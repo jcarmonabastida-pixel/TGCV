@@ -1,0 +1,7 @@
+TGCV-EXT-1.0 DATASET MANIFEST
+file=CollegeMsg.txt.gz
+sha256=50ae2d98ed3bad9ddb18dbd495a89e5e10cfb8f7e86932827db29fc41b41f9fa
+records=59835
+source=SNAP CollegeMsg
+status=INPUT_INTEGRITY_VERIFIED
+policy=raw dataset not committed to GitHub
