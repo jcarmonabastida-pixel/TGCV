@@ -1,0 +1,18 @@
+{
+  "version": "TGCV-EMP-1.1",
+  "status": "frozen_before_confirmatory_model_fit",
+  "core": "S; T_acc=F(S,C,L); phenomenon=Delta T_acc; consequence=Delta Reach -> Delta Trajectory; I is mechanism, not primitive",
+  "hypothesis": "R adds reproducible out-of-sample predictive utility beyond conventional snapshot representation B",
+  "null": "R adds no incremental predictive utility beyond B",
+  "primary_metric": "paired out-of-sample LogLoss improvement",
+  "alpha": 0.05,
+  "delta": 0.04,
+  "confirmatory_train_n": 30000,
+  "confirmatory_test_n": 10000,
+  "training_seed": 3100000,
+  "test_seed": 4100000,
+  "algorithm": "HistGradientBoostingClassifier with identical fixed hyperparameters in both arms",
+  "statistical_test": "paired Monte-Carlo sign-flip permutation test, 200000 flips, seed 13579",
+  "controls": ["R_count_only", "R_permuted_marginals", "RandomForestClassifier"],
+  "no_retrofit": "No Core, MVE, R definition, outcome, delta, dataset, or model-selection rule may be altered after test-set sealing."
+}
