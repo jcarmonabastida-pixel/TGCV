@@ -1,64 +1,72 @@
 # TGCV — Teoría de Construcción de Valor de Sistemas Generativos
 
-## Research programme
+TGCV is a research programme investigating **interactions that modify the set of transformations accessible to a system**, and how those modifications relate to subsequent trajectories and value construction.
 
-TGCV investigates a transversal phenomenon: **interactions that modify the set of transformations accessible to a system**, and how those modifications relate to subsequent trajectories and value construction.
+## Repository purpose
 
-The programme is organized around a cautious, falsifiable research hypothesis: a widely distributed phenomenon is studied across multiple fields through partial theories, but lacks a minimal unified representation that is independent of application domain.
+This repository is the canonical continuity and reproducibility layer for TGCV. It separates the research state into governance, conceptual core, literature/evidence, experiments, research assets, applications, code, and data manifests.
 
-### Current research state
+## Current state
 
-- Conceptual architecture: stabilized working architecture following EXT-1.1.
-- Central object: interactions that modify the set of transformations accessible to a system.
-- Scientific aim: establish and test a minimal transversal analytical layer connecting interactions, changes in accessible transformations, subsequent trajectories, and value creation.
-- Practical aim: derive a methodology for value construction from the ontological core and evaluate its applicability in industrial contexts.
-- Research programme: literature synthesis → ontological/conceptual stabilization → falsifiable experimental programme → empirical validation → value-construction methodology.
+- Research stage: post-EXT-1.1 continuity/bootstrap.
+- Central research object: interactions that modify the set of transformations accessible to a system.
+- Scientific hypothesis: a transversal phenomenon is studied through partial theories across several fields, but lacks a minimal unified representation independent of application domain.
+- Scientific aim: establish and test a minimal analytical layer connecting interactions, changes in accessible transformations, subsequent trajectories, and value creation.
+- Practical aim: derive a methodology of value construction from the ontological core and evaluate it in industrial contexts.
 
-## Repository structure
+## Structure
 
 ```text
 TGCV/
-├── README.md
-├── LICENSE
-├── CHANGELOG.md
-├── STATUS.md
-├── CITATION.cff
-├── docs/
+├── 00_GOVERNANCE/
+│   ├── decisions/
+│   ├── freezes/
+│   └── provenance/
+├── 01_CORE/
 │   ├── architecture/
-│   ├── research-prospectus/
-│   ├── vision-paper/
-│   ├── research-notes/
-│   ├── transfer/
-│   └── freezes/
-├── ontology/
-│   ├── core/
+│   ├── ontology/
 │   ├── glossary/
-│   └── mappings/
-├── experiments/
-│   ├── EXT-1.1/
+│   └── hypotheses/
+├── 02_LITERATURE/
+│   ├── SLR/
+│   ├── evidence-map/
+│   └── references/
+├── 03_EXPERIMENTS/
+│   ├── EXT-1.0_CollegeMsg/
+│   ├── EXT-1.1_Rust/
 │   ├── protocols/
-│   ├── data-dictionary/
-│   └── results/
-├── evidence/
-│   ├── literature/
-│   ├── traceability/
-│   └── claims/
-├── industrial/
+│   ├── results/
+│   └── validation/
+├── 04_RMA/
+├── 05_ASSETS/
+│   ├── Vision_Paper/
+│   ├── Research_Prospectus/
 │   ├── ARM/
+│   └── Research_Notes/
+├── 06_APPLICATIONS/
+│   ├── UAM/
+│   ├── IE/
 │   └── Orange/
-├── reproducibility/
-│   ├── code/
-│   ├── configs/
-│   └── manifests/
-└── archive/
+├── 07_CODE/
+│   ├── src/
+│   ├── tests/
+│   └── scripts/
+├── 08_DATA_MANIFESTS/
+│   ├── datasets/
+│   ├── hashes/
+│   └── provenance/
+├── README.md
+├── STATUS.md
+├── CHANGELOG.md
+└── CITATION.cff
 ```
 
-## Versioning and freezes
+## Freeze policy
 
-Research-state freezes are immutable snapshots used to preserve continuity between research stages. They are stored under `docs/freezes/` and referenced from `STATUS.md` and the relevant experimental records.
+A freeze is an immutable research-state snapshot. It records what was fixed, when, why, the exact inputs/configuration, provenance, and validation status. Frozen material is never silently overwritten; later changes receive a new revision.
 
-The EXT-1.1 freeze material is the authoritative continuity layer for the present repository bootstrap. New work must not silently overwrite a frozen state; subsequent changes are recorded as explicit revisions.
+**EXT-1.1 continuity constraint:** before downloading or processing the Rust dataset, an identifiability/privacy audit must pass. Only after that gate is satisfied should EXT-1.1 be frozen and the exact dataset identified/processed.
 
-## Principle of continuity
+## Reproducibility principle
 
-The repository is intended to make TGCV computationally and conceptually reproducible across conversations and research stages. The canonical state is represented by versioned documents, explicit freezes, traceability records, and reproducibility assets rather than by conversational context alone.
+Large datasets are not committed to Git. The repository stores protocols, manifests, hashes, provenance, code, configurations, logs, and derived results sufficient to reproduce the computational pipeline.
