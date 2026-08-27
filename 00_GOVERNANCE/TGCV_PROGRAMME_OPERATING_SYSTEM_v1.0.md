@@ -20,6 +20,8 @@ The repository is the continuity point; the Programme OS defines how the reposit
 5. **Evidence precedes promotion.** Working constructs do not become foundational by repetition.
 6. **Separate science, methodology and programme governance.**
 7. **Repository state is the continuity reference.**
+8. **External transfer is an open programme function.** Named universities, companies or partners are current opportunities/relationships, not permanent programme destinations or constraints.
+9. **Value delivery is the ultimate practical orientation.** External transfer exists to test, apply, communicate and ultimately construct and deliver practical value from the programme's validated scientific and methodological assets.
 
 ## 3. Programme layers
 
@@ -66,17 +68,31 @@ Current scientific boundary:
 - RII
 - MOI
 - value-construction methodology
-- external application assets
+- applied solution assets
 
 Applied methodology may derive from or operationalise the scientific architecture but cannot redefine it without an explicit scientific decision.
 
-### L4 — External transfer
+### L4 — External transfer / value delivery
 
-- Vision Paper
-- Research Prospectus
-- academic candidature assets
-- Orange / industrial research assets
-- other external deliverables
+This is an **open and evolving layer**, not a fixed list of institutions.
+
+It includes, as appropriate:
+
+- academic dissemination and collaboration;
+- doctoral/research-host relationships;
+- industrial research and co-development;
+- pilots and empirical application;
+- partnerships and alliances;
+- products, services, methods and other value-delivery mechanisms;
+- Vision Paper, Research Prospectus and other external communication assets.
+
+**IE, UAM and Orange are current identified opportunities/relationships only.** Their appearance in current programme materials must never be interpreted as defining the scope or destination of TGCV. Future universities, companies, funders, research consortia, clients, partners or other channels can enter this layer through normal programme governance.
+
+The governing objective is therefore:
+
+`validated science → applicable methodology → adoption / application → practical value → value delivery`
+
+without assuming in advance which external actor or institutional channel will realise it.
 
 ## 4. Operating control loop
 
@@ -102,6 +118,8 @@ CURRENT PROGRAMME STATE
 ```
 
 PMO/SMO is the coordination/control function across this loop.
+
+External transfer/value-delivery activities enter the loop through explicit work items and are governed by the same provenance, evidence and change-control principles.
 
 ## 5. Asset-state discipline
 
@@ -138,9 +156,9 @@ Must identify the scientific dependency it uses and must not introduce circulari
 
 Must update the relevant governance artefact and provenance record.
 
-### External asset change
+### External asset / value-delivery change
 
-Must be traceable to the current scientific/methodological state and must not silently become evidence for the Core.
+Must be traceable to the current scientific/methodological state and must not silently become evidence for the Core. A partner, pilot or commercial application can generate new empirical evidence, but its status as evidence must be evaluated explicitly.
 
 ## 7. SLR operating interface
 
@@ -202,3 +220,4 @@ Future versions may modify the operating baseline through explicit governance de
 4. Consolidate SLR SOP and evidence lifecycle.
 5. Add automated repository checks for status/provenance consistency.
 6. Link Programme OS to STATUS/RMA and active freezes.
+7. Define an explicit external-transfer/value-delivery portfolio model that remains open to future partners and routes to value.
