@@ -1,0 +1,25 @@
+{
+  "version": "TGCV-EMP-1.1",
+  "status": "frozen_before_confirmatory_model_fit",
+  "core": "Core*=S; T_acc=F(S,C,L); phenomenon=Delta T_acc; consequence=Delta Reach -> Delta Trajectory; I is mechanism, not primitive.",
+  "hypothesis": "The derived accessible-transformation structure R adds reproducible out-of-sample predictive utility beyond a conventional snapshot representation B that excludes relational transformation structure.",
+  "null": "R adds no incremental predictive utility beyond B.",
+  "primary_metric": "paired out-of-sample LogLoss improvement Delta=LL_B-LL_B+R",
+  "alpha": 0.05,
+  "delta": 0.04,
+  "confirmatory_train_n": 30000,
+  "confirmatory_test_n": 10000,
+  "training_seed": 3100000,
+  "test_seed": 4100000,
+  "algorithm": "HistGradientBoostingClassifier, identical fixed hyperparameters in both arms",
+  "statistical_test": "paired Monte-Carlo sign-flip permutation test on per-test-episode log-loss differences, 200000 flips, fixed seed 13579",
+  "controls": [
+    "R_count_only",
+    "R_permuted_marginals",
+    "alternative algorithm RandomForestClassifier"
+  ],
+  "decision_rule": "Primary support requires Delta>=0.04 and paired permutation p<0.05. Strong support additionally requires TGCV improvement over count-only and permuted-R controls and same-direction replication with RandomForest.",
+  "representation_scope": "B includes component count, three resource values, and objective identity; B deliberately excludes relational edge structure. R is derived from accessible transformations at the frozen snapshot.",
+  "critical_coherence_correction": "Since R is deterministic from S, the earlier conditional statement P(Y|S,B,R)!=P(Y|S,B) would be tautologically unavailable when S is fully observed. The valid empirical claim is representation-level incremental utility P(Y|B,R)!=P(Y|B).",
+  "no_retrofit": "No Core, MVE, R definition, outcome, delta, dataset, or model-selection rule may be altered after test-set sealing."
+}
