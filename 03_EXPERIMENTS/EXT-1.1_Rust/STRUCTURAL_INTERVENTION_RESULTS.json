@@ -1,0 +1,12 @@
+{
+  "pairs": 5000,
+  "success_rate_A": 0.2884,
+  "success_rate_B": 0.2962,
+  "paired_mean_difference_A_minus_B": -0.0078,
+  "discordant_A1_B0": 143,
+  "discordant_A0_B1": 182,
+  "mc_signflip_p": 0.037048147592620366,
+  "baseline_preserved": "components, resources, edge count, in-degree multiset, out-degree multiset",
+  "shared_transition_seed_per_pair": true,
+  "objective_random_and_same_within_pair": true
+}
