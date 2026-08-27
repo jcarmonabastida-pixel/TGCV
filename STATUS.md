@@ -1,41 +1,46 @@
-# TGCV — Status
+# TGCV — Canonical Status
 
-**Repository continuity bootstrap:** 2026-08-27
+**Last updated:** 2026-08-27
 
-## Canonical research state recovered
+## Canonical continuity point
 
-The latest recoverable state is **post-TR-180E**, not a frozen EXT-1.1 execution.
+`jcarmonabastida-pixel/TGCV` is the canonical versioned continuity layer for the entire TGCV programme.
 
-The stabilized conceptual architecture remains:
+## Current research state
+
+**Conceptual Core: STABILIZED**
 
 - Ontological Core: `S`
 - Analytical structure: `T_acc = F(S,C,L)`
 - Central phenomenon: `ΔT_acc`
-- Consequence: `ΔT_acc -> ΔReach -> ΔTrajectory`
-- Value extension: `Trajectory -> Outcome -> Value`
-- `I`: explanatory mechanism, not a Core primitive.
+- Consequence: `ΔT_acc → ΔReach → ΔTrajectory`
+- Value extension: `Trajectory → Outcome → Value`
+- `I`: explanatory mechanism, not Core primitive.
 
-TR-129, TR-130 and TR-135–TR-140 are part of the recovered safe state; TR-139 is CONDITIONAL PASS and TR-140 SURVIVES. Architectural originality remains a question for SLR-1, not a demonstrated fact. fileciteturn6file4
+TR-129, TR-130 and TR-135–TR-140 constitute the recovered conceptual safe state; TR-139 remains CONDITIONAL PASS on architectural originality. SLR-1 remains the formal prior-art absorption gate.
 
-## Experimental state
+## Empirical state
 
-**TR-180E = PASS.** The conceptual comparative predictive protocol is frozen at the level recovered from the research record. MVE-1.0 is frozen and must not be modified by later results. fileciteturn9file3
+The ChatGPT Library contains a completed computational programme under the explicitly frozen operationalization **TGCV-EMP-1.1**. Its recorded primary result is **PASS**: `ΔLogLoss = +0.07942` against `δ=0.04`, with paired sign-flip `p < 0.000005`; the structural-intervention check is also recorded. This is evidence for the specified operationalization, **not universal validation of TGCV**.
 
-The next defined stage is **TR-181E — Predictive Pilot & Effect-Size Estimation**. Its purpose is to estimate the effect distribution and derive `δ`, `N*` and `α` before opening the confirmatory dataset. fileciteturn9file3
+The earlier historical EXT-1.0 CollegeMsg execution is separately recorded as **FAIL / NO SUPPORT** under its locked criterion (`ΔLogLoss=0.008717 < 0.04`). It remains part of the scientific history and must not be erased by the later computational result.
 
-## Important continuity correction
+## Freeze state
 
-The repository bootstrap previously labelled a candidate Rust dataset as an EXT-1.1 prerequisite. That label is **not supported by the recovered canonical research records currently available** and must not be treated as a TGCV fact.
+- MVE-1.0: frozen historical state.
+- TGCV-EMP-1.1 protocol: frozen before confirmatory model fit.
+- TGCV-EMP-1.1 test set: sealed; hashes recorded.
+- TGCV-EMP-1.1 computational state: frozen in `00_GOVERNANCE/freezes/2026-08-27_TGCV-EMP-1.1_FREEZE.md`.
+- TGCV as a universally validated theory: **NOT CLAIMED**.
 
-Accordingly:
+## Next scientific programme
 
-- no Rust dataset is claimed to be the canonical EXT-1.1 dataset;
-- no EXT-1.1 freeze is declared;
-- no dataset is downloaded or processed on the basis of that unsupported label;
-- the repository records the confirmed research boundary instead: **TR-180E PASS → TR-181E**.
+The next priority is **independent external/domain replication** and the systematic SLR-1 prior-art absorption work, while preserving the Core unchanged unless an explicit evidence/gate decision reopens it.
 
-This correction is deliberate and preserves scientific provenance rather than allowing an earlier repository placeholder to become false canonical history.
+## Programme assets
+
+The repository stores canonical scientific records and programme metadata. Application/candidacy documents are kept in separate application directories and are not allowed to redefine the scientific Core.
 
 ## Continuity rule
 
-GitHub is the canonical programme continuity layer. Every substantive research-state change must be represented by a versioned commit and, where applicable, an immutable freeze record. Conversational context is not the authoritative state.
+Every substantive state change requires a versioned GitHub commit. Frozen states are immutable; later work creates new versions. ChatGPT Library files remain source/provenance material, not an alternative canonical state.
