@@ -1,0 +1,26 @@
+{
+  "experiment": "TGCV-EMP-1.1",
+  "status": "PRIMARY_TEST_PASS",
+  "primary": {
+    "base_logloss": 0.2667941776817361,
+    "tgcv_logloss": 0.18737058183173086,
+    "delta_logloss": 0.07942359585000518,
+    "sd_delta": 0.33150577723422986,
+    "auc_base": 0.9373365574313027,
+    "auc_tgcv": 0.9724192803224981,
+    "paired_signflip_p": 0.0000049999750001249995
+  },
+  "controls": {
+    "count_only_delta": 0.01809,
+    "permuted_r_delta": -0.09496,
+    "random_forest_delta": 0.00430
+  },
+  "structural_intervention": {
+    "pairs": 5000,
+    "success_rate_A": 0.2884,
+    "success_rate_B": 0.2962,
+    "paired_mean_difference_A_minus_B": -0.0078,
+    "mc_signflip_p": 0.037048147592620366
+  },
+  "interpretation": "Evidence for the specified frozen computational operationalization; not universal validation of TGCV. Independent external/domain replication remains required."
+}
