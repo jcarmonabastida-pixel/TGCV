@@ -2,26 +2,40 @@
 
 ## State
 
-**NOT FROZEN** as of 2026-08-27.
+**NOT FROZEN / NOT CURRENT NEXT STEP** as of 2026-08-27.
 
-## Recovered continuity constraint
+## Canonical continuity correction
 
-Before downloading or processing the Rust dataset, an identifiability/privacy audit must be performed. Only if that audit passes should EXT-1.1 be frozen and the exact dataset identified.
+The recovered TGCV research record places the programme at **TR-180E = PASS**, with **MVE-1.0 frozen**, and explicitly defines **TR-181E — Predictive Pilot & Effect-Size Estimation** as the next stage. The pilot is required to estimate `δ`, `N*` and `α` before the confirmatory dataset is opened. fileciteturn9file3
 
-## Why this record exists
+Therefore this file must not be used to imply that a Rust dataset has already been identified as the canonical EXT-1.1 dataset. No such dataset is established by the recovered records currently available.
 
-This file deliberately records the boundary between recovered research state and validated frozen state. It prevents an unverified dataset, execution, or result from being represented as an authoritative EXT-1.1 freeze.
+## What is frozen
 
-## Freeze prerequisites
+- MVE-1.0 is frozen.
+- The TR-180E conceptual comparative predictive design is PASS.
+- The Core is not to be modified by subsequent results.
+- The confirmatory protocol must be frozen before opening the confirmatory dataset.
 
-- [ ] Identifiability/privacy audit completed and passed.
-- [ ] Exact Rust dataset identified and provenance recorded.
-- [ ] Dataset integrity/hash recorded without committing the dataset itself.
-- [ ] EXT-1.1 protocol and configuration fixed.
+## What remains open
+
+- TR-181E predictive pilot.
+- Estimation of effect variability.
+- Pre-specification of `δ`, `N*` and `α`.
+- Confirmatory dataset identification and admissibility audit.
+- Confirmatory execution.
+- Formal EXT-1.1 freeze, if and when the relevant experiment reaches that state.
+
+## Freeze prerequisites for any future EXT-1.1 record
+
+- [ ] Exact experiment identity established.
+- [ ] Dataset identity and provenance established.
+- [ ] Identifiability/privacy audit passed where applicable.
+- [ ] Protocol and configuration frozen before confirmatory data access.
 - [ ] Computational execution reproducibly recorded.
 - [ ] Results and validation checks recorded.
 - [ ] Immutable freeze manifest created.
 
 ## Integrity rule
 
-Do not change this record to `FROZEN` merely to establish continuity. The freeze status must follow the evidence and reproducibility checks above.
+Never promote a repository placeholder, filename, assumed dataset, or reconstructed detail into canonical TGCV history without supporting provenance.
