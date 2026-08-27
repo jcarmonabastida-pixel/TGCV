@@ -1,0 +1,14 @@
+asset_id,asset,class,purpose,status,dependency,ext_1_0_sensitivity,priority
+TGCV-EXT-VP-001,Vision Paper,external-scientific,Expose vision/problem/architecture,WORKING,stabilized architecture;SLR-1,medium,1
+TGCV-EXT-RP-001,Research Prospectus,external-scientific,Convert vision into falsifiable research programme,WORKING,VP;TCP;architecture,high,1
+TGCV-EXT-ARM-001,ARM,external-applied,Formalize transformation architecture and application/value interface,WORKING,TCP;architecture,high,1
+TGCV-EXT-MOI-001,Industrial Opportunities Map,external-applied,Map domains for investigation/application,WORKING,ARM;RII;architecture,medium,1
+TGCV-EXT-TCP-001,TCP,external-scientific-technical,Fix testable architecture and criteria,WORKING,architecture;EXT-1.0,very-high,1
+TGCV-EXT-RII-001,RII,external-scientific-applied,Connect research implementation evidence and impact,WORKING,ARM;MOI;TCP,high,1
+TGCV-MET-SIP-001,SIP,methodological,Research operating and prioritization system,WORKING,governance;RMA,medium,2
+TGCV-MET-PMO-001,PMO-SMO,methodological-governance,Coordinate assets gates decisions versions dependencies,WORKING,Project Zero;work contract,low,2
+TGCV-MET-SDM-001,Scientific Discovery Methodology,methodological,Compile discovery methodology,PROPOSED,SIP;PMO-SMO;research history,medium,2
+TGCV-SLR-EXP-001,SLR dossiers,scientific,Preserve literature research and source traceability,WORKING,SLR-1,low,3
+TGCV-SLR-EVB-001,Evidence Bank,scientific,Structure primary evidence and claims,WORKING,SLR dossiers,low,3
+TGCV-SLR-FCT-001,Fact Bank,scientific,Separate extracted facts from inference/claims,WORKING,Evidence Bank,low,3
+TGCV-SLR-MAT-001,SLR-1 Prior-Art Absorption Matrix,scientific-gate,Attempt to falsify architectural originality,WORKING,literature;architecture,low,3
