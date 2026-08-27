@@ -1,4 +1,4 @@
-"""Self-contained sanity checks for the reconstructed TR-181E R engine.
+"""Self-contained sanity checks for the minimal TR-181E R engine.
 
 Deterministic software checks only. Synthetic snapshots are used; no sealed
 EMP-1.1 data are touched.
@@ -18,7 +18,6 @@ CANDIDATES = [
 BASE = {
     "components": ["c1", "c2"],
     "resources": {"r1": 5},
-    "objective": "o1",
     "outcome": 0,
     "trajectory": [{"step": 1}],
 }
@@ -43,7 +42,7 @@ def test_missing_resource_blocks_candidate():
     a = compute_r(BASE, CANDIDATES)
     altered = deepcopy(BASE); altered["resources"]["r1"] = 0
     b = compute_r(altered, CANDIDATES)
-    assert a["total_accessible"] == b["total_accessible"] + 1
+    assert a["cardinality"] == b["cardinality"] + 1
 
 
 def test_invalid_snapshot_fails_closed():
