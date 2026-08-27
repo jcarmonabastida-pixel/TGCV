@@ -1,0 +1,9 @@
+{
+  "experiment": "TGCV-EMP-1.1",
+  "test_n": 10000,
+  "test_seed": 4100000,
+  "test_npz_sha256": "731f4071d6658b9023290ca423bf948e49d928713c8c11300b26f38dda1c273",
+  "test_episodes_sha256": "d12d8c14efdc581113c2cab0eaeb975dee6bac26ac9250be2a11725da6b9be4d",
+  "protocol_sha256": "55c8f5654a41fdbefbae217089448b6ffeceb646feaed70b7bc9693fee92172c",
+  "raw_data_policy": "Do not commit raw or sensitive datasets to GitHub."
+}
