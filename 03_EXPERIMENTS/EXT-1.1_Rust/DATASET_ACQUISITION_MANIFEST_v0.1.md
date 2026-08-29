@@ -1,6 +1,6 @@
 # EXT-1.1 — Dataset acquisition manifest v0.1
 
-**Status:** IDENTIFIED / ACQUISITION OPEN
+**Status:** IDENTIFIED / SUITABILITY AUDITED / PHYSICAL ACQUISITION OPEN
 
 ## Canonical source
 
@@ -10,21 +10,21 @@ DOI: `10.6084/m9.figshare.c.5983534.v1`
 
 Source publication DOI: `10.1038/s41597-022-01819-z`
 
-## Dataset suitability audit
+## Dataset suitability audit — PASS
 
-The publication documents the presence of:
+The published data descriptor confirms that the dataset integrates Cargo package metadata, versions, semantic-versioned dependencies and daily downloads per package version. It also provides temporal data on dependencies, use and success and documents the database schema. The named tables include `packages`, `package_versions`, `package_dependencies` and `package_version_downloads`.
 
-- package identities and creation dates;
-- package versions;
-- version-level dependency relations with semver constraints;
-- daily downloads for package versions;
-- package-level and repository-level temporal information.
+This is sufficient to establish **conceptual/schema-level suitability** for the EXT-1.1 observational unit and the provisional DR-013 outcome specification.
 
-The documented data model therefore supports the EXT-1.1 observational unit and the provisional DR-013 outcome specification at the conceptual/schema level.
+Evidence: Schueller et al. (2022), Scientific Data 9:703, Data Sources and Data Records sections.
+
+## Important distinction
+
+The suitability audit is **not** an acquisition or integrity audit. We have not yet obtained the exact binary/database artifact in this execution environment, so no hash, byte size, local file inventory or empirical schema check is claimed.
 
 ## Acquisition gate
 
-The exact downloadable artifact/version is **not yet frozen**. Before computational use, record:
+Before computational use, record:
 
 1. exact Figshare artifact identifier;
 2. download URL;
@@ -34,19 +34,21 @@ The exact downloadable artifact/version is **not yet frozen**. Before computatio
 6. schema/version metadata;
 7. temporal coverage;
 8. row/cardinality checks for the tables used by EXT-1.1;
-9. local acquisition timestamp;
+9. acquisition timestamp;
 10. any transformation performed before analysis.
 
-## Required tables / fields
-
-Minimum expected evidence for the confirmatory pipeline:
+## Required evidence for confirmatory pipeline
 
 - `packages`: package identity;
 - `package_versions`: package version identity and release timestamp;
 - `package_dependencies`: version-to-package dependency relations;
 - `package_version_downloads`: date-level download observations by package version.
 
-The exact column names and types must be verified from the acquired artifact rather than inferred from the publication.
+The exact column names, types and constraints must be verified from the acquired artifact rather than inferred from the publication.
+
+## Acquisition attempt — 2026-08-29
+
+The canonical Figshare DOI and publication were independently located and verified. The web-access layer confirms the dataset and its documented structure, but this execution environment could not retrieve the Figshare binary/API artifact directly. Therefore the physical acquisition gate remains OPEN rather than being falsely marked PASS.
 
 ## Freeze rule
 
@@ -54,4 +56,4 @@ No EXT-1.1 dataset freeze may be declared until the acquired artifact is hashed 
 
 ## Provenance note
 
-The source publication states that the dataset is hosted on Figshare, that the accompanying code can rebuild the database, and that the data are distributed in PostgreSQL/SQLite-compatible forms. The publication also describes pseudonymisation of developer-identifying information.
+The publication states that the data are hosted on Figshare, that the accompanying code can recreate the database, and that the database can be created in PostgreSQL or SQLite formats. It also documents pseudonymisation of direct developer-identifying information.
