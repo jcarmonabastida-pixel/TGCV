@@ -2,7 +2,7 @@
 
 **HRSV:** Historical Registry State & Version-ID Gate
 **Date:** 2026-08-30
-**Status:** OPEN — execution pending
+**Status:** EXECUTED — FAIL / BLOCKED
 **Parent:** EXT-1.1_Rust
 **Predecessor:** CHR-MICRO-3 (FAIL/BLOCKED on available evidence)
 
@@ -30,36 +30,48 @@ Can each resolved `package@version` be mapped reproducibly to the crates.io `ver
 3. Official archived daily version-download CSVs, used only after identity mapping and never as a resolution input.
 4. Secondary documentation only as corroboration, never as sole evidence for a gate-critical historical fact.
 
-## Non-circularity
+## Execution findings
 
-The following are prohibited as inputs to A-C:
-- downloads;
-- popularity/adoption;
-- survival/success;
-- downstream outcomes;
-- any variable derived from the eventual trajectory.
+### HRSV-A — Historical registry state: FAIL
 
-## PASS criteria
+The current public `rust-lang/crates.io-index` Git repository exposes the index as a Git repository, but the accessible commit history has been collapsed into a current snapshot commit. The repository's commit for the current snapshot explicitly states that the previous HEAD was moved to `snapshot-2026-08-19` and the resulting commit has no parent. Direct historical-path queries for the three micro-slice files return no commits at the required historical cutoffs.
 
-HRSV passes only if all A-D are demonstrated for the three CHR micro-slice cases with reproducible evidence and explicit cutoff timestamps.
+Therefore the current Git history cannot provide an auditable registry state for the 2017/2020 cutoffs needed by C1-C3.
 
-**PASS:** A-D demonstrated for all cases.
-**CONDITIONAL PASS:** only a documented identity-only convention remains, with no temporal or outcome information introduced.
-**FAIL:** any historical state cannot be reconstructed, resolution is non-deterministic/unverifiable, or the version-ID bridge cannot be established without retrospective information.
+### HRSV-B — Candidate universe: FAIL / NOT IDENTIFIABLE FROM CURRENT INDEX HISTORY
 
-## Current state
+Current index entries expose publication timestamps and dependency metadata, but these do not reconstruct the historical index state or historical yank state at each cutoff. A current-state entry cannot be treated as proof that the same entry/yank status was observable at the historical cutoff.
 
-- CHR-MICRO-3: FAIL/BLOCKED.
-- CARGO_NATIVE_ROUTE: OPEN.
-- EXT-1.1 FREEZE: BLOCKED.
-- No T freeze authorized.
+### HRSV-C — Deterministic resolution: BLOCKED
 
-## Execution record
+Cargo/semver rules are deterministic when supplied with a valid historical candidate universe. The Cargo documentation confirms that version requirements define the candidate range. However, because HRSV-B cannot supply the exact historical candidate universe and yank state, deterministic historical resolution cannot be demonstrated without leakage or an unsupported reconstruction assumption.
+
+### HRSV-D — Version-ID bridge: PARTIAL / NOT YET PROVEN
+
+The official crates.io daily download archive confirms that its files contain `version_id` and daily download counts. This establishes the outcome-side identifier format. The present evidence does not independently establish the exact `package@version → version_id` mapping for all three cases in a reproducible, gate-ready manner.
+
+## Case assessment
 
 | Case | A | B | C | D | Evidence / notes |
 |---|---|---|---|---|---|
-| C1 serde@1.0.0 | PENDING | PENDING | PENDING | PENDING | |
-| C2 tokio@1.0.0 | PENDING | PENDING | PENDING | PENDING | |
-| C3 rand@0.8.0 | PENDING | PENDING | PENDING | PENDING | |
+| C1 serde@1.0.0 | FAIL | FAIL | BLOCKED | PARTIAL | Historical index path has no accessible pre-cutoff commit history. |
+| C2 tokio@1.0.0 | FAIL | FAIL | BLOCKED | PARTIAL | Same historical-state limitation. |
+| C3 rand@0.8.0 | FAIL | FAIL | BLOCKED | PARTIAL | Same historical-state limitation. |
 
-**Overall verdict:** PENDING
+## Verdict
+
+**HRSV = FAIL / BLOCKED.**
+
+This is an acquisition/evidence failure, not a finding that the Cargo-native route or TGCV is invalid. The missing object is a recoverable historical registry state (or an independently auditable archival equivalent) sufficient to reconstruct candidate universes and historical resolution.
+
+## Consequences
+
+- CHR-MICRO-3 remains FAIL/BLOCKED.
+- CARGO_NATIVE_ROUTE remains OPEN.
+- EXT-1.1 FREEZE remains BLOCKED.
+- No T freeze is authorized.
+- No downloads/outcomes are used to infer missing historical resolution.
+
+## Next gate
+
+Open a dedicated **Historical Index Archive Recovery Gate (HIAR)** to determine whether an external archival copy, snapshot, release artifact, or other independently auditable source can recover the required pre-cutoff registry states. If HIAR fails, EXT-1.1 should be assessed for empirical identifiability under an alternative domain/acquisition route rather than relaxing the temporal gate.
