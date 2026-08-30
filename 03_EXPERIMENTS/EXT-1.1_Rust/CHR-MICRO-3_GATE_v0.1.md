@@ -1,6 +1,6 @@
 # EXT-1.1 Rust — CHR-MICRO-3 Chrono-Resolution Gate v0.1
 
-**Status:** OPEN — execution pending
+**Status:** EXECUTED — FAIL / BLOCKED ON AVAILABLE EVIDENCE
 **Date:** 2026-08-30
 **Parent experiment:** EXT-1.1_Rust
 
@@ -14,13 +14,11 @@ This file is part of the canonical EXT-1.1 experiment record in GitHub. The chat
 
 ## Micro-slice
 
-Three crates must be evaluated:
+- C1 — `serde@1.0.0`.
+- C2 — `tokio@1.0.0`.
+- C3 — `rand@0.8.0`.
 
-- C1 — simple historical dependency-resolution case.
-- C2 — intermediate case with multiple compatible candidate releases.
-- C3 — difficult case with potential temporal ambiguity or dependency-history evolution.
-
-Selection must not be based on downstream outcome or later success.
+Selection was made to span increasing resolution complexity and was not based on downstream outcome.
 
 ## Required reconstruction chain
 
@@ -28,58 +26,29 @@ Selection must not be based on downstream outcome or later success.
 
 All resolution inputs must be available no later than the relevant observation time.
 
-## Gates
+## Gate results
 
-### A — Identity
-
-`package@version` identifies one unambiguous release.
-
-### B — Temporal availability
-
-For every resolved dependency release:
-
-`release_time <= resolution_time`
-
-A release that did not yet exist cannot be selected retrospectively.
-
-### C — Reproducibility
-
-Running the same resolution against the historical state at time `t` must reproduce the same result.
-
-### D — No outcome leakage
-
-Resolution must not use downloads, popularity, adoption, survival, success, or any outcome-derived variable observed after `t`.
-
-### E — Registry bridge
-
-A reproducible identifier bridge must exist:
-
-`package@version → registry version_id`
-
-The bridge may use a modern lookup only as an identity mapping; it must not inject retrospective temporal or outcome information.
-
-### F — Temporal T_acc construction
-
-The historical graph must support construction of `T_acc,t` from information available at `t`, and where applicable comparison with `T_acc,t+1` to obtain `ΔT_acc`.
+| Case | A Identity | B Temporal availability | C Reproducibility | D No outcome leakage | E Registry bridge | F Temporal T_acc construction |
+|---|---|---|---|---|---|---|
+| C1 `serde@1.0.0` | PASS | PASS for release identity; historical candidate resolution not demonstrated | OPEN | PASS | OPEN | OPEN |
+| C2 `tokio@1.0.0` | PASS | PASS for release identity; historical candidate resolution not demonstrated | OPEN | PASS | OPEN | OPEN |
+| C3 `rand@0.8.0` | PASS | PASS for release identity; historical candidate resolution not demonstrated | OPEN | PASS | OPEN | OPEN |
 
 ## Verdict rule
 
-- **PASS:** A–F pass for all three cases.
-- **CONDITIONAL PASS:** only an explicit, non-substantive convention is required and does not alter historical observability.
-- **FAIL:** any substantive use of future information, retrospective resolution, irreproducibility, identity ambiguity, or inability to construct the required temporal object.
+**FAIL / BLOCKED:** the currently recoverable evidence establishes release identity, chronology and dependency constraints, but does not establish reproducible historical dependency resolution from a time-indexed registry state for the three cases. The `package@version → registry version_id` bridge has also not yet been independently demonstrated for all three cases.
 
-No full EXT-1.1 extraction or FREEZE is authorized solely by this protocol. Execution evidence and the final verdict must be recorded separately.
+This is a substantive evidentiary gap, not a merely conventional choice.
 
-## Execution record
+## Consequence
 
-| Case | A | B | C | D | E | F | Notes |
-|---|---|---|---|---|---|---|---|
-| C1 | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | |
-| C2 | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | |
-| C3 | PENDING | PENDING | PENDING | PENDING | PENDING | PENDING | |
+The failure is a failure of the **current acquisition/evidence path**, not proof that the Cargo-native route is impossible.
 
-**Overall verdict:** PENDING
+- Full EXT-1.1 extraction remains blocked.
+- EXT-1.1 FREEZE remains blocked.
+- No outcome variable may be used to infer or repair the missing historical resolution.
+- A new acquisition/reconstruction sub-gate is required for historical registry/index state and the version_id bridge.
 
-## Next authorized step
+## Execution evidence
 
-Execute CHR-MICRO-3 on the three selected cases, preserve the evidence needed to reproduce each gate, and record the verdict before proceeding to minimal extraction or EXT-1.1 freeze.
+Detailed execution record: `CHR-MICRO-3_EXECUTION_v0.1.md`.
