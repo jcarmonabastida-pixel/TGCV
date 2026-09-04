@@ -1,6 +1,6 @@
 # EXT-1.1 Rust — Resolver Specification `R` v0.1
 
-**Status:** DRAFT — environment capture substantially completed; configuration probe still required before freeze
+**Status:** DRAFT — configuration audit negative; resolver policy boundary frozen; fixture execution required before scientific freeze
 **Purpose:** Freeze the deterministic resolution semantics used by the `T_acc` identifiability experiment.
 
 ## 1. Role
@@ -15,7 +15,7 @@ This artifact is intentionally separate from package state `S_t` and historical 
 
 ## 2. Captured execution environment
 
-Captured from the actual EXT-1.1/C3 execution environment on Windows:
+Captured from the actual EXT-1.1/C3 execution environment:
 
 | Parameter | Captured value |
 |---|---|
@@ -28,37 +28,57 @@ Captured from the actual EXT-1.1/C3 execution environment on Windows:
 | Rust active toolchain | `stable-x86_64-pc-windows-msvc` |
 | target | `x86_64-pc-windows-msvc` |
 | OS | Windows 11 Professional, build `26200` |
-| Cargo environment variables | None matching `CARGO_*` or `RUST*` were reported |
-| User `.cargo` file count | 17,525 files |
+| `CARGO_*` / `RUST*` environment variables | None reported |
+| ambient `%USERPROFILE%\\.cargo` file count | 17,525 |
 
-The `.cargo` file count is recorded only as an audit observation. It is **not** part of `R` and MUST NOT be treated as scientific input. In particular, Cargo cache/index contents are not implicitly frozen by this count.
+The `.cargo` file count is an audit observation only. It is **not** part of `R` and MUST NOT be treated as scientific input.
 
-## 3. Configuration boundary
+## 3. Cargo configuration audit
 
-The following configuration surface remains to be explicitly inspected before freeze:
+The following checks were performed from the isolated C3 environment:
 
-- user-level Cargo configuration (`%USERPROFILE%\\.cargo\\config.toml` / legacy `config`);
-- project/local Cargo configuration (`.cargo\\config.toml` / legacy `config`);
-- relevant parent-directory Cargo configuration discovered by Cargo's configuration hierarchy;
-- source replacement and registry configuration;
-- any other configuration that can alter dependency resolution.
+- `%USERPROFILE%\\.cargo\\config`
+- `%USERPROFILE%\\.cargo\\config.toml`
+- configuration files in the current project directory
+- `.cargo` configuration in the current project tree
 
-If no such configuration exists, that negative result MUST be recorded explicitly.
+**Observed result:** no matching Cargo configuration files were reported by the performed probes.
 
-No unspecified setting may silently affect the accessibility result.
+The stable Cargo channel rejected `cargo -Z unstable-options config get`; this is an expected channel limitation, not evidence of a configuration value. Therefore configuration absence is established only for the paths actually probed, not as a universal claim about every possible Cargo configuration mechanism.
+
+Before scientific fixture freeze, the execution harness MUST still construct its own explicit configuration and isolated Cargo home so that resolution does not depend on ambient configuration discovery.
 
 ## 4. Resolver generation
 
-The resolver generation MUST be determined from the exact manifest used by the experiment and recorded explicitly. The C3 project manifest uses Rust edition 2021; the final fixture MUST additionally record the effective Cargo resolver generation rather than infer it from edition alone.
+The C3 manifest is:
+
+```toml
+[package]
+name = "tgcv_cargo_probe_c3"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rand = "=0.8.0"
+```
+
+The scientific fixture MUST NOT infer resolver semantics from edition alone. Its manifest MUST declare the resolver generation explicitly. The chosen generation for the confirmatory fixture is **Cargo resolver 2**, declared as:
+
+```toml
+[package]
+resolver = "2"
+```
+
+This explicit declaration is part of the frozen fixture input, rather than an assumption about ambient Cargo defaults.
 
 ## 5. Registry policy
 
-- Registry: crates.io historical index.
+- Registry: crates.io historical index represented by the frozen fixture context `C_t`.
 - Historical snapshot: explicit dated snapshot supplied as `C_t`.
 - Live registry access: **PROHIBITED** during historical accessibility computation.
 - Current index substitution: **PROHIBITED**.
 - Future package versions: **PROHIBITED**.
-- Source replacement: none unless explicitly recorded in this artifact.
+- Source replacement: none unless explicitly recorded in the fixture's frozen configuration.
 
 ## 6. Candidate-resolution policy
 
@@ -71,35 +91,34 @@ For the minimal confirmatory ontology:
 - candidate requirement: exact version `=v`;
 - one dependency edge inserted per candidate;
 - path/git dependencies excluded;
-- dev/build dependencies excluded.
+- dev/build dependencies excluded;
+- workspace inheritance excluded;
+- target-specific and feature-dependent dependencies excluded.
 
 ## 7. Resolver semantics to freeze
 
-The final `R` MUST explicitly record:
+The confirmatory fixture MUST explicitly record:
 
-1. Cargo resolver generation;
-2. exact Cargo version;
-3. exact Rust toolchain;
-4. target/platform;
-5. feature resolution policy;
-6. yanked-version handling;
-7. registry source configuration;
-8. lockfile generation mode;
-9. relevant `.cargo/config.toml` settings;
-10. environment variables affecting Cargo resolution;
-11. isolation policy for Cargo home, registry index and crate cache;
-12. fail-closed behaviour when any required frozen input is absent.
+1. resolver generation: Cargo resolver 2;
+2. exact Cargo version: `1.98.1 (797e8a9bc 2026-08-05)`;
+3. exact Rust toolchain: `stable-x86_64-pc-windows-msvc`, rustc `1.98.1 (48a229cea 2026-09-01)`;
+4. target/platform: `x86_64-pc-windows-msvc`;
+5. feature policy: empty candidate feature set;
+6. yanked-version policy: yanked candidate versions excluded from the fixture candidate universe;
+7. registry source: frozen historical local registry/index context only;
+8. lockfile mode: generated deterministically from the frozen manifest/context, with no live registry access;
+9. Cargo configuration: explicitly supplied by the fixture harness; no ambient source replacement permitted;
+10. environment variables: no `CARGO_*` or `RUST*` variables were present in the captured environment; the harness MUST reject undeclared resolution-affecting variables;
+11. Cargo home/index/cache isolation: explicit isolated paths only;
+12. fail-closed behaviour whenever a required frozen input is absent.
 
 ## 8. Local-state non-contamination rule
 
 The scientific accessibility result MUST be invariant to unrelated user-local Cargo state.
 
-Therefore the execution harness MUST either:
+Therefore the execution harness MUST construct an isolated Cargo home/cache containing only explicitly frozen inputs. The ambient `%USERPROFILE%\\.cargo` directory is not an admissible implicit input.
 
-- construct an isolated Cargo home/cache containing only explicitly frozen inputs; or
-- prove that every accessed local artifact is an explicit member of the frozen `C_t`/`R` package and is hash-identified.
-
-The ambient `%USERPROFILE%\\.cargo` directory is not an admissible implicit input.
+The C3 portability probe already demonstrated why this matters: an isolated copy of the C3 project could not resolve `rand_hc` without the historical index/cache context. This is treated as evidence about C3 portability, not as scientific Rust dataset evidence.
 
 ## 9. Deterministic invocation
 
@@ -119,7 +138,7 @@ The final freeze package must include:
 
 - this specification;
 - environment capture output;
-- configuration files used for resolution;
+- explicit fixture Cargo configuration;
 - hashes of all frozen inputs;
 - deterministic invocation record;
 - expected machine-readable output;
@@ -128,6 +147,8 @@ The final freeze package must include:
 
 ## 11. Freeze status
 
-**NOT FROZEN.**
+**NOT YET SCIENTIFICALLY FROZEN.**
 
-Toolchain, host, target and environment-variable capture are complete. The remaining prerequisite is explicit Cargo configuration/resolver inspection, followed by fixture execution and hashing.
+The environment capture and configuration audit are complete enough to define the resolver boundary. The remaining gate is executable fixture construction and verification: exact fixture registry records, isolated Cargo home/index, A/B/C execution, deterministic two-run comparison, and hashes.
+
+No scientific Rust dataset processing is authorised before that gate passes.
