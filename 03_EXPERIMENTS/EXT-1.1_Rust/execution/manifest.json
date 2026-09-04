@@ -1,10 +1,50 @@
-﻿{
-    "experiment":  "EXT-1.1_Rust",
-    "snapshot_2018_commit":  "9110daee6752e903379f3af955506d6116315273",
-    "snapshot_2021_commit":  "a5dcd8438da2d8f99e3661a1956afbfb8f026fa0",
-    "package":  "serde",
-    "requirement":  "^1.0.0",
-    "C1_candidate_count":  79,
-    "C2_candidate_count":  124,
-    "source_policy":  "local_snapshot_only"
+{
+  "experiment": "EXT-1.1_Rust",
+  "snapshot_2018_commit": "9110daee6752e903379f3af955506d6116315273",
+  "snapshot_2021_commit": "a5dcd8438da2d8f99e3661a1956afbfb8f026fa0",
+  "package": "serde",
+  "requirement": "^1.0.0",
+  "C1_candidate_count": 79,
+  "C2_candidate_count": 124,
+  "source_policy": "local_snapshot_only",
+  "experimental_closure": {
+    "status": "CLOSED",
+    "probes": {
+      "C1": "PASS",
+      "C2": "PASS",
+      "C3": "PASS"
+    },
+    "independent_version_id_bridge": "PASS",
+    "checksum_integrity": "PASS"
+  },
+  "C1": {
+    "package": "serde",
+    "version": "1.0.0",
+    "version_id": 50790,
+    "result": "PASS"
+  },
+  "C2": {
+    "package": "tokio",
+    "version": "1.0.0",
+    "version_id": 318256,
+    "result": "PASS_YANKED_REJECTION"
+  },
+  "C3": {
+    "package": "rand",
+    "version": "0.8.0",
+    "version_id": 316445,
+    "result": "PASS_TRANSITIVE_OFFLINE_MATERIALIZATION",
+    "resolved_packages": 9,
+    "cargo_check_offline": "PASS"
+  },
+  "reproducibility_qualification": "AUDITABLE_RUN_NOT_SELF_CONTAINED_BYTE_FOR_BYTE_REBUILD_BUNDLE",
+  "evidence": [
+    "execution/C1",
+    "execution/C2",
+    "execution/C3",
+    "execution/RESULTS.md",
+    "execution/VERSION_IDS.md",
+    "execution/CLOSURE.md",
+    "execution/SHA256SUMS.txt"
+  ]
 }
