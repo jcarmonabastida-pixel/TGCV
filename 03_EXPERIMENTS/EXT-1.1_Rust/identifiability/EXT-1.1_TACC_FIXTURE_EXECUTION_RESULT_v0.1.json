@@ -1,0 +1,21 @@
+{
+  "fixture_id": "EXT-1.1_TAcc_COUNTERFACTUAL_FIXTURE_v0.1",
+  "status": "PASS",
+  "toolchain": {
+    "rustc": "1.98.1",
+    "cargo": "1.98.1",
+    "host": "x86_64-pc-windows-msvc",
+    "target": "x86_64-pc-windows-msvc",
+    "resolver": "2"
+  },
+  "cases": {
+    "A": {"run1_exit": 0, "run2_exit": 0, "lock_sha256": "64F1E3EE4D9DBF2596D2C84281E1A3B623D440E4AC399D2D2DA4D2E25D54A9B1", "deterministic": true, "classification": "tau_a_in_T_acc_t"},
+    "B": {"run1_exit": 101, "run2_exit": 101, "lock_created": false, "deterministic": true, "classification": "tau_b_not_in_T_acc_t"},
+    "C": {"run1_exit": 0, "run2_exit": 0, "lock_sha256": "72483C9298C4A160A5FD7BC998A08C72486AB956774C721E52407BB9AC08D839", "deterministic": true, "classification": "tau_c_in_T_acc_t"},
+    "C_later": {"exit_code": 0, "lock_created": true, "lock_sha256": "020442150DD5F0E950E78302EB9D7492816FB87E31022422E4786F77429AEC93", "candidate_c_present_in_lock": true}
+  },
+  "classification_validation": true,
+  "temporal_validation": true,
+  "determinism_overall": true,
+  "overall_pass": true
+}
