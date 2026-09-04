@@ -1,0 +1,4 @@
+﻿git -C tgcv-index-2018-09-26 rev-parse HEAD
+git -C tgcv-index-2021-05-05 rev-parse HEAD
+python .\03_EXPERIMENTS\EXT-1.1_Rust\tools\replay_snapshot_resolver.py .\tgcv-index-2018-09-26\se\rd\serde serde ^1.0.0
+python .\03_EXPERIMENTS\EXT-1.1_Rust\tools\replay_snapshot_resolver.py .\tgcv-index-2021-05-05\se\rd\serde serde ^1.0.0

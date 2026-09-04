@@ -1,0 +1,10 @@
+﻿{
+    "experiment":  "EXT-1.1_Rust",
+    "snapshot_2018_commit":  "9110daee6752e903379f3af955506d6116315273",
+    "snapshot_2021_commit":  "a5dcd8438da2d8f99e3661a1956afbfb8f026fa0",
+    "package":  "serde",
+    "requirement":  "^1.0.0",
+    "C1_candidate_count":  79,
+    "C2_candidate_count":  124,
+    "source_policy":  "local_snapshot_only"
+}
