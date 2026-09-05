@@ -24,6 +24,15 @@ class SemVer:
         return cls(*(int(x) for x in m.groups()))
 
 
+def _caret_base(req: str) -> SemVer:
+    raw = req.strip()[1:]
+    parts = raw.split(".")
+    if len(parts) not in (2, 3) or not all(p.isdigit() for p in parts):
+        raise ValueError(f"UNSUPPORTED_REQUIREMENT:{req}")
+    parts += ["0"] * (3 - len(parts))
+    return SemVer(*(int(x) for x in parts))
+
+
 def requirement_kind(req: str) -> str:
     req = req.strip()
     if re.fullmatch(r"=\d+\.\d+\.\d+", req):
@@ -41,9 +50,9 @@ def satisfies(version: str, req: str) -> bool:
         raise ValueError(f"UNSUPPORTED_REQUIREMENT:{req}")
     v = SemVer.parse(version)
     raw = req.strip()
-    base = SemVer.parse(raw[1:] if raw.startswith("^") or raw.startswith("=") else raw)
     if kind == "EXACT":
-        return v == base
+        return v == SemVer.parse(raw[1:])
+    base = _caret_base(raw if raw.startswith("^") else "^" + raw)
     if base.major > 0:
         upper = SemVer(base.major + 1, 0, 0)
     elif base.minor > 0:
