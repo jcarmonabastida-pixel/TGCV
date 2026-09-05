@@ -13,8 +13,8 @@ from pathlib import Path
 from branch_n_r8_operationalisation_v01 import canonical_state
 from branch_n_r8c2_vnext_generator_v01 import (
     CONFIG_PATH, CONTRACT_PATH, KEY_PATH, OPS_PATH, OT_PATH,
-    SEED, TARGET_PAIRS, build_candidate_buckets, evaluate_ot_after_key_equality,
-    generate_candidate, verify_frozen_inputs,
+    SEED, TARGET_PAIRS, build_candidate_buckets, dry_run,
+    evaluate_ot_after_key_equality, generate_candidate, verify_frozen_inputs,
 )
 from branch_n_r8c2_vnext_key_v01 import c2_vnext_key
 
@@ -45,6 +45,19 @@ def result_blind_ast_check() -> tuple[bool, list[str]]:
     return not errors, errors
 
 
+def implementation_entrypoint_check() -> bool:
+    tree = ast.parse(GENERATOR.read_text(encoding="utf-8"), filename=str(GENERATOR))
+    functions = {node.name for node in tree.body if isinstance(node, ast.FunctionDef)}
+    has_main_guard = any(
+        isinstance(node, ast.If)
+        and isinstance(node.test, ast.Compare)
+        and isinstance(node.test.left, ast.Name)
+        and node.test.left.id == "__name__"
+        for node in tree.body
+    )
+    return {"dry_run", "run_generation", "main"}.issubset(functions) and has_main_guard
+
+
 def deterministic_probe() -> bool:
     def run():
         rng = random.Random(SEED)
@@ -58,6 +71,17 @@ def schema_smoke() -> bool:
     states = [generate_candidate(rng) for _ in range(8)]
     buckets = build_candidate_buckets(states)
     return all(isinstance(k, tuple) and all(s.sha256() for s in v) for k, v in buckets.items())
+
+
+def dry_run_smoke() -> bool:
+    result = dry_run(sample_pairs=1, seed=SEED)
+    return (
+        result.get("status") == "PASS"
+        and result.get("dry_run") is True
+        and result.get("accepted_pair_count") == 1
+        and result.get("corpus_generation") == "NOT_PERFORMED"
+        and result.get("scientific_execution") == "NOT_PERFORMED"
+    )
 
 
 def generate_witness_a():
@@ -90,6 +114,8 @@ def main() -> None:
         "P7_target_5000_not_generated": TARGET_PAIRS == 5000,
         "P8_rust_dataset_not_accessed": True,
         "P9_scientific_execution_not_performed": True,
+        "P10_generator_entrypoint_present": implementation_entrypoint_check(),
+        "P11_small_dry_run_passes": dry_run_smoke(),
     }
     status = "PASS" if all(assertions.values()) else "BLOCKED_INFRASTRUCTURE"
     out = {
