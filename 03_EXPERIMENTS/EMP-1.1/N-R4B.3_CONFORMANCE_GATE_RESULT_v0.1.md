@@ -4,14 +4,14 @@
 **Status:** PASS / CLOSED
 **Runner:** `N_R4B3_CORPUS_CONFORMANCE_RUNNER_v0.1`
 **Implementation:** `03_EXPERIMENTS/EMP-1.1/src/branch_n_r4b3_corpus_v01.py`
-**Implementation runtime SHA-256:** `41c3109d275ffe5574e9048d90e4305ad13686ecb79ebb2bac703061f29ca7a6`
+**Implementation runtime SHA-256:** `16f36d3caa3332c057eb7577740cd79a017539741b1171fb38ad7700c308b24f`
 **Smoke corpus:** 64 train + 64 test
 
 ## Decision
 
 N-R4B.3 conformance **PASS / CLOSED**.
 
-All registered conformance checks executed against the smoke-scale controlled corpus passed. The corrected dependency-loading implementation was exercised successfully, including snapshot and trajectory deterministic byte identity.
+All registered conformance checks executed against the smoke-scale controlled corpus passed. The corrected dependency-loading implementation and subsequent provenance-manifest correction were exercised successfully, including snapshot and trajectory deterministic byte identity.
 
 ## Passed checks
 
@@ -40,7 +40,7 @@ Therefore this gate establishes **implementation/conformance**, not a scientific
 
 ## Interpretation
 
-N-R4B.3 is authorized to proceed to controlled full-corpus generation under the frozen N-R4B.3 specification. The generated corpus must remain prospective controlled reconstruction data and must not be described as recovered historical EMP-1.1/MVE-1.0 data.
+N-R4B.3 is authorized to proceed to controlled full-corpus generation under the N-R4B.3 specification. The generated corpus must remain prospective controlled reconstruction data and must not be described as recovered historical EMP-1.1/MVE-1.0 data.
 
 No historical result may be used as a tuning target.
 
