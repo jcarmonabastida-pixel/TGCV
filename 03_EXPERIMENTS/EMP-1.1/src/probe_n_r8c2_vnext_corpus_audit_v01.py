@@ -18,7 +18,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 SRC = ROOT / "03_EXPERIMENTS" / "EMP-1.1" / "src"
 EXECUTION = ROOT / "03_EXPERIMENTS" / "EMP-1.1" / "execution"
 CORPUS_PATH = EXECUTION / "N-R8-C2_vNEXT_CORPUS_v0.1.jsonl"
@@ -118,8 +118,10 @@ def audit() -> dict:
         "contract": CONTRACT_PATH,
         "generator": GENERATOR_PATH,
     }
-    frozen = {name: path.exists() and git_blob_sha(path) == sha for name, (path, sha) in
-              zip(paths, [(p, EXPECTED_BLOB_SHA[n]) for n, p in paths.items()])}
+    frozen = {
+        name: path.exists() and git_blob_sha(path) == EXPECTED_BLOB_SHA[name]
+        for name, path in paths.items()
+    }
     if not all(frozen.values()):
         raise RuntimeError(f"frozen input mismatch: {frozen}")
 
