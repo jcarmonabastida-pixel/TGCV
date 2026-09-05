@@ -66,17 +66,28 @@ def git_blob_sha(path: Path) -> str:
     return result.stdout.strip()
 
 
+def load_module(path: Path, name: str):
+    spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load module: {path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_ops_module():
+    src_dir = str(SRC)
+    if src_dir not in sys.path:
+        sys.path.insert(0, src_dir)
+    return load_module(OPS_PATH, "tgcv_r8c2_operationalisation_audit")
+
+
 def load_ot_module():
     src_dir = str(SRC)
     if src_dir not in sys.path:
         sys.path.insert(0, src_dir)
-    spec = importlib.util.spec_from_file_location("tgcv_r8c2_ot_authoritative", OT_PATH)
-    if spec is None or spec.loader is None:
-        raise RuntimeError("cannot load authoritative O_T module")
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    return module
+    return load_module(OT_PATH, "tgcv_r8c2_ot_authoritative")
 
 
 def load_state(ops, record: dict):
@@ -154,15 +165,10 @@ def audit() -> dict:
     if len(records) != TARGET_PAIRS:
         raise RuntimeError(f"corpus record count mismatch: {len(records)}")
 
-    ops = load_ot_module()
-    key_mod_spec = importlib.util.spec_from_file_location("tgcv_r8c2_key", KEY_PATH)
-    if key_mod_spec is None or key_mod_spec.loader is None:
-        raise RuntimeError("cannot load frozen K module")
-    key_mod = importlib.util.module_from_spec(key_mod_spec)
-    sys.modules[key_mod_spec.name] = key_mod
-    key_mod_spec.loader.exec_module(key_mod)
+    ops = load_ops_module()
+    ot_mod = load_ot_module()
+    key_mod = load_module(KEY_PATH, "tgcv_r8c2_key_audit")
 
-    ot_ops = ops.load_modules()[0]
     state_cache = {}
     ot_cache = {}
     pair_ids = set()
@@ -203,8 +209,8 @@ def audit() -> dict:
 
             for state, sha in ((a, a_sha), (b, b_sha)):
                 if sha not in ot_cache:
-                    graph = ops.transformation_organisation_graph(state, ot_ops)
-                    ot_cache[sha] = ops.graph_signature(graph)
+                    graph = ot_mod.transformation_organisation_graph(state, ops)
+                    ot_cache[sha] = ot_mod.graph_signature(graph)
             if ot_cache[a_sha] != tuple(rec["o_t_a_signature"]):
                 raise ValueError("O_T(A) signature mismatch")
             if ot_cache[b_sha] != tuple(rec["o_t_b_signature"]):
