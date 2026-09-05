@@ -11,6 +11,7 @@ import json
 import random
 from pathlib import Path
 
+from branch_n_r8_operationalisation_v01 import canonical_state
 from branch_n_r8c2_vnext_generator_v01 import (
     CONFIG_PATH, CONTRACT_PATH, EXPECTED_SHA256, KEY_PATH, OPS_PATH, OT_PATH,
     SEED, TARGET_PAIRS, build_candidate_buckets, evaluate_ot_after_key_equality,
@@ -41,15 +42,14 @@ def frozen_input_check() -> tuple[bool, dict[str, bool]]:
 def result_blind_ast_check() -> tuple[bool, list[str]]:
     tree = ast.parse(GENERATOR.read_text(encoding="utf-8"), filename=str(GENERATOR))
     errors: list[str] = []
-    target = next((n for n in tree.body if isinstance(n, ast.FunctionDef)
-                   and n.name == "canonical_state_from_rng"), None)
-    if target is None:
-        return False, ["canonical_state_from_rng_missing"]
-    for node in ast.walk(target):
-        if isinstance(node, ast.Name) and node.id in FORBIDDEN_CONSTRUCTION_NAMES:
-            errors.append(f"forbidden_name:{node.id}")
-        if isinstance(node, ast.Attribute) and node.attr in FORBIDDEN_CONSTRUCTION_NAMES:
-            errors.append(f"forbidden_attribute:{node.attr}")
+    checked = {"canonical_state_from_rng", "generate_candidate", "build_candidate_buckets", "ordered_pairs"}
+    for node in tree.body:
+        if isinstance(node, ast.FunctionDef) and node.name in checked:
+            for sub in ast.walk(node):
+                if isinstance(sub, ast.Name) and sub.id in FORBIDDEN_CONSTRUCTION_NAMES:
+                    errors.append(f"forbidden_name:{sub.id}:{node.name}")
+                if isinstance(sub, ast.Attribute) and sub.attr in FORBIDDEN_CONSTRUCTION_NAMES:
+                    errors.append(f"forbidden_attribute:{sub.attr}:{node.name}")
     return not errors, errors
 
 
