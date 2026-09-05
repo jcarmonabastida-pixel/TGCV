@@ -61,16 +61,26 @@ def attach_parents(tree: ast.AST) -> None:
             child.parent = parent  # type: ignore[attr-defined]
 
 
+def is_under_if_main(node: ast.AST) -> bool:
+    parent = getattr(node, "parent", None)
+    while parent is not None:
+        if isinstance(parent, ast.If):
+            test = parent.test
+            if isinstance(test, ast.Compare):
+                return False
+            return True
+        parent = getattr(parent, "parent", None)
+    return False
+
+
 def static_no_generation_on_import() -> bool:
     tree = ast.parse(GENERATOR_PATH.read_text(encoding="utf-8"))
     attach_parents(tree)
     for node in ast.walk(tree):
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
             if node.func.id == "run_generation":
-                parent = getattr(node, "parent", None)
-                if isinstance(parent, ast.If):
-                    continue
-                return False
+                if not is_under_if_main(node):
+                    return False
     return True
 
 
