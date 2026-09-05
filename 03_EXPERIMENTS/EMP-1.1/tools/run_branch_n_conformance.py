@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -17,6 +18,7 @@ spec = importlib.util.spec_from_file_location("branch_n_r_v02", IMPL)
 if spec is None or spec.loader is None:
     raise RuntimeError("IMPORT_SPEC_FAILURE")
 mod = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = mod
 spec.loader.exec_module(mod)
 
 
@@ -40,38 +42,31 @@ def main():
     checks.append(assert_true("six_families_present", families == set(mod.FAMILIES), str(sorted(families))))
     checks.append(assert_true("canonical_transformation_order", t == tuple(sorted(t, key=lambda x: (mod.FAMILIES.index(x[0]), tuple((mod.COMPONENTS.index(p) if isinstance(p, str) else p) for p in x[1:]))))))
 
-    # ADD_COMPONENT: absent component enters, no edges are created.
     add = next(x for x in t if x[0] == "ADD_COMPONENT")
     s_add = mod.apply_transformation(s, add)
     checks.append(assert_true("add_component_transition", len(s_add.components) == 4 and len(s_add.edges) == 2))
 
-    # REMOVE_COMPONENT: only incident edges disappear.
     rem = next(x for x in t if x[0] == "REMOVE_COMPONENT" and x[1] == "B1")
     s_rem = mod.apply_transformation(s, rem)
     checks.append(assert_true("remove_component_transition", s_rem.components == ("A1", "C1") and s_rem.edges == ()))
 
-    # ADD_EDGE: exactly one edge added.
     add_edge = next(x for x in t if x[0] == "ADD_EDGE")
     s_ae = mod.apply_transformation(s, add_edge)
     checks.append(assert_true("add_edge_transition", len(s_ae.edges) == len(s.edges) + 1))
 
-    # REMOVE_EDGE: exactly one edge removed.
     rem_edge = next(x for x in t if x[0] == "REMOVE_EDGE")
     s_re = mod.apply_transformation(s, rem_edge)
     checks.append(assert_true("remove_edge_transition", len(s_re.edges) == len(s.edges) - 1))
 
-    # REWIRE_EDGE: same edge count, source preserved, one relation replaced.
     rw = next(x for x in t if x[0] == "REWIRE_EDGE")
     s_rw = mod.apply_transformation(s, rw)
     checks.append(assert_true("rewire_edge_transition", len(s_rw.edges) == len(s.edges) and s_rw.resources == s.resources and s_rw.objective == s.objective))
 
-    # MODIFY_RESOURCE: exactly one unit change, objective and graph preserved.
     mr = next(x for x in t if x[0] == "MODIFY_RESOURCE" and x[2] == +1)
     s_mr = mod.apply_transformation(s, mr)
     diffs = [b - a for a, b in zip(s.resources, s_mr.resources)]
     checks.append(assert_true("modify_resource_transition", sum(d != 0 for d in diffs) == 1 and sum(diffs) == 1 and s_mr.objective == s.objective and s_mr.edges == s.edges))
 
-    # Global invariants for every accessible transformation.
     for tau in t:
         s2 = mod.apply_transformation(s, tau)
         assert_true("global_transition_validity", len(s2.components) >= 1 and len(s2.components) <= 6)
@@ -79,14 +74,12 @@ def main():
         assert_true("no_self_loops", all(u != v for u, v in s2.edges))
         assert_true("no_duplicate_edges", len(s2.edges) == len(set(s2.edges)))
 
-    # R dimensionality and determinism.
     r1 = mod.encode_r(s, t)
     r2 = mod.encode_r(s, t)
     checks.append(assert_true("r_dimension_58", len(r1) == 58))
     checks.append(assert_true("same_state_determinism", r1 == r2))
     checks.append(assert_true("serialization_determinism", mod.canonical_serialization(r1) == mod.canonical_serialization(r2)))
 
-    # Input-order invariance: State.make canonicalizes unordered inputs.
     s_perm = mod.State.make(
         ["C1", "A1", "B1"],
         [("B1", "C1"), ("A1", "B1")],
@@ -95,24 +88,18 @@ def main():
     )
     checks.append(assert_true("input_order_invariance", mod.encode_r(s_perm) == r1))
 
-    # Empty accessibility: all 58 scientific features must be zero.
     r_empty = mod.encode_r(s, ())
     checks.append(assert_true("empty_tacc_all_zero", r_empty == (0,) * 58))
 
-    # No no-op transformations under the canonical universe.
     checks.append(assert_true("no_noop_transformations", all(mod.apply_transformation(s, tau) != s for tau in t)))
 
-    # Family completeness and exact R2 correspondence.
     r2_counts = r1[6:12]
     expected_counts = tuple(sum(1 for tau in t if tau[0] == f) for f in mod.FAMILIES)
     checks.append(assert_true("family_count_completeness", r2_counts == expected_counts))
 
-    # No objective/outcome/future input exists in the encoder signature/behavior;
-    # objective changes alone may change only baseline B, never T_acc or R here.
     s_obj = mod.State.make(s.components, s.edges, s.resources, "O08")
     checks.append(assert_true("objective_exogeneity", mod.encode_r(s_obj) == r1))
 
-    # Stable implementation fingerprint for local audit.
     blob = IMPL.read_bytes()
     result = {
         "runner": "BRANCH_N_CONFORMANCE_RUNNER_v0.1",
