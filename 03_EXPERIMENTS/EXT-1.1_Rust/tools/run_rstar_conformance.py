@@ -25,7 +25,7 @@ REQUIRED = {
     "package_dependencies": {"depending_version", "depending_on_package", "semver_str"},
 }
 EXPECTED_SPEC_BLOB = "77bd55820ff7c8a1bfc14fd1e7a09febda1d77f5"
-EXPECTED_IMPL_COMMIT = "1eb7eae34e6f2c7ca72cd3a1bb307c142903d256"
+EXPECTED_IMPL_COMMIT = "6c2fdd01efa8ec40973edb5bb5161f6fe5f98b2e"
 
 
 def sha256(path: Path) -> str:
