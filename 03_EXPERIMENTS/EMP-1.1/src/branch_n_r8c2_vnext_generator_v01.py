@@ -3,6 +3,14 @@
 Preparation-stage implementation. Candidate construction is result-blind:
 K_C2_vNext is computed before any O_T evaluation. O_T is imported only through
 the authoritative identifiability implementation and evaluated post hoc.
+
+The module is intentionally usable in two modes:
+- ``dry_run`` exercises the generation boundary without writing the corpus;
+- ``main`` performs the contracted 5,000-pair corpus generation when explicitly
+  invoked by the operator.
+
+Importing this module never generates a corpus and never performs scientific
+EXT-1.1 execution.
 """
 from __future__ import annotations
 
@@ -12,6 +20,7 @@ import json
 import random
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
@@ -20,6 +29,9 @@ from branch_n_r8c2_vnext_key_v01 import c2_vnext_key
 
 ROOT = Path(__file__).resolve().parents[3]
 SRC = ROOT / "03_EXPERIMENTS" / "EMP-1.1" / "src"
+OUTPUT_DIR = ROOT / "03_EXPERIMENTS" / "EMP-1.1" / "execution"
+CORPUS_PATH = OUTPUT_DIR / "N-R8-C2_vNEXT_CORPUS_v0.1.jsonl"
+MANIFEST_PATH = OUTPUT_DIR / "N-R8-C2_vNEXT_CORPUS_MANIFEST_v0.1.json"
 OPS_PATH = SRC / "branch_n_r8_operationalisation_v01.py"
 KEY_PATH = SRC / "branch_n_r8c2_vnext_key_v01.py"
 OT_PATH = SRC / "probe_n_r8c2_vnext_identifiability_v01.py"
@@ -39,7 +51,6 @@ EXPECTED_BLOB_SHA = {
     "config": "48c00a16fb50d2258e50920b3bd283810c60d149",
     "contract": "62e0ad9b5b075276af4a8716f8ac824e14a47021",
 }
-# Backward-compatible alias used by the preflight.
 EXPECTED_SHA256 = EXPECTED_BLOB_SHA
 
 
@@ -142,8 +153,106 @@ def pair_id(state_a, state_b) -> str:
 
 
 def state_record(state) -> dict:
-    return {"components": list(state.components), "edges": [list(e) for e in state.edges],
-            "resources": list(state.resources), "objective": state.objective}
+    return {
+        "components": list(state.components),
+        "edges": [list(e) for e in state.edges],
+        "resources": list(state.resources),
+        "objective": state.objective,
+    }
+
+
+def _pair_record(state_a, state_b, ot_a, ot_b) -> dict:
+    key = c2_vnext_key(state_a)
+    if key != c2_vnext_key(state_b):
+        raise RuntimeError("accepted pair violates exact key equality")
+    if ot_a == ot_b:
+        raise RuntimeError("accepted pair does not establish O_T inequality")
+    return {
+        "pair_id": pair_id(state_a, state_b),
+        "state_a": state_record(state_a),
+        "state_b": state_record(state_b),
+        "state_a_sha256": state_a.sha256(),
+        "state_b_sha256": state_b.sha256(),
+        "key_c2_vnext": list(key),
+        "key_c2_vnext_sha256": hashlib.sha256(canonical_json(list(key)).encode("utf-8")).hexdigest(),
+        "o_t_a_signature": ot_a,
+        "o_t_b_signature": ot_b,
+        "provenance": "DERIVED_RECONSTRUCTED",
+        "generator_version": "branch_n_r8c2_vnext_generator_v01",
+        "input_manifest_id": "N-R8-C2_vNEXT_GENERATION_CONFIG_v0.1",
+    }
+
+
+def _generation_core(target_pairs: int = TARGET_PAIRS, seed: int = SEED, dry_run: bool = False):
+    """Deterministically construct accepted pairs; optionally return them in-memory."""
+    frozen = verify_frozen_inputs()
+    if not all(frozen.values()):
+        raise RuntimeError(f"frozen input verification failed: {frozen}")
+    if target_pairs < 1:
+        raise ValueError("target_pairs must be positive")
+
+    rng = random.Random(seed)
+    buckets: dict[tuple, list] = {}
+    seen_pair_ids: set[str] = set()
+    accepted: list[dict] = []
+    equal_key_pairs_examined = 0
+    rejected_equal_ot = 0
+    candidate_count = 0
+    ot_cache: dict[str, tuple] = {}
+
+    while len(accepted) < target_pairs:
+        state = generate_candidate(rng)
+        candidate_count += 1
+        key = c2_vnext_key(state)
+        bucket = buckets.setdefault(key, [])
+
+        # Only states already in the exact-K bucket can reach O_T.
+        for other in sorted(bucket, key=lambda s: s.sha256()):
+            equal_key_pairs_examined += 1
+            a, b = sorted((other, state), key=lambda s: s.sha256())
+            a_sha, b_sha = a.sha256(), b.sha256()
+            pid = pair_id(a, b)
+            if pid in seen_pair_ids:
+                raise RuntimeError(f"duplicate pair_id: {pid}")
+
+            if a_sha not in ot_cache:
+                ot_cache[a_sha] = evaluate_ot_after_key_equality(a, a)
+            if b_sha not in ot_cache:
+                ot_cache[b_sha] = evaluate_ot_after_key_equality(b, b)
+            ot_a, ot_b = ot_cache[a_sha], ot_cache[b_sha]
+            if ot_a == ot_b:
+                rejected_equal_ot += 1
+                continue
+
+            record = _pair_record(a, b, ot_a, ot_b)
+            seen_pair_ids.add(pid)
+            accepted.append(record)
+            if len(accepted) >= target_pairs:
+                break
+        bucket.append(state)
+
+    return {
+        "records": accepted,
+        "candidate_count": candidate_count,
+        "equal_key_pairs_examined": equal_key_pairs_examined,
+        "rejected_equal_ot": rejected_equal_ot,
+        "frozen_input_checks": frozen,
+    }
+
+
+def dry_run(sample_pairs: int = 1, seed: int = SEED) -> dict:
+    """Exercise the full pairing boundary without writing corpus artifacts."""
+    result = _generation_core(target_pairs=sample_pairs, seed=seed, dry_run=True)
+    return {
+        "status": "PASS",
+        "dry_run": True,
+        "accepted_pair_count": len(result["records"]),
+        "candidate_count": result["candidate_count"],
+        "equal_key_pairs_examined": result["equal_key_pairs_examined"],
+        "rejected_equal_ot": result["rejected_equal_ot"],
+        "corpus_generation": "NOT_PERFORMED",
+        "scientific_execution": "NOT_PERFORMED",
+    }
 
 
 def manifest(config: dict, input_shas: dict[str, str]) -> dict:
@@ -158,3 +267,75 @@ def manifest(config: dict, input_shas: dict[str, str]) -> dict:
         "corpus_generation": "NOT_PERFORMED",
         "scientific_execution": "NOT_PERFORMED",
     }
+
+
+def _utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+
+def _write_corpus(records: list[dict]) -> str:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    with CORPUS_PATH.open("w", encoding="utf-8", newline="\n") as fh:
+        for record in records:
+            fh.write(canonical_json(record) + "\n")
+    return file_sha256(CORPUS_PATH)
+
+
+def _final_manifest_hash(payload: dict) -> str:
+    basis = dict(payload)
+    basis.pop("final_manifest_sha256", None)
+    return hashlib.sha256(canonical_json(basis).encode("utf-8")).hexdigest()
+
+
+def run_generation(target_pairs: int = TARGET_PAIRS, seed: int = SEED) -> dict:
+    """Execute the contracted prospective corpus generation only."""
+    if target_pairs != TARGET_PAIRS:
+        raise ValueError(f"contract fixes target_pair_count={TARGET_PAIRS}")
+    if seed != SEED:
+        raise ValueError(f"contract fixes seed={SEED}")
+
+    started = _utc_now()
+    config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    input_shas = {
+        "operationalisation": git_blob_sha(OPS_PATH),
+        "key": git_blob_sha(KEY_PATH),
+        "ot": git_blob_sha(OT_PATH),
+        "config": git_blob_sha(CONFIG_PATH),
+        "contract": git_blob_sha(CONTRACT_PATH),
+        "generator": git_blob_sha(Path(__file__)),
+    }
+    result = _generation_core(target_pairs=target_pairs, seed=seed)
+    corpus_sha = _write_corpus(result["records"])
+    ended = _utc_now()
+
+    payload = {
+        "contract_version": "N-R8-C2_vNEXT_CORPUS_GENERATION_CONTRACT_v0.1",
+        "generator_version": "branch_n_r8c2_vnext_generator_v01",
+        "seed": seed,
+        "target_pair_count": target_pairs,
+        "accepted_pair_count": len(result["records"]),
+        "candidate_count": result["candidate_count"],
+        "equal_key_pairs_examined": result["equal_key_pairs_examined"],
+        "rejected_equal_ot": result["rejected_equal_ot"],
+        "frozen_input_shas": dict(sorted(input_shas.items())),
+        "deterministic_rerun_result": "NOT_CHECKED",
+        "start_utc": started,
+        "end_utc": ended,
+        "corpus_sha256": corpus_sha,
+        "status": "PASS",
+        "corpus_generation": "PERFORMED",
+        "scientific_execution": "NOT_PERFORMED",
+    }
+    payload["final_manifest_sha256"] = _final_manifest_hash(payload)
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    MANIFEST_PATH.write_text(canonical_json(payload) + "\n", encoding="utf-8")
+    return payload
+
+
+def main() -> None:
+    result = run_generation()
+    print(json.dumps(result, indent=2, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main()
