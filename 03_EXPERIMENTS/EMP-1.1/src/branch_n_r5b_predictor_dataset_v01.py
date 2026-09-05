@@ -1,8 +1,8 @@
-"""Prospective Branch N predictor-dataset constructor for N-R5.3.
+"""Prospective Branch N predictor-dataset constructor for corrected N-R5.3 v0.2.
 
-Consumes only frozen N-R4B.4 initial snapshots and the N-R5.2 predictor
-representation. Predictor construction does not read post-snapshot records,
-learner state, network state, or external state.
+Consumes only frozen N-R4B.4 initial snapshots and the corrected N-R5.2
+predictor representation. Predictor construction does not read post-snapshot
+records, learner state, network state, or external state.
 """
 from __future__ import annotations
 import hashlib
@@ -63,7 +63,8 @@ def build_predictor_dataset(snapshot_path: Path, output_path: Path, expected_cou
 
 def provenance(train_input: Path, test_input: Path, train_output: Path, test_output: Path) -> dict:
     return {"artifact": "N-R5.3_PREDICTOR_DATASET", "status": "CONTROLLED_GENERATION",
-            "historical_recovery": False, "specification": "N-R5.3 v0.1",
+            "historical_recovery": False, "specification": "N-R5.3 v0.2",
+            "hash_convention": "N-R5.2 v0.2 semantic S0 hash; sorted compact JSON; ASCII-safe; UTF-8; no terminal newline; episode_id excluded",
             "train_input_sha256": hashlib.sha256(train_input.read_bytes()).hexdigest(),
             "test_input_sha256": hashlib.sha256(test_input.read_bytes()).hexdigest(),
             "train_output_sha256": hashlib.sha256(train_output.read_bytes()).hexdigest(),
