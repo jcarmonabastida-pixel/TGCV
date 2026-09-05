@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 R4A_PATH = SRC / "branch_n_r4a_generator_v01.py"
 R4B_PATH = SRC / "branch_n_r4b_trajectory_v01.py"
+R_PATH = SRC / "branch_n_r_v02.py"
 
 
 def _load_module(name: str, path: Path):
@@ -30,6 +31,10 @@ def _load_module(name: str, path: Path):
     return module
 
 
+# R4B imports branch_n_r_v02 by module name. Load and register that
+# dependency explicitly before loading R4B, so the corpus generator is
+# independent of the caller's working directory / sys.path configuration.
+r_core = _load_module("branch_n_r_v02", R_PATH)
 r4a = _load_module("branch_n_r4a_generator_v01", R4A_PATH)
 r4b = _load_module("branch_n_r4b_trajectory_v01", R4B_PATH)
 
