@@ -7,39 +7,20 @@ from __future__ import annotations
 
 import numpy as np
 from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
-from sklearn.metrics import log_loss
 
 HGB_PARAMS = {
-    "loss": "log_loss",
-    "learning_rate": 0.1,
-    "max_iter": 100,
-    "max_leaf_nodes": 31,
-    "max_depth": None,
-    "min_samples_leaf": 20,
-    "l2_regularization": 0.0,
-    "max_features": 1.0,
-    "max_bins": 255,
-    "categorical_features": None,
-    "early_stopping": "auto",
-    "scoring": "loss",
-    "validation_fraction": 0.1,
-    "n_iter_no_change": 10,
-    "tol": 1e-7,
-    "random_state": 3100000,
-    "class_weight": None,
+    "loss": "log_loss", "learning_rate": 0.1, "max_iter": 100,
+    "max_leaf_nodes": 31, "max_depth": None, "min_samples_leaf": 20,
+    "l2_regularization": 0.0, "max_features": 1.0, "max_bins": 255,
+    "categorical_features": None, "early_stopping": "auto", "scoring": "loss",
+    "validation_fraction": 0.1, "n_iter_no_change": 10, "tol": 1e-7,
+    "random_state": 3100000, "class_weight": None,
 }
 
 RF_PARAMS = {
-    "n_estimators": 100,
-    "criterion": "gini",
-    "max_depth": None,
-    "min_samples_split": 2,
-    "min_samples_leaf": 1,
-    "max_features": "sqrt",
-    "bootstrap": True,
-    "class_weight": None,
-    "random_state": 3100000,
-    "n_jobs": 1,
+    "n_estimators": 100, "criterion": "gini", "max_depth": None,
+    "min_samples_split": 2, "min_samples_leaf": 1, "max_features": "sqrt",
+    "bootstrap": True, "class_weight": None, "random_state": 3100000, "n_jobs": 1,
 }
 
 B_DIM = 16
@@ -79,12 +60,7 @@ def paired_delta(loss_b: np.ndarray, loss_br: np.ndarray) -> np.ndarray:
 
 
 def signflip_pvalue(delta: np.ndarray) -> float:
-    """Two-sided finite Monte-Carlo sign-flip p-value.
-
-    The observed statistic is |mean(delta)|. Each permutation flips every paired
-    difference independently. The empirical p-value uses (k + 1)/(N + 1), with
-    the observed statistic included in the numerator convention through +1.
-    """
+    """Two-sided finite Monte-Carlo sign-flip p-value."""
     d = np.asarray(delta, dtype=float)
     if d.ndim != 1 or d.size == 0:
         raise ValueError("INVALID_DELTA_VECTOR")
@@ -102,12 +78,13 @@ def evaluate_pair(model_b, model_br, Xb_test, Xbr_test, y_test):
     lb = predict_logloss(model_b, Xb_test, y_test)
     lbr = predict_logloss(model_br, Xbr_test, y_test)
     d = paired_delta(lb, lbr)
+    p = signflip_pvalue(d)
     return {
         "base_logloss": float(np.mean(lb)),
         "tgcv_logloss": float(np.mean(lbr)),
         "delta_logloss": float(np.mean(d)),
         "sd_delta": float(np.std(d, ddof=1)),
-        "paired_signflip_p": signflip_pvalue(d),
+        "paired_signflip_p": p,
         "meets_practical_delta": bool(np.mean(d) >= PRACTICAL_DELTA),
-        "meets_alpha": bool(signflip_pvalue(d) < ALPHA),
+        "meets_alpha": bool(p < ALPHA),
     }
