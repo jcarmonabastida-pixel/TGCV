@@ -31,9 +31,15 @@ For every initial state S:
 
 `B(S) = [n_components, q1, q2, q3, one_hot(objective)]`, dimension 16.
 
-`R1(S)` is the frozen 58-dimensional N-R3 representation of `T_acc(S)`.
+`R(S)` is the frozen 58-dimensional N-R1.3 v0.2 representation of `T_acc(S)`.
 
-`BR1(S) = B(S) || R1(S)`, dimension 74.
+`R_family_availability(S)` denotes the first six R1 family-availability features of `R(S)`.
+
+`R_family_cardinality(S)` denotes the next six family-cardinality features of `R(S)`.
+
+`R_component_incidence(S)` denotes the 30 R3 component-incidence features of `R(S)`.
+
+`BR(S) = B(S) || R(S)`, dimension 74.
 
 The outcome Y is generated only by the frozen N-R4B trajectory mechanism after the initial snapshot has been constructed. Y is never used to construct, select, match, filter, or rank predictor states.
 
@@ -105,19 +111,17 @@ and
 
 Matching is performed before trajectory generation and without observing Y, predictions, losses, or any N-R8 result.
 
-### 5.3 Construction
+### 5.3 Deterministic construction
 
-For each pair:
+The pair constructor first generates a deterministic pool of candidate states using the dedicated pair RNG and the frozen G2-compatible state generator. Candidates are bucketed by the exact canonical B vector. Within each B bucket, candidate pairs are enumerated in deterministic generation order and accepted when their canonical `T_acc` structures differ exactly.
 
-1. Sample one baseline tuple B from the admissible Branch N baseline space.
-2. Construct two distinct canonical initial states with exactly that same B.
-3. Require distinct accessible-transformation structures.
-4. Reject pairs violating Branch N invariants.
-5. Generate trajectories independently from the two states using independently derived deterministic episode seeds.
+The constructor therefore does not rely on probabilistic coincidence between two independently generated B values. The matching algorithm is a deterministic indexing/search operation over initial-state information only.
 
-The pair generator may search over candidate states until the structural condition is satisfied, but search must use only initial-state information and frozen transformation semantics.
+The pair seed is `5_200_000`.
 
-Proposed pair seed: `5_200_000`.
+The frozen target is **5,000 valid pairs** and the maximum candidate-pair evaluation budget is **2,000,000**. Search stops immediately at 5,000 accepted pairs. If the target is not reached within the budget, construction fails closed and no partial pair corpus may be promoted to frozen status.
+
+The exact candidate-pool size, bucket ordering, pair ordering, number of candidate-pair evaluations, and all rejected/accepted counts must be retained in provenance.
 
 ### 5.4 Outcome comparison
 
@@ -125,9 +129,9 @@ For each pair, compute Y_A and Y_B. The primary descriptive quantity is the pair
 
 A secondary predictive analysis compares:
 
-`P(Y | B,R1)` across the two matched states.
+`P(Y | B,R)` across the two matched states.
 
-Because B is identical within pair, any systematic prediction difference is attributable to R1 rather than to B as encoded in N-R5.1.
+Because B is identical within pair, any systematic prediction difference is attributable to R rather than to B as encoded in N-R5.1.
 
 This is an intervention-style synthetic test. It does not establish real-world causality.
 
@@ -142,9 +146,9 @@ Test whether the N-R7 signal survives when low-order structural summaries are ma
 A valid pair must satisfy exact equality for:
 
 - B (all 16 baseline variables);
-- R1 family availability R1;
-- R2 family cardinality R2;
-- R3 component-incidence features;
+- R family availability (six features);
+- R family cardinality (six features);
+- R3 component-incidence features (30 features);
 - total number of accessible transformations `|T_acc|`;
 - total number of accessible transformation families;
 - component count;
@@ -154,17 +158,23 @@ A valid pair must satisfy exact equality for:
 
 The pair must nevertheless satisfy:
 
-`R1(A) != R1(B)`.
+`R(A) != R(B)` for the **full 58-dimensional N-R1.3 representation**.
 
-This deliberately creates a high-order structural contrast while controlling the low-order summaries already identified as plausible confounders.
+This resolves the otherwise contradictory reading in which equality of the first R-family features could coexist with `R1(A) != R1(B)`. In N-R8-C, the inequality is explicitly a full-R inequality after the specified low-order summaries have been matched.
 
 ### 6.3 Pair generation
 
 Pairs are generated from initial states only. No outcome, trajectory, learner prediction, N-R7 result, or post-state information may be used.
 
-Proposed seed: `5_300_000`.
+The pair generator uses seed `5_300_000` and a deterministic candidate stream. Candidate states are placed into buckets keyed by the complete frozen matching key:
 
-Target: 5,000 valid pairs, with deterministic candidate search and fail-closed rejection if the target cannot be reached under the frozen search budget.
+`K(S) = (B(S), R_family_availability(S), R_family_cardinality(S), R_component_incidence(S), |T_acc(S)|, family_count(S), n_components(S), n_edges(S), resources(S), objective(S))`.
+
+Within each bucket, candidate pairs are evaluated in deterministic generation order. A pair is accepted only when the full 58-dimensional R vectors differ. This gives an explicit high-order contrast while controlling the specified low-order summaries.
+
+The frozen target is **5,000 valid pairs** and the maximum candidate-pair evaluation budget is **5,000,000**. Search stops immediately at 5,000 accepted pairs. If the target is not reached within the budget, construction fails closed and no partial pair corpus may be promoted to frozen status.
+
+The exact candidate-pool size, bucket counts, pair ordering, candidate-pair evaluation count, accepted count, rejected count, and provenance must be retained.
 
 ### 6.4 Interpretation
 
@@ -320,7 +330,7 @@ Before corpus generation, implementation must demonstrate:
 3. exact B matching for N-R8-B;
 4. exact T_acc inequality for N-R8-B;
 5. exact low-order matching for N-R8-C;
-6. exact R1 inequality for N-R8-C;
+6. exact full-R inequality for N-R8-C;
 7. R2 dimension = 24;
 8. R2 empty-T_acc all-zero rule;
 9. R2 byte determinism;
