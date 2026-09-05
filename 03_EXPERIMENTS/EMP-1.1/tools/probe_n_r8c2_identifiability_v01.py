@@ -42,6 +42,12 @@ def load_module(path: Path, name: str):
 
 
 def load_constructor_module():
+    # The constructor imports sibling EMP-1.1 source modules by module name.
+    # Make the canonical src directory importable without changing any
+    # scientific logic or the authoritative modules.
+    src_dir = str(SRC.parent)
+    if src_dir not in sys.path:
+        sys.path.insert(0, src_dir)
     return load_module(OLD_CONSTRUCTOR, "branch_n_r8b_constructor_probe")
 
 
