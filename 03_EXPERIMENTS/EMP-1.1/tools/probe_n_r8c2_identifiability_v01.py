@@ -20,7 +20,7 @@ from statistics import mean, pstdev
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src" / "branch_n_r_v02.py"
-OLD_CONSTRUCTOR = ROOT / "src" / "branch_n_r8b_corpus_v01.py"
+OLD_CONSTRUCTOR = ROOT / "src" / "branch_n_r8b4_corpus_v01.py"
 
 COMPONENTS = ("A1", "A2", "B1", "B2", "C1", "C2")
 FIXTURE_COMPONENT_SETS = (("A1", "A2", "B1"), ("A1", "A2", "B1", "B2"))
