@@ -11,7 +11,7 @@ N-R6.1 defines the learner and statistical-analysis procedure to be applied to t
 
 This is a **prospective controlled learner specification**, not recovery of the historical EMP-1.1 executable implementation. The historical record specifies the learner family and major confirmatory parameters but does not recover the exact historical hyperparameter dictionary. Missing historical executable details are therefore not silently reconstructed.
 
-No learner execution, model fitting, test-set scoring, permutation test, or confirmatory inference is authorized by this specification alone. Execution requires N-R6.2 conformance PASS/CLOSED.
+No learner execution, model fitting, test-set scoring, permutation test, or confirmatory inference is authorized by this specification alone. Execution requires N-R6.2 conformance PASS/CLOSED and N-R7 preflight PASS/CLOSED.
 
 ## 2. Frozen inputs
 
@@ -120,7 +120,7 @@ If the installed scikit-learn version does not support one of these explicit par
 
 - `random_state = 3100000` is fixed for the primary learner in both arms.
 - Training data ordering is the canonical N-R5.3 ordering.
-- Test data are never used for fitting or early-stopping selection beyond the learner's explicitly configured internal training validation mechanism.
+- Test data are never used for fitting or model selection beyond the learner's explicitly configured internal training validation mechanism.
 - No external random state, global RNG, network state, or ambient cache may influence execution.
 - B and B+R must be fitted independently but under identical learner configuration and training observations.
 
@@ -148,21 +148,43 @@ The confirmatory test uses the frozen paired differences `delta_i`.
 
 For each of 200,000 permutations, independently assign a sign of +1 or -1 to every paired difference and calculate the resulting mean signed difference. The permutation RNG is independently seeded with `13,579`.
 
-The two-sided empirical p-value must use one fixed, explicitly implemented finite-sample convention and that convention must be frozen in N-R6.2 before execution. No alternative p-value convention may be selected after observing the result.
+The two-sided empirical p-value uses the fixed finite-sample convention:
 
-The observed mean difference is never included or excluded selectively after inspection.
+`p = (k + 1) / (200000 + 1)`
+
+where `k` is the number of generated sign-flip statistics whose absolute value is greater than or equal to the observed absolute mean difference.
+
+The observed statistic is not separately added to the generated permutations; the +1 correction is the sole finite-sample correction.
 
 ## 9. Controls
 
-The following controls remain registered from the EMP-1.1 protocol:
+The following controls remain registered from the EMP-1.1 protocol.
 
 ### 9.1 Count-only R control
 
-Replace the full 58-dimensional R representation by its registered accessibility-count information only. The exact control encoding must be derived from the frozen N-R1.3/N-R5 specifications without introducing additional variables.
+Replace the full 58-dimensional R representation by the registered accessibility-count information only. The exact control encoding is the six R2 family-cardinality features from N-R1.3 v0.2, in the frozen family order:
+
+`ADD_COMPONENT, REMOVE_COMPONENT, ADD_EDGE, REMOVE_EDGE, REWIRE_EDGE, MODIFY_RESOURCE`.
+
+No other R features are included in this control.
 
 ### 9.2 Permuted-marginals R control
 
-Construct a control in which R feature marginals are preserved while cross-feature structural association is disrupted. The permutation procedure, seed, and exact implementation must be frozen before execution. It must not inspect outcomes or model performance.
+Purpose: preserve each R feature's marginal distribution while disrupting cross-feature structural association without inspecting outcomes or model performance.
+
+Exact prospective procedure:
+
+1. Operate on the **training R matrix only**; test R is not used to construct the permutation.
+2. Preserve the canonical N-R5.3 training row set and all B features unchanged.
+3. For each of the 58 R columns independently, generate one random permutation of its 30,000 training values using `numpy.random.default_rng(24681357)`.
+4. Apply each column's permutation to that column only, thereby preserving its exact empirical marginal multiset while disrupting row-wise cross-feature association.
+5. Keep the resulting permuted R columns in the original 58-feature order.
+6. Construct the control predictor as `B || R_permuted`.
+7. Use the same primary HGB configuration and `random_state = 3100000`.
+8. The permutation seed `24681357` is fixed before any scientific result is observed.
+9. No test outcomes, trajectory data, historical result, model score, or feature-performance statistic may influence the permutation.
+
+This is a prospective structural-disruption control. It is not claimed to reproduce any unrecovered historical permutation implementation.
 
 ### 9.3 RandomForest alternative
 
@@ -229,7 +251,7 @@ In particular, it must not be used to choose:
 
 ## 12. Reproducibility requirements
 
-Before scientific execution, N-R6.2 must verify:
+Before scientific execution, N-R6.2/N-R7 must verify:
 
 1. exact learner class and supported parameters;
 2. exact parameter dictionary;
@@ -239,7 +261,7 @@ Before scientific execution, N-R6.2 must verify:
 6. locked predictor hashes;
 7. outcome join by episode identity;
 8. no predictor/outcome leakage;
-9. fixed permutation procedure and seed;
+9. fixed permutation procedure and seeds;
 10. fixed control definitions;
 11. no network dependency;
 12. independent rerun byte/result identity to the registered tolerance.
@@ -262,6 +284,8 @@ It will not, by itself, establish:
 
 The exact historical HGB hyperparameters remain unrecovered. The explicit prospective configuration above resolves that missing executable detail without claiming historical recovery and without using the historical result as a tuning target.
 
-**Next gate:** N-R6.2 — Learner Conformance.
+The permuted-marginals control is now fully specified prospectively, including its training-only scope, column-wise permutation rule, fixed seed, and absence of outcome/model-performance dependence.
 
-No learner execution is authorized until N-R6.1 is frozen and N-R6.2 passes.
+**Next gate:** N-R6.2 — Learner Conformance, followed by N-R7 preflight.
+
+No learner execution is authorized until N-R6.1 is frozen and N-R6.2/N-R7 pass.
