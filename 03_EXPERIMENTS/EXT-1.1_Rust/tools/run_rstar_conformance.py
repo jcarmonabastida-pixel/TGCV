@@ -26,6 +26,8 @@ REQUIRED = {
 }
 EXPECTED_SPEC_BLOB = "77bd55820ff7c8a1bfc14fd1e7a09febda1d77f5"
 EXPECTED_IMPL_COMMIT = "6c2fdd01efa8ec40973edb5bb5161f6fe5f98b2e"
+EXPECTED_IMPL_BLOB = "669d4f01131af518f32b1b4b3da27f676ae4ae55"
+IMPLEMENTATION_PATH = "03_EXPERIMENTS/EXT-1.1_Rust/src/rstar_v02.py"
 
 
 def sha256(path: Path) -> str:
@@ -39,6 +41,13 @@ def sha256(path: Path) -> str:
 def git_head() -> str:
     try:
         return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip()
+    except Exception:
+        return "unknown"
+
+
+def git_blob(path: str) -> str:
+    try:
+        return subprocess.check_output(["git", "rev-parse", f"HEAD:{path}"], cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip()
     except Exception:
         return "unknown"
 
@@ -129,12 +138,18 @@ def main():
     ap.add_argument("--skip-hash", action="store_true")
     args = ap.parse_args()
     db = Path(args.db).expanduser().resolve()
+    current_impl_blob = git_blob(IMPLEMENTATION_PATH)
     result = {"runner": "RSTAR_CONFORMANCE_RUNNER_v0.1", "status": "NOT_EXECUTED",
-              "implementation_expected_commit": EXPECTED_IMPL_COMMIT, "spec_expected_blob": EXPECTED_SPEC_BLOB,
+              "implementation_expected_commit": EXPECTED_IMPL_COMMIT,
+              "implementation_expected_blob": EXPECTED_IMPL_BLOB,
+              "implementation_current_blob": current_impl_blob,
+              "spec_expected_blob": EXPECTED_SPEC_BLOB,
               "git_head": git_head(), "python": platform.python_version(), "platform": platform.platform(),
               "database": {"path": str(db), "exists": db.exists()}, "code_checks": [], "schema": {}, "smoke_test": {}}
     if not db.exists():
         result.update(status="BLOCKED", failure="DATABASE_NOT_FOUND")
+    elif current_impl_blob != EXPECTED_IMPL_BLOB:
+        result.update(status="FAIL", failure="IMPLEMENTATION_BLOB_MISMATCH")
     else:
         if not args.skip_hash:
             result["database"]["sha256"] = sha256(db)
