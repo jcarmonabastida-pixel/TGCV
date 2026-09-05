@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 SRC = Path(__file__).resolve().parent
-ROOT = SRC.parents[3]
+ROOT = SRC.parents[2]
 EMP = ROOT / "03_EXPERIMENTS" / "EMP-1.1"
 EXECUTION = EMP / "execution"
 GENERATOR = SRC / "branch_n_r8c2_vnext_generator_v01.py"
