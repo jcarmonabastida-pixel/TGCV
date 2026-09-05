@@ -13,6 +13,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import sys
 from itertools import combinations
 from pathlib import Path
 from statistics import mean, pstdev
@@ -33,6 +34,9 @@ def load_module(path: Path, name: str):
     if spec is None or spec.loader is None:
         raise RuntimeError(f"CANNOT_LOAD_MODULE:{path}")
     mod = importlib.util.module_from_spec(spec)
+    # dataclasses (Python 3.14+) expects the module to be registered before
+    # executing a dynamically loaded module.
+    sys.modules[name] = mod
     spec.loader.exec_module(mod)
     return mod
 
@@ -52,8 +56,6 @@ def transformation_organisation(nr, state):
         try:
             s_tau = nr.apply_transformation(state, tau)
             s_sigma = nr.apply_transformation(state, sigma)
-            nr.apply_transformation(s_tau, sigma)
-            nr.apply_transformation(s_sigma, tau)
             left = nr.apply_transformation(s_tau, sigma)
             right = nr.apply_transformation(s_sigma, tau)
         except ValueError:
@@ -115,7 +117,6 @@ def main() -> int:
     nr = load_module(SRC, "branch_n_r_v02_probe")
     op = load_constructor_module()
 
-    # The existing constructor's C key is the authoritative K_C2 implementation.
     if not hasattr(op, "_c_match_key"):
         raise AssertionError("C_MATCH_KEY_NOT_FOUND")
 
