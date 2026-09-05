@@ -202,7 +202,7 @@ def audit() -> dict:
             kb = key_mod.c2_vnext_key(b)
             if ka != kb:
                 raise ValueError("K inequality")
-            if list(ka) != rec["key_c2_vnext"]:
+            if canonical_json(list(ka)) != canonical_json(rec["key_c2_vnext"]):
                 raise ValueError("recorded K mismatch")
             if hashlib.sha256(canonical_json(list(ka)).encode("utf-8")).hexdigest() != rec["key_c2_vnext_sha256"]:
                 raise ValueError("K hash mismatch")
