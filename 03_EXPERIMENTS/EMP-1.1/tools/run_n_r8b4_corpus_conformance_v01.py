@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import hashlib
 import inspect
-import itertools
 import json
 import sys
 from pathlib import Path
@@ -18,6 +17,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 import branch_n_r8b4_corpus_v01 as m
+import branch_n_r8_operationalisation_v01 as op
 from branch_n_r8_operationalisation_v01 import b_vector
 from branch_n_r_v02 import encode_r
 
@@ -41,7 +41,7 @@ def find_c_fixture():
     """Enumerate only the 64 edge subsets of a 3-component graph.
 
     This is deliberately tiny and deterministic. It searches for two states
-    with identical N-R8-C matching keys and different full 58-dimensional R.
+    with identical amended N-R8-C matching keys and different full 58-D R.
     """
     comps = ("A1", "A2", "B1")
     possible = tuple((u, v) for u in comps for v in comps if u != v)
@@ -117,12 +117,13 @@ def main():
     check("r2_dimension_and_finiteness", r2_fixture, failures)
 
     def empty_r2():
-        a, _ = fixture_states(); original = m.tacc
+        a, _ = fixture_states()
+        original = op.tacc
         try:
-            m.tacc = lambda _s: []
+            op.tacc = lambda _s: []
             assert m.r2(a) == (0.0,) * 24
         finally:
-            m.tacc = original
+            op.tacc = original
     check("r2_empty_zero", empty_r2, failures)
 
     def fail_closed():
@@ -136,7 +137,7 @@ def main():
     check("pair_search_fail_closed", fail_closed, failures)
 
     sha = hashlib.sha256(Path(m.__file__).read_bytes()).hexdigest()
-    print(json.dumps({"runner":"N_R8_CONFORMANCE_RUNNER_v0.3",
+    print(json.dumps({"runner":"N_R8_CONFORMANCE_RUNNER_v0.4",
                       "implementation_sha256":sha,"failures":failures,
                       "status":"PASS" if not failures else "FAIL",
                       "scientific_execution":"NOT_PERFORMED",
