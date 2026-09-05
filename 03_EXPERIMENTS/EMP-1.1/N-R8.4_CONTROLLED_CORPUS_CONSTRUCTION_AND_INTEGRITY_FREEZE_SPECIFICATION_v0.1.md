@@ -61,7 +61,7 @@ Use the reconciled N-R8.2 G2 generator:
 - uniform component-subset sampling conditional on component count;
 - canonicalization before emission.
 
-Seed: **5,100,000**. Training and test are generated as deterministic, non-overlapping streams derived from this frozen seed under the frozen generator implementation; the exact derivation rule must be recorded in the implementation/provenance and verified by the integrity runner.
+Seed: **5,100,000**. A single fresh `random.Random(5_100_000)` stream is used. The first 30,000 generated snapshots form train and the following 10,000 form test, with episode IDs restarted at zero within each split. This exact stream rule is normative.
 
 ### 4.3 State-only requirements
 
@@ -79,7 +79,7 @@ with sorted keys, compact separators, ASCII-safe JSON, UTF-8, and no trailing ne
 
 ## 5. N-R8-B matched-pair corpus
 
-### 5.1 Required condition
+### 5.1 Required condition and size
 
 Every pair `(A,B)` must satisfy:
 
@@ -87,16 +87,21 @@ Every pair `(A,B)` must satisfy:
 
 `T_acc(A) != T_acc(B)` exactly.
 
+The frozen target is **5,000 valid pairs**.
+
 The equality and inequality are evaluated from the frozen initial-state and transformation semantics, before trajectory generation.
 
 ### 5.2 Construction constraints
 
 - Pair seed: **5,200,000**.
-- Pair generation uses only initial-state information.
+- Target: **5,000 valid pairs**.
+- Maximum candidate-pair evaluations: **2,000,000**.
+- Candidate generation and pair selection use only initial-state information.
 - No Y, trajectory, learner prediction, loss, N-R7 result, or N-R8 result may be observed.
-- Candidate search is deterministic.
-- A pair is emitted only after both conditions and all Branch N invariants pass.
-- The exact pair-generation search budget and exhaustion/fail-closed rule must be frozen before construction.
+- Pair generation is deterministic.
+- Candidate pairs are formed from independently generated G2-compatible states under the pair RNG; a pair is emitted only after both conditions and all Branch N invariants pass.
+- Search terminates immediately when 5,000 valid pairs are obtained.
+- If 5,000 valid pairs are not obtained within 2,000,000 candidate evaluations, construction **fails closed** and no partial pair corpus may be promoted to frozen status.
 
 ### 5.3 Required provenance
 
@@ -137,8 +142,11 @@ And simultaneously:
 
 - Pair seed: **5,300,000**.
 - Target: **5,000 valid pairs**.
+- Maximum candidate-pair evaluations: **5,000,000**.
 - Pair search is deterministic and uses initial-state information only.
+- Candidate states are generated from the G2-compatible state generator using the dedicated pair RNG.
 - No outcome, trajectory, learner prediction, loss, N-R7 result, or N-R8 result may be used.
+- Search terminates immediately when 5,000 valid pairs are obtained.
 - If the frozen search budget cannot produce 5,000 valid pairs, construction must fail closed and no partial corpus may be promoted to frozen status.
 
 ### 6.3 Verification
@@ -222,7 +230,7 @@ N-R8.4 may be declared PASS/CLOSED only if all applicable checks pass:
 3. G2 train/test counts exact;
 4. G2 schemas exact;
 5. semantic state hashes recomputed and exact;
-6. train/test episode IDs unique and complete where applicable;
+6. train/test episode IDs unique and complete within each split;
 7. G2 deterministic regeneration byte-identical;
 8. G2 distribution properties conform to frozen probabilities/rules;
 9. N-R8-B matching conditions independently verified for every pair;
@@ -273,6 +281,7 @@ Construction must abort and the corpus must not be frozen if any of the followin
 - state-hash mismatch;
 - matching-condition violation;
 - insufficient N-R8-C pairs within the frozen search budget;
+- insufficient N-R8-B pairs within the frozen search budget;
 - non-deterministic regeneration;
 - non-finite R2;
 - implementation/specification hash mismatch;
