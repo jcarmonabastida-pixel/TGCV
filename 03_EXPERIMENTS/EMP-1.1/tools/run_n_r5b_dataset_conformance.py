@@ -3,7 +3,6 @@
 No full corpus generation, learner execution, or confirmatory inference.
 """
 from __future__ import annotations
-import ast
 import hashlib
 import importlib.util
 import json
@@ -11,7 +10,7 @@ from pathlib import Path
 import sys
 import tempfile
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 SRC = ROOT / "03_EXPERIMENTS" / "EMP-1.1" / "src"
 CORPUS = ROOT / "03_EXPERIMENTS" / "EMP-1.1" / "artifacts" / "N-R4B.4_CONTROLLED_CORPUS"
 GEN = SRC / "branch_n_r5b_predictor_dataset_v01.py"
@@ -34,6 +33,23 @@ def result(name, status, **kw):
     d = {"name": name, "status": status}; d.update(kw); return d
 
 
+def validate_records(path, expected_seed, expected_count):
+    rows = [json.loads(x) for x in path.read_text(encoding="utf-8").splitlines() if x.strip()]
+    if len(rows) != expected_count:
+        return False
+    ids = [r["episode_id"] for r in rows]
+    if ids != sorted(ids) or len(ids) != len(set(ids)):
+        return False
+    for r in rows:
+        if set(r) != {"episode_id", "initial_snapshot_sha256", "B", "R", "BR"}:
+            return False
+        if len(r["B"]) != 16 or len(r["R"]) != 58 or len(r["BR"]) != 74:
+            return False
+        if r["BR"] != r["B"] + r["R"]:
+            return False
+    return True
+
+
 def main():
     m = load(GEN)
     checks = []
@@ -48,17 +64,15 @@ def main():
         (smoke / "train_snapshots.jsonl").write_text("\n".join(train_lines) + "\n", encoding="utf-8")
         (smoke / "test_snapshots.jsonl").write_text("\n".join(test_lines) + "\n", encoding="utf-8")
         out1 = td / "out1"; out2 = td / "out2"
+        out1.mkdir(); out2.mkdir()
         m.build_predictor_dataset(smoke / "train_snapshots.jsonl", out1 / "train_predictors.jsonl", 64, 3100000)
         m.build_predictor_dataset(smoke / "test_snapshots.jsonl", out1 / "test_predictors.jsonl", 64, 4100000)
         m.build_predictor_dataset(smoke / "train_snapshots.jsonl", out2 / "train_predictors.jsonl", 64, 3100000)
         m.build_predictor_dataset(smoke / "test_snapshots.jsonl", out2 / "test_predictors.jsonl", 64, 4100000)
-        checks.append(result("smoke_counts", "PASS" if sum(1 for _ in (out1 / "train_predictors.jsonl").open()) == 64 and sum(1 for _ in (out1 / "test_predictors.jsonl").open()) == 64 else "FAIL"))
-        checks.append(result("predictor_schema_and_dimensions", "PASS"))
-        checks.append(result("canonical_episode_order", "PASS" if [json.loads(x)["episode_id"] for x in (out1 / "train_predictors.jsonl").read_text().splitlines()] == sorted(json.loads(x)["episode_id"] for x in (out1 / "train_predictors.jsonl").read_text().splitlines()) else "FAIL"))
+        checks.append(result("smoke_counts_and_schema", "PASS" if validate_records(out1 / "train_predictors.jsonl", 3100000, 64) and validate_records(out1 / "test_predictors.jsonl", 4100000, 64) else "FAIL"))
         checks.append(result("byte_determinism", "PASS" if sha(out1 / "train_predictors.jsonl") == sha(out2 / "train_predictors.jsonl") and sha(out1 / "test_predictors.jsonl") == sha(out2 / "test_predictors.jsonl") else "FAIL"))
-        checks.append(result("traceability_and_concatenation", "PASS"))
+        checks.append(result("traceability_and_concatenation", "PASS" if all(len(json.loads(x)["initial_snapshot_sha256"]) == 64 for x in (out1 / "train_predictors.jsonl").read_text().splitlines()) else "FAIL"))
         checks.append(result("train_test_seed_separation", "PASS"))
-        checks.append(result("no_trajectory_outcome_dependency", "PASS"))
     source = GEN.read_text(encoding="utf-8")
     forbidden = ["sklearn", "HistGradientBoosting", "RandomForest", "logloss", "requests", "urllib", "httpx", "socket", "trajectory", "outcome"]
     found = [x for x in forbidden if x in source]
@@ -68,7 +82,7 @@ def main():
     checks.append(result("learner_execution", "NOT_PERFORMED"))
     checks.append(result("confirmatory_inference", "NOT_PERFORMED"))
     status = "PASS" if all(c["status"] in ("PASS", "NOT_PERFORMED") for c in checks) else "FAIL"
-    print(json.dumps({"runner":"N_R5.3_DATASET_CONFORMANCE_RUNNER_v0.1","checks":checks,"scientific_execution":"NOT_PERFORMED","learner_execution":"NOT_PERFORMED","confirmatory_inference":"NOT_PERFORMED","status":status,"constructor_sha256":sha(GEN)}, indent=2))
+    print(json.dumps({"runner":"N_R5.3_DATASET_CONFORMANCE_RUNNER_v0.2","checks":checks,"scientific_execution":"NOT_PERFORMED","learner_execution":"NOT_PERFORMED","confirmatory_inference":"NOT_PERFORMED","status":status,"constructor_sha256":sha(GEN)}, indent=2))
     raise SystemExit(0 if status == "PASS" else 1)
 
 if __name__ == "__main__": main()
