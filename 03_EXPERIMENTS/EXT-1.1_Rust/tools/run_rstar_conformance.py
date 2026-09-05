@@ -52,6 +52,13 @@ def git_blob(path: str) -> str:
         return "unknown"
 
 
+def git_is_ancestor(commit: str) -> bool:
+    try:
+        return subprocess.run(["git", "merge-base", "--is-ancestor", commit, "HEAD"], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
+    except Exception:
+        return False
+
+
 def call(origin_id, origin_name, origin_created_at, target_package_id, target_name, requirement, versions):
     return resolve_edge(origin_id, origin_name, origin_created_at, target_package_id, target_name, requirement, versions)
 
@@ -139,15 +146,20 @@ def main():
     args = ap.parse_args()
     db = Path(args.db).expanduser().resolve()
     current_impl_blob = git_blob(IMPLEMENTATION_PATH)
+    current_head = git_head()
+    implementation_ancestor = git_is_ancestor(EXPECTED_IMPL_COMMIT)
     result = {"runner": "RSTAR_CONFORMANCE_RUNNER_v0.1", "status": "NOT_EXECUTED",
               "implementation_expected_commit": EXPECTED_IMPL_COMMIT,
               "implementation_expected_blob": EXPECTED_IMPL_BLOB,
               "implementation_current_blob": current_impl_blob,
+              "implementation_commit_is_ancestor": implementation_ancestor,
               "spec_expected_blob": EXPECTED_SPEC_BLOB,
-              "git_head": git_head(), "python": platform.python_version(), "platform": platform.platform(),
+              "git_head": current_head, "python": platform.python_version(), "platform": platform.platform(),
               "database": {"path": str(db), "exists": db.exists()}, "code_checks": [], "schema": {}, "smoke_test": {}}
     if not db.exists():
         result.update(status="BLOCKED", failure="DATABASE_NOT_FOUND")
+    elif not implementation_ancestor:
+        result.update(status="FAIL", failure="IMPLEMENTATION_COMMIT_NOT_IN_HEAD_HISTORY")
     elif current_impl_blob != EXPECTED_IMPL_BLOB:
         result.update(status="FAIL", failure="IMPLEMENTATION_BLOB_MISMATCH")
     else:
