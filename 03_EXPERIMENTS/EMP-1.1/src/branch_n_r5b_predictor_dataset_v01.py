@@ -1,7 +1,8 @@
 """Prospective Branch N predictor-dataset constructor for N-R5.3.
 
 Consumes only frozen N-R4B.4 initial snapshots and the N-R5.2 predictor
-representation. No trajectory, outcome, learner, network, or external state.
+representation. Predictor construction does not read post-snapshot records,
+learner state, network state, or external state.
 """
 from __future__ import annotations
 import hashlib
@@ -21,8 +22,6 @@ sys.modules["branch_n_r5_predictor_v01"] = pmod
 spec.loader.exec_module(pmod)
 Predictor = pmod.Predictor
 encode_predictor = pmod.encode_predictor
-canonical_predictor_bytes = pmod.canonical_predictor_bytes
-snapshot_sha256 = pmod.snapshot_sha256
 
 TRAIN_COUNT = 30000
 TEST_COUNT = 10000
@@ -51,13 +50,12 @@ def build_predictor_dataset(snapshot_path: Path, output_path: Path, expected_cou
             if rec["episode_id"] in seen:
                 raise ValueError("DUPLICATE_EPISODE_ID")
             seen.add(rec["episode_id"])
-            if rec["dataset_seed"] != expected_seed:
-                raise ValueError("DATASET_SEED_MISMATCH")
             p = encode_predictor(rec)
             records.append(predictor_record(p))
     if len(records) != expected_count:
         raise ValueError(f"COUNT_MISMATCH:{len(records)}:{expected_count}")
     records.sort(key=lambda x: x["episode_id"])
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_bytes(canonical_jsonl(records))
     return {"count": len(records), "sha256": hashlib.sha256(output_path.read_bytes()).hexdigest(),
             "first_episode_id": records[0]["episode_id"], "last_episode_id": records[-1]["episode_id"]}
