@@ -1,0 +1,31 @@
+{
+  "version": "N-R8-C2_vNEXT_GENERATION_CONFIG_v0.1",
+  "status": "FROZEN_PRE_GENERATION",
+  "contract": "N-R8-C2_vNEXT_CORPUS_GENERATION_CONTRACT_v0.1",
+  "generator": "branch_n_r8c2_vnext_generator_v01",
+  "target_pair_count": 5000,
+  "seed": 582031,
+  "candidate_sampling": {
+    "components": ["A1", "A2", "B1", "B2", "C1", "C2"],
+    "component_count": [4, 5, 6],
+    "edge_density": [0.10, 0.25, 0.50, 0.75],
+    "resources": [0, 1, 2, 3],
+    "objectives": ["O01", "O02", "O03", "O04", "O05", "O06", "O07", "O08", "O09", "O10", "O11", "O12"],
+    "construction_rule": "state-only prospective sampling; no O_T during candidate construction"
+  },
+  "pairing": {
+    "bucket_key": "K_C2_vNext",
+    "pair_order": "lexicographic_state_sha256",
+    "pair_id": "sha256(canonical_json(sorted([state_A_sha256,state_B_sha256])))"
+  },
+  "acceptance": {
+    "key_equality_required": true,
+    "O_T_inequality_required": true,
+    "O_T_stage": "post_hoc_only"
+  },
+  "provenance": "DERIVED_RECONSTRUCTED",
+  "corpus_output": "N-R8-C2_vNEXT_CORPUS_v0.1.jsonl",
+  "manifest_output": "N-R8-C2_vNEXT_CORPUS_MANIFEST_v0.1.json",
+  "preflight_required": true,
+  "scientific_execution": "NOT_PERFORMED"
+}
