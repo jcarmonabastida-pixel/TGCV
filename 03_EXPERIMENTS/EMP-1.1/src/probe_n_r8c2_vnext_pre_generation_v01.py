@@ -27,7 +27,7 @@ EXPECTED = {
     "generator": "652ffeebab1f43095494a93a5cae04d18656d51d",
     "conformance": "9f51582e06d2bf4162915bb945560fd0986cb212",
 }
-EXPECTED_CONFORMANCE_RESULT_SHA256 = None
+EXPECTED_CONFORMANCE_RESULT_SHA256 = "4091d7ee78d3a6981228935279ffb6aa33ddc5f32c40b77570a71b3c889734d9"
 EXPECTED_SEED = 582031
 EXPECTED_TARGET = 5000
 
@@ -131,7 +131,8 @@ def run_gate() -> dict:
         "rust_dataset_consumption": "NOT_PERFORMED",
         "conformance_evidence": {
             "gate_blob_sha": EXPECTED["conformance"],
-            "status": "PASS_PENDING_LOCAL_EXECUTION",
+            "result_sha256": EXPECTED_CONFORMANCE_RESULT_SHA256,
+            "status": "PASS",
         },
     }
 
