@@ -1,7 +1,8 @@
 """EXT-1.1 Rust restricted resolver R* v0.2.
 
 Operates only on the retained Rust dataset schema. It is deliberately not a
-historical Cargo resolver. Unsupported requirement syntax fails closed.
+historical Cargo resolver. Unsupported requirement/version syntax fails
+closed by exclusion from the admissible candidate set.
 """
 from __future__ import annotations
 
@@ -67,7 +68,7 @@ def eligible_versions(
     origin_created_at: str,
     req: str,
 ) -> tuple[list[tuple[int, str, str]], str | None]:
-    """Return temporally eligible candidates and an exclusion reason."""
+    """Return admissible candidates and an edge-level exclusion reason."""
     if requirement_kind(req) == "UNSUPPORTED":
         return [], "UNSUPPORTED"
     candidates = []
@@ -76,8 +77,15 @@ def eligible_versions(
         if version_id in seen:
             raise ValueError(f"DUPLICATE_VERSION_ID:{version_id}")
         seen.add(version_id)
-        if created_at <= origin_created_at and satisfies(version_str, req):
-            candidates.append((version_id, version_str, created_at))
+        if created_at > origin_created_at:
+            continue
+        try:
+            if satisfies(version_str, req):
+                candidates.append((version_id, version_str, created_at))
+        except ValueError as exc:
+            if str(exc).startswith("UNSUPPORTED_VERSION:"):
+                continue
+            raise
     return candidates, None if candidates else "NO_ELIGIBLE_CANDIDATE"
 
 
