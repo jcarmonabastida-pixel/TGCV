@@ -30,6 +30,7 @@ SEED = 582031
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
+from branch_n_r8_operationalisation_v01 import canonical_state  # noqa: E402
 import branch_n_r8c2_vnext_generator_v01 as generator  # noqa: E402
 
 
@@ -38,7 +39,6 @@ def canonical_json(value: object) -> str:
 
 
 def canonical_result(result: dict) -> bytes:
-    """Stable serialization of the deterministic generation-core result."""
     payload = {
         "records": result["records"],
         "candidate_count": result["candidate_count"],
@@ -55,8 +55,15 @@ def file_state(path: Path) -> tuple[bool, str | None]:
     return True, hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def attach_parents(tree: ast.AST) -> None:
+    for parent in ast.walk(tree):
+        for child in ast.iter_child_nodes(parent):
+            child.parent = parent  # type: ignore[attr-defined]
+
+
 def static_no_generation_on_import() -> bool:
     tree = ast.parse(GENERATOR_PATH.read_text(encoding="utf-8"))
+    attach_parents(tree)
     for node in ast.walk(tree):
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
             if node.func.id == "run_generation":
@@ -67,10 +74,14 @@ def static_no_generation_on_import() -> bool:
     return True
 
 
-def attach_parents(tree: ast.AST) -> None:
-    for parent in ast.walk(tree):
-        for child in ast.iter_child_nodes(parent):
-            child.parent = parent  # type: ignore[attr-defined]
+def state_from_record(record: dict) -> object:
+    """Reconstruct the canonical state solely from serialized state fields."""
+    return canonical_state(
+        tuple(record["components"]),
+        tuple(tuple(edge) for edge in record["edges"]),
+        tuple(record["resources"]),
+        record["objective"],
+    )
 
 
 def semantic_checks(result: dict) -> list[str]:
@@ -100,10 +111,21 @@ def semantic_checks(result: dict) -> list[str]:
         if record["pair_id"] != expected_pid:
             errors.append(f"pair_id formula mismatch: {record['pair_id']}")
 
-        if record["key_c2_vnext"] != list(generator.c2_vnext_key_from_record(record["state_a"])):
+        state_a = state_from_record(record["state_a"])
+        state_b = state_from_record(record["state_b"])
+        if state_a.sha256() != a_sha:
+            errors.append(f"state_a SHA mismatch: {record['pair_id']}")
+        if state_b.sha256() != b_sha:
+            errors.append(f"state_b SHA mismatch: {record['pair_id']}")
+
+        expected_key = list(generator.c2_vnext_key(state_a))
+        if record["key_c2_vnext"] != expected_key:
             errors.append(f"state_a key mismatch: {record['pair_id']}")
-        if record["key_c2_vnext"] != list(generator.c2_vnext_key_from_record(record["state_b"])):
+        if record["key_c2_vnext"] != list(generator.c2_vnext_key(state_b)):
             errors.append(f"state_b key mismatch: {record['pair_id']}")
+        expected_key_sha = hashlib.sha256(canonical_json(expected_key).encode("utf-8")).hexdigest()
+        if record["key_c2_vnext_sha256"] != expected_key_sha:
+            errors.append(f"key SHA mismatch: {record['pair_id']}")
 
         if record["o_t_a_signature"] == record["o_t_b_signature"]:
             errors.append(f"O_T equality accepted: {record['pair_id']}")
@@ -115,14 +137,7 @@ def semantic_checks(result: dict) -> list[str]:
     return errors
 
 
-def record_key_from_record(record: dict):
-    """Reconstruct a state using only serialized state fields for key checking."""
-    return generator.c2_vnext_key_from_record(record)
-
-
 def run_gate() -> dict:
-    attach_parents(ast.parse(GENERATOR_PATH.read_text(encoding="utf-8")))
-
     before_corpus = file_state(CORPUS_PATH)
     before_manifest = file_state(MANIFEST_PATH)
 
