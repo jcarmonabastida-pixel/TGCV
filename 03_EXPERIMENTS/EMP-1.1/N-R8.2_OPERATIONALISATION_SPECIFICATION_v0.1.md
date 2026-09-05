@@ -3,6 +3,7 @@
 **Status:** PROPOSED — NOT FROZEN
 **Date:** 2026-09-05
 **Parent:** N-R8.1 Robustness & Mechanism Discrimination Specification v0.1
+**Clarification:** N-R8.2.1 resolves and is incorporated into this parent specification; where the earlier draft wording differed, the reconciled definitions below are normative for N-R8.3.
 
 ## 1. Purpose and gate position
 
@@ -186,38 +187,55 @@ For each state, enumerate canonical transformations in frozen transformation ord
 - canonical target component set `dst(τ)` where applicable;
 - successor-state structural delta `Δτ` relative to S.
 
-R2 consists of the following deterministic statistics:
+The transformation-incidence mapping is frozen as follows:
+
+| Transformation | `src(τ)` | `dst(τ)` |
+|---|---|---|
+| `ADD_COMPONENT(v)` | `∅` | `{v}` |
+| `REMOVE_COMPONENT(v)` | `{v}` | `∅` |
+| `ADD_EDGE(u,v)` | `{u}` | `{v}` |
+| `REMOVE_EDGE(u,v)` | `{u}` | `{v}` |
+| `REWIRE_EDGE(u,v,w)` | `{u}` | `{w}` |
+| `MODIFY_RESOURCE(i,d)` | `∅` | `∅` |
+
+For `REWIRE_EDGE(u,v,w)`, `v` is the removed edge target and is not included in `dst`; the resulting relation is from `u` to `w`.
+
+`MODIFY_RESOURCE(i,d)` is restricted to `d ∈ {-1,+1}` and is accessible only when the resulting resource remains in `{0,1,2,3}`. No arbitrary resource jumps are represented.
+
+R2 consists of the following deterministic statistics, in this exact order:
 
 1. total `|T_acc|`;
 2. number of non-empty families;
-3. Shannon entropy of family proportions;
+3. Shannon entropy of family proportions, using natural logarithm;
 4. Herfindahl concentration of family proportions;
 5. mean number of source components;
 6. mean number of target components;
 7. mean absolute resource delta;
-8. mean component-count delta;
-9. mean edge-count delta;
-10. mean edge-addition count;
-11. mean edge-removal count;
-12. mean component-addition count;
-13. mean component-removal count;
-14. fraction of transformations that preserve component count;
-15. fraction that preserve edge count;
-16. fraction that modify resources;
-17. fraction that modify edges;
-18. fraction that modify components;
-19. mean Jaccard similarity between original and successor component sets;
-20. mean Jaccard similarity between original and successor edge sets;
-21. standard deviation of successor edge-count change;
-22. standard deviation of successor component-count change;
-23. maximum absolute edge-count change;
-24. maximum absolute component-count change.
+8. mean component-count delta `ΔV`;
+9. mean edge-count delta `ΔE`;
+10. mean positive edge-count change `max(ΔE,0)`;
+11. mean edge-count decrease `-min(ΔE,0)`;
+12. fraction of transformations in `ADD_COMPONENT`;
+13. fraction of transformations in `REMOVE_COMPONENT`;
+14. fraction of transformations in `MODIFY_RESOURCE`;
+15. fraction of edge-transform families (`ADD_EDGE`, `REMOVE_EDGE`, `REWIRE_EDGE`);
+16. fraction of component-transform families (`ADD_COMPONENT`, `REMOVE_COMPONENT`);
+17. fraction preserving component count;
+18. fraction preserving edge count;
+19. fraction modifying resources;
+20. fraction modifying edges;
+21. mean Jaccard similarity between original and successor component sets;
+22. mean Jaccard similarity between original and successor edge sets;
+23. population standard deviation of successor edge-count change;
+24. population standard deviation of successor component-count change.
+
+This exact 24-feature order supersedes the earlier draft ordering in this document. The clarification is incorporated here rather than treated as a parallel specification.
 
 All statistics are computed from the initial state's accessible transformations and their deterministic successors only. No trajectory is executed to compute R2. No Y, terminal state, or post-snapshot field enters R2.
 
 Empty `T_acc` handling is frozen as follows: all 24 R2 features are exactly `0.0`.
 
-Floating-point computation must use deterministic IEEE-754 double precision and a single documented implementation. Canonical serialization of R2 must use JSON sorted keys, compact separators, UTF-8, ASCII-safe output, and no trailing newline when hashing artifacts.
+Jaccard similarity is defined as `|A∩B|/|A∪B|`, with value `1.0` when both sets are empty. Standard deviations are population standard deviations. Floating-point computation must use deterministic IEEE-754 double precision and a single documented implementation. Canonical serialization of R2 must use JSON sorted keys, compact separators, UTF-8, ASCII-safe output, and no trailing newline when hashing artifacts.
 
 ### 7.3 R2 evaluation
 
