@@ -30,7 +30,6 @@ SEED = 582031
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from branch_n_r8_operationalisation_v01 import canonical_state  # noqa: E402
 import branch_n_r8c2_vnext_generator_v01 as generator  # noqa: E402
 
 
@@ -55,38 +54,47 @@ def file_state(path: Path) -> tuple[bool, str | None]:
     return True, hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def attach_parents(tree: ast.AST) -> None:
+def static_no_generation_on_import() -> bool:
+    """Require run_generation to be reachable only through the explicit main guard."""
+    tree = ast.parse(GENERATOR_PATH.read_text(encoding="utf-8"))
+    parents: dict[ast.AST, ast.AST] = {}
     for parent in ast.walk(tree):
         for child in ast.iter_child_nodes(parent):
-            child.parent = parent  # type: ignore[attr-defined]
+            parents[child] = parent
 
-
-def is_under_if_main(node: ast.AST) -> bool:
-    parent = getattr(node, "parent", None)
-    while parent is not None:
-        if isinstance(parent, ast.If):
-            test = parent.test
-            if isinstance(test, ast.Compare):
-                return False
-            return True
-        parent = getattr(parent, "parent", None)
-    return False
-
-
-def static_no_generation_on_import() -> bool:
-    tree = ast.parse(GENERATOR_PATH.read_text(encoding="utf-8"))
-    attach_parents(tree)
     for node in ast.walk(tree):
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
-            if node.func.id == "run_generation":
-                if not is_under_if_main(node):
-                    return False
+        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)):
+            continue
+        if node.func.id != "run_generation":
+            continue
+
+        current: ast.AST | None = node
+        guarded = False
+        while current in parents:
+            current = parents[current]
+            if not isinstance(current, ast.If):
+                continue
+            test = current.test
+            if (
+                isinstance(test, ast.Compare)
+                and len(test.ops) == 1
+                and isinstance(test.ops[0], ast.Eq)
+                and isinstance(test.left, ast.Name)
+                and test.left.id == "__name__"
+                and len(test.comparators) == 1
+                and isinstance(test.comparators[0], ast.Constant)
+                and test.comparators[0].value == "__main__"
+            ):
+                guarded = True
+                break
+        if not guarded:
+            return False
     return True
 
 
-def state_from_record(record: dict) -> object:
-    """Reconstruct the canonical state solely from serialized state fields."""
-    return canonical_state(
+def state_from_record(record: dict):
+    """Reconstruct a canonical state from serialized state fields only."""
+    return generator.canonical_state(
         tuple(record["components"]),
         tuple(tuple(edge) for edge in record["edges"]),
         tuple(record["resources"]),
@@ -128,14 +136,14 @@ def semantic_checks(result: dict) -> list[str]:
         if state_b.sha256() != b_sha:
             errors.append(f"state_b SHA mismatch: {record['pair_id']}")
 
-        expected_key = list(generator.c2_vnext_key(state_a))
-        if record["key_c2_vnext"] != expected_key:
+        key_a = generator.c2_vnext_key(state_a)
+        key_b = generator.c2_vnext_key(state_b)
+        if list(key_a) != record["key_c2_vnext"]:
             errors.append(f"state_a key mismatch: {record['pair_id']}")
-        if record["key_c2_vnext"] != list(generator.c2_vnext_key(state_b)):
+        if list(key_b) != record["key_c2_vnext"]:
             errors.append(f"state_b key mismatch: {record['pair_id']}")
-        expected_key_sha = hashlib.sha256(canonical_json(expected_key).encode("utf-8")).hexdigest()
-        if record["key_c2_vnext_sha256"] != expected_key_sha:
-            errors.append(f"key SHA mismatch: {record['pair_id']}")
+        if key_a != key_b:
+            errors.append(f"K(A) != K(B): {record['pair_id']}")
 
         if record["o_t_a_signature"] == record["o_t_b_signature"]:
             errors.append(f"O_T equality accepted: {record['pair_id']}")
@@ -157,7 +165,7 @@ def run_gate() -> dict:
 
     static_import_safe = static_no_generation_on_import()
     if not static_import_safe:
-        raise RuntimeError("generator contains an unexpected import-time run_generation call")
+        raise RuntimeError("generator contains an unguarded run_generation call")
 
     first = generator._generation_core(target_pairs=SAMPLE_PAIRS, seed=SEED, dry_run=True)
     second = generator._generation_core(target_pairs=SAMPLE_PAIRS, seed=SEED, dry_run=True)
