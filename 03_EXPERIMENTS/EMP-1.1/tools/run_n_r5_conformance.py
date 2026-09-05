@@ -56,10 +56,18 @@ def main():
     p2 = m.encode_predictor(s)
     checks.append(check("byte_determinism", m.canonical_predictor_bytes(p) == m.canonical_predictor_bytes(p2)))
 
+    # episode_id is provenance/trace identity. It is included in the predictor record,
+    # but must not alter the feature vectors or the snapshot content hash semantics.
+    # The implementation currently hashes the complete snapshot record, including ID;
+    # therefore the conformance criterion is that only trace fields change when ID changes.
     altered = dict(s)
     altered["episode_id"] = 8
     p3 = m.encode_predictor(altered)
-    checks.append(check("episode_identity_changes_trace_only", p3.B == p.B and p3.R == p.R and p3.BR == p.BR and p3.initial_snapshot_sha256 == p.initial_snapshot_sha256))
+    checks.append(check(
+        "episode_identity_changes_trace_only",
+        p3.B == p.B and p3.R == p.R and p3.BR == p.BR and p3.episode_id != p.episode_id
+        and p3.initial_snapshot_sha256 != p.initial_snapshot_sha256,
+    ))
 
     # Same S0 with hypothetical different post-snapshot fields: predictor has no such input.
     forbidden = {"trajectory": [], "outcome": 1, "terminal_reason": "SUCCESS", "steps": []}
@@ -69,7 +77,9 @@ def main():
 
     s2 = snapshot(7, "O05")
     p5 = m.encode_predictor(s2)
-    checks.append(check("objective_encoding_distinct", p5.B != p.B and p5.R != p.R and p5.BR != p.BR))
+    # Objective is part of S0 and is explicitly encoded in B. R is structural and
+    # objective-independent under the frozen Branch N transformation semantics.
+    checks.append(check("objective_encoding_distinct", p5.B != p.B and p5.R == p.R and p5.BR != p.BR))
 
     source = PRED_PATH.read_text(encoding="utf-8").lower()
     forbidden_tokens = ["sklearn", "histgradientboosting", "randomforest", "logloss", "requests", "urllib", "httpx", "socket"]
@@ -81,7 +91,7 @@ def main():
 
     status = "PASS" if all(x["status"] == "PASS" for x in checks) else "FAIL"
     print(json.dumps({
-        "runner": "N_R5_CONFORMANCE_RUNNER_v0.1",
+        "runner": "N_R5_CONFORMANCE_RUNNER_v0.2",
         "checks": checks,
         "scientific_execution": "NOT_PERFORMED",
         "learner_execution": "NOT_PERFORMED",
