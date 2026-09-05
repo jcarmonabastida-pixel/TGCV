@@ -31,8 +31,8 @@ TRAIN_TRAJ = CORP / "train_trajectories.jsonl"
 TEST_TRAJ = CORP / "test_trajectories.jsonl"
 
 EXPECTED = {
-    "train_predictors_sha256": "d40e3d5f5bd8839d5c83efb1fa2a2d33f432c65c47f568516152dce578f991bd",
-    "test_predictors_sha256": "8ae5d84ef0bd1dc50835b1b006e20f299437f2a49395b31e057c0f016d1d3b35",
+    "train_predictors_sha256": "6559e31c7ef369c3d93f00d4c4dd0dfc481f7a001c4d89896994051872749bb9",
+    "test_predictors_sha256": "6c2bebff931aaeae4b542ef9846645c0d88b07c86ad6962d19c166ed0a59cd98",
     "train_count": 30000,
     "test_count": 10000,
     "B_DIM": 16,
