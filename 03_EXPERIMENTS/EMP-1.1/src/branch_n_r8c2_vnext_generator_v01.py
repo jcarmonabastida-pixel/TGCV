@@ -35,7 +35,7 @@ OBJECTIVES = tuple(f"O{i:02d}" for i in range(1, 13))
 EXPECTED_BLOB_SHA = {
     "operationalisation": "0cc01c7afb051b44f010a798a1b8a256dff286c9",
     "key": "40a8cfa6c74cbdf253285b3073372e6c42d262e3",
-    "ot": "095cff6c69adfba19b1722a5a355b58f7e2cbe1",
+    "ot": "095cff6c69adfba19b1722a5a355b58f7e2cbe1a",
     "config": "48c00a16fb50d2258e50920b3bd283810c60d149",
     "contract": "62e0ad9b5b075276af4a8716f8ac824e14a47021",
 }
