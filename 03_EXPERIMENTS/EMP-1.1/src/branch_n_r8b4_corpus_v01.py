@@ -96,12 +96,13 @@ def _r_full(state: State) -> tuple[int, ...]:
 
 
 def _c_match_key(state: State) -> tuple:
-    """Exact N-R8-C matching key before the full-R inequality test.
+    """Exact N-R8-C amended matching key before the full-R inequality test.
 
     The first 42 dimensions of the authoritative 58-vector are R1+R2+R3:
     six family-availability indicators, six family cardinalities, and thirty
     component-incidence features. N-R8-C then additionally fixes |T_acc|,
-    family count, component/edge counts, resources, and objective.
+    family count, component count, resources, and objective. Graph edge count
+    is deliberately not part of the key under N-R8.2.3.
     """
     ts = tacc(state)
     rr = _r_full(state)
@@ -113,7 +114,6 @@ def _c_match_key(state: State) -> tuple:
         len(ts),
         sum(1 for x in rr[:6] if x),
         len(state.components),
-        len(state.edges),
         tuple(state.resources),
         state.objective,
     )
