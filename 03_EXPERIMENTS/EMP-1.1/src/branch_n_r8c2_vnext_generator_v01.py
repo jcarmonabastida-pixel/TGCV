@@ -10,6 +10,7 @@ import hashlib
 import importlib.util
 import json
 import random
+import subprocess
 import sys
 from pathlib import Path
 from typing import Iterable
@@ -29,13 +30,17 @@ TARGET_PAIRS = 5000
 SEED = 582031
 COMPONENTS = ("A1", "A2", "B1", "B2", "C1", "C2")
 OBJECTIVES = tuple(f"O{i:02d}" for i in range(1, 13))
-EXPECTED_SHA256 = {
+# These are Git blob SHAs, not SHA-256 digests. Verification therefore uses
+# `git hash-object`, matching the SHAs reported by the GitHub Contents API.
+EXPECTED_BLOB_SHA = {
     "operationalisation": "0cc01c7afb051b44f010a798a1b8a256dff286c9",
     "key": "40a8cfa6c74cbdf253285b3073372e6c42d262e3",
-    "ot": "095cff6c69adfba19b1722a5a355b58f7e2cbe1a",
+    "ot": "095cff6c69adfba19b1722a5a355b58f7e2cbe1",
     "config": "48c00a16fb50d2258e50920b3bd283810c60d149",
     "contract": "62e0ad9b5b075276af4a8716f8ac824e14a47021",
 }
+# Backward-compatible alias used by the preflight.
+EXPECTED_SHA256 = EXPECTED_BLOB_SHA
 
 
 def canonical_json(value: object) -> str:
@@ -46,11 +51,32 @@ def file_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def git_blob_sha(path: Path) -> str:
+    try:
+        result = subprocess.run(
+            ["git", "hash-object", str(path)],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise RuntimeError(f"cannot compute Git blob SHA for {path}") from exc
+    return result.stdout.strip()
+
+
 def verify_frozen_inputs() -> dict[str, bool]:
-    paths = {"operationalisation": OPS_PATH, "key": KEY_PATH, "ot": OT_PATH,
-             "config": CONFIG_PATH, "contract": CONTRACT_PATH}
-    return {name: path.exists() and file_sha256(path) == expected
-            for (name, path), expected in zip(paths.items(), EXPECTED_SHA256.values())}
+    paths = {
+        "operationalisation": OPS_PATH,
+        "key": KEY_PATH,
+        "ot": OT_PATH,
+        "config": CONFIG_PATH,
+        "contract": CONTRACT_PATH,
+    }
+    return {
+        name: path.exists() and git_blob_sha(path) == EXPECTED_BLOB_SHA[name]
+        for name, path in paths.items()
+    }
 
 
 def load_ot_module():
@@ -104,8 +130,9 @@ def evaluate_ot_after_key_equality(state_a, state_b):
     if c2_vnext_key(state_a) != c2_vnext_key(state_b):
         raise ValueError("O_T evaluation forbidden before key equality")
     ot = load_ot_module()
-    ga = ot.transformation_organisation_graph(state_a, ot.load_modules()[0])
-    gb = ot.transformation_organisation_graph(state_b, ot.load_modules()[0])
+    ops = ot.load_modules()[0]
+    ga = ot.transformation_organisation_graph(state_a, ops)
+    gb = ot.transformation_organisation_graph(state_b, ops)
     return ot.graph_signature(ga), ot.graph_signature(gb)
 
 
