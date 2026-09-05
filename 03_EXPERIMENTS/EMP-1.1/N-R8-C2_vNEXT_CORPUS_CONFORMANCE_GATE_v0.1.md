@@ -1,123 +1,60 @@
 # N-R8-C2 vNext — Corpus / Conformance Gate v0.1
 
-**Status:** SPECIFIED — NOT YET EXECUTED
+**Status:** PASS — SMOKE CONFORMANCE COMPLETED
 
-## 1. Purpose
+## Result
 
-This gate defines the controlled transition from the successful bounded identifiability result to prospective corpus construction. It is a conformance gate, not a scientific result and not the EXT-1.1 model execution.
+The deterministic smoke conformance probe was executed locally after the deterministic witness-search step.
 
-The gate exists to ensure that the frozen C2-vNext key, the authoritative Branch N operationalisation, the transformation-organisation observable `O_T`, and the pair-construction procedure remain internally coherent before any 5,000-pair corpus is generated.
+All assertions C1–C9 returned `true` and the overall decision was `PASS`.
 
-## 2. Preconditions
+- `corpus_generation`: `NOT_PERFORMED`
+- `scientific_execution`: `NOT_PERFORMED`
+- `N-R7`: `INTACT`
+- `states_examined`: `2`
+- `key_collision_pairs_examined`: `1`
+- `K(A) == K(B)`: `true`
+- `O_T(A) != O_T(B)`: `true`
 
-The following are already frozen or recorded and must not be altered by this gate:
+Witness hashes:
 
-1. `N-R8-C2_vNEXT_FREEZE_v0.1.md`.
-2. `branch_n_r8c2_vnext_key_v01.py`.
-3. `branch_n_r8_operationalisation_v01.py`.
-4. `probe_n_r8c2_vnext_identifiability_v01.py`.
-5. `N-R8-C2_vNEXT_IDENTIFIABILITY_RESULT_v0.1.md`.
-6. EMP-1.1 frozen experimental protocol.
+- `state_a_sha256 = 0d965256c3aae89093fa954db992843e770b0c358be5392634078b3af0fb6b7c`
+- `state_b_sha256 = 0dd6e9d0418beb5c92778cb0e5b3c167b9bc89afc9cbea20c5cbc8ec69870880`
 
-The bounded identifiability result is `IDENTIFIABLE / PASS`; corpus generation itself remains `NOT_PERFORMED`.
+## Scope
 
-## 3. Conformance assertions
+This gate validates implementation conformance only. It does not establish global identifiability, does not inspect the Rust dataset, does not train or evaluate models, and does not constitute scientific execution of EXT-1.1.
 
-A conformance implementation must verify all of the following before accepting a corpus-generation run.
+The frozen key, authoritative operationalisation, target observable, and fail-closed rules remain unchanged.
 
-### C1 — Frozen-key conformance
+## Preconditions preserved
 
-For every candidate state:
+- `N-R8-C2_vNEXT_FREEZE_v0.1.md` remains frozen.
+- `branch_n_r8c2_vnext_key_v01.py` remains unchanged.
+- `branch_n_r8_operationalisation_v01.py` remains unchanged.
+- The bounded identifiability result remains an immutable empirical record.
+- The deterministic witness is recovered from the same 4-component / 4,096-state fixture family; no target-optimised fixture was introduced.
 
-`K_C2_vNext = B + degree-multiset(V)`
+## Conformance assertions
 
-with:
+- **C1 — Frozen-key conformance:** PASS
+- **C2 — State canonicalisation:** PASS
+- **C3 — Pair equality:** PASS
+- **C4 — Target inequality:** PASS
+- **C5 — Result-blind construction:** PASS
+- **C6 — Determinism:** PASS
+- **C7 — Witness compatibility:** PASS
+- **C8 — Provenance separation:** PASS
+- **C9 — No scientific execution:** PASS
 
-`B = (|V|, q1, q2, q3, objective)`.
+## Corpus boundary
 
-The key implementation must remain pure state-derived and must not call or inspect `tacc`, transformation enumeration/application, `R`, or `O_T`.
+The intended prospective corpus remains **5,000 matched pairs**. It has **not** been generated.
 
-### C2 — State canonicalisation
+The smoke gate PASS permits progression to the separately controlled corpus-generation preparation stage. It does **not** itself authorize scientific execution.
 
-Every generated state must pass the authoritative `canonical_state` validation. No duplicate edge, self-loop, absent endpoint, invalid resource, or invalid objective may enter the corpus.
+## Required next step
 
-### C3 — Pair equality
+Prepare and freeze the prospective 5,000-pair corpus-generation configuration and provenance contract before any corpus generation is executed. The configuration must make the sampling space, deterministic seed, pair-bucketing rule, post hoc `O_T` acceptance rule, output schema, canonical hashes, and provenance classification explicit and reproducible.
 
-Every accepted pair `(A,B)` must satisfy:
-
-`K_C2_vNext(A) == K_C2_vNext(B)`.
-
-### C4 — Target inequality
-
-Every accepted pair must satisfy:
-
-`O_T(A) != O_T(B)`.
-
-The target inequality is evaluated only after key equality has been established.
-
-### C5 — Result-blind construction
-
-Pair generation/bucketing may use only the frozen key. `O_T` may be used solely as the post hoc acceptance condition for a candidate equal-key pair. No generation parameter, sampling weight, seed, or key coordinate may be changed in response to observed `O_T` values.
-
-### C6 — Determinism
-
-Given identical source, configuration and seed, the generated corpus and all canonical state hashes must be byte-for-byte deterministic.
-
-### C7 — Witness compatibility
-
-The conformance implementation must be capable of representing the frozen four-component witness class used by the identifiability gate. This is a fixture adequacy check and must not be replaced by a new target-optimised fixture.
-
-### C8 — Provenance separation
-
-Generated corpus artifacts are `DERIVED` / `RECONSTRUCTED`, not `HISTORICAL`. The bounded identifiability result remains an immutable empirical record.
-
-### C9 — No scientific execution
-
-The conformance gate must not train models, consume the Rust dataset, evaluate the primary LogLoss estimand, or execute the confirmatory experiment.
-
-## 4. Corpus construction boundary
-
-Only after C1–C9 pass may the prospective matched-pair corpus be generated.
-
-The intended corpus target remains **5,000 matched pairs**, but this document does not itself authorise execution of that generation. The generation command must be a separate explicit step after the conformance gate passes.
-
-The conformance gate should first run on a small deterministic smoke corpus / fixture set. A passing smoke gate does not imply scientific validity; it only permits progression to the frozen corpus-generation stage.
-
-## 5. Required output of the conformance gate
-
-The gate must emit a machine-readable record containing at least:
-
-- gate identifier and version;
-- source commit SHA;
-- key implementation SHA;
-- operationalisation SHA;
-- fixture/conformance seed(s);
-- number of states checked;
-- number of candidate equal-key pairs checked;
-- number of accepted unequal-`O_T` pairs;
-- canonical state hashes for accepted smoke pairs;
-- deterministic rerun equality result;
-- all assertion statuses C1–C9;
-- overall `PASS` / `FAIL` / `BLOCKED_INFRASTRUCTURE` decision.
-
-## 6. Fail-closed rules
-
-- Any C1–C8 failure → `FAIL` and no corpus generation.
-- Any implementation/import/runtime/invariant failure → `BLOCKED_INFRASTRUCTURE` and no corpus generation.
-- A passing conformance gate does not authorize scientific execution.
-- Any change to the frozen key, target observable, or authoritative transformation semantics invalidates this gate and requires a new versioned audit/freeze.
-
-## 7. Explicit non-goals
-
-This gate does not:
-
-- establish global identifiability;
-- prove that `O_T` is universally independent of the key;
-- generate or inspect the Rust dataset;
-- train or evaluate predictive models;
-- alter N-R1.3;
-- reopen the previous C2 derivability analysis.
-
-## 8. Next operational step
-
-Implement a small, deterministic **conformance/smoke probe** that executes C1–C9 only. Run that probe locally after `git pull`. If it returns `PASS`, freeze its output and only then proceed to the separately authorised 5,000-pair corpus-generation step.
+Any change to the frozen key, target observable, or authoritative transformation semantics invalidates this gate and requires a new versioned audit/freeze.
