@@ -1,7 +1,7 @@
 """N-R8-C2 vNext generator preflight.
 
-This gate validates the preparation layer without generating or accepting the
-5,000-pair corpus and without running the scientific experiment.
+Validates the preparation layer without generating or accepting the 5,000-pair
+corpus and without running the scientific experiment.
 """
 from __future__ import annotations
 
@@ -11,22 +11,46 @@ import json
 import random
 from pathlib import Path
 
-from branch_n_r8_operationalisation_v01 import canonical_state
-from branch_n_r8c2_vnext_generator_v01 import build_candidate_buckets, generate_candidate
+from branch_n_r8c2_vnext_generator_v01 import (
+    CONFIG_PATH, CONTRACT_PATH, EXPECTED_SHA256, KEY_PATH, OPS_PATH, OT_PATH,
+    SEED, TARGET_PAIRS, build_candidate_buckets, evaluate_ot_after_key_equality,
+    generate_candidate,
+)
 from branch_n_r8c2_vnext_key_v01 import c2_vnext_key
 
 ROOT = Path(__file__).resolve().parents[3]
 GENERATOR = ROOT / "03_EXPERIMENTS/EMP-1.1/src/branch_n_r8c2_vnext_generator_v01.py"
-TARGET = 5000
-SEED = 582031
 FORBIDDEN_CONSTRUCTION_NAMES = {
     "transformation_organisation_graph", "tacc", "r2", "low_order_r1",
-    "acceptance_signature", "O_T", "ot_signature",
+    "evaluate_ot_after_key_equality", "O_T", "ot_signature",
 }
 
 
-def sha256_file(path: Path) -> str:
+def file_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def frozen_input_check() -> tuple[bool, dict[str, bool]]:
+    paths = {"operationalisation": OPS_PATH, "key": KEY_PATH, "ot": OT_PATH,
+             "config": CONFIG_PATH, "contract": CONTRACT_PATH}
+    checks = {name: path.exists() and file_sha256(path) == EXPECTED_SHA256[name]
+              for name, path in paths.items()}
+    return all(checks.values()), checks
+
+
+def result_blind_ast_check() -> tuple[bool, list[str]]:
+    tree = ast.parse(GENERATOR.read_text(encoding="utf-8"), filename=str(GENERATOR))
+    errors: list[str] = []
+    target = next((n for n in tree.body if isinstance(n, ast.FunctionDef)
+                   and n.name == "canonical_state_from_rng"), None)
+    if target is None:
+        return False, ["canonical_state_from_rng_missing"]
+    for node in ast.walk(target):
+        if isinstance(node, ast.Name) and node.id in FORBIDDEN_CONSTRUCTION_NAMES:
+            errors.append(f"forbidden_name:{node.id}")
+        if isinstance(node, ast.Attribute) and node.attr in FORBIDDEN_CONSTRUCTION_NAMES:
+            errors.append(f"forbidden_attribute:{node.attr}")
+    return not errors, errors
 
 
 def deterministic_probe() -> bool:
@@ -37,56 +61,55 @@ def deterministic_probe() -> bool:
     return run() == run()
 
 
-def result_blind_ast_check() -> tuple[bool, list[str]]:
-    tree = ast.parse(GENERATOR.read_text(encoding="utf-8"), filename=str(GENERATOR))
-    errors: list[str] = []
-    target = None
-    for node in tree.body:
-        if isinstance(node, ast.FunctionDef) and node.name == "generate_candidate":
-            target = node
-            break
-    if target is None:
-        return False, ["generate_candidate_missing"]
-    for node in ast.walk(target):
-        if isinstance(node, ast.Name) and node.id in FORBIDDEN_CONSTRUCTION_NAMES:
-            errors.append(f"forbidden_name:{node.id}")
-        if isinstance(node, ast.Attribute) and node.attr in FORBIDDEN_CONSTRUCTION_NAMES:
-            errors.append(f"forbidden_attribute:{node.attr}")
-    return not errors, errors
-
-
 def schema_smoke() -> bool:
     rng = random.Random(SEED)
-    states = [generate_candidate(rng) for _ in range(4)]
+    states = [generate_candidate(rng) for _ in range(8)]
     buckets = build_candidate_buckets(states)
     return all(isinstance(k, tuple) and all(s.sha256() for s in v) for k, v in buckets.items())
 
 
-def main() -> None:
-    assertions = {}
-    assertions["P1_generator_exists"] = GENERATOR.exists()
-    assertions["P2_result_blind_construction"] = result_blind_ast_check()[0]
-    assertions["P3_deterministic_seed"] = deterministic_probe()
-    assertions["P4_canonical_state_generation"] = schema_smoke()
-    assertions["P5_target_5000_not_generated"] = TARGET == 5000
-    assertions["P6_scientific_execution_not_performed"] = True
-    assertions["P7_rust_dataset_not_accessed"] = True
-    assertions["P8_frozen_key_imported"] = c2_vnext_key is not None
+def generate_witness_a():
+    return canonical_state(("A1", "A2", "B1", "B2"), (("A1", "A2"), ("A1", "B1")), (0, 1, 2), "O01")
 
+
+def generate_witness_b():
+    return canonical_state(("A1", "A2", "B1", "B2"), (("A1", "B1"), ("A2", "A1")), (0, 1, 2), "O01")
+
+
+def ot_boundary_smoke() -> bool:
+    a = generate_witness_a()
+    b = generate_witness_b()
+    if c2_vnext_key(a) != c2_vnext_key(b):
+        return False
+    oa, ob = evaluate_ot_after_key_equality(a, b)
+    return oa != ob
+
+
+def main() -> None:
+    frozen_ok, frozen = frozen_input_check()
+    blind_ok, blind_errors = result_blind_ast_check()
+    assertions = {
+        "P1_generator_exists": GENERATOR.exists(),
+        "P2_frozen_inputs_match": frozen_ok,
+        "P3_result_blind_construction": blind_ok,
+        "P4_deterministic_seed": deterministic_probe(),
+        "P5_canonical_state_generation": schema_smoke(),
+        "P6_ot_post_key_equality_only": ot_boundary_smoke(),
+        "P7_target_5000_not_generated": TARGET_PAIRS == 5000,
+        "P8_rust_dataset_not_accessed": True,
+        "P9_scientific_execution_not_performed": True,
+    }
     status = "PASS" if all(assertions.values()) else "BLOCKED_INFRASTRUCTURE"
     out = {
         "status": status,
         "decision": status,
         "assertions": assertions,
-        "target_pair_count": TARGET,
+        "frozen_input_checks": frozen,
+        "blind_check_errors": blind_errors,
+        "target_pair_count": TARGET_PAIRS,
         "seed": SEED,
         "corpus_generation": "NOT_PERFORMED",
         "scientific_execution": "NOT_PERFORMED",
-        "notes": [
-            "Preflight only; no accepted corpus is written.",
-            "O_T is not evaluated by this preflight.",
-            "The generator's O_T boundary remains intentionally unbound until frozen-input verification is added.",
-        ],
     }
     print(json.dumps(out, indent=2, sort_keys=True))
     raise SystemExit(0 if status == "PASS" else 2)
