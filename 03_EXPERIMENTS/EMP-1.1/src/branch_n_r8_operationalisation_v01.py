@@ -1,8 +1,7 @@
 """N-R8.3 operationalisation primitives.
 
-Result-blind implementation of G2, matched-state construction primitives,
-and the independent R2 representation. No learner, outcome, trajectory, or
-N-R7 result dependency is permitted.
+Result-blind construction of G2, controlled transformations, and R2.
+No learner fitting, result consumption, or N-R7 dependency is permitted.
 """
 from __future__ import annotations
 
@@ -87,6 +86,15 @@ def apply(s: State, t: tuple) -> State:
 
 def tacc(s: State) -> list[tuple]: return [(t, apply(s,t)) for t in enumerate_transformations(s)]
 
+def _incidence(t: tuple) -> tuple[set[str], set[str]]:
+    fam=t[0]
+    if fam == "ADD_COMPONENT": return set(), {t[1]}
+    if fam == "REMOVE_COMPONENT": return {t[1]}, set()
+    if fam in ("ADD_EDGE", "REMOVE_EDGE"): return {t[1]}, {t[2]}
+    if fam == "REWIRE_EDGE": return {t[1]}, {t[3]}
+    if fam == "MODIFY_RESOURCE": return set(), set()
+    raise ValueError("unknown family")
+
 def _jaccard(a: set, b: set) -> float:
     u=a|b; return float(len(a&b)/len(u)) if u else 1.0
 
@@ -96,11 +104,7 @@ def r2(s: State) -> tuple[float,...]:
     fam_counts={f:0 for f in FAMILIES}; rows=[]; C=set(s.components); E=set(s.edges)
     for t,s2 in pairs:
         fam=t[0]; fam_counts[fam]+=1
-        src,dst=set(),set()
-        if fam == "ADD_COMPONENT": dst={t[1]}
-        elif fam == "REMOVE_COMPONENT": src={t[1]}
-        elif fam in ("ADD_EDGE","REMOVE_EDGE"): src={t[1]}; dst={t[2]}
-        elif fam == "REWIRE_EDGE": src={t[1]}; dst={t[3]}
+        src,dst=_incidence(t)
         ed=len(s2.edges)-len(s.edges); cd=len(s2.components)-len(s.components); rd=sum(abs(a-b) for a,b in zip(s.resources,s2.resources))
         rows.append((fam,len(src),len(dst),ed,cd,rd,_jaccard(C,set(s2.components)),_jaccard(E,set(s2.edges))))
     n=len(rows); p=[fam_counts[f]/n for f in FAMILIES]; entropy=-sum(x*math.log(x) for x in p if x>0); hhi=sum(x*x for x in p)
@@ -111,7 +115,7 @@ def r2(s: State) -> tuple[float,...]:
             float(mean(cd)), float(mean(ed)), float(mean(max(x,0) for x in ed)), float(mean(-min(x,0) for x in ed)),
             float(fam_counts["ADD_COMPONENT"]/n), float(fam_counts["REMOVE_COMPONENT"]/n), float(fam_counts["MODIFY_RESOURCE"]/n),
             float(sum(x[0] in ("ADD_EDGE","REMOVE_EDGE","REWIRE_EDGE") for x in rows)/n), float(sum(x[0] in ("ADD_COMPONENT","REMOVE_COMPONENT") for x in rows)/n),
-            float(sum(x[4]==0 for x in rows)/n), float(sum(x[3]==0 for x in rows)/n), float(sum(x[0]=="MODIFY_RESOURCE" for x in rows)/n),
+            float(sum(x[4]==0 for x in rows)/n), float(sum(x[3]==0 for x in rows)/n), float(fam_counts["MODIFY_RESOURCE"]/n),
             float(sum(x[0] in ("ADD_EDGE","REMOVE_EDGE","REWIRE_EDGE") for x in rows)/n), float(mean(x[6] for x in rows)), float(mean(x[7] for x in rows)), float(sd(ed)), float(sd(cd)))
 
 def b_vector(s: State) -> tuple[float,...]:
@@ -121,6 +125,6 @@ def low_order_r1(s: State) -> tuple:
     pairs=tacc(s); fam={f:0 for f in FAMILIES}; inc={x:0 for x in COMPONENTS}
     for t,_ in pairs:
         fam[t[0]]+=1
-        if t[0] in ("ADD_EDGE","REMOVE_EDGE"): inc[t[1]]+=1; inc[t[2]]+=1
-        elif t[0]=="REWIRE_EDGE": inc[t[1]]+=1; inc[t[2]]+=1; inc[t[3]]+=1
+        src,dst=_incidence(t)
+        for x in src|dst: inc[x]+=1
     return (len(pairs), sum(v>0 for v in fam.values()), tuple(fam[f] for f in FAMILIES), tuple(inc[x] for x in COMPONENTS))
