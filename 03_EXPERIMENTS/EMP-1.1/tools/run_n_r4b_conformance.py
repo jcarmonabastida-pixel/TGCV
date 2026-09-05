@@ -1,4 +1,4 @@
-"""N-R4B implementation conformance runner v0.2.
+"""N-R4B implementation conformance runner v0.3.
 
 Conformance only. No scientific corpus generation or learner fitting.
 """
@@ -84,9 +84,6 @@ results.append(check("seed_changes_trajectory_seed_not_snapshot", seed_change))
 
 
 def objective_independence():
-    # Suppress goal termination only inside this conformance fixture. This
-    # isolates the registered objective-independence property of transition
-    # selection from objective-dependent stopping.
     s1 = make_state("O01")
     s2 = make_state("O12")
     original_goal = mod.goal
@@ -117,18 +114,45 @@ results.append(check("empty_tacc_terminal_semantics", empty_tacc))
 
 
 def duplicate_successor_selection():
-    # Two distinct transformation entries are forced to yield the same successor.
-    # Selection is over transformation entries, not deduplicated successor states.
+    # Two distinct transformation identities are mapped to the same successor.
+    # Sampling must remain over transformation entries, not deduplicated successors.
     s = make_state("O12")
-    tacc = (("MODIFY_RESOURCE", 1, +1), ("MODIFY_RESOURCE", 1, +1))
+    t1 = ("FIXTURE_TRANSFORMATION_A",)
+    t2 = ("FIXTURE_TRANSFORMATION_B",)
+    tacc = (t1, t2)
     original_enum = mod.enumerate_transformations
+    original_apply = mod.apply_transformation
+    original_goal = mod.goal
     mod.enumerate_transformations = lambda state: tacc
+    mod.apply_transformation = lambda state, selected: state
+    mod.goal = lambda state, objective: False
     try:
-        r = mod.generate_trajectory(s, "train", 3_100_000, 52)
+        selected_ids = []
+        for episode_id in range(60, 92):
+            r = mod.generate_trajectory(s, "train", 3_100_000, episode_id)
+            selected_ids.extend(x.transformation_id for x in r.steps)
     finally:
         mod.enumerate_transformations = original_enum
-    return len(r.steps) == 6 and all(x.transformation_id == repr(tacc[0]) for x in r.steps), {"steps": len(r.steps)}
+        mod.apply_transformation = original_apply
+        mod.goal = original_goal
+    observed = set(selected_ids)
+    return observed == {repr(t1), repr(t2)}, {"distinct_transformation_ids_observed": sorted(observed), "episodes": 32}
 results.append(check("duplicate_successor_transformations_remain_selectable", duplicate_successor_selection))
+
+
+def success_after_step():
+    s = make_state("O02")
+    forced = (("ADD_COMPONENT", "A2"),)
+    original_enum = mod.enumerate_transformations
+    mod.enumerate_transformations = lambda state: forced
+    try:
+        r = mod.generate_trajectory(s, "train", 3_100_000, 103)
+    finally:
+        mod.enumerate_transformations = original_enum
+    return r.outcome == 1 and r.terminal_step == 1 and r.terminal_reason == "GOAL_REACHED" and len(r.steps) == 1, {
+        "terminal_step": r.terminal_step, "terminal_reason": r.terminal_reason, "steps": len(r.steps)
+    }
+results.append(check("success_after_one_or_more_steps", success_after_step))
 
 
 def horizon_and_schema():
@@ -169,7 +193,7 @@ output = {
     "checks": results,
     "implementation_path": str(IMPLEMENTATION),
     "implementation_sha256": hashlib.sha256(IMPLEMENTATION.read_bytes()).hexdigest(),
-    "runner": "N_R4B_CONFORMANCE_RUNNER_v0.2",
+    "runner": "N_R4B_CONFORMANCE_RUNNER_v0.3",
     "scientific_execution": "NOT_PERFORMED",
     "status": "FAIL" if failures else "PASS",
 }
