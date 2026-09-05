@@ -184,5 +184,4 @@ def generate_controlled_corpus(output_dir: Path) -> dict[str, Any]:
     manifest = provenance(output_dir, partitions, Path(__file__), R4B_PATH)
     manifest_path = output_dir / "PROVENANCE.json"
     manifest_path.write_bytes(canonical_json_line(manifest))
-    manifest["provenance_sha256"] = file_sha256(manifest_path)
     return manifest
