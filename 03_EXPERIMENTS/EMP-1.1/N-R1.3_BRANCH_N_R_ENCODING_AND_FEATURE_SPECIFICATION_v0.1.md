@@ -3,7 +3,7 @@
 **Program:** TGCV  
 **Experiment:** EMP-1.1  
 **Branch:** N — Controlled New Reconstruction  
-**Status:** PROSPECTIVE SPECIFICATION — NOT HISTORICAL RECOVERY  
+**Status:** PROSPECTIVE SPECIFICATION — CORRECTED  
 **Gate:** N-R1.3  
 **Date:** 2026-09-05
 
@@ -40,7 +40,7 @@ The representation must satisfy:
 5. **Determinism:** identical snapshots produce byte-identical feature vectors after canonical serialization.
 6. **Permutation invariance:** input row ordering cannot affect R.
 7. **No target leakage:** objective outcome, future state, realized transformation, trajectory, success, or value cannot enter R.
-8. **No result-driven tuning:** dimensions and transformations are fixed before confirmatory execution.
+8. **No result-driven tuning:** dimensions and definitions are fixed before confirmatory execution.
 
 ## 4. Canonical feature vector
 
@@ -124,16 +124,9 @@ For each accessible transformation instance `tau`, apply the deterministic trans
 
 The fixed-dimensional vector is always emitted.
 
-If `T_acc = emptyset`:
+If `T_acc = emptyset`, **all 58 scientific R features are exactly `0`**. This includes the four R4 min/max successor-state features. No current-state value is copied into R when there is no accessible transformation.
 
-- all R1 features = `0`;
-- all R2 features = `0`;
-- all R3 features = `0`;
-- R4 count features = `0`;
-- `n_distinct_next_* = 0`;
-- min/max successor-count features = the current-state values only where mathematically meaningful; otherwise encode `0`.
-
-For a completely empty accessibility structure, the implementation must additionally emit an explicit validity flag outside R for execution diagnostics; this flag is not part of the 58-feature scientific vector.
+An explicit accessibility-status/validity diagnostic may be emitted outside R for execution auditing; it is not part of the scientific 58-feature vector.
 
 If a valid state produces only one transformation family, all other family blocks remain zero. No imputation is performed.
 
@@ -205,7 +198,7 @@ The following tests are mandatory before any scientific execution:
 4. **Traceability:** every non-zero R2/R3/R4 count can be traced to one or more concrete T_acc instances.
 5. **Transition consistency:** every R4 successor signature agrees with the N-R1.2 transition equations.
 6. **No leakage:** changing future/outcome data while holding S fixed cannot change R.
-7. **Empty-set handling:** `T_acc=emptyset` yields the specified fixed vector.
+7. **Empty-set handling:** `T_acc=emptyset` yields the specified fixed vector of 58 zeros.
 8. **Serialization determinism:** repeated canonical serialization yields identical bytes.
 9. **Dimensionality:** every valid state produces exactly 58 features.
 10. **Family-order invariance:** internal iteration order cannot change the vector.
@@ -231,7 +224,7 @@ The following tests are mandatory before any scientific execution:
 - exact family availability and cardinality features;
 - exact component-incidence summaries;
 - exact successor-state structural signature;
-- empty-set numerical encoding;
+- empty-set encoding as the all-zero 58-feature vector;
 - raw integer representation and no pre-R normalization;
 - canonical serialization order.
 
@@ -259,7 +252,7 @@ Any change after this document is frozen requires a new version and a new prospe
 
 ## 14. Gate decision — N-R1.3
 
-**N-R1.3 STATUS: PASS / CLOSED**
+**N-R1.3 STATUS: PASS / CLOSED — CORRECTED**
 
 The Branch N R representation is now sufficiently explicit to permit implementation-level construction and deterministic unit testing.
 
@@ -267,7 +260,7 @@ The Branch N R representation is now sufficiently explicit to permit implementat
 
 ### Next gates
 
-1. **N-R2 — Transformation/R implementation conformance** against N-R1.2 and N-R1.3.
+1. **N-R2 — Transformation/R implementation conformance** against N-R1.2 and this corrected N-R1.3 specification.
 2. **N-R3 — Deterministic unit and invariance tests.**
 3. **N-R4 — Controlled smoke execution and artifact integrity.**
 4. Only after those gates pass may the reconstruction proceed toward the controlled full EMP-1.1 execution boundary.
