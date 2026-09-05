@@ -211,9 +211,9 @@ def audit() -> dict:
                 if sha not in ot_cache:
                     graph = ot_mod.transformation_organisation_graph(state, ops)
                     ot_cache[sha] = ot_mod.graph_signature(graph)
-            if ot_cache[a_sha] != tuple(rec["o_t_a_signature"]):
+            if canonical_json(ot_cache[a_sha]) != canonical_json(rec["o_t_a_signature"]):
                 raise ValueError("O_T(A) signature mismatch")
-            if ot_cache[b_sha] != tuple(rec["o_t_b_signature"]):
+            if canonical_json(ot_cache[b_sha]) != canonical_json(rec["o_t_b_signature"]):
                 raise ValueError("O_T(B) signature mismatch")
             if rec["o_t_a_signature"] == rec["o_t_b_signature"]:
                 raise ValueError("O_T inequality violation")
