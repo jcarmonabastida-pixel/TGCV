@@ -15,6 +15,7 @@ MANIFEST_PATH = OUTPUT_DIR / "N-R8-C2_vNEXT_CORPUS_MANIFEST_v0.1.json"
 GENERATOR_PATH = SRC / "branch_n_r8c2_vnext_generator_v01.py"
 SAMPLE_PAIRS = 3
 SEED = 582031
+EXPECTED_GENERATOR_BLOB_SHA = "652ffeebab1f43095494a93a5cae04d18656d51d"
 
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
@@ -42,6 +43,12 @@ def file_state(path: Path) -> tuple[bool, str | None]:
     return True, hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def git_blob_sha(path: Path) -> str:
+    import subprocess
+    result = subprocess.run(["git", "hash-object", str(path)], cwd=ROOT, capture_output=True, text=True, check=True)
+    return result.stdout.strip()
+
+
 def _is_main_guard(node: ast.If) -> bool:
     test = node.test
     return (
@@ -59,7 +66,6 @@ def _is_main_guard(node: ast.If) -> bool:
 def static_no_generation_on_import() -> bool:
     """Verify the only top-level entry to generation is the main guard."""
     tree = ast.parse(GENERATOR_PATH.read_text(encoding="utf-8"))
-
     main_functions = {
         node.name
         for node in tree.body
@@ -85,20 +91,6 @@ def static_no_generation_on_import() -> bool:
             continue
         if node.func.id != "run_generation":
             continue
-        # run_generation must be called from main(), never at module scope.
-        function_parent = None
-        stack = [tree]
-        while stack:
-            parent = stack.pop()
-            for child in ast.iter_child_nodes(parent):
-                if child is node:
-                    function_parent = parent
-                    break
-                stack.append(child)
-            if function_parent is not None:
-                break
-        # The direct parent can be an Expr/Return; walk the tree structurally
-        # through the enclosing function using a dedicated recursive check.
         found_in_main = False
         for fn in [n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and n.name == "main"]:
             if any(x is node for x in ast.walk(fn)):
@@ -115,6 +107,21 @@ def state_from_record(record: dict):
         tuple(tuple(edge) for edge in record["edges"]),
         tuple(record["resources"]),
         record["objective"],
+    )
+
+
+def valid_ot_signature_shape(signature: object) -> bool:
+    """Require one authoritative O_T signature, not the defective nested pair shape."""
+    if not isinstance(signature, (tuple, list)) or len(signature) != 4:
+        return False
+    n, components, degrees, triangles = signature
+    return (
+        isinstance(n, int)
+        and isinstance(components, (tuple, list))
+        and isinstance(degrees, (tuple, list))
+        and isinstance(triangles, int)
+        and all(isinstance(x, int) for x in components)
+        and all(isinstance(x, int) for x in degrees)
     )
 
 
@@ -147,6 +154,10 @@ def semantic_checks(result: dict) -> list[str]:
             errors.append(f"K reconstruction mismatch: {record['pair_id']}")
         if key_a != key_b:
             errors.append(f"K(A) != K(B): {record['pair_id']}")
+        if not valid_ot_signature_shape(record["o_t_a_signature"]):
+            errors.append(f"invalid O_T(A) signature shape: {record['pair_id']}")
+        if not valid_ot_signature_shape(record["o_t_b_signature"]):
+            errors.append(f"invalid O_T(B) signature shape: {record['pair_id']}")
         if record["o_t_a_signature"] == record["o_t_b_signature"]:
             errors.append(f"O_T equality accepted: {record['pair_id']}")
         if record["provenance"] != "DERIVED_RECONSTRUCTED":
@@ -162,6 +173,8 @@ def run_gate() -> dict:
     frozen = generator.verify_frozen_inputs()
     if not all(frozen.values()):
         raise RuntimeError(f"frozen input verification failed: {frozen}")
+    if git_blob_sha(GENERATOR_PATH) != EXPECTED_GENERATOR_BLOB_SHA:
+        raise RuntimeError("generator blob SHA does not match corrected frozen generator")
     static_import_safe = static_no_generation_on_import()
     if not static_import_safe:
         raise RuntimeError("generator has an invalid generation entrypoint")
@@ -180,6 +193,7 @@ def run_gate() -> dict:
     return {
         "status": "PASS",
         "gate": "N-R8-C2_vNEXT_GENERATION_CONFORMANCE_v0.1",
+        "generator_blob_sha": EXPECTED_GENERATOR_BLOB_SHA,
         "sample_pair_count": SAMPLE_PAIRS,
         "seed": SEED,
         "run_1_candidate_count": first["candidate_count"],
@@ -191,6 +205,7 @@ def run_gate() -> dict:
         "canonical_result_sha256": hashlib.sha256(first_bytes).hexdigest(),
         "byte_for_byte_reproducible": True,
         "semantic_conformance": True,
+        "ot_signature_shape_check": True,
         "static_import_safe": True,
         "corpus_artifact_side_effect": False,
         "manifest_artifact_side_effect": False,
