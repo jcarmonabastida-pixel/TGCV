@@ -13,6 +13,8 @@ def test_exact_and_caret():
 def test_unsupported_fails_closed():
     assert requirement_kind("~1.0") == "UNSUPPORTED"
     assert requirement_kind(">=1.0") == "UNSUPPORTED"
+    assert requirement_kind("^1") == "UNSUPPORTED"
+    assert requirement_kind("^1.0.0, <2.0.0") == "UNSUPPORTED"
 
 
 def test_temporal_cutoff_and_max_selection():
@@ -46,3 +48,13 @@ def test_row_order_independence():
     a = resolve_edge(9, "a@1.0.0", "2022-01-04", 8, "b", "^1.0", rows)
     b = resolve_edge(9, "a@1.0.0", "2022-01-04", 8, "b", "^1.0", list(reversed(rows)))
     assert a == b
+
+
+def test_duplicate_version_id_fails_closed():
+    rows = [(1, "1.0.1", "2022-01-01"), (1, "1.0.2", "2022-01-02")]
+    try:
+        resolve_edge(9, "a@1.0.0", "2022-01-04", 8, "b", "^1.0", rows)
+    except ValueError as exc:
+        assert str(exc).startswith("DUPLICATE_VERSION_ID:")
+    else:
+        raise AssertionError("duplicate version IDs must fail closed")
