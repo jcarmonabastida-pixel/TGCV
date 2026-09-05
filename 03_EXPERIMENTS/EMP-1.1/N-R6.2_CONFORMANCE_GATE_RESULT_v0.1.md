@@ -1,11 +1,12 @@
 # N-R6.2 — LEARNER CONFORMANCE GATE RESULT v0.1
 
 **Date:** 2026-09-05  
-**Status:** **PASS / CLOSED — CONFORMANCE ONLY**
+**Status:** **PASS / CLOSED — CONFORMANCE ONLY**  
+**Re-conformance:** corrected learner / updated N-R6.1 specification
 
 ## 1. Decision
 
-N-R6.2 Learner Conformance is **PASS / CLOSED**.
+N-R6.2 Learner Conformance is **PASS / CLOSED** on the current learner implementation.
 
 The prospective Branch N learner implementation conforms to the registered N-R6.1 learner specification as checked by `N_R6_CONFORMANCE_RUNNER_v0.1`.
 
@@ -25,9 +26,10 @@ This gate establishes implementation/specification conformance only. It does **n
 - Alpha: 0.05
 - Sign-flip permutations: 200,000
 - Sign-flip seed: 13,579
-- Control: RandomForestClassifier with registered fixed configuration
+- RandomForest control: registered fixed configuration
+- Permuted-marginals control: training R only; independent column-wise permutation; seed 24,681,357
 
-## 3. Conformance execution
+## 3. Re-conformance execution
 
 Runner: `N_R6_CONFORMANCE_RUNNER_v0.1`
 
@@ -46,9 +48,11 @@ All registered checks returned PASS:
 11. implementation_contains_no_execution_at_import
 12. implementation_hash_recorded
 
-Implementation SHA-256:
+Current learner implementation SHA-256:
 
-`08ccce5b8c41e8164872d81fa63756cced47c0fa2bfe5e36f00e7b9ab55ed079`
+`e9d2f61da49de0fa76f47efea31f8e8dcd4d4411afcd5ec99bbc744ab937bc0e`
+
+The implementation is the corrected version in which the paired sign-flip p-value is computed once and reused, avoiding duplicate 200,000-permutation computation.
 
 ## 4. Scientific execution boundary
 
@@ -76,9 +80,23 @@ The conformance was executed in the user's local environment with:
 
 The installed learner API was available sufficiently for all registered N-R6.2 configuration checks to pass.
 
-## 7. Scientific claim boundary
+## 7. Control specification status
 
-This gate permits the next controlled step: execute the registered learner protocol against the frozen N-R5.3 predictor dataset.
+The previously incomplete permuted-marginals control is now explicitly frozen in N-R6.1 before scientific execution:
+
+- source: training R matrix only;
+- B unchanged;
+- each of the 58 R columns independently permuted across the 30,000 training rows;
+- RNG: `numpy.random.default_rng(24681357)`;
+- empirical marginal of each column preserved;
+- original R column order preserved;
+- construct `B || R_permuted`;
+- same HGB configuration as primary learner;
+- no test/outcome/trajectory/historical-result information used.
+
+## 8. Scientific claim boundary
+
+This gate authorizes the next controlled step: N-R7 scientific learner execution against the frozen N-R5.3 predictor dataset.
 
 It does **not** permit claims of:
 
@@ -89,8 +107,8 @@ It does **not** permit claims of:
 - literature novelty;
 - reproduction of the historical numerical result.
 
-## 8. Next authorized gate
+## 9. Next authorized gate
 
 **N-R7 — Controlled Learner Execution / Primary Evaluation**
 
-Execution must use the frozen N-R5.3 predictor dataset without modification, preserve the B versus B+R paired evaluation, retain deterministic provenance, and produce an auditable execution record before any confirmatory interpretation is accepted.
+Execution must use the frozen N-R5.3 predictor dataset without modification, preserve the B versus B+R paired evaluation, retain deterministic provenance, and produce a complete auditable execution record before any confirmatory interpretation is accepted.
