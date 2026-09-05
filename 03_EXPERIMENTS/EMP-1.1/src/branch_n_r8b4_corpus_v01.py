@@ -7,11 +7,10 @@ outside module import and requires an explicit caller.
 from __future__ import annotations
 
 from collections import defaultdict
-from dataclasses import asdict, dataclass
+from dataclasses import asdict
 import hashlib
 import json
 import random
-from pathlib import Path
 from typing import Iterable
 
 from branch_n_r8_operationalisation_v01 import (
@@ -19,11 +18,12 @@ from branch_n_r8_operationalisation_v01 import (
     FAMILIES,
     State,
     canonical_state,
-    encode_b,
+    b_vector,
     low_order_r1,
     r2,
     tacc,
 )
+from branch_n_r_v02 import encode_r as encode_r_full
 
 G2_SEED = 5_100_000
 R8B_SEED = 5_200_000
@@ -67,8 +67,7 @@ def generate_g2(rng: random.Random) -> State:
 
 def make_g2_corpus() -> tuple[list[dict], list[dict]]:
     rng = random.Random(G2_SEED)
-    train = []
-    test = []
+    train, test = [], []
     for i in range(TRAIN_COUNT + TEST_COUNT):
         rec = {
             "episode_id": i if i < TRAIN_COUNT else i - TRAIN_COUNT,
@@ -79,36 +78,40 @@ def make_g2_corpus() -> tuple[list[dict], list[dict]]:
 
 
 def _state_from_record(rec: dict) -> State:
-    s = rec["snapshot"]
+    s = rec["snapshot"] if "snapshot" in rec else rec["state"]
     return canonical_state(s["components"], [tuple(e) for e in s["edges"]], s["resources"], s["objective"])
 
 
 def _b_key(state: State) -> tuple:
-    return tuple(encode_b(state))
+    return tuple(b_vector(state))
 
 
 def _tacc_key(state: State) -> tuple:
     return tuple(tacc(state))
 
 
-def _r1_full(state: State) -> tuple[int, ...]:
-    return tuple(low_order_r1(state)) + tuple(r2(state))
+def _r_full(state: State) -> tuple[int, ...]:
+    """Authoritative N-R1.3 v0.2 full R: exactly 58 dimensions."""
+    return tuple(encode_r_full(state))
 
 
 def _c_match_key(state: State) -> tuple:
+    """Exact N-R8-C matching key before the full-R inequality test.
+
+    The first 42 dimensions of the authoritative 58-vector are R1+R2+R3:
+    six family-availability indicators, six family cardinalities, and thirty
+    component-incidence features. N-R8-C then additionally fixes |T_acc|,
+    family count, component/edge counts, resources, and objective.
+    """
     ts = tacc(state)
-    low = low_order_r1(state)
-    rr2 = r2(state)
-    # low_order_r1 supplies the family availability/cardinality/incidence
-    # summaries used by the operational matching rule; r2 is retained only
-    # to expose the exact clarified R2 values in provenance.
+    rr = _r_full(state)
     return (
         _b_key(state),
-        tuple(low[:6]),
-        tuple(low[6:12]),
-        tuple(low[12:42]),
+        tuple(rr[:6]),
+        tuple(rr[6:12]),
+        tuple(rr[12:42]),
         len(ts),
-        sum(1 for x in low[:6] if x),
+        sum(1 for x in rr[:6] if x),
         len(state.components),
         len(state.edges),
         tuple(state.resources),
@@ -120,8 +123,7 @@ def build_matched_pairs_b(target: int = PAIR_TARGET, budget: int = R8B_PAIR_BUDG
     rng = random.Random(R8B_SEED)
     buckets: dict[tuple, list[dict]] = defaultdict(list)
     pairs = []
-    evaluations = 0
-    generated = 0
+    evaluations = generated = 0
     while len(pairs) < target and evaluations < budget:
         state = generate_g2(rng)
         rec = {"state": asdict(state), "state_hash": state_hash(state), "B": list(_b_key(state)), "T_acc": [list(t) for t in tacc(state)]}
@@ -145,16 +147,15 @@ def build_matched_pairs_c(target: int = PAIR_TARGET, budget: int = R8C_PAIR_BUDG
     rng = random.Random(R8C_SEED)
     buckets: dict[tuple, list[dict]] = defaultdict(list)
     pairs = []
-    evaluations = 0
-    generated = 0
+    evaluations = generated = 0
     while len(pairs) < target and evaluations < budget:
         state = generate_g2(rng)
-        rec = {"state": asdict(state), "state_hash": state_hash(state), "R": list(_r1_full(state))}
+        rec = {"state": asdict(state), "state_hash": state_hash(state), "R": list(_r_full(state))}
         key = _c_match_key(state)
         for prior in buckets[key]:
             evaluations += 1
             prior_state = _state_from_record(prior)
-            if tuple(_r1_full(prior_state)) != tuple(_r1_full(state)):
+            if _r_full(prior_state) != _r_full(state):
                 pairs.append({"pair_id": len(pairs), "A": prior, "B": rec})
                 if len(pairs) >= target:
                     break
@@ -184,10 +185,8 @@ def verify_b_pairs(obj: dict) -> None:
         raise AssertionError("R8B_TARGET")
     for pair in obj["pairs"]:
         a, b = _state_from_record(pair["A"]), _state_from_record(pair["B"])
-        if _b_key(a) != _b_key(b):
-            raise AssertionError("R8B_B_MISMATCH")
-        if _tacc_key(a) == _tacc_key(b):
-            raise AssertionError("R8B_TACC_NOT_DIFFERENT")
+        if _b_key(a) != _b_key(b): raise AssertionError("R8B_B_MISMATCH")
+        if _tacc_key(a) == _tacc_key(b): raise AssertionError("R8B_TACC_NOT_DIFFERENT")
 
 
 def verify_c_pairs(obj: dict) -> None:
@@ -195,7 +194,5 @@ def verify_c_pairs(obj: dict) -> None:
         raise AssertionError("R8C_TARGET")
     for pair in obj["pairs"]:
         a, b = _state_from_record(pair["A"]), _state_from_record(pair["B"])
-        if _c_match_key(a) != _c_match_key(b):
-            raise AssertionError("R8C_MATCH_KEY_MISMATCH")
-        if tuple(_r1_full(a)) == tuple(_r1_full(b)):
-            raise AssertionError("R8C_FULL_R_NOT_DIFFERENT")
+        if _c_match_key(a) != _c_match_key(b): raise AssertionError("R8C_MATCH_KEY_MISMATCH")
+        if _r_full(a) == _r_full(b): raise AssertionError("R8C_FULL_R_NOT_DIFFERENT")
