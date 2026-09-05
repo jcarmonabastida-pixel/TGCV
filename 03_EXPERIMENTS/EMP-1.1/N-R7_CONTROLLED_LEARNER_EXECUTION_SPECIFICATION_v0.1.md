@@ -1,15 +1,17 @@
 # N-R7 — CONTROLLED LEARNER EXECUTION SPECIFICATION v0.1
 
-**Status:** PROPOSED FOR PROSPECTIVE FREEZE  
+**Status:** FROZEN FOR PROSPECTIVE EXECUTION  
 **Date:** 2026-09-05
 
 ## 1. Purpose
 
-N-R7 defines the first authorized scientific execution of the prospective Branch N learner against the frozen N-R5.3 predictor dataset.
+N-R7 defines the first authorized scientific execution of the prospective Branch N learner against the frozen N-R5.3 predictor dataset, using the separately frozen N-R4B.4 outcome corpus solely as the source of supervised labels.
 
 This is a controlled reconstruction, not recovery of the historical EMP-1.1 executable. The historical numerical result is not a tuning target and must not be used to select or modify any implementation choice.
 
 ## 2. Frozen inputs
+
+### Predictor-side inputs
 
 - N-R5.3 train predictors: 30,000 records
 - N-R5.3 test predictors: 10,000 records
@@ -18,8 +20,32 @@ This is a controlled reconstruction, not recovery of the historical EMP-1.1 exec
 - B = 16 dimensions
 - R = 58 dimensions
 - BR = 74 dimensions
-- N-R6.1 learner specification
-- N-R6.2 conformance gate: PASS/CLOSED
+
+### Outcome-label input
+
+The binary supervised label `Y` is obtained **only** from the frozen N-R4B.4 controlled trajectory/outcome corpus, using the one-to-one key:
+
+`episode_id + initial_snapshot_sha256`
+
+The outcome corpus is a separate input channel from the predictor dataset. Its trajectory fields are never passed to the learner as predictor features.
+
+For each predictor record, exactly one matching outcome record must exist. The join is valid only if:
+
+1. `episode_id` matches;
+2. `initial_snapshot_sha256` matches exactly;
+3. the outcome record is unique;
+4. `Y` is binary;
+5. no predictor-side field is sourced from the trajectory or terminal state.
+
+The resulting supervised datasets are conceptually:
+
+`X_B, Y_train` and `X_BR, Y_train` for training, and
+
+`X_B, Y_test` and `X_BR, Y_test` for evaluation.
+
+`Y` is a **label**, not a predictor feature. The test label is inaccessible to fitting and model selection and is consumed only at the pre-registered evaluation stage.
+
+N-R6.1 learner specification and N-R6.2 conformance gate are also frozen inputs.
 
 ## 3. Primary comparison
 
@@ -81,27 +107,50 @@ The following controls are secondary and are executed only under their registere
 2. permuted-marginals R control;
 3. RandomForest alternative.
 
-The exact permutation procedure for the permuted-marginals control must be frozen before scientific execution. If it is not sufficiently specified by the existing N-R6.1 record, execution of that control is blocked rather than reconstructed ad hoc.
+The permuted-marginals procedure is frozen as follows:
 
-## 8. Execution boundary
+1. use the training R matrix only;
+2. leave B unchanged;
+3. independently permute each of the 58 R columns across the 30,000 training rows;
+4. use `numpy.random.default_rng(24681357)`;
+5. preserve the exact empirical marginal of each R column;
+6. preserve the original R column order;
+7. construct `B || R_permuted`;
+8. use the exact registered HGB configuration;
+9. do not use test outcomes, trajectory data, model performance, or historical results to determine the permutation.
 
-Allowed inputs:
+This is a prospective structural-disruption control, not historical implementation recovery.
 
-`frozen N-R5.3 predictor dataset → registered learner → test predictions → paired loss → registered inference`
+## 8. Execution boundary and label firewall
 
-Forbidden inputs include:
+The complete controlled data flow is:
 
-- trajectory records as predictor features;
+`N-R5.3 predictors + N-R4B.4 labels → registered learner → test predictions → paired loss → registered inference`
+
+The predictor path is strictly:
+
+`initial snapshot S0 → B/R → learner features`
+
+The label path is strictly:
+
+`frozen N-R4B.4 trajectory/outcome corpus → Y → supervised-label interface`
+
+The following are forbidden as predictor inputs:
+
+- trajectory records;
+- transformation IDs;
 - terminal reason;
-- outcome Y during training;
-- test labels for fitting or model selection;
+- terminal step;
+- post-transition states;
 - future states;
+- outcome Y encoded into B or R;
+- any test-derived statistic;
 - historical EMP-1.1 result values as configuration targets;
 - live network or registry access;
 - ambient caches or undeclared files;
 - post-result parameter changes.
 
-Test labels may be consumed only at the pre-registered evaluation stage to calculate test loss and paired deltas.
+`Y` is permitted to the learner **only as the supervised target vector**. Training labels may be consumed by `.fit()`; they must never be concatenated into X or used to construct B/R. Test labels may be consumed only after fitting is complete, to calculate test LogLoss and paired deltas.
 
 ## 9. Determinism and provenance
 
@@ -112,13 +161,16 @@ The execution record must contain:
 - Python version and implementation;
 - NumPy and scikit-learn versions;
 - platform;
-- input hashes;
+- N-R5.3 predictor input hashes;
+- N-R4B.4 outcome artifact hashes;
 - output prediction/loss hashes;
 - row counts and episode-ID ranges;
 - model random states;
 - sign-flip seed and count;
+- permuted-marginals seed and procedure;
 - execution timestamp;
 - control statuses;
+- join integrity checks;
 - any exception or blocked control.
 
 A second identical execution must reproduce the primary output byte-for-byte where serialized outputs are deterministic, or otherwise reproduce all registered numerical outputs within an explicitly pre-registered tolerance.
@@ -136,6 +188,7 @@ Execution is invalid if any of the following occurs:
 - frozen input hash mismatch;
 - train/test contamination;
 - predictor schema or dimensionality mismatch;
+- label join missing, duplicate, or hash-inconsistent;
 - learner configuration drift;
 - undeclared dependency;
 - network access;
@@ -145,7 +198,8 @@ Execution is invalid if any of the following occurs:
 - control procedure invented after observing primary results;
 - inability to pair B and B+R predictions by episode ID;
 - sign-flip procedure drift;
-- silent fallback to unsupported parameters.
+- silent fallback to unsupported parameters;
+- any trajectory/outcome field entering predictor features.
 
 ## 12. Claims permitted after successful execution
 
@@ -164,12 +218,22 @@ It cannot by itself establish:
 
 Before execution:
 
-1. N-R7 specification freeze;
-2. execution-runner preflight/conformance;
+1. N-R7 specification reconciliation and freeze;
+2. N-R7 execution-runner preflight/conformance;
 3. freeze all secondary-control procedures;
 4. execute primary learner once under the frozen runner;
 5. seal outputs and provenance;
 6. perform independent repeat;
 7. only then interpret confirmatory statistics.
 
-**Scientific execution is NOT authorized by this document alone until the N-R7 preflight gate is PASS/CLOSED.**
+**Scientific execution is authorized only after the reconciled N-R7 specification, N-R7 preflight gate, and N-R6.2 conformance gate are PASS/CLOSED.**
+
+## 14. Reconciliation decision
+
+The prior ambiguity concerning the source of `Y` is resolved without changing any predictor representation, learner parameter, seed, dataset partition, or control procedure.
+
+`Y` is explicitly sourced from the already frozen N-R4B.4 trajectory/outcome corpus and joined to N-R5.3 predictor records by `episode_id + initial_snapshot_sha256`.
+
+This reconciliation introduces no new scientific degree of freedom and does not use any observed learner result.
+
+**N-R7 specification: FROZEN FOR PROSPECTIVE EXECUTION.**
