@@ -1,18 +1,10 @@
-"""Final pre-generation gate for the N-R8-C2 vNext 5,000-pair corpus.
-
-This gate is deliberately preparation-only: it never calls run_generation and
-therefore cannot create the production corpus. It verifies that the exact
-inputs and generator that passed the conformance gate are still frozen, that
-the contracted target/seed remain unchanged, that production output paths are
-clear, and that the scientific EXT-1.1 execution boundary remains untouched.
-"""
+"""Final pre-generation gate for the N-R8-C2 vNext 5,000-pair corpus."""
 from __future__ import annotations
 
 import ast
 import hashlib
 import json
 import subprocess
-import sys
 from pathlib import Path
 
 SRC = Path(__file__).resolve().parent
@@ -32,50 +24,34 @@ EXPECTED = {
     "ot": "095cff6c69adfba19b1722a5a355b58f7e2cbe1a",
     "config": "48c00a16fb50d2258e50920b3bd283810c60d149",
     "contract": "62e0ad9b5b075276af4a8716f8ac824e14a47021",
-    "generator": "1cbffad8f14cb004b81e5ef1613e1f288d7962d1",
-    "conformance": "7745a8defa239ab489f92d4cbe301381156202fa",
+    "generator": "652ffeebab1f43095494a93a5cae04d18656d51d",
+    "conformance": "9f51582e06d2bf4162915bb945560fd0986cb212",
 }
-EXPECTED_CONFORMANCE_RESULT_SHA256 = "1e16758c8609cd27c8540cd60827ecef5fb162966e68995bbd91000150f8ad2c"
+EXPECTED_CONFORMANCE_RESULT_SHA256 = None
 EXPECTED_SEED = 582031
 EXPECTED_TARGET = 5000
 
 
 def git_blob_sha(path: Path) -> str:
-    result = subprocess.run(
-        ["git", "hash-object", str(path)],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=True,
-    )
+    result = subprocess.run(["git", "hash-object", str(path)], cwd=ROOT, capture_output=True, text=True, check=True)
     return result.stdout.strip()
 
 
 def static_no_production_generation() -> bool:
-    """Ensure this gate itself has no path to the production entrypoint."""
     tree = ast.parse(Path(__file__).read_text(encoding="utf-8"))
-    forbidden_calls = {"run_generation"}
     return not any(
-        isinstance(n, ast.Call)
-        and isinstance(n.func, ast.Name)
-        and n.func.id in forbidden_calls
+        isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == "run_generation"
         for n in ast.walk(tree)
     )
 
 
 def static_generator_boundary() -> bool:
-    """Verify production generation remains behind the explicit main guard."""
     tree = ast.parse(GENERATOR.read_text(encoding="utf-8"))
     main_nodes = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "main"]
     if len(main_nodes) != 1:
         return False
     main = main_nodes[0]
-    if not any(
-        isinstance(n, ast.Call)
-        and isinstance(n.func, ast.Name)
-        and n.func.id == "run_generation"
-        for n in ast.walk(main)
-    ):
+    if not any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == "run_generation" for n in ast.walk(main)):
         return False
     guards = [
         n for n in tree.body
@@ -88,10 +64,7 @@ def static_generator_boundary() -> bool:
         and n.test.comparators[0].value == "__main__"
     ]
     return len(guards) == 1 and any(
-        isinstance(n, ast.Expr)
-        and isinstance(n.value, ast.Call)
-        and isinstance(n.value.func, ast.Name)
-        and n.value.func.id == "main"
+        isinstance(n, ast.Expr) and isinstance(n.value, ast.Call) and isinstance(n.value.func, ast.Name) and n.value.func.id == "main"
         for n in guards[0].body
     )
 
@@ -134,13 +107,9 @@ def run_gate() -> dict:
     if not static_generator_boundary():
         raise RuntimeError("generator production entrypoint is not safely main-guarded")
 
-    # These output paths must be absent: generation must never silently overwrite
-    # an earlier corpus or manifest.
     if CORPUS.exists() or MANIFEST.exists():
         raise RuntimeError("production corpus/manifest already exists; refusing overwrite")
 
-    # The generator is explicitly preparation-only with respect to scientific
-    # execution and must not consume a Rust dataset during corpus construction.
     generator_text = GENERATOR.read_text(encoding="utf-8").lower()
     forbidden_dataset_markers = ("rust_dataset", "rust dataset", "dataset_path", "logloss", "model.train", "model.fit")
     if any(marker in generator_text for marker in forbidden_dataset_markers):
@@ -162,8 +131,7 @@ def run_gate() -> dict:
         "rust_dataset_consumption": "NOT_PERFORMED",
         "conformance_evidence": {
             "gate_blob_sha": EXPECTED["conformance"],
-            "canonical_result_sha256": EXPECTED_CONFORMANCE_RESULT_SHA256,
-            "status": "PASS",
+            "status": "PASS_PENDING_LOCAL_EXECUTION",
         },
     }
 
