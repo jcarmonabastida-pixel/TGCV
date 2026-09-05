@@ -9,12 +9,14 @@ import hashlib
 import json
 import importlib.util
 from pathlib import Path
+import sys
 
 ROOT = Path(__file__).resolve().parent
 R_PATH = ROOT / "branch_n_r_v02.py"
 spec = importlib.util.spec_from_file_location("branch_n_r_v02", R_PATH)
 rmod = importlib.util.module_from_spec(spec)
 assert spec and spec.loader
+sys.modules["branch_n_r_v02"] = rmod
 spec.loader.exec_module(rmod)
 State = rmod.State
 encode_r = rmod.encode_r
