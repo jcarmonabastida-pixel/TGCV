@@ -7,7 +7,7 @@ not execute the scientific experiment.
 """
 from __future__ import annotations
 
-import hashlib
+import ast
 import importlib.util
 import json
 import sys
@@ -30,37 +30,37 @@ def load_module(path: Path, name: str):
     return module
 
 
-def canonical_digest(state, op):
-    payload = {
-        "components": list(state.components),
-        "edges": [list(e) for e in sorted(state.edges)],
-        "resources": list(state.resources),
-        "objective": state.objective,
-    }
-    return hashlib.sha256(
-        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    ).hexdigest()
-
-
 def make_fixture(op):
-    return op.State(
-        components=("A1", "A2", "B1", "B2"),
-        edges=(
-            ("A1", "A2"),
-            ("A2", "B1"),
-            ("B1", "B2"),
-            ("B2", "A1"),
-        ),
-        resources=(0, 1, 2),
-        objective="O01",
+    return op.canonical_state(
+        ("A1", "A2", "B1", "B2"),
+        (("A1", "A2"), ("A2", "B1"), ("B1", "B2"), ("B2", "A1")),
+        (0, 1, 2),
+        "O01",
+    )
+
+
+def make_witness_b(op):
+    return op.canonical_state(
+        ("A1", "A2", "B1", "B2"),
+        (("A1", "A2"), ("A2", "A1"), ("B1", "B2"), ("B2", "B1")),
+        (0, 1, 2),
+        "O01",
     )
 
 
 def run_ot(state, op, ot):
-    # Reuse only the observable construction already exercised by the
-    # identifiability probe; no O_T information enters key construction.
-    ts = op.enumerate_transformations(state)
-    return ot.graph_signature(ot.build_ot_graph(state, ts, op))
+    return ot.graph_signature(ot.transformation_organisation_graph(state, op))
+
+
+def key_static_conformance():
+    """C1 static check: frozen key implementation remains result-blind."""
+    tree = ast.parse(KEY_PATH.read_text(encoding="utf-8"))
+    forbidden = {"tacc", "enumerate_transformations", "apply", "R", "O_T", "graph_signature", "transformation_organisation_graph"}
+    return not any(
+        (isinstance(node, ast.Name) and node.id in forbidden)
+        or (isinstance(node, ast.Attribute) and node.attr in forbidden)
+        for node in ast.walk(tree)
+    )
 
 
 def main():
@@ -71,43 +71,41 @@ def main():
     key = load_module(KEY_PATH, "branch_n_r8c2_vnext_key_v01")
     ot = load_module(OT_PATH, "probe_n_r8c2_vnext_identifiability_v01")
 
-    states = [make_fixture(op)]
-    key_values = [key.c2_vnext_key(s) for s in states]
-    canonical_ok = all(op.canonical_state(s) == s for s in states)
+    state_a = make_fixture(op)
+    state_b = make_witness_b(op)
 
-    # C3: self-pair equality is a minimal matched-pair sanity check.
-    pair_equal = key_values[0] == key_values[0]
+    key_a = key.c2_vnext_key(state_a)
+    key_b = key.c2_vnext_key(state_b)
+    key_expected_a = (op.b_vector(state_a), key.degree_multiset(state_a))
+    key_expected_b = (op.b_vector(state_b), key.degree_multiset(state_b))
 
-    # C4: retain an independently known unequal-O_T witness by comparing the
-    # frozen fixture against a two-2-cycle state with the same key.
-    witness_b = op.State(
-        components=("A1", "A2", "B1", "B2"),
-        edges=(
-            ("A1", "A2"),
-            ("A2", "A1"),
-            ("B1", "B2"),
-            ("B2", "B1"),
-        ),
-        resources=(0, 1, 2),
-        objective="O01",
+    canonical_ok = (
+        op.canonical_state(state_a.components, state_a.edges, state_a.resources, state_a.objective) == state_a
+        and op.canonical_state(state_b.components, state_b.edges, state_b.resources, state_b.objective) == state_b
     )
-    key_equal = key.c2_vnext_key(states[0]) == key.c2_vnext_key(witness_b)
-    ot_a = run_ot(states[0], op, ot)
-    ot_b = run_ot(witness_b, op, ot)
+
+    # O_T is evaluated only after frozen-key equality has been established.
+    key_equal = key_a == key_b
+    ot_a = run_ot(state_a, op, ot)
+    ot_b = run_ot(state_b, op, ot)
     target_unequal = ot_a != ot_b
 
-    # C6: deterministic rerun of key and canonical state digest.
-    repeat_key = key.c2_vnext_key(states[0])
-    repeat_digest = canonical_digest(states[0], op)
-    digest = canonical_digest(states[0], op)
-    deterministic = (repeat_key == key_values[0]) and (repeat_digest == digest)
+    digest_a = state_a.sha256()
+    digest_b = state_b.sha256()
+    deterministic = (
+        key.c2_vnext_key(state_a) == key_a
+        and key.c2_vnext_key(state_b) == key_b
+        and state_a.sha256() == digest_a
+        and state_b.sha256() == digest_b
+    )
 
+    static_ok = key_static_conformance()
     assertions = {
-        "C1_frozen_key_conformance": key_values[0] == (op.b_vector(states[0]), key.degree_multiset(states[0])),
-        "C2_state_canonicalisation": canonical_ok and op.canonical_state(witness_b) == witness_b,
-        "C3_pair_equality": pair_equal and key_equal,
+        "C1_frozen_key_conformance": static_ok and key_a == key_expected_a and key_b == key_expected_b,
+        "C2_state_canonicalisation": canonical_ok,
+        "C3_pair_equality": key_equal,
         "C4_target_inequality": target_unequal,
-        "C5_result_blind_construction": True,
+        "C5_result_blind_construction": static_ok,
         "C6_determinism": deterministic,
         "C7_witness_compatibility": key_equal and target_unequal,
         "C8_provenance_separation": True,
@@ -126,8 +124,8 @@ def main():
         "status": status,
         "assertions": assertions,
         "witness": {
-            "state_a_sha256": digest,
-            "state_b_sha256": canonical_digest(witness_b, op),
+            "state_a_sha256": digest_a,
+            "state_b_sha256": digest_b,
             "ot_a_signature": ot_a,
             "ot_b_signature": ot_b,
         },
