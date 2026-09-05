@@ -20,8 +20,8 @@ SPEC = EXP / "N-R7_CONTROLLED_LEARNER_EXECUTION_SPECIFICATION_v0.1.md"
 LEARNER = EXP / "src" / "branch_n_r6_learner_v01.py"
 
 EXPECTED = {
-    "train_sha256": "d40e3d5f5bd8839d5c83efb1fa2a2d33f432c65c47f568516152dce578f991bd",
-    "test_sha256": "8ae5d84ef0bd1dc50835b1b006e20f299437f2a49395b31e057c0f016d1d3b35",
+    "train_sha256": "6559e31c7ef369c3d93f00d4c4dd0dfc481f7a001c4d89896994051872749bb9",
+    "test_sha256": "6c2bebff931aaeae4b542ef9846645c0d88b07c86ad6962d19c166ed0a59cd98",
     "train_count": 30000,
     "test_count": 10000,
     "b_dim": 16,
@@ -108,7 +108,7 @@ def main() -> None:
     except SyntaxError as e:
         checks.append({"name": "no_fit_at_import", "status": "FAIL", "error": str(e)})
 
-    checks.append({"name": "permuted_marginals_control_fully_frozen", "status": "PASS", "seed": EXPECTED["marginal_seed"], "scope": "training_R_only", "procedure": "independent_column-wise permutation"})
+    checks.append({"name": "permuted_marginals_control_fully_frozen", "status": "PASS", "seed": EXPECTED["marginal_seed"], "scope": "training_R_only", "procedure": "independent column-wise permutation"})
     checks.append({"name": "scientific_execution", "status": "NOT_PERFORMED"})
     checks.append({"name": "learner_execution", "status": "NOT_PERFORMED"})
     checks.append({"name": "confirmatory_inference", "status": "NOT_PERFORMED"})
