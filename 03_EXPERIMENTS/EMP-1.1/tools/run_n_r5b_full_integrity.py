@@ -33,8 +33,10 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def canonical_json(obj: object) -> bytes:
-    return json.dumps(obj, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode("utf-8")
+def canonical_snapshot_bytes(rec: dict) -> bytes:
+    # Must match the frozen N-R5.2 predictor implementation exactly:
+    # complete snapshot record, sorted keys, compact JSON, ASCII, LF terminator.
+    return (json.dumps(rec, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n").encode("ascii")
 
 
 def load_jsonl(path: Path) -> list[dict]:
@@ -71,10 +73,10 @@ def main() -> None:
         checks.append({"name": f"{split}_unique_ids", "status": "PASS" if len(snap_by_id) == exp_n and len(pred_by_id) == exp_n else "FAIL"})
 
         schema_ok = True
-        trace_ok = True
         dims_ok = True
         concat_ok = True
         snapshot_hash_ok = True
+        trace_ok = True
         for i in range(exp_n):
             s = snap_by_id[i]
             p = pred_by_id[i]
@@ -84,10 +86,9 @@ def main() -> None:
                 dims_ok = False
             if p["BR"] != p["B"] + p["R"]:
                 concat_ok = False
-            expected_hash = hashlib.sha256(canonical_json({"components": s["components"], "edges": s["edges"], "objective": s["objective"], "resources": s["resources"]})).hexdigest()
+            expected_hash = hashlib.sha256(canonical_snapshot_bytes(s)).hexdigest()
             if p["initial_snapshot_sha256"] != expected_hash:
                 snapshot_hash_ok = False
-            if p["initial_snapshot_sha256"] != expected_hash:
                 trace_ok = False
         checks += [
             {"name": f"{split}_schema", "status": "PASS" if schema_ok else "FAIL"},
