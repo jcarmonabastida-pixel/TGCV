@@ -43,7 +43,18 @@ def encode_b(rec: dict[str, Any]) -> tuple[int, ...]:
 
 
 def canonical_snapshot_bytes(rec: dict[str, Any]) -> bytes:
-    return (json.dumps(rec, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n").encode("ascii")
+    """Canonical bytes for the semantic initial state S0.
+
+    The hash deliberately excludes episode_id and excludes any post-snapshot
+    fields. This is the identity used by N-R4B.4 for initial_snapshot_sha256.
+    """
+    state_record = {
+        "components": list(rec["components"]),
+        "edges": [list(e) for e in rec["edges"]],
+        "objective": rec["objective"],
+        "resources": list(rec["resources"]),
+    }
+    return json.dumps(state_record, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
 
 
 def snapshot_sha256(rec: dict[str, Any]) -> str:
