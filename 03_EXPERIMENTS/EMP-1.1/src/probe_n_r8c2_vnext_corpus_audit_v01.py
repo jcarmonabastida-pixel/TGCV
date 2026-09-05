@@ -33,7 +33,7 @@ GENERATOR_PATH = SRC / "branch_n_r8c2_vnext_generator_v01.py"
 TARGET_PAIRS = 5000
 SEED = 582031
 EXPECTED_CORPUS_SHA256 = "abff66d496c2ab5dadbf5adc0e05daf3c2992c18b1b6118b58c8c4d712910f3f"
-EXPECTED_MANIFEST_SHA256 = "03caf7bb680b93b696dd2914dd06b4c30fe4340559c44698bb33fc9be124c323"
+EXPECTED_FINAL_MANIFEST_SHA256 = "03caf7bb680b93b696dd2914dd06b4c30fe4340559c44698bb33fc9be124c323"
 EXPECTED_BLOB_SHA = {
     "operationalisation": "0cc01c7afb051b44f010a798a1b8a256dff286c9",
     "key": "40a8cfa6c74cbdf253285b3073372e6c42d262e3",
@@ -104,11 +104,9 @@ def audit() -> dict:
         raise RuntimeError("production corpus and manifest must both exist")
 
     corpus_sha = sha256_file(CORPUS_PATH)
-    manifest_sha = sha256_file(MANIFEST_PATH)
+    manifest_file_sha = sha256_file(MANIFEST_PATH)
     if corpus_sha != EXPECTED_CORPUS_SHA256:
         raise RuntimeError(f"corpus SHA mismatch: {corpus_sha}")
-    if manifest_sha != EXPECTED_MANIFEST_SHA256:
-        raise RuntimeError(f"manifest SHA mismatch: {manifest_sha}")
 
     paths = {
         "operationalisation": OPS_PATH,
@@ -126,8 +124,14 @@ def audit() -> dict:
         raise RuntimeError(f"frozen input mismatch: {frozen}")
 
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-    if manifest_hash(manifest) != manifest.get("final_manifest_sha256"):
+    recomputed_manifest_hash = manifest_hash(manifest)
+    if recomputed_manifest_hash != manifest.get("final_manifest_sha256"):
         raise RuntimeError("manifest self-hash mismatch")
+    if manifest.get("final_manifest_sha256") != EXPECTED_FINAL_MANIFEST_SHA256:
+        raise RuntimeError(
+            "manifest final_manifest_sha256 mismatch: "
+            f"{manifest.get('final_manifest_sha256')}"
+        )
     if manifest.get("corpus_sha256") != corpus_sha:
         raise RuntimeError("manifest corpus_sha256 does not match corpus")
     if manifest.get("accepted_pair_count") != TARGET_PAIRS:
@@ -237,8 +241,8 @@ def audit() -> dict:
         "distinct_state_count": len(state_cache),
         "distinct_ot_states_verified": len(ot_cache),
         "corpus_sha256": corpus_sha,
-        "manifest_sha256": manifest_sha,
-        "manifest_self_hash": manifest.get("final_manifest_sha256"),
+        "manifest_file_sha256": manifest_file_sha,
+        "manifest_final_sha256": manifest.get("final_manifest_sha256"),
         "frozen_input_checks": frozen,
     }
 
