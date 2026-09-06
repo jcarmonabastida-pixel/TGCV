@@ -1,6 +1,6 @@
 # TGCV — Canonical Status
 
-**Last updated:** 2026-08-27
+**Last updated:** 2026-09-06
 
 ## Canonical continuity point
 
@@ -21,9 +21,23 @@ TR-129, TR-130 and TR-135–TR-140 constitute the recovered conceptual safe stat
 
 ## Empirical state
 
-The ChatGPT Library contains a completed computational programme under the explicitly frozen operationalization **TGCV-EMP-1.1**. Its recorded primary result is **PASS**: `ΔLogLoss = +0.07942` against `δ=0.04`, with paired sign-flip `p < 0.000005`; the structural-intervention check is also recorded. This is evidence for the specified operationalization, **not universal validation of TGCV**.
+The computational programme **TGCV-EMP-1.1** remains a completed, explicitly frozen programme whose recorded primary result is **PASS**: `ΔLogLoss = +0.07942` against `δ=0.04`, with paired sign-flip `p < 0.000005`; the structural-intervention check is also recorded. This is evidence for the specified operationalization, **not universal validation of TGCV**.
 
-The earlier historical EXT-1.0 CollegeMsg execution is separately recorded as **FAIL / NO SUPPORT** under its locked criterion (`ΔLogLoss=0.008717 < 0.04`). It remains part of the scientific history and must not be erased by the later computational result.
+The historical **EXT-1.0 CollegeMsg** execution remains **FAIL / NO SUPPORT** under its locked criterion (`ΔLogLoss=0.008717 < 0.04`). It remains part of the scientific history and is not superseded by later computational results.
+
+### EXT-1.1 Rust — independent external/domain replication line
+
+EXT-1.1 Rust is a separate empirical replication programme and is not treated as a continuation of the frozen TGCV-EMP-1.1 computational state.
+
+Accepted experimental decisions currently governing EXT-1.1 include:
+
+- DR-019 — component identity;
+- DR-020 — candidate universe `T`;
+- DR-021 — `R*` accessibility operationalization;
+- DR-022 — resource-feasibility predicate inactive (`Resource_τ = TRUE`);
+- DR-023 — primary outcome `subsequent_release_activity` with `H = 180` elapsed days.
+
+The next open gate is **DR-024 — sampling/exclusion**, currently an ex-ante design proposal awaiting structural audit and acceptance. No confirmatory EXT-1.1 execution is authorized by this status alone.
 
 ## Freeze state
 
@@ -31,11 +45,12 @@ The earlier historical EXT-1.0 CollegeMsg execution is separately recorded as **
 - TGCV-EMP-1.1 protocol: frozen before confirmatory model fit.
 - TGCV-EMP-1.1 test set: sealed; hashes recorded.
 - TGCV-EMP-1.1 computational state: frozen in `00_GOVERNANCE/freezes/2026-08-27_TGCV-EMP-1.1_FREEZE.md`.
+- EXT-1.1 Rust: **active ex-ante replication sequence; not confirmatorily executed**.
 - TGCV as a universally validated theory: **NOT CLAIMED**.
 
 ## Next scientific programme
 
-The next priority is **independent external/domain replication** and the systematic SLR-1 prior-art absorption work, while preserving the Core unchanged unless an explicit evidence/gate decision reopens it.
+The active empirical priority is **EXT-1.1 Rust independent external/domain replication**, proceeding through its explicit decision gates, alongside the SLR-1 prior-art absorption work. The conceptual Core remains unchanged unless an explicit evidence/gate decision reopens it.
 
 ## Programme assets
 
