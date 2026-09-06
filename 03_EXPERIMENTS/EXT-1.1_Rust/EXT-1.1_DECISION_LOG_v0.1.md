@@ -140,15 +140,40 @@ and therefore:
 
 No Rust resource variable or numerical threshold is authorised. Measurable descriptors such as dependency count, graph size, metadata size, or target-version count are not promoted to feasibility restrictions merely because they are observable.
 
-This decision is scope-limited. It does not claim that Rust software has no computational, build, runtime, acquisition, or other resource requirements, and it does not instantiate Resource for other transformation families. It also does not decide outcome, sampling, baseline `B`, or representation `R`.
+This decision is scope-limited. It does not claim that Rust software has no computational, build, runtime, acquisition, or other resource requirements, and it does not instantiate Resource for other transformation families. It also does not decide outcome, sampling, baseline `B`, or `R` serialization.
 
 Evidence record: `AUDIT_DR-022_Resource_Feasibility_v0.1.md`.
 
 No confirmatory execution is authorised by DR-022 itself.
 
+## DR-023 — Rust outcome definition and horizon
+
+**Status:** ACCEPTED — NEW EXPERIMENTAL DECISION
+
+The primary post-origin outcome for EXT-1.1 is `subsequent_release_activity` for the same Rust package.
+
+For origin release `v_o`:
+
+`Y_180(v_o) = 1` iff there exists a later release `v'` of the same package such that:
+
+`created_at(v_o) < created_at(v') <= created_at(v_o) + 180 days`.
+
+`Y_180(v_o) = 0` iff no such later release is observed and complete 180-day follow-up is available.
+
+The primary horizon is frozen at **H = 180 elapsed days**, common to all primary observations. Origins without complete 180-day follow-up are excluded from the primary outcome analysis and are not coded as zero.
+
+The ex-ante structural horizon audit established 83.5030% complete-follow-up coverage for 180 days. The 365-day candidate had 68.4960% coverage and was rejected under the design-stage 80% coverage floor. No outcome prevalence, `T_acc`, association, effect size, significance test, or sampling result contributed to the selection.
+
+`later_package_state_transition` is not retained as a co-primary outcome because, under the accepted observational unit `package@version`, a later package-version observation is itself a release event and does not provide a substantively distinct primary outcome.
+
+The outcome is computed only from later package-version release timestamps and does not use `T_acc`, `R*`, `B`, dependency constraints, downloads, adoption, downstream success, or predictor-derived quantities. Future releases are used only as the post-origin outcome evidence defined by this decision and must not enter the pre-outcome predictor representation.
+
+This decision closes the DR-023 outcome-definition and horizon question. It does not decide sampling/exclusion rules beyond the frozen complete-follow-up rule, pilot N/seed, baseline `B`, or `R` serialization. No confirmatory execution is authorised merely by accepting DR-023.
+
+Evidence: `AUDIT_DR-023_Outcome_Horizon_v0.1.md`; `AUDIT_DR-023_Horizon_Feasibility_v0.1.md`; `DR-023A_Outcome_Horizon_ExAnte_Design_v0.1.md`; `DR-023B_Horizon_Selection_Proposal_v0.1.md`.
+
 ## OPEN DECISIONS
 
-- Outcome definition and horizon: OPEN.
 - Sampling/exclusion rules: OPEN.
 - Pilot N and seed: OPEN.
 - Baseline `B` encoding in Rust: OPEN.
