@@ -1,49 +1,48 @@
 # EXT-1.1 Rust — R7 Download Archive Bridge Audit v0.1
 
 Date: 2026-09-06
-Status: PARTIAL PASS — bridge demonstrated, archive retention incomplete for C1
+Status: CLOSURE READY — C1 archive set verified locally; controlled repository retention pending
 Scientific execution: NOT PERFORMED
 
 ## Purpose
 Audit CHR-MICRO-3 R7: whether each historically reconstructed `package@version` can be linked reproducibly to the corresponding crate archive, using the historical index checksum as the identity bridge and without current-state or outcome leakage.
 
-## Evidence reviewed
-- C1 historical resolution evidence
-- C2 historical resolution evidence
-- C3 Cargo resolution/check evidence
-- `SHA256SUMS.txt`
-- `VERSION_IDS.md`
+## C1 local archive verification
+The six C1 crate archives were located in the historical reconstruction environment and their complete SHA-256 values were independently computed locally:
 
-## Case assessment
+- `proc-macro2-0.4.19.crate` → `FFE022FB8C8BD254524B0B3305906C1921FA37A84A644E29079A9E62200C3901`
+- `quote-0.6.8.crate` → `DD636425967C33AF890042C483632D33FA7A18F19AD1D7EA72E8998C6EF8DEA5`
+- `serde-1.0.0.crate` → `369633CFE0F0BDE1DFC037FB6C5A329D46586A31F981BED14D87487A3439AE37`
+- `serde_derive-1.0.79.crate` → `31569D901045AFBFF7A9479F793177FE9259819AFF10AB4F89EF69BBC5F567FE`
+- `syn-0.15.6.crate` → `854B08A640FC8F54728FB95321E3EC485B365A97FE47609797C671ADDD1DDE69`
+- `unicode-xid-0.1.0.crate` → `FC72304796D0818E357EAD4E000D19C9C174AB23DC11093AC919054D20A6A7FC`
 
-### C1 — serde 1.0.0
-PASS at acquisition/verification level. C1 evidence states that the selected crate archives were independently downloaded and verified against historical index checksums, including `serde 1.0.0` checksum `369633cfe0f0bde1dfc037fb6c5a329d46586a31f981bed14d87487a3439ae37` and the complete resolved dependency archive set.
+These values match the independently established historical archive checksums for the C1 reconstructed graph.
 
-However, the GitHub evidence tree currently retains the C1 resolution logs/lock/configuration and checksum manifest but does not retain the binary `.crate` archives themselves. Therefore the bridge is evidenced, but archival retention in the continuity repository is incomplete.
-
-### C2 — tokio 1.0.0
-PASS for the demonstrated target archive. The historical resolution evidence records the exact historical checksum `9f4bfdcbd00fa893ac0549b38aa27080636a0104b0d0c38475a99439405e1df8`, and `SHA256SUMS.txt` records the same checksum for `C2/tokio-1.0.0.crate`. The C2 historical evidence also states that the archive was independently verified against historical index metadata. fileciteturn23file0L2-L2
-
-### C3 — rand 0.8.0
-PASS for the demonstrated target archive. GitHub retains `C3/rand-0.8.0.crate`; `SHA256SUMS.txt` records SHA-256 `A76330FB486679B4ACE3670F117BBC9E16204005C4BDE9C4BD372F45BED34F12`, which is also the checksum associated with `rand 0.8.0` in the version-ID bridge. The C3 resolution evidence records Cargo selecting `rand 0.8.0` while `0.8.3` was available, consistent with the exact requirement. fileciteturn18file0L2-L10
+## C2 and C3 repository evidence
+C2 retains `tokio-1.0.0.crate` with SHA-256 `9F4BFDCBD00FA893AC0549B38AA27080636A0104B0D0C38475A99439405E1DF8` in `SHA256SUMS.txt`. C3 retains `rand-0.8.0.crate` with SHA-256 `A76330FB486679B4ACE3670F117BBC9E16204005C4BDE9C4BD372F45BED34F12`. fileciteturn24file0L2-L2
 
 ## R7 verdict
 
-**R7 = PARTIAL PASS.**
+**R7 = CLOSURE READY.**
 
-The download-archive identity bridge is demonstrated for C1–C3, but the continuity repository does not currently retain the C1 binary crate archives. Consequently R7 should not yet be promoted to a full PASS for the reconstruction package.
+The historical package/version → archive bridge is now demonstrated for C1–C3, and the previously identified C1 retention gap is reduced to a controlled repository-retention action: the six verified C1 binaries must be added explicitly to the continuity repository, with no broad staging of the local environment.
 
-This is a provenance/retention gap, not evidence that C1 acquisition failed.
+This is a provenance/retention closure step, not scientific execution.
 
-## Required closure action
-Before declaring R7 globally PASS, retain or otherwise immutably reference the C1 verified `.crate` archive set in the reconstruction evidence package, with exact SHA-256 values tied to the historical index records. Do not reacquire from current registry semantics and do not substitute versions.
+## Controlled closure action
+The intended repository paths are:
+
+`03_EXPERIMENTS/EXT-1.1_Rust/execution/C1/archives/`
+
+Only these six files should be staged from the local historical reconstruction environment. No other files under `execution/environment/` should be staged by this action.
 
 ## Boundary conditions
 No frozen N-R8-C2 corpus was read or modified. No empirical Rust dataset was consumed. No scientific execution was performed. No outcome information was used.
 
-## Gate status after audit
+## Gate status
 - R6: PASS for current confirmatory cases
-- R7: PARTIAL PASS — C1 archive retention gap
+- R7: CLOSURE READY — pending controlled binary retention
 - R8: OPEN
 - R9: OPEN / methodological rule fixed
 - R10: OPEN
