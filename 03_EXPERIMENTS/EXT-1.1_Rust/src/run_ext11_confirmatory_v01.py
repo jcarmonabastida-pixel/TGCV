@@ -80,10 +80,10 @@ def git_blob_sha(path: Path) -> str:
 
 
 def git_clean_for_execution(root: Path) -> bool:
-    allowed = tuple((root / OUTPUT_DIRS[m]).as_posix() + "/" for m in OUTPUT_DIRS)
+    allowed = tuple(OUTPUT_DIRS.values())
     for line in git(["status", "--porcelain"]).splitlines():
         path = line[3:].strip().replace("\\", "/")
-        if not any(path.startswith(a) for a in allowed):
+        if not any(path == a.rstrip("/") or path.startswith(a) for a in allowed):
             return False
     return True
 
