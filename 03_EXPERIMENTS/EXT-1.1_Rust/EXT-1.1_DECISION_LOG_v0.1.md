@@ -50,9 +50,16 @@ The frozen `EXT-1.1_RESOLVER_SPEC_R_v0.2.md` is the sole normative SemVer/access
 
 No expansion of the R* grammar or substitution of an alternative SemVer semantics may occur silently. Any substantive change requires a new specification/decision before scientific execution.
 
+## DR-007 — Rust observational unit
+
+**Status:** ACCEPTED — NEW DECISION
+
+`package@version` (Rust package release) is the primary observational unit for EXT-1.1. The package-version snapshot defines the pre-outcome state. This closes the observational-unit question only; it does not close the definitions of `T`, `T_acc`, `B`, `R`, or outcome, and does not treat any particular version transition as the scientific baseline `B`.
+
+The decision preserves the pre-outcome/non-circularity constraint: features entering the pre-outcome representation must be computable from information available no later than the release observation boundary. Detailed release inclusion/exclusion, component identity, dependency resolution, candidate-universe instantiation, accessibility, and outcome remain governed by subsequent decision records.
+
 ## OPEN DECISIONS
 
-- DR-007: Rust observational unit
 - DR-008: Rust component identity/domain
 - DR-009: concrete T instantiation
 - DR-010: Rust accessibility predicate
