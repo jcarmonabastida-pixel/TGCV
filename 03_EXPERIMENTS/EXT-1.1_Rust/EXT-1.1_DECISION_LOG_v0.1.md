@@ -122,9 +122,32 @@ The audit is dataset-independent and establishes conformance of the normative R*
 
 This decision closes the accessibility operationalization question only. It does not close resource variables/thresholds, outcome definition/horizon, sampling/exclusion, pilot N/seed, baseline `B`, or `R` serialization. No confirmatory execution is authorised by DR-021.
 
+## DR-022 — Rust resource feasibility / threshold operationalization
+
+**Status:** ACCEPTED — NEW EXPERIMENTAL DECISION
+
+The DR-022 resource-feasibility audit was executed locally against the accepted pre-outcome schema and returned `RESOURCE_PREDICATE_INACTIVE: True` with interpretation `ACCEPT_RESOURCE_TRUE_CANDIDATE`.
+
+The audit passed R1 (pre-outcome schema), R2 (transformation resource necessity), R3 (no outcome leakage), R4 (non-redundancy with R*), R5 (ex-ante threshold), R6 (determinism), and R8 (minimality). R7 (membership relevance) intentionally returned `FAIL`, because no independently justified resource variable was identified that can alter `T_acc` for the currently defined dependency-target transformation. Under the explicit DR-022 acceptance rule, this diagnostic failure supports the inactive/vacuous resource interpretation rather than an active resource constraint.
+
+Accordingly, for the current EXT-1.1 dependency-target transformation family only:
+
+`Resource_τ(S_t,C_t,L_t) = TRUE`
+
+and therefore:
+
+`T_acc^(R*) = T_acc^(R*,Resource=TRUE)`.
+
+No Rust resource variable or numerical threshold is authorised. Measurable descriptors such as dependency count, graph size, metadata size, or target-version count are not promoted to feasibility restrictions merely because they are observable.
+
+This decision is scope-limited. It does not claim that Rust software has no computational, build, runtime, acquisition, or other resource requirements, and it does not instantiate Resource for other transformation families. It also does not decide outcome, sampling, baseline `B`, or representation `R`.
+
+Evidence record: `AUDIT_DR-022_Resource_Feasibility_v0.1.md`.
+
+No confirmatory execution is authorised by DR-022 itself.
+
 ## OPEN DECISIONS
 
-- Resource variables/thresholds: OPEN.
 - Outcome definition and horizon: OPEN.
 - Sampling/exclusion rules: OPEN.
 - Pilot N and seed: OPEN.
