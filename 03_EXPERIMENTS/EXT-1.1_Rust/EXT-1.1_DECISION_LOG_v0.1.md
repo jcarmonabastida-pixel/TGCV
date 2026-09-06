@@ -108,9 +108,22 @@ Acceptance is supported by `AUDIT_DR-020_Candidate_Universe_T_v0.1.md`. The corr
 
 This acceptance closes candidate-universe `T` only. It does not close accessibility/`T_acc`, resources, outcome, sampling, baseline `B`, `R` serialization, or remaining exact dependency-resolution implementation parameters. No confirmatory execution is authorised by DR-020.
 
+## DR-021 — Rust accessibility operationalization
+
+**Status:** ACCEPTED — NEW EXPERIMENTAL DECISION
+
+The accessibility layer for EXT-1.1 is operationalized as a strict separation between candidate existence (`T`) and admissibility/selection under the frozen R* operator. For each observable dependency edge `e=(v_o,p_d,q)`, eligible target releases are those in `T(e)` that satisfy the frozen temporal cutoff and supported R* constraint semantics. If eligible candidates exist, R* selects the greatest eligible semantic version. The resulting selected edges constitute `T_acc^(R*)`.
+
+The normative implementation is `src/rstar_v02.py`. Unsupported SemVer forms fail closed. Resource terms are not silently instantiated by this decision and remain separately governed.
+
+Acceptance is supported by `AUDIT_DR-021_RStar_Conformance_v0.1.md`. The local synthetic conformance audit passed all fourteen predicates: exact grammar, caret grammar, bare stable caret grammar, unsupported wildcard/tilde/compound handling, temporal cutoff, maximal selection, exact selection, fail-closed unsupported input, no future target selection, row-order invariance, duplicate-version-ID fail-closed behavior, and distinction of empty candidate sets. The final result was `DR021_CONFORMANCE_PASS: True`.
+
+The audit is dataset-independent and establishes conformance of the normative R* implementation to the tested DR-021 operational contract; it does not establish empirical accessibility results for the Rust dataset.
+
+This decision closes the accessibility operationalization question only. It does not close resource variables/thresholds, outcome definition/horizon, sampling/exclusion, pilot N/seed, baseline `B`, or `R` serialization. No confirmatory execution is authorised by DR-021.
+
 ## OPEN DECISIONS
 
-- Rust accessibility predicate: OPEN — must be resolved after candidate-universe instantiation and without silently resolving other parameters.
 - Resource variables/thresholds: OPEN.
 - Outcome definition and horizon: OPEN.
 - Sampling/exclusion rules: OPEN.
