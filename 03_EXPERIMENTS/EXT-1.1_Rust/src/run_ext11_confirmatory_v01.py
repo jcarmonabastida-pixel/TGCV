@@ -9,11 +9,10 @@ from __future__ import annotations
 
 import argparse
 import bisect
+import csv
 import hashlib
-import importlib
 import io
 import json
-import os
 import platform
 import subprocess
 import sys
@@ -316,46 +315,47 @@ def main() -> int:
             result["brier_T_acc"] = float(brier_score_loss(y_test, p_T))
             result["roc_auc_B"] = float(roc_auc_score(y_test, p_B))
             result["roc_auc_T_acc"] = float(roc_auc_score(y_test, p_T))
+        else:
+            result["brier_B"] = None; result["brier_T_acc"] = None; result["roc_auc_B"] = None; result["roc_auc_T_acc"] = None
 
-        result["dataset_sha256"] = DATASET_SHA256
-        result["runner_blob_sha"] = runner_sha
-        result["git_head"] = git_head
-        result["protocol"] = {
+        manifest = {
+            "runner_path": RUNNER_PATH,
+            "runner_blob_sha": runner_sha,
+            "git_head": git_head,
+            "mode": args.mode,
+            "dataset_path": str(DATASET),
+            "dataset_size": DATASET_SIZE,
+            "dataset_sha256": DATASET_SHA256,
+            "runtime": {"python": platform.python_version(), "os": os_id, "machine": platform.machine(), "sklearn": sklearn.__version__, "numpy": np.__version__, "scipy": scipy.__version__},
+            "normative_resolver": {"path": NORMATIVE_RESOLVER, "blob_sha": NORMATIVE_RESOLVER_SHA},
             "random_state": RANDOM_STATE,
             "horizon_days": HORIZON_DAYS,
-            "hash_algorithm": "BLAKE2b-256",
             "hash_dimension": HASH_DIM,
-            "solver": SOLVER,
-            "C": C,
-            "tol": TOL,
-            "max_iter": MAX_ITER,
+            "hash_algorithm": "blake2b-256",
+            "hash_encoding": "UTF-8",
+            "hash_index": "first_8_digest_bytes_big_endian_unsigned_mod_2^20",
+            "hash_sign": "ninth_digest_byte_even_plus1_odd_minus1",
+            "model": {"class": "sklearn.linear_model.LogisticRegression", "penalty": "l2", "C": C, "solver": SOLVER, "fit_intercept": True, "max_iter": MAX_ITER, "tol": TOL, "class_weight": None, "random_state": RANDOM_STATE},
+            "split": "first 80% elapsed eligible-origin timeline; train <= boundary; test > boundary",
+            "primary_metric": "mean_test_log_loss",
+            "primary_comparison": "LogLoss(B)-LogLoss(T_acc)",
+            "prohibited_inference": {"p_values": False, "confidence_intervals": False, "significance": False},
         }
-        (outdir / "result.json").write_text(json.dumps(result, indent=2, sort_keys=True), encoding="utf-8")
-        (outdir / "status.txt").write_text("EXECUTION_RESULT=PASS\n", encoding="utf-8")
-        print("TGCV EXT-1.1 — CONFIRMATORY EXECUTION")
-        print("=" * 80)
+        (outdir / "EXECUTION_MANIFEST.json").write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
+        (outdir / "RESULTS.json").write_text(json.dumps(result, indent=2, sort_keys=True), encoding="utf-8")
+
+        print("EXT-1.1_RUST_CONFIRMATORY_RUNNER_V0.2")
         print(f"MODE: {args.mode}")
-        print(f"DATASET_SHA256: {DATASET_SHA256}")
-        print(f"RUNNER_BLOB_SHA: {runner_sha}")
-        print(f"GIT_HEAD: {git_head}")
-        print(f"N_VERSIONS: {len(versions)}")
-        print(f"N_ELIGIBLE: {n}")
-        print(f"N_TRAIN: {int(train_mask.sum())}")
-        print(f"N_TEST: {int(test_mask.sum())}")
-        print(f"N_DEPENDENCY_ROWS: {dependency_rows}")
+        print(f"ELIGIBLE_ORIGINS: {n}")
+        print(f"TRAIN_ORIGINS: {int(train_mask.sum())}")
+        print(f"TEST_ORIGINS: {int(test_mask.sum())}")
         print(f"RESOLVED_TACC_RELATIONS: {resolved_edges}")
         print(f"UNRESOLVED_DEPENDENCY_EDGES: {unresolved_edges}")
-        print(f"TEMPORAL_BOUNDARY: {boundary.isoformat()}")
-        print(f"Y_TEST_CLASS_COUNTS: {json.dumps(result['y_test_class_counts'], sort_keys=True)}")
-        print(f"LOG_LOSS_B: {ll_B:.12g}")
-        print(f"LOG_LOSS_T_ACC: {ll_T:.12g}")
-        print(f"DELTA_LOG_LOSS_B_MINUS_T_ACC: {delta:.12g}")
-        if "brier_B" in result:
-            print(f"BRIER_B: {result['brier_B']:.12g}")
-            print(f"BRIER_T_ACC: {result['brier_T_acc']:.12g}")
-            print(f"ROC_AUC_B: {result['roc_auc_B']:.12g}")
-            print(f"ROC_AUC_T_ACC: {result['roc_auc_T_acc']:.12g}")
-        print("EXECUTION_RESULT=PASS")
+        print(f"LOGLOSS_B: {ll_B:.12f}")
+        print(f"LOGLOSS_TACC: {ll_T:.12f}")
+        print(f"DELTA_LOSS_B_MINUS_TACC: {delta:.12f}")
+        print("CONFIRMATORY_EXECUTION_COMPLETED: True")
+
     return 0
 
 
