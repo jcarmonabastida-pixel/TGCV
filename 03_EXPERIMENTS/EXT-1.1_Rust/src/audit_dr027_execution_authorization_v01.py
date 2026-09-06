@@ -17,6 +17,11 @@ EXPECTED_SOLVER = "liblinear"
 EXPECTED_C = 1.0
 EXPECTED_TOL = 1e-8
 EXPECTED_MAX_ITER = 1000
+EXPECTED_RUNNER_SHA = "dbf4aa11aee9848e5c6466e63bd8fb772cfe772c"
+EXPECTED_RUNNER_COMMIT = "e24f6365fd942053704026ecfa4861fc05c469bf"
+RUNNER = "03_EXPERIMENTS/EXT-1.1_Rust/src/run_ext11_confirmatory_v01.py"
+RESOLVER = "03_EXPERIMENTS/EXT-1.1_Rust/src/rstar_v02.py"
+EXPECTED_RESOLVER_SHA = "669d4f01131af518f32b1b4b3da27f676ae4ae55"
 
 ROOT = Path(__file__).resolve().parents[3]
 DATASET = Path.home() / "Downloads" / "rust_repos_2022_09_07.zip"
@@ -27,7 +32,7 @@ REQUIRED = [
     ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-026A_Rust_TAcc_Representation_v0.2_ACCEPTED.md",
     ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-026C_Rust_Model_Evaluation_ExAnte_Finalization_v0.2_ACCEPTED.md",
     ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-026D_Rust_Deterministic_Runtime_Finalization_v0.2_ACCEPTED.md",
-    ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/src/rstar_v02.py",
+    ROOT / RESOLVER,
 ]
 
 
@@ -43,8 +48,12 @@ def git(*args: str) -> str:
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
 
+def git_blob_sha(path: Path) -> str:
+    return git("hash-object", str(path))
+
+
 def main() -> int:
-    print("TGCV EXT-1.1 — DR-027 confirmatory execution authorization structural audit v0.1")
+    print("TGCV EXT-1.1 — DR-027 confirmatory execution authorization structural audit v0.2")
     print("MODE: PRE-AUTHORIZATION / STRUCTURAL ONLY")
     print("OUTCOME_LABELS: NOT COMPUTED")
     print("TACC: NOT COMPUTED")
@@ -83,11 +92,23 @@ def main() -> int:
     )
 
     checks["PREREQUISITE_DECISIONS_PRESENT"] = all(p.exists() for p in REQUIRED[:-1])
-    checks["NORMATIVE_RESOLVER_PRESENT"] = REQUIRED[-1].exists()
+    resolver = ROOT / RESOLVER
+    checks["NORMATIVE_RESOLVER_PRESENT"] = resolver.exists()
+    checks["NORMATIVE_RESOLVER_SHA_MATCH"] = checks["NORMATIVE_RESOLVER_PRESENT"] and git_blob_sha(resolver) == EXPECTED_RESOLVER_SHA
+    runner = ROOT / RUNNER
+    checks["CONFIRMATORY_RUNNER_PRESENT"] = runner.exists()
+    runner_sha = git_blob_sha(runner) if checks["CONFIRMATORY_RUNNER_PRESENT"] else None
+    checks["CONFIRMATORY_RUNNER_SHA_MATCH"] = runner_sha == EXPECTED_RUNNER_SHA
+
     checks["GIT_REPOSITORY_PRESENT"] = (ROOT / ".git").exists()
     git_head = git("rev-parse", "HEAD") if checks["GIT_REPOSITORY_PRESENT"] else None
     git_status = git("status", "--porcelain") if checks["GIT_REPOSITORY_PRESENT"] else ""
     checks["GIT_STATUS_CLEAN"] = git_status == ""
+    if checks["GIT_REPOSITORY_PRESENT"]:
+        ancestor_rc = subprocess.run(["git", "merge-base", "--is-ancestor", EXPECTED_RUNNER_COMMIT, "HEAD"], cwd=ROOT).returncode
+        checks["RUNNER_COMMIT_IN_CURRENT_HISTORY"] = ancestor_rc == 0
+    else:
+        checks["RUNNER_COMMIT_IN_CURRENT_HISTORY"] = False
 
     prohibited = {
         "OUTCOME_LABELS_COMPUTED": False,
@@ -113,10 +134,13 @@ def main() -> int:
     print(f"SCIPY_VERSION: {getattr(scipy, '__version__', None)}")
     print(f"GIT_HEAD: {git_head}")
     print(f"GIT_STATUS_CLEAN: {checks['GIT_STATUS_CLEAN']}")
+    print(f"CONFIRMATORY_RUNNER_SHA: {runner_sha}")
+    print(f"EXPECTED_CONFIRMATORY_RUNNER_SHA: {EXPECTED_RUNNER_SHA}")
+    print(f"RUNNER_COMMIT_IN_CURRENT_HISTORY: {checks['RUNNER_COMMIT_IN_CURRENT_HISTORY']}")
     print()
 
     print("PREREQUISITES")
-    for k in ("PREREQUISITE_DECISIONS_PRESENT", "NORMATIVE_RESOLVER_PRESENT"):
+    for k in ("PREREQUISITE_DECISIONS_PRESENT", "NORMATIVE_RESOLVER_PRESENT", "NORMATIVE_RESOLVER_SHA_MATCH", "CONFIRMATORY_RUNNER_PRESENT", "CONFIRMATORY_RUNNER_SHA_MATCH", "RUNNER_COMMIT_IN_CURRENT_HISTORY"):
         print(f"{k}: {checks[k]}")
     print()
 
@@ -142,6 +166,8 @@ def main() -> int:
         "SKLEARN_VERSION_MATCH", "NUMPY_VERSION_MATCH", "SCIPY_VERSION_MATCH",
         "SEED_EXPLICIT", "HASH_DIMENSION_MATCH", "MODEL_CONFIGURATION_MATCH",
         "PREREQUISITE_DECISIONS_PRESENT", "NORMATIVE_RESOLVER_PRESENT",
+        "NORMATIVE_RESOLVER_SHA_MATCH", "CONFIRMATORY_RUNNER_PRESENT",
+        "CONFIRMATORY_RUNNER_SHA_MATCH", "RUNNER_COMMIT_IN_CURRENT_HISTORY",
         "GIT_REPOSITORY_PRESENT", "GIT_STATUS_CLEAN",
     ]
     structural_pass = all(checks[k] for k in structural_keys) and prohibited_all_false
@@ -167,6 +193,10 @@ def main() -> int:
         "tol": EXPECTED_TOL,
         "max_iter": EXPECTED_MAX_ITER,
         "git_head": git_head,
+        "expected_runner_sha": EXPECTED_RUNNER_SHA,
+        "runner_sha": runner_sha,
+        "expected_runner_commit": EXPECTED_RUNNER_COMMIT,
+        "resolver_sha": EXPECTED_RESOLVER_SHA,
         "git_status_clean": checks["GIT_STATUS_CLEAN"],
         "audit_pass": structural_pass,
     }
