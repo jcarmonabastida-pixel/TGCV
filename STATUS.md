@@ -35,9 +35,13 @@ Accepted experimental decisions currently governing EXT-1.1 include:
 - DR-020 — candidate universe `T`;
 - DR-021 — `R*` accessibility operationalization;
 - DR-022 — resource-feasibility predicate inactive (`Resource_τ = TRUE`);
-- DR-023 — primary outcome `subsequent_release_activity` with `H = 180` elapsed days.
+- DR-023 — primary outcome `subsequent_release_activity` with `H = 180` elapsed days;
+- DR-024 — structural eligibility and census-first population, with complete 180-day follow-up; no confirmatory sampling selected;
+- DR-025 — conventional baseline design;
+- DR-025A — baseline representation `B(v_o)=(V_o,H_o,A_o,D_o)`;
+- DR-026A — canonical relational representation of `T_acc^(R*)` plus derived cardinality `A_count`.
 
-The next open gate is **DR-024 — sampling/exclusion**, currently an ex-ante design proposal awaiting structural audit and acceptance. No confirmatory EXT-1.1 execution is authorized by this status alone.
+The next open gate is **DR-026 — model and evaluation specification**, including the exact model-compatible encoding of the accepted `T_acc` representation and the symmetric comparison protocol against `B`. No confirmatory EXT-1.1 execution is authorized by this status alone.
 
 ## Freeze state
 
