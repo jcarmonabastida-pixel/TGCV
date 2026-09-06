@@ -1,79 +1,66 @@
 # DR-023 — EXT-1.1 Rust Outcome Definition and Horizon v0.1
 
-**Status:** PROPOSED NEW EXPERIMENTAL DECISION  
+**Status:** ACCEPTED — NEW EXPERIMENTAL DECISION
 **Scope:** Outcome definition and observation horizon for the Rust dependency-target transformation family defined by DR-020/DR-021/DR-022
 
-## 1. Decision status
+## 1. Decision
 
-This record is a **proposal only**. It does not accept or freeze an outcome variable, outcome horizon, threshold, sampling rule, or confirmatory execution parameter.
+The primary post-origin outcome is `subsequent_release_activity` for the same Rust package, measured over a fixed elapsed-time horizon of **180 days**.
 
-## 2. Governing question
+For origin release `v_o`:
 
-The question is:
+`Y_180(v_o) = 1` iff there exists a later release `v'` of the same package such that:
 
-> What observable post-transformation outcome can be measured at a pre-specified horizon to test whether the accessibility structure `T_acc^(R*)` contains information relevant to subsequent system trajectories, without defining the outcome from the predictor itself or introducing leakage from future information into the pre-outcome state?
+`created_at(v_o) < created_at(v') <= created_at(v_o) + 180 days`.
 
-## 3. Scope boundary
+`Y_180(v_o) = 0` iff no such later release is observed and complete 180-day follow-up is available.
 
-DR-023 applies only to the current EXT-1.1 Rust dependency-target transformation family. It does not redefine `T`, `R*`, `T_acc`, Resource, baseline `B`, representation `R`, sampling, or pilot N.
+## 2. Acceptance basis
 
-## 4. Outcome requirements
+DR-023 is accepted following:
 
-A candidate outcome must satisfy all of the following:
+- structural outcome audit PASS;
+- ex-ante outcome/horizon design analysis;
+- horizon-feasibility audit PASS;
+- explicit ex-ante horizon proposal selecting H=180 days.
 
-1. **Post-outcome status:** it occurs strictly after the origin release observation boundary.
-2. **Observable reconstruction:** it can be reconstructed reproducibly from the frozen Rust dataset or an explicitly frozen outcome source.
-3. **Temporal ordering:** the outcome horizon is specified before confirmatory execution.
-4. **Non-circularity:** the outcome is not a restatement of `T_acc`, R*, dependency constraints, or any predictor representation.
-5. **Incremental relevance:** the outcome must be capable of distinguishing subsequent trajectories associated with different pre-outcome accessibility states.
-6. **Ex-ante definition:** its event rule, measurement window, censoring/exclusion treatment, and horizon are frozen before confirmatory execution.
-7. **Reproducibility:** identical frozen inputs produce identical outcome labels.
-8. **No future leakage:** information occurring after the specified outcome horizon cannot affect the outcome label.
+The frozen Rust snapshot contains 607,498 package-version observations with complete `created_at` values. Complete-follow-up coverage was 97.0943% at 30 days, 91.4630% at 90 days, 83.5030% at 180 days, and 68.4960% at 365 days. The design-stage primary coverage floor was 80%; therefore 365 days was rejected and 180 days selected as the longest candidate satisfying that structural criterion.
 
-## 5. Candidate outcome families
+No outcome prevalence, `T_acc`, association, effect size, significance test, or sampling result contributed to the selection.
 
-Candidate families may include subsequent package-level ecosystem events such as:
+## 3. Follow-up and censoring
 
-- release activity after the origin release;
-- subsequent dependency-network trajectory;
-- later package state transitions observable in the dataset.
+An origin release is eligible for the primary outcome only when the frozen snapshot provides complete observation opportunity through `created_at(v_o) + 180 days`.
 
-These are candidate classes only. No candidate is accepted by this proposal merely because it is available.
+Origins without complete 180-day follow-up are excluded from the primary outcome analysis and are not assigned `Y_180 = 0`.
 
-## 6. Critical methodological constraint
+Complete follow-up is determined from the frozen dataset's terminal observable `package_versions.created_at` boundary and does not depend on whether a later release occurs.
 
-The outcome must not be selected because it produces a desired association with `T_acc`, `B`, or `R`. The choice must be justified independently from the confirmatory result and frozen before analysis of the outcome relationship.
+## 4. Outcome-family closure
 
-Likewise, the horizon must not be chosen by searching across multiple post-outcome windows for the strongest result. If more than one horizon is scientifically defensible, the primary horizon must be specified ex ante and alternatives, if retained, must be explicitly labelled secondary/exploratory.
+`later_package_state_transition` is not retained as a co-primary outcome because, under the accepted observational unit `package@version`, a later package-version observation is itself a release event and does not provide a substantively distinct primary outcome.
 
-## 7. Dataset-boundary constraint
+The primary outcome is therefore frozen as `subsequent_release_activity`.
 
-Before accepting an outcome, the audit must establish exactly which post-release observations are available in the frozen Rust dataset and whether their timestamps support an unambiguous horizon. If the dataset does not contain a suitable post-outcome signal, no outcome should be manufactured from pre-outcome fields merely to complete the experimental architecture.
+## 5. Non-circularity and leakage controls
 
-## 8. Audit gate
+The outcome is strictly post-origin and is reconstructed from later package-version release timestamps. It does not use `T_acc`, `R*`, `B`, dependency constraints, accessibility-derived quantities, downloads, adoption, downstream success, or predictor-derived quantities.
 
-The DR-023 audit must test:
+Future releases may contribute only as the post-origin outcome evidence defined by this decision. They must not enter the pre-outcome predictor representation.
 
-- O1 — post-outcome observability;
-- O2 — temporal ordering;
-- O3 — non-circularity with `T_acc`;
-- O4 — no predictor-derived outcome definition;
-- O5 — deterministic reconstruction;
-- O6 — explicit horizon feasibility;
-- O7 — no future leakage;
-- O8 — incremental trajectory relevance;
-- O9 — minimality of the selected outcome representation.
+## 6. Governance consequences
 
-## 9. Acceptance rule
+This decision closes the DR-023 outcome-definition and horizon question.
 
-DR-023 may be accepted only when one outcome and one primary horizon have been independently justified, deterministically reconstructable, non-circular, and frozen ex ante.
+The following remain OPEN:
 
-If the current frozen dataset cannot support a suitable outcome/horizon, the decision remains OPEN; no proxy outcome may be introduced merely because it is convenient or statistically available.
+- sampling/exclusion rules beyond the frozen complete-follow-up eligibility rule;
+- pilot N and seed;
+- baseline `B` encoding in Rust;
+- `R` serialization.
 
-## 10. Explicit non-claims
+No confirmatory execution is authorised merely by accepting DR-023.
 
-This proposal does not claim that any candidate outcome is predictive, that `T_acc` has empirical explanatory power, or that a particular horizon will produce a significant result. Those are empirical questions reserved for the experiment.
+## 7. Explicit non-claims
 
-## 11. Next action
-
-Perform a **DR-023 outcome/horizon audit** against the actual frozen Rust dataset schema and the accepted pre-outcome definitions. The audit must remain pre-confirmatory and must not inspect or optimize against any experimental result.
+This decision does not claim that 180 days is universally optimal for Rust or software ecosystems, nor that `T_acc` predicts subsequent release activity. It establishes the ex-ante primary measurement horizon and outcome definition for EXT-1.1 under the committed experimental criteria.
