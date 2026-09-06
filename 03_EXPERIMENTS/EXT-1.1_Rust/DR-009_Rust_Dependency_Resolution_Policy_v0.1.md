@@ -1,6 +1,6 @@
 # DR-009 — Rust dependency-resolution policy
 
-**Status:** PROPOSED NEW EXPERIMENTAL DECISION
+**Status:** ACCEPTED — OPERATIONAL DECISION SUPPORTING DR-007/DR-008
 
 ## Decision
 
@@ -23,8 +23,27 @@ The resolver may use only package metadata and registry state available at or be
 
 ## Open parameters
 
-The exact registry snapshot mechanism, feature-resolution semantics, treatment of yanked versions, and lockfile availability remain to be specified and frozen in subsequent decision records.
+The exact registry snapshot mechanism, feature-resolution semantics, treatment of yanked versions, and lockfile availability remain to be specified and frozen in subsequent decision records. Acceptance of DR-009 therefore does not imply that these implementation parameters are already frozen.
+
+## Scope boundary
+
+DR-009 does **not** decide:
+
+- Rust component identity/domain semantics;
+- the concrete candidate universe `T`;
+- the accessibility predicate;
+- resource thresholds;
+- outcome or horizon;
+- sampling;
+- baseline `B` encoding;
+- `R` serialization.
+
+## Consequence
+
+This record fixes the dependency-resolution principle while leaving explicitly identified implementation parameters open. It does not authorise dataset acquisition or confirmatory analysis.
 
 ## Provenance
 
-This is a **NEW DECISION for EXT-1.1**. It is not asserted as historical MVE/EMP-1.1 methodology.
+This record preserves its original filename and version for traceability. Its role is explicitly clarified as the dependency-resolution decision following DR-008 governance.
+
+This is a **NEW DECISION for EXT-1.1** and is not asserted as historical MVE/EMP-1.1 methodology.
