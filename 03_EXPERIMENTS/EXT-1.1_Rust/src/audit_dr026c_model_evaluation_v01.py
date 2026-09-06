@@ -11,9 +11,7 @@ import argparse
 import csv
 import hashlib
 import io
-import math
 import zipfile
-from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -56,7 +54,7 @@ def main() -> int:
     ap.add_argument("--zip", default=str(Path.home() / "Downloads" / "rust_repos_2022_09_07.zip"))
     args = ap.parse_args()
 
-    print("TGCV EXT-1.1 — DR-026C model/evaluation structural audit v0.1")
+    print("TGCV EXT-1.1 — DR-026C model/evaluation structural audit v0.2")
     print("=" * 72)
     print(f"ZIP: {args.zip}")
     print("MODE: PRE-CONFIRMATORY / STRUCTURAL ONLY")
@@ -67,7 +65,6 @@ def main() -> int:
 
     with zipfile.ZipFile(args.zip, "r") as zf:
         pv = find_member(zf, "package_versions.csv")
-
         required = {"id", "package_id", "version_str", "created_at"}
         versions = {}
         package_times: dict[str, list[datetime]] = {}
@@ -119,7 +116,6 @@ def main() -> int:
         train = [x for x in eligible if boundary is not None and x[0] <= boundary]
         test = [x for x in eligible if boundary is not None and x[0] > boundary]
 
-        # Structural representation checks. No outcome labels are generated.
         token_cases = [
             "BASE_VERSION::1.2.3",
             "BASE_VERSION::0.1.0-alpha",
@@ -143,7 +139,7 @@ def main() -> int:
         print(f"HORIZON_DAYS: {HORIZON_DAYS}")
         print("ELIGIBILITY_RULE: created_at + 180d <= snapshot_max_created_at")
         print(f"ELIGIBLE_ORIGINS: {len(eligible)}")
-        print(f"TEMPORAL_BOUNDARY_RULE: min_eligible_created_at + 0.80 * elapsed_span")
+        print("TEMPORAL_BOUNDARY_RULE: min_eligible_created_at + 0.80 * elapsed_span")
         print(f"TEMPORAL_BOUNDARY: {boundary}")
         print(f"TRAIN_ORIGINS: {len(train)}")
         print(f"TEST_ORIGINS: {len(test)}")
@@ -213,8 +209,50 @@ def main() -> int:
         for k, v in checks.items():
             print(f"{k}: {v}")
 
-        # These are protocol invariants, not empirical outcomes.
-        protocol_pass = all(checks.values()) and total == valid and invalid == 0 and missing_identity == 0 and dup == 0 and len(eligible) > 0 and len(train) > 0 and len(test) > 0 and hashes == replay_hashes and HASH_DIM == 2**20 and EXPECTED_HASH_ALGORITHM == "blake2b-256"
+        prohibited_false = all(
+            not checks[k]
+            for k in (
+                "OUTCOME_AS_INPUT",
+                "POST_ORIGIN_DATA_AS_INPUT",
+                "TACC_USED_IN_BASELINE",
+                "RSTAR_USED_IN_BASELINE",
+                "PACKAGE_ID_AS_PREDICTIVE_FEATURE",
+                "FUTURE_RELEASES_IN_FEATURES",
+            )
+        )
+        symmetry_true = all(
+            checks[k]
+            for k in (
+                "SAME_ELIGIBLE_FRAME",
+                "SAME_TEMPORAL_SPLIT",
+                "SAME_LEARNER",
+                "SAME_REGULARIZATION",
+                "SAME_PRIMARY_METRIC",
+                "UNREPRESENTABLE_OBSERVATIONS_FAIL_CLOSED",
+            )
+        )
+        protocol_pass = (
+            prohibited_false
+            and symmetry_true
+            and total == valid
+            and invalid == 0
+            and missing_identity == 0
+            and dup == 0
+            and len(eligible) > 0
+            and len(train) > 0
+            and len(test) > 0
+            and hashes == replay_hashes
+            and HASH_DIM == 2**20
+            and EXPECTED_HASH_ALGORITHM == "blake2b-256"
+            and EXPECTED_SOLVER == "liblinear"
+            and EXPECTED_C == 1.0
+            and EXPECTED_MAX_ITER == 1000
+            and EXPECTED_TOL == 1e-8
+        )
+
+        print("\nPROTOCOL AGGREGATION")
+        print(f"PROHIBITED_INPUTS_ALL_FALSE: {prohibited_false}")
+        print(f"SYMMETRY_CHECKS_ALL_TRUE: {symmetry_true}")
 
         print("\nPROHIBITED COMPUTATIONS")
         print("OUTCOME_PREVALENCE_COMPUTED: False")
