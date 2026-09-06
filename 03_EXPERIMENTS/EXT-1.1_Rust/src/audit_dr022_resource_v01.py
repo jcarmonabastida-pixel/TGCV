@@ -46,11 +46,15 @@ CANDIDATE_DESCRIPTORS = {
 def run_audit():
     checks = []
 
+    r1 = (
+        {"created_at"}.issubset(SCHEMA["package_versions"])
+        and {"origin_version_id", "target_package_id", "requirement"}.issubset(
+            SCHEMA["package_dependencies"]
+        )
+    )
     checks.append(Check(
         "R1_pre_outcome_schema",
-        all({"created_at"}.issubset(SCHEMA["package_versions"])
-            and {"origin_version_id", "target_package_id", "requirement"}.issubset(
-                SCHEMA["package_dependencies"])),
+        r1,
         "Required accessibility inputs are pre-outcome package/release/dependency metadata.",
     ))
 
@@ -100,9 +104,9 @@ def run_audit():
     # predicate survives the relevance gate, which is the acceptance condition
     # specified by DR-022 for the vacuous interpretation.
     resource_inactive = (
-        checks[0].passed and checks[1].passed and checks[2].passed and
-        checks[3].passed and checks[4].passed and checks[5].passed and
-        not checks[6].passed and checks[7].passed
+        checks[0].passed and checks[1].passed and checks[2].passed
+        and checks[3].passed and checks[4].passed and checks[5].passed
+        and not checks[6].passed and checks[7].passed
     )
 
     for c in checks:
