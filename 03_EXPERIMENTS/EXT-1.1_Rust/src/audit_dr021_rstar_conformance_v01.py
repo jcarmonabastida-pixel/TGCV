@@ -42,7 +42,10 @@ def main():
     results.append(check("P8_max_selection", resolve_edge(1, "origin", "2022-03-01T00:00:00", 9, "target", "^1.0", versions)["selected_version"] == "1.2.0"))
     results.append(check("P9_exact_selection", resolve_edge(1, "origin", "2022-03-01T00:00:00", 9, "target", "=1.1.0", versions)["selected_version"] == "1.1.0"))
     results.append(check("P10_unsupported_fails_closed", resolve_edge(1, "origin", "2022-03-01T00:00:00", 9, "target", "1.*", versions)["exclusion_reason"] == "UNSUPPORTED"))
-    results.append(check("P11_no_future_target", resolve_edge(1, "origin", "2022-03-01T00:00:00", 9, "target", "^1.0", versions)["selected_version"] == "1.1.0"))
+    # The cutoff is 2022-03-01, so 1.3.0 and 2.0.0 are future. The
+    # greatest eligible ^1.0 target is therefore 1.2.0, not 1.1.0.
+    selected = resolve_edge(1, "origin", "2022-03-01T00:00:00", 9, "target", "^1.0", versions)["selected_version"]
+    results.append(check("P11_no_future_target", selected == "1.2.0" and selected not in {"1.3.0", "2.0.0"}))
 
     shuffled = list(reversed(versions))
     a = resolve_edge(1, "origin", "2022-03-01T00:00:00", 9, "target", "^1.0", versions)
