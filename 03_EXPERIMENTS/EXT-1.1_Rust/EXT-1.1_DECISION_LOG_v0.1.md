@@ -58,10 +58,36 @@ No expansion of the R* grammar or substitution of an alternative SemVer semantic
 
 The decision preserves the pre-outcome/non-circularity constraint: features entering the pre-outcome representation must be computable from information available no later than the release observation boundary. Detailed release inclusion/exclusion, component identity, dependency resolution, candidate-universe instantiation, accessibility, and outcome remain governed by subsequent decision records.
 
+## DR-018 — Decision-numbering reconciliation for EXT-1.1
+
+**Status:** ACCEPTED — GOVERNANCE RECONCILIATION / NEW DECISION
+
+A review of the versioned decision files identified a bookkeeping mismatch between the historical OPEN list above and the substantive contents of the files named `DR-008` and `DR-009`. The mismatch is resolved here without deleting, renaming, or silently rewriting historical decision identities.
+
+### Authoritative substantive mapping
+
+- **DR-007** — observational unit: `package@version`.
+- **DR-008** — observational-unit governance and freeze requirements, as defined in `DR-008_Rust_Observational_Unit_Governance_v0.1.md`.
+- **DR-009** — dependency-resolution policy, as defined in `DR-009_Rust_Dependency_Resolution_Policy_v0.1.md`.
+
+The prior OPEN labels that described DR-008 as “Rust component identity/domain” and DR-009 as “concrete T instantiation” are therefore treated as stale bookkeeping labels and are superseded by this reconciliation. The underlying scientific questions remain OPEN and are not thereby decided.
+
+### Scope of reconciliation
+
+This decision changes **only the governance mapping of decision identifiers to their existing versioned records**. It does not decide component identity, candidate universe `T`, accessibility, resources, outcome, sampling, `B`, or `R`.
+
+No dataset acquisition, sampling, outcome measurement, or confirmatory execution is authorised by this reconciliation.
+
+### Next decision identifiers
+
+The unresolved component-identity question will receive a new decision identifier after this reconciliation, and the concrete candidate-universe `T` question will likewise receive a new decision identifier. Existing numbered records are not repurposed retroactively.
+
+This preserves traceability and fail-closed execution while avoiding a destructive renumbering of versioned experimental artefacts.
+
 ## OPEN DECISIONS
 
-- DR-008: Rust component identity/domain
-- DR-009: concrete T instantiation
+- Component identity/domain: OPEN — new decision record to be assigned after DR-018 reconciliation.
+- Candidate universe `T` instantiation: OPEN — new decision record to be assigned after component identity is resolved.
 - DR-010: Rust accessibility predicate
 - DR-011: resource variables/thresholds
 - DR-012: outcome definition and horizon
