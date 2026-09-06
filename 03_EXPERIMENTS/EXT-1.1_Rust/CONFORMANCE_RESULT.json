@@ -1,0 +1,90 @@
+{
+  "code_checks": [
+    {
+      "name": "exact_match",
+      "status": "PASS"
+    },
+    {
+      "name": "caret_1_0",
+      "status": "PASS"
+    },
+    {
+      "name": "unsupported_is_distinct",
+      "status": "PASS"
+    },
+    {
+      "name": "temporal_cutoff",
+      "status": "PASS"
+    },
+    {
+      "name": "row_order_independence",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate_id_fail_closed",
+      "status": "PASS"
+    }
+  ],
+  "database": {
+    "exists": true,
+    "path": "C:\\Users\\pedri\\Downloads\\TGCV_Rust_Audit\\rust_repos_2022_09_07_export.db",
+    "sha256": "31bb2e8ddb6d4942e933c11901d6d5d6efab26a29a6a2be8956538c36065a298"
+  },
+  "git_head": "4a726c2bb65a22cc75cdeb65ff4333fb17b782f9",
+  "implementation_commit_is_ancestor": true,
+  "implementation_current_blob": "669d4f01131af518f32b1b4b3da27f676ae4ae55",
+  "implementation_expected_blob": "669d4f01131af518f32b1b4b3da27f676ae4ae55",
+  "implementation_expected_commit": "6c2fdd01efa8ec40973edb5bb5161f6fe5f98b2e",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.7",
+  "runner": "RSTAR_CONFORMANCE_RUNNER_v0.1",
+  "schema": {
+    "package_dependencies": {
+      "columns_present": [
+        "depending_on_package",
+        "depending_version",
+        "semver_str"
+      ],
+      "missing_required": [],
+      "row_count": 3618523
+    },
+    "package_versions": {
+      "columns_present": [
+        "created_at",
+        "id",
+        "package_id",
+        "version_str"
+      ],
+      "missing_required": [],
+      "row_count": 607498
+    },
+    "packages": {
+      "columns_present": [
+        "created_at",
+        "id",
+        "insource_id",
+        "name",
+        "repo_id",
+        "source_id",
+        "url_id"
+      ],
+      "missing_required": [],
+      "row_count": 91437
+    }
+  },
+  "smoke_test": {
+    "candidate_count": 145,
+    "constraint": "^1.0",
+    "exclusion_reason": null,
+    "origin_created_at": "2022-08-27 02:41:15.742533",
+    "origin_id": 4,
+    "origin_name": "solana-tokens",
+    "selected_version": "1.0.144",
+    "selected_version_id": 295740,
+    "status": "PASS",
+    "target_package": "serde"
+  },
+  "spec_expected_blob": "77bd55820ff7c8a1bfc14fd1e7a09febda1d77f5",
+  "sqlite_version": "3.50.4",
+  "status": "PASS"
+}
