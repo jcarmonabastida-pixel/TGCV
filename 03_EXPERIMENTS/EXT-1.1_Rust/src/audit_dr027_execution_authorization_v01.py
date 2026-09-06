@@ -4,7 +4,6 @@ import hashlib
 import json
 import platform
 import subprocess
-import sys
 from pathlib import Path
 
 DATASET_SHA256 = "823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224"
@@ -24,7 +23,7 @@ DATASET = Path.home() / "Downloads" / "rust_repos_2022_09_07.zip"
 REQUIRED = [
     ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-023_Rust_Outcome_Definition_and_Horizon_v0.1.md",
     ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-024_Rust_Sampling_Exclusion_v0.2_ACCEPTED.md",
-    ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-025A_Rust_Baseline_Representation_ExAnte_v0.2_ACCEPTED.md",
+    ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-025A_Rust_Baseline_Representation_v0.2_ACCEPTED.md",
     ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-026A_Rust_TAcc_Representation_v0.2_ACCEPTED.md",
     ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-026C_Rust_Model_Evaluation_ExAnte_Finalization_v0.2_ACCEPTED.md",
     ROOT / "03_EXPERIMENTS/EXT-1.1_Rust/DR-026D_Rust_Deterministic_Runtime_Finalization_v0.2_ACCEPTED.md",
@@ -56,7 +55,6 @@ def main() -> int:
     print()
 
     checks: dict[str, bool] = {}
-
     checks["DATASET_EXISTS"] = DATASET.exists()
     dataset_sha = sha256_file(DATASET) if checks["DATASET_EXISTS"] else None
     checks["DATASET_SHA_MATCH"] = dataset_sha == DATASET_SHA256
@@ -91,8 +89,6 @@ def main() -> int:
     git_status = git("status", "--porcelain") if checks["GIT_REPOSITORY_PRESENT"] else ""
     checks["GIT_STATUS_CLEAN"] = git_status == ""
 
-    # This audit intentionally does not inspect scientific results or construct
-    # any outcome, T_acc, model, prediction, metric, or significance object.
     prohibited = {
         "OUTCOME_LABELS_COMPUTED": False,
         "TACC_COMPUTED": False,
@@ -176,7 +172,6 @@ def main() -> int:
     }
     print("AUDIT_MANIFEST_JSON:")
     print(json.dumps(manifest, sort_keys=True))
-
     return 0 if structural_pass else 1
 
 
