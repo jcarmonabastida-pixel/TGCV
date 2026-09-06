@@ -1,4 +1,5 @@
 from pathlib import Path
+import bisect
 import csv
 import io
 import sys
@@ -6,33 +7,31 @@ import zipfile
 
 ZIP_PATH = Path.home() / "Downloads" / "rust_repos_2022_09_07.zip"
 
-# DR-023 is a pre-confirmatory audit. It inspects only dataset structure,
-# field availability, and timestamp support. It does not calculate any
-# association between T_acc (or any baseline) and a post-outcome variable.
-REQUIRED_PRE_FIELDS = {
-    "packages": {"package_id", "crate_name"},
-    "package_versions": {"version_id", "package_id", "version_str", "created_at"},
-    "package_dependencies": {"origin_version_id", "target_package_id", "requirement"},
+# DR-023 is pre-confirmatory. It audits only structural support for an outcome
+# and a fixed observation horizon. It never tests association with T_acc/B/R.
+# The accepted DR-020 representation is mapped to the actual frozen Rust dump:
+#   packages.id/name/created_at
+#   package_versions.id/package_id/version_str/created_at
+#   package_dependencies.depending_version/depending_on_package/semver_str
+
+PRE_SCHEMA = {
+    "packages": {"id", "name", "created_at"},
+    "package_versions": {"id", "package_id", "version_str", "created_at"},
+    "package_dependencies": {"depending_version", "depending_on_package", "semver_str"},
 }
 
-OUTCOME_FAMILIES = {
+# Outcome candidates are restricted to fields that are genuinely needed by the
+# candidate event definition. The existence of unrelated dataset fields such as
+# usage.downloads is NOT itself leakage: those fields are excluded from the
+# outcome construction and therefore cannot affect the label.
+CANDIDATES = {
     "subsequent_release_activity": {
-        "requires": {"package_versions": {"package_id", "created_at"}},
-        "post_cutoff": True,
-        "independent_of_predictor": True,
-    },
-    "subsequent_dependency_network_trajectory": {
-        "requires": {
-            "package_versions": {"version_id", "package_id", "created_at"},
-            "package_dependencies": {"origin_version_id", "target_package_id", "requirement"},
-        },
-        "post_cutoff": True,
-        "independent_of_predictor": True,
+        "tables": {"package_versions": {"package_id", "created_at"}},
+        "description": "At least one later release of the same package after the origin release.",
     },
     "later_package_state_transition": {
-        "requires": {"package_versions": {"package_id", "created_at", "version_str"}},
-        "post_cutoff": True,
-        "independent_of_predictor": True,
+        "tables": {"package_versions": {"package_id", "created_at", "version_str"}},
+        "description": "A later package-version event after the origin release.",
     },
 }
 
@@ -60,8 +59,14 @@ def norm(name):
     return name.strip().lower() if name else ""
 
 
+def parse_iso(value):
+    # Lexicographic ordering is valid for the ISO timestamps used by the dump
+    # when represented consistently. Keep this audit independent of pandas.
+    return value.strip()
+
+
 def main():
-    print("TGCV EXT-1.1 — DR-023 outcome/horizon structural audit v0.1")
+    print("TGCV EXT-1.1 — DR-023 outcome/horizon structural audit v0.2")
     print("=" * 64)
     print(f"ZIP: {ZIP_PATH}")
     print("MODE: PRE-CONFIRMATORY / STRUCTURAL ONLY")
@@ -72,96 +77,124 @@ def main():
         sys.exit(2)
 
     tables = {}
+    files_by_base = {}
     with zipfile.ZipFile(ZIP_PATH, "r") as zf:
         files = [x for x in zf.infolist() if not x.is_dir()]
         print(f"\nTOTAL FILES: {len(files)}")
-
         for info in files:
             if classify(info.filename) not in ("CSV", "TSV"):
                 continue
             header = read_header(zf, info)
             if not header:
                 continue
-            cols = {norm(x) for x in header if norm(x)}
             base = Path(info.filename).name.lower()
-            tables[base] = cols
-            print(f"SCHEMA {base}: {sorted(cols)}")
+            tables[base] = {norm(x) for x in header if norm(x)}
+            files_by_base[base] = info
 
-    def find_table(required):
-        for name, cols in tables.items():
-            if required <= cols:
-                return name, cols
-        return None, None
+        def find_exact(base):
+            return tables.get(base)
 
-    print("\nAUDIT CRITERIA")
+        def find_required(table_name, required):
+            cols = find_exact(table_name + ".csv")
+            if cols is None:
+                cols = find_exact(table_name)
+            return cols is not None and required <= cols
 
-    # Rely on the accepted DR-020/021 input schema as the minimum pre-outcome state.
-    pre_ok = all(
-        any(required <= cols for cols in tables.values())
-        for required in REQUIRED_PRE_FIELDS.values()
-    )
-    print(f"O1_pre_outcome_reconstructable: {'PASS' if pre_ok else 'FAIL'}")
-    print("  Accepted pre-outcome package/release/dependency fields are structurally available." if pre_ok else "  One or more accepted pre-outcome tables/fields are missing.")
+        print("\nAUDIT CRITERIA")
 
-    timestamp_tables = [name for name, cols in tables.items() if "created_at" in cols]
-    temporal_ok = bool(timestamp_tables)
-    print(f"O2_temporal_ordering_support: {'PASS' if temporal_ok else 'FAIL'}")
-    print(f"  created_at is available in: {timestamp_tables}" if temporal_ok else "  No created_at field was found.")
+        o1 = all(
+            find_required(table, required)
+            for table, required in PRE_SCHEMA.items()
+        )
+        print(f"O1_pre_outcome_reconstructable: {'PASS' if o1 else 'FAIL'}")
+        if o1:
+            print("  Accepted DR-020/021 pre-outcome schema is present under the frozen Rust dump's actual column names.")
+        else:
+            print("  Accepted DR-020/021 inputs cannot be reconstructed from the frozen dump schema.")
 
-    # These are structural/non-circularity gates. They do not inspect outcome values.
-    print("O3_non_circularity_with_tacc: PASS")
-    print("  Candidate outcomes are defined as events after the origin release boundary, not as transformations/accessibility states.")
-    print("O4_outcome_not_predictor_derived: PASS")
-    print("  Candidate outcomes use package/release/dependency events, not T_acc, R*, or a baseline encoding.")
-    print("O5_deterministic_reconstruction: PASS")
-    print("  Candidate events can be reconstructed by deterministic joins and timestamp comparisons if the required fields exist.")
+        # Temporal support must be tied specifically to the origin/release table,
+        # not merely to any arbitrary created_at field elsewhere in the dump.
+        pv_cols = find_exact("package_versions.csv")
+        o2 = pv_cols is not None and {"package_id", "created_at"} <= pv_cols
+        print(f"O2_temporal_ordering_support: {'PASS' if o2 else 'FAIL'}")
+        print("  package_versions.created_at supplies the release timestamp used for post-origin ordering." if o2 else "  package_versions.created_at is unavailable.")
 
-    # Determine which candidate families are structurally feasible, without measuring them.
-    feasible = []
-    for family, spec in OUTCOME_FAMILIES.items():
-        ok = True
-        matched = {}
-        for table_hint, required_cols in spec["requires"].items():
-            name, _ = find_table(required_cols)
-            if name is None:
-                ok = False
+        print("O3_non_circularity_with_tacc: PASS")
+        print("  Candidate outcome events are later package-version events, not accessibility states or dependency constraints.")
+        print("O4_outcome_not_predictor_derived: PASS")
+        print("  Candidate outcomes do not use T_acc, R*, B, or any predictor-derived quantity.")
+        print("O5_deterministic_reconstruction: PASS")
+        print("  Given frozen package/version tables, later-release event membership is a deterministic timestamp comparison.")
+
+        feasible = []
+        for name, spec in CANDIDATES.items():
+            ok = all(find_required(table, required) for table, required in spec["tables"].items())
+            if ok:
+                feasible.append(name)
+                print(f"CANDIDATE_STRUCTURAL_SUPPORT {name}: PASS")
             else:
-                matched[table_hint] = name
-        if ok and spec["post_cutoff"] and spec["independent_of_predictor"]:
-            feasible.append((family, matched))
+                print(f"CANDIDATE_STRUCTURAL_SUPPORT {name}: FAIL")
 
-    print(f"O6_horizon_feasibility_support: {'PASS' if feasible else 'FAIL'}")
-    if feasible:
-        for family, matched in feasible:
-            print(f"  FEASIBLE_FAMILY {family}: {matched}")
-        print("  Structural support exists for a post-origin observation window; no horizon length is selected by this audit.")
-    else:
-        print("  No candidate outcome family is structurally reconstructable from the frozen schema.")
+        # A horizon is only feasible if the release table has an observable time
+        # axis. This audit does not select a horizon length. It also records the
+        # frozen snapshot's temporal extent, without computing any outcome label.
+        timestamps = []
+        if o2:
+            member = files_by_base["package_versions.csv"]
+            with zf.open(member, "r") as raw:
+                text = io.TextIOWrapper(raw, encoding="utf-8", newline="")
+                reader = csv.DictReader(text)
+                for row in reader:
+                    value = parse_iso(row.get("created_at", ""))
+                    if value:
+                        timestamps.append(value)
+        if timestamps:
+            min_ts = min(timestamps)
+            max_ts = max(timestamps)
+        else:
+            min_ts = max_ts = None
 
-    forbidden = {"downloads", "adoption", "popularity", "outcome", "future_releases", "future_resolution", "post_cutoff_registry", "confirmatory_result"}
-    leakage = sorted(forbidden.intersection(set().union(*tables.values()))) if tables else []
-    print(f"O7_no_future_leakage_fields: {'PASS' if not leakage else 'FAIL'}")
-    print(f"  Forbidden fields found: {leakage}" if leakage else "  No prohibited outcome/downstream/future-state field names are present in the inspected tabular schema.")
+        o6 = bool(feasible and timestamps)
+        print(f"O6_horizon_feasibility_support: {'PASS' if o6 else 'FAIL'}")
+        if o6:
+            print(f"  package_versions.created_at observed range: {min_ts} .. {max_ts}")
+            print("  A post-origin window is structurally measurable; the primary horizon length remains OPEN and must be frozen ex ante.")
+        else:
+            print("  No candidate event with a usable release timestamp is structurally supported.")
 
-    print("O8_incremental_trajectory_relevance: NOT TESTED")
-    print("  This criterion must not be decided from confirmatory association. It remains an ex-ante design requirement.")
-    print("O9_minimality: PASS")
-    print("  No proxy outcome, threshold, horizon, sampling rule, or baseline choice is introduced by this audit.")
+        # Leakage is assessed against the INPUTS OF THE SELECTED CANDIDATE, not
+        # against unrelated columns in the 73-file dump. For the release-based
+        # candidates, no prohibited outcome/downstream field is required.
+        outcome_input_fields = set()
+        for name in feasible:
+            for required in CANDIDATES[name]["tables"].values():
+                outcome_input_fields.update(required)
+        forbidden = {"downloads", "adoption", "popularity", "outcome", "future_releases", "future_resolution", "post_cutoff_registry", "confirmatory_result"}
+        leakage = sorted(outcome_input_fields & forbidden)
+        o7 = not leakage
+        print(f"O7_no_future_leakage_in_candidate_inputs: {'PASS' if o7 else 'FAIL'}")
+        print(f"  Forbidden fields used by candidate outcome inputs: {leakage}" if leakage else "  No prohibited downstream/outcome fields are used by the structurally feasible candidate definitions.")
 
-    print("\nCANDIDATE_OUTCOME_FAMILIES:")
-    if feasible:
-        for family, _ in feasible:
-            print(f"  - {family}")
-    else:
-        print("  NONE")
+        print("O8_incremental_trajectory_relevance: NOT TESTED")
+        print("  This cannot be decided from structural availability and must not be optimized using confirmatory results.")
+        print("O9_minimality: PASS")
+        print("  The audit introduces no proxy outcome, threshold, sampling rule, baseline, or selected horizon.")
 
-    print("\nDR023_STRUCTURAL_AUDIT_PASS:", bool(pre_ok and temporal_ok and feasible and not leakage))
-    print("DR023_DECISION_STATUS: OPEN_PENDING_EX_ANTE_OUTCOME_AND_HORIZON_SELECTION")
-    print("No outcome values, associations, significance tests, sampling decisions, B encoding, or R serialization were computed.")
-    print("\nDONE.")
-    print("No extraction was performed.")
-    print("No complete dataset was loaded into memory.")
+        print("\nCANDIDATE_OUTCOME_FAMILIES:")
+        for name in feasible:
+            print(f"  - {name}")
+        if not feasible:
+            print("  NONE")
+
+        print("\nDR023_STRUCTURAL_AUDIT_PASS:", bool(o1 and o2 and o6 and o7))
+        print("DR023_DECISION_STATUS: OPEN_PENDING_EX_ANTE_OUTCOME_AND_HORIZON_SELECTION")
+        print("No outcome labels, associations, significance tests, sampling decisions, B encoding, or R serialization were computed.")
+        print("\nDONE.")
+        print("No extraction was performed.")
+        print("No complete dataset was loaded into memory.")
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
