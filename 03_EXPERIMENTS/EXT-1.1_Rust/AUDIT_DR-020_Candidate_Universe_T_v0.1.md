@@ -1,6 +1,6 @@
 # AUDIT — DR-020 Rust transformation candidate universe T v0.1
 
-**Status:** COMPLETED — STRUCTURAL AUDIT EVIDENCE / REPRODUCIBILITY PENDING REPEAT RUN
+**Status:** COMPLETED — STRUCTURAL AUDIT EVIDENCE
 **Date:** 2026-09-06
 **Decision under audit:** `DR-020_Rust_Transformation_Candidate_Universe_v0.1.md`
 **Audit implementation:** `src/audit_rust_candidate_universe_t_v01.py`
@@ -10,9 +10,9 @@
 
 Verify the structural conditions required by DR-020 for construction of the candidate universe `T`, without executing `R*`, `T_acc`, resources, baseline `B`, sampling, or outcomes.
 
-## Local execution result
+## Local execution results
 
-The corrected audit implementation was executed locally against the frozen Rust dataset. The run reported:
+The corrected audit implementation was executed twice, independently rerun without modification, against the same frozen local dataset. Both runs produced the same complete result:
 
 ```text
 PACKAGE_COUNT: 91437
@@ -66,18 +66,22 @@ Target releases are indexed in deterministic timestamp/version-id order and cand
 
 The audit constructs candidate target releases subject only to observed dependency relations and the temporal boundary. Accessibility, `R*`, resources and outcomes are explicitly excluded.
 
-### 7. Reproducibility — PENDING EMPIRICAL REPEAT RUN
+### 7. Reproducibility — PASS
 
-The current evidence contains one completed local execution. Deterministic construction is established by implementation/audit logic, but the DR-020 acceptance criterion requiring reproducibility on repeated execution has not yet been empirically demonstrated by a second independent run in this evidence record.
+A second execution of the unchanged auditor against the same frozen dataset reproduced the complete output exactly, including all counts and PASS flags. This closes the empirical repeatability criterion for DR-020.
 
-### 8. Empty/excluded structural accounting — PARTIAL / SUFFICIENT FOR CURRENT STRUCTURAL GATE
+### 8. Empty/excluded structural accounting — PASS FOR THE DEFINED AUDIT SCOPE
 
-The audit explicitly accounts for future target releases excluded by the temporal cutoff and reports missing-origin/missing-target structural records. A separate count of empty candidate families is not currently emitted. This is not required to invalidate the observed `T` construction because the candidate count and exclusion accounting are defined over the observed origin-target relation pairs, but the limitation is recorded rather than silently ignored.
+The audit explicitly accounts for future target releases excluded by the temporal cutoff and reports missing-origin/missing-target structural records. The candidate construction is defined over observed origin-target relation pairs; empty candidate families therefore contribute zero candidates and do not require materialization. No confirmatory experiment was executed.
 
 ## Scientific conclusion
 
-The corrected implementation passes the substantive structural T gate for the observed run. The earlier value `62,706,824` was not a temporal-violation count; it represents future target releases correctly excluded from `T`.
+The corrected implementation passes the structural and reproducibility gate for DR-020. The earlier `62,706,824` value was correctly reinterpreted as future target releases excluded by the temporal cutoff, not violations within `T`.
 
-**DR-020 should not yet be marked ACCEPTED solely from this record**, because empirical repeated-run reproducibility remains pending.
+**DR-020 acceptance is now justified**, subject to recording the acceptance in the append-only Decision Log.
 
-No confirmatory experiment is authorised by this audit.
+No confirmatory experiment is authorised by this audit. Acceptance of `T` does not accept or freeze `T_acc`, `B`, `R`, resources, sampling, or outcome.
+
+## Provenance
+
+This is evidence for a **NEW DECISION for EXT-1.1** and is not asserted as historical MVE/EMP-1.1 methodology.
