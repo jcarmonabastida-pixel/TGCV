@@ -96,9 +96,20 @@ The structural audit `AUDIT_DR-010_Component_Identity_v0.1.md` verified the deci
 
 This decision closes component identity/domain only. It does not decide `T`, accessibility/`T_acc`, resources, outcome, sampling, `B`, `R`, or the exact dependency-resolution implementation parameters left open by DR-009. No confirmatory execution is authorised.
 
+## DR-020 — Rust transformation candidate universe T
+
+**Status:** ACCEPTED — NEW EXPERIMENTAL DECISION
+
+The candidate universe `T` for EXT-1.1 is defined for each observed dependency edge `e=(v_o,p_d,q)` as the set of candidate target releases `τ(v_o,p_d,v_d)` where `v_d` is a release of the referenced target package `p_d` and `created_at(v_d) <= created_at(v_o)`.
+
+Canonical candidate identity is `(origin_version_id, target_package_id, target_version_id)`. The dependency constraint `q` is retained as provenance but does not determine membership in `T`; accessibility is evaluated later by the frozen `R*`/`T_acc` layer. Thus `T_acc ⊆ T` remains explicit and non-circular.
+
+Acceptance is supported by `AUDIT_DR-020_Candidate_Universe_T_v0.1.md`. The corrected auditor was executed twice against the same frozen dataset and reproduced the complete result exactly: 91,437 packages; 607,498 versions; 3,618,523 dependency edges; 194,371,905 candidates; zero duplicate candidate keys; zero temporal violations within `T`; 62,706,824 future target releases explicitly excluded; zero missing origin versions or target packages; zero target-package identity mismatches; `q` not used for membership; deterministic construction PASS; and structural T gate PASS.
+
+This acceptance closes candidate-universe `T` only. It does not close accessibility/`T_acc`, resources, outcome, sampling, baseline `B`, `R` serialization, or remaining exact dependency-resolution implementation parameters. No confirmatory execution is authorised by DR-020.
+
 ## OPEN DECISIONS
 
-- Candidate universe `T` instantiation: OPEN — new decision record required before it can be encoded or executed.
 - Rust accessibility predicate: OPEN — must be resolved after candidate-universe instantiation and without silently resolving other parameters.
 - Resource variables/thresholds: OPEN.
 - Outcome definition and horizon: OPEN.
