@@ -84,16 +84,27 @@ The unresolved component-identity question will receive a new decision identifie
 
 This preserves traceability and fail-closed execution while avoiding a destructive renumbering of versioned experimental artefacts.
 
+## DR-019 — Rust component identity and domain
+
+**Status:** ACCEPTED — NEW EXPERIMENTAL DECISION
+
+The analytical component for EXT-1.1 is the Rust package identified by its canonical package/crate name. The primary observational record remains `package@version` under DR-007; version is a state attribute, not a distinct component identity.
+
+The domain boundary is the package-level Rust ecosystem represented by the frozen registry and package metadata. Identity is defined from pre-outcome metadata and does not depend on downloads, adoption, downstream success, future releases, or outcomes.
+
+The structural audit `AUDIT_DR-010_Component_Identity_v0.1.md` verified the decision against the frozen local dataset: unique `crates` source identification; 91,437 unique package IDs with no package identity conflicts or duplicate crate names; 607,498 unique package-version observations with valid package references, unique `(package_id, version_str)` keys and valid temporal ordering; and valid foreign-key references across 3,618,523 dependency rows.
+
+This decision closes component identity/domain only. It does not decide `T`, accessibility/`T_acc`, resources, outcome, sampling, `B`, `R`, or the exact dependency-resolution implementation parameters left open by DR-009. No confirmatory execution is authorised.
+
 ## OPEN DECISIONS
 
-- Component identity/domain: OPEN — new decision record to be assigned after DR-018 reconciliation.
-- Candidate universe `T` instantiation: OPEN — new decision record to be assigned after component identity is resolved.
-- DR-010: Rust accessibility predicate
-- DR-011: resource variables/thresholds
-- DR-012: outcome definition and horizon
-- DR-013: sampling/exclusion rules
-- DR-014: pilot N and seed
-- DR-015: baseline B encoding in Rust
-- DR-016: R serialization
+- Candidate universe `T` instantiation: OPEN — new decision record required before it can be encoded or executed.
+- Rust accessibility predicate: OPEN — must be resolved after candidate-universe instantiation and without silently resolving other parameters.
+- Resource variables/thresholds: OPEN.
+- Outcome definition and horizon: OPEN.
+- Sampling/exclusion rules: OPEN.
+- Pilot N and seed: OPEN.
+- Baseline `B` encoding in Rust: OPEN.
+- `R` serialization: OPEN.
 
 No OPEN decision may be silently resolved in code.
