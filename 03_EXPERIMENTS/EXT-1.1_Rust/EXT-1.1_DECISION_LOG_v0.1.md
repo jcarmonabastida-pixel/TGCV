@@ -38,6 +38,18 @@ The engine-level test has passed using synthetic states with identical B and dif
 
 Any unresolved executable-path parameter remains OPEN and blocks scientific execution. Missing historical information may be replaced by a new experimental decision only when necessary, explicitly labelled NEW DECISION, justified and versioned.
 
+## DR-017 — R* SemVer normative implementation boundary
+
+**Status:** ACCEPTED
+
+The frozen `EXT-1.1_RESOLVER_SPEC_R_v0.2.md` is the sole normative SemVer/accessibility specification for EXT-1.1. Its supported grammar is intentionally restricted to the tested exact and caret forms defined there; unsupported forms must fail closed and must not be broadened by auxiliary code.
+
+`rstar_v02.py` is the normative resolver implementation. `semver_reference.py` is retained only as a fixture/test helper and must implement the same restricted grammar; it must not introduce wildcard, inequality, tilde, compound, prerelease, or other unsupported semantics.
+
+`tacc_pipeline.py` is not itself the normative R* resolver and must not be used as evidence of R* conformance unless its semantics are separately reconciled with the frozen R* selection operator. In particular, the R* definition selects the maximal eligible target per observable edge; a helper that merely returns all satisfying versions is not equivalent to R*.
+
+No expansion of the R* grammar or substitution of an alternative SemVer semantics may occur silently. Any substantive change requires a new specification/decision before scientific execution.
+
 ## OPEN DECISIONS
 
 - DR-007: Rust observational unit
