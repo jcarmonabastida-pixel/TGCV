@@ -1,16 +1,10 @@
-"""RUST-DYN-EXEC-1 real-data executor v0.1.
-
-Controlled executor for the already-authorized EXT-1.1 Rust run.
-It composes the frozen structural adapter/R* semantics with the frozen
-RUST-DYN-1 temporal and bounded Reach/Trajectory semantics.
-"""
+"""RUST-DYN-EXEC-1 real-data executor v0.1."""
 from __future__ import annotations
 
 import argparse
 import csv
 import hashlib
 import json
-import os
 import zipfile
 from collections import defaultdict
 from datetime import datetime
@@ -65,12 +59,11 @@ def build_real_model(dataset: Path):
 
     required_v = {"id", "package_id", "version_str", "created_at"}
     required_d = {"depending_version", "depending_on_package", "semver_str"}
-    if set(versions[0]) != required_v:
+    if not versions or set(versions[0]) != required_v:
         raise RuntimeError("package_versions schema mismatch")
-    if set(deps[0]) != required_d:
+    if not deps or set(deps[0]) != required_d:
         raise RuntimeError("package_dependencies schema mismatch")
 
-    origins = []
     by_id = {}
     by_package = defaultdict(list)
     for r in versions:
@@ -82,7 +75,6 @@ def build_real_model(dataset: Path):
                "version_str": r["version_str"], "created_at": created}
         by_id[oid] = row
         by_package[row["package_id"]].append(row)
-        origins.append(row)
 
     dep_map = defaultdict(list)
     for r in deps:
@@ -91,22 +83,28 @@ def build_real_model(dataset: Path):
         )
 
     tacc_by_origin = {}
-    for o in origins:
+    for o in by_id.values():
         transformations = []
+        origin_created_at = o["created_at"].isoformat()
         for target_package_id, requirement in dep_map.get(o["version_id"], []):
+            target_versions = [
+                (v["version_id"], v["version_str"], v["created_at"].isoformat())
+                for v in by_package.get(target_package_id, [])
+            ]
             resolved = resolve_edge(
-                origin_created_at=o["created_at"],
+                origin_id=o["version_id"],
+                origin_name=str(o["version_id"]),
+                origin_created_at=origin_created_at,
                 target_package_id=target_package_id,
+                target_name=str(target_package_id),
                 requirement=requirement,
-                versions=by_package.get(target_package_id, []),
+                target_versions=target_versions,
             )
-            if resolved is None:
+            selected_id = resolved["selected_version_id"]
+            selected_version = resolved["selected_version"]
+            if selected_id is None:
                 continue
-            transformations.append((
-                o["version_id"],
-                resolved["version_id"],
-                resolved["version_str"],
-            ))
+            transformations.append((o["version_id"], selected_id, selected_version))
         tacc_by_origin[o["version_id"]] = canonical_tacc(transformations)
 
     pairs = []
@@ -119,12 +117,10 @@ def build_real_model(dataset: Path):
             if a["created_at"] == b["created_at"]:
                 tied.add(a["version_id"])
                 tied.add(b["version_id"])
-        if tied:
-            tie_origin_count += len(tied)
-            excluded_origin_count += len(tied)
+        tie_origin_count += len(tied)
+        excluded_origin_count += len(tied)
         eligible = [r for r in rows if r["version_id"] not in tied]
-        for a, b in zip(eligible, eligible[1:]):
-            pairs.append((a, b))
+        pairs.extend(zip(eligible, eligible[1:]))
 
     return by_id, tacc_by_origin, pairs, tie_origin_count, excluded_origin_count, len(by_package)
 
