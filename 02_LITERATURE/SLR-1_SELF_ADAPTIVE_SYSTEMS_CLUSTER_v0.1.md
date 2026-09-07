@@ -4,7 +4,7 @@
 
 ## Current bounded pass
 
-The self-adaptive-systems family has now produced four convergent strong antecedents: `SRC-SAS-001` (Metzger et al.), `SRC-SAS-002` (Gheibi & Weyns, 2024), `SRC-SAS-003` (Angelopoulos, Souza & Mylopoulos, 2015), and `SRC-DSPL-001` (Ayala et al., 2021).
+The self-adaptive-systems family has now produced five convergent strong antecedents: `SRC-SAS-001` (Metzger et al.), `SRC-SAS-002` (Gheibi & Weyns, 2024), `SRC-SAS-003` (Angelopoulos, Souza & Mylopoulos, 2015), `SRC-DSPL-001` (Ayala et al., 2021), and `SRC-SAS-004` (Stevens & Bagheri, 2020).
 
 ### Cluster evidence
 
@@ -18,6 +18,10 @@ The cluster establishes prior art for:
 - emergence/disappearance of options;
 - dynamic variability and valid runtime configuration spaces;
 - proactive recomputation/optimization over changing configuration spaces;
+- formal reachability analysis over adaptation alternatives;
+- bounded-horizon adaptation trajectories;
+- explicit utility/value assessment of alternatives;
+- adaptation-space reduction based on anticipated utility;
 - adaptation-space structure as an analytical determinant of adaptivity;
 - downstream adaptation/learning behaviour over the available alternatives.
 
@@ -27,7 +31,7 @@ The cluster establishes prior art for:
 
 **AC3: NOT ESTABLISHED.**
 
-The convergence means TGCV must no longer claim novelty for the existence, explicit representation, drift, expansion, contraction, multidimensional modelling or runtime recomputation/optimization of an adaptation/action/configuration space within adaptive software systems.
+The convergence means TGCV must no longer claim novelty for the existence, explicit representation, drift, expansion, contraction, multidimensional modelling, runtime recomputation/optimization, reachability analysis or utility-based selection of an adaptation/action/configuration space within adaptive software systems.
 
 The remaining candidate contribution is narrower and transversal:
 
@@ -43,10 +47,9 @@ where `τ` denotes a domain-independent transformation rather than a software ad
 
 Continue the bounded pass within self-adaptive systems, now targeting specifically:
 
-1. runtime recomputation of valid configuration/action spaces beyond DSPL;
-2. self-evolution changing future adaptation possibilities;
-3. explicit reachability/trajectory consequences of adaptation-space drift;
-4. formal links between changing variability spaces and reachable behavioural states.
+1. self-evolution changing future adaptation possibilities;
+2. explicit reachability/trajectory consequences of adaptation-space drift;
+3. formal links between changing variability spaces and reachable behavioural states.
 
 Stop on the first plausible AC3 candidate and open a dedicated comparative architecture review. If none appears after the predefined subfamilies are screened, freeze this family as AC2 prior-art and proceed to the next SLR-1 family.
 
