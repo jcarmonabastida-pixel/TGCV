@@ -50,6 +50,7 @@ Forward citation chaining for `SRC-TRANS-001` remains pending systematic bibliog
 | CAND-0012 | SRC-HENSHIN-001 | Strüber et al. (2018), *Henshin...MDEOptimiser* | formal transformation-language antecedent | **AC2 confirmed; AC3 not established** |
 | CAND-0013 | SRC-DAF-001 | Xu et al. (2021), *Deep Affordance Foresight* | accessibility/future-possibilities antecedent | **AC2 strong; AC3 not established** |
 | CAND-0014 | SRC-SCI-001 | Petersen, Rasmussen & Trettvik (2020), *Affordances of Shape-Changing Interfaces* | system-change → affordance-change antecedent | **AC2 strong; AC3 not established** |
+| CAND-0015 | SRC-LAF-001 | Kiverstein, van Dijk & Rietveld (2019/2021), *The field and landscape of affordances* | landscape-level accessibility antecedent | **AC2 strong; AC3 not established** |
 
 ### CH-0001 dossier outcome — consolidated structural cluster
 
@@ -70,17 +71,22 @@ Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001`, `SRC-MDEO-001` and `SRC
 
 `SRC-SCI-001` strengthens this result in a different direction: shape-changing-interface research explicitly states that affordances change when the interface changes its shape, linking system configuration changes directly to changes in available functions/action possibilities. citeturn1search35turn1search0
 
-Together, these sources **absorb any broad originality claim over state-dependent action accessibility, future enabled actions, or the generic proposition that changing system conditions can change action possibilities**.
+`SRC-LAF-001` strengthens the accessibility cluster at the **landscape level**. Kiverstein, van Dijk & Rietveld distinguish a broader landscape of affordances from a contextually selected field of relevant affordances and describe a reciprocal temporal relation in which engagement/practice can further determine the possibilities available in the future.
 
-They still do not establish AC3 because neither source, on the current evidence, formalizes the *whole accessibility relation* as a transversal object whose change is independently represented and connected to a general value-construction architecture.
+Together, these sources **absorb any broad originality claim over state-dependent action accessibility, future enabled actions, generic system-change → affordance-change relations, or the existence of a landscape/field of interrelated action possibilities**.
 
-## 7. Immediate controlled operation after accessibility screening
+They still do not establish AC3 because the current evidence does not formalize the *change of the whole accessibility landscape* as an independent transversal analytical object and connect it to a general `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value` architecture.
 
-The next operation is now **citation-chain mining around formal/general affordance landscapes and fields of affordances**, especially sources that treat the landscape itself as a dynamical object. The falsification target is:
+## 7. Immediate controlled operation after landscape screening
 
-> Does prior literature explicitly represent the whole available-action/transformation landscape as a dynamical object whose change is itself measured, theorized or causally linked to downstream possibilities?
+The next operation is **citation-chain mining from `SRC-LAF-001` and formal possibility-space/action-space literature**, with special attention to whether the landscape/field tradition contains a successor formulation that explicitly represents:
 
-A promising immediate cluster is the Rietveld/Kiverstein tradition of “landscape/field of affordances”, followed by formal possibility-space/action-space representations. No AC3 decision should be made solely from the current accessibility cluster.
+1. the set/space of available possibilities as a state variable;
+2. a measurable change in that set/space;
+3. mechanisms that alter the set;
+4. downstream reachability/trajectory consequences.
+
+This is now the most direct falsification route for AC3. No Core modification is triggered by the present evidence.
 
 ## 8. Integrity boundary
 
