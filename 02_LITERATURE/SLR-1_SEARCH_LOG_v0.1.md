@@ -47,15 +47,17 @@ Forward citation chaining for `SRC-TRANS-001` remains pending systematic bibliog
 | CAND-0009 | SRC-MOMOT-001 | Bill et al. (2019), *A local and global tour on MOMoT* | direct predecessor / structural antecedent | **AC2 confirmed; AC3 not established** |
 | CAND-0010 | SRC-DSE-001 | Abdeen et al. (2014), *Multi-Objective Optimization in Rule-Based Design Space Exploration* | foundational DSE antecedent | **AC2 candidate/strong structural antecedent; AC3 not established** |
 | CAND-0011 | SRC-MDEO-001 | Burdusel et al. (2018/2019), *MDEOptimiser* | adjacent competing architecture / representation comparison | **AC2 confirmed; AC3 not established** |
-| CAND-0012 | SRC-HENSHIN-001 | Strüber et al. (2018), *Henshin...MDEOptimiser* | formal transformation-language antecedent | pending |
+| CAND-0012 | SRC-HENSHIN-001 | Strüber et al. (2018), *Henshin...MDEOptimiser* | formal transformation-language antecedent | **AC2 confirmed; AC3 not established** |
 
 ### CH-0001 dossier outcome — consolidated structural cluster
 
-Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001` and `SRC-MDEO-001` confirms a coherent prior-art cluster covering:
+Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001`, `SRC-MDEO-001` and `SRC-HENSHIN-001` confirms a coherent prior-art cluster covering:
 
 - explicit transformation/search spaces;
 - transformation-rule applicability/executability or consistency;
-- reachable candidate states;
+- state-dependent applicability of transformations;
+- changes in future applicability after state transitions;
+- reachable candidate states and state-space exploration;
 - transformation sequences as trajectories;
 - objective/fitness evaluation of resulting states;
 - model transformations used explicitly as search operators.
@@ -66,16 +68,13 @@ This remains a bounded interpretation, not a final SLR-1 originality conclusion.
 
 ## 7. Immediate controlled operation after chaining
 
-The next operation is to screen:
-
-1. `SRC-HENSHIN-001` — Strüber et al. (2018), *Henshin: A Model Transformation Language and its Use for Search-Based Model Optimisation in MDEOptimiser*, if the formal transformation-language layer can materially affect the AC3 boundary;
-2. otherwise continue with the predefined SLR-1 search families and independent candidate screening.
+The Henshin formal-language check is complete. The next operation is therefore **not another source from the same MDE transformation cluster**. Continue with the predefined SLR-1 search families and independent candidate screening, targeting literature where accessibility/changeability is itself the analytical object rather than merely an operational consequence of a transformation rule.
 
 No AC3 decision should be made solely from the current cluster.
 
 ## 8. Integrity boundary
 
-The citation-chain results do not prove TGCV originality or non-originality. They establish a **prior-art cluster** that materially raises the standard required for any originality claim concerning transformation-space representation, transformation-chain exploration, reachability/path search or optimization over transformation sequences.
+The citation-chain results do not prove TGCV originality or non-originality. They establish a **prior-art cluster** that materially raises the standard required for any originality claim concerning transformation-space representation, transformation-chain exploration, reachability/path search, state-dependent applicability or optimization over transformation sequences.
 
 The unresolved question remains the higher-level architecture: whether prior literature already contains the transversal relation in which changes in system conditions modify an accessible transformation space and thereby alter future reachability/trajectories and downstream outcomes/value.
 
