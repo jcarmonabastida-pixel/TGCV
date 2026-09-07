@@ -4,7 +4,7 @@
 
 ## Current bounded pass
 
-The self-adaptive-systems family has now produced three convergent strong antecedents: `SRC-SAS-001` (Metzger et al.), `SRC-SAS-002` (Gheibi & Weyns, 2024), and `SRC-SAS-003` (Angelopoulos, Souza & Mylopoulos, 2015).
+The self-adaptive-systems family has now produced four convergent strong antecedents: `SRC-SAS-001` (Metzger et al.), `SRC-SAS-002` (Gheibi & Weyns, 2024), `SRC-SAS-003` (Angelopoulos, Souza & Mylopoulos, 2015), and `SRC-DSPL-001` (Ayala et al., 2021).
 
 ### Cluster evidence
 
@@ -16,6 +16,8 @@ The cluster establishes prior art for:
 - evolution-induced additions/removals;
 - adaptation-space drift;
 - emergence/disappearance of options;
+- dynamic variability and valid runtime configuration spaces;
+- proactive recomputation/optimization over changing configuration spaces;
 - adaptation-space structure as an analytical determinant of adaptivity;
 - downstream adaptation/learning behaviour over the available alternatives.
 
@@ -25,7 +27,7 @@ The cluster establishes prior art for:
 
 **AC3: NOT ESTABLISHED.**
 
-The convergence means TGCV must no longer claim novelty for the existence, explicit representation, drift, expansion, contraction or multidimensional modelling of an adaptation/action space within adaptive software systems.
+The convergence means TGCV must no longer claim novelty for the existence, explicit representation, drift, expansion, contraction, multidimensional modelling or runtime recomputation/optimization of an adaptation/action/configuration space within adaptive software systems.
 
 The remaining candidate contribution is narrower and transversal:
 
@@ -35,16 +37,16 @@ The remaining candidate contribution is narrower and transversal:
 
 `mechanism → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`
 
-where `τ` denotes a domain-independent transformation rather than a software adaptation option, and where the mechanism producing the change is analytically separated from the accessible transformation object.
+where `τ` denotes a domain-independent transformation rather than a software adaptation/configuration option, and where the mechanism producing the change is analytically separated from the accessible transformation object.
 
 ## Next controlled operation
 
 Continue the bounded pass within self-adaptive systems, now targeting specifically:
 
-1. dynamic software product lines / variability-model evolution;
-2. runtime recomputation of valid configuration/action spaces;
-3. self-evolution changing future adaptation possibilities;
-4. explicit reachability/trajectory consequences of adaptation-space drift.
+1. runtime recomputation of valid configuration/action spaces beyond DSPL;
+2. self-evolution changing future adaptation possibilities;
+3. explicit reachability/trajectory consequences of adaptation-space drift;
+4. formal links between changing variability spaces and reachable behavioural states.
 
 Stop on the first plausible AC3 candidate and open a dedicated comparative architecture review. If none appears after the predefined subfamilies are screened, freeze this family as AC2 prior-art and proceed to the next SLR-1 family.
 
