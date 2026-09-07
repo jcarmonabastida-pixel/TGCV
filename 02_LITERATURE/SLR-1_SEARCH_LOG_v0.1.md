@@ -52,17 +52,29 @@ The organizational-capability family is therefore **FROZEN AS PRIOR-ART BOUNDARY
 
 ### CAND-0030 — SRC-SSR-001
 
-**Source:** Maidens, Kaynama, Mitchell, Oishi & Dumont (2013), *Lagrangian methods for approximating the viability kernel in high-dimensional systems*, Automatica 49(9), 2803–2810, DOI `10.1016/j.automatica.2013.03.020`.
-
 **Classification:** **AC2 VERY STRONG / DIRECT STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
 
-The source explicitly uses reachability and viability as set-valued analyses over dynamical state spaces, admissible inputs and constraints. It provides strong prior art for reachable/viable future-state sets and trajectory reasoning. The correspondence is downstream of TGCV's transformation-accessibility object: reachable state sets are not themselves an explicit `T_acc`, and `ΔT_acc` is not the central object.
+Maidens et al. (2013) provide strong prior art for reachability/viability over state spaces, admissible inputs and constraints. Reachable/viable future-state sets and trajectory reasoning are established, but these are downstream of TGCV's transformation-accessibility object.
 
-### Initial family decision
+### CAND-0031 — SRC-SSR-002
 
-The state-space/reachability family is **OPEN — INITIAL PASS**.
+**Source:** Gabel & Riedmiller (2008), *Reinforcement Learning for DEC-MDPs with Changing Action Sets and Partially Ordered Dependencies*, AAMAS 2008, DOI `10.1145/1402821.1402865`.
 
-The first source therefore establishes that TGCV must not claim novelty for generic reachability, reachable sets, viability kernels, or trajectory analysis. The controlled next operation is a targeted search for sources where **the set of admissible transitions/actions/transformations itself changes with state or context**, and where that changing transition/action structure is linked to reachability or future trajectories.
+**Classification:** **AC2 VERY STRONG / NEAR-DIRECT / AC3 NOT ESTABLISHED**.
+
+The source explicitly models changing action sets inside a state-transition process. Its scheduling application represents a resource's local state through the changing set of jobs waiting for processing; completing an operation changes another resource's future local action set. This directly establishes state-dependent action-space change linked to subsequent trajectories. citeturn1search47turn1search49
+
+The finding materially absorbs the claim that accessible actions can change through system evolution and that such changes affect subsequent decision trajectories. It does not establish a domain-independent `T_acc`, nor `ΔT_acc` as a transversal analytical object, nor the complete TGCV architecture.
+
+### Intermediate family decision
+
+The state-space/reachability family is now **OPEN — INTERMEDIATE PASS**.
+
+- AC2: **CONFIRMED / VERY STRONG / NEAR-DIRECT**.
+- AC3: **NOT ESTABLISHED**.
+- `NO_FULL_ABSORPTION_IDENTIFIED`: bounded current finding.
+- Generic reachability/viability and changing action-set dynamics are prior art.
+- Remaining candidate: a domain-independent analytical construction that explicitly treats changing accessible transformations as the central object and connects that change to reachability/trajectory/outcome.
 
 ## 10. Integrity boundary
 
@@ -70,4 +82,4 @@ No Core modification is triggered. No conceptual test is reopened. No empirical 
 
 ## 11. Next controlled operation
 
-Continue the predefined state-space/reachability family with changing-transition/action-space constructions. Do not invent an ad hoc family.
+Continue the predefined state-space/reachability family with a final targeted search for changing transition relations / feasible-transition spaces that are explicitly separated from observed execution and linked to future reachability or trajectories.
