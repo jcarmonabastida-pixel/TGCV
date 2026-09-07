@@ -48,10 +48,11 @@ Forward citation chaining for `SRC-TRANS-001` remains pending systematic bibliog
 | CAND-0010 | SRC-DSE-001 | Abdeen et al. (2014), *Multi-Objective Optimization in Rule-Based Design Space Exploration* | foundational DSE antecedent | **AC2 candidate/strong structural antecedent; AC3 not established** |
 | CAND-0011 | SRC-MDEO-001 | Burdusel et al. (2018/2019), *MDEOptimiser* | adjacent competing architecture / representation comparison | **AC2 confirmed; AC3 not established** |
 | CAND-0012 | SRC-HENSHIN-001 | Strüber et al. (2018), *Henshin...MDEOptimiser* | formal transformation-language antecedent | **AC2 confirmed; AC3 not established** |
+| CAND-0013 | SRC-DAF-001 | Xu et al. (2021), *Deep Affordance Foresight* | accessibility/future-possibilities antecedent | **AC2 strong; AC3 not established** |
 
 ### CH-0001 dossier outcome — consolidated structural cluster
 
-Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001`, `SRC-MDEO-001` and `SRC-HENSHIN-001` confirms a coherent prior-art cluster covering:
+Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001`, `SRC-MDEO-001` and `SRC-HENSHIN-001` confirms a coherent MDE prior-art cluster covering:
 
 - explicit transformation/search spaces;
 - transformation-rule applicability/executability or consistency;
@@ -62,19 +63,25 @@ Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001`, `SRC-MDEO-001` and `SRC
 - objective/fitness evaluation of resulting states;
 - model transformations used explicitly as search operators.
 
-This cluster **absorbs any broad originality claim over those individual structural elements**. It does not, on the current evidence, absorb the stronger TGCV architectural proposition concerning the explicit analytical object `ΔT_acc` — change in the accessibility relation itself — and its transversal connection to future reachability, trajectories, outcomes and value.
+### New accessibility/future-possibilities search front
 
-This remains a bounded interpretation, not a final SLR-1 originality conclusion.
+`SRC-DAF-001` provides a stronger cross-cluster falsification candidate. Deep Affordance Foresight explicitly defines an affordance as the set of states in which a parameterized skill is feasible and recursively models actions that become feasible after a current action is executed. It therefore establishes prior art for state-dependent accessibility, future feasible actions and chains of enabled possibilities.
+
+However, the current evidence still does not establish AC3 because the source does not isolate `ΔT_acc` — change in the entire accessibility relation — as an independent transversal analytical object, nor does it connect that object to a general value-construction architecture across domains.
+
+This cluster **absorbs any broad originality claim over state-dependent action accessibility, future enabled actions, reachability through feasible action chains, and goal-directed planning**. It does not yet absorb the narrower TGCV architectural proposition concerning the transversal analytical object `ΔT_acc` and its relation to future reachability, trajectories, outcomes and value.
 
 ## 7. Immediate controlled operation after chaining
 
-The Henshin formal-language check is complete. The next operation is therefore **not another source from the same MDE transformation cluster**. Continue with the predefined SLR-1 search families and independent candidate screening, targeting literature where accessibility/changeability is itself the analytical object rather than merely an operational consequence of a transformation rule.
+The MDE transformation cluster is closed. The next controlled operation is **citation-chain mining from `SRC-DAF-001` and adjacent affordance/future-possibility literature**, with the specific falsification target:
 
-No AC3 decision should be made solely from the current cluster.
+> Does prior literature explicitly represent the *whole available-action/transformation relation* as an object whose change is itself measured, theorized or causally linked to downstream possibilities?
+
+No AC3 decision should be made solely from `SRC-DAF-001`.
 
 ## 8. Integrity boundary
 
-The citation-chain results do not prove TGCV originality or non-originality. They establish a **prior-art cluster** that materially raises the standard required for any originality claim concerning transformation-space representation, transformation-chain exploration, reachability/path search, state-dependent applicability or optimization over transformation sequences.
+The citation-chain results do not prove TGCV originality or non-originality. They establish prior-art clusters that materially raise the standard required for originality claims concerning transformation-space representation, state-dependent applicability, future action possibilities, reachability, trajectories or optimization.
 
 The unresolved question remains the higher-level architecture: whether prior literature already contains the transversal relation in which changes in system conditions modify an accessible transformation space and thereby alter future reachability/trajectories and downstream outcomes/value.
 
