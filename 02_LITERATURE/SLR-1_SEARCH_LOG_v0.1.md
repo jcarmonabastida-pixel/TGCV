@@ -7,18 +7,6 @@
 
 ## 6. Candidate cluster — accessibility / possibility / dynamic action sets
 
-The falsification front has screened a convergent sequence of prior-art families:
-
-- transformation/search spaces in MDE;
-- state-dependent transformation applicability;
-- future enabled actions and recursive affordance chains;
-- system-change → affordance-change;
-- dynamic possibility spaces;
-- dynamic action sets;
-- configuration-dependent available-operation sets in reconfigurable/distributed systems;
-- formal/reconfigurable systems with changing transition relations;
-- endogenous action-space expansion in autonomous agents.
-
 ### Final structural-bridge decision
 
 The ReacTS / reactive-graphs / dynamic-action family is **FROZEN AS PRIOR-ART BOUNDARY**.
@@ -32,8 +20,6 @@ The ReacTS / reactive-graphs / dynamic-action family is **FROZEN AS PRIOR-ART BO
 ## 7. Candidate cluster — self-adaptive systems / runtime adaptation
 
 ### CAND-0027 — SRC-SAS-007
-
-**Source:** María Gómez Lacruz (2011), *Designing Self-Adaptive Systems*.
 
 **Classification:** **AC2 DIRECT / VERY STRONG / AC3 NOT ESTABLISHED**.
 
@@ -56,19 +42,25 @@ The self-adaptive family is therefore **FROZEN AS PRIOR-ART BOUNDARY**.
 
 ### CAND-0028 — SRC-OC-001
 
-**Source:** Koutsopoulos, Henkel & Stirna (2021), *An analysis of capability meta-models for expressing dynamic business transformation*.
-
 **Classification:** **AC2 STRONG / AC3 NOT ESTABLISHED**.
 
-The source systematically analyses capability meta-models for dynamic business transformation, including capability adaptability/change, capability realization, transformation/adaptation and impacts across related capabilities. This is strong prior art for capability change and propagation of transformation through capability relations. citeturn0search4turn0search7
+Koutsopoulos, Henkel & Stirna (2021) provide strong prior art for capability change, adaptation/transformation and propagation through capability relations. citeturn0search4turn0search7
 
-AC3 is not established because the source does not provide the domain-independent transformation predicate, an explicit `T_acc` accessibility structure, central `ΔT_acc`, or the full transversal chain to reachability, trajectory, outcome and value.
+### CAND-0029 — SRC-OC-002
+
+**Source:** Dagnino & Mariani (2007), *Dynamic gap bridging and realized gap set development: The strategic role of the firm in the coevolution of capability space and opportunity space*.
+
+**Classification:** **AC2 VERY STRONG / NEAR-DIRECT / AC3 NOT ESTABLISHED**.
+
+The source explicitly models a **Capability Space**, capability sets and their coevolution with an **Opportunity Space**. It addresses evolution, expansion/contraction of the spaces, potential versus realized capability sets, and the role of capability sets as conditions for seizing opportunities. citeturn1search1turn1search0
+
+This substantially absorbs the organizational-domain claim that an evolving space/set of capabilities can condition future opportunities. AC3 is nevertheless not established because the source does not provide a domain-independent transformation object/predicate, `T_acc` as accessible transformations, central `ΔT_acc`, or the full `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value` architecture.
 
 ### Family status
 
-**OPEN — INITIAL PASS.**
+**OPEN — INTERMEDIATE PASS.**
 
-The organizational-capability family has produced a strong AC2 antecedent. The next controlled operation is a targeted search for whether organizational/capability literature explicitly represents a changing **set/space of accessible capabilities or transformations**, rather than capability change merely as change in capability properties or realization.
+The family now contains a strong meta-model antecedent and a near-direct capability-space antecedent. The next controlled operation is a final targeted search for an organizational/capability construction that explicitly distinguishes **potentially accessible transformations/capabilities from realized execution** and links changes in that accessible set to subsequent trajectories/outcomes.
 
 ## 9. Integrity boundary
 
