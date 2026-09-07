@@ -43,40 +43,41 @@ The ReacTS / reactive-graphs / dynamic-action family is **FROZEN AS PRIOR-ART BO
 
 ### CAND-0020 — SRC-SAS-001
 
-**Source:** Metzger et al., *Realizing self-adaptive systems via online reinforcement learning and feature-model-guided exploration*.
+**Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
+
+### CAND-0021 — SRC-SAS-002
+
+**Source:** Gheibi & Weyns (2024), *Dealing with Drift of Adaptation Spaces in Learning-based Self-Adaptive Systems Using Lifelong Self-Adaptation*.
 
 **Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
 
-The source explicitly represents an adaptation space as a set of valid runtime configurations/actions, distinguishes possible adaptations from executed adaptations, and computes additions/removals of adaptation possibilities after system evolution.
+The source explicitly studies drift of an adaptation space, including emergence and disappearance of adaptation options over time. This strengthens prior art for an explicit changing future-action repertoire.
 
-This absorbs the broad novelty claims that TGCV is the first construction to represent:
+### CAND-0022 — SRC-SAS-003
 
-- a constraint-defined future adaptation/action repertoire;
-- possible versus executed adaptation;
-- evolution-induced addition/removal of future adaptations;
-- downstream exploration/learning consequences of changing adaptation possibilities.
+**Source:** Angelopoulos, Silva Souza & Mylopoulos (2015), *Capturing Variability in Adaptation Spaces: A Three-Peaks Approach*.
 
-However, AC3 remains unestablished because the source is software-adaptation specific and does not provide the full transversal architecture:
+**Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
 
-`T_acc = {τ | P_τ(S,C,L)=1}`
-
-`ΔT_acc = T_acc,t+1 ⊖ T_acc,t`
-
-`mechanism → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
+The source models an adaptation space as multidimensional variability across requirements/goals, architecture and behaviour, and treats the possible reconfigurations as the adaptation space. It therefore establishes near-direct prior art for explicit structural representation of an adaptation space and for treating its size/structure as analytically meaningful.
 
 ### Cluster status
 
-**OPEN — BOUNDED FALSIFICATION PASS STARTED.**
+**OPEN — BOUNDED FALSIFICATION PASS CONTINUES.**
 
-The next controlled operation is to screen the predefined self-adaptive subfamilies:
+The self-adaptive family now has convergent very-strong AC2 antecedents for:
 
-1. runtime adaptation/configuration spaces;
-2. dynamic variability models;
-3. self-evolution changing future adaptation options;
-4. adaptive control/planning with formal action-set recomputation;
-5. frameworks linking adaptation-space change to reachability/trajectory/outcomes.
+- explicit adaptation spaces;
+- multidimensional adaptation-space representation;
+- possible versus executed adaptation;
+- adaptation-space drift;
+- emergence/disappearance of options;
+- evolution-induced addition/removal;
+- downstream adaptation/learning behaviour.
 
-Decision boundary: AC3 candidate → dedicated comparative architecture review; otherwise freeze cluster after bounded screening and move to the next predefined SLR-1 family.
+AC3 remains unestablished because no screened source yet provides the domain-independent transformation predicate plus the full mechanism-to-ΔT_acc-to-value architecture.
+
+Next controlled operation: screen the remaining predefined self-adaptive subfamilies, beginning with **dynamic software product lines / variability-model evolution**, followed by runtime recomputation, self-evolution, and explicit reachability/trajectory consequences.
 
 ## 8. Integrity boundary
 
