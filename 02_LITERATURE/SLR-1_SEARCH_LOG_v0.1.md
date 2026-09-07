@@ -61,23 +61,33 @@ The source explicitly studies drift of an adaptation space, including emergence 
 
 The source models an adaptation space as multidimensional variability across requirements/goals, architecture and behaviour, and treats the possible reconfigurations as the adaptation space. It therefore establishes near-direct prior art for explicit structural representation of an adaptation space and for treating its size/structure as analytically meaningful.
 
+### CAND-0023 — SRC-DSPL-001
+
+**Source:** Ayala, Papadopoulos, Amor & Fuentes (2021), *ProDSPL: Proactive self-adaptation based on Dynamic Software Product Lines*.
+
+**Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
+
+The source combines dynamic variability, valid runtime configuration spaces, proactive recomputation/optimization, prediction of future conditions and downstream quality consequences. This is strong prior art for a changing constrained configuration space linked to future adaptation trajectories.
+
 ### Cluster status
 
 **OPEN — BOUNDED FALSIFICATION PASS CONTINUES.**
 
 The self-adaptive family now has convergent very-strong AC2 antecedents for:
 
-- explicit adaptation spaces;
+- explicit adaptation/configuration spaces;
 - multidimensional adaptation-space representation;
 - possible versus executed adaptation;
 - adaptation-space drift;
 - emergence/disappearance of options;
 - evolution-induced addition/removal;
-- downstream adaptation/learning behaviour.
+- dynamic variability and valid runtime configuration spaces;
+- proactive recomputation/optimization over changing configuration spaces;
+- downstream adaptation/learning/quality consequences.
 
 AC3 remains unestablished because no screened source yet provides the domain-independent transformation predicate plus the full mechanism-to-ΔT_acc-to-value architecture.
 
-Next controlled operation: screen the remaining predefined self-adaptive subfamilies, beginning with **dynamic software product lines / variability-model evolution**, followed by runtime recomputation, self-evolution, and explicit reachability/trajectory consequences.
+Next controlled operation: screen the remaining predefined self-adaptive subfamilies, beginning with **runtime recomputation of valid configuration/action spaces beyond DSPL**, followed by self-evolution and explicit reachability/trajectory consequences.
 
 ## 8. Integrity boundary
 
