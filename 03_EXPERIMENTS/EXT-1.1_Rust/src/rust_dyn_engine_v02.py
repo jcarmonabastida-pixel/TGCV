@@ -72,10 +72,8 @@ def trajectories_h(origin_id: int, tacc_by_origin: TAccMap, horizon: int) -> tup
     if horizon < 0:
         raise ValueError("NEGATIVE_HORIZON")
     paths: list[tuple[int, ...]] = [()]
-    frontier = {origin_id}
     for _ in range(horizon):
         expanded: list[tuple[int, ...]] = []
-        next_frontier: set[int] = set()
         for path in paths:
             node = origin_id if not path else path[-1]
             successors = _successors(node, tacc_by_origin)
@@ -84,62 +82,44 @@ def trajectories_h(origin_id: int, tacc_by_origin: TAccMap, horizon: int) -> tup
             else:
                 for nxt in successors:
                     expanded.append(path + (nxt,))
-                    next_frontier.add(nxt)
         paths = sorted(set(expanded))
-        frontier = next_frontier
-        if not frontier:
+        if not paths or all(not p for p in paths):
             break
     return tuple(paths)
 
 
-def classify_temporal_pair(
-    origin_a: int,
-    origin_b: int,
-    tacc_by_origin: TAccMap,
-    horizon: int,
-) -> dict:
+def classify_temporal_pair(origin_a: int, origin_b: int, tacc_by_origin: TAccMap, horizon: int) -> dict:
     t0 = canonical_tacc(tacc_by_origin.get(origin_a, ()))
     t1 = canonical_tacc(tacc_by_origin.get(origin_b, ()))
     d = delta_tacc(t0, t1)
     r0, r1 = reach_h(origin_a, tacc_by_origin, horizon), reach_h(origin_b, tacc_by_origin, horizon)
     tr0, tr1 = trajectories_h(origin_a, tacc_by_origin, horizon), trajectories_h(origin_b, tacc_by_origin, horizon)
-    return {
-        "origin_a": origin_a,
-        "origin_b": origin_b,
-        "horizon": horizon,
-        "delta_tacc": d,
-        "reach_equal": r0 == r1,
-        "reach_a": r0,
-        "reach_b": r1,
-        "trajectory_equal": tr0 == tr1,
-        "trajectory_a": tr0,
-        "trajectory_b": tr1,
-        "outcome_read": False,
-        "future_activity_read": False,
-        "sampling": False,
-        "predictive_metrics": False,
-    }
+    return {"origin_a": origin_a, "origin_b": origin_b, "horizon": horizon, "delta_tacc": d,
+            "reach_equal": r0 == r1, "reach_a": r0, "reach_b": r1,
+            "trajectory_equal": tr0 == tr1, "trajectory_a": tr0, "trajectory_b": tr1,
+            "outcome_read": False, "future_activity_read": False, "sampling": False, "predictive_metrics": False}
 
 
 def synthetic_conformance() -> dict:
     tau12 = (1, 10, 2, "1.0.0")
     tau13 = (1, 10, 3, "1.1.0")
+    tau62 = (6, 10, 2, "1.0.0")
     tau24 = (2, 20, 4, "1.0.0")
     tau34 = (3, 20, 4, "1.0.0")
     tau35 = (3, 20, 5, "1.1.0")
     tau45 = (4, 20, 5, "1.1.0")
-    graph = {1: (tau12,), 2: (tau24,), 3: (tau34, tau35), 4: (tau45,), 5: ()}
+    graph = {1: (tau12,), 2: (tau24,), 3: (tau34, tau35), 4: (tau45,), 5: (), 6: (tau62,)}
     tests: dict[str, bool] = {}
     tests["delta_reconfiguration_equal_cardinality"] = delta_tacc((tau12,), (tau13,))["classification"] == "RECONFIGURATION"
     tests["delta_persistence"] = delta_tacc((tau12,), (tau12,))["classification"] == "PERSISTENCE"
     tests["reach_excludes_origin"] = reach_h(1, graph, 1) == (2,)
-    pair = classify_temporal_pair(1, 2, graph, 1)
+    pair = classify_temporal_pair(1, 6, graph, 1)
     tests["pair_reports_delta"] = pair["delta_tacc"]["changed"]
     tests["origin_difference_does_not_force_reach_difference"] = pair["reach_equal"]
     tests["trajectory_excludes_origin"] = trajectories_h(1, graph, 1) == ((2,),)
     tests["trajectory_deterministic"] = trajectories_h(1, graph, 1) == trajectories_h(1, graph, 1)
     tests["firewall_closed"] = not pair["outcome_read"] and not pair["future_activity_read"] and not pair["sampling"] and not pair["predictive_metrics"]
-    repeat = classify_temporal_pair(1, 2, graph, 1)
+    repeat = classify_temporal_pair(1, 6, graph, 1)
     tests["repeatable"] = pair == repeat
     try:
         canonical_tacc((tau12, tau12))
