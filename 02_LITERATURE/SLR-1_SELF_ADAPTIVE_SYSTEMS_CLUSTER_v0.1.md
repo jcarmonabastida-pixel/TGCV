@@ -4,29 +4,28 @@
 
 ## Current bounded pass
 
-The self-adaptive-systems family has now produced a second, stronger antecedent: `SRC-SAS-002` (Gheibi & Weyns, 2024), which explicitly studies **drift of adaptation spaces** — the emergence and disappearance of adaptation options over time.
+The self-adaptive-systems family has now produced three convergent strong antecedents: `SRC-SAS-001` (Metzger et al.), `SRC-SAS-002` (Gheibi & Weyns, 2024), and `SRC-SAS-003` (Angelopoulos, Souza & Mylopoulos, 2015).
 
 ### Cluster evidence
 
-`SRC-SAS-001` established prior art for:
+The cluster establishes prior art for:
 - explicit adaptation spaces;
 - constraint-defined possible configurations;
 - possible vs executed adaptation;
-- evolution-induced additions/removals.
-
-`SRC-SAS-002` strengthens this boundary by establishing:
-- adaptation space as an explicit set of selectable options;
-- adaptation-space drift as an explicit phenomenon;
-- disappearance and emergence of options;
-- mechanisms and lifelong adaptation responding to that drift.
+- multidimensional representation of adaptation alternatives;
+- evolution-induced additions/removals;
+- adaptation-space drift;
+- emergence/disappearance of options;
+- adaptation-space structure as an analytical determinant of adaptivity;
+- downstream adaptation/learning behaviour over the available alternatives.
 
 ### Architectural verdict
 
-**AC2: VERY STRONG / CONVERGENT.**
+**AC2: VERY STRONG / CONVERGENT / NEAR-DIRECT.**
 
 **AC3: NOT ESTABLISHED.**
 
-The convergence means TGCV must no longer claim novelty for the existence of an explicit, changing adaptation/action space, including drift, expansion and contraction, within adaptive software systems.
+The convergence means TGCV must no longer claim novelty for the existence, explicit representation, drift, expansion, contraction or multidimensional modelling of an adaptation/action space within adaptive software systems.
 
 The remaining candidate contribution is narrower and transversal:
 
