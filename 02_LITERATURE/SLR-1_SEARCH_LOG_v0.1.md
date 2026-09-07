@@ -62,7 +62,7 @@ Maidens et al. (2013) provide strong prior art for reachability/viability over s
 
 **Classification:** **AC2 VERY STRONG / NEAR-DIRECT / AC3 NOT ESTABLISHED**.
 
-The source explicitly models changing action sets inside a state-transition process. Its scheduling application represents a resource's local state through the changing set of jobs waiting for processing; completing an operation changes another resource's future local action set. This directly establishes state-dependent action-space change linked to subsequent trajectories. citeturn1search47turn1search49
+The source explicitly models changing action sets inside a state-transition process. Its scheduling application represents a resource's local state through the changing set of jobs waiting for processing; completing an operation changes another resource's future local action set. This directly establishes state-dependent action-space change linked to subsequent trajectories.
 
 The finding materially absorbs the claim that accessible actions can change through system evolution and that such changes affect subsequent decision trajectories. It does not establish a domain-independent `T_acc`, nor `ΔT_acc` as a transversal analytical object, nor the complete TGCV architecture.
 
@@ -72,7 +72,7 @@ The finding materially absorbs the claim that accessible actions can change thro
 
 **Classification:** **AC2 VERY STRONG / DIRECT ANALOGUE / AC3 NOT ESTABLISHED**.
 
-The source explicitly models systems in which the set of possible states itself evolves, with states being added or removed, and links this evolving possibility structure to path dependence and future trajectories. citeturn3search2
+The source explicitly models systems in which the set of possible states itself evolves, with states being added or removed, and links this evolving possibility structure to path dependence and future trajectories.
 
 This materially absorbs the broader claim that the future possibility/state space itself can change and thereby alter future paths. It does not isolate transformations as the primary object, does not formulate a domain-independent accessibility predicate `P_τ`, and does not establish `ΔT_acc` as the central transversal analytical construct.
 
@@ -102,7 +102,7 @@ Therefore the state-space/reachability family is now **FROZEN AS PRIOR-ART BOUND
 
 **Classification:** **AC2 VERY STRONG / NEAR-DIRECT STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
 
-The source explicitly represents a system-level possible set `Π_t` and adjacent possible `A_t`, with `A_t` changing through time as the system evolves. It treats the adjacent possible as a changing structure of newly available possibilities and links that evolution to creative trajectories. citeturn1search0
+The source explicitly represents a system-level possible set `Π_t` and adjacent possible `A_t`, with `A_t` changing through time as the system evolves. It treats the adjacent possible as a changing structure of newly available possibilities and links that evolution to creative trajectories.
 
 The finding materially absorbs the broader claim that a system's future possibility structure can be explicitly represented and that its change can shape subsequent trajectories. It does not establish a domain-independent transformation set `T_acc`, a generic accessibility predicate `P_τ(S,C,L)`, or `ΔT_acc` as the transversal analytical object.
 
@@ -112,7 +112,7 @@ The finding materially absorbs the broader claim that a system's future possibil
 
 **Classification:** **AC2 VERY STRONG / NEAR-DIRECT STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
 
-TAP formalizes combinatorial innovation as a process that expands a system's space of possible states/objects. The possibility/configuration space itself is therefore modeled as dynamically growing through innovation. citeturn1academia33turn1academia30
+TAP formalizes combinatorial innovation as a process that expands a system's space of possible states/objects. The possibility/configuration space itself is therefore modeled as dynamically growing through innovation.
 
 This materially absorbs the claim that mechanisms of combinatorial innovation can change the future possibility structure. It does not isolate an accessible transformation set, does not provide a generic `P_τ(S,C,L)`, and does not establish the full TGCV chain.
 
@@ -122,7 +122,7 @@ This materially absorbs the claim that mechanisms of combinatorial innovation ca
 
 **Classification:** **AC2 STRONG / STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
 
-The framework treats generativity as a pipeline of successive data transformations and explicitly defines a design space of generative pipelines. Transformations may generate, expand, augment, reduce or otherwise modify information. citeturn1search6turn1search34
+The framework treats generativity as a pipeline of successive data transformations and explicitly defines a design space of generative pipelines. Transformations may generate, expand, augment, reduce or otherwise modify information.
 
 This absorbs the broad claim that generative systems can be analyzed through explicit transformations and their composition. It does not establish a domain-independent space of currently accessible transformations or centralize `ΔT_acc` as the analytical object.
 
@@ -132,7 +132,7 @@ This absorbs the broad claim that generative systems can be analyzed through exp
 
 **Classification:** **AC2 VERY STRONG / NEAR-DIRECT STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
 
-The paper explicitly represents and visualizes the generative/expressive range of a procedural generator and studies how changing generator parameters changes that space. It also identifies holes and biases in the space of generated content. citeturn1search1turn1search3
+The paper explicitly represents and visualizes the generative/expressive range of a procedural generator and studies how changing generator parameters changes that space. It also identifies holes and biases in the space of generated content.
 
 This materially absorbs the claim that a generator-dependent possibility/output space can be made explicit and compared under changes in the system. It does not represent transformations themselves as the transversal accessibility object and does not establish the downstream TGCV architecture.
 
@@ -153,6 +153,16 @@ The generativity/combinatorial possibility family is now **FROZEN AS PRIOR-ART B
 
 No Core modification is triggered. No conceptual test is reopened. No empirical protocol is modified. EXT-1.1 remains excluded from this literature gate.
 
-## 12. Next controlled operation
+## 12. Final SLR-1 status and next controlled operation
 
-The generativity/combinatorial possibility family is frozen. Proceed to the next predefined SLR-1 family in protocol order. Do not invent a new family or infer architectural originality from the absence of AC3 in this bounded pass.
+All **predefined SLR-1 concept families** in the reconstructed protocol have now been screened to the documented bounded depth. The SLR-1 phase therefore moves from generic prior-art discovery to **final architectural decision and contribution specification**.
+
+Current bounded result:
+
+- AC2: **CONFIRMED / CONVERGENT / VERY STRONG** across the screened families.
+- AC3: **NOT ESTABLISHED**.
+- `NO_FULL_ABSORPTION_IDENTIFIED`.
+- Broad changing-possibility/action/capability/state-space phenomena: **ABSORBED AS PRIOR ART**.
+- Residual candidate: explicit domain-independent `T_acc`, explicit accessibility semantics, central `ΔT_acc`, and its relation to reachability/trajectory/outcome/value.
+
+The next controlled operation is the **Contribution Specification Gate for `T_acc → ΔT_acc`**. It must not introduce another generic literature family. It must convert the residual candidate into explicit contribution claims, map each claim against the strongest prior-art boundary, state its falsifier, and separate formal/analytical contribution from empirical utility.
