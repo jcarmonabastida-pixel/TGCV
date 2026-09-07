@@ -85,9 +85,17 @@ The source treats runtime adaptation alternatives as an explicit space of possib
 
 The sources explicitly move beyond ordinary self-adaptation: self-evolution changes the operational design domain and addresses conditions, goals and constraints not anticipated initially. The proposed evolutionary engine can generate and evaluate novel system variants, evolve architecture online and integrate new capabilities. This absorbs broad novelty claims concerning autonomous change of a system's future capability envelope or adaptation domain.
 
+### CAND-0026 — SRC-SAS-006
+
+**Source:** Morin et al. (2009), *Unifying Runtime Adaptation and Design Evolution*.
+
+**Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
+
+The source explicitly couples runtime self-adaptation with runtime design evolution. Changes in design models and runtime conditions are monitored and correlated to drive subsequent adaptation decisions, demonstrating that evolution of the system design can modify the conditions and possibilities for later adaptation. This is strong prior art for mechanism-driven modification of future adaptation/evolution possibilities.
+
 ### Cluster status
 
-**OPEN — BOUNDED FALSIFICATION PASS CONTINUES.**
+**OPEN — FINAL BOUNDED SUBPASS.**
 
 The self-adaptive family now has convergent very-strong/near-direct AC2 antecedents for:
 
@@ -103,11 +111,12 @@ The self-adaptive family now has convergent very-strong/near-direct AC2 antecede
 - bounded-horizon adaptation trajectories;
 - utility/value assessment and utility-based reduction of the candidate space;
 - downstream adaptation/learning/quality consequences;
-- autonomous self-evolution of the operational domain and future system capabilities.
+- autonomous self-evolution of the operational domain and future system capabilities;
+- coupling runtime adaptation with design evolution so that later adaptation possibilities depend on evolved design/runtime state.
 
 AC3 remains unestablished because no screened source yet provides the domain-independent transformation predicate plus the full mechanism-to-ΔT_acc-to-value architecture.
 
-Next controlled operation: screen the remaining predefined self-adaptive subfamily concerning **explicit reachability/trajectory consequences of adaptation-space drift and formal links between changing variability spaces and reachable behavioural states**. If that pass also fails to produce AC3, freeze the self-adaptive family as AC2 prior-art and move to the next SLR-1 family.
+Next controlled operation: perform the final targeted pass on **explicit reachability/trajectory consequences of adaptation-space drift and formal links between changing variability spaces and reachable behavioural states**. If that pass also fails to produce AC3, freeze the self-adaptive family as AC2 prior-art and move to the next SLR-1 family.
 
 ## 8. Integrity boundary
 
