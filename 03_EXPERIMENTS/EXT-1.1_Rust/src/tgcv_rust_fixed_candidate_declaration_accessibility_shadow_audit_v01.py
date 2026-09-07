@@ -2,14 +2,8 @@
 """TGCV Rust Fixed-Candidate Declaration-Driven Accessibility Shadow Audit v0.1.
 
 OUTCOME-BLIND / STRUCTURAL / SHADOW ONLY.
-
-Tests whether focal dependency-declaration changes can alter accessibility of
-FIXED candidate transformation identities without changing candidate identity
-or candidate-universe membership.
-
-This is deliberately NOT a T_acc or Delta T_acc experiment. It produces only
-shadow diagnostics. No outcome, model, value, execution, or future activity is
-used. R* v0.2 is imported only for requirement semantics.
+No T_acc, Delta T_acc, outcome, model, value, execution, or future activity.
+R* v0.2 is frozen and used only through its existing API.
 """
 from __future__ import annotations
 
@@ -47,7 +41,7 @@ def load_rstar():
     return requirement_kind, satisfies
 
 
-def main() -> int:
+def main():
     ap = argparse.ArgumentParser(description="TGCV Rust fixed-candidate declaration-driven accessibility shadow audit v0.1")
     ap.add_argument("--zip", default=str(DEFAULT_ZIP))
     ap.add_argument("--max-rows", type=int, default=0, help="0 = all dependency rows")
@@ -80,36 +74,38 @@ def main() -> int:
             versions_member = member(zf, "package_versions.csv")
             deps_member = member(zf, "package_dependencies.csv")
 
-            # Focal version metadata and successive temporal pairs.
             version_package = {}
             version_created = {}
-            package_versions = defaultdict(list)
+            version_str = {}
+            versions_by_package = defaultdict(list)
+
             with zf.open(versions_member, "r") as raw:
                 text = io.TextIOWrapper(raw, encoding="utf-8", errors="strict", newline="")
                 reader = csv.DictReader(text)
                 required = {"id", "package_id", "version_str", "created_at"}
-                if not required.issubset(set(reader.fieldnames or [])):
-                    raise RuntimeError(f"VERSION_SCHEMA_ERROR: missing={sorted(required - set(reader.fieldnames or []))}")
+                fields = set(reader.fieldnames or [])
+                if not required.issubset(fields):
+                    raise RuntimeError(f"VERSION_SCHEMA_ERROR: missing={sorted(required - fields)}")
                 for row in reader:
                     vid = as_int(row["id"], "package_versions.id")
                     pid = as_int(row["package_id"], "package_versions.package_id")
                     version_package[vid] = pid
+                    version_str[vid] = row["version_str"].strip()
                     version_created[vid] = row["created_at"].strip()
-                    package_versions[pid].append(vid)
+                    versions_by_package[pid].append(vid)
 
             next_version = {}
-            pair_count = 0
-            for pid, vids in package_versions.items():
+            total_pairs = 0
+            for pid, vids in versions_by_package.items():
                 ordered = sorted(vids, key=lambda v: (version_created[v], v))
                 for old, new in zip(ordered, ordered[1:]):
                     next_version[old] = new
-                    pair_count += 1
+                    total_pairs += 1
 
             if args.max_pairs:
-                allowed_old = set(sorted(next_version)[: args.max_pairs])
-                next_version = {k: v for k, v in next_version.items() if k in allowed_old}
+                selected = set(sorted(next_version)[: args.max_pairs])
+                next_version = {k: v for k, v in next_version.items() if k in selected}
 
-            # Declaration map: focal_version -> target_package -> set(raw requirements).
             declarations = defaultdict(lambda: defaultdict(set))
             dependency_rows = 0
             malformed_rows = 0
@@ -119,8 +115,9 @@ def main() -> int:
                 text = io.TextIOWrapper(raw, encoding="utf-8", errors="strict", newline="")
                 reader = csv.DictReader(text)
                 required = {"depending_version", "depending_on_package", "semver_str"}
-                if not required.issubset(set(reader.fieldnames or [])):
-                    raise RuntimeError(f"DEPENDENCY_SCHEMA_ERROR: missing={sorted(required - set(reader.fieldnames or []))}")
+                fields = set(reader.fieldnames or [])
+                if not required.issubset(fields):
+                    raise RuntimeError(f"DEPENDENCY_SCHEMA_ERROR: missing={sorted(required - fields)}")
                 for row in reader:
                     dependency_rows += 1
                     if args.max_rows and dependency_rows > args.max_rows:
@@ -138,13 +135,9 @@ def main() -> int:
                     seen_rows.add(key)
                     declarations[focal][target_pkg].add(req)
 
-            # Shadow accessibility: fixed candidate is (focal origin, target package,
-            # target version). It is tested against the focal declaration at t0/t1.
-            # Candidate universe is the union of target releases observed in the
-            # retained dataset, but candidate identity itself never changes because
-            # of declaration membership. Target release existence is intentionally
-            # NOT used as the declaration-driven difference; both endpoints must
-            # have the target version available to isolate declaration variation.
+            # Candidate target releases are fixed independently of declarations.
+            # To isolate declaration-driven accessibility, a target version must
+            # already exist by t0. Thus release availability cannot drive 0->1/1->0.
             target_versions_by_package = defaultdict(list)
             for vid, pid in version_package.items():
                 target_versions_by_package[pid].append(vid)
@@ -153,14 +146,11 @@ def main() -> int:
 
             stats = defaultdict(int)
             examples = []
-            candidate_records = []
 
             for old, new in sorted(next_version.items()):
                 old_deps = declarations.get(old, {})
                 new_deps = declarations.get(new, {})
-                target_pkgs = sorted(set(old_deps) | set(new_deps))
-
-                for target_pkg in target_pkgs:
+                for target_pkg in sorted(set(old_deps) | set(new_deps)):
                     old_reqs = old_deps.get(target_pkg, set())
                     new_reqs = new_deps.get(target_pkg, set())
                     if old_reqs == new_reqs:
@@ -174,23 +164,22 @@ def main() -> int:
                     else:
                         stats["declaration_changed_target_pairs"] += 1
 
-                    # Evaluate fixed candidate identities only for target versions
-                    # available at BOTH temporal endpoints. This prevents release
-                    # availability from masquerading as declaration-driven change.
-                    common_targets = target_versions_by_package.get(target_pkg, [])
-                    for target_vid in common_targets:
-                        target_ts = version_created[target_vid]
-                        if target_ts > version_created[old] or target_ts > version_created[new]:
-                            continue
+                    # Fixed candidate identity: (origin package, target package,
+                    # target version). Declaration text is not part of identity.
+                    # Require target release <= t0 at both endpoints, isolating the
+                    # effect of the focal declaration itself.
+                    for target_vid in target_versions_by_package.get(target_pkg, []):
+                        if version_created[target_vid] > version_created[old]:
+                            break
 
-                        # Candidate exists independently of declaration membership.
-                        # Determine whether each endpoint's declaration admits this
-                        # target version under R* v0.2.
                         old_supported = [r for r in old_reqs if requirement_kind(r) != "UNSUPPORTED"]
                         new_supported = [r for r in new_reqs if requirement_kind(r) != "UNSUPPORTED"]
 
-                        old_access = any(satisfies(requirement, target_version=target_vid, version_id=target_vid) for requirement in old_supported) if old_supported else False
-                        new_access = any(satisfies(requirement, target_version=target_vid, version_id=target_vid) for requirement in new_supported) if new_supported else False
+                        try:
+                            old_access = any(satisfies(version_str[target_vid], r) for r in old_supported)
+                            new_access = any(satisfies(version_str[target_vid], r) for r in new_supported)
+                        except ValueError as exc:
+                            raise RuntimeError(f"RSTAR_EVALUATION_ERROR: {exc}") from exc
 
                         stats["fixed_candidates_tested"] += 1
                         if old_access and not new_access:
@@ -202,7 +191,6 @@ def main() -> int:
                         else:
                             stats["accessibility_persistent_0"] += 1
 
-                        # This is a shadow classification only. No T_acc set is built.
                         if old_access != new_access:
                             stats["declaration_driven_accessibility_changes"] += 1
                             if len(examples) < 20:
@@ -211,7 +199,8 @@ def main() -> int:
                                     "origin_version_t1": new,
                                     "target_package_id": target_pkg,
                                     "target_version_id": target_vid,
-                                    "target_version_created_at": target_ts,
+                                    "target_version": version_str[target_vid],
+                                    "target_version_created_at": version_created[target_vid],
                                     "t0": version_created[old],
                                     "t1": version_created[new],
                                     "t0_requirements": sorted(old_reqs),
@@ -223,8 +212,8 @@ def main() -> int:
             report = {
                 "zip": str(zip_path),
                 "rstar_version": "v0.2",
-                "pair_count_total": pair_count,
-                "pair_count_inspected": len(next_version),
+                "pairs_total": total_pairs,
+                "pairs_inspected": len(next_version),
                 "dependency_rows_scanned": dependency_rows,
                 "malformed_rows": malformed_rows,
                 "duplicate_rows": duplicate_rows,
@@ -233,7 +222,7 @@ def main() -> int:
                 "checks": {
                     "candidate_identity_includes_declaration": False,
                     "candidate_universe_membership_driven_by_declaration": False,
-                    "target_release_cutoff_used_for_change_classification": False,
+                    "target_release_cutoff_used_as_change_driver": False,
                     "execution_used": False,
                     "outcome_used": False,
                     "value_used": False,
@@ -248,32 +237,21 @@ def main() -> int:
 
             print("\nTEMPORAL / DECLARATION BASE")
             print(f"FOCAL_VERSION_COUNT: {len(version_created)}")
-            print(f"PACKAGE_COUNT: {len(package_versions)}")
-            print(f"SUCCESSIVE_FOCAL_PAIRS_TOTAL: {pair_count}")
+            print(f"PACKAGE_COUNT: {len(versions_by_package)}")
+            print(f"SUCCESSIVE_FOCAL_PAIRS_TOTAL: {total_pairs}")
             print(f"SUCCESSIVE_FOCAL_PAIRS_INSPECTED: {len(next_version)}")
             print(f"DEPENDENCY_ROWS_SCANNED: {dependency_rows}")
             print(f"MALFORMED_ROWS: {malformed_rows}")
             print(f"DUPLICATE_ROWS: {duplicate_rows}")
 
             print("\nDECLARATION VARIATION SHADOW")
-            for k in (
-                "declaration_changed_focal_target_pairs",
-                "declaration_removed_target_pairs",
-                "declaration_added_target_pairs",
-                "declaration_changed_target_pairs",
-                "fixed_candidates_tested",
-                "accessibility_1_to_0",
-                "accessibility_0_to_1",
-                "accessibility_persistent_1",
-                "accessibility_persistent_0",
-                "declaration_driven_accessibility_changes",
-            ):
+            for k in ("declaration_changed_focal_target_pairs", "declaration_removed_target_pairs", "declaration_added_target_pairs", "declaration_changed_target_pairs", "fixed_candidates_tested", "accessibility_1_to_0", "accessibility_0_to_1", "accessibility_persistent_1", "accessibility_persistent_0", "declaration_driven_accessibility_changes"):
                 print(f"{k.upper()}: {stats[k]}")
 
             print("\nIDENTITY / UNIVERSE FIREWALL")
             print("CANDIDATE_IDENTITY_INCLUDES_DECLARATION: False")
             print("CANDIDATE_UNIVERSE_MEMBERSHIP_DRIVEN_BY_DECLARATION: False")
-            print("TARGET_RELEASE_CUTOFF_USED_FOR_CHANGE_CLASSIFICATION: False")
+            print("TARGET_RELEASE_CUTOFF_USED_AS_CHANGE_DRIVER: False")
 
             print("\nLEAKAGE / INTEGRITY")
             print("EXECUTION_USED: False")
@@ -295,7 +273,7 @@ def main() -> int:
             print("NEXT_GATE: FIXED_IDENTITY_ACCESSIBILITY_DECISION")
             return 0
 
-    except (zipfile.BadZipFile, RuntimeError, OSError, csv.Error, UnicodeError, TypeError) as exc:
+    except (zipfile.BadZipFile, RuntimeError, OSError, csv.Error, UnicodeError) as exc:
         print(f"FAIL_AUDIT_RUNTIME: {type(exc).__name__}: {exc}")
         return 7
 
