@@ -19,12 +19,6 @@ The ReacTS / reactive-graphs / dynamic-action family is **FROZEN AS PRIOR-ART BO
 
 ## 7. Candidate cluster — self-adaptive systems / runtime adaptation
 
-### CAND-0027 — SRC-SAS-007
-
-**Classification:** **AC2 DIRECT / VERY STRONG / AC3 NOT ESTABLISHED**.
-
-The source explicitly defines a Possibility Space from variability information as a state-machine representation containing feasible configurations reachable through execution and the reconfigurations among them, and performs explicit reconfiguration/reachability analysis.
-
 ### Final bounded subpass decision
 
 The final targeted self-adaptive subpass **did not identify AC3**. It did identify a direct structural antecedent for the remaining reachability/trajectory link.
@@ -48,20 +42,28 @@ Koutsopoulos, Henkel & Stirna (2021) provide strong prior art for capability cha
 
 ### CAND-0029 — SRC-OC-002
 
-**Source:** Dagnino & Mariani (2007), *Dynamic gap bridging and realized gap set development: The strategic role of the firm in the coevolution of capability space and opportunity space*.
-
 **Classification:** **AC2 VERY STRONG / NEAR-DIRECT / AC3 NOT ESTABLISHED**.
 
-The source explicitly models a **Capability Space**, capability sets and their coevolution with an **Opportunity Space**. It addresses evolution, expansion/contraction of the spaces, potential versus realized capability sets, and the role of capability sets as conditions for seizing opportunities. citeturn1search1turn1search0
+Dagnino & Mariani (2007) explicitly model a Capability Space, capability sets and their coevolution with an Opportunity Space, including potential versus realized capability sets and capability sets as conditions for seizing opportunities. citeturn1search1turn1search0
 
-This substantially absorbs the organizational-domain claim that an evolving space/set of capabilities can condition future opportunities. AC3 is nevertheless not established because the source does not provide a domain-independent transformation object/predicate, `T_acc` as accessible transformations, central `ΔT_acc`, or the full `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value` architecture.
+### Final bounded subpass decision
 
-### Family status
+A final targeted search for organizational/capability constructions that explicitly distinguish potential/accessibility from realization did **not identify a Level-3 architectural equivalent**. The closest findings remain capability-space / opportunity-space constructions rather than a domain-independent accessible-transformation architecture.
 
-**OPEN — INTERMEDIATE PASS.**
+The organizational-capability family is therefore **FROZEN AS PRIOR-ART BOUNDARY**.
 
-The family now contains a strong meta-model antecedent and a near-direct capability-space antecedent. The next controlled operation is a final targeted search for an organizational/capability construction that explicitly distinguishes **potentially accessible transformations/capabilities from realized execution** and links changes in that accessible set to subsequent trajectories/outcomes.
+- AC2: **CONFIRMED / VERY STRONG / NEAR-DIRECT**.
+- AC3: **NOT ESTABLISHED**.
+- `NO_FULL_ABSORPTION_IDENTIFIED`: bounded current finding, not universal novelty proof.
+- Broad claims about dynamic capability spaces, potential/realized capability sets and capability change conditioning future opportunities: **ABSORBED**.
+- Remaining TGCV candidate: domain-independent `T_acc`, central `ΔT_acc`, and the full mechanism → accessible-transformations → reachability → trajectory → outcome/value architecture.
+- TGCV Core: **UNCHANGED**.
+- EXT-1.1: **NOT USED**.
 
 ## 9. Integrity boundary
 
 No Core modification is triggered. No conceptual test is reopened. No empirical protocol is modified. EXT-1.1 remains excluded from this literature gate.
+
+## 10. Next predefined family
+
+Proceed to the next family in the reconstructed SLR-1 protocol. Do not invent an ad hoc family from the organizational-capability findings.
