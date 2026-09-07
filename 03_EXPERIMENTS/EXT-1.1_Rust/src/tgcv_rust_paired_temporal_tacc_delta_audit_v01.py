@@ -65,9 +65,10 @@ def req_matches(req: str, target_version: str) -> bool:
     return satisfies(target_version, req)
 
 
-def canonical_sha(con: sqlite3.Connection, table: str, columns: str) -> str:
+def canonical_sha(con: sqlite3.Connection, table: str, columns: str, order_by: str | None = None) -> str:
     h = hashlib.sha256()
-    for row in con.execute(f"SELECT {columns} FROM {table} ORDER BY origin_id,target_package_id,target_version_id"):
+    ordering = order_by or columns
+    for row in con.execute(f"SELECT {columns} FROM {table} ORDER BY {ordering}"):
         h.update("|".join(map(str, row)).encode("utf-8") + b"\n")
     return h.hexdigest()
 
@@ -153,6 +154,7 @@ def main() -> int:
                         dep_reqs.append((oid, tpid, req))
 
                     # Reconstruct membership-level T_acc independently at t0/t1.
+                    # Each canonical member is (origin_id,target_package_id,target_version_id).
                     inserted_t0 = inserted_t1 = 0
                     for oid, tpid, req in dep_reqs:
                         pair = db.execute("SELECT t0,t1 FROM pairs WHERE origin_id=?", (oid,)).fetchone()
@@ -164,13 +166,15 @@ def main() -> int:
                             unresolved_targets += 1
                             continue
                         try:
+                            parsed_t0 = parse_ts(t0)
+                            parsed_t1 = parse_ts(t1)
                             for vid, vstr, vts in target_rows:
                                 ts = parse_ts(vts)
-                                if ts <= parse_ts(t0) and req_matches(req, vstr):
+                                if ts <= parsed_t0 and req_matches(req, vstr):
                                     before = db.total_changes
                                     db.execute("INSERT OR IGNORE INTO t0 VALUES (?,?,?)", (oid, tpid, vid))
                                     inserted_t0 += db.total_changes - before
-                                if ts <= parse_ts(t1) and req_matches(req, vstr):
+                                if ts <= parsed_t1 and req_matches(req, vstr):
                                     before = db.total_changes
                                     db.execute("INSERT OR IGNORE INTO t1 VALUES (?,?,?)", (oid, tpid, vid))
                                     inserted_t1 += db.total_changes - before
@@ -199,7 +203,7 @@ def main() -> int:
 
                     t0_sha = canonical_sha(db, "t0", "origin_id,target_package_id,target_version_id")
                     t1_sha = canonical_sha(db, "t1", "origin_id,target_package_id,target_version_id")
-                    pair_sha = canonical_sha(db, "pairs", "origin_id,package_id,0")
+                    pair_sha = canonical_sha(db, "pairs", "origin_id,package_id,t0,t1,next_version_id", "origin_id,package_id,t0,t1,next_version_id")
                     combined_sha = hashlib.sha256((pair_sha + t0_sha + t1_sha).encode()).hexdigest()
                     empty_t0 = db.execute("SELECT COUNT(*) FROM pairs p LEFT JOIN (SELECT DISTINCT origin_id FROM t0) x ON p.origin_id=x.origin_id WHERE x.origin_id IS NULL").fetchone()[0]
                     empty_t1 = db.execute("SELECT COUNT(*) FROM pairs p LEFT JOIN (SELECT DISTINCT origin_id FROM t1) x ON p.origin_id=x.origin_id WHERE x.origin_id IS NULL").fetchone()[0]
@@ -252,7 +256,6 @@ def main() -> int:
                         "DEPENDENCY_CSV_MATERIALIZED_IN_MEMORY": True,
                     }.items(): print(f"{k}: {v}")
 
-                    # This is deliberately a runtime integrity indicator, not a scientific PASS.
                     runtime_ok = paired > 0 and bool(t0_sha) and bool(t1_sha) and bool(pair_sha)
                     print("\nRUNTIME_STRUCTURAL_EXECUTION_OK:", runtime_ok)
                     print("DECISION_STATUS: OPEN_PENDING_HUMAN_REVIEW_AND_ACCEPTANCE")
