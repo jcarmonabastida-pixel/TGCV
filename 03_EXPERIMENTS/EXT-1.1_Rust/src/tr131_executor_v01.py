@@ -30,8 +30,6 @@ if str(SRC_DIR) not in sys.path:
 
 from rstar_v02 import resolve_edge  # noqa: E402
 
-DEFAULT_ZIP = Path.home() / "Downloads" / "rust_repos_2022_09_07.zip"
-
 
 @dataclass(frozen=True, order=True)
 class BState:
@@ -72,6 +70,8 @@ def compare_b_classes(records: Iterable[tuple[int, BState, Iterable[tuple[int, i
     groups: dict[BState, list[tuple[int, tuple[tuple[int, int, int, str], ...]]]] = defaultdict(list)
     seen_origins: set[int] = set()
     for origin_id, bstate, tacc in records:
+        if not isinstance(bstate, BState):
+            raise TypeError(f"MISSING_OR_INVALID_B_STATE:{origin_id}")
         if origin_id in seen_origins:
             raise ValueError(f"DUPLICATE_ORIGIN_ID:{origin_id}")
         seen_origins.add(origin_id)
@@ -148,7 +148,7 @@ def synthetic_conformance() -> dict:
     results["different_B_not_comparable"] = compare_b_classes([
         (1, BState("1.0.0", 0, 0.0, 1), same),
         (2, BState("1.1.0", 0, 0.0, 1), different),
-    )["pair_comparison_count"] == 0
+    ])["pair_comparison_count"] == 0
 
     results["empty_tacc_equality"] = compare_b_classes([
         (1, BState("1.0.0", 0, 0.0, 0), empty),
@@ -170,8 +170,8 @@ def synthetic_conformance() -> dict:
             (2, BState("1.0.0", 0, 0.0, 0), empty),
         ])
         results["missing_state_fail_closed"] = False
-    except (TypeError, AttributeError):
-        results["missing_state_fail_closed"] = True
+    except TypeError as exc:
+        results["missing_state_fail_closed"] = str(exc).startswith("MISSING_OR_INVALID_B_STATE:")
 
     ordered = compare_b_classes([
         (1, BState("1.0.0", 0, 0.0, 1), same_card_different_membership),
@@ -183,8 +183,6 @@ def synthetic_conformance() -> dict:
     ])
     results["order_permutation_invariant"] = ordered["witness_count"] == permuted["witness_count"] and ordered["pair_comparison_count"] == permuted["pair_comparison_count"]
 
-    # Firewall test: an outcome-like field exists in the synthetic record but is
-    # intentionally not represented in BState or passed to comparison logic.
     synthetic_with_prohibited = {"outcome": 1, "record": (1, BState("1.0.0", 0, 0.0, 0), empty)}
     results["prohibited_outcome_not_read"] = compare_b_classes([synthetic_with_prohibited["record"]])["witness_count"] == 0
 
