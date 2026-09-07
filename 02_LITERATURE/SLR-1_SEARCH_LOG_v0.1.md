@@ -49,6 +49,7 @@ Forward citation chaining for `SRC-TRANS-001` remains pending systematic bibliog
 | CAND-0011 | SRC-MDEO-001 | Burdusel et al. (2018/2019), *MDEOptimiser* | adjacent competing architecture / representation comparison | **AC2 confirmed; AC3 not established** |
 | CAND-0012 | SRC-HENSHIN-001 | Strüber et al. (2018), *Henshin...MDEOptimiser* | formal transformation-language antecedent | **AC2 confirmed; AC3 not established** |
 | CAND-0013 | SRC-DAF-001 | Xu et al. (2021), *Deep Affordance Foresight* | accessibility/future-possibilities antecedent | **AC2 strong; AC3 not established** |
+| CAND-0014 | SRC-SCI-001 | Petersen, Rasmussen & Trettvik (2020), *Affordances of Shape-Changing Interfaces* | system-change → affordance-change antecedent | **AC2 strong; AC3 not established** |
 
 ### CH-0001 dossier outcome — consolidated structural cluster
 
@@ -63,21 +64,23 @@ Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001`, `SRC-MDEO-001` and `SRC
 - objective/fitness evaluation of resulting states;
 - model transformations used explicitly as search operators.
 
-### New accessibility/future-possibilities search front
+### Accessibility/future-possibilities search front
 
-`SRC-DAF-001` provides a stronger cross-cluster falsification candidate. Deep Affordance Foresight explicitly defines an affordance as the set of states in which a parameterized skill is feasible and recursively models actions that become feasible after a current action is executed. It therefore establishes prior art for state-dependent accessibility, future feasible actions and chains of enabled possibilities.
+`SRC-DAF-001` provides a strong cross-cluster falsification candidate. Deep Affordance Foresight explicitly defines an affordance as the set of states in which a parameterized skill is feasible and recursively models actions that become feasible after a current action is executed. It therefore establishes prior art for state-dependent accessibility, future feasible actions and chains of enabled possibilities.
 
-However, the current evidence still does not establish AC3 because the source does not isolate `ΔT_acc` — change in the entire accessibility relation — as an independent transversal analytical object, nor does it connect that object to a general value-construction architecture across domains.
+`SRC-SCI-001` strengthens this result in a different direction: shape-changing-interface research explicitly states that affordances change when the interface changes its shape, linking system configuration changes directly to changes in available functions/action possibilities. citeturn1search35turn1search0
 
-This cluster **absorbs any broad originality claim over state-dependent action accessibility, future enabled actions, reachability through feasible action chains, and goal-directed planning**. It does not yet absorb the narrower TGCV architectural proposition concerning the transversal analytical object `ΔT_acc` and its relation to future reachability, trajectories, outcomes and value.
+Together, these sources **absorb any broad originality claim over state-dependent action accessibility, future enabled actions, or the generic proposition that changing system conditions can change action possibilities**.
 
-## 7. Immediate controlled operation after chaining
+They still do not establish AC3 because neither source, on the current evidence, formalizes the *whole accessibility relation* as a transversal object whose change is independently represented and connected to a general value-construction architecture.
 
-The MDE transformation cluster is closed. The next controlled operation is **citation-chain mining from `SRC-DAF-001` and adjacent affordance/future-possibility literature**, with the specific falsification target:
+## 7. Immediate controlled operation after accessibility screening
 
-> Does prior literature explicitly represent the *whole available-action/transformation relation* as an object whose change is itself measured, theorized or causally linked to downstream possibilities?
+The next operation is now **citation-chain mining around formal/general affordance landscapes and fields of affordances**, especially sources that treat the landscape itself as a dynamical object. The falsification target is:
 
-No AC3 decision should be made solely from `SRC-DAF-001`.
+> Does prior literature explicitly represent the whole available-action/transformation landscape as a dynamical object whose change is itself measured, theorized or causally linked to downstream possibilities?
+
+A promising immediate cluster is the Rietveld/Kiverstein tradition of “landscape/field of affordances”, followed by formal possibility-space/action-space representations. No AC3 decision should be made solely from the current accessibility cluster.
 
 ## 8. Integrity boundary
 
