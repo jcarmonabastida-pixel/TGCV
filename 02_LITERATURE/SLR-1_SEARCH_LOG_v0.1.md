@@ -1,221 +1,74 @@
 # TGCV SLR-1 — Search Log v0.1
 
 **Status:** RECONSTRUCTED / WORKING
-**Type:** normative search-record template; now partially populated with the first supplementary web-discovery pass.
+**Type:** normative search-record template; partially populated with the first supplementary web-discovery and citation-chaining passes.
 **Protocol:** `SLR-1_OPERATIONAL_PROTOCOL_v0.1_RECONSTRUCTED.md`
 **Date frozen:** 2026-09-07
 
-## 1. Purpose
+## 5. Citation-chain register — MOMoT
 
-This log is the controlled record of the SLR-1 prior-art search. It must be populated contemporaneously with each search operation. It is not a narrative summary and must not be reconstructed from memory after screening decisions have been made.
+`SRC-TRANS-001` was classified AC2 after full-text extraction. Citation chaining was therefore initiated as a falsification operation, not as enrichment.
 
-## 2. Search cutoff
+### CH-0001 — backward conceptual/technical chain
 
-- `search_cutoff_date`: 2026-09-07.
-- `publication_temporal_status`: record publication/online date for every substantive candidate.
-- No legal patent-novelty conclusion is made by SLR-1. The temporal classification is scientific prior-art context.
+**Parent:** `SRC-TRANS-001` — Eisenberg et al. (2024), MOMoT.
 
-## 3. Discovery sources
+**Search date:** 2026-09-07.
 
-The minimum discovery set is:
+**Sources surfaced for independent screening:**
 
-1. Scopus, where accessible.
-2. Web of Science Core Collection, where accessible.
-3. Google Scholar as supplementary broad discovery.
-4. OpenAlex and/or Crossref as reproducible open bibliographic supplements.
-5. Backward citation chaining for all AC2+ candidates.
-6. Forward citation chaining for all AC2+ candidates where available.
+1. **Bill et al. — *A local and global tour on MOMoT* (2019), DOI 10.1007/s10270-017-0644-3.** The article describes transformation problems as spanning a very large search space of possible transformation results and develops local/global search over model-transformation orchestrations. citeturn1search35turn1search6
+2. **Abdeen et al. — *Multi-Objective Optimization in Rule-Based Design Space Exploration* (2014).** The paper explicitly treats rule-based design-space exploration as an optimization problem over design candidates constrained by structural and numerical restrictions. citeturn1search7turn0search13
+3. **Burdusel, Zschaler & Strüber — *MDEOptimiser: A Search Based Model Engineering Tool* (2018/2019), DOI 10.1145/3270112.3270130.** The tool represents candidate solutions with models and uses model transformations as search operators; related work explicitly distinguishes transformation-chain encodings used by MOMoT and VIATRA-DSE. citeturn1search0turn1search3
+4. **Strüber et al. — *Henshin: A Model Transformation Language and its Use for Search-Based Model Optimisation in MDEOptimiser* (2018).** Henshin is presented as a graph-transformation language used to specify evolutionary operators for search-based model optimization. citeturn1search1
+5. **Search-based model-engineering infrastructure literature** explicitly distinguishes the MOMoT approach as encoding solution candidates as chains of model transformations applied to an input model, with mutation/crossover generating new chains and reapplying them to the initial model. citeturn1search36
 
-If a source is unavailable, the reason and substitute must be recorded; absence of access must never be represented as absence of literature.
+### CH-0001 preliminary interpretation
 
-**Current status:** the first pass recorded below is **supplementary web discovery only**. It is not a Scopus/Web of Science/Google Scholar-complete search and does not support a final SLR-1 conclusion.
+The chain substantially strengthens the conclusion that **explicit transformation/search spaces and trajectories through transformation operators are established prior art in model-driven engineering**. MOMoT is therefore not an isolated terminology match.
 
-## 4. Query-family register
+At the same time, the surfaced chain remains **domain-specific and optimization-oriented**. The sources found so far focus on finding good transformation results/design candidates, not on a transversal theory of how a system's conditions modify the set of transformations that are subsequently accessible.
 
-Searches are organized into families to reduce dependence on TGCV-specific terminology.
+Therefore:
 
-| Query ID | Family | Concept focus | Exact query | Source/platform | Date | Retrieved candidate results | Notes |
-|---|---|---|---|---|---|---:|---|
-| Q-A01 | A | transformation/accessibility | `"transformation space" accessibility transformations system` | Web search | 2026-09-07 | 3 | Broad discovery; several results use transformation-space in domain-specific senses. |
-| Q-A02 | A | transformation/accessibility | `"transformation space" "admissible transformations"` | Web search | 2026-09-07 | 1 | Candidate: admissible transformations in parametric deformation. |
-| Q-B01 | B | state-dependent future possibilities | `"affordances" "possible actions" environment state theory` | Web search | 2026-09-07 | 4 | Strong adjacent tradition; no architectural equivalence established from snippets. |
-| Q-B02 | B | state-dependent future possibilities | `"state space" "possible actions" reachability systems` | Web search | 2026-09-07 | 0 directly matching result retained | Search engine returned adjacent material but no candidate retained in first pass. |
-| Q-C01 | C | change/reconfiguration of possibility structure | `"dynamic capabilities" "reconfigure" resources capabilities Teece 1997` | Web search | 2026-09-07 | 4 | Strong adjacent theoretical tradition; requires dossier review. |
-| Q-C02 | C | structural change | `"reconfigurable systems" "set of possible" transformations state` | Web search | 2026-09-07 | 0 directly matching result retained | No candidate retained from first pass. |
-| Q-D01 | D | adjacent theories/frameworks | `"reachability" "state space" "possible actions" systems` | Web search | 2026-09-07 | 0 directly matching result retained | No candidate retained from first pass. |
-| Q-D02 | D | model transformation / transformation-space adjacent literature | `"model transformation" "transformation space" possible chains` | Web search | 2026-09-07 | 1 | Candidate: MOMoT transformation-chain exploration. |
+- `AC2` for `SRC-TRANS-001` remains supported.
+- `AC3` is still **not established**.
+- No Core modification is triggered.
+- The citation chain itself becomes a source-discovery cluster requiring independent dossiers before any architectural absorption conclusion.
 
-Exact queries must be frozen in the log at execution time. Query expansion is permitted only when generated by a documented synonym discovered during screening or chaining; the expansion and reason must be logged before use.
+### CH-0002 — forward-chain status
 
-## 5. Concept-family coverage
+Forward citation chaining for `SRC-TRANS-001` remains pending systematic bibliographic execution. The web-discovery pass surfaced later work on reinforcement-learning-based model transformation that explicitly compares MOMoT, MDEOptimiser and VIATRA-style transformation-rule sequence approaches, but this is contextual evidence rather than a completed forward-citation census. citeturn1search4
 
-### A — Transformation/accessibility
+## 6. Candidate cluster created by CH-0001
 
-Candidate terms include:
+| Candidate ID | Source ID | Source | Provisional role | AC level |
+|---|---|---|---|---|
+| CAND-0009 | SRC-MOMOT-001 | Bill et al. (2019), *A local and global tour on MOMoT* | direct predecessor / structural antecedent | pending |
+| CAND-0010 | SRC-DSE-001 | Abdeen et al. (2014), *Multi-Objective Optimization in Rule-Based Design Space Exploration* | foundational DSE antecedent | pending |
+| CAND-0011 | SRC-MDEO-001 | Burdusel et al. (2018/2019), *MDEOptimiser* | adjacent competing architecture / representation comparison | pending |
+| CAND-0012 | SRC-HENSHIN-001 | Strüber et al. (2018), *Henshin...MDEOptimiser* | formal transformation-language antecedent | pending |
 
-- accessible transformations;
-- possible transformations;
-- transformation space;
-- possible actions;
-- action space;
-- reachable transformations;
-- feasible transformations;
-- capability space;
-- option space.
+These are **not yet AC2/AC3 classifications**. They must be independently documented using the source-dossier schema.
 
-### B — State-dependent future possibilities
+## 7. Immediate controlled operation after chaining
 
-Candidate terms include:
+The next operation is to create independent source dossiers for the strongest newly surfaced antecedents, in this order:
 
-- state-dependent capabilities;
-- changing action possibilities;
-- changing capability sets;
-- changing affordances;
-- future possibility space;
-- state and possible actions;
-- reconfiguration of capabilities/options.
+1. `SRC-DSE-001` — Abdeen et al. 2014;
+2. `SRC-MOMOT-001` — Bill et al. 2019;
+3. `SRC-MDEO-001` — Burdusel et al. 2018/2019.
 
-### C — Structural change
+No AC3 decision should be made until these independent dossiers are screened.
 
-Candidate terms include:
+## 8. Integrity boundary
 
-- transformation-space change;
-- capability-set change;
-- affordance change;
-- reconfiguration of possible actions;
-- expansion/contraction of possibilities;
-- changing reachable states/trajectories.
+The citation-chain results do not prove TGCV originality or non-originality. They establish a **prior-art cluster** that materially raises the standard required for any originality claim concerning transformation-space representation, transformation-chain exploration, reachability/path search or optimization over transformation sequences.
 
-### D — Adjacent theoretical traditions
+The unresolved question remains the higher-level architecture: whether prior literature already contains the transversal relation in which changes in system conditions modify an accessible transformation space and thereby alter future reachability/trajectories and downstream outcomes/value.
 
-Candidate traditions include, where relevant:
+## 9. Remaining search completeness requirements
 
-- affordance theory;
-- dynamic capabilities;
-- adaptive systems;
-- self-* systems;
-- reconfigurable systems;
-- evolutionary/evolving systems;
-- runtime composition;
-- organizational capability change;
-- state-space/reachability approaches;
-- generativity and combinatorial possibility approaches;
-- model-transformation and transformation-chain exploration.
+The final SLR-1 search remains incomplete until predefined query families have been searched across accessible primary bibliographic databases, all AC2+ candidates have backward and forward chaining where available, candidate clusters have been independently screened, evidence and facts have been normalized separately from architectural interpretation, and coverage limitations are recorded.
 
-These lists are discovery aids, not evidence of equivalence.
-
-## 6. Screening register
-
-Initial screening is intentionally conservative. A result is retained as a candidate when the retrieved material contains a potentially relevant construct or architecture; no AC2/AC3 conclusion is made from search snippets alone.
-
-| Candidate ID | Source ID | Retrieved by | Title/author | Initial screen | Reason | Full-text status | Next action |
-|---|---|---|---|---|---|---|---|
-| CAND-0001 | SRC-TRANS-001 | Q-A01 | *Multi-objective model transformation chain exploration with MOMoT* (2024) | retain | Explicit exploration of a transformation space defined by a model-transformation repository and possible transformation chains. | open/full text indicated | dossier + structural comparison |
-| CAND-0002 | SRC-AFF-001 | Q-B01 | *Moral affordances and the demands of fittingness* (2023) | retain | Formalizes affordances as relations determining possible actions for an agent/environment configuration. | accessible article page | dossier + structural comparison |
-| CAND-0003 | SRC-AFF-002 | Q-B01 | *Body-scaled affordances in sensory substitution* (2016) | retain | Defines affordances as possibilities for action for a particular perceiver and links them to prospective action. | article page accessible | dossier + structural comparison |
-| CAND-0004 | SRC-AFF-003 | Q-B01 | *A Rich Landscape of Affordances* (2014) | retain | Explicitly discusses a landscape containing available affordances and selection among possible actions. | article page accessible | dossier + structural comparison |
-| CAND-0005 | SRC-AFF-004 | Q-B01 | *Affordances, Motivations, and the World Graph Theory* (1998) | retain | Models a repertoire of affordances for possible actions and relates affordances to action selection. | abstract accessible | dossier + structural comparison |
-| CAND-0006 | SRC-DC-001 | Q-C01 | Teece, Pisano & Shuen, *Dynamic Capabilities and Strategic Management* (1997) | retain | Framework explicitly links processes, positions and paths to integrating, building and reconfiguring competences. | bibliographic/abstract material accessible | dossier + structural comparison |
-| CAND-0007 | SRC-DC-002 | Q-C01 | Teece, *Dynamic Capabilities* / later framework material | retain | Explicit distinction between ordinary capabilities and capacity to create, extend or modify the resource base. | accessible | use as contextual/chaining source; do not treat as primary architecture without source dossier |
-| CAND-0008 | SRC-ADM-001 | Q-A02 | *Hierarchical free-form deformation with rigid feature preservation for shape-parameterized model order reduction* (2026) | retain | Uses formal “admissible transformations” over a transformation space, but in a domain-specific geometric sense. | abstract/page accessible | dossier only if chaining/search expansion indicates structural relevance |
-
-## 7. Substantive comparison register
-
-No AC level is assigned yet. The following candidates are retained for source-dossier analysis because the first-pass material is insufficient to distinguish construct similarity from structural equivalence.
-
-| Candidate ID | Source ID | Construct | AC level | Key evidence IDs | TGCV components mapped | Substantive remainder | Decision status |
-|---|---|---|---|---|---|---|---|
-| CAND-0001 | SRC-TRANS-001 | transformation space / transformation chains | pending | TBD | TBD | TBD | pending dossier |
-| CAND-0002 | SRC-AFF-001 | affordance / possible action relation | pending | TBD | TBD | TBD | pending dossier |
-| CAND-0003 | SRC-AFF-002 | affordance / possible action | pending | TBD | TBD | TBD | pending dossier |
-| CAND-0004 | SRC-AFF-003 | landscape of affordances | pending | TBD | TBD | TBD | pending dossier |
-| CAND-0005 | SRC-AFF-004 | repertoire of affordances / possible actions | pending | TBD | TBD | TBD | pending dossier |
-| CAND-0006 | SRC-DC-001 | dynamic capability / reconfiguration | pending | TBD | TBD | TBD | pending dossier |
-| CAND-0007 | SRC-DC-002 | capability/resource-base modification | pending | TBD | TBD | TBD | pending dossier |
-| CAND-0008 | SRC-ADM-001 | admissible transformations | pending | TBD | TBD | TBD | pending dossier |
-
-## 8. Citation chaining register
-
-For every AC2+ candidate:
-
-| Chain ID | Parent Source | Direction | Round | Sources inspected | New substantive candidates | Completed |
-|---|---|---|---:|---:|---|---|
-| CH-0001 | TBD | backward | 1 | TBD | TBD | no |
-| CH-0002 | TBD | forward | 1 | TBD | TBD | no |
-
-Citation chaining is part of falsification, not optional enrichment. Chaining begins after source-dossier screening identifies AC2+ candidates.
-
-## 9. Search completeness
-
-The final SLR-1 search can be considered complete only when:
-
-- all predefined concept families have been searched across the accessible primary databases;
-- supplementary open discovery has been completed;
-- all AC2+ candidates have undergone backward and forward chaining where technically available;
-- candidate sources have been screened and documented;
-- the final search date and database state are recorded.
-
-If no AC3 candidate is found, the final record must explicitly state which sources were unavailable and what coverage limitations remain.
-
-**Current status:** incomplete. The first supplementary web-discovery pass has identified candidates but does not satisfy the completeness gate.
-
-## 10. Search expansion rule
-
-A new term may be added only when its provenance is recorded as one of:
-
-1. synonym/alternative term explicitly used by a discovered candidate source;
-2. controlled-vocabulary term supplied by a searched database;
-3. term identified in a cited theoretical tradition;
-4. methodological synonym justified before execution.
-
-Post-hoc addition of terms solely because they produce a desired result is prohibited.
-
-## 11. Integrity and reproducibility
-
-For every executed query record:
-
-- exact query string;
-- database/platform;
-- filters and limits;
-- search date/time;
-- result count or explicitly recorded retrieval count;
-- export format where applicable;
-- duplicate handling method;
-- candidate identifiers;
-- retrieval failures;
-- relevant local snapshot/hash when available.
-
-For the first web-discovery pass, the source platform is recorded as `Web search`; the returned result set is discovery evidence only and is not treated as a bibliographic database census.
-
-## 12. Final gate output
-
-The completed search log feeds the SLR-1 decision record. Permitted final statuses are:
-
-- `FALSIFIED_ARCHITECTURAL_ORIGINALITY` — AC3 absorption established;
-- `PARTIAL_ABSORPTION` — strong prior art but substantive TGCV remainder remains;
-- `NO_FULL_ABSORPTION_IDENTIFIED` — search completed without established AC3;
-- `UNRESOLVED` — evidence/coverage insufficient for a bounded decision.
-
-`NO_FULL_ABSORPTION_IDENTIFIED` must never be rewritten as proof of universal novelty.
-
-## 13. First supplementary discovery pass — interpretation boundary
-
-The first pass produces **candidate discovery, not an SLR conclusion**.
-
-Three clusters are already visible:
-
-1. **Transformation-space literature:** transformation spaces are established objects in technical domains, including model transformation and geometric transformation. This is terminology/construct evidence, not yet architectural absorption.
-2. **Affordance literature:** prior work explicitly represents possible actions as relations between an agent and environment. This is potentially closer to TGCV's accessibility predicate and therefore requires careful structural comparison.
-3. **Dynamic-capabilities literature:** prior work explicitly studies integration, building and reconfiguration of competences/resources over changing environments. It is highly relevant to TGCV's mechanism → state/conditions → future possibilities/value chain, but its architecture is not assumed equivalent.
-
-No candidate is currently classified AC2 or AC3. That classification requires source-dossier evidence and explicit mapping against the TGCV architecture.
-
-## 14. Immediate next controlled operation
-
-The next operation is **not** to declare novelty or modify the Core. It is to create source dossiers for the highest-relevance candidates, beginning with:
-
-1. `SRC-AFF-001` / affordance possible-action relation;
-2. `SRC-DC-001` / dynamic capabilities;
-3. `SRC-TRANS-001` / model-transformation space.
-
-Only after dossier extraction should AC0–AC3 classification and citation chaining be performed.
+`NO_FULL_ABSORPTION_IDENTIFIED` remains a bounded possible outcome, never proof of universal novelty.
