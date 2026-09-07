@@ -1,210 +1,287 @@
 # TGCV — Contribution Formalization Gate v0.1
 
-**Status:** RECONSTRUCTED / WORKING  
-**Date:** 2026-09-07  
-**Precondition:** SLR-1 Contribution Specification Gate = PASS — bounded candidate defined.
+**Status:** PASS — FORMALIZATION TARGET ESTABLISHED  
+**Date:** 2026-09-08  
+**Gate:** TGCV Contribution Formalization  
+**Predecessor:** SLR-1 Contribution Specification Gate v0.1  
+**Scientific basis:** SLR-1 bounded prior-art boundary; DR-032 TR-131 scientific integration
 
 ## 1. Purpose
 
-This gate converts the bounded contribution candidate into a minimal formal specification that can be independently inspected, mapped across domains, and falsified.
+This gate converts the bounded residual contribution identified by SLR-1 into a minimal formal specification and a claim-to-test traceability structure.
 
-It does **not** assert that the formalization is empirically validated or universally novel.
+It is a **formalization gate, not a validation gate**. Its purpose is to define exactly what TGCV proposes to add, prevent silent expansion into claims already absorbed by prior art, and establish the tests required before stronger contribution claims may be made.
 
-## 2. Minimal formal vocabulary
+No Core ontological decision is reopened by this gate.
 
-### 2.1 System
+## 2. Entry conditions
 
-Let `S_t` denote the system at time `t` at the analytical level under study.
+The gate relies on the following frozen decisions:
 
-`S` is the ontological Core candidate. It is intentionally not decomposed here into a universal list of state variables.
+- `Core_ontological = S`.
+- `T_acc` is an analytical object derived from system/context conditions.
+- `I` is an explanatory mechanism, not a Core primitive.
+- SLR-1 established `NO_FULL_ABSORPTION_IDENTIFIED` within its documented bounded search depth.
+- TR-131 execution and replay are closed with PASS; DR-032 integrated the result scientifically.
+- EXT-1.1 is not used as evidence of originality or universal validity.
 
-### 2.2 Conditions/context
+The preceding SLR-1 decision explicitly moves the scientific task from prior-art falsification to contribution specification. fileciteturn79file0
 
-Let `C_t` denote the conditions relevant to evaluating whether transformations are accessible at time `t`.
+## 3. Minimal formal vocabulary
 
-`C` is an analytical/contextual parameter, not an additional Core primitive.
+### 3.1 System
 
-### 2.3 Analytical level
+`S_t` denotes the system at time `t` at the analytical level under study. `S` remains the sole ontological Core primitive.
 
-Let `L` denote the declared analytical level at which transformations and accessibility are represented.
+### 3.2 Conditions/context
 
-`L` is a representation parameter, not an ontological primitive.
+`C_t` denotes the conditions relevant to evaluating whether transformations are accessible at time `t`. `C` is an analytical/contextual parameter, not an additional Core primitive.
 
-### 2.4 Transformation
+### 3.3 Analytical level / laws / constraints
 
-A transformation `τ` is a specified change operation over the system representation at level `L`.
+`L` denotes the declared analytical level together with the relevant laws, rules, constraints, resources or admissibility conditions governing the transformation domain. Domain-specific assumptions must be explicit.
 
-`τ` must have enough specification to determine what change it represents and what domain/representation it acts upon.
+### 3.4 Transformation
 
-### 2.5 Accessibility predicate
+`τ` denotes a specified transformation/change operation over the system representation at level `L`.
 
-Define:
+A transformation must be defined independently of its membership in `T_acc`. In particular, observed execution cannot be the definition of the transformation or of its accessibility.
 
-`P_τ(S_t,C_t,L) ∈ {0,1}`
+### 3.5 Accessibility predicate
 
-where `P_τ = 1` means that `τ` is accessible under the declared system, conditions and analytical level.
+`P_τ(S_t,C_t,L) ∈ {0,1}` determines whether `τ` is accessible under the declared system, conditions and analytical level.
 
-Accessibility is distinct from execution: `P_τ=1` does not imply that `τ` is executed.
+Binding requirements:
 
-### 2.6 Accessible transformation space
+1. **Non-circularity:** `P_τ` cannot be defined as “τ was executed” or “τ belongs to `T_acc`”.
+2. **Observability/specifiability:** the inputs required to evaluate `P_τ` must be identifiable from the declared representation.
+3. **Pre-execution evaluability:** where accessibility is the independent object, the predicate must in principle be evaluable without requiring the target outcome to have already occurred.
+4. **Determinacy:** a frozen `(S,C,L,τ)` representation must yield a reproducible truth value.
+5. **Domain discipline:** domain-specific assumptions cannot be hidden inside the notation.
 
-Define:
+### 3.6 Accessible transformation space
 
-`T_acc,t = {τ | P_τ(S_t,C_t,L)=1}`.
+Define the candidate transformation universe `U_τ` independently, and then:
 
-This is the central analytical object of the candidate contribution.
+`T_acc,t = {τ ∈ U_τ | P_τ(S_t,C_t,L)=1}`.
 
-### 2.7 Change in accessible transformation space
+Thus `T_acc` is a **derived analytical object**, not a second ontological primitive.
 
-Define transformation-space change comparatively:
+Accessibility is analytically distinct from execution:
+
+`τ ∈ T_acc` does not imply that `τ` was executed, and execution of `τ` does not define `T_acc`.
+
+### 3.7 Change in accessible transformation space
+
+For comparable analytical states/contexts:
 
 `ΔT_acc(t,t+1) = T_acc,t+1 ≄ T_acc,t`.
 
-The relation `≄` is intentionally structural rather than numerical equality. The operational comparison must specify the representation and equivalence criterion for the domain under study.
-
-Permitted change forms include:
+The comparison relation `≄` must be operationalized using fixed canonical transformation identity and membership rules. Permitted structural forms include:
 
 - expansion: `T_acc,t ⊂ T_acc,t+1`;
 - contraction: `T_acc,t+1 ⊂ T_acc,t`;
-- reconfiguration: neither set contains the other, but membership changes;
-- substitution: accessible transformations are replaced while cardinality may remain similar.
+- reconfiguration: membership changes without simple inclusion;
+- substitution: materially different transformations become accessible while cardinality may remain similar.
 
-## 3. Dynamic relation
+### 3.8 Downstream structures
 
-The minimal dynamic schema is:
+`Reach` denotes the relevant set/structure of states or transformations reachable under declared rules and horizon.
 
-`(S_t,C_t) --mechanism--> (S_t+1,C_t+1)`
+`Trajectory` denotes an ordered evolution through states/configurations.
 
-followed by:
+`Outcome` denotes a subsequent realized result under a declared outcome definition.
 
-`T_acc,t = F(S_t,C_t,L)`
+`Value` denotes a domain-specific valuation of an outcome.
 
-`T_acc,t+1 = F(S_t+1,C_t+1,L)`
-
-and therefore potentially:
-
-`ΔT_acc ≠ ∅`.
-
-The mechanism is explanatory. It is not a primitive element of the ontological Core.
-
-## 4. Downstream analytical relation
-
-The candidate architecture proposes:
+The proposed downstream architecture is:
 
 `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
 
-Definitions:
+Only the first part is currently a differentiated contribution candidate. The downstream value relation remains a research claim.
 
-- `Reach_t`: set/structure of states or transformations reachable under the relevant rules and horizon;
-- `Trajectory`: temporally ordered path through reachable states/configurations;
-- `Outcome`: observed subsequent result under the declared outcome definition;
-- `Value`: domain-specific valuation of an outcome.
+### 3.9 Mechanism
 
-Only the first part of this chain is presently a differentiated candidate. The final Outcome/Value connection remains a research claim.
+`I` denotes an explanatory mechanism through which system/context conditions may change. It may explain why `S`, `C`, `L` or consequently `T_acc` changes, but it is not a Core primitive.
 
-## 5. Claim-to-test traceability
+### 3.10 Representation `B`
 
-| Claim | Formal object | Minimum test | Falsifier | Current status |
-|---|---|---|---|---|
-| C1 | `T_acc = {τ \| P_τ=1}` | Formal non-circularity + cross-domain mapping | Prior framework materially equivalent at same abstraction | Defensible candidate |
-| C2 | `P_τ=1` distinct from execution | Accessibility/execution separation | Representation collapses accessibility into execution | Absorbed in isolation |
-| C3 | `ΔT_acc` | Structural change test | Existing framework makes equivalent `ΔT_acc` central | Primary differentiated candidate |
-| C4 | `ΔT_acc → ΔReach → ΔTrajectory` | Dynamic/reachability test | Equivalent domain-independent architecture already established | Integration candidate |
-| C5 | mechanism explanatory | Mechanism/Core separation audit | Mechanism required as Core primitive | Integrated architectural element |
-| C6 | cross-domain mapping | Heterogeneous-domain reconstruction | Mapping requires incompatible domain-specific semantics | Plausible, unestablished |
-| C7 | `... → Outcome → Value` | Pre-specified empirical/value test | No incremental explanatory content or unstable operationalization | Research hypothesis |
+`B` denotes an observational/analytical representation used in TR-131 to test whether a frozen representation uniquely determines canonical `T_acc` membership.
 
-## 6. Non-circularity conditions
+`B` is not Core ontology and is not interchangeable with `S`. TR-131's positive witness result supports retaining explicit `T_acc` as an analytical layer, but does not establish originality, ontological independence, causality or predictive superiority.
 
-A valid operationalization must satisfy all of the following:
+## 4. Contribution claims
 
-1. `τ` is defined independently of its membership in `T_acc`.
-2. `P_τ` is evaluated from observable/specifiable properties of `(S,C,L)` and the transformation requirements.
-3. `T_acc` is constructed by applying `P_τ` to an independently defined candidate transformation universe.
-4. Execution of `τ` is not used to define whether `τ` was accessible.
-5. Future outcome/value is not used to define present accessibility.
-6. The transformation representation is fixed ex ante for a given test.
+### C1 — Explicit accessible-transformation object
 
-## 7. Equivalence and comparison rule
+**Claim:** TGCV explicitly represents transformations accessible from a system/context as `T_acc = {τ ∈ U_τ | P_τ(S,C,L)=1}` in a domain-independent analytical construction.
 
-Because prior art uses heterogeneous objects, comparison must distinguish:
+**Type:** formal/analytical.  
+**Status:** BOUNDED CANDIDATE.
 
-- **lexical equivalence:** same or similar terminology;
-- **construct equivalence:** substantially same analytical object;
-- **structural equivalence:** substantially same relations among objects;
-- **architectural equivalence:** substantially same full organization and explanatory role.
+**Prior-art boundary:** action sets, adaptation spaces, capability/opportunity spaces, possibility spaces and dynamic transition structures.
 
-A mapping of an action set, adaptation space, capability space or possibility space into `T_acc` does not by itself prove equivalence or novelty. The mapping must preserve the relevant semantics and expose any residual structure.
+**Falsifier:** a prior framework at comparable abstraction and scope materially instantiates the same transformation-level accessibility construction and absorbs the TGCV remainder.
 
-## 8. Cross-domain reconstruction criterion
+### C2 — Accessibility distinguished from execution
 
-For each domain `D`, a valid reconstruction requires explicit identification of:
+**Claim:** membership in `T_acc` is analytically distinct from actual execution.
 
-`S_D, C_D, L_D, U_τ,D, P_τ,D, T_acc,D, ΔT_acc,D, Reach_D, Trajectory_D`.
+**Type:** architectural component.  
+**Status:** NOT CLAIMED AS INDEPENDENTLY NOVEL.
 
-A domain passes the formalization test only if:
+Its role is to ensure that accessibility is not inferred from observed execution.
 
-- the candidate transformation universe `U_τ,D` is independently specified;
-- accessibility can be evaluated without execution/outcome leakage;
-- `T_acc,D` is reconstructable;
-- change in `T_acc,D` can be represented;
-- the mapping does not silently import TGCV-specific assumptions absent from the domain.
+### C3 — `ΔT_acc` as the central comparative object
 
-## 9. Strong falsification conditions
+**Claim:** TGCV treats change in the accessible-transformation structure, `ΔT_acc`, as the central comparative object for analyzing how system/mechanism change alters future transformation possibilities.
 
-The formal candidate is weakened or rejected if any of the following is demonstrated:
+**Type:** primary differentiated analytical candidate.  
+**Status:** BOUNDED CANDIDATE — requires non-redundancy and dynamic validation.
 
-### F1 — Existing architectural absorption
+**Prior-art boundary:** changing action sets, adaptation-space drift, capability/opportunity-space evolution, evolving possibility spaces, dynamic transition structures and adjacent-possible constructions.
 
-A prior framework contains a materially equivalent domain-independent accessible-transformation object and central `ΔT_acc` relation, leaving no substantive TGCV remainder.
+**Falsifier:** a prior framework at comparable abstraction explicitly treats change in the accessible set of transformations themselves as the central organizing variable and supplies materially equivalent downstream analytical consequences.
 
-### F2 — State reduction
+### C4 — Transversal bridge
 
-For all relevant domains/tests, `T_acc` is uniquely and analytically redundant with the chosen state representation such that explicit `ΔT_acc` adds no relevant information for the stated research question.
+**Claim:** `ΔT_acc` can serve as a transversal bridge from system/mechanism change to downstream reachability and trajectory change:
 
-### F3 — Circular accessibility
+`ΔT_acc → ΔReach → ΔTrajectory`.
 
-`P_τ` cannot be specified without first assuming membership in `T_acc`, execution, or future outcome.
+**Type:** architectural/unifying.  
+**Status:** RESEARCH CONTRIBUTION TO BE DEMONSTRATED.
 
-### F4 — Cross-domain non-transferability
+**Falsifier:** cross-domain tests show that the bridge adds no analytical content beyond the domain-specific constructs it translates, or requires incompatible assumptions across domains.
 
-The construction cannot be mapped across heterogeneous domains without domain-specific semantics that destroy the claimed transversal abstraction.
+### C5 — Mechanism as explanatory layer
 
-### F5 — No downstream role
+**Claim:** mechanisms can explain changes in system/context and consequently in `T_acc` without becoming Core primitives.
 
-Under pre-specified tests, changes in `T_acc` cannot be related to changes in reachability/trajectory in a way that adds analytical content beyond existing representations.
+**Type:** architectural separation.  
+**Status:** NOT CLAIMED AS INDEPENDENTLY NOVEL.
 
-## 10. What remains deliberately unclaimed
+### C6 — Cross-domain analytical translation
 
-This formalization does not establish:
+**Claim:** heterogeneous constructs such as action sets, adaptation spaces, capability spaces, evolving possibility spaces and transition structures can be translated into a common analytical layer based on `T_acc` and `ΔT_acc` without collapsing their domain-specific semantics.
 
-- universal ontological status of `T_acc`;
-- universal novelty of `T_acc`;
-- universal novelty of `ΔT_acc`;
-- causal sufficiency of `ΔT_acc`;
-- predictive superiority of `T_acc`;
-- value creation caused by `ΔT_acc`;
-- validity across every possible domain.
+**Type:** cross-domain research contribution.  
+**Status:** PLAUSIBLE CANDIDATE — NOT ESTABLISHED.
 
-## 11. Gate decision
+**Falsifier:** mapping is tautological, destroys the relevant phenomenon, or requires incompatible domain-specific semantics that prevent a common analytical layer.
 
-**PASS — MINIMAL FORMAL CANDIDATE ESTABLISHED.**
+### C7 — Downstream value connection
 
-The candidate can now be expressed with a minimal, inspectable vocabulary without reintroducing interaction as a Core primitive and without relying on claims already absorbed by SLR-1.
+**Claim:** changes in accessible transformations can be connected through reachability and trajectories to downstream outcomes and value construction:
 
-The formalization is intentionally modest: it establishes a testable object and relations, not their empirical truth.
+`ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
 
-## 12. Integrity consequences
+**Type:** research hypothesis / architectural extension.  
+**Status:** NOT ESTABLISHED.
 
-- `Core_ontological = S` remains unchanged.
-- `T_acc` remains an analytical object derived from `S,C,L`.
-- `I` remains an explanatory mechanism.
-- `TR-130–TR-140` remain closed.
-- `EXT-1.1` remains excluded from originality validation.
-- SLR-1 remains bounded; no new generic literature family is opened by this gate.
+**Falsifier:** value-oriented tests show no incremental analytical contribution over existing outcome/value models, or `T_acc` cannot be operationalized consistently enough to support the chain.
 
-## 13. Next controlled operation
+## 5. Claim hierarchy
 
-The next gate is the **Cross-Domain Reconstruction / Non-Redundancy Gate**.
+The contribution hierarchy is frozen for the present gate:
 
-Its purpose is to test whether the formal object `T_acc` can be reconstructed in heterogeneous domains while retaining information that is not merely a relabeling of existing action, adaptation, capability, possibility or state-space constructs.
+1. **Core candidate:** `T_acc` as an explicit domain-independent accessible-transformation object.
+2. **Primary differentiator:** `ΔT_acc` as an explicit comparative object.
+3. **Architectural extension:** `ΔT_acc → ΔReach → ΔTrajectory`.
+4. **Cross-domain research program:** translation of heterogeneous constructs into the common layer.
+5. **Future value extension:** `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
+
+Downstream value claims cannot retroactively establish the originality of C1 or C3.
+
+## 6. Claim-to-test traceability
+
+| Claim | Required test/gate | Minimum success condition | Main falsifier |
+|---|---|---|---|
+| C1 | Formal specification + prior-art non-redundancy | Non-circular, observable and domain-independent `T_acc` with residual analytical content | Equivalent prior construction |
+| C2 | Accessibility/execution separation audit | Accessibility remains formally distinct from execution | Definition collapses accessibility into execution |
+| C3 | Non-redundancy + dynamic test | `ΔT_acc` is analytically distinct and yields non-trivial comparative information | Prior equivalent organizing variable |
+| C4 | Cross-domain structural bridge + trajectory test | Same bridge preserves explanatory distinctions across heterogeneous domains | Bridge adds no content / incompatible assumptions |
+| C5 | Architecture integrity check | Mechanism explains change without becoming Core | Mechanism required as Core primitive |
+| C6 | Cross-domain mapping + loss/utility test | Mapping is explicit, semantically controlled and analytically useful | Tautology, destructive loss or domain incompatibility |
+| C7 | Pre-specified value test | Demonstrable incremental analytical contribution to outcome/value explanation | No gain beyond existing models |
+
+## 7. Formalization constraints
+
+The following constraints are binding for all subsequent TGCV contribution work:
+
+- No broad phenomenon already absorbed by SLR-1 may be relabeled as novel merely by changing terminology.
+- `T_acc` must remain derived from `S,C,L` through an explicit predicate over an independently defined candidate transformation universe.
+- `P_τ` cannot contain the conclusion it is supposed to establish.
+- Execution frequency, observed success or outcome value cannot define accessibility when accessibility is the independent analytical object.
+- `ΔT_acc` must be defined over comparable canonical transformation identities, not arbitrary labels or observations.
+- Domain-specific implementations may instantiate `P_τ`, but their assumptions must remain explicit.
+- `B` may be used as an empirical representation but cannot be promoted to Core ontology.
+- TR-131 cannot be used as a novelty proof; it is bounded evidence for analytical indispensability under its frozen representation.
+- No future empirical result may modify the already closed TR-131 execution result retroactively.
+- No later value result may be used to infer originality of C1/C3 without a separate prior-art comparison.
+
+## 8. Evidence levels
+
+**Established within the current project record**
+
+- Core ontology remains `S`.
+- `T_acc` is retained as an explicit analytical object.
+- TR-131 provides bounded empirical support that frozen `B` does not uniquely determine canonical `T_acc` membership in the tested Rust structural snapshot.
+- SLR-1 did not identify full architectural absorption within its documented bounded search depth. fileciteturn79file0
+
+**Bounded contribution candidates**
+
+- C1: explicit transformation-level accessibility construction.
+- C3: `ΔT_acc` as differentiated comparative object.
+
+**Research contributions requiring demonstration**
+
+- C4: transversal reachability/trajectory bridge.
+- C6: cross-domain analytical translation.
+
+**Future hypothesis**
+
+- C7: downstream value connection.
+
+**Not claimed as independently novel**
+
+- C2 and C5.
+
+## 9. Decision
+
+**CONTRIBUTION FORMALIZATION GATE: PASS — FORMALIZATION TARGET ESTABLISHED.**
+
+This PASS means that the residual contribution has been converted into an explicit, bounded and falsifiable formal target with traceability to future tests. It does **not** mean that C1, C3, C4, C6 or C7 has been scientifically validated or proven original.
+
+## 10. Consequences
+
+- `TGCV Core = S`: **UNCHANGED**.
+- `T_acc = F(S,C,L)`: **RETAINED AS ANALYTICAL OBJECT**.
+- `ΔT_acc`: **PRIMARY DIFFERENTIATED CANDIDATE**, not established novelty.
+- `I`: **EXPLANATORY MECHANISM, NOT CORE PRIMITIVE**.
+- TR-129–TR-140: **NOT REOPENED**.
+- TR-131: **CLOSED; NO RERUN AUTHORIZED**.
+- EXT-1.1: **NOT USED** as originality proof.
+- No universal originality claim authorized.
+- No causal value claim authorized.
+- No predictive-superiority claim authorized.
+- No empirical protocol is modified by this gate.
+
+## 11. Next controlled operation
+
+The next gate is the **Formal Specification / Non-Circularity Gate** for `P_τ(S,C,L)` and `T_acc`.
+
+It must establish, before stronger novelty or cross-domain claims are advanced:
+
+1. a precise unit of transformation `τ`;
+2. a non-circular accessibility predicate `P_τ`;
+3. explicit observability and admissibility conditions;
+4. canonical transformation identity and set-comparison rules;
+5. separation between accessibility, execution and outcome;
+6. the minimum domain assumptions required for instantiation.
+
+Only after this gate should the project proceed to the corresponding non-redundancy and cross-domain tests.
+
+## 12. Integrity boundary
+
+This document is a contribution-formalization artifact. It does not replace the SLR-1 evidence bank, fact bank, source dossiers or architectural comparison matrices. It does not alter the frozen empirical record and does not authorize retrospective reinterpretation of TR-131.
