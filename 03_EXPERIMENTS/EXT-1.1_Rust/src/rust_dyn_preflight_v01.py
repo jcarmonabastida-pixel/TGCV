@@ -15,14 +15,14 @@ import sys
 import zipfile
 from pathlib import Path
 
-DATASET_MEMBER = "rust_repos_2022_09_07/dumps/postgresql/data/package_versions.csv"
+PACKAGE_VERSIONS_MEMBER = "rust_repos_2022_09_07/dumps/postgresql/data/package_versions.csv"
+PACKAGE_DEPENDENCIES_MEMBER = "rust_repos_2022_09_07/dumps/postgresql/data/package_dependencies.csv"
 TEMPORAL_RULE_ID = "DR-035-v0.1-ADJACENT-CREATED-AT"
 HORIZON = 1
 REAL_EXECUTION_AUTHORIZED = False
 
-EXPECTED_PACKAGE_VERSION_COLUMNS = {
-    "id", "package_id", "version", "created_at"
-}
+EXPECTED_PACKAGE_VERSION_COLUMNS = {"id", "package_id", "version_str", "created_at"}
+EXPECTED_PACKAGE_DEPENDENCY_COLUMNS = {"depending_version", "depending_on_package", "semver_str"}
 
 
 def sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
@@ -44,38 +44,47 @@ def header_from_zip(zf: zipfile.ZipFile, member: str) -> list[str]:
     return next(csv.reader([text]))
 
 
+def inspect_member(zf: zipfile.ZipFile, member: str, expected: set[str]) -> dict:
+    present = member in set(zf.namelist())
+    if not present:
+        return {
+            "member": member,
+            "present": False,
+            "header": [],
+            "duplicate_columns": [],
+            "missing_expected": sorted(expected),
+            "schema_pass": False,
+        }
+    header = header_from_zip(zf, member)
+    duplicates = sorted({c for c in header if header.count(c) > 1})
+    normalized = {c.strip().lower() for c in header}
+    missing = sorted(expected - normalized)
+    return {
+        "member": member,
+        "present": True,
+        "header": header,
+        "duplicate_columns": duplicates,
+        "missing_expected": missing,
+        "schema_pass": not missing and not duplicates,
+    }
+
+
 def preflight(dataset: Path) -> dict:
     if not dataset.is_file():
         raise FileNotFoundError(f"DATASET_NOT_FOUND:{dataset}")
 
     dataset_sha256 = sha256_file(dataset)
     with zipfile.ZipFile(dataset, "r") as zf:
-        names = set(zf.namelist())
-        member_present = DATASET_MEMBER in names
-        if not member_present:
-            raise RuntimeError(f"REQUIRED_MEMBER_NOT_FOUND:{DATASET_MEMBER}")
-        header = header_from_zip(zf, DATASET_MEMBER)
-        duplicates = sorted({c for c in header if header.count(c) > 1})
-
-    # This is intentionally a schema observation only. The exact final schema
-    # is frozen by D-OPS-1 after inspection; no structural execution follows.
-    normalized = {c.strip().lower() for c in header}
-    missing_expected = sorted(EXPECTED_PACKAGE_VERSION_COLUMNS - normalized)
+        versions = inspect_member(zf, PACKAGE_VERSIONS_MEMBER, EXPECTED_PACKAGE_VERSION_COLUMNS)
+        dependencies = inspect_member(zf, PACKAGE_DEPENDENCIES_MEMBER, EXPECTED_PACKAGE_DEPENDENCY_COLUMNS)
 
     return {
         "MODE": "LOCAL_PREFLIGHT_ONLY",
         "dataset_path": str(dataset),
         "dataset_sha256": dataset_sha256,
         "zip_opened": True,
-        "required_member": DATASET_MEMBER,
-        "required_member_present": member_present,
-        "package_versions_header": header,
-        "duplicate_header_columns": duplicates,
-        "expected_column_presence_check": {
-            "expected": sorted(EXPECTED_PACKAGE_VERSION_COLUMNS),
-            "missing": missing_expected,
-            "pass": not missing_expected and not duplicates,
-        },
+        "package_versions": versions,
+        "package_dependencies": dependencies,
         "temporal_rule_id": TEMPORAL_RULE_ID,
         "horizon": HORIZON,
         "sampling": False,
@@ -103,7 +112,13 @@ def main() -> int:
     except Exception as exc:
         print(json.dumps({"MODE": "PREFLIGHT_FAIL_CLOSED", "pass": False, "error": str(exc), "real_dataset_execution": False, "execution_authorization": False}, indent=2))
         return 2
-    result["pass"] = bool(result["zip_opened"] and result["required_member_present"] and result["expected_column_presence_check"]["pass"])
+    result["pass"] = bool(
+        result["zip_opened"]
+        and result["package_versions"]["present"]
+        and result["package_versions"]["schema_pass"]
+        and result["package_dependencies"]["present"]
+        and result["package_dependencies"]["schema_pass"]
+    )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["pass"] else 1
 
