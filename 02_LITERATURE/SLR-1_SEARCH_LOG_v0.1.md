@@ -1,13 +1,13 @@
 # TGCV SLR-1 — Search Log v0.1
 
-**Status:** RECONSTRUCTED / WORKING
-**Type:** normative search-record template; partially populated with supplementary web-discovery and citation-chaining passes.
-**Protocol:** `SLR-1_OPERATIONAL_PROTOCOL_v0.1_RECONSTRUCTED.md`
+**Status:** RECONSTRUCTED / WORKING  
+**Type:** normative search-record template; partially populated with supplementary web-discovery and citation-chaining passes.  
+**Protocol:** `SLR-1_OPERATIONAL_PROTOCOL_v0.1_RECONSTRUCTED.md`  
 **Date frozen:** 2026-09-07
 
 ## 6. Candidate cluster — accessibility / possibility / dynamic action sets
 
-The current falsification front has now screened a convergent sequence of prior-art families:
+The falsification front has screened a convergent sequence of prior-art families:
 
 - transformation/search spaces in MDE;
 - state-dependent transformation applicability;
@@ -21,36 +21,42 @@ The current falsification front has now screened a convergent sequence of prior-
 
 ### CAND-0018 — SRC-PHASE-001
 
-**Source:** *Designing Distributed Applications Using a Phase-Aware, Reversible System*.
-
 **Classification:** **AC2 very strong / AC3 not established**.
-
-This source is a particularly strong structural antecedent because it explicitly models an available-operation set as a function of a time-varying phase configuration. The source defines a phase configuration and a function mapping phase configurations to operation sets/vectors, with the elements representing operations available at nodes.
-
-It therefore directly establishes prior art for the relation:
-
-`system configuration → available-operation set`.
 
 ### CAND-0019 — SRC-BSTAR-001
 
-**Source:** Mayorquín Posadas & Vega (2026), *Thinking Is Not Enough: The B* Expansion Technique for Enhancing Autonomous LLM Agents*.
-
 **Classification:** **AC2 strong / AC3 not established**.
 
-The source explicitly represents an evolving action space through an initial action basis `B`, generated actions `A*`, and an expanded action space `B* = B ∪ A*`. It therefore provides direct prior art for treating an action/operation repertoire as an explicit evolving object with downstream performance consequences.
+The source explicitly represents an evolving action space through `B* = B ∪ A*`, providing direct prior art for an explicit evolving action repertoire. It does not establish the domain-independent transformation-space/value architecture required for AC3.
 
-The source does not establish a domain-independent transformation space, a general accessibility predicate over arbitrary transformations, mechanism separation at the transversal level, or the full downstream architecture `mechanism → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
+### Final structural-bridge decision
 
-### Consolidated interpretation
+The ReacTS / reactive-graphs / dynamic-action family is **FROZEN AS PRIOR-ART BOUNDARY**.
 
-The evidence now **absorbs the broad novelty claims** that TGCV is the first construction to:
+- AC2: **CONFIRMED / CONVERGENT**.
+- AC3: **NOT ESTABLISHED**.
+- `NO_FULL_ABSORPTION_IDENTIFIED`: bounded current finding, not universal novelty proof.
+- TGCV Core: **UNCHANGED**.
+- EXT-1.1: **NOT USED**.
 
-- express available operations as a function of changing system conditions/configuration;
-- represent changing action sets as an explicit analytical object;
-- represent mechanisms that modify future transition/action availability;
-- connect changing availability to subsequent behaviour/reachability/trajectory within a domain-specific formalism.
+## 7. Candidate cluster — self-adaptive systems / runtime adaptation
 
-However, **AC3 remains unestablished**. No screened source demonstrates, in a transversal domain-independent form, all of the following in one architecture:
+### CAND-0020 — SRC-SAS-001
+
+**Source:** Metzger et al., *Realizing self-adaptive systems via online reinforcement learning and feature-model-guided exploration*.
+
+**Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
+
+The source explicitly represents an adaptation space as a set of valid runtime configurations/actions, distinguishes possible adaptations from executed adaptations, and computes additions/removals of adaptation possibilities after system evolution.
+
+This absorbs the broad novelty claims that TGCV is the first construction to represent:
+
+- a constraint-defined future adaptation/action repertoire;
+- possible versus executed adaptation;
+- evolution-induced addition/removal of future adaptations;
+- downstream exploration/learning consequences of changing adaptation possibilities.
+
+However, AC3 remains unestablished because the source is software-adaptation specific and does not provide the full transversal architecture:
 
 `T_acc = {τ | P_τ(S,C,L)=1}`
 
@@ -58,29 +64,20 @@ However, **AC3 remains unestablished**. No screened source demonstrates, in a tr
 
 `mechanism → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
 
-The remaining originality boundary is therefore not the existence of a changing operation set or action space. It is the **general analytical elevation of the change in an accessible transformation relation itself**, independently of a specific agent, software architecture, control problem, transformation language, or reconfiguration formalism, plus the systematic propagation of that change into future reachability/trajectories/outcomes/value.
+### Cluster status
 
-## 7. Final structural-bridge decision
+**OPEN — BOUNDED FALSIFICATION PASS STARTED.**
 
-The targeted final adjacent-literature pass has been completed at the current bounded search depth.
+The next controlled operation is to screen the predefined self-adaptive subfamilies:
 
-The strongest newly screened source, `SRC-BSTAR-001`, remains AC2 and does not establish AC3. Combined with the ReacTS/reactive-graph cluster, the prior-art boundary is now sufficiently documented to freeze that family for the present SLR-1 pass.
+1. runtime adaptation/configuration spaces;
+2. dynamic variability models;
+3. self-evolution changing future adaptation options;
+4. adaptive control/planning with formal action-set recomputation;
+5. frameworks linking adaptation-space change to reachability/trajectory/outcomes.
 
-**Decision:**
+Decision boundary: AC3 candidate → dedicated comparative architecture review; otherwise freeze cluster after bounded screening and move to the next predefined SLR-1 family.
 
-- ReacTS / reactive graphs / dynamic action spaces: **FROZEN AS PRIOR-ART BOUNDARY**.
-- AC2: **CONFIRMED / CONVERGENT**.
-- AC3: **NOT ESTABLISHED**.
-- `NO_FULL_ABSORPTION_IDENTIFIED`: **bounded current finding**, not universal novelty proof.
-- TGCV Core: **UNCHANGED**.
-- EXT-1.1: **NOT USED**.
+## 8. Integrity boundary
 
-## 8. Next controlled operation
-
-Move to the **next predefined SLR-1 literature family**. Do not continue searching the ReacTS/dynamic-action family unless a later source independently supplies a plausible AC3 candidate.
-
-Any future AC3 candidate must receive a dedicated source dossier and comparative architecture review before any Core decision.
-
-## 9. Integrity boundary
-
-No Core modification is triggered. No conceptual test is reopened. No empirical protocol is modified. No post-hoc EXT-1.1 interpretation is introduced. Historical/reconstructed distinctions remain preserved.
+No Core modification is triggered. No conceptual test is reopened. No empirical protocol is modified. EXT-1.1 remains excluded from this literature gate.
