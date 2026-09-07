@@ -34,18 +34,6 @@ The self-adaptive family is therefore **FROZEN AS PRIOR-ART BOUNDARY**.
 
 ## 8. Candidate cluster — organizational capability change
 
-### CAND-0028 — SRC-OC-001
-
-**Classification:** **AC2 STRONG / AC3 NOT ESTABLISHED**.
-
-Koutsopoulos, Henkel & Stirna (2021) provide strong prior art for capability change, adaptation/transformation and propagation through capability relations. citeturn0search4turn0search7
-
-### CAND-0029 — SRC-OC-002
-
-**Classification:** **AC2 VERY STRONG / NEAR-DIRECT / AC3 NOT ESTABLISHED**.
-
-Dagnino & Mariani (2007) explicitly model a Capability Space, capability sets and their coevolution with an Opportunity Space, including potential versus realized capability sets and capability sets as conditions for seizing opportunities. citeturn1search1turn1search0
-
 ### Final bounded subpass decision
 
 A final targeted search for organizational/capability constructions that explicitly distinguish potential/accessibility from realization did **not identify a Level-3 architectural equivalent**. The closest findings remain capability-space / opportunity-space constructions rather than a domain-independent accessible-transformation architecture.
@@ -60,10 +48,26 @@ The organizational-capability family is therefore **FROZEN AS PRIOR-ART BOUNDARY
 - TGCV Core: **UNCHANGED**.
 - EXT-1.1: **NOT USED**.
 
-## 9. Integrity boundary
+## 9. Candidate cluster — state-space and reachability approaches
+
+### CAND-0030 — SRC-SSR-001
+
+**Source:** Maidens, Kaynama, Mitchell, Oishi & Dumont (2013), *Lagrangian methods for approximating the viability kernel in high-dimensional systems*, Automatica 49(9), 2803–2810, DOI `10.1016/j.automatica.2013.03.020`.
+
+**Classification:** **AC2 VERY STRONG / DIRECT STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
+
+The source explicitly uses reachability and viability as set-valued analyses over dynamical state spaces, admissible inputs and constraints. It provides strong prior art for reachable/viable future-state sets and trajectory reasoning. The correspondence is downstream of TGCV's transformation-accessibility object: reachable state sets are not themselves an explicit `T_acc`, and `ΔT_acc` is not the central object.
+
+### Initial family decision
+
+The state-space/reachability family is **OPEN — INITIAL PASS**.
+
+The first source therefore establishes that TGCV must not claim novelty for generic reachability, reachable sets, viability kernels, or trajectory analysis. The controlled next operation is a targeted search for sources where **the set of admissible transitions/actions/transformations itself changes with state or context**, and where that changing transition/action structure is linked to reachability or future trajectories.
+
+## 10. Integrity boundary
 
 No Core modification is triggered. No conceptual test is reopened. No empirical protocol is modified. EXT-1.1 remains excluded from this literature gate.
 
-## 10. Next predefined family
+## 11. Next controlled operation
 
-Proceed to the next family in the reconstructed SLR-1 protocol. Do not invent an ad hoc family from the organizational-capability findings.
+Continue the predefined state-space/reachability family with changing-transition/action-space constructions. Do not invent an ad hoc family.
