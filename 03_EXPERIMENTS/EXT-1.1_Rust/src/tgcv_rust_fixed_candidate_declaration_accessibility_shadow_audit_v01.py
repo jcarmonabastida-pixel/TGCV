@@ -135,9 +135,9 @@ def main():
                     seen_rows.add(key)
                     declarations[focal][target_pkg].add(req)
 
-            # Candidate target releases are fixed independently of declarations.
-            # To isolate declaration-driven accessibility, a target version must
-            # already exist by t0. Thus release availability cannot drive 0->1/1->0.
+            # Fixed candidate target universe: all canonical target releases in the
+            # dataset, independently of focal declarations. For this shadow isolation
+            # test, only candidates whose target release existed by t0 are evaluated.
             target_versions_by_package = defaultdict(list)
             for vid, pid in version_package.items():
                 target_versions_by_package[pid].append(vid)
@@ -164,10 +164,8 @@ def main():
                     else:
                         stats["declaration_changed_target_pairs"] += 1
 
-                    # Fixed candidate identity: (origin package, target package,
-                    # target version). Declaration text is not part of identity.
-                    # Require target release <= t0 at both endpoints, isolating the
-                    # effect of the focal declaration itself.
+                    # Isolate declaration variation: target release must already
+                    # exist at t0. Thus target availability cannot create the change.
                     for target_vid in target_versions_by_package.get(target_pkg, []):
                         if version_created[target_vid] > version_created[old]:
                             break
@@ -175,10 +173,16 @@ def main():
                         old_supported = [r for r in old_reqs if requirement_kind(r) != "UNSUPPORTED"]
                         new_supported = [r for r in new_reqs if requirement_kind(r) != "UNSUPPORTED"]
 
+                        # A target version outside the frozen R* v0.2 SemVer grammar
+                        # is explicitly unsupported and excluded, never coerced.
                         try:
                             old_access = any(satisfies(version_str[target_vid], r) for r in old_supported)
                             new_access = any(satisfies(version_str[target_vid], r) for r in new_supported)
                         except ValueError as exc:
+                            message = str(exc)
+                            if message.startswith("UNSUPPORTED_VERSION:"):
+                                stats["unsupported_target_versions_excluded"] += 1
+                                continue
                             raise RuntimeError(f"RSTAR_EVALUATION_ERROR: {exc}") from exc
 
                         stats["fixed_candidates_tested"] += 1
@@ -223,6 +227,7 @@ def main():
                     "candidate_identity_includes_declaration": False,
                     "candidate_universe_membership_driven_by_declaration": False,
                     "target_release_cutoff_used_as_change_driver": False,
+                    "unsupported_target_versions_silently_coerced": False,
                     "execution_used": False,
                     "outcome_used": False,
                     "value_used": False,
@@ -245,13 +250,26 @@ def main():
             print(f"DUPLICATE_ROWS: {duplicate_rows}")
 
             print("\nDECLARATION VARIATION SHADOW")
-            for k in ("declaration_changed_focal_target_pairs", "declaration_removed_target_pairs", "declaration_added_target_pairs", "declaration_changed_target_pairs", "fixed_candidates_tested", "accessibility_1_to_0", "accessibility_0_to_1", "accessibility_persistent_1", "accessibility_persistent_0", "declaration_driven_accessibility_changes"):
+            for k in (
+                "declaration_changed_focal_target_pairs",
+                "declaration_removed_target_pairs",
+                "declaration_added_target_pairs",
+                "declaration_changed_target_pairs",
+                "fixed_candidates_tested",
+                "unsupported_target_versions_excluded",
+                "accessibility_1_to_0",
+                "accessibility_0_to_1",
+                "accessibility_persistent_1",
+                "accessibility_persistent_0",
+                "declaration_driven_accessibility_changes",
+            ):
                 print(f"{k.upper()}: {stats[k]}")
 
             print("\nIDENTITY / UNIVERSE FIREWALL")
             print("CANDIDATE_IDENTITY_INCLUDES_DECLARATION: False")
             print("CANDIDATE_UNIVERSE_MEMBERSHIP_DRIVEN_BY_DECLARATION: False")
             print("TARGET_RELEASE_CUTOFF_USED_AS_CHANGE_DRIVER: False")
+            print("UNSUPPORTED_TARGET_VERSIONS_SILENTLY_COERCED: False")
 
             print("\nLEAKAGE / INTEGRITY")
             print("EXECUTION_USED: False")
