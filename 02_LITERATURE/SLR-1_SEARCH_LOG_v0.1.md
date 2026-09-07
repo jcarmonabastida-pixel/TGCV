@@ -69,11 +69,19 @@ The source models an adaptation space as multidimensional variability across req
 
 The source combines dynamic variability, valid runtime configuration spaces, proactive recomputation/optimization, prediction of future conditions and downstream quality consequences. This is strong prior art for a changing constrained configuration space linked to future adaptation trajectories.
 
+### CAND-0024 — SRC-SAS-004
+
+**Source:** Stevens & Bagheri (2020), *Reducing Run-Time Adaptation Space via Analysis of Possible Utility Bounds*.
+
+**Classification:** **AC2 NEAR-DIRECT / VERY STRONG / AC3 NOT ESTABLISHED**.
+
+The source treats runtime adaptation alternatives as an explicit space of possible transitions, performs formal reachability analysis, evaluates bounded-horizon trajectories and utility, and reduces the candidate space using anticipated utility bounds. This establishes near-direct prior art for runtime adaptation-space analysis, recomputation/reduction, reachability and value/utility evaluation.
+
 ### Cluster status
 
 **OPEN — BOUNDED FALSIFICATION PASS CONTINUES.**
 
-The self-adaptive family now has convergent very-strong AC2 antecedents for:
+The self-adaptive family now has convergent very-strong/near-direct AC2 antecedents for:
 
 - explicit adaptation/configuration spaces;
 - multidimensional adaptation-space representation;
@@ -83,11 +91,14 @@ The self-adaptive family now has convergent very-strong AC2 antecedents for:
 - evolution-induced addition/removal;
 - dynamic variability and valid runtime configuration spaces;
 - proactive recomputation/optimization over changing configuration spaces;
+- formal reachability analysis;
+- bounded-horizon adaptation trajectories;
+- utility/value assessment and utility-based reduction of the candidate space;
 - downstream adaptation/learning/quality consequences.
 
 AC3 remains unestablished because no screened source yet provides the domain-independent transformation predicate plus the full mechanism-to-ΔT_acc-to-value architecture.
 
-Next controlled operation: screen the remaining predefined self-adaptive subfamilies, beginning with **runtime recomputation of valid configuration/action spaces beyond DSPL**, followed by self-evolution and explicit reachability/trajectory consequences.
+Next controlled operation: screen the remaining predefined self-adaptive subfamilies, beginning with **self-evolution changing future adaptation possibilities**, followed by explicit reachability/trajectory consequences and formal links between changing variability spaces and reachable behavioural states.
 
 ## 8. Integrity boundary
 
