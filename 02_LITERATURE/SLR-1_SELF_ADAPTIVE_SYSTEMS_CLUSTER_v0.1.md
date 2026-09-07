@@ -1,32 +1,34 @@
 # SLR-1 — Self-Adaptive Systems / Runtime Adaptation Cluster v0.1
 
-**Status:** RECONSTRUCTED / WORKING  
-**Gate:** SLR-1 — Architectural Originality / Prior-Art Falsification  
-**Current source:** SRC-SAS-001 — Metzger et al., adaptation-space evolution in self-adaptive systems.
+**Status:** RECONSTRUCTED / WORKING
 
-## 1. Purpose
+## Current bounded pass
 
-This cluster tests whether self-adaptive systems and runtime-adaptation literature already provides the TGCV architecture, rather than merely a similar vocabulary.
+The self-adaptive-systems family has now produced a second, stronger antecedent: `SRC-SAS-002` (Gheibi & Weyns, 2024), which explicitly studies **drift of adaptation spaces** — the emergence and disappearance of adaptation options over time.
 
-## 2. Initial result
+### Cluster evidence
 
-`SRC-SAS-001` is classified **AC2 — VERY STRONG STRUCTURAL ANTECEDENT; AC3 NOT ESTABLISHED**.
+`SRC-SAS-001` established prior art for:
+- explicit adaptation spaces;
+- constraint-defined possible configurations;
+- possible vs executed adaptation;
+- evolution-induced additions/removals.
 
-It explicitly represents a constrained adaptation space, distinguishes possible adaptations from executed adaptations, and computes additions/removals in the adaptation space after system evolution.
+`SRC-SAS-002` strengthens this boundary by establishing:
+- adaptation space as an explicit set of selectable options;
+- adaptation-space drift as an explicit phenomenon;
+- disappearance and emergence of options;
+- mechanisms and lifelong adaptation responding to that drift.
 
-## 3. Absorbed claims
+### Architectural verdict
 
-The cluster must be treated as prior art for:
+**AC2: VERY STRONG / CONVERGENT.**
 
-- explicit future adaptation/action repertoires;
-- constraint-defined validity of possible adaptations;
-- distinction between possible and executed adaptation;
-- evolution-induced addition/removal of possible adaptations;
-- downstream exploration/learning consequences of adaptation-space change.
+**AC3: NOT ESTABLISHED.**
 
-## 4. Remaining TGCV boundary
+The convergence means TGCV must no longer claim novelty for the existence of an explicit, changing adaptation/action space, including drift, expansion and contraction, within adaptive software systems.
 
-AC3 remains open only for the conjunction of:
+The remaining candidate contribution is narrower and transversal:
 
 `T_acc = {τ | P_τ(S,C,L)=1}`
 
@@ -34,23 +36,19 @@ AC3 remains open only for the conjunction of:
 
 `mechanism → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`
 
-with the following additional requirement: `τ` must be a **domain-independent transformation**, not merely an adaptation configuration/action defined inside one software architecture.
+where `τ` denotes a domain-independent transformation rather than a software adaptation option, and where the mechanism producing the change is analytically separated from the accessible transformation object.
 
-## 5. Next controlled operation
+## Next controlled operation
 
-Perform a bounded adjacent pass over the self-adaptive-systems family targeting specifically:
+Continue the bounded pass within self-adaptive systems, now targeting specifically:
 
-1. runtime adaptation spaces / configuration spaces;
-2. dynamic variability models and changing valid configuration sets;
-3. self-evolution where evolution changes future adaptation options;
-4. adaptive control/planning with formal action-set recomputation;
-5. frameworks explicitly relating changing adaptation spaces to reachability/trajectory and outcomes.
+1. dynamic software product lines / variability-model evolution;
+2. runtime recomputation of valid configuration/action spaces;
+3. self-evolution changing future adaptation possibilities;
+4. explicit reachability/trajectory consequences of adaptation-space drift.
 
-Do not search generic self-adaptation indefinitely. Stop when either:
+Stop on the first plausible AC3 candidate and open a dedicated comparative architecture review. If none appears after the predefined subfamilies are screened, freeze this family as AC2 prior-art and proceed to the next SLR-1 family.
 
-- an AC3 candidate appears, triggering a dedicated comparative architecture review; or
-- the predefined subfamilies are screened to a documented bounded depth, after which the cluster is frozen and the next SLR-1 family is opened.
+## Integrity boundary
 
-## 6. Integrity boundary
-
-No Core modification is triggered. No conceptual test is reopened. EXT-1.1 is excluded from the evidence base for this literature gate.
+No Core modification. No reopening of TR-130–TR-140. No modification of EXT-1.1.
