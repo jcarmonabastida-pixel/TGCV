@@ -10,7 +10,6 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime as dt
-import hashlib
 import io
 import json
 import sys
@@ -114,16 +113,13 @@ def canonical_tacc(rows: Iterable[tuple[int, int, int, str]]) -> tuple[tuple[int
     return tuple(ordered)
 
 
-def _member_by_basename(zf: zipfile.ZipFile, basename: str) -> str:
-    matches = [n for n in zf.namelist() if n.replace("\\", "/").rsplit("/", 1)[-1] == basename]
-    if len(matches) != 1:
-        raise RuntimeError(f"ARCHIVE_MEMBER_RESOLUTION_ERROR:{basename}:{len(matches)}")
-    return matches[0]
-
-
-def _read_rows(zf: zipfile.ZipFile, basename: str):
-    member = _member_by_basename(zf, basename)
-    with zf.open(member, "r") as raw:
+def _read_rows(zf: zipfile.ZipFile, member: str):
+    """Read exactly the frozen archive member; basename fallback is forbidden."""
+    names = {n.replace("\\", "/") for n in zf.namelist()}
+    normalized = member.replace("\\", "/")
+    if normalized not in names:
+        raise RuntimeError(f"FROZEN_ARCHIVE_MEMBER_MISSING:{normalized}")
+    with zf.open(normalized, "r") as raw:
         text = io.TextIOWrapper(raw, encoding="utf-8", errors="strict", newline="")
         yield from csv.DictReader(text)
 
@@ -133,7 +129,7 @@ def load_structural_origins_and_tacc(dataset: Path):
     with zipfile.ZipFile(dataset, "r") as zf:
         versions: dict[int, Origin] = {}
         by_package: dict[int, list[Origin]] = defaultdict(list)
-        for row in _read_rows(zf, "package_versions.csv"):
+        for row in _read_rows(zf, VERSIONS_MEMBER):
             required = ("id", "package_id", "version_str", "created_at")
             if any(k not in row or row[k] is None for k in required):
                 raise ValueError("MALFORMED_PACKAGE_VERSION_ROW")
@@ -148,7 +144,7 @@ def load_structural_origins_and_tacc(dataset: Path):
             by_package[package_id].sort(key=lambda o: (parse_created_at(o.created_at), o.version_id))
 
         deps_by_origin: dict[int, list[tuple[int, int, str]]] = defaultdict(list)
-        for row in _read_rows(zf, "package_dependencies.csv"):
+        for row in _read_rows(zf, DEPENDENCIES_MEMBER):
             required = ("depending_version", "depending_on_package", "semver_str")
             if any(k not in row or row[k] is None for k in required):
                 raise ValueError("MALFORMED_PACKAGE_DEPENDENCY_ROW")
@@ -162,11 +158,6 @@ def load_structural_origins_and_tacc(dataset: Path):
         records = []
         for oid in sorted(versions):
             origin = versions[oid]
-            same_pkg = by_package[origin.package_id]
-            origin_ts = parse_created_at(origin.created_at)
-            earlier_count = sum(parse_created_at(o.created_at) < origin_ts for o in same_pkg)
-            first_ts = parse_created_at(same_pkg[0].created_at)
-            age_days = (origin_ts - first_ts).total_seconds() / 86400.0
             tacc_rows = []
             for _, target_package_id, req in deps_by_origin.get(oid, []):
                 target_versions = by_package.get(target_package_id, [])
@@ -177,23 +168,10 @@ def load_structural_origins_and_tacc(dataset: Path):
                     tacc_rows.append((oid, target_package_id, int(selected_id), result["selected_version"]))
             records.append({
                 "origin": origin,
-                "prior_release_count": earlier_count,
-                "package_age_days": age_days,
                 "dependency_count": len(deps_by_origin.get(oid, [])),
                 "tacc": canonical_tacc(tacc_rows),
             })
         return records
-
-
-def _sha256_bytes(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
-
-
-def _tacc_hash(tacc: Iterable[tuple[int, int, int, str]]) -> str:
-    h = hashlib.sha256()
-    for origin_id, target_pid, target_vid, target_version in canonical_tacc(tacc):
-        h.update(f"{origin_id}|{target_pid}|{target_vid}|{target_version}\n".encode("utf-8"))
-    return h.hexdigest()
 
 
 def synthetic_conformance() -> dict:
