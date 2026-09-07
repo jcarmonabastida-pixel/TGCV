@@ -47,11 +47,11 @@ The ReacTS / reactive-graphs / dynamic-action family is **FROZEN AS PRIOR-ART BO
 
 ### CAND-0021 — SRC-SAS-002
 
-**Source:** Gheibi & Weyns (2024), *Dealing with Drift of Adaptation Spaces in Learning-based Self-Adaptive Systems Using Lifelong Self-Adaptation*.
+**Source:** Gheibi & Weyns (2024), *Dealing with Drift of Adaptation Spaces in Learning-based Self-Adaptation*.
 
 **Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
 
-The source explicitly studies drift of an adaptation space, including emergence and disappearance of adaptation options over time. This strengthens prior art for an explicit changing future-action repertoire.
+The source explicitly studies drift of an adaptation space, including emergence and disappearance of adaptation options over time.
 
 ### CAND-0022 — SRC-SAS-003
 
@@ -59,7 +59,7 @@ The source explicitly studies drift of an adaptation space, including emergence 
 
 **Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
 
-The source models an adaptation space as multidimensional variability across requirements/goals, architecture and behaviour, and treats the possible reconfigurations as the adaptation space. It therefore establishes near-direct prior art for explicit structural representation of an adaptation space and for treating its size/structure as analytically meaningful.
+The source models adaptation space as multidimensional variability across requirements/goals, architecture and behaviour, with possible reconfigurations defining the adaptation space.
 
 ### CAND-0023 — SRC-DSPL-001
 
@@ -67,7 +67,7 @@ The source models an adaptation space as multidimensional variability across req
 
 **Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
 
-The source combines dynamic variability, valid runtime configuration spaces, proactive recomputation/optimization, prediction of future conditions and downstream quality consequences. This is strong prior art for a changing constrained configuration space linked to future adaptation trajectories.
+The source combines dynamic variability, valid runtime configuration spaces, proactive recomputation/optimization, prediction of future conditions and downstream quality consequences.
 
 ### CAND-0024 — SRC-SAS-004
 
@@ -75,7 +75,7 @@ The source combines dynamic variability, valid runtime configuration spaces, pro
 
 **Classification:** **AC2 NEAR-DIRECT / VERY STRONG / AC3 NOT ESTABLISHED**.
 
-The source treats runtime adaptation alternatives as an explicit space of possible transitions, performs formal reachability analysis, evaluates bounded-horizon trajectories and utility, and reduces the candidate space using anticipated utility bounds. This establishes near-direct prior art for runtime adaptation-space analysis, recomputation/reduction, reachability and value/utility evaluation.
+The source treats runtime adaptation alternatives as an explicit space of possible transitions, performs formal reachability analysis, evaluates bounded-horizon trajectories and utility, and reduces the candidate space using anticipated utility bounds.
 
 ### CAND-0025 — SRC-SAS-005
 
@@ -83,7 +83,7 @@ The source treats runtime adaptation alternatives as an explicit space of possib
 
 **Classification:** **AC2 VERY STRONG / NEAR-DIRECT / AC3 NOT ESTABLISHED**.
 
-The sources explicitly move beyond ordinary self-adaptation: self-evolution changes the operational design domain and addresses conditions, goals and constraints not anticipated initially. The proposed evolutionary engine can generate and evaluate novel system variants, evolve architecture online and integrate new capabilities. This absorbs broad novelty claims concerning autonomous change of a system's future capability envelope or adaptation domain.
+The sources explicitly move beyond ordinary self-adaptation: self-evolution changes the operational design domain and addresses conditions, goals and constraints not anticipated initially. The evolutionary engine can generate/evaluate novel system variants, evolve architecture online and integrate new capabilities.
 
 ### CAND-0026 — SRC-SAS-006
 
@@ -91,33 +91,33 @@ The sources explicitly move beyond ordinary self-adaptation: self-evolution chan
 
 **Classification:** **AC2 VERY STRONG / AC3 NOT ESTABLISHED**.
 
-The source explicitly couples runtime self-adaptation with runtime design evolution. Changes in design models and runtime conditions are monitored and correlated to drive subsequent adaptation decisions, demonstrating that evolution of the system design can modify the conditions and possibilities for later adaptation. This is strong prior art for mechanism-driven modification of future adaptation/evolution possibilities.
+Runtime self-adaptation is explicitly coupled with runtime design evolution; evolved design/runtime state modifies conditions and possibilities for later adaptation.
 
-### Cluster status
+### CAND-0027 — SRC-SAS-007
 
-**OPEN — FINAL BOUNDED SUBPASS.**
+**Source:** María Gómez Lacruz (2011), *Designing Self-Adaptive Systems*.
 
-The self-adaptive family now has convergent very-strong/near-direct AC2 antecedents for:
+**Classification:** **AC2 DIRECT / VERY STRONG / AC3 NOT ESTABLISHED**.
 
-- explicit adaptation/configuration spaces;
-- multidimensional adaptation-space representation;
-- possible versus executed adaptation;
-- adaptation-space drift;
-- emergence/disappearance of options;
-- evolution-induced addition/removal;
-- dynamic variability and valid runtime configuration spaces;
-- proactive recomputation/optimization over changing configuration spaces;
-- formal reachability analysis;
-- bounded-horizon adaptation trajectories;
-- utility/value assessment and utility-based reduction of the candidate space;
-- downstream adaptation/learning/quality consequences;
-- autonomous self-evolution of the operational domain and future system capabilities;
-- coupling runtime adaptation with design evolution so that later adaptation possibilities depend on evolved design/runtime state.
+The source explicitly defines a **Possibility Space** from variability information as a state-machine representation containing feasible configurations reachable through execution and the reconfigurations among them. It performs explicit reconfiguration analysis and a safe-reconfiguration/reachability refinement. This directly links variability specification → possibility space → feasible reconfigurations → reachability/path consequences.
 
-AC3 remains unestablished because no screened source yet provides the domain-independent transformation predicate plus the full mechanism-to-ΔT_acc-to-value architecture.
+### Final bounded subpass decision
 
-Next controlled operation: perform the final targeted pass on **explicit reachability/trajectory consequences of adaptation-space drift and formal links between changing variability spaces and reachable behavioural states**. If that pass also fails to produce AC3, freeze the self-adaptive family as AC2 prior-art and move to the next SLR-1 family.
+The final targeted self-adaptive subpass **did not identify AC3**. It did, however, identify a direct structural antecedent for the remaining reachability/trajectory link.
+
+The self-adaptive family is therefore **FROZEN AS PRIOR-ART BOUNDARY**.
+
+- AC2: **CONFIRMED / CONVERGENT / DIRECT**.
+- AC3: **NOT ESTABLISHED**.
+- `NO_FULL_ABSORPTION_IDENTIFIED`: bounded current finding, not universal novelty proof.
+- Broad claims that changing variability/adaptation spaces affect feasible configurations, reachability and future reconfiguration trajectories: **ABSORBED**.
+- TGCV Core: **UNCHANGED**.
+- EXT-1.1: **NOT USED**.
 
 ## 8. Integrity boundary
 
 No Core modification is triggered. No conceptual test is reopened. No empirical protocol is modified. EXT-1.1 remains excluded from this literature gate.
+
+## 9. Next SLR-1 operation
+
+The self-adaptive family is closed at the current bounded depth. The next operation is to identify the **next predefined SLR-1 family** from the reconstructed operational protocol/search plan and begin its falsification pass. No new family is invented ad hoc as a response to the negative result above.
