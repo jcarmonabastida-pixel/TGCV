@@ -66,15 +66,33 @@ The source explicitly models changing action sets inside a state-transition proc
 
 The finding materially absorbs the claim that accessible actions can change through system evolution and that such changes affect subsequent decision trajectories. It does not establish a domain-independent `T_acc`, nor `ΔT_acc` as a transversal analytical object, nor the complete TGCV architecture.
 
-### Intermediate family decision
+### CAND-0032 — SRC-SSR-003
 
-The state-space/reachability family is now **OPEN — INTERMEDIATE PASS**.
+**Source:** Brenner & zu Jeddeloh (2024), *Path dependence in an evolving system: a modeling perspective*, Cliometrica 18, 1–36, DOI `10.1007/s11698-023-00266-z`.
 
-- AC2: **CONFIRMED / VERY STRONG / NEAR-DIRECT**.
+**Classification:** **AC2 VERY STRONG / DIRECT ANALOGUE / AC3 NOT ESTABLISHED**.
+
+The source explicitly models systems in which the set of possible states itself evolves, with states being added or removed, and links this evolving possibility structure to path dependence and future trajectories. citeturn3search2
+
+This materially absorbs the broader claim that the future possibility/state space itself can change and thereby alter future paths. It does not isolate transformations as the primary object, does not formulate a domain-independent accessibility predicate `P_τ`, and does not establish `ΔT_acc` as the central transversal analytical construct.
+
+### Final targeted subpass decision
+
+The targeted search for changing transition relations / feasible-transition spaces **did not identify a Level-3 architectural equivalent** of TGCV. The strongest findings instead converge on partial antecedents:
+
+- reachable/viable state sets;
+- changing action sets embedded in decision processes;
+- evolving possible-state spaces linked to path dependence.
+
+Therefore the state-space/reachability family is now **FROZEN AS PRIOR-ART BOUNDARY**.
+
+- AC2: **CONFIRMED / CONVERGENT / VERY STRONG**.
 - AC3: **NOT ESTABLISHED**.
-- `NO_FULL_ABSORPTION_IDENTIFIED`: bounded current finding.
-- Generic reachability/viability and changing action-set dynamics are prior art.
-- Remaining candidate: a domain-independent analytical construction that explicitly treats changing accessible transformations as the central object and connects that change to reachability/trajectory/outcome.
+- `NO_FULL_ABSORPTION_IDENTIFIED`: bounded current finding, not universal novelty proof.
+- Generic reachability, viability, changing action sets, and evolving possibility/state spaces: **ABSORBED AS PRIOR ART**.
+- Remaining TGCV candidate: domain-independent analytical construction in which `T_acc` is explicitly the accessible-transformation object, `ΔT_acc` is the central change variable, and its downstream relation to reachability/trajectory/outcome is made explicit.
+- TGCV Core: **UNCHANGED**.
+- EXT-1.1: **NOT USED**.
 
 ## 10. Integrity boundary
 
@@ -82,4 +100,4 @@ No Core modification is triggered. No conceptual test is reopened. No empirical 
 
 ## 11. Next controlled operation
 
-Continue the predefined state-space/reachability family with a final targeted search for changing transition relations / feasible-transition spaces that are explicitly separated from observed execution and linked to future reachability or trajectories.
+State-space and reachability approaches are frozen. Proceed to the **next predefined SLR-1 family**, not to an ad hoc family. The next operation must follow the family order defined in `SLR-1_OPERATIONAL_PROTOCOL_v0.1_RECONSTRUCTED.md`.
