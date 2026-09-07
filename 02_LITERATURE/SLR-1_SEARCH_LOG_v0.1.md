@@ -77,6 +77,14 @@ The source combines dynamic variability, valid runtime configuration spaces, pro
 
 The source treats runtime adaptation alternatives as an explicit space of possible transitions, performs formal reachability analysis, evaluates bounded-horizon trajectories and utility, and reduces the candidate space using anticipated utility bounds. This establishes near-direct prior art for runtime adaptation-space analysis, recomputation/reduction, reachability and value/utility evaluation.
 
+### CAND-0025 — SRC-SAS-005
+
+**Source:** Weyns et al. (2023), *The Vision of Self-Evolving Computing Systems*; related Weyns & Andersson (2023), *From Self-Adaptation to Self-Evolution Leveraging the Operational Design Domain*.
+
+**Classification:** **AC2 VERY STRONG / NEAR-DIRECT / AC3 NOT ESTABLISHED**.
+
+The sources explicitly move beyond ordinary self-adaptation: self-evolution changes the operational design domain and addresses conditions, goals and constraints not anticipated initially. The proposed evolutionary engine can generate and evaluate novel system variants, evolve architecture online and integrate new capabilities. This absorbs broad novelty claims concerning autonomous change of a system's future capability envelope or adaptation domain.
+
 ### Cluster status
 
 **OPEN — BOUNDED FALSIFICATION PASS CONTINUES.**
@@ -94,11 +102,12 @@ The self-adaptive family now has convergent very-strong/near-direct AC2 antecede
 - formal reachability analysis;
 - bounded-horizon adaptation trajectories;
 - utility/value assessment and utility-based reduction of the candidate space;
-- downstream adaptation/learning/quality consequences.
+- downstream adaptation/learning/quality consequences;
+- autonomous self-evolution of the operational domain and future system capabilities.
 
 AC3 remains unestablished because no screened source yet provides the domain-independent transformation predicate plus the full mechanism-to-ΔT_acc-to-value architecture.
 
-Next controlled operation: screen the remaining predefined self-adaptive subfamilies, beginning with **self-evolution changing future adaptation possibilities**, followed by explicit reachability/trajectory consequences and formal links between changing variability spaces and reachable behavioural states.
+Next controlled operation: screen the remaining predefined self-adaptive subfamily concerning **explicit reachability/trajectory consequences of adaptation-space drift and formal links between changing variability spaces and reachable behavioural states**. If that pass also fails to produce AC3, freeze the self-adaptive family as AC2 prior-art and move to the next SLR-1 family.
 
 ## 8. Integrity boundary
 
