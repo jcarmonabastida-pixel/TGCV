@@ -94,10 +94,32 @@ Therefore the state-space/reachability family is now **FROZEN AS PRIOR-ART BOUND
 - TGCV Core: **UNCHANGED**.
 - EXT-1.1: **NOT USED**.
 
-## 10. Integrity boundary
+## 10. Candidate cluster — generativity and combinatorial possibility approaches
+
+### CAND-0033 — SRC-GEN-001
+
+**Source:** Devereaux, Koppl & Kauffman (2024), *Creative evolution in economics*, Journal of Evolutionary Economics 34, 489–514, DOI `10.1007/s00191-024-00855-9`.
+
+**Classification:** **AC2 VERY STRONG / NEAR-DIRECT STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
+
+The source explicitly represents a system-level possible set `Π_t` and adjacent possible `A_t`, with `A_t` changing through time as the system evolves. It treats the adjacent possible as a changing structure of newly available possibilities and links that evolution to creative trajectories. citeturn1search0
+
+The finding materially absorbs the broader claim that a system's future possibility structure can be explicitly represented and that its change can shape subsequent trajectories. It does not establish a domain-independent transformation set `T_acc`, a generic accessibility predicate `P_τ(S,C,L)`, or `ΔT_acc` as the transversal analytical object.
+
+### Initial family decision
+
+The generativity/combinatorial possibility family is **OPEN — INITIAL PASS**.
+
+- AC2: **VERY STRONG / NEAR-DIRECT** in the first source.
+- AC3: **NOT ESTABLISHED**.
+- The source establishes a significant prior-art boundary around changing possibility spaces and open-ended generativity.
+- TGCV Core: **UNCHANGED**.
+- EXT-1.1: **NOT USED**.
+
+## 11. Integrity boundary
 
 No Core modification is triggered. No conceptual test is reopened. No empirical protocol is modified. EXT-1.1 remains excluded from this literature gate.
 
-## 11. Next controlled operation
+## 12. Next controlled operation
 
-State-space and reachability approaches are frozen. Proceed to the **next predefined SLR-1 family**, not to an ad hoc family. The next operation must follow the family order defined in `SLR-1_OPERATIONAL_PROTOCOL_v0.1_RECONSTRUCTED.md`.
+Continue the predefined generativity/combinatorial possibility family with sources that explicitly model combinatorial generation, adjacent-possible expansion, or changing sets of feasible future configurations. Do not infer AC3 from possibility-space similarity alone.
