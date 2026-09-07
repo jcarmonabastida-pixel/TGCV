@@ -46,18 +46,19 @@ Forward citation chaining for `SRC-TRANS-001` remains pending systematic bibliog
 |---|---|---|---|---|
 | CAND-0009 | SRC-MOMOT-001 | Bill et al. (2019), *A local and global tour on MOMoT* | direct predecessor / structural antecedent | **AC2 confirmed; AC3 not established** |
 | CAND-0010 | SRC-DSE-001 | Abdeen et al. (2014), *Multi-Objective Optimization in Rule-Based Design Space Exploration* | foundational DSE antecedent | **AC2 candidate/strong structural antecedent; AC3 not established** |
-| CAND-0011 | SRC-MDEO-001 | Burdusel et al. (2018/2019), *MDEOptimiser* | adjacent competing architecture / representation comparison | pending |
+| CAND-0011 | SRC-MDEO-001 | Burdusel et al. (2018/2019), *MDEOptimiser* | adjacent competing architecture / representation comparison | **AC2 confirmed; AC3 not established** |
 | CAND-0012 | SRC-HENSHIN-001 | Strüber et al. (2018), *Henshin...MDEOptimiser* | formal transformation-language antecedent | pending |
 
 ### CH-0001 dossier outcome — consolidated structural cluster
 
-Independent screening of `SRC-DSE-001` and `SRC-MOMOT-001` confirms a coherent prior-art cluster covering:
+Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001` and `SRC-MDEO-001` confirms a coherent prior-art cluster covering:
 
 - explicit transformation/search spaces;
-- transformation-rule applicability/executability;
+- transformation-rule applicability/executability or consistency;
 - reachable candidate states;
 - transformation sequences as trajectories;
-- objective/fitness evaluation of resulting states.
+- objective/fitness evaluation of resulting states;
+- model transformations used explicitly as search operators.
 
 This cluster **absorbs any broad originality claim over those individual structural elements**. It does not, on the current evidence, absorb the stronger TGCV architectural proposition concerning the explicit analytical object `ΔT_acc` — change in the accessibility relation itself — and its transversal connection to future reachability, trajectories, outcomes and value.
 
@@ -65,11 +66,10 @@ This remains a bounded interpretation, not a final SLR-1 originality conclusion.
 
 ## 7. Immediate controlled operation after chaining
 
-The next operation is to create the independent source dossier for:
+The next operation is to screen:
 
-1. `SRC-MDEO-001` — Burdusel, Zschaler & Strüber, *MDEOptimiser: A Search Based Model Engineering Tool* (2018/2019).
-
-After that, `SRC-HENSHIN-001` should be screened if the MDEOptimiser dossier indicates that the formal transformation-language layer can materially affect the AC3 boundary.
+1. `SRC-HENSHIN-001` — Strüber et al. (2018), *Henshin: A Model Transformation Language and its Use for Search-Based Model Optimisation in MDEOptimiser*, if the formal transformation-language layer can materially affect the AC3 boundary;
+2. otherwise continue with the predefined SLR-1 search families and independent candidate screening.
 
 No AC3 decision should be made solely from the current cluster.
 
