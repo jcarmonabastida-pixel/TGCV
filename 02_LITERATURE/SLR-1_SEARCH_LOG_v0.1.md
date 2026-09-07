@@ -5,110 +5,70 @@
 **Protocol:** `SLR-1_OPERATIONAL_PROTOCOL_v0.1_RECONSTRUCTED.md`
 **Date frozen:** 2026-09-07
 
-## 5. Citation-chain register — MOMoT
+## 6. Candidate cluster — accessibility / possibility / dynamic action sets
 
-`SRC-TRANS-001` was classified AC2 after full-text extraction. Citation chaining was therefore initiated as a falsification operation, not as enrichment.
+The current falsification front has now screened a convergent sequence of prior-art families:
 
-### CH-0001 — backward conceptual/technical chain
+- transformation/search spaces in MDE;
+- state-dependent transformation applicability;
+- future enabled actions and recursive affordance chains;
+- system-change → affordance-change;
+- dynamic possibility spaces;
+- dynamic action sets;
+- configuration-dependent available-operation sets in reconfigurable/distributed systems.
 
-**Parent:** `SRC-TRANS-001` — Eisenberg et al. (2024), MOMoT.
+### CAND-0018 — SRC-PHASE-001
 
-**Search date:** 2026-09-07.
+**Source:** *Designing Distributed Applications Using a Phase-Aware, Reversible System*.
 
-**Sources surfaced for independent screening:**
+**Classification:** **AC2 very strong / AC3 not established**.
 
-1. **Bill et al. — *A local and global tour on MOMoT* (2019), DOI 10.1007/s10270-017-0644-3.** The article describes transformation problems as spanning a very large search space of possible transformation results and develops local/global search over model-transformation orchestrations.
-2. **Abdeen et al. — *Multi-Objective Optimization in Rule-Based Design Space Exploration* (2014).** The paper explicitly treats rule-based design-space exploration as an optimization problem over design candidates constrained by structural and numerical restrictions.
-3. **Burdusel, Zschaler & Strüber — *MDEOptimiser: A Search Based Model Engineering Tool* (2018/2019), DOI 10.1145/3270112.3270130.** The tool represents candidate solutions with models and uses model transformations as search operators; related work explicitly distinguishes transformation-chain encodings used by MOMoT and VIATRA-DSE.
-4. **Strüber et al. — *Henshin: A Model Transformation Language and its Use for Search-Based Model Optimisation in MDEOptimiser* (2018).** Henshin is presented as a graph-transformation language used to specify evolutionary operators for search-based model optimization.
-5. **Search-based model-engineering infrastructure literature** explicitly distinguishes the MOMoT approach as encoding solution candidates as chains of model transformations applied to an input model, with mutation/crossover generating new chains and reapplying them to the initial model.
+This source is a particularly strong structural antecedent because it explicitly models an available-operation set as a function of a time-varying phase configuration. The source defines a phase configuration and a function mapping phase configurations to operation sets/vectors, with the elements representing operations available at nodes. citeturn2search24turn2search25
 
-### CH-0001 preliminary interpretation
+It therefore directly establishes prior art for the relation:
 
-The chain substantially strengthens the conclusion that **explicit transformation/search spaces and trajectories through transformation operators are established prior art in model-driven engineering**. MOMoT is therefore not an isolated terminology match.
+`system configuration → available-operation set`.
 
-At the same time, the surfaced chain remains **domain-specific and optimization-oriented**. The sources found so far focus on finding good transformation results/design candidates, not on a transversal theory of how a system's conditions modify the set of transformations that are subsequently accessible.
+The source also provides adjacent evidence that runtime configuration/reconfiguration can determine which operations are applicable in a distributed software system, while industrial responsive-manufacturing work independently links evolving execution states/reconfiguration to updates of available operations. citeturn1search0turn1search1turn1search27
 
-Therefore:
+### Consolidated interpretation
 
-- `AC2` for `SRC-TRANS-001` remains supported.
-- `AC3` is still **not established**.
-- No Core modification is triggered.
-- The citation chain itself becomes a source-discovery cluster requiring independent dossiers before any architectural absorption conclusion.
+The new evidence **absorbs the broad novelty claim** that TGCV is the first construction to express available operations as a function of changing system conditions/configuration.
 
-### CH-0002 — forward-chain status
+It also materially weakens any claim that the distinction between a system state/configuration and its currently available operations is itself novel.
 
-Forward citation chaining for `SRC-TRANS-001` remains pending systematic bibliographic execution. The web-discovery pass surfaced later work on reinforcement-learning-based model transformation that explicitly compares MOMoT, MDEOptimiser and VIATRA-style transformation-rule sequence approaches, but this is contextual evidence rather than a completed forward-citation census.
+However, **AC3 remains unestablished**. None of the screened sources yet demonstrates, in a transversal domain-independent form, all of the following in one architecture:
 
-## 6. Candidate cluster created by CH-0001
+`T_acc = {τ | P_τ(S,C,L)=1}`
 
-| Candidate ID | Source ID | Source | Provisional role | AC level |
-|---|---|---|---|---|
-| CAND-0009 | SRC-MOMOT-001 | Bill et al. (2019), *A local and global tour on MOMoT* | direct predecessor / structural antecedent | **AC2 confirmed; AC3 not established** |
-| CAND-0010 | SRC-DSE-001 | Abdeen et al. (2014), *Multi-Objective Optimization in Rule-Based Design Space Exploration* | foundational DSE antecedent | **AC2 candidate/strong structural antecedent; AC3 not established** |
-| CAND-0011 | SRC-MDEO-001 | Burdusel et al. (2018/2019), *MDEOptimiser* | adjacent competing architecture / representation comparison | **AC2 confirmed; AC3 not established** |
-| CAND-0012 | SRC-HENSHIN-001 | Strüber et al. (2018), *Henshin...MDEOptimiser* | formal transformation-language antecedent | **AC2 confirmed; AC3 not established** |
-| CAND-0013 | SRC-DAF-001 | Xu et al. (2021), *Deep Affordance Foresight* | accessibility/future-possibilities antecedent | **AC2 strong; AC3 not established** |
-| CAND-0014 | SRC-SCI-001 | Petersen, Rasmussen & Trettvik (2020), *Affordances of Shape-Changing Interfaces* | system-change → affordance-change antecedent | **AC2 strong; AC3 not established** |
-| CAND-0015 | SRC-LAF-001 | Kiverstein, van Dijk & Rietveld (2019/2021), *The field and landscape of affordances* | landscape-level accessibility antecedent | **AC2 strong; AC3 not established** |
-| CAND-0016 | SRC-PSP-001 | Ross (2025), *The Possibility Space Concept in Neuroscience* | dynamic possibility-space / accessibility antecedent | **AC2 very strong; AC3 not established** |
-| CAND-0017 | SRC-DAS-001 | Chandak et al. (2018/2019), *Reinforcement Learning with a Dynamic Action Set / Lifelong Learning with a Changing Action Set* | direct changing-action-set antecedent | **AC2 direct; AC3 not established** |
+`ΔT_acc = T_acc,t+1 ⊖ T_acc,t`
 
-### CH-0001 dossier outcome — consolidated structural cluster
+`mechanism → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
 
-Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001`, `SRC-MDEO-001` and `SRC-HENSHIN-001` confirms a coherent MDE prior-art cluster covering:
+The remaining originality boundary is therefore not the existence of a changing operation set. It is the **general analytical elevation of the change in an accessible transformation relation itself**, independently of a specific agent, software architecture, control problem, transformation language, or reconfiguration formalism, plus the systematic propagation of that change into future reachability/trajectories/outcomes/value.
 
-- explicit transformation/search spaces;
-- transformation-rule applicability/executability or consistency;
-- state-dependent applicability of transformations;
-- changes in future applicability after state transitions;
-- reachable candidate states and state-space exploration;
-- transformation sequences as trajectories;
-- objective/fitness evaluation of resulting states;
-- model transformations used explicitly as search operators.
+## 7. Next controlled operation — final structural bridge
 
-### Accessibility/future-possibilities search front
+The next operation is now sharply defined:
 
-`SRC-DAF-001` provides a strong cross-cluster falsification candidate. Deep Affordance Foresight explicitly defines an affordance as the set of states in which a parameterized skill is feasible and recursively models actions that become feasible after a current action is executed. It therefore establishes prior art for state-dependent accessibility, future feasible actions and chains of enabled possibilities.
-
-`SRC-SCI-001` strengthens this result in a different direction: shape-changing-interface research explicitly states that affordances change when the interface changes its shape, linking system configuration changes directly to changes in available functions/action possibilities. citeturn1search35turn1search0
-
-`SRC-LAF-001` strengthens the accessibility cluster at the **landscape level**. Kiverstein, van Dijk & Rietveld distinguish a broader landscape of affordances from a contextually selected field of relevant affordances and describe a reciprocal temporal relation in which engagement/practice can further determine the possibilities available in the future.
-
-`SRC-PSP-001` provides a **very strong possibility-space anchor**. Ross (2025) explicitly treats possibility spaces as containing possibilities, constraints and trajectories, and discusses cases in which the possibility-space landscape, repertoire of available states, and accessibility of states change as system configuration or constraints change. This substantially strengthens prior art against any broad claim that the *space of possibilities itself* cannot be a changing analytical object. citeturn0search0turn0search3
-
-`SRC-DAS-001` now closes another broad novelty route: dynamic-action-set reinforcement learning explicitly treats the **set of currently available actions as a changing object** and distinguishes action-set change from changing transition dynamics or rewards. The 2018/2019 work therefore establishes direct prior art for changing action sets and adaptation to additions/removals in available actions. citeturn1search0turn1academia42
-
-Together, these sources **absorb any broad originality claim over state-dependent action accessibility, future enabled actions, generic system-change → affordance-change relations, the existence of a landscape/field of interrelated action possibilities, generic changing possibility spaces, or generic changing action sets**.
-
-They still do not establish AC3 because the current evidence does not demonstrate a general **accessible transformation space** distinct from a state possibility space, with an explicit transformation-accessibility predicate and a general mechanism by which system-condition changes modify that transformation space and propagate to future reachability/trajectories/outcomes/value.
-
-## 7. Immediate controlled operation after dynamic-action-set screening
-
-The next operation is now narrowed further toward **endogenous reconfiguration**. Search for formal/reconfigurable systems where the available action/operation set changes *because the system itself changes configuration*, rather than because an external environment changes the task or an agent receives a new action catalogue.
-
-The falsification target is:
-
-> Does prior literature already define `A_t = F(S_t,C_t)` for a system's available operations, with system reconfiguration causing `A_t → A_{t+1}`, and then explicitly link that change to future reachability or trajectories?
+> Search for formal systems in which the **enabled/available transition relation itself is represented as a changing object**, and a reconfiguration changes that relation and consequently changes the reachable state/trajectory structure.
 
 Priority subfamilies:
 
-1. self-reconfigurable and dynamically reconfigurable systems;
-2. runtime adaptation and reconfiguration;
-3. software product lines / dynamic feature models with changing transition/action availability;
-4. formal transition systems with dynamic enabled-transition relations;
-5. planning/control systems where the action repertoire is generated from current configuration.
+1. reconfigurable transition systems;
+2. dynamic/reconfigurable Petri nets;
+3. runtime-adaptive software architectures with formal enabled-operation semantics;
+4. transition systems whose enabled-transition relation is recomputed after reconfiguration;
+5. formal planning/control models where the action repertoire is generated from the current configuration.
 
-No Core modification is triggered by the present evidence.
+**Decision boundary:**
+
+- If a source explicitly establishes the full architecture above, classify it AC3 candidate and initiate a full comparative architecture review.
+- If sources establish only parts of it, retain AC2 and document the absorbed subclaims.
+- Do not modify TGCV Core automatically.
 
 ## 8. Integrity boundary
 
-The citation-chain results do not prove TGCV originality or non-originality. They establish prior-art clusters that materially raise the standard required for originality claims concerning transformation-space representation, state-dependent applicability, future action possibilities, reachability, trajectories or optimization.
-
-The unresolved question remains the higher-level architecture: whether prior literature already contains the transversal relation in which changes in system conditions modify an accessible transformation space and thereby alter future reachability/trajectories and downstream outcomes/value.
-
-## 9. Remaining search completeness requirements
-
-The final SLR-1 search remains incomplete until predefined query families have been searched across accessible primary bibliographic databases, all AC2+ candidates have backward and forward chaining where available, candidate clusters have been independently screened, evidence and facts have been normalized separately from architectural interpretation, and coverage limitations are recorded.
+No Core modification is triggered. EXT-1.1 is not used as evidence in this literature falsification pass.
 
 `NO_FULL_ABSORPTION_IDENTIFIED` remains a bounded possible outcome, never proof of universal novelty.
