@@ -15,7 +15,9 @@ The current falsification front has now screened a convergent sequence of prior-
 - system-change → affordance-change;
 - dynamic possibility spaces;
 - dynamic action sets;
-- configuration-dependent available-operation sets in reconfigurable/distributed systems.
+- configuration-dependent available-operation sets in reconfigurable/distributed systems;
+- formal/reconfigurable systems with changing transition relations;
+- endogenous action-space expansion in autonomous agents.
 
 ### CAND-0018 — SRC-PHASE-001
 
@@ -23,21 +25,32 @@ The current falsification front has now screened a convergent sequence of prior-
 
 **Classification:** **AC2 very strong / AC3 not established**.
 
-This source is a particularly strong structural antecedent because it explicitly models an available-operation set as a function of a time-varying phase configuration. The source defines a phase configuration and a function mapping phase configurations to operation sets/vectors, with the elements representing operations available at nodes. citeturn2search24turn2search25
+This source is a particularly strong structural antecedent because it explicitly models an available-operation set as a function of a time-varying phase configuration. The source defines a phase configuration and a function mapping phase configurations to operation sets/vectors, with the elements representing operations available at nodes.
 
 It therefore directly establishes prior art for the relation:
 
 `system configuration → available-operation set`.
 
-The source also provides adjacent evidence that runtime configuration/reconfiguration can determine which operations are applicable in a distributed software system, while industrial responsive-manufacturing work independently links evolving execution states/reconfiguration to updates of available operations. citeturn1search0turn1search1turn1search27
+### CAND-0019 — SRC-BSTAR-001
+
+**Source:** Mayorquín Posadas & Vega (2026), *Thinking Is Not Enough: The B* Expansion Technique for Enhancing Autonomous LLM Agents*.
+
+**Classification:** **AC2 strong / AC3 not established**.
+
+The source explicitly represents an evolving action space through an initial action basis `B`, generated actions `A*`, and an expanded action space `B* = B ∪ A*`. It therefore provides direct prior art for treating an action/operation repertoire as an explicit evolving object with downstream performance consequences.
+
+The source does not establish a domain-independent transformation space, a general accessibility predicate over arbitrary transformations, mechanism separation at the transversal level, or the full downstream architecture `mechanism → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
 
 ### Consolidated interpretation
 
-The new evidence **absorbs the broad novelty claim** that TGCV is the first construction to express available operations as a function of changing system conditions/configuration.
+The evidence now **absorbs the broad novelty claims** that TGCV is the first construction to:
 
-It also materially weakens any claim that the distinction between a system state/configuration and its currently available operations is itself novel.
+- express available operations as a function of changing system conditions/configuration;
+- represent changing action sets as an explicit analytical object;
+- represent mechanisms that modify future transition/action availability;
+- connect changing availability to subsequent behaviour/reachability/trajectory within a domain-specific formalism.
 
-However, **AC3 remains unestablished**. None of the screened sources yet demonstrates, in a transversal domain-independent form, all of the following in one architecture:
+However, **AC3 remains unestablished**. No screened source demonstrates, in a transversal domain-independent form, all of the following in one architecture:
 
 `T_acc = {τ | P_τ(S,C,L)=1}`
 
@@ -45,30 +58,29 @@ However, **AC3 remains unestablished**. None of the screened sources yet demonst
 
 `mechanism → ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
 
-The remaining originality boundary is therefore not the existence of a changing operation set. It is the **general analytical elevation of the change in an accessible transformation relation itself**, independently of a specific agent, software architecture, control problem, transformation language, or reconfiguration formalism, plus the systematic propagation of that change into future reachability/trajectories/outcomes/value.
+The remaining originality boundary is therefore not the existence of a changing operation set or action space. It is the **general analytical elevation of the change in an accessible transformation relation itself**, independently of a specific agent, software architecture, control problem, transformation language, or reconfiguration formalism, plus the systematic propagation of that change into future reachability/trajectories/outcomes/value.
 
-## 7. Next controlled operation — final structural bridge
+## 7. Final structural-bridge decision
 
-The next operation is now sharply defined:
+The targeted final adjacent-literature pass has been completed at the current bounded search depth.
 
-> Search for formal systems in which the **enabled/available transition relation itself is represented as a changing object**, and a reconfiguration changes that relation and consequently changes the reachable state/trajectory structure.
+The strongest newly screened source, `SRC-BSTAR-001`, remains AC2 and does not establish AC3. Combined with the ReacTS/reactive-graph cluster, the prior-art boundary is now sufficiently documented to freeze that family for the present SLR-1 pass.
 
-Priority subfamilies:
+**Decision:**
 
-1. reconfigurable transition systems;
-2. dynamic/reconfigurable Petri nets;
-3. runtime-adaptive software architectures with formal enabled-operation semantics;
-4. transition systems whose enabled-transition relation is recomputed after reconfiguration;
-5. formal planning/control models where the action repertoire is generated from the current configuration.
+- ReacTS / reactive graphs / dynamic action spaces: **FROZEN AS PRIOR-ART BOUNDARY**.
+- AC2: **CONFIRMED / CONVERGENT**.
+- AC3: **NOT ESTABLISHED**.
+- `NO_FULL_ABSORPTION_IDENTIFIED`: **bounded current finding**, not universal novelty proof.
+- TGCV Core: **UNCHANGED**.
+- EXT-1.1: **NOT USED**.
 
-**Decision boundary:**
+## 8. Next controlled operation
 
-- If a source explicitly establishes the full architecture above, classify it AC3 candidate and initiate a full comparative architecture review.
-- If sources establish only parts of it, retain AC2 and document the absorbed subclaims.
-- Do not modify TGCV Core automatically.
+Move to the **next predefined SLR-1 literature family**. Do not continue searching the ReacTS/dynamic-action family unless a later source independently supplies a plausible AC3 candidate.
 
-## 8. Integrity boundary
+Any future AC3 candidate must receive a dedicated source dossier and comparative architecture review before any Core decision.
 
-No Core modification is triggered. EXT-1.1 is not used as evidence in this literature falsification pass.
+## 9. Integrity boundary
 
-`NO_FULL_ABSORPTION_IDENTIFIED` remains a bounded possible outcome, never proof of universal novelty.
+No Core modification is triggered. No conceptual test is reopened. No empirical protocol is modified. No post-hoc EXT-1.1 interpretation is introduced. Historical/reconstructed distinctions remain preserved.
