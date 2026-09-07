@@ -51,6 +51,7 @@ Forward citation chaining for `SRC-TRANS-001` remains pending systematic bibliog
 | CAND-0013 | SRC-DAF-001 | Xu et al. (2021), *Deep Affordance Foresight* | accessibility/future-possibilities antecedent | **AC2 strong; AC3 not established** |
 | CAND-0014 | SRC-SCI-001 | Petersen, Rasmussen & Trettvik (2020), *Affordances of Shape-Changing Interfaces* | system-change → affordance-change antecedent | **AC2 strong; AC3 not established** |
 | CAND-0015 | SRC-LAF-001 | Kiverstein, van Dijk & Rietveld (2019/2021), *The field and landscape of affordances* | landscape-level accessibility antecedent | **AC2 strong; AC3 not established** |
+| CAND-0016 | SRC-PSP-001 | Ross (2025), *The Possibility Space Concept in Neuroscience* | dynamic possibility-space / accessibility antecedent | **AC2 very strong; AC3 not established** |
 
 ### CH-0001 dossier outcome — consolidated structural cluster
 
@@ -73,20 +74,27 @@ Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001`, `SRC-MDEO-001` and `SRC
 
 `SRC-LAF-001` strengthens the accessibility cluster at the **landscape level**. Kiverstein, van Dijk & Rietveld distinguish a broader landscape of affordances from a contextually selected field of relevant affordances and describe a reciprocal temporal relation in which engagement/practice can further determine the possibilities available in the future.
 
-Together, these sources **absorb any broad originality claim over state-dependent action accessibility, future enabled actions, generic system-change → affordance-change relations, or the existence of a landscape/field of interrelated action possibilities**.
+`SRC-PSP-001` now provides a **very strong possibility-space anchor**. Ross (2025) explicitly treats possibility spaces as containing possibilities, constraints and trajectories, and discusses cases in which the possibility-space landscape, repertoire of available states, and accessibility of states change as system configuration or constraints change. This substantially strengthens prior art against any broad claim that the *space of possibilities itself* cannot be a changing analytical object. citeturn0search0turn0search3
 
-They still do not establish AC3 because the current evidence does not formalize the *change of the whole accessibility landscape* as an independent transversal analytical object and connect it to a general `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value` architecture.
+Together, these sources **absorb any broad originality claim over state-dependent action accessibility, future enabled actions, generic system-change → affordance-change relations, the existence of a landscape/field of interrelated action possibilities, or the generic proposition that a system's possibility space can change over time**.
 
-## 7. Immediate controlled operation after landscape screening
+They still do not establish AC3 because the current evidence does not demonstrate a general **accessible transformation space** distinct from a state possibility space, with an explicit transformation-accessibility predicate and a general mechanism by which system-condition changes modify that transformation space and propagate to future reachability/trajectories/outcomes/value.
 
-The next operation is **citation-chain mining from `SRC-LAF-001` and formal possibility-space/action-space literature**, with special attention to whether the landscape/field tradition contains a successor formulation that explicitly represents:
+## 7. Immediate controlled operation after possibility-space screening
 
-1. the set/space of available possibilities as a state variable;
-2. a measurable change in that set/space;
-3. mechanisms that alter the set;
-4. downstream reachability/trajectory consequences.
+The next operation is now sharply narrowed. Search for **formal accessible transformation spaces / action spaces**, not generic possibility spaces. The falsification target is:
 
-This is now the most direct falsification route for AC3. No Core modification is triggered by the present evidence.
+> Does prior literature already define a general set of transformations/actions available from a system state, specify its accessibility predicate, and explicitly model how changes in system conditions modify that set?
+
+Priority subfamilies:
+
+1. formal action-space representations in planning/control;
+2. reconfigurable systems where configuration changes the available operation set;
+3. dynamic capability/action-set models where state changes alter feasible operations;
+4. runtime adaptation/reconfiguration models with explicit operation availability;
+5. formal transition systems where the enabled-transition relation itself is represented as a changing object.
+
+No Core modification is triggered by the present evidence.
 
 ## 8. Integrity boundary
 
