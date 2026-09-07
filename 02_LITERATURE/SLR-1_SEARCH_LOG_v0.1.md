@@ -106,14 +106,47 @@ The source explicitly represents a system-level possible set `Π_t` and adjacent
 
 The finding materially absorbs the broader claim that a system's future possibility structure can be explicitly represented and that its change can shape subsequent trajectories. It does not establish a domain-independent transformation set `T_acc`, a generic accessibility predicate `P_τ(S,C,L)`, or `ΔT_acc` as the transversal analytical object.
 
-### Initial family decision
+### CAND-0034 — SRC-GEN-002
 
-The generativity/combinatorial possibility family is **OPEN — INITIAL PASS**.
+**Source:** Cortês, Kauffman, Liddle & Smolin (2022), *The TAP equation: evaluating combinatorial innovation in Biocosmology*, arXiv:2204.14115.
 
-- AC2: **VERY STRONG / NEAR-DIRECT** in the first source.
+**Classification:** **AC2 VERY STRONG / NEAR-DIRECT STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
+
+TAP formalizes combinatorial innovation as a process that expands a system's space of possible states/objects. The possibility/configuration space itself is therefore modeled as dynamically growing through innovation. citeturn1academia33turn1academia30
+
+This materially absorbs the claim that mechanisms of combinatorial innovation can change the future possibility structure. It does not isolate an accessible transformation set, does not provide a generic `P_τ(S,C,L)`, and does not establish the full TGCV chain.
+
+### CAND-0035 — SRC-GEN-003
+
+**Source:** Compton & Mateas (2017), *A Generative Framework of Generativity*, DOI `10.1609/aiide.v13i2.12974`.
+
+**Classification:** **AC2 STRONG / STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
+
+The framework treats generativity as a pipeline of successive data transformations and explicitly defines a design space of generative pipelines. Transformations may generate, expand, augment, reduce or otherwise modify information. citeturn1search6turn1search34
+
+This absorbs the broad claim that generative systems can be analyzed through explicit transformations and their composition. It does not establish a domain-independent space of currently accessible transformations or centralize `ΔT_acc` as the analytical object.
+
+### CAND-0036 — SRC-GEN-004
+
+**Source:** Smith & Whitehead (2010), *Analyzing the Expressive Range of a Level Generator*, DOI `10.1145/1814256.1814260`.
+
+**Classification:** **AC2 VERY STRONG / NEAR-DIRECT STRUCTURAL ANTECEDENT / AC3 NOT ESTABLISHED**.
+
+The paper explicitly represents and visualizes the generative/expressive range of a procedural generator and studies how changing generator parameters changes that space. It also identifies holes and biases in the space of generated content. citeturn1search1turn1search3
+
+This materially absorbs the claim that a generator-dependent possibility/output space can be made explicit and compared under changes in the system. It does not represent transformations themselves as the transversal accessibility object and does not establish the downstream TGCV architecture.
+
+### Final bounded family decision
+
+The generativity/combinatorial possibility family is now **FROZEN AS PRIOR-ART BOUNDARY** at the current documented depth.
+
+- AC2: **CONFIRMED / CONVERGENT / VERY STRONG**.
 - AC3: **NOT ESTABLISHED**.
-- The source establishes a significant prior-art boundary around changing possibility spaces and open-ended generativity.
+- `NO_FULL_ABSORPTION_IDENTIFIED`: bounded current finding, not universal novelty proof.
+- Absorbed as prior art: adjacent possible, dynamically expanding possibility spaces, combinatorial innovation, generative transformation pipelines, and expressive/generative ranges whose structure changes with generator parameters.
+- Remaining TGCV candidate: the domain-independent analytical construction centered specifically on **accessible transformations** `T_acc`, explicit change `ΔT_acc`, and the downstream relation `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
 - TGCV Core: **UNCHANGED**.
+- TR-130–TR-140: **NOT REOPENED**.
 - EXT-1.1: **NOT USED**.
 
 ## 11. Integrity boundary
@@ -122,4 +155,4 @@ No Core modification is triggered. No conceptual test is reopened. No empirical 
 
 ## 12. Next controlled operation
 
-Continue the predefined generativity/combinatorial possibility family with sources that explicitly model combinatorial generation, adjacent-possible expansion, or changing sets of feasible future configurations. Do not infer AC3 from possibility-space similarity alone.
+The generativity/combinatorial possibility family is frozen. Proceed to the next predefined SLR-1 family in protocol order. Do not invent a new family or infer architectural originality from the absence of AC3 in this bounded pass.
