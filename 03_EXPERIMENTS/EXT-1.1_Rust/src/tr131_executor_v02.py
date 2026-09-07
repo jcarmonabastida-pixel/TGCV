@@ -1,26 +1,48 @@
 #!/usr/bin/env python3
 """EXT-1.1 Rust — deterministic TR-131 executor v0.2.
 
-This patch preserves the frozen DR-029 B/T_acc logic and changes only one
-integrity behavior: duplicate canonical T_acc transformations now fail closed
-instead of being silently collapsed.
+Compatibility wrapper around the frozen v0.1 executor. The analytical
+specification is unchanged. The only implementation change is strict
+fail-closed detection of duplicate canonical T_acc transformations.
 """
 from __future__ import annotations
 
+import hashlib
+import sys
 from pathlib import Path
+from typing import Iterable
 
-OLD = Path(__file__).with_name("tr131_executor_v01.py")
+SRC_DIR = Path(__file__).resolve().parent
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
-# v0.2 is intentionally a minimal source-level integrity patch. It loads the
-# frozen v0.1 implementation and replaces canonicalization with a strict
-# duplicate-detecting implementation before exposing the same entry point.
-source = OLD.read_text(encoding="utf-8")
-old = '''def canonical_tacc(rows: Iterable[tuple[int, int, int, str]]) -> tuple[tuple[int, int, int, str], ...]:\n    return tuple(sorted(set(rows), key=lambda r: (r[0], r[1], r[2], r[3])))\n'''
-new = '''def canonical_tacc(rows: Iterable[tuple[int, int, int, str]]) -> tuple[tuple[int, int, int, str], ...]:\n    materialized = list(rows)\n    ordered = sorted(materialized, key=lambda r: (r[0], r[1], r[2], r[3]))\n    for previous, current in zip(ordered, ordered[1:]):\n        if previous == current:\n            raise ValueError(f"DUPLICATE_TACC_TRANSFORMATION:{current}")\n    return tuple(ordered)\n'''
-if old not in source:
-    raise SystemExit("PATCH_TARGET_NOT_FOUND")
-patched = source.replace(old, new, 1)
-# Keep this file self-contained while preserving every frozen v0.1 function.
-patched = patched.replace('deterministic TR-131 executor v0.1', 'deterministic TR-131 executor v0.2', 1)
-patched = patched.replace('"""EXT-1.1 Rust — deterministic TR-131 executor v0.2.\n\nImplements DR-029 v0.2 only.', '"""EXT-1.1 Rust — deterministic TR-131 executor v0.2.\n\nImplements DR-029 v0.2 only.')
-print(patched)
+import tr131_executor_v01 as _v01
+
+
+def canonical_tacc(rows: Iterable[tuple[int, int, int, str]]) -> tuple[tuple[int, int, int, str], ...]:
+    materialized = list(rows)
+    ordered = sorted(materialized, key=lambda r: (r[0], r[1], r[2], r[3]))
+    for previous, current in zip(ordered, ordered[1:]):
+        if previous == current:
+            raise ValueError(f"DUPLICATE_TACC_TRANSFORMATION:{current}")
+    return tuple(ordered)
+
+
+# Patch the frozen module's canonicalization symbol so every v0.1 analytical
+# path (synthetic suite, loader, comparison, and hashing) uses strict v0.2
+# duplicate handling. No B/T_acc definition or comparison rule is changed.
+_v01.canonical_tacc = canonical_tacc
+
+
+def canonical_sha256(tacc: Iterable[tuple[int, int, int, str]]) -> str:
+    h = hashlib.sha256()
+    for origin_id, target_pid, target_vid, target_version in canonical_tacc(tacc):
+        h.update(f"{origin_id}|{target_pid}|{target_vid}|{target_version}\n".encode("utf-8"))
+    return h.hexdigest()
+
+
+_v01.canonical_sha256 = canonical_sha256
+
+
+if __name__ == "__main__":
+    raise SystemExit(_v01.main())
