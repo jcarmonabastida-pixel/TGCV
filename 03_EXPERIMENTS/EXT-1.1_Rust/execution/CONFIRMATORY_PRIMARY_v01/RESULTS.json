@@ -1,0 +1,23 @@
+{
+  "brier_B": 0.12862999557185928,
+  "brier_T_acc": 0.13123035232566702,
+  "delta_log_loss_B_minus_T_acc": -0.006122732273119991,
+  "log_loss_B": 0.40512255638027656,
+  "log_loss_T_acc": 0.41124528865339655,
+  "mode": "primary",
+  "n_dependency_rows": 3618523,
+  "n_eligible": 507279,
+  "n_test": 226519,
+  "n_train": 280760,
+  "n_versions": 607498,
+  "resolved_tacc_relations": 2509886,
+  "roc_auc_B": 0.7671989511641575,
+  "roc_auc_T_acc": 0.759314009238935,
+  "temporal_boundary": "2020-09-21T15:56:13.527172+00:00",
+  "unique_tacc_relations": 2509886,
+  "unresolved_dependency_edges": 355475,
+  "y_test_class_counts": {
+    "0": 41570,
+    "1": 184949
+  }
+}

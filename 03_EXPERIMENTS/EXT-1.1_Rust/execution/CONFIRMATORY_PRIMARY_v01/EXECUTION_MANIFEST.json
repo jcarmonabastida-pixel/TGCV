@@ -1,0 +1,47 @@
+{
+  "dataset_path": "C:\\Users\\pedri\\Downloads\\rust_repos_2022_09_07.zip",
+  "dataset_sha256": "823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224",
+  "dataset_size": 6047715996,
+  "git_head": "16511d9366003d9d0f1ae96aa7b75f5950727112",
+  "hash_algorithm": "blake2b-256",
+  "hash_dimension": 1048576,
+  "hash_encoding": "UTF-8",
+  "hash_index": "first_8_digest_bytes_big_endian_unsigned_mod_2^20",
+  "hash_sign": "ninth_digest_byte_even_plus1_odd_minus1",
+  "horizon_days": 180,
+  "mode": "primary",
+  "model": {
+    "C": 1.0,
+    "class": "sklearn.linear_model.LogisticRegression",
+    "class_weight": null,
+    "fit_intercept": true,
+    "max_iter": 1000,
+    "penalty": "l2",
+    "random_state": 0,
+    "solver": "liblinear",
+    "tol": 1e-08
+  },
+  "normative_resolver": {
+    "blob_sha": "669d4f01131af518f32b1b4b3da27f676ae4ae55",
+    "path": "03_EXPERIMENTS/EXT-1.1_Rust/src/rstar_v02.py"
+  },
+  "primary_comparison": "LogLoss(B)-LogLoss(T_acc)",
+  "primary_metric": "mean_test_log_loss",
+  "prohibited_inference": {
+    "confidence_intervals": false,
+    "p_values": false,
+    "significance": false
+  },
+  "random_state": 0,
+  "runner_blob_sha": "0bf11ea54e33082900f49a73de276342e61c83a1",
+  "runner_path": "03_EXPERIMENTS/EXT-1.1_Rust/src/run_ext11_confirmatory_v01.py",
+  "runtime": {
+    "machine": "AMD64",
+    "numpy": "2.5.2",
+    "os": "Windows-11-10.0.26200",
+    "python": "3.14.7",
+    "scipy": "1.18.1",
+    "sklearn": "1.9.0"
+  },
+  "split": "first 80% elapsed eligible-origin timeline; train <= boundary; test > boundary"
+}
