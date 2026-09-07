@@ -52,6 +52,7 @@ Forward citation chaining for `SRC-TRANS-001` remains pending systematic bibliog
 | CAND-0014 | SRC-SCI-001 | Petersen, Rasmussen & Trettvik (2020), *Affordances of Shape-Changing Interfaces* | system-change → affordance-change antecedent | **AC2 strong; AC3 not established** |
 | CAND-0015 | SRC-LAF-001 | Kiverstein, van Dijk & Rietveld (2019/2021), *The field and landscape of affordances* | landscape-level accessibility antecedent | **AC2 strong; AC3 not established** |
 | CAND-0016 | SRC-PSP-001 | Ross (2025), *The Possibility Space Concept in Neuroscience* | dynamic possibility-space / accessibility antecedent | **AC2 very strong; AC3 not established** |
+| CAND-0017 | SRC-DAS-001 | Chandak et al. (2018/2019), *Reinforcement Learning with a Dynamic Action Set / Lifelong Learning with a Changing Action Set* | direct changing-action-set antecedent | **AC2 direct; AC3 not established** |
 
 ### CH-0001 dossier outcome — consolidated structural cluster
 
@@ -74,25 +75,29 @@ Independent screening of `SRC-DSE-001`, `SRC-MOMOT-001`, `SRC-MDEO-001` and `SRC
 
 `SRC-LAF-001` strengthens the accessibility cluster at the **landscape level**. Kiverstein, van Dijk & Rietveld distinguish a broader landscape of affordances from a contextually selected field of relevant affordances and describe a reciprocal temporal relation in which engagement/practice can further determine the possibilities available in the future.
 
-`SRC-PSP-001` now provides a **very strong possibility-space anchor**. Ross (2025) explicitly treats possibility spaces as containing possibilities, constraints and trajectories, and discusses cases in which the possibility-space landscape, repertoire of available states, and accessibility of states change as system configuration or constraints change. This substantially strengthens prior art against any broad claim that the *space of possibilities itself* cannot be a changing analytical object. citeturn0search0turn0search3
+`SRC-PSP-001` provides a **very strong possibility-space anchor**. Ross (2025) explicitly treats possibility spaces as containing possibilities, constraints and trajectories, and discusses cases in which the possibility-space landscape, repertoire of available states, and accessibility of states change as system configuration or constraints change. This substantially strengthens prior art against any broad claim that the *space of possibilities itself* cannot be a changing analytical object. citeturn0search0turn0search3
 
-Together, these sources **absorb any broad originality claim over state-dependent action accessibility, future enabled actions, generic system-change → affordance-change relations, the existence of a landscape/field of interrelated action possibilities, or the generic proposition that a system's possibility space can change over time**.
+`SRC-DAS-001` now closes another broad novelty route: dynamic-action-set reinforcement learning explicitly treats the **set of currently available actions as a changing object** and distinguishes action-set change from changing transition dynamics or rewards. The 2018/2019 work therefore establishes direct prior art for changing action sets and adaptation to additions/removals in available actions. citeturn1search0turn1academia42
+
+Together, these sources **absorb any broad originality claim over state-dependent action accessibility, future enabled actions, generic system-change → affordance-change relations, the existence of a landscape/field of interrelated action possibilities, generic changing possibility spaces, or generic changing action sets**.
 
 They still do not establish AC3 because the current evidence does not demonstrate a general **accessible transformation space** distinct from a state possibility space, with an explicit transformation-accessibility predicate and a general mechanism by which system-condition changes modify that transformation space and propagate to future reachability/trajectories/outcomes/value.
 
-## 7. Immediate controlled operation after possibility-space screening
+## 7. Immediate controlled operation after dynamic-action-set screening
 
-The next operation is now sharply narrowed. Search for **formal accessible transformation spaces / action spaces**, not generic possibility spaces. The falsification target is:
+The next operation is now narrowed further toward **endogenous reconfiguration**. Search for formal/reconfigurable systems where the available action/operation set changes *because the system itself changes configuration*, rather than because an external environment changes the task or an agent receives a new action catalogue.
 
-> Does prior literature already define a general set of transformations/actions available from a system state, specify its accessibility predicate, and explicitly model how changes in system conditions modify that set?
+The falsification target is:
+
+> Does prior literature already define `A_t = F(S_t,C_t)` for a system's available operations, with system reconfiguration causing `A_t → A_{t+1}`, and then explicitly link that change to future reachability or trajectories?
 
 Priority subfamilies:
 
-1. formal action-space representations in planning/control;
-2. reconfigurable systems where configuration changes the available operation set;
-3. dynamic capability/action-set models where state changes alter feasible operations;
-4. runtime adaptation/reconfiguration models with explicit operation availability;
-5. formal transition systems where the enabled-transition relation itself is represented as a changing object.
+1. self-reconfigurable and dynamically reconfigurable systems;
+2. runtime adaptation and reconfiguration;
+3. software product lines / dynamic feature models with changing transition/action availability;
+4. formal transition systems with dynamic enabled-transition relations;
+5. planning/control systems where the action repertoire is generated from current configuration.
 
 No Core modification is triggered by the present evidence.
 
