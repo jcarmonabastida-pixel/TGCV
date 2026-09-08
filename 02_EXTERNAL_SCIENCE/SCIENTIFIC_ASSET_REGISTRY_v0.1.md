@@ -22,6 +22,8 @@ Before any new scientific gate, audit, experiment, domain selection, dataset sea
 
 The existence of a relevant historical artifact blocks a claim that the new operation starts "from scratch" unless the operation explicitly records why the artifact is scientifically irrelevant.
 
+This is the **from-scratch prohibition**: a new operation must not describe itself as starting from scratch while materially relevant prior TGCV work remains unreconciled.
+
 ## 3. Registered reusable scientific assets
 
 | ID | Historical artifact | Type | Scientific role | Status | Reuse relevance | Canonical handling |
