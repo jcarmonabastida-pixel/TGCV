@@ -2,8 +2,8 @@
 
 **Last updated:** 2026-09-09  
 **Governance reconciliation:** DR-044 / DR-045  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.0.md`  
-**Structural/content propagation:** EXT-UPD-1R.4 / EXT-UPD-3.1 / EXT-UPD-3.2 / EXT-UPD-3.3.5 / EXT-UPD-3.4 / EXT-UPD-3.5
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.1.md`  
+**Structural/content propagation:** EXT-UPD-1R.4 / EXT-UPD-3.1 / EXT-UPD-3.2 / EXT-UPD-3.3.5 / EXT-UPD-3.4 / EXT-UPD-3.5 / EXT-UPD-3.6
 
 ## Canonical continuity point
 
@@ -63,6 +63,12 @@ Current controlled drafts:
 - ARM: `05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.1.md`
 - RII: `05_ASSETS/RII/TGCV-EXT-RII-001_v0.1.md`
 
+## Scientific-memory structure
+
+`02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md` is the canonical registry/integration surface for reusable research-bearing scientific artifacts.
+
+`02_LITERATURE/` remains the historical SLR working/archive surface. Relevant historical scientific gates, audits and operational specifications may remain physically there while being discoverable through the registry. No physical migration was performed under EXT-UPD-3.6.
+
 ## D-OPS state
 
 D-OPS-15 through D-OPS-20: CLOSED — no execution-ready independent external domain identified under current strict criteria.
@@ -70,17 +76,21 @@ D-OPS-21: CLOSED — high local redundancy; broad novelty claim weakened.
 D-OPS-22: CLOSED — bounded translational non-redundancy; superiority not proved.
 D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
 
-**D-OPS-24: NEXT — unblocked by governance consistency closure; subject to its own historical reconstruction, design and preflight.**
+**D-OPS-24: NEXT — held pending EXT-UPD-3.6 consistency closure; subject to its own historical reconstruction, design and preflight.**
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1. EXT-UPD-3.5 propagated RII v0.1 through RMA v1.0, current pointer and traceability without changing scientific claims, evidence levels or gate states.
+DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1. EXT-UPD-3.5 propagated RII v0.1 through RMA v1.0. EXT-UPD-3.6 establishes the canonical scientific-memory registry and mandatory reuse control without changing scientific claims, evidence levels or gate states.
 
 The canonical propagation rule is:
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → Evidence-to-Claim Matrix → consistency audit → next controlled operation`.
 
-**EXT-UPD-3.5 RII propagation: CLOSED / CONSISTENT.**
+The scientific reuse rule is:
+
+> The existence of a relevant historical artifact blocks a claim that a new operation starts “from scratch”, unless the operation explicitly records why the artifact is scientifically irrelevant.
+
+**EXT-UPD-3.6 scientific asset reconciliation: PROPAGATION IN PROGRESS.**
 
 ## Freeze state
 
