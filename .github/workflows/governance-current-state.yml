@@ -1,0 +1,16 @@
+name: TGCV governance current-state consistency
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  governance-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate current-state governance chain
+        run: python 00_GOVERNANCE/tools/validate_current_state.py
