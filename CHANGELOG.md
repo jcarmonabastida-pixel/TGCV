@@ -2,6 +2,14 @@
 
 ## 2026-09-09
 
+- Reconciled a post-closure governance inconsistency identified after EXT-UPD-3.6: immutable RMA v1.1 and dependent current-control surfaces still contained pre-closure wording.
+- Created `00_GOVERNANCE/impact/EXT-UPD-3.6_POST_CLOSURE_RECONCILIATION_v0.1.md` documenting the discrepancy and corrective decision.
+- Created immutable `00_GOVERNANCE/rma/TGCV_RMA_v1.2.md` as the corrected current RMA; v1.1 remains historical and immutable.
+- Created `00_GOVERNANCE/rma/TGCV_RMA_traceability_v1.2.csv` and moved the current dependency map to v1.2.
+- Moved `TGCV_RMA_current.md` to v1.2 and synchronized `STATUS.md` with the closed/consistent EXT-UPD-3.6 state.
+- D-OPS-24 is released to continue its controlled preflight sequence; real-data execution remains NOT AUTHORIZED.
+- No scientific claims, evidence levels, empirical results, Core propositions or gate closures changed through this reconciliation.
+
 - Opened `EXT-UPD-3.3.5_VP_PROPAGATION_v0.1.md` and accepted Vision Paper v0.2 propagation into the current canonical external-asset state.
 - Created `00_GOVERNANCE/rma/TGCV_RMA_v0.6.md` as the new immutable current RMA master; v0.5 remains historical.
 - Created `00_GOVERNANCE/rma/TGCV_RMA_traceability_v0.6.csv` and moved the current dependency map to v0.6.
