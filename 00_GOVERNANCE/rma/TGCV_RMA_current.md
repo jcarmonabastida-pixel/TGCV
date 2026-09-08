@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v0.7.md`  
+**Current master:** `TGCV_RMA_v0.8.md`  
 **Governance decision:** DR-044  
 **Conformance closure:** DR-045  
 **Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4
@@ -36,7 +36,7 @@ This file is the current RMA pointer. It is not a historical record. Historical 
 - Vision Paper → `05_ASSETS/Vision_Paper/` — current `TGCV-EXT-VP-001_v0.2.md`
 - Research Prospectus → `05_ASSETS/Research_Prospectus/` — current `TGCV-EXT-RP-001_v0.1.md`
 - ARM → `05_ASSETS/ARM/` — current `TGCV-EXT-ARM-001_v0.1.md`
-- RII → `05_ASSETS/RII/`
+- RII → `05_ASSETS/RII/` — identified-pending
 - MOI → `05_ASSETS/MOI/` (reserved; substantive creation deferred)
 
 The IE PhD Research Prospectus adaptation is subordinate to the generic RP and is located under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
@@ -60,10 +60,12 @@ C01–C02 = E0; C03–C07 = E1 within frozen Rust; C08–C12 = H; C13 = O; C14�
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test with PASS. EXT-UPD-1R.4 propagated the external-asset structural regularisation. EXT-UPD-3.1 propagated the current RP v0.1. EXT-UPD-3.2 propagated the current TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagates ARM v0.1 into the current RMA without changing scientific claims, evidence levels or gate states.
+DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1 and its control surfaces without changing scientific claims, evidence levels or gate states.
 
 Propagation rule:
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation`.
+
+**EXT-UPD-3.4 ARM propagation: CLOSED / CONSISTENT.**
 
 **D-OPS-24 is unblocked by governance consistency and remains subject to its own historical reconstruction, design and preflight.**
