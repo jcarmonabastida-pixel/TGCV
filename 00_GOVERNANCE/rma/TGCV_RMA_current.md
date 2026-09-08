@@ -1,44 +1,54 @@
 # TGCV — RMA current state
 
-**Date:** 2026-08-27  
-**Status:** WORKING / OPERATIVE
+**Date:** 2026-09-08  
+**Status:** CURRENT / OPERATIVE  
+**Current master:** `TGCV_RMA_v0.2.md`  
+**Governance decision:** DR-044  
 
-This current RMA pointer supersedes neither historical RMA v0.1 nor frozen experiment records. It integrates their traceability with the current empirical state.
+This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
 
-## Canonical Core
+## Current state
 
-`S` → `T_acc = F(S,C,L)` → `ΔT_acc` → `ΔReach → ΔTrajectory` → downstream `Outcome → Value`.
+- Core ontology: `S`
+- Analytical object: `T_acc = F(S,C,L)`
+- Central phenomenon: `ΔT_acc`
+- Downstream chain: `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`
+- `I`: explanatory mechanism, not Core primitive.
 
-`I` is mechanism, not Core primitive.
+## Evidence state
 
-## Empirical evidence
+- TR-131: CLOSED.
+- RUST-DYN-1: CLOSED.
+- RUST-DYN-2 / EXEC-1A: CLOSED — bounded structural empirical pass.
+- Independent replication: OPEN.
+- Cross-domain empirical generalisation: OPEN; no execution-ready external domain currently identified.
+- Causal, predictive and value claims: OPEN.
+- Originality: BOUNDED/PARTIAL, not established.
+- Transversal translation protocol: FROZEN; conformance test is next once governance consistency is verified.
 
-- Historical `TGCV-EXT-1.0 / CollegeMsg`: FAIL / NO SUPPORT under locked `ΔLogLoss >= 0.04` criterion; observed `ΔLogLoss=0.008717`.
-- `TGCV-EMP-1.1`: PRIMARY TEST PASS under frozen computational operationalization; `ΔLogLoss=0.07942`, `δ=0.04`, paired sign-flip `p<0.000005`.
-- Structural intervention: 5,000 matched pairs, paired mean difference `-0.0078`, `p≈0.037`.
+## Current claim control
 
-These results are not universal validation. They support the specified operationalization and motivate independent replication/domain validation.
+Authoritative matrix:
+`00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md`.
 
-## Asset states
+C01–C02 = E0; C03–C07 = E1 within frozen Rust; C08–C12 = H; C13 = O; C14–C15 = F within scope; C16 = H.
 
-| Asset | Current state |
-|---|---|
-| Core | FOUNDATIONAL / STABILIZED |
-| MVE-1.0 | FROZEN historical state |
-| TGCV-EMP-1.1 protocol | FROZEN |
-| TGCV-EMP-1.1 results | EMPIRICALLY TESTED / PRIMARY TEST PASS |
-| Vision Paper v0.1 | WORKING / CONDITIONAL historical version |
-| TCP v0.2 | WORKING / CONDITIONAL historical version |
-| IE Research Prospectus application version | APPLICATION HISTORY |
-| Orange v5.1 note/emails | APPLICATION/INDUSTRIAL CONTEXT |
-| UAM track | MATERIALS NOT RECOVERED as a distinct canonical UAM set |
-| SLR-1 | OPEN prior-art absorption gate |
+## Current gate state
 
-## Rules
+- G1 Independent replication: OPEN
+- G2 Cross-domain generalisation: OPEN
+- G3 Trajectory sufficiency: OPEN
+- G4 Causal identification: OPEN
+- G5 Value linkage: OPEN
+- G6 Originality/comparative architecture: BOUNDED/PARTIAL
+- G7 Transversal translation protocol: FROZEN / D-OPS-24 NEXT
 
-1. Experimental evidence is propagated through the RMA before changing external claims.
-2. Negative and positive experiments are both retained.
-3. No result is used to rewrite the Core retrospectively.
-4. Application material cannot redefine the scientific Core.
-5. Every substantive change gets a new version/commit.
-6. Frozen records are immutable.
+## Governance state
+
+DR-044 accepted a reconciliation because the previous RMA current pointer and STATUS were stale relative to the September 8 canonical state.
+
+Propagation rule:
+
+`accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation`.
+
+**D-OPS-24 remains BLOCKED until the propagation chain is verified consistent.**
