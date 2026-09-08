@@ -75,7 +75,7 @@ Propagation rule:
 
 Scientific-memory reuse rule:
 
-> The existence of a relevant historical artifact blocks a claim that a new operation starts “from scratch”, unless the operation explicitly records why the artifact is scientifically irrelevant.
+> The existence of a relevant historical artifact blocks a claim that a new operation starts “from scratch” (from-scratch), unless the operation explicitly records why the artifact is scientifically irrelevant.
 
 **EXT-UPD-3.6 scientific asset reconciliation: propagation in progress.**
 
