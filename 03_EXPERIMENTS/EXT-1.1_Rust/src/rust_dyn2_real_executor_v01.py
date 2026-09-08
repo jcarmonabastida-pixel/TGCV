@@ -63,17 +63,17 @@ def read_member(zf: zipfile.ZipFile, member: str):
         yield from csv.DictReader(text)
 
 
-def canonical_config(rows: Iterable[tuple[int, int, str]]) -> tuple[tuple[int, int, str], ...]:
+def canonical_config(rows: Iterable[tuple[int, str]]) -> tuple[tuple[int, str], ...]:
     rows = [tuple(x) for x in rows]
     if len(rows) != len(set(rows)):
         raise ValueError("DUPLICATE_CANONICAL_CONFIGURATION")
-    return tuple(sorted(rows, key=lambda x: (x[0], x[1], x[2])))
+    return tuple(sorted(rows, key=lambda x: (x[0], x[1])))
 
 
 def successor_config(config, tau):
     _origin_id, target_package, target_version_id, target_version_str = tau
     remaining = [r for r in config if r[0] != target_package]
-    remaining.append((target_package, target_version_id, target_version_str))
+    remaining.append((target_package, f"{target_version_id}:{target_version_str}"))
     return canonical_config(remaining)
 
 
@@ -130,7 +130,6 @@ def run(dataset: Path):
                 raise ValueError(f"MISSING_ORIGIN:{oid}")
             deps[oid].append((tpid, row["semver_str"].strip()))
 
-    # Configuration-multiplicity invariant is required by DR-043.
     for oid, rows in deps.items():
         targets = [p for p, _ in rows]
         if len(targets) != len(set(targets)):
@@ -139,20 +138,20 @@ def run(dataset: Path):
     tacc_by_origin = {}
     config_by_origin = {}
     for oid in sorted(versions):
-        _, pid, version_str, created = versions[oid]
+        _, _, _, created = versions[oid]
         tacc_rows = []
-        config_rows = []
+        # Initial configuration is declaration-induced: target package + requirement.
+        # It is deliberately independent of R* version selection.
+        config_rows = [(target_pid, req) for target_pid, req in deps.get(oid, [])]
+        config_by_origin[oid] = canonical_config(config_rows)
         for target_pid, req in deps.get(oid, []):
             candidates = [(v[0], v[2], v[3]) for v in by_package.get(target_pid, [])]
             resolved = resolve_edge(oid, "", created, target_pid, "", req, candidates)
             selected_id = resolved["selected_version_id"]
             if selected_id is None:
                 continue
-            selected_version = resolved["selected_version"]
-            tacc_rows.append((oid, target_pid, int(selected_id), selected_version))
-            config_rows.append((target_pid, int(selected_id), selected_version))
+            tacc_rows.append((oid, target_pid, int(selected_id), resolved["selected_version"]))
         tacc_by_origin[oid] = canonical_tacc(tacc_rows)
-        config_by_origin[oid] = canonical_config(config_rows)
 
     pairs = []
     zero_pair_packages = 0
