@@ -2,8 +2,9 @@
 
 **Date:** 2026-09-08  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v0.2.md`  
+**Current master:** `TGCV_RMA_v0.3.md`  
 **Governance decision:** DR-044  
+**Conformance closure:** DR-045  
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
 
@@ -24,7 +25,7 @@ This file is the current RMA pointer. It is not a historical record. Historical 
 - Cross-domain empirical generalisation: OPEN; no execution-ready external domain currently identified.
 - Causal, predictive and value claims: OPEN.
 - Originality: BOUNDED/PARTIAL, not established.
-- Transversal translation protocol: FROZEN; conformance test is next once governance consistency is verified.
+- Transversal translation protocol: FROZEN; D-OPS-24 is next controlled operation.
 
 ## Current claim control
 
@@ -45,10 +46,12 @@ C01–C02 = E0; C03–C07 = E1 within frozen Rust; C08–C12 = H; C13 = O; C14�
 
 ## Governance state
 
-DR-044 accepted a reconciliation because the previous RMA current pointer and STATUS were stale relative to the September 8 canonical state.
+DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test with PASS.
 
 Propagation rule:
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation`.
 
-**D-OPS-24 remains BLOCKED until the propagation chain is verified consistent.**
+The governance conformance test demonstrated that incomplete synthetic propagation is blocked and complete synthetic propagation satisfies the required obligations without modifying production state.
+
+**D-OPS-24 is unblocked by governance consistency and remains subject to its own historical reconstruction, design and preflight.**
