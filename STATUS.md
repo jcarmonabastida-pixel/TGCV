@@ -3,7 +3,7 @@
 **Last updated:** 2026-09-08  
 **Governance reconciliation:** DR-044 / DR-045  
 **Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.4.md`  
-**Structural propagation:** EXT-UPD-1R.4
+**Structural propagation:** EXT-UPD-1R.4 / EXT-UPD-3.1
 
 ## Canonical continuity point
 
@@ -56,6 +56,8 @@ Authoritative current control surface:
 
 `05_ASSETS/` is the canonical physical surface for external-facing deliverables: TCP, Vision Paper, Research Prospectus, ARM, RII and reserved MOI. The IE PhD adaptation is subordinate to the generic Research Prospectus under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
 
+**Current generic Research Prospectus:** `05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.1.md` — controlled draft under EXT-UPD-3.1. This document update changes current asset state only and does not upgrade scientific claims or evidence levels.
+
 ## D-OPS state
 
 D-OPS-15 through D-OPS-20: CLOSED — no execution-ready independent external domain identified under current strict criteria.
@@ -70,7 +72,7 @@ D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 propagated the external-asset structural regularisation without changing scientific claims or evidence levels.
+DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 propagated the external-asset structural regularisation. EXT-UPD-3.1 established the current generic Research Prospectus controlled draft without changing scientific claims or evidence levels.
 
 The canonical propagation rule is:
 
