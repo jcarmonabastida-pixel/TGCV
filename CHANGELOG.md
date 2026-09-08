@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-09-09
+
+- Opened `EXT-UPD-3.3.5_VP_PROPAGATION_v0.1.md` and accepted Vision Paper v0.2 propagation into the current canonical external-asset state.
+- Created `00_GOVERNANCE/rma/TGCV_RMA_v0.6.md` as the new immutable current RMA master; v0.5 remains historical.
+- Created `00_GOVERNANCE/rma/TGCV_RMA_traceability_v0.6.csv` and moved the current dependency map to v0.6.
+- Moved `TGCV_RMA_current.md` to v0.6 and synchronized the current pointer with Vision Paper v0.2.
+- Updated `STATUS.md` to record Vision Paper v0.2 as the current controlled draft and EXT-UPD-3.3.5 as the current propagation.
+- Updated `validate_current_state.py` to validate RMA v0.6, traceability v0.6 and the Vision Paper propagation impact.
+- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by this propagation.
+- D-OPS-24 remains the next controlled operation and is not an execution authorization.
+
 ## 2026-09-08
 
 - Confirmed GitHub canonical continuity is operational through direct repository reads/writes.
