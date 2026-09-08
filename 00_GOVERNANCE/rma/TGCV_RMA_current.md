@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v1.1.md`  
+**Current master:** `TGCV_RMA_v1.2.md`  
 **Governance decision:** DR-044  
 **Conformance closure:** DR-045  
 **Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6
@@ -77,6 +77,6 @@ Scientific-memory reuse rule:
 
 > The existence of a relevant historical artifact blocks a claim that a new operation starts “from scratch” (from-scratch), unless the operation explicitly records why the artifact is scientifically irrelevant.
 
-**EXT-UPD-3.6 scientific asset reconciliation: propagation in progress.**
+**EXT-UPD-3.6 scientific asset reconciliation: CLOSED / CONSISTENT.**
 
-**D-OPS-24 is the next controlled operation and remains held until EXT-UPD-3.6 consistency closure.**
+**D-OPS-24 is the next controlled operation and is released to continue its controlled preflight sequence. Real-data execution remains NOT AUTHORIZED.**
