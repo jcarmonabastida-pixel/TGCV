@@ -1,0 +1,22 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+TGCV-CORE-001,scientific_core,CURRENT,01_SCIENTIFIC_CORE/,TR131;DOPS21;DOPS22;DOPS23,Core ontology S and analytical architecture
+TR-131,test,CLOSED,03_EXPERIMENTS/EXT-1.1_Rust/,Rust operationalization,State sufficiency / T_acc analytical indispensability
+RUST-DYN-1,experiment,CLOSED,03_EXPERIMENTS/EXT-1.1_Rust/,TR131;DR-036,Bounded dynamic evidence
+RUST-DYN-2,experiment,CLOSED,03_EXPERIMENTS/EXT-1.1_Rust/,DR-043,Bounded structural empirical evidence
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md,RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23,Authoritative current evidence-to-claim matrix
+D-OPS-21,gate,CLOSED,00_GOVERNANCE/,SLR;prior_art,Deep comparative architectural originality audit
+D-OPS-22,gate,CLOSED,00_GOVERNANCE/,DOPS21,Transversal translation architecture non-redundancy
+D-OPS-23,gate,CLOSED,00_GOVERNANCE/,DOPS22,Minimal transversal translation protocol frozen
+D-OPS-24,gate,NEXT,00_GOVERNANCE/,DOPS23,Historical reconstruction/design/preflight required
+TGCV-EXT-TCP-001,external_asset,CURRENT-DRAFT,05_ASSETS/TCP/,Core;TR131;RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23,Current controlled TCP: TGCV-EXT-TCP-001_v0.3.md
+TGCV-EXT-VP-001,external_asset,CURRENT-DRAFT,05_ASSETS/Vision_Paper/,Core;claim_matrix;DOPS21;DOPS22;DOPS23;EXT-UPD-3.3.5,Current controlled Vision Paper: TGCV-EXT-VP-001_v0.2.md
+TGCV-EXT-RP-001,external_asset,CURRENT-DRAFT,05_ASSETS/Research_Prospectus/,Core;TR131;RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23,Current generic RP: TGCV-EXT-RP-001_v0.1.md
+TGCV-EXT-ARM-001,external_asset,CURRENT-DRAFT,05_ASSETS/ARM/,Core;DOPS21;DOPS22;DOPS23;EXT-UPD-3.4,Current controlled ARM: TGCV-EXT-ARM-001_v0.1.md; propagation CLOSED/CONSISTENT
+TGCV-EXT-RII-001,external_asset,CURRENT-DRAFT,05_ASSETS/RII/,Core;claim_matrix;DOPS21;DOPS22;DOPS23;EXT-UPD-3.5,Current controlled RII: TGCV-EXT-RII-001_v0.1.md; propagation CLOSED/CONSISTENT
+TGCV-EXT-MOI-001,external_asset,RESERVED,05_ASSETS/MOI/,Core;DOPS21;DOPS22;DOPS23,Substantive creation deferred
+IE-RP-ADAPT,adaptation,SUBORDINATE,05_ASSETS/Research_Prospectus/adaptations/IE_PhD/,TGCV-EXT-RP-001,Application-specific adaptation
+RMA-v1.0,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v1.0.md,DOPS21;DOPS22;DOPS23;EXT-UPD-3.1;EXT-UPD-3.2;EXT-UPD-3.3.5;EXT-UPD-3.4;EXT-UPD-3.5,Current master after RII propagation closure
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v1.0,Must point to v1.0
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v1.0;TCP-v0.3;VP-v0.2;ARM-v0.1;RII-v0.1,Current-state summary
+PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA;traceability;STATUS;claim_matrix,Machine consistency validator; CI run 81 success
