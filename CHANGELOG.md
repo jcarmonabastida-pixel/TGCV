@@ -2,6 +2,15 @@
 
 ## 2026-09-09
 
+- Froze `00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md` as the bounded documentary candidate-domain discovery protocol.
+- The frozen protocol defines six bounded source families, documentary evidence requirements, outcome-blind selection, hard exclusions, bounded search budget, candidate admission threshold, stopping rule and explicit authorization boundaries.
+- Created `00_GOVERNANCE/impact/EXT-UPD-3.7_DOPS24_DISCOVERY_PROTOCOL_FREEZE_v0.1.md` to propagate the protocol freeze through current governance.
+- Created immutable `00_GOVERNANCE/rma/TGCV_RMA_v1.3.md` and `TGCV_RMA_traceability_v1.3.csv`.
+- Updated the current RMA pointer and STATUS to v1.3 / EXT-UPD-3.7.
+- Updated `validate_current_state.py` to require the frozen D-OPS-24 discovery protocol, EXT-UPD-3.7 propagation and RMA v1.3 surfaces.
+- No scientific claims, evidence levels, empirical results, Core propositions or gate closures changed through EXT-UPD-3.7.
+- D-OPS-24 is now procedurally ready for bounded documentary empirical-domain discovery; dataset download, data processing and empirical execution remain NOT AUTHORIZED pending subsequent gates.
+
 - Reconciled a post-closure governance inconsistency identified after EXT-UPD-3.6: immutable RMA v1.1 and dependent current-control surfaces still contained pre-closure wording.
 - Created `00_GOVERNANCE/impact/EXT-UPD-3.6_POST_CLOSURE_RECONCILIATION_v0.1.md` documenting the discrepancy and corrective decision.
 - Created immutable `00_GOVERNANCE/rma/TGCV_RMA_v1.2.md` as the corrected current RMA; v1.1 remains historical and immutable.
