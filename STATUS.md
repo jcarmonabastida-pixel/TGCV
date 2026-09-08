@@ -2,7 +2,8 @@
 
 **Last updated:** 2026-09-08  
 **Governance reconciliation:** DR-044 / DR-045  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.3.md`
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.4.md`  
+**Structural propagation:** EXT-UPD-1R.4
 
 ## Canonical continuity point
 
@@ -44,12 +45,16 @@ Authoritative current control surface:
 ## Current gate state
 
 - G1 Independent replication: OPEN
-- G2 Cross-domain generalisation: OPEN; no execution-ready external domain currently identified
+- G2 Cross-domain generalisation: OPEN; no execution-ready external domain identified
 - G3 Trajectory sufficiency: OPEN
 - G4 Causal identification: OPEN
 - G5 Value linkage: OPEN
 - G6 Originality/comparative architecture: BOUNDED/PARTIAL
 - G7 Transversal translation protocol: FROZEN / D-OPS-24 NEXT
+
+## External asset structure
+
+`05_ASSETS/` is the canonical physical surface for external-facing deliverables: TCP, Vision Paper, Research Prospectus, ARM, RII and reserved MOI. The IE PhD adaptation is subordinate to the generic Research Prospectus under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
 
 ## D-OPS state
 
@@ -65,13 +70,11 @@ D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing.
+DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 propagated the external-asset structural regularisation without changing scientific claims or evidence levels.
 
 The canonical propagation rule is:
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → Evidence-to-Claim Matrix → consistency audit → next controlled operation`.
-
-The governance conformance test demonstrated that incomplete synthetic propagation is blocked and complete synthetic propagation satisfies the required obligations, without modifying production state.
 
 ## Freeze state
 
