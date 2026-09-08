@@ -24,6 +24,12 @@
 - GitHub Actions governance-current-state run 81 for the pre-finalization propagation commit completed successfully; the final-state commits subsequently completed the same canonical propagation chain.
 - No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by RII creation/propagation.
 - EXT-UPD-3.5 RII propagation is CLOSED / CONSISTENT. D-OPS-24 remains the next controlled operation and is not an execution authorization.
+- EXT-UPD-3.6 identified a scientific-memory/reuse-control gap: substantive historical `TGCV_*` scientific artifacts were present in `02_LITERATURE/` and were not surfaced through a canonical reusable-science registry before later work.
+- Created `02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md` as the canonical registry/integration surface; fourteen substantive historical `TGCV_*` artifacts are initially registered without physical migration or epistemic upgrade.
+- Created `00_GOVERNANCE/impact/EXT-UPD-3.6_SCIENTIFIC_ASSET_RECONCILIATION_v0.1.md` documenting the finding, reconciliation decision and propagation obligations.
+- Advanced the immutable RMA to v1.1 and traceability to v1.1; current pointer and STATUS now identify EXT-UPD-3.6 and the scientific-memory registry.
+- Established the normative reuse rule: a relevant historical artifact blocks a “from-scratch” claim unless its scientific irrelevance is explicitly justified.
+- No scientific claims, evidence levels or gate states changed through EXT-UPD-3.6; D-OPS-24 is held pending consistency closure.
 
 ## 2026-09-08
 
