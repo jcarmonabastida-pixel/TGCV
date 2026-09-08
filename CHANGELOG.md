@@ -5,16 +5,15 @@
 - Confirmed GitHub canonical continuity is operational through direct repository reads/writes.
 - Completed RMA Governance Reconciliation Audit v0.1 and accepted the current-state propagation workflow.
 - Accepted DR-045 closing governance conformance and establishing the propagation chain as operational.
-- Current RMA is `00_GOVERNANCE/rma/TGCV_RMA_v0.3.md`; `TGCV_RMA_current.md` points to v0.3 and `TGCV_RMA_traceability_v0.3.csv` is the current dependency map.
-- `STATUS.md` is synchronized with the current governance state.
-- D-OPS-24 is the next controlled operation and is not yet an execution authorization.
-- Opened the controlled external-asset update operation `IMPACT-EXT-ASSETS-UPDATE_v0.1.md`.
-- Closed `EXT-UPD-1R` structural reconciliation and completed EXT-UPD-1R.3 physical regularisation of `05_ASSETS`.
-- `05_ASSETS` is now the single canonical surface for external deliverables.
+- Advanced the current RMA to `00_GOVERNANCE/rma/TGCV_RMA_v0.4.md`; `TGCV_RMA_current.md` now points to v0.4 and `TGCV_RMA_traceability_v0.4.csv` is the current dependency map.
+- Synchronized `STATUS.md` with RMA v0.4 and the canonical external-asset structure.
+- Opened and recorded `EXT-UPD-1R.4_CONSISTENCY_PROPAGATION_v0.1.md`.
+- `05_ASSETS` remains the single canonical physical surface for external deliverables.
 - Reserved canonical locations for `TGCV-EXT-ARM-001`, `TGCV-EXT-RII-001` and `TGCV-EXT-MOI-001`; no substantive ARM/RII/MOI content was promoted.
 - Normalised the IE PhD Research Prospectus adaptation under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
-- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by the structural maintenance.
-- EXT-UPD-2 current-state content delta analysis is the next controlled step.
+- Updated the current-state validator to enforce RMA v0.4, traceability v0.4 and the canonical external-asset family structure.
+- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by the structural propagation.
+- D-OPS-24 remains the next controlled operation and is not an execution authorization.
 
 ## 2026-08-27
 
