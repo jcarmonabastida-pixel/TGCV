@@ -69,7 +69,7 @@ D-OPS-24: DISCOVERY PROTOCOL FROZEN — bounded empirical-domain discovery is th
 ## Governance state
 
 EXT-UPD-3.6 scientific asset reconciliation: CLOSED / CONSISTENT.
-EXT-UPD-3.7 freezes the bounded D-OPS-24 candidate-domain discovery protocol without changing scientific claims, evidence levels or gate closures. Propagation remains to be closed by consistency audit.
+EXT-UPD-3.7 D-OPS-24 discovery protocol freeze: CLOSED / CONSISTENT.
 
 The canonical propagation rule is:
 
