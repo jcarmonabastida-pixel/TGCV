@@ -1,6 +1,8 @@
 # TGCV — Canonical Status
 
-**Last updated:** 2026-09-06
+**Last updated:** 2026-09-08  
+**Governance reconciliation:** DR-044  
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.2.md`
 
 ## Canonical continuity point
 
@@ -17,49 +19,64 @@
 - Value extension: `Trajectory → Outcome → Value`
 - `I`: explanatory mechanism, not Core primitive.
 
-TR-129, TR-130 and TR-135–TR-140 constitute the recovered conceptual safe state; TR-139 remains CONDITIONAL PASS on architectural originality. SLR-1 remains the formal prior-art absorption gate.
-
 ## Empirical state
 
-The computational programme **TGCV-EMP-1.1** remains a completed, explicitly frozen programme whose recorded primary result is **PASS**: `ΔLogLoss = +0.07942` against `δ=0.04`, with paired sign-flip `p < 0.000005`; the structural-intervention check is also recorded. This is evidence for the specified operationalization, **not universal validation of TGCV**.
+- Historical EXT-1.0 / CollegeMsg: FAIL / NO SUPPORT under its locked criterion; retained as immutable history.
+- TGCV-EMP-1.1: completed/frozen historical computational programme; retained separately from EXT-1.1.
+- TR-131: CLOSED — bounded structural empirical support for analytical T_acc indispensability.
+- EXT-1.1 Rust / RUST-DYN-1: CLOSED — bounded dynamic structural evidence.
+- EXT-1.1 Rust / RUST-DYN-2 / EXEC-1A: **CLOSED — bounded structural empirical pass**.
 
-The historical **EXT-1.0 CollegeMsg** execution remains **FAIL / NO SUPPORT** under its locked criterion (`ΔLogLoss=0.008717 < 0.04`). It remains part of the scientific history and is not superseded by later computational results.
+RUST-DYN-2 recorded 516,061 adjacent temporal pairs, 438,203 non-persistent pairs (~84.91%), ND-1 = 159,921, ND-2 = 278,282 and ND-4 = 266,201. The result is limited to the frozen Rust H=1 operationalization and does not establish causality, prediction, value, universal validity, originality, H>1 trajectory sufficiency or runtime Cargo reachability.
 
-### EXT-1.1 Rust — independent external/domain replication line
+## Current claim/evidence state
 
-EXT-1.1 Rust is a separate empirical replication programme and is not treated as a continuation of the frozen TGCV-EMP-1.1 computational state.
+Authoritative current control surface:
+`00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md`.
 
-Accepted experimental decisions currently governing EXT-1.1 include:
+- C01–C02: E0
+- C03–C07: E1 within frozen Rust operationalization
+- C08–C12: H
+- C13: O
+- C14–C15: F within scope
+- C16: H with frozen translation protocol
 
-- DR-019 — component identity;
-- DR-020 — candidate universe `T`;
-- DR-021 — `R*` accessibility operationalization;
-- DR-022 — resource-feasibility predicate inactive (`Resource_τ = TRUE`);
-- DR-023 — primary outcome `subsequent_release_activity` with `H = 180` elapsed days;
-- DR-024 — structural eligibility and census-first population, with complete 180-day follow-up; no confirmatory sampling selected;
-- DR-025 — conventional baseline design;
-- DR-025A — baseline representation `B(v_o)=(V_o,H_o,A_o,D_o)`;
-- DR-026A — canonical relational representation of `T_acc^(R*)` plus derived cardinality `A_count`.
+## Current gate state
 
-The next open gate is **DR-026 — model and evaluation specification**, including the exact model-compatible encoding of the accepted `T_acc` representation and the symmetric comparison protocol against `B`. No confirmatory EXT-1.1 execution is authorized by this status alone.
+- G1 Independent replication: OPEN
+- G2 Cross-domain generalisation: OPEN; no execution-ready external domain currently identified
+- G3 Trajectory sufficiency: OPEN
+- G4 Causal identification: OPEN
+- G5 Value linkage: OPEN
+- G6 Originality/comparative architecture: BOUNDED/PARTIAL
+- G7 Transversal translation protocol: FROZEN / D-OPS-24 NEXT
+
+## D-OPS state
+
+D-OPS-15 through D-OPS-20: CLOSED — no execution-ready independent external domain identified under current strict criteria.
+
+D-OPS-21: CLOSED — high local redundancy; broad novelty claim weakened.
+
+D-OPS-22: CLOSED — bounded translational non-redundancy; superiority not proved.
+
+D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
+
+**D-OPS-24: BLOCKED pending RMA governance consistency closure.**
+
+## Governance state
+
+DR-044 confirmed that the previous RMA current pointer and STATUS were stale relative to the September 8 canonical state. The historical RMA v0.1 remains immutable.
+
+The canonical propagation rule is:
+
+`accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → Evidence-to-Claim Matrix → consistency audit → next controlled operation`.
+
+No new controlled operation is opened while the current-state chain is inconsistent.
 
 ## Freeze state
 
-- MVE-1.0: frozen historical state.
-- TGCV-EMP-1.1 protocol: frozen before confirmatory model fit.
-- TGCV-EMP-1.1 test set: sealed; hashes recorded.
-- TGCV-EMP-1.1 computational state: frozen in `00_GOVERNANCE/freezes/2026-08-27_TGCV-EMP-1.1_FREEZE.md`.
-- EXT-1.1 Rust: **active ex-ante replication sequence; not confirmatorily executed**.
-- TGCV as a universally validated theory: **NOT CLAIMED**.
-
-## Next scientific programme
-
-The active empirical priority is **EXT-1.1 Rust independent external/domain replication**, proceeding through its explicit decision gates, alongside the SLR-1 prior-art absorption work. The conceptual Core remains unchanged unless an explicit evidence/gate decision reopens it.
-
-## Programme assets
-
-The repository stores canonical scientific records and programme metadata. Application/candidacy documents are kept in separate application directories and are not allowed to redefine the scientific Core.
+Frozen historical and experimental records remain immutable. New substantive states are represented by new versioned artifacts.
 
 ## Continuity rule
 
-Every substantive state change requires a versioned GitHub commit. Frozen states are immutable; later work creates new versions. ChatGPT Library files remain source/provenance material, not an alternative canonical state.
+Every substantive state change requires a versioned GitHub commit. GitHub remains the canonical continuity/provenance surface; chat is an execution interface, not the canonical store.
