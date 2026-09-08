@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-09-09  
 **Governance reconciliation:** DR-044 / DR-045  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.9.md`  
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.0.md`  
 **Structural/content propagation:** EXT-UPD-1R.4 / EXT-UPD-3.1 / EXT-UPD-3.2 / EXT-UPD-3.3.5 / EXT-UPD-3.4 / EXT-UPD-3.5
 
 ## Canonical continuity point
@@ -70,17 +70,17 @@ D-OPS-21: CLOSED — high local redundancy; broad novelty claim weakened.
 D-OPS-22: CLOSED — bounded translational non-redundancy; superiority not proved.
 D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
 
-**D-OPS-24: NEXT — unblocked by governance consistency; subject to its own historical reconstruction, design and preflight.**
+**D-OPS-24: NEXT — unblocked by governance consistency closure; subject to its own historical reconstruction, design and preflight.**
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1. EXT-UPD-3.5 propagates RII v0.1 through RMA v0.9, current pointer and traceability without changing scientific claims, evidence levels or gate states.
+DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1. EXT-UPD-3.5 propagated RII v0.1 through RMA v1.0, current pointer and traceability without changing scientific claims, evidence levels or gate states.
 
 The canonical propagation rule is:
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → Evidence-to-Claim Matrix → consistency audit → next controlled operation`.
 
-**EXT-UPD-3.5 RII propagation: OPEN at initiation; consistency closure pending.**
+**EXT-UPD-3.5 RII propagation: CLOSED / CONSISTENT.**
 
 ## Freeze state
 
