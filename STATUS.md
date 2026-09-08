@@ -1,8 +1,8 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-08  
-**Governance reconciliation:** DR-044  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.2.md`
+**Governance reconciliation:** DR-044 / DR-045  
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.3.md`
 
 ## Canonical continuity point
 
@@ -25,7 +25,7 @@
 - TGCV-EMP-1.1: completed/frozen historical computational programme; retained separately from EXT-1.1.
 - TR-131: CLOSED — bounded structural empirical support for analytical T_acc indispensability.
 - EXT-1.1 Rust / RUST-DYN-1: CLOSED — bounded dynamic structural evidence.
-- EXT-1.1 Rust / RUST-DYN-2 / EXEC-1A: **CLOSED — bounded structural empirical pass**.
+- EXT-1.1 Rust / RUST-DYN-2 / EXEC-1A: CLOSED — bounded structural empirical pass.
 
 RUST-DYN-2 recorded 516,061 adjacent temporal pairs, 438,203 non-persistent pairs (~84.91%), ND-1 = 159,921, ND-2 = 278,282 and ND-4 = 266,201. The result is limited to the frozen Rust H=1 operationalization and does not establish causality, prediction, value, universal validity, originality, H>1 trajectory sufficiency or runtime Cargo reachability.
 
@@ -61,17 +61,17 @@ D-OPS-22: CLOSED — bounded translational non-redundancy; superiority not prove
 
 D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
 
-**D-OPS-24: BLOCKED pending RMA governance consistency closure.**
+**D-OPS-24: NEXT — unblocked by governance consistency closure; subject to its own historical reconstruction, design and preflight.**
 
 ## Governance state
 
-DR-044 confirmed that the previous RMA current pointer and STATUS were stale relative to the September 8 canonical state. The historical RMA v0.1 remains immutable.
+DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing.
 
 The canonical propagation rule is:
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → Evidence-to-Claim Matrix → consistency audit → next controlled operation`.
 
-No new controlled operation is opened while the current-state chain is inconsistent.
+The governance conformance test demonstrated that incomplete synthetic propagation is blocked and complete synthetic propagation satisfies the required obligations, without modifying production state.
 
 ## Freeze state
 
