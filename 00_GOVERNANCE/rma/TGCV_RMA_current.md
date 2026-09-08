@@ -2,10 +2,10 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v1.0.md`  
+**Current master:** `TGCV_RMA_v1.1.md`  
 **Governance decision:** DR-044  
 **Conformance closure:** DR-045  
-**Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5
+**Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
 
@@ -41,6 +41,13 @@ This file is the current RMA pointer. It is not a historical record. Historical 
 
 The IE PhD Research Prospectus adaptation is subordinate to the generic RP and is located under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
 
+## Scientific-memory registry
+
+Canonical reusable scientific-memory registry:
+`02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md`.
+
+`02_LITERATURE/` remains the historical SLR working/archive surface. Relevant historical scientific artifacts remain discoverable through the registry without requiring physical migration.
+
 ## Current claim control
 
 Authoritative matrix:
@@ -60,14 +67,16 @@ C01–C02 = E0; C03–C07 = E1 within frozen Rust; C08–C12 = H; C13 = O; C14�
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1. EXT-UPD-3.5 propagated RII v0.1 through RMA v1.0, current pointer and traceability without changing scientific claims, evidence levels or gate states.
+DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1. EXT-UPD-3.5 propagated RII v0.1 through RMA v1.0, current pointer and traceability without changing scientific claims, evidence levels or gate states. EXT-UPD-3.6 establishes the canonical scientific-memory registry and reuse control without changing scientific claims, evidence levels or gate states.
 
 Propagation rule:
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation`.
 
-**EXT-UPD-3.5 RII propagation: CLOSED / CONSISTENT.**
+Scientific-memory reuse rule:
 
-GitHub Actions governance-current-state run 81 for commit `52627f6c2540136c43d0607b4d30eb25e55702a5` completed successfully.
+> The existence of a relevant historical artifact blocks a claim that a new operation starts “from scratch”, unless the operation explicitly records why the artifact is scientifically irrelevant.
 
-**D-OPS-24 is the next controlled operation and remains subject to its own historical reconstruction, design and preflight.**
+**EXT-UPD-3.6 scientific asset reconciliation: propagation in progress.**
+
+**D-OPS-24 is the next controlled operation and remains held until EXT-UPD-3.6 consistency closure.**
