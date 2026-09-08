@@ -2,9 +2,10 @@
 
 **Date:** 2026-09-08  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v0.3.md`  
+**Current master:** `TGCV_RMA_v0.4.md`  
 **Governance decision:** DR-044  
 **Conformance closure:** DR-045  
+**Structural propagation:** EXT-UPD-1R.4
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
 
@@ -27,6 +28,19 @@ This file is the current RMA pointer. It is not a historical record. Historical 
 - Originality: BOUNDED/PARTIAL, not established.
 - Transversal translation protocol: FROZEN; D-OPS-24 is next controlled operation.
 
+## External asset structure
+
+`05_ASSETS/` is the canonical physical surface for external-facing deliverables:
+
+- TCP → `05_ASSETS/TCP/`
+- Vision Paper → `05_ASSETS/Vision_Paper/`
+- Research Prospectus → `05_ASSETS/Research_Prospectus/`
+- ARM → `05_ASSETS/ARM/`
+- RII → `05_ASSETS/RII/`
+- MOI → `05_ASSETS/MOI/` (reserved; substantive creation deferred)
+
+The IE PhD Research Prospectus adaptation is subordinate to the generic RP and is located under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
+
 ## Current claim control
 
 Authoritative matrix:
@@ -46,12 +60,10 @@ C01–C02 = E0; C03–C07 = E1 within frozen Rust; C08–C12 = H; C13 = O; C14�
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test with PASS.
+DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test with PASS. EXT-UPD-1R.4 propagated the external-asset structural regularisation without changing scientific claims or evidence levels.
 
 Propagation rule:
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation`.
-
-The governance conformance test demonstrated that incomplete synthetic propagation is blocked and complete synthetic propagation satisfies the required obligations without modifying production state.
 
 **D-OPS-24 is unblocked by governance consistency and remains subject to its own historical reconstruction, design and preflight.**
