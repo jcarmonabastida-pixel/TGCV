@@ -11,7 +11,10 @@
 - Closed EXT-UPD-3.3.5 consistency without fabricating a CI PASS where no status check was observable.
 - Created `EXT-UPD-3.4_ARM_HISTORICAL_RECONSTRUCTION_v0.1.md`; no substantive historical ARM artifact was found.
 - Created `TGCV-EXT-ARM-001_v0.1.md` as the first substantive canonical ARM controlled draft.
-- Opened `EXT-UPD-3.4_ARM_PROPAGATION_v0.1.md` and propagated ARM v0.1 into RMA v0.7, traceability v0.7, current pointer and STATUS.
+- Opened `EXT-UPD-3.4_ARM_PROPAGATION_v0.1.md` and propagated ARM v0.1 through the current governance surfaces.
+- Created RMA v0.7 and traceability v0.7, then finalized the propagation in immutable RMA v0.8 and traceability v0.8.
+- Moved the RMA current pointer to v0.8 and synchronized STATUS with ARM v0.1 and EXT-UPD-3.4.
+- Updated `validate_current_state.py` to validate RMA v0.8, traceability v0.8, ARM v0.1 and the ARM propagation impact.
 - No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by ARM creation/propagation.
 - D-OPS-24 remains the next controlled operation and is not an execution authorization.
 
