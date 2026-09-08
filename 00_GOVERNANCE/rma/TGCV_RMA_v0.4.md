@@ -3,7 +3,7 @@
 **Estado:** CURRENT / OPERATIVE  
 **Fecha:** 2026-09-08  
 **Predecesor:** `00_GOVERNANCE/rma/TGCV_RMA_v0.3.md`  
-**Governance basis:** DR-044 + DR-045 + EXT-UPD-1R.4  
+**Governance basis:** DR-044 + DR-045 + EXT-UPD-1R.4 + EXT-UPD-3.1  
 **Purpose:** current master register of assets, dependencies, epistemic states, evidence and propagation obligations.
 
 ## 1. Canonical current state
@@ -90,6 +90,12 @@ It remains subject to its own historical reconstruction, design, preflight and e
 
 Programme/application adaptations are subordinate derived artefacts. The IE PhD Research Prospectus adaptation is located at `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
 
+### Current content state
+
+`TGCV-EXT-RP-001_v0.1.md` is now the current generic Research Prospectus controlled draft, created and reviewed under EXT-UPD-3.1. Its content derives from the current architecture, current claim/evidence boundary, TR-131, bounded RUST-DYN-1/2 evidence and D-OPS-21/22/23. It does not upgrade epistemic status or gate state.
+
+The TCP, Vision Paper, ARM and RII remain dependent current asset families pending their own controlled drafting/review. MOI remains reserved.
+
 Historical/preparatory copies in scientific, external-science and impact-transfer directories retain their historical status and do not compete with the canonical external identity.
 
 ## 8. Master propagation rule
@@ -162,6 +168,8 @@ Evidence levels remain E0/E1/E2/H/O/F and are never upgraded by documentation pr
 
 **RMA v0.4 CURRENT / OPERATIVE.**
 
-EXT-UPD-1R.4 has propagated the structural regularisation of the external-asset surface without changing scientific claims, evidence levels or gate states.
+EXT-UPD-1R.4 propagated the structural regularisation of the external-asset surface without changing scientific claims, evidence levels or gate states.
+
+EXT-UPD-3.1 has now propagated a substantive current-asset update: `TGCV-EXT-RP-001_v0.1.md` is the current generic Research Prospectus controlled draft. This propagation changes document state only; it does not change scientific claims, evidence levels or gate states.
 
 The RMA governance chain is considered current only when the validator passes and a consistency closure records the corresponding commit state.
