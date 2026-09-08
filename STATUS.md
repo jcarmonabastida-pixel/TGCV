@@ -2,8 +2,8 @@
 
 **Last updated:** 2026-09-09  
 **Governance reconciliation:** DR-044 / DR-045  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.6.md`  
-**Structural/content propagation:** EXT-UPD-1R.4 / EXT-UPD-3.1 / EXT-UPD-3.2 / EXT-UPD-3.3.5
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.7.md`  
+**Structural/content propagation:** EXT-UPD-1R.4 / EXT-UPD-3.1 / EXT-UPD-3.2 / EXT-UPD-3.3.5 / EXT-UPD-3.4
 
 ## Canonical continuity point
 
@@ -60,6 +60,7 @@ Current controlled drafts:
 - TCP: `05_ASSETS/TCP/TGCV-EXT-TCP-001_v0.3.md`
 - Vision Paper: `05_ASSETS/Vision_Paper/TGCV-EXT-VP-001_v0.2.md`
 - Research Prospectus: `05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.1.md`
+- ARM: `05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.1.md`
 
 ## D-OPS state
 
@@ -72,7 +73,7 @@ D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagates Vision Paper v0.2 through RMA v0.6, current pointer and traceability without changing scientific claims, evidence levels or gate states.
+DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagates ARM v0.1 through RMA v0.7, current pointer and traceability without changing scientific claims, evidence levels or gate states.
 
 The canonical propagation rule is:
 
