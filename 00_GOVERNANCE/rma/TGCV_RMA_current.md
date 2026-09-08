@@ -2,10 +2,10 @@
 
 **Date:** 2026-09-08  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v0.4.md`  
+**Current master:** `TGCV_RMA_v0.5.md`  
 **Governance decision:** DR-044  
 **Conformance closure:** DR-045  
-**Structural propagation:** EXT-UPD-1R.4
+**Structural propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
 
@@ -41,6 +41,11 @@ This file is the current RMA pointer. It is not a historical record. Historical 
 
 The IE PhD Research Prospectus adaptation is subordinate to the generic RP and is located under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
 
+## Current external documents
+
+- RP → `05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.1.md` — current controlled draft.
+- TCP → `05_ASSETS/TCP/TGCV-EXT-TCP-001_v0.3.md` — current controlled draft.
+
 ## Current claim control
 
 Authoritative matrix:
@@ -60,7 +65,7 @@ C01–C02 = E0; C03–C07 = E1 within frozen Rust; C08–C12 = H; C13 = O; C14�
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test with PASS. EXT-UPD-1R.4 propagated the external-asset structural regularisation without changing scientific claims or evidence levels.
+DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test with PASS. EXT-UPD-1R.4 propagated the external-asset structural regularisation. EXT-UPD-3.1 propagated the current RP v0.1. EXT-UPD-3.2 propagates the current TCP v0.3.
 
 Propagation rule:
 
