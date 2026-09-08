@@ -2,7 +2,7 @@
 """TGCV RUST-DYN-2 executor v0.2 — synthetic conformance only.
 
 This artifact freezes the implementation boundary established by DR-042.
-Real-dataset execution is deliberately blocked.  It will be enabled only by
+Real-dataset execution is deliberately blocked. It will be enabled only by
 an explicit later authorization decision after synthetic conformance and
 real-data preflight.
 """
@@ -11,19 +11,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from typing import Any, Dict, Iterable, List, Tuple
-
+from typing import Any, Dict, Iterable, Tuple
 
 TAU = Tuple[int, int, int, str]
 Config = Tuple[Tuple[int, int, str], ...]
 
 
 def canonical_config(declarations: Iterable[Tuple[int, int, str]]) -> Config:
-    """Canonical structural dependency configuration.
-
-    Each declaration is (depending_on_package, target_version_id, target_version_str).
-    Duplicate canonical declarations fail closed.
-    """
     rows = [tuple(x) for x in declarations]
     if len(rows) != len(set(rows)):
         raise ValueError("duplicate canonical configuration declaration")
@@ -31,12 +25,7 @@ def canonical_config(declarations: Iterable[Tuple[int, int, str]]) -> Config:
 
 
 def successor_config(config: Config, tau: TAU) -> Config:
-    """Historical frozen Potential Reach successor semantics.
-
-    Succ(C,tau) = C \ {(p_d, *)} union {(p_d, v_d)}.
-    The origin package/version fields in tau are identity/context, while
-    target_package_id and target_version_id/version_str determine the replacement.
-    """
+    """Frozen Potential Reach successor: C minus target-package assignment plus target version."""
     _origin_version_id, target_package_id, target_version_id, target_version_str = tau
     remaining = [r for r in config if r[0] != target_package_id]
     remaining.append((target_package_id, target_version_id, target_version_str))
@@ -44,7 +33,6 @@ def successor_config(config: Config, tau: TAU) -> Config:
 
 
 def potential_reach(config: Config, tacc: Iterable[TAU]) -> frozenset[Config]:
-    """Depth-1 Potential Reach as canonical successor configurations."""
     return frozenset(successor_config(config, tau) for tau in tacc)
 
 
@@ -55,12 +43,7 @@ def canonical_tau(tau: TAU) -> TAU:
 
 
 def trajectory_h1(reach: frozenset[Config]) -> Tuple[Config, ...]:
-    """Bounded H=1 trajectory representation.
-
-    There is no semantic temporal ordering among alternative one-step
-    successors. Therefore H=1 trajectory is a canonicalized successor
-    collection, not an invented path ordering. H>1 is out of scope.
-    """
+    """Canonical H=1 successor collection; no semantic ordering is claimed."""
     return tuple(sorted(reach))
 
 
@@ -73,31 +56,28 @@ def run_synthetic() -> Dict[str, Any]:
     origin = 1
     config_a = canonical_config([(10, 100, "1.0.0"), (20, 200, "2.0.0")])
     config_b = canonical_config([(10, 101, "1.1.0"), (20, 200, "2.0.0")])
-
     tau_a1 = canonical_tau((origin, 10, 100, "1.0.0"))
     tau_a2 = canonical_tau((origin, 20, 200, "2.0.0"))
     tau_b1 = canonical_tau((origin, 10, 101, "1.1.0"))
-
     t_a = frozenset({tau_a1, tau_a2})
     t_b = frozenset({tau_b1, tau_a2})
     r_a = potential_reach(config_a, t_a)
     r_b = potential_reach(config_b, t_b)
-
-    tests: Dict[str, bool] = {}
-    tests["canonical_four_field_identity"] = all(len(x) == 4 for x in (tau_a1, tau_a2, tau_b1))
-    tests["successor_is_not_tau"] = all(isinstance(x, tuple) and len(x) != 4 or True for x in r_a)
-    tests["reach_is_configuration_set"] = all(isinstance(x, tuple) for x in r_a) and all(len(c) == 2 for c in r_a)
-    tests["deterministic_canonicalization"] = canonical_config(reversed(config_a)) == config_a
-    tests["duplicate_fail_closed"] = _duplicate_check()
-    tests["nd1_delta_t_reach_equal"] = _nd1_case()
-    tests["nd2_delta_t_reach_changed"] = (t_a != t_b and r_a != r_b)
-    tests["nd4_equal_cardinality_different_membership"] = _nd4_case()
-    tests["trajectory_h1_non_arbitrary"] = trajectory_h1(r_a) == tuple(sorted(r_a))
-    tests["trajectory_excludes_origin"] = all(origin not in item for item in trajectory_h1(r_a))
-    tests["h_gt_1_not_claimed"] = True
-    tests["real_execution_blocked"] = True
-    tests["firewall_closed"] = True
-
+    tests = {
+        "canonical_four_field_identity": all(len(x) == 4 for x in (tau_a1, tau_a2, tau_b1)),
+        "successor_is_not_tau": all(x not in t_a for x in r_a),
+        "reach_is_configuration_set": all(isinstance(x, tuple) for x in r_a) and all(len(c) == 2 for c in r_a),
+        "deterministic_canonicalization": canonical_config(reversed(config_a)) == config_a,
+        "duplicate_fail_closed": _duplicate_check(),
+        "nd1_delta_t_reach_equal": _nd1_case(),
+        "nd2_delta_t_reach_changed": (t_a != t_b and r_a != r_b),
+        "nd4_equal_cardinality_different_membership": _nd4_case(),
+        "trajectory_h1_non_arbitrary": trajectory_h1(r_a) == tuple(sorted(r_a)),
+        "trajectory_excludes_origin": all(origin not in item for item in trajectory_h1(r_a)),
+        "h_gt_1_not_claimed": True,
+        "real_execution_blocked": True,
+        "firewall_closed": True,
+    }
     return {
         "mode": "SYNTHETIC_ONLY",
         "pass": all(tests.values()),
@@ -127,9 +107,7 @@ def _nd1_case() -> bool:
     tau = canonical_tau((1, 10, 100, "1.0"))
     r1 = potential_reach(c, [tau])
     r2 = potential_reach(c, [tau])
-    t1 = frozenset([tau])
-    t2 = frozenset()
-    return t1 != t2 and r1 == r2
+    return frozenset([tau]) != frozenset() and r1 == r2
 
 
 def _nd4_case() -> bool:
