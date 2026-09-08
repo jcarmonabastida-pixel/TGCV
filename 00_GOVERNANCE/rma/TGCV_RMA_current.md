@@ -32,19 +32,14 @@ This file is the current RMA pointer. It is not a historical record. Historical 
 
 `05_ASSETS/` is the canonical physical surface for external-facing deliverables:
 
-- TCP → `05_ASSETS/TCP/`
+- TCP → `05_ASSETS/TCP/` — current `TGCV-EXT-TCP-001_v0.3.md`
 - Vision Paper → `05_ASSETS/Vision_Paper/`
-- Research Prospectus → `05_ASSETS/Research_Prospectus/`
+- Research Prospectus → `05_ASSETS/Research_Prospectus/` — current `TGCV-EXT-RP-001_v0.1.md`
 - ARM → `05_ASSETS/ARM/`
 - RII → `05_ASSETS/RII/`
 - MOI → `05_ASSETS/MOI/` (reserved; substantive creation deferred)
 
 The IE PhD Research Prospectus adaptation is subordinate to the generic RP and is located under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
-
-## Current external documents
-
-- RP → `05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.1.md` — current controlled draft.
-- TCP → `05_ASSETS/TCP/TGCV-EXT-TCP-001_v0.3.md` — current controlled draft.
 
 ## Current claim control
 
