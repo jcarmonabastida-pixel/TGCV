@@ -7,7 +7,7 @@
 
 `03_EXPERIMENTS/EXT-1.1_Rust/src/rust_dyn2_executor_v02.py`
 
-Implementation correction after execution: documentation escape warning removed without semantic change.
+The corrected v0.2 implementation was executed locally after the implementation amendment. The corrected `successor_is_not_tau` assertion was independently exercised and passed.
 
 ## User execution
 
@@ -50,7 +50,7 @@ The equality of each H=1 trajectory hash with its corresponding Reach hash is ex
 
 ## Interpretation
 
-Synthetic conformance establishes that the implementation can represent the re-anchored Potential Reach semantics, exact set comparison, the selected non-redundancy witnesses, and the bounded H=1 trajectory representation without introducing an arbitrary path ordering.
+Synthetic conformance establishes that the corrected implementation can represent the re-anchored Potential Reach semantics, exact set comparison, the selected non-redundancy witnesses, and the bounded H=1 trajectory representation without introducing an arbitrary path ordering.
 
 It does **not** establish the empirical existence of ND-1/ND-2/ND-4 in the Rust dataset. Synthetic cases are implementation conformance fixtures only.
 
@@ -62,4 +62,4 @@ No real dataset was read. No T_acc, ΔT_acc, Reach, Trajectory, outcome, value, 
 
 ## Governance consequence
 
-EXEC-1A synthetic conformance is closed PASS. The next controlled operation is the dedicated real-data preflight for RUST-DYN-2. A separate execution-authorization decision remains mandatory.
+EXEC-1A synthetic conformance is closed PASS on the corrected implementation. The real-data preflight is already closed PASS separately. The next controlled operation is the dedicated ex-ante real-data execution-authorization gate. No real-data execution is authorized by this closure alone.
