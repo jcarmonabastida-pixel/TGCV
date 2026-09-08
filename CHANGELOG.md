@@ -12,7 +12,10 @@
 - Reserved canonical locations for `TGCV-EXT-ARM-001`, `TGCV-EXT-RII-001` and `TGCV-EXT-MOI-001`; no substantive ARM/RII/MOI content was promoted.
 - Normalised the IE PhD Research Prospectus adaptation under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
 - Updated the current-state validator to enforce RMA v0.4, traceability v0.4 and the canonical external-asset family structure.
-- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by the structural propagation.
+- Created `TGCV-EXT-RP-001_v0.1.md` as the current generic Research Prospectus controlled draft under `05_ASSETS/Research_Prospectus/`.
+- Recorded EXT-UPD-3.1 controlled drafting and consistency review.
+- Propagated RP v0.1 into RMA v0.4, current traceability and `STATUS.md`.
+- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by the RP propagation.
 - D-OPS-24 remains the next controlled operation and is not an execution authorization.
 
 ## 2026-08-27
