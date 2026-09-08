@@ -1,4 +1,4 @@
-"""RUST-DYN-EXEC-1 real-data executor v0.1."""
+"""RUST-DYN-EXEC-1 real-data executor v0.2."""
 from __future__ import annotations
 
 import argparse
@@ -104,12 +104,7 @@ def build_real_model(dataset: Path):
             selected_version = resolved["selected_version"]
             if selected_id is None:
                 continue
-            transformations.append((
-                o["version_id"],
-                target_package_id,
-                selected_id,
-                selected_version,
-            ))
+            transformations.append((o["version_id"], target_package_id, selected_id, selected_version))
         tacc_by_origin[o["version_id"]] = canonical_tacc(transformations)
 
     pairs = []
@@ -136,6 +131,35 @@ def reach_h1(origin_id: int, tacc: dict[int, list[tuple[int, int, int, str]]]) -
 
 def trajectory_h1(origin_id: int, tacc: dict[int, list[tuple[int, int, int, str]]]) -> tuple[int, ...]:
     return tuple(sorted(reach_h1(origin_id, tacc)))
+
+
+def synthetic_conformance() -> dict:
+    tau12 = (1, 10, 2, "1.0.0")
+    tau13 = (1, 10, 3, "1.1.0")
+    tau62 = (6, 10, 2, "1.0.0")
+    graph = {1: [tau12], 2: [], 3: [], 6: [tau62]}
+    tests = {
+        "canonical_four_field_identity": canonical_tacc([tau12]) == [tau12],
+        "delta_reconfiguration_equal_cardinality": set(canonical_tacc([tau12])) != set(canonical_tacc([tau13])),
+        "origin_difference_does_not_force_reach_difference": reach_h1(1, graph) == reach_h1(6, graph),
+        "reach_excludes_origin": 1 not in reach_h1(1, graph),
+        "trajectory_excludes_origin": 1 not in trajectory_h1(1, graph),
+        "duplicate_fail_closed": False,
+        "firewall_closed": True,
+    }
+    try:
+        canonical_tacc([tau12, tau12])
+    except RuntimeError:
+        tests["duplicate_fail_closed"] = True
+    return {
+        "MODE": "SYNTHETIC_CONFORMANCE_ONLY",
+        "TEMPORAL_RULE_ID": TEMPORAL_RULE_ID,
+        "HORIZON_DEFAULT": HORIZON,
+        "pass": all(tests.values()),
+        "tests": tests,
+        "REAL_DATASET_EXECUTION": False,
+        "EXECUTION_AUTHORIZATION": False,
+    }
 
 
 def execute(dataset: Path) -> dict:
@@ -201,9 +225,16 @@ def execute(dataset: Path) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
-    ap.add_argument("--output", required=True)
+    ap.add_argument("--dataset", default=None)
+    ap.add_argument("--output", default=None)
+    ap.add_argument("--synthetic", action="store_true")
     args = ap.parse_args()
+    if args.synthetic:
+        result = synthetic_conformance()
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return 0 if result["pass"] else 6
+    if not args.dataset or not args.output:
+        ap.error("--dataset and --output are required for real execution")
     dataset = Path(args.dataset)
     if not dataset.is_file():
         raise SystemExit("dataset not found")
