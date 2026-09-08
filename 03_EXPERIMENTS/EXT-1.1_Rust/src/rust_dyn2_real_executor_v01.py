@@ -45,18 +45,14 @@ def sha256_file(path: Path) -> str:
 
 
 def git_blob_sha(path: Path) -> str:
-    """Return the repository Git blob SHA using Git's path-aware normalization.
-
-    This deliberately delegates to Git rather than hashing working-tree bytes,
-    because Windows core.autocrlf may normalize LF/CRLF differently from the
-    bytes stored in the canonical Git blob.
-    """
+    """Return the canonical Git blob SHA using Git path-aware normalization."""
+    repo_root = Path(__file__).resolve().parents[3]
     try:
         proc = subprocess.run(
             [
                 "git",
                 "-C",
-                str(path.parent),
+                str(repo_root),
                 "hash-object",
                 f"--path={RSTAR_REPO_PATH}",
                 "--",
