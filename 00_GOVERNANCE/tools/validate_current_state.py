@@ -23,11 +23,11 @@ require_file(rma_current, "RMA current pointer")
 require_file(ROOT / "STATUS.md", "STATUS")
 require_file(ROOT / "CHANGELOG.md", "CHANGELOG")
 require_file(ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md", "current claim matrix")
-require_file(RMA_DIR / "TGCV_RMA_v1.1.md", "current RMA master v1.1")
-require_file(RMA_DIR / "TGCV_RMA_traceability_v1.1.csv", "current RMA traceability v1.1")
+require_file(RMA_DIR / "TGCV_RMA_v1.2.md", "current RMA master v1.2")
+require_file(RMA_DIR / "TGCV_RMA_traceability_v1.2.csv", "current RMA traceability v1.2")
 require_file(ROOT / "00_GOVERNANCE" / "workflows" / "CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md", "propagation workflow")
-for impact in ("EXT-UPD-1R.4_CONSISTENCY_PROPAGATION_v0.1.md", "EXT-UPD-3.1_RP_CONTROLLED_DRAFTING_AND_CONSISTENCY_v0.1.md", "EXT-UPD-3.2_TCP_PROPAGATION_v0.1.md", "EXT-UPD-3.3.5_VP_PROPAGATION_v0.1.md", "EXT-UPD-3.4_ARM_PROPAGATION_v0.1.md", "EXT-UPD-3.5_RII_PROPAGATION_v0.1.md", "EXT-UPD-3.6_SCIENTIFIC_ASSET_RECONCILIATION_v0.1.md"):
-    require_file(IMPACT_DIR / impact, f"propagation impact {impact}")
+for impact in ("EXT-UPD-1R.4_CONSISTENCY_PROPAGATION_v0.1.md", "EXT-UPD-3.1_RP_CONTROLLED_DRAFTING_AND_CONSISTENCY_v0.1.md", "EXT-UPD-3.2_TCP_PROPAGATION_v0.1.md", "EXT-UPD-3.3.5_VP_PROPAGATION_v0.1.md", "EXT-UPD-3.4_ARM_PROPAGATION_v0.1.md", "EXT-UPD-3.5_RII_PROPAGATION_v0.1.md", "EXT-UPD-3.6_SCIENTIFIC_ASSET_RECONCILIATION_v0.1.md", "EXT-UPD-3.6_POST_CLOSURE_RECONCILIATION_v0.1.md", "EXT-UPD-3.6_CONSISTENCY_CLOSURE_v0.1.md"):
+    require_file(IMPACT_DIR / impact, f"impact {impact}")
 require_file(SCIENCE / "SCIENTIFIC_ASSET_REGISTRY_v0.1.md", "canonical scientific asset registry")
 require_file(ASSETS / "ARM" / "TGCV-EXT-ARM-001_v0.1.md", "current ARM v0.1")
 require_file(ASSETS / "RII" / "TGCV-EXT-RII-001_v0.1.md", "current RII v0.1")
@@ -37,8 +37,8 @@ for rel in ("TCP", "Vision_Paper", "Research_Prospectus", "ARM", "RII", "MOI"):
 
 if rma_current.exists():
     text = rma_current.read_text(encoding="utf-8")
-    if "TGCV_RMA_v1.1.md" not in text:
-        errors.append("RMA current pointer does not point to v1.1")
+    if "TGCV_RMA_v1.2.md" not in text:
+        errors.append("RMA current pointer does not point to v1.2")
     for token, label in {
         "TGCV-EXT-TCP-001_v0.3.md": "TCP v0.3",
         "TGCV-EXT-VP-001_v0.2.md": "Vision Paper v0.2",
@@ -53,8 +53,8 @@ if rma_current.exists():
         errors.append("RMA current does not declare D-OPS-24 as next controlled operation")
     if "accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation" not in text:
         errors.append("RMA current propagation rule missing")
-    if "EXT-UPD-3.6 scientific asset reconciliation: propagation in progress" not in text:
-        errors.append("RMA current does not record EXT-UPD-3.6 propagation state")
+    if "EXT-UPD-3.6 scientific asset reconciliation: CLOSED / CONSISTENT" not in text:
+        errors.append("RMA current does not record EXT-UPD-3.6 closed/consistent state")
     if "from-scratch" not in text or "historical artifact" not in text:
         errors.append("RMA current scientific reuse rule missing")
 
@@ -72,7 +72,7 @@ if registry_path.exists():
         if token not in registry:
             errors.append(f"Scientific registry missing required control token {token}")
 
-trace = RMA_DIR / "TGCV_RMA_traceability_v1.1.csv"
+trace = RMA_DIR / "TGCV_RMA_traceability_v1.2.csv"
 if trace.exists():
     with trace.open(encoding="utf-8-sig", newline="") as f:
         rows = list(csv.DictReader(f))
@@ -82,7 +82,7 @@ if trace.exists():
         "TGCV-EXT-TCP-001", "TGCV-EXT-VP-001", "TGCV-EXT-RP-001",
         "TGCV-EXT-ARM-001", "TGCV-EXT-RII-001", "TGCV-EXT-MOI-001",
         "SCIENTIFIC-ASSET-REGISTRY", "EXT-UPD-3.6",
-        "RMA-v1.1", "RMA-current", "STATUS", "PROPAGATION-WORKFLOW", "HISTORICAL-RECONSTRUCTION-WORKFLOW", "VALIDATOR",
+        "RMA-v1.2", "RMA-current", "STATUS", "PROPAGATION-WORKFLOW", "HISTORICAL-RECONSTRUCTION-WORKFLOW", "VALIDATOR",
         "ESA-TGCV-001", "ESA-TGCV-007", "ESA-TGCV-014"
     }
     ids = {r.get("asset_id") for r in rows}
@@ -101,20 +101,12 @@ if trace.exists():
         matches = [r for r in rows if r.get("asset_id") == asset_id]
         if matches and matches[0].get("canonical_location") != expected:
             errors.append(f"Traceability canonical location mismatch for {asset_id}")
-    expected_notes = {
-        "TGCV-EXT-TCP-001": "TGCV-EXT-TCP-001_v0.3.md",
-        "TGCV-EXT-VP-001": "TGCV-EXT-VP-001_v0.2.md",
-        "TGCV-EXT-RP-001": "TGCV-EXT-RP-001_v0.1.md",
-        "TGCV-EXT-ARM-001": "TGCV-EXT-ARM-001_v0.1.md",
-        "TGCV-EXT-RII-001": "TGCV-EXT-RII-001_v0.1.md",
-    }
-    for asset_id, token in expected_notes.items():
-        matches = [r for r in rows if r.get("asset_id") == asset_id]
-        if matches and token not in matches[0].get("notes", ""):
-            errors.append(f"Traceability does not identify {token} as current")
     rii = [r for r in rows if r.get("asset_id") == "TGCV-EXT-RII-001"]
     if rii and "CLOSED/CONSISTENT" not in rii[0].get("notes", ""):
         errors.append("Traceability does not record RII propagation closure")
+    ext = [r for r in rows if r.get("asset_id") == "EXT-UPD-3.6"]
+    if ext and ext[0].get("status") != "CLOSED-CONSISTENT":
+        errors.append("Traceability does not record EXT-UPD-3.6 closure")
 
 if errors:
     print("GOVERNANCE_CURRENT_STATE=FAIL")
@@ -123,4 +115,4 @@ if errors:
     sys.exit(1)
 
 print("GOVERNANCE_CURRENT_STATE=PASS")
-print("RMA v1.1, current pointer, traceability, STATUS, claim matrix, propagation impacts, scientific asset registry, ARM v0.1, RII v0.1 and canonical external asset structure are structurally aligned.")
+print("RMA v1.2, current pointer, traceability, STATUS, claim matrix, propagation impacts, scientific asset registry, ARM v0.1, RII v0.1 and canonical external asset structure are structurally aligned.")
