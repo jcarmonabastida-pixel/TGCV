@@ -14,6 +14,7 @@ import hashlib
 import io
 import json
 import platform
+import subprocess
 import sys
 import zipfile
 from collections import defaultdict
@@ -28,6 +29,7 @@ from rstar_v02 import resolve_edge
 
 DATASET_SHA256 = "823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224"
 RSTAR_GIT_BLOB_SHA = "669d4f01131af518f32b1b4b3da27f676ae4ae55"
+RSTAR_REPO_PATH = "03_EXPERIMENTS/EXT-1.1_Rust/src/rstar_v02.py"
 TEMPORAL_RULE_ID = "DR-035-v0.1-ADJACENT-CREATED-AT"
 HORIZON = 1
 VERSIONS_MEMBER = "rust_repos_2022_09_07/dumps/postgresql/data/package_versions.csv"
@@ -43,9 +45,33 @@ def sha256_file(path: Path) -> str:
 
 
 def git_blob_sha(path: Path) -> str:
-    data = path.read_bytes()
-    header = f"blob {len(data)}\\0".encode("utf-8")
-    return hashlib.sha1(header + data).hexdigest()
+    """Return the repository Git blob SHA using Git's path-aware normalization.
+
+    This deliberately delegates to Git rather than hashing working-tree bytes,
+    because Windows core.autocrlf may normalize LF/CRLF differently from the
+    bytes stored in the canonical Git blob.
+    """
+    try:
+        proc = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(path.parent),
+                "hash-object",
+                f"--path={RSTAR_REPO_PATH}",
+                "--",
+                str(path),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise RuntimeError("RSTAR_GIT_BLOB_SHA_UNAVAILABLE") from exc
+    value = proc.stdout.strip()
+    if not value:
+        raise RuntimeError("RSTAR_GIT_BLOB_SHA_UNAVAILABLE")
+    return value
 
 
 def canonical_json_sha(obj) -> str:
