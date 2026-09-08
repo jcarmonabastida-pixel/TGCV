@@ -66,4 +66,4 @@ Discovery is limited to documentary candidate identification. Dataset download, 
 
 **EXT-UPD-3.6 scientific asset reconciliation: CLOSED / CONSISTENT.**
 
-**EXT-UPD-3.7 D-OPS-24 discovery protocol freeze: IN PROPAGATION.**
+**EXT-UPD-3.7 D-OPS-24 discovery protocol freeze: CLOSED / CONSISTENT.**
