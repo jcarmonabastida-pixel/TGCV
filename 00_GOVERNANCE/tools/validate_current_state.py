@@ -21,31 +21,30 @@ require_file(rma_current, "RMA current pointer")
 require_file(ROOT / "STATUS.md", "STATUS")
 require_file(ROOT / "CHANGELOG.md", "CHANGELOG")
 require_file(ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md", "current claim matrix")
-require_file(RMA_DIR / "TGCV_RMA_v0.8.md", "current RMA master v0.8")
-require_file(RMA_DIR / "TGCV_RMA_traceability_v0.8.csv", "current RMA traceability v0.8")
+require_file(RMA_DIR / "TGCV_RMA_v0.9.md", "current RMA master v0.9")
+require_file(RMA_DIR / "TGCV_RMA_traceability_v0.9.csv", "current RMA traceability v0.9")
 require_file(ROOT / "00_GOVERNANCE" / "workflows" / "CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md", "propagation workflow")
-require_file(ROOT / "00_GOVERNANCE" / "impact" / "EXT-UPD-1R.4_CONSISTENCY_PROPAGATION_v0.1.md", "external asset propagation impact")
-require_file(ROOT / "00_GOVERNANCE" / "impact" / "EXT-UPD-3.1_RP_CONTROLLED_DRAFTING_AND_CONSISTENCY_v0.1.md", "RP propagation impact")
-require_file(ROOT / "00_GOVERNANCE" / "impact" / "EXT-UPD-3.2_TCP_PROPAGATION_v0.1.md", "TCP propagation impact")
-require_file(ROOT / "00_GOVERNANCE" / "impact" / "EXT-UPD-3.3.5_VP_PROPAGATION_v0.1.md", "Vision Paper propagation impact")
-require_file(ROOT / "00_GOVERNANCE" / "impact" / "EXT-UPD-3.4_ARM_PROPAGATION_v0.1.md", "ARM propagation impact")
+for impact in ("EXT-UPD-1R.4_CONSISTENCY_PROPAGATION_v0.1.md", "EXT-UPD-3.1_RP_CONTROLLED_DRAFTING_AND_CONSISTENCY_v0.1.md", "EXT-UPD-3.2_TCP_PROPAGATION_v0.1.md", "EXT-UPD-3.3.5_VP_PROPAGATION_v0.1.md", "EXT-UPD-3.4_ARM_PROPAGATION_v0.1.md", "EXT-UPD-3.5_RII_PROPAGATION_v0.1.md"):
+    require_file(ROOT / "00_GOVERNANCE" / "impact" / impact, f"propagation impact {impact}")
 require_file(ASSETS / "ARM" / "TGCV-EXT-ARM-001_v0.1.md", "current ARM v0.1")
+require_file(ASSETS / "RII" / "TGCV-EXT-RII-001_v0.1.md", "current RII v0.1")
 
 for rel in ("TCP", "Vision_Paper", "Research_Prospectus", "ARM", "RII", "MOI"):
     require_dir(ASSETS / rel, f"canonical external asset family {rel}")
 
 if rma_current.exists():
     text = rma_current.read_text(encoding="utf-8")
-    if "TGCV_RMA_v0.8.md" not in text:
-        errors.append("RMA current pointer does not point to v0.8")
-    if "TGCV-EXT-TCP-001_v0.3.md" not in text:
-        errors.append("RMA current does not declare TCP v0.3 current")
-    if "TGCV-EXT-VP-001_v0.2.md" not in text:
-        errors.append("RMA current does not declare Vision Paper v0.2 current")
-    if "TGCV-EXT-RP-001_v0.1.md" not in text:
-        errors.append("RMA current does not declare RP v0.1 current")
-    if "TGCV-EXT-ARM-001_v0.1.md" not in text:
-        errors.append("RMA current does not declare ARM v0.1 current")
+    if "TGCV_RMA_v0.9.md" not in text:
+        errors.append("RMA current pointer does not point to v0.9")
+    for token, label in {
+        "TGCV-EXT-TCP-001_v0.3.md": "TCP v0.3",
+        "TGCV-EXT-VP-001_v0.2.md": "Vision Paper v0.2",
+        "TGCV-EXT-RP-001_v0.1.md": "RP v0.1",
+        "TGCV-EXT-ARM-001_v0.1.md": "ARM v0.1",
+        "TGCV-EXT-RII-001_v0.1.md": "RII v0.1",
+    }.items():
+        if token not in text:
+            errors.append(f"RMA current does not declare {label} current")
     if "D-OPS-24" not in text or "NEXT" not in text:
         errors.append("RMA current does not declare D-OPS-24 as next controlled operation")
     if "accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation" not in text:
@@ -58,7 +57,7 @@ if matrix_path.exists():
         if token not in matrix:
             errors.append(f"Current claim matrix missing {token}")
 
-trace = RMA_DIR / "TGCV_RMA_traceability_v0.8.csv"
+trace = RMA_DIR / "TGCV_RMA_traceability_v0.9.csv"
 if trace.exists():
     with trace.open(encoding="utf-8-sig", newline="") as f:
         rows = list(csv.DictReader(f))
@@ -67,7 +66,7 @@ if trace.exists():
         "D-OPS-21", "D-OPS-22", "D-OPS-23", "D-OPS-24",
         "TGCV-EXT-TCP-001", "TGCV-EXT-VP-001", "TGCV-EXT-RP-001",
         "TGCV-EXT-ARM-001", "TGCV-EXT-RII-001", "TGCV-EXT-MOI-001",
-        "RMA-v0.8", "RMA-current", "STATUS", "PROPAGATION-WORKFLOW", "VALIDATOR"
+        "RMA-v0.9", "RMA-current", "STATUS", "PROPAGATION-WORKFLOW", "VALIDATOR"
     }
     ids = {r.get("asset_id") for r in rows}
     missing = required_assets - ids
@@ -84,15 +83,17 @@ if trace.exists():
         matches = [r for r in rows if r.get("asset_id") == asset_id]
         if matches and matches[0].get("canonical_location") != expected:
             errors.append(f"Traceability canonical location mismatch for {asset_id}")
-    tcp = [r for r in rows if r.get("asset_id") == "TGCV-EXT-TCP-001"]
-    if tcp and "TGCV-EXT-TCP-001_v0.3.md" not in tcp[0].get("notes", ""):
-        errors.append("Traceability does not identify TCP v0.3 as current")
-    vp = [r for r in rows if r.get("asset_id") == "TGCV-EXT-VP-001"]
-    if vp and "TGCV-EXT-VP-001_v0.2.md" not in vp[0].get("notes", ""):
-        errors.append("Traceability does not identify Vision Paper v0.2 as current")
-    arm = [r for r in rows if r.get("asset_id") == "TGCV-EXT-ARM-001"]
-    if arm and "TGCV-EXT-ARM-001_v0.1.md" not in arm[0].get("notes", ""):
-        errors.append("Traceability does not identify ARM v0.1 as current")
+    expected_notes = {
+        "TGCV-EXT-TCP-001": "TGCV-EXT-TCP-001_v0.3.md",
+        "TGCV-EXT-VP-001": "TGCV-EXT-VP-001_v0.2.md",
+        "TGCV-EXT-RP-001": "TGCV-EXT-RP-001_v0.1.md",
+        "TGCV-EXT-ARM-001": "TGCV-EXT-ARM-001_v0.1.md",
+        "TGCV-EXT-RII-001": "TGCV-EXT-RII-001_v0.1.md",
+    }
+    for asset_id, token in expected_notes.items():
+        matches = [r for r in rows if r.get("asset_id") == asset_id]
+        if matches and token not in matches[0].get("notes", ""):
+            errors.append(f"Traceability does not identify {token} as current")
 
 if errors:
     print("GOVERNANCE_CURRENT_STATE=FAIL")
@@ -101,4 +102,4 @@ if errors:
     sys.exit(1)
 
 print("GOVERNANCE_CURRENT_STATE=PASS")
-print("RMA v0.8, current pointer, traceability, STATUS, claim matrix, propagation impacts, ARM v0.1 and canonical external asset structure are structurally aligned.")
+print("RMA v0.9, current pointer, traceability, STATUS, claim matrix, propagation impacts, ARM v0.1, RII v0.1 and canonical external asset structure are structurally aligned.")
