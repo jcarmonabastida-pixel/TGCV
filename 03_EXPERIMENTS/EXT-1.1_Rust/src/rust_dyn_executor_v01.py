@@ -32,15 +32,15 @@ def parse_created_at(value: str) -> datetime:
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
-def canonical_tacc(items: list[tuple[int, int, str]]) -> list[tuple[int, int, str]]:
-    out = sorted(items, key=lambda x: (x[0], x[1], x[2]))
+def canonical_tacc(items: list[tuple[int, int, int, str]]) -> list[tuple[int, int, int, str]]:
+    out = sorted(items, key=lambda x: (x[0], x[1], x[2], x[3]))
     if len(out) != len(set(out)):
         raise RuntimeError("duplicate canonical transformation")
     return out
 
 
-def tacc_hash(items: list[tuple[int, int, str]]) -> str:
-    payload = "\n".join(f"{a}|{b}|{c}" for a, b, c in items).encode()
+def tacc_hash(items: list[tuple[int, int, int, str]]) -> str:
+    payload = "\n".join(f"{a}|{b}|{c}|{d}" for a, b, c, d in items).encode()
     return hashlib.sha256(payload).hexdigest()
 
 
@@ -104,7 +104,12 @@ def build_real_model(dataset: Path):
             selected_version = resolved["selected_version"]
             if selected_id is None:
                 continue
-            transformations.append((o["version_id"], selected_id, selected_version))
+            transformations.append((
+                o["version_id"],
+                target_package_id,
+                selected_id,
+                selected_version,
+            ))
         tacc_by_origin[o["version_id"]] = canonical_tacc(transformations)
 
     pairs = []
@@ -125,11 +130,11 @@ def build_real_model(dataset: Path):
     return by_id, tacc_by_origin, pairs, tie_origin_count, excluded_origin_count, len(by_package)
 
 
-def reach_h1(origin_id: int, tacc: dict[int, list[tuple[int, int, str]]]) -> set[int]:
-    return {target_id for _, target_id, _ in tacc.get(origin_id, []) if target_id != origin_id}
+def reach_h1(origin_id: int, tacc: dict[int, list[tuple[int, int, int, str]]]) -> set[int]:
+    return {target_id for _, _, target_id, _ in tacc.get(origin_id, []) if target_id != origin_id}
 
 
-def trajectory_h1(origin_id: int, tacc: dict[int, list[tuple[int, int, str]]]) -> tuple[int, ...]:
+def trajectory_h1(origin_id: int, tacc: dict[int, list[tuple[int, int, int, str]]]) -> tuple[int, ...]:
     return tuple(sorted(reach_h1(origin_id, tacc)))
 
 
