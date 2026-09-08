@@ -16,7 +16,12 @@
 - Moved the RMA current pointer to v0.8 and synchronized STATUS with ARM v0.1 and EXT-UPD-3.4.
 - Updated `validate_current_state.py` to validate RMA v0.8, traceability v0.8, ARM v0.1 and the ARM propagation impact.
 - No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by ARM creation/propagation.
-- D-OPS-24 remains the next controlled operation and is not an execution authorization.
+- Created `EXT-UPD-3.5_RII_HISTORICAL_RECONSTRUCTION_v0.1.md`; historical/preparatory impact-roadmap material was identified and retained without promotion.
+- Created `TGCV-EXT-RII-001_v0.1.md` as the first substantive canonical RII controlled draft, excluding obsolete EMP-1.1 predictive/readiness framing.
+- Opened `EXT-UPD-3.5_RII_PROPAGATION_v0.1.md` and advanced the current RMA to immutable v0.9 with traceability v0.9.
+- Moved the RMA current pointer to v0.9 and synchronized STATUS with RII v0.1 and EXT-UPD-3.5.
+- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by RII creation/propagation.
+- EXT-UPD-3.5 consistency closure remains pending; D-OPS-24 remains the next controlled operation and is not an execution authorization.
 
 ## 2026-09-08
 
