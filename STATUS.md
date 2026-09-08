@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-09-09  
 **Governance reconciliation:** DR-044 / DR-045  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.1.md`  
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.2.md`  
 **Structural/content propagation:** EXT-UPD-1R.4 / EXT-UPD-3.1 / EXT-UPD-3.2 / EXT-UPD-3.3.5 / EXT-UPD-3.4 / EXT-UPD-3.5 / EXT-UPD-3.6
 
 ## Canonical continuity point
@@ -76,7 +76,7 @@ D-OPS-21: CLOSED — high local redundancy; broad novelty claim weakened.
 D-OPS-22: CLOSED — bounded translational non-redundancy; superiority not proved.
 D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
 
-**D-OPS-24: NEXT — held pending EXT-UPD-3.6 consistency closure; subject to its own historical reconstruction, design and preflight.**
+**D-OPS-24: NEXT — released after EXT-UPD-3.6 consistency closure; subject to its own historical reconstruction, design and preflight. Real-data execution remains NOT AUTHORIZED.**
 
 ## Governance state
 
@@ -90,7 +90,7 @@ The scientific reuse rule is:
 
 > The existence of a relevant historical artifact blocks a claim that a new operation starts “from scratch”, unless the operation explicitly records why the artifact is scientifically irrelevant.
 
-**EXT-UPD-3.6 scientific asset reconciliation: PROPAGATION IN PROGRESS.**
+**EXT-UPD-3.6 scientific asset reconciliation: CLOSED / CONSISTENT.**
 
 ## Freeze state
 
