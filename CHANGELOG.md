@@ -8,7 +8,11 @@
 - Moved `TGCV_RMA_current.md` to v0.6 and synchronized the current pointer with Vision Paper v0.2.
 - Updated `STATUS.md` to record Vision Paper v0.2 as the current controlled draft and EXT-UPD-3.3.5 as the current propagation.
 - Updated `validate_current_state.py` to validate RMA v0.6, traceability v0.6 and the Vision Paper propagation impact.
-- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by this propagation.
+- Closed EXT-UPD-3.3.5 consistency without fabricating a CI PASS where no status check was observable.
+- Created `EXT-UPD-3.4_ARM_HISTORICAL_RECONSTRUCTION_v0.1.md`; no substantive historical ARM artifact was found.
+- Created `TGCV-EXT-ARM-001_v0.1.md` as the first substantive canonical ARM controlled draft.
+- Opened `EXT-UPD-3.4_ARM_PROPAGATION_v0.1.md` and propagated ARM v0.1 into RMA v0.7, traceability v0.7, current pointer and STATUS.
+- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by ARM creation/propagation.
 - D-OPS-24 remains the next controlled operation and is not an execution authorization.
 
 ## 2026-09-08
