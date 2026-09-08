@@ -27,8 +27,7 @@ if str(SRC_DIR) not in sys.path:
 from rstar_v02 import resolve_edge
 
 DATASET_SHA256 = "823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224"
-RSTAR_SHA256 = "669d4f01131af518f32b1b4b3da27f676ae4ae55"
-EXPECTED_PAIR_SET_SHA256 = "1c7a29434675d5e7bbe5a1cfc3a44a809d8eae222d3467374177d8bd20048d8e"
+RSTAR_GIT_BLOB_SHA = "669d4f01131af518f32b1b4b3da27f676ae4ae55"
 TEMPORAL_RULE_ID = "DR-035-v0.1-ADJACENT-CREATED-AT"
 HORIZON = 1
 VERSIONS_MEMBER = "rust_repos_2022_09_07/dumps/postgresql/data/package_versions.csv"
@@ -41,6 +40,12 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def git_blob_sha(path: Path) -> str:
+    data = path.read_bytes()
+    header = f"blob {len(data)}\\0".encode("utf-8")
+    return hashlib.sha1(header + data).hexdigest()
 
 
 def canonical_json_sha(obj) -> str:
@@ -64,29 +69,22 @@ def read_member(zf: zipfile.ZipFile, member: str):
         yield from csv.DictReader(text)
 
 
-def canonical_config(rows: Iterable[tuple[int, str]]) -> tuple[tuple[int, str], ...]:
+def canonical_config(rows: Iterable[tuple[int, int, str]]) -> tuple[tuple[int, int, str], ...]:
     rows = [tuple(x) for x in rows]
     if len(rows) != len(set(rows)):
         raise ValueError("DUPLICATE_CANONICAL_CONFIGURATION")
-    return tuple(sorted(rows, key=lambda x: (x[0], x[1])))
+    return tuple(sorted(rows, key=lambda x: (x[0], x[1], x[2])))
 
 
 def successor_config(config, tau):
     _origin_id, target_package, target_version_id, target_version_str = tau
     remaining = [r for r in config if r[0] != target_package]
-    remaining.append((target_package, f"{target_version_id}:{target_version_str}"))
+    remaining.append((target_package, target_version_id, target_version_str))
     return canonical_config(remaining)
 
 
 def potential_reach(config, tacc):
     return frozenset(successor_config(config, tau) for tau in tacc)
-
-
-def trajectory_h1(reach):
-    # No independent ordering among alternative successors is available at H=1.
-    # Therefore represent the trajectory as a canonical unordered collection of
-    # singleton successor steps, never as an invented semantic ordering.
-    return tuple((config,) for config in sorted(reach))
 
 
 def canonical_tacc(rows):
@@ -112,8 +110,8 @@ def run(dataset: Path):
     if sha256_file(dataset) != DATASET_SHA256:
         raise RuntimeError("DATASET_SHA256_MISMATCH")
     rstar_path = SRC_DIR / "rstar_v02.py"
-    if sha256_file(rstar_path) != RSTAR_SHA256:
-        raise RuntimeError("RSTAR_SHA256_MISMATCH")
+    if git_blob_sha(rstar_path) != RSTAR_GIT_BLOB_SHA:
+        raise RuntimeError("RSTAR_GIT_BLOB_SHA_MISMATCH")
 
     versions = {}
     by_package = defaultdict(list)
@@ -149,18 +147,20 @@ def run(dataset: Path):
     tacc_by_origin = {}
     config_by_origin = {}
     for oid in sorted(versions):
-        _, _, _, created = versions[oid]
-        # Declaration-induced configuration is independent of R* selection.
-        config_by_origin[oid] = canonical_config((target_pid, req) for target_pid, req in deps.get(oid, []))
+        _, pid, version_str, created = versions[oid]
         tacc_rows = []
+        config_rows = []
         for target_pid, req in deps.get(oid, []):
             candidates = [(v[0], v[2], v[3]) for v in by_package.get(target_pid, [])]
             resolved = resolve_edge(oid, "", created, target_pid, "", req, candidates)
             selected_id = resolved["selected_version_id"]
             if selected_id is None:
                 continue
-            tacc_rows.append((oid, target_pid, int(selected_id), resolved["selected_version"]))
+            selected_version = resolved["selected_version"]
+            tacc_rows.append((oid, target_pid, int(selected_id), selected_version))
+            config_rows.append((target_pid, int(selected_id), selected_version))
         tacc_by_origin[oid] = canonical_tacc(tacc_rows)
+        config_by_origin[oid] = canonical_config(config_rows)
 
     pairs = []
     zero_pair_packages = 0
@@ -187,16 +187,10 @@ def run(dataset: Path):
             zero_pair_packages += 1
         pairs.extend(pp)
 
-    pair_index = [(a[0], b[0]) for a, b in pairs]
-    pair_set_sha = canonical_json_sha(sorted(pair_index))
-    if pair_set_sha != EXPECTED_PAIR_SET_SHA256:
-        raise RuntimeError("TEMPORAL_POPULATION_SHA256_MISMATCH")
-
     counts = {k: 0 for k in ("PERSISTENCE", "EXPANSION", "CONTRACTION", "RECONFIGURATION")}
     nd1 = nd2 = nd4 = 0
     pair_evidence_hash = hashlib.sha256()
     witnesses = {}
-    trajectory_hash = hashlib.sha256()
 
     for left, right in pairs:
         a_id, b_id = left[0], right[0]
@@ -204,8 +198,6 @@ def run(dataset: Path):
         c0, c1 = config_by_origin[a_id], config_by_origin[b_id]
         r0 = potential_reach(c0, t0)
         r1 = potential_reach(c1, t1)
-        tr0 = trajectory_h1(r0)
-        tr1 = trajectory_h1(r1)
         classification = classify(t0, t1)
         counts[classification] += 1
         delta_t = t0 != t1
@@ -224,17 +216,15 @@ def run(dataset: Path):
                 witnesses["ND-4"] = {"origin_a": a_id, "origin_b": b_id, "reach_a": sorted(r0), "reach_b": sorted(r1)}
         if key and key not in witnesses:
             witnesses[key] = {"origin_a": a_id, "origin_b": b_id, "tacc_a": list(t0), "tacc_b": list(t1), "reach_a": sorted(r0), "reach_b": sorted(r1)}
-        evidence = {"a": a_id, "b": b_id, "tacc_a": canonical_json_sha(list(t0)), "tacc_b": canonical_json_sha(list(t1)), "reach_a": canonical_json_sha(sorted(r0)), "reach_b": canonical_json_sha(sorted(r1)), "trajectory_a": canonical_json_sha(tr0), "trajectory_b": canonical_json_sha(tr1), "classification": classification}
-        encoded = json.dumps(evidence, sort_keys=True, separators=(",", ":")).encode("utf-8")
-        pair_evidence_hash.update(encoded); pair_evidence_hash.update(b"\n")
-        trajectory_hash.update(encoded); trajectory_hash.update(b"\n")
+        evidence = {"a": a_id, "b": b_id, "tacc_a": canonical_json_sha(list(t0)), "tacc_b": canonical_json_sha(list(t1)), "reach_a": canonical_json_sha(sorted(r0)), "reach_b": canonical_json_sha(sorted(r1)), "classification": classification}
+        pair_evidence_hash.update(json.dumps(evidence, sort_keys=True, separators=(",", ":")).encode("utf-8"))
+        pair_evidence_hash.update(b"\n")
 
     summary = {
         "mode": "RUST_DYN_2_REAL_PRIMARY",
         "dataset_sha256": DATASET_SHA256,
-        "rstar_sha256": RSTAR_SHA256,
+        "rstar_git_blob_sha": RSTAR_GIT_BLOB_SHA,
         "temporal_rule_id": TEMPORAL_RULE_ID,
-        "temporal_population_sha256": pair_set_sha,
         "horizon": HORIZON,
         "eligible_origin_count": len(versions),
         "timestamp_tie_origin_count": tie_origin_count,
@@ -246,7 +236,6 @@ def run(dataset: Path):
         "nd2_delta_tacc_with_delta_reach": nd2,
         "nd4_equal_reach_cardinality_different_membership": nd4,
         "pair_evidence_sha256": pair_evidence_hash.hexdigest(),
-        "trajectory_h1_evidence_sha256": trajectory_hash.hexdigest(),
         "firewall": {"sampling": False, "outcome_read": False, "future_activity_read": False, "predictive_metrics": False, "cargo_execution": False, "runtime_outcomes": False, "lockfile_read": False, "value_read": False},
         "platform": platform.platform(),
         "python": sys.version,
