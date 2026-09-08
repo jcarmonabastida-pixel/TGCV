@@ -1,0 +1,27 @@
+asset_id,asset,class,status,current_evidence_or_basis,primary_dependencies,current_gate_or_next,canonical_location,governance_state
+TGCV-CORE-001,Current TGCV architecture,scientific-foundational,FOUNDATIONAL,Core=S; T_acc=F(S,C,L); DeltaT_acc; downstream chain,TR-131;SLR;D-OPS-23,None,01_CORE,STABLE
+TGCV-TR131-001,TR-131 real execution,empirical-structural,CLOSED,Bounded Rust structural evidence; scientific integration,DR-031;DR-032,No rerun required,03_EXPERIMENTS/EXT-1.1_Rust,CLOSED
+TGCV-RUST-DYN1-001,RUST-DYN-1 EXEC-1,empirical-dynamic,CLOSED,Bounded temporal Rust evidence,DR-035;DR-037,No rerun; explicit trace only,03_EXPERIMENTS/EXT-1.1_Rust,CLOSED
+TGCV-RUST-DYN2-001,RUST-DYN-2 EXEC-1A,empirical-structural,CLOSED,ND1/ND2/ND4; 516061 pairs; mandatory replay,DR-043;DR-042;DR-035,Evidence integrated,03_EXPERIMENTS/EXT-1.1_Rust,CLOSED
+TGCV-CLAIM-001,Evidence-to-Claim Matrix Post-DOPS23,governance-control,CURRENT,C01-C16 current claim/evidence states,D-OPS-21;D-OPS-22;D-OPS-23,Maintain after every accepted substantive change,00_GOVERNANCE,CURRENT
+TGCV-DOPS-15-20,External-domain discovery chain,governance-scientific,CLOSED,No execution-ready independent domain identified,D-OPS-15..20,D-OPS-24 downstream,00_GOVERNANCE,CLOSED
+TGCV-DOPS21-001,D-OPS-21 originality audit,scientific-gate,CLOSED,High local redundancy; originality claim weakened,SLR-1;architecture,D-OPS-22,00_GOVERNANCE,CLOSED
+TGCV-DOPS22-001,D-OPS-22 translation non-redundancy,scientific-gate,CLOSED,Bounded translational non-redundancy; superiority unproved,D-OPS-21,D-OPS-23,00_GOVERNANCE,CLOSED
+TGCV-DOPS23-001,D-OPS-23 translation protocol,scientific-gate,FROZEN,Minimal protocol and information-preservation invariants,D-OPS-22,D-OPS-24,00_GOVERNANCE,FROZEN
+TGCV-DOPS24-001,D-OPS-24 translation conformance,scientific-gate,NEXT,Not started; subject to own historical reconstruction/design/preflight,D-OPS-23;RMA;STATUS,Open after consistency closure,00_GOVERNANCE,NEXT
+TGCV-DR044-001,DR-044 RMA reconciliation,governance,ACCEPTED,Confirmed stale RMA/STATUS propagation defect,Historical RMA;STATUS;claim matrix,RMA consistency closure,00_GOVERNANCE,ACCEPTED
+TGCV-RMA-001,RMA v0.4,governance-control,CURRENT,Current master including canonical external-asset locations,DR-044;DR-045;EXT-UPD-1R.4,Maintain after every accepted substantive change,00_GOVERNANCE/rma,CURRENT
+TGCV-RMA-002,RMA current pointer,governance-control,CURRENT,Points to RMA v0.4,RMA v0.4,Update only when current master advances,00_GOVERNANCE/rma,CURRENT
+TGCV-RMA-003,RMA traceability v0.4,governance-control,CURRENT,Current asset/dependency map with canonical external locations,RMA v0.4,Update with every substantive propagation,00_GOVERNANCE/rma,CURRENT
+TGCV-GOV-001,Current-state propagation workflow,governance-control,FROZEN,Mandatory impact propagation sequence,RMA;Programme OS,Apply after every substantive accepted change,00_GOVERNANCE/workflows,FROZEN
+TGCV-GOV-002,Current-state structural validator,governance-tool,CURRENT,Checks current-state structural invariants,RMA;STATUS;claim matrix,Run on governance changes,00_GOVERNANCE/tools,CURRENT
+TGCV-STATUS-001,STATUS.md,governance-control,CURRENT,September 8 canonical state,RMA;claim matrix;closures,Update after accepted substantive change,/,CURRENT
+TGCV-EXT-VP-001,Vision Paper,external-scientific,DEPENDENT,Canonical external family; content must derive from current architecture and claim state,Core;SLR;claim matrix,Update when external revision resumes,05_ASSETS/Vision_Paper/,DEPENDENT
+TGCV-EXT-RP-001,Research Prospectus,external-scientific,DEPENDENT,Canonical generic external family; programme adaptations subordinate,Core;VP;TCP;claim matrix,Update when external revision resumes,05_ASSETS/Research_Prospectus/,DEPENDENT
+TGCV-EXT-ARM-001,ARM,external-applied,DEPENDENT,Canonical location reserved; no substantive current document yet,TCP;Core;claim matrix,Update when applied layer resumes,05_ASSETS/ARM/,DEPENDENT
+TGCV-EXT-RII-001,RII,external-scientific-applied,DEPENDENT,Canonical location reserved; historical candidate not promoted,TCP;ARM;claim matrix,Update when applied layer resumes,05_ASSETS/RII/,DEPENDENT
+TGCV-EXT-MOI-001,Industrial Opportunities Map,external-applied,DEPENDENT,Canonical location reserved; substantive creation deferred,ARM;RII;D-OPS discovery,Review after domain-search closure,05_ASSETS/MOI/,DEPENDENT
+TGCV-MET-SIP-001,SIP,methodological,DEPENDENT,Operating/prioritization layer,RMA;Programme OS,Reconcile when methodology is next revised,01_SCIENTIFIC_CORE,DEPENDENT
+TGCV-MET-PMO-001,PMO-SMO,methodological-governance,DEPENDENT,Coordination/control layer,Programme OS;RMA,Reconcile when methodology is next revised,01_SCIENTIFIC_CORE,DEPENDENT
+TGCV-MET-SDM-001,Scientific Discovery Methodology,methodological,PROPOSED,Not yet formalized as current canonical asset,SIP;PMO;history,No promotion without explicit decision,01_SCIENTIFIC_CORE,PROPOSED
+TGCV-SLR-001,SLR-1 literature/evidence assets,scientific-gate,DEPENDENT,Prior-art absorption and comparative architecture,Core;claim matrix,D-OPS-21/22/23 integrated,02_LITERATURE,DEPENDENT
