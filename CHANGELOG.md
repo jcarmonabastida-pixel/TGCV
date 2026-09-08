@@ -3,13 +3,18 @@
 ## 2026-09-08
 
 - Confirmed GitHub canonical continuity is operational through direct repository reads/writes.
-- Completed RMA Governance Reconciliation Audit v0.1.
-- Accepted DR-044 establishing the current-state propagation rule and blocking new controlled operations until consistency closure.
-- Created `00_GOVERNANCE/rma/TGCV_RMA_v0.2.md` as the new current RMA master; historical RMA v0.1 remains immutable.
-- Advanced `00_GOVERNANCE/rma/TGCV_RMA_current.md` to the v0.2 current pointer.
-- Created `00_GOVERNANCE/rma/TGCV_RMA_traceability_v0.2.csv` as the current asset/dependency control matrix.
-- Synchronized `STATUS.md` with the September 8 scientific and governance state.
-- D-OPS-24 remains blocked pending final consistency audit.
+- Completed RMA Governance Reconciliation Audit v0.1 and accepted the current-state propagation workflow.
+- Accepted DR-045 closing governance conformance and establishing the propagation chain as operational.
+- Current RMA is `00_GOVERNANCE/rma/TGCV_RMA_v0.3.md`; `TGCV_RMA_current.md` points to v0.3 and `TGCV_RMA_traceability_v0.3.csv` is the current dependency map.
+- `STATUS.md` is synchronized with the current governance state.
+- D-OPS-24 is the next controlled operation and is not yet an execution authorization.
+- Opened the controlled external-asset update operation `IMPACT-EXT-ASSETS-UPDATE_v0.1.md`.
+- Closed `EXT-UPD-1R` structural reconciliation and completed EXT-UPD-1R.3 physical regularisation of `05_ASSETS`.
+- `05_ASSETS` is now the single canonical surface for external deliverables.
+- Reserved canonical locations for `TGCV-EXT-ARM-001`, `TGCV-EXT-RII-001` and `TGCV-EXT-MOI-001`; no substantive ARM/RII/MOI content was promoted.
+- Normalised the IE PhD Research Prospectus adaptation under `05_ASSETS/Research_Prospectus/adaptations/IE_PhD/`.
+- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by the structural maintenance.
+- EXT-UPD-2 current-state content delta analysis is the next controlled step.
 
 ## 2026-08-27
 
