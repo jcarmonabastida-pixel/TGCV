@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v0.9.md`  
+**Current master:** `TGCV_RMA_v1.0.md`  
 **Governance decision:** DR-044  
 **Conformance closure:** DR-045  
 **Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5
@@ -23,7 +23,7 @@ This file is the current RMA pointer. It is not a historical record. Historical 
 - RUST-DYN-1: CLOSED.
 - RUST-DYN-2 / EXEC-1A: CLOSED — bounded structural empirical pass.
 - Independent replication: OPEN.
-- Cross-domain empirical generalisation: OPEN; no execution-ready external domain currently identified.
+- Cross-domain empirical generalisation: OPEN.
 - Causal, predictive and value claims: OPEN.
 - Originality: BOUNDED/PARTIAL, not established.
 - Transversal translation protocol: FROZEN; D-OPS-24 is next controlled operation.
@@ -60,12 +60,14 @@ C01–C02 = E0; C03–C07 = E1 within frozen Rust; C08–C12 = H; C13 = O; C14�
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1. EXT-UPD-3.5 propagates RII v0.1 and its control surfaces without changing scientific claims, evidence levels or gate states.
+DR-044 established the RMA reconciliation and propagation control. DR-045 closed the governance conformance test. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1. EXT-UPD-3.5 propagated RII v0.1 through RMA v1.0, current pointer and traceability without changing scientific claims, evidence levels or gate states.
 
 Propagation rule:
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation`.
 
-**EXT-UPD-3.5 RII propagation: OPEN at initiation; consistency closure pending.**
+**EXT-UPD-3.5 RII propagation: CLOSED / CONSISTENT.**
+
+GitHub Actions governance-current-state run 81 for commit `52627f6c2540136c43d0607b4d30eb25e55702a5` completed successfully.
 
 **D-OPS-24 is the next controlled operation and remains subject to its own historical reconstruction, design and preflight.**
