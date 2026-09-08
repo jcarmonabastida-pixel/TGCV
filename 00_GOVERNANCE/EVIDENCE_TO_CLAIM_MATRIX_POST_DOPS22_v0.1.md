@@ -1,13 +1,13 @@
-# TGCV — Evidence-to-Claim Matrix Post-D-OPS-22 v0.1
+# TGCV — Evidence-to-Claim Matrix Post-D-OPS-22 v0.2
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT
 **Date:** 2026-09-08
-**Predecessor:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_POST_RUST_DYN2_v0.1.md`
-**Purpose:** Establish the current claim/evidence control state after D-OPS-20, D-OPS-21 and D-OPS-22 without rewriting historical matrices.
+**Predecessor:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS22_v0.1.md`
+**Purpose:** Apply the explicit C11–C16 claim consequences required by D-OPS-22 while preserving all historical matrices as immutable records.
 
 ## 1. Governing rule
 
-No claim may be upgraded beyond the evidence level actually established. Comparative architectural findings are not empirical validation. Historical matrices remain immutable.
+No claim may be upgraded beyond the evidence actually established. Comparative architectural evidence is not empirical validation. A claim may be narrowed or its evidential burden increased without being treated as an empirical upgrade.
 
 ## 2. Evidence levels
 
@@ -32,28 +32,46 @@ No claim may be upgraded beyond the evidence level actually established. Compara
 | C08 | Changes in accessibility modify reachable future trajectories | H | Formal chain + bounded H=1 Reach evidence | Valid trajectory test |
 | C09 | Accessibility changes causally affect subsequent trajectories | H | No causal identification | Intervention/quasi-experiment |
 | C10 | Accessibility changes can systematically generate or predict value | H | Programme objective; outcome/value excluded from Rust test | Value-linked empirical test |
-| C11 | TGCV is domain-independent / transversal | H | Cross-domain structural and translational analysis, but no independent empirical generalisation | Independent cross-domain operationalization |
-| C12 | TGCV provides a superior explanatory representation relative to relevant alternatives | H | D-OPS-22 shows bounded translational non-redundancy, not superiority | Controlled comparative explanatory test |
-| C13 | TGCV contains no equivalent prior architecture | O | D-OPS-21 found high local redundancy and near-direct adaptation-space drift analogue; full absorption not established | Targeted comparative coverage; no absolute novelty claim |
+| C11 | TGCV is domain-independent / transversal | H | Cross-domain structural reconstruction plus D-OPS-22 bounded translational analysis; no independent empirical generalisation | Independent cross-domain operationalization |
+| C12 | TGCV provides a superior explanatory representation relative to relevant alternatives | H | D-OPS-22 establishes bounded translational non-redundancy, explicitly not superiority | Controlled comparative explanatory test |
+| C13 | TGCV contains no equivalent prior architecture | O | D-OPS-21 found high local redundancy and a near-direct adaptation-space drift analogue; full absorption not established | Targeted comparative coverage; absolute novelty claim prohibited |
 | C14 | `T_acc` is an ontological primitive independent of `S` | F | TR-131 | No restoration without contrary evidence |
 | C15 | RUST-DYN-2 demonstrates observed Cargo/runtime reachability | F | Reach is `Reach¹_pot`, not runtime execution | Separate governed execution design |
-| C16 | TGCV provides a transversal analytical translation protocol that preserves distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value across heterogeneous domain constructs | H | D-OPS-22 bounded translational non-redundancy | D-OPS-23 minimal protocol + information-preservation/falsification test |
+| C16 | TGCV provides a transversal analytical translation protocol that preserves distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value across heterogeneous domain constructs | H | D-OPS-22 PASS — bounded translational non-redundancy | D-OPS-23 minimal protocol + information-preservation/falsification test |
 
-## 4. Material comparative evidence
+## 4. Explicit D-OPS-22 claim consequences
 
-### D-OPS-20
+### C11 — Domain independence / transversality
 
-External-domain discovery and formal-to-empirical bridge search closed without an execution-ready independent domain. This is a methodological closure, not TGCV falsification.
+**Status remains H.** D-OPS-22 is architectural evidence only. It does not establish empirical generalisation across domains.
 
-### D-OPS-21
+### C12 — Explanatory superiority
 
-Deep comparative originality audit found high local redundancy around `T_acc`/`ΔT_acc`, especially adaptation-space drift in self-adaptive systems. No single reviewed architecture was shown to contain the complete nine-component TGCV architecture in the same transversal form. Broad novelty of `T_acc`/`ΔT_acc` is therefore not defensible.
+**Status remains H.** D-OPS-22 explicitly states that bounded translational non-redundancy is not superiority.
 
-### D-OPS-22
+### C13 — Absence of equivalent prior architecture
 
-Bounded translational non-redundancy established. The TGCV mapping is not merely terminological because it preserves explicit typed distinctions among state, candidate transformations, accessibility, execution, Reach, Trajectory, Outcome and Value. This remains architectural/formal evidence and does not establish superiority, originality, empirical usefulness or domain independence.
+**Status remains O, with a strengthened negative constraint.** D-OPS-21 shows high local redundancy, especially adaptation-space drift. The project must not claim that `T_acc`, changing accessible spaces, or admissible transformation spaces are novel in isolation.
 
-## 5. Architecture status
+### C14 — Ontological independence of `T_acc`
+
+**Status remains F.** No D-OPS result reopens TR-131.
+
+### C15 — Runtime/Cargo reachability
+
+**Status remains F.** D-OPS-22 does not alter the Rust firewall or convert potential Reach into observed execution.
+
+### C16 — Transversal translation protocol
+
+**Status H.** D-OPS-22 provides bounded architectural support for the proposition that the mapping is not pure renaming because it preserves typed distinctions among state, candidate transformations, accessibility, execution, Reach, Trajectory, Outcome and Value. It does not establish empirical usefulness, superiority, originality or domain independence.
+
+## 5. Material comparative evidence
+
+- **D-OPS-20:** no valid formal-to-empirical bridge currently identified.
+- **D-OPS-21:** high local redundancy; adaptation-space drift is a near-direct analogue; full architectural absorption not established.
+- **D-OPS-22:** PASS — bounded translational non-redundancy; the common mapping preserves explicit typed distinctions and is not merely terminological, but superiority remains unproved.
+
+## 6. Architecture status
 
 Unchanged:
 
@@ -67,21 +85,21 @@ Unchanged:
 
 `T_acc` remains derived; `ΔT_acc` remains the central comparative object; `Reach¹_pot` remains downstream and bounded.
 
-## 6. Gate state
+## 7. Gate state
 
 - G1 Independent replication: **OPEN**.
-- G2 Cross-domain generalisation: **OPEN**, but no execution-ready domain currently identified.
+- G2 Cross-domain generalisation: **OPEN**, with no execution-ready external domain currently identified.
 - G3 Trajectory sufficiency: **OPEN**.
 - G4 Causal identification: **OPEN**.
 - G5 Value linkage: **OPEN**.
 - G6 Originality/comparative architecture: **BOUNDED / PARTIAL**.
 - G7 Transversal translation protocol: **OPEN / NEXT**.
 
-## 7. Current scientific position
+## 8. Current scientific position
 
-**E1 evidence exists for bounded structural distinction between changing accessible transformations and changing bounded potential Reach in Rust. D-OPS-21/22 narrow the candidate contribution toward a transversal translation architecture, but do not establish superiority, originality, cross-domain validity, causality, prediction or value creation.**
+**E1 evidence exists for a bounded structural distinction between changing accessible transformations and changing bounded potential Reach in Rust. D-OPS-21/22 narrow the candidate contribution toward a transversal translation protocol, but do not establish superiority, originality, cross-domain validity, causality, prediction or value creation.**
 
-## 8. Next controlled operation
+## 9. Next controlled operation
 
 **D-OPS-23 — Minimal Transversal Translation Protocol & Information-Preservation Gate.**
 
