@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-09-09  
 **Governance reconciliation:** DR-044 / DR-045  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.7.md`  
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v0.8.md`  
 **Structural/content propagation:** EXT-UPD-1R.4 / EXT-UPD-3.1 / EXT-UPD-3.2 / EXT-UPD-3.3.5 / EXT-UPD-3.4
 
 ## Canonical continuity point
@@ -73,7 +73,7 @@ D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
 
 ## Governance state
 
-DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagates ARM v0.1 through RMA v0.7, current pointer and traceability without changing scientific claims, evidence levels or gate states.
+DR-044 established the RMA reconciliation and propagation control. DR-045 records successful governance conformance testing. EXT-UPD-1R.4 regularised the external-asset structure. EXT-UPD-3.1 propagated RP v0.1. EXT-UPD-3.2 propagated TCP v0.3. EXT-UPD-3.3.5 propagated Vision Paper v0.2. EXT-UPD-3.4 propagated ARM v0.1 through RMA v0.8, current pointer and traceability without changing scientific claims, evidence levels or gate states.
 
 The canonical propagation rule is:
 
