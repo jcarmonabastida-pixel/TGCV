@@ -1,0 +1,26 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+TGCV-CORE-001,scientific_core,CURRENT,01_SCIENTIFIC_CORE/,TR131;DOPS21;DOPS22;DOPS23;C-01,Core ontology and analytical architecture unchanged by C-01 Gate D
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23;C-01;EXT-UPD-4.3;EXT-UPD-4.4,Current matrix v0.4; historical matrices remain immutable
+D-OPS-24,gate,FROZEN-DESIGN,00_GOVERNANCE/impact/,EXT-UPD-4.1;EXT-UPD-4.2;EXT-UPD-4.4,Current roadmap requires new governance decision before further Gate-D resolution or independent-domain testing
+DOPS24-DISCOVERY-PROTOCOL-v0.4,controlled_protocol,FROZEN-HISTORICAL,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md,EXT-UPD-4.0;RMA-v2.1,F2-first protocol; budget 3/3 consumed; immutable
+DOPS24-PREFLIGHT-v0.4,preflight,CLOSED-HISTORICAL,00_GOVERNANCE/impact/D-OPS-24_PREFLIGHT_v0.4.md,DOPS24-v0.4,Historical preflight
+DOPS24-F2-Q1-RESULT,execution_result,CLOSED-HISTORICAL,00_GOVERNANCE/impact/D-OPS-24_F2_Q1_EXECUTION_LOG_v0.1.md,DOPS24-v0.4,Zero candidates
+DOPS24-F2-Q2-RESULT,execution_result,CLOSED-HISTORICAL,00_GOVERNANCE/impact/D-OPS-24_F2_Q2_EXECUTION_RESULT_v0.1.md,DOPS24-v0.4,Zero admissible candidates
+DOPS24-F2-Q3-RESULT,execution_result,CLOSED-HISTORICAL,00_GOVERNANCE/impact/D-OPS-24_F2_Q3_EXECUTION_RESULT_v0.1.md,DOPS24-v0.4,Zero admissible candidates
+EXT-UPD-4.1,governance_update,CLOSED-FROZEN-PROPAGATED,00_GOVERNANCE/impact/EXT-UPD-4.1_DOPS24_V05_FREEZE_PROPAGATION_v0.1.md,DOPS24-PREFLIGHT-v0.5;RMA-v2.2,Methodological freeze; later C-01 evidence propagated separately
+DOPS24-PREFLIGHT-v0.5,preflight,CLOSED-PASS,00_GOVERNANCE/impact/D-OPS-24_PREFLIGHT_v0.5.md,DOPS24-v0.5;EXT-UPD-4.1,Final preflight PASS
+DOPS24-DISCOVERY-PROTOCOL-v0.5,controlled_protocol,FROZEN,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.5.md,EXT-UPD-4.1;DOPS24-PREFLIGHT-v0.5,Staged Discovery/MTE/TR/Translation Trace/Extended Conformance architecture
+C-01,cross_domain_translation_evidence,CLOSED-BOUNDED,00_GOVERNANCE/impact/D-OPS-24_V05_C01_MTE_AUDIT_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_TR_AUDIT_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_TRANSLATION_TRACE_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_EXTENDED_CONFORMANCE_AUDIT_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_EXECUTION_RESULT_v0.1.md,EXT-UPD-4.2;EXT-UPD-4.4;NASA-CR-172489,A PASS; B PASS; C PASS bounded/partial; D INDETERMINATE; extension boundary identified
+C01-GATED-EXEC,gate_d_execution,CLOSED-INDETERMINATE,00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_EXECUTION_RESULT_v0.1.md,D-OPS-24_V05_C01_GATE_D_OPERATIONALIZATION_DESIGN_v0.2;D-OPS-24_V05_C01_GATE_D_OPERATIONALIZATION_PREFLIGHT_v0.1;D-OPS-24_V05_C01_GATE_D_EXECUTION_AUTHORIZATION_v0.1,C-01 Gate D result: D1 INDETERMINATE; D2 INDETERMINATE; D3 partial support insufficient for PASS; D4 INDETERMINATE
+EXT-UPD-4.2,governance_decision,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.2_C01_GATE_D_RESOLUTION_DECISION_v0.1.md,C-01,Retains C-01 and opens controlled Gate-D resolution path; second-domain test remains alternative
+EXT-UPD-4.3,governance_correction,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.3_EVIDENCE_CLAIM_PROPAGATION_GOVERNANCE_CORRECTION_v0.1.md,C-01,Material evidence requires explicit Evidence→Claim impact assessment; current matrix pointer is mandatory control
+EXT-UPD-4.4,propagation,CLOSED-PROPAGATED,00_GOVERNANCE/impact/EXT-UPD-4.4_C01_GATE_D_RESULT_PROPAGATION_v0.1.md,C01-GATED-EXEC;EXT-UPD-4.3,Material Gate-D result propagated; consistency closure pending
+RMA-v2.2,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v2.2.md,EXT-UPD-4.1,Immutable historical master
+RMA-v2.3,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v2.3.md,EXT-UPD-4.2;C-01;EXT-UPD-4.3,Immutable historical master after initial C-01 propagation
+RMA-v2.4,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v2.4.md,EXT-UPD-4.4;C-01-GATED-EXEC;CLAIM-MATRIX-v0.4,Current master after C-01 Gate-D execution result
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v2.4,Must point to v2.4
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v2.4;C-01;CLAIM-MATRIX-v0.4,Current-state summary; consistency closure pending
+PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
+HISTORICAL-RECONSTRUCTION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/HISTORICAL_RECONSTRUCTION_BEFORE_NEW_WORK_RULE_v0.1.md,None,Mandatory historical reconstruction
+SCIENTIFIC-ASSET-REGISTRY,scientific_memory_registry,CURRENT,02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md,EXT-UPD-3.6,Canonical scientific registry
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA-v2.4;traceability-v2.4;STATUS;claim_matrix_current;scientific_registry,Validator must be updated to current RMA/matrix control
