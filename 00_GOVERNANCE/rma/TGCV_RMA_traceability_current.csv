@@ -1,4 +1,4 @@
 # Canonical current traceability pointer
 # Current traceability is resolved by the RMA current-state pointer and must identify the same CURRENT RMA master.
 current_rma_pointer=00_GOVERNANCE/rma/TGCV_RMA_current.md
-current_traceability=00_GOVERNANCE/rma/TGCV_RMA_traceability_v2.7.csv
+current_traceability=00_GOVERNANCE/rma/TGCV_RMA_traceability_v2.8.csv
