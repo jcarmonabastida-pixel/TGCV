@@ -3,6 +3,7 @@
 **Last updated:** 2026-09-09  
 **Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.6.md`  
 **Governance state:** D-OPS-24 F1 discovery STOPPED / GOVERNANCE HOLD after non-admissible Q3 exploratory formulation
+**EXT-UPD-3.9 consistency closure:** CLOSED / CONSISTENT at document/control level; post-closure CI verification is not observable for commit `9098ace5d48fe8313c672bd6fe87b07ec2edba27`.
 
 ## Canonical continuity point
 
