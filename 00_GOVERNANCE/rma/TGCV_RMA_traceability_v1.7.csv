@@ -7,7 +7,7 @@ CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRI
 D-OPS-21,gate,CLOSED,00_GOVERNANCE/,SLR;prior_art,Deep comparative architectural originality audit
 D-OPS-22,gate,CLOSED,00_GOVERNANCE/,DOPS21,Transversal translation architecture non-redundancy
 D-OPS-23,gate,CLOSED,00_GOVERNANCE/,DOPS22,Minimal transversal translation protocol frozen
-D-OPS-24,gate,PROTOCOL-DESIGN-PREFLIGHT,00_GOVERNANCE/impact/,DOPS23;EXT-UPD-3.6;EXT-UPD-3.7;EXT-UPD-3.8;EXT-UPD-3.9;EXT-UPD-4.0;RMA-v1.7,New v0.4 F2-first documentary protocol designed; search not authorized
+D-OPS-24,gate,PROTOCOL-FROZEN-PREFLIGHT-PASS,00_GOVERNANCE/impact/,DOPS23;EXT-UPD-3.6;EXT-UPD-3.7;EXT-UPD-3.8;EXT-UPD-3.9;EXT-UPD-4.0;RMA-v1.7, v0.4 F2-first protocol frozen; preflight PASS; search not authorized
 TGCV-EXT-TCP-001,external_asset,CURRENT-DRAFT,05_ASSETS/TCP/,Core;TR131;RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23,Current controlled TCP v0.3
 TGCV-EXT-VP-001,external_asset,CURRENT-DRAFT,05_ASSETS/Vision_Paper/,Core;claim_matrix;DOPS21;DOPS22;DOPS23;EXT-UPD-3.3.5,Current controlled Vision Paper v0.2
 TGCV-EXT-RP-001,external_asset,CURRENT-DRAFT,05_ASSETS/Research_Prospectus/,Core;TR131;RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23,Current generic RP v0.1
@@ -21,7 +21,8 @@ EXT-UPD-3.7,governance_propagation,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UP
 EXT-UPD-3.8,governance_correction,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-3.8_DOPS24_DISCOVERY_PROTOCOL_CORRECTION_v0.1.md,DOPS24;DOPS24-DISCOVERY-PROTOCOL-v0.2;RMA-v1.4,Nonconforming v0.2 search pass closed; corrected v0.3 frozen and propagated
 DOPS24-DISCOVERY-PROTOCOL-v0.2,controlled_protocol,HISTORICAL-NON-ADMISSIBLE,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md,DOPS24;EXT-UPD-3.7,Historical frozen protocol; execution pass not admissible
 DOPS24-DISCOVERY-PROTOCOL-v0.3,controlled_protocol,FROZEN-HISTORICAL,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.3.md,DOPS24;EXT-UPD-3.8,Corrected protocol retained immutable
-DOPS24-DISCOVERY-PROTOCOL-v0.4,controlled_protocol,DRAFT-FOR-PREFLIGHT,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md,DOPS24;EXT-UPD-4.0;RMA-v1.7,New F2-first controlled documentary discovery protocol
+DOPS24-DISCOVERY-PROTOCOL-v0.4,controlled_protocol,FROZEN,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md,DOPS24;EXT-UPD-4.0;RMA-v1.7;DOPS24-PREFLIGHT-v0.4,New F2-first controlled documentary discovery protocol; preflight PASS
+DOPS24-PREFLIGHT-v0.4,preflight,CLOSED,00_GOVERNANCE/impact/D-OPS-24_PREFLIGHT_v0.4.md,DOPS24-DISCOVERY-PROTOCOL-v0.4;EXT-UPD-4.0,PF-01..PF-18 PASS; PF-19 not satisfied; search not authorized
 DOPS24-DISCOVERY-EXECUTION-v0.1,execution_log,STOPPED-GOVERNANCE-HOLD,00_GOVERNANCE/impact/D-OPS-24_DISCOVERY_EXECUTION_LOG_v0.1.md,DOPS24-DISCOVERY-PROTOCOL-v0.2;EXT-UPD-3.8,Initial discovery pass stopped; no candidate admitted
 DOPS24-F1-Q3-CORRECTION,governance_correction,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md,DOPS24-DISCOVERY-PROTOCOL-v0.3,Exploratory F1-Q3 attempt retained as non-admissible
 DOPS24-DISCOVERY-SEARCH-v0.3,discovery_search_log,STOPPED-GOVERNANCE-HOLD,00_GOVERNANCE/impact/D-OPS-24_DISCOVERY_SEARCH_LOG_v0.3.md,DOPS24-DISCOVERY-PROTOCOL-v0.3;DOPS24-F1-Q3-CORRECTION,F1 stopped at Q2; Q3 not admissibly executed
@@ -32,7 +33,7 @@ RMA-v1.5,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v1.5
 RMA-v1.6,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v1.6.md,EXT-UPD-3.9,Predecessor current master; immutable
 RMA-v1.7,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v1.7.md,EXT-UPD-4.0,Current master for D-OPS-24 v0.4 design/preflight
 RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v1.7,Must point to v1.7
-STATUS,governance_status,CURRENT,STATUS.md,RMA-v1.7;DOPS24-DISCOVERY-PROTOCOL-v0.4,Current-state summary
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v1.7;DOPS24-DISCOVERY-PROTOCOL-v0.4;DOPS24-PREFLIGHT-v0.4,Current-state summary
 PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
 HISTORICAL-RECONSTRUCTION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/HISTORICAL_RECONSTRUCTION_BEFORE_NEW_WORK_RULE_v0.1.md,None,Mandatory historical reconstruction before new work
 VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA;traceability;STATUS;claim_matrix;scientific_registry,D-OPS-24 current controls
