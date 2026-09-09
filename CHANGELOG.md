@@ -2,6 +2,12 @@
 
 ## 2026-09-09
 
+- Closed EXT-UPD-4.0 propagation as CLOSED / CONSISTENT at document/control level.
+- Created `00_GOVERNANCE/rma/EXT-UPD-4.0_CONSISTENCY_CLOSURE_v0.1.md`.
+- Confirmed RMA v1.7, current pointer, STATUS, traceability and validator alignment for D-OPS-24 v0.4.
+- CI PASS is not claimed for validator commit `5118ef4348ac508bde287254d042301684a8ea5d`; its observed commit status was pending with no completed status.
+- D-OPS-24 v0.4 remains DRAFT FOR PREFLIGHT; documentary search execution is NOT AUTHORIZED.
+
 - Recorded EXT-UPD-4.0 as the new versioned governance decision for D-OPS-24 continuation after the v0.3 F1 governance hold.
 - Created immutable `00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md` as a new F2-first controlled documentary-discovery protocol draft for preflight; v0.3 remains historical and immutable.
 - Created `00_GOVERNANCE/impact/EXT-UPD-4.0_DOPS24_CONTINUATION_PROPAGATION_v0.1.md` and propagated the decision into RMA v1.7, current pointer, STATUS, traceability and validator controls.
@@ -9,7 +15,6 @@
 - D-OPS-24 is now in v0.4 DESIGN/PREFLIGHT for F2 Physical/engineering reconfiguration systems. F2 is a documentary-discovery hypothesis, not an admitted or validated domain.
 - No candidate was admitted. No scientific claims, evidence levels, empirical results, Core propositions, domain validation or D-OPS-24 conformance results changed.
 - Only protocol design and preflight are authorized. Documentary search execution, dataset acquisition/processing, empirical execution, outcome/model/value analysis and D-OPS-24 conformance execution remain NOT AUTHORIZED.
-- EXT-UPD-4.0 propagation remains OPEN pending consistency closure and current-state CI verification.
 
 - Reconciled the current RMA pointer and STATUS after EXT-UPD-3.9: the consistency closure is CLOSED / CONSISTENT at document/control level, while post-closure CI for commit `9098ace5d48fe8313c672bd6fe87b07ec2edba27` remains not observable.
 - No scientific state changed; no D-OPS-24 discovery, dataset acquisition, empirical execution, outcome/value analysis or conformance execution was authorized.
