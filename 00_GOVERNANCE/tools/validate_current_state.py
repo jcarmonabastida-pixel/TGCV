@@ -33,7 +33,7 @@ def extract(text, pattern, label):
     if not match:
         fail(f"{label} declaration missing")
         return None
-    return match.group(1)
+    return match.group(1).strip()
 
 
 # 1. Resolve the stable canonical manifest. No scientific or historical version is hardcoded here.
@@ -80,7 +80,19 @@ for role, label in required_roles.items():
     require_file(path, label)
     resolved[role] = path
 
-# 2. Resolve the sole canonical RMA pointer and its current master dynamically.
+# 2. Canonical current locations are stable; the targets are resolved dynamically.
+canonical_current_rma = ROOT / "00_GOVERNANCE" / "rma" / "TGCV_RMA_current.md"
+canonical_current_matrix = ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md"
+canonical_traceability_pointer = ROOT / "00_GOVERNANCE" / "rma" / "TGCV_RMA_traceability_current.csv"
+
+if resolved.get("rma") != canonical_current_rma:
+    fail("canonical RMA pointer location mismatch")
+if resolved.get("claim_matrix") != canonical_current_matrix:
+    fail("canonical matrix location mismatch")
+if resolved.get("rma_traceability") != canonical_traceability_pointer:
+    fail("canonical traceability pointer location mismatch")
+
+# 3. Resolve the sole canonical RMA pointer and its current master dynamically.
 rma_pointer = resolved.get("rma")
 rma_pointer_text = read_text(rma_pointer, "RMA pointer") if rma_pointer else ""
 rma_master_rel = extract(
@@ -108,7 +120,7 @@ if rma_master:
     if "**Status:** CURRENT / OPERATIVE" not in rma_text:
         fail("resolved current RMA master is not marked CURRENT / OPERATIVE")
 
-# 3. Resolve the canonical Evidence→Claim Matrix dynamically.
+# 4. Resolve the canonical Evidence→Claim Matrix dynamically.
 matrix_pointer = resolved.get("claim_matrix_pointer")
 matrix_pointer_text = read_text(matrix_pointer, "current claim matrix pointer") if matrix_pointer else ""
 matrix_rel = extract(
@@ -138,7 +150,7 @@ matrix_declared_version = extract(
 if matrix_version and matrix_declared_version and matrix_version != matrix_declared_version:
     fail(f"claim matrix version mismatch: pointer {matrix_version} != artifact {matrix_declared_version}")
 
-# 4. Cross-align RMA and matrix without encoding their versions in executable logic.
+# 5. Cross-align RMA and matrix without encoding their versions in executable logic.
 if rma_pointer_text and matrix_rel:
     declared_matrix_in_rma = extract(
         rma_pointer_text,
@@ -148,21 +160,29 @@ if rma_pointer_text and matrix_rel:
     if declared_matrix_in_rma and declared_matrix_in_rma != matrix_rel:
         fail("RMA pointer and matrix pointer disagree")
 
-# 5. Resolve traceability through its stable pointer, then require it to match the resolved RMA version.
+# 6. Resolve traceability through its stable pointer and verify BOTH directions of alignment.
 trace_pointer = resolved.get("rma_traceability")
 trace_pointer_text = read_text(trace_pointer, "current RMA traceability pointer") if trace_pointer else ""
+trace_rma_rel = extract(
+    trace_pointer_text,
+    r"^current_rma_pointer=(.+)$",
+    "traceability current RMA pointer",
+)
 trace_rel = extract(
     trace_pointer_text,
     r"^current_traceability=(.+)$",
     "traceability current target",
 )
+if trace_rma_rel and rma_pointer:
+    if ROOT / trace_rma_rel != rma_pointer:
+        fail("traceability pointer and canonical RMA pointer disagree")
 if trace_rel:
     trace = ROOT / trace_rel
     require_file(trace, "resolved current RMA traceability")
     if rma_version and trace.name != f"TGCV_RMA_traceability_{rma_version}.csv":
         fail("traceability target does not match resolved current RMA version")
 
-# 6. STATUS must point to the same resolved current RMA and matrix.
+# 7. STATUS must point to the same resolved current RMA and matrix.
 status = resolved.get("status")
 status_text = read_text(status, "STATUS") if status else ""
 status_rma = extract(status_text, r"^\*\*Current RMA:\*\*\s*`([^`]+)`", "STATUS current RMA")
@@ -176,13 +196,10 @@ if matrix and status_matrix:
     if status_matrix != expected_matrix:
         fail("STATUS current matrix disagrees with resolved matrix")
 
-# 7. Stable canonical locations are the sole current pointers.
-canonical_current_rma = ROOT / "00_GOVERNANCE" / "rma" / "TGCV_RMA_current.md"
-if rma_pointer != canonical_current_rma:
-    fail("canonical RMA pointer location mismatch")
-canonical_current_matrix = ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md"
-if matrix != canonical_current_matrix:
-    fail("canonical matrix location mismatch")
+# 8. The validator itself must be the canonical executable referenced by the manifest.
+validator = resolved.get("validator")
+if validator and validator != ROOT / "00_GOVERNANCE" / "tools" / "validate_current_state.py":
+    fail("canonical validator location mismatch")
 
 if errors:
     print("GOVERNANCE_CURRENT_STATE=FAIL")
@@ -192,5 +209,6 @@ if errors:
 print("GOVERNANCE_CURRENT_STATE=PASS")
 print(
     "Canonical current-state pointers resolved and aligned: "
-    f"RMA {rma_version or 'unresolved'}, matrix {matrix_declared_version or matrix_version or 'unresolved'}."
+    f"RMA {rma_version or 'unresolved'}, matrix {matrix_declared_version or matrix_version or 'unresolved'}, "
+    "traceability dynamically aligned."
 )
