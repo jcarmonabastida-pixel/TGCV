@@ -7,10 +7,10 @@
 
 ## Preflight result
 
-**PF-01 through PF-19: PASS at documentary/control level.**
+**PF-01 through PF-18: PASS at documentary/control level. PF-19: NOT SATISFIED.**
 
 ### PF-01 — Current governance
-PASS. Current RMA is v1.7 and EXT-UPD-4.0 is the operative continuation decision.
+PASS. Current RMA is v1.8 and EXT-UPD-4.0 is the operative continuation decision.
 
 ### PF-02 — Historical reconstruction
 PASS. D-OPS-24 historical reconstruction remains CLOSED with a bounded residual gap.
@@ -37,7 +37,7 @@ PASS. Query-family membership is mechanically defined; material formulation chan
 PASS. Fresh F2 budget is maximum 3 QFs and maximum 10 initially screened candidate records, cumulative and non-resettable.
 
 ### PF-10 — Pre-registration
-PASS. Q1–Q3 must be recorded exactly in a dedicated search log before execution; no search has been executed under v0.4.
+PASS. Q1–Q3 are recorded in the dedicated v0.4 search log before execution; no search has been executed under v0.4.
 
 ### PF-11 — Outcome blindness
 PASS. Candidate selection cannot use Outcome, Value, performance or post-hoc TGCV result.
@@ -68,6 +68,6 @@ PASS. Discovery is documentary-only; dataset and empirical execution remain outs
 
 ## Conclusion
 
-The v0.4 protocol is **preflight-ready** and may be frozen as the controlled F2-first discovery protocol. No documentary search is authorized by this preflight alone.
+The v0.4 protocol is **preflight-ready and internally consistent**. No documentary search is authorized by this preflight alone.
 
-Next controlled action: freeze v0.4, create the v0.4 search log with exact Q1–Q3 formulations, propagate the preflight state, and obtain an explicit documentary-execution authorization before F2-Q1.
+The v0.4 search log is pre-registered with Q1–Q3 marked NOT EXECUTED. The next controlled gate is the separate explicit documentary-execution authorization for F2-Q1.
