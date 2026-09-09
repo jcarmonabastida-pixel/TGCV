@@ -2,9 +2,9 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v2.1.md`  
-**Governance decision:** EXT-UPD-4.0 / D-OPS-24 F2-Q3 execution authorization  
-**Conformance closure:** EXT-UPD-4.0 CLOSED / CONSISTENT at document/control level; D-OPS-24 v0.4 CLOSED / PREFLIGHT PASS; F2-Q3 execution CLOSED.  
+**Current master:** `TGCV_RMA_v2.2.md`  
+**Governance decision:** EXT-UPD-4.1 / D-OPS-24 v0.5 freeze and propagation  
+**Conformance closure:** EXT-UPD-4.1 CLOSED / FROZEN / PROPAGATED at document/control level; v0.5 preflight PASS.  
 
 This file is the current RMA pointer. Historical RMA versions remain immutable.
 
@@ -22,23 +22,17 @@ TR-131, RUST-DYN-1 and RUST-DYN-2 remain CLOSED with bounded interpretations. In
 
 ## D-OPS-24 state
 
-- Historical reconstruction: CLOSED — bounded residual gap identified.
-- Design: FROZEN v0.1.
-- Candidate-domain eligibility audit: CLOSED — no eligible candidate identified on prior record.
-- v0.2: HISTORICAL / NON-ADMISSIBLE.
-- v0.3: FROZEN-HISTORICAL / CORRECTED.
-- EXT-UPD-3.9: CLOSED / GOVERNANCE CORRECTION.
-- EXT-UPD-4.0: CLOSED / GOVERNANCE DECISION and propagation.
-- v0.4: FROZEN / PREFLIGHT PASS.
-- F2-Q1: AUTHORIZED and EXECUTED; zero candidates returned by the registered exact formulation in the two search channels used.
-- F2-Q2: AUTHORIZED and EXECUTED; zero admissible candidates identified.
-- F2-Q3: AUTHORIZED and EXECUTED; zero admissible candidates identified.
-- F2 query-family budget: 3/3 consumed.
-- F2 candidate budget: 0/10 admitted.
+- v0.4: FROZEN / HISTORICAL / DISCOVERY FAMILY CLOSED; F2 Q1-Q3 consumed 3/3 with zero admissible candidates; immutable.
+- EXT-UPD-4.1: CLOSED / GOVERNANCE DECISION — design reopened for reassessment, then v0.5 finalized.
+- v0.5: FROZEN after final preflight PASS.
+- v0.5 architecture: Discovery → MTE → Translation Readiness → Translation Trace → Extended TGCV Conformance.
+- v0.5 search execution: NOT AUTHORIZED.
+- v0.5 search budget: NOT YET ESTABLISHED.
+- v0.5 does not inherit the exhausted v0.4 F2 budget.
 
 ## Authorization boundary
 
-PF-19 is satisfied for F2-Q3. No Q4 is authorized under v0.4. Dataset acquisition/processing, empirical execution, outcome/model/value analysis and D-OPS-24 conformance execution remain NOT AUTHORIZED.
+No v0.5 search, candidate screening execution, dataset acquisition/processing, empirical execution, outcome/model/value analysis or conformance execution is authorized. A separate explicit execution authorization is required.
 
 ## Scientific-memory control
 
@@ -46,10 +40,10 @@ PF-19 is satisfied for F2-Q3. No Q4 is authorized under v0.4. Dataset acquisitio
 
 ## Non-claims
 
-F2 is closed as a bounded documentary discovery operation, not admitted or validated as an external domain. The Q1-Q3 zero-result outcome does not establish domain absence, exhaustion, validation, cross-domain generalisation, translation conformance, causality, prediction, value linkage, originality or superiority.
+The v0.5 freeze is a methodological/governance state change only. It establishes no new empirical evidence, cross-domain validation, causality, prediction, value linkage, originality or superiority.
 
 ## Propagation rule
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation`.
 
-**Next gate:** a new explicit governance decision is required before any further external-domain discovery or alternative scientific continuation.
+**Next gate:** explicit governance authorization for controlled v0.5 discovery execution, with a newly defined search budget and query-family controls.
