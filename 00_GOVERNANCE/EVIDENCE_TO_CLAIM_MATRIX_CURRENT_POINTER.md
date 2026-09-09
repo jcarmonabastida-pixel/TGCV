@@ -2,9 +2,9 @@
 
 **Status:** CURRENT CONTROL POINTER
 **Current matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`
-**Current version:** v0.3
-**Established by:** EXT-UPD-4.3
-**Canonical matrix commit:** `5b5cd527f5a1fb99f32466a76f4e915c0c546474`
-**Matrix blob SHA:** `0728d3c2257d70103c4be0072f6c4ef8c8ece644`
+**Current version:** v0.4
+**Established by:** EXT-UPD-4.3; updated by EXT-UPD-4.4
+**Canonical matrix commit:** `beef0405f8cda891417f208699df06be447b6e70`
+**Matrix blob SHA:** `9ad7b170f554a90f4c5348c03423ff7313049cd5`
 
 Historical Evidence-to-Claim Matrix files remain immutable historical records. This pointer identifies the sole current matrix for active governance control.
