@@ -9,9 +9,9 @@
 
 TR-132-G0 did not admit Rust / EXT-1.1 because decision-time accessibility was not independently closed.
 
-TR-132-MOD-1 design has now passed design audit and its controlled fixture schema is frozen at design level.
+TR-132-MOD-1 design passed audit and its controlled fixture schema was frozen. The concrete execution package is now specified at design level.
 
-**TR-132-MOD-1: DESIGN AUDIT PASS / EXECUTION NOT AUTHORIZED.**
+**TR-132-MOD-1: PACKAGE SPECIFIED / EXECUTION NOT AUTHORIZED.**
 
 No scientific evidence has been introduced. C01–C16 are unchanged. No scientific gate is upgraded or closed. Industrial Track remains unchanged and industrial utility remains unproven/open.
 
@@ -19,7 +19,7 @@ No scientific evidence has been introduced. C01–C16 are unchanged. No scientif
 
 No fixture execution, Rust execution, industrial experiment, O3 reassessment, causal inference, value assessment, Core modification or claim upgrade is authorized.
 
-The next controlled operation is preparation of the concrete TR-132-MOD-1 execution package, followed by a separate authorization review.
+The next controlled operation is the separate execution-package authorization review.
 
 ## Canonical continuity
 
