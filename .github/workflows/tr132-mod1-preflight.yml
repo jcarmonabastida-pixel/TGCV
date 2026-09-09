@@ -1,0 +1,19 @@
+name: TGCV TR-132-MOD-1 preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact repository state
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run deterministic TR-132-MOD-1 preflight
+        run: python 03_EXPERIMENTS/TR-132-MOD-1/execution/preflight_mod1_v01.py
