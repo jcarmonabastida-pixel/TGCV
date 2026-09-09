@@ -1,9 +1,9 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-09  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.6.md`  
-**Governance state:** D-OPS-24 F1 discovery STOPPED / GOVERNANCE HOLD after non-admissible Q3 exploratory formulation
-**EXT-UPD-3.9 consistency closure:** CLOSED / CONSISTENT at document/control level; post-closure CI verification is not observable for commit `9098ace5d48fe8313c672bd6fe87b07ec2edba27`.
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.7.md`  
+**Governance state:** EXT-UPD-4.0 propagation; D-OPS-24 v0.4 design/preflight
+**EXT-UPD-4.0 consistency closure:** PENDING
 
 ## Canonical continuity point
 
@@ -28,7 +28,7 @@
 - EXT-1.1 Rust / RUST-DYN-1: CLOSED — bounded dynamic structural evidence.
 - EXT-1.1 Rust / RUST-DYN-2 / EXEC-1A: CLOSED — bounded structural empirical pass.
 
-RUST-DYN-2 recorded 516,061 adjacent temporal pairs, 438,203 non-persistent pairs (~84.91%), ND-1 = 159,921, ND-2 = 278,282 and ND-4 = 266,201. The result is limited to the frozen Rust H=1 operationalization and does not establish causality, prediction, value, universal validity, originality, H>1 trajectory sufficiency or runtime Cargo reachability.
+No empirical state changes in EXT-UPD-4.0.
 
 ## Current claim/evidence state
 
@@ -64,7 +64,7 @@ D-OPS-15 through D-OPS-20: CLOSED — no execution-ready independent external do
 D-OPS-21: CLOSED — high local redundancy; broad novelty claim weakened.
 D-OPS-22: CLOSED — bounded translational non-redundancy; superiority not proved.
 D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
-D-OPS-24: DISCOVERY PROTOCOL v0.3 FROZEN / CORRECTED. v0.2 is HISTORICAL / NON-ADMISSIBLE. The v0.3 F1 documentary pass is STOPPED / GOVERNANCE HOLD after the attempted F1-Q3 formulation deviated from the exact pre-registered query. No candidate was admitted. EXT-UPD-3.9 records the correction. No further discovery is authorized until a new versioned governance decision.
+D-OPS-24: NEW v0.4 F2-FIRST CONTROLLED PROTOCOL — DRAFT FOR PREFLIGHT. v0.3 F1 remains historical/non-admissible and stopped at Q2. No candidate admitted.
 
 ## Governance state
 
@@ -72,6 +72,8 @@ EXT-UPD-3.6 scientific asset reconciliation: CLOSED / CONSISTENT.
 EXT-UPD-3.7 D-OPS-24 discovery protocol freeze: CLOSED / CONSISTENT.
 EXT-UPD-3.8 D-OPS-24 discovery protocol correction: CLOSED / CONSISTENT.
 EXT-UPD-3.9 D-OPS-24 F1-Q3 governance correction: CLOSED / GOVERNANCE CORRECTION.
+EXT-UPD-4.0 D-OPS-24 continuation decision: CLOSED / GOVERNANCE DECISION.
+EXT-UPD-4.0 propagation: OPEN / CONSISTENCY CLOSURE PENDING.
 
 The canonical propagation rule is:
 
@@ -88,3 +90,7 @@ Frozen historical, experimental and protocol records remain immutable. New subst
 ## Continuity rule
 
 Every substantive state change requires a versioned GitHub commit. GitHub remains the canonical continuity/provenance surface; chat is an execution interface, not the canonical store.
+
+## Authorization boundary
+
+Only v0.4 protocol design and preflight are authorized. Documentary search execution, dataset acquisition/processing, empirical execution, outcome/value analysis and D-OPS-24 conformance execution are NOT AUTHORIZED.
