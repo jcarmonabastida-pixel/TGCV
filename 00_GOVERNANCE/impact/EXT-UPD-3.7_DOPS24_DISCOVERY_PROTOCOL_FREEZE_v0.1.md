@@ -1,12 +1,12 @@
 # TGCV — EXT-UPD-3.7 — D-OPS-24 Discovery Protocol Freeze v0.1
 
-**Status:** OPEN / PROPAGATION
+**Status:** CLOSED / CONSISTENT
 **Date:** 2026-09-09
 **Trigger:** Freeze of bounded D-OPS-24 candidate-domain discovery protocol
 **Current protocol:** `00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md`
 **Predecessor:** `D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.1.md`
 
-## 1. Decision being propagated
+## 1. Decision propagated
 
 D-OPS-24 candidate-pool expansion has been converted from an unbounded discovery-design state to a **FROZEN / DISCOVERY PROTOCOL** state.
 
@@ -18,7 +18,7 @@ No empirical evidence, scientific claim, domain selection, translation-conforman
 
 The change is procedural and controls the conditions under which the next discovery operation may occur.
 
-## 3. Mandatory controls now frozen
+## 3. Mandatory controls frozen
 
 - scientific-memory/reuse gate;
 - D1 Rust / D2 MDE / D3 Self-Adaptive-Self-Evolving starting boundary;
@@ -35,26 +35,48 @@ The change is procedural and controls the conditions under which the next discov
 - required GitHub discovery outputs;
 - no dataset download or empirical execution authorization.
 
-## 4. Propagation obligations
+## 4. Propagation completed
 
-The current governance chain must reflect this protocol freeze through:
+The current governance chain now reflects the freeze through:
 
 `RMA → current pointer → STATUS → traceability → validator → consistency closure`.
 
-The Evidence-to-Claim Matrix is not scientifically changed because the protocol freeze establishes no new evidence or claim.
+The Evidence-to-Claim Matrix is unchanged because the protocol freeze establishes no new evidence or claim.
 
-## 5. Next controlled state
+Verified current surfaces:
 
-After propagation and consistency closure, D-OPS-24 may enter **BOUNDED EMPIRICAL-DOMAIN DISCOVERY** within the frozen protocol.
+- RMA current master: `TGCV_RMA_v1.3.md`;
+- current pointer: `TGCV_RMA_current.md`;
+- `STATUS.md`;
+- `TGCV_RMA_traceability_v1.3.csv`;
+- `validate_current_state.py`;
+- this impact/propagation record;
+- frozen D-OPS-24 discovery protocol v0.2.
+
+## 5. Consistency decision
+
+**EXT-UPD-3.7 = CLOSED / CONSISTENT.**
+
+The current surfaces agree that the D-OPS-24 candidate-pool expansion protocol is frozen and that bounded empirical-domain discovery is the next controlled operation.
+
+No scientific-state change is implied by this closure.
+
+## 6. Next controlled state
+
+D-OPS-24 may now enter **BOUNDED EMPIRICAL-DOMAIN DISCOVERY** within the frozen protocol.
 
 A retained candidate would then require a separate candidate-admission audit before any dataset acquisition or empirical execution.
 
-## 6. Authorization boundary
+## 7. Authorization boundary
 
-External documentary domain search is authorized only within the frozen v0.2 protocol after this propagation is consistent.
+External documentary domain search is authorized only within the frozen v0.2 protocol.
 
 Dataset download, dataset processing, empirical execution, outcome/value analysis, model fitting, and D-OPS-24 execution remain NOT AUTHORIZED.
 
-## 7. Non-claims
+## 8. Non-claims
 
-This propagation does not establish a second domain, cross-domain generalisation, translation conformance, causality, prediction, value linkage, originality, or superiority.
+This closure does not establish a second domain, cross-domain generalisation, translation conformance, causality, prediction, value linkage, originality, or superiority.
+
+## 9. Canonical continuity
+
+GitHub remains the canonical continuity/provenance surface. The frozen protocol and all propagation records are versioned and immutable; subsequent substantive changes require a new versioned operation.
