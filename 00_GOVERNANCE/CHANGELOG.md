@@ -28,6 +28,7 @@
 - Advanced current RMA atomically to immutable `TGCV_RMA_v3.7.md`; current pointer, traceability and `STATUS.md` synchronized. No industrial candidate currently qualifies for IT-G1 retention.
 - Completed second-pass structural audit of the current-state validator after CI exposed semantic-version parsing incompatibility with `v3.7`.
 - Repaired semantic RMA version parsing without hardcoding the current version; no scientific state changed.
+- CI then exposed a second identity-layer mismatch between the RMA filename and its semantic traceability asset ID; repaired atomically by deriving `RMA-{version}` from the resolved RMA version.
 
 ## 2026-09-08
 

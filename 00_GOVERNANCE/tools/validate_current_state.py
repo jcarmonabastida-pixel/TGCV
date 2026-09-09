@@ -102,7 +102,7 @@ if rma_master_rel:
     require_file(rma_master, "resolved current RMA master")
     if rma_master_rel != rma_master_name:
         fail("RMA current master pointer resolves outside canonical RMA directory")
-    # Accept semantic RMA versions such as v3, v3.7, v3.7.1 without hardcoding one version.
+    # Accept semantic versions vN, vN.N, vN.N.N, etc.; never hardcode the current version.
     version_match = re.fullmatch(r"TGCV_RMA_(v\d+(?:\.\d+)*)\.md", rma_master.name)
     if not version_match:
         fail("resolved current RMA master has no parseable semantic version")
@@ -170,7 +170,10 @@ if "RMA-current" in by_id:
         fail("RMA-current traceability row is not CURRENT")
     if row.get("canonical_location", "").strip() != "00_GOVERNANCE/rma/TGCV_RMA_current.md":
         fail("RMA-current traceability location mismatch")
-    if rma_master and rma_master.name not in row.get("depends_on", ""):
+    # Traceability uses semantic asset identity (RMA-v3.7), while the master uses its filename.
+    expected_rma_asset = f"RMA-{rma_version}" if rma_version else None
+    dependencies = {item.strip() for item in row.get("depends_on", "").split(";") if item.strip()}
+    if expected_rma_asset and expected_rma_asset not in dependencies:
         fail("RMA-current traceability does not resolve to the current RMA master")
 
 if "TRACEABILITY-current" in by_id:
