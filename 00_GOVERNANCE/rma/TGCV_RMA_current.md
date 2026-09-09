@@ -2,9 +2,10 @@
 
 **Date:** 2026-09-09
 **Status:** CURRENT / OPERATIVE
-**Current master:** `TGCV_RMA_v2.9.md`
+**Current master:** `TGCV_RMA_v3.0.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6
 **Governance decision:** EXT-UPD-4.9 — strategic disposition of industrial applicability result; INDUSTRIAL-TRACK PROPOSED; industrial utility remains unproven
+**Current propagation:** INDUSTRIAL-TRACK Governance Specification v0.1 and its Evidence→Claim Impact Assessment v0.1 propagated; no scientific claim change
 **Evidence-control correction:** EXT-UPD-4.3 — material evidence requires explicit Evidence→Claim impact assessment
 
 ## Current state
@@ -21,11 +22,15 @@ TR-131, RUST-DYN-1 and RUST-DYN-2 remain CLOSED with bounded interpretations. C-
 
 EXT-UPD-4.8 remains CLOSED at the corrective accessibility boundary. Stage A is PASS; Stage-B comparative IUT-2 was not accepted; the corrective accessibility reassessment is procedurally PASS but scientifically INDETERMINATE. Industrial utility remains UNPROVEN / OPEN.
 
-## Strategic disposition
+## Strategic disposition and Industrial Track
 
 EXT-UPD-4.9 separates industrial applicability from scientific Core validation. No further O3 rescue execution is authorized. The scientific Core, falsification criteria and existing claim statuses remain unchanged.
 
-A separate INDUSTRIAL-TRACK is now PROPOSED as a programme/application line. It is not evidence or validation. Future execution requires a new explicit governance decision after design review against independently specified entry conditions.
+A separate INDUSTRIAL-TRACK is PROPOSED as a programme/application line. Its Governance Specification v0.1 is CURRENT / OPERATIVE as design infrastructure only; execution remains NOT AUTHORIZED.
+
+The associated Evidence→Claim Impact Assessment records NO SCIENTIFIC CLAIM CHANGE. No C01–C16 claim is upgraded and no scientific gate is closed by the specification.
+
+Future design must satisfy independently specified case identifiability, variable observability, accessibility closure, utility criteria, frozen comparison where applicable, and evidence separation before any execution authorization is considered.
 
 ## Epistemic boundary
 
