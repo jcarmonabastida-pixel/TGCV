@@ -1,8 +1,8 @@
 # TGCV — Research Programme STATUS
 
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`
-**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`
-**Governance state:** CURRENT-STATE VALIDATION REQUIRED AFTER THIS ATOMIC PROPAGATION
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`  
+**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
+**Governance state:** CURRENT-STATE VALIDATION REQUIRED AFTER THIS ATOMIC PROPAGATION  
 **Scientific Core:** UNCHANGED
 
 ## Current position
@@ -19,21 +19,22 @@ EXT-UPD-4.9 establishes the **INDUSTRIAL-TRACK as PROPOSED**, separate from the 
 
 D-OPS-24 remains `CLOSED-BOUNDED-SEARCH` with no documentary accessibility PASS. Industrial utility remains `UNPROVEN / OPEN`. No industrial candidate is currently admitted.
 
-The normative/operational specification discovery protocol and authorization package were prepared as design-only governance artifacts. Following design review PASS, a separate authorization record now authorizes the bounded documentary discovery operation. This authorization does not authorize industrial experimentation or any scientific claim upgrade.
+## Documentary discovery
+The bounded normative/operational specification discovery operation `IT-NOSD-EXEC-001` was separately authorized and is now **CLOSED — BOUNDED DOCUMENTARY DISCOVERY**.
 
-## Recorded result
-- `T_acc+ (t0) = {TA, TB}`
-- `T_acc+ (t1) = {TA, TB, TD}`
-- symmetric difference = `{TD}`
-- non-circularity = `PASS`
-- reproducibility = `PASS`
-- deviations = none
-- external dataset used = `false`
+- 13 distinct specifications screened
+- 10 retained candidates
+- 0 indeterminate
+- 3 rejected
+- 0 concrete industrial cases admitted
+
+Retention is documentary candidate material only and does not constitute IT-G0 or IT-G1 admission. Any future candidate use must independently pass the canonical Industrial Track gates.
 
 ## Authorization boundary
-TR-132-MOD-1 is closed. Its result does not authorize Rust/EXT-1.1, industrial execution, O3, Stage-C/Stage-D, causal inference, value assessment, Core modification, or claim upgrade. EXT-UPD-4.9 likewise does not authorize industrial experiment execution or partner evidential engagement.
+The documentary discovery authorization does not authorize datasets, event logs, industrial intervention, partner/customer evidence, O3 rescue, Stage-C/D, causal/value analysis, Core modification, or claim upgrades. Industrial execution remains NOT AUTHORIZED.
 
-The present authorization is limited to documentary discovery and screening of normative/operational specifications under the frozen protocol/package. It does not authorize datasets, event logs, industrial intervention, partner/customer evidence, O3 rescue, Stage-C/D, causal/value analysis, Core modification, or claim upgrades.
+## Scientific boundary
+The discovery result adds no scientific evidence and makes no change to the scientific Core, TR-131, TR-132, C01–C16, or their current statuses.
 
 ## Canonical continuity
 GitHub `main` remains the canonical continuity and provenance gate. Substantive state changes are propagated atomically across canonical governance assets and must pass the current-state validator before further controlled research work.
