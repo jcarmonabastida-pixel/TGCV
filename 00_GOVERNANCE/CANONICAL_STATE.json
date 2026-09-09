@@ -1,0 +1,14 @@
+{
+  "schema": "TGCV-CANONICAL-STATE-1",
+  "status": "CURRENT",
+  "pointers": {
+    "rma": "00_GOVERNANCE/rma/TGCV_RMA_current.md",
+    "claim_matrix": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md",
+    "claim_matrix_pointer": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md",
+    "rma_traceability": "00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv",
+    "status": "STATUS.md",
+    "changelog": "CHANGELOG.md",
+    "scientific_registry": "02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md",
+    "validator": "00_GOVERNANCE/tools/validate_current_state.py"
+  }
+}
