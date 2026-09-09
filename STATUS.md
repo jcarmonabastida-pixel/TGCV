@@ -1,6 +1,7 @@
 # TGCV — Research Programme STATUS
 
-**Current RMA:** `TGCV_RMA_v3.15.md`  
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`  
+**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
 **Governance state:** CURRENT-STATE VALIDATION REQUIRED AFTER THIS ATOMIC PROPAGATION  
 **Scientific Core:** UNCHANGED
 
