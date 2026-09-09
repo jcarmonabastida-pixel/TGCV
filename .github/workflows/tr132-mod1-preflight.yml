@@ -1,6 +1,8 @@
 name: TGCV TR-132-MOD-1 preflight
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
