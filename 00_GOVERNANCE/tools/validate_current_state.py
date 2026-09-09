@@ -182,15 +182,14 @@ if trace_rel:
     if rma_version and trace.name != f"TGCV_RMA_traceability_{rma_version}.csv":
         fail("traceability target does not match resolved current RMA version")
 
-# 7. STATUS must point to the same resolved current RMA and matrix.
+# 7. STATUS must reference the stable canonical RMA pointer and matrix location.
+# Versioned RMA master resolution remains the responsibility of the canonical RMA pointer.
 status = resolved.get("status")
 status_text = read_text(status, "STATUS") if status else ""
 status_rma = extract(status_text, r"^\*\*Current RMA:\*\*\s*`([^`]+)`", "STATUS current RMA")
 status_matrix = extract(status_text, r"^\*\*Current Evidence→Claim Matrix:\*\*\s*`([^`]+)`", "STATUS current matrix")
-if rma_master and status_rma:
-    expected_rma = rma_master.relative_to(ROOT).as_posix()
-    if status_rma != expected_rma:
-        fail("STATUS current RMA disagrees with resolved RMA master")
+if status_rma and status_rma != canonical_current_rma.relative_to(ROOT).as_posix():
+    fail("STATUS current RMA must reference the stable canonical RMA pointer")
 if matrix and status_matrix:
     expected_matrix = matrix.relative_to(ROOT).as_posix()
     if status_matrix != expected_matrix:

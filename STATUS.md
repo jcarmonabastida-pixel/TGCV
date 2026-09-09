@@ -1,7 +1,7 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-09
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v2.8.md`
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6
 **Governance state:** EXT-UPD-4.8 Stage B corrective accessibility route CLOSED / INDETERMINATE; industrial utility remains unproven
 **C-01 gate profile:** MTE PASS / Translation Readiness PASS / Translation Trace PASS / Extended Conformance INDETERMINATE
