@@ -7,7 +7,7 @@
 
 ## Closure finding
 
-The D-OPS-24 F1-Q3 governance correction has been propagated through the canonical current-control surfaces.
+The D-OPS-24 F1-Q3 governance correction is propagated through the canonical current-control surfaces.
 
 Confirmed:
 
@@ -17,18 +17,18 @@ Confirmed:
 - `STATUS.md` is synchronized to v1.6 and the D-OPS-24 governance hold.
 - `TGCV_RMA_traceability_v1.6.csv` records the correction and current dependencies.
 - `CHANGELOG.md` records EXT-UPD-3.9 and the immutable-version transition.
-- The current-state validator has been updated to validate v1.6 / EXT-UPD-3.9.
-- The v0.3 F1 discovery pass remains stopped at Q2; F1-Q3 exploratory searches remain NON-ADMISSIBLE.
+- The current-state validator validates the v1.6 / EXT-UPD-3.9 control state.
+- F1 discovery remains stopped at Q2; F1-Q3 exploratory searches remain NON-ADMISSIBLE.
 - No candidate was admitted and no scientific state, evidence level, claim, domain selection or D-OPS-24 conformance result changed.
 
 ## Scientific and execution boundary
 
-No dataset acquisition, processing, empirical execution, outcome/value/model analysis or D-OPS-24 conformance execution is authorized by this closure.
+No dataset acquisition, processing, empirical execution, outcome/value/model analysis or D-OPS-24 conformance execution is authorized.
 
 Further documentary discovery requires a new versioned governance decision and explicit authorization.
 
 ## Control result
 
-GitHub Actions run `34294595741` for validator commit `e25a2d132a380433d11f2c462bd1cb92e126de9a` completed successfully. The final closure document is subsequently committed, so that earlier successful run is not treated as validation of the closure commit itself. No CI PASS is inferred for the final closure commit without an observable corresponding run.
+The preceding validator propagation commit `e25a2d132a380433d11f2c462bd1cb92e126de9a` completed successfully in GitHub Actions. This closure document is now itself committed after that run; therefore a new GitHub Actions validation is required to establish final CI conformance for the post-closure commit.
 
-**Closure status:** CLOSED / CONSISTENT at the document/control level. CI PASS is confirmed for the validator update commit `e25a2d132a380433d11f2c462bd1cb92e126de9a`; no CI PASS is claimed for the final closure commit.
+**Closure status:** CLOSED / CONSISTENT at the document/control level, pending observable post-closure CI verification.
