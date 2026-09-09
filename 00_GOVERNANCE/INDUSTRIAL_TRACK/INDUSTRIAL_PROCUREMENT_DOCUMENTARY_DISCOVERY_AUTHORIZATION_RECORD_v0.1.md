@@ -6,28 +6,44 @@
 
 ## Decision
 
-**STATUS: EXECUTION NOT AUTHORIZED**
+**STATUS: EXECUTION AUTHORIZED**
 
-The protocol and authorization package have been created and frozen as the proposed boundary for a new operation. No discovery execution may begin until an explicit authorization decision changes this record to `EXECUTION AUTHORIZED`.
+Authorization is limited strictly to the bounded documentary discovery operation defined by protocol v0.1 and package v0.1.
 
-## Rationale
+## Frozen authorization boundary
 
-The previous documentary discovery cycle is closed and must not be reopened. A new public-procurement/technology-service discovery therefore requires its own bounded governance chain.
+- documentary discovery only;
+- maximum 12 candidates screened;
+- maximum 6 retained;
+- frozen inclusion/exclusion criteria;
+- public evidence only;
+- no confidential/proprietary evidence;
+- no industrial execution;
+- no IT-G2/G3/G4/G5 execution;
+- no new scientific dataset execution;
+- no causal, value, utility, superiority or predictive claim;
+- no modification of Core or scientific gate status.
 
-The proposed operation has a maximum of 12 screened candidates and 6 retained candidates and uses documentary evidence only. Retention does not admit an industrial case.
+## Separation from prior cycle
+
+This operation is not a continuation or reopening of `IT-NOSD-EXEC-001`. The prior discovery cycle remains CLOSED and its candidates are excluded from this new screening budget.
+
+## Execution start condition
+
+The authorization takes effect for one bounded discovery execution. The execution record and candidate register must be created before screening results are treated as canonical.
 
 ## IT-METH-I parallel state
 
-FAA AMOC independent reconstruction remains **BLOCKED — INDEPENDENT EXECUTOR NOT ESTABLISHED**. The frozen G4/G5/result chain is not reopened. A genuinely independent executor remains the sole missing prerequisite for reconstruction 002.
+FAA AMOC independent reconstruction remains **BLOCKED — INDEPENDENT EXECUTOR NOT ESTABLISHED**. The frozen G4/G5/result chain is not reopened.
 
 ## Scientific boundary
 
 - Scientific Core: `UNCHANGED`
 - Industrial Track: `PROPOSED`
-- Industrial execution: `NOT AUTHORIZED`
+- Industrial execution: `NOT AUTHORIZED` as a standing state; this authorization permits documentary discovery only
 - Scientific claim upgrade: `NONE`
 - Causal/value/utility/superiority claim: `NONE`
 
-## Next gate
+## Closure requirement
 
-Before any procurement discovery search is treated as execution, an explicit authorization must be issued and recorded here. Until then, work on this operation is limited to governance preparation and protocol review.
+At the end of the bounded cycle, an execution record and closure record must explicitly report screened, retained, rejected and indeterminate candidates and route retained candidates to IT-G1 without treating documentary retention as case admission.
