@@ -1,0 +1,19 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+TGCV-CORE-001,scientific_core,CURRENT,01_SCIENTIFIC_CORE/,TR131;DOPS21;DOPS22;DOPS23;C-01,Core unchanged by alternative D1
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,EXT-UPD-4.3;EXT-UPD-4.5;C-01,Current matrix v0.5
+D-OPS-24,gate,FROZEN-DESIGN,00_GOVERNANCE/impact/,EXT-UPD-4.1;EXT-UPD-4.2;EXT-UPD-4.5,Further Gate-D or independent-domain work requires new governance decision
+DOPS24-DISCOVERY-PROTOCOL-v0.5,controlled_protocol,FROZEN,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.5.md,EXT-UPD-4.1;DOPS24-PREFLIGHT-v0.5,Staged Discovery/MTE/TR/Trace/Extended Conformance architecture
+C-01,cross_domain_translation_evidence,CLOSED-BOUNDED,00_GOVERNANCE/impact/D-OPS-24_V05_C01_MTE_AUDIT_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_TR_AUDIT_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_TRANSLATION_TRACE_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_EXECUTION_RESULT_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_ALTERNATIVE_D1_EXECUTION_RESULT_v0.1.md,EXT-UPD-4.2;EXT-UPD-4.4;EXT-UPD-4.5;NASA-CR-172489,A/B/C PASS bounded/partial; original D INDETERMINATE; alternative D1 INDETERMINATE
+C01-GATED-EXEC,gate_d_execution,CLOSED-INDETERMINATE,00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_EXECUTION_RESULT_v0.1.md,D-OPS-24_V05_C01_GATE_D_OPERATIONALIZATION_DESIGN_v0.2;preflight;authorization,Original Gate D INDETERMINATE
+C01-GATED-ALT-D1,gate_d_alternative_execution,CLOSED-INDETERMINATE,00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_ALTERNATIVE_D1_EXECUTION_RESULT_v0.1.md,D-OPS-24_V05_C01_GATE_D_ALTERNATIVE_OPERATIONALIZATION_DESIGN_v0.2;preflight;execution authorization,D1 stopped as INDETERMINATE; finite enumerable U_tau,D* not closed
+EXT-UPD-4.2,governance_decision,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.2_C01_GATE_D_RESOLUTION_DECISION_v0.1.md,C-01,Retains C-01
+EXT-UPD-4.3,governance_correction,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.3_EVIDENCE_CLAIM_PROPAGATION_GOVERNANCE_CORRECTION_v0.1.md,C-01,Material evidence requires explicit Evidence→Claim impact assessment
+EXT-UPD-4.4,propagation,CLOSED-PROPAGATED,00_GOVERNANCE/impact/EXT-UPD-4.4_C01_GATE_D_RESULT_PROPAGATION_v0.1.md,C01-GATED-EXEC;EXT-UPD-4.3,Historical propagation remains immutable
+EXT-UPD-4.5-D1-IMPACT,evidence_claim_impact,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.5_C01_D1_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md,C01-GATED-ALT-D1;EXT-UPD-4.3,Alternative D1 impact explicitly assessed
+RMA-v2.4,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v2.4.md,EXT-UPD-4.4,Immutable predecessor
+RMA-v2.5,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v2.5.md,EXT-UPD-4.5-D1-IMPACT;CLAIM-MATRIX-v0.5,Current master after alternative D1 impact
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v2.5,Must point to v2.5
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v2.5;C-01;CLAIM-MATRIX-v0.5,Current state; consistency closure pending
+PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
+SCIENTIFIC-ASSET-REGISTRY,scientific_memory_registry,CURRENT,02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md,EXT-UPD-3.6,Canonical scientific registry
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA-v2.5;traceability-v2.5;STATUS;claim_matrix_current;scientific_registry,Validator must be advanced to current state
