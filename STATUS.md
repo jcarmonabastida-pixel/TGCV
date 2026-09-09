@@ -1,9 +1,9 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-09  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v2.2.md`  
-**Governance state:** D-OPS-24 v0.5 FROZEN / PREPARED FOR SEPARATE EXECUTION AUTHORIZATION  
-**Execution state:** v0.5 search NOT AUTHORIZED; new search budget NOT YET ESTABLISHED
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v2.3.md`  
+**Governance state:** D-OPS-24 v0.5 — C-01 staged gate sequence completed; propagation CLOSED / pending consistency closure
+**C-01 gate profile:** MTE PASS / Translation Readiness PASS / Translation Trace PASS / Extended Conformance INDETERMINATE
 
 ## Canonical continuity point
 
@@ -15,21 +15,21 @@
 
 ## Evidence / claims
 
-No scientific or empirical state changed through EXT-UPD-4.1. TR-131, RUST-DYN-1 and RUST-DYN-2 remain CLOSED with bounded interpretations. Current evidence-to-claim matrix unchanged.
+C-01 adds bounded documentary cross-domain translation evidence through Gates A-C. Gate D is INDETERMINATE because the present source does not establish the complete Reach → Trajectory → Outcome → Value extension. This does not constitute universal cross-domain validation. TR-131, RUST-DYN-1 and RUST-DYN-2 remain CLOSED with bounded interpretations. Independent replication, broader cross-domain generalisation, trajectory sufficiency, causal identification and value linkage remain OPEN. Originality remains BOUNDED/PARTIAL.
 
 ## D-OPS state
 
 D-OPS-24 v0.4 and F2 Q1-Q3 remain immutable historical controls; F2 query-family budget 3/3 is exhausted and is not inherited by v0.5.
 
-EXT-UPD-4.1 reopened design only. D-OPS-24 v0.5 passed final preflight and is now FROZEN. Its staged architecture is:
+D-OPS-24 v0.5 remains frozen with staged architecture:
 
 `Discovery → MTE → Translation Readiness → Translation Trace → Extended TGCV Conformance`
 
-The revised design tests minimum independent translation eligibility before downstream conformance. Translation Readiness is documentary feasibility, not empirical validation.
+C-01 completed the staged sequence with MTE PASS, Translation Readiness PASS, Translation Trace PASS and Extended Conformance INDETERMINATE.
 
 ## Governance state
 
-D-OPS-24 v0.5 freeze and propagation: CLOSED / FROZEN / PROPAGATED at document/control level. No v0.5 search has been executed or authorized. A new explicit execution authorization must establish the v0.5 search budget and controlled discovery boundary.
+C-01 result propagation is CLOSED / PROPAGATED at the control-record level. Consistency closure is the next control action. No retroactive invalidation of Gates A-C is permitted. No further Gate-D resolution or additional candidate operation is authorized by propagation alone.
 
 ## Scientific-memory structure
 
@@ -37,7 +37,7 @@ D-OPS-24 v0.5 freeze and propagation: CLOSED / FROZEN / PROPAGATED at document/c
 
 ## Authorization boundary
 
-No v0.5 discovery search, candidate screening execution, dataset acquisition/processing, empirical execution, outcome/model/value analysis or D-OPS-24 conformance execution is authorized.
+No further Gate-D resolution, additional candidate screening, dataset acquisition/processing, empirical execution, outcome/model/value analysis or causal inference is authorized without separate controlled authorization.
 
 ## Continuity rule
 
