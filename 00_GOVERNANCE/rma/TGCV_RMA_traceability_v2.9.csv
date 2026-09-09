@@ -1,0 +1,15 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+TGCV-CORE-001,scientific_core,CURRENT,01_SCIENTIFIC_CORE/,TR131;DOPS21;DOPS22;DOPS23;C-01,Core unchanged by EXT-UPD-4.9
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,EXT-UPD-4.3;EXT-UPD-4.5;EXT-UPD-4.6;EXT-UPD-4.8;EXT-UPD-4.9,Matrix v0.6; no epistemic upgrade
+D-OPS-24,gate,FROZEN-DESIGN,00_GOVERNANCE/impact/,EXT-UPD-4.1;EXT-UPD-4.2;EXT-UPD-4.5,Further route requires explicit governance
+EXT-UPD-4.8,strategic_applicability_reassessment,CLOSED-INDETERMINATE,00_GOVERNANCE/EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_PROPAGATION_v0.1.md,EXT-UPD-4.8-STAGE-A;EXT-UPD-4.8-STAGE-B;EXT-UPD-4.8-STAGE-B-ACCESSIBILITY,Industrial utility remains unproven; no further O3 execution
+EXT-UPD-4.9,strategic_disposition,CLOSED,00_GOVERNANCE/EXT-UPD-4.9_STRATEGIC_DISPOSITION_INDUSTRIAL_APPLICABILITY_RESULT_v0.1.md,EXT-UPD-4.8;EXT-UPD-4.9-IMPACT,Separates industrial applicability from Core validation
+EXT-UPD-4.9-IMPACT,evidence_claim_impact,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.9_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md,EXT-UPD-4.9,No scientific claim upgrade
+INDUSTRIAL-TRACK,programme_line,PROPOSED,00_GOVERNANCE/EXT-UPD-4.9_STRATEGIC_DISPOSITION_INDUSTRIAL_APPLICABILITY_RESULT_v0.1.md,EXT-UPD-4.9,Future design/execution requires new explicit governance decision
+RMA-v2.8,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v2.8.md,EXT-UPD-4.8,Immutable predecessor
+RMA-v2.9,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v2.9.md,EXT-UPD-4.9,Current master after strategic disposition
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v2.9,Must point to v2.9
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v2.9;CLAIM-MATRIX;EXT-UPD-4.9,Current state
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Resolves to v2.9 traceability
+PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA-current;traceability-current;STATUS;claim_matrix_current,Version-independent canonical-state validator
