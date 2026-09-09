@@ -15,7 +15,6 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[3]
 FIXTURE = ROOT / "00_GOVERNANCE" / "TR-132-MOD-1" / "fixture"
-GOV = ROOT / "00_GOVERNANCE"
 EXEC = ROOT / "03_EXPERIMENTS" / "TR-132-MOD-1" / "execution"
 
 EXPECTED_PACKAGE = "TR132-MOD1-PKG-001"
@@ -98,7 +97,7 @@ def main() -> int:
 
     auth_rel = "00_GOVERNANCE/TR-132-MOD-1_AUTHORIZATION_RECORD_v0.1.md"
     auth = git_file_text(auth_rel) or ""
-    checks["authorization"] = "Status: EXECUTION AUTHORIZED" in auth and "EXECUTION AUTHORIZED" in auth
+    checks["authorization"] = "**Status:** `EXECUTION AUTHORIZED`" in auth and "**EXECUTION AUTHORIZED**" in auth
 
     transformations = read_csv("TRANSFORMATIONS_v0.1.csv")
     states = read_csv("STATES_v0.1.csv")
