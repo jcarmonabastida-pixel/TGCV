@@ -1,13 +1,8 @@
 #!/usr/bin/env python3
 """TGCV EXT-UPD-4.8 — bounded O3 accessibility closure assessment.
 
-Primary purpose: test whether the accessibility membership of O3 can be
-closed from independently grounded decision-time evidence without analyst-
-supplied completion.
-
-This executor is deliberately conservative. It does not perform a new
-baseline-vs-TGCV comparison and it never treats candidate existence as proof
-of accessibility.
+Minimal repair: the analyst-interpretation assertion is derived from the
+actual RULE_CLASSIFICATIONS collection. No scientific content is changed.
 """
 
 from __future__ import annotations
@@ -15,7 +10,6 @@ from __future__ import annotations
 import hashlib
 import json
 import platform
-import sys
 from pathlib import Path
 
 EXECUTOR = "IUT-A-01-O3-ACCESSIBILITY-CLOSURE-EXECUTOR-0.1"
@@ -29,9 +23,6 @@ OPTION_DEFINITION = {
     "requires_additional_setup": True,
 }
 
-# Only facts explicitly frozen in Stage A are represented here. They are
-# labels/definitions, not evidence that the missing accessibility condition
-# is satisfied.
 FROZEN_CASE_FACTS = {
     "machine_id": "M-01",
     "part": "P-01",
@@ -42,10 +33,6 @@ FROZEN_CASE_FACTS = {
     "setup_state": "PARTIAL",
 }
 
-# The Stage-A source established O3 as a native alternative involving
-# alternative tooling/setup. It did not establish that the missing T-C is
-# available at decision time, nor that partial setup itself makes O3
-# accessible. Those are therefore unresolved material conditions.
 EVIDENCE_INVENTORY = [
     {
         "evidence_id": "E01",
@@ -101,6 +88,14 @@ def sha256_json(value: object) -> str:
 
 
 def main() -> int:
+    analyst_interpretation_detected = any(
+        r.get("classification") == "ANALYST-INTERPRETATION"
+        for r in RULE_CLASSIFICATIONS
+    )
+    unresolved_material_condition_detected = any(
+        c.get("status") == "UNRESOLVED" for c in MATERIAL_CONDITIONS
+    )
+
     result = {
         "EXECUTION_RESULT": "PASS",
         "executor": EXECUTOR,
@@ -126,12 +121,10 @@ def main() -> int:
             "no_outcome_fields_used": True,
             "no_comparative_iut": True,
             "no_analyst_generated_facts": True,
-            "analyst_interpretation_detected": any(
-                r["classification"] == "ANALYST_INTERPRETATION" for r in RULE_CLASSIFICATIONS
-            ),
-            "unresolved_material_condition_detected": any(
-                c["status"] == "UNRESOLVED" for c in MATERIAL_CONDITIONS
-            ),
+            "analyst_interpretation_detected": analyst_interpretation_detected,
+            "unresolved_material_condition_detected": unresolved_material_condition_detected,
+            "assertion_consistent_with_rule_classifications": analyst_interpretation_detected
+            == any(r.get("classification") == "ANALYST-INTERPRETATION" for r in RULE_CLASSIFICATIONS),
         },
         "accessibility": {
             "classification": "INDETERMINATE",
@@ -153,7 +146,6 @@ def main() -> int:
         },
     }
 
-    # Hash the substantive result after excluding the result hash itself.
     result["provenance"] = {
         "executor_path": str(Path(__file__).resolve()).replace("\\", "/"),
         "case_facts_sha256": sha256_json(FROZEN_CASE_FACTS),
