@@ -34,6 +34,9 @@
 - Created `INDUSTRIAL_CANDIDATE_DISCOVERY_MATRIX_v0.1.md` with no candidate screened or selected.
 - Recorded the Candidate Discovery Protocol Evidence→Claim Impact Assessment as **IMPACT = NO SCIENTIFIC CLAIM CHANGE**.
 - Advanced current RMA to immutable `TGCV_RMA_v3.3.md`; current RMA pointer, traceability and `STATUS.md` synchronized atomically.
+- Completed documentary application of the Candidate Discovery Protocol. Retained ICD-01 (BPI-2019 purchase-item workflow) and ICD-02 (BPI-2015 building-permit workflow); ICD-03, ICD-04 and ICD-05 remain conditional. No candidate was selected or admitted to IT-G1.
+- Recorded `EXT-UPD-4.9_INDUSTRIAL_CANDIDATE_DISCOVERY_SCREENING_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md` with **IMPACT = NO SCIENTIFIC CLAIM CHANGE**.
+- Advanced current RMA to immutable `TGCV_RMA_v3.4.md`; current RMA pointer, traceability and `STATUS.md` synchronized atomically. ICD-01 is the documentary priority for any future separate IT-G1 proposal.
 
 ## 2026-09-08
 
