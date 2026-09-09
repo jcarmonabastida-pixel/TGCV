@@ -56,6 +56,8 @@ The from-scratch prohibition remains operative.
 - Discovery protocol v0.3: **FROZEN / CORRECTED DISCOVERY PROTOCOL**.
 - Next controlled operation: new bounded documentary discovery pass under v0.3, after propagation closure.
 
+The nonconforming v0.2 search pass is not a valid candidate-discovery result and admits no candidate.
+
 Discovery remains documentary only. Dataset download, processing, empirical execution, outcome/value analysis, model fitting and D-OPS-24 execution remain NOT AUTHORIZED.
 
 ## Propagation rule
