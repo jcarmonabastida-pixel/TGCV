@@ -1,8 +1,8 @@
 # TGCV — Research Master Architecture — CURRENT POINTER
 
 **Status:** CURRENT CONTROL POINTER
-**Current master:** `TGCV_RMA_v3.19.md`
+**Current master:** `TGCV_RMA_v3.20.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`
-**Current version:** v3.19
+**Current version:** v3.20
 
 This stable pointer resolves the active RMA master. Historical versions remain immutable records.
