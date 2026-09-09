@@ -17,14 +17,14 @@ TGCV-EXT-MOI-001,external_asset,RESERVED,05_ASSETS/MOI/,Core;DOPS21;DOPS22;DOPS2
 IE-RP-ADAPT,adaptation,SUBORDINATE,05_ASSETS/Research_Prospectus/adaptations/IE_PhD/,TGCV-EXT-RP-001,Application-specific adaptation
 SCIENTIFIC-ASSET-REGISTRY,scientific_memory_registry,CURRENT,02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md,EXT-UPD-3.6,Canonical registry of reusable research-bearing scientific artifacts
 EXT-UPD-3.6,governance_reconciliation,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-3.6_POST_CLOSURE_RECONCILIATION_v0.1.md;00_GOVERNANCE/rma/EXT-UPD-3.6_CONSISTENCY_CLOSURE_v0.1.md,SCIENTIFIC-ASSET-REGISTRY;RMA-v1.2,Scientific-memory reconciliation complete; no scientific-state change
-EXT-UPD-3.7,governance_propagation,OPEN-PROPAGATION,00_GOVERNANCE/impact/EXT-UPD-3.7_DOPS24_DISCOVERY_PROTOCOL_FREEZE_v0.1.md,DOPS24;RMA-v1.3,Protocol freeze propagation; scientific evidence/claims unchanged
+EXT-UPD-3.7,governance_propagation,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-3.7_DOPS24_DISCOVERY_PROTOCOL_FREEZE_v0.1.md,DOPS24;RMA-v1.3;DOPS24-DISCOVERY-PROTOCOL,Discovery protocol freeze propagated and consistency closed; scientific evidence/claims unchanged
 DOPS24-DISCOVERY-PROTOCOL,controlled_protocol,FROZEN,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md,DOPS24;EXT-UPD-3.7,Frozen bounded documentary candidate-domain discovery protocol
 RMA-v1.3,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v1.3.md,DOPS21;DOPS22;DOPS23;EXT-UPD-3.1;EXT-UPD-3.2;EXT-UPD-3.3.5;EXT-UPD-3.4;EXT-UPD-3.5;EXT-UPD-3.6;EXT-UPD-3.7,Current master after D-OPS-24 discovery protocol freeze
 RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v1.3,Must point to v1.3
 STATUS,governance_status,CURRENT,STATUS.md,RMA-v1.3;TCP-v0.3;VP-v0.2;ARM-v0.1;RII-v0.1,Current-state summary
 PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
 HISTORICAL-RECONSTRUCTION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/HISTORICAL_RECONSTRUCTION_BEFORE_NEW_WORK_RULE_v0.1.md,None,Mandatory historical reconstruction before new work
-VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA;traceability;STATUS;claim_matrix;scientific_registry,Machine consistency validator
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA;traceability;STATUS;claim_matrix;scientific_registry,D-OPS-24 discovery freeze controls included
 ESA-TGCV-001,scientific_registry_entry,HISTORICAL-WORKING,02_LITERATURE/TGCV_ARCHITECTURE_DEVELOPMENT_OPERATIONALIZATION_GATE_v0.1.md,SCIENTIFIC-ASSET-REGISTRY,Reusable architecture/gate artifact
 ESA-TGCV-002,scientific_registry_entry,HISTORICAL-WORKING,02_LITERATURE/TGCV_CONTRIBUTION_FORMALIZATION_GATE_v0.1.md,SCIENTIFIC-ASSET-REGISTRY,Reusable contribution/claim-boundary artifact
 ESA-TGCV-003,scientific_registry_entry,HISTORICAL-WORKING,02_LITERATURE/TGCV_CROSS_DOMAIN_ARCHITECTURE_CLOSURE_CONTRIBUTION_NON_REDUNDANCY_GATE_v0.1.md,SCIENTIFIC-ASSET-REGISTRY,Prior-art absorption/non-redundancy artifact
