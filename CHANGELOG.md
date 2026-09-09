@@ -2,13 +2,20 @@
 
 ## 2026-09-09
 
+- Recorded D-OPS-24 v0.3 F1-Q3 governance deviation: exploratory searches were materially different from the exact pre-registered formulation and are therefore NON-ADMISSIBLE; no retroactive reclassification permitted.
+- Created `00_GOVERNANCE/impact/D-OPS-24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md` and closed the corrective governance decision.
+- Stopped the v0.3 F1 documentary discovery pass at Q2 under GOVERNANCE HOLD; no candidate was admitted, no dataset was acquired, no empirical execution occurred and no scientific state changed.
+- Advanced the current RMA to immutable `TGCV_RMA_v1.5.md` and created `TGCV_RMA_traceability_v1.5.csv`.
+- Updated the current RMA pointer and STATUS to v1.5 and synchronized D-OPS-24 F1 governance-hold state.
+- No scientific claims, evidence levels, empirical results, Core propositions, domain selections or D-OPS-24 conformance results changed.
+
 - Closed the EXT-UPD-3.8 propagation/consistency correction for D-OPS-24 discovery.
 - Corrected the D-OPS-24 bounded discovery process after the initial v0.2 documentary pass exceeded the frozen query-family budget.
 - Recorded the nonconforming pass in `00_GOVERNANCE/impact/D-OPS-24_DISCOVERY_EXECUTION_LOG_v0.1.md`; no candidate was admitted and no scientific state changed.
 - Created `00_GOVERNANCE/impact/EXT-UPD-3.8_DOPS24_DISCOVERY_PROTOCOL_CORRECTION_v0.1.md` to preserve the deviation and require a versioned corrective protocol rather than retroactive reclassification.
 - Created and froze `00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.3.md`.
 - v0.3 mechanically defines a query family, requires pre-registration of Q-IDs, makes the three-family budget cumulative/non-resettable, and prohibits retroactive budget restoration.
-- Advanced the immutable current RMA to `TGCV_RMA_v1.4.md` and created `TGCV_RMA_traceability_v1.4.csv`.
+- Advanced the current RMA to `TGCV_RMA_v1.4.md` and created `TGCV_RMA_traceability_v1.4.csv`.
 - Updated the current RMA pointer and STATUS to v1.4.
 - Updated `validate_current_state.py` to require EXT-UPD-3.8, the non-admissible v0.2 execution record and the corrected v0.3 protocol.
 - No scientific claims, evidence levels, empirical results, Core propositions, domain selections or D-OPS-24 conformance results changed.
