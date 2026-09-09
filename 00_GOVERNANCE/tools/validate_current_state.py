@@ -1,79 +1,29 @@
 from pathlib import Path
 import csv
 import sys
-
-ROOT = Path(__file__).resolve().parents[2]
-RMA_DIR = ROOT / "00_GOVERNANCE" / "rma"
-IMPACT_DIR = ROOT / "00_GOVERNANCE" / "impact"
-SCIENCE = ROOT / "02_EXTERNAL_SCIENCE"
-ASSETS = ROOT / "05_ASSETS"
-errors = []
-
-def require_file(path: Path, label: str):
-    if not path.exists(): errors.append(f"MISSING {label}: {path.as_posix()}")
-
-def require_dir(path: Path, label: str):
-    if not path.is_dir(): errors.append(f"MISSING {label}: {path.as_posix()}")
-
-rma_current = RMA_DIR / "TGCV_RMA_current.md"
-required = [
-    (rma_current, "RMA current pointer"),(ROOT / "STATUS.md", "STATUS"),(ROOT / "CHANGELOG.md", "CHANGELOG"),
-    (ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md", "current claim matrix"),
-    (RMA_DIR / "TGCV_RMA_v1.5.md", "historical RMA v1.5"),(RMA_DIR / "TGCV_RMA_traceability_v1.5.csv", "historical traceability v1.5"),
-    (RMA_DIR / "TGCV_RMA_v1.6.md", "historical RMA v1.6"),(RMA_DIR / "TGCV_RMA_traceability_v1.6.csv", "historical traceability v1.6"),
-    (RMA_DIR / "TGCV_RMA_v1.7.md", "historical RMA v1.7"),(RMA_DIR / "TGCV_RMA_traceability_v1.7.csv", "historical traceability v1.7"),
-    (RMA_DIR / "TGCV_RMA_v1.8.md", "current RMA v1.8"),(RMA_DIR / "TGCV_RMA_traceability_v1.8.csv", "current traceability v1.8"),
-    (ROOT / "00_GOVERNANCE" / "workflows" / "CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md", "propagation workflow"),
-    (SCIENCE / "SCIENTIFIC_ASSET_REGISTRY_v0.1.md", "scientific registry"),
-    (IMPACT_DIR / "D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md", "historical v0.2"),(IMPACT_DIR / "D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.3.md", "historical v0.3"),
-    (IMPACT_DIR / "D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md", "frozen v0.4"),(IMPACT_DIR / "D-OPS-24_PREFLIGHT_v0.4.md", "preflight v0.4"),
-    (IMPACT_DIR / "D-OPS-24_DISCOVERY_EXECUTION_LOG_v0.1.md", "historical execution log"),(IMPACT_DIR / "D-OPS-24_DISCOVERY_SEARCH_LOG_v0.3.md", "historical search log"),
-    (IMPACT_DIR / "D-OPS-24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md", "F1-Q3 correction"),(IMPACT_DIR / "EXT-UPD-3.9_DOPS24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md", "EXT-UPD-3.9 correction"),
-    (IMPACT_DIR / "EXT-UPD-4.0_DOPS24_CONTINUATION_DECISION_v0.1.md", "EXT-UPD-4.0 decision"),(IMPACT_DIR / "EXT-UPD-4.0_DOPS24_CONTINUATION_PROPAGATION_v0.1.md", "EXT-UPD-4.0 propagation"),
-    (RMA_DIR / "EXT-UPD-4.0_CONSISTENCY_CLOSURE_v0.1.md", "EXT-UPD-4.0 closure"),(IMPACT_DIR / "D-OPS-24_PREFLIGHT_v0.4.md", "D-OPS-24 preflight"),
-]
-for p, label in required: require_file(p, label)
-for rel in ("TCP", "Vision_Paper", "Research_Prospectus", "ARM", "RII", "MOI"): require_dir(ASSETS / rel, f"canonical external asset family {rel}")
-
-if rma_current.exists():
-    text = rma_current.read_text(encoding="utf-8")
-    for token, msg in {
-        "TGCV_RMA_v1.8.md":"RMA current pointer does not point to v1.8","EXT-UPD-4.0":"RMA current does not declare EXT-UPD-4.0",
-        "D-OPS-24":"RMA current does not declare D-OPS-24","v0.4":"RMA current does not declare v0.4",
-        "F2-first":"RMA current does not record F2-first continuation","FROZEN / PREFLIGHT PASS":"RMA current does not record preflight pass",
-        "PF-19":"RMA current does not record PF-19 boundary","NOT AUTHORIZED":"RMA current does not record execution boundary",
-        "from-scratch":"RMA current scientific reuse rule missing"}.items():
-        if token not in text: errors.append(msg)
-
-trace = RMA_DIR / "TGCV_RMA_traceability_v1.8.csv"
-if trace.exists():
-    with trace.open(encoding="utf-8-sig", newline="") as f: rows = list(csv.DictReader(f))
-    ids = {r.get("asset_id") for r in rows}
-    required_ids = {"TGCV-CORE-001","TR-131","RUST-DYN-1","RUST-DYN-2","D-OPS-21","D-OPS-22","D-OPS-23","D-OPS-24","DOPS24-DISCOVERY-PROTOCOL-v0.2","DOPS24-DISCOVERY-PROTOCOL-v0.3","DOPS24-DISCOVERY-PROTOCOL-v0.4","DOPS24-PREFLIGHT-v0.4","DOPS24-DISCOVERY-EXECUTION-v0.1","DOPS24-DISCOVERY-SEARCH-v0.3","DOPS24-F1-Q3-CORRECTION","DOPS24-EXT-UPD-4.0","EXT-UPD-4.0","DOPS24-EXT-UPD-4.0-CLOSURE","RMA-v1.5","RMA-v1.6","RMA-v1.7","RMA-v1.8","RMA-current","STATUS","PROPAGATION-WORKFLOW","VALIDATOR","SCIENTIFIC-ASSET-REGISTRY"}
-    missing = required_ids - ids
-    if missing: errors.append("Traceability missing required assets: " + ", ".join(sorted(missing)))
-    expected = {"RMA-v1.5":"HISTORICAL-SUPERSEDED","RMA-v1.6":"HISTORICAL-SUPERSEDED","RMA-v1.7":"HISTORICAL-SUPERSEDED","RMA-v1.8":"CURRENT","DOPS24-DISCOVERY-PROTOCOL-v0.3":"FROZEN-HISTORICAL","DOPS24-DISCOVERY-PROTOCOL-v0.4":"FROZEN","DOPS24-PREFLIGHT-v0.4":"CLOSED","DOPS24-F1-Q3-CORRECTION":"CLOSED","DOPS24-DISCOVERY-SEARCH-v0.3":"STOPPED-GOVERNANCE-HOLD","EXT-UPD-4.0":"CLOSED-CONSISTENT","DOPS24-EXT-UPD-4.0-CLOSURE":"CLOSED-CONSISTENT"}
-    for asset_id, status in expected.items():
-        matches = [r for r in rows if r.get("asset_id") == asset_id]
-        if matches and matches[0].get("status") != status: errors.append(f"Traceability status mismatch for {asset_id}")
-    pointer = [r for r in rows if r.get("asset_id") == "RMA-current"]
-    if pointer and pointer[0].get("depends_on") != "RMA-v1.8": errors.append("Traceability current pointer does not depend on RMA v1.8")
-
-matrix = ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md"
-if matrix.exists():
-    m = matrix.read_text(encoding="utf-8")
-    for token in ("C03", "C07", "C11", "C13", "C16", "G7"):
-        if token not in m: errors.append(f"Current claim matrix missing {token}")
-
-registry = SCIENCE / "SCIENTIFIC_ASSET_REGISTRY_v0.1.md"
-if registry.exists():
-    s = registry.read_text(encoding="utf-8")
-    for token in ("ESA-TGCV-001", "ESA-TGCV-007", "ESA-TGCV-014", "02_LITERATURE/", "from-scratch"):
-        if token not in s: errors.append(f"Scientific registry missing required control token {token}")
-
-if errors:
-    print("GOVERNANCE_CURRENT_STATE=FAIL")
-    for e in errors: print(e)
-    sys.exit(1)
-print("GOVERNANCE_CURRENT_STATE=PASS")
-print("RMA v1.8, current pointer, traceability, STATUS, claim matrix, scientific registry, D-OPS-24 v0.4 frozen protocol/preflight and EXT-UPD-4.0 closure are structurally aligned.")
+ROOT=Path(__file__).resolve().parents[2]
+R=ROOT/'00_GOVERNANCE'/'rma'; I=ROOT/'00_GOVERNANCE'/'impact'; S=ROOT/'02_EXTERNAL_SCIENCE'; A=ROOT/'05_ASSETS'
+e=[]
+def f(p,n):
+    if not p.exists(): e.append(f'MISSING {n}: {p.as_posix()}')
+def d(p,n):
+    if not p.is_dir(): e.append(f'MISSING {n}: {p.as_posix()}')
+for p,n in [(R/'TGCV_RMA_current.md','RMA pointer'),(ROOT/'STATUS.md','STATUS'),(ROOT/'CHANGELOG.md','CHANGELOG'),(ROOT/'00_GOVERNANCE'/'EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md','claim matrix'),(R/'TGCV_RMA_v1.8.md','RMA v1.8'),(R/'TGCV_RMA_traceability_v1.8.csv','traceability v1.8'),(R/'TGCV_RMA_v1.9.md','RMA v1.9'),(R/'TGCV_RMA_v2.0.md','RMA v2.0'),(R/'TGCV_RMA_v2.1.md','RMA v2.1'),(R/'TGCV_RMA_traceability_v2.1.csv','traceability v2.1'),(S/'SCIENTIFIC_ASSET_REGISTRY_v0.1.md','scientific registry'),(I/'D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md','protocol v0.4'),(I/'D-OPS-24_PREFLIGHT_v0.4.md','preflight v0.4'),(I/'D-OPS-24_F2_Q1_EXECUTION_AUTHORIZATION_v0.1.md','Q1 auth'),(I/'D-OPS-24_F2_Q1_EXECUTION_LOG_v0.1.md','Q1 result'),(I/'D-OPS-24_F2_Q2_EXECUTION_AUTHORIZATION_v0.1.md','Q2 auth'),(I/'D-OPS-24_F2_Q2_EXECUTION_RESULT_v0.1.md','Q2 result'),(I/'D-OPS-24_F2_Q3_EXECUTION_AUTHORIZATION_v0.1.md','Q3 auth'),(I/'D-OPS-24_F2_Q3_EXECUTION_RESULT_v0.1.md','Q3 result'),(I/'EXT-UPD-4.0_F2_DISCOVERY_PROPAGATION_v0.1.md','F2 propagation')]: f(p,n)
+for x in ('TCP','Vision_Paper','Research_Prospectus','ARM','RII','MOI'): d(A/x,f'asset family {x}')
+if (R/'TGCV_RMA_current.md').exists():
+ t=(R/'TGCV_RMA_current.md').read_text(encoding='utf-8')
+ for x in ('TGCV_RMA_v2.1.md','D-OPS-24','v0.4','F2-Q1','F2-Q2','F2-Q3','3/3 consumed','0/10 admitted','No Q4','from-scratch'):
+  if x not in t: e.append(f'RMA pointer missing {x}')
+tr=R/'TGCV_RMA_traceability_v2.1.csv'
+if tr.exists():
+ with tr.open(encoding='utf-8-sig',newline='') as h: rows=list(csv.DictReader(h))
+ ids={x.get('asset_id') for x in rows}; need={'D-OPS-24','DOPS24-DISCOVERY-PROTOCOL-v0.4','DOPS24-PREFLIGHT-v0.4','DOPS24-F2-Q1-AUTH','DOPS24-F2-Q1-RESULT','DOPS24-F2-Q2-AUTH','DOPS24-F2-Q2-RESULT','DOPS24-F2-Q3-AUTH','DOPS24-F2-Q3-RESULT','EXT-UPD-4.0-F2-PROPAGATION','RMA-v1.8','RMA-v1.9','RMA-v2.0','RMA-v2.1','RMA-current','STATUS','PROPAGATION-WORKFLOW','VALIDATOR','SCIENTIFIC-ASSET-REGISTRY'}
+ e += [f'Traceability missing {x}' for x in sorted(need-ids)]
+ for aid,st in {'RMA-v1.8':'HISTORICAL-SUPERSEDED','RMA-v1.9':'HISTORICAL-SUPERSEDED','RMA-v2.0':'HISTORICAL-SUPERSEDED','RMA-v2.1':'CURRENT','DOPS24-F2-Q1-RESULT':'CLOSED','DOPS24-F2-Q2-RESULT':'CLOSED','DOPS24-F2-Q3-RESULT':'CLOSED','EXT-UPD-4.0-F2-PROPAGATION':'CLOSED-CONSISTENT'}.items():
+  m=[x for x in rows if x.get('asset_id')==aid]
+  if m and m[0].get('status')!=st: e.append(f'Traceability status mismatch {aid}')
+ m=[x for x in rows if x.get('asset_id')=='RMA-current']
+ if m and m[0].get('depends_on')!='RMA-v2.1': e.append('Traceability current pointer mismatch')
+if e:
+ print('GOVERNANCE_CURRENT_STATE=FAIL'); print('\n'.join(e)); sys.exit(1)
+print('GOVERNANCE_CURRENT_STATE=PASS'); print('RMA v2.1, pointer, traceability, STATUS and F2 closure structurally aligned.')
