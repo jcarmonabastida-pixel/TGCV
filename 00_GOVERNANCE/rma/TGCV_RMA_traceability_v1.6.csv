@@ -1,0 +1,37 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+TGCV-CORE-001,scientific_core,CURRENT,01_SCIENTIFIC_CORE/,TR131;DOPS21;DOPS22;DOPS23,Core ontology S and analytical architecture
+TR-131,test,CLOSED,03_EXPERIMENTS/EXT-1.1_Rust/,Rust operationalization,State sufficiency / T_acc analytical indispensability
+RUST-DYN-1,experiment,CLOSED,03_EXPERIMENTS/EXT-1.1_Rust/,TR131;DR-036,Bounded dynamic evidence
+RUST-DYN-2,experiment,CLOSED,03_EXPERIMENTS/EXT-1.1_Rust/,DR-043,Bounded structural empirical evidence
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md,RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23,Authoritative current evidence-to-claim matrix unchanged
+D-OPS-21,gate,CLOSED,00_GOVERNANCE/,SLR;prior_art,Deep comparative architectural originality audit
+D-OPS-22,gate,CLOSED,00_GOVERNANCE/,DOPS21,Transversal translation architecture non-redundancy
+D-OPS-23,gate,CLOSED,00_GOVERNANCE/,DOPS22,Minimal transversal translation protocol frozen
+D-OPS-24,gate,GOVERNANCE-HOLD,00_GOVERNANCE/impact/,DOPS23;EXT-UPD-3.6;EXT-UPD-3.7;EXT-UPD-3.8;DOPS24-F1-Q3-CORRECTION;RMA-v1.6,Further discovery blocked pending new versioned decision
+TGCV-EXT-TCP-001,external_asset,CURRENT-DRAFT,05_ASSETS/TCP/,Core;TR131;RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23,Current controlled TCP v0.3
+TGCV-EXT-VP-001,external_asset,CURRENT-DRAFT,05_ASSETS/Vision_Paper/,Core;claim_matrix;DOPS21;DOPS22;DOPS23;EXT-UPD-3.3.5,Current controlled Vision Paper v0.2
+TGCV-EXT-RP-001,external_asset,CURRENT-DRAFT,05_ASSETS/Research_Prospectus/,Core;TR131;RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23,Current generic RP v0.1
+TGCV-EXT-ARM-001,external_asset,CURRENT-DRAFT,05_ASSETS/ARM/,Core;DOPS21;DOPS22;DOPS23;EXT-UPD-3.4,Current controlled ARM v0.1
+TGCV-EXT-RII-001,external_asset,CURRENT-DRAFT,05_ASSETS/RII/,Core;claim_matrix;DOPS21;DOPS22;DOPS23;EXT-UPD-3.5,Current controlled RII v0.1
+TGCV-EXT-MOI-001,external_asset,RESERVED,05_ASSETS/MOI/,Core;DOPS21;DOPS22;DOPS23,Substantive creation deferred
+IE-RP-ADAPT,adaptation,SUBORDINATE,05_ASSETS/Research_Prospectus/adaptations/IE_PhD/,TGCV-EXT-RP-001,Application-specific adaptation
+SCIENTIFIC-ASSET-REGISTRY,scientific_memory_registry,CURRENT,02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md,EXT-UPD-3.6,Canonical registry of reusable research-bearing scientific artifacts
+EXT-UPD-3.6,governance_reconciliation,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-3.6_POST_CLOSURE_RECONCILIATION_v0.1.md;00_GOVERNANCE/rma/EXT-UPD-3.6_CONSISTENCY_CLOSURE_v0.1.md,SCIENTIFIC-ASSET-REGISTRY;RMA-v1.2,Scientific-memory reconciliation complete; no scientific-state change
+EXT-UPD-3.7,governance_propagation,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-3.7_DOPS24_DISCOVERY_PROTOCOL_FREEZE_v0.1.md,DOPS24;RMA-v1.3;DOPS24-DISCOVERY-PROTOCOL,Discovery protocol v0.2 freeze propagated and closed
+EXT-UPD-3.8,governance_correction,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-3.8_DOPS24_DISCOVERY_PROTOCOL_CORRECTION_v0.1.md,DOPS24;DOPS24-DISCOVERY-PROTOCOL-v0.2;RMA-v1.4,Nonconforming v0.2 search pass closed; corrected v0.3 frozen and propagated
+DOPS24-DISCOVERY-PROTOCOL-v0.2,controlled_protocol,HISTORICAL-NON-ADMISSIBLE,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md,DOPS24;EXT-UPD-3.7,Historical frozen protocol; execution pass not admissible after budget nonconformance
+DOPS24-DISCOVERY-PROTOCOL-v0.3,controlled_protocol,FROZEN,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.3.md,DOPS24;EXT-UPD-3.8,Corrected bounded documentary candidate-domain discovery protocol
+DOPS24-DISCOVERY-EXECUTION-v0.1,execution_log,STOPPED-GOVERNANCE-HOLD,00_GOVERNANCE/impact/D-OPS-24_DISCOVERY_EXECUTION_LOG_v0.1.md,DOPS24-DISCOVERY-PROTOCOL-v0.2;EXT-UPD-3.8,Initial discovery pass stopped; no candidate admitted
+DOPS24-F1-Q3-CORRECTION,governance_correction,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md,DOPS24-DISCOVERY-PROTOCOL-v0.3,Exploratory F1-Q3 attempt retained as non-admissible; no retroactive reclassification
+DOPS24-DISCOVERY-SEARCH-v0.3,discovery_search_log,STOPPED-GOVERNANCE-HOLD,00_GOVERNANCE/impact/D-OPS-24_DISCOVERY_SEARCH_LOG_v0.3.md,DOPS24-DISCOVERY-PROTOCOL-v0.3;DOPS24-F1-Q3-CORRECTION,F1 stopped at Q2; Q3 not admissibly executed
+RMA-v1.5,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v1.5.md,DOPS24-F1-Q3-CORRECTION,Predecessor current master; immutable
+RMA-v1.6,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v1.6.md,DOPS21;DOPS22;DOPS23;EXT-UPD-3.1;EXT-UPD-3.2;EXT-UPD-3.3.5;EXT-UPD-3.4;EXT-UPD-3.5;EXT-UPD-3.6;EXT-UPD-3.7;EXT-UPD-3.8;DOPS24-F1-Q3-CORRECTION,Current master incorporating the F1-Q3 governance correction
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v1.6,Must point to v1.6
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v1.6;TCP-v0.3;VP-v0.2;ARM-v0.1;RII-v0.1,Current-state summary
+PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
+HISTORICAL-RECONSTRUCTION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/HISTORICAL_RECONSTRUCTION_BEFORE_NEW_WORK_RULE_v0.1.md,None,Mandatory historical reconstruction before new work
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA;traceability;STATUS;claim_matrix;scientific_registry,D-OPS-24 corrected discovery controls included
+ESA-TGCV-001,scientific_registry_entry,HISTORICAL-WORKING,02_LITERATURE/TGCV_ARCHITECTURE_DEVELOPMENT_OPERATIONALIZATION_GATE_v0.1.md,SCIENTIFIC-ASSET-REGISTRY,Reusable architecture/gate artifact
+ESA-TGCV-007,scientific_registry_entry,HISTORICAL-WORKING,02_LITERATURE/TGCV_DYNAMIC_DELTA_TACC_TEST_v0.1.md,SCIENTIFIC-ASSET-REGISTRY,Dynamic Delta-T_acc test artifact
+ESA-TGCV-014,scientific_registry_entry,HISTORICAL-WORKING,02_LITERATURE/TGCV_VALUE_LINK_OUTCOME_SUFFICIENCY_GATE_v0.1.md,SCIENTIFIC-ASSET-REGISTRY,Value-link/outcome sufficiency artifact
+DOPS24-F1-Q3-GOV-CORRECTION,governance_correction,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md,RMA-v1.5;DOPS24-DISCOVERY-SEARCH-v0.3,Formal record of non-admissible Q3 deviation and governance hold
