@@ -15,51 +15,50 @@ Execution remains blocked until the v0.4 preflight/consistency gate is explicitl
 ## 2. Fixed semantic groups
 
 ### State terms
-`state configuration structure composition condition topology mode regime system configuration` 
+`state configuration structure composition condition topology mode regime system configuration`
 
 ### Transformation terms
-`reconfiguration switching restructuring topology change repair replacement operation intervention transition modification` 
+`reconfiguration switching restructuring topology change repair replacement operation intervention transition modification`
 
 ### Accessibility terms
-`feasible admissible available enabled applicable possible permitted reachable realizable` 
+`feasible admissible available enabled applicable possible permitted reachable realizable`
 
 ### Temporal terms
-`longitudinal temporal sequence history repeated observation evolution change over time` 
+`longitudinal temporal sequence history repeated observation evolution change over time`
 
 ### F2 native-domain terms
-`physical engineering device infrastructure mechanical electrical control system` 
+`physical engineering device infrastructure mechanical electrical control system`
 
 ### Source-type restriction
 Peer-reviewed scholarly literature, established scholarly indexes, authoritative institutional/project documentation, official dataset documentation/repositories, and stable archival primary sources.
 
 ## 3. Pre-registered query families
 
-The following three query families are fixed before execution. They are not to be altered during the F2 run.
+The three query families are materially distinct in their exact formulation while preserving the same fixed semantic groups and source restriction. Q1 is the broad baseline; Q2 changes the formulation to require an explicit longitudinal/accessibility conjunction; Q3 changes the formulation to foreground the F2 native-domain construct and explicit reconfiguration/accessibility conjunction. These distinctions are registered before execution and are not to be altered during the F2 run.
 
-### F2-Q1 — Broad physical/engineering reconfiguration
+### F2-Q1 — Broad physical/engineering reconfiguration baseline
 
 `state configuration structure composition condition topology mode regime system configuration reconfiguration switching restructuring topology change repair replacement operation intervention transition modification feasible admissible available enabled applicable possible permitted reachable realizable longitudinal temporal sequence history repeated observation evolution change over time physical engineering device infrastructure mechanical electrical control system`
 
 **Q-ID:** F2-Q1
 **Budget unit:** 1 of 3
+**Formulation class:** broad concatenative baseline across all fixed semantic groups.
 
-### F2-Q2 — Longitudinal reconfiguration/accessibility emphasis
+### F2-Q2 — Longitudinal accessibility conjunction
 
-`state configuration structure composition condition topology mode regime system configuration reconfiguration switching restructuring topology change repair replacement operation intervention transition modification feasible admissible available enabled applicable possible permitted reachable realizable longitudinal temporal sequence history repeated observation evolution change over time physical engineering device infrastructure mechanical electrical control system`
+`"longitudinal" "temporal" "history" "repeated observation" (reconfiguration OR switching OR restructuring OR transition OR modification) (feasible OR admissible OR available OR enabled OR applicable OR possible OR permitted OR reachable OR realizable) (state OR configuration OR structure OR composition OR condition OR topology OR mode OR regime) (physical OR engineering OR device OR infrastructure OR mechanical OR electrical OR control OR system)`
 
 **Q-ID:** F2-Q2
 **Budget unit:** 2 of 3
+**Formulation class:** explicit temporal/accessibility conjunction with transformation, state and F2-native constraints.
 
-**Control note:** Q2 uses the same registered semantic sets as Q1 but is reserved for a separately identified search formulation only if the exact query representation is materially instantiated differently by the approved search interface. If no material distinction can be specified before execution, Q2 must not be counted as an independent family and the run must stop for protocol clarification.
+### F2-Q3 — Native engineering reconfiguration/accessibility conjunction
 
-### F2-Q3 — Native engineering-system emphasis
-
-`state configuration structure composition condition topology mode regime system configuration reconfiguration switching restructuring topology change repair replacement operation intervention transition modification feasible admissible available enabled applicable possible permitted reachable realizable longitudinal temporal sequence history repeated observation evolution change over time physical engineering device infrastructure mechanical electrical control system`
+`("physical engineering" OR device OR infrastructure OR mechanical OR electrical OR "control system") (reconfiguration OR switching OR restructuring OR "topology change" OR repair OR replacement OR operation OR intervention OR transition OR modification) (feasible OR admissible OR available OR enabled OR applicable OR possible OR permitted OR reachable OR realizable) (state OR configuration OR structure OR composition OR condition OR topology OR mode OR regime) (longitudinal OR temporal OR sequence OR history OR "repeated observation" OR evolution)`
 
 **Q-ID:** F2-Q3
 **Budget unit:** 3 of 3
-
-**Control note:** Q3 is executable only if its exact formulation is materially distinct from Q1/Q2 under the mechanical query-family rule and that distinction is recorded before execution. Otherwise Q3 is not executed and the protocol enters GOVERNANCE STOP rather than improvising a new formulation.
+**Formulation class:** explicit F2-native-domain emphasis with transformation/accessibility conjunction and temporal condition.
 
 ## 4. Candidate screening budget
 
