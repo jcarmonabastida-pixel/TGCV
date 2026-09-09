@@ -12,8 +12,10 @@
 - EXT-UPD-4.9 establishes the `INDUSTRIAL-TRACK` as `PROPOSED`, separate from Core validation; no industrial utility has been established.
 - Reconciled current RMA to v3.19, synchronized STATUS and traceability, and preserved the existing evidence/claim boundary.
 - Prepared the INDUSTRIAL-TRACK normative/operational specification discovery protocol and its authorization package as design-only governance artifacts.
-- Recorded the preparation in RMA v3.20 and versioned traceability; documentary discovery remains NOT AUTHORIZED pending a separate governance decision after design review.
-- The industrial-track preparation introduces no scientific evidence, no claim upgrade, and no change to TGCV Core, TR-131, TR-132, or C01–C16.
+- Corrected the provisional admission-review nomenclature so that the existing canonical `IT-G0` through `IT-G5` sequence is used and no unestablished gate is introduced.
+- Authorized the bounded INDUSTRIAL-TRACK normative/operational specification documentary discovery operation under a separate authorization record; industrial experimentation remains unauthorized.
+- Propagated the authorization state across current STATUS, RMA and traceability as one atomic governance commit.
+- The industrial-track authorization introduces no scientific evidence, no claim upgrade, and no change to TGCV Core, TR-131, TR-132, or C01–C16.
 
 ## Prior state
 - TR-132-MOD-1 concrete execution package remained design-only and required exact fixture instantiation before execution authorization.

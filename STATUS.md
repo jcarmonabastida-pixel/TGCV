@@ -19,7 +19,7 @@ EXT-UPD-4.9 establishes the **INDUSTRIAL-TRACK as PROPOSED**, separate from the 
 
 D-OPS-24 remains `CLOSED-BOUNDED-SEARCH` with no documentary accessibility PASS. Industrial utility remains `UNPROVEN / OPEN`. No industrial candidate is currently admitted.
 
-The normative/operational specification discovery protocol and authorization package are now prepared as design-only governance artifacts. Documentary discovery remains **NOT AUTHORIZED** pending a separate governance decision after design review.
+The normative/operational specification discovery protocol and authorization package were prepared as design-only governance artifacts. Following design review PASS, a separate authorization record now authorizes the bounded documentary discovery operation. This authorization does not authorize industrial experimentation or any scientific claim upgrade.
 
 ## Recorded result
 - `T_acc+ (t0) = {TA, TB}`
@@ -31,7 +31,9 @@ The normative/operational specification discovery protocol and authorization pac
 - external dataset used = `false`
 
 ## Authorization boundary
-TR-132-MOD-1 is closed. Its result does not authorize Rust/EXT-1.1, industrial execution, O3, Stage-C/Stage-D, causal inference, value assessment, Core modification, or claim upgrade. EXT-UPD-4.9 likewise does not authorize industrial experiment execution or partner evidential engagement. The present industrial-track package does not authorize documentary discovery.
+TR-132-MOD-1 is closed. Its result does not authorize Rust/EXT-1.1, industrial execution, O3, Stage-C/Stage-D, causal inference, value assessment, Core modification, or claim upgrade. EXT-UPD-4.9 likewise does not authorize industrial experiment execution or partner evidential engagement.
+
+The present authorization is limited to documentary discovery and screening of normative/operational specifications under the frozen protocol/package. It does not authorize datasets, event logs, industrial intervention, partner/customer evidence, O3 rescue, Stage-C/D, causal/value analysis, Core modification, or claim upgrades.
 
 ## Canonical continuity
-GitHub `main` remains the canonical continuity and provenance gate. Substantive state changes are propagated atomically across canonical governance assets and must pass the current-state validator before further scientific operations.
+GitHub `main` remains the canonical continuity and provenance gate. Substantive state changes are propagated atomically across canonical governance assets and must pass the current-state validator before further controlled research work.
