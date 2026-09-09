@@ -16,6 +16,11 @@
 - No `05_ASSETS` refresh was performed; external-asset lag remains deliberate and traceable.
 - A new governance decision is required before any further attempt to resolve the C-01 Gate-D boundary or initiate an independent-domain test.
 - No new D-OPS QF, dataset acquisition, causal analysis, value optimization or second-domain search was authorized by this result.
+- EXT-UPD-4.8 Stage A completed with PASS for controlled industrial case specification IUT-A-01.
+- Stage-A Evidence→Claim impact assessed: material bounded updates to C01/C02/C11/C16; no material impact on remaining claim rows.
+- Propagated Stage-A bounded applicability evidence into current RMA v2.7, STATUS and traceability; current Evidence→Claim Matrix remains v0.6 without silent epistemic upgrade.
+- Industrial utility remains UNPROVEN / OPEN; Stage B remains separately gated and NOT AUTHORIZED.
+- GOV-REPAIR-01 version-independent current-state validation was closed; canonical-state validation remains dynamic and version-independent.
 
 ## 2026-09-08
 
