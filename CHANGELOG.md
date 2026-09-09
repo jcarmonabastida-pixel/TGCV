@@ -10,12 +10,18 @@
 - Created `EXT-UPD-4.1_C01_RESULT_PROPAGATION_v0.1.md` and propagated the C-01 result through the current governance state.
 - Advanced current RMA to immutable `TGCV_RMA_v2.3.md`; v2.2 remains historical and immutable.
 - Updated `TGCV_RMA_current.md` to point to v2.3 and synchronized `STATUS.md` with the C-01 gate profile.
+- Created the canonical current Evidence→Claim Matrix and pointer; reconstructed the matrix from the historical five-column scientific record and added an explicit evidence-impact column.
+- Registered C-01 in the current Evidence→Claim Matrix as material documentary/translational evidence, with bounded impact on the Core-translation claim and no upgrade of Gate D or downstream causal/value claims.
+- EXT-UPD-4.3 established mandatory explicit Evidence→Claim impact assessment for every material evidence-bearing closure.
+- Created `TGCV_RMA_traceability_v2.3.csv` and synchronized the dependency map with C-01, EXT-UPD-4.2, EXT-UPD-4.3, RMA v2.3 and the current claim-control surfaces.
+- Updated the machine governance validator to control RMA v2.3, traceability v2.3 and the current Evidence→Claim Matrix/pointer.
 - C-01 strengthens bounded documentary cross-domain translation evidence for `S`, `Uτ,D`, `T_acc,D` and `ΔT_acc`, without changing TGCV ontology.
 - Gate D remains INDETERMINATE because Reach and Trajectory were not independently operationalized and Outcome → Value was not established in the source.
 - No causal, predictive, value-creation, universal-validity, originality or superiority claim is added.
 - No dataset or empirical execution was performed.
-- Propagation is closed at the control-record level; a consistency closure remains the next control action.
-- No further Gate-D resolution or additional candidate operation is authorized by propagation alone.
+- Propagation remains pending final consistency closure; external `05_ASSETS` are intentionally not refreshed in this control window.
+- EXT-UPD-4.2 retains C-01 and opens the controlled Gate-D resolution path; second-domain testing remains an alternative future path.
+- No Gate-D execution, additional candidate operation, dataset acquisition/processing, empirical execution, outcome/value analysis or causal inference is authorized by this propagation alone.
 
 ## 2026-09-08
 
