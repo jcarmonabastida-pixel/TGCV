@@ -6,11 +6,10 @@ TR-132-PROTOCOL,methodological_protocol,CURRENT-DESIGN-ONLY,00_GOVERNANCE/TR-132
 TR-132-REQ,methodological_matrix,CURRENT-DESIGN-ONLY,00_GOVERNANCE/TR-132_CLAIM_IDENTIFIABILITY_REQUIREMENTS_MATRIX_v0.1.md,TR-132,Claim-specific minimum identifiability levels; no epistemic upgrade
 TR-132-IMPACT,governance_impact,CURRENT,00_GOVERNANCE/impact/TR-132_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md,TR-132,No scientific claim change
 TR-132-REQ-IMPACT,governance_impact,CURRENT,00_GOVERNANCE/impact/TR-132_CLAIM_IDENTIFIABILITY_REQUIREMENTS_IMPACT_ASSESSMENT_v0.1.md,TR-132-REQ,No scientific claim change
-TR-132-AUTH-REVIEW,governance_review,CURRENT,00_GOVERNANCE/TR-132_GOVERNANCE_AUTHORIZATION_REVIEW_v0.1.md,TR-132;TR-132-REQ,Design review complete; execution not authorized
-TR-132-AUTH-REVIEW-IMPACT,governance_impact,CURRENT,00_GOVERNANCE/impact/TR-132_GOVERNANCE_AUTHORIZATION_REVIEW_IMPACT_ASSESSMENT_v0.1.md,TR-132-AUTH-REVIEW,No scientific claim change
+TR-132-REVIEW,governance_review,CURRENT,00_GOVERNANCE/TR-132_GOVERNANCE_AUTHORIZATION_REVIEW_v0.1.md,TR-132;TR-132-PROTOCOL;TR-132-REQ,Design review complete; execution not authorized
+TR-132-EXEC-PKG,execution_package_specification,CURRENT-DESIGN-ONLY,00_GOVERNANCE/TR-132_EXECUTION_PACKAGE_SPECIFICATION_v0.1.md,TR-132;TR-132-PROTOCOL;TR-132-REQ,Pre-execution freezing specification; no concrete package admitted
 D-OPS-24,gate,CLOSED-BOUNDED-SEARCH,00_GOVERNANCE/D-OPS-24_DIRECTED_DOCUMENTARY_ACCESSIBILITY_SEARCH_PROTOCOL_v0.1.md,EXT-UPD-4.9,Search completed; no documentary PASS
-RMA-v3.11,governance_master,SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v3.11.md,TR-132;TR-132-PROTOCOL;TR-132-REQ,Superseded by v3.12; immutable historical record
-RMA-v3.12,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.12.md,TR-132;TR-132-PROTOCOL;TR-132-REQ;TR-132-AUTH-REVIEW,RMA updated for authorization review
+RMA-v3.12,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.12.md,TR-132;TR-132-PROTOCOL;TR-132-REQ;TR-132-REVIEW;TR-132-EXEC-PKG,RMA updated for execution-package preparation
 RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.12,Stable canonical pointer to current RMA master
 TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Stable canonical pointer to current traceability CSV
 PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Atomic propagation rule operative
