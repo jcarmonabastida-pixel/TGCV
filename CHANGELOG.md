@@ -26,6 +26,10 @@
 - Prepared `INDUSTRIAL_CASE_SPECIFICATION_v0.1.md` as the next design-only artifact. No industrial case was selected, no experiment or dataset was executed, and no scientific claim changed.
 - Recorded `EXT-UPD-4.9_INDUSTRIAL_CASE_SPECIFICATION_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md` with **IMPACT = NO SCIENTIFIC CLAIM CHANGE**.
 - Advanced current RMA to immutable `TGCV_RMA_v3.1.md`; `TGCV_RMA_current.md`, current traceability and `STATUS.md` were propagated atomically.
+- Proposed C-IND-01 as a candidate industrial case for IT-G1 review; no execution or partner evidential engagement was authorized.
+- Completed IT-G1 Case Identifiability review for C-IND-01: **FAIL / NOT ADMITTED** because the candidate's decision context, system boundary, unit of analysis, temporal frame and transformation identity were insufficiently closed.
+- Recorded the IT-G1 impact assessment as **IMPACT = NO SCIENTIFIC CLAIM CHANGE**.
+- Advanced current RMA to immutable `TGCV_RMA_v3.2.md`; current RMA pointer, traceability and `STATUS.md` synchronized with the IT-G1 decision.
 
 ## 2026-09-08
 

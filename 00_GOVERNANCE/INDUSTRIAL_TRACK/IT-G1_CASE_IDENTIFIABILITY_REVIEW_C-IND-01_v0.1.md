@@ -1,50 +1,59 @@
-# TGCV — IT-G1 Case Identifiability Review v0.1
+# TGCV — Industrial Candidate Case Proposal v0.1
 
 **Date:** 2026-09-09  
-**Candidate:** C-IND-01  
-**Gate:** IT-G1 Case Identifiability  
-**Decision:** FAIL / NOT ADMITTED  
+**Status:** CANDIDATE / PROPOSED / NOT ADMITTED  
+**Track:** INDUSTRIAL-TRACK  
 **Execution:** NOT AUTHORIZED  
-**Scientific evidence introduced:** NO
+**IT-G1 status:** NOT YET EXECUTED
 
-## 1. Scope
+## 1. Candidate
 
-IT-G1 tests only whether C-IND-01 can be defined as an independently identifiable industrial case under the frozen Industrial Case Specification v0.1. It does not test TGCV, utility, causality or value.
+**Candidate C-IND-01:** a bounded enterprise workflow in which an AI-agent capability is introduced into an existing operational workflow, using a trusted enterprise AI environment as the technological context.
 
-## 2. Candidate reviewed
+**Potential industrial setting:** Orange Business / enterprise AI environment, with Live Intelligence Studio treated only as a contextual candidate platform, not as evidence and not as the case itself.
 
-C-IND-01 is currently defined as a generic enterprise workflow in which an AI-agent capability is introduced into an existing operational workflow, with a potential enterprise AI environment as context.
+Orange publicly describes Live Intelligence Studio as an environment for designing, deploying and governing AI agents in trusted infrastructure, and its 2026 strategy identifies AI deployment in customer experience, network management, internal processes and new revenue opportunities as strategic areas. These facts establish contextual plausibility only; they do not establish case admissibility, accessibility or utility for TGCV. 
 
-The proposal explicitly states that it is not yet a case and requires narrowing before IT-G1.
+## 2. Why this candidate is relevant to TGCV
 
-## 3. Admission assessment
+The candidate is structurally interesting because an agent-enabled workflow may create a distinguishable change in the set of transformations available to the bounded workflow/system, rather than merely producing a different outcome.
 
-| IT-G1 requirement | Assessment | Result |
-|---|---|---|
-| Concrete industrial decision context | Generic workflow only; decision context/owner not closed | FAIL |
-| Explicit system boundary `S` | No exact workflow/system boundary specified | FAIL |
-| Bounded unit of analysis | No discrete unit permitting independent reconstruction | FAIL |
-| Temporal frame/horizon | Not specified | FAIL |
-| Candidate transformation identity | Agent introduction is too generic to identify one transformation independently | FAIL |
-| Accessibility/admissibility boundary | Not closed; intentionally deferred to later gate | BLOCKED |
-| Independent observability | Required material/configuration/log evidence not identified | BLOCKED |
+The candidate therefore permits a potential test of the analytical distinction:
 
-## 4. Decision
+`S_t → T_acc,t → enabling change → T_acc,t+1`
 
-**IT-G1 = FAIL / NOT ADMITTED.**
+while keeping downstream outcome and utility questions separate.
 
-The failure is a case-definition failure, not a scientific failure of TGCV. The candidate is presently too broad to support an independently reconstructable `(S_t, C_t) → transformation → accessibility → (S_{t+1}, C_{t+1})` unit.
+## 3. Required narrowing before IT-G1
 
-No criteria are relaxed and no TGCV definition is changed.
+The candidate is **not yet a case**. Before IT-G1 can be passed, the following must be independently specified:
 
-## 5. Consequence
+1. exact business process/workflow;
+2. exact system boundary `S`;
+3. unit of analysis;
+4. temporal window;
+5. transformation identity rule;
+6. accessibility/admissibility rule;
+7. observable evidence available without relying on the expected TGCV result;
+8. pre-change and post-change states;
+9. candidate comparator, if utility is later tested.
 
-C-IND-01 remains a PROPOSED candidate but is **not admitted** to IT-G2. No industrial execution, dataset execution, partner evidential engagement, utility assessment, causal inference or value assessment is authorized.
+## 4. Principal identifiability risk
 
-A future revision may return C-IND-01 to IT-G1 only by closing the missing boundary, unit, temporal frame and transformation identity ex ante. That revision must not be based on a favorable TGCV result.
+The main current risk is that a generic "AI adoption" description may be too broad to identify a discrete transformation space. A case cannot pass IT-G1 merely because AI is deployed or because a platform exists.
 
-## 6. Evidence separation
+A second risk is access dependence: if the decisive material, configuration, logs or historical state can only be obtained through an industrial partner, this must be explicitly classified rather than silently assumed.
 
-No Core evidence is introduced. No C01–C16 claim changes. Industrial utility remains UNPROVEN / OPEN.
+## 5. Non-retroactivity
 
-**Disposition:** `C-IND-01 = PROPOSED / IT-G1 FAIL / NOT ADMITTED / NO EXECUTION AUTHORIZED`.
+The candidate was selected because its structure appears potentially compatible with the frozen Industrial Case Specification, not because it is expected to produce a positive TGCV result.
+
+No threshold, definition, falsification rule or claim has been changed to accommodate this candidate.
+
+## 6. Governance disposition
+
+`C-IND-01 = PROPOSED CANDIDATE / NOT ADMITTED`
+
+No industrial experiment, partner evidential engagement, dataset execution, utility assessment or causal inference is authorized.
+
+**Next controlled action:** perform an IT-G1 Case Identifiability review on this candidate, including an explicit decision on whether its boundary and unit of analysis can be closed independently.
