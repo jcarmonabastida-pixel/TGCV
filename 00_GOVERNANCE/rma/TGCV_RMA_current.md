@@ -2,10 +2,10 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v1.5.md`  
-**Governance decision:** EXT-UPD-3.8  
-**Conformance closure:** `EXT-UPD-3.8_CONSISTENCY_CLOSURE_v0.1.md`  
-**Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6 + EXT-UPD-3.7 + EXT-UPD-3.8
+**Current master:** `TGCV_RMA_v1.6.md`  
+**Governance decision:** EXT-UPD-3.9  
+**Conformance closure:** pending EXT-UPD-3.9 consistency closure  
+**Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6 + EXT-UPD-3.7 + EXT-UPD-3.8 + EXT-UPD-3.9
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
 
@@ -55,7 +55,9 @@ The from-scratch prohibition remains operative.
 - EXT-UPD-3.8: CLOSED / CONSISTENT corrective propagation.
 - Discovery protocol v0.3: FROZEN / CORRECTED DISCOVERY PROTOCOL.
 - v0.3 F1 documentary discovery: STOPPED / GOVERNANCE HOLD after F1-Q3 query-formulation deviation.
-- Next controlled operation: new versioned governance decision correcting the discovery protocol/execution boundary before any further search.
+- F1-Q3 exploratory searches: NON-ADMISSIBLE; not retroactively classified as Q3.
+- EXT-UPD-3.9: CLOSED / GOVERNANCE CORRECTION.
+- Next controlled operation: requires a new versioned governance decision and explicit authorization before any further documentary discovery.
 
 The nonconforming v0.2 search pass and the non-admissible F1-Q3 exploratory searches are not valid candidate-discovery results and admit no candidate.
 
@@ -75,4 +77,6 @@ Discovery remains documentary only. Dataset download, processing, empirical exec
 
 **EXT-UPD-3.8 D-OPS-24 discovery protocol correction: CLOSED / CONSISTENT.**
 
-**D-OPS-24 v0.3 F1 discovery execution: STOPPED / GOVERNANCE HOLD; corrective decision required.**
+**EXT-UPD-3.9 D-OPS-24 F1-Q3 governance correction: CLOSED / GOVERNANCE CORRECTION.**
+
+**D-OPS-24 v0.3 F1 discovery execution: STOPPED / GOVERNANCE HOLD; further discovery requires a new versioned decision.**
