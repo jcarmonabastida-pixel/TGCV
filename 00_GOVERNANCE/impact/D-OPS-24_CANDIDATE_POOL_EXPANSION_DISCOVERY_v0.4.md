@@ -1,9 +1,10 @@
 # TGCV — D-OPS-24 Candidate-Pool Expansion / Empirical-Domain Discovery v0.4
 
-**Status:** DRAFT FOR PREFLIGHT — NOT AUTHORIZED FOR SEARCH EXECUTION
+**Status:** FROZEN / PREFLIGHT PASS — SEARCH NOT YET AUTHORIZED
 **Date:** 2026-09-09
 **Predecessor:** `D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.3.md`
 **Governance decision:** `EXT-UPD-4.0_DOPS24_CONTINUATION_DECISION_v0.1.md`
+**Preflight:** `D-OPS-24_PREFLIGHT_v0.4.md` — CLOSED / PASS
 **Initial source family:** F2 — Physical/engineering reconfiguration systems
 
 ## 1. Purpose
@@ -28,7 +29,7 @@ The initial discovery family is:
 
 - **F2 — Physical/engineering reconfiguration systems**
 
-Other families remain outside the initial execution and may only be opened under this protocol after F2 stopping conditions are evaluated and, where required, an explicit versioned authorization.
+Other families remain outside the initial execution and may only be opened under a subsequent explicit versioned decision.
 
 The following remain excluded unless separately reopened: Rust/software-package ecosystems substantially equivalent to existing TGCV work; MDE transformation frameworks covered by the frozen prior-art boundary; self-adaptive/self-evolving software families covered by the frozen prior-art boundary.
 
@@ -80,7 +81,7 @@ For F2:
 - cumulative budget across all engines, repositories, sessions and operators;
 - no reset or retroactive reclassification.
 
-The proposed Q1–Q3 formulations must be frozen in the search log before any query is executed.
+The Q1–Q3 formulations must be frozen in the search log before any query is executed.
 
 ## 8. Outcome-blind selection
 
@@ -144,9 +145,9 @@ If B or C occurs, no dataset or empirical execution follows. Further scope requi
 
 ## 13. Execution boundary
 
-This v0.4 document is not yet frozen and therefore authorizes no search.
+The protocol is frozen after preflight, but documentary search execution is not released by the protocol itself.
 
-After preflight and consistency closure, an explicit authorization record must release documentary execution. Until then:
+Until an explicit execution authorization is recorded:
 
 - documentary search: NOT AUTHORIZED;
 - dataset acquisition: NOT AUTHORIZED;
