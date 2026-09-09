@@ -8,9 +8,9 @@ execution. It performs no realization and produces no scientific result.
 from __future__ import annotations
 
 import csv
-import hashlib
 import json
 from pathlib import Path
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -39,10 +39,36 @@ HASHES = {
 }
 
 
-def blob_sha(path: Path) -> str:
-    data = path.read_bytes()
-    header = f"blob {len(data)}\0".encode("utf-8")
-    return hashlib.sha1(header + data).hexdigest()
+def git_blob_sha(rel: str) -> str | None:
+    """Return the canonical Git blob SHA for *rel* at the checked-out HEAD."""
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", f"HEAD:{rel}"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (subprocess.CalledProcessError, OSError):
+        return None
+    return result.stdout.strip() or None
+
+
+def git_file_text(rel: str) -> str | None:
+    """Read canonical UTF-8 file content directly from the checked-out Git tree."""
+    try:
+        result = subprocess.run(
+            ["git", "show", f"HEAD:{rel}"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+        )
+    except (subprocess.CalledProcessError, OSError):
+        return None
+    try:
+        return result.stdout.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
 
 
 def read_csv(name: str) -> list[dict[str, str]]:
@@ -54,23 +80,24 @@ def main() -> int:
     checks: dict[str, bool] = {}
     errors: list[str] = []
 
-    manifest = (FIXTURE / "FIXTURE_MANIFEST_v0.1.md").read_text(encoding="utf-8")
+    manifest = git_file_text("00_GOVERNANCE/TR-132-MOD-1/fixture/FIXTURE_MANIFEST_v0.1.md") or ""
     checks["fixture_identity"] = f"**Fixture ID:** `{EXPECTED_FIXTURE}`" in manifest
     checks["package_identity"] = f"**Package ID:** `{EXPECTED_PACKAGE}`" in manifest
     checks["seed"] = f"**Deterministic seed:** `{EXPECTED_SEED}`" in manifest
     checks["predicate"] = f"fixed accessibility predicate version `{EXPECTED_PREDICATE}`" in manifest
 
+    # Immutable package integrity: compare frozen hashes with canonical Git blobs,
+    # never with the Windows working-tree byte representation.
     for rel, expected in HASHES.items():
-        path = ROOT / rel
         key = f"hash:{rel}"
-        ok = path.is_file() and blob_sha(path) == expected
+        actual = git_blob_sha(rel)
+        ok = actual == expected
         checks[key] = ok
         if not ok:
-            actual = blob_sha(path) if path.is_file() else "MISSING"
-            errors.append(f"{rel}: expected {expected}, got {actual}")
+            errors.append(f"{rel}: expected {expected}, got {actual or 'MISSING'}")
 
-    auth_path = GOV / "TR-132-MOD-1_AUTHORIZATION_RECORD_v0.1.md"
-    auth = auth_path.read_text(encoding="utf-8") if auth_path.is_file() else ""
+    auth_rel = "00_GOVERNANCE/TR-132-MOD-1_AUTHORIZATION_RECORD_v0.1.md"
+    auth = git_file_text(auth_rel) or ""
     checks["authorization"] = "Status: EXECUTION AUTHORIZED" in auth and "EXECUTION AUTHORIZED" in auth
 
     transformations = read_csv("TRANSFORMATIONS_v0.1.csv")
