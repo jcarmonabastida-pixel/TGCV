@@ -26,7 +26,8 @@ DOPS24-DISCOVERY-EXECUTION-v0.1,execution_log,STOPPED-GOVERNANCE-HOLD,00_GOVERNA
 DOPS24-F1-Q3-CORRECTION,governance_correction,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md,DOPS24-DISCOVERY-PROTOCOL-v0.3,Exploratory F1-Q3 attempt retained as non-admissible
 DOPS24-DISCOVERY-SEARCH-v0.3,discovery_search_log,STOPPED-GOVERNANCE-HOLD,00_GOVERNANCE/impact/D-OPS-24_DISCOVERY_SEARCH_LOG_v0.3.md,DOPS24-DISCOVERY-PROTOCOL-v0.3;DOPS24-F1-Q3-CORRECTION,F1 stopped at Q2; Q3 not admissibly executed
 DOPS24-EXT-UPD-4.0,governance_decision,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.0_DOPS24_CONTINUATION_DECISION_v0.1.md,EXT-UPD-3.9;DOPS24,D-OPS-24 continuation decision; F2 selected as next discovery family
-EXT-UPD-4.0,governance_propagation,OPEN,00_GOVERNANCE/impact/EXT-UPD-4.0_DOPS24_CONTINUATION_PROPAGATION_v0.1.md,DOPS24-EXT-UPD-4.0;DOPS24-DISCOVERY-PROTOCOL-v0.4,RMA v1.7 and current-control synchronization in progress
+EXT-UPD-4.0,governance_propagation,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-4.0_DOPS24_CONTINUATION_PROPAGATION_v0.1.md,DOPS24-EXT-UPD-4.0;DOPS24-DISCOVERY-PROTOCOL-v0.4;RMA-v1.7,Propagation and consistency closure complete at document/control level
+DOPS24-EXT-UPD-4.0-CLOSURE,governance_closure,CLOSED-CONSISTENT,00_GOVERNANCE/rma/EXT-UPD-4.0_CONSISTENCY_CLOSURE_v0.1.md,EXT-UPD-4.0;RMA-v1.7,Propagation closure; CI PASS not claimed for validator commit 5118ef4
 RMA-v1.5,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v1.5.md,DOPS24-F1-Q3-CORRECTION,Predecessor current master; immutable
 RMA-v1.6,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v1.6.md,EXT-UPD-3.9,Predecessor current master; immutable
 RMA-v1.7,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v1.7.md,EXT-UPD-4.0,Current master for D-OPS-24 v0.4 design/preflight
