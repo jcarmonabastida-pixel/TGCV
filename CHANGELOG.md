@@ -2,6 +2,13 @@
 
 ## 2026-09-09
 
+- Closed EXT-UPD-3.7 consistency propagation for the frozen D-OPS-24 candidate-domain discovery protocol.
+- Confirmed immutable D-OPS-24 discovery protocol v0.2 as the operative bounded documentary discovery procedure.
+- Synchronized RMA current pointer, STATUS and traceability to the CLOSED / CONSISTENT EXT-UPD-3.7 state.
+- Updated the current-state validator to require the EXT-UPD-3.7 impact record, frozen discovery protocol and closed propagation state.
+- No scientific claims, evidence levels, empirical results, Core propositions or gate closures changed through EXT-UPD-3.7.
+- D-OPS-24 bounded empirical-domain discovery is now the next controlled operation; dataset download, processing and empirical execution remain NOT AUTHORIZED.
+
 - Froze `00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md` as the bounded documentary candidate-domain discovery protocol.
 - The frozen protocol defines six bounded source families, documentary evidence requirements, outcome-blind selection, hard exclusions, bounded search budget, candidate admission threshold, stopping rule and explicit authorization boundaries.
 - Created `00_GOVERNANCE/impact/EXT-UPD-3.7_DOPS24_DISCOVERY_PROTOCOL_FREEZE_v0.1.md` to propagate the protocol freeze through current governance.
@@ -18,35 +25,6 @@
 - Moved `TGCV_RMA_current.md` to v1.2 and synchronized `STATUS.md` with the closed/consistent EXT-UPD-3.6 state.
 - D-OPS-24 is released to continue its controlled preflight sequence; real-data execution remains NOT AUTHORIZED.
 - No scientific claims, evidence levels, empirical results, Core propositions or gate closures changed through this reconciliation.
-
-- Opened `EXT-UPD-3.3.5_VP_PROPAGATION_v0.1.md` and accepted Vision Paper v0.2 propagation into the current canonical external-asset state.
-- Created `00_GOVERNANCE/rma/TGCV_RMA_v0.6.md` as the new immutable current RMA master; v0.5 remains historical.
-- Created `00_GOVERNANCE/rma/TGCV_RMA_traceability_v0.6.csv` and moved the current dependency map to v0.6.
-- Moved `TGCV_RMA_current.md` to v0.6 and synchronized the current pointer with Vision Paper v0.2.
-- Updated `STATUS.md` to record Vision Paper v0.2 as the current controlled draft and EXT-UPD-3.3.5 as the current propagation.
-- Updated `validate_current_state.py` to validate RMA v0.6, traceability v0.6 and the Vision Paper propagation impact.
-- Closed EXT-UPD-3.3.5 consistency without fabricating a CI PASS where no status check was observable.
-- Created `EXT-UPD-3.4_ARM_HISTORICAL_RECONSTRUCTION_v0.1.md`; no substantive historical ARM artifact was found.
-- Created `TGCV-EXT-ARM-001_v0.1.md` as the first substantive canonical ARM controlled draft.
-- Opened `EXT-UPD-3.4_ARM_PROPAGATION_v0.1.md` and propagated ARM v0.1 through the current governance surfaces.
-- Created RMA v0.7 and traceability v0.7, then finalized the propagation in immutable RMA v0.8 and traceability v0.8.
-- Moved the RMA current pointer to v0.8 and synchronized STATUS with ARM v0.1 and EXT-UPD-3.4.
-- Updated `validate_current_state.py` to validate RMA v0.8, traceability v0.8, ARM v0.1 and the ARM propagation impact.
-- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by ARM creation/propagation.
-- Created `EXT-UPD-3.5_RII_HISTORICAL_RECONSTRUCTION_v0.1.md`; historical/preparatory impact-roadmap material was identified and retained without promotion.
-- Created `TGCV-EXT-RII-001_v0.1.md` as the first substantive canonical RII controlled draft, excluding obsolete EMP-1.1 predictive/readiness framing.
-- Opened `EXT-UPD-3.5_RII_PROPAGATION_v0.1.md` and advanced the current RMA through v0.9 to final immutable v1.0 and traceability v1.0.
-- Moved the RMA current pointer to v1.0 and synchronized STATUS with RII v0.1 and EXT-UPD-3.5.
-- Updated `validate_current_state.py` to validate RMA v1.0 and traceability v1.0.
-- GitHub Actions governance-current-state run 81 for the pre-finalization propagation commit completed successfully; the final-state commits subsequently completed the same canonical propagation chain.
-- No scientific claims, evidence levels, gate states or historical scientific artefacts were changed by RII creation/propagation.
-- EXT-UPD-3.5 RII propagation is CLOSED / CONSISTENT. D-OPS-24 remains the next controlled operation and is not an execution authorization.
-- EXT-UPD-3.6 identified a scientific-memory/reuse-control gap: substantive historical `TGCV_*` scientific artifacts were present in `02_LITERATURE/` and were not surfaced through a canonical reusable-science registry before later work.
-- Created `02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md` as the canonical registry/integration surface; fourteen substantive historical `TGCV_*` artifacts are initially registered without physical migration or epistemic upgrade.
-- Created `00_GOVERNANCE/impact/EXT-UPD-3.6_SCIENTIFIC_ASSET_RECONCILIATION_v0.1.md` documenting the finding, reconciliation decision and propagation obligations.
-- Advanced the immutable RMA to v1.1 and traceability to v1.1; current pointer and STATUS now identify EXT-UPD-3.6 and the scientific-memory registry.
-- Established the normative reuse rule: a relevant historical artifact blocks a “from-scratch” claim unless its scientific irrelevance is explicitly justified.
-- No scientific claims, evidence levels or gate states changed through EXT-UPD-3.6; D-OPS-24 is held pending consistency closure.
 
 ## 2026-09-08
 
