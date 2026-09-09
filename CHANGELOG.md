@@ -2,6 +2,13 @@
 
 ## 2026-09-09
 
+- Recorded EXT-UPD-3.9 as the versioned governance correction for the D-OPS-24 v0.3 F1-Q3 query-formulation deviation.
+- Preserved the exploratory F1-Q3 searches as NON-ADMISSIBLE and retained the compliant F1 discovery pass stopped at Q2 under GOVERNANCE HOLD.
+- Created immutable `00_GOVERNANCE/rma/TGCV_RMA_v1.6.md` and `TGCV_RMA_traceability_v1.6.csv`; RMA v1.5 remains historical and immutable.
+- Updated `00_GOVERNANCE/rma/TGCV_RMA_current.md` and `STATUS.md` to RMA v1.6 / EXT-UPD-3.9.
+- No scientific claims, evidence levels, empirical results, Core propositions, domain selections or D-OPS-24 conformance results changed.
+- No further documentary discovery is authorized until a new versioned governance decision and explicit authorization.
+
 - Recorded D-OPS-24 v0.3 F1-Q3 governance deviation: exploratory searches were materially different from the exact pre-registered formulation and are therefore NON-ADMISSIBLE; no retroactive reclassification permitted.
 - Created `00_GOVERNANCE/impact/D-OPS-24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md` and closed the corrective governance decision.
 - Stopped the v0.3 F1 documentary discovery pass at Q2 under GOVERNANCE HOLD; no candidate was admitted, no dataset was acquired, no empirical execution occurred and no scientific state changed.
