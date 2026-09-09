@@ -1,9 +1,9 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-09
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v2.9
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6
-**Governance state:** EXT-UPD-4.8 Stage B corrective accessibility route CLOSED / INDETERMINATE; industrial utility remains unproven
+**Governance state:** EXT-UPD-4.9 CLOSED as strategic disposition; INDUSTRIAL-TRACK PROPOSED; industrial utility remains unproven
 **C-01 gate profile:** MTE PASS / Translation Readiness PASS / Translation Trace PASS / Extended Conformance INDETERMINATE
 **I-01 gate profile:** MTE PASS / Translation Readiness PASS / Translation Trace INDETERMINATE / constructive operationalization INDETERMINATE
 **EXT-UPD-4.8 profile:** Stage A PASS / Stage B comparative IUT-2 NOT ACCEPTED / corrective accessibility INDETERMINATE
@@ -20,33 +20,21 @@
 
 C-01 provides bounded documentary cross-domain translation evidence through Gates A-C. Original and alternative Gate-D routes remain INDETERMINATE. I-01 adds independent-domain Gate-C evidence and its single constructive operationalization attempt remained INDETERMINATE at complete native `T_acc,D` closure.
 
-EXT-UPD-4.8 Stage A established a controlled industrial case specification (IUT-A-01) in manufacturing, with a bounded native state/context, finite source-defined candidate-option universe, frozen pre-decision information boundary, credible incumbent baseline and distinct TGCV-specific analytical output. The subsequent Stage-B comparative execution did not establish IUT-2 because O3 accessibility was not independently grounded. The single authorized corrective accessibility reassessment remains INDETERMINATE after repaired executor validation.
+EXT-UPD-4.8 Stage A established a controlled industrial case specification (IUT-A-01) in manufacturing. The subsequent Stage-B comparative execution did not establish IUT-2 because O3 accessibility was not independently grounded. The single authorized corrective accessibility reassessment remains scientifically INDETERMINATE after repaired executor validation.
 
 The corrective route strengthens a bounded methodological interpretation that native candidate existence does not by itself close decision-time accessibility when material availability/setup conditions are not independently specified. This is not a universal impossibility claim.
 
 No causal, predictive, financial-value, superiority, universal-generalization or complete-T_acc claim is upgraded. Industrial utility remains UNPROVEN / OPEN.
 
-TR-131, RUST-DYN-1 and RUST-DYN-2 remain CLOSED with bounded interpretations. Trajectory sufficiency, causal identification and value linkage remain OPEN. Originality remains BOUNDED/PARTIAL.
+## EXT-UPD-4.9 state
 
-## D-OPS state
+EXT-UPD-4.9 formally separates industrial applicability from scientific Core validation. Further O3 rescue execution is not authorized. The Core, falsification criteria and claim statuses remain unchanged.
 
-D-OPS-24 v0.4/F2 remains immutable historical control; its 3/3 budget is exhausted and is not inherited by v0.5.
-
-D-OPS-24 v0.5 remains frozen with staged architecture:
-
-`Discovery → MTE → Translation Readiness → Translation Trace → Extended TGCV Conformance`
-
-C-01 completed A-C with PASS/PASS/PASS (bounded/partial). I-01 completed MTE/TR PASS and Gate C plus constructive operationalization INDETERMINATE. No I-01 downstream Gate-D/ETC execution is authorized.
-
-## EXT-UPD-4.8 state
-
-Stage A is CLOSED / PASS. Stage-A impact is CLOSED. Stage-B comparative execution is immutable and IUT-2 is NOT ACCEPTED. The single corrective O3 accessibility route is CLOSED / INDETERMINATE; its repaired executor audit and Evidence→Claim impact assessment are CLOSED.
-
-No further O3 accessibility execution is authorized. Any future industrial-utility work requires a new explicit governance decision.
+`INDUSTRIAL-TRACK` is **PROPOSED** as a programme/application line only. It is not evidence or validation. Future industrial execution requires a new explicit governance decision after design review against independently specified entry conditions.
 
 ## Authorization boundary
 
-No dataset execution, industrial partner engagement, causal inference, value optimization, Core modification or external-asset update is authorized without a new explicit governance decision and authorization.
+No dataset execution, new industrial experiment, industrial evidential engagement, causal inference, value optimization, Core modification or external-asset upgrade is authorized without a subsequent explicit governance decision. Only preparation/design of governance artifacts for a possible industrial track is authorized by EXT-UPD-4.9.
 
 ## Scientific-memory structure
 
