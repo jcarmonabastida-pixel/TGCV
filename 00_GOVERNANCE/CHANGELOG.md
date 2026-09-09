@@ -15,6 +15,9 @@
 - Synchronized `STATUS.md` with the Industrial Track specification and its no-claim-change impact assessment.
 - Scientific Core, falsification criteria and current Evidence→Claim Matrix v0.6 remain unchanged.
 - Next controlled operation after consistency closure: prepare the Industrial Case Specification; no execution is authorized by this propagation.
+- **Governance integrity audit:** audited the transient consistency warnings generated during EXT-UPD-4.9 propagation (`30251c4`, `8f2fadd`, `aaa161e`) and identified non-atomic multi-commit canonical propagation as the root cause. No scientific state was affected.
+- **Corrective action:** replaced the propagation workflow with v0.2, requiring atomic Git-tree/one-commit publication for multi-asset canonical changes. Historical warning-producing commits remain immutable and are explicitly preserved by the audit.
+- **Audit closure:** current canonical state remains consistent; future multi-asset propagation must not use sequential Contents-API commits on `main`.
 
 - Completed C-01 Gate A / Minimum Translation Eligibility: PASS.
 - Completed C-01 Gate B / Translation Readiness: PASS.
