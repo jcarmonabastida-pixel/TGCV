@@ -3,7 +3,7 @@
 **Status:** CURRENT / OPERATIVE  
 **Date:** 2026-09-09  
 **Predecessor:** v3.19  
-**Update:** Recorded the prepared INDUSTRIAL-TRACK normative/operational specification discovery design and authorization package; execution remains not authorized.
+**Update:** Recorded the prepared INDUSTRIAL-TRACK normative/operational specification discovery design and authorization package; execution remains not authorized. The post-discovery admission review is descriptive only and has no frozen gate identifier yet.
 
 ## Scientific core
 - Core ontology: `S`
@@ -51,7 +51,7 @@ A normative/operational specification discovery protocol and its authorization p
 - `00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_TRACK_NORMATIVE_OPERATIONAL_SPECIFICATION_DISCOVERY_PROTOCOL_v0.1.md`
 - `00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_TRACK_NORMATIVE_OPERATIONAL_SPECIFICATION_DISCOVERY_AUTHORIZATION_PACKAGE_v0.1.md`
 
-The package fixes the intended documentary scope, candidate identity requirements, decision-time applicability, independent accessibility boundary, anti-retroactivity controls, evidence hierarchy, bounded search budget, disposition rules, stop rules and future IT-G1 review boundary.
+The package fixes the intended documentary scope, candidate identity requirements, decision-time applicability, independent accessibility boundary, anti-retroactivity controls, evidence hierarchy, bounded search budget, disposition rules, stop rules and a **post-discovery admission review whose canonical gate identifier is not yet established**.
 
 **Execution remains NOT AUTHORIZED.** The package itself does not authorize documentary search.
 
@@ -66,7 +66,7 @@ EXT-UPD-4.9 and this preparation do not authorize a new industrial experiment, f
 TR-132-MOD-1 adds methodological execution evidence only. EXT-UPD-4.9 adds a governance disposition and no new scientific evidence. The industrial-track preparation adds governance/design artifacts only. C01–C16 remain unchanged. No scientific claim is upgraded and no scientific gate is upgraded or closed by these decisions.
 
 ## Governance state
-The current-state governance validator remains the canonical gate. Governed checkout actions use `actions/checkout@v6`. Current-state consistency must be validated on the final atomic propagation commit before further controlled research work.
+The current-state governance validator remains the canonical gate. Governed checkout actions use `actions/checkout@v6`. Current-state consistency must be validated on the final propagation commit before further controlled research work.
 
 ## Current position
-TR-132-MOD-1 is formally closed as `BOUNDED PASS (L3)`. EXT-UPD-4.9 establishes the INDUSTRIAL-TRACK as `PROPOSED`, not executable. The current controlled work has produced the normative/operational specification discovery design and authorization package. The next gate is a separate authorization decision; no discovery search is to be executed before that gate passes.
+TR-132-MOD-1 is formally closed as `BOUNDED PASS (L3)`. EXT-UPD-4.9 establishes the INDUSTRIAL-TRACK as `PROPOSED`, not executable. The current controlled work has produced the normative/operational specification discovery design and authorization package, with the previously unverified `IT-G1` label removed from canonical use. The next gate is a separate authorization decision after formal establishment of the post-discovery admission-review nomenclature; no discovery search is to be executed before that gate passes.
