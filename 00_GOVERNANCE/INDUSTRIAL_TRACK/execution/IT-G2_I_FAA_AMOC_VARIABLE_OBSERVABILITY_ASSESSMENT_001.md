@@ -11,13 +11,13 @@ Assess whether the frozen FAA AMOC case identified at IT-G1 has sufficient indep
 
 ## 2. Evidence closure
 
-The EASA Safety Publications Tool exposes the AD identity, approval holder, affected type designations, service-document revisions and the attached FAA AMOC. citeturn1view1
+The EASA Safety Publications Tool exposes the AD identity, approval holder, affected type designations, service-document revisions and the attached FAA AMOC.
 
-The attached FAA approval letter is unusually strong public evidence for this case. It identifies the requester (Textron Aviation), FAA event number 19880001, reference 7K0-18-00734, the AD, the proposal date (17 January 2018), and the approval decision. It also states the substantive change: the prior interim 15,000-hour TIS life limit was superseded after testing and analysis, and specifies the maintenance-manual Airworthiness Limitations used as the AMOC. citeturn1view0
+The attached FAA approval letter is unusually strong public evidence for this case. It identifies the requester (Textron Aviation), FAA event number 19880001, reference 7K0-18-00734, the AD, the proposal date (17 January 2018), and the approval decision. It also states the substantive change: the prior interim 15,000-hour TIS life limit was superseded after testing and analysis, and specifies the maintenance-manual Airworthiness Limitations used as the AMOC.
 
-Crucially, the letter exposes concrete applicability restrictions: named aircraft models and explicit serial-number ranges, plus the required maintenance-manual revisions. It identifies the substantiating basis for acceptable safety and the transferability condition. citeturn1view0
+Crucially, the letter exposes concrete applicability restrictions: named aircraft models and explicit serial-number ranges, plus the required maintenance-manual revisions. It identifies the substantiating basis for acceptable safety and the transferability condition.
 
-FAA Order 8110.103B independently confirms that these are the kinds of fields required in an AMOC approval response: AD and paragraphs, make/model or other limits, substantiating data, restrictions, service documents and transferability. It also states that public requests may disclose holder, approval date, applicable make/model and AD information, while technical specifics may be restricted. citeturn0search24turn0search26
+FAA Order 8110.103B independently confirms that these are the kinds of fields required in an AMOC approval response: AD and paragraphs, make/model or other limits, substantiating data, restrictions, service documents and transferability. It also states that public requests may disclose holder, approval date, applicable make/model and AD information, while technical specifics may be restricted.
 
 ## 3. IT-G2 assessment
 
@@ -48,4 +48,4 @@ No utility comparison, causal inference, value inference, industrial experiment,
 
 ## 6. Routing
 
-Next permissible operation: **IT-G3 Accessibility Closure** for `IT-G1-I-AMOC-US-91-12-10-7K0-00734`.
+Next permissible operation: **IT-G3 Accessibility Closure** for `IT-G1-I-AMOC-US-91-12-10-7K0-18-00734`.
