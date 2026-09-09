@@ -2,10 +2,10 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v1.6.md`  
-**Governance decision:** EXT-UPD-3.9  
-**Conformance closure:** `EXT-UPD-3.9_CONSISTENCY_CLOSURE_v0.1.md` — CLOSED / CONSISTENT at document/control level; post-closure CI verification is not observable for commit `9098ace5d48fe8313c672bd6fe87b07ec2edba27`.  
-**Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6 + EXT-UPD-3.7 + EXT-UPD-3.8 + EXT-UPD-3.9
+**Current master:** `TGCV_RMA_v1.7.md`  
+**Governance decision:** EXT-UPD-4.0  
+**Conformance closure:** pending EXT-UPD-4.0 consistency closure.  
+**Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6 + EXT-UPD-3.7 + EXT-UPD-3.8 + EXT-UPD-3.9 + EXT-UPD-4.0
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
 
@@ -38,7 +38,7 @@ The from-scratch prohibition remains operative.
 ## Current gate state
 
 - G1 Independent replication: OPEN
-- G2 Cross-domain generalisation: OPEN
+- G2 Cross-domain generalisation: OPEN; no eligible independent external domain admitted on present record
 - G3 Trajectory sufficiency: OPEN
 - G4 Causal identification: OPEN
 - G5 Value linkage: OPEN
@@ -50,18 +50,19 @@ The from-scratch prohibition remains operative.
 - Historical reconstruction: CLOSED — bounded residual gap identified.
 - Design: FROZEN v0.1.
 - Preflight: OPEN / controls defined.
-- Candidate-domain eligibility audit: CLOSED — no eligible candidate identified on present record.
-- Discovery protocol v0.2: HISTORICAL / NON-ADMISSIBLE EXECUTION after query-budget nonconformance.
-- EXT-UPD-3.8: CLOSED / CONSISTENT corrective propagation.
-- Discovery protocol v0.3: FROZEN / CORRECTED DISCOVERY PROTOCOL.
+- Candidate-domain eligibility audit: CLOSED — no eligible candidate identified on prior record.
+- Discovery protocol v0.2: HISTORICAL / NON-ADMISSIBLE.
+- EXT-UPD-3.8: CLOSED / CONSISTENT.
+- Discovery protocol v0.3: FROZEN / CORRECTED; historical and immutable.
 - v0.3 F1 documentary discovery: STOPPED / GOVERNANCE HOLD after F1-Q3 query-formulation deviation.
 - F1-Q3 exploratory searches: NON-ADMISSIBLE; not retroactively classified as Q3.
 - EXT-UPD-3.9: CLOSED / GOVERNANCE CORRECTION.
-- Next controlled operation: requires a new versioned governance decision and explicit authorization before any further documentary discovery.
+- EXT-UPD-4.0: CLOSED / GOVERNANCE DECISION.
+- Discovery protocol v0.4: DRAFT FOR PREFLIGHT — F2-first controlled documentary discovery; search execution not authorized.
 
-The nonconforming v0.2 search pass and the non-admissible F1-Q3 exploratory searches are not valid candidate-discovery results and admit no candidate.
+The v0.2 nonconforming pass and v0.3 F1-Q3 exploratory searches remain non-admissible historical records. No candidate is admitted.
 
-Discovery remains documentary only. Dataset download, processing, empirical execution, outcome/value analysis, model fitting and D-OPS-24 execution remain NOT AUTHORIZED.
+Discovery remains documentary-only by scope, but execution is not yet released. Dataset download, processing, empirical execution, outcome/value analysis, model fitting and D-OPS-24 conformance execution remain NOT AUTHORIZED.
 
 ## Propagation rule
 
@@ -79,4 +80,6 @@ Discovery remains documentary only. Dataset download, processing, empirical exec
 
 **EXT-UPD-3.9 D-OPS-24 F1-Q3 governance correction: CLOSED / GOVERNANCE CORRECTION.**
 
-**D-OPS-24 v0.3 F1 discovery execution: STOPPED / GOVERNANCE HOLD; further discovery requires a new versioned decision.**
+**EXT-UPD-4.0 D-OPS-24 continuation decision: CLOSED / GOVERNANCE DECISION.**
+
+**EXT-UPD-4.0 propagation: OPEN / consistency closure pending.**
