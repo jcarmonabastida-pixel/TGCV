@@ -92,12 +92,12 @@ rma_master_rel = extract(
 rma_master = None
 rma_version = None
 if rma_master_rel:
-    rma_master = ROOT / "00_GOVERNANCE" / "rma" / Path(rma_master_rel).name
+    rma_master_name = Path(rma_master_rel).name
+    rma_master = ROOT / "00_GOVERNANCE" / "rma" / rma_master_name
     require_file(rma_master, "resolved current RMA master")
-    if rma_master_rel != rma_master.relative_to(ROOT / "00_GOVERNANCE" / "rma").as_posix():
-        # Accept only a filename resolving inside the canonical RMA directory.
+    if rma_master_rel != rma_master_name:
         fail("RMA current master pointer resolves outside canonical RMA directory")
-    version_match = re.search(r"_v([^.`/]+)\.md$", rma_master.name)
+    version_match = re.search(r"_v(.+)\.md$", rma_master.name)
     if not version_match:
         fail("resolved current RMA master has no parseable version")
     else:
@@ -159,7 +159,7 @@ trace_rel = extract(
 if trace_rel:
     trace = ROOT / trace_rel
     require_file(trace, "resolved current RMA traceability")
-    if rma_version and f"TGCV_RMA_traceability_{rma_version}.csv" != trace.name:
+    if rma_version and trace.name != f"TGCV_RMA_traceability_{rma_version}.csv":
         fail("traceability target does not match resolved current RMA version")
 
 # 6. STATUS must point to the same resolved current RMA and matrix.
@@ -176,8 +176,7 @@ if matrix and status_matrix:
     if status_matrix != expected_matrix:
         fail("STATUS current matrix disagrees with resolved matrix")
 
-# 7. Stable-pointer uniqueness: the canonical locations themselves are the sole current pointers.
-# Historical versioned artifacts are intentionally not rejected.
+# 7. Stable canonical locations are the sole current pointers.
 canonical_current_rma = ROOT / "00_GOVERNANCE" / "rma" / "TGCV_RMA_current.md"
 if rma_pointer != canonical_current_rma:
     fail("canonical RMA pointer location mismatch")
