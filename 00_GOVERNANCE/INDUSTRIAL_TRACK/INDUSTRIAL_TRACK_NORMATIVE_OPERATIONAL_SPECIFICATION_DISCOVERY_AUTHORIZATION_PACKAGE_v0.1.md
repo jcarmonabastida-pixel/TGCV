@@ -1,10 +1,11 @@
 # INDUSTRIAL-TRACK — Normative / Operational Specification Discovery Authorization Package v0.1
 
 **Status:** PROPOSED / PENDING-AUTHORIZATION  
-**Design review:** PASS WITH CORRECTION  
+**Design review:** PASS  
 **Execution authorization:** NOT GRANTED  
 **Basis:** EXT-UPD-4.9  
-**Design protocol:** `INDUSTRIAL_TRACK_NORMATIVE_OPERATIONAL_SPECIFICATION_DISCOVERY_PROTOCOL_v0.1.md`
+**Design protocol:** `INDUSTRIAL_TRACK_NORMATIVE_OPERATIONAL_SPECIFICATION_DISCOVERY_PROTOCOL_v0.1.md`  
+**Governance nomenclature:** `INDUSTRIAL_TRACK_GOVERNANCE_SPEC_v0.1.md`
 
 ## 1. Purpose
 
@@ -93,15 +94,22 @@ A future authorized execution must produce:
 - final stop-rule status;
 - execution record suitable for governance audit.
 
-## 9. Post-discovery admission review
+## 9. Post-discovery governance disposition
 
-Following execution, the results must pass a separate governance review before any candidate is admitted as an industrial case or used in comparative analysis.
+Following execution, the results must undergo the established Industrial Track governance sequence before any candidate is admitted as an industrial case or used in comparative analysis.
 
-**Provisional gate designation:** `INDUSTRIAL-CANDIDATE-DOCUMENTARY-ADMISSION-REVIEW`.
+The canonical governance nomenclature is already established in `INDUSTRIAL_TRACK_GOVERNANCE_SPEC_v0.1.md`:
 
-This is a provisional descriptive designation, not yet a frozen gate identifier. The canonical gate name and definition must be established in the Industrial Track governance nomenclature before execution authorization.
+- **IT-G0 — Strategic admission:** confirm that the candidate represents an industrial application question and does not alter the scientific Core.
+- **IT-G1 — Case identifiability:** close the concrete case, system boundary, unit of analysis and temporal frame.
+- **IT-G2 — Variable observability:** close the required state, transformation, condition and outcome variables.
+- **IT-G3 — Accessibility closure:** close the independent accessibility/admissibility criterion before comparative assessment.
+- **IT-G4 — Utility protocol freeze:** freeze the independent utility criterion and comparator before outcome assessment.
+- **IT-G5 — Execution authorization:** explicitly authorize execution only after IT-G0 through IT-G4 are closed.
 
-At that review, documentary sufficiency must be assessed independently from utility and outcome evidence. A retained candidate may be rejected without implying any failure of TGCV Core.
+Documentary discovery therefore does **not** create a new admission gate. Its retained or indeterminate results are inputs to the existing Industrial Track gates, beginning with IT-G0/IT-G1 as applicable to the candidate.
+
+Documentary sufficiency must remain independent from utility and outcome evidence. A candidate may be rejected at any subsequent gate without implying any failure of TGCV Core.
 
 ## 10. Explicit exclusions
 
@@ -122,9 +130,9 @@ This package does not authorize:
 
 ## 11. Authorization condition
 
-Execution remains **NOT AUTHORIZED** until a separate governance decision explicitly authorizes the frozen discovery package after design review and after the post-discovery admission-review nomenclature has been formally established.
+Execution remains **NOT AUTHORIZED** until a separate governance decision explicitly authorizes the frozen discovery package after design review.
 
-A user instruction to continue the workflow does not override this project-level boundary.
+No user instruction to continue the workflow overrides this project-level boundary.
 
 ## 12. Scientific status
 
