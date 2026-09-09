@@ -1,10 +1,10 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-09  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.7  
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.8  
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6  
 **Governance state:** EXT-UPD-4.9 CLOSED; INDUSTRIAL-TRACK PROPOSED; C-IND-01 IT-G1 FAIL; ICD-01 IT-G1 FAIL; ICD-02 IT-G1 FAIL; industrial utility remains unproven  
-**Current propagation:** Industrial Candidate Discovery Cycle v0.2 completed; no documentary candidate retained for IT-G1
+**Current propagation:** D-OPS-24 protocol v0.1 defined; documentary search execution not authorized
 
 ## Canonical continuity point
 
@@ -16,7 +16,11 @@
 
 ## Industrial Track
 
-C-IND-01 remains **NOT ADMITTED / IT-G1 FAIL**. ICD-01 and ICD-02 have both failed IT-G1 because decision-time accessibility could not be independently closed. A subsequent documentary discovery cycle screened additional candidates and found no new candidate satisfying the mandatory accessibility filter for retention to IT-G1.
+No industrial candidate is currently admitted to IT-G1. C-IND-01, ICD-01 and ICD-02 remain failed/not admitted at IT-G1; the later documentary cycle retained no candidate.
+
+## D-OPS-24
+
+The Directed Documentary Accessibility Search Protocol v0.1 is defined as design-only governance infrastructure. It targets independently specified normative/operational admissibility conditions. Execution remains **NOT AUTHORIZED**.
 
 ## Evidence / claims
 
@@ -32,4 +36,4 @@ Every substantive state change requires a versioned GitHub commit. GitHub remain
 
 ## Next controlled operation
 
-Any continuation of the Industrial Track requires separate governance authorization for a documentary search specifically targeting independently specified normative/operational admissible alternatives. No execution is implied.
+Before any D-OPS-24 execution, governance must record an explicit authorization, frozen search scope/result template and a fresh current-state validator PASS. Until then, D-OPS-24 remains preparation-only.
