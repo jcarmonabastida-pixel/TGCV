@@ -1,0 +1,21 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+TGCV-CORE-001,scientific_core,CURRENT,01_SCIENTIFIC_CORE/,TR131;DOPS21;DOPS22;DOPS23;C-01,Core unchanged
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,EXT-UPD-4.3;EXT-UPD-4.5;EXT-UPD-4.6;EXT-UPD-4.8;EXT-UPD-4.9,Matrix v0.6; no epistemic upgrade
+EXT-UPD-4.8,strategic_applicability_reassessment,CLOSED-INDETERMINATE,00_GOVERNANCE/EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_PROPAGATION_v0.1.md,EXT-UPD-4.1;EXT-UPD-4.2,Industrial utility remains unproven
+EXT-UPD-4.9,strategic_disposition,CLOSED,00_GOVERNANCE/EXT-UPD-4.9_STRATEGIC_DISPOSITION_INDUSTRIAL_APPLICABILITY_RESULT_v0.1.md,EXT-UPD-4.8;EXT-UPD-4.9-IMPACT,Separates industrial applicability from Core validation
+INDUSTRIAL-TRACK,programme_line,PROPOSED,00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_TRACK_GOVERNANCE_SPEC_v0.1.md,EXT-UPD-4.9,Design infrastructure only; execution not authorized
+INDUSTRIAL-CANDIDATE-DISCOVERY-MATRIX,screening_matrix,CURRENT,00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_CANDIDATE_DISCOVERY_MATRIX_v0.2.md,INDUSTRIAL-CANDIDATE-DISCOVERY-PROTOCOL,ICD-01 failed IT-G1; ICD-02 retained
+C-IND-01,industrial_candidate,NOT-ADMITTED-IT-G1-FAIL,00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_CANDIDATE_CASE_PROPOSAL_v0.1.md,IT-G1-C-IND-01,Case definition insufficient
+IT-G1-C-IND-01,governance_gate,CLOSED-FAIL,00_GOVERNANCE/INDUSTRIAL_TRACK/IT-G1_CASE_IDENTIFIABILITY_REVIEW_C-IND-01_v0.1.md,C-IND-01,No scientific claim change
+ICD-01,industrial_candidate,IT-G1-FAIL-NOT-ADMITTED,00_GOVERNANCE/INDUSTRIAL_TRACK/IT-G1_CASE_IDENTIFIABILITY_REVIEW_ICD-01_v0.1.md,INDUSTRIAL-CANDIDATE-DISCOVERY-MATRIX;IT-G1-ICD-01,Accessibility closure insufficient; no IT-G2 progression
+IT-G1-ICD-01,governance_gate,CLOSED-FAIL,00_GOVERNANCE/INDUSTRIAL_TRACK/IT-G1_CASE_IDENTIFIABILITY_REVIEW_ICD-01_v0.1.md,ICD-01,Case identity bounded; accessibility closure failed
+IT-G1-ICD-01-IMPACT,evidence_claim_impact,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.9_IT-G1_ICD-01_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md,IT-G1-ICD-01,No scientific claim change
+ICD-02,industrial_candidate,RETAINED-NOT-ADMITTED,00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_CANDIDATE_DISCOVERY_MATRIX_v0.2.md,INDUSTRIAL-CANDIDATE-DISCOVERY-PROTOCOL,Potential future separate IT-G1 review
+D-OPS-24,gate,FROZEN-DESIGN,00_GOVERNANCE/impact/,EXT-UPD-4.1;EXT-UPD-4.2;EXT-UPD-4.5,Further route requires explicit governance
+RMA-v3.4,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v3.4.md,INDUSTRIAL-CANDIDATE-DISCOVERY-SCREENING-IMPACT,Previous current master; immutable
+RMA-v3.5,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.5.md,IT-G1-ICD-01;IT-G1-ICD-01-IMPACT,Current master after ICD-01 IT-G1
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.5,Must point to v3.5
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v3.5;CLAIM-MATRIX;IT-G1-ICD-01,Current state
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Resolves to v3.5 traceability
+PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Atomic propagation rule operative
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA-current;traceability-current;STATUS;claim_matrix_current,Version-independent canonical-state validator
