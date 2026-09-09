@@ -5,27 +5,46 @@
 
 ## 1. Scope
 
-This closure covers the controlled Stage-A case specification for IUT-A-01, its Evidence→Claim impact assessment and the subsequent governance propagation.
+This closure covers the controlled Stage-A case specification for IUT-A-01, its Evidence→Claim impact assessment, governance propagation, canonical-state reconciliation and machine validation.
 
-## 2. Propagated state
+## 2. Canonical current state
 
-- Current RMA: `TGCV_RMA_v2.7.md`.
-- Current Evidence→Claim Matrix: v0.6.
-- Current traceability: `TGCV_RMA_traceability_v2.7.csv`.
-- Current STATUS reflects EXT-UPD-4.8 Stage A PASS and Stage B NOT AUTHORIZED.
-- Stage-A Evidence→Claim impact is explicitly recorded.
-- Stage-A propagation is explicitly recorded.
-- No 05_ASSETS update was made.
+- Current RMA pointer resolves to `TGCV_RMA_v2.7.md`.
+- Resolved RMA master is marked `CURRENT / OPERATIVE`.
+- Current Evidence→Claim Matrix is `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6.
+- Current traceability pointer resolves to `TGCV_RMA_traceability_v2.7.csv`.
+- Traceability target matches the dynamically resolved RMA version.
+- STATUS reflects RMA v2.7, matrix v0.6, Stage-A PASS and Stage B NOT AUTHORIZED.
+- `CANONICAL_STATE.json` remains the stable manifest of canonical roles.
 
-## 3. Machine consistency verification
+## 3. Governance-state repair
 
-The GitHub Actions workflow `TGCV governance current-state consistency` executed after the propagation commit `834ec86043d3d923e60320c5258412bc81985a19`.
+The post-propagation state exposed a stale current-RMA pointer during reconciliation. This has been repaired at the canonical-state level rather than by adding another historical version exception to the validator.
 
-Run #342 completed with conclusion **success**. The workflow head SHA is the propagation commit itself.
+The validator was additionally strengthened to enforce bidirectional alignment among:
 
-This confirms that the version-independent canonical-state validator accepts the propagated current-state chain.
+- canonical manifest;
+- RMA current-state pointer;
+- resolved current RMA master;
+- matrix current pointer and matrix artifact;
+- RMA-declared current matrix;
+- traceability current pointer and versioned traceability artifact;
+- STATUS;
+- canonical validator location.
 
-## 4. Scientific consistency
+No historical version identifier or EXT-UPD identifier is hardcoded into executable validation logic.
+
+## 4. Machine validation
+
+The repaired validator is committed as:
+
+`ff50c85bc914e22c23394e2808892769fcc2c70a`
+
+The validator is now designed to fail on stale or contradictory current-state pointers while accepting arbitrary future RMA/matrix version changes when their canonical pointers and artifact metadata are internally aligned.
+
+A final push-based GitHub Actions run on the reconciled state is the required machine gate before this closure is considered operationally verified.
+
+## 5. Scientific consistency
 
 No frozen TGCV definition was changed.
 
@@ -41,30 +60,18 @@ The following remain unchanged:
 - universal-generalization boundary;
 - originality and superiority boundaries.
 
-## 5. Epistemic consistency
+## 6. Epistemic consistency
 
-The Stage-A PASS is interpreted strictly as **controlled industrial case-testability evidence**.
+Stage A remains strictly **controlled industrial case-testability evidence**.
 
-It does not establish:
+It does not establish differentiated industrial utility, superiority, causality, prediction, financial value, universal validity, full cross-domain generalization or complete `T_acc` operationalization.
 
-- differentiated industrial utility;
-- superiority over an incumbent baseline;
-- causality;
-- prediction;
-- financial value;
-- universal validity;
-- complete `T_acc` operationalization.
+## 7. Governance boundary
 
-## 6. Governance consistency
+Stage B remains **NOT AUTHORIZED**. No dataset execution, industrial partner engagement, causal inference, value optimization, Core modification or external-asset update is authorized without a new explicit governance decision and authorization.
 
-Stage B remains **NOT AUTHORIZED**.
+## 8. Closure condition
 
-The next operation therefore requires a new explicit governance decision assessing whether comparative Stage-B testing is justified and defining its exact boundary if authorized.
+This closure is complete only after the post-repair GitHub Actions governance-current-state workflow returns `completed / success` on the reconciled commit.
 
-## 7. Closure decision
-
-The Stage-A evidence, impact assessment, propagation and canonical-state validation are mutually consistent.
-
-**EXT-UPD-4.8 Stage A is CLOSED / CONSISTENT.**
-
-No further Stage-A execution is authorized or required.
+Until that machine gate is observed, the scientific state is unchanged but the control closure remains pending verification.
