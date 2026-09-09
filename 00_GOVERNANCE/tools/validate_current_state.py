@@ -1,109 +1,189 @@
 from pathlib import Path
-import csv
+import json
+import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
-R = ROOT / "00_GOVERNANCE" / "rma"
-I = ROOT / "00_GOVERNANCE" / "impact"
-S = ROOT / "02_EXTERNAL_SCIENCE"
-A = ROOT / "05_ASSETS"
+MANIFEST = ROOT / "00_GOVERNANCE" / "CANONICAL_STATE.json"
 errors = []
 
 
+def fail(message):
+    errors.append(message)
+
+
 def require_file(path, label):
-    if not path.exists():
-        errors.append(f"MISSING {label}: {path.as_posix()}")
+    if not path.is_file():
+        fail(f"MISSING {label}: {path.as_posix()}")
 
 
-def require_dir(path, label):
-    if not path.is_dir():
-        errors.append(f"MISSING {label}: {path.as_posix()}")
+def read_text(path, label):
+    if not path.is_file():
+        fail(f"MISSING {label}: {path.as_posix()}")
+        return ""
+    try:
+        return path.read_text(encoding="utf-8")
+    except Exception as exc:
+        fail(f"UNREADABLE {label}: {exc}")
+        return ""
 
 
-def require_text(path, label, tokens):
-    if not path.exists():
-        errors.append(f"MISSING {label}: {path.as_posix()}")
-        return
-    text = path.read_text(encoding="utf-8")
-    for token in tokens:
-        if token not in text:
-            errors.append(f"{label} missing {token}")
+def extract(text, pattern, label):
+    match = re.search(pattern, text, flags=re.MULTILINE)
+    if not match:
+        fail(f"{label} declaration missing")
+        return None
+    return match.group(1)
 
-# Canonical current-state artifacts.
-for path, label in [
-    (R / "TGCV_RMA_current.md", "RMA pointer"),
-    (R / "TGCV_RMA_v2.6.md", "RMA v2.6"),
-    (R / "TGCV_RMA_traceability_v2.6.csv", "traceability v2.6"),
-    (ROOT / "STATUS.md", "STATUS"),
-    (ROOT / "CHANGELOG.md", "CHANGELOG"),
-    (ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md", "current claim matrix"),
-    (ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md", "current claim matrix pointer"),
-    (S / "SCIENTIFIC_ASSET_REGISTRY_v0.1.md", "scientific registry"),
-]:
+
+# 1. Resolve the stable canonical manifest. No scientific or historical version is hardcoded here.
+require_file(MANIFEST, "canonical state manifest")
+if errors:
+    print("GOVERNANCE_CURRENT_STATE=FAIL")
+    print("\n".join(errors))
+    sys.exit(1)
+
+try:
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+except Exception as exc:
+    fail(f"INVALID canonical state manifest: {exc}")
+    manifest = {}
+
+if manifest.get("schema") != "TGCV-CANONICAL-STATE-1":
+    fail("canonical state manifest schema mismatch")
+if manifest.get("status") != "CURRENT":
+    fail("canonical state manifest is not CURRENT")
+
+pointers = manifest.get("pointers")
+if not isinstance(pointers, dict):
+    fail("canonical state manifest pointers missing or invalid")
+    pointers = {}
+
+required_roles = {
+    "rma": "RMA pointer",
+    "claim_matrix": "current claim matrix",
+    "claim_matrix_pointer": "current claim matrix pointer",
+    "rma_traceability": "current RMA traceability pointer",
+    "status": "STATUS",
+    "changelog": "CHANGELOG",
+    "scientific_registry": "scientific registry",
+    "validator": "validator",
+}
+
+resolved = {}
+for role, label in required_roles.items():
+    value = pointers.get(role)
+    if not isinstance(value, str) or not value.strip():
+        fail(f"canonical pointer missing {role}")
+        continue
+    path = ROOT / value
     require_file(path, label)
+    resolved[role] = path
 
-# Current EXT-UPD-4.6 / 4.7 / 4.8 control chain.
-for path, label in [
-    (I / "EXT-UPD-4.6_I01_GATE_C_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md", "EXT-UPD-4.6 impact"),
-    (I / "EXT-UPD-4.6_I01_PROPAGATION_v0.1.md", "EXT-UPD-4.6 propagation"),
-    (I / "EXT-UPD-4.6_I01_CONSISTENCY_CLOSURE_v0.1.md", "EXT-UPD-4.6 closure"),
-    (ROOT / "00_GOVERNANCE" / "EXT-UPD-4.8_TGCV_SCIENTIFIC_AND_INDUSTRIAL_APPLICABILITY_REASSESSMENT_DECISION_v0.1.md", "EXT-UPD-4.8 decision"),
-    (ROOT / "00_GOVERNANCE" / "D-OPS-24_EXT-UPD-4.8_TGCV_SCIENTIFIC_AND_INDUSTRIAL_APPLICABILITY_REASSESSMENT_DESIGN_v0.1.md", "EXT-UPD-4.8 design"),
-    (ROOT / "00_GOVERNANCE" / "D-OPS-24_EXT-UPD-4.8_TGCV_SCIENTIFIC_AND_INDUSTRIAL_APPLICABILITY_REASSESSMENT_DESIGN_AUDIT_v0.1.md", "EXT-UPD-4.8 design audit"),
-    (ROOT / "00_GOVERNANCE" / "D-OPS-24_EXT-UPD-4.8_TGCV_SCIENTIFIC_AND_INDUSTRIAL_APPLICABILITY_REASSESSMENT_PREFLIGHT_v0.1.md", "EXT-UPD-4.8 preflight"),
-]:
-    require_file(path, label)
-
-for family in ("TCP", "Vision_Paper", "Research_Prospectus", "ARM", "RII", "MOI"):
-    require_dir(A / family, f"asset family {family}")
-
-# Current RMA pointer must identify the actual current master and current matrix.
-require_text(
-    R / "TGCV_RMA_current.md",
-    "RMA pointer",
-    ("TGCV_RMA_v2.6.md", "v0.6", "EXT-UPD-4.6", "I-01", "machine consistency validation"),
+# 2. Resolve the sole canonical RMA pointer and its current master dynamically.
+rma_pointer = resolved.get("rma")
+rma_pointer_text = read_text(rma_pointer, "RMA pointer") if rma_pointer else ""
+rma_master_rel = extract(
+    rma_pointer_text,
+    r"^\*\*Current master:\*\*\s*`([^`]+)`",
+    "RMA pointer current master",
 )
 
-# Current matrix pointer must agree with matrix v0.6.
-require_text(
-    ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md",
-    "claim matrix pointer",
-    ("EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md", "v0.6", "EXT-UPD-4.6"),
+rma_master = None
+rma_version = None
+if rma_master_rel:
+    rma_master = ROOT / "00_GOVERNANCE" / "rma" / Path(rma_master_rel).name
+    require_file(rma_master, "resolved current RMA master")
+    if rma_master_rel != rma_master.relative_to(ROOT / "00_GOVERNANCE" / "rma").as_posix():
+        # Accept only a filename resolving inside the canonical RMA directory.
+        fail("RMA current master pointer resolves outside canonical RMA directory")
+    version_match = re.search(r"_v([^.`/]+)\.md$", rma_master.name)
+    if not version_match:
+        fail("resolved current RMA master has no parseable version")
+    else:
+        rma_version = "v" + version_match.group(1)
+
+if rma_master:
+    rma_text = read_text(rma_master, "resolved current RMA master")
+    if "**Status:** CURRENT / OPERATIVE" not in rma_text:
+        fail("resolved current RMA master is not marked CURRENT / OPERATIVE")
+
+# 3. Resolve the canonical Evidence→Claim Matrix dynamically.
+matrix_pointer = resolved.get("claim_matrix_pointer")
+matrix_pointer_text = read_text(matrix_pointer, "current claim matrix pointer") if matrix_pointer else ""
+matrix_rel = extract(
+    matrix_pointer_text,
+    r"^\*\*Current matrix:\*\*\s*`([^`]+)`",
+    "claim matrix pointer current matrix",
+)
+matrix_version = extract(
+    matrix_pointer_text,
+    r"^\*\*Current version:\*\*\s*(v[^\s]+)",
+    "claim matrix pointer current version",
 )
 
-matrix = ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md"
-require_text(matrix, "claim matrix", ("Current v0.6", "C11", "C16", "I-01"))
+matrix = resolved.get("claim_matrix")
+if matrix_rel:
+    expected_matrix = ROOT / matrix_rel
+    if matrix != expected_matrix:
+        fail("canonical matrix manifest and matrix pointer disagree")
+    require_file(expected_matrix, "resolved current claim matrix")
 
-# Traceability is versioned with the current RMA; historical v2.5 remains immutable.
-trace = R / "TGCV_RMA_traceability_v2.6.csv"
-if trace.exists():
-    with trace.open(encoding="utf-8-sig", newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    by_id = {row.get("asset_id"): row for row in rows}
-    required = {
-        "RMA-v2.4": "HISTORICAL-SUPERSEDED",
-        "RMA-v2.5": "HISTORICAL-SUPERSEDED",
-        "RMA-v2.6": "CURRENT",
-        "RMA-current": "CURRENT",
-        "CLAIM-MATRIX": "CURRENT",
-        "STATUS": "CURRENT",
-        "VALIDATOR": "CURRENT",
-        "EXT-UPD-4.6-I01-IMPACT": "CLOSED",
-        "EXT-UPD-4.6-I01-PROPAGATION": "CLOSED-PROPAGATED",
-        "EXT-UPD-4.6-I01-CLOSURE": "CLOSED-CONSISTENT",
-    }
-    for asset_id, expected in required.items():
-        row = by_id.get(asset_id)
-        if row is None:
-            errors.append(f"Traceability missing {asset_id}")
-        elif row.get("status") != expected:
-            errors.append(f"Traceability status mismatch {asset_id}: {row.get('status')} != {expected}")
-    if by_id.get("RMA-current", {}).get("depends_on") != "RMA-v2.6":
-        errors.append("Traceability current pointer mismatch")
-    if by_id.get("CLAIM-MATRIX", {}).get("canonical_location") != "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md":
-        errors.append("Traceability claim matrix location mismatch")
-    if by_id.get("RMA-v2.6", {}).get("canonical_location") != "00_GOVERNANCE/rma/TGCV_RMA_v2.6.md":
-        errors.append("Traceability RMA v2.6 location mismatch")
+matrix_text = read_text(matrix, "current claim matrix") if matrix else ""
+matrix_declared_version = extract(
+    matrix_text,
+    r"^# TGCV — Evidence-to-Claim Matrix — Current\s+(v[^\s]+)",
+    "claim matrix declared current version",
+)
+if matrix_version and matrix_declared_version and matrix_version != matrix_declared_version:
+    fail(f"claim matrix version mismatch: pointer {matrix_version} != artifact {matrix_declared_version}")
+
+# 4. Cross-align RMA and matrix without encoding their versions in executable logic.
+if rma_pointer_text and matrix_rel:
+    declared_matrix_in_rma = extract(
+        rma_pointer_text,
+        r"^\*\*Current Evidence→Claim Matrix:\*\*\s*`([^`]+)`",
+        "RMA pointer current matrix",
+    )
+    if declared_matrix_in_rma and declared_matrix_in_rma != matrix_rel:
+        fail("RMA pointer and matrix pointer disagree")
+
+# 5. Resolve traceability through its stable pointer, then require it to match the resolved RMA version.
+trace_pointer = resolved.get("rma_traceability")
+trace_pointer_text = read_text(trace_pointer, "current RMA traceability pointer") if trace_pointer else ""
+trace_rel = extract(
+    trace_pointer_text,
+    r"^current_traceability=(.+)$",
+    "traceability current target",
+)
+if trace_rel:
+    trace = ROOT / trace_rel
+    require_file(trace, "resolved current RMA traceability")
+    if rma_version and f"TGCV_RMA_traceability_{rma_version}.csv" != trace.name:
+        fail("traceability target does not match resolved current RMA version")
+
+# 6. STATUS must point to the same resolved current RMA and matrix.
+status = resolved.get("status")
+status_text = read_text(status, "STATUS") if status else ""
+status_rma = extract(status_text, r"^\*\*Current RMA:\*\*\s*`([^`]+)`", "STATUS current RMA")
+status_matrix = extract(status_text, r"^\*\*Current Evidence→Claim Matrix:\*\*\s*`([^`]+)`", "STATUS current matrix")
+if rma_master and status_rma:
+    expected_rma = rma_master.relative_to(ROOT).as_posix()
+    if status_rma != expected_rma:
+        fail("STATUS current RMA disagrees with resolved RMA master")
+if matrix and status_matrix:
+    expected_matrix = matrix.relative_to(ROOT).as_posix()
+    if status_matrix != expected_matrix:
+        fail("STATUS current matrix disagrees with resolved matrix")
+
+# 7. Stable-pointer uniqueness: the canonical locations themselves are the sole current pointers.
+# Historical versioned artifacts are intentionally not rejected.
+canonical_current_rma = ROOT / "00_GOVERNANCE" / "rma" / "TGCV_RMA_current.md"
+if rma_pointer != canonical_current_rma:
+    fail("canonical RMA pointer location mismatch")
+canonical_current_matrix = ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md"
+if matrix != canonical_current_matrix:
+    fail("canonical matrix location mismatch")
 
 if errors:
     print("GOVERNANCE_CURRENT_STATE=FAIL")
@@ -111,4 +191,7 @@ if errors:
     sys.exit(1)
 
 print("GOVERNANCE_CURRENT_STATE=PASS")
-print("Current RMA v2.6, matrix v0.6, v2.6 traceability, STATUS, validator and EXT-UPD-4.6/4.8 control chain aligned.")
+print(
+    "Canonical current-state pointers resolved and aligned: "
+    f"RMA {rma_version or 'unresolved'}, matrix {matrix_declared_version or matrix_version or 'unresolved'}."
+)
