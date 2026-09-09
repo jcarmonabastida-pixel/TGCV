@@ -1,0 +1,23 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+TGCV-CORE-001,scientific_core,CURRENT,01_SCIENTIFIC_CORE/,TR131;DOPS21;DOPS22;DOPS23;C-01,Core unchanged
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,EXT-UPD-4.3;EXT-UPD-4.5;EXT-UPD-4.6,Current matrix v0.6
+D-OPS-24,gate,FROZEN-DESIGN,00_GOVERNANCE/impact/,EXT-UPD-4.1;EXT-UPD-4.2;EXT-UPD-4.5,Further route requires new governance decision
+DOPS24-DISCOVERY-PROTOCOL-v0.5,controlled_protocol,FROZEN,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.5.md,EXT-UPD-4.1,Staged Discovery/MTE/TR/Trace/ETC architecture
+C-01,cross_domain_translation_evidence,CLOSED-BOUNDED,00_GOVERNANCE/impact/D-OPS-24_V05_C01_MTE_AUDIT_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_TR_AUDIT_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_TRANSLATION_TRACE_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_EXECUTION_RESULT_v0.1.md;00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_ALTERNATIVE_D1_EXECUTION_RESULT_v0.1.md,EXT-UPD-4.2;EXT-UPD-4.4;EXT-UPD-4.5,Bounded documentary A/B/C; Gate-D routes indeterminate
+C01-GATED-EXEC,gate_d_execution,CLOSED-INDETERMINATE,00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_EXECUTION_RESULT_v0.1.md,D-OPS-24_V05_C01_GATE_D_OPERATIONALIZATION_DESIGN_v0.2,Original Gate D indeterminate
+C01-GATED-ALT-D1,gate_d_alternative_execution,CLOSED-INDETERMINATE,00_GOVERNANCE/impact/D-OPS-24_V05_C01_GATE_D_ALTERNATIVE_D1_EXECUTION_RESULT_v0.1.md,D-OPS-24_V05_C01_GATE_D_ALTERNATIVE_OPERATIONALIZATION_DESIGN_v0.2,Alternative D1 indeterminate
+EXT-UPD-4.2,governance_decision,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.2_C01_GATE_D_RESOLUTION_DECISION_v0.1.md,C-01,Retains C-01
+EXT-UPD-4.3,governance_correction,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.3_EVIDENCE_CLAIM_PROPAGATION_GOVERNANCE_CORRECTION_v0.1.md,C-01,Material evidence requires explicit impact assessment
+EXT-UPD-4.4,propagation,CLOSED-PROPAGATED,00_GOVERNANCE/impact/EXT-UPD-4.4_C01_GATE_D_RESULT_PROPAGATION_v0.1.md,C01-GATED-EXEC;EXT-UPD-4.3,Historical propagation immutable
+EXT-UPD-4.5-D1-IMPACT,evidence_claim_impact,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.5_C01_D1_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md,C01-GATED-ALT-D1;EXT-UPD-4.3,Alternative D1 impact assessed
+EXT-UPD-4.6-I01-IMPACT,evidence_claim_impact,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.6_I01_GATE_C_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md,I-01;EXT-UPD-4.3,I-01 Gate-C impact assessed
+EXT-UPD-4.6-I01-PROPAGATION,propagation,CLOSED-PROPAGATED,00_GOVERNANCE/impact/EXT-UPD-4.6_I01_PROPAGATION_v0.1.md,EXT-UPD-4.6-I01-IMPACT,Matrix/RMA/STATUS propagated
+EXT-UPD-4.6-I01-CLOSURE,consistency_closure,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-4.6_I01_CONSISTENCY_CLOSURE_v0.1.md,EXT-UPD-4.6-I01-PROPAGATION,Control-level consistency closure
+RMA-v2.4,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v2.4.md,EXT-UPD-4.4,Immutable predecessor
+RMA-v2.5,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v2.5.md,EXT-UPD-4.5-D1-IMPACT,Historical predecessor
+RMA-v2.6,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v2.6.md,EXT-UPD-4.6-I01-IMPACT,Current master after I-01 Gate-C impact
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v2.6,Must point to v2.6
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v2.6;CLAIM-MATRIX,Current state
+PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
+SCIENTIFIC-ASSET-REGISTRY,scientific_memory_registry,CURRENT,02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md,EXT-UPD-3.6,Canonical scientific registry
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA-v2.6;traceability-v2.6;STATUS;claim_matrix_current;scientific_registry,Validator reconciled to current state
