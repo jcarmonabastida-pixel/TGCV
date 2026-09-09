@@ -2,20 +2,20 @@
 
 ## 2026-09-09
 
-- Froze `D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.5.md` after final preflight PASS (`D-OPS-24_PREFLIGHT_v0.5.md`).
-- Recorded `EXT-UPD-4.1_DOPS24_V05_FREEZE_PROPAGATION_v0.1.md` as the CLOSED / FROZEN / PROPAGATED governance record.
-- Advanced the current RMA to immutable `TGCV_RMA_v2.2.md`; v2.1 remains historical and immutable.
-- Updated `TGCV_RMA_current.md` to point to v2.2 and synchronized `STATUS.md` with the v0.5 frozen-design state.
-- Created `TGCV_RMA_traceability_v2.2.csv` recording the v0.5 freeze, preflight PASS and current control dependencies.
-- D-OPS-24 v0.5 is now frozen with the staged architecture `Discovery → MTE → Translation Readiness → Translation Trace → Extended TGCV Conformance`.
-- v0.5 search execution remains NOT AUTHORIZED; a new search budget has not yet been established and must be explicitly defined by a separate execution authorization.
-- The exhausted v0.4 F2 budget (3/3) is not inherited by v0.5.
-- No scientific claim, evidence level, empirical result, domain validation, originality assessment or epistemic status changed.
-- Historical v0.4/F2 artifacts remain immutable. No Q4 is reopened under v0.4.
-- The from-scratch prohibition and canonical scientific-memory registry remain operative.
-- CI PASS is not claimed for the propagation commits unless a completed workflow result is directly observable.
-
-- Previous F2-Q3 execution and closure remain recorded below as historical state.
+- Completed C-01 Gate A / Minimum Translation Eligibility: PASS.
+- Completed C-01 Gate B / Translation Readiness: PASS.
+- Completed C-01 Gate C / Translation Trace: PASS with bounded/partial mappings.
+- Completed C-01 Gate D / Extended TGCV Conformance: INDETERMINATE — downstream extension not established.
+- Recorded `D-OPS-24_V05_C01_EXTENDED_CONFORMANCE_AUDIT_v0.1.md` as the immutable Gate-D audit record.
+- Created `EXT-UPD-4.1_C01_RESULT_PROPAGATION_v0.1.md` and propagated the C-01 result through the current governance state.
+- Advanced current RMA to immutable `TGCV_RMA_v2.3.md`; v2.2 remains historical and immutable.
+- Updated `TGCV_RMA_current.md` to point to v2.3 and synchronized `STATUS.md` with the C-01 gate profile.
+- C-01 strengthens bounded documentary cross-domain translation evidence for `S`, `Uτ,D`, `T_acc,D` and `ΔT_acc`, without changing TGCV ontology.
+- Gate D remains INDETERMINATE because Reach and Trajectory were not independently operationalized and Outcome → Value was not established in the source.
+- No causal, predictive, value-creation, universal-validity, originality or superiority claim is added.
+- No dataset or empirical execution was performed.
+- Propagation is closed at the control-record level; a consistency closure remains the next control action.
+- No further Gate-D resolution or additional candidate operation is authorized by propagation alone.
 
 ## 2026-09-08
 
