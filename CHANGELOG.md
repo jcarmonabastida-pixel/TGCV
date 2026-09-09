@@ -5,23 +5,17 @@
 - Completed C-01 Gate A / Minimum Translation Eligibility: PASS.
 - Completed C-01 Gate B / Translation Readiness: PASS.
 - Completed C-01 Gate C / Translation Trace: PASS with bounded/partial mappings.
-- Completed C-01 Gate D / Extended TGCV Conformance: INDETERMINATE — downstream extension not established.
-- Recorded `D-OPS-24_V05_C01_EXTENDED_CONFORMANCE_AUDIT_v0.1.md` as the immutable Gate-D audit record.
-- Created `EXT-UPD-4.1_C01_RESULT_PROPAGATION_v0.1.md` and propagated the C-01 result through the current governance state.
-- Advanced current RMA to immutable `TGCV_RMA_v2.3.md`; v2.2 remains historical and immutable.
-- Updated `TGCV_RMA_current.md` to point to v2.3 and synchronized `STATUS.md` with the C-01 gate profile.
-- Created the canonical current Evidence→Claim Matrix and pointer; reconstructed the matrix from the historical five-column scientific record and added an explicit evidence-impact column.
-- Registered C-01 in the current Evidence→Claim Matrix as material documentary/translational evidence, with bounded impact on the Core-translation claim and no upgrade of Gate D or downstream causal/value claims.
-- EXT-UPD-4.3 established mandatory explicit Evidence→Claim impact assessment for every material evidence-bearing closure.
-- Created `TGCV_RMA_traceability_v2.3.csv` and synchronized the dependency map with C-01, EXT-UPD-4.2, EXT-UPD-4.3, RMA v2.3 and the current claim-control surfaces.
-- Updated the machine governance validator to control RMA v2.3, traceability v2.3 and the current Evidence→Claim Matrix/pointer.
-- C-01 strengthens bounded documentary cross-domain translation evidence for `S`, `Uτ,D`, `T_acc,D` and `ΔT_acc`, without changing TGCV ontology.
-- Gate D remains INDETERMINATE because Reach and Trajectory were not independently operationalized and Outcome → Value was not established in the source.
-- No causal, predictive, value-creation, universal-validity, originality or superiority claim is added.
-- No dataset or empirical execution was performed.
-- Propagation remains pending final consistency closure; external `05_ASSETS` are intentionally not refreshed in this control window.
-- EXT-UPD-4.2 retains C-01 and opens the controlled Gate-D resolution path; second-domain testing remains an alternative future path.
-- No Gate-D execution, additional candidate operation, dataset acquisition/processing, empirical execution, outcome/value analysis or causal inference is authorized by this propagation alone.
+- Completed C-01 Gate D / Extended TGCV Conformance: INDETERMINATE — extension boundary identified.
+- Recorded `D-OPS-24_V05_C01_GATE_D_EXECUTION_RESULT_v0.1.md` as the immutable Gate-D execution result.
+- Created `EXT-UPD-4.4_C01_GATE_D_RESULT_PROPAGATION_v0.1.md` and propagated the material Gate-D result through the current governance state.
+- Advanced current RMA to immutable `TGCV_RMA_v2.4.md`; v2.3 remains historical and immutable.
+- Updated `TGCV_RMA_current.md` to point to v2.4 and synchronized `STATUS.md` with the Gate-D result.
+- Advanced the canonical current Evidence→Claim Matrix to v0.4 and updated its current pointer.
+- Registered the Gate-D result as material evidence with explicit Evidence→Claim impact: preserve bounded Core-translation support while recording the downstream extension boundary; no claim upgrade to full conformance, causality, prediction, value creation, universal validity, originality or superiority.
+- Created `TGCV_RMA_traceability_v2.4.csv` and synchronized the dependency map with the Gate-D execution result, EXT-UPD-4.4, RMA v2.4 and current claim-control surfaces.
+- No `05_ASSETS` refresh was performed; external-asset lag remains deliberate and traceable.
+- A new governance decision is required before any further attempt to resolve the C-01 Gate-D boundary or initiate an independent-domain test.
+- No new D-OPS QF, dataset acquisition, causal analysis, value optimization or second-domain search was authorized by this result.
 
 ## 2026-09-08
 
