@@ -95,6 +95,10 @@ def main() -> int:
         return stop("realization schedule is incomplete")
     if not all(r["evidence_reference"] in evidence_text for r in adjudication):
         return stop("mandatory evidence reference is unresolved")
+    if set(realization[0].keys()) != {"run_id", "timepoint_id", "tau_id", "realization_status", "order"}:
+        return stop("realization schedule schema changed")
+    if any(r["realization_status"] not in {"REALIZED", "NOT_REALIZED"} for r in realization):
+        return stop("realization schedule contains an invalid realization status")
 
     # Certified bounded sets are taken only from the frozen pre-realization
     # adjudication. Realization records are retained solely for observed sets.
@@ -109,11 +113,26 @@ def main() -> int:
 
     observed = {
         t: sorted(
-            {r["tau_id"] for r in realization if r["timepoint_id"] == t and r["expected_realization"] == "REALIZED"},
+            {r["tau_id"] for r in realization if r["timepoint_id"] == t and r["realization_status"] == "REALIZED"},
             key=CANDIDATES.index,
         )
         for t in TIMEPOINTS
     }
+
+    # Explicit non-circularity controls: TB is certified accessible at t0 but
+    # deliberately not realized; TD is inaccessible at t0 and realized only at
+    # t1. These conditions demonstrate that certified accessibility is not being
+    # inferred from realization.
+    non_circularity_checks = {
+        "TB_certified_t0": "TB" in certified["t0"],
+        "TB_not_realized_t0": "TB" not in observed["t0"],
+        "TD_not_certified_t0": "TD" not in certified["t0"],
+        "TD_realized_t1": "TD" in observed["t1"],
+        "TD_certified_t1": "TD" in certified["t1"],
+    }
+    non_circularity = "PASS" if all(non_circularity_checks.values()) else "FAIL"
+    if non_circularity == "FAIL":
+        return stop("non-circularity controls failed")
 
     delta = sorted(set(certified["t0"]).symmetric_difference(certified["t1"]), key=CANDIDATES.index)
     if not delta:
@@ -121,7 +140,6 @@ def main() -> int:
     else:
         decision = "BOUNDED PASS"
 
-    non_circularity = "PASS" if observed["t0"] != certified["t0"] or observed["t1"] != certified["t1"] else "PASS"
     fingerprint = hashlib.sha256("\n".join(f"{p}:{git_blob_sha(p)}" for p in HASHES).encode()).hexdigest()
 
     result = {
@@ -141,6 +159,7 @@ def main() -> int:
         "OBSERVED_T1": observed["t1"],
         "ACHIEVED_LEVEL": "L3" if delta else "L3_NOT_DEMONSTRATED",
         "NON_CIRCULARITY_STATUS": non_circularity,
+        "NON_CIRCULARITY_CHECKS": non_circularity_checks,
         "REPRODUCIBILITY_STATUS": "PASS",
         "DEVIATIONS": [],
         "DECISION": decision,
