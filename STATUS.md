@@ -1,10 +1,10 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-09
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.0
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.1
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6
-**Governance state:** EXT-UPD-4.9 CLOSED as strategic disposition; INDUSTRIAL-TRACK PROPOSED; industrial utility remains unproven
-**Current propagation:** INDUSTRIAL-TRACK Governance Specification v0.1 + Evidence→Claim Impact Assessment v0.1 propagated; no scientific claim change
+**Governance state:** EXT-UPD-4.9 CLOSED as strategic disposition; INDUSTRIAL-TRACK PROPOSED; Industrial Case Specification PROPOSED / DESIGN-ONLY; industrial utility remains unproven
+**Current propagation:** Industrial Case Specification v0.1 + Evidence→Claim Impact Assessment v0.1 propagated; no scientific claim change
 **C-01 gate profile:** MTE PASS / Translation Readiness PASS / Translation Trace PASS / Extended Conformance INDETERMINATE
 **I-01 gate profile:** MTE PASS / Translation Readiness PASS / Translation Trace INDETERMINATE / constructive operationalization INDETERMINATE
 **EXT-UPD-4.8 profile:** Stage A PASS / Stage B comparative IUT-2 NOT ACCEPTED / corrective accessibility INDETERMINATE
@@ -31,7 +31,9 @@ No causal, predictive, financial-value, superiority, universal-generalization or
 
 EXT-UPD-4.9 formally separates industrial applicability from scientific Core validation. Further O3 rescue execution is not authorized. The Core, falsification criteria and claim statuses remain unchanged.
 
-`INDUSTRIAL-TRACK` is **PROPOSED** as a programme/application line only. Governance Specification v0.1 is now operative design infrastructure; it is not evidence or validation and its associated impact assessment records no scientific claim change. Future industrial execution requires a new explicit governance decision after design review against independently specified entry conditions.
+`INDUSTRIAL-TRACK` is **PROPOSED** as a programme/application line only. Governance Specification v0.1 is operative design infrastructure; execution is NOT AUTHORIZED.
+
+Industrial Case Specification v0.1 is **PROPOSED / DESIGN-ONLY**. It defines the minimum admission structure for a future concrete industrial case but selects no case and authorizes no execution. Its impact assessment records **NO SCIENTIFIC CLAIM CHANGE**.
 
 ## Authorization boundary
 

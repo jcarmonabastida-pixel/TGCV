@@ -2,10 +2,10 @@
 
 **Date:** 2026-09-09
 **Status:** CURRENT / OPERATIVE
-**Current master:** `TGCV_RMA_v3.0.md`
+**Current master:** `TGCV_RMA_v3.1.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6
 **Governance decision:** EXT-UPD-4.9 — strategic disposition of industrial applicability result; INDUSTRIAL-TRACK PROPOSED; industrial utility remains unproven
-**Current propagation:** INDUSTRIAL-TRACK Governance Specification v0.1 and its Evidence→Claim Impact Assessment v0.1 propagated; no scientific claim change
+**Current propagation:** Industrial Case Specification v0.1 and its Evidence→Claim Impact Assessment v0.1 propagated; no scientific claim change
 **Evidence-control correction:** EXT-UPD-4.3 — material evidence requires explicit Evidence→Claim impact assessment
 
 ## Current state
@@ -28,9 +28,9 @@ EXT-UPD-4.9 separates industrial applicability from scientific Core validation. 
 
 A separate INDUSTRIAL-TRACK is PROPOSED as a programme/application line. Its Governance Specification v0.1 is CURRENT / OPERATIVE as design infrastructure only; execution remains NOT AUTHORIZED.
 
-The associated Evidence→Claim Impact Assessment records NO SCIENTIFIC CLAIM CHANGE. No C01–C16 claim is upgraded and no scientific gate is closed by the specification.
+Industrial Case Specification v0.1 is now PROPOSED / DESIGN-ONLY. It defines the minimum admission structure for a future concrete case but selects no case and authorizes no execution. Its associated impact assessment records NO SCIENTIFIC CLAIM CHANGE.
 
-Future design must satisfy independently specified case identifiability, variable observability, accessibility closure, utility criteria, frozen comparison where applicable, and evidence separation before any execution authorization is considered.
+No C01–C16 claim is upgraded and no scientific gate is closed by this design artifact.
 
 ## Epistemic boundary
 

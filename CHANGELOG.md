@@ -21,6 +21,11 @@
 - Propagated Stage-A bounded applicability evidence into current RMA v2.7, STATUS and traceability; current Evidence→Claim Matrix remains v0.6 without silent epistemic upgrade.
 - Industrial utility remains UNPROVEN / OPEN; Stage B remains separately gated and NOT AUTHORIZED.
 - GOV-REPAIR-01 version-independent current-state validation was closed; canonical-state validation remains dynamic and version-independent.
+- EXT-UPD-4.9 formally separated industrial applicability from scientific Core validation; INDUSTRIAL-TRACK was registered as PROPOSED design infrastructure only.
+- Closed the EXT-UPD-4.9 governance propagation consistency audit and enforced atomic canonical propagation for multi-asset state changes.
+- Prepared `INDUSTRIAL_CASE_SPECIFICATION_v0.1.md` as the next design-only artifact. No industrial case was selected, no experiment or dataset was executed, and no scientific claim changed.
+- Recorded `EXT-UPD-4.9_INDUSTRIAL_CASE_SPECIFICATION_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md` with **IMPACT = NO SCIENTIFIC CLAIM CHANGE**.
+- Advanced current RMA to immutable `TGCV_RMA_v3.1.md`; `TGCV_RMA_current.md`, current traceability and `STATUS.md` were propagated atomically.
 
 ## 2026-09-08
 
