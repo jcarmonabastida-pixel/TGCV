@@ -2,9 +2,9 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v1.9.md`  
-**Governance decision:** EXT-UPD-4.0 / F2-Q1 execution authorization  
-**Conformance closure:** EXT-UPD-4.0 CLOSED / CONSISTENT at document/control level; preflight v0.4 CLOSED / PASS.  
+**Current master:** `TGCV_RMA_v2.0.md`  
+**Governance decision:** EXT-UPD-4.0 / F2-Q2 execution authorization  
+**Conformance closure:** EXT-UPD-4.0 CLOSED / CONSISTENT at document/control level; D-OPS-24 v0.4 CLOSED / PREFLIGHT PASS; F2-Q2 execution CLOSED.  
 
 This file is the current RMA pointer. Historical RMA versions remain immutable.
 
@@ -30,12 +30,13 @@ TR-131, RUST-DYN-1 and RUST-DYN-2 remain CLOSED with bounded interpretations. In
 - EXT-UPD-3.9: CLOSED / GOVERNANCE CORRECTION.
 - EXT-UPD-4.0: CLOSED / GOVERNANCE DECISION and propagation.
 - v0.4: FROZEN / PREFLIGHT PASS.
-- F2-Q1: **AUTHORIZED and EXECUTED; zero admissible candidate records returned by the registered exact formulation in the two searched scholarly-search channels.**
-- F2-Q2/Q3: **NOT AUTHORIZED / NOT EXECUTED.**
+- F2-Q1: AUTHORIZED and EXECUTED; zero candidates returned by the registered exact formulation in the two search channels used.
+- F2-Q2: AUTHORIZED and EXECUTED; zero admissible candidates identified.
+- F2-Q3: NOT AUTHORIZED / NOT EXECUTED.
 
 ## Authorization boundary
 
-PF-19 is satisfied for F2-Q1 only. Q2/Q3, dataset acquisition/processing, empirical execution, outcome/model/value analysis and D-OPS-24 conformance execution remain NOT AUTHORIZED.
+PF-19 is satisfied for F2-Q2. Q3, dataset acquisition/processing, empirical execution, outcome/model/value analysis and D-OPS-24 conformance execution remain NOT AUTHORIZED.
 
 ## Scientific-memory control
 
@@ -43,10 +44,10 @@ PF-19 is satisfied for F2-Q1 only. Q2/Q3, dataset acquisition/processing, empiri
 
 ## Non-claims
 
-F2 remains a discovery family, not an admitted or validated external domain. Q1 returning no admissible candidate does not establish domain absence, validation, cross-domain generalisation, translation conformance, causality, prediction, value linkage, originality or superiority.
+F2 remains a discovery family, not an admitted or validated external domain. Q1 and Q2 returning no admissible candidates do not establish domain absence, exhaustion, validation, cross-domain generalisation, translation conformance, causality, prediction, value linkage, originality or superiority.
 
 ## Propagation rule
 
 `accepted result/decision → impact analysis → RMA → dependent current assets → STATUS → claim/evidence control → consistency audit → next controlled operation`.
 
-**Next gate:** controlled review of the F2-Q1 zero-result and decision on whether to authorize Q2 under a separately revalidated query-family registration.
+**Next gate:** controlled decision on whether to authorize F2-Q3, with no execution implied by this pointer.
