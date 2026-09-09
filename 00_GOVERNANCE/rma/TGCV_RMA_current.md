@@ -2,9 +2,9 @@
 
 **Date:** 2026-09-09
 **Status:** CURRENT / OPERATIVE
-**Current master:** `TGCV_RMA_v2.8.md`
+**Current master:** `TGCV_RMA_v2.9.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6
-**Governance decision:** EXT-UPD-4.8 — Stage B corrective accessibility route closed indeterminate; industrial utility remains unproven
+**Governance decision:** EXT-UPD-4.9 — strategic disposition of industrial applicability result; INDUSTRIAL-TRACK PROPOSED; industrial utility remains unproven
 **Evidence-control correction:** EXT-UPD-4.3 — material evidence requires explicit Evidence→Claim impact assessment
 
 ## Current state
@@ -19,7 +19,13 @@
 
 TR-131, RUST-DYN-1 and RUST-DYN-2 remain CLOSED with bounded interpretations. C-01 remains bounded documentary cross-domain translation evidence through Gates A-C; original Gate D and alternative D1 remain INDETERMINATE. I-01 completed Gate C INDETERMINATE and its single constructive operationalization attempt remained INDETERMINATE.
 
-EXT-UPD-4.8 Stage A remains CLOSED / PASS. Stage B comparative execution produced a procedural executor PASS but IUT-2 was not accepted because O3 accessibility was not independently grounded. The single authorized corrective accessibility reassessment was repaired and re-executed; the repaired audit is procedurally PASS and scientifically INDETERMINATE. MC02 and MC03 remain unresolved and HS-AC01 remains the decisive hard stop.
+EXT-UPD-4.8 remains CLOSED at the corrective accessibility boundary. Stage A is PASS; Stage-B comparative IUT-2 was not accepted; the corrective accessibility reassessment is procedurally PASS but scientifically INDETERMINATE. Industrial utility remains UNPROVEN / OPEN.
+
+## Strategic disposition
+
+EXT-UPD-4.9 separates industrial applicability from scientific Core validation. No further O3 rescue execution is authorized. The scientific Core, falsification criteria and existing claim statuses remain unchanged.
+
+A separate INDUSTRIAL-TRACK is now PROPOSED as a programme/application line. It is not evidence or validation. Future execution requires a new explicit governance decision after design review against independently specified entry conditions.
 
 ## Epistemic boundary
 
@@ -29,11 +35,11 @@ No industrial utility, superiority, causality, prediction, financial value, univ
 
 ## Authorization boundary
 
-No further O3 accessibility execution is authorized. No Stage-C/Stage-D execution, new domain, I-01 reopening, dataset execution, industrial partner engagement, causal inference, value optimization, Core modification or external-asset update is authorized without a new explicit governance decision and authorization.
+No further O3 accessibility execution, Stage-C/Stage-D execution, new industrial experiment, dataset execution, industrial evidential engagement, causal inference, value optimization, Core modification or external-asset upgrade is authorized by EXT-UPD-4.9. Only preparation/design of governance artifacts for a possible future industrial track is authorized.
 
 ## External assets
 
-No `05_ASSETS` update is made in this control window. External-asset lag remains deliberate and traceable.
+No `05_ASSETS` update is made to represent industrial utility. External-asset lag remains deliberate and traceable.
 
 ## Propagation rule
 
