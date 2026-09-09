@@ -2,10 +2,10 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v1.3.md`  
+**Current master:** `TGCV_RMA_v1.4.md`  
 **Governance decision:** DR-044  
 **Conformance closure:** DR-045  
-**Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6 + EXT-UPD-3.7
+**Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6 + EXT-UPD-3.7 + EXT-UPD-3.8
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
 
@@ -51,10 +51,12 @@ The from-scratch prohibition remains operative.
 - Design: FROZEN v0.1.
 - Preflight: OPEN / controls defined.
 - Candidate-domain eligibility audit: CLOSED — no eligible candidate identified on present record.
-- Candidate-pool expansion protocol: **FROZEN / DISCOVERY PROTOCOL v0.2**.
-- Next controlled operation: bounded empirical-domain discovery within the frozen protocol.
+- Discovery protocol v0.2: HISTORICAL / NON-ADMISSIBLE EXECUTION after query-budget nonconformance.
+- EXT-UPD-3.8: CLOSED / CONSISTENT corrective propagation.
+- Discovery protocol v0.3: **FROZEN / CORRECTED DISCOVERY PROTOCOL**.
+- Next controlled operation: new bounded documentary discovery pass under v0.3, after propagation closure.
 
-Discovery is limited to documentary candidate identification. Dataset download, processing, empirical execution, outcome/value analysis, model fitting and D-OPS-24 execution remain NOT AUTHORIZED.
+Discovery remains documentary only. Dataset download, processing, empirical execution, outcome/value analysis, model fitting and D-OPS-24 execution remain NOT AUTHORIZED.
 
 ## Propagation rule
 
@@ -67,3 +69,5 @@ Discovery is limited to documentary candidate identification. Dataset download, 
 **EXT-UPD-3.6 scientific asset reconciliation: CLOSED / CONSISTENT.**
 
 **EXT-UPD-3.7 D-OPS-24 discovery protocol freeze: CLOSED / CONSISTENT.**
+
+**EXT-UPD-3.8 D-OPS-24 discovery protocol correction: CLOSED / CONSISTENT.**
