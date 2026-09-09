@@ -102,9 +102,10 @@ if rma_master_rel:
     require_file(rma_master, "resolved current RMA master")
     if rma_master_rel != rma_master_name:
         fail("RMA current master pointer resolves outside canonical RMA directory")
-    version_match = re.fullmatch(r"TGCV_RMA_(v[^.]+)\.md", rma_master.name)
+    # Accept semantic RMA versions such as v3, v3.7, v3.7.1 without hardcoding one version.
+    version_match = re.fullmatch(r"TGCV_RMA_(v\d+(?:\.\d+)*)\.md", rma_master.name)
     if not version_match:
-        fail("resolved current RMA master has no parseable version")
+        fail("resolved current RMA master has no parseable semantic version")
     else:
         rma_version = version_match.group(1)
 if rma_master:

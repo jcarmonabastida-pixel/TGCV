@@ -26,6 +26,8 @@
 - Completed Industrial Candidate Discovery Cycle v0.2. Screened ICD-06 Road Traffic Fine Management, ICD-07 Hospital Sepsis pathway and ICD-08 BPI-2017 decision process; none satisfied the mandatory accessibility filter for retention to IT-G1.
 - Recorded the discovery-cycle Evidence→Claim Impact Assessment as IMPACT = NO SCIENTIFIC CLAIM CHANGE.
 - Advanced current RMA atomically to immutable `TGCV_RMA_v3.7.md`; current pointer, traceability and `STATUS.md` synchronized. No industrial candidate currently qualifies for IT-G1 retention.
+- Completed second-pass structural audit of the current-state validator after CI exposed semantic-version parsing incompatibility with `v3.7`.
+- Repaired semantic RMA version parsing without hardcoding the current version; no scientific state changed.
 
 ## 2026-09-08
 
