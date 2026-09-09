@@ -39,13 +39,9 @@ HASHES = {
 }
 
 
-def fail(check: str, detail: str) -> None:
-    print(f"FAIL | {check} | {detail}")
-
-
 def blob_sha(path: Path) -> str:
     data = path.read_bytes()
-    header = f"blob {len(data)}\\0".encode("utf-8")
+    header = f"blob {len(data)}\0".encode("utf-8")
     return hashlib.sha1(header + data).hexdigest()
 
 
@@ -58,14 +54,12 @@ def main() -> int:
     checks: dict[str, bool] = {}
     errors: list[str] = []
 
-    # 1. Repository/package identity.
     manifest = (FIXTURE / "FIXTURE_MANIFEST_v0.1.md").read_text(encoding="utf-8")
     checks["fixture_identity"] = f"**Fixture ID:** `{EXPECTED_FIXTURE}`" in manifest
     checks["package_identity"] = f"**Package ID:** `{EXPECTED_PACKAGE}`" in manifest
     checks["seed"] = f"**Deterministic seed:** `{EXPECTED_SEED}`" in manifest
     checks["predicate"] = f"fixed accessibility predicate version `{EXPECTED_PREDICATE}`" in manifest
 
-    # 2. Immutable package integrity: Git blob SHA-1, exactly as recorded.
     for rel, expected in HASHES.items():
         path = ROOT / rel
         key = f"hash:{rel}"
@@ -75,12 +69,10 @@ def main() -> int:
             actual = blob_sha(path) if path.is_file() else "MISSING"
             errors.append(f"{rel}: expected {expected}, got {actual}")
 
-    # 3. Authorization record must explicitly authorize execution.
     auth_path = GOV / "TR-132-MOD-1_AUTHORIZATION_RECORD_v0.1.md"
     auth = auth_path.read_text(encoding="utf-8") if auth_path.is_file() else ""
     checks["authorization"] = "Status: EXECUTION AUTHORIZED" in auth and "EXECUTION AUTHORIZED" in auth
 
-    # 4. Candidate universe and timepoints are invariant.
     transformations = read_csv("TRANSFORMATIONS_v0.1.csv")
     states = read_csv("STATES_v0.1.csv")
     adjudication = read_csv("ACCESSIBILITY_ADJUDICATION_v0.1.csv")
@@ -100,7 +92,6 @@ def main() -> int:
     )
     checks["evidence_complete"] = all(r["evidence_reference"] in evidence for r in adjudication)
 
-    # 5. Realization is present only as a separate control input and cannot define accessibility.
     realization = read_csv("REALIZATION_SCHEDULE_v0.1.csv")
     checks["realization_separate"] = len(realization) == 10 and all(
         r["tau_id"] in EXPECTED_CANDIDATES for r in realization
@@ -113,13 +104,11 @@ def main() -> int:
         r["tau_id"] == "TE" and r["expected_accessibility"] == "INDETERMINATE" for r in controls
     )
 
-    # 6. Expected bounded L3 sets are represented by the frozen adjudication only.
     t0 = {r["tau_id"] for r in adjudication if r["timepoint_id"] == "t0" and r["status"] == "ACCESSIBLE"}
     t1 = {r["tau_id"] for r in adjudication if r["timepoint_id"] == "t1" and r["status"] == "ACCESSIBLE"}
     checks["bounded_sets"] = t0 == {"TA", "TB"} and t1 == {"TA", "TB", "TD"}
     checks["temporal_delta"] = t0.symmetric_difference(t1) == {"TD"}
 
-    # 7. Explicitly prohibit known out-of-scope execution material.
     forbidden = []
     for p in EXEC.rglob("*"):
         if p.is_file() and p.name != Path(__file__).name and p.suffix.lower() in {".zip", ".parquet", ".sqlite", ".db"}:
@@ -128,7 +117,6 @@ def main() -> int:
     if forbidden:
         errors.append("External/data artifact in execution layer: " + ", ".join(forbidden))
 
-    # 8. Report and exit. No scientific execution is performed here.
     failed = [name for name, ok in checks.items() if not ok]
     status = "PASS" if not failed and not errors else "FAIL"
     result = {
