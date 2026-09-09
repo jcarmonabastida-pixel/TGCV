@@ -2,6 +2,10 @@
 
 ## 2026-09-09
 
+- Reconciled the current RMA pointer and STATUS after EXT-UPD-3.9: the consistency closure is CLOSED / CONSISTENT at document/control level, while post-closure CI for commit `9098ace5d48fe8313c672bd6fe87b07ec2edba27` remains not observable.
+- No scientific state changed; no D-OPS-24 discovery, dataset acquisition, empirical execution, outcome/value analysis or conformance execution was authorized.
+- The new commit exists to trigger and observe the canonical current-state CI on the reconciled control surface.
+
 - Recorded EXT-UPD-3.9 as the versioned governance correction for the D-OPS-24 v0.3 F1-Q3 query-formulation deviation.
 - Preserved the exploratory F1-Q3 searches as NON-ADMISSIBLE and retained the compliant F1 discovery pass stopped at Q2 under GOVERNANCE HOLD.
 - Created immutable `00_GOVERNANCE/rma/TGCV_RMA_v1.6.md` and `TGCV_RMA_traceability_v1.6.csv`; RMA v1.5 remains historical and immutable.
@@ -36,7 +40,7 @@
 - D-OPS-24 bounded empirical-domain discovery was procedurally opened; dataset download, processing and empirical execution remain NOT AUTHORIZED.
 
 - Froze `00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md` as the bounded documentary candidate-domain discovery protocol.
-- The frozen protocol defines six bounded source families, documentary evidence requirements, outcome-blind selection, hard exclusions, bounded search budget, candidate admission threshold, stopping rule and explicit authorization boundaries.
+- The frozen protocol defines six bounded source families, documentary evidence requirements, outcome-blind selection, hard exclusions, bounded search budget, stopping rule and explicit authorization boundaries.
 - Created `00_GOVERNANCE/impact/EXT-UPD-3.7_DOPS24_DISCOVERY_PROTOCOL_FREEZE_v0.1.md` to propagate the protocol freeze through current governance.
 - Created immutable `00_GOVERNANCE/rma/TGCV_RMA_v1.3.md` and `TGCV_RMA_traceability_v1.3.csv`.
 - Updated the current RMA pointer and STATUS to v1.3 / EXT-UPD-3.7.
