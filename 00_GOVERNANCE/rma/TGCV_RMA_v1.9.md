@@ -25,7 +25,7 @@ No scientific claim, evidence level, empirical result or domain validation chang
 - EXT-UPD-3.9: CLOSED / GOVERNANCE CORRECTION.
 - EXT-UPD-4.0: CLOSED / GOVERNANCE DECISION and propagation.
 - v0.4: FROZEN / PREFLIGHT PASS.
-- F2-Q1: **AUTHORIZED and EXECUTED; zero admissible candidate records returned by the registered exact formulation in the two searched scholarly-search channels.**
+- F2-Q1: **AUTHORIZED and EXECUTED; zero candidate records were returned by the registered exact formulation in the two search channels used.**
 - F2-Q2/Q3: **NOT AUTHORIZED / NOT EXECUTED.**
 
 ## Authorization and execution state
@@ -34,7 +34,7 @@ PF-19 is satisfied for F2-Q1 only through explicit authorization recorded in `D-
 
 The Q1 operation was limited to the exact pre-registered formulation. No reformulation, dataset acquisition, empirical execution, outcome/model/value analysis or D-OPS-24 translation-conformance execution occurred.
 
-The absence of returned candidates is a discovery result only. It does not constitute evidence that no eligible candidate exists in the broader literature or that F2 is scientifically exhausted.
+The absence of returned candidates is a documentary discovery result only. It does not constitute evidence that no eligible candidate exists in the broader literature or that F2 is scientifically exhausted.
 
 ## Scientific-memory control
 
@@ -46,7 +46,7 @@ TR-131, RUST-DYN-1 and RUST-DYN-2 remain CLOSED with bounded interpretations. In
 
 ## Non-claims
 
-F2 remains a discovery family, not an admitted or validated external domain. Q1 returned no admissible candidate under its exact formulation; this does not establish domain absence, validation, cross-domain generalisation, translation conformance, causality, prediction, value linkage, originality or superiority.
+F2 remains a discovery family, not an admitted or validated external domain. Q1 returned no candidate under its exact formulation; this does not establish domain absence, validation, cross-domain generalisation, translation conformance, causality, prediction, value linkage, originality or superiority.
 
 ## Propagation rule
 
