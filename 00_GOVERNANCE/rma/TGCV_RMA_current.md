@@ -2,10 +2,10 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v3.5.md`  
+**Current master:** `TGCV_RMA_v3.6.md`  
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6  
 **Governance decision:** EXT-UPD-4.9 — INDUSTRIAL-TRACK PROPOSED; industrial utility remains unproven  
-**Current propagation:** ICD-01 IT-G1 reviewed and failed; no candidate currently admitted
+**Current propagation:** ICD-01 and ICD-02 IT-G1 reviewed and failed; no candidate currently admitted
 
 ## Current state
 
@@ -19,7 +19,7 @@
 
 C-IND-01 remains `IT-G1 FAIL / NOT ADMITTED`.
 
-ICD-01 was reviewed under IT-G1 and **FAILED / NOT ADMITTED** because decision-time accessibility/admissibility could not be independently closed from the documentary evidence. ICD-02 remains retained but not admitted to IT-G1.
+ICD-01 was reviewed under IT-G1 and **FAILED / NOT ADMITTED** because decision-time accessibility/admissibility could not be independently closed from documentary evidence. ICD-02 was subsequently reviewed under IT-G1 and **FAILED / NOT ADMITTED** for the same decisive accessibility-closure reason.
 
 No industrial execution, dataset execution, partner evidential engagement, utility assessment, causal inference or value assessment is authorized.
 
@@ -29,8 +29,8 @@ No C01–C16 claim changes. No scientific gate is upgraded or closed. Industrial
 
 ## Authorization boundary
 
-ICD-01 cannot advance to IT-G2 in its present form. A future revision requires a separately grounded accessibility specification and a new IT-G1 review.
+Neither ICD-01 nor ICD-02 can advance to IT-G2 in its present form. A future revision requires a separately grounded accessibility specification and a new IT-G1 review.
 
 ## Next controlled operation
 
-If authorized, propose a separate IT-G1 review of ICD-02 or perform a new documentary candidate discovery cycle. No dataset execution is implied.
+With the retained candidates exhausted at IT-G1, the next controlled operation, if authorized, is a new documentary candidate discovery cycle. No dataset execution is implied.

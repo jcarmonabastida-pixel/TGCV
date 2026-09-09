@@ -24,6 +24,9 @@
 - Completed IT-G1 Case Identifiability Review for **ICD-01: FAIL / NOT ADMITTED**. Case identity, unit and temporal boundary were sufficiently bounded, but decision-time accessibility/admissibility could not be independently closed from documentary evidence.
 - Recorded the ICD-01 IT-G1 Evidence→Claim Impact Assessment as **IMPACT = NO SCIENTIFIC CLAIM CHANGE**.
 - Advanced current RMA atomically to immutable `TGCV_RMA_v3.5.md`; current pointer, traceability and `STATUS.md` synchronized. ICD-01 does not progress to IT-G2.
+- Completed IT-G1 Case Identifiability Review for **ICD-02: FAIL / NOT ADMITTED**. Case identity, unit and temporal boundary were sufficiently bounded, but decision-time accessibility/admissibility could not be independently closed from documentary evidence.
+- Recorded the ICD-02 IT-G1 Evidence→Claim Impact Assessment as **IMPACT = NO SCIENTIFIC CLAIM CHANGE**.
+- Advanced current RMA atomically to immutable `TGCV_RMA_v3.6.md`; current pointer, traceability, `STATUS.md` and candidate matrix synchronized. The retained documentary candidate set is exhausted at IT-G1.
 
 ## 2026-09-08
 
