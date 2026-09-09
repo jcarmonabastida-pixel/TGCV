@@ -5,7 +5,7 @@
 
 ## 1. Scope
 
-This closure covers the controlled Stage-A case specification for IUT-A-01, its Evidence→Claim impact assessment, governance propagation, canonical-state reconciliation and machine validation.
+This closure covers the controlled Stage-A case specification for IUT-A-01, its Evidence→Claim impact assessment, governance propagation, canonical-state reconciliation and final machine validation.
 
 ## 2. Canonical current state
 
@@ -19,7 +19,7 @@ This closure covers the controlled Stage-A case specification for IUT-A-01, its 
 
 ## 3. Governance-state repair
 
-The post-propagation state exposed a stale current-RMA pointer during reconciliation. This has been repaired at the canonical-state level rather than by adding another historical version exception to the validator.
+The post-propagation state exposed a stale current-RMA pointer during reconciliation. This was repaired at the canonical-state level rather than by adding another historical version exception to the validator.
 
 The validator was additionally strengthened to enforce bidirectional alignment among:
 
@@ -40,9 +40,16 @@ The repaired validator is committed as:
 
 `ff50c85bc914e22c23394e2808892769fcc2c70a`
 
-The validator is now designed to fail on stale or contradictory current-state pointers while accepting arbitrary future RMA/matrix version changes when their canonical pointers and artifact metadata are internally aligned.
+Final push-based GitHub Actions verification was executed on the reconciled state:
 
-A final push-based GitHub Actions run on the reconciled state is the required machine gate before this closure is considered operationally verified.
+- Workflow: `TGCV governance current-state consistency`
+- Run: **#345**
+- Head SHA: `847d5b17c14bfd6de86a1ad595a0d536d4a1b193`
+- Conclusion: **completed / success**
+- Job: `governance-consistency` — **success**
+- Step: `Validate current-state governance chain` — **success**
+
+This confirms that the version-independent canonical-state validator accepts the final reconciled current-state chain.
 
 ## 5. Scientific consistency
 
@@ -70,8 +77,10 @@ It does not establish differentiated industrial utility, superiority, causality,
 
 Stage B remains **NOT AUTHORIZED**. No dataset execution, industrial partner engagement, causal inference, value optimization, Core modification or external-asset update is authorized without a new explicit governance decision and authorization.
 
-## 8. Closure condition
+## 8. Closure decision
 
-This closure is complete only after the post-repair GitHub Actions governance-current-state workflow returns `completed / success` on the reconciled commit.
+**EXT-UPD-4.8 Stage A is CLOSED / CONSISTENT / MACHINE-VERIFIED.**
 
-Until that machine gate is observed, the scientific state is unchanged but the control closure remains pending verification.
+No further Stage-A execution is authorized or required.
+
+The next operation, if pursued, is a separate governance decision assessing whether Stage B — comparative industrial utility testing — is scientifically and methodologically justified. Stage B is not authorized by this closure.
