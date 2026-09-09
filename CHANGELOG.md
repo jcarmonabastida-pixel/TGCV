@@ -2,12 +2,23 @@
 
 ## 2026-09-09
 
+- Corrected the D-OPS-24 bounded discovery process after the initial v0.2 documentary pass exceeded the frozen query-family budget.
+- Recorded the nonconforming pass in `00_GOVERNANCE/impact/D-OPS-24_DISCOVERY_EXECUTION_LOG_v0.1.md`; no candidate was admitted and no scientific state changed.
+- Created `00_GOVERNANCE/impact/EXT-UPD-3.8_DOPS24_DISCOVERY_PROTOCOL_CORRECTION_v0.1.md` to preserve the deviation and require a versioned corrective protocol rather than retroactive reclassification.
+- Created and froze `00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.3.md`.
+- v0.3 mechanically defines a query family, requires pre-registration of Q-IDs, makes the three-family budget cumulative/non-resettable, and prohibits retroactive budget restoration.
+- Advanced the immutable current RMA to `TGCV_RMA_v1.4.md` and created `TGCV_RMA_traceability_v1.4.csv`.
+- Updated the current RMA pointer and STATUS to v1.4.
+- Updated `validate_current_state.py` to require EXT-UPD-3.8, the non-admissible v0.2 execution record and the corrected v0.3 protocol.
+- No scientific claims, evidence levels, empirical results, Core propositions, domain selections or D-OPS-24 conformance results changed.
+- Further external discovery is held until EXT-UPD-3.8 consistency closure is complete; dataset download, processing and empirical execution remain NOT AUTHORIZED.
+
 - Closed EXT-UPD-3.7 consistency propagation for the frozen D-OPS-24 candidate-domain discovery protocol.
 - Confirmed immutable D-OPS-24 discovery protocol v0.2 as the operative bounded documentary discovery procedure.
 - Synchronized RMA current pointer, STATUS and traceability to the CLOSED / CONSISTENT EXT-UPD-3.7 state.
 - Updated the current-state validator to require the EXT-UPD-3.7 impact record, frozen discovery protocol and closed propagation state.
 - No scientific claims, evidence levels, empirical results, Core propositions or gate closures changed through EXT-UPD-3.7.
-- D-OPS-24 bounded empirical-domain discovery is now the next controlled operation; dataset download, processing and empirical execution remain NOT AUTHORIZED.
+- D-OPS-24 bounded empirical-domain discovery was procedurally opened; dataset download, processing and empirical execution remain NOT AUTHORIZED.
 
 - Froze `00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md` as the bounded documentary candidate-domain discovery protocol.
 - The frozen protocol defines six bounded source families, documentary evidence requirements, outcome-blind selection, hard exclusions, bounded search budget, candidate admission threshold, stopping rule and explicit authorization boundaries.
@@ -16,14 +27,14 @@
 - Updated the current RMA pointer and STATUS to v1.3 / EXT-UPD-3.7.
 - Updated `validate_current_state.py` to require the frozen D-OPS-24 discovery protocol, EXT-UPD-3.7 propagation and RMA v1.3 surfaces.
 - No scientific claims, evidence levels, empirical results, Core propositions or gate closures changed through EXT-UPD-3.7.
-- D-OPS-24 is now procedurally ready for bounded documentary empirical-domain discovery; dataset download, data processing and empirical execution remain NOT AUTHORIZED pending subsequent gates.
+- D-OPS-24 was procedurally ready for bounded documentary empirical-domain discovery; dataset download, data processing and empirical execution remained NOT AUTHORIZED pending subsequent gates.
 
 - Reconciled a post-closure governance inconsistency identified after EXT-UPD-3.6: immutable RMA v1.1 and dependent current-control surfaces still contained pre-closure wording.
 - Created `00_GOVERNANCE/impact/EXT-UPD-3.6_POST_CLOSURE_RECONCILIATION_v0.1.md` documenting the discrepancy and corrective decision.
 - Created immutable `00_GOVERNANCE/rma/TGCV_RMA_v1.2.md` as the corrected current RMA; v1.1 remains historical and immutable.
 - Created `00_GOVERNANCE/rma/TGCV_RMA_traceability_v1.2.csv` and moved the current dependency map to v1.2.
 - Moved `TGCV_RMA_current.md` to v1.2 and synchronized `STATUS.md` with the closed/consistent EXT-UPD-3.6 state.
-- D-OPS-24 is released to continue its controlled preflight sequence; real-data execution remains NOT AUTHORIZED.
+- D-OPS-24 was released to continue its controlled preflight sequence; real-data execution remained NOT AUTHORIZED.
 - No scientific claims, evidence levels, empirical results, Core propositions or gate closures changed through this reconciliation.
 
 ## 2026-09-08
