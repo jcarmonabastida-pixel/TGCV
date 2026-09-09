@@ -2,6 +2,17 @@
 
 ## 2026-09-09
 
+- Recorded the strategic conversation between EXT-UPD-4.8 and EXT-UPD-4.9 in `00_GOVERNANCE/CONVERSATION_RECORDS/2026-09-09_EXT-UPD-4.8_TO_4.9_INDUSTRIAL_STRATEGY.md`, preserving Options A/B/C and their dispositions.
+- Created `EXT-UPD-4.9_STRATEGIC_DISPOSITION_INDUSTRIAL_APPLICABILITY_RESULT_v0.1.md` as a governance decision.
+- EXT-UPD-4.9 formally closes the strategic disposition of EXT-UPD-4.8 without interpreting it as proof of industrial utility.
+- Option A (further O3 rescue) rejected; Option B (separate industrial/applied track) adopted; Option C (reorient TGCV into an applied theory of value) not adopted at present.
+- Registered `INDUSTRIAL-TRACK` as PROPOSED only. No industrial experiment, O3 rescue, Stage-C/Stage-D execution, causal/value inference, Core modification or external-asset upgrade is authorized by EXT-UPD-4.9.
+- Created `EXT-UPD-4.9_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md`; no scientific claim upgrade recorded.
+- Advanced current RMA to immutable `TGCV_RMA_v2.9.md` and synchronized `TGCV_RMA_current.md`.
+- Created `TGCV_RMA_traceability_v2.9.csv` and advanced the current traceability pointer.
+- Synchronized `STATUS.md` with EXT-UPD-4.9 and the proposed INDUSTRIAL-TRACK.
+- Scientific Core, falsification criteria and current Evidence→Claim Matrix v0.6 remain unchanged.
+
 - Completed C-01 Gate A / Minimum Translation Eligibility: PASS.
 - Completed C-01 Gate B / Translation Readiness: PASS.
 - Completed C-01 Gate C / Translation Trace: PASS with bounded/partial mappings.
