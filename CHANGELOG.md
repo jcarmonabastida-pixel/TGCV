@@ -2,6 +2,7 @@
 
 ## 2026-09-09
 
+- Closed the EXT-UPD-3.8 propagation/consistency correction for D-OPS-24 discovery.
 - Corrected the D-OPS-24 bounded discovery process after the initial v0.2 documentary pass exceeded the frozen query-family budget.
 - Recorded the nonconforming pass in `00_GOVERNANCE/impact/D-OPS-24_DISCOVERY_EXECUTION_LOG_v0.1.md`; no candidate was admitted and no scientific state changed.
 - Created `00_GOVERNANCE/impact/EXT-UPD-3.8_DOPS24_DISCOVERY_PROTOCOL_CORRECTION_v0.1.md` to preserve the deviation and require a versioned corrective protocol rather than retroactive reclassification.
@@ -11,7 +12,7 @@
 - Updated the current RMA pointer and STATUS to v1.4.
 - Updated `validate_current_state.py` to require EXT-UPD-3.8, the non-admissible v0.2 execution record and the corrected v0.3 protocol.
 - No scientific claims, evidence levels, empirical results, Core propositions, domain selections or D-OPS-24 conformance results changed.
-- Further external discovery is held until EXT-UPD-3.8 consistency closure is complete; dataset download, processing and empirical execution remain NOT AUTHORIZED.
+- EXT-UPD-3.8 is now CLOSED / CONSISTENT. Further external discovery may proceed only as a new bounded documentary pass under v0.3. Dataset download, processing and empirical execution remain NOT AUTHORIZED.
 
 - Closed EXT-UPD-3.7 consistency propagation for the frozen D-OPS-24 candidate-domain discovery protocol.
 - Confirmed immutable D-OPS-24 discovery protocol v0.2 as the operative bounded documentary discovery procedure.
