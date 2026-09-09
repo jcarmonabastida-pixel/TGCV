@@ -2,6 +2,14 @@
 
 ## 2026-09-09
 
+- Completed `D-OPS-24_PREFLIGHT_v0.4.md`: PF-01..PF-18 PASS at documentary/control level; PF-19 explicit documentary-execution authorization remains unsatisfied.
+- Froze `D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md` as the F2-first controlled documentary-discovery protocol. Search execution remains NOT AUTHORIZED.
+- Advanced the current RMA from v1.7 to immutable `TGCV_RMA_v1.8.md` and created `TGCV_RMA_traceability_v1.8.csv` to record the preflight/freeze state; v1.7 remains historical and immutable.
+- Synchronized the current RMA pointer and STATUS to v1.8 / D-OPS-24 v0.4 FROZEN / PREFLIGHT PASS.
+- Updated the current-state validator for RMA v1.8, v0.4 preflight/freeze controls and EXT-UPD-4.0 closure.
+- No candidate was admitted and no scientific claim, evidence level, empirical result, domain validation or D-OPS-24 conformance result changed.
+- Documentary search, dataset acquisition/processing, empirical execution, outcome/model/value analysis and D-OPS-24 conformance execution remain NOT AUTHORIZED.
+
 - Closed EXT-UPD-4.0 propagation as CLOSED / CONSISTENT at document/control level.
 - Created `00_GOVERNANCE/rma/EXT-UPD-4.0_CONSISTENCY_CLOSURE_v0.1.md`.
 - Confirmed RMA v1.7, current pointer, STATUS, traceability and validator alignment for D-OPS-24 v0.4.
