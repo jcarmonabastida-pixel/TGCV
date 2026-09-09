@@ -1,9 +1,8 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-09  
-**Governance reconciliation:** DR-044 / DR-045  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.4.md`  
-**Structural/content propagation:** EXT-UPD-1R.4 / EXT-UPD-3.1 / EXT-UPD-3.2 / EXT-UPD-3.3.5 / EXT-UPD-3.4 / EXT-UPD-3.5 / EXT-UPD-3.6 / EXT-UPD-3.7 / EXT-UPD-3.8
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v1.5.md`  
+**Governance state:** D-OPS-24 F1 discovery STOPPED / GOVERNANCE HOLD after non-admissible Q3 exploratory formulation
 
 ## Canonical continuity point
 
@@ -64,13 +63,14 @@ D-OPS-15 through D-OPS-20: CLOSED — no execution-ready independent external do
 D-OPS-21: CLOSED — high local redundancy; broad novelty claim weakened.
 D-OPS-22: CLOSED — bounded translational non-redundancy; superiority not proved.
 D-OPS-23: CLOSED — minimal transversal translation protocol frozen.
-D-OPS-24: DISCOVERY PROTOCOL v0.3 FROZEN / CORRECTED. The prior v0.2 discovery pass is HISTORICAL / NON-ADMISSIBLE due to query-budget nonconformance. A new bounded documentary discovery pass is the next controlled operation. Real-data execution remains NOT AUTHORIZED.
+D-OPS-24: DISCOVERY PROTOCOL v0.3 FROZEN / CORRECTED. v0.2 is HISTORICAL / NON-ADMISSIBLE. The v0.3 F1 documentary pass is STOPPED / GOVERNANCE HOLD after the attempted F1-Q3 formulation deviated from the exact pre-registered query. No candidate was admitted. No further discovery is authorized until a new versioned governance decision.
 
 ## Governance state
 
 EXT-UPD-3.6 scientific asset reconciliation: CLOSED / CONSISTENT.
 EXT-UPD-3.7 D-OPS-24 discovery protocol freeze: CLOSED / CONSISTENT.
 EXT-UPD-3.8 D-OPS-24 discovery protocol correction: CLOSED / CONSISTENT.
+D-OPS-24 F1-Q3 governance correction: CLOSED — non-admissible exploratory searches preserved; no retroactive reclassification.
 
 The canonical propagation rule is:
 
