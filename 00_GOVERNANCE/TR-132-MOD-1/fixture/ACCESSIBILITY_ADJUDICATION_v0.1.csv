@@ -1,0 +1,11 @@
+tau_id,timepoint_id,ID,STATE,ADM,MAT,SETUP,AUTH,TIME,EVIDENCE,status,evidence_reference,adjudication_phase
+TA,t0,true,true,true,true,true,true,true,true,ACCESSIBLE,E-A-t0,PRE_REALIZATION
+TB,t0,true,true,true,true,true,true,true,true,ACCESSIBLE,E-B-t0,PRE_REALIZATION
+TC,t0,true,true,false,true,true,true,true,true,INACCESSIBLE,E-C-t0,PRE_REALIZATION
+TD,t0,true,true,true,false,true,true,true,true,INACCESSIBLE,E-D-t0,PRE_REALIZATION
+TE,t0,true,true,true,true,true,true,true,false,INDETERMINATE,E-E-t0,PRE_REALIZATION
+TA,t1,true,true,true,true,true,true,true,true,ACCESSIBLE,E-A-t1,PRE_REALIZATION
+TB,t1,true,true,true,true,true,true,true,true,ACCESSIBLE,E-B-t1,PRE_REALIZATION
+TC,t1,true,true,false,true,true,true,true,true,INACCESSIBLE,E-C-t1,PRE_REALIZATION
+TD,t1,true,true,true,true,true,true,true,true,ACCESSIBLE,E-D-t1,PRE_REALIZATION
+TE,t1,true,true,true,true,true,true,true,false,INDETERMINATE,E-E-t1,PRE_REALIZATION

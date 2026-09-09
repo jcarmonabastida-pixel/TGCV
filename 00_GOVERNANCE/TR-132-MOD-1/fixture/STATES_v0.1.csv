@@ -1,0 +1,3 @@
+timepoint_id,S_id,C_id,R1_available,R2_available,AUTH_A,AUTH_B,AUTH_C,AUTH_D,AUTH_E,time_window
+t0,S-FX-001,C-FX-001,true,false,true,true,true,true,true,valid
+t1,S-FX-001,C-FX-001,true,true,true,true,true,true,true,valid

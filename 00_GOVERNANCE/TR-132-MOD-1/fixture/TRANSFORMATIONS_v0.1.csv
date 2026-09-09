@@ -1,0 +1,6 @@
+tau_id,type,precondition,required_resource,required_setup,authorization,temporal_window,admissibility,transition_rule
+TA,standard,BASE,R1,SETUP-A,AUTH-A,valid,admissible,SAME_STATE
+TB,standard,BASE,R1,SETUP-B,AUTH-B,valid,admissible,SAME_STATE
+TC,restricted,BASE,R1,SETUP-C,AUTH-C,valid,inadmissible,SAME_STATE
+TD,resource-dependent,BASE,R2,SETUP-D,AUTH-D,valid,admissible,STATE_PLUS_D
+TE,evidence-dependent,BASE,R1,SETUP-E,AUTH-E,valid,admissible,SAME_STATE

@@ -1,0 +1,7 @@
+control_id,class,tau_id,timepoint_id,expected_accessibility,expected_realization,purpose
+CTRL-A,accessible_realized,TA,t0,ACCESSIBLE,REALIZED,positive control
+CTRL-B,accessible_unrealized,TB,t0,ACCESSIBLE,NOT_REALIZED,separate accessibility from observation
+CTRL-C,possible_inadmissible,TC,t0,INACCESSIBLE,NOT_REALIZED,separate possibility from admissibility
+CTRL-D,admissible_inaccessible,TD,t0,INACCESSIBLE,NOT_REALIZED,separate admissibility from accessibility
+CTRL-E,evidence_indeterminate,TE,t0,INDETERMINATE,NOT_REALIZED,prevent missing evidence becoming inaccessible
+CTRL-F,state_enabled,TD,t1,ACCESSIBLE,REALIZED,temporal accessibility change
