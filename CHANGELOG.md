@@ -2,53 +2,20 @@
 
 ## 2026-09-09
 
-- Authorized and executed `D-OPS-24` F2-Q3 under the exact pre-registered v0.4 formulation. Two search channels returned no results; no admissible candidate was identified.
-- Created `D-OPS-24_F2_Q3_EXECUTION_AUTHORIZATION_v0.1.md` and `D-OPS-24_F2_Q3_EXECUTION_RESULT_v0.1.md`; Q3 consumed the final F2 query-family budget unit.
-- Propagated the F2-Q3 result through `EXT-UPD-4.0_F2_DISCOVERY_PROPAGATION_v0.1.md`.
-- Advanced the current RMA to immutable `TGCV_RMA_v2.1.md`; `TGCV_RMA_v1.8`, `v1.9` and `v2.0` remain historical and immutable.
-- Created `TGCV_RMA_traceability_v2.1.csv` and updated `TGCV_RMA_current.md` and `STATUS.md` to the closed F2 discovery state.
-- Updated `00_GOVERNANCE/tools/validate_current_state.py` for RMA v2.1, F2 Q1-Q3 execution records and F2 budget closure.
-- F2 query-family budget is exhausted at 3/3; candidate budget remains 0/10 admitted. No Q4 is authorized under v0.4.
+- Froze `D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.5.md` after final preflight PASS (`D-OPS-24_PREFLIGHT_v0.5.md`).
+- Recorded `EXT-UPD-4.1_DOPS24_V05_FREEZE_PROPAGATION_v0.1.md` as the CLOSED / FROZEN / PROPAGATED governance record.
+- Advanced the current RMA to immutable `TGCV_RMA_v2.2.md`; v2.1 remains historical and immutable.
+- Updated `TGCV_RMA_current.md` to point to v2.2 and synchronized `STATUS.md` with the v0.5 frozen-design state.
+- Created `TGCV_RMA_traceability_v2.2.csv` recording the v0.5 freeze, preflight PASS and current control dependencies.
+- D-OPS-24 v0.5 is now frozen with the staged architecture `Discovery → MTE → Translation Readiness → Translation Trace → Extended TGCV Conformance`.
+- v0.5 search execution remains NOT AUTHORIZED; a new search budget has not yet been established and must be explicitly defined by a separate execution authorization.
+- The exhausted v0.4 F2 budget (3/3) is not inherited by v0.5.
 - No scientific claim, evidence level, empirical result, domain validation, originality assessment or epistemic status changed.
-- The F2 zero-result discovery outcome is not interpreted as evidence of domain absence or exhaustion.
-- Document/control consistency was reconciled. CI status for the latest validator update was not observable through the available workflow-read surface and is therefore not claimed.
+- Historical v0.4/F2 artifacts remain immutable. No Q4 is reopened under v0.4.
+- The from-scratch prohibition and canonical scientific-memory registry remain operative.
+- CI PASS is not claimed for the propagation commits unless a completed workflow result is directly observable.
 
-- F2-Q2 was previously authorized, executed and propagated; zero admissible candidates were identified.
-- F2-Q1 was previously authorized and executed; zero candidates were returned by the registered exact formulation.
-- D-OPS-24 v0.4 remains the frozen protocol; no Q4 exists under that protocol.
-
-- Completed `D-OPS-24_PREFLIGHT_v0.4.md`: PF-01..PF-18 PASS at documentary/control level; PF-19 explicit documentary-execution authorization remains unsatisfied.
-- Froze `D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md` as the F2-first controlled documentary-discovery protocol. Search execution remains NOT AUTHORIZED.
-- Advanced the current RMA from v1.7 to immutable `TGCV_RMA_v1.8.md` and created `TGCV_RMA_traceability_v1.8.csv` to record the preflight/freeze state; v1.7 remains historical and immutable.
-- Synchronized the current RMA pointer and STATUS to v1.8 / D-OPS-24 v0.4 FROZEN / PREFLIGHT PASS.
-- Updated the current-state validator for RMA v1.8, v0.4 preflight/freeze controls and EXT-UPD-4.0 closure.
-- No candidate was admitted and no scientific claim, evidence level, empirical result, domain validation or D-OPS-24 conformance result changed.
-- Documentary search, dataset acquisition/processing, empirical execution, outcome/model/value analysis and D-OPS-24 conformance execution remain NOT AUTHORIZED.
-
-- Closed EXT-UPD-4.0 propagation as CLOSED / CONSISTENT at document/control level.
-- Created `00_GOVERNANCE/rma/EXT-UPD-4.0_CONSISTENCY_CLOSURE_v0.1.md`.
-- Confirmed RMA v1.7, current pointer, STATUS, traceability and validator alignment for D-OPS-24 v0.4.
-- CI PASS is not claimed for validator commit `5118ef4348ac508bde287254d042301684a8ea5d`; its observed commit status was pending with no completed status.
-- D-OPS-24 v0.4 remains DRAFT FOR PREFLIGHT; documentary search execution is NOT AUTHORIZED.
-
-- Recorded EXT-UPD-4.0 as the new versioned governance decision for D-OPS-24 continuation after the v0.3 F1 governance hold.
-- Created immutable `00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md` as a new F2-first controlled documentary-discovery protocol draft for preflight; v0.3 remains historical and immutable.
-- Created `00_GOVERNANCE/impact/EXT-UPD-4.0_DOPS24_CONTINUATION_PROPAGATION_v0.1.md` and propagated the decision into RMA v1.7, current pointer, STATUS, traceability and validator controls.
-- Advanced the current RMA to immutable `TGCV_RMA_v1.7.md` and created `TGCV_RMA_traceability_v1.7.csv`; v1.6 remains historical and immutable.
-- D-OPS-24 is now in v0.4 DESIGN/PREFLIGHT for F2 Physical/engineering reconfiguration systems. F2 is a documentary-discovery hypothesis, not an admitted or validated domain.
-- No candidate was admitted. No scientific claims, evidence levels, empirical results, Core propositions, domain validation or D-OPS-24 conformance results changed.
-- Only protocol design and preflight are authorized. Documentary search execution, dataset acquisition/processing, empirical execution, outcome/model/value analysis and D-OPS-24 conformance execution remain NOT AUTHORIZED.
-
-- Reconciled the current RMA pointer and STATUS after EXT-UPD-3.9: the consistency closure is CLOSED / CONSISTENT at document/control level, while post-closure CI for commit `9098ace5d48fe8313c672bd6fe87b07ec2edba27` remains not observable.
-- No scientific state changed; no D-OPS-24 discovery, dataset acquisition, empirical execution, outcome/value analysis or conformance execution was authorized.
-- The new commit exists to trigger and observe the canonical current-state CI on the reconciled control surface.
-
-- Recorded EXT-UPD-3.9 as the versioned governance correction for the D-OPS-24 v0.3 F1-Q3 query-formulation deviation.
-- Preserved the exploratory F1-Q3 searches as NON-ADMISSIBLE and retained the compliant F1 discovery pass stopped at Q2 under GOVERNANCE HOLD.
-- Created immutable `00_GOVERNANCE/rma/TGCV_RMA_v1.6.md` and `TGCV_RMA_traceability_v1.6.csv`; RMA v1.5 remains historical and immutable.
-- Updated `00_GOVERNANCE/rma/TGCV_RMA_current.md` and `STATUS.md` to RMA v1.6 / EXT-UPD-3.9.
-- No scientific claims, evidence levels, empirical results, Core propositions, domain selections or D-OPS-24 conformance results changed.
-- No further documentary discovery is authorized until a new versioned governance decision and explicit authorization.
+- Previous F2-Q3 execution and closure remain recorded below as historical state.
 
 ## 2026-09-08
 
