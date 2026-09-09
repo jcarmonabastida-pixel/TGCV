@@ -18,15 +18,14 @@
 - EXT-UPD-4.9 formally separated industrial applicability from scientific Core validation; INDUSTRIAL-TRACK was registered as PROPOSED design infrastructure only.
 - Closed the EXT-UPD-4.9 governance propagation consistency audit and enforced atomic canonical propagation for multi-asset state changes.
 - Prepared `INDUSTRIAL_CASE_SPECIFICATION_v0.1.md` as design-only infrastructure.
-- Proposed C-IND-01 and completed IT-G1: **FAIL / NOT ADMITTED**; no scientific claim changed.
+- Proposed C-IND-01 and completed IT-G1: FAIL / NOT ADMITTED; no scientific claim changed.
 - Established the Industrial Candidate Discovery Protocol and screened documentary candidates.
-- Retained ICD-01 and ICD-02; no candidate was admitted by screening alone.
-- Completed IT-G1 Case Identifiability Review for **ICD-01: FAIL / NOT ADMITTED**. Case identity, unit and temporal boundary were sufficiently bounded, but decision-time accessibility/admissibility could not be independently closed from documentary evidence.
-- Recorded the ICD-01 IT-G1 Evidence→Claim Impact Assessment as **IMPACT = NO SCIENTIFIC CLAIM CHANGE**.
-- Advanced current RMA atomically to immutable `TGCV_RMA_v3.5.md`; current pointer, traceability and `STATUS.md` synchronized. ICD-01 does not progress to IT-G2.
-- Completed IT-G1 Case Identifiability Review for **ICD-02: FAIL / NOT ADMITTED**. Case identity, unit and temporal boundary were sufficiently bounded, but decision-time accessibility/admissibility could not be independently closed from documentary evidence.
-- Recorded the ICD-02 IT-G1 Evidence→Claim Impact Assessment as **IMPACT = NO SCIENTIFIC CLAIM CHANGE**.
-- Advanced current RMA atomically to immutable `TGCV_RMA_v3.6.md`; current pointer, traceability, `STATUS.md` and candidate matrix synchronized. The retained documentary candidate set is exhausted at IT-G1.
+- Completed IT-G1 Case Identifiability Review for ICD-01: FAIL / NOT ADMITTED.
+- Completed IT-G1 Case Identifiability Review for ICD-02: FAIL / NOT ADMITTED. Case identity, unit and temporal boundary were sufficiently bounded, but decision-time accessibility/admissibility could not be independently closed from documentary evidence.
+- Recorded the ICD-02 IT-G1 Evidence→Claim Impact Assessment as IMPACT = NO SCIENTIFIC CLAIM CHANGE.
+- Completed Industrial Candidate Discovery Cycle v0.2. Screened ICD-06 Road Traffic Fine Management, ICD-07 Hospital Sepsis pathway and ICD-08 BPI-2017 decision process; none satisfied the mandatory accessibility filter for retention to IT-G1.
+- Recorded the discovery-cycle Evidence→Claim Impact Assessment as IMPACT = NO SCIENTIFIC CLAIM CHANGE.
+- Advanced current RMA atomically to immutable `TGCV_RMA_v3.7.md`; current pointer, traceability and `STATUS.md` synchronized. No industrial candidate currently qualifies for IT-G1 retention.
 
 ## 2026-09-08
 

@@ -1,10 +1,10 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-09  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.6  
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.7  
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6  
-**Governance state:** EXT-UPD-4.9 CLOSED; INDUSTRIAL-TRACK PROPOSED; C-IND-01 IT-G1 FAIL; ICD-01 IT-G1 FAIL / NOT ADMITTED; ICD-02 IT-G1 FAIL / NOT ADMITTED; industrial utility remains unproven  
-**Current propagation:** ICD-02 IT-G1 completed; no candidate admitted; no scientific claim change
+**Governance state:** EXT-UPD-4.9 CLOSED; INDUSTRIAL-TRACK PROPOSED; C-IND-01 IT-G1 FAIL; ICD-01 IT-G1 FAIL; ICD-02 IT-G1 FAIL; industrial utility remains unproven  
+**Current propagation:** Industrial Candidate Discovery Cycle v0.2 completed; no documentary candidate retained for IT-G1
 
 ## Canonical continuity point
 
@@ -16,7 +16,7 @@
 
 ## Industrial Track
 
-C-IND-01 remains **NOT ADMITTED / IT-G1 FAIL**. ICD-01 and ICD-02 have both **FAILED IT-G1 / NOT ADMITTED** because decision-time accessibility could not be independently closed from documentary evidence. The retained documentary candidate set is therefore exhausted at IT-G1.
+C-IND-01 remains **NOT ADMITTED / IT-G1 FAIL**. ICD-01 and ICD-02 have both failed IT-G1 because decision-time accessibility could not be independently closed. A subsequent documentary discovery cycle screened additional candidates and found no new candidate satisfying the mandatory accessibility filter for retention to IT-G1.
 
 ## Evidence / claims
 
@@ -24,7 +24,7 @@ No C01–C16 claim changes. No scientific gate is upgraded or closed. Industrial
 
 ## Authorization boundary
 
-No IT-G2, dataset execution, industrial experiment, industrial evidential engagement, causal inference, value optimization, Core modification or external-asset upgrade is authorized for the failed candidates.
+No IT-G2, dataset execution, industrial experiment, industrial evidential engagement, causal inference, value optimization, Core modification or external-asset upgrade is authorized.
 
 ## Continuity rule
 
@@ -32,4 +32,4 @@ Every substantive state change requires a versioned GitHub commit. GitHub remain
 
 ## Next controlled operation
 
-If separately authorized, begin a new documentary candidate discovery cycle under the existing protocol and accessibility criterion. No dataset execution is implied.
+Any continuation of the Industrial Track requires separate governance authorization for a documentary search specifically targeting independently specified normative/operational admissible alternatives. No execution is implied.

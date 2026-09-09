@@ -2,10 +2,10 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v3.6.md`  
+**Current master:** `TGCV_RMA_v3.7.md`  
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6  
 **Governance decision:** EXT-UPD-4.9 — INDUSTRIAL-TRACK PROPOSED; industrial utility remains unproven  
-**Current propagation:** ICD-01 and ICD-02 IT-G1 reviewed and failed; no candidate currently admitted
+**Current propagation:** Industrial Candidate Discovery Cycle v0.2 completed; no candidate retained for IT-G1
 
 ## Current state
 
@@ -19,7 +19,11 @@
 
 C-IND-01 remains `IT-G1 FAIL / NOT ADMITTED`.
 
-ICD-01 was reviewed under IT-G1 and **FAILED / NOT ADMITTED** because decision-time accessibility/admissibility could not be independently closed from documentary evidence. ICD-02 was subsequently reviewed under IT-G1 and **FAILED / NOT ADMITTED** for the same decisive accessibility-closure reason.
+ICD-01 and ICD-02 both failed IT-G1 because decision-time accessibility/admissibility could not be independently closed.
+
+The subsequent documentary discovery cycle screened ICD-06, ICD-07 and ICD-08. No new candidate satisfied the mandatory accessibility filter for retention to IT-G1.
+
+**Current state: NO DOCUMENTARILY ADMISSIBLE INDUSTRIAL CANDIDATE.**
 
 No industrial execution, dataset execution, partner evidential engagement, utility assessment, causal inference or value assessment is authorized.
 
@@ -29,8 +33,4 @@ No C01–C16 claim changes. No scientific gate is upgraded or closed. Industrial
 
 ## Authorization boundary
 
-Neither ICD-01 nor ICD-02 can advance to IT-G2 in its present form. A future revision requires a separately grounded accessibility specification and a new IT-G1 review.
-
-## Next controlled operation
-
-With the retained candidates exhausted at IT-G1, the next controlled operation, if authorized, is a new documentary candidate discovery cycle. No dataset execution is implied.
+The next possible route is a separately authorized documentary search specifically targeting normative/operational specifications of admissible alternatives. No execution is implied.

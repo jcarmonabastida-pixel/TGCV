@@ -4,29 +4,32 @@
 **Execution:** NOT AUTHORIZED  
 **Protocol:** `INDUSTRIAL_CANDIDATE_DISCOVERY_PROTOCOL_v0.1.md`
 
-Documentary screening completed. IT-G1 has now been separately applied to ICD-01 and ICD-02. Retention is not admission.
+Documentary discovery has now been extended after separate IT-G1 failures of ICD-01 and ICD-02. Retention is not admission.
 
-| Candidate | Natural unit / boundary | State reconstructability | Transformation identity | Accessibility observability | Temporal closure | Independent evidence | Downstream separation | Access dependency | Risks | Disposition |
-|---|---|---|---|---|---|---|---|---|---|---|
-| **ICD-01 BPI-2019 Purchase-item workflow** | One purchase-document line item within the P2P process; case identity is purchase document + item | **PASS-BOUND** | **PASS-CANDIDATE** | **FAIL at IT-G1** — decision-time accessibility/admissibility not independently closed | **PASS** — 2018 coverage | **PASS for case identity; insufficient for accessibility closure** | **PASS-BOUND** | **PASS for initial documentary identifiability** | Alternative accessible actions remain underdetermined | **IT-G1 FAIL — NOT ADMITTED** |
-| **ICD-02 BPI-2015 Building-permit workflow** | One building-permit application within one Dutch municipality/process slice | **CONDITIONAL** | **PASS-CANDIDATE** | **FAIL at IT-G1** — exact admissible alternatives not independently closed | **PASS** — multi-year observation | **PASS for case identity; insufficient for accessibility closure** | **PASS-BOUND** | **PASS** for initial documentary identifiability | Rule-change timing and municipal implementation differences; admissible alternatives underdetermined | **IT-G1 FAIL — NOT ADMITTED** |
-| **ICD-03 BPI-2014 Change/Incident management** | One IT change record / associated incident | **PASS-CANDIDATE** | **CONDITIONAL** | **CONDITIONAL** | **PASS-CANDIDATE** | **PASS** — public logs | **PASS-CANDIDATE** | **PASS** | Accessibility coupling unresolved | **CONDITIONAL — NOT ADMITTED** |
-| **ICD-04 BPI-2020 Travel-permit workflow** | One travel-permit case | **PASS-BOUND** | **CONDITIONAL** | **CONDITIONAL** | **PASS** — 2017–2018 | **PASS** | **PASS-CANDIDATE** | **PASS** | Process changes complicate closure | **CONDITIONAL — NOT ADMITTED** |
-| **ICD-05 BPI-2017 Loan-application workflow** | One loan application / associated offers | **PASS-BOUND** | **CONDITIONAL** | **WEAK / OPEN** | **PASS** — 2016–Feb 2017 | **PASS** | **PASS-CANDIDATE** | **PASS** | Multiple event origins | **CONDITIONAL — LOW PRIORITY** |
+| Candidate | Natural unit / boundary | State reconstructability | Transformation identity | Accessibility observability | Temporal closure | Independent evidence | Downstream separation | Disposition |
+|---|---|---|---|---|---|---|---|---|
+| **ICD-01 BPI-2019 Purchase-item workflow** | Purchase-document line item | PASS-BOUND | PASS-CANDIDATE | **FAIL at IT-G1** | PASS | Insufficient for accessibility closure | PASS-BOUND | **IT-G1 FAIL — NOT ADMITTED** |
+| **ICD-02 BPI-2015 Building-permit workflow** | Building-permit application / municipality slice | PASS-BOUND | PASS-CANDIDATE | **FAIL at IT-G1** | PASS | Insufficient for accessibility closure | PASS-CANDIDATE | **IT-G1 FAIL — NOT ADMITTED** |
+| **ICD-03 BPI-2014 Change/Incident management** | IT change / incident | PASS-CANDIDATE | CONDITIONAL | CONDITIONAL | PASS-CANDIDATE | PASS | PASS-CANDIDATE | CONDITIONAL — NOT ADMITTED |
+| **ICD-04 BPI-2020 Travel-permit workflow** | Travel-permit case | PASS-BOUND | CONDITIONAL | CONDITIONAL | PASS | PASS | PASS-CANDIDATE | CONDITIONAL — NOT ADMITTED |
+| **ICD-05 BPI-2017 Loan-application workflow** | Loan application / offers | PASS-BOUND | CONDITIONAL | WEAK / OPEN | PASS | PASS | PASS-CANDIDATE | CONDITIONAL — LOW PRIORITY |
+| **ICD-06 Road Traffic Fine Management** | One traffic fine | PASS-BOUND | PASS-CANDIDATE | **FAIL at screening** — normative alternatives exist, but actual choice can depend on unavailable contextual factors | PASS | Public event log + normative description | PASS-CANDIDATE | **DISCARD** |
+| **ICD-07 Hospital Sepsis pathway** | One patient pathway | PASS | CONDITIONAL | **FAIL at screening** — evolving clinical state/judgement does not yield complete ex-ante admissibility set | PASS | Public event log + clinical attributes | CONDITIONAL | **DISCARD** |
+| **ICD-08 BPI-2017 decision process** | One loan application | PASS-BOUND | PASS-CANDIDATE | **CONDITIONAL / NOT CLOSED** — decision-mining inference is not independent accessibility evidence | PASS | Public event log with activity data | PASS-CANDIDATE | **CONDITIONAL — NOT RETAINED** |
 
-## Gate result
+## Discovery-cycle result
 
-- Candidate discovery: **COMPLETED — DOCUMENTARY ONLY**
-- Retained before IT-G1: **ICD-01, ICD-02**
-- IT-G1 reviewed: **ICD-01, ICD-02**
-- IT-G1 result: **FAIL / NOT ADMITTED** for both
-- No candidate is currently admitted to IT-G2.
-- Industrial evidence introduced: **NO**
-- Scientific claims changed: **NO**
-- Execution authorized: **NO**
+- Documentary discovery cycle v0.2: **COMPLETED**.
+- IT-G1 candidates retained and tested: **ICD-01, ICD-02**.
+- Both: **IT-G1 FAIL / NOT ADMITTED**.
+- New documentary candidates satisfying the mandatory accessibility filter: **NONE**.
+- No candidate admitted to IT-G2.
+- Industrial evidence introduced: **NO**.
+- Scientific claims changed: **NO**.
+- Execution authorized: **NO**.
 
 ## Governance interpretation
 
-The failures of ICD-01 and ICD-02 are candidate-definition/evidence-closure failures at IT-G1, not scientific failures of TGCV. Both candidates have usable case identities and temporal structure, but realized event data do not independently establish the complete decision-time set of admissible alternatives.
+The repeated failure is specifically about **independent decision-time accessibility closure**, not about the existence of process alternatives or the usefulness of event logs. Several sources support decision-model inference from observed traces, but inference from realized choices is not equivalent to an independently grounded ex-ante accessible transformation set. This distinction remains frozen.
 
-No further candidate may advance without separately grounded accessibility closure. A new documentary discovery cycle may be proposed under governance; no dataset execution is implied.
+The Industrial Track therefore currently has no documentary candidate suitable for progression. Further discovery, if authorized, should target domains with explicit normative or operational specifications of admissible alternatives rather than another generic event-log search.
