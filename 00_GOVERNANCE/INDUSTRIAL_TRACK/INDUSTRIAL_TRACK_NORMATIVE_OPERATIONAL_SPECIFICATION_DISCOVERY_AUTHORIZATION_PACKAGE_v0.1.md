@@ -1,6 +1,7 @@
 # INDUSTRIAL-TRACK — Normative / Operational Specification Discovery Authorization Package v0.1
 
 **Status:** PROPOSED / PENDING-AUTHORIZATION  
+**Design review:** PASS WITH CORRECTION  
 **Execution authorization:** NOT GRANTED  
 **Basis:** EXT-UPD-4.9  
 **Design protocol:** `INDUSTRIAL_TRACK_NORMATIVE_OPERATIONAL_SPECIFICATION_DISCOVERY_PROTOCOL_v0.1.md`
@@ -92,13 +93,15 @@ A future authorized execution must produce:
 - final stop-rule status;
 - execution record suitable for governance audit.
 
-## 9. Decision gate after discovery
+## 9. Post-discovery admission review
 
 Following execution, the results must pass a separate governance review before any candidate is admitted as an industrial case or used in comparative analysis.
 
-The review gate is **IT-G1 — Industrial Candidate Documentary Admission Gate**, provided that this gate name is confirmed against the existing Industrial Track governance nomenclature before execution authorization.
+**Provisional gate designation:** `INDUSTRIAL-CANDIDATE-DOCUMENTARY-ADMISSION-REVIEW`.
 
-At IT-G1, documentary sufficiency is assessed independently from utility and outcome evidence. A retained candidate may be rejected at IT-G1 without implying any failure of TGCV Core.
+This is a provisional descriptive designation, not yet a frozen gate identifier. The canonical gate name and definition must be established in the Industrial Track governance nomenclature before execution authorization.
+
+At that review, documentary sufficiency must be assessed independently from utility and outcome evidence. A retained candidate may be rejected without implying any failure of TGCV Core.
 
 ## 10. Explicit exclusions
 
@@ -119,9 +122,9 @@ This package does not authorize:
 
 ## 11. Authorization condition
 
-Execution remains **NOT AUTHORIZED** until a separate governance decision explicitly authorizes the frozen discovery package after design review.
+Execution remains **NOT AUTHORIZED** until a separate governance decision explicitly authorizes the frozen discovery package after design review and after the post-discovery admission-review nomenclature has been formally established.
 
-A user instruction to continue the workflow does not override this project-level boundary. The present operation is complete only when the design artifacts and their current-state propagation are recorded and machine consistency is validated.
+A user instruction to continue the workflow does not override this project-level boundary.
 
 ## 12. Scientific status
 
