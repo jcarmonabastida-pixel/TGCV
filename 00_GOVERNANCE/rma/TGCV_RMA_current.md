@@ -4,7 +4,7 @@
 **Status:** CURRENT / OPERATIVE  
 **Current master:** `TGCV_RMA_v1.7.md`  
 **Governance decision:** EXT-UPD-4.0  
-**Conformance closure:** pending EXT-UPD-4.0 consistency closure.  
+**Conformance closure:** `EXT-UPD-4.0_CONSISTENCY_CLOSURE_v0.1.md` — CLOSED / CONSISTENT at document/control level; CI PASS is not claimed for validator commit `5118ef4348ac508bde287254d042301684a8ea5d` because its observed status was pending with no completed status.  
 **Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6 + EXT-UPD-3.7 + EXT-UPD-3.8 + EXT-UPD-3.9 + EXT-UPD-4.0
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
@@ -82,4 +82,4 @@ Discovery remains documentary-only by scope, but execution is not yet released. 
 
 **EXT-UPD-4.0 D-OPS-24 continuation decision: CLOSED / GOVERNANCE DECISION.**
 
-**EXT-UPD-4.0 propagation: OPEN / consistency closure pending.**
+**EXT-UPD-4.0 propagation: CLOSED / CONSISTENT at document/control level.**
