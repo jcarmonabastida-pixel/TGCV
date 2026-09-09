@@ -29,6 +29,6 @@ Further documentary discovery requires a new versioned governance decision and e
 
 ## Control result
 
-GitHub Actions run `34294595741` for the preceding validator propagation commit completed successfully. The subsequent validator update for RMA v1.6 is recorded in commit `e25a2d132a380433d11f2c462bd1cb92e126de9a`; its corresponding Actions run `34294595741` was superseded by the v1.6 update sequence, so no CI PASS is inferred for the final closure commit from that earlier run.
+GitHub Actions run `34294595741` for validator commit `e25a2d132a380433d11f2c462bd1cb92e126de9a` completed successfully. The final closure document is subsequently committed, so that earlier successful run is not treated as validation of the closure commit itself. No CI PASS is inferred for the final closure commit without an observable corresponding run.
 
-**Closure status:** CLOSED / CONSISTENT at the document/control level; final post-closure CI status must be verified against the commit containing this closure.
+**Closure status:** CLOSED / CONSISTENT at the document/control level. CI PASS is confirmed for the validator update commit `e25a2d132a380433d11f2c462bd1cb92e126de9a`; no CI PASS is claimed for the final closure commit.
