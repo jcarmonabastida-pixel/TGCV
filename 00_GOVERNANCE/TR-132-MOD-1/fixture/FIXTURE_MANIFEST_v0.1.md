@@ -35,20 +35,7 @@ These are **expected classifications frozen for test control**, not observed exe
 ## Realization separation
 `TA` and `TD` are scheduled for realization; `TB` is deliberately not realized. Accessibility is adjudicated before realization is disclosed to the adjudication record.
 
-## Frozen object integrity
-The following blob SHA-1 values are the exact Git object identities of the frozen package inputs at the freeze commit:
-
-| object | path | blob_sha |
-|---|---|---|
-| fixture_manifest | `00_GOVERNANCE/TR-132-MOD-1/fixture/FIXTURE_MANIFEST_v0.1.md` | `PENDING_SELF_HASH` |
-| evidence_manifest | `00_GOVERNANCE/TR-132-MOD-1/fixture/EVIDENCE_MANIFEST_v0.1.md` | `a5c5c3d3e7bdbb1f2e1c4f7b2d1d1e4f8a7c6b5d` |
-| accessibility_adjudication | `00_GOVERNANCE/TR-132-MOD-1/fixture/ACCESSIBILITY_ADJUDICATION_v0.1.csv` | `a9c2dfbcb5c5baf2df61ef3d3de331e6e3d31a53` |
-| control_cases | `00_GOVERNANCE/TR-132-MOD-1/fixture/CONTROL_CASES_v0.1.csv` | `63567783c74c35b0dfd3d08a6aa29a1541f62da5` |
-| realization_schedule | `00_GOVERNANCE/TR-132-MOD-1/fixture/REALIZATION_SCHEDULE_v0.1.csv` | `fc7cc4a8ab2f6951cd5a388701e1eab23ef04ec8` |
-| states | `00_GOVERNANCE/TR-132-MOD-1/fixture/STATES_v0.1.csv` | `b4b10c262b9eac53e039dad10ba1777b45b5d286` |
-| transformations | `00_GOVERNANCE/TR-132-MOD-1/fixture/TRANSFORMATIONS_v0.1.csv` | `182cd12d5daede2b9646df5daa58f217410b53fb` |
-
-**Important:** the evidence-manifest SHA above is a temporary placeholder and the fixture-manifest self-hash is intentionally unresolved because a file cannot contain its own final content hash. The authorization gate must replace this table with a mechanically generated immutable package manifest before empirical execution.
-
 ## Integrity rule
+All package-input hashes are recorded in the separate immutable `PACKAGE_INPUT_MANIFEST_v0.1.md`. The fixture manifest itself is hashed there after this file reaches its final frozen content. No self-hash is embedded in this file.
+
 Any post-freeze change, use of realization to establish accessibility, or alteration of the candidate universe/predicate/evidence threshold invalidates the package.
