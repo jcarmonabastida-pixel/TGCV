@@ -2,9 +2,9 @@
 
 **Date:** 2026-09-09  
 **Status:** CURRENT / OPERATIVE  
-**Current master:** `TGCV_RMA_v1.4.md`  
-**Governance decision:** DR-044  
-**Conformance closure:** DR-045  
+**Current master:** `TGCV_RMA_v1.5.md`  
+**Governance decision:** EXT-UPD-3.8  
+**Conformance closure:** `EXT-UPD-3.8_CONSISTENCY_CLOSURE_v0.1.md`  
 **Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6 + EXT-UPD-3.7 + EXT-UPD-3.8
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
@@ -53,10 +53,11 @@ The from-scratch prohibition remains operative.
 - Candidate-domain eligibility audit: CLOSED — no eligible candidate identified on present record.
 - Discovery protocol v0.2: HISTORICAL / NON-ADMISSIBLE EXECUTION after query-budget nonconformance.
 - EXT-UPD-3.8: CLOSED / CONSISTENT corrective propagation.
-- Discovery protocol v0.3: **FROZEN / CORRECTED DISCOVERY PROTOCOL**.
-- Next controlled operation: new bounded documentary discovery pass under v0.3, after propagation closure.
+- Discovery protocol v0.3: FROZEN / CORRECTED DISCOVERY PROTOCOL.
+- v0.3 F1 documentary discovery: STOPPED / GOVERNANCE HOLD after F1-Q3 query-formulation deviation.
+- Next controlled operation: new versioned governance decision correcting the discovery protocol/execution boundary before any further search.
 
-The nonconforming v0.2 search pass is not a valid candidate-discovery result and admits no candidate.
+The nonconforming v0.2 search pass and the non-admissible F1-Q3 exploratory searches are not valid candidate-discovery results and admit no candidate.
 
 Discovery remains documentary only. Dataset download, processing, empirical execution, outcome/value analysis, model fitting and D-OPS-24 execution remain NOT AUTHORIZED.
 
@@ -73,3 +74,5 @@ Discovery remains documentary only. Dataset download, processing, empirical exec
 **EXT-UPD-3.7 D-OPS-24 discovery protocol freeze: CLOSED / CONSISTENT.**
 
 **EXT-UPD-3.8 D-OPS-24 discovery protocol correction: CLOSED / CONSISTENT.**
+
+**D-OPS-24 v0.3 F1 discovery execution: STOPPED / GOVERNANCE HOLD; corrective decision required.**
