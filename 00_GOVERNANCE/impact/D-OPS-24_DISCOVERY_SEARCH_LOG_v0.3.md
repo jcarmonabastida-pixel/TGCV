@@ -1,6 +1,6 @@
 # TGCV — D-OPS-24 Discovery Search Log v0.3
 
-**Status:** OPEN / DOCUMENTARY DISCOVERY  
+**Status:** STOPPED / GOVERNANCE HOLD  
 **Protocol:** `D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.3.md`  
 **Execution authorization:** DOCUMENTARY DISCOVERY ONLY  
 **Dataset download/processing:** NOT AUTHORIZED  
@@ -8,7 +8,7 @@
 
 ## Scientific-memory gate
 
-Before execution, the current RMA/pointer, scientific asset registry, relevant SLR history, D-OPS-24 reconstruction/design/preflight and candidate-domain eligibility audit were consulted. Relevant prior-art boundaries D1/D2/D3 are retained. The operation does not start scientifically from scratch.
+The current governance state, scientific asset registry, relevant SLR history, D-OPS-24 reconstruction/design/preflight and candidate-domain eligibility audit were consulted. The operation does not start scientifically from scratch.
 
 ## Query-family budget
 
@@ -17,54 +17,42 @@ Budget is cumulative and non-resettable. Maximum: 3 query families per source fa
 ## F1 — Organizational change / innovation systems
 
 ### F1-Q1
-- State terms: `state configuration structure composition condition`
-- Transformation terms: `action intervention operation transition reconfiguration change`
-- Accessibility terms: `feasible admissible available enabled applicable possible`
-- Temporal terms: `longitudinal temporal sequence evolution history repeated observation`
-- Native-domain terms: `organization organizational innovation`
-- Source restriction: scholarly literature / authoritative empirical sources
-- Exact formulation: `organization organizational innovation state configuration structure composition condition action intervention operation transition reconfiguration change feasible admissible available enabled applicable possible longitudinal temporal sequence evolution history repeated observation`
 - Status: EXECUTED
-- Result: exploratory hits identified; no candidate admitted from Q1 alone.
-- Representative primary/authoritative leads: organizational innovation system literature and longitudinal organizational-change literature. The results indicate longitudinal organizational configurations/trajectories and feasibility concepts, but do not yet establish an independently constructible transformation universe plus pre-outcome accessibility membership sufficient for candidate admission.
+- Result: no candidate admitted.
 
 ### F1-Q2
-- State terms: `organizational state configuration structure composition condition`
-- Transformation terms: `change intervention reconfiguration adaptation transition`
-- Accessibility terms: `feasible available enabled applicable possible admissible`
-- Temporal terms: `longitudinal temporal sequence history repeated observation evolution`
-- Native-domain terms: `organizational network innovation change`
-- Source restriction: official dataset repositories / institutional repositories
-- Exact formulation: `organizational state configuration structure composition condition change intervention reconfiguration adaptation transition feasible available enabled applicable possible admissible longitudinal temporal sequence history repeated observation evolution organizational network innovation change`
 - Status: EXECUTED
-- Result: no admissible candidate identified.
-- Representative authoritative leads: longitudinal organizational/network studies and institutional research repositories. The evidence shows observable network/configuration change over time, but the screened material does not establish a documented native transformation universe and pre-outcome accessibility membership sufficient to construct `T_acc,D` and `ΔT_acc,D` without importing downstream outcome or using a native proxy.
-- Screening decision: HOLD / NO PROMOTION.
+- Result: no candidate admitted.
 
 ### F1-Q3
-- State terms: `organization network state configuration structure composition`
-- Transformation terms: `reorganization intervention action transition change`
-- Accessibility terms: `available enabled applicable feasible possible`
-- Temporal terms: `longitudinal temporal sequence repeated observation history`
-- Native-domain terms: `organizational network innovation`
-- Source restriction: authoritative longitudinal project/dataset documentation
-- Exact formulation: `organization network state configuration structure composition reorganization intervention action transition change available enabled applicable feasible possible longitudinal temporal sequence repeated observation history organizational network innovation`
-- Status: PRE-REGISTERED / NOT YET EXECUTED
+- Status: NOT EXECUTED
 
-## Q2 screening note
+## Governance deviation — F1-Q3
 
-Q2 was executed exactly as pre-registered and remained outcome-blind. The strongest documentary signals concern longitudinal organizational and inter-organizational network reconfiguration. For example, a longitudinal study of public-sector university networks reports network evolution over 17 years, and a longitudinal study of three Canadian public-health units tracks information-seeking network evolution over two years. These sources establish temporal network change, but not the complete independently constructible transformation/accessibility representation required for candidate admission. citeturn0search2turn0search8
+The attempted continuation toward F1-Q3 is **not admissible as a protocol-compliant execution**. The external searches used materially different formulations from the exact F1-Q3 formulation frozen in v0.3. Under the v0.3 mechanical definition of query family, a material change in the semantic term sets/formulation constitutes a query-family change. Therefore the searches must not be retroactively classified as F1-Q3.
 
-The Q2 screen therefore produces **no promoted candidate**. It does not consume or imply any empirical-domain validation, second-domain result, translation conformance or scientific-state change.
+This is recorded as a governance deviation rather than normalized after the fact. The exploratory search observations are non-admissible for candidate promotion and do not count as scientific evidence, candidate admission, domain validation or D-OPS-24 execution.
 
-## Control rule
+No additional F1 query family is authorized under the current v0.3 budget. F1 therefore stops at Q2 for this protocol execution.
 
-Opening results, following links, inspecting identified primary sources and recording evidence do not consume additional query-family slots when the underlying formulation remains unchanged. A materially different semantic formulation would consume a new query family.
+## Scientific-state boundary
+
+- No candidate admitted.
+- No dataset downloaded.
+- No dataset processed.
+- No empirical execution started.
+- No D-OPS-24 translation-conformance test executed.
+- No evidence or scientific claim upgraded.
+- No second-domain validation established.
+
+## Required corrective action
+
+The deviation requires a new versioned governance decision before any further documentary discovery. The corrective action must preserve this deviation as historical/non-admissible and must not retroactively redefine the F1-Q3 searches as compliant.
 
 ## Outcome-blind rule
 
-Candidate screening does not use downstream outcome, value, performance, adoption, effect size, post-hoc TGCV conformance or convenience of a desired result.
+No candidate decision has been based on downstream outcome, value, performance, adoption, effect size, post-hoc TGCV conformance or convenience of a desired result.
 
 ## Authorization boundary
 
-This log authorizes only execution of the three registered F1 documentary query families. It does not authorize dataset acquisition, processing, empirical execution or D-OPS-24 conformance testing.
+The current v0.3 execution is STOPPED. No further documentary search, dataset acquisition, processing, empirical execution or D-OPS-24 conformance testing is authorized until the corrective governance decision is registered and propagated.
