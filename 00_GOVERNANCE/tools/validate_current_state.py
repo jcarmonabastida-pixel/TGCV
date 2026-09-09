@@ -21,8 +21,10 @@ required = [
     (ROOT / "STATUS.md", "STATUS"),
     (ROOT / "CHANGELOG.md", "CHANGELOG"),
     (ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md", "current claim matrix"),
-    (RMA_DIR / "TGCV_RMA_v1.5.md", "current RMA master v1.5"),
-    (RMA_DIR / "TGCV_RMA_traceability_v1.5.csv", "current RMA traceability v1.5"),
+    (RMA_DIR / "TGCV_RMA_v1.5.md", "historical RMA master v1.5"),
+    (RMA_DIR / "TGCV_RMA_traceability_v1.5.csv", "historical RMA traceability v1.5"),
+    (RMA_DIR / "TGCV_RMA_v1.6.md", "current RMA master v1.6"),
+    (RMA_DIR / "TGCV_RMA_traceability_v1.6.csv", "current RMA traceability v1.6"),
     (ROOT / "00_GOVERNANCE" / "workflows" / "CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md", "propagation workflow"),
     (SCIENCE / "SCIENTIFIC_ASSET_REGISTRY_v0.1.md", "scientific asset registry"),
     (IMPACT_DIR / "D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.2.md", "historical D-OPS-24 v0.2 protocol"),
@@ -30,6 +32,7 @@ required = [
     (IMPACT_DIR / "D-OPS-24_DISCOVERY_EXECUTION_LOG_v0.1.md", "D-OPS-24 execution log"),
     (IMPACT_DIR / "D-OPS-24_DISCOVERY_SEARCH_LOG_v0.3.md", "D-OPS-24 search log"),
     (IMPACT_DIR / "D-OPS-24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md", "D-OPS-24 F1-Q3 correction"),
+    (IMPACT_DIR / "EXT-UPD-3.9_DOPS24_F1_Q3_GOVERNANCE_CORRECTION_v0.1.md", "EXT-UPD-3.9 governance correction"),
 ]
 for p, label in required: require_file(p, label)
 for rel in ("TCP", "Vision_Paper", "Research_Prospectus", "ARM", "RII", "MOI"): require_dir(ASSETS / rel, f"canonical external asset family {rel}")
@@ -37,7 +40,8 @@ for rel in ("TCP", "Vision_Paper", "Research_Prospectus", "ARM", "RII", "MOI"): 
 if rma_current.exists():
     text = rma_current.read_text(encoding="utf-8")
     checks = {
-        "TGCV_RMA_v1.5.md": "RMA current pointer does not point to v1.5",
+        "TGCV_RMA_v1.6.md": "RMA current pointer does not point to v1.6",
+        "EXT-UPD-3.9": "RMA current does not declare EXT-UPD-3.9",
         "D-OPS-24": "RMA current does not declare D-OPS-24",
         "v0.3": "RMA current does not declare corrected discovery protocol v0.3",
         "GOVERNANCE HOLD": "RMA current does not record the F1 governance hold",
@@ -48,18 +52,18 @@ if rma_current.exists():
     for token, msg in checks.items():
         if token not in text: errors.append(msg)
 
-trace = RMA_DIR / "TGCV_RMA_traceability_v1.5.csv"
+trace = RMA_DIR / "TGCV_RMA_traceability_v1.6.csv"
 if trace.exists():
     with trace.open(encoding="utf-8-sig", newline="") as f: rows = list(csv.DictReader(f))
     ids = {r.get("asset_id") for r in rows}
-    required_ids = {"TGCV-CORE-001","TR-131","RUST-DYN-1","RUST-DYN-2","D-OPS-21","D-OPS-22","D-OPS-23","D-OPS-24","TGCV-EXT-TCP-001","TGCV-EXT-VP-001","TGCV-EXT-RP-001","TGCV-EXT-ARM-001","TGCV-EXT-RII-001","TGCV-EXT-MOI-001","SCIENTIFIC-ASSET-REGISTRY","EXT-UPD-3.6","EXT-UPD-3.7","EXT-UPD-3.8","DOPS24-DISCOVERY-PROTOCOL-v0.2","DOPS24-DISCOVERY-PROTOCOL-v0.3","DOPS24-DISCOVERY-EXECUTION-v0.1","DOPS24-F1-Q3-CORRECTION","DOPS24-DISCOVERY-SEARCH-v0.3","RMA-v1.5","RMA-current","STATUS","PROPAGATION-WORKFLOW","VALIDATOR"}
+    required_ids = {"TGCV-CORE-001","TR-131","RUST-DYN-1","RUST-DYN-2","D-OPS-21","D-OPS-22","D-OPS-23","D-OPS-24","TGCV-EXT-TCP-001","TGCV-EXT-VP-001","TGCV-EXT-RP-001","TGCV-EXT-ARM-001","TGCV-EXT-RII-001","TGCV-EXT-MOI-001","SCIENTIFIC-ASSET-REGISTRY","EXT-UPD-3.6","EXT-UPD-3.7","EXT-UPD-3.8","DOPS24-DISCOVERY-PROTOCOL-v0.2","DOPS24-DISCOVERY-PROTOCOL-v0.3","DOPS24-DISCOVERY-EXECUTION-v0.1","DOPS24-F1-Q3-CORRECTION","DOPS24-DISCOVERY-SEARCH-v0.3","DOPS24-F1-Q3-GOV-CORRECTION","RMA-v1.5","RMA-v1.6","RMA-current","STATUS","PROPAGATION-WORKFLOW","VALIDATOR"}
     missing = required_ids - ids
     if missing: errors.append("Traceability missing required assets: " + ", ".join(sorted(missing)))
-    for asset_id, expected in {"RMA-v1.5":"CURRENT","DOPS24-DISCOVERY-PROTOCOL-v0.3":"FROZEN","DOPS24-F1-Q3-CORRECTION":"CLOSED","DOPS24-DISCOVERY-SEARCH-v0.3":"STOPPED-GOVERNANCE-HOLD","EXT-UPD-3.8":"CLOSED-CONSISTENT"}.items():
+    for asset_id, expected in {"RMA-v1.5":"HISTORICAL-SUPERSEDED","RMA-v1.6":"CURRENT","DOPS24-DISCOVERY-PROTOCOL-v0.3":"FROZEN","DOPS24-F1-Q3-CORRECTION":"CLOSED","DOPS24-DISCOVERY-SEARCH-v0.3":"STOPPED-GOVERNANCE-HOLD","EXT-UPD-3.8":"CLOSED-CONSISTENT","DOPS24-F1-Q3-GOV-CORRECTION":"CLOSED"}.items():
         matches = [r for r in rows if r.get("asset_id") == asset_id]
         if matches and matches[0].get("status") != expected: errors.append(f"Traceability status mismatch for {asset_id}")
     pointer = [r for r in rows if r.get("asset_id") == "RMA-current"]
-    if pointer and pointer[0].get("depends_on") != "RMA-v1.5": errors.append("Traceability current pointer does not depend on RMA v1.5")
+    if pointer and pointer[0].get("depends_on") != "RMA-v1.6": errors.append("Traceability current pointer does not depend on RMA v1.6")
 
 matrix = ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md"
 if matrix.exists():
@@ -78,4 +82,4 @@ if errors:
     for e in errors: print(e)
     sys.exit(1)
 print("GOVERNANCE_CURRENT_STATE=PASS")
-print("RMA v1.5, current pointer, traceability, STATUS, claim matrix, scientific registry, D-OPS-24 v0.3 controls and F1-Q3 governance correction are structurally aligned.")
+print("RMA v1.6, current pointer, traceability, STATUS, claim matrix, scientific registry, D-OPS-24 v0.3 controls and EXT-UPD-3.9 F1-Q3 governance correction are structurally aligned.")
