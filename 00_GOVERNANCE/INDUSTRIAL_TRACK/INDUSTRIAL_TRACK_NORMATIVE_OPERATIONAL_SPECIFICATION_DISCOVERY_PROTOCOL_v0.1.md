@@ -1,7 +1,8 @@
 # INDUSTRIAL-TRACK — Normative / Operational Specification Discovery Protocol v0.1
 
-**Status:** PROPOSED / DESIGN-ONLY  
-**Execution authorization:** NOT GRANTED  
+**Status:** CURRENT / OPERATIVE — DOCUMENTARY DISCOVERY ONLY  
+**Execution authorization:** GRANTED FOR DOCUMENTARY DISCOVERY ONLY  
+**Industrial execution authorization:** NOT GRANTED  
 **Basis:** EXT-UPD-4.9  
 **Track:** INDUSTRIAL-TRACK  
 
@@ -9,7 +10,7 @@
 
 Define a bounded, auditable method for identifying external normative or operational specifications that can independently constrain the set of admissible alternatives in a future industrial decision context.
 
-This protocol is preparatory. It does not establish industrial utility, empirical validation of TGCV, causal evidence, value evidence, superiority, predictive validity, or any change to the scientific Core.
+This protocol governs documentary discovery only. It does not establish industrial utility, empirical validation of TGCV, causal evidence, value evidence, superiority, predictive validity, or any change to the scientific Core.
 
 ## 2. Search object
 
@@ -91,7 +92,7 @@ Stop the discovery operation if:
 
 ## 10. Output
 
-A conforming future execution must produce:
+A conforming execution must produce:
 
 - frozen search scope;
 - candidate register;
@@ -106,9 +107,13 @@ No candidate becomes an industrial case merely by appearing in the register.
 
 ## 11. Authorization boundary
 
-This protocol authorizes no search execution by itself.
+This protocol is authorized only for documentary discovery and screening under the separate authorization record:
 
-A separate governance decision must authorize execution after the design has been reviewed. Any future execution remains limited to documentary discovery and screening and must not include industrial experimentation, Rust execution, O3 rescue, Stage-C/D, causal inference, value optimization, Core modification, or claim upgrading.
+`INDUSTRIAL_TRACK_NORMATIVE_OPERATIONAL_SPECIFICATION_DISCOVERY_AUTHORIZATION_RECORD_v0.1.md`
+
+It does not authorize industrial experimentation, Rust execution, O3 rescue, Stage-C/D, causal inference, value optimization, Core modification, or claim upgrading.
+
+Any candidate retained by this operation must subsequently enter the established Industrial Track governance sequence (`IT-G0` through `IT-G5`) before industrial-case admission, comparative analysis, or industrial execution.
 
 ## 12. Scientific boundary
 
