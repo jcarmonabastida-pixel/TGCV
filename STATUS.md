@@ -19,7 +19,7 @@ EXT-UPD-4.9 establishes the **INDUSTRIAL-TRACK as PROPOSED**, separate from the 
 
 D-OPS-24 remains `CLOSED-BOUNDED-SEARCH` with no documentary accessibility PASS. Industrial utility remains `UNPROVEN / OPEN`. No industrial candidate is currently admitted.
 
-The next controlled work, if authorized, is design/preparation of the INDUSTRIAL-TRACK focused on normative or operational specifications of admissible alternatives, not another generic event-log search and not further O3 rescue.
+The normative/operational specification discovery protocol and authorization package are now prepared as design-only governance artifacts. Documentary discovery remains **NOT AUTHORIZED** pending a separate governance decision after design review.
 
 ## Recorded result
 - `T_acc+ (t0) = {TA, TB}`
@@ -31,7 +31,7 @@ The next controlled work, if authorized, is design/preparation of the INDUSTRIAL
 - external dataset used = `false`
 
 ## Authorization boundary
-TR-132-MOD-1 is closed. Its result does not authorize Rust/EXT-1.1, industrial execution, O3, Stage-C/Stage-D, causal inference, value assessment, Core modification, or claim upgrade. EXT-UPD-4.9 likewise does not authorize industrial experiment execution or partner evidential engagement.
+TR-132-MOD-1 is closed. Its result does not authorize Rust/EXT-1.1, industrial execution, O3, Stage-C/Stage-D, causal inference, value assessment, Core modification, or claim upgrade. EXT-UPD-4.9 likewise does not authorize industrial experiment execution or partner evidential engagement. The present industrial-track package does not authorize documentary discovery.
 
 ## Canonical continuity
 GitHub `main` remains the canonical continuity and provenance gate. Substantive state changes are propagated atomically across canonical governance assets and must pass the current-state validator before further scientific operations.

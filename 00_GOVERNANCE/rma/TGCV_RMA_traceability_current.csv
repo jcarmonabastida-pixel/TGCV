@@ -15,7 +15,9 @@ TR-132-MOD-1-RESULT-TEMPLATE,execution_result_template,FROZEN-DESIGN,00_GOVERNAN
 D-OPS-24,gate,CLOSED-BOUNDED-SEARCH,00_GOVERNANCE/D-OPS-24_DIRECTED_DOCUMENTARY_ACCESSIBILITY_SEARCH_PROTOCOL_v0.1.md,EXT-UPD-4.9,Search completed; no documentary PASS
 EXT-UPD-4.9,strategic_disposition,CURRENT,00_GOVERNANCE/EXT-UPD-4.9_STRATEGIC_DISPOSITION_INDUSTRIAL_APPLICABILITY_RESULT_v0.1.md,EXT-UPD-4.8;D-OPS-24,Industrial Track PROPOSED; no industrial execution authorization
 INDUSTRIAL-TRACK,application_research_line,PROPOSED,00_GOVERNANCE/INDUSTRIAL_TRACK/,EXT-UPD-4.9,Design/preparation only; no candidate admitted and no execution authorized
-RMA-v3.19,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.19.md,TR-132-MOD-1-RESULT;TR-132-MOD-1-CLOSURE;EXT-UPD-4.9,RMA reconciled with industrial-track strategic disposition
-RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.19,Stable canonical pointer
-TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Stable canonical pointer to current traceability
+INDUSTRIAL-TRACK-PROTOCOL,governance_methodology,CURRENT-DESIGN-ONLY,00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_TRACK_NORMATIVE_OPERATIONAL_SPECIFICATION_DISCOVERY_PROTOCOL_v0.1.md,INDUSTRIAL-TRACK;EXT-UPD-4.9,Normative/operational specification discovery design; execution not authorized
+INDUSTRIAL-TRACK-AUTH-PKG,governance_authorization_package,PROPOSED,00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_TRACK_NORMATIVE_OPERATIONAL_SPECIFICATION_DISCOVERY_AUTHORIZATION_PACKAGE_v0.1.md,INDUSTRIAL-TRACK-PROTOCOL;EXT-UPD-4.9,Prepared for separate authorization; documentary discovery not yet authorized
+RMA-v3.20,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.20.md,TR-132-MOD-1-RESULT;TR-132-MOD-1-CLOSURE;EXT-UPD-4.9;INDUSTRIAL-TRACK-AUTH-PKG,RMA records prepared industrial-track design; execution remains unauthorized
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.20,Stable canonical pointer
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Stable canonical pointer to current traceability v3.20
 PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Atomic propagation operative
