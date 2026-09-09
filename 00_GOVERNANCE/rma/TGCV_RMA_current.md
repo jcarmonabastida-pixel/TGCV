@@ -4,7 +4,7 @@
 **Status:** CURRENT / OPERATIVE  
 **Current master:** `TGCV_RMA_v1.6.md`  
 **Governance decision:** EXT-UPD-3.9  
-**Conformance closure:** pending EXT-UPD-3.9 consistency closure  
+**Conformance closure:** `EXT-UPD-3.9_CONSISTENCY_CLOSURE_v0.1.md` — CLOSED / CONSISTENT at document/control level; post-closure CI verification is not observable for commit `9098ace5d48fe8313c672bd6fe87b07ec2edba27`.  
 **Structural/content propagation:** EXT-UPD-1R.4 + EXT-UPD-3.1 + EXT-UPD-3.2 + EXT-UPD-3.3.5 + EXT-UPD-3.4 + EXT-UPD-3.5 + EXT-UPD-3.6 + EXT-UPD-3.7 + EXT-UPD-3.8 + EXT-UPD-3.9
 
 This file is the current RMA pointer. It is not a historical record. Historical RMA versions remain immutable.
