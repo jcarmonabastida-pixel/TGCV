@@ -8,10 +8,13 @@
 - Option A (further O3 rescue) rejected; Option B (separate industrial/applied track) adopted; Option C (reorient TGCV into an applied theory of value) not adopted at present.
 - Registered `INDUSTRIAL-TRACK` as PROPOSED only. No industrial experiment, O3 rescue, Stage-C/Stage-D execution, causal/value inference, Core modification or external-asset upgrade is authorized by EXT-UPD-4.9.
 - Created `EXT-UPD-4.9_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md`; no scientific claim upgrade recorded.
-- Advanced current RMA to immutable `TGCV_RMA_v2.9.md` and synchronized `TGCV_RMA_current.md`.
-- Created `TGCV_RMA_traceability_v2.9.csv` and advanced the current traceability pointer.
-- Synchronized `STATUS.md` with EXT-UPD-4.9 and the proposed INDUSTRIAL-TRACK.
+- Created `INDUSTRIAL_TRACK_GOVERNANCE_SPEC_v0.1.md` as operative design infrastructure; execution remains not authorized.
+- Created `EXT-UPD-4.9_INDUSTRIAL_TRACK_GOVERNANCE_SPEC_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md`; no scientific claim, gate or Core change recorded.
+- Advanced current RMA to immutable `TGCV_RMA_v3.0.md` and synchronized `TGCV_RMA_current.md`.
+- Created `TGCV_RMA_traceability_v3.0.csv` and advanced the current traceability pointer.
+- Synchronized `STATUS.md` with the Industrial Track specification and its no-claim-change impact assessment.
 - Scientific Core, falsification criteria and current Evidence→Claim Matrix v0.6 remain unchanged.
+- Next controlled operation after consistency closure: prepare the Industrial Case Specification; no execution is authorized by this propagation.
 
 - Completed C-01 Gate A / Minimum Translation Eligibility: PASS.
 - Completed C-01 Gate B / Translation Readiness: PASS.
