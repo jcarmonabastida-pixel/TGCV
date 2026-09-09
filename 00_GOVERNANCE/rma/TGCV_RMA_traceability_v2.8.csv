@@ -1,0 +1,21 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+TGCV-CORE-001,scientific_core,CURRENT,01_SCIENTIFIC_CORE/,TR131;DOPS21;DOPS22;DOPS23;C-01,Core unchanged
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,EXT-UPD-4.3;EXT-UPD-4.5;EXT-UPD-4.6;EXT-UPD-4.8,Current matrix v0.6; corrective impact recorded without epistemic upgrade
+D-OPS-24,gate,FROZEN-DESIGN,00_GOVERNANCE/impact/,EXT-UPD-4.1;EXT-UPD-4.2;EXT-UPD-4.5,Further route requires new governance decision
+C-01,cross_domain_translation_evidence,CLOSED-BOUNDED,00_GOVERNANCE/impact/D-OPS-24_V05_C01_TRANSLATION_TRACE_v0.1.md,EXT-UPD-4.2;EXT-UPD-4.4;EXT-UPD-4.5,Bounded documentary A/B/C; Gate-D routes indeterminate
+EXT-UPD-4.6-I01-IMPACT,evidence_claim_impact,CLOSED,00_GOVERNANCE/impact/EXT-UPD-4.6_I01_GATE_C_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md,I-01;EXT-UPD-4.3,I-01 Gate-C impact assessed
+EXT-UPD-4.6-I01-CLOSURE,consistency_closure,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-4.6_I01_CONSISTENCY_CLOSURE_v0.1.md,EXT-UPD-4.6-I01-PROPAGATION,Control-level consistency closure
+EXT-UPD-4.7-I01,constructive_operationalization,CLOSED-INDETERMINATE,00_GOVERNANCE/EXT-UPD-4.7_I01_CONSTRUCTIVE_OPERATIONALIZATION_EXECUTION_RESULT_v0.1.md,EXT-UPD-4.7,Single authorized attempt exhausted; deeper operationalization boundary persists
+EXT-UPD-4.8,strategic_applicability_reassessment,ACTIVE-STAGE-B-CORRECTIVE-CLOSED,00_GOVERNANCE/EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_PROPAGATION_v0.1.md,EXT-UPD-4.8-STAGE-A;EXT-UPD-4.8-STAGE-B;EXT-UPD-4.8-STAGE-B-ACCESSIBILITY,Stage B comparative route did not establish IUT-2; corrective accessibility route closed indeterminate
+EXT-UPD-4.8-STAGE-A-IMPACT,evidence_claim_impact,CLOSED,00_GOVERNANCE/EXT-UPD-4.8_STAGE_A_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md,IUT-A-01;EXT-UPD-4.3,Material bounded impact; no utility proof
+EXT-UPD-4.8-STAGE-B-ACCESSIBILITY-IMPACT,evidence_claim_impact,CLOSED,00_GOVERNANCE/EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_EVIDENCE_CLAIM_IMPACT_ASSESSMENT_v0.1.md,EXT-UPD-4.8-STAGE-B-ACCESSIBILITY-AUDIT,Corrective impact assessed; no claim upgrade
+EXT-UPD-4.8-STAGE-B-ACCESSIBILITY-PROPAGATION,propagation,CLOSED-PROPAGATED,00_GOVERNANCE/EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_PROPAGATION_v0.1.md,EXT-UPD-4.8-STAGE-B-ACCESSIBILITY-IMPACT,Repaired executor and indeterminate scientific result propagated
+EXT-UPD-4.8-STAGE-B-ACCESSIBILITY-CLOSURE,consistency_closure,PENDING,00_GOVERNANCE/EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_CONSISTENCY_CLOSURE_v0.1.md,EXT-UPD-4.8-STAGE-B-ACCESSIBILITY-PROPAGATION,To be created after current-state machine validation
+RMA-v2.6,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v2.6.md,EXT-UPD-4.6-I01-IMPACT,Immutable predecessor
+RMA-v2.7,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v2.7.md,EXT-UPD-4.8-STAGE-A-IMPACT,Immutable predecessor
+RMA-v2.8,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v2.8.md,EXT-UPD-4.8-STAGE-B-ACCESSIBILITY-IMPACT,Current master after corrective accessibility propagation
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v2.8,Must point to v2.8
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v2.8;CLAIM-MATRIX;EXT-UPD-4.8,Current state
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Resolves to v2.8 traceability
+PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA-current;traceability-current;STATUS;claim_matrix_current,Version-independent canonical-state validator
