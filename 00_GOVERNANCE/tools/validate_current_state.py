@@ -44,6 +44,8 @@ if rma_current.exists():
         errors.append("RMA current does not declare the frozen D-OPS-24 discovery protocol")
     if "EXT-UPD-3.6 scientific asset reconciliation: CLOSED / CONSISTENT" not in text:
         errors.append("RMA current does not record EXT-UPD-3.6 closed/consistent state")
+    if "EXT-UPD-3.7 D-OPS-24 discovery protocol freeze: CLOSED / CONSISTENT" not in text:
+        errors.append("RMA current does not record EXT-UPD-3.7 closed/consistent state")
     if "from-scratch" not in text or "historical artifact" not in text:
         errors.append("RMA current scientific reuse rule missing")
 
@@ -93,6 +95,9 @@ if trace.exists():
     ext = [r for r in rows if r.get("asset_id") == "EXT-UPD-3.6"]
     if ext and ext[0].get("status") != "CLOSED-CONSISTENT":
         errors.append("Traceability does not record EXT-UPD-3.6 closure")
+    ext37 = [r for r in rows if r.get("asset_id") == "EXT-UPD-3.7"]
+    if ext37 and ext37[0].get("status") != "CLOSED-CONSISTENT":
+        errors.append("Traceability does not record EXT-UPD-3.7 closure")
     dops = [r for r in rows if r.get("asset_id") == "DOPS24-DISCOVERY-PROTOCOL"]
     if dops and dops[0].get("status") != "FROZEN":
         errors.append("Traceability does not record D-OPS-24 discovery protocol as frozen")
