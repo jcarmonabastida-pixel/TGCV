@@ -1,0 +1,26 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+TGCV-CORE-001,scientific_core,CURRENT,01_SCIENTIFIC_CORE/,TR131;DOPS21;DOPS22;DOPS23,Core ontology S and analytical architecture
+TR-131,test,CLOSED,03_EXPERIMENTS/EXT-1.1_Rust/,Rust operationalization,State sufficiency / T_acc analytical indispensability
+RUST-DYN-1,experiment,CLOSED,03_EXPERIMENTS/EXT-1.1_Rust/,TR131;DR-036,Bounded dynamic evidence
+RUST-DYN-2,experiment,CLOSED,03_EXPERIMENTS/EXT-1.1_Rust/,DR-043,Bounded structural empirical evidence
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_POST_DOPS23_v0.1.md,RUST-DYN-1;RUST-DYN-2;DOPS21;DOPS22;DOPS23,Authoritative current evidence-to-claim matrix unchanged
+D-OPS-24,gate,CLOSED-DISCOVERY-FAMILY,00_GOVERNANCE/impact/,DOPS23;EXT-UPD-3.6;EXT-UPD-3.7;EXT-UPD-3.8;EXT-UPD-3.9;EXT-UPD-4.0;RMA-v2.1,v0.4 frozen; Q1-Q3 executed; zero admissible candidates; F2 budget exhausted
+DOPS24-DISCOVERY-PROTOCOL-v0.4,controlled_protocol,FROZEN,00_GOVERNANCE/impact/D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md,DOPS24;EXT-UPD-4.0;RMA-v2.1,F2-first protocol; QF budget 3/3 consumed
+DOPS24-PREFLIGHT-v0.4,preflight,CLOSED,00_GOVERNANCE/impact/D-OPS-24_PREFLIGHT_v0.4.md,DOPS24-DISCOVERY-PROTOCOL-v0.4;EXT-UPD-4.0,PF-01..PF-18 PASS; PF-19 satisfied per explicit Q1/Q2/Q3 authorizations
+DOPS24-F2-Q1-AUTH,execution_authorization,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F2_Q1_EXECUTION_AUTHORIZATION_v0.1.md,DOPS24-DISCOVERY-PROTOCOL-v0.4,Explicit Q1 authorization
+DOPS24-F2-Q1-RESULT,execution_result,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F2_Q1_EXECUTION_LOG_v0.1.md,DOPS24-F2-Q1-AUTH,Zero candidates under exact formulation
+DOPS24-F2-Q2-AUTH,execution_authorization,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F2_Q2_EXECUTION_AUTHORIZATION_v0.1.md,DOPS24-DISCOVERY-PROTOCOL-v0.4,Explicit Q2 authorization
+DOPS24-F2-Q2-RESULT,execution_result,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F2_Q2_EXECUTION_RESULT_v0.1.md,DOPS24-F2-Q2-AUTH,Zero admissible candidates
+DOPS24-F2-Q3-AUTH,execution_authorization,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F2_Q3_EXECUTION_AUTHORIZATION_v0.1.md,DOPS24-DISCOVERY-PROTOCOL-v0.4,Explicit Q3 authorization
+DOPS24-F2-Q3-RESULT,execution_result,CLOSED,00_GOVERNANCE/impact/D-OPS-24_F2_Q3_EXECUTION_RESULT_v0.1.md,DOPS24-F2-Q3-AUTH,Zero admissible candidates
+EXT-UPD-4.0-F2-PROPAGATION,governance_propagation,CLOSED-CONSISTENT,00_GOVERNANCE/impact/EXT-UPD-4.0_F2_DISCOVERY_PROPAGATION_v0.1.md,DOPS24-F2-Q3-RESULT;RMA-v2.1,F2 discovery result propagated
+RMA-v1.8,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v1.8.md,DOPS24-PREFLIGHT-v0.4,Immutable historical master
+RMA-v1.9,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v1.9.md,DOPS24-F2-Q1-RESULT,Immutable historical master
+RMA-v2.0,governance_master,HISTORICAL-SUPERSEDED,00_GOVERNANCE/rma/TGCV_RMA_v2.0.md,DOPS24-F2-Q2-RESULT,Immutable historical master
+RMA-v2.1,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v2.1.md,DOPS24-F2-Q3-RESULT,Current master after F2 discovery closure
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v2.1,Must point to v2.1
+STATUS,governance_status,CURRENT,STATUS.md,RMA-v2.1;DOPS24-DISCOVERY-PROTOCOL-v0.4;DOPS24-F2-Q3-RESULT,Current-state summary
+PROPAGATION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/CURRENT_STATE_PROPAGATION_AND_CONSISTENCY_WORKFLOW_v0.1.md,None,Mandatory propagation sequence
+HISTORICAL-RECONSTRUCTION-WORKFLOW,governance_workflow,FROZEN,00_GOVERNANCE/workflows/HISTORICAL_RECONSTRUCTION_BEFORE_NEW_WORK_RULE_v0.1.md,None,Mandatory historical reconstruction
+SCIENTIFIC-ASSET-REGISTRY,scientific_memory_registry,CURRENT,02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md,EXT-UPD-3.6,Canonical reusable research-bearing scientific registry
+VALIDATOR,machine_control,CURRENT,00_GOVERNANCE/tools/validate_current_state.py,RMA-v2.1;traceability-v2.1;STATUS;claim_matrix;scientific_registry,Current-state structural control
