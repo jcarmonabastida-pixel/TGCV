@@ -1,22 +1,18 @@
-# CHANGELOG
+# Changelog
 
-## 2026-09-09 — TR-132-MOD-1 concrete execution package specification
+## 2026-09-09
 
-- Added `TR-132-MOD-1_CONCRETE_EXECUTION_PACKAGE_SPECIFICATION_v0.1.md`.
-- Added corresponding execution-package impact assessment.
-- Frozen the concrete methodological package structure: finite synthetic candidate universe, state pair, stable identities, ex-ante accessibility predicate, realization-blind adjudication, negative controls, reproducibility manifest and L1/L2/L3 decision logic.
-- Execution remains NOT AUTHORIZED pending a separate authorization review.
-- No empirical evidence introduced.
-- No Core, claim, gate, Rust evidence or Industrial Track change.
-- Updated RMA to v3.16 and synchronized canonical traceability atomically.
+- Instantiated and froze methodological fixture `MOD1-FX-001` for TR-132-MOD-1.
+- Frozen exact finite candidate universe, state pair, accessibility classifications, controls, realization schedule, deterministic seed and pre-execution result/stop rules.
+- Executed the separately authorized controlled fixture run `TR-132-MOD-1-EXEC-001`.
+- Recorded `BOUNDED PASS (L3)`: `{TA,TB}` at t0 → `{TA,TB,TD}` at t1; symmetric difference `{TD}`.
+- Confirmed non-circularity `PASS`, reproducibility `PASS`, no deviations and no external dataset use.
+- Formally closed TR-132-MOD-1 as `CLOSED / BOUNDED PASS (L3)` in the governance conversation record.
+- Kept the scientific interpretation bounded: no full `T_acc` closure, causal/value inference, industrial utility, Rust evidence, Core validation, claim upgrade or scientific gate upgrade.
+- Advanced current RMA atomically to `TGCV_RMA_v3.18.md`; current pointer, STATUS and traceability synchronized.
+- Kept historical `TGCV_RMA_v3.17.md` immutable.
+- Maintained `actions/checkout@v6` in governed workflows; current-state validator remains the canonical governance gate.
 
-## 2026-09-09 — TR-132-MOD-1 design audit and schema freeze
-
-- Added `TR-132-MOD-1_TACC_OPERATIONALIZATION_FIXTURE_DESIGN_v0.1.md`.
-- Added `TR-132-MOD-1_DESIGN_AUDIT_AND_FIXTURE_SCHEMA_v0.1.md`.
-- Added corresponding impact assessment.
-- Design audit disposition: PASS for schema freeze.
-- Frozen controls include finite candidate universe, stable identity, ex-ante accessibility, realization independence, negative controls, L1/L2/L3 progression and non-circularity.
-- No empirical execution authorized.
-- No Core, claim, gate, Rust evidence or Industrial Track change.
-- Updated RMA to v3.15 and synchronized canonical traceability atomically.
+## Prior state
+- TR-132-MOD-1 concrete execution package and fixture were frozen under v3.17, pending separate execution authorization.
+- Package instantiation authorization had been granted; empirical fixture execution was subsequently authorized and completed under a distinct authorization record.
