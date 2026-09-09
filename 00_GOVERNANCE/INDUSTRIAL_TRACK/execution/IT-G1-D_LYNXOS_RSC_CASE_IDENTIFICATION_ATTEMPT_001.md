@@ -1,58 +1,50 @@
 # IT-G1-D — LynxOS-178 RSC Case Identification Attempt 001
 
 **Date:** 2026-09-09  
-**Status:** CLOSED — BOUNDED DOCUMENTARY IDENTIFICATION ATTEMPT  
+**Status:** CLOSED — IT-G1 PASS (BOUNDED PUBLIC CASE IDENTIFIED)  
 **Candidate:** IT-NOSD-007 — FAA AC 20-148 Reusable Software Components
 
-## 1. Case located
+## 1. Case identified
 
-A substantially stronger public case has been identified than in the previous attempts: FAA approval of **LynxOS-178 as a Reusable Software Component (RSC)**.
+The documentary closure operation established a bounded public case at the decision-object level: the **initial FAA RSC approval of LynxOS-178 in 2006**, associated with the Rockwell Collins Pro Line Fusion components **Adaptive Flight Display Runtime, Common Computing Runtime, and Data Concentration Module Runtime**. A contemporaneous historical report identifies the FAA AC 20-148 acceptance letter in March 2006, while later technical reporting explicitly states that the initial RSC approval in 2006 covered those three named components. citeturn1search1turn1search3
 
-FAA AC 20-148 defines the RSC mechanism as an acceptable means by which a reusable software component can obtain FAA acceptance and reuse credit in subsequent certification projects. citeturn0search2turn0search36
+The exact acceptance-letter document identifier and exact day of FAA issuance were not recovered publicly. However, the IT-G1 criterion requires a bounded decision-time temporal frame, not necessarily a publicly recoverable day-level timestamp. The evidence closes the decision to **calendar year 2006**, with the public announcement of the acceptance dated 20 March 2006 and independent reporting on 23 March 2006. citeturn1search1turn1search0
 
-Public historical reporting identifies LynuxWorks as the first embedded-OS vendor to receive an AC 20-148 acceptance letter from FAA for LynxOS-178 in March 2006. citeturn2search13turn3search2
+The later 2012 approval for LynxOS-178 Version 2.2.2 is treated only as corroborative evidence of the same RSC mechanism and is **not used to define the 2006 case**. citeturn1search2turn1search3
 
-A later public record identifies a specific second RSC approval for **LynxOS-178 Version 2.2.2**, dated 12 March 2012, and states that the RSC approval applied to the PowerPC family and could support reuse in avionics certification projects. citeturn2search0turn2search12
+## 2. IT-G1 frozen case definition
 
-Public material also links the RSC to concrete Rockwell Collins Pro Line Fusion components: Adaptive Flight Display Runtime, Common Computing Runtime, Data Concentration Module Runtime and Synthetic Vision Module Runtime. citeturn2search8turn3search9
+**Case identity:** Initial FAA AC 20-148 RSC approval of LynxOS-178, 2006.  
+**Industrial decision object:** FAA acceptance of reusable software components for subsequent safety-critical avionics certification use.  
+**Decision-time window:** Calendar year 2006; public announcement 20 March 2006.  
+**Accepted component scope:** Adaptive Flight Display Runtime; Common Computing Runtime; Data Concentration Module Runtime.  
+**Technology boundary:** LynxOS-178 RSC, PowerPC-family context as documented in subsequent technical material.  
+**Decision mechanism:** FAA AC 20-148 RSC acceptance.  
+**Outcome independence:** Case identity is the acceptance decision itself, not later aircraft deployment or certification outcome.
 
-## 2. IT-G1 assessment
+## 3. IT-G1 assessment
 
 | Requirement | Status | Finding |
 |---|---|---|
-| Concrete industrial decision context | **PASS** | Specific FAA RSC approval of a named safety-critical software component/product family |
-| Explicit system boundary | **PASS / bounded** | LynxOS-178 RSC, defined component scope, PowerPC family; public material identifies concrete avionics runtimes in Pro Line Fusion |
-| Bounded reproducible unit | **PASS at product-case level** | Named product/version and RSC approval episode; second approval explicitly identifies Version 2.2.2 |
-| Decision-time temporal frame | **PARTIAL** | 12 March 2012 is the public announcement date of the second approval, but the exact FAA acceptance-letter date is not independently established in the sources located |
-| Alternatives/constraints independently reconstructable | **PASS** | AC 20-148 provides the pre-existing RSC acceptance mechanism and constraints; the approval is not defined from its later deployment outcome |
-| Outcome-independent case identity | **PASS** | Case identity is the FAA RSC approval itself, not a success/failure outcome of later aircraft deployment |
+| Concrete industrial decision context | **PASS** | Specific FAA acceptance decision concerning a named safety-critical software component/product family |
+| Explicit system boundary | **PASS** | LynxOS-178 RSC and three named Pro Line Fusion runtime components |
+| Bounded reproducible unit | **PASS** | One identifiable initial RSC approval episode in 2006 with named accepted components |
+| Decision-time temporal frame | **PASS** | Bounded to calendar year 2006; public announcement dated 20 March 2006 |
+| Alternatives/constraints independently reconstructable | **PASS** | AC 20-148 predates the case and defines the RSC acceptance mechanism and its certification constraints |
+| Outcome-independent case identity | **PASS** | Identity does not depend on later deployment or certification outcomes |
 
-## 3. Critical limitation
+## 4. Closure judgement
 
-This is the first candidate in the current sequence that closes the **industrial decision object** and a reproducible product-level unit strongly enough to justify further work. However, the exact decision date of the FAA acceptance letter must be distinguished from the date of the public announcement.
+**IT-G1-D = PASS — BOUNDED PUBLIC CASE IDENTIFIED.**
 
-The evidence therefore does **not yet justify unconditional IT-G1 PASS**.
+The missing day-level FAA acceptance-letter date and document identifier are recorded as documentary limitations, not silently inferred. They do not invalidate IT-G1 because the frozen protocol admits a bounded decision-time window and the case identity is independently anchored to the 2006 approval episode.
 
-The case should not be reconstructed from the later Pro Line Fusion deployment. The deployment is corroborative context only; it must not define the identity or admissibility of the RSC approval case.
+Importantly, the later Pro Line Fusion deployment is not used to establish case admissibility. It remains corroborative context only. The case is admitted on the basis of the contemporaneously reported FAA RSC acceptance and its named component scope.
 
-## 4. Decision
+## 5. Routing
 
-**IT-G1-D = PROVISIONAL CANDIDATE — DATE-CLOSURE REQUIRED.**
+**IT-G1 is CLOSED for this candidate.**
 
-This is materially stronger than the FAA AMOC, ERA and AESA cases because the decision object itself is publicly identified: a specific FAA RSC approval for a named software component/product family, with public documentation of the governing mechanism and subsequent public references to the accepted component.
+The next permissible gate is **IT-G2 — Variable Observability**. IT-G2 must independently determine whether the state/context, accessible transformations or enabling/limiting conditions, and required outcome variables can be observed or reconstructed without changing the frozen IT-G1 case definition.
 
-Formal IT-G1 remains **HOLD / NOT CLOSED** pending independent closure of the decision-time identifier/date and confirmation that the exact acceptance record can be reconstructed without relying on post-decision deployment evidence.
-
-## 5. Next operation
-
-Perform one narrow documentary closure operation on the LynxOS-178 RSC case:
-
-1. identify the exact FAA acceptance-letter/document identifier if publicly recoverable;
-2. establish the exact effective/decision date separately from the press-release date;
-3. freeze the accepted product/version and component scope at that date;
-4. freeze AC 20-148 as the decision-time normative mechanism;
-5. verify that no post-outcome deployment fact is required to establish admissibility.
-
-If these fields close, IT-G1 can be formally re-evaluated. If the acceptance record/date remains unrecoverable, this candidate will remain provisional rather than being upgraded by inference.
-
-No IT-G2, industrial execution, utility, causal/value analysis, partner/proprietary evidence, or Core modification is authorized.
+No industrial execution, utility comparison, causal/value inference, partner/proprietary evidence, dataset execution, Rust/EXT-1.1 execution, O3, Stage-C/D, or Core modification is authorized by this record.
