@@ -1,11 +1,12 @@
 # TGCV — Canonical Status
 
 **Last updated:** 2026-09-09
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v2.6.md`
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_v2.7.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` v0.6
-**Governance state:** EXT-UPD-4.6 / I-01 Gate-C INDETERMINATE; Evidence→Claim impact assessed; propagation pending closure
+**Governance state:** EXT-UPD-4.8 Stage A IUT-A-01 PASS; Stage-A Evidence→Claim impact assessed and propagated; Stage-B decision pending
 **C-01 gate profile:** MTE PASS / Translation Readiness PASS / Translation Trace PASS / Extended Conformance INDETERMINATE
-**I-01 gate profile:** MTE PASS / Translation Readiness PASS / Translation Trace INDETERMINATE
+**I-01 gate profile:** MTE PASS / Translation Readiness PASS / Translation Trace INDETERMINATE / constructive operationalization INDETERMINATE
+**EXT-UPD-4.8 profile:** Stage A PASS / Stage B NOT AUTHORIZED
 
 ## Canonical continuity point
 
@@ -17,9 +18,11 @@
 
 ## Evidence / claims
 
-C-01 provides bounded documentary cross-domain translation evidence through Gates A-C. Original and alternative Gate-D routes remain INDETERMINATE. I-01 adds independent-domain Gate-C evidence, but `T_acc,D` and `ΔT_acc,D` remain INDETERMINATE because the native candidate universe and accessibility membership cannot be closed without analyst-supplied completion.
+C-01 provides bounded documentary cross-domain translation evidence through Gates A-C. Original and alternative Gate-D routes remain INDETERMINATE. I-01 adds independent-domain Gate-C evidence and its single constructive operationalization attempt remained INDETERMINATE at complete native `T_acc,D` closure.
 
-The I-01 evidence strengthens bounded cross-domain translation support but does not upgrade full generalization, downstream conformance, causality, prediction, value creation, universal validity, originality or superiority.
+EXT-UPD-4.8 Stage A established a controlled industrial case specification (IUT-A-01) in manufacturing, with a bounded native state/context, finite source-defined candidate-option universe, frozen pre-decision information boundary, credible incumbent baseline and distinct TGCV-specific analytical output. This is case-testability evidence only; industrial utility remains unproven.
+
+No causal, predictive, financial-value, superiority, universal-generalization or complete-T_acc claim is upgraded.
 
 TR-131, RUST-DYN-1 and RUST-DYN-2 remain CLOSED with bounded interpretations. Trajectory sufficiency, causal identification and value linkage remain OPEN. Originality remains BOUNDED/PARTIAL.
 
@@ -31,15 +34,17 @@ D-OPS-24 v0.5 remains frozen with staged architecture:
 
 `Discovery → MTE → Translation Readiness → Translation Trace → Extended TGCV Conformance`
 
-C-01 completed A-C with PASS/PASS/PASS (bounded/partial). I-01 completed MTE/TR PASS and Gate C INDETERMINATE. No I-01 downstream Gate-D/ETC execution is authorized by this result alone.
+C-01 completed A-C with PASS/PASS/PASS (bounded/partial). I-01 completed MTE/TR PASS and Gate C plus constructive operationalization INDETERMINATE. No I-01 downstream Gate-D/ETC execution is authorized.
 
-## Governance state
+## EXT-UPD-4.8 state
 
-EXT-UPD-4.2, 4.3, 4.4 and 4.5 remain closed. EXT-UPD-4.6 I-01 Evidence→Claim impact assessment is CLOSED; matrix/RMA/STATUS propagation is complete except final consistency closure.
+Stage A is CLOSED / PASS. Its Evidence→Claim impact assessment is CLOSED and propagation is complete. The current RMA is v2.7; the current claim matrix remains v0.6.
+
+Stage B comparative industrial utility testing is NOT AUTHORIZED. A new governance decision is required before any Stage-B execution.
 
 ## Authorization boundary
 
-No further I-01 downstream execution, new domain, new D-OPS QF, dataset acquisition/processing, empirical escalation, causal inference, value optimization or external-asset update is authorized without a new explicit governance decision and authorization.
+No dataset execution, industrial partner engagement, causal inference, value optimization, Core modification or external-asset update is authorized without a new explicit governance decision and authorization.
 
 ## Scientific-memory structure
 
