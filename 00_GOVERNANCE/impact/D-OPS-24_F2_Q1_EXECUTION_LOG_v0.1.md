@@ -1,21 +1,19 @@
 # D-OPS-24 — F2-Q1 Execution Log v0.1
 
-**Status:** EXECUTION RELEASED — SEARCH NOT YET EXECUTED IN THIS RECORD
+**Status:** EXECUTED / ZERO RESULT
 **Date:** 2026-09-09
 **Authorization:** `D-OPS-24_F2_Q1_EXECUTION_AUTHORIZATION_v0.1.md`
 **Protocol:** `D-OPS-24_CANDIDATE_POOL_EXPANSION_DISCOVERY_v0.4.md`
 
 ## 1. Release state
 
-Explicit authorization for F2-Q1 has been recorded. The authorized operation is documentary discovery only, using the exact pre-registered F2-Q1 formulation.
+Explicit authorization for F2-Q1 was recorded. The authorized operation was documentary discovery only, using the exact pre-registered F2-Q1 formulation.
 
-## 2. Important control condition
+## 2. Control condition
 
-The current search log states that Q1, Q2 and Q3 are materially distinct. However, the canonical log currently contains Q1/Q2/Q3 as registered formulations and no search has yet been executed. This execution log therefore releases **Q1 only** and does not authorize Q2 or Q3.
+F2-Q1 only was executed. Q2 and Q3 were not executed and remain unauthorized.
 
-Before any Q2/Q3 execution, their registration must be independently revalidated against the fixed-query-family rule.
-
-## 3. Authorized query
+## 3. Executed query
 
 **Q-ID:** F2-Q1
 
@@ -23,25 +21,29 @@ Before any Q2/Q3 execution, their registration must be independently revalidated
 
 `state configuration structure composition condition topology mode regime system configuration reconfiguration switching restructuring topology change repair replacement operation intervention transition modification feasible admissible available enabled applicable possible permitted reachable realizable longitudinal temporal sequence history repeated observation evolution change over time physical engineering device infrastructure mechanical electrical control system`
 
-## 4. Execution constraints
+## 4. Execution channels
 
-- One budget unit consumed by F2-Q1 only.
-- Maximum query-family budget remains 3 cumulative/non-resettable.
-- Maximum candidate-record budget remains 10 cumulative/non-resettable.
+The exact formulation was submitted unchanged through two independent web-search channels. Both returned **no results** for the exact formulation.
+
+No candidate source was therefore screened or admitted.
+
+## 5. Budget accounting
+
+- F2 query-family budget consumed: **1 of 3**.
+- F2 candidate-record budget consumed: **0 of 10**.
 - No query reformulation.
 - No additional search terms.
 - No outcome-guided selection.
 - No dataset acquisition or processing.
 - No empirical execution.
 - No outcome/model/value analysis.
-- Any material deviation causes immediate STOP C.
 
-## 5. Recording requirement
+## 6. Result interpretation
 
-Each search invocation and every screened candidate must be recorded with the exact Q-ID, exact query, source, timestamp and required DS-1..DS-14/C1-C5 fields. No candidate may be admitted from a snippet alone.
+**F2-Q1 = ZERO RESULT under the exact registered formulation.**
 
-## 6. Current execution result
+This is a documentary-search result only. It does **not** establish that no eligible physical/engineering candidate exists in the broader literature or that F2 is exhausted.
 
-**F2-Q1 = AUTHORIZED / READY FOR CONTROLLED EXECUTION.**
+## 7. Next-gate condition
 
-No search result is asserted by this record.
+Q2/Q3 must not be executed automatically. Before any further query-family execution, the registered formulations must be revalidated against the fixed-query-family/material-distinction rule and a separate authorization must be recorded.
