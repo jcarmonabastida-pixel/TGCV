@@ -14,7 +14,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import re
 import shutil
 import subprocess
 import sys
@@ -116,7 +115,6 @@ def main() -> int:
         print(str(exc))
         return 3
 
-    # Source bytes are optional at this stage; when present, verify exact frozen hashes.
     source_candidates = {
         "ASG_TEMPLATE": [
             args.repo_root / ".." / "Downloads" / "AWS-PatchAsgInstance" / "PUBLIC_SOURCES" / "ASG_FIXTURE_SOURCE" / "template.yaml",
@@ -129,11 +127,22 @@ def main() -> int:
         ],
     }
     source_hashes = {}
+    hash_failures = {}
     for key, paths in source_candidates.items():
         existing = next((p.resolve() for p in paths if p.is_file()), None)
+        actual = sha256_file(existing) if existing else None
+        expected = EXPECTED_SOURCE_SHA256[key]
         source_hashes[key] = {"path": str(existing) if existing else None,
-                              "sha256": sha256_file(existing) if existing else None,
-                              "expected_sha256": EXPECTED_SOURCE_SHA256[key]}
+                              "sha256": actual,
+                              "expected_sha256": expected,
+                              "status": "PASS" if actual == expected else ("BLOCKED_MISSING" if actual is None else "FAIL")}
+        if actual != expected:
+            hash_failures[key] = source_hashes[key]
+
+    if hash_failures:
+        print("PHASE_A_STATUS=BLOCKED_SOURCE_INTEGRITY")
+        print(json.dumps({"source_hash_failures": hash_failures}, indent=2))
+        return 6
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     record = {
