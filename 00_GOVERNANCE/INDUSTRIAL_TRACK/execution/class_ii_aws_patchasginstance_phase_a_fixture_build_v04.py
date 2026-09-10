@@ -20,12 +20,10 @@ No candidate/comparator transformation is enabled by this wrapper.
 from __future__ import annotations
 
 import importlib.util
-import re
 from pathlib import Path
 from typing import Any
 
 V03 = Path(__file__).with_name("class_ii_aws_patchasginstance_phase_a_fixture_build_v03.py")
-
 
 REMOVED_LOGICAL_IDS = {
     "InstanceRefreshHandler",
@@ -83,19 +81,11 @@ def build_pruned_template(source_template: Path, destination: Path) -> tuple[Pat
         raise RuntimeError("PACKAGED_TEMPLATE_RESOURCES_SECTION_INVALID")
 
     resources = document["Resources"]
-    removed = {
-        logical_id
-        for logical_id in resources
-        if _is_removed_resource(logical_id)
-    }
+    removed = {logical_id for logical_id in resources if _is_removed_resource(logical_id)}
 
-    # Remove unrelated resources first.
     for logical_id in removed:
         resources.pop(logical_id, None)
 
-    # Remove outputs that point exclusively at removed resources. Remaining
-    # resource references are a hard failure: silent dependency changes would
-    # invalidate the fixture composition.
     outputs = document.get("Outputs")
     if isinstance(outputs, dict):
         for output_id in list(outputs):
@@ -115,8 +105,6 @@ def build_pruned_template(source_template: Path, destination: Path) -> tuple[Pat
             + ";".join(unresolved)
         )
 
-    # Retain all non-Image-Builder resources, parameters and mappings so that
-    # the resulting fixture remains structurally derived from the public source.
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(
         yaml.safe_dump(document, sort_keys=False, default_flow_style=False),
@@ -127,34 +115,32 @@ def build_pruned_template(source_template: Path, destination: Path) -> tuple[Pat
 
 def load_base_with_pruning():
     v03 = load_v03()
-    base = v03.load_base_with_capability()
+    v02 = v03.load_base_with_capability()
+    base = v02.load_base()
     original_run_aws = base.run_aws
-    generated_template: Path | None = None
 
     def run_aws(aws: str, args: list[str], region: str, *, timeout: int = 120) -> dict:
-        nonlocal generated_template
         call_args = list(args)
         if len(call_args) >= 2 and call_args[0] == "cloudformation" and call_args[1] == "create-stack":
-            if "--template-body" in call_args:
-                i = call_args.index("--template-body")
-                if i + 1 >= len(call_args):
-                    raise RuntimeError("CREATE_STACK_TEMPLATE_BODY_ARGUMENT_MISSING")
-                source = call_args[i + 1]
-                if source.startswith("file://"):
-                    source_template = Path(source[7:])
-                else:
-                    raise RuntimeError("CREATE_STACK_TEMPLATE_BODY_MUST_BE_FILE_URI")
-                generated_template = source_template.with_name("phase_a_minimal_fixture_template.yaml")
-                _, removed_ids = build_pruned_template(source_template, generated_template)
-                call_args[i + 1] = f"file://{generated_template}"
-                print("PHASE_A_TEMPLATE_PRUNED=" + str(generated_template))
-                print("PHASE_A_REMOVED_UNRELATED_RESOURCES=" + ",".join(removed_ids))
+            if "--template-body" not in call_args:
+                raise RuntimeError("CREATE_STACK_TEMPLATE_BODY_ARGUMENT_MISSING")
+            i = call_args.index("--template-body")
+            if i + 1 >= len(call_args):
+                raise RuntimeError("CREATE_STACK_TEMPLATE_BODY_ARGUMENT_MISSING")
+            source = call_args[i + 1]
+            if not source.startswith("file://"):
+                raise RuntimeError("CREATE_STACK_TEMPLATE_BODY_MUST_BE_FILE_URI")
+            source_template = Path(source[7:])
+            generated_template = source_template.with_name("phase_a_minimal_fixture_template.yaml")
+            _, removed_ids = build_pruned_template(source_template, generated_template)
+            call_args[i + 1] = f"file://{generated_template}"
+            print("PHASE_A_TEMPLATE_PRUNED=" + str(generated_template))
+            print("PHASE_A_REMOVED_UNRELATED_RESOURCES=" + ",".join(removed_ids))
         return original_run_aws(aws, call_args, region, timeout=timeout)
 
     base.run_aws = run_aws
-    # v0.3's main resolves its executor through this hook.
-    v03.load_base_with_capability = lambda: base
-    v03.load_v02 = lambda: base
+    v02.load_base = lambda: base
+    v03.load_base_with_capability = lambda: v02
     return v03
 
 
