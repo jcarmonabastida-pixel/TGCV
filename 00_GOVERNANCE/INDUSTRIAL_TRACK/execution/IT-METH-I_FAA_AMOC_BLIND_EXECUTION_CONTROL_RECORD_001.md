@@ -1,6 +1,6 @@
 # IT-METH-I — FAA AMOC Blind Execution Control Record 001
 
-**Status:** `PRE-EXECUTION CONTROL RECORD — OPEN / PARTIALLY EVIDENCED`
+**Status:** `PRE-EXECUTION CONTROL RECORD — OPEN / CONTROLLED INPUT INTEGRITY EVIDENCED`
 
 **Package:** `IT-METH-I-AMOC-BLIND-EXEC-001`
 
@@ -29,10 +29,14 @@ This record is a control form, not a reconstruction result.
 - Blind package canonical Git blob SHA: `722e9150b0b8c337950d0978d9f8ffaf400a4b3c`
 - Blind package commit recorded in legacy control form: `fe00fce804361863e53a64d8e34f5ad0932f9025`
 - Documentary manifest Git blob SHA: `3343e2de8bcade607ec56a8da548ad3b96d6881c`
-- Frozen evidence hash: `[TO BE RECORDED — NOT AVAILABLE IN CURRENT CONTROL RECORD]`
+- Frozen evidence container: `IT-METH-I_FAA_AMOC_FROZEN_EVIDENCE_001.zip`
+- Frozen evidence container SHA-256: `829A301215FB13EC619EE478DA45FDE4DABF0A3206B7D14F8ECADBF1660EDCBA`
+- Frozen evidence byte-integrity record: `IT-METH-I_FAA_AMOC_FROZEN_EVIDENCE_INTEGRITY_RECORD_001.md`
+- Frozen evidence byte-integrity record Git blob SHA: `8af2e1c89914705a411cfcb4c305c56029d3a2a8`
+- Frozen evidence integrity verified: `PASS — BYTE-LEVEL ANCHOR ESTABLISHED`
 - Package integrity verified: `PASS`
 
-**Limitation:** canonical package and manifest integrity are established, but the separate frozen-evidence-set integrity hash required by the package has not yet been recorded. Therefore Gate B is not fully closed for authorization purposes.
+**Basis:** the exact frozen documentary container and its three PDF byte-level SHA-256 anchors are recorded in the dedicated integrity record. The integrity record explicitly preserves the evidence boundary and does not authorize R002.
 
 ## Gate C — Information barrier
 
@@ -68,7 +72,7 @@ This record is a control form, not a reconstruction result.
 
 `EXECUTION_AUTHORIZATION_UNDER_BLIND_CONTROL = BLOCKED`
 
-**Reason:** Gates A, C, D and E have sufficient current-state evidence, but Gate B lacks the required frozen-evidence-set integrity hash. The control record therefore does not satisfy its own rule that Gates A–E must all be PASS before authorization.
+**Reason:** the frozen-evidence-set integrity requirement is now satisfied, but the record remains a pre-execution control record and no new IT-G5 authorization has yet been issued. The existing IT-G5 review remains `BLOCKED — EXECUTION AUTHORIZATION NOT GRANTED`.
 
 ## Post-execution fields
 
@@ -83,8 +87,8 @@ To be completed only after the independent reconstruction has been sealed:
 
 ## Hard rule
 
-A `PASS` in this control record cannot be entered merely because the protocol exists. It requires evidence from the actual execution arrangement. Until all required gates are satisfied, execution remains blocked.
+A `PASS` in this control record cannot be entered merely because the protocol exists. It requires evidence from the actual execution arrangement. Until an applicable IT-G5 authorization is issued, execution remains blocked.
 
 ## Current routing
 
-**Next permissible operation:** establish and record the integrity hash for the exact frozen evidence set, without changing the evidence boundary. Only after Gate B is thereby closed should the control record be reassessed for a new IT-G5 authorization decision.
+**Next permissible operation:** reassess this completed pre-execution control record under a new explicit IT-G5 authorization review. No transfer of the frozen evidence container and no Reconstruction 002 execution is authorized by this record alone.
