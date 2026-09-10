@@ -1,7 +1,7 @@
 # IT-METH-I — Class II AWS-PatchAsgInstance Phase A Technical Build Specification Audit 001
 
 **Date:** 2026-09-10  
-**Status:** `AUDIT COMPLETE — PASS WITH REQUIRED CORRECTIONS BEFORE EXECUTABLE REPAIR`  
+**Status:** `CLOSED — DELTA AUDIT PASS`  
 **Audited specification:** `IT_METH_I_CLASS_II_AWS_PATCHASGINSTANCE_PHASE_A_TECHNICAL_BUILD_SPECIFICATION_001.md`  
 **Primary contract:** `IT_METH_I_CLASS_II_AWS_PATCHASGINSTANCE_PREDECISION_STATE_AND_COMPARATOR_CONTRACT_001.md`  
 **Build specification:** `IT_METH_I_CLASS_II_AWS_PATCHASGINSTANCE_CONTROLLED_FIXTURE_BUILD_SPECIFICATION_001.md`  
@@ -9,124 +9,77 @@
 
 ## 1. Audit decision
 
-The technical specification is structurally consistent with the governing records and correctly preserves the Phase A / transformation boundary. It is **not yet sufficiently precise to serve as the direct implementation contract for the executable**.
+The C1–C5 corrections identified in Audit 001 have been incorporated into the technical build specification. The corrected specification is now sufficiently precise to serve as the direct implementation contract for the Phase A executable.
 
-`AUDIT_RESULT = PASS WITH REQUIRED CORRECTIONS`
+`INITIAL_AUDIT_RESULT = PASS WITH REQUIRED CORRECTIONS`
 
-No AWS execution is authorized by this audit.
+`DELTA_AUDIT_RESULT = PASS`
 
-## 2. Confirmed alignments
+`AUDIT_STATUS = CLOSED`
 
-The specification correctly carries forward:
+No AWS execution is authorized by this audit beyond the already granted Phase A fixture-build/pre-decision-freeze authorization.
 
-- Class II evidence classification;
-- Phase A-only authorization;
-- explicit exclusion of candidate/comparator transformations and utility scoring;
-- frozen public source composition and SHA-256 values;
-- minimum fixture boundary;
-- effective-value freezing for dynamic/latest identifiers;
-- all 16 mandatory pre-decision state variables;
-- pre-decision-only accessibility evaluation;
-- evidence preservation and hashing;
-- independent reconstruction requirement;
-- material-disagreement blocking;
-- explicit non-claims;
-- no TGCV Core modification.
+## 2. Delta verification
 
-These elements align with the pre-decision contract, which requires the same 16 state variables, common evidence boundary, accessibility predicates, metric contract, independent reconstruction and closure conditions.
+### C1 — cutoff ordering
 
-## 3. Required correction C1 — cutoff ordering
+PASS. The corrected specification establishes the exact UTC cutoff and pre-decision observation window before the mandatory observation set and requires accessibility predicates to consume only evidence within that boundary.
 
-The technical build sequence currently evaluates accessibility predicates before freezing the observation cutoff:
+### C2 — comparator operationalization
 
-13. evaluate accessibility predicates;
-14. freeze the observation cutoff timestamp.
+PASS. The corrected specification requires comparator identity, implementation/procedure reference, and eligibility predicates to be frozen before Phase A closure, while explicitly prohibiting comparator execution during Phase A.
 
-This is temporally underspecified. The governing contract defines the cutoff as the boundary for pre-decision evidence. The cutoff must therefore be established **before or atomically with the observations used to evaluate the predicates**, not after predicate evaluation.
+### C3 — effort convention
 
-Required implementation wording:
+PASS. The corrected specification requires a frozen effort convention when effort is measured and requires explicit `EFFORT_MEASURED = FALSE` when it is not.
 
-1. establish the observation cutoff immediately before the pre-decision observation set;
-2. capture all state/evidence observations against that cutoff;
-3. evaluate predicates only from observations within that boundary;
-4. preserve the exact UTC cutoff in the evidence manifest.
+### C4 — observation consistency
 
-`C1 = REQUIRED`
+PASS. The corrected specification distinguishes the common cutoff from individual capture times, requires all mandatory observations to fall within the declared pre-decision window, and blocks closure if a common frozen-state representation cannot be supported.
 
-## 4. Required correction C2 — comparator operationalization
+### C5 — source-location contract
 
-The authorization requires Phase A completion to include **comparator identity/operationalization**. The technical specification records comparator identity as part of reconstruction but does not explicitly require an operational comparator definition to be frozen before Phase A closure.
+PASS. The corrected specification binds source hashes to canonical local source paths/references and explicitly prevents use of the stale local source inventory as authoritative provenance.
 
-The governing contract requires an operationally explicit comparator, not merely a label such as “normal patching”.
+## 3. Cross-contract verification
 
-Required addition:
+The corrected specification remains aligned with the governing pre-decision contract:
 
-- freeze comparator transformation identity and implementation/procedure reference before Phase A closure;
-- freeze its eligibility predicates against the common pre-decision state;
-- do not execute it during Phase A.
+- all 16 mandatory state variables remain required;
+- accessibility predicates remain pre-decision only;
+- candidate and comparator identities remain distinct;
+- the common evidence boundary is preserved;
+- independent reconstruction remains mandatory;
+- missing, out-of-window, or post-decision-derived values remain `NOT_CLOSED`;
+- effort remains conditional rather than silently introduced as a new mandatory scientific variable;
+- no TGCV Core change is introduced.
 
-`C2 = REQUIRED`
+## 4. Implementation routing decision
 
-## 5. Required correction C3 — effort convention
+The corrected technical specification is now the **direct implementation contract** for repairing the Phase A executable.
 
-The governing contract makes the effort convention conditional: it is required if effort is measured. The technical specification defines runtime/cost boundaries but does not explicitly state that any measured effort must use a frozen convention.
+The next executable revision SHALL implement the specification without adding new scientific requirements or relaxing any frozen gate.
 
-Required addition:
+Implementation must preserve:
 
-- if effort is measured, freeze the effort definition and measurement boundary before execution;
-- if effort is not measured, record `EFFORT_MEASURED = FALSE` rather than leaving the dimension implicit.
-
-`C3 = REQUIRED`
-
-## 6. Required correction C4 — observation atomicity
-
-The specification uses several sequential AWS observations (health, lifecycle, compliance, SSM, baseline, etc.). Because these can change independently, the implementation must explicitly distinguish:
-
-- a single observation cutoff;
-- individual API/query capture times;
-- whether the resulting state vector is considered valid as a bounded snapshot.
-
-Required addition:
-
-- record capture time for every raw observation;
-- require all mandatory state observations to fall within the declared pre-decision observation window;
-- if the window cannot be bounded sufficiently for the state to be treated as common, block closure rather than silently treating asynchronous observations as simultaneous.
-
-`C4 = REQUIRED`
-
-## 7. Required correction C5 — source-location contract
-
-The specification freezes source hashes but does not make the canonical local source locations part of the executable implementation contract. Since the local source inventory is known to contain stale information, the executor must not resolve sources through that inventory.
-
-Required addition:
-
-- bind each expected source hash to an explicitly frozen source path/reference in the execution package;
-- validate bytes against the expected hash;
-- do not consume `LOCAL_SOURCE_INVENTORY_001.json` as authoritative provenance.
-
-`C5 = REQUIRED`
-
-## 8. No other substantive divergence identified
-
-No divergence was found that justifies changing:
-
-- the Class II classification;
-- the fixture boundary;
-- the Phase A authorization;
-- the 16-variable state contract;
-- the accessibility representation;
-- the independent reconstruction requirement;
-- the transformation boundary;
-- TGCV Core.
-
-## 9. Routing decision
-
-The specification should be **patched once** to incorporate C1–C5, then re-audited as a delta check. If the delta audit passes, the corrected specification becomes the direct contract for repairing the Phase A executable.
-
-The executable must not be repaired against the current uncorrected specification because doing so would recreate the exact omission cycle we are deliberately eliminating.
+1. canonical source recovery from GitHub;
+2. source path/hash integrity gate;
+3. AWS identity verification;
+4. isolated fixture construction;
+5. effective-value resolution and freezing;
+6. pre-decision cutoff/window establishment;
+7. raw observation capture with individual timestamps;
+8. all mandatory state variables;
+9. accessibility predicate evaluation from pre-decision evidence only;
+10. comparator identity/operationalization freeze without execution;
+11. evidence hashing and manifest generation;
+12. independent reconstruction;
+13. Phase A stop boundary.
 
 `AWS_EXECUTION = NOT PERFORMED`
 
 `CANDIDATE_TRANSFORMATION = NOT AUTHORIZED`
 
 `COMPARATOR_TRANSFORMATION = NOT AUTHORIZED`
+
+`PHASE_A_IMPLEMENTATION_GATE = OPEN`
