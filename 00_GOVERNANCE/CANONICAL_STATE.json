@@ -4,13 +4,15 @@
   "current_versions": {
     "rma": "v3.27",
     "claim_matrix": "v0.9",
-    "rma_traceability": "v3.27"
+    "rma_traceability": "v3.27",
+    "governance_operating_principles": "v0.1"
   },
   "pointers": {
     "rma": "00_GOVERNANCE/rma/TGCV_RMA_current.md",
     "claim_matrix": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md",
     "claim_matrix_pointer": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md",
     "rma_traceability": "00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv",
+    "governance_operating_principles": "00_GOVERNANCE/GOVERNANCE_OPERATING_PRINCIPLES_v0.1.md",
     "status": "STATUS.md",
     "changelog": "CHANGELOG.md",
     "scientific_registry": "02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md",
