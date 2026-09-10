@@ -82,11 +82,12 @@ foreach ($expected in $ExpectedFiles) {
 $checks.expected_pdf_hashes_match = $hashOk
 $checks.expected_pdf_lengths_match = $lengthOk
 
+$failedChecks = @($checks.Values | Where-Object { $_ -eq $false })
 $manifest = [ordered]@{
     PACKAGE_ID = 'IT-METH-I-AMOC-BLIND-EXEC-001'
     CASE_ID = 'IT-G1-I-AMOC-US-91-12-10-7K0-18-00734'
     MODE = 'R002_FROZEN_PDF_INTAKE_ONLY'
-    STATUS = if (($checks.Values | Where-Object { $_ -eq $false }).Count -eq 0) { 'PASS' } else { 'FAIL' }
+    STATUS = if ($failedChecks.Count -eq 0) { 'PASS' } else { 'FAIL' }
     CHECKS = $checks
     TRANSFER_ROOT = $TransferRoot
     OUTPUT_ROOT = $OutputRoot
