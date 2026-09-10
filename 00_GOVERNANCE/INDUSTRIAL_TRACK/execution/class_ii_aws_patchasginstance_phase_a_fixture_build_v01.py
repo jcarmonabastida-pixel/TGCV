@@ -11,8 +11,9 @@ import json
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 CANDIDATE = "AWS-PatchAsgInstance"
@@ -163,8 +164,6 @@ def get_stack_outputs(aws: str, region: str, name: str) -> dict[str, str]:
 
 
 def create_fixture_baseline(aws: str, region: str, name: str) -> dict:
-    # Mirrors the frozen workshop semantics: security+bugfix rule, all severities,
-    # plus an all-patches rule with non-security enabled, and explicit kernel* approval.
     approval = {
         "PatchRules": [
             {
@@ -396,14 +395,13 @@ def main() -> int:
         }
         record["independent_reconstruction"] = {"status": "REQUIRED", "package": "PHASE_A_INDEPENDENT_RECONSTRUCTION_PACKAGE_001.json", "automatic_second_reconstruction": False}
         record["status"] = "PHASE_A_PREDECISION_FREEZE_READY — INDEPENDENT RECONSTRUCTION REQUIRED BEFORE CLOSED"
+        record["evidence_manifest_reference"] = {"path": "PHASE_A_EVIDENCE_MANIFEST_001.json", "status": "FROZEN_AFTER_RECORD_AND_RECONSTRUCTION_WRITE"}
 
         out = args.output_dir / "PHASE_A_PREDECISION_FREEZE_RECORD_001.json"
         recon = args.output_dir / "PHASE_A_INDEPENDENT_RECONSTRUCTION_PACKAGE_001.json"
         out.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
         recon.write_text(json.dumps({"schema": "IT-METH-I-PHASE-A-RECON-1", "source_hash_preflight": static["source_hash_preflight"], "predecision_freeze": state, "candidate": record["candidate"], "comparator": record["comparator"], "metric": record["metric"], "effort": record["effort"]}, indent=2) + "\n", encoding="utf-8")
-        manifest = write_manifest(args.output_dir, [out.name, recon.name])
-        record["evidence_manifest_reference"] = {"path": "PHASE_A_EVIDENCE_MANIFEST_001.json", "status": "FROZEN_AFTER_RECORD_AND_RECONSTRUCTION_WRITE"}
-        # Do not rewrite the primary record after manifest creation: the manifest hashes the immutable record bytes.
+        write_manifest(args.output_dir, [out.name, recon.name])
         print("PHASE_A_STATUS=PREDECISION_FREEZE_READY")
         print(f"OUTPUT={out}")
         print("CLOSURE=BLOCKED_UNTIL_INDEPENDENT_RECONSTRUCTION")
