@@ -1,0 +1,11 @@
+RMA-version,traceability_type,status,reference,notes
+RMA-v3.25,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.25.md,Current operative RMA after IT-METH-I closure and post-closure methodological propagation
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,Points to TGCV_RMA_v3.25.md
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,v0.7; no scientific claim upgrade
+IT-METH-I-GOVERNED-COMPARISON,industrial_experiment,CLOSED-INCONCLUSIVE,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-METH-I_FAA_AMOC_GOVERNED_COMPARISON_001.md,FAA AMOC comparison closed; no superiority established
+IT-METH-I-CLOSURE,industrial_experiment,CLOSED-INCONCLUSIVE,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-METH-I_FAA_AMOC_EXPERIMENT_CLOSURE_001.md,Experiment closed; no rerun; Core unchanged
+IT-METH-I-MR-01-07,methodological_requirements,ADOPTED,00_GOVERNANCE/INDUSTRIAL_TRACK/IT-METH_I_METHODOLOGICAL_REQUIREMENTS_AFTER_CLOSURE_001.md,Preconditions for future industrial utility tests
+POST-IT-METH-I-FILTER,discovery_filter,FROZEN,00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_DISCOVERY_FILTER_POST_IT_METH_I_v0.1.md,Ex-ante candidate screening; not execution authorization
+POST-IT-METH-I-DISCOVERY,discovery_state,CURRENT,00_GOVERNANCE/INDUSTRIAL_TRACK/INDUSTRIAL_CANDIDATE_DISCOVERY_POST_IT_METH_I_001.md,AWS SSM retained for targeted case discovery; no IT-G1 admission
+AWS-SSM-CANDIDATE,candidate_screening,CONDITIONAL,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_METH_I_POST_FILTER_CANDIDATE_ASSESSMENT_AWS_SSM_001.md,Conditional candidate family; not admitted to IT-G1
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,Current traceability pointer
