@@ -1,13 +1,8 @@
 #!/usr/bin/env python3
-"""IT-METH-I FAA AMOC Blind Executor-2 control harness v0.5.
+"""IT-METH-I FAA AMOC Blind Executor-2 control harness v0.6.
 
-DRY-RUN CONTROL ONLY.
-
-Supports a frozen documentary evidence boundary represented by exact files
-already persisted in the canonical TGCV GitHub repository. The manifest may
-anchor each documentary record by Git blob SHA; local filesystem access is
-used only to verify the checked-out representation of those GitHub records.
-This does NOT claim global filesystem isolation or executor independence.
+DRY-RUN CONTROL ONLY. Uses the frozen GitHub blob SHA as the canonical
+package-integrity anchor; no precomputed local SHA-256 is required.
 """
 from __future__ import annotations
 
@@ -23,6 +18,7 @@ from pathlib import Path
 
 PACKAGE_ID = "IT-METH-I-AMOC-BLIND-EXEC-001"
 CASE_ID = "IT-G1-I-AMOC-US-91-12-10-7K0-18-00734"
+EXPECTED_PACKAGE_GIT_BLOB_SHA = "722e9150b0b8c337950d0978d9f8ffaf400a4b3c"
 FORBIDDEN_TERMS = (
     "RECONSTRUCTION_001",
     "IT-G4_I_FAA_AMOC_UTILITY_EXECUTION_RESULT_001",
@@ -45,9 +41,8 @@ def sha256_file(path: Path) -> str:
 
 def git_blob_sha1(path: Path) -> str:
     data = path.read_bytes()
-    header = f"blob {len(data)}\0".encode("utf-8")
     h = hashlib.sha1()
-    h.update(header)
+    h.update(f"blob {len(data)}\0".encode("utf-8"))
     h.update(data)
     return h.hexdigest()
 
@@ -69,15 +64,11 @@ def roots_disjoint(a: Path, b: Path) -> bool:
 
 
 def scan_declared_file(path: Path) -> list[str]:
-    hits: list[str] = []
     try:
         text = path.read_text(encoding="utf-8", errors="replace").upper()
     except OSError:
-        return hits
-    for term in FORBIDDEN_TERMS:
-        if term in text:
-            hits.append(term)
-    return hits
+        return []
+    return [term for term in FORBIDDEN_TERMS if term in text]
 
 
 def symlink_paths(root: Path) -> list[str]:
@@ -106,20 +97,16 @@ def read_declared_manifest(path: Path) -> list[dict[str, str]]:
             raise ValueError(f"invalid git_blob_sha for {repo_path}")
         if sha256 and (len(sha256) != 64 or any(c not in "0123456789abcdef" for c in sha256)):
             raise ValueError(f"invalid sha256 for {repo_path}")
-        out.append({
-            "repo_path": repo_path,
-            "git_blob_sha": git_sha,
-            "sha256": sha256,
-            "source_role": str(item["source_role"]),
-            "source_locator": str(item.get("source_locator", "")),
-        })
-    keys = [e["repo_path"] for e in out]
-    if len(set(keys)) != len(keys):
+        out.append({"repo_path": repo_path, "git_blob_sha": git_sha, "sha256": sha256,
+                    "source_role": str(item["source_role"]),
+                    "source_locator": str(item.get("source_locator", ""))})
+    paths = [e["repo_path"] for e in out]
+    if len(set(paths)) != len(paths):
         raise ValueError("duplicate manifest repo_path")
     return sorted(out, key=lambda x: x["repo_path"])
 
 
-def verify_manifest(entries: list[dict[str, str]], repo_root: Path, evidence_root: Path) -> tuple[bool, list[str], list[dict[str, str]]]:
+def verify_manifest(entries: list[dict[str, str]], repo_root: Path, evidence_root: Path):
     errors: list[str] = []
     observed: list[dict[str, str]] = []
     for entry in entries:
@@ -139,29 +126,23 @@ def verify_manifest(entries: list[dict[str, str]], repo_root: Path, evidence_roo
             errors.append(f"git blob hash mismatch: {p}")
         if entry["sha256"] and observed_sha != entry["sha256"]:
             errors.append(f"sha256 mismatch: {p}")
-        observed.append({
-            "repo_path": entry["repo_path"],
-            "git_blob_sha_observed": observed_git,
-            "sha256_observed": observed_sha,
-            "source_role": entry["source_role"],
-            "source_locator": entry["source_locator"],
-        })
+        observed.append({"repo_path": entry["repo_path"],
+                         "git_blob_sha_observed": observed_git,
+                         "sha256_observed": observed_sha,
+                         "source_role": entry["source_role"],
+                         "source_locator": entry["source_locator"]})
     return not errors, errors, observed
 
 
 def dependency_inventory() -> list[str]:
-    return sorted(
-        f"{d.metadata['Name']}=={d.version}"
-        for d in importlib.metadata.distributions()
-        if d.metadata.get("Name")
-    )
+    return sorted(f"{d.metadata['Name']}=={d.version}" for d in importlib.metadata.distributions()
+                  if d.metadata.get("Name"))
 
 
 def git_head() -> str | None:
     try:
-        return subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL, text=True
-        ).strip()
+        return subprocess.check_output(["git", "rev-parse", "HEAD"],
+                                       stderr=subprocess.DEVNULL, text=True).strip()
     except (OSError, subprocess.CalledProcessError):
         return None
 
@@ -173,7 +154,6 @@ def control(args: argparse.Namespace) -> dict:
     output = resolved(args.output)
     manifest_path = resolved(args.evidence_manifest)
     sequence = [{"event": "control_start", "timestamp_utc": now()}]
-
     result: dict[str, object] = {
         "PACKAGE_ID": PACKAGE_ID,
         "CASE_ID": CASE_ID,
@@ -181,13 +161,16 @@ def control(args: argparse.Namespace) -> dict:
         "CONTROL_SEQUENCE": sequence,
         "CONTROL_TIMESTAMP_UTC": sequence[0]["timestamp_utc"],
         "REPOSITORY_HEAD_OBSERVED": git_head(),
+        "EXPECTED_PACKAGE_GIT_BLOB_SHA": EXPECTED_PACKAGE_GIT_BLOB_SHA,
     }
 
-    package_hash = sha256_file(package) if package.is_file() and not package.is_symlink() else None
-    result["PACKAGE_SHA256_OBSERVED"] = package_hash
-    result["PACKAGE_INTEGRITY"] = "PASS" if package_hash == args.expected_package_sha256.lower() else "FAIL"
+    package_git = git_blob_sha1(package) if package.is_file() and not package.is_symlink() else None
+    package_sha256 = sha256_file(package) if package.is_file() and not package.is_symlink() else None
+    result["PACKAGE_GIT_BLOB_SHA_OBSERVED"] = package_git
+    result["PACKAGE_SHA256_OBSERVED"] = package_sha256
+    result["PACKAGE_INTEGRITY"] = "PASS" if package_git == EXPECTED_PACKAGE_GIT_BLOB_SHA else "FAIL"
+    result["PACKAGE_INTEGRITY_ANCHOR_TYPE"] = "GIT_BLOB_SHA1_CANONICAL_REPOSITORY_ANCHOR"
     result["PACKAGE_METADATA_ROLE"] = "OBSERVED_PACKAGE_METADATA_ONLY"
-    result["PACKAGE_METADATA"] = {"path": str(package), "sha256": package_hash}
 
     try:
         declared = read_declared_manifest(manifest_path)
@@ -202,11 +185,11 @@ def control(args: argparse.Namespace) -> dict:
 
     evidence_symlinks = symlink_paths(evidence)
     package_hits = scan_declared_file(package) if package.is_file() else []
-    evidence_hits = [
-        {"repo_path": e["repo_path"], "terms": scan_declared_file(resolved(repo_root / e["repo_path"]))}
-        for e in declared
-        if scan_declared_file(resolved(repo_root / e["repo_path"]))
-    ]
+    evidence_hits = []
+    for e in declared:
+        hits = scan_declared_file(resolved(repo_root / e["repo_path"]))
+        if hits:
+            evidence_hits.append({"repo_path": e["repo_path"], "terms": hits})
     result["CONTENT_SCAN_SUPPLEMENTARY"] = {"package": package_hits, "evidence": evidence_hits}
     result["DECLARED_EVIDENCE_BOUNDARY_STATUS"] = "PASS" if manifest_ok and not evidence_symlinks else "FAIL"
     result["DECLARED_EVIDENCE_BOUNDARY_BASIS"] = "external manifest + exact GitHub documentary record anchors + observed hash verification + symlink rejection"
@@ -215,11 +198,9 @@ def control(args: argparse.Namespace) -> dict:
     result["RECONSTRUCTION_001_ACCESS_EVIDENCE"] = "No global filesystem isolation claim is made by this harness."
 
     output_preexisting_symlink = output.is_symlink()
-    result["OUTPUT_BOUNDARY_STATUS"] = (
-        "PASS"
-        if not output_preexisting_symlink and roots_disjoint(output, package) and roots_disjoint(output, evidence)
-        else "FAIL"
-    )
+    result["OUTPUT_BOUNDARY_STATUS"] = "PASS" if (
+        not output_preexisting_symlink and roots_disjoint(output, package) and roots_disjoint(output, evidence)
+    ) else "FAIL"
     output.mkdir(parents=True, exist_ok=True)
     result["OUTPUT_PATH_IDENTITY_STATUS"] = "PASS" if resolved(output) == output else "FAIL"
     result["OUTPUT_PATH_IDENTITY"] = str(output)
@@ -245,23 +226,15 @@ def control(args: argparse.Namespace) -> dict:
     result["CONTROL_SEQUENCE_STATUS"] = "PASS" if sequence_ok else "FAIL"
     result["TEMPORAL_ORDERING_STATUS"] = result["CONTROL_SEQUENCE_STATUS"]
 
-    config = {
-        "package": str(package),
-        "repo_root": str(repo_root),
-        "evidence_root": str(evidence),
-        "output": str(output),
-        "manifest": str(manifest_path),
-        "mode": args.mode,
-    }
+    config = {"package": str(package), "repo_root": str(repo_root), "evidence_root": str(evidence),
+              "output": str(output), "manifest": str(manifest_path), "mode": args.mode}
     config_text = json.dumps(config, sort_keys=True).upper()
     config_hits = [t for t in FORBIDDEN_TERMS if t in config_text]
     manifest_path_hits = [t for t in FORBIDDEN_TERMS if any(t in e["repo_path"].upper() for e in declared)]
     result["COMPARISON_TARGET_DECLARATION_STATUS"] = "PASS" if not config_hits and not manifest_path_hits else "FAIL"
-    result["COMPARISON_TARGET_VERIFICATION_BASIS"] = {
-        "configuration_scan": config_hits,
-        "manifest_path_scan": manifest_path_hits,
-        "scope": "declared control inputs only; not global filesystem isolation",
-    }
+    result["COMPARISON_TARGET_VERIFICATION_BASIS"] = {"configuration_scan": config_hits,
+                                                       "manifest_path_scan": manifest_path_hits,
+                                                       "scope": "declared control inputs only; not global filesystem isolation"}
     result["COMPARISON_PRESEAL_STATUS"] = result["COMPARISON_TARGET_DECLARATION_STATUS"]
 
     result["ENVIRONMENT_FINGERPRINT"] = {
@@ -273,17 +246,10 @@ def control(args: argparse.Namespace) -> dict:
         "local_dependency_inventory": dependency_inventory(),
         "dependency_inventory_role": "OBSERVATIONAL_HOST_METADATA_ONLY",
     }
-
-    technical = [
-        result["PACKAGE_INTEGRITY"] == "PASS",
-        result["EVIDENCE_MANIFEST_STATUS"] == "PASS",
-        result["DECLARED_EVIDENCE_BOUNDARY_STATUS"] == "PASS",
-        result["OUTPUT_BOUNDARY_STATUS"] == "PASS",
-        result["OUTPUT_PATH_IDENTITY_STATUS"] == "PASS",
-        result["SEAL_MECHANISM_CAPABILITY_STATUS"] == "PASS",
-        result["CONTROL_SEQUENCE_STATUS"] == "PASS",
-        result["COMPARISON_TARGET_DECLARATION_STATUS"] == "PASS",
-    ]
+    technical = [result["PACKAGE_INTEGRITY"] == "PASS", result["EVIDENCE_MANIFEST_STATUS"] == "PASS",
+                 result["DECLARED_EVIDENCE_BOUNDARY_STATUS"] == "PASS", result["OUTPUT_BOUNDARY_STATUS"] == "PASS",
+                 result["OUTPUT_PATH_IDENTITY_STATUS"] == "PASS", result["SEAL_MECHANISM_CAPABILITY_STATUS"] == "PASS",
+                 result["CONTROL_SEQUENCE_STATUS"] == "PASS", result["COMPARISON_TARGET_DECLARATION_STATUS"] == "PASS"]
     result["OVERALL_CONTROL_STATUS"] = "PASS" if all(technical) else "BLOCKED"
     result["EXECUTOR_2_DISTINCT"] = "NOT_ESTABLISHED"
     result["GOVERNANCE_AUTHORIZATION_STATUS"] = "NOT_AUTHORIZED"
@@ -299,12 +265,11 @@ def main() -> int:
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--evidence-manifest", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--expected-package-sha256", required=True)
     parser.add_argument("--result", type=Path)
     parser.add_argument("--mode", choices=("DRY_RUN_CONTROL", "EXECUTION"), default="DRY_RUN_CONTROL")
     args = parser.parse_args()
     if args.mode != "DRY_RUN_CONTROL":
-        print("BLOCKED: EXECUTION mode is not implemented/authorized by v0.5.")
+        print("BLOCKED: EXECUTION mode is not implemented/authorized by v0.6.")
         return 2
     result = control(args)
     payload = json.dumps(result, indent=2, ensure_ascii=False) + "\n"
