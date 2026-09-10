@@ -1,6 +1,11 @@
 {
   "schema": "TGCV-CANONICAL-STATE-1",
   "status": "CURRENT",
+  "current_versions": {
+    "rma": "v3.27",
+    "claim_matrix": "v0.9",
+    "rma_traceability": "v3.27"
+  },
   "pointers": {
     "rma": "00_GOVERNANCE/rma/TGCV_RMA_current.md",
     "claim_matrix": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md",
