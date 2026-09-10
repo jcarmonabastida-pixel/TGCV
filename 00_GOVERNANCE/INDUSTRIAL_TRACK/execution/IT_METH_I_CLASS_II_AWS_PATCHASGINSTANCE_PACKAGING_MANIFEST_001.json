@@ -1,0 +1,34 @@
+{
+  "schema": "IT-METH-I-PACKAGING-MANIFEST-1",
+  "status": "FROZEN",
+  "candidate": "AWS-PatchAsgInstance",
+  "evidence_class": "CLASS II — PUBLIC REPRODUCIBLE FIXTURE",
+  "source_sha256": {
+    "ASG_TEMPLATE": "D10B323570774C9D4C07547A8035EB7D6B3D907E83CF0DDF95A8EDC73D02C339",
+    "PATCH_TEMPLATE": "FD1C09C1FD200BC14A8039F00BF15AB3E894DE5DBA15315A07C375FD2ECEF5E2",
+    "RUNBOOK": "EFC2F49FFA368EFF1BF768F71E74F7BC518C136EDE03ABAAB97D5B966DC3C4EB"
+  },
+  "packaged_template": "C:\\Users\\pedri\\Downloads\\AWS-PatchAsgInstance\\PACKAGING\\packaged-template.yaml",
+  "packaged_template_sha256": "7FD061975D7632BE4DC8D30225C9434A1E139101BFE9781E14AA8DBA8B676870",
+  "build_metadata": {
+    "build_toml": "C:\\Users\\pedri\\Downloads\\AWS-PatchAsgInstance\\PACKAGING\\build.toml",
+    "build_toml_sha256": "19C6CD96AD36C4C837D4820A0C9E6657EBDEE28B3A8F11693D3C85D0E68B8940"
+  },
+  "packaging_procedure_reference": "AWS SAM CLI: sam build --template-file PUBLIC_SOURCES/ASG_FIXTURE_SOURCE/template.yaml --build-dir PACKAGING/.aws-sam --no-use-container; sam validate --template-file PACKAGING/.aws-sam/template.yaml --region eu-south-2; sam package --template-file PACKAGING/.aws-sam/template.yaml --resolve-s3 --region eu-south-2 --profile tgcv --output-template-file PACKAGING/packaged-template.yaml",
+  "composition_reference": "00_GOVERNANCE/INDUSTRIAL_TRACK/IT_METH_I_CLASS_II_FIXTURE_COMPOSITION_MANIFEST_001.md",
+  "composition_reference_sha": "2a994400fcdbfd0ddf26d72936cc56aff7b1fb94",
+  "build_specification_reference": "00_GOVERNANCE/INDUSTRIAL_TRACK/IT_METH_I_CLASS_II_AWS_PATCHASGINSTANCE_CONTROLLED_FIXTURE_BUILD_SPECIFICATION_001.md",
+  "build_specification_reference_sha": "2ff77ddde6dbd5e9782aa72ba81d7cccc96d2c22",
+  "packaging_tools": {
+    "aws_cli": "2.36.42",
+    "sam_cli": "1.166.1",
+    "region": "eu-south-2"
+  },
+  "integrity_rule": "Frozen source hashes and packaged-template hash must match before Phase A fixture construction. Any material packaging change requires an amended manifest/governance decision.",
+  "execution_boundary": {
+    "phase_a_fixture_build": "AUTHORIZED",
+    "candidate_transformation": "NOT_AUTHORIZED",
+    "comparator_transformation": "NOT_AUTHORIZED",
+    "industrial_execution": "NOT_AUTHORIZED"
+  }
+}
