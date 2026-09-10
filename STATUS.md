@@ -1,40 +1,51 @@
-# TGCV — Research Programme STATUS
+# TGCV — Current Status
 
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`  
-**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
-**Governance state:** CURRENT-STATE VALIDATION REQUIRED AFTER THIS ATOMIC PROPAGATION  
-**Scientific Core:** UNCHANGED
+**Date:** 2026-09-10
+**Governance state:** CURRENT — synchronized after IT-METH-I closure propagation
 
-## Current position
-TR-132-G0 did not admit Rust / EXT-1.1 because decision-time accessibility was not independently closed.
-
-TR-132-MOD-1 design passed audit, the package and fixture were frozen, execution was separately authorized, and controlled execution `TR-132-MOD-1-EXEC-001` completed as `BOUNDED PASS (L3)`.
-
-**TR-132-MOD-1: CLOSED / BOUNDED PASS (L3).**
-
-The result is a bounded methodological demonstration of temporal change in the certified accessible transformation set under the frozen controlled fixture, independently of realization. No empirical Rust or industrial evidence has been introduced. C01–C16 are unchanged. No scientific gate is upgraded or closed.
+## Scientific Core
+- **Core:** unchanged.
+- **TR-132-MOD-1:** `CLOSED — BOUNDED PASS (L3)`.
+- No Core primitive, relation, threshold or falsification criterion was modified.
+- No scientific claim upgrade was introduced by the industrial track.
 
 ## Industrial Track
-EXT-UPD-4.9 establishes the **INDUSTRIAL-TRACK as PROPOSED**, separate from the scientific Core. It does not establish industrial utility, superiority, causal/value evidence, predictive evidence, or Core validation.
+- **Track status:** `PROPOSED`.
+- **FAA AMOC IT-METH-I:** `CLOSED — INCONCLUSIVE`.
+- R001/R002 governed comparison completed.
+- Sealed R002 artifact preserved byte-exactly.
+- Bounded blind execution-context independence resolved `PASS`; no human-identity independence claim.
+- No rerun required.
+- Industrial utility: `UNPROVEN / OPEN`.
+- Comparative superiority: `NOT ESTABLISHED`.
+- Causality: `NOT ASSESSED`.
+- Financial/value effect: `NOT ASSESSED`.
 
-D-OPS-24 remains `CLOSED-BOUNDED-SEARCH` with no documentary accessibility PASS. Industrial utility remains `UNPROVEN / OPEN`. No industrial candidate is currently admitted.
+## Methodological closure
+- `MR-01` through `MR-07` adopted as preconditions for future industrial utility tests.
+- No retroactive protocol change and no reopening of FAA AMOC.
+
+## Industrial discovery
+- Post-IT-METH-I discovery filter: `FROZEN`.
+- AWS Systems Manager Automation: `CONDITIONAL — RETAIN FOR TARGETED CASE DISCOVERY`.
+- AWS candidate is not admitted to IT-G1.
+- No industrial execution is authorized by this status.
+
+## Existing routing
+- FAA AMOC: G1/G2/G3/G4/G5 completed; comparison and experiment closed `INCONCLUSIVE`.
+- LynxOS-178 RSC: G1 PASS; G2 HOLD / NOT CLOSED.
+- Searecs/BG Verkehr: G1 PASS; G2 HOLD / NOT CLOSED.
+- PROC-001 through PROC-005: G1 PASS; G2 HOLD / NOT CLOSED.
+- PROC-006: G1 INSUFFICIENT; no G2.
 
 ## Documentary discovery
-The bounded normative/operational specification discovery operation `IT-NOSD-EXEC-001` was separately authorized and is now **CLOSED — BOUNDED DOCUMENTARY DISCOVERY**.
-
-- 13 distinct specifications screened
-- 10 retained candidates
-- 0 indeterminate
-- 3 rejected
-- 0 concrete industrial cases admitted
-
-Retention is documentary candidate material only and does not constitute IT-G0 or IT-G1 admission. Any future candidate use must independently pass the canonical Industrial Track gates.
-
-## Authorization boundary
-The documentary discovery authorization does not authorize datasets, event logs, industrial intervention, partner/customer evidence, O3 rescue, Stage-C/D, causal/value analysis, Core modification, or claim upgrades. Industrial execution remains NOT AUTHORIZED.
-
-## Scientific boundary
-The discovery result adds no scientific evidence and makes no change to the scientific Core, TR-131, TR-132, C01–C16, or their current statuses.
+- Normative/operational specification discovery: 13 screened, 10 retained, 3 rejected, 0 indeterminate, 0 admitted at closure.
+- Procurement documentary discovery: 8 screened, 6 retained, 2 rejected, 0 indeterminate, 0 admitted at closure.
 
 ## Canonical continuity
-GitHub `main` remains the canonical continuity and provenance gate. Substantive state changes are propagated atomically across canonical governance assets and must pass the current-state validator before further controlled research work.
+`00_GOVERNANCE/CANONICAL_STATE.json` remains the canonical current-state entry point.
+
+Current chain:
+`CANONICAL_STATE → RMA → Evidence→Claim Matrix → RMA traceability → STATUS → validator`
+
+Historical experiment and governance records remain immutable. Standing industrial execution authorization: `NONE`.
