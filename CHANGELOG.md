@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-10 — IT-METH-I closure, methodological requirements and post-filter propagation
+
+- Closed the authorized FAA AMOC industrial experiment as `INCONCLUSIVE` after governed R001/R002 comparison.
+- Accepted the sealed R002 artifact byte-exactly and resolved bounded execution-context independence as sufficient, without claiming human-identity independence.
+- Preserved the documentary approval-date discrepancy and the missing frozen effort convention as methodological limitations; no R002 rerun and no historical artifact modification.
+- Adopted `MR-01` through `MR-07` as preconditions for future industrial utility tests.
+- Froze the post-IT-METH-I industrial discovery filter.
+- Recorded AWS Systems Manager Automation as `CONDITIONAL — RETAIN FOR TARGETED CASE DISCOVERY`; no IT-G1 admission or execution authorization.
+- Kept the scientific Core and C01–C16 claim statuses unchanged; no superiority, causal, predictive, value or general industrial-utility claim was introduced.
+- Synchronized current governance pointers, RMA v3.25, Evidence→Claim Matrix v0.7, traceability and STATUS.
+- Historical FAA records remain immutable.
+
 ## 2026-09-09 — TR-132-MOD-1 closure and current-state propagation
 
 - Executed the separately authorized controlled fixture run `TR-132-MOD-1-EXEC-001`.
