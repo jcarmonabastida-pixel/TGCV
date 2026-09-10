@@ -166,20 +166,8 @@ def get_stack_outputs(aws: str, region: str, name: str) -> dict[str, str]:
 def create_fixture_baseline(aws: str, region: str, name: str) -> dict:
     approval = {
         "PatchRules": [
-            {
-                "PatchFilterGroup": {"PatchFilters": [
-                    {"Key": "CLASSIFICATION", "Values": ["Security", "Bugfix"]},
-                ]},
-                "ApproveAfterDays": 0,
-                "ComplianceLevel": "CRITICAL",
-                "EnableNonSecurity": False,
-            },
-            {
-                "PatchFilterGroup": {"PatchFilters": []},
-                "ApproveAfterDays": 0,
-                "ComplianceLevel": "MEDIUM",
-                "EnableNonSecurity": True,
-            },
+            {"PatchFilterGroup": {"PatchFilters": [{"Key": "CLASSIFICATION", "Values": ["Security", "Bugfix"]}]}, "ApproveAfterDays": 0, "ComplianceLevel": "CRITICAL", "EnableNonSecurity": False},
+            {"PatchFilterGroup": {"PatchFilters": []}, "ApproveAfterDays": 0, "ComplianceLevel": "MEDIUM", "EnableNonSecurity": True},
         ]
     }
     request = {
@@ -225,22 +213,29 @@ def capture_state(aws: str, region: str, asg: str, instance_id: str, window_star
     obs("instance_tags", tags)
     managed = run_aws(aws, ["ssm", "describe-instance-information", "--filters", f"Key=InstanceIds,Values={instance_id}"], region)
     obs("ssm_managed_instance", managed)
-    compliance = run_aws(aws, ["ssm", "list-compliance-items", "--resource-ids", instance_id, "--resource-types", "ManagedInstance"], region)
-    obs("ssm_compliance", compliance)
+    compliance_items = run_aws(aws, ["ssm", "list-compliance-items", "--resource-ids", instance_id, "--resource-types", "ManagedInstance"], region)
+    obs("ssm_compliance_items", compliance_items)
+    patch_state = run_aws(aws, ["ssm", "describe-instance-patch-states", "--instance-ids", instance_id], region)
+    obs("instance_patch_state", patch_state)
     baseline = run_aws(aws, ["ssm", "get-patch-baseline-for-patch-group", "--patch-group", PATCH_GROUP, "--operating-system", "AMAZON_LINUX_2"], region)
     obs("effective_patch_baseline", baseline)
+    baseline_details = run_aws(aws, ["ssm", "get-patch-baseline", "--baseline-id", baseline["BaselineId"]], region)
+    obs("effective_patch_baseline_details", baseline_details)
     hooks = run_aws(aws, ["autoscaling", "describe-lifecycle-hooks", "--auto-scaling-group-name", asg], region)
     obs("lifecycle_hooks", hooks)
     termination = group.get("TerminationPolicy", [])
     obs("termination_policy", termination)
     health_cfg = {"health_check_type": group.get("HealthCheckType"), "health_check_grace_period": group.get("HealthCheckGracePeriod")}
     obs("health_check_configuration", health_cfg)
+    ssm_info = managed.get("InstanceInformationList", [])
+    ssm_os = ssm_info[0] if ssm_info else {}
     predicates = {
         "target_member_of_asg": any(x.get("InstanceId") == instance_id for x in group.get("Instances", [])),
         "instance_in_service": next((x.get("LifecycleState") == "InService" for x in group.get("Instances", []) if x.get("InstanceId") == instance_id), False),
-        "ssm_registered": bool(managed.get("InstanceInformationList")),
+        "ssm_registered": bool(ssm_info),
         "patch_group_app": any(t.get("Key") in {"Patch Group", "PatchGroup"} and t.get("Value") == PATCH_GROUP for t in tags.get("Tags", [])),
         "effective_baseline_resolved": bool(baseline.get("BaselineId")),
+        "patch_state_resolved": bool(patch_state.get("InstancePatchStates")),
     }
     cutoff = utc_now()
     state = {
@@ -254,14 +249,14 @@ def capture_state(aws: str, region: str, asg: str, instance_id: str, window_star
             "asg_capacity": {k: group.get(k) for k in ["MinSize", "MaxSize", "DesiredCapacity"]},
             "launch_template_identity_version": group.get("LaunchTemplate"),
             "effective_ami_id": inst.get("ImageId"),
-            "os_identity": inst.get("PlatformDetails", inst.get("Platform", "Linux/UNIX")),
+            "os_identity": {"platform_details": inst.get("PlatformDetails"), "ssm_platform_type": ssm_os.get("PlatformType"), "ssm_platform_name": ssm_os.get("PlatformName"), "ssm_platform_version": ssm_os.get("PlatformVersion")},
             "instance_health": next((x.get("HealthStatus") for x in health.get("AutoScalingInstances", []) if x.get("InstanceId") == instance_id), None),
             "lifecycle_hooks": hooks,
             "health_check_type": group.get("HealthCheckType"),
             "replacement_termination_behavior": {"termination_policy": termination},
             "patch_group": PATCH_GROUP if predicates["patch_group_app"] else None,
-            "effective_patch_baseline": baseline,
-            "predecision_patch_compliance": compliance,
+            "effective_patch_baseline": {"assignment": baseline, "details": baseline_details},
+            "predecision_patch_compliance": {"compliance_items": compliance_items, "patch_state": patch_state},
             "ssm_managed_instance_state": managed,
             "eligibility_predicates": predicates,
         },
