@@ -1,0 +1,26 @@
+[
+  {
+    "repo_path": "00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-G1-I_FAA_AC_39_10_AMOC_CASE_IDENTIFICATION_ASSESSMENT_001.md",
+    "git_blob_sha": "40ea9f5c1285c8007b1bfd1fa9049da2be644916",
+    "source_role": "TGCV_DOCUMENTARY_RECORD",
+    "source_locator": "Public EASA Safety Publications Tool record + FAA AC 39-10 / FAA Order 8110.103B references as recorded in the G1 assessment."
+  },
+  {
+    "repo_path": "00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-G2_I_FAA_AMOC_VARIABLE_OBSERVABILITY_ASSESSMENT_001.md",
+    "git_blob_sha": "70f991aae3e73180cd348b99861589fadf4c6a76e",
+    "source_role": "TGCV_DOCUMENTARY_RECORD",
+    "source_locator": "Public EASA Safety Publications Tool record + attached FAA AMOC approval letter + FAA Order 8110.103B references as recorded in the G2 assessment."
+  },
+  {
+    "repo_path": "00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-G3_I_FAA_AMOC_ACCESSIBILITY_CLOSURE_001.md",
+    "git_blob_sha": "3d4353a1a6610bdc8b0010385db5b6ef9a78cc0b",
+    "source_role": "TGCV_DOCUMENTARY_RECORD",
+    "source_locator": "Public EASA Safety Publications Tool record + FAA AMOC approval letter references as recorded in the G3 closure."
+  },
+  {
+    "repo_path": "00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-G4_I_FAA_AMOC_UTILITY_PROTOCOL_FREEZE_001.md",
+    "git_blob_sha": "56f34dce50061efc3e714431e6d7e2ee51eca192",
+    "source_role": "TGCV_GOVERNANCE_RECORD",
+    "source_locator": "Frozen IT-G4 protocol; retained only as methodological boundary/context, not as primary external evidence."
+  }
+]
