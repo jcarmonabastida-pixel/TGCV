@@ -45,6 +45,7 @@ Before resource creation, freeze in the execution record:
 
 - AWS region;
 - source commit identifiers and source hashes;
+- canonical local source paths/references bound to those hashes;
 - CloudFormation/template identity;
 - dedicated fixture stack/name prefix;
 - ASG desired/min/max capacity;
@@ -56,7 +57,11 @@ Before resource creation, freeze in the execution record:
 - lifecycle hooks and relevant replacement/termination behavior;
 - Patch Group key/value;
 - patch baseline identity/version;
-- SSM configuration and required IAM role identities.
+- SSM configuration and required IAM role identities;
+- candidate transformation identity and frozen parameter vector;
+- comparator transformation identity, implementation/procedure reference, and eligibility predicates;
+- effort measurement status and convention (`EFFORT_MEASURED = TRUE/FALSE`);
+- pre-decision observation window and exact UTC cutoff.
 
 Any dynamic value such as a public latest-AMI parameter must be resolved once and frozen; it must not remain an implicit moving input.
 
@@ -65,22 +70,23 @@ Any dynamic value such as a public latest-AMI parameter must be resolved once an
 Execute in this order:
 
 1. recover canonical inputs from GitHub;
-2. run static source-integrity preflight;
+2. run static source-integrity preflight, including path-to-hash binding;
 3. verify AWS CLI and caller identity;
 4. create the isolated fixture infrastructure;
 5. resolve and record effective resource identifiers;
 6. wait for instance stabilization;
 7. verify SSM managed-instance registration;
 8. verify Patch Group and effective baseline assignment;
-9. capture pre-decision patch compliance state;
-10. capture ASG capacity and launch-template state;
-11. capture instance image/OS identity;
-12. capture health, lifecycle and replacement configuration/state;
-13. evaluate the frozen accessibility predicates from pre-decision evidence only;
-14. freeze the observation cutoff timestamp;
-15. generate the evidence manifest and SHA-256 inventory;
-16. perform the independent reconstruction check;
-17. stop.
+9. establish the pre-decision observation window and exact UTC cutoff;
+10. capture the mandatory pre-decision observation set, preserving individual capture times;
+11. capture pre-decision patch compliance state;
+12. capture ASG capacity and launch-template state;
+13. capture instance image/OS identity;
+14. capture health, lifecycle and replacement configuration/state;
+15. evaluate the frozen accessibility predicates from observations within the pre-decision boundary only;
+16. freeze the evidence package and SHA-256 inventory;
+17. perform the independent reconstruction check;
+18. stop.
 
 No candidate or comparator transformation may occur in this sequence.
 
@@ -89,7 +95,7 @@ No candidate or comparator transformation may occur in this sequence.
 The Phase A record must contain, at minimum:
 
 - fixture identifier;
-- source provenance and hashes;
+- source provenance, canonical local references and hashes;
 - region;
 - ASG identity and desired/min/max;
 - target instance identity;
@@ -103,14 +109,25 @@ The Phase A record must contain, at minimum:
 - pre-decision patch compliance state;
 - SSM managed-instance state;
 - accessibility predicates and their evidence variables;
-- exact UTC cutoff timestamp;
-- raw observation references;
+- candidate transformation identity and frozen parameter vector;
+- comparator identity, implementation/procedure reference and eligibility predicates;
+- effort measurement status/convention;
+- exact UTC cutoff and pre-decision observation window;
+- raw observation references with individual capture times;
 - evidence-file SHA-256 values;
 - independent reconstruction result.
 
-A field is `CLOSED` only when directly observed or independently reconstructed at or before the cutoff. Missing or post-decision-derived values remain `NOT_CLOSED`.
+A field is `CLOSED` only when directly observed or independently reconstructed within the declared pre-decision observation boundary. Missing, out-of-window, or post-decision-derived values remain `NOT_CLOSED`.
 
-## 7. Independent reconstruction
+## 7. Observation consistency
+
+The executor shall preserve the distinction between the declared common cutoff and the individual capture time of each observation.
+
+All mandatory state observations must be captured within the declared pre-decision observation window. If the observations cannot be bounded sufficiently to support a common frozen state representation, Phase A closure is blocked.
+
+The accessibility predicates must consume only evidence captured at or before the cutoff. No later observation may retroactively alter a pre-decision predicate.
+
+## 8. Independent reconstruction
 
 A second reconstruction must use the same frozen public source package and independently reproduce the pre-decision state representation.
 
@@ -123,12 +140,23 @@ Agreement is required for:
 - Patch Group and compliance state;
 - SSM state;
 - accessibility predicates;
-- cutoff;
-- provenance.
+- candidate transformation identity and parameters;
+- comparator identity and operationalization;
+- cutoff and observation window;
+- provenance;
+- effort status/convention where applicable.
 
 Material disagreement blocks Phase A closure.
 
-## 8. Failure conditions
+## 9. Comparator and effort freeze
+
+Phase A must freeze the comparator definition without executing it. The comparator must be operationally explicit and tied to the same pre-decision state/evidence boundary.
+
+If effort is measured, its measurement convention and boundary must be frozen before observations are interpreted. If effort is not measured, the evidence record shall state `EFFORT_MEASURED = FALSE`.
+
+Neither comparator execution nor utility scoring is part of Phase A.
+
+## 10. Failure conditions
 
 Phase A must terminate as blocked if any of the following occurs:
 
@@ -143,18 +171,21 @@ Phase A must terminate as blocked if any of the following occurs:
 - pre-decision compliance cannot be observed;
 - SSM state cannot be established;
 - accessibility predicates cannot be evaluated without post-decision information;
+- mandatory observations fall outside the declared pre-decision boundary;
 - evidence cannot be preserved and hashed;
-- independent reconstruction materially disagrees.
+- independent reconstruction materially disagrees;
+- comparator identity/operationalization is not frozen;
+- required effort convention is absent when effort is measured.
 
 No partial Phase A record may be promoted to `CLOSED`.
 
-## 9. Runtime and cost boundary
+## 11. Runtime and cost boundary
 
 The fixture must be minimal and disposable. Runtime duration, resource identifiers, and cleanup status shall be recorded. Any cost-bearing resource must be explicitly within the authorized fixture boundary.
 
 The build does not authorize persistence beyond what is required for evidence capture.
 
-## 10. Execution boundary
+## 12. Execution boundary
 
 `PHASE_A_FIXTURE_BUILD = AUTHORIZED`
 
@@ -170,7 +201,7 @@ The build does not authorize persistence beyond what is required for evidence ca
 
 `TGCV_CORE_MODIFICATION = NOT AUTHORIZED`
 
-## 11. Current gate
+## 13. Current gate
 
 `TECHNICAL_BUILD_SPECIFICATION = FROZEN`
 
