@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""IT-METH-I FAA AMOC Blind Executor-2 control harness v0.6.
+"""IT-METH-I FAA AMOC Blind Executor-2 control harness v0.7.
 
-DRY-RUN CONTROL ONLY. Uses the frozen GitHub blob SHA as the canonical
-package-integrity anchor; no precomputed local SHA-256 is required.
+DRY-RUN CONTROL ONLY. Uses canonical GitHub repository blob SHAs at HEAD
+for package/evidence integrity; local checkout line-ending normalization
+must not alter repository-level integrity verification.
 """
 from __future__ import annotations
 
@@ -45,6 +46,25 @@ def git_blob_sha1(path: Path) -> str:
     h.update(f"blob {len(data)}\0".encode("utf-8"))
     h.update(data)
     return h.hexdigest()
+
+
+def git_head_blob_sha(repo_root: Path, repo_path: str) -> str | None:
+    """Return the canonical blob SHA stored at HEAD, independent of checkout filters."""
+    try:
+        return subprocess.check_output(
+            ["git", "-C", str(repo_root), "rev-parse", f"HEAD:{repo_path.replace(chr(92), '/') }"],
+            stderr=subprocess.DEVNULL,
+            text=True,
+        ).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+
+def relative_repo_path(path: Path, repo_root: Path) -> str | None:
+    try:
+        return path.resolve(strict=False).relative_to(repo_root.resolve(strict=False)).as_posix()
+    except ValueError:
+        return None
 
 
 def resolved(path: Path) -> Path:
@@ -120,14 +140,18 @@ def verify_manifest(entries: list[dict[str, str]], repo_root: Path, evidence_roo
         if p.is_symlink() or not p.is_file():
             errors.append(f"manifest file unavailable or symlinked: {p}")
             continue
-        observed_git = git_blob_sha1(p)
+        canonical_git = git_head_blob_sha(repo_root, entry["repo_path"])
+        observed_local_git = git_blob_sha1(p)
         observed_sha = sha256_file(p)
-        if entry["git_blob_sha"] and observed_git != entry["git_blob_sha"]:
-            errors.append(f"git blob hash mismatch: {p}")
+        if canonical_git is None:
+            errors.append(f"repository HEAD blob unavailable: {entry['repo_path']}")
+        elif entry["git_blob_sha"] and canonical_git != entry["git_blob_sha"]:
+            errors.append(f"canonical Git blob hash mismatch: {p}")
         if entry["sha256"] and observed_sha != entry["sha256"]:
             errors.append(f"sha256 mismatch: {p}")
         observed.append({"repo_path": entry["repo_path"],
-                         "git_blob_sha_observed": observed_git,
+                         "git_blob_sha_observed": canonical_git,
+                         "local_checkout_blob_sha_observed": observed_local_git,
                          "sha256_observed": observed_sha,
                          "source_role": entry["source_role"],
                          "source_locator": entry["source_locator"]})
@@ -164,9 +188,13 @@ def control(args: argparse.Namespace) -> dict:
         "EXPECTED_PACKAGE_GIT_BLOB_SHA": EXPECTED_PACKAGE_GIT_BLOB_SHA,
     }
 
-    package_git = git_blob_sha1(package) if package.is_file() and not package.is_symlink() else None
+    package_repo_path = relative_repo_path(package, repo_root)
+    package_git = git_head_blob_sha(repo_root, package_repo_path) if package_repo_path else None
+    package_local_git = git_blob_sha1(package) if package.is_file() and not package.is_symlink() else None
     package_sha256 = sha256_file(package) if package.is_file() and not package.is_symlink() else None
+    result["PACKAGE_REPO_PATH"] = package_repo_path
     result["PACKAGE_GIT_BLOB_SHA_OBSERVED"] = package_git
+    result["PACKAGE_LOCAL_CHECKOUT_BLOB_SHA_OBSERVED"] = package_local_git
     result["PACKAGE_SHA256_OBSERVED"] = package_sha256
     result["PACKAGE_INTEGRITY"] = "PASS" if package_git == EXPECTED_PACKAGE_GIT_BLOB_SHA else "FAIL"
     result["PACKAGE_INTEGRITY_ANCHOR_TYPE"] = "GIT_BLOB_SHA1_CANONICAL_REPOSITORY_ANCHOR"
@@ -192,7 +220,7 @@ def control(args: argparse.Namespace) -> dict:
             evidence_hits.append({"repo_path": e["repo_path"], "terms": hits})
     result["CONTENT_SCAN_SUPPLEMENTARY"] = {"package": package_hits, "evidence": evidence_hits}
     result["DECLARED_EVIDENCE_BOUNDARY_STATUS"] = "PASS" if manifest_ok and not evidence_symlinks else "FAIL"
-    result["DECLARED_EVIDENCE_BOUNDARY_BASIS"] = "external manifest + exact GitHub documentary record anchors + observed hash verification + symlink rejection"
+    result["DECLARED_EVIDENCE_BOUNDARY_BASIS"] = "external manifest + exact GitHub documentary record anchors + canonical HEAD blob verification + symlink rejection"
     result["RUNTIME_FILESYSTEM_ISOLATION_STATUS"] = "NOT_VERIFIED"
     result["RECONSTRUCTION_001_ACCESS_STATUS"] = "NOT_VERIFIED"
     result["RECONSTRUCTION_001_ACCESS_EVIDENCE"] = "No global filesystem isolation claim is made by this harness."
@@ -269,7 +297,7 @@ def main() -> int:
     parser.add_argument("--mode", choices=("DRY_RUN_CONTROL", "EXECUTION"), default="DRY_RUN_CONTROL")
     args = parser.parse_args()
     if args.mode != "DRY_RUN_CONTROL":
-        print("BLOCKED: EXECUTION mode is not implemented/authorized by v0.6.")
+        print("BLOCKED: EXECUTION mode is not implemented/authorized by v0.7.")
         return 2
     result = control(args)
     payload = json.dumps(result, indent=2, ensure_ascii=False) + "\n"
