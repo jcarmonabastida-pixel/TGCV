@@ -1,4 +1,4 @@
-# IT-METH-I FAA AMOC — Executor-2 isolated preflight v0.3
+# IT-METH-I FAA AMOC — Executor-2 isolated preflight v0.4
 # PRE-R002 PREFLIGHT ONLY
 # Technical boundary check for Windows Sandbox; does NOT execute Reconstruction 002.
 # Inputs remain under the read-only transfer mount; preflight output is written to a separate writable sandbox root.
@@ -21,10 +21,11 @@ $expectedEvidenceSha256 = '829A301215FB13EC619EE478DA45FDE4DABF0A3206B7D14F8ECAD
 $expectedRuntimeSha256 = '2B559B39FD00E7E152D290AE754733AAA1469392900E77917F4CC200143C2B26'
 
 function Test-PathUnderRoot([string]$Path, [string]$Root) {
-    $fullPath = [IO.Path]::GetFullPath($Path)
-    $fullRoot = [IO.Path]::GetFullPath($Root)
-    $relative = [IO.Path]::GetRelativePath($fullRoot, $fullPath)
-    return ($relative -ne '..') -and (-not $relative.StartsWith('..' + [IO.Path]::DirectorySeparatorChar, [StringComparison]::Ordinal)) -and (-not [IO.Path]::IsPathRooted($relative))
+    $fullPath = [IO.Path]::GetFullPath($Path).TrimEnd([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)
+    $fullRoot = [IO.Path]::GetFullPath($Root).TrimEnd([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)
+    if ($fullPath.Equals($fullRoot, [StringComparison]::OrdinalIgnoreCase)) { return $true }
+    $rootPrefix = $fullRoot + [IO.Path]::DirectorySeparatorChar
+    return $fullPath.StartsWith($rootPrefix, [StringComparison]::OrdinalIgnoreCase)
 }
 
 $checks = [ordered]@{}
