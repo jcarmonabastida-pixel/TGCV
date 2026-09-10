@@ -64,6 +64,7 @@ required_roles = {
     "claim_matrix": "current claim matrix",
     "claim_matrix_pointer": "current claim matrix pointer",
     "rma_traceability": "current RMA traceability pointer",
+    "governance_operating_principles": "governance operating principles",
     "status": "STATUS",
     "changelog": "CHANGELOG",
     "scientific_registry": "scientific registry",
@@ -83,12 +84,15 @@ for role, label in required_roles.items():
 canonical_current_rma = ROOT / "00_GOVERNANCE" / "rma" / "TGCV_RMA_current.md"
 canonical_current_matrix = ROOT / "00_GOVERNANCE" / "EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md"
 canonical_traceability_pointer = ROOT / "00_GOVERNANCE" / "rma" / "TGCV_RMA_traceability_current.csv"
+canonical_governance_principles = ROOT / "00_GOVERNANCE" / "GOVERNANCE_OPERATING_PRINCIPLES_v0.1.md"
 if resolved.get("rma") != canonical_current_rma:
     fail("canonical RMA pointer location mismatch")
 if resolved.get("claim_matrix") != canonical_current_matrix:
     fail("canonical matrix location mismatch")
 if resolved.get("rma_traceability") != canonical_traceability_pointer:
     fail("canonical traceability pointer location mismatch")
+if resolved.get("governance_operating_principles") != canonical_governance_principles:
+    fail("canonical governance operating principles location mismatch")
 
 # 2. Resolve current RMA dynamically from the stable RMA pointer.
 rma_pointer = resolved.get("rma")
@@ -102,7 +106,6 @@ if rma_master_rel:
     require_file(rma_master, "resolved current RMA master")
     if rma_master_rel != rma_master_name:
         fail("RMA current master pointer resolves outside canonical RMA directory")
-    # Accept semantic versions vN, vN.N, vN.N.N, etc.; never hardcode the current version.
     version_match = re.fullmatch(r"TGCV_RMA_(v\d+(?:\.\d+)*)\.md", rma_master.name)
     if not version_match:
         fail("resolved current RMA master has no parseable semantic version")
@@ -170,7 +173,6 @@ if "RMA-current" in by_id:
         fail("RMA-current traceability row is not CURRENT")
     if row.get("canonical_location", "").strip() != "00_GOVERNANCE/rma/TGCV_RMA_current.md":
         fail("RMA-current traceability location mismatch")
-    # Traceability uses semantic asset identity (RMA-v3.7), while the master uses its filename.
     expected_rma_asset = f"RMA-{rma_version}" if rma_version else None
     dependencies = {item.strip() for item in row.get("depends_on", "").split(";") if item.strip()}
     if expected_rma_asset and expected_rma_asset not in dependencies:
@@ -199,7 +201,19 @@ if status_rma and status_rma != canonical_current_rma.relative_to(ROOT).as_posix
 if matrix and status_matrix and status_matrix != matrix.relative_to(ROOT).as_posix():
     fail("STATUS current matrix disagrees with resolved matrix")
 
-# 6. Canonical validator location is itself stable.
+# 6. Governance operating principles are policy, not a scientific state transition.
+# Their presence is required for current governance integrity, but the validator does not
+# require a claim/gate/version transition when only maintenance is performed.
+if resolved.get("governance_operating_principles"):
+    principles_text = read_text(resolved["governance_operating_principles"], "governance operating principles")
+    if "GPO-01 — Scientific-state primacy" not in principles_text:
+        fail("governance operating principles do not declare scientific-state primacy")
+    if "GPO-03 — Maintenance is subordinate" not in principles_text:
+        fail("governance operating principles do not declare maintenance subordination")
+    if "GPO-04 — Atomic propagation of substantive changes" not in principles_text:
+        fail("governance operating principles do not declare atomic substantive propagation")
+
+# 7. Canonical validator location is itself stable.
 validator = resolved.get("validator")
 if validator and validator != ROOT / "00_GOVERNANCE" / "tools" / "validate_current_state.py":
     fail("canonical validator location mismatch")
@@ -213,5 +227,5 @@ print("GOVERNANCE_CURRENT_STATE=PASS")
 print(
     "Canonical current-state pointers resolved and aligned: "
     f"RMA {rma_version or 'unresolved'}, matrix {matrix_declared_version or matrix_version or 'unresolved'}, "
-    "traceability CSV structurally and semantically aligned."
+    "traceability CSV structurally and semantically aligned; governance operating principles active."
 )
