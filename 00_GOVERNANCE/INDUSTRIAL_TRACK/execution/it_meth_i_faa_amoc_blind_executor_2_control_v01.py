@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""IT-METH-I FAA AMOC Blind Executor-2 control harness v0.1.
+"""IT-METH-I FAA AMOC Blind Executor-2 control harness v0.2.
 
 DRY-RUN CONTROL ONLY.
 
@@ -12,8 +12,8 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.metadata
 import json
-import os
 import platform
 import sys
 from datetime import datetime, timezone
@@ -41,17 +41,12 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def scan_tree(root: Path) -> list[str]:
-    if not root.exists():
-        return [f"MISSING_ROOT:{root}"]
-    hits: list[str] = []
-    for p in root.rglob("*"):
-        if not p.is_file():
-            continue
-        name = p.name.upper()
-        if any(term in name for term in FORBIDDEN_TERMS):
-            hits.append(str(p))
-    return hits
+def iter_files(root: Path):
+    if not root.exists() or not root.is_dir():
+        return
+    for p in sorted(root.rglob("*")):
+        if p.is_file():
+            yield p
 
 
 def path_is_inside(path: Path, root: Path) -> bool:
@@ -62,57 +57,135 @@ def path_is_inside(path: Path, root: Path) -> bool:
         return False
 
 
+def scan_tree(root: Path) -> list[str]:
+    hits: list[str] = []
+    if not root.exists():
+        return hits
+    for p in iter_files(root):
+        if any(term in p.name.upper() for term in FORBIDDEN_TERMS):
+            hits.append(str(p))
+    return hits
+
+
+def symlink_escape_paths(root: Path) -> list[str]:
+    escapes: list[str] = []
+    if not root.exists() or not root.is_dir():
+        return escapes
+    for p in root.rglob("*"):
+        if p.is_symlink() and not path_is_inside(p, root):
+            escapes.append(str(p))
+    return escapes
+
+
+def manifest(root: Path) -> list[dict[str, str]]:
+    entries: list[dict[str, str]] = []
+    for p in iter_files(root):
+        entries.append({"path": str(p), "sha256": sha256_file(p)})
+    return entries
+
+
+def local_dependency_inventory() -> list[str]:
+    return sorted(
+        f"{d.metadata['Name']}=={d.version}"
+        for d in importlib.metadata.distributions()
+        if d.metadata.get("Name")
+    )
+
+
 def control(args: argparse.Namespace) -> dict:
     package = args.package.resolve()
     evidence = args.evidence.resolve()
     output = args.output.resolve()
+
+    checks: dict[str, object] = {
+        "PACKAGE_ID": PACKAGE_ID,
+        "CASE_ID": CASE_ID,
+        "EXECUTION_MODE": "DRY_RUN_CONTROL",
+        "CONTROL_TIMESTAMP_UTC": utc_now(),
+    }
+
     package_hash = sha256_file(package) if package.is_file() else None
-
-    checks: dict[str, object] = {}
-
-    checks["PACKAGE_ID"] = PACKAGE_ID
-    checks["CASE_ID"] = CASE_ID
+    checks["PACKAGE_SHA256_OBSERVED"] = package_hash
     checks["PACKAGE_INTEGRITY"] = (
-        "PASS" if package.is_file() and (
-            args.expected_package_sha256 is None
-            or package_hash == args.expected_package_sha256.lower()
-        ) else "FAIL"
+        "PASS"
+        if package.is_file()
+        and bool(args.expected_package_sha256)
+        and package_hash == args.expected_package_sha256.lower()
+        else "FAIL"
     )
 
-    evidence_hits = scan_tree(evidence)
-    output_hits = scan_tree(output)
-    package_hits = scan_tree(package.parent) if package.is_file() else []
-
-    # P1 is deliberately scoped to the configured blind roots. The harness
-    # does not claim that a local user cannot access files outside those roots.
-    forbidden_hits = sorted(set(evidence_hits + output_hits + package_hits))
-    checks["RECONSTRUCTION_001_ACCESS_STATUS"] = "FAIL" if forbidden_hits else "PASS"
+    forbidden_hits = sorted(
+        set(scan_tree(evidence) + scan_tree(output) + scan_tree(package.parent))
+    )
+    symlink_escapes = sorted(
+        set(symlink_escape_paths(evidence) + symlink_escape_paths(output))
+    )
+    checks["RECONSTRUCTION_001_ACCESS_STATUS"] = (
+        "PASS" if not forbidden_hits and not symlink_escapes else "FAIL"
+    )
     checks["RECONSTRUCTION_001_ACCESS_EVIDENCE"] = forbidden_hits
+    checks["SYMLINK_ESCAPE_EVIDENCE"] = symlink_escapes
 
-    declared_roots = [evidence, package.parent, output]
-    undeclared = []
-    for p in (package, evidence, output):
-        if not any(path_is_inside(p, root) for root in declared_roots):
-            undeclared.append(str(p))
-    checks["INPUT_BOUNDARY_STATUS"] = "PASS" if not undeclared else "FAIL"
-    checks["UNDECLARED_PATHS"] = undeclared
-
-    checks["OUTPUT_BOUNDARY_STATUS"] = (
-        "PASS" if output != package.parent and output != evidence else "FAIL"
+    declared_inputs = {
+        "package": str(package),
+        "evidence_root": str(evidence),
+    }
+    checks["DECLARED_INPUTS"] = declared_inputs
+    checks["INPUT_BOUNDARY_STATUS"] = (
+        "PASS"
+        if package.is_file() and evidence.is_dir() and not symlink_escapes
+        else "FAIL"
     )
-    checks["SEAL_CAPABILITY_STATUS"] = "PASS" if output.exists() or output.parent.exists() else "FAIL"
-    checks["TEMPORAL_ORDERING_STATUS"] = "PASS"  # dry-run records only the control timestamp
-    checks["COMPARISON_PRESEAL_STATUS"] = "NOT_PRESENT"
-    checks["EXECUTOR_2_DISTINCT"] = "NOT_ESTABLISHED"
-    checks["GOVERNANCE_AUTHORIZATION_STATUS"] = "NOT_AUTHORIZED"
-    checks["EXECUTION_MODE"] = "DRY_RUN_CONTROL"
-    checks["CONTROL_TIMESTAMP_UTC"] = utc_now()
+
+    output_exists_before = output.exists()
+    if output_exists_before and not output.is_dir():
+        checks["OUTPUT_BOUNDARY_STATUS"] = "FAIL"
+    else:
+        checks["OUTPUT_BOUNDARY_STATUS"] = (
+            "PASS" if output != package.parent and output != evidence else "FAIL"
+        )
+
+    # Dry-run seal: create a control-only temporary record inside the output
+    # boundary, hash it, and remove it. No reconstruction data is generated.
+    seal_probe = output / ".it_meth_i_seal_probe.tmp"
+    seal_hash = None
+    seal_status = "FAIL"
+    try:
+        output.mkdir(parents=True, exist_ok=True)
+        seal_probe.write_text(
+            "IT-METH-I DRY-RUN SEAL PROBE\nPACKAGE_ID=" + PACKAGE_ID + "\n",
+            encoding="utf-8",
+        )
+        seal_hash = sha256_file(seal_probe)
+        seal_status = "PASS" if len(seal_hash) == 64 else "FAIL"
+    finally:
+        if seal_probe.exists():
+            seal_probe.unlink()
+    checks["SEAL_CAPABILITY_STATUS"] = seal_status
+    checks["DRY_RUN_SEAL_PROBE_SHA256"] = seal_hash
+
+    # P7 is observable control sequencing, not a claim that an independent
+    # executor has already existed.
+    checks["PRESEAL_CONTROL_RECORDED"] = True
+    checks["TEMPORAL_ORDERING_STATUS"] = "PASS"
+
+    # No comparison target is accepted by this harness. The dry-run itself
+    # performs no comparison and therefore cannot disclose reconstruction 001.
+    checks["COMPARISON_PRESEAL_STATUS"] = "PASS"
+    checks["COMPARISON_TARGET_CONFIGURED"] = False
+
     checks["ENVIRONMENT_FINGERPRINT"] = {
-        "python": platform.python_version(),
-        "implementation": platform.python_implementation(),
+        "python_version": sys.version,
+        "python_implementation": platform.python_implementation(),
         "platform": platform.platform(),
         "executable": sys.executable,
         "script_sha256": sha256_file(Path(__file__).resolve()),
+        "local_dependency_inventory": local_dependency_inventory(),
+    }
+
+    checks["INPUT_MANIFEST"] = {
+        "package": manifest(package.parent),
+        "evidence": manifest(evidence),
     }
 
     technical = [
@@ -121,9 +194,14 @@ def control(args: argparse.Namespace) -> dict:
         checks["INPUT_BOUNDARY_STATUS"] == "PASS",
         checks["OUTPUT_BOUNDARY_STATUS"] == "PASS",
         checks["SEAL_CAPABILITY_STATUS"] == "PASS",
-        checks["COMPARISON_PRESEAL_STATUS"] == "NOT_PRESENT",
+        checks["TEMPORAL_ORDERING_STATUS"] == "PASS",
+        checks["COMPARISON_PRESEAL_STATUS"] == "PASS",
     ]
     checks["OVERALL_CONTROL_STATUS"] = "PASS" if all(technical) else "BLOCKED"
+
+    # These fields are deliberately non-promotable by this program.
+    checks["EXECUTOR_2_DISTINCT"] = "NOT_ESTABLISHED"
+    checks["GOVERNANCE_AUTHORIZATION_STATUS"] = "NOT_AUTHORIZED"
     checks["INDEPENDENCE_STATUS"] = "NOT_DEMONSTRATED"
     checks["RECONSTRUCTION_002_STATUS"] = "NOT_EXECUTED"
     return checks
@@ -134,7 +212,7 @@ def main() -> int:
     parser.add_argument("--package", type=Path, required=True)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--expected-package-sha256")
+    parser.add_argument("--expected-package-sha256", required=True)
     parser.add_argument("--result", type=Path)
     parser.add_argument(
         "--mode",
@@ -144,7 +222,7 @@ def main() -> int:
     args = parser.parse_args()
 
     if args.mode != "DRY_RUN_CONTROL":
-        print("BLOCKED: EXECUTION mode is not implemented/authorized by v0.1.")
+        print("BLOCKED: EXECUTION mode is not implemented/authorized by v0.2.")
         return 2
 
     result = control(args)
