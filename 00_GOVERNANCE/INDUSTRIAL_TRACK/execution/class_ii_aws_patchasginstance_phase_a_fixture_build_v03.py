@@ -1,12 +1,9 @@
 """IT-METH-I Class II AWS-PatchAsgInstance — Phase A executor v0.3.
 
-Repair wrapper over v0.2. The previous v0.3 wrapper was structurally wrong:
-v0.2 exposes its run_aws implementation only through the v0.1 module returned
-by load_base(). This version layers the CloudFormation capability repair at
-that actual module boundary.
-
-Repair added: CAPABILITY_AUTO_EXPAND for the packaged SAM template's
-CloudFormation create-stack request.
+Repair wrapper over v0.2. Preserves the v0.2 non-empty PatchFilterGroup
+repair, adds CAPABILITY_AUTO_EXPAND for the packaged SAM template, and makes
+Patch Group App baseline registration idempotent after a prior failed Phase A
+attempt has already registered a baseline.
 
 No candidate/comparator transformation is enabled by this wrapper.
 """
@@ -55,15 +52,46 @@ def load_base_with_capability():
         return original_run_aws(aws, call_args, region, timeout=timeout)
 
     base.run_aws = run_aws
-    # v0.2's repaired baseline builder calls its module-level load_base().
-    # Replace that loader with the capability-repaired v0.1 module so both
-    # repairs are applied in the same Phase A execution path.
     v02.load_base = lambda: base
+    return v02
+
+
+def make_idempotent_baseline_builder(v02):
+    """Wrap v0.2 baseline creation so an existing App mapping is reused."""
+    original_builder = v02.repaired_create_fixture_baseline
+
+    def create_fixture_baseline(aws: str, region: str, name: str) -> dict:
+        try:
+            return original_builder(aws, region, name)
+        except RuntimeError as exc:
+            text = str(exc)
+            if "AlreadyExistsException" not in text or "Patch Group App already has a baseline registered" not in text:
+                raise
+            base = v02.load_base()
+            effective = base.run_aws(
+                aws,
+                ["ssm", "get-patch-baseline-for-patch-group", "--patch-group", base.PATCH_GROUP, "--operating-system", "AMAZON_LINUX_2"],
+                region,
+            )
+            baseline_id = effective.get("BaselineId")
+            if not baseline_id:
+                raise RuntimeError("PATCH_GROUP_BASELINE_ID_MISSING_AFTER_ALREADY_EXISTS")
+            details = base.run_aws(aws, ["ssm", "get-patch-baseline", "--baseline-id", baseline_id], region)
+            return {
+                "request": {"reuse_existing_registration": True, "patch_group": base.PATCH_GROUP, "operating_system": "AMAZON_LINUX_2"},
+                "created": None,
+                "registered": {"reused": True, "AlreadyExistsException": True},
+                "effective_for_patch_group": effective,
+                "details": details,
+            }
+
+    v02.repaired_create_fixture_baseline = create_fixture_baseline
     return v02
 
 
 def main() -> int:
     v02 = load_base_with_capability()
+    v02 = make_idempotent_baseline_builder(v02)
     return v02.main()
 
 
