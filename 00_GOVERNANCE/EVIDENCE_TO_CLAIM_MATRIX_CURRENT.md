@@ -1,4 +1,4 @@
-# TGCV — Evidence-to-Claim Matrix v0.8
+# TGCV — Evidence-to-Claim Matrix — Current v0.8
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-11  
