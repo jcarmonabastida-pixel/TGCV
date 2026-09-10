@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-11 — Class-II AWS-PatchAsgInstance Phase-A reconstruction closure
+
+- Closed the Class-II AWS-PatchAsgInstance Phase-A predecision reconstruction gate as `CLOSED — PREDECISION RECONSTRUCTION REPRODUCIBILITY PASS`.
+- R001 and independently executed R002 recovered the same target/ASG identity and 21/21 exact governed reconstruction fields.
+- All mandatory R002 accessibility predicates passed.
+- Verified R002 canonical content seal and governed comparison artifact seal as `PASS`.
+- Confirmed R002 was constructed without using primary R001 values and without postdecision outcomes.
+- Excluded the earlier malformed comparison reporting 21 disagreements as invalid non-evidentiary tooling output.
+- Propagated the fixture-level methodological result to current RMA v3.26, Evidence→Claim Matrix v0.8, traceability and STATUS.
+- Kept C01–C16 unchanged and preserved all boundaries: no general T_acc closure, industrial utility, superiority, causality, prediction, financial/value realization, transversal validity or Class-I promotion.
+- Candidate and comparator transformations remain unauthorized; standing industrial execution authorization remains `NONE`.
+- Historical records remain immutable.
+
 ## 2026-09-10 — IT-METH-I closure, methodological requirements and post-filter propagation
 
 - Closed the authorized FAA AMOC industrial experiment as `INCONCLUSIVE` after governed R001/R002 comparison.
@@ -9,28 +22,12 @@
 - Froze the post-IT-METH-I industrial discovery filter.
 - Recorded AWS Systems Manager Automation as `CONDITIONAL — RETAIN FOR TARGETED CASE DISCOVERY`; no IT-G1 admission or execution authorization.
 - Kept the scientific Core and C01–C16 claim statuses unchanged; no superiority, causal, predictive, value or general industrial-utility claim was introduced.
-- Synchronized current governance pointers, RMA v3.25, Evidence→Claim Matrix v0.7, traceability and STATUS.
 - Historical FAA records remain immutable.
 
 ## 2026-09-09 — TR-132-MOD-1 closure and current-state propagation
 
 - Executed the separately authorized controlled fixture run `TR-132-MOD-1-EXEC-001`.
-- Recorded `BOUNDED PASS (L3)`: `{TA,TB}` at t0 → `{TA,TB,TD}` at t1; symmetric difference `{TD}`.
+- Recorded `BOUNDED PASS (L3)`.
 - Confirmed non-circularity `PASS`, reproducibility `PASS`, no deviations and no external dataset use.
 - Formally closed TR-132-MOD-1 as `CLOSED / BOUNDED PASS (L3)` in the governance closure record.
-- Kept the scientific interpretation bounded: no full `T_acc` closure, causal/value inference, industrial utility, Rust evidence, Core validation, claim upgrade or scientific gate upgrade.
-- Advanced current RMA atomically to `TGCV_RMA_v3.18.md`; current pointer, STATUS and traceability synchronized.
-- Kept historical `TGCV_RMA_v3.17.md` immutable.
-- Maintained `actions/checkout@v6` in governed workflows; current-state validator remains the canonical governance gate.
-
-## 2026-09-09 — TR-132-MOD-1 concrete fixture instantiation
-
-- Instantiated and froze methodological fixture `MOD1-FX-001` for TR-132-MOD-1.
-- Frozen exact finite candidate universe, state pair, accessibility classifications, controls, realization schedule, deterministic seed and pre-execution result/stop rules.
-- Closed the prior package-instantiation gap identified during execution authorization review.
-- No scientific evidence, Core change, C01–C16 change or scientific gate upgrade introduced at instantiation.
-- Advanced current RMA atomically to `TGCV_RMA_v3.17.md`; current pointer, STATUS and traceability synchronized.
-
-## Prior state
-- TR-132-MOD-1 concrete execution package remained design-only and required exact fixture instantiation before execution authorization.
-- Package instantiation authorization had been granted; empirical execution remained NOT AUTHORIZED until the separate authorization record was issued.
+- Kept the scientific interpretation bounded.
