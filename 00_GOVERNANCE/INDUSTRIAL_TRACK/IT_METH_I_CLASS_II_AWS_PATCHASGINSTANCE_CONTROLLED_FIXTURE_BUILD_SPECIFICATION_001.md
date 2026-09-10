@@ -1,7 +1,7 @@
 # IT-METH-I — Class II AWS-PatchAsgInstance Controlled Fixture Build Specification 001
 
 **Date:** 2026-09-10  
-**Status:** `BUILD SPECIFICATION FROZEN — NOT AUTHORIZED FOR EXECUTION`  
+**Status:** `BUILD SPECIFICATION FROZEN — PHASE A AUTHORIZED / TRANSFORMATION NOT AUTHORIZED`  
 **Candidate:** `AWS-PatchAsgInstance`  
 **Evidence class:** `CLASS II — PUBLIC REPRODUCIBLE FIXTURE`  
 **Parent plan:** `IT_METH_I_CLASS_II_AWS_PATCHASGINSTANCE_FIXTURE_INSTANTIATION_PLAN_001.md`
@@ -112,7 +112,7 @@ This specification deliberately ends before transformation execution.
 
 `PHASE_C = COMPARATOR_EXECUTION`
 
-Only Phase A is described here. Phases B and C require separate authorization after the pre-execution integrity gate.
+Only Phase A is authorized by the current authorization record. Phases B and C require separate authorization after the pre-execution integrity gate.
 
 ## 8. Comparator preparation
 
@@ -158,8 +158,10 @@ This build specification does not establish:
 
 `BUILD_SPECIFICATION = FROZEN`
 
-`FIXTURE_BUILD_AUTHORIZATION = NOT GRANTED`
+`FIXTURE_BUILD_AUTHORIZATION = GRANTED`
 
-`PRE_EXECUTION_GATE = BLOCKED`
+`PHASE_A_AUTHORIZED = TRUE`
 
-The next governance decision is whether to authorize **Phase A fixture construction only**. Authorization of fixture construction must not be interpreted as authorization to invoke `AWS-PatchAsgInstance` or the comparator.
+`PRE_EXECUTION_TRANSFORMATION_GATE = BLOCKED`
+
+The current authorization permits **Phase A fixture construction and pre-decision freeze only**. It does not authorize invocation of `AWS-PatchAsgInstance` or the comparator.
