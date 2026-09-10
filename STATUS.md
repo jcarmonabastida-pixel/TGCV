@@ -2,6 +2,8 @@
 
 **Date:** 2026-09-10
 **Governance state:** CURRENT — synchronized after IT-METH-I closure propagation
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`
+**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`
 
 ## Scientific Core
 - **Core:** unchanged.
