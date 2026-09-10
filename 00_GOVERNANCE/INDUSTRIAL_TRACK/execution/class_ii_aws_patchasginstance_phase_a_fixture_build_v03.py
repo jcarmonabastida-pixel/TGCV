@@ -79,7 +79,7 @@ def make_idempotent_baseline_builder(v02):
             details = base.run_aws(aws, ["ssm", "get-patch-baseline", "--baseline-id", baseline_id], region)
             return {
                 "request": {"reuse_existing_registration": True, "patch_group": base.PATCH_GROUP, "operating_system": "AMAZON_LINUX_2"},
-                "created": None,
+                "created": {"BaselineId": baseline_id, "reused": True},
                 "registered": {"reused": True, "AlreadyExistsException": True},
                 "effective_for_patch_group": effective,
                 "details": details,
