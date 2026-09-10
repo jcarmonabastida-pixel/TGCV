@@ -12,7 +12,7 @@ import shutil
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 CANDIDATE = "AWS-PatchAsgInstance"
@@ -123,7 +123,7 @@ def validate_packaging_manifest(manifest: Path, sources: dict) -> dict:
     if not manifest.is_file():
         raise RuntimeError("PACKAGING_MANIFEST_REQUIRED")
     data = json.loads(manifest.read_text(encoding="utf-8"))
-    if data.get("status") != "FROZEN":
+    if data.get("schema") != "IT-METH-I-PACKAGING-MANIFEST-1" or data.get("status") != "FROZEN":
         raise RuntimeError("PACKAGING_MANIFEST_NOT_FROZEN")
     if data.get("source_sha256") != {k: v["sha256"] for k, v in sources.items()}:
         raise RuntimeError("PACKAGING_MANIFEST_SOURCE_HASH_MISMATCH")
@@ -133,8 +133,8 @@ def validate_packaging_manifest(manifest: Path, sources: dict) -> dict:
     actual = sha256_file(packaged)
     if actual != data.get("packaged_template_sha256"):
         raise RuntimeError("PACKAGED_TEMPLATE_HASH_MISMATCH")
-    if not data.get("packaging_procedure_reference"):
-        raise RuntimeError("PACKAGING_PROCEDURE_REFERENCE_MISSING")
+    if not data.get("packaging_procedure_reference") or not data.get("composition_reference"):
+        raise RuntimeError("PACKAGING_PROVENANCE_REFERENCE_MISSING")
     return data
 
 
@@ -150,7 +150,7 @@ def wait_stack(aws: str, region: str, name: str, timeout_s: int = 1800) -> None:
         status = data["Stacks"][0]["StackStatus"]
         if status == "CREATE_COMPLETE":
             return
-        if status.endswith("_FAILED") or status.endswith("_ROLLBACK_COMPLETE"):
+        if status in {"CREATE_FAILED", "ROLLBACK_FAILED", "ROLLBACK_COMPLETE"}:
             raise RuntimeError(f"STACK_BUILD_FAILED: {status}")
         time.sleep(10)
     raise RuntimeError("STACK_BUILD_TIMEOUT")
@@ -163,15 +163,49 @@ def get_stack_outputs(aws: str, region: str, name: str) -> dict[str, str]:
 
 
 def create_fixture_baseline(aws: str, region: str, name: str) -> dict:
-    approval = "PatchRules=[{PatchFilterGroup={PatchFilters=[{Key=CLASSIFICATION,Values=[Security,Bugfix]}]},ApproveAfterDays=0,ComplianceLevel=CRITICAL}]"
-    created = run_aws(aws, ["ssm", "create-patch-baseline", "--name", name, "--operating-system", "AMAZON_LINUX_2", "--approval-rules", approval, "--description", "TGCV IT-METH-I Class II disposable fixture baseline", "--tags", "Key=TGCV,Value=IT-METH-I", "Key=Fixture,Value=Class-II"], region)
+    # Mirrors the frozen workshop semantics: security+bugfix rule, all severities,
+    # plus an all-patches rule with non-security enabled, and explicit kernel* approval.
+    approval = {
+        "PatchRules": [
+            {
+                "PatchFilterGroup": {"PatchFilters": [
+                    {"Key": "CLASSIFICATION", "Values": ["Security", "Bugfix"]},
+                ]},
+                "ApproveAfterDays": 0,
+                "ComplianceLevel": "CRITICAL",
+                "EnableNonSecurity": False,
+            },
+            {
+                "PatchFilterGroup": {"PatchFilters": []},
+                "ApproveAfterDays": 0,
+                "ComplianceLevel": "MEDIUM",
+                "EnableNonSecurity": True,
+            },
+        ]
+    }
+    request = {
+        "Name": name,
+        "OperatingSystem": "AMAZON_LINUX_2",
+        "ApprovalRules": approval,
+        "ApprovedPatches": ["kernel*"],
+        "ApprovedPatchesComplianceLevel": "CRITICAL",
+        "ApprovedPatchesEnableNonSecurity": True,
+        "Description": "TGCV IT-METH-I Class II disposable fixture baseline; composition of frozen AWS workshop semantics.",
+        "Tags": [{"Key": "TGCV", "Value": "IT-METH-I"}, {"Key": "Fixture", "Value": "Class-II"}],
+    }
+    request_file = Path(tempfile.gettempdir()) / f"tgcv_{name}_patch_baseline.json"
+    request_file.write_text(json.dumps(request), encoding="utf-8")
+    try:
+        created = run_aws(aws, ["ssm", "create-patch-baseline", "--cli-input-json", f"file://{request_file}"], region)
+    finally:
+        request_file.unlink(missing_ok=True)
     baseline_id = created.get("BaselineId")
     if not baseline_id:
         raise RuntimeError("PATCH_BASELINE_ID_MISSING")
-    run_aws(aws, ["ssm", "register-patch-baseline-for-patch-group", "--baseline-id", baseline_id, "--patch-group", PATCH_GROUP], region)
+    registered = run_aws(aws, ["ssm", "register-patch-baseline-for-patch-group", "--baseline-id", baseline_id, "--patch-group", PATCH_GROUP], region)
     effective = run_aws(aws, ["ssm", "get-patch-baseline-for-patch-group", "--patch-group", PATCH_GROUP, "--operating-system", "AMAZON_LINUX_2"], region)
     details = run_aws(aws, ["ssm", "get-patch-baseline", "--baseline-id", baseline_id], region)
-    return {"created": created, "effective_for_patch_group": effective, "details": details}
+    return {"request": request, "created": created, "registered": registered, "effective_for_patch_group": effective, "details": details}
 
 
 def capture_state(aws: str, region: str, asg: str, instance_id: str, window_start: str) -> dict:
@@ -198,7 +232,7 @@ def capture_state(aws: str, region: str, asg: str, instance_id: str, window_star
     obs("effective_patch_baseline", baseline)
     hooks = run_aws(aws, ["autoscaling", "describe-lifecycle-hooks", "--auto-scaling-group-name", asg], region)
     obs("lifecycle_hooks", hooks)
-    termination = run_aws(aws, ["autoscaling", "describe-auto-scaling-groups", "--auto-scaling-group-names", asg], region)["AutoScalingGroups"][0].get("TerminationPolicy")
+    termination = group.get("TerminationPolicy", [])
     obs("termination_policy", termination)
     health_cfg = {"health_check_type": group.get("HealthCheckType"), "health_check_grace_period": group.get("HealthCheckGracePeriod")}
     obs("health_check_configuration", health_cfg)
@@ -208,12 +242,8 @@ def capture_state(aws: str, region: str, asg: str, instance_id: str, window_star
         "ssm_registered": bool(managed.get("InstanceInformationList")),
         "patch_group_app": any(t.get("Key") in {"Patch Group", "PatchGroup"} and t.get("Value") == PATCH_GROUP for t in tags.get("Tags", [])),
         "effective_baseline_resolved": bool(baseline.get("BaselineId")),
-        "predecision_observations": bool(observations),
     }
     cutoff = utc_now()
-    for value in observations.values():
-        if value["captured_utc"] > cutoff:
-            raise RuntimeError("OBSERVATION_AFTER_CUTOFF")
     state = {
         "observation_window_start_utc": window_start,
         "observation_cutoff_utc": cutoff,
@@ -237,17 +267,20 @@ def capture_state(aws: str, region: str, asg: str, instance_id: str, window_star
             "eligibility_predicates": predicates,
         },
     }
+    for value in observations.values():
+        if value["captured_utc"] > cutoff or value["captured_utc"] < window_start:
+            raise RuntimeError("OBSERVATION_OUTSIDE_COMMON_WINDOW")
     if not all(predicates.values()):
         raise RuntimeError("PREDECISION_ACCESSIBILITY_GATE_FAILED")
     return state
 
 
-def write_manifest(output_dir: Path, record_name: str) -> dict:
+def write_manifest(output_dir: Path, record_names: list[str]) -> dict:
     files = []
     for p in sorted(output_dir.glob("*")):
         if p.is_file() and p.name != "PHASE_A_EVIDENCE_MANIFEST_001.json":
             files.append({"path": p.name, "size": p.stat().st_size, "sha256": sha256_file(p)})
-    manifest = {"schema": "IT-METH-I-PHASE-A-EVIDENCE-1", "record": record_name, "files": files}
+    manifest = {"schema": "IT-METH-I-PHASE-A-EVIDENCE-1", "records": record_names, "files": files}
     path = output_dir / "PHASE_A_EVIDENCE_MANIFEST_001.json"
     path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
@@ -271,7 +304,6 @@ def main() -> int:
         print("PHASE_A_STATUS=BLOCKED_STATIC_PREFLIGHT")
         print(str(exc))
         return 4
-
     aws = shutil.which("aws")
     if aws is None:
         print("PHASE_A_STATUS=BLOCKED_INFRASTRUCTURE")
@@ -288,13 +320,18 @@ def main() -> int:
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     record = {
-        "schema": "IT-METH-I-PHASE-A-EXECUTION-2",
+        "schema": "IT-METH-I-PHASE-A-EXECUTION-3",
         "phase": PHASE, "candidate": CANDIDATE, "evidence_class": EVIDENCE_CLASS,
         "region": args.region, "aws_identity_check": identity,
         "execution_boundary": {
             "fixture_build": "authorized", "predecision_freeze": "authorized",
             "candidate_transformation": "NOT_AUTHORIZED", "comparator_transformation": "NOT_AUTHORIZED",
             "utility_scoring": "NOT_AUTHORIZED", "industrial_execution": "NOT_AUTHORIZED",
+        },
+        "candidate": {
+            "identity": CANDIDATE,
+            "parameters": {"InstanceId": "FROZEN_AT_RUNTIME", "AutomationAssumeRole": "OMITTED_UNLESS_FROZEN", "LambdaRoleArn": "OMITTED_UNLESS_FROZEN", "WaitForInstance": "PT2M", "WaitForReboot": "PT5M"},
+            "execution": "NOT_AUTHORIZED",
         },
         **static,
     }
@@ -303,7 +340,7 @@ def main() -> int:
         record["status"] = "PREFLIGHT_READY — FIXTURE BUILD NOT REQUESTED"
         out = args.output_dir / "PHASE_A_PREFLIGHT_RECORD_001.json"
         out.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
-        write_manifest(args.output_dir, out.name)
+        write_manifest(args.output_dir, [out.name])
         print("PHASE_A_STATUS=PREFLIGHT_READY")
         print(f"OUTPUT={out}")
         return 0
@@ -311,7 +348,6 @@ def main() -> int:
     stack = None
     baseline_id = None
     try:
-        packaging = None
         if args.build_fixture:
             if args.packaging_manifest is None:
                 raise RuntimeError("PACKAGING_MANIFEST_REQUIRED")
@@ -323,7 +359,7 @@ def main() -> int:
             baseline_id = baseline["created"]["BaselineId"]
             record["patch_baseline_fixture"] = baseline
             stack = stack_name(args.stack_name)
-            run_aws(aws, ["cloudformation", "create-stack", "--stack-name", stack, "--template-body", f"file://{template}", "--capabilities", "CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"], args.region, timeout=120)
+            run_aws(aws, ["cloudformation", "create-stack", "--stack-name", stack, "--template-body", f"file://{template}", "--capabilities", "CAPABILITY_IAM", "CAPABILITY_NAMED_IAM", "--on-failure", "DO_NOTHING"], args.region, timeout=120)
             wait_stack(aws, args.region, stack)
             outputs = get_stack_outputs(aws, args.region, stack)
             record["fixture_build"] = {"stack_name": stack, "stack_outputs": outputs}
@@ -344,6 +380,7 @@ def main() -> int:
         window_start = utc_now()
         state = capture_state(aws, args.region, asg, instance_id, window_start)
         record["predecision_freeze"] = state
+        record["candidate"]["parameters"]["InstanceId"] = instance_id
         record["comparator"] = {
             "identity": "SSM-AWS-RunPatchBaseline on the same frozen target, Install operation, same baseline/group/evidence boundary",
             "procedure_reference": "AWS Systems Manager AWS-RunPatchBaseline; comparator execution explicitly not authorized in Phase A",
@@ -357,20 +394,16 @@ def main() -> int:
             "definition": "Hamming distance between normalized candidate/comparator accessibility predicate vectors at the common frozen cutoff; no post-decision outcomes permitted.",
             "comparison_rule": "0 = identical predicate vector; >0 = predecision accessibility distinction.",
         }
-        record["independent_reconstruction"] = {
-            "status": "REQUIRED",
-            "package": "PHASE_A_INDEPENDENT_RECONSTRUCTION_PACKAGE_001.json",
-            "automatic_second_reconstruction": False,
-        }
+        record["independent_reconstruction"] = {"status": "REQUIRED", "package": "PHASE_A_INDEPENDENT_RECONSTRUCTION_PACKAGE_001.json", "automatic_second_reconstruction": False}
         record["status"] = "PHASE_A_PREDECISION_FREEZE_READY — INDEPENDENT RECONSTRUCTION REQUIRED BEFORE CLOSED"
 
         out = args.output_dir / "PHASE_A_PREDECISION_FREEZE_RECORD_001.json"
-        out.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
         recon = args.output_dir / "PHASE_A_INDEPENDENT_RECONSTRUCTION_PACKAGE_001.json"
-        recon.write_text(json.dumps({"schema": "IT-METH-I-PHASE-A-RECON-1", "source_hash_preflight": static["source_hash_preflight"], "predecision_freeze": state, "candidate": CANDIDATE, "comparator": record["comparator"], "metric": record["metric"], "effort": record["effort"]}, indent=2) + "\n", encoding="utf-8")
-        manifest = write_manifest(args.output_dir, out.name)
-        record["evidence_manifest"] = manifest
         out.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+        recon.write_text(json.dumps({"schema": "IT-METH-I-PHASE-A-RECON-1", "source_hash_preflight": static["source_hash_preflight"], "predecision_freeze": state, "candidate": record["candidate"], "comparator": record["comparator"], "metric": record["metric"], "effort": record["effort"]}, indent=2) + "\n", encoding="utf-8")
+        manifest = write_manifest(args.output_dir, [out.name, recon.name])
+        record["evidence_manifest_reference"] = {"path": "PHASE_A_EVIDENCE_MANIFEST_001.json", "status": "FROZEN_AFTER_RECORD_AND_RECONSTRUCTION_WRITE"}
+        # Do not rewrite the primary record after manifest creation: the manifest hashes the immutable record bytes.
         print("PHASE_A_STATUS=PREDECISION_FREEZE_READY")
         print(f"OUTPUT={out}")
         print("CLOSURE=BLOCKED_UNTIL_INDEPENDENT_RECONSTRUCTION")
