@@ -1,7 +1,7 @@
 # TGCV — Current Status
 
 **Date:** 2026-09-11
-**Governance state:** CURRENT — IT-NOSD-010 IT-G2 closure propagated
+**Governance state:** CURRENT — material IUT-A-01 and IT-NOSD-010 evidence propagation completed
 **Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`
 
@@ -10,6 +10,7 @@
 - **TR-132-MOD-1:** `CLOSED — BOUNDED PASS (L3)`.
 - No Core primitive, relation, threshold or falsification criterion was modified.
 - No scientific claim upgrade was introduced.
+- Material evidence is now propagated to the Evidence→Claim Matrix even when claim status does not change; claim upgrade remains a separate decision.
 
 ## Industrial Track
 - **Track status:** `PROPOSED`.
@@ -19,11 +20,16 @@
 - **Class-II AWS-PatchAsgInstance Phase B0 accessibility:** `CLOSED — NO ADMISSIBLE RESOLVED ACCESSIBILITY DIFFERENCE IDENTIFIED`.
 - **Class-II AWS-PatchAsgInstance B0 permissions audit:** `CLOSED — PARTIAL / EFFECTIVE CANDIDATE PERMISSION UNRESOLVED`.
 - **IT-NOSD-010 / ETSI TS 23.502 / 3GPP 5GS:** `IT-G0 CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS`; `IT-G1 CLOSED — BOUNDED REPRODUCIBILITY / ADMISSION PASS`; `IT-G2 CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS`.
-- IT-G2 independent reconstruction: G2-01 through G2-10 all `PASS`; frozen provenance integrity `PASS`; accessibility was not reused as outcome; outcome was not used to define post-state; complete `T_acc` enumeration was not required.
 - Industrial utility: `UNPROVEN / OPEN`.
 - Comparative superiority: `NOT ESTABLISHED`.
 - Causality: `NOT ASSESSED`.
 - Financial/value effect: `NOT ASSESSED`.
+
+## Evidence propagation boundary
+- Current Evidence→Claim Matrix: `v1.0`.
+- IUT-A-01 U2 is represented as material bounded comparative methodological evidence; C12 remains `H` because M2 failed and the overall result is `U2-NULL`.
+- IT-NOSD-010 G0/G1/G2 is represented as material bounded methodological evidence for reconstruction and downstream separation; no C01–C16 status is upgraded.
+- Evidence propagation does not imply claim upgrade.
 
 ## IUT-A-01 U2 closure boundary
 - Evidence artifact: `03_EXPERIMENTS/IUT-A-01/IUT_A01_U2_FULL_PILOT_RESULT_001.json`.
@@ -38,51 +44,17 @@
 - No rerun is authorized or required.
 - No explanatory superiority, industrial utility, financial/value realization, causal generalisation, or TGCV Core modification is established by this pilot.
 
-## Class-II AWS Phase-A/B0 boundary
-- Evidence class: `CLASS II — PUBLIC REPRODUCIBLE FIXTURE`.
-- Phase-A result establishes fixture-level reproducibility of the bounded predecision state representation.
-- B0 accessibility preflight found no admissible resolved candidate/comparator predicate difference.
-- Phase-A contract permits `AutomationAssumeRole` and `LambdaRoleArn` to be omitted when not used.
-- Frozen Phase-A role fields are `OMITTED_UNLESS_FROZEN`, not concrete frozen IAM identities.
-- `FROZEN_CANDIDATE_ROLE_ARN_PRESENT=False`.
-- `IAM_ROLE_AVAILABILITY=UNRESOLVED`.
-- `OPERATION_PERMISSION_AVAILABILITY=UNRESOLVED`.
-- Comparator caller IAM simulation observed `ssm:SendCommand` as `allowed` under `AmazonSSMFullAccess`; this is simulation evidence only and not end-to-end execution evidence.
-- No discovered IAM role was substituted retrospectively.
-- Candidate transformation: `NOT AUTHORIZED`.
-- Comparator transformation: `NOT AUTHORIZED`.
-- No postdecision outcome was used to define predecision state.
-- No Class-II → Class-I promotion.
-
 ## IT-NOSD-010 bounded closure boundary
 - Candidate: `ETSI TS 23.502 / 3GPP 5GS procedures`.
 - Experimental unit: one bounded public `5G-to-5G` handover event from the T-Mobile Spectrum Usage Dataset.
-- Session: `T-Mobile_2026.03.28_05.14.11`.
-- Timestamp: `2026-03-28T05:16:15`.
-- Event: `HANDOVER_DATA_5G5G`; source cell `2`; target cell `3`; node `84246`.
-- Frozen events MD5: `f7f1eb72063ad5ab290817815c55f297`.
-- Frozen spectrum MD5: `0796c64f3c8850e5b571ce49c556c50b`.
-- Pre-event window: `[2026-03-28T05:15:15, 2026-03-28T05:16:15)`.
-- Post-event window: `[2026-03-28T05:16:15, 2026-03-28T05:16:25)`.
-- Target cell observed 15 times before the event; first observation `2026-03-28T05:15:32`.
-- Post-event rows: `9`; post-event target rows: `8`.
-- Accessibility under IT-G0/IT-G1: `PASS`.
-- Post-event evidence was not used to establish accessibility.
-- State transition reconstructable: `PASS`.
-- Reconstructed transformation: `τ_HO = serving-cell / serving-gNB state → target-cell / target-gNB serving state`.
-- Complete `T_acc(S_t)` enumeration required: `false`.
 - `IT-G0 = CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS`.
 - `IT-G1 = CLOSED — BOUNDED REPRODUCIBILITY / ADMISSION PASS`.
 - `IT-G2 = CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS`.
-- This does not establish full normative 3GPP admissibility, complete `T_acc`, industrial utility, causality, value, superiority or scientific validation.
+- G2-01 through G2-10 all `PASS`; accessibility was not reused as outcome; outcome was not used to define post-state; complete `T_acc` enumeration was not required.
+- This remains bounded evidence for one frozen event and does not establish normative 3GPP admissibility, complete `T_acc`, utility, causality, value, superiority or scientific validation.
 
 ## Methodological closure
 - `MR-01` through `MR-07` remain adopted as preconditions for future industrial utility tests.
-- The AWS Phase-A reconstruction gate is closed and must not be retroactively altered.
-- The B0 accessibility preflight is closed with no admissible resolved difference.
-- The B0 permissions audit is closed as an audit operation, while the effective candidate permission dimensions remain unresolved.
-- The earlier malformed reconstruction comparison is invalidated as non-evidentiary tooling output.
-- No transformation or fixture/IAM mutation was performed in B0.
 - IUT-A-01 U2 FULL_PILOT 001 is closed as `U2-NULL`; its frozen evidence and closure audit are canonical experiment records.
 - IT-NOSD-010 G2 closure is a bounded downstream-separation/reconstructability result for the single frozen event; it does not authorize industrial execution or establish utility/value/causality.
 
