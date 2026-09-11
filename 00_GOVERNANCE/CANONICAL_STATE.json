@@ -2,9 +2,9 @@
   "schema": "TGCV-CANONICAL-STATE-1",
   "status": "CURRENT",
   "current_versions": {
-    "rma": "v3.27",
+    "rma": "v3.28",
     "claim_matrix": "v0.9",
-    "rma_traceability": "v3.27",
+    "rma_traceability": "v3.28",
     "governance_operating_principles": "v0.1"
   },
   "pointers": {
