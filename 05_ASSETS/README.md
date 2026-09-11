@@ -6,7 +6,7 @@
 
 - `TCP/` — `TGCV-EXT-TCP-001` — **CURRENT / CONTROLLED**, v0.4
 - `Vision_Paper/` — `TGCV-EXT-VP-001` — **CURRENT / CONTROLLED**, v0.3
-- `Research_Prospectus/` — `TGCV-EXT-RP-001`
+- `Research_Prospectus/` — `TGCV-EXT-RP-001` — **CURRENT / CONTROLLED**, v0.2
   - `adaptations/IE_PhD/` contains programme-specific application adaptations.
 - `ARM/` — `TGCV-EXT-ARM-001` — **CURRENT / CONTROLLED**, v0.2
 - `RII/` — `TGCV-EXT-RII-001` — **CURRENT / CONTROLLED**, v0.1
@@ -26,4 +26,4 @@ Historical or preparatory copies outside this surface are not competing current 
 
 ## Status
 
-TCP v0.4, Vision Paper v0.3, ARM v0.2, RII v0.1 and MOI v0.1 are propagated as current controlled external assets. MOI is a bounded opportunity-discovery map only: it contains four controlled entries, including two evidence-bounded opportunity routes and two explicit holds. No industrial utility, superiority, causality, value or execution authorization is established by MOI.
+TCP v0.4, Vision Paper v0.3, Research Prospectus v0.2, ARM v0.2, RII v0.1 and MOI v0.1 are propagated as current controlled external assets. The Research Prospectus is programme-level scientific scope and does not authorize execution. MOI remains a bounded opportunity-discovery map only. No industrial utility, superiority, causality, value or execution authorization is established by these assets.
