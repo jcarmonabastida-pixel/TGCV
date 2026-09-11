@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """IUT-A-01 U2 executor v0.2.1.
 
-Compatibility wrapper around v0.2 that fixes a control-flow bug in the integrity
-gate: the per-class count dictionary is metadata, not a boolean integrity flag.
+Compatibility wrapper around v0.2 that fixes control-flow bugs in the wrapper:
+the dynamically loaded source module is registered in sys.modules, the per-class
+count dictionary is metadata, and the negative integrity assertion
+analyst_generated_options_added=False is evaluated with the correct polarity.
 All scientific logic, frozen source checks, trial universe and M1-M3 scoring are
 inherited unchanged from v0.2.
 """
@@ -45,12 +47,19 @@ def run(mode: str) -> dict:
     integrity = mod.integrity_checks(trials, source_integrity)
     fixture_hash = mod.hash_trials(trials)
 
-    boolean_integrity_flags = {
-        key: value
-        for key, value in integrity.items()
-        if isinstance(value, bool)
-    }
-    execution_allowed = all(boolean_integrity_flags.values())
+    positive_integrity_flags = (
+        "trial_count_ok",
+        "class_balance_ok",
+        "unique_trial_ids_ok",
+        "same_universe_for_both_arms",
+        "outcome_blind",
+        "ground_truth_immutable",
+        "frozen_source_files_match",
+    )
+    execution_allowed = (
+        all(integrity[key] is True for key in positive_integrity_flags)
+        and integrity["analyst_generated_options_added"] is False
+    )
 
     result = {
         "EXECUTION_RESULT": "PASS" if execution_allowed else "INDETERMINATE",
