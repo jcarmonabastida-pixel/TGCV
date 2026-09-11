@@ -1,7 +1,7 @@
 # IT-NOSD-010 — TR-132 Case Definition Gate 001
 
 **Date:** 2026-09-11  
-**Status:** `OPEN — CASE DEFINITION EVIDENCE PENDING`  
+**Status:** `CLOSED — BOUNDED PASS / IT-G0`  
 **Candidate:** ETSI TS 23.502 / 3GPP 5GS procedures  
 **Parent screening:** `IT_NOSD_010_TR132_RESCREENING_001.md`
 
@@ -13,43 +13,71 @@ Define one concrete, publicly reproducible 5G handover event that can be screene
 
 The **T-Mobile Spectrum Usage Dataset**, Zenodo record `10.5281/zenodo.19462212`, is retained as the preferred source because its public description explicitly reports both spectrum measurements (including frequency band, RSRP and RSRQ) and event measurements including **5G-to-5G handover**, with measurements associated with latitude, longitude and elevation. The record was published 2026-04-07, version 1.0.
 
-The dataset contains a combined events CSV and separate drive-event/spectrum files. Source identity must be frozen before any event-level reconstruction.
+Frozen file identities:
 
-## 3. Candidate event definition
+- events CSV MD5: `f7f1eb72063ad5ab290817815c55f297`
+- spectrum CSV MD5: `0796c64f3c8850e5b571ce49c556c50b`
 
-A candidate case shall be exactly one recorded `5G-to-5G handover` event plus a bounded pre-event observation window and the immediately corresponding post-event state needed only to establish the state transition.
+## 3. Frozen candidate event
 
-The candidate must not be defined by post-event performance, success, throughput, continuity or other downstream outcome.
+A qualifying event has now been identified and frozen:
 
-## 4. Required evidence closure
+- session: `T-Mobile_2026.03.28_05.14.11`
+- timestamp: `2026-03-28T05:16:15`
+- event: `HANDOVER_DATA_5G5G`
+- source cell: `2`
+- target cell: `3`
+- source/target node: `84246`
+- transition: `5G-to-5G`
 
-The next controlled inspection must establish, from the frozen public record:
+The bounded pre-event observation window is `[2026-03-28T05:15:15, 2026-03-28T05:16:15)`.
 
-- exact event row / event identifier;
-- timestamp and bounded pre-event window;
-- serving and target cell identity, where available;
-- pre-event radio/context variables;
-- whether the relevant target transformation is identifiable before the outcome;
-- whether accessibility/admissibility can be evaluated from pre-event information;
-- post-event state sufficient to reconstruct the transition;
-- exact file/version/hash provenance.
+## 4. Required evidence closure — result
+
+The controlled inspection established:
+
+- exact candidate event identity: `PASS`;
+- serving/source state identifiable before the event: `PASS`;
+- target cell identifiable before the event: `PASS`;
+- target cell observed 15 times in the pre-event window: `PASS`;
+- first target observation: `2026-03-28T05:15:32`;
+- first target observation: `5G NSA`, `cell_id=3`, `cgi=3102601154500003`, `node=84246`, `ARFCN=66786`, `level=-79 dBm`, `qual=-12 dB`, `SNR=19 dB`;
+- pre-outcome accessibility under rule `IT-NOSD-010-A1`: `PASS`;
+- post-event rows considered for accessibility: `0`;
+- outcome used to establish accessibility: `false`;
+- state transition reconstructable from frozen event and pre-state: `PASS`;
+- complete `T_acc(S_t)` enumeration required: `false`.
+
+The accessibility result is frozen in:
+
+`IT_NOSD_010_TR132_IT_G0_CLOSURE_001.md`
+
+The technical accessibility executor is:
+
+`00_GOVERNANCE/INDUSTRIAL_TRACK/execution/it_nosd_010_accessibility_gate_v01.py`
+
+Executor commit: `4188976803bfbdd638c44f526660563d3e8cb201`.
 
 ## 5. TR-132 rule
 
 Failure to enumerate every alternative handover available at the pre-event state is **not**, by itself, a failure. The decisive question is whether the observed candidate transformation `τ_i` has independently assessable pre-outcome accessibility/admissibility and a reconstructable state transition.
 
-## 6. Current gate decision
+## 6. Gate decision
 
-`CASE_DEFINITION = PENDING EVIDENCE INSPECTION`
+`CASE_DEFINITION = CLOSED — BOUNDED PASS`
 
-`IT-G0 = NOT STARTED`
+`IT-G0 = CLOSED — BOUNDED PASS`
 
 `IT-G1 = NOT STARTED`
 
 `INDUSTRIAL EXECUTION AUTHORIZATION = NONE`
 
-No dataset download, event selection, scoring, utility assessment, causal assessment or value assessment is authorized by this record.
+## 7. Interpretation boundary
 
-## 7. Next operation
+This gate closes the methodological case-definition/accessibility sufficiency requirement for the concrete candidate event. It does not establish full normative 3GPP admissibility, complete `T_acc(S_t)`, industrial utility, causal effect, value effect, comparative superiority, or scientific validation.
 
-Inspect the public event file and freeze the first event that satisfies the above identity/provenance requirements. If no event permits the required pre-outcome reconstruction, the candidate remains conditional or is discarded; do not relax TR-132 to rescue the candidate.
+No dataset execution beyond the documented technical inspection is authorized by this record.
+
+## 8. Next controlled gate
+
+The next operation is the separately governed **IT-G1 admission/reproducibility gate** for this single frozen event. IT-G1 must verify reproducibility/provenance, pre-event state and transformation identity, state-transition closure, temporal closure, and explicit separation of transformation/accessibility from downstream outcome. IT-G1 does not authorize industrial execution by itself.
