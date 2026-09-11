@@ -1,0 +1,18 @@
+{
+  "executor": "IUT-A-01-O3-ACCESSIBILITY-CLOSURE-EXECUTOR-0.1",
+  "python": "3.14.7",
+  "execution_result": "PASS",
+  "case_id": "IUT-A-01",
+  "option_id": "O3",
+  "scope": "BOUNDED_O3_ACCESSIBILITY_CLOSURE_ONLY",
+  "accessibility": {"classification":"INDETERMINATE","reason":"Material decision-time accessibility conditions remain unresolved; closing them would require analyst-supplied completion."},
+  "interpretation": {"classification":"H-B","meaning":"Deeper operationalization boundary persists for this bounded accessibility condition."},
+  "hard_stop": {"code":"HS-AC01","triggered":true,"reason":"At least one material accessibility condition remains unresolved and the available candidate rule is analyst interpretation rather than an explicit native rule or necessary inference."},
+  "rule_controls": {"RF-AC01":"PASS","RF-AC02":"PASS","RF-AC03":"PASS","RF-AC04":"PASS"},
+  "assertions": {"analyst_interpretation_detected":true,"assertion_consistent_with_rule_classifications":true,"case_id_frozen":true,"decision_time_boundary_only":true,"evidence_inventory_present":true,"no_analyst_generated_facts":true,"no_comparative_iut":true,"no_outcome_fields_used":true,"o3_definition_frozen":true,"unresolved_material_condition_detected":true},
+  "material_conditions": [{"condition_id":"MC01","status":"RESOLVED_NATIVE"},{"condition_id":"MC02","status":"UNRESOLVED"},{"condition_id":"MC03","status":"UNRESOLVED"}],
+  "evidence_inventory": [{"evidence_id":"E01","source_identifier":"Ferreira & Wysk (2001)","source_version_or_date":"2001","exact_relevant_section_or_fact":"Frozen Stage-A fact: the source supports O3 as a native alternative involving alternative tooling/setup; no exact section/page identifier is present in the frozen Stage-A record.","provenance":"FROZEN_STAGE_A_SOURCE","decision_time":true,"supports_accessibility":false}],
+  "reproducibility": {"platform":"Windows-11-10.0.26200-SP0","python_version":"3.14.7"},
+  "provenance_hashes": {"case_facts_sha256":"632ac9ea9d2e924269fe91e18b5d40142c93970afee52c771b16824f0c1cbecc","evidence_inventory_sha256":"09f997291679869dede07043fb381bd081a4ad21fc577c068ed4a9709f23c270","material_conditions_sha256":"083e8ca4b1c79fa0381d52fb9a03fce219eb4991b8074c6caadcc8fadfde62a3","rule_classifications_sha256":"65ddbbbf9baddfc7729a18daaca1a093bfad75444afc10cb30340e0eab5999a0","result_sha256":"951fdfc1902c07c56553959dbdd1d3f10f00ef75f04814f9883db36f8566f29d"},
+  "scientific_scope": {"causal_inference":false,"comparative_iut_executed":false,"financial_value_tested":false,"universal_validity_tested":false,"epistemic_scope":"METHODOLOGICAL_ACCESSIBILITY_CLOSURE_ONLY"}
+}
