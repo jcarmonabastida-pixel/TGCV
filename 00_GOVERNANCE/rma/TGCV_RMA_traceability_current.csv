@@ -15,7 +15,9 @@ CLAIM-MATRIX-v1.1,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAI
 CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.1,v1.1; current scientific claim control remains unchanged
 ARM-v0.1,external_asset,HISTORICAL,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.1.md,ARM-current,Historical ARM state preserved immutable
 ARM-v0.2,external_asset,CURRENT,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.2.md,RMA-current,Current controlled ARM; architectural reconciliation only; Core and C01-C16 unchanged
-ARM-current,pointer,CURRENT,05_ASSETS/ARM/README.md,ARM-v0.2,Current ARM pointer; RII remains next pending substantive external asset
+ARM-current,pointer,CURRENT,05_ASSETS/ARM/README.md,ARM-v0.2,Current ARM pointer; RII follows as current controlled external asset
+RII-v0.1,external_asset,CURRENT,05_ASSETS/RII/TGCV-EXT-RII-001_v0.1.md,RMA-current,Current controlled RII; programme impact/transfer interface only; no scientific claim upgrade or industrial authorization
+RII-current,pointer,CURRENT,05_ASSETS/RII/README.md,RII-v0.1,Current RII pointer; historical impact roadmap remains immutable/preparatory
 IT-METH-I-GOVERNED-COMPARISON,industrial_experiment,CLOSED-INCONCLUSIVE,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-METH-I_FAA_AMOC_GOVERNED_COMPARISON_001.md,,FAA AMOC comparison closed; no superiority established
 IT-METH-I-CLOSURE,industrial_experiment,CLOSED-INCONCLUSIVE,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-METH-I_FAA_AMOC_EXPERIMENT_CLOSURE_001.md,IT-METH-I-GOVERNED-COMPARISON,Experiment closed; no rerun; Core unchanged
 IT-METH-I-MR-01-07,methodological_requirements,ADOPTED,00_GOVERNANCE/INDUSTRIAL_TRACK/IT-METH_I_METHODOLOGICAL_REQUIREMENTS_AFTER_CLOSURE_001.md,IT-METH-I-CLOSURE,Preconditions for future industrial utility tests
