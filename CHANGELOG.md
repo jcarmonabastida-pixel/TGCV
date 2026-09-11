@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-09-11 — IT-NOSD-010 TR-132 IT-G0 closure propagation
+
+- Closed IT-NOSD-010 IT-G0 as `CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS` for one frozen public 5G-to-5G handover event.
+- Frozen candidate: session `T-Mobile_2026.03.28_05.14.11`, timestamp `2026-03-28T05:16:15`, `HANDOVER_DATA_5G5G`, source cell 2, target cell 3, node 84246.
+- Verified frozen events/spectrum file MD5s and bounded pre-event provenance.
+- Verified 15 target-cell observations before the event, no post-event rows used for accessibility, and reconstructable state transition.
+- Propagated the bounded methodological closure to RMA v3.28, current RMA pointer, RMA traceability v3.28/current pointer, CANONICAL_STATE and STATUS.
+- Kept the Evidence→Claim Matrix at v0.9 and all scientific claim statuses unchanged; no scientific Core upgrade was introduced.
+- IT-G1 remains `NOT STARTED`; standing industrial execution authorization remains `NONE`.
+- Historical records remain immutable.
+
 ## 2026-09-11 — Class-II AWS-PatchAsgInstance Phase-A reconstruction closure
 
 - Closed the Class-II AWS-PatchAsgInstance Phase-A predecision reconstruction gate as `CLOSED — PREDECISION RECONSTRUCTION REPRODUCIBILITY PASS`.
