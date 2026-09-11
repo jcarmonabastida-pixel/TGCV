@@ -1,9 +1,10 @@
 # TGCV — Current Status
 
 **Date:** 2026-09-11
-**Governance state:** CURRENT — EXT-UPD-4.8 O3 accessibility-closure evidence propagated; no claim upgrade
+**Governance state:** CURRENT — SWIM Reactive-0 evidence propagated; IGRT governance reconciliation PASS; no claim upgrade
 **Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`
+**IGRT governance status:** `00_GOVERNANCE/IGRT/TGCV_IGRT_GOVERNANCE_STATUS_2026-09-11.md`
 
 ## Scientific Core
 - **Core:** unchanged.
@@ -11,6 +12,13 @@
 - No Core primitive, relation, threshold or falsification criterion was modified.
 - No scientific claim upgrade was introduced.
 - Material evidence is propagated to the Evidence→Claim Matrix even when claim status does not change; claim upgrade remains a separate decision.
+
+## Governance integrity
+- **IGRT:** `PASS — GOVERNANCE CHAIN RECONCILED`.
+- The canonical state manifest resolves RMA `v3.32`, Evidence→Claim Matrix `v1.2`, RMA traceability `v3.32`, governance operating principles `v0.1`, STATUS and validator.
+- The current matrix pointer has been synchronized to `EVIDENCE_TO_CLAIM_MATRIX_v1.2.md`.
+- The prior stale `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` alias was a governance consistency defect; it did not represent a scientific-state defect.
+- No historical experiment or governance record was modified.
 
 ## Industrial Track
 - **Track status:** `PROPOSED`.
@@ -21,13 +29,15 @@
 - **Class-II AWS-PatchAsgInstance Phase B0 accessibility:** `CLOSED — NO ADMISSIBLE RESOLVED ACCESSIBILITY DIFFERENCE IDENTIFIED`.
 - **Class-II AWS-PatchAsgInstance B0 permissions audit:** `CLOSED — PARTIAL / EFFECTIVE CANDIDATE PERMISSION UNRESOLVED`.
 - **IT-NOSD-010 / ETSI TS 23.502 / 3GPP 5GS:** `IT-G0 CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS`; `IT-G1 CLOSED — BOUNDED REPRODUCIBILITY / ADMISSION PASS`; `IT-G2 CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS`.
+- **SWIM Reactive-0:** `CLOSED — BOUNDED TGCV OPERATIONALIZATION RESULT`.
 - Industrial utility: `UNPROVEN / OPEN`.
 - Comparative superiority: `NOT ESTABLISHED`.
 - Causality: `NOT ASSESSED`.
 - Financial/value effect: `NOT ASSESSED`.
 
 ## Evidence propagation boundary
-- Current Evidence→Claim Matrix: `v1.1`.
+- Current Evidence→Claim Matrix: `v1.2`.
+- SWIM Reactive-0 material evidence is propagated in v1.2; no C01–C16 claim status/level is upgraded.
 - IUT-A-01 U2 and IT-NOSD-010 remain material bounded methodological evidence without claim upgrade.
 - EXT-UPD-4.8 O3 is material bounded methodological evidence that qualifies the decision-time accessibility-closure boundary; C01–C16 statuses remain unchanged.
 - Evidence propagation does not imply claim upgrade.
@@ -65,6 +75,7 @@
 - IUT-A-01 O3: bounded accessibility closure `INDETERMINATE / H-B`; no industrial admission.
 - AWS PatchAsgInstance: Phase-A reconstruction CLOSED — PASS; B0 accessibility CLOSED — no admissible resolved difference; B0 permissions audit CLOSED — PARTIAL; downstream candidate/comparator execution separately governed.
 - IT-NOSD-010: IT-G0/G1/G2 closed; no industrial execution authorization.
+- SWIM Reactive-0: bounded operationalization closed; no repeat run for the current claim.
 
 ## Canonical continuity
 `00_GOVERNANCE/CANONICAL_STATE.json` remains the canonical current-state entry point.
