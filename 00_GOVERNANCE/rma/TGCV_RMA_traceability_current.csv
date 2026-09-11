@@ -24,6 +24,9 @@ TCP-v0.4,external_asset,CURRENT,05_ASSETS/TCP/TGCV-EXT-TCP-001_v0.4.md,RMA-curre
 TCP-current,pointer,CURRENT,05_ASSETS/TCP/README.md,TCP-v0.4,Current TCP pointer
 VP-v0.3,external_asset,CURRENT,05_ASSETS/Vision_Paper/TGCV-EXT-VP-001_v0.3.md,RMA-current,Current controlled Vision Paper; research vision/architectural synthesis only; no scientific claim upgrade or execution authorization
 VP-current,pointer,CURRENT,05_ASSETS/Vision_Paper/README.md,VP-v0.3,Current Vision Paper pointer; v0.2 remains historical and immutable
+RP-v0.1,external_asset,HISTORICAL,05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.1.md,RP-current,Historical research prospectus draft preserved immutable
+RP-v0.2,external_asset,CURRENT,05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.2.md,RMA-current,Current controlled Research Prospectus; programme-level scientific synthesis; no claim upgrade or execution authorization
+RP-current,pointer,CURRENT,05_ASSETS/Research_Prospectus/README.md,RP-v0.2,Current Research Prospectus pointer; application adaptations remain separate
 IT-METH-I-GOVERNED-COMPARISON,industrial_experiment,CLOSED-INCONCLUSIVE,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-METH-I_FAA_AMOC_GOVERNED_COMPARISON_001.md,,FAA AMOC comparison closed; no superiority established
 IT-METH-I-CLOSURE,industrial_experiment,CLOSED-INCONCLUSIVE,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-METH-I_FAA_AMOC_EXPERIMENT_CLOSURE_001.md,IT-METH-I-GOVERNED-COMPARISON,Experiment closed; no rerun; Core unchanged
 IT-METH-I-MR-01-07,methodological_requirements,ADOPTED,00_GOVERNANCE/INDUSTRIAL_TRACK/IT-METH_I_METHODOLOGICAL_REQUIREMENTS_AFTER_CLOSURE_001.md,IT-METH-I-CLOSURE,Preconditions for future industrial utility tests
