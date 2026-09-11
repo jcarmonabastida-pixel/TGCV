@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-09-11 — Material evidence propagation rule, IUT-A-01 and IT-NOSD-010
+
+- Identified and corrected an overly aggressive governance rule that treated absence of scientific claim upgrade as sufficient reason to omit material experimental evidence from the Evidence→Claim Matrix.
+- Established the operative rule: material experimental evidence is propagated when it adds, removes, qualifies, bounds or otherwise changes the evidentiary basis or interpretation of a claim, even when no claim status/level changes; claim upgrade remains a separate decision.
+- Propagated IUT-A-01 U2 FULL_PILOT 001 to Evidence→Claim Matrix v1.0 as bounded comparative methodological evidence: M1 PASS (+40 pp) and M2 FAIL, final `U2-NULL`; C12 and all other C01–C16 statuses remain unchanged.
+- Propagated IT-NOSD-010 G0/G1/G2 to Evidence→Claim Matrix v1.0 as bounded methodological evidence for reconstruction and downstream separation; no C01–C16 status upgraded.
+- Created RMA v3.31 and propagated the material-evidence rule and both evidence records without changing the scientific Core.
+- Updated RMA traceability to v3.31 and current pointers; historical versions remain immutable.
+- Updated `CANONICAL_STATE.json` to RMA v3.31, Evidence→Claim Matrix v1.0 and traceability v3.31.
+- Updated STATUS with the evidence-propagation boundary and current bounded evidence state.
+- Updated the canonical current-state validator so it verifies current-version alignment and requires the current matrix to explicitly declare the distinction between material evidence propagation and claim upgrade.
+- The validator remains a validator: it does not infer scientific upgrades or mutate the matrix automatically.
+- Standing industrial execution authorization remains `NONE`.
+
 ## 2026-09-11 — IT-NOSD-010 TR-132 IT-G2 closure propagation
 
 - Closed IT-NOSD-010 IT-G2 as `CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS` for the same frozen public 5G-to-5G handover event admitted through G0 and G1.
@@ -18,10 +32,7 @@
 - Frozen candidate: session `T-Mobile_2026.03.28_05.14.11`, timestamp `2026-03-28T05:16:15`, `HANDOVER_DATA_5G5G`, source cell 2, target cell 3, node 84246.
 - Verified frozen events/spectrum file MD5s and bounded pre-event provenance.
 - Verified 15 target-cell observations before the event, no post-event rows used for accessibility, and reconstructable state transition.
-- Propagated the bounded methodological closure to RMA v3.28, current RMA pointer, RMA traceability v3.28/current pointer, CANONICAL_STATE and STATUS.
-- Kept the Evidence→Claim Matrix at v0.9 and all scientific claim statuses unchanged; no scientific Core upgrade was introduced.
-- IT-G1 remains `NOT STARTED`; standing industrial execution authorization remains `NONE`.
-- Historical records remain immutable.
+- Historical propagation records remain immutable; current matrix now captures the material evidence under the corrected propagation rule.
 
 ## 2026-09-11 — Class-II AWS-PatchAsgInstance Phase-A reconstruction closure
 
