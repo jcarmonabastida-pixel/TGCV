@@ -1,0 +1,17 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+RMA-v3.25,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.25.md,,Historical operative RMA preserved immutable
+RMA-v3.26,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.26.md,RMA-current,Historical operative RMA preserved immutable
+RMA-v3.27,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.27.md,RMA-current,Historical operative RMA preserved immutable
+RMA-v3.28,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.28.md,RMA-current,Historical operative RMA preserved immutable
+RMA-v3.29,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.29.md,RMA-current,Historical operative RMA preserved immutable
+RMA-v3.30,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.30.md,RMA-current,Current operative RMA; propagates IT-NOSD-010 IT-G2 bounded downstream-separation closure; no scientific claim upgrade
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.30,Points to TGCV_RMA_v3.30.md
+CLAIM-MATRIX-v0.8,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v0.8.md,,Historical matrix preserved immutable
+CLAIM-MATRIX-v0.9,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v0.9.md,,Current versioned matrix; no scientific claim upgrade
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v0.9,v0.9; current scientific claim control remains unchanged
+IT-NOSD-010-RESCREENING,candidate_screening,CURRENT,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_RESCREENING_001.md,TR-132-MOD-1,Corrected TR-132 screening; retained for concrete event case definition
+IT-NOSD-010-CASE-GATE,case_definition,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_CASE_DEFINITION_GATE_001.md,IT-NOSD-010-RESCREENING,Concrete 5G-to-5G event frozen; bounded pre-outcome accessibility/case-definition PASS
+IT-NOSD-010-G0-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_IT_G0_CLOSURE_001.md,IT-NOSD-010-CASE-GATE,IT-G0 closed; no industrial execution authorization
+IT-NOSD-010-G1-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_IT_G1_CLOSURE_001.md,IT-NOSD-010-G0-CLOSURE,IT-G1 bounded reproducibility/admission closed; no industrial execution authorization
+IT-NOSD-010-G2-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_IT_G2_CLOSURE_001.md,IT-NOSD-010-G1-CLOSURE,IT-G2 bounded downstream-separation closed; no industrial execution authorization
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Current traceability pointer for RMA v3.30
