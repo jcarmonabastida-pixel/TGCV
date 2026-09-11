@@ -1,71 +1,80 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.1
+# TGCV — Evidence-to-Claim Matrix — Current v1.2
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-11  
-**Predecessor:** v1.0  
-**Current update:** Material evidence propagation for IUT-A-01 U2 FULL_PILOT 001, IT-NOSD-010 IT-G2, and EXT-UPD-4.8 O3 accessibility-closure reassessment. No scientific claim status/level upgrade.
+**Predecessor:** v1.1  
+**Current update:** Material evidence propagation for SWIM Reactive-0 bounded TGCV operationalization. No scientific claim status/level upgrade.
 
 ## Material evidence propagation rule
 A material experimental result is propagated to this matrix when it adds, removes, qualifies, bounds, or otherwise changes the evidentiary basis or interpretation of a claim, even when no claim status/level changes. Claim upgrade is a separate decision and is never inferred merely from evidence propagation.
 
-**Operational rule:** A material experimental result is propagated to this matrix when it adds, removes, qualifies, bounds, or otherwise changes the evidentiary basis or interpretation of a claim. Claim upgrade is a separate decision. Evidence propagation does not imply claim upgrade.
+**Operational rule:** Evidence propagation does not imply claim upgrade.
 
 | ID | Claim | Status | Current evidence / basis | Evidence impact / interpretation | Next requirement |
 |---|---|---|---|---|---|
-| C01 | TGCV represents system state/context/conditions and constraints/resources | E0 | Formal architecture + bounded cross-domain traces | IUT, IT-NOSD and EXT-UPD-4.8 provide bounded methodological evidence, but no claim-level upgrade. | Further independent operational confirmation |
-| C02 | Accessibility is represented by transformations satisfying an independently defined admissibility predicate | E0 | Formalization + Rust + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 | IT-NOSD closes bounded accessibility reconstruction for one event; EXT-UPD-4.8 additionally demonstrates that a native candidate definition does not by itself close decision-time accessibility when material conditions remain unresolved. General T_acc remains unclosed. | Independent operationalization with closed accessible transformation space |
-| C03 | T_acc is analytically distinct from downstream Reach in bounded Rust | E1 | Rust evidence | IT-NOSD adds bounded empirical separation of accessibility from downstream evidence; EXT-UPD-4.8 does not alter the Rust claim level. | Independent replication |
-| C04 | ΔT_acc can occur without ΔReach¹_pot | E1 | Rust ND-1 | No direct test by IUT, IT-NOSD or EXT-UPD-4.8. | Independent replication |
-| C05 | ΔT_acc can occur with ΔReach¹_pot change | E1 | Rust ND-2 | No direct test by IUT, IT-NOSD or EXT-UPD-4.8. | Independent replication |
-| C06 | Reach identity is not characterized by cardinality alone | E1 | Rust ND-4 | No direct impact. | Independent replication |
-| C07 | Accessible transformation spaces change over time in Rust | E1 | Rust non-persistent pairs | IT-NOSD reconstructs one bounded state transition; EXT-UPD-4.8 does not establish the general Rust claim. | Independent closed operationalization |
-| C08 | Accessibility changes modify reachable future trajectories | H | Formal chain + bounded Rust H=1 | IT-NOSD closes bounded downstream separation/reconstructability for one event; EXT-UPD-4.8 identifies an accessibility-closure boundary but does not identify trajectory effects. | Valid trajectory test |
-| C09 | Accessibility changes causally affect subsequent trajectories | H | No causal identification | IUT, IT-NOSD and EXT-UPD-4.8 do not establish causality. | Causal design |
-| C10 | Accessibility changes generate/predict value | H | No Value evidence | IUT is bounded decision-performance evidence; IT-NOSD is bounded reconstructability evidence; EXT-UPD-4.8 is bounded accessibility-closure evidence. None establishes value realization. | Value-linked test |
-| C11 | TGCV is domain-independent / transversal | H | C-01 A-C + I-01 Gate C | One bounded 5G case, one frozen decision fixture and one bounded O3 accessibility case do not establish transversal validity. | Independent operationalization across broader domains |
-| C12 | TGCV provides superior explanatory representation | H | Comparative evidence absent | IUT M1 shows +40 pp bounded decision correctness in the frozen fixture, but M2 fails; U2-NULL. EXT-UPD-4.8 is non-comparative and does not establish superiority. | Controlled differentiated comparison |
-| C13 | TGCV contains no equivalent prior architecture | O | D-OPS-21 | No impact. | Comparative coverage |
-| C14 | T_acc is an ontological primitive independent of S | F | TR-131 | No impact. | No restoration without contrary evidence |
+| C01 | TGCV represents system state/context/conditions and constraints/resources | E0 | Formal architecture + bounded cross-domain traces | SWIM Reactive-0 adds a bounded self-adaptive-system operationalization of state/context reconstruction; no claim-level upgrade. | Further independent operational confirmation |
+| C02 | Accessibility is represented by transformations satisfying an independently defined admissibility predicate | E0 | Formalization + Rust + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 | SWIM provides a bounded operational reconstruction of `Pτ(S_t,C_t)` and `T_acc,t` for three observed candidate transformation families. This strengthens bounded operational support while general `T_acc` remains unclosed. | Independent operationalization across a distinct exemplar |
+| C03 | T_acc is analytically distinct from downstream Reach in bounded Rust | E1 | Rust evidence | SWIM does not alter the bounded Rust claim level; it independently instantiates the accessibility object without establishing the Rust claim more generally. | Independent replication |
+| C04 | ΔT_acc can occur without ΔReach¹_pot | E1 | Rust ND-1 | SWIM demonstrates bounded `ΔT_acc` but does not test the specific Reach-separation condition. | Independent replication |
+| C05 | ΔT_acc can occur with ΔReach¹_pot change | E1 | Rust ND-2 | SWIM demonstrates bounded `ΔT_acc` but does not test the specific Reach-separation condition. | Independent replication |
+| C06 | Reach identity is not characterized by cardinality alone | E1 | Rust ND-4 | No material impact. | Independent replication |
+| C07 | Accessible transformation spaces change over time in Rust | E1 | Rust non-persistent pairs | SWIM provides bounded non-Rust operational evidence that accessible transformation spaces can change across observed state transitions. This does not upgrade the Rust-specific claim. | Independent closed operationalization / replication |
+| C08 | Accessibility changes modify reachable future trajectories | H | Formal chain + bounded Rust H=1 | SWIM reconstructs `ΔT_acc` but does not establish downstream trajectory effects. | Valid trajectory test |
+| C09 | Accessibility changes causally affect subsequent trajectories | H | No causal identification | No causal evidence from SWIM Reactive-0. | Causal design |
+| C10 | Accessibility changes generate/predict value | H | No Value evidence | SWIM is methodological/reconstructive evidence only; no value realization or predictive-value claim is established. | Value-linked test |
+| C11 | TGCV is domain-independent / transversal | H | C-01 A-C + I-01 Gate C | SWIM is one bounded self-adaptive software exemplar and therefore strengthens cross-context evidence only at the methodological level; transversal validity remains unestablished. | Independent operationalization across broader domains |
+| C12 | TGCV provides superior explanatory representation | H | Comparative evidence absent | SWIM Reactive-0 is non-comparative for explanatory superiority. | Controlled differentiated comparison |
+| C13 | TGCV contains no equivalent prior architecture | O | D-OPS-21 | No material impact. | Comparative coverage |
+| C14 | T_acc is an ontological primitive independent of S | F | TR-131 | No impact; SWIM treats `T_acc` as derived from state/context and admissibility. | No restoration without contrary evidence |
 | C15 | Rust demonstrates observed Cargo/runtime reachability | F | Rust evidence boundary | No impact. | Separate governed runtime test |
-| C16 | TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value | H | D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 | EXT-UPD-4.8 materially qualifies the accessibility-closure boundary: native candidate identification is insufficient where decision-time material conditions are unresolved. It does not close downstream trajectory/value boundaries. | Closed independent-domain operationalization / downstream test |
+| C16 | TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value | H | D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 | SWIM adds a bounded operationalization of the state/context → accessibility → `T_acc` → `ΔT_acc` segment in a self-adaptive software exemplar. It does not close downstream trajectory/value boundaries or establish transversal validity. | Closed independent-domain operationalization / downstream test |
 
-## Material methodological evidence — IUT-A-01 U2 FULL_PILOT 001
+## Material methodological evidence — SWIM Reactive-0
 
-**Case:** `IUT-A-01`  
-**Status:** `CLOSED — U2-NULL`
+**Case:** `SWIM Reactive-0`  
+**Run:** `Reactive-0-20260911-17:49:20-1`  
+**Status:** `CLOSED — BOUNDED TGCV OPERATIONALIZATION RESULT`  
+**Disposition:** `00_GOVERNANCE/SIP/TGCV_SWIM_REACTIVE0_OPERATIONALIZATION_DISPOSITION_001.md`
 
-The frozen FULL_PILOT completed with execution integrity `PASS`. M1 decision correctness was `60.0%` control versus `100.0%` TGCV, a `+40.0` percentage-point difference, while M2 failed its predeclared improvement threshold. The overall classification is `U2-NULL`. This is material comparative methodological evidence bounded to Fixture 002 and the executed criteria; it does not upgrade C12 or any other claim.
+The frozen SWIM Reactive-0 execution completed successfully with a reproducible `.sca/.vec` result bundle. Existing run evidence and deterministic source semantics were used to reconstruct candidate transformation identities, pre-outcome accessibility predicates, multiple accessible-transformation snapshots and observed changes in that space.
 
-## Material methodological evidence — IT-NOSD-010
+Bounded candidate universe:
 
-**Case:** `IT-NOSD-010 — ETSI TS 23.502 / 3GPP 5GS`  
-**Status:** `IT-G0 CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS`; `IT-G1 CLOSED — BOUNDED REPRODUCIBILITY / ADMISSION PASS`; `IT-G2 CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS`.
+`Uτ = {AddServer, RemoveServer, SetDimmer(k)}`
 
-The independent G1 and G2 executions reproduced the frozen event, provenance, bounded pre-state, transformation identity, temporal boundary and downstream separation. Accessibility was not reused as outcome evidence, outcome was not used to define post-state, and complete ex-ante enumeration of `T_acc(S_t)` was not required under TR-132-MOD-1. This is material bounded methodological evidence and does not establish complete `T_acc`, utility, causality, value, superiority, transversal validity or scientific validation.
+with only observed dimmer targets represented in the bounded reconstruction.
 
-## Material methodological evidence — EXT-UPD-4.8 O3 accessibility closure reassessment
+The reconstruction yielded multiple `T_acc,t` snapshots and non-empty `ΔT_acc` transitions, including:
 
-**Case:** `IUT-A-01`; **Option:** `O3`  
-**Status:** `CLOSED — INDETERMINATE / H-B — HS-AC01`  
-**Execution artifact:** `03_EXPERIMENTS/IUT-A-01/IUT_A01_O3_ACCESSIBILITY_CLOSURE_RESULT_001.json`  
-**Governance closure:** `00_GOVERNANCE/D-OPS-24_EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_EXECUTION_RESULT_v0.1.md`
+- `t=600 → 660`: `AddServer` enters `T_acc`;
+- `t=660 → 3960`: `RemoveServer` leaves `T_acc`;
+- `t=3960 → 4680`: `RemoveServer` re-enters `T_acc`;
+- `t=4680 → 4740`: `AddServer` leaves `T_acc` at `maxServers=3`.
 
-The bounded corrective assessment executed with integrity `PASS`; RF-AC01 through RF-AC04 all passed. O3 was confirmed as a native candidate alternative, but MC02 (availability/accessibility of T-C at decision time) and MC03 (ability to perform required setup within the decision-time boundary) remained unresolved. The rule that partial setup plus an explicit alternative-tool requirement implies accessibility was correctly classified as `ANALYST-INTERPRETATION`, triggering `HS-AC01`.
+This is material evidence because it operationalizes the bounded chain:
 
-The result is `INDETERMINATE / H-B`: a bounded deeper operationalization boundary persists. It is material methodological evidence because it qualifies the evidence boundary for accessibility closure. It does not establish complete `T_acc`, utility, superiority, causality, value, transversal validity or any Core modification. No additional constructive attempt or comparative IUT is authorized by this closure.
+`S_t,C_t → Pτ(S_t,C_t) → T_acc,t → ΔT_acc`
 
-## Material methodological evidence — Class-II AWS-PatchAsgInstance
+without using downstream outcome to define accessibility.
 
-**Fixture:** `IT-METH-I-CLASS-II-AWS-PATCHASGINSTANCE`  
-**Phase-A:** `CLOSED — PREDECISION RECONSTRUCTION REPRODUCIBILITY PASS`  
-**B0 accessibility:** `CLOSED — NO ADMISSIBLE RESOLVED ACCESSIBILITY DIFFERENCE IDENTIFIED`  
-**B0 permissions:** `CLOSED — PARTIAL / EFFECTIVE CANDIDATE PERMISSION UNRESOLVED`
+### Interpretation boundary
 
-The primary Phase-A freeze and independent R002 reconstruction recovered the same governed identity and 21/21 exact compared fields. B0 found no admissible resolved accessibility difference and the permissions audit left effective candidate permission unresolved. This remains Class-II fixture-level methodological evidence.
+The result supports bounded operational reconstructability of accessible transformation space and its change over time in this SWIM exemplar.
 
-### Claim boundary
+It does **not** establish:
 
-No C01–C16 status is upgraded by the material evidence recorded in v1.1. EXT-UPD-4.8 does not establish general T_acc closure, utility, production benefit, financial/value realization, causality, predictive validity, superiority, transversal validity or Class-I industrial status.
+- transversal novelty;
+- causal effects on trajectories;
+- value creation or prediction;
+- explanatory superiority;
+- general validity across self-adaptive systems;
+- industrial utility or production benefit.
+
+No additional Reactive-0 simulation is required for the present bounded operationalization claim.
+
+## Claim boundary
+
+No C01–C16 status is upgraded by the material evidence recorded in v1.2. The SWIM result strengthens the bounded evidentiary basis for C01, C02, C07 and C16 and provides bounded non-Rust operational support for the programme's accessibility-space construct, but it does not cross any current claim-level upgrade threshold.
 
 ## Gate state
 
@@ -75,16 +84,17 @@ No C01–C16 status is upgraded by the material evidence recorded in v1.1. EXT-U
 - G4 Causal identification: OPEN.
 - G5 Value linkage: OPEN.
 - G6 Originality/comparative architecture: BOUNDED / PARTIAL.
-- G7 Transversal translation protocol: C-01 A-C PASS + I-01 Gate C INDETERMINATE; IT-NOSD-010 provides bounded downstream-separation evidence; EXT-UPD-4.8 provides bounded accessibility-closure boundary evidence.
+- G7 Transversal translation protocol: BOUNDED operational support strengthened by SWIM; general/transversal closure remains OPEN.
 
 ## Current methodological routing
 
 - IUT-A-01 U2 FULL_PILOT 001: `CLOSED — U2-NULL`; no rerun.
 - IT-NOSD-010: G0/G1/G2 closed for one bounded frozen event; industrial execution authorization `NONE`.
 - EXT-UPD-4.8 O3 accessibility closure: `CLOSED — INDETERMINATE / H-B / HS-AC01`; no reopening or additional attempt under this closure.
-- AWS Phase-A/B0 work remains fixture-level and no candidate/comparator transformation is authorized.
+- AWS Phase-A/B0 work remains fixture-level; no candidate/comparator transformation is authorized.
+- SWIM Reactive-0: `CLOSED — BOUNDED TGCV OPERATIONALIZATION RESULT`; no repeat run for the current claim.
 - Utility scoring and industrial case admission: `NOT AUTHORIZED`.
 
 ## Current scientific position
 
-The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, and Class-II AWS fixture evidence. These results are material evidence records but do not alter the scientific Core or any C01–C16 claim status.
+The evidence base now includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, and a bounded self-adaptive software operationalization from SWIM Reactive-0. These are material evidence records, not claim upgrades. The scientific Core remains unchanged.
