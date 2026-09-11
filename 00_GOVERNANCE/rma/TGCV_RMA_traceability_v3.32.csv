@@ -1,0 +1,12 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+RMA-v3.31,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.31.md,RMA-current,Historical operative RMA preserved immutable
+RMA-v3.32,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.32.md,RMA-current,Current operative RMA; EXT-UPD-4.8 O3 accessibility-closure boundary propagated without claim upgrade
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.32,Points to TGCV_RMA_v3.32.md
+CLAIM-MATRIX-v1.0,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.0.md,,Historical matrix preserved immutable
+CLAIM-MATRIX-v1.1,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.1.md,,Current versioned matrix; EXT-UPD-4.8 material evidence propagated; no scientific claim upgrade
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.1,v1.1; current scientific claim control remains unchanged
+EXT-UPD-4.8-O3-EXECUTION,accessibility_closure,CLOSED-INDETERMINATE-HB,03_EXPERIMENTS/IUT-A-01/IUT_A01_O3_ACCESSIBILITY_CLOSURE_RESULT_001.json,EXT-UPD-4.8-AUTHORIZATION,Bounded O3 accessibility closure; HS-AC01; material conditions unresolved; no claim upgrade
+EXT-UPD-4.8-CLOSURE,governance_closure,CLOSED-INDETERMINATE-HB,00_GOVERNANCE/D-OPS-24_EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_EXECUTION_RESULT_v0.1.md,EXT-UPD-4.8-O3-EXECUTION,Controlled H-B methodological boundary; no additional attempt authorized
+IUT-A-01-U2,FULL_PILOT,CLOSED-NULL,03_EXPERIMENTS/IUT-A-01/IUT_A01_U2_FULL_PILOT_CLOSURE_AUDIT_001.md,,Material bounded comparative methodological evidence; M1 PASS, M2 FAIL; no claim upgrade
+IT-NOSD-010-G2-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_IT_G2_CLOSURE_001.md,IT-NOSD-010-G1-CLOSURE,IT-G2 bounded downstream-separation closed; material evidence propagated without claim upgrade
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Current traceability pointer for RMA v3.32
