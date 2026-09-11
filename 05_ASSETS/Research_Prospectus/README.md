@@ -1,11 +1,18 @@
 # Research Prospectus
 
-## Recovered versions
+## Current canonical asset
 
-- `IE/Research_Prospectus_IE_PhD_v0.1.md` — application-stage version recovered from the final IE pack.
+- `TGCV-EXT-RP-001_v0.2.md` — **CURRENT / CONTROLLED**
 
-The application-stage prospectus is retained as historical/transfer material. It does not override the current canonical Core.
+The canonical Research Prospectus is the programme-level scientific prospectus. It reflects the stabilized Core, RMA v3.32, Evidence→Claim Matrix v1.1, current methodological boundaries, and the controlled evidence state.
 
-## Canonical relation
+## Historical and adapted material
 
-The current research state includes the stabilized Core and completed `TGCV-EMP-1.1` computational test. Any future Research Prospectus revision must propagate the empirical status through the RMA and clearly distinguish evidence for the computational operationalization from universal theory validation.
+- `TGCV-EXT-RP-001_v0.1.md` — historical/current-situation draft, preserved immutable.
+- `adaptations/IE_PhD/Research_Prospectus_IE_PhD_v0.1.md` — programme-specific application-history adaptation, preserved separately and not authoritative for the canonical Core.
+
+Adaptations must not silently replace the canonical prospectus.
+
+## Canonical boundary
+
+The current prospectus distinguishes evidence for bounded computational and methodological operationalizations from claims of universal theory validation, causality, value, superiority, originality, transversal validity, or industrial utility. D-OPS-24 and EXT-UPD-4.8 are closed within their authorized scopes and are not presented here as pending operations.
