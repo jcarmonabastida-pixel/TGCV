@@ -14,6 +14,7 @@ import hashlib
 import importlib.util
 import json
 import platform
+import sys
 from pathlib import Path
 
 SOURCE = Path(__file__).with_name("execute_iut_a01_u2_pilot_v02.py")
@@ -24,6 +25,7 @@ def load_source_module():
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Cannot load executor source: {SOURCE}")
     module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 
