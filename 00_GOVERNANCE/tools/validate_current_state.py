@@ -37,7 +37,7 @@ def extract(text, pattern, label):
     return match.group(1).strip()
 
 
-# 1. Stable manifest: only canonical roles and locations are structural invariants.
+# 1. Stable manifest: canonical roles, locations and declared current versions are structural invariants.
 require_file(MANIFEST, "canonical state manifest")
 if errors:
     print("GOVERNANCE_CURRENT_STATE=FAIL")
@@ -58,6 +58,11 @@ pointers = manifest.get("pointers")
 if not isinstance(pointers, dict):
     fail("canonical state manifest pointers missing or invalid")
     pointers = {}
+
+current_versions = manifest.get("current_versions")
+if not isinstance(current_versions, dict):
+    fail("canonical state manifest current_versions missing or invalid")
+    current_versions = {}
 
 required_roles = {
     "rma": "RMA pointer",
@@ -116,6 +121,10 @@ if rma_master:
     if "**Status:** CURRENT / OPERATIVE" not in rma_text:
         fail("resolved current RMA master is not marked CURRENT / OPERATIVE")
 
+manifest_rma_version = current_versions.get("rma")
+if rma_version and manifest_rma_version != rma_version:
+    fail(f"canonical manifest RMA version mismatch: manifest {manifest_rma_version} != resolved {rma_version}")
+
 # 3. Resolve current Evidence→Claim Matrix dynamically.
 matrix_pointer = resolved.get("claim_matrix_pointer")
 matrix_pointer_text = read_text(matrix_pointer, "current claim matrix pointer") if matrix_pointer else ""
@@ -131,10 +140,25 @@ matrix_text = read_text(matrix, "current claim matrix") if matrix else ""
 matrix_declared_version = extract(matrix_text, r"^# TGCV — Evidence-to-Claim Matrix — Current\s+(v[^\s]+)", "claim matrix declared current version")
 if matrix_version and matrix_declared_version and matrix_version != matrix_declared_version:
     fail(f"claim matrix version mismatch: pointer {matrix_version} != artifact {matrix_declared_version}")
+manifest_matrix_version = current_versions.get("claim_matrix")
+if matrix_declared_version and manifest_matrix_version != matrix_declared_version:
+    fail(f"canonical manifest matrix version mismatch: manifest {manifest_matrix_version} != resolved {matrix_declared_version}")
 if rma_pointer_text and matrix_rel:
     declared_matrix_in_rma = extract(rma_pointer_text, r"^\*\*Current Evidence→Claim Matrix:\*\*\s*`([^`]+)`", "RMA pointer current matrix")
     if declared_matrix_in_rma and declared_matrix_in_rma != matrix_rel:
         fail("RMA pointer and matrix pointer disagree")
+
+# Material evidence propagation policy is a governance invariant. The validator does not
+# decide scientific upgrades; it verifies that the current matrix explicitly distinguishes
+# evidence propagation from claim-status upgrades.
+required_evidence_policy_phrases = (
+    "A material experimental result is propagated to this matrix",
+    "Claim upgrade is a separate decision",
+    "Evidence propagation does not imply claim upgrade",
+)
+for phrase in required_evidence_policy_phrases:
+    if phrase not in matrix_text:
+        fail(f"current claim matrix missing material-evidence propagation policy phrase: {phrase}")
 
 # 4. Traceability is a CSV data asset, not a key/value pointer file.
 trace_pointer = resolved.get("rma_traceability")
@@ -190,6 +214,10 @@ if "TRACEABILITY-current" in by_id:
 if rma_version:
     versioned_trace = ROOT / "00_GOVERNANCE" / "rma" / f"TGCV_RMA_traceability_{rma_version}.csv"
     require_file(versioned_trace, "versioned current RMA traceability")
+
+manifest_trace_version = current_versions.get("rma_traceability")
+if rma_version and manifest_trace_version != rma_version:
+    fail(f"canonical manifest traceability version mismatch: manifest {manifest_trace_version} != resolved {rma_version}")
 
 # 5. STATUS aligns with stable canonical locations and the resolved matrix.
 status = resolved.get("status")
