@@ -29,6 +29,8 @@ RP-v0.2,external_asset,CURRENT,05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.
 RP-current,pointer,CURRENT,05_ASSETS/Research_Prospectus/README.md,RP-v0.2,Current Research Prospectus pointer; application adaptations remain separate
 SIP-v0.1,external_asset,CURRENT,05_ASSETS/SIP/TGCV-EXT-SIP-001_v0.1.md,RMA-current,Current controlled Scientific Integration Plan; strategic programme planning only; no scientific claim upgrade or execution authorization
 SIP-current,pointer,CURRENT,05_ASSETS/SIP/README.md,SIP-v0.1,Current SIP pointer
+PMO-SMO-v0.1,programme_governance,CURRENT,00_GOVERNANCE/TGCV_PMO_SMO_FUNCTIONAL_SPEC_v0.1.md,RMA-current;SIP-v0.1,Current controlled functional derivative; coordinates programme control loop; not historical original; no scientific claim or execution authorization
+PMO-SMO-PROPAGATION-CLOSURE-v0.1,governance_closure,CLOSED,00_GOVERNANCE/impact/PMO_SMO_v0.1_PROPAGATION_CLOSURE_v0.1.md,PMO-SMO-v0.1,Propagation closed pending current-state validator gate
 IT-METH-I-GOVERNED-COMPARISON,industrial_experiment,CLOSED-INCONCLUSIVE,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-METH-I_FAA_AMOC_GOVERNED_COMPARISON_001.md,,FAA AMOC comparison closed; no superiority established
 IT-METH-I-CLOSURE,industrial_experiment,CLOSED-INCONCLUSIVE,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-METH-I_FAA_AMOC_EXPERIMENT_CLOSURE_001.md,IT-METH-I-GOVERNED-COMPARISON,Experiment closed; no rerun; Core unchanged
 IT-METH-I-MR-01-07,methodological_requirements,ADOPTED,00_GOVERNANCE/INDUSTRIAL_TRACK/IT-METH_I_METHODOLOGICAL_REQUIREMENTS_AFTER_CLOSURE_001.md,IT-METH-I-CLOSURE,Preconditions for future industrial utility tests
