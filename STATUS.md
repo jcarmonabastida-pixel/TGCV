@@ -13,6 +13,7 @@
 
 ## Industrial Track
 - **Track status:** `PROPOSED`.
+- **IUT-A-01 U2:** `CLOSED — U2-NULL`; FULL_PILOT 001 integrity PASS; M1 PASS; M2 FAIL; no U2-positive decision-performance conclusion.
 - **FAA AMOC IT-METH-I:** `CLOSED — INCONCLUSIVE`; historical records immutable.
 - **Class-II AWS-PatchAsgInstance Phase A:** `CLOSED — PREDECISION RECONSTRUCTION REPRODUCIBILITY PASS`.
 - **Class-II AWS-PatchAsgInstance Phase B0 accessibility:** `CLOSED — NO ADMISSIBLE RESOLVED ACCESSIBILITY DIFFERENCE IDENTIFIED`.
@@ -23,6 +24,19 @@
 - Comparative superiority: `NOT ESTABLISHED`.
 - Causality: `NOT ASSESSED`.
 - Financial/value effect: `NOT ASSESSED`.
+
+## IUT-A-01 U2 closure boundary
+- Evidence artifact: `03_EXPERIMENTS/IUT-A-01/IUT_A01_U2_FULL_PILOT_RESULT_001.json`.
+- Closure audit: `03_EXPERIMENTS/IUT-A-01/IUT_A01_U2_FULL_PILOT_CLOSURE_AUDIT_001.md`.
+- Trial universe hash: `4a993f428144fc955c4060bc0299c23357f663929ecf05bfa3cb9cade30b8ec5`.
+- M1: Control `60.0% (24/40)`; TGCV `100.0% (40/40)`; `+40.0 pp`; predeclared gate `PASS`.
+- M2: Control median `0.00155 ms`; TGCV median `0.00485 ms`; relative reduction `-212.9%`; predeclared gate `FAIL`.
+- M3: retired and not active for scoring.
+- Final classification: `U2-NULL`.
+- Timing is a microbenchmark of the decision functions, not evidence of human or industrial workflow time.
+- Manifest/executor overhead-field discrepancy recorded as non-blocking documentation/methodological note.
+- No rerun is authorized or required.
+- No explanatory superiority, industrial utility, financial/value realization, causal generalisation, or TGCV Core modification is established by this pilot.
 
 ## Class-II AWS Phase-A/B0 boundary
 - Evidence class: `CLASS II — PUBLIC REPRODUCIBLE FIXTURE`.
@@ -47,6 +61,7 @@
 - The B0 permissions audit is closed as an audit operation, while the effective candidate permission dimensions remain unresolved.
 - The earlier malformed reconstruction comparison is invalidated as non-evidentiary tooling output.
 - No transformation or fixture/IAM mutation was performed in B0.
+- IUT-A-01 U2 FULL_PILOT 001 is closed as `U2-NULL`; its frozen evidence and closure audit are canonical experiment records.
 
 ## Industrial discovery
 - Post-IT-METH-I discovery filter: `FROZEN`.
@@ -59,6 +74,7 @@
 - Searecs/BG Verkehr: G1 PASS; G2 HOLD / NOT CLOSED.
 - PROC-001 through PROC-005: G1 PASS; G2 HOLD / NOT CLOSED.
 - PROC-006: G1 INSUFFICIENT; no G2.
+- IUT-A-01 U2: FULL_PILOT 001 closed `U2-NULL`; no rerun; no positive-utility claim.
 - AWS PatchAsgInstance: Phase-A reconstruction CLOSED — PASS at Class-II fixture level; B0 accessibility CLOSED — no admissible resolved difference; B0 permissions audit CLOSED — PARTIAL / effective candidate permission unresolved; downstream candidate/comparator execution separately governed.
 
 ## Canonical continuity
