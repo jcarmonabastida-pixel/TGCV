@@ -4,7 +4,7 @@
 
 ## Canonical asset families
 
-- `TCP/` — `TGCV-EXT-TCP-001`
+- `TCP/` — `TGCV-EXT-TCP-001` — **CURRENT / CONTROLLED**, v0.4
 - `Vision_Paper/` — `TGCV-EXT-VP-001`
 - `Research_Prospectus/` — `TGCV-EXT-RP-001`
   - `adaptations/IE_PhD/` contains programme-specific application adaptations.
@@ -26,4 +26,4 @@ Historical or preparatory copies outside this surface are not competing current 
 
 ## Status
 
-ARM v0.2, RII v0.1 and MOI v0.1 are propagated as current controlled external assets. MOI is a bounded opportunity-discovery map only: it contains four controlled entries, including two evidence-bounded opportunity routes and two explicit holds. No industrial utility, superiority, causality, value or execution authorization is established by MOI.
+TCP v0.4, ARM v0.2, RII v0.1 and MOI v0.1 are propagated as current controlled external assets. MOI is a bounded opportunity-discovery map only: it contains four controlled entries, including two evidence-bounded opportunity routes and two explicit holds. No industrial utility, superiority, causality, value or execution authorization is established by MOI.
