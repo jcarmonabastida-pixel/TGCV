@@ -1,9 +1,10 @@
-# TGCV — Mapa de Oportunidades Industriales (MOI)
+# TGCV — Mapa de Oportunidades Industriales (MOI) v0.1
 
-**Asset ID:** TGCV-EXT-MOI-001  
+**Asset ID:** `TGCV-EXT-MOI-001`  
 **Version:** v0.1  
-**Status:** DRAFT — CONTROLLED CONSTRUCTION  
-**Canonical location:** `05_ASSETS/MOI/TGCV-EXT-MOI-001_v0.1.md`
+**Status:** CURRENT / CONTROLLED  
+**Canonical location:** `05_ASSETS/MOI/TGCV-EXT-MOI-001_v0.1.md`  
+**Date:** 2026-09-11
 
 ## 1. Purpose
 
@@ -11,86 +12,114 @@ The MOI is an external-facing mapping asset intended to organize **plausible ind
 
 ## 2. Governing status
 
-This document opens a controlled construction operation. Creation of an opportunity entry does **not** constitute admission of an industrial case to IT-G1, nor authorization of industrial execution.
+MOI v0.1 is a controlled opportunity-discovery map. Inclusion means only **retained opportunity hypothesis** or **controlled hold**. It does not constitute admission of an industrial case to IT-G1 and does not authorize industrial execution.
 
-The current scientific Core remains unchanged. The Industrial Track remains PROPOSED, with standing industrial execution NOT AUTHORIZED except where a separate case-specific G5 decision explicitly authorizes bounded execution.
+The current scientific Core remains unchanged. The Industrial Track remains PROPOSED, with standing industrial execution NOT AUTHORIZED except where a separate case-specific decision explicitly authorizes bounded execution.
 
 ## 3. Construction principles
 
-Each opportunity entry must be traceable to evidence already admitted by the governed TGCV record or to a clearly identified documentary source. The map shall distinguish:
+Each opportunity entry is traceable to evidence already admitted by the governed TGCV record. The map distinguishes opportunity hypothesis, observed/documented mechanism, potential TGCV analytical object, evidence maturity, evidence gap and industrial claim boundary.
 
-- **Opportunity hypothesis:** why the domain may be relevant to TGCV.
-- **Observed/documented mechanism:** what is actually supported by evidence.
-- **Potential TGCV analytical object:** state, accessible transformations, constraints/context, or transition mechanism that could in principle be reconstructed.
-- **Evidence maturity:** the strongest currently justified gate/status.
-- **Evidence gap:** what prevents progression to the next governed gate.
-- **Industrial claim boundary:** what the evidence explicitly does **not** establish.
+No entry is upgraded because an attractive application can merely be imagined.
 
-No entry may be upgraded solely because an attractive industrial application can be imagined.
+## 4. Bounded opportunity register
 
-## 4. Eligibility criteria
+### MOI-01 — Cloud infrastructure operations / automated remediation
 
-An opportunity may be retained in the bounded MOI only when all of the following are satisfied:
+**Status:** `RETAIN — R1 EVIDENCE-BOUNDED / TARGETED CASE DISCOVERY`
 
-1. A concrete industrial or operational domain is identifiable.
-2. There is a documented decision, transformation, configuration, adaptation, approval, procurement, or comparable mechanism potentially relevant to TGCV.
-3. The relevant system boundary can at least be hypothesized without inventing hidden variables.
-4. There is an identifiable evidence trail or a previously governed TGCV discovery record.
-5. The opportunity can be stated without claiming that TGCV has already demonstrated utility, causality, prediction, superiority, or general validity there.
-6. The entry identifies the next evidence needed for a governed case-selection route.
+**Opportunity hypothesis:** cloud operational systems with runbooks, conditional branches, approvals and multiple action types may provide a natural setting to test whether explicit representation of accessible transformations adds discriminative information to a concrete operational decision.
 
-## 5. Exclusions
+**Evidence source/record:** `IT_METH_I_POST_FILTER_CANDIDATE_ASSESSMENT_AWS_SSM_001.md`.
 
-The MOI shall not contain:
+**TGCV-relevant mechanism/object:** state/context-dependent admissibility of alternative remediation actions; explicit transformation identity; pre-decision accessibility conditions.
 
-- claims of demonstrated industrial utility;
-- causal claims derived from documentary association alone;
-- claims of predictive superiority;
-- claims that an opportunity is a validated TGCV use case;
-- speculative quantitative business value;
-- post-outcome reconstruction presented as decision-time accessibility;
-- confidential or unavailable evidence represented as if independently observable;
-- Core modifications;
-- authorization of IT-G1/G2/G3/G4/G5 execution by inclusion in the map.
+**Evidence maturity:** documentary screening is conditionally positive. F1, F3, F6 and F12 are positive; F2/F4/F5/F7/F8/F9/F10/F11 remain conditional around a concrete decision unit.
 
-The restrictions already fixed for external assets remain applicable: no presentation of causal proof, value prediction, superiority, full originality, transversal generalization, or unverified runtime/Cargo reachability as established results.
+**Evidence gap:** no specific incident/resource case has yet been frozen with a decision-time state, alternatives, comparator, accessibility evidence, utility metric, effort convention and reproducibility rule.
 
-## 6. Candidate classes for bounded construction
+**Permitted next operation:** targeted case discovery only. IT-G1 remains NOT STARTED.
 
-The first controlled construction may draw only from the currently governed industrial evidence base, including:
+**Claim boundary:** no demonstrated cloud-management benefit, superiority, causality, value or production readiness.
 
-- FAA AMOC case routing and its documented utility-execution result;
-- LynxOS RSC case routing;
-- Searecs/BG Verkehr case routing;
-- the completed procurement documentary-discovery branch and its PROC-001 through PROC-006 routing;
-- other documentary opportunities only when their identity and provenance are independently established and their inclusion does not bypass the Industrial Track gates.
+### MOI-02 — 5G mobility / handover reconfiguration
 
-## 7. Required entry schema
+**Status:** `RETAIN — R1 EVIDENCE-BOUNDED / CASE ROUTING`
 
-Each MOI entry shall contain:
+**Opportunity hypothesis:** network mobility events with changing reachable serving configurations provide a concrete setting in which a transformation and its pre-outcome accessibility can be reconstructed at event level.
 
-`MOI-ID | Domain | Opportunity hypothesis | Evidence source/record | TGCV-relevant mechanism/object | Current gate/status | Evidence gap | Permitted next operation | Claim boundary`
+**Evidence source/record:** `IT_NOSD_010_TR132_RESCREENING_001.md` and its G0 closure records.
 
-## 8. Bounded construction rule
+**TGCV-relevant mechanism/object:** bounded state/context, concrete transformation `5G cell 2 → 5G cell 3`, pre-event accessibility and reconstructable transition.
 
-Construction is limited to a small, reviewable map. The initial controlled operation shall not exceed **12 opportunity entries**. It shall not introduce new empirical execution, new industrial datasets, new utility measurements, or new scientific tests.
+**Evidence maturity:** IT-G0 CLOSED — BOUNDED PASS. The candidate event satisfies the corrected TR-132 screening rule without requiring exhaustive ex-ante enumeration of the complete transformation structure.
 
-If fewer than 12 opportunities satisfy the eligibility criteria, the map shall contain fewer entries rather than relaxing the criteria.
+**Evidence gap:** IT-G1 reproducibility/provenance and the remaining controlled-gate conditions have not been closed; no utility/comparative execution is authorized.
 
-## 9. Decision logic
+**Permitted next operation:** separate IT-G1 gate review only if explicitly authorized; otherwise remain at bounded screening.
 
-- **RETAIN:** eligibility satisfied and claim boundary explicit.
-- **HOLD:** potentially relevant but a material evidence gap prevents bounded inclusion as an opportunity.
-- **EXCLUDE:** speculative, duplicate, outcome-dependent, or unsupported.
+**Claim boundary:** no handover-performance improvement, operational superiority, causality, financial value or general telecommunications validity is established.
 
-A RETAIN status means only “retained as an opportunity hypothesis”; it does not mean “industrial case admitted”.
+### MOI-03 — Manufacturing / alternative tooling and setup
 
-## 10. Next controlled operation
+**Status:** `HOLD — R1 BOUNDARY EVIDENCE / ACCESSIBILITY UNRESOLVED`
 
-The next operation after this protocol is a bounded **MOI construction and eligibility review**. That operation must produce a dated register and a closure record. Any resulting changes to the active RMA, current pointer, traceability, or status surfaces must be propagated atomically and then verified by the governance-current-state validator.
+**Opportunity hypothesis:** manufacturing cases in which alternative tooling or setup conditions alter which transformations are accessible may provide a direct application setting for TGCV's accessibility-changing mechanism representation.
 
-## 11. Current decision
+**Evidence source/record:** `D-OPS-24_EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_EXECUTION_RESULT_v0.1.md` and `IUT_A01_O3_ACCESSIBILITY_CLOSURE_RESULT_001.json`.
 
-**MOI substantive construction is OPEN under controlled governance.**
+**TGCV-relevant mechanism/object:** native alternative candidate involving alternative tooling/setup, with explicit decision-time accessibility predicates and unresolved material conditions.
 
-No industrial execution is authorized by this document.
+**Evidence maturity:** `CLOSED — INDETERMINATE / H-B / HS-AC01`.
+
+**Evidence gap:** T-C availability/accessibility at decision time and ability to perform the required additional setup within the decision-time boundary remain unresolved. Closing them by analyst completion is prohibited.
+
+**Permitted next operation:** no additional O3 closure attempt under the closed EXT-UPD-4.8 scope; any future manufacturing case must be a separately authorized operation with independently frozen evidence.
+
+**Claim boundary:** no manufacturing utility, accessibility benefit, causal effect or value is established.
+
+### MOI-04 — FAA AMOC / regulated operational decision support
+
+**Status:** `HOLD — CLOSED-INCONCLUSIVE / NOT AN ADMITTED INDUSTRIAL CASE`
+
+**Opportunity hypothesis:** regulated operational decision contexts may contain structured transformation choices and evidence constraints relevant to TGCV's representation of changing accessible transformations.
+
+**Evidence source/record:** IT-METH-I FAA AMOC governed comparison and closure records.
+
+**TGCV-relevant mechanism/object:** bounded case reconstruction and comparison discipline around decision-time evidence and transformation accessibility.
+
+**Evidence maturity:** the governed comparison is CLOSED-INCONCLUSIVE; the required independent reconstruction condition was not satisfied for industrial inference.
+
+**Evidence gap:** independent reconstruction/reproducibility condition required by the closed case was not established.
+
+**Permitted next operation:** none within this MOI entry; do not reopen IT-METH-I by virtue of MOI inclusion.
+
+**Claim boundary:** no superiority, industrial utility, causal effect or value claim.
+
+## 5. Opportunity-status taxonomy
+
+- `SIGNAL` — plausible structural fit identified; no bounded evidence route yet.
+- `R1-EVIDENCE-BOUNDED` — bounded methodological evidence materially informs the opportunity area.
+- `R2-CANDIDATE-HYPOTHESIS` — a concrete application hypothesis is frozen and ready for controlled design review.
+- `R3-DEMONSTRATOR-CANDIDATE` — a separately authorized controlled demonstrator design exists.
+- `R4-TRANSFER-CANDIDATE` — measured effect and boundary conditions support a transfer decision.
+- `R5-DEMONSTRATED-IMPACT` — downstream value/effect independently evidenced against a declared baseline.
+- `HOLD` — a material evidence boundary prevents progression.
+
+Current MOI contains no R3, R4 or R5 entry.
+
+## 6. Selection criteria for future progression
+
+An opportunity may progress only if all relevant conditions are explicitly addressed: concrete target system/domain; identifiable state and context at decision time; concrete candidate transformation; defensible accessibility/admissibility independent of outcome; reconstructable transition; measurable baseline; explicit TGCV intervention or representation; alternative explanations and controls; defined outcome criterion; separate value criterion where value is claimed; and stop conditions with authorization boundary.
+
+Complete ex-ante enumeration of the whole transformation structure is not imposed as a universal prerequisite. Operational closure remains case-dependent, consistent with TR-132-MOD-1 and the current RMA/ARM methodological boundary.
+
+## 7. Exclusions and nonclaims
+
+MOI shall not be interpreted as establishing demonstrated industrial utility, causal effectiveness, predictive superiority, a validated TGCV use case, quantitative business value, production readiness, universal or transversal industrial validity, validation by any named organization or partner, or authorization of IT-G1/G2/G3/G4/G5 execution.
+
+No standing industrial authorization is created by this asset.
+
+## 8. Governance disposition
+
+MOI v0.1 is a **controlled opportunity-discovery map**. The bounded construction retained four entries: two evidence-bounded opportunity routes and two explicit holds. No new empirical execution, industrial dataset, utility measurement or scientific test was introduced by this asset. Historical/preparatory opportunity material remains immutable and is not silently promoted.
