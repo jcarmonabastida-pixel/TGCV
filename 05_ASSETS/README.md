@@ -10,7 +10,7 @@
   - `adaptations/IE_PhD/` contains programme-specific application adaptations.
 - `ARM/` — `TGCV-EXT-ARM-001` — **CURRENT / CONTROLLED**, v0.2
 - `RII/` — `TGCV-EXT-RII-001` — **CURRENT / CONTROLLED**, v0.1
-- `MOI/` — `TGCV-EXT-MOI-001` (reserved; substantive asset intentionally not yet created)
+- `MOI/` — `TGCV-EXT-MOI-001` — **CURRENT / CONTROLLED**, v0.1
 
 ## Structural rule
 
@@ -26,4 +26,4 @@ Historical or preparatory copies outside this surface are not competing current 
 
 ## Status
 
-ARM v0.2 and RII v0.1 are propagated as current controlled external assets. MOI remains reserved and intentionally not yet created as a substantive asset. This surface implements the structural reconciliation recorded in `00_GOVERNANCE/impact/EXT-UPD-1R_EXTERNAL_ASSET_STRUCTURAL_RECONCILIATION_v0.1.md` and the subsequent controlled external-asset updates.
+ARM v0.2, RII v0.1 and MOI v0.1 are propagated as current controlled external assets. MOI is a bounded opportunity-discovery map only: it contains four controlled entries, including two evidence-bounded opportunity routes and two explicit holds. No industrial utility, superiority, causality, value or execution authorization is established by MOI.
