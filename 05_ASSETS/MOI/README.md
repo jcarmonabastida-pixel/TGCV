@@ -2,8 +2,10 @@
 
 **Asset ID:** `TGCV-EXT-MOI-001`
 
-Canonical location reserved for the Industrial Opportunities Map.
+Canonical substantive asset: `TGCV-EXT-MOI-001_v0.1.md`
 
-This asset is intentionally **not yet populated**. Creation of substantive MOI content requires a separate explicit operation once TGCV maturity is sufficient to distinguish plausible industrial opportunities from speculative application projections.
+**Status:** CURRENT / CONTROLLED
 
-**Status:** RESERVED / NOT YET CREATED AS A SUBSTANTIVE ASSET
+MOI v0.1 is a bounded opportunity-discovery map. It distinguishes evidence-bounded opportunity routes from explicit holds and does not establish industrial utility, superiority, causality, value or execution authorization.
+
+Historical/preparatory material remains immutable and is not silently promoted.
