@@ -1,0 +1,44 @@
+{
+  "AWS_EXECUTION": false,
+  "CASE_ID": "IUT-A-01",
+  "ENVIRONMENT": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.14.7"
+  },
+  "EXECUTION_RESULT": "PASS",
+  "EXECUTOR_VERSION": "IUT-A-01-U2-PILOT-EXECUTOR-0.3",
+  "INTEGRITY": {
+    "analyst_generated_options_added": false,
+    "class_balance_ok": true,
+    "counts_by_class": {
+      "ALTERNATIVE_SPACE": 10,
+      "CONSTRAINT_CONFLICT": 10,
+      "DEPENDENCY": 10,
+      "DIRECT_FEASIBILITY": 10
+    },
+    "fixture_source_integrity": true,
+    "ground_truth_immutable": true,
+    "m3_active": false,
+    "outcome_blind": true,
+    "preferred_option_exact": true,
+    "preferred_option_viable": true,
+    "same_universe_for_both_arms": true,
+    "trial_count_ok": true,
+    "unique_trial_ids_ok": true,
+    "viable_options_exact": true
+  },
+  "MODE": "DRY_RUN",
+  "NO_EXTERNAL_DATA": true,
+  "RESULT_SHA256": "e83387de677be12b2d82a8c272c42244b0ec037ca2b9caeeb3b20b6b0bcee464",
+  "SCORED_RESULT": null,
+  "SEED": 20260911,
+  "SOURCE_INTEGRITY": {
+    "PASS": true,
+    "fixture_blob_match": true,
+    "fixture_exists": true,
+    "fixture_git_blob_sha": "fc274826f66ee28f6e1b0329866b322577c6bc62",
+    "manifest_exists": true,
+    "metric_exists": true
+  },
+  "TRIAL_UNIVERSE_HASH": "4a993f428144fc955c4060bc0299c23357f663929ecf05bfa3cb9cade30b8ec5"
+}
