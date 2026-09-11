@@ -1,162 +1,181 @@
-# TGCV-EXT-RII-001 — Research & Impact Interface v0.1
+# TGCV — Research & Impact Interface (RII) v0.1
 
-**Status:** CURRENT-DRAFT / CONTROLLED  
-**Date:** 2026-09-09  
-**Asset ID:** `TGCV-EXT-RII-001`
+**Asset ID:** `TGCV-EXT-RII-001`  
+**Status:** CURRENT / CONTROLLED  
+**Canonical location:** `05_ASSETS/RII/`  
+**Date:** 2026-09-11  
+**Predecessor:** historical `INNOVATION_IMPACT_ROADMAP_POST_EMP11_v0.2.md`
 
 ## 1. Purpose
 
-The Research & Impact Interface (RII) connects the current TGCV research architecture with possible technical, organisational and societal impact pathways without changing the scientific ontology or inflating the evidence base.
+The Research & Impact Interface (RII) connects the TGCV research programme with possible technical, organisational, industrial and societal transfer pathways while preserving a strict separation between scientific evidence, technical maturity, transfer readiness and realized value.
 
-RII is an integration and decision-support artefact. It is not itself an empirical result, validation record, causal model, or proof of practical value.
+RII is a programme interface, not evidence of impact. It does not introduce a scientific claim, empirical result, ontological primitive or industrial authorization.
 
 ## 2. Current scientific starting point
 
-TGCV currently distinguishes:
+The current governed architecture is based on:
 
-- **Ontological Core:** `S`.
-- **Analytical accessible transformation space:** `T_acc,t = {τ ∈ Uτ | Pτ(S_t,C_t,L)=1}`.
-- **Primary change variable:** `ΔT_acc(t,t+1)`.
-- **Downstream analytical consequences:** `ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
-- **Mechanisms/interactions:** explanatory variables; `I` is not a Core primitive.
+- `Core_ontological = S`;
+- `T_acc = F(S,C,L)` as an analytically indispensable, state-dependent representation;
+- `ΔT_acc` as the central analytical change;
+- `I` as an explanatory mechanism rather than a Core primitive;
+- downstream distinctions among `Reach`, `Trajectory`, `Outcome` and `Value`.
 
-The analytical question is therefore not merely whether a system changes state, but whether and how the set of accessible transformations changes and what downstream consequences may follow.
+Current RMA is v3.32 and the Evidence→Claim Matrix is v1.1. C01–C16 remain unchanged. The current evidence base is bounded and does not establish general utility, superiority, causality, value realization or transversal validity.
 
-## 3. Impact logic
+## 3. Interface architecture
 
-The controlled impact pathway is:
+RII separates four readiness dimensions:
+
+### Scientific readiness
+Measures whether the underlying proposition has sufficiently bounded and reproducible scientific support.
+
+Current position: **bounded / in development**. Independent replication, broader operationalization, trajectory sufficiency, causal identification and value linkage remain open.
+
+### Technical readiness
+Measures whether a scientifically supported representation can be implemented reproducibly with explicit assumptions and operational boundaries.
+
+Current position: **early / provisional**. Technical patterns may be developed around validated or bounded methodological components, but technical feasibility must not be interpreted as scientific validation or business value.
+
+### Transfer readiness
+Measures whether a bounded scientific or technical result has a sufficiently explicit application hypothesis, context, constraints, stakeholders, measurement plan and evidence boundary for controlled transfer activity.
+
+Current position: **exploratory**. No industrial solution or Class-I industrial status has been established.
+
+### Impact/value realization
+Measures demonstrated downstream effects against an explicitly defined baseline and value criterion.
+
+Current position: **unproven / open**. No current evidence establishes realized financial, operational or strategic value attributable to TGCV.
+
+## 4. Controlled impact pathway
 
 ```text
-Scientific question
-        ↓
-Representation / operationalisation
-        ↓
-Evidence
-        ↓
-Bounded scientific knowledge
-        ↓
-Mechanism / intervention hypothesis
-        ↓
-Change in accessible transformations
-        ↓
-Potential Reach / Trajectory effects
-        ↓
-Observable Outcome
-        ↓
-Context-dependent Value
+Research question
+      ↓
+Governed evidence
+      ↓
+Bounded scientific interpretation
+      ↓
+Replication / boundary conditions
+      ↓
+Reusable principle or method
+      ↓
+Technical maturation
+      ↓
+Explicit application hypothesis
+      ↓
+Controlled demonstrator / pilot
+      ↓
+Measured effect
+      ↓
+Adoption / transfer
+      ↓
+Demonstrated value
 ```
 
-Each transition requires its own evidence. No downstream effect is inferred merely because an upstream representation exists.
+No stage is considered complete merely because the preceding stage exists. In particular, a scientific result does not imply technical readiness, transfer readiness or value.
 
-## 4. Evidence position
+## 5. Current evidence interface
 
-Current evidence is bounded and domain-specific.
+### IUT-A-01 U2
+`CLOSED — U2-NULL`. The bounded FULL_PILOT provides material comparative methodological evidence, but the complete gate did not establish comparative superiority. No rerun is authorized by the closure.
 
-### Established / closed
+### IT-NOSD-010
+G0/G1/G2 are closed for one bounded frozen event, including reproducible reconstruction and downstream separation. This is methodological evidence, not proof of industrial utility or value.
 
-- TR-131: bounded structural support that `T_acc` is analytically indispensable for studying changes in accessible transformation membership, while not being an independent ontological primitive.
-- RUST-DYN-1: bounded dynamic structural evidence.
-- RUST-DYN-2 / EXEC-1A: bounded structural empirical evidence under the frozen Rust operationalisation.
-- D-OPS-21: high local redundancy with strong prior-art analogues.
-- D-OPS-22: bounded translational non-redundancy; superiority not established.
-- D-OPS-23: minimal transversal translation protocol frozen.
+### EXT-UPD-4.8 O3
+`CLOSED — INDETERMINATE / H-B / HS-AC01`. O3 was identified as a native candidate, but material decision-time accessibility conditions remained unresolved. This is a methodological boundary result, not an application benefit.
 
-### Open / not established
+### Class-II AWS PatchAsgInstance
+Fixture-level evidence only. No admissible resolved accessibility difference was established in B0 and effective candidate permission remained unresolved.
 
-- independent replication;
-- cross-domain generalisation;
-- trajectory sufficiency;
-- causal identification;
-- value linkage;
-- broad originality or superiority;
-- runtime Cargo reachability;
-- demonstrated practical or industrial value.
+## 6. Transfer channels
 
-RII must preserve these distinctions in every impact pathway.
+Potential channels include:
 
-## 5. Translational interface
+- academic and research collaborations;
+- doctoral and industrial-doctoral pathways;
+- European and other competitive research programmes;
+- industrial research collaborations;
+- controlled technical demonstrators;
+- innovation programmes;
+- licensing or exploitation routes where scientifically and contractually appropriate.
 
-D-OPS-23 establishes the current minimal transversal translation protocol. A candidate external domain or application must preserve, as far as its semantics permit:
+These are opportunity channels, not commitments to specific organisations, customers or institutions.
 
-1. a clearly identified system/state representation;
-2. a justified transformation universe;
-3. an observable accessibility predicate or equivalent;
-4. a reproducible rule for identifying change in accessibility;
-5. explicit downstream observables for Reach, Trajectory, Outcome and, where appropriate, Value;
-6. separation between empirical observations and interpretive/business claims.
+## 7. Application-hypothesis discipline
 
-The protocol is a translation architecture, not evidence of successful cross-domain generalisation.
+Any future application candidate must specify, before controlled transfer activity:
 
-## 6. Potential impact domains
+1. target system/domain;
+2. transformation candidates and accessibility semantics;
+3. decision-time boundary;
+4. measurable baseline;
+5. proposed TGCV intervention or representation;
+6. expected measurable effect;
+7. alternative explanations and controls;
+8. scientific versus technical versus business claims;
+9. evidence required for progression;
+10. explicit stop conditions.
 
-RII may be used to structure hypotheses concerning:
+Technical feasibility must not substitute for accessibility evidence. Accessibility must not substitute for outcome evidence. Outcome must not substitute for value evidence.
 
-- adaptive and generative technical systems;
-- technological roadmapping;
-- architecture and intervention design;
-- anticipation of future system possibilities;
-- strategic decision-making under changing transformation spaces;
-- research and industrial collaboration.
+## 8. Impact hypotheses
 
-These are candidate impact contexts. Their inclusion does not imply validated benefit in any particular domain or organisation.
+RII records the following as hypotheses to be tested, not established benefits:
 
-## 7. Impact hypotheses
+- improved representation of changing future transformation possibilities;
+- improved identification of accessibility-changing mechanisms;
+- improved decision support in systems whose transformation space changes over time;
+- improved technological or organisational roadmapping under changing constraints;
+- identification of interventions whose effects on future possibilities can be measured.
 
-Subject to future validation, TGCV may test whether explicit analysis of accessibility-changing mechanisms can improve:
+No current evidence establishes that TGCV produces these benefits in production settings.
 
-- identification of interventions that alter future transformation possibilities;
-- anticipation of reachable future states or trajectories;
-- comparison of interventions across heterogeneous systems;
-- design of adaptive/generative architectures;
-- prioritisation of technically or strategically relevant interventions.
+## 9. Risks and safeguards
 
-These propositions remain hypotheses until supported by appropriately designed evidence.
+**Premature transfer:** scientific gates precede impact claims.
 
-## 8. Transfer and maturation logic
+**Use-case overfitting:** application evidence must remain separable from the transversal scientific Core.
 
-RII separates three dimensions:
+**Technical-feasibility conflation:** implementation success cannot close scientific accessibility questions.
 
-### Scientific validation
-Evidence that a representation, mechanism or relationship is supported under a specified operationalisation.
+**Value inflation:** value requires its own baseline, metric and evidentiary argument.
 
-### Technical maturation
-Conversion of supported knowledge into reproducible methods, tooling, reference implementations or demonstrators.
+**Partner dependency:** no single organisation or use case is constitutive of TGCV.
 
-### Impact / transfer
-Testing whether the matured artefact produces an observable effect in a specified context.
+**Commercial pressure:** external commitments must not alter scientific governance invariants or evidence boundaries.
 
-Progress in one dimension does not automatically complete another.
+## 10. Progression gates
 
-## 9. Decision and governance interface
+RII uses the following programme-level routing states:
 
-RII must remain subordinate to the scientific and governance control surfaces.
+- `R0 — Research-bound`: evidence is insufficient for controlled transfer.
+- `R1 — Evidence-bounded`: a reproducible bounded result exists, but application readiness is unresolved.
+- `R2 — Application hypothesis`: a concrete application hypothesis and measurement design are frozen.
+- `R3 — Controlled demonstrator`: execution occurs under explicit authorization and predefined success/stop rules.
+- `R4 — Transfer candidate`: measurable effect and boundary conditions support a controlled transfer decision.
+- `R5 — Demonstrated impact`: downstream value/effect has been independently evidenced against a declared baseline.
 
-Current governance position:
+These are internal programme routing levels, not external standards or certifications.
 
-- RMA: v0.8 current at initiation of this asset.
-- D-OPS-24: next controlled operation, not authorized.
-- MOI: reserved; substantive creation deferred.
-- RII: this v0.1 is the first substantive current controlled version following historical reconstruction EXT-UPD-3.5.
+## 11. Current routing decision
 
-Any substantive scientific or governance change must propagate through the RMA before RII is treated as current after that change.
+The TGCV programme remains primarily research-bound with exploratory transfer activity. Existing bounded methodological evidence can inform application hypotheses, but no current result authorizes an industrial solution, superiority claim, production deployment, financial/value claim or Class-I industrial admission.
 
-## 10. Nonclaims
+The next substantive external asset after RII is the Industrial Opportunities Map (MOI), which should be created only under a separate controlled operation and only when plausible opportunities can be distinguished from speculative application projection.
 
-RII does not establish:
+## 12. Claim boundary
 
-- causality;
-- predictive validity beyond the bounded operationalisations actually tested;
-- universal applicability;
-- cross-domain validity;
-- value creation;
-- industrial readiness;
-- runtime reachability;
-- originality or superiority of TGCV as a whole.
+RII v0.1 must not be interpreted as evidence that:
 
-No impact claim may be derived solely from the existence of this document.
+- TGCV is universally valid;
+- TGCV is causally effective;
+- TGCV is superior to alternative representations;
+- TGCV creates or predicts value;
+- any named organisation validates TGCV;
+- any industrial use case has been scientifically validated;
+- any current readiness level constitutes an external certification.
 
-## 11. Current decision
-
-RII v0.1 is a **controlled current draft** suitable for propagation through the TGCV governance chain. It does not alter the scientific Core, evidence levels, claim matrix or gate states.
-
-The next controlled governance action is propagation of RII through the RMA, current pointer, STATUS, CHANGELOG, traceability and consistency controls. Only after that closure may the programme proceed to the historical reconstruction and design of D-OPS-24.
+Historical RII material remains immutable and is not silently promoted as current evidence.
