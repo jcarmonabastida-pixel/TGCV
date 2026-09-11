@@ -37,10 +37,14 @@ EVIDENCE_INVENTORY = [
     {
         "evidence_id": "E01",
         "source": "Ferreira & Wysk (2001), An investigation of the influence of alternative process plans on equipment control",
+        "source_identifier": "Ferreira & Wysk (2001)",
+        "source_version_or_date": "2001",
+        "exact_relevant_section_or_fact": "Frozen Stage-A fact: the source supports O3 as a native alternative involving alternative tooling/setup; no exact section/page identifier is present in the frozen Stage-A record.",
         "role": "native_candidate_definition",
         "decision_time": True,
         "supports": "O3 exists as a native alternative involving alternative tooling/setup",
         "supports_accessibility": False,
+        "provenance": "FROZEN_STAGE_A_SOURCE",
         "provenance_status": "FROZEN_STAGE_A_SOURCE",
     }
 ]
