@@ -1,7 +1,7 @@
 # TGCV — Current Status
 
 **Date:** 2026-09-11
-**Governance state:** CURRENT — IT-NOSD-010 IT-G0 closure propagated
+**Governance state:** CURRENT — IT-NOSD-010 IT-G2 closure propagated
 **Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`
 
@@ -18,9 +18,8 @@
 - **Class-II AWS-PatchAsgInstance Phase A:** `CLOSED — PREDECISION RECONSTRUCTION REPRODUCIBILITY PASS`.
 - **Class-II AWS-PatchAsgInstance Phase B0 accessibility:** `CLOSED — NO ADMISSIBLE RESOLVED ACCESSIBILITY DIFFERENCE IDENTIFIED`.
 - **Class-II AWS-PatchAsgInstance B0 permissions audit:** `CLOSED — PARTIAL / EFFECTIVE CANDIDATE PERMISSION UNRESOLVED`.
-- **IT-NOSD-010 / ETSI TS 23.502 / 3GPP 5GS:** `IT-G0 CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS`; `IT-G1 NOT STARTED`.
-- R001/R002: target and ASG identity agreement `True`; 21/21 exact reconstruction-field agreements; 0 disagreements; 0 unresolved.
-- R002 seal: `PASS`; governed reconstruction comparison seal: `PASS`.
+- **IT-NOSD-010 / ETSI TS 23.502 / 3GPP 5GS:** `IT-G0 CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS`; `IT-G1 CLOSED — BOUNDED REPRODUCIBILITY / ADMISSION PASS`; `IT-G2 CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS`.
+- IT-G2 independent reconstruction: G2-01 through G2-10 all `PASS`; frozen provenance integrity `PASS`; accessibility was not reused as outcome; outcome was not used to define post-state; complete `T_acc` enumeration was not required.
 - Industrial utility: `UNPROVEN / OPEN`.
 - Comparative superiority: `NOT ESTABLISHED`.
 - Causality: `NOT ASSESSED`.
@@ -55,7 +54,7 @@
 - No postdecision outcome was used to define predecision state.
 - No Class-II → Class-I promotion.
 
-## IT-NOSD-010 IT-G0 closure boundary
+## IT-NOSD-010 bounded closure boundary
 - Candidate: `ETSI TS 23.502 / 3GPP 5GS procedures`.
 - Experimental unit: one bounded public `5G-to-5G` handover event from the T-Mobile Spectrum Usage Dataset.
 - Session: `T-Mobile_2026.03.28_05.14.11`.
@@ -64,14 +63,17 @@
 - Frozen events MD5: `f7f1eb72063ad5ab290817815c55f297`.
 - Frozen spectrum MD5: `0796c64f3c8850e5b571ce49c556c50b`.
 - Pre-event window: `[2026-03-28T05:15:15, 2026-03-28T05:16:15)`.
+- Post-event window: `[2026-03-28T05:16:15, 2026-03-28T05:16:25)`.
 - Target cell observed 15 times before the event; first observation `2026-03-28T05:15:32`.
-- Accessibility under `IT-NOSD-010-A1`: `PASS`.
-- Post-event rows used for accessibility: `0`.
-- Outcome used to establish accessibility: `false`.
+- Post-event rows: `9`; post-event target rows: `8`.
+- Accessibility under IT-G0/IT-G1: `PASS`.
+- Post-event evidence was not used to establish accessibility.
 - State transition reconstructable: `PASS`.
+- Reconstructed transformation: `τ_HO = serving-cell / serving-gNB state → target-cell / target-gNB serving state`.
 - Complete `T_acc(S_t)` enumeration required: `false`.
 - `IT-G0 = CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS`.
-- `IT-G1 = NOT STARTED`.
+- `IT-G1 = CLOSED — BOUNDED REPRODUCIBILITY / ADMISSION PASS`.
+- `IT-G2 = CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS`.
 - This does not establish full normative 3GPP admissibility, complete `T_acc`, industrial utility, causality, value, superiority or scientific validation.
 
 ## Methodological closure
@@ -82,12 +84,12 @@
 - The earlier malformed reconstruction comparison is invalidated as non-evidentiary tooling output.
 - No transformation or fixture/IAM mutation was performed in B0.
 - IUT-A-01 U2 FULL_PILOT 001 is closed as `U2-NULL`; its frozen evidence and closure audit are canonical experiment records.
+- IT-NOSD-010 G2 closure is a bounded downstream-separation/reconstructability result for the single frozen event; it does not authorize industrial execution or establish utility/value/causality.
 
 ## Industrial discovery
 - Corrected post-IT-METH-I discovery framework: `CURRENT / OPERATIVE`.
 - AWS Systems Manager Automation / PatchAsgInstance: conditional candidate family; targeted fixture Phase-A/B0 methodological work closed to the extent governed; IT-G1 industrial admission remains open/not granted.
-- IT-NOSD-010: IT-G0 closed for one concrete bounded event; IT-G1 remains not started.
-- No industrial execution is authorized by this status.
+- IT-NOSD-010: IT-G0, IT-G1 and IT-G2 closed for one concrete bounded event; no industrial execution authorization.
 
 ## Existing routing
 - FAA AMOC: G1/G2/G3/G4/G5 completed; comparison and experiment closed `INCONCLUSIVE`.
@@ -97,7 +99,7 @@
 - PROC-006: G1 INSUFFICIENT; no G2.
 - IUT-A-01 U2: FULL_PILOT 001 closed `U2-NULL`; no rerun; no positive-utility claim.
 - AWS PatchAsgInstance: Phase-A reconstruction CLOSED — PASS at Class-II fixture level; B0 accessibility CLOSED — no admissible resolved difference; B0 permissions audit CLOSED — PARTIAL / effective candidate permission unresolved; downstream candidate/comparator execution separately governed.
-- IT-NOSD-010 / ETSI TS 23.502 / 3GPP 5GS: IT-G0 CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS; IT-G1 NOT STARTED; no industrial execution authorization.
+- IT-NOSD-010 / ETSI TS 23.502 / 3GPP 5GS: IT-G0 CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS; IT-G1 CLOSED — BOUNDED REPRODUCIBILITY / ADMISSION PASS; IT-G2 CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS; no industrial execution authorization.
 
 ## Canonical continuity
 `00_GOVERNANCE/CANONICAL_STATE.json` remains the canonical current-state entry point.
