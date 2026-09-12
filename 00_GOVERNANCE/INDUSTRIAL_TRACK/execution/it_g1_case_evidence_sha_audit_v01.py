@@ -14,7 +14,6 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -24,7 +23,7 @@ OUT = REPO_ROOT / "03_EXPERIMENTS/IT-G1_AWSSUPPORT_EXECUTEEC2RESCUE_CASE_SHA_AUD
 
 HASH_RE = re.compile(r"`([0-9A-Fa-f]{64})`")
 PATH_RE = re.compile(r"`(IT-G1_AWSSUPPORT_EXECUTEEC2RESCUE_[^`]+\.md)`")
-CASE_RE = re.compile(r"\|\s*(CASE-\d{3})\s*\|(.+?)\|\s*([0-9A-Fa-f` ;]+)\s*\|")
+CASE_ID_RE = re.compile(r"^\|\s*(CASE-\d{3})\s*\|")
 
 
 def sha256(path: Path) -> str:
@@ -37,19 +36,27 @@ def main() -> int:
 
     text = MANIFEST.read_text(encoding="utf-8")
     results = []
-    current_case = None
 
     for line in text.splitlines():
-        m = CASE_RE.match(line)
-        if not m:
+        case_match = CASE_ID_RE.match(line)
+        if not case_match:
             continue
-        case_id, evidence_cell, hashes_cell = m.groups()
+
+        cells = [cell.strip() for cell in line.split("|")]
+        if len(cells) < 5:
+            raise SystemExit(f"MANIFEST_SCHEMA_ERROR={case_match.group(1)}: cells={len(cells)}")
+
+        case_id = case_match.group(1)
+        evidence_cell = cells[3]
+        hash_cell = cells[4]
         paths = PATH_RE.findall(evidence_cell)
-        hashes = HASH_RE.findall(hashes_cell)
+        hashes = HASH_RE.findall(hash_cell)
+
         if len(paths) != len(hashes):
             raise SystemExit(
                 f"MANIFEST_SCHEMA_ERROR={case_id}: paths={len(paths)} hashes={len(hashes)}"
             )
+
         for path_text, expected in zip(paths, hashes):
             path = REPO_ROOT / "00_GOVERNANCE/INDUSTRIAL_TRACK/execution" / path_text
             actual = sha256(path) if path.exists() else None
