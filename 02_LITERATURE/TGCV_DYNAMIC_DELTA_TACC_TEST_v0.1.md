@@ -1,7 +1,7 @@
 # TGCV — Dynamic ΔT_acc Test v0.1
 
-**Status:** RECONSTRUCTED / WORKING  
-**Date:** 2026-09-07  
+**Status:** RECONSTRUCTED / WORKING — SUBSEQUENT GATES RECONCILED
+**Date:** 2026-09-12
 **Precondition:** ΔT_acc Information Sufficiency / State-Reduction Gate = PASS.
 
 ## 1. Purpose
@@ -177,43 +177,47 @@ The candidate `ΔT_acc` should be rejected for the intended analytical role if a
 4. all downstream distinctions attributed to `ΔT_acc` are already completely encoded by `Reach` or `Trajectory`;
 5. the temporal distinction disappears once native domain semantics are represented correctly.
 
-## 8. Gate criteria
+## 8. Gate criteria — reconciled with subsequent evidence
 
-| Criterion | Requirement | Result |
-|---|---|---|
-| DYN-G1 | Define T_acc at successive times | PASS |
-| DYN-G2 | Define expansion/contraction/reconfiguration | PASS |
-| DYN-G3 | Separate state change from T_acc change | PASS — formal |
-| DYN-G4 | Permit accessibility change before execution | PASS — formal |
-| DYN-G5 | Establish concrete domain counterexample | NOT YET ESTABLISHED |
-| DYN-G6 | Establish downstream ΔT_acc → ΔReach case | NOT YET ESTABLISHED |
-| DYN-G7 | Establish downstream ΔReach → ΔTrajectory case | NOT YET ESTABLISHED |
-| DYN-G8 | Establish universal dynamic law | NOT CLAIMED |
+| Criterion | Requirement | Current status | Evidence / boundary |
+|---|---|---|---|
+| DYN-G1 | Define T_acc at successive times | PASS | Formal definition |
+| DYN-G2 | Define expansion/contraction/reconfiguration | PASS | Formal definition |
+| DYN-G3 | Separate state change from T_acc change | PASS — formal | Dynamic non-redundancy specification |
+| DYN-G4 | Permit accessibility change before execution | PASS — formal | Accessibility/execution separation |
+| DYN-G5 | Establish concrete domain counterexample | **CLOSED — BOUNDED EMPIRICAL PASS** | SWIM observed temporal accessibility changes and bounded trajectory linkage; no universal claim |
+| DYN-G6 | Establish downstream ΔT_acc → ΔReach case | **CLOSED — BOUNDED STRUCTURAL EMPIRICAL PASS** | RUST-DYN-2 / EXEC-1A; ND-1/ND-2/ND-4; no causal claim |
+| DYN-G7 | Establish downstream ΔReach → ΔTrajectory case | **CLOSED — BOUNDED TRAJECTORY LINKAGE** | SWIM bounded trajectory reconstruction; no causal claim |
+| DYN-G8 | Establish universal dynamic law | **NOT CLAIMED** | Universality remains outside evidence scope |
 
-## 9. Gate decision
+## 9. Reconciliation rule
 
-**PASS — DYNAMIC DISTINCTION FORMALLY SPECIFIED; EMPIRICAL/DYNAMIC DOMAIN VALIDATION REMAINS OPEN.**
+The original G5–G7 statuses above were provisional and predated the subsequent SWIM and RUST-DYN-2 evidence closures. They are superseded by the bounded dispositions recorded in the current governance state.
 
-The test establishes a valid temporal analytical distinction between:
+This reconciliation does **not** convert the bounded findings into universal or causal laws. In particular:
 
-`ΔS`
+- G5 is closed only for the bounded SWIM domain/evidence;
+- G6 is closed only for the bounded RUST-DYN-2 structural operationalization;
+- G7 is closed only for the bounded SWIM trajectory linkage;
+- G8 remains explicitly unclaimed.
 
-and
+## 10. Gate decision
 
-`ΔT_acc`.
+**PASS — DYNAMIC DISTINCTION FORMALLY SPECIFIED; G5–G7 CLOSED IN BOUNDED DOMAIN-SPECIFIC DISPOSITIONS; G8 NOT CLAIMED.**
 
-It does **not** yet establish that the distinction is empirically observable or materially useful in every domain. That requires explicit domain-level cases and, if pursued, a new ex-ante empirical gate.
+The reconciled state establishes that the previously open empirical/dynamic sub-gates G5–G7 have subsequent bounded evidence. It does not establish causal effect, predictive superiority, universal validity, or industrial value.
 
-## 10. Integrity consequences
+## 11. Integrity consequences
 
 - `Core_ontological = S` unchanged.
 - `T_acc` remains derived analytical object.
 - `ΔT_acc` remains primary differentiated candidate.
-- No causal claim authorized.
+- No causal claim authorized; C09 remains open.
 - No predictive claim authorized.
-- EXT-1.1 result remains untouched and cannot be repurposed as validation of this gate.
-- No new literature family is introduced.
+- RUST-DYN-2 result remains bounded structural evidence and is not repurposed as causal evidence.
+- SWIM remains bounded observed trajectory linkage and is not repurposed as causal evidence.
+- No universal dynamic law is claimed.
 
-## 11. Next controlled operation
+## 12. Next controlled operation
 
-The next gate is the **Reachability Link / Trajectory Sufficiency Gate**: test whether a change in accessible transformations can be analytically connected to a change in reachable futures and trajectory structure without collapsing `ΔT_acc` into `Reach` or `Trajectory` themselves.
+The next unresolved scientific gate is **C09 — Accessibility changes causally affect subsequent trajectories**, subject to the controlled causal-design specification and the C09 domain/identification feasibility gate.
