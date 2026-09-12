@@ -4,7 +4,7 @@
 **Governance state:** CURRENT — RUST-DYN-2 and SWIM closures consolidated; C09 identified as next scientific priority; final local validator gate pending
 **Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.34
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` → v1.3
-**IGRT governance status:** `00_GOVERNANCE/IGRT/TGCV_IGRT_GOVERNANCE_STATUS_2026-09-12.md`
+**IGRT governance status:** `00_GOVERNANCE/IGRT/TGCV_IGRT_GOVERNANCE_STATUS_2026-09-12_RUST_DYN2_SWIM.md`
 
 ## Scientific Core
 - **Core:** unchanged.
@@ -36,7 +36,7 @@
 - **C16:** stronger transversal translation remains open.
 
 ## Next operation
-`C09-CAUSAL-DESIGN-PRIORITY`: define a falsifiable causal-design gate for accessibility changes and subsequent trajectories. This is a design/prioritization operation only; it does not authorize execution.
+`00_GOVERNANCE/SIP/TGCV_C09_CAUSAL_DESIGN_PRIORITY_GATE_001.md`: define and audit a falsifiable causal-design specification for accessibility changes and subsequent trajectories. This is a design/prioritization operation only; it does not authorize execution.
 
 ## Industrial Track
 - Industrial utility: `UNPROVEN / OPEN`.
