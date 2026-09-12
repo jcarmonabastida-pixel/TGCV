@@ -1,7 +1,7 @@
 # TGCV — Governance Operating Principles v0.1
 
 **Status:** CURRENT / OPERATIVE  
-**Date:** 2026-09-11  
+**Date:** 2026-09-12  
 **Purpose:** prevent governance maintenance from creating artificial scientific stages and keep governance effort subordinate to research progression.
 
 ## GPO-01 — Scientific-state primacy
@@ -24,3 +24,12 @@ After a governance maintenance closure with no substantive state change, the wor
 
 ## GPO-07 — Historical immutability
 Governance maintenance must not rewrite historical evidence or historical closure records merely to make current-state pointers consistent.
+
+## GPO-08 — Cumulative evidence-matrix preservation
+The Evidence-to-Claim Matrix is a cumulative evidence-control artifact, not a summary dashboard. Every current version must preserve the predecessor's claim schema, material evidence descriptions, evidence basis, interpretation boundaries and next requirements, while adding or explicitly qualifying new material evidence. Columns or substantive evidence content must not be silently removed or compressed into a summary-only representation.
+
+## GPO-09 — Current/versioned matrix identity
+The stable `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` alias and the versioned current matrix artifact must contain the same complete matrix content. The stable alias must never become a reduced or simplified derivative of the versioned artifact.
+
+## GPO-10 — Matrix schema integrity is a validator invariant
+The current-state validator must detect loss of the required Evidence-to-Claim Matrix columns and divergence between the stable current alias and its versioned current artifact. A governance-current-state PASS is not sufficient if matrix evidence richness has been silently degraded.
