@@ -148,6 +148,50 @@ if rma_pointer_text and matrix_rel:
     if declared_matrix_in_rma and declared_matrix_in_rma != matrix_rel:
         fail("RMA pointer and matrix pointer disagree")
 
+# Matrix evidence richness is a governance invariant, not a presentation preference.
+required_matrix_columns = [
+    "ID",
+    "Claim",
+    "Status",
+    "Current evidence / basis",
+    "Evidence impact / interpretation",
+    "Next requirement",
+]
+claim_header_match = re.search(r"^\|\s*ID\s*\|.*$", matrix_text, flags=re.MULTILINE)
+if not claim_header_match:
+    fail("current claim matrix detailed claim-table header missing")
+else:
+    header = claim_header_match.group(0)
+    for column in required_matrix_columns:
+        if f"| {column} |" not in header and not header.endswith(f"| {column} |"):
+            fail(f"current claim matrix missing required column: {column}")
+
+required_matrix_sections = (
+    "## Material methodological evidence — IUT-A-01 U2 FULL_PILOT 001",
+    "## Material methodological evidence — IT-NOSD-010",
+    "## Material methodological evidence — EXT-UPD-4.8 O3 accessibility closure reassessment",
+    "## Material methodological evidence — Class-II AWS-PatchAsgInstance",
+    "## Material methodological evidence — SWIM Reactive-0",
+    "## Material methodological evidence — SWIM trajectory linkage",
+    "## Material methodological evidence — SWIM Reactive2",
+    "## Material industrial evidence — IT-G1 AWSSupport-ExecuteEC2Rescue",
+)
+for section in required_matrix_sections:
+    if section not in matrix_text:
+        fail(f"current claim matrix missing material evidence section: {section}")
+
+# The stable alias and versioned current artifact must be byte-for-byte text-equivalent.
+if matrix_declared_version:
+    versioned_matrix = ROOT / "00_GOVERNANCE" / f"EVIDENCE_TO_CLAIM_MATRIX_{matrix_declared_version}.md"
+    require_file(versioned_matrix, "versioned current claim matrix")
+    if versioned_matrix.is_file() and matrix.is_file():
+        try:
+            versioned_text = versioned_matrix.read_text(encoding="utf-8")
+            if matrix_text != versioned_text:
+                fail("stable current matrix and versioned current matrix content diverge")
+        except Exception as exc:
+            fail(f"UNREADABLE versioned current claim matrix: {exc}")
+
 # Material evidence propagation policy is a governance invariant. The validator does not
 # decide scientific upgrades; it verifies that the current matrix explicitly distinguishes
 # evidence propagation from claim-status upgrades.
@@ -155,10 +199,12 @@ required_evidence_policy_phrases = (
     "A material experimental result is propagated to this matrix",
     "Claim upgrade is a separate decision",
     "Evidence propagation does not imply claim upgrade",
+    "This matrix is cumulative",
+    "MUST preserve the full evidentiary content and schema of its predecessor",
 )
 for phrase in required_evidence_policy_phrases:
     if phrase not in matrix_text:
-        fail(f"current claim matrix missing material-evidence propagation policy phrase: {phrase}")
+        fail(f"current claim matrix missing material-evidence preservation policy phrase: {phrase}")
 
 # 4. Traceability is a CSV data asset, not a key/value pointer file.
 trace_pointer = resolved.get("rma_traceability")
@@ -230,16 +276,18 @@ if matrix and status_matrix and status_matrix != matrix.relative_to(ROOT).as_pos
     fail("STATUS current matrix disagrees with resolved matrix")
 
 # 6. Governance operating principles are policy, not a scientific state transition.
-# Their presence is required for current governance integrity, but the validator does not
-# require a claim/gate/version transition when only maintenance is performed.
 if resolved.get("governance_operating_principles"):
     principles_text = read_text(resolved["governance_operating_principles"], "governance operating principles")
-    if "GPO-01 — Scientific-state primacy" not in principles_text:
-        fail("governance operating principles do not declare scientific-state primacy")
-    if "GPO-03 — Maintenance is subordinate" not in principles_text:
-        fail("governance operating principles do not declare maintenance subordination")
-    if "GPO-04 — Atomic propagation of substantive changes" not in principles_text:
-        fail("governance operating principles do not declare atomic substantive propagation")
+    for principle in (
+        "GPO-01 — Scientific-state primacy",
+        "GPO-03 — Maintenance is subordinate",
+        "GPO-04 — Atomic propagation of substantive changes",
+        "GPO-08 — Cumulative evidence-matrix preservation",
+        "GPO-09 — Current/versioned matrix identity",
+        "GPO-10 — Matrix schema integrity is a validator invariant",
+    ):
+        if principle not in principles_text:
+            fail(f"governance operating principles missing required declaration: {principle}")
 
 # 7. Canonical validator location is itself stable.
 validator = resolved.get("validator")
