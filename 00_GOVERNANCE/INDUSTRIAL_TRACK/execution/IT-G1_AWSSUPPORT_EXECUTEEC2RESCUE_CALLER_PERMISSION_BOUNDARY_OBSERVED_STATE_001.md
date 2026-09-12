@@ -14,19 +14,19 @@ aws iam get-user --profile tgcv --user-name tgcv-experiment --query "User.{UserN
 
 ```json
 {
-  "UserName": "tgcv-experiment",
-  "Arn": "arn:aws:iam::502731779370:user/tgcv-experiment",
-  "PermissionsBoundary": null
+    "UserName": "tgcv-experiment",
+    "Arn": "arn:aws:iam::502731779370:user/tgcv-experiment",
+    "PermissionsBoundary": null
 }
 ```
 
-The IAM user `tgcv-experiment` has no permissions boundary configured.
+## Observation
+
+No permissions boundary is attached to IAM user `tgcv-experiment` at the observed instant.
 
 ## Interpretation boundary
 
-This establishes that no IAM permissions boundary is attached directly to the caller user at the observed instant. Together with the preceding observations, no direct inline policy and no group membership have been observed for this user.
-
-This still does not establish the complete effective authorization context: session policies, resource policies, applicable organizational controls, and other IAM evaluation mechanisms remain separate considerations.
+This removes a directly attached IAM permissions boundary as an observed constraint on the caller. It does not establish the caller's complete effective authorization context. Session policies, resource policies, AWS Organizations controls, SCPs, and other applicable authorization mechanisms remain separate considerations.
 
 No IAM modification was performed. No SSM Automation was started.
 
