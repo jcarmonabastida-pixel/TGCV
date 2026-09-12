@@ -1,6 +1,6 @@
 # TGCV — IGRT Governance Status — 2026-09-12
 
-**Status:** `PASS — GOVERNANCE PROPAGATION RECONCILED`
+**Status:** `PROPAGATION RECONCILED — LOCAL VALIDATOR PENDING`
 
 **Scope:** propagation of the closed IT-G1 `AWSSupport-ExecuteEC2Rescue` result into the canonical current-state governance chain.
 
@@ -23,10 +23,10 @@ The case does not establish complete `T_acc`, causal trajectory effects, value l
 
 ## Governance disposition
 
-IGRT confirms structural propagation across:
+The canonical propagation is reconciled across:
 
 `CANONICAL_STATE → RMA → Evidence→Claim Matrix → RMA traceability → STATUS → validator`
 
-This is a governance reconciliation state, not scientific evidence for TGCV validity. The canonical validator remains the final current-state gate and must be executed from the local canonical checkout after synchronization.
+The repository-side propagation is complete. The canonical validator remains the final current-state gate and has **not** been claimed as executed here; it must be run from the local canonical checkout after synchronization.
 
 **Standing industrial execution authorization: NONE.**
