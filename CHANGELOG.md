@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-12 — RUST-DYN-2 + SWIM consolidation and C09 priority routing
+
+- Confirmed `RUST-DYN-2 / EXEC-1A` closed as `CLOSED — BOUNDED STRUCTURAL EMPIRICAL PASS`.
+- Confirmed SWIM Reactive-0, Reactive2 and trajectory-linkage reconstruction closed under bounded dispositions.
+- Audited the current Evidence→Claim Matrix v1.3 and found the substantive RUST-DYN-2 and SWIM evidence already represented; no matrix version increment was required.
+- Created RMA v3.34 consolidating both closures without scientific Core or C01–C16 claim upgrade.
+- Advanced RMA traceability to v3.34 and recorded the C09 next-priority route.
+- Updated `CANONICAL_STATE.json` to RMA v3.34, matrix v1.3 and traceability v3.34.
+- Updated STATUS and created the current IGRT consolidation record.
+- Established `C09-CAUSAL-DESIGN-PRIORITY` as the next scientific operation: design/gate a falsifiable causal test; no execution authorization implied.
+- No rerun of RUST-DYN-2 or SWIM; no industrial execution authorization.
+
 ## 2026-09-12 — IT-G1 AWSSupport-ExecuteEC2Rescue final result propagation
 
 - Closed `IT-G1-AWSSUPPORT-EXECUTEEC2RESCUE` with functional recovery demonstrated after the governed two-stage intervention.
