@@ -7,30 +7,31 @@ RMA-v3.29,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.29.md,RMA-c
 RMA-v3.30,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.30.md,RMA-current,Historical operative RMA preserved immutable
 RMA-v3.31,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.31.md,RMA-current,Historical operative RMA preserved immutable
 RMA-v3.32,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.32.md,RMA-current,Historical operative RMA preserved immutable
-RMA-v3.33,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.33.md,RMA-current,Current operative RMA; IT-G1 material bounded industrial evidence propagated without claim upgrade
-RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.33,Points to TGCV_RMA_v3.33.md
+RMA-v3.33,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.33.md,RMA-current,Historical operative RMA preserved immutable
+RMA-v3.34,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.34.md,RMA-current,Current operative RMA; consolidates RUST-DYN-2 and SWIM bounded closures; no claim upgrade
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.34,Points to TGCV_RMA_v3.34.md
 CLAIM-MATRIX-v0.8,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v0.8.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v0.9,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v0.9.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v1.0,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.0.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v1.1,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.1.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v1.2,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.2.md,RMA-current,Historical matrix preserved immutable
-CLAIM-MATRIX-v1.3,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.3.md,RMA-current,Current matrix; IT-G1 material bounded industrial evidence propagated without scientific claim upgrade
+CLAIM-MATRIX-v1.3,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.3.md,RMA-current,Current matrix; RUST-DYN-2 and SWIM substantive evidence already represented; no claim upgrade required
 CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.3,v1.3; current scientific claim control remains unchanged
 ARM-v0.1,external_asset,HISTORICAL,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.1.md,ARM-current,Historical ARM state preserved immutable
 ARM-v0.2,external_asset,CURRENT,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.2.md,RMA-current,Current controlled ARM; architectural reconciliation only; Core and C01-C16 unchanged
 ARM-current,pointer,CURRENT,05_ASSETS/ARM/README.md,ARM-v0.2,Current ARM pointer; RII follows as current controlled external asset
-RII-v0.1,external_asset,CURRENT,05_ASSETS/RII/TGCV-EXT-RII-001_v0.1.md,RMA-current,Current controlled RII; programme impact/transfer interface only; no scientific claim upgrade or industrial authorization
-RII-current,pointer,CURRENT,05_ASSETS/RII/README.md,RII-v0.1,Current RII pointer; historical impact roadmap remains immutable/preparatory
-MOI-v0.1,external_asset,CURRENT,05_ASSETS/MOI/TGCV-EXT-MOI-001_v0.1.md,RMA-current,Current controlled opportunity-discovery map; four bounded entries; no industrial claim or authorization
-MOI-current,pointer,CURRENT,05_ASSETS/MOI/README.md,MOI-v0.1,Current MOI pointer; historical/preparatory material remains immutable
-TCP-v0.4,external_asset,CURRENT,05_ASSETS/TCP/TGCV-EXT-TCP-001_v0.4.md,RMA-current,Current controlled Testable Concept Paper; architecture/methodological synthesis only; no scientific claim upgrade or execution authorization
+RII-v0.1,external_asset,CURRENT,05_ASSETS/RII/TGCV-EXT-RII-001_v0.1.md,RMA-current,Programme impact/transfer interface only; no scientific claim upgrade or industrial authorization
+RII-current,pointer,CURRENT,05_ASSETS/RII/README.md,RII-v0.1,Current RII pointer
+MOI-v0.1,external_asset,CURRENT,05_ASSETS/MOI/TGCV-EXT-MOI-001_v0.1.md,RMA-current,Current controlled opportunity-discovery map; no industrial claim or authorization
+MOI-current,pointer,CURRENT,05_ASSETS/MOI/README.md,MOI-v0.1,Current MOI pointer
+TCP-v0.4,external_asset,CURRENT,05_ASSETS/TCP/TGCV-EXT-TCP-001_v0.4.md,RMA-current,Current controlled Testable Concept Paper; no scientific claim upgrade or execution authorization
 TCP-current,pointer,CURRENT,05_ASSETS/TCP/README.md,TCP-v0.4,Current TCP pointer
-VP-v0.3,external_asset,CURRENT,05_ASSETS/Vision_Paper/TGCV-EXT-VP-001_v0.3.md,RMA-current,Current controlled Vision Paper; research vision/architectural synthesis only; no scientific claim upgrade or execution authorization
-VP-current,pointer,CURRENT,05_ASSETS/Vision_Paper/README.md,VP-v0.3,Current Vision Paper pointer; v0.2 remains historical and immutable
-RP-v0.1,external_asset,HISTORICAL,05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.1.md,RP-current,Historical research prospectus draft preserved immutable
-RP-v0.2,external_asset,CURRENT,05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.2.md,RMA-current,Current controlled Research Prospectus; programme-level scientific synthesis; no claim upgrade or execution authorization
-RP-current,pointer,CURRENT,05_ASSETS/Research_Prospectus/README.md,RP-v0.2,Current Research Prospectus pointer; application adaptations remain separate
-SIP-v0.1,external_asset,CURRENT,05_ASSETS/SIP/TGCV-EXT-SIP-001_v0.1.md,RMA-current,Current controlled Scientific Integration Plan; strategic programme planning only; no scientific claim upgrade or execution authorization
+VP-v0.3,external_asset,CURRENT,05_ASSETS/Vision_Paper/TGCV-EXT-VP-001_v0.3.md,RMA-current,Current controlled Vision Paper; no scientific claim upgrade or execution authorization
+VP-current,pointer,CURRENT,05_ASSETS/Vision_Paper/README.md,VP-v0.3,Current VP pointer
+RP-v0.1,external_asset,HISTORICAL,05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.1.md,RP-current,Historical prospectus preserved immutable
+RP-v0.2,external_asset,CURRENT,05_ASSETS/Research_Prospectus/TGCV-EXT-RP-001_v0.2.md,RMA-current,Current controlled Research Prospectus; no claim upgrade or execution authorization
+RP-current,pointer,CURRENT,05_ASSETS/Research_Prospectus/README.md,RP-v0.2,Current RP pointer
+SIP-v0.1,external_asset,CURRENT,05_ASSETS/SIP/TGCV-EXT-SIP-001_v0.1.md,RMA-current,Current controlled Scientific Integration Plan; no scientific claim upgrade or execution authorization
 SIP-current,pointer,CURRENT,05_ASSETS/SIP/README.md,SIP-v0.1,Current SIP pointer
 PMO-SMO-v0.1,programme_governance,CURRENT,00_GOVERNANCE/TGCV_PMO_SMO_FUNCTIONAL_SPEC_v0.1.md,RMA-current;SIP-v0.1,Current controlled functional derivative; coordinates programme control loop; not historical original; no scientific claim or execution authorization
 PMO-SMO-PROPAGATION-CLOSURE-v0.1,governance_closure,CLOSED,00_GOVERNANCE/impact/PMO_SMO_v0.1_PROPAGATION_CLOSURE_v0.1.md,PMO-SMO-v0.1,Propagation closed pending current-state validator gate
@@ -50,13 +51,16 @@ AWS-PATCHASGINSTANCE-B0-PERMISSIONS,permissions_audit,CLOSED-PARTIAL,00_GOVERNAN
 IUT-A-01-U2,FULL_PILOT,CLOSED-NULL,03_EXPERIMENTS/IUT-A-01/IUT_A01_U2_FULL_PILOT_CLOSURE_AUDIT_001.md,,Material bounded comparative methodological evidence; M1 PASS, M2 FAIL; no claim upgrade
 IT-NOSD-010-RESCREENING,candidate_screening,CURRENT,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_RESCREENING_001.md,TR-132-MOD-1,Corrected TR-132 screening; retained for concrete event case definition
 IT-NOSD-010-CASE-GATE,case_definition,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_CASE_DEFINITION_GATE_001.md,IT-NOSD-010-RESCREENING,Concrete 5G-to-5G event frozen; bounded pre-outcome accessibility/case-definition PASS
-IT-NOSD-010-G0-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_IT_G0_CLOSURE_001.md,IT-NOSD-010-CASE-GATE,IT-G0 closed; no industrial execution authorization
-IT-NOSD-010-G1-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_IT_G1_CLOSURE_001.md,IT-NOSD-010-G0-CLOSURE,IT-G1 bounded reproducibility/admission closed; no industrial execution authorization
-IT-NOSD-010-G2-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/IT_NOSD_010_TR132_IT_G2_CLOSURE_001.md,IT-NOSD-010-G1-CLOSURE,IT-G2 bounded downstream-separation closed; material evidence propagated without claim upgrade
+IT-NOSD-010-G0-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT_NOSD_010_TR132_IT_G0_CLOSURE_001.md,IT-NOSD-010-CASE-GATE,IT-G0 closed; no industrial execution authorization
+IT-NOSD-010-G1-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT_NOSD_010_TR132_IT_G1_CLOSURE_001.md,IT-NOSD-010-G0-CLOSURE,IT-G1 bounded reproducibility/admission closed; no industrial execution authorization
+IT-NOSD-010-G2-CLOSURE,industrial_gate,CLOSED-BOUNDED-PASS,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT_NOSD_010_TR132_IT_G2_CLOSURE_001.md,IT-NOSD-010-G1-CLOSURE,IT-G2 bounded downstream-separation closed; material evidence propagated without claim upgrade
 EXT-UPD-4.8-O3-EXECUTION,accessibility_closure,CLOSED-INDETERMINATE-HB,03_EXPERIMENTS/IUT-A-01/IUT_A01_O3_ACCESSIBILITY_CLOSURE_RESULT_001.json,EXT-UPD-4.8-AUTHORIZATION,Bounded O3 accessibility closure; HS-AC01; material conditions unresolved; no claim upgrade
 EXT-UPD-4.8-CLOSURE,governance_closure,CLOSED-INDETERMINATE-HB,00_GOVERNANCE/D-OPS-24_EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_EXECUTION_RESULT_v0.1.md,EXT-UPD-4.8-O3-EXECUTION,Controlled H-B methodological boundary; no additional attempt authorized
 SWIM-REACTIVE0-OPERATIONALIZATION,empirical_operationalization,CLOSED-BOUNDED-PASS,00_GOVERNANCE/SIP/TGCV_SWIM_REACTIVE0_OPERATIONALIZATION_DISPOSITION_001.md,SWIM-REACTIVE0-TACC,Bounded TGCV operationalization result; no claim upgrade; no repeat run required for current claim
 SWIM-REACTIVE0-TACC,reconstruction,CLOSED-BOUNDED-PASS,00_GOVERNANCE/SIP/TGCV_SWIM_REACTIVE0_TACC_RECONSTRUCTION_001.md,SWIM-REACTIVE0-RECON-CONSOLIDATION,Multiple T_acc snapshots and non-empty Delta T_acc reconstructed; bounded candidate universe only
 SWIM-REACTIVE0-RECON-CONSOLIDATION,reconstruction,CLOSED-BOUNDED-PASS,00_GOVERNANCE/SIP/TGCV_SWIM_REACTIVE0_RECONSTRUCTION_CONSOLIDATION_001.md,SWIM-REACTIVE0-RECON-PREFLIGHT,Three candidate transformation families reconstructed pre-outcome
 SWIM-REACTIVE0-RECON-PREFLIGHT,reconstruction_preflight,CLOSED-BOUNDED-PASS,00_GOVERNANCE/SIP/TGCV_SWIM_REACTIVE0_RECONSTRUCTION_PREFLIGHT_001.md,,Result bundle/provenance/temporal boundary/outcome firewall verified
-TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Current traceability pointer for RMA v3.33
+SWIM-TRAJECTORY-LINKAGE,reconstruction,CLOSED-BOUNDED-PASS,00_GOVERNANCE/SIP/TGCV_SWIM_TRAJECTORY_LINKAGE_DISPOSITION_001.md,SWIM-REACTIVE0-TACC,Bounded observed trajectory association; no causal inference
+RUST-DYN-2-EXEC-1A,scientific_experiment,CLOSED-BOUNDED-EMPIRICAL-PASS,03_EXPERIMENTS/EXT-1.1_Rust/execution/RUST-DYN-2_SCIENTIFIC_INTEGRATION_CLOSURE_v01.md,,Bounded empirical distinction between Delta T_acc and potential one-step Reach; H=1; no causal/value/superiority upgrade
+C09-CAUSAL-DESIGN-PRIORITY,scientific_priority,PRIORITY-NEXT,00_GOVERNANCE/rma/TGCV_RMA_v3.34.md,RUST-DYN-2-EXEC-1A;SWIM-TRAJECTORY-LINKAGE,Next operation: causal-design priority gate for accessibility changes and subsequent trajectories; design only, no execution authorization
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Current traceability pointer for RMA v3.34
