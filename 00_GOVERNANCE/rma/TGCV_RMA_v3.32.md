@@ -31,7 +31,7 @@ IUT-A-01 U2 remains `CLOSED — U2-NULL`; IT-NOSD-010 G0/G1/G2 remain closed as 
 The corrected industrial discovery framework remains operative and design/documentary in scope. EXT-UPD-4.8 does not grant IT-G1 admission or industrial execution authority to IUT-A-01, O3, AWS, or any other candidate.
 
 ## Current claim boundary
-The current Evidence→Claim Matrix is v1.1. No C01–C16 status or level is upgraded by EXT-UPD-4.8. In particular, the result does not close general `T_acc`, trajectory, causal, value, superiority or transversal claims.
+The current Evidence→Claim Matrix is v1.2. No C01–C16 status or level is upgraded by EXT-UPD-4.8. In particular, the result does not close general `T_acc`, trajectory, causal, value, superiority or transversal claims.
 
 ## Governance current-state requirements
 The canonical current-state chain remains:
