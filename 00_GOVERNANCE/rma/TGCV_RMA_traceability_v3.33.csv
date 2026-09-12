@@ -1,0 +1,10 @@
+asset_id,asset_type,status,canonical_location,depends_on,notes
+RMA-v3.32,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.32.md,RMA-current,Historical operative RMA preserved immutable
+RMA-v3.33,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.33.md,RMA-current,Current operative RMA; IT-G1 material bounded industrial evidence propagated without claim upgrade
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.33,Points to TGCV_RMA_v3.33.md
+CLAIM-MATRIX-v1.2,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.2.md,,Historical matrix preserved immutable
+CLAIM-MATRIX-v1.3,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.3.md,RMA-current,Current matrix; IT-G1 material bounded industrial evidence propagated without scientific claim upgrade
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.3,v1.3; current scientific claim control remains unchanged
+IT-G1-AWSSUPPORT-EXECUTEEC2RESCUE,industrial_case,CLOSED-FUNCTIONAL-RECOVERY,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-G1_AWSSUPPORT_EXECUTEEC2RESCUE_FINAL_RESULT_INTEGRATION_001.md,IT-G1-CASE-CLOSURE,Closed governed case; functional recovery demonstrated after bounded two-stage intervention; no claim upgrade or standing authorization
+IT-G1-FINAL-INTEGRATION,governance_integration,CURRENT,00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-G1_AWSSUPPORT_EXECUTEEC2RESCUE_FINAL_RESULT_INTEGRATION_001.md,IT-G1-AWSSUPPORT-EXECUTEEC2RESCUE,Final case result integrated; historical result boundary preserved
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Current traceability pointer for RMA v3.33
