@@ -1,7 +1,7 @@
 # TGCV — Current Status
 
-**Date:** 2026-09-11
-**Governance state:** CURRENT — SWIM Reactive-0 evidence propagated; IGRT governance reconciliation PASS; no claim upgrade
+**Date:** 2026-09-12
+**Governance state:** CURRENT — SWIM Reactive-0, Reactive2 and bounded trajectory-linkage evidence propagated; IGRT governance reconciliation PASS; no claim upgrade
 **Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md`
 **Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`
 **IGRT governance status:** `00_GOVERNANCE/IGRT/TGCV_IGRT_GOVERNANCE_STATUS_2026-09-11.md`
@@ -30,6 +30,8 @@
 - **Class-II AWS-PatchAsgInstance B0 permissions audit:** `CLOSED — PARTIAL / EFFECTIVE CANDIDATE PERMISSION UNRESOLVED`.
 - **IT-NOSD-010 / ETSI TS 23.502 / 3GPP 5GS:** `IT-G0 CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS`; `IT-G1 CLOSED — BOUNDED REPRODUCIBILITY / ADMISSION PASS`; `IT-G2 CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS`.
 - **SWIM Reactive-0:** `CLOSED — BOUNDED TGCV OPERATIONALIZATION RESULT`.
+- **SWIM trajectory linkage:** `CLOSED — BOUNDED TRAJECTORY-LINKAGE RECONSTRUCTION`.
+- **SWIM Reactive2:** `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE; A8 NOT_COMPARABLE`.
 - Industrial utility: `UNPROVEN / OPEN`.
 - Comparative superiority: `NOT ESTABLISHED`.
 - Causality: `NOT ASSESSED`.
@@ -38,6 +40,8 @@
 ## Evidence propagation boundary
 - Current Evidence→Claim Matrix: `v1.2`.
 - SWIM Reactive-0 material evidence is propagated in v1.2; no C01–C16 claim status/level is upgraded.
+- SWIM Reactive2 material methodological evidence is propagated in v1.2; no C01–C16 claim status/level is upgraded; A8 remains `NOT_COMPARABLE`.
+- SWIM trajectory-linkage reconstruction adds material bounded evidence relevant to C08 and the `ΔT_acc → trajectory` segment of C16; no claim status/level is upgraded and no causal inference follows.
 - IUT-A-01 U2 and IT-NOSD-010 remain material bounded methodological evidence without claim upgrade.
 - EXT-UPD-4.8 O3 is material bounded methodological evidence that qualifies the decision-time accessibility-closure boundary; C01–C16 statuses remain unchanged.
 - Evidence propagation does not imply claim upgrade.
@@ -76,6 +80,8 @@
 - AWS PatchAsgInstance: Phase-A reconstruction CLOSED — PASS; B0 accessibility CLOSED — no admissible resolved difference; B0 permissions audit CLOSED — PARTIAL; downstream candidate/comparator execution separately governed.
 - IT-NOSD-010: IT-G0/G1/G2 closed; no industrial execution authorization.
 - SWIM Reactive-0: bounded operationalization closed; no repeat run for the current claim.
+- SWIM trajectory linkage: bounded reconstruction closed; no repeat run for the current bounded reconstruction.
+- SWIM Reactive2: bounded methodological gate closed with A8 `NOT_COMPARABLE`; no additional execution under current gate.
 
 ## Canonical continuity
 `00_GOVERNANCE/CANONICAL_STATE.json` remains the canonical current-state entry point.
