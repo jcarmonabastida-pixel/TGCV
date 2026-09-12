@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-09-12 — IT-G1 AWSSupport-ExecuteEC2Rescue final result propagation
+
+- Closed `IT-G1-AWSSUPPORT-EXECUTEEC2RESCUE` with functional recovery demonstrated after the governed two-stage intervention.
+- Preserved the historical execution-result boundary: EC2Rescue success/internal remediation remains immutable; later diagnostic attribution, explicit remediation authorization, SG mutation and same-observation-point verification establish the subsequent state transition.
+- Classified IT-G1 as material bounded industrial/methodological evidence relevant to C01, C02, C07, C08 and C16 without upgrading any C01–C16 status or level.
+- Created RMA v3.33 and Evidence→Claim Matrix v1.3.
+- Synchronized current RMA and Evidence→Claim Matrix pointers.
+- Advanced RMA traceability to v3.33 and recorded the IT-G1 integration assets.
+- Updated `CANONICAL_STATE.json` to RMA v3.33, Evidence→Claim Matrix v1.3 and traceability v3.33.
+- Updated STATUS and recorded `TGCV_IGRT_GOVERNANCE_STATUS_2026-09-12.md`.
+- No Core modification, claim upgrade, utility claim, causal claim, value claim, superiority claim or standing industrial execution authorization was introduced.
+- Final current-state validator execution remains the closing local gate after synchronization.
+- Historical experiment and governance records remain immutable.
+
 ## 2026-09-11 — EXT-UPD-4.8 O3 accessibility-closure reassessment closure and propagation
 
 - Executed the authorized bounded corrective assessment for `IUT-A-01 / O3` with execution integrity `PASS`.
