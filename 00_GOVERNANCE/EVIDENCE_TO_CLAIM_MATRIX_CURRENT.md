@@ -1,11 +1,11 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.5
+# TGCV — Evidence-to-Claim Matrix — Current v1.6
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-13  
-**Predecessor:** v1.4  
-**Incremental governance update:** v1.5 preserves the complete material evidentiary content and schema of v1.4; no evidence is deleted, collapsed, or downgraded and no scientific claim status/level is upgraded.
+**Predecessor:** v1.5  
+**Incremental governance update:** v1.6 preserves the complete material evidentiary content and schema of v1.5; no evidence is deleted, collapsed, or downgraded and no scientific claim status/level is upgraded.
 
-**Current update:** Material evidence propagation for closed IT-G1 `AWSSupport-ExecuteEC2Rescue`. No scientific claim status/level upgrade.
+**Current update:** Material evidence propagation for closed C09 Bundle 003 Executor-2 independent reconstruction. No scientific claim status/level upgrade.
 
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
@@ -29,14 +29,14 @@ A material experimental result is propagated to this matrix when it adds, remove
 | C06 | Reach identity is not characterized by cardinality alone | E1 | Rust ND-4 | No material impact. | Independent replication |
 | C07 | Accessible transformation spaces change over time in Rust | E1 | Rust non-persistent pairs + bounded SWIM operationalization | SWIM provides bounded non-Rust evidence that accessible transformation spaces can change across observed state transitions; IT-G1 adds a bounded industrial state-transformation sequence but does not upgrade the Rust-specific claim. | Independent closed operationalization / replication |
 | C08 | Accessibility changes modify reachable future trajectories | H | Formal chain + bounded Rust H=1 + SWIM trajectory-linkage reconstruction + IT-G1 bounded state/trajectory observation | SWIM adds bounded reconstructability of ordered subsequent transformations and state transitions; IT-G1 provides a bounded industrial state/trajectory observation. Neither establishes causal trajectory modification or a general trajectory claim. | Independent valid trajectory test with explicit trajectory criterion beyond bounded exemplars |
-| C09 | Accessibility changes causally affect subsequent trajectories | H | No causal identification | Neither SWIM nor IT-G1 establishes causality. IT-G1 explicitly preserves the distinction between internal remediation, external enabling condition and end-to-end outcome. | Causal design |
-| C10 | Accessibility changes generate/predict value | H | No Value evidence | SWIM and IT-G1 are methodological/reconstructive evidence only; no value realization or predictive-value claim is established. | Value-linked test |
-| C11 | TGCV is domain-independent / transversal | H | C-01 A-C + I-01 Gate C + bounded cross-domain evidence | SWIM is a bounded self-adaptive software exemplar and IT-G1 a bounded industrial AWS exemplar; transversal validity remains unestablished. | Independent operationalization across broader domains |
-| C12 | TGCV provides superior explanatory representation | H | Comparative evidence absent | IUT M1 provides bounded decision-performance evidence but U2-NULL; SWIM and IT-G1 are non-comparative for explanatory superiority. | Controlled differentiated comparison |
+| C09 | Accessibility changes causally affect subsequent trajectories | H | No causal identification; FOS C09 methodological/reference evidence; C09 Bundle 003 + independent Executor-2 reconstruction | Executor-2 provides bounded executable causal-operationalization evidence for `Z → ΔT_acc → Y`: frozen `T_acc(control)=[A,C]`, `T_acc(treatment)=[A,B,C]`, balanced 128/128, `tau_hat=1.6484375`, and 13/13 integrity checks PASS. This establishes independent reconstruction of the bounded design and estimate, not real-world causal evidence. FOS remains non-reportable under its frozen estimator. No claim-level upgrade. | Admissible real-world causal identification |
+| C10 | Accessibility changes generate/predict value | H | No Value evidence | SWIM and IT-G1 are methodological/reconstructive evidence only; C09 Bundle 003 is causal-operationalization evidence without value realization or predictive-value evidence. No value claim is established. | Value-linked test |
+| C11 | TGCV is domain-independent / transversal | H | C-01 A-C + I-01 Gate C + bounded cross-domain evidence | SWIM is a bounded self-adaptive software exemplar and IT-G1 a bounded industrial AWS exemplar; transversal validity remains unestablished. C09 Bundle 003 adds bounded methodological causal-operationalization evidence only. | Independent operationalization across broader domains |
+| C12 | TGCV provides superior explanatory representation | H | Comparative evidence absent | IUT M1 provides bounded decision-performance evidence but U2-NULL; SWIM and IT-G1 are non-comparative for explanatory superiority; C09 Bundle 003 is not a comparative explanatory test. | Controlled differentiated comparison |
 | C13 | TGCV contains no equivalent prior architecture | O | D-OPS-21 | No material impact. | Comparative coverage |
-| C14 | T_acc is an ontological primitive independent of S | F | TR-131 | No impact; SWIM and IT-G1 treat accessibility as derived/conditioned rather than restoring the rejected primitive. | No restoration without contrary evidence |
+| C14 | T_acc is an ontological primitive independent of S | F | TR-131 | No impact; SWIM, IT-G1 and C09 Bundle 003 treat accessibility as derived/conditioned rather than restoring the rejected primitive. | No restoration without contrary evidence |
 | C15 | Rust demonstrates observed Cargo/runtime reachability | F | Rust evidence boundary | No impact. | Separate governed runtime test |
-| C16 | TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value | H | D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 | SWIM supports bounded state/context → accessibility → `T_acc` → `ΔT_acc` and bounded trajectory linkage. IT-G1 adds bounded industrial evidence preserving distinctions among internal state transformation, external enabling condition and end-to-end outcome. It does not close downstream value boundaries or establish transversal validity. | Closed independent-domain operationalization / downstream test |
+| C16 | TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value | H | D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 + C09 Bundle 003 | SWIM supports bounded state/context → accessibility → `T_acc` → `ΔT_acc` and bounded trajectory linkage. IT-G1 adds bounded industrial evidence preserving distinctions among internal state transformation, external enabling condition and end-to-end outcome. C09 Bundle 003 adds bounded executable causal-operationalization evidence while preserving the distinction between intervention/accessibility and downstream outcome. It does not close downstream value boundaries or establish transversal validity. | Closed independent-domain operationalization / downstream test |
 
 ## Material methodological evidence — IUT-A-01 U2 FULL_PILOT 001
 
@@ -166,37 +166,6 @@ The historical execution-result artifact remains immutable. The later diagnostic
 
 No claim status/level is upgraded by IT-G1.
 
-## Claim boundary
-
-The v1.5 update is additive. It preserves the full evidence/claim structure of v1.4 and adds FOS C09 as material methodological/reference evidence. No C01–C16 status is upgraded. Material evidence propagation remains distinct from scientific claim upgrade. The TGCV Core remains unchanged.
-
-## Gate state
-
-- G1 Independent replication: OPEN at general scientific level; bounded fixture/event closures remain separately recorded.
-- G2 Cross-domain generalisation: BOUNDED / PARTIAL.
-- G3 Trajectory sufficiency: OPEN; bounded trajectory-linkage and IT-G1 state-transition observations do not close the general gate.
-- G4 Causal identification: OPEN.
-- G5 Value linkage: OPEN.
-- G6 Originality/comparative architecture: BOUNDED / PARTIAL.
-- G7 Transversal translation protocol: BOUNDED operational support; general/transversal closure remains OPEN.
-
-## Current methodological routing
-
-- IUT-A-01 U2 FULL_PILOT 001: `CLOSED — U2-NULL`; no rerun.
-- IT-NOSD-010: G0/G1/G2 closed for one bounded frozen event; industrial execution authorization `NONE`.
-- EXT-UPD-4.8 O3 accessibility closure: `CLOSED — INDETERMINATE / H-B / HS-AC01`; no reopening or additional attempt under this closure.
-- Class-II AWS-PatchAsgInstance: fixture-level closure as previously governed.
-- SWIM Reactive-0: `CLOSED — BOUNDED TGCV OPERATIONALIZATION RESULT`; no repeat run for current claim.
-- SWIM trajectory linkage: `CLOSED — BOUNDED TRAJECTORY-LINKAGE RECONSTRUCTION`; no repeat run for current bounded reconstruction.
-- SWIM Reactive2: `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE; A8 NOT_COMPARABLE`; no additional execution under current gate.
-- IT-G1 `AWSSupport-ExecuteEC2Rescue`: `CLOSED — FUNCTIONAL RECOVERY DEMONSTRATED`; no rerun implied.
-- IT-METH-I FAA AMOC: `CLOSED — INCONCLUSIVE`.
-- Utility scoring and new industrial execution: `NOT AUTHORIZED`.
-
-## Current scientific position
-
-The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, bounded self-adaptive software operationalization from SWIM Reactive-0 and Reactive2, bounded SWIM trajectory-linkage reconstruction, and the closed IT-G1 industrial case. These are cumulative material evidence records, not claim upgrades. The scientific Core remains unchanged.
-
 ## Material methodological evidence — FOS C09
 
 # FOS C09 — Evidence Disposition 001
@@ -218,3 +187,60 @@ Frozen disposition:
 ### Interpretation boundary
 
 FOS is material methodological/reference evidence for reconstruction and evaluation of a candidate causal-design pathway. Its closure is specifically an estimator/reportability boundary: it does not constitute a reportable causal estimate for C09 and must not be used to infer one. Evidence propagation does not imply claim upgrade.
+
+## Material methodological evidence — C09 Bundle 003 + independent Executor-2 reconstruction
+
+**Case:** `C09_OPERATIONAL_BUNDLE_003`  
+**Status:** `CLOSED — EXECUTOR-2 RECONSTRUCTION PASS / CAUSAL CLAIM REMAINS OPEN`  
+**Execution result:** `03_EXPERIMENTS/C09_EXECUTOR_2_RECONSTRUCTION_RESULT_001.md`  
+**Closure audit:** `00_GOVERNANCE/SIP/TGCV_C09_EXECUTOR_2_RECONSTRUCTION_CLOSURE_AUDIT_001.md`  
+**Evidence registration:** `00_GOVERNANCE/SIP/TGCV_C09_EXECUTOR_2_RECONSTRUCTION_EVIDENCE_REGISTRATION_001.md`  
+**Propagation record:** `00_GOVERNANCE/SIP/TGCV_C09_EVIDENCE_MATRIX_PROPAGATION_RECORD_001.md`
+
+The frozen Bundle 003 causal-operationalization test specifies the bounded intervention `Z → ΔT_acc → Y` at `H=1`, with `U={A,B,C}`, control accessibility `T_acc=[A,C]`, treatment accessibility `T_acc=[A,B,C]`, deterministic balanced assignment and a fixed transformation-selection policy independent of the treatment flag except through the accessibility predicate. Bundle 003 is frozen and immutable.
+
+Executor-2 independently reconstructed the frozen design using the subsequently frozen exact randomization specification. The reconstruction completed with `PASS_RECONSTRUCTION`, `n_control=128`, `n_treatment=128`, `mean_control=5.671875`, `mean_treatment=7.3203125`, and `tau_hat=1.6484375`. The retained null observation was `null_tau_hat=-0.3515625`; Bundle 003 explicitly does not impose a zero-null gate, so this value is not a failure condition.
+
+All 13 Executor-2 integrity checks returned `true`, including accessibility intervention, balanced assignment, baseline definition, bundle-hash integrity, canonical row schema, transition/policy integrity, null no-accessibility-change, randomization-specification presence, and confirmation that Executor-1 output was not used as an input.
+
+### Material methodological significance
+
+This is material evidence because C09 moves from causal-design specification plus prior estimator-boundary evidence to a frozen, executable bounded causal-operationalization with an independent reconstruction. The result demonstrates that the specified intervention can produce a measurable bounded contrast in the frozen synthetic system while preserving the information firewall between treatment assignment, accessibility, transition, policy, observation and outcome.
+
+The result is therefore evidence of **bounded causal operationalization and independent reconstruction**, not evidence of real-world causal identification. The positive `tau_hat` is a result of the governed synthetic reconstruction and must not be generalized to empirical causal effectiveness. The nonzero null is retained as a control observation under the frozen specification and does not invalidate the execution.
+
+### Interpretation boundary
+
+The reconstruction does **not** close C09 scientifically. It does not establish an admissible real-world intervention, external validity, empirical causal effect, transversal validity, value creation, predictive value, explanatory superiority, or TGCV Core modification. It also does not supersede the FOS C09 estimator/reportability boundary; FOS remains methodological/reference evidence only.
+
+## Claim boundary
+
+The v1.6 update is additive. It preserves the full evidence/claim structure of v1.5 and adds the closed C09 Bundle 003 Executor-2 reconstruction as material bounded methodological evidence. No C01–C16 status is upgraded. Material evidence propagation remains distinct from scientific claim upgrade. The TGCV Core remains unchanged.
+
+## Gate state
+
+- G1 Independent replication: OPEN at general scientific level; bounded fixture/event closures remain separately recorded.
+- G2 Cross-domain generalisation: BOUNDED / PARTIAL.
+- G3 Trajectory sufficiency: OPEN; bounded trajectory-linkage and IT-G1 state-transition observations do not close the general gate.
+- G4 Causal identification: OPEN; C09 bounded causal-operationalization and independent reconstruction are closed, but admissible real-world causal identification remains outstanding.
+- G5 Value linkage: OPEN.
+- G6 Originality/comparative architecture: BOUNDED / PARTIAL.
+- G7 Transversal translation protocol: BOUNDED operational support; general/transversal closure remains OPEN.
+
+## Current methodological routing
+
+- IUT-A-01 U2 FULL_PILOT 001: `CLOSED — U2-NULL`; no rerun.
+- IT-NOSD-010: G0/G1/G2 closed for one bounded frozen event; industrial execution authorization `NONE`.
+- EXT-UPD-4.8 O3 accessibility closure: `CLOSED — INDETERMINATE / H-B / HS-AC01`; no reopening or additional attempt under this closure.
+- Class-II AWS-PatchAsgInstance: fixture-level closure as previously governed.
+- SWIM Reactive-0: `CLOSED — BOUNDED TGCV OPERATIONALIZATION RESULT`; no repeat run for current claim.
+- SWIM trajectory linkage: `CLOSED — BOUNDED TRAJECTORY-LINKAGE RECONSTRUCTION`; no repeat run for current bounded reconstruction.
+- SWIM Reactive2: `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE; A8 NOT_COMPARABLE`; no additional execution under current gate.
+- IT-G1 `AWSSupport-ExecuteEC2Rescue`: `CLOSED — FUNCTIONAL RECOVERY DEMONSTRATED`; no rerun implied.
+- C09 Bundle 003 Executor-2 reconstruction: `CLOSED — PASS`; no further Bundle 003 rerun justified.
+- IT-METH-I FAA AMOC: `CLOSED — INCONCLUSIVE`.
+- Utility scoring and new industrial execution: `NOT AUTHORIZED`.
+
+## Current scientific position
+
+The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, bounded self-adaptive software operationalization from SWIM Reactive-0 and Reactive2, bounded SWIM trajectory-linkage reconstruction, the closed IT-G1 industrial case, FOS C09 methodological/reference evidence, and the closed C09 Bundle 003 Executor-2 independent reconstruction. These are cumulative material evidence records, not claim upgrades. The scientific Core remains unchanged.
