@@ -115,6 +115,15 @@ def load_manifest(path):
  if any(r.get("authorized") is not True for r in rows): raise RuntimeError("MANIFEST_UNAUTHORIZED_PATH")
  return data
 
+def git_worktree_clean_for_paths(paths):
+ r=subprocess.run(["git","diff","--quiet","--"]+list(paths),cwd=ROOT,capture_output=True)
+ if r.returncode not in (0,1): raise RuntimeError(r.stderr.decode("utf-8","replace").strip() or "GIT_DIFF_FAILED")
+ return r.returncode==0
+
+def normalize_worktree_from_index(paths):
+ r=subprocess.run(["git","checkout-index","--force","--"]+list(paths),cwd=ROOT,capture_output=True)
+ if r.returncode: raise RuntimeError(r.stderr.decode("utf-8","replace").strip() or "GIT_WORKTREE_NORMALIZATION_FAILED")
+
 def apply_manifest(manifest_path):
  manifest=load_manifest(manifest_path); source=git("rev-parse",f'{manifest["source_commit"]}^{{commit}}'); head=git("rev-parse","HEAD")
  if source!=head: raise RuntimeError("SOURCE_COMMIT_NOT_HEAD")
@@ -124,19 +133,18 @@ def apply_manifest(manifest_path):
  if errors: raise RuntimeError("TARGET_VALIDATION_FAILED:"+"|".join(errors))
  rows={r["path"]:r for r in manifest["files"]}
  for name in ALLOWED_PATHS:
-  expected_source=sha_bytes(source_bytes(source,Path(ROOT/name))); expected_target=sha_bytes(target[name])
-  row=rows[name]
+  expected_source=sha_bytes(source_bytes(source,Path(ROOT/name))); expected_target=sha_bytes(target[name]); row=rows[name]
   if row.get("source_commit_sha256")!=expected_source or row.get("target_sha256")!=expected_target: raise RuntimeError(f"MANIFEST_HASH_MISMATCH:{name}")
- changed=[name for name in sorted(ALLOWED_PATHS) if (ROOT/name).read_bytes() if False]
  backups={}; writes=[]
  try:
   for name in sorted(ALLOWED_PATHS):
-   path=ROOT/name; old=path.read_bytes() if path.exists() else None; new=target[name]
-   backups[name]=old
+   path=ROOT/name; old=path.read_bytes() if path.exists() else None; new=target[name]; backups[name]=old
    if old!=new: path.parent.mkdir(parents=True,exist_ok=True); writes.append(name); path.write_bytes(new)
+  normalize_worktree_from_index(sorted(ALLOWED_PATHS))
   for name in sorted(ALLOWED_PATHS):
    path=ROOT/name
-   if not path.exists() or sha(path)!=sha_bytes(target[name]): raise RuntimeError(f"POST_WRITE_VERIFY_FAILED:{name}")
+   if not path.exists(): raise RuntimeError(f"POST_WRITE_VERIFY_FAILED:{name}")
+  if not git_worktree_clean_for_paths(sorted(ALLOWED_PATHS)): raise RuntimeError("POST_WRITE_GIT_CLEAN_VERIFY_FAILED")
  except Exception:
   for name,old in backups.items():
    path=ROOT/name
@@ -144,7 +152,7 @@ def apply_manifest(manifest_path):
     if path.exists(): path.unlink()
    else: path.write_bytes(old)
   raise
- print("TGCV CANONICAL STATE SYNC"); print("MODE=APPLY"); print("ENGINE_VERSION=v3.4"); print("SOURCE_COMMIT="+source); print("WRITE_RESULT=PASS"); print("FILES_WRITTEN="+str(len(writes))); print("RE_READ_VERIFY=PASS"); print("WRITTEN_PATHS="+json.dumps(writes,ensure_ascii=False)); print("REMOTE_COMMIT_PUSH=NOT_PERFORMED")
+ print("TGCV CANONICAL STATE SYNC"); print("MODE=APPLY"); print("ENGINE_VERSION=v3.4"); print("SOURCE_COMMIT="+source); print("WRITE_RESULT=PASS"); print("FILES_WRITTEN="+str(len(writes))); print("RE_READ_VERIFY=PASS"); print("WRITTEN_PATHS="+json.dumps(writes,ensure_ascii=False)); print("GIT_WORKTREE_VERIFY=PASS"); print("REMOTE_COMMIT_PUSH=NOT_PERFORMED")
  return 0
 
 def main():
