@@ -1,7 +1,7 @@
 # TGCV C09 Operational Execution Bundle 001
 
-**Status:** `DRAFT — NOT YET FROZEN`
-**Purpose:** complete operational specification for the bounded C09 controlled domain.
+**Status:** `FROZEN — EXECUTION NOT YET AUTHORIZED`
+**Freeze scope:** operational definitions, fixture, randomization, null control, endpoint, executor contract and reconstruction boundary.
 **Claim:** C09 — Accessibility changes causally affect subsequent trajectories.
 
 ## 1. Frozen experiment
@@ -18,7 +18,7 @@ For every unit `u`:
 
 Accessibility:
 - control Z=0: R1=false, therefore `T_acc,0={A,C}`;
-- treatment Z=1: R1=true, therefore `T_acc,1={A,B,C}`.
+- treatment Z=1: R1=true, therefore `T_acc,1={A,B,C}`;
 - null arm uses R1=false and must therefore preserve `{A,C}`.
 
 The treatment flag may be consumed only by the accessibility predicate. It must not be read by transition, score, policy, metric, observation, or randomization code.
@@ -59,10 +59,14 @@ The executor must verify:
 
 Any failed check yields `BLOCKED` and no scientific estimate is emitted.
 
-## 8. Independence reconstruction
+## 8. Runtime contract
+
+Execution requires CPython 3.11+ with the standard library only. No network access, external package, external dataset, or mutable service is required. The executor shall record the exact `sys.version`, operating-system identifier and SHA-256 of the executed source before scientific execution. That runtime fingerprint is an execution-input record, not an experimental degree of freedom.
+
+## 9. Independence reconstruction
 
 Executor-2 must reconstruct the fixture, assignment, accessibility sets, policy, transition, endpoint and checks from this bundle without reading Executor-1 output. It must use the same canonical definitions but an independently implemented reconstruction path.
 
-## 9. Scope
+## 10. Scope
 
 This bundle supports only the bounded causal test `Z -> ΔT_acc -> Y` in this synthetic domain at H=1. It does not authorize claim upgrade, Core/RMA/Evidence→Claim Matrix modification, or inference to other domains/horizons.
