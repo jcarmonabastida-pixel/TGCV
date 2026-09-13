@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Independent deterministic executor for TGCV C09 Operational Bundle 001."""
-import hashlib, json, sys
+"""Deterministic Executor-1 implementation for TGCV C09 Operational Bundle 001."""
+import hashlib, json, platform, sys
 from pathlib import Path
 
 SEED = 130917
@@ -15,6 +15,10 @@ TRANSFORMS = {
 C0 = {"capacity": 1, "policy_version": "C09-001"}
 
 
+def sha256_bytes(data):
+    return hashlib.sha256(data).hexdigest()
+
+
 def s0(unit_id):
     return int(hashlib.sha256(unit_id.encode()).hexdigest()[:8], 16) % 10
 
@@ -25,7 +29,6 @@ def rng_key(seed, i):
 
 def assignment():
     a = UNIT_IDS[:]
-    # Deterministic Fisher-Yates. The exact integer conversion is part of the protocol.
     for i in range(len(a) - 1, 0, -1):
         j = int.from_bytes(rng_key(SEED, i)[:8], "big") % (i + 1)
         a[i], a[j] = a[j], a[i]
@@ -33,7 +36,7 @@ def assignment():
 
 
 def t_acc(r1):
-    return [u for u in U if TRANSFORMS[u]["requires"] in (None, "R1" if r1 else None)] if r1 else ["A", "C"]
+    return ["A", "B", "C"] if r1 else ["A", "C"]
 
 
 def policy(tacc):
@@ -44,11 +47,10 @@ def run(r1_by_arm):
     rows = []
     for uid in UNIT_IDS:
         z = ASSIGNMENT[uid]
-        r1 = r1_by_arm[z]
-        ta = t_acc(r1)
+        ta = t_acc(r1_by_arm[z])
         chosen = policy(ta)
-        y = s0(uid) + TRANSFORMS[chosen]["delta"]
-        rows.append({"unit_id": uid, "Z": z, "S0": s0(uid), "T_acc": ta, "selected": chosen, "Y": y})
+        rows.append({"unit_id": uid, "Z": z, "S0": s0(uid), "T_acc": ta,
+                     "selected": chosen, "Y": s0(uid) + TRANSFORMS[chosen]["delta"]})
     return rows
 
 
@@ -56,8 +58,14 @@ def mean(xs):
     return sum(xs) / len(xs)
 
 
+def bundle_hashes(root):
+    names = ["fixture.json", "EXECUTION_SPEC.md", "execute_c09_bundle_001.py"]
+    return {name: sha256_bytes((root / name).read_bytes()) for name in names}
+
+
 def main():
     global ASSIGNMENT
+    root = Path(__file__).resolve().parent
     ASSIGNMENT = assignment()
     assert list(ASSIGNMENT.values()).count(0) == 128
     assert list(ASSIGNMENT.values()).count(1) == 128
@@ -69,10 +77,18 @@ def main():
     null = run({0: False, 1: False})
     yt = [r["Y"] for r in primary if r["Z"] == 1]
     yc = [r["Y"] for r in primary if r["Z"] == 0]
-    null_diff = mean([r["Y"] for r in null if r["Z"] == 1]) - mean([r["Y"] for r in null if r["Z"] == 0])
+    ny_t = [r["Y"] for r in null if r["Z"] == 1]
+    ny_c = [r["Y"] for r in null if r["Z"] == 0]
+    null_diff = mean(ny_t) - mean(ny_c)
     result = {
         "bundle": "C09_OPERATIONAL_BUNDLE_001",
         "status": "PASS_PREANALYTIC_EXECUTION" if null_diff == 0 else "BLOCKED",
+        "runtime_fingerprint": {
+            "python": sys.version,
+            "platform": platform.platform(),
+            "implementation": platform.python_implementation(),
+        },
+        "bundle_sha256": bundle_hashes(root),
         "n_control": len(yc), "n_treatment": len(yt),
         "mean_control": mean(yc), "mean_treatment": mean(yt),
         "tau_hat": mean(yt) - mean(yc),
@@ -81,7 +97,7 @@ def main():
         "accessibility_treatment": t_acc(True),
         "rows": primary,
     }
-    out = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("c09_execution_result.json")
+    out = Path(sys.argv[1]) if len(sys.argv) > 1 else root / "c09_execution_result.json"
     out.write_text(json.dumps(result, sort_keys=True, separators=(",", ":")), encoding="utf-8")
     print(json.dumps({k: result[k] for k in result if k != "rows"}, sort_keys=True))
 
