@@ -1,9 +1,9 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.4
+# TGCV — Evidence-to-Claim Matrix — Current v1.5
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
-**Date:** 2026-09-12  
-**Predecessor:** v1.3  
-**Incremental governance update:** v1.4 preserves the complete material evidentiary content and schema of v1.3; no evidence is deleted, collapsed, or downgraded and no scientific claim status/level is upgraded.
+**Date:** 2026-09-13  
+**Predecessor:** v1.4  
+**Incremental governance update:** v1.5 preserves the complete material evidentiary content and schema of v1.4; no evidence is deleted, collapsed, or downgraded and no scientific claim status/level is upgraded.
 
 **Current update:** Material evidence propagation for closed IT-G1 `AWSSupport-ExecuteEC2Rescue`. No scientific claim status/level upgrade.
 
@@ -168,7 +168,7 @@ No claim status/level is upgraded by IT-G1.
 
 ## Claim boundary
 
-The v1.3 update is additive. It preserves the full evidence/claim structure of v1.2 and adds IT-G1 as material bounded industrial evidence. No C01–C16 status is upgraded. Material evidence propagation remains distinct from scientific claim upgrade. The TGCV Core remains unchanged.
+The v1.5 update is additive. It preserves the full evidence/claim structure of v1.4 and adds FOS C09 as material methodological/reference evidence. No C01–C16 status is upgraded. Material evidence propagation remains distinct from scientific claim upgrade. The TGCV Core remains unchanged.
 
 ## Gate state
 
@@ -196,3 +196,25 @@ The v1.3 update is additive. It preserves the full evidence/claim structure of v
 ## Current scientific position
 
 The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, bounded self-adaptive software operationalization from SWIM Reactive-0 and Reactive2, bounded SWIM trajectory-linkage reconstruction, and the closed IT-G1 industrial case. These are cumulative material evidence records, not claim upgrades. The scientific Core remains unchanged.
+
+## Material methodological evidence — FOS C09
+
+# FOS C09 — Evidence Disposition 001
+
+**Status:** CLOSED — NOT REPORTABLE UNDER FROZEN ESTIMATOR
+
+FOS provides material bounded evidence for reconstructing intervention availability, randomized SUB/UC assignment, linkage to the 37-month endpoint, and weighted ITT arithmetic. It does not provide a reportable C09 causal estimate under the currently frozen TGCV estimator because a design-consistent randomization variance could not be demonstrated from the public-use files and frozen design information.
+
+Frozen disposition:
+- retain FOS as methodological/reference evidence;
+- do not report SE, CI, p-value, or final causal effect;
+- do not impute the single determinately unresolved SUB/UC endpoint;
+- preserve the reconstructed weighted ITT only as arithmetic reconstruction, not as a causal result;
+- no C09 claim upgrade;
+- no TGCV Core change;
+- no execution authorization;
+- resume C09 candidate screening.
+
+### Interpretation boundary
+
+FOS is material methodological/reference evidence for reconstruction and evaluation of a candidate causal-design pathway. Its closure is specifically an estimator/reportability boundary: it does not constitute a reportable causal estimate for C09 and must not be used to infer one. Evidence propagation does not imply claim upgrade.

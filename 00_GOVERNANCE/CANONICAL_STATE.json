@@ -1,21 +1,21 @@
 {
-  "schema": "TGCV-CANONICAL-STATE-1",
-  "status": "CURRENT",
-  "current_versions": {
-    "rma": "v3.34",
-    "claim_matrix": "v1.4",
-    "rma_traceability": "v3.34",
-    "governance_operating_principles": "v0.1"
-  },
-  "pointers": {
-    "rma": "00_GOVERNANCE/rma/TGCV_RMA_current.md",
-    "claim_matrix": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md",
-    "claim_matrix_pointer": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md",
-    "rma_traceability": "00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv",
-    "governance_operating_principles": "00_GOVERNANCE/GOVERNANCE_OPERATING_PRINCIPLES_v0.1.md",
-    "status": "STATUS.md",
-    "changelog": "CHANGELOG.md",
-    "scientific_registry": "02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md",
-    "validator": "00_GOVERNANCE/tools/validate_current_state.py"
-  }
+    "schema":  "TGCV-CANONICAL-STATE-1",
+    "status":  "CURRENT",
+    "current_versions":  {
+                             "rma":  "v3.35",
+                             "claim_matrix":  "v1.5",
+                             "rma_traceability":  "v3.35",
+                             "governance_operating_principles":  "v0.1"
+                         },
+    "pointers":  {
+                     "rma":  "00_GOVERNANCE/rma/TGCV_RMA_current.md",
+                     "claim_matrix":  "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md",
+                     "claim_matrix_pointer":  "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md",
+                     "rma_traceability":  "00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv",
+                     "governance_operating_principles":  "00_GOVERNANCE/GOVERNANCE_OPERATING_PRINCIPLES_v0.1.md",
+                     "status":  "STATUS.md",
+                     "changelog":  "CHANGELOG.md",
+                     "scientific_registry":  "02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md",
+                     "validator":  "00_GOVERNANCE/tools/validate_current_state.py"
+                 }
 }
