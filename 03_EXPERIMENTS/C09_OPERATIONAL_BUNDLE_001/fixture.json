@@ -1,0 +1,43 @@
+{
+  "accessibility": {
+    "control": {"R1": false},
+    "treatment": {"R1": true}
+  },
+  "baseline_generation": {
+    "algorithm": "SHA256(counter)",
+    "c0": {"capacity": 1, "policy_version": "C09-001"},
+    "s0": "int(hash(unit_id)[0:8],16)%10"
+  },
+  "candidate_universe": ["A", "B", "C"],
+  "horizon": 1,
+  "null": {"R1": false},
+  "policy": {
+    "name": "MAX_SCORE_LEXICOGRAPHIC",
+    "rule": "select accessible transformation with highest fixed score; ties by A<B<C"
+  },
+  "primary_endpoint": {
+    "encoding": "integer final state value",
+    "metric": "mean_treatment_minus_control",
+    "name": "Y_final_state"
+  },
+  "randomization": {
+    "algorithm": "SHA256-Fisher-Yates",
+    "seed": 130917,
+    "seed_range": [100000, 199999]
+  },
+  "schema_version": "C09-BUNDLE-001",
+  "transformations": {
+    "A": {"delta": 1, "requires": "NONE", "score": 1.0},
+    "B": {"delta": 3, "requires": "R1", "score": 2.0},
+    "C": {"delta": 0, "requires": "NONE", "score": 0.5}
+  },
+  "treatment_assignment": {
+    "balanced": true,
+    "n_control": 128,
+    "n_treatment": 128
+  },
+  "units": {
+    "n": 256,
+    "unit_id": "u-0000..u-0255"
+  }
+}
