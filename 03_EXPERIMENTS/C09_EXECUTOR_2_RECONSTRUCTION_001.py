@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 BUNDLE = ROOT / "C09_OPERATIONAL_BUNDLE_003"
+RANDOMIZATION_SPEC = ROOT / "C09_RANDOMIZATION_SPECIFICATION_001.md"
 SEED = 130917
 N = 256
 IDS = tuple(f"u-{i:04d}" for i in range(N))
@@ -47,11 +48,13 @@ def baseline(uid):
 
 
 def fisher_yates(universe, seed):
-    # Independent SHA256 counter construction: one digest per descending index.
+    """Frozen by C09_RANDOMIZATION_SPECIFICATION_001.md."""
     values = list(universe)
     for i in range(len(values) - 1, 0, -1):
-        digest = hashlib.sha256(f"{seed}:{i}".encode("ascii")).digest()
-        j = int.from_bytes(digest, "big") % (i + 1)
+        input_bytes = f"{seed}:{i}".encode("ascii")
+        digest = hashlib.sha256(input_bytes).digest()
+        integer = int.from_bytes(digest, "big", signed=False)
+        j = integer % (i + 1)
         values[i], values[j] = values[j], values[i]
     return values
 
@@ -109,6 +112,7 @@ def main():
     treatment = [r for r in primary if r["Z"] == 1]
     checks = {
         "bundle_hashes": bundle_ok,
+        "randomization_spec_present": RANDOMIZATION_SPEC.is_file(),
         "accessibility": accessible(fixture, 0) == ("A", "C") and accessible(fixture, 1) == ("A", "B", "C"),
         "accessibility_differs": accessible(fixture, 0) != accessible(fixture, 1),
         "balanced_assignment": len(control) == 128 and len(treatment) == 128,
@@ -128,6 +132,7 @@ def main():
     result = {
         "bundle": "C09_OPERATIONAL_BUNDLE_003",
         "executor": "EXECUTOR-2",
+        "randomization_spec": "C09_RANDOMIZATION_SPECIFICATION_001.md",
         "status": "PASS_RECONSTRUCTION" if all(checks.values()) else "BLOCKED",
         "runtime": {"python": sys.version, "platform": platform.platform(), "implementation": platform.python_implementation()},
         "bundle_sha256": actual_hashes,
