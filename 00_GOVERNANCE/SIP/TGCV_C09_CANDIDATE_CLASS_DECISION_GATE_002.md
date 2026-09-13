@@ -1,63 +1,64 @@
 # TGCV — C09 Candidate-Class Decision Gate 002
 
-**Status:** `COMPLETED — RETROSPECTIVE SET CLOSED / DIRECTED EXTERNAL SEARCH NOT JUSTIFIED / CONTROLLED DOMAIN ROUTE OPEN`
+**Status:** `COMPLETED — RETROSPECTIVE SET CLOSED / CONTROLLED DOMAIN CLOSED / DIRECTED REAL-WORLD SEARCH OPEN`
 **Date:** 2026-09-14
 **Claim:** C09 — Accessibility changes causally affect subsequent trajectories
-**Preconditions:** `TGCV_C09_DOMAIN_IDENTIFICATION_GATE_001.md`; `TGCV_C09_HISTORICAL_LONGITUDINAL_FEASIBILITY_AUDIT_001.md`; completed TR-132 retrospective candidate reviews
+**Preconditions:** `TGCV_C09_DOMAIN_IDENTIFICATION_GATE_001.md`; `TGCV_C09_HISTORICAL_LONGITUDINAL_FEASIBILITY_AUDIT_001.md`; completed TR-132 retrospective candidate reviews; completed controlled-domain C09 design/execution/closure records
 
 ## 1. Decision objective
 
-Determine the next admissible research route for C09 after the completed retrospective candidate review, without repeating candidate preflights whose decisive blocker has already been established.
+Determine the next admissible research route for C09 after the completed retrospective candidate review and the completed controlled-domain route, without repeating either class of work.
 
 The decision is methodological only. It does not execute a causal test and does not change C09 claim status.
 
 ## 2. Accumulated finding
 
-The retrospective sequence evaluated randomized and longitudinal candidates including MTO, Chicago voucher lottery, NYCHANS, King County free transit, naturalization fee voucher, OHIE and Charlotte-Mecklenburg school choice.
+The retrospective sequence evaluated multiple randomized and longitudinal candidates. The repeated decisive blocker was the inability to establish, from the governed public data packages, a sufficiently complete bounded `U*` and unit-level `T_acc,0/T_acc,1` mapping while preserving the information firewall and excluding realized transformations, treatment indicators, aggregate statistics or restricted administrative records as substitutes for accessibility.
 
-The repeated decisive blocker is not absence of randomized interventions or independent trajectories. It is the inability to establish, from the governed public data packages, a sufficiently complete bounded `U*` and unit-level `T_acc,0/T_acc,1` mapping while preserving the information firewall and excluding realized transformations, treatment indicators, aggregate statistics or restricted administrative records as substitutes for accessibility.
+The controlled C09 domain was subsequently designed, frozen, independently reconstructed and closed. Executor-2 reconstruction passed, but the resulting evidence was correctly registered as bounded methodological evidence only. It does not establish the real-world C09 proposition.
 
-Historical railway evidence was subsequently identified as a promising candidate architecture, but its candidate-specific treatment-assignment independence and data provenance remain unresolved. Therefore it is not admitted for causal execution merely because accessibility can be reconstructed.
+Therefore neither another retrospective candidate loop nor another controlled/synthetic C09 experiment is authorized or scientifically justified by this gate.
 
 ## 3. Route comparison
 
 | Route | Current disposition | Reason |
 |---|---|---|
-| Repeat retrospective preflights of already reviewed randomized candidates | **CLOSED** | Same representation/provenance blocker would be re-tested without new admissible information |
-| Broad search for another generic observational domain | **REJECTED** | Would repeat the established association/accessibility problem and risk outcome-tuned domain selection |
-| Focused external search for a public intervention explicitly changing an access/eligibility/permission condition | **NOT JUSTIFIED AS DEFAULT** | No current evidence establishes a materially superior candidate; would require a new discovery programme before governance can evaluate it |
-| Historical railway candidate | **OPEN EXPLORATORY** | Strong longitudinal accessibility architecture, but treatment-assignment independence remains unresolved |
-| New controlled C09 domain | **PREFERRED NEXT ROUTE** | Can freeze `U*`, `L`, assignment, intervention, counterfactual and trajectory before execution and directly satisfy TR-132 |
+| Repeat retrospective preflights of already reviewed candidates | **CLOSED** | The decisive public-provenance/T_acc blocker has already been established repeatedly |
+| Repeat controlled/synthetic C09 experiment | **CLOSED** | Controlled-domain design, execution and independent reconstruction are already complete; repeating them would not address the remaining real-world gap |
+| Historical railway candidate | **NOT ADMITTED** | Treatment-assignment independence and provenance remain unresolved; no new admissible evidence currently closes that gap |
+| Targeted search for a new real-world intervention with public unit-level data | **PREFERRED NEXT ROUTE** | This is the remaining route capable of addressing the outstanding real-world causal-identification gap |
+| C09 real-world causal execution | **NOT YET AUTHORIZED** | Requires one concrete candidate to pass TR-132 operational sufficiency and data-provenance checks first |
 
-## 4. Decision rule
+## 4. Decision rule for the real-world search
 
-The programme must not continue candidate hunting solely because previous candidates failed public `T_acc` completeness. Such repetition does not increase identification strength.
+A new candidate should be admitted for operational preflight only when it is materially new and can plausibly satisfy all of the following before causal analysis:
 
-A new external candidate should enter the programme only if its intervention is independently determined and its bounded accessibility representation is demonstrably reconstructible from public, independently reproducible information before outcome analysis.
+- real intervention already occurred;
+- stable identifiable unit;
+- bounded `U*` whose relevant transformations can be explicitly declared;
+- reconstructible `T_acc,0` and `T_acc,1` from public, independently reproducible data;
+- intervention/assignment independently identifiable, preferably randomized or otherwise credibly exogenous;
+- independent post-intervention trajectory `Y` with a fixed horizon;
+- public unit-level treatment, accessibility and outcome data sufficient for independent reconstruction;
+- no post-treatment or outcome leakage into the accessibility representation;
+- credible counterfactual and prespecified causal estimand;
+- bounded sufficiency under TR-132, without requiring complete system-wide `T_acc`.
 
-Absent such a candidate, the scientifically cleaner route is to construct a controlled domain in which the accessibility intervention and bounded transformation universe are explicit by design.
+The search is directed, not an invitation to reopen the previously closed candidate catalogue. New candidates are allowed and should be considered when they satisfy the above conditions better than the already rejected cases.
 
-## 5. Controlled-domain requirements inherited from C09
+## 5. Scientific target
 
-Any new controlled domain must preserve the existing C09 causal design and TR-132 gate, including:
+The remaining empirical gap is narrow:
 
-- frozen `S0`, `C0`, `U*` and accessibility rule `L`;
-- exogenous or randomized `Z`;
-- intervention affecting accessibility and not directly encoding the target trajectory;
-- explicit `T_acc,0` and `T_acc,1` within `U*`;
-- independently defined trajectory `Y` and fixed horizon;
-- credible counterfactual;
-- exclusion of omitted transformations capable of changing the declared causal conclusion;
-- prespecified estimator and uncertainty treatment;
-- integrity/falsification checks;
-- independent reproducibility;
-- no post-treatment or outcome leakage.
+`real-world intervention Z → bounded ΔT_acc → subsequent trajectory Y`
 
-## 6. Scientific boundary
+The purpose is not to prove that every transformation in a real system has been enumerated. The purpose is to demonstrate, in one bounded real case, that the declared accessibility change is sufficient to identify the causal contrast required by C09 and that the resulting trajectory can be independently reconstructed.
 
-This gate does **not** claim that a controlled synthetic domain establishes the real-world C09 proposition by itself. A controlled domain can establish whether the proposed TGCV causal mechanism is identifiable and behaves as predicted under known conditions. External validity and real-world causal identification remain separate questions.
+## 6. Search boundary
 
-Likewise, the railway candidate remains available for a later focused audit if new provenance/assignment evidence becomes available. Its historical feasibility record remains immutable.
+The next operation is a targeted real-world case search across new domains, including cases not previously considered. The search must stop early on candidates that fail public data/provenance or accessibility operationalization, rather than generating repeated descriptive preflights.
+
+No candidate becomes a C09 execution candidate merely because a paper reports a causal effect. The underlying unit-level assignment, bounded accessibility representation and trajectory data must be independently inspectable or reproducibly downloadable.
 
 ## 7. Decision
 
@@ -65,11 +66,11 @@ Likewise, the railway candidate remains available for a later focused audit if n
 
 **RETROSPECTIVE CANDIDATE LOOP = CLOSED.**
 
-**DIRECTED EXTERNAL SEARCH = NOT REQUIRED AS THE NEXT DEFAULT OPERATION.**
+**CONTROLLED C09 DOMAIN ROUTE = CLOSED.**
 
-**NEXT ROUTE = CONTROLLED C09 DOMAIN DESIGN / EXECUTION-PACKAGE PREPARATION, subject to the existing design and TR-132 gates.**
+**NEXT ROUTE = TARGETED SEARCH FOR ONE NEW REAL-WORLD CASE WITH PUBLIC, REPRODUCIBLE UNIT-LEVEL DATA.**
 
-C09 remains `OPEN — UNTESTED CAUSAL CLAIM`.
+C09 remains `OPEN — UNTESTED REAL-WORLD CAUSAL CLAIM`.
 
 No Matrix, RMA, Core or canonical claim upgrade follows from this gate.
 
@@ -77,4 +78,4 @@ No Matrix, RMA, Core or canonical claim upgrade follows from this gate.
 
 `EXECUTION AUTHORIZATION = NONE`
 
-This artifact authorizes only the next design stage. No causal execution, dataset acquisition, model fitting or external intervention is authorized by this decision gate.
+This artifact authorizes only targeted real-world case identification and subsequent TR-132 operational preflight of a materially new candidate. No causal execution, model fitting or claim upgrade is authorized by this decision gate.
