@@ -4,7 +4,7 @@ TGCV C09 — KGFS / D178 automated acquisition and technical audit.
 
 Purpose
 -------
-1. Discover the parent Yale Dataverse dataset from the verified D178F03 file id.
+1. Discover the parent Yale Dataverse dataset from the verified D178F10 file id.
 2. Download the complete published D178 dataset in original format.
 3. Extract the archive and inventory all files.
 4. Copy Baseline and Endline .dta files into the canonical audit structure.
@@ -34,7 +34,8 @@ from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 BASE_URL = "https://dataverse.yale.edu"
-VERIFIED_FILE_ID = 28737  # D178F03, verified by direct /api/access/datafile test
+VERIFIED_FILE_ID = 28737  # D178F10, verified by direct /api/access/datafile test
+VERIFIED_FILE_LABEL = "D178F10"
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
 BASELINE = DATA / "baseline"
@@ -119,9 +120,8 @@ def discover_persistent_id():
         for value in candidates:
             if value.startswith(("doi:", "hdl:", "https://doi.org/", "http://doi.org/")):
                 return value
-        # Some Dataverse responses nest datasetVersionId but expose no PID.
         # Keep the complete response for diagnosis instead of guessing.
-        (OUTPUT / "D178F03_METADATA.json").write_text(
+        (OUTPUT / f"{VERIFIED_FILE_LABEL}_METADATA.json").write_text(
             json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8"
         )
     return None
@@ -168,20 +168,18 @@ def classify(name: str):
 def main():
     print("=== TGCV C09 — KGFS / D178 AUTOMATED AUDIT ===")
     print(f"Root: {ROOT}")
-    print(f"Verified source file id: {VERIFIED_FILE_ID} (D178F03)")
+    print(f"Verified source file id: {VERIFIED_FILE_ID} ({VERIFIED_FILE_LABEL})")
+    print(f"Python: {sys.version.split()[0]} ({sys.executable})")
 
-    # 1. Discover parent dataset PID.
     print("\n[1/7] Discovering parent Dataverse dataset...")
     pid = discover_persistent_id()
     if not pid:
         raise RuntimeError(
-            "Could not recover the parent dataset persistentId from Dataverse "
-            "file metadata. D178F03 metadata was saved to output for diagnosis; "
-            "no identifier was guessed."
+            f"Could not recover the parent dataset persistentId from Dataverse file metadata. "
+            f"{VERIFIED_FILE_LABEL} metadata was saved to output for diagnosis; no identifier was guessed."
         )
     print(f"  persistentId = {pid}")
 
-    # 2. Download complete dataset in original format.
     print("\n[2/7] Downloading complete D178 dataset in original format...")
     encoded = quote(pid, safe="")
     dataset_url = (
@@ -198,7 +196,6 @@ def main():
     zip_sha = sha256(ZIP_PATH)
     print(f"  archive SHA-256 = {zip_sha}")
 
-    # 3. Extract.
     print("\n[3/7] Extracting archive...")
     if EXTRACT.exists():
         shutil.rmtree(EXTRACT)
@@ -209,7 +206,6 @@ def main():
             raise RuntimeError(f"Corrupt ZIP member: {bad}")
         z.extractall(EXTRACT)
 
-    # 4. Inventory and canonical copy.
     print("\n[4/7] Inventorying files and building canonical data folders...")
     records = []
     for path in sorted(p for p in EXTRACT.rglob("*") if p.is_file()):
@@ -235,6 +231,7 @@ def main():
             {
                 "dataset_persistent_id": pid,
                 "source_file_id": VERIFIED_FILE_ID,
+                "source_file_label": VERIFIED_FILE_LABEL,
                 "archive": str(ZIP_PATH),
                 "archive_sha256": zip_sha,
                 "files": records,
@@ -250,7 +247,6 @@ def main():
         w.writeheader()
         w.writerows(records)
 
-    # 5. Variable metadata audit.
     print("\n[5/7] Auditing Stata metadata/variables...")
     variable_results = []
     pyreadstat_ok = ensure_pyreadstat()
@@ -289,14 +285,6 @@ def main():
             "reason": "pyreadstat unavailable; file acquisition/hash audit remains valid",
         })
 
-    # 6. Required identifier check, exact-name only.
-    exact_names = {"baseline": set(), "endline": set()}
-    for r in variable_results:
-        if r.get("status") == "PASS":
-            # candidate_variables are not sufficient for exact-name determination;
-            # re-read names cheaply via the metadata result if available is avoided.
-            pass
-
     identifier_report = {}
     if pyreadstat_ok:
         import pyreadstat
@@ -312,13 +300,14 @@ def main():
                 k: (k in names) for k in ("hhid", "memid", "cont_s_id")
             }
 
-    # 7. Write final reports.
     print("\n[6/7] Writing reports...")
     report = {
         "audit": "TGCV_C09_KGFS_TRAJECTORY_VARIABLE_AUDIT",
         "status": "TECHNICAL_ACQUISITION_AND_METADATA_AUDIT",
         "scientific_claim_status": "NO_C09_UPGRADE",
         "dataset_persistent_id": pid,
+        "source_file_id": VERIFIED_FILE_ID,
+        "source_file_label": VERIFIED_FILE_LABEL,
         "archive_sha256": zip_sha,
         "file_count": len(records),
         "dta_count": sum(r["file_name"].lower().endswith(".dta") for r in records),
@@ -339,6 +328,7 @@ def main():
         "**Scientific status:** this artifact does not upgrade C09, Core, RMA, or the Evidence→Claim Matrix.",
         "",
         f"- Dataset persistentId: `{pid}`",
+        f"- Source file: `{VERIFIED_FILE_LABEL}` / file id `{VERIFIED_FILE_ID}`",
         f"- Archive SHA-256: `{zip_sha}`",
         f"- Files inventoried: `{len(records)}`",
         f"- DTA files: `{report['dta_count']}`",
@@ -371,6 +361,8 @@ def main():
 
     summary = {
         "dataset_persistent_id": pid,
+        "source_file_id": VERIFIED_FILE_ID,
+        "source_file_label": VERIFIED_FILE_LABEL,
         "archive_sha256": zip_sha,
         "files": len(records),
         "dta": report["dta_count"],
@@ -388,8 +380,4 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as exc:
-        print(f"\nFATAL: {exc}", file=sys.stderr)
-        sys.exit(1)
+    main()
