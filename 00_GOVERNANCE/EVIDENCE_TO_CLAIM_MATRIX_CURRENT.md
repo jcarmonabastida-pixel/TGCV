@@ -1,11 +1,11 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.6
+# TGCV — Evidence-to-Claim Matrix — Current v1.7
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
-**Date:** 2026-09-13  
-**Predecessor:** v1.5  
-**Incremental governance update:** v1.6 preserves the complete material evidentiary content and schema of v1.5; no evidence is deleted, collapsed, or downgraded and no scientific claim status/level is upgraded.
+**Date:** 2026-09-14  
+**Predecessor:** v1.6  
+**Incremental governance update:** v1.7 preserves the complete material evidentiary content and schema of v1.6; no evidence is deleted, collapsed, or downgraded. C09 is updated only because a separate claim-level consolidation closed bounded empirical causal support.
 
-**Current update:** Material evidence propagation for closed C09 Bundle 003 Executor-2 independent reconstruction. No scientific claim status/level upgrade.
+**Current update:** Claim-level consolidation of C09 using SWIM + RUST-DYN-2 + KGFS, including KGFS D5-A closure and exact 74/74 trajectory-variable reproducibility audit. C09 status upgraded to `PASS — BOUNDED EMPIRICAL CAUSAL SUPPORT`. No Core/RMA-wide scientific upgrade is implied.
 
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
@@ -15,7 +15,7 @@ This matrix is cumulative. Every new version MUST preserve the full evidentiary 
 ## Material evidence propagation rule
 A material experimental result is propagated to this matrix when it adds, removes, qualifies, bounds, or otherwise changes the evidentiary basis or interpretation of a claim, even when no claim status/level changes. Claim upgrade is a separate decision and is never inferred merely from evidence propagation.
 
-**Operational rule:** Evidence propagation does not imply claim upgrade.
+**Operational rule:** Evidence propagation does not imply claim upgrade. A claim-level upgrade requires an explicit claim-level consolidation record.
 
 ## Current claim matrix
 
@@ -28,13 +28,13 @@ A material experimental result is propagated to this matrix when it adds, remove
 | C05 | ΔT_acc can occur with ΔReach¹_pot change | E1 | Rust ND-2 | No direct test by SWIM or IT-G1. | Independent replication |
 | C06 | Reach identity is not characterized by cardinality alone | E1 | Rust ND-4 | No material impact. | Independent replication |
 | C07 | Accessible transformation spaces change over time in Rust | E1 | Rust non-persistent pairs + bounded SWIM operationalization | SWIM provides bounded non-Rust evidence that accessible transformation spaces can change across observed state transitions; IT-G1 adds a bounded industrial state-transformation sequence but does not upgrade the Rust-specific claim. | Independent closed operationalization / replication |
-| C08 | Accessibility changes modify reachable future trajectories | H | Formal chain + bounded Rust H=1 + SWIM trajectory-linkage reconstruction + IT-G1 bounded state/trajectory observation | SWIM adds bounded reconstructability of ordered subsequent transformations and state transitions; IT-G1 provides a bounded industrial state/trajectory observation. Neither establishes causal trajectory modification or a general trajectory claim. | Independent valid trajectory test with explicit trajectory criterion beyond bounded exemplars |
-| C09 | Accessibility changes causally affect subsequent trajectories | H | No causal identification; FOS C09 methodological/reference evidence; C09 Bundle 003 + independent Executor-2 reconstruction | Executor-2 provides bounded executable causal-operationalization evidence for `Z → ΔT_acc → Y`: frozen `T_acc(control)=[A,C]`, `T_acc(treatment)=[A,B,C]`, balanced 128/128, `tau_hat=1.6484375`, and 13/13 integrity checks PASS. This establishes independent reconstruction of the bounded design and estimate, not real-world causal evidence. FOS remains non-reportable under its frozen estimator. No claim-level upgrade. | Admissible real-world causal identification |
-| C10 | Accessibility changes generate/predict value | H | No Value evidence | SWIM and IT-G1 are methodological/reconstructive evidence only; C09 Bundle 003 is causal-operationalization evidence without value realization or predictive-value evidence. No value claim is established. | Value-linked test |
-| C11 | TGCV is domain-independent / transversal | H | C-01 A-C + I-01 Gate C + bounded cross-domain evidence | SWIM is a bounded self-adaptive software exemplar and IT-G1 a bounded industrial AWS exemplar; transversal validity remains unestablished. C09 Bundle 003 adds bounded methodological causal-operationalization evidence only. | Independent operationalization across broader domains |
-| C12 | TGCV provides superior explanatory representation | H | Comparative evidence absent | IUT M1 provides bounded decision-performance evidence but U2-NULL; SWIM and IT-G1 are non-comparative for explanatory superiority; C09 Bundle 003 is not a comparative explanatory test. | Controlled differentiated comparison |
+| C08 | Accessibility changes modify reachable future trajectories | H | Formal chain + bounded Rust H=1 + SWIM trajectory-linkage reconstruction + IT-G1 bounded state/trajectory observation | SWIM adds bounded reconstructability of ordered subsequent transformations and state transitions; IT-G1 provides a bounded industrial state/trajectory observation. KGFS supplies the causal layer now reflected in C09, but C08 remains a broader trajectory-modification claim and is not automatically upgraded. | Independent valid trajectory test with explicit trajectory criterion beyond bounded exemplars |
+| C09 | Accessibility changes causally affect subsequent trajectories | **PASS — BOUNDED EMPIRICAL CAUSAL SUPPORT** | SWIM trajectory-linkage reconstruction + RUST-DYN-2 bounded structural evidence + KGFS randomized structural accessibility intervention with D5-A identified contribution + KGFS exact 74/74 trajectory-variable reproducibility audit + C09 Bundle 003 Executor-2 reconstruction + FOS methodological/reference evidence | Claim-level consolidation establishes bounded empirical causal support. KGFS provides the decisive real-world causal layer: randomized early expansion of KGFS banking infrastructure, reconstructable structural accessibility change, D5.2-S applicability, D5-A identified contribution, and reproducible longitudinal trajectory variables. SWIM and RUST-DYN-2 provide complementary bounded structural/trajectory-linkage support. Bundle 003 remains synthetic causal-operationalization evidence and FOS remains non-reportable under its frozen estimator. | Independent real-world replication across a distinct domain; broader generality; no automatic value claim |
+| C10 | Accessibility changes generate/predict value | H | No Value evidence | SWIM, RUST-DYN-2, KGFS and IT-G1 do not establish causal `ΔT_acc → ΔV` or predictive value. No value claim is established. | Value-linked test |
+| C11 | TGCV is domain-independent / transversal | H | C-01 A-C + I-01 Gate C + bounded cross-domain evidence | SWIM is a bounded self-adaptive software exemplar, IT-G1 a bounded industrial AWS exemplar, and KGFS a bounded real-world rural-finance intervention. Transversal validity remains unestablished. | Independent operationalization across broader domains |
+| C12 | TGCV provides superior explanatory representation | H | Comparative evidence absent | IUT M1 provides bounded decision-performance evidence but U2-NULL; SWIM, IT-G1 and KGFS are non-comparative for explanatory superiority. | Controlled differentiated comparison |
 | C13 | TGCV contains no equivalent prior architecture | O | D-OPS-21 | No material impact. | Comparative coverage |
-| C14 | T_acc is an ontological primitive independent of S | F | TR-131 | No impact; SWIM, IT-G1 and C09 Bundle 003 treat accessibility as derived/conditioned rather than restoring the rejected primitive. | No restoration without contrary evidence |
+| C14 | T_acc is an ontological primitive independent of S | F | TR-131 | No impact; SWIM, IT-G1, KGFS and C09 Bundle 003 treat accessibility as derived/conditioned rather than restoring the rejected primitive. | No restoration without contrary evidence |
 | C15 | Rust demonstrates observed Cargo/runtime reachability | F | Rust evidence boundary | No impact. | Separate governed runtime test |
 | C16 | TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value | H | D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 + C09 Bundle 003 | SWIM supports bounded state/context → accessibility → `T_acc` → `ΔT_acc` and bounded trajectory linkage. IT-G1 adds bounded industrial evidence preserving distinctions among internal state transformation, external enabling condition and end-to-end outcome. C09 Bundle 003 adds bounded executable causal-operationalization evidence while preserving the distinction between intervention/accessibility and downstream outcome. It does not close downstream value boundaries or establish transversal validity. | Closed independent-domain operationalization / downstream test |
 
@@ -213,16 +213,58 @@ The result is therefore evidence of **bounded causal operationalization and inde
 
 The reconstruction does **not** close C09 scientifically. It does not establish an admissible real-world intervention, external validity, empirical causal effect, transversal validity, value creation, predictive value, explanatory superiority, or TGCV Core modification. It also does not supersede the FOS C09 estimator/reportability boundary; FOS remains methodological/reference evidence only.
 
+## Material empirical causal evidence — KGFS Rural Banking
+
+**Case:** `KGFS Rural Banking — Barboni, Field, Pande`  
+**Status:** `CLOSED — D5-A IDENTIFIED CONTRIBUTION`  
+**Operationalisation audit:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_TACC_OPERATIONALISATION_AUDIT_001.md`  
+**D5-A closure:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_D5A_CLOSURE_RECORD_001.md`  
+**Trajectory bridge:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_ACCESSIBILITY_TO_TRAJECTORY_BRIDGE_001.md`  
+**Exact variable audit:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_TRAJECTORY_VARIABLE_AUDIT_001.md`  
+**Download manifest:** `03_EXPERIMENTS/C09_KGFS_TRAJECTORY_AUDIT/output/KGFS_D178_DOWNLOAD_MANIFEST.json`  
+**Source reconciliation:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_D178F70_SOURCE_INCONSISTENCY_AUDIT_001.md`
+
+KGFS provides the decisive real-world causal layer for C09. The study uses randomized expansion of banking infrastructure at the service-area level, with treatment consisting of early opening of a KGFS branch. The intervention is a structural accessibility intervention under D5.2-S: it changes the local financial-access system itself rather than merely encouraging downstream use.
+
+The TGCV reconstruction is:
+
+`S0 = absence of KGFS branch/service system`  
+`T_acc,0 = financial transformations structurally accessible pre-opening`  
+`Z = randomized early branch assignment/opening`  
+`S1 = branch/service system present`  
+`T_acc,1 = T_acc,0 + structural financial-access capabilities introduced by KGFS`  
+`ΔT_acc = T_acc,1 − T_acc,0`
+
+The structural accessibility representation includes the introduced local branch access and associated formal financial capabilities: formal loans, formal savings, formal insurance and tailored financial advice/wealth-management services. Downstream take-up, investment, employment, income and poverty variables are not substituted for `T_acc`.
+
+D5.0 and D5.1 are PASS. D5.2-S is PASS because assignment is randomized, the intervention implements a structural accessibility change, pre/post accessibility can be characterized independently of downstream outcomes, the estimand is the causal effect of the structural intervention, and downstream adoption is not used as the accessibility construct. D5.3 pathway audit is PASS and D5.4 classification is `D5-A IDENTIFIED CONTRIBUTION`.
+
+The public longitudinal trajectory architecture was independently audited at exact variable level: `technical_status=PASS`, `files_audited=74`, `missing=[]`, `scientific_claim_status=NO_C09_UPGRADE` at the technical-audit stage. The 74 public `.dta` files were reconciled against the Yale D178 inventory; D178F70 retained a documented catalogue-size discrepancy while the current Dataverse object and checksum were verified. No fabricated padding or byte repair was used.
+
+### Causal interpretation
+
+KGFS therefore supplies an admissible real-world causal architecture in which a randomized structural change in accessibility is followed by observed downstream household/economic trajectories over the study's post-intervention period. This supports the bounded C09 proposition that accessibility changes causally affect subsequent trajectories in the studied setting.
+
+The result is deliberately bounded. It does not establish universal causality across all generative systems, sole causation, universal effect magnitude, that every accessibility change changes a trajectory, or causal `ΔT_acc → ΔV`. It also does not by itself establish full transversal validation of TGCV Core.
+
 ## Claim boundary
 
-The v1.6 update is additive. It preserves the full evidence/claim structure of v1.5 and adds the closed C09 Bundle 003 Executor-2 reconstruction as material bounded methodological evidence. No C01–C16 status is upgraded. Material evidence propagation remains distinct from scientific claim upgrade. The TGCV Core remains unchanged.
+The v1.7 update preserves the full evidence/claim structure of v1.6 and adds the KGFS empirical causal evidence plus the explicit claim-level consolidation. C09 is upgraded from `H` to `PASS — BOUNDED EMPIRICAL CAUSAL SUPPORT`. No other C01–C16 status is upgraded. The TGCV Core remains unchanged.
+
+C09 scope limits remain mandatory:
+- no universal causality across all generative systems;
+- no claim that accessibility is the sole cause of trajectory change;
+- no claim that every accessibility change causes trajectory change;
+- no generalization of KGFS effect magnitude/function beyond its study context;
+- no causal establishment of `ΔT_acc → ΔV`;
+- no universal validation of TGCV Core.
 
 ## Gate state
 
 - G1 Independent replication: OPEN at general scientific level; bounded fixture/event closures remain separately recorded.
 - G2 Cross-domain generalisation: BOUNDED / PARTIAL.
 - G3 Trajectory sufficiency: OPEN; bounded trajectory-linkage and IT-G1 state-transition observations do not close the general gate.
-- G4 Causal identification: OPEN; C09 bounded causal-operationalization and independent reconstruction are closed, but admissible real-world causal identification remains outstanding.
+- G4 Causal identification: **BOUNDED PASS at C09 claim level** through KGFS D5-A; broader/general causal identification remains open.
 - G5 Value linkage: OPEN.
 - G6 Originality/comparative architecture: BOUNDED / PARTIAL.
 - G7 Transversal translation protocol: BOUNDED operational support; general/transversal closure remains OPEN.
@@ -238,9 +280,10 @@ The v1.6 update is additive. It preserves the full evidence/claim structure of v
 - SWIM Reactive2: `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE; A8 NOT_COMPARABLE`; no additional execution under current gate.
 - IT-G1 `AWSSupport-ExecuteEC2Rescue`: `CLOSED — FUNCTIONAL RECOVERY DEMONSTRATED`; no rerun implied.
 - C09 Bundle 003 Executor-2 reconstruction: `CLOSED — PASS`; no further Bundle 003 rerun justified.
+- KGFS Rural Banking: `CLOSED — D5-A IDENTIFIED CONTRIBUTION`; no repeat of existing local reproducibility audit justified.
 - IT-METH-I FAA AMOC: `CLOSED — INCONCLUSIVE`.
 - Utility scoring and new industrial execution: `NOT AUTHORIZED`.
 
 ## Current scientific position
 
-The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, bounded self-adaptive software operationalization from SWIM Reactive-0 and Reactive2, bounded SWIM trajectory-linkage reconstruction, the closed IT-G1 industrial case, FOS C09 methodological/reference evidence, and the closed C09 Bundle 003 Executor-2 independent reconstruction. These are cumulative material evidence records, not claim upgrades. The scientific Core remains unchanged.
+The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, bounded self-adaptive software operationalization from SWIM Reactive-0 and Reactive2, bounded SWIM trajectory-linkage reconstruction, the closed IT-G1 industrial case, FOS C09 methodological/reference evidence, the closed C09 Bundle 003 Executor-2 independent reconstruction, and the closed KGFS real-world causal architecture. These are cumulative material evidence records. The only claim-level change in v1.7 is C09, supported by the explicit claim-level consolidation record. The scientific Core remains unchanged.

@@ -2,9 +2,9 @@
 
 **Status:** CURRENT CONTROL POINTER  
 **Current matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
-**Current version:** v1.6  
-**Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.6.md`  
-**Established by:** EXT-UPD-4.3; updated by EXT-UPD-4.5, EXT-UPD-4.6, IT-METH-I closure propagation, material IUT-A-01 / IT-NOSD-010 evidence propagation, EXT-UPD-4.8 O3 accessibility-closure propagation, SWIM Reactive-0 bounded operationalization propagation, SWIM trajectory-linkage evidence propagation, IT-G1 AWSSupport-ExecuteEC2Rescue material evidence propagation, FOS C09 methodological/reference evidence propagation, FOS C09 material evidence propagation, and C09 Bundle 003 Executor-2 independent reconstruction evidence propagation
-**Matrix content:** cumulative v1.5 evidence preserved; C09 Bundle 003 + independent Executor-2 bounded causal-operationalization evidence added without scientific claim upgrade.
+**Current version:** v1.7  
+**Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.7.md`  
+**Established by:** C09 claim-level consolidation and controlled canonical propagation 2026-09-14. Historical evidence propagation and prior governance closures remain preserved in immutable versioned records.
+**Matrix content:** cumulative v1.6 evidence/schema preserved; C09 upgraded only through explicit claim-level consolidation to `PASS — BOUNDED EMPIRICAL CAUSAL SUPPORT`; KGFS D5-A empirical causal evidence added; no Core-wide upgrade.
 
-Historical Evidence-to-Claim Matrix files remain immutable historical records. This pointer identifies the sole stable current matrix alias for active governance control; the versioned artifact records the corresponding immutable current version.
+Historical Evidence-to-Claim Matrix files remain immutable historical records. This pointer identifies the sole stable current matrix alias for active governance control. The current alias MUST resolve to the complete versioned artifact and MUST NOT be a simplified derivative.

@@ -1,47 +1,44 @@
 # TGCV — Current Status
 
-**Date:** 2026-09-13
-**Governance state:** CURRENT — RUST-DYN-2 and SWIM closures consolidated; C09 identified as next scientific priority; final local validator gate pending
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.34
-**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` → v1.5
+**Date:** 2026-09-14
+**Governance state:** CURRENT — C09 claim-level closure propagated through the canonical governance chain; matrix preservation and current/versioned identity verified at Git object level; final validator gate is the remaining executable check.
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.35
+**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` → v1.7
 **IGRT governance status:** `00_GOVERNANCE/IGRT/TGCV_IGRT_GOVERNANCE_STATUS_2026-09-12_RUST_DYN2_SWIM.md`
 
 ## Scientific Core
 - **Core:** unchanged.
+- **C09:** `PASS — BOUNDED EMPIRICAL CAUSAL SUPPORT`.
+- **KGFS:** `CLOSED — D5-A IDENTIFIED CONTRIBUTION` with exact 74/74 trajectory-variable reproducibility audit.
 - **RUST-DYN-2 / EXEC-1A:** `CLOSED — BOUNDED STRUCTURAL EMPIRICAL PASS`.
 - **SWIM trajectory linkage:** `CLOSED — BOUNDED TRAJECTORY-LINKAGE RECONSTRUCTION`.
 - No Core primitive, relation, threshold or falsification criterion was modified.
-- No scientific claim upgrade was introduced.
+- No claim status/level other than C09 was upgraded by this propagation.
 
 ## Governance integrity
-- Canonical current versions: RMA `v3.34`, Evidence→Claim Matrix `v1.5`, RMA traceability `v3.34`, governance operating principles `v0.1`.
-- Matrix v1.5 already contains the substantive SWIM accessibility/trajectory evidence and the Rust ND-1/ND-2/ND-4 evidence; therefore no matrix version increment was required.
+- Canonical current versions: RMA `v3.35`, Evidence→Claim Matrix `v1.7`, RMA traceability `v3.35`, governance operating principles `v0.1`.
+- `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` is the stable alias of the complete `EVIDENCE_TO_CLAIM_MATRIX_v1.7.md`; it is not a summary derivative.
+- `EVIDENCE_TO_CLAIM_MATRIX_v1.6.md` remains immutable historical evidence and is retained as the predecessor of v1.7.
+- RMA traceability current resolves to v3.35 and its versioned traceability record is preserved.
 - Historical records remain immutable.
-- Final local validator execution remains the closing gate.
+- The canonical chain is propagated atomically: `CANONICAL_STATE → RMA → Evidence→Claim Matrix → RMA traceability → STATUS → validator`.
 
 ## Scientific evidence state
-- RUST-DYN-2 closes the bounded empirical distinction between `ΔT_acc` and potential one-step Reach under H=1; H>1 trajectory sufficiency, runtime reachability, causality, value, superiority and transversal validity remain open.
-- SWIM provides bounded accessibility-space change and bounded trajectory-linkage reconstruction; it does not establish causality or general trajectory modification.
-- IT-G1 AWSSupport-ExecuteEC2Rescue remains closed with functional recovery demonstrated, without claim upgrade.
+- C09 is closed only at bounded empirical causal-support level through the explicit claim-level consolidation, with KGFS as the decisive real-world causal layer and SWIM/RUST-DYN-2 as complementary bounded evidence.
+- C10 value linkage remains open.
+- C11 transversal validity remains open.
+- C12 explanatory superiority remains open.
+- C13 originality remains open.
+- C08 remains broader than the bounded C09 causal claim and is not automatically upgraded.
 
-## Current open claim routing
-- **C02:** general `T_acc` remains open.
-- **C08:** stronger claim that accessibility changes modify reachable future trajectories remains open.
-- **C09:** `Accessibility changes causally affect subsequent trajectories` is the **NEXT PRIORITY** because it is the immediate unresolved causal link after bounded C08 association evidence.
-- **C10:** value generation/prediction remains downstream and open.
-- **C11:** transversal validity remains open.
-- **C12:** explanatory superiority remains open.
-- **C13:** originality remains open.
-- **C16:** stronger transversal translation remains open.
-
-## Next operation
-`00_GOVERNANCE/SIP/TGCV_C09_CAUSAL_DESIGN_PRIORITY_GATE_001.md`: define and audit a falsifiable causal-design specification for accessibility changes and subsequent trajectories. This is a design/prioritization operation only; it does not authorize execution.
+## Current routing
+- No new C09 dataset hunt or Bundle 003 rerun is authorized merely by this closure.
+- Future C09 work requires independent real-world replication or a clearly broader generalization test.
+- Next scientific priorities are downstream/breadth-related: causal `ΔT_acc → ΔV`, independent replication/generalization, transversal validity, explanatory superiority and comparative/originality coverage.
 
 ## Industrial Track
 - Industrial utility: `UNPROVEN / OPEN`.
 - Comparative superiority: `NOT ESTABLISHED`.
-- Causality: `NOT ASSESSED`.
-- Financial/value effect: `NOT ASSESSED`.
 - Standing industrial execution authorization: `NONE`.
 
 ## Canonical continuity
