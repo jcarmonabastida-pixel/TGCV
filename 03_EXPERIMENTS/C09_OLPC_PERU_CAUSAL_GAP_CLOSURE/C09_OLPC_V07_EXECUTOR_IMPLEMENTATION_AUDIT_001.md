@@ -1,10 +1,10 @@
 # C09 OLPC Peru — v0.7 Executor Implementation Audit 001
 
-Status: **PASS — IMPLEMENTATION STRUCTURE ACCEPTED / EXECUTION NOT YET AUTHORIZED**
+Status: **PASS — IMPLEMENTATION STRUCTURE ACCEPTED / EXECUTION COMPLETED**
 
 ## Scope
 
-Audit of `run_c09_olpc_peru_gap_closure_v03.py` (v0.7) against the blocking defects recorded for v0.6. This is an implementation audit, not a scientific result.
+Audit of `run_c09_olpc_peru_gap_closure_v03.py` (v0.7) against the blocking defects recorded for v0.6 and the subsequent mediator-diagnostic correction. This is an implementation audit, not a scientific result.
 
 ## Gates
 
@@ -12,7 +12,7 @@ Audit of `run_c09_olpc_peru_gap_closure_v03.py` (v0.7) against the blocking defe
 
 PASS.
 
-The v0.7 executor delegates the base reconstruction to the corrected v0.6 executor and therefore preserves the individual-lottery universe established there before Z contrasts:
+The v0.7 executor delegates the base reconstruction to the corrected v0.6 executor and verifies the individual-lottery universe before Z contrasts:
 
 `participated_in_lottery == 1 AND treatment_school == 1`.
 
@@ -24,19 +24,19 @@ The canonical `g5_attrition_analysis_c09_v01.py` is invoked as an execution depe
 
 ### G3 — G6.1: Z → ΔT_acc
 
-PASS — gate exists.
+PASS.
 
 The executor explicitly extracts `Z_to_delta_*` contrasts and requires at least one available non-zero first-stage contrast for G6.1 PASS.
 
-### G4 — G6.2: ΔT_acc → subsequent trajectory
+### G4 — G6.2: ΔT_acc → subsequent trajectory diagnostic
 
-PASS — gate exists.
+PASS — bounded diagnostic gate.
 
-The executor explicitly extracts `Z_to_trajectory_*` contrasts and evaluates them separately from the first stage. A first-stage result alone cannot satisfy this gate.
+The executor uses `Z_to_delta_resource_count` as the specified aggregate ΔT_acc contrast and computes a bounded Wald/IV diagnostic using Z as instrument for the downstream `Z_to_trajectory_*` contrasts. The diagnostic is explicitly marked `causal_interpretation_authorized=False`; it does not constitute causal mediation identification.
 
 ### G5 — G6.3: persistence under attrition sensitivity
 
-PASS — gate exists.
+PASS.
 
 The executor compares complete-case and IPW signs for the trajectory outcomes returned by G5 and requires usable sensitivity results with consistent non-zero signs for the persistence gate.
 
@@ -56,7 +56,7 @@ The executor explicitly records that no separate exclusion/mediation identificat
 
 PASS.
 
-The final status is not derived from the first-stage contrast alone. `PASS` additionally requires trajectory, G5 persistence, and the alternative/direct-pathway condition. With the currently encoded identification limitation, scientific closure is blocked.
+The final status is not derived from the first-stage contrast alone. Scientific closure additionally requires the trajectory condition, G5 persistence, alternative/direct-pathway resolution, and causal identification. With the currently encoded identification limitation, scientific closure remains blocked.
 
 ### G9 — Frozen specification protection
 
@@ -72,13 +72,14 @@ No RMA, Evidence Matrix, STATUS, or Core update is performed by the executor.
 
 ## Result of implementation audit
 
-The v0.7 implementation closes the two specific v0.6 implementation defects: G5 is now an actual execution dependency and G6 is an explicit multi-condition gate. The implementation also contains a deliberate blocking condition for the currently unresolved identification problem.
+The v0.7 implementation closes the two specific v0.6 implementation defects: G5 is an actual execution dependency and G6 is an explicit multi-condition gate. The subsequent correction also removes the methodological mislabeling of G6.2: it is now a bounded mediator diagnostic rather than a direct `Z → trajectory` pass, and its output is explicitly non-causal.
 
 Therefore:
 
 - **Implementation audit:** PASS.
-- **Scientific execution:** NOT PERFORMED.
+- **Controlled scientific execution:** COMPLETED.
+- **Scientific result:** `PARTIAL/INCONCLUSIVE`.
 - **Scientific closure:** NOT AUTHORIZED.
-- **Next required artifact:** v0.5 preflight for v0.7.
+- **Next required artifact:** C09 causal-gap closure evidence record.
 
 No scientific claim is upgraded by this audit.
