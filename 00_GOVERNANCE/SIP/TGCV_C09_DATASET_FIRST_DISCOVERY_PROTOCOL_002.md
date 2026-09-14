@@ -1,27 +1,15 @@
 # TGCV C09 — Dataset-First Discovery Protocol 002
 
 **Date:** 2026-09-14  
-**Status:** FROZEN — D5 CAUSAL-BRIDGE REFINEMENT ADOPTED  
+**Status:** FROZEN — D5 CAUSAL-BRIDGE REFINEMENT ADOPTED; FACTORIAL/MECHANISM-SEPARATION D0 RULE PERSISTED  
 **Supersedes:** `TGCV_C09_DATASET_FIRST_DISCOVERY_PROTOCOL_001.md` for future C09 discovery  
 **Scope:** C09 real-world candidate discovery only
 
 ## 1. Purpose
 
-Refine the dataset-first discovery route after repeated D5 failures showed that the principal bottleneck is not merely observing:
+Refine the dataset-first discovery route after repeated D5 failures showed that the principal bottleneck is not merely observing `Z → ΔT_acc` and `Z → Y`, but identifying, bounding or otherwise defensibly separating the specific causal bridge `ΔT_acc → subsequent trajectory Y` from direct treatment effects and alternative post-treatment pathways.
 
-`Z → ΔT_acc`
-
-and:
-
-`Z → Y`
-
-but identifying, bounding or otherwise defensibly separating the **specific causal bridge**:
-
-`ΔT_acc → subsequent trajectory Y`
-
-from direct treatment effects and alternative post-treatment pathways.
-
-The discovery process must therefore search not only for a structural accessibility transition, but for a **mechanism-identification architecture** capable of separating or bounding the accessibility-mediated pathway.
+The discovery process must therefore search not only for a structural accessibility transition, but for a mechanism-identification architecture capable of separating or bounding the accessibility-mediated pathway.
 
 ## 2. Strategic decision
 
@@ -41,15 +29,25 @@ Search trusted public repositories and archives first, including openICPSR/AEA D
 
 The core data required for the C09 test must be publicly accessible and reproducible. Public code alone is insufficient.
 
+### D0 priority filter — mechanism-separation architecture first
+
+Before investing in the full D1–D5 screen, the D0 ranking must preferentially select datasets with at least one credible mechanism-separation signature:
+
+1. **Factorial / separate randomization** of the accessibility-producing component and one or more competing intervention components.
+2. **Multiple intervention arms** in which the structural accessibility component can be isolated from complementary treatment components.
+3. **Encouragement / two-stage design** in which the encouragement changes structural accessibility while direct effects on `Y` can plausibly be excluded or bounded.
+4. **Independently randomized infrastructure/accessibility intensity** rather than only a binary treatment indicator.
+5. **Explicit principal-stratification/compliance architecture**, with public data sufficient to define the relevant strata or bounds.
+6. **Repeated mediator measurements plus rich baseline covariates** supporting an explicitly interventional mediated estimand.
+7. **Design features supporting informative partial-identification bounds** that constrain direct versus accessibility-mediated effects.
+
+A dataset with only the signature `RCT → structural access change → outcome`, but no plausible mechanism-separation architecture, is **low priority** and should normally be screened out at D0/D5 rather than subjected to ad hoc mediator regressions.
+
+The D0 priority filter is a ranking/admission heuristic, not itself evidence that D5 will pass. D1–D6 remain mandatory for candidate admission.
+
 ### D1 — Structural transition
 
-The dataset must permit observation or reconstruction for the same stable unit of a structural state transition:
-
-`S_0 → S_1`
-
-with an independently defined accessibility/capability representation:
-
-`T_acc,0` and `T_acc,1`, hence bounded `ΔT_acc`.
+The dataset must permit observation or reconstruction for the same stable unit of a structural state transition `S_0 → S_1` with an independently defined accessibility/capability representation `T_acc,0` and `T_acc,1`, hence bounded `ΔT_acc`.
 
 `T_acc` must represent structural accessibility/capability and must not be defined by realized downstream behaviour, adoption, use, treatment status alone, or outcome.
 
@@ -61,9 +59,7 @@ An identifiable intervention/exposure `Z` must exist and must be distinguishable
 
 ### D3 — Stable unit
 
-The same identifiable structural unit must be linkable across the relevant periods:
-
-`unit_i,t0 → unit_i,t1 → Y_i,t>1`.
+The same identifiable structural unit must be linkable across the relevant periods: `unit_i,t0 → unit_i,t1 → Y_i,t>1`.
 
 Cross-sectional substitution of different units is not sufficient.
 
@@ -98,13 +94,7 @@ A simple regression of `Y` on observed `ΔT_acc`, including adjustment for basel
 
 ### D5.1 — First-stage identification
 
-There must be a defensible causal estimate of:
-
-`Z → ΔT_acc`
-
-including a clear definition of the structural mediator and its estimand.
-
-The first stage must not merely reproduce treatment assignment.
+There must be a defensible causal estimate of `Z → ΔT_acc`, including a clear definition of the structural mediator and its estimand. The first stage must not merely reproduce treatment assignment.
 
 ### D5.2 — Bridge identification
 
@@ -125,17 +115,7 @@ The identification assumptions must be stated explicitly and must be testable wh
 
 The candidate must enumerate the principal post-treatment pathways through which `Z` can affect `Y` other than `ΔT_acc`.
 
-Examples include:
-
-- complementary infrastructure;
-- information or training;
-- staffing/resources;
-- prices/income/transfers;
-- institutional or organizational change;
-- behavioural adoption/use;
-- spillovers/interference;
-- selection/compliance changes;
-- simultaneous treatment components.
+Examples include complementary infrastructure, information or training, staffing/resources, prices/income/transfers, institutional or organizational change, behavioural adoption/use, spillovers/interference, selection/compliance changes and simultaneous treatment components.
 
 For each material pathway the public data/design must provide one of:
 
@@ -147,23 +127,19 @@ A candidate with a material unresolved direct pathway cannot receive a D5 PASS m
 
 D5 receives one of four statuses:
 
-**D5-A — IDENTIFIED**  
-The accessibility-mediated estimand is identified under a defensible design/assumption set, with alternative pathways addressed.
+**D5-A — IDENTIFIED** — accessibility-mediated estimand identified under a defensible design/assumption set, with alternative pathways addressed.
 
-**D5-B — BOUNDED / ASSUMPTION-EXPLICIT**  
-Point identification is unavailable, but the accessibility-mediated contribution is bounded or identified within a clearly defined principal/interventional stratum, and the bounds/assumptions materially constrain the causal interpretation.
+**D5-B — BOUNDED / ASSUMPTION-EXPLICIT** — point identification unavailable, but accessibility-mediated contribution bounded or identified within a clearly defined principal/interventional stratum, with materially constraining assumptions.
 
-**D5-C — DIAGNOSTIC ONLY**  
-The dataset supports first-stage evidence and a useful mediator diagnostic (including IV/Wald diagnostics), but causal interpretation of `ΔT_acc → Y` is not authorized because exclusion, sequential ignorability or equivalent assumptions remain unresolved.
+**D5-C — DIAGNOSTIC ONLY** — first-stage evidence and mediator diagnostic available, but causal interpretation of `ΔT_acc → Y` not authorized because exclusion, sequential ignorability or equivalent assumptions remain unresolved.
 
-**D5-FAIL — TOTAL EFFECT ONLY**  
-The dataset establishes `Z → Y` and possibly `Z → ΔT_acc`, but provides no credible mechanism-identification architecture for separating the accessibility bridge from direct/alternative pathways.
+**D5-FAIL — TOTAL EFFECT ONLY** — `Z → Y` and possibly `Z → ΔT_acc` established, but no credible mechanism-identification architecture for separating the accessibility bridge from direct/alternative pathways.
 
 For ordinary C09 candidate admission, **D5-A or D5-B is required**. D5-C is informative but does not admit the candidate. D5-FAIL rejects it.
 
 ## 5. D6 — Provenance and admission
 
-Every variable required for `Z`, `T_acc,0`, `T_acc,1`, `ΔT_acc`, the stable-unit linkage, `Y`, and the D5 mechanism-identification architecture must have public provenance, reproducible construction and persistent source identity.
+Every variable required for `Z`, `T_acc,0`, `T_acc,1`, `ΔT_acc`, stable-unit linkage, `Y`, and the D5 mechanism-identification architecture must have public provenance, reproducible construction and persistent source identity.
 
 D6 must also verify that the specific mechanism-identification variables are public. A candidate cannot pass D6 if the causal bridge depends on restricted treatment-assignment, service-area, compliance, mediator, outcome or administrative records.
 
@@ -201,43 +177,37 @@ Do not continue a candidate after a definitive early-stop failure.
 
 The protocol does not require `T_acc,1` to be unaffected by `Z`. The requirement is that `T_acc` be an independently defined structural representation whose change can be measured rather than simply recoding treatment status.
 
-The key distinction is now explicit:
+The key distinction is explicit:
 
-`Z → Y`  ≠  `Z → ΔT_acc → Y`.
+`Z → Y` ≠ `Z → ΔT_acc → Y`.
 
 Likewise:
 
-`Z → ΔT_acc` + `Z → Y`  ≠  causal identification of `ΔT_acc → Y`.
+`Z → ΔT_acc` + `Z → Y` ≠ causal identification of `ΔT_acc → Y`.
 
-A mediator diagnostic may be reported where scientifically useful, including IV/Wald diagnostics. It must be labelled **diagnostic only** unless the D5 assumptions authorize causal interpretation.
-
-Principal stratification may be used to avoid pretending that an observed post-treatment mediator is randomized; however, the resulting estimand must be reported as a principal-stratum effect or bound and must not be silently generalized to the full population. The mediation literature explicitly recognizes that post-treatment mediators are not generally randomized and that principal stratification can relax the sequential-ignorability problem, while identification may remain model-dependent or partial. citeturn0search0turn0search1
-
-Interventional mediation estimands may be considered when natural indirect-effect assumptions are too strong, especially with multiple or post-treatment confounding, but the assumptions and estimand must be made explicit. citeturn0search3turn0search12
+A mediator diagnostic may be reported where scientifically useful, including IV/Wald diagnostics. It must be labelled **diagnostic only** unless D5 assumptions authorize causal interpretation.
 
 ## 9. Implication for the current dataset-first search
 
-Repeated D5 failures are now treated as evidence about **search architecture**, not as a reason to keep testing ordinary RCT datasets.
+Repeated D5 failures are treated as evidence about **search architecture**, not as a reason to keep testing ordinary RCT datasets.
 
-Future D0 searches must preferentially rank datasets containing one of the following structural signatures:
+Future D0 searches must preferentially rank datasets containing the mechanism-separation signatures above. In particular, a **factorial/separate-randomization or multi-arm architecture that isolates the accessibility-producing component from complementary/direct components is now a first-class D0 priority**.
 
-- factorial/separate randomization of the accessibility-producing component;
-- encouragement designs with a credible exclusion restriction;
-- independently randomized infrastructure/accessibility intensity;
-- multiple intervention arms that isolate the structural component;
-- explicit principal-stratification/compliance data;
-- repeated mediator measurements plus rich baseline covariates enabling interventional effects;
-- design features supporting informative bounds on direct versus accessibility-mediated effects.
+A dataset is especially high priority when its structure permits:
+
+`Z_access → ΔT_acc`
+
+while a separate randomized component `Z_other` captures competing direct pathways, or when factorial combinations allow the accessibility component and complementary component to be estimated separately.
 
 Datasets with only:
 
 `RCT → structural access change → outcome`
 
-but no mechanism-separation architecture should be screened out at D5 without attempting ad hoc mediation regressions.
+but no mechanism-separation architecture should normally be screened out at D0/D5 without attempting ad hoc mediation regressions.
 
 ## 10. Relation to C09 Gate 002
 
-This refinement preserves the decisions of `TGCV_C09_CANDIDATE_CLASS_DECISION_GATE_002`:
+This refinement preserves the decisions of `TGCV_C09_CANDIDATE_CLASS_DECISION_GATE_002.md`:
 
 - retrospective candidate loop: CLOSED;
 - controlled/synthetic C09 route: CLOSED;
@@ -250,8 +220,8 @@ C09 remains an open, untested real-world causal claim. This protocol does not up
 
 ## 11. Next operation
 
-Restart D0 ranking from the existing public-dataset universe, but apply a new priority filter:
+Restart D0 ranking from the existing public-dataset universe with the priority order:
 
-`mechanism-identification architecture first → structural transition → stable unit → downstream trajectory → causal bridge`.
+`mechanism-separation architecture first → structural transition → stable unit → downstream trajectory → causal bridge`.
 
 Do not continue broad screening of ordinary RCTs whose only identification is `Z → Y`.
