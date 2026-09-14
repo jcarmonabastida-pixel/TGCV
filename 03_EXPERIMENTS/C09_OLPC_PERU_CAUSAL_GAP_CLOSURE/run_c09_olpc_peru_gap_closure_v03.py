@@ -19,15 +19,36 @@ V06=Path(__file__).with_name("run_c09_olpc_peru_gap_closure_v02.py")
 G5=Path(__file__).with_name("g5_attrition_analysis_c09_v01.py")
 
 
+def _last_json_object(stdout: str):
+    """Extract the last complete JSON object emitted by a child process.
+
+    Child executors may pretty-print JSON over multiple lines, so parsing the
+    last non-empty line is invalid when the final line is only ``}``.
+    """
+    decoder=json.JSONDecoder()
+    found=[]
+    for i,ch in enumerate(stdout):
+        if ch!="{":
+            continue
+        try:
+            obj,end=decoder.raw_decode(stdout[i:])
+            found.append(obj)
+        except json.JSONDecodeError:
+            continue
+    if not found:
+        raise ValueError("no complete JSON object found in child stdout")
+    return found[-1]
+
+
 def run_json(script: Path, root: Path, out: Path):
     cmd=[sys.executable,str(script),"--data-root",str(root),"--output-dir",str(out)]
     p=subprocess.run(cmd,text=True,capture_output=True)
     if p.returncode!=0:
         raise RuntimeError(f"CHILD_EXECUTION_FAILED:{script.name}:\n{p.stdout}\n{p.stderr}")
-    lines=[x.strip() for x in p.stdout.splitlines() if x.strip()]
-    if not lines: raise RuntimeError(f"CHILD_NO_JSON:{script.name}")
-    try: return json.loads(lines[-1]),p.stdout,p.stderr
-    except json.JSONDecodeError as e: raise RuntimeError(f"CHILD_JSON_INVALID:{script.name}:{e}: {lines[-1]}")
+    try:
+        return _last_json_object(p.stdout),p.stdout,p.stderr
+    except ValueError as e:
+        raise RuntimeError(f"CHILD_JSON_INVALID:{script.name}:{e}:\n{p.stdout}") from e
 
 
 def nonzero_contrast(v):
