@@ -3,13 +3,14 @@
 
 Wraps the canonical D178 audit inventory without changing its scientific logic.
 A per-file HTTP failure is recorded instead of aborting the complete 74-file
-acquisition. Existing verified files are reused. If all 74 files are present
-with the published sizes, the canonical metadata audit is then executed.
+acquisition. Existing verified files are reused. Truncated downloads are
+recovered with bounded HTTP Range requests against the same canonical
+Dataverse endpoint. If all 74 files are present with the published sizes, the
+canonical metadata audit is then executed.
 """
 from __future__ import annotations
 import json, subprocess, sys, time
-from pathlib import Path
-from urllib.error import HTTPError, URLError
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 from RUN_KGFS_D178_AUDIT import (
@@ -21,17 +22,66 @@ from RUN_KGFS_D178_AUDIT import (
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/139 Safari/537.36"
 
 
-def download_resilient(file_id, destination):
+def _request_headers():
+    return {
+        "User-Agent": UA,
+        "Accept": "application/octet-stream,*/*;q=0.8",
+        "Referer": "https://isps.yale.edu/research/data/d178",
+        "Connection": "close",
+    }
+
+
+def download_range(file_id, destination, expected_size):
+    """Download the exact expected byte range in bounded chunks.
+
+    This is a transport recovery only: same fileId, same Dataverse endpoint,
+    same published byte count. The assembled file must equal expected_size.
+    """
+    url = f"{BASE_URL}/api/access/datafile/{file_id}?format=original"
+    chunk_size = 1024 * 1024
+    tmp = destination.with_suffix(destination.suffix + ".range.tmp")
+    if tmp.exists():
+        tmp.unlink()
+    with open(tmp, "wb") as out:
+        start = 0
+        while start < expected_size:
+            end = min(start + chunk_size - 1, expected_size - 1)
+            req = Request(url, headers={**_request_headers(), "Range": f"bytes={start}-{end}"})
+            last_error = None
+            for attempt in range(1, 4):
+                try:
+                    with urlopen(req, timeout=600) as r:
+                        status = getattr(r, "status", r.getcode())
+                        if status not in (200, 206):
+                            raise RuntimeError(f"unexpected HTTP status {status} for range {start}-{end}")
+                        data = r.read(end - start + 1)
+                        if len(data) != end - start + 1:
+                            raise RuntimeError(f"range {start}-{end}: received {len(data)} bytes")
+                        out.write(data)
+                        last_error = None
+                        break
+                except Exception as e:
+                    last_error = e
+                    time.sleep(2 * attempt)
+            if last_error is not None:
+                tmp.unlink(missing_ok=True)
+                raise last_error
+            start = end + 1
+    actual = tmp.stat().st_size
+    if actual != expected_size:
+        tmp.unlink(missing_ok=True)
+        raise RuntimeError(f"range assembled size={actual}, expected={expected_size}")
+    tmp.replace(destination)
+    return actual, "http-range"
+
+
+def download_resilient(file_id, destination, expected_size):
     url = f"{BASE_URL}/api/access/datafile/{file_id}?format=original"
     destination.parent.mkdir(parents=True, exist_ok=True)
     last_error = None
     for attempt in range(1, 4):
-        req = Request(url, headers={
-            "User-Agent": UA,
-            "Accept": "application/octet-stream,*/*;q=0.8",
-            "Referer": "https://isps.yale.edu/research/data/d178",
-            "Connection": "close",
-        })
+        destination.unlink(missing_ok=True)
+        req = Request(url, headers=_request_headers())
         try:
             with urlopen(req, timeout=600) as r, open(destination, "wb") as f:
                 while True:
@@ -39,14 +89,16 @@ def download_resilient(file_id, destination):
                     if not chunk:
                         break
                     f.write(chunk)
-            return destination.stat().st_size, "urllib"
+            size = destination.stat().st_size
+            if size == expected_size:
+                return size, "urllib"
+            last_error = RuntimeError(f"truncated download size={size}, expected={expected_size}")
         except Exception as e:
             last_error = e
-            if isinstance(e, HTTPError) and e.code not in (403, 429, 500, 502, 503, 504):
-                break
-            time.sleep(2 * attempt)
+        time.sleep(2 * attempt)
 
     if sys.platform.startswith("win"):
+        destination.unlink(missing_ok=True)
         curl = [
             "curl.exe", "-L", "--http1.1", "--retry", "3", "--retry-delay", "2",
             "--retry-all-errors", "-A", UA,
@@ -56,11 +108,18 @@ def download_resilient(file_id, destination):
         ]
         try:
             subprocess.check_call(curl, timeout=900)
-            return destination.stat().st_size, "curl"
+            size = destination.stat().st_size
+            if size == expected_size:
+                return size, "curl"
+            last_error = RuntimeError(f"curl truncated download size={size}, expected={expected_size}")
         except Exception as e:
             last_error = e
 
-    raise RuntimeError(str(last_error))
+    # Final bounded recovery for deterministic truncation/connection cutoff.
+    try:
+        return download_range(file_id, destination, expected_size)
+    except Exception as range_error:
+        raise RuntimeError(f"full/range download failed; last_full_error={last_error}; range_error={range_error}") from range_error
 
 
 def main():
@@ -94,7 +153,7 @@ def main():
                 size = expected
                 method = "reused"
             else:
-                size, method = download_resilient(file_id, destination)
+                size, method = download_resilient(file_id, destination, expected)
 
             if size != expected:
                 raise RuntimeError(f"size={size}, expected={expected}")
