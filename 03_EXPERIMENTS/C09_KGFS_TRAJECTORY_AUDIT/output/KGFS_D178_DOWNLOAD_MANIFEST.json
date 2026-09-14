@@ -1,0 +1,46 @@
+{
+  "manifest": "TGCV_C09_KGFS_D178_DOWNLOAD_REPRODUCIBILITY",
+  "status": "74/74_VERIFIED_RECONCILED",
+  "file_count": 74,
+  "verified_count": 74,
+  "historical_catalogue_pass_count": 73,
+  "reconciled_exception_count": 1,
+  "scientific_claim_status": "NO_C09_UPGRADE",
+  "source": {
+    "archive": "Yale ISPS D178",
+    "inventory": "D178F03-D178F76",
+    "inventory_count": 74
+  },
+  "reconciliation_policy": {
+    "principle": "GitHub is canonical governance/continuity; local execution artifacts are evidence inputs.",
+    "historical_catalogue_size_is_preserved": true,
+    "current_dataverse_object_identity_is_preserved": true,
+    "historical_expected_size_must_not_be_overwritten": true,
+    "catalogue_vs_current_object_discrepancy_is_not_classified_as_transport_corruption": true
+  },
+  "files": {
+    "D178F70": {
+      "status": "RECONCILED_VERIFIED",
+      "file_id": 28730,
+      "dataset_version_id": 928,
+      "original_file_name": "EL_section20_health.dta",
+      "historical_yale_catalogue_size_bytes": 5661173,
+      "current_dataverse_original_size_bytes": 5660036,
+      "size_difference_bytes": 1137,
+      "md5": "42b62693db82e8725ef0f40021e0b84e",
+      "current_dataverse_source": "https://dataverse.yale.edu/api/access/datafile/28730?format=original",
+      "historical_catalogue_source": "Yale ISPS D178 archive catalogue",
+      "local_reconciled_path": "03_EXPERIMENTS/C09_KGFS_TRAJECTORY_AUDIT/reconciled/D178F70.dta",
+      "local_size_verified": 5660036,
+      "reconciliation_note": "The current Dataverse object is 1,137 bytes smaller than the historical Yale catalogue entry. Independent local acquisition matches the current Dataverse object size and MD5. The discrepancy is retained as metadata reconciliation and is not treated as download corruption."
+    }
+  },
+  "other_files": {
+    "status": "VERIFIED_FROM_LOCAL_ACQUISITION_STATUS",
+    "count": 73,
+    "scope": "D178F03-D178F69 and D178F71-D178F76",
+    "local_status_source": "03_EXPERIMENTS/C09_KGFS_TRAJECTORY_AUDIT/output/KGFS_D178_RESUMABLE_ACQUISITION_STATUS.json"
+  },
+  "next_authorized_operation": "EXACT_VARIABLE_LEVEL_AUDIT_AND_REPRODUCIBILITY_MANIFEST_CLOSURE",
+  "note": "This manifest records reproducibility reconciliation. It does not alter the historical acquisition validator or upgrade C09/Core/RMA/Evidence Matrix/STATUS."
+}
