@@ -24,7 +24,7 @@ def main():
     checks["g6_function"]='def g6_gate(' in e
     checks["g6_first_stage"]='Z_to_delta_' in e
     checks["g6_trajectory"]='Z_to_trajectory_' in e
-    checks["g6_2_mediator_diagnostic"]='def g6_2_delta_tacc_diagnostic(' in e and 'Wald/IV diagnostic using Z as instrument' in e and 'causal_interpretation_authorized=False' in e
+    checks["g6_2_mediator_diagnostic"]='def g6_2_delta_tacc_diagnostic(' in e and 'Wald/IV diagnostic using Z as instrument' in e and '"causal_interpretation_authorized":False' in e
     checks["g6_g5_sensitivity"]='complete_case_contrasts' in e and 'ipw_contrasts' in e
     checks["g6_alternative_path_block"]='alternative_paths_addressed=False' in e
     checks["g6_identification_block"]='causal_identification=False' in e
