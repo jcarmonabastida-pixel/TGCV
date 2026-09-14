@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """TGCV C09 — KGFS / D178 automated acquisition and technical audit.
 
-The Yale ISPS D178 archive page is the canonical public index. Python urllib
-can receive HTTP 404 from the Yale web endpoint on this Windows environment,
-while the same public endpoint is accessible through PowerShell. Therefore the
-acquisition layer uses urllib first and a PowerShell Invoke-WebRequest fallback.
-The D178 file number is read from the surrounding HTML table row, because the
-HDL anchor itself is labelled only "Download file". Individual HDL links are
-then resolved to Dataverse fileIds and downloaded via the public Dataverse API.
+The Yale ISPS D178 archive page is the canonical public source. Local HTTP
+access to that page is unstable in this Windows environment, and the rendered
+page does not reliably expose the D178Fxx identifiers to a simple HTML parser.
+Therefore the acquisition layer uses the Yale page when available, then falls
+back to the public Yale Dataverse search API, matching the D178Fxx identifiers
+in file metadata. Individual Dataverse file ids are downloaded through the
+public /api/access/datafile endpoint.
 
 This audit is technical only and does not upgrade C09.
 """
@@ -15,6 +15,7 @@ from __future__ import annotations
 import csv, hashlib, json, re, subprocess, sys
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 YALE_D178_PAGE = "https://isps.yale.edu/research/data/d178"
@@ -31,25 +32,17 @@ for p in (BASELINE, ENDLINE, OUTPUT): p.mkdir(parents=True, exist_ok=True)
 TARGET_TERMS = ["hhid","memid","cont_s_id","occup","occupation","employ","employment","job","income","earn","wage","salary","business","enterprise","sales","profit","loan","borrow","lender","saving","savings","insurance","insur","asset","wealth","poverty","wellbeing","welfare"]
 
 class D178Parser(HTMLParser):
-    """Extract D178Fxx + HDL from each archive-table row.
-
-    The D178Fxx identifier is outside the HDL anchor; the anchor text is only
-    "Download file". Row-level parsing therefore avoids the previous false
-    assumption that the identifier appears inside the <a> element.
-    """
     def __init__(self):
-        super().__init__(); self.in_tr=False; self.in_a=False; self.row_text=[]; self.row_hrefs=[]; self.rows=[]
+        super().__init__(); self.in_tr=False; self.row_text=[]; self.row_hrefs=[]; self.rows=[]
     def handle_starttag(self, tag, attrs):
         a=dict(attrs)
-        if tag=="tr":
-            self.in_tr=True; self.row_text=[]; self.row_hrefs=[]
+        if tag=="tr": self.in_tr=True; self.row_text=[]; self.row_hrefs=[]
         elif tag=="a" and self.in_tr and a.get("href") and "hdl.handle.net/10079/" in a["href"]:
-            self.in_a=True; self.row_hrefs.append(a["href"])
+            self.row_hrefs.append(a["href"])
     def handle_data(self, data):
         if self.in_tr: self.row_text.append(data)
     def handle_endtag(self, tag):
-        if tag=="a": self.in_a=False
-        elif tag=="tr" and self.in_tr:
+        if tag=="tr" and self.in_tr:
             self.rows.append({"text":" ".join(self.row_text),"hrefs":list(self.row_hrefs)})
             self.in_tr=False; self.row_text=[]; self.row_hrefs=[]
 
@@ -64,7 +57,62 @@ def request_bytes(url, timeout=120):
             out=subprocess.check_output(["powershell.exe","-NoProfile","-NonInteractive","-Command",ps],stderr=subprocess.STDOUT,timeout=timeout,text=False)
             return out,"powershell",{}
         except Exception as ps_err:
-            raise RuntimeError(f"Yale request failed via urllib ({py_err}) and PowerShell ({ps_err})") from ps_err
+            raise RuntimeError(f"Request failed via urllib ({py_err}) and PowerShell ({ps_err})") from ps_err
+
+def request_json(url, timeout=120):
+    raw, transport, _ = request_bytes(url, timeout=timeout)
+    try:
+        return json.loads(raw.decode("utf-8","replace")), transport
+    except Exception as e:
+        raise RuntimeError(f"Invalid JSON from {url}: {e}") from e
+
+def discover_from_yale_page():
+    raw,transport,_=request_bytes(YALE_D178_PAGE)
+    html=raw.decode("utf-8","replace")
+    parser=D178Parser(); parser.feed(html)
+    links={}
+    for row in parser.rows:
+        m=re.search(r"D178F(\d+(?:\.\d+)?)",row["text"])
+        if m and row["hrefs"]:
+            links[f"D178F{m.group(1)}"]=row["hrefs"][0]
+    return links, transport
+
+def discover_from_dataverse_search(needed):
+    """Resolve D178Fxx directly through Yale Dataverse's public search API.
+
+    This avoids dependence on the rendered Yale archive HTML. The D178Fxx
+    identifier is expected in the file name/description returned by search.
+    """
+    found={}
+    for label in needed:
+        url=f"{BASE_URL}/api/search?q={quote(label)}&type=file&per_page=100"
+        payload,transport=request_json(url)
+        items=payload.get("data",{}).get("items",[])
+        candidates=[]
+        for item in items:
+            text=json.dumps(item,ensure_ascii=False).lower()
+            if label.lower() in text:
+                fid=item.get("entityId") or item.get("id")
+                if fid is not None:
+                    candidates.append((int(fid),item))
+        if len(candidates)==1:
+            fid,item=candidates[0]
+            found[label]={"file_id":fid,"hdl":None,"source":"dataverse_search","search_url":url,"search_transport":transport,"metadata":item}
+        elif len(candidates)>1:
+            # Prefer an exact D178 label in description/name; otherwise refuse
+            # to guess rather than silently selecting a file.
+            exact=[]
+            for fid,item in candidates:
+                text=json.dumps(item,ensure_ascii=False)
+                if re.search(rf"\b{re.escape(label)}\b",text,re.I): exact.append((fid,item))
+            if len(exact)==1:
+                fid,item=exact[0]
+                found[label]={"file_id":fid,"hdl":None,"source":"dataverse_search","search_url":url,"search_transport":transport,"metadata":item}
+            else:
+                raise RuntimeError(f"Dataverse search returned ambiguous matches for {label}: {[x[0] for x in candidates]}")
+        else:
+            raise RuntimeError(f"Dataverse search returned no public file for {label}: {url}")
+    return found
 
 def resolve_file_id(hdl):
     req=Request(hdl,headers={"User-Agent":"TGCV-C09-KGFS-Audit/1.0"})
@@ -78,8 +126,7 @@ def resolve_file_id(hdl):
         except Exception as e:
             raise RuntimeError(f"Could not resolve HDL via urllib or PowerShell: {hdl}: {e}") from e
     m=re.search(r"[?&]fileId=(\d+)",final)
-    if not m:
-        raise RuntimeError(f"Could not resolve Dataverse fileId from {hdl}; final URL: {final}")
+    if not m: raise RuntimeError(f"Could not resolve Dataverse fileId from {hdl}; final URL: {final}")
     return int(m.group(1)), final
 
 def download_file(file_id,destination):
@@ -131,44 +178,49 @@ def main():
     print(f"Dataset persistentId: {DATASET_PERSISTENT_ID}")
     print(f"Yale D178 index: {YALE_D178_PAGE}")
     print(f"Python: {sys.version.split()[0]} ({sys.executable})")
-
-    print("\n[1/7] Reading canonical Yale D178 file index...")
-    raw,transport,_=request_bytes(YALE_D178_PAGE)
-    html=raw.decode("utf-8","replace")
-    parser=D178Parser(); parser.feed(html)
-    links={}
-    for row in parser.rows:
-        m=re.search(r"D178F(\d+(?:\.\d+)?)",row["text"])
-        if m and row["hrefs"]:
-            label=f"D178F{m.group(1)}"
-            links[label]=row["hrefs"][0]
     needed=[f"D178F{i:02d}" for i in range(3,77)]
-    missing=[x for x in needed if x not in links]
-    if missing: raise RuntimeError(f"Yale D178 index missing expected files: {missing}")
-    print(f"  transport={transport}; discovered {len(links)} D178 file links; {len(needed)} baseline/endline data files required")
 
-    print("\n[2/7] Resolving HDL links to Dataverse file ids and downloading data files...")
+    print("\n[1/7] Discovering canonical D178 file inventory...")
+    links={}
+    page_error=None
+    try:
+        links,transport=discover_from_yale_page()
+        if len([x for x in needed if x in links]) != len(needed):
+            raise RuntimeError(f"rendered Yale page exposed only {len([x for x in needed if x in links])}/{len(needed)} expected identifiers")
+        print(f"  source=Yale D178 archive page; transport={transport}; discovered {len(links)} file links")
+    except Exception as e:
+        page_error=str(e)
+        print(f"  Yale HTML index not machine-readable locally: {e}")
+        print("  Falling back to public Yale Dataverse file-search API...")
+        search_records=discover_from_dataverse_search(needed)
+        print(f"  source=Yale Dataverse search API; resolved {len(search_records)}/{len(needed)} D178 files")
+
+    print("\n[2/7] Resolving file ids and downloading data files...")
     records=[]
     for idx,label in enumerate(needed,1):
-        n=int(label[5:]); category=classify(n); hdl=links[label]
-        file_id,final_url=resolve_file_id(hdl)
+        n=int(label[5:]); category=classify(n)
+        if label in links:
+            hdl=links[label]; file_id,final_url=resolve_file_id(hdl); source="yale_hdl"
+        else:
+            # Dataverse-search fallback record was populated only if page discovery failed.
+            if idx==1: search_records=locals().get("search_records",{})
+            rec_search=search_records[label]; file_id=rec_search["file_id"]; hdl=None; final_url=rec_search["search_url"]; source="dataverse_search"
         destination=(BASELINE if category=="BASELINE" else ENDLINE)/f"{label}.dta"
         if destination.exists(): size=destination.stat().st_size; reused=True
         else: size,_=download_file(file_id,destination); reused=False
-        rec={"file_name":label,"d178_number":n,"category":category,"dataverse_file_id":file_id,"hdl":hdl,"resolved_url":final_url,"size_bytes":size,"sha256":sha256(destination),"reused":reused}
+        rec={"file_name":label,"d178_number":n,"category":category,"dataverse_file_id":file_id,"hdl":hdl,"resolved_url":final_url,"discovery_source":source,"size_bytes":size,"sha256":sha256(destination),"reused":reused}
         records.append(rec)
         if label==VERIFIED_FILE_LABEL and file_id!=VERIFIED_FILE_ID:
             raise RuntimeError(f"Verified identity mismatch: Yale {label} resolved to fileId {file_id}, expected {VERIFIED_FILE_ID}")
         if idx%5==0 or idx==len(needed): print(f"  {idx}/{len(needed)} files processed",flush=True)
 
-    manifest={"dataset_persistent_id":DATASET_PERSISTENT_ID,"dataset_persistent_id_source":"Yale ISPS D178 public archive page","yale_index":YALE_D178_PAGE,"verified_source_file":{"label":VERIFIED_FILE_LABEL,"file_id":VERIFIED_FILE_ID},"files":records}
+    manifest={"dataset_persistent_id":DATASET_PERSISTENT_ID,"dataset_persistent_id_source":"Yale ISPS D178 public archive page","yale_index":YALE_D178_PAGE,"inventory_fallback":"Yale Dataverse file-search API" if page_error else None,"page_discovery_error":page_error,"verified_source_file":{"label":VERIFIED_FILE_LABEL,"file_id":VERIFIED_FILE_ID},"files":records}
     (OUTPUT/"KGFS_D178_DOWNLOAD_MANIFEST.json").write_text(json.dumps(manifest,indent=2,ensure_ascii=False),encoding="utf-8")
     with open(OUTPUT/"KGFS_D178_SHA256.csv","w",newline="",encoding="utf-8") as f:
         w=csv.DictWriter(f,fieldnames=list(records[0].keys())); w.writeheader(); w.writerows(records)
 
     print("\n[3/7] Acquisition integrity...")
     print(f"  PASS — {len(records)} DTA files acquired/resolved and SHA-256 recorded")
-
     print("\n[4/7] Auditing Stata metadata/variables...")
     variable_results=[]; identifier_report={}; pyreadstat_ok=ensure_pyreadstat()
     if pyreadstat_ok:
