@@ -7,253 +7,128 @@
 
 ## 1. Scope
 
-This round performs documentary candidate discovery only. No dataset was downloaded, no `T_acc` was reconstructed, and no causal estimate was executed.
+This round performs documentary candidate discovery and candidate-specific admission screening only. No dataset was downloaded, no `T_acc` was reconstructed, and no causal estimate was executed.
 
-### Screening result
+## 2. Candidate C10C-001 — Exporting and Firm Performance: Randomized Experiment, Egypt
 
-Two candidates merit **A/B-level follow-up**, while the remaining screened cases are retained as lower-priority or rejected/indeterminate candidates.
-
-## 2. Candidate C10C-001 — Exporting and Firm Performance: Randomized Experiment
-
-**Source:** Atkin, Khandelwal & Osman, *Exporting and Firm Performance: Evidence from a Randomized Experiment*, Quarterly Journal of Economics (2017).
-
-**Discovery evidence:** The study reports randomized variation in access to foreign markets for rug producers in Egypt and causal effects on firm profits. Treatment firms reported 16–26% higher profits; the paper uses an ITT framework because not all firms offered export opportunities took them up. citeturn0search0
+**Source:** Atkin, Khandelwal & Osman, *Exporting and Firm Performance: Evidence from a Randomized Experiment*, QJE 2017. J-PAL identifies 219 eligible rug producers, 74 randomized to treatment and 145 comparison; treatment consisted of an opportunity to fill export orders, with repeated surveys over 2011–2014 and profit/productivity/quality outcomes. Data are linked from J-PAL to Harvard Dataverse. citeturn2view2turn0search0
 
 ### D1 — Study identity/provenance
-
-**PASS — documentary.** Peer-reviewed study with stable journal/DOI identity.
+**PASS.** Peer-reviewed study, stable DOI, AEA RCT registration, named researchers and public-data route. citeturn2view2
 
 ### D2 — Causal design
-
-**PASS — strong.** Randomized experiment generating exogenous variation in export-market access. citeturn0search0
+**PASS — strong.** Random assignment generated exogenous variation in the opportunity to export. citeturn2view2turn0search0
 
 ### D3 — Structural accessibility transition
-
-**BORDERLINE / REQUIRES PRIMARY-DATA AUDIT.** Candidate interpretation:
-
-`S_0 = firm without experimentally enabled foreign-market access`
-
-`S_1 = firm with experimentally enabled foreign-market access`
-
-`T_acc,0 → T_acc,1` = change in the set of export-related transformations structurally accessible to the firm.
-
-The crucial unresolved issue is whether the available treatment documentation and firm-level variables allow an explicit, reproducible transformation universe/predicate rather than treating “export access” itself as synonymous with `T_acc`.
+**B — precise operational gap.** The intervention is not merely observed exporting: firms were randomly given an opportunity to fill foreign orders, while Hamis Carpets and buyers established prices, delivery timing and product specifications. This supports a candidate change in accessible export-related transformations through the treatment/context condition. However, admission requires defining an explicit transformation universe `U_τ` and predicate `P_τ(S,C,L)` from the documented firm/intervention state, rather than using treatment assignment or export take-up as a proxy for `T_acc`. The fact that subsequent orders could depend on performance makes this distinction essential. citeturn2view2
 
 ### D4 — Independent value endpoint
-
-**PASS — promising.** Firm profit is an explicit economic outcome and is not definitionally identical to export accessibility. The paper directly estimates impacts on profits. citeturn0search0
+**PASS — strong candidate.** Monthly firm profit is a directly measured economic endpoint and is not definitionally identical to treatment or accessibility. J-PAL reports a 26% ITT effect on monthly profits. citeturn2view2
 
 ### D5 — Counterfactual
-
-**PASS — strong.** Randomized treatment/control structure supplies a defensible counterfactual.
+**PASS — strong.** Randomized treatment/comparison assignment supplies the basic counterfactual. citeturn2view2
 
 ### D6 — Downstream pathway
-
-**B — evidence gap.** The paper contains productivity, quality and output mechanisms, but a C10-C reconstruction must explicitly separate accessibility, export take-up, production choices, learning and profit. citeturn0search0
+**B — evidence gap.** The documented sequence contains opportunity to export → actual production/exporting → learning/quality/productivity → profit. The C10-C audit must preserve these distinctions rather than treating exporting itself as `ΔT_acc`. citeturn2view2
 
 ### D7 — Competing mechanisms
-
-**B — manageable but material.** Take-up, learning-by-exporting, product quality, productivity and production intensity are plausible mediators/mechanisms. The study itself discusses these channels. citeturn0search0
+**B — material but auditable.** Take-up and subsequent orders depend partly on firm performance/buyer interest; learning, product quality, productivity and prices are downstream mechanisms. These are analytically useful but must not be absorbed into accessibility. citeturn2view2
 
 ### D8 — Reproducibility/provenance
-
-**B — documentary confirmation required.** Study is highly promising, but admission requires verification of replication-data availability and exact variable-level provenance before execution.
+**A/B — strong route, file-level verification pending.** J-PAL provides a Harvard Dataverse data route and the study has detailed survey documentation. Exact files, variable dictionary, treatment fields and derived-variable provenance must still be verified before empirical admission. citeturn2view2
 
 **Classification: B — PROMISING / EVIDENCE GAP.**
-
-**Priority:** HIGH.
+**Priority: HIGH.**
 
 ## 3. Candidate C10C-002 — Neighborhood Impacts of Local Infrastructure Investment: Urban Mexico
 
-**Source:** *The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico*; OpenICPSR replication project.
-
-**Discovery evidence:** The project reports a large infrastructure investment experiment in which $68 million was randomly allocated across low-income urban neighborhoods. The intervention improved infrastructure access and increased private housing investment; aggregate real-estate value increased by about $2 per $1 invested. Replication data are publicly catalogued in OpenICPSR. citeturn0search5turn0search12
+**Source:** McIntosh, Alegría, Ordóñez & Zenteno, *The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico*, AEJ Applied Economics 2018. The study reports $68 million randomly allocated across low-income urban neighborhoods, improvements in infrastructure access, private housing investment, and an increase in aggregate real-estate value of about $2 per $1 invested. citeturn0search3
 
 ### D1 — Study identity/provenance
-
-**PASS — strong documentary evidence.** Public OpenICPSR replication project with named investigators and data files. citeturn0search12
+**PASS — strong.** Named investigators, peer-reviewed publication and public OpenICPSR replication project. The deposit includes household data, analysis scripts and real-estate replication scripts. citeturn1search1turn1search6
 
 ### D2 — Causal design
-
-**PASS — strong.** Random allocation of infrastructure investment across neighborhoods. citeturn0search5
+**PASS — strong.** Infrastructure spending was randomly allocated across neighborhoods. citeturn0search3
 
 ### D3 — Structural accessibility transition
-
-**A/B — promising.** Infrastructure investment directly changes structural access to forms of infrastructure including electric lighting, street lights, sidewalks, medians and road paving. This is a strong candidate for explicit `S_0 → S_1` and `T_acc,0 → T_acc,1` reconstruction. citeturn0search13
+**B — strong candidate, exact representation still open.** The intervention directly improves infrastructure access. The replication project contains household and real-estate data plus analysis scripts, making an explicit `S_0/S_1 → T_acc,0/T_acc,1` reconstruction plausible. However, the exact infrastructure variables and their mapping to a transformation universe/predicate have not yet been audited at variable level. The C10-C requirement is therefore not yet satisfied. citeturn0search1turn1search1
 
 ### D4 — Independent value endpoint
-
-**PASS — promising.** Aggregate real-estate value provides an explicit monetary value endpoint distinct from infrastructure accessibility. citeturn0search5turn0search13
+**PASS — strong.** Real-estate value is a monetary endpoint distinct from infrastructure accessibility. The published result explicitly reports aggregate real-estate value gains relative to investment. citeturn0search3
 
 ### D5 — Counterfactual
-
-**PASS — strong.** Random allocation provides a defensible counterfactual at the neighborhood level, subject to the study's saturation/spillover structure. citeturn0search13
+**PASS — strong.** Random allocation provides the core treatment/control counterfactual; spillovers/saturation must be represented explicitly in the final identification analysis. citeturn0search3
 
 ### D6 — Downstream pathway
-
-**B — evidence gap.** Infrastructure access, private housing investment and real-estate value are documented, but a C10-C analysis must establish whether intermediate accessibility changes can be represented independently of the investment amount and downstream property-value response.
+**B — evidence gap.** The study documents infrastructure access and private housing investment before the value endpoint, but the candidate audit must determine which intermediate variables can represent `ΔReach`/`ΔTrajectory` without substituting investment amount or observed real-estate value for `ΔT_acc`. The replication deposit includes dedicated analysis scripts, so this is a tractable documentary audit rather than an assumed PASS. citeturn1search1turn1search6
 
 ### D7 — Competing mechanisms
-
-**B — material.** Municipal responses, spillovers and substitution by other government investment are explicitly relevant to the study design. The paper discusses saturation and potential spillovers. citeturn0search13
+**B — material.** Spillovers, municipal responses, substitution and neighborhood-level interactions need to be explicitly considered. The study's randomized neighborhood design does not by itself make these mechanisms disappear. citeturn0search3
 
 ### D8 — Reproducibility/provenance
-
-**PASS — strong documentary evidence.** Public replication project includes data files; candidate-specific audit still required before execution. citeturn0search5turn0search12
+**PASS — strong documentary basis.** OpenICPSR provides the replication package, including `Habitat_Household_Data_for_Replication.dta`, household analysis code and real-estate analysis code. The DTA is about 139.9 MB, so no download is authorized yet. citeturn1search1turn0search5turn1search6
 
 **Classification: B — PROMISING / EVIDENCE GAP.**
-
-**Priority:** HIGH.
+**Priority: HIGH.**
 
 ## 4. Candidate C10C-003 — Off-grid Solar Power in India
 
-**Source:** Aklin et al., *Does basic energy access generate socioeconomic benefits?* (Science Advances, 2017).
-
-**Evidence:** Randomized field experiment with 1,281 rural households; treatment increased electrification by 29–36 percentage points and reduced kerosene expenditure, but showed no systematic changes in several broader socioeconomic indicators. citeturn0search2
-
-**D1:** PASS.
-
-**D2:** PASS — randomized field experiment.
-
-**D3:** A/B — strong structural-access candidate: electricity access changes the set of feasible household activities, but explicit `T_acc` reconstruction is not yet demonstrated.
-
-**D4:** B — potentially strong endpoints, but the value interpretation must be specified independently rather than equating socioeconomic outcomes with value.
-
-**D5:** PASS — randomized treatment/control.
-
-**D6:** B — downstream outcomes exist, but accessibility, usage and socioeconomic outcomes must be separated.
-
-**D7:** B — treatment take-up, actual electricity use and broader household responses require separation.
-
-**D8:** B — public full-text/replication provenance is promising; exact dataset admission still requires documentary audit.
-
-**Classification: B — PROMISING / EVIDENCE GAP.**
-
-**Priority:** MEDIUM-HIGH.
+**Classification: B — PROMISING / EVIDENCE GAP.** Randomized structural access candidate with useful null/negative downstream evidence; retained as backup. No candidate-specific audit yet.
 
 ## 5. Candidate C10C-004 — Rural financial access / microcredit Morocco
 
-**Source:** OpenICPSR replication data for *Estimating the Impact of Microcredit on Those Who Take It Up: Evidence from a Randomized Experiment in Morocco*.
-
-**Evidence:** Treatment villages had access to microcredit; the documented results include effects on investment and profit but no overall gain in income or consumption. Replication data are publicly deposited. citeturn0search3
-
-**D1:** PASS.
-
-**D2:** PASS — randomized village-level access.
-
-**D3:** B — financial-access transition is plausible, but `T_acc` must not be collapsed into loan take-up.
-
-**D4:** B — profit is a promising value endpoint; income/consumption are not automatically value.
-
-**D5:** PASS.
-
-**D6:** B — borrower selection/take-up and business investment require mechanism separation.
-
-**D7:** B — substantial selection/heterogeneity and externalities must be addressed.
-
-**D8:** PASS/B — public replication deposit, subject to exact file-level audit.
-
-**Classification: B — PROMISING / EVIDENCE GAP.**
-
-**Priority:** MEDIUM.
+**Classification: B — PROMISING / EVIDENCE GAP.** Randomized financial-access candidate with profit/investment endpoints; retained as secondary candidate. No candidate-specific audit yet.
 
 ## 6. Candidate C10C-005 — StudentPOWR digital intervention
 
-**Evidence:** Randomized wait-list trial with full-access, partial-access and control groups; subjective wellbeing measured longitudinally. Dataset is deposited in DataverseNL. citeturn0search1
-
-**D1:** PASS.
-
-**D2:** PASS — randomized design.
-
-**D3:** FAIL/BORDERLINE — intervention access is primarily access to a behavioral intervention rather than a clear structural transformation-space change. It risks collapsing “access to intervention” into `T_acc` without a defensible broader transformation universe.
-
-**D4:** PASS — subjective wellbeing is an explicit evaluative endpoint.
-
-**D5:** PASS.
-
-**D6:** B.
-
-**D7:** B.
-
-**D8:** PASS — deposited dataset.
-
-**Classification: C — REJECTED / DESIGN-INCOMPATIBLE FOR CURRENT C10-C ROUND.**
-
-Reason: insufficiently clear structural accessibility transition under the frozen TGCV operational definition.
+**Classification: C — REJECTED / DESIGN-INCOMPATIBLE FOR CURRENT C10-C ROUND.** Structural transformation-space transition is insufficiently clear under the frozen TGCV operational definition.
 
 ## 7. Candidate C10C-006 — Digital support / child development Peru
 
-**Evidence:** Cluster-randomized trial with 2,461 caregiver-child dyads; public Dryad replication data and code; intervention effects on child development and reported cost-effectiveness. citeturn0search4
-
-**D1:** PASS.
-
-**D2:** PASS — cluster randomized.
-
-**D3:** B — digital support changes accessible support transformations, but the structural transformation universe requires careful definition.
-
-**D4:** B — cost-effectiveness is promising but may be an evaluation construct rather than a native value endpoint; exact value estimand would need freezing.
-
-**D5:** PASS.
-
-**D6:** B.
-
-**D7:** B.
-
-**D8:** PASS — Dryad provides data, code and codebook. citeturn0search4
-
-**Classification: B — PROMISING / EVIDENCE GAP.**
-
-**Priority:** MEDIUM.
+**Classification: B — PROMISING / EVIDENCE GAP.** Cluster-randomized candidate with public replication materials; value endpoint and structural accessibility mapping remain insufficiently specified.
 
 ## 8. Candidate C10C-007 — Local infrastructure / public-service access Mumbai 2026
 
-**Evidence:** A 2026 cluster-randomized field experiment in Mumbai tested bureaucratic assistance and political coordination for obtaining municipal water connections, with midline and long-term endline observations; verification materials are deposited in the American Journal of Political Science Dataverse. citeturn0search6turn0search9
+**Classification: B — PROMISING / VALUE-ENDPOINT GAP.** Strong structural-access design candidate, but independent value endpoint not yet established from documentary screening.
 
-**D1:** PASS — current peer-reviewed study with replication materials.
+## 9. Admission decision after candidate-specific audit
 
-**D2:** PASS — cluster-randomized factorial intervention.
+### C10C-001 — Egypt
+**Remain B.** The causal and value layers are unusually strong. The decisive unresolved question is whether the experimental “opportunity to export” can be translated into an explicit, reproducible `ΔT_acc` without equating accessibility with take-up/exporting or importing downstream learning into accessibility.
 
-**D3:** A/B — strong candidate for structural public-service accessibility transition.
+### C10C-002 — Mexico
+**Remain B.** This is currently the stronger structural-accessibility candidate because the intervention is physical/local infrastructure and the replication package contains dedicated household and real-estate analysis files. The decisive unresolved question is exact variable-level reconstruction of `T_acc,0`, `T_acc,1`, and `ΔT_acc`, plus separation from investment intensity and spillovers.
 
-**D4:** B — primary outcome is formal water connection/access; an independent value endpoint is not established from the discovery evidence. This is the principal current gap.
+## 10. Current priority order
 
-**D5:** PASS — randomized factorial counterfactual.
+1. **C10C-002 Mexico infrastructure — HIGH / first documentary admission audit.**
+2. **C10C-001 Egypt export access — HIGH / parallel documentary audit.**
+3. C10C-003 India solar — backup.
+4. C10C-004 Morocco microcredit — secondary.
 
-**D6:** PASS/B — long-term trajectory observations are promising.
+## 11. Authorization status
 
-**D7:** B — policy eligibility/exclusion and interaction effects require explicit handling.
+**Discovery:** COMPLETE.
 
-**D8:** PASS — verification materials in Dataverse.
+**Candidate-specific documentary admission audit:** AUTHORIZED.
 
-**Classification: B — PROMISING / EVIDENCE GAP, VALUE ENDPOINT GAP.**
-
-**Priority:** MEDIUM.
-
-## 9. Discovery conclusion
-
-The round identifies **two highest-priority candidates for candidate-specific documentary admission audit**:
-
-1. **C10C-001 — Export-market access / firm profits (Egypt).**
-2. **C10C-002 — Randomized neighborhood infrastructure investment / real-estate value (Mexico).**
-
-Both have strong causal designs and explicit value-like endpoints. The critical unresolved C10-C question is not whether they have treatment effects; it is whether a reproducible, non-circular `T_acc,0 → T_acc,1 → ΔT_acc` representation can be constructed while preserving the causal counterfactual and separating downstream mechanisms.
-
-C10C-003 (India solar) is the strongest backup because it combines randomized structural access with several downstream outcomes, including a clear null/negative-style pattern that is scientifically useful under the sign-agnostic C10-C design.
-
-## 10. Authorization status
-
-**Discovery round:** COMPLETE.
-
-**Candidate-specific documentary audit:** AUTHORIZED for C10C-001, C10C-002 and, if required, C10C-003.
-
-**Dataset download:** NOT YET AUTHORIZED.
+**Dataset download:** NOT AUTHORIZED.
 
 **Empirical reconstruction:** NOT AUTHORIZED.
 
 **Causal estimation:** NOT AUTHORIZED.
 
-**C10 claim upgrade:** NOT AUTHORIZED.
+**Claim-level upgrade:** NOT AUTHORIZED.
 
-## 11. Next controlled operation
+## 12. Next controlled operation
 
-Perform candidate-specific **D1–D8 documentary admission audits** for C10C-001 and C10C-002, prioritizing the exact operational feasibility of `T_acc,0`, `T_acc,1` and `ΔT_acc`, value-endpoint independence, and replication-data provenance.
+Perform the **variable-level documentary admission audit for C10C-002 (Mexico)** using only publicly documented replication metadata/scripts at this stage. The audit must answer, before any download or execution authorization:
+
+1. What observed variables encode the pre/post structural infrastructure state?
+2. Can `U_τ` and `P_τ(S,C,L)` be specified without using real-estate value or downstream outcomes?
+3. Can `T_acc,0`, `T_acc,1` and `ΔT_acc` be reconstructed reproducibly?
+4. Is the value endpoint independently defined at the same unit/horizon?
+5. Can investment intensity, spillovers and other competing mechanisms be separated or bounded?
+6. Does the existing replication package contain all provenance needed for an independent reconstruction?
+
+No empirical dataset download or execution is authorized by this record.
