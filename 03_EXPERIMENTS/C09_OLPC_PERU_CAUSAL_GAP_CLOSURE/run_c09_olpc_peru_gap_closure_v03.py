@@ -47,7 +47,12 @@ def g6_gate(v06,g5):
         cs=sign(cc.get(y,{})); ins=sign(iv); sensitivity[y]={"complete_case_sign":cs,"ipw_sign":ins,"same_nonzero_sign":bool(cs is not None and ins is not None and cs==ins and cs!=0)}
     av=[x for x in sensitivity.values() if x["complete_case_sign"] is not None and x["ipw_sign"] is not None]; g5_consistent=bool(av) and all(x["same_nonzero_sign"] for x in av)
     alternative_paths_addressed=False; causal_identification=False
-    status="PASS" if first_pass and traj_pass and g5_consistent and alternative_paths_addressed else ("FAIL" if not first_pass else "PARTIAL/INCONCLUSIVE")
+    if first_pass and traj_pass and g5_consistent and alternative_paths_addressed:
+        status="PASS"
+    elif not first_pass:
+        status="FAIL"
+    else:
+        status="PARTIAL/INCONCLUSIVE"
     return {"status":status,"G6_1_Z_to_delta_T_acc":{"status":"PASS" if first_pass else "FAIL","available_contrasts":first_available},"G6_2_delta_T_acc_to_trajectory":{"status":"PASS" if traj_pass else "FAIL","available_contrasts":traj_available},"G6_3_G5_persistence":{"status":"PASS" if g5_consistent else "FAIL/INCONCLUSIVE","sensitivity":sensitivity},"G6_4_alternative_direct_pathways":{"status":"NOT_IDENTIFIED","addressed":alternative_paths_addressed},"G6_5_identification_limit":{"status":"NOT_SATISFIED","causal_identification":causal_identification},"closure_authorized":status=="PASS"}
 
 def main():
