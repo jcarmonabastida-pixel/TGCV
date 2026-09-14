@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-"""TGCV C09 — KGFS / D178 resumable acquisition wrapper.
-
-Wraps the canonical D178 audit inventory without changing its scientific logic.
-A per-file HTTP failure is recorded instead of aborting the complete 74-file
-acquisition. Existing verified files are reused. Truncated downloads are
-recovered with bounded HTTP Range requests against the same canonical
-Dataverse endpoint. If all 74 files are present with the published sizes, the
-canonical metadata audit is then executed.
-"""
+"""TGCV C09 — KGFS / D178 resumable acquisition wrapper."""
 from __future__ import annotations
 import json, subprocess, sys, time
 from urllib.request import Request, urlopen
@@ -37,9 +29,13 @@ def _request_headers():
 
 
 def download_range(file_id, destination, expected_size):
-    """Download the exact expected byte range in bounded chunks."""
+    """Recover the exact file with small strict HTTP byte ranges.
+
+    We require HTTP 206 and an exact Content-Range. A 200 response is rejected
+    because accepting it could silently assemble the wrong byte sequence.
+    """
     url = f"{BASE_URL}/api/access/datafile/{file_id}?format=original"
-    chunk_size = 1024 * 1024
+    chunk_size = 256 * 1024
     tmp = destination.with_suffix(destination.suffix + ".range.tmp")
     _safe_unlink(tmp)
     start = 0
@@ -47,17 +43,22 @@ def download_range(file_id, destination, expected_size):
         with open(tmp, "wb") as out:
             while start < expected_size:
                 end = min(start + chunk_size - 1, expected_size - 1)
+                wanted = end - start + 1
                 last_error = None
                 for attempt in range(1, 4):
                     req = Request(url, headers={**_request_headers(), "Range": f"bytes={start}-{end}"})
                     try:
                         with urlopen(req, timeout=600) as r:
                             status = getattr(r, "status", r.getcode())
-                            if status not in (200, 206):
-                                raise RuntimeError(f"unexpected HTTP status {status} for range {start}-{end}")
-                            data = r.read(end - start + 1)
-                            if len(data) != end - start + 1:
-                                raise RuntimeError(f"range {start}-{end}: received {len(data)} bytes")
+                            if status != 206:
+                                raise RuntimeError(f"range {start}-{end}: expected HTTP 206, got {status}")
+                            content_range = r.headers.get("Content-Range", "")
+                            expected_cr = f"bytes {start}-{end}/{expected_size}"
+                            if content_range != expected_cr:
+                                raise RuntimeError(f"range {start}-{end}: Content-Range={content_range!r}, expected={expected_cr!r}")
+                            data = r.read(wanted)
+                            if len(data) != wanted:
+                                raise RuntimeError(f"range {start}-{end}: received {len(data)} bytes, expected {wanted}")
                             out.write(data)
                             out.flush()
                             last_error = None
@@ -69,7 +70,6 @@ def download_range(file_id, destination, expected_size):
                     raise last_error
                 start = end + 1
     except Exception:
-        # The file must be closed before Windows can unlink it.
         _safe_unlink(tmp)
         raise
 
@@ -79,7 +79,7 @@ def download_range(file_id, destination, expected_size):
         raise RuntimeError(f"range assembled size={actual}, expected={expected_size}")
     _safe_unlink(destination)
     tmp.replace(destination)
-    return actual, "http-range"
+    return actual, "http-range-256k"
 
 
 def download_resilient(file_id, destination, expected_size):
