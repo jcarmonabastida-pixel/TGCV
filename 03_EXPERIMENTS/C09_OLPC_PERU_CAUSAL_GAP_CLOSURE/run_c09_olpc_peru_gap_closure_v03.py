@@ -9,7 +9,7 @@ Controlled correction of v0.6:
 The frozen C09 specification is not modified by this executor.
 """
 from __future__ import annotations
-import argparse,json,platform,subprocess,sys
+import argparse,json,platform,re,subprocess,sys
 from pathlib import Path
 VERSION="0.7"
 SPEC="TGCV_C09_OLPC_PERU_CAUSAL_GAP_CLOSURE_SPEC_001"
@@ -17,7 +17,7 @@ DEFAULT_ROOT=Path(r"C:\Users\pedri\Downloads\openICPSR\113587-V2")
 V06=Path(__file__).with_name("run_c09_olpc_peru_gap_closure_v02.py")
 G5=Path(__file__).with_name("g5_attrition_analysis_c09_v01.py")
 
-def _child_root_json(stdout, required_keys):
+def _child_root_json(stdout, required_keys, fallback_result=None):
     decoder=json.JSONDecoder(); candidates=[]
     for i,ch in enumerate(stdout):
         if ch!="{": continue
@@ -25,13 +25,21 @@ def _child_root_json(stdout, required_keys):
             obj,end=decoder.raw_decode(stdout[i:])
             if isinstance(obj,dict) and all(k in obj for k in required_keys): candidates.append(obj)
         except json.JSONDecodeError: pass
-    if not candidates: raise ValueError(f"no JSON object containing required keys {required_keys}")
-    return candidates[-1]
+    if candidates: return candidates[-1]
+    if fallback_result and fallback_result.exists():
+        obj=json.loads(fallback_result.read_text(encoding="utf-8"))
+        if isinstance(obj,dict) and all(k in obj for k in required_keys): return obj
+    raise ValueError(f"no JSON object containing required keys {required_keys}")
+
+def _result_path(stdout):
+    m=re.search(r'"result"\s*:\s*"([^"]+)"',stdout)
+    return Path(m.group(1)) if m else None
 
 def run_json(script,root,out,required_keys):
     p=subprocess.run([sys.executable,str(script),"--data-root",str(root),"--output-dir",str(out)],text=True,capture_output=True)
     if p.returncode!=0: raise RuntimeError(f"CHILD_EXECUTION_FAILED:{script.name}:\n{p.stdout}\n{p.stderr}")
-    try: return _child_root_json(p.stdout,required_keys),p.stdout,p.stderr
+    try:
+        return _child_root_json(p.stdout,required_keys,_result_path(p.stdout)),p.stdout,p.stderr
     except ValueError as e: raise RuntimeError(f"CHILD_JSON_INVALID:{script.name}:{e}:\n{p.stdout}") from e
 
 def nonzero(v): return isinstance(v,dict) and v.get("diff") is not None and abs(float(v["diff"]))>0
