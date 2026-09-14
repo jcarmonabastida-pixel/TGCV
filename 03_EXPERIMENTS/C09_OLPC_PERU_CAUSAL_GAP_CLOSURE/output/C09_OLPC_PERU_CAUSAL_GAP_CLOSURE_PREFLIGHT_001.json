@@ -1,0 +1,231 @@
+{
+  "capability_mapping": {
+    "objective_test": [
+      "P91",
+      "P92",
+      "P93",
+      "P94",
+      "P95",
+      "P96_A1",
+      "P96_A2",
+      "P96_A3",
+      "P96_A4",
+      "P97_A1",
+      "P97_A2",
+      "P97_A3",
+      "P97_A4",
+      "P97_A5"
+    ],
+    "self_reported": [
+      "P10_A1",
+      "P10_A2",
+      "P10_A3",
+      "P10_A4",
+      "P10_A5",
+      "P10_A6",
+      "P10_A7",
+      "P10_A8",
+      "P10_A9",
+      "P10_A10",
+      "P10_A11"
+    ]
+  },
+  "checks": [
+    {
+      "check": "data_root_exists",
+      "detail": "C:\\Users\\pedri\\Downloads\\openICPSR\\113587-V2",
+      "status": "PASS"
+    },
+    {
+      "bytes": 121339,
+      "check": "input:listas_final.dta",
+      "columns_missing": [],
+      "columns_resolved": {
+        "codest": "codest",
+        "participated_in_lottery": "participated_in_lottery",
+        "received_laptop": "received_laptop",
+        "treatment_school": "treatment_school",
+        "won_lottery": "won_lottery"
+      },
+      "rows": 10019,
+      "sha256": "51778742b0d69585625aa99d2c49976098ed531419a52987b7e33f7fcedc6d5d",
+      "status": "PASS"
+    },
+    {
+      "bytes": 881,
+      "check": "input:school_pairs_final.dta",
+      "columns_missing": [],
+      "columns_resolved": {
+        "codmod": "codmod",
+        "pair": "pair",
+        "treatment_school": "treatment_school"
+      },
+      "rows": 28,
+      "sha256": "6bc89d68f99d8f7fcd5bff086ca91fbdedfebeab170f9cf3c273caddd12df0b1",
+      "status": "PASS"
+    },
+    {
+      "bytes": 3486997,
+      "check": "input:cestudiante_g3-6_p2_r1.dta",
+      "columns_missing": [],
+      "columns_resolved": {
+        "P12_A1": "P12_A1",
+        "P12_A2": "P12_A2",
+        "P12_A3": "P12_A3",
+        "P12_A4": "P12_A4",
+        "P12_A5": "P12_A5",
+        "P12_A6": "P12_A6",
+        "P12_A7": "P12_A7",
+        "P12_A8": "P12_A8",
+        "P2": "P2",
+        "P3": "P3",
+        "P4": "P4",
+        "codest": "CODEST"
+      },
+      "rows": 6121,
+      "sha256": "f99446acdead2e6f23ea599c197a7034ad7721048c43fecb6f0053e0c63733de",
+      "status": "PASS"
+    },
+    {
+      "bytes": 3126959,
+      "check": "input:cestudiante_g3-6_p1_r2.dta",
+      "columns_missing": [],
+      "columns_resolved": {
+        "codest": "CODEST"
+      },
+      "rows": 6008,
+      "sha256": "37255255e05a2a749e148779cf89fe93393262d5ecc2e83428acd67e885555b9",
+      "status": "PASS"
+    },
+    {
+      "bytes": 4030927,
+      "check": "input:cestudiante_g3-6_p2_r2.dta",
+      "columns_missing": [],
+      "columns_resolved": {
+        "P1": "P1",
+        "P10_A1": "P10_A1",
+        "P10_A10": "P10_A10",
+        "P10_A11": "P10_A11",
+        "P10_A2": "P10_A2",
+        "P10_A3": "P10_A3",
+        "P10_A4": "P10_A4",
+        "P10_A5": "P10_A5",
+        "P10_A6": "P10_A6",
+        "P10_A7": "P10_A7",
+        "P10_A8": "P10_A8",
+        "P10_A9": "P10_A9",
+        "P2": "P2",
+        "P3": "P3",
+        "P4_A1": "P4_A1",
+        "P4_A2": "P4_A2",
+        "P4_A3": "P4_A3",
+        "P4_A4": "P4_A4",
+        "P4_A5": "P4_A5",
+        "P4_B1": "P4_B1",
+        "P4_B2": "P4_B2",
+        "P4_B3": "P4_B3",
+        "P4_B4": "P4_B4",
+        "P4_B5": "P4_B5",
+        "P5_A1": "P5_A1",
+        "P5_A2": "P5_A2",
+        "P5_A3": "P5_A3",
+        "P5_A4": "P5_A4",
+        "P5_A5": "P5_A5",
+        "P6_A1": "P6_A1",
+        "P6_A2": "P6_A2",
+        "P6_A3": "P6_A3",
+        "P6_A4": "P6_A4",
+        "P7": "P7",
+        "P91": "P91",
+        "P92": "P92",
+        "P93": "P93",
+        "P94": "P94",
+        "P95": "P95",
+        "P96_A1": "P96_A1",
+        "P96_A2": "P96_A2",
+        "P96_A3": "P96_A3",
+        "P96_A4": "P96_A4",
+        "P97_A1": "P97_A1",
+        "P97_A2": "P97_A2",
+        "P97_A3": "P97_A3",
+        "P97_A4": "P97_A4",
+        "P97_A5": "P97_A5",
+        "codest": "CODEST"
+      },
+      "rows": 6041,
+      "sha256": "be874761f520e433a01bfb016e500af522eb17a317b85e8883e7b19cabefac67",
+      "status": "PASS"
+    },
+    {
+      "check": "student_assignment_key_unique",
+      "status": "PASS"
+    },
+    {
+      "check": "r1_student_key_unique",
+      "status": "PASS"
+    },
+    {
+      "check": "school_pair_structure",
+      "pairs": 14,
+      "status": "PASS"
+    },
+    {
+      "check": "frozen_assignment_identity",
+      "detail": "Z=won_lottery; receipt=received_laptop; school_condition=treatment_school",
+      "status": "PASS"
+    },
+    {
+      "check": "trajectory_semantic_mapping",
+      "detail": "R2 P4 A/B duration; P5 use by place; P6 use by activity; P7 Internet use",
+      "status": "PASS"
+    },
+    {
+      "check": "capability_semantic_mapping",
+      "detail": "R2 section 13.6 objective PC/Internet test and self-reported PC/Internet skills",
+      "status": "PASS"
+    }
+  ],
+  "data_root": "C:\\Users\\pedri\\Downloads\\openICPSR\\113587-V2",
+  "environment": {
+    "pandas": "3.0.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pyreadstat": "1.3.6",
+    "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]"
+  },
+  "operation": "C09_OLPC_PERU_CAUSAL_GAP_CLOSURE_PREFLIGHT",
+  "scientific_execution": false,
+  "status": "PASS",
+  "trajectory_mapping": {
+    "P4_duration_hours": [
+      "P4_A1",
+      "P4_A2",
+      "P4_A3",
+      "P4_A4",
+      "P4_A5"
+    ],
+    "P4_duration_minutes": [
+      "P4_B1",
+      "P4_B2",
+      "P4_B3",
+      "P4_B4",
+      "P4_B5"
+    ],
+    "P5_use_by_place": [
+      "P5_A1",
+      "P5_A2",
+      "P5_A3",
+      "P5_A4",
+      "P5_A5"
+    ],
+    "P6_use_by_activity": [
+      "P6_A1",
+      "P6_A2",
+      "P6_A3",
+      "P6_A4"
+    ],
+    "P7_internet_use": [
+      "P7"
+    ]
+  },
+  "version": "0.3"
+}
