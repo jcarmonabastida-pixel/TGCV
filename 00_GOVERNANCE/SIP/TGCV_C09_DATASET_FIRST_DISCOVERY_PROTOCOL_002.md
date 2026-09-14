@@ -1,7 +1,7 @@
 # TGCV C09 — Dataset-First Discovery Protocol 002
 
 **Date:** 2026-09-14  
-**Status:** FROZEN — D5 CAUSAL-BRIDGE REFINEMENT ADOPTED; FACTORIAL/MECHANISM-SEPARATION D0 RULE PERSISTED  
+**Status:** FROZEN — D5 MECHANISM-IDENTIFICATION GATE ADOPTED; FACTORIAL/MECHANISM-SEPARATION D0 RULE PERSISTED  
 **Supersedes:** `TGCV_C09_DATASET_FIRST_DISCOVERY_PROTOCOL_001.md` for future C09 discovery  
 **Scope:** C09 real-world candidate discovery only
 
@@ -9,7 +9,7 @@
 
 Refine the dataset-first discovery route after repeated D5 failures showed that the principal bottleneck is not merely observing `Z → ΔT_acc` and `Z → Y`, but identifying, bounding or otherwise defensibly separating the specific causal bridge `ΔT_acc → subsequent trajectory Y` from direct treatment effects and alternative post-treatment pathways.
 
-The discovery process must therefore search not only for a structural accessibility transition, but for a mechanism-identification architecture capable of separating or bounding the accessibility-mediated pathway.
+The discovery process must therefore search not only for a structural accessibility transition, but for a **mechanism-identification architecture** capable of separating or bounding the accessibility-mediated pathway.
 
 ## 2. Strategic decision
 
@@ -19,7 +19,7 @@ The adopted route is now:
 
 A dataset is not a strong C09 candidate merely because it contains a randomized intervention, pre/post accessibility measure and downstream outcome. If the same intervention simultaneously changes multiple post-treatment channels and there is no design or identification strategy capable of separating them, the candidate fails D5.
 
-The previous protocol remains the conceptual base, but D5 is replaced by the refined mechanism-identification gate below.
+The previous protocol remains the conceptual base, but D5 is replaced by the refined **Mechanism-Identification Gate** below.
 
 ## 3. D0–D6 pipeline
 
@@ -59,7 +59,9 @@ An identifiable intervention/exposure `Z` must exist and must be distinguishable
 
 ### D3 — Stable unit
 
-The same identifiable structural unit must be linkable across the relevant periods: `unit_i,t0 → unit_i,t1 → Y_i,t>1`.
+The same identifiable structural unit must be linkable across the relevant periods:
+
+`unit_i,t0 → unit_i,t1 → Y_i,t>1`.
 
 Cross-sectional substitution of different units is not sufficient.
 
@@ -73,9 +75,9 @@ Direct use, adoption, take-up or immediate utilization of the intervention is no
 
 The existence of `Y` is necessary but does not establish the C09 causal bridge.
 
-## 4. D5 — Mechanism-identification gate
+## 4. D5 — Mechanism-Identification Gate
 
-D5 is no longer a single generic causal-identification check. It is a structured gate with four questions.
+D5 is now an explicit **Mechanism-Identification Gate**, not a generic causal-identification check. It asks whether the dataset contains an architecture capable of separating or bounding the specific bridge `ΔT_acc → Y` from direct and alternative treatment pathways.
 
 ### D5.0 — Mechanism architecture exists
 
