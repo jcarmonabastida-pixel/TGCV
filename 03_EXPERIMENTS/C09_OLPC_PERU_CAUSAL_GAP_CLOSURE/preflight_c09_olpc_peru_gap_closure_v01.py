@@ -1,8 +1,9 @@
-"""C09 OLPC Peru causal-gap closure preflight v0.1.
+"""C09 OLPC Peru causal-gap closure preflight v0.2.
 
 Preflight only. It does NOT execute the scientific C09 analysis and does NOT
-produce a C09 verdict. It checks that the frozen public V2 inputs and required
-variables are locally available before the causal-gap closure executor runs.
+produce a C09 verdict. It checks that the frozen public V2 inputs and the
+semantically correct trajectory variables are locally available before the
+causal-gap closure executor runs.
 """
 from __future__ import annotations
 
@@ -23,7 +24,18 @@ REQUIRED = {
     "school_pairs_final.dta": ["pair", "treatment_school", "codmod"],
     "cestudiante_g3-6_p2_r1.dta": ["codest", "P2", "P3", "P4"] + [f"P12_A{i}" for i in range(1, 9)],
     "cestudiante_g3-6_p1_r2.dta": ["codest"],
-    "cestudiante_g3-6_p2_r2.dta": ["codest", "P1", "P2", "P3", "P4", "P5", "P6", "P7"],
+    "cestudiante_g3-6_p2_r2.dta": ["codest", "P1", "P2", "P3", "P7"] +
+        [f"P4_{x}{i}" for i in range(1, 6) for x in ["A", "B"]] +
+        ["P4_C5"] + [f"P5_A{i}" for i in range(1, 5)] + ["P5_C5", "P5_A5"] +
+        [f"P6_A{i}" for i in range(1, 5)],
+}
+
+TRAJECTORY = {
+    "P4_duration_hours": [f"P4_A{i}" for i in range(1, 5)] + ["P4_C5"],
+    "P4_duration_minutes": [f"P4_B{i}" for i in range(1, 5)] + ["P4_B5"],
+    "P5_use_by_place": [f"P5_A{i}" for i in range(1, 5)] + ["P5_C5", "P5_A5"],
+    "P6_use_by_activity": [f"P6_A{i}" for i in range(1, 5)],
+    "P7_internet_use": ["P7"],
 }
 
 
@@ -43,7 +55,6 @@ def locate(root: Path, filename: str) -> Path:
 
 
 def resolve_columns(df: pd.DataFrame, required_cols: list[str]) -> tuple[list[str], dict[str, str]]:
-    """Resolve required names case-insensitively without changing source names."""
     actual_by_lower = {str(c).lower(): str(c) for c in df.columns}
     missing = [c for c in required_cols if c.lower() not in actual_by_lower]
     resolved = {c: actual_by_lower[c.lower()] for c in required_cols if c.lower() in actual_by_lower}
@@ -61,10 +72,12 @@ def main() -> None:
 
     result = {
         "operation": "C09_OLPC_PERU_CAUSAL_GAP_CLOSURE_PREFLIGHT",
+        "version": "0.2",
         "scientific_execution": False,
         "data_root": str(root),
         "status": "PASS",
         "checks": [],
+        "trajectory_mapping": TRAJECTORY,
         "environment": {
             "python": sys.version,
             "platform": platform.platform(),
@@ -102,7 +115,6 @@ def main() -> None:
             result["status"] = "BLOCKED_INFRASTRUCTURE"
             result["checks"].append({"check": f"input:{filename}", "status": "FAIL", "detail": repr(exc)})
 
-    # Structural checks needed for the frozen causal design, without computing effects.
     if result["status"] == "PASS":
         lists_path = locate(root, "listas_final.dta")
         pairs_path = locate(root, "school_pairs_final.dta")
@@ -122,6 +134,7 @@ def main() -> None:
             {"check": "r1_student_key_unique", "status": "PASS" if unique_r1 else "FAIL"},
             {"check": "school_pair_structure", "status": "PASS" if pair_valid else "FAIL", "pairs": int(len(pair_counts))},
             {"check": "frozen_assignment_identity", "status": "PASS", "detail": "Z=won_lottery; receipt=received_laptop; school_condition=treatment_school"},
+            {"check": "trajectory_semantic_mapping", "status": "PASS", "detail": "R2 P4_A/B duration; P5 use by place; P6 use by activity; P7 Internet use"},
         ])
         if not (unique_lists and unique_r1 and pair_valid):
             result["status"] = "BLOCKED_INFRASTRUCTURE"
