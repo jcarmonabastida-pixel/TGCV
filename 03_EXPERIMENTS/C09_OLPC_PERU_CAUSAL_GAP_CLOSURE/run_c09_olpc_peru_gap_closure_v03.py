@@ -4,6 +4,7 @@ Controlled correction of v0.6:
 - preserves the v0.6 corrected causal universe and reconstruction logic;
 - integrates the canonical G5 attrition analysis as an execution dependency;
 - implements an explicit G6 causal-bridge gate;
+- evaluates G6.2 with a bounded Delta-T_acc -> trajectory diagnostic rather than relabeling Z -> trajectory as mediator evidence;
 - never treats a positive first-stage contrast alone as scientific closure.
 
 The frozen C09 specification is not modified by this executor.
@@ -46,10 +47,24 @@ def nonzero(v): return isinstance(v,dict) and v.get("diff") is not None and abs(
 def sign(v):
     if not isinstance(v,dict) or v.get("diff") is None:return None
     x=float(v["diff"]);return 1 if x>0 else (-1 if x<0 else 0)
+
+def g6_2_delta_tacc_diagnostic(contrasts):
+    mediator=contrasts.get("Z_to_delta_resource_count",{})
+    denom=mediator.get("diff") if isinstance(mediator,dict) else None
+    out={"mediator":"delta_resource_count","mediator_contrast":mediator,"method":"Wald/IV diagnostic using Z as instrument","causal_interpretation_authorized":False,"trajectory_estimates":{}}
+    if denom is None or float(denom)==0:
+        out["status"]="NOT_ESTIMABLE"
+        return out
+    for k,v in contrasts.items():
+        if not k.startswith("Z_to_trajectory_") or not isinstance(v,dict) or v.get("diff") is None: continue
+        out["trajectory_estimates"][k]={"reduced_form_diff":float(v["diff"]),"wald_ratio":float(v["diff"])/float(denom)}
+    out["status"]="PASS_DIAGNOSTIC_ONLY" if out["trajectory_estimates"] else "NOT_ESTIMABLE"
+    return out
+
 def g6_gate(v06,g5):
-    c=v06.get("contrasts",{}); first={k:v for k,v in c.items() if k.startswith("Z_to_delta_")}; traj={k:v for k,v in c.items() if k.startswith("Z_to_trajectory_")}
-    first_available={k:v for k,v in first.items() if v.get("diff") is not None}; traj_available={k:v for k,v in traj.items() if v.get("diff") is not None}
-    first_pass=bool(first_available) and any(nonzero(v) for v in first_available.values()); traj_pass=bool(traj_available) and any(nonzero(v) for v in traj_available.values())
+    c=v06.get("contrasts",{}); first={k:v for k,v in c.items() if k.startswith("Z_to_delta_")}; first_available={k:v for k,v in first.items() if v.get("diff") is not None}
+    first_pass=bool(first_available) and any(nonzero(v) for v in first_available.values())
+    g62=g6_2_delta_tacc_diagnostic(c); traj_pass=g62["status"]=="PASS_DIAGNOSTIC_ONLY"
     cc=g5.get("complete_case_contrasts",{}); ipw=g5.get("ipw_contrasts",{}); sensitivity={}
     for y,iv in ipw.items():
         cs=sign(cc.get(y,{})); ins=sign(iv); sensitivity[y]={"complete_case_sign":cs,"ipw_sign":ins,"same_nonzero_sign":bool(cs is not None and ins is not None and cs==ins and cs!=0)}
@@ -61,11 +76,12 @@ def g6_gate(v06,g5):
         status="FAIL"
     else:
         status="PARTIAL/INCONCLUSIVE"
-    return {"status":status,"G6_1_Z_to_delta_T_acc":{"status":"PASS" if first_pass else "FAIL","available_contrasts":first_available},"G6_2_delta_T_acc_to_trajectory":{"status":"PASS" if traj_pass else "FAIL","available_contrasts":traj_available},"G6_3_G5_persistence":{"status":"PASS" if g5_consistent else "FAIL/INCONCLUSIVE","sensitivity":sensitivity},"G6_4_alternative_direct_pathways":{"status":"NOT_IDENTIFIED","addressed":alternative_paths_addressed},"G6_5_identification_limit":{"status":"NOT_SATISFIED","causal_identification":causal_identification},"closure_authorized":status=="PASS"}
+    return {"status":status,"G6_1_Z_to_delta_T_acc":{"status":"PASS" if first_pass else "FAIL","available_contrasts":first_available},"G6_2_delta_T_acc_to_trajectory":g62,"G6_3_G5_persistence":{"status":"PASS" if g5_consistent else "FAIL/INCONCLUSIVE","sensitivity":sensitivity},"G6_4_alternative_direct_pathways":{"status":"NOT_IDENTIFIED","addressed":alternative_paths_addressed},"G6_5_identification_limit":{"status":"NOT_SATISFIED","causal_identification":causal_identification},"closure_authorized":status=="PASS"}
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--data-root",type=Path,default=DEFAULT_ROOT);ap.add_argument("--output-dir",type=Path,default=Path("03_EXPERIMENTS/C09_OLPC_PERU_CAUSAL_GAP_CLOSURE/output_v07"));a=ap.parse_args();root=a.data_root.resolve();out=a.output_dir.resolve();out.mkdir(parents=True,exist_ok=True)
     v06,v06stdout,_=run_json(V06,root,out/"v06_base",["contrasts","status","version"]);g5,g5stdout,_=run_json(G5,root,out/"g5",["complete_case_contrasts","ipw_contrasts"]);g6=g6_gate(v06,g5)
-    result={"spec":SPEC,"version":VERSION,"status":g6["status"],"scientific_closure_authorized":g6["closure_authorized"],"execution_dependency":{"v06_executor":"executed_as_historical_base_only","g5_executor":"integrated_as_execution_dependency","frozen_spec_unchanged":True},"G1_G5":{"G1_corrected_causal_universe":"PASS" if v06.get("causal_universe") else "NOT_VERIFIED","G2_assignment":"EXECUTED_IN_V06","G3_accessibility":"EXECUTED_IN_V06","G4_trajectory":"EXECUTED_IN_V06","G5_attrition":g5.get("g5","PASS_OPERATIONAL")},"G6":g6,"v06_base_status":v06.get("status"),"scientific_boundary":"A positive Z->delta_T_acc result is necessary but insufficient; closure requires the explicit G6 bridge and identification conditions."}
-    rp=out/"C09_OLPC_PERU_CAUSAL_GAP_CLOSURE_RESULT_003.json";rp.write_text(json.dumps(result,ensure_ascii=False,indent=2,sort_keys=True),encoding="utf-8");(out/"C09_OLPC_PERU_CAUSAL_GAP_CLOSURE_EXECUTION_LOG_003.txt").write_text(f"SPEC={SPEC}\nVERSION={VERSION}\nSTATUS={result['status']}\nG5=INTEGRATED\nG6=EXPLICIT\nSCIENTIFIC_CLOSURE_AUTHORIZED={result['scientific_closure_authorized']}\nV06_BASE_STATUS={v06.get('status')}\n",encoding="utf-8");print(json.dumps({"status":result["status"],"result":str(rp),"g6_status":g6["status"],"scientific_closure_authorized":result["scientific_closure_authorized"]},ensure_ascii=False,indent=2))
+    identity=v06.get("identity",{}); universe_verified=(identity.get("causal_universe")=="participated_in_lottery==1 AND treatment_school==1" and identity.get("Z_definition")=="won_lottery")
+    result={"spec":SPEC,"version":VERSION,"status":g6["status"],"scientific_closure_authorized":g6["closure_authorized"],"execution_dependency":{"v06_executor":"executed_as_historical_base_only","g5_executor":"integrated_as_execution_dependency","frozen_spec_unchanged":True},"G1_G5":{"G1_corrected_causal_universe":"PASS" if universe_verified else "NOT_VERIFIED","G2_assignment":"EXECUTED_IN_V06","G3_accessibility":"EXECUTED_IN_V06","G4_trajectory":"EXECUTED_IN_V06","G5_attrition":g5.get("g5","PASS_OPERATIONAL")},"G6":g6,"v06_base_status":v06.get("status"),"scientific_boundary":"G6.2 reports a bounded Wald/IV diagnostic for delta_T_acc to trajectory; it is not treated as causal identification. A positive Z->delta_T_acc result is necessary but insufficient; closure requires the explicit G6 bridge, exclusion/direct-pathway assessment, and identification conditions."}
+    rp=out/"C09_OLPC_PERU_CAUSAL_GAP_CLOSURE_RESULT_003.json";rp.write_text(json.dumps(result,ensure_ascii=False,indent=2,sort_keys=True),encoding="utf-8");(out/"C09_OLPC_PERU_CAUSAL_GAP_CLOSURE_EXECUTION_LOG_003.txt").write_text(f"SPEC={SPEC}\nVERSION={VERSION}\nSTATUS={result['status']}\nG5=INTEGRATED\nG6=EXPLICIT\nG6_2=WALD_IV_DIAGNOSTIC_ONLY\nSCIENTIFIC_CLOSURE_AUTHORIZED={result['scientific_closure_authorized']}\nV06_BASE_STATUS={v06.get('status')}\n",encoding="utf-8");print(json.dumps({"status":result["status"],"result":str(rp),"g6_status":g6["status"],"scientific_closure_authorized":result["scientific_closure_authorized"]},ensure_ascii=False,indent=2))
 if __name__=="__main__":main()
