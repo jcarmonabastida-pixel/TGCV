@@ -1,4 +1,13 @@
-"""C09 OLPC Peru causal-gap closure executor v0.7."""
+"""C09 OLPC Peru causal-gap closure executor v0.7.
+
+Controlled correction of v0.6:
+- preserves the v0.6 corrected causal universe and reconstruction logic;
+- integrates the canonical G5 attrition analysis as an execution dependency;
+- implements an explicit G6 causal-bridge gate;
+- never treats a positive first-stage contrast alone as scientific closure.
+
+The frozen C09 specification is not modified by this executor.
+"""
 from __future__ import annotations
 import argparse,json,platform,subprocess,sys
 from pathlib import Path
