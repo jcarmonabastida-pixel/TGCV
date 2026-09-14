@@ -42,6 +42,14 @@ def locate(root: Path, filename: str) -> Path:
     return hits[0]
 
 
+def resolve_columns(df: pd.DataFrame, required_cols: list[str]) -> tuple[list[str], dict[str, str]]:
+    """Resolve required names case-insensitively without changing source names."""
+    actual_by_lower = {str(c).lower(): str(c) for c in df.columns}
+    missing = [c for c in required_cols if c.lower() not in actual_by_lower]
+    resolved = {c: actual_by_lower[c.lower()] for c in required_cols if c.lower() in actual_by_lower}
+    return missing, resolved
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data-root", type=Path, default=DEFAULT_ROOT)
@@ -77,7 +85,7 @@ def main() -> None:
         try:
             path = locate(root, filename)
             df, _ = pyreadstat.read_dta(str(path), encoding="latin1", metadataonly=False)
-            missing = [c for c in required_cols if c not in df.columns]
+            missing, resolved = resolve_columns(df, required_cols)
             status = "PASS" if not missing else "FAIL"
             if status == "FAIL":
                 result["status"] = "BLOCKED_INFRASTRUCTURE"
@@ -86,6 +94,7 @@ def main() -> None:
                 "status": status,
                 "rows": int(len(df)),
                 "columns_missing": missing,
+                "columns_resolved": resolved,
                 "bytes": path.stat().st_size,
                 "sha256": sha256_file(path),
             })
@@ -95,13 +104,19 @@ def main() -> None:
 
     # Structural checks needed for the frozen causal design, without computing effects.
     if result["status"] == "PASS":
-        lists = pyreadstat.read_dta(str(locate(root, "listas_final.dta")), encoding="latin1")[0]
-        pairs = pyreadstat.read_dta(str(locate(root, "school_pairs_final.dta")), encoding="latin1")[0]
-        r1 = pyreadstat.read_dta(str(locate(root, "cestudiante_g3-6_p2_r1.dta")), encoding="latin1")[0]
-        pair_counts = pairs.groupby("pair")["treatment_school"].agg(["count", "sum"])
+        lists_path = locate(root, "listas_final.dta")
+        pairs_path = locate(root, "school_pairs_final.dta")
+        r1_path = locate(root, "cestudiante_g3-6_p2_r1.dta")
+        lists = pyreadstat.read_dta(str(lists_path), encoding="latin1")[0]
+        pairs = pyreadstat.read_dta(str(pairs_path), encoding="latin1")[0]
+        r1 = pyreadstat.read_dta(str(r1_path), encoding="latin1")[0]
+        _, lists_cols = resolve_columns(lists, REQUIRED["listas_final.dta"])
+        _, pairs_cols = resolve_columns(pairs, REQUIRED["school_pairs_final.dta"])
+        _, r1_cols = resolve_columns(r1, REQUIRED["cestudiante_g3-6_p2_r1.dta"])
+        pair_counts = pairs.groupby(pairs_cols["pair"])[pairs_cols["treatment_school"]].agg(["count", "sum"])
         pair_valid = bool((pair_counts["count"] == 2).all() and (pair_counts["sum"] == 1).all())
-        unique_lists = int(lists["codest"].nunique()) == len(lists)
-        unique_r1 = int(r1["codest"].nunique()) == len(r1)
+        unique_lists = int(lists[lists_cols["codest"]].nunique()) == len(lists)
+        unique_r1 = int(r1[r1_cols["codest"]].nunique()) == len(r1)
         result["checks"].extend([
             {"check": "student_assignment_key_unique", "status": "PASS" if unique_lists else "FAIL"},
             {"check": "r1_student_key_unique", "status": "PASS" if unique_r1 else "FAIL"},
