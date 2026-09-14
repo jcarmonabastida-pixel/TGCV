@@ -8,15 +8,18 @@ RMA-v3.30,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.30.md,RMA-c
 RMA-v3.31,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.31.md,RMA-current,Historical operative RMA preserved immutable
 RMA-v3.32,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.32.md,RMA-current,Historical operative RMA preserved immutable
 RMA-v3.33,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.33.md,RMA-current,Historical operative RMA preserved immutable
-RMA-v3.34,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.34.md,RMA-current,Current operative RMA; consolidates RUST-DYN-2 and SWIM bounded closures; no claim upgrade
-RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.34,Points to TGCV_RMA_v3.34.md
+RMA-v3.34,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.34.md,RMA-current,Historical operative RMA preserved immutable
+RMA-v3.35,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.35.md,RMA-current,Current operative RMA; propagates C09 bounded empirical causal support; Core unchanged
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.35,Points to TGCV_RMA_v3.35.md
 CLAIM-MATRIX-v0.8,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v0.8.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v0.9,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v0.9.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v1.0,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.0.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v1.1,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.1.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v1.2,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.2.md,RMA-current,Historical matrix preserved immutable
-CLAIM-MATRIX-v1.3,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.3.md,RMA-current,Current matrix; RUST-DYN-2 and SWIM substantive evidence already represented; no claim upgrade required
-CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.3,v1.3; current scientific claim control remains unchanged
+CLAIM-MATRIX-v1.3,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.3.md,RMA-current,Historical matrix preserved immutable
+CLAIM-MATRIX-v1.6,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.6.md,RMA-current,Historical matrix preserved immutable; prior current matrix
+CLAIM-MATRIX-v1.7,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.7.md,RMA-v3.35,C09 upgraded to PASS — BOUNDED EMPIRICAL CAUSAL SUPPORT; full material evidence/schema preserved
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.7,Current matrix alias must resolve to complete v1.7; not a simplified derivative
 ARM-v0.1,external_asset,HISTORICAL,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.1.md,ARM-current,Historical ARM state preserved immutable
 ARM-v0.2,external_asset,CURRENT,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.2.md,RMA-current,Current controlled ARM; architectural reconciliation only; Core and C01-C16 unchanged
 ARM-current,pointer,CURRENT,05_ASSETS/ARM/README.md,ARM-v0.2,Current ARM pointer; RII follows as current controlled external asset
@@ -62,5 +65,8 @@ SWIM-REACTIVE0-RECON-CONSOLIDATION,reconstruction,CLOSED-BOUNDED-PASS,00_GOVERNA
 SWIM-REACTIVE0-RECON-PREFLIGHT,reconstruction_preflight,CLOSED-BOUNDED-PASS,00_GOVERNANCE/SIP/TGCV_SWIM_REACTIVE0_RECONSTRUCTION_PREFLIGHT_001.md,,Result bundle/provenance/temporal boundary/outcome firewall verified
 SWIM-TRAJECTORY-LINKAGE,reconstruction,CLOSED-BOUNDED-PASS,00_GOVERNANCE/SIP/TGCV_SWIM_TRAJECTORY_LINKAGE_DISPOSITION_001.md,SWIM-REACTIVE0-TACC,Bounded observed trajectory association; no causal inference
 RUST-DYN-2-EXEC-1A,scientific_experiment,CLOSED-BOUNDED-EMPIRICAL-PASS,03_EXPERIMENTS/EXT-1.1_Rust/execution/RUST-DYN-2_SCIENTIFIC_INTEGRATION_CLOSURE_v01.md,,Bounded empirical distinction between Delta T_acc and potential one-step Reach; H=1; no causal/value/superiority upgrade
-C09-CAUSAL-DESIGN-PRIORITY,scientific_priority,PRIORITY-NEXT,00_GOVERNANCE/rma/TGCV_RMA_v3.34.md,RUST-DYN-2-EXEC-1A;SWIM-TRAJECTORY-LINKAGE,Next operation: causal-design priority gate for accessibility changes and subsequent trajectories; design only, no execution authorization
-TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Current traceability pointer for RMA v3.34
+C09-CAUSAL-DESIGN-PRIORITY,scientific_priority,HISTORICAL-COMPLETED,00_GOVERNANCE/rma/TGCV_RMA_v3.34.md,RUST-DYN-2-EXEC-1A;SWIM-TRAJECTORY-LINKAGE,Historical next-priority routing superseded by C09 claim-level closure
+C09-CLAIM-LEVEL-CLOSURE,scientific_claim_closure,CLOSED-BOUNDED-EMPIRICAL-CAUSAL-SUPPORT,00_GOVERNANCE/SIP/TGCV_C09_CLAIM_LEVEL_CONSOLIDATION_RECORD_001.md,SWIM-TRAJECTORY-LINKAGE;RUST-DYN-2-EXEC-1A;KGFS-D5A,Claim-level closure: C09 PASS — BOUNDED EMPIRICAL CAUSAL SUPPORT; bounded scope and explicit value/generalisation boundaries
+KGFS-D5A,scientific_evidence,CLOSED-D5A-IDENTIFIED-CONTRIBUTION,00_GOVERNANCE/SIP/TGCV_C09_KGFS_D5A_CLOSURE_RECORD_001.md,C09-CLAIM-LEVEL-CLOSURE,D5-A identified contribution under structural accessibility intervention extension
+KGFS-TRAJECTORY-AUDIT,scientific_evidence,CLOSED-74-OF-74-REPRODUCIBILITY-PASS,00_GOVERNANCE/SIP/TGCV_C09_KGFS_TRAJECTORY_VARIABLE_AUDIT_001.md,KGFS-D5A,Exact variable-level reproducibility audit; 74/74 files verified; technical audit did not itself upgrade claim
+TRACEABILITY-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_traceability_current.csv,RMA-current,Current traceability pointer for RMA v3.35
