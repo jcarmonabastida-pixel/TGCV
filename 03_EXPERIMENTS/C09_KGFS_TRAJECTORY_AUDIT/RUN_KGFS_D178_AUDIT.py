@@ -5,8 +5,9 @@ The Yale ISPS D178 archive page is the canonical public index. Python urllib
 can receive HTTP 404 from the Yale web endpoint on this Windows environment,
 while the same public endpoint is accessible through PowerShell. Therefore the
 acquisition layer uses urllib first and a PowerShell Invoke-WebRequest fallback.
-Individual HDL links are then resolved to Dataverse fileIds and downloaded via
-the public Dataverse datafile API.
+The D178 file number is read from the surrounding HTML table row, because the
+HDL anchor itself is labelled only "Download file". Individual HDL links are
+then resolved to Dataverse fileIds and downloaded via the public Dataverse API.
 
 This audit is technical only and does not upgrade C09.
 """
@@ -30,30 +31,35 @@ for p in (BASELINE, ENDLINE, OUTPUT): p.mkdir(parents=True, exist_ok=True)
 TARGET_TERMS = ["hhid","memid","cont_s_id","occup","occupation","employ","employment","job","income","earn","wage","salary","business","enterprise","sales","profit","loan","borrow","lender","saving","savings","insurance","insur","asset","wealth","poverty","wellbeing","welfare"]
 
 class D178Parser(HTMLParser):
+    """Extract D178Fxx + HDL from each archive-table row.
+
+    The D178Fxx identifier is outside the HDL anchor; the anchor text is only
+    "Download file". Row-level parsing therefore avoids the previous false
+    assumption that the identifier appears inside the <a> element.
+    """
     def __init__(self):
-        super().__init__(); self.current=None; self.rows=[]
+        super().__init__(); self.in_tr=False; self.in_a=False; self.row_text=[]; self.row_hrefs=[]; self.rows=[]
     def handle_starttag(self, tag, attrs):
         a=dict(attrs)
-        if tag=="a" and a.get("href") and "hdl.handle.net/10079/" in a["href"]:
-            self.current={"href":a["href"],"text":""}
+        if tag=="tr":
+            self.in_tr=True; self.row_text=[]; self.row_hrefs=[]
+        elif tag=="a" and self.in_tr and a.get("href") and "hdl.handle.net/10079/" in a["href"]:
+            self.in_a=True; self.row_hrefs.append(a["href"])
     def handle_data(self, data):
-        if self.current is not None: self.current["text"] += data
+        if self.in_tr: self.row_text.append(data)
     def handle_endtag(self, tag):
-        if tag=="a" and self.current is not None:
-            self.rows.append(self.current); self.current=None
+        if tag=="a": self.in_a=False
+        elif tag=="tr" and self.in_tr:
+            self.rows.append({"text":" ".join(self.row_text),"hrefs":list(self.row_hrefs)})
+            self.in_tr=False; self.row_text=[]; self.row_hrefs=[]
 
 def request_bytes(url, timeout=120):
     req=Request(url,headers={"User-Agent":"TGCV-C09-KGFS-Audit/1.0"})
     try:
         with urlopen(req,timeout=timeout) as r: return r.read(), r.geturl(), dict(r.headers)
     except Exception as py_err:
-        # Yale's public D178 page is reachable from Windows PowerShell even
-        # when Python urllib receives HTTP 404. Keep this as a transport-level
-        # fallback only; the Yale page remains the canonical source.
-        if not sys.platform.startswith("win"):
-            raise
-        ps=("$r=Invoke-WebRequest -Uri '"+url+"' -UseBasicParsing -MaximumRedirection 10; "
-            "$r.Content")
+        if not sys.platform.startswith("win"): raise
+        ps=("$r=Invoke-WebRequest -Uri '"+url+"' -UseBasicParsing -MaximumRedirection 10; $r.Content")
         try:
             out=subprocess.check_output(["powershell.exe","-NoProfile","-NonInteractive","-Command",ps],stderr=subprocess.STDOUT,timeout=timeout,text=False)
             return out,"powershell",{}
@@ -66,8 +72,7 @@ def resolve_file_id(hdl):
         with urlopen(req,timeout=120) as r: final=r.geturl()
     except Exception:
         if not sys.platform.startswith("win"): raise
-        ps=("$r=Invoke-WebRequest -Uri '"+hdl+"' -UseBasicParsing -MaximumRedirection 10; "
-            "$r.BaseResponse.ResponseUri.AbsoluteUri")
+        ps=("$r=Invoke-WebRequest -Uri '"+hdl+"' -UseBasicParsing -MaximumRedirection 10; $r.BaseResponse.ResponseUri.AbsoluteUri")
         try:
             final=subprocess.check_output(["powershell.exe","-NoProfile","-NonInteractive","-Command",ps],stderr=subprocess.STDOUT,timeout=120,text=True).strip()
         except Exception as e:
@@ -90,10 +95,7 @@ def download_file(file_id,destination):
         return total,url
     except Exception as py_err:
         if not sys.platform.startswith("win"): raise
-        # Use PowerShell binary streaming as a transport fallback; do not parse
-        # or transform the Stata bytes.
-        ps=("$wc=New-Object System.Net.WebClient; $wc.Headers['User-Agent']='TGCV-C09-KGFS-Audit/1.0'; "
-            "$wc.DownloadFile('"+url+"','"+str(destination).replace("'","''")+"')")
+        ps=("$wc=New-Object System.Net.WebClient; $wc.Headers['User-Agent']='TGCV-C09-KGFS-Audit/1.0'; $wc.DownloadFile('"+url+"','"+str(destination).replace("'","''")+"')")
         try:
             subprocess.check_call(["powershell.exe","-NoProfile","-NonInteractive","-Command",ps],timeout=600)
             return destination.stat().st_size,url
@@ -136,8 +138,10 @@ def main():
     parser=D178Parser(); parser.feed(html)
     links={}
     for row in parser.rows:
-        m=re.search(r"D178F(\d+(?:\.1)?)",row["text"])
-        if m: links[f"D178F{m.group(1)}"]=row["href"]
+        m=re.search(r"D178F(\d+(?:\.\d+)?)",row["text"])
+        if m and row["hrefs"]:
+            label=f"D178F{m.group(1)}"
+            links[label]=row["hrefs"][0]
     needed=[f"D178F{i:02d}" for i in range(3,77)]
     missing=[x for x in needed if x not in links]
     if missing: raise RuntimeError(f"Yale D178 index missing expected files: {missing}")
