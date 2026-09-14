@@ -24,11 +24,11 @@ def main():
     checks["g6_function"]='def g6_gate(' in e
     checks["g6_first_stage"]='Z_to_delta_' in e
     checks["g6_trajectory"]='Z_to_trajectory_' in e
+    checks["g6_2_mediator_diagnostic"]='def g6_2_delta_tacc_diagnostic(' in e and 'Wald/IV diagnostic using Z as instrument' in e and 'causal_interpretation_authorized=False' in e
     checks["g6_g5_sensitivity"]='complete_case_contrasts' in e and 'ipw_contrasts' in e
     checks["g6_alternative_path_block"]='alternative_paths_addressed=False' in e
     checks["g6_identification_block"]='causal_identification=False' in e
-    # Semantic guard: the executor must contain both the first-stage-only blocking branch
-    # and the PARTIAL/INCONCLUSIVE fallback; formatting/line wrapping must not matter.
+    checks["g1_identity_verification"]='identity=v06.get("identity",{})' in e and 'identity.get("causal_universe")' in e and 'identity.get("Z_definition")' in e
     checks["no_first_stage_only_verdict"]=("elif not first_pass" in e and "PARTIAL/INCONCLUSIVE" in e and "status=" in e)
     checks["audit_pass"]='Implementation audit:** PASS' in a
     checks["g5_x0_only"]='X0_SOURCE' in g and 'X0-only' in g
