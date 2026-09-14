@@ -10,8 +10,8 @@ canonical metadata audit is then executed.
 """
 from __future__ import annotations
 import json, subprocess, sys, time
-from urllib.error import HTTPError
 from urllib.request import Request, urlopen
+from pathlib import Path
 
 from RUN_KGFS_D178_AUDIT import (
     D178_HDL, EXPECTED_SIZES, BASE_URL, BASELINE, ENDLINE, OUTPUT,
@@ -22,49 +22,57 @@ from RUN_KGFS_D178_AUDIT import (
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/139 Safari/537.36"
 
 
+def _safe_unlink(path: Path):
+    for _ in range(5):
+        try:
+            path.unlink(missing_ok=True)
+            return
+        except PermissionError:
+            time.sleep(1)
+
+
 def _request_headers():
     return {"User-Agent": UA, "Accept": "application/octet-stream,*/*;q=0.8",
             "Referer": "https://isps.yale.edu/research/data/d178", "Connection": "close"}
 
 
-def _safe_unlink(path):
-    try:
-        path.unlink(missing_ok=True)
-    except PermissionError:
-        time.sleep(1)
-        path.unlink(missing_ok=True)
-
-
 def download_range(file_id, destination, expected_size):
+    """Download the exact expected byte range in bounded chunks."""
     url = f"{BASE_URL}/api/access/datafile/{file_id}?format=original"
     chunk_size = 1024 * 1024
     tmp = destination.with_suffix(destination.suffix + ".range.tmp")
     _safe_unlink(tmp)
-    with open(tmp, "wb") as out:
-        start = 0
-        while start < expected_size:
-            end = min(start + chunk_size - 1, expected_size - 1)
-            last_error = None
-            for attempt in range(1, 4):
-                req = Request(url, headers={**_request_headers(), "Range": f"bytes={start}-{end}"})
-                try:
-                    with urlopen(req, timeout=600) as r:
-                        status = getattr(r, "status", r.getcode())
-                        if status not in (200, 206):
-                            raise RuntimeError(f"unexpected HTTP status {status} for range {start}-{end}")
-                        data = r.read(end - start + 1)
-                        if len(data) != end - start + 1:
-                            raise RuntimeError(f"range {start}-{end}: received {len(data)} bytes")
-                        out.write(data)
-                        last_error = None
-                        break
-                except Exception as e:
-                    last_error = e
-                    time.sleep(2 * attempt)
-            if last_error is not None:
-                _safe_unlink(tmp)
-                raise last_error
-            start = end + 1
+    start = 0
+    try:
+        with open(tmp, "wb") as out:
+            while start < expected_size:
+                end = min(start + chunk_size - 1, expected_size - 1)
+                last_error = None
+                for attempt in range(1, 4):
+                    req = Request(url, headers={**_request_headers(), "Range": f"bytes={start}-{end}"})
+                    try:
+                        with urlopen(req, timeout=600) as r:
+                            status = getattr(r, "status", r.getcode())
+                            if status not in (200, 206):
+                                raise RuntimeError(f"unexpected HTTP status {status} for range {start}-{end}")
+                            data = r.read(end - start + 1)
+                            if len(data) != end - start + 1:
+                                raise RuntimeError(f"range {start}-{end}: received {len(data)} bytes")
+                            out.write(data)
+                            out.flush()
+                            last_error = None
+                            break
+                    except Exception as e:
+                        last_error = e
+                        time.sleep(2 * attempt)
+                if last_error is not None:
+                    raise last_error
+                start = end + 1
+    except Exception:
+        # The file must be closed before Windows can unlink it.
+        _safe_unlink(tmp)
+        raise
+
     actual = tmp.stat().st_size
     if actual != expected_size:
         _safe_unlink(tmp)
@@ -107,8 +115,6 @@ def download_resilient(file_id, destination, expected_size):
         except Exception as e:
             last_error = e
         finally:
-            # curl may leave a partial destination and/or an active handle;
-            # remove the partial before Range recovery.
             time.sleep(1)
             _safe_unlink(destination)
 
