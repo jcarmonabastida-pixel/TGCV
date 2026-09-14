@@ -33,9 +33,9 @@ This bootstrap is an index and session-entry protocol. It does **not** replace a
 
 The bootstrap must obtain the live values below from the authoritative artifacts at session start; they are recorded here only as routing labels and must not override those artifacts.
 
-- Current scientific priority: `C09`
-- Current next operation: `00_GOVERNANCE/SIP/TGCV_C09_CAUSAL_DESIGN_PRIORITY_GATE_001.md`
-- Execution authorization for that operation: design/prioritization only; no execution authorization.
+- Current scientific priority: `C10 — causal ΔT_acc → ΔV`
+- Current next operation: recover and consolidate the canonical C10 methodological state before any new empirical execution or dataset search.
+- Execution authorization for that operation: design/recovery only; no execution authorization.
 
 ## Continuity rules
 
