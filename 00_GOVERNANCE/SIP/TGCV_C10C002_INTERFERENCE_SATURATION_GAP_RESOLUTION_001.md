@@ -10,9 +10,11 @@ Resolve the remaining C10-C admission gap concerning municipal saturation and in
 
 ## 2. Documentary finding
 
-The published study documentation independently establishes that the experiment used a **randomized saturation design** and explicitly studied municipal-level spillovers. The published research therefore confirms that saturation/interference is not an accidental afterthought: it is a design feature relevant to causal identification. citeturn1search1turn1search13
+The published methodological record establishes that the experiment used a **randomized saturation design** and explicitly studied municipal-level spillovers. The 2014 McIntosh et al. paper states that the saturation design was used to study how municipal-level spillovers could undermine causal inference. citeturn0search0turn0search24
 
-The AEA publication describes the intervention as randomized across low-income urban neighborhoods in 60 municipalities and reports infrastructure and real-estate effects. citeturn0search0turn0search1
+The same methodological paper explicitly formulates the spillover problem as a possible violation of SUTVA and reports that the randomized saturation design provided evidence that spillovers did not occur at a level sufficient to undermine the study's internal validity. citeturn0search2
+
+This is **published study-level evidence about the interference question**. It is not treated as a substitute for variable-level provenance in the deposited replication data.
 
 ## 3. Controlled-data finding
 
@@ -26,13 +28,14 @@ The gap is split into two distinct questions:
 
 ### 4.1 Design-level interference question — RESOLVED
 
-The study's published methodological record establishes that:
+The published methodological record establishes that:
 
 - treatment was implemented under a randomized saturation design;
 - municipal-level spillovers were an explicit identification concern;
-- the study was designed to permit analysis of treatment intensity/saturation rather than assuming universal SUTVA.
+- the study explicitly analyzed the possibility of spillovers rather than assuming universal SUTVA;
+- the published analysis reports evidence consistent with spillovers not occurring at a magnitude sufficient to undermine the principal causal interpretation.
 
-Thus, the existence and methodological relevance of interference/saturation are established rather than unknown.
+Thus, the existence, methodological relevance, and published empirical treatment of interference/saturation are established.
 
 ### 4.2 Variable-level provenance question — UNRESOLVED
 
@@ -42,9 +45,11 @@ Therefore the programme must **not** use `sat`, `sat_treat`, `r2` or related und
 
 ## 5. Permitted causal-design consequence
 
-A future execution specification may treat municipal saturation/interference as an explicit design feature and may use only a saturation/intensity variable whose definition and construction are independently documented and frozen before estimation.
+The published spillover analysis may be used as documentary evidence that interference was explicitly addressed by the original study. It does **not** authorize importing the authors' analytical choices into the TGCV execution specification without an ex-ante governance decision.
 
-A deterministic observed municipal treatment share computed directly from admitted `treat` values is conceptually distinct from the deposited `sat` variable and may be considered only if its construction is frozen ex ante and its relationship to the randomized assignment mechanism is documented sufficiently for the intended estimand.
+A future execution specification may proceed without the deposited `sat` variable only if it formally documents why the primary estimand is identifiable without conditioning on that undocumented field and freezes the corresponding interference robustness rule before estimation.
+
+A deterministic observed municipal treatment share computed directly from admitted `treat` values remains conceptually distinct from the deposited `sat` variable and may be considered only if its construction is frozen ex ante and its relationship to the randomized assignment mechanism is documented sufficiently for the intended estimand.
 
 No such substitution is authorized by this record.
 
@@ -52,17 +57,19 @@ No such substitution is authorized by this record.
 
 **C10C-002 remains PROMISING / EVIDENCE GAP REMAINS.**
 
-The remaining gap is narrower than previously stated: it is no longer “whether the experiment has a saturation/interference design”; it is the **provenance and admissible operationalization of the saturation variable required for the causal estimand**.
+The remaining gap is now narrowly defined as the **provenance and admissible operationalization of the saturation variable, or a formally justified ex-ante decision to proceed without the undocumented deposited saturation fields**.
+
+The published study-level evidence on interference does not by itself close this data-level governance condition.
 
 ## 7. Execution boundary
 
 Causal estimation remains **NOT AUTHORIZED**.
 
-Before execution, a separate candidate-specific causal specification must freeze:
+Before execution, the candidate-specific causal specification must freeze:
 
 1. the exact estimand;
 2. whether saturation is part of the estimand or an identification condition;
-3. the exact saturation variable and source definition;
+3. the exact saturation variable and source definition, or a documented decision to proceed without the undocumented deposited saturation variables;
 4. the counterfactual under the randomized saturation design;
 5. treatment/state/accessibility separation;
 6. value endpoint and linkage;
@@ -75,6 +82,6 @@ This record does not reopen C10C-002's prior bounded causal experiment and does 
 
 ## 9. Sources
 
-- AEA article: *The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico*.
-- McIntosh et al., *Infrastructure Upgrading and Budgeting Spillovers: Mexico's Hábitat Experiment*, documenting the randomized saturation design and municipal spillover problem.
+- McIntosh, Alegría, Ordóñez & Zenteno, *Infrastructure Upgrading and Budgeting Spillovers: Mexico's Hábitat Experiment* (2014), eScholarship/UC Berkeley.
+- McIntosh, Alegría, Ordóñez & Zenteno, *The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico* (2018), American Economic Journal: Applied Economics.
 - OpenICPSR 113705 V1 replication deposit and its deposited scripts/data.
