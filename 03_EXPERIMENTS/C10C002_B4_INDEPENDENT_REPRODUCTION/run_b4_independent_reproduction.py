@@ -17,6 +17,7 @@ from pathlib import Path
 import pandas as pd
 
 ZIP_SHA256 = "D481DF2CCD6D677E81D1F0CD80AF27F24A111515BB6D1E9844D1DE6483A1DFC8"
+B4_SPEC_GIT_BLOB_SHA = "90d9795666031ed1afeca1a68ab6157216fee2fd"
 REQUIRED = {
     "Encuestas-2012.docx": "CD3947BAE112CEBE83783C241B18C06783FE31D0101D2C50C155761A512EC1A6",
     "Habitat_Household_Analysis_Replication_170830.do": "9C2F010725DCD60B090438137D155C8AC629D9AC185E3F22430C43DF46E4F3AF",
@@ -30,6 +31,7 @@ REQUIRED = {
 DIMS = ["Disp_Agua", "Disp_Drenaje", "Disp_Luz", "Disp_Guarniciones", "Disp_Banquetas", "Disp_Pavimento"]
 FORBIDDEN = ["sat", "sat_treat", "r2", "treat_r2"]
 
+
 def sha256(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as f:
@@ -37,7 +39,39 @@ def sha256(path: Path) -> str:
             h.update(chunk)
     return h.hexdigest().upper()
 
+
+def clean(v):
+    try:
+        if pd.isna(v):
+            return None
+        return int(v)
+    except Exception:
+        return None
+
+
+def collapse_polygon_round(g, dimensions):
+    """Conservatively collapse repeated household rows to polygon x round.
+
+    A structural value is admitted only when all non-missing observations
+    within a polygon-round agree on the same binary state. No arbitrary row,
+    treatment value, or outcome value is selected.
+    """
+    state = {}
+    conflicts = {}
+    for d in dimensions:
+        vals = sorted({clean(v) for v in g[d].tolist() if clean(v) is not None})
+        invalid = [v for v in vals if v not in (0, 1)]
+        if invalid:
+            conflicts[d] = {"reason": "non_binary", "values": vals}
+        elif len(vals) > 1:
+            conflicts[d] = {"reason": "intra_polygon_round_conflict", "values": vals}
+        else:
+            state[d] = vals[0] if vals else None
+    return state, conflicts
+
+
 def main(root: Path, out: Path) -> int:
+    script_path = Path(__file__).resolve()
     result = {
         "status": "B4_INDEPENDENT_REPRODUCTION",
         "causal_estimation": "NOT_PERFORMED",
@@ -45,6 +79,11 @@ def main(root: Path, out: Path) -> int:
             "python": sys.version,
             "platform": platform.platform(),
             "pandas": pd.__version__,
+        },
+        "governance_hashes": {
+            "source_zip_sha256": ZIP_SHA256,
+            "b4_specification_git_blob_sha": B4_SPEC_GIT_BLOB_SHA,
+            "verifier_script_sha256": sha256(script_path),
         },
         "checks": {},
     }
@@ -99,22 +138,19 @@ def main(root: Path, out: Path) -> int:
         return 4
     r0, r1 = rounds[0], rounds[-1]
 
-    def clean(v):
-        try:
-            if pd.isna(v): return None
-            return int(v)
-        except Exception:
-            return None
-
     states = {}
+    conflicts = {}
     delta_counts = {"opening": 0, "closing": 0, "nonempty_delta": 0}
     for pid, g in panel.groupby("N_POLIGONO_STR"):
         g0 = g.loc[g["round"] == r0]
         g1 = g.loc[g["round"] == r1]
-        if len(g0) != 1 or len(g1) != 1:
+        if g0.empty or g1.empty:
             continue
-        s0 = {d: clean(g0.iloc[0][d]) for d in DIMS}
-        s1 = {d: clean(g1.iloc[0][d]) for d in DIMS}
+        s0, c0 = collapse_polygon_round(g0, DIMS)
+        s1, c1 = collapse_polygon_round(g1, DIMS)
+        if c0 or c1:
+            conflicts[pid] = {"round_0": c0, "round_1": c1}
+            continue
         t0 = {f"{d}+" for d in DIMS if s0[d] is not None and s0[d] < 1}
         t0 |= {f"{d}-" for d in DIMS if s0[d] is not None and s0[d] > 0}
         t1 = {f"{d}+" for d in DIMS if s1[d] is not None and s1[d] < 1}
@@ -123,16 +159,25 @@ def main(root: Path, out: Path) -> int:
         cl = t0 - t1
         delta_counts["opening"] += len(op)
         delta_counts["closing"] += len(cl)
-        if op or cl: delta_counts["nonempty_delta"] += 1
+        if op or cl:
+            delta_counts["nonempty_delta"] += 1
         states[pid] = {"T_acc_0": sorted(t0), "T_acc_1": sorted(t1), "Delta_open": sorted(op), "Delta_close": sorted(cl)}
+
+    structural_pass = len(states) == 342 and not conflicts and all(
+        len(v["T_acc_0"]) <= 12 and len(v["T_acc_1"]) <= 12 for v in states.values()
+    )
     result["checks"]["bounded_structural_reconstruction"] = {
-        "pass": len(states) == 342 and all(len(v["T_acc_0"]) <= 12 and len(v["T_acc_1"]) <= 12 for v in states.values()),
+        "pass": structural_pass,
         "polygons_reconstructed": len(states),
         "dimensions": DIMS,
         "transformation_count": 12,
+        "aggregation_rule": "polygon x round; retain a structural value only when all non-missing observations agree on the same binary state; conflicting groups are excluded, never resolved arbitrarily",
+        "conflicting_polygon_rounds": len(conflicts),
         "delta_counts": delta_counts,
         "rounds": [r0, r1],
     }
+    if conflicts:
+        result["checks"]["bounded_structural_reconstruction"]["conflict_examples"] = dict(list(conflicts.items())[:10])
 
     treatment_ok = "treat" in panel.columns and set(pd.to_numeric(panel["treat"], errors="coerce").dropna().unique()).issubset({0, 1})
     result["checks"]["treatment_state_separation"] = {"pass": treatment_ok, "treat_counts": panel["treat"].value_counts(dropna=False).to_dict()}
@@ -147,10 +192,15 @@ def main(root: Path, out: Path) -> int:
     result["checks"]["causal_estimation"] = {"pass": True, "performed": False, "reason": "B4 is reproduction only; no regression is executed."}
     result["reconstruction_digest"] = hashlib.sha256(json.dumps(states, sort_keys=True).encode()).hexdigest()
 
-    all_pass = all(v.get("pass", False) for v in result["checks"].values() if isinstance(v, dict) and "pass" in v and v is not result["checks"]["causal_estimation"])
+    all_pass = all(
+        v.get("pass", False)
+        for k, v in result["checks"].items()
+        if isinstance(v, dict) and "pass" in v and k != "causal_estimation"
+    )
     result["overall"] = "PASS_B4_REPRODUCTION_CHECKS" if all_pass else "B4_REPRODUCTION_CHECKS_REQUIRE_REVIEW"
     out.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     return 0 if all_pass else 5
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
