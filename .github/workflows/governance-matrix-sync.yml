@@ -1,0 +1,47 @@
+name: TGCV governance matrix sync
+
+on:
+  push:
+    branches:
+      - main
+      - matrix-v1.9-c10c001-staging
+    paths:
+      - '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v*.md'
+      - '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md'
+      - '00_GOVERNANCE/tools/canonical_state_sync_v4.py'
+      - '00_GOVERNANCE/tools/migrate_c10c001_matrix_v1_9.py'
+      - '.github/workflows/governance-matrix-sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  synchronize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Build the governed C10C-001 v1.9 staging matrix
+        if: github.ref_name == 'matrix-v1.9-c10c001-staging'
+        run: python 00_GOVERNANCE/tools/migrate_c10c001_matrix_v1_9.py
+
+      - name: Validate and synchronize CURRENT
+        run: |
+          python 00_GOVERNANCE/tools/canonical_state_sync_v4.py --sync
+          python 00_GOVERNANCE/tools/canonical_state_sync_v4.py --check
+
+      - name: Commit governed matrix changes
+        run: |
+          if git diff --quiet -- 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.9.md; then
+            echo 'No matrix synchronization changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.9.md
+          git commit -m 'GOV: synchronize Evidence-to-Claim Matrix current alias'
+          git push
