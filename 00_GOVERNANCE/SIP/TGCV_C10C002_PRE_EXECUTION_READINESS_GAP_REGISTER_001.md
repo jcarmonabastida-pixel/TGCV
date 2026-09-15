@@ -29,26 +29,32 @@ The published study establishes randomized saturation and explicit municipal spi
 
 The formal disposition is to proceed conceptually without those undocumented fields, while retaining interference as an identification/robustness issue.
 
-## 3. Remaining blockers
+## 3. Conditions closed or formally disposed
 
 ### B1 — Endpoint upstream construction provenance
-**Status: OPEN — MATERIAL BLOCKER.**
+**Status: CLOSED AS IRRECOVERABLE PROVENANCE LIMITATION.**
 
-The deposited endpoint variable `precios_diferencia_usd` is identified and directly used by the authors' replication script, but the script does not construct it. The exact upstream construction of `precios_diferencia` and its USD representation is not recoverable from the inspected V1 script/metadata without inference.
+The deposited endpoint variable `precios_diferencia_usd` is identified and directly used by the authors' replication script, but the script does not construct it. The exact upstream construction of `precios_diferencia` and its USD representation is not recoverable from the admitted V1 script/metadata without inference.
 
 The direct check also establishes that `precios_diferencia` is not equal to `valor_co_12 - valor_co_09`.
 
-No inferred formula is admissible.
+No inferred formula is admissible. The limitation is formally recorded in `TGCV_C10C002_ENDPOINT_PROVENANCE_IRRECOVERABLE_LIMITATION_001.md`.
 
 ### B2 — Endpoint field/unit/time/aggregation freeze
-**Status: OPEN — MATERIAL BLOCKER.**
+**Status: CLOSED AT DOCUMENTED EVIDENCE LEVEL; PROVENANCE LIMITATION RETAINED.**
 
-The economic meaning is documented as professional real-estate price/value per square meter, real 2012 USD, with polygon-level analysis and 138 observed valuation polygons. Before authorization, the exact file-level mapping, missing-value rule, baseline/follow-up construction and aggregation rule must be frozen sufficiently to make the estimand independently reproducible.
+The primary deposited field is `precios_diferencia_usd`, documented as change in professional real-estate price/value per square meter in real 2012 USD, at polygon level, over the baseline/follow-up valuation period. The endpoint is observed for 138 of 342 polygons.
+
+The exact upstream construction remains unavailable and is governed by the B1 limitation record. No imputation or inferred transformation is authorized.
 
 ### B3 — Interference robustness rule
-**Status: OPEN — SPECIFICATION BLOCKER.**
+**Status: CLOSED — SPECIFICATION FROZEN.**
 
-The primary estimand may proceed without undocumented saturation fields, but the exact pre-specified treatment of municipal interference/robustness must be frozen before estimation. No outcome-driven choice is permitted.
+The primary ITT estimand will not condition on undocumented `sat`, `sat_treat`, `r2`, `treat_r2` or related fields. Interference is not assumed absent. Primary inference is municipality-clustered using `cve_mun`; any additional sensitivity analysis must be frozen ex ante using only provenance-established variables.
+
+The full rule is recorded in `TGCV_C10C002_B3_INTERFERENCE_ROBUSTNESS_RULE_FREEZE_001.md`.
+
+## 4. Remaining blockers
 
 ### B4 — Independent reproduction package
 **Status: OPEN — MATERIAL BLOCKER.**
@@ -60,27 +66,28 @@ An independent executor must be able to reproduce the frozen empirical package, 
 
 The final execution script/specification has not yet been frozen and hashed. No empirical result may be generated before this condition is satisfied.
 
-## 4. Authorization threshold
+## 5. Authorization threshold
 
 Empirical execution may be authorized only when all material blockers are closed or explicitly accepted as irrecoverable limitations under a documented governance decision that preserves reproducibility and falsifiability.
 
 At minimum, authorization requires:
 
-- exact endpoint variable and unit frozen;
-- endpoint time/aggregation/missingness rules frozen;
+- endpoint limitation explicitly governed;
+- exact endpoint field and documented unit frozen;
+- endpoint time/aggregation/missingness rules frozen to the extent supported by admitted evidence;
 - interference robustness rule frozen;
 - final script/specification hash frozen;
 - independent executor package and reproduction test completed.
 
-## 5. Current decision
+## 6. Current decision
 
 **C10C-002: PROMISING / EVIDENCE GAP REMAINS.**
 
 **EMPIRICAL CAUSAL EXECUTION: NOT AUTHORIZED.**
 
-The candidate is not rejected. The remaining work is now a finite readiness problem rather than an open-ended search for another causal candidate.
+The candidate is not rejected. The remaining work is now a finite readiness problem: B4 and B5.
 
-## 6. Non-reopening rule
+## 7. Non-reopening rule
 
 This register does not reopen:
 
