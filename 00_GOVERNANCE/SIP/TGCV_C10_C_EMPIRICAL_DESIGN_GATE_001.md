@@ -1,267 +1,226 @@
 # TGCV — C10-C Empirical Design Gate 001
 
-**Status:** FROZEN FOR DESIGN — NO EXECUTION AUTHORIZED
-**Date:** 2026-09-14
+**Status:** FROZEN — DESIGN GATE ONLY; NO EMPIRICAL EXECUTION AUTHORIZED
+**Date:** 2026-09-15
 **Claim:** C10 — causal `ΔT_acc → ΔV`
-**Precondition:** C10-A/B methodological sufficiency audit = PASS; exact C10-C gap defined.
+**Precondition:** C10-A/B sufficient for C10-C design; C10-C empirical gap open
 
 ## 1. Purpose
 
-Freeze the minimum admissible empirical architecture for testing whether a credibly identified change in accessible transformations contributes causally to downstream value.
+Freeze the minimum admissible causal design for C10-C before any new dataset/case search, acquisition, inspection, reconstruction or causal estimation.
 
-This gate defines what a study must establish **before** dataset selection, execution or case-specific adaptation. It is an ex-ante design contract, not an empirical result.
+C10-C targets the bounded causal contribution of an identified change in accessibility to an independently defined value endpoint. It does not test the already-established C09 question of whether `ΔT_acc` can affect subsequent trajectories.
 
-## 2. Target causal question
+## 2. Causal target
 
-For a unit exposed to an accessibility-changing intervention or other credible source of exogenous variation:
+The target is not the association `ΔT_acc ↔ ΔV`, nor the generic proposition that more accessible transformations are beneficial.
 
-> What is the causal contribution of the induced change in `T_acc` to an explicitly defined value endpoint, relative to the admissible counterfactual accessibility condition?
+The target is:
 
-Canonical structure:
+`Effect(ΔT_acc on V | admissible counterfactual, specified context)`
 
-`Z → S_0/S_1 → T_acc,0/T_acc,1 → ΔT_acc → Reach/Trajectory → Outcome → V`
+with preferred causal ordering:
 
-The target is a bounded causal contribution, not the generic association `ΔT_acc ↔ ΔV`.
+`Z → ΔS → ΔT_acc → ΔReach/ΔTrajectory → Outcome → V`
 
-## 3. Primary estimand
+The sign is unrestricted: positive, null, negative and heterogeneous effects are all admissible outcomes.
 
-The default estimand is a treatment-effect contrast over value:
+## 3. C10-C1 — Value estimand and endpoint
 
-`τ_V = E[V(1) − V(0)]`
+A candidate must define, before causal estimation:
 
-where treatment status indexes the accessibility-changing intervention/exposure and the intervention must induce a reconstructible change in `T_acc`.
-
-Where the intervention does not deterministically map to the same `ΔT_acc` for all units, the design must distinguish:
-
-- effect of assignment/intervention `Z` on value;
-- effect attributable to induced accessibility change `ΔT_acc`;
-- any instrumental-variable/complier or mediation estimand actually identified.
-
-No stronger estimand may be claimed than the identification strategy supports.
-
-## 4. Value endpoint requirements
-
-`V` must be defined independently of `T_acc`, treatment assignment and observed downstream success.
-
-The value endpoint must specify ex ante:
-
-- construct being valued;
-- unit of analysis;
+- an explicit value endpoint `V`;
+- its unit of observation;
 - measurement scale and units;
 - aggregation rule;
-- time horizon;
-- objective(s), preferences and constraints where relevant;
-- direction of desirability;
-- treatment of zero, negative and missing values;
-- whether value is monetary, utility-like, performance-based, welfare-based or another explicit evaluative construct.
+- evaluation horizon;
+- value context/objectives/preferences/constraints;
+- the causal estimand, including treatment contrast and target population.
 
-A value endpoint may be multidimensional, but the aggregation rule must be fixed before outcome inspection if a scalar estimand is required.
+`V` must be observable or deterministically reproducible and must be defined independently of `T_acc`, treatment success and downstream observed results.
 
-## 5. Accessibility operationalization
+If value is multidimensional, the primary estimand and any secondary dimensions must be frozen before estimation. A post-treatment composite selected for statistical advantage is inadmissible.
 
-For each relevant unit, define:
+## 4. C10-C2 — Accessibility representation
 
-`T_acc,t = {τ ∈ U_τ | P_τ(S_t,C_t,L)=1}`
+The candidate must support independent reconstruction of:
 
-and reconstruct:
+`T_acc,0 = F(S_0,C_0,L)`
 
-`ΔT_acc = T_acc,1 \ T_acc,0`,
-`T_acc,0 \ T_acc,1`,
+`T_acc,1 = F(S_1,C_1,L)`
 
-and any retained reconfiguration/substitution component.
+`ΔT_acc = T_acc,1 − T_acc,0`
 
-The operationalization must state:
+within a bounded, explicit and minimum-sufficient `U_τ* ⊂ U_τ`.
 
-- transformation universe `U_τ`;
-- accessibility predicate `P_τ`;
-- structural state variables `S`;
-- context variables `C`;
-- fixed/local knowledge or enabling conditions `L`;
-- observation times;
-- rules for partial observability;
-- reproducibility procedure;
-- exclusion of downstream value/outcome variables from the accessibility predicate.
+`U_τ*` must be:
 
-Native dataset fields may be used only when their semantic role is explicit. If `ΔT_acc` is reconstructed, the reconstruction must be auditable independently of the value endpoint.
+1. observable or deterministically reconstructible;
+2. defined before access to value results;
+3. structurally grounded;
+4. sufficiently rich for non-trivial `ΔT_acc`;
+5. small enough for explicit predicate reconstruction;
+6. independently reproducible.
 
-## 6. Intervention / treatment requirement
+No outcome, value, treatment effect or downstream success measure may enter `P_τ`.
 
-The preferred design has a credible accessibility-changing intervention:
+## 5. C10-C3 — Intervention and identification
 
-`Z → structural change → ΔT_acc`.
+A candidate must provide a credible source of variation `Z` that changes accessibility or the structural conditions determining accessibility.
 
-Acceptable identification families may include:
+Preferred hierarchy:
 
-1. randomized structural accessibility intervention;
-2. quasi-random or natural experiment with defensible exogeneity;
-3. credible instrumental-variable design where the instrument changes accessibility and satisfies explicit exclusion assumptions;
-4. other pre-specified causal designs with auditable identification assumptions.
+1. randomized assignment;
+2. credible quasi-experimental assignment with auditable assumptions;
+3. other explicitly justified identification strategy only where confounding/selection can be addressed defensibly.
 
-A purely observational accessibility/value correlation is not sufficient for C10-C closure.
+Pure cross-sectional association is insufficient.
 
-## 7. Counterfactual
+The identification strategy, treatment definition, unit, timing, clustering and principal assumptions must be specified before estimation.
 
-The design must identify the value that would have occurred for the relevant unit under the counterfactual accessibility condition.
+## 6. C10-C4 — Counterfactual
 
-The counterfactual must be specified ex ante and must not be defined as “what happened before” unless the design provides a defensible reason that the untreated potential outcome is identified by that comparison.
+The design must identify an admissible counterfactual value for the relevant unit under the alternative accessibility condition.
 
-Potential outcomes notation:
+Acceptable counterfactual construction must be justified by the identification design. Before/after comparison without a credible counterfactual is insufficient.
 
-`V(1)` = value under the intervention-induced accessibility condition;
+Where interference or spillovers are plausible, the estimand must explicitly address them or the candidate must be bounded accordingly.
 
-`V(0)` = value under the counterfactual accessibility condition.
+## 7. C10-C5 — Downstream separation
 
-## 8. Downstream mechanism architecture
+The design must distinguish the contribution of `ΔT_acc` from:
 
-The design should preserve the analytical chain:
+- transformation selection;
+- execution quality/intensity;
+- realized transformation frequency;
+- Reach;
+- trajectory/sequence;
+- external conditions;
+- simultaneous interventions;
+- other competing mechanisms.
 
-`ΔT_acc → ΔReach → ΔTrajectory → Outcome → Value`.
+Where mediation is analysed, the preferred structure is:
 
-At minimum, the study must observe or defensibly reconstruct the value endpoint and the major downstream outcome pathway.
+`ΔT_acc → ΔReach → ΔTrajectory → Outcome → V`.
 
-Where data permit, mediation/mechanism analysis should distinguish:
+C09 evidence may serve as upstream evidence for the accessibility-to-trajectory boundary but cannot be reused as evidence of causal value attribution.
 
-- accessibility change;
-- changed reachable alternatives;
-- trajectory/sequence selection;
-- execution intensity/quality;
-- realized outcome;
-- value evaluation.
+## 8. C10-C6 — Value attribution boundary
 
-Mechanism analysis is subordinate to causal identification and must not be used to manufacture an apparent `ΔT_acc` effect post hoc.
+The analysis must distinguish at minimum:
 
-## 9. Confounding and competing mechanisms
+- total intervention effect on `V`;
+- the component attributable to changed accessibility;
+- mediation through Reach/Trajectory/Outcome where identifiable;
+- contextual modification;
+- competing causal explanations.
 
-Before admission, identify plausible simultaneous changes that could affect value independently of accessibility.
+If the design cannot isolate the accessibility contribution, it may report an intervention effect but does not close C10-C.
 
-The design must specify how each material competitor is:
+## 9. Inclusion rules
 
-- randomized away;
-- controlled by design;
-- measured and adjusted under a justified model;
-- isolated through timing or mechanism;
-- or explicitly retained as an identification limitation.
+A candidate enters C10-C design admission only if all are potentially satisfiable from its pre-estimation information:
 
-The design must not treat every downstream improvement as evidence for `ΔT_acc`.
+- exact source identity and provenance;
+- independent value endpoint;
+- reconstructible baseline/follow-up structural state;
+- explicit bounded `U_τ*` and deterministic `P_τ` rules;
+- treatment/state separation;
+- credible causal identification;
+- admissible counterfactual;
+- downstream outcome/value linkage;
+- interference/spillover assessment;
+- reproducibility by independent execution.
 
-## 10. Required falsification / robustness tests
+## 10. Exclusion rules
 
-At minimum, candidate studies must define applicable tests for:
+A candidate is excluded or stopped if any required condition depends on:
 
-**F-C10-1 — Accessibility reconstruction integrity:** independently reproduce `T_acc,0`, `T_acc,1` and `ΔT_acc`.
+- post-treatment value information to define `T_acc`;
+- outcome-informed selection of transformations;
+- retrospective threshold selection;
+- latent accessibility fitted to `V`;
+- arbitrary narrowing of `U_τ` to improve the result;
+- cross-sectional association presented as causal identification;
+- value inferred retrospectively from an intervention outcome;
+- missing provenance that requires guessing;
+- irreducible confounding without a defensible identification strategy;
+- absence of an admissible counterfactual;
+- unresolved interference that invalidates the stated estimand.
 
-**F-C10-2 — Pre-treatment balance / identification:** test the assumptions required by the selected causal design.
+## 11. Falsification and robustness requirements
 
-**F-C10-3 — Outcome timing:** verify that value changes occur after the accessibility intervention/change under the proposed causal ordering.
+Before causal closure, the design must pre-specify applicable tests for:
 
-**F-C10-4 — Placebo / negative-control outcome or period:** where feasible, test an outcome or period that should not respond through the proposed pathway.
+- baseline balance / pre-trends where relevant;
+- placebo or falsification outcomes where justified;
+- alternative admissible specifications;
+- sensitivity to clustering and dependence structure;
+- attrition/missingness;
+- interference/spillovers;
+- measurement error in structural state and value;
+- heterogeneous effects where substantively required.
 
-**F-C10-5 — Alternative mechanism:** test or bound a plausible competing explanation for the value difference.
+These tests must not be selected after observing the preferred value result.
 
-**F-C10-6 — Accessibility-null comparison:** where feasible, identify a comparison in which structural conditions change without the hypothesized `ΔT_acc`, or where `ΔT_acc` remains unchanged despite treatment exposure.
+## 12. Minimum evidence and provenance package
 
-**F-C10-7 — Heterogeneity:** pre-specify materially relevant effect heterogeneity rather than interpreting it post hoc as universality.
+Before empirical execution, the candidate package must contain:
 
-**F-C10-8 — Negative/null possibility:** retain zero and negative value effects as admissible outcomes.
+1. frozen source manifest and hashes;
+2. provenance chain `source → variable → definition → coding → admissible values → missingness → unit → time → level`;
+3. structural state dictionary;
+4. treatment/intervention dictionary;
+5. frozen `U_τ*` and transformation identifiers;
+6. deterministic `P_τ` definitions;
+7. value endpoint specification;
+8. causal estimand and identification assumptions;
+9. counterfactual definition;
+10. interference/spillover assessment;
+11. pre-specified falsification/robustness plan;
+12. independent-execution reproducibility requirements;
+13. explicit stop conditions.
 
-## 11. Minimum evidence admission package
+## 13. Closure criterion
 
-A C10-C candidate may enter empirical execution only if it can provide, at minimum:
+C10-C can close only when a real-world bounded study provides:
 
-1. frozen study/unit definition;
-2. provenance and access record for all source data;
-3. explicit `U_τ` and accessibility predicate or equivalent operational mapping;
-4. reproducible `T_acc,0` and `T_acc,1` construction;
-5. intervention/treatment definition;
-6. identification strategy and assumptions;
-7. counterfactual definition;
-8. value endpoint specification;
-9. downstream outcome/trajectory variables relevant to the pathway;
-10. pre-specified estimand and analysis plan;
-11. falsification/robustness plan;
-12. frozen exclusion and admission rules;
-13. exact provenance of derived variables;
-14. reproducibility artifacts sufficient for independent reconstruction.
-
-## 12. Evidence hierarchy
-
-Preferred evidence, in descending order:
-
-**Tier A — randomized structural accessibility intervention + explicit value endpoint + reproducible downstream pathway.**
-
-**Tier B — strong quasi-experimental accessibility intervention with credible identification + explicit value endpoint.**
-
-**Tier C — other defensible causal identification strategy with explicit assumptions and value endpoint.**
-
-**Tier D — observational association or predictive evidence.**
-
-Tier D may inform design or mechanism discovery but cannot by itself close C10-C.
-
-## 13. C09 inheritance rule
-
-C09 is already closed at bounded empirical causal-support level for accessibility effects on subsequent trajectories. Therefore a C10-C study must not repeat C09 as its primary research question.
-
-C09 evidence can be inherited as upstream methodological/scientific context, but the C10-C study must independently establish the value endpoint and its causal contribution.
-
-The incremental target is:
-
-`ΔTrajectory → Outcome → Value`
-
-under an accessibility change whose causal origin is credibly identified.
-
-## 14. Closure criterion for C10-C
-
-C10-C may be considered for claim-level closure only when a real-world study provides all of the following:
-
-- independently defined accessibility states;
-- reproducible `ΔT_acc`;
-- credible causal identification of the accessibility-changing exposure/intervention;
-- explicit independently defined value endpoint;
-- defensible counterfactual;
-- separation/bounding of major competing mechanisms;
-- reproducible downstream data;
-- causal estimate with uncertainty and identification assumptions;
+- reproducible `T_acc,0`, `T_acc,1` and `ΔT_acc`;
+- credible causal variation in accessibility;
+- an independently defined value endpoint;
+- an admissible counterfactual;
+- separation of accessibility from major competing mechanisms;
+- reproducible downstream outcome/value data;
+- a causal estimate with uncertainty and auditable assumptions;
 - bounded interpretation.
 
-The sign of the effect is not predetermined.
+A null, negative or heterogeneous estimate is scientifically admissible and must update the claim accordingly.
 
-Possible outcomes:
+## 14. Governance boundary
 
-- positive → supports a positive value contribution under the studied context;
-- null → no evidence of value contribution in that context;
-- negative → evidence that accessibility expansion/reconfiguration can reduce value under that context;
-- heterogeneous → context-dependent causal contribution.
+This gate freezes the design only.
 
-None of these results authorizes universalization without broader evidence.
+It does **not** authorize:
 
-## 15. Explicit exclusions
+- dataset search;
+- dataset acquisition;
+- data download;
+- data inspection;
+- candidate admission;
+- reconstruction;
+- causal estimation;
+- claim upgrade.
 
-The following do not constitute C10-C closure:
+Those actions require a subsequent explicit C10-C candidate discovery/data-level authorization derived from this frozen gate.
 
-- correlation alone;
-- before/after without credible counterfactual;
-- value inferred from outcome without an explicit value criterion;
-- intervention without reconstructible `ΔT_acc`;
-- `ΔT_acc` reconstructed using downstream value;
-- C09 trajectory evidence alone;
-- synthetic causal simulation alone;
-- predictive superiority alone;
-- industrial utility without a controlled value estimand.
+## 15. Relationship to C10C-002
 
-## 16. Governance status
+C10C-002 remains closed with its previously recorded negative bounded causal result. This gate does not reopen, reinterpret or rerun that experiment.
 
-**C10-A:** PASS — bounded formal coherence.
+The methodological lesson on minimum-sufficient bounded `U_τ*` remains binding for future candidates and prevents both unnecessary semantic breadth and post-hoc value-driven narrowing.
 
-**C10-B:** PASS — bounded architectural/non-redundancy sufficiency.
+## 16. Decision
 
-**C10-C:** OPEN — design frozen; empirical validation not yet performed.
+**C10-C EMPIRICAL DESIGN GATE: FROZEN — PASS FOR DESIGN, NO EXECUTION AUTHORIZATION.**
 
-**C10 overall:** OPEN.
-
-**Execution authorization:** NONE.
-
-**Dataset search authorization:** NONE under this gate. A subsequent explicit discovery/admission gate must authorize any candidate dataset or case search.
-
-## 17. Next controlled operation
-
-The next operation is a **C10-C Candidate Discovery / Dataset-First Admission Gate** that applies this frozen design contract to candidate real-world datasets/cases without changing the design retrospectively.
+Next governed operation: derive the candidate-discovery/data-level admission specification from this frozen causal design, then evaluate future candidates against it before any acquisition or execution.
