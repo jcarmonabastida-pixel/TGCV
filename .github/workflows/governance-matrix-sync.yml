@@ -11,6 +11,7 @@ on:
       - '00_GOVERNANCE/tools/canonical_state_sync_v4.py'
       - '00_GOVERNANCE/tools/migrate_c10c001_matrix_v1_9.py'
       - '00_GOVERNANCE/tools/repair_cumulative_matrix_v1_9.py'
+      - '00_GOVERNANCE/tools/validate_matrix_publication.py'
       - '.github/workflows/governance-matrix-sync.yml'
   workflow_dispatch:
 
@@ -34,10 +35,11 @@ jobs:
         if: github.ref_name == 'matrix-v1.9-c10c001-staging'
         run: python 00_GOVERNANCE/tools/repair_cumulative_matrix_v1_9.py
 
-      - name: Validate and synchronize CURRENT
-        run: |
-          python 00_GOVERNANCE/tools/canonical_state_sync_v4.py --sync
-          python 00_GOVERNANCE/tools/canonical_state_sync_v4.py --check
+      - name: Synchronize CURRENT
+        run: python 00_GOVERNANCE/tools/canonical_state_sync_v4.py --sync
+
+      - name: Validate publication chain
+        run: python 00_GOVERNANCE/tools/validate_matrix_publication.py
 
       - name: Commit governed matrix changes
         run: |
