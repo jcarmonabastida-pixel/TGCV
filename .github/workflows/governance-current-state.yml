@@ -2,9 +2,16 @@ name: TGCV governance current-state consistency
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - matrix-v1.9-c10c001-staging
+    paths:
+      - '00_GOVERNANCE/**'
+      - 'STATUS.md'
+      - '.github/workflows/governance-current-state.yml'
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   governance-consistency:
@@ -12,5 +19,5 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Validate current-state governance chain
+      - name: Validate canonical current-state governance chain
         run: python 00_GOVERNANCE/tools/validate_current_state.py
