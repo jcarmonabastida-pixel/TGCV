@@ -10,6 +10,7 @@ on:
       - '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md'
       - '00_GOVERNANCE/tools/canonical_state_sync_v4.py'
       - '00_GOVERNANCE/tools/migrate_c10c001_matrix_v1_9.py'
+      - '00_GOVERNANCE/tools/repair_cumulative_matrix_v1_9.py'
       - '.github/workflows/governance-matrix-sync.yml'
   workflow_dispatch:
 
@@ -28,6 +29,10 @@ jobs:
       - name: Build the governed C10C-001 v1.9 staging matrix
         if: github.ref_name == 'matrix-v1.9-c10c001-staging'
         run: python 00_GOVERNANCE/tools/migrate_c10c001_matrix_v1_9.py
+
+      - name: Repair cumulative matrix summaries
+        if: github.ref_name == 'matrix-v1.9-c10c001-staging'
+        run: python 00_GOVERNANCE/tools/repair_cumulative_matrix_v1_9.py
 
       - name: Validate and synchronize CURRENT
         run: |
