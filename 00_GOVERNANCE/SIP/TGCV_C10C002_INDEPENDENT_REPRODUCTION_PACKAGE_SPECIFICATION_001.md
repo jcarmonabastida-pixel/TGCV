@@ -17,14 +17,16 @@ The independent package must use exactly OpenICPSR 113705 V1, identified by:
 
 Required deposited files and SHA-256:
 
-- `Encuestas-2012.docx` — `CD3947BAE112CE83783C241B18C06783FE31D0101D2C50C155761A512EC1A6`
+- `Encuestas-2012.docx` — `CD3947BAE112CEBE83783C241B18C06783FE31D0101D2C50C155761A512EC1A6`
 - `Habitat_Household_Analysis_Replication_170830.do` — `9C2F010725DCD60B090438137D155C8AC629D9AC185E3F22430C43DF46E4F3AF`
 - `Habitat_Household_Data_for_Replication.dta` — `B080612908BDD45BD8B44B2A42F94E92CCAFCF776DE5379BD6DAB2B054469C55`
 - `Habitat_Household_Data_for_Replication.xlsx` — `6E2E72DA1386F76DA7750CC0DCCCC73D9F74E0FF416C3178D85ABF9463E62B84`
 - `Habitat_Real_Estate_Replication_170830.do` — `383531C1C9CC64D4AC772E4518E35B5DC66429369974A4CD1E23B0B08702B67D`
 - `ReadMe.txt` — `AA2053E1745DE8CF1C04A6A49EECF7C642BA75468F24CDB3AA7FBB024CF8A443`
-- `real_estate_polygon_level.dta` — `428560B2976F6F77CD7669F476262FA9AF9F6CD1B7C578D45E95456884B494`
-- `real_estate_polygon_level.xlsx` — `5F962319AD9C22814C9C342E87237F5BFE5C191C38BD6D82451C5D1C82D58BE`
+- `real_estate_polygon_level.dta` — `428560B2976FBBFB77CD7669F476262FA9AF9F6CD1B7C578D45E95456884B494`
+- `real_estate_polygon_level.xlsx` — `5F962319AD9C22814C9C342E87237F5BFE5C191C38BD6D82451C5D1C82D58BEF`
+
+**Integrity correction recorded:** the previous B4 specification contained an incorrect hash for `real_estate_polygon_level.dta`. The correction is supported independently by (a) the SHA-256 of the frozen V1 ZIP itself, (b) clean re-extraction of that ZIP, and (c) direct hashing of the ZIP member `data/real_estate_polygon_level.dta`. The dataset bytes and ZIP are unchanged; only the erroneous recorded hash is corrected.
 
 ## 3. Governance inputs
 
