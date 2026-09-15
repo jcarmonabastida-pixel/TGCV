@@ -1,109 +1,85 @@
 # TGCV — C10C-002 Pre-Execution Readiness Gap Register 001
 
-**Status:** FROZEN — READINESS REGISTER; EMPIRICAL EXECUTION NOT AUTHORIZED
+**Status:** FROZEN — CANDIDATE READINESS CLOSED WITHOUT EMPIRICAL EXECUTION
 **Date:** 2026-09-15
 **Candidate:** C10C-002 — The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico
 
 ## 1. Purpose
 
-Consolidate the remaining conditions that must be satisfied before any C10-C empirical execution can be authorized, after resolution of the design-level saturation question.
+Consolidate the final readiness disposition for C10-C-002 after the controlled data-level inspection, endpoint provenance review, interference specification, independent reproduction attempt, and bounded documentary search for polygon-level structural-state provenance.
 
 This register is a governance/status artifact only. It does not alter the frozen causal design and does not reopen T17.
 
-## 2. Conditions already resolved for readiness purposes
+## 2. Conditions resolved or formally disposed
 
 ### R1 — Bounded structural universe
-**Status: RESOLVED AT THE TRANSFORMATION-DEFINITION LEVEL; POLYGON-LEVEL STATE RECONSTRUCTION NOT RESOLVED.**
+**Status: TRANSFORMATION DEFINITIONS RESOLVED; POLYGON-LEVEL STATE MAPPING FORMALLY UNAVAILABLE FROM ADMITTED V1 EVIDENCE.**
 
-The admissible structural universe contains six elemental infrastructure dimensions and 12 opening/closure transformations. The transformation definitions are frozen. However, the independent B4 reproduction has established that the admitted V1 evidence does not yet prove a deterministic household-to-polygon mapping capable of producing reproducible binary structural states for all 342 polygons at both rounds. Therefore `T_acc,0`, `T_acc,1`, and `ΔT_acc` are **not currently reproducible at the required polygon level**.
+The admissible structural universe contains six elemental infrastructure dimensions and 12 opening/closure transformations. The definitions are frozen. However, the admitted V1 evidence does not establish a deterministic household-to-polygon mapping capable of producing reproducible binary structural states for all 342 polygons at both rounds.
 
 ### R2 — Treatment/state separation
 **Status: RESOLVED.**
 
-`treat` remains the assignment variable. The six `Disp_*` infrastructure variables are structurally distinct from treatment and value variables. However, the polygon-level structural state required by the frozen causal pathway remains subject to the B4 household-to-polygon provenance limitation.
+`treat` remains the assignment variable and is distinct from the household-level `Disp_*` infrastructure variables and the independent value endpoint.
 
 ### R3 — Design-level saturation/interference identification concern
 **Status: RESOLVED AS A DESIGN QUESTION.**
 
-The published study establishes randomized saturation and explicit municipal spillover analysis. The undocumented deposited fields `sat`, `sat_treat` and `r2` remain excluded from the primary estimand.
-
-The formal disposition is to proceed conceptually without those undocumented fields, while retaining interference as an identification/robustness issue.
-
-## 3. Conditions closed or formally disposed
+Randomized saturation and municipal spillover concerns are documented at study level. Undocumented deposited saturation fields remain excluded from the primary estimand; interference is not assumed absent.
 
 ### B1 — Endpoint upstream construction provenance
 **Status: CLOSED AS IRRECOVERABLE PROVENANCE LIMITATION.**
 
-The deposited endpoint variable `precios_diferencia_usd` is identified and directly used by the authors' replication script, but the script does not construct it. The exact upstream construction of `precios_diferencia` and its USD representation is not recoverable from the admitted V1 script/metadata without inference.
-
-The direct check also establishes that `precios_diferencia` is not equal to `valor_co_12 - valor_co_09`.
-
-No inferred formula is admissible. The limitation is formally recorded in `TGCV_C10C002_ENDPOINT_PROVENANCE_IRRECOVERABLE_LIMITATION_001.md`.
+`precios_diferencia_usd` is directly consumed by the replication script, but its upstream construction is not recoverable from the admitted V1 script/metadata without inference. No inferred formula is admissible.
 
 ### B2 — Endpoint field/unit/time/aggregation freeze
-**Status: CLOSED AT DOCUMENTED EVIDENCE LEVEL; PROVENANCE LIMITATION RETAINED.**
+**Status: CLOSED AT DOCUMENTED EVIDENCE LEVEL.**
 
-The primary deposited field is `precios_diferencia_usd`, documented as change in professional real-estate price/value per square meter in real 2012 USD, at polygon level, over the baseline/follow-up valuation period. The endpoint is observed for 138 of 342 polygons.
-
-The exact upstream construction remains unavailable and is governed by the B1 limitation record. No imputation or inferred transformation is authorized.
+The deposited endpoint, its documented economic unit, baseline/follow-up period, polygon-level representation and 138/342 observation coverage are frozen, subject to the B1 provenance limitation.
 
 ### B3 — Interference robustness rule
 **Status: CLOSED — SPECIFICATION FROZEN.**
 
-The primary ITT estimand will not condition on undocumented `sat`, `sat_treat`, `r2`, `treat_r2` or related fields. Interference is not assumed absent. Primary inference is municipality-clustered using `cve_mun`; any additional sensitivity analysis must be frozen ex ante using only provenance-established variables.
+Primary analysis would use the randomized `treat` assignment and municipality-clustered inference without conditioning on undocumented saturation variables. No universal no-spillover claim is made.
 
-The full rule is recorded in `TGCV_C10C002_B3_INTERFERENCE_ROBUSTNESS_RULE_FREEZE_001.md`.
+### B4 — Independent reproduction / structural pathway
+**Status: CLOSED AS IRRECOVERABLE LIMITATION.**
 
-## 4. Remaining blockers
+The independent B4 process verified the frozen V1 input hashes, complete polygon linkage, treatment/state separation, endpoint linkage and exclusion of undocumented saturation fields. It could not establish the required polygon-level structural state because the admitted V1 evidence does not document a deterministic household-to-polygon mapping for the six `Disp_*` dimensions.
 
-### B4 — Independent reproduction package
-**Status: OPEN — MATERIAL BLOCKER.**
+The targeted documentary search for direct polygon-level variables, `collapse`, `egen`/mean constructions keyed to `N_POLIGONO`, and explicit `b_Disp_*`/`d_Disp_*` conversion rules did not identify an admissible mapping.
 
-The controlled B4 execution verified all eight frozen V1 input hashes, 342/342 polygon linkage, treatment/state separation, endpoint linkage and exclusion of undocumented saturation fields. However, the bounded structural reconstruction failed because the admitted V1 evidence does not establish a deterministic household-to-polygon mapping for the six `Disp_*` dimensions.
+The B4 unanimity rule is withdrawn. No replacement heuristic is permitted.
 
-The previous verifier unanimity rule has been withdrawn. No alternative aggregation rule (majority, mean/threshold, presence, median, treatment-informed or outcome-informed classification) is admissible without independent V1 provenance or a separately frozen methodological rule.
+Formal disposition: `B4 CLOSED — IRRECOVERABLE LIMITATION FROM ADMITTED V1 EVIDENCE`.
 
-This material limitation is formally recorded in:
-
-- `TGCV_C10C002_B4_STRUCTURAL_LEVEL_MISMATCH_DIAGNOSTIC_001.md`
-- `TGCV_C10C002_B4_HOUSEHOLD_TO_POLYGON_STATE_PROVENANCE_LIMITATION_001.md`
-
-Accordingly, B4 cannot close as a successful independent reproduction of the polygon-level TGCV structural pathway on the currently admitted evidence.
+The authoritative record is `TGCV_C10C002_B4_IRRECOVERABLE_STRUCTURAL_STATE_LIMITATION_001.md`.
 
 ### B5 — Final analysis script/specification hash
-**Status: OPEN.**
+**Status: NOT PURSUED — DEPENDENT ON B4 STRUCTURAL PREREQUISITE.**
 
-The final execution script/specification has not yet been frozen and hashed. No empirical result may be generated before this condition is satisfied.
+A final causal execution script/specification cannot be meaningfully frozen while the material polygon-level structural-state prerequisite is unavailable. B5 therefore does not remain an open execution blocker; it is discontinued for this candidate under the current V1 evidence boundary.
 
-## 5. Authorization threshold
+## 3. Final candidate disposition
 
-Empirical execution may be authorized only when all material blockers are closed or explicitly accepted as irrecoverable limitations under a documented governance decision that preserves reproducibility and falsifiability.
+**C10C-002: PROMISING / EVIDENCE GAP REMAINS — NOT EXECUTION-READY UNDER THE ADMITTED V1 EVIDENCE BOUNDARY.**
 
-At minimum, authorization requires:
-
-- endpoint limitation explicitly governed;
-- exact endpoint field and documented unit frozen;
-- endpoint time/aggregation/missingness rules frozen to the extent supported by admitted evidence;
-- interference robustness rule frozen;
-- final script/specification hash frozen;
-- independent executor package and reproduction test completed; and
-- a reproducible polygon-level structural state mapping established, or its absence explicitly accepted as an irrecoverable limitation with the causal design correspondingly not executed.
-
-## 6. Current decision
-
-**C10C-002: PROMISING / EVIDENCE GAP REMAINS.**
+The candidate is not rejected as a study. Its original experimental evidence remains relevant to its own research questions. The disposition concerns only the feasibility of the frozen TGCV polygon-level empirical pathway under the admitted V1 replication boundary.
 
 **EMPIRICAL CAUSAL EXECUTION: NOT AUTHORIZED.**
 
-The candidate is not rejected. The remaining work is now a finite readiness problem centered on B4, with B5 dependent on a valid execution-ready design.
+No causal regression, mediator claim, value-attribution claim, or TGCV claim upgrade is authorized from this candidate on the present evidence.
 
-## 7. Non-reopening rule
+## 4. Future reopening condition
+
+Any future attempt must begin as a new controlled admission decision and must identify an admissible source that directly establishes the missing polygon-level structural state, or explicitly redesign the TGCV test at a level supported by the evidence. It must not silently introduce a new aggregation rule into the current B4 package.
+
+## 5. Non-reopening rule
 
 This register does not reopen:
 
 - the completed C10C-002 bounded causal experiment;
 - T17;
 - T10–T16-B;
-- the frozen C10-C causal design.
-
-It does not introduce a new estimand and does not authorize any causal regression.
+- the frozen C10-C causal design;
+- the endpoint provenance limitation.
