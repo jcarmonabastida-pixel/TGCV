@@ -2,7 +2,7 @@
 
 ## Status
 
-`FROZEN — SOURCE VERSION IDENTIFIED; LOCAL DOWNLOAD PENDING`
+`FROZEN — SOURCE VERSION AND LOCAL ARCHIVE INTEGRITY VERIFIED`
 
 ## Exact source
 
@@ -32,23 +32,28 @@ The released version exposes one replication archive:
 - MD5 reported by Dataverse: `d34d30d45bbabcb5bd21eec31c89a613`
 - description: contains data, do files, and a readme file.
 
-The MD5 is recorded as source metadata only. The TGCV acquisition record must additionally calculate and freeze SHA-256 from the locally downloaded archive.
+## Controlled local acquisition integrity record
+
+The archive was downloaded to the controlled local acquisition directory:
+
+`C:\Users\pedri\Downloads\TGCV_C10C001\JPAL_3813.zip`
+
+Observed integrity:
+
+- byte size: `895831` — **PASS**
+- MD5: `D34D30D45BBABCB5BD21EEC31C89A613` — **PASS**, exact match to Dataverse metadata
+- SHA-256: `B528F933BD72022AD16F320C55FEB20DB8B410AB2C5816137D0DAD7061A73AB5` — **RECORDED / FROZEN**
+
+Therefore the locally acquired archive is accepted as the exact frozen C10C-001 V1 replication archive for the next controlled inspection step.
 
 ## Local acquisition boundary
 
-The archive must be downloaded unchanged from the Dataverse data-file endpoint corresponding to file ID `3348775` or its persistent file identifier. After download:
+The archive was acquired unchanged from the Dataverse data-file source corresponding to file ID `3348775`. Archive-level integrity has been verified before extraction.
 
-1. verify the local byte size against `895831`;
-2. verify the reported MD5;
-3. calculate SHA-256;
-4. record the exact local path and acquisition timestamp;
-5. inspect the ZIP member inventory without modifying the archive;
-6. calculate hashes for admitted extracted files only after the archive-level integrity check passes.
+The next controlled operation is limited to inspection of the ZIP member inventory and recording original member filenames, sizes and SHA-256 hashes. No empirical analysis, causal estimation, transformation construction, outcome-informed variable selection, or claim upgrade is authorized by this record.
 
 No file may be renamed, normalized, converted or edited before its original hash is recorded.
 
 ## No-execution boundary
 
 This freeze does not authorize causal estimation, replication of published estimates, outcome-informed variable selection, transformation construction, or claim upgrade. Those remain subsequent governed operations.
-
-The next operation is local archive acquisition and integrity verification only.
