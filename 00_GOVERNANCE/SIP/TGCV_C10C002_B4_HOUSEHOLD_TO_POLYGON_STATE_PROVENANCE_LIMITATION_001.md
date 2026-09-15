@@ -2,7 +2,7 @@
 
 ## Status
 
-`FROZEN — MATERIAL STRUCTURAL PROVENANCE LIMITATION; B4 NOT CLOSED; EMPIRICAL CAUSAL EXECUTION NOT AUTHORIZED`
+`FROZEN — DOCUMENTARY SEARCH COMPLETED; MATERIAL STRUCTURAL PROVENANCE LIMITATION; B4 NOT CLOSED; EMPIRICAL CAUSAL EXECUTION NOT AUTHORIZED`
 
 ## Finding
 
@@ -14,7 +14,23 @@ It then analyses these variables directly with household observations, using `m_
 
 The deposited `b_Disp_*` and `d_Disp_*` variables are themselves household-level baseline/change constructs used in regressions. The script explicitly uses `d_Disp_Agua`, `b_Disp_Agua`, `d_Disp_Drenaje`, and `b_Disp_Drenaje` in this manner. fileciteturn199file1L48-L55 fileciteturn200file14L648-L665
 
-The reviewed explicit `collapse` command concerns construction variables and does not provide the missing six-dimensional household-to-polygon rule. fileciteturn197file4L137-L146
+The explicit `collapse` command reviewed in the admitted script concerns construction variables, not the six infrastructure dimensions. fileciteturn207file6L190-L198
+
+The script does contain `egen ... mean(...)` constructions for `Disp_Infra_Bas`, but these are manzana-level interaction-analysis quantities and do not establish a polygon-level binary state for the six elemental dimensions. fileciteturn205file0L10-L20
+
+The script also explicitly defines the infrastructure family at household analytical level and uses the six elemental variables directly in regressions with polygon clustering; this is not equivalent to defining a polygon state. fileciteturn206file6L202-L218
+
+## Documentary search result
+
+A targeted documentary search was performed for:
+
+- direct polygon-level `Disp_*` state variables;
+- `collapse` operations converting `Disp_*` to polygon level;
+- `egen`/mean constructions keyed by `N_POLIGONO` for the six elemental dimensions;
+- explicit `b_Disp_*` / `d_Disp_*` conversion rules establishing polygon state;
+- polygon-level infrastructure state fields suitable for direct `T_acc` reconstruction.
+
+No admissible V1 evidence was found establishing such a deterministic polygon-level binary mapping.
 
 ## Consequence for TGCV reconstruction
 
@@ -41,6 +57,6 @@ No heuristic aggregation will be introduced merely to make B4 pass.
 
 ## Decision
 
-`B4 MATERIAL BLOCKER — HOUSEHOLD-TO-POLYGON STRUCTURAL STATE MAPPING NOT PROVEN FROM ADMITTED V1 EVIDENCE`
+`B4 MATERIAL BLOCKER — DOCUMENTARY SEARCH COMPLETED WITHOUT PROVEN POLYGON-LEVEL STRUCTURAL STATE MAPPING`
 
 B4 remains open. B5 remains separate. No causal estimation or claim upgrade is authorized.
