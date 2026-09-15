@@ -13,14 +13,14 @@ This register is a governance/status artifact only. It does not alter the frozen
 ## 2. Conditions already resolved for readiness purposes
 
 ### R1 — Bounded structural universe
-**Status: RESOLVED.**
+**Status: RESOLVED AT THE TRANSFORMATION-DEFINITION LEVEL; POLYGON-LEVEL STATE RECONSTRUCTION NOT RESOLVED.**
 
-The admissible structural universe contains six elemental infrastructure dimensions and 12 opening/closure transformations. Baseline/follow-up `T_acc*` and `ΔT_acc` are reproducible on the 342-polygon panel universe.
+The admissible structural universe contains six elemental infrastructure dimensions and 12 opening/closure transformations. The transformation definitions are frozen. However, the independent B4 reproduction has established that the admitted V1 evidence does not yet prove a deterministic household-to-polygon mapping capable of producing reproducible binary structural states for all 342 polygons at both rounds. Therefore `T_acc,0`, `T_acc,1`, and `ΔT_acc` are **not currently reproducible at the required polygon level**.
 
 ### R2 — Treatment/state separation
 **Status: RESOLVED.**
 
-`treat` remains the assignment variable. Structural state is reconstructed independently from the six admitted infrastructure variables. Value variables are excluded from accessibility predicates.
+`treat` remains the assignment variable. The six `Disp_*` infrastructure variables are structurally distinct from treatment and value variables. However, the polygon-level structural state required by the frozen causal pathway remains subject to the B4 household-to-polygon provenance limitation.
 
 ### R3 — Design-level saturation/interference identification concern
 **Status: RESOLVED AS A DESIGN QUESTION.**
@@ -59,7 +59,16 @@ The full rule is recorded in `TGCV_C10C002_B3_INTERFERENCE_ROBUSTNESS_RULE_FREEZ
 ### B4 — Independent reproduction package
 **Status: OPEN — MATERIAL BLOCKER.**
 
-An independent executor must be able to reproduce the frozen empirical package, including exact inputs, hashes, extraction/transformation procedure and statistical specification, without relying on the prior bounded experiment or post-outcome choices.
+The controlled B4 execution verified all eight frozen V1 input hashes, 342/342 polygon linkage, treatment/state separation, endpoint linkage and exclusion of undocumented saturation fields. However, the bounded structural reconstruction failed because the admitted V1 evidence does not establish a deterministic household-to-polygon mapping for the six `Disp_*` dimensions.
+
+The previous verifier unanimity rule has been withdrawn. No alternative aggregation rule (majority, mean/threshold, presence, median, treatment-informed or outcome-informed classification) is admissible without independent V1 provenance or a separately frozen methodological rule.
+
+This material limitation is formally recorded in:
+
+- `TGCV_C10C002_B4_STRUCTURAL_LEVEL_MISMATCH_DIAGNOSTIC_001.md`
+- `TGCV_C10C002_B4_HOUSEHOLD_TO_POLYGON_STATE_PROVENANCE_LIMITATION_001.md`
+
+Accordingly, B4 cannot close as a successful independent reproduction of the polygon-level TGCV structural pathway on the currently admitted evidence.
 
 ### B5 — Final analysis script/specification hash
 **Status: OPEN.**
@@ -77,7 +86,8 @@ At minimum, authorization requires:
 - endpoint time/aggregation/missingness rules frozen to the extent supported by admitted evidence;
 - interference robustness rule frozen;
 - final script/specification hash frozen;
-- independent executor package and reproduction test completed.
+- independent executor package and reproduction test completed; and
+- a reproducible polygon-level structural state mapping established, or its absence explicitly accepted as an irrecoverable limitation with the causal design correspondingly not executed.
 
 ## 6. Current decision
 
@@ -85,7 +95,7 @@ At minimum, authorization requires:
 
 **EMPIRICAL CAUSAL EXECUTION: NOT AUTHORIZED.**
 
-The candidate is not rejected. The remaining work is now a finite readiness problem: B4 and B5.
+The candidate is not rejected. The remaining work is now a finite readiness problem centered on B4, with B5 dependent on a valid execution-ready design.
 
 ## 7. Non-reopening rule
 
