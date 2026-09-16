@@ -74,6 +74,35 @@ The `X update` MUST be persisted in the matrix version content itself. It MUST N
 
 This rule prevents two distinct systematic failures: omission of a material novelty from the new version's top-level traceability, and uncontrolled accumulation of historical `X update` entries in later version headers.
 
+## GL-008 — Material evidence must be represented twice: in the claim table and in an enriched material-evidence section
+
+A material evidence propagation is incomplete if the result appears only as a short entry in the claim table. **Every material evidence item propagated into one or more claim rows MUST have a corresponding enriched `Material ... evidence` section in the same matrix version.**
+
+The claim table is the routing/index layer; the material-evidence section is the evidentiary record. They are complementary and neither may substitute for the other.
+
+The material section MUST preserve, where available and relevant:
+
+- experiment/case identity and status;
+- frozen source, dataset or evidence provenance;
+- protocol/execution/result artifacts and relevant hashes or identifiers;
+- population, horizon and operational definitions;
+- principal quantitative results and classifications;
+- primary/replay or independent-reconstruction status and integrity boundaries;
+- scientific interpretation at the strongest justified level;
+- explicit non-claims / interpretation boundaries;
+- evidence-to-claim propagation, including affected claims and why the evidence does or does not change them;
+- whether the result changes claim status, and an explicit statement when it does not.
+
+For foundational experiments that originally established claims before the current cumulative matrix existed, the same rule applies retroactively when a material omission is discovered: the evidence MUST be restored to the cumulative matrix with both its claim-table routing and its enriched material section. Such restoration is an additive/corrective governance action and does not by itself constitute a claim upgrade.
+
+The integrity check for every future matrix update MUST therefore verify both directions:
+
+`material evidence item in claim table ↔ corresponding enriched material-evidence section`
+
+and must reject a matrix state in which a material result is represented only by a compressed table label or only by an orphaned narrative section.
+
+This rule is cumulative. Later matrix versions MUST preserve these enriched sections unless explicitly correcting, superseding or retiring them under the normal governance rules.
+
 ## Future-session discovery instruction
 
 **Before any future TGCV governance update, inspect `00_GOVERNANCE/` and locate this document (`GOVERNANCE_LESSONS_LEARNED_001.md`) and the active `GOVERNANCE_OPERATING_PRINCIPLES` artifact. Do not assume that either rule set is remembered from prior ChatGPT sessions.**
