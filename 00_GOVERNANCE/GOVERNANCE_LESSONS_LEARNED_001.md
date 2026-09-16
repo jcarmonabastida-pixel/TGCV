@@ -41,8 +41,32 @@ The MT4 governance episode demonstrated a concrete failure mode: a residual v1.1
 
 This incident is therefore recorded as a procedural warning against conversational reconstruction, cumulative rewriting, and iterative governance repair.
 
+## GL-007 — Explicit X-update traceability for material evidence additions
+
+The cumulative matrix rule is:
+
+**Each version = complete predecessor + explicitly authorized additive/corrective changes.**
+
+After the new version has been created as an exact byte-for-byte copy of the canonical predecessor, any material evidence result that is incorporated into the new version and materially changes, qualifies, bounds, or otherwise modifies the evidentiary basis or interpretation of one or more claims MUST be identified explicitly in the new version's header as an `X update` (for example, `MT4 update`, `C10C-004 update`).
+
+The criterion for an `X update` is **material evidence propagation**, not claim-level upgrade. Therefore an `X update` is required even when the affected claim status remains unchanged, provided the evidence is material enough to be propagated into the matrix as a new evidentiary contribution or qualification.
+
+The `X update` MUST be part of the matrix version content itself. It MUST NOT exist only as a workflow-generated note, temporary workflow, commit message, or external trace. A temporary workflow MAY perform an authorized mechanical edit during an exceptional recovery operation, but the resulting `X update` is valid only when persisted in the canonical matrix content and covered by the cumulative-version integrity checks.
+
+Conversely, an evidence result that is not materially propagated into the new matrix version does not require an `X update`. Historical evidence already present in the predecessor is not repeated merely because it remains relevant.
+
+### Required order for future cumulative matrix updates
+
+1. Freeze/identify the exact canonical predecessor.
+2. Create the new version as a byte-for-byte copy of that predecessor.
+3. Identify material evidence additions/qualifications and determine which require an `X update`.
+4. Add the `X update` entry or entries to the new version header together with the corresponding explicit claim-table/material-evidence additions.
+5. Verify that predecessor content is preserved in order except for the explicitly authorized additive/corrective changes.
+6. Only after content integrity passes, propagate the new version to `CURRENT` and update canonical pointers/state as required.
+7. Run the canonical validator as the final gate.
+
+This rule prevents a systematic omission in which the evidence is propagated into claim rows or material sections but the new version's top-level traceability fails to identify the evidence as a material novelty of that version.
+
 ## Future-session discovery instruction
 
 **Before any future TGCV governance update, inspect `00_GOVERNANCE/` and locate this document (`GOVERNANCE_LESSONS_LEARNED_001.md`) and the active `GOVERNANCE_OPERATING_PRINCIPLES` artifact. Do not assume that either rule set is remembered from prior ChatGPT sessions.**
-
-This instruction is intentionally stored in the repository because its purpose is to make the rule discoverable independently of conversational memory.
