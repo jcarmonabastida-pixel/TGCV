@@ -41,31 +41,38 @@ The MT4 governance episode demonstrated a concrete failure mode: a residual v1.1
 
 This incident is therefore recorded as a procedural warning against conversational reconstruction, cumulative rewriting, and iterative governance repair.
 
-## GL-007 — Explicit X-update traceability for material evidence additions
+## GL-007 — Per-version X-update traceability for material evidence additions
 
 The cumulative matrix rule is:
 
-**Each version = complete predecessor + explicitly authorized additive/corrective changes.**
+**Each version = complete predecessor evidentiary content + explicitly authorized additive/corrective changes.**
 
-After the new version has been created as an exact byte-for-byte copy of the canonical predecessor, any material evidence result that is incorporated into the new version and materially changes, qualifies, bounds, or otherwise modifies the evidentiary basis or interpretation of one or more claims MUST be identified explicitly in the new version's header as an `X update` (for example, `MT4 update`, `C10C-004 update`).
+The `X update` entries in the matrix header are **version-local traceability metadata**, not cumulative evidentiary content. They identify the material evidence novelties introduced or materially qualified by that specific version and MUST NOT be carried forward into the header of later versions merely because the underlying evidence remains part of the cumulative matrix.
 
-The criterion for an `X update` is **material evidence propagation**, not claim-level upgrade. Therefore an `X update` is required even when the affected claim status remains unchanged, provided the evidence is material enough to be propagated into the matrix as a new evidentiary contribution or qualification.
+Therefore, after creating the new version from the canonical predecessor, the header's `X update` block MUST be reset/replaced for the new version so that it contains **only** the `X update` entries corresponding to material evidence propagation performed in that update cycle. For example:
 
-The `X update` MUST be part of the matrix version content itself. It MUST NOT exist only as a workflow-generated note, temporary workflow, commit message, or external trace. A temporary workflow MAY perform an authorized mechanical edit during an exceptional recovery operation, but the resulting `X update` is valid only when persisted in the canonical matrix content and covered by the cumulative-version integrity checks.
+- v1.11: `C10C-003 update` and `C10C-004 update`.
+- v1.12: `MT4 update` only.
+- v1.13: only the material `X update` entries belonging to the v1.13 cycle.
 
-Conversely, an evidence result that is not materially propagated into the new matrix version does not require an `X update`. Historical evidence already present in the predecessor is not repeated merely because it remains relevant.
+The underlying evidentiary content, claim-row qualifications and material evidence sections remain cumulative unless explicitly corrected, superseded or retired under the governance rules. Historical `X update` metadata remains preserved in the historical version in which it was recorded; it is not deleted from historical artifacts and is not propagated into later headers.
+
+An `X update` is required when a new version incorporates a material evidence result that changes, qualifies, bounds or otherwise modifies the evidentiary basis or interpretation of one or more claims, even when no claim-level status/level is upgraded. An evidence result that is not materially propagated into the new matrix version does not require an `X update`.
+
+The `X update` MUST be persisted in the matrix version content itself. It MUST NOT exist only as a workflow-generated note, temporary workflow, commit message or external trace. Temporary automation must not be treated as the authoritative traceability mechanism.
 
 ### Required order for future cumulative matrix updates
 
 1. Freeze/identify the exact canonical predecessor.
 2. Create the new version as a byte-for-byte copy of that predecessor.
-3. Identify material evidence additions/qualifications and determine which require an `X update`.
-4. Add the `X update` entry or entries to the new version header together with the corresponding explicit claim-table/material-evidence additions.
-5. Verify that predecessor content is preserved in order except for the explicitly authorized additive/corrective changes.
-6. Only after content integrity passes, propagate the new version to `CURRENT` and update canonical pointers/state as required.
-7. Run the canonical validator as the final gate.
+3. Identify the material evidence additions/qualifications belonging to the new cycle.
+4. Replace/reset the **version-local header `X update` block** so that it contains only the `X update` entries for the new cycle; do not carry forward prior-version header updates.
+5. Add the corresponding explicit claim-table and/or material-evidence changes.
+6. Verify that cumulative predecessor evidentiary content is preserved in order except for explicitly authorized additive/corrective changes and the intentionally renewed version-local header traceability block.
+7. Only after content integrity passes, propagate the new version to `CURRENT` and update canonical pointers/state as required.
+8. Run the canonical validator as the final gate.
 
-This rule prevents a systematic omission in which the evidence is propagated into claim rows or material sections but the new version's top-level traceability fails to identify the evidence as a material novelty of that version.
+This rule prevents two distinct systematic failures: omission of a material novelty from the new version's top-level traceability, and uncontrolled accumulation of historical `X update` entries in later version headers.
 
 ## Future-session discovery instruction
 
