@@ -7,6 +7,8 @@
 
 **C10C-004 update:** C10C-004 Morocco Gate G4 closed as `OPERATIONAL RECONSTRUCTION VERIFIED`. The endline women's-empowerment construct was independently reconstructed from questionnaire semantics, physical variables, observed coding and the historical Stata construction rule using Python. The historical duplicate `outcome2` and omission of `outcome3` were preserved. This is a bounded operationalisation/reconstruction result and does not identify TGCV `T_acc`, `Delta T_acc`, trajectory causality or value.
 
+**MT4 update:** MT4 closed as `BOUNDED PASS — METHODOLOGICAL TRANSFER DEMONSTRATED WITH EXPLICIT LIMITS`. The candidate analytical methodology was transferred to a heterogeneous national electricity-system domain while preserving separation among state/conditions, candidate technical transformations, admissibility/accessibility, realized transformations, state/trajectory variables and economic/value-related variables. CORE6 provides a partially formalized technical admissibility candidate with 92.58% complete country-technology-year coverage, but full `P_tau` remains undetermined. No transversal causal validity, `Delta T_acc -> Delta V`, or claim-level upgrade is established.
+
 **C10C-003 update:** C10C-003 India static inspection closed as `DATA-LEVEL STATIC INSPECTION — STRUCTURAL READINESS LIMITATION CONFIRMED`. The inspection searched for a bounded, prospectively defensible operational transformation space derivable from the frozen replication package; it did not attempt exhaustive enumeration of the complete transformation universe. Within that bounded search space, `U_tau` and a non-circular `P_tau(S,C,L)` were not identified. This is an operationalization boundary, not an exhaustive-universe impossibility result and not a refutation of TGCV or the original experiment.
 
 ## Matrix preservation rule
@@ -428,6 +430,45 @@ The v1.10 update preserves the full evidence/claim structure of v1.9 and adds th
 The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, bounded self-adaptive software operationalization from SWIM Reactive-0 and Reactive2, bounded SWIM trajectory-linkage reconstruction, the closed IT-G1 industrial case, FOS C09 methodological/reference evidence, the closed C09 Bundle 003 Executor-2 independent reconstruction, the closed KGFS real-world causal architecture, the closed C10C-002 urban-infrastructure bounded causal experiment, and the closed C10C-003 India static inspection. These are cumulative material evidence records. The only claim-level change in the cumulative matrix remains the prior C09 consolidation; v1.8 added C10C-002 evidence propagation, v1.9 added C10C-001 evidence propagation, v1.10 added C10C-003 bounded evidence propagation, and v1.11 adds C10C-004 bounded methodological evidence propagation, while v1.12 adds MT4 bounded methodological domain-transfer evidence propagation. None of these C10-C/MT4 propagations changes any claim status. The scientific Core remains unchanged.
 
 ## Material methodological evidence — MT4 Domain Transfer
+
+**Case:** `MT4 — Historical national electricity-system transitions / energy-system technology change`  
+**Status:** `BOUNDED PASS — METHODOLOGICAL TRANSFER DEMONSTRATED WITH EXPLICIT LIMITS`  
+**Primary frozen source:** Jaxa-Rozen, Wen & Trutnevyte, historic national electricity-system transitions dataset, Zenodo 6696776 v2.  
+**Source SHA256:** `691F950A314015A7DE9D4CBABCC177846D74ABF7036B6A89E192B152A88E6D30`
+
+### MT4 objective and domain transfer
+
+MT4 tests whether the candidate transversal analytical methodology can be transferred to a genuinely heterogeneous electricity-system domain without collapsing TGCV distinctions or importing downstream/value information into the accessibility layer. The frozen source covers national electricity-system transitions in Europe across 31 countries and 1990–2019.
+
+### Gate summary and meaning
+
+- **MT4-1 — Domain novelty: PASS.** The case provides a genuinely heterogeneous domain relative to the previously used exemplars.
+- **MT4-2 — Frozen evidence: PASS.** The source package, version and hash were frozen before methodological interpretation.
+- **MT4-3 — Structural inspection: PASS.** Country, technology, resource and technical/economic parameter structures were reproducibly identified.
+- **MT4-4 — Semantic non-substitution: PASS — BOUNDED.** Candidate technical constraints were kept separate from realized transformations, state/trajectory variables and economic/value-related variables; observed realization was not relabeled as `T_acc`.
+- **MT4-5 — `P_tau` technical formalization: OPEN / BOUNDED.** CORE6 provides a partially formalized technical candidate layer with 92.58% complete coverage, but full `P_tau` sufficiency remains undetermined.
+- **MT4-6 — Independent reproducibility: PASS.** The frozen structural representation, coverage, missingness and discrimination results were independently reproduced.
+- **MT4-7 — Downstream separation: BOUNDED PASS.** Candidate constraints, realized technology changes and state/trajectory variables were structurally separated; no trajectory causal estimand was established.
+- **MT4-8 — Value isolation: BOUNDED PASS.** `Inv`, `Fixed_OM_annual` and `Variable_OM` were isolated from the CORE6 candidate accessibility rule; no downstream TGCV value endpoint was established.
+
+### Consolidated methodological finding
+
+The candidate TGCV analytical methodology can be transferred to a heterogeneous electricity-system domain while preserving explicit separation between candidate technical constraints, admissibility/accessibility, realized transformations, state/trajectory variables and economic/value-related variables. CORE6 provides a partially formalized technical admissibility candidate with 92.58% complete country-technology-year coverage, while full `P_tau` remains undetermined. Economic variables are structurally isolated from CORE6, but no independently established downstream TGCV `Delta V` endpoint has been demonstrated.
+
+### MT4 material contribution to the claim matrix
+
+- **C01 — bounded methodological support:** identifies and preserves a technical constraint/state layer in a heterogeneous electricity-system domain; no claim-level upgrade.
+- **C02 — bounded qualification:** provides a partially formalized candidate admissibility layer through CORE6; full `P_tau` remains undetermined; no upgrade.
+- **C07 — boundary qualification:** separates candidate technical constraints from realized technology changes and does not establish positive `Delta T_acc`; no upgrade.
+- **C08 — bounded methodological support:** separates candidate constraints, realized transformations and state/trajectory variables, without establishing a trajectory causal estimand; no upgrade.
+- **C09 — no positive causal propagation:** MT4 does not estimate `Delta T_acc -> subsequent trajectory`; the existing bounded causal status is unchanged.
+- **C10 — material boundary qualification:** MT4-8 isolates economic parameters from CORE6 but does not establish `Delta T_acc -> Delta V`; C10 remains open.
+- **C11 — bounded cross-domain evidence:** adds a heterogeneous electricity-system domain and strengthens documented methodological transfer/boundary evidence, but does not establish transversal validity.
+- **C16 — bounded methodological evidence:** preserves the separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables; no upgrade.
+
+### Boundaries and research disposition
+
+MT4 does not establish transversal causal validity, full `P_tau` sufficiency, `Delta T_acc -> Delta V`, or a general causal value mechanism. It does not promote observed adoption, installed capacity, generation, investment cost or operating-cost parameters into accessibility or value constructs by semantic substitution. MT4 is closed as a bounded methodological domain-transfer result; further work should target full `P_tau` formalization where feasible and a genuinely downstream, independently defined outcome/value endpoint.
 
 # TGCV MT4 — Domain Transfer Result 001
 
