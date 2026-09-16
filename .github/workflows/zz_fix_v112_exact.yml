@@ -1,0 +1,144 @@
+name: TGCV one-shot exact v1.12 reconstruction
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/zz_fix_v112_exact.yml'
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Rebuild v1.12 mechanically from exact v1.11
+        shell: python
+        run: |
+          from pathlib import Path
+          import hashlib
+
+          src = Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.11.md')
+          dst = Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md')
+          cur = Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md')
+
+          base = src.read_text(encoding='utf-8')
+          expected = '02fe951b99ee36b6c4f9e28d8ded6c294bbbca88'
+          actual = hashlib.sha256(base.encode('utf-8')).hexdigest()
+          if actual != expected:
+              raise SystemExit(f'ERROR: unexpected v1.11 SHA {actual}')
+
+          old_heading = '# TGCV — Evidence-to-Claim Matrix — Current v1.11'
+          new_heading = '# TGCV — Evidence-to-Claim Matrix — Current v1.12'
+          old_pred = '**Predecessor:** v1.10'
+          new_pred = '**Predecessor:** v1.11'
+          old_intro = '**Incremental governance update:** v1.11 preserves the complete material evidentiary content and schema of v1.10; no evidence is deleted, collapsed, or downgraded. C10C-004 is propagated as bounded methodological evidence to C01, C11 and C16, with explicit negative/boundary qualification for C02 and no direct evidence contribution to C07, C08, C09 or C10. No claim-level status is upgraded by this propagation.'
+          new_intro = '**Incremental governance update:** v1.12 preserves the complete material evidentiary content and schema of v1.11; no evidence is deleted, collapsed, or downgraded. MT4 is added as bounded methodological domain-transfer evidence with explicit bounded/non-positive propagation; no claim-level status is upgraded by this propagation.'
+
+          if base.count(old_heading) != 1 or base.count(old_pred) != 1 or base.count(old_intro) != 1:
+              raise SystemExit('ERROR: exact v1.11 anchors not unique')
+
+          core = base.replace(old_heading, new_heading, 1).replace(old_pred, new_pred, 1).replace(old_intro, new_intro, 1)
+
+          mt4 = r'''
+
+## Material methodological evidence — MT4 Domain Transfer
+
+**Case:** Historical national electricity-system transitions / energy-system technology change  
+**Status:** `BOUNDED PASS — METHODOLOGICAL TRANSFER DEMONSTRATED WITH EXPLICIT LIMITS`  
+**Primary source:** Jaxa-Rozen, Wen & Trutnevyte, *Historic data of the national electricity system transitions in Europe in 1990–2019 for retrospective evaluation of models*, Zenodo record 6696776, v2.  
+**Frozen source SHA256:** `691F950A314015A7DE9D4CBABCC177846D74ABF7036B6A89E192B152A88E6D30`  
+**Closure artifact:** `00_GOVERNANCE/SIP/TGCV_MT4_DOMAIN_TRANSFER_RESULT_001.md`
+
+MT4 is an additive methodological domain-transfer result. It applies the candidate TGCV analytical translation to a heterogeneous historical electricity-system domain while preserving the distinction among state/conditions, candidate transformations, admissibility/accessibility, realized transformations, subsequent state/trajectory and economic/value-related variables. The result is bounded and does not modify TGCV Core, RMA ontology or any claim-level status.
+
+### Gate results
+
+- **MT4-1:** PASS
+- **MT4-2:** PASS
+- **MT4-3:** PASS
+- **MT4-4:** PASS — BOUNDED
+- **MT4-5:** OPEN / BOUNDED — full `P_tau` not established
+- **MT4-6:** PASS — independent reproducibility of the structural audit
+- **MT4-7:** BOUNDED PASS — downstream separation
+- **MT4-8:** BOUNDED PASS — value isolation
+
+### Material bounded findings
+
+- CORE6 candidate technical layer: 12,331 of 13,320 country-technology-year cells complete (**92.58%**).
+- CORE6 consists of `Fuel_efficiency`, `LF_min`, `LF_max`, `Peak_contr`, `Ramp_rate` and `Resource`.
+- Full `P_tau` remains **UNDETERMINED**; MT4-5 remains open/bounded.
+- `Actual_new_capacity` and `Actual_retired_capacity` remain realized-transformation variables and are not substituted for accessibility.
+- `Actual_capacity` and `Actual_generation` remain state/trajectory variables and are not substituted for accessibility.
+- `Inv`, `Fixed_OM_annual` and `Variable_OM` were isolated from the CORE6 candidate rule; their common 1990–2019 span does not establish downstream value ordering.
+- MT4 contains no causal estimate of `Delta T_acc -> subsequent trajectory` and no estimate of `Delta T_acc -> Delta V`.
+
+### Additive claim propagation
+
+- **C01:** bounded methodological support for identifying/preserving a technical constraint/state layer in a heterogeneous electricity-system domain. No upgrade.
+- **C02:** bounded methodological qualification through the partially formalized CORE6 candidate layer and 92.58% complete coverage; full `P_tau` remains undetermined. No upgrade.
+- **C07:** bounded separation between candidate constraints and realized technology changes; no complete `T_acc` or positive `Delta T_acc` result. No upgrade.
+- **C08:** bounded downstream separation among candidate constraints, realized transformations and state/trajectory variables; no trajectory causal estimand. No upgrade.
+- **C09:** explicit non-positive propagation; MT4 contains no estimate of the causal link `Delta T_acc -> subsequent trajectory`. Existing C09 status remains unchanged.
+- **C10:** MT4-8 isolates economic/value-related variables from the CORE6 candidate rule, but does not establish a downstream TGCV value endpoint or `Delta T_acc -> Delta V`. C10 remains open.
+- **C11:** bounded methodological cross-domain evidence from a heterogeneous electricity-system domain; it strengthens documented transfer/boundary evidence but does not establish transversal validity. No upgrade.
+- **C16:** bounded methodological evidence preserving separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables. No upgrade.
+
+No positive propagation is made to C03, C04, C05, C06, C12, C13, C14 or C15. The MT4 closure is additive to the complete v1.11 matrix.
+
+### Interpretation boundaries
+
+MT4 is methodological domain-transfer evidence, not transversal causal validation. It does not establish a complete accessibility predicate, a downstream TGCV value endpoint, a causal accessibility-to-value mechanism, or general transversal validity. It does not modify the TGCV Core, RMA, C09 bounded causal-support status, or the open status of C10, C11, C12 and C16.
+
+### Preservation statement
+
+This section is additive. No material v1.11 evidence description, claim row, routing entry, gate statement or scientific-position text is deleted, collapsed, reordered or replaced. The only pre-existing text changes in v1.12 are the version/predecessor/intro declarations required to identify the new cumulative version.
+'''
+
+          out = core.rstrip() + mt4 + '\n'
+          dst.write_text(out, encoding='utf-8')
+          cur.write_text(out, encoding='utf-8')
+
+          normalized = out
+          normalized = normalized.replace(new_heading, old_heading, 1)
+          normalized = normalized.replace(new_pred, old_pred, 1)
+          normalized = normalized.replace(new_intro, old_intro, 1)
+          marker = '\n\n## Material methodological evidence — MT4 Domain Transfer\n'
+          if normalized.count(marker) != 1:
+              raise SystemExit('ERROR: MT4 marker count != 1')
+          preserved = normalized.split(marker, 1)[0].rstrip() + '\n'
+          if preserved != base:
+              raise SystemExit('ERROR: v1.11 content is not byte-preserved before MT4')
+
+          if dst.read_bytes() != cur.read_bytes():
+              raise SystemExit('ERROR: CURRENT differs from versioned v1.12')
+
+          print('V111_SHA256=' + actual)
+          print('V111_LINES=' + str(len(base.splitlines())))
+          print('V112_SHA256=' + hashlib.sha256(out.encode('utf-8')).hexdigest())
+          print('V112_LINES=' + str(len(out.splitlines())))
+          print('PRESERVATION=PASS')
+          print('RESULT=EXACT_V111_PLUS_AUTHORIZED_MT4_ADDITION')
+
+      - name: Validate canonical current state
+        run: python 00_GOVERNANCE/tools/validate_current_state.py
+
+      - name: Commit repaired matrix and canonical alias
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md
+          git commit -m "Repair v1.12 from exact v1.11 plus MT4"
+          git push origin main
+
+      - name: Remove one-shot workflow
+        if: always()
+        run: |
+          rm -f .github/workflows/zz_fix_v112_exact.yml
+          git add -u .github/workflows/zz_fix_v112_exact.yml
+          git diff --cached --quiet || git commit -m "Remove one-shot v1.12 repair workflow"
+          git push origin main || true
