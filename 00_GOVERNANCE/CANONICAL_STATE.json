@@ -3,9 +3,16 @@
   "status": "CURRENT",
   "current_versions": {
     "rma": "v3.35",
-    "claim_matrix": "v1.10",
+    "claim_matrix": "v1.11",
     "rma_traceability": "v3.35",
     "governance_operating_principles": "v0.1"
+  },
+  "analytical_synthesis": {
+    "cross_domain_map": "00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_END_TO_END_ACCESSIBILITY_OUTCOME_VALUE_MAP_001.md",
+    "evaluation": "00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_MAP_EVALUATION_AND_PERSISTENCE_DECISION_001.md",
+    "status": "CURRENT_INDEPENDENT_ANALYSIS",
+    "disposition": "RETAINED_AS_INDEPENDENT_ANALYTICAL_SYNTHESIS; NOT_YET_NORMATIVE_METHODOLOGY",
+    "next_authorized_analysis": "EXTRACT_TRANSVERSAL_METHODOLOGY_WITHOUT_UNSUPPORTED_CONCEPTS"
   },
   "pointers": {
     "rma": "00_GOVERNANCE/rma/TGCV_RMA_current.md",

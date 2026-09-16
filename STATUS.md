@@ -1,10 +1,11 @@
 # TGCV — Current Status
 
-**Date:** 2026-09-14
-**Governance state:** CURRENT — C09 claim-level closure propagated through the canonical governance chain; matrix preservation and current/versioned identity verified at Git object level; final validator gate is the remaining executable check.
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.35
-**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` → v1.7
-**IGRT governance status:** `00_GOVERNANCE/IGRT/TGCV_IGRT_GOVERNANCE_STATUS_2026-09-12_RUST_DYN2_SWIM.md`
+**Date:** 2026-09-16  
+**Governance state:** CURRENT — C10C-004 Morocco G4 evidence propagation is represented in Matrix v1.11; the independent cross-domain accessibility → execution → outcome/value map has been registered and evaluated as an independent analytical synthesis; canonical-state synchronization is being completed before the next methodology analysis.
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.35  
+**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` → v1.11  
+**Independent analytical synthesis:** `00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_END_TO_END_ACCESSIBILITY_OUTCOME_VALUE_MAP_001.md`
+**Map evaluation:** `00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_MAP_EVALUATION_AND_PERSISTENCE_DECISION_001.md`
 
 ## Scientific Core
 - **Core:** unchanged.
@@ -12,29 +13,37 @@
 - **KGFS:** `CLOSED — D5-A IDENTIFIED CONTRIBUTION` with exact 74/74 trajectory-variable reproducibility audit.
 - **RUST-DYN-2 / EXEC-1A:** `CLOSED — BOUNDED STRUCTURAL EMPIRICAL PASS`.
 - **SWIM trajectory linkage:** `CLOSED — BOUNDED TRAJECTORY-LINKAGE RECONSTRUCTION`.
+- **C10C-004 Morocco G4:** `CLOSED — OPERATIONAL RECONSTRUCTION VERIFIED`.
 - No Core primitive, relation, threshold or falsification criterion was modified.
-- No claim status/level other than C09 was upgraded by this propagation.
+- No claim-level status was upgraded by the C10C-004 propagation or by the cross-domain map analysis.
+
+## Cross-domain analytical state
+- The cross-domain map is retained as an **independent analytical synthesis**, not yet as a normative governance methodology.
+- It consolidates distributed evidence across state/conditions, accessibility, transformation/execution, trajectory and outcome while preserving explicit boundaries between these layers.
+- Operationalisation evidence is currently stronger/more mature than transversal causal validation.
+- C09 provides the current bounded causal evidence for accessibility → subsequent trajectory.
+- The downstream `ΔT_acc → ΔV / Value` linkage remains open.
+- C10C-004 strengthens semantic-to-executable reconstruction methodology in a non-software domain but does not identify TGCV `T_acc`.
 
 ## Governance integrity
-- Canonical current versions: RMA `v3.35`, Evidence→Claim Matrix `v1.7`, RMA traceability `v3.35`, governance operating principles `v0.1`.
-- `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` is the stable alias of the complete `EVIDENCE_TO_CLAIM_MATRIX_v1.7.md`; it is not a summary derivative.
-- `EVIDENCE_TO_CLAIM_MATRIX_v1.6.md` remains immutable historical evidence and is retained as the predecessor of v1.7.
-- RMA traceability current resolves to v3.35 and its versioned traceability record is preserved.
+- Canonical current versions: RMA `v3.35`, Evidence→Claim Matrix `v1.11`, RMA traceability `v3.35`, governance operating principles `v0.1`.
+- `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` is the stable alias of complete Matrix v1.11 and has a corresponding immutable versioned artifact.
 - Historical records remain immutable.
 - The canonical chain is propagated atomically: `CANONICAL_STATE → RMA → Evidence→Claim Matrix → RMA traceability → STATUS → validator`.
+- The cross-domain map is a separate analytical synthesis layer and does not replace the canonical claim matrix.
 
 ## Scientific evidence state
-- C09 is closed only at bounded empirical causal-support level through the explicit claim-level consolidation, with KGFS as the decisive real-world causal layer and SWIM/RUST-DYN-2 as complementary bounded evidence.
+- C09 remains closed only at bounded empirical causal-support level; no automatic Value claim follows.
 - C10 value linkage remains open.
 - C11 transversal validity remains open.
 - C12 explanatory superiority remains open.
 - C13 originality remains open.
-- C08 remains broader than the bounded C09 causal claim and is not automatically upgraded.
+- C16 remains an H-level claim; the cross-domain map does not by itself upgrade it.
 
 ## Current routing
-- No new C09 dataset hunt or Bundle 003 rerun is authorized merely by this closure.
-- Future C09 work requires independent real-world replication or a clearly broader generalization test.
-- Next scientific priorities are downstream/breadth-related: causal `ΔT_acc → ΔV`, independent replication/generalization, transversal validity, explanatory superiority and comparative/originality coverage.
+- Do not reopen closed C09 work merely because of the cross-domain map.
+- Do not treat the map as evidence of general TGCV validation.
+- Next authorized scientific analysis: test whether a transversal methodology can be extracted from the map without introducing unsupported concepts, distinguishing Core ontology, evidence-supported translation rules, empirical gates, optional conventions and open hypotheses.
 
 ## Industrial Track
 - Industrial utility: `UNPROVEN / OPEN`.
