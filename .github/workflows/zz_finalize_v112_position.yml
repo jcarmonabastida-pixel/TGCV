@@ -1,0 +1,46 @@
+name: TGCV finalize v1.12
+on:
+  push:
+    paths:
+      - '.github/workflows/zz_finalize_v112_position.yml'
+  workflow_dispatch:
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply one deterministic v1.12 correction and integrity checks
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          root=Path('.')
+          paths=[root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md',root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md']
+          old='and v1.11 adds C10C-004 bounded methodological evidence propagation. None of these C10-C propagations changes any claim status. The scientific Core remains unchanged.'
+          new='and v1.11 adds C10C-004 bounded methodological evidence propagation, while v1.12 adds MT4 bounded methodological domain-transfer evidence propagation. None of these C10-C/MT4 propagations changes any claim status. The scientific Core remains unchanged.'
+          for p in paths:
+              t=p.read_text(encoding='utf-8')
+              if t.count(old)!=1: raise SystemExit(f'expected exact source phrase once in {p}, found {t.count(old)}')
+              p.write_text(t.replace(old,new,1),encoding='utf-8')
+          a=paths[0].read_text(encoding='utf-8'); b=paths[1].read_text(encoding='utf-8')
+          if a!=b: raise SystemExit('CURRENT and versioned matrix diverge')
+          required=['| C01 ','| C02 ','| C07 ','| C08 ','| C09 ','| C10 ','| C11 ','| C16 ']
+          for r in required:
+              line=next(x for x in a.splitlines() if x.startswith(r))
+              if 'MT4' not in line: raise SystemExit('MT4 missing from '+r.strip())
+          if '## Material methodological evidence — MT4 Domain Transfer' not in a: raise SystemExit('MT4 section missing')
+          header=next(x for x in a.splitlines() if x.startswith('| ID |'))
+          for col in ['ID','Claim','Status','Current evidence / basis','Evidence impact / interpretation','Next requirement']:
+              if f'| {col} |' not in header and not header.endswith(f'| {col} |'): raise SystemExit('missing matrix column '+col)
+          print('V112_FINALIZE=PASS')
+          PY
+      - name: Commit and self-remove
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md .github/workflows/zz_finalize_v112_position.yml
+          git commit -m 'Finalize cumulative Evidence-to-Claim Matrix v1.12' || exit 0
+          git push origin main
