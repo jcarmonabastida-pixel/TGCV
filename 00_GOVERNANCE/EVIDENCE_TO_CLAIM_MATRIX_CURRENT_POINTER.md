@@ -1,6 +1,7 @@
 # TGCV — Evidence-to-Claim Matrix — CURRENT POINTER
 
 **Status:** CURRENT CONTROL POINTER  
+**Current matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
 **Current version:** v1.11  
 **Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.11.md`  
 **Predecessor:** v1.10  
