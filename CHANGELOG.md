@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-16 — Evidence-to-Claim Matrix v1.12 / MT4 propagation
+
+- Created `EVIDENCE_TO_CLAIM_MATRIX_v1.12.md` as a cumulative complete successor to v1.11, preserving the full evidentiary content and six-column claim schema while adding the MT4 bounded methodological domain-transfer evidence.
+- Propagated MT4 to C01, C02, C07, C08, C10, C11 and C16 as bounded methodological support/qualification; explicitly propagated no positive evidence to C09 and no material impact to C03, C04, C05, C06, C12, C13, C14 or C15.
+- Preserved MT4-5 as `OPEN / BOUNDED`; full `P_tau`, downstream TGCV value and transversal validity remain unresolved.
+- Updated the stable current matrix alias and matrix pointer to v1.12.
+- Updated `CANONICAL_STATE.json`, STATUS and RMA traceability to resolve the new current matrix v1.12 while preserving RMA v3.35 and historical matrix versions as immutable.
+- No TGCV Core modification and no C01–C16 claim-level upgrade.
+- Final local current-state validator remains the closing gate after synchronization.
+
 ## 2026-09-12 — RUST-DYN-2 + SWIM consolidation and C09 priority routing
 
 - Confirmed `RUST-DYN-2 / EXEC-1A` closed as `CLOSED — BOUNDED STRUCTURAL EMPIRICAL PASS`.
