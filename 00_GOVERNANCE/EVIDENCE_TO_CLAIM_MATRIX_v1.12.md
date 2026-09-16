@@ -125,7 +125,7 @@ This is material bounded methodological evidence for reconstruction and separati
 **Case:** `IUT-A-01`  
 **Option:** `O3`  
 **Status:** `CLOSED — INDETERMINATE / H-B — HS-AC01`  
-**Execution artifact:** `03_EXPERIMENTS/IUT-A-01/TGCV_IUT_A01_O3_ACCESSIBILITY_CLOSURE_RESULT_001.json`  
+**Execution artifact:** `03_EXPERIMENTS/IUT-A-01/IUT_A01_O3_ACCESSIBILITY_CLOSURE_RESULT_001.json`  
 **Governance closure:** `00_GOVERNANCE/D-OPS-24_EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_EXECUTION_RESULT_v0.1.md`
 
 The bounded corrective assessment executed with integrity `PASS`. RF-AC01 through RF-AC04 all passed. O3 was confirmed as a native candidate alternative from frozen Stage-A evidence, but two material decision-time conditions remained unresolved: availability/accessibility of alternative tooling T-C and ability to perform the required additional setup within the decision-time boundary. The available rule that partial setup plus an explicit alternative-tool requirement implies accessibility was classified as `ANALYST-INTERPRETATION`, so the hard stop `HS-AC01` was correctly triggered.
