@@ -86,7 +86,7 @@ The case remains bounded industrial/methodological evidence and does not establi
 IUT-A-01 U2 remains `CLOSED — U2-NULL`; IT-NOSD-010 G0/G1/G2 remain closed; EXT-UPD-4.8 O3 remains `CLOSED — INDETERMINATE / H-B / HS-AC01`; Class-II AWS PatchAsgInstance remains fixture-level; SWIM Reactive-0, trajectory linkage and Reactive2 remain closed; RUST-DYN-2 / EXEC-1A is closed as bounded structural empirical evidence; KGFS is closed at D5-A for C09. Industrial utility remains `UNPROVEN / OPEN`; comparative superiority, value effects and general transversal validity remain unestablished.
 
 ## Current claim boundary
-The current Evidence→Claim Matrix is **v1.7**. C09 is the only claim whose status is upgraded in this propagation. C01–C08 and C10–C16 retain their prior statuses. The TGCV Core remains unchanged.
+The current Evidence→Claim Matrix is **v1.12**. C09 is the only claim whose status is upgraded in this propagation. C01–C08 and C10–C16 retain their prior statuses. The TGCV Core remains unchanged.
 
 Open/bounded claims remain claim-specific: C02 general `T_acc`; C08 stronger/general trajectory modification; C10 value; C11 transversal validity; C12 superiority; C13 originality; and C16 stronger transversal translation. C09 is closed only at the explicitly bounded empirical level stated above. No closed operation is reopened.
 
