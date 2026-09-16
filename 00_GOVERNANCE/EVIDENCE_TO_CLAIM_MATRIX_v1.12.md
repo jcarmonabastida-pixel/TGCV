@@ -5,11 +5,7 @@
 **Predecessor:** v1.11  
 **Incremental governance update:** v1.12 preserves the complete material evidentiary content and schema of v1.11; no evidence is deleted, collapsed, or downgraded. MT4 is propagated as bounded methodological domain-transfer evidence with explicit positive/boundary qualifications; no claim-level status is upgraded by this propagation.
 
-**C10C-004 update:** C10C-004 Morocco Gate G4 closed as `OPERATIONAL RECONSTRUCTION VERIFIED`. The endline women's-empowerment construct was independently reconstructed from questionnaire semantics, physical variables, observed coding and the historical Stata construction rule using Python. The historical duplicate `outcome2` and omission of `outcome3` were preserved. This is a bounded operationalisation/reconstruction result and does not identify TGCV `T_acc`, `Delta T_acc`, trajectory causality or value.
-
 **MT4 update:** MT4 closed as `BOUNDED PASS — METHODOLOGICAL TRANSFER DEMONSTRATED WITH EXPLICIT LIMITS`. The candidate analytical methodology was transferred to a heterogeneous national electricity-system domain while preserving separation among state/conditions, candidate technical transformations, admissibility/accessibility, realized transformations, state/trajectory variables and economic/value-related variables. CORE6 provides a partially formalized technical admissibility candidate with 92.58% complete country-technology-year coverage, but full `P_tau` remains undetermined. No transversal causal validity, `Delta T_acc -> Delta V`, or claim-level upgrade is established.
-
-**C10C-003 update:** C10C-003 India static inspection closed as `DATA-LEVEL STATIC INSPECTION — STRUCTURAL READINESS LIMITATION CONFIRMED`. The inspection searched for a bounded, prospectively defensible operational transformation space derivable from the frozen replication package; it did not attempt exhaustive enumeration of the complete transformation universe. Within that bounded search space, `U_tau` and a non-circular `P_tau(S,C,L)` were not identified. This is an operationalization boundary, not an exhaustive-universe impossibility result and not a refutation of TGCV or the original experiment.
 
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
@@ -374,8 +370,8 @@ The value pathway was not executed. Municipal treatment saturation/interference 
 **Case:** `C10C-004 — Morocco microcredit / women's empowerment`  
 **Gate:** `G4`  
 **Status:** `CLOSED — OPERATIONAL RECONSTRUCTION VERIFIED`  
-**Result artifact:** `00_GOVERNANCE/SIP/C10C004_MOROCCO_G4_WOMENS_EMPOWERMENT_RECONSTRUCTION_RESULT_001.md`  
-**Propagation record:** `00_GOVERNANCE/SIP/C10C004_MOROCCO_G4_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`
+**Result artifact:** `00_GOVERNANCE/SIP/TGCV_C10C004_MOROCCO_G4_WOMENS_EMPOWERMENT_RECONSTRUCTION_RESULT_001.md`  
+**Propagation record:** `00_GOVERNANCE/SIP/TGCV_C10C004_MOROCCO_G4_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`
 
 C10C-004 provides a closed independent reconstruction of the historical endline women's-empowerment construct from `Microcredit_EL_mini_anonym.dta` (N=5,551). The reconstruction linked questionnaire semantics, physical variables, observed coding, the historical Stata construction block and an independent Python implementation. J1-J9 were reconstructed across the F1-F11 household slots; J9b was reconstructed separately as `women_10`; J10-J13 were reconstructed under the documented 3/4 rule as `women_11`-`women_14`. Standardisation and the historical `women_index` row-total specification were reproduced, including the duplicate `outcome2` and omission of `outcome3`, without post-hoc correction.
 
