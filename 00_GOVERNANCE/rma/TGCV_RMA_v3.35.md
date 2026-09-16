@@ -90,8 +90,27 @@ The current Evidence→Claim Matrix is **v1.12**. C09 is the only claim whose st
 
 Open/bounded claims remain claim-specific: C02 general `T_acc`; C08 stronger/general trajectory modification; C10 value; C11 transversal validity; C12 superiority; C13 originality; and C16 stronger transversal translation. C09 is closed only at the explicitly bounded empirical level stated above. No closed operation is reopened.
 
+## Candidate transversal methodology — controlled propagation
+The controlled propagation package `TGCV-TM-CPP-001-R1` authorizes the following candidate methodological translation rules, extracted from already closed evidence and retained as non-normative unless separately validated:
+
+1. **M0 — State/conditions:** reconstruct state/configuration and relevant conditions before defining candidate transformations.
+2. **M1 — Candidate universe:** define `Uτ` before evaluating accessibility or observed outcomes.
+3. **M2 — Ex-ante admissibility:** define `Pτ` independently of subsequent outcome/value.
+4. **M3 — Accessible space:** derive `T_acc` from candidate transformations satisfying `Pτ`; observed execution and outcome do not define `T_acc`.
+5. **M4 — Accessibility change:** reconstruct comparable `T_acc,0`, `T_acc,1` and `ΔT_acc` independently of outcome.
+6. **M5 — Execution separation:** keep `ΔT_acc` distinct from the transformation actually selected/executed/observed; bounded candidate rule only.
+7. **M6 — Subsequent trajectory:** reconstruct subsequent state/trajectory as a temporally distinct layer; bounded candidate rule only.
+8. **M7 — Outcome:** reconstruct the conventional outcome independently after the state/trajectory layer.
+9. **M8 — Outcome/Value boundary:** do not identify conventional outcome with TGCV Value without a separate value construction/validation argument.
+
+**M9 — `ΔT_acc → ΔV` remains OPEN.** It is not propagated as an established methodological rule.
+
+The associated empirical controls are: ex-ante accessibility/admissibility; outcome-independent `T_acc`; temporal ordering; non-circularity; provenance/reproducibility; independent reconstruction where required; and explicit handling of interference/comparability and other design-specific threats.
+
+The propagation does not add Core primitives, does not alter `T_acc = F(S,C,L)`, and does not upgrade C01–C16. The seven non-substitution controls remain mandatory: observed transformation ≠ accessible transformation; eligibility ≠ `Pτ` unless ex-ante admissibility; structural/treatment/take-up/adoption ≠ `ΔT_acc` without accessibility reconstruction; longitudinal variable match ≠ TGCV trajectory; outcome ≠ Value; temporal association ≠ causal effect; domain-specific semantics ≠ TGCV primitives.
+
 ## Next scientific priority
-With C09 now closed at bounded empirical causal-support level, the next scientific priorities are downstream and breadth-related rather than another C09 dataset hunt: causal `ΔT_acc → ΔV` (C10), independent real-world replication/broader generality, transversal validity (C11), explanatory superiority (C12), and prior-art absorption/originality (C13). The value link remains downstream of the now-supported accessibility→trajectory boundary.
+With C09 now closed at bounded empirical causal-support level and the candidate methodology propagated in controlled form, the next scientific priorities remain downstream and breadth-related rather than another C09 dataset hunt: causal `ΔT_acc → ΔV` (C10), independent real-world replication/broader generality, transversal validity (C11), explanatory superiority (C12), and prior-art absorption/originality (C13). The value link remains downstream of the now-supported accessibility→trajectory boundary.
 
 No new C09 execution or dataset search is authorized merely by this closure. Any future C09 work must be an independent replication or a clearly broader generalization test.
 
@@ -99,6 +118,6 @@ No new C09 execution or dataset search is authorized merely by this closure. Any
 The canonical current-state chain remains:
 `CANONICAL_STATE → RMA → Evidence→Claim Matrix → RMA traceability → STATUS → validator`.
 
-Historical artifacts remain immutable. Evidence propagation does not imply claim upgrade; this v3.35 RMA update is authorized because the separate claim-level consolidation explicitly changed C09 status.
+Historical artifacts remain immutable. Evidence propagation does not imply claim upgrade; this v3.35 RMA update is authorized because the separate claim-level consolidation explicitly changed C09 status, and the controlled methodology propagation package authorizes the candidate methodological section above.
 
 **Standing industrial execution authorization: NONE.**
