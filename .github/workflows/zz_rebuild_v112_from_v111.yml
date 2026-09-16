@@ -1,0 +1,81 @@
+name: TGCV one-shot exact v1.12 reconstruction
+on:
+  push:
+    paths:
+      - '.github/workflows/zz_rebuild_v112_from_v111.yml'
+      - '.github/workflows/zz_v112_trigger'
+  workflow_dispatch:
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild v1.12 mechanically from v1.11
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          root=Path('.')
+          src=root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.11.md'
+          out=root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md'
+          cur=root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md'
+          text=src.read_text(encoding='utf-8')
+          if not text.startswith('# TGCV — Evidence-to-Claim Matrix — Current v1.11'):
+              raise SystemExit('v1.11 source header mismatch')
+          text=text.replace('# TGCV — Evidence-to-Claim Matrix — Current v1.11','# TGCV — Evidence-to-Claim Matrix — Current v1.12',1)
+          text=text.replace('**Predecessor:** v1.10','**Predecessor:** v1.11',1)
+          old='**Incremental governance update:** v1.11 preserves the complete material evidentiary content and schema of v1.10; no evidence is deleted, collapsed, or downgraded. C10C-004 is propagated as bounded methodological evidence to C01, C11 and C16, with explicit negative/boundary qualification for C02 and no direct evidence contribution to C07, C08, C09 or C10. No claim-level status is upgraded by this propagation.'
+          new='**Incremental governance update:** v1.12 preserves the complete material evidentiary content and schema of v1.11; no evidence is deleted, collapsed, or downgraded. MT4 is propagated as bounded methodological domain-transfer evidence with explicit positive/boundary qualifications; no claim-level status is upgraded by this propagation.'
+          if old not in text: raise SystemExit('v1.11 incremental declaration not found')
+          text=text.replace(old,new,1)
+          additions={
+            'C01':(' + MT4',' MT4 adds bounded methodological evidence for identifying and preserving a technical constraint/state layer in a heterogeneous electricity-system domain. No claim-level upgrade.'),
+            'C02':(' + MT4',' MT4 adds a bounded methodological qualification through the partially formalized CORE6 candidate layer with 92.58% complete coverage; full `P_tau` remains undetermined. No claim-level upgrade.'),
+            'C07':(' + MT4',' MT4 adds a bounded boundary qualification separating candidate technical constraints from realized technology changes; it does not establish a complete `T_acc` or positive `Delta T_acc` result. No claim-level upgrade.'),
+            'C08':(' + MT4',' MT4 adds bounded methodological separation among candidate constraints, realized transformations and state/trajectory variables, but does not establish a trajectory causal estimand. No claim-level upgrade.'),
+            'C09':(' + MT4',' MT4 provides no positive causal evidence for `Delta T_acc -> subsequent trajectory`; the existing bounded causal status remains unchanged.'),
+            'C10':(' + MT4',' MT4-8 isolates `Inv`, `Fixed_OM_annual` and `Variable_OM` from the CORE6 candidate accessibility rule, but does not establish a downstream TGCV value endpoint or `Delta T_acc -> Delta V`. C10 remains open.'),
+            'C11':(' + MT4',' MT4 adds bounded methodological cross-domain evidence from a heterogeneous electricity-system domain and strengthens documented transfer/boundary evidence only; it does not establish transversal validity or justify a claim upgrade.'),
+            'C16':(' + MT4',' MT4 adds bounded methodological evidence preserving separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables. No claim-level upgrade.'),
+          }
+          lines=text.splitlines()
+          seen=set()
+          for i,line in enumerate(lines):
+              m=re.match(r'^\| (C\d+) \|',line)
+              if not m: continue
+              cid=m.group(1)
+              if cid not in additions: continue
+              basis,impact=additions[cid]
+              parts=line.split('|')
+              if 'MT4' not in parts[4]: parts[4]=parts[4].rstrip()+basis
+              if 'MT4' not in parts[5]: parts[5]=parts[5].rstrip()+impact
+              lines[i]='|'.join(parts)
+              seen.add(cid)
+          missing=set(additions)-seen
+          if missing: raise SystemExit('missing claim rows: '+','.join(sorted(missing)))
+          text='\n'.join(lines)+'\n'
+          mt4=root/'00_GOVERNANCE/SIP/TGCV_MT4_DOMAIN_TRANSFER_RESULT_001.md'
+          if not mt4.exists(): raise SystemExit('MT4 closure artifact missing')
+          mt4txt=mt4.read_text(encoding='utf-8').strip()
+          text += '\n## Material methodological evidence — MT4 Domain Transfer\n\n' + mt4txt + '\n'
+          if any(f'| {cid} |' not in text or 'MT4' not in next(x for x in text.splitlines() if x.startswith(f'| {cid} |')) for cid in additions):
+              raise SystemExit('MT4 claim-table propagation failed')
+          out.write_text(text,encoding='utf-8')
+          cur.write_text(text,encoding='utf-8')
+          if out.read_bytes()!=cur.read_bytes(): raise SystemExit('CURRENT mismatch')
+          print('V112_REBUILD=PASS')
+          print('MT4_ROWS=C01,C02,C07,C08,C09,C10,C11,C16')
+          print('SOURCE=v1.11')
+          PY
+      - name: Commit result and remove workflow
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md
+          git add -A .github/workflows/zz_rebuild_v112_from_v111.yml
+          git commit -m 'Rebuild cumulative Evidence-to-Claim Matrix v1.12 from v1.11' || exit 0
+          git push origin main
