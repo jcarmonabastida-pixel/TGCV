@@ -3,9 +3,11 @@
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-16  
 **Predecessor:** v1.11  
-**Incremental governance update:** v1.12 preserves the complete material evidentiary content and schema of v1.11; no evidence is deleted, collapsed, or downgraded. MT4 is propagated as bounded methodological domain-transfer evidence with explicit positive/boundary qualifications; no claim-level status is upgraded by this propagation.
+**Incremental governance update:** v1.12 preserves the complete material evidentiary content and schema of v1.11; no evidence is deleted, collapsed, or downgraded. MT4 is propagated as bounded methodological domain-transfer evidence, and the foundational RUST-DYN-2 evidence record is enriched and explicitly restored in the cumulative matrix; no claim-level status is upgraded by either propagation.
 
 **MT4 update:** MT4 closed as `BOUNDED PASS — METHODOLOGICAL TRANSFER DEMONSTRATED WITH EXPLICIT LIMITS`. The candidate analytical methodology was transferred to a heterogeneous national electricity-system domain while preserving separation among state/conditions, candidate technical transformations, admissibility/accessibility, realized transformations, state/trajectory variables and economic/value-related variables. CORE6 provides a partially formalized technical admissibility candidate with 92.58% complete country-technology-year coverage, but full `P_tau` remains undetermined. No transversal causal validity, `Delta T_acc -> Delta V`, or claim-level upgrade is established.
+
+**RUST foundational evidence update:** The cumulative matrix now contains an enriched material evidence section for RUST-DYN-2 / EXEC-1A, including the frozen temporal population, transition classification, ND-1/ND-2/ND-4 quantitative results, non-persistence rate, reproducibility boundary and explicit scientific exclusions. C04–C07 claim-table routing is correspondingly made quantitatively explicit. This is a documentation/completeness correction and evidence propagation only; no claim-level status is upgraded.
 
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
@@ -17,17 +19,19 @@ A material experimental result is propagated to this matrix when it adds, remove
 
 **Operational rule:** Evidence propagation does not imply claim upgrade. A claim-level upgrade requires an explicit claim-level consolidation record.
 
+**Material-section completeness rule:** Every material evidence item propagated into one or more claim rows MUST have a corresponding enriched `Material ... evidence` section in the same matrix version. The claim table is the routing/index layer; the material-evidence section is the developed evidentiary record. Table-only references are insufficient. This rule applies equally to foundational/base experiments that originally established claims and to later experiments. Where a foundational material result was previously represented only by a compressed table reference, the result MUST be restored cumulatively with its quantitative findings, provenance, operational scope, reproducibility boundary, interpretation limits and claim propagation. The integrity check is bidirectional: `material evidence item in claim table ↔ corresponding enriched material-evidence section`.
+
 ## Current claim matrix
 
 | ID | Claim | Status | Current evidence / basis | Evidence impact / interpretation | Next requirement |
 |---|---|---|---|---|---|
 | C01 | TGCV represents system state/context/conditions and constraints/resources | E0 | Formal architecture + bounded cross-domain traces + IT-G1 bounded industrial case + C10C-004 + MT4| IT-G1 adds material bounded evidence for reconstruction of internal state and external enabling conditions. C10C-004 adds bounded methodological evidence that an empirical construct can be traced from instrument semantics through physical variables to an executable derived outcome, without establishing TGCV state representation. No claim-level upgrade. MT4 adds bounded methodological evidence for identifying and preserving a technical constraint/state layer in a heterogeneous electricity-system domain. No claim-level upgrade.| Further independent operational confirmation |
 | C02 | Accessibility is represented by transformations satisfying an independently defined admissibility predicate | E0 | Formalization + Rust + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + IT-G1 + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4| SWIM provides bounded accessibility operationalization; IT-G1 adds bounded evidence that end-to-end accessibility/function can depend on conditions external to the internal remediation target; C10C-002 adds an independent real-world bounded reconstruction of `T_acc*` from six structural infrastructure dimensions using pre-outcome structural predicates across 342 polygons and two observed rounds. C10C-001 independently demonstrates in a distinct non-software case that structural state reconstruction and observed configuration changes do not identify `Pτ`/`T_acc` without an explicit admissibility predicate. C10C-003 adds a distinct randomized non-software boundary case in which rich longitudinal structural data and treatment/take-up variables do not identify a non-circular accessibility predicate within the bounded operational search. General `T_acc` remains unclosed. C10C-004 adds no direct positive accessibility evidence: its women's-empowerment construct is not an independently defined TGCV admissibility predicate and must not be relabeled as `T_acc`. No claim-level upgrade is implied. MT4 adds a bounded methodological qualification through the partially formalized CORE6 candidate layer with 92.58% complete coverage; full `P_tau` remains undetermined. No claim-level upgrade.| Independent operationalization across a distinct exemplar |
-| C03 | T_acc is analytically distinct from downstream Reach in bounded Rust | E1 | Rust evidence | SWIM does not alter the bounded Rust claim level; IT-G1 does not test the Rust-specific Reach separation; C10C-002 does not operationalize downstream Reach identity; C10C-003 does not test Reach identity. | Independent replication |
-| C04 | ΔT_acc can occur without ΔReach¹_pot | E1 | Rust ND-1 | No direct test by SWIM, IT-G1, C10C-002 or C10C-003. | Independent replication |
-| C05 | ΔT_acc can occur with ΔReach¹_pot change | E1 | Rust ND-2 | No direct test by SWIM, IT-G1, C10C-002 or C10C-003. | Independent replication |
-| C06 | Reach identity is not characterized by cardinality alone | E1 | Rust ND-4 | No material impact; C10C-002 uses a scalar net cardinality outcome only for its frozen bounded causal test and does not establish Reach identity; C10C-003 does not test Reach identity. | Independent replication |
-| C07 | Accessible transformation spaces change over time in Rust | E1 | Rust non-persistent pairs + bounded SWIM operationalization + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4| SWIM provides bounded non-Rust evidence that accessible transformation spaces can change across observed state transitions; IT-G1 adds a bounded industrial state-transformation sequence; C10C-002 adds independent real-world longitudinal evidence from 342 polygons in which a bounded universe of 12 elementary structural transformations yields non-empty `ΔT_acc*` in 238 polygons, including 104 openings and 171 closures. C10C-001 adds a distinct non-software boundary case in which observed structural changes are reconstructible but `T_acc` and `ΔT_acc` are not identified. C10C-003 adds a second distinct non-software boundary case in which observed longitudinal configuration changes are available but `T_acc` and `ΔT_acc` remain unidentified within the bounded operational search. These cases qualify the distinction between observed structural change and accessible transformation-space change and are not evidence of `ΔT_acc`. C10C-004 is an endline operationalisation audit and does not reconstruct `U_tau`, `P_tau` or `ΔT_acc`. This does not upgrade the Rust-specific claim level. MT4 adds a bounded boundary qualification separating candidate technical constraints from realized technology changes; it does not establish a complete `T_acc` or positive `Delta T_acc` result. No claim-level upgrade.| Independent closed operationalization / replication |
+| C03 | T_acc is analytically distinct from downstream Reach in bounded Rust | E1 | Rust RUST-DYN-2 / EXEC-1A; ND-1 = 159,921 and ND-2 = 278,282 adjacent temporal pairs with `Delta T_acc != 0`, distinguishing zero-change and nonzero-change bounded potential Reach outcomes | The enriched RUST-DYN-2 record makes the bounded structural distinction quantitatively explicit. SWIM does not alter the bounded Rust claim level; IT-G1 does not test the Rust-specific Reach separation; C10C-002 does not operationalize downstream Reach identity; C10C-003 does not test Reach identity. No claim-level upgrade.| Independent replication |
+| C04 | ΔT_acc can occur without ΔReach¹_pot | E1 | Rust RUST-DYN-2 / EXEC-1A ND-1 = **159,921 adjacent temporal pairs** with `Delta T_acc != 0` and `Delta Reach^1_pot = 0` | Direct bounded empirical evidence in the frozen Rust representation that transformation-space change can occur without a change in bounded H=1 potential Reach. No direct test by SWIM, IT-G1, C10C-002 or C10C-003. No claim-level upgrade.| Independent replication |
+| C05 | ΔT_acc can occur with ΔReach¹_pot change | E1 | Rust RUST-DYN-2 / EXEC-1A ND-2 = **278,282 adjacent temporal pairs** with `Delta T_acc != 0` and `Delta Reach^1_pot != 0` | Direct bounded empirical evidence in the frozen Rust representation that transformation-space change can coincide with a change in bounded H=1 potential Reach. No direct test by SWIM, IT-G1, C10C-002 or C10C-003. No claim-level upgrade.| Independent replication |
+| C06 | Reach identity is not characterized by cardinality alone | E1 | Rust RUST-DYN-2 / EXEC-1A ND-4 = **266,201 adjacent pairs** with equal Reach cardinality but different Reach membership | Direct bounded structural evidence that equal cardinality does not imply Reach identity. C10C-002 uses a scalar net cardinality outcome only for its frozen bounded causal test and does not establish Reach identity; C10C-003 does not test Reach identity. No claim-level upgrade.| Independent replication |
+| C07 | Accessible transformation spaces change over time in Rust | E1 | Rust RUST-DYN-2 / EXEC-1A: **438,203 non-persistent of 516,061 adjacent pairs (~84.91%)**, with PERSISTENCE 77,858, EXPANSION 8,295, CONTRACTION 3,786 and RECONFIGURATION 426,122 | The enriched Rust record supplies the quantitative temporal evidence underlying the bounded claim. SWIM provides bounded non-Rust evidence that accessible transformation spaces can change across observed state transitions; IT-G1 adds a bounded industrial state-transformation sequence; C10C-002 adds independent real-world longitudinal evidence from 342 polygons in which a bounded universe of 12 elementary structural transformations yields non-empty `ΔT_acc*` in 238 polygons, including 104 openings and 171 closures. C10C-001 adds a distinct non-software boundary case in which observed structural changes are reconstructible but `T_acc` and `ΔT_acc` are not identified. C10C-003 adds a second distinct non-software boundary case in which observed longitudinal configuration changes are available but `T_acc` and `ΔT_acc` remain unidentified within the bounded operational search. These cases qualify the distinction between observed structural change and accessible transformation-space change and are not evidence of `ΔT_acc`. C10C-004 is an endline operationalisation audit and does not reconstruct `U_tau`, `P_tau` or `ΔT_acc`. MT4 adds a bounded boundary qualification separating candidate technical constraints from realized technology changes; it does not establish a complete `T_acc` or positive `Delta T_acc` result. No claim-level upgrade.| Independent closed operationalization / replication |
 | C08 | Accessibility changes modify reachable future trajectories | H | Formal chain + bounded Rust H=1 + SWIM trajectory-linkage reconstruction + IT-G1 bounded state/trajectory observation + C10C-001 + C10C-003 + MT4| SWIM adds bounded reconstructability of ordered subsequent transformations and state transitions; IT-G1 provides a bounded industrial state/trajectory observation. KGFS supplies the causal layer now reflected in C09. C10C-002 does not add a trajectory outcome. C10C-001 and C10C-003 add complementary empirical boundary qualifications: structural change, realized intervention and conventional longitudinal outcomes cannot substitute for identified accessibility and reachable-trajectory evidence. No trajectory causal estimand is established by either case. No claim-level upgrade is implied. MT4 adds bounded methodological separation among candidate constraints, realized transformations and state/trajectory variables, but does not establish a trajectory causal estimand. No claim-level upgrade.| Independent valid trajectory test with explicit trajectory criterion beyond bounded exemplars |
 | C09 | Accessibility changes causally affect subsequent trajectories | **PASS — BOUNDED EMPIRICAL CAUSAL SUPPORT** | SWIM trajectory-linkage reconstruction + RUST-DYN-2 bounded structural evidence + KGFS randomized structural accessibility intervention with D5-A identified contribution + KGFS exact 74/74 trajectory-variable reproducibility audit + C09 Bundle 003 Executor-2 reconstruction + FOS methodological/reference evidence + MT4| Claim-level consolidation establishes bounded empirical causal support. KGFS provides the decisive real-world causal layer: randomized early expansion of KGFS banking infrastructure, reconstructable structural accessibility change, D5.2-S applicability, D5-A identified contribution, and reproducible longitudinal trajectory variables. SWIM and RUST-DYN-2 provide complementary bounded structural/trajectory-linkage support. Bundle 003 remains synthetic causal-operationalization evidence and FOS remains non-reportable under its frozen estimator. C10C-002 is deliberately excluded from positive C09 support because its estimand tests the intervention effect on `ΔT_acc*`, not the effect of `ΔT_acc*` on subsequent trajectories. C10C-003 adds no positive causal support because `ΔT_acc` is not identified. MT4 provides no positive causal evidence for `Delta T_acc -> subsequent trajectory`; the existing bounded causal status remains unchanged.| Independent real-world replication across a distinct domain; broader generality; no automatic value claim |
 | C10 | Accessibility changes generate/predict value | H | No Value evidence + MT4| SWIM, RUST-DYN-2, KGFS, IT-G1, C10C-002 and C10C-003 do not establish causal `ΔT_acc → ΔV` or predictive value. C10C-002 explicitly did not execute a value regression. C10C-003 does not identify the TGCV accessibility layer required for a value pathway. No value claim is established. MT4-8 isolates `Inv`, `Fixed_OM_annual` and `Variable_OM` from the CORE6 candidate accessibility rule, but does not establish a downstream TGCV value endpoint or `Delta T_acc -> Delta V`. C10 remains open.| Value-linked test |
@@ -121,7 +125,7 @@ This is material bounded methodological evidence for reconstruction and separati
 **Case:** `IUT-A-01`  
 **Option:** `O3`  
 **Status:** `CLOSED — INDETERMINATE / H-B — HS-AC01`  
-**Execution artifact:** `03_EXPERIMENTS/IUT-A-01/IUT_A01_O3_ACCESSIBILITY_CLOSURE_RESULT_001.json`  
+**Execution artifact:** `03_EXPERIMENTS/IUT-A-01/TGCV_IUT_A01_O3_ACCESSIBILITY_CLOSURE_RESULT_001.json`  
 **Governance closure:** `00_GOVERNANCE/D-OPS-24_EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_EXECUTION_RESULT_v0.1.md`
 
 The bounded corrective assessment executed with integrity `PASS`. RF-AC01 through RF-AC04 all passed. O3 was confirmed as a native candidate alternative from frozen Stage-A evidence, but two material decision-time conditions remained unresolved: availability/accessibility of alternative tooling T-C and ability to perform the required additional setup within the decision-time boundary. The available rule that partial setup plus an explicit alternative-tool requirement implies accessibility was classified as `ANALYST-INTERPRETATION`, so the hard stop `HS-AC01` was correctly triggered.
@@ -423,7 +427,91 @@ The v1.10 update preserves the full evidence/claim structure of v1.9 and adds th
 
 ## Current scientific position
 
-The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, bounded self-adaptive software operationalization from SWIM Reactive-0 and Reactive2, bounded SWIM trajectory-linkage reconstruction, the closed IT-G1 industrial case, FOS C09 methodological/reference evidence, the closed C09 Bundle 003 Executor-2 independent reconstruction, the closed KGFS real-world causal architecture, the closed C10C-002 urban-infrastructure bounded causal experiment, and the closed C10C-003 India static inspection. These are cumulative material evidence records. The only claim-level change in the cumulative matrix remains the prior C09 consolidation; v1.8 added C10C-002 evidence propagation, v1.9 added C10C-001 evidence propagation, v1.10 added C10C-003 bounded evidence propagation, and v1.11 adds C10C-004 bounded methodological evidence propagation, while v1.12 adds MT4 bounded methodological domain-transfer evidence propagation. None of these C10-C/MT4 propagations changes any claim status. The scientific Core remains unchanged.
+The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, bounded self-adaptive software operationalization from SWIM Reactive-0 and Reactive2, bounded SWIM trajectory-linkage reconstruction, the closed IT-G1 industrial case, FOS C09 methodological/reference evidence, the closed C09 Bundle 003 Executor-2 independent reconstruction, the closed KGFS real-world causal architecture, the closed C10C-002 urban-infrastructure bounded causal experiment, and the closed C10C-003 India static inspection. These are cumulative material evidence records. The only claim-level change in the cumulative matrix remains the prior C09 consolidation; v1.8 added C10C-002 evidence propagation, v1.9 added C10C-001 evidence propagation, v1.10 added C10C-003 bounded evidence propagation, and v1.11 adds C10C-004 bounded methodological evidence propagation, while v1.12 adds MT4 bounded methodological domain-transfer evidence propagation and restores/enriches the foundational RUST-DYN-2 material evidence record. None of these C10-C/MT4/Rust propagations changes any claim status. The scientific Core remains unchanged.
+
+## Material empirical evidence — RUST-DYN-2 / EXEC-1A foundational Rust structural experiment
+
+**Case:** `RUST-DYN-2 / EXEC-1A`  
+**Status:** `CLOSED — BOUNDED STRUCTURAL EMPIRICAL TEST`  
+**Operational horizon:** `H=1`  
+**Frozen temporal rule:** `DR-035-v0.1-ADJACENT-CREATED-AT`  
+**Frozen dataset SHA-256:** `823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224`
+
+### Purpose and operational scope
+
+RUST-DYN-2 / EXEC-1A is the foundational empirical Rust experiment underlying the bounded C03–C07 evidence layer. It tests structural distinguishability between changes in the accessible transformation space `T_acc` and changes in bounded one-step potential Reach, while also characterizing temporal change in the frozen Rust package ecosystem. The operational Reach object is `Reach¹_pot`; the experiment does **not** execute Cargo or runtime behavior and therefore does not establish observed runtime reachability.
+
+The frozen temporal population contains **516,061 adjacent package-version pairs** under `DR-035-v0.1-ADJACENT-CREATED-AT`, with `H=1`. The transition classification is:
+
+- `PERSISTENCE`: **77,858**
+- `EXPANSION`: **8,295**
+- `CONTRACTION`: **3,786**
+- `RECONFIGURATION`: **426,122**
+- `NON-PERSISTENCE`: **438,203 / 516,061 ≈ 84.91%**
+
+These counts are the bounded empirical population used for the Rust temporal claims and are not a sample-based estimate of a broader software ecosystem.
+
+### ND-1 — transformation-space change without bounded Reach change
+
+`ND-1 = 159,921` adjacent temporal pairs satisfy:
+
+`Delta T_acc != 0` and `Delta Reach^1_pot = 0`.
+
+This is the direct quantitative basis for **C04**. It establishes, within the frozen Rust representation and H=1 operationalization, that a change in accessible transformation space can occur without a change in the bounded potential Reach cardinal/identity outcome used by this test.
+
+### ND-2 — transformation-space change with bounded Reach change
+
+`ND-2 = 278,282` adjacent temporal pairs satisfy:
+
+`Delta T_acc != 0` and `Delta Reach^1_pot != 0`.
+
+This is the direct quantitative basis for **C05**. It establishes, within the frozen Rust representation and H=1 operationalization, that transformation-space change can also coincide with a change in bounded potential Reach.
+
+### ND-4 — Reach identity is not reducible to cardinality
+
+`ND-4 = 266,201` adjacent pairs have **equal Reach cardinality but different Reach membership**.
+
+This is the direct quantitative basis for **C06**. Equal cardinality therefore does not establish identity of the reachable transformation set in the frozen representation. This is a structural identity result, not a claim about observed runtime execution.
+
+### Temporal change and non-persistence
+
+The **438,203 non-persistent pairs (84.91%)** provide the direct quantitative basis for **C07** within the frozen Rust operationalization. The classification shows that adjacent package-version transitions are dominated by reconfiguration in this historical technical ecosystem, with additional persistence, expansion and contraction classes. The result establishes bounded temporal change of the represented accessible transformation space; it does not by itself identify a causal mechanism for each change.
+
+### Reproducibility and execution firewall
+
+Primary and replay structured outputs were field-identical under the governed closure. The closure does **not** claim byte-level raw-file equality because independent raw JSON artifacts were not supplied during coordination. The experiment firewall reports no sampling, downstream outcome/value, future/predictive, Cargo-runtime or lockfile access. `Reach¹_pot` is a frozen analytical potential-Reach object, not an observed execution result.
+
+The earlier immutable Rust source snapshots used in the foundational programme remain governed separately, including the 2018-09-26 snapshot `9110daee6752e903379f3af955506d6116315273` and the 2021-05-05 snapshot `a5dcd8438da2d8f99e3661a1956afbfb8f026fa0`, with the documented snapshot scale of 79,053 files / 449,893,157 bytes. These source snapshots are provenance for the broader Rust experimental lineage; the quantitative C03–C07 results above are specifically the closed RUST-DYN-2 / EXEC-1A evidence.
+
+### Scientific interpretation
+
+The strongest empirical result supported by RUST-DYN-2 is **bounded structural distinguishability between `Delta T_acc` and `Delta Reach^1_pot` in the frozen Rust representation**, together with bounded temporal change in the represented accessibility space. The experiment supports C03–C07 only within its stated operational scope.
+
+The result must **not** be rewritten as evidence for:
+
+- causality;
+- predictive superiority;
+- positive value creation;
+- universal domain independence;
+- complete prior-art absence;
+- observed Cargo/runtime reachability;
+- H>1 trajectory sufficiency.
+
+In particular, C08 remains a hypothesis, C09's causal support comes from its separately governed evidence layer, C10 remains open, and C15 remains falsified for the observed-runtime interpretation.
+
+### Evidence-to-claim propagation
+
+- **C03:** Material quantitative support. ND-1 and ND-2 provide the bounded structural distinguishability evidence separating `T_acc` change from downstream H=1 potential Reach behavior. No upgrade beyond E1.
+- **C04:** Material direct support. ND-1 = 159,921 pairs with `Delta T_acc != 0` and `Delta Reach^1_pot = 0`. No upgrade beyond E1.
+- **C05:** Material direct support. ND-2 = 278,282 pairs with `Delta T_acc != 0` and `Delta Reach^1_pot != 0`. No upgrade beyond E1.
+- **C06:** Material direct support. ND-4 = 266,201 pairs with equal Reach cardinality but different membership. No upgrade beyond E1.
+- **C07:** Material direct support. 438,203 of 516,061 adjacent pairs are non-persistent (~84.91%), with the complete transition classification preserved above. No upgrade beyond E1.
+- **C08:** Bounded structural antecedent only. The experiment uses H=1 potential Reach and does not establish H>1 trajectory sufficiency or a causal accessibility-to-trajectory effect. No upgrade.
+- **C09:** Complementary bounded structural evidence only. RUST-DYN-2 is not a causal intervention and does not independently establish C09. The existing C09 bounded causal status is unchanged.
+- **C10:** No value evidence. Outcome/value variables are excluded by the experiment firewall; no `Delta T_acc -> Delta V` result is available.
+- **C15:** Boundary confirmation. The experiment uses `Reach^1_pot`, not observed Cargo/runtime execution; C15 remains F.
+
+No positive propagation is made to C01, C02, C11, C12, C13, C14 or C16 beyond the bounded evidentiary basis already recorded. No claim-level status is changed and no TGCV Core/RMA modification is implied.
 
 ## Material methodological evidence — MT4 Domain Transfer
 
