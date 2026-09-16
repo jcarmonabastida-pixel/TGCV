@@ -7,20 +7,11 @@ try{
  $cells=@{}
  foreach($e in $z.Entries){
   if($e.FullName -notmatch '/Technologies/.*\.csv$'){continue}
-  $sr=[IO.StreamReader]::new($e.Open())
-  try{
-   while(($l=$sr.ReadLine()) -ne $null){
-    if($l -notmatch ',(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)'){continue}
-    $x=$l -split ',(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)',10
-    if($x.Count -lt 10){continue}
-    $p=$x[2].Trim();if($p -notin @('LF_min','LF_max')){continue}
-    $key="$($x[0].Trim())|$($x[1].Trim())|$($x[3].Trim())"
-    if(!$cells.ContainsKey($key)){$cells[$key]=@{}}
-    $cells[$key][$p]=[pscustomobject]@{Country=$x[0].Trim();Entity=$x[1].Trim();Year=$x[3].Trim();Value=$x[5].Trim().Trim('"');Reference=$x[7].Trim().Trim('"');Note=$x[9].Trim().Trim('"')}
-   }
-  }finally{$sr.Dispose()}
+  $r=[IO.StreamReader]::new($e.Open())
+  try{$null=$r.ReadLine();while(($l=$r.ReadLine())-ne$null){$x=$l -split ',(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)',10;if($x.Count-lt 10){continue};$p=$x[2].Trim();if($p-notin @('LF_min','LF_max')){continue};$k="$($x[0].Trim())|$($x[1].Trim())|$($x[3].Trim())";if(!$cells[$k]){$cells[$k]=@{}};$cells[$k][$p]=$x[5].Trim().Trim('"')}}finally{$r.Dispose()}
  }
- $bad=@()
- foreach($key in $cells.Keys){$c=$cells[$key];if(!$c.ContainsKey('LF_min') -or !$c.ContainsKey('LF_max')){continue};$a=0.0;$b=0.0;$ok1=[double]::TryParse($c.LF_min.Value,[Globalization.NumberStyles]::Float,[Globalization.CultureInfo]::InvariantCulture,[ref]$a);$ok2=[double]::TryParse($c.LF_max.Value,[Globalization.NumberStyles]::Float,[Globalization.CultureInfo]::InvariantCulture,[ref]$b);if($ok1 -and $ok2 -and $a -gt $b){$bad += [pscustomobject]@{Country=$c.LF_min.Country;Entity=$c.LF_min.Entity;Year=$c.LF_min.Year;LF_min=$a;LF_max=$b;Gap=$a-$b;Reference=$c.LF_min.Reference;Note=$c.LF_min.Note}}}
- $o=@();$o+='TGCV MT4-5 — LF INCONSISTENCY DIAGNOSTIC 002';$o+='ZIP='+$zip;$o+='MD5='+((Get-FileHash $zip -Algorithm MD5).Hash);$o+='SHA256='+((Get-FileHash $zip -Algorithm SHA256).Hash);$o+='LF_INCONSISTENCY_CELLS='+$bad.Count;$o+='';$o+='BY YEAR';foreach($g in ($bad|Group-Object Year|Sort-Object Name)){$o+="$($g.Name)=$($g.Count)"};$o+='';$o+='TOP ENTITIES';foreach($g in ($bad|Group-Object Entity|Sort-Object Count -Descending|Select-Object -First 25)){$o+="$($g.Name)=$($g.Count)"};$o+='';$o+='TOP COUNTRIES';foreach($g in ($bad|Group-Object Country|Sort-Object Count -Descending|Select-Object -First 25)){$o+="$($g.Name)=$($g.Count)"};$o+='';$o+='INTERPRETATION_BOUNDARY=Diagnostic only; no repair, imputation, exclusion, or P_tau sufficiency claim.';$o+='STATUS=ANALYTICAL DIAGNOSTIC — NOT A FINAL MT4-5 GATE DECISION';$o|Set-Content $out -Encoding UTF8;Write-Output "OUTPUT=$out";Write-Output "LF_INCONSISTENCY_CELLS=$($bad.Count)";Write-Output "SHA256=$((Get-FileHash $zip -Algorithm SHA256).Hash)";Write-Output "MD5=$((Get-FileHash $zip -Algorithm MD5).Hash)"
+ $badDefault=@();$badInvariant=@();$parseDefault=0;$parseInvariant=0
+ foreach($key in $cells.Keys){$c=$cells[$key];if(!$c.ContainsKey('LF_min')-or!$c.ContainsKey('LF_max')){continue};[double]$a=0;[double]$b=0;$d1=[double]::TryParse($c['LF_min'],[ref]$a);$d2=[double]::TryParse($c['LF_max'],[ref]$b);$i1=[double]::TryParse($c['LF_min'],[Globalization.NumberStyles]::Float,[Globalization.CultureInfo]::InvariantCulture,[ref]$a);$i2=[double]::TryParse($c['LF_max'],[Globalization.NumberStyles]::Float,[Globalization.CultureInfo]::InvariantCulture,[ref]$b);if($d1-and$d2){[double]$ad=0;[double]$bd=0;[double]::TryParse($c['LF_min'],[ref]$ad)|Out-Null;[double]::TryParse($c['LF_max'],[ref]$bd)|Out-Null;if($ad-gt$bd){$badDefault+=[pscustomobject]@{Key=$key;Min=$c['LF_min'];Max=$c['LF_max'];Gap=$ad-$bd}}}else{$parseDefault++};if($i1-and$i2){[double]$ai=0;[double]$bi=0;[double]::TryParse($c['LF_min'],[Globalization.NumberStyles]::Float,[Globalization.CultureInfo]::InvariantCulture,[ref]$ai)|Out-Null;[double]::TryParse($c['LF_max'],[Globalization.NumberStyles]::Float,[Globalization.CultureInfo]::InvariantCulture,[ref]$bi)|Out-Null;if($ai-$gt$bi){$badInvariant+=[pscustomobject]@{Key=$key;Min=$c['LF_min'];Max=$c['LF_max'];Gap=$ai-$bi}}}else{$parseInvariant++}}
+ $sha=(Get-FileHash $zip -Algorithm SHA256).Hash;$md5=(Get-FileHash $zip -Algorithm MD5).Hash
+ $o=@();$o+='TGCV MT4-5 — LF INCONSISTENCY DIAGNOSTIC 003';$o+="ZIP=$zip";$o+="MD5=$md5";$o+="SHA256=$sha";$o+="LF_CELLS_WITH_BOTH=$($cells.Values|Where-Object {$_.ContainsKey('LF_min')-and$_.ContainsKey('LF_max')}).Count";$o+="DEFAULT_CULTURE_INCONSISTENCIES=$($badDefault.Count)";$o+="INVARIANT_CULTURE_INCONSISTENCIES=$($badInvariant.Count)";$o+="DEFAULT_PARSE_FAILURE_CELLS=$parseDefault";$o+="INVARIANT_PARSE_FAILURE_CELLS=$parseInvariant";$o+='';$o+='DEFAULT_CULTURE_TOP_25';foreach($x in($badDefault|Select-Object -First 25)){$o+="$($x.Key)|MIN=$($x.Min)|MAX=$($x.Max)|GAP=$($x.Gap)"};$o+='';$o+='BOUNDARY=Compare both parsing modes because prior auditor reported 802 while invariant diagnostic reported 0. No repair/exclusion/P_tau decision.';$o+='STATUS=ANALYTICAL DIAGNOSTIC — NOT A FINAL MT4-5 GATE DECISION';$o|Set-Content $out -Encoding UTF8;Write-Output "OUTPUT=$out";Write-Output "DEFAULT_CULTURE_INCONSISTENCIES=$($badDefault.Count)";Write-Output "INVARIANT_CULTURE_INCONSISTENCIES=$($badInvariant.Count)";Write-Output "SHA256=$sha";Write-Output "MD5=$md5"
 }finally{$z.Dispose()}
