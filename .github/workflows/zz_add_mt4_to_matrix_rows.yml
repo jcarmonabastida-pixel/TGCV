@@ -1,70 +1,68 @@
-name: TGCV one-shot MT4 matrix propagation
+name: TGCV one-shot GL-07 C05 completeness migration
 
 on:
   push:
     branches: [ main ]
-    paths:
-      - '.github/workflows/zz_add_mt4_to_matrix_rows.yml'
+    paths: [ '.github/workflows/zz_add_mt4_to_matrix_rows.yml' ]
   workflow_dispatch:
 
 jobs:
-  propagate:
+  migrate:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v6
-      - name: Add MT4 to claim-table rows mechanically
+      - name: Build and validate cumulative v1.16
         shell: python
         run: |
           from pathlib import Path
-          import hashlib
-          p=Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md')
-          c=Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md')
-          text=p.read_text(encoding='utf-8')
-          expected='f32600a3a9eb522c0521080100a8cf922f91fbdc'
-          actual=hashlib.sha1(p.read_bytes()).hexdigest()
-          if actual != expected: raise SystemExit(f'unexpected v1.12 SHA {actual}')
-          additions = {
-            '| C01 | TGCV represents system state/context/conditions and constraints/resources | E0 | Formal architecture + bounded cross-domain traces + IT-G1 bounded industrial case + C10C-004 |': '| C01 | TGCV represents system state/context/conditions and constraints/resources | E0 | Formal architecture + bounded cross-domain traces + IT-G1 bounded industrial case + C10C-004 + MT4 |',
-            '| C02 | Accessibility is represented by transformations satisfying an independently defined admissibility predicate | E0 | Formalization + Rust + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + IT-G1 + C10C-002 + C10C-001 + C10C-003 + C10C-004 |': '| C02 | Accessibility is represented by transformations satisfying an independently defined admissibility predicate | E0 | Formalization + Rust + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + IT-G1 + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4 |',
-            '| C07 | Accessible transformation spaces change over time in Rust | E1 | Rust non-persistent pairs + bounded SWIM operationalization + C10C-002 + C10C-001 + C10C-003 + C10C-004 |': '| C07 | Accessible transformation spaces change over time in Rust | E1 | Rust non-persistent pairs + bounded SWIM operationalization + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4 |',
-            '| C08 | Accessibility changes modify reachable future trajectories | H | Formal chain + bounded Rust H=1 + SWIM trajectory-linkage reconstruction + IT-G1 bounded state/trajectory observation + C10C-001 + C10C-003 |': '| C08 | Accessibility changes modify reachable future trajectories | H | Formal chain + bounded Rust H=1 + SWIM trajectory-linkage reconstruction + IT-G1 bounded state/trajectory observation + C10C-001 + C10C-003 + MT4 |',
-            '| C10 | Accessibility changes generate/predict value | H | No Value evidence |': '| C10 | Accessibility changes generate/predict value | H | No Value evidence + MT4 boundary qualification |',
-            '| C11 | TGCV is domain-independent / transversal | H | C-01 A-C + I-01 Gate C + bounded cross-domain evidence + C10C-002 + C10C-001 + C10C-003 |': '| C11 | TGCV is domain-independent / transversal | H | C-01 A-C + I-01 Gate C + bounded cross-domain evidence + C10C-002 + C10C-001 + C10C-003 + MT4 |',
-            '| C16 | TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value | H | D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 + C09 Bundle 003 + C10C-002 + C10C-001 + C10C-003 + C10C-004 |': '| C16 | TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value | H | D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 + C09 Bundle 003 + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4 |'
-          }
-          for old,new in additions.items():
-              if text.count(old)!=1: raise SystemExit('anchor count != 1: '+old[:60])
-              text=text.replace(old,new,1)
-          rows=text.splitlines()
-          impacts={'C01':' MT4 adds bounded methodological evidence for identifying and preserving a technical constraint/state layer in a heterogeneous electricity-system domain. No claim-level upgrade.','C02':' MT4 adds a bounded methodological qualification through the partially formalized CORE6 candidate layer with 92.58% complete coverage; full `P_tau` remains undetermined. No claim-level upgrade.','C07':' MT4 adds a bounded boundary qualification separating candidate technical constraints from realized technology changes; it does not establish a complete `T_acc` or positive `Delta T_acc` result. No claim-level upgrade.','C08':' MT4 adds bounded methodological separation among candidate constraints, realized transformations and state/trajectory variables, but does not establish a trajectory causal estimand. No claim-level upgrade.','C09':' MT4 provides no positive causal evidence for `Delta T_acc -> subsequent trajectory`; the existing bounded causal status remains unchanged.','C10':' MT4-8 isolates `Inv`, `Fixed_OM_annual` and `Variable_OM` from the CORE6 candidate accessibility rule, but does not establish a downstream TGCV value endpoint or `Delta T_acc -> Delta V`. C10 remains open.','C11':' MT4 adds bounded methodological cross-domain evidence from a heterogeneous electricity-system domain and strengthens documented transfer/boundary evidence only; it does not establish transversal validity or justify a claim upgrade.','C16':' MT4 adds bounded methodological evidence preserving separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables. No claim-level upgrade.'}
-          for i,line in enumerate(rows):
-              if line.startswith('| C') and line.count('|')>=6:
-                  cid=line.split('|')[1].strip()
-                  if cid in impacts:
-                      parts=line.split('|'); parts[5]=parts[5].rstrip()+impacts[cid]; rows[i]='|'.join(parts)
-          text='\n'.join(rows)+'\n'; p.write_text(text,encoding='utf-8'); c.write_text(text,encoding='utf-8')
-          if p.read_bytes()!=c.read_bytes(): raise SystemExit('CURRENT mismatch')
-          for cid in ('C01','C02','C07','C08','C09','C10','C11','C16'):
-              row=next(x for x in rows if x.startswith('| '+cid+' |'))
-              if 'MT4' not in row: raise SystemExit(cid+' MT4 missing')
-          print('TABLE_MT4_PROPAGATION=PASS')
-          print('CURRENT_VERSIONED_EQUAL=PASS')
-      - name: Commit matrix change
+          import subprocess, hashlib
+          root=Path('.')
+          cur=root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md'
+          v15=root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.15.md'
+          exp=root/'00_GOVERNANCE/SIP/TGCV_C05_EV_GRID_MINIMUM_DEMONSTRATOR_MATERIAL_EXPEDIENT_001.md'
+          text=cur.read_text(encoding='utf-8'); text15=v15.read_text(encoding='utf-8')
+          assert text==text15, 'CURRENT != v1.15 before migration'
+          assert text.startswith('# TGCV — Evidence-to-Claim Matrix — Current v1.15')
+          marker='## Material empirical evidence — C05 EV–Grid Minimum Demonstrator v001'
+          assert text.count(marker)==1
+          pos=text.index(marker); tail=text[pos:]
+          assert '## Material ' not in tail[len(marker):], 'C05 is not terminal; refusing destructive replacement'
+          rows=[x for x in text.splitlines() if x.startswith('| C') and x.count('|')==7]
+          assert len(rows)==16 and [x.split('|')[1].strip() for x in rows]==[f'C{i:02d}' for i in range(1,17)]
+          old=subprocess.check_output(['git','show','9fdab42fce7da22fe1c095dfd876c2f438ff5dbc:00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.14.md'],text=True)
+          for a in ['C10C-001 Structural Reconstruction','TSTC v004 Application-Fit Demonstrator','MT4 Domain Transfer','RUST-DYN-2 / EXEC-1A foundational Rust structural experiment']:
+              assert a in old, 'v1.14 preservation anchor missing: '+a
+          developed=exp.read_text(encoding='utf-8').strip()
+          developed=developed.replace('# TGCV — C05 EV–Grid Minimum Demonstrator — Material Expediente 001','## Material empirical evidence — C05 EV–Grid Minimum Demonstrator v001',1)
+          for h in ['## 1. Purpose, research role and frozen scope','## 2. Frozen transformation universe and operational contract','## 3. Provenance and execution integrity','## 4. Scenario coverage and quantitative findings','## 5. Interpretation of the result','## 6. Baseline reconstruction limitation','## 7. Negative controls and trajectory-policy limitation','## 8. Evidence-to-claim propagation','## 9. Scientific boundaries and explicit non-claims','## 10. Governance disposition and closure','## 11. GL-07 disposition']:
+              assert h in developed, 'C05 GL-07 requirement missing: '+h
+          assert 'baseline_equivalent=true' in developed and 'selection_tiebreak=reverse_lexical' in developed and 'does **not consume that field**' in developed
+          assert '**Claim routing:** `C02`, `C07`, `C08`, `C16` only.' in developed
+          body=text[:pos].rstrip()
+          v16=body.replace('# TGCV — Evidence-to-Claim Matrix — Current v1.15','# TGCV — Evidence-to-Claim Matrix — Current v1.16',1)
+          v16=v16.replace('**Predecessor:** v1.14','**Predecessor:** v1.15',1)
+          v16=v16.replace('**Incremental governance update:** Adds the C05 EV–Grid Minimum Demonstrator material evidence record and bounded propagation to C02, C07, C08 and C16. No claim-level status/level is changed; C09 remains unchanged.','**Incremental governance update:** Enriches the C05 EV–Grid Minimum Demonstrator record into a complete GL-07 material expediente; supersedes the compressed v1.15 C05 section without changing claim status/level. C05 propagation remains limited to C02, C07, C08 and C16; C09 remains unchanged.',1)
+          v16=v16+'\n\n'+developed+'\n'
+          assert v16.count('| C01 |')==1 and v16.count('| C16 |')==1
+          assert v16.count('## Material empirical evidence — C05 EV–Grid Minimum Demonstrator v001')==1
+          assert sum(1 for r in rows if 'C05 adds' in r)==4
+          p=root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.16.md'; p.write_text(v16,encoding='utf-8'); cur.write_text(v16,encoding='utf-8')
+          pointer=root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md'
+          pointer.write_text('# TGCV — Evidence-to-Claim Matrix — CURRENT POINTER\n\n**Status:** CURRENT CONTROL POINTER  \n**Current matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  \n**Current version:** v1.16  \n**Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.16.md`  \n**Predecessor:** v1.15  \n**Established:** 2026-09-18\n\nv1.16 cumulatively preserves v1.15 and enriches C05 into a complete, enriched and autocontained GL-07 material expediente. C05 remains routed only to C02, C07, C08 and C16; no claim-level status/level changes; C09 remains unchanged.\n',encoding='utf-8')
+          assert cur.read_bytes()==p.read_bytes()
+          print('GL07_C05_ENRICHMENT=PASS')
+          print('CLAIM_ROWS=16')
+          print('C05_ROUTING=C02,C07,C08,C16')
+          print('C09_UNCHANGED=true')
+          print('V15_SHA256='+hashlib.sha256(text15.encode()).hexdigest())
+          print('V16_SHA256='+hashlib.sha256(v16.encode()).hexdigest())
+      - name: Commit and remove one-shot workflow
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md
-          git commit -m 'Propagate MT4 into v1.12 claim table'
+          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.16.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md
+          git rm .github/workflows/zz_add_mt4_to_matrix_rows.yml
+          git commit -m 'Governance: persist GL-07 complete C05 material expediente'
           git push origin main
-      - name: Validate canonical state
-        run: python 00_GOVERNANCE/tools/validate_current_state.py
-      - name: Remove one-shot workflow
-        if: always()
-        run: |
-          rm -f .github/workflows/zz_add_mt4_to_matrix_rows.yml
-          git add -u .github/workflows/zz_add_mt4_to_matrix_rows.yml
-          git diff --cached --quiet || git commit -m 'Remove one-shot MT4 matrix propagation workflow'
-          git push origin main || true
-      # trigger
