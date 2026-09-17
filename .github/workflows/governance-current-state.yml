@@ -13,11 +13,152 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   governance-consistency:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - name: Enrich C05 material expediente and persist GL-07
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          developed = '''## Material empirical evidence — C05 EV–Grid Minimum Demonstrator v001
+
+**Case:** `C05_EV_GRID_SYNTHETIC_MINIMUM_DEMONSTRATOR_V001`  
+**Status:** `EXECUTION COMPLETE — PASS WITH METHODOLOGICAL LIMITATIONS`  
+**Evidence class:** bounded synthetic application-fit / methodological evidence; not empirical causal evidence.  
+**Runner:** `03_EXPERIMENTS/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_MINIMUM_DEMONSTRATOR_V001.py`  
+**Runner commit:** `e8e55f50f82b9bdf69eeca4d48deb9d23799672e`  
+**SPEC_COMMIT:** `5aa2c7e20ea3f5775b2d6e60797f9be9efe10e05`  
+**FIXTURE_COMMIT:** `9dd6e9b6bb8d0b7a7e686c4dc61926fc627fa8b6`  
+**Execution:** `C05_EXECUTION_COMPLETE`  
+**Python:** `3.8.10`  
+**Platform:** `Windows-10-10.0.26200-SP0`  
+**Output SHA-256:** `27025e638c05458e19a125c00d9d86d89906bc418eec5670eddec14c89e96880`  
+**Preflight:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_RUNNER_PREFLIGHT_001.md`  
+**Post-execution audit:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_POST_EXECUTION_AUDIT_001.md`
+
+### 1. Purpose, research role and frozen scope
+C05 is the executed **EV–Grid Minimum Demonstrator** for TGCV application-fit. Its purpose is to instantiate the TGCV translation chain in a compact synthetic domain while preserving the distinction among system/context state, candidate transformations, admissibility, accessible transformation space (`T_acc`), transition, post-transition state/context and bounded subsequent trajectory. Its evidentiary role is methodological and application-fit oriented.
+
+The demonstrator is deliberately bounded. It is not a real-world EV-grid study, a causal identification experiment, a value/ROI test, an explanatory- or predictive-superiority comparison, a generality test, an industrial validation, or a deployment-readiness assessment. No claim-level validation is inferred from execution completion. The synthetic nature of the domain, transformation universe, admissibility predicates, transitions and trajectory generation is part of the evidence boundary.
+
+### 2. Frozen transformation universe and operational contract
+The frozen candidate transformation universe `U_tau` contains exactly: `accept_A`, `accept_B`, `defer`, `reduce_power`, `shift_window`, `redirect_A_to_B`, `redirect_B_to_A`, `reserve_capacity`, `release_capacity`, `v1g_discharge`, `v2g_discharge`, and `reject`.
+
+For each frozen scenario, candidate transformations are evaluated through an explicit admissibility rule and `T_acc` is the admissible subset of `U_tau`. The execution contract records the relevant initial state/context, candidate transformation universe, admissibility/accessibility results, transition identifier, post-transition state/context, `T_acc_1`, `Delta T_acc`, bounded trajectory fields, baseline fields, controls and explicit non-claims. This preserves the analytical distinction between the candidate transformation universe and the subset accessible under current conditions.
+
+### 3. Provenance, execution integrity and audit status
+The frozen runner executed to `C05_EXECUTION_COMPLETE` under Python `3.8.10` on `Windows-10-10.0.26200-SP0`. Runner, specification and fixture provenance are pinned by the commits above. The execution output is identified by SHA-256 `27025e638c05458e19a125c00d9d86d89906bc418eec5670eddec14c89e96880`.
+
+The preflight and post-execution audit record execution-integrity PASS, runtime-contract PASS, transition-coverage PASS, negative-control PASS and observed-accessibility-delta PASS. Those execution findings are retained together with the independent-baseline and trajectory-policy limitations below; they are not converted into broader scientific validity claims.
+
+### 4. Scenario coverage and quantitative findings
+The frozen execution contains scenarios `T1`–`T6` plus negative controls `NC1` and `NC2`. The material positive result is concentrated in **T3**.
+
+Under **T3**, the accessibility space changes from **8 accessible transformations to 6**: `|T_acc,0| = 8`, `|T_acc,1| = 6`, and `Delta |T_acc| = -2`. The two transformations that close are **`accept_B`** and **`redirect_A_to_B`**.
+
+Under **T1, T2, T4, T5 and T6**, the frozen execution reports **no accessibility delta**. The same absence of an accessibility delta is reported for **NC1 and NC2**. Thus the demonstrator does not classify every represented state/context change as an accessibility-space change; the observed delta depends on the frozen admissibility structure.
+
+The bounded quantitative result is therefore: within this synthetic rule system, a represented change in the conditions governing admissibility can produce a corresponding change in `T_acc`, while the specified other transitions and controls leave `T_acc` unchanged.
+
+### 5. Analytical interpretation of the result
+The T3 result concerns the identity and cardinality of the **accessible candidate-transformation space**, not downstream outcomes. The closing of `accept_B` and `redirect_A_to_B` is evidence of a bounded synthetic `T_acc` change. It is not evidence that an EV-grid intervention caused a real-world reliability, mobility, energy, economic or value outcome.
+
+The experiment preserves the distinction among `U_tau`, admissibility, `T_acc`, transition, post-transition state/context and bounded trajectory fields. This distinction is the principal application-fit contribution of C05. The result demonstrates that these objects can be instantiated and inspected as separate elements of one executable frozen contract.
+
+### 6. Baseline reconstruction limitation
+The frozen implementation defines `baseline(s,c,l)` by returning `admissible(s,c,l)`. Consequently, the recorded `baseline_equivalent=true` is an **implementation identity**, not an independently constructed baseline model. It cannot be counted as independent baseline evidence and cannot support independent validation, explanatory superiority, predictive superiority or comparative advantage.
+
+This limitation is substantive rather than cosmetic: the baseline comparison confirms consistency with the same admissibility implementation, but does not constitute an independent comparator. The C05 evidentiary classification therefore remains bounded synthetic methodological/application-fit evidence.
+
+### 7. Negative controls and trajectory-policy limitation
+`NC1` and `NC2` show no accessibility delta in the frozen execution. `NC2` specifies `selection_tiebreak=reverse_lexical`, but the frozen `trajectory()` implementation does **not consume that field**. Consequently NC2 is **not** a valid trajectory-policy sensitivity test. It is only a negative-control execution under the frozen implementation.
+
+C05 therefore does not establish trajectory-policy robustness, sensitivity of trajectory conclusions to selection policy, a causal `Delta T_acc -> trajectory` estimand, or any downstream causal trajectory effect. The trajectory fields are retained as bounded post-transition representation only.
+
+### 8. Evidence-to-claim propagation
+**C02 — bounded qualification:** C05 supplies synthetic application-fit evidence that explicit candidate transformations, admissibility/accessibility and `T_acc` can be represented and executed, including the T3 reduction from 8 to 6. It does not establish general empirical accessibility or an independently validated admissibility predicate.
+
+**C07 — bounded qualification:** C05 supplies synthetic evidence that `T_acc` can change between frozen states/contexts, specifically 8→6 under T3, with `accept_B` and `redirect_A_to_B` closing. It does not establish temporal change of accessible transformation spaces in real systems.
+
+**C08 — bounded qualification:** C05 represents transition, post-transition accessibility and bounded trajectory fields. Because the demonstrator is synthetic and NC2 is not a genuine trajectory-policy sensitivity test, it does not establish a causal `Delta T_acc -> trajectory` estimand.
+
+**C16 — bounded methodological contribution:** C05 preserves an executable distinction among candidate transformations, admissibility, `T_acc`, transition, bounded trajectory, controls and explicit non-claims in an EV-grid application-fit domain. It strengthens the translation-protocol evidence without establishing transversal validity.
+
+No propagation is made to C01, C03, C04, C05, C06, C09, C10, C11, C12, C13, C14 or C15. No claim-level status or level is changed.
+
+### 9. Scientific boundaries and explicit non-claims
+C05 does **not** establish empirical causality, generality, transversal validity, value creation, ROI, downstream operational performance, explanatory superiority, predictive superiority, real-world EV-grid validity, industrial validation, deployment readiness, or a causal `Delta T_acc -> Delta V` pathway.
+
+It does not independently validate the baseline because the baseline implementation is identical to the admissibility function. It does not establish trajectory-policy robustness because `selection_tiebreak` is not consumed by `trajectory()`. It does not establish that the synthetic admissibility predicates correspond to an independently identified real-world EV-grid mechanism.
+
+### 10. Governance disposition and closure
+C05 is **closed as bounded synthetic methodological/application-fit evidence**. Its material result is retained because it qualifies the evidentiary basis of C02, C07, C08 and C16 without warranting a claim-level upgrade. No completed C05 gate is reopened by this enrichment, and no Core/RMA modification follows.
+
+**Claim routing:** `C02`, `C07`, `C08`, `C16` only.
+'''
+
+          matrix = Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md')
+          versioned = Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.15.md')
+          marker = '## Material empirical evidence — C05 EV–Grid Minimum Demonstrator v001'
+          text = matrix.read_text(encoding='utf-8')
+          if marker in text and '### 1. Purpose, research role and frozen scope' not in text[text.index(marker):]:
+              text = text[:text.index(marker)].rstrip() + '\n\n' + developed
+              matrix.write_text(text, encoding='utf-8')
+              versioned.write_text(text, encoding='utf-8')
+
+          gl = Path('00_GOVERNANCE/SIP/TGCV_GL07_MATERIAL_EVIDENCE_COMPLETENESS_RULE_001.md')
+          gl.write_text('''# TGCV — GL-07 Material Evidence Completeness Rule
+
+**Status:** GOVERNANCE RULE — PERSISTENT  
+**Effective:** 2026-09-18  
+**Scope:** Evidence-to-Claim Matrix and all future cumulative matrix versions
+
+## Rule
+A material evidence section in the Evidence-to-Claim Matrix is an **expediente material desarrollado**, not a summary or citation stub. Whenever a material evidence item is routed to a claim, its corresponding `Material ... evidence` section MUST be **complete, enriched and autocontained** within the same matrix version.
+
+### Mandatory content
+A complete material section MUST contain, to the extent applicable to the evidence type:
+1. identity, status and evidence classification;
+2. purpose, research role and frozen scope;
+3. source/provenance, protocol, runner, fixture, commits, environment and output identifiers;
+4. operational universe, variables, constructs and execution or inspection contract;
+5. methods and coverage actually executed;
+6. quantitative or otherwise material findings, including controls and negative controls;
+7. interpretation of what the evidence establishes;
+8. explicit distinction between observation, reconstruction, inference and non-claim;
+9. methodological limitations, identification boundaries and reproducibility boundaries;
+10. evidence-to-claim routing, including positive, qualifying and explicitly excluded propagation;
+11. governance disposition and claim-level consequences.
+
+### Autocontainment test
+A reader MUST be able to understand the material result, its provenance, operational scope, findings, limitations and claim impact from the section itself, without reconstructing the evidentiary record from scattered table cells, short references or external chat context. External artifacts MAY be cited for auditability, but citations MUST supplement the developed section rather than substitute for it.
+
+### Anti-compression rule
+A version MUST NOT satisfy GL-07 by reducing a developed material record to a few summary paragraphs, a status line, a list of artifact names, or a compressed claim-table cell. If the predecessor contains a developed material expediente, the cumulative successor MUST preserve it. If a predecessor contains only a compressed representation of material evidence, the successor MUST restore the developed record when that evidence is carried forward or materially relied upon.
+
+### Versioning and GL-07
+GL-07 is distinct from the incremental-version header rule: the version header records only what the current version changes; GL-07 governs the required completeness of the underlying cumulative material-evidence record. Adding or enriching a material section is therefore a versioned governance change even when claim status/level remains unchanged.
+
+### Integrity relation
+The matrix must satisfy the bidirectional relation:
+`material evidence item routed in claim table ↔ complete, enriched, autocontained material expediente`.
+
+A GL-07 failure is a **governance-integrity defect**, not a reason to silently delete, compress or downgrade the underlying evidence. The corrective action is to restore or enrich the material expediente and re-run the cumulative preservation and bidirectional-integrity checks.
+''', encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.15.md 00_GOVERNANCE/SIP/TGCV_GL07_MATERIAL_EVIDENCE_COMPLETENESS_RULE_001.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Governance: complete C05 material expediente and persist GL-07'
+            git push
+          fi
       - name: Validate canonical current-state governance chain
         run: python 00_GOVERNANCE/tools/validate_current_state.py
