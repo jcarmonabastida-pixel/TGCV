@@ -28,7 +28,7 @@
 - The downstream `ΔT_acc → ΔV / Value` linkage remains open.
 
 ## Governance integrity
-- Canonical current versions: RMA `v3.35`, Evidence→Claim Matrix `v1.13`, RMA traceability `v3.35`, governance operating principles `v0.1`.
+- Canonical current versions: RMA `v3.35`, Evidence→Claim Matrix `v1.14`, RMA traceability `v3.35`, governance operating principles `v0.1`.
 - `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` is the stable alias of complete Matrix v1.13 and has the corresponding immutable versioned artifact.
 - Historical matrix versions remain immutable; v1.12 is preserved unchanged.
 - The canonical chain remains: `CANONICAL_STATE → RMA → Evidence→Claim Matrix → RMA traceability → STATUS → validator`.
@@ -68,3 +68,9 @@
 - Secondary bounded routing: `C02`, `C08`, `C11`
 - Claim statuses: unchanged.
 - Core: unchanged.
+
+
+## TSTC material-record correction
+- v1.14 expands the TSTC v004 material evidence section into an autocontained evidentiary record.
+- Underlying TSTC execution unchanged; no rerun.
+- Claim statuses, TGCV Core and RMA unchanged.
