@@ -1,131 +1,140 @@
 # TGCV MT5-VSL-39 — Alternative Evidence-Bearing Deployment Route Specification 001
 
 **Date:** 2026-09-17
-**Status:** FROZEN SPECIFICATION — NO CANDIDATE YET QUALIFIED
+**Status:** CLOSED — CANDIDATE ROUTES IDENTIFIED; NO QUALIFIED DEPLOYMENT CONTEXT
 
 ## 1. Purpose
 
-Define the next bounded acquisition route after MT5-VSL-38 produced zero qualified deployment contexts.
+Define and audit alternative evidence-bearing routes capable of supplying the frozen C1–C12 intake package required for prospective TGCV Value measurement, without repeating the generic opportunity search already closed in MT5-VSL-38.
 
-The objective is not to search indefinitely for another retrospective endpoint. It is to identify a concrete prospective doctoral/applied-research project, formal partnership opportunity, or publicly documented prospective study that can supply the minimum evidence package required to test the Value side prospectively.
+## 2. Scientific boundary
 
-## 2. Scientific target
+The admissible route must eventually support:
 
-Required chain:
+`concrete system/service transformation → independently reconstructed ΔT_acc → subsequent trajectory → independently frozen external VSL → individual V*`
 
-`concrete system/service transformation → independently reconstructed ΔT_acc → subsequent trajectory → frozen external VSL → individual V*`
+The route itself is not evidence of TGCV validity. It is an acquisition pathway for a future prospective measurement context.
 
-The Value instrument must be specified independently of treatment results and must remain external to the construction of `Pτ`, `T_acc`, `ΔT_acc`, and the trajectory.
+## 3. Route R39-A — Existing doctoral/applied-research network with a concrete finance deployment ecosystem
 
-## 3. Route classes
+### Candidate R39-A1: MSCA Industrial Doctoral Network on Digital Finance (DIGITAL; Grant Agreement 101119635)
 
-### R39-A — Prospective doctoral/applied-research project
+The DIGITAL network is an EU-funded Industrial Doctoral Network running from 2024 to 2027, with funded doctoral positions and collaboration among universities, financial companies, technology providers and policy organisations. Its research programme covers European financial data, AI in financial markets, explainable/fair AI, blockchain and sustainable finance. The official network site documents cross-sector partners and individual research projects.
 
-Admit only where a named project, host, research group, programme, or doctoral research context already has or can formally establish:
+External evidence reviewed:
+- MSCA DIGITAL network official site: https://www.digital-finance-msca.com/
+- CORDIS project record: https://cordis.europa.eu/project/id/101119635
+- Individual research-project catalogue: https://www.digital-finance-msca.com/individual-research-projects
 
-- a concrete transformation/deployment;
-- identifiable individual participants;
-- pre/post measurement opportunity;
-- independently specified accessibility consequences;
-- external Value instrument;
-- item-level measurement and reproducibility;
-- ethics/data-governance pathway.
+### R39-A1 intake assessment
 
-A generic doctoral programme or funding call is not sufficient by itself.
+| C1–C12 condition | Assessment |
+|---|---|
+| C1 concrete prospective study | PARTIAL — concrete funded doctoral network exists |
+| C2 individual respondents/recruitment | NOT ESTABLISHED |
+| C3 language/mode/instrument freeze | NOT ESTABLISHED |
+| C4 observable system transformation | PARTIAL — finance/technology deployments exist in network scope, but no TGCV-compatible transformation identified |
+| C5 independent ΔT_acc reconstruction | NOT ESTABLISHED |
+| C6 prospective item-level Value measurement | NOT ESTABLISHED |
+| C7 frozen temporal structure | NOT ESTABLISHED |
+| C8 VSL independence | NOT ESTABLISHED |
+| C9 data access/reproducibility | NOT ESTABLISHED |
+| C10 ethics/privacy/legal basis | NOT ESTABLISHED for a TGCV deployment |
+| C11 independent executor | NOT ESTABLISHED |
+| C12 pre-analysis separation | NOT ESTABLISHED |
 
-### R39-B — Formal partnership with an existing programme/operator
+**Disposition:** `CONDITIONAL CONTEXT / PARTNERSHIP TARGET`, not Qualified Context.
 
-Target organisations already operating a financial-service, financial-inclusion, social-impact, digital-finance, or related programme in which a prospective system/service transition can be observed.
+Unlike the generic MSCA DN ecosystem screened previously, DIGITAL is an existing, named, funded doctoral network with concrete finance/technology research infrastructure and cross-sector participants. It therefore supplies a substantially more specific partnership target. Public evidence nevertheless does not establish the individual-level longitudinal financial-wellbeing measurement and identifiable transformation required by C1–C12.
 
-Admission requires a named operational programme and a responsible study contact able to evidence C1–C12.
+## 4. Route R39-B — Financial-inclusion research group embedded in DIGITAL
 
-### R39-C — Publicly documented prospective study
+### Candidate R39-B1: University of Naples Federico II / financial-inclusion and survey-analysis research capability
 
-Use a registered, protocolized, or otherwise formally documented prospective study when its intervention/transformation, respondent population, measurement schedule, instrument, data access and governance are independently documented.
+DIGITAL partner documentation identifies research on financial inclusion through digital finance and survey analytics, latent models and complex categorical data.
 
-Public availability of a dataset alone is insufficient if the transformation is retrospective or the Value instrument was not frozen prospectively.
+Assessment:
+- concrete research organisation: PASS
+- financial-inclusion relevance: PASS
+- survey/individual-data capability: PASS in general methodological terms
+- concrete prospective intervention/deployment satisfying C4–C12: NOT ESTABLISHED
+- CFPB Financial Well-Being Scale deployment: NOT ESTABLISHED
+- item-level longitudinal Value measurement: NOT ESTABLISHED
 
-### R39-D — Research infrastructure / consortium route
+**Disposition:** `OPPORTUNITY / TARGET FOR CONTEXT INQUIRY`, not Qualified Context.
 
-Use a research infrastructure, consortium, doctoral network, or applied-research platform only when it identifies a concrete project/site/partner satisfying the operational C1–C12 requirements.
+## 5. Route R39-C — Existing applied consumer-finance deployment research
 
-Infrastructure or funding availability alone remains `OPPORTUNITY ONLY`.
+### Candidate R39-C1: Graph-Theoretic Analysis for Consumer Credit Risk Assessment in Personal Lending
 
-## 4. Mandatory admission evidence
+The DIGITAL network documents an applied research project involving consumer-lending data and credit-risk prediction in personal lending. The project addresses real-world market data and economic consequences of prediction accuracy.
 
-Before any Value measurement is initiated, the candidate must provide or make independently verifiable:
+Assessment:
+- concrete named applied research project: PASS
+- individual/consumer finance domain: PASS
+- real-world financial-service context: PASS
+- observable prospective system transformation: NOT ESTABLISHED
+- pre/post individual financial-wellbeing measurement: NOT ESTABLISHED
+- CFPB VSL or equivalent independent Value instrument: NOT ESTABLISHED
+- independent ΔT_acc reconstruction: NOT ESTABLISHED
 
-C1. Named prospective study/context and responsible organisation/person.
-C2. Individual target population and recruitment/sampling frame.
-C3. Frozen language, instrument version and administration mode.
-C4. Concrete system/service transformation and relevant state/configuration transition.
-C5. Independently reconstructible `ΔT_acc` specification.
-C6. Prospective item-level Value observations.
-C7. Frozen baseline/post timing and pairing/follow-up structure.
-C8. VSL independence from treatment and accessibility outcomes.
-C9. Data access, provenance and independent reproducibility pathway.
-C10. Ethics, consent, privacy and legal/data-governance pathway.
-C11. Independent executor for reproduction.
-C12. Pre-analysis separation preventing post-treatment endpoint or instrument selection.
+**Disposition:** `SCIENTIFICALLY RELEVANT APPLIED CONTEXT — NOT QUALIFIED DEPLOYMENT`.
 
-## 5. Qualification states
+The documented economic-benefit endpoint must not be silently reclassified as TGCV Value.
 
-- **QUALIFIED CONTEXT** — C1–C12 evidenced sufficiently for controlled protocol construction.
-- **CONDITIONAL CONTEXT** — concrete context exists but one or more non-scientific or operational prerequisites remain resolvable before protocol freeze.
-- **OPPORTUNITY ONLY** — relevant organisation/programme/infrastructure exists, but no concrete deployable context has been established.
-- **INCOMPATIBLE** — context cannot satisfy the scientific or governance boundary.
+## 6. Route R39-D — Sustainable/financial-inclusion doctoral project
 
-No candidate may be upgraded from Opportunity Only to Qualified merely because an organisation expresses general interest.
+### Candidate R39-D1: DIGITAL “Experimenting with Green AI”
 
-## 6. First-stage acquisition evidence
+The project is a named doctoral research project at University of Naples Federico II, with an industrial secondment at Swedbank and an applied-research secondment at Athena Research Centre. Its stated objectives include Green AI in finance and financial inclusion/inequality.
 
-The first contact/intake should seek only context-level information:
+Assessment:
+- concrete named doctoral project: PASS
+- industry/research deployment interface: PASS
+- financial inclusion relevance: PASS
+- prospective individual respondents: NOT ESTABLISHED
+- system transformation and independently reconstructible ΔT_acc: NOT ESTABLISHED
+- prospective financial-wellbeing measurement: NOT ESTABLISHED
+- CFPB VSL: NOT ESTABLISHED
 
-1. What concrete prospective programme/study/deployment is available?
-2. Who are the individual participants and how are they recruited?
-3. What system/service transformation is occurring?
-4. Can the relevant transition and accessibility consequences be independently specified?
-5. Can an external individual-level financial-wellbeing instrument be administered prospectively before and after the transition?
-6. Will item-level observations and scoring metadata be retained for independent reproduction?
-7. What ethics/privacy/data-access arrangements apply?
+**Disposition:** `CONDITIONAL PARTNERSHIP TARGET`, not Qualified Context.
 
-No participant-level data are required at this stage.
+## 7. Route R39-E — Directly prospective new doctoral project under MSCA DN 2026
 
-## 7. Exclusion rules
+The 2026 MSCA Doctoral Networks call supports consortia spanning universities, research institutions/infrastructures, businesses and public-sector organisations. A future project could potentially embed TGCV measurement prospectively from the beginning, with VSL and accessibility measurement frozen before outcomes are collected.
 
-Reject or keep as Opportunity Only where:
+This route is not itself a deployment context. It requires a concrete host/consortium and field project to supply C1–C12.
 
-- the proposal relies on C09 household records as individual CFPB observations;
-- the Value endpoint is selected after observing treatment results;
-- the instrument is modified without a versioned measurement-validity process;
-- treatment effect or statistical significance is substituted for Value;
-- the intervention is not independently identifiable;
-- `ΔT_acc` cannot be reconstructed independently;
-- item-level Value measurement cannot be reproduced;
-- ethics/privacy/data access are unresolved;
-- no independent executor can reproduce the Value measurement;
-- the context exists only as a generic funding or networking opportunity.
+**Disposition:** `FUNDING/HOSTING ROUTE — NOT DEPLOYMENT CONTEXT`.
 
-## 8. Scientific stopping rule
+## 8. Route qualification conclusion
 
-Do not expand into an unbounded partner hunt merely because no candidate qualifies.
+The audit identifies a materially stronger target than the generic opportunity pool:
 
-After a bounded acquisition batch, consolidate the result and reassess whether the bottleneck is:
+**Primary target:** MSCA DIGITAL / Digital Finance network and its financial-inclusion-capable partners.
 
-- absence of a concrete context;
-- absence of independent accessibility reconstruction;
-- absence of prospective individual Value measurement;
-- population/instrument incompatibility;
-- access/ethics constraints.
+Relevant subtargets:
+1. DIGITAL coordination/network contacts;
+2. University of Naples Federico II financial-inclusion/survey-analysis capability;
+3. applied consumer-finance research partners;
+4. doctoral projects with financial-inclusion and industry secondments.
 
-Any new route must address the localized bottleneck rather than repeat the same search under a new name.
+However, none currently satisfies C1–C12 from public evidence alone.
 
-## 9. Governance disposition
+Therefore:
 
-This specification does **not** authorize recruitment, intervention, translation, pilot execution, confirmatory measurement, causal estimation, or any modification to TGCV Core/RMA/Evidence→Claim Matrix/STATUS/C09/M9.
+**`MT5-VSL-39 — CLOSED — CANDIDATE ROUTES IDENTIFIED; NO QUALIFIED DEPLOYMENT CONTEXT.`**
 
-Current decision:
+The strongest current route is `CONDITIONAL CONTEXT / PARTNERSHIP TARGET`, not a scientific admission.
 
-**MT5-VSL-39 — FROZEN ALTERNATIVE EVIDENCE-BEARING DEPLOYMENT ROUTE; NO QUALIFIED CANDIDATE YET IDENTIFIED.**
+## 9. Required next action
 
-The next operational movement is a bounded search/audit for one or more concrete candidates under R39-A through R39-D, with the existing C1–C12 admission criteria unchanged.
+Proceed to **MT5-VSL-40 — Evidence-Bearing Route Contact Specification and Target Selection**, restricted to the concrete DIGITAL/UNINA/financial-inclusion targets identified above.
+
+The contact objective must be to determine whether an actual prospective study/deployment can satisfy C1–C12. It must not request participant data, imply TGCV validation, or treat existing project endpoints as TGCV Value.
+
+## 10. Governance consequences
+
+No changes to TGCV Core, RMA, Evidence→Claim Matrix, STATUS, C09, or M9 / `ΔT_acc → ΔV*`.
+
+No recruitment, intervention, translation, pilot or confirmatory Value measurement is authorized.
