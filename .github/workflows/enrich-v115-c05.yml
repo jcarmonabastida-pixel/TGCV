@@ -1,0 +1,109 @@
+name: Enrich v1.15 C05 material evidence
+
+on: push
+
+permissions:
+  contents: write
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enrich C05 section
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md')
+          text=p.read_text(encoding='utf-8')
+          marker='## Material empirical evidence — C05 EV–Grid Minimum Demonstrator v001'
+          if marker not in text:
+              raise SystemExit('C05 marker not found')
+          head=text[:text.index(marker)]
+          section='''## Material empirical evidence — C05 EV–Grid Minimum Demonstrator v001
+
+**Case:** `C05_EV_GRID_SYNTHETIC_MINIMUM_DEMONSTRATOR_V001`  
+**Status:** `EXECUTION COMPLETE — PASS WITH METHODOLOGICAL LIMITATIONS`  
+**Evidence class:** bounded synthetic application-fit / methodological evidence; not empirical causal evidence.  
+**Runner:** `03_EXPERIMENTS/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_MINIMUM_DEMONSTRATOR_V001.py`  
+**Runner commit:** `e8e55f50f82b9bdf69eeca4d48deb9d23799672e`  
+**SPEC_COMMIT:** `5aa2c7e20ea3f5775b2d6e60797f9be9efe10e05`  
+**FIXTURE_COMMIT:** `9dd6e9b6bb8d0b7a7e686c4dc61926fc627fa8b6`  
+**Execution status:** `C05_EXECUTION_COMPLETE`  
+**Python:** `3.8.10`  
+**Platform:** `Windows-10-10.0.26200-SP0`  
+**Output SHA-256:** `27025e638c05458e19a125c00d9d86d89906bc418eec5670eddec14c89e96880`  
+**Preflight:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_RUNNER_PREFLIGHT_001.md`  
+**Post-execution audit:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_POST_EXECUTION_AUDIT_001.md`  
+
+### 1. Purpose and frozen scope
+C05 is the executed **EV–Grid Minimum Demonstrator** for TGCV application-fit. Its purpose is to test whether the TGCV translation chain can be instantiated reproducibly in a compact synthetic domain while preserving the distinction among system/context state, candidate transformations, admissibility, accessible transformation space (`T_acc`), transition, post-transition state and bounded subsequent trajectory.
+
+The result is deliberately bounded. The demonstrator is not a real-world EV-grid study, causal identification experiment, value/ROI test, explanatory-superiority comparison, predictive-superiority test, generality test, deployment-readiness assessment, or claim-level validation. Its evidentiary role is methodological: demonstrate explicit and executable representation of a state/context-dependent transformation space and its bounded change.
+
+### 2. Frozen transformation universe and execution contract
+The frozen candidate transformation universe `U_tau` contains exactly: `accept_A`, `accept_B`, `defer`, `reduce_power`, `shift_window`, `redirect_A_to_B`, `redirect_B_to_A`, `reserve_capacity`, `release_capacity`, `v1g_discharge`, `v2g_discharge`, and `reject`.
+
+The frozen execution evaluates candidate transformations through an explicit admissibility rule and derives `T_acc` as the admissible subset of `U_tau`. The output contract records the relevant initial state/context, candidate transformation universe, admissibility/accessibility result, transition identifier, post-transition state/context, `T_acc_1`, `Delta T_acc`, bounded trajectory fields, baseline fields, controls and non-claims.
+
+The experiment therefore tests the representation and execution of a bounded application-fit chain of the form `C -> T_acc -> transition -> T_acc' / bounded trajectory`; it does not estimate an external-world causal mechanism.
+
+### 3. Execution integrity and provenance
+The frozen runner executed to `C05_EXECUTION_COMPLETE` under Python `3.8.10` on `Windows-10-10.0.26200-SP0`. The runner, specification and fixture are pinned by the commits recorded above, and the execution output is identified by SHA-256 `27025e638c05458e19a125c00d9d86d89906bc418eec5670eddec14c89e96880`.
+
+The preflight established the frozen execution prerequisites and the post-execution audit recorded execution-integrity PASS, runtime-contract PASS, transition-coverage PASS, negative-control PASS and observed-accessibility-delta PASS, while explicitly retaining the independent-baseline and trajectory-sensitivity limitations described below.
+
+### 4. Main transition result
+The frozen demonstrator contains the transition scenarios `T1`–`T6` plus negative controls `NC1` and `NC2`. The material positive result is concentrated in **T3**.
+
+Under **T3**, the accessibility space changes from **8 accessible transformations to 6**, i.e. `|T_acc,0| = 8` and `|T_acc,1| = 6`, giving `Delta |T_acc| = -2`. The two transformations that close are **`accept_B`** and **`redirect_A_to_B`**. This is a bounded observed change in the explicitly represented synthetic `T_acc` under the frozen admissibility rule.
+
+Under **T1, T2, T4, T5 and T6**, the frozen execution reports **no accessibility delta**. The same absence of an accessibility delta is reported for **NC1 and NC2**. These controls therefore delimit the result within the frozen synthetic rule system: not every represented state/context change is classified as a change in `T_acc`.
+
+The result supports the narrow methodological observation that, within this demonstrator, an explicitly represented change in the conditions governing admissibility can produce a corresponding change in the accessible transformation space, while other frozen transitions/controls leave that space unchanged.
+
+### 5. Interpretation of `T_acc` and transformation identity
+The result is about the **set of accessible candidate transformations**, not about downstream outcomes. The closing of `accept_B` and `redirect_A_to_B` is therefore recorded as a transformation-space change. It must not be interpreted as evidence that an EV-grid intervention caused a real-world operational effect, economic benefit, reliability change, mobility outcome or value change.
+
+The demonstrator preserves the distinction between candidate transformations in `U_tau`, their admissibility conditions, the resulting `T_acc`, the transition that changes state/context, and the bounded trajectory generated after the transition. This distinction is the principal application-fit contribution of the experiment.
+
+### 6. Baseline reconstruction limitation
+The frozen implementation's `baseline(s,c,l)` returns `admissible(s,c,l)`. Consequently, the recorded `baseline_equivalent=true` is an **implementation identity**, not an independently constructed baseline model. It cannot be counted as independent baseline evidence or as a comparative validation of TGCV against an external model.
+
+This limitation is material to interpretation. The C05 result remains execution-conformant and useful as a synthetic methodological demonstrator, but the baseline comparison cannot support claims of independent validation, superiority, explanatory advantage or predictive advantage.
+
+### 7. Negative-control and trajectory-policy limitation
+`NC1` and `NC2` show no accessibility delta in the frozen execution. `NC2` additionally specifies `selection_tiebreak=reverse_lexical`; however, the frozen `trajectory()` implementation does **not consume that field**. Therefore NC2 is **not** a valid trajectory-policy sensitivity test. Its result can only be reported as a negative-control execution under the frozen implementation, not as evidence that trajectory conclusions are insensitive to selection policy.
+
+Accordingly, C05 does not establish a causal trajectory estimand or a robustness/sensitivity result for trajectory selection.
+
+### 8. Evidence-to-claim propagation
+**C02 — bounded qualification:** C05 supplies synthetic application-fit evidence that explicit candidate transformations, admissibility conditions and `T_acc` can be represented and executed, including a bounded positive `Delta T_acc` under T3. It does not establish general empirical accessibility or an independently validated admissibility predicate.
+
+**C07 — bounded qualification:** C05 supplies synthetic evidence that `T_acc` can change between frozen states/contexts, specifically 8→6 under T3, with `accept_B` and `redirect_A_to_B` closing. It does not establish temporal change of accessible transformation spaces in real systems.
+
+**C08 — bounded qualification:** C05 represents post-transition accessibility and bounded trajectory fields, but because the demonstrator is synthetic and NC2 is not a genuine trajectory-policy sensitivity test, it does not establish a causal `Delta T_acc -> trajectory` estimand.
+
+**C16 — bounded methodological contribution:** C05 preserves an executable distinction among candidate transformations, admissibility, `T_acc`, transition, bounded trajectory, controls and explicit non-claims in an EV-grid application-fit domain. It therefore strengthens the translation-protocol evidence without establishing transversal validity.
+
+No propagation is made to C01, C03, C04, C05, C06, C09, C10, C11, C12, C13, C14 or C15. No claim-level status or level is changed.
+
+### 9. Scientific boundaries and non-claims
+C05 does **not** establish empirical causality, generality, transversal validity, value creation, ROI, downstream operational performance, explanatory superiority, predictive superiority, real-world EV-grid validity, industrial validation, deployment readiness, or any causal `Delta T_acc -> Delta V` pathway.
+
+It also does not independently validate the baseline, because the baseline implementation is identical to the admissibility function. It does not establish trajectory-policy robustness, because `selection_tiebreak` is not consumed by `trajectory()`. The synthetic nature of `U_tau`, admissibility predicates, transitions and trajectory generation is part of the evidence boundary, not an incidental caveat.
+
+### 10. Governance disposition
+C05 is **closed as bounded synthetic methodological/application-fit evidence**. Its material result is retained because it changes and qualifies the evidentiary basis of C02, C07, C08 and C16 without warranting a claim-level upgrade. The result should not be reinterpreted as empirical causal or value evidence, and no completed C05 gate is reopened by this enrichment.
+
+**Claim routing:** `C02`, `C07`, `C08`, `C16` only.
+'''
+          p.write_text(head+section,encoding='utf-8')
+          for q in ['00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.15.md']:
+              Path(q).write_text(p.read_text(encoding='utf-8'),encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.15.md
+          git commit -m 'Governance: enrich C05 material evidence record'
+          git push
