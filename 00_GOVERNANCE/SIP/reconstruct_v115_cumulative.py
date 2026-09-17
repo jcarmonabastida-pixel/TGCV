@@ -65,10 +65,28 @@ This is bounded synthetic methodological/application-fit evidence only. The impl
 **Claim routing:** C02, C07, C08, C16 only.
 '''
 text += c05
-base_lines=base.split(marker,1)[1].splitlines(); text_lines=text.splitlines()
-for ln in base_lines:
-    if ln.strip() and ln not in text_lines: raise AssertionError('CUMULATIVE_CONTENT_FAIL:'+ln[:160])
-rows=[ln for ln in text_lines if ln.startswith('| C') and ln.count('|')>=6]
+
+# Verify cumulative preservation. The four routed rows are intentionally modified only in column 5 (Evidence impact).
+base_lines = base.split(marker,1)[1].splitlines()
+new_lines = text.splitlines()
+new_rows = {r.split('|')[1].strip(): r.split('|') for r in new_lines if r.startswith('| C') and r.count('|') >= 6}
+base_rows = {r.split('|')[1].strip(): r.split('|') for r in base_lines if r.startswith('| C') and r.count('|') >= 6}
+assert set(base_rows) == set(new_rows) and len(new_rows)==16, 'CLAIM_ROW_SET_FAIL'
+for cid, brow in base_rows.items():
+    nrow = new_rows[cid]
+    assert len(brow)==8 and len(nrow)==8, 'ROW_SCHEMA_FAIL'
+    if cid in additions:
+        assert nrow[1:5] == brow[1:5], f'ROW_PRESERVATION_FAIL:{cid}:left'
+        assert nrow[6:8] == brow[6:8], f'ROW_PRESERVATION_FAIL:{cid}:right'
+        assert nrow[5].startswith(brow[5]), f'ROW_PRESERVATION_FAIL:{cid}:impact'
+    else:
+        assert nrow == brow, f'ROW_UNCHANGED_FAIL:{cid}'
+# All non-table inherited lines must survive verbatim.
+base_nonrows=[ln for ln in base_lines if not (ln.startswith('| C') and ln.count('|')>=6)]
+for ln in base_nonrows:
+    if ln.strip() and ln not in new_lines: raise AssertionError('CUMULATIVE_CONTENT_FAIL:'+ln[:160])
+
+rows=[ln for ln in new_lines if ln.startswith('| C') and ln.count('|')>=6]
 assert len(rows)==16, f'CLAIM_COUNT_FAIL:{len(rows)}'
 assert all(len(r.split('|'))==8 for r in rows), 'COLUMN_COUNT_FAIL'
 assert text.count('## Material empirical evidence') == base.count('## Material empirical evidence')+1, 'MATERIAL_SECTION_COUNT_FAIL'
