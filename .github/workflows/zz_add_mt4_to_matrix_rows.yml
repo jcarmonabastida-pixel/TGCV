@@ -14,8 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Build and validate cumulative v1.16
-        shell: python
+        shell: bash
         run: |
+          set -euo pipefail
+          git fetch --no-tags origin 9fdab42fce7da22fe1c095dfd876c2f438ff5dbc
+          python3 - <<'PY'
           from pathlib import Path
           import subprocess, hashlib
           root=Path('.')
@@ -46,7 +49,7 @@ jobs:
           v16=v16.replace('**Incremental governance update:** Adds the C05 EV–Grid Minimum Demonstrator material evidence record and bounded propagation to C02, C07, C08 and C16. No claim-level status/level is changed; C09 remains unchanged.','**Incremental governance update:** Enriches the C05 EV–Grid Minimum Demonstrator record into a complete GL-07 material expediente; supersedes the compressed v1.15 C05 section without changing claim status/level. C05 propagation remains limited to C02, C07, C08 and C16; C09 remains unchanged.',1)
           v16=v16+'\n\n'+developed+'\n'
           assert v16.count('| C01 |')==1 and v16.count('| C16 |')==1
-          assert v16.count('## Material empirical evidence — C05 EV–Grid Minimum Demonstrator v001')==1
+          assert v16.count(marker)==1
           assert sum(1 for r in rows if 'C05 adds' in r)==4
           p=root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.16.md'; p.write_text(v16,encoding='utf-8'); cur.write_text(v16,encoding='utf-8')
           pointer=root/'00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md'
@@ -58,7 +61,8 @@ jobs:
           print('C09_UNCHANGED=true')
           print('V15_SHA256='+hashlib.sha256(text15.encode()).hexdigest())
           print('V16_SHA256='+hashlib.sha256(v16.encode()).hexdigest())
-      - name: Commit and remove one-shot workflow
+          PY
+      - name: Commit migration and remove one-shot workflow
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
