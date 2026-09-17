@@ -1,1 +1,1 @@
-trigger: execute cumulative v1.15 reconstruction
+trigger: execute deterministic v1.15 reconstruction
