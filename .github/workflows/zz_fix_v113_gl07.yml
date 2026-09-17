@@ -11,61 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build and validate v1.13
-        shell: bash
+      - name: Execute staged GL-07 propagation
+        run: python 00_GOVERNANCE/SIP/_tmp_apply_gl07_v113.py
+      - name: Commit and clean one-shot artifacts
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          old=Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md').read_text(encoding='utf-8')
-          marker='## Matrix preservation rule'
-          assert old.count(marker)==1
-          _,body=old.split(marker,1)
-          header='''# TGCV — Evidence-to-Claim Matrix — Current v1.13
-
-**Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
-**Date:** 2026-09-17  
-**Predecessor:** v1.12  
-**Incremental governance update:** v1.13 preserves the complete material evidentiary content and schema of v1.12; no evidence is deleted, collapsed, or downgraded. TSTC v004 is propagated as bounded methodological/application-fit evidence with no claim-level status upgrade.
-
-**TSTC update:** TSTC synthetic Fixture-003 execution v004 completed with the required output contract, independently reconstructed baseline representation, all eight comparison dimensions, negative controls and controlled cross-domain paths. The result is bounded methodological/application-fit evidence only; no claim-level status is upgraded.
-
-'''
-          new=header+marker+body
-          adds={'C02':(' TSTC v004',' TSTC v004 adds bounded synthetic application-fit evidence for explicit transformation, admissibility/accessibility and `T_acc` representation; methodological only, no claim upgrade.'),'C08':(' TSTC v004',' TSTC v004 adds bounded synthetic representation of transition and subsequent trajectory fields; no causal trajectory estimand or claim upgrade.'),'C11':(' TSTC v004',' TSTC v004 adds bounded synthetic heterogeneity and domain-specific baseline comparison; no real-world transversal validity or claim upgrade.'),'C16':(' TSTC v004',' TSTC v004 provides primary bounded methodological evidence for application-fit of the translation protocol across heterogeneous synthetic fixtures, including cross-domain paths and negative controls; no causal, value, superiority, generality or industrial-validation claim upgrade.')}
-          for cid,(b,i) in adds.items():
-              lines=new.splitlines(); idx=next(j for j,x in enumerate(lines) if x.startswith('| '+cid+' |')); p=lines[idx].split('|'); assert len(p)==8,(cid,len(p)); p[4]+=b; p[5]+=i; lines[idx]='|'.join(p); new='\n'.join(lines)+'\n'
-          material='''
-
-## Material methodological evidence — TSTC v004 Application-Fit Demonstrator
-
-**Case:** `TSTC — Synthetic Fixture-003`  
-**Status:** `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE REGISTERED`  
-**Execution artifact:** `03_EXPERIMENTS/TSTC/tstc_execution_v004.py`  
-**Post-execution audit:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_POST_EXECUTION_AUDIT_002.md`  
-**Propagation record:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`
-
-TSTC v004 executed the frozen synthetic Fixture-003 under the authorized application-fit demonstrator protocol. It emitted all required run-record fields, independently reconstructed the domain-specific baseline representation, and compared it with the TGCV representation across the eight predeclared comparison dimensions. The bounded result category was `EQUIVALENT_REPRESENTATION` for the principal C01/C03/C05 fixture comparisons. Negative controls produced empty `Delta_T_acc`, and the controlled cross-domain paths C01→C03 and C03→C05 were explicitly represented.
-
-Frozen provenance includes fixture version `003`, source commit `bdb8477089b3b141ebf8231a9ad678cca9cbdce8`, fixture manifest hash `1ac8e7ca8c8a3e7afdc125a1d5021b386206205ec486664b362be0136e90bced`, ruleset hash `9a0c757ee8e166e991f60d898018a4ee424fae0e0e9c955458252ce7f56221c2`, transformation-universe hash `c6d4dfec24877318f466f7736f587557111d8524170f76b71e9596fe42868d3c`, configuration hash `ce274a9bc723989451b0ae2a5318efa92ccca86cf30c4403267a1c1123afaa84`, output hash `6afaffa091984b9b2e7823194b9170cfcdbef98f337d38d6f143f8c3e887bb38`, Windows `10.0.26200`, Python `3.8.10`, and `random_seed = null`.
-
-The post-execution audit classified the execution as `PASS — execution complete and output contract satisfied`. The propagation record closes the result as bounded methodological evidence, routing primarily to C16 and secondarily to C02, C08 and C11. Claim levels remain unchanged.
-'''
-          new=new.rstrip()+material+'\n'
-          assert new.split(marker,1)[0].count('**TSTC update:**')==1
-          assert '**MT4 update:**' not in new.split(marker,1)[0]
-          assert '**RUST foundational evidence update:**' not in new.split(marker,1)[0]
-          def sts(s): return {x.split('|')[1].strip():x.split('|')[3].strip() for x in s.splitlines() if x.startswith('| C')}
-          assert sts(old)==sts(new)
-          Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.13.md').write_text(new,encoding='utf-8')
-          Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md').write_text(new,encoding='utf-8')
-          assert Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.13.md').read_text(encoding='utf-8')==Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md').read_text(encoding='utf-8')
-          print('GL07_V113_BUILD=PASS'); print('CLAIM_STATUS_PRESERVED=PASS'); print('HEADER_UPDATE_SCOPE=PASS'); print('CURRENT_ALIAS_EQUAL=PASS'); print('TSTC_MATERIAL_SECTION=PASS')
-          PY
-      - name: Commit and clean one-shot workflows
-        shell: bash
-        run: |
-          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.13.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md
-          git rm .github/workflows/zz_apply_v113_gl07.yml .github/workflows/zz_fix_v113_gl07.yml
+          git rm .github/workflows/zz_apply_v113_gl07.yml .github/workflows/zz_fix_v113_gl07.yml 00_GOVERNANCE/SIP/_tmp_apply_gl07_v113.py
           git commit -m 'Close GL-07 cumulative Evidence-to-Claim Matrix v1.13'
           git push origin main
