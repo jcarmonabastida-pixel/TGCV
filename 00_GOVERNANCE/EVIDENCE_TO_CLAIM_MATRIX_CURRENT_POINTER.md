@@ -7,4 +7,4 @@
 **Predecessor:** v1.14  
 **Established:** 2026-09-18
 
-v1.15 incorporates the C05 EV–Grid Minimum Demonstrator material evidence record and bounded propagation to C02, C07, C08 and C16. No claim-level status changes. The canonical CURRENT matrix is the complete v1.15 artifact; it is not a simplified derivative.
+v1.15 cumulatively preserves v1.14 and adds only the C05 EV–Grid Minimum Demonstrator material evidence record and bounded propagation to C02, C07, C08 and C16. No claim-level status/level changes; C09 remains unchanged.
