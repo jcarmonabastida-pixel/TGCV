@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import json
 from copy import deepcopy
-from tstc_fixture_engine_v001 import fixtures, tacc, digest
+from tstc_fixture_engine_v002 import fixtures, tacc, digest
 
 EXECUTION_VERSION = "TSTC_EXECUTION_v002"
 
@@ -74,9 +74,9 @@ def audit_operationalisation():
     checks.append(_check_declared_transition(c01, "c01.restrict_security"))
 
     c03_repo_transition = None
-    for tid in _transition_ids(c03):
-        if "repo" in tid.lower():
-            c03_repo_transition = tid
+    for t in c03.transformations:
+        if "repo" in t.transformation_id.lower() and "repo" in t.affected_variables:
+            c03_repo_transition = t.transformation_id
             break
 
     if c03_repo_transition is None:
