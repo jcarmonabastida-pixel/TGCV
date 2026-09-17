@@ -7,7 +7,6 @@ EXPLICIT-IMPLEMENTATION, or MISSING and fails closed on MISSING semantics.
 from __future__ import annotations
 
 import json
-from pathlib import Path
 from tstc_fixture_engine_v001 import fixtures, digest
 
 VERSION = "TSTC_FIXTURE_001_ADAPTER_AUDIT_v001"
@@ -70,7 +69,9 @@ def build_manifest():
             rows.append({
                 "fixture_id": fixture.fixture_id,
                 "fixture_version": fixture.fixture_version,
-                "connector_id": fixture.connector_id,
+                # Fixture v001 has no connector_id field. The transformation
+                # domain is the frozen connector identifier (C01/C03/C05).
+                "connector_id": transformation.domain,
                 **classify(fixture, transformation.transformation_id),
             })
 
