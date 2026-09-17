@@ -16,9 +16,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import platform
+import subprocess
+import sys
 from copy import deepcopy
 from dataclasses import dataclass
-from typing import Dict, Tuple
+from typing import Tuple
 
 from tstc_fixture_engine_v003 import fixtures, tacc, digest
 
@@ -111,6 +114,25 @@ def _delta(t0, t1):
     }
 
 
+def _bounded_trajectory(fixture, state, context):
+    """Record one bounded step using only a transformation admissible now."""
+    admissible, _ = tacc(fixture, state, context)
+    assert admissible, f"no admissible transformation for trajectory: {fixture.fixture_id}"
+    transformation_id = admissible[0]
+    before, after, changed = _transition(fixture, transformation_id, state, context)
+    return [
+        {
+            "step": 0,
+            "transformation_id": transformation_id,
+            "S_before": before[0],
+            "C_before": before[1],
+            "S_after": after[0],
+            "C_after": after[1],
+            "changed_variables": changed,
+        }
+    ]
+
+
 def _baseline_representation(fixture, state, context):
     """Conventional representation with the same frozen information inputs."""
     admissible, _ = tacc(fixture, state, context)
@@ -144,9 +166,6 @@ def _baseline_representation(fixture, state, context):
 
 
 def _baseline_compare(tgcv_before, tgcv_after, baseline_before, baseline_after):
-    # The comparison is descriptive, not a score. Both representations receive
-    # the same frozen state/context information and are compared by explicit
-    # structural content only.
     same_accessibility = (
         tuple(tgcv_before) == tuple(baseline_before)
         and tuple(tgcv_after) == tuple(baseline_after)
@@ -172,12 +191,35 @@ def _assert_fixture_versions(fs):
     assert versions == {"FX-C01": FIXTURE_VERSION, "FX-C03": FIXTURE_VERSION, "FX-C05": FIXTURE_VERSION}
 
 
+def _assert_frozen_universes(fs):
+    expected = {
+        "FX-C01": (
+            "c01.deploy_A", "c01.deploy_B", "c01.route_A_to_B",
+            "c01.route_B_to_A", "c01.restrict_security", "c01.restore_security",
+        ),
+        "FX-C03": (
+            "c03.query_db", "c03.inspect_repo", "c03.open_pr",
+            "c03.complete_task", "c03.modify_repo",
+        ),
+        "FX-C05": (
+            "c05.start_A", "c05.start_B", "c05.defer_A", "c05.defer_B",
+            "c05.redirect_A_to_B", "c05.reduce_power_A",
+        ),
+    }
+    for fixture in fs:
+        actual = tuple(t.transformation_id for t in fixture.transformations)
+        assert actual == expected[fixture.fixture_id], (
+            f"U_tau mismatch for {fixture.fixture_id}: {actual}"
+        )
+
+
 def _run_local_positive(fixture):
     t0, _ = tacc(fixture)
     before, after, changed = _apply(
         fixture, fixture.intervention, fixture.intervention_variables, "positive intervention"
     )
     t1, _ = tacc(fixture, *after)
+    trajectory = _bounded_trajectory(fixture, *after)
     return {
         "intervention_id": fixture.intervention_id,
         "S0": before[0],
@@ -188,6 +230,7 @@ def _run_local_positive(fixture):
         "T_acc_0": t0,
         "T_acc_1": t1,
         "Delta_T_acc": _delta(t0, t1),
+        "trajectory": trajectory,
         "baseline_before": _baseline_representation(fixture, *before),
         "baseline_after": _baseline_representation(fixture, *after),
     }
@@ -199,19 +242,20 @@ def _run_negative_control(fixture):
         fixture, fixture.negative_control, fixture.negative_control_variables, "negative control"
     )
     t1, _ = tacc(fixture, *after)
-    assert set(t1) == set(t0), f"negative control changed T_acc for {fixture.fixture_id}"
+    delta = _delta(t0, t1)
+    assert delta == {"opened": (), "closed": (), "persistent": t0, "changed": ()}, (
+        f"negative control changed T_acc for {fixture.fixture_id}: {delta}"
+    )
     return {
         "negative_control_id": fixture.negative_control_id,
         "changed_variables": changed,
         "T_acc_0": t0,
         "T_acc_1": t1,
-        "Delta_T_acc": _delta(t0, t1),
+        "Delta_T_acc": delta,
     }
 
 
 def _cross_domain_scenario_c01_to_c03(c01, c03):
-    # Scenario A: independent C01 intervention/transition followed by the
-    # explicitly frozen propagation rule. It does not execute C03.modify_repo.
     t0, _ = tacc(c01)
     _, after_c01, changed = _apply(
         c01, _find_transformation(c01, "c01.restrict_security").transition,
@@ -245,9 +289,6 @@ def _cross_domain_scenario_c01_to_c03(c01, c03):
 
 
 def _cross_domain_scenario_c03_to_c05(c03, c05):
-    # Scenario B is deliberately independent from Scenario A. Repository
-    # modification is executed only from the initial C03 state where the
-    # repository permission is granted.
     before, after, changed = _transition(c03, "c03.modify_repo", c03.state, c03.context)
     assert changed == ("repo",)
     t0, _ = tacc(c03, *before)
@@ -284,7 +325,16 @@ def _cross_domain_scenario_c03_to_c05(c03, c05):
     }
 
 
-def _metadata(fs, output):
+def _source_commit():
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL, text=True
+        ).strip()
+    except Exception as exc:
+        raise RuntimeError("source_commit unavailable; execution must fail closed") from exc
+
+
+def _metadata(fs, output, source_commit):
     fixture_manifest = {
         f.fixture_id: {
             "fixture_version": f.fixture_version,
@@ -295,16 +345,25 @@ def _metadata(fs, output):
         }
         for f in fs
     }
+    transformation_universe_hash = digest({
+        k: v["U_tau"] for k, v in fixture_manifest.items()
+    })
     return {
         "execution_version": EXECUTION_VERSION,
         "fixture_version": FIXTURE_VERSION,
+        "source_commit": source_commit,
         "fixture_manifest_hash": digest(fixture_manifest),
+        "ruleset_hash": digest(COUPLING_RULES),
+        "transformation_universe_hash": transformation_universe_hash,
         "coupling_rules_hash": digest(COUPLING_RULES),
         "configuration_hash": hashlib.sha256(
             json.dumps({"execution_version": EXECUTION_VERSION, "fixture_version": FIXTURE_VERSION}, sort_keys=True).encode()
         ).hexdigest(),
+        "environment": {
+            "python": sys.version.split()[0],
+            "platform": platform.platform(),
+        },
         "random_seed": None,
-        "environment": "deterministic synthetic local execution",
         "output_hash": digest(output),
     }
 
@@ -312,6 +371,8 @@ def _metadata(fs, output):
 def run_execution():
     fs = fixtures()
     _assert_fixture_versions(fs)
+    _assert_frozen_universes(fs)
+    source_commit = _source_commit()
     c01 = _fixture_by_id(fs, "FX-C01")
     c03 = _fixture_by_id(fs, "FX-C03")
     c05 = _fixture_by_id(fs, "FX-C05")
@@ -324,7 +385,6 @@ def run_execution():
         for f in fs
     }
 
-    # Baseline reconstruction uses exactly the same frozen state/context inputs.
     comparisons = {}
     for f in fs:
         positive = local[f.fixture_id]["positive"]
@@ -363,7 +423,7 @@ def run_execution():
             "No industrial validation claim",
         ],
     }
-    result["execution_metadata"] = _metadata(fs, result)
+    result["execution_metadata"] = _metadata(fs, result, source_commit)
     return result
 
 
