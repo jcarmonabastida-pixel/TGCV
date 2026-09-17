@@ -1,8 +1,7 @@
 """Static conformance audit for the TGCV WP2 TSTC execution adapter v003.
 
-This audit is pre-execution only. It reads the execution adapter as source text
-and fails closed when mandatory execution-boundary elements are absent.
-It does not import or execute the TSTC runner.
+Pre-execution only. This audit reads source text and AST structure; it never
+imports or executes the TSTC runner.
 """
 from __future__ import annotations
 
@@ -19,18 +18,29 @@ REQUIRED_TEXT = {
     "negative_control": "_run_negative_control",
     "baseline": "_baseline_representation",
     "delta": "_delta",
+    "trajectory": "_bounded_trajectory",
     "cross_domain_a": "_cross_domain_scenario_c01_to_c03",
     "cross_domain_b": "_cross_domain_scenario_c03_to_c05",
     "execution_entrypoint": "def run_execution():",
+    "source_commit": "def _source_commit():",
     "non_claims": '"non_claims"',
 }
 
-FORBIDDEN_TEXT = {
-    "real_data": "real datasets",
+BOUNDARY_TEXT = {
+    "real_data": "No real datasets",
     "network": "network access",
     "causal_claim": "empirical causal inference",
     "value_analysis": "value analysis",
 }
+
+EXPECTED_UNIVERSE_IDS = (
+    "c01.deploy_A", "c01.deploy_B", "c01.route_A_to_B",
+    "c01.route_B_to_A", "c01.restrict_security", "c01.restore_security",
+    "c03.query_db", "c03.inspect_repo", "c03.open_pr",
+    "c03.complete_task", "c03.modify_repo",
+    "c05.start_A", "c05.start_B", "c05.defer_A", "c05.defer_B",
+    "c05.redirect_A_to_B", "c05.reduce_power_A",
+)
 
 REQUIRED_OUTPUT_FIELDS = {
     "fixture_versions",
@@ -42,53 +52,61 @@ REQUIRED_OUTPUT_FIELDS = {
     "execution_metadata",
 }
 
+REQUIRED_METADATA_FIELDS = {
+    "source_commit",
+    "fixture_manifest_hash",
+    "ruleset_hash",
+    "transformation_universe_hash",
+    "configuration_hash",
+    "random_seed",
+    "output_hash",
+}
+
 
 def main():
     source = TARGET.read_text(encoding="utf-8")
     tree = ast.parse(source, filename=str(TARGET))
-    function_names = {n.name for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))}
+    function_names = {
+        n.name for n in ast.walk(tree)
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
+    }
 
     failures = []
     for name, text in REQUIRED_TEXT.items():
         if text not in source:
             failures.append(f"MISSING_REQUIRED:{name}")
 
-    for name, text in FORBIDDEN_TEXT.items():
-        # These phrases are intentionally present only as explicit boundary
-        # restrictions in the module. Their presence is therefore required,
-        # not a violation; the map documents the safety boundary.
+    for name, text in BOUNDARY_TEXT.items():
         if text not in source:
             failures.append(f"MISSING_BOUNDARY_DECLARATION:{name}")
 
     if "run_execution" not in function_names:
         failures.append("MISSING_FUNCTION:run_execution")
 
-    if "_cross_domain_scenario_c01_to_c03" not in function_names:
-        failures.append("MISSING_FUNCTION:cross_domain_c01_to_c03")
-    if "_cross_domain_scenario_c03_to_c05" not in function_names:
-        failures.append("MISSING_FUNCTION:cross_domain_c03_to_c05")
+    for function_name in (
+        "_cross_domain_scenario_c01_to_c03",
+        "_cross_domain_scenario_c03_to_c05",
+        "_bounded_trajectory",
+    ):
+        if function_name not in function_names:
+            failures.append(f"MISSING_FUNCTION:{function_name}")
 
-    # Required reproducibility fields. These checks deliberately look for
-    # explicit source_commit and output_hash semantics, not merely generic
-    # metadata containers.
-    if '"source_commit"' not in source and "source_commit" not in source:
-        failures.append("MISSING_REPRODUCIBILITY:source_commit")
-    if '"output_hash"' not in source:
-        failures.append("MISSING_REPRODUCIBILITY:output_hash")
-    if '"random_seed"' not in source:
-        failures.append("MISSING_REPRODUCIBILITY:random_seed")
-    if '"configuration_hash"' not in source:
-        failures.append("MISSING_REPRODUCIBILITY:configuration_hash")
+    for transformation_id in EXPECTED_UNIVERSE_IDS:
+        if transformation_id not in source:
+            failures.append(f"MISSING_U_TAU_ID:{transformation_id}")
 
-    # The execution specification requires a bounded trajectory, not merely
-    # before/after T_acc sets.
-    if "trajectory" not in source.lower():
-        failures.append("MISSING_EXECUTION_BOUNDARY:trajectory")
-
-    # Output-field contract must be visibly represented in the result object.
     for field in REQUIRED_OUTPUT_FIELDS:
         if f'"{field}"' not in source:
             failures.append(f"MISSING_OUTPUT_FIELD:{field}")
+
+    for field in REQUIRED_METADATA_FIELDS:
+        if f'"{field}"' not in source:
+            failures.append(f"MISSING_METADATA_FIELD:{field}")
+
+    if "It does not execute C03.modify_repo" not in source:
+        failures.append("MISSING_GUARD:C01_C03_does_not_execute_modify_repo")
+    if "independent from Scenario A" not in source and "independent" not in source:
+        failures.append("MISSING_GUARD:independent_cross_domain_scenarios")
 
     if failures:
         print("TSTC_EXECUTION_V003_STATIC_AUDIT=BLOCKED")
