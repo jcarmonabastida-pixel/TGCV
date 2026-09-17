@@ -20,11 +20,13 @@ Specification blob SHA at freeze:
 
 The following artifact is frozen as the operational outcome definition:
 
+**Verified baseline:** `S0=(10,10)`; `O(S0)=15`.
+
 `00_GOVERNANCE/SIP/TGCV_VSL_SYNTHETIC_MIN_OUTCOME_DEFINITION_v0.1.md`
 
 Outcome definition blob SHA at freeze:
 
-`RETRIEVED FROM CANONICAL GITHUB AT FREEZE`
+`1262cb33b95f4b7f43cbaa510a70b07266049e7f`
 
 Frozen outcome:
 
