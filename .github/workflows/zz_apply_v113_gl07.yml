@@ -1,0 +1,147 @@
+name: TGCV apply GL-07 v1.13
+on:
+  push:
+    paths:
+      - '.github/workflows/zz_apply_v113_gl07.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build v1.13 from v1.12 using GL-07
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('.')
+          src = root / '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md'
+          dst = root / '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.13.md'
+          cur = root / '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md'
+          text = src.read_text(encoding='utf-8')
+
+          marker = '## Matrix preservation rule'
+          if text.count(marker) != 1:
+              raise SystemExit('GL07: unexpected v1.12 structure')
+          _, body = text.split(marker, 1)
+
+          header = '''# TGCV — Evidence-to-Claim Matrix — Current v1.13
+
+          **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
+          **Date:** 2026-09-17  
+          **Predecessor:** v1.12  
+          **Incremental governance update:** v1.13 preserves the complete material evidentiary content and schema of v1.12; no evidence is deleted, collapsed, or downgraded. TSTC v004 is propagated as bounded methodological/application-fit evidence with no claim-level status upgrade.
+
+          **TSTC update:** TSTC synthetic Fixture-003 execution v004 completed with the required output contract, independently reconstructed baseline representation, all eight comparison dimensions, negative controls and controlled cross-domain paths. The result is bounded methodological/application-fit evidence showing that the TGCV representation can explicitly encode state/context, transformation universe, admissibility/accessibility, transition, changed transformation space and subsequent trajectory fields across the bounded synthetic domains. It does not establish empirical causality, value creation, superiority, generality, industrial validation or deployment readiness, and no claim-level status is upgraded.
+
+          '''
+
+          # GL-07: only current-cycle update metadata is retained in the new header.
+          new = header + marker + body
+
+          def replace_once(s, old, new, label):
+              n = s.count(old)
+              if n != 1:
+                  raise SystemExit(f'GL07: expected exactly one {label}, found {n}')
+              return s.replace(old, new, 1)
+
+          rows = {}
+          for cid in ['C02','C08','C11','C16']:
+              m = re.search(rf'^\\| {cid} \\|.*$', new, re.M)
+              if not m:
+                  raise SystemExit(f'GL07: missing {cid} row')
+              rows[cid] = m.group(0)
+
+          additions = {
+            'C02': (
+              ' + TSTC v004',
+              ' TSTC v004 adds bounded synthetic application-fit evidence that the representation explicitly instantiates candidate transformations, admissibility/accessibility conditions and `T_acc` snapshots across the frozen fixtures. This is methodological evidence only; it does not establish an empirical accessibility predicate or upgrade the claim.'),
+            'C08': (
+              ' + TSTC v004',
+              ' TSTC v004 adds bounded synthetic evidence that the representation explicitly carries transition and subsequent trajectory fields after changes in transformation accessibility. It does not identify a causal trajectory estimand or establish empirical trajectory effects. No claim-level upgrade.'),
+            'C11': (
+              ' + TSTC v004',
+              ' TSTC v004 adds bounded synthetic heterogeneity across the frozen demonstrator domains and explicitly compares the same representation schema against domain-specific baseline reconstructions. This supports methodological transfer/application-fit evidence only and does not establish real-world transversal validity. No claim-level upgrade.'),
+            'C16': (
+              ' + TSTC v004',
+              ' TSTC v004 provides the primary bounded methodological evidence for application-fit of the translation protocol: the frozen schema explicitly preserves distinctions among state/context, candidate transformations, accessibility/admissibility, transition, changed transformation space, trajectory and baseline representation across heterogeneous synthetic fixtures, including controlled cross-domain paths and negative controls. It remains a bounded demonstrator and does not establish causal validity, value, superiority, generality or industrial validation. No claim-level upgrade.')
+          }
+
+          for cid, (basis_add, impact_add) in additions.items():
+              old = rows[cid]
+              parts = old.split('|')
+              # Table schema: ['', ID, Claim, Status, Basis, Impact, Next requirement, '']
+              if len(parts) != 8:
+                  raise SystemExit(f'GL07: unexpected table shape for {cid}: {len(parts)} fields')
+              parts[4] = parts[4] + basis_add
+              parts[5] = parts[5] + impact_add
+              newrow = '|'.join(parts)
+              new = replace_once(new, old, newrow, f'{cid} row')
+
+          material = '''
+
+          ## Material methodological evidence — TSTC v004 Application-Fit Demonstrator
+
+          **Case:** `TSTC — Synthetic Fixture-003`  
+          **Status:** `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE REGISTERED`  
+          **Execution artifact:** `03_EXPERIMENTS/TSTC/tstc_execution_v004.py`  
+          **Post-execution audit:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_POST_EXECUTION_AUDIT_002.md`  
+          **Propagation record:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`
+
+          TSTC v004 executed the frozen synthetic Fixture-003 under the authorized application-fit demonstrator protocol. The execution emitted all required run-record fields, including `fixture_id`, `fixture_version`, `connector_id`, `intervention_id`, `S0`, `C0`, `L_version`, `U_tau`, `T_acc_0`, `transition`, `S1`, `C1`, `T_acc_1`, `Delta_T_acc`, `trajectory`, `baseline_model`, `baseline_representation`, `baseline_reconstruction`, `comparison_observations`, `limitations`, `non_claims` and `execution_metadata`.
+
+          The execution independently reconstructed the domain-specific baseline representation and compared it with the TGCV representation across the eight predeclared dimensions: transformation identities; admissibility conditions; state/context dependencies; transition causing accessibility change; cross-domain dependency; trajectory consequence; assumptions; and information omitted. The bounded result category was `EQUIVALENT_REPRESENTATION` for the principal C01/C03/C05 fixture comparisons. Negative controls produced empty `Delta_T_acc`, and the controlled cross-domain paths C01→C03 and C03→C05 were explicitly represented.
+
+          Frozen provenance includes fixture version `003`, source commit `bdb8477089b3b141ebf8231a9ad678cca9cbdce8`, fixture manifest hash `1ac8e7ca8c8a3e7afdc125a1d5021b386206205ec486664b362be0136e90bced`, ruleset hash `9a0c757ee8e166e991f60d898018a4ee424fae0e0e9c955458252ce7f56221c2`, transformation-universe hash `c6d4dfec24877318f466f7736f587557111d8524170f76b71e9596fe42868d3c`, configuration hash `ce274a9bc723989451b0ae2a5318efa92ccca86cf30c4403267a1c1123afaa84`, output hash `6afaffa091984b9b2e7823194b9170cfcdbef98f337d38d6f143f8c3e887bb38`, Windows `10.0.26200`, Python `3.8.10`, and `random_seed = null`.
+
+          The post-execution audit classified the execution as `PASS — execution complete and output contract satisfied`. The propagation record closes the result as bounded methodological evidence, routing primarily to C16 and secondarily to C02, C08 and C11. Claim levels remain unchanged. The demonstrator does not establish empirical causality, causal `Delta_T_acc -> trajectory`, value/ROI, superiority, generality in real-world populations, industrial validation or deployment readiness.
+          '''
+          new = new.rstrip() + material + '\n'
+
+          # Versioned and CURRENT files must be byte-identical: CURRENT is the complete alias, not a derivative.
+          dst.write_text(new, encoding='utf-8')
+          cur.write_text(new, encoding='utf-8')
+
+          # GL-07 integrity checks.
+          if '## Material methodological evidence — TSTC v004 Application-Fit Demonstrator' not in new:
+              raise SystemExit('GL07: TSTC material section missing')
+          if '## Matrix preservation rule' not in new:
+              raise SystemExit('GL07: preservation rule missing')
+          for forbidden in ['**MT4 update:**', '**RUST foundational evidence update:**']:
+              if forbidden in new:
+                  raise SystemExit('GL07: historical update metadata leaked into new header: '+forbidden)
+          if new.split(marker,1)[0].count('**TSTC update:**') != 1:
+              raise SystemExit('GL07: current update header malformed')
+
+          def statuses(s):
+              out = {}
+              for line in s.splitlines():
+                  m = re.match(r'^\\| (C\\d+) \\|', line)
+                  if m:
+                      p = line.split('|')
+                      out[m.group(1)] = p[3].strip()
+              return out
+          if statuses(text) != statuses(new):
+              raise SystemExit('GL07: claim status changed unexpectedly')
+          if new != cur.read_text(encoding='utf-8'):
+              raise SystemExit('GL07: versioned matrix and CURRENT alias diverge')
+
+          print('GL07_V113_BUILD=PASS')
+          print('CLAIM_STATUS_PRESERVED=PASS')
+          print('CURRENT_ALIAS_EQUAL=PASS')
+          print('HEADER_UPDATE_SCOPE=PASS')
+          print('TSTC_MATERIAL_SECTION=PASS')
+          PY
+      - name: Commit v1.13 and remove one-shot workflow
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.13.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md .github/workflows/zz_apply_v113_gl07.yml
+          git rm .github/workflows/zz_apply_v113_gl07.yml
+          git commit -m 'Apply GL-07 and close cumulative Evidence-to-Claim Matrix v1.13'
+          git push origin main
