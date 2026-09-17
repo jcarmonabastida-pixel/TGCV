@@ -1,0 +1,211 @@
+name: TGCV expand TSTC material evidence v1.14
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  expand:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Expand TSTC material section and close v1.14
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('.')
+          old = root / '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.13.md'
+          cur = root / '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md'
+          pointer = root / '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md'
+          canonical = root / '00_GOVERNANCE/CANONICAL_STATE.json'
+          status = root / 'STATUS.md'
+
+          text = old.read_text(encoding='utf-8')
+          marker = '## Material methodological evidence — TSTC v004 Application-Fit Demonstrator'
+          if marker not in text:
+              raise SystemExit('TSTC material section not found')
+          prefix = text.split(marker, 1)[0].rstrip() + '\n\n'
+
+          header = '''# TGCV — Evidence-to-Claim Matrix — Current v1.14
+
+          **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
+          **Date:** 2026-09-17  
+          **Predecessor:** v1.13  
+          **Incremental governance update:** v1.14 preserves the complete material evidentiary content and schema of v1.13. This documentation correction replaces the previously abbreviated TSTC v004 material section with an autocontained evidentiary record derived from the frozen execution, post-execution audit and propagation record. No evidence is deleted, collapsed, or downgraded; no claim-level status is changed.
+
+          **TSTC material-section correction:** The TSTC v004 record is expanded to be self-contained, including provenance, frozen scope, execution contract, fixture-level results, baseline reconstruction, comparison dimensions, negative controls, cross-domain propagation, trajectory checks, interpretation boundaries, claim routing and non-claims.
+
+          ## Matrix preservation rule
+          This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
+
+          `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` is a stable alias of the complete versioned current matrix; it MUST NOT be a simplified derivative.
+
+          ## Material evidence propagation rule
+          A material experimental result is propagated to this matrix when it adds, removes, qualifies, bounds, or otherwise changes the evidentiary basis or interpretation of a claim, even when no claim status/level changes. Claim upgrade is a separate decision and is never inferred merely from evidence propagation.
+
+          **Operational rule:** Evidence propagation does not imply claim upgrade. A claim-level upgrade requires an explicit claim-level consolidation record.
+
+          **Material-section completeness rule:** Every material evidence item propagated into one or more claim rows MUST have a corresponding enriched `Material ... evidence` section in the same matrix version. The claim table is the routing/index layer; the material-evidence section is the developed evidentiary record. Table-only references are insufficient. This rule applies equally to foundational/base experiments that originally established claims and to later experiments. Where a foundational material result was previously represented only by a compressed table reference, the result MUST be restored cumulatively with its quantitative findings, provenance, operational scope, reproducibility boundary, interpretation limits and claim propagation. The integrity check is bidirectional: `material evidence item in claim table ↔ corresponding enriched material-evidence section`.
+
+          ## Current claim matrix
+
+          '''
+          # Reuse the complete claim-table and all material evidence from v1.13, beginning at the table.
+          table_start = text.index('## Current claim matrix')
+          table_and_material = text[table_start:]
+          # Remove the old header/policy block and replace with the corrected v1.14 header/policy block.
+          body = table_and_material.split(marker, 1)[0].rstrip()
+
+          tstc = '''
+          ## Material methodological evidence — TSTC v004 Application-Fit Demonstrator
+
+          **Case:** `TSTC — Synthetic Fixture-003 / Freeze-003`  
+          **Status:** `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE REGISTERED`  
+          **Execution mode:** `TSTC_SYNTHETIC_EXECUTION_V004`  
+          **Fixture version:** `003`  
+          **Execution artifact:** `03_EXPERIMENTS/TSTC/tstc_execution_v004.py`  
+          **Post-execution audit:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_POST_EXECUTION_AUDIT_002.md`  
+          **Propagation record:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`  
+          **Execution source commit:** `bdb8477089b3b141ebf8231a9ad678cca9cbdce8`  
+          **Fixture manifest SHA-256:** `1ac8e7ca8c8a3e7afdc125a1d5021b386206205ec486664b362be0136e90bced`  
+          **Ruleset SHA-256:** `9a0c757ee8e166e991f60d898018a4ee424fae0e0e9c955458252ce7f56221c2`  
+          **Transformation-universe SHA-256:** `c6d4dfec24877318f466f7736f587557111d8524170f76b71e9596fe42868d3c`  
+          **Configuration SHA-256:** `ce274a9bc723989451b0ae2a5318efa92ccca86cf30c4403267a1c1123afaa84`  
+          **Output SHA-256:** `6afaffa091984b9b2e7823194b9170cfcdbef98f337d38d6f143f8c3e887bb38`  
+          **Environment:** Windows `10.0.26200`; Python `3.8.10`  
+          **Random seed:** `null`
+
+          ### 1. Purpose and frozen scope
+
+          TSTC v004 is the executed form of the frozen **TGCV Application Fit — WP2 TSTC Minimum Demonstrator Specification 001**, using **Synthetic Fixtures Freeze-003** and **Execution Authorization Gate 003**. Its purpose is to test whether the TGCV translation representation can be instantiated reproducibly across heterogeneous synthetic domains while making explicit how a state/context transition changes the accessible transformation space and how that change is represented in a bounded subsequent trajectory.
+
+          This is an application-fit and methodological demonstrator. It is not a scientific validation experiment, causal identification study, superiority comparison, value/ROI test, industrial validation or deployment-readiness test.
+
+          The execution covers three frozen connector fixtures: **FX-C01 technical orchestration**, **FX-C03 agent/tool/permission**, and **FX-C05 resource/constraint**. The same machine-readable contract requires explicit `S0`, `C0`, `L_version`, `U_tau`, `T_acc_0`, intervention, transition, `S1`, `C1`, `T_acc_1`, `Delta_T_acc`, trajectory, baseline model, baseline representation, baseline reconstruction and comparison observations.
+
+          ### 2. Execution integrity and output contract
+
+          The post-execution audit recorded `TSTC_EXECUTION_COMPLETE` under `TSTC_SYNTHETIC_EXECUTION_V004`, fixture version `003`, with execution source, fixture manifest, ruleset, transformation-universe, configuration, environment, random-seed and output hashes recorded. All three connector records contain every required machine-readable output field. The v003 output-contract deficiencies were therefore corrected rather than silently tolerated.
+
+          Each connector also contains the eight predeclared comparison dimensions:
+
+          1. transformation identities;
+          2. admissibility conditions;
+          3. state/context dependencies;
+          4. transition causing accessibility change;
+          5. cross-domain dependency;
+          6. trajectory consequence;
+          7. assumptions;
+          8. information omitted.
+
+          The executor independently reconstructs a conventional baseline feasible-transformation representation for each connector. All three principal local comparisons are classified `EQUIVALENT_REPRESENTATION` within the frozen transformation universe. This is representational equivalence within the demonstrator, not explanatory superiority.
+
+          ### 3. Fixture-level results
+
+          **FX-C01 — technical orchestration.** Baseline model: `finite-state-orchestration-rule-model`. The intervention `trust_B: trusted → untrusted` removes accessibility of `c01.deploy_B` while retaining `c01.deploy_A` and `c01.restrict_security`. The transition therefore produces an explicit bounded `Delta_T_acc` through a state/context-dependent admissibility rule. The corresponding bounded trajectory contains only transformations admissible under the post-transition state.
+
+          **FX-C03 — agent/tool/permission.** Baseline model: `capability-access-control-matrix-plus-workflow`. The intervention `permission_repo: granted → denied` closes `c03.inspect_repo`, `c03.open_pr` and `c03.modify_repo`, while retaining `c03.query_db` and `c03.complete_task`. The result explicitly separates a changed enabling condition from the resulting accessible transformation-space change and from the later bounded trajectory.
+
+          **FX-C05 — resource/constraint.** Baseline model: `finite-constrained-resource-feasibility-model`. The intervention `grid_capacity: high → low` closes `c05.start_A` and `c05.start_B` while retaining the remaining admissible transformations. The result represents a resource/constraint transition as a bounded change in accessibility rather than conflating the constraint with an executed outcome.
+
+          ### 4. Negative controls
+
+          The three frozen negative controls all pass: `N-C01`, `N-C03` and `N-C05` produce an empty `Delta_T_acc` with no opened, closed or changed transformations. In `N-C01`, `routing` changes but accessibility does not change. These controls bound the interpretation by showing that not every changed state/context variable is automatically treated as an accessibility change.
+
+          ### 5. Controlled cross-domain propagation
+
+          **C01 → C03:** the declared synthetic rule `security = restricted → permission_repo = denied` propagates the source condition into the target connector, producing the corresponding reduction in target accessibility, including closure of `c03.modify_repo`. The denied target scenario does not execute `c03.modify_repo`.
+
+          **C03 → C05:** the independent C03 source transition `c03.modify_repo` changes `repo` to `changed`; the declared synthetic rule propagates this to `mobility_requirement_A = urgent`, which closes `c05.redirect_A_to_B` in the target connector.
+
+          These paths demonstrate explicit translation and dependency propagation across heterogeneous synthetic domains. They are **synthetic rule propagation, not empirical causality**.
+
+          ### 6. Trajectory and representation checks
+
+          The three local records contain bounded trajectories composed only of transformations admissible in the corresponding `T_acc`. The output explicitly records the transition, post-transition state/context, accessible transformation space and subsequent bounded trajectory. This makes the representation of the chain `state/context transition → Delta_T_acc → bounded subsequent trajectory` inspectable under the frozen contract.
+
+          The conventional baselines reconstruct the same feasible transformation sets for the three local fixtures under their respective frozen rules. The result therefore demonstrates that the TGCV representation can preserve the relevant distinctions without requiring the baseline to be discarded or replaced. No comparative performance, predictive accuracy or explanatory-superiority metric was executed.
+
+          ### 7. Evidence-to-claim routing
+
+          **Primary routing — C16:** TSTC v004 supplies bounded methodological evidence that one frozen execution contract can be instantiated across three heterogeneous synthetic domains while preserving explicit distinctions among state/context, candidate transformation universe `U_tau`, admissibility/accessibility, `T_acc`, intervention, `Delta_T_acc`, realized bounded trajectory, baseline reconstruction, cross-domain dependency, omitted information and non-claims. This is the principal evidentiary contribution.
+
+          **C02 — bounded qualification:** the demonstrator explicitly instantiates deterministic admissibility predicates and computes `T_acc` before and after intervention. Because the predicates and transformation universes are synthetic and specified by construction, this is application-fit evidence rather than independent empirical validation of general accessibility.
+
+          **C08 — bounded qualification:** the demonstrator represents a bounded accessibility-space change followed by a bounded admissible trajectory and explicit downstream state/context. It does not identify a causal estimand and does not establish empirical `Delta_T_acc → trajectory` validity.
+
+          **C11 — bounded qualification:** three heterogeneous synthetic connector types and two controlled cross-domain paths demonstrate that the same execution contract can be instantiated across distinct synthetic domains. This is methodological heterogeneity coverage, not transversal empirical validity.
+
+          Claim statuses remain unchanged: **C02 = E0, C08 = H, C11 = H, C16 = H**. No Core primitive, relation, threshold or falsification criterion is modified.
+
+          ### 8. Scientific and interpretive boundaries
+
+          TSTC v004 does **not** establish scientific validity of TGCV; empirical causality; a causal `Delta_T_acc → trajectory` estimand; `Delta_T_acc → Delta_V`; value creation; ROI; explanatory superiority; generality across real-world domains; industrial validation; deployment readiness; or predictive superiority.
+
+          The synthetic predicates are rule-defined, the transformation universes are frozen and bounded, the trajectories are generated within the demonstrator, and the cross-domain links are declared synthetic propagation rules. Consequently, the result cannot be interpreted as evidence that the same accessibility mechanism has been empirically identified in heterogeneous real-world systems.
+
+          ### 9. Reproducibility and closure
+
+          The executed artifact and post-execution audit jointly provide the provenance needed to identify the exact execution configuration and verify contract conformance. The audit reports PASS for execution integrity, all required output fields, independent baseline reconstruction, all eight comparison dimensions, negative controls, cross-domain propagation and trajectory/boundary checks. The propagation record closes the evidence registration as **`EVIDENCE_PROPAGATION_TSTC_001 = CLOSED — BOUNDED METHODOLOGICAL CONTRIBUTION`**.
+
+          This material record is therefore a self-contained evidentiary account of what TSTC v004 actually demonstrated, what it did not demonstrate, how it routes into the claim matrix, and which frozen provenance identifies the execution. It is not an authorization to reopen or repeat TSTC v004.
+          '''
+
+          # Construct from the v1.13 cumulative body, retaining everything before the old TSTC section.
+          new_text = header + body + '\n\n' + tstc.strip() + '\n'
+          out = root / '00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.14.md'
+          out.write_text(new_text, encoding='utf-8')
+          cur.write_text(new_text, encoding='utf-8')
+
+          pointer.write_text('''# TGCV — Evidence-to-Claim Matrix — CURRENT POINTER
+
+          **Status:** CURRENT CONTROL POINTER  
+          **Current matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
+          **Current version:** v1.14  
+          **Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.14.md`  
+          **Predecessor:** v1.13  
+          **Established:** 2026-09-17  
+
+          This stable pointer resolves the active complete cumulative Evidence→Claim Matrix. Historical versions remain immutable. v1.14 expands the TSTC v004 material evidence section into an autocontained record; no claim-level status is changed.
+
+          **Integrity rule:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` MUST resolve to the complete content of the versioned current artifact and MUST NOT be a simplified derivative.
+          ''', encoding='utf-8')
+
+          import json
+          c = json.loads(canonical.read_text(encoding='utf-8'))
+          c['current_versions']['claim_matrix'] = 'v1.14'
+          canonical.write_text(json.dumps(c, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          s = status.read_text(encoding='utf-8')
+          s = re.sub(r'(\*\*Current Evidence→Claim Matrix:\*\* `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT\.md` → )v1\.13', r'\g<1>v1.14', s)
+          s = s.replace('Canonical current versions: RMA `v3.35`, Evidence→Claim Matrix `v1.13`', 'Canonical current versions: RMA `v3.35`, Evidence→Claim Matrix `v1.14`')
+          s = s.replace('complete Matrix v1.13', 'complete Matrix v1.14')
+          s = s.replace('Matrix: `v1.13`', 'Matrix: `v1.14`')
+          s = s.replace('v1.13', 'v1.14')
+          correction = '\n## TSTC material-record correction\n- v1.14 expands the TSTC v004 material evidence section into an autocontained evidentiary record.\n- Claim statuses and TGCV Core remain unchanged.\n'
+          if '## TSTC material-record correction' not in s:
+              s += correction
+          status.write_text(s, encoding='utf-8')
+          PY
+
+          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.14.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md 00_GOVERNANCE/CANONICAL_STATE.json STATUS.md
+          git commit -m 'Expand TSTC material evidence and close matrix v1.14'
+          git push origin main
+
+      - name: Remove one-shot workflow
+        if: success()
+        shell: bash
+        run: |
+          git pull --rebase origin main
+          git rm .github/workflows/zz_expand_tstc_material_v114.yml
+          git commit -m 'Remove one-shot TSTC material expansion workflow'
+          git push origin main
