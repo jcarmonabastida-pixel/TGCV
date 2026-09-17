@@ -29,8 +29,6 @@ class TransitionResult:
     exogenous_factor: int = 0
 
 
-# Independent transformation layer. The outcome function below does not
-# receive this object or any accessibility/treatment variable.
 TRANSFORMS = {
     "A": lambda s: State(s.q, s.r),
     "B": lambda s: State(s.q + 4, s.r),
@@ -49,6 +47,11 @@ def select_transform(case_id: str, accessible: Tuple[str, ...]) -> str:
     return "A"
 
 
+def apply_exogenous_factor(state: State, factor: int) -> State:
+    """Apply the independent T4 exogenous perturbation."""
+    return State(state.q + factor, state.r)
+
+
 def execute_transition(case_id: str) -> TransitionResult:
     s0 = State(*BASELINE)
     accessible = accessible_transforms(case_id)
@@ -59,11 +62,11 @@ def execute_transition(case_id: str) -> TransitionResult:
         raise AssertionError("selected transform is not accessible")
 
     if case_id == "T4":
-        final_state = State(s0.q + 2, s0.r)
         exogenous_factor = 2
+        final_state = apply_exogenous_factor(s0, exogenous_factor)
     else:
-        final_state = TRANSFORMS[selected](s0)
         exogenous_factor = 0
+        final_state = TRANSFORMS[selected](s0)
 
     return TransitionResult(
         case_id=case_id,
@@ -74,8 +77,6 @@ def execute_transition(case_id: str) -> TransitionResult:
     )
 
 
-# Frozen VSL computational path: final state -> outcome -> value.
-# No treatment/accessibility/case identifier is an input.
 def outcome(state: State) -> float:
     return state.q + 0.5 * state.r
 
@@ -138,6 +139,9 @@ def validate_runner() -> None:
     assert run_case("T3")["delta_value"] == 4.0
     assert run_case("T4")["delta_value"] == 2.0
     assert run_case("NC2")["delta_value"] == 0.0
+
+    t4 = execute_transition("T4")
+    assert t4.final_state == apply_exogenous_factor(State(*BASELINE), t4.exogenous_factor)
 
 
 if __name__ == "__main__":
