@@ -1,7 +1,7 @@
 # TGCV — VSL Synthetic Minimum v0.1
 ## Exact Downstream Outcome Definition
 
-**Status:** CANDIDATE ADDENDUM — FREEZE BLOCKED UNTIL REVIEW  
+**Status:** FROZEN  
 **Scope:** Synthetic demonstrator only  
 **Parent specification:** `TGCV_VSL_SYNTHETIC_MIN_v0.1_SPECIFICATION.md`
 
@@ -36,7 +36,7 @@ The frozen baseline is:
 
 The baseline outcome is therefore:
 
-`O(S0) = 10`
+`O(S0) = 10 + 0.5(10) = 15`
 
 ## 4. Exact Outcome Function
 
@@ -107,7 +107,7 @@ Therefore:
 
 while:
 
-`ΔO = 0,quad ΔV* = 0`
+`ΔO = 0, ΔV* = 0`
 
 This is the principal control against interpreting accessibility change itself as Value.
 
@@ -119,13 +119,11 @@ Accessibility changes and trajectory B produces a downstream capability improvem
 
 Therefore:
 
-`ΔO = 4
-`
+`ΔO = 4`
 
 and:
 
-`ΔV* = 4
-`
+`ΔV* = 4`
 
 The intended pathway is:
 
@@ -141,13 +139,11 @@ An exogenous downstream state factor changes capability:
 
 Therefore:
 
-`ΔT_acc = 0
-`
+`ΔT_acc = 0`
 
 while:
 
-`ΔO = 2,quad ΔV* = 2
-`
+`ΔO = 2, ΔV* = 2`
 
 The change to `q` MUST be generated independently of accessibility.
 
@@ -163,8 +159,7 @@ The final state remains:
 
 Therefore:
 
-`ΔO = 0,quad ΔV* = 0
-`
+`ΔO = 0, ΔV* = 0`
 
 ### NC2 — Accessible but not selected
 
@@ -174,13 +169,11 @@ Accessibility changes, but the selected trajectory A leaves the state unchanged:
 
 Therefore:
 
-`ΔT_acc ≠ 0
-`
+`ΔT_acc ≠ 0`
 
 while:
 
-`ΔO = 0,quad ΔV* = 0
-`
+`ΔO = 0, ΔV* = 0`
 
 ## 8. Required Identifiability Pattern
 
@@ -226,18 +219,18 @@ The following architecture is prohibited:
 
 ## 10. Freeze Condition
 
-This addendum may become frozen only after the circularity/identifiability review confirms:
+The circularity/identifiability review has confirmed:
 
-1. `q` and `r` are genuine downstream state variables;
+1. `q` and `r` are specified as downstream state variables;
 2. `q` and `r` are not aliases for accessibility;
-3. the transition effects above are implemented exactly;
+3. the required transition effects are specified exactly;
 4. T4 changes `q` independently of accessibility;
-5. the outcome runner cannot access `T_acc`;
+5. the outcome path is prohibited from accessing `T_acc`;
 6. an independent executor can calculate `O` from `S1` alone.
 
-Until then:
+Therefore:
 
-`OUTCOME_DEFINITION_v0.1 = CANDIDATE`
+`OUTCOME_DEFINITION_v0.1 = FROZEN`
 
 ## 11. Claim Boundary
 
