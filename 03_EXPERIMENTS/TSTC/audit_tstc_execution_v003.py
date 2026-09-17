@@ -43,70 +43,51 @@ EXPECTED_UNIVERSE_IDS = (
 )
 
 REQUIRED_OUTPUT_FIELDS = {
-    "fixture_versions",
-    "local_connector_results",
-    "cross_domain_results",
-    "baseline_comparison",
-    "limitations",
-    "non_claims",
-    "execution_metadata",
+    "fixture_versions", "local_connector_results", "cross_domain_results",
+    "baseline_comparison", "limitations", "non_claims", "execution_metadata",
 }
 
 REQUIRED_METADATA_FIELDS = {
-    "source_commit",
-    "fixture_manifest_hash",
-    "ruleset_hash",
-    "transformation_universe_hash",
-    "configuration_hash",
-    "random_seed",
-    "output_hash",
+    "source_commit", "fixture_manifest_hash", "ruleset_hash",
+    "transformation_universe_hash", "configuration_hash", "random_seed", "output_hash",
 }
 
 
 def main():
     source = TARGET.read_text(encoding="utf-8")
     tree = ast.parse(source, filename=str(TARGET))
-    function_names = {
-        n.name for n in ast.walk(tree)
-        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
-    }
-
+    function_names = {n.name for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))}
     failures = []
+
     for name, text in REQUIRED_TEXT.items():
         if text not in source:
             failures.append(f"MISSING_REQUIRED:{name}")
-
     for name, text in BOUNDARY_TEXT.items():
         if text not in source:
             failures.append(f"MISSING_BOUNDARY_DECLARATION:{name}")
-
-    if "run_execution" not in function_names:
-        failures.append("MISSING_FUNCTION:run_execution")
-
-    for function_name in (
-        "_cross_domain_scenario_c01_to_c03",
-        "_cross_domain_scenario_c03_to_c05",
-        "_bounded_trajectory",
-    ):
+    for function_name in ("run_execution", "_cross_domain_scenario_c01_to_c03", "_cross_domain_scenario_c03_to_c05", "_bounded_trajectory"):
         if function_name not in function_names:
             failures.append(f"MISSING_FUNCTION:{function_name}")
-
     for transformation_id in EXPECTED_UNIVERSE_IDS:
         if transformation_id not in source:
             failures.append(f"MISSING_U_TAU_ID:{transformation_id}")
-
     for field in REQUIRED_OUTPUT_FIELDS:
         if f'"{field}"' not in source:
             failures.append(f"MISSING_OUTPUT_FIELD:{field}")
-
     for field in REQUIRED_METADATA_FIELDS:
         if f'"{field}"' not in source:
             failures.append(f"MISSING_METADATA_FIELD:{field}")
 
-    if "It does not execute C03.modify_repo" not in source:
+    # Guards requested by the execution-integrity audit. These are structural
+    # source assertions, not comments and not runtime results.
+    if 'assert "c03.modify_repo" in c03_t0 and "c03.modify_repo" not in c03_t1' not in source:
         failures.append("MISSING_GUARD:C01_C03_does_not_execute_modify_repo")
-    if "independent from Scenario A" not in source and "independent" not in source:
+    if 'assert c03.context["permission_repo"] == "granted"' not in source:
+        failures.append("MISSING_GUARD:C01_C03_fresh_granted_context")
+    if 'Scenario B is independent from Scenario A' not in source:
         failures.append("MISSING_GUARD:independent_cross_domain_scenarios")
+    if 'assert c03.context["permission_repo"] == "granted" and c03.state["repo"] == "clean"' not in source:
+        failures.append("MISSING_GUARD:C03_C05_independent_initial_state")
 
     if failures:
         print("TSTC_EXECUTION_V003_STATIC_AUDIT=BLOCKED")
