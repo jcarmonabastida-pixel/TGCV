@@ -1,12 +1,12 @@
 # TGCV — Application Fit and Transfer Strategy 001
 
-**Status:** FROZEN STRATEGIC DIRECTION — INFORMAL BRAINSTORM RECORDED; EXECUTION NOT YET AUTHORIZED  
+**Status:** FROZEN STRATEGIC DIRECTION — INFORMAL BRAINSTORM RECORDED; WP1 NEXT  
 **Date:** 2026-09-17  
 **Canonical scientific base:** RMA v3.35 / Evidence→Claim Matrix v1.12 / RMA traceability v3.35
 
 ## 1. Purpose
 
-Record the strategic direction agreed for the practical-application and transfer exploration of TGCV.
+Record the strategic direction agreed for the practical-application and transfer exploration of TGCV, together with the immediate execution boundary established in the continuation conversation.
 
 The working premise is to search for **application fit** through structural problem classes and mechanisms rather than beginning from sectors. The purpose is opportunity discovery and transfer exploration, not scientific validation by application demand.
 
@@ -36,7 +36,7 @@ This is an application hypothesis, not an established product architecture or co
 
 ### WP1 — Canonical asset update
 
-Update the seven key external assets to the current canonical scientific state:
+**NEXT OPERATIONAL STEP.** Update the seven key external assets to the current canonical scientific state:
 
 1. Vision Paper;
 2. Research Prospectus;
@@ -46,11 +46,15 @@ Update the seven key external assets to the current canonical scientific state:
 6. MOI;
 7. SIP.
 
+The update must use controlled new versions where substantive content or canonical metadata changes are required; historical versions are not silently rewritten.
+
 PMO/SMO remains a separate functional governance derivative and is not silently included in the seven.
+
+The target canonical base is RMA v3.35 / Evidence→Claim Matrix v1.12 / RMA traceability v3.35, together with the current methodological boundaries and current evidence disposition.
 
 ### WP2 — Mechanism-first application-fit discovery
 
-Instrument an iterative discovery process around eight structural problem mechanisms:
+After WP1, instrument an iterative discovery process around eight structural problem mechanisms:
 
 1. opening options;
 2. closing options;
@@ -201,6 +205,8 @@ The loop should be lightweight at discovery stage and become progressively more 
 
 ## 10. Current disposition
 
-**FROZEN STRATEGIC DIRECTION — INFORMAL BRAINSTORM RECORDED; EXECUTION NOT YET AUTHORIZED.**
+**FROZEN STRATEGIC DIRECTION — INFORMAL BRAINSTORM RECORDED; WP1 IS THE NEXT OPERATIONAL STEP.**
 
-The next operational work is WP1: update the seven key external assets to RMA v3.35 / Matrix v1.12 and current methodological boundaries. After WP1, WP2 can be instrumented as a controlled discovery workflow without treating the resulting opportunities as scientific evidence.
+VSL-44 remains the frozen response-monitoring gate for the separate MT5-VSL outreach track. That track does not block WP1.
+
+WP1 now proceeds as the immediate work: reconcile and, where necessary, create controlled new versions of the seven key external assets against RMA v3.35 / Matrix v1.12 and the current methodological/evidence boundaries. After WP1, WP2 can be instrumented as a controlled discovery workflow without treating resulting opportunities as scientific evidence.
