@@ -2,38 +2,22 @@ name: TGCV governance current-state consistency
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - matrix-v1.9-c10c001-staging
     paths:
       - '00_GOVERNANCE/**'
       - 'STATUS.md'
       - '.github/workflows/governance-current-state.yml'
   pull_request:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  correction:
-    if: github.event_name == 'push' && github.event.head_commit.message != 'Expand TSTC material evidence and publish matrix v1.14'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - run: python 00_GOVERNANCE/tools/expand_tstc_material_v114.py
-      - run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.14.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md 00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT_POINTER.md 00_GOVERNANCE/CANONICAL_STATE.json STATUS.md
-          git commit -m "Expand TSTC material evidence and publish matrix v1.14"
-          git push origin main
-
   governance-consistency:
-    if: github.event_name != 'push' || github.event.head_commit.message == 'Expand TSTC material evidence and publish matrix v1.14'
-    needs: correction
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - run: python 00_GOVERNANCE/tools/validate_current_state.py
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Validate canonical current-state governance chain
+        run: python 00_GOVERNANCE/tools/validate_current_state.py
