@@ -38,9 +38,9 @@ A9. monetary/business interpretation separable from the endpoint measurement.
 
 ## 4. TSTC-specific finding
 
-The TSTC post-execution audit confirms that TSTC v004 successfully executes the frozen synthetic contract, reconstructs conventional baselines, reports `Delta_T_acc`, bounded trajectories, negative controls and synthetic cross-domain propagation. fileciteturn223file0
+The TSTC post-execution audit confirms that TSTC v004 successfully executes the frozen synthetic contract, reconstructs conventional baselines, reports `Delta_T_acc`, bounded trajectories, negative controls and synthetic cross-domain propagation.
 
-Its evidence propagation explicitly excludes value creation, `Delta_T_acc -> Delta V`, empirical causality, superiority, real-world generality and industrial validation. fileciteturn224file0
+Its evidence propagation explicitly excludes value creation, `Delta_T_acc -> Delta V`, empirical causality, superiority, real-world generality and industrial validation.
 
 Therefore TSTC cannot currently serve as a value-endpoint execution substrate without a new, separately frozen endpoint/outcome design. This is a boundary result, not a deficiency in the completed TSTC execution.
 
