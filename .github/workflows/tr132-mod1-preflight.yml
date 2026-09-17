@@ -1,12 +1,14 @@
-name: TGCV TR-132-MOD-1 preflight
+name: TGCV TR-132-MOD-1 preflight (manual — validated/closed)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
+
+# TR-132-MOD-1 preflight is a validated/closed control artifact.
+# It must not execute on ordinary repository pushes. Manual dispatch is retained
+# only for explicit re-verification if governance later authorizes it.
 
 jobs:
   preflight:
