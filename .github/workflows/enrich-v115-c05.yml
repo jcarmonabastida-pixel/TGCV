@@ -1,3 +1,4 @@
+# Trigger revision: execute enrichment on a subsequent push after workflow creation.
 name: Enrich v1.15 C05 material evidence
 
 on: push
@@ -99,8 +100,7 @@ C05 is **closed as bounded synthetic methodological/application-fit evidence**. 
 **Claim routing:** `C02`, `C07`, `C08`, `C16` only.
 '''
           p.write_text(head+section,encoding='utf-8')
-          for q in ['00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.15.md']:
-              Path(q).write_text(p.read_text(encoding='utf-8'),encoding='utf-8')
+          Path('00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.15.md').write_text(p.read_text(encoding='utf-8'),encoding='utf-8')
           PY
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
