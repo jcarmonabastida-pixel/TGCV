@@ -1,0 +1,371 @@
+"""TGCV WP2 TSTC bounded execution adapter v003.
+
+Authorized synthetic execution path for Fixture-003.
+
+This module implements the minimum demonstrator execution boundary only:
+fixture -> T_acc,0 -> declared transition/intervention -> T_acc,1 ->
+Delta T_acc -> bounded admissible trajectory -> explicit cross-domain
+propagation -> baseline reconstruction -> qualitative representation comparison.
+
+No real datasets, network access, predictive modelling, downstream outcomes,
+causal inference, value analysis, ROI, or industrial validation are permitted.
+The module does not execute on import; run_execution() must be called
+explicitly.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+from copy import deepcopy
+from dataclasses import dataclass
+from typing import Dict, Tuple
+
+from tstc_fixture_engine_v003 import fixtures, tacc, digest
+
+EXECUTION_VERSION = "TSTC_EXECUTION_v003"
+FIXTURE_VERSION = "003"
+
+COUPLING_RULES = (
+    {
+        "source_connector": "C01",
+        "source_condition": {"security": "restricted"},
+        "target_connector": "C03",
+        "target_condition": {"permission_repo": "denied"},
+        "transition": "propagate",
+    },
+    {
+        "source_connector": "C03",
+        "source_condition": {"repo": "changed"},
+        "target_connector": "C05",
+        "target_condition": {"mobility_requirement_A": "urgent"},
+        "transition": "propagate",
+    },
+)
+
+
+@dataclass(frozen=True)
+class TransitionRecord:
+    intervention_id: str
+    changed_variables: Tuple[str, ...]
+    S_before: dict
+    C_before: dict
+    S_after: dict
+    C_after: dict
+
+
+def _fixture_by_id(items, fixture_id):
+    return next(f for f in items if f.fixture_id == fixture_id)
+
+
+def _find_transformation(fixture, transformation_id):
+    for transformation in fixture.transformations:
+        if transformation.transformation_id == transformation_id:
+            return transformation
+    raise AssertionError(f"unknown transformation: {transformation_id}")
+
+
+def _changed(before, after):
+    s0, c0 = before
+    s1, c1 = after
+    changed = []
+    for key in set(s0) | set(s1):
+        if s0.get(key) != s1.get(key):
+            changed.append(key)
+    for key in set(c0) | set(c1):
+        if c0.get(key) != c1.get(key):
+            changed.append(key)
+    return tuple(sorted(changed))
+
+
+def _apply(fixture, operation, allowed_variables, label):
+    before = (deepcopy(fixture.state), deepcopy(fixture.context))
+    after = operation(*before)
+    changed = _changed(before, after)
+    unexpected = set(changed) - set(allowed_variables)
+    assert not unexpected, f"{label}: undeclared mutation {sorted(unexpected)}"
+    return before, after, changed
+
+
+def _transition(fixture, transformation_id, state, context):
+    transformation = _find_transformation(fixture, transformation_id)
+    assert transformation.predicate(state, context), (
+        f"inaccessible transformation used: {transformation_id}"
+    )
+    before = (deepcopy(state), deepcopy(context))
+    after = transformation.transition(*before)
+    changed = _changed(before, after)
+    unexpected = set(changed) - set(transformation.affected_variables)
+    assert not unexpected, (
+        f"{transformation_id}: undeclared mutation {sorted(unexpected)}"
+    )
+    return before, after, changed
+
+
+def _delta(t0, t1):
+    a, b = set(t0), set(t1)
+    return {
+        "opened": tuple(sorted(b - a)),
+        "closed": tuple(sorted(a - b)),
+        "persistent": tuple(sorted(a & b)),
+        "changed": tuple(sorted((a - b) | (b - a))),
+    }
+
+
+def _baseline_representation(fixture, state, context):
+    """Conventional representation with the same frozen information inputs."""
+    admissible, _ = tacc(fixture, state, context)
+    if fixture.fixture_id == "FX-C01":
+        return {
+            "representation": "finite-state-rule-graph",
+            "state": deepcopy(state),
+            "context": deepcopy(context),
+            "feasible_actions": admissible,
+        }
+    if fixture.fixture_id == "FX-C03":
+        return {
+            "representation": "capability-permission-matrix-workflow",
+            "state": deepcopy(state),
+            "context": deepcopy(context),
+            "capability_matrix": {
+                "permission_db": context["permission_db"],
+                "permission_repo": context["permission_repo"],
+                "tool_query": context["tool_query"],
+                "tool_pr": context["tool_pr"],
+            },
+            "workflow": {"task": state["task"], "repo": state["repo"]},
+            "feasible_actions": admissible,
+        }
+    return {
+        "representation": "finite-constrained-feasibility",
+        "state": deepcopy(state),
+        "context": deepcopy(context),
+        "feasible_actions": admissible,
+    }
+
+
+def _baseline_compare(tgcv_before, tgcv_after, baseline_before, baseline_after):
+    # The comparison is descriptive, not a score. Both representations receive
+    # the same frozen state/context information and are compared by explicit
+    # structural content only.
+    same_accessibility = (
+        tuple(tgcv_before) == tuple(baseline_before)
+        and tuple(tgcv_after) == tuple(baseline_after)
+    )
+    if same_accessibility:
+        return {
+            "category": "EQUIVALENT_REPRESENTATION",
+            "observations": [
+                "Baseline reconstructs the same admissible transformation sets",
+                "under the same frozen state/context information."
+            ],
+        }
+    return {
+        "category": "INCONCLUSIVE",
+        "observations": [
+            "The bounded comparison did not establish information parity."
+        ],
+    }
+
+
+def _assert_fixture_versions(fs):
+    versions = {f.fixture_id: f.fixture_version for f in fs}
+    assert versions == {"FX-C01": FIXTURE_VERSION, "FX-C03": FIXTURE_VERSION, "FX-C05": FIXTURE_VERSION}
+
+
+def _run_local_positive(fixture):
+    t0, _ = tacc(fixture)
+    before, after, changed = _apply(
+        fixture, fixture.intervention, fixture.intervention_variables, "positive intervention"
+    )
+    t1, _ = tacc(fixture, *after)
+    return {
+        "intervention_id": fixture.intervention_id,
+        "S0": before[0],
+        "C0": before[1],
+        "S1": after[0],
+        "C1": after[1],
+        "changed_variables": changed,
+        "T_acc_0": t0,
+        "T_acc_1": t1,
+        "Delta_T_acc": _delta(t0, t1),
+        "baseline_before": _baseline_representation(fixture, *before),
+        "baseline_after": _baseline_representation(fixture, *after),
+    }
+
+
+def _run_negative_control(fixture):
+    t0, _ = tacc(fixture)
+    before, after, changed = _apply(
+        fixture, fixture.negative_control, fixture.negative_control_variables, "negative control"
+    )
+    t1, _ = tacc(fixture, *after)
+    assert set(t1) == set(t0), f"negative control changed T_acc for {fixture.fixture_id}"
+    return {
+        "negative_control_id": fixture.negative_control_id,
+        "changed_variables": changed,
+        "T_acc_0": t0,
+        "T_acc_1": t1,
+        "Delta_T_acc": _delta(t0, t1),
+    }
+
+
+def _cross_domain_scenario_c01_to_c03(c01, c03):
+    # Scenario A: independent C01 intervention/transition followed by the
+    # explicitly frozen propagation rule. It does not execute C03.modify_repo.
+    t0, _ = tacc(c01)
+    _, after_c01, changed = _apply(
+        c01, _find_transformation(c01, "c01.restrict_security").transition,
+        ("security",), "C01 restriction"
+    )
+    t1, _ = tacc(c01, *after_c01)
+    assert "c01.restrict_security" in t0 and "c01.restrict_security" not in t1
+
+    propagated_context = deepcopy(c03.context)
+    propagated_context["permission_repo"] = "denied"
+    c03_t0, _ = tacc(c03)
+    c03_t1, _ = tacc(c03, c03.state, propagated_context)
+    assert "c03.modify_repo" in c03_t0
+    assert "c03.modify_repo" not in c03_t1
+
+    return {
+        "scenario_id": "CD-C01-C03-001",
+        "source": {"connector": "C01", "changed_variables": changed,
+                   "S_after": after_c01[0], "C_after": after_c01[1],
+                   "T_acc_before": t0, "T_acc_after": t1},
+        "propagation": {
+            "rule": COUPLING_RULES[0],
+            "target_context_before": deepcopy(c03.context),
+            "target_context_after": propagated_context,
+            "T_acc_before": c03_t0,
+            "T_acc_after": c03_t1,
+            "Delta_T_acc": _delta(c03_t0, c03_t1),
+        },
+        "non_claim": "synthetic rule propagation, not empirical causality",
+    }
+
+
+def _cross_domain_scenario_c03_to_c05(c03, c05):
+    # Scenario B is deliberately independent from Scenario A. Repository
+    # modification is executed only from the initial C03 state where the
+    # repository permission is granted.
+    before, after, changed = _transition(c03, "c03.modify_repo", c03.state, c03.context)
+    assert changed == ("repo",)
+    t0, _ = tacc(c03, *before)
+    t1, _ = tacc(c03, *after)
+    assert "c03.modify_repo" in t0
+    assert "c03.modify_repo" not in t1
+
+    propagated_context = deepcopy(c05.context)
+    propagated_context["mobility_requirement_A"] = "urgent"
+    c05_t0, _ = tacc(c05)
+    c05_t1, _ = tacc(c05, c05.state, propagated_context)
+    assert "c05.redirect_A_to_B" in c05_t0
+    assert "c05.redirect_A_to_B" not in c05_t1
+
+    return {
+        "scenario_id": "CD-C03-C05-001",
+        "source": {
+            "connector": "C03", "transition": "c03.modify_repo",
+            "S_before": before[0], "C_before": before[1],
+            "S_after": after[0], "C_after": after[1],
+            "changed_variables": changed,
+            "T_acc_before": t0, "T_acc_after": t1,
+            "Delta_T_acc": _delta(t0, t1),
+        },
+        "propagation": {
+            "rule": COUPLING_RULES[1],
+            "target_context_before": deepcopy(c05.context),
+            "target_context_after": propagated_context,
+            "T_acc_before": c05_t0,
+            "T_acc_after": c05_t1,
+            "Delta_T_acc": _delta(c05_t0, c05_t1),
+        },
+        "non_claim": "synthetic rule propagation, not empirical causality",
+    }
+
+
+def _metadata(fs, output):
+    fixture_manifest = {
+        f.fixture_id: {
+            "fixture_version": f.fixture_version,
+            "state": f.state,
+            "context": f.context,
+            "U_tau": tuple(t.transformation_id for t in f.transformations),
+            "baseline": f.baseline_kind,
+        }
+        for f in fs
+    }
+    return {
+        "execution_version": EXECUTION_VERSION,
+        "fixture_version": FIXTURE_VERSION,
+        "fixture_manifest_hash": digest(fixture_manifest),
+        "coupling_rules_hash": digest(COUPLING_RULES),
+        "configuration_hash": hashlib.sha256(
+            json.dumps({"execution_version": EXECUTION_VERSION, "fixture_version": FIXTURE_VERSION}, sort_keys=True).encode()
+        ).hexdigest(),
+        "random_seed": None,
+        "environment": "deterministic synthetic local execution",
+        "output_hash": digest(output),
+    }
+
+
+def run_execution():
+    fs = fixtures()
+    _assert_fixture_versions(fs)
+    c01 = _fixture_by_id(fs, "FX-C01")
+    c03 = _fixture_by_id(fs, "FX-C03")
+    c05 = _fixture_by_id(fs, "FX-C05")
+
+    local = {
+        f.fixture_id: {
+            "positive": _run_local_positive(f),
+            "negative_control": _run_negative_control(f),
+        }
+        for f in fs
+    }
+
+    # Baseline reconstruction uses exactly the same frozen state/context inputs.
+    comparisons = {}
+    for f in fs:
+        positive = local[f.fixture_id]["positive"]
+        comparisons[f.fixture_id] = _baseline_compare(
+            positive["T_acc_0"], positive["T_acc_1"],
+            tuple(positive["baseline_before"]["feasible_actions"]),
+            tuple(positive["baseline_after"]["feasible_actions"]),
+        )
+
+    cross_domain = {
+        "C01_to_C03": _cross_domain_scenario_c01_to_c03(c01, c03),
+        "C03_to_C05": _cross_domain_scenario_c03_to_c05(c03, c05),
+    }
+
+    result = {
+        "status": "TSTC_EXECUTION_COMPLETE",
+        "mode": "TSTC_SYNTHETIC_EXECUTION_V003",
+        "fixture_versions": {f.fixture_id: f.fixture_version for f in fs},
+        "local_connector_results": local,
+        "cross_domain_results": cross_domain,
+        "baseline_comparison": comparisons,
+        "limitations": [
+            "synthetic bounded demonstrator",
+            "no empirical causal inference",
+            "no downstream outcome measurement",
+            "no value/ROI analysis",
+            "no superiority claim",
+            "no generality claim",
+        ],
+        "non_claims": [
+            "No scientific validity claim",
+            "No empirical causal claim",
+            "No superiority claim",
+            "No generality claim",
+            "No value creation claim",
+            "No industrial validation claim",
+        ],
+    }
+    result["execution_metadata"] = _metadata(fs, result)
+    return result
+
+
+if __name__ == "__main__":
+    print(json.dumps(run_execution(), sort_keys=True, indent=2, default=list))
