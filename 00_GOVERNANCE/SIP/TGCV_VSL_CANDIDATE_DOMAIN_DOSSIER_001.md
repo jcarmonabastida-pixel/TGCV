@@ -103,6 +103,28 @@ The initial registry contains four heterogeneous candidate domains because they 
 
 **Evidence provenance:** existing C10C boundary-case material in the canonical repository.
 
+
+
+### CD-05 — C09 / KGFS Rural Banking downstream outcome domain
+
+**Domain:** KGFS rural banking / downstream household financial and wellbeing outcomes.
+
+**Potential unit of analysis:** household/beneficiary-level longitudinal case, subject to the frozen empirical evidence boundary.
+
+**Potential Outcome material:** independently measured downstream financial/economic and poverty/wellbeing outcomes following the structural/accessibility intervention.
+
+**Potential evaluative perspective:** beneficiary/household-level interpretation is plausible from the existing evidence, but the exact Value-reference specification is not yet frozen.
+
+**Potential reference:** longitudinal baseline/endline and intervention comparison are available in the existing evidence; a complete Value reference frame must still be explicitly frozen under VSL-SPEC-01.
+
+**Existing Value-interpretation material:** canonical MT5-08 identified a partial domain-bounded Value interpretation architecture, and MT5-10 identified the required sufficiency conditions S1-S10. MT5-11 defines a frozen independent-reconstruction protocol for testing reproducibility of a domain-bounded V*.
+
+**Value status at registry stage:** NOT YET ASSESSED UNDER VSL-EXP-01.
+
+**Known methodological issue:** existing evidence identifies downstream value-relevant outcomes but does not yet freeze the complete reference entity, valuation objective, direction rule and reproducible Outcome → Value mapping required by VSL-SPEC-01.
+
+**Evidence provenance:** canonical MT5 Value Interpretation material and closed C09/KGFS evidence.
+
 ## 4. Registry neutrality
 
 The four candidates are registry entries, not recommendations.
