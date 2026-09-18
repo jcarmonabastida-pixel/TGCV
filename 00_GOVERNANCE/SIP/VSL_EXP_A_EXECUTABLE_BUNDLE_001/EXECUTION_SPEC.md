@@ -1,50 +1,42 @@
-# TGCV VSL Experimental Bundle A — Execution Specification 001
-Date: 2026-09-19
-Status: BUNDLE DRAFT — NOT AUTHORIZED FOR EXECUTION
-Frozen VSL: TGCV_VSL_DOMAIN_SPECIFIC_FREEZE_A_BUILT_ASSETS_LCC_v0.1.md
+# TGCV VSL Experimental Bundle A — Execution Specification 002
+
+**Date:** 2026-09-19  
+**Status:** BUNDLE DRAFT — NOT AUTHORIZED FOR EXECUTION  
+**Frozen VSL:** TGCV_VSL_DOMAIN_SPECIFIC_FREEZE_A_BUILT_ASSETS_LCC_v0.1.md
 
 ## Synthetic scope
-This is a synthetic methodological execution bundle. It is not evidence about real buildings or infrastructure.
+Synthetic methodological execution only; not evidence about real buildings/infrastructure.
 
-## Unit
-Each fixture is a six-state finite built-asset decision system. States are 0..5. Baseline state is 0; terminal state is 5.
+## Paired unit
+N=100 identical finite fixtures, IDs 1..100. Each fixture executes both conditions.
 
 ## Fixed transformations
-For every fixture, the base directed edges are:
-0->1 cost 4, 0->2 cost 7, 1->3 cost 5, 2->3 cost 2, 2->4 cost 6, 3->5 cost 8, 4->5 cost 3.
-Each edge has a stable identifier in the execution code.
+Base edges:
+0->1 cost 4; 0->2 cost 7; 1->3 cost 5; 2->3 cost 2; 2->4 cost 6; 3->5 cost 8; 4->5 cost 3.
+Treatment adds 1->4 cost 1.
 
-## Treatment
-Treatment adds exactly one admissible edge selected by the frozen fixture seed:
-1->4 cost 1.
-Control/reference adds no edge.
-The intervention changes T_acc only; all other base state/edge definitions remain unchanged.
+## Conditions
+Control = base graph. Treatment = identical graph plus intervention edge 1->4. Both are executed for every fixture.
 
-## Admissibility
-An edge is admissible iff it exists in the fixture edge table and both endpoint states are valid. No outcome, cost total, or V* is used by the predicate.
+## Accessibility
+Admissibility: edge exists in frozen edge table and endpoints are valid; no Outcome/LCC/V* input. T_acc,0=control graph; T_acc,1=treatment graph; ΔT_acc=treatment-control.
 
-## Assignment
-N=100 fixtures. Fixture IDs 1..100. Assignment is deterministic pseudorandom using Python's random.Random(582031). For each fixture, one Bernoulli draw p=0.5 assigns treatment/control. The seed, N and assignment rule are frozen.
+## Assignment / order
+No treatment/control assignment. Primary comparison is paired within fixture. The frozen seed 582031 is retained only as the bundle identifier; execution order is fixed control then treatment. No outcome-dependent ordering.
 
 ## Trajectory
-Deterministic breadth-first search from state 0 to state 5; ties resolved by ascending edge identifier. The trajectory rule does not inspect cost, LCC, Outcome or V*.
+Deterministic BFS from 0 to 5; ties resolved by ascending edge ID, never by cost/LCC/Outcome/V*.
 
-## Outcome and Value
-Outcome O = sum of transition costs on the selected trajectory.
-V* = -O, exactly implementing the frozen A valuation convention V*=-LCC.
-Reference contrast = V*_treatment - V*_control is computed only across paired fixture conditions; primary fixture-level treatment indicator is assigned before execution.
+## Outcome / Value
+O=sum of transition costs on selected trajectory. V*=-O under frozen A VSL.
 
-## Metrics
-Report N, treatment/control counts, mean O by assignment, mean V* by assignment, mean ΔT_acc (edge-count difference), trajectory identity frequencies, and exact reconstruction hashes.
-
-## Null/control
-Control is the identical fixture without the added 1->4 edge.
-
-## Integrity
-No external data. Python 3 standard library only. UTF-8 JSON. Frozen seed 582031. No network access.
+## Required outputs
+For each fixture: control/treatment T_acc size, trajectories, O, V*, ΔT_acc and ΔV*. Dataset hash over canonical JSON.
 
 ## Independent reconstruction
-Executor-2 must use only this bundle, its manifest, and the frozen VSL; no Executor-1 outputs or interpretations.
+Executor-2 reconstructs all 100 paired fixtures from frozen bundle, VSL and manifest without Executor-1 outputs/interpretations.
 
 ## Stop/failure
-Fail closed if any frozen constant, seed, edge table, assignment, trajectory rule, VSL reference, or hash differs from the manifest.
+Fail closed on any mismatch of frozen constants, edge table, trajectory rule, VSL reference or manifest integrity.
+
+**Disposition:** OPERATIONAL BUNDLE CORRECTED — NOT FROZEN.
