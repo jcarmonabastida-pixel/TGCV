@@ -2,9 +2,9 @@
 
 **Status:** CURRENT CONTROL POINTER  
 **Current matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
-**Current version:** v1.18  
-**Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.18.md`  
-**Predecessor:** v1.17  
+**Current version:** v1.19  
+**Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.19.md`  
+**Predecessor:** v1.18  
 **Established:** 2026-09-18
 
-v1.18 cumulatively preserves v1.17 and corrects the routing of VSL Synthetic Minimum v0.1: it is retained as a complete GL-07 material expediente and routed to C16 only. C10 remains unchanged from v1.16/v1.17 because the synthetic experiment does not provide evidence for the C10 claim.
+v1.19 cumulatively preserves v1.18 and restores bidirectional routing coherence: VSL Synthetic Minimum v0.1 is routed to C10 and C16 as bounded methodological/qualifying evidence. This routing does not change C10 status/level and does not establish causal `ΔT_acc → ΔV`, predictive value, real-world Value, universal Value or cross-domain comparability.
