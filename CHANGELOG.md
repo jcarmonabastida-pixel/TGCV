@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-18 — Evidence-to-Claim Matrix v1.22 / VSL C16 bidirectional propagation
+
+- Corrected the C16 claim-table routing so VSL Synthetic Minimum v0.1 is represented not only in the evidence basis but also in the claim's evidence-impact/interpretation field.
+- Preserved the VSL material expediente unchanged from v1.21 / v1.17 routing text.
+- Published cumulative Matrix v1.22 and advanced the current pointer.
+- No C10 change, no claim-level status/level upgrade, and no change to C09, TGCV Core or RMA.
+- Propagated Matrix v1.22 to CANONICAL_STATE, STATUS and RMA traceability.
+- Final current-state validator remains the closing gate after synchronization.
+
 ## 2026-09-16 — Evidence-to-Claim Matrix v1.12 / MT4 propagation
 
 - Created `EVIDENCE_TO_CLAIM_MATRIX_v1.12.md` as a cumulative complete successor to v1.11, preserving the full evidentiary content and six-column claim schema while adding the MT4 bounded methodological domain-transfer evidence.
