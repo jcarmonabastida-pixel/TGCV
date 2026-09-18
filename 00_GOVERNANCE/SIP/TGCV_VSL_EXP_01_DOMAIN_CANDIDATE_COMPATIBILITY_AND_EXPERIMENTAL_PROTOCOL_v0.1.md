@@ -1,7 +1,7 @@
 # TGCV — VSL-EXP-01
 ## Domain Candidate Compatibility and Experimental Protocol
 
-**Status:** DRAFT / CANDIDATE FOR FREEZE  
+**Status:** FROZEN  
 **Version:** v0.1  
 **Precondition:** VSL-SPEC-01 is FROZEN  
 **Scope:** Candidate-domain compatibility and pre-experimental protocol  
