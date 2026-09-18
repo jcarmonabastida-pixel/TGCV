@@ -20,8 +20,10 @@ CLAIM-MATRIX-v1.3,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_C
 CLAIM-MATRIX-v1.6,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.6.md,RMA-current,Historical matrix preserved immutable; prior current matrix
 CLAIM-MATRIX-v1.7,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.7.md,RMA-v3.35,Historical matrix preserved immutable; prior current matrix
 CLAIM-MATRIX-v1.11,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.11.md,RMA-v3.35,Historical matrix preserved immutable; predecessor of v1.12
-CLAIM-MATRIX-v1.12,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md,RMA-v3.35,Current cumulative matrix; MT4 bounded methodological domain-transfer evidence propagated; no claim upgrade; retained current during CPP-001-R1 methodology propagation
-CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.12,Current matrix alias must resolve to complete v1.12; not a simplified derivative
+CLAIM-MATRIX-v1.12,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md,RMA-v3.35,Historical cumulative matrix preserved immutable
+CLAIM-MATRIX-v1.21,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.21.md,RMA-v3.35,Historical cumulative matrix preserved immutable; immediate predecessor of v1.22
+CLAIM-MATRIX-v1.22,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.22.md,RMA-v3.35,Current cumulative matrix; VSL Synthetic Minimum v0.1 C16 claim-table evidentiary-impact routing completed; no claim upgrade
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.22,Current matrix alias must resolve to complete v1.22; not a simplified derivative
 ARM-v0.1,external_asset,HISTORICAL,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.1.md,ARM-current,Historical ARM state preserved immutable
 ARM-v0.2,external_asset,CURRENT,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.2.md,RMA-current,Current controlled ARM; architectural reconciliation only; Core and C01-C16 unchanged
 ARM-current,pointer,CURRENT,05_ASSETS/ARM/README.md,ARM-v0.2,Current ARM pointer; RII follows as current controlled external asset
