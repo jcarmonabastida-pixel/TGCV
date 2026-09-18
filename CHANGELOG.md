@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-19 — VSL-KGFS-02 formal closure
+
+- Formally closed `VSL-KGFS-02` as `CLOSED — COMPATIBILITY_NOT_ESTABLISHED` after the controlled source, population, site, translation/equivalence and administration audits.
+- Registered the stopping rule: development/validation of a Tamil CFPB adaptation, if undertaken in future, is a new methodological/psychometric work package and cannot be introduced retrospectively into C09.
+- Confirmed prospective KGFS VSL execution is not authorized.
+- Preserved `CD-05 historical Value = VALUE_NOT_IDENTIFIED_BLOCKED`.
+- No change to `VSL-SPEC-01`, `VSL-EXP-01`, C09, TGCV Core, RMA or Evidence→Claim Matrix v1.22.
+- Created `00_GOVERNANCE/SIP/TGCV_VSL_KGFS_02_CLOSURE_RECORD_001.md`.
+- Updated STATUS to make the candidate-level closure part of the canonical current-state reporting.
+
+# Changelog
+
 ## 2026-09-18 — Evidence-to-Claim Matrix v1.22 / VSL C16 bidirectional propagation
 
 - Corrected the C16 claim-table routing so VSL Synthetic Minimum v0.1 is represented not only in the evidence basis but also in the claim's evidence-impact/interpretation field.
