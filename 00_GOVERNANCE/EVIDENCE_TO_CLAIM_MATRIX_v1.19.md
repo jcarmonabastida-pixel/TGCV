@@ -1,9 +1,9 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.19
+# TGCV — Evidence-to-Claim Matrix — Current v1.20
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-18  
-**Predecessor:** v1.18  
-**Incremental governance update:** Restores bidirectional routing coherence for the VSL Synthetic Minimum v0.1: the experiment is routed to C10 and C16 as bounded methodological/qualifying evidence, while preserving the explicit non-claim that it does not establish the C10 causal/value proposition. The complete GL-07 material expediente is retained. No claim-level upgrade; C09, Core and RMA remain unchanged.
+**Predecessor:** v1.19  
+**Incremental governance update:** Corrects the C16 routing record for VSL Synthetic Minimum v0.1: the material evidence is explicitly represented in the C16 claim-table evidence basis and its bounded methodological contribution is stated in the C16 evidence-impact narrative. The C10 routing remains bounded methodological/qualifying evidence. The complete GL-07 material expediente is retained. No claim-level upgrade; C09, Core and RMA remain unchanged.
 
 **C05 material-evidence update:** The C05 frozen runner, runtime execution, post-execution audit and evidence-to-claim propagation are incorporated as a bounded synthetic application-fit record. The result is propagated only to C02, C07, C08 and C16 within the explicitly stated methodological limits. The synthetic baseline is not independent evidence, and NC2 does not constitute a trajectory-policy sensitivity test because the frozen trajectory implementation does not consume the added `selection_tiebreak` field.
 
@@ -636,7 +636,7 @@ Each local record keeps transition, post-transition state/context, `T_acc_1` and
 ### 7. Evidence-to-claim routing
 **C10 — bounded methodological qualification.** The result adds bounded methodological evidence that an independently frozen Outcome→Value mapping can be operationalized separately from the transformation/accessibility path. It does not establish real-world Value, causal `ΔT_acc → ΔV`, predictive value, a universal Value function, or cross-domain comparability, and does not constitute positive evidence for the C10 proposition.
 
-**C16 — bounded methodological contribution.** The experiment provides bounded methodological evidence that one frozen contract can be instantiated across three heterogeneous synthetic connector types while preserving distinctions among state/context, `U_tau`, admissibility/accessibility, `T_acc`, intervention, `Delta_T_acc`, trajectory, baseline reconstruction, cross-domain dependency, omitted information and non-claims.
+**C16 — bounded methodological contribution.** VSL Synthetic Minimum v0.1 is material evidence for C16: it demonstrates, under a frozen synthetic contract and controlled execution, that the translation protocol can preserve an explicit downstream Outcome/Value distinction and an external VSL interface without allowing the valuation functions to inspect accessibility, treatment, selected transformation or transformation identity. This is bounded implementation/reproducibility evidence for the translation protocol, not evidence of transversal empirical validity, causal `ΔT_acc → ΔV`, or a universal Value definition. The experiment provides bounded methodological evidence that one frozen contract can be instantiated across three heterogeneous synthetic connector types while preserving distinctions among state/context, `U_tau`, admissibility/accessibility, `T_acc`, intervention, `Delta_T_acc`, trajectory, baseline reconstruction, cross-domain dependency, omitted information and non-claims.
 
 **C02:** bounded qualification only; deterministic synthetic admissibility predicates and `T_acc` are explicitly represented, but general empirical accessibility is not validated.  
 **C08:** bounded qualification only; accessibility change and bounded trajectory are represented, but no causal trajectory estimand is identified.  
