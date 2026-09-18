@@ -1,9 +1,9 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.20
+# TGCV — Evidence-to-Claim Matrix — Current v1.21
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-18  
-**Predecessor:** v1.19  
-**Incremental governance update:** Corrects the C16 routing record for VSL Synthetic Minimum v0.1: the material evidence is explicitly represented in the C16 claim-table evidence basis and its bounded methodological contribution is stated in the C16 evidence-impact narrative. The C10 routing remains bounded methodological/qualifying evidence. The complete GL-07 material expediente is retained. No claim-level upgrade; C09, Core and RMA remain unchanged.
+**Predecessor:** v1.20  
+**Incremental governance update:** Corrects the VSL material expediente by restoring its original v1.17 routing text unchanged, while preserving the cumulative claim-table routing to C10 and C16 as bounded methodological/qualifying evidence. No claim-level upgrade; C09, Core and RMA remain unchanged.
 
 **C05 material-evidence update:** The C05 frozen runner, runtime execution, post-execution audit and evidence-to-claim propagation are incorporated as a bounded synthetic application-fit record. The result is propagated only to C02, C07, C08 and C16 within the explicitly stated methodological limits. The synthetic baseline is not independent evidence, and NC2 does not constitute a trajectory-policy sensitivity test because the frozen trajectory implementation does not consume the added `selection_tiebreak` field.
 
@@ -812,9 +812,11 @@ The result demonstrates a bounded implementation property: a synthetic VSL can b
 The T3 result is **not** an independent causal estimate of accessibility on Value. The synthetic runner deliberately encodes the transformation/accessibility pathway, so the execution cannot establish empirical causal validity.
 
 ### 7. Evidence-to-claim routing
+**C10 — bounded methodological qualification.** The result shows that an independently frozen outcome-to-Value mapping can be operationalized separately from the transformation/accessibility path. It does not establish real-world Value, `Delta T_acc → Delta V`, a universal Value function, or predictive validity.
+
 **C16 — bounded methodological contribution.** The result extends the translation protocol to preserve an explicit downstream Outcome/Value distinction and an external VSL interface. It demonstrates implementation-level separation without establishing transversal empirical validity or a causal value pathway.
 
-No routing is added to C02, C07, C08, C09 or C10. The experiment does not test accessibility, Reach or trajectory causality as its primary endpoint. No TGCV Core primitive or relation changes.
+No routing is added to C02, C07, C08 or C09. The experiment does not test accessibility, Reach or trajectory causality as its primary endpoint. No TGCV Core primitive or relation changes.
 
 ### 8. Reproducibility and boundaries
 The specification, outcome definition, freeze record, fixture, runner and audits are versioned in the canonical repository. Runtime evidence is the supplied controlled local execution under the corrected runner. The result is synthetic and domain-bounded. No real-world population, empirical valuation objective, monetary interpretation, ROI or cross-domain Value comparability is claimed.
