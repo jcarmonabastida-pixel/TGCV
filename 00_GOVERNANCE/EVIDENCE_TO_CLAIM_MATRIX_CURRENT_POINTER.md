@@ -2,9 +2,9 @@
 
 **Status:** CURRENT CONTROL POINTER  
 **Current matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
-**Current version:** v1.21  
-**Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.21.md`  
-**Predecessor:** v1.20  
+**Current version:** v1.22  
+**Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.22.md`  
+**Predecessor:** v1.21  
 **Established:** 2026-09-18
 
-v1.21 cumulatively preserves v1.20 and restores the original v1.17 VSL material-expediente routing text unchanged. The claim table retains VSL Synthetic Minimum v0.1 as bounded methodological/qualifying routing for C10 and C16. No claim-level status or level changes.
+v1.22 cumulatively preserves v1.21 and completes the bidirectional VSL routing by adding the VSL C16 evidentiary-impact text to the claim table. The VSL material expediente remains unchanged; C10 routing is unchanged. No claim-level status or level changes.
