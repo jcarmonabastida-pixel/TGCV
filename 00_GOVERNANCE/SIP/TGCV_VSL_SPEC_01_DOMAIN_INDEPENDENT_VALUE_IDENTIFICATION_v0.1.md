@@ -1,7 +1,7 @@
 # TGCV — VSL-SPEC-01
 ## Domain-Independent Specification for Value Identification
 
-**Status:** DRAFT / CANDIDATE FOR FREEZE  
+**Status:** FROZEN  
 **Version:** v0.1  
 **Scope:** Domain-independent methodological specification  
 **Role:** Pre-domain specification for subsequent domain-specific VSL construction
