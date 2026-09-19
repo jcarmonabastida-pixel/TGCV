@@ -11,15 +11,15 @@
 
 ## B. Scientific bundle
 
-- [ ] Scientific runner identified.
-- [ ] Scientific configuration identified.
-- [ ] Policy definitions identified.
+- [x] Scientific runner identified: `tr131_scientific_runner_v02.py`.
+- [x] Scientific configuration identified: `scientific_execution_config_v01.json`.
+- [x] Policy definitions identified: `scientific_policy_definitions.json`.
 - [ ] Canonical S0 identified.
 - [ ] Canonical C identified.
 - [ ] Canonical T_acc identified.
 - [ ] Transition/admissibility rules identified.
-- [ ] Environment specification identified.
-- [ ] Integrity manifest complete.
+- [x] Environment specification identified: `ENVIRONMENT_SPEC_v01.json`.
+- [x] Integrity manifest complete for the declared candidate artifacts; final freeze integrity audit remains pending.
 
 ## C. X isolation
 
@@ -73,7 +73,7 @@
 
 Freeze may be considered only if every applicable item A-G is PASS and no unresolved deviation exists.
 
-Freeze status: `PENDING`.
+Freeze status: `BLOCKED — EXECUTOR-2 PACKAGE v0.2 CREATED; INTEGRITY AUDIT PENDING`.
 G8 authorization: `NOT AUTHORIZED`.
 
 ## I. Scientific execution result fields
