@@ -1,0 +1,35 @@
+{
+  "package_version": "v0.2",
+  "status": "CANDIDATE — NOT FROZEN",
+  "executor": "EXECUTOR_2",
+  "scientific_execution_authorized": false,
+  "allowed_inputs": [
+    "00_GOVERNANCE/SIP/TGCV_TR-131_PROTOCOL_v0.1.md",
+    "03_EXPERIMENTS/TR-131/tr131_scientific_runner_v02.py",
+    "03_EXPERIMENTS/TR-131/scientific_policy_definitions.json",
+    "03_EXPERIMENTS/TR-131/scientific_execution_config_v01.json",
+    "03_EXPERIMENTS/TR-131/ENVIRONMENT_SPEC_v01.json",
+    "03_EXPERIMENTS/TR-131/TR-131_INTEGRITY_MANIFEST_v01.json",
+    "03_EXPERIMENTS/TR-131/G8_AUTHORIZATION_RECORD_SCHEMA_v01.json",
+    "03_EXPERIMENTS/TR-131/SCIENTIFIC_EXECUTION_OUTPUT_SCHEMA_v01.json",
+    "03_EXPERIMENTS/TR-131/EXECUTOR_2_RECONSTRUCTION_INSTRUCTIONS_v01.md"
+  ],
+  "prohibited_inputs": [
+    "EXECUTOR_1_RESULTS",
+    "EXECUTOR_1_INTERPRETATION",
+    "POST_EXECUTION_MODIFICATIONS",
+    "EXPECTED_OUTCOMES",
+    "COACHING"
+  ],
+  "required_output": [
+    "baseline_hashes",
+    "X_declarations",
+    "realized_transformations",
+    "transition_traces",
+    "H_A",
+    "H_B",
+    "integrity_hashes",
+    "deviations"
+  ],
+  "binding_note": "This package is candidate-only. No scientific execution authorization is conveyed."
+}
