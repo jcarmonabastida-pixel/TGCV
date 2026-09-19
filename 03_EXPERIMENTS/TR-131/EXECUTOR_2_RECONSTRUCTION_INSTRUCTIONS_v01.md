@@ -19,7 +19,16 @@ Executor-2 may use only:
 - integrity manifest;
 - G8 authorization-record schema (template only; no authorization);
 - scientific execution-output schema;
+- X declaration schema;
+- trace schema;
+- execution command template;
+- audit worksheet;
+- freeze audit;
 - this reconstruction instruction.
+
+## Execution command boundary
+
+The command template is supplied for post-G8 use only. Executor-2 must not execute scientific mode while the package is candidate-only or without the formally bound G8 authorization record.
 
 ## Reconstruction
 
