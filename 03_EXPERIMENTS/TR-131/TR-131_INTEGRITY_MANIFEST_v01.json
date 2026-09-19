@@ -1,0 +1,29 @@
+{
+  "manifest_version": "v0.1",
+  "status": "CANDIDATE — NOT FROZEN",
+  "scientific_execution_authorized": false,
+  "artifacts": [
+    {
+      "path": "03_EXPERIMENTS/TR-131/tr131_scientific_runner_v01.py",
+      "commit": "8554d056dcfd200e1978734da182a659513a6419"
+    },
+    {
+      "path": "03_EXPERIMENTS/TR-131/scientific_policy_definitions.json",
+      "commit": "c3edf2664984ff9cac91f38d1a3e4cac18b2a858"
+    },
+    {
+      "path": "03_EXPERIMENTS/TR-131/scientific_execution_config_v01.json",
+      "commit": "f06ad18d1bd445c3b9bed5215095130342564067"
+    },
+    {
+      "path": "03_EXPERIMENTS/TR-131/ENVIRONMENT_SPEC_v01.json",
+      "status": "candidate"
+    }
+  ],
+  "required_before_freeze": [
+    "Executor-2 reconstruction package",
+    "audit worksheet",
+    "freeze audit",
+    "G8 authorization"
+  ]
+}
