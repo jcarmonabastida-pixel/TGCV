@@ -1,12 +1,9 @@
 # TGCV — Evidence-to-Claim Matrix — Current v1.23
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
-**Date:** 2026-09-18  
-**Predecessor:** v1.21  
-**Incremental governance update:** Completes bidirectional VSL routing by adding the VSL C16 evidentiary-impact text to the claim table, while preserving the VSL material expediente unchanged. C10 routing is unchanged. No claim-level upgrade; C09, Core and RMA remain unchanged.
-
-**C05 material-evidence update:** The C05 frozen runner, runtime execution, post-execution audit and evidence-to-claim propagation are incorporated as a bounded synthetic application-fit record. The result is propagated only to C02, C07, C08 and C16 within the explicitly stated methodological limits. The synthetic baseline is not independent evidence, and NC2 does not constitute a trajectory-policy sensitivity test because the frozen trajectory implementation does not consume the added `selection_tiebreak` field.
-
+**Date:** 2026-09-19  
+**Predecessor:** v1.22  
+**Incremental governance update:** Incorporates `VSL Paired E1/E2 v001` as bounded synthetic methodological evidence under GL-07, with bidirectional routing to C02, C07, C08, C10 and C16. No claim-level upgrade; C09, Core and RMA remain unchanged.
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
 
