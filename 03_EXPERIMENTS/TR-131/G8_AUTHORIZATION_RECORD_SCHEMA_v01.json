@@ -1,0 +1,20 @@
+{
+  "schema_version": "v0.1",
+  "record_type": "TGCV_TR-131_G8_AUTHORIZATION",
+  "gate": "G8",
+  "authorized": false,
+  "required_fields": [
+    "gate",
+    "authorized",
+    "package_manifest_sha256",
+    "protocol_sha256",
+    "runner_sha256",
+    "config_sha256",
+    "policy_definitions_sha256",
+    "environment_sha256",
+    "executor_2_audit_reference",
+    "freeze_record_reference"
+  ],
+  "binding_rule": "authorized=true is valid only when every listed SHA-256 matches the frozen package and the referenced Executor-2 audit and freeze record both establish PASS.",
+  "status": "TEMPLATE — NOT AN AUTHORIZATION"
+}
