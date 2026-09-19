@@ -56,11 +56,11 @@ Therefore, when:
 (S,C,T_{acc})_A=(S,C,T_{acc})_B
 \]
 
-equivalent realizational conditions should not produce systematically different trajectories unless an already represented variable differs.
+variation in a candidate external realization variable X should not be necessary to predict H if (S,C,T_acc) is sufficient.
 
 ### H1 — Additional realization dependence
 
-There exists a controlled realization/selection condition not reducible to (S,C,T_acc) such that:
+There exists a controlled realization/selection condition not represented by (S,C,T_acc) such that:
 
 \[
 (S,C,T_{acc})_A=(S,C,T_{acc})_B
@@ -74,7 +74,7 @@ H_A\neq H_B
 
 and the trajectory difference is attributable to the controlled realization/selection condition.
 
-H1 is evidence of insufficiency of the current representation under the tested construction. It is not, by itself, proof that Π is a universal primitive or that it belongs in the TGCV Core.
+H1 is evidence of **representation insufficiency under the tested construction**. It is not, by itself, proof that Π is a universal primitive or that it belongs in the TGCV Core.
 
 ---
 
@@ -95,6 +95,8 @@ T_{real}\subseteq T_{acc}
 X represents candidate realization/selection information or mechanism.
 
 TR-131 must operationalize X independently from the variables whose sufficiency is being tested.
+
+A positive result must not be labelled “Π irreducible” without a subsequent irreducibility assessment.
 
 ---
 
@@ -118,7 +120,23 @@ The following must remain frozen and identical across the principal comparison:
 - analysis code;
 - exclusion rules.
 
-Only the designated realization/selection condition may vary.
+Only the designated realization/selection condition X may vary.
+
+The protocol must explicitly verify that the intended variation in X does not alter the candidate explanatory representation before realization:
+
+\[
+X\not\rightarrow S
+\]
+
+\[
+X\not\rightarrow C
+\]
+
+\[
+X\not\rightarrow T_{acc}
+\]
+
+except through the explicitly intended downstream realization operation.
 
 If any critical invariant differs unintentionally, the comparison is invalid for the primary TR-131 inference.
 
@@ -151,6 +169,8 @@ subject to:
 (S_0,C,T_{acc})_A=(S_0,C,T_{acc})_B
 \]
 
+The paired design is interpretable only if equality of the non-target representation is independently verified rather than inferred from identical configuration or fixture files.
+
 ---
 
 ## 7. Operationalization requirements
@@ -175,9 +195,13 @@ The protocol must permit independent verification that:
 T_{acc,A}=T_{acc,B}
 \]
 
+Equality must be checked using a canonical transformation representation, deterministic ordering/canonicalization, cardinality, and a reproducible set/hash procedure.
+
 ### 7.4 Realization/selection condition
 
 X_A and X_B must differ in a precisely specified way.
+
+The protocol must declare X before execution, specify its admissible values, instantiate it deterministically or according to a frozen randomization procedure, and record it in the execution trace before realization occurs.
 
 The difference must not silently modify S, C, T_acc, admissibility, or transition rules.
 
@@ -187,7 +211,7 @@ T_real must be observable from the execution trace rather than inferred retrospe
 
 ### 7.6 Trajectory
 
-H must have a deterministic representation from the sequence of states and realized transformations.
+H must have a deterministic representation derived from the sequence of states and realized transformations.
 
 ---
 
@@ -213,13 +237,40 @@ Y_H=
 \end{cases}
 \]
 
-The exact metric must be frozen before execution.
+The exact metric or equality predicate must be frozen before fixture generation and execution.
+
+It must be deterministic, computable from the frozen transition trace, insensitive to irrelevant serialization differences, and independently executable.
+
+Where the representation permits exact comparison, exact trajectory equality should be preferred to a discretionary distance threshold. If a non-zero threshold is used, its value and justification must be frozen before execution.
 
 No post hoc trajectory metric selection is permitted.
 
 ---
 
-## 9. Secondary outcomes
+## 9. Required transition trace
+
+The operational bundle must produce a transition-level trace exposing, for every relevant transition at minimum:
+
+\[
+(S_t,C_t,T_{acc,t},X_t,T_{real,t},S_{t+1})
+\]
+
+The trajectory H must be derived from this trace using the frozen trajectory definition.
+
+The final state alone is insufficient to establish the realized transformation sequence.
+
+The trace must make it possible to independently verify:
+
+1. X_A ≠ X_B;
+2. S_A = S_B at the relevant comparison points;
+3. C_A = C_B;
+4. T_acc,A = T_acc,B;
+5. T_real,A and T_real,B;
+6. H_A and H_B.
+
+---
+
+## 10. Secondary outcomes
 
 The protocol may record:
 
@@ -237,26 +288,26 @@ A downstream value difference must not be used to rescue an otherwise null traje
 
 ---
 
-## 10. Identification condition
+## 11. Identification condition
 
 A positive TR-131 result requires all of the following:
 
 1. S₀ equivalence is verified;
 2. C equivalence is verified;
 3. T_acc equivalence is verified;
-4. all non-target rules are frozen and identical;
+4. equality of transformation/admissibility/transition definitions is verified;
 5. X_A and X_B are demonstrably different;
-6. T_real is measured;
-7. H is measured using the frozen definition;
+6. T_real is measured from the execution trace;
+7. H is derived using the frozen definition;
 8. H_A ≠ H_B under the pre-specified criterion;
 9. the result survives independent reconstruction;
-10. no identified invariant violation explains the difference.
+10. no identified invariant violation or uncontrolled factor explains the difference.
 
-If any of these conditions fails, the primary irreducibility inference is not established.
+If any of these conditions fails, the primary **representation-insufficiency** inference is not established.
 
 ---
 
-## 11. Negative-result interpretation
+## 12. Negative-result interpretation
 
 If:
 
@@ -270,7 +321,7 @@ and:
 H_A=H_B
 \]
 
-under the controlled realization contrast, the test does not establish irreducibility of Π.
+under the controlled realization contrast, the test does not establish representation insufficiency or irreducibility of Π.
 
 It may support sufficiency of the tested representation, subject to the scope and limitations of the construction.
 
@@ -278,7 +329,7 @@ It does not prove universal sufficiency.
 
 ---
 
-## 12. Positive-result interpretation
+## 13. Positive-result interpretation
 
 If the identification conditions are satisfied and:
 
@@ -286,9 +337,11 @@ If the identification conditions are satisfied and:
 H_A\neq H_B
 \]
 
-then the result provides evidence that the current (S,C,T_acc) representation is insufficient to determine realized trajectory under the tested construction.
+then the result is classified:
 
-The appropriate conclusion is:
+**TR-131 POSITIVE — REPRESENTATION INSUFFICIENCY**
+
+The result provides evidence that the current (S,C,T_acc) representation is insufficient to determine realized trajectory under the tested construction:
 
 \[
 (S,C,T_{acc})\not\Rightarrow H
@@ -296,13 +349,15 @@ The appropriate conclusion is:
 
 under the tested conditions.
 
-The next step would be an irreducibility assessment of the candidate realization mechanism.
+This is not yet a finding that Π is irreducible.
+
+The next step is a separate **irreducibility assessment** asking whether X can be incorporated into an expanded state/context representation without making the explanation tautological or destroying the intended explanatory distinction.
 
 No automatic Core modification follows.
 
 ---
 
-## 13. Falsification and invalidation rules
+## 14. Falsification and invalidation rules
 
 The primary result must be classified as invalid, unresolved, or non-informative for TR-131 if:
 
@@ -311,6 +366,7 @@ The primary result must be classified as invalid, unresolved, or non-informative
 - context differs;
 - transition/admissibility rules differ;
 - realization contrast is not isolated;
+- X is defined retrospectively from observed outcomes;
 - trajectory metric was selected after observing outcomes;
 - execution trace is incomplete;
 - independent reconstruction fails;
@@ -319,7 +375,7 @@ The primary result must be classified as invalid, unresolved, or non-informative
 
 ---
 
-## 14. Independence requirement
+## 15. Independence requirement
 
 TR-131 requires an independent Executor-2 reconstruction.
 
@@ -329,7 +385,7 @@ Executor-2 must reconstruct from the frozen package without access to:
 - Executor-1 interpretation;
 - post-execution trajectory data;
 - post-execution tuning;
-- unfreezed implementation changes;
+- unfrozen implementation changes;
 - coaching intended to reproduce a desired result.
 
 The independent executor must independently verify:
@@ -342,7 +398,7 @@ before comparison.
 
 ---
 
-## 15. Required frozen package
+## 16. Required frozen package
 
 Before authorization, the repository must contain a complete operational bundle containing at minimum:
 
@@ -355,21 +411,24 @@ Before authorization, the repository must contain a complete operational bundle 
 7. exact X_A and X_B definitions;
 8. transition function;
 9. admissibility rules;
-10. trajectory metric;
-11. randomization/seed policy, if applicable;
-12. null/control conditions, if applicable;
-13. execution commands;
-14. environment specification;
-15. expected output schema;
-16. integrity hashes;
-17. independent reconstruction instructions;
-18. audit worksheet.
+10. trajectory metric or exact equality predicate;
+11. canonical T_acc representation and hash/equality procedure;
+12. transition-trace schema;
+13. randomization/seed policy, if applicable;
+14. null/control conditions, if applicable;
+15. execution commands;
+16. environment specification;
+17. expected output schema;
+18. integrity hashes;
+19. independent reconstruction instructions;
+20. audit worksheet;
+21. explicit non-target invariance checklist.
 
 The package must be executable by an independent executor without interpretive completion of missing scientific definitions.
 
 ---
 
-## 16. Pre-execution gates
+## 17. Pre-execution gates
 
 No scientific execution is authorized until the following gates pass:
 
@@ -383,11 +442,25 @@ All variables and outcome measures are operationally defined.
 
 ### G3 — Invariance completeness
 
-The frozen invariants can be independently checked.
+The frozen invariants can be independently checked, including:
+
+\[
+S_A=S_B
+\]
+
+\[
+C_A=C_B
+\]
+
+\[
+T_{acc,A}=T_{acc,B}
+\]
+
+and equality of transition/admissibility definitions.
 
 ### G4 — Isolation of realization condition
 
-X is the only intended experimental difference.
+X is the only intended experimental difference and the protocol demonstrates that X does not alter S, C, or T_acc except through the intended downstream realization operation.
 
 ### G5 — Identifiability
 
@@ -423,7 +496,7 @@ Only after G1-G7 pass may TR-131 scientific execution be authorized.
 
 ---
 
-## 17. Governance boundaries
+## 18. Governance boundaries
 
 This protocol does not authorize:
 
@@ -436,21 +509,107 @@ This protocol does not authorize:
 
 Any such change requires a separate governance decision after results are available.
 
+A TR-131 positive result does not automatically alter the Core. It first triggers a separate irreducibility assessment.
+
 ---
 
-## 18. Decision table
+## 19. Decision table
 
 | Result | Interpretation | TGCV consequence |
 |---|---|---|
-| H_A = H_B, valid execution | No irreducibility demonstrated | Π remains auxiliary |
-| H_A ≠ H_B, valid execution | Current representation insufficient under construction | Formal irreducibility assessment of Π |
+| H_A = H_B, valid execution | No representation insufficiency demonstrated | Π remains auxiliary |
+| H_A ≠ H_B, valid execution | Representation insufficiency under construction | Separate irreducibility assessment of Π |
 | Invariant failure | Test invalid/unresolved | No scientific inference |
 | Executor-2 failure | Execution not independently verified | No scientific inference |
 | Ambiguous trajectory metric | Protocol failure | No primary inference |
 
 ---
 
-## 19. Status and next action
+## 20. Explicit non-target invariance audit
+
+Before freeze and before each scientific execution, the operational audit must produce machine-checkable results for:
+
+### A1 — State invariance
+
+\[
+S_A=S_B
+\]
+
+with a canonical state representation and reproducible equality/hash result.
+
+### A2 — Context invariance
+
+\[
+C_A=C_B
+\]
+
+with a canonical representation and reproducible equality/hash result.
+
+### A3 — T_acc invariance
+
+\[
+T_{acc,A}=T_{acc,B}
+\]
+
+with canonical transformation representation, cardinality, and set/hash result.
+
+### A4 — Rule invariance
+
+Transformation definitions, admissibility rules, transition function, observation window, measurement procedure, and analysis code must be identical or explicitly hash-equivalent.
+
+The audit must fail closed if any required equality cannot be established.
+
+---
+
+## 21. X declaration and trace audit
+
+Before execution, an X declaration record must specify:
+
+- X definition;
+- admissible values;
+- X_A;
+- X_B;
+- instantiation procedure;
+- randomization procedure, if any;
+- expected location in the trace;
+- verification that X is present before realization;
+- verification that X does not alter S, C, T_acc, admissibility, or transition rules except through the intended realization operation.
+
+The declaration record is frozen with the protocol.
+
+X must never be defined as a function of H, O, V, T_real, or any post-execution result.
+
+---
+
+## 22. Expanded-state challenge
+
+A TR-131 positive result establishes representation insufficiency, not formal irreducibility.
+
+Before considering any Core modification, the candidate realization information X must be subjected to an expanded-state challenge.
+
+The challenge asks whether an equivalent representation can be constructed:
+
+\[
+S' = G(S,C,X)
+\]
+
+or, where appropriate:
+
+\[
+C' = G(C,X)
+\]
+
+such that the observed trajectory can be represented without a separate Π while preserving the intended explanatory distinction.
+
+The challenge must avoid tautological constructions in which the entire outcome or trajectory is simply encoded into the expanded state.
+
+A positive TR-131 result followed by successful expanded-state representation would therefore not justify declaring Π irreducible.
+
+Only if the additional realization dependence survives this challenge does a formal irreducibility assessment become warranted.
+
+---
+
+## 23. Status and next action
 
 **Current status:** DRAFT — NOT FROZEN  
 **Scientific execution:** NOT AUTHORIZED  
@@ -458,8 +617,15 @@ Any such change requires a separate governance decision after results are availa
 **RMA:** unchanged  
 **Evidence Matrix:** unchanged
 
-The next operation after this protocol draft is **not execution**.
+The protocol has incorporated the six design-audit requirements A1-A6:
 
-It is a protocol audit focused on whether the proposed contrast is scientifically identifiable and whether X can genuinely be varied without changing S, C, or T_acc.
+- A1 — explicit non-target invariance audit;
+- A2 — canonical T_acc representation;
+- A3 — X declaration record;
+- A4 — transition-level trace schema;
+- A5 — positive-result classification as representation insufficiency;
+- A6 — expanded-state challenge.
 
-Only after that audit should the operational fixture and frozen execution bundle be constructed.
+The next operation is a **second protocol audit** of this amended version.
+
+Only after that audit passes should the operational fixture and frozen execution bundle be constructed.
