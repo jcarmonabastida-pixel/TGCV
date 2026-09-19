@@ -1,12 +1,12 @@
 {
-  "environment_spec_version": "v0.1",
+  "environment_spec_version": "v0.2",
   "platform": "Windows",
   "python": "3.x",
   "execution_mode": "candidate_scientific_bundle",
   "repository": "jcarmonabastida-pixel/TGCV",
   "branch": "main",
   "required_files": [
-    "03_EXPERIMENTS/TR-131/tr131_scientific_runner_v01.py",
+    "03_EXPERIMENTS/TR-131/tr131_scientific_runner_v02.py",
     "03_EXPERIMENTS/TR-131/scientific_policy_definitions.json",
     "03_EXPERIMENTS/TR-131/scientific_execution_config_v01.json"
   ],
