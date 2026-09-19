@@ -46,8 +46,8 @@ def load_policy_definitions():
         raise ValueError("Policy definition set mismatch.")
     if data["constraints"] != {
         "selection_source": "X",
-        "post_hoc_selection": false,
-        "selected_transformation_must_be_in_T_acc": true
+        "post_hoc_selection": False,
+        "selected_transformation_must_be_in_T_acc": True
     }:
         raise ValueError("Policy constraints mismatch.")
     policies = data["policies"]
