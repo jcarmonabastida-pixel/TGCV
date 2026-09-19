@@ -1,0 +1,57 @@
+{
+  "manifest_version": "v0.2",
+  "status": "FREEZE_CANDIDATE — NOT FROZEN",
+  "scientific_execution_authorized": false,
+  "protocol": {
+    "path": "00_GOVERNANCE/SIP/TGCV_TR-131_PROTOCOL_v0.1.md",
+    "status": "DRAFT — NOT FROZEN"
+  },
+  "bundle": {
+    "path": "03_EXPERIMENTS/TR-131/TR-131_SCIENTIFIC_EXECUTION_BUNDLE_v0.1.md",
+    "status": "DRAFT — NOT FROZEN"
+  },
+  "artifacts": [
+    "03_EXPERIMENTS/TR-131/tr131_scientific_runner_v01.py",
+    "03_EXPERIMENTS/TR-131/scientific_policy_definitions.json",
+    "03_EXPERIMENTS/TR-131/scientific_execution_config_v01.json",
+    "03_EXPERIMENTS/TR-131/ENVIRONMENT_SPEC_v01.json",
+    "03_EXPERIMENTS/TR-131/TR-131_INTEGRITY_MANIFEST_v01.json",
+    "03_EXPERIMENTS/TR-131/EXECUTOR_2_RECONSTRUCTION_INSTRUCTIONS_v01.md",
+    "03_EXPERIMENTS/TR-131/EXECUTOR_2_PACKAGE_MANIFEST_v01.json",
+    "00_GOVERNANCE/SIP/TGCV_TR-131_SCIENTIFIC_FREEZE_EXECUTOR2_AUDIT_WORKSHEET_v0.1.md"
+  ],
+  "construction_checks": {
+    "preflight": "PREFLIGHT_PASS",
+    "scientific_runner": "CONSTRUCTION_CHECK_PASS"
+  },
+  "baseline_hashes": {
+    "S0": "f172e9a705a27d73b864f6ce34e0c6b6cdf9f18bf1e61a646f2d81efdd40ec0a",
+    "C": "0aefc336bb0509d6403b51449c07f75a08b83d69137823e4653437a63164af43",
+    "T_acc": "0b5d8211831f6f2701578dc4a91d82ce63a4192422f66fee7aae856e9ba539b9"
+  },
+  "x": {
+    "A": "policy_A",
+    "B": "policy_B"
+  },
+  "prohibited_inputs": [
+    "EXECUTOR_1_RESULTS",
+    "EXECUTOR_1_INTERPRETATION",
+    "EXPECTED_OUTCOMES",
+    "COACHING",
+    "POST_EXECUTION_MODIFICATIONS"
+  ],
+  "required_before_freeze": [
+    "immutable artifact-level hashes for every bundle component",
+    "final protocol freeze audit",
+    "Executor-2 package integrity audit",
+    "freeze record",
+    "G8 authorization record"
+  ],
+  "governance": {
+    "core": "UNCHANGED",
+    "rma": "UNCHANGED",
+    "evidence_matrix": "UNCHANGED",
+    "vsl": "UNCHANGED",
+    "c09": "UNCHANGED"
+  }
+}
