@@ -1,0 +1,16 @@
+{
+  "protocol_id": "TGCV_TR-131_PROTOCOL_v0.1",
+  "bundle_id": "TGCV_TR131_SCIENTIFIC_EXECUTION_BUNDLE_v0.1",
+  "bundle_version": "v0.1",
+  "mode": "SCIENTIFIC_CANDIDATE",
+  "cases": ["A", "B"],
+  "x_A": "policy_A",
+  "x_B": "policy_B",
+  "policy_definitions": "scientific_policy_definitions.json",
+  "primary_outcome": "H",
+  "positive_contrast": "H_A != H_B",
+  "null_contrast": "H_A == H_B",
+  "post_hoc_modification": false,
+  "authorization_required": true,
+  "executor_2_required": true
+}
