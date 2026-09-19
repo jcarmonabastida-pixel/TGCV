@@ -1,0 +1,18 @@
+{
+  "schema_version": "v0.1",
+  "record_type": "TGCV_TR-131_SCIENTIFIC_EXECUTION_OUTPUT",
+  "canonical_output_path": "03_EXPERIMENTS/TR-131/execution/TR131_SCIENTIFIC_EXECUTION_RESULT_001.json",
+  "required_fields": [
+    "status",
+    "execution_performed",
+    "authorization_gate",
+    "checks",
+    "primary_outcome",
+    "hashes",
+    "x",
+    "realized_transformations",
+    "traces"
+  ],
+  "status_rule": "Only a run with a valid frozen G8 authorization may emit a scientific execution result.",
+  "registration_rule": "The output file and its SHA-256 must be registered as execution evidence only after independent Executor-2 reconstruction and the applicable result audit."
+}
