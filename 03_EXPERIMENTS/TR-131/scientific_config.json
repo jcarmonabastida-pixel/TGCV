@@ -1,0 +1,8 @@
+{
+  "protocol_id": "TGCV_TR-131_PROTOCOL_v0.1",
+  "fixture_id": "TGCV_TR131_SCIENTIFIC_FIXTURE_v0.1",
+  "mode": "CONSTRUCTION_CHECK",
+  "cases": ["A", "B"],
+  "x_A": "policy_A",
+  "x_B": "policy_B"
+}
