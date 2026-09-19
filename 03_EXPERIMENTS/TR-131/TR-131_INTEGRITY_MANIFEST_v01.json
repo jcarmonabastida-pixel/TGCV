@@ -1,23 +1,43 @@
 {
-  "manifest_version": "v0.1",
+  "manifest_version": "v0.2",
   "status": "CANDIDATE — NOT FROZEN",
   "scientific_execution_authorized": false,
   "artifacts": [
     {
-      "path": "03_EXPERIMENTS/TR-131/tr131_scientific_runner_v01.py",
-      "commit": "8554d056dcfd200e1978734da182a659513a6419"
+      "path": "00_GOVERNANCE/SIP/TGCV_TR-131_PROTOCOL_v0.1.md",
+      "sha256": "9945E42C3D72006DD76B39040EBB4C23C6CA5D274D5FA6E40C203D7F73B02409"
+    },
+    {
+      "path": "03_EXPERIMENTS/TR-131/tr131_scientific_runner_v02.py",
+      "sha256": "5CE5AF11466BC129D1131C9C11BDA44224607323D1BCCF0823E9C2CB1EFC3EA1"
     },
     {
       "path": "03_EXPERIMENTS/TR-131/scientific_policy_definitions.json",
-      "commit": "c3edf2664984ff9cac91f38d1a3e4cac18b2a858"
+      "sha256": "938CEDE9DF894674C1BE1A7335D268BE27460D48C1BDD8E70CFF1A143A2684B1"
     },
     {
       "path": "03_EXPERIMENTS/TR-131/scientific_execution_config_v01.json",
-      "commit": "f06ad18d1bd445c3b9bed5215095130342564067"
+      "sha256": "BC190FF2DAC5FBBD61E5BE6D0C814BD9C4810EE0D20B62AC69E044CF7C610B4E"
     },
     {
       "path": "03_EXPERIMENTS/TR-131/ENVIRONMENT_SPEC_v01.json",
-      "status": "candidate"
+      "sha256": "9D4DFC60C9E7909C52846D8651F8705E416D9B2B8E87ADD4E5DE638ADD53054D"
+    },
+    {
+      "path": "03_EXPERIMENTS/TR-131/TR-131_INTEGRITY_MANIFEST_v01.json",
+      "status": "self-reference excluded from artifact hash inventory"
+    },
+    {
+      "path": "03_EXPERIMENTS/TR-131/G8_AUTHORIZATION_RECORD_SCHEMA_v01.json",
+      "sha256": "7DB4A1E74FF47CBD262D6039B3CCA5DBB03E445415F27495209BEFADAED141F8"
+    },
+    {
+      "path": "03_EXPERIMENTS/TR-131/SCIENTIFIC_EXECUTION_OUTPUT_SCHEMA_v01.json",
+      "sha256": "EB32BF7F0B852BF9DE3D7B9CBBCE4ED6864C447203346813A94461F7293E86DC"
+    },
+    {
+      "path": "03_EXPERIMENTS/TR-131/EXECUTOR_2_RECONSTRUCTION_INSTRUCTIONS_v01.md",
+      "sha256": "E93DD714A9A82764421E41F791F263182AD3DBC3479E601BF71845BA9CFC6504"
     }
   ],
   "required_before_freeze": [
