@@ -1,0 +1,9 @@
+{
+  "protocol_id": "TGCV_TR-131_PROTOCOL_v0.1",
+  "fixture_id": "TGCV_TR131_OPERATIONAL_FIXTURE_v0.1",
+  "mode": "PREFLIGHT",
+  "cases": ["A", "B"],
+  "x_A": "policy_A",
+  "x_B": "policy_B",
+  "seed": 131001
+}
