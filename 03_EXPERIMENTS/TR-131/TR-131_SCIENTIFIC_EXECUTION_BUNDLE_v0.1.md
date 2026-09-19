@@ -23,15 +23,15 @@ Required components:
 
 ## 2. Scientific runner reference
 
-`03_EXPERIMENTS/TR-131/tr131_scientific_runner_v01.py`
+`03_EXPERIMENTS/TR-131/tr131_scientific_runner_v02.py`
 
-The runner is currently restricted to `CONSTRUCTION_CHECK` mode and must fail closed for any other mode until G8 authorization exists.
+The scientific runner v0.2 implements `SCIENTIFIC_CANDIDATE` but remains fail-closed: execution requires a valid canonical G8 authorization record bound to the frozen package.
 
 ## 3. Scientific configuration
 
-`03_EXPERIMENTS/TR-131/scientific_config.json`
+`03_EXPERIMENTS/TR-131/scientific_execution_config_v01.json`
 
-Current configuration is construction-only. A separate frozen scientific configuration MUST be created and hashed before execution.
+The candidate scientific configuration is `SCIENTIFIC_CANDIDATE` and MUST be frozen and hashed before execution.
 
 ## 4. Canonical baseline
 
@@ -91,6 +91,8 @@ Before freeze, the following remain incomplete:
 - explicit immutable policy-definition artifact;
 - environment specification;
 - integrity manifest covering the complete bundle;
+- canonical G8 authorization-record schema;
+- canonical scientific execution-output schema;
 - Executor-2 package;
 - audit worksheet;
 - freeze audit;
@@ -100,4 +102,4 @@ Before freeze, the following remain incomplete:
 
 This bundle specification is a construction artifact. It does not authorize execution and does not constitute scientific evidence.
 
-**Disposition:** `BUNDLE_ASSEMBLY_STARTED — SCIENTIFIC EXECUTION BLOCKED`.
+**Disposition:** `BUNDLE_ASSEMBLY_UPDATED — SCIENTIFIC EXECUTION BLOCKED`.
