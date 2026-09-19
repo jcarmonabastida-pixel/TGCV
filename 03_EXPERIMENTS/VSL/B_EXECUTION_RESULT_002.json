@@ -1,0 +1,2507 @@
+﻿{
+  "N": 100,
+  "dataset_sha256": "a3c7cefa75cf01ce7bd6944d845a578b652d499e6fa01ff38443c7c15e5cda03",
+  "rows": [
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 1,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 2,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 3,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 4,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 5,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 6,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 7,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 8,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 9,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 10,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 11,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 12,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 13,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 14,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 15,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 16,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 17,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 18,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 19,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 20,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 21,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 22,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 23,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 24,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 25,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 26,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 27,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 28,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 29,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 30,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 31,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 32,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 33,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 34,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 35,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 36,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 37,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 38,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 39,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 40,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 41,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 42,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 43,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 44,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 45,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 46,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 47,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 48,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 49,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 50,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 51,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 52,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 53,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 54,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 55,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 56,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 57,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 58,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 59,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 60,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 61,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 62,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 63,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 64,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 65,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 66,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 67,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 68,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 69,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 70,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 71,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 72,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 73,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 74,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 75,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 76,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 77,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 78,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 79,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 80,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 81,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 82,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 83,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 84,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 85,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 86,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 87,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 88,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 89,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 90,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 91,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 92,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 93,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 94,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 95,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 96,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 97,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 98,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 99,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    },
+    {
+      "control": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 7,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      },
+      "delta_V_star": 0,
+      "delta_t_acc": 1,
+      "fixture": 100,
+      "treatment": {
+        "O": 18,
+        "V_star": -18,
+        "t_acc_size": 8,
+        "trajectory": [
+          "o01",
+          "o13",
+          "o35"
+        ]
+      }
+    }
+  ],
+  "seed": 582031
+}
