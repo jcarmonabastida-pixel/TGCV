@@ -1,0 +1,17 @@
+{
+  "protocol_id": "TGCV_TR-131_PROTOCOL_v0.1",
+  "policy_definition_version": "v0.1",
+  "policies": {
+    "policy_A": {
+      "select": "tau_accept"
+    },
+    "policy_B": {
+      "select": "tau_defer"
+    }
+  },
+  "constraints": {
+    "selection_source": "X",
+    "post_hoc_selection": false,
+    "selected_transformation_must_be_in_T_acc": true
+  }
+}
