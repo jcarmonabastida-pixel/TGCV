@@ -11,6 +11,7 @@ Executor-2 must receive only the frozen scientific package and must not receive 
 
 Executor-2 may use only:
 - protocol reference;
+- scientific bundle specification;
 - scientific runner v0.2;
 - scientific policy definitions;
 - scientific execution configuration;
