@@ -11,17 +11,19 @@ Executor-2 must receive only the frozen scientific package and must not receive 
 
 Executor-2 may use only:
 - protocol reference;
-- scientific runner;
+- scientific runner v0.2;
 - scientific policy definitions;
 - scientific execution configuration;
 - environment specification;
 - integrity manifest;
+- G8 authorization-record schema (template only; no authorization);
+- scientific execution-output schema;
 - this reconstruction instruction.
 
 ## Reconstruction
 
 1. Verify repository/package identifiers and integrity references.
-2. Reconstruct A and B from the declared X policies.
+2. Reconstruct A and B from the declared X policies using the frozen scientific runner/configuration definitions. Do not execute unless the package is formally frozen and the Executor-2 procedure explicitly authorizes reconstruction.
 3. Independently derive T_real,A and T_real,B.
 4. Independently derive H_A and H_B.
 5. Verify S0, C and T_acc equality across A/B.
