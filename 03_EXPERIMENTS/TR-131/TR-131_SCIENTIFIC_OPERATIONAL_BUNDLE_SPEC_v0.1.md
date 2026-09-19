@@ -11,7 +11,7 @@ The proposed controlled contrast uses the same frozen system state, context, acc
 Only the realization/selection condition X differs:
 
 - Case A: `policy_A` selects `tau_accept`.
-- Case B: `policy_B` selects `tau_reject`.
+- Case B: `policy_B` selects `tau_defer`.
 
 The scientific fixture must implement these as independently declared realization policies rather than hard-coding a trajectory outcome.
 
