@@ -39,10 +39,22 @@ def baseline():
 
 def load_policy_definitions():
     data = json.loads(POLICIES.read_text(encoding="utf-8"))
-    required = {"policy_A", "policy_B"}
+    required = {"protocol_id", "policy_definition_version", "policies", "constraints"}
     if set(data) != required:
+        raise ValueError("Policy definition schema mismatch.")
+    if set(data["policies"]) != {"policy_A", "policy_B"}:
         raise ValueError("Policy definition set mismatch.")
-    return data
+    if data["constraints"] != {
+        "selection_source": "X",
+        "post_hoc_selection": false,
+        "selected_transformation_must_be_in_T_acc": true
+    }:
+        raise ValueError("Policy constraints mismatch.")
+    policies = data["policies"]
+    for name in ("policy_A", "policy_B"):
+        if policies[name].get("selection_source") != "X" or policies[name].get("post_hoc") is not False:
+            raise ValueError(f"Policy {name} is not a frozen pre-declared X policy.")
+    return policies
 
 def realize(tacc, x, policies):
     allowed = {t["id"] for t in tacc}
