@@ -1,0 +1,17 @@
+{
+  "schema_version": "v0.1",
+  "status": "CANDIDATE — NOT FROZEN",
+  "x_definition": "realization_policy",
+  "required_fields": ["case_id", "X"],
+  "allowed_cases": ["A", "B"],
+  "allowed_X": ["policy_A", "policy_B"],
+  "binding_constraints": {
+    "declared_before_realization": true,
+    "derived_from_H_O_V_T_real": false,
+    "modifies_S0": false,
+    "modifies_C": false,
+    "modifies_T_acc": false,
+    "modifies_admissibility": false,
+    "modifies_transition": false
+  }
+}
