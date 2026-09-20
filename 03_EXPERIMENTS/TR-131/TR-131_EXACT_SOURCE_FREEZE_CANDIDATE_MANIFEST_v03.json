@@ -1,0 +1,61 @@
+{
+  "manifest_version": "v0.3",
+  "status": "EXACT-SOURCE FREEZE CANDIDATE — BLOCKED",
+  "scientific_execution_authorized": false,
+  "package_purpose": "Replace the synthetic TR-131 candidate with the exact-source VisitAll/Rainbow fixture and source-defined transition adapters.",
+  "fixture": {
+    "source_lock": "03_EXPERIMENTS/TR-131/execution/TR131_EXACT_FIXTURE_SOURCE_LOCK_v01.json",
+    "exact_fixture_preflight": "03_EXPERIMENTS/TR-131/execution/TR131_EXACT_FIXTURE_PREFLIGHT_AUDIT_001.md",
+    "adapter_spec": "03_EXPERIMENTS/TR-131/execution/TR131_SOURCE_DEFINED_TRANSITION_EXECUTION_ADAPTER_SPEC_001.md",
+    "adapter_implementation": "03_EXPERIMENTS/TR-131/execution/TR131_SOURCE_TRANSITION_ADAPTER_IMPLEMENTATION_PREFLIGHT_001.py",
+    "adapter_preflight_audit": "03_EXPERIMENTS/TR-131/execution/TR131_ADAPTER_IMPLEMENTATION_TRACEABILITY_PREFLIGHT_AUDIT_001.md"
+  },
+  "source_revisions": {
+    "visitall_instances": {
+      "repository": "potassco/pddl-instances",
+      "revision": "cf19edf7c53d1540ddbb396c642595e0926ee552",
+      "problem": "grid-5",
+      "blob": "f49fb86fb3f7dd4aba5a6ed79fdddc240097ec34"
+    },
+    "visitall_domain": {
+      "repository": "AI-Planning/pddl-generators",
+      "revision": "d5c22c9ab21ecaf90db82daf2a0537973c661009",
+      "blob": "0e0ce4e845fac76ad9c8c815f9a697e7946784d8"
+    },
+    "rainbow": {
+      "repository": "cmu-able/rainbow",
+      "revision": "c053e2aab6d58c233016574887296e2be43ca60f4",
+      "model_blob": "9989790020ff1b814e0b1aa7bd1f926d980ce823",
+      "strategy_blob": "5ac062d6a01c918c018f29e26a9a3bc2943d4885",
+      "tactics_blob": "513a5d78e301e9fa4660b8bac9154b93e6a7a605"
+    }
+  },
+  "x": {
+    "A": "SELECT_RANK_0",
+    "B": "SELECT_RANK_1"
+  },
+  "prohibited_state": {
+    "scientific_execution": true,
+    "old_synthetic_runner_authorized": true,
+    "old_G8_extended_to_this_package": true
+  },
+  "legacy_artifacts_not_adopted": [
+    "03_EXPERIMENTS/TR-131/tr131_scientific_runner_v02.py",
+    "03_EXPERIMENTS/TR-131/TR-131_FREEZE_CANDIDATE_MANIFEST_v02.json"
+  ],
+  "required_before_freeze": [
+    "exact-source scientific runner implementation",
+    "runner source-traceability preflight",
+    "complete immutable artifact hash inventory",
+    "independent Executor-2 reconstruction",
+    "new Freeze Audit",
+    "new hash-bound G8 authorization"
+  ],
+  "governance": {
+    "core": "UNCHANGED",
+    "rma": "UNCHANGED",
+    "evidence_matrix": "UNCHANGED",
+    "vsl": "UNCHANGED",
+    "c09": "UNCHANGED"
+  }
+}
