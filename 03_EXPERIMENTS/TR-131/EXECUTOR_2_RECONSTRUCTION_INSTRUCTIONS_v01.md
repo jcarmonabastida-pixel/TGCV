@@ -5,7 +5,7 @@
 
 ## Boundary
 
-Executor-2 must receive only the frozen scientific package and must not receive Executor-1 outputs, trajectory results, interpretation, or post-execution modifications.
+Executor-2 must receive only the candidate scientific package under pre-freeze audit and must not receive Executor-1 outputs, trajectory results, interpretation, or post-execution modifications.
 
 ## Inputs
 
@@ -33,7 +33,7 @@ The command template is supplied for post-G8 use only. Executor-2 must not execu
 ## Reconstruction
 
 1. Verify repository/package identifiers and integrity references.
-2. Reconstruct A and B from the declared X policies using the frozen scientific runner/configuration definitions. Do not execute unless the package is formally frozen and the Executor-2 procedure explicitly authorizes reconstruction.
+2. Reconstruct A and B from the declared X policies using the candidate scientific runner/configuration definitions. This is a pre-freeze reconstruction and audit activity, not scientific execution. It is explicitly authorized for reconstruction before freeze; the runner scientific execution mode remains fail-closed and must not be invoked without a formally bound G8 authorization record.
 3. Independently derive T_real,A and T_real,B.
 4. Independently derive H_A and H_B.
 5. Verify S0, C and T_acc equality across A/B.
