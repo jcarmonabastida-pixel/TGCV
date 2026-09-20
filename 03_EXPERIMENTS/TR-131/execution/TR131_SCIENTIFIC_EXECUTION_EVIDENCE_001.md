@@ -41,6 +41,28 @@
 - Case B: `policy_B → tau_defer`
 - Contrast: `H_A != H_B` — **TRUE**
 
+## Result Audit 001
+
+**Disposition: PASS — TR-131 SCIENTIFIC EXECUTION RESULT VERIFIED.**
+
+Audit checks:
+- Required output fields: PASS
+- `status = SCIENTIFIC EXECUTION RESULT`: PASS
+- `execution_performed = true`: PASS
+- `authorization_gate = G8`: PASS
+- All 10 runner checks: PASS
+- Contrast: PASS
+- `X_A != X_B`: PASS
+- X declared before realization: PASS
+- A realizes `tau_accept`: PASS
+- B realizes `tau_defer`: PASS
+- Trace A/B complete: PASS
+- Deviations: 0
+- Baseline hashes equal integrity hashes: PASS
+- Outcome/trace hashes equal integrity hashes: PASS
+- Required output projection: PASS
+- Result SHA-256: PASS
+
 ## Interpretation boundary
 
 This registration records execution evidence and integrity only. It does not by itself upgrade the TGCV theoretical claim, establish empirical generality, or establish value causality beyond the defined experimental result.
