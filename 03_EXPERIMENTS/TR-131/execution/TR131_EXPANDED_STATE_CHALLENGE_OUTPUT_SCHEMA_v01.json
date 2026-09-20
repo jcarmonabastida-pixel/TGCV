@@ -1,0 +1,21 @@
+{
+  "schema_version": "v0.1",
+  "status": "CANDIDATE — NOT FROZEN",
+  "required": [
+    "candidate_id",
+    "representation_definition",
+    "pre_realization_semantics",
+    "non_tautology_check",
+    "deterministic_rule_without_X",
+    "counterfactual",
+    "result",
+    "deviations",
+    "integrity_hashes"
+  ],
+  "result_values": [
+    "PASS — ABSORBABLE",
+    "FAIL — NOT ABSORBABLE",
+    "INCONCLUSIVE"
+  ],
+  "interpretation_boundary": "No result changes TGCV Core or establishes formal irreducibility without the separately defined scientific disposition."
+}
