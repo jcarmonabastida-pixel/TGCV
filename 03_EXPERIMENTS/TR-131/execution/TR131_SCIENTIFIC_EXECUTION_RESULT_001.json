@@ -1,0 +1,167 @@
+{
+  "status": "SCIENTIFIC EXECUTION RESULT",
+  "execution_performed": true,
+  "authorization_gate": "G8",
+  "checks": {
+    "state_equal": true,
+    "context_equal": true,
+    "tacc_equal": true,
+    "rules_equal": true,
+    "x_distinct": true,
+    "x_pre_realization": true,
+    "realization_depends_on_x": true,
+    "realizations_admissible": true,
+    "trajectory_derivation_deterministic": true,
+    "trace_complete": true
+  },
+  "primary_outcome": {
+    "H_A": {
+      "realized_transformations": [
+        "tau_accept"
+      ],
+      "states": [
+        {
+          "node": "S0",
+          "resources": 1,
+          "status": "ready"
+        },
+        {
+          "node": "S1",
+          "resources": 1,
+          "status": "accepted"
+        }
+      ]
+    },
+    "H_B": {
+      "realized_transformations": [
+        "tau_defer"
+      ],
+      "states": [
+        {
+          "node": "S0",
+          "resources": 1,
+          "status": "ready"
+        },
+        {
+          "node": "S1",
+          "resources": 1,
+          "status": "deferred"
+        }
+      ]
+    },
+    "contrast": true
+  },
+  "hashes": {
+    "S0": "f172e9a705a27d73b864f6ce34e0c6b6cdf9f18bf1e61a646f2d81efdd40ec0a",
+    "C": "0aefc336bb0509d6403b51449c07f75a08b83d69137823e4653437a63164af43",
+    "T_acc": "0b5d8211831f6f2701578dc4a91d82ce63a4192422f66fee7aae856e9ba539b9",
+    "rules": "3b3a45423554b15715285e6564c5e8d2a617cd35e74ac3148ace93437defea58",
+    "H_A": "1ae68e8ea472ab7b678333372518b2979e28178348516d5aaab90207c8bc577d",
+    "H_B": "1209d690c8c61d3f8b441f8a2c52890c0f2556fd91fcdf73d43b5e2a453a38c2",
+    "trace_A": "ef661e670c112145caf2e08b09438c7f45a23f9621ba28f18ed5265e3984ce00",
+    "trace_B": "f91f3dcf0634f51b837d19c9c8ff8359b15aad1f33f2a29f9861220946b7edd1"
+  },
+  "x": {
+    "A": "policy_A",
+    "B": "policy_B"
+  },
+  "realized_transformations": {
+    "A": "tau_accept",
+    "B": "tau_defer"
+  },
+  "traces": {
+    "A": [
+      {
+        "case_id": "A",
+        "step": 0,
+        "S_t": {
+          "node": "S0",
+          "resources": 1,
+          "status": "ready"
+        },
+        "C_t": {
+          "context": "frozen",
+          "version": 1
+        },
+        "T_acc_t": [
+          {
+            "id": "tau_accept",
+            "pre": "ready",
+            "post": "accepted"
+          },
+          {
+            "id": "tau_defer",
+            "pre": "ready",
+            "post": "deferred"
+          }
+        ],
+        "X_t": "policy_A",
+        "T_real_t": "tau_accept",
+        "S_t1": {
+          "node": "S1",
+          "resources": 1,
+          "status": "accepted"
+        }
+      }
+    ],
+    "B": [
+      {
+        "case_id": "B",
+        "step": 0,
+        "S_t": {
+          "node": "S0",
+          "resources": 1,
+          "status": "ready"
+        },
+        "C_t": {
+          "context": "frozen",
+          "version": 1
+        },
+        "T_acc_t": [
+          {
+            "id": "tau_accept",
+            "pre": "ready",
+            "post": "accepted"
+          },
+          {
+            "id": "tau_defer",
+            "pre": "ready",
+            "post": "deferred"
+          }
+        ],
+        "X_t": "policy_B",
+        "T_real_t": "tau_defer",
+        "S_t1": {
+          "node": "S1",
+          "resources": 1,
+          "status": "deferred"
+        }
+      }
+    ]
+  },
+  "baseline_hashes": {
+    "S0": "f172e9a705a27d73b864f6ce34e0c6b6cdf9f18bf1e61a646f2d81efdd40ec0a",
+    "C": "0aefc336bb0509d6403b51449c07f75a08b83d69137823e4653437a63164af43",
+    "T_acc": "0b5d8211831f6f2701578dc4a91d82ce63a4192422f66fee7aae856e9ba539b9",
+    "rules": "3b3a45423554b15715285e6564c5e8d2a617cd35e74ac3148ace93437defea58"
+  },
+  "X_declarations": {
+    "A": "policy_A",
+    "B": "policy_B"
+  },
+  "transition_traces": {
+    "A": "trace_A",
+    "B": "trace_B"
+  },
+  "integrity_hashes": {
+    "S0": "f172e9a705a27d73b864f6ce34e0c6b6cdf9f18bf1e61a646f2d81efdd40ec0a",
+    "C": "0aefc336bb0509d6403b51449c07f75a08b83d69137823e4653437a63164af43",
+    "T_acc": "0b5d8211831f6f2701578dc4a91d82ce63a4192422f66fee7aae856e9ba539b9",
+    "rules": "3b3a45423554b15715285e6564c5e8d2a617cd35e74ac3148ace93437defea58",
+    "H_A": "1ae68e8ea472ab7b678333372518b2979e28178348516d5aaab90207c8bc577d",
+    "H_B": "1209d690c8c61d3f8b441f8a2c52890c0f2556fd91fcdf73d43b5e2a453a38c2",
+    "trace_A": "ef661e670c112145caf2e08b09438c7f45a23f9621ba28f18ed5265e3984ce00",
+    "trace_B": "f91f3dcf0634f51b837d19c9c8ff8359b15aad1f33f2a29f9861220946b7edd1"
+  },
+  "deviations": []
+}
