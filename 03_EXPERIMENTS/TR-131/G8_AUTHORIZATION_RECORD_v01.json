@@ -2,8 +2,8 @@
   "record_version": "v0.1",
   "record_type": "TGCV_TR-131_G8_AUTHORIZATION",
   "gate": "G8",
-  "authorized": false,
-  "status": "CANDIDATE — HASH-BOUND — NOT AUTHORIZED",
+  "authorized": true,
+  "status": "EXECUTION AUTHORIZED — HASH-BOUND",
   "frozen_package_commit": "b0b3cd4e2d4c86f341b9465f9f6188de9f1bfbb0",
   "package_manifest_sha256": "055D839E639AE7F750ACB5AB1D82320F737EE73451039F25F7115D121517734B",
   "protocol_sha256": "9945E42C3D72006DD76B39040EBB4C23C6CA5D274D5FA6E40C203D7F73B02409",
@@ -16,5 +16,5 @@
   "freeze_record_reference": "03_EXPERIMENTS/TR-131/TR-131_FREEZE_AUDIT_v01.md",
   "freeze_record_sha256": "3F6BA47D86C842DC83653D7C030D46DABDFA5BD5FD28D9B31743D79742FF1B85",
   "binding_check": "PASS — all required hash bindings resolve to the frozen package; Executor-2 reconstruction audit and freeze audit both establish PASS.",
-  "scientific_execution_authorized": false
+  "scientific_execution_authorized": true
 }
