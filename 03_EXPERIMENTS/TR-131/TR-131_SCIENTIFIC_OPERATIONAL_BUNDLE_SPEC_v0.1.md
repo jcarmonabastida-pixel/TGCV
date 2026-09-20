@@ -115,7 +115,8 @@ The repository must contain:
 - integrity manifest;
 - audit worksheet;
 - freeze audit;
-- G8 authorization record.
+
+The G8 authorization record is a **post-freeze authorization artifact** and is created only after the freeze record establishes PASS.
 
 ## 10. Current disposition
 
