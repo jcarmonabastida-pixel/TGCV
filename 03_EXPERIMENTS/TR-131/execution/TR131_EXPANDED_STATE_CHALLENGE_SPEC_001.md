@@ -70,7 +70,7 @@ A representation that simply renames policy_A, policy_B, tau_accept, tau_defer, 
 
 ## 7. Counterfactual criterion
 
-The candidate representation must support at least one counterfactual evaluation in which the same pre-realization expanded representation is evaluated under an admissible alternative X-equivalent condition without using post-execution information.
+The candidate representation must support at least one counterfactual evaluation in which the same admissible pre-realization system representation is evaluated under an alternative realization condition, without inserting the observed T_real or H into the representation. If changing X necessarily changes the candidate representation only because X was copied into it, the candidate fails the absorption challenge rather than passing it.
 
 The purpose is to test whether G represents a genuine pre-realization system condition rather than an outcome code.
 
@@ -107,7 +107,17 @@ This specification:
 
 Any execution requires a separate freeze and authorization process.
 
-## 10. Next gate
+## 10. Design-audit invariants
+
+The design audit must verify that the challenge does not make absorption trivial by construction. In particular, it must verify:
+
+- X is not merely renamed and copied into S' or C';
+- the semantics of every added component are independently defined before execution;
+- the candidate representation is not defined from T_real, H, O or V;
+- the counterfactual test distinguishes genuine state/context absorption from relabelling of X;
+- a PASS outcome cannot be obtained solely by changing the notation used for X.
+
+## 11. Next gate
 
 The immediate next gate is Expanded-State Challenge Design Audit.
 
