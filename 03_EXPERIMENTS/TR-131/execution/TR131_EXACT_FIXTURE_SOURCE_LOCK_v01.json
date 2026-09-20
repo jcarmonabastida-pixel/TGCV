@@ -1,0 +1,78 @@
+{
+  "record_type": "TGCV_TR131_EXACT_FIXTURE_SOURCE_LOCK",
+  "status": "CANDIDATE — SOURCE LOCKED; PREFLIGHT NOT YET EXECUTED",
+  "scientific_execution_authorized": false,
+  "parent_commit": "1dd4f6bfb207bdcc35bc943bd06d75a7e6b0a533",
+  "visitall": {
+    "repository": "potassco/pddl-instances",
+    "revision": "cf19edf7c53d1540ddbb396c642595e0926ee552",
+    "path": "ipc-2014/domains/visit-all-sequential-optimal/instances/instance-1.pddl",
+    "blob_sha": "f49fb86fb3f7dd4aba5a6ed79fdddc240097ec34",
+    "problem": "grid-5",
+    "initial_state": {
+      "at_robot": "loc-x2-y2",
+      "visited": [
+        "loc-x2-y2"
+      ]
+    },
+    "t_acc": {
+      "cardinality": 4,
+      "transformations": [
+        "move:loc-x2-y2->loc-x1-y2",
+        "move:loc-x2-y2->loc-x3-y2",
+        "move:loc-x2-y2->loc-x2-y1",
+        "move:loc-x2-y2->loc-x2-y3"
+      ]
+    }
+  },
+  "visitall_domain": {
+    "repository": "AI-Planning/pddl-generators",
+    "revision": "d5c22c9ab21ecaf90db82daf2a0537973c661009",
+    "domain_path": "visitall/domain.pddl",
+    "domain_blob_sha": "0e0ce4e845fac76ad9c8c815f9a697e7946784d8",
+    "generator_path": "visitall/grid.c",
+    "generator_blob_sha": "5febdf45316e7e61f6d2920901e3f52ae401e03b"
+  },
+  "rainbow": {
+    "repository": "cmu-able/rainbow",
+    "revision": "c053e2aab6d58c233016574887296e2be43ca60f4",
+    "model_path": "targets/swim/model/swim.acme",
+    "model_blob_sha": "9989790020ff1b814e0b1aa7bd1f926d980ce823",
+    "strategy_path": "targets/swim/stitch/swimStrategies.s",
+    "strategy_blob_sha": "5ac062d6a01c918c018f29e26a9a3bc2943d4885",
+    "tactics_path": "targets/swim/stitch/swimTactics.t.s",
+    "tactics_blob_sha": "513a5d78e301e9fa4660b8bac9154b93e6a7a605",
+    "state_defaults": {
+      "LB0_dimmer": 1,
+      "DIMMER_LEVELS": 5,
+      "DIMMER_MARGIN": 0.1,
+      "servers": [
+        "server1",
+        "server2",
+        "server3"
+      ],
+      "server_count": 3
+    },
+    "t_acc_minimum": {
+      "cardinality": 2,
+      "transformations": [
+        "TIncDimmer",
+        "TRemoveServer"
+      ]
+    }
+  },
+  "structural_resolution": {
+    "state": "explicit source-defined state/defaults",
+    "applicability": "source-defined applicability predicates",
+    "transformation": "named source-defined transformation/tactic",
+    "effect": "source-defined action/effect semantics",
+    "semantic_isomorphism_claim": false
+  },
+  "preflight_boundary": [
+    "verify all pinned revisions and blob SHAs",
+    "verify exact VisitAll initial state and four applicable moves",
+    "verify Rainbow defaults and two applicable tactics",
+    "verify no generated or hand-authored benchmark instance is introduced",
+    "verify fixture representation does not encode an expected scientific outcome"
+  ]
+}
