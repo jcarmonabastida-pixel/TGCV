@@ -1,0 +1,25 @@
+{
+  "schema_version": "v0.1",
+  "status": "CANDIDATE — NOT FROZEN",
+  "allowed_inputs": [
+    "frozen TR-131 baseline evidence",
+    "pre-realization system/state/context semantics",
+    "independently defined candidate representation rules",
+    "independently defined realization rule",
+    "pre-specified counterfactual condition"
+  ],
+  "prohibited_inputs": [
+    "observed T_real",
+    "observed H",
+    "observed final outcome",
+    "value outcome",
+    "post-execution classification",
+    "prior challenge outcome",
+    "coaching toward PASS or FAIL"
+  ],
+  "candidates": [
+    "E1",
+    "E2"
+  ],
+  "x_absorption_rule": "X may not be copied or renamed into S' or C' merely to obtain sufficiency"
+}
