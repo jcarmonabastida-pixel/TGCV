@@ -13,7 +13,7 @@ This audit evaluates the current TR-131 candidate package after:
 - second protocol audit;
 - P1-P3 construction/preflight checks;
 - scientific bundle assembly;
-- artifact-level SHA-256 inventory added to `TR-131_FREEZE_CANDIDATE_MANIFEST_v02.json`.
+- artifact-level SHA-256 inventory defined by EXECUTOR_2_PACKAGE_MANIFEST_v02.json, with component integrity cross-checked against TR-131_INTEGRITY_MANIFEST_v01.json.
 
 The artifact inventory was recorded in commit `e8be82056bd29595be37d27219d0c7a0d7ad0749`.
 
