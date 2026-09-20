@@ -55,6 +55,6 @@
     "03_EXPERIMENTS/TR-131/TR-131_FREEZE_AUDIT_v01.md": "3F6BA47D86C842DC83653D7C030D46DABDFA5BD5FD28D9B31743D79742FF1B85"
   },
   "prohibited_artifact_note": "No Executor-1 results, interpretations, expected outcomes, coaching, or post-execution modifications are included in this package.",
-  "binding_note": "This package is candidate-only. No scientific execution authorization is conveyed. The package manifest itself is excluded from artifact_sha256 to avoid circular hashing."
+  "binding_note": "This package is frozen. No scientific execution authorization is conveyed. The package manifest itself is excluded from artifact_sha256 to avoid circular hashing."
 }
 
