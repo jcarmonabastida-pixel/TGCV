@@ -5,54 +5,58 @@
 
 ## Gate conclusion
 
-The source-runtime availability gate has now been resolved asymmetrically:
+VisitAll remains available for infrastructure-level smoke testing. Rainbow/SWIM remains blocked, now with the block reproduced against a newly rebuilt package from the pinned Rainbow revision.
 
-| Domain | Source runtime | Disposition |
-|---|---|---|
-| VisitAll | Pinned PDDL + pinned Fast Downward revision | AVAILABLE for non-scientific smoke test |
-| Rainbow/SWIM | Pinned Rainbow revision and exact packaged build | BLOCKED by pinned runtime type incompatibility |
+## Rainbow/SWIM reproduced block
 
-## VisitAll disposition
+Pinned Rainbow revision: `c053e2aab6d58c233016574887296e2be43ca60f4`
 
-The exact source domain/problem was executed through the pinned Fast Downward runtime. Translation and search completed successfully, and the resulting plan was consistent with the source-defined action semantics.
+Rebuilt package: `Rainbow-202609210558.zip`
 
-This establishes infrastructure-level executability only.
+Rebuilt package SHA-256: `B538E095E57F23CA80687FD6F738C3B34CE684084FFBC164AD29ADF166FB1415`
 
-## Rainbow/SWIM disposition
+Runtime: OpenJDK `1.8.0_502`.
 
-The exact packaged Rainbow SWIM runtime loads and registers the pinned SWIM model, but the initialization path fails in the pinned source at:
+The PLADAPT native wrapper was successfully loaded after correcting the library path to the actual wrapper directory. The controlled harness then reached Rainbow initialization, registration of `SwimSys:Acme` and `ArrivalRate:TSP`, SWIM model lookup, adaptation-manager initialization, and evaluation of `[EXPR]size(/self/components:ServerT)`, yielding `MAX_SERVERS=3`.
 
-`SwimModelHelper.getDoubleProperty()`
+The rebuilt run then reproduced the same pinned-runtime failure:
 
-when the source expression `[EXPR]size(/self/components:ServerT)` returns `Integer` and the pinned implementation casts it directly to `Double`.
+```text
+java.lang.ClassCastException: java.lang.Integer cannot be cast to java.lang.Double
+    at org.sa.rainbow.model.acme.swim.SwimModelHelper.getDoubleProperty(SwimModelHelper.java:74)
+    at org.sa.rainbow.model.acme.swim.SwimModelHelper.getMaxServers(SwimModelHelper.java:162)
+    at org.sa.rainbow.swim.adaptation.AdaptationManagerBase.computeDecisionHorizon(AdaptationManagerBase.java:422)
+    at org.sa.rainbow.swim.adaptation.AdaptationManagerBase.initializeAdaptationMgr(AdaptationManagerBase.java:538)
+```
 
-The failure occurs before PLADAPT initialization and before adaptation evaluation.
+The expression `[EXPR]size(/self/components:ServerT)` returns `Integer`, while the pinned `getDoubleProperty()` implementation casts the non-`Float` value directly to `Double`.
 
-No source patch, semantic substitution, or synthetic transition has been introduced to bypass this condition.
+The intermediate `CheckConfiguration` failure is not used as the gate result. The controlled harness is the relevant reproduction.
+
+## Boundary determination
+
+The failure occurs before adaptation evaluation and before any scientific execution. No Rainbow source was modified, no Integer-to-Double normalization was introduced, and no synthetic transition was used.
+
+Therefore the rebuilt package does not establish an exact-source executable Rainbow transition adapter for TR-131.
 
 ## Package consequence
 
-Because the TR-131 exact-source design requires authentic source-defined transition execution for both source domains, the cross-domain exact-source scientific package **cannot proceed to Freeze Audit or G8** at this time.
+Because the exact-source TR-131 design requires authentic source-defined transition execution for both source domains, the cross-domain exact-source scientific package cannot proceed to Freeze Audit or G8.
 
-The VisitAll runtime result must not be used to silently replace the blocked Rainbow domain.
-
-The existing hand-written adapter functions remain **preflight approximations** and are not promoted to scientific execution adapters.
+The VisitAll runtime result must not silently replace the blocked Rainbow domain. Existing hand-written adapter functions remain preflight approximations and are not promoted to scientific execution adapters.
 
 ## Methodological disposition
 
-This closure is preferable to silently changing the experimental object:
-
 - no synthetic Rainbow transition;
-- no cross-domain semantic mapping;
 - no runtime source patch;
+- no Integer-to-Double bypass;
+- no cross-domain semantic mapping;
 - no reuse of the historical G8 authorization;
 - no scientific execution.
 
 ## Next legitimate paths
 
-Only two paths remain methodologically valid:
-
-1. establish an independently auditable, exact-source-compatible Rainbow execution path without changing the pinned semantics; or
-2. explicitly redesign the research package as a VisitAll-only experiment, with a new protocol, package, audit and authorization rather than treating it as the existing cross-domain TR-131 experiment.
+1. Establish an independently auditable, exact-source-compatible Rainbow execution path without changing pinned semantics; or
+2. explicitly redesign the research package as a VisitAll-only experiment, with a new protocol, package, audit and authorization.
 
 **Canonical gate result: CROSS-DOMAIN EXACT-SOURCE PACKAGE BLOCKED.**
