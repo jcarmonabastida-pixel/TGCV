@@ -31,5 +31,5 @@ public class CommandSmoke {
 '@
 
 $javaPath = Join-Path $PSScriptRoot "CommandSmoke.java"
-$java | Set-Content -Encoding UTF8 $javaPath
+[System.IO.File]::WriteAllText($javaPath, $java, (New-Object System.Text.UTF8Encoding($false)))
 Write-Host "CREATED=$javaPath"
