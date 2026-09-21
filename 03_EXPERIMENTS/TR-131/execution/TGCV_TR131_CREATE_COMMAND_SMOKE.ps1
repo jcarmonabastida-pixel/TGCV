@@ -15,9 +15,13 @@ public class CommandSmoke {
         System.setProperty("rainbow.target", "swim");
         ModelsManager models = new ModelsManager();
         models.initializeModels();
-        AcmeModelInstance model = (AcmeModelInstance) models.getModelInstance(
+        Object modelObject = models.getModelInstance(
             new ModelReference("SwimSys", "Acme")
         );
+        if (!(modelObject instanceof AcmeModelInstance)) {
+            throw new IllegalStateException("MODEL_TYPE=" + modelObject);
+        }
+        AcmeModelInstance model = (AcmeModelInstance) modelObject;
         IAcmeComponent lb0 = model.resolveInModel("LB0", IAcmeComponent.class);
         System.out.println("LB0=" + lb0);
         System.out.println("DIMMER=" + model.getProperty("/self/components:LB0.dimmer"));
