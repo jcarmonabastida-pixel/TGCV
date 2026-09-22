@@ -2,54 +2,86 @@
 from pathlib import Path
 
 TARGET = Path("rainbow/rainbow-core/src/main/java/org/sa/rainbow/core/RainbowMaster.java")
+METHOD = "public IDelegateManagementPort connectDelegate(String delegateID, Properties connectionProperties)"
+LINE = "m_delegateConfigurtationPorts.put(delegateID, delegateConfigurationPort);"
 
-OLD = """                        m_delegateConfigurtationPorts.put(delegateID, delegateConfigurationPort);
-                        // Add a second to the heartbeat to allow for communication time
-                        // TODO: Must be a better way to do this...
-                        Beacon beacon = new Beacon(Long.parseLong(
-                                        m_rainbowEnvironment.getProperty(RainbowConstants.PROPKEY_DELEGATE_BEACONPERIOD, "1000")) + 1000);
-                        synchronized (m_heartbeats) {
-                                m_heartbeats.put(delegatePort.getDelegateId(), beacon);
-                        }
-                        m_nonCompliantDelegates.add(delegatePort.getDelegateId());
-                        beacon.mark();
-                        LOGGER.info(MessageFormat.format("Master created management connection with delegate {0}", delegateID));
-                        return delegatePort;"""
-
-NEW = """                        System.err.println("[TR131-DIAG-CONNECT] BEFORE_CONFIG_MAP_PUT");
-                        m_delegateConfigurtationPorts.put(delegateID, delegateConfigurationPort);
-                        System.err.println("[TR131-DIAG-CONNECT] AFTER_CONFIG_MAP_PUT");
-                        System.err.println("[TR131-DIAG-CONNECT] BEFORE_BEACON_CREATE");
-                        // Add a second to the heartbeat to allow for communication time
-                        // TODO: Must be a better way to do this...
-                        Beacon beacon = new Beacon(Long.parseLong(
-                                        m_rainbowEnvironment.getProperty(RainbowConstants.PROPKEY_DELEGATE_BEACONPERIOD, "1000")) + 1000);
-                        System.err.println("[TR131-DIAG-CONNECT] AFTER_BEACON_CREATE");
-                        System.err.println("[TR131-DIAG-CONNECT] BEFORE_HEARTBEAT_PUT");
-                        synchronized (m_heartbeats) {
-                                m_heartbeats.put(delegatePort.getDelegateId(), beacon);
-                        }
-                        System.err.println("[TR131-DIAG-CONNECT] AFTER_HEARTBEAT_PUT");
-                        System.err.println("[TR131-DIAG-CONNECT] BEFORE_NONCOMPLIANT_ADD");
-                        m_nonCompliantDelegates.add(delegatePort.getDelegateId());
-                        System.err.println("[TR131-DIAG-CONNECT] AFTER_NONCOMPLIANT_ADD");
-                        System.err.println("[TR131-DIAG-CONNECT] BEFORE_BEACON_MARK");
-                        beacon.mark();
-                        System.err.println("[TR131-DIAG-CONNECT] AFTER_BEACON_MARK");
-                        LOGGER.info(MessageFormat.format("Master created management connection with delegate {0}", delegateID));
-                        System.err.println("[TR131-DIAG-CONNECT] BEFORE_RETURN");
-                        return delegatePort;"""
+def marker(indent, name):
+    return f'{indent}System.err.println("[TR131-DIAG-CONNECT] {name}");'
 
 def main():
     if not TARGET.exists():
         raise SystemExit(f"TARGET_NOT_FOUND: {TARGET}")
+
     text = TARGET.read_text()
     if "[TR131-DIAG-CONNECT] BEFORE_CONFIG_MAP_PUT" in text:
         print("ALREADY_PATCHED")
         return
-    if OLD not in text:
-        raise SystemExit("TARGET_BLOCK_NOT_FOUND")
-    TARGET.write_text(text.replace(OLD, NEW, 1))
+
+    method_pos = text.find(METHOD)
+    if method_pos < 0:
+        raise SystemExit("CONNECT_DELEGATE_METHOD_NOT_FOUND")
+
+    method_end = text.find("\n        /**", method_pos)
+    if method_end < 0:
+        method_end = len(text)
+
+    method = text[method_pos:method_end]
+    if method.count(LINE) != 1:
+        raise SystemExit(f"TARGET_LINE_COUNT_IN_CONNECT_DELEGATE={method.count(LINE)}")
+
+    lines = method.splitlines(keepends=True)
+    out = []
+    patched = False
+
+    for line in lines:
+        stripped = line.strip()
+        if stripped == LINE:
+            indent = line[:len(line) - len(line.lstrip())]
+            out.append(marker(indent, "BEFORE_CONFIG_MAP_PUT") + "\n")
+            out.append(line)
+            out.append(marker(indent, "AFTER_CONFIG_MAP_PUT") + "\n")
+            patched = True
+        elif stripped == "Beacon beacon = new Beacon(Long.parseLong(":
+            indent = line[:len(line) - len(line.lstrip())]
+            out.append(marker(indent, "BEFORE_BEACON_CREATE") + "\n")
+            out.append(line)
+        elif stripped == 'm_rainbowEnvironment.getProperty(RainbowConstants.PROPKEY_DELEGATE_BEACONPERIOD, "1000")) + 1000);':
+            out.append(line)
+            indent = line[:len(line) - len(line.lstrip())]
+            out.append(marker(indent, "AFTER_BEACON_CREATE") + "\n")
+        elif stripped == "synchronized (m_heartbeats) {":
+            indent = line[:len(line) - len(line.lstrip())]
+            out.append(marker(indent, "BEFORE_HEARTBEAT_PUT") + "\n")
+            out.append(line)
+        elif stripped == "}":
+            if out and any("BEFORE_HEARTBEAT_PUT" in x for x in out[-4:]):
+                out.append(line)
+                indent = line[:len(line) - len(line.lstrip())]
+                out.append(marker(indent, "AFTER_HEARTBEAT_PUT") + "\n")
+            else:
+                out.append(line)
+        elif stripped == "m_nonCompliantDelegates.add(delegatePort.getDelegateId());":
+            indent = line[:len(line) - len(line.lstrip())]
+            out.append(marker(indent, "BEFORE_NONCOMPLIANT_ADD") + "\n")
+            out.append(line)
+            out.append(marker(indent, "AFTER_NONCOMPLIANT_ADD") + "\n")
+        elif stripped == "beacon.mark();":
+            indent = line[:len(line) - len(line.lstrip())]
+            out.append(marker(indent, "BEFORE_BEACON_MARK") + "\n")
+            out.append(line)
+            out.append(marker(indent, "AFTER_BEACON_MARK") + "\n")
+        elif stripped == "return delegatePort;":
+            indent = line[:len(line) - len(line.lstrip())]
+            out.append(marker(indent, "BEFORE_RETURN") + "\n")
+            out.append(line)
+        else:
+            out.append(line)
+
+    if not patched:
+        raise SystemExit("TARGET_LINE_NOT_FOUND_IN_CONNECT_DELEGATE")
+
+    new_method = "".join(out)
+    TARGET.write_text(text[:method_pos] + new_method + text[method_pos + len(method):])
     print("PATCH_OK")
 
 if __name__ == "__main__":
