@@ -243,3 +243,16 @@ Next gate: verify the launcher script location/content and its relationship to t
 The README reference `./run-oracle.sh -p rainbow.properties swim` is relative to `$RAINBOW/Rainbow-build`, not to `deployments/rainbow-swim`. Attempting to open `deployments/rainbow-swim/run-oracle.sh` confirmed that the script is not present there. The README therefore identifies the command and expected Rainbow installation context, but does not establish the local launcher path yet.
 
 Status corrected: launcher command known from README; local launcher path still to be located. No runtime execution performed.
+
+## Launcher locations resolved — 2026-09-23
+
+The checkout contains five `run-oracle.sh` files:
+- `Rainbow-202609210222/run-oracle.sh`
+- `Rainbow-202609210231/run-oracle.sh`
+- `Rainbow-202609210558/run-oracle.sh`
+- `Rainbow-202609230056/run-oracle.sh`
+- `scripts/run-oracle.sh`
+
+No directory named `Rainbow-build` exists in the checkout. Therefore the README's `$RAINBOW/Rainbow-build/run-oracle.sh` path is historical/documentary rather than the literal local directory structure. The newly generated package timestamp `Rainbow-202609230056` is the current build candidate and must be inspected before execution; do not select an older timestamped launcher or `scripts/run-oracle.sh` by assumption.
+
+Next gate: compare the current generated package launcher with the other timestamped launchers and verify which one points to the generated `deployments/rainbow-swim/target/rainbow-swim-3.0.jar`/current runtime assets. Record the verified launcher before execution.
