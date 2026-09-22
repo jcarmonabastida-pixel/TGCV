@@ -278,3 +278,11 @@ Do not copy or mutate target assets yet. Next gate is to determine which timesta
 The comparison shows the newly generated `Rainbow-202609230056` contains the complete runtime `lib/` set, including the newly built `rainbow-swim-3.0.jar`, plus launcher scripts, but no `targets/swim`. The repository root contains `targets/swim` with the required SWIM configuration/assets. The older executable package `Rainbow-202609210558` contains both runtime and `targets/swim`.
 
 This establishes that the current build produced the runtime package but did not stage/copy the root `targets/swim` tree into the timestamped package. This is a packaging/layout issue, not a compilation failure. Before changing or copying anything, inspect the packaging section of the build script and determine whether target staging is an explicit step or a separate deployment/package operation. Do not use the older package as a scientific runtime substitute because it contains older artifacts and local modifications.
+
+## Root cause of missing `targets/swim` — 2026-09-23
+
+The `build.sh` inspection resolves the packaging issue. The script accepts deployment selection with `-d` and target selection separately with `-t`. The target list is populated only by the `-t` option (lines 51–62); during packaging, the script creates `bin/targets` and copies each selected entry with `cp -r $i bin/targets` (lines 163–166). It then renames `bin` to `Rainbow-$VERSION` (line 172).
+
+Therefore the successful build command used earlier, which supplied `-d rainbow-swim` but **did not supply `-t swim`**, correctly produced the runtime libraries and launcher but no `Rainbow-<timestamp>/targets/swim`. This is a packaging invocation omission, not a missing target or a compilation defect.
+
+The reproducible packaging invocation must therefore include the SWIM target explicitly, while retaining the JDK8 and `-Dmaven.test.skip=true` workaround already documented. Do not copy `targets/swim` manually into the generated package.
