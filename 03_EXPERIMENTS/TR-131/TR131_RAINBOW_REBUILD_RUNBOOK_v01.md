@@ -201,3 +201,11 @@ Do not repeat the narrow jcctarget-only substitution. Before the next package-bu
 Do not modify module POMs to solve this unless the build-script route is proven insufficient. In particular, keep libs/parsec/pom.xml untouched.
 
 **Current status:** this failure is persisted as a known blocker; the next command should inspect the actual build.sh Maven call sites before another build is launched.
+
+## Build-script inspection result — 2026-09-23
+
+Inspection of the canonical Rainbow `build.sh` showed 12 Maven invocations. The script defines `SKIPTESTS="-DskipTests"` (line 72), while multiple invocations hard-code `-DskipTests` (lines 113, 121, 127, 131, 135) and others use `$SKIPTESTS` (105, 109, 117, 144, 149, 155). Line 139 invokes Maven without either flag.
+
+This confirms the previous workaround was incomplete: replacing only the JavaCC invocation cannot prevent downstream `testCompile` phases. The next repair must operate on the build-script flag propagation as a whole. The intended temporary build-script invariant is to replace the effective test-skipping mode with `-Dmaven.test.skip=true` for the package build, while preserving the original `build.sh` unchanged.
+
+No new build has been launched from this inspection. POMs remain untouched.
