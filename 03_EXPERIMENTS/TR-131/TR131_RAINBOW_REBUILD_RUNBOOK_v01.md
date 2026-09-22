@@ -256,3 +256,11 @@ The checkout contains five `run-oracle.sh` files:
 No directory named `Rainbow-build` exists in the checkout. Therefore the README's `$RAINBOW/Rainbow-build/run-oracle.sh` path is historical/documentary rather than the literal local directory structure. The newly generated package timestamp `Rainbow-202609230056` is the current build candidate and must be inspected before execution; do not select an older timestamped launcher or `scripts/run-oracle.sh` by assumption.
 
 Next gate: compare the current generated package launcher with the other timestamped launchers and verify which one points to the generated `deployments/rainbow-swim/target/rainbow-swim-3.0.jar`/current runtime assets. Record the verified launcher before execution.
+
+## Launcher implementation verified — 2026-09-23
+
+Comparison of all five `run-oracle.sh` files shows the same Rainbow bootstrap structure. Each invokes `org.sa.rainbow.core.RainbowMaster` with classpath `.${delim}lib/*`, target property `-Drainbow.target=$TARGET`, and first runs `org.sa.rainbow.core.CheckConfiguration` against `targets/$TARGET/config-check.bin`. The relevant launcher therefore executes from inside a timestamped Rainbow installation directory, where `lib/` and `targets/<target>/` are siblings.
+
+The current generated package is `Rainbow-202609230056`, and its target is `targets/swim`. The launcher is therefore `Rainbow-202609230056/run-oracle.sh`, invoked from that directory. The README's historical `Rainbow-build` name does not match the current generated directory name.
+
+Verified launcher invocation candidate: `./run-oracle.sh -p rainbow.properties swim` from `/mnt/c/Users/pedri/TGCV/TR131_RAINBOW_SRC/Rainbow-202609230056`. Runtime execution has not yet been performed.
