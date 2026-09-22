@@ -13,6 +13,10 @@ old = """            catch (Exception e) {
             }
 """
 new = """            catch (Exception e) {
+                System.err.println("[TR131-DIAG-ESEB-PROVIDER] PORT=" + port);
+                System.err.println("[TR131-DIAG-ESEB-PROVIDER] CACHE_PRESENT=" + s_servers.containsKey(port));
+                System.err.println("[TR131-DIAG-ESEB-PROVIDER] CACHE_SIZE=" + s_servers.size());
+                System.err.println("[TR131-DIAG-ESEB-PROVIDER] CACHED_BUS=" + s_servers.get(port));
                 System.err.println("[TR131-DIAG-ESEB-PROVIDER] EXCEPTION_CLASS=" + e.getClass().getName());
                 System.err.println("[TR131-DIAG-ESEB-PROVIDER] EXCEPTION_MESSAGE=" + e.getMessage());
                 e.printStackTrace(System.err);
