@@ -264,3 +264,11 @@ Comparison of all five `run-oracle.sh` files shows the same Rainbow bootstrap st
 The current generated package is `Rainbow-202609230056`, and its target is `targets/swim`. The launcher is therefore `Rainbow-202609230056/run-oracle.sh`, invoked from that directory. The README's historical `Rainbow-build` name does not match the current generated directory name.
 
 Verified launcher invocation candidate: `./run-oracle.sh -p rainbow.properties swim` from `/mnt/c/Users/pedri/TGCV/TR131_RAINBOW_SRC/Rainbow-202609230056`. Runtime execution has not yet been performed.
+
+## Launcher target-path correction — 2026-09-23
+
+The first execution of the verified launcher `Rainbow-202609230056/run-oracle.sh -p rainbow.properties swim` failed before Rainbow startup with: `Error: target directory targets/swim does not exist.`
+
+This invalidates the prior assumption that the generated `Rainbow-202609230056` directory is a complete self-contained runtime tree. The launcher requires `targets/swim` relative to its own working directory, while the inspected generated target package is currently located under `Rainbow-202609210222/targets/swim` (and the source/deployment target also exists under `deployments/rainbow-swim/target`). No runtime diagnostics were reached.
+
+Do not copy or mutate target assets yet. Next gate is to determine which timestamped Rainbow directory contains the matching launcher + `targets/swim` pair and how the successful build generated/populated that pair. Record that relationship before attempting another launch.
