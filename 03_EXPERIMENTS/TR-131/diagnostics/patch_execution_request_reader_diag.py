@@ -9,6 +9,23 @@ def main():
     if not TARGET.exists():
         raise SystemExit(f"TARGET_NOT_FOUND: {TARGET}")
     text = TARGET.read_text()
+
+    malformed = (
+        '        System.err.println("[TR131-DIAG-RPC-READER] OBJ_ID=" + obj_id);\\n'
+        '        System.err.println("[TR131-DIAG-RPC-READER] SERVICE_COUNT=" + m_services.size());\\n'
+        '        System.err.println("[TR131-DIAG-RPC-READER] SERVICE_IDS=" + m_services.keySet());\\n'
+        'String obj_id = m_information.execution_request_obj_id(data.value());'
+    )
+    corrected = (
+        'String obj_id = m_information.execution_request_obj_id(data.value());\\n'
+        '        System.err.println("[TR131-DIAG-RPC-READER] OBJ_ID=" + obj_id);\\n'
+        '        System.err.println("[TR131-DIAG-RPC-READER] SERVICE_COUNT=" + m_services.size());\\n'
+        '        System.err.println("[TR131-DIAG-RPC-READER] SERVICE_IDS=" + m_services.keySet());'
+    )
+    if malformed in text:
+        TARGET.write_text(text.replace(malformed, corrected, 1))
+        print("PATCH_FIXED")
+        return
     if MARK in text:
         print("ALREADY_PATCHED")
         return
