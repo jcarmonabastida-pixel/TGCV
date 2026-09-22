@@ -40,7 +40,7 @@ def patch_method(text, name, signature):
     # Remove every previously injected heartbeat diagnostic line in this method.
     # This makes the patch idempotent even when earlier passes created duplicates.
     diagnostic_line = re.compile(
-        r'^[ \\t]*System\\.err\\.println\\("\\[TR131-DIAG-HEARTBEAT\\][^"]*"\\);\\r?\\n?',
+        r'^[ \t]*System\.err\.println\("\[TR131-DIAG-HEARTBEAT\][^"]*"\);\r?\n?',
         re.MULTILINE,
     )
     method = diagnostic_line.sub("", method)
