@@ -3,44 +3,46 @@ from pathlib import Path
 
 TARGET = Path("rainbow/rainbow-core/src/main/java/org/sa/rainbow/core/RainbowMaster.java")
 
-METHODS = {
-    "connectDelegate": "public IDelegateManagementPort connectDelegate(String delegateID, Properties connectionProperties)",
-    "processHeartbeat": "public void processHeartbeat(String delegateID)",
-    "checkHeartbeats": "private void checkHeartbeats()",
-    "flushDelegate": "public void flushDelegate(String id)",
-}
+METHODS = [
+    ("connectDelegate", "public IDelegateManagementPort connectDelegate(String delegateID, Properties connectionProperties)"),
+    ("processHeartbeat", "public void processHeartbeat(String delegateID)"),
+    ("checkHeartbeats", "private void checkHeartbeats()"),
+    ("flushDelegate", "void flushDelegate(String id)"),
+]
 
 MARKERS = {
-    "connectDelegate": ("[TR131-DIAG-HEARTBEAT] BEFORE_HEARTBEAT_PUT", "[TR131-DIAG-HEARTBEAT] AFTER_HEARTBEAT_PUT"),
-    "processHeartbeat": ("[TR131-DIAG-HEARTBEAT] BEFORE_HEARTBEAT_GET", "[TR131-DIAG-HEARTBEAT] AFTER_HEARTBEAT_GET"),
-    "checkHeartbeats": ("[TR131-DIAG-HEARTBEAT] BEFORE_HEARTBEAT_SCAN", "[TR131-DIAG-HEARTBEAT] AFTER_HEARTBEAT_SCAN"),
-    "flushDelegate": ("[TR131-DIAG-HEARTBEAT] BEFORE_HEARTBEAT_REMOVE", "[TR131-DIAG-HEARTBEAT] AFTER_HEARTBEAT_REMOVE"),
+    "connectDelegate": ("[TR131-DIAG-HEARTBEAT] CONNECT_DELEGATE_BEFORE_PUT", "[TR131-DIAG-HEARTBEAT] CONNECT_DELEGATE_AFTER_PUT"),
+    "processHeartbeat": ("[TR131-DIAG-HEARTBEAT] PROCESS_HEARTBEAT_BEFORE_GET", "[TR131-DIAG-HEARTBEAT] PROCESS_HEARTBEAT_AFTER_GET"),
+    "checkHeartbeats": ("[TR131-DIAG-HEARTBEAT] CHECK_HEARTBEATS_BEFORE_SCAN", "[TR131-DIAG-HEARTBEAT] CHECK_HEARTBEATS_AFTER_SCAN"),
+    "flushDelegate": ("[TR131-DIAG-HEARTBEAT] FLUSH_DELEGATE_BEFORE_REMOVE", "[TR131-DIAG-HEARTBEAT] FLUSH_DELEGATE_AFTER_REMOVE"),
 }
 
-def bounds(text, start):
-    positions = [text.find(sig, start + 1) for sig in METHODS.values()]
-    positions = [p for p in positions if p >= 0]
-    end = min(positions) if positions else len(text)
-    return start, end
+def method_bounds(text, start):
+    ends = [text.find(sig, start + 1) for _, sig in METHODS]
+    ends = [p for p in ends if p >= 0]
+    return start, min(ends) if ends else len(text)
 
 def patch_method(text, name, signature):
     start = text.find(signature)
     if start < 0:
         raise SystemExit(f"{name.upper()}_METHOD_NOT_FOUND")
-    start, end = bounds(text, start)
+    start, end = method_bounds(text, start)
     method = text[start:end]
     before, after = MARKERS[name]
     if before in method:
         return text, False
     sync = "synchronized (m_heartbeats) {"
-    count = method.count(sync)
-    if count != 1:
-        raise SystemExit(f"{name.upper()}_HEARTBEAT_SYNC_COUNT={count}")
+    positions = []
     pos = method.find(sync)
-    line_start = method.rfind("\n", 0, pos) + 1
-    indent = method[line_start:pos]
+    while pos >= 0:
+        positions.append(pos)
+        pos = method.find(sync, pos + 1)
+    if len(positions) != 1:
+        raise SystemExit(f"{name.upper()}_HEARTBEAT_SYNC_COUNT={len(positions)}")
+    open_pos = positions[0]
+    line_start = method.rfind("\n", 0, open_pos) + 1
+    indent = method[line_start:open_pos]
     method = method[:line_start] + indent + f'System.err.println("{before}");\n' + method[line_start:]
-    # Locate the matching synchronized block by brace balance from the original opening.
     open_pos = method.find(sync, line_start)
     depth = 0
     close_pos = None
@@ -67,7 +69,7 @@ def main():
         raise SystemExit(f"TARGET_NOT_FOUND: {TARGET}")
     text = TARGET.read_text()
     changed = 0
-    for name, signature in METHODS.items():
+    for name, signature in METHODS:
         text, did = patch_method(text, name, signature)
         changed += int(did)
     if changed == 0:
