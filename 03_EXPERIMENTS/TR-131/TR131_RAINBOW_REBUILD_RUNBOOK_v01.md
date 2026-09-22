@@ -223,3 +223,11 @@ The temporary build-script workaround was executed successfully with JDK 8 and `
 Validated sequence: preserve original `build.sh`; create a temporary copy; change `SKIPTESTS` to `-Dmaven.test.skip=true`; replace hard-coded `-DskipTests`; ensure the previously unguarded `rainbow-utility-model` invocation receives the same skip property; execute the temporary script with Java 8 and `rainbow-swim` target.
 
 The validation concerns compilation/package generation only. It does not constitute scientific execution or TR-131 evidence by itself.
+
+## Launcher discovery gate — 2026-09-23
+
+The generated SWIM target package was inspected and does not itself contain a Rainbow runtime launcher. The runtime artifacts are under `deployments/rainbow-swim/target`; the generated `Rainbow-*/targets/swim` tree contains target configuration/model/system assets rather than the Rainbow process entry point.
+
+Operational rule: launcher discovery is a separate gate after successful package generation. Because this path has previously required iteration, once the correct Rainbow launcher/entry point is identified and verified, its exact path, invocation, required working directory/properties, and observed startup markers must be recorded in this runbook before proceeding. Do not execute target utility scripts such as `system/util/swimcmd.sh` as a substitute for the Rainbow launcher.
+
+Current status: launcher not yet identified; no runtime execution performed in this step.
