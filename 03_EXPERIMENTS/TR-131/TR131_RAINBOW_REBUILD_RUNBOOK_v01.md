@@ -181,3 +181,23 @@ The purpose of recompiling Rainbow is to unblock TR-131 and obtain experimental 
 - Standard `build.sh` path: historically attempted, but full success NOT VERIFIED.
 - Temporary `maven.test.skip=true` build-script workaround: reconstructed, full success NOT VERIFIED.
 - Full Rainbow package reproducible build: **NOT YET PROVEN**.
+
+## New failure recorded — 2026-09-23: test compilation still reaches typelib
+
+The first execution of the reconstructed temporary-script workaround failed in the typelib module during Maven testCompile with missing JUnit classes:
+
+- package org.junit does not exist
+- class file for org.junit.Assert not found
+- cascaded @Test / @Before symbol failures
+- failing goal: org.apache.maven.plugins:maven-compiler-plugin:3.0:testCompile
+- project: typelib
+
+This establishes that the previous sed workaround was too narrow: it altered the jcctarget invocation but did not prevent test compilation for all subsequent module Maven invocations. The error is therefore a build-script propagation problem, not evidence that typelib production sources are broken.
+
+### Rule added from this failure
+
+Do not repeat the narrow jcctarget-only substitution. Before the next package-build attempt, inspect build.sh for all Maven invocations that can reach module testCompile and determine where -DskipTests is introduced. The required invariant for this legacy package build is that every relevant Maven invocation used by the package build carries -Dmaven.test.skip=true, not merely the JavaCC/parsec invocation.
+
+Do not modify module POMs to solve this unless the build-script route is proven insufficient. In particular, keep libs/parsec/pom.xml untouched.
+
+**Current status:** this failure is persisted as a known blocker; the next command should inspect the actual build.sh Maven call sites before another build is launched.
