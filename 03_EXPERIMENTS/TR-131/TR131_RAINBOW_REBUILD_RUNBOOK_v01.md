@@ -209,3 +209,9 @@ Inspection of the canonical Rainbow `build.sh` showed 12 Maven invocations. The 
 This confirms the previous workaround was incomplete: replacing only the JavaCC invocation cannot prevent downstream `testCompile` phases. The next repair must operate on the build-script flag propagation as a whole. The intended temporary build-script invariant is to replace the effective test-skipping mode with `-Dmaven.test.skip=true` for the package build, while preserving the original `build.sh` unchanged.
 
 No new build has been launched from this inspection. POMs remain untouched.
+
+## build.sh control-flow inspection — 2026-09-23
+
+Inspection of lines 65–145 confirms the relevant control flow. Option `-s` only sets `SKIPTESTS="-DskipTests"` (lines 71–73). The build then executes Maven sequentially in `libs/auxtestlib`, `libs/incubator`, `libs/parsec`, `libs/typelib`, `libs/eseblib`, followed by Rainbow modules. Several calls hard-code `-DskipTests`, while line 139 (`rainbow-utility-model`) invokes `mvn $target` without any test-skip flag. Therefore the robust temporary repair is to construct a copy of the script in which `-s` selects `-Dmaven.test.skip=true` and all hard-coded `-DskipTests` calls are replaced by `-Dmaven.test.skip=true`; the unguarded utility-model invocation must also receive the same property. The original `build.sh` remains unchanged.
+
+This is now a sufficiently specified workaround to test. It is still a proposed build workaround until a complete package build succeeds; no scientific conclusion is attached to it.
