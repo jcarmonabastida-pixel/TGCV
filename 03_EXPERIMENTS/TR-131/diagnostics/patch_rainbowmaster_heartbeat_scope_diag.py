@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import re
 
 TARGET = Path("rainbow/rainbow-core/src/main/java/org/sa/rainbow/core/RainbowMaster.java")
 
@@ -36,12 +37,13 @@ def patch_method(text, name, signature):
     method = text[start:end]
     before, after = MARKERS[name]
 
-    for marker in LEGACY_MARKERS:
-        method = method.replace(marker, "")
-
-    # Normalize duplicate scoped markers already introduced by earlier diagnostic passes.
-    method = method.replace(before + "\n", "")
-    method = method.replace(after + "\n", "")
+    # Remove every previously injected heartbeat diagnostic line in this method.
+    # This makes the patch idempotent even when earlier passes created duplicates.
+    diagnostic_line = re.compile(
+        r'^[ \\t]*System\\.err\\.println\\("\\[TR131-DIAG-HEARTBEAT\\][^"]*"\\);\\r?\\n?',
+        re.MULTILINE,
+    )
+    method = diagnostic_line.sub("", method)
 
     sync = "synchronized (m_heartbeats) {"
     positions = []
