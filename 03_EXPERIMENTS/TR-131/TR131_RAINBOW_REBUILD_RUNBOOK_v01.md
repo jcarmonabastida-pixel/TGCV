@@ -272,3 +272,9 @@ The first execution of the verified launcher `Rainbow-202609230056/run-oracle.sh
 This invalidates the prior assumption that the generated `Rainbow-202609230056` directory is a complete self-contained runtime tree. The launcher requires `targets/swim` relative to its own working directory, while the inspected generated target package is currently located under `Rainbow-202609210222/targets/swim` (and the source/deployment target also exists under `deployments/rainbow-swim/target`). No runtime diagnostics were reached.
 
 Do not copy or mutate target assets yet. Next gate is to determine which timestamped Rainbow directory contains the matching launcher + `targets/swim` pair and how the successful build generated/populated that pair. Record that relationship before attempting another launch.
+
+## Package-layout diagnosis — 2026-09-23
+
+The comparison shows the newly generated `Rainbow-202609230056` contains the complete runtime `lib/` set, including the newly built `rainbow-swim-3.0.jar`, plus launcher scripts, but no `targets/swim`. The repository root contains `targets/swim` with the required SWIM configuration/assets. The older executable package `Rainbow-202609210558` contains both runtime and `targets/swim`.
+
+This establishes that the current build produced the runtime package but did not stage/copy the root `targets/swim` tree into the timestamped package. This is a packaging/layout issue, not a compilation failure. Before changing or copying anything, inspect the packaging section of the build script and determine whether target staging is an explicit step or a separate deployment/package operation. Do not use the older package as a scientific runtime substitute because it contains older artifacts and local modifications.
