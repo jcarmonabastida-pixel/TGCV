@@ -231,3 +231,9 @@ The generated SWIM target package was inspected and does not itself contain a Ra
 Operational rule: launcher discovery is a separate gate after successful package generation. Because this path has previously required iteration, once the correct Rainbow launcher/entry point is identified and verified, its exact path, invocation, required working directory/properties, and observed startup markers must be recorded in this runbook before proceeding. Do not execute target utility scripts such as `system/util/swimcmd.sh` as a substitute for the Rainbow launcher.
 
 Current status: launcher not yet identified; no runtime execution performed in this step.
+
+## Launcher identified — 2026-09-23
+
+The local source inspection has identified the Rainbow-SWIM launcher reference in `deployments/rainbow-swim/README.md`: `./run-oracle.sh -p rainbow.properties swim`. This is now the primary launcher candidate. It has not yet been executed in this gate.
+
+Next gate: verify the launcher script location/content and its relationship to the generated `deployments/rainbow-swim/target/rainbow-swim-3.0.jar` before runtime execution. Once verified, record the exact invocation and runtime observations here.
