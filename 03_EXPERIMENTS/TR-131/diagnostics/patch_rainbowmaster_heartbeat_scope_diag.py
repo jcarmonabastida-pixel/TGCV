@@ -13,13 +13,14 @@ METHODS = [
 MARKERS = {
     "connectDelegate": ("[TR131-DIAG-HEARTBEAT] CONNECT_DELEGATE_BEFORE_PUT", "[TR131-DIAG-HEARTBEAT] CONNECT_DELEGATE_AFTER_PUT"),
     "processHeartbeat": ("[TR131-DIAG-HEARTBEAT] PROCESS_HEARTBEAT_BEFORE_GET", "[TR131-DIAG-HEARTBEAT] PROCESS_HEARTBEAT_AFTER_GET"),
-    "checkHeartbeats": ("[TR131-DIAG-HEARTBEAT] CHECK_HEARTBEATS_BEFORE_SCAN", "[TR131-DIAG-HEARTBEATS_AFTER_SCAN]"),
+    "checkHeartbeats": ("[TR131-DIAG-HEARTBEAT] CHECK_HEARTBEATS_BEFORE_SCAN", "[TR131-DIAG-HEARTBEAT] CHECK_HEARTBEATS_AFTER_SCAN"),
     "flushDelegate": ("[TR131-DIAG-HEARTBEAT] FLUSH_DELEGATE_BEFORE_REMOVE", "[TR131-DIAG-HEARTBEAT] FLUSH_DELEGATE_AFTER_REMOVE"),
 }
 
-OLD_GENERIC = (
+LEGACY_MARKERS = (
     "[TR131-DIAG-HEARTBEAT] BEFORE_HEARTBEAT_PUT",
     "[TR131-DIAG-HEARTBEAT] AFTER_HEARTBEAT_PUT",
+    "[TR131-DIAG-HEARTBEATS_AFTER_SCAN]",
 )
 
 def method_bounds(text, start):
@@ -35,11 +36,12 @@ def patch_method(text, name, signature):
     method = text[start:end]
     before, after = MARKERS[name]
 
-    for marker in OLD_GENERIC:
+    for marker in LEGACY_MARKERS:
         method = method.replace(marker, "")
 
-    if before in method and after in method:
-        return text[:start] + method + text[end:], False
+    # Normalize duplicate scoped markers already introduced by earlier diagnostic passes.
+    method = method.replace(before + "\n", "")
+    method = method.replace(after + "\n", "")
 
     sync = "synchronized (m_heartbeats) {"
     positions = []
@@ -47,6 +49,7 @@ def patch_method(text, name, signature):
     while pos >= 0:
         positions.append(pos)
         pos = method.find(sync, pos + 1)
+
     if len(positions) != 1:
         raise SystemExit(f"{name.upper()}_HEARTBEAT_SYNC_COUNT={len(positions)}")
 
