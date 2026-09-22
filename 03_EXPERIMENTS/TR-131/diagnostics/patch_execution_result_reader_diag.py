@@ -27,6 +27,7 @@ new = """\t\tlong id = m_information.execution_response_id(data.value());
 \t\tSystem.err.println("[TR131-DIAG-RPC-RESULT] RESPONSE_ID=" + id);
 \t\tSystem.err.println("[TR131-DIAG-RPC-RESULT] PENDING_COUNT_BEFORE=" + m_pending.size());
 \t\tsynchronized (this) {
+\t\t\tSystem.err.println("[TR131-DIAG-RPC-RESULT] PENDING_IDS=" + m_pending.keySet());
 \t\t\tWeakReference<RemoteExecution> wr = m_pending.get(id);
 \t\t\tSystem.err.println("[TR131-DIAG-RPC-RESULT] WAIT_REF_FOUND=" + (wr != null));
 \t\t\tif (wr != null) {
@@ -45,21 +46,18 @@ if old not in text:
     raise SystemExit("PATCH_BLOCK_NOT_FOUND")
 
 text = text.replace(old, new, 1)
-
 old2 = """\t\tif (re == null) {
 """
 new2 = """\t\tif (re == null) {
 \t\t\tSystem.err.println("[TR131-DIAG-RPC-RESULT] NO_MATCH_RETURN_FALSE");
 """
 text = text.replace(old2, new2, 1)
-
 old3 = """\t\tif (m_information.is_successful_execution(data.value())) {
 """
 new3 = """\t\tif (m_information.is_successful_execution(data.value())) {
 \t\t\tSystem.err.println("[TR131-DIAG-RPC-RESULT] SUCCESS_RESPONSE");
 """
 text = text.replace(old3, new3, 1)
-
 old4 = """\t\t\tif (fi == null) {
 \t\t\t\tre.done(new RemoteExecutionResult(output));
 """
@@ -68,7 +66,6 @@ new4 = """\t\t\tif (fi == null) {
 \t\t\t\tre.done(new RemoteExecutionResult(output));
 """
 text = text.replace(old4, new4, 1)
-
 old5 = """\t\t} else {
 \t\t\tString type = m_information.execution_response_failure_type(
 """
@@ -77,6 +74,5 @@ new5 = """\t\t} else {
 \t\t\tString type = m_information.execution_response_failure_type(
 """
 text = text.replace(old5, new5, 1)
-
 TARGET.write_text(text, encoding="utf-8")
 print("PATCH_OK")
