@@ -215,3 +215,11 @@ No new build has been launched from this inspection. POMs remain untouched.
 Inspection of lines 65–145 confirms the relevant control flow. Option `-s` only sets `SKIPTESTS="-DskipTests"` (lines 71–73). The build then executes Maven sequentially in `libs/auxtestlib`, `libs/incubator`, `libs/parsec`, `libs/typelib`, `libs/eseblib`, followed by Rainbow modules. Several calls hard-code `-DskipTests`, while line 139 (`rainbow-utility-model`) invokes `mvn $target` without any test-skip flag. Therefore the robust temporary repair is to construct a copy of the script in which `-s` selects `-Dmaven.test.skip=true` and all hard-coded `-DskipTests` calls are replaced by `-Dmaven.test.skip=true`; the unguarded utility-model invocation must also receive the same property. The original `build.sh` remains unchanged.
 
 This is now a sufficiently specified workaround to test. It is still a proposed build workaround until a complete package build succeeds; no scientific conclusion is attached to it.
+
+## Full Rainbow package build — 2026-09-23
+
+The temporary build-script workaround was executed successfully with JDK 8 and `-s -d rainbow-swim`. The Rainbow package compiled and was generated successfully. This validates the build workaround for the current source tree.
+
+Validated sequence: preserve original `build.sh`; create a temporary copy; change `SKIPTESTS` to `-Dmaven.test.skip=true`; replace hard-coded `-DskipTests`; ensure the previously unguarded `rainbow-utility-model` invocation receives the same skip property; execute the temporary script with Java 8 and `rainbow-swim` target.
+
+The validation concerns compilation/package generation only. It does not constitute scientific execution or TR-131 evidence by itself.
