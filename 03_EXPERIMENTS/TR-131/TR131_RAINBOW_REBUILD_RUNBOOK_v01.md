@@ -286,3 +286,7 @@ The `build.sh` inspection resolves the packaging issue. The script accepts deplo
 Therefore the successful build command used earlier, which supplied `-d rainbow-swim` but **did not supply `-t swim`**, correctly produced the runtime libraries and launcher but no `Rainbow-<timestamp>/targets/swim`. This is a packaging invocation omission, not a missing target or a compilation defect.
 
 The reproducible packaging invocation must therefore include the SWIM target explicitly, while retaining the JDK8 and `-Dmaven.test.skip=true` workaround already documented. Do not copy `targets/swim` manually into the generated package.
+
+## Reusable-artefact staging correction — 2026-09-23
+
+The compiled SWIM deployment artefacts are present at `deployments/rainbow-swim/target/`: `target/rainbow-swim-3.0.jar` and `target/lib/*`. The failed manual package reconstruction used the nonexistent root `bin/`, so it produced a package with the launcher/target but no runtime JARs. The correct no-recompile staging mirrors the packaging logic in `build.sh`: create `bin/lib`, copy `deployments/rainbow-swim/target/*.jar` and `target/lib/*`, create `bin/targets`, copy the selected `targets/swim`, copy `scripts/*` and `license.html`, then rename `bin` to the release directory. This reuses the already successful compilation and must not invoke Maven.
