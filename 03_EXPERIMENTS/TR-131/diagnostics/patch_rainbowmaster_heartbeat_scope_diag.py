@@ -13,9 +13,14 @@ METHODS = [
 MARKERS = {
     "connectDelegate": ("[TR131-DIAG-HEARTBEAT] CONNECT_DELEGATE_BEFORE_PUT", "[TR131-DIAG-HEARTBEAT] CONNECT_DELEGATE_AFTER_PUT"),
     "processHeartbeat": ("[TR131-DIAG-HEARTBEAT] PROCESS_HEARTBEAT_BEFORE_GET", "[TR131-DIAG-HEARTBEAT] PROCESS_HEARTBEAT_AFTER_GET"),
-    "checkHeartbeats": ("[TR131-DIAG-HEARTBEAT] CHECK_HEARTBEATS_BEFORE_SCAN", "[TR131-DIAG-HEARTBEAT] CHECK_HEARTBEATS_AFTER_SCAN"),
+    "checkHeartbeats": ("[TR131-DIAG-HEARTBEAT] CHECK_HEARTBEATS_BEFORE_SCAN", "[TR131-DIAG-HEARTBEATS_AFTER_SCAN]"),
     "flushDelegate": ("[TR131-DIAG-HEARTBEAT] FLUSH_DELEGATE_BEFORE_REMOVE", "[TR131-DIAG-HEARTBEAT] FLUSH_DELEGATE_AFTER_REMOVE"),
 }
+
+OLD_GENERIC = (
+    "[TR131-DIAG-HEARTBEAT] BEFORE_HEARTBEAT_PUT",
+    "[TR131-DIAG-HEARTBEAT] AFTER_HEARTBEAT_PUT",
+)
 
 def method_bounds(text, start):
     ends = [text.find(sig, start + 1) for _, sig in METHODS]
@@ -29,8 +34,13 @@ def patch_method(text, name, signature):
     start, end = method_bounds(text, start)
     method = text[start:end]
     before, after = MARKERS[name]
-    if before in method:
-        return text, False
+
+    for marker in OLD_GENERIC:
+        method = method.replace(marker, "")
+
+    if before in method and after in method:
+        return text[:start] + method + text[end:], False
+
     sync = "synchronized (m_heartbeats) {"
     positions = []
     pos = method.find(sync)
@@ -39,10 +49,12 @@ def patch_method(text, name, signature):
         pos = method.find(sync, pos + 1)
     if len(positions) != 1:
         raise SystemExit(f"{name.upper()}_HEARTBEAT_SYNC_COUNT={len(positions)}")
+
     open_pos = positions[0]
     line_start = method.rfind("\n", 0, open_pos) + 1
     indent = method[line_start:open_pos]
     method = method[:line_start] + indent + f'System.err.println("{before}");\n' + method[line_start:]
+
     open_pos = method.find(sync, line_start)
     depth = 0
     close_pos = None
@@ -56,6 +68,7 @@ def patch_method(text, name, signature):
                 break
     if close_pos is None:
         raise SystemExit(f"{name.upper()}_HEARTBEAT_BLOCK_UNCLOSED")
+
     close_line_end = method.find("\n", close_pos)
     if close_line_end < 0:
         close_line_end = len(method)
