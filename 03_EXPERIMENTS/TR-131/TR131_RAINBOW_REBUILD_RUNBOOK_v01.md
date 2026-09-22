@@ -237,3 +237,9 @@ Current status: launcher not yet identified; no runtime execution performed in t
 The local source inspection has identified the Rainbow-SWIM launcher reference in `deployments/rainbow-swim/README.md`: `./run-oracle.sh -p rainbow.properties swim`. This is now the primary launcher candidate. It has not yet been executed in this gate.
 
 Next gate: verify the launcher script location/content and its relationship to the generated `deployments/rainbow-swim/target/rainbow-swim-3.0.jar` before runtime execution. Once verified, record the exact invocation and runtime observations here.
+
+## Launcher-path correction — 2026-09-23
+
+The README reference `./run-oracle.sh -p rainbow.properties swim` is relative to `$RAINBOW/Rainbow-build`, not to `deployments/rainbow-swim`. Attempting to open `deployments/rainbow-swim/run-oracle.sh` confirmed that the script is not present there. The README therefore identifies the command and expected Rainbow installation context, but does not establish the local launcher path yet.
+
+Status corrected: launcher command known from README; local launcher path still to be located. No runtime execution performed.
