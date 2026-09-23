@@ -89,7 +89,6 @@ def analyze(package,input_sha256=None,implementation_sha256=None):
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("input",type=Path); ap.add_argument("-o","--output",type=Path,required=True); a=ap.parse_args()
     raw=a.input.read_bytes(); res=analyze(json.loads(raw),hashlib.sha256(raw).hexdigest(),hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
-    a.output.write_text(json.dumps(res,sort_keys=True,indent=2,ensure_ascii=False)+"
-",encoding="utf-8")
+    a.output.write_text(json.dumps(res,sort_keys=True,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     print(json.dumps({"status":"ANALYSIS_COMPLETED","records":res["record_count"],"invalid":res["invalid_count"],"output_sha256":res["output_sha256"]}))
 if __name__=="__main__": main()
