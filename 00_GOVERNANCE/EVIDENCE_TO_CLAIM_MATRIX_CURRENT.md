@@ -39,73 +39,175 @@ A material experimental result is propagated to this matrix when it adds, remove
 
 ## Material methodological evidence — TR-131 VisitAll Transformation-Space Instrumentation
 
-**Case:** `TR-131 VisitAll — Dynamic Space Instrumentation`  
+**Case:** `TR-131 VisitAll — Dynamic Transformation Space`  
 **Status:** `CLOSED — BOUNDED METHODOLOGICAL INSTRUMENTATION EVIDENCE`  
-**Primary result:** `03_EXPERIMENTS/TR-131/execution/TR131_VISITALL_DYNAMIC_SPACE_SCIENTIFIC_EVALUATION_AUDIT_001.md`  
+**Experiment scope:** frozen VisitAll / PDDL `grid-5`, exhaustive depth-2 tree  
+**Primary scientific audit:** `03_EXPERIMENTS/TR-131/execution/TR131_VISITALL_DYNAMIC_SPACE_SCIENTIFIC_EVALUATION_AUDIT_001.md`  
 **Scientific evaluation commit:** `2d8dd7b72245e7dc747bfb848ecda1de409b09fc`  
-**Content SHA:** `4e4cff8a07904877cafca86ba701d7476212a3f3`
+**Scientific evaluation content SHA:** `4e4cff8a07904877cafca86ba701d7476212a3f3`
 
-### 1. Purpose and scope
+### 1. Source and frozen experimental object
 
-VisitAll is retained as the first-domain demonstration that the TGCV transformation-space instrumentation can be instantiated, executed and audited without requiring the experiment to demonstrate representational superiority over the domain-native baseline.
+The experiment used the source-defined VisitAll planning instance:
 
-The relevant chain is:
+- **Source repository:** `potassco/pddl-instances`
+- **Revision:** `cf19edf7c53d1540ddbb396c642595e0926ee552`
+- **PDDL problem blob:** `f49fb86fb3f7dd4aba5a6ed79fdddc240097ec34`
+- **Problem:** `grid-5`
+- **Depth:** 2
+- **Root state:** robot at `loc-x2-y2`
+
+The relevant source-defined transformation is the action:
+
+`move(?curpos ?nextpos)`
+
+with preconditions:
+
+- `at-robot(?curpos)`
+- `connected(?curpos,?nextpos)`
+
+and effects that move the robot and mark the visited location.
+
+At the root, four outgoing moves are accessible under the frozen source semantics.
+
+The experiment therefore did not invent a transformation universe independently of the domain. It instrumented the source-defined transformation possibilities and their evolution through the source-defined state transitions.
+
+### 2. Experimental question
+
+The operational question was whether the following sequence could be explicitly instrumented and reconstructed:
 
 `S_t → T_acc,t → T_real,t → S_(t+1) → T_acc,t+1`
 
-The experiment operationalised a finite transformation tree, identified accessible transformations at each state, recorded realized transformations and reconstructed successive changes in the accessible transformation space.
+and, consequently:
 
-### 2. Independent reconstruction
+`T_acc,t → T_acc,t+1`
 
-Executor-1 and Executor-2 independently reconstructed the same depth-2 VisitAll tree. The canonical audit reports:
+with `Delta T_acc` observable along realized transitions.
 
-- 21 nodes;
-- 20 edges;
-- 16 leaves;
+The original scientific evaluation additionally tested whether this explicit instrumentation produced a representational distinction not already recoverable from the conventional domain-native state/action representation.
+
+These are separate questions. The latter failed in this fixture; the former succeeded as a bounded instrumentation result.
+
+### 3. Execution design
+
+Two independent executions were performed:
+
+- **Executor-1:** persisted stdout SHA-256 `735a4b6d13c763bbf6211bc9aebdf8ba5f6e00397e08ffa815df7edd601a3afa`
+- **Executor-2:** persisted stdout SHA-256 `6c2a0dd29764c41c7aa5264cda4c9c070edbf096813b38fe90fc447c2615d95c`
+
+The independent comparison audit established agreement on:
+
+- source revision;
+- source problem/blob;
+- execution depth;
+- node count;
+- root `T_acc`;
+- reconstructed tree structure.
+
+The final comparison was PASS after excluding redundant parent-state provenance that duplicated the baseline `S_t`.
+
+### 4. Observed transformation-space structure
+
+The independently reconstructed exhaustive depth-2 tree contained:
+
+- **21 nodes**;
+- **20 edges**;
+- **16 leaves**;
 - root `|T_acc| = 4`;
-- 4 distinct root realizations;
-- 4 distinct first-step successor states;
-- 16 depth-2 nodes;
-- 20 observed `Delta T_acc` edges;
-- zero reconstruction mismatches.
+- **4 distinct root realizations**;
+- **4 distinct first-step successor states**;
+- **16 depth-2 nodes**;
+- **20 observed non-empty `Delta T_acc` transitions**;
+- **0 reconstruction mismatches**.
 
-The experiment therefore demonstrates that the transformation-space variables can be operationalised and audited in a concrete domain.
+Thus the experiment operationally captured:
 
-### 3. Scientific evaluation boundary
+1. the accessible transformations at a state;
+2. a realized transformation selected from those alternatives;
+3. the resulting successor state;
+4. the accessible transformation space of that successor state;
+5. the change between the two accessible spaces.
 
-The formal scientific evaluation classified:
+### 5. Scientific evaluation
 
-- C1: NOT_TESTABLE because accessibility was deterministic from state plus frozen connectivity;
-- C2: OBSERVED;
-- C3: OBSERVED;
-- C4: OBSERVED;
-- `representation_gain_result = FAIL_NO_DISTINCT_REPRESENTATIONAL_GAIN`.
+The frozen scientific audit evaluated four representation cases:
 
-The negative representational-gain result is not a failure of the instrumentation objective. It establishes the correct evidentiary boundary: VisitAll demonstrates **instrumentation and observation**, not superior representation.
+**C1 — Same state, different accessible transformation space:** `NOT_TESTABLE`.
 
-### 4. Evidence-to-claim propagation
+Applicability was deterministic from `S_t` and the frozen connectivity relation. No independent context variable was present that could produce different `T_acc` for the same state.
 
-**C07 — bounded methodological qualification.** VisitAll provides a first-domain executable demonstration that accessible transformation spaces can be represented at successive states and that non-empty `Delta T_acc` can be observed along realized transitions. It does not establish general temporal dynamics across domains.
+**C2 — Same state and `T_acc`, different realization:** `OBSERVED`.
 
-**C08 — bounded methodological qualification.** VisitAll provides a finite trajectory/tree reconstruction linking realized transformations to successor states and subsequent accessible transformation spaces. It does not establish a causal trajectory estimand or general effect of accessibility change on trajectories.
+At the root, four applicable moves were available and all four were realized across the exhaustive branches.
 
-**C11 — bounded first-domain foundation.** VisitAll provides the first bounded domain instance for the new cross-domain operationalisation programme. It does not establish transversal validity; its role is to provide the reference instrumentation pattern against which Gate A can test a materially different second domain.
+**C3 — Same current state and `T_acc`, different trajectories:** `OBSERVED`.
 
-**C16 — bounded methodological qualification.** VisitAll provides executable evidence that the proposed translation logic can preserve distinctions among state, accessible transformations, realized transformations, successor states and subsequent accessible transformations in a concrete domain.
+The four root realizations generated four distinct first-step successor states and 16 depth-2 nodes.
 
-**C12 — explicitly not supported.** The scientific audit found no distinct representational gain relative to the domain-native baseline. VisitAll must therefore not be used as evidence for explanatory or representational superiority.
+**C4 — Realized transformation changes subsequent `T_acc`:** `OBSERVED`.
 
-No claim-level status or level is changed.
+All 20 realized edges had non-empty `Delta T_acc`.
 
-### 5. Reproducibility and provenance boundary
+### 6. Reconstruction and representational boundary
 
-The result is bounded to the frozen VisitAll instance and its canonical source/provenance. It is not evidence of domain independence, value linkage, Transformational Intelligence, causal `Delta T_acc → Delta Value`, or ontological irreducibility.
+The critical audit result was that all observed transformation-space changes were reconstructible from the conventional source-defined state/connectivity/action semantics.
 
-### 6. Governance disposition
+Therefore:
 
-VisitAll is closed as **bounded methodological instrumentation evidence**. It is not reopened to seek representational gain. Its role in the current research programme is to establish the first operational anchor for **Gate A — Cross-domain operationalisation**.
+`representation_gain_result = FAIL_NO_DISTINCT_REPRESENTATIONAL_GAIN`
 
-The evidence does not modify TGCV Core. Any future ontology implication is reserved for **Gate F — Scientific Core & Ontology Review**, governed by the rule:
+This means that VisitAll did **not** demonstrate that `T_acc` constitutes an analytically independent or superior representation relative to the domain-native baseline.
+
+It does **not** mean that the transformation-space instrumentation failed.
+
+The two findings are deliberately separated:
+
+- **Instrumentation:** demonstrated in this bounded fixture.
+- **Distinct representational gain:** not demonstrated.
+
+This distinction is now the governing interpretation of the VisitAll evidence.
+
+### 7. Evidence-to-claim propagation
+
+**C07 — bounded methodological qualification.** VisitAll demonstrates that successive `T_acc` states and non-empty `Delta T_acc` can be explicitly instrumented over realized transitions in a concrete planning domain.
+
+**C08 — bounded methodological qualification.** VisitAll demonstrates an executable finite linkage among accessible transformations, realized transformations, successor states and subsequent accessible transformations. It does not establish a causal trajectory estimand.
+
+**C11 — bounded first-domain foundation.** VisitAll is the first operational anchor for the new cross-domain programme. It does not establish transversal validity. Its purpose is to define a concrete instrumentation pattern against which a materially different second domain can be tested in Gate A.
+
+**C16 — bounded methodological qualification.** VisitAll demonstrates preservation of distinctions among state, candidate/accessibility space, realized transformation and successor state within an executable domain translation.
+
+**C12 — explicitly not supported.** The experiment found no distinct representational gain relative to the conventional baseline and must not be used as evidence of explanatory or representational superiority.
+
+No claim-level status or level is changed by this evidence propagation.
+
+### 8. Reproducibility, scope and exclusions
+
+The result is bounded to the frozen `grid-5` VisitAll instance and its source-defined semantics.
+
+It does not establish:
+
+- cross-domain or transversal validity;
+- generality of transformation-space dynamics;
+- Transformational Intelligence;
+- value linkage;
+- causal `Delta T_acc → Delta Value`;
+- ontological irreducibility of `T_acc`, `T_real`, selection or any other candidate construct;
+- superiority over domain-native representations.
+
+No new scientific execution was performed during the final scientific evaluation audit.
+
+### 9. Governance disposition
+
+VisitAll is **closed** as a bounded methodological instrumentation result. It is not reopened to seek representational gain in the same fixture.
+
+Its role is now explicitly:
+
+> **First-domain demonstration that TGCV can instrument a transformation space and observe its evolution through realized transformations.**
+
+The next question is therefore not whether VisitAll can be made to show representational superiority, but whether the instrumentation logic survives a **materially different second domain** under Gate A — Cross-domain operationalisation.
+
+Any implication for TGCV's scientific Core remains deferred to Gate F and governed by:
 
 > **Evidence first → conceptual differentiation second → ontological review third → Core modification only if warranted by accumulated evidence.**
 
