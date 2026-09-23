@@ -17,7 +17,7 @@ The frozen VisitAll Dynamic Transformation Space package passed the package free
 Runner conformance preflight: PASS.
 
 - Runner SHA-256: `696a41fcdaf3eed8dd9d4b8ec18cbedf190f7fce9d89d2f6b4703f5f83e89cba`
-- Adapter SHA-256: `7e35715b20fe9623dfe10c96e64aa9236881d2a8d...` 
+- Adapter SHA-256: `7e35715b20fe9623dfe10c96e64aa9236881d2a7bc684113fafb4d15f594a6d3` 
 
 Authorization checks: explicit gate PASS; unauthorized execution refusal PASS; authorized flags consistency PASS.
 
