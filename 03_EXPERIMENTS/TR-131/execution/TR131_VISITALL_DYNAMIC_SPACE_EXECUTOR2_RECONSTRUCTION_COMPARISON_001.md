@@ -1,6 +1,6 @@
 # TR-131 VisitAll Dynamic Space Executor-2 Reconstruction Comparison 001
 
-**Status:** EVIDENCE RECEIVED — INDEPENDENT RECONSTRUCTION COMPLETED / COMPARISON PENDING CANONICAL PERSISTENCE
+**Status:** EVIDENCE PERSISTED — INDEPENDENT RECONSTRUCTION COMPLETED / BYTE-LEVEL COMPARISON PENDING
 
 ## Executor-2 execution
 
@@ -38,10 +38,10 @@ The canonical Executor-1 captured-output hash is:
 
 `735a4b6d13c763bbf6211bc9aebdf8ba5f6e00397e08ffa815df7edd601a3afa`
 
-The Executor-2 captured-output hash must be obtained from the new persistence wrapper before the raw reconstruction is canonically persisted and byte-level comparison is closed.
+The Executor-2 captured-output hash has now been obtained from the persistence wrapper: `6c2a0dd29764c41c7aa5264cda4c9c070edbf096813b38fe90fc447c2615d95c`. The raw output remains local; this record preserves its captured-output hash.
 
 ## Next gate
 
-Run the new Executor-2 persistence wrapper with scientific authorization enabled. Then compare the persisted Executor-1 and Executor-2 records using an independent comparison audit.
+Next: compare the Executor-1 and Executor-2 records using an independent comparison audit. The comparison must distinguish exact byte identity from scientific/structural agreement; identical bytes are not required because the executors are independently implemented.
 
 No scientific interpretation is authorized by this record.
