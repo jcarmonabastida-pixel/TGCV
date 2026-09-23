@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 
 from TR131_VISITALL_SOURCE_DEFINED_TRANSITION_ADAPTER_001 import Move, applicable_moves, apply_move
@@ -50,6 +51,17 @@ def build_connected():
 
 
 def main():
+    authorized = os.environ.get("TGCV_TR131_SCIENTIFIC_AUTHORIZED") == "YES"
+    if not authorized:
+        print(json.dumps({
+            "record_type": "TGCV_TR131_VISITALL_DYNAMIC_SPACE_EXECUTOR2_AUTHORIZATION_REFUSAL",
+            "status": "NOT_AUTHORIZED",
+            "executor": "EXECUTOR_2",
+            "scientific_execution_authorized": False,
+            "scientific_execution_performed": False,
+            "authorization_mechanism": "TGCV_TR131_SCIENTIFIC_AUTHORIZED=YES",
+        }, indent=2, ensure_ascii=False))
+        return 3
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
     va = lock["visitall"]
     connected = build_connected()
@@ -119,8 +131,8 @@ def main():
         "node_count": len(nodes),
         "root_tacc": list(root_tacc),
         "nodes": nodes,
-        "scientific_execution_authorized": False,
-        "scientific_execution_performed": False,
+        "scientific_execution_authorized": authorized,
+        "scientific_execution_performed": True,
     }
     print(json.dumps(report, indent=2, ensure_ascii=False))
     return 0
