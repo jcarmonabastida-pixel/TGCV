@@ -36,7 +36,8 @@ for j,p in enumerate(shuffled):
     expected[p]={"slot_A":"control","slot_B":"treatment"} if j%2==0 else {"slot_A":"treatment","slot_B":"control"}
 ok("A7_ASSIGNMENT_REPRODUCIBILITY",all(expected.get(x.get("pair_id"),{}).get(x.get("execution_slot"))==x.get("condition") for x in instances))
 ok("A8_ASSIGNMENT_CONTENT_INDEPENDENCE",all(x.get("condition") not in json.dumps({"S_t":x.get("S_t"),"T_acc_t":x.get("T_acc_t"),"successors":x.get("successors")},sort_keys=True) for x in instances))
-ok("A9_NO_DUPLICATE_INSTANCE",len({x.get("instance_id") for x in instances})==64)
+# instance_id identifies the matched environment/pair; condition distinguishes its two realised records.
+ok("A9_NO_DUPLICATE_INSTANCE",len({x.get("instance_id") for x in instances})==32 and all(sum(1 for x in instances if x.get("instance_id")==p)==2 for p in pair_set) and len({(x.get("instance_id"),x.get("condition")) for x in instances})==64)
 
 print(json.dumps({"status":"PREFLIGHT_PASS" if all(results.values()) else "PREFLIGHT_FAIL","checks":results,"passed":sum(results.values()),"total":len(results),"scientific_execution":"NOT_AUTHORIZED"},indent=2,sort_keys=True))
 raise SystemExit(0 if all(results.values()) else 1)
