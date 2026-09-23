@@ -9,7 +9,7 @@ import argparse, hashlib, json
 from itertools import product
 from pathlib import Path
 
-EXPECTED_SHA = "8335ac3258dc457cb0d486fd8b774826799b87c81d65f15a5ae23696d7f2f43e"
+EXPECTED_SHA = "7a5a5639dda894966b92d8f8e447d9b02313194c675e23bbd24f967ce7cc0309"
 
 def sha256(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
