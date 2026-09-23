@@ -34,19 +34,22 @@ def main():
 
     lock = json.loads(FILES["source_lock"].read_text(encoding="utf-8"))
     va = lock["visitall"]
+    construction = FILES["construction_spec"].read_text(encoding="utf-8")
+    runner = FILES["runner"].read_text(encoding="utf-8")
+    executor2 = FILES["executor2"].read_text(encoding="utf-8")
 
     checks = {
         "all_required_files_present": not missing,
         "source_revision_pinned": va["revision"] == "cf19edf7c53d1540ddbb396c642595e0926ee552",
         "source_problem_pinned": va["problem"] == "grid-5",
         "source_blob_pinned": va["blob_sha"] == "f49fb86fb3f7dd4aba5a6ed79fdddc240097ec34",
-        "construction_depth_2": "depth-2" in FILES["construction_spec"].read_text(encoding="utf-8"),
-        "construction_no_rainbow": "Rainbow is excluded" in FILES["construction_spec"].read_text(encoding="utf-8"),
+        "construction_depth_2": "Frozen exploration depth: 2" in construction,
+        "construction_no_rainbow": "Rainbow is excluded entirely" in construction,
         "adapter_preflight_pass_recorded": "PASS" in FILES["adapter_preflight"].read_text(encoding="utf-8"),
         "runner_preflight_pass_recorded": "PASS" in FILES["runner_preflight"].read_text(encoding="utf-8"),
         "executor2_preflight_pass_recorded": "PASS" in FILES["executor2_preflight"].read_text(encoding="utf-8"),
-        "runner_no_x_policy": "selection_policy" not in FILES["runner"].read_text(encoding="utf-8"),
-        "executor2_no_executor1_reference": "EXECUTOR_1" not in FILES["executor2"].read_text(encoding="utf-8"),
+        "runner_no_x_policy": "selection_policy" not in runner,
+        "executor2_no_executor1_reference": "EXECUTOR_1" not in executor2,
         "scientific_execution_not_authorized": all(
             '"scientific_execution_authorized": False' in FILES[name].read_text(encoding="utf-8")
             for name in ("runner", "executor2")
