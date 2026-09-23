@@ -19,19 +19,24 @@ ok("P9_DETERMINISTIC_RECONSTRUCTION",all(set(x["successors"])=={"a","b","c"} and
 ok("P10_PRIMARY_METRIC_FREEZE",len({x["primary_estimand"]["name"] for x in instances})==1 and all(x["primary_estimand"]["type"]=="difference_in_subsequent_transformation_handling" and all(k in x["primary_estimand"]["forbidden"] for k in ["TI_score","value","reward","utility","performance"]) for x in instances))
 
 # Gate A — Randomisation & Assignment Integrity.
-# These checks intentionally fail on the pre-assignment fixture until the generator is updated.
+pairs=sorted({x.get("pair_id") for x in instances})
+pair_set=set(pairs)
 ok("A1_ASSIGNMENT_FIELDS_PRESENT",all(all(k in x for k in ["pair_id","condition","execution_slot","environment_seed","randomisation_seed"]) for x in instances))
-pair_ids=[x.get("pair_id") for x in instances]
+ok("A2_PAIR_STRUCTURE",len(instances)==64 and len(pairs)==32 and all(isinstance(p,str) and p.startswith("TI001-") for p in pairs))
 conditions=[x.get("condition") for x in instances]
-slots=[x.get("execution_slot") for x in instances]
-ok("A2_PAIR_STRUCTURE",len(instances)==32 and len(set(pair_ids))==32 and all(isinstance(p,str) and p.startswith("TI001-") for p in pair_ids))
-ok("A3_CONDITION_BALANCE",conditions.count("control")==16 and conditions.count("treatment")==16)
-ok("A4_PAIR_CONDITION_COMPLETENESS",len({(x.get("pair_id"),x.get("condition")) for x in instances})==32)
-ok("A5_SLOT_UNIQUENESS",len({(x.get("pair_id"),x.get("execution_slot")) for x in instances})==32)
+ok("A3_CONDITION_BALANCE",conditions.count("control")==32 and conditions.count("treatment")==32)
+ok("A4_PAIR_CONDITION_COMPLETENESS",len({(x.get("pair_id"),x.get("condition")) for x in instances})==64 and all(sum(1 for x in instances if x.get("pair_id")==p and x.get("condition")=="control")==1 and sum(1 for x in instances if x.get("pair_id")==p and x.get("condition")=="treatment")==1 for p in pair_set))
+ok("A5_SLOT_UNIQUENESS",len({(x.get("pair_id"),x.get("execution_slot")) for x in instances})==64 and all({x.get("execution_slot") for x in instances if x.get("pair_id")==p}=={"slot_A","slot_B"} for p in pair_set))
 ok("A6_SEED_SEPARATION",all(x.get("environment_seed") is not None and x.get("randomisation_seed")==582031 for x in instances) and len({x.get("environment_seed") for x in instances})==32)
-ok("A7_ASSIGNMENT_REPRODUCIBILITY",False)
-ok("A8_ASSIGNMENT_CONTENT_INDEPENDENCE",all("condition" not in x.get("S_t","") and "condition" not in json.dumps(x.get("T_acc_t",[])).lower() for x in instances))
-ok("A9_NO_DUPLICATE_INSTANCE",len({x.get("instance_id") for x in instances})==len(instances))
+rng=random.Random(582031)
+shuffled=pairs[:]
+rng.shuffle(shuffled)
+expected={}
+for j,p in enumerate(shuffled):
+    expected[p]={"slot_A":"control","slot_B":"treatment"} if j%2==0 else {"slot_A":"treatment","slot_B":"control"}
+ok("A7_ASSIGNMENT_REPRODUCIBILITY",all(expected.get(x.get("pair_id"),{}).get(x.get("execution_slot"))==x.get("condition") for x in instances))
+ok("A8_ASSIGNMENT_CONTENT_INDEPENDENCE",all(x.get("condition") not in json.dumps({"S_t":x.get("S_t"),"T_acc_t":x.get("T_acc_t"),"successors":x.get("successors")},sort_keys=True) for x in instances))
+ok("A9_NO_DUPLICATE_INSTANCE",len({x.get("instance_id") for x in instances})==64)
 
 print(json.dumps({"status":"PREFLIGHT_PASS" if all(results.values()) else "PREFLIGHT_FAIL","checks":results,"passed":sum(results.values()),"total":len(results),"scientific_execution":"NOT_AUTHORIZED"},indent=2,sort_keys=True))
 raise SystemExit(0 if all(results.values()) else 1)
