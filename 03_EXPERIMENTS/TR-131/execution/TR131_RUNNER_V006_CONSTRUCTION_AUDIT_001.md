@@ -1,16 +1,12 @@
-# TR-131 — Runner V006 Construction Audit
+# TR-131 — Runner V006 Correction Audit
 
-**Status:** CONSTRUCTED — UNIT TEST EXECUTION PENDING / SCIENTIFIC EXECUTION NOT AUTHORIZED
+**Status:** CORRECTED — UNIT TEST EXECUTION PENDING / SCIENTIFIC EXECUTION NOT AUTHORIZED
 **Date:** 2026-09-23
 
-V006 addresses the three V005 release blockers without modifying the frozen scientific question or introducing a domain.
+The first V006 unit run exposed a test-fixture/semantic mismatch in Utility Probe item 5.
 
-Corrections:
-1. Utility Probe item 5 now requires explicit temporal linkage between consecutive records in the same trajectory: current successor state equals next source state, and next accessibility differs from current post-transition accessibility.
-2. The package is mechanically restricted to the two frozen domains: VisitAll and PRISM.
-3. Full trajectory history H=(S_0,T_real,0,S_1,...,S_n) is reconstructed from ordered trajectory records and attached to each record in that trajectory.
-4. New tests cover all three controls.
+Correction: the temporal condition requires consecutive records in the same trajectory to satisfy current.S_t1 == next.S_t and current.T_acc_t1 != next.T_acc_t1. The positive fixture now encodes exactly that condition; the negative control keeps future accessibility unchanged.
 
-The suite contains 13 tests.
+The two-domain scope and full trajectory-history controls remain unchanged.
 
-Next gate: execute the complete 13-test suite locally.
+**Next gate:** execute the complete 15-test suite locally.
