@@ -290,3 +290,79 @@ The reproducible packaging invocation must therefore include the SWIM target exp
 ## Reusable-artefact staging correction — 2026-09-23
 
 The compiled SWIM deployment artefacts are present at `deployments/rainbow-swim/target/`: `target/rainbow-swim-3.0.jar` and `target/lib/*`. The failed manual package reconstruction used the nonexistent root `bin/`, so it produced a package with the launcher/target but no runtime JARs. The correct no-recompile staging mirrors the packaging logic in `build.sh`: create `bin/lib`, copy `deployments/rainbow-swim/target/*.jar` and `target/lib/*`, create `bin/targets`, copy the selected `targets/swim`, copy `scripts/*` and `license.html`, then rename `bin` to the release directory. This reuses the already successful compilation and must not invoke Maven.
+
+
+## SWIM + Rainbow runtime bootstrap — 2026-09-23
+
+This section records the recovered end-to-end startup chain used to connect the Rainbow-SWIM runtime to the actual SWIM simulator. It is operational provenance only; it is not scientific evidence.
+
+### SWIM source and runtime interface
+
+The separate local SWIM source tree is `/mnt/c/Users/pedri/SWIM`.
+
+The SWIM source contains the external TCP adaptation interface in `src/externalControl/AdaptInterface.cc`. It registers the same commands consumed by the Rainbow SWIM probes: `get_dimmer`, `get_servers`, `get_active_servers`, `get_max_servers`, `get_utilization`, `get_basic_rt`, `get_basic_throughput`, `get_opt_rt`, `get_opt_throughput`, and `get_arrival_rate`.
+
+The implementation uses OMNeT++ `cSocketRTScheduler`. The NED topology explicitly connects the simulation probe to the external control interface in `simulations/swim/swim.ned`:
+
+`probe.out++ --> adaptInterface.probe;`
+
+The intended observation path is therefore:
+
+`SWIM Probe -> AdaptInterface -> TCP -> swimcmd.sh -> Rainbow GenericScriptBasedProbe -> ESEB -> Gauge -> model update/TSP`
+
+### SWIM TCP port
+
+`examples/simple_am/SwimClient.h` declares TCP port `4242` as the default. The Rainbow-SWIM Docker environment explicitly sets `SOCAT_PORT=4242`. Rainbow's `targets/swim/system/util/swimcmd.sh` uses `SOCAT_PORT` when defined and otherwise falls back to `4243`.
+
+Therefore the integrated runtime configuration is **TCP 4242**, with `SOCAT_PORT=4242`.
+
+The SWIM-side command interface is implemented by the OMNeT++ `AdaptInterface` module inside the running SWIM simulation; it is not a separate Rainbow Java server.
+
+### Historical SWIM startup procedure
+
+`simulations/swim/run-sa.sh` documents the integrated startup:
+
+```sh
+{ ../../examples/simple_am/simple_am localhost; }&
+AMPID=$!;
+trap 'kill $AMPID;' INT
+./run.sh $*
+wait $AMPID
+echo "done!"
+```
+
+The accompanying `examples/simple_am/README.md` states that SWIM is launched first and the external adaptation manager is then run; `run-sa.sh` automates that sequence.
+
+The SWIM configuration in `simulations/swim/swim.ini` uses `cSocketRTScheduler`, `network = SWIM`, a 6300-second simulation limit, a 900-second warmup, a 60-second adaptation evaluation period, and three initial/max servers.
+
+### Build environment recovered from SWIM Dockerfile
+
+The SWIM Dockerfile is `docker/Dockerfile` and uses `omnetpp/omnetpp:u18.04-5.4.1`. It extracts `queueinglib.tgz`, builds `queueinglib`, runs `make cleanall && make makefiles && make -j$(nproc)` in SWIM, and builds `examples/simple_am`.
+
+The current WSL environment has no `opp_run`, no compiled SWIM binary, and no compiled `simple_am`. It does contain the original `queueinglib.tgz`. Docker is not available inside this WSL distribution.
+
+Thus the SWIM source and exact runtime interface have been recovered, but SWIM has not yet been rebuilt or launched in the current environment.
+
+### Rainbow runtime state at this gate
+
+The current local Rainbow runtime is `/mnt/c/Users/pedri/TGCV/TR131_RAINBOW_SRC/Rainbow-202609230117`.
+
+The clean RainbowMaster process is PID `64399`, with ESEB on TCP port `1100`.
+
+The runtime has successfully reached SWIM model loading, strategy parsing, PLA-SDP Adaptation Manager initialization, Rainbow Strategy Executor startup, probe registration, and effector registration.
+
+The adaptation cycle currently reports:
+
+`No environment observations available. Can't make adaptation decision`
+
+This is consistent with the SWIM command endpoint not yet being active and therefore with no probe output reaching Rainbow. It is not evidence of an adaptation-manager failure.
+
+### Operational boundary
+
+Do **not** restart or modify the currently running RainbowMaster merely to test this hypothesis.
+
+The next operational step is to reproduce SWIM in the correct OMNeT++ 5.4.1 environment, verify that TCP 4242 is listening and that a direct SWIM command returns a value, and only then allow the existing Rainbow probe path to consume observations.
+
+No Integer-to-Double normalization, heartbeat modification, Rainbow source bypass, or other source change is authorized by this record.
+
+No scientific execution is authorized by this bootstrap record. Its purpose is solely to restore the runtime observation path required before TR-131 scientific execution.
