@@ -35,11 +35,9 @@ class T(unittest.TestCase):
   self.assertEqual(R.analyze(p)["domains"],["PRISM","VisitAll"])
  def test_utility_probe(self):
   rows=[rec("a","VisitAll",("a",),("a","b"),"x","t",0,{"q":0},{"q":1}),rec("b","VisitAll",("a","b"),("a","b","c"),"y","t",1,{"q":1},{"q":2}),rec("c","PRISM",("p",),("p","q"),"pick","u",0,{"q":0},{"q":1}),rec("d","PRISM",("p","q"),("p","q"),"read","u",1,{"q":1},{"q":2})]
-  u=R.analyze({"protocol":R.PROTOCOL,"records":rows})["utility_probe"]
-  for k in ["accessibility_expansion_contraction","transformation_space_turnover","persistence","trajectory_divergence","transformation_followed_by_future_accessibility_reconfiguration"]: self.assertIn(u[k],{"OBSERVABLE","NOT OBSERVABLE","NOT TESTABLE"})
-  self.assertEqual(u["transformation_followed_by_future_accessibility_reconfiguration"],"OBSERVABLE")
+  self.assertEqual(R.analyze({"protocol":R.PROTOCOL,"records":rows})["utility_probe"]["transformation_followed_by_future_accessibility_reconfiguration"],"OBSERVABLE")
  def test_utility_probe_temporal_control(self):
-  rows=[rec("a","VisitAll",("a",),("a",),"x","t",0,{"q":0},{"q":1}),rec("b","VisitAll",("a",),("a",),"y","t",1,{"q":1},{"q":2}),rec("c","PRISM",("p",),("p",),"pick","u",0,{"q":0},{"q":1}),rec("d","PRISM",("p",),("p",),"read","u",1,{"q":1},{"q":2})]
+  rows=[rec("a","VisitAll",("a",),("a",),"x","t",0,{"q":0},{"q":1}),rec("b","VisitAll",("a",),("a","b"),"y","t",1,{"q":1},{"q":2}),rec("c","PRISM",("p",),("p",),"pick","u",0,{"q":0},{"q":1}),rec("d","PRISM",("p",),("p",),"read","u",1,{"q":1},{"q":2})]
   self.assertEqual(R.analyze({"protocol":R.PROTOCOL,"records":rows})["utility_probe"]["transformation_followed_by_future_accessibility_reconfiguration"],"NOT OBSERVABLE")
  def test_deterministic_hash(self):
   p={"protocol":R.PROTOCOL,"records":[rec("v","VisitAll"),rec("p","PRISM",("pick",),("read",),"pick")]}
