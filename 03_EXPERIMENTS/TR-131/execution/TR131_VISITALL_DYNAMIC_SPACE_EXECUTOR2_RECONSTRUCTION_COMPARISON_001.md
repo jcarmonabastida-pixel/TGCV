@@ -1,6 +1,6 @@
 # TR-131 VisitAll Dynamic Space Executor-2 Reconstruction Comparison 001
 
-**Status:** EVIDENCE PERSISTED — INDEPENDENT RECONSTRUCTION COMPLETED / BYTE-LEVEL COMPARISON PENDING
+**Status:** PASS — INDEPENDENT EXECUTOR COMPARISON AUDIT PASSED / SCIENTIFIC RESULT INTERPRETATION NOT PERFORMED
 
 ## Executor-2 execution
 
@@ -28,7 +28,19 @@ The received Executor-2 reconstruction reports:
 - Delta_T_acc recorded on realized edges
 - baseline state / realized transformation / successor state recorded on each edge
 
-The Executor-2 result is therefore structurally consistent with the already observed Executor-1 reconstruction at the reported aggregate level.
+The Executor-2 result is therefore structurally consistent with the Executor-1 reconstruction under the canonical comparison audit. The audit found identical source basis, depth, node count, root T_acc, root hash, and all compared node fields after normalizing only the redundant `S_parent` provenance field against `baseline.S_t`.
+
+## Comparison audit result
+
+The independent comparison audit returned `PASS`. Scientific interpretation remains explicitly separate and was not performed by the comparison audit.
+
+- Executor-1 captured-output SHA-256: `735a4b6d13c763bbf6211bc9aebdf8ba5f6e00397e08ffa815df7edd601a3afa`
+- Executor-2 captured-output SHA-256: `6c2a0dd29764c41c7aa5264cda4c9c070edbf096813b38fe90fc447c2615d95c`
+- `node_structure_equal_excluding_redundant_parent_provenance`: `true`
+- `e1_parent_provenance_consistent`: `true`
+- `e2_parent_provenance_consistent`: `true`
+
+Byte identity is not required and is not asserted.
 
 ## Important limitation
 
@@ -42,6 +54,6 @@ The Executor-2 captured-output hash has now been obtained from the persistence w
 
 ## Next gate
 
-Next: compare the Executor-1 and Executor-2 records using an independent comparison audit. The comparison must distinguish exact byte identity from scientific/structural agreement; identical bytes are not required because the executors are independently implemented.
+The independent reconstruction/comparison gate is closed. The next gate is a separate scientific evaluation of the Dynamic Transformation Space representation cases against the frozen VisitAll baseline.
 
-No scientific interpretation is authorized by this record.
+No scientific interpretation is asserted by this record.
