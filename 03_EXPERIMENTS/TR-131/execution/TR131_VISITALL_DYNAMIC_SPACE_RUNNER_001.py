@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """TR-131 VisitAll Dynamic Transformation Space exhaustive depth-2 runner.
 
-Scientific runner implementation only. Authorization is governed externally
-by the package freeze/audit gates. This runner performs no planner search,
-optimization, goal-directed selection, value evaluation, or TGCV inference.
+Scientific execution requires explicit operator authorization.
+Default invocation is a non-executing authorization refusal.
 """
 from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 
 from TR131_VISITALL_SOURCE_DEFINED_TRANSITION_ADAPTER_001 import Move, applicable_moves, apply_move
@@ -16,6 +16,8 @@ from TR131_VISITALL_SOURCE_DEFINED_TRANSITION_ADAPTER_001 import Move, applicabl
 ROOT = Path(__file__).resolve().parent
 LOCK = ROOT / "TR131_EXACT_FIXTURE_SOURCE_LOCK_v01.json"
 DEPTH = 2
+AUTH_ENV = "TGCV_TR131_SCIENTIFIC_AUTHORIZED"
+AUTH_VALUE = "YES"
 
 
 def canonical_json(value):
@@ -26,30 +28,19 @@ def sha256_value(value):
     return hashlib.sha256(canonical_json(value).encode("utf-8")).hexdigest()
 
 
-def state_key(state):
-    return canonical_json(state)
-
-
 def tacc_ids(state, connected):
     return tuple(sorted(m.identity for m in applicable_moves(state, connected)))
 
 
 def delta_tacc(t0, t1):
     a, b = set(t0), set(t1)
-    return {
-        "Added": sorted(b - a),
-        "Removed": sorted(a - b),
-        "Retained": sorted(a & b),
-    }
+    return {"Added": sorted(b - a), "Removed": sorted(a - b), "Retained": sorted(a & b)}
 
 
 def load_fixture():
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
     va = lock["visitall"]
-    s0 = {
-        "at-robot": va["initial_state"]["at_robot"],
-        "visited": sorted(va["initial_state"]["visited"]),
-    }
+    s0 = {"at-robot": va["initial_state"]["at_robot"], "visited": sorted(va["initial_state"]["visited"])}
     return lock, s0
 
 
@@ -66,30 +57,31 @@ def build_connected_grid():
 
 def make_node(branch, depth, state, connected, parent_tacc=None, realized=None):
     tacc = tacc_ids(state, connected)
-    node = {
-        "branch": branch,
-        "depth": depth,
-        "S_t": state,
-        "T_acc_t": list(tacc),
-        "T_acc_hash": sha256_value(tacc),
-    }
+    node = {"branch": branch, "depth": depth, "S_t": state, "T_acc_t": list(tacc), "T_acc_hash": sha256_value(tacc)}
     if realized is not None:
-        node["T_real_t"] = realized.identity
-        node["S_parent"] = None
-        node["T_acc_parent"] = list(parent_tacc)
-        node["Delta_T_acc_from_parent"] = delta_tacc(parent_tacc, tacc)
-        node["baseline"] = {
-            "S_t": None,
+        node.update({
             "T_real_t": realized.identity,
-            "S_t1": state,
-        }
+            "S_parent": None,
+            "T_acc_parent": list(parent_tacc),
+            "Delta_T_acc_from_parent": delta_tacc(parent_tacc, tacc),
+            "baseline": {"S_t": None, "T_real_t": realized.identity, "S_t1": state},
+        })
     return node
 
 
 def main():
+    if os.environ.get(AUTH_ENV) != AUTH_VALUE:
+        print(json.dumps({
+            "record_type": "TGCV_TR131_VISITALL_DYNAMIC_SPACE_AUTHORIZATION_REFUSAL",
+            "status": "NOT_AUTHORIZED",
+            "scientific_execution_authorized": False,
+            "scientific_execution_performed": False,
+            "authorization_mechanism": AUTH_ENV + "=YES",
+        }, indent=2, ensure_ascii=False))
+        return 3
+
     lock, s0 = load_fixture()
     connected = build_connected_grid()
-
     root_tacc = tacc_ids(s0, connected)
     expected = set(lock["visitall"]["t_acc"]["transformations"])
     if set(root_tacc) != expected:
@@ -97,7 +89,6 @@ def main():
 
     nodes = [make_node("root", 0, s0, connected)]
     leaves = []
-
     frontier = [("root", s0, root_tacc, [])]
 
     while frontier:
@@ -106,31 +97,20 @@ def main():
         if depth >= DEPTH:
             leaves.append(branch)
             continue
-
-        actions = applicable_moves(state, connected)
-        for index, action in enumerate(actions):
+        for index, action in enumerate(applicable_moves(state, connected)):
             child_branch = f"{branch}.{index}"
             successor = apply_move(state, action, connected)
             child_tacc = tacc_ids(successor, connected)
-            node = make_node(
-                child_branch, depth + 1, successor, connected,
-                parent_tacc=parent_tacc, realized=action
-            )
+            node = make_node(child_branch, depth + 1, successor, connected, parent_tacc, action)
             node["baseline"]["S_t"] = state
             nodes.append(node)
-            frontier.append((
-                child_branch,
-                successor,
-                child_tacc,
-                trajectory + [action.identity],
-            ))
+            frontier.append((child_branch, successor, child_tacc, trajectory + [action.identity]))
 
     edges = [n for n in nodes if "T_real_t" in n]
-
     report = {
         "record_type": "TGCV_TR131_VISITALL_DYNAMIC_SPACE_DEPTH2_RUN",
         "status": "COMPLETED",
-        "scientific_execution_authorized": False,
+        "scientific_execution_authorized": True,
         "scientific_execution_performed": True,
         "source_repository": lock["visitall"]["repository"],
         "source_revision": lock["visitall"]["revision"],
@@ -142,12 +122,7 @@ def main():
         "edge_count": len(edges),
         "leaf_count": len(leaves),
         "nodes": nodes,
-        "cases": {
-            "C1": "NOT_TESTABLE",
-            "C2": "enumerated at root",
-            "C3": "enumerated through depth 2",
-            "C4": "computed on every realized edge"
-        },
+        "cases": {"C1": "NOT_TESTABLE", "C2": "enumerated at root", "C3": "enumerated through depth 2", "C4": "computed on every realized edge"},
         "overall_representation_result": "NOT_EVALUATED_BY_RUNNER",
     }
     print(json.dumps(report, indent=2, ensure_ascii=False))
