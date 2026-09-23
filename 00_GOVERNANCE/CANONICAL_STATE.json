@@ -3,7 +3,7 @@
   "status": "CURRENT",
   "current_versions": {
     "rma": "v3.35",
-    "claim_matrix": "v1.22",
+    "claim_matrix": "v1.23",
     "rma_traceability": "v3.35",
     "governance_operating_principles": "v0.1"
   },
@@ -13,6 +13,19 @@
     "status": "CURRENT_INDEPENDENT_ANALYSIS",
     "disposition": "RETAINED_AS_INDEPENDENT ANALYTICAL SYNTHESIS; NOT_YET_NORMATIVE_METHODOLOGY",
     "next_authorized_analysis": "MT5_DOWNSTREAM_VALUE_ENDPOINT_CANDIDATE_DISCOVERY"
+  },
+  "instrument_status": {
+    "rainbow": "ABANDONED_AS_EXPERIMENTAL_INSTRUMENT",
+    "rainbow_runtime_diagnosis": "CLOSED — AUTOMATIC PROBE ACTIVATION UNRESOLVED / NON-OPERATIONAL",
+    "swim_interface": "VERIFIED_INDEPENDENTLY",
+    "scientific_execution_through_rainbow": "NOT_PERFORMED / NOT_AUTHORIZED"
+  },
+  "scientific_boundary": {
+    "tgcv_core": "UNCHANGED",
+    "existing_scientific_evidence": "UNCHANGED",
+    "claim_statuses": "UNCHANGED_BY_RAINBOW_CLOSURE",
+    "delta_tacc_to_value": "OPEN",
+    "transformational_dynamics_direction": "REQUIRES_SEPARATE_FORMALIZATION_AND_FALSIFIABLE_TEST_DESIGN"
   },
   "pointers": {
     "rma": "00_GOVERNANCE/rma/TGCV_RMA_current.md",
