@@ -366,3 +366,100 @@ The next operational step is to reproduce SWIM in the correct OMNeT++ 5.4.1 envi
 No Integer-to-Double normalization, heartbeat modification, Rainbow source bypass, or other source change is authorized by this record.
 
 No scientific execution is authorized by this bootstrap record. Its purpose is solely to restore the runtime observation path required before TR-131 scientific execution.
+
+## Canonical SWIM + Rainbow startup procedure — consolidated 2026-09-23
+
+This section consolidates the recovered startup procedure so it can be reused without repeating the reconstruction work. It is operational provenance only and does not constitute scientific execution or evidence.
+
+### Preconditions
+
+- Local SWIM checkout: `C:\Users\pedri\SWIM` (WSL: `/mnt/c/Users/pedri/SWIM`).
+- Docker is used because the SWIM checkout does not provide the required OMNeT++ runtime in the current WSL environment.
+- SWIM Docker base image: `omnetpp/omnetpp:u18.04-5.4.1`.
+- SWIM image name defined by the repository build script: `gabrielmoreno/swim:1.0.1`.
+- Rainbow is an independent external adaptation manager; `run-sa.sh` must NOT be used with Rainbow because it starts the bundled `simple_am`.
+
+### Canonical image build
+
+The repository-provided `docker/build-images.sh` performs exactly two builds, in this order:
+
+```sh
+cd docker/omnetpp-vnc
+docker build . -t gabrielmoreno/omnetpp-vnc:5.4.1
+cd ..
+docker build . -t gabrielmoreno/swim:1.0.1
+```
+
+Equivalent PowerShell invocation from the SWIM checkout, when Bash is available:
+
+```powershell
+cd C:\Users\pedri\SWIM\docker; bash .\build-images.sh
+```
+
+The Dockerfile builds `queueinglib`, SWIM, and the bundled `examples/simple_am` against OMNeT++ 5.4.1. The Dockerfile itself does not define a `CMD` or `ENTRYPOINT` that starts SWIM.
+
+### Canonical SWIM launch mode for Rainbow
+
+SWIM documents a mode in which another external adaptation manager uses its TCP interface. Rainbow belongs to this mode.
+
+Therefore the canonical SWIM command is:
+
+```sh
+cd ~/seams-swim/swim/simulations/swim
+./run.sh <config> <run-number(s)|all> [ini-file]
+```
+
+For example, the documented form is `./run.sh Reactive 1`.
+
+`simulations/swim/run.sh` invokes `opp_runall` on SWIM with `swim.ini`, `-u Cmdenv`, and does not start an external adaptation manager.
+
+Do NOT use `run-sa.sh` for Rainbow, because that script starts the bundled `simple_am`.
+
+### TCP observation interface
+
+The SWIM simulation uses `cSocketRTScheduler`; `simulations/swim/swim.ned` connects the simulation probe to `AdaptInterface`:
+
+```
+probe.out++ --> adaptInterface.probe;
+```
+
+The external interface is implemented by `src/externalControl/AdaptInterface.cc` and exposes the commands consumed by Rainbow's SWIM probes.
+
+The recovered SWIM client default is TCP `4242` (`examples/simple_am/SwimClient.h`). Rainbow's `swimcmd.sh` uses `SOCAT_PORT` and falls back to `4243` only when the variable is absent. The SWIM Docker environment sets `SOCAT_PORT=4242`.
+
+**Canonical integrated runtime value: `SOCAT_PORT=4242`.**
+
+The SWIM README currently documents host publication of `5901` and `6901` for HTTP/VNC only. Host publication of TCP `4242` has NOT yet been independently verified and remains a connectivity gate; do not assume a `-p 4242:4242` mapping until verified.
+
+### Rainbow launch
+
+The currently verified local Rainbow runtime launcher is:
+
+```sh
+cd /mnt/c/Users/pedri/TGCV/TR131_RAINBOW_SRC/Rainbow-202609230117
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export PATH="$JAVA_HOME/bin:$PATH"
+export PLADAPT=/mnt/c/Users/pedri/TGCV/TR131_RAINBOW_SRC/pladapt
+./run-oracle.sh -p rainbow.properties swim
+```
+
+The existing Rainbow runtime reached SWIM model loading, PLA-SDP initialization, strategy executor startup, probe registration, and effector registration. Its adaptation loop currently reports no environment observations because the SWIM TCP endpoint has not yet been connected.
+
+### End-to-end startup order
+
+1. Build `gabrielmoreno/omnetpp-vnc:5.4.1` and `gabrielmoreno/swim:1.0.1` with the repository's `build-images.sh`.
+2. Create/start the SWIM Docker container using the repository's documented image.
+3. Enter the container and launch SWIM with `simulations/swim/run.sh`, not `run-sa.sh`.
+4. Verify that SWIM's external TCP interface is reachable on the host at TCP `4242` and that a direct command returns a valid single-line response.
+5. Ensure the Rainbow probe environment contains `SOCAT_PORT=4242`.
+6. Keep the independently running RainbowMaster alive; do not restart it merely because observations are initially absent.
+7. Once direct SWIM TCP connectivity is verified, observe the existing Rainbow probes for incoming environment observations.
+8. Only after the runtime observation path is proven should any separate scientific execution gate be considered.
+
+### Explicit non-actions
+
+- Do not replace Rainbow's probe mechanism with ad-hoc commands.
+- Do not modify Rainbow source to bypass missing observations.
+- Do not modify heartbeat handling to mask connectivity problems.
+- Do not use `simple_am` together with Rainbow.
+- Do not treat successful Docker image construction or runtime connectivity as scientific evidence.
