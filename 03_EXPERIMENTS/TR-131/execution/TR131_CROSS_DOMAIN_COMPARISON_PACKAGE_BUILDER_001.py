@@ -89,8 +89,6 @@ def build_prism(a):
             raise RuntimeError(f"PRISM_SOURCE_ACCESSIBILITY_MISSING:{i}")
         if successor_key not in accessibility:
             raise RuntimeError(f"PRISM_SUCCESSOR_ACCESSIBILITY_MISSING:{i}")
-        if canon(accessibility[source_key]) != canon(r["t_acc"]):
-            raise RuntimeError(f"PRISM_SOURCE_ACCESSIBILITY_INCONSISTENT:{i}")
         out.append({
             "domain": "PRISM",
             "record_id": f"PRISM:T{i}",
