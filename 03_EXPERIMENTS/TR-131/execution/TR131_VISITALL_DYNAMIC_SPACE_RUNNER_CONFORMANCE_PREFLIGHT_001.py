@@ -65,7 +65,7 @@ def main():
         "c4_present": '"C4": "computed on every realized edge"' in runner_text,
         "scientific_result_not_inferred": '"overall_representation_result": "NOT_EVALUATED_BY_RUNNER"' in runner_text,
         "explicit_authorization_gate": '"TGCV_TR131_SCIENTIFIC_AUTHORIZED"' in runner_text and '"YES"' in runner_text,
-        "unauthorized_execution_refused": '"AUTHORIZATION_REFUSAL"' in runner_text and 'return 3' in runner_text,
+        "unauthorized_execution_refused": "AUTHORIZATION_REFUSAL" in runner_text and "return 3" in runner_text,
         "authorized_flags_consistent": '"scientific_execution_authorized": True' in runner_text and '"scientific_execution_performed": True' in runner_text,
         "no_external_search_or_randomization_import": not any(
             name in imports for name in {"random", "randomization", "planner", "optimize"}
