@@ -204,6 +204,28 @@ y estudiar si el conocimiento de la dinámica transformacional puede orientar la
 
 **Criterio:** evidencia de utilidad de navegación orientada por valor sin convertir TI en una función de valor ni VSL en una definición de transformación.
 
+
+### Gate F — Scientific Core & Ontology Review
+
+Gate F follows Gate E and is explicitly part of the cross-domain research programme. Its purpose is to determine, from accumulated evidence, whether the current TGCV scientific Core and ontology remain adequate for the phenomena exposed by transformation-space dynamics and Transformational Intelligence.
+
+Gate F does **not** presume that the Core must change. It may conclude:
+
+- **NO ONTOLOGICAL CHANGE REQUIRED**;
+- Core extension required;
+- existing construct demotion required;
+- new primitive/process/capability warranted;
+- analytical architecture should remain outside the ontology;
+- boundaries between mechanism, capability, process and ontology require revision.
+
+Candidate constructs for review include `T_real`, selection, transformation handling, trajectory, transformation-space dynamics and Transformational Intelligence, alongside the existing Core assumption centred on `S`.
+
+Methodological rule:
+
+> **Evidence first → conceptual differentiation second → ontological review third → Core modification only if warranted by accumulated evidence.**
+
+Until Gate F, candidate constructs are not to be promoted silently into the Core.
+
 ## 15. Flujo experimental operativo
 
 Cada Gate mantiene:
@@ -226,7 +248,7 @@ Toda nueva operación requiere consultar \`CANONICAL_STATE\`, Scientific Asset R
 
 **SIP-L6 — Transferencia disciplinada:** formular aplicaciones como hipótesis y no como beneficios demostrados.
 
-**SIP-L7 — Ruta doctoral:** mantener una narrativa falsable, acumulativa y separada de las adaptaciones institucionales.
+**SIP-L7 — Ontology/Core governance:** preserve the explicit Gate F and the rule that evidence precedes ontological modification.\n\n**SIP-L8 — Ruta doctoral:** mantener una narrativa falsable, acumulativa y separada de las adaptaciones institucionales.
 
 ## 17. Próximo paso
 
@@ -236,7 +258,7 @@ El próximo gate de la planificación científica es:
 
 La tarea inmediata es seleccionar y auditar un segundo dominio experimental materialmente diferente de VisitAll, con fuente primaria reproducible y capacidad de observar la evolución de \`T_acc\`.
 
-No se inicia Gate B, C, D o E hasta cerrar el correspondiente gate anterior.
+No se inicia Gate B, C, D, E o F hasta cerrar el correspondiente gate anterior. Gate F is a review gate, not a presumption of ontological change.
 
 ## 10. No-claims
 
