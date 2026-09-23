@@ -15,16 +15,15 @@ def ids(x):
 def derive(r):
     unknown=set(r)-ALLOWED
     if unknown:
-        forbidden=unknown&FORBIDDEN
-        if forbidden: raise ValueError("FORBIDDEN_OUTCOME_VALUE_FIELD:"+",".join(sorted(forbidden)))
+        f=unknown&FORBIDDEN
+        if f: raise ValueError("FORBIDDEN_OUTCOME_VALUE_FIELD:"+",".join(sorted(f)))
         raise ValueError("UNAUTHORIZED_FIELD:"+",".join(sorted(unknown)))
     req=("domain","record_id","S_t","T_acc_t","T_real_t","S_t1","T_acc_t1")
-    missing=[k for k in req if k not in r]
-    if missing: raise ValueError("MISSING_REQUIRED_FIELDS:"+",".join(missing))
+    miss=[k for k in req if k not in r]
+    if miss: raise ValueError("MISSING_REQUIRED_FIELDS:"+",".join(miss))
     if r["domain"] not in REQUIRED_DOMAINS: raise ValueError("UNAUTHORIZED_DOMAIN:"+str(r["domain"]))
     a,b=set(ids(r["T_acc_t"])),set(ids(r["T_acc_t1"]))
-    add,rem=sorted(b-a),sorted(a-b); keep=sorted(a&b)
-    A,G,L,P=len(a),len(add),len(rem),len(keep); f=[]
+    add,rem=sorted(b-a),sorted(a-b); keep=sorted(a&b); A,G,L,P=len(a),len(add),len(rem),len(keep); f=[]
     if G:f.append("EXPANSION")
     if L:f.append("CONTRACTION")
     if G or L:f.append("TURNOVER")
@@ -68,7 +67,7 @@ def utility_probe(rows,traj):
     for v in groups.values():
         for i in range(len(v)-1):
             cur,nxt=v[i],v[i+1]
-            if cur["S_t1"]==nxt["S_t"] and cur["T_acc_t1"]!=nxt["T_acc_t"]: temporal=True
+            if cur["S_t1"]==nxt["S_t"] and cur["T_acc_t1"]!=nxt["T_acc_t1"]: temporal=True
     return {"accessibility_expansion_contraction":status(lambda x:bool(x["G"] or x["L"])),"transformation_space_turnover":status(lambda x:x["R"]>0),"persistence":status(lambda x:x["P"]>0),"trajectory_divergence":div,"transformation_followed_by_future_accessibility_reconfiguration":"OBSERVABLE" if temporal else ("NOT TESTABLE" if not groups else "NOT OBSERVABLE")}
 def analyze(package,input_sha256=None,implementation_sha256=None):
     if package.get("protocol")!=PROTOCOL: raise ValueError("PROTOCOL_MISMATCH")
@@ -76,11 +75,7 @@ def analyze(package,input_sha256=None,implementation_sha256=None):
     if not isinstance(records,list) or not records: raise ValueError("NO_RECORDS")
     domains={r.get("domain") for r in records if isinstance(r,dict)}
     if domains!=REQUIRED_DOMAINS: raise ValueError("FROZEN_TWO_DOMAIN_SCOPE_MISMATCH")
-    derived=[]; invalid=[]
-    for i,r in enumerate(records):
-        try: derived.append(derive(r))
-        except ValueError as e: invalid.append({"index":i,"record_id":r.get("record_id"),"status":"NOT AVAILABLE","reason":str(e)})
-    if invalid: raise ValueError("INVALID_ANALYTICAL_RECORDS:"+str(len(invalid)))
+    derived=[derive(r) for r in records]
     traj,histories=trajectory_analysis(derived)
     for (d,tid),h in histories.items():
         for x in derived:
@@ -94,6 +89,7 @@ def analyze(package,input_sha256=None,implementation_sha256=None):
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("input",type=Path); ap.add_argument("-o","--output",type=Path,required=True); a=ap.parse_args()
     raw=a.input.read_bytes(); res=analyze(json.loads(raw),hashlib.sha256(raw).hexdigest(),hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
-    a.output.write_text(json.dumps(res,sort_keys=True,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
+    a.output.write_text(json.dumps(res,sort_keys=True,indent=2,ensure_ascii=False)+"
+",encoding="utf-8")
     print(json.dumps({"status":"ANALYSIS_COMPLETED","records":res["record_count"],"invalid":res["invalid_count"],"output_sha256":res["output_sha256"]}))
 if __name__=="__main__": main()
