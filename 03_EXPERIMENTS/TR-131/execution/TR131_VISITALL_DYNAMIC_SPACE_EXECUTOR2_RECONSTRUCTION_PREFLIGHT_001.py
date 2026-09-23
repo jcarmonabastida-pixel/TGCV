@@ -52,6 +52,8 @@ def main():
         "no_result_file_reference": "RESULT" not in text and "result.json" not in text.lower(),
         "no_random_import": "random" not in imports,
         "no_planner_import": "planner" not in imports,
+        "authorization_gate_present": "TGCV_TR131_SCIENTIFIC_AUTHORIZED" in text and "return 3" in text,
+        "authorized_flags_consistent": '"scientific_execution_authorized": authorized' in text and '"scientific_execution_performed": True' in text,
         "no_scientific_authorization": '"scientific_execution_authorized": False' in text,
         "no_scientific_execution": '"scientific_execution_performed": False' in text,
     }
