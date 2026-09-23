@@ -1,13 +1,17 @@
 # TR-131 — Gate A Preflight Record 001
 
-**Status:** PREFLIGHT BLOCKED — EXTERNAL FIXTURE NOT YET FROZEN  
+**Status:** FIXTURE REJECTED — INSUFFICIENT FOR FORWARD OPERATIONALISATION  
 **Date:** 2026-09-23  
 **Candidate:** Healthcare treatment process / CPN process execution  
 **Gate:** A — Cross-domain operationalisation
 
 ## 1. Purpose
 
-This preflight verifies the public source metadata before any scientific execution or operational mapping is frozen.
+This preflight verifies whether the selected healthcare-treatment fixture contains the source artifacts required to instantiate and independently reconstruct:
+
+`S_t → T_acc,t → T_real,t → S_(t+1) → T_acc,t+1`
+
+without retrospective inference from observed outcomes or future events.
 
 ## 2. Source verification
 
@@ -22,80 +26,129 @@ Verified:
 - Licence: **CC0**
 - Format: **RAR**
 - Dataset description: simulated healthcare treatment process using a Colored Petri Net (CPN) model
-- Event logs include activities such as patient admission, doctor visits and test orders
-- Data logs record data-access events
 - Published experiment archives: **9**
 - Total uncompressed size reported by repository: **25,833,041 bytes**
 
-Repository-reported MD5 values:
+## 3. Fixture integrity
 
-| File | Size | MD5 |
-|---|---:|---|
-| Experiment0.rar | 2,875,209 | 7ca4a5583405a8e91db2be30fafa1330 |
-| Experiment1.rar | 2,870,112 | a2c2dcbbb01abe7aba9a7c1991d971f4 |
-| Experiment2.rar | 2,871,632 | 2b0e82a0c4278611d3d039650b1e3339 |
-| Experiment3.rar | 2,882,379 | 05913dcf233c24d6e96b71eedc4e7c69 |
-| Experiment4.rar | 2,868,909 | f37b369fd955706c549040a75acf2b90 |
-| Experiment5.rar | 2,879,782 | 8f55579982e4185e7c37b44cb1c618ae |
-| Experiment6.rar | 2,867,793 | 9ee1c8b85ec763fffa75f149c7e7cb2a |
-| Experiment7.rar | 2,856,585 | 368594d2df1963fb112705f8f99c5d50 |
-| Experiment8.rar | 2,860,640 | 862a6863d4483d25323aedd83e63c94c7 |
+The version-1 download was retrieved and its container SHA-256 was verified:
 
-## 3. Current preflight result
+`370AD1822FE6CEB245188DE2750DD6B59E0ED9358A861287D35435CF5435B46C`
 
-**BLOCKED — FIXTURE NOT FROZEN**
+All nine published RAR archives were extracted without modification and matched the repository-reported MD5 values.
 
-The repository metadata is sufficiently identified, but the actual archive contents have not yet been incorporated into the experimental fixture.
+Fixture integrity is therefore **PASS**.
 
-Therefore the following remain **UNVERIFIED**:
+## 4. Artifact inventory
 
-- exact CPN model file;
-- exact experiment/log files to use;
-- internal file names and versions;
-- model semantics;
-- state representation;
-- enabled-transition semantics;
-- data-dependent guards;
-- event-to-transition mapping;
-- state-update rule;
-- case/trajectory identity;
-- executable/replay mechanism.
+Each experiment contains the expected process/data/log artifacts. The process model is `processModel.pnml` and is **8,936 bytes in all nine experiments**.
 
-No Gate A scientific execution is authorized.
+Experiment0 contains:
 
-## 4. Required next action
+- `DataLog.xes`
+- `DataModel.csv`
+- `OrganisationalModel.CSV`
+- `processLog.xes`
+- `processModel.pnml`
 
-Download the version-1 dataset from the repository and place the original archive(s) into the local experimental workspace without modification.
+No additional model/configuration/simulation artifact was found in the extracted Experiment0 fixture. The same process-model filename and size are present across Experiments1–8.
 
-Then:
+## 5. Process-model semantics verified
 
-1. verify repository MD5 values;
-2. enumerate archive contents;
-3. identify the CPN model artifact;
-4. identify the candidate experiment/log artifact;
-5. hash every selected fixture file;
-6. freeze the fixture manifest;
-7. only then define the operational mapping.
+The PNML is a Yasper EPnml model:
 
-The operational definitions must not be adapted after inspecting scientific results.
+- Yasper version: `1.2.4020.34351`
+- 12 places: `pl1`–`pl12`
+- 12 transitions: `tr1`–`tr12`
+- explicit input/output arcs
+- transition names identify healthcare activities and organizational roles
+- no explicit `initialMarking` element was found
+- no guard, condition or inscription semantics were found in the inspected PNML
+- `<text>true</text>` occurrences are `tokenCaseSensitive` settings and are **not initial tokens**
 
-## 5. Scientific boundary
+The process log begins with observed events such as `Identify patient (ip)` and `Admission (ad)`, but these observations do not constitute an independent specification of the initial marking.
 
-This preflight establishes only source/fixture readiness.
+## 6. Critical missing operational artifact
 
-It does not establish:
+The frozen fixture does **not** provide an independent representation of the initial state/marking `S_0`.
 
-- Gate A PASS;
-- cross-domain validity;
+Consequently:
+
+`S_t → T_acc,t`
+
+cannot be reconstructed forward from the frozen fixture alone, because enabled transitions require the current marking/state.
+
+Likewise, a formal reconstruction of:
+
+`T_real,t → S_(t+1) → T_acc,t+1`
+
+cannot be established without independently specified state/update semantics.
+
+## 7. Retrospective reconstruction is explicitly rejected
+
+The first observed event in `processLog.xes` must **not** be used to infer that its input place was initially marked.
+
+Doing so would make accessibility partly a consequence of the observed realization rather than an independently determined property of the current state.
+
+## 8. Gate A assessment
+
+| Dimension | Result | Reason |
+|---|---|---|
+| A1 — State operationalisation | **FAIL** | No independent `S_0`/marking representation |
+| A2 — Accessibility operationalisation | **FAIL** | `T_acc` cannot be derived without `S_t` |
+| A3 — Realization identity | **PASS** | Process events are explicitly identifiable |
+| A4 — Successor-state reconstruction | **FAIL** | No independently frozen state/update semantics |
+| A5 — Transformation-space evolution | **FAIL** | Requires A1/A2/A4 |
+| A6 — Independent reproducibility | **NOT AUTHORIZED** | No scientific execution authorized on an insufficient fixture |
+| A7 — Domain-boundary disclosure | **PASS** | Boundary is explicitly identified |
+
+## 9. Decision
+
+**GATE A — FAIL / FIXTURE INSUFFICIENT FOR FORWARD OPERATIONALISATION**
+
+This is a **fixture-level failure**, not a finding that healthcare is unsuitable as a domain and not a failure of TGCV.
+
+The dataset demonstrates explicit healthcare-process transition structure and executable event traces, but the published fixture as frozen here does not contain the independent state information required to demonstrate the TGCV analytical grammar without retrospective inference.
+
+No scientific execution is authorized from this fixture.
+
+## 10. Scientific boundary
+
+This result does not establish or test:
+
+- cross-domain validity of TGCV;
 - cross-domain usefulness;
 - Transformational Intelligence;
 - outcome linkage;
 - value linkage;
-- causal delta-Tacc to delta-Value;
-- ontological consequences.
+- causal `ΔT_acc → ΔValue`;
+- ontological consequences;
+- TGCV Core modification.
 
-## 6. Decision
+The result only establishes the operational boundary of this candidate fixture for Gate A.
 
-**Gate A remains OPEN but execution is BLOCKED pending fixture freezing.**
+## 11. Next research action
 
-The candidate remains valid as a selected domain because the public source provides a formal CPN-based healthcare process and versioned reproducible provenance. Its suitability for the actual TGCV operationalisation remains to be tested from the artifact contents.
+The healthcare fixture is **not promoted to Gate A execution**.
+
+The next action is to select a new second-domain fixture using these hard pre-screen requirements:
+
+1. explicit source-defined state representation;
+2. explicit initial state;
+3. source-defined transformation identity;
+4. forward-computable accessibility predicate;
+5. deterministic or independently specified successor-state rule;
+6. observable realized transformation;
+7. observable/reconstructible subsequent transformation space;
+8. stable primary provenance;
+9. independent reconstruction possible before scientific results are inspected.
+
+The candidate-selection protocol remains unchanged except that these conditions are now treated as **hard pre-screen requirements**, not merely post-selection preflight questions.
+
+## 12. Governance
+
+No TGCV Core, Evidence→Claim Matrix, SIP gate status, or scientific claim is upgraded or downgraded by this fixture-level failure.
+
+The canonical methodological rule remains:
+
+> **Evidence first → conceptual differentiation second → ontological review third → Core modification only if warranted by accumulated evidence.**
