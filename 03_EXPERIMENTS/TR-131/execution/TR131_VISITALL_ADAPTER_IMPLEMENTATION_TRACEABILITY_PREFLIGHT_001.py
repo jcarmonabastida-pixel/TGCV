@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import importlib.util
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -18,6 +19,7 @@ def load_adapter():
     spec = importlib.util.spec_from_file_location("tr131_visitall_adapter", ADAPTER)
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 
