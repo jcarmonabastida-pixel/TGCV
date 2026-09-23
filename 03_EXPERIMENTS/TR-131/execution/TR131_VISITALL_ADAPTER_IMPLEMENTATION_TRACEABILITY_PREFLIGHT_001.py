@@ -49,13 +49,16 @@ def main():
     s0 = {"at-robot":"loc-x2-y2", "visited":["loc-x2-y2"]}
     t0 = adapter.applicable_moves(s0, connected)
 
+    expected_tacc = set(va["t_acc"]["transformations"])
+    actual_tacc = {m.identity for m in t0}
+
     checks = {
         "source_revision": va["revision"] == "cf19edf7c53d1540ddbb396c642595e0926ee552",
         "source_blob": va["blob_sha"] == "f49fb86fb3f7dd4aba5a6ed79fdddc240097ec34",
         "adapter_file_sha_present": len(sha256(ADAPTER)) == 64,
         "initial_state_matches_lock": s0["at-robot"] == va["initial_state"]["at_robot"],
-        "tacc_cardinality": len(t0) == 4,
-        "tacc_identity_match": [m.identity for m in t0] == va["t_acc"]["transformations"],
+        "tacc_cardinality": len(t0) == va["t_acc"]["cardinality"],
+        "tacc_identity_match": actual_tacc == expected_tacc,
         "precondition_enforced": False,
         "effects_source_shape": False,
         "non_applicable_rejected": False,
