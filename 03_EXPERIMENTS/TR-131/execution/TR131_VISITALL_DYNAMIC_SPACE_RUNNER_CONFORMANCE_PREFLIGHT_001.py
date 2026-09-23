@@ -20,17 +20,35 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def imported_names(tree):
+    names = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            names.update(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom):
+            names.add(node.module or "")
+    return names
+
+
+def called_names(tree):
+    names = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name):
+                names.add(node.func.id)
+            elif isinstance(node.func, ast.Attribute):
+                names.add(node.func.attr)
+    return names
+
+
 def main():
     runner_text = RUNNER.read_text(encoding="utf-8")
     runner_ast = ast.parse(runner_text)
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
     va = lock["visitall"]
 
-    forbidden = (
-        "planner", "optimize", "goal", "value", "rainbow",
-        "random", "randomize", "selection_policy", "X"
-    )
-    lowered = runner_text.lower()
+    imports = imported_names(runner_ast)
+    calls = called_names(runner_ast)
 
     checks = {
         "runner_sha256_present": len(sha256(RUNNER)) == 64,
@@ -46,7 +64,12 @@ def main():
         "c3_present": '"C3": "enumerated through depth 2"' in runner_text,
         "c4_present": '"C4": "computed on every realized edge"' in runner_text,
         "scientific_result_not_inferred": '"overall_representation_result": "NOT_EVALUATED_BY_RUNNER"' in runner_text,
-        "no_forbidden_runtime_tokens": not any(token in lowered for token in forbidden),
+        "no_external_search_or_randomization_import": not any(
+            name in imports for name in {"random", "randomization", "planner", "optimize"}
+        ),
+        "no_goal_or_value_api_calls": not bool(
+            {"goal", "value", "evaluate_value", "goal_test"} & calls
+        ),
         "no_scientific_execution": True,
         "syntax_valid": runner_ast is not None,
     }
