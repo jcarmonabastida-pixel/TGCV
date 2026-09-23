@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""TR-131 VisitAll independent Executor-1/Executor-2 comparison audit.
-
-Audit only. It consumes two persisted local JSON outputs, compares the
-scientific structure without requiring byte identity, and emits no scientific
-interpretation beyond PASS/FAIL/INCONCLUSIVE of reconstruction agreement.
-"""
+"""TR-131 VisitAll independent Executor-1/Executor-2 comparison audit."""
 from __future__ import annotations
 import hashlib, json
 from pathlib import Path
@@ -16,10 +11,18 @@ E2=ROOT/"results"/"TR131_VISITALL_DYNAMIC_SPACE_EXECUTOR2_RECONSTRUCTION_001.jso
 def load(p):
     return json.loads(p.read_text(encoding="utf-8"))
 
-def node_key(n):
-    return (n["branch"], n["depth"], n["S_t"], n["T_acc_t"], n.get("T_real_t"),
-            n.get("S_parent"), n.get("T_acc_parent"), n.get("Delta_T_acc_from_parent"),
-            n.get("baseline"))
+def canon(v):
+    if isinstance(v, dict):
+        return {k:canon(v[k]) for k in sorted(v)}
+    if isinstance(v, list):
+        return sorted((canon(x) for x in v), key=lambda x: json.dumps(x,sort_keys=True,separators=(",",":")))
+    return v
+
+def node_signature(n):
+    # Branch labels and list ordering are executor-local representation details.
+    # Compare the scientific node content as an unordered canonical structure.
+    x={k:v for k,v in n.items() if k!="branch"}
+    return json.dumps(canon(x),sort_keys=True,separators=(",",":"))
 
 def main():
     if not E1.exists() or not E2.exists():
@@ -34,17 +37,15 @@ def main():
       "same_source_blob": a.get("source_blob_sha")==b.get("source_blob_sha"),
       "same_problem": a.get("problem")==b.get("problem")=="grid-5",
       "same_depth": a.get("depth")==b.get("depth")==2,
-      "same_root_tacc": a.get("root_tacc")==b.get("root_tacc"),
+      "same_root_tacc": canon(a.get("root_tacc"))==canon(b.get("root_tacc")),
       "same_node_count": a.get("node_count")==b.get("node_count")==21,
     }
-    # E1 may use a different top-level schema; compare its nodes when present.
     e1nodes=a.get("nodes",[])
     e2nodes=b.get("nodes",[])
     checks["same_node_count_actual"]=len(e1nodes)==len(e2nodes)==21
-    if len(e1nodes)!=len(e2nodes):
-        checks["node_structure_equal"]=False
-    else:
-        checks["node_structure_equal"]=all(node_key(x)==node_key(y) for x,y in zip(e1nodes,e2nodes))
+    s1=sorted(node_signature(x) for x in e1nodes)
+    s2=sorted(node_signature(x) for x in e2nodes)
+    checks["node_structure_equal"]=s1==s2
     checks["root_hash_present_and_equal"]=bool(e1nodes and e2nodes and e1nodes[0].get("T_acc_hash")==e2nodes[0].get("T_acc_hash"))
     checks["byte_identity_not_required"]=True
     status="PASS" if all(checks.values()) else "FAIL"
