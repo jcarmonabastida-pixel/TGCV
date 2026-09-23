@@ -3,6 +3,11 @@
 
 No scientific execution is performed. E1/E2 agreement is checked before
 normalization into the frozen cross-domain schema.
+
+PRISM A6 rows encode the accessibility of each row's successor state in the
+row-level t_acc field. The builder therefore reconstructs successor
+accessibility from the persisted A6 records themselves, not from the single
+S0 state row and not from an invented empty/default set.
 """
 import hashlib
 import json
@@ -58,15 +63,34 @@ def check_prism(a, b):
         raise RuntimeError("PRISM_E1_E2_MISMATCH")
 
 def build_prism(a):
-    states = {canon(r["state"]): r["t_acc"]
-              for r in a["rows"] if r["kind"] == "state"}
+    # A6 persists t_acc on every realization/transition row. For those rows,
+    # t_acc is the accessibility set of the row's successor state. The state
+    # row additionally provides the initial S0 accessibility.
+    accessibility = {}
+    for i, r in enumerate(a["rows"]):
+        if r["kind"] == "state":
+            key = canon(r["state"])
+        elif r["kind"] in ("realization", "transition"):
+            key = canon(r["successor"])
+        else:
+            raise RuntimeError(f"PRISM_UNKNOWN_ROW_KIND:{i}:{r.get('kind')}")
+        value = r["t_acc"]
+        if key in accessibility and canon(accessibility[key]) != canon(value):
+            raise RuntimeError(f"PRISM_ACCESSIBILITY_MISMATCH:{i}")
+        accessibility[key] = value
+
     out = []
     for i, r in enumerate(a["rows"]):
         if r["kind"] != "transition":
             continue
-        s, t = canon(r["source"]), canon(r["successor"])
-        if s not in states or t not in states:
-            raise RuntimeError(f"PRISM_STATE_MISSING:{i}")
+        source_key = canon(r["source"])
+        successor_key = canon(r["successor"])
+        if source_key not in accessibility:
+            raise RuntimeError(f"PRISM_SOURCE_ACCESSIBILITY_MISSING:{i}")
+        if successor_key not in accessibility:
+            raise RuntimeError(f"PRISM_SUCCESSOR_ACCESSIBILITY_MISSING:{i}")
+        if canon(accessibility[source_key]) != canon(r["t_acc"]):
+            raise RuntimeError(f"PRISM_SOURCE_ACCESSIBILITY_INCONSISTENT:{i}")
         out.append({
             "domain": "PRISM",
             "record_id": f"PRISM:T{i}",
@@ -74,7 +98,7 @@ def build_prism(a):
             "T_acc_t": r["t_acc"],
             "T_real_t": r["transformation"],
             "S_t1": r["successor"],
-            "T_acc_t1": states[t],
+            "T_acc_t1": accessibility[successor_key],
             "trajectory_id": "leader_sync3_2",
             "step": i,
         })
