@@ -2,7 +2,8 @@
 """TR-131 VisitAll run-output persistence wrapper.
 
 Execution wrapper only. It captures the runner's exact JSON stdout without
-modifying the scientific payload or authorizing execution.
+modifying the scientific payload or authorizing execution. Before execution,
+it verifies the runner against the frozen package hash.
 """
 from __future__ import annotations
 
@@ -18,8 +19,23 @@ OUTPUT_DIR = ROOT / "results"
 OUTPUT = OUTPUT_DIR / "TR131_VISITALL_DYNAMIC_SPACE_EXECUTOR1_RUN_001.json"
 META = OUTPUT_DIR / "TR131_VISITALL_DYNAMIC_SPACE_EXECUTOR1_RUN_001.sha256"
 
+FROZEN_RUNNER_SHA256 = "696a41fcdaf3eed8dd9d4b8ec18cbedf190f7fce9d89d2f6b4703f5f83e89cba"
+
+
+def sha256(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
 
 def main():
+    actual_runner_sha256 = sha256(RUNNER)
+    if actual_runner_sha256 != FROZEN_RUNNER_SHA256:
+        raise SystemExit(
+            "FROZEN_RUNNER_HASH_MISMATCH: "
+            + actual_runner_sha256
+            + " != "
+            + FROZEN_RUNNER_SHA256
+        )
+
     OUTPUT_DIR.mkdir(exist_ok=True)
     result = subprocess.run(
         [sys.executable, str(RUNNER)],
@@ -50,6 +66,7 @@ def main():
         "output": str(OUTPUT.relative_to(ROOT)),
         "captured_stdout_sha256": digest,
         "wrapper_exit_code": result.returncode,
+        "runner_sha256": actual_runner_sha256,
     }, indent=2, ensure_ascii=False))
     return 0
 
