@@ -1,8 +1,8 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.26
+# TGCV — Evidence-to-Claim Matrix — Current v1.30
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-23  
-**Predecessor:** v1.25  
+**Predecessor:** v1.29  
 **Incremental governance update:** Incorporates TR-131 VisitAll as bounded methodological evidence that the transformation space can be instrumented and its dynamics observed in a reproducible first-domain exemplar. This is not evidence of representational gain, transversal validity, TI, value linkage or ontological necessity. No claim-level upgrade; C02, C07, C08, C11 and C16 receive bounded methodological qualification; C12, C14 and all causal/value claims are explicitly not supported.
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
