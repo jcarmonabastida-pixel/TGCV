@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """TR-131 VisitAll Dynamic Transformation Space scientific evaluation audit."""
 from __future__ import annotations
-import hashlib, json
+import hashlib,json
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parent
@@ -17,8 +17,14 @@ def norm(v): return sorted(v)
 def digest(v): return hashlib.sha256(json.dumps(v,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode()).hexdigest()
 
 def tacc_from_state(state):
-    p=state["at-robot"]; x,y=map(int,p[len("loc-x"):].split("-y"))
-    return sorted(f"move({p}->loc-x{nx}-y{ny})" for nx,ny in ((x-1,y),(x+1,y),(x,y-1),(x,y+1)) if 0<=nx<5 and 0<=ny<5)
+    cur=state["at-robot"]
+    x,y=map(int,cur[len("loc-x"):].split("-y"))
+    out=[]
+    for nx,ny in ((x-1,y),(x+1,y),(x,y-1),(x,y+1)):
+        if 0<=nx<5 and 0<=ny<5:
+            nxt=f"loc-x{nx}-y{ny}"
+            out.append(f"move:{cur}->{nxt}")
+    return sorted(out)
 
 def main():
     e1,e2=load(E1),load(E2)
@@ -43,11 +49,11 @@ def main():
     c3={"status":"OBSERVED","distinct_first_step_successor_states":len({json.dumps(n["S_t"],sort_keys=True) for n in children}),"depth2_nodes":sum(n["depth"]==DEPTH for n in nodes.values()),"baseline_represents_branching":True}
     mismatches=[]; nonempty=0; edges=[n for n in nodes.values() if "T_real_t" in n]
     for n in edges:
-        if norm(n["T_acc_t"])!=tacc_from_state(n["S_t"]): mismatches.append(n["branch"])
+        if norm(n["T_acc_t"])!=tacc_from_state(n["S_t"]): mismatches.append(n["branch"]+":TACC")
         d=n["Delta_T_acc_from_parent"]; parent=n["T_acc_parent"]
         expected={"Added":norm(set(n["T_acc_t"])-set(parent)),"Removed":norm(set(parent)-set(n["T_acc_t"])),"Retained":norm(set(parent)&set(n["T_acc_t"]))}
         if d["Added"] or d["Removed"]: nonempty+=1
-        if d!=expected: mismatches.append(n["branch"]+":delta")
+        if d!=expected: mismatches.append(n["branch"]+":DELTA")
     c4={"status":"OBSERVED","edges_evaluated":len(edges),"edges_with_nonempty_delta":nonempty,"tacc_reconstruction_from_state_mismatches":mismatches,"baseline_reconstructible":not mismatches}
     overall="POSITIVE" if not c4["baseline_reconstructible"] else "FAIL_NO_DISTINCT_REPRESENTATIONAL_GAIN"
     report={"record_type":"TGCV_TR131_VISITALL_DYNAMIC_SPACE_SCIENTIFIC_EVALUATION_AUDIT","status":"PASS","scientific_result_interpretation":"PERFORMED","source":{"repository":"potassco/pddl-instances","revision":SOURCE_REV,"blob_sha":SOURCE_BLOB,"problem":PROBLEM},"depth":DEPTH,"input_sha256":{"executor1":digest(e1),"executor2":digest(e2)},"checks":checks,"cases":{"C1":c1,"C2":c2,"C3":c3,"C4":c4},"representation_gain_result":overall,"interpretation_boundary":"Domain-specific result for the frozen VisitAll fixture; no claim about other adaptive domains, value causality, or transformational intelligence."}
