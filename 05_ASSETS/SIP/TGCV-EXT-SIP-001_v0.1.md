@@ -1,9 +1,10 @@
-# TGCV-EXT-SIP-001 — Scientific Integration Plan (SIP) v0.1
+# TGCV-EXT-SIP-001 — Scientific Integration Plan (SIP) v0.2
 
 **Programa:** TGCV — Teoría de Construcción de Valor de Sistemas Generativos  
 **Clase:** Planificación científica estratégica  
 **Estado:** CURRENT / CONTROLLED  
-**Fecha:** 2026-09-11  
+**Supersedes:** v0.1 (`f147b94c15ccea98f6306c75d708d54f49a4e3dd`)  
+**Fecha:** 2026-09-23  
 **Asset ID:** TGCV-EXT-SIP-001  
 **Base canónica:** RMA v3.32 + Evidence→Claim Matrix v1.1 + TCP v0.4 + Vision Paper v0.3 + Research Prospectus v0.2 + ARM v0.2 + RII v0.1 + MOI v0.1
 
@@ -105,6 +106,138 @@ Antes de iniciar una nueva operación:
 
 El SIP precede lógicamente a instrumentos de gestión operativa como PMO/SMO. Esos instrumentos, si se crean, deben derivarse de este marco y no modificar la arquitectura científica ni conceder autorización experimental por defecto.
 
+## 10. Redirección científica vigente de TR-131
+
+La línea vigente de TR-131 se ha desplazado desde la búsqueda de superioridad representacional de \`T_acc\` y desde la hipótesis causal \`ΔT_acc → ΔValue\` hacia la dinámica del espacio de transformaciones y la capacidad de navegarlo.
+
+Referencia canónica:
+- \`03_EXPERIMENTS/TR-131/TR131_CONVERSATION_RECORD_TRANSFORMATIONAL_INTELLIGENCE_001.md\`
+- \`00_GOVERNANCE/TGCV_TRANSFORMATIONAL_DYNAMICS_INTELLIGENCE_MANIFESTO_001.md\`
+
+La interpretación vigente de VisitAll es:
+
+**PASS — instrumentación y observación de estructura/dinámica de transformación; sin demostración de ganancia representacional distintiva frente al baseline nativo.**
+
+Este resultado no constituye un fracaso de TGCV. VisitAll queda cerrado como demostración de instrumentación y observación; no se reabre para perseguir representational gain.
+
+Rainbow queda fuera de la infraestructura científica requerida para esta línea actual de TR-131. SWIM no forma parte de esta línea científica.
+
+## 11. Transformation-Space Dynamics
+
+La cadena dinámica de referencia es:
+
+\`S_t → T_acc,t → T_real,t → S_(t+1) → T_acc,t+1 → ...\`
+
+con:
+
+\`ΔT_acc,t = D(T_acc,t,T_acc,t+1)\`
+
+El foco pasa a ser cómo evoluciona el espacio de transformaciones accesibles.
+
+Los fenómenos candidato incluyen expansión, contracción, turnover, persistencia, novedad, pérdida, reversibilidad, dependencia histórica, branching, reconfiguración y efectos de las transformaciones realizadas sobre las posibilidades futuras.
+
+La transversalidad se busca en la lógica analítica y en la utilidad práctica, no en una ontología idéntica entre dominios.
+
+## 12. Transformational Intelligence
+
+Constructo de trabajo:
+
+> **Transformational Intelligence is the capacity to reason over, navigate, and adapt a system's space of accessible transformations in order to shape future trajectories toward desired outcomes under an independently specified value model.**
+
+Componentes funcionales:
+1. **Reason over:** representar y analizar el espacio de transformaciones.
+2. **Navigate:** discriminar y seleccionar entre transformaciones accesibles.
+3. **Adapt:** incorporar que las transformaciones realizadas modifican estados y posibilidades futuras.
+4. **Orient trajectories:** utilizar outcomes deseados y un modelo de valor independiente como contexto de orientación.
+
+TI no se define por valor, éxito, performance ni outcome observado.
+
+## 13. Value/VSL
+
+La arquitectura de valor permanece downstream e independiente:
+
+\`T_acc → transformation handling / TI → T_real → trajectory → O → VSL → V*\`
+
+VSL no define \`T_acc\`, \`ΔT_acc\`, TI, transformación ni trayectoria.
+
+La hipótesis \`ΔT_acc → ΔValue\` deja de ser el eje de investigación. Cualquier relación entre dinámica transformacional y valor deberá establecerse mediante evidencia independiente y controles apropiados.
+
+## 14. Secuencia experimental canónica
+
+La nueva secuencia de investigación queda fijada en el SIP:
+
+### Gate A — Cross-domain operationalisation
+
+Seleccionar un segundo dominio sustancialmente diferente de VisitAll y comprobar que puede instanciarse de forma reproducible:
+
+\`state → transformation space → realized transformation → successor state → changed transformation space → trajectory\`
+
+Requisitos mínimos: estado bien definido, transformaciones identificables, ejecución/reconstrucción reproducible, evolución observable de \`T_acc\`, trayectorias observables y fuente primaria reproducible.
+
+**Criterio:** operacionalización reproducible de la dinámica transformacional en un dominio materialmente distinto.
+
+### Gate B — Cross-domain usefulness
+
+Comparar los dominios sin exigir equivalencia ontológica y evaluar si la representación permite extraer información útil sobre expansión/contracción, apertura/cierre de posibilidades, persistencia/pérdida, branching, efectos sobre espacio futuro, trayectorias y adaptación/reconfiguración.
+
+**Criterio:** información analíticamente útil y transversalmente interpretable sobre dinámica transformacional.
+
+### Gate C — Transformational Intelligence differentiation
+
+Diferenciar TI frente a dynamic capabilities, adaptability, self-adaptation, search/selection, learning/evolution, affordances y constructos relacionados.
+
+**Criterio:** diferenciación conceptual y operacional falsable, sin reclamar novedad por terminología.
+
+### Gate D — Outcome linkage
+
+Estudiar \`trajectory → outcome\`, manteniendo outcomes fuera de la definición de TI.
+
+**Criterio:** relaciones sistemáticas, si existen, entre patrones de navegación/dinámica transformacional y outcomes independientes.
+
+### Gate E — Value-guided navigation
+
+Integrar:
+
+\`trajectory → outcome → VSL → value\`
+
+y estudiar si el conocimiento de la dinámica transformacional puede orientar la selección entre transformaciones accesibles hacia trayectorias cuyos outcomes reciben mayor valoración.
+
+**Criterio:** evidencia de utilidad de navegación orientada por valor sin convertir TI en una función de valor ni VSL en una definición de transformación.
+
+## 15. Flujo experimental operativo
+
+Cada Gate mantiene:
+
+\`source → fixture → operationalisation → Executor-1 → Executor-2 → audit → scientific result → canonical incorporation\`
+
+Toda nueva operación requiere consultar \`CANONICAL_STATE\`, Scientific Asset Registry y antecedentes; fijar objetivo y claim boundary; definir diseño y stop criteria; ejecutar preflight y autorización específica; ejecutar independientemente; registrar hashes, resultados y desviaciones; auditar; propagar materialmente el resultado y cerrar mediante validator.
+
+## 16. Líneas de trabajo actualizadas
+
+**SIP-L1 — Consolidación científica:** mantener arquitectura, claims y no-claims sincronizados.
+
+**SIP-L2 — Transformation-Space Dynamics:** operacionalizar y estudiar la evolución de espacios de transformación.
+
+**SIP-L3 — Cross-domain applicability:** evaluar operacionalización y utilidad transversal en dominios heterogéneos.
+
+**SIP-L4 — Transformational Intelligence:** diferenciar y operacionalizar el constructo frente al estado del arte.
+
+**SIP-L5 — Outcome/Value linkage:** conectar trayectorias con outcomes y, posteriormente, con VSL independiente.
+
+**SIP-L6 — Transferencia disciplinada:** formular aplicaciones como hipótesis y no como beneficios demostrados.
+
+**SIP-L7 — Ruta doctoral:** mantener una narrativa falsable, acumulativa y separada de las adaptaciones institucionales.
+
+## 17. Próximo paso
+
+El próximo gate de la planificación científica es:
+
+**GATE A — CROSS-DOMAIN OPERATIONALISATION**
+
+La tarea inmediata es seleccionar y auditar un segundo dominio experimental materialmente diferente de VisitAll, con fuente primaria reproducible y capacidad de observar la evolución de \`T_acc\`.
+
+No se inicia Gate B, C, D o E hasta cerrar el correspondiente gate anterior.
+
 ## 10. No-claims
 
 Este SIP no establece:
@@ -120,8 +253,8 @@ Este SIP no establece:
 - certificación o estándar externo;
 - autorización permanente de ejecución.
 
-## 11. Estado
+## 18. Estado
 
-**CURRENT / CONTROLLED.**
+**CURRENT / CONTROLLED — v0.2.** Esta versión sustituye a v0.1 como SIP vigente.
 
 Este documento es un activo de planificación estratégica científica. Cualquier revisión material debe crear una nueva versión controlada y propagarse por los canales canónicos correspondientes.
