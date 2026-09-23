@@ -463,3 +463,46 @@ The existing Rainbow runtime reached SWIM model loading, PLA-SDP initialization,
 - Do not modify heartbeat handling to mask connectivity problems.
 - Do not use `simple_am` together with Rainbow.
 - Do not treat successful Docker image construction or runtime connectivity as scientific evidence.
+
+
+## Rainbow runtime diagnosis — CLOSED / ABANDONED — 2026-09-23
+
+This section closes the Rainbow runtime restoration path. It is an operational disposition, not a scientific result.
+
+### Verified facts
+
+- The SWIM TCP endpoint was independently reachable at `172.19.48.1:4242`.
+- A direct `get_servers` request returned `3`.
+- With `SOCAT_PORT=4242`, the real Rainbow `genericProbe.pl` chain was independently verified to return `3`: `genericProbe.pl -> swimcmd.sh -> DESKTOP-VND1OFG -> 172.19.48.1:4242 -> SWIM -> 3`.
+- The running RainbowMaster successfully initialized the SWIM target, loaded models, initialized the PLA-SDP adaptation manager and strategy executor, registered the SWIM script-based probes and effectors, and maintained delegate heartbeats.
+- No running `genericProbe.pl` / Perl probe child processes were observed while the Rainbow runtime was active.
+- Bytecode inspection established that `RainbowMaster` stores the parsed `-autostart` flag in `m_autoStart` and exposes `autoStartProbes()`, while `RainbowMaster.startProbes()` dispatches to delegate management ports.
+- A complete search for bytecode callers of `startProbes()` returned no caller that connects the automatic-start flag to probe activation in this distribution.
+- `LocalProbeManager.startProbes()` activates the locally registered probes, but the observed runtime did not reach that activation path through the automatic-start mechanism.
+- The adaptation loop consequently remained at `No environment observations available. Can't make adaptation decision`, with metrics remaining at zero and repeated `Singular matrix -- cannot calibrate the model` messages.
+
+### Disposition
+
+The Rainbow runtime activation path in the supplied distribution is therefore recorded as **UNRESOLVED / NON-OPERATIONAL for automatic probe activation**.
+
+This is sufficient for operational closure. No further Rainbow bytecode archaeology, source patching, launcher experimentation, probe substitution, heartbeat modification, or temporary workaround is authorized under this runbook.
+
+### Scope of closure
+
+This closure does **not** invalidate or modify the previously closed SWIM Reactive-0, Reactive2, or trajectory-linkage evidence. It does not constitute new scientific evidence and does not alter TGCV's scientific claims.
+
+It also does not establish that Rainbow as a software framework is generally defective. The disposition is specific to the supplied Rainbow distribution and the runtime activation path investigated here.
+
+### Canonical project decision
+
+**Rainbow is abandoned as an experimental runtime/instrument for this TGCV line.** The recovered build history, SWIM interface reconstruction, verified TCP/probe-client chain, runtime initialization evidence, and failure boundary are retained for provenance. No further TGCV effort should depend on making this Rainbow distribution operational.
+
+### Final status
+
+- SWIM interface/client chain: **VERIFIED independently**.
+- Rainbow initialization: **VERIFIED**.
+- Rainbow automatic probe activation: **NOT OPERATIONAL / UNRESOLVED**.
+- Rainbow runtime restoration effort: **CLOSED**.
+- Rainbow as TGCV experimental instrument for this line: **ABANDONED**.
+- Scientific execution through Rainbow: **NOT PERFORMED / NOT AUTHORIZED**.
+- Existing TGCV scientific evidence and claims: **UNCHANGED**.
