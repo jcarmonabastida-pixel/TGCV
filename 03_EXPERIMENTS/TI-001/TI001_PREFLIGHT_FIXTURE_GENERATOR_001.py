@@ -3,6 +3,7 @@
 import json,hashlib,random
 
 RANDOMISATION_SEED=582031
+ENVIRONMENT_SEED_BASE=731407
 N=32
 BASE_ACTIONS=["a","b","c"]
 PAIR_IDS=[f"TI001-{i+1:03d}" for i in range(N)]
@@ -21,7 +22,7 @@ for j,pair_id in enumerate(shuffled_pairs):
 
 RECORDS=[]
 for i,pair_id in enumerate(PAIR_IDS):
-    environment_seed=RANDOMISATION_SEED+i
+    environment_seed=ENVIRONMENT_SEED_BASE+i
     current={"state":"S0","t_acc":BASE_ACTIONS}
     successors={
       "a":{"state":"SA","t_acc":["x","y"]},
@@ -63,7 +64,7 @@ for i,pair_id in enumerate(PAIR_IDS):
         condition=assignment[pair_id][slot]
         RECORDS.append({
           **common,
-          "instance_id":f"{pair_id}-{condition}",
+          "instance_id":pair_id,
           "condition":condition,
           "execution_slot":slot,
           "environment_seed":environment_seed,
@@ -73,8 +74,9 @@ for i,pair_id in enumerate(PAIR_IDS):
         })
 
 out={
-  "schema":"TI001_PREFLIGHT_FIXTURE_v002",
+  "schema":"TI001_PREFLIGHT_FIXTURE_v003",
   "randomisation_seed":RANDOMISATION_SEED,
+  "environment_seed_base":ENVIRONMENT_SEED_BASE,
   "pair_count":N,
   "record_count":len(RECORDS),
   "instances":RECORDS
