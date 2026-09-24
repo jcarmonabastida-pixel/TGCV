@@ -1,7 +1,7 @@
 {
   "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
-  "authorization_status": "AUTHORIZED",
-  "canonical_commit": "cbeadcdf24369e1b495c0f4e5adb0700bccd03fb",
+  "authorization_status": "REQUIRES_REAUTHORIZATION",
+  "canonical_commit": "15f3dc1b6bf556773dfbb9d460a529931d329fb8",
   "preflight_audit": "03_EXPERIMENTS/TI-001/TRGCV_TI-001_PREFLIGHT_AUDIT_002.json",
   "p9_reconstruction_record": "03_EXPERIMENTS/TI-001/TI001_P9_EXECUTION_RECORD_001.json",
   "fixture": "03_EXPERIMENTS/TI-001/TI001_PREFLIGHT_FIXTURE_v004.json",
@@ -22,7 +22,7 @@
     "api_surface": "Responses API",
     "api_version": "not_exposed_by_serving_response",
     "generation_configuration": {
-      "temperature": 0.0,
+      "temperature": 0,
       "top_p": 0.98,
       "max_output_tokens": 16,
       "tools": [],
@@ -42,12 +42,12 @@
     "a1_a9_pass": true,
     "p9_independent_reconstruction_pass": true,
     "p10_estimand_frozen": true,
-    "executor_frozen": true,
+    "executor_frozen": false,
     "runtime_identification_verified_where_exposed": true,
     "unexposed_runtime_fields_explicitly_recorded": true,
     "scientific_execution_performed_before_authorization": false
   },
-  "authorization_basis": "Explicit user authorization in conversation.",
-  "scientific_execution": "AUTHORIZED",
+  "authorization_basis": "Prior authorization invalidated by executor correction; re-authorization required.",
+  "scientific_execution": "NOT_AUTHORIZED",
   "execution_status": "NOT_STARTED"
 }
