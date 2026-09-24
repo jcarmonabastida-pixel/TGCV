@@ -108,6 +108,38 @@ The execution contract itself MUST NOT silently inherit the v004 seed, pair coun
 
 No v004 randomisation parameter is implicitly valid for v005.
 
+## 7. Implementation binding
+
+The v005 execution infrastructure is bound to the following canonical implementation artifacts:
+
+- **Provider:** `TI001_DECISION_AGENT_PROVIDER_V005_001`
+  - Path: `03_EXPERIMENTS/TI-001/TI001_V005_DECISION_AGENT_PROVIDER_001.py`
+  - Scope: v005 decision acquisition only.
+  - Scientific execution occurs only when its explicit execution flag is supplied.
+
+- **Scientific Executor:** `TI001_V005_SCIENTIFIC_EXECUTOR_001`
+  - Path: `03_EXPERIMENTS/TI-001/TI001_V005_SCIENTIFIC_EXECUTOR_001.py`
+  - Scope: v005 decision-package validation and primary scientific observation generation.
+  - It has no v004 successor dependency and generates no composite TI score.
+
+- **Executor-2 reconstruction:**
+  - Path: `03_EXPERIMENTS/TI-001/TI001_V005_EXECUTOR_2_RECONSTRUCTION_001.py`
+  - Scope: independent structural/equivalence reconstruction of the v005 decision-input contract.
+
+- **Compatibility checker:**
+  - Path: `03_EXPERIMENTS/TI-001/TI001_V005_COMPATIBILITY_PREFLIGHT_CHECKER_001.py`
+  - Scope: machine-checkable infrastructure compatibility gate; never performs scientific execution.
+
+These implementation identities are normative bindings for this contract. A different provider, executor, or compatibility implementation requires a new contract version or an explicit contract revision before authorization.
+
+The frozen v005 fixture Git blob identity remains:
+
+`edd83fd2df3d39aad8911087569c19614c2264b7`
+
+The canonical JSON SHA-256 identity remains:
+
+`bc7e0e69cb56337145593e67fb55c1a1b5042db661520498a2c86b346eef76e5`
+
 ## 7. Provider interface
 
 A new v005 provider implementation MUST:
