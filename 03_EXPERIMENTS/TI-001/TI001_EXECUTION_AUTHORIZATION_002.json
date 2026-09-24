@@ -1,9 +1,9 @@
 {
   "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
-  "authorization_status": "AUTHORIZED",
-  "scientific_execution": "AUTHORIZED",
-  "execution_status": "AUTHORIZED_NOT_STARTED",
-  "authorization_action": "EXPLICIT_REAUTHORIZATION",
+  "authorization_status": "INVALIDATED_PENDING_RUNTIME_RECONCILIATION",
+  "scientific_execution": "NOT_AUTHORIZED",
+  "execution_status": "BLOCKED_PENDING_REAUTHORIZATION",
+  "authorization_action": "INVALIDATION_AFTER_PROVIDER_CHANGE",
   "basis": {
     "provider_preflight": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_PROVIDER_PREFLIGHT_002.json",
     "runtime_freeze_record": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_RUNTIME_FREEZE_RECORD_001.md",
@@ -14,8 +14,8 @@
     "executor": "03_EXPERIMENTS/TI-001/TI001_SCIENTIFIC_EXECUTOR_001.py",
     "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
     "executor_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
-    "provider_version": "TI001_DECISION_AGENT_PROVIDER_002",
-    "runtime_reconciliation_commit": "9618b1abb018c30a0f95bc759f0e4c2b077c8602"
+    "provider_version": "TI001_DECISION_AGENT_PROVIDER_003",
+    "runtime_reconciliation_commit": "b090e05bfa8fa04a48fa369037c0ac5c62e3fac6"
   },
   "primary_estimand": {
     "name": "matched_condition_difference_in_transformation_handling",
@@ -32,7 +32,7 @@
       "temperature": null,
       "temperature_status": "OMITTED_UNSUPPORTED_IN_SCIENTIFIC_REQUEST",
       "top_p": 0.98,
-      "max_output_tokens": 16,
+      "max_output_tokens": 64,
       "tools": [],
       "tool_choice": "auto",
       "background": false,
@@ -43,7 +43,7 @@
     }
   },
   "preconditions": {
-    "provider_preflight_002_pass": true,
+    "provider_preflight_002_pass": false,
     "p1_p10_pass": true,
     "a1_a9_pass": true,
     "p9_independent_reconstruction_pass": true,
@@ -53,11 +53,12 @@
     "historical_temperature_incompatibility_preserved": true,
     "scientific_execution_performed_before_authorization": false
   },
-  "authorization_basis": "Explicit reauthorization after reconciliation of Provider 002 and the runtime freeze. The previously rejected temperature parameter remains excluded. The historical authorization 001 remains invalidated and preserved.",
+  "authorization_basis": "Invalidated because the scientific provider generation configuration changed from max_output_tokens=16 to 64 after non-scientific diagnostic established output truncation at 16. Reauthorization is required before scientific execution.",
   "historical_authorization": {
     "record": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_001.json",
     "status": "INVALIDATED_PENDING_RUNTIME_RECONCILIATION",
-    "preserved": true
+    "preserved": true,
+    "superseded_by": "provider_003_change"
   },
   "execution_boundary": {
     "scientific_input_must_match_frozen_fixture": true,
