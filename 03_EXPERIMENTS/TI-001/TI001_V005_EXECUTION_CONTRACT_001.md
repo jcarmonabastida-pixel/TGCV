@@ -138,7 +138,7 @@ The frozen v005 fixture Git blob identity remains:
 
 The canonical JSON SHA-256 identity remains:
 
-`bc7e0e69cb56337145593e67fb55c1a1b5042db661520498a2c86b346eef76e5`
+`bc7e0e69cb56337145593e67fb55c1a1b5042db6615204982a86b346eef76e5`
 
 ## 7. Provider interface
 
