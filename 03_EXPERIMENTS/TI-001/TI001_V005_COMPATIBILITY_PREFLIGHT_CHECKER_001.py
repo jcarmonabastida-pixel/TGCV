@@ -54,7 +54,14 @@ def main(argv):
     checks["contract_binding_pass"]=EXPECTED_FIXTURE_GIT_BLOB_SHA in contract and EXPECTED_ESTIMAND in contract and EXPECTED_PROVIDER in contract and EXPECTED_EXECUTOR in contract
     checks["runtime_model_pass"]=EXPECTED_MODEL in runtime and "tools" in runtime
     checks["v004_dependency_absent_pass"]=not any(t in (provider+executor+executor2) for t in ["20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd","582031","731407","TI001_PREFLIGHT_FIXTURE_v004"])
-    checks["scientific_execution_absent_pass"]="--execute" in provider
+    # Static safety property: the provider must gate all scientific API calls behind
+# an explicit --execute flag. This does not execute the provider.
+has_execute_flag = '"--execute"' in provider or "add_argument(\"--execute\"" in provider
+has_execute_branch = 'if not args.execute:' in provider
+has_scientific_call = 'client.responses.create(' in provider
+has_guard_before_call = has_execute_branch and provider.find('if not args.execute:') < provider.find('client.responses.create(')
+checks["execution_requires_explicit_flag_pass"]=has_execute_flag and has_execute_branch and has_scientific_call and has_guard_before_call
+checks["scientific_execution_absent_pass"]=checks["execution_requires_explicit_flag_pass"]
     for k,v in checks.items():
         if not v: reasons[k]="v005 infrastructure compatibility requirement failed"
     out=result(checks,reasons)
