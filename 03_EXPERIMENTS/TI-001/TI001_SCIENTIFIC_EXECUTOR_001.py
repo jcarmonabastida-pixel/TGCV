@@ -53,7 +53,7 @@ def execute(fixture: dict, decisions: dict, canonical_commit: str, executor_vers
     if actual_hash != expected_hash:
         raise ValueError("fixture canonical body hash mismatch")
 
-    records = fixture["records"]
+    records = fixture["instances"]
     observations = []
 
     for record in records:
