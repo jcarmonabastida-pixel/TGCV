@@ -1,15 +1,15 @@
 {
   "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
-  "authorization_status": "AUTHORIZED",
-  "canonical_commit": "15f3dc1b6bf556773dfbb9d460a529931d329fb8",
+  "authorization_status": "REQUIRES_REAUTHORIZATION",
+  "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
   "preflight_audit": "03_EXPERIMENTS/TI-001/TRGCV_TI-001_PREFLIGHT_AUDIT_002.json",
   "p9_reconstruction_record": "03_EXPERIMENTS/TI-001/TI001_P9_EXECUTION_RECORD_001.json",
   "fixture": "03_EXPERIMENTS/TI-001/TI001_PREFLIGHT_FIXTURE_v004.json",
   "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
   "execution_specification": "03_EXPERIMENTS/TI-001/TI001_SCIENTIFIC_EXECUTION_SPECIFICATION_001.md",
   "executor": "03_EXPERIMENTS/TI-001/TI001_SCIENTIFIC_EXECUTOR_001.py",
-  "executor_version": "TI001_SCIENTIFIC_EXECUTOR_001",
-  "executor_commit": "15f3dc1b6bf556773dfbb9d460a529931d329fb8",
+  "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+  "executor_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
   "primary_estimand": {
     "name": "matched_condition_difference_in_transformation_handling",
     "type": "difference_in_subsequent_transformation_handling"
@@ -47,7 +47,7 @@
     "unexposed_runtime_fields_explicitly_recorded": true,
     "scientific_execution_performed_before_authorization": false
   },
-  "authorization_basis": "Explicit user re-authorization in conversation after executor correction and governance reconciliation.",
-  "scientific_execution": "AUTHORIZED",
+  "authorization_basis": "Prior authorization invalidated by scientific executor correction resolving Control/Treatment decision-key collision; reconciliation completed, explicit re-authorization required.",
+  "scientific_execution": "NOT_AUTHORIZED",
   "execution_status": "NOT_STARTED"
 }
