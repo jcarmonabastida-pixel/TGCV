@@ -1,6 +1,6 @@
 # TI-001 Decision Agent Runtime Freeze Record 001
 
-**Status:** RUNTIME IDENTIFICATION VERIFIED WHERE EXPOSED — SCIENTIFIC EXECUTION NOT STARTED
+**Status:** RUNTIME IDENTIFICATION PRESERVED — SCIENTIFIC EXECUTION NOT STARTED
 
 ## Verified frozen component
 
@@ -23,7 +23,11 @@ Verified runtime metadata:
 - `runtime_id`: not exposed by the serving response
 - `runtime_version`: not exposed by the serving response
 
-Generation configuration actually observed:
+The OpenAI model catalogue identifies GPT-5.6 Luna by model ID `gpt-5.6-luna` and states that GPT-5.6 models are available through the Responses API. citeturn0search0
+
+## Historical technical verification configuration
+
+The earlier technical verification recorded the following request configuration:
 
 - `temperature`: 0.0
 - `top_p`: 0.98
@@ -38,13 +42,41 @@ Generation configuration actually observed:
 - runtime status: completed
 - web search requests: 0
 
-Local execution environment observed during the technical verification:
+This historical configuration is preserved as observed evidence. It is **not** silently rewritten as the current scientific request configuration.
 
-- Python: 3.14.7
-- Windows: 11, build 10.0.26200
-- OpenAI SDK: 3.19.2
+## Scientific request reconciliation
 
-The conversational label **GPT-5.6 Luna** is not used as a substitute for the runtime metadata above.
+The first attempted TI-001 scientific request was rejected by the serving runtime before any scientific decision was generated because `temperature=0` was unsupported for the selected model.
+
+Consequently:
+
+- no scientific decision was generated;
+- no scientific observation was produced;
+- no scientific evidence package was created by that failed request;
+- the historical `temperature=0.0` observation remains preserved;
+- the current Provider 002 scientific request configuration omits `temperature`;
+- `top_p=0.98` remains recorded as the current intended configuration, but its serving compatibility has **not** yet been independently demonstrated by a successful TI-001 scientific request;
+- `max_output_tokens=16` remains the current intended configuration;
+- unsupported parameters must not be added to the scientific request merely to reproduce the historical technical probe.
+
+## Current scientific runtime configuration
+
+For the reconciled Provider 002:
+
+- `model_id`: `gpt-5.6-luna`
+- `API surface`: Responses API
+- `temperature`: omitted
+- `top_p`: 0.98
+- `max_output_tokens`: 16
+- `tools`: []
+- `tool_choice`: auto
+- `background`: false
+- `previous_response_id`: none
+- `conversation`: none
+- `reasoning`: none
+- `store`: false
+
+The current configuration is **identified and reconciled but not yet scientifically runtime-validated**.
 
 ## Generation constraints
 
@@ -54,22 +86,24 @@ The decision runtime must:
 - receive only the frozen pre-decision input;
 - produce exactly one executable transformation;
 - preserve the frozen base prompt;
-- record the actual runtime metadata returned by the serving system.
-
-The technical verification observed `tools=[]`, completed execution, and zero web-search requests.
+- record the actual runtime metadata returned by the serving system;
+- use the reconciled Provider 002 request configuration;
+- not include `temperature`.
 
 ## Runtime identification disposition
 
-The executable runtime has provided a concrete `model_id` and generation configuration. The serving response does not expose `model_version`, `runtime_id`, or `runtime_version`, and therefore these fields are recorded explicitly as **not exposed by the serving response**, rather than inferred or fabricated.
+The executable runtime has provided a concrete `model_id` and the historical technical verification provided a concrete generation configuration. The serving response does not expose `model_version`, `runtime_id`, or `runtime_version`, and therefore these fields remain recorded explicitly as **not exposed by the serving response**, rather than inferred or fabricated.
 
-This record therefore distinguishes verified runtime metadata from metadata unavailable through the serving interface.
+The rejected scientific request establishes a serving incompatibility for `temperature=0` in the selected model. It does not establish successful serving compatibility for the remaining request parameters.
 
 ## Governance
 
-This record supersedes the earlier pending runtime-identification wording.
+This record supersedes the prior disposition of the runtime freeze record.
 
-The previously issued scientific authorization remains in force, but **scientific execution must not start until governance accepts the disposition of the runtime fields that are not exposed by the serving response and, if required, freezes that disposition explicitly**.
+The historical technical verification remains immutable in substance and is distinguished from the current scientific request configuration.
 
-No TI-001 scientific decision input was used in the technical runtime verification.
+The Provider 002 preflight is the current static/canonical preflight. Scientific execution remains blocked pending explicit reauthorization.
 
-**Scientific execution: AUTHORIZED / NOT STARTED**
+**Scientific execution: NOT AUTHORIZED / BLOCKED PENDING REAUTHORIZATION**
+
+No TI-001 scientific decision input has been used in the reconciled runtime freeze record.
