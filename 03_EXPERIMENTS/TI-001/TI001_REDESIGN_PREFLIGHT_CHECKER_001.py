@@ -7,7 +7,7 @@ R1-R14. It does not generate fixtures and never performs scientific execution.
 
 Critical constraints:
 - R8 is structural: neutral descriptor fields are allowlisted; lexical scan
-  is diagnostic only.
+  is diagnostic only and can NEVER establish R8 or overall preflight PASS.
 - D6/R11 require a treatment-induced divergence witness, not arbitrary
   differing decision functions.
 - v004 is outside this checker and must remain unchanged.
@@ -25,6 +25,10 @@ ACTIONS = ("a", "b", "c")
 
 # R8: only neutral, structural future-space descriptors are admissible.
 # Values are deliberately restricted to categorical structural descriptors.
+# Explicit governance marker: lexical scanning is auxiliary diagnostic data,
+# never an R8 criterion and never an input to overall_preflight_pass.
+LEXICAL_DIAGNOSTIC_ONLY = True
+
 ALLOWED_DESCRIPTOR_FIELDS = frozenset({
     "future_accessibility_class",
     "identity_turnover_class",
@@ -100,7 +104,7 @@ def _descriptor_is_structurally_neutral(
 
 
 def _lexical_diagnostic(value: Any) -> bool:
-    """Auxiliary diagnostic only; never establishes R8."""
+    """Auxiliary diagnostic only; NEVER establishes R8 or overall PASS."""
     blob = json.dumps(value, ensure_ascii=False, sort_keys=True).lower()
     return not any(re.search(r"\b" + re.escape(t) + r"\b", blob)
                    for t in PROHIBITED_SEMANTIC_TOKENS)
