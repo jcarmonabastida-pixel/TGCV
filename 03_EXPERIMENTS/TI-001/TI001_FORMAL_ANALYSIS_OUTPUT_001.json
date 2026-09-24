@@ -1,0 +1,232 @@
+{
+  "action_specific_condition_differences": {
+    "a": 0.0,
+    "b": 0.0,
+    "c": 0.0
+  },
+  "analysis_version": "TI001_FORMAL_ANALYSIS_001",
+  "composite_ti_score": null,
+  "condition_action_counts": {
+    "control": {
+      "a": 32,
+      "b": 0,
+      "c": 0
+    },
+    "treatment": {
+      "a": 32,
+      "b": 0,
+      "c": 0
+    }
+  },
+  "decision_provider_version": "TI001_DECISION_AGENT_PROVIDER_003",
+  "deviations": [],
+  "divergent_pairs": 0,
+  "estimand": "matched_condition_difference_in_transformation_handling",
+  "estimand_type": "difference_in_subsequent_transformation_handling",
+  "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+  "interpretation": "NOT_PERFORMED",
+  "matched_pair_count": 32,
+  "non_divergent_pairs": 32,
+  "pair_results": [
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-001",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-002",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-003",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-004",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-005",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-006",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-007",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-008",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-009",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-010",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-011",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-012",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-013",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-014",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-015",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-016",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-017",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-018",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-019",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-020",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-021",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-022",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-023",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-024",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-025",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-026",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-027",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-028",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-029",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-030",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-031",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    },
+    {
+      "control_transformation": "a",
+      "pair_id": "TI001-032",
+      "transformation_choice_diverged": false,
+      "treatment_transformation": "a"
+    }
+  ],
+  "primary_metric": "transformation_choice_divergence_rate",
+  "primary_metric_definition": "proportion of complete matched pairs for which treatment and control selected different transformations",
+  "record_count": 64,
+  "record_type": "TGCV_TI001_FORMAL_ANALYSIS_OUTPUT",
+  "scientific_execution_canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+  "scientific_execution_output_fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+  "scientific_executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+  "transformation_choice_divergence_rate": 0.0
+}

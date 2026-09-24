@@ -1,0 +1,972 @@
+{
+  "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+  "decision_provider_version": "TI001_DECISION_AGENT_PROVIDER_003",
+  "deviations": [],
+  "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+  "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+  "observation_count": 64,
+  "observations": [
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-001",
+      "pair_id": "TI001-001",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-001",
+      "pair_id": "TI001-001",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-002",
+      "pair_id": "TI001-002",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-002",
+      "pair_id": "TI001-002",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-003",
+      "pair_id": "TI001-003",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-003",
+      "pair_id": "TI001-003",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-004",
+      "pair_id": "TI001-004",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-004",
+      "pair_id": "TI001-004",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-005",
+      "pair_id": "TI001-005",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-005",
+      "pair_id": "TI001-005",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-006",
+      "pair_id": "TI001-006",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-006",
+      "pair_id": "TI001-006",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-007",
+      "pair_id": "TI001-007",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-007",
+      "pair_id": "TI001-007",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-008",
+      "pair_id": "TI001-008",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-008",
+      "pair_id": "TI001-008",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-009",
+      "pair_id": "TI001-009",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-009",
+      "pair_id": "TI001-009",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-010",
+      "pair_id": "TI001-010",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-010",
+      "pair_id": "TI001-010",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-011",
+      "pair_id": "TI001-011",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-011",
+      "pair_id": "TI001-011",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-012",
+      "pair_id": "TI001-012",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-012",
+      "pair_id": "TI001-012",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-013",
+      "pair_id": "TI001-013",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-013",
+      "pair_id": "TI001-013",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-014",
+      "pair_id": "TI001-014",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-014",
+      "pair_id": "TI001-014",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-015",
+      "pair_id": "TI001-015",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-015",
+      "pair_id": "TI001-015",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-016",
+      "pair_id": "TI001-016",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-016",
+      "pair_id": "TI001-016",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-017",
+      "pair_id": "TI001-017",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-017",
+      "pair_id": "TI001-017",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-018",
+      "pair_id": "TI001-018",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-018",
+      "pair_id": "TI001-018",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-019",
+      "pair_id": "TI001-019",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-019",
+      "pair_id": "TI001-019",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-020",
+      "pair_id": "TI001-020",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-020",
+      "pair_id": "TI001-020",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-021",
+      "pair_id": "TI001-021",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-021",
+      "pair_id": "TI001-021",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-022",
+      "pair_id": "TI001-022",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-022",
+      "pair_id": "TI001-022",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-023",
+      "pair_id": "TI001-023",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-023",
+      "pair_id": "TI001-023",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-024",
+      "pair_id": "TI001-024",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-024",
+      "pair_id": "TI001-024",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-025",
+      "pair_id": "TI001-025",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-025",
+      "pair_id": "TI001-025",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-026",
+      "pair_id": "TI001-026",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-026",
+      "pair_id": "TI001-026",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-027",
+      "pair_id": "TI001-027",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-027",
+      "pair_id": "TI001-027",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-028",
+      "pair_id": "TI001-028",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-028",
+      "pair_id": "TI001-028",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-029",
+      "pair_id": "TI001-029",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-029",
+      "pair_id": "TI001-029",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-030",
+      "pair_id": "TI001-030",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-030",
+      "pair_id": "TI001-030",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-031",
+      "pair_id": "TI001-031",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-031",
+      "pair_id": "TI001-031",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "control",
+      "execution_slot": "slot_A",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-032",
+      "pair_id": "TI001-032",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    },
+    {
+      "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+      "condition": "treatment",
+      "execution_slot": "slot_B",
+      "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+      "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+      "instance_id": "TI001-032",
+      "pair_id": "TI001-032",
+      "selected_transformation": "a",
+      "successor_accessibility": [
+        "x",
+        "y"
+      ],
+      "successor_state": "SA"
+    }
+  ],
+  "record_type": "TGCV_TI001_SCIENTIFIC_EXECUTION_OUTPUT",
+  "scientific_execution": "PERFORMED"
+}
