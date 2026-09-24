@@ -1,11 +1,11 @@
 {
   "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
-  "authorization_status": "INVALIDATED_PENDING_RUNTIME_RECONCILIATION",
+  "authorization_status": "READY_PENDING_EXPLICIT_REAUTHORIZATION",
   "scientific_execution": "NOT_AUTHORIZED",
-  "execution_status": "BLOCKED_PENDING_REAUTHORIZATION",
-  "authorization_action": "INVALIDATION_AFTER_PROVIDER_CHANGE",
+  "execution_status": "BLOCKED_PENDING_EXPLICIT_REAUTHORIZATION",
+  "authorization_action": "EXPLICIT_REAUTHORIZATION_REQUIRED",
   "basis": {
-    "provider_preflight": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_PROVIDER_PREFLIGHT_002.json",
+    "provider_preflight": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_PROVIDER_PREFLIGHT_003.json",
     "runtime_freeze_record": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_RUNTIME_FREEZE_RECORD_001.md",
     "p9_reconstruction_record": "03_EXPERIMENTS/TI-001/TI001_P9_EXECUTION_RECORD_001.json",
     "fixture": "03_EXPERIMENTS/TI-001/TI001_PREFLIGHT_FIXTURE_v004.json",
@@ -15,7 +15,7 @@
     "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
     "executor_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
     "provider_version": "TI001_DECISION_AGENT_PROVIDER_003",
-    "runtime_reconciliation_commit": "b090e05bfa8fa04a48fa369037c0ac5c62e3fac6"
+    "runtime_reconciliation_commit": "7d74d3a7e22c4b9284b7d0203691975487af3d75"
   },
   "primary_estimand": {
     "name": "matched_condition_difference_in_transformation_handling",
@@ -51,9 +51,11 @@
     "executor_frozen": true,
     "runtime_identification_reconciled": true,
     "historical_temperature_incompatibility_preserved": true,
-    "scientific_execution_performed_before_authorization": false
+    "scientific_execution_performed_before_authorization": false,
+    "provider_preflight_003_pass": true,
+    "runtime_output_budget_diagnostic_pass": true
   },
-  "authorization_basis": "Invalidated because the scientific provider generation configuration changed from max_output_tokens=16 to 64 after non-scientific diagnostic established output truncation at 16. Reauthorization is required before scientific execution.",
+  "authorization_basis": "Provider 003 preflight PASS after non-scientific diagnostic established that max_output_tokens=16 truncates reasoning before output and max_output_tokens=64 permits completion. Explicit user reauthorization is required before scientific execution.",
   "historical_authorization": {
     "record": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_001.json",
     "status": "INVALIDATED_PENDING_RUNTIME_RECONCILIATION",
