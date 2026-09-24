@@ -26,12 +26,12 @@ from openai import OpenAI
 
 MODEL_ID = "gpt-5.6-luna"
 TOP_P = 0.98
-MAX_OUTPUT_TOKENS = 16
+MAX_OUTPUT_TOKENS = 64
 TOOLS = []
 TOOL_CHOICE = "auto"
 BACKGROUND = False
 STORE = False
-PROVIDER_VERSION = "TI001_DECISION_AGENT_PROVIDER_002"
+PROVIDER_VERSION = "TI001_DECISION_AGENT_PROVIDER_003"
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
