@@ -1,0 +1,13 @@
+import sys, json, tempfile, subprocess, pathlib
+base=pathlib.Path('.')
+checker=base/'03_EXPERIMENTS/TI-001/TI001_V005_COMPATIBILITY_PREFLIGHT_CHECKER_001.py'
+args=[sys.executable,str(checker),
+'03_EXPERIMENTS/TI-001/TI001_v005_CANDIDATE_001.json',
+'03_EXPERIMENTS/TI-001/TI001_V005_DECISION_AGENT_PROVIDER_001.py',
+'03_EXPERIMENTS/TI-001/TI001_V005_SCIENTIFIC_EXECUTOR_001.py',
+'03_EXPERIMENTS/TI-001/TI001_V005_EXECUTOR_2_RECONSTRUCTION_001.py',
+'03_EXPERIMENTS/TI-001/TI001_V005_EXECUTION_CONTRACT_001.md',
+'03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_RUNTIME_FREEZE_001.md',
+'03_EXPERIMENTS/TI-001/TI001_V005_COMPATIBILITY_PREFLIGHT_001.json']
+print(subprocess.run(args,text=True,capture_output=True).stdout)
+print(subprocess.run(args,text=True,capture_output=True).stderr,file=sys.stderr)
