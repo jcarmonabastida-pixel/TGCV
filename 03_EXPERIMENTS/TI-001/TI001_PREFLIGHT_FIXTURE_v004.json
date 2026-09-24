@@ -1,20 +1,38 @@
 {
   "environment_seed_base": 731407,
-  "fixture_sha256": "d428c17850e0b7696c0007d701ac9e7a9e261b5cf4e9e58fd725f2b2ea7d94bb",
+  "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
   "instances": [
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731407,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -45,6 +63,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-001",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -54,6 +80,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-001",
       "primary_estimand": {
@@ -68,6 +105,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731407,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -99,18 +138,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731407,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -137,6 +194,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-001",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -146,6 +211,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-001",
       "primary_estimand": {
@@ -160,6 +236,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731407,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -191,18 +269,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731408,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -229,6 +325,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-002",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -238,6 +342,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-002",
       "primary_estimand": {
@@ -252,6 +367,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731408,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -283,18 +400,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731408,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -325,6 +460,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-002",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -334,6 +477,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-002",
       "primary_estimand": {
@@ -348,6 +502,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731408,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -379,18 +535,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731409,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -421,6 +595,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-003",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -430,6 +612,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-003",
       "primary_estimand": {
@@ -444,6 +637,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731409,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -475,18 +670,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731409,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -513,6 +726,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-003",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -522,6 +743,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-003",
       "primary_estimand": {
@@ -536,6 +768,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731409,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -567,18 +801,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731410,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -605,6 +857,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-004",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -614,6 +874,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-004",
       "primary_estimand": {
@@ -628,6 +899,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731410,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -659,18 +932,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731410,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -701,6 +992,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-004",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -710,6 +1009,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-004",
       "primary_estimand": {
@@ -724,6 +1034,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731410,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -755,18 +1067,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731411,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -797,6 +1127,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-005",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -806,6 +1144,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-005",
       "primary_estimand": {
@@ -820,6 +1169,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731411,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -851,18 +1202,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731411,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -889,6 +1258,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-005",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -898,6 +1275,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-005",
       "primary_estimand": {
@@ -912,6 +1300,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731411,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -943,18 +1333,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731412,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -981,6 +1389,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-006",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -990,6 +1406,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-006",
       "primary_estimand": {
@@ -1004,6 +1431,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731412,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1035,18 +1464,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731412,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -1077,6 +1524,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-006",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1086,6 +1541,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-006",
       "primary_estimand": {
@@ -1100,6 +1566,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731412,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1131,18 +1599,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731413,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -1169,6 +1655,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-007",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1178,6 +1672,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-007",
       "primary_estimand": {
@@ -1192,6 +1697,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731413,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1223,18 +1730,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731413,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -1265,6 +1790,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-007",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1274,6 +1807,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-007",
       "primary_estimand": {
@@ -1288,6 +1832,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731413,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1319,18 +1865,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731414,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -1357,6 +1921,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-008",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1366,6 +1938,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-008",
       "primary_estimand": {
@@ -1380,6 +1963,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731414,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1411,18 +1996,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731414,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -1453,6 +2056,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-008",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1462,6 +2073,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-008",
       "primary_estimand": {
@@ -1476,6 +2098,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731414,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1507,18 +2131,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731415,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -1545,6 +2187,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-009",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1554,6 +2204,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-009",
       "primary_estimand": {
@@ -1568,6 +2229,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731415,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1599,18 +2262,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731415,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -1641,6 +2322,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-009",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1650,6 +2339,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-009",
       "primary_estimand": {
@@ -1664,6 +2364,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731415,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1695,18 +2397,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731416,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -1737,6 +2457,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-010",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1746,6 +2474,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-010",
       "primary_estimand": {
@@ -1760,6 +2499,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731416,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1791,18 +2532,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731416,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -1829,6 +2588,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-010",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1838,6 +2605,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-010",
       "primary_estimand": {
@@ -1852,6 +2630,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731416,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1883,18 +2663,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731417,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -1921,6 +2719,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-011",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -1930,6 +2736,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-011",
       "primary_estimand": {
@@ -1944,6 +2761,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731417,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -1975,18 +2794,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731417,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -2017,6 +2854,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-011",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2026,6 +2871,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-011",
       "primary_estimand": {
@@ -2040,6 +2896,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731417,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2071,18 +2929,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731418,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -2109,6 +2985,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-012",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2118,6 +3002,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-012",
       "primary_estimand": {
@@ -2132,6 +3027,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731418,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2163,18 +3060,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731418,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -2205,6 +3120,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-012",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2214,6 +3137,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-012",
       "primary_estimand": {
@@ -2228,6 +3162,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731418,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2259,18 +3195,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731419,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -2301,6 +3255,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-013",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2310,6 +3272,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-013",
       "primary_estimand": {
@@ -2324,6 +3297,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731419,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2355,18 +3330,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731419,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -2393,6 +3386,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-013",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2402,6 +3403,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-013",
       "primary_estimand": {
@@ -2416,6 +3428,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731419,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2447,18 +3461,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731420,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -2489,6 +3521,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-014",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2498,6 +3538,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-014",
       "primary_estimand": {
@@ -2512,6 +3563,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731420,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2543,18 +3596,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731420,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -2581,6 +3652,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-014",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2590,6 +3669,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-014",
       "primary_estimand": {
@@ -2604,6 +3694,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731420,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2635,18 +3727,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731421,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -2673,6 +3783,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-015",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2682,6 +3800,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-015",
       "primary_estimand": {
@@ -2696,6 +3825,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731421,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2727,18 +3858,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731421,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -2769,6 +3918,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-015",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2778,6 +3935,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-015",
       "primary_estimand": {
@@ -2792,6 +3960,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731421,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2823,18 +3993,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731422,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -2865,6 +4053,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-016",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2874,6 +4070,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-016",
       "primary_estimand": {
@@ -2888,6 +4095,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731422,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -2919,18 +4128,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731422,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -2957,6 +4184,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-016",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -2966,6 +4201,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-016",
       "primary_estimand": {
@@ -2980,6 +4226,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731422,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3011,18 +4259,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731423,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -3049,6 +4315,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-017",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3058,6 +4332,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-017",
       "primary_estimand": {
@@ -3072,6 +4357,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731423,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3103,18 +4390,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731423,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -3145,6 +4450,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-017",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3154,6 +4467,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-017",
       "primary_estimand": {
@@ -3168,6 +4492,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731423,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3199,18 +4525,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731424,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -3237,6 +4581,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-018",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3246,6 +4598,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-018",
       "primary_estimand": {
@@ -3260,6 +4623,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731424,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3291,18 +4656,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731424,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -3333,6 +4716,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-018",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3342,6 +4733,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-018",
       "primary_estimand": {
@@ -3356,6 +4758,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731424,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3387,18 +4791,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731425,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -3425,6 +4847,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-019",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3434,6 +4864,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-019",
       "primary_estimand": {
@@ -3448,6 +4889,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731425,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3479,18 +4922,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731425,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -3521,6 +4982,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-019",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3530,6 +4999,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-019",
       "primary_estimand": {
@@ -3544,6 +5024,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731425,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3575,18 +5057,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731426,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -3617,6 +5117,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-020",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3626,6 +5134,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-020",
       "primary_estimand": {
@@ -3640,6 +5159,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731426,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3671,18 +5192,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731426,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -3709,6 +5248,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-020",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3718,6 +5265,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-020",
       "primary_estimand": {
@@ -3732,6 +5290,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731426,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3763,18 +5323,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731427,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -3805,6 +5383,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-021",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3814,6 +5400,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-021",
       "primary_estimand": {
@@ -3828,6 +5425,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731427,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3859,18 +5458,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731427,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -3897,6 +5514,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-021",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -3906,6 +5531,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-021",
       "primary_estimand": {
@@ -3920,6 +5556,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731427,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -3951,18 +5589,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731428,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -3993,6 +5649,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-022",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4002,6 +5666,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-022",
       "primary_estimand": {
@@ -4016,6 +5691,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731428,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4047,18 +5724,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731428,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -4085,6 +5780,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-022",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4094,6 +5797,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-022",
       "primary_estimand": {
@@ -4108,6 +5822,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731428,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4139,18 +5855,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731429,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -4181,6 +5915,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-023",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4190,6 +5932,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-023",
       "primary_estimand": {
@@ -4204,6 +5957,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731429,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4235,18 +5990,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731429,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -4273,6 +6046,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-023",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4282,6 +6063,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-023",
       "primary_estimand": {
@@ -4296,6 +6088,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731429,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4327,18 +6121,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731430,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -4365,6 +6177,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-024",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4374,6 +6194,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-024",
       "primary_estimand": {
@@ -4388,6 +6219,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731430,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4419,18 +6252,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731430,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -4461,6 +6312,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-024",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4470,6 +6329,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-024",
       "primary_estimand": {
@@ -4484,6 +6354,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731430,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4515,18 +6387,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731431,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -4557,6 +6447,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-025",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4566,6 +6464,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-025",
       "primary_estimand": {
@@ -4580,6 +6489,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731431,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4611,18 +6522,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731431,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -4649,6 +6578,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-025",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4658,6 +6595,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-025",
       "primary_estimand": {
@@ -4672,6 +6620,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731431,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4703,18 +6653,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731432,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -4745,6 +6713,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-026",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4754,6 +6730,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-026",
       "primary_estimand": {
@@ -4768,6 +6755,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731432,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4799,18 +6788,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731432,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -4837,6 +6844,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-026",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4846,6 +6861,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-026",
       "primary_estimand": {
@@ -4860,6 +6886,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731432,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4891,18 +6919,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731433,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -4933,6 +6979,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-027",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -4942,6 +6996,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-027",
       "primary_estimand": {
@@ -4956,6 +7021,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731433,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -4987,18 +7054,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731433,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -5025,6 +7110,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-027",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5034,6 +7127,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-027",
       "primary_estimand": {
@@ -5048,6 +7152,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731433,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5079,18 +7185,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731434,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -5117,6 +7241,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-028",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5126,6 +7258,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-028",
       "primary_estimand": {
@@ -5140,6 +7283,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731434,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5171,18 +7316,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731434,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -5213,6 +7376,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-028",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5222,6 +7393,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-028",
       "primary_estimand": {
@@ -5236,6 +7418,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731434,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5267,18 +7451,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731435,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -5309,6 +7511,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-029",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5318,6 +7528,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-029",
       "primary_estimand": {
@@ -5332,6 +7553,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731435,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5363,18 +7586,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731435,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -5401,6 +7642,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-029",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5410,6 +7659,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-029",
       "primary_estimand": {
@@ -5424,6 +7684,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731435,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5455,18 +7717,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731436,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -5493,6 +7773,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-030",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5502,6 +7790,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-030",
       "primary_estimand": {
@@ -5516,6 +7815,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731436,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5547,18 +7848,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731436,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -5589,6 +7908,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-030",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5598,6 +7925,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-030",
       "primary_estimand": {
@@ -5612,6 +7950,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731436,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5643,18 +7983,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731437,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -5685,6 +8043,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-031",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5694,6 +8060,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-031",
       "primary_estimand": {
@@ -5708,6 +8085,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731437,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5739,18 +8118,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731437,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -5777,6 +8174,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-031",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5786,6 +8191,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-031",
       "primary_estimand": {
@@ -5800,6 +8216,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731437,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5831,18 +8249,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "control",
+      "decision_before_future_reveal": true,
       "environment_seed": 731438,
       "execution_slot": "slot_A",
       "future_alternatives": [
@@ -5869,6 +8305,14 @@
       },
       "information_treatment": null,
       "instance_id": "TI001-032",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5878,6 +8322,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-032",
       "primary_estimand": {
@@ -5892,6 +8347,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731438,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -5923,18 +8380,36 @@
       ]
     },
     {
+      "Delta_T_acc_t": null,
       "S_t": "S0",
+      "S_t1": null,
+      "TSDA_descriptors": {
+        "accessibility_cardinality_t": 3,
+        "future_accessibility_cardinalities": [
+          2,
+          2
+        ],
+        "future_alternative_count": 2,
+        "identity_turnover": true,
+        "net_accessibility_change_by_alternative": [
+          -1,
+          -1
+        ],
+        "representation": "transition_level_preflight"
+      },
       "T_acc_t": [
         "a",
         "b",
         "c"
       ],
+      "T_acc_t1": null,
       "available_transformations": [
         "a",
         "b",
         "c"
       ],
       "condition": "treatment",
+      "decision_before_future_reveal": true,
       "environment_seed": 731438,
       "execution_slot": "slot_B",
       "future_alternatives": [
@@ -5965,6 +8440,14 @@
         "future_reconfiguration": "two_of_three_identity_pattern"
       },
       "instance_id": "TI001-032",
+      "leakage_checks": {
+        "condition_in_current_accessibility": false,
+        "condition_in_state": false,
+        "future_space_signal_in_control": false,
+        "future_space_signal_in_treatment_is_structured": true,
+        "outcome_revealed": false,
+        "preferred_action_revealed": false
+      },
       "null": {
         "information": {
           "candidate_count": 3,
@@ -5974,6 +8457,17 @@
           "recommendation": false,
           "task": "select_one_current_transformation"
         }
+      },
+      "null_condition": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        },
+        "scientific_execution": false
       },
       "pair_id": "TI001-032",
       "primary_estimand": {
@@ -5988,6 +8482,8 @@
         "type": "difference_in_subsequent_transformation_handling"
       },
       "randomisation_seed": 582031,
+      "seed": 731438,
+      "selected_transformation": null,
       "successors": {
         "a": {
           "state": "SA",
@@ -6022,5 +8518,5 @@
   "pair_count": 32,
   "randomisation_seed": 582031,
   "record_count": 64,
-  "schema": "TI001_PREFLIGHT_FIXTURE_v003"
+  "schema": "TI001_PREFLIGHT_FIXTURE_v004"
 }
