@@ -132,6 +132,28 @@ def main(argv: list[str]) -> int:
         )
         selected = response.output_text.strip()
         if selected not in ALLOWED:
+            diagnostic = {
+                "event": "INVALID_MODEL_OUTPUT",
+                "pair_id": unit["pair_id"],
+                "condition": condition,
+                "response_id": getattr(response, "id", None),
+                "response_status": getattr(response, "status", None),
+                "output_text_repr": repr(getattr(response, "output_text", "")),
+                "incomplete_details": getattr(response, "incomplete_details", None),
+                "usage": response.usage.model_dump() if getattr(response, "usage", None) else None,
+                "output_structure": [
+                    {
+                        "id": getattr(item, "id", None),
+                        "type": getattr(item, "type", None),
+                        "status": getattr(item, "status", None),
+                        "role": getattr(item, "role", None),
+                        "phase": getattr(item, "phase", None),
+                        "content_types": [getattr(part, "type", None) for part in (getattr(item, "content", None) or [])],
+                    }
+                    for item in (getattr(response, "output", None) or [])
+                ],
+            }
+            print(json.dumps(diagnostic, indent=2, sort_keys=True, default=str), file=sys.stderr)
             raise ValueError(f"invalid model output: {selected!r}")
         key = f"{unit['pair_id']}::{condition}"
         decisions[key] = {
