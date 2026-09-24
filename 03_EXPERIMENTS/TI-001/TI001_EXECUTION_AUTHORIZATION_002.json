@@ -1,8 +1,9 @@
 {
   "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
-  "authorization_status": "READY_PENDING_EXPLICIT_AUTHORIZATION",
-  "scientific_execution": "NOT_AUTHORIZED",
-  "execution_status": "BLOCKED_PENDING_EXPLICIT_REAUTHORIZATION",
+  "authorization_status": "AUTHORIZED",
+  "scientific_execution": "AUTHORIZED",
+  "execution_status": "AUTHORIZED_NOT_STARTED",
+  "authorization_action": "EXPLICIT_REAUTHORIZATION",
   "basis": {
     "provider_preflight": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_PROVIDER_PREFLIGHT_002.json",
     "runtime_freeze_record": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_RUNTIME_FREEZE_RECORD_001.md",
@@ -52,18 +53,30 @@
     "historical_temperature_incompatibility_preserved": true,
     "scientific_execution_performed_before_authorization": false
   },
-  "authorization_basis": "Prepared after runtime reconciliation. Provider 002 removes the previously rejected temperature parameter. The historical rejected request is preserved and excluded from the current scientific configuration. No scientific execution has been authorized by this record.",
+  "authorization_basis": "Explicit reauthorization after reconciliation of Provider 002 and the runtime freeze. The previously rejected temperature parameter remains excluded. The historical authorization 001 remains invalidated and preserved.",
   "historical_authorization": {
     "record": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_001.json",
     "status": "INVALIDATED_PENDING_RUNTIME_RECONCILIATION",
     "preserved": true
   },
-  "explicit_authorization_requirement": {
-    "required": true,
-    "authorization_status_until_explicit_action": "NOT_AUTHORIZED",
-    "execution_must_not_start": true
+  "execution_boundary": {
+    "scientific_input_must_match_frozen_fixture": true,
+    "decision_mechanism_must_match_provider_002": true,
+    "no_external_tools": true,
+    "no_web_access": true,
+    "no_file_access": true,
+    "no_conversation_state": true,
+    "no_previous_response_id": true,
+    "no_successor_information_before_decision": true,
+    "no_reward_utility_payoff_value_outcome_information_before_decision": true,
+    "exactly_one_current_executable_transformation_per_record": true,
+    "execution_must_persist_decision_timestamp_and_runtime_metadata": true
   },
-  "external_runtime_reference": {
-    "model_catalog_status": "gpt-5.6-luna is listed by OpenAI as a current GPT-5.6 model available through the Responses API."
+  "execution_prohibition": {
+    "do_not_use_chat_conversational_responses_as_scientific_decisions": true,
+    "do_not_reuse_non_scientific_attempts_as_evidence": true,
+    "do_not_modify_fixture": true,
+    "do_not_modify_estimand": true,
+    "do_not_modify_frozen_prompt": true
   }
 }
