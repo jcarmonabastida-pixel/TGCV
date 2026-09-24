@@ -1,7 +1,7 @@
 {
   "fixture_id": "TI001-v005-candidate-001",
   "version": "v005-candidate-001",
-  "status": "CANDIDATE_NOT_FROZEN",
+  "status": "FROZEN",
   "scientific_execution": "NOT_AUTHORIZED",
   "antecedent": {
     "historical_fixture": "TI-001-v004",
