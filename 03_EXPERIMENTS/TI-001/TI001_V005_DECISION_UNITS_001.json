@@ -1,0 +1,400 @@
+{
+  "record_type": "TGCV_TI001_V005_EXECUTION_DATA",
+  "specification": "TI001_V005_EXECUTION_DATA_SPECIFICATION_001.md",
+  "specification_commit": "3aca33634187298daa5c6275c34a67d2a8db28dd",
+  "pair_count": 32,
+  "condition_count": 3,
+  "decision_count": 96,
+  "conditions": [
+    "control",
+    "treatment",
+    "null"
+  ],
+  "decision_units": [
+    {
+      "pair_id": "P001",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P001",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P001",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P002",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P002",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P002",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P003",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P003",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P003",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P004",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P004",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P004",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P005",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P005",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P005",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P006",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P006",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P006",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P007",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P007",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P007",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P008",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P008",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P008",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P009",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P009",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P009",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P010",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P010",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P010",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P011",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P011",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P011",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P012",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P012",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P012",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P013",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P013",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P013",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P014",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P014",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P014",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P015",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P015",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P015",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P016",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P016",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P016",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P017",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P017",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P017",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P018",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P018",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P018",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P019",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P019",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P019",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P020",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P020",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P020",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P021",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P021",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P021",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P022",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P022",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P022",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P023",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P023",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P023",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P024",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P024",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P024",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P025",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P025",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P025",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P026",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P026",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P026",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P027",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P027",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P027",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P028",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P028",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P028",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P029",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P029",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P029",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P030",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P030",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P030",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P031",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P031",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P031",
+      "condition": "null"
+    },
+    {
+      "pair_id": "P032",
+      "condition": "control"
+    },
+    {
+      "pair_id": "P032",
+      "condition": "treatment"
+    },
+    {
+      "pair_id": "P032",
+      "condition": "null"
+    }
+  ],
+  "scientific_execution": "NOT_PERFORMED"
+}
