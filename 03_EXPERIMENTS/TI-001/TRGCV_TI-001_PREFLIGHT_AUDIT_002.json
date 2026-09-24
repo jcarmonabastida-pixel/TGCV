@@ -1,0 +1,42 @@
+{
+  "scientific_execution": "NOT_AUTHORIZED",
+  "canonical_commit": "ef0abb7a34c91202d31c8c6604a915679f267f7e",
+  "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+  "checks": {
+    "A1_ASSIGNMENT_FIELDS_PRESENT": true,
+    "A2_PAIR_STRUCTURE": true,
+    "A3_CONDITION_BALANCE": true,
+    "A4_PAIR_CONDITION_COMPLETENESS": true,
+    "A5_SLOT_UNIQUENESS": true,
+    "A6_SEED_SEPARATION": true,
+    "A7_ASSIGNMENT_REPRODUCIBILITY": true,
+    "A8_ASSIGNMENT_CONTENT_INDEPENDENCE": true,
+    "A9_NO_DUPLICATE_INSTANCE": true,
+    "P1_CURRENT_SPACE_EQUALITY": true,
+    "P2_CANDIDATE_MULTIPLICITY": true,
+    "P3_TREATMENT_SPECIFICITY": true,
+    "P4_NO_DIRECT_RECOMMENDATION": true,
+    "P5_NO_OUTCOME_LEAKAGE": true,
+    "P6_FUTURE_NON_DERIVABILITY": true,
+    "P7_TEMPORAL_ORDER": true,
+    "P8_NULL_VALIDITY": true,
+    "P9_DETERMINISTIC_RECONSTRUCTION": true,
+    "P10_PRIMARY_METRIC_FREEZE": true
+  },
+  "p9_independent_reconstruction": {
+    "status": "P9_PASS",
+    "executor_2_exit_zero": true,
+    "observable_fixture_equivalence": true,
+    "fixture_sha256_match": true,
+    "reconstructed_fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+    "differences": [],
+    "execution_record": "03_EXPERIMENTS/TI-001/TI001_P9_EXECUTION_RECORD_001.json"
+  },
+  "p10_primary_estimand": {
+    "name": "matched_condition_difference_in_transformation_handling",
+    "type": "difference_in_subsequent_transformation_handling",
+    "frozen_before_scientific_execution": true
+  },
+  "record_type": "TGCV_TI-001_PREFLIGHT_AUDIT",
+  "status": "PREFLIGHT_PASS"
+}
