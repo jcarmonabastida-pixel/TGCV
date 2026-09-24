@@ -1,0 +1,70 @@
+{
+  "record_type": "TGCV_TI001_DECISION_AGENT_PROVIDER_PREFLIGHT",
+  "status": "PREFLIGHT_PASS",
+  "scientific_execution": "NOT_PERFORMED",
+  "provider": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_PROVIDER_001.py",
+  "provider_version": "TI001_DECISION_AGENT_PROVIDER_002",
+  "fixture": "03_EXPERIMENTS/TI-001/TI001_PREFLIGHT_FIXTURE_v004.json",
+  "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+  "base_prompt": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_BASE_PROMPT_001.md",
+  "base_prompt_sha256": "e451d2d89a353aa58030b3e59510837f5a664b186eb077662ae93376764f7006",
+  "checks": {
+    "fixture_record_count_64": true,
+    "treatment_count_32": true,
+    "control_count_32": true,
+    "composite_decision_keys_unique": true,
+    "composite_decision_key_format": "pair_id::condition",
+    "fixture_hash_canonical_match": true,
+    "prompt_hash_match": true,
+    "current_state_only": true,
+    "current_transformations_only": true,
+    "control_receives_no_future_space_signal": true,
+    "treatment_receives_only_structured_future_space_signal": true,
+    "successor_state_excluded_from_decision_input": true,
+    "successor_accessibility_excluded_from_decision_input": true,
+    "outcome_value_reward_utility_excluded": true,
+    "preferred_action_excluded": true,
+    "output_restricted_to_currently_executable_transformation": true,
+    "one_response_per_record_when_execute_enabled": true,
+    "decision_timestamp_recorded": true,
+    "response_id_recorded": true,
+    "runtime_metadata_recorded": true,
+    "no_tools": true,
+    "no_conversation_state": true,
+    "no_previous_response_id": true,
+    "dry_run_does_not_call_api": true
+  },
+  "runtime_contract": {
+    "model_id": "gpt-5.6-luna",
+    "api_surface": "Responses API",
+    "temperature": null,
+    "temperature_status": "OMITTED_UNSUPPORTED_IN_SCIENTIFIC_REQUEST",
+    "top_p": 0.98,
+    "max_output_tokens": 16,
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "previous_response_id": null,
+    "conversation": null,
+    "reasoning": null,
+    "store": false
+  },
+  "authorization": {
+    "status": "NOT_AUTHORIZED",
+    "execution_status": "BLOCKED_PENDING_REAUTHORIZATION",
+    "authorization_commit": "3d61036c0edb338915dbb95bc9e0fe56d4748d8a",
+    "executor_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+    "reconciliation_basis": "Provider 002 removes the unsupported temperature parameter identified by the failed scientific execution attempt; explicit reauthorization remains required before scientific execution."
+  },
+  "historical_preflight": {
+    "record": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_PROVIDER_PREFLIGHT_001.json",
+    "status": "HISTORICAL_CONFIGURATION",
+    "preserved": true,
+    "not_current_authorization_basis": true
+  },
+  "limitations": [
+    "This is a static/canonical preflight; no scientific model call was performed.",
+    "Actual serving-response metadata can only be recorded during the explicitly reauthorized scientific decision run.",
+    "The prior scientific execution attempt demonstrated that temperature=0 is rejected by the serving runtime for the selected model; the historical preflight remains preserved and is not rewritten."
+  ]
+}
