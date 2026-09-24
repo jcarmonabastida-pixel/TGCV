@@ -1,9 +1,9 @@
 {
   "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
-  "authorization_status": "READY_PENDING_EXPLICIT_REAUTHORIZATION",
-  "scientific_execution": "NOT_AUTHORIZED",
-  "execution_status": "BLOCKED_PENDING_EXPLICIT_REAUTHORIZATION",
-  "authorization_action": "EXPLICIT_REAUTHORIZATION_REQUIRED",
+  "authorization_status": "AUTHORIZED",
+  "scientific_execution": "AUTHORIZED",
+  "execution_status": "AUTHORIZED_NOT_STARTED",
+  "authorization_action": "EXPLICIT_REAUTHORIZATION",
   "basis": {
     "provider_preflight": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_PROVIDER_PREFLIGHT_003.json",
     "runtime_freeze_record": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_RUNTIME_FREEZE_RECORD_001.md",
@@ -55,7 +55,7 @@
     "provider_preflight_003_pass": true,
     "runtime_output_budget_diagnostic_pass": true
   },
-  "authorization_basis": "Provider 003 preflight PASS after non-scientific diagnostic established that max_output_tokens=16 truncates reasoning before output and max_output_tokens=64 permits completion. Explicit user reauthorization is required before scientific execution.",
+  "authorization_basis": "Explicit user reauthorization after Provider 003 preflight PASS and reconciliation of the output-budget correction from 16 to 64 tokens. Fixture, frozen prompt, estimand, and executor remain unchanged.",
   "historical_authorization": {
     "record": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_001.json",
     "status": "INVALIDATED_PENDING_RUNTIME_RECONCILIATION",
