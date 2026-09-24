@@ -1,7 +1,7 @@
 {
   "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
-  "authorization_status": "AUTHORIZED",
-  "canonical_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+  "authorization_status": "INVALIDATED_PENDING_RUNTIME_RECONCILIATION",
+  "canonical_commit": "e6a1a1c32638a9499f4a6f888d276390f7a6946a",
   "preflight_audit": "03_EXPERIMENTS/TI-001/TRGCV_TI-001_PREFLIGHT_AUDIT_002.json",
   "p9_reconstruction_record": "03_EXPERIMENTS/TI-001/TI001_P9_EXECUTION_RECORD_001.json",
   "fixture": "03_EXPERIMENTS/TI-001/TI001_PREFLIGHT_FIXTURE_v004.json",
@@ -22,7 +22,6 @@
     "api_surface": "Responses API",
     "api_version": "not_exposed_by_serving_response",
     "generation_configuration": {
-      "temperature": 0,
       "top_p": 0.98,
       "max_output_tokens": 16,
       "tools": [],
@@ -47,7 +46,7 @@
     "unexposed_runtime_fields_explicitly_recorded": true,
     "scientific_execution_performed_before_authorization": false
   },
-  "authorization_basis": "Explicit user re-authorization in conversation after executor reconciliation resolving the Control/Treatment decision-key collision.",
-  "scientific_execution": "AUTHORIZED",
-  "execution_status": "NOT_STARTED"
+  "authorization_basis": "Previous authorization invalidated after first execution attempt exposed runtime incompatibility: temperature parameter rejected by gpt-5.6-luna. Provider corrected to omit unsupported parameter; re-preflight and explicit re-authorization required before scientific execution.",
+  "scientific_execution": "NOT_AUTHORIZED",
+  "execution_status": "BLOCKED_PENDING_REAUTHORIZATION"
 }
