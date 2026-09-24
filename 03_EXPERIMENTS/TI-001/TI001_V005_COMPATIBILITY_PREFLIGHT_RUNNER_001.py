@@ -9,5 +9,7 @@ args=[sys.executable,str(checker),
 '03_EXPERIMENTS/TI-001/TI001_V005_EXECUTION_CONTRACT_001.md',
 '03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_RUNTIME_FREEZE_001.md',
 '03_EXPERIMENTS/TI-001/TI001_V005_COMPATIBILITY_PREFLIGHT_001.json']
-print(subprocess.run(args,text=True,capture_output=True).stdout)
-print(subprocess.run(args,text=True,capture_output=True).stderr,file=sys.stderr)
+proc=subprocess.run(args,text=True,capture_output=True)
+print(proc.stdout)
+print(proc.stderr,file=sys.stderr)
+raise SystemExit(proc.returncode)
