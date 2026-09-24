@@ -8,7 +8,6 @@ N=32
 BASE_ACTIONS=["a","b","c"]
 PAIR_IDS=[f"TI001-{i+1:03d}" for i in range(N)]
 
-# Frozen assignment protocol: shuffle pair IDs, then alternate slot mapping.
 rng=random.Random(RANDOMISATION_SEED)
 shuffled_pairs=PAIR_IDS[:]
 rng.shuffle(shuffled_pairs)
@@ -23,10 +22,6 @@ for j,pair_id in enumerate(shuffled_pairs):
 RECORDS=[]
 for i,pair_id in enumerate(PAIR_IDS):
     environment_seed=ENVIRONMENT_SEED_BASE+i
-
-    # Environment seed is persisted as the frozen generation seed.
-    # The preflight environment is intentionally structurally identical
-    # across matched pairs; no scientific outcome is generated here.
     environment_rng=random.Random(environment_seed)
     _environment_nonce=environment_rng.getrandbits(32)
 
@@ -40,7 +35,6 @@ for i,pair_id in enumerate(PAIR_IDS):
         {"choice":"a","successor":"SA","T_acc_t1":["x","y"]},
         {"choice":"b","successor":"SB","T_acc_t1":["x","z"]},
     ]
-
     treatment_info={
       "future_reconfiguration":"two_of_three_identity_pattern",
       "candidate_count":3,
@@ -50,21 +44,22 @@ for i,pair_id in enumerate(PAIR_IDS):
       "task":"select_one_current_transformation",
       "candidate_count":3
     }
-
     tsda_descriptors={
       "representation":"transition_level_preflight",
       "accessibility_cardinality_t":len(current["t_acc"]),
       "future_alternative_count":len(future_alternatives),
-      "future_accessibility_cardinalities":[
-          len(x["T_acc_t1"]) for x in future_alternatives
-      ],
+      "future_accessibility_cardinalities":[len(x["T_acc_t1"]) for x in future_alternatives],
       "identity_turnover":True,
-      "net_accessibility_change_by_alternative":[
-          len(x["T_acc_t1"])-len(current["t_acc"])
-          for x in future_alternatives
-      ]
+      "net_accessibility_change_by_alternative":[len(x["T_acc_t1"])-len(current["t_acc"]) for x in future_alternatives]
     }
-
+    null_information={
+      "task":"select_one_current_transformation",
+      "candidate_count":3,
+      "format":"structured",
+      "future_space_signal":False,
+      "recommendation":False,
+      "outcome_signal":False
+    }
     common={
       "pair_id":pair_id,
       "S_t":current["state"],
@@ -72,30 +67,15 @@ for i,pair_id in enumerate(PAIR_IDS):
       "available_transformations":BASE_ACTIONS,
       "successors":successors,
       "future_alternatives":future_alternatives,
-      "temporal_order":[
-          "information_available",
-          "transformation_choice",
-          "successor_state",
-          "successor_accessibility"
-      ],
+      "temporal_order":["information_available","transformation_choice","successor_state","successor_accessibility"],
       "primary_estimand":{
         "name":"matched_condition_difference_in_transformation_handling",
         "type":"difference_in_subsequent_transformation_handling",
         "forbidden":["TI_score","value","reward","utility","performance"]
       },
-      "null_condition":{
-        "information":{
-          "task":"select_one_current_transformation",
-          "candidate_count":3,
-          "format":"structured",
-          "future_space_signal":False,
-          "recommendation":False,
-          "outcome_signal":False
-        },
-        "scientific_execution":False
-      }
+      "null":{"information":null_information},
+      "null_condition":{"information":null_information,"scientific_execution":False}
     }
-
     for slot in ["slot_A","slot_B"]:
         condition=assignment[pair_id][slot]
         RECORDS.append({
@@ -108,13 +88,10 @@ for i,pair_id in enumerate(PAIR_IDS):
           "randomisation_seed":RANDOMISATION_SEED,
           "information_control":control_info,
           "information_treatment":treatment_info if condition=="treatment" else None,
-
-          # Execution-only observations remain explicitly null in preflight.
           "selected_transformation":None,
           "S_t1":None,
           "T_acc_t1":None,
           "Delta_T_acc_t":None,
-
           "TSDA_descriptors":tsda_descriptors,
           "decision_before_future_reveal":True,
           "leakage_checks":{
