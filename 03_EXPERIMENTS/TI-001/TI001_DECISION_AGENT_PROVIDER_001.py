@@ -25,14 +25,13 @@ from pathlib import Path
 from openai import OpenAI
 
 MODEL_ID = "gpt-5.6-luna"
-TEMPERATURE = 0.0
 TOP_P = 0.98
 MAX_OUTPUT_TOKENS = 16
 TOOLS = []
 TOOL_CHOICE = "auto"
 BACKGROUND = False
 STORE = False
-PROVIDER_VERSION = "TI001_DECISION_AGENT_PROVIDER_001"
+PROVIDER_VERSION = "TI001_DECISION_AGENT_PROVIDER_002"
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -118,7 +117,6 @@ def main(argv: list[str]) -> int:
             model=MODEL_ID,
             instructions=prompt,
             input=json.dumps(decision_input, sort_keys=True, separators=(",", ":"), ensure_ascii=False),
-            temperature=TEMPERATURE,
             top_p=TOP_P,
             max_output_tokens=MAX_OUTPUT_TOKENS,
             tools=TOOLS,
@@ -142,7 +140,6 @@ def main(argv: list[str]) -> int:
             "response_status": response.status,
             "model_id": getattr(response, "model", MODEL_ID),
             "generation_configuration": {
-                "temperature": TEMPERATURE,
                 "top_p": TOP_P,
                 "max_output_tokens": MAX_OUTPUT_TOKENS,
                 "tools": TOOLS,
@@ -168,7 +165,6 @@ def main(argv: list[str]) -> int:
         "runtime_id": "not exposed by serving response",
         "runtime_version": "not exposed by serving response",
         "generation_configuration": {
-            "temperature": TEMPERATURE,
             "top_p": TOP_P,
             "max_output_tokens": MAX_OUTPUT_TOKENS,
             "tools": TOOLS,
