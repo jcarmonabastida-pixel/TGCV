@@ -20,7 +20,7 @@ def main() -> int:
         instructions="Return exactly one token: a",
         input="Diagnostic only. Return exactly one token: a",
         top_p=0.98,
-        max_output_tokens=64,
+        max_output_tokens=256,
         tools=[],
         tool_choice="auto",
         background=False,
