@@ -1,38 +1,45 @@
 # TI-001 Decision Agent Runtime Freeze Record 001
 
-**Status:** FROZEN — SCIENTIFIC EXECUTION AUTHORIZED, NOT STARTED
+**Status:** RUNTIME IDENTIFICATION PENDING — SCIENTIFIC EXECUTION AUTHORIZED, NOT STARTED
 
-## Frozen runtime
+## Verified frozen component
 
-- Model ID: `gpt-5.6-luna`
-- Model family: GPT-5.6 Luna
-- API: OpenAI Responses API
-- Runtime capture date: 2026-09-24
-- Reasoning configuration: `none`
-- External tools: disabled
 - Prompt version: `TI001_DECISION_AGENT_BASE_PROMPT_001`
 - Base prompt SHA-256: `e451d2d89a353aa58030b3e59510837f5a664b186eb077662ae93376764f7006`
+- External tools: disabled
+- Web access: disabled
+- File access: disabled
+- Required output: single transformation identifier
 
-The OpenAI model catalogue identifies GPT-5.6 Luna with model ID `gpt-5.6-luna` and lists it as available through the Responses API. The catalogue also lists reasoning levels including `none`. The exact model ID above, rather than the conversational model label, is the experimental runtime identifier.
+## Model/runtime identification
 
-## Generation configuration
+The exact production model ID and serving-runtime identifier have **not yet been verified** from an authoritative runtime/API source.
 
-- output format: single transformation identifier
-- temperature: not set
-- tools: none
-- web access: none
-- file access: none
-- external context: none
-- reasoning: `none`
+The conversational label **GPT-5.6 Luna** must not be converted into an assumed API model ID. No unverified model identifier is frozen by this record.
 
-## Reproducibility boundary
+The following fields remain unresolved and must be populated from the actual executable runtime before scientific execution:
 
-The runtime identifier, prompt hash, API surface, reasoning configuration, tool restrictions, and output contract are frozen for the first TI-001 run.
+- `model_id`
+- `model_version`
+- `runtime_id`
+- `runtime_version`
+- `API surface/version`
+- generation configuration actually supported by that runtime
 
-If the serving platform reports an additional runtime/model revision identifier at execution time, that identifier must be persisted in the execution record. A change in model ID, prompt, reasoning configuration, tool access, or output contract after the first scientific observation constitutes a protocol deviation.
+## Generation constraints
 
-## Authorization state
+The decision runtime must:
 
-This runtime freeze does not modify the already issued scientific authorization.
+- expose no external tools;
+- receive only the frozen pre-decision input;
+- produce exactly one executable transformation;
+- preserve the frozen base prompt;
+- record the actual runtime metadata returned by the serving system.
+
+## Governance
+
+The previously issued scientific authorization remains in force, but **no scientific execution may start until the unresolved runtime fields are verified and frozen**.
+
+This record supersedes any earlier unverified runtime identification.
 
 **Scientific execution: AUTHORIZED / NOT STARTED**
