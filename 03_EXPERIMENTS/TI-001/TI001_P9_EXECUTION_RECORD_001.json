@@ -1,0 +1,19 @@
+{
+  "record_type": "TGCV_TI-001_P9_EXECUTION_RECORD",
+  "status": "P9_PASS",
+  "canonical_commit": "a9aff85dcd2d37c4fb4def083d15e9775d688208",
+  "frozen_fixture": "03_EXPERIMENTS/TI-001/TI001_PREFLIGHT_FIXTURE_v004.json",
+  "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+  "executor_2": "03_EXPERIMENTS/TI-001/TI001_EXECUTOR_2_RECONSTRUCTION_001.py",
+  "comparison_runner": "03_EXPERIMENTS/TI-001/TI001_P9_RECONSTRUCTION_RUNNER_001.py",
+  "checks": {
+    "executor_2_exit_zero": true,
+    "canonical_structure_valid": true,
+    "reconstructed_structure_valid": true,
+    "observable_fixture_equivalence": true,
+    "fixture_sha256_match": true
+  },
+  "differences": [],
+  "reconstructed_fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+  "scientific_execution": "NOT_PERFORMED"
+}
