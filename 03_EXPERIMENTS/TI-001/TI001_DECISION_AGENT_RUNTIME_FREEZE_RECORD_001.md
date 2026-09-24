@@ -1,6 +1,6 @@
 # TI-001 Decision Agent Runtime Freeze Record 001
 
-**Status:** RUNTIME IDENTIFICATION PENDING — SCIENTIFIC EXECUTION AUTHORIZED, NOT STARTED
+**Status:** RUNTIME IDENTIFICATION VERIFIED WHERE EXPOSED — SCIENTIFIC EXECUTION NOT STARTED
 
 ## Verified frozen component
 
@@ -13,18 +13,38 @@
 
 ## Model/runtime identification
 
-The exact production model ID and serving-runtime identifier have **not yet been verified** from an authoritative runtime/API source.
+A technical runtime verification was performed against the executable decision runtime without executing TI-001 scientific inputs.
 
-The conversational label **GPT-5.6 Luna** must not be converted into an assumed API model ID. No unverified model identifier is frozen by this record.
+Verified runtime metadata:
 
-The following fields remain unresolved and must be populated from the actual executable runtime before scientific execution:
+- `model_id`: `gpt-5.6-luna`
+- `API surface/version`: Responses API; API version not exposed by the serving response
+- `model_version`: not exposed by the serving response
+- `runtime_id`: not exposed by the serving response
+- `runtime_version`: not exposed by the serving response
 
-- `model_id`
-- `model_version`
-- `runtime_id`
-- `runtime_version`
-- `API surface/version`
-- generation configuration actually supported by that runtime
+Generation configuration actually observed:
+
+- `temperature`: 0.0
+- `top_p`: 0.98
+- `max_output_tokens`: 16
+- `tools`: []
+- `tool_choice`: auto
+- `background`: false
+- `previous_response_id`: none
+- `conversation`: none
+- `reasoning`: none
+- `store`: false
+- runtime status: completed
+- web search requests: 0
+
+Local execution environment observed during the technical verification:
+
+- Python: 3.14.7
+- Windows: 11, build 10.0.26200
+- OpenAI SDK: 3.19.2
+
+The conversational label **GPT-5.6 Luna** is not used as a substitute for the runtime metadata above.
 
 ## Generation constraints
 
@@ -36,10 +56,20 @@ The decision runtime must:
 - preserve the frozen base prompt;
 - record the actual runtime metadata returned by the serving system.
 
+The technical verification observed `tools=[]`, completed execution, and zero web-search requests.
+
+## Runtime identification disposition
+
+The executable runtime has provided a concrete `model_id` and generation configuration. The serving response does not expose `model_version`, `runtime_id`, or `runtime_version`, and therefore these fields are recorded explicitly as **not exposed by the serving response**, rather than inferred or fabricated.
+
+This record therefore distinguishes verified runtime metadata from metadata unavailable through the serving interface.
+
 ## Governance
 
-The previously issued scientific authorization remains in force, but **no scientific execution may start until the unresolved runtime fields are verified and frozen**.
+This record supersedes the earlier pending runtime-identification wording.
 
-This record supersedes any earlier unverified runtime identification.
+The previously issued scientific authorization remains in force, but **scientific execution must not start until governance accepts the disposition of the runtime fields that are not exposed by the serving response and, if required, freezes that disposition explicitly**.
+
+No TI-001 scientific decision input was used in the technical runtime verification.
 
 **Scientific execution: AUTHORIZED / NOT STARTED**
