@@ -48,8 +48,10 @@ def main(argv):
     checks["provider_output_pass"]="selected_transformation" in provider and "decision_input_sha256" in provider
     checks["executor_binding_pass"]=EXPECTED_EXECUTOR in executor and EXPECTED_CONTRACT in executor and EXPECTED_FIXTURE_GIT_BLOB_SHA in executor
     checks["executor_no_successor_dependency_pass"]=not any(t in executor for t in ['fixture["successors"]','record["successors"]','successor =','transitions ='])
-    checks["executor_estimand_pass"]=EXPECTED_ESTIMAND in executor and 
-        not any(t in executor for t in ["calculate_composite_ti_score", "compute_composite_ti_score", "composite_ti_score =", "composite_ti_score="])
+    checks["executor_estimand_pass"]=(
+        EXPECTED_ESTIMAND in executor
+        and not any(t in executor for t in ["calculate_composite_ti_score", "compute_composite_ti_score", "composite_ti_score =", "composite_ti_score="])
+    )
     checks["executor2_independence_pass"]=all(t not in executor2 for t in ["V005_DECISION_AGENT_PROVIDER","V005_SCIENTIFIC_EXECUTOR","Executor-1"])
     checks["executor2_hash_pass"]=EXPECTED_FIXTURE_GIT_BLOB_SHA in executor2
     checks["contract_binding_pass"]=EXPECTED_FIXTURE_GIT_BLOB_SHA in contract and EXPECTED_ESTIMAND in contract and EXPECTED_PROVIDER in contract and EXPECTED_EXECUTOR in contract
