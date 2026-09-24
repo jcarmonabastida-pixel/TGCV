@@ -1,0 +1,6026 @@
+{
+  "environment_seed_base": 731407,
+  "fixture_sha256": "d428c17850e0b7696c0007d701ac9e7a9e261b5cf4e9e58fd725f2b2ea7d94bb",
+  "instances": [
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731407,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-001",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-001",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731407,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-001",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-001",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731408,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-002",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-002",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731408,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-002",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-002",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731409,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-003",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-003",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731409,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-003",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-003",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731410,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-004",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-004",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731410,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-004",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-004",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731411,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-005",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-005",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731411,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-005",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-005",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731412,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-006",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-006",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731412,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-006",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-006",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731413,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-007",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-007",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731413,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-007",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-007",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731414,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-008",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-008",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731414,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-008",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-008",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731415,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-009",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-009",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731415,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-009",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-009",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731416,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-010",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-010",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731416,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-010",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-010",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731417,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-011",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-011",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731417,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-011",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-011",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731418,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-012",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-012",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731418,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-012",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-012",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731419,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-013",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-013",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731419,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-013",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-013",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731420,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-014",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-014",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731420,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-014",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-014",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731421,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-015",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-015",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731421,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-015",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-015",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731422,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-016",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-016",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731422,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-016",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-016",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731423,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-017",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-017",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731423,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-017",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-017",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731424,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-018",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-018",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731424,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-018",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-018",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731425,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-019",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-019",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731425,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-019",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-019",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731426,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-020",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-020",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731426,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-020",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-020",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731427,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-021",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-021",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731427,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-021",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-021",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731428,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-022",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-022",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731428,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-022",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-022",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731429,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-023",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-023",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731429,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-023",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-023",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731430,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-024",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-024",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731430,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-024",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-024",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731431,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-025",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-025",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731431,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-025",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-025",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731432,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-026",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-026",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731432,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-026",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-026",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731433,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-027",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-027",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731433,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-027",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-027",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731434,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-028",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-028",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731434,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-028",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-028",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731435,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-029",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-029",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731435,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-029",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-029",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731436,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-030",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-030",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731436,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-030",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-030",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731437,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-031",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-031",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731437,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-031",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-031",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "control",
+      "environment_seed": 731438,
+      "execution_slot": "slot_A",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": null,
+      "instance_id": "TI001-032",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-032",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    },
+    {
+      "S_t": "S0",
+      "T_acc_t": [
+        "a",
+        "b",
+        "c"
+      ],
+      "available_transformations": [
+        "a",
+        "b",
+        "c"
+      ],
+      "condition": "treatment",
+      "environment_seed": 731438,
+      "execution_slot": "slot_B",
+      "future_alternatives": [
+        {
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "choice": "a",
+          "successor": "SA"
+        },
+        {
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "choice": "b",
+          "successor": "SB"
+        }
+      ],
+      "information_control": {
+        "candidate_count": 3,
+        "task": "select_one_current_transformation"
+      },
+      "information_treatment": {
+        "candidate_count": 3,
+        "descriptor": "successor_space_identity_turnover",
+        "future_reconfiguration": "two_of_three_identity_pattern"
+      },
+      "instance_id": "TI001-032",
+      "null": {
+        "information": {
+          "candidate_count": 3,
+          "format": "structured",
+          "future_space_signal": false,
+          "outcome_signal": false,
+          "recommendation": false,
+          "task": "select_one_current_transformation"
+        }
+      },
+      "pair_id": "TI001-032",
+      "primary_estimand": {
+        "forbidden": [
+          "TI_score",
+          "value",
+          "reward",
+          "utility",
+          "performance"
+        ],
+        "name": "matched_condition_difference_in_transformation_handling",
+        "type": "difference_in_subsequent_transformation_handling"
+      },
+      "randomisation_seed": 582031,
+      "successors": {
+        "a": {
+          "state": "SA",
+          "t_acc": [
+            "x",
+            "y"
+          ]
+        },
+        "b": {
+          "state": "SB",
+          "t_acc": [
+            "x",
+            "z"
+          ]
+        },
+        "c": {
+          "state": "SC",
+          "t_acc": [
+            "y",
+            "z"
+          ]
+        }
+      },
+      "temporal_order": [
+        "information_available",
+        "transformation_choice",
+        "successor_state",
+        "successor_accessibility"
+      ]
+    }
+  ],
+  "pair_count": 32,
+  "randomisation_seed": 582031,
+  "record_count": 64,
+  "schema": "TI001_PREFLIGHT_FIXTURE_v003"
+}
