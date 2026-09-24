@@ -1,0 +1,69 @@
+{
+  "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
+  "authorization_status": "READY_PENDING_EXPLICIT_AUTHORIZATION",
+  "scientific_execution": "NOT_AUTHORIZED",
+  "execution_status": "BLOCKED_PENDING_EXPLICIT_REAUTHORIZATION",
+  "basis": {
+    "provider_preflight": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_PROVIDER_PREFLIGHT_002.json",
+    "runtime_freeze_record": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_RUNTIME_FREEZE_RECORD_001.md",
+    "p9_reconstruction_record": "03_EXPERIMENTS/TI-001/TI001_P9_EXECUTION_RECORD_001.json",
+    "fixture": "03_EXPERIMENTS/TI-001/TI001_PREFLIGHT_FIXTURE_v004.json",
+    "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+    "execution_specification": "03_EXPERIMENTS/TI-001/TI001_SCIENTIFIC_EXECUTION_SPECIFICATION_001.md",
+    "executor": "03_EXPERIMENTS/TI-001/TI001_SCIENTIFIC_EXECUTOR_001.py",
+    "executor_version": "TI001_SCIENTIFIC_EXECUTOR_002",
+    "executor_commit": "ac2fed919eeb4ffc7b0cb8fc8c0b5763de21469c",
+    "provider_version": "TI001_DECISION_AGENT_PROVIDER_002",
+    "runtime_reconciliation_commit": "9618b1abb018c30a0f95bc759f0e4c2b077c8602"
+  },
+  "primary_estimand": {
+    "name": "matched_condition_difference_in_transformation_handling",
+    "type": "difference_in_subsequent_transformation_handling"
+  },
+  "runtime": {
+    "model_id": "gpt-5.6-luna",
+    "api_surface": "Responses API",
+    "model_version": "not_exposed_by_serving_response",
+    "runtime_id": "not_exposed_by_serving_response",
+    "runtime_version": "not_exposed_by_serving_response",
+    "api_version": "not_exposed_by_serving_response",
+    "generation_configuration": {
+      "temperature": null,
+      "temperature_status": "OMITTED_UNSUPPORTED_IN_SCIENTIFIC_REQUEST",
+      "top_p": 0.98,
+      "max_output_tokens": 16,
+      "tools": [],
+      "tool_choice": "auto",
+      "background": false,
+      "previous_response_id": null,
+      "conversation": null,
+      "reasoning": null,
+      "store": false
+    }
+  },
+  "preconditions": {
+    "provider_preflight_002_pass": true,
+    "p1_p10_pass": true,
+    "a1_a9_pass": true,
+    "p9_independent_reconstruction_pass": true,
+    "p10_estimand_frozen": true,
+    "executor_frozen": true,
+    "runtime_identification_reconciled": true,
+    "historical_temperature_incompatibility_preserved": true,
+    "scientific_execution_performed_before_authorization": false
+  },
+  "authorization_basis": "Prepared after runtime reconciliation. Provider 002 removes the previously rejected temperature parameter. The historical rejected request is preserved and excluded from the current scientific configuration. No scientific execution has been authorized by this record.",
+  "historical_authorization": {
+    "record": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_001.json",
+    "status": "INVALIDATED_PENDING_RUNTIME_RECONCILIATION",
+    "preserved": true
+  },
+  "explicit_authorization_requirement": {
+    "required": true,
+    "authorization_status_until_explicit_action": "NOT_AUTHORIZED",
+    "execution_must_not_start": true
+  },
+  "external_runtime_reference": {
+    "model_catalog_status": "gpt-5.6-luna is listed by OpenAI as a current GPT-5.6 model available through the Responses API."
+  }
+}
