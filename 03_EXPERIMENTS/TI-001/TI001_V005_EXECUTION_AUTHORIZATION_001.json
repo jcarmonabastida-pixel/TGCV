@@ -9,7 +9,7 @@
     "redesign_specification": "03_EXPERIMENTS/TI-001/TI001_REDESIGN_PREFLIGHT_SPECIFICATION_002.md",
     "fixture": "03_EXPERIMENTS/TI-001/TI001_v005_CANDIDATE_001.json",
     "fixture_git_blob_sha": "edd83fd2df3d39aad8911087569c19614c2264b7",
-    "fixture_canonical_sha256": "bc7e0e69cb56337145593e67fb55c1a1b5042db661520498a2c86b346eef76e5",
+    "fixture_canonical_sha256": "bc7e0e69cb56337145593e67fb55c1a1b5042db6615204982a86b346eef76e5",
     "execution_contract": "03_EXPERIMENTS/TI-001/TI001_V005_EXECUTION_CONTRACT_001.md",
     "execution_contract_blob_sha": "0614a28d923c015a51f99cf33c81b55c4b2a06eb",
     "provider": "03_EXPERIMENTS/TI-001/TI001_V005_DECISION_AGENT_PROVIDER_001.py",
@@ -17,7 +17,7 @@
     "provider_blob_sha": "36a305901be4b9094264ef5fd269a6a6155a08cb",
     "executor": "03_EXPERIMENTS/TI-001/TI001_V005_SCIENTIFIC_EXECUTOR_001.py",
     "executor_version": "TI001_V005_SCIENTIFIC_EXECUTOR_001",
-    "executor_blob_sha": "4af8070cdee5cd828d5a5504b4e06a838f17cba5",
+    "executor_blob_sha": "41306b4bbb72ce582e0f56c8771a0cd66d17d57b",
     "executor_2": "03_EXPERIMENTS/TI-001/TI001_V005_EXECUTOR_2_RECONSTRUCTION_001.py",
     "executor_2_blob_sha": "2746d6d7428bd0a7020fe49846caa95bd2d843bd",
     "compatibility_checker": "03_EXPERIMENTS/TI-001/TI001_V005_COMPATIBILITY_PREFLIGHT_CHECKER_001.py",
@@ -66,7 +66,11 @@
     "other_decisions": false,
     "post_decision_feedback": false,
     "exactly_one_selected_transformation_per_decision": true,
-    "allowed_transformations": ["a", "b", "c"]
+    "allowed_transformations": [
+      "a",
+      "b",
+      "c"
+    ]
   },
   "execution_prohibition": {
     "do_not_modify_fixture": true,
