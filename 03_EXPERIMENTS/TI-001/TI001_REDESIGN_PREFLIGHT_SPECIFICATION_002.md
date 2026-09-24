@@ -55,6 +55,10 @@ For the canonical three-action design, all three mappings should be explicit and
 
 The treatment MUST NOT contain preferred-action labels, rankings of actions, scores attached to actions, normative words equivalent to best/preferred/recommended/optimal/choose/avoid, reward/value/utility/performance information, outcome ranking, or a direct alias in which a treatment token uniquely denotes the action that should be selected.
 
+This property MUST be enforced structurally, not only lexically. The treatment future-descriptor schema MUST define an allowlisted set of neutral structural fields (for example: future-accessibility class, identity-turnover class, persistence class, or reconfiguration class) and MUST reject any field whose semantics encode preference, evaluation, recommendation, ranking, reward, value, utility, performance, or outcome quality.
+
+The checker MUST validate the descriptor schema and field semantics against this allowlist. A lexical scan may be an auxiliary diagnostic, but a lexical PASS alone MUST NOT establish R8.
+
 A future descriptor may identify the consequence associated with an action, but must not evaluate that consequence.
 
 ## 6. No prohibited outcome information
@@ -81,9 +85,11 @@ D4 — Decision-time availability: I_T is available before selection and no real
 
 D5 — Choice multiplicity: at least two transformations remain admissible after treatment information is received.
 
-D6 — Divergence existence: there exist at least two deterministic decision functions compatible with the respective information sets such that one selects u and another selects v, with u != v, without using reward, value, utility, performance or outcome information.
+D6 — Treatment-induced divergence opportunity: there exist matched deterministic decision rules, identical with respect to S0, T_acc, task, timing and decision procedure, for which the treatment-exclusive mapping u → F(u) permits at least one admissible decision to differ from the corresponding control decision, with u != v, while no reward, value, utility, performance or outcome information is available.
 
-D6 is an existence property, not a prediction that an experimental agent will diverge. It establishes that the treatment creates a real opportunity for condition-dependent behavioural divergence rather than merely adding redundant information.
+The witness for D6 MUST therefore depend on the treatment-exclusive future mapping: the checker MUST demonstrate that removing that mapping while holding S0, T_acc, task, timing and decision rules fixed eliminates the specific information difference used to produce the divergent selection. Two arbitrary decision functions that merely happen to return different actions are insufficient.
+
+D6 is an existence property, not a prediction that an experimental agent will diverge. It establishes that the treatment creates a real opportunity for condition-dependent behavioural divergence attributable to the treatment-exclusive information rather than to an unconstrained choice of decision function.
 
 ## 8. Structural equivalence constraint
 
@@ -115,13 +121,13 @@ R6 — Future-space distinction: at least two of F(a), F(b), F(c) differ.
 
 R7 — Control non-derivability: control cannot reconstruct the treatment-only mapping.
 
-R8 — No recommendation: no treatment field encodes a normative action preference.
+R8 — No recommendation: the treatment descriptor conforms to the allowlisted neutral structural schema and contains no normative/evaluative field; lexical scanning may supplement but cannot substitute for this structural check.
 
 R9 — No prohibited quantities: reward/value/utility/performance/outcome information is absent.
 
 R10 — Choice multiplicity: at least two actions remain admissible after treatment exposure.
 
-R11 — Divergence opportunity: D6 is satisfied by an independent structural checker.
+R11 — Divergence opportunity: D6 is satisfied by an independent structural checker using an explicit treatment-induced divergence witness; arbitrary differing decision functions do not satisfy this check.
 
 R12 — Null validity: null has comparable presentation structure but no future-space signal or recommendation.
 
@@ -142,7 +148,8 @@ The checker MUST return, at minimum:
 - action_conditioned_mapping_complete
 - future_descriptor_distinction_pass
 - control_non_derivability_pass
-- recommendation_leakage_pass
+- recommendation_schema_pass
+- recommendation_lexical_diagnostic
 - prohibited_information_absent
 - choice_multiplicity_pass
 - divergence_opportunity_pass
@@ -172,7 +179,7 @@ If later execution is authorized, the primary behavioural observable remains a c
 The required sequence is:
 
 1. approve/fix this redesign specification;
-2. run structural preflight against the specification itself;
+2. run structural preflight against the specification itself, including review of the revised R8 schema constraint and D6 witness criterion;
 3. only if PASS, implement/update the generator and checker;
 4. run R1–R14 on the candidate design;
 5. only if PASS, generate and freeze the new fixture;
