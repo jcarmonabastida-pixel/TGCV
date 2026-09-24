@@ -1,0 +1,91 @@
+{
+  "record_type": "TGCV_TI-001_V005_EXECUTION_AUTHORIZATION",
+  "authorization_status": "AUTHORIZED",
+  "scientific_execution": "AUTHORIZED",
+  "execution_status": "AUTHORIZED_NOT_STARTED",
+  "authorization_action": "EXPLICIT_V005_AUTHORIZATION_REQUIRED",
+  "scope": "TI-001 v005 only",
+  "basis": {
+    "redesign_specification": "03_EXPERIMENTS/TI-001/TI001_REDESIGN_PREFLIGHT_SPECIFICATION_002.md",
+    "fixture": "03_EXPERIMENTS/TI-001/TI001_v005_CANDIDATE_001.json",
+    "fixture_git_blob_sha": "edd83fd2df3d39aad8911087569c19614c2264b7",
+    "fixture_canonical_sha256": "bc7e0e69cb56337145593e67fb55c1a1b5042db661520498a2c86b346eef76e5",
+    "execution_contract": "03_EXPERIMENTS/TI-001/TI001_V005_EXECUTION_CONTRACT_001.md",
+    "execution_contract_blob_sha": "0614a28d923c015a51f99cf33c81b55c4b2a06eb",
+    "provider": "03_EXPERIMENTS/TI-001/TI001_V005_DECISION_AGENT_PROVIDER_001.py",
+    "provider_version": "TI001_DECISION_AGENT_PROVIDER_V005_001",
+    "provider_blob_sha": "36a305901be4b9094264ef5fd269a6a6155a08cb",
+    "executor": "03_EXPERIMENTS/TI-001/TI001_V005_SCIENTIFIC_EXECUTOR_001.py",
+    "executor_version": "TI001_V005_SCIENTIFIC_EXECUTOR_001",
+    "executor_blob_sha": "4af8070cdee5cd828d5a5504b4e06a838f17cba5",
+    "executor_2": "03_EXPERIMENTS/TI-001/TI001_V005_EXECUTOR_2_RECONSTRUCTION_001.py",
+    "executor_2_blob_sha": "2746d6d7428bd0a7020fe49846caa95bd2d843bd",
+    "compatibility_checker": "03_EXPERIMENTS/TI-001/TI001_V005_COMPATIBILITY_PREFLIGHT_CHECKER_001.py",
+    "compatibility_checker_blob_sha": "b59d73bccc961a7dc3e1969f45b8a68a05b9a8f7",
+    "runtime_freeze": "03_EXPERIMENTS/TI-001/TI001_DECISION_AGENT_RUNTIME_FREEZE_001.md",
+    "runtime_freeze_blob_sha": "4f20e16911c76d754b468701c1e1aa293d46e0da",
+    "compatibility_preflight": "03_EXPERIMENTS/TI-001/TI001_V005_COMPATIBILITY_PREFLIGHT_001.json"
+  },
+  "gates": {
+    "redesign_preflight_pass": true,
+    "fixture_frozen_pass": true,
+    "g8_authorized": true,
+    "compatibility_preflight_pass": true,
+    "contract_binding_pass": true,
+    "provider_runtime_pass": true,
+    "executor_pass": true,
+    "executor_2_independence_pass": true,
+    "v004_dependency_absent_pass": true,
+    "execution_requires_explicit_flag_pass": true
+  },
+  "primary_estimand": {
+    "name": "matched_condition_difference_in_transformation_selection",
+    "type": "difference_in_transformation_selection"
+  },
+  "runtime": {
+    "model_id": "gpt-5.6-luna",
+    "api_surface": "Responses API",
+    "top_p": 0.98,
+    "max_output_tokens": 64,
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "store": false,
+    "reasoning": null,
+    "previous_response_id": null,
+    "conversation": null
+  },
+  "execution_boundary": {
+    "decision_input_contains_only_current_state_current_transformations_task_and_treatment_future_mapping": true,
+    "successor_information_before_decision": false,
+    "future_reveal_before_decision": false,
+    "reward_value_utility_performance_payoff_outcome_information_before_decision": false,
+    "external_tools": false,
+    "web_access": false,
+    "conversation_state": false,
+    "other_decisions": false,
+    "post_decision_feedback": false,
+    "exactly_one_selected_transformation_per_decision": true,
+    "allowed_transformations": ["a", "b", "c"]
+  },
+  "execution_prohibition": {
+    "do_not_modify_fixture": true,
+    "do_not_modify_contract": true,
+    "do_not_modify_estimand": true,
+    "do_not_modify_frozen_prompt": true,
+    "do_not_reuse_v004_authorization": true,
+    "do_not_use_v004_successor_data": true,
+    "do_not_generate_composite_ti_score": true,
+    "do_not_treat_diagnostic_or_non_authorized_calls_as_scientific_evidence": true
+  },
+  "scientific_execution_condition": {
+    "explicit_user_authorization_for_v005_is_required_before_calling_provider_with_execute": true,
+    "authorization_record_does_not_by_itself_execute_scientific_decisions": true,
+    "execution_must_use_the_bound_fixture_and_implementations": true
+  },
+  "historical_boundary": {
+    "v004_preserved": true,
+    "v004_authorization_reused": false,
+    "v004_fixture_mutated": false
+  }
+}
