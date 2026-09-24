@@ -1,0 +1,26 @@
+{
+  "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
+  "authorization_status": "NOT_AUTHORIZED",
+  "canonical_commit": "4673a8d8fc74c7355478f1868af0f4d2b756d6c8",
+  "preflight_audit": "03_EXPERIMENTS/TI-001/TRGCV_TI-001_PREFLIGHT_AUDIT_002.json",
+  "p9_reconstruction_record": "03_EXPERIMENTS/TI-001/TI001_P9_EXECUTION_RECORD_001.json",
+  "fixture": "03_EXPERIMENTS/TI-001/TI001_PREFLIGHT_FIXTURE_v004.json",
+  "fixture_sha256": "20ad94fcaca2e85228f1a266ae69d9d391a35182a64ab122fd5feed56b46a4dd",
+  "primary_estimand": {
+    "name": "matched_condition_difference_in_transformation_handling",
+    "type": "difference_in_subsequent_transformation_handling"
+  },
+  "preconditions": {
+    "preflight_pass": true,
+    "p1_p10_pass": true,
+    "a1_a9_pass": true,
+    "p9_independent_reconstruction_pass": true,
+    "p10_estimand_frozen": true,
+    "scientific_execution_performed_before_authorization": false
+  },
+  "authorization_timestamp": null,
+  "authorized_executor": null,
+  "runtime_metadata": null,
+  "reason": "Explicit scientific authorization has not yet been issued.",
+  "scientific_execution": "NOT_PERFORMED"
+}
