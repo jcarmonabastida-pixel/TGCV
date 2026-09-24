@@ -12,7 +12,8 @@ from pathlib import Path
 ALLOWED = {"a", "b", "c"}
 FIXTURE_ID = "TI001-v005-candidate-001"
 FIXTURE_VERSION = "v005-candidate-001"
-EXPECTED_FIXTURE_SHA = "edd83fd2df3d39aad8911087569c19614c2264b7"
+EXPECTED_FIXTURE_GIT_BLOB_SHA = "edd83fd2df3d39aad8911087569c19614c2264b7"
+EXPECTED_FIXTURE_CANONICAL_SHA256 = "bc7e0e69cb56337145593e67fb55c1a1b5042db6615204982a86b346eef76e5"
 EXECUTOR_VERSION = "TI001_V005_SCIENTIFIC_EXECUTOR_001"
 
 def load_json(path: Path) -> dict:
@@ -40,7 +41,7 @@ def validate_fixture(fixture: dict) -> None:
         raise ValueError("future reveal is not blocked")
 
 def validate_decisions(package: dict, fixture: dict) -> list[dict]:
-    if package.get("fixture_sha256") != EXPECTED_FIXTURE_SHA:
+    if package.get("fixture_sha256") != EXPECTED_FIXTURE_CANONICAL_SHA256:
         raise ValueError("decision package fixture hash mismatch")
     decisions = package.get("decisions")
     if not isinstance(decisions, dict) or not decisions:
@@ -67,7 +68,7 @@ def validate_decisions(package: dict, fixture: dict) -> list[dict]:
 
 def execute(fixture: dict, package: dict, canonical_commit: str) -> dict:
     actual = canonical_hash(fixture)
-    if actual != EXPECTED_FIXTURE_SHA:
+    if actual != EXPECTED_FIXTURE_CANONICAL_SHA256:
         raise ValueError("frozen v005 fixture canonical hash mismatch")
     observations = validate_decisions(package, fixture)
     return {
@@ -75,7 +76,7 @@ def execute(fixture: dict, package: dict, canonical_commit: str) -> dict:
         "executor_version": EXECUTOR_VERSION,
         "contract": "TI001_V005_EXECUTION_CONTRACT_001",
         "canonical_commit": canonical_commit,
-        "fixture_sha256": EXPECTED_FIXTURE_SHA,
+        "fixture_sha256": EXPECTED_FIXTURE_CANONICAL_SHA256,
         "decision_provider_version": package.get("provider_version"),
         "observation_count": len(observations),
         "estimand": "matched_condition_difference_in_transformation_selection",
