@@ -1,7 +1,7 @@
 {
   "record_type": "TGCV_TI-001_EXECUTION_AUTHORIZATION",
   "authorization_status": "AUTHORIZED",
-  "canonical_commit": "3a8a84816073bc9874460cbf6086190eb764d811",
+  "canonical_commit": "cbeadcdf24369e1b495c0f4e5adb0700bccd03fb",
   "preflight_audit": "03_EXPERIMENTS/TI-001/TRGCV_TI-001_PREFLIGHT_AUDIT_002.json",
   "p9_reconstruction_record": "03_EXPERIMENTS/TI-001/TI001_P9_EXECUTION_RECORD_001.json",
   "fixture": "03_EXPERIMENTS/TI-001/TI001_PREFLIGHT_FIXTURE_v004.json",
@@ -14,6 +14,28 @@
     "name": "matched_condition_difference_in_transformation_handling",
     "type": "difference_in_subsequent_transformation_handling"
   },
+  "runtime": {
+    "model_id": "gpt-5.6-luna",
+    "model_version": "not_exposed_by_serving_response",
+    "runtime_id": "not_exposed_by_serving_response",
+    "runtime_version": "not_exposed_by_serving_response",
+    "api_surface": "Responses API",
+    "api_version": "not_exposed_by_serving_response",
+    "generation_configuration": {
+      "temperature": 0.0,
+      "top_p": 0.98,
+      "max_output_tokens": 16,
+      "tools": [],
+      "tool_choice": "auto",
+      "background": false,
+      "previous_response_id": null,
+      "conversation": null,
+      "reasoning": null,
+      "store": false
+    },
+    "runtime_status": "completed",
+    "web_search_requests": 0
+  },
   "preconditions": {
     "preflight_pass": true,
     "p1_p10_pass": true,
@@ -21,6 +43,8 @@
     "p9_independent_reconstruction_pass": true,
     "p10_estimand_frozen": true,
     "executor_frozen": true,
+    "runtime_identification_verified_where_exposed": true,
+    "unexposed_runtime_fields_explicitly_recorded": true,
     "scientific_execution_performed_before_authorization": false
   },
   "authorization_basis": "Explicit user authorization in conversation.",
