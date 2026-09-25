@@ -1,0 +1,30 @@
+{
+  "preflight_id": "TI001-V010-SCIENTIFIC-EXECUTOR-1-IDENTITY-PREFLIGHT-001",
+  "checks": {
+    "A1_EXECUTOR_EXISTS": true,
+    "A2_INTERFACE_EXISTS": true,
+    "A3_CONTRACT_EXISTS": true,
+    "A4_EXECUTOR_ID": true,
+    "A5_FIXTURE_ID": true,
+    "A6_FIXTURE_SHA256": true,
+    "A7_INTERFACE_ID": true,
+    "A8_INTERFACE_SHA256": true,
+    "A9_INTERFACE_HASH_CURRENT": true,
+    "A10_MODEL": true,
+    "A11_API_SURFACE": true,
+    "A12_TOP_P": true,
+    "A13_MAX_OUTPUT_TOKENS": true,
+    "A14_REASONING_NONE": true,
+    "A15_VALID_OUTPUTS_AB": true,
+    "A16_NO_RETRY_CALL": true,
+    "A17_NO_RECODE_CALL": true,
+    "A18_NO_ANALYSIS_DURING_EXECUTION": true,
+    "A19_CONTRACT_EXECUTOR_BINDING": true,
+    "A20_CONTRACT_INTERFACE_HASH": true
+  },
+  "all_checks_pass": true,
+  "scientific_execution": "NOT_PERFORMED",
+  "authorization": "NOT_AUTHORIZED",
+  "executor_sha256": "0be1b1d63ff8f70a4f8e5c80004a1267aa72f5c5266a80aeb697906facd77131",
+  "interface_sha256": "e025d66e477de3afd79147986b716389d7d7be03d01a21d4380b384e17c8510c"
+}
