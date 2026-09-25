@@ -97,6 +97,7 @@ def validate(fixture: dict, raw: bytes) -> dict:
 
     condition_pairs = {name: 0 for name in ("control", "treatment", "null")}
     presentations = {name: 0 for name in ("I1_FIRST", "I2_FIRST")}
+    pair_orientations = {name: 0 for name in ("I1_FIRST", "I2_FIRST")}
     hidden_ok = True
     structure_ok = True
     for pair_id, pair_units in pairs.items():
@@ -107,6 +108,8 @@ def validate(fixture: dict, raw: bytes) -> dict:
         seen = {u["presentation"] for u in pair_units}
         if seen != {"I1_FIRST", "I2_FIRST"}:
             structure_ok = False
+        elif pair_units:
+            pair_orientations[pair_units[0]["presentation"]] += 1
     for unit in units:
         presentations[unit["presentation"]] += 1
         visible = set(unit["context"].keys()) | {"available_actions", "future_structure"}
@@ -124,7 +127,7 @@ def validate(fixture: dict, raw: bytes) -> dict:
         "pair_count": len(pairs) == 210,
         "decision_count": len(units) == 420,
         "condition_allocation": condition_pairs == {"control": 70, "treatment": 70, "null": 70},
-        "presentation_allocation": presentations == {"I1_FIRST": 105, "I2_FIRST": 105},
+        "presentation_allocation": pair_orientations == {"I1_FIRST": 105, "I2_FIRST": 105},
         "two_units_per_pair": all(len(v) == 2 for v in pairs.values()),
         "complementary_presentation": structure_ok,
         "future_structure_mapping": all(
@@ -152,6 +155,7 @@ def validate(fixture: dict, raw: bytes) -> dict:
         "decision_count": len(units),
         "condition_pair_counts": condition_pairs,
         "presentation_counts": presentations,
+        "pair_orientation_counts": pair_orientations,
     }
 
 
