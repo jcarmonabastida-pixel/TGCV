@@ -52,7 +52,8 @@ def main():
     checks["executor2_independence"] = "Executor-2" in st and "MUST NOT read" in st
     checks["scientific_not_performed"] = '"scientific_execution": "NOT_PERFORMED"' in gt
     checks["generation_requires_binding"] = 'requires --binding-manifest' in gt
-    checks["schema_order_reconciliation"] = "the first decision uses the pair's deterministically shuffled presentation assignment" in st and "the second decision uses the complementary presentation assignment" in st and "pair-level orientation is determined by the approved presentation stream" in st\n    checks["generation_not_performed"] = not (ROOT / "03_EXPERIMENTS/TI-001/generated/V008/TI001_V008_FIXTURE_001.json").exists()
+    checks["schema_order_reconciliation"] = "the first decision uses the pair's deterministically shuffled presentation assignment" in st and "the second decision uses the complementary presentation assignment" in st and "pair-level orientation is determined by the approved presentation stream" in st
+    checks["generation_not_performed"] = not (ROOT / "03_EXPERIMENTS/TI-001/generated/V008/TI001_V008_FIXTURE_001.json").exists()
     status = "PASS" if all(checks.values()) else "FAIL"
     result = {"preflight_id": PREFLIGHT_ID, "expected_generator_blob_sha1": EXPECTED_GENERATOR_SHA, "expected_schema_blob_sha1": EXPECTED_SCHEMA_SHA, "actual_generator_blob_sha1": generator_sha, "actual_schema_blob_sha1": schema_sha, "checks": checks, "scientific_execution": "NOT_PERFORMED", "fixture_generated": False, "status": status}
     print(json.dumps(result, indent=2, sort_keys=True))
