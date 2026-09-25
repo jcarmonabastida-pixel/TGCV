@@ -93,8 +93,7 @@ def main():
         "scientific_analysis": "NOT_PERFORMED",
         "authorization": "NOT_AUTHORIZED",
     }
-    Path(args.output).write_text(json.dumps(result, indent=2) + "
-", encoding="utf-8")
+    Path(args.output).write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2))
 
 
