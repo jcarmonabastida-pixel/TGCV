@@ -6,7 +6,7 @@
   "execution_status": "AUTHORIZED_NOT_STARTED",
   "authorization_action": "EXPLICIT_V006_REAUTHORIZATION",
   "scope": "TI-001 V006 runtime-corrected scientific execution only",
-  "canonical_commit": "49122409fdcc9bfc54f71cd8ef980fe0dff3a482",
+  "canonical_commit": "8e7b85707819368ba55318b5ab38d89c706ee5bf",
   "authorization_gate": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_GATE_001.md",
   "preflight": {
     "runtime_correction_compatibility_preflight": "03_EXPERIMENTS/TI-001/TI001_V006_RUNTIME_CORRECTION_COMPATIBILITY_PREFLIGHT_RESULT_001.json",
@@ -31,7 +31,9 @@
     "model": "gpt-5.6-luna",
     "top_p": 0.98,
     "max_output_tokens": 64,
-    "reasoning": {"effort": "none"},
+    "reasoning": {
+      "effort": "none"
+    },
     "tools": [],
     "tool_choice": "auto",
     "background": false,
@@ -42,12 +44,16 @@
   "executor": {
     "version": "TI001_V005_SCIENTIFIC_EXECUTOR_001",
     "binding": "UNCHANGED_V005_SCIENTIFIC_DESIGN",
-    "git_blob_sha": "469c4c659c820e9c941f3ad68b558f58abd4b448"
+    "git_blob_sha": "28f4dabedf1b053c0928f96c323c5e7d99feef5d"
   },
   "estimand": "matched_condition_difference_in_transformation_selection",
   "decision_count": 96,
   "condition_count": 3,
-  "conditions": ["control", "treatment", "null"],
+  "conditions": [
+    "control",
+    "treatment",
+    "null"
+  ],
   "authorization_boundary": {
     "explicit_user_authorization_required": true,
     "this_record_does_not_authorize_execution": false,
@@ -63,6 +69,7 @@
   "reauthorization": {
     "previous_authorization_invalidated": true,
     "new_explicit_user_authorization": true,
-    "confirmation_text": "Sí"
+    "confirmation_text": "Reautorizo",
+    "authorization_commit": null
   }
 }
