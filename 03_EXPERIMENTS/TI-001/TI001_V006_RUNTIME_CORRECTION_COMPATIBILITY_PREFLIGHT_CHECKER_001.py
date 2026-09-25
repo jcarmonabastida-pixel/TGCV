@@ -53,7 +53,7 @@ def main(argv):
     checks["executor_estimand_pass"]=EXPECTED_ESTIMAND in executor and not any(t in executor for t in ["calculate_composite_ti_score","compute_composite_ti_score","composite_ti_score =","composite_ti_score="])
     executor2_raw=Path(a.executor2).read_bytes()
     executor2_blob_sha=hashlib.sha1(("blob "+str(len(executor2_raw))+"\0").encode()+executor2_raw).hexdigest()
-    checks["executor2_hash_pass"]=EXPECTED_EXECUTOR2 in executor2 and executor2_blob_sha==EXPECTED_EXECUTOR2_GIT_BLOB_SHA
+    checks["executor2_hash_pass"]=executor2_blob_sha==EXPECTED_EXECUTOR2_GIT_BLOB_SHA
     checks["executor2_fixture_identity_pass"]=EXPECTED_FIXTURE_GIT_BLOB_SHA in executor2 and EXPECTED_FIXTURE_CANONICAL_SHA256 in executor2
     checks["executor2_estimand_pass"]=EXPECTED_ESTIMAND in executor2
     checks["executor2_no_successor_dependency_pass"]="successor_information_consumed" in executor2 and '"successor_information_consumed": False' in executor2
