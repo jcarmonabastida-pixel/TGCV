@@ -1,0 +1,23 @@
+{
+  "preflight_id": "TI001-V010-DECISION-INTERFACE-COMPATIBILITY-PREFLIGHT-001",
+  "checks": {
+    "A1_IMPLEMENTATION_EXISTS": true,
+    "A2_SPECIFICATION_EXISTS": true,
+    "A3_EXPLICIT_DECISION_INSTRUCTION": true,
+    "A4_VISIBLE_FIELDS_EXACT": true,
+    "A5_HIDDEN_FIELDS_DECLARED": true,
+    "A6_VALID_OUTPUT_DOMAIN_EXACT": true,
+    "A7_NO_JSON_OUTPUT_EXTRACTION": true,
+    "A8_ATOMIC_OUTPUT_VALIDATION": true,
+    "A9_NO_RETRY": true,
+    "A10_NO_RECODE": true,
+    "A11_NO_SCIENTIFIC_EXECUTION": true,
+    "A12_NO_VALUE_REWARD_UTILITY": true,
+    "A13_NO_SUCCESSOR_REALIZATION": true,
+    "A14_SYNTAX_VALID": true
+  },
+  "all_checks_pass": true,
+  "implementation_sha256": "e025d66e477de3afd79147986b716389d7d7be03d01a21d4380b384e17c8510c",
+  "scientific_execution": "NOT_PERFORMED",
+  "authorization": "NOT_AUTHORIZED"
+}
