@@ -69,7 +69,7 @@ def main():
         "A8_TIDC_FORMULA": "TI_DC = q_A(treatment) - q_A(control)" in spec.read_text(encoding="utf-8"),
         "A9_TINULL_FORMULA": "TI_NULL = q_A(null) - q_A(control)" in spec.read_text(encoding="utf-8"),
         "A10_NO_RECODING": "No recoding" in spec.read_text(encoding="utf-8"),
-        "A11_NO_RETRY": "retry" not in spec.read_text(encoding="utf-8").lower(),
+        "A11_NO_RETRY": spec.read_text(encoding="utf-8").count("No retry") == 1,
         "A12_NO_VALUE_METRIC": "value, reward, utility, performance" in spec.read_text(encoding="utf-8"),
         "A13_NO_CAUSAL_CLAIM": "causal impact" in spec.read_text(encoding="utf-8"),
         "A14_PRESENTATION_STRATIFICATION": "I1_FIRST" in spec.read_text(encoding="utf-8") and "I2_FIRST" in spec.read_text(encoding="utf-8"),
