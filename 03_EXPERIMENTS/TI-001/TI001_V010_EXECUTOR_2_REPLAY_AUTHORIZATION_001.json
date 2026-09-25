@@ -1,0 +1,27 @@
+{
+  "authorization_id": "TI001-V010-EXECUTOR-2-REPLAY-AUTHORIZATION-001",
+  "scientific_execution": "AUTHORIZED",
+  "authorized_by": "user",
+  "gate_id": "TI001-V010-EXECUTOR-2-REPLAY-AUTHORIZATION-GATE-001",
+  "executor_id": "TI001-V010-EXECUTOR-2-REPLAY-001",
+  "fixture_id": "TI001-V008-FIXTURE-001",
+  "fixture_sha256": "dd45ae453b5a3d37b4faff34ed829e7aac52ce4ed5a7462bb3546c1a420c2eb9",
+  "interface_id": "TI001-V010-DECISION-INTERFACE-001",
+  "interface_sha256": "e025d66e477de3afd79147986b716389d7d7be03d01a21d4380b384e17c8510c",
+  "model_id": "gpt-5.6-luna",
+  "api_surface": "Responses API",
+  "top_p": 0.98,
+  "max_output_tokens": 64,
+  "reasoning": {
+    "effort": "none"
+  },
+  "temperature": null,
+  "tools": [],
+  "tool_choice": "auto",
+  "background": false,
+  "previous_response_id": null,
+  "conversation": null,
+  "store": false,
+  "analysis_performed": false,
+  "primary_result_must_remain_unchanged": true
+}
