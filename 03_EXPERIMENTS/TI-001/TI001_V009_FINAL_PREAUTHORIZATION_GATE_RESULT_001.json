@@ -1,0 +1,23 @@
+{
+  "preflight_id": "TI001-V009-FINAL-PREAUTHORIZATION-GATE-001",
+  "checks": {
+    "execution_contract_identity": true,
+    "fixture_identity": true,
+    "scientific_runner_identity": true,
+    "runtime_contract_preflight_pass": true,
+    "runner_identity_preflight_pass": true,
+    "executor2_reconstruction_pass": true,
+    "analysis_definition_pass": true,
+    "indicator_definition_pass": true,
+    "analysis_contract_integrity_pass": true,
+    "contract_not_authorized": true,
+    "contract_runtime_reasoning_none": true,
+    "contract_runtime_max_tokens_64": true,
+    "contract_domain_AB": true,
+    "no_scientific_execution": true,
+    "explicit_authorization_required": true
+  },
+  "scientific_execution": "NOT_PERFORMED",
+  "authorization": "NOT_AUTHORIZED",
+  "status": "PASS"
+}
