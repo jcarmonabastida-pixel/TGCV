@@ -1,0 +1,22 @@
+{
+  "preflight_id": "TI001-V008-TI-ANALYSIS-DEFINITION-PREFLIGHT-001",
+  "checks": {
+    "spec_identity": true,
+    "fixture_identity": true,
+    "schema_identity": true,
+    "provider_identity": true,
+    "executor1_identity": true,
+    "decision_count": true,
+    "conditions_70_pairs_each": true,
+    "ab_only": true,
+    "no_value_reward_utility_performance": true,
+    "causal_value_excluded": true,
+    "ti_object_defined": true,
+    "ti_indicator_required": true,
+    "no_scientific_authorization": true,
+    "scientific_execution_not_performed": true
+  },
+  "spec_blob_sha1": "f46cfa2fb9253cac87cfe8ee3a807fe16b90e714",
+  "scientific_execution": "NOT_PERFORMED",
+  "status": "PASS"
+}

@@ -1,0 +1,23 @@
+{
+  "preflight_id": "TI001-V008-ANALYSIS-CONTRACT-INTEGRITY-PREFLIGHT-001",
+  "checks": {
+    "contract_identity": true,
+    "spec_identity": true,
+    "fixture_identity": true,
+    "object_ti": true,
+    "primary_indicator": true,
+    "null_reference": true,
+    "indicator_bound": true,
+    "required_outputs_bound": true,
+    "prohibited_value_metrics": true,
+    "no_recode": true,
+    "interpretation_boundary": true,
+    "not_authorized": true,
+    "spec_indicator_text": true,
+    "fixture_420": true
+  },
+  "contract_blob_sha1": "4c94e497e333ecf80072985cbcb4fe05b959609b",
+  "spec_blob_sha1": "5cb84ecb96dc08664fc507d5b681d1e3c935437a",
+  "scientific_execution": "NOT_PERFORMED",
+  "status": "PASS"
+}\n

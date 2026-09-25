@@ -1,0 +1,20 @@
+{
+  "preflight_id": "TI001-V008-TI-INDICATOR-DEFINITION-PREFLIGHT-001",
+  "checks": {
+    "spec_identity": true,
+    "fixture_identity": true,
+    "decision_count": true,
+    "pair_count": true,
+    "ab_only": true,
+    "three_conditions": true,
+    "paired_presentation": true,
+    "indicator_treatment_control": true,
+    "null_reference": true,
+    "pair_agreement_switch": true,
+    "no_value_reward_utility_performance": true,
+    "no_scientific_authorization": true
+  },
+  "spec_blob_sha1": "5cb84ecb96dc08664fc507d5b681d1e3c935437a",
+  "scientific_execution": "NOT_PERFORMED",
+  "status": "PASS"
+}

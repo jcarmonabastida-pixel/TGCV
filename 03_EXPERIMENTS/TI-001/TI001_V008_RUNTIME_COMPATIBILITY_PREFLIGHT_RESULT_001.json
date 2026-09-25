@@ -1,0 +1,33 @@
+{
+  "checks": {
+    "ab_only": true,
+    "api_surface": true,
+    "contract_identity": true,
+    "conversation_absent": true,
+    "diagnostic_completed": true,
+    "diagnostic_non_scientific": true,
+    "diagnostic_only": true,
+    "diagnostic_response_present": true,
+    "fixture_identity": true,
+    "hidden_fields_isolated": true,
+    "invalid_no_retry_or_recode": true,
+    "max_output_tokens": true,
+    "model_identity": true,
+    "no_scientific_inputs_consumed": true,
+    "no_successor_realization": true,
+    "previous_response_absent": true,
+    "provider_blob_sha": true,
+    "provider_identity": true,
+    "schema_identity": true,
+    "scientific_execution_not_authorized": true,
+    "store_false": true,
+    "temperature_omitted": true,
+    "tools_empty": true,
+    "top_p": true
+  },
+  "fixture_sha256": "dd45ae453b5a3d37b4faff34ed829e7aac52ce4ed5a7462bb3546c1a420c2eb9",
+  "preflight_id": "TI001-V008-RUNTIME-COMPATIBILITY-PREFLIGHT-001",
+  "provider_blob_sha1": "c7d066de3481143d878f06bb2c1d791cb7dc54e1",
+  "scientific_execution": "NOT_PERFORMED",
+  "status": "PASS"
+}
