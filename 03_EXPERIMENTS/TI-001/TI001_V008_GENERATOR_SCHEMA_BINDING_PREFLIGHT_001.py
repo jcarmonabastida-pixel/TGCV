@@ -9,7 +9,7 @@ SCHEMA = ROOT / "03_EXPERIMENTS" / "TI-001" / "TI001_V008_DECISION_UNIT_SCHEMA_S
 PREFLIGHT_ID = "TI001-V008-GENERATOR-SCHEMA-BINDING-PREFLIGHT-001"
 GENERATOR_ID = "TI001-V008-FIXTURE-GENERATOR-001"
 SCHEMA_ID = "TI001-V008-DU-SCHEMA-001"
-EXPECTED_SCHEMA_SHA = "e0da4352f74a518f7e1bc7c9532a171bf5167735"
+EXPECTED_SCHEMA_SHA = "d9539790452b047bc845a19bdcf50b8713a42b2a"
 EXPECTED_GENERATOR_SHA = "f345c41371a189c43b69b707b49b7eb17d140f55"
 
 def git_blob_sha1(data):
@@ -52,7 +52,7 @@ def main():
     checks["executor2_independence"] = "Executor-2" in st and "MUST NOT read" in st
     checks["scientific_not_performed"] = '"scientific_execution": "NOT_PERFORMED"' in gt
     checks["generation_requires_binding"] = 'requires --binding-manifest' in gt
-    checks["generation_not_performed"] = not (ROOT / "03_EXPERIMENTS/TI-001/generated/V008/TI001_V008_FIXTURE_001.json").exists()
+    checks["schema_order_reconciliation"] = "the first decision uses the pair's deterministically shuffled presentation assignment" in st and "the second decision uses the complementary presentation assignment" in st and "pair-level orientation is determined by the approved presentation stream" in st\n    checks["generation_not_performed"] = not (ROOT / "03_EXPERIMENTS/TI-001/generated/V008/TI001_V008_FIXTURE_001.json").exists()
     status = "PASS" if all(checks.values()) else "FAIL"
     result = {"preflight_id": PREFLIGHT_ID, "expected_generator_blob_sha1": EXPECTED_GENERATOR_SHA, "expected_schema_blob_sha1": EXPECTED_SCHEMA_SHA, "actual_generator_blob_sha1": generator_sha, "actual_schema_blob_sha1": schema_sha, "checks": checks, "scientific_execution": "NOT_PERFORMED", "fixture_generated": False, "status": status}
     print(json.dumps(result, indent=2, sort_keys=True))
