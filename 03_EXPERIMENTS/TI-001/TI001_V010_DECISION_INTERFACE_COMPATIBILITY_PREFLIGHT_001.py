@@ -5,7 +5,7 @@ import ast
 import hashlib
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[2]
 IMPLEMENTATION = ROOT / "03_EXPERIMENTS/TI-001/TI001_V010_DECISION_INTERFACE_001.py"
 SPEC = ROOT / "03_EXPERIMENTS/TI-001/TI001_V010_DECISION_INTERFACE_SPECIFICATION_001.md"
 
