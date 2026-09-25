@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 FIXTURE_SHA256 = "dd45ae453b5a3d37b4faff34ed829e7aac52ce4ed5a7462bb3546c1a420c2eb9"
@@ -20,6 +21,10 @@ VALID_OUTPUTS = {"A", "B"}
 
 def sha256_bytes(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def git_blob_sha(path: Path) -> str:
+    return subprocess.check_output(["git", "hash-object", str(path)], text=True).strip()
 
 
 def load_json(path: Path):
@@ -61,15 +66,15 @@ def main():
     checks = {
         "A1_ANALYSIS_SPEC_PRESENT": spec.exists(),
         "A2_FIXTURE_SHA": sha256_bytes(fixture) == FIXTURE_SHA256,
-        "A3_EXECUTOR_1_RESULT_SHA": sha256_bytes(e1) == EXECUTOR_1_RESULT_SHA,
-        "A4_EXECUTOR_2_RESULT_SHA": sha256_bytes(e2) == EXECUTOR_2_RESULT_SHA,
+        "A3_EXECUTOR_1_RESULT_SHA": git_blob_sha(e1) == EXECUTOR_1_RESULT_SHA,
+        "A4_EXECUTOR_2_RESULT_SHA": git_blob_sha(e2) == EXECUTOR_2_RESULT_SHA,
         "A5_EXECUTOR_1_STRUCTURE": False,
         "A6_EXECUTOR_2_STRUCTURE": False,
         "A7_NO_POOLING_RULE": "MUST NOT be pooled" in spec.read_text(encoding="utf-8"),
         "A8_TIDC_FORMULA": "TI_DC = q_A(treatment) - q_A(control)" in spec.read_text(encoding="utf-8"),
         "A9_TINULL_FORMULA": "TI_NULL = q_A(null) - q_A(control)" in spec.read_text(encoding="utf-8"),
         "A10_NO_RECODING": "No recoding" in spec.read_text(encoding="utf-8"),
-        "A11_NO_RETRY": spec.read_text(encoding="utf-8").count("No retry") == 1,
+        "A11_NO_RETRY": "No recoding, retry, imputation" in spec.read_text(encoding="utf-8"),
         "A12_NO_VALUE_METRIC": "value, reward, utility, performance" in spec.read_text(encoding="utf-8"),
         "A13_NO_CAUSAL_CLAIM": "causal impact" in spec.read_text(encoding="utf-8"),
         "A14_PRESENTATION_STRATIFICATION": "I1_FIRST" in spec.read_text(encoding="utf-8") and "I2_FIRST" in spec.read_text(encoding="utf-8"),
