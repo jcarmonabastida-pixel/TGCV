@@ -1,0 +1,59 @@
+{
+  "replay_contract_id": "TI001-V010-EXECUTOR-2-REPLAY-CONTRACT-001",
+  "status": "CONTRACT — SCIENTIFIC EXECUTION NOT AUTHORIZED",
+  "purpose": "Independent reconstruction of TI-001 V010 before scientific analysis.",
+  "primary_result_preserved": true,
+  "independence": {
+    "executor_2_must_be_independent": true,
+    "may_consume_executor_1_source": false,
+    "may_consume_executor_1_result": false,
+    "may_consume_primary_analysis": false
+  },
+  "bindings": {
+    "fixture_id": "TI001-V008-FIXTURE-001",
+    "fixture_sha256": "dd45ae453b5a3d37b4faff34ed829e7aac52ce4ed5a7462bb3546c1a420c2eb9",
+    "interface_id": "TI001-V010-DECISION-INTERFACE-001",
+    "interface_sha256": "e025d66e477de3afd79147986b716389d7d7be03d01a21d4380b384e17c8510c"
+  },
+  "population": {
+    "decision_units": 420,
+    "pairs": 210,
+    "pair_conditions": {
+      "control": 70,
+      "treatment": 70,
+      "null": 70
+    },
+    "decision_unit_conditions": {
+      "control": 140,
+      "treatment": 140,
+      "null": 140
+    },
+    "presentations": {
+      "I1_FIRST": 210,
+      "I2_FIRST": 210
+    }
+  },
+  "decision_rule": {
+    "valid_outputs": ["A", "B"],
+    "whitespace_strip_only": true,
+    "retry": false,
+    "recode": false
+  },
+  "runtime": {
+    "model": "gpt-5.6-luna",
+    "api": "Responses API",
+    "top_p": 0.98,
+    "max_output_tokens": 64,
+    "reasoning": {"effort": "none"},
+    "temperature_request": null,
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "previous_response": null,
+    "conversation": null,
+    "store": false
+  },
+  "analysis_during_replay": false,
+  "scientific_execution_authorized": false,
+  "authorization_required": true
+}
