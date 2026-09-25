@@ -1,0 +1,22 @@
+{
+  "gate_id": "TI001-V010-EXECUTOR-2-IDENTITY-PREFLIGHT-001",
+  "status": "PASS",
+  "checks": {
+    "A1_EXECUTOR_ID": true,
+    "A2_FIXTURE_ID": true,
+    "A3_FIXTURE_SHA": true,
+    "A4_INTERFACE_ID": true,
+    "A5_INTERFACE_SHA": true,
+    "A6_FIXTURE_SHA_MATCH": true,
+    "A7_420_UNITS_LITERAL": true,
+    "A8_NO_EXECUTOR_1_IMPORT": true,
+    "A9_NO_EXECUTOR_1_RESULT": true,
+    "A10_NO_RETRY": true,
+    "A11_NO_RECODE": true,
+    "A12_NO_ANALYSIS": true,
+    "A13_NOT_PERFORMED_BY_DEFAULT": true
+  },
+  "all_checks_pass": true,
+  "scientific_execution": "NOT_PERFORMED",
+  "authorization": "NOT_AUTHORIZED"
+}
