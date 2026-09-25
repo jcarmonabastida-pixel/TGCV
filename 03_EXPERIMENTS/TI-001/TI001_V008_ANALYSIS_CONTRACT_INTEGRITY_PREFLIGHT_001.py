@@ -7,7 +7,7 @@ SPEC_SHA1="5cb84ecb96dc08664fc507d5b681d1e3c935437a"
 FIXTURE_ID="TI001-V008-FIXTURE-001"
 FIXTURE_SHA256="dd45ae453b5a3d37b4faff34ed829e7aac52ce4ed5a7462bb3546c1a420c2eb9"
 
-def blob_sha1(b): return hashlib.sha1(f"blob {len(b)}\\0".encode()+b).hexdigest()
+def blob_sha1(b): return hashlib.sha1(f"blob {len(b)}\0".encode()+b).hexdigest()
 
 def main():
  p=argparse.ArgumentParser()
