@@ -80,3 +80,61 @@ They MUST retain:
 `scientific_execution = NOT_PERFORMED`
 
 No model/API call is permitted as part of generator validation.
+
+
+## Authoritative deterministic semantics
+
+The following semantics are now binding for V008.
+
+### PRNG
+
+- PRNG: xorshift32.
+- State width: exactly 32 bits.
+- Arithmetic: unsigned 32-bit; every state is reduced modulo 2^32 after each left-shift/XOR stage.
+- Transition, in order:
+  1. `state ^= (state << 13) & 0xFFFFFFFF`
+  2. `state ^= state >> 17`
+  3. `state ^= (state << 5) & 0xFFFFFFFF`
+  4. final state is masked with `0xFFFFFFFF`.
+- Zero state is invalid and MUST terminate generation rather than being repaired.
+- Seed: decimal integer `20260925`.
+- Condition stream initial state: seed.
+- Presentation stream initial state: `seed XOR 0x9E3779B9`, reduced to 32 bits.
+- The two streams are independent and MUST NOT share consumed state.
+- No warm-up draws.
+- Each Fisher-Yates iteration consumes exactly one PRNG draw.
+
+### Fisher-Yates
+
+- Input sequence is indexed from 0.
+- Iteration is descending: `i = n-1, n-2, ..., 1`.
+- At each iteration, consume one PRNG state and calculate `j = state % (i+1)`.
+- Swap positions `i` and `j`.
+- No rejection sampling, floating-point conversion, or additional draw.
+- Condition labels before shuffle: 70 `control`, followed by 70 `treatment`, followed by 70 `null`.
+- Presentation labels before shuffle: 105 `I1_FIRST`, followed by 105 `I2_FIRST`.
+- Pair IDs are assigned in fixed lexical order `P001` through `P210`; shuffled condition and presentation labels are then assigned by pair position.
+
+### Canonical self-test vectors
+
+For seed `1`, the first five xorshift32 outputs MUST be:
+
+`270369, 67634689, 2647435461, 307599695, 2398689233`.
+
+For condition-stream seed `20260925`, the first five outputs MUST be:
+
+`577347236, 639621434, 2049311590, 4078523939, 3799384941`.
+
+For presentation-stream initial state `20260925 XOR 0x9E3779B9 = 2667729284`, the first five outputs MUST be:
+
+`1936054461, 3325135876, 27233372, 4070243990, 71659122`.
+
+For a four-element test sequence `[a,b,c,d]` using the condition stream, the final sequence MUST be `[b,d,c,a]`; the consumed swaps are `(i,j)=(3,0),(2,2),(1,0)`.
+
+For the same sequence using the presentation stream, the final sequence MUST be `[c,a,d,b]`; the consumed swaps are `(3,1),(2,1),(1,0)`.
+
+These vectors are design-test fixtures, not scientific observations.
+
+### Generation restriction
+
+The generator source MUST implement exactly these semantics. V008 fixture generation remains blocked until the implementation passes every self-test vector and the generator preflight binds the implementation blob SHA.
