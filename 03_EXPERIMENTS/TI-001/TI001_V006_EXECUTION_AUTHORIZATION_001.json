@@ -1,10 +1,10 @@
 {
   "record_type": "TGCV_TI001_V006_EXECUTION_AUTHORIZATION",
   "authorization_id": "TI001_V006_EXECUTION_AUTHORIZATION_001",
-  "authorization_status": "PENDING_EXPLICIT_USER_AUTHORIZATION",
-  "scientific_execution": "NOT_AUTHORIZED",
-  "execution_status": "AUTHORIZED_NOT_STARTED_PENDING_EXPLICIT_CONFIRMATION",
-  "authorization_action": "V006_AUTHORIZATION_RECORD_PREPARED — EXPLICIT_USER_CONFIRMATION_REQUIRED",
+  "authorization_status": "AUTHORIZED",
+  "scientific_execution": "AUTHORIZED",
+  "execution_status": "AUTHORIZED_NOT_STARTED",
+  "authorization_action": "EXPLICIT_V006_USER_AUTHORIZATION",
   "scope": "TI-001 V006 runtime-corrected scientific execution only",
   "canonical_commit": "716307ffd7bbabb1a66ebca061b25bf51178062f",
   "authorization_gate": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_GATE_001.md",
@@ -16,7 +16,6 @@
   "execution_contract": {
     "path": "03_EXPERIMENTS/TI-001/TI001_V006_EXECUTION_CONTRACT_001.json",
     "contract_id": "TI001_V006_EXECUTION_CONTRACT_001",
-    "status": "CONTRACT — DESIGN / IMPLEMENTATION PRECONDITION",
     "scientific_execution": "NOT_AUTHORIZED"
   },
   "fixture": {
@@ -56,7 +55,7 @@
   ],
   "authorization_boundary": {
     "explicit_user_authorization_required": true,
-    "this_record_does_not_authorize_execution": true,
+    "this_record_does_not_authorize_execution": false,
     "scientific_execution_performed": false,
     "no_silent_retry": true,
     "invalid_or_incomplete_provider_response_is_failure": true
@@ -67,9 +66,9 @@
     "classification": "UNREPRODUCED PROVIDER RESPONSE ANOMALY — CAUSE UNDETERMINED"
   },
   "explicit_confirmation": {
-    "user_authorized": false,
-    "confirmation_timestamp": null,
-    "confirmation_text": null,
+    "user_authorized": true,
+    "confirmation_timestamp": "2026-09-25T00:47:52+00:00",
+    "confirmation_text": "Autorizo",
     "confirmation_required_before_execution": true,
     "no_scientific_execution_before_authorization": true
   }
