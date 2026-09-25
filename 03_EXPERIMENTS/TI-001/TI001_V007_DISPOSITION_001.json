@@ -1,0 +1,41 @@
+{
+  "record_type": "TGCV_TI001_V007_DISPOSITION",
+  "status": "CLOSED_FOR_SCIENTIFIC_EXECUTION",
+  "scientific_execution": "NOT_PERFORMED",
+  "fixture_id": "TI001-v007-candidate-001",
+  "fixture_version": "v007-candidate-001",
+  "fixture_blob_sha": "663383b27b567d73757ac967986d0b9b949dc50e",
+  "decision": "PRESERVE_V007_AND_DO_NOT_EXECUTE",
+  "basis": [
+    "The authoritative V007 generator implementation was not recovered from repository history or repository search.",
+    "The declared xorshift32 + Fisher-Yates algorithm is underspecified for independent reconstruction.",
+    "Executor-2 therefore cannot be implemented without introducing an unrecorded algorithmic assumption."
+  ],
+  "preservation": {
+    "fixture_bytes": "UNCHANGED",
+    "fixture_identity": "PRESERVED",
+    "historical_value": "RETAINED"
+  },
+  "execution_consequence": {
+    "executor_2": "NOT_IMPLEMENTED",
+    "scientific_execution": "NOT_AUTHORIZED",
+    "authorization": "BLOCKED"
+  },
+  "next_design": {
+    "identity": "V008",
+    "requirement": "Complete deterministic generator specification must be authored before fixture generation.",
+    "minimum_prng_definition": [
+      "word width and unsigned arithmetic",
+      "initial state derivation",
+      "exact shift constants and state update order",
+      "zero-state handling",
+      "Fisher-Yates iteration direction",
+      "random-value-to-index mapping",
+      "bounded-index method",
+      "draw consumption",
+      "stream separation",
+      "generator implementation source and canonical blob binding"
+    ],
+    "independent_reconstruction_required": true
+  }
+}
