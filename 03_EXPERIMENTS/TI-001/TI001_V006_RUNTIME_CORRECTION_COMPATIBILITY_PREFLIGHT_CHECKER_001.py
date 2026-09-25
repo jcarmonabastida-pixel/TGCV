@@ -50,7 +50,7 @@ def main(argv):
     checks["executor2_independence_pass"]=all(t not in executor2 for t in ["V005_DECISION_AGENT_PROVIDER","V005_SCIENTIFIC_EXECUTOR","Executor-1"])
     checks["executor2_hash_pass"]=EXPECTED_FIXTURE_GIT_BLOB_SHA in executor2
     checks["contract_binding_pass"]=EXPECTED_FIXTURE_GIT_BLOB_SHA in contract and EXPECTED_ESTIMAND in contract and EXPECTED_PROVIDER in contract and EXPECTED_EXECUTOR in contract
-    checks["runtime_spec_pass"]=runtime_spec.get("authorized_runtime_change",{}).get("value")=={"effort":"none"} and runtime_spec.get("scientific_execution")=="NOT_AUTHORIZED"
+    checks["runtime_spec_pass"]=runtime_spec.get("authorized_runtime_change",{}).get("parameter")=="reasoning" and runtime_spec.get("authorized_runtime_change",{}).get("value")=={"effort":"none"} and runtime_spec.get("status")=="SPECIFICATION ONLY — NO SCIENTIFIC EXECUTION AUTHORIZED"
     checks["runtime_model_pass"]=EXPECTED_MODEL in json.dumps(runtime_spec,sort_keys=True) and runtime_spec.get("frozen_runtime_parameters",{}).get("max_output_tokens")==64
     has_execute_flag='"--execute"' in provider or 'add_argument("--execute"' in provider
     has_execute_branch='if not args.execute:' in provider
