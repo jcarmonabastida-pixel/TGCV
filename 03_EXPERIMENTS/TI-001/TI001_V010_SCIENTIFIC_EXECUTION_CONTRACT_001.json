@@ -1,0 +1,97 @@
+{
+  "contract_id": "TI001-V010-SCIENTIFIC-EXECUTION-CONTRACT-001",
+  "version": "V010",
+  "status": "CONTRACT — SCIENTIFIC EXECUTION NOT AUTHORIZED",
+  "scientific_execution": "NOT_AUTHORIZED",
+  "scientific_object": "Transformational Intelligence",
+  "decision_interface": {
+    "specification": "03_EXPERIMENTS/TI-001/TI001_V010_DECISION_INTERFACE_SPECIFICATION_001.md",
+    "implementation": "03_EXPERIMENTS/TI-001/TI001_V010_DECISION_INTERFACE_001.py",
+    "implementation_sha256": "e025d66e477de3afd79147986b716389d7d7be03d01a21d4380b384e17c8510c",
+    "compatibility_preflight_result": "03_EXPERIMENTS/TI-001/TI001_V010_DECISION_INTERFACE_COMPATIBILITY_PREFLIGHT_RESULT_001.json"
+  },
+  "frozen_fixture": {
+    "source_version": "V008",
+    "decision_units": 420,
+    "pairs": 210,
+    "conditions": {
+      "control": 70,
+      "treatment": 70,
+      "null": 70
+    },
+    "pair_orientation": {
+      "I1_FIRST": 105,
+      "I2_FIRST": 105
+    },
+    "status": "FROZEN — CANONICAL"
+  },
+  "agent_visible_fields": [
+    "context",
+    "available_actions",
+    "future_structure"
+  ],
+  "hidden_fields": [
+    "decision_id",
+    "pair_id",
+    "condition",
+    "presentation"
+  ],
+  "valid_outputs": [
+    "A",
+    "B"
+  ],
+  "runtime": {
+    "model": "gpt-5.6-luna",
+    "api": "Responses API",
+    "top_p": 0.98,
+    "max_output_tokens": 64,
+    "reasoning": {
+      "effort": "none"
+    },
+    "temperature": null,
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "store": false,
+    "previous_response_id": null,
+    "conversation": null
+  },
+  "scientific_invariants": {
+    "no_value_input": true,
+    "no_reward_input": true,
+    "no_utility_input": true,
+    "no_performance_input": true,
+    "no_task_success_input": true,
+    "no_external_outcome_input": true,
+    "no_successor_realization": true,
+    "no_retry": true,
+    "no_recode": true,
+    "no_analysis_during_execution": true,
+    "no_causal_delta_tacc_to_value_analysis": true
+  },
+  "analysis": {
+    "indicator": "TI_DC",
+    "null_indicator": "TI_NULL",
+    "definition": "03_EXPERIMENTS/TI-001/TI001_V008_TI_INDICATOR_SPECIFICATION_001.md",
+    "analysis_contract": "03_EXPERIMENTS/TI-001/TI001_V008_ANALYSIS_CONTRACT_001.json"
+  },
+  "execution_identity": {
+    "executor_version": "V010",
+    "executor_1": "TO_BE_BOUND_BY_V010_RUNNER_IDENTITY_PREFLIGHT",
+    "executor_2": "TI001-V008-EXECUTOR-2-RECONSTRUCTION",
+    "runner_must_bind": [
+      "decision_interface_implementation_sha256",
+      "frozen_fixture_identity",
+      "runtime_configuration",
+      "valid_output_domain",
+      "no_retry",
+      "no_recode",
+      "no_analysis_during_execution"
+    ]
+  },
+  "authorization_boundary": {
+    "contract_does_not_authorize_execution": true,
+    "explicit_user_authorization_required": true,
+    "final_pre_authorization_gate_required": true
+  }
+}
