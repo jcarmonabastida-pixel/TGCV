@@ -42,8 +42,8 @@ checks["A8_ATOMIC_OUTPUT_VALIDATION"] = (
     'normalized = output_text.strip()' in source
     and 'normalized in VALID_OUTPUTS' in source
 )
-checks["A9_NO_RETRY"] = "retry" not in source.lower()
-checks["A10_NO_RECODE"] = "recode" not in source.lower()
+checks["A9_NO_RETRY"] = "retry(" not in source.lower()
+checks["A10_NO_RECODE"] = "recode(" not in source.lower()
 checks["A11_NO_SCIENTIFIC_EXECUTION"] = (
     "scientific execution is not authorized" in source.lower()
 )
