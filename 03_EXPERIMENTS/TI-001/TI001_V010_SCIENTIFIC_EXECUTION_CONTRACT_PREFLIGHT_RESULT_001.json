@@ -1,0 +1,33 @@
+{
+  "preflight_id": "TI001-V010-SCIENTIFIC-EXECUTION-CONTRACT-PREFLIGHT-001",
+  "checks": {
+    "A1_CONTRACT_EXISTS": true,
+    "A2_INTERFACE_EXISTS": true,
+    "A3_INTERFACE_PREFLIGHT_EXISTS": true,
+    "A4_STATUS_NOT_AUTHORIZED": true,
+    "A5_SCIENTIFIC_OBJECT_TI": true,
+    "A6_FIXTURE_420": true,
+    "A7_FIXTURE_210_PAIRS": true,
+    "A8_CONDITIONS_70_EACH": true,
+    "A9_VISIBLE_FIELDS_EXACT": true,
+    "A10_HIDDEN_FIELDS_EXACT": true,
+    "A11_VALID_OUTPUT_AB": true,
+    "A12_RUNTIME_MODEL": true,
+    "A13_RUNTIME_TOP_P": true,
+    "A14_RUNTIME_MAX_TOKENS": true,
+    "A15_REASONING_NONE": true,
+    "A16_NO_TOOLS": true,
+    "A17_NO_RETRY": true,
+    "A18_NO_RECODE": true,
+    "A19_NO_VALUE_INPUT": true,
+    "A20_NO_SUCCESSOR": true,
+    "A21_NO_EXECUTION_ANALYSIS": true,
+    "A22_NO_CAUSAL_VALUE_ANALYSIS": true,
+    "A23_EXPLICIT_AUTH_REQUIRED": true,
+    "A24_FINAL_GATE_REQUIRED": true,
+    "A25_INTERFACE_SHA_BOUND": true
+  },
+  "all_checks_pass": true,
+  "scientific_execution": "NOT_PERFORMED",
+  "authorization": "NOT_AUTHORIZED"
+}
