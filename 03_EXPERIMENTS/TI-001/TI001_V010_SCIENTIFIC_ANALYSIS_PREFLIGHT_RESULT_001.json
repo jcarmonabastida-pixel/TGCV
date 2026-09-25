@@ -1,0 +1,46 @@
+{
+  "gate_id": "TI001-V010-SCIENTIFIC-ANALYSIS-PREFLIGHT-001",
+  "status": "PASS",
+  "checks": {
+    "A1_ANALYSIS_SPEC_PRESENT": true,
+    "A2_FIXTURE_SHA": true,
+    "A3_EXECUTOR_1_RESULT_SHA": true,
+    "A4_EXECUTOR_2_RESULT_SHA": true,
+    "A5_EXECUTOR_1_STRUCTURE": true,
+    "A6_EXECUTOR_2_STRUCTURE": true,
+    "A7_NO_POOLING_RULE": true,
+    "A8_TIDC_FORMULA": true,
+    "A9_TINULL_FORMULA": true,
+    "A10_NO_RECODING": true,
+    "A11_NO_RETRY": true,
+    "A12_NO_VALUE_METRIC": true,
+    "A13_NO_CAUSAL_CLAIM": true,
+    "A14_PRESENTATION_STRATIFICATION": true,
+    "A15_PAIR_ANALYSIS": true,
+    "A16_ANALYSIS_NOT_AUTHORIZED_BY_PREFLIGHT": true
+  },
+  "executor_1_checks": {
+    "decision_count": true,
+    "scientific_execution": true,
+    "analysis_not_performed": true,
+    "executor_identity": true,
+    "all_valid": true,
+    "no_missing_response_ids": true,
+    "condition_balance": true,
+    "presentation_balance": true,
+    "outputs_only_A_B": true
+  },
+  "executor_2_checks": {
+    "decision_count": true,
+    "scientific_execution": true,
+    "analysis_not_performed": true,
+    "executor_identity": true,
+    "all_valid": true,
+    "no_missing_response_ids": true,
+    "condition_balance": true,
+    "presentation_balance": true,
+    "outputs_only_A_B": true
+  },
+  "scientific_analysis": "NOT_PERFORMED",
+  "authorization": "NOT_AUTHORIZED"
+}
