@@ -45,7 +45,7 @@ def main(argv):
     checks["provider_reasoning_explicit_pass"]='reasoning=REASONING' in provider and 'REASONING = {"effort": "none"}' in provider
     checks["provider_isolation_pass"]=all(t not in provider for t in ['record["successors"]','record["future_alternatives"]','record["S_t1"]','record["T_acc_t1"]'])
     checks["provider_output_pass"]="selected_transformation" in provider and "decision_input_sha256" in provider
-    executor_blob_sha=hashlib.sha1(("blob "+str(len(executor.encode("utf-8")))+"\\0").encode()+executor.encode("utf-8")).hexdigest()
+    executor_blob_sha=hashlib.sha1(("blob "+str(len(executor.encode("utf-8")))+"\0").encode()+executor.encode("utf-8")).hexdigest()
     checks["executor_binding_pass"]=EXPECTED_EXECUTOR in executor and "TI001_V005_EXECUTION_CONTRACT_001" in executor and EXPECTED_FIXTURE_GIT_BLOB_SHA in executor and executor_blob_sha==EXPECTED_EXECUTOR_GIT_BLOB_SHA
     checks["executor_no_successor_dependency_pass"]=not any(t in executor for t in ['fixture["successors"]','record["successors"]','successor =','transitions ='])
     checks["executor_estimand_pass"]=EXPECTED_ESTIMAND in executor and not any(t in executor for t in ["calculate_composite_ti_score","compute_composite_ti_score","composite_ti_score =","composite_ti_score="])
