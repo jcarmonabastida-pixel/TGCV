@@ -1,0 +1,89 @@
+{
+  "record_type": "TGCV_TI001_V006_EXECUTION_CONTRACT",
+  "contract_id": "TI001_V006_EXECUTION_CONTRACT_001",
+  "date": "2026-09-25",
+  "status": "CONTRACT — DESIGN / IMPLEMENTATION PRECONDITION",
+  "scientific_execution": "NOT_AUTHORIZED",
+  "purpose": "Bind the runtime-corrected V006 decision provider to the unchanged V005 scientific design without authorizing scientific execution.",
+  "supersedes_for_execution_binding": "TI001_V005_EXECUTION_CONTRACT_001",
+  "historical_v005_attempt": {
+    "status": "FAILED_RUNTIME_ATTEMPT — NOT_COMPLETED",
+    "interpretation": "UNREPRODUCED PROVIDER RESPONSE ANOMALY — CAUSE UNDETERMINED",
+    "scientific_evidence_status": "NOT_ACCEPTED",
+    "design_reuse": "scientific design is retained; the V005 provider binding is not reused"
+  },
+  "scientific_design": {
+    "fixture_id": "TI001-v005-candidate-001",
+    "fixture_git_blob_sha": "edd83fd2df3d39aad8911087569c19614c2264b7",
+    "fixture_canonical_sha256": "bc7e0e69cb56337145593e67fb55c1a1b5042db661520498a2c86b346eef76e5",
+    "pair_count": 32,
+    "condition_count": 3,
+    "decision_count": 96,
+    "conditions": ["control", "treatment", "null"],
+    "action_space": ["a", "b", "c"],
+    "estimand": "matched_condition_difference_in_transformation_selection"
+  },
+  "provider_binding": {
+    "provider_version": "TI001_DECISION_AGENT_PROVIDER_V006_001",
+    "provider_path": "03_EXPERIMENTS/TI-001/TI001_V006_DECISION_AGENT_PROVIDER_001.py",
+    "provider_commit": "abaee147f5b060aac8ac164ad758b30dfbd0f3a0",
+    "provider_sha256_note": "Git blob identity must be resolved canonically before authorization"
+  },
+  "runtime_binding": {
+    "model": "gpt-5.6-luna",
+    "api_surface": "Responses API",
+    "top_p": 0.98,
+    "max_output_tokens": 64,
+    "reasoning": {"effort": "none"},
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "store": false,
+    "previous_response_id": null,
+    "conversation": null
+  },
+  "runtime_correction": {
+    "specification_path": "03_EXPERIMENTS/TI-001/TI001_V005_RUNTIME_CORRECTION_SPECIFICATION_001.json",
+    "specification_git_commit": "d738080c8bec2e0ea0b1217ec9744d872e19481c",
+    "required_request_property": "reasoning={"effort":"none"}",
+    "scientific_design_change": false
+  },
+  "executor_binding": {
+    "executor_version": "TI001_V005_SCIENTIFIC_EXECUTOR_001",
+    "executor_path": "03_EXPERIMENTS/TI-001/TI001_V005_SCIENTIFIC_EXECUTOR_001.py",
+    "executor_binding_is_unchanged": true,
+    "executor2_required": true
+  },
+  "isolation_boundary": {
+    "successor_information": false,
+    "reward_information": false,
+    "value_information": false,
+    "utility_information": false,
+    "performance_information": false,
+    "outcome_information": false,
+    "external_tools": false,
+    "web": false,
+    "files": false,
+    "conversation_state": false,
+    "decision_contract": "exactly one selected transformation: a, b, or c"
+  },
+  "execution_boundary": {
+    "explicit_user_authorization_required": true,
+    "preflight_must_pass": true,
+    "executor2_must_pass": true,
+    "no_scientific_execution_during_preflight": true,
+    "invalid_or_incomplete_response": "fail the execution; no silent retry",
+    "partial_decision_package": "not accepted as scientific evidence"
+  },
+  "required_pre_authorization_checks": [
+    "canonical provider Git blob identity resolved",
+    "runtime correction specification binding verified",
+    "V006 compatibility preflight PASS",
+    "Executor-2 independence and hash checks PASS",
+    "exact fixture identity PASS",
+    "exact estimand identity PASS",
+    "no V004 dependency PASS",
+    "explicit user authorization after all checks"
+  ],
+  "authorization_rule": "This contract does not authorize execution. Authorization must be issued explicitly after the V006 compatibility preflight closes successfully."
+}
