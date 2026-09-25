@@ -1,0 +1,67 @@
+{
+  "record_type": "TGCV_TI001_V005_RUNTIME_CORRECTION_SPECIFICATION",
+  "specification_id": "TI001_V005_RUNTIME_CORRECTION_SPEC_001",
+  "date": "2026-09-25",
+  "status": "SPECIFICATION_ONLY — NO SCIENTIFIC EXECUTION AUTHORIZED",
+  "purpose": "Correct the effective decision-agent runtime so that the declared reasoning mode is explicitly materialized in the Responses API request.",
+  "scope": {
+    "scientific_design_change": false,
+    "fixture_change": false,
+    "prompt_change": false,
+    "estimand_change": false,
+    "decision_units_change": false,
+    "isolation_boundary_change": false
+  },
+  "authorized_runtime_change": {
+    "parameter": "reasoning",
+    "value": {
+      "effort": "none"
+    },
+    "rationale": "The V005 runtime freeze declared no reasoning effort, but the V005 provider did not transmit a reasoning parameter. The failed scientific response consumed all 64 output tokens as reasoning tokens. This correction makes the declared runtime setting explicit in the API request."
+  },
+  "frozen_runtime_parameters": {
+    "model": "gpt-5.6-luna",
+    "top_p": 0.98,
+    "max_output_tokens": 64,
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "store": false,
+    "previous_response_id": null,
+    "conversation": null
+  },
+  "request_semantics": {
+    "input": "unchanged",
+    "instructions": "unchanged",
+    "output_contract": "exactly one selected transformation: a, b, or c",
+    "reasoning": {
+      "effort": "none"
+    }
+  },
+  "scientific_integrity_constraints": [
+    "Do not modify the frozen fixture.",
+    "Do not modify the frozen decision prompt.",
+    "Do not modify the estimand.",
+    "Do not modify the 32-pair x 3-condition decision structure.",
+    "Do not add successor, reward, value, utility, performance, or outcome information.",
+    "Do not enable tools, web, files, conversation state, or external context.",
+    "Do not silently retry an incomplete or invalid response.",
+    "Any provider implementation differing from the authorized V005 provider requires a new provider/version binding and compatibility preflight before scientific execution."
+  ],
+  "validation_requirements": {
+    "runtime_request_must_include": {
+      "reasoning": {
+        "effort": "none"
+      }
+    },
+    "response_must_be_audited_for": [
+      "response_status",
+      "incomplete_details",
+      "output_text",
+      "output_tokens",
+      "reasoning_tokens"
+    ],
+    "scientific_execution": "NOT_AUTHORIZED"
+  },
+  "next_gate": "RUNTIME_CORRECTION_IMPLEMENTATION_AND_COMPATIBILITY_PREFLIGHT"
+}
