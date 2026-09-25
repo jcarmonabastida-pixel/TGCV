@@ -13,7 +13,7 @@ ALLOWED = {"a", "b", "c"}
 FIXTURE_ID = "TI001-v005-candidate-001"
 FIXTURE_VERSION = "v005-candidate-001"
 EXPECTED_FIXTURE_GIT_BLOB_SHA = "edd83fd2df3d39aad8911087569c19614c2264b7"
-EXPECTED_FIXTURE_CANONICAL_SHA256 = "bc7e0e69cb56337145593e67fb55c1a1b5042db6615204982a86b346eef76e5"
+EXPECTED_FIXTURE_CANONICAL_SHA256 = "bc7e0e69cb56337145593e67fb55c1a1b5042db661520498a2c86b346eef76e5"
 EXECUTOR_VERSION = "TI001_V005_SCIENTIFIC_EXECUTOR_001"
 
 def load_json(path: Path) -> dict:
@@ -95,7 +95,8 @@ def main(argv: list[str]) -> int:
     p.add_argument("output")
     args = p.parse_args(argv[1:])
     result = execute(load_json(Path(args.fixture)), load_json(Path(args.decisions)), args.canonical_commit)
-    Path(args.output).write_text(json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False)+"\n", encoding="utf-8")
+    Path(args.output).write_text(json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False)+"
+", encoding="utf-8")
     print(json.dumps({"status":"SCIENTIFIC_EXECUTION_OUTPUT_WRITTEN","observation_count":result["observation_count"]},indent=2))
     return 0
 
