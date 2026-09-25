@@ -1,0 +1,75 @@
+{
+  "record_type":"TGCV_TI001_V007_FREEZE_CANDIDATE",
+  "freeze_candidate_id":"TI001_V007_FREEZE_CANDIDATE_001",
+  "date":"2026-09-25",
+  "status":"FREEZE_CANDIDATE",
+  "scientific_execution":"NOT_AUTHORIZED",
+  "fixture":{
+    "path":"03_EXPERIMENTS/TI-001/TI001_V007_CANDIDATE_FIXTURE_001.json",
+    "fixture_id":"TI001-v007-candidate-001",
+    "git_blob_sha":"663383b27b567d73757ac967986d0b9b949dc50e",
+    "status":"CANDIDATE"
+  },
+  "design":{
+    "experimental_unit":"pair",
+    "primary_analysis_unit":"pair",
+    "initial_transformations":["A","B"],
+    "treatment_I1":{"A":["A","B","C"],"B":["A","B","D"]},
+    "treatment_I2":{"A":["A","B","D"],"B":["A","B","C"]},
+    "null":{"A":["A","B","C","D"],"B":["A","B","C","D"]},
+    "non_dominance":true,
+    "successor_realization_before_decision":false,
+    "utility_or_reward_instruction":false
+  },
+  "primary_analysis":{
+    "outcome":"Y_pair=(Y_I1+Y_I2)/2",
+    "estimand":"E(Y_pair|Treatment)-E(Y_pair|Control)",
+    "test":"bilateral pair-level permutation test",
+    "alpha":0.05,
+    "confidence_interval":"95% CI by inversion of permutation procedure",
+    "null_role":"specificity control; excluded from primary contrast"
+  },
+  "sampling":{
+    "pairs_per_condition":70,
+    "total_pairs":210,
+    "total_decisions":420,
+    "condition_balance":"70/70/70",
+    "order_balance":"I1_FIRST=105; I2_FIRST=105",
+    "algorithm":"xorshift32 + Fisher-Yates",
+    "seed":20260925,
+    "seed_reused_from_V005_V006":false
+  },
+  "response_policy":{
+    "valid":"exactly one A or B",
+    "invalid":["missing","incomplete","ambiguous","non-A/B","unparseable"],
+    "retry":false,
+    "recoding":false,
+    "pair_missing_if_either_invalid":true,
+    "max_planned_loss_pairs_per_condition":7,
+    "minimum_analyzable_pairs_per_condition":63
+  },
+  "gates":{
+    "transformational_discriminability":"PASS_AFTER_V007_REDESIGN",
+    "structural_non_dominance":"PASS",
+    "design_integrity":"PASS",
+    "operational_schema":"PASS",
+    "fixture_validation":"PASS",
+    "leakage_and_symmetry":"PASS",
+    "candidate_validation":"PASS",
+    "estimand_design":"PASS",
+    "sample_assignment":"PASS",
+    "scientific_protocol_consistency":"PASS"
+  },
+  "power_planning":{
+    "alpha":0.05,
+    "target_power":0.80,
+    "MDE":0.25,
+    "formal_discrete_power_simulation_performed":false,
+    "note":"70 pairs per condition remains a planning candidate, not a simulation-validated power result."
+  },
+  "freeze_boundary":{
+    "fixture_changes_after_candidate":"require new candidate identity and revalidation",
+    "authorization":"not granted by this record",
+    "next_gate":"V007 Freeze Audit"
+  }
+}
