@@ -1,0 +1,33 @@
+{
+  "record_type": "TGCV_TI001_V007_DECISION_UNITS_INTEGRITY_PREFLIGHT_RESULT",
+  "status": "PASS",
+  "scientific_execution": "NOT_PERFORMED",
+  "checker_commit": "bc73ec151a30f1905bc259795c2f751e4689c360",
+  "fixture_commit": "4379f526be63e6721a706f834464b800ed383a04",
+  "decision_units_commit": "f6a098f0d32995e54e7dea91c03eb14e89213443",
+  "binding_criterion": "decision_units.fixture_version == fixture.version",
+  "condition_counts": {
+    "control": 140,
+    "treatment": 140,
+    "null": 140
+  },
+  "checks": {
+    "decision_units_420": true,
+    "instances_420": true,
+    "decision_ids_unique": true,
+    "decision_unit_schema": true,
+    "conditions_balanced": true,
+    "condition_values_valid": true,
+    "instance_ids_unique": true,
+    "instance_pair_variant_traceability": true,
+    "condition_matches_fixture": true,
+    "fixture_id_binding": true,
+    "fixture_version_binding": true,
+    "fixture_blob_binding": true,
+    "agent_identity_hidden": true,
+    "treatment_future_structure": true,
+    "non_treatment_no_future_structure": true,
+    "successor_not_realised": true,
+    "scientific_execution_absent": true
+  }
+}
