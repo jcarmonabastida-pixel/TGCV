@@ -10,6 +10,7 @@ EXPECTED_FIXTURE_GIT_BLOB_SHA="edd83fd2df3d39aad8911087569c19614c2264b7"
 EXPECTED_FIXTURE_CANONICAL_SHA256="bc7e0e69cb56337145593e67fb55c1a1b5042db661520498a2c86b346eef76e5"
 EXPECTED_PROVIDER="TI001_DECISION_AGENT_PROVIDER_V006_001"
 EXPECTED_EXECUTOR="TI001_V005_SCIENTIFIC_EXECUTOR_001"
+EXPECTED_EXECUTOR_GIT_BLOB_SHA="469c4c659c820e9c941f3ad68b558f58abd4b448"
 EXPECTED_MODEL="gpt-5.6-luna"
 EXPECTED_CONTRACT="TI001_V006_EXECUTION_CONTRACT_001"
 EXPECTED_ESTIMAND="matched_condition_difference_in_transformation_selection"
@@ -44,7 +45,8 @@ def main(argv):
     checks["provider_reasoning_explicit_pass"]='reasoning=REASONING' in provider and 'REASONING = {"effort": "none"}' in provider
     checks["provider_isolation_pass"]=all(t not in provider for t in ['record["successors"]','record["future_alternatives"]','record["S_t1"]','record["T_acc_t1"]'])
     checks["provider_output_pass"]="selected_transformation" in provider and "decision_input_sha256" in provider
-    checks["executor_binding_pass"]=EXPECTED_EXECUTOR in executor and "TI001_V005_EXECUTION_CONTRACT_001" in executor and EXPECTED_FIXTURE_GIT_BLOB_SHA in executor
+    executor_blob_sha=hashlib.sha1(("blob "+str(len(executor.encode("utf-8")))+"\\0").encode()+executor.encode("utf-8")).hexdigest()
+    checks["executor_binding_pass"]=EXPECTED_EXECUTOR in executor and "TI001_V005_EXECUTION_CONTRACT_001" in executor and EXPECTED_FIXTURE_GIT_BLOB_SHA in executor and executor_blob_sha==EXPECTED_EXECUTOR_GIT_BLOB_SHA
     checks["executor_no_successor_dependency_pass"]=not any(t in executor for t in ['fixture["successors"]','record["successors"]','successor =','transitions ='])
     checks["executor_estimand_pass"]=EXPECTED_ESTIMAND in executor and not any(t in executor for t in ["calculate_composite_ti_score","compute_composite_ti_score","composite_ti_score =","composite_ti_score="])
     checks["executor2_independence_pass"]=all(t not in executor2 for t in ["V005_DECISION_AGENT_PROVIDER","V005_SCIENTIFIC_EXECUTOR","Executor-1"])
