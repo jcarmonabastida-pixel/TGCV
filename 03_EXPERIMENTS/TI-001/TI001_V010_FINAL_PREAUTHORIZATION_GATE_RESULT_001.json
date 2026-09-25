@@ -1,0 +1,26 @@
+{
+  "gate_id": "TI001-V010-FINAL-PREAUTHORIZATION-GATE-001",
+  "status": "PASS — READY FOR EXPLICIT AUTHORIZATION",
+  "checks": {
+    "A1_CONTRACT_EXISTS": true,
+    "A2_CONTRACT_PREFLIGHT_EXISTS": true,
+    "A3_IDENTITY_PREFLIGHT_EXISTS": true,
+    "A4_CONTRACT_NOT_AUTHORIZED": true,
+    "A5_CONTRACT_PREFLIGHT_PASS": true,
+    "A6_IDENTITY_PREFLIGHT_PASS": true,
+    "A7_INTERFACE_SHA_CURRENT": true,
+    "A8_INTERFACE_SHA_CONTRACT": true,
+    "A9_IDENTITY_INTERFACE_SHA": true,
+    "A10_EXECUTOR_SHA_IDENTITY": true,
+    "A11_EXECUTOR_EXISTS": true,
+    "A12_FIXTURE_SHA_CONTRACT": true,
+    "A13_EXPLICIT_AUTH_REQUIRED": true,
+    "A14_FINAL_GATE_REQUIRED": true,
+    "A15_NO_SCIENTIFIC_EXECUTION": true
+  },
+  "all_checks_pass": true,
+  "scientific_execution": "NOT_PERFORMED",
+  "authorization": "NOT_AUTHORIZED",
+  "interface_sha256": "e025d66e477de3afd79147986b716389d7d7be03d01a21d4380b384e17c8510c",
+  "executor_sha256": "0be1b1d63ff8f70a4f8e5c80004a1267aa72f5c5266a80aeb697906facd77131"
+}
