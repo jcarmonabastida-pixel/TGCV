@@ -1,0 +1,28 @@
+{
+  "diagnostic_id": "TI001-V009-RUNTIME-DIAGNOSTIC-001",
+  "scientific_execution": "NOT_PERFORMED",
+  "diagnostic_only": true,
+  "response_id": "resp_06125cb087cb7e4b016ab6a6584e9c87d28f72f299cd75f383",
+  "status": "completed",
+  "output_text": "A",
+  "incomplete_details": null,
+  "model": "gpt-5.6-luna",
+  "runtime": {
+    "temperature": null,
+    "top_p": 0.98,
+    "max_output_tokens": 64,
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "previous_response_id": null,
+    "conversation": null,
+    "store": false
+  },
+  "usage": {
+    "input_tokens": 12,
+    "output_tokens": 19,
+    "reasoning_tokens": 12,
+    "total_tokens": 31
+  },
+  "status_assessment": "PASS"
+}
