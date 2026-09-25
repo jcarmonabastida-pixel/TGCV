@@ -1,0 +1,76 @@
+{
+  "record_type": "TGCV_TI001_V006_EXECUTION_AUTHORIZATION",
+  "authorization_id": "TI001_V006_EXECUTION_AUTHORIZATION_001",
+  "authorization_status": "PENDING_EXPLICIT_USER_AUTHORIZATION",
+  "scientific_execution": "NOT_AUTHORIZED",
+  "execution_status": "AUTHORIZED_NOT_STARTED_PENDING_EXPLICIT_CONFIRMATION",
+  "authorization_action": "V006_AUTHORIZATION_RECORD_PREPARED — EXPLICIT_USER_CONFIRMATION_REQUIRED",
+  "scope": "TI-001 V006 runtime-corrected scientific execution only",
+  "canonical_commit": "716307ffd7bbabb1a66ebca061b25bf51178062f",
+  "authorization_gate": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_GATE_001.md",
+  "preflight": {
+    "runtime_correction_compatibility_preflight": "03_EXPERIMENTS/TI-001/TI001_V006_RUNTIME_CORRECTION_COMPATIBILITY_PREFLIGHT_RESULT_001.json",
+    "status": "PASS",
+    "scientific_execution_during_preflight": false
+  },
+  "execution_contract": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V006_EXECUTION_CONTRACT_001.json",
+    "contract_id": "TI001_V006_EXECUTION_CONTRACT_001",
+    "status": "CONTRACT — DESIGN / IMPLEMENTATION PRECONDITION",
+    "scientific_execution": "NOT_AUTHORIZED"
+  },
+  "fixture": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_v005_CANDIDATE_001.json",
+    "git_blob_sha": "edd83fd2df3d39aad8911087569c19614c2264b7",
+    "canonical_sha256": "bc7e0e69cb56337145593e67fb55c1a1b5042db661520498a2c86b346eef76e5",
+    "status": "FROZEN"
+  },
+  "runtime": {
+    "provider_version": "TI001_DECISION_AGENT_PROVIDER_V006_001",
+    "provider_path": "03_EXPERIMENTS/TI-001/TI001_V006_DECISION_AGENT_PROVIDER_001.py",
+    "provider_commit": "abaee147f5b060aac8ac164ad758b30dfbd0f3a0",
+    "model": "gpt-5.6-luna",
+    "top_p": 0.98,
+    "max_output_tokens": 64,
+    "reasoning": {
+      "effort": "none"
+    },
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "store": false,
+    "previous_response_id": null,
+    "conversation": null
+  },
+  "executor": {
+    "version": "TI001_V005_SCIENTIFIC_EXECUTOR_001",
+    "binding": "UNCHANGED_V005_SCIENTIFIC_DESIGN"
+  },
+  "estimand": "matched_condition_difference_in_transformation_selection",
+  "decision_count": 96,
+  "condition_count": 3,
+  "conditions": [
+    "control",
+    "treatment",
+    "null"
+  ],
+  "authorization_boundary": {
+    "explicit_user_authorization_required": true,
+    "this_record_does_not_authorize_execution": true,
+    "scientific_execution_performed": false,
+    "no_silent_retry": true,
+    "invalid_or_incomplete_provider_response_is_failure": true
+  },
+  "historical_v005_attempt": {
+    "status": "FAILED_RUNTIME_ATTEMPT — NOT_COMPLETED",
+    "evidence_status": "NOT_ACCEPTED",
+    "classification": "UNREPRODUCED PROVIDER RESPONSE ANOMALY — CAUSE UNDETERMINED"
+  },
+  "explicit_confirmation": {
+    "user_authorized": false,
+    "confirmation_timestamp": null,
+    "confirmation_text": null,
+    "confirmation_required_before_execution": true,
+    "no_scientific_execution_before_authorization": true
+  }
+}
