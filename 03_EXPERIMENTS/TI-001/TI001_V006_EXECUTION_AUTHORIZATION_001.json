@@ -6,12 +6,13 @@
   "execution_status": "AUTHORIZED_NOT_STARTED",
   "authorization_action": "EXPLICIT_V006_REAUTHORIZATION",
   "scope": "TI-001 V006 runtime-corrected scientific execution only",
-  "canonical_commit": "8e7b85707819368ba55318b5ab38d89c706ee5bf",
+  "canonical_commit": "b3395b9e8b4bb0a346ff88da39faac57cf9e37b4",
   "authorization_gate": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_GATE_001.md",
   "preflight": {
     "runtime_correction_compatibility_preflight": "03_EXPERIMENTS/TI-001/TI001_V006_RUNTIME_CORRECTION_COMPATIBILITY_PREFLIGHT_RESULT_001.json",
     "status": "PASS",
-    "scientific_execution_during_preflight": false
+    "scientific_execution_during_preflight": false,
+    "result_commit": "b3395b9e8b4bb0a346ff88da39faac57cf9e37b4"
   },
   "execution_contract": {
     "path": "03_EXPERIMENTS/TI-001/TI001_V006_EXECUTION_CONTRACT_001.json",
@@ -70,6 +71,11 @@
     "previous_authorization_invalidated": true,
     "new_explicit_user_authorization": true,
     "confirmation_text": "Reautorizo",
-    "authorization_commit": null
+    "authorization_commit": "50387f7b076019b6ecc26e58b999800add204e3b"
+  },
+  "executor2": {
+    "version": "TI001_V006_EXECUTOR_2_RECONSTRUCTION_001",
+    "git_blob_sha": "8fd84e372de023e5d8b9e569d584a4541f59ef2d",
+    "binding": "INDEPENDENT_RECONSTRUCTION"
   }
 }
