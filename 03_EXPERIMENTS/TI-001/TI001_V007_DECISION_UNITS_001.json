@@ -13,2524 +13,1684 @@
   ],
   "decision_units": [
     {
-      "decision_id": "P001::I1",
-      "pair_id": "P001",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU001",
+      "condition": "control"
     },
     {
-      "decision_id": "P001::I2",
-      "pair_id": "P001",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU002",
+      "condition": "control"
     },
     {
-      "decision_id": "P002::I1",
-      "pair_id": "P002",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU003",
+      "condition": "null"
     },
     {
-      "decision_id": "P002::I2",
-      "pair_id": "P002",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU004",
+      "condition": "null"
     },
     {
-      "decision_id": "P003::I1",
-      "pair_id": "P003",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU005",
+      "condition": "null"
     },
     {
-      "decision_id": "P003::I2",
-      "pair_id": "P003",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU006",
+      "condition": "null"
     },
     {
-      "decision_id": "P004::I1",
-      "pair_id": "P004",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU007",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P004::I2",
-      "pair_id": "P004",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU008",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P005::I1",
-      "pair_id": "P005",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU009",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P005::I2",
-      "pair_id": "P005",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU010",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P006::I1",
-      "pair_id": "P006",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU011",
+      "condition": "null"
     },
     {
-      "decision_id": "P006::I2",
-      "pair_id": "P006",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU012",
+      "condition": "null"
     },
     {
-      "decision_id": "P007::I1",
-      "pair_id": "P007",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU013",
+      "condition": "null"
     },
     {
-      "decision_id": "P007::I2",
-      "pair_id": "P007",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU014",
+      "condition": "null"
     },
     {
-      "decision_id": "P008::I1",
-      "pair_id": "P008",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU015",
+      "condition": "null"
     },
     {
-      "decision_id": "P008::I2",
-      "pair_id": "P008",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU016",
+      "condition": "null"
     },
     {
-      "decision_id": "P009::I1",
-      "pair_id": "P009",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU017",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P009::I2",
-      "pair_id": "P009",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU018",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P010::I1",
-      "pair_id": "P010",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU019",
+      "condition": "control"
     },
     {
-      "decision_id": "P010::I2",
-      "pair_id": "P010",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU020",
+      "condition": "control"
     },
     {
-      "decision_id": "P011::I1",
-      "pair_id": "P011",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU021",
+      "condition": "control"
     },
     {
-      "decision_id": "P011::I2",
-      "pair_id": "P011",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU022",
+      "condition": "control"
     },
     {
-      "decision_id": "P012::I1",
-      "pair_id": "P012",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU023",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P012::I2",
-      "pair_id": "P012",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU024",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P013::I1",
-      "pair_id": "P013",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU025",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P013::I2",
-      "pair_id": "P013",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU026",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P014::I1",
-      "pair_id": "P014",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU027",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P014::I2",
-      "pair_id": "P014",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU028",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P015::I1",
-      "pair_id": "P015",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU029",
+      "condition": "null"
     },
     {
-      "decision_id": "P015::I2",
-      "pair_id": "P015",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU030",
+      "condition": "null"
     },
     {
-      "decision_id": "P016::I1",
-      "pair_id": "P016",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU031",
+      "condition": "control"
     },
     {
-      "decision_id": "P016::I2",
-      "pair_id": "P016",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU032",
+      "condition": "control"
     },
     {
-      "decision_id": "P017::I1",
-      "pair_id": "P017",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU033",
+      "condition": "control"
     },
     {
-      "decision_id": "P017::I2",
-      "pair_id": "P017",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU034",
+      "condition": "control"
     },
     {
-      "decision_id": "P018::I1",
-      "pair_id": "P018",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU035",
+      "condition": "control"
     },
     {
-      "decision_id": "P018::I2",
-      "pair_id": "P018",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU036",
+      "condition": "control"
     },
     {
-      "decision_id": "P019::I1",
-      "pair_id": "P019",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU037",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P019::I2",
-      "pair_id": "P019",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU038",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P020::I1",
-      "pair_id": "P020",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU039",
+      "condition": "null"
     },
     {
-      "decision_id": "P020::I2",
-      "pair_id": "P020",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU040",
+      "condition": "null"
     },
     {
-      "decision_id": "P021::I1",
-      "pair_id": "P021",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU041",
+      "condition": "control"
     },
     {
-      "decision_id": "P021::I2",
-      "pair_id": "P021",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU042",
+      "condition": "control"
     },
     {
-      "decision_id": "P022::I1",
-      "pair_id": "P022",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU043",
+      "condition": "control"
     },
     {
-      "decision_id": "P022::I2",
-      "pair_id": "P022",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU044",
+      "condition": "control"
     },
     {
-      "decision_id": "P023::I1",
-      "pair_id": "P023",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU045",
+      "condition": "control"
     },
     {
-      "decision_id": "P023::I2",
-      "pair_id": "P023",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU046",
+      "condition": "control"
     },
     {
-      "decision_id": "P024::I1",
-      "pair_id": "P024",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU047",
+      "condition": "null"
     },
     {
-      "decision_id": "P024::I2",
-      "pair_id": "P024",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU048",
+      "condition": "null"
     },
     {
-      "decision_id": "P025::I1",
-      "pair_id": "P025",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU049",
+      "condition": "null"
     },
     {
-      "decision_id": "P025::I2",
-      "pair_id": "P025",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU050",
+      "condition": "null"
     },
     {
-      "decision_id": "P026::I1",
-      "pair_id": "P026",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU051",
+      "condition": "control"
     },
     {
-      "decision_id": "P026::I2",
-      "pair_id": "P026",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU052",
+      "condition": "control"
     },
     {
-      "decision_id": "P027::I1",
-      "pair_id": "P027",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU053",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P027::I2",
-      "pair_id": "P027",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU054",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P028::I1",
-      "pair_id": "P028",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU055",
+      "condition": "control"
     },
     {
-      "decision_id": "P028::I2",
-      "pair_id": "P028",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU056",
+      "condition": "control"
     },
     {
-      "decision_id": "P029::I1",
-      "pair_id": "P029",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU057",
+      "condition": "null"
     },
     {
-      "decision_id": "P029::I2",
-      "pair_id": "P029",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU058",
+      "condition": "null"
     },
     {
-      "decision_id": "P030::I1",
-      "pair_id": "P030",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU059",
+      "condition": "control"
     },
     {
-      "decision_id": "P030::I2",
-      "pair_id": "P030",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU060",
+      "condition": "control"
     },
     {
-      "decision_id": "P031::I1",
-      "pair_id": "P031",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU061",
+      "condition": "null"
     },
     {
-      "decision_id": "P031::I2",
-      "pair_id": "P031",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU062",
+      "condition": "null"
     },
     {
-      "decision_id": "P032::I1",
-      "pair_id": "P032",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU063",
+      "condition": "null"
     },
     {
-      "decision_id": "P032::I2",
-      "pair_id": "P032",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU064",
+      "condition": "null"
     },
     {
-      "decision_id": "P033::I1",
-      "pair_id": "P033",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU065",
+      "condition": "control"
     },
     {
-      "decision_id": "P033::I2",
-      "pair_id": "P033",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU066",
+      "condition": "control"
     },
     {
-      "decision_id": "P034::I1",
-      "pair_id": "P034",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU067",
+      "condition": "null"
     },
     {
-      "decision_id": "P034::I2",
-      "pair_id": "P034",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU068",
+      "condition": "null"
     },
     {
-      "decision_id": "P035::I1",
-      "pair_id": "P035",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU069",
+      "condition": "control"
     },
     {
-      "decision_id": "P035::I2",
-      "pair_id": "P035",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU070",
+      "condition": "control"
     },
     {
-      "decision_id": "P036::I1",
-      "pair_id": "P036",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU071",
+      "condition": "null"
     },
     {
-      "decision_id": "P036::I2",
-      "pair_id": "P036",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU072",
+      "condition": "null"
     },
     {
-      "decision_id": "P037::I1",
-      "pair_id": "P037",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU073",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P037::I2",
-      "pair_id": "P037",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU074",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P038::I1",
-      "pair_id": "P038",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU075",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P038::I2",
-      "pair_id": "P038",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU076",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P039::I1",
-      "pair_id": "P039",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU077",
+      "condition": "null"
     },
     {
-      "decision_id": "P039::I2",
-      "pair_id": "P039",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU078",
+      "condition": "null"
     },
     {
-      "decision_id": "P040::I1",
-      "pair_id": "P040",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU079",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P040::I2",
-      "pair_id": "P040",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU080",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P041::I1",
-      "pair_id": "P041",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU081",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P041::I2",
-      "pair_id": "P041",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU082",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P042::I1",
-      "pair_id": "P042",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU083",
+      "condition": "null"
     },
     {
-      "decision_id": "P042::I2",
-      "pair_id": "P042",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU084",
+      "condition": "null"
     },
     {
-      "decision_id": "P043::I1",
-      "pair_id": "P043",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU085",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P043::I2",
-      "pair_id": "P043",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU086",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P044::I1",
-      "pair_id": "P044",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU087",
+      "condition": "control"
     },
     {
-      "decision_id": "P044::I2",
-      "pair_id": "P044",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU088",
+      "condition": "control"
     },
     {
-      "decision_id": "P045::I1",
-      "pair_id": "P045",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU089",
+      "condition": "null"
     },
     {
-      "decision_id": "P045::I2",
-      "pair_id": "P045",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU090",
+      "condition": "null"
     },
     {
-      "decision_id": "P046::I1",
-      "pair_id": "P046",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU091",
+      "condition": "null"
     },
     {
-      "decision_id": "P046::I2",
-      "pair_id": "P046",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU092",
+      "condition": "null"
     },
     {
-      "decision_id": "P047::I1",
-      "pair_id": "P047",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU093",
+      "condition": "null"
     },
     {
-      "decision_id": "P047::I2",
-      "pair_id": "P047",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU094",
+      "condition": "null"
     },
     {
-      "decision_id": "P048::I1",
-      "pair_id": "P048",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU095",
+      "condition": "null"
     },
     {
-      "decision_id": "P048::I2",
-      "pair_id": "P048",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU096",
+      "condition": "null"
     },
     {
-      "decision_id": "P049::I1",
-      "pair_id": "P049",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU097",
+      "condition": "null"
     },
     {
-      "decision_id": "P049::I2",
-      "pair_id": "P049",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU098",
+      "condition": "null"
     },
     {
-      "decision_id": "P050::I1",
-      "pair_id": "P050",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU099",
+      "condition": "control"
     },
     {
-      "decision_id": "P050::I2",
-      "pair_id": "P050",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU100",
+      "condition": "control"
     },
     {
-      "decision_id": "P051::I1",
-      "pair_id": "P051",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU101",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P051::I2",
-      "pair_id": "P051",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU102",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P052::I1",
-      "pair_id": "P052",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU103",
+      "condition": "null"
     },
     {
-      "decision_id": "P052::I2",
-      "pair_id": "P052",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU104",
+      "condition": "null"
     },
     {
-      "decision_id": "P053::I1",
-      "pair_id": "P053",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU105",
+      "condition": "control"
     },
     {
-      "decision_id": "P053::I2",
-      "pair_id": "P053",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU106",
+      "condition": "control"
     },
     {
-      "decision_id": "P054::I1",
-      "pair_id": "P054",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU107",
+      "condition": "null"
     },
     {
-      "decision_id": "P054::I2",
-      "pair_id": "P054",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU108",
+      "condition": "null"
     },
     {
-      "decision_id": "P055::I1",
-      "pair_id": "P055",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU109",
+      "condition": "control"
     },
     {
-      "decision_id": "P055::I2",
-      "pair_id": "P055",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU110",
+      "condition": "control"
     },
     {
-      "decision_id": "P056::I1",
-      "pair_id": "P056",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU111",
+      "condition": "control"
     },
     {
-      "decision_id": "P056::I2",
-      "pair_id": "P056",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU112",
+      "condition": "control"
     },
     {
-      "decision_id": "P057::I1",
-      "pair_id": "P057",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU113",
+      "condition": "null"
     },
     {
-      "decision_id": "P057::I2",
-      "pair_id": "P057",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU114",
+      "condition": "null"
     },
     {
-      "decision_id": "P058::I1",
-      "pair_id": "P058",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU115",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P058::I2",
-      "pair_id": "P058",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU116",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P059::I1",
-      "pair_id": "P059",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU117",
+      "condition": "control"
     },
     {
-      "decision_id": "P059::I2",
-      "pair_id": "P059",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU118",
+      "condition": "control"
     },
     {
-      "decision_id": "P060::I1",
-      "pair_id": "P060",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU119",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P060::I2",
-      "pair_id": "P060",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU120",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P061::I1",
-      "pair_id": "P061",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU121",
+      "condition": "null"
     },
     {
-      "decision_id": "P061::I2",
-      "pair_id": "P061",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU122",
+      "condition": "null"
     },
     {
-      "decision_id": "P062::I1",
-      "pair_id": "P062",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU123",
+      "condition": "null"
     },
     {
-      "decision_id": "P062::I2",
-      "pair_id": "P062",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU124",
+      "condition": "null"
     },
     {
-      "decision_id": "P063::I1",
-      "pair_id": "P063",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU125",
+      "condition": "control"
     },
     {
-      "decision_id": "P063::I2",
-      "pair_id": "P063",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU126",
+      "condition": "control"
     },
     {
-      "decision_id": "P064::I1",
-      "pair_id": "P064",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU127",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P064::I2",
-      "pair_id": "P064",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU128",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P065::I1",
-      "pair_id": "P065",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU129",
+      "condition": "null"
     },
     {
-      "decision_id": "P065::I2",
-      "pair_id": "P065",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU130",
+      "condition": "null"
     },
     {
-      "decision_id": "P066::I1",
-      "pair_id": "P066",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU131",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P066::I2",
-      "pair_id": "P066",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU132",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P067::I1",
-      "pair_id": "P067",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU133",
+      "condition": "control"
     },
     {
-      "decision_id": "P067::I2",
-      "pair_id": "P067",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU134",
+      "condition": "control"
     },
     {
-      "decision_id": "P068::I1",
-      "pair_id": "P068",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU135",
+      "condition": "null"
     },
     {
-      "decision_id": "P068::I2",
-      "pair_id": "P068",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU136",
+      "condition": "null"
     },
     {
-      "decision_id": "P069::I1",
-      "pair_id": "P069",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU137",
+      "condition": "control"
     },
     {
-      "decision_id": "P069::I2",
-      "pair_id": "P069",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU138",
+      "condition": "control"
     },
     {
-      "decision_id": "P070::I1",
-      "pair_id": "P070",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU139",
+      "condition": "null"
     },
     {
-      "decision_id": "P070::I2",
-      "pair_id": "P070",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU140",
+      "condition": "null"
     },
     {
-      "decision_id": "P071::I1",
-      "pair_id": "P071",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU141",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P071::I2",
-      "pair_id": "P071",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU142",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P072::I1",
-      "pair_id": "P072",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU143",
+      "condition": "control"
     },
     {
-      "decision_id": "P072::I2",
-      "pair_id": "P072",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU144",
+      "condition": "control"
     },
     {
-      "decision_id": "P073::I1",
-      "pair_id": "P073",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU145",
+      "condition": "control"
     },
     {
-      "decision_id": "P073::I2",
-      "pair_id": "P073",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU146",
+      "condition": "control"
     },
     {
-      "decision_id": "P074::I1",
-      "pair_id": "P074",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU147",
+      "condition": "control"
     },
     {
-      "decision_id": "P074::I2",
-      "pair_id": "P074",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU148",
+      "condition": "control"
     },
     {
-      "decision_id": "P075::I1",
-      "pair_id": "P075",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU149",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P075::I2",
-      "pair_id": "P075",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU150",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P076::I1",
-      "pair_id": "P076",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU151",
+      "condition": "control"
     },
     {
-      "decision_id": "P076::I2",
-      "pair_id": "P076",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU152",
+      "condition": "control"
     },
     {
-      "decision_id": "P077::I1",
-      "pair_id": "P077",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU153",
+      "condition": "null"
     },
     {
-      "decision_id": "P077::I2",
-      "pair_id": "P077",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU154",
+      "condition": "null"
     },
     {
-      "decision_id": "P078::I1",
-      "pair_id": "P078",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU155",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P078::I2",
-      "pair_id": "P078",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU156",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P079::I1",
-      "pair_id": "P079",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU157",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P079::I2",
-      "pair_id": "P079",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU158",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P080::I1",
-      "pair_id": "P080",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU159",
+      "condition": "control"
     },
     {
-      "decision_id": "P080::I2",
-      "pair_id": "P080",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU160",
+      "condition": "control"
     },
     {
-      "decision_id": "P081::I1",
-      "pair_id": "P081",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU161",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P081::I2",
-      "pair_id": "P081",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU162",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P082::I1",
-      "pair_id": "P082",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU163",
+      "condition": "control"
     },
     {
-      "decision_id": "P082::I2",
-      "pair_id": "P082",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU164",
+      "condition": "control"
     },
     {
-      "decision_id": "P083::I1",
-      "pair_id": "P083",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU165",
+      "condition": "control"
     },
     {
-      "decision_id": "P083::I2",
-      "pair_id": "P083",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU166",
+      "condition": "control"
     },
     {
-      "decision_id": "P084::I1",
-      "pair_id": "P084",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU167",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P084::I2",
-      "pair_id": "P084",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU168",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P085::I1",
-      "pair_id": "P085",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU169",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P085::I2",
-      "pair_id": "P085",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU170",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P086::I1",
-      "pair_id": "P086",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU171",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P086::I2",
-      "pair_id": "P086",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU172",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P087::I1",
-      "pair_id": "P087",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU173",
+      "condition": "null"
     },
     {
-      "decision_id": "P087::I2",
-      "pair_id": "P087",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU174",
+      "condition": "null"
     },
     {
-      "decision_id": "P088::I1",
-      "pair_id": "P088",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU175",
+      "condition": "null"
     },
     {
-      "decision_id": "P088::I2",
-      "pair_id": "P088",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU176",
+      "condition": "null"
     },
     {
-      "decision_id": "P089::I1",
-      "pair_id": "P089",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU177",
+      "condition": "control"
     },
     {
-      "decision_id": "P089::I2",
-      "pair_id": "P089",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU178",
+      "condition": "control"
     },
     {
-      "decision_id": "P090::I1",
-      "pair_id": "P090",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU179",
+      "condition": "control"
     },
     {
-      "decision_id": "P090::I2",
-      "pair_id": "P090",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU180",
+      "condition": "control"
     },
     {
-      "decision_id": "P091::I1",
-      "pair_id": "P091",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU181",
+      "condition": "control"
     },
     {
-      "decision_id": "P091::I2",
-      "pair_id": "P091",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU182",
+      "condition": "control"
     },
     {
-      "decision_id": "P092::I1",
-      "pair_id": "P092",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU183",
+      "condition": "null"
     },
     {
-      "decision_id": "P092::I2",
-      "pair_id": "P092",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU184",
+      "condition": "null"
     },
     {
-      "decision_id": "P093::I1",
-      "pair_id": "P093",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU185",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P093::I2",
-      "pair_id": "P093",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU186",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P094::I1",
-      "pair_id": "P094",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU187",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P094::I2",
-      "pair_id": "P094",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU188",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P095::I1",
-      "pair_id": "P095",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU189",
+      "condition": "null"
     },
     {
-      "decision_id": "P095::I2",
-      "pair_id": "P095",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU190",
+      "condition": "null"
     },
     {
-      "decision_id": "P096::I1",
-      "pair_id": "P096",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU191",
+      "condition": "control"
     },
     {
-      "decision_id": "P096::I2",
-      "pair_id": "P096",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU192",
+      "condition": "control"
     },
     {
-      "decision_id": "P097::I1",
-      "pair_id": "P097",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU193",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P097::I2",
-      "pair_id": "P097",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU194",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P098::I1",
-      "pair_id": "P098",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU195",
+      "condition": "null"
     },
     {
-      "decision_id": "P098::I2",
-      "pair_id": "P098",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU196",
+      "condition": "null"
     },
     {
-      "decision_id": "P099::I1",
-      "pair_id": "P099",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU197",
+      "condition": "control"
     },
     {
-      "decision_id": "P099::I2",
-      "pair_id": "P099",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU198",
+      "condition": "control"
     },
     {
-      "decision_id": "P100::I1",
-      "pair_id": "P100",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU199",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P100::I2",
-      "pair_id": "P100",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU200",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P101::I1",
-      "pair_id": "P101",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU201",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P101::I2",
-      "pair_id": "P101",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU202",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P102::I1",
-      "pair_id": "P102",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU203",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P102::I2",
-      "pair_id": "P102",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU204",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P103::I1",
-      "pair_id": "P103",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU205",
+      "condition": "control"
     },
     {
-      "decision_id": "P103::I2",
-      "pair_id": "P103",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU206",
+      "condition": "control"
     },
     {
-      "decision_id": "P104::I1",
-      "pair_id": "P104",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU207",
+      "condition": "null"
     },
     {
-      "decision_id": "P104::I2",
-      "pair_id": "P104",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU208",
+      "condition": "null"
     },
     {
-      "decision_id": "P105::I1",
-      "pair_id": "P105",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU209",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P105::I2",
-      "pair_id": "P105",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU210",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P106::I1",
-      "pair_id": "P106",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU211",
+      "condition": "control"
     },
     {
-      "decision_id": "P106::I2",
-      "pair_id": "P106",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU212",
+      "condition": "control"
     },
     {
-      "decision_id": "P107::I1",
-      "pair_id": "P107",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU213",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P107::I2",
-      "pair_id": "P107",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU214",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P108::I1",
-      "pair_id": "P108",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU215",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P108::I2",
-      "pair_id": "P108",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU216",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P109::I1",
-      "pair_id": "P109",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU217",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P109::I2",
-      "pair_id": "P109",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU218",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P110::I1",
-      "pair_id": "P110",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU219",
+      "condition": "null"
     },
     {
-      "decision_id": "P110::I2",
-      "pair_id": "P110",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU220",
+      "condition": "null"
     },
     {
-      "decision_id": "P111::I1",
-      "pair_id": "P111",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU221",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P111::I2",
-      "pair_id": "P111",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU222",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P112::I1",
-      "pair_id": "P112",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU223",
+      "condition": "control"
     },
     {
-      "decision_id": "P112::I2",
-      "pair_id": "P112",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU224",
+      "condition": "control"
     },
     {
-      "decision_id": "P113::I1",
-      "pair_id": "P113",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU225",
+      "condition": "null"
     },
     {
-      "decision_id": "P113::I2",
-      "pair_id": "P113",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU226",
+      "condition": "null"
     },
     {
-      "decision_id": "P114::I1",
-      "pair_id": "P114",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU227",
+      "condition": "null"
     },
     {
-      "decision_id": "P114::I2",
-      "pair_id": "P114",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU228",
+      "condition": "null"
     },
     {
-      "decision_id": "P115::I1",
-      "pair_id": "P115",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU229",
+      "condition": "null"
     },
     {
-      "decision_id": "P115::I2",
-      "pair_id": "P115",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU230",
+      "condition": "null"
     },
     {
-      "decision_id": "P116::I1",
-      "pair_id": "P116",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU231",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P116::I2",
-      "pair_id": "P116",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU232",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P117::I1",
-      "pair_id": "P117",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU233",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P117::I2",
-      "pair_id": "P117",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU234",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P118::I1",
-      "pair_id": "P118",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU235",
+      "condition": "control"
     },
     {
-      "decision_id": "P118::I2",
-      "pair_id": "P118",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU236",
+      "condition": "control"
     },
     {
-      "decision_id": "P119::I1",
-      "pair_id": "P119",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU237",
+      "condition": "control"
     },
     {
-      "decision_id": "P119::I2",
-      "pair_id": "P119",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU238",
+      "condition": "control"
     },
     {
-      "decision_id": "P120::I1",
-      "pair_id": "P120",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU239",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P120::I2",
-      "pair_id": "P120",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU240",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P121::I1",
-      "pair_id": "P121",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU241",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P121::I2",
-      "pair_id": "P121",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU242",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P122::I1",
-      "pair_id": "P122",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU243",
+      "condition": "null"
     },
     {
-      "decision_id": "P122::I2",
-      "pair_id": "P122",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU244",
+      "condition": "null"
     },
     {
-      "decision_id": "P123::I1",
-      "pair_id": "P123",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU245",
+      "condition": "control"
     },
     {
-      "decision_id": "P123::I2",
-      "pair_id": "P123",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU246",
+      "condition": "control"
     },
     {
-      "decision_id": "P124::I1",
-      "pair_id": "P124",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU247",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P124::I2",
-      "pair_id": "P124",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU248",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P125::I1",
-      "pair_id": "P125",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU249",
+      "condition": "null"
     },
     {
-      "decision_id": "P125::I2",
-      "pair_id": "P125",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU250",
+      "condition": "null"
     },
     {
-      "decision_id": "P126::I1",
-      "pair_id": "P126",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU251",
+      "condition": "null"
     },
     {
-      "decision_id": "P126::I2",
-      "pair_id": "P126",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU252",
+      "condition": "null"
     },
     {
-      "decision_id": "P127::I1",
-      "pair_id": "P127",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU253",
+      "condition": "control"
     },
     {
-      "decision_id": "P127::I2",
-      "pair_id": "P127",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU254",
+      "condition": "control"
     },
     {
-      "decision_id": "P128::I1",
-      "pair_id": "P128",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU255",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P128::I2",
-      "pair_id": "P128",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU256",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P129::I1",
-      "pair_id": "P129",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU257",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P129::I2",
-      "pair_id": "P129",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU258",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P130::I1",
-      "pair_id": "P130",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU259",
+      "condition": "null"
     },
     {
-      "decision_id": "P130::I2",
-      "pair_id": "P130",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU260",
+      "condition": "null"
     },
     {
-      "decision_id": "P131::I1",
-      "pair_id": "P131",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU261",
+      "condition": "control"
     },
     {
-      "decision_id": "P131::I2",
-      "pair_id": "P131",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU262",
+      "condition": "control"
     },
     {
-      "decision_id": "P132::I1",
-      "pair_id": "P132",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU263",
+      "condition": "control"
     },
     {
-      "decision_id": "P132::I2",
-      "pair_id": "P132",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU264",
+      "condition": "control"
     },
     {
-      "decision_id": "P133::I1",
-      "pair_id": "P133",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU265",
+      "condition": "null"
     },
     {
-      "decision_id": "P133::I2",
-      "pair_id": "P133",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU266",
+      "condition": "null"
     },
     {
-      "decision_id": "P134::I1",
-      "pair_id": "P134",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU267",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P134::I2",
-      "pair_id": "P134",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU268",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P135::I1",
-      "pair_id": "P135",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU269",
+      "condition": "null"
     },
     {
-      "decision_id": "P135::I2",
-      "pair_id": "P135",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU270",
+      "condition": "null"
     },
     {
-      "decision_id": "P136::I1",
-      "pair_id": "P136",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU271",
+      "condition": "null"
     },
     {
-      "decision_id": "P136::I2",
-      "pair_id": "P136",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU272",
+      "condition": "null"
     },
     {
-      "decision_id": "P137::I1",
-      "pair_id": "P137",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU273",
+      "condition": "null"
     },
     {
-      "decision_id": "P137::I2",
-      "pair_id": "P137",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU274",
+      "condition": "null"
     },
     {
-      "decision_id": "P138::I1",
-      "pair_id": "P138",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU275",
+      "condition": "null"
     },
     {
-      "decision_id": "P138::I2",
-      "pair_id": "P138",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU276",
+      "condition": "null"
     },
     {
-      "decision_id": "P139::I1",
-      "pair_id": "P139",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU277",
+      "condition": "null"
     },
     {
-      "decision_id": "P139::I2",
-      "pair_id": "P139",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU278",
+      "condition": "null"
     },
     {
-      "decision_id": "P140::I1",
-      "pair_id": "P140",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU279",
+      "condition": "null"
     },
     {
-      "decision_id": "P140::I2",
-      "pair_id": "P140",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU280",
+      "condition": "null"
     },
     {
-      "decision_id": "P141::I1",
-      "pair_id": "P141",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU281",
+      "condition": "control"
     },
     {
-      "decision_id": "P141::I2",
-      "pair_id": "P141",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU282",
+      "condition": "control"
     },
     {
-      "decision_id": "P142::I1",
-      "pair_id": "P142",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU283",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P142::I2",
-      "pair_id": "P142",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU284",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P143::I1",
-      "pair_id": "P143",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU285",
+      "condition": "control"
     },
     {
-      "decision_id": "P143::I2",
-      "pair_id": "P143",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU286",
+      "condition": "control"
     },
     {
-      "decision_id": "P144::I1",
-      "pair_id": "P144",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU287",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P144::I2",
-      "pair_id": "P144",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU288",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P145::I1",
-      "pair_id": "P145",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU289",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P145::I2",
-      "pair_id": "P145",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU290",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P146::I1",
-      "pair_id": "P146",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU291",
+      "condition": "null"
     },
     {
-      "decision_id": "P146::I2",
-      "pair_id": "P146",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU292",
+      "condition": "null"
     },
     {
-      "decision_id": "P147::I1",
-      "pair_id": "P147",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU293",
+      "condition": "null"
     },
     {
-      "decision_id": "P147::I2",
-      "pair_id": "P147",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU294",
+      "condition": "null"
     },
     {
-      "decision_id": "P148::I1",
-      "pair_id": "P148",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU295",
+      "condition": "null"
     },
     {
-      "decision_id": "P148::I2",
-      "pair_id": "P148",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU296",
+      "condition": "null"
     },
     {
-      "decision_id": "P149::I1",
-      "pair_id": "P149",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU297",
+      "condition": "control"
     },
     {
-      "decision_id": "P149::I2",
-      "pair_id": "P149",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU298",
+      "condition": "control"
     },
     {
-      "decision_id": "P150::I1",
-      "pair_id": "P150",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU299",
+      "condition": "control"
     },
     {
-      "decision_id": "P150::I2",
-      "pair_id": "P150",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU300",
+      "condition": "control"
     },
     {
-      "decision_id": "P151::I1",
-      "pair_id": "P151",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU301",
+      "condition": "control"
     },
     {
-      "decision_id": "P151::I2",
-      "pair_id": "P151",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU302",
+      "condition": "control"
     },
     {
-      "decision_id": "P152::I1",
-      "pair_id": "P152",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU303",
+      "condition": "null"
     },
     {
-      "decision_id": "P152::I2",
-      "pair_id": "P152",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU304",
+      "condition": "null"
     },
     {
-      "decision_id": "P153::I1",
-      "pair_id": "P153",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU305",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P153::I2",
-      "pair_id": "P153",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU306",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P154::I1",
-      "pair_id": "P154",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU307",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P154::I2",
-      "pair_id": "P154",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU308",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P155::I1",
-      "pair_id": "P155",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU309",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P155::I2",
-      "pair_id": "P155",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU310",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P156::I1",
-      "pair_id": "P156",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU311",
+      "condition": "control"
     },
     {
-      "decision_id": "P156::I2",
-      "pair_id": "P156",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU312",
+      "condition": "control"
     },
     {
-      "decision_id": "P157::I1",
-      "pair_id": "P157",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU313",
+      "condition": "null"
     },
     {
-      "decision_id": "P157::I2",
-      "pair_id": "P157",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU314",
+      "condition": "null"
     },
     {
-      "decision_id": "P158::I1",
-      "pair_id": "P158",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU315",
+      "condition": "control"
     },
     {
-      "decision_id": "P158::I2",
-      "pair_id": "P158",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU316",
+      "condition": "control"
     },
     {
-      "decision_id": "P159::I1",
-      "pair_id": "P159",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU317",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P159::I2",
-      "pair_id": "P159",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU318",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P160::I1",
-      "pair_id": "P160",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU319",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P160::I2",
-      "pair_id": "P160",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU320",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P161::I1",
-      "pair_id": "P161",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU321",
+      "condition": "control"
     },
     {
-      "decision_id": "P161::I2",
-      "pair_id": "P161",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU322",
+      "condition": "control"
     },
     {
-      "decision_id": "P162::I1",
-      "pair_id": "P162",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU323",
+      "condition": "control"
     },
     {
-      "decision_id": "P162::I2",
-      "pair_id": "P162",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU324",
+      "condition": "control"
     },
     {
-      "decision_id": "P163::I1",
-      "pair_id": "P163",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU325",
+      "condition": "control"
     },
     {
-      "decision_id": "P163::I2",
-      "pair_id": "P163",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU326",
+      "condition": "control"
     },
     {
-      "decision_id": "P164::I1",
-      "pair_id": "P164",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU327",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P164::I2",
-      "pair_id": "P164",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU328",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P165::I1",
-      "pair_id": "P165",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU329",
+      "condition": "null"
     },
     {
-      "decision_id": "P165::I2",
-      "pair_id": "P165",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU330",
+      "condition": "null"
     },
     {
-      "decision_id": "P166::I1",
-      "pair_id": "P166",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU331",
+      "condition": "null"
     },
     {
-      "decision_id": "P166::I2",
-      "pair_id": "P166",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU332",
+      "condition": "null"
     },
     {
-      "decision_id": "P167::I1",
-      "pair_id": "P167",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU333",
+      "condition": "null"
     },
     {
-      "decision_id": "P167::I2",
-      "pair_id": "P167",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU334",
+      "condition": "null"
     },
     {
-      "decision_id": "P168::I1",
-      "pair_id": "P168",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU335",
+      "condition": "control"
     },
     {
-      "decision_id": "P168::I2",
-      "pair_id": "P168",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU336",
+      "condition": "control"
     },
     {
-      "decision_id": "P169::I1",
-      "pair_id": "P169",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU337",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P169::I2",
-      "pair_id": "P169",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU338",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P170::I1",
-      "pair_id": "P170",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU339",
+      "condition": "control"
     },
     {
-      "decision_id": "P170::I2",
-      "pair_id": "P170",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU340",
+      "condition": "control"
     },
     {
-      "decision_id": "P171::I1",
-      "pair_id": "P171",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU341",
+      "condition": "control"
     },
     {
-      "decision_id": "P171::I2",
-      "pair_id": "P171",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU342",
+      "condition": "control"
     },
     {
-      "decision_id": "P172::I1",
-      "pair_id": "P172",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU343",
+      "condition": "control"
     },
     {
-      "decision_id": "P172::I2",
-      "pair_id": "P172",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU344",
+      "condition": "control"
     },
     {
-      "decision_id": "P173::I1",
-      "pair_id": "P173",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU345",
+      "condition": "control"
     },
     {
-      "decision_id": "P173::I2",
-      "pair_id": "P173",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU346",
+      "condition": "control"
     },
     {
-      "decision_id": "P174::I1",
-      "pair_id": "P174",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU347",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P174::I2",
-      "pair_id": "P174",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU348",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P175::I1",
-      "pair_id": "P175",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU349",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P175::I2",
-      "pair_id": "P175",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU350",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P176::I1",
-      "pair_id": "P176",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU351",
+      "condition": "null"
     },
     {
-      "decision_id": "P176::I2",
-      "pair_id": "P176",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU352",
+      "condition": "null"
     },
     {
-      "decision_id": "P177::I1",
-      "pair_id": "P177",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU353",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P177::I2",
-      "pair_id": "P177",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU354",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P178::I1",
-      "pair_id": "P178",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU355",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P178::I2",
-      "pair_id": "P178",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU356",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P179::I1",
-      "pair_id": "P179",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU357",
+      "condition": "null"
     },
     {
-      "decision_id": "P179::I2",
-      "pair_id": "P179",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU358",
+      "condition": "null"
     },
     {
-      "decision_id": "P180::I1",
-      "pair_id": "P180",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU359",
+      "condition": "control"
     },
     {
-      "decision_id": "P180::I2",
-      "pair_id": "P180",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU360",
+      "condition": "control"
     },
     {
-      "decision_id": "P181::I1",
-      "pair_id": "P181",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU361",
+      "condition": "null"
     },
     {
-      "decision_id": "P181::I2",
-      "pair_id": "P181",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU362",
+      "condition": "null"
     },
     {
-      "decision_id": "P182::I1",
-      "pair_id": "P182",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU363",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P182::I2",
-      "pair_id": "P182",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU364",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P183::I1",
-      "pair_id": "P183",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU365",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P183::I2",
-      "pair_id": "P183",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU366",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P184::I1",
-      "pair_id": "P184",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU367",
+      "condition": "null"
     },
     {
-      "decision_id": "P184::I2",
-      "pair_id": "P184",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU368",
+      "condition": "null"
     },
     {
-      "decision_id": "P185::I1",
-      "pair_id": "P185",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU369",
+      "condition": "null"
     },
     {
-      "decision_id": "P185::I2",
-      "pair_id": "P185",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU370",
+      "condition": "null"
     },
     {
-      "decision_id": "P186::I1",
-      "pair_id": "P186",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU371",
+      "condition": "control"
     },
     {
-      "decision_id": "P186::I2",
-      "pair_id": "P186",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU372",
+      "condition": "control"
     },
     {
-      "decision_id": "P187::I1",
-      "pair_id": "P187",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU373",
+      "condition": "control"
     },
     {
-      "decision_id": "P187::I2",
-      "pair_id": "P187",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU374",
+      "condition": "control"
     },
     {
-      "decision_id": "P188::I1",
-      "pair_id": "P188",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU375",
+      "condition": "control"
     },
     {
-      "decision_id": "P188::I2",
-      "pair_id": "P188",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU376",
+      "condition": "control"
     },
     {
-      "decision_id": "P189::I1",
-      "pair_id": "P189",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU377",
+      "condition": "control"
     },
     {
-      "decision_id": "P189::I2",
-      "pair_id": "P189",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU378",
+      "condition": "control"
     },
     {
-      "decision_id": "P190::I1",
-      "pair_id": "P190",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU379",
+      "condition": "control"
     },
     {
-      "decision_id": "P190::I2",
-      "pair_id": "P190",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU380",
+      "condition": "control"
     },
     {
-      "decision_id": "P191::I1",
-      "pair_id": "P191",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU381",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P191::I2",
-      "pair_id": "P191",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU382",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P192::I1",
-      "pair_id": "P192",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU383",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P192::I2",
-      "pair_id": "P192",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU384",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P193::I1",
-      "pair_id": "P193",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU385",
+      "condition": "null"
     },
     {
-      "decision_id": "P193::I2",
-      "pair_id": "P193",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU386",
+      "condition": "null"
     },
     {
-      "decision_id": "P194::I1",
-      "pair_id": "P194",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU387",
+      "condition": "control"
     },
     {
-      "decision_id": "P194::I2",
-      "pair_id": "P194",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU388",
+      "condition": "control"
     },
     {
-      "decision_id": "P195::I1",
-      "pair_id": "P195",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU389",
+      "condition": "control"
     },
     {
-      "decision_id": "P195::I2",
-      "pair_id": "P195",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU390",
+      "condition": "control"
     },
     {
-      "decision_id": "P196::I1",
-      "pair_id": "P196",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU391",
+      "condition": "null"
     },
     {
-      "decision_id": "P196::I2",
-      "pair_id": "P196",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU392",
+      "condition": "null"
     },
     {
-      "decision_id": "P197::I1",
-      "pair_id": "P197",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU393",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P197::I2",
-      "pair_id": "P197",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU394",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P198::I1",
-      "pair_id": "P198",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU395",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P198::I2",
-      "pair_id": "P198",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU396",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P199::I1",
-      "pair_id": "P199",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU397",
+      "condition": "null"
     },
     {
-      "decision_id": "P199::I2",
-      "pair_id": "P199",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU398",
+      "condition": "null"
     },
     {
-      "decision_id": "P200::I1",
-      "pair_id": "P200",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU399",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P200::I2",
-      "pair_id": "P200",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU400",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P201::I1",
-      "pair_id": "P201",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU401",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P201::I2",
-      "pair_id": "P201",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU402",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P202::I1",
-      "pair_id": "P202",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU403",
+      "condition": "control"
     },
     {
-      "decision_id": "P202::I2",
-      "pair_id": "P202",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU404",
+      "condition": "control"
     },
     {
-      "decision_id": "P203::I1",
-      "pair_id": "P203",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU405",
+      "condition": "null"
     },
     {
-      "decision_id": "P203::I2",
-      "pair_id": "P203",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU406",
+      "condition": "null"
     },
     {
-      "decision_id": "P204::I1",
-      "pair_id": "P204",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU407",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P204::I2",
-      "pair_id": "P204",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU408",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P205::I1",
-      "pair_id": "P205",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU409",
+      "condition": "control"
     },
     {
-      "decision_id": "P205::I2",
-      "pair_id": "P205",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU410",
+      "condition": "control"
     },
     {
-      "decision_id": "P206::I1",
-      "pair_id": "P206",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU411",
+      "condition": "null"
     },
     {
-      "decision_id": "P206::I2",
-      "pair_id": "P206",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU412",
+      "condition": "null"
     },
     {
-      "decision_id": "P207::I1",
-      "pair_id": "P207",
-      "condition": "null",
-      "variant": "I1"
+      "decision_id": "DU413",
+      "condition": "null"
     },
     {
-      "decision_id": "P207::I2",
-      "pair_id": "P207",
-      "condition": "null",
-      "variant": "I2"
+      "decision_id": "DU414",
+      "condition": "null"
     },
     {
-      "decision_id": "P208::I1",
-      "pair_id": "P208",
-      "condition": "control",
-      "variant": "I1"
+      "decision_id": "DU415",
+      "condition": "control"
     },
     {
-      "decision_id": "P208::I2",
-      "pair_id": "P208",
-      "condition": "control",
-      "variant": "I2"
+      "decision_id": "DU416",
+      "condition": "control"
     },
     {
-      "decision_id": "P209::I1",
-      "pair_id": "P209",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU417",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P209::I2",
-      "pair_id": "P209",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU418",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P210::I1",
-      "pair_id": "P210",
-      "condition": "treatment",
-      "variant": "I1"
+      "decision_id": "DU419",
+      "condition": "treatment"
     },
     {
-      "decision_id": "P210::I2",
-      "pair_id": "P210",
-      "condition": "treatment",
-      "variant": "I2"
+      "decision_id": "DU420",
+      "condition": "treatment"
     }
   ],
   "instances": [
