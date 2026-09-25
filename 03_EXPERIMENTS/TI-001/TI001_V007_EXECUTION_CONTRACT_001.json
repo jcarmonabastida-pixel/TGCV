@@ -1,0 +1,88 @@
+{
+  "record_type":"TGCV_TI001_V007_EXECUTION_CONTRACT",
+  "contract_id":"TI001_V007_EXECUTION_CONTRACT_001",
+  "date":"2026-09-25",
+  "status":"CONTRACT — IMPLEMENTATION PRECONDITION",
+  "scientific_execution":"NOT_AUTHORIZED",
+  "purpose":"Bind the frozen V007 scientific design to the runtime, execution, independent reconstruction, and analysis components before any authorization.",
+  "scientific_design":{
+    "fixture_id":"TI001-v007-candidate-001",
+    "fixture_path":"03_EXPERIMENTS/TI-001/TI001_V007_CANDIDATE_FIXTURE_001.json",
+    "fixture_git_blob_sha":"663383b27b567d73757ac967986d0b9b949dc50e",
+    "freeze_audit_path":"03_EXPERIMENTS/TI-001/TI001_V007_FREEZE_AUDIT_001.json",
+    "pair_count":210,
+    "decision_count":420,
+    "conditions":["control","treatment","null"],
+    "condition_allocation":{"control":70,"treatment":70,"null":70},
+    "action_space":["A","B"],
+    "estimand":"E(Y_pair|Treatment)-E(Y_pair|Control)",
+    "primary_outcome":"Y_pair=(Y_I1+Y_I2)/2"
+  },
+  "primary_analysis":{
+    "unit":"pair",
+    "Y_definition":"Y=1 when selected transformation is the branch enabling C; otherwise Y=0.",
+    "test":"bilateral pair-level permutation test",
+    "alpha":0.05,
+    "confidence_interval":"95% CI by inversion of the permutation procedure",
+    "null_excluded_from_primary_contrast":true
+  },
+  "randomization":{
+    "condition_assignment":"restricted random permutation exactly 70/70/70 at pair level",
+    "presentation_order":"restricted random permutation exactly 105/105",
+    "algorithm":"xorshift32 + Fisher-Yates",
+    "seed":20260925
+  },
+  "runtime_binding":{
+    "provider_status":"PENDING_V007_IMPLEMENTATION",
+    "model":"PENDING",
+    "api_surface":"PENDING",
+    "reasoning":"must provide bounded observable A/B response",
+    "tools":[],
+    "retries":false
+  },
+  "executor_binding":{
+    "executor_status":"PENDING_V007_IMPLEMENTATION",
+    "executor2_status":"PENDING_INDEPENDENT_RECONSTRUCTION",
+    "analysis_status":"PENDING_IMPLEMENTATION_AND_VALIDATION"
+  },
+  "isolation_boundary":{
+    "condition_label_to_agent":false,
+    "pair_id_to_agent":false,
+    "variant_label_to_agent":false,
+    "successor_realization_before_decision":false,
+    "future_successor_information":"treatment receives only the specified predecision structural rules; control and null do not receive future structure",
+    "utility":false,
+    "reward":false,
+    "value":false,
+    "performance_feedback":false,
+    "external_tools":false,
+    "conversation_state":false
+  },
+  "power_planning":{
+    "assigned_pairs_per_condition":70,
+    "target_power":0.80,
+    "MDE":0.25,
+    "formal_discrete_power_simulation_performed":false,
+    "blocking_status":"must be resolved before final sample-size freeze/authorization"
+  },
+  "execution_boundary":{
+    "explicit_user_authorization_required":true,
+    "preflight_must_pass":true,
+    "executor2_must_pass":true,
+    "analysis_validation_must_pass":true,
+    "no_scientific_execution_during_preflight":true,
+    "invalid_response":"no retry and no recoding"
+  },
+  "required_pre_authorization_checks":[
+    "canonical provider Git blob identity resolved",
+    "provider runtime binding verified",
+    "V007 executor identity resolved",
+    "independent Executor-2 identity and independence verified",
+    "exact frozen fixture identity verified",
+    "primary estimand and analysis identity verified",
+    "formal discrete power simulation completed or explicitly resolved by a documented design decision",
+    "full V007 compatibility/readiness preflight PASS",
+    "explicit user authorization after all checks"
+  ],
+  "authorization_rule":"This contract does not authorize scientific execution."
+}
