@@ -1,0 +1,21 @@
+{
+  "record_type": "TGCV_TI001_V007_SCIENTIFIC_EXECUTOR_PREFLIGHT",
+  "status": "PREFLIGHT_PASS",
+  "scientific_execution": "NOT_PERFORMED",
+  "executor_commit": "70dad5d4cf770e675d2dc419a1854682cc6fc9ad",
+  "corrected_criterion": "no_model_import = absence of OpenAI/model-call imports in executor; model decisions are supplied as input",
+  "checks": {
+    "provider_input_required": true,
+    "no_model_import": true,
+    "v007_identity": true,
+    "fixture_210_pairs": true,
+    "decision_units_420": true,
+    "unit_fixture_binding": true,
+    "decision_output_required": true,
+    "allowed_ab": true,
+    "successor_after_decision": true,
+    "exact_420_output": true,
+    "no_scientific_execution_on_import": true,
+    "syntax_newline": true
+  }
+}
