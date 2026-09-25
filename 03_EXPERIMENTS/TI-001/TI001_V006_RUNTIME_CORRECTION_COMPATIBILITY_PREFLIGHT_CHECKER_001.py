@@ -11,6 +11,8 @@ EXPECTED_FIXTURE_CANONICAL_SHA256="bc7e0e69cb56337145593e67fb55c1a1b5042db661520
 EXPECTED_PROVIDER="TI001_DECISION_AGENT_PROVIDER_V006_001"
 EXPECTED_EXECUTOR="TI001_V005_SCIENTIFIC_EXECUTOR_001"
 EXPECTED_EXECUTOR_GIT_BLOB_SHA="28f4dabedf1b053c0928f96c323c5e7d99feef5d"
+EXPECTED_EXECUTOR2="TI001_V006_EXECUTOR_2_RECONSTRUCTION_001"
+EXPECTED_EXECUTOR2_GIT_BLOB_SHA="8fd84e372de023e5d8b9e569d584a4541f59ef2d"
 EXPECTED_MODEL="gpt-5.6-luna"
 EXPECTED_CONTRACT="TI001_V006_EXECUTION_CONTRACT_001"
 EXPECTED_ESTIMAND="matched_condition_difference_in_transformation_selection"
@@ -49,8 +51,12 @@ def main(argv):
     checks["executor_binding_pass"]=EXPECTED_EXECUTOR in executor and "TI001_V005_EXECUTION_CONTRACT_001" in executor and EXPECTED_FIXTURE_GIT_BLOB_SHA in executor and executor_blob_sha==EXPECTED_EXECUTOR_GIT_BLOB_SHA
     checks["executor_no_successor_dependency_pass"]=not any(t in executor for t in ['fixture["successors"]','record["successors"]','successor =','transitions ='])
     checks["executor_estimand_pass"]=EXPECTED_ESTIMAND in executor and not any(t in executor for t in ["calculate_composite_ti_score","compute_composite_ti_score","composite_ti_score =","composite_ti_score="])
+    executor2_blob_sha=hashlib.sha1(("blob "+str(len(executor2.encode("utf-8")))+"\\0").encode()+executor2.encode("utf-8")).hexdigest()
     checks["executor2_independence_pass"]=all(t not in executor2 for t in ["V005_DECISION_AGENT_PROVIDER","V005_SCIENTIFIC_EXECUTOR","Executor-1"])
-    checks["executor2_hash_pass"]=EXPECTED_FIXTURE_GIT_BLOB_SHA in executor2
+    checks["executor2_hash_pass"]=EXPECTED_EXECUTOR2 in executor2 and executor2_blob_sha==EXPECTED_EXECUTOR2_GIT_BLOB_SHA
+    checks["executor2_fixture_identity_pass"]=EXPECTED_FIXTURE_GIT_BLOB_SHA in executor2 and EXPECTED_FIXTURE_CANONICAL_SHA256 in executor2
+    checks["executor2_estimand_pass"]=EXPECTED_ESTIMAND in executor2
+    checks["executor2_no_successor_dependency_pass"]="successor_information_consumed" in executor2 and '"successor_information_consumed": False' in executor2
     checks["contract_binding_pass"]=EXPECTED_FIXTURE_GIT_BLOB_SHA in contract and EXPECTED_ESTIMAND in contract and EXPECTED_PROVIDER in contract and EXPECTED_EXECUTOR in contract
     checks["runtime_spec_pass"]=runtime_spec.get("authorized_runtime_change",{}).get("parameter")=="reasoning" and runtime_spec.get("authorized_runtime_change",{}).get("value")=={"effort":"none"} and runtime_spec.get("status")=="SPECIFICATION_ONLY — NO SCIENTIFIC EXECUTION AUTHORIZED"
     checks["runtime_model_pass"]=EXPECTED_MODEL in json.dumps(runtime_spec,sort_keys=True) and runtime_spec.get("frozen_runtime_parameters",{}).get("max_output_tokens")==64
