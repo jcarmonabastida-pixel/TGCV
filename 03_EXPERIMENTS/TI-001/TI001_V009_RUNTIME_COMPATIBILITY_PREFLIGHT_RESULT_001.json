@@ -1,0 +1,20 @@
+{
+  "preflight_id":"TI001-V009-RUNTIME-COMPATIBILITY-PREFLIGHT-001",
+  "checks":{
+    "diagnostic_only":true,
+    "scientific_execution_not_performed":true,
+    "status_completed":true,
+    "incomplete_details_absent":true,
+    "output_present":true,
+    "model_identity":true,
+    "top_p":true,
+    "max_output_tokens":true,
+    "temperature_omitted":true,
+    "tools_empty":true,
+    "conversation_absent":true,
+    "previous_response_absent":true,
+    "store_false":true
+  },
+  "status":"PASS",
+  "scientific_execution":"NOT_PERFORMED"
+}
