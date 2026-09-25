@@ -25,15 +25,15 @@ checks["A3_EXPLICIT_DECISION_INSTRUCTION"] = (
     and "exactly one token: A or B" in source
 )
 checks["A4_VISIBLE_FIELDS_EXACT"] = (
-    "ALLOWED_VISIBLE_FIELDS = ("context", "available_actions", "future_structure")"
+    'ALLOWED_VISIBLE_FIELDS = ("context", "available_actions", "future_structure")'
     in source
 )
 checks["A5_HIDDEN_FIELDS_DECLARED"] = (
-    "HIDDEN_FIELDS = ("decision_id", "pair_id", "condition", "presentation")"
+    'HIDDEN_FIELDS = ("decision_id", "pair_id", "condition", "presentation")'
     in source
 )
 checks["A6_VALID_OUTPUT_DOMAIN_EXACT"] = (
-    "VALID_OUTPUTS = ("A", "B")" in source
+    'VALID_OUTPUTS = ("A", "B")' in source
 )
 checks["A7_NO_JSON_OUTPUT_EXTRACTION"] = (
     "json.loads" not in source and "json.load" not in source
