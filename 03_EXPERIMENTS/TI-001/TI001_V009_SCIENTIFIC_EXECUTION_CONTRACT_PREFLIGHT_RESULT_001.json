@@ -1,0 +1,29 @@
+{
+  "preflight_id": "TI001-V009-SCIENTIFIC-EXECUTION-CONTRACT-PREFLIGHT-001",
+  "checks": {
+    "contract_exists": true,
+    "runtime_spec_exists": true,
+    "diagnostic_result_exists": true,
+    "diagnostic_preflight_exists": true,
+    "fixture_exists": true,
+    "contract_status_not_authorized": true,
+    "runtime_spec_commit_bound": true,
+    "model_identity": true,
+    "top_p": true,
+    "max_output_tokens": true,
+    "reasoning_effort_none": true,
+    "temperature_omitted": true,
+    "tools_empty": true,
+    "fixture_identity": true,
+    "fixture_sha256_matches_local": true,
+    "decision_domain_AB": true,
+    "diagnostic_pass": true,
+    "diagnostic_scientific_not_performed": true,
+    "diagnostic_reasoning_none": true,
+    "diagnostic_reasoning_tokens_zero": true,
+    "no_retry_recode": true,
+    "separate_authorization_required": true
+  },
+  "status": "PASS",
+  "scientific_execution": "NOT_PERFORMED"
+}
