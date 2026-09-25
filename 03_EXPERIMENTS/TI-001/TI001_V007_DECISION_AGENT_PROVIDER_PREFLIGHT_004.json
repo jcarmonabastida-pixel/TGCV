@@ -1,0 +1,29 @@
+{
+  "record_type": "TGCV_TI001_V007_DECISION_AGENT_PROVIDER_PREFLIGHT",
+  "status": "PREFLIGHT_PASS",
+  "scientific_execution": "NOT_PERFORMED",
+  "provider_commit": "1c653078103b38d36c9982cf292089dc531338ef",
+  "provider_blob_sha256": "c95c0f35f1e1ec1d6838756ac119cf742694aaeb",
+  "checks": {
+    "provider_identity": true,
+    "model_bound": true,
+    "v007_fixture_identity": true,
+    "fixture_210_pairs": true,
+    "condition_balance": true,
+    "decision_units_420": true,
+    "action_space_ab_only": true,
+    "identity_hidden": true,
+    "future_structure_isolation": true,
+    "successor_not_exposed": true,
+    "explicit_execute_gate": true,
+    "scientific_calls_guarded": true,
+    "no_retry": true,
+    "output_restriction": true,
+    "syntax_tail_valid": true
+  },
+  "binding": {
+    "fixture_id": "TI001-v007-candidate-001",
+    "fixture_version": "v007-candidate-001",
+    "fixture_blob_sha256": "663383b27b567d73757ac967986d0b9b949dc50e"
+  }
+}
