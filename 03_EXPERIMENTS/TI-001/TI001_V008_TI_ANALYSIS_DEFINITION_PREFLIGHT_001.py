@@ -32,7 +32,7 @@ def main():
       "conditions_70_pairs_each": all(sum(u.get("condition")==c for u in units)==140 for c in ("control","treatment","null")),
       "ab_only": all(set(u.get("available_actions",[]))=={"A","B"} for u in units),
       "no_value_reward_utility_performance": all(x in st.lower() for x in ("no individual response is assigned a value score","reward;","utility;","value;","performance;")),
-      "causal_value_excluded": ("does not test a causal relationship" in st.lower() and "causal claim about value" in st.lower() and "does not measure value" in st.lower()),
+      "causal_value_excluded": ("does **not** test a causal relationship" in st.lower() and "does not measure value" in st.lower() and "causal claim about value" in st.lower()),
       "ti_object_defined": "transformational intelligence (ti)" in st.lower() and "future transformation structure" in st.lower(),
       "ti_indicator_required": "predefined ti indicator" in st.lower(),
       "no_scientific_authorization": "scientific_execution: not_authorized" in st.lower(),
