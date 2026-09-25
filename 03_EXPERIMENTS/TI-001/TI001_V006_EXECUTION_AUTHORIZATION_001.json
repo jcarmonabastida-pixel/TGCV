@@ -1,12 +1,12 @@
 {
   "record_type": "TGCV_TI001_V006_EXECUTION_AUTHORIZATION",
   "authorization_id": "TI001_V006_EXECUTION_AUTHORIZATION_001",
-  "authorization_status": "NOT_AUTHORIZED",
-  "scientific_execution": "NOT_AUTHORIZED",
-  "execution_status": "REAUTHORIZATION_REQUIRED",
-  "authorization_action": "PREVIOUS_AUTHORIZATION_INVALIDATED_BY_EXECUTOR_IMPLEMENTATION_CHANGE",
+  "authorization_status": "AUTHORIZED",
+  "scientific_execution": "AUTHORIZED",
+  "execution_status": "AUTHORIZED_NOT_STARTED",
+  "authorization_action": "EXPLICIT_V006_REAUTHORIZATION",
   "scope": "TI-001 V006 runtime-corrected scientific execution only",
-  "canonical_commit": "19816b408390b23aa6dd2933ff1302d7bb104d91",
+  "canonical_commit": "49122409fdcc9bfc54f71cd8ef980fe0dff3a482",
   "authorization_gate": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_GATE_001.md",
   "preflight": {
     "runtime_correction_compatibility_preflight": "03_EXPERIMENTS/TI-001/TI001_V006_RUNTIME_CORRECTION_COMPATIBILITY_PREFLIGHT_RESULT_001.json",
@@ -50,8 +50,8 @@
   "conditions": ["control", "treatment", "null"],
   "authorization_boundary": {
     "explicit_user_authorization_required": true,
-    "this_record_does_not_authorize_execution": true,
-    "scientific_execution_performed": true,
+    "this_record_does_not_authorize_execution": false,
+    "scientific_execution_performed": false,
     "no_silent_retry": true,
     "invalid_or_incomplete_provider_response_is_failure": true
   },
@@ -60,9 +60,9 @@
     "evidence_status": "NOT_ACCEPTED",
     "classification": "UNREPRODUCED PROVIDER RESPONSE ANOMALY — CAUSE UNDETERMINED"
   },
-  "reauthorization_required": {
-    "reason": "Executor implementation changed after the prior explicit V006 authorization.",
+  "reauthorization": {
     "previous_authorization_invalidated": true,
-    "new_explicit_user_authorization_required": true
+    "new_explicit_user_authorization": true,
+    "confirmation_text": "Sí"
   }
 }
