@@ -1,0 +1,30 @@
+{
+  "record_type": "TGCV_TI001_V007_REPRODUCIBILITY_ASSESSMENT",
+  "status": "BLOCKED",
+  "scientific_execution": "NOT_PERFORMED",
+  "fixture_id": "TI001-v007-candidate-001",
+  "fixture_version": "v007-candidate-001",
+  "fixture_blob_sha": "663383b27b567d73757ac967986d0b9b949dc50e",
+  "assessment": {
+    "fixture_is_hash_identified": true,
+    "fixture_is_structurally_inspectable": true,
+    "independent_regeneration_is_currently_specified": false,
+    "independent_executor_2_can_be_implemented_without_inference": false
+  },
+  "basis": [
+    "The V007 fixture declares xorshift32 + Fisher-Yates with seed 20260925.",
+    "Repository history and repository search found no authoritative V007 generator implementation or complete PRNG/Fisher-Yates semantics.",
+    "The missing semantics are sufficient to permit multiple non-equivalent reconstructions."
+  ],
+  "consequence": {
+    "reproducibility_status": "INSUFFICIENT_FOR_INDEPENDENT_RECONSTRUCTION",
+    "executor_2_status": "BLOCKED",
+    "scientific_execution_status": "BLOCKED",
+    "fixture_modification": "NOT_PERMITTED"
+  },
+  "resolution_options": [
+    "recover an authoritative generator/design artifact and bind it to V007",
+    "or create a new design identity with a complete PRNG/Fisher-Yates specification and regenerate/revalidate a new fixture"
+  ],
+  "decision_boundary": "No algorithm variant is selected by this assessment. No fixture bytes are modified."
+}
