@@ -1,12 +1,12 @@
 {
   "record_type": "TGCV_TI001_V006_EXECUTION_AUTHORIZATION",
   "authorization_id": "TI001_V006_EXECUTION_AUTHORIZATION_001",
-  "authorization_status": "AUTHORIZED",
-  "scientific_execution": "AUTHORIZED",
-  "execution_status": "AUTHORIZED_NOT_STARTED",
-  "authorization_action": "EXPLICIT_V006_USER_AUTHORIZATION",
+  "authorization_status": "NOT_AUTHORIZED",
+  "scientific_execution": "NOT_AUTHORIZED",
+  "execution_status": "REAUTHORIZATION_REQUIRED",
+  "authorization_action": "PREVIOUS_AUTHORIZATION_INVALIDATED_BY_EXECUTOR_IMPLEMENTATION_CHANGE",
   "scope": "TI-001 V006 runtime-corrected scientific execution only",
-  "canonical_commit": "716307ffd7bbabb1a66ebca061b25bf51178062f",
+  "canonical_commit": "19816b408390b23aa6dd2933ff1302d7bb104d91",
   "authorization_gate": "03_EXPERIMENTS/TI-001/TI001_EXECUTION_AUTHORIZATION_GATE_001.md",
   "preflight": {
     "runtime_correction_compatibility_preflight": "03_EXPERIMENTS/TI-001/TI001_V006_RUNTIME_CORRECTION_COMPATIBILITY_PREFLIGHT_RESULT_001.json",
@@ -31,9 +31,7 @@
     "model": "gpt-5.6-luna",
     "top_p": 0.98,
     "max_output_tokens": 64,
-    "reasoning": {
-      "effort": "none"
-    },
+    "reasoning": {"effort": "none"},
     "tools": [],
     "tool_choice": "auto",
     "background": false,
@@ -43,20 +41,17 @@
   },
   "executor": {
     "version": "TI001_V005_SCIENTIFIC_EXECUTOR_001",
-    "binding": "UNCHANGED_V005_SCIENTIFIC_DESIGN"
+    "binding": "UNCHANGED_V005_SCIENTIFIC_DESIGN",
+    "git_blob_sha": "469c4c659c820e9c941f3ad68b558f58abd4b448"
   },
   "estimand": "matched_condition_difference_in_transformation_selection",
   "decision_count": 96,
   "condition_count": 3,
-  "conditions": [
-    "control",
-    "treatment",
-    "null"
-  ],
+  "conditions": ["control", "treatment", "null"],
   "authorization_boundary": {
     "explicit_user_authorization_required": true,
-    "this_record_does_not_authorize_execution": false,
-    "scientific_execution_performed": false,
+    "this_record_does_not_authorize_execution": true,
+    "scientific_execution_performed": true,
     "no_silent_retry": true,
     "invalid_or_incomplete_provider_response_is_failure": true
   },
@@ -65,11 +60,9 @@
     "evidence_status": "NOT_ACCEPTED",
     "classification": "UNREPRODUCED PROVIDER RESPONSE ANOMALY — CAUSE UNDETERMINED"
   },
-  "explicit_confirmation": {
-    "user_authorized": true,
-    "confirmation_timestamp": "2026-09-25T00:47:52+00:00",
-    "confirmation_text": "Autorizo",
-    "confirmation_required_before_execution": true,
-    "no_scientific_execution_before_authorization": true
+  "reauthorization_required": {
+    "reason": "Executor implementation changed after the prior explicit V006 authorization.",
+    "previous_authorization_invalidated": true,
+    "new_explicit_user_authorization_required": true
   }
 }
