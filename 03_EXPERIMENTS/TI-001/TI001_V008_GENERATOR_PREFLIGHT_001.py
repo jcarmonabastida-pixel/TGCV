@@ -42,13 +42,15 @@ REQUIRED_GENERATOR_MARKERS = (
     "def fisher_yates(values: list[str], seed: int)",
     'def self_test() -> dict:',
     'raise RuntimeError(',
-    '"BLOCKED: V008 fixture generation requires generator preflight and source hash binding."',
+    '"BLOCKED: V008 fixture generation requires generator preflight "',
+    "and source hash binding.",
     '"scientific_execution": "NOT_PERFORMED"',
 )
 
 
-def sha256_bytes(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
+def git_blob_sha1(data: bytes) -> str:
+    header = f"blob {len(data)}\0".encode("utf-8")
+    return hashlib.sha1(header + data).hexdigest()
 
 
 def load_generator():
@@ -70,8 +72,8 @@ def run_preflight() -> dict:
 
     checks["spec_exists"] = SPEC_PATH.is_file()
     checks["generator_exists"] = GENERATOR_PATH.is_file()
-    checks["spec_sha256"] = sha256_bytes(spec_bytes) == EXPECTED_SPEC_SHA
-    checks["generator_blob_sha256"] = sha256_bytes(generator_bytes) == EXPECTED_GENERATOR_SHA
+    checks["spec_blob_sha1"] = git_blob_sha1(spec_bytes) == EXPECTED_SPEC_SHA
+    checks["generator_blob_sha1"] = git_blob_sha1(generator_bytes) == EXPECTED_GENERATOR_SHA
     checks["implementation_commit_binding_declared"] = bool(EXPECTED_IMPLEMENTATION_COMMIT)
     checks["generator_id"] = EXPECTED_GENERATOR_ID in generator_text
     checks["spec_markers"] = all(marker in spec_text for marker in REQUIRED_SPEC_MARKERS)
@@ -85,8 +87,9 @@ def run_preflight() -> dict:
     checks["self_test_scientific_execution"] = result.get("scientific_execution") == "NOT_PERFORMED"
 
     checks["generation_blocked"] = (
-        "V008 fixture generation requires generator preflight and source hash binding."
+        "BLOCKED: V008 fixture generation requires generator preflight "
         in generator_text
+        and "and source hash binding." in generator_text
         and generator_text.count("def generate") == 1
     )
 
@@ -97,8 +100,8 @@ def run_preflight() -> dict:
         "scientific_execution": "NOT_PERFORMED",
         "fixture_generated": False,
         "expected_implementation_commit": EXPECTED_IMPLEMENTATION_COMMIT,
-        "expected_spec_sha256": EXPECTED_SPEC_SHA,
-        "expected_generator_blob_sha256": EXPECTED_GENERATOR_SHA,
+        "expected_spec_blob_sha1": EXPECTED_SPEC_SHA,
+        "expected_generator_blob_sha1": EXPECTED_GENERATOR_SHA,
         "checks": checks,
     }
 
