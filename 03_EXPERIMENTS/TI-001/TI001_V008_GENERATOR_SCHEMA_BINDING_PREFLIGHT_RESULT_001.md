@@ -8,13 +8,13 @@
 ## Canonical bindings
 
 - Generator blob SHA-1: `f345c41371a189c43b69b707b49b7eb17d140f55`
-- Schema blob SHA-1: `e0da4352f74a518f7e1bc7c9532a171bf5167735`
+- Schema blob SHA-1: `d9539790452b047bc845a19bdcf50b8713a42b2a`
 
 ## Result
 
-All 26 reported binding checks passed.
+All 27 reported binding checks passed, including the reconciled presentation-order rule.
 
-The committed generator is bound to the approved V008 Decision Unit Schema and its deterministic implementation requirements. The preflight confirms materialization structure, allocation, presentation pairing, serialization, fixture SHA-256 calculation, external integrity-manifest binding, explicit generation binding, Executor-2 independence, and the scientific boundary.
+The committed generator is bound to the approved V008 Decision Unit Schema and its deterministic implementation requirements. The preflight confirms materialization structure, allocation, presentation pairing, reconciled presentation ordering, serialization, fixture SHA-256 calculation, external integrity-manifest binding, explicit generation binding, Executor-2 independence, and the scientific boundary.
 
 ## Interpretation
 
