@@ -236,18 +236,17 @@ The integrity manifest is external metadata and does not alter the Decision Unit
 Decision units are ordered by:
 
 1. pair_id lexical order P001 → P210;
-2. within each pair, `I1_FIRST` then `I2_FIRST`.
+2. within each pair, the first decision uses the pair's deterministically shuffled presentation assignment;
+3. the second decision uses the complementary presentation assignment.
 
-Therefore:
+Thus every pair contains exactly one `I1_FIRST` and one `I2_FIRST`, while the pair-level orientation is determined by the approved presentation stream.
 
-- D001 = P001 / I1_FIRST;
-- D002 = P001 / I2_FIRST;
-- D003 = P002 / I1_FIRST;
-- D004 = P002 / I2_FIRST;
-- ...
-- D419 = P210 / I1_FIRST;
-- D420 = P210 / I2_FIRST.
+The presentation stream therefore determines whether the pair is materialized as:
 
+- first `I1_FIRST`, second `I2_FIRST`; or
+- first `I2_FIRST`, second `I1_FIRST`.
+
+For example, D001/D002 are P001 with the pair-level orientation assigned to P001; D003/D004 are P002 with the orientation assigned to P002; and so on through D419/D420 for P210.
 ## 11. Deterministic assignment boundary
 
 Condition assignment and presentation assignment are generated according to the already approved V008 generator specification.
