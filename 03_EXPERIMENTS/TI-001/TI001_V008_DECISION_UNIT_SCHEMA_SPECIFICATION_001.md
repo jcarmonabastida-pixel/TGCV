@@ -205,16 +205,31 @@ Top-level field order:
 4. `seed`
 5. `decision_units`
 
-## 9. Provenance
+## 9. Provenance and integrity binding
 
-The fixture metadata MUST contain:
+The fixture JSON metadata MUST contain exactly:
 
 - `fixture_id = "TI001-V008-FIXTURE-001"`
 - `schema_id = "TI001-V008-DU-SCHEMA-001"`
 - `generator_id = "TI001-V008-FIXTURE-GENERATOR-001"`
 - `seed = 20260925`
 
-The final fixture provenance record must additionally bind the exact generator source blob SHA and schema specification blob SHA.
+The fixture JSON MUST NOT contain additional provenance fields for source hashes.
+
+The external V008 fixture integrity manifest MUST bind the generated fixture to:
+
+- canonical fixture SHA-256, calculated over the exact UTF-8 fixture JSON byte sequence including its single final LF;
+- exact schema specification Git blob SHA-1;
+- exact generator source Git blob SHA-1;
+- fixture_id;
+- schema_id;
+- generator_id;
+- seed;
+- generation timestamp;
+- generation environment identity sufficient for reproducibility;
+- `scientific_execution = NOT_PERFORMED` for generation-stage records.
+
+The integrity manifest is external metadata and does not alter the Decision Unit schema or fixture JSON serialization.
 
 ## 10. Canonical decision-unit ordering
 
