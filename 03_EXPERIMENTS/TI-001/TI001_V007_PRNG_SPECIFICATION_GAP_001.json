@@ -1,0 +1,39 @@
+{
+  "record_type": "TGCV_TI001_V007_PRNG_SPECIFICATION_GAP",
+  "status": "BLOCKED",
+  "scientific_execution": "NOT_PERFORMED",
+  "fixture_id": "TI001-v007-candidate-001",
+  "fixture_version": "v007-candidate-001",
+  "fixture_blob_sha": "663383b27b567d73757ac967986d0b9b949dc50e",
+  "declared_generator": {
+    "version": "TI001-V007-FIXTURE-GENERATOR-001",
+    "algorithm": "xorshift32 + Fisher-Yates",
+    "seed": 20260925
+  },
+  "verification": {
+    "repository_history_search": "NO_EXACT_V007_GENERATOR_FOUND",
+    "search_scope": "03_EXPERIMENTS/TI-001 commit history and repository search",
+    "authoritative_implementation_found": false,
+    "exact_prng_semantics_found": false
+  },
+  "missing_definition": [
+    "xorshift32 word width and unsigned arithmetic semantics",
+    "initial state derivation from seed",
+    "exact shift constants",
+    "state update ordering",
+    "zero-state handling",
+    "Fisher-Yates iteration direction",
+    "random-value-to-index mapping",
+    "modulo versus bounded/unbiased reduction",
+    "warm-up draws, if any",
+    "draw consumption per shuffle position",
+    "PRNG stream separation or sharing between condition and presentation-order assignment"
+  ],
+  "decision": "Do not implement Executor-2 by choosing or inferring an algorithm variant. Do not reverse-engineer the frozen fixture as a substitute for the missing generator specification.",
+  "consequence": {
+    "executor_2_implementation": "BLOCKED",
+    "scientific_execution_authorization": "BLOCKED",
+    "fixture_modification": "NOT_PERMITTED"
+  },
+  "required_resolution": "Recover an authoritative V007 generator/design artifact or explicitly approve and version a complete PRNG/Fisher-Yates specification as a new design identity before Executor-2 implementation."
+}
