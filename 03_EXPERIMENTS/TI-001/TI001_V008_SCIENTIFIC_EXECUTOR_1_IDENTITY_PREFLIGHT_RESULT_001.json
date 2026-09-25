@@ -1,0 +1,29 @@
+{
+  "preflight_id": "TI001-V008-SCIENTIFIC-EXECUTOR-1-IDENTITY-PREFLIGHT-001",
+  "checks": {
+    "runner_identity": true,
+    "fixture_identity": true,
+    "provider_identity": true,
+    "model_identity": true,
+    "api_surface": true,
+    "runtime_top_p": true,
+    "runtime_max_output_tokens": true,
+    "temperature_omitted_from_request": true,
+    "tools_empty": true,
+    "no_conversation": true,
+    "no_previous_response": true,
+    "hidden_fields_not_in_model_input": true,
+    "successor_not_realized": true,
+    "ab_only": true,
+    "no_retry_or_recode_logic": true,
+    "no_analysis": true,
+    "explicit_authorization": true,
+    "scientific_execution_only_after_authorization": true,
+    "preflight_non_scientific": true
+  },
+  "runner_blob_sha1": "04a1b6cf37197499988579e5636c72a445a03a16",
+  "provider_blob_sha1": "c7d066de3481143d878f06bb2c1d791cb7dc54e1",
+  "fixture_sha256": "dd45ae453b5a3d37b4faff34ed829e7aac52ce4ed5a7462bb3546c1a420c2eb9",
+  "scientific_execution": "NOT_PERFORMED",
+  "status": "PASS"
+}
