@@ -1,0 +1,22 @@
+{
+  "preflight_id": "TI001-V009-SCIENTIFIC-RUNNER-IDENTITY-PREFLIGHT-001",
+  "runner_source_sha256": "f96f930344049e303cd7f34ffb47c413cea0c5e5f1117453e9ff5ce967c01599",
+  "checks": {
+    "runner_exists": true,
+    "runner_blob_binding_declared": true,
+    "runner_executor_id": true,
+    "runner_reasoning_explicit": true,
+    "runner_max_output_tokens_64": true,
+    "runner_fixture_sha": true,
+    "runner_provider_blob": true,
+    "runner_domain_AB": true,
+    "runner_no_retry_recode": true,
+    "runner_no_analysis": true,
+    "contract_runner_identity": true,
+    "contract_runtime_reasoning": true,
+    "contract_runtime_max_tokens": true,
+    "contract_still_not_authorized": true
+  },
+  "status": "PASS",
+  "scientific_execution": "NOT_PERFORMED"
+}
