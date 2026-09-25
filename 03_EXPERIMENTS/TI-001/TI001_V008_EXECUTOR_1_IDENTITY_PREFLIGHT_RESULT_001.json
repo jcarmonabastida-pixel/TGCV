@@ -1,0 +1,16 @@
+{
+  "preflight_id": "TI001-V008-EXECUTOR-1-IDENTITY-PREFLIGHT-001",
+  "checks": {
+    "executor_identity": true,
+    "fixture_identity": true,
+    "schema_identity": true,
+    "provider_identity": true,
+    "decision_count": true,
+    "action_space_ab": true,
+    "no_successor_realization": true,
+    "scientific_execution_not_performed": true
+  },
+  "executor_blob_sha1": "533dc44c30331bcb561712d6a0a762660dd7737f",
+  "scientific_execution": "NOT_PERFORMED",
+  "status": "PASS"
+}
