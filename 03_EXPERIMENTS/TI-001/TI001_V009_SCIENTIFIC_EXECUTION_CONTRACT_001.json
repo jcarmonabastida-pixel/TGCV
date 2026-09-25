@@ -1,0 +1,104 @@
+{
+  "contract_id": "TI001-V009-SCIENTIFIC-EXECUTION-CONTRACT-001",
+  "status": "CONTRACT — SCIENTIFIC EXECUTION NOT AUTHORIZED",
+  "experiment": "TI-001",
+  "version": "V009",
+  "purpose": "Runtime-corrected repeat of TI-001 V008 after V008 produced no valid A/B decisions because max_output_tokens=16 was exhausted by reasoning.",
+  "scientific_object": "Transformational Intelligence",
+  "interpretation_boundary": {
+    "question": "Determine whether an agent, when provided information about a future transformation structure, modifies its present decision systematically in orientation to that future structure.",
+    "not_a_causal_value_test": true,
+    "prohibited_interpretations": [
+      "delta_T_acc_to_delta_value",
+      "reward_effect",
+      "utility_effect",
+      "performance_effect",
+      "task_success_effect",
+      "external_outcome_effect"
+    ]
+  },
+  "runtime_specification": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V009_SCIENTIFIC_RUNTIME_SPECIFICATION_001.md",
+    "commit": "0a77b62f45a64bae192162f430081cb029df2d34",
+    "model": "gpt-5.6-luna",
+    "api": "Responses API",
+    "top_p": 0.98,
+    "max_output_tokens": 64,
+    "temperature": null,
+    "reasoning": {"effort": "none"},
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "store": false,
+    "previous_response_id": null,
+    "conversation": null
+  },
+  "scientific_fixture": {
+    "version": "V008",
+    "path": "03_EXPERIMENTS/TI-001/generated/V008/TI001_V008_FIXTURE_001.json",
+    "sha256": "dd45ae453b5a3d37b4faff34ed829e7aac52ce4ed5a7462bb3546c1a420c2eb9",
+    "git_blob": "3ff971544f98c8d810173493cd49d54c46070952",
+    "decision_units": 420,
+    "pairs": 210,
+    "conditions": {
+      "control": 70,
+      "treatment": 70,
+      "null": 70
+    },
+    "orientation": {
+      "I1_FIRST": 105,
+      "I2_FIRST": 105
+    }
+  },
+  "decision_schema": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V008_DECISION_UNIT_SCHEMA_SPECIFICATION_001.md",
+    "blob": "d9539790452b047bc845a19bdcf50b8713a42b2a",
+    "visible_fields": ["context", "available_actions", "future_structure"],
+    "hidden_fields": ["decision_id", "pair_id", "condition", "presentation"],
+    "allowed_decisions": ["A", "B"]
+  },
+  "provider": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V008_DECISION_AGENT_PROVIDER_001.py",
+    "commit": "283a25017d3fcad753c9919129c83aa8c1070667",
+    "blob": "c7d066de3481143d878f06bb2c1d791cb7dc54e1",
+    "invariants": [
+      "hidden fields never enter model input",
+      "only A/B decisions accepted",
+      "successor must not be realized",
+      "invalid output is invalid; no retry or recoding"
+    ]
+  },
+  "required_preconditions": [
+    "V009 scientific runtime specification integrity PASS",
+    "V009 runtime diagnostic 002 PASS",
+    "V009 runtime diagnostic 002 preflight PASS",
+    "fixture identity PASS",
+    "provider identity PASS",
+    "scientific runner identity PASS",
+    "Executor-2 independent reconstruction PASS",
+    "analysis definition and indicator integrity PASS",
+    "final pre-authorization gate PASS",
+    "explicit user authorization"
+  ],
+  "execution_controls": {
+    "scientific_execution_before_all_preconditions": false,
+    "retry": false,
+    "recode": false,
+    "analysis_during_execution": false,
+    "value_or_reward_input": false,
+    "successor_realization": false,
+    "v008_modification": false
+  },
+  "expected_execution_record": {
+    "records": 420,
+    "valid_decision_domain": ["A", "B"],
+    "invalid_outputs_are_not_repaired": true,
+    "runtime_errors_are_recorded": true,
+    "raw_response_and_provenance_persisted": true
+  },
+  "authorization": {
+    "contract_authorizes_science": false,
+    "separate_final_gate_required": true,
+    "separate_explicit_user_authorization_required": true
+  }
+}
