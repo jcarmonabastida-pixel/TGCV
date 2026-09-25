@@ -1,0 +1,29 @@
+{
+  "diagnostic_id": "TI001-V009-RUNTIME-DIAGNOSTIC-002",
+  "scientific_execution": "NOT_PERFORMED",
+  "diagnostic_only": true,
+  "response_id": "resp_0b72f4e3679d8115016ab6a8727cb487d2bad0a2fae89d8067",
+  "status": "completed",
+  "output_text": "A",
+  "incomplete_details": null,
+  "model": "gpt-5.6-luna",
+  "generation_configuration": {
+    "top_p": 0.98,
+    "max_output_tokens": 64,
+    "reasoning": {"effort": "none"},
+    "tools": [],
+    "tool_choice": "auto",
+    "background": false,
+    "previous_response_id": null,
+    "conversation": null,
+    "store": false
+  },
+  "usage": {
+    "input_tokens": 326,
+    "input_tokens_details": {"cache_write_tokens": 0, "cached_tokens": 0},
+    "output_tokens": 5,
+    "output_tokens_details": {"reasoning_tokens": 0},
+    "total_tokens": 331
+  },
+  "status_assessment": "PASS"
+}
