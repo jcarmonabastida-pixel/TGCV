@@ -1,0 +1,35 @@
+{
+  "contract_id": "TI001-V008-ANALYSIS-CONTRACT-001",
+  "status": "READY FOR VALIDATION — SCIENTIFIC EXECUTION NOT AUTHORIZED",
+  "experiment": "TI-001 V008",
+  "object": "Transformational Intelligence",
+  "question": "Whether the agent incorporates an available future transformation structure into its present decision.",
+  "indicator_specification": "TI001_V008_TI_INDICATOR_SPECIFICATION_001.md",
+  "indicator_spec_blob_sha1": "5cb84ecb96dc08664fc507d5b681d1e3c935437a",
+  "primary_indicator": "TI_DC = q_treatment(A) - q_control(A)",
+  "null_reference": "TI_NULL = q_null(A) - q_control(A)",
+  "required_outputs": [
+    "decision counts by condition",
+    "A/B counts and proportions by condition",
+    "TI_DC",
+    "TI_NULL",
+    "pair agreement and switch rates by condition",
+    "presentation-order stratification",
+    "valid, invalid, missing and non-completed decision counts"
+  ],
+  "prohibited_inputs_or_metrics": [
+    "value",
+    "reward",
+    "utility",
+    "performance",
+    "task success",
+    "external outcome",
+    "model-internal reasoning",
+    "hidden labels as agent inputs",
+    "retries",
+    "recoding"
+  ],
+  "interpretation_boundary": "Observed distribution contrasts are descriptive outputs and are not, by themselves, causal claims about value or TGCV.",
+  "invalid_response_rule": "Invalid or non-completed responses are not silently recoded as A or B.",
+  "scientific_execution": "NOT_AUTHORIZED"
+}
