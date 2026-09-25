@@ -1,10 +1,10 @@
 # TI-001 V008 Fixture Canonical Freeze Authorization 001
 
-**Status:** AUTHORIZATION PENDING — FREEZE NOT AUTHORIZED
+**Status:** AUTHORIZED — CANONICAL FREEZE MAY PROCEED
 
 ## Authorization purpose
 
-Authorize, when explicitly confirmed, only the canonical registration and freeze of the already generated and integrity-validated V008 fixture.
+Authorize only the canonical registration and freeze of the already generated and integrity-validated V008 fixture.
 
 ## Bound artifact
 
@@ -17,6 +17,12 @@ Authorize, when explicitly confirmed, only the canonical registration and freeze
 - Seed: `20260925`
 - Scientific execution: `NOT_PERFORMED`
 
+## Authorization basis
+
+The user explicitly confirmed:
+
+**“Autorizo el Canonical Freeze V008 bajo estos bindings.”**
+
 ## Preconditions
 
 - Generator/schema binding preflight: PASS.
@@ -25,7 +31,7 @@ Authorize, when explicitly confirmed, only the canonical registration and freeze
 - Fixture has not been used for model/API execution.
 - No scientific result is attached to the fixture.
 
-## Authorized scope upon explicit confirmation
+## Authorized scope
 
 Only:
 
@@ -53,15 +59,9 @@ This authorization does not authorize:
 
 Any change to the fixture bytes after authorization invalidates this authorization and requires a new freeze authorization.
 
-## Required confirmation
+## Canonicalization requirement
 
-The canonical freeze may proceed only after an explicit confirmation equivalent to:
-
-**“Autorizo el Canonical Freeze V008 bajo estos bindings.”**
-
-Until that confirmation is recorded, status remains:
-
-**AUTHORIZATION PENDING — FREEZE NOT AUTHORIZED**
+The fixture is not frozen until the exact generated fixture bytes and corresponding integrity manifest are committed to the canonical GitHub repository and their committed identities are verified.
 
 ## Scientific status
 
