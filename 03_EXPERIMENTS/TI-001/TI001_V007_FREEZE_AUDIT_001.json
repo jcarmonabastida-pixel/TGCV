@@ -1,0 +1,55 @@
+{
+  "record_type":"TGCV_TI001_V007_FREEZE_AUDIT",
+  "freeze_audit_id":"TI001_V007_FREEZE_AUDIT_001",
+  "date":"2026-09-25",
+  "status":"PASS",
+  "package_status":"FROZEN",
+  "scientific_execution":"NOT_AUTHORIZED",
+  "candidate":{
+    "path":"03_EXPERIMENTS/TI-001/TI001_V007_FREEZE_CANDIDATE_001.json",
+    "git_blob_sha":"7e4256c8924b33cad8602b58220dc48f79e0f20c",
+    "status":"FREEZE_CANDIDATE"
+  },
+  "fixture":{
+    "path":"03_EXPERIMENTS/TI-001/TI001_V007_CANDIDATE_FIXTURE_001.json",
+    "git_blob_sha":"663383b27b567d73757ac967986d0b9b949dc50e",
+    "status":"CANDIDATE",
+    "scientific_execution":"NOT_AUTHORIZED"
+  },
+  "checks":{
+    "candidate_identity_resolved":true,
+    "fixture_identity_resolved":true,
+    "fixture_blob_matches_declared_identity":true,
+    "pair_count_210":true,
+    "decision_count_420":true,
+    "condition_balance_70_70_70":true,
+    "order_balance_105_105":true,
+    "fixture_scientific_execution_absent":true,
+    "condition_pair_variant_leakage_absent":true,
+    "future_successor_predecision_leakage_absent":true,
+    "utility_reward_instruction_absent":true,
+    "non_dominance_declared_and_validated":true,
+    "primary_estimand_bound":true,
+    "null_excluded_from_primary_contrast":true,
+    "response_policy_bound":true,
+    "seed_and_algorithm_bound":true,
+    "power_caveat_preserved":true
+  },
+  "observed_fixture_summary":{
+    "pairs":210,
+    "decisions":420,
+    "conditions":{"control":70,"treatment":70,"null":70},
+    "seed":20260925,
+    "algorithm":"xorshift32 + Fisher-Yates",
+    "leakage_detected":false
+  },
+  "power_planning_caveat":{
+    "formal_discrete_power_simulation_performed":false,
+    "status":"planning_candidate_only"
+  },
+  "freeze_decision":{
+    "fixture_modification_after_freeze":"not_permitted_without_new_identity_and_revalidation",
+    "scientific_authorization":"not_granted",
+    "next_gate":"V007 Execution/Analysis Readiness Gate"
+  }
+}
