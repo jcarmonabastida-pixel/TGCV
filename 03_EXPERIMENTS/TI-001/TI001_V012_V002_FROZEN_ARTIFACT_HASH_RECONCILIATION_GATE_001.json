@@ -1,0 +1,31 @@
+{
+  "gate_id": "TI001_V012_V002_FROZEN_ARTIFACT_HASH_RECONCILIATION_GATE_001",
+  "record_type": "TGCV_TI001_V012_V002_FROZEN_ARTIFACT_HASH_RECONCILIATION",
+  "status": "BLOCKED",
+  "disposition": "FROZEN_ARTIFACT_HASH_MISMATCH",
+  "purpose": "Reconcile frozen artifact identity before Execution Package Binding; no scientific execution is authorized by this record.",
+  "artifacts": {
+    "system_prompt": {
+      "frozen_commit": "89d755a11b6d8aa50e76f9f8836e662db5119e1d",
+      "current_main_blob_sha": "865c8113d1f239e1e2f947cc6111bcf3cbd20788",
+      "declared_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
+      "observed_canonical_sha256": "162fe16e59a4a748e82381ce45dea67992c3e2568ea9ae064494d7b7bd8fa360",
+      "match": false
+    },
+    "response_validation": {
+      "frozen_commit": "2a20e610129d7a9505dbbbe9d1d2292102dafc63",
+      "current_main_blob_sha": "652939ebfaf93bbe6d8659430d0b9815066b63e9",
+      "declared_sha256": "30603f52b50c70949b5c9af237e6b3089933b8ef093ba7e53e3d298c3063463c",
+      "observed_canonical_sha256": "44f31ddc1173f4b69d8302b97ed6dc96e4fd559c8865a86b5aaf921cefd43374",
+      "match": false
+    }
+  },
+  "rules": [
+    "Frozen artifacts are not modified by this gate.",
+    "A commit identifier and a content SHA-256 are distinct provenance identities.",
+    "A declared SHA-256 may not be rebound to different content.",
+    "Execution Package Binding remains blocked until the mismatch is resolved by an explicit governance decision."
+  ],
+  "scientific_execution_authorized": false,
+  "scientific_execution_performed": false
+}
