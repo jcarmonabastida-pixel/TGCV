@@ -37,29 +37,61 @@ def expected_records(record):
 
 def validate(fixture):
     failures = []
-    if fixture.get("instance_count") != EXPECTED_COUNT: failures.append("instance_count")
-    if len(fixture.get("instances", [])) != EXPECTED_COUNT: failures.append("instances_length")
-    if fixture.get("fixture_sha256") != EXPECTED_FIXTURE_SHA256: failures.append("fixture_sha256")
-    if canonical_hash(fixture) != EXPECTED_FIXTURE_SHA256: failures.append("canonical_body_hash")
+    if fixture.get("instance_count") != EXPECTED_COUNT:
+        failures.append("instance_count")
+    if len(fixture.get("instances", [])) != EXPECTED_COUNT:
+        failures.append("instances_length")
+
+    # Binding is against the canonical body hash. The fixture need not carry
+    # a redundant self-referential fixture_sha256 field.
+    if canonical_hash(fixture) != EXPECTED_FIXTURE_SHA256:
+        failures.append("canonical_body_hash")
+
     for r in fixture.get("instances", []):
         p = r.get("presentation")
-        if p not in ORDERS: failures.append(f"{r.get('instance_id')}:presentation")
-        if r.get("state", {}).get("T_acc") != ACTIONS: failures.append(f"{r.get('instance_id')}:current_T_acc")
-        if r.get("available_transformations") != ACTIONS: failures.append(f"{r.get('instance_id')}:actions")
-        if r.get("selected_transformation") is not None: failures.append(f"{r.get('instance_id')}:selected_nonnull")
-        if r.get("S_t1") is not None or r.get("T_acc_t1") is not None: failures.append(f"{r.get('instance_id')}:future_revealed")
-        rep = r.get("presentation_representation", {})
-        key = "p1_records" if p == "P1" else "p2_records"
-        if rep.get("p2_order") != ORDERS["P2"]: failures.append(f"{r.get('instance_id')}:p2_order")
-        if rep.get(key) != expected_records(r): failures.append(f"{r.get('instance_id')}:representation")
         cond = r.get("condition")
-        if cond == "NULL" and "future_space_mapping" in r.get("information", {}): failures.append(f"{r.get('instance_id')}:null_future_signal")
-        if cond == "INTACT":
-            if r.get("information", {}).get("future_space_mapping") != {a:r["transition_spec"][a]["T_acc_t1"] for a in ACTIONS}: failures.append(f"{r.get('instance_id')}:intact_mapping")
-        if cond == "SCRAMBLED":
-            mapping = r.get("information", {}).get("future_space_mapping", {})
-            if set(mapping.keys()) != set(ACTIONS): failures.append(f"{r.get('instance_id')}:scrambled_keys")
-            if any(mapping[a] == r["transition_spec"][a]["T_acc_t1"] for a in ACTIONS): failures.append(f"{r.get('instance_id')}:scramble_not_deranged")
+        iid = r.get("instance_id")
+
+        if p not in ORDERS:
+            failures.append(f"{iid}:presentation")
+            continue
+        if r.get("state", {}).get("T_acc") != ACTIONS:
+            failures.append(f"{iid}:current_T_acc")
+        if r.get("available_transformations") != ACTIONS:
+            failures.append(f"{iid}:actions")
+        if r.get("selected_transformation") is not None:
+            failures.append(f"{iid}:selected_nonnull")
+        if r.get("S_t1") is not None or r.get("T_acc_t1") is not None:
+            failures.append(f"{iid}:future_revealed")
+
+        rep = r.get("presentation_representation", {})
+        if cond == "NULL":
+            if rep.get("p1_records") != []:
+                failures.append(f"{iid}:null_p1_representation")
+            if rep.get("p2_records") != []:
+                failures.append(f"{iid}:null_p2_representation")
+            if rep.get("p2_order") != []:
+                failures.append(f"{iid}:null_p2_order")
+            if r.get("information", {}).get("future_space_mapping") is not None:
+                failures.append(f"{iid}:null_future_signal")
+        else:
+            key = "p1_records" if p == "P1" else "p2_records"
+            if rep.get("p2_order") != ORDERS["P2"]:
+                failures.append(f"{iid}:p2_order")
+            if rep.get(key) != expected_records(r):
+                failures.append(f"{iid}:representation")
+
+            if cond == "INTACT":
+                expected = {a: r["transition_spec"][a]["T_acc_t1"] for a in ACTIONS}
+                if r.get("information", {}).get("future_space_mapping") != expected:
+                    failures.append(f"{iid}:intact_mapping")
+            elif cond == "SCRAMBLED":
+                mapping = r.get("information", {}).get("future_space_mapping", {})
+                if set(mapping.keys()) != set(ACTIONS):
+                    failures.append(f"{iid}:scrambled_keys")
+                if any(mapping[a] == r["transition_spec"][a]["T_acc_t1"] for a in ACTIONS):
+                    failures.append(f"{iid}:scramble_not_deranged")
+
     return failures
 
 def main():
@@ -67,19 +99,25 @@ def main():
     ap.add_argument("fixture")
     ap.add_argument("output")
     args = ap.parse_args()
+
     fixture = json.loads(Path(args.fixture).read_text(encoding="utf-8"))
     failures = validate(fixture)
+    fixture_hash = canonical_hash(fixture)
+
     result = {
         "record_type": "TGCV_TI001_V012_V002_EXECUTOR_2_RECONSTRUCTION_RESULT",
         "executor_2_id": "TI001-V012-V002-INDEPENDENT-RECONSTRUCTOR-2-001",
-        "fixture_sha256": fixture.get("fixture_sha256"),
+        "fixture_sha256": fixture_hash,
         "expected_fixture_sha256": EXPECTED_FIXTURE_SHA256,
         "instance_count": len(fixture.get("instances", [])),
         "status": "PASS" if not failures else "FAIL",
         "failures": failures,
         "scientific_execution": False
     }
-    Path(args.output).write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    Path(args.output).write_text(
+        json.dumps(result, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8"
+    )
     print(json.dumps(result, sort_keys=True, indent=2))
     return 0 if not failures else 1
 
