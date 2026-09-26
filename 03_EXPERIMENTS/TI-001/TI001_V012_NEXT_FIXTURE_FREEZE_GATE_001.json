@@ -1,0 +1,38 @@
+{
+  "artifact_id": "TI001_V012_NEXT_FIXTURE_FREEZE_GATE_001",
+  "status": "PASS",
+  "decision": "FIXTURE_FROZEN",
+  "fixture": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT_FIXTURE_v001.json",
+    "git_blob_sha": "1886160849aecdbda2904a0d3b593975077e1914",
+    "schema": "TI001_V012_NEXT_FIXTURE_v001",
+    "fixture_version": "NEXT_v001",
+    "instance_count": 72,
+    "seed": 582031
+  },
+  "basis": {
+    "generation_specification": "TI001_V012_NEXT_FIXTURE_GENERATION_SPECIFICATION_001",
+    "generation_authorization": "TI001_V012_NEXT_FIXTURE_GENERATION_GATE_001",
+    "integrity_preflight": "TI001_V012_NEXT_FIXTURE_INTEGRITY_PREFLIGHT_001"
+  },
+  "freeze_conditions": {
+    "new_immutable_version": true,
+    "prior_fixtures_unchanged": true,
+    "integrity_preflight_pass": true,
+    "action_counterbalance_pass": true,
+    "mapping_reversal_structure_present": true,
+    "baseline_structure_present": true,
+    "presentation_balance_pass": true,
+    "decision_boundary_pass": true,
+    "scientific_execution": false
+  },
+  "authorization_boundary": {
+    "fixture_generation": false,
+    "fixture_integrity_preflight": false,
+    "fixture_freeze": true,
+    "executor_implementation": false,
+    "scientific_execution": false,
+    "interpretation": false
+  },
+  "next_gate": "TI001_V012_NEXT_EXECUTOR_IMPLEMENTATION_GATE_001"
+}
