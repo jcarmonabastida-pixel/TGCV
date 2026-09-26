@@ -1,0 +1,48 @@
+{
+  "gate_id": "TI001_V012_FIXTURE_V002_FREEZE_GATE_001",
+  "status": "PASS",
+  "decision": "V002_FROZEN",
+  "fixture": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v002.json",
+    "schema": "TI001_V012_FIXTURE_v002",
+    "instance_count": 72,
+    "sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+    "github_blob_sha": "3dfcbae15414cade42d10a65548b646fe74877d5"
+  },
+  "precondition": {
+    "integrity_preflight_gate": "TI001_V012_FIXTURE_V002_INTEGRITY_PREFLIGHT_001",
+    "integrity_preflight_status": "PASS",
+    "integrity_preflight_commit": "5267543c9f1b3905ea23297de7a3858390dbe729"
+  },
+  "freeze_checks": {
+    "A1_INTEGRITY_PREFLIGHT_PASS": true,
+    "A2_FIXTURE_IDENTITY_NEW_AND_UNIQUE": true,
+    "A3_INSTANCE_COUNT_72": true,
+    "A4_P1_P2_EXPLICIT_AND_RECONSTRUCTABLE": true,
+    "A5_NON_REPRESENTATION_SCIENTIFIC_CONTENT_PRESERVED": true,
+    "A6_V001_LEFT_UNMODIFIED": true,
+    "A7_SCIENTIFIC_EXECUTION_NOT_PERFORMED": true,
+    "A8_PRIOR_AUTHORIZATION_NOT_REUSED": true,
+    "A9_V002_FREEZE_SCOPE_LIMITED_TO_AMENDED_PACKAGE": true
+  },
+  "freeze_policy": "Any scientific-package modification requires a new version; frozen artifacts are not edited in place.",
+  "frozen_artifacts": [
+    {
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v002.json",
+      "sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f"
+    },
+    {
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_V002_INTEGRITY_PREFLIGHT_001.json",
+      "sha256": "pending-recorded-by-git"
+    }
+  ],
+  "authorization": {
+    "prior_authorization_commit": "28ed73398adab2b365a2be4077875b482c75fe82",
+    "reuse": "FORBIDDEN",
+    "reconciliation_required_before_execution": true,
+    "scientific_execution_authorized": false
+  },
+  "scientific_execution": false,
+  "scientific_execution_authorized": false,
+  "next_gate": "TI001_V012_V002_AUTHORIZATION_RECONCILIATION_GATE_001"
+}
