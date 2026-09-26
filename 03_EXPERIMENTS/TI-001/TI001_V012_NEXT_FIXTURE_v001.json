@@ -1,0 +1,6913 @@
+{
+  "schema": "TI001_V012_NEXT_FIXTURE_v001",
+  "fixture_version": "NEXT_v001",
+  "randomisation_seed": 582031,
+  "generator_version": "TI001_V012_NEXT_GENERATOR_v001",
+  "instance_count": 72,
+  "actions": [
+    "A",
+    "B"
+  ],
+  "operationalisations": {
+    "O1": {
+      "informative_action_mappings": {
+        "A": [
+          "x",
+          "y"
+        ],
+        "B": [
+          "x",
+          "z"
+        ]
+      },
+      "baseline_mapping": [
+        "y",
+        "z"
+      ]
+    },
+    "O2": {
+      "informative_action_mappings": {
+        "A": [
+          "p",
+          "q"
+        ],
+        "B": [
+          "p",
+          "r"
+        ]
+      },
+      "baseline_mapping": [
+        "q",
+        "r"
+      ]
+    },
+    "O3": {
+      "informative_action_mappings": {
+        "A": [
+          "m",
+          "n"
+        ],
+        "B": [
+          "n",
+          "o"
+        ]
+      },
+      "baseline_mapping": [
+        "m",
+        "o"
+      ]
+    }
+  },
+  "presentations": [
+    "P1",
+    "P2"
+  ],
+  "mapping_conditions": [
+    "INFORMATIVE",
+    "BASELINE"
+  ],
+  "normative_encoding": false,
+  "scientific_execution": false,
+  "instances": [
+    {
+      "instance_id": "N001",
+      "matched_pair_id": "O1-P1-A-01",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N002",
+      "matched_pair_id": "O1-P1-A-02",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N003",
+      "matched_pair_id": "O1-P1-A-03",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N004",
+      "matched_pair_id": "O1-P1-B-01",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N005",
+      "matched_pair_id": "O1-P1-B-02",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N006",
+      "matched_pair_id": "O1-P1-B-03",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N007",
+      "matched_pair_id": "O1-P1-A-01",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N008",
+      "matched_pair_id": "O1-P1-A-02",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N009",
+      "matched_pair_id": "O1-P1-A-03",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N010",
+      "matched_pair_id": "O1-P1-B-01",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N011",
+      "matched_pair_id": "O1-P1-B-02",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N012",
+      "matched_pair_id": "O1-P1-B-03",
+      "operationalisation": "O1",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N013",
+      "matched_pair_id": "O1-P2-A-01",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N014",
+      "matched_pair_id": "O1-P2-A-02",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N015",
+      "matched_pair_id": "O1-P2-A-03",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "x",
+            "y"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "y"
+            ],
+            "future_accessibility_class": "pair_xy",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xy"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N016",
+      "matched_pair_id": "O1-P2-B-01",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N017",
+      "matched_pair_id": "O1-P2-B-02",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N018",
+      "matched_pair_id": "O1-P2-B-03",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "x",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "x",
+              "z"
+            ],
+            "future_accessibility_class": "pair_xz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_xz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N019",
+      "matched_pair_id": "O1-P2-A-01",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N020",
+      "matched_pair_id": "O1-P2-A-02",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N021",
+      "matched_pair_id": "O1-P2-A-03",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N022",
+      "matched_pair_id": "O1-P2-B-01",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N023",
+      "matched_pair_id": "O1-P2-B-02",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N024",
+      "matched_pair_id": "O1-P2-B-03",
+      "operationalisation": "O1",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          },
+          "B": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "y",
+            "z"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "y",
+              "z"
+            ],
+            "future_accessibility_class": "pair_yz",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_yz"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N025",
+      "matched_pair_id": "O2-P1-A-01",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "p",
+            "q"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N026",
+      "matched_pair_id": "O2-P1-A-02",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "p",
+            "q"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N027",
+      "matched_pair_id": "O2-P1-A-03",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "p",
+            "q"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N028",
+      "matched_pair_id": "O2-P1-B-01",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "p",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N029",
+      "matched_pair_id": "O2-P1-B-02",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "p",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N030",
+      "matched_pair_id": "O2-P1-B-03",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "p",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N031",
+      "matched_pair_id": "O2-P1-A-01",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N032",
+      "matched_pair_id": "O2-P1-A-02",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N033",
+      "matched_pair_id": "O2-P1-A-03",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N034",
+      "matched_pair_id": "O2-P1-B-01",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N035",
+      "matched_pair_id": "O2-P1-B-02",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N036",
+      "matched_pair_id": "O2-P1-B-03",
+      "operationalisation": "O2",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N037",
+      "matched_pair_id": "O2-P2-A-01",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "p",
+            "q"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N038",
+      "matched_pair_id": "O2-P2-A-02",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "p",
+            "q"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N039",
+      "matched_pair_id": "O2-P2-A-03",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "p",
+            "q"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "q"
+            ],
+            "future_accessibility_class": "pair_pq",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pq"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N040",
+      "matched_pair_id": "O2-P2-B-01",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "p",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N041",
+      "matched_pair_id": "O2-P2-B-02",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "p",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N042",
+      "matched_pair_id": "O2-P2-B-03",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "p",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "p",
+              "r"
+            ],
+            "future_accessibility_class": "pair_pr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_pr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N043",
+      "matched_pair_id": "O2-P2-A-01",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N044",
+      "matched_pair_id": "O2-P2-A-02",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N045",
+      "matched_pair_id": "O2-P2-A-03",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N046",
+      "matched_pair_id": "O2-P2-B-01",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N047",
+      "matched_pair_id": "O2-P2-B-02",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N048",
+      "matched_pair_id": "O2-P2-B-03",
+      "operationalisation": "O2",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          },
+          "B": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "q",
+            "r"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "q",
+              "r"
+            ],
+            "future_accessibility_class": "pair_qr",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_qr"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N049",
+      "matched_pair_id": "O3-P1-A-01",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "n"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N050",
+      "matched_pair_id": "O3-P1-A-02",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "n"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N051",
+      "matched_pair_id": "O3-P1-A-03",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "n"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N052",
+      "matched_pair_id": "O3-P1-B-01",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "n",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N053",
+      "matched_pair_id": "O3-P1-B-02",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "n",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N054",
+      "matched_pair_id": "O3-P1-B-03",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "n",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N055",
+      "matched_pair_id": "O3-P1-A-01",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N056",
+      "matched_pair_id": "O3-P1-A-02",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N057",
+      "matched_pair_id": "O3-P1-A-03",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N058",
+      "matched_pair_id": "O3-P1-B-01",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N059",
+      "matched_pair_id": "O3-P1-B-02",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N060",
+      "matched_pair_id": "O3-P1-B-03",
+      "operationalisation": "O3",
+      "presentation": "P1",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N061",
+      "matched_pair_id": "O3-P2-A-01",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "n"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N062",
+      "matched_pair_id": "O3-P2-A-02",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "n"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N063",
+      "matched_pair_id": "O3-P2-A-03",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "n"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "n"
+            ],
+            "future_accessibility_class": "pair_mn",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mn"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N064",
+      "matched_pair_id": "O3-P2-B-01",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "n",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N065",
+      "matched_pair_id": "O3-P2-B-02",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "n",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N066",
+      "matched_pair_id": "O3-P2-B-03",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "INFORMATIVE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        },
+        "informative_correspondence_defined": true
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "n",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "n",
+              "o"
+            ],
+            "future_accessibility_class": "pair_no",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_no"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N067",
+      "matched_pair_id": "O3-P2-A-01",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N068",
+      "matched_pair_id": "O3-P2-A-02",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N069",
+      "matched_pair_id": "O3-P2-A-03",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "A",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N070",
+      "matched_pair_id": "O3-P2-B-01",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N071",
+      "matched_pair_id": "O3-P2-B-02",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    },
+    {
+      "instance_id": "N072",
+      "matched_pair_id": "O3-P2-B-03",
+      "operationalisation": "O3",
+      "presentation": "P2",
+      "mapping_condition": "BASELINE",
+      "informative_action": "B",
+      "available_actions": [
+        "A",
+        "B"
+      ],
+      "state": {
+        "state_id": "S0",
+        "T_acc": [
+          "A",
+          "B"
+        ]
+      },
+      "task": {
+        "task": "select_one_current_transformation",
+        "candidate_count": 2
+      },
+      "information": {
+        "future_signal": true,
+        "future_space_mapping": {
+          "A": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          },
+          "B": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "informative_correspondence_defined": false
+      },
+      "decision_boundary": {
+        "decision_before_future_reveal": true,
+        "realized_successor_visible_at_decision": false,
+        "realized_T_acc_visible_at_decision": false
+      },
+      "transition_spec": {
+        "A": {
+          "successor_state": "S_A",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        },
+        "B": {
+          "successor_state": "S_B",
+          "T_acc_t1": [
+            "m",
+            "o"
+          ],
+          "descriptor": {
+            "future_accessibility": [
+              "m",
+              "o"
+            ],
+            "future_accessibility_class": "pair_mo",
+            "identity_turnover_class": "turnover_2",
+            "persistence_class": "none",
+            "reconfiguration_class": "pair_mo"
+          }
+        }
+      },
+      "selected_action": null,
+      "S_t1": null,
+      "T_acc_t1": null,
+      "scientific_execution": false,
+      "seed": 582031
+    }
+  ]
+}
