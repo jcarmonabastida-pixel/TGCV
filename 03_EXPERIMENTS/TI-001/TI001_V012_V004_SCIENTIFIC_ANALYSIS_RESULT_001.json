@@ -1,0 +1,156 @@
+{
+  "record_type": "TGCV_TI001_V012_V004_SCIENTIFIC_ANALYSIS_RESULT",
+  "gate_basis": "TI001_V012_V004_SCIENTIFIC_ANALYSIS_READINESS_GATE_001",
+  "source_result_sha256": "50dbc53e1d88937688d9f5772bfd305b075fa2f6bbea39afcec2bfc936dbbb33",
+  "fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+  "decision_count": 72,
+  "primary_observable": {
+    "definition": "transformation-selection difference between matched information conditions",
+    "condition_counts": {
+      "INTACT": {
+        "n": 24,
+        "a": 22,
+        "b": 2,
+        "c": 0
+      },
+      "SCRAMBLED": {
+        "n": 24,
+        "a": 23,
+        "b": 0,
+        "c": 1
+      },
+      "NULL": {
+        "n": 24,
+        "a": 24,
+        "b": 0,
+        "c": 0
+      }
+    },
+    "a_selection_rate": {
+      "INTACT": 0.9166666667,
+      "SCRAMBLED": 0.9583333333,
+      "NULL": 1
+    },
+    "intact_minus_null_a_rate": -0.0833333333,
+    "intact_minus_scrambled_a_rate": -0.0416666667
+  },
+  "secondary_observables": {
+    "presentation_stratified": {
+      "P1": {
+        "INTACT": {
+          "n": 12,
+          "a": 12,
+          "b": 0,
+          "c": 0
+        },
+        "SCRAMBLED": {
+          "n": 12,
+          "a": 12,
+          "b": 0,
+          "c": 0
+        },
+        "NULL": {
+          "n": 12,
+          "a": 12,
+          "b": 0,
+          "c": 0
+        }
+      },
+      "P2": {
+        "INTACT": {
+          "n": 12,
+          "a": 10,
+          "b": 2,
+          "c": 0
+        },
+        "SCRAMBLED": {
+          "n": 12,
+          "a": 11,
+          "b": 0,
+          "c": 1
+        },
+        "NULL": {
+          "n": 12,
+          "a": 12,
+          "b": 0,
+          "c": 0
+        }
+      }
+    },
+    "operationalisation_consistency": {
+      "O1": {
+        "INTACT": {
+          "n": 8,
+          "a": 8,
+          "b": 0,
+          "c": 0
+        },
+        "SCRAMBLED": {
+          "n": 8,
+          "a": 8,
+          "b": 0,
+          "c": 0
+        },
+        "NULL": {
+          "n": 8,
+          "a": 8,
+          "b": 0,
+          "c": 0
+        }
+      },
+      "O2": {
+        "INTACT": {
+          "n": 8,
+          "a": 7,
+          "b": 1,
+          "c": 0
+        },
+        "SCRAMBLED": {
+          "n": 8,
+          "a": 8,
+          "b": 0,
+          "c": 0
+        },
+        "NULL": {
+          "n": 8,
+          "a": 8,
+          "b": 0,
+          "c": 0
+        }
+      },
+      "O3": {
+        "INTACT": {
+          "n": 8,
+          "a": 7,
+          "b": 1,
+          "c": 0
+        },
+        "SCRAMBLED": {
+          "n": 8,
+          "a": 7,
+          "b": 0,
+          "c": 1
+        },
+        "NULL": {
+          "n": 8,
+          "a": 8,
+          "b": 0,
+          "c": 0
+        }
+      }
+    }
+  },
+  "decision_to_Tacc_bridge": {
+    "decision_units_reconstructable": 72,
+    "transition_records_reconstructable": 72,
+    "intact_selected_mapping_matches": 24,
+    "scrambled_selected_mapping_perturbed": 24
+  },
+  "boundary": {
+    "descriptive_analysis_only": true,
+    "hypothesis_decision": false,
+    "causal_conclusion": false,
+    "value_claim": false,
+    "TGCV_core_change": false
+  }
+}
