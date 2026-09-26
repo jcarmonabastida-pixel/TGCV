@@ -1,0 +1,36 @@
+{
+  "gate_id": "TI001_V012_V003_POST_CLOSURE_DECISION_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "decision": "CLOSED_AND_NEXT_DESIGN_REQUIRED",
+  "closure_status": "CLOSED_FOR_TI001_V012_V003",
+  "checks": {
+    "scientific_closure_gate_pass": true,
+    "execution_result_immutable": true,
+    "analysis_result_immutable": true,
+    "interpretation_scope_preserved": true,
+    "tgcv_wide_claim": false,
+    "unresolved_questions_remain": true
+  },
+  "decision_basis": {
+    "Q1_construct": "NOT_RESOLVED",
+    "Q2_presentation": "NOT_RESOLVED",
+    "Q3_null_control": "DESCRIPTIVE_CONTRAST_ONLY",
+    "Q4_robustness": "NOT_ESTABLISHED",
+    "Q5_mechanism": "NOT_ESTABLISHED",
+    "Q6_decision_to_T_acc_bridge": "NOT_ESTABLISHED_FROM_DECISION_RECORD_ALONE"
+  },
+  "post_closure_action": {
+    "action": "OPEN_NEXT_DESIGN_GATE",
+    "purpose": "Define the next falsifiable experiment/version from the unresolved V012 questions without reopening V003.",
+    "priority": "Q6_DECISION_TO_T_ACC_BRIDGE_AND_MECHANISM_DISCRIMINATION",
+    "constraints": [
+      "V003 remains CLOSED and IMMUTABLE",
+      "do not rerun V003",
+      "do not pool V003 with a future version as a substitute for independent evidence",
+      "preserve V003 as a standalone evidence record"
+    ]
+  },
+  "next_gate": "TI001_V012_V004_DESIGN_REQUIREMENTS_GATE_001"
+}
