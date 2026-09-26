@@ -1,0 +1,35 @@
+{
+  "gate_id": "TI001_V012_V002_INSTRUMENTATION_AMENDMENT_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V002",
+  "gate_type": "INSTRUMENTATION_AMENDMENT",
+  "decision": "REQUIRED",
+  "basis": {
+    "primary_result_sha256": "46fd03aa48edf949b5efe861de0b33f43bba083c6c2be9ac164dedb9d0313a4b",
+    "decision_count": 72,
+    "valid_count": 2,
+    "invalid_count": 70,
+    "invalid_response_status": "incomplete",
+    "configured_max_output_tokens": 16,
+    "observed_reasoning_tokens_in_invalid_records": 16
+  },
+  "finding": {
+    "type": "BUDGET_SEMANTICS_NOT_SEPARATELY_ESTABLISHED",
+    "statement": "The recorded execution does not establish an independently controlled reasoning budget and output budget. The artifact records max_output_tokens=16 and reasoning_tokens=16 while 70 responses are incomplete. Therefore the 2 valid responses are not treated as a substantive scientific signal before generation-budget instrumentation is corrected."
+  },
+  "required_amendment": {
+    "reasoning_budget": "explicitly specified and independently recorded",
+    "output_budget": "explicitly specified and independently recorded",
+    "termination_status": "recorded separately from token consumption",
+    "per_decision_budget_trace": true,
+    "validation_rule": "Invalidity must not be attributed to reasoning or output exhaustion without the independent budget trace needed to distinguish them."
+  },
+  "disposition": {
+    "v012_v002_scientific_interpretation": "BLOCKED",
+    "v012_v002_result_status": "EXECUTED_BUT_NOT_SCIENTIFICALLY_INTERPRETABLE",
+    "repeat_executor_2": false,
+    "repeat_scientific_execution": "ONLY_AFTER_AMENDMENT_AND_NEW_VERSION"
+  },
+  "next_gate": "TI001_V012_V003_INSTRUMENTATION_AMENDMENT_VALIDATION_GATE_001"
+}
