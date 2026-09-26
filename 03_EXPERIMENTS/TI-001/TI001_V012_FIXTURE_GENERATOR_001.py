@@ -42,7 +42,6 @@ for op, mapping in OPS.items():
         elif condition=="SCRAMBLED":
             perm={"a":"b","b":"c","c":"a"}
             future_mapping={a:mapping[perm[a]] for a in ACTIONS}
-        records.append if False else None
         RECORDS.append({
           "instance_id":iid,"operationalisation":op,"seed":SEED,
           "state":{"state_id":"S0","T_acc":["a","b","c"]},
