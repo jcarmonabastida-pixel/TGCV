@@ -161,3 +161,51 @@ TGCV Core: UNCHANGED.
 Before generating any V012 fixture or executable package, perform a dedicated V012 Design Audit / Requirements Gate verifying traceability from every V012 design element to Q1–Q6 and verifying that no inherited v005 constraint has silently become a scientific requirement.
 
 Only a PASS permits construction of the V012 candidate fixture and dedicated preflight.
+
+
+## 21. Detailed design closure conditions
+
+### 21.1 Presentation factor — frozen design rule
+
+V012 will use two semantically equivalent encodings of the same action-conditioned future-space mapping:
+
+- **P1:** action-keyed tabular records, one row per action, with the same neutral descriptor fields for every action.
+- **P2:** action-keyed ordered records using the same fields and values but a different presentation order determined by a frozen permutation.
+
+The semantic mapping is invariant between P1 and P2. Presentation order is independent of condition assignment and is randomized at the decision-unit level using the frozen randomization seed. No presentation encoding may contain condition labels, preferred-action labels, rankings, or normative language.
+
+The primary Q2 comparison is the treatment-versus-control contrast separately within P1 and P2, with the presentation-by-condition interaction as a secondary diagnostic. A condition effect that appears only under one presentation is not treated as presentation-invariant evidence.
+
+### 21.2 Mechanism perturbation — frozen design rule
+
+The mechanism test uses three information states within otherwise matched decision units:
+
+- **INTACT:** each action is paired with its correct future-space descriptor F(u).
+- **SCRAMBLED:** the same descriptor multiset, descriptor fields, information volume, and presentation structure are retained, but descriptors are independently permuted across action keys.
+- **NULL:** no future-space mapping is supplied.
+
+The scramble permutation is generated from the frozen seed and must be a derangement for the three-action case, so no action retains its original descriptor. The transition specification used for reconstruction remains the ground truth; the SCRAMBLED condition is an information perturbation, not a change to the environment.
+
+This directly operationalises Q5: if behaviour depends on the action-to-future correspondence, INTact and SCRAMBLED should differ under the pre-specified analysis while current state, current T_acc, task, timing, descriptor inventory, and presentation burden remain matched. The result is not interpreted as mechanism proof by itself; it is a discrimination test between intact correspondence and a structurally matched perturbation.
+
+### 21.3 Independent operationalisations — frozen minimum
+
+V012 will contain **three** independently specified finite-state operationalisations, O1–O3. Each has S_t=S0 and current T_acc={a,b,c}, but distinct successor-accessibility identity structures:
+
+- **O1:** a→{x,y}, b→{x,z}, c→{y,z}.
+- **O2:** a→{p,q}, b→{p,r}, c→{q,s}.
+- **O3:** a→{m,n}, b→{n,o}, c→{m,o}.
+
+The abstract structure is held constant (two-element successor accessibility per action, at least two distinct future-space descriptors), while concrete transformation identities and the action-to-future mapping differ. No operationalisation may be derived by merely renaming one already generated fixture after observing outcomes; all three transition specifications are frozen before execution.
+
+### 21.4 Experimental unit, sample size and randomization — frozen design rule
+
+The primary unit is an independently generated decision instance within one operationalisation and one presentation/condition assignment. V012 will use **24 independent instances per operationalisation**, 72 instances total. Each instance is evaluated under one information condition and one presentation assignment. The allocation is balanced across the three information states INTact, SCRAMBLED, and NULL and across P1/P2 within each operationalisation, yielding 8 instances per information state and 12 per presentation per operationalisation.
+
+The frozen randomization seed is **582031**. A deterministic assignment procedure will independently shuffle the 24 instance identifiers within each operationalisation, then assign condition and presentation using the pre-specified balanced allocation. Condition and presentation assignments are recorded in the frozen package and are not inferable from state/action identifiers.
+
+No scientific execution is implied by this design closure. The exact generated instance identifiers, randomization manifest, and fixture bytes must be produced only after the V012 design requirements gate passes.
+
+### 21.5 Closure status
+
+The four conditions identified by the V012 Design Audit are now specified at the design level. They remain subject to machine-checking in the dedicated V012 Requirements/Preflight Gate before fixture generation.
