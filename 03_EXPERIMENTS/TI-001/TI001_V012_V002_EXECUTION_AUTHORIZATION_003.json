@@ -1,0 +1,42 @@
+{
+  "gate_id": "TI001_V012_V002_EXECUTION_AUTHORIZATION_003",
+  "authorization_decision": "EXPLICITLY_AUTHORIZED",
+  "authorized_by_user": true,
+  "authorization_basis": {
+    "authorization_gate": "TI001_V012_V002_EXECUTION_AUTHORIZATION_GATE_002",
+    "authorization_gate_commit": "fe8cb376ecbbc427fa8a3e8fd629ab28156d4456",
+    "fixture_path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v002.json",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "instance_count": 72,
+    "system_prompt_path": "03_EXPERIMENTS/TI-001/TI001_V012_V002_SYSTEM_PROMPT_001.txt",
+    "system_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
+    "validation_procedure_sha256": "44f31ddc1173f4b69d8302b97ed6dc96e4fd559c8865a86b5aaf921cefd43374",
+    "executor_1_path": "03_EXPERIMENTS/TI-001/TI001_V012_V002_SCIENTIFIC_EXECUTOR_1_001.py",
+    "executor_1_commit": "7fbce71fb1cf824415d585fe33f87998f8d191ad",
+    "executor_1_blob_sha": "618f39634e9dd7fbbf194b242ed5c2c720b8f733",
+    "binding_preflight": "TI001_V012_V002_EXECUTION_PACKAGE_BINDING_PREFLIGHT_001",
+    "binding_preflight_commit": "aadc1664a623ec506ea7f9962a97d3d6e4f05305",
+    "executor_2_blob_sha": "47bf48104333236ecf3defe74326dab67366f5ec"
+  },
+  "execution_constraints": {
+    "instance_count": 72,
+    "retry": false,
+    "recoding": false,
+    "substitution": false,
+    "tools": [],
+    "store": false,
+    "max_output_tokens": 16,
+    "top_p": 0.98,
+    "scientific_execution_scope": "V012 V002 fixture only"
+  },
+  "authorization": {
+    "scientific_execution_authorized": true,
+    "prior_authorization_reuse": "FORBIDDEN"
+  },
+  "execution_state": {
+    "scientific_execution_performed": false,
+    "execution_authorized_at_gate": "TI001_V012_V002_EXECUTION_AUTHORIZATION_GATE_002",
+    "next_operation": "Run exactly one --execute against the frozen V002 package; no retry, recoding, substitution, or package modification."
+  },
+  "status": "AUTHORIZED"
+}
