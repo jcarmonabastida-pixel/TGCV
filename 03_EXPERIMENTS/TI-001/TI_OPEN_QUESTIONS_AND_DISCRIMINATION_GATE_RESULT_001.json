@@ -1,0 +1,36 @@
+{
+  "gate_id": "TI-OPEN-QUESTIONS-AND-DISCRIMINATION-GATE-001",
+  "checks": {
+    "A1_SPEC_PRESENT": true,
+    "A2_V011_CLOSED": true,
+    "A3_V011_ANALYSIS_PERFORMED": true,
+    "A4_CONSOLIDATION_PRESENT": true,
+    "A5_EVIDENCE_CONSOLIDATED": true,
+    "A6_MATRIX_V135_PRESENT": true,
+    "A7_V011_MATERIAL_SECTION_PRESENT": true,
+    "A8_ESTABLISHED_VS_NONCLAIM_BOUNDARY": true,
+    "A9_Q1_CONSTRUCT_VALIDITY": true,
+    "A10_Q2_PRESENTATION": true,
+    "A11_Q3_NULL_CONTROL": true,
+    "A12_Q4_ROBUSTNESS": true,
+    "A13_Q5_MECHANISM": true,
+    "A14_Q6_TGCV_RELATION": true,
+    "A15_DISCRIMINATION_REQUIREMENTS_PRESENT": true,
+    "A16_NO_V012_DESIGN": true,
+    "A17_NO_EXECUTION_AUTHORIZATION": true,
+    "A18_NO_CLAIM_UPGRADE": true,
+    "A19_NO_CORE_MODIFICATION": true,
+    "A20_FINAL_DISPOSITION_DEFINED": true
+  },
+  "details": {
+    "v011_status": "CLOSED_FOR_TI001_V011",
+    "consolidation_status": "TI_EVIDENCE_CONSOLIDATED",
+    "matrix_version": "v1.35",
+    "questions_formalized": 6,
+    "discrimination_requirements": 6,
+    "v012_authorized": false,
+    "claim_statuses_upgraded": false,
+    "core_modified": false
+  },
+  "status": "TI_OPEN_QUESTIONS_FORMALIZED"
+}
