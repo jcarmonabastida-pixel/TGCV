@@ -19,7 +19,7 @@ checks = {
     "A8_EXACTLY_SIX_Q_REQUIREMENTS": len(re.findall(r"^\| Q[1-6] \|", text, re.M)) == 6,
     "A9_PRE_OUTCOME_IDENTIFIABILITY": "identifiable before inspecting the outcome" in text,
     "A10_ALTERNATIVES_REMAIN_EXPLICIT": "remain explicitly represented until evidence discriminates them" in text,
-    "A11_REPRODUCIBILITY_NOT_DISCRIMINATION": "reproducibility and construct validity are distinct" in text,
+    "A11_REPRODUCIBILITY_NOT_DISCRIMINATION": "reproducibility and construct validity are distinct" in text.lower(),
     "A12_DECISION_TRANSFORMATION_VALUE_DISTINCTION": "present decision, future transformation structure, transformation-space consequences, and value endpoints" in text,
     "A13_NO_RETROSPECTIVE_V011_RESOLUTION": "No single result from V011 is to be retrospectively reclassified" in text,
     "A14_NO_V012_DESIGN": "specify V012" in text,
