@@ -1,0 +1,23 @@
+{
+  "authorization": "READY_FOR_EXPLICIT_AUTHORIZATION",
+  "checks": {
+    "A10_DESIGN_BINDS_REASONING_NONE": true,
+    "A11_NO_E2R_AUTHORIZATION_EXISTS": true,
+    "A12_NO_E2R_RESULT_EXISTS": true,
+    "A13_GATE_ITSELF_NO_PROVIDER_CALL": true,
+    "A1_FIXTURE_SHA_EXACT": true,
+    "A2_GENERATOR_BLOB_EXACT": true,
+    "A3_SCHEMA_BLOB_EXACT": true,
+    "A4_INTERFACE_BLOB_EXACT": true,
+    "A5_E2R_EXECUTOR_BLOB_EXACT": true,
+    "A6_PREFLIGHT_EXISTS_PASS": true,
+    "A7_PREFLIGHT_STATUS_PASS": true,
+    "A8_PREFLIGHT_BINDINGS_EXACT": true,
+    "A9_E2R_INDEPENDENT": true
+  },
+  "executor_blob_sha": "a8cdb770ffab6d0023c809b7466fe00c2fcd89c6",
+  "fixture_sha256": "30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1",
+  "gate_id": "TI001-V011-E2R-FINAL-PREAUTHORIZATION-GATE-001",
+  "scientific_execution": "NOT_PERFORMED",
+  "status": "PASS"
+}
