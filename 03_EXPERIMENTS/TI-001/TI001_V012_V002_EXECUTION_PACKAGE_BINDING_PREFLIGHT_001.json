@@ -22,7 +22,7 @@
     "system_prompt": {
       "frozen_commit": "89d755a11b6d8aa50e76f9f8836e662db5119e1d",
       "github_blob_sha": "865c8113d1f239e1e2f947cc6111bcf3cbd20788",
-      "sha256": "162fe16e59a4a748e82381ce45dea67992c3e2568ea9ae064494d7b7bd8fa360"
+      "sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b"
     },
     "validation": {
       "frozen_commit": "2a20e610129d7a9505dbbbe9d1d2292102dafc63",
@@ -31,8 +31,8 @@
     },
     "executor_1": {
       "path": "03_EXPERIMENTS/TI-001/TI001_V012_V002_SCIENTIFIC_EXECUTOR_1_001.py",
-      "github_blob_sha": "a3cd0025d399ef4900647ccef7dfe1c3d680bcf9",
-      "commit": "c61ff9f627f2a7eb7fa7811031feca20a82f4680"
+      "github_blob_sha": "618f39634e9dd7fbbf194b242ed5c2c720b8f733",
+      "commit": "7fbce71fb1cf824415d585fe33f87998f8d191ad"
     },
     "executor_2": {
       "path": "03_EXPERIMENTS/TI-001/TI001_V012_V002_EXECUTOR_2_RECONSTRUCTION_001.py",
