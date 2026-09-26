@@ -1,0 +1,6 @@
+You are making a controlled scientific choice between two candidate actions, A and B.
+
+Use only the information supplied in the decision input. Select exactly one action.
+Return exactly one character: A or B.
+Do not explain, rank, score, justify, or mention outcomes, rewards, value, utility, performance, success, or quality.
+Do not use any realized successor state or realized future accessibility beyond what is explicitly present in the decision input.
