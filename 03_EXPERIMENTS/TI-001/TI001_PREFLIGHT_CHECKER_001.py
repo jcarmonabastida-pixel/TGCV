@@ -5,17 +5,17 @@ d=json.load(open(sys.argv[1],encoding="utf-8"))
 results={}
 def ok(k,v): results[k]=bool(v)
 instances=d["instances"]
-ok("P1_CURRENT_SPACE_EQUALITY",all(x["T_acc_t"]==["a","b","c"] and x["information_control"]["candidate_count"]==3 and (x["information_treatment"] is None or x["information_treatment"]["candidate_count"]==3) for x in instances))
+ok("P1_CURRENT_SPACE_EQUALITY",all(x["T_acc_t"]==["a","b","c"] and x["available_transformations"]==["a","b","c"] and x["information_control"]["candidate_count"]==3 and (x["information_treatment"] is None or x["information_treatment"]["candidate_count"]==3) for x in instances))
 ok("P2_CANDIDATE_MULTIPLICITY",all(len(x["available_transformations"])>=2 for x in instances))
-ok("P3_TREATMENT_SPECIFICITY",all((x["condition"]=="control" and x["information_treatment"] is None) or (x["condition"]=="treatment" and x["information_treatment"] is not None) for x in instances))
-ok("P4_NO_DIRECT_RECOMMENDATION",all(not any(k in (x["information_treatment"] or {}) for k in ["recommended_action","preferred_action","selected_action","action_recommendation","recommended_transformation","preferred_transformation"]) for x in instances))
-ok("P5_NO_OUTCOME_LEAKAGE",all(not any(k in json.dumps(x["information_treatment"] or {}).lower() for k in ["reward","utility","payoff","outcome","preferred"]) for x in instances))
-present=[json.dumps({"S_t":x["S_t"],"T_acc_t":x["T_acc_t"],"control":x["information_control"]},sort_keys=True,separators=(",",":")) for x in instances]
-futures=[(tuple(x["future_alternatives"][0]["T_acc_t1"]),tuple(x["future_alternatives"][1]["T_acc_t1"])) for x in instances]
-ok("P6_FUTURE_NON_DERIVABILITY",all(len(set(f))>=2 for f in futures) and len(set(present))==1)
+ok("P3_TREATMENT_SPECIFICITY",all((x["condition"]=="control" and x["information_treatment"] is None) or (x["condition"]=="treatment" and x["information_treatment"] is not None and x["information_treatment"] != x["information_control"]) for x in instances))
+ok("P4_NO_DIRECT_RECOMMENDATION",all((x["condition"]=="control") or (x["information_treatment"] is not None and not any(k in json.dumps(x["information_treatment"],sort_keys=True).lower() for k in ["recommended_action","preferred_action","selected_action","action_recommendation","recommended_transformation","preferred_transformation","best_action","best_transformation"])) for x in instances))
+ok("P5_NO_OUTCOME_LEAKAGE",all(not any(k in json.dumps(x["information_treatment"] or {}).lower() for k in ["reward","utility","payoff","outcome","preferred","ranking","score"]) for x in instances))
+present=[json.dumps({"S_t":x["S_t"],"T_acc_t":x["T_acc_t"],"available_transformations":x["available_transformations"],"control":x["information_control"]},sort_keys=True,separators=(",",":")) for x in instances]
+futures=[tuple(sorted((a["choice"],tuple(a["T_acc_t1"])) for a in x["future_alternatives"])) for x in instances]
+ok("P6_FUTURE_NON_DERIVABILITY",len(set(present))==1 and all(len(x["future_alternatives"])>=2 and len({tuple(a["T_acc_t1"]) for a in x["future_alternatives"]})>=2 for x in instances) and all(x["condition"]=="control" or x["information_treatment"] is not None for x in instances))
 ok("P7_TEMPORAL_ORDER",all(x["temporal_order"]==["information_available","transformation_choice","successor_state","successor_accessibility"] for x in instances))
 ok("P8_NULL_VALIDITY",all(not x["null"]["information"]["future_space_signal"] and not x["null"]["information"]["recommendation"] and not x["null"]["information"]["outcome_signal"] for x in instances))
-ok("P9_DETERMINISTIC_RECONSTRUCTION",all(set(x["successors"])=={"a","b","c"} and all(len(x["successors"][a]["t_acc"])==2 for a in x["successors"]) for x in instances))
+ok("P9_DETERMINISTIC_RECONSTRUCTION",all(set(x["successors"])==set(x["available_transformations"]) and all(len(x["successors"][a]["t_acc"])==2 and x["successors"][a]["state"] for a in x["successors"] for x in [x]) for x in instances))
 ok("P10_PRIMARY_METRIC_FREEZE",len({x["primary_estimand"]["name"] for x in instances})==1 and all(x["primary_estimand"]["type"]=="difference_in_subsequent_transformation_handling" and all(k in x["primary_estimand"]["forbidden"] for k in ["TI_score","value","reward","utility","performance"]) for x in instances))
 
 # Gate A — Randomisation & Assignment Integrity.
