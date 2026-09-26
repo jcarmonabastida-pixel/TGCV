@@ -1,0 +1,31 @@
+{
+  "consolidation_gate_id": "TI-EVIDENCE-CONSOLIDATION-GATE-001",
+  "checks": {
+    "A1_V011_CLOSED_CANONICALLY": true,
+    "A2_E1R_VALID_420": true,
+    "A3_E2R_VALID_420": true,
+    "A4_E1R_E2R_AUDITED": true,
+    "A5_CONCORDANCE_PASS": true,
+    "A6_PRIMARY_ANALYSIS_PASS": true,
+    "A7_ANALYSIS_PERFORMED": true,
+    "A8_ANALYSIS_AUTHORIZED": true,
+    "A9_BOUNDED_NO_CLAIM_UPGRADE": true,
+    "A10_CORE_UNCHANGED": true,
+    "A11_DESCRIPTIVE_ESTIMATES_ONLY": true,
+    "A12_REPRODUCIBILITY_NOT_CONSTRUCT_VALIDATION": true,
+    "A13_OPEN_QUESTIONS_SEPARATED": true,
+    "A14_NO_V012_AUTHORIZATION": true
+  },
+  "details": {
+    "v011_status": "CLOSED_FOR_TI001_V011",
+    "e1r_records": 420,
+    "e2r_records": 420,
+    "e1r_ti_dc": -0.06428571428571428,
+    "e2r_ti_dc": -0.0357142857142857,
+    "response_agreement_count": 380,
+    "claim_statuses_upgraded": false,
+    "core_modified": false,
+    "v012_authorized": false
+  },
+  "status": "TI_EVIDENCE_CONSOLIDATED"
+}
