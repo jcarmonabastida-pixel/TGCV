@@ -57,7 +57,7 @@ def main():
     checks["A9_VISIBLE_FIELDS_EXACT"] = 'ALLOWED_VISIBLE_FIELDS = ("context", "available_actions", "future_structure")' in source
     checks["A10_HIDDEN_FIELDS_EXACT"] = 'HIDDEN_FIELDS = ("decision_id", "pair_id", "condition", "presentation")' in source
     checks["A11_VALID_OUTPUT_DOMAIN_EXACT"] = 'VALID_OUTPUTS = ("A", "B")' in source
-    checks["A12_EXACT_INSTRUCTION"] = EXPECTED_INSTRUCTION in source
+    instruction_node = next((node for node in tree.body if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "DECISION_INSTRUCTION" for t in node.targets)), None)\n    instruction_value = ast.literal_eval(instruction_node.value) if instruction_node is not None else None\n    checks["A12_EXACT_INSTRUCTION"] = instruction_value == EXPECTED_INSTRUCTION
     checks["A13_NO_JSON_OUTPUT_EXTRACTION"] = "json.loads" not in source and "json.load" not in source
     checks["A14_NO_RETRY"] = "retry(" not in source.lower()
     checks["A15_NO_RECODE"] = "recode(" not in source.lower()
