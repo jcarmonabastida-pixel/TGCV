@@ -1,0 +1,27 @@
+{
+  "gate_id": "TI001_V012_V002_FROZEN_ARTIFACT_IDENTITY_AMENDMENT_001",
+  "record_type": "EXECUTION_PACKAGE_IDENTITY_AMENDMENT",
+  "status": "RESOLVED_FOR_BINDING",
+  "parent_gate": "TI001_V012_V002_FROZEN_ARTIFACT_HASH_RECONCILIATION_GATE_001",
+  "parent_gate_commit": "3784aaa9112dd8f1f784e03e294caeda8f5350a4",
+  "scope": "Execution Package binding metadata only",
+  "rationale": "No historical repository evidence was found for the previously declared prompt or validation SHA-256 values. Binding identity is amended to the reproducibly observed SHA-256 values of the frozen artifact contents.",
+  "frozen_artifacts_unchanged": true,
+  "identities": {
+    "system_prompt": {
+      "frozen_commit": "89d755a11b6d8aa50e76f9f8836e662db5119e1d",
+      "git_blob_sha": "865c8113d1f239e1e2f947cc6111bcf3cbd20788",
+      "canonical_content_sha256": "162fe16e59a4a748e82381ce45dea67992c3e2568ea9ae064494d7b7bd8fa360",
+      "superseded_declared_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b"
+    },
+    "response_validation": {
+      "frozen_commit": "2a20e610129d7a9505dbbbe9d1d2292102dafc63",
+      "git_blob_sha": "652939ebfaf93bbe6d8659430d0b9815066b63e9",
+      "canonical_content_sha256": "44f31ddc1173f4b69d8302b97ed6dc96e4fd559c8865a86b5aaf921cefd43374",
+      "superseded_declared_sha256": "30603f52b50c70949b5c9af237e6b3089933b8ef093ba7e53e3d298c3063463c"
+    }
+  },
+  "authorization_effect": "Permits construction and validation of the execution-package binding against the amended identities. Does not authorize scientific execution.",
+  "scientific_execution_authorized": false,
+  "next_gate": "TI001_V012_V002_EXECUTION_PACKAGE_BINDING_PREFLIGHT_001"
+}
