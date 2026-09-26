@@ -1,0 +1,71 @@
+{
+  "record_type": "TGCV_TI001_V012_V002_SCIENTIFIC_ANALYSIS_RESULT",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V002",
+  "status": "COMPLETED_DESCRIPTIVE_ANALYSIS",
+  "input_artifact": {
+    "artifact_sha256": "46fd03aa48edf949b5efe861de0b33f43bba083c6c2be9ac164dedb9d0313a4b",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "system_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
+    "validation_procedure_sha256": "14934b507a774b9b354ed2005d5903790dfcabafa40486c72467336393daec53"
+  },
+  "sample": {
+    "decision_count": 72,
+    "conditions": {
+      "INTACT": 24,
+      "SCRAMBLED": 24,
+      "NULL": 24
+    },
+    "operationalisations": {
+      "O1": 24,
+      "O2": 24,
+      "O3": 24
+    }
+  },
+  "validity": {
+    "VALID": 2,
+    "INVALID": 70,
+    "valid_rate": 0.0277777777777778,
+    "invalid_rate": 0.9722222222222222
+  },
+  "validity_by_condition": {
+    "INTACT": {"n": 24, "valid": 2, "invalid": 22, "valid_rate": 0.0833333333333333},
+    "SCRAMBLED": {"n": 24, "valid": 0, "invalid": 24, "valid_rate": 0.0},
+    "NULL": {"n": 24, "valid": 0, "invalid": 24, "valid_rate": 0.0}
+  },
+  "validity_by_operationalisation": {
+    "O1": {"n": 24, "valid": 2, "invalid": 22, "valid_rate": 0.0833333333333333},
+    "O2": {"n": 24, "valid": 0, "invalid": 24, "valid_rate": 0.0},
+    "O3": {"n": 24, "valid": 0, "invalid": 24, "valid_rate": 0.0}
+  },
+  "valid_records": [
+    {"instance_id": "O1-01", "condition": "INTACT", "operationalisation": "O1", "presentation": "P2", "parsed_action": "a", "response_status": "completed"},
+    {"instance_id": "O1-08", "condition": "INTACT", "operationalisation": "O1", "presentation": "P2", "parsed_action": "a", "response_status": "completed"}
+  ],
+  "invalidity_pattern": {
+    "invalid_response_status": "incomplete",
+    "invalid_raw_output_text": "",
+    "invalid_parsed_action": null,
+    "all_invalid_records_exhausted_output_budget": true,
+    "max_output_tokens": 16,
+    "reasoning_tokens": 16
+  },
+  "descriptive_observations": [
+    "Two of 72 decisions were valid; both were INTACT/O1/P2 and parsed action a.",
+    "No valid decision occurred in SCRAMBLED or NULL conditions.",
+    "No valid decision occurred under O2 or O3.",
+    "All 70 invalid decisions had response_status incomplete, empty raw output, null parsed_action, and 16 reasoning tokens consumed against max_output_tokens 16."
+  ],
+  "scientific_boundary": {
+    "recoding": false,
+    "retry": false,
+    "substitution": false,
+    "scientific_execution_repeated": false,
+    "causal_conclusion": false,
+    "hypothesis_decision": false,
+    "interpretive_reclassification": false,
+    "note": "This artifact records descriptive analysis of the immutable primary execution result. It does not convert the observed validity pattern into a hypothesis decision or causal conclusion."
+  },
+  "next_gate": "TI001_V012_V002_SCIENTIFIC_ANALYSIS_RESULT_GATE_001"
+}
