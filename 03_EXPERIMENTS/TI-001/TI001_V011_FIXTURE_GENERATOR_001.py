@@ -54,10 +54,18 @@ def build_fixture():
     condition_assignment = fisher_yates(
         condition_labels, XorShift32(SEED)
     )
-    first_presentation = fisher_yates(
-        presentation_labels,
-        XorShift32((SEED ^ PRESENTATION_XOR) & MASK),
-    )
+    first_presentation = [None] * 210
+    for condition_index, condition in enumerate(CONDITIONS):
+        pair_indices = [
+            i for i, assigned in enumerate(condition_assignment)
+            if assigned == condition
+        ]
+        condition_presentations = fisher_yates(
+            ["I1_FIRST"] * 35 + ["I2_FIRST"] * 35,
+            XorShift32((SEED ^ PRESENTATION_XOR ^ (condition_index + 1)) & MASK),
+        )
+        for pair_index, presentation in zip(pair_indices, condition_presentations):
+            first_presentation[pair_index] = presentation
 
     decision_units = []
     for pair_index in range(210):
