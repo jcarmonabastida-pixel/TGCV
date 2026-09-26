@@ -1,0 +1,38 @@
+{
+  "gate_id": "TI001_V012_V004_POST_CLOSURE_DECISION_GATE_001",
+  "version": "V004",
+  "decision": "CLOSED_AND_NEXT_DESIGN_REQUIRED",
+  "status": "V004_CLOSED",
+  "basis": {
+    "scientific_execution_result_gate": "PASS",
+    "scientific_analysis_result_gate": "PASS",
+    "scientific_interpretation_gate": "PASS",
+    "interpretation_artifact": "TI001_V012_V004_SCIENTIFIC_INTERPRETATION_001.json"
+  },
+  "closure_findings": {
+    "Q1_construct": "UNRESOLVED",
+    "Q2_presentation": "UNRESOLVED",
+    "Q3_null_control": "DESCRIPTIVE_ONLY",
+    "Q4_robustness": "UNRESOLVED",
+    "Q5_mechanism": "NOT_SUPPORTED_AS_POSITIVE_RESULT",
+    "Q6_decision_to_T_acc": "TRACEABILITY_ONLY"
+  },
+  "closure_statement": "V004 is closed as a valid descriptive and traceability experiment. It does not establish that intact action-conditioned future-space information changes transformation selection. Q1-Q5 remain unresolved, while Q6 is supported only at the reconstruction/traceability level.",
+  "scientific_boundaries": {
+    "TGCV_confirmation": false,
+    "TGCV_falsification": false,
+    "causal_claim": false,
+    "value_claim": false,
+    "normative_action_preference": false,
+    "retroactive_reinterpretation_of_V003": false,
+    "pooling_V003_V004_as_substitute_for_discrimination": false,
+    "rerun_V004": false
+  },
+  "next_design_priority": {
+    "primary": "Q5_MECHANISM_DISCRIMINATION",
+    "secondary": "Q1_CONSTRUCT_IDENTIFICATION",
+    "required_direction": "Design a subsequent experiment capable of discriminating action-conditioned future-space information from baseline action preference/heuristic while preserving the decision-before-realised-future-access boundary.",
+    "Q6_role": "Retain the decision-to-T_acc reconstruction bridge as an established traceability component rather than treating it as evidence of causal or value effects."
+  },
+  "next_gate": "TI001_V012_NEXT_DESIGN_REQUIREMENTS_GATE_001"
+}
