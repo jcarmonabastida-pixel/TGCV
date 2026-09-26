@@ -1,0 +1,128 @@
+{
+  "gate_id": "TI001_V012_NEXT_DESIGN_SPECIFICATION_GATE_001",
+  "status": "PASS",
+  "decision": "NEXT_DESIGN_SPECIFICATION_DEFINED",
+  "version": "NEXT-DESIGN-001",
+  "basis": {
+    "requirements_gate": "TI001_V012_NEXT_DESIGN_REQUIREMENTS_GATE_001",
+    "requirements_decision": "NEXT_DESIGN_REQUIREMENTS_DEFINED",
+    "prior_closed_experiment": "V004"
+  },
+  "scope": {
+    "purpose": "Specify the next experimental design capable of discriminating action-conditioned future-space information from a baseline action preference or heuristic.",
+    "fixture_generation_authorized": false,
+    "executor_implementation_authorized": false,
+    "scientific_execution_authorized": false,
+    "interpretation_authorized": false
+  },
+  "scientific_target": {
+    "primary_question": "Q5_MECHANISM_DISCRIMINATION",
+    "secondary_question": "Q1_CONSTRUCT_IDENTIFICATION",
+    "retained_question": "Q6_DECISION_TO_T_ACC_TRACEABILITY",
+    "core_test": "Determine whether action selection tracks an independently varied action-to-future-space correspondence rather than merely tracking action identity."
+  },
+  "design": {
+    "factor_A_mapping_condition": [
+      "CONGRUENT",
+      "INCONGRUENT"
+    ],
+    "factor_B_action_identity": [
+      "A",
+      "B"
+    ],
+    "factor_C_presentation": [
+      "P1",
+      "P2"
+    ],
+    "factor_D_baseline": [
+      "MAPPING_INFORMATIVE",
+      "MAPPING_UNINFORMATIVE"
+    ],
+    "within_unit_structure": "Each decision unit exposes the same current state, candidate action set, task context and timing while independently varying which action is associated with the informative future-space correspondence.",
+    "counterbalancing": "Across the complete fixture, action identity and informative future-space correspondence must be independently counterbalanced so neither action is systematically privileged.",
+    "primary_contrast": "Selection of the action associated with the informative future-space correspondence under counterbalanced action identity, compared against the corresponding action-selection baseline when that correspondence is unavailable.",
+    "mechanism_discriminator": "A future-space mechanism predicts tracking of the currently assigned informative action across counterbalanced mappings; a fixed action preference predicts persistence of action identity independently of the mapping."
+  },
+  "controls": {
+    "current_state_matched": true,
+    "action_set_matched": true,
+    "task_matched": true,
+    "timing_matched": true,
+    "environment_matched": true,
+    "presentation_counterbalanced": true,
+    "post_decision_future_access": false,
+    "reward_signal": false,
+    "utility_signal": false,
+    "value_signal": false,
+    "performance_signal": false,
+    "task_success_signal": false,
+    "normative_recommendation": false
+  },
+  "decision_boundary": {
+    "decision_precedes_realized_future": true,
+    "realized_successor_hidden_at_decision": true,
+    "realized_T_acc_hidden_at_decision": true,
+    "post_decision_reconstruction_allowed": true
+  },
+  "traceability": {
+    "required_per_decision_unit": [
+      "S_t",
+      "candidate_action_set",
+      "selected_action",
+      "action_to_future_mapping",
+      "S_t_plus_1",
+      "T_acc_t_plus_1"
+    ],
+    "reconstruction_failure_policy": "Exclude the unit from mechanism interpretation and fail the traceability gate if reconstruction cannot be independently established."
+  },
+  "fixture_requirements": {
+    "new_immutable_version": true,
+    "action_mapping_randomization": true,
+    "action_identity_counterbalancing": true,
+    "presentation_counterbalancing": true,
+    "baseline_condition": true,
+    "no_single_action_predicts_informative_mapping": true,
+    "no_descriptor_contains_normative_quality": true,
+    "exact_mapping_record_per_unit": true
+  },
+  "executor_requirements": {
+    "fresh_executor_binding": true,
+    "executor_2_independent_verification": true,
+    "fixture_hash_binding": true,
+    "prompt_hash_binding": true,
+    "validation_procedure_hash_binding": true,
+    "retry": false,
+    "recoding": false,
+    "substitution": false,
+    "imputation": false
+  },
+  "analysis_plan": {
+    "primary_observable": "Mapping-consistent action-selection rate.",
+    "secondary_observables": [
+      "Fixed-action preference rate across mapping reversals",
+      "Mapping-by-action-identity interaction",
+      "Presentation-stratified mapping-consistent selection",
+      "Baseline versus informative-mapping contrast",
+      "Operationalisation-stratified consistency",
+      "Decision-to-realized-T_acc reconstruction rate"
+    ],
+    "interpretive_rule": "A mechanism claim requires the observed pattern to distinguish mapping-consistent selection from persistence of action identity under counterbalanced mappings. Descriptive differences alone are not sufficient.",
+    "statistical_threshold": "Not specified at this design gate; no inferential threshold is introduced retroactively."
+  },
+  "versioning_and_boundaries": {
+    "V003_immutable": true,
+    "V004_immutable": true,
+    "no_pooling_as_substitute_for_discrimination": true,
+    "no_TGCV_wide_confirmation": true,
+    "no_TGCV_wide_falsification": true,
+    "no_value_claim": true,
+    "no_causal_value_claim": true
+  },
+  "authorization": {
+    "design_specification_complete": true,
+    "fixture_generation": false,
+    "executor_implementation": false,
+    "scientific_execution": false
+  },
+  "next_gate": "TI001_V012_NEXT_FIXTURE_REQUIREMENTS_GATE_001"
+}
