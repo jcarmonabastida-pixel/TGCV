@@ -1,0 +1,19 @@
+{
+  "checks": {
+    "authorization_execution_status": true,
+    "authorization_status": true,
+    "decision_unit_count": true,
+    "fixture_id": true,
+    "fixture_sha256": true,
+    "generator_git_blob_sha": true,
+    "interface_fixture_binding": true,
+    "interface_generator_binding": true,
+    "interface_git_blob_sha": true,
+    "interface_schema_binding": true,
+    "schema_git_blob_sha": true
+  },
+  "executor_version": "TI001-V011-SCIENTIFIC-EXECUTOR-001",
+  "fixture_sha256": "30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1",
+  "scientific_execution": "NOT_PERFORMED",
+  "status": "READY_NOT_EXECUTED"
+}
