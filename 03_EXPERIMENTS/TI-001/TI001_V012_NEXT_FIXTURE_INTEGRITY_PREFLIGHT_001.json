@@ -1,0 +1,39 @@
+{
+  "artifact_id": "TI001_V012_NEXT_FIXTURE_INTEGRITY_PREFLIGHT_001",
+  "status": "PASS",
+  "decision": "FIXTURE_INTEGRITY_PASS",
+  "fixture_path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT_FIXTURE_v001.json",
+  "fixture_git_blob_sha": "1886160849aecdbda2904a0d3b593975077e1914",
+  "checks": {
+    "schema": true,
+    "version": true,
+    "count": true,
+    "op_counts": true,
+    "informative_action_balance": true,
+    "baseline_action_balance": true,
+    "informative_baseline_balance": true,
+    "presentation_balance": true,
+    "decision_boundary": true,
+    "scientific_execution_false": true,
+    "deterministic_seed": true,
+    "normative_encoding": true
+  },
+  "observed_counts": {
+    "count": 72,
+    "informativeA": 18,
+    "informativeB": 18,
+    "baselineA": 18,
+    "baselineB": 18,
+    "p1": 36,
+    "p2": 36,
+    "ops": {
+      "O1": 24,
+      "O2": 24,
+      "O3": 24
+    },
+    "badDecision": 0,
+    "badExec": 0
+  },
+  "scientific_execution": false,
+  "next_gate": "TI001_V012_NEXT_FIXTURE_FREEZE_GATE_001"
+}
