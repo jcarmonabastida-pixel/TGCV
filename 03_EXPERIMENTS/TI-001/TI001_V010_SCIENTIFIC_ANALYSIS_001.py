@@ -119,8 +119,7 @@ def main():
         "executor_2": analyze(e2),
     }
 
-    Path(args.output).write_text(json.dumps(analysis, indent=2) + "
-", encoding="utf-8")
+    Path(args.output).write_text(json.dumps(analysis, indent=2) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
