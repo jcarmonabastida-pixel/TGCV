@@ -1,0 +1,65 @@
+{
+  "gate_id": "TI001_V012_V004_DESIGN_REQUIREMENTS_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V004",
+  "gate_type": "DESIGN_REQUIREMENTS",
+  "decision": "PASS",
+  "basis": {
+    "prior_closure": "TI001_V012_V003_POST_CLOSURE_DECISION_GATE_001",
+    "source_design": "TI001_V012_EXPERIMENTAL_DESIGN_SPECIFICATION_001.md"
+  },
+  "requirements": {
+    "R1_Q6_DECISION_TO_T_ACC_BRIDGE": {
+      "status": "REQUIRED",
+      "requirement": "The next experiment must independently reconstruct S_t, selected transformation, S_t+1, and T_acc,t+1 for every decision unit.",
+      "failure_condition": "Interpretation blocked if the successor state or successor accessible transformation space cannot be independently reconstructed."
+    },
+    "R2_Q5_MECHANISM_DISCRIMINATION": {
+      "status": "REQUIRED",
+      "requirement": "Preserve a mechanism-sensitive comparison in which the action-to-future correspondence is intact versus structurally perturbed while current state, current action set, task, timing, presentation burden, and environment remain matched.",
+      "source_design_conditions": ["INTACT", "SCRAMBLED", "NULL"]
+    },
+    "R3_Q1_Q4_CONTROLS": {
+      "status": "REQUIRED",
+      "requirement": "Retain matched current state/action structure, null control, presentation variation, and independent operationalisations sufficient to distinguish construct, presentation, baseline, and robustness explanations."
+    },
+    "R4_NO_PREFERRED_ACTION_ENCODING": {
+      "status": "REQUIRED",
+      "requirement": "Future-space descriptors must not encode recommendation, ranking, reward, value, utility, performance, or outcome-quality information."
+    },
+    "R5_FROZEN_PREDECISION_INFORMATION": {
+      "status": "REQUIRED",
+      "requirement": "The agent must select before access to realised future state/accessibility; future consequences are reconstructed/revealed only after the decision."
+    },
+    "R6_INDEPENDENT_RECONSTRUCTION": {
+      "status": "REQUIRED",
+      "requirement": "Executor-2 must independently verify state/action identity, condition isolation, presentation assignment, future mapping, successor states, successor accessibility, and primary observables."
+    },
+    "R7_ANALYTICAL_BOUNDARY": {
+      "status": "REQUIRED",
+      "requirement": "The next version must not convert the decision-to-T_acc bridge into a value claim and must not reopen, rerun, or modify V003."
+    }
+  },
+  "traceability": {
+    "Q1": ["R3_Q1_Q4_CONTROLS", "R4_NO_PREFERRED_ACTION_ENCODING"],
+    "Q2": ["R3_Q1_Q4_CONTROLS"],
+    "Q3": ["R3_Q1_Q4_CONTROLS"],
+    "Q4": ["R3_Q1_Q4_CONTROLS", "R6_INDEPENDENT_RECONSTRUCTION"],
+    "Q5": ["R2_Q5_MECHANISM_DISCRIMINATION", "R4_NO_PREFERRED_ACTION_ENCODING"],
+    "Q6": ["R1_Q6_DECISION_TO_T_ACC_BRIDGE", "R5_FROZEN_PREDECISION_INFORMATION", "R6_INDEPENDENT_RECONSTRUCTION"]
+  },
+  "immutability_boundary": {
+    "V003_status": "CLOSED_AND_IMMUTABLE",
+    "v003_rerun": false,
+    "v003_pooling_as_substitute": false,
+    "v003_modification": false
+  },
+  "authorization_boundary": {
+    "fixture_generation_authorized": false,
+    "scientific_execution_authorized": false,
+    "scientific_interpretation_authorized": false
+  },
+  "disposition": "REQUIREMENTS PASS — V004 DESIGN SPECIFICATION MAY NOW BE FORMALIZED",
+  "next_gate": "TI001_V012_V004_DESIGN_SPECIFICATION_GATE_001"
+}
