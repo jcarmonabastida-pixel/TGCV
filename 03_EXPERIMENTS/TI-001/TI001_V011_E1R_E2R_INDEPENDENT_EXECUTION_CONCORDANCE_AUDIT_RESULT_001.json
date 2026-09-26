@@ -1,0 +1,35 @@
+{
+  "audit_id": "TI001-V011-E1R-E2R-INDEPENDENT-EXECUTION-CONCORDANCE-AUDIT-001",
+  "authorization": "READY_FOR_SCIENTIFIC_ANALYSIS",
+  "checks": {
+    "A10_EACH_ALL_VALID": true,
+    "A11_EACH_REASONING_ZERO": true,
+    "A12_EACH_RESPONSE_IDS_UNIQUE": true,
+    "A13_RESPONSE_IDS_DISJOINT": true,
+    "A14_NO_CROSS_RESULT_REFERENCE": true,
+    "A15_SEPARATE_RUNTIME_METADATA": true,
+    "A16_NO_FORBIDDEN_EXECUTION_FIELDS": true,
+    "A17_NO_POOLING_OR_RECODING_MARKERS": true,
+    "A18_NO_SCIENTIFIC_ESTIMANDS_IN_RESULTS": true,
+    "A19_AGREEMENT_NOT_USED_AS_VALIDITY": true,
+    "A1_E1R_AUDIT_PASS": true,
+    "A20_GATE_NO_ESTIMATION": true,
+    "A2_E2R_AUDIT_PASS": true,
+    "A3_DISTINCT_EXECUTOR_IDENTITIES": true,
+    "A4_DISTINCT_RESULT_FILES": true,
+    "A5_SAME_FIXTURE_BINDING": true,
+    "A6_SAME_INTERFACE_GENERATOR_SCHEMA": true,
+    "A7_EACH_420_RECORDS": true,
+    "A8_EACH_FIXTURE_ORDER": true,
+    "A9_EACH_BALANCED": true
+  },
+  "details": {
+    "e1r_executor": "TI001-V011-E1R-SCIENTIFIC-EXECUTOR-001",
+    "e1r_valid": 420,
+    "e2r_executor": "TI001-V011-E2R-SCIENTIFIC-EXECUTOR-001",
+    "e2r_valid": 420,
+    "response_id_overlap": 0
+  },
+  "scientific_analysis": "NOT_PERFORMED",
+  "status": "PASS"
+}
