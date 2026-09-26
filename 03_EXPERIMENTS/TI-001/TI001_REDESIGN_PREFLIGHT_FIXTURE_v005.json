@@ -1,0 +1,167 @@
+{
+  "actions": [
+    "a",
+    "b",
+    "c"
+  ],
+  "conditions": {
+    "control": {
+      "actions": ["a", "b", "c"],
+      "candidate_count": 3,
+      "future_signal": null,
+      "mapping_non_derivable": true,
+      "state": "S0",
+      "t_acc": ["a", "b", "c"],
+      "task": "select_one_current_transformation"
+    },
+    "null": {
+      "actions": ["a", "b", "c"],
+      "candidate_count": 3,
+      "format_compatible": true,
+      "future_mapping": null,
+      "future_signal": null,
+      "recommendation": null,
+      "state": "S0",
+      "t_acc": ["a", "b", "c"],
+      "task": "select_one_current_transformation"
+    },
+    "treatment": {
+      "actions": ["a", "b", "c"],
+      "admissible_actions": ["a", "b", "c"],
+      "candidate_count": 3,
+      "future_mapping": {
+        "a": {
+          "future_accessibility_class": "pair_xy",
+          "identity_turnover_class": "turnover_2",
+          "persistence_class": "none",
+          "reconfiguration_class": "pair_xy"
+        },
+        "b": {
+          "future_accessibility_class": "pair_xz",
+          "identity_turnover_class": "turnover_2",
+          "persistence_class": "none",
+          "reconfiguration_class": "pair_xz"
+        },
+        "c": {
+          "future_accessibility_class": "pair_yz",
+          "identity_turnover_class": "turnover_2",
+          "persistence_class": "none",
+          "reconfiguration_class": "pair_yz"
+        }
+      },
+      "state": "S0",
+      "t_acc": ["a", "b", "c"],
+      "task": "select_one_current_transformation"
+    }
+  },
+  "divergence_witness": {
+    "control_action": "a",
+    "control_without_mapping_action": "a",
+    "depends_on_treatment_mapping": true,
+    "different": true,
+    "mapping_action_used": "b",
+    "mapping_descriptor_used": {
+      "future_accessibility_class": "pair_xz",
+      "identity_turnover_class": "turnover_2",
+      "persistence_class": "none",
+      "reconfiguration_class": "pair_xz"
+    },
+    "mapping_removed_action": "a",
+    "no_evaluation": true,
+    "removing_mapping_removes_witness": true,
+    "same_decision_rule": true,
+    "same_state": true,
+    "same_t_acc": true,
+    "same_task": true,
+    "same_timing": true,
+    "treatment_action": "b",
+    "treatment_with_mapping_action": "b"
+  },
+  "environment_nonce": 1929524440,
+  "environment_seed": 731407,
+  "fixture_sha256": "e02a38a82517b8df0ce951aa13840ecb91d17936e14c0684515cc1d01ae24f1b",
+  "randomisation_seed": 582031,
+  "schema": "TI001_REDESIGN_PREFLIGHT_FIXTURE_v005",
+  "scientific_execution": false,
+  "state": "S0",
+  "successor_accessibility_before_selection": false,
+  "successor_state_before_selection": false,
+  "t_acc": ["a", "b", "c"],
+  "temporal_order": [
+    "information_presentation",
+    "transformation_selection",
+    "successor_realisation",
+    "future_accessibility_reveal"
+  ],
+  "transition_spec": {
+    "current_accessible_transformations": ["a", "b", "c"],
+    "state": "S0",
+    "transitions": {
+      "a": {
+        "future_accessible_transformations": ["x", "y"],
+        "future_descriptor": {
+          "future_accessibility_class": "pair_xy",
+          "identity_turnover_class": "turnover_2",
+          "persistence_class": "none",
+          "reconfiguration_class": "pair_xy"
+        },
+        "successor": "SA"
+      },
+      "b": {
+        "future_accessible_transformations": ["x", "z"],
+        "future_descriptor": {
+          "future_accessibility_class": "pair_xz",
+          "identity_turnover_class": "turnover_2",
+          "persistence_class": "none",
+          "reconfiguration_class": "pair_xz"
+        },
+        "successor": "SB"
+      },
+      "c": {
+        "future_accessible_transformations": ["y", "z"],
+        "future_descriptor": {
+          "future_accessibility_class": "pair_yz",
+          "identity_turnover_class": "turnover_2",
+          "persistence_class": "none",
+          "reconfiguration_class": "pair_yz"
+        },
+        "successor": "SC"
+      }
+    }
+  },
+  "transition_traceability": {
+    "a": {
+      "action": "a",
+      "future_descriptor": {
+        "future_accessibility_class": "pair_xy",
+        "identity_turnover_class": "turnover_2",
+        "persistence_class": "none",
+        "reconfiguration_class": "pair_xy"
+      },
+      "source_future_accessibility": ["x", "y"],
+      "source_successor": "SA"
+    },
+    "b": {
+      "action": "b",
+      "future_descriptor": {
+        "future_accessibility_class": "pair_xz",
+        "identity_turnover_class": "turnover_2",
+        "persistence_class": "none",
+        "reconfiguration_class": "pair_xz"
+      },
+      "source_future_accessibility": ["x", "z"],
+      "source_successor": "SB"
+    },
+    "c": {
+      "action": "c",
+      "future_descriptor": {
+        "future_accessibility_class": "pair_yz",
+        "identity_turnover_class": "turnover_2",
+        "persistence_class": "none",
+        "reconfiguration_class": "pair_yz"
+      },
+      "source_future_accessibility": ["y", "z"],
+      "source_successor": "SC"
+    }
+  }
+}
