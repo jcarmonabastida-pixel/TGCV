@@ -10,6 +10,9 @@ def load(p):
     if raw.endswith("\\n"): raw=raw[:-2]
     return json.loads(raw)
 
+def valid_count(data):
+    return sum(1 for r in data["records"] if r.get("valid") is True and r.get("validated_decision") in ("A","B"))
+
 def main():
     e1=load(B/"TI001_V011_E1R_SCIENTIFIC_EXECUTION_RESULT_001.json")
     e2=load(B/"TI001_V011_E2R_SCIENTIFIC_EXECUTION_RESULT_001.json")
@@ -20,12 +23,14 @@ def main():
     an=load(B/"TI001_V011_SCIENTIFIC_ANALYSIS_RESULT_001.json")
     pa=load(B/"TI001_V011_PRIMARY_SCIENTIFIC_ANALYSIS_AUDIT_RESULT_001.json")
     fx=load(B/"TI001_V011_FIXTURE_001.json")
-
     auth_boundary=auth.get("analysis_boundary",{})
     an_boundary=an.get("analysis_boundary",{})
+    e1_valid=valid_count(e1)
+    e2_valid=valid_count(e2)
+
     checks={
-      "A1_E1R_420_VALID": len(e1["records"])==420 and e1.get("valid_count")==420,
-      "A2_E2R_420_VALID": len(e2["records"])==420 and e2.get("valid_count")==420,
+      "A1_E1R_420_VALID": len(e1["records"])==420 and e1_valid==420,
+      "A2_E2R_420_VALID": len(e2["records"])==420 and e2_valid==420,
       "A3_E1R_EXECUTION_AUDIT_PASS": a1.get("status")=="PASS",
       "A4_E2R_EXECUTION_AUDIT_PASS": a2.get("status")=="PASS",
       "A5_CONCORDANCE_AUDIT_PASS": ca.get("status")=="PASS",
@@ -36,7 +41,7 @@ def main():
       "A10_NO_RECODE_RETRY_IMPUTATION": auth_boundary.get("pooling") is False and auth_boundary.get("recode") is False and auth_boundary.get("retry") is False and auth_boundary.get("imputation") is False and auth_boundary.get("outcome_dependent_filtering") is False,
       "A11_NO_CAUSAL_VALUE_GENERAL_CLAIM": pa["checks"].get("A13_NO_CAUSAL_VALUE_CLAIM") is True,
       "A12_FIXTURE_420": len(fx["decision_units"])==420,
-      "A13_FIXTURE_IDENTITY_PRESERVED": e1.get("fixture_sha256")==e2.get("fixture_sha256")==auth_boundary.get("fixture_sha256",e1.get("fixture_sha256")) if "fixture_sha256" in auth_boundary else e1.get("fixture_sha256")==e2.get("fixture_sha256"),
+      "A13_FIXTURE_IDENTITY_PRESERVED": e1.get("fixture_sha256")==e2.get("fixture_sha256") and e1.get("fixture_id")==e2.get("fixture_id")==fx.get("fixture_id"),
       "A14_CLOSURE_DOES_NOT_MUTATE_SCIENTIFIC_RESULTS": True,
     }
     result={
@@ -44,8 +49,8 @@ def main():
       "checks":checks,
       "details":{
         "fixture_sha256":e1.get("fixture_sha256"),
-        "e1r_valid_count":e1.get("valid_count"),
-        "e2r_valid_count":e2.get("valid_count"),
+        "e1r_valid_count":e1_valid,
+        "e2r_valid_count":e2_valid,
         "e1r_ti_dc":an["E1R"]["contrasts"]["TI_DC"],
         "e2r_ti_dc":an["E2R"]["contrasts"]["TI_DC"],
         "response_agreement_count":an["cross_execution"]["response_level_agreement_count"],
