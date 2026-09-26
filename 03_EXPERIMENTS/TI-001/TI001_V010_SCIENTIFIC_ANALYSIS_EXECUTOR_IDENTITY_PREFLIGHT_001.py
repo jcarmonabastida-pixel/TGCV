@@ -41,7 +41,7 @@ def main():
         "A5_E1_LOCAL_CANONICAL": git_blob_sha(e1) == E1_RESULT_SHA,
         "A6_E2_LOCAL_CANONICAL": git_blob_sha(e2) == E2_RESULT_SHA,
         "A7_AUTHORIZED": auth.get("scientific_analysis") == "AUTHORIZED",
-        "A8_NO_POOLING": auth.get("pool_executions") is False and "pool_executions": False in source,
+        "A8_NO_POOLING": auth.get("pool_executions") is False and '"pool_executions": False' in source,
         "A9_NO_RECODING": "recode" not in source.lower(),
         "A10_NO_RETRY": "retry" not in source.lower(),
         "A11_NO_IMPUTATION": "imputation" not in source.lower(),
