@@ -1,0 +1,34 @@
+{
+  "record_type": "TI001-V011-E2R-SCIENTIFIC-EXECUTION-AUTHORIZATION",
+  "authorization_status": "AUTHORIZED",
+  "scientific_execution": "AUTHORIZED",
+  "execution_status": "AUTHORIZED_NOT_STARTED",
+  "authorization_action": "EXPLICIT_USER_AUTHORIZATION",
+  "authorization_statement": "Autorizo la ejecución científica de TI-001 V011 E2-R",
+  "basis": {
+    "final_preauthorization_gate": "03_EXPERIMENTS/TI-001/TI001_V011_E2R_FINAL_PREAUTHORIZATION_GATE_RESULT_001.json",
+    "final_preauthorization_status": "PASS",
+    "executor_preflight": "03_EXPERIMENTS/TI-001/TI001_V011_E2R_EXECUTOR_IDENTITY_COMPATIBILITY_PREFLIGHT_RESULT_001.json",
+    "executor_blob_sha": "a8cdb770ffab6d0023c809b7466fe00c2fcd89c6",
+    "fixture": "03_EXPERIMENTS/TI-001/TI001_V011_FIXTURE_001.json",
+    "fixture_sha256": "30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1",
+    "generator_git_blob_sha": "9170f767cac3fceccaba248747c6524c5f150e11",
+    "schema_git_blob_sha": "b2fef667f6eb33689ece5481957d3917a860dd3e",
+    "interface_git_blob_sha": "8667b0ff70f58283c688f24c76f10db142655d14",
+    "reasoning": {
+      "effort": "none"
+    }
+  },
+  "execution_boundary": {
+    "fixture_must_match_frozen_sha256": true,
+    "no_fixture_modification": true,
+    "no_interface_modification": true,
+    "no_retry": true,
+    "no_recode": true,
+    "no_repair": true,
+    "no_imputation": true,
+    "no_pooling_with_e1": true,
+    "no_pooling_with_e1r": true
+  },
+  "scientific_execution_before_authorization": false
+}
