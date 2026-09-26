@@ -1,0 +1,42 @@
+{
+  "gate_id": "TI001_V012_V002_EXECUTOR_2_RECONSTRUCTION_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V002",
+  "gate_type": "EXECUTOR_2_RECONSTRUCTION",
+  "decision": "PASS",
+  "checks": {
+    "executor_2_id": "TI001-V012-V002-INDEPENDENT-RECONSTRUCTOR-2-001",
+    "reconstruction_result_status": "PASS",
+    "reconstruction_failures": [],
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "expected_fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "instance_count": 72,
+    "scientific_execution_by_executor_2": false,
+    "executor_2_independent_of_executor_1": true,
+    "fixture_identity_bound": true
+  },
+  "scope": {
+    "validated": [
+      "fixture identity",
+      "instance count",
+      "current transformation space",
+      "presentation representation",
+      "NULL condition information isolation",
+      "INTACT future-space mapping",
+      "SCRAMBLED future-space derangement"
+    ],
+    "not_validated": [
+      "scientific interpretation",
+      "causal effect estimation",
+      "hypothesis acceptance or rejection"
+    ]
+  },
+  "result_basis": {
+    "record_type": "TGCV_TI001_V012_V002_EXECUTOR_2_RECONSTRUCTION_RESULT",
+    "status": "PASS",
+    "failures": [],
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "instance_count": 72
+  }
+}
