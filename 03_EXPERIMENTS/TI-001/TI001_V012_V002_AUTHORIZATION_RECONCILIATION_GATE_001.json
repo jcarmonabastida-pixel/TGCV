@@ -1,0 +1,51 @@
+{
+  "gate_id": "TI001_V012_V002_AUTHORIZATION_RECONCILIATION_GATE_001",
+  "status": "PASS_WITH_REAUTHORIZATION_REQUIRED",
+  "decision": "V002_PACKAGE_ELIGIBLE_FOR_FRESH_SCIENTIFIC_AUTHORIZATION",
+  "canonical_basis": {
+    "fixture_path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v002.json",
+    "fixture_schema": "TI001_V012_FIXTURE_v002",
+    "fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+    "fixture_instance_count": 72,
+    "freeze_gate": "TI001_V012_FIXTURE_V002_FREEZE_GATE_001",
+    "freeze_gate_commit": "0c8e1de275c543034d569298f4b8866233f1adc6",
+    "integrity_preflight": "TI001_V012_FIXTURE_V002_INTEGRITY_PREFLIGHT_001",
+    "integrity_preflight_commit": "5267543c9f1b3905ea23297de7a3858390dbe729"
+  },
+  "prior_authorization": {
+    "artifact": "TI001_V012_SCIENTIFIC_EXECUTION_AUTHORIZATION_001.json",
+    "prior_fixture_schema": "TI001_V012_FIXTURE_v001",
+    "prior_fixture_sha256": "9690c3bf394495327e528d8aba9288b87e7a3501ff94899793f7cd9b08e818fc",
+    "prior_authorization_commit": "28ed73398adab2b365a2be4077875b482c75fe82",
+    "status_for_v002": "NOT_VALID_FOR_V002",
+    "automatic_reuse": "FORBIDDEN"
+  },
+  "reconciliation_checks": {
+    "A1_V002_FROZEN": true,
+    "A2_V002_INTEGRITY_PREFLIGHT_PASS": true,
+    "A3_V002_IDENTITY_DIFFERS_FROM_V001": true,
+    "A4_PRIOR_AUTHORIZATION_BINDS_TO_V001": true,
+    "A5_PRIOR_AUTHORIZATION_REUSE_REJECTED": true,
+    "A6_DESIGN_SCOPE_UNCHANGED": true,
+    "A7_V002_EXECUTION_NOT_PERFORMED": true,
+    "A8_V002_EXECUTION_NOT_AUTHORIZED": true,
+    "A9_FRESH_AUTHORIZATION_REQUIRED": true
+  },
+  "identity_change": {
+    "changed": true,
+    "scope": [
+      "fixture schema/version",
+      "fixture SHA-256",
+      "explicit P1/P2 representation"
+    ],
+    "scientific_package_identity": "V002"
+  },
+  "authorization_conclusion": {
+    "v001_authorization": "superseded_for_v002",
+    "v002_authorization": "NOT_GRANTED_BY_THIS_GATE",
+    "next_required_action": "Obtain fresh explicit authorization for the frozen V002 scientific package, then register the new authorization artifact."
+  },
+  "scientific_execution": false,
+  "scientific_execution_authorized": false,
+  "next_gate": "TI001_V012_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_002"
+}
