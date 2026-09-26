@@ -1,0 +1,95 @@
+{
+  "gate_id": "TI001_V012_FIXTURE_AMENDMENT_GATE_001",
+  "status": "AMENDMENT_REQUIRED",
+  "decision": "CREATE_V012_FIXTURE_v002",
+  "canonical_main_at_gate": "28ed73398adab2b365a2be4077875b482c75fe82",
+  "antecedent": {
+    "fixture_schema": "TI001_V012_FIXTURE_v001",
+    "fixture_sha256": "9690c3bf394495327e528d8aba9288b87e7a3501ff94899793f7cd9b08e818fc",
+    "fixture_instance_count": 72,
+    "freeze_record": "03_EXPERIMENTS/TI-001/TI001_V012_FREEZE_001.json",
+    "freeze_status": "FROZEN",
+    "freeze_modification_policy": "Any scientific-package modification requires a new version; frozen artifacts are not edited in place."
+  },
+  "trigger": {
+    "finding": "The frozen v001 fixture records a P1/P2 presentation label, but does not explicitly materialize the frozen P1/P2 representation semantics as presentation data.",
+    "design_requirement": {
+      "P1": "action-keyed tabular records, one row per action, with the same neutral descriptor fields for every action",
+      "P2": "action-keyed ordered records using the same fields and values but a different presentation order determined by a frozen permutation"
+    },
+    "reason": "A presentation label alone does not make the intended representation/order independently reconstructable from the fixture."
+  },
+  "correction": {
+    "target_schema": "TI001_V012_FIXTURE_v002",
+    "scope": "Add an explicit, reconstructable P1/P2 representation to each decision instance.",
+    "required_representation": {
+      "P1": {
+        "representation_type": "action_keyed_tabular_records",
+        "records": "one record per current action, containing the frozen neutral descriptor fields and the action key"
+      },
+      "P2": {
+        "representation_type": "action_keyed_ordered_records",
+        "records": "the same action records, with an explicit frozen presentation order",
+        "order": "must be explicitly stored and reconstructable; it must use the same fields and values as P1"
+      }
+    },
+    "preserve_without_change": [
+      "72 decision instances",
+      "randomisation seed 582031",
+      "O1/O2/O3 operationalisations and their transition structures",
+      "INTACT/SCRAMBLED/NULL condition assignments",
+      "P1/P2 assignments",
+      "instance identifiers",
+      "current state S0 and current T_acc={a,b,c}",
+      "successor states and ground-truth transition_spec",
+      "future-space descriptors",
+      "SCRAMBLED information perturbation semantics",
+      "temporal order",
+      "decision_before_future_reveal",
+      "scientific_execution=false",
+      "selected_transformation=null",
+      "S_t1=null",
+      "T_acc_t1=null",
+      "all fixture-level values not required by the explicit P1/P2 representation correction"
+    ],
+    "prohibited_changes": [
+      "do not edit v001 in place",
+      "do not alter the experimental design",
+      "do not alter Q1-Q6 scope or estimands",
+      "do not alter condition or presentation allocation",
+      "do not alter transition ground truth",
+      "do not add value/reward/utility/performance information",
+      "do not perform scientific execution",
+      "do not reuse v001 fixture identity for v002"
+    ]
+  },
+  "identity_consequence": {
+    "scientific_package_identity_changes": true,
+    "expected_effect": "The v002 fixture SHA/package identity must differ from v001.",
+    "authorization_reconciliation_required": true,
+    "prior_authorization_commit": "28ed73398adab2b365a2be4077875b482c75fe82",
+    "prior_authorization_reuse": "FORBIDDEN",
+    "reason": "The authorization at 28ed7339 was issued for the then-authorized V012 scientific package and its v001 fixture identity. A new fixture version is a new scientific-package identity and therefore requires fresh reconciliation against the amended package before any execution."
+  },
+  "gate_checks": {
+    "A1_V001_FROZEN": true,
+    "A2_V001_NOT_EDITED_IN_PLACE": true,
+    "A3_P1_P2_REQUIREMENT_PRESENT_IN_DESIGN": true,
+    "A4_V001_LACKS_EXPLICIT_P1_P2_REPRESENTATION": true,
+    "A5_AMENDMENT_SCOPE_LIMITED_TO_REPRESENTATION": true,
+    "A6_ALL_OTHER_FIXTURE_SEMANTICS_PRESERVED": true,
+    "A7_V002_NEW_SCHEMA_IDENTITY_REQUIRED": true,
+    "A8_V002_NEW_FIXTURE_HASH_REQUIRED": true,
+    "A9_PRIOR_AUTHORIZATION_NOT_REUSED": true,
+    "A10_AUTHORIZATION_RECONCILIATION_REQUIRED_BEFORE_EXECUTION": true,
+    "A11_SCIENTIFIC_EXECUTION_PERFORMED_BY_THIS_GATE": false
+  },
+  "required_next_artifacts": [
+    "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v002.json",
+    "updated or new deterministic fixture-generation provenance for v002",
+    "dedicated v002 fixture integrity/freeze audit",
+    "authorization reconciliation against the v002 scientific-package identity before execution"
+  ],
+  "scientific_execution": false,
+  "scientific_execution_authorized": false
+}
