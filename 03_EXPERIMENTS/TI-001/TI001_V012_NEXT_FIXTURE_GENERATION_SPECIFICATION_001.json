@@ -1,0 +1,115 @@
+{
+  "artifact_id": "TI001_V012_NEXT_FIXTURE_GENERATION_SPECIFICATION_001",
+  "status": "SPECIFICATION_FROZEN_FOR_GENERATION",
+  "decision": "GENERATION_SPECIFIED",
+  "basis": {
+    "design_specification_gate": "TI001_V012_NEXT_DESIGN_SPECIFICATION_GATE_001",
+    "fixture_requirements_gate": "TI001_V012_NEXT_FIXTURE_REQUIREMENTS_GATE_001",
+    "fixture_generation_gate": "TI001_V012_NEXT_FIXTURE_GENERATION_GATE_001"
+  },
+  "fixture_identity": {
+    "schema_version": "TI001_V012_NEXT_FIXTURE_v001",
+    "fixture_version": "NEXT_v001",
+    "previous_fixture_v004_is_immutable": true
+  },
+  "generation_parameters": {
+    "seed": 582031,
+    "operationalisations": 3,
+    "presentations": ["P1", "P2"],
+    "mapping_conditions": ["INFORMATIVE", "BASELINE"],
+    "action_identities": ["A", "B"],
+    "units_per_operationalisation": 24,
+    "total_units": 72,
+    "units_per_operationalisation_cell": 4,
+    "cell_definition": "Each operationalisation contains the full 2x2 mapping-by-action design with two presentation-balanced replicates per cell."
+  },
+  "cell_structure": {
+    "mapping_condition": {
+      "INFORMATIVE": "Exactly one candidate action is assigned the informative future-space correspondence.",
+      "BASELINE": "No candidate action is assigned a uniquely informative future-space correspondence."
+    },
+    "action_identity": {
+      "A": "Candidate action identity A",
+      "B": "Candidate action identity B"
+    },
+    "presentation": {
+      "P1": "Presentation condition 1",
+      "P2": "Presentation condition 2"
+    },
+    "replication": "Each operationalisation contains 4 units for each mapping-by-action cell, with 2 P1 and 2 P2 units."
+  },
+  "counterbalancing_invariants": {
+    "informative_mapping_A": 12,
+    "informative_mapping_B": 12,
+    "baseline_action_A": 12,
+    "baseline_action_B": 12,
+    "P1_total": 36,
+    "P2_total": 36,
+    "per_operationalisation_informative_A": 4,
+    "per_operationalisation_informative_B": 4,
+    "per_operationalisation_baseline_A": 4,
+    "per_operationalisation_baseline_B": 4
+  },
+  "mapping_rule": {
+    "informative_condition": "The informative future-space descriptor is assigned to A in exactly half of informative units and to B in exactly half.",
+    "reversal_requirement": "Matched units must exist with identical current-state/task structure and reversed informative-action identity.",
+    "baseline_condition": "The descriptor structure must not identify a uniquely informative action.",
+    "action_identity_independence": true
+  },
+  "decision_boundary": {
+    "decision_inputs_exclude": [
+      "realized_successor_state",
+      "realized_T_acc",
+      "post_decision_outcome"
+    ],
+    "decision_precedes_realized_future": true
+  },
+  "post_decision_reconstruction": {
+    "required_fields": [
+      "S_t",
+      "candidate_action_set",
+      "selected_action",
+      "action_to_future_mapping",
+      "S_t_plus_1",
+      "T_acc_t_plus_1"
+    ],
+    "reconstruction_required_for_all_units": true
+  },
+  "normative_encoding_prohibition": {
+    "forbidden_in_decision_relevant_descriptors": [
+      "reward",
+      "utility",
+      "value",
+      "performance",
+      "task_success",
+      "recommendation",
+      "normative_quality"
+    ],
+    "preferred_action_encoded": false
+  },
+  "generation_determinism": {
+    "generator_version": "TI001_V012_NEXT_GENERATOR_v001",
+    "seed": 582031,
+    "deterministic": true,
+    "canonical_serialization_required": true
+  },
+  "required_generation_outputs": [
+    "candidate_fixture",
+    "generation_manifest",
+    "balance_report",
+    "mapping_reversal_report",
+    "baseline_matching_report",
+    "presentation_balance_report",
+    "decision_boundary_report",
+    "transition_reconstructability_report",
+    "fixture_sha256"
+  ],
+  "authorization_boundary": {
+    "fixture_generation": true,
+    "fixture_integrity_preflight": false,
+    "fixture_freeze": false,
+    "executor_implementation": false,
+    "scientific_execution": false
+  },
+  "next_gate": "TI001_V012_NEXT_FIXTURE_INTEGRITY_PREFLIGHT_001"
+}
