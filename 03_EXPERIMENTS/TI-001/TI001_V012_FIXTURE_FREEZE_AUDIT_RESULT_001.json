@@ -1,0 +1,33 @@
+{
+  "gate_id": "TI001-V012-FIXTURE-FREEZE-AUDIT-001",
+  "status": "PASS",
+  "freeze_eligibility": "PACKAGE_ELIGIBLE_FOR_FREEZE",
+  "checks": {
+    "DESIGN_PRESENT": true,
+    "MAPPING_PRESENT": true,
+    "DESIGN_AUDIT_PRESENT": true,
+    "REQUIREMENTS_RESULT_PRESENT": true,
+    "GENERATOR_PRESENT": true,
+    "FIXTURE_PRESENT": true,
+    "FIXTURE_HASH": true,
+    "FIXTURE_COUNT": true,
+    "SCIENTIFIC_EXECUTION_FALSE": true,
+    "REQUIREMENTS_PREFLIGHT_PASS": true,
+    "DESIGN_AUDIT_CLOSED": true,
+    "NO_AUTHORIZATION_IN_FIXTURE": true,
+    "CANONICAL_MAIN_VISIBLE": true
+  },
+  "canonical_main": "6efc70d1dc0c2df5afb743a53f81b359f6e40fe2",
+  "fixture": {
+    "schema": "TI001_V012_FIXTURE_v001",
+    "instance_count": 72,
+    "fixture_sha256": "9690c3bf394495327e528d8aba9288b87e7a3501ff94899793f7cd9b08e818fc"
+  },
+  "scientific_execution_authorized": false,
+  "scientific_execution": false,
+  "notes": [
+    "Freeze audit verifies package eligibility only.",
+    "This result does not itself freeze the package.",
+    "No scientific execution was performed."
+  ]
+}
