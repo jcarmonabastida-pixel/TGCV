@@ -1,0 +1,7 @@
+Validate a scientific executor response for TI-001 V012 NEXT.
+
+A response is VALID only when its stripped text is exactly one of:
+A
+B
+
+Any other text is INVALID. Do not recode, normalize, infer, substitute, retry, or select a replacement response.
