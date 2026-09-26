@@ -15,7 +15,7 @@
   "authorization_scope": {
     "authorized_executor": "TI001-V012-V003-SCIENTIFIC-EXECUTOR-1-001",
     "authorized_fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
-    "authorized_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beee47c3f6737eca2d35fac27c784be6d66be352f1cf354359384b",
+    "authorized_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
     "reasoning_effort": "low",
     "max_output_tokens": 128,
     "top_p": 0.98,
