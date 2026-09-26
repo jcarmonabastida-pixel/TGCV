@@ -1,0 +1,24 @@
+{
+  "authorization": "READY_FOR_EXPLICIT_AUTHORIZATION",
+  "checks": {
+    "A10_DESIGN_BINDS_REASONING_NONE": true,
+    "A11_E1_PRESERVED": true,
+    "A12_NO_E1R_AUTHORIZATION_EXISTS": true,
+    "A13_NO_E1R_RESULT_EXISTS": true,
+    "A14_GATE_ITSELF_NO_PROVIDER_CALL": true,
+    "A1_FIXTURE_SHA_EXACT": true,
+    "A2_GENERATOR_BLOB_EXACT": true,
+    "A3_SCHEMA_BLOB_EXACT": true,
+    "A4_INTERFACE_BLOB_EXACT": true,
+    "A5_E1R_EXECUTOR_BLOB_EXACT": true,
+    "A6_PREFLIGHT_EXISTS_PASS": true,
+    "A7_PREFLIGHT_STATUS_PASS": true,
+    "A8_PREFLIGHT_BINDINGS_EXACT": true,
+    "A9_DESIGN_EXISTS": true
+  },
+  "executor_blob_sha": "f51e62cce134303df4a5fede92bb7b33ff38f5c0",
+  "fixture_sha256": "30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1",
+  "gate_id": "TI001-V011-E1R-FINAL-PREAUTHORIZATION-GATE-001",
+  "scientific_execution": "NOT_PERFORMED",
+  "status": "PASS"
+}
