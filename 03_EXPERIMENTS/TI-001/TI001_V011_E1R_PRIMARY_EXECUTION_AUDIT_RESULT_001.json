@@ -1,0 +1,50 @@
+{
+  "audit_id": "TI001-V011-E1R-PRIMARY-EXECUTION-AUDIT-001",
+  "authorization": "AUDIT_PASS",
+  "checks": {
+    "A10_RECORD_METADATA_MATCH_FIXTURE": true,
+    "A11_EACH_PAIR_EXACTLY_TWICE": true,
+    "A12_CONDITION_BALANCE": true,
+    "A13_PRESENTATION_BALANCE": true,
+    "A14_RESPONSE_IDS_PRESENT_UNIQUE": true,
+    "A15_RESPONSE_VALIDATION_CONSISTENT": true,
+    "A16_VALID_COUNT_RECOMPUTED": true,
+    "A17_INVALID_RESPONSES_RETAINED": true,
+    "A18_TIMESTAMP_FIELDS_PRESENT_ORDERED": true,
+    "A19_RUNTIME_METADATA_PRESENT": true,
+    "A1_RESULT_EXISTS_AND_JSON": true,
+    "A20_GENERATION_CONFIGURATION_EXACT": true,
+    "A21_REASONING_TOKENS_ZERO": true,
+    "A22_NO_FORBIDDEN_SCIENTIFIC_FIELDS": true,
+    "A23_NO_RETRY_RECODE_REPAIR_IMPUTATION": true,
+    "A24_SERIALIZATION_RECONCILIATION_PASS": true,
+    "A2_RECORD_TYPE_EXACT": true,
+    "A3_SCIENTIFIC_EXECUTION_PERFORMED": true,
+    "A4_FIXTURE_ID_EXACT": true,
+    "A5_FIXTURE_SHA_EXACT": true,
+    "A6_EXECUTOR_VERSION_EXACT": true,
+    "A7_DECISION_COUNT_420": true,
+    "A8_DECISION_IDS_UNIQUE": true,
+    "A9_DECISION_IDS_MATCH_FIXTURE_ORDER": true
+  },
+  "details": {
+    "condition_counts": {
+      "control": 140,
+      "null": 140,
+      "treatment": 140
+    },
+    "decision_count": 420,
+    "invalid_count": 0,
+    "nonzero_reasoning_record_count": 0,
+    "presentation_counts": {
+      "I1_FIRST": 210,
+      "I2_FIRST": 210
+    },
+    "reasoning_tokens_total": 0,
+    "valid_count": 420
+  },
+  "executor_version": "TI001-V011-E1R-SCIENTIFIC-EXECUTOR-001",
+  "fixture_sha256": "30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1",
+  "scientific_execution": "PERFORMED",
+  "status": "PASS"
+}
