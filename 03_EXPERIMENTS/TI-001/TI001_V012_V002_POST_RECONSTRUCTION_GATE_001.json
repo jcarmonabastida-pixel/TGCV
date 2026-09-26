@@ -1,0 +1,24 @@
+{
+  "gate_id": "TI001_V012_V002_POST_RECONSTRUCTION_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V002",
+  "gate_type": "POST_RECONSTRUCTION",
+  "decision": "PASS",
+  "checks": {
+    "primary_execution_audit_registered": true,
+    "primary_execution_result_sha256": "46fd03aa48edf949b5efe861de0b33f43bba083c6c2be9ac164dedb9d0313a4b",
+    "executor_2_reconstruction_gate": "TI001_V012_V002_EXECUTOR_2_RECONSTRUCTION_GATE_001",
+    "executor_2_reconstruction_status": "PASS",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "instance_count": 72,
+    "reconstruction_failures": [],
+    "corrected_executor_2_commit": "c11b02e8d3bf45f7c5924a758be4ecd93722a0ed",
+    "scientific_execution_by_executor_2": false,
+    "scientific_interpretation_performed": false,
+    "fixture_modified_after_primary_execution": false
+  },
+  "disposition": "RECONSTRUCTION-CLOSED — READY FOR THE NEXT SCIENTIFIC ANALYSIS GATE",
+  "provenance_note": "The primary execution audit contains the historical pre-correction Executor-2 blob SHA 47bf48104333236ecf3defe74326dab67366f5ec. That blob was the defective reconstruction script; the corrected reconstruction is bound here to commit c11b02e8d3bf45f7c5924a758be4ecd93722a0ed and its PASS result. No scientific execution result was altered.",
+  "next_gate": "TI001_V012_V002_SCIENTIFIC_ANALYSIS_GATE_001"
+}
