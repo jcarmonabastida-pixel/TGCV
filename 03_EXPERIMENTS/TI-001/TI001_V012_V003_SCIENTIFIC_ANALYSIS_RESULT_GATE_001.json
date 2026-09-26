@@ -1,0 +1,41 @@
+{
+  "gate_id": "TI001_V012_V003_SCIENTIFIC_ANALYSIS_RESULT_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "gate_type": "SCIENTIFIC_ANALYSIS_RESULT",
+  "decision": "PASS",
+  "checks": {
+    "analysis_readiness_gate": "TI001_V012_V003_SCIENTIFIC_ANALYSIS_READINESS_GATE_001",
+    "analysis_result_registered": true,
+    "analysis_result_status": "COMPLETED_DESCRIPTIVE_ANALYSIS",
+    "analysis_result_artifact": "TI001_V012_V003_SCIENTIFIC_ANALYSIS_RESULT_001.json",
+    "primary_execution_result_sha256": "5665060ea62eea5c8f40ebe32320f64ae6f5ada3923f056ea0302fa9d1c85856",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "instance_count": 72,
+    "valid_count": 72,
+    "invalid_count": 0,
+    "completed_count": 72,
+    "incomplete_count": 0,
+    "scientific_values_modified": false,
+    "scientific_execution_repeated": false,
+    "recoding": false,
+    "retry": false,
+    "substitution": false
+  },
+  "observed_pattern": {
+    "INTACT": {"n": 24, "valid": 24},
+    "SCRAMBLED": {"n": 24, "valid": 24},
+    "NULL": {"n": 24, "valid": 24},
+    "O1": {"n": 24, "valid": 24},
+    "O2": {"n": 24, "valid": 24},
+    "O3": {"n": 24, "valid": 24}
+  },
+  "scientific_boundary": {
+    "hypothesis_decision": false,
+    "causal_conclusion": false,
+    "interpretive_reclassification": false,
+    "disposition": "DESCRIPTIVE ANALYSIS RESULT REGISTERED — NO HYPOTHESIS DECISION"
+  },
+  "next_gate": "TI001_V012_V003_SCIENTIFIC_INTERPRETATION_GATE_001"
+}
