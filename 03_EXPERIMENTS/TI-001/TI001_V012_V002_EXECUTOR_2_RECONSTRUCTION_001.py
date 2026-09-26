@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse, hashlib, json
 from pathlib import Path
 
-EXPECTED_FIXTURE_SHA256 = "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f"
+EXPECTED_FIXTURE_SHA256 = "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d"
 EXPECTED_COUNT = 72
 ACTIONS = ["a", "b", "c"]
 ORDERS = {"P1": ["a", "b", "c"], "P2": ["c", "b", "a"]}
