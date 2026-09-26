@@ -1,0 +1,47 @@
+{
+  "gate_id": "TI001_V012_V004_DESIGN_SPECIFICATION_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V004",
+  "gate_type": "DESIGN_SPECIFICATION",
+  "decision": "PASS",
+  "specification_source": "03_EXPERIMENTS/TI-001/TI001_V012_EXPERIMENTAL_DESIGN_SPECIFICATION_001.md",
+  "checks": {
+    "R1_Q6_DECISION_TO_T_ACC_BRIDGE_SPECIFIED": true,
+    "R2_Q5_MECHANISM_DISCRIMINATION_SPECIFIED": true,
+    "R3_Q1_Q4_CONTROLS_SPECIFIED": true,
+    "R4_NO_PREFERRED_ACTION_ENCODING_SPECIFIED": true,
+    "R5_PREDECISION_INFORMATION_BOUNDARY_SPECIFIED": true,
+    "R6_INDEPENDENT_RECONSTRUCTION_SPECIFIED": true,
+    "R7_ANALYTICAL_BOUNDARY_SPECIFIED": true,
+    "PRIMARY_ESTIMAND_FROZEN_BEFORE_OUTCOMES": true,
+    "PRESENTATION_P1_P2_DEFINED": true,
+    "MECHANISM_INTACT_SCRAMBLED_NULL_DEFINED": true,
+    "INDEPENDENT_OPERATIONALISATIONS_O1_O2_O3_DEFINED": true,
+    "RANDOMIZATION_SEED_FROZEN": true,
+    "V003_IMMUTABLE": true
+  },
+  "frozen_design": {
+    "operationalisations": ["O1","O2","O3"],
+    "conditions": ["INTACT","SCRAMBLED","NULL"],
+    "presentations": ["P1","P2"],
+    "instances_per_operationalisation": 24,
+    "total_instances": 72,
+    "randomization_seed": 582031,
+    "primary_observable": "transformation-selection difference between matched information conditions",
+    "secondary_observables": [
+      "presentation-stratified condition contrast",
+      "treatment/control/null contrast",
+      "intact-versus-perturbed mapping contrast",
+      "cross-operationalisation consistency",
+      "decision-to-realised-T_acc correspondence"
+    ]
+  },
+  "authorization_boundary": {
+    "fixture_generation_authorized": false,
+    "scientific_execution_authorized": false,
+    "scientific_interpretation_authorized": false
+  },
+  "disposition": "DESIGN SPECIFICATION PASS — CANDIDATE FIXTURE MAY NOW BE CONSTRUCTED UNDER A DEDICATED FIXTURE GATE",
+  "next_gate": "TI001_V012_V004_FIXTURE_GENERATION_GATE_001"
+}
