@@ -1,0 +1,40 @@
+{
+  "contract_id": "TI001_V012_V002_PROVIDER_RUNTIME_CONTRACT_002",
+  "status": "RECONCILED_FOR_EXECUTION_PREFLIGHT",
+  "supersedes": "TI001_V012_V002_PROVIDER_RUNTIME_CONTRACT_001",
+  "scientific_execution": false,
+  "provider": {
+    "provider_id": "TI001-V012-V002-DECISION-AGENT-PROVIDER-001",
+    "model_id": "gpt-5.6-luna",
+    "api_surface": "Responses API"
+  },
+  "runtime": {
+    "temperature": null,
+    "top_p": 0.98,
+    "max_output_tokens": 16,
+    "tools": [],
+    "conversation": null,
+    "previous_response_id": null,
+    "store": false
+  },
+  "request_contract": {
+    "one_independent_request_per_decision_unit": true,
+    "retries": false,
+    "recoding": false,
+    "substitution": false,
+    "external_tools": false,
+    "conversation_state": false
+  },
+  "fixture_binding": {
+    "fixture_schema": "TI001_V012_FIXTURE_v002",
+    "fixture_path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v002.json",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "instance_count": 72
+  },
+  "response_contract": {
+    "valid_outputs": ["a", "b", "c"],
+    "invalid_output_policy": "INVALID_NO_RETRY"
+  },
+  "identity_note": "Reconciled provider/runtime binding for the current V002 package. It records the same runtime values implemented by the canonical Executor-1 and corrects only the stale fixture identity in contract 001.",
+  "next_gate": "TI001_V012_V002_EXECUTION_PACKAGE_COMPLETION_AND_BINDING_GATE_001"
+}
