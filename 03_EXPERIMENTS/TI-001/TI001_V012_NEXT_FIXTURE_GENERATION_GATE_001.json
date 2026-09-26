@@ -1,0 +1,67 @@
+{
+  "gate_id": "TI001_V012_NEXT_FIXTURE_GENERATION_GATE_001",
+  "status": "PASS",
+  "decision": "FIXTURE_GENERATION_AUTHORIZED",
+  "basis": {
+    "requirements_gate": "TI001_V012_NEXT_DESIGN_REQUIREMENTS_GATE_001",
+    "design_specification_gate": "TI001_V012_NEXT_DESIGN_SPECIFICATION_GATE_001",
+    "fixture_requirements_gate": "TI001_V012_NEXT_FIXTURE_REQUIREMENTS_GATE_001",
+    "prior_closed_experiment": "V004"
+  },
+  "scope": {
+    "authorized_action": "Generate a new immutable candidate fixture satisfying the approved next-design specification and fixture requirements.",
+    "fixture_generation_authorized": true,
+    "fixture_freeze_authorized": false,
+    "executor_implementation_authorized": false,
+    "scientific_execution_authorized": false,
+    "interpretation_authorized": false
+  },
+  "mandatory_generation_constraints": {
+    "new_version_only": true,
+    "do_not_modify_V003": true,
+    "do_not_modify_V004": true,
+    "action_identity_counterbalance": true,
+    "mapping_reversal": true,
+    "matched_baseline": true,
+    "presentation_counterbalance": true,
+    "operationalisation_balance": true,
+    "no_normative_encoding": true,
+    "decision_before_realized_future": true,
+    "exact_mapping_record": true,
+    "post_decision_transition_reconstruction": true,
+    "deterministic_generation": true,
+    "declared_generator_version": true,
+    "declared_generator_seed": true
+  },
+  "required_generation_outputs": [
+    "candidate_fixture_json",
+    "generator_identity",
+    "generator_seed",
+    "fixture_schema_version",
+    "decision_unit_count",
+    "action_identity_balance_report",
+    "mapping_balance_report",
+    "presentation_balance_report",
+    "baseline_matching_report",
+    "mapping_reversal_report",
+    "normative_encoding_check",
+    "decision_boundary_check",
+    "transition_reconstructability_check",
+    "canonical_fixture_sha256"
+  ],
+  "post_generation_gates_required": [
+    "fixture_integrity_preflight",
+    "fixture_freeze_gate"
+  ],
+  "blocking_conditions": [
+    "Any action-identity imbalance",
+    "Any mapping imbalance",
+    "Any presentation imbalance",
+    "Any unmatched baseline unit",
+    "Any descriptor encoding normative quality",
+    "Any decision input containing realized future information",
+    "Any failure to reconstruct the specified transition fields",
+    "Any non-deterministic or undeclared generation procedure"
+  ],
+  "next_gate": "TI001_V012_NEXT_FIXTURE_INTEGRITY_PREFLIGHT_001"
+}
