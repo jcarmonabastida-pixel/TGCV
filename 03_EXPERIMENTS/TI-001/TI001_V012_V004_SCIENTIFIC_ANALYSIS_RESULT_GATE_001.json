@@ -1,0 +1,41 @@
+{
+  "gate_id": "TI001_V012_V004_SCIENTIFIC_ANALYSIS_RESULT_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V004",
+  "gate_type": "SCIENTIFIC_ANALYSIS_RESULT",
+  "decision": "PASS",
+  "source_analysis_result": "03_EXPERIMENTS/TI-001/TI001_V012_V004_SCIENTIFIC_ANALYSIS_RESULT_001.json",
+  "source_result_sha256": "50dbc53e1d88937688d9f5772bfd305b075fa2f6bbea39afcec2bfc936dbbb33",
+  "checks": {
+    "decision_count_72": true,
+    "primary_observable_computed": true,
+    "secondary_observables_computed": true,
+    "presentation_stratification_computed": true,
+    "operationalisation_stratification_computed": true,
+    "decision_to_T_acc_bridge_reconstructed_72_of_72": true,
+    "intact_mapping_verified_24_of_24": true,
+    "scrambled_mapping_perturbation_verified_24_of_24": true,
+    "analysis_boundary_respected": true,
+    "value_claim": false,
+    "causal_conclusion": false,
+    "TGCV_core_change": false
+  },
+  "descriptive_findings": {
+    "INTACT_a_rate": "22/24 (91.67%)",
+    "SCRAMBLED_a_rate": "23/24 (95.83%)",
+    "NULL_a_rate": "24/24 (100%)",
+    "INTACT_minus_SCRAMBLED_a_rate": "-4.17 percentage points",
+    "INTACT_minus_NULL_a_rate": "-8.33 percentage points",
+    "P1_condition_counts": "12/12 a in all three conditions",
+    "P2_condition_counts": "INTACT 10/12 a; SCRAMBLED 11/12 a; NULL 12/12 a",
+    "operationalisations": "O1 identical all-a; O2 one b under INTACT; O3 one b under INTACT and one c under SCRAMBLED"
+  },
+  "boundary": {
+    "interpretation_not_yet_authorized": true,
+    "causal_inference_not_established": true,
+    "value_inference_not_established": true
+  },
+  "disposition": "SCIENTIFIC ANALYSIS RESULT REGISTERED — INTERPRETATION GATE REQUIRED",
+  "next_gate": "TI001_V012_V004_SCIENTIFIC_INTERPRETATION_GATE_001"
+}
