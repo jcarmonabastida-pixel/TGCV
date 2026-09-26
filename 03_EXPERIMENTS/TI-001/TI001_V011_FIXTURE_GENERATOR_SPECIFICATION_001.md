@@ -1,6 +1,6 @@
 # TI-001 V011 Fixture Generator Specification 001
 
-**Status:** GENERATOR SPECIFICATION — SEED FROZEN / FIXTURE NOT GENERATED
+**Status:** GENERATOR SPECIFICATION — SEMANTICS FROZEN / FIXTURE NOT GENERATED**
 
 ## 1. Generator identity
 
@@ -13,10 +13,63 @@
 ## 2. Frozen seed
 
 - Seed: `20260926`
+- PRNG: xorshift32
+- State width: exactly 32 bits
+- Arithmetic: unsigned 32-bit modulo 2^32
+- zero state: invalid and terminates generation
+- mask: `0xFFFFFFFF`
+- presentation stream XOR constant: `0x9E3779B9`
 
 The seed is part of the generator contract. The same generator source, specification, and seed must reproduce the same fixture byte-for-byte.
 
-## 3. Population
+## 3. Deterministic PRNG semantics
+
+Transition, in order:
+
+1. `state ^= (state << 13) & 0xFFFFFFFF`
+2. `state ^= state >> 17`
+3. `state ^= (state << 5) & 0xFFFFFFFF`
+4. mask the resulting state with `0xFFFFFFFF`.
+
+No warm-up draws are used.
+
+Condition stream initial state: `20260926`.
+
+Presentation stream initial state: `20260926 XOR 0x9E3779B9`, reduced to 32 bits.
+
+The streams are independent and never share consumed state.
+
+## 4. Fisher-Yates semantics
+
+Input sequences are indexed from zero.
+
+Iteration is descending:
+
+`i = n-1, n-2, ..., 1`
+
+At each iteration exactly one PRNG state is consumed and:
+
+`j = state % (i+1)`
+
+The elements at positions `i` and `j` are swapped.
+
+No rejection sampling, floating-point conversion, or additional random draw is permitted.
+
+Condition labels before shuffle:
+
+`70 control, 70 treatment, 70 null`
+
+Presentation-orientation labels before shuffle:
+
+`105 I1_FIRST, 105 I2_FIRST`
+
+Pair IDs are assigned in fixed lexical order `P001` through `P210`. The shuffled condition assignment is applied by pair position.
+
+The shuffled presentation assignment determines which orientation appears first within each pair. Every pair still contains exactly one `I1_FIRST` unit and one `I2_FIRST` unit.
+
+Thus, at pair level, exactly 35 control pairs, 35 treatment pairs, and 35 null pairs have `I1_FIRST` as their first materialized unit; the remaining 35 pairs in each condition have `I2_FIRST` as their first materialized unit. This is an ordering balance, not a reduction of the two-presentation-per-pair structure.
+
+## 5. Population
 
 The generated fixture must contain exactly:
 
@@ -25,134 +78,155 @@ The generated fixture must contain exactly:
 - 70 pairs in control;
 - 70 pairs in treatment;
 - 70 pairs in null;
-- 35 pairs per condition × presentation;
 - 210 I1_FIRST decision units;
 - 210 I2_FIRST decision units.
 
-Each pair must contain exactly two decision units:
+Each pair contains exactly two decision units:
 - one I1_FIRST;
 - one I2_FIRST.
 
-## 4. Assignment procedure
+The resulting decision-unit counts are exactly 140 control, 140 treatment, and 140 null.
 
-Pair IDs are assigned deterministically in canonical order.
+## 6. Decision-unit schema
 
-For each condition, exactly 70 pair IDs are assigned.
+Every decision unit must contain exactly these top-level fields, in this order:
 
-Within each condition, exactly 35 pairs are assigned to the I1_FIRST/I2_FIRST orientation class through the deterministic seeded assignment procedure.
+1. `decision_id`
+2. `pair_id`
+3. `condition`
+4. `presentation`
+5. `context`
+6. `available_actions`
+7. `future_structure`
 
-Each pair then emits exactly two decision units, one for each orientation.
-
-No model output is involved in fixture generation.
-
-## 5. Required decision-unit schema
-
-Every decision unit must contain exactly these top-level fields:
-
-- `decision_id`
-- `pair_id`
-- `condition`
-- `presentation`
-- `context`
-- `available_actions`
-- `future_structure`
-
-The model-visible fields are:
+The model-visible fields are only:
 
 - `context`
 - `available_actions`
 - `future_structure`
 
-The following are hidden provenance fields:
+Hidden provenance fields are:
 
 - `decision_id`
 - `pair_id`
 - `condition`
 - `presentation`
 
-## 6. Action space
+## 7. Exact field semantics
 
-Every decision unit must expose exactly two selectable actions:
+`decision_id`: `D001` through `D420`, assigned in canonical pair order.
 
-- `A`
-- `B`
+`pair_id`: `P001` through `P210`.
 
-No additional action is permitted.
+`context` contains exactly `items` and `item_count`.
 
-## 7. Presentation construction
+For I1_FIRST:
 
-The fixture must explicitly encode the presentation orientation.
+`{"items":[{"id":"I1","action":"A"},{"id":"I2","action":"B"}],"item_count":2}`
 
-For every pair:
+For I2_FIRST:
 
-- I1_FIRST unit presents the first decision item before the second according to the frozen presentation rule;
-- I2_FIRST unit reverses that presentation order according to the same rule.
+`{"items":[{"id":"I2","action":"B"},{"id":"I1","action":"A"}],"item_count":2}`
 
-The underlying paired decision content must remain invariant except for the presentation transformation defined by the specification.
+`available_actions` is exactly:
 
-## 8. Condition construction
+`["A","B"]`
 
-The generator must implement the frozen condition semantics from the V011 experiment specification.
+`future_structure` contains exactly:
 
-The generator must not use model responses, external outcomes, reward, utility, performance, or task-success information.
+- `successor_realized`
+- `future_structure_available`
 
-## 9. Determinism requirements
+For control and null:
 
-The generator must:
+`{"successor_realized":false,"future_structure_available":false}`
 
-1. initialize the pseudorandom generator exclusively from the frozen seed;
-2. use a documented deterministic assignment order;
-3. avoid time, process ID, filesystem order, network state, or nondeterministic iteration as generation inputs;
-4. emit canonical JSON with stable ordering and encoding;
-5. make no external API calls.
+For treatment:
 
-## 10. Integrity requirements
+`{"successor_realized":false,"future_structure_available":true}`
 
-After generation, the fixture must be checked for:
+No utility, reward, value, performance, task-success, successor state, outcome, model response, or scientific score may occur in the fixture.
+
+## 8. Canonical serialization
+
+The fixture is UTF-8 JSON with:
+
+- exact top-level field order: `fixture_id`, `schema_id`, `generator_id`, `seed`, `decision_units`;
+- exact decision-unit field order defined above;
+- exact nested field order defined above;
+- compact separators equivalent to `,` and `:`;
+- preserved array ordering;
+- no BOM;
+- exactly one final LF.
+
+Fixture JSON metadata:
+
+- `fixture_id = TI001-V011-FIXTURE-001`
+- `schema_id = TI001-V011-DU-SCHEMA-001`
+- `generator_id = TI001-V011-FIXTURE-GENERATOR-001`
+- `seed = 20260926`
+
+## 9. Integrity requirements
+
+After generation, verify:
 
 - exactly 420 decision units;
 - exactly 210 unique pairs;
 - exactly two units per pair;
 - exactly one I1_FIRST and one I2_FIRST per pair;
 - exactly 70 pairs per condition;
-- exactly 35 pairs per condition × presentation;
-- exactly 210 units per presentation;
 - exactly 140 decision units per condition;
-- exactly A/B as the action set;
+- exactly 210 units per presentation;
+- exactly 35 pairs per condition in each pair-level first-presentation orientation class;
+- exact A/B action set;
 - exact visible/hidden field partition;
 - no duplicate decision IDs;
 - no duplicate pair IDs;
 - deterministic reconstruction from the frozen seed.
 
-The fixture SHA-256 must be computed and bound to the resulting manifest.
+The fixture SHA-256 is calculated over the exact UTF-8 bytes including the single final LF and bound in an external integrity manifest.
 
-## 11. Independence boundary
+## 10. Independence boundary
 
-The generator may depend only on this specification and its own source plus deterministic local standard-library functionality.
+The generator may depend only on this specification, its own source, and deterministic local standard-library functionality.
 
 It must not import, execute, parse, or consume:
+
 - Executor-1 outputs;
 - Executor-2 outputs;
 - V010 scientific results;
 - model responses;
 - post-hoc observations.
 
-V010 findings motivate the design but are not inputs to fixture generation.
+V010 findings motivate V011 but are not generator inputs.
+
+## 11. Required generator self-tests
+
+Before fixture generation, the implementation must verify:
+
+1. xorshift32 seed-1 first five outputs:
+   `270369, 67634689, 2647435461, 307599695, 2398689233`;
+2. zero-state rejection;
+3. deterministic condition-stream reconstruction for seed `20260926`;
+4. deterministic presentation-stream reconstruction from the frozen XOR seed;
+5. Fisher-Yates descending iteration and modulo mapping;
+6. canonical serialization;
+7. population/integrity invariants.
+
+The V011 stream vectors must be computed and recorded by the generator preflight rather than copied from an external execution.
 
 ## 12. Pre-generation gate
 
-Before implementation or execution of the generator, the following must be checked:
+Before generation:
 
-- specification is canonical;
-- seed is fixed;
-- population counts are fixed;
-- schema is fixed;
-- condition semantics are fixed;
-- presentation construction is fixed;
-- deterministic serialization is fixed;
-- integrity criteria are fixed.
+- this specification must be canonical;
+- seed and PRNG semantics must be frozen;
+- schema identity must be canonical;
+- generator source must be committed and hash-bound;
+- self-tests must pass;
+- integrity preflight must pass.
 
-The pre-generation gate does not authorize scientific model execution.
+The gate does not authorize scientific model execution.
 
 ## 13. Current disposition
 
@@ -164,4 +238,4 @@ The pre-generation gate does not authorize scientific model execution.
 
 **Scientific execution: NOT AUTHORIZED.**
 
-The next action is to implement the deterministic V011 fixture generator and run a generator-only identity/integrity preflight before generating the scientific fixture.
+The next action is to create the V011 decision-unit schema specification and then implement the deterministic generator against the exact frozen schema.
