@@ -1,0 +1,41 @@
+{
+  "gate_id": "TI001_V012_V003_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "gate_type": "SCIENTIFIC_EXECUTION_AUTHORIZATION",
+  "decision": "AUTHORIZED",
+  "basis": {
+    "instrumentation_amendment_validation_gate": "TI001_V012_V003_INSTRUMENTATION_VALIDATION_RESULT_GATE_001",
+    "executor_implementation_gate": "TI001_V012_V003_EXECUTOR_IMPLEMENTATION_GATE_001",
+    "executor_preflight_gate": "TI001_V012_V003_EXECUTOR_PREFLIGHT_GATE_001",
+    "v002_primary_result_sha256": "46fd03aa48edf949b5efe861de0b33f43bba083c6c2be9ac164dedb9d0313a4b",
+    "v002_scientific_interpretation": "BLOCKED"
+  },
+  "authorization_scope": {
+    "authorized_executor": "TI001-V012-V003-SCIENTIFIC-EXECUTOR-1-001",
+    "authorized_fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "authorized_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beee47c3f6737eca2d35fac27c784be6d66be352f1cf354359384b",
+    "reasoning_effort": "low",
+    "max_output_tokens": 128,
+    "top_p": 0.98,
+    "tools": [],
+    "store": false,
+    "decision_count": 72
+  },
+  "constraints": {
+    "new_version_only": true,
+    "repeat_executor_2": false,
+    "retry": false,
+    "recoding": false,
+    "substitution": false,
+    "scientific_values_from_v002": "immutable_reference_only"
+  },
+  "authorization_boundary": {
+    "scientific_execution_authorized": true,
+    "scientific_interpretation_authorized": false,
+    "post_execution_analysis_authorized": false
+  },
+  "disposition": "V012 V003 SCIENTIFIC EXECUTION AUTHORIZED",
+  "next_gate": "TI001_V012_V003_SCIENTIFIC_EXECUTION_RESULT_GATE_001"
+}
