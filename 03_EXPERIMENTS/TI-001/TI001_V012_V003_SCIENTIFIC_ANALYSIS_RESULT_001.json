@@ -1,0 +1,69 @@
+{
+  "record_type": "TGCV_TI001_V012_V003_SCIENTIFIC_ANALYSIS_RESULT",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "status": "COMPLETED_DESCRIPTIVE_ANALYSIS",
+  "input_artifact": {
+    "artifact_sha256": "5665060ea62eea5c8f40ebe32320f64ae6f5ada3923f056ea0302fa9d1c85856",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "system_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
+    "validation_procedure_sha256": "14934b507a774b9b354ed2005d5903790dfcabafa40486c72467336393daec53"
+  },
+  "sample": {
+    "decision_count": 72,
+    "conditions": {"INTACT": 24, "SCRAMBLED": 24, "NULL": 24},
+    "operationalisations": {"O1": 24, "O2": 24, "O3": 24}
+  },
+  "execution_integrity": {
+    "validity": {"VALID": 72, "INVALID": 0},
+    "response_status": {"completed": 72, "incomplete": 0},
+    "incomplete_details_null": 72
+  },
+  "descriptive_observations": {
+    "valid_rate": 1.0,
+    "validity_by_condition": {
+      "INTACT": {"n": 24, "valid": 24},
+      "SCRAMBLED": {"n": 24, "valid": 24},
+      "NULL": {"n": 24, "valid": 24}
+    },
+    "validity_by_operationalisation": {
+      "O1": {"n": 24, "valid": 24},
+      "O2": {"n": 24, "valid": 24},
+      "O3": {"n": 24, "valid": 24}
+    },
+    "parsed_action_distribution": {"a": 67, "b": 4, "c": 1},
+    "parsed_action_by_condition": {
+      "INTACT": {"a": 21, "b": 2, "c": 1},
+      "SCRAMBLED": {"a": 22, "b": 2, "c": 0},
+      "NULL": {"a": 24, "b": 0, "c": 0}
+    },
+    "parsed_action_by_operationalisation": {
+      "O1": {"a": 22, "b": 1, "c": 1},
+      "O2": {"a": 23, "b": 1, "c": 0},
+      "O3": {"a": 22, "b": 2, "c": 0}
+    },
+    "presentation_distribution": {"P1": 36, "P2": 36},
+    "generation_usage": {
+      "output_tokens_min": 5,
+      "output_tokens_max": 114,
+      "output_tokens_mean": 30.805555555555557,
+      "reasoning_tokens_min": 0,
+      "reasoning_tokens_max": 107,
+      "reasoning_tokens_mean": 24.61111111111111,
+      "max_output_tokens": 128,
+      "reasoning_effort": "low"
+    }
+  },
+  "scientific_boundary": {
+    "scientific_execution_repeated": false,
+    "recoding": false,
+    "retry": false,
+    "substitution": false,
+    "hypothesis_decision": false,
+    "causal_conclusion": false,
+    "interpretive_reclassification": false
+  },
+  "disposition": "DESCRIPTIVE ANALYSIS COMPLETE — NO HYPOTHESIS DECISION",
+  "next_gate": "TI001_V012_V003_SCIENTIFIC_ANALYSIS_RESULT_GATE_001"
+}
