@@ -12,11 +12,11 @@
     "scientific_execution_performed": false
   },
   "package_identity": {
-    "fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
     "system_prompt_sha256": "162fe16e59a4a748e82381ce45dea67992c3e2568ea9ae064494d7b7bd8fa360",
     "validation_procedure_sha256": "44f31ddc1173f4b69d8302b97ed6dc96e4fd559c8865a86b5aaf921cefd43374",
-    "executor_1_commit": "919ad22ce4fe7ada90c49d311f45de127ee06942",
-    "executor_2_blob_sha": "f8e5d6bd24544fb158470b26034ff89da0c1403b"
+    "executor_1_commit": "c61ff9f627f2a7eb7fa7811031feca20a82f4680",
+    "executor_2_blob_sha": "47bf48104333236ecf3defe74326dab67366f5ec"
   },
   "execution_constraints": {
     "instance_count": 72,
