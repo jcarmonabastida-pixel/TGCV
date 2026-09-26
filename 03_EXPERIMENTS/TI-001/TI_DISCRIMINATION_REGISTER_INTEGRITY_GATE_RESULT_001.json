@@ -1,0 +1,35 @@
+{
+  "gate_id": "TI-DISCRIMINATION-REGISTER-INTEGRITY-GATE-001",
+  "checks": {
+    "A1_REGISTER_PRESENT": true,
+    "A2_SPEC_PRESENT": true,
+    "A3_Q1_PRESENT": true,
+    "A4_Q2_PRESENT": true,
+    "A5_Q3_PRESENT": true,
+    "A6_Q4_PRESENT": true,
+    "A7_Q5_PRESENT": true,
+    "A8_Q6_PRESENT": true,
+    "A9_EXACTLY_SIX_REGISTER_ENTRIES": true,
+    "A10_UNRESOLVED_ISSUES_PRESENT": true,
+    "A11_ALTERNATIVES_PRESENT": true,
+    "A12_DISCRIMINATING_OBSERVABLES_PRESENT": true,
+    "A13_INFORMATIVE_PATTERNS_PRESENT": true,
+    "A14_NONCLAIMS_PRESENT": true,
+    "A15_NO_V012_DESIGN": true,
+    "A16_NO_EXECUTION_AUTHORIZATION": true,
+    "A17_NO_CLAIM_UPGRADE": true,
+    "A18_CORE_UNCHANGED": true,
+    "A19_NO_V011_MUTATION": true,
+    "A20_NO_WINNER_SELECTION": true,
+    "A21_FINAL_DISPOSITION": true
+  },
+  "details": {
+    "register_entries": 6,
+    "v012_authorized": false,
+    "claim_statuses_upgraded": false,
+    "core_modified": false,
+    "v011_mutated": false,
+    "alternatives_adjudicated": false
+  },
+  "status": "PASS"
+}
