@@ -1,0 +1,41 @@
+{
+  "closure_gate_id": "TI001_V012_V003_SCIENTIFIC_CLOSURE_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "checks": {
+    "A1_EXECUTION_RESULT_REGISTERED": true,
+    "A2_72_DECISIONS_COMPLETE": true,
+    "A3_EXECUTION_INTEGRITY_PASS": true,
+    "A4_ANALYSIS_READINESS_PASS": true,
+    "A5_DESCRIPTIVE_ANALYSIS_PERFORMED": true,
+    "A6_ANALYSIS_RESULT_GATE_PASS": true,
+    "A7_INTERPRETATION_GATE_PASS_WITH_SCOPE_LIMITS": true,
+    "A8_NO_POOLING_WITH_PREVIOUS_VERSIONS": true,
+    "A9_NO_RECODE_RETRY_IMPUTATION_OR_SUBSTITUTION": true,
+    "A10_NO_CAUSAL_VALUE_PERFORMANCE_OR_GENERAL_CAPABILITY_CLAIM": true,
+    "A11_FIXTURE_IDENTITY_PRESERVED": true,
+    "A12_EXECUTION_RESULT_UNMODIFIED": true,
+    "A13_SCOPE_LIMITS_REGISTERED": true,
+    "A14_Q6_BRIDGE_NOT_CLAIMED_AS_ESTABLISHED": true
+  },
+  "evidence": {
+    "execution_result_artifact_sha256": "5665060ea62eea5c8f40ebe32320f64ae6f5ada3923f056ea0302fa9d1c85856",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "analysis_result": "TI001_V012_V003_SCIENTIFIC_ANALYSIS_RESULT_001.json",
+    "interpretation_result": "TI001_V012_V003_SCIENTIFIC_INTERPRETATION_001.json",
+    "interpretation_gate": "TI001_V012_V003_SCIENTIFIC_INTERPRETATION_GATE_001.json"
+  },
+  "scientific_scope": {
+    "Q1_construct": "NOT_RESOLVED",
+    "Q2_presentation": "NOT_RESOLVED",
+    "Q3_null_control": "DESCRIPTIVE_CONTRAST_ONLY",
+    "Q4_robustness": "NOT_ESTABLISHED",
+    "Q5_mechanism": "NOT_ESTABLISHED",
+    "Q6_decision_to_T_acc_bridge": "NOT_ESTABLISHED_FROM_DECISION_RECORD_ALONE",
+    "tgcv_wide_claim": "NONE"
+  },
+  "closure_boundary": "Closure records the completed V003 experiment and its evidence chain. It does not establish a general law, causal effect on value, universal capability, or TGCV-wide confirmation/falsification.",
+  "status": "CLOSED_FOR_TI001_V012_V003",
+  "next_gate": "TI001_V012_V003_POST_CLOSURE_DECISION_GATE_001"
+}
