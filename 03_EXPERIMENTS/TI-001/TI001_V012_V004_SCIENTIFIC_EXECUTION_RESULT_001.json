@@ -1,0 +1,2189 @@
+{
+  "api_surface": "Responses API",
+  "decision_count": 72,
+  "decisions": [
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-21",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:46.866515+00:00",
+      "response_id": "resp_025b0fb383ca0b4c016ab8556b481087d28ceadaf821b57c5f",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:29:49.020851+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 45,
+        "reasoning_tokens": 38,
+        "total_tokens": 319
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-16",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:49.021399+00:00",
+      "response_id": "resp_0d0169befe75177a016ab8556cf85c87d28f4bd5e8fc57390b",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:29:50.187606+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 43,
+        "reasoning_tokens": 36,
+        "total_tokens": 317
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-24",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:50.187669+00:00",
+      "response_id": "resp_0713212e629c4e60016ab8556e228c87d2a607a978461d7a64",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:29:51.385628+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 32,
+        "reasoning_tokens": 25,
+        "total_tokens": 306
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-17",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:51.385664+00:00",
+      "response_id": "resp_011b7b4dec758f6f016ab8556f50c887d2887fc19106d4a632",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:29:52.401620+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 40,
+        "reasoning_tokens": 33,
+        "total_tokens": 314
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-04",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:52.401659+00:00",
+      "response_id": "resp_03b110e869c5d6be016ab8557050ec87d2ba0af79659d5f935",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:29:53.673391+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 85,
+        "reasoning_tokens": 78,
+        "total_tokens": 359
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-01",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:53.673437+00:00",
+      "response_id": "resp_0bacd4d8cbbc7cf6016ab8557194b887d2a8155b2bb2684f85",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:29:54.886033+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 58,
+        "reasoning_tokens": 51,
+        "total_tokens": 332
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-08",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:54.886077+00:00",
+      "response_id": "resp_084b46a3d2725416016ab85572c9ec87d2a10d769579794881",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:29:57.283249+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 34,
+        "reasoning_tokens": 27,
+        "total_tokens": 308
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-11",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:57.283290+00:00",
+      "response_id": "resp_080952b10785a8a5016ab855752ab087d28bab28a098257228",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:29:58.500987+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 58,
+        "reasoning_tokens": 51,
+        "total_tokens": 332
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-12",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:58.501022+00:00",
+      "response_id": "resp_05202e229456aca0016ab85576636c87d29072b1146a87f6a5",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:29:59.742397+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 51,
+        "reasoning_tokens": 44,
+        "total_tokens": 325
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-09",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:29:59.742436+00:00",
+      "response_id": "resp_0d2d2061f01cb959016ab855779dd087d28890740feb44b6f5",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:01.034199+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 57,
+        "reasoning_tokens": 50,
+        "total_tokens": 331
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-20",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:01.034233+00:00",
+      "response_id": "resp_0d04b4f9438b7587016ab85578e54c87d29399d90aab2ce87f",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:02.889624+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 99,
+        "reasoning_tokens": 92,
+        "total_tokens": 373
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-14",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:02.889660+00:00",
+      "response_id": "resp_0b3ae080220aa304016ab8557ad94087d2a7f92167ac83831f",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:03.857863+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 34,
+        "reasoning_tokens": 27,
+        "total_tokens": 308
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-05",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:03.857898+00:00",
+      "response_id": "resp_076602b1fb8b098d016ab8557bd6c087d28e84fb6036a8e02e",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:05.075802+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 38,
+        "reasoning_tokens": 31,
+        "total_tokens": 312
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-07",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:05.075836+00:00",
+      "response_id": "resp_047cf0acb1616828016ab8557d0cdc87d2bcadc64081f995e7",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:05.765784+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-10",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:05.765818+00:00",
+      "response_id": "resp_0c5eb3cbf8aca626016ab8557dc56487d2b988c7cae15271e8",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:06.551457+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-02",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:06.551514+00:00",
+      "response_id": "resp_0765f8e8d0e7cbd9016ab8557e8b3c87d2b5a9d85ea3d61a9f",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:07.320573+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-18",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:07.320614+00:00",
+      "response_id": "resp_070d162d58887c71016ab8557f50d487d2a02fe40e364d34d5",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:08.215957+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 31,
+        "reasoning_tokens": 24,
+        "total_tokens": 162
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-22",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:08.216007+00:00",
+      "response_id": "resp_09483085ee89f2de016ab85580356087d288fd9a526f8afb53",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:09.029358+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 29,
+        "reasoning_tokens": 22,
+        "total_tokens": 160
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-06",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:09.029416+00:00",
+      "response_id": "resp_033947e4608a0711016ab85581080087d292867b697d8066b8",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:09.651391+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 136
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-03",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:09.651426+00:00",
+      "response_id": "resp_0093949ef77539b7016ab85581abe487d28695875e74304206",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:10.620015+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 136
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-19",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:10.620054+00:00",
+      "response_id": "resp_0903d200b1a42e03016ab855829cf087d28914bf800f720301",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:11.402585+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 24,
+        "reasoning_tokens": 17,
+        "total_tokens": 155
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-23",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:11.402625+00:00",
+      "response_id": "resp_042b695e28eebe8c016ab85583682087d2ab6ecf38e85455c0",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:12.296868+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 29,
+        "reasoning_tokens": 22,
+        "total_tokens": 160
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-15",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:12.296940+00:00",
+      "response_id": "resp_0aa0a2a7366965aa016ab855844ca487d2a70c101cb6491c40",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:13.017404+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 136
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O1-13",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O1",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:13.017440+00:00",
+      "response_id": "resp_0c9ee84747ea8e9a016ab8558500dc87d2ab8036a15ae2eb89",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:13.831421+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 29,
+        "reasoning_tokens": 22,
+        "total_tokens": 160
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-05",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:13.831466+00:00",
+      "response_id": "resp_0598d401d14b1f2e016ab85585cf2487d2ac0e186cee79eb2c",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:14.934788+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 63,
+        "reasoning_tokens": 56,
+        "total_tokens": 337
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-04",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:14.934828+00:00",
+      "response_id": "resp_070fc38daa58a2cc016ab85587025487d2bef88d85e4b5e2eb",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:16.481014+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 79,
+        "reasoning_tokens": 72,
+        "total_tokens": 353
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-08",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:16.481066+00:00",
+      "response_id": "resp_0d713f0ecf131efc016ab85588747087d2b39b233f7d8828a9",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:17.997355+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 67,
+        "reasoning_tokens": 60,
+        "total_tokens": 341
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-12",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:17.997392+00:00",
+      "response_id": "resp_0fb8fb846df215be016ab85589f80487d287ce7baf2eee9a0d",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:18.946688+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 33,
+        "reasoning_tokens": 26,
+        "total_tokens": 307
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-15",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:18.946730+00:00",
+      "response_id": "resp_033eac9efadbb251016ab8558ae79087d2be0b37b2efbf2cc9",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:20.186151+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 70,
+        "reasoning_tokens": 63,
+        "total_tokens": 344
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-22",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "b",
+      "presentation": "P2",
+      "raw_output_text": "b",
+      "request_timestamp": "2026-09-26T23:30:20.186187+00:00",
+      "response_id": "resp_083f6841808eead1016ab8558c277087d2b144a1fb8547168b",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:21.249248+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-18",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:21.249283+00:00",
+      "response_id": "resp_096dcd3d250c33bc016ab8558d301087d282e7f5821f74e97d",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:22.304856+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 43,
+        "reasoning_tokens": 36,
+        "total_tokens": 317
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-14",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:22.304897+00:00",
+      "response_id": "resp_06bb359c94019211016ab8558e41e487d2a58523d0405ed2fe",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:23.519437+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 57,
+        "reasoning_tokens": 50,
+        "total_tokens": 331
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-06",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:23.519478+00:00",
+      "response_id": "resp_0553ab58f38a2a3c016ab8558f748487d2823c7788aaa38eb3",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:24.425830+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 36,
+        "reasoning_tokens": 29,
+        "total_tokens": 310
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-24",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:24.425872+00:00",
+      "response_id": "resp_0cff3bfb4694724b016ab855905a7887d288ff092f75745e7f",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:25.356268+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 40,
+        "reasoning_tokens": 33,
+        "total_tokens": 314
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-02",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:25.356322+00:00",
+      "response_id": "resp_08ac7f3dac8501f4016ab855914da487d298e862597f714158",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:26.788805+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 64,
+        "reasoning_tokens": 57,
+        "total_tokens": 338
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-07",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:26.788840+00:00",
+      "response_id": "resp_0f15af2164df8ad4016ab85592b28087d285f165eb472836e9",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:28.265273+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 92,
+        "reasoning_tokens": 85,
+        "total_tokens": 366
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-17",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:28.265342+00:00",
+      "response_id": "resp_0c8f8822ad16757a016ab85594273887d2b9e548d78581245e",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:29.356549+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 40,
+        "reasoning_tokens": 33,
+        "total_tokens": 314
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-19",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:29.356588+00:00",
+      "response_id": "resp_0c97b4e9f42ca0b6016ab85595406487d291943c9f22dfca7b",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:30.920289+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 81,
+        "reasoning_tokens": 74,
+        "total_tokens": 355
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-11",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:30.920331+00:00",
+      "response_id": "resp_0de86408d6b64eeb016ab85596cbf887d2adeb7f6e5b12b8a0",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:31.991330+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 44,
+        "reasoning_tokens": 37,
+        "total_tokens": 318
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-16",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:31.991372+00:00",
+      "response_id": "resp_0ddd4cb20ea9a9f1016ab85597f13887d2b670b74bfd030a24",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:32.979189+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 35,
+        "reasoning_tokens": 28,
+        "total_tokens": 309
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-09",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:32.979245+00:00",
+      "response_id": "resp_043ef3b8c262c661016ab85598f13c87d282a43fdbc9d318fd",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:33.732532+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 136
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-20",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:33.732567+00:00",
+      "response_id": "resp_09667fbfe921683a016ab85599c3d887d2a18f0dc0967880a8",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:34.832062+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 27,
+        "reasoning_tokens": 20,
+        "total_tokens": 158
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-23",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:34.832098+00:00",
+      "response_id": "resp_0bf29f6668111408016ab8559b703c87d290a8dcd17bfd35f2",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:36.352018+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 30,
+        "reasoning_tokens": 23,
+        "total_tokens": 161
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-13",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:36.352077+00:00",
+      "response_id": "resp_09b88f30a9ba43bb016ab8559c540887d2b6336bd5b5672cd3",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:36.964780+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 136
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-01",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:36.964816+00:00",
+      "response_id": "resp_0fe4f4cebeacc135016ab8559cf26087d29bbc4d27462a446b",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:37.823003+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 30,
+        "reasoning_tokens": 23,
+        "total_tokens": 161
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-03",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:37.823039+00:00",
+      "response_id": "resp_0a8cddc5fac1216f016ab8559dd29887d2904a06acc6690051",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:38.847737+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 136
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-21",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:38.847770+00:00",
+      "response_id": "resp_06e683ce0449c7f8016ab8559ed5a087d2a93951ff849e35d2",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:39.760690+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 25,
+        "reasoning_tokens": 18,
+        "total_tokens": 156
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O2-10",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O2",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:39.760725+00:00",
+      "response_id": "resp_0fadca50f954b1a1016ab8559fbdc487d288d02aafe4aac5ae",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:40.761532+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 31,
+        "reasoning_tokens": 24,
+        "total_tokens": 162
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-10",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:40.761571+00:00",
+      "response_id": "resp_056591cb6ae19871016ab855a0be4c87d295b758861e9d5e5a",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:41.495893+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-21",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:41.495926+00:00",
+      "response_id": "resp_06217491cd04e027016ab855a179c887d2a404f2cb97ca12c9",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:42.335936+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-07",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:42.335994+00:00",
+      "response_id": "resp_08447fe03b5b6a1e016ab855a2632c87d28907f303ddcd7580",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:43.142670+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-20",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:43.142723+00:00",
+      "response_id": "resp_0694e3c696b7d58f016ab855a320d887d2bf1eb473fdb90b3b",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:44.739730+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 46,
+        "reasoning_tokens": 39,
+        "total_tokens": 320
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-18",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:44.739763+00:00",
+      "response_id": "resp_0ae7eda68421a266016ab855a4b78487d2afc2860edc5a927d",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:46.080972+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 62,
+        "reasoning_tokens": 55,
+        "total_tokens": 336
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-05",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:46.081010+00:00",
+      "response_id": "resp_06a8a47975980559016ab855a6096487d295c711896c31e3bb",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:47.682621+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 77,
+        "reasoning_tokens": 70,
+        "total_tokens": 351
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-01",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:47.682656+00:00",
+      "response_id": "resp_0f426067814f3e7a016ab855a7a15087d2af64bb74d0b1c193",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:48.901058+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 79,
+        "reasoning_tokens": 72,
+        "total_tokens": 353
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "INTACT",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-19",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "b",
+      "presentation": "P2",
+      "raw_output_text": "b",
+      "request_timestamp": "2026-09-26T23:30:48.901093+00:00",
+      "response_id": "resp_0849f4f2f0b27788016ab855a8d82887d29f921e7edc6815f2",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:49.760717+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-23",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:49.760752+00:00",
+      "response_id": "resp_0333bd77a57ac94f016ab855a9b35087d29e76bafd711b2582",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:51.327221+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 45,
+        "reasoning_tokens": 38,
+        "total_tokens": 319
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-13",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:51.327256+00:00",
+      "response_id": "resp_08256587a5c2d509016ab855ab40c087d2a34401020b57590d",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:52.326657+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 47,
+        "reasoning_tokens": 40,
+        "total_tokens": 321
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-11",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:52.326714+00:00",
+      "response_id": "resp_0b3f4a6ff22c6de1016ab855ac414887d2993f43b9e03dce6f",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:53.431637+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-09",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:53.431673+00:00",
+      "response_id": "resp_046ed84c9f3de56c016ab855ad573087d2ba84b06334ea7efe",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:54.564622+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 49,
+        "reasoning_tokens": 42,
+        "total_tokens": 323
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-16",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:54.564656+00:00",
+      "response_id": "resp_0af7163f60b15961016ab855ae7ad887d28bcb3fea480e47b2",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:55.784911+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 49,
+        "reasoning_tokens": 42,
+        "total_tokens": 323
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-15",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:55.784950+00:00",
+      "response_id": "resp_0b7e34a3ad442db2016ab855afaf7087d283e2ff10f260d8b2",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:57.427124+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 87,
+        "reasoning_tokens": 80,
+        "total_tokens": 361
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-12",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "c",
+      "presentation": "P2",
+      "raw_output_text": "c",
+      "request_timestamp": "2026-09-26T23:30:57.427192+00:00",
+      "response_id": "resp_0f3f09a5cb1a7978016ab855b14ff887d2a77fd59ef8cf1789",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:58.252417+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 279
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "SCRAMBLED",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-03",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:58.252465+00:00",
+      "response_id": "resp_070b8b5ca29bb9c3016ab855b2236087d2ba19164a4bd38050",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:30:59.527729+00:00",
+      "usage": {
+        "input_tokens": 274,
+        "output_tokens": 50,
+        "reasoning_tokens": 43,
+        "total_tokens": 324
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-06",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:30:59.527770+00:00",
+      "response_id": "resp_05e2a45728dc0794016ab855b367c487d2ae3828039d9b3c36",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:31:00.566037+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 136
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-08",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:31:00.566076+00:00",
+      "response_id": "resp_02d44f51a3297dc6016ab855b46d4087d2898fc87e18c073c2",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:31:01.277799+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 28,
+        "reasoning_tokens": 21,
+        "total_tokens": 159
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-04",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:31:01.277861+00:00",
+      "response_id": "resp_08b3cebe41a273cb016ab855b5446c87d2925f84d6c3bc5284",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:31:02.182606+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 28,
+        "reasoning_tokens": 21,
+        "total_tokens": 159
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-17",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P1",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:31:02.182675+00:00",
+      "response_id": "resp_0838fe631f77f3d7016ab855b6218c87d28cdd273028558656",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:31:03.104077+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 30,
+        "reasoning_tokens": 23,
+        "total_tokens": 161
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-24",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:31:03.104134+00:00",
+      "response_id": "resp_0ca40622a90ee487016ab855b7156887d2a91e73a868a475e4",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:31:03.852917+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 5,
+        "reasoning_tokens": 0,
+        "total_tokens": 136
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-22",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:31:03.852952+00:00",
+      "response_id": "resp_04f1f60d336efff1016ab855b7d7d487d2bd1d20521ec55487",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:31:04.886892+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 29,
+        "reasoning_tokens": 22,
+        "total_tokens": 160
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-02",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:31:04.886942+00:00",
+      "response_id": "resp_0c8a3c70953e7c27016ab855b8dd6087d28e1169a427196a51",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:31:05.731455+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 27,
+        "reasoning_tokens": 20,
+        "total_tokens": 158
+      },
+      "validity": "VALID"
+    },
+    {
+      "condition": "NULL",
+      "generation_configuration": {
+        "conversation": null,
+        "max_output_tokens": 128,
+        "previous_response_id": null,
+        "reasoning_effort": "low",
+        "store": false,
+        "tools": [],
+        "top_p": 0.98
+      },
+      "incomplete_details": null,
+      "instance_id": "O3-14",
+      "model_id": "gpt-5.6-luna",
+      "operationalisation": "O3",
+      "parsed_action": "a",
+      "presentation": "P2",
+      "raw_output_text": "a",
+      "request_timestamp": "2026-09-26T23:31:05.731494+00:00",
+      "response_id": "resp_04f33d9967a17282016ab855b9b45c87d283c32b555daf5c86",
+      "response_status": "completed",
+      "response_timestamp": "2026-09-26T23:31:06.572895+00:00",
+      "usage": {
+        "input_tokens": 131,
+        "output_tokens": 25,
+        "reasoning_tokens": 18,
+        "total_tokens": 156
+      },
+      "validity": "VALID"
+    }
+  ],
+  "execution_environment": {
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "executor_id": "TI001-V012-V004-SCIENTIFIC-EXECUTOR-1-001",
+  "fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+  "generation_configuration": {
+    "conversation": null,
+    "max_output_tokens": 128,
+    "previous_response_id": null,
+    "reasoning_effort": "low",
+    "store": false,
+    "tools": [],
+    "top_p": 0.98
+  },
+  "model_id": "gpt-5.6-luna",
+  "recoding": false,
+  "record_type": "TGCV_TI001_V012_V004_SCIENTIFIC_EXECUTION_RESULT",
+  "retry": false,
+  "scientific_execution": true,
+  "substitution": false,
+  "system_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
+  "validation_procedure_sha256": "14934b507a774b9b354ed2005d5903790dfcabafa40486c72467336393daec53"
+}
