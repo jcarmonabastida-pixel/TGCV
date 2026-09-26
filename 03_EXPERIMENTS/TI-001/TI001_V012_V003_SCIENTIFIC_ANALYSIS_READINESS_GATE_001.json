@@ -1,0 +1,33 @@
+{
+  "gate_id": "TI001_V012_V003_SCIENTIFIC_ANALYSIS_READINESS_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "gate_type": "SCIENTIFIC_ANALYSIS_READINESS",
+  "decision": "PASS",
+  "checks": {
+    "scientific_execution_result_gate": "TI001_V012_V003_SCIENTIFIC_EXECUTION_RESULT_GATE_001",
+    "scientific_execution_result_registered": true,
+    "scientific_execution_result_sha256": "5665060ea62eea5c8f40ebe32320f64ae6f5ada3923f056ea0302fa9d1c85856",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "system_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
+    "validation_procedure_sha256": "14934b507a774b9b354ed2005d5903790dfcabafa40486c72467336393daec53",
+    "instance_count": 72,
+    "execution_complete": true,
+    "response_trace_complete": true,
+    "scientific_values_modified": false,
+    "scientific_execution_repeated": false,
+    "retry": false,
+    "recoding": false,
+    "substitution": false
+  },
+  "analysis_boundary": {
+    "authorized_next_activity": "scientific analysis of the immutable V003 primary execution result",
+    "analysis_not_yet_performed": true,
+    "hypothesis_decision": false,
+    "causal_conclusion": false,
+    "result_reinterpretation": false
+  },
+  "disposition": "READY FOR SCIENTIFIC ANALYSIS — V003 PRIMARY RESULT IMMUTABLE",
+  "next_gate": "TI001_V012_V003_SCIENTIFIC_ANALYSIS_RESULT_GATE_001"
+}
