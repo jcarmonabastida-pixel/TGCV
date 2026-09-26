@@ -1,0 +1,39 @@
+{
+  "gate_id": "TI001_V012_V002_SCIENTIFIC_ANALYSIS_RESULT_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V002",
+  "gate_type": "SCIENTIFIC_ANALYSIS_RESULT",
+  "decision": "PASS",
+  "checks": {
+    "analysis_readiness_gate": "TI001_V012_V002_SCIENTIFIC_ANALYSIS_GATE_001",
+    "primary_execution_result_sha256": "46fd03aa48edf949b5efe861de0b33f43bba083c6c2be9ac164dedb9d0313a4b",
+    "analysis_result_registered": true,
+    "analysis_result_status": "COMPLETED_DESCRIPTIVE_ANALYSIS",
+    "instance_count": 72,
+    "valid_count": 2,
+    "invalid_count": 70,
+    "executor_2_reconstruction_status": "PASS",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
+    "scientific_values_modified": false,
+    "recoding": false,
+    "retry": false,
+    "substitution": false
+  },
+  "observed_pattern": {
+    "INTACT": {"n": 24, "valid": 2, "invalid": 22},
+    "SCRAMBLED": {"n": 24, "valid": 0, "invalid": 24},
+    "NULL": {"n": 24, "valid": 0, "invalid": 24},
+    "O1": {"n": 24, "valid": 2, "invalid": 22},
+    "O2": {"n": 24, "valid": 0, "invalid": 24},
+    "O3": {"n": 24, "valid": 0, "invalid": 24}
+  },
+  "validity_limitation": "The 70 invalid records were incomplete responses with empty output and output-budget exhaustion at max_output_tokens=16. Therefore the observed validity pattern is not treated here as a hypothesis decision or causal effect estimate.",
+  "scientific_boundary": {
+    "hypothesis_decision": false,
+    "causal_conclusion": false,
+    "interpretive_reclassification": false
+  },
+  "disposition": "ANALYSIS RESULT REGISTERED — NO HYPOTHESIS DECISION",
+  "next_gate": "TI001_V012_V002_SCIENTIFIC_INTERPRETATION_GATE_001"
+}
