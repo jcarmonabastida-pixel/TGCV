@@ -1,0 +1,44 @@
+{
+  "gate_id": "TI001_V012_V004_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V004",
+  "gate_type": "SCIENTIFIC_EXECUTION_AUTHORIZATION",
+  "decision": "AUTHORIZED",
+  "basis": {
+    "design_requirements_gate": "TI001_V012_V004_DESIGN_REQUIREMENTS_GATE_001",
+    "design_specification_gate": "TI001_V012_V004_DESIGN_SPECIFICATION_GATE_001",
+    "fixture_generation_gate": "TI001_V012_V004_FIXTURE_GENERATION_GATE_001",
+    "executor_preflight_gate": "TI001_V012_V004_EXECUTOR_PREFLIGHT_GATE_001",
+    "prior_v003_authorization_reused": false
+  },
+  "authorization_scope": {
+    "authorized_executor": "TI001-V012-V004-SCIENTIFIC-EXECUTOR-1-001",
+    "authorized_fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+    "authorized_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
+    "authorized_validation_procedure_sha256": "14934b507a774b9b354ed2005d5903790dfcabafa40486c72467336393daec53",
+    "model_id": "gpt-5.6-luna",
+    "reasoning_effort": "low",
+    "max_output_tokens": 128,
+    "top_p": 0.98,
+    "tools": [],
+    "store": false,
+    "decision_count": 72
+  },
+  "constraints": {
+    "new_version_only": true,
+    "repeat_executor_2": false,
+    "retry": false,
+    "recoding": false,
+    "substitution": false,
+    "fixture_substitution": false,
+    "scientific_execution_must_use_authorized_fixture": true
+  },
+  "authorization_boundary": {
+    "scientific_execution_authorized": true,
+    "scientific_interpretation_authorized": false,
+    "post_execution_analysis_authorized": false
+  },
+  "disposition": "V012 V004 SCIENTIFIC EXECUTION AUTHORIZED",
+  "next_gate": "TI001_V012_V004_SCIENTIFIC_EXECUTION_RESULT_GATE_001"
+}
