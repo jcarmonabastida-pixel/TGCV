@@ -45,7 +45,7 @@ def main():
     )
     checks["A9_DESIGN_EXISTS"]=exists(DESIGN)
     design=DESIGN.read_text(encoding="utf-8") if checks["A9_DESIGN_EXISTS"] else ""
-    checks["A10_DESIGN_BINDS_REASONING_NONE"]='reasoning={"effort":"none"}' in design and '"none"' in design
+    checks["A10_DESIGN_BINDS_REASONING_NONE"]='reasoning={"effort": "none"}' in design and '"none"' in design
     checks["A11_E1_PRESERVED"]=exists(E1_RESULT)
     checks["A12_NO_E1R_AUTHORIZATION_EXISTS"]=not exists(AUTHORIZATION)
     checks["A13_NO_E1R_RESULT_EXISTS"]=not exists(E1R_RESULT)
