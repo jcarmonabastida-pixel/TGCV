@@ -1,0 +1,38 @@
+{
+  "gate_id": "TI001_V012_V002_EXECUTION_AUTHORIZATION_GATE_002",
+  "status": "READY_FOR_EXPLICIT_AUTHORIZATION",
+  "decision": "AUTHORIZATION_PENDING",
+  "prerequisites": {
+    "frozen_artifact_identity_amendment": "PASS",
+    "execution_package_binding_preflight": "PASS",
+    "fixture_integrity": "PASS",
+    "fixture_frozen": true,
+    "executor_1_bound_to_reconciled_hashes": true,
+    "executor_2_reconstruction_present": true,
+    "scientific_execution_performed": false
+  },
+  "package_identity": {
+    "fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+    "system_prompt_sha256": "162fe16e59a4a748e82381ce45dea67992c3e2568ea9ae064494d7b7bd8fa360",
+    "validation_procedure_sha256": "44f31ddc1173f4b69d8302b97ed6dc96e4fd559c8865a86b5aaf921cefd43374",
+    "executor_1_commit": "919ad22ce4fe7ada90c49d311f45de127ee06942",
+    "executor_2_blob_sha": "f8e5d6bd24544fb158470b26034ff89da0c1403b"
+  },
+  "execution_constraints": {
+    "instance_count": 72,
+    "retry": false,
+    "recoding": false,
+    "substitution": false,
+    "tools": [],
+    "store": false,
+    "max_output_tokens": 16,
+    "top_p": 0.98,
+    "scientific_execution_scope": "V012 V002 fixture only"
+  },
+  "authorization": {
+    "scientific_execution_authorized": false,
+    "explicit_authorization_required": true,
+    "prior_authorization_reuse": "FORBIDDEN"
+  },
+  "next_action": "Explicitly authorize V012 V002 scientific execution; authorization must be recorded as a new governance artifact before --execute."
+}
