@@ -1,0 +1,23 @@
+{
+  "gate_id": "TI001_V012_V004_SCIENTIFIC_INTERPRETATION_GATE_001",
+  "version": "V004",
+  "decision": "PASS",
+  "status": "INTERPRETATION_REGISTERED_AND_BOUNDED",
+  "checks": {
+    "analysis_result_gate_pass": true,
+    "result_artifact_sha256_match": true,
+    "decision_count_72": true,
+    "decision_to_T_acc_bridge_72_of_72": true,
+    "intact_mapping_24_of_24": true,
+    "scrambled_perturbation_24_of_24": true,
+    "Q1_Q5_not_overclaimed": true,
+    "Q6_limited_to_traceability": true,
+    "no_causal_claim": true,
+    "no_value_claim": true,
+    "no_TGCV_wide_conclusion": true,
+    "no_V003_pooling": true,
+    "no_retry_recoding_substitution": true
+  },
+  "interpretation_artifact": "TI001_V012_V004_SCIENTIFIC_INTERPRETATION_001.json",
+  "next_gate": "TI001_V012_V004_POST_CLOSURE_DECISION_GATE_001"
+}

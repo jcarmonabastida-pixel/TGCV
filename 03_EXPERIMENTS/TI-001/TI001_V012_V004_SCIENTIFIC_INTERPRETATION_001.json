@@ -1,0 +1,53 @@
+{
+  "artifact_id": "TI001_V012_V004_SCIENTIFIC_INTERPRETATION_001",
+  "status": "CONTROLLED_SCIENTIFIC_INTERPRETATION_COMPLETE",
+  "version": "V004",
+  "result_artifact_sha256": "50dbc53e1d88937688d9f5772bfd305b075fa2f6bbea39afcec2bfc936dbbb33",
+  "findings": {
+    "Q1_construct": "UNRESOLVED",
+    "Q2_presentation": "UNRESOLVED",
+    "Q3_null_control": "DESCRIPTIVE_ONLY",
+    "Q4_robustness": "UNRESOLVED",
+    "Q5_mechanism": "NOT_SUPPORTED_AS_POSITIVE_RESULT",
+    "Q6_decision_to_T_acc": "SUPPORTED_AS_RECONSTRUCTION_TRACEABILITY_ONLY"
+  },
+  "descriptive_record": {
+    "INTACT": {
+      "n": 24,
+      "a": 22,
+      "b": 2,
+      "c": 0
+    },
+    "SCRAMBLED": {
+      "n": 24,
+      "a": 23,
+      "b": 0,
+      "c": 1
+    },
+    "NULL": {
+      "n": 24,
+      "a": 24,
+      "b": 0,
+      "c": 0
+    },
+    "primary_observable_intact_minus_scrambled_percentage_points": -4.17,
+    "decision_to_T_acc_bridge_reconstructable": 72,
+    "decision_to_T_acc_bridge_total": 72,
+    "intact_mapping_verified": "24/24",
+    "scrambled_perturbation_verified": "24/24"
+  },
+  "scope_boundary": {
+    "causal_claim": false,
+    "value_claim": false,
+    "TGCV_wide_confirmation": false,
+    "TGCV_wide_falsification": false,
+    "normative_action_preference": false,
+    "pool_with_V003": false,
+    "retry": false,
+    "recoding": false,
+    "substitution": false,
+    "imputation": false
+  },
+  "conclusion": "V004 provides a valid descriptive record and a fully reconstructable decision-to-T_acc trace, but does not provide positive discriminating evidence that intact action-conditioned future-space information changes transformation selection. Q1-Q5 remain unresolved; Q6 is supported only at the reconstruction/traceability level, without a demonstrated causal or value relation.",
+  "next_gate": "TI001_V012_V004_SCIENTIFIC_INTERPRETATION_GATE_001"
+}
