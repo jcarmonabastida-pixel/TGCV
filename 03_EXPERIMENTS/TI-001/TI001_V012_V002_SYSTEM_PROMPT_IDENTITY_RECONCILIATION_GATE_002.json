@@ -1,0 +1,17 @@
+{
+  "gate_id": "TI001_V012_V002_SYSTEM_PROMPT_IDENTITY_RECONCILIATION_GATE_002",
+  "record_type": "EXECUTION_PACKAGE_IDENTITY_RECONCILIATION",
+  "status": "RESOLVED_FOR_BINDING",
+  "scope": "Frozen system-prompt binding metadata only",
+  "frozen_artifact_unchanged": true,
+  "identity": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_V002_SYSTEM_PROMPT_001.txt",
+    "frozen_commit": "89d755a11b6d8aa50e76f9f8836e662db5119e1d",
+    "git_blob_sha": "865c8113d1f239e1e2f947cc6111bcf3cbd20788",
+    "observed_content_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
+    "superseded_binding_sha256": "162fe16e59a4a748e82381ce45dea67992c3e2568ea9ae064494d7b7bd8fa360"
+  },
+  "rationale": "The WSL execution verified that the checked-out frozen prompt content hashes to 7c5453f1...9384b. The repository artifact at the frozen commit is unchanged. Binding metadata must therefore use the reproducibly observed content hash.",
+  "scientific_execution_authorized": false,
+  "next_gate": "TI001_V012_V002_EXECUTION_PACKAGE_BINDING_PREFLIGHT_001"
+}
