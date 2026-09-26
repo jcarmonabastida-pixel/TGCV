@@ -1,0 +1,31 @@
+{
+  "gate_id": "TI001_V012_V003_INSTRUMENTATION_VALIDATION_RESULT_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "gate_type": "INSTRUMENTATION_VALIDATION_RESULT",
+  "decision": "BLOCKED",
+  "validation_basis": {
+    "v003_amendment_gate": "TI001_V012_V003_INSTRUMENTATION_AMENDMENT_VALIDATION_GATE_001",
+    "validated_model": "gpt-5.6-luna",
+    "validated_api_surface": "Responses API"
+  },
+  "checks": {
+    "reasoning_effort_semantics_established": true,
+    "max_output_tokens_total_budget_semantics_established": true,
+    "v002_executor_meets_v003_contract": false,
+    "v003_executor_implementation_present": false,
+    "scientific_execution_authorized": false
+  },
+  "finding": {
+    "type": "EXECUTOR_IMPLEMENTATION_NOT_YET_AMENDED",
+    "statement": "The current V002 Executor-1 hard-codes max_output_tokens=16 and does not specify reasoning.effort or explicitly capture incomplete_details.reason. Therefore the instrumentation amendment is conceptually validated but not yet implemented in a V003 executor."
+  },
+  "disposition": {
+    "v012_v002_result": "IMMUTABLE",
+    "v012_v002_interpretation": "BLOCKED",
+    "v012_v003_scientific_execution": "NOT_AUTHORIZED",
+    "executor_2_reconstruction": "NOT_REQUIRED_AT_THIS_STAGE"
+  },
+  "next_gate": "TI001_V012_V003_EXECUTOR_IMPLEMENTATION_GATE_001"
+}
