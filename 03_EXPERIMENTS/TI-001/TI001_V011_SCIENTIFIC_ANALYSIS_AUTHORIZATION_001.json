@@ -1,0 +1,21 @@
+{
+  "record_type": "TI001-V011-SCIENTIFIC-ANALYSIS-AUTHORIZATION",
+  "authorization_status": "AUTHORIZED",
+  "scientific_analysis": "AUTHORIZED",
+  "authorization_action": "EXPLICIT_USER_AUTHORIZATION",
+  "authorization_statement": "Autorizo el análisis científico de TI-001 V011",
+  "basis": {
+    "preauthorization_gate": "03_EXPERIMENTS/TI-001/TI001_V011_SCIENTIFIC_ANALYSIS_PREAUTHORIZATION_GATE_RESULT_001.json",
+    "preauthorization_status": "PASS",
+    "fixture_sha256": "30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1"
+  },
+  "analysis_boundary": {
+    "e1r_and_e2r_separate": true,
+    "pooling": false,
+    "recode": false,
+    "imputation": false,
+    "retry": false,
+    "outcome_dependent_filtering": false
+  },
+  "analysis_status": "AUTHORIZED_NOT_STARTED"
+}
