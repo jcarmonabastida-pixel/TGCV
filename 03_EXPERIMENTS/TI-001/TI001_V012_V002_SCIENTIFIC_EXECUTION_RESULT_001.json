@@ -1,0 +1,12 @@
+{
+  "record_type": "TGCV_TI001_V012_V002_SCIENTIFIC_EXECUTION_RESULT",
+  "artifact": "TI001_V012_V002_SCIENTIFIC_EXECUTION_RESULT_001.json",
+  "artifact_sha256": "46fd03aa48edf949b5efe861de0b33f43bba083c6c2be9ac164dedb9d0313a4b",
+  "status": "REGISTERED",
+  "provenance": {
+    "primary_execution_audit": "TI001_V012_V002_PRIMARY_EXECUTION_AUDIT_001",
+    "post_reconstruction_gate": "TI001_V012_V002_POST_RECONSTRUCTION_GATE_001",
+    "executor_2_reconstruction_gate": "TI001_V012_V002_EXECUTOR_2_RECONSTRUCTION_GATE_001"
+  },
+  "note": "This registration binds the previously executed primary result by its verified SHA-256. No scientific values are reconstructed, modified, or reinterpreted by this registration."
+}
