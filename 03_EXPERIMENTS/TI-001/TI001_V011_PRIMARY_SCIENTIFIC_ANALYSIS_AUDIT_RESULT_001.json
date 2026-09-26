@@ -1,0 +1,28 @@
+{
+  "audit_id": "TI001-V011-PRIMARY-SCIENTIFIC-ANALYSIS-AUDIT-001",
+  "authorization": "READY_FOR_SCIENTIFIC_CLOSURE",
+  "checks": {
+    "A10_NO_INVALID_INCLUDED": true,
+    "A11_RESPONSE_AGREEMENT_RECALC": true,
+    "A12_NO_SCIENTIFIC_ESTIMANDS_IN_EXECUTION_RESULTS": true,
+    "A13_NO_CAUSAL_VALUE_CLAIM": true,
+    "A14_NO_POOLING_OR_RECODING": true,
+    "A15_DETERMINISTIC_INPUTS": true,
+    "A1_ANALYSIS_STATUS_PERFORMED": true,
+    "A2_NO_POOLING": true,
+    "A3_E1_SEPARATE": true,
+    "A4_E1_RECALC_EXACT": true,
+    "A5_E2_RECALC_EXACT": true,
+    "A6_E1_CONTRASTS_EXACT": true,
+    "A7_E2_CONTRASTS_EXACT": true,
+    "A8_VALID_RECORDS_420": true,
+    "A9_FIXTURE_UNIT_COUNT": true
+  },
+  "details": {
+    "E1R_TI_DC": -0.06428571428571428,
+    "E2R_TI_DC": -0.0357142857142857,
+    "response_agreement_count": 380
+  },
+  "scientific_analysis": "PERFORMED",
+  "status": "PASS"
+}
