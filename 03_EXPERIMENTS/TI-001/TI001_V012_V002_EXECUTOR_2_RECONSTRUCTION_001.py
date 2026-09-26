@@ -63,26 +63,25 @@ def validate(fixture):
     return failures
 
 def main():
-    ap=argparse.ArgumentParser()
+    ap = argparse.ArgumentParser()
     ap.add_argument("fixture")
     ap.add_argument("output")
-    args=ap.parse_args()
-    fixture=json.loads(Path(args.fixture).read_text(encoding="utf-8"))
-    failures=validate(fixture)
-    result={
-        "record_type":"TGCV_TI001_V012_V002_EXECUTOR_2_RECONSTRUCTION_RESULT",
-        "executor_2_id":"TI001-V012-V002-INDEPENDENT-RECONSTRUCTOR-2-001",
-        "fixture_sha256":fixture.get("fixture_sha256"),
-        "expected_fixture_sha256":EXPECTED_FIXTURE_SHA256,
-        "instance_count":len(fixture.get("instances",[])),
-        "status":"PASS" if not failures else "FAIL",
-        "failures":failures,
-        "scientific_execution":False
+    args = ap.parse_args()
+    fixture = json.loads(Path(args.fixture).read_text(encoding="utf-8"))
+    failures = validate(fixture)
+    result = {
+        "record_type": "TGCV_TI001_V012_V002_EXECUTOR_2_RECONSTRUCTION_RESULT",
+        "executor_2_id": "TI001-V012-V002-INDEPENDENT-RECONSTRUCTOR-2-001",
+        "fixture_sha256": fixture.get("fixture_sha256"),
+        "expected_fixture_sha256": EXPECTED_FIXTURE_SHA256,
+        "instance_count": len(fixture.get("instances", [])),
+        "status": "PASS" if not failures else "FAIL",
+        "failures": failures,
+        "scientific_execution": False
     }
-    Path(args.output).write_text(json.dumps(result,sort_keys=True,indent=2)+"
-",encoding="utf-8")
-    print(json.dumps(result,sort_keys=True,indent=2))
+    Path(args.output).write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps(result, sort_keys=True, indent=2))
     return 0 if not failures else 1
 
-if __name__=="__main__":
+if __name__ == "__main__":
     raise SystemExit(main())
