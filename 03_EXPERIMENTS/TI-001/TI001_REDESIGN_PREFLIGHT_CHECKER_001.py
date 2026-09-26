@@ -171,17 +171,22 @@ def check_r6_distinction(fixture: Mapping[str, Any]) -> Tuple[bool, str]:
 def check_r7_control_non_derivability(fixture: Mapping[str, Any]) -> Tuple[bool, str]:
     control = fixture["conditions"]["control"]
     mapping = fixture["conditions"]["treatment"]["future_mapping"]
+    trace = fixture.get("transition_traceability")
     if "future_mapping" in control:
         return _fail("control explicitly contains future_mapping")
     if control.get("derivable_future_mapping") is True:
         return _fail("control declares future mapping derivable")
     if control.get("future_signal") is not None:
         return _fail("control contains future-space signal")
-    # The fixture schema must explicitly attest non-derivability.
     if control.get("mapping_non_derivable") is not True:
         return _fail("missing explicit control non-derivability attestation")
-    return _pass()
-
+    if not isinstance(trace, Mapping):
+        return _fail("missing transition_traceability for non-derivability test")
+    if set(mapping) != set(ACTIONS) or set(trace) != set(ACTIONS):
+        return _fail("complete action-keyed treatment mapping/trace required")
+    if any(k in control for k in ("future_descriptors", "action_future_mapping")):
+        return _fail("control contains an action-keyed future descriptor field")
+    return _pass("PASS: control payload excludes the treatment-only action-keyed future mapping")
 
 def check_r8_schema(fixture: Mapping[str, Any]) -> Tuple[bool, str]:
     mapping = fixture["conditions"]["treatment"]["future_mapping"]
@@ -215,24 +220,17 @@ def check_r11_d6_witness(fixture: Mapping[str, Any]) -> Tuple[bool, str]:
     witness = fixture.get("divergence_witness")
     if not isinstance(witness, Mapping):
         return _fail("missing divergence_witness")
-
     required = {
-        "control_action",
-        "treatment_action",
-        "different",
-        "depends_on_treatment_mapping",
-        "same_state",
-        "same_t_acc",
-        "same_task",
-        "same_timing",
-        "same_decision_rule",
-        "no_evaluation",
-        "removing_mapping_removes_witness",
+        "control_action", "treatment_action", "different",
+        "depends_on_treatment_mapping", "same_state", "same_t_acc",
+        "same_task", "same_timing", "same_decision_rule", "no_evaluation",
+        "removing_mapping_removes_witness", "mapping_action_used",
+        "mapping_descriptor_used", "control_without_mapping_action",
+        "treatment_with_mapping_action", "mapping_removed_action",
     }
     missing = required - set(witness)
     if missing:
         return _fail("D6 witness missing fields: " + ",".join(sorted(missing)))
-
     if witness["different"] is not True:
         return _fail("D6 witness does not demonstrate different actions")
     if witness["control_action"] == witness["treatment_action"]:
@@ -244,9 +242,21 @@ def check_r11_d6_witness(fixture: Mapping[str, Any]) -> Tuple[bool, str]:
     ):
         if witness[key] is not True:
             return _fail("D6 witness condition false: " + key)
-
-    return _pass()
-
+    mapping = fixture["conditions"]["treatment"]["future_mapping"]
+    action_used = witness["mapping_action_used"]
+    if action_used not in ACTIONS:
+        return _fail("D6 mapping_action_used is not a current action")
+    if witness["mapping_descriptor_used"] != mapping[action_used]:
+        return _fail("D6 witness descriptor does not match the treatment mapping")
+    if witness["control_without_mapping_action"] != witness["control_action"]:
+        return _fail("D6 control action is not the stated no-mapping baseline")
+    if witness["treatment_with_mapping_action"] != witness["treatment_action"]:
+        return _fail("D6 treatment action is not the stated mapping-dependent action")
+    if witness["mapping_removed_action"] != witness["control_action"]:
+        return _fail("D6 removing the mapping does not restore the control action")
+    if witness["mapping_removed_action"] == witness["treatment_action"]:
+        return _fail("D6 witness remains divergent after mapping removal")
+    return _pass("PASS: explicit treatment-mapping-dependent divergence witness")
 
 def check_r12_null(fixture: Mapping[str, Any]) -> Tuple[bool, str]:
     null = fixture["conditions"]["null"]
@@ -273,11 +283,23 @@ def check_r14_traceability(fixture: Mapping[str, Any]) -> Tuple[bool, str]:
     trace = fixture.get("transition_traceability")
     if not isinstance(trace, Mapping):
         return _fail("missing transition_traceability")
+    if set(trace) != set(ACTIONS):
+        return _fail("transition_traceability must be exactly keyed by a,b,c")
     for action in ACTIONS:
-        if action not in trace or action not in mapping:
-            return _fail("missing traceability for " + action)
-    return _pass()
-
+        if action not in mapping:
+            return _fail("missing treatment mapping for " + action)
+        entry = trace[action]
+        if not isinstance(entry, Mapping):
+            return _fail("traceability entry is not an object for " + action)
+        if entry.get("action") != action:
+            return _fail("traceability action key mismatch for " + action)
+        if entry.get("future_descriptor") != mapping[action]:
+            return _fail("traceability descriptor mismatch for " + action)
+        if not isinstance(entry.get("source_successor"), str):
+            return _fail("missing source_successor for " + action)
+        if not isinstance(entry.get("source_future_accessibility"), list):
+            return _fail("missing source_future_accessibility for " + action)
+    return _pass("PASS: each F(u) is linked to its explicit action and transition source")
 
 def run_preflight(fixture: Mapping[str, Any]) -> Dict[str, Any]:
     conditions = _get_conditions(fixture)
