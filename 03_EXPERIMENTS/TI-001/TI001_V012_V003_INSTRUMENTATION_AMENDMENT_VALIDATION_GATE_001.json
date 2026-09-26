@@ -1,0 +1,47 @@
+{
+  "gate_id": "TI001_V012_V003_INSTRUMENTATION_AMENDMENT_VALIDATION_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "gate_type": "INSTRUMENTATION_AMENDMENT_VALIDATION",
+  "decision": "READY_FOR_VALIDATION",
+  "basis": {
+    "prior_amendment_gate": "TI001_V012_V002_INSTRUMENTATION_AMENDMENT_GATE_001",
+    "prior_amendment_commit": "37540017a710271f30ef273cc90d7464fbad7937",
+    "model_id": "gpt-5.6-luna",
+    "api_surface": "Responses API"
+  },
+  "validated_semantics": {
+    "max_output_tokens": "total generated-token ceiling including reasoning and visible output",
+    "reasoning_control": "reasoning.effort",
+    "reasoning_effort_supported_values_for_model": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ],
+    "scientific_design_constraint": "Do not describe reasoning.effort as an independent numeric token budget."
+  },
+  "v003_requirements": {
+    "reasoning_effort": "explicit and fixed before execution",
+    "max_output_tokens": "explicit and recorded; must provide sufficient total generation budget for reasoning plus required visible response",
+    "usage_output_tokens": "required per decision",
+    "usage_reasoning_tokens": "required per decision",
+    "status": "required per decision",
+    "incomplete_details_reason": "required when status is incomplete",
+    "per_decision_trace": true,
+    "retry": false,
+    "substitution": false,
+    "recoding": false,
+    "executor_2_reconstruction": "not repeated for instrumentation validation"
+  },
+  "validation_boundary": {
+    "scientific_execution_authorized": false,
+    "scientific_interpretation_authorized": false,
+    "purpose": "validate the amended instrumentation contract before any new scientific execution"
+  },
+  "disposition": "V012 V003 INSTRUMENTATION AMENDMENT READY FOR VALIDATION",
+  "next_gate": "TI001_V012_V003_INSTRUMENTATION_VALIDATION_RESULT_GATE_001"
+}
