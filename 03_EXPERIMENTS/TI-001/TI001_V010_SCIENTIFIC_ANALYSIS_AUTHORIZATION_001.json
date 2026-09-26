@@ -1,0 +1,17 @@
+{
+  "authorization_id": "TI001-V010-SCIENTIFIC-ANALYSIS-AUTHORIZATION-001",
+  "scientific_analysis": "AUTHORIZED",
+  "authorized_by": "user",
+  "gate_id": "TI001-V010-SCIENTIFIC-ANALYSIS-AUTHORIZATION-GATE-001",
+  "analysis_specification": "03_EXPERIMENTS/TI-001/TI001_V010_SCIENTIFIC_ANALYSIS_SPECIFICATION_001.md",
+  "fixture_sha256": "dd45ae453b5a3d37b4faff34ed829e7aac52ce4ed5a7462bb3546c1a420c2eb9",
+  "interface_sha256": "e025d66e477de3afd79147986b716389d7d7be03d01a21d4380b384e17c8510c",
+  "executor_1_result_sha": "5297b578f250a50e90043dab5806877e3c3eec1d",
+  "executor_2_result_sha": "82b09712d1fa866dc25927c62ada1c7da1004665",
+  "pool_executions": false,
+  "recode": false,
+  "retry": false,
+  "imputation": false,
+  "value_metric": false,
+  "causal_inference": false
+}
