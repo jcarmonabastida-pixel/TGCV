@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse
-import hashlib
+import json
 import subprocess
 from pathlib import Path
 
@@ -9,8 +9,6 @@ EXPECTED_SEED = "20260926"
 EXPECTED_GENERATOR_ID = "TI001-V011-FIXTURE-GENERATOR-001"
 EXPECTED_FIXTURE_ID = "TI001-V011-FIXTURE-001"
 EXPECTED_SCHEMA_ID = "TI001-V011-DU-SCHEMA-001"
-EXPECTED_SCHEMA_PATH = "03_EXPERIMENTS/TI-001/TI001_V011_DECISION_UNIT_SCHEMA_SPECIFICATION_001.md"
-EXPECTED_GENERATOR_PATH = "03_EXPERIMENTS/TI-001/TI001_V011_FIXTURE_GENERATOR_001.py"
 
 
 def git_blob_sha(path):
@@ -69,11 +67,10 @@ def main():
         "scientific_execution": "NOT_PERFORMED",
     }
     Path(args.output).write_text(
-        __import__("json").dumps(result, indent=2) + "
-",
+        json.dumps(result, indent=2) + "\n",
         encoding="utf-8",
     )
-    print(__import__("json").dumps(result, indent=2))
+    print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":
