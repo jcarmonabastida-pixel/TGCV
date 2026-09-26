@@ -1,0 +1,39 @@
+{
+  "gate_id": "TI001_V012_V003_EXECUTOR_PREFLIGHT_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "gate_type": "EXECUTOR_PREFLIGHT",
+  "decision": "PASS",
+  "executor": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_V003_SCIENTIFIC_EXECUTOR_1_001.py",
+    "blob_sha256": "a8742dbc3d404bef139e5b24fd8bb909e3b8512b",
+    "executor_id": "TI001-V012-V003-SCIENTIFIC-EXECUTOR-1-001"
+  },
+  "preflight_mode": {
+    "execute_flag": false,
+    "scientific_execution_performed": false
+  },
+  "checks": {
+    "fixture_binding": true,
+    "prompt_binding": true,
+    "validation_binding": true,
+    "instance_count": 72,
+    "reasoning_effort": "low",
+    "max_output_tokens": 128,
+    "total_budget_semantics": true,
+    "usage_trace_implemented": true,
+    "termination_trace_implemented": true,
+    "incomplete_reason_trace_implemented": true,
+    "retry": false,
+    "recoding": false,
+    "substitution": false
+  },
+  "observed_preflight_status": "READY_NOT_EXECUTED",
+  "scientific_boundary": {
+    "execution_authorized": false,
+    "interpretation_authorized": false
+  },
+  "disposition": "PREFLIGHT PASS — V003 EXECUTOR READY FOR SCIENTIFIC EXECUTION AUTHORIZATION GATE",
+  "next_gate": "TI001_V012_V003_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001"
+}
