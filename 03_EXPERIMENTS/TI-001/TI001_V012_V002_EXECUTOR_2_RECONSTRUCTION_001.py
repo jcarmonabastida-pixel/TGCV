@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""TI-001 V012 V002 independent Executor-2 reconstruction.
-
-Reconstructs and validates the observable decision-time representation from
-the frozen V012 design/fixture semantics without importing or executing
-Executor-1. Scientific execution is never performed.
-"""
+"""TI-001 V012 V002 independent Executor-2 reconstruction."""
 from __future__ import annotations
 import argparse, hashlib, json
 from pathlib import Path
@@ -22,6 +17,12 @@ def canonical_hash(fixture):
 
 def expected_records(record):
     ts = record["transition_spec"]
+    cond = record["condition"]
+    mapping = (
+        {a: ts[a]["T_acc_t1"] for a in ACTIONS}
+        if cond == "INTACT"
+        else record.get("information", {}).get("future_space_mapping", {})
+    )
     rows = []
     for action in ORDERS[record["presentation"]]:
         d = ts[action]["descriptor"]
@@ -31,7 +32,7 @@ def expected_records(record):
             "identity_turnover_class": d["identity_turnover_class"],
             "persistence_class": d["persistence_class"],
             "reconfiguration_class": d["reconfiguration_class"],
-            "future_accessibility": ts[action]["T_acc_t1"],
+            "future_accessibility": mapping[action],
         })
     return rows
 
@@ -41,9 +42,6 @@ def validate(fixture):
         failures.append("instance_count")
     if len(fixture.get("instances", [])) != EXPECTED_COUNT:
         failures.append("instances_length")
-
-    # Binding is against the canonical body hash. The fixture need not carry
-    # a redundant self-referential fixture_sha256 field.
     if canonical_hash(fixture) != EXPECTED_FIXTURE_SHA256:
         failures.append("canonical_body_hash")
 
@@ -51,7 +49,6 @@ def validate(fixture):
         p = r.get("presentation")
         cond = r.get("condition")
         iid = r.get("instance_id")
-
         if p not in ORDERS:
             failures.append(f"{iid}:presentation")
             continue
@@ -81,15 +78,14 @@ def validate(fixture):
             if rep.get(key) != expected_records(r):
                 failures.append(f"{iid}:representation")
 
-            if cond == "INTACT":
-                expected = {a: r["transition_spec"][a]["T_acc_t1"] for a in ACTIONS}
-                if r.get("information", {}).get("future_space_mapping") != expected:
-                    failures.append(f"{iid}:intact_mapping")
+            mapping = r.get("information", {}).get("future_space_mapping", {})
+            true_mapping = {a: r["transition_spec"][a]["T_acc_t1"] for a in ACTIONS}
+            if cond == "INTACT" and mapping != true_mapping:
+                failures.append(f"{iid}:intact_mapping")
             elif cond == "SCRAMBLED":
-                mapping = r.get("information", {}).get("future_space_mapping", {})
                 if set(mapping.keys()) != set(ACTIONS):
                     failures.append(f"{iid}:scrambled_keys")
-                if any(mapping[a] == r["transition_spec"][a]["T_acc_t1"] for a in ACTIONS):
+                if any(mapping[a] == true_mapping[a] for a in ACTIONS):
                     failures.append(f"{iid}:scramble_not_deranged")
 
     return failures
@@ -99,11 +95,9 @@ def main():
     ap.add_argument("fixture")
     ap.add_argument("output")
     args = ap.parse_args()
-
     fixture = json.loads(Path(args.fixture).read_text(encoding="utf-8"))
     failures = validate(fixture)
     fixture_hash = canonical_hash(fixture)
-
     result = {
         "record_type": "TGCV_TI001_V012_V002_EXECUTOR_2_RECONSTRUCTION_RESULT",
         "executor_2_id": "TI001-V012-V002-INDEPENDENT-RECONSTRUCTOR-2-001",
@@ -114,10 +108,7 @@ def main():
         "failures": failures,
         "scientific_execution": False
     }
-    Path(args.output).write_text(
-        json.dumps(result, sort_keys=True, indent=2) + "\n",
-        encoding="utf-8"
-    )
+    Path(args.output).write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, sort_keys=True, indent=2))
     return 0 if not failures else 1
 
