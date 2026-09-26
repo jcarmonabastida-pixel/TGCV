@@ -1,0 +1,39 @@
+{
+  "reconciliation_id": "TI001-V011-E1R-RESULT-SERIALIZATION-RECONCILIATION-001",
+  "status": "RESOLVED_NON_SCIENTIFIC_SERIALIZATION_DEVIATION",
+  "source_result": "03_EXPERIMENTS/TI-001/TI001_V011_E1R_SCIENTIFIC_EXECUTION_RESULT_001.json",
+  "source_blob_sha": "04a3c07060ce5a904b974633dcbe462b0f6245ca",
+  "deviation": {
+    "type": "JSON_SERIALIZATION",
+    "description": "The canonized E1-R result contained a literal backslash-n sequence after the closing JSON object, making the full file invalid JSON.",
+    "scientific_fields_changed": false,
+    "execution_rerun_required": false
+  },
+  "normalization": {
+    "artifact": "03_EXPERIMENTS/TI-001/TI001_V011_E1R_SCIENTIFIC_EXECUTION_RESULT_001_NORMALIZED.json",
+    "operation": "Remove only the trailing literal backslash-n sequence outside the JSON object.",
+    "scientific_content_changed": false,
+    "json_parse_valid": true
+  },
+  "verified_content": {
+    "decision_count": 420,
+    "record_count": 420,
+    "valid_count": 420,
+    "invalid_count": 0,
+    "condition_counts": {
+      "control": 140,
+      "treatment": 140,
+      "null": 140
+    },
+    "presentation_counts": {
+      "I1_FIRST": 210,
+      "I2_FIRST": 210
+    },
+    "response_status_counts": {
+      "completed": 420
+    },
+    "reasoning_tokens_total": 0,
+    "nonzero_reasoning_record_count": 0
+  },
+  "evidence_rule": "The original result remains preserved; the normalized copy is the sole parseable representation eligible for structural audit. No scientific record may be added, removed, recoded, retried, or imputed."
+}
