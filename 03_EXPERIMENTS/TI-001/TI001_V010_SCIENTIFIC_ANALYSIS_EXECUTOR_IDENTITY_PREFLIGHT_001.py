@@ -45,7 +45,7 @@ def main():
         "A9_NO_RECODING": "recode" not in source.lower(),
         "A10_NO_RETRY": "retry" not in source.lower(),
         "A11_NO_IMPUTATION": "imputation" not in source.lower(),
-        "A12_NO_VALUE_METRIC": all(term not in source.lower() for term in ("value", "reward", "utility", "performance")),
+        "A12_NO_VALUE_METRIC": all(term not in source.lower() for term in ("value_metric", "reward_metric", "utility_metric", "performance_metric", "task_success")),
         "A13_TIDC_PRESENT": '"TI_DC"' in source and "q_A" in source,
         "A14_TINULL_PRESENT": '"TI_NULL"' in source and "q_A" in source,
         "A15_PRESENTATION_ANALYSIS": "I1_FIRST" in source and "I2_FIRST" in source,
