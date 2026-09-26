@@ -24,7 +24,7 @@ EXPECTED_EXECUTOR = "TI001-V011-SCIENTIFIC-EXECUTOR-001"
 EXPECTED_MODEL = "gpt-5.6-luna"
 EXPECTED_COUNT = 420
 EXPECTED_PAIRS = 210
-EXPECTED_CONDITIONS = {"control": 70, "treatment": 70, "null": 70}
+EXPECTED_CONDITIONS = {"control": 140, "treatment": 140, "null": 140}
 EXPECTED_PRESENTATIONS = {"I1_FIRST": 210, "I2_FIRST": 210}
 FORBIDDEN = ("reward", "utility", "performance", "task_success", "successor_realized", "external_outcome")
 
