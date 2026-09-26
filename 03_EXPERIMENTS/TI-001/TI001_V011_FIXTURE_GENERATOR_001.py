@@ -153,7 +153,7 @@ def validate(fixture):
     for unit in units:
         assert list(unit.keys()) == expected_keys
         assert list(unit["context"].keys()) == ["items", "item_count"]
-        assert unit["item_count"] if False else unit["context"]["item_count"] == 2
+        assert unit["context"]["item_count"] == 2
         assert unit["available_actions"] == ["A", "B"]
         assert list(unit["future_structure"].keys()) == [
             "successor_realized",
@@ -168,8 +168,7 @@ def validate(fixture):
 def serialize(fixture):
     return (
         json.dumps(fixture, ensure_ascii=False, separators=(",", ":"))
-        + "
-"
+        + "\n"
     ).encode("utf-8")
 
 
