@@ -7,7 +7,11 @@ def read_json(path):
     with open(path, encoding="utf-8") as f:
         return json.load(f)
 
-spec = (ROOT / "03_EXPERIMENTS/TI-001/TI_SCIENTIFIC_DESIGN_READINESS_GATE_SPECIFICATION_001.md").read_text(encoding="utf-8")
+spec_path = ROOT / "03_EXPERIMENTS/TI-001/TI_SCIENTIFIC_DESIGN_READINESS_GATE_SPECIFICATION_001.md"
+requirements_path = ROOT / "03_EXPERIMENTS/TI-001/TI_DISCRIMINATION_REQUIREMENTS_GATE_SPECIFICATION_001.md"
+
+spec = spec_path.read_text(encoding="utf-8")
+requirements_spec = requirements_path.read_text(encoding="utf-8")
 v011 = read_json(ROOT / "03_EXPERIMENTS/TI-001/TI001_V011_SCIENTIFIC_CLOSURE_GATE_RESULT_001.json")
 consolidation = read_json(ROOT / "03_EXPERIMENTS/TI-001/TI_EVIDENCE_CONSOLIDATION_GATE_RESULT_001.json")
 oq = read_json(ROOT / "03_EXPERIMENTS/TI-001/TI_OPEN_QUESTIONS_AND_DISCRIMINATION_GATE_RESULT_001.json")
@@ -26,12 +30,12 @@ checks = {
     "A7_CLOSURE_PASS": closure.get("status") == "PASS",
     "A8_SIX_QUESTIONS_PRESERVED": oq.get("details", {}).get("questions_formalized") == 6 and all(q in register for q in ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6"]),
     "A9_ALTERNATIVES_UNADJUDICATED": register_integrity.get("details", {}).get("alternatives_adjudicated") is False,
-    "A10_OUTCOME_INDEPENDENT_OBSERVABLES": "identifiable before inspecting outcome" in requirements.get("details", {}).get("cross_cutting_requirements_text", "").lower() or "identifiable before inspecting outcome" in (ROOT / "03_EXPERIMENTS/TI-001/TI_DISCRIMINATION_REQUIREMENTS_GATE_SPECIFICATION_001.md").read_text(encoding="utf-8").lower(),
+    "A10_OUTCOME_INDEPENDENT_OBSERVABLES": "identifiable before inspecting outcome" in requirements_spec.lower(),
     "A11_DECISION_TRANSFORMATION_VALUE_BOUNDARY": all(x in spec for x in ["decision-level evidence", "transformation-space evidence", "value evidence"]),
     "A12_TRACEABILITY_TO_OPEN_QUESTIONS": "traceable to one or more specific open questions" in spec,
     "A13_DISCRIMINATION_NOT_REPETITION": "rather than merely reproduce V011" in spec,
     "A14_INDEPENDENT_AUDITABILITY": all(x in spec for x in ["independent execution", "auditability", "reproducibility", "pre-specified analysis boundaries"]),
-    "A15_NO_FUTURE_EXPERIMENT_DEFINED": all(x in spec for x in ["does not define", "does not", "define V012"]),
+    "A15_NO_FUTURE_EXPERIMENT_DEFINED": "does not define, approve, or authorize a specific future experiment" in spec,
     "A16_NO_EXECUTION_AUTHORIZATION": "authorize scientific execution" in spec,
     "A17_NO_CLAIM_UPGRADE": "upgrade claims" in spec,
     "A18_CORE_UNCHANGED": "modify the TGCV Core" in spec,
