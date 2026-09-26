@@ -1,0 +1,29 @@
+{
+  "closure_gate_id": "TI001-V011-SCIENTIFIC-CLOSURE-GATE-001",
+  "checks": {
+    "A1_E1R_420_VALID": true,
+    "A2_E2R_420_VALID": true,
+    "A3_E1R_EXECUTION_AUDIT_PASS": true,
+    "A4_E2R_EXECUTION_AUDIT_PASS": true,
+    "A5_CONCORDANCE_AUDIT_PASS": true,
+    "A6_ANALYSIS_AUTHORIZED": true,
+    "A7_ANALYSIS_PERFORMED": true,
+    "A8_PRIMARY_ANALYSIS_AUDIT_PASS": true,
+    "A9_SEPARATE_NO_POOLING": true,
+    "A10_NO_RECODE_RETRY_IMPUTATION": true,
+    "A11_NO_CAUSAL_VALUE_GENERAL_CLAIM": true,
+    "A12_FIXTURE_420": true,
+    "A13_FIXTURE_IDENTITY_PRESERVED": true,
+    "A14_CLOSURE_DOES_NOT_MUTATE_SCIENTIFIC_RESULTS": true
+  },
+  "details": {
+    "fixture_sha256": "30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1",
+    "e1r_valid_count": 420,
+    "e2r_valid_count": 420,
+    "e1r_ti_dc": -0.06428571428571428,
+    "e2r_ti_dc": -0.0357142857142857,
+    "response_agreement_count": 380
+  },
+  "scientific_analysis": "PERFORMED",
+  "status": "CLOSED_FOR_TI001_V011"
+}
