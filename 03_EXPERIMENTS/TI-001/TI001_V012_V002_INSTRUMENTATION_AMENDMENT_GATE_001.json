@@ -15,15 +15,22 @@
     "observed_reasoning_tokens_in_invalid_records": 16
   },
   "finding": {
-    "type": "BUDGET_SEMANTICS_NOT_SEPARATELY_ESTABLISHED",
-    "statement": "The recorded execution does not establish an independently controlled reasoning budget and output budget. The artifact records max_output_tokens=16 and reasoning_tokens=16 while 70 responses are incomplete. Therefore the 2 valid responses are not treated as a substantive scientific signal before generation-budget instrumentation is corrected."
+    "type": "TOTAL_GENERATION_BUDGET_INSUFFICIENTLY_INSTRUMENTED",
+    "statement": "The recorded execution used max_output_tokens=16. In the Responses API, this is a total generated-token ceiling that includes reasoning tokens and visible output tokens; it is not an independently controlled reasoning budget plus an independent output budget. The 70 incomplete responses consumed the recorded 16 reasoning tokens, so the artifact does not establish that the model had sufficient generation budget to produce the required visible response. The 2 valid responses are therefore not treated as a substantive scientific signal."
   },
   "required_amendment": {
-    "reasoning_budget": "explicitly specified and independently recorded",
-    "output_budget": "explicitly specified and independently recorded",
+    "reasoning_control": "Specify and record the model-supported reasoning.effort setting used for V012 V003; do not represent it as an independent numeric token budget unless the runtime explicitly exposes one.",
+    "total_generation_budget": "Specify max_output_tokens at a level sufficient for the intended reasoning plus visible response, and record the configured value.",
+    "usage_trace": [
+      "usage.output_tokens",
+      "usage.output_tokens_details.reasoning_tokens",
+      "usage.output_tokens_details.reasoning_tokens",
+      "status",
+      "incomplete_details.reason"
+    ],
     "termination_status": "recorded separately from token consumption",
     "per_decision_budget_trace": true,
-    "validation_rule": "Invalidity must not be attributed to reasoning or output exhaustion without the independent budget trace needed to distinguish them."
+    "validation_rule": "Do not attribute invalidity to reasoning exhaustion or visible-output exhaustion from token counts alone; use the recorded status and incomplete_details.reason together with the usage breakdown."
   },
   "disposition": {
     "v012_v002_scientific_interpretation": "BLOCKED",
