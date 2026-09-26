@@ -1,0 +1,100 @@
+{
+  "analysis_id": "TI001-V010-SCIENTIFIC-ANALYSIS-001",
+  "scientific_analysis": "PERFORMED",
+  "authorization_id": "TI001-V010-SCIENTIFIC-ANALYSIS-AUTHORIZATION-001",
+  "pool_executions": false,
+  "executor_1": {
+    "decision_count": 420,
+    "valid_count": 420,
+    "invalid_count": 0,
+    "by_condition": {
+      "control": {
+        "n": 140,
+        "A": 82,
+        "B": 58,
+        "q_A": 0.5857142857142857
+      },
+      "treatment": {
+        "n": 140,
+        "A": 82,
+        "B": 58,
+        "q_A": 0.5857142857142857
+      },
+      "null": {
+        "n": 140,
+        "A": 88,
+        "B": 52,
+        "q_A": 0.6285714285714286
+      }
+    },
+    "TI_DC": 0.0,
+    "TI_NULL": 0.042857142857142816,
+    "by_presentation": {
+      "I1_FIRST": {
+        "n": 210,
+        "A": 210,
+        "B": 0,
+        "q_A": 1.0
+      },
+      "I2_FIRST": {
+        "n": 210,
+        "A": 42,
+        "B": 168,
+        "q_A": 0.2
+      }
+    },
+    "pair_level": {
+      "pairs": 210,
+      "agreement": 42,
+      "disagreement": 168,
+      "agreement_rate": 0.2
+    }
+  },
+  "executor_2": {
+    "decision_count": 420,
+    "valid_count": 420,
+    "invalid_count": 0,
+    "by_condition": {
+      "control": {
+        "n": 140,
+        "A": 98,
+        "B": 42,
+        "q_A": 0.7
+      },
+      "treatment": {
+        "n": 140,
+        "A": 86,
+        "B": 54,
+        "q_A": 0.6142857142857143
+      },
+      "null": {
+        "n": 140,
+        "A": 101,
+        "B": 39,
+        "q_A": 0.7214285714285714
+      }
+    },
+    "TI_DC": -0.08571428571428563,
+    "TI_NULL": 0.021428571428571463,
+    "by_presentation": {
+      "I1_FIRST": {
+        "n": 210,
+        "A": 209,
+        "B": 1,
+        "q_A": 0.9952380952380953
+      },
+      "I2_FIRST": {
+        "n": 210,
+        "A": 76,
+        "B": 134,
+        "q_A": 0.3619047619047619
+      }
+    },
+    "pair_level": {
+      "pairs": 210,
+      "agreement": 77,
+      "disagreement": 133,
+      "agreement_rate": 0.36666666666666664
+    }
+  }
+}
