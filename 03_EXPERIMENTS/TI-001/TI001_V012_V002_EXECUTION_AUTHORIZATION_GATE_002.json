@@ -13,9 +13,9 @@
   },
   "package_identity": {
     "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
-    "system_prompt_sha256": "162fe16e59a4a748e82381ce45dea67992c3e2568ea9ae064494d7b7bd8fa360",
+    "system_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
     "validation_procedure_sha256": "44f31ddc1173f4b69d8302b97ed6dc96e4fd559c8865a86b5aaf921cefd43374",
-    "executor_1_commit": "c61ff9f627f2a7eb7fa7811031feca20a82f4680",
+    "executor_1_commit": "7fbce71fb1cf824415d585fe33f87998f8d191ad",
     "executor_2_blob_sha": "47bf48104333236ecf3defe74326dab67366f5ec"
   },
   "execution_constraints": {
