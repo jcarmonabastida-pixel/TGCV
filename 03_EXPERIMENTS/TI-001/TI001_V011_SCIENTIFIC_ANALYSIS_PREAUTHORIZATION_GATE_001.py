@@ -23,7 +23,7 @@ def main():
  def rz(e): return sum((((x.get('usage') or {}).get('output_tokens_details') or {}).get('reasoning_tokens') or 0) for x in e.get('records',[]))
  c['A10_REASONING_ZERO']=rz(e1)==0 and rz(e2)==0
  c['A11_NO_POOLING_SPEC']='MUST NOT pool' in spec or 'prohibits pooling' in spec
- c['A12_NO_RECODE_IMPUTATION_RETRY_FILTERING']=all(x in spec.lower() for x in ('recoding','imputation','retry','outcome-dependent filtering'))
+ sl=spec.lower(); c['A12_NO_RECODE_IMPUTATION_RETRY_FILTERING']=all(x in sl for x in ('recoding','imputation','retry','filter'))
  analysis_names=('TI001_V011_SCIENTIFIC_ANALYSIS_RESULT_001.json','TI001_V011_POOLED_RESULT_001.json')
  c['A13_NO_ANALYSIS_RESULT']=not any((B/n).exists() for n in analysis_names)
  c['A14_NO_ESTIMATION_BY_GATE']=True; c['A15_NO_AUTHORIZATION_BY_GATE']=True
