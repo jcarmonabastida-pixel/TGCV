@@ -1,0 +1,83 @@
+{
+  "gate_id": "TI001_V012_NEXT_DESIGN_REQUIREMENTS_GATE_001",
+  "status": "PASS",
+  "decision": "NEXT_DESIGN_REQUIREMENTS_DEFINED",
+  "basis": {
+    "prior_closure_gate": "TI001_V012_V004_POST_CLOSURE_DECISION_GATE_001",
+    "prior_closure_decision": "CLOSED_AND_NEXT_DESIGN_REQUIRED",
+    "prior_experiment": "V004"
+  },
+  "scope": {
+    "purpose": "Define the scientific requirements for the next TI-001 design before fixture generation or scientific execution.",
+    "fixture_generation_authorized": false,
+    "executor_implementation_authorized": false,
+    "scientific_execution_authorized": false,
+    "interpretation_authorized": false
+  },
+  "requirements": {
+    "R1_Q5_MECHANISM_DISCRIMINATION": {
+      "requirement": "The next design must discriminate action-conditioned future-space information from a baseline preference or heuristic for an action.",
+      "acceptance_condition": "The observed decision pattern must permit the two mechanisms to generate distinguishable predictions under matched current-state, action-set, task, timing, presentation, and environment conditions."
+    },
+    "R2_Q1_CONSTRUCT_IDENTIFICATION": {
+      "requirement": "The design must prevent a stable preference for a particular action from being observationally equivalent to the hypothesized use of future transformation information.",
+      "acceptance_condition": "The design must include counterbalanced or otherwise independently identifiable action-to-future mappings such that the preferred action cannot remain predictive across incompatible future-space assignments."
+    },
+    "R3_ACTION_MAPPING_COUNTERBALANCE": {
+      "requirement": "The mapping between candidate actions and future transformation descriptors must vary independently of action identity.",
+      "acceptance_condition": "No single action may be systematically associated with the hypothesized informative future-space condition."
+    },
+    "R4_DECISION_BEFORE_REALIZED_FUTURE": {
+      "requirement": "The decision must occur before access to the realized successor state or realized future transformation outcome.",
+      "acceptance_condition": "The executor must not receive post-decision information that identifies which future transformation actually occurred."
+    },
+    "R5_DECISION_TO_T_ACC_TRACEABILITY": {
+      "requirement": "The V004 reconstruction bridge must be retained.",
+      "acceptance_condition": "Every decision unit must permit independent reconstruction of S_t, selected transformation, S_(t+1), and T_acc,t+1, with interpretation blocked if reconstruction fails."
+    },
+    "R6_NO_NORMATIVE_ACTION_ENCODING": {
+      "requirement": "Future-space descriptors must not encode a preferred action through reward, utility, value, performance, task success, or normative quality.",
+      "acceptance_condition": "Action identity and future-space information remain independently manipulable and no descriptor contains an implicit recommendation."
+    },
+    "R7_PRESENTATION_CONTROL": {
+      "requirement": "Presentation must be controlled so that any action-selection difference cannot be attributed solely to presentation format.",
+      "acceptance_condition": "Presentation conditions are matched/counterbalanced and included as an explicit design factor where applicable."
+    },
+    "R8_NULL_OR_BASELINE_CONTROL": {
+      "requirement": "The design must retain a baseline condition capable of estimating action selection in the absence of the hypothesized informative correspondence.",
+      "acceptance_condition": "The baseline does not contain information that systematically predicts the identity of the action that is informative under the treatment mapping."
+    },
+    "R9_OPERATIONALISATION_ROBUSTNESS": {
+      "requirement": "The mechanism must not depend on a single operationalisation.",
+      "acceptance_condition": "Where multiple operationalisations are used, the mapping manipulation is structurally equivalent and action-balanced across them."
+    },
+    "R10_INDEPENDENT_EXECUTOR_VERIFICATION": {
+      "requirement": "Scientific execution must retain independent Executor-2 verification.",
+      "acceptance_condition": "Executor-2 independently reconstructs the authorized fixture, execution package, decision records, and primary observables without substituting or recoding observations."
+    },
+    "R11_NEW_VERSION_ONLY": {
+      "requirement": "The next design must be a new immutable version.",
+      "acceptance_condition": "V003 and V004 remain unchanged and are not rerun or retroactively modified."
+    },
+    "R12_ANALYTICAL_BOUNDARY": {
+      "requirement": "The next design remains an experimental test of decision/transformation-space relationships rather than a direct value test.",
+      "acceptance_condition": "No conclusion about TGCV-wide confirmation, falsification, or value creation may be encoded as an outcome criterion."
+    }
+  },
+  "design_principle": {
+    "primary_target": "Q5_MECHANISM_DISCRIMINATION",
+    "secondary_target": "Q1_CONSTRUCT_IDENTIFICATION",
+    "retained_bridge": "DECISION_TO_T_ACC",
+    "core_discriminant": "Action identity must cease to be a sufficient proxy for the hypothesized future-space information."
+  },
+  "prohibited_shortcuts": [
+    "Reusing V004 fixture without a new design justification",
+    "Changing only sample size while retaining the same mechanism ambiguity",
+    "Treating the V004 INTACT-SCRAMBLED descriptive contrast as evidence of mechanism",
+    "Pooling V003 and V004 to manufacture discrimination",
+    "Introducing reward, value, utility, performance, or task-success signals",
+    "Reusing V004 authorization implicitly",
+    "Scientific execution before a new fixture and executor binding have passed their respective gates"
+  ],
+  "next_gate": "TI001_V012_NEXT_DESIGN_SPECIFICATION_GATE_001"
+}
