@@ -1,0 +1,54 @@
+{
+  "audit_id": "TI001-V011-E2R-PRIMARY-EXECUTION-AUDIT-001",
+  "authorization": "AUDIT_PASS",
+  "checks": {
+    "A10_DECISION_IDS_UNIQUE": true,
+    "A11_DECISION_IDS_MATCH_FIXTURE_ORDER": true,
+    "A12_RECORD_METADATA_MATCH_FIXTURE": true,
+    "A13_EACH_PAIR_EXACTLY_TWICE": true,
+    "A14_CONDITION_BALANCE": true,
+    "A15_PRESENTATION_BALANCE": true,
+    "A16_RESPONSE_IDS_PRESENT_UNIQUE": true,
+    "A17_RESPONSE_VALIDATION_CONSISTENT": true,
+    "A18_VALID_COUNT_420": true,
+    "A19_ALL_RESPONSES_COMPLETED": true,
+    "A1_RESULT_JSON_VALID": true,
+    "A20_TIMESTAMPS_PRESENT_ORDERED": true,
+    "A21_RUNTIME_METADATA_PRESENT": true,
+    "A22_GENERATION_CONFIGURATION_EXACT": true,
+    "A23_REASONING_TOKENS_ZERO": true,
+    "A24_NO_FORBIDDEN_SCIENTIFIC_FIELDS": true,
+    "A25_NO_E1_OR_E1R_POOLING_FIELDS": true,
+    "A26_E2R_AUTHORIZATION_EXISTS": true,
+    "A27_NO_INVALID_RESPONSES": true,
+    "A28_NO_RETRY_RECODE_REPAIR_IMPUTATION": true,
+    "A2_RECORD_TYPE_EXACT": true,
+    "A3_SCIENTIFIC_EXECUTION_PERFORMED": true,
+    "A4_FIXTURE_ID_EXACT": true,
+    "A5_FIXTURE_SHA_EXACT": true,
+    "A6_GENERATOR_SCHEMA_INTERFACE_BINDINGS": true,
+    "A7_EXECUTOR_VERSION_EXACT": true,
+    "A8_MODEL_EXACT": true,
+    "A9_DECISION_COUNT_420": true
+  },
+  "details": {
+    "condition_counts": {
+      "control": 140,
+      "null": 140,
+      "treatment": 140
+    },
+    "decision_count": 420,
+    "invalid_count": 0,
+    "nonzero_reasoning_record_count": 0,
+    "presentation_counts": {
+      "I1_FIRST": 210,
+      "I2_FIRST": 210
+    },
+    "reasoning_tokens_total": 0,
+    "valid_count": 420
+  },
+  "executor_version": "TI001-V011-E2R-SCIENTIFIC-EXECUTOR-001",
+  "fixture_sha256": "30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1",
+  "scientific_execution": "PERFORMED",
+  "status": "PASS"
+}
