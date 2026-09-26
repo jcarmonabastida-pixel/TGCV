@@ -1,0 +1,37 @@
+{
+  "artifact_id": "TI001_V012_NEXT_EXECUTOR_PREFLIGHT_GATE_001",
+  "status": "PASS",
+  "decision": "EXECUTOR_PREFLIGHT_PASS",
+  "executor_path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_EXECUTOR_1_001.py",
+  "executor_commit": "ed9eea88a6483af59bfec1f9f7737876106bdd91",
+  "authorized_fixture": {
+    "schema": "TI001_V012_NEXT_FIXTURE_v001",
+    "fixture_version": "NEXT_v001",
+    "sha256": "7782e7652001ec8a64cd1f231c37e6c3c7cd065e672564140fdfa4626b185a5b",
+    "git_blob_sha": "1886160849aecdbda2904a0d3b593975077e1914"
+  },
+  "checks": {
+    "executor_present": true,
+    "executor_id": true,
+    "fixture_sha_binding": true,
+    "fixture_schema_binding": true,
+    "fixture_version_binding": true,
+    "seed_binding": true,
+    "prompt_binding": true,
+    "validation_binding": true,
+    "exact_count_binding": true,
+    "no_retry": true,
+    "no_recoding": true,
+    "no_substitution": true,
+    "no_fixture_substitution": true,
+    "explicit_execute_flag": true,
+    "dry_run_default": true,
+    "scientific_execution_false_dry_run": true,
+    "responses_api": true,
+    "tools_empty": true,
+    "store_false": true
+  },
+  "scientific_execution": false,
+  "interpretation": false,
+  "next_gate": "TI001_V012_NEXT_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001"
+}
