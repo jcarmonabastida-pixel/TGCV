@@ -1,0 +1,46 @@
+{
+  "gate_id": "TI001_V012_V003_EXECUTOR_IMPLEMENTATION_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "gate_type": "EXECUTOR_IMPLEMENTATION",
+  "decision": "PASS",
+  "executor": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_V003_SCIENTIFIC_EXECUTOR_1_001.py",
+    "blob_sha256": "a8742dbc3d404bef139e5b24fd8bb909e3b8512b",
+    "executor_id": "TI001-V012-V003-SCIENTIFIC-EXECUTOR-1-001"
+  },
+  "checks": {
+    "canonical_fixture_binding": true,
+    "canonical_prompt_binding": true,
+    "canonical_validation_binding": true,
+    "instance_count_72": true,
+    "reasoning_effort_explicit": true,
+    "max_output_tokens_explicit": true,
+    "max_output_tokens_is_total_budget": true,
+    "usage_output_tokens_recorded": true,
+    "usage_reasoning_tokens_recorded": true,
+    "status_recorded": true,
+    "incomplete_details_recorded": true,
+    "retry_disabled": true,
+    "recoding_disabled": true,
+    "substitution_disabled": true,
+    "execute_flag_required": true
+  },
+  "configuration": {
+    "model_id": "gpt-5.6-luna",
+    "api_surface": "Responses API",
+    "reasoning_effort": "low",
+    "max_output_tokens": 128,
+    "top_p": 0.98,
+    "tools": [],
+    "store": false
+  },
+  "scientific_boundary": {
+    "scientific_execution_performed": false,
+    "scientific_execution_authorized": false,
+    "scientific_interpretation_authorized": false
+  },
+  "disposition": "V003 EXECUTOR IMPLEMENTATION PASS — READY FOR PREFLIGHT EXECUTION",
+  "next_gate": "TI001_V012_V003_EXECUTOR_PREFLIGHT_GATE_001"
+}
