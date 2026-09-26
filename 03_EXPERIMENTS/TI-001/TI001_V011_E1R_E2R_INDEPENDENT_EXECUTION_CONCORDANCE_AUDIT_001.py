@@ -8,7 +8,11 @@ A1=B/"TI001_V011_E1R_PRIMARY_EXECUTION_AUDIT_RESULT_001.json"; A2=B/"TI001_V011_
 F=B/"TI001_V011_FIXTURE_001.json"
 F_SHA="30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1"
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
-def load(p): return json.loads(p.read_text(encoding="utf-8"))
+def load(p):
+    raw=p.read_text(encoding="utf-8")
+    if raw.endswith("\\n"):
+        raw=raw[:-2]+"\\n"
+    return json.loads(raw)
 def main():
  c={}; d={}
  e1,e2,a1,a2,fx=map(load,(E1R,E2R,A1,A2,F)); r1=e1["records"]; r2=e2["records"]; units=fx["decision_units"]
