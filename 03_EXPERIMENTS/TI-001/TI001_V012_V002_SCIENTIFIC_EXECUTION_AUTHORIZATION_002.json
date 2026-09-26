@@ -5,15 +5,16 @@
   "authorization_basis": {
     "fixture_path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v002.json",
     "fixture_schema": "TI001_V012_FIXTURE_v002",
-    "fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+    "fixture_sha256": "065ffa5f51fb69b5c9cca8f958bd424375b47b3e2e4e4b5cdb48f4259794a04d",
     "instance_count": 72,
     "freeze_gate": "TI001_V012_FIXTURE_V002_FREEZE_GATE_001",
     "reconciliation_gate": "TI001_V012_V002_AUTHORIZATION_RECONCILIATION_GATE_001",
     "system_prompt_sha256": "162fe16e59a4a748e82381ce45dea67992c3e2568ea9ae064494d7b7bd8fa360",
     "validation_procedure_sha256": "44f31ddc1173f4b69d8302b97ed6dc96e4fd559c8865a86b5aaf921cefd43374",
-    "executor_1_commit": "919ad22ce4fe7ada90c49d311f45de127ee06942",
+    "executor_1_commit": "c61ff9f627f2a7eb7fa7811031feca20a82f4680",
     "binding_preflight": "TI001_V012_V002_EXECUTION_PACKAGE_BINDING_PREFLIGHT_001",
-    "binding_preflight_commit": "b789c6894b2c395ea7438b2e8306cd2e01853991"
+    "binding_preflight_commit": "a6720efbdc53bea1229b44da373495f28af5890e",
+    "executor_2_blob_sha": "47bf48104333236ecf3defe74326dab67366f5ec"
   },
   "checks": {
     "CANONICAL_V002_FIXTURE": true,
@@ -32,7 +33,7 @@
     "reuse": "FORBIDDEN"
   },
   "notes": [
-    "Explicit user authorization received for the frozen V002 scientific package.",
+    "Explicit user authorization received for the reconciled frozen V002 scientific package.",
     "Authorization is bound to the V002 fixture identity and does not authorize any later package modification.",
     "No scientific execution was performed by this gate."
   ],
