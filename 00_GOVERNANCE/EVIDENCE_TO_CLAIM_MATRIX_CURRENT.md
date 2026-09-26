@@ -1,9 +1,9 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.33
+# TGCV — Evidence-to-Claim Matrix — Current v1.34
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-26  
-**Predecessor:** v1.32  
-**Incremental governance update:** Corrects the v1.32 propagation by placing TI-001 V011 explicitly inside the C16 matrix row (current evidence/basis and evidence impact), while retaining the material-evidence section. No claim-level upgrade and no TGCV Core modification are introduced.
+**Predecessor:** v1.33  
+**Incremental governance update:** Restores the required enriched material-evidence section for TI-001 V011 while retaining its explicit routing in the C16 matrix row. No claim-level upgrade and no TGCV Core modification are introduced. No claim-level upgrade and no TGCV Core modification are introduced.
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
 
@@ -36,6 +36,52 @@ A material experimental result is propagated to this matrix when it adds, remove
 | C14 | T_acc is an ontological primitive independent of S | F | TR-131 | No impact; SWIM, IT-G1, KGFS, C09 Bundle 003, C10C-002 and C10C-003 treat accessibility as derived/conditioned rather than restoring the rejected primitive. | No restoration without contrary evidence |
 | C15 | Rust demonstrates observed Cargo/runtime reachability | F | Rust evidence boundary | No impact. | Separate governed runtime test |
 |  C16  |  TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value  |  H  |   D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 + C09 Bundle 003 + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4 TSTC v004 + VSL Synthetic Minimum v0.1 + VSL Paired E1/E2 v001 + TR-131 VisitAll |  SWIM supports bounded state/context → accessibility → `T_acc` → `ΔT_acc` and bounded trajectory linkage. IT-G1 adds bounded industrial evidence preserving distinctions among internal state transformation, external enabling condition and end-to-end outcome. C09 Bundle 003 adds bounded executable causal-operationalization evidence while preserving the distinction between intervention/accessibility and downstream outcome. C10C-002 adds a reproducible real-world bounded chain `Z → ΔS → T_acc* → ΔT_acc* → frozen causal estimand`, with structural-only predicates, explicit treatment/state separation, endpoint separation, and a negative result retained without post-hoc rescue. C10C-001 adds a complementary non-software boundary case preserving distinctions among structural state, candidate transformations, accessibility and realized transformations while preventing temporal leakage. C10C-003 adds a second randomized non-software boundary case preserving the same distinctions and explicitly qualifying the bounded scope of accessibility operationalization. C10C-004 adds a worked non-software translation example preserving the distinction among instrument semantics, raw variables, derived outcomes and TGCV constructs. It does not close downstream value boundaries or establish transversal validity. MT4 adds bounded methodological evidence preserving separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables. No claim-level upgrade. TSTC v004 provides primary bounded methodological evidence for application-fit of the translation protocol across heterogeneous synthetic fixtures, including cross-domain paths and negative controls; no causal, value, superiority, generality or industrial-validation claim upgrade. C05 adds bounded synthetic application-fit evidence preserving the distinctions among candidate transformations, admissibility, `T_acc`, transition, bounded trajectory fields, negative controls and explicit non-claims; no causal, value, superiority, generality or deployment claim is inferred. VSL Synthetic Minimum v0.1 extends the translation protocol to preserve an explicit downstream Outcome/Value distinction and an external VSL interface. It demonstrates implementation-level separation without establishing transversal empirical validity or a causal value pathway. VSL paired E1/E2 adds closed, independently reconstructed methodological evidence preserving the separation among `T_acc`, realized trajectory and downstream `V*`; no transversal empirical validity or claim-level upgrade follows. TR-131 VisitAll and PRISM V007 together provide bounded cross-domain methodological evidence for an executable translation from state to accessible transformations, realised transformations, successor states and changed accessible spaces. VisitAll contributes 20 transition records and PRISM 16; both satisfy independent reconstruction/integrity checks and V007 contains zero invalid records. The common representation preserves domain-specific transformation identities while deriving comparable reconfiguration descriptors. The result supports the cross-domain analytical translation layer as an operationalisation finding only; it does not establish representational gain, transversal validity, Transformational Intelligence, value linkage or ontological necessity. V011 is methodological evidence for the decision-level Transformational Intelligence research direction, not evidence of transversal validity, causal value linkage or ontological necessity. |  Closed independent-domain operationalization / downstream test  |
+
+## Material experimental evidence — TI-001 V011 Transformational Intelligence
+
+**Case:** `TI001_V011`  
+**Status:** `CLOSED — BOUNDED TRANSFORMATIONAL-INTELLIGENCE EXPERIMENTAL EVIDENCE`  
+**Closure gate:** `TI001-V011-SCIENTIFIC-CLOSURE-GATE-001`  
+**Consolidation gate:** `TI-EVIDENCE-CONSOLIDATION-GATE-001`  
+**Fixture SHA-256:** `30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1`
+
+### 1. Experimental object and scope
+
+V011 tests whether an agent incorporates an explicitly available future transformation structure into its present decision. Treatment exposes the future structure; control does not. The evidence is bounded to the frozen task, interface, fixture, model/runtime configuration and decision rule.
+
+### 2. Execution and audit evidence
+
+E1-R and E2-R each contain **420/420 valid decisions**. Both primary execution audits passed. The independent E1-R/E2-R concordance audit passed. Scientific analysis was performed and its primary audit passed **15/15**. The scientific closure gate passed **14/14**.
+
+Response-level agreement was **380/420**. The two executions remained analytically separate; no pooling, recoding, retry, imputation or outcome-dependent filtering was introduced.
+
+### 3. Quantitative findings
+
+- E1-R: `TI_DC = -0.06428571428571428`
+- E2-R: `TI_DC = -0.0357142857142857`
+
+These are descriptive contrasts under the frozen construction. They are not general capability estimates.
+
+### 4. Evidence contribution
+
+V011 adds bounded experimental evidence that the proposed decision-level Transformational Intelligence operationalisation can be executed, audited and independently reproduced while preserving the distinction among present decision, future transformation structure and downstream value. The cross-execution agreement is reproducibility evidence for the executed record; it is not, by itself, construct validation.
+
+### 5. Claim routing
+
+**C16:** V011 provides a methodological qualification to the evidence base surrounding the proposed Transformational Intelligence research direction. It does **not** establish transversal validity, explanatory/predictive superiority, causal value linkage or ontological necessity, and therefore does not upgrade C16.
+
+**C10:** V011 contains no Value endpoint and does not establish or estimate `Delta T_acc -> Delta V`; C10 remains open.
+
+No other C01–C16 claim receives a positive upgrade from V011.
+
+### 6. Interpretation limits
+
+The observed negative `TI_DC` estimates do not establish absence or presence of a universal Transformational Intelligence capability. V011 does not establish that the tested decision contrast is a general property of generative systems. It does not modify the TGCV Core.
+
+### 7. Governance disposition
+
+V011 is scientifically closed and consolidated as bounded experimental evidence. Existing claim statuses remain unchanged. Any future TI experiment must address a specifically identified unresolved question rather than repeat V011 solely to obtain another estimate.
+
 
 ## Material methodological evidence — TR-131 VisitAll Transformation-Space Instrumentation
 
