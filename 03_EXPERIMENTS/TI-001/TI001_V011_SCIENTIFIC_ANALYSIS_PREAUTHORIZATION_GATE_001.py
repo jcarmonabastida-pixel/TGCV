@@ -7,7 +7,10 @@ E1=B/'TI001_V011_E1R_SCIENTIFIC_EXECUTION_RESULT_001.json'; E2=B/'TI001_V011_E2R
 A1=B/'TI001_V011_E1R_PRIMARY_EXECUTION_AUDIT_RESULT_001.json'; A2=B/'TI001_V011_E2R_PRIMARY_EXECUTION_AUDIT_RESULT_001.json'
 C=B/'TI001_V011_E1R_E2R_INDEPENDENT_EXECUTION_CONCORDANCE_AUDIT_RESULT_001.json'
 EXPECTED='30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1'
-def load(p): return json.loads(p.read_text(encoding='utf-8'))
+def load(p):
+ raw=p.read_text(encoding='utf-8')
+ if raw.endswith('\\n'): raw=raw[:-2]
+ return json.loads(raw)
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
  c={}; e1,e2,a1,a2,co=map(load,(E1,E2,A1,A2,C)); spec=S.read_text(encoding='utf-8'); f=load(F)
