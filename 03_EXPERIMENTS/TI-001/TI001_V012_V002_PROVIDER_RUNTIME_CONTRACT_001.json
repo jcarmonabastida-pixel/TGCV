@@ -1,0 +1,43 @@
+{
+  "contract_id": "TI001_V012_V002_PROVIDER_RUNTIME_CONTRACT_001",
+  "status": "FROZEN_FOR_PREFLIGHT",
+  "scientific_execution": false,
+  "provider": {
+    "provider_id": "TI001-V012-V002-DECISION-AGENT-PROVIDER-001",
+    "model_id": "gpt-5.6-luna",
+    "api_surface": "Responses API"
+  },
+  "runtime": {
+    "temperature": null,
+    "top_p": 0.98,
+    "max_output_tokens": 16,
+    "tools": [],
+    "conversation": null,
+    "previous_response_id": null,
+    "store": false
+  },
+  "request_contract": {
+    "one_independent_request_per_decision_unit": true,
+    "retries": false,
+    "recoding": false,
+    "substitution": false,
+    "external_tools": false,
+    "conversation_state": false
+  },
+  "fixture_binding": {
+    "fixture_schema": "TI001_V012_FIXTURE_v002",
+    "fixture_path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v002.json",
+    "fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+    "instance_count": 72
+  },
+  "response_contract": {
+    "valid_outputs": [
+      "a",
+      "b",
+      "c"
+    ],
+    "invalid_output_policy": "INVALID_NO_RETRY"
+  },
+  "identity_note": "Provider/runtime contract is specific to TI-001 V012 V002 and must be bound to the exact executor and prompt before scientific execution.",
+  "next_gate": "TI001_V012_V002_EXECUTION_PACKAGE_BINDING_PREFLIGHT_001"
+}
