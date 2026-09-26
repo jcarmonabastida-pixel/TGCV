@@ -30,7 +30,7 @@ checks = {
     "A7_CLOSURE_PASS": closure.get("status") == "PASS",
     "A8_SIX_QUESTIONS_PRESERVED": oq.get("details", {}).get("questions_formalized") == 6 and all(q in register for q in ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6"]),
     "A9_ALTERNATIVES_UNADJUDICATED": register_integrity.get("details", {}).get("alternatives_adjudicated") is False,
-    "A10_OUTCOME_INDEPENDENT_OBSERVABLES": "identifiable before inspecting outcome" in requirements_spec.lower(),
+    "A10_OUTCOME_INDEPENDENT_OBSERVABLES": "the discriminating observation must be identifiable before inspecting the outcome." in requirements_spec.lower(),
     "A11_DECISION_TRANSFORMATION_VALUE_BOUNDARY": all(x in spec for x in ["decision-level evidence", "transformation-space evidence", "value evidence"]),
     "A12_TRACEABILITY_TO_OPEN_QUESTIONS": "traceable to one or more specific open questions" in spec,
     "A13_DISCRIMINATION_NOT_REPETITION": "rather than merely reproduce V011" in spec,
