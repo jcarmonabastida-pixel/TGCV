@@ -1,0 +1,30 @@
+{
+  "gate_id": "TI001-V010-SCIENTIFIC-ANALYSIS-EXECUTOR-IDENTITY-PREFLIGHT-001",
+  "status": "PASS",
+  "checks": {
+    "A1_ANALYSIS_SOURCE_EXISTS": true,
+    "A2_ANALYSIS_SOURCE_SHA": true,
+    "A3_E1_RESULT_SHA_BINDING": true,
+    "A4_E2_RESULT_SHA_BINDING": true,
+    "A5_E1_LOCAL_CANONICAL": true,
+    "A6_E2_LOCAL_CANONICAL": true,
+    "A7_AUTHORIZED": true,
+    "A8_NO_POOLING": true,
+    "A9_NO_RECODING": true,
+    "A10_NO_RETRY": true,
+    "A11_NO_IMPUTATION": true,
+    "A12_NO_VALUE_METRIC": true,
+    "A13_TIDC_PRESENT": true,
+    "A14_TINULL_PRESENT": true,
+    "A15_PRESENTATION_ANALYSIS": true,
+    "A16_PAIR_ANALYSIS": true,
+    "A17_NO_EXECUTION_CALLS": true,
+    "A18_NO_RESULT_MODIFICATION": true,
+    "A19_ANALYSIS_NOT_PERFORMED_BY_PREFLIGHT": true
+  },
+  "analysis_execution": "NOT_PERFORMED",
+  "authorization": "AUTHORIZED_BUT_NOT_EXECUTED",
+  "analysis_sha": "7044dc6bb346fa891b9750f5c63931adfcc7c391",
+  "executor_1_result_sha": "5297b578f250a50e90043dab5806877e3c3eec1d",
+  "executor_2_result_sha": "82b09712d1fa866dc25927c62ada1c7da1004665"
+}
