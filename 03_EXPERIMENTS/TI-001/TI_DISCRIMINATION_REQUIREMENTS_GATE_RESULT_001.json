@@ -1,0 +1,36 @@
+{
+  "gate_id": "TI-DISCRIMINATION-REQUIREMENTS-GATE-001",
+  "checks": {
+    "A1_SPEC_PRESENT": true,
+    "A2_Q1_REQUIREMENT_PRESENT": true,
+    "A3_Q2_REQUIREMENT_PRESENT": true,
+    "A4_Q3_REQUIREMENT_PRESENT": true,
+    "A5_Q4_REQUIREMENT_PRESENT": true,
+    "A6_Q5_REQUIREMENT_PRESENT": true,
+    "A7_Q6_REQUIREMENT_PRESENT": true,
+    "A8_EXACTLY_SIX_Q_REQUIREMENTS": true,
+    "A9_PRE_OUTCOME_IDENTIFIABILITY": true,
+    "A10_ALTERNATIVES_REMAIN_EXPLICIT": true,
+    "A11_REPRODUCIBILITY_NOT_DISCRIMINATION": true,
+    "A12_DECISION_TRANSFORMATION_VALUE_DISTINCTION": true,
+    "A13_NO_RETROSPECTIVE_V011_RESOLUTION": true,
+    "A14_NO_V012_DESIGN": true,
+    "A15_NO_EXECUTION_AUTHORIZATION": true,
+    "A16_NO_CLAIM_UPGRADE": true,
+    "A17_NO_CORE_MODIFICATION": true,
+    "A18_NO_V011_MUTATION": true,
+    "A19_NO_PREFERRED_ALTERNATIVE": true,
+    "A20_FINAL_DISPOSITION": true
+  },
+  "details": {
+    "questions_with_requirements": 6,
+    "cross_cutting_requirements": 6,
+    "v012_designed": false,
+    "v012_authorized": false,
+    "claim_statuses_upgraded": false,
+    "core_modified": false,
+    "v011_mutated": false,
+    "preferred_alternative_selected": false
+  },
+  "status": "PASS"
+}
