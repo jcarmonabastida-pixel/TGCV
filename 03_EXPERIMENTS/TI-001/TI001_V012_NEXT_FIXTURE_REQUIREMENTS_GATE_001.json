@@ -1,0 +1,55 @@
+{
+  "gate_id": "TI001_V012_NEXT_FIXTURE_REQUIREMENTS_GATE_001",
+  "status": "PASS",
+  "decision": "NEXT_FIXTURE_REQUIREMENTS_DEFINED",
+  "basis": {
+    "requirements_gate": "TI001_V012_NEXT_DESIGN_REQUIREMENTS_GATE_001",
+    "design_specification_gate": "TI001_V012_NEXT_DESIGN_SPECIFICATION_GATE_001",
+    "prior_closed_experiment": "V004"
+  },
+  "scope": {
+    "purpose": "Define the immutable fixture requirements required to instantiate the approved next-design specification without introducing mechanism ambiguity, action imbalance, or normative encoding.",
+    "fixture_generation_authorized": false,
+    "executor_implementation_authorized": false,
+    "scientific_execution_authorized": false
+  },
+  "fixture_requirements": {
+    "F1_NEW_IMMUTABLE_VERSION": "Fixture must be a new version and must not modify V003 or V004 fixtures.",
+    "F2_ACTION_IDENTITY_COUNTERBALANCE": "Candidate action identities A and B must occur equally often as the action assigned to the informative future-space correspondence.",
+    "F3_MAPPING_REVERSAL": "The informative future-space correspondence must be assigned to A in some units and B in matched units with otherwise equivalent current-state and task structure.",
+    "F4_BASELINE_MATCH": "Each informative-mapping unit must have a structurally matched uninformative/baseline unit.",
+    "F5_PRESENTATION_COUNTERBALANCE": "P1 and P2 presentation conditions must be balanced across action identity and mapping condition.",
+    "F6_OPERATIONALISATION_BALANCE": "Any multiple operationalisations must preserve the same counterbalancing and mapping-reversal logic.",
+    "F7_NO_NORMATIVE_ENCODING": "Fixture descriptors must not encode reward, utility, value, performance, success, recommendation, or normative quality.",
+    "F8_PRE_DECISION_BOUNDARY": "Decision-relevant inputs must contain no realized successor state or realized T_acc information.",
+    "F9_EXACT_MAPPING_RECORD": "Every decision unit must explicitly record the action-to-future mapping used to generate the unit.",
+    "F10_RECONSTRUCTABLE_TRANSITION": "Every unit must contain sufficient post-decision fixture information to reconstruct S_t, selected action, S_t+1, and T_acc,t+1.",
+    "F11_DETERMINISTIC_REPRODUCTION": "Fixture generation must be reproducible from a declared generator version and seed, with the resulting canonical file hash recorded.",
+    "F12_INTEGRITY_BINDING": "The generated fixture must pass schema, count, uniqueness, balance, mapping, and integrity checks before any executor is implemented or authorized."
+  },
+  "required_balance_invariants": {
+    "action_identity": "A == B as informative-mapping assignment counts",
+    "mapping_condition": "INFORMATIVE == BASELINE as matched unit counts",
+    "presentation": "P1 == P2 within each principal mapping/action stratum",
+    "mapping_reversal": "Each action identity must appear with both informative and non-informative correspondence",
+    "no_single_action_predicts_mapping": true
+  },
+  "required_fixture_metadata": [
+    "fixture_schema_version",
+    "fixture_version",
+    "generator_version",
+    "generator_seed",
+    "decision_unit_count",
+    "action_identity_balance",
+    "mapping_balance",
+    "presentation_balance",
+    "fixture_sha256"
+  ],
+  "pre_generation_blockers": [
+    "No generation before this gate is persisted as PASS.",
+    "No reuse of V004 fixture as the next canonical fixture.",
+    "No executor binding before fixture freeze and integrity validation.",
+    "No scientific execution authorization at fixture-requirements stage."
+  ],
+  "next_gate": "TI001_V012_NEXT_FIXTURE_GENERATION_GATE_001"
+}
