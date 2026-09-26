@@ -1,47 +1,60 @@
 #!/usr/bin/env python3
-"""TI-001 V012 design audit against Q1-Q6. No fixture generation and no scientific execution."""
+"""TI-001 V012 design audit against the persisted Q1-Q6 mapping. No fixture generation or scientific execution."""
 import json
 from pathlib import Path
 
 SPEC = Path("03_EXPERIMENTS/TI-001/TI001_V012_EXPERIMENTAL_DESIGN_SPECIFICATION_001.md")
 MAPPING = Path("03_EXPERIMENTS/TI-001/TI001_V012_DISCRIMINATION_MAPPING_001.md")
 
+def has(text, *terms):
+    return all(term in text for term in terms)
+
 def main():
+    spec = SPEC.read_text(encoding="utf-8")
+    mapping = MAPPING.read_text(encoding="utf-8")
+
     checks = {
         "A1_SPEC_PRESENT": SPEC.exists(),
-        "A2_Q1_CONSTRUCT_VALIDITY_ADDRESSED": True,
-        "A3_Q2_PRESENTATION_ADDRESSED": True,
-        "A4_Q3_NULL_CONTROL_ADDRESSED": True,
-        "A5_Q4_ROBUSTNESS_ADDRESSED": True,
-        "A6_Q5_MECHANISM_ADDRESSED": True,
-        "A7_Q6_TACC_BRIDGE_ADDRESSED": True,
-        "A8_V011_IMMUTABILITY_BOUNDARY": True,
-        "A9_NO_V011_POOLING": True,
-        "A10_NO_VALUE_ENDPOINT_PRIMARY": True,
-        "A11_NO_COMPOSITE_TI_SCORE": True,
-        "A12_INDEPENDENT_RECONSTRUCTION_REQUIRED": True,
-        "A13_V005_NOT_V012": True,
-        "A14_FIXTURE_NOT_YET_GENERATED": True,
-        "A15_EXECUTION_NOT_AUTHORIZED": True,
-        "A16_MAPPING_PRESENT": MAPPING.exists(),
-        "A17_ALL_SIX_QS_TRACEABLE": all([
-            True, True, True, True, True, True
-        ]),
-        "A18_NEXT_GATE_IS_V012_SPECIFIC": True,
+        "A2_MAPPING_PRESENT": MAPPING.exists(),
+        "A3_Q1_TRACEABLE": has(mapping, "Q1 Construct validity") and has(spec, "## 8. Q1 — Construct validity"),
+        "A4_Q2_TRACEABLE": has(mapping, "Q2 Presentation dependence") and has(spec, "## 9. Q2 — Presentation dependence"),
+        "A5_Q3_TRACEABLE": has(mapping, "Q3 Null/control behaviour") and has(spec, "## 10. Q3 — Null/control behaviour"),
+        "A6_Q4_TRACEABLE": has(mapping, "Q4 Robustness") and has(spec, "## 11. Q4 — Robustness"),
+        "A7_Q5_TRACEABLE": has(mapping, "Q5 Mechanism") and has(spec, "## 12. Q5 — Mechanism"),
+        "A8_Q6_TRACEABLE": has(mapping, "Q6 Relation to TGCV") and has(spec, "## 13. Q6 — Decision-to-T_acc bridge"),
+        "A9_V011_IMMUTABLE": "V011 remains immutable and closed" in spec,
+        "A10_NO_V011_POOLING": "pool V011 with V012 observations" in spec,
+        "A11_NO_PRIMARY_VALUE_ENDPOINT": "No ΔV endpoint is part of primary V012 inference." in spec,
+        "A12_NO_COMPOSITE_TI_SCORE": "No composite TI score is defined." in spec,
+        "A13_INDEPENDENT_RECONSTRUCTION": "Executor-2 must reconstruct" in spec,
+        "A14_V005_EXCLUDED_AS_IDENTITY": "they are not V012 by identity" in spec,
+        "A15_EXECUTION_NOT_AUTHORIZED": "V012 scientific execution: NOT AUTHORIZED." in spec,
+        "A16_FIXTURE_NOT_GENERATED": "V012 fixture: NOT GENERATED." in spec,
+        "A17_PRESENTATION_FACTOR_DEFINED": has(spec, "### F2 — Presentation", "At least two independently specified"),
+        "A18_NULL_DEFINED": has(spec, "### F3 — Null", "excluding future-space information"),
+        "A19_MECHANISM_FACTOR_DEFINED": has(spec, "### F4 — Mechanism perturbation", "removed or independently scrambled"),
+        "A20_ROBUSTNESS_FACTOR_DEFINED": has(spec, "### F5 — Independent operationalisation", "multiple independently specified"),
+        "A21_PRIMARY_ESTIMAND_DEFINED": "Primary behavioural estimand:" in spec,
+        "A22_BLOCKING_CRITERIA_DEFINED": "## 15. Blocking and falsification criteria" in spec,
     }
-    # This audit is a governance/design consistency check. It deliberately does
-    # not execute the scientific design, generate a fixture, or infer outcomes.
+
+    conditions = [
+        "Exact presentation encodings/order scheme are not yet frozen.",
+        "Exact mechanism-perturbation construction is not yet frozen.",
+        "Exact independent environment/transition instances are not yet specified.",
+        "Sample size/randomization details are not yet specified.",
+    ]
+
+    passed = all(checks.values())
     result = {
         "gate_id": "TI001-V012-DESIGN-AUDIT-001",
         "checks": checks,
-        "reasons": {} if all(checks.values()) else {
-            k: "failed" for k, v in checks.items() if not v
-        },
-        "v012_designed": True,
-        "fixture_generated": False,
+        "reasons": {} if passed else {k: "failed" for k,v in checks.items() if not v},
+        "conditions": conditions,
+        "overall_design_audit_pass": passed,
+        "status": "PASS_WITH_CONDITIONS" if passed else "BLOCKED",
+        "fixture_generation_authorized_by_this_audit": False,
         "scientific_execution_authorized": False,
-        "overall_design_audit_pass": all(checks.values()),
-        "status": "PASS" if all(checks.values()) else "BLOCKED"
     }
     print(json.dumps(result, indent=2, sort_keys=True))
 
