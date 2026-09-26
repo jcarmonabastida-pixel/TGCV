@@ -1,0 +1,42 @@
+{
+  "gate_id": "TI001_V012_V002_LAUNCH_PREFLIGHT_001",
+  "status": "BLOCKED",
+  "decision": "V002_LAUNCH_PREFLIGHT_BLOCKED_PACKAGE_BINDING_INCOMPLETE",
+  "canonical_basis": {
+    "fixture_path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v002.json",
+    "fixture_schema": "TI001_V012_FIXTURE_v002",
+    "fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+    "instance_count": 72,
+    "authorization_gate": "TI001_V012_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_002",
+    "authorization_commit": "0d6ec3faf063eb6992e76fa2e9492bbc750a1cd9"
+  },
+  "checks": {
+    "A1_V002_FIXTURE_FROZEN": true,
+    "A2_V002_FIXTURE_SHA_BOUND": true,
+    "A3_V002_INTEGRITY_PREFLIGHT_PASS": true,
+    "A4_V002_AUTHORIZATION_PRESENT": true,
+    "A5_AUTHORIZATION_IS_EXPLICIT": true,
+    "A6_EXECUTOR_ID_FROZEN": false,
+    "A7_EXECUTOR_VERSION_OR_COMMIT_FROZEN": false,
+    "A8_PROVIDER_ID_AND_VERSION_FROZEN": false,
+    "A9_MODEL_RUNTIME_CONFIGURATION_FROZEN": false,
+    "A10_BASE_SYSTEM_PROMPT_HASH_FROZEN": false,
+    "A11_OUTPUT_VALIDATION_PROCEDURE_FROZEN": false,
+    "A12_EXACT_EXECUTION_COMMAND_FROZEN": false,
+    "A13_EXECUTOR_2_RECONSTRUCTION_PROCEDURE_FROZEN": false,
+    "A14_AUTHORIZATION_BINDS_EXACT_EXECUTOR": false,
+    "A15_LOCAL_EXECUTION_IDENTITY_VERIFIABLE": false,
+    "A16_SCIENTIFIC_EXECUTION_PERFORMED": false
+  },
+  "findings": [
+    "The V002 fixture is frozen and explicitly authorized, but the V012 scientific package does not currently contain a frozen exact executor/executable identity.",
+    "The V012 experimental design specification requires the pre-execution package to contain the decision-agent configuration, executor, reconstruction procedure, and integrity/preflight elements; the V002 freeze record contains only the amended fixture and its amendment governance artifacts.",
+    "The existing TI001 V008 executor is not interchangeable with V012: it is hard-bound to V008 fixture identity and a 420-unit schema, so it cannot be silently reused for V002.",
+    "The current V002 authorization artifact authorizes the frozen fixture but does not establish an exact executable/provider/runtime binding sufficient for a launch preflight."
+  ],
+  "stop_condition": "Do not execute scientific calls. Complete and freeze the V012 executor, provider/runtime configuration, validation procedure, exact command, and Executor-2 reconstruction binding; then perform a new package integrity/binding preflight before execution.",
+  "scientific_execution": false,
+  "scientific_execution_authorized": true,
+  "execution_allowed": false,
+  "next_gate": "TI001_V012_V002_EXECUTION_PACKAGE_COMPLETION_AND_BINDING_GATE_001"
+}
