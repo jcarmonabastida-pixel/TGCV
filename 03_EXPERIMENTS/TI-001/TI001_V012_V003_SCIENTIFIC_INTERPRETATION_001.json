@@ -1,0 +1,78 @@
+{
+  "record_type": "TGCV_TI001_V012_V003_SCIENTIFIC_INTERPRETATION",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V003",
+  "status": "CONTROLLED_SCIENTIFIC_INTERPRETATION_COMPLETE",
+  "basis": {
+    "execution_result_sha256": "5665060ea62eea5c8f40ebe32320f64ae6f5ada3923f056ea0302fa9d1c85856",
+    "analysis_result": "TI001_V012_V003_SCIENTIFIC_ANALYSIS_RESULT_001.json",
+    "design_specification": "TI001_V012_EXPERIMENTAL_DESIGN_SPECIFICATION_001.md"
+  },
+  "observed_decision_distributions": {
+    "INTACT": {"n": 24, "a": 21, "b": 2, "c": 1},
+    "SCRAMBLED": {"n": 24, "a": 22, "b": 2, "c": 0},
+    "NULL": {"n": 24, "a": 24, "b": 0, "c": 0}
+  },
+  "condition_contrasts": {
+    "INTACT_vs_SCRAMBLED": {
+      "a_rate": {"INTACT": 0.875, "SCRAMBLED": 0.9166666666666666},
+      "non_a_count": {"INTACT": 3, "SCRAMBLED": 2},
+      "descriptive_interpretation": "The observed action distributions are very similar; INTACT contains one additional non-a selection."
+    },
+    "INTACT_vs_NULL": {
+      "a_rate": {"INTACT": 0.875, "NULL": 1.0},
+      "non_a_count": {"INTACT": 3, "NULL": 0},
+      "descriptive_interpretation": "The only observed deviations from action a occur in INTACT; NULL selects a in all 24 instances."
+    },
+    "SCRAMBLED_vs_NULL": {
+      "a_rate": {"SCRAMBLED": 0.9166666666666666, "NULL": 1.0},
+      "non_a_count": {"SCRAMBLED": 2, "NULL": 0},
+      "descriptive_interpretation": "SCRAMBLED differs from NULL only by two non-a selections."
+    }
+  },
+  "presentation_stratification": {
+    "INTACT_P1": {"n": 12, "a": 12, "b": 0, "c": 0},
+    "INTACT_P2": {"n": 12, "a": 9, "b": 2, "c": 1},
+    "SCRAMBLED_P1": {"n": 12, "a": 11, "b": 1, "c": 0},
+    "SCRAMBLED_P2": {"n": 12, "a": 11, "b": 1, "c": 0},
+    "NULL_P1": {"n": 12, "a": 12, "b": 0, "c": 0},
+    "NULL_P2": {"n": 12, "a": 12, "b": 0, "c": 0},
+    "descriptive_interpretation": "The non-a selections are concentrated in INTACT/P2. This is a presentation-stratified observation and cannot by itself establish a presentation causal effect."
+  },
+  "operationalisation_stratification": {
+    "O1": {
+      "INTACT": {"a": 6, "b": 1, "c": 1},
+      "SCRAMBLED": {"a": 8, "b": 0, "c": 0},
+      "NULL": {"a": 8, "b": 0, "c": 0}
+    },
+    "O2": {
+      "INTACT": {"a": 8, "b": 0, "c": 0},
+      "SCRAMBLED": {"a": 7, "b": 1, "c": 0},
+      "NULL": {"a": 8, "b": 0, "c": 0}
+    },
+    "O3": {
+      "INTACT": {"a": 7, "b": 1, "c": 0},
+      "SCRAMBLED": {"a": 7, "b": 1, "c": 0},
+      "NULL": {"a": 8, "b": 0, "c": 0}
+    }
+  },
+  "scientific_interpretation": {
+    "Q1_construct": "Not resolved by V003 alone. The observed condition differences are small and the design does not define a directional action-selection criterion in this artifact.",
+    "Q2_presentation": "Not resolved as a causal presentation effect. Non-a selections occur only in INTACT/P2, but the observed pattern is too limited to attribute causality to presentation.",
+    "Q3_null_control": "Descriptively, NULL is uniform on action a (24/24), while non-a selections occur in INTACT and SCRAMBLED. This is an observed baseline contrast, not a causal conclusion.",
+    "Q4_robustness": "The observed departures from action a are not identical across O1-O3: O1 has two non-a selections under INTACT, O2 has one under SCRAMBLED, and O3 has one under INTACT and one under SCRAMBLED. No general cross-operationalisation effect is established.",
+    "Q5_mechanism": "INTACT and SCRAMBLED are descriptively similar (21/24 versus 22/24 selecting a). The observed data do not by themselves establish that action-to-future correspondence drives selection.",
+    "Q6_decision_to_Tacc_bridge": "The present decision record alone does not establish the post-decision S_t+1 -> T_acc,t+1 bridge. That requires the independently reconstructed successor/accessibility observables specified by V012."
+  },
+  "scope_limits": [
+    "No value, reward, utility, performance, task-success, or external-outcome conclusion is drawn.",
+    "No causal claim is made.",
+    "No TGCV-wide confirmation or falsification is claimed.",
+    "No preferred action is inferred from the observed distribution.",
+    "No pooling with V011 or V002 is performed.",
+    "No retry, recoding, substitution, or imputation is used."
+  ],
+  "overall_disposition": "V003 provides a complete, interpretable descriptive decision record, but the recorded decision distributions alone do not resolve Q1-Q6 or establish the TGCV claim.",
+  "next_gate": "TI001_V012_V003_SCIENTIFIC_INTERPRETATION_GATE_001"
+}
