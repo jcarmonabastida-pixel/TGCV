@@ -200,8 +200,7 @@ def run(argv: list[str]) -> int:
     }
 
     Path(args.output).write_text(
-        json.dumps(package, indent=2, sort_keys=True, ensure_ascii=False) + "
-",
+        json.dumps(package, indent=2, sort_keys=True, ensure_ascii=False) + "\\n",
         encoding="utf-8",
     )
     print(json.dumps({
