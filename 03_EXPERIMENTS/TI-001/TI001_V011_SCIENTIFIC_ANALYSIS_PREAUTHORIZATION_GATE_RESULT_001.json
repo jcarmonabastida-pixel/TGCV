@@ -1,0 +1,23 @@
+{
+  "authorization": "READY_FOR_EXPLICIT_AUTHORIZATION",
+  "checks": {
+    "A10_REASONING_ZERO": true,
+    "A11_NO_POOLING_SPEC": true,
+    "A12_NO_RECODE_IMPUTATION_RETRY_FILTERING": true,
+    "A13_NO_ANALYSIS_RESULT": true,
+    "A14_NO_ESTIMATION_BY_GATE": true,
+    "A15_NO_AUTHORIZATION_BY_GATE": true,
+    "A1_SPEC_EXISTS": true,
+    "A2_SPEC_NOT_AUTHORIZED": true,
+    "A3_FIXTURE_SHA_EXACT": true,
+    "A4_E1R_AUDIT_PASS": true,
+    "A5_E2R_AUDIT_PASS": true,
+    "A6_CONCORDANCE_PASS": true,
+    "A7_EACH_420_VALID": true,
+    "A8_SAME_FIXTURE_BINDING": true,
+    "A9_RESPONSE_IDS_DISJOINT": true
+  },
+  "gate_id": "TI001-V011-SCIENTIFIC-ANALYSIS-PREAUTHORIZATION-GATE-001",
+  "scientific_analysis": "NOT_PERFORMED",
+  "status": "PASS"
+}
