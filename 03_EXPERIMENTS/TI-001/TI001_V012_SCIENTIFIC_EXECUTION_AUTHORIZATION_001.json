@@ -1,31 +1,32 @@
 {
-  "gate_id": "TI001-V012-SCIENTIFIC-EXECUTION-AUTHORIZATION-001",
-  "status": "AUTHORIZATION_ELIGIBLE",
+  "authorization_decision": "EXPLICITLY_AUTHORIZED",
+  "authorized_by_user": true,
+  "canonical_main": "61484fbd6f5d146e136810a4b6147c519edf3bc7",
   "checks": {
-    "FREEZE_STATUS": true,
-    "FREEZE_INTEGRITY_VERIFIED": true,
-    "REQUIREMENTS_PASS": true,
-    "FREEZE_AUDIT_PASS": true,
-    "FIXTURE_VERSION": true,
+    "CANONICAL_MAIN": true,
     "FIXTURE_COUNT": true,
     "FIXTURE_NO_EXECUTION": true,
-    "PACKAGE_NO_EXECUTION": true,
-    "PACKAGE_NOT_ALREADY_AUTHORIZED": true,
+    "FIXTURE_VERSION": true,
     "FREEZE_AUDIT_NOT_AUTHORIZED": true,
-    "CANONICAL_MAIN": true
+    "FREEZE_AUDIT_PASS": true,
+    "FREEZE_INTEGRITY_VERIFIED": true,
+    "FREEZE_STATUS": true,
+    "PACKAGE_NOT_ALREADY_AUTHORIZED": true,
+    "PACKAGE_NO_EXECUTION": true,
+    "REQUIREMENTS_PASS": true
   },
-  "canonical_main": "61484fbd6f5d146e136810a4b6147c519edf3bc7",
   "fixture": {
-    "schema": "TI001_V012_FIXTURE_v001",
+    "fixture_sha256": "9690c3bf394495327e528d8aba9288b87e7a3501ff94899793f7cd9b08e818fc",
     "instance_count": 72,
-    "fixture_sha256": "9690c3bf394495327e528d8aba9288b87e7a3501ff94899793f7cd9b08e818fc"
+    "schema": "TI001_V012_FIXTURE_v001"
   },
-  "scientific_execution_authorized": false,
-  "scientific_execution": false,
-  "authorization_decision": "PENDING_EXPLICIT_AUTHORIZATION",
+  "gate_id": "TI001-V012-SCIENTIFIC-EXECUTION-AUTHORIZATION-001",
   "notes": [
     "The precheck establishes eligibility only.",
     "No scientific execution was performed.",
     "Scientific execution requires explicit authorization after this eligibility result."
-  ]
+  ],
+  "scientific_execution": false,
+  "scientific_execution_authorized": true,
+  "status": "AUTHORIZED"
 }
