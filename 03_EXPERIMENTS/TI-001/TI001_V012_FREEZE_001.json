@@ -1,0 +1,62 @@
+{
+  "artifacts": [
+    {
+      "bytes": 7933,
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_DISCRIMINATION_MAPPING_001.md",
+      "sha256": "ce27ae89969b8cd5897595b58b12dac8d9541f18379df599997e1c48856c39a7"
+    },
+    {
+      "bytes": 14403,
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_EXPERIMENTAL_DESIGN_SPECIFICATION_001.md",
+      "sha256": "bac86dda2af0d773c8fe10824b5b125db05ec6f2241a8efc03d1ebe6ccf7b02a"
+    },
+    {
+      "bytes": 3534,
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_EXPERIMENTAL_DESIGN_AUDIT_001.py",
+      "sha256": "134b46ed46680e82992716e244dd78cc1a5938b98e938e780e9383afa3069c33"
+    },
+    {
+      "bytes": 1299,
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_DESIGN_AUDIT_RESULT_001.json",
+      "sha256": "110f10e62e402cacf3b42d132c5a2f30c1a6eabfd56193b236aa4094a7e496b5"
+    },
+    {
+      "bytes": 2254,
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_REQUIREMENTS_PREFLIGHT_001.py",
+      "sha256": "a3d5d71d3a171d3f90beffdd72a4f8d8bf8b21d401441ef8cc5160dd702f3307"
+    },
+    {
+      "bytes": 389,
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_REQUIREMENTS_PREFLIGHT_RESULT_001.json",
+      "sha256": "42b527834b74c546c0a9b75fc3588d79c14c097ad5843ccc1a2ea39a79ce06da"
+    },
+    {
+      "bytes": 3935,
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_GENERATOR_001.py",
+      "sha256": "ca04ca9a530f1274a653e63db3ad61fd34adb1cd554c2f9c29787d662fa49b34"
+    },
+    {
+      "bytes": 158424,
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_v001.json",
+      "sha256": "2d59de62736f15c82def373cabf5d2409b36f2145a9dc0a13bda6b9b84ede09c"
+    },
+    {
+      "bytes": 1074,
+      "path": "03_EXPERIMENTS/TI-001/TI001_V012_FIXTURE_FREEZE_AUDIT_RESULT_001.json",
+      "sha256": "4658424972a4f17dd0c8e763b93efcda53f76f330c2bbd0045631b7032c845c3"
+    }
+  ],
+  "canonical_git_commit": "0e730269f5b2c212c99f0dfa060be70eb20a71ca",
+  "fixture": {
+    "instance_count": 72,
+    "schema": "TI001_V012_FIXTURE_v001",
+    "sha256": "9690c3bf394495327e528d8aba9288b87e7a3501ff94899793f7cd9b08e818fc"
+  },
+  "freeze_type": "SCIENTIFIC_PACKAGE_FREEZE",
+  "gate_id": "TI001-V012-FREEZE-001",
+  "manifest_sha256": "d40f241eed05ae99963608078d2dd7df39102b53b0d382de67401005b078164a",
+  "modification_policy": "Any scientific-package modification requires a new version; frozen artifacts are not edited in place.",
+  "scientific_execution": false,
+  "scientific_execution_authorized": false,
+  "status": "FROZEN"
+}
