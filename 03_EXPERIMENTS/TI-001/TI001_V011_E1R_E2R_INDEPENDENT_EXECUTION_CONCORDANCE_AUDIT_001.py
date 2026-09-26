@@ -11,7 +11,7 @@ def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def load(p):
     raw=p.read_text(encoding="utf-8")
     if raw.endswith("\\n"):
-        raw=raw[:-2]+"\\n"
+        raw=raw[:-2]
     return json.loads(raw)
 def main():
  c={}; d={}
