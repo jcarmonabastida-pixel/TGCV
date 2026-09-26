@@ -1,0 +1,59 @@
+{
+  "artifact_id": "TI001_V012_NEXT_EXECUTOR_IMPLEMENTATION_GATE_001",
+  "status": "PASS",
+  "decision": "EXECUTOR_IMPLEMENTATION_AUTHORIZED",
+  "basis": {
+    "next_design_requirements": "TI001_V012_NEXT_DESIGN_REQUIREMENTS_GATE_001",
+    "next_design_specification": "TI001_V012_NEXT_DESIGN_SPECIFICATION_GATE_001",
+    "next_fixture_requirements": "TI001_V012_NEXT_FIXTURE_REQUIREMENTS_GATE_001",
+    "fixture_generation_authorization": "TI001_V012_NEXT_FIXTURE_GENERATION_GATE_001",
+    "fixture_integrity_preflight": "TI001_V012_NEXT_FIXTURE_INTEGRITY_PREFLIGHT_001",
+    "fixture_freeze": "TI001_V012_NEXT_FIXTURE_FREEZE_GATE_001"
+  },
+  "authorized_fixture": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT_FIXTURE_v001.json",
+    "schema": "TI001_V012_NEXT_FIXTURE_v001",
+    "fixture_version": "NEXT_v001",
+    "git_blob_sha": "1886160849aecdbda2904a0d3b593975077e1914",
+    "instance_count": 72,
+    "seed": 582031
+  },
+  "implementation_requirements": {
+    "new_executor_version_only": true,
+    "prior_v003_v004_executors_immutable": true,
+    "explicit_fixture_binding_required": true,
+    "fixture_file_bytes_hash_binding_required": true,
+    "schema_version_binding_required": true,
+    "instance_count_binding_required": true,
+    "seed_binding_required": true,
+    "no_fixture_substitution": true,
+    "no_retry": true,
+    "no_recoding": true,
+    "no_response_substitution": true,
+    "no_cross_version_reuse": true,
+    "executor_2_not_authorized": true,
+    "scientific_execution_not_authorized": true
+  },
+  "required_executor_contract": {
+    "executor_id": "TI001-V012-NEXT-SCIENTIFIC-EXECUTOR-1-001",
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "low",
+    "max_output_tokens": 128,
+    "top_p": 0.98,
+    "tools": [],
+    "store": false,
+    "prompt_binding_required": true,
+    "validation_binding_required": true,
+    "output_must_preserve_raw_response": true,
+    "decision_record_must_include_unit_id": true,
+    "decision_record_must_include_selected_action": true,
+    "decision_to_transition_bridge_required": true
+  },
+  "authorization_boundary": {
+    "executor_implementation": true,
+    "executor_preflight": false,
+    "scientific_execution": false,
+    "interpretation": false
+  },
+  "next_gate": "TI001_V012_NEXT_EXECUTOR_PREFLIGHT_GATE_001"
+}
