@@ -1,0 +1,42 @@
+{
+  "gate_id": "TI001_V012_V004_EXECUTOR_PREFLIGHT_GATE_001",
+  "experiment": "TI-001",
+  "version": "V012",
+  "variant": "V004",
+  "gate_type": "EXECUTOR_PREFLIGHT",
+  "decision": "PASS",
+  "status": "READY_NOT_EXECUTED",
+  "executor_id": "TI001-V012-V004-SCIENTIFIC-EXECUTOR-1-001",
+  "executor_commit": "ee34a6eea20aa92971030f345ce83416b04508fd",
+  "checks": {
+    "EXECUTOR_PRESENT": true,
+    "EXECUTOR_EXPLICITLY_BOUND_TO_V004_FIXTURE": true,
+    "FIXTURE_SHA_MATCH": true,
+    "PROMPT_SHA_MATCH": true,
+    "VALIDATION_SHA_MATCH": true,
+    "INSTANCE_COUNT_72": true,
+    "NO_EXECUTE_FLAG": true,
+    "SCIENTIFIC_EXECUTION_PERFORMED": false,
+    "RETRY_DISABLED": true,
+    "RECODING_DISABLED": true,
+    "SUBSTITUTION_DISABLED": true,
+    "TOOLS_EMPTY": true,
+    "STORE_FALSE": true
+  },
+  "package_identity": {
+    "fixture_sha256": "bf9dd4d44d9caad5079ad24617df2f56e6175523f31e75e32435aa087f032b5f",
+    "system_prompt_sha256": "7c5453f19d87c3f6737eca2d35fac27c784beef6cde66be352f1cf354359384b",
+    "validation_procedure_sha256": "14934b507a774b9b354ed2005d5903790dfcabafa40486c72467336393daec53",
+    "model_id": "gpt-5.6-luna",
+    "reasoning_effort": "low",
+    "max_output_tokens": 128,
+    "top_p": 0.98,
+    "instance_count": 72
+  },
+  "scientific_boundary": {
+    "scientific_execution_authorized": false,
+    "scientific_interpretation_authorized": false
+  },
+  "disposition": "PREFLIGHT PASS — READY FOR FRESH SCIENTIFIC EXECUTION AUTHORIZATION",
+  "next_gate": "TI001_V012_V004_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001"
+}
