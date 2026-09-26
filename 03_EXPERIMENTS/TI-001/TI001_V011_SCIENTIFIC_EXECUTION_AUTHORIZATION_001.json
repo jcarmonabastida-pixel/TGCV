@@ -1,0 +1,33 @@
+{
+  "record_type": "TI001-V011-SCIENTIFIC-EXECUTION-AUTHORIZATION",
+  "authorization_status": "AUTHORIZED",
+  "scientific_execution": "AUTHORIZED",
+  "execution_status": "AUTHORIZED_NOT_STARTED",
+  "authorization_action": "EXPLICIT_USER_AUTHORIZATION",
+  "authorization_timestamp": "2026-09-26T01:15:00+02:00",
+  "basis": {
+    "final_preauthorization_gate": "03_EXPERIMENTS/TI-001/TI001_V011_FINAL_PREAUTHORIZATION_GATE_RESULT_001.json",
+    "final_preauthorization_status": "PASS",
+    "fixture": "03_EXPERIMENTS/TI-001/TI001_V011_FIXTURE_001.json",
+    "fixture_sha256": "30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1",
+    "generator_git_blob_sha": "9170f767cac3fceccaba248747c6524c5f150e11",
+    "schema_git_blob_sha": "b2fef667f6eb33689ece5481957d3917a860dd3e",
+    "interface_git_blob_sha": "8667b0ff70f58283c688f24c76f10db142655d14",
+    "execution_contract": "03_EXPERIMENTS/TI-001/TI001_V011_SCIENTIFIC_EXECUTION_CONTRACT_001.md"
+  },
+  "explicit_authorization": {
+    "statement": "Autorizo la ejecución científica de TI-001 V011",
+    "scope": "TI-001 V011 scientific execution under the frozen canonical fixture, schema, interface, and execution contract.",
+    "scientific_execution_before_authorization": false
+  },
+  "execution_boundary": {
+    "fixture_must_match_frozen_sha256": true,
+    "interface_must_match_frozen_git_blob_sha": true,
+    "no_fixture_modification": true,
+    "no_contract_modification": true,
+    "no_retry": true,
+    "no_recode": true,
+    "no_imputation": true,
+    "no_pooling": true
+  }
+}
