@@ -1,0 +1,36 @@
+{
+  "gate_id": "TI001-V011-E1-CONFIGURATION-DEVIATION-RECONCILIATION-001",
+  "status": "DEVIATION_CONFIRMED",
+  "basis": {
+    "e1_result": "03_EXPERIMENTS/TI-001/TI001_V011_SCIENTIFIC_EXECUTION_E1_RESULT_001.json",
+    "e1_valid_count": 245,
+    "e1_invalid_count": 175,
+    "observed_reasoning_records": 300,
+    "observed_reasoning_tokens": 16613,
+    "declared_generation_reasoning": null,
+    "executor_call_does_not_set_reasoning_effort": true
+  },
+  "runtime_semantics": {
+    "documented_control": "reasoning.effort",
+    "explicit_no_reasoning_value": "none",
+    "model_supports_none": true,
+    "interpretation": "The E1 executor declared reasoning as null only in its persisted metadata; it did not pass a reasoning.effort parameter to the Responses API request. Therefore null cannot be treated as an explicit no-reasoning request. The observed non-zero reasoning_tokens are a runtime observation of reasoning being used."
+  },
+  "contract_conformity": {
+    "e1_fully_conformant": false,
+    "reason": "The frozen execution package was intended to operate without reasoning, but the request did not explicitly bind reasoning.effort=none and the runtime observed non-zero reasoning tokens."
+  },
+  "evidence_status": {
+    "e1_records_preserved": true,
+    "e1_descriptive_observations_usable": true,
+    "confirmatory_scientific_analysis_authorized": false,
+    "causal_or_general_capability_interpretation_authorized": false
+  },
+  "required_resolution": {
+    "repeat_e1": false,
+    "new_execution_design_required": true,
+    "minimum_configuration_change": "Explicitly set reasoning.effort to none in a new executor contract and preauthorization sequence before any replacement execution."
+  },
+  "scientific_analysis": "BLOCKED_PENDING_NEW_EXECUTION_DESIGN",
+  "decision_recode_or_repair": false
+}
