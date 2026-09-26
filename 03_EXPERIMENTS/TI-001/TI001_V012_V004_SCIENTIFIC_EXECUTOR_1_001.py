@@ -31,13 +31,8 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def canonical_fixture_hash(fixture: dict) -> str:
-    body = dict(fixture)
-    body.pop("fixture_sha256", None)
-    raw = json.dumps(
-        body, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    ).encode("utf-8")
-    return sha256_bytes(raw)
+def fixture_file_hash(path: Path) -> str:
+    return sha256_bytes(path.read_bytes())
 
 
 def build_decision_input(record: dict) -> dict:
@@ -81,11 +76,12 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--execute", action="store_true")
     args = parser.parse_args(argv[1:])
 
-    fixture = json.loads(Path(args.fixture).read_text(encoding="utf-8"))
+    fixture_path = Path(args.fixture)
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
     prompt = Path(args.prompt).read_text(encoding="utf-8")
     validation = Path(args.validation_procedure).read_text(encoding="utf-8")
 
-    actual_fixture_hash = canonical_fixture_hash(fixture)
+    actual_fixture_hash = fixture_file_hash(fixture_path)
     if actual_fixture_hash != FIXTURE_SHA256:
         raise ValueError("V004 fixture canonical hash mismatch")
     if sha256_bytes(prompt.encode("utf-8")) != PROMPT_SHA256:
