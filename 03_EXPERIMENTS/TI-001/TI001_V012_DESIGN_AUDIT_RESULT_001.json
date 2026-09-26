@@ -1,0 +1,36 @@
+{
+  "gate_id": "TI001-V012-DESIGN-AUDIT-001",
+  "status": "PASS_WITH_CONDITIONS",
+  "checks": {
+    "A1_SPEC_PRESENT": true,
+    "A2_MAPPING_PRESENT": true,
+    "A3_Q1_TRACEABLE": true,
+    "A4_Q2_TRACEABLE": true,
+    "A5_Q3_TRACEABLE": true,
+    "A6_Q4_TRACEABLE": true,
+    "A7_Q5_TRACEABLE": true,
+    "A8_Q6_TRACEABLE": true,
+    "A9_V011_IMMUTABLE": true,
+    "A10_NO_V011_POOLING": true,
+    "A11_NO_PRIMARY_VALUE_ENDPOINT": true,
+    "A12_NO_COMPOSITE_TI_SCORE": true,
+    "A13_INDEPENDENT_RECONSTRUCTION": true,
+    "A14_V005_EXCLUDED_AS_IDENTITY": true,
+    "A15_EXECUTION_NOT_AUTHORIZED": true,
+    "A16_FIXTURE_NOT_GENERATED": true,
+    "A17_PRESENTATION_FACTOR_DEFINED": true,
+    "A18_NULL_DEFINED": true,
+    "A19_MECHANISM_FACTOR_DEFINED": true,
+    "A20_ROBUSTNESS_FACTOR_DEFINED": true,
+    "A21_PRIMARY_ESTIMAND_DEFINED": true,
+    "A22_BLOCKING_CRITERIA_DEFINED": true
+  },
+  "conditions": [
+    "Exact presentation encodings/order scheme are not yet frozen.",
+    "Exact mechanism-perturbation construction is not yet frozen.",
+    "Exact independent environment/transition instances are not yet specified.",
+    "Sample size/randomization details are not yet specified."
+  ],
+  "fixture_generation_authorized_by_this_audit": false,
+  "scientific_execution_authorized": false
+}
