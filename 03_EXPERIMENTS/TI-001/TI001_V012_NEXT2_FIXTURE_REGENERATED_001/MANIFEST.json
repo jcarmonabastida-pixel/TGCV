@@ -1,0 +1,10 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_FIXTURE_REGENERATED_CANDIDATE_001",
+  "status": "GENERATED_NOT_FROZEN",
+  "immutable_version": "NEXT2_v001",
+  "requirements_blob_sha256": "c9e55982188e4242124adbe196a6d98211bec2fe",
+  "semantics_blob_sha256": "b0801bfc7e7614f5fc7ca6304fb305c0d77d9252",
+  "unit_count": 23040,
+  "shard_count": 24,
+  "units_per_shard": 960
+}
