@@ -1,0 +1,22 @@
+{
+  "gate_id": "TI001_V012_NEXT2_DESIGN_REQUIREMENTS_GATE_001",
+  "version": "NEXT2",
+  "status": "PASS",
+  "decision": "NEXT2_DESIGN_REQUIREMENTS_DEFINED",
+  "purpose": "Define a high-discriminability experiment addressing Q1, Q2, Q3, Q4 and Q5 while retaining the already established Q6 traceability bridge.",
+  "requirements": {
+    "R1_Q1_construct_identification": "Break the equivalence between action identity and hypothesized future-space information using four candidate actions with full action-to-future remapping.",
+    "R2_Q2_presentation": "Fully cross presentation position, textual order, orientation and neutral formatting with action identity and future assignment.",
+    "R3_Q3_null": "Include a true uninformative correspondence condition matched to informative conditions on surface complexity, length, frequency and placement.",
+    "R4_Q4_robustness": "Replicate the manipulation across four structurally different domains and five operationalisations of future-space structure.",
+    "R5_Q5_mechanism": "Primary discriminator is whether selection tracks independently reassigned action-to-future correspondence rather than stable action identity.",
+    "R6_Q6_traceability": "Persist S_t, candidate actions, mapping, selected action, realized transformation, S_t+1, T_acc,t and T_acc,t+1 for every unit; independent reconstruction required.",
+    "R7_DECISION_BOUNDARY": "Decision must occur before realized successor state and realized T_acc are accessible to the decision process.",
+    "R8_NON_NORMATIVE": "No reward, utility, value, performance, success, quality or normative action descriptor may determine or be disclosed to the selector.",
+    "R9_REPLICATION": "Two independent complete executions plus an independent reconstruction audit.",
+    "R10_PRE_SPECIFICATION": "Analysis, exclusion, missingness, multiplicity and replication criteria frozen before scientific execution.",
+    "R11_NO_SHORTCUTS": "No pooling with V004/V012_NEXT for mechanism inference; no retry, recoding, substitution or post-hoc threshold."
+  },
+  "design_principle": "The experiment must make the competing mechanisms generate distinguishable predictions while preventing action identity, presentation and surface descriptors from serving as stable proxies for the manipulated future-space correspondence.",
+  "scientific_boundary": "A successful result would be evidence about the tested operational construct/mechanism, not automatic confirmation of TGCV as a whole."
+}
