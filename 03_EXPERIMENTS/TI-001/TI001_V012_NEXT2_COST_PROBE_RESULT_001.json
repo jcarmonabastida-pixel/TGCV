@@ -1,0 +1,10 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_COST_PROBE_RESULT_001",
+  "schema": "TI001_V012_NEXT2_COST_PROBE_RESULT_v001",
+  "status": "COST_PROBE_COMPLETE",
+  "scientific_execution": false,
+  "system_prompt_sha256": "660002f6506648fd0bfd703751f8996fae9fe0aaed3a48defbe78b2382c94122",
+  "system_prompt_count_with_minimal_input": 179,
+  "payload_tokens": 260,
+  "total_input_tokens": 432
+}
