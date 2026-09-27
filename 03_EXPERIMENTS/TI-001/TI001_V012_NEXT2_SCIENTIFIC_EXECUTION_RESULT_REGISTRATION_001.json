@@ -1,0 +1,26 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_SCIENTIFIC_EXECUTION_RESULT_REGISTRATION_001",
+  "status": "SCIENTIFIC_EXECUTION_RESULT_REGISTERED",
+  "result_artifact": "TI001_V012_NEXT2_SCIENTIFIC_EXECUTION_RESULT_001.json",
+  "result_sha256": "4d63933cd508ce1749db2a1210caf6c49fe5233c18185fce87ed7d9fcdf1c103",
+  "result_git_commit": "766022f1",
+  "result_git_commit_full": "766022f1",
+  "fixture_artifact": "TI001_V012_NEXT2_FIXTURE_REGENERATED_001",
+  "immutable_version": "NEXT2_v001",
+  "decision_count": 23040,
+  "scientific_execution": true,
+  "executor_id": "TI001-V012-NEXT2-SCIENTIFIC-EXECUTOR-1-001",
+  "system_prompt_sha256": "660002f6506648fd0bfd703751f8996fae9fe0aaed3a48defbe78b2382c94122",
+  "fixture_freeze_sha256": "4df58c0829956e22a9058252a127e446f822c11d90741c6f5fb202876d92ff91",
+  "scientific_execution_authorization": "TI001_V012_NEXT2_SCIENTIFIC_EXECUTION_AUTHORIZATION_001",
+  "scientific_execution_ready": "TI001_V012_NEXT2_SCIENTIFIC_EXECUTION_READY_001",
+  "registration_scope": {
+    "result_bytes_registered": true,
+    "sha256_bound": true,
+    "fixture_bound": true,
+    "prompt_bound": true,
+    "executor_bound": true,
+    "scientific_execution_complete": true
+  },
+  "next_gate": "RESULT_VALIDATION_AND_ANALYSIS"
+}
