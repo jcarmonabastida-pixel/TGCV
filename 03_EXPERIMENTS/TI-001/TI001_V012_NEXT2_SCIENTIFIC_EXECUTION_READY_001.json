@@ -1,0 +1,19 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_SCIENTIFIC_EXECUTION_READY_001",
+  "status": "READY_NOT_EXECUTED",
+  "executor_id": "TI001-V012-NEXT2-SCIENTIFIC-EXECUTOR-1-001",
+  "fixture_artifact": "TI001_V012_NEXT2_FIXTURE_REGENERATED_001",
+  "immutable_version": "NEXT2_v001",
+  "unit_count": 23040,
+  "system_prompt_sha256": "660002f6506648fd0bfd703751f8996fae9fe0aaed3a48defbe78b2382c94122",
+  "scientific_execution": false,
+  "execution_authorized": true,
+  "checks": {
+    "executor_canonical": true,
+    "fixture_frozen": true,
+    "system_prompt_bound": true,
+    "unit_count_bound": true,
+    "scientific_execution_not_performed": true
+  },
+  "next_gate": "SCIENTIFIC_EXECUTION"
+}
