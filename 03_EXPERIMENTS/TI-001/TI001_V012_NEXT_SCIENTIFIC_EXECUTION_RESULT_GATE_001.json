@@ -1,0 +1,32 @@
+{
+  "gate_id": "TI001_V012_NEXT_SCIENTIFIC_EXECUTION_RESULT_GATE_001",
+  "checks": {
+    "A1_AUTHORIZED": true,
+    "A2_RESULT_TYPE": true,
+    "A3_SCIENTIFIC_EXECUTION": true,
+    "A4_EXECUTOR_IDENTITY": true,
+    "A5_FIXTURE_SHA256": true,
+    "A6_FIXTURE_SCHEMA": true,
+    "A7_FIXTURE_VERSION": true,
+    "A8_INSTANCE_COUNT": true,
+    "A9_RANDOMIZATION_SEED": true,
+    "A10_PROMPT_SHA256": true,
+    "A11_VALIDATION_SHA256": true,
+    "A12_MODEL": true,
+    "A13_REASONING_EFFORT": true,
+    "A14_TOOLS_EMPTY": true,
+    "A15_STORE_FALSE": true,
+    "A16_NO_RETRY": true,
+    "A17_NO_RECODING": true,
+    "A18_NO_SUBSTITUTION": true,
+    "A19_ALL_RESPONSES_VALID": true,
+    "A20_RESULT_COUNT": true
+  },
+  "details": {
+    "decision_count": 72,
+    "fixture_sha256": "7782e7652001ec8a64cd1f231c37e6c3c7cd065e672564140fdfa4626b185a5b",
+    "result_sha256": "b45920191f4e7f25853606c0e719c73702145e2496254163d2b2fed504232c50"
+  },
+  "scientific_execution": true,
+  "status": "PASS"
+}
