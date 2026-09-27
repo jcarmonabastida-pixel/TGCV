@@ -1,0 +1,29 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_FIXTURE_REQUIREMENTS_001",
+  "status": "REQUIRED_BEFORE_FIXTURE_FREEZE",
+  "immutable_version": "NEXT2_v001",
+  "requirements": {
+    "balanced_full_factorial": true,
+    "four_actions": true,
+    "all_24_action_mapping_permutations_balanced": true,
+    "mapping_conditions": [
+      "INFORMATIVE",
+      "SURFACE_PERMUTED",
+      "UNINFORMATIVE_NULL",
+      "CONTRADICTORY"
+    ],
+    "domains": 4,
+    "operationalisations": 5,
+    "presentations": 4,
+    "replicates_per_cell": 30,
+    "decision_units_per_execution": 3840,
+    "no_action_predicts_informative_mapping": true,
+    "surface_statistics_balanced": true,
+    "future_realization_hidden_pre_decision": true,
+    "exact_mapping_persisted_per_unit": true,
+    "deterministic_successor_generation": true,
+    "no_normative_quality_descriptors": true,
+    "independent_fixture_hash_required": true
+  },
+  "fixture_generation_rule": "Fixture generation must be deterministic from a frozen seed and schema. The fixture is not executable evidence until its hash, schema, version and count are bound by the authorization/preflight gates."
+}
