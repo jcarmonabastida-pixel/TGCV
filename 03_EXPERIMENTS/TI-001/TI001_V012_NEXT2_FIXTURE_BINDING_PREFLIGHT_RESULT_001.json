@@ -1,0 +1,28 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_FIXTURE_BINDING_PREFLIGHT_RESULT_001",
+  "status": "PASS",
+  "preflight_script": "TI001_V012_NEXT2_FIXTURE_BINDING_PREFLIGHT_001.py",
+  "preflight_script_commit": "c65517ca0ca0646ac3cbccc50ddfe98d963afe7b",
+  "fixture_artifact": "TI001_V012_NEXT2_FIXTURE_REGENERATED_CANDIDATE_001",
+  "immutable_version": "NEXT2_v001",
+  "unit_count": 23040,
+  "shard_count": 24,
+  "units_per_shard": 960,
+  "checks": {
+    "version": true,
+    "requirements_hash": true,
+    "semantics_hash": true,
+    "unit_count": true,
+    "shard_count": true,
+    "units_per_shard": true,
+    "scientific_execution_false": true,
+    "freeze_not_authorized": true,
+    "sha256_all_files": true,
+    "all_units_loaded": true,
+    "ids_unique": true,
+    "ids_sequential": true
+  },
+  "scientific_execution": false,
+  "freeze_authorized": false,
+  "next_gate": "FIXTURE_FREEZE_AUTHORIZATION"
+}
