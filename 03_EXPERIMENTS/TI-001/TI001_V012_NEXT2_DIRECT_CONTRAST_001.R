@@ -166,7 +166,7 @@ out <- list(
   direct_interaction_lrt=as.data.frame(lrt),
   replication_status="NOT_ASSESSABLE_FROM_SINGLE_EXECUTION",
   interpretation_boundary="No TGCV-wide confirmation/falsification, no value/causal claim, no Transformational Intelligence claim.",
-  scientific_execution_performed=false,
+  scientific_execution_performed=FALSE,
   secondary_mi_contrast_status="NOT_EXECUTED"
 )
 
