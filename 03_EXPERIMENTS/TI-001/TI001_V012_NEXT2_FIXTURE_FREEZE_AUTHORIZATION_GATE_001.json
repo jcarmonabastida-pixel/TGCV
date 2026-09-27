@@ -1,0 +1,28 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_FIXTURE_FREEZE_AUTHORIZATION_GATE_001",
+  "status": "PASS",
+  "decision": "FIXTURE_FREEZE_AUTHORIZED",
+  "fixture_artifact": "TI001_V012_NEXT2_FIXTURE_REGENERATED_CANDIDATE_001",
+  "immutable_version": "NEXT2_v001",
+  "binding_preflight_result": "TI001_V012_NEXT2_FIXTURE_BINDING_PREFLIGHT_RESULT_001",
+  "binding_preflight_commit": "0dc1654680b7f7186a81e1a22db71692cbb6d140",
+  "unit_count": 23040,
+  "shard_count": 24,
+  "units_per_shard": 960,
+  "checks": {
+    "binding_preflight_pass": true,
+    "fixture_integrity_pass": true,
+    "requirements_bound": true,
+    "mapping_semantics_bound": true,
+    "count_bound": true,
+    "version_bound": true,
+    "scientific_execution": false,
+    "scientific_execution_authorized": false
+  },
+  "authorization_scope": {
+    "freeze_fixture": true,
+    "modify_fixture_after_freeze": false,
+    "authorize_scientific_execution": false
+  },
+  "next_gate": "FROZEN_FIXTURE_INTEGRITY_AUDIT"
+}
