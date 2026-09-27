@@ -1,0 +1,68 @@
+{
+  "gate_id": "TI001_V012_NEXT2_DESIGN_SPECIFICATION_GATE_001",
+  "version": "NEXT2",
+  "status": "PASS",
+  "decision": "NEXT2_DESIGN_SPECIFIED",
+  "factorial_structure": {
+    "domains": [
+      "D1_spatial_planning",
+      "D2_resource_planning",
+      "D3_graph_reconfiguration",
+      "D4_workflow_state_machine"
+    ],
+    "future_space_operationalisations": [
+      "O1_cardinality",
+      "O2_topology",
+      "O3_depth",
+      "O4_constraints",
+      "O5_composition"
+    ],
+    "mapping_conditions": [
+      "M1_INFORMATIVE",
+      "M2_SURFACE_PERMUTED",
+      "M3_UNINFORMATIVE_NULL",
+      "M4_CONTRADICTORY"
+    ],
+    "presentations": [
+      "P1_order",
+      "P2_position",
+      "P3_orientation",
+      "P4_format"
+    ],
+    "actions": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "action_mapping_rule": "All 24 permutations of action identity to future-space assignment are balanced; each action occupies each assignment equally often.",
+    "replicates_per_cell": 30,
+    "target_decision_units_per_execution": 3840,
+    "target_total_decision_units_two_executions": 7680
+  },
+  "protocol": {
+    "decision_input": "Current state, four candidate actions, task context, and the currently assigned action-to-future-space correspondence descriptor only.",
+    "hidden_until_after_decision": [
+      "realized successor state",
+      "realized transformation",
+      "realized T_acc",
+      "downstream trajectory",
+      "outcome",
+      "value"
+    ],
+    "realization_after_decision": "Execute the selected action deterministically in the domain simulator, derive S_t+1 and T_acc,t+1 from frozen domain semantics.",
+    "mapping_manipulation": "The informative correspondence is independently reassigned to action identities and counterbalanced; no action is systematically privileged.",
+    "surface_controls": "Descriptor length, token count, structural complexity, frequency, position, orientation and format are balanced across action identities and conditions.",
+    "contradictory_condition": "Presented future-space correspondence conflicts with the independently generated realized future assignment, allowing separation of descriptor-following from actual future correspondence.",
+    "null_condition": "Future-like descriptors preserve surface statistics but carry no predictive information about realized future accessibility."
+  },
+  "Q_discriminators": {
+    "Q1": "Selection must vary with reassigned correspondence while action identity is held balanced; stable identity preference alone predicts no mapping-following interaction.",
+    "Q2": "The mapping effect must persist across presentation strata; presentation-specific effects are treated as confounding evidence, not mechanism evidence.",
+    "Q3": "The informative mapping effect must exceed the matched null condition under the pre-specified contrast.",
+    "Q4": "The direction and presence of the primary effect must replicate across domains and operationalisations without relying on one representation.",
+    "Q5": "Primary estimand is the action-identity × future-assignment interaction on selection probability, with planned simple contrasts for remapping.",
+    "Q6": "Independent reconstruction must recover the full decision-to-T_acc chain for every included unit."
+  },
+  "prohibited_information": "No realized future access, reward, utility, value, performance, success, quality or normative preference may be available before the decision."
+}
