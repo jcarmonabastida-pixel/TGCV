@@ -1,0 +1,47 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_TOKEN_USAGE_PROBE_REQUIREMENTS_001",
+  "schema": "TI001_V012_NEXT2_TOKEN_USAGE_PROBE_REQUIREMENTS_v001",
+  "status": "REQUIRED_BEFORE_TOKEN_USAGE_PROBE",
+  "scientific_execution": false,
+  "purpose": "Measure the complete token-usage decomposition of one real NEXT2 decision request before any scientific execution.",
+  "source_artifacts": {
+    "system_prompt": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT2_SYSTEM_PROMPT_001.txt",
+    "system_prompt_sha256": "660002f6506648fd0bfd703751f8996fae9fe0aaed3a48defbe78b2382c94122",
+    "cost_probe_input": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT2_COST_PROBE_INPUT_001.json",
+    "cost_probe_result": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT2_COST_PROBE_RESULT_001.json",
+    "cost_budget_gate": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT2_COST_BUDGET_GATE_001.json"
+  },
+  "probe_scope": {
+    "decision_units": 1,
+    "must_use_real_next2_unit": true,
+    "must_use_frozen_system_prompt": true,
+    "must_use_frozen_generation_configuration": true,
+    "must_not_count_as_scientific_execution": true
+  },
+  "required_usage_fields": {
+    "input_tokens": true,
+    "input_tokens_details.cached_tokens": true,
+    "output_tokens": true,
+    "output_tokens_details.reasoning_tokens": true,
+    "total_tokens": true
+  },
+  "accounting_rules": {
+    "reasoning_tokens_are_not_output_tokens": true,
+    "reasoning_tokens_must_be_reported_separately": true,
+    "output_tokens_include_reasoning_tokens_in_api_usage": true,
+    "max_output_tokens_is_a_generation_upper_bound_that_includes_visible_output_and_reasoning": true,
+    "input_tokens_must_not_be_added_to_reasoning_or_output_as_if_they_were_the_same_component": true
+  },
+  "probe_acceptance": {
+    "response_usage_present": true,
+    "all_required_usage_fields_present": true,
+    "input_tokens_recorded": true,
+    "reasoning_tokens_recorded": true,
+    "output_tokens_recorded": true,
+    "total_tokens_recorded": true,
+    "cached_tokens_recorded": true,
+    "no_null_cost_component_allowed_for_authorization": true
+  },
+  "scientific_authorization_dependency": "The measured usage decomposition must be persisted and incorporated into the NEXT2 cost budget before scientific execution authorization.",
+  "official_api_basis": "Responses API usage exposes input_tokens, output_tokens, output_tokens_details.reasoning_tokens and total_tokens."
+}
