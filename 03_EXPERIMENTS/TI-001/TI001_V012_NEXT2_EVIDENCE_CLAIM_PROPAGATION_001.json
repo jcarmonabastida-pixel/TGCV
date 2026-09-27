@@ -1,0 +1,26 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_EVIDENCE_CLAIM_PROPAGATION_001",
+  "status": "REGISTERED",
+  "basis": "V012_NEXT_CLOSED",
+  "purpose": "Register V012_NEXT as material evidence before the NEXT2 design and preserve cumulative claim-matrix continuity.",
+  "evidence": {
+    "decision_count": 72,
+    "mapping_consistent_rate": 0.5,
+    "informative_action_A_selection_rate": 1,
+    "informative_action_B_selection_rate": 0,
+    "baseline_A_selection_rate": 1,
+    "decision_to_T_acc_reconstruction_rate": 1,
+    "result_sha256": "b45920191f4e7f25853606c0e719c73702145e2496254163d2b2fed504232c50",
+    "fixture_sha256": "7782e7652001ec8a64cd1f231c37e6c3c7cd065e672564140fdfa4626b185a5b"
+  },
+  "routing": {
+    "C02": "No claim-level upgrade; V012_NEXT does not independently identify a domain-independent accessibility predicate.",
+    "C07": "Bounded methodological qualification only; the experiment reconstructs decision-to-successor-accessibility linkage but does not establish temporal dynamics generally.",
+    "C08": "Bounded methodological qualification only; Q6 traceability is complete, but no causal trajectory effect is tested.",
+    "C10": "No positive propagation; no value endpoint was encoded.",
+    "C11": "No claim-level upgrade; no cross-domain validity was tested.",
+    "C16": "Material methodological evidence: controlled decision→realized transformation→successor accessibility traceability and explicit separation of action selection from downstream T_acc reconstruction."
+  },
+  "interpretation_boundary": "V012_NEXT is descriptive/traceability evidence. Q1 and Q5 remain unresolved; Q2-Q4 are descriptively stable under the tested conditions. No TGCV-wide confirmation/falsification, causal, value, superiority or normative claim.",
+  "next_sequence": "V011 → V012_NEXT → evidence propagation → NEXT2 design requirements/specification/analysis plan → fixture/executor gates → authorized execution."
+}
