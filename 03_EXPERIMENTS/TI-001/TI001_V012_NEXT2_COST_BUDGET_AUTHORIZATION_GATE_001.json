@@ -1,0 +1,60 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_COST_BUDGET_AUTHORIZATION_GATE_001",
+  "schema": "TI001_V012_NEXT2_COST_BUDGET_AUTHORIZATION_GATE_v001",
+  "status": "PASS",
+  "scientific_execution": false,
+  "decision": "COST_BUDGET_BOUND_READY_FOR_SCIENTIFIC_AUTHORIZATION",
+  "checks": {
+    "exact_unit_count_bound": true,
+    "input_tokens_bound": true,
+    "reasoning_tokens_bound": true,
+    "output_tokens_bound": true,
+    "total_tokens_bound": true,
+    "pricing_verified": true,
+    "reasoning_not_double_counted": true,
+    "scientific_fixture_unchanged": true,
+    "cost_probe_non_scientific": true,
+    "token_usage_probe_non_scientific": true
+  },
+  "canonical_scope": {
+    "decision_units_per_execution": 23040,
+    "fixture_requirements": "TI001_V012_NEXT2_FIXTURE_REQUIREMENTS_001",
+    "system_prompt_sha256": "660002f6506648fd0bfd703751f8996fae9fe0aaed3a48defbe78b2382c94122"
+  },
+  "measured_per_unit": {
+    "input_tokens": 432,
+    "reasoning_tokens": 40,
+    "output_tokens": 47,
+    "total_tokens": 479,
+    "cached_input_tokens": 0
+  },
+  "projected_execution_totals": {
+    "input_tokens": 9953280,
+    "reasoning_tokens": 921600,
+    "output_tokens": 1082880,
+    "total_tokens": 11036160
+  },
+  "pricing": {
+    "model_id": "gpt-5.6-luna",
+    "service_tier": "standard",
+    "input_usd_per_million_tokens": 0.2,
+    "output_usd_per_million_tokens": 1.2,
+    "pricing_verified": true,
+    "source": "OpenAI API model/pricing documentation"
+  },
+  "projected_cost_usd": {
+    "input": 1.990656,
+    "output": 1.299456,
+    "total": 3.290112
+  },
+  "authorization_boundary": {
+    "cost_budget_gate_passed": true,
+    "scientific_execution_authorized": false,
+    "next_required_gate": "SCIENTIFIC_EXECUTION_AUTHORIZATION",
+    "fixture_modification_permitted": false
+  },
+  "provenance": {
+    "cost_budget_gate_commit": "f6a311527d1c5d4aa866d4b24cbf5fd5f9f036b2",
+    "token_usage_probe_result_sha256": "c76446d856c464f1438ba417abcf38a14019c57afa53e670d62b951667ab77f9"
+  }
+}
