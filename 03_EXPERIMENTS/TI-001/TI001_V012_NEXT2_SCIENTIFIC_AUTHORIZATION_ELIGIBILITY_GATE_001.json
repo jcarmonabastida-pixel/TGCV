@@ -1,0 +1,50 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_SCIENTIFIC_AUTHORIZATION_ELIGIBILITY_GATE_001",
+  "schema": "TI001_V012_NEXT2_SCIENTIFIC_AUTHORIZATION_ELIGIBILITY_GATE_v001",
+  "status": "BLOCKED_PENDING_NEXT2_FIXTURE_FREEZE",
+  "scientific_execution": false,
+  "decision": "NOT_ELIGIBLE_FOR_SCIENTIFIC_AUTHORIZATION",
+  "checks": {
+    "cost_budget_gate_pass": true,
+    "exact_unit_count_bound": true,
+    "token_usage_bound": true,
+    "pricing_verified": true,
+    "system_prompt_hash_bound": true,
+    "next2_fixture_requirements_present": true,
+    "next2_fixture_frozen": false,
+    "next2_fixture_hash_bound": false,
+    "next2_fixture_count_bound": false,
+    "next2_fixture_schema_bound": false,
+    "requirements_json_valid": false,
+    "scientific_execution_authorized": false
+  },
+  "blockers": [
+    "NEXT2 scientific fixture has not yet been frozen and independently hashed.",
+    "NEXT2 fixture hash, schema and instance count are therefore not yet bound to scientific authorization.",
+    "TI001_V012_NEXT2_FIXTURE_REQUIREMENTS_001.json currently has a missing comma between decision_unit_count_formula and decision_units_per_execution and must be corrected before fixture freeze."
+  ],
+  "bound_budget": {
+    "decision_units_per_execution": 23040,
+    "input_tokens_per_unit": 432,
+    "reasoning_tokens_per_unit": 40,
+    "output_tokens_per_unit": 47,
+    "total_tokens_per_unit": 479,
+    "projected_total_tokens": 11036160,
+    "projected_cost_usd": 3.290112
+  },
+  "bound_system_prompt": {
+    "artifact": "TI001_V012_NEXT2_SYSTEM_PROMPT_001",
+    "sha256": "660002f6506648fd0bfd703751f8996fae9fe0aaed3a48defbe78b2382c94122"
+  },
+  "authorization_boundary": {
+    "scientific_execution_authorized": false,
+    "fixture_modification_permitted_before_freeze": true,
+    "execution_permitted": false
+  },
+  "provenance": {
+    "cost_budget_authorization_gate": "5beb4b4f25308431e231021ba00fe187da229673",
+    "requirements_sha": "d8181755ecccb13002da0fe9c5191114ccef0724",
+    "existing_v012_authorization_not_reused": true
+  },
+  "next_required_action": "Correct the NEXT2 fixture requirements JSON, generate the deterministic 23040-unit fixture, freeze it, compute and bind its SHA-256/schema/count, then rerun this eligibility gate."
+}
