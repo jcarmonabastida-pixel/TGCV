@@ -1,0 +1,50 @@
+{
+  "closure_gate_id": "TI001-V012-NEXT-SCIENTIFIC-CLOSURE-GATE-001",
+  "version": "V012_NEXT",
+  "decision": "CLOSED_AND_RESULT_INTERPRETATION_REQUIRED",
+  "status": "V012_NEXT_CLOSED",
+  "basis": {
+    "scientific_execution_result_gate": "TI001_V012_NEXT_SCIENTIFIC_EXECUTION_RESULT_GATE_001",
+    "primary_descriptive_analysis": "TI001_V012_NEXT_PRIMARY_DESCRIPTIVE_ANALYSIS_001",
+    "primary_descriptive_analysis_audit": "TI001_V012_NEXT_PRIMARY_DESCRIPTIVE_ANALYSIS_AUDIT_RESULT_001"
+  },
+  "closure_findings": {
+    "Q1_construct": "NOT_DISCRIMINATED",
+    "Q2_presentation": "DESCRIPTIVELY_STABLE",
+    "Q3_null_control": "DESCRIPTIVELY_NO_DIFFERENCE_IN_MAPPING_CONSISTENCY",
+    "Q4_robustness": "DESCRIPTIVELY_STABLE_ACROSS_OPERATIONALISATIONS",
+    "Q5_mechanism": "NOT_SUPPORTED_AS_POSITIVE_RESULT",
+    "Q6_decision_to_T_acc": "TRACEABILITY_RECONSTRUCTION_COMPLETE"
+  },
+  "descriptive_findings": {
+    "decision_count": 72,
+    "mapping_consistent_rate_informative": 0.5,
+    "informative_action_A_selection_rate": 1.0,
+    "informative_action_B_selection_rate": 0.0,
+    "baseline_action_A_selection_rate": 1.0,
+    "presentation_P1_mapping_consistent_rate": 0.5,
+    "presentation_P2_mapping_consistent_rate": 0.5,
+    "operationalisation_O1_mapping_consistent_rate": 0.5,
+    "operationalisation_O2_mapping_consistent_rate": 0.5,
+    "operationalisation_O3_mapping_consistent_rate": 0.5,
+    "decision_to_realized_T_acc_reconstruction_rate": 1.0
+  },
+  "closure_statement": "V012 NEXT is closed as a valid descriptive and traceability experiment. The observed decisions track fixed action identity rather than the independently varied informative future-space correspondence in this fixture. The design therefore does not provide positive mechanism discrimination for Q5 and does not resolve Q1 against a stable action preference. This is a descriptive experimental result, not a causal, value, TGCV-wide confirmation, or TGCV-wide falsification claim.",
+  "scientific_boundaries": {
+    "inferential_threshold_applied": false,
+    "TGCV_confirmation": false,
+    "TGCV_falsification": false,
+    "causal_claim": false,
+    "value_claim": false,
+    "normative_action_preference": false,
+    "pooling_with_prior_experiments": false,
+    "retroactive_modification_of_V003_V004": false,
+    "rerun_V004": false
+  },
+  "next_design_priority": {
+    "primary": "Interpret the observed fixed-action pattern without converting it into a TGCV-wide falsification claim.",
+    "secondary": "Determine whether a subsequent design is scientifically required to distinguish fixed action preference from other mechanisms under the remaining open questions.",
+    "Q6_role": "Retain the decision-to_T_acc reconstruction bridge as a traceability component."
+  },
+  "next_gate": "TI001_V012_NEXT_POST_CLOSURE_DECISION_GATE_001"
+}
