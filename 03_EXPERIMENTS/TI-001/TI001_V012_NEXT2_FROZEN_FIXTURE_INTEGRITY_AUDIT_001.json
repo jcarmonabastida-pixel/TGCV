@@ -1,0 +1,36 @@
+{
+  "gate_id": "TI001-V012-NEXT2-FROZEN-FIXTURE-INTEGRITY-AUDIT-001",
+  "status": "PASS",
+  "decision": "PACKAGE_ELIGIBLE_FOR_FREEZE",
+  "fixture": {
+    "artifact": "TI001_V012_NEXT2_FIXTURE_REGENERATED_001",
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT2_FIXTURE_REGENERATED_001",
+    "immutable_version": "NEXT2_v001",
+    "unit_count": 23040,
+    "shard_count": 24,
+    "units_per_shard": 960
+  },
+  "checks": {
+    "version": true,
+    "unit_count": true,
+    "shard_count": true,
+    "units_per_shard": true,
+    "requirements_bound": true,
+    "semantics_bound": true,
+    "status_not_frozen_before_audit": true,
+    "scientific_execution_false": true,
+    "freeze_authorized": true,
+    "all_registered_hashes_match": true,
+    "all_units_loaded": true,
+    "ids_unique": true,
+    "ids_sequential": true
+  },
+  "scientific_execution": false,
+  "scientific_execution_authorized": false,
+  "notes": [
+    "Audit verifies integrity and eligibility for freeze.",
+    "The audit does not itself modify the fixture.",
+    "The fixture remains GENERATED_NOT_FROZEN until the freeze artifact is committed."
+  ],
+  "next_gate": "NEXT2_FIXTURE_FREEZE"
+}
