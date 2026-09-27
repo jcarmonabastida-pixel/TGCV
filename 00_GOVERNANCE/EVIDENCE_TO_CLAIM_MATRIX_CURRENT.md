@@ -1,9 +1,9 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.37
+# TGCV — Evidence-to-Claim Matrix — Current v1.38
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-27  
-**Predecessor:** v1.36  
-**Incremental governance update:** Registers TI-001 V012_NEXT explicitly in the C16 claim row and as an enriched material-evidence record, while introducing no claim-level upgrade or TGCV Core modification.
+**Predecessor:** v1.37  
+**Incremental governance update:** Removes a duplicate V012_NEXT material-evidence section while retaining the more self-contained experimental record and its explicit C16 routing; no claim-level upgrade or TGCV Core modification is introduced.
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
 
@@ -1088,51 +1088,6 @@ The VSL Synthetic Minimum v0.1 is closed as **bounded methodological evidence**.
 ### 10. GL-07 completeness
 This section is the autocontained material expediente for the VSL Synthetic Minimum result. It contains identity/status, purpose and frozen scope, provenance, operational contract, methods and controls, quantitative findings, interpretation, observation-versus-inference boundaries, evidence-to-claim routing and governance disposition. External artifacts supplement rather than replace this record.
 
-
-## Material methodological evidence — TI-001 V012_NEXT
-
-**Case:** `TI001_V012_NEXT`  
-**Status:** `CLOSED — BOUNDED DESCRIPTIVE / TRACEABILITY EVIDENCE`  
-**Evidence class:** controlled experimental decision-selection and decision-to-`T_acc` traceability evidence; not construct validation, causal, value, superiority or TGCV-wide confirmation/falsification evidence.  
-**Closure record:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_CLOSURE_GATE_001.json`  
-**Post-closure decision:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_POST_CLOSURE_DECISION_GATE_001.json`  
-**Result:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_EXECUTION_RESULT_001.json`  
-**Result SHA-256:** `b45920191f4e7f25853606c0e719c73702145e2496254163d2b2fed504232c50`  
-**Fixture SHA-256:** `7782e7652001ec8a64cd1f231c37e6c3c7cd065e672564140fdfa4626b185a5b`
-
-### 1. Purpose and frozen scope
-
-V012_NEXT was designed to discriminate an action-conditioned future-space correspondence mechanism from stable action preference while preserving a decision-before-realized-future boundary. It was executed as a controlled 72-unit experiment under the frozen fixture, executor, system prompt and response-validation bindings.
-
-### 2. Quantitative findings
-
-- Decision units: **72**; valid responses: **72/72**.
-- Informative mapping-consistent selection rate: **18/36 = 0.50**.
-- Informative action A selection rate: **18/18 = 1.00**.
-- Informative action B selection rate: **0/18 = 0.00**.
-- Baseline action A selection rate: **1.00**.
-- Decision-to-realized-`T_acc` reconstruction: **72/72 = 1.00**.
-- The observed mapping-consistent rate therefore arose from fixed selection of action A while the informative correspondence was balanced across A and B.
-
-### 3. Scientific interpretation
-
-The result does **not** discriminate Q1 or Q5: the observed fixed-action pattern is compatible with stable action preference and does not provide positive mechanism evidence for action-conditioned future-space tracking. Q2 and Q4 were descriptively stable across the tested presentation and operationalisation strata; Q3 showed no descriptive difference in mapping consistency under the tested baseline. Q6 is closed at the traceability/reconstruction level for this experiment.
-
-### 4. Evidence-to-claim routing
-
-**C16 — bounded methodological qualification.** V012_NEXT adds material evidence that a controlled decision-selection experiment can preserve the separation between the pre-decision information boundary and the post-decision realization layer, while mechanically reconstructing `S_t → selected action → S_t+1 → T_acc,t+1` for every included unit. This strengthens the bounded translation/traceability evidence but does not establish transversal validity or a claim-level upgrade.
-
-**C02/C07/C08/C10/C11 — no claim-level upgrade.** V012_NEXT does not independently identify a general admissibility predicate, establish general temporal `T_acc` dynamics, estimate a causal trajectory effect, test a value pathway, or establish cross-domain validity.
-
-### 5. Reproducibility and boundaries
-
-The execution result, fixture, prompt and validation bindings were hash-checked by the scientific execution result gate; the primary descriptive analysis and its audit passed. No retry, recoding, substitution, imputation, pooling or post-hoc inferential threshold was used in the registered analysis.
-
-The evidence is bounded to the frozen operational construct and 72-unit execution. It does not constitute TGCV-wide confirmation or falsification and does not modify the TGCV Core.
-
-### 6. Governance disposition
-
-V012_NEXT is admissible as **material bounded descriptive/traceability evidence**. Q1 and Q5 remain unresolved; Q6 remains established at the traceability level. The governed next step is NEXT2, whose design is registered separately and is required to make the competing mechanisms generate distinguishable predictions.
 
 ## Material methodological evidence — VSL Paired E1/E2 v001
 
