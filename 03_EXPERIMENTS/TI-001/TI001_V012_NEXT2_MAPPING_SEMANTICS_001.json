@@ -6,14 +6,39 @@
   "notation": {
     "f": "presented action-to-future-space mapping persisted in field f",
     "z": "realized action-to-successor mapping persisted in field z",
-    "A": ["A","B","C","D"],
-    "slots": ["slot_1","slot_2","slot_3","slot_4"],
+    "A": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "slots": [
+      "slot_1",
+      "slot_2",
+      "slot_3",
+      "slot_4"
+    ],
     "composition": "For a slot permutation sigma, z(a)=sigma(f(a))."
   },
   "canonical_slot_permutations": {
-    "identity": {"slot_1":"slot_1","slot_2":"slot_2","slot_3":"slot_3","slot_4":"slot_4"},
-    "surface_shift_1": {"slot_1":"slot_2","slot_2":"slot_3","slot_3":"slot_4","slot_4":"slot_1"},
-    "contradictory_shift_2": {"slot_1":"slot_3","slot_2":"slot_4","slot_3":"slot_1","slot_4":"slot_2"}
+    "identity": {
+      "slot_1": "slot_1",
+      "slot_2": "slot_2",
+      "slot_3": "slot_3",
+      "slot_4": "slot_4"
+    },
+    "surface_shift_1": {
+      "slot_1": "slot_2",
+      "slot_2": "slot_3",
+      "slot_3": "slot_4",
+      "slot_4": "slot_1"
+    },
+    "contradictory_shift_2": {
+      "slot_1": "slot_3",
+      "slot_2": "slot_4",
+      "slot_3": "slot_1",
+      "slot_4": "slot_2"
+    }
   },
   "conditions": {
     "INFORMATIVE": {
@@ -55,5 +80,6 @@
     "scientific_execution_authorized": false
   },
   "regeneration_requirement": "The existing GENERATED_NOT_FROZEN fixture must not be frozen under the previous implicit realization rules. Regenerate it deterministically only after this semantic definition is accepted and its generator implementation is bound to this artifact.",
-  "authorization_boundary": "This artifact is a design/semantic specification only. It does not authorize scientific execution."
+  "authorization_boundary": "This artifact is a design/semantic specification only. It does not authorize scientific execution.",
+  "normative_quality_descriptors": false
 }
