@@ -1,0 +1,61 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_COST_PROBE_INPUT_001",
+  "schema": "TI001_V012_NEXT2_COST_PROBE_INPUT_v001",
+  "status": "COST_PROBE_ONLY",
+  "scientific_execution": false,
+  "system_prompt_sha256": "660002f6506648fd0bfd703751f8996fae9fe0aaed3a48defbe78b2382c94122",
+  "api_surface": "Responses API",
+  "model_id": "gpt-5.6-luna",
+  "generation_configuration": {
+    "conversation": null,
+    "max_output_tokens": 128,
+    "previous_response_id": null,
+    "reasoning_effort": "low",
+    "store": false,
+    "tools": [],
+    "top_p": 0.98
+  },
+  "decision_unit": {
+    "instance_id": "COST-PROBE-NEXT2-001",
+    "domain": "D1_spatial_planning",
+    "future_space_operationalisation": "O1_cardinality",
+    "mapping_condition": "M1_INFORMATIVE",
+    "presentation": "P1_order",
+    "available_actions": ["A", "B", "C", "D"],
+    "state": {
+      "state_id": "S0",
+      "T_acc": ["A", "B", "C", "D"]
+    },
+    "task": {
+      "task": "select_one_current_transformation",
+      "candidate_count": 4
+    },
+    "information": {
+      "future_signal": true,
+      "future_space_mapping": {
+        "A": {
+          "future_accessibility": ["slot_1", "slot_2"],
+          "future_accessibility_class": "cardinality_2"
+        },
+        "B": {
+          "future_accessibility": ["slot_1", "slot_3"],
+          "future_accessibility_class": "cardinality_2"
+        },
+        "C": {
+          "future_accessibility": ["slot_2", "slot_3"],
+          "future_accessibility_class": "cardinality_2"
+        },
+        "D": {
+          "future_accessibility": ["slot_1", "slot_4"],
+          "future_accessibility_class": "cardinality_2"
+        }
+      },
+      "informative_correspondence_defined": true
+    },
+    "decision_boundary": {
+      "decision_before_future_reveal": true,
+      "realized_successor_visible_at_decision": false,
+      "realized_T_acc_visible_at_decision": false
+    }
+  }
+}
