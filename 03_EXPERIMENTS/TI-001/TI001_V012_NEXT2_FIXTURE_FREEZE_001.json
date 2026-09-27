@@ -1,0 +1,28 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_FIXTURE_FREEZE_001",
+  "status": "FROZEN",
+  "decision": "NEXT2_FIXTURE_FROZEN",
+  "freeze_type": "FIXTURE_FREEZE",
+  "fixture_artifact": "TI001_V012_NEXT2_FIXTURE_REGENERATED_001",
+  "immutable_version": "NEXT2_v001",
+  "unit_count": 23040,
+  "shard_count": 24,
+  "units_per_shard": 960,
+  "integrity_audit": {
+    "artifact": "TI001_V012_NEXT2_FROZEN_FIXTURE_INTEGRITY_AUDIT_001",
+    "status": "PASS",
+    "sha256": "61f36730d24d4270b301dd86b38cce3311fb8f24853ae8388950023de771d918"
+  },
+  "freeze_scope": {
+    "fixture_content": "IMMUTABLE",
+    "requirements_binding": "IMMUTABLE",
+    "mapping_semantics_binding": "IMMUTABLE",
+    "unit_count": "IMMUTABLE",
+    "shard_structure": "IMMUTABLE",
+    "unit_ids": "IMMUTABLE"
+  },
+  "scientific_execution": false,
+  "scientific_execution_authorized": false,
+  "modification_policy": "Any modification to the frozen fixture requires a new immutable fixture version and a new integrity/binding audit.",
+  "next_gate": "SCIENTIFIC_EXECUTION_AUTHORIZATION"
+}
