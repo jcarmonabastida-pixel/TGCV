@@ -1,0 +1,59 @@
+{
+  "analysis_id": "TI001_V012_NEXT_PRIMARY_DESCRIPTIVE_ANALYSIS_001",
+  "status": "PERFORMED",
+  "scientific_analysis": "PERFORMED",
+  "basis": {
+    "design_specification": "TI001_V012_NEXT_DESIGN_SPECIFICATION_GATE_001",
+    "primary_question": "Q5_MECHANISM_DISCRIMINATION",
+    "secondary_question": "Q1_CONSTRUCT_IDENTIFICATION"
+  },
+  "fixture_sha256": "7782e7652001ec8a64cd1f231c37e6c3c7cd065e672564140fdfa4626b185a5b",
+  "result_sha256": "b45920191f4e7f25853606c0e719c73702145e2496254163d2b2fed504232c50",
+  "decision_count": 72,
+  "primary_observable": {
+    "name": "Mapping-consistent action-selection rate",
+    "informative_n": 36,
+    "informative_mapping_consistent_n": 18,
+    "informative_mapping_consistent_rate": 0.5
+  },
+  "secondary_observables": {
+    "fixed_action_preference_rate_informative_A": 1,
+    "fixed_action_preference_rate_baseline_A": 1,
+    "informative_A_n": 18,
+    "informative_A_selected_A_n": 18,
+    "informative_B_n": 18,
+    "informative_B_selected_B_n": 0,
+    "mapping_by_action_identity": {
+      "informative_A_rate": 1,
+      "informative_B_rate": 0
+    },
+    "presentation_stratified_mapping_consistent_rate": {
+      "P1": 0.5,
+      "P2": 0.5
+    },
+    "operationalisation_stratified_mapping_consistent_rate": {
+      "O1": 0.5,
+      "O2": 0.5,
+      "O3": 0.5
+    }
+  },
+  "decision_to_realized_T_acc_reconstruction": {
+    "required_fields": [
+      "state",
+      "selected_action",
+      "S_t1",
+      "T_acc_t1"
+    ],
+    "reconstructable_units": 72,
+    "total_units": 72,
+    "rate": 1
+  },
+  "interpretation_boundary": {
+    "inferential_threshold_applied": false,
+    "mechanism_claim": false,
+    "causal_value_claim": false,
+    "TGCV_wide_confirmation": false,
+    "TGCV_wide_falsification": false,
+    "descriptive_result_only": true
+  }
+}
