@@ -1,0 +1,25 @@
+{
+  "analysis_id": "TI001_V012_NEXT2_ANALYSIS_PLAN_001",
+  "status": "PRE_SPECIFIED_DESIGN",
+  "primary_estimand": "Action-identity × future-assignment interaction on selection probability.",
+  "model": "Mixed-effects logistic model with fixed effects for action identity, future assignment, presentation, mapping condition, operationalisation, domain and the action-identity × future-assignment interaction; random intercepts for experimental unit and domain/block as applicable.",
+  "primary_contrast": "Compare selection probability under reassigned future correspondence while holding action identity and all surface/presentation factors balanced.",
+  "null_contrast": "Informative correspondence versus matched uninformative/null correspondence.",
+  "secondary_contrasts": [
+    "presentation-stratified mapping consistency",
+    "domain × mapping interaction",
+    "operationalisation × mapping interaction",
+    "contradictory versus informative correspondence",
+    "fixed action preference across remapping"
+  ],
+  "replication_rule": "The primary mechanism interpretation requires the pre-specified effect direction to be reproduced in both independent complete executions; discordance is reported as replication ambiguity.",
+  "exclusions": "Only pre-specified invalid response, missing required traceability field, fixture integrity failure or independent reconstruction failure. No outcome-dependent exclusion.",
+  "missing_data": "No imputation or response substitution; missingness is reported by condition and execution.",
+  "multiplicity": "Primary estimand and primary contrasts are fixed before execution; all other analyses are secondary/exploratory and cannot replace the primary test.",
+  "decision_categories": [
+    "MECHANISM_DISCRIMINATED",
+    "MECHANISM_NOT_DISCRIMINATED",
+    "AMBIGUOUS_REPLICATION"
+  ],
+  "interpretation_boundary": "No post-hoc inferential threshold, no TGCV-wide confirmation/falsification and no value/causal claim."
+}
