@@ -1,0 +1,33 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_EXECUTOR_REQUIREMENTS_001",
+  "status": "REQUIRED_BEFORE_EXECUTOR_FREEZE",
+  "requirements": {
+    "fresh_executor_version": true,
+    "fresh_binding_to_fixture_prompt_validation": true,
+    "exact_decision_count": 3840,
+    "responses_exactly_A_B_C_D": true,
+    "retry": false,
+    "recoding": false,
+    "substitution": false,
+    "imputation": false,
+    "post_decision_future_access": false,
+    "tools_empty": true,
+    "store_false": true,
+    "executor_2_independent_reconstruction": true,
+    "two_independent_complete_executions": true,
+    "full_provenance_hashes": true,
+    "scientific_execution_default": false
+  },
+  "traceability_record_per_unit": [
+    "S_t",
+    "candidate_actions",
+    "action_to_future_mapping",
+    "selected_action",
+    "realized_transformation",
+    "S_t+1",
+    "T_acc_t",
+    "T_acc_t+1",
+    "Delta_T_acc"
+  ],
+  "authorization_boundary": "No scientific execution authorization is implied by this requirements artifact."
+}
