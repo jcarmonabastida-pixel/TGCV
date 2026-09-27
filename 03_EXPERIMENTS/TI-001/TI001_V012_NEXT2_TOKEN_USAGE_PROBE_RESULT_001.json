@@ -1,0 +1,37 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_TOKEN_USAGE_PROBE_RESULT_001",
+  "schema": "TI001_V012_NEXT2_TOKEN_USAGE_PROBE_RESULT_v001",
+  "status": "TOKEN_USAGE_PROBE_COMPLETE",
+  "scientific_execution": false,
+  "source_input_artifact": "TI001_V012_NEXT2_COST_PROBE_INPUT_001",
+  "system_prompt_sha256": "660002f6506648fd0bfd703751f8996fae9fe0aaed3a48defbe78b2382c94122",
+  "instance_id": "COST-PROBE-NEXT2-001",
+  "model_id": "gpt-5.6-luna",
+  "api_surface": "Responses API",
+  "generation_configuration": {
+    "conversation": null,
+    "max_output_tokens": 128,
+    "previous_response_id": null,
+    "reasoning_effort": "low",
+    "store": false,
+    "tools": [],
+    "top_p": 0.98
+  },
+  "response_id": "resp_0b9c592089eee11c016ab8ded1c52087d29de2bfffa353a1c4",
+  "usage": {
+    "input_tokens": 432,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 47,
+    "output_tokens_details": {
+      "reasoning_tokens": 40
+    },
+    "total_tokens": 479
+  },
+  "accounting": {
+    "reasoning_tokens_separate_from_visible_output": true,
+    "input_plus_output_equals_total": true,
+    "output_tokens_include_reasoning_tokens": true
+  }
+}
