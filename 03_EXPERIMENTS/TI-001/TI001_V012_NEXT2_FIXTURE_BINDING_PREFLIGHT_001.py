@@ -40,8 +40,11 @@ def main():
     checks = {}
 
     checks["version"] = man.get("immutable_version") == reg["immutable_version"] == sem["immutable_version"] == req["immutable_version"]
-    checks["requirements_hash"] = man.get("requirements_blob_sha256") == reg["requirements_blob_sha256"] == sha256(REQUIREMENTS)
-    checks["semantics_hash"] = man.get("semantics_blob_sha256") == reg["semantics_blob_sha256"] == sha256(SEMANTICS)
+    import subprocess
+    def git_blob_sha(path):
+        return subprocess.check_output(["git", "-C", str(REPO), "hash-object", str(path)], text=True).strip()
+    checks["requirements_hash"] = man.get("requirements_blob_sha256") == reg["requirements_blob_sha256"] == git_blob_sha(REQUIREMENTS)
+    checks["semantics_hash"] = man.get("semantics_blob_sha256") == reg["semantics_blob_sha256"] == git_blob_sha(SEMANTICS)
     checks["unit_count"] = man.get("unit_count") == reg["unit_count"] == 23040
     checks["shard_count"] = man.get("shard_count") == reg["shard_count"] == 24
     checks["units_per_shard"] = man.get("units_per_shard") == reg["units_per_shard"] == 960
