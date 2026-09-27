@@ -1,0 +1,114 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_FIXTURE_SCHEMA_001",
+  "schema": "TI001_V012_NEXT2_FIXTURE_SCHEMA_v001",
+  "status": "SCHEMA_DEFINED_BEFORE_FIXTURE_GENERATION",
+  "immutable_version": "NEXT2_v001",
+  "source_requirements": {
+    "artifact_id": "TI001_V012_NEXT2_FIXTURE_REQUIREMENTS_001",
+    "blob_sha256": "06bf0da71d633b2605c60ecae98fb7d956a500c7"
+  },
+  "dimensions": {
+    "domains": [
+      "D1",
+      "D2",
+      "D3",
+      "D4"
+    ],
+    "operationalisations": [
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5"
+    ],
+    "mapping_conditions": [
+      "INFORMATIVE",
+      "SURFACE_PERMUTED",
+      "UNINFORMATIVE_NULL",
+      "CONTRADICTORY"
+    ],
+    "presentations": [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+    ],
+    "action_set": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "action_mapping_permutations": 24,
+    "replicates_per_cell": 30
+  },
+  "unit_construction": {
+    "cartesian_factors": [
+      "domain",
+      "future_space_operationalisation",
+      "mapping_condition",
+      "presentation",
+      "action_mapping_permutation",
+      "replicate"
+    ],
+    "decision_units": 23040,
+    "ordering": "lexicographic_over_factors_then_replicate",
+    "unique_instance_id": true
+  },
+  "mapping_rules": {
+    "permutation_definition": "Each permutation is a bijection from the four action identifiers A,B,C,D to four future-space slots slot_1,slot_2,slot_3,slot_4.",
+    "permutation_balance": "All 24 bijections occur equally often within every domain × operationalisation × mapping_condition × presentation cell.",
+    "informative_condition": "The persisted action-to-future mapping is the informative correspondence presented before decision.",
+    "surface_permuted_condition": "The presented correspondence is a surface permutation of the underlying correspondence while preserving balanced surface statistics.",
+    "uninformative_null_condition": "The presented correspondence contains no predictive information about the realized successor.",
+    "contradictory_condition": "The presented correspondence is systematically inconsistent with the realized successor mapping.",
+    "no_action_predicts_informative_mapping": true
+  },
+  "presentation_rules": {
+    "identifiers": [
+      "P1",
+      "P2",
+      "P3",
+      "P4"
+    ],
+    "semantic_content_not_introduced": "Presentation identifiers are structural factors only; no normative or quality descriptor is assigned by this schema.",
+    "exact_presentation_persisted_per_unit": true
+  },
+  "state_and_future_rules": {
+    "candidate_actions": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "T_acc_t": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "realized_successor_hidden_pre_decision": true,
+    "realized_T_acc_hidden_pre_decision": true,
+    "exact_mapping_persisted_per_unit": true,
+    "deterministic_successor_generation": true
+  },
+  "seed_rule": {
+    "method": "Derive the deterministic generator seed from the canonical SHA-256 digest of the frozen requirements artifact.",
+    "input_artifact": "TI001_V012_NEXT2_FIXTURE_REQUIREMENTS_001.json",
+    "numeric_seed_derivation": "Use the full SHA-256 digest as the deterministic seed material; do not introduce an independent arbitrary seed.",
+    "freeze_dependency": true
+  },
+  "serialization": {
+    "format": "UTF-8 JSON",
+    "deterministic_key_order": true,
+    "deterministic_array_order": true,
+    "no_whitespace_variation_after_canonical_serialization": true
+  },
+  "freeze_boundary": {
+    "fixture_not_generated_by_this_artifact": true,
+    "fixture_hash_required": true,
+    "fixture_count_required": 23040,
+    "fixture_schema_binding_required": true,
+    "scientific_execution_authorized": false
+  }
+}
