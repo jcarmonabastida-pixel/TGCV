@@ -1,0 +1,59 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_COST_BUDGET_GATE_001",
+  "schema": "TI001_V012_NEXT2_COST_BUDGET_GATE_v001",
+  "status": "REQUIRED_BEFORE_SCIENTIFIC_AUTHORIZATION",
+  "scientific_execution": false,
+  "design_principle": "Every previously observed cost-accounting failure must become a pre-execution constraint or gate.",
+  "historical_failure_controls": {
+    "reasoning_and_output_must_be_separated": true,
+    "input_cost_must_not_be_treated_as_total_cost": true,
+    "unit_cost_must_not_be_extrapolated_to_full_execution_without_exact_unit_count": true,
+    "pricing_must_be_verified_before_scientific_authorization": true
+  },
+  "canonical_design": {
+    "decision_units_per_execution": 23040,
+    "decision_unit_count_formula": "4 × 5 × 4 × 4 × 24 × 30",
+    "source_fixture_requirements": "TI001_V012_NEXT2_FIXTURE_REQUIREMENTS_001"
+  },
+  "measured_input_probe": {
+    "input_tokens_per_unit": 432,
+    "measurement_artifact": "TI001_V012_NEXT2_COST_PROBE_RESULT_001",
+    "measurement_status": "MEASURED",
+    "scope": "combined exact system prompt plus one real NEXT2 payload"
+  },
+  "cost_components_per_unit": {
+    "input_tokens": {
+      "status": "MEASURED",
+      "tokens": 432
+    },
+    "reasoning_tokens": {
+      "status": "MUST_BE_MEASURED_BEFORE_AUTHORIZATION",
+      "tokens": null
+    },
+    "output_tokens": {
+      "status": "MUST_BE_MEASURED_BEFORE_AUTHORIZATION",
+      "tokens": null
+    }
+  },
+  "budget_formula": {
+    "input_tokens_total": "432 × 23040 = 9953280",
+    "reasoning_tokens_total": "reasoning_tokens_per_unit × 23040",
+    "output_tokens_total": "output_tokens_per_unit × 23040",
+    "total_tokens": "input_tokens_total + reasoning_tokens_total + output_tokens_total",
+    "total_cost": "input_cost + reasoning_cost + output_cost"
+  },
+  "authorization_requirements": {
+    "exact_unit_count_bound": true,
+    "input_tokens_bound": true,
+    "reasoning_tokens_bound": false,
+    "output_tokens_bound": false,
+    "pricing_verified": false,
+    "all_cost_components_bound_before_scientific_execution": true,
+    "scientific_execution_authorized": false
+  },
+  "required_next_measurement": "Run a non-scientific representative probe that records input, reasoning and output token usage separately, then update this gate before scientific authorization.",
+  "provenance": {
+    "system_prompt_sha256": "660002f6506648fd0bfd703751f8996fae9fe0aaed3a48defbe78b2382c94122",
+    "cost_probe_result_sha256": "9d9e2745d64194f4cee17cdcb7dbbaafc74473fd960eb7cdcba0b4ef3d0281b6"
+  }
+}
