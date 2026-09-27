@@ -1,0 +1,37 @@
+{
+  "gate_id": "TI001_V012_NEXT_POST_CLOSURE_DECISION_GATE_001",
+  "version": "V012_NEXT",
+  "status": "CLOSED_AND_NEXT_DESIGN_REQUIRED",
+  "decision": "NEXT_DESIGN_REQUIRED",
+  "basis": {
+    "scientific_closure_gate": "TI001_V012_NEXT_SCIENTIFIC_CLOSURE_GATE_001",
+    "closure_status": "V012_NEXT_CLOSED"
+  },
+  "decision_findings": {
+    "Q1_construct": "UNRESOLVED",
+    "Q2_presentation": "DESCRIPTIVELY_STABLE",
+    "Q3_null_control": "DESCRIPTIVELY_NO_DIFFERENCE_IN_MAPPING_CONSISTENCY",
+    "Q4_robustness": "DESCRIPTIVELY_STABLE_ACROSS_OPERATIONALISATIONS",
+    "Q5_mechanism": "NOT_DISCRIMINATED",
+    "Q6_decision_to_T_acc": "TRACEABILITY_ESTABLISHED"
+  },
+  "decision_statement": "V012 NEXT closes as a valid descriptive and traceability experiment. Its observed fixed-action pattern does not discriminate the hypothesized action-conditioned future-space mechanism from stable action preference. Q1 and Q5 therefore remain unresolved at the mechanism-discrimination level. A subsequent design is scientifically required only if the programme is to distinguish these remaining alternatives; the present result is not treated as TGCV-wide falsification or confirmation.",
+  "next_design_requirement": {
+    "required": true,
+    "primary_target": "Q1_CONSTRUCT_IDENTIFICATION",
+    "secondary_target": "Q5_MECHANISM_DISCRIMINATION",
+    "retained_bridge": "DECISION_TO_T_ACC",
+    "required_direction": "Introduce a new independently identifying manipulation in which the competing explanatory mechanisms generate distinguishable predictions while preserving the decision-before-realized-future boundary and avoiding normative, reward, utility, value, performance, or task-success encoding."
+  },
+  "scientific_boundaries": {
+    "TGCV_confirmation": false,
+    "TGCV_falsification": false,
+    "causal_claim": false,
+    "value_claim": false,
+    "pooling_with_prior_experiments": false,
+    "rerun_V004": false,
+    "retroactive_modification_of_prior_versions": false,
+    "post_hoc_inferential_threshold": false
+  },
+  "next_gate": "TI001_V012_NEXT2_DESIGN_REQUIREMENTS_GATE_001"
+}
