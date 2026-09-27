@@ -4,7 +4,7 @@
   "requirements": {
     "fresh_executor_version": true,
     "fresh_binding_to_fixture_prompt_validation": true,
-    "exact_decision_count": 3840,
+    "exact_decision_count": 23040,
     "responses_exactly_A_B_C_D": true,
     "retry": false,
     "recoding": false,
