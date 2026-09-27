@@ -1,0 +1,53 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_PRIMARY_ANALYSIS_SPECIFICATION_001",
+  "status": "PRE_SPECIFIED_ANALYSIS_OPERATIONALISATION",
+  "basis": {
+    "analysis_plan": "TI001_V012_NEXT2_ANALYSIS_PLAN_001",
+    "design_gate": "TI001_V012_NEXT2_DESIGN_SPECIFICATION_GATE_001",
+    "result_artifact": "TI001_V012_NEXT2_SCIENTIFIC_EXECUTION_RESULT_001.json",
+    "result_sha256": "4d63933cd508ce1749db2a1210caf6c49fe5233c18185fce87ed7d9fcdf1c103"
+  },
+  "primary_estimand": "Action-identity × future-assignment interaction on selection probability.",
+  "data_model": {
+    "unit_level": "Each decision unit is expanded to four candidate-action rows.",
+    "response": "selected_binary = 1 only for the observed parsed action; 0 for the other three valid candidate actions.",
+    "action_identity": "Candidate action A/B/C/D.",
+    "future_assignment": "The presented f[action] slot for that candidate action.",
+    "fixed_effects": [
+      "action_identity",
+      "future_assignment",
+      "presentation",
+      "mapping_condition",
+      "operationalisation",
+      "domain",
+      "action_identity:future_assignment"
+    ],
+    "random_effects": [
+      "decision_unit",
+      "domain_block"
+    ],
+    "valid_records_only": true,
+    "invalid_records": "Excluded only because validity is pre-specified as an execution-level exclusion; no outcome-dependent exclusion."
+  },
+  "primary_contrast": {
+    "mapping_following": "Joint action_identity × future_assignment interaction.",
+    "informative_vs_null": "Compare the mapping-following interaction under INFORMATIVE and UNINFORMATIVE_NULL.",
+    "presentation_stratification": "Report the interaction separately by presentation as a diagnostic; it does not replace the primary contrast.",
+    "direction": "Pre-specified mechanism direction is stronger action selection dependence on reassigned future correspondence under INFORMATIVE than under UNINFORMATIVE_NULL."
+  },
+  "secondary_analysis": {
+    "name": "UNINFORMATIVE_NULL negative-control MI contrast",
+    "estimand": "MI(action;f) - MI(action;z)",
+    "status": "SECONDARY_EXPLORATORY",
+    "observed_delta_bits": 0.002143
+  },
+  "exclusions": [
+    "invalid response",
+    "missing required traceability field",
+    "fixture integrity failure",
+    "independent reconstruction failure"
+  ],
+  "missing_data": "No imputation or response substitution; missingness reported.",
+  "multiplicity": "Primary estimand remains primary; secondary analyses cannot replace it.",
+  "interpretation_boundary": "No TGCV-wide confirmation/falsification, no value/causal claim, and no general Transformational Intelligence claim."
+}
