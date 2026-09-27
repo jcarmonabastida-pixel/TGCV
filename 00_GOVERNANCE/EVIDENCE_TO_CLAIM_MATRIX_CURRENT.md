@@ -1,9 +1,9 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.38
+# TGCV — Evidence-to-Claim Matrix — Current v1.39
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-27  
-**Predecessor:** v1.37  
-**Incremental governance update:** Removes a duplicate V012_NEXT material-evidence section while retaining the more self-contained experimental record and its explicit C16 routing; no claim-level upgrade or TGCV Core modification is introduced.
+**Predecessor:** v1.38  
+**Incremental governance update:** Restores the self-contained TI-001 V012_NEXT material-evidence record, including the explicit `S_t → selected action → S_t+1 → T_acc,t+1` reconstruction chain and C16 routing; no claim-level upgrade or TGCV Core modification is introduced.
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
 
