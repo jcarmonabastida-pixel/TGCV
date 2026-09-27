@@ -1,0 +1,182 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_FIXTURE_001",
+  "schema": "TI001_V012_NEXT2_FIXTURE_v001_SHARDED",
+  "status": "GENERATED_NOT_FROZEN",
+  "scientific_execution": false,
+  "immutable_version": "NEXT2_v001",
+  "requirements_blob_sha256": "c9e55982188e4242124adbe196a6d98211bec2fe",
+  "generator_seed_sha256": "e40f5689d94d513ee5b659720312cd4a8028ac310e31a19ab845f3568fc8260d",
+  "unit_count": 23040,
+  "shard_count": 24,
+  "units_per_shard": 960,
+  "shards": [
+    {
+      "ordinal": 1,
+      "path": "shards/SHARD_001.json",
+      "git_blob_sha": "605f70d07d167e4302a4fe8e0d3d130705e85917",
+      "first_unit": 1,
+      "last_unit": 960
+    },
+    {
+      "ordinal": 2,
+      "path": "shards/SHARD_002.json",
+      "git_blob_sha": "cb3bf1a63678421489adc1595b2a81f67757252b",
+      "first_unit": 961,
+      "last_unit": 1920
+    },
+    {
+      "ordinal": 3,
+      "path": "shards/SHARD_003.json",
+      "git_blob_sha": "bf22b0c42ae40e97f077b71edb38dacc37226c63",
+      "first_unit": 1921,
+      "last_unit": 2880
+    },
+    {
+      "ordinal": 4,
+      "path": "shards/SHARD_004.json",
+      "git_blob_sha": "65d896ae37af870e2411516299b1bc836ca209e6",
+      "first_unit": 2881,
+      "last_unit": 3840
+    },
+    {
+      "ordinal": 5,
+      "path": "shards/SHARD_005.json",
+      "git_blob_sha": "4caaa2e15b7808d797ab3d5d3d71a9a7892d9382",
+      "first_unit": 3841,
+      "last_unit": 4800
+    },
+    {
+      "ordinal": 6,
+      "path": "shards/SHARD_006.json",
+      "git_blob_sha": "5f26ec2e04a278904e39ad3af0a4d38d01ce85ee",
+      "first_unit": 4801,
+      "last_unit": 5760
+    },
+    {
+      "ordinal": 7,
+      "path": "shards/SHARD_007.json",
+      "git_blob_sha": "f7daa916475ecec4ffaa1168831ba560cc61395c",
+      "first_unit": 5761,
+      "last_unit": 6720
+    },
+    {
+      "ordinal": 8,
+      "path": "shards/SHARD_008.json",
+      "git_blob_sha": "ce011e785cd514e9d8d0f1d0a905215eb06ed8dd",
+      "first_unit": 6721,
+      "last_unit": 7680
+    },
+    {
+      "ordinal": 9,
+      "path": "shards/SHARD_009.json",
+      "git_blob_sha": "77eefb330be768de03569588b4a7303a798d12e9",
+      "first_unit": 7681,
+      "last_unit": 8640
+    },
+    {
+      "ordinal": 10,
+      "path": "shards/SHARD_010.json",
+      "git_blob_sha": "0b950ba1597905ac0269ea5da654325010afa6e0",
+      "first_unit": 8641,
+      "last_unit": 9600
+    },
+    {
+      "ordinal": 11,
+      "path": "shards/SHARD_011.json",
+      "git_blob_sha": "90c295801e57473ba448ee1fab175954de995396",
+      "first_unit": 9601,
+      "last_unit": 10560
+    },
+    {
+      "ordinal": 12,
+      "path": "shards/SHARD_012.json",
+      "git_blob_sha": "ef26da315c00a0f692ee58bc3afbcece071b60e2",
+      "first_unit": 10561,
+      "last_unit": 11520
+    },
+    {
+      "ordinal": 13,
+      "path": "shards/SHARD_013.json",
+      "git_blob_sha": "dd1f9742a5e30dd32b31d3018feeb5b3b9853bd1",
+      "first_unit": 11521,
+      "last_unit": 12480
+    },
+    {
+      "ordinal": 14,
+      "path": "shards/SHARD_014.json",
+      "git_blob_sha": "72a5c32c34b4cf61c3c0b502f3dc725448087e9d",
+      "first_unit": 12481,
+      "last_unit": 13440
+    },
+    {
+      "ordinal": 15,
+      "path": "shards/SHARD_015.json",
+      "git_blob_sha": "7a15b38be38e9ee1d8aaee732ca143253d75cb35",
+      "first_unit": 13441,
+      "last_unit": 14400
+    },
+    {
+      "ordinal": 16,
+      "path": "shards/SHARD_016.json",
+      "git_blob_sha": "847747efa3a1d9d0eb95e91f85e65857ae605ddc",
+      "first_unit": 14401,
+      "last_unit": 15360
+    },
+    {
+      "ordinal": 17,
+      "path": "shards/SHARD_017.json",
+      "git_blob_sha": "ae964dcb42d6bf58c1afd3bda4ba3842cf08c67b",
+      "first_unit": 15361,
+      "last_unit": 16320
+    },
+    {
+      "ordinal": 18,
+      "path": "shards/SHARD_018.json",
+      "git_blob_sha": "467c040c54b8256415350cce714c6ef185aa10eb",
+      "first_unit": 16321,
+      "last_unit": 17280
+    },
+    {
+      "ordinal": 19,
+      "path": "shards/SHARD_019.json",
+      "git_blob_sha": "da65cac02bec37d007f98b31f7844cf7511a4777",
+      "first_unit": 17281,
+      "last_unit": 18240
+    },
+    {
+      "ordinal": 20,
+      "path": "shards/SHARD_020.json",
+      "git_blob_sha": "b0b81f5cf86ee914b82a5bf17847095b50105172",
+      "first_unit": 18241,
+      "last_unit": 19200
+    },
+    {
+      "ordinal": 21,
+      "path": "shards/SHARD_021.json",
+      "git_blob_sha": "558337523e7eb4489685e13e0539389a2763b941",
+      "first_unit": 19201,
+      "last_unit": 20160
+    },
+    {
+      "ordinal": 22,
+      "path": "shards/SHARD_022.json",
+      "git_blob_sha": "b2d9a7c8639d7c792c11190ee6860dee67d6487f",
+      "first_unit": 20161,
+      "last_unit": 21120
+    },
+    {
+      "ordinal": 23,
+      "path": "shards/SHARD_023.json",
+      "git_blob_sha": "4d9f33da9f61809beb960c0d851ad3bb1c6fde3a",
+      "first_unit": 21121,
+      "last_unit": 22080
+    },
+    {
+      "ordinal": 24,
+      "path": "shards/SHARD_024.json",
+      "git_blob_sha": "a625d14d5505f62781218488321bec2b05dddb37",
+      "first_unit": 22081,
+      "last_unit": 23040
+    }
+  ]
+}
