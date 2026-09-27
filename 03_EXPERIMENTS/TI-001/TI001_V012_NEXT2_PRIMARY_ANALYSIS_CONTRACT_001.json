@@ -1,0 +1,51 @@
+{
+  "analysis_id": "TI001_V012_NEXT2_PRIMARY_ANALYSIS_CONTRACT_001",
+  "status": "PRE_SPECIFIED_ANALYSIS_CONTRACT",
+  "source_plan": "TI001_V012_NEXT2_ANALYSIS_PLAN_001",
+  "source_design": "TI001_V012_NEXT2_DESIGN_SPECIFICATION_GATE_001",
+  "estimand": "Action-identity × future-assignment interaction on selection probability, with primary null contrast between INFORMATIVE and UNINFORMATIVE_NULL.",
+  "analysis_population": {
+    "execution": "TI001_V012_NEXT2_SCIENTIFIC_EXECUTION_RESULT_001",
+    "decision_count": 23040,
+    "inclusion": "Only records with validity == VALID.",
+    "invalid_handling": "Reported by condition; no imputation, substitution or outcome-dependent exclusion."
+  },
+  "outcome_encoding": {
+    "unit": "decision",
+    "selected_action": "parsed_action",
+    "candidate_actions": ["A","B","C","D"],
+    "future_assignment": "For each candidate action, its presented f[action] slot in the same decision.",
+    "selection_indicator": "One binary observation per candidate action: 1 if candidate action equals parsed_action, otherwise 0."
+  },
+  "primary_model": {
+    "family": "binomial_logistic",
+    "structure": "Selection indicator ~ action_identity * future_assignment * mapping_condition + presentation + domain + operationalisation",
+    "primary_interaction": "action_identity:future_assignment",
+    "primary_null_contrast": "Compare the action_identity:future_assignment interaction under INFORMATIVE versus UNINFORMATIVE_NULL.",
+    "random_effects": "Decision-level and domain/block intercept structure must be implemented only if the selected statistical runtime supports the specified binomial mixed model without changing the estimand.",
+    "fallback_rule": "No silent substitution of a different model. If the declared mixed-effects model cannot be executed reproducibly, analysis remains BLOCKED pending an explicit contract revision."
+  },
+  "balance_controls": {
+    "action_mapping": "All 24 action-to-future permutations are balanced by fixture design.",
+    "presentation": "Included as fixed effect.",
+    "domain": "Included as fixed effect.",
+    "operationalisation": "Included as fixed effect.",
+    "mapping_condition": "Included as fixed effect and interaction contrast factor."
+  },
+  "secondary_analysis": {
+    "name": "NULL_ACTION_FUTURE_INFORMATION_COMPARISON",
+    "estimand": "Delta_MI = MI(action;f) - MI(action;z) within UNINFORMATIVE_NULL.",
+    "status": "SECONDARY_EXPLORATORY",
+    "observed_value_bits": 0.002143,
+    "observed_ratio_MI_f_over_MI_z": 1.352674,
+    "inferential_method": "Randomization/permutation test only after the primary analysis contract is executed."
+  },
+  "prohibited_analysis_changes": [
+    "No outcome-dependent exclusions.",
+    "No recoding of invalid responses as an action.",
+    "No pooling with an independent second execution.",
+    "No post-hoc threshold selection.",
+    "No replacement of the primary model by MI, chi-square or Cramer's V."
+  ],
+  "interpretation_boundary": "The analysis may test mechanism discrimination within NEXT2. It does not by itself establish TGCV confirmation, causality, value effects, or Transformational Intelligence outside the tested configuration."
+}
