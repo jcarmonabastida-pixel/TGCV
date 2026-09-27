@@ -10,12 +10,13 @@ suppressPackageStartupMessages({
 })
 
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) != 2) {
-  stop("Usage: Rscript TI001_V012_NEXT2_PRIMARY_ANALYZER_001.R <result_json> <output_json>")
+if (length(args) != 3) {
+  stop("Usage: Rscript TI001_V012_NEXT2_PRIMARY_ANALYZER_001.R <result_json> <fixture_dir> <output_json>")
 }
 
 result_path <- args[[1]]
-output_path <- args[[2]]
+fixture_dir <- args[[2]]
+output_path <- args[[3]]
 
 EXPECTED_RESULT_SHA <- "4d63933cd508ce1749db2a1210caf6c49fe5233c18185fce87ed7d9fcdf1c103"
 EXPECTED_COUNT <- 23040L
@@ -35,6 +36,16 @@ stopifnot(identical(result$system_prompt_sha256,
 decisions <- result$decisions
 if (length(decisions) != EXPECTED_COUNT) stop("Unexpected decision count")
 
+# Reconstruct presented future assignment from the immutable fixture.
+fixture_files <- list.files(fixture_dir, pattern="^SHARD_[0-9]+\\.json$", full.names=TRUE)
+if (length(fixture_files) != 24L) stop("Expected exactly 24 fixture shards")
+fixture_units <- unlist(lapply(sort(fixture_files), function(p)
+  fromJSON(paste(readLines(p, encoding="UTF-8", warn=FALSE), collapse="\\n"),
+           simplifyDataFrame=FALSE)), recursive=FALSE)
+if (length(fixture_units) != EXPECTED_COUNT) stop("Unexpected fixture unit count")
+fixture_by_id <- setNames(fixture_units, vapply(fixture_units, function(x) x$id, character(1)))
+if (length(fixture_by_id) != EXPECTED_COUNT) stop("Fixture IDs are not unique")
+
 valid <- Filter(function(x) identical(x$validity, VALIDITY), decisions)
 invalid_count <- length(decisions) - length(valid)
 
@@ -42,9 +53,17 @@ rows <- vector("list", length(valid) * 4L)
 j <- 1L
 
 for (d in valid) {
-  f <- d$presented_mapping
-  if (is.null(f)) f <- d$f
-  if (is.null(f)) stop(paste("Missing presented mapping:", d$unit_id))
+  fu <- fixture_by_id[[d$unit_id]]
+  if (is.null(fu)) stop(paste("Missing fixture unit:", d$unit_id))
+  if (!identical(as.integer(fu$d), as.integer(d$d)) ||
+      !identical(as.integer(fu$o), as.integer(d$o)) ||
+      !identical(as.character(fu$m), as.character(d$mapping_condition)) ||
+      !identical(as.integer(fu$p), as.integer(d$presentation)) ||
+      !identical(as.integer(fu$k), as.integer(d$permutation_index)) ||
+      !identical(as.integer(fu$r), as.integer(d$replicate))) {
+    stop(paste("Result/fixture traceability mismatch:", d$unit_id))
+  }
+  f <- fu$f
 
   selected <- d$parsed_action
   if (!(selected %in% ACTIONS)) stop(paste("Invalid parsed action:", d$unit_id))
@@ -142,6 +161,8 @@ out <- list(
   analysis_specification="TI001_V012_NEXT2_PRIMARY_ANALYSIS_SPECIFICATION_001",
   authorization_gate="TI001_V012_NEXT2_PRIMARY_ANALYSIS_AUTHORIZATION_GATE_001",
   result_sha256=EXPECTED_RESULT_SHA,
+  fixture_dir_binding="TI001_V012_NEXT2_FIXTURE_REGENERATED_001",
+  fixture_unit_traceability="VALIDATED_FOR_ALL_VALID_DECISIONS",
   total_decisions=length(decisions),
   valid_decisions=length(valid),
   invalid_decisions=invalid_count,
