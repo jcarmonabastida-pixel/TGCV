@@ -1,0 +1,55 @@
+{
+  "artifact_id": "TI001_V012_NEXT_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+  "status": "AUTHORIZED",
+  "decision": "SCIENTIFIC_EXECUTION_AUTHORIZED",
+  "basis": {
+    "next_design_requirements": "TI001_V012_NEXT_DESIGN_REQUIREMENTS_GATE_001",
+    "next_design_specification": "TI001_V012_NEXT_DESIGN_SPECIFICATION_GATE_001",
+    "next_fixture_requirements": "TI001_V012_NEXT_FIXTURE_REQUIREMENTS_GATE_001",
+    "fixture_generation": "TI001_V012_NEXT_FIXTURE_GENERATION_GATE_001",
+    "fixture_integrity_preflight": "TI001_V012_NEXT_FIXTURE_INTEGRITY_PREFLIGHT_001",
+    "fixture_freeze": "TI001_V012_NEXT_FIXTURE_FREEZE_GATE_001",
+    "executor_implementation": "TI001_V012_NEXT_EXECUTOR_IMPLEMENTATION_GATE_001",
+    "executor_preflight": "TI001_V012_NEXT_EXECUTOR_PREFLIGHT_GATE_001"
+  },
+  "authorized_executor": {
+    "executor_id": "TI001-V012-NEXT-SCIENTIFIC-EXECUTOR-1-001",
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_EXECUTOR_1_001.py",
+    "commit": "ed9eea88a6483af59bfec1f9f7737876106bdd91"
+  },
+  "authorized_fixture": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT_FIXTURE_v001.json",
+    "schema": "TI001_V012_NEXT_FIXTURE_v001",
+    "fixture_version": "NEXT_v001",
+    "sha256": "7782e7652001ec8a64cd1f231c37e6c3c7cd065e672564140fdfa4626b185a5b",
+    "git_blob_sha": "1886160849aecdbda2904a0d3b593975077e1914",
+    "instance_count": 72,
+    "seed": 582031
+  },
+  "generation_configuration": {
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "low",
+    "max_output_tokens": 128,
+    "top_p": 0.98,
+    "tools": [],
+    "store": false
+  },
+  "constraints": {
+    "new_version_only": true,
+    "prior_v003_v004_immutable": true,
+    "fixture_substitution": false,
+    "retry": false,
+    "recoding": false,
+    "response_substitution": false,
+    "executor_2_repeat": false,
+    "post_hoc_modification": false,
+    "interpretation_during_execution": false
+  },
+  "authorization_boundary": {
+    "scientific_execution": true,
+    "analysis": false,
+    "interpretation": false,
+    "closure": false
+  },
+  "next_gate": "TI001_V012_NEXT_SCIENTIFIC_EXECUTION_RESULT_GATE_001"
+}
