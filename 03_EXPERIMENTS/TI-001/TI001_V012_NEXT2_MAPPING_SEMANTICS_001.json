@@ -1,0 +1,59 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_MAPPING_SEMANTICS_001",
+  "status": "CANONICAL_DESIGN_GATE_REQUIRED_BEFORE_FIXTURE_REGENERATION",
+  "immutable_version": "NEXT2_v001",
+  "purpose": "Formalize the exact pre-decision mapping semantics required to regenerate and validate the NEXT2 fixture. This artifact defines the realization relation; it does not authorize scientific execution.",
+  "notation": {
+    "f": "presented action-to-future-space mapping persisted in field f",
+    "z": "realized action-to-successor mapping persisted in field z",
+    "A": ["A","B","C","D"],
+    "slots": ["slot_1","slot_2","slot_3","slot_4"],
+    "composition": "For a slot permutation sigma, z(a)=sigma(f(a))."
+  },
+  "canonical_slot_permutations": {
+    "identity": {"slot_1":"slot_1","slot_2":"slot_2","slot_3":"slot_3","slot_4":"slot_4"},
+    "surface_shift_1": {"slot_1":"slot_2","slot_2":"slot_3","slot_3":"slot_4","slot_4":"slot_1"},
+    "contradictory_shift_2": {"slot_1":"slot_3","slot_2":"slot_4","slot_3":"slot_1","slot_4":"slot_2"}
+  },
+  "conditions": {
+    "INFORMATIVE": {
+      "rule": "z = identity composed with f",
+      "formal": "For every action a, z(a)=f(a).",
+      "dependency": "realized mapping is exactly the presented mapping.",
+      "validation": "All four action-slot pairs are equal between f and z."
+    },
+    "SURFACE_PERMUTED": {
+      "rule": "z = surface_shift_1 composed with f",
+      "formal": "For every action a, z(a)=surface_shift_1(f(a)).",
+      "dependency": "realized mapping is a fixed derangement of the presented mapping.",
+      "validation": "No action retains its presented slot; applying surface_shift_1 inverse to z recovers f.",
+      "interpretation": "The presentation surface is systematically permuted relative to the realized correspondence; no action identifier is privileged."
+    },
+    "UNINFORMATIVE_NULL": {
+      "rule": "z is generated deterministically from the frozen requirements digest, unit cell identifiers and replicate, without using f, k or the presented permutation.",
+      "formal": "z = PRP(seed=requirements_sha256, d, o, m, p, r), followed by canonical action-slot assignment.",
+      "dependency": "The realized mapping generator has no input dependency on the presented mapping f or permutation index k.",
+      "validation": "Generator inputs exclude f and k; replay with identical seed and cell/replicate identifiers reproduces z exactly."
+    },
+    "CONTRADICTORY": {
+      "rule": "z = contradictory_shift_2 composed with f",
+      "formal": "For every action a, z(a)=contradictory_shift_2(f(a)).",
+      "dependency": "realized mapping is systematically inconsistent with the presented mapping.",
+      "validation": "No action retains its presented slot and z differs from f by the fixed half-turn permutation; applying contradictory_shift_2 inverse to z recovers f."
+    }
+  },
+  "invariants": {
+    "bijection_f": true,
+    "bijection_z": true,
+    "informative_exact_equality": true,
+    "surface_shift_has_no_fixed_points": true,
+    "contradictory_shift_has_no_fixed_points": true,
+    "null_generation_independent_of_f": true,
+    "null_generation_independent_of_k": true,
+    "all_conditions_use_same_action_and_slot_vocabulary": true,
+    "realized_successor_hidden_pre_decision": true,
+    "scientific_execution_authorized": false
+  },
+  "regeneration_requirement": "The existing GENERATED_NOT_FROZEN fixture must not be frozen under the previous implicit realization rules. Regenerate it deterministically only after this semantic definition is accepted and its generator implementation is bound to this artifact.",
+  "authorization_boundary": "This artifact is a design/semantic specification only. It does not authorize scientific execution."
+}
