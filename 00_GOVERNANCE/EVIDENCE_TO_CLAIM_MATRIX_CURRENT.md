@@ -37,51 +37,50 @@ A material experimental result is propagated to this matrix when it adds, remove
 | C15 | Rust demonstrates observed Cargo/runtime reachability | F | Rust evidence boundary | No impact. | Separate governed runtime test |
 |  C16  |  TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value  |  H  |   D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 + C09 Bundle 003 + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4 TSTC v004 + VSL Synthetic Minimum v0.1 + VSL Paired E1/E2 v001 + TR-131 VisitAll |  SWIM supports bounded state/context → accessibility → `T_acc` → `ΔT_acc` and bounded trajectory linkage. IT-G1 adds bounded industrial evidence preserving distinctions among internal state transformation, external enabling condition and end-to-end outcome. C09 Bundle 003 adds bounded executable causal-operationalization evidence while preserving the distinction between intervention/accessibility and downstream outcome. C10C-002 adds a reproducible real-world bounded chain `Z → ΔS → T_acc* → ΔT_acc* → frozen causal estimand`, with structural-only predicates, explicit treatment/state separation, endpoint separation, and a negative result retained without post-hoc rescue. C10C-001 adds a complementary non-software boundary case preserving distinctions among structural state, candidate transformations, accessibility and realized transformations while preventing temporal leakage. C10C-003 adds a second randomized non-software boundary case preserving the same distinctions and explicitly qualifying the bounded scope of accessibility operationalization. C10C-004 adds a worked non-software translation example preserving the distinction among instrument semantics, raw variables, derived outcomes and TGCV constructs. It does not close downstream value boundaries or establish transversal validity. MT4 adds bounded methodological evidence preserving separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables. No claim-level upgrade. TSTC v004 provides primary bounded methodological evidence for application-fit of the translation protocol across heterogeneous synthetic fixtures, including cross-domain paths and negative controls; no causal, value, superiority, generality or industrial-validation claim upgrade. C05 adds bounded synthetic application-fit evidence preserving the distinctions among candidate transformations, admissibility, `T_acc`, transition, bounded trajectory fields, negative controls and explicit non-claims; no causal, value, superiority, generality or deployment claim is inferred. VSL Synthetic Minimum v0.1 extends the translation protocol to preserve an explicit downstream Outcome/Value distinction and an external VSL interface. It demonstrates implementation-level separation without establishing transversal empirical validity or a causal value pathway. VSL paired E1/E2 adds closed, independently reconstructed methodological evidence preserving the separation among `T_acc`, realized trajectory and downstream `V*`; no transversal empirical validity or claim-level upgrade follows. TR-131 VisitAll and PRISM V007 together provide bounded cross-domain methodological evidence for an executable translation from state to accessible transformations, realised transformations, successor states and changed accessible spaces. VisitAll contributes 20 transition records and PRISM 16; both satisfy independent reconstruction/integrity checks and V007 contains zero invalid records. The common representation preserves domain-specific transformation identities while deriving comparable reconfiguration descriptors. The result supports the cross-domain analytical translation layer as an operationalisation finding only; it does not establish representational gain, transversal validity, Transformational Intelligence, value linkage or ontological necessity. V011 is methodological evidence for the decision-level Transformational Intelligence research direction, not evidence of transversal validity, causal value linkage or ontological necessity. V012_NEXT adds bounded descriptive/traceability evidence that a controlled decision-selection experiment can preserve the pre-decision/post-decision distinction and mechanically reconstruct the decision-to-successor-`T_acc` chain for every included unit. It does not identify Q1/Q5, establish a general future-space mechanism, or upgrade C16. |  Closed independent-domain operationalization / downstream test  |
 
-## Material experimental evidence — TI-001 V012_NEXT
+## Material methodological evidence — TI-001 V012_NEXT
 
 **Case:** `TI001_V012_NEXT`  
 **Status:** `CLOSED — BOUNDED DESCRIPTIVE / TRACEABILITY EVIDENCE`  
 **Evidence class:** controlled experimental decision-selection and decision-to-`T_acc` traceability evidence; not construct validation, causal, value, superiority or TGCV-wide confirmation/falsification evidence.  
-**Closure gate:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_CLOSURE_GATE_001.json`  
+**Closure record:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_CLOSURE_GATE_001.json`  
 **Post-closure decision:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_POST_CLOSURE_DECISION_GATE_001.json`  
-**Execution result:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_EXECUTION_RESULT_001.json`  
+**Result:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_EXECUTION_RESULT_001.json`  
 **Result SHA-256:** `b45920191f4e7f25853606c0e719c73702145e2496254163d2b2fed504232c50`  
 **Fixture SHA-256:** `7782e7652001ec8a64cd1f231c37e6c3c7cd065e672564140fdfa4626b185a5b`
 
-### 1. Experimental object and scope
+### 1. Purpose and frozen scope
 
-V012_NEXT was designed to discriminate action-conditioned future-space correspondence from stable action preference while preserving a decision-before-realized-future boundary. The frozen execution contained 72 decision units.
+V012_NEXT was designed to discriminate an action-conditioned future-space correspondence mechanism from stable action preference while preserving a decision-before-realized-future boundary. It was executed as a controlled 72-unit experiment under the frozen fixture, executor, system prompt and response-validation bindings.
 
-### 2. Execution and audit evidence
-
-The scientific execution result gate passed with **72/72 valid responses** and exact fixture, schema, version, seed, prompt and validation bindings. The primary descriptive analysis and its audit also passed. No retry, recoding, substitution, imputation or pooling was used in the registered analysis.
-
-### 3. Quantitative findings
+### 2. Quantitative findings
 
 - Decision units: **72**; valid responses: **72/72**.
-- Informative mapping-consistent selection: **18/36 = 0.50**.
-- Informative action A selection: **18/18 = 1.00**.
-- Informative action B selection: **0/18 = 0.00**.
-- Baseline action A selection: **1.00**.
+- Informative mapping-consistent selection rate: **18/36 = 0.50**.
+- Informative action A selection rate: **18/18 = 1.00**.
+- Informative action B selection rate: **0/18 = 0.00**.
+- Baseline action A selection rate: **1.00**.
 - Decision-to-realized-`T_acc` reconstruction: **72/72 = 1.00**.
+- The observed mapping-consistent rate therefore arose from fixed selection of action A while the informative correspondence was balanced across A and B.
 
-The 0.50 mapping-consistent rate is therefore explained descriptively by fixed selection of action A while the informative correspondence was balanced across A and B.
+### 3. Scientific interpretation
 
-### 4. Scientific interpretation and boundaries
+The result does **not** discriminate Q1 or Q5: the observed fixed-action pattern is compatible with stable action preference and does not provide positive mechanism evidence for action-conditioned future-space tracking. Q2 and Q4 were descriptively stable across the tested presentation and operationalisation strata; Q3 showed no descriptive difference in mapping consistency under the tested baseline. Q6 is closed at the traceability/reconstruction level for this experiment.
 
-V012_NEXT does **not** discriminate Q1 or Q5: the observed fixed-action pattern is compatible with stable action preference and does not provide positive evidence for action-conditioned future-space tracking. Q2 and Q4 were descriptively stable across the tested presentation and operationalisation strata; Q3 showed no descriptive difference in mapping consistency under the tested baseline. Q6 is established at the traceability/reconstruction level for this experiment.
+### 4. Evidence-to-claim routing
 
-No TGCV-wide confirmation or falsification, causal claim, value claim, superiority claim or Core modification follows from V012_NEXT.
+**C16 — bounded methodological qualification.** V012_NEXT adds material evidence that a controlled decision-selection experiment can preserve the separation between the pre-decision information boundary and the post-decision realization layer, while mechanically reconstructing `S_t → selected action → S_t+1 → T_acc,t+1` for every included unit. This strengthens the bounded translation/traceability evidence but does not establish transversal validity or a claim-level upgrade.
 
-### 5. Evidence-to-claim routing
+**C02/C07/C08/C10/C11 — no claim-level upgrade.** V012_NEXT does not independently identify a general admissibility predicate, establish general temporal `T_acc` dynamics, estimate a causal trajectory effect, test a value pathway, or establish cross-domain validity.
 
-**C16 — material bounded methodological qualification.** V012_NEXT strengthens the evidence base for the translation/traceability protocol by demonstrating, under a controlled decision boundary, a mechanically reconstructable chain from present state and selected action to realized successor state and successor `T_acc`, without using the post-decision realization to determine the recorded pre-decision choice.
+### 5. Reproducibility and boundaries
 
-**C02, C07, C08, C10 and C11 — no claim-level upgrade.** V012_NEXT does not independently identify a general admissibility predicate, establish general temporal `T_acc` dynamics, estimate a causal trajectory effect, test a value pathway, or establish cross-domain validity.
+The execution result, fixture, prompt and validation bindings were hash-checked by the scientific execution result gate; the primary descriptive analysis and its audit passed. No retry, recoding, substitution, imputation, pooling or post-hoc inferential threshold was used in the registered analysis.
+
+The evidence is bounded to the frozen operational construct and 72-unit execution. It does not constitute TGCV-wide confirmation or falsification and does not modify the TGCV Core.
 
 ### 6. Governance disposition
 
-V012_NEXT is retained as cumulative material evidence. It changes the evidentiary record by adding a bounded decision-level traceability experiment, while leaving all claim statuses and the TGCV Core unchanged. Q1 and Q5 remain open; Q6 traceability is retained as established. NEXT2 is the governed subsequent design intended to make the competing mechanisms generate distinguishable predictions.
+V012_NEXT is admissible as **material bounded descriptive/traceability evidence**. Q1 and Q5 remain unresolved; Q6 remains established at the traceability level. The governed next step is NEXT2, whose design is registered separately and is required to make the competing mechanisms generate distinguishable predictions.
 
 ## Material experimental evidence — TI-001 V011 Transformational Intelligence
 
