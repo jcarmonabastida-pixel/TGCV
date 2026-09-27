@@ -1,0 +1,37 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_SCIENTIFIC_EXECUTION_AUTHORIZATION_001",
+  "status": "AUTHORIZED",
+  "decision": "NEXT2_SCIENTIFIC_EXECUTION_AUTHORIZED",
+  "fixture": {
+    "artifact": "TI001_V012_NEXT2_FIXTURE_REGENERATED_001",
+    "immutable_version": "NEXT2_v001",
+    "freeze_artifact": "TI001_V012_NEXT2_FIXTURE_FREEZE_001",
+    "freeze_sha256": "4df58c0829956e22a9058252a127e446f822c11d90741c6f5fb202876d92ff91",
+    "unit_count": 23040,
+    "shard_count": 24,
+    "units_per_shard": 960
+  },
+  "integrity_audit": {
+    "artifact": "TI001_V012_NEXT2_FROZEN_FIXTURE_INTEGRITY_AUDIT_001",
+    "status": "PASS",
+    "sha256": "61f36730d24d4270b301dd86b38cce3311fb8f24853ae8388950023de771d918"
+  },
+  "authorization_checks": {
+    "fixture_frozen": true,
+    "fixture_integrity_audit_pass": true,
+    "requirements_bound": true,
+    "mapping_semantics_bound": true,
+    "unit_count_bound": true,
+    "scientific_execution_not_previously_performed_on_frozen_fixture": true,
+    "fixture_modification_after_freeze": false
+  },
+  "authorization_scope": {
+    "execute_scientific_experiment": true,
+    "modify_frozen_fixture": false,
+    "modify_requirements": false,
+    "modify_mapping_semantics": false,
+    "modify_system_prompt": false
+  },
+  "scientific_execution": false,
+  "next_gate": "SCIENTIFIC_EXECUTION"
+}
