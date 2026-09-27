@@ -1,0 +1,27 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_PRIMARY_ANALYSIS_AUTHORIZATION_GATE_001",
+  "status": "PASS",
+  "decision": "PRIMARY_ANALYSIS_AUTHORIZED",
+  "analysis_specification": "TI001_V012_NEXT2_PRIMARY_ANALYSIS_SPECIFICATION_001",
+  "specification_commit": "48ee78dade4288956da53e5f11ae3721d1ef0fd6",
+  "result_artifact": "TI001_V012_NEXT2_SCIENTIFIC_EXECUTION_RESULT_001.json",
+  "result_sha256": "4d63933cd508ce1749db2a1210caf6c49fe5233c18185fce87ed7d9fcdf1c103",
+  "checks": {
+    "specification_registered": true,
+    "primary_estimand_pre_specified": true,
+    "exclusions_pre_specified": true,
+    "invalid_response_handling_pre_specified": true,
+    "secondary_analysis_separated": true,
+    "result_sha256_bound": true,
+    "fixture_immutable": true,
+    "scientific_execution_complete": true
+  },
+  "scope": {
+    "execute_primary_analysis": true,
+    "modify_result": false,
+    "modify_fixture": false,
+    "modify_system_prompt": false,
+    "redefine_primary_estimand": false
+  },
+  "next_gate": "PRIMARY_ANALYSIS_EXECUTION"
+}
