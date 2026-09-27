@@ -37,8 +37,9 @@
     ],
     "action_mapping_rule": "All 24 permutations of action identity to future-space assignment are balanced; each action occupies each assignment equally often.",
     "replicates_per_cell": 30,
-    "target_decision_units_per_execution": 3840,
-    "target_total_decision_units_two_executions": 7680
+    "decision_unit_count_formula": "4 domains × 5 operationalisations × 4 presentations × 4 mapping conditions × 24 action-to-future permutations × 30 replicates = 23040 decision units per execution",
+    "target_decision_units_per_execution": 23040,
+    "target_total_decision_units_two_executions": 46080
   },
   "protocol": {
     "decision_input": "Current state, four candidate actions, task context, and the currently assigned action-to-future-space correspondence descriptor only.",
