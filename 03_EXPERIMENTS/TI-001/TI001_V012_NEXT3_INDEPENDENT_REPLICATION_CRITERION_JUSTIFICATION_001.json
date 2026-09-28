@@ -1,0 +1,44 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_INDEPENDENT_REPLICATION_CRITERION_JUSTIFICATION_001",
+  "status": "CRITERION_NOT_JUSTIFIED",
+  "decision": "NO_SCIENTIFIC_REPLICATION_COUNT_CAN_BE_FROZEN",
+  "scope": "Pre-execution scientific replication criterion justification",
+  "question": "Does the current specification provide an independent, pre-execution scientific basis for a numerical replication criterion for NEXT3?",
+  "finding": "NO",
+  "routes_audited": {
+    "minimum_relevant_effect": {
+      "status": "REJECTED",
+      "basis": "No independent numerical MRE is specified or defensibly derivable from the current design."
+    },
+    "target_precision": {
+      "status": "REJECTED",
+      "basis": "No independent numerical precision threshold is specified or defensibly derivable from the current design."
+    }
+  },
+  "evidence": [
+    "TI001_V012_NEXT3_REPLICATION_COUNT_DECISION_001",
+    "TI001_V012_NEXT3_REPLICATION_CRITERION_GATE_001",
+    "TI001_V012_NEXT3_MINIMUM_RELEVANT_EFFECT_JUSTIFICATION_AUDIT_001",
+    "TI001_V012_NEXT3_PRECISION_THRESHOLD_JUSTIFICATION_AUDIT_001"
+  ],
+  "prohibited_substitutions": [
+    "Configured generator value 30",
+    "NEXT2 replication count",
+    "Runtime or monetary cost",
+    "Desired execution duration",
+    "Observed or pilot NEXT3 results",
+    "Arbitrary conventional effect or precision threshold"
+  ],
+  "consequence": {
+    "replication_count": "UNDETERMINED",
+    "scientific_execution_authorized": false,
+    "fixture_status": "FROZEN_NON_SCIENTIFIC",
+    "confirmatory_scientific_execution": "NOT_AUTHORIZED"
+  },
+  "valid_next_paths": [
+    "Obtain an independent domain/scientific justification for the MRE or precision criterion, then calculate and freeze the replication count.",
+    "Retain NEXT3 permanently as a frozen methodological fixture and do not perform confirmatory scientific execution under the current specification."
+  ],
+  "interpretation": "The absence of an independently justified replication criterion is a substantive design boundary, not a runtime or implementation defect. No numerical replication count should be invented to unlock execution.",
+  "next_gate": "SCIENTIFIC_REPLICATION_COUNT_FREEZE_OR_METHODOLOGICAL_CLOSURE"
+}
