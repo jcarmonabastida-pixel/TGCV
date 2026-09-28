@@ -20,11 +20,7 @@ b4e97d5441c45ab43da879986816803e590f055e
 
 The corrected MANIFEST_SHA256.md records the Git blob SHA and byte-level SHA-256 for the immutable bundle components and the freeze manifest.
 
-The current byte-level SHA-256 of MANIFEST_SHA256.md, established from the exact checkout at commit 9411188cbf366c68fc0dd46ab8fdf344ac4076e8, is:
-
-5720e895dd32f0e64f28591d095070905336dd4c89296c543b048033a42aca00
-
-This value identifies the current manifest content but is not recursively included in the manifest's own inventory.
+The byte-level SHA-256 of MANIFEST_SHA256.md is intentionally not embedded here. Its identity is recorded externally in the post-correction integrity audit and final freeze record, avoiding a recursive hash dependency.
 
 ## Environment
 
