@@ -1,0 +1,143 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_MINIMAL_IDENTIFIABILITY_REQUIREMENTS_001",
+  "status": "NEXT3_IDENTIFIABILITY_REQUIREMENTS_DEFINED",
+  "purpose": "Define the minimum pre-decision interface conditions required for NEXT3 to identify the Q1/Q5 mechanism that action selection responds to future-space information rather than stable action identity.",
+  "scope": {
+    "inherits_from": [
+      "TI001_V012_NEXT2_DESIGN_REQUIREMENTS_GATE_001",
+      "TI001_V012_NEXT2_DESIGN_SPECIFICATION_GATE_001",
+      "TI001_V012_NEXT2_MAPPING_SEMANTICS_001",
+      "TI001_V012_NEXT2_POST_CLOSURE_DECISION_GATE_001"
+    ],
+    "does_not_reopen": [
+      "NEXT2 execution",
+      "NEXT2 primary analysis",
+      "NEXT2 secondary analysis",
+      "previously completed Q2/Q4/Q6 work"
+    ]
+  },
+  "diagnostic_basis": {
+    "identified_issue": "NEXT2 defines action-to-slot correspondence but does not define independently observable semantic differences among slots that make the future-space correspondence informative before the decision.",
+    "consequence": "A reassignment of f may be formally different while remaining informationally indistinguishable to the decision agent; in that case Q1/Q5 are not identifiable from action selection.",
+    "unverified_hypothesis_to_check": "Whether mapping_condition or any other experimental-condition label was exposed to the NEXT2 decision agent must be established from the actual executor input path before NEXT3 is frozen. It must not be assumed from the analysis dataset alone."
+  },
+  "requirements": {
+    "R1_future_representation": {
+      "requirement": "Each future-space slot must correspond to a concrete, pre-decision observable representation of a distinct future-space property.",
+      "minimum_condition": "slot_1..slot_4 cannot be mere opaque labels; each must have a defined semantic content available to the decision agent before selection."
+    },
+    "R2_slot_discriminability": {
+      "requirement": "The four slot representations must be observably distinguishable using information present in the decision input.",
+      "minimum_condition": "For every pair of slots, there must be at least one pre-decision observable feature on which the representations differ."
+    },
+    "R3_action_to_future_information": {
+      "requirement": "f must map each candidate action to one of the semantically defined future representations.",
+      "minimum_condition": "Changing f while holding action identity, current state, task context and presentation controlled must change which observable future representation is associated with the action."
+    },
+    "R4_realized_correspondence": {
+      "requirement": "z must define the post-decision realized action-to-successor correspondence consistently with the pre-decision representation.",
+      "minimum_condition": "After the decision, deterministic execution must permit independent reconstruction of action -> realized successor -> realized T_acc, without changing the pre-decision meaning of f."
+    },
+    "R5_hidden_successor_boundary": {
+      "requirement": "The realized successor and realized transformation space must remain unavailable at decision time.",
+      "hidden_before_decision": [
+        "realized successor state",
+        "realized transformation",
+        "realized T_acc",
+        "downstream trajectory",
+        "outcome",
+        "value",
+        "reward",
+        "utility",
+        "performance",
+        "success",
+        "quality"
+      ]
+    },
+    "R6_primary_identifying_contrast": {
+      "requirement": "The primary contrast must identify whether selection changes when the semantic future representation assigned to an action is reassigned, independently of action identity.",
+      "estimand": "action_identity × future_representation_assignment interaction on selection probability",
+      "identification_logic": "Action identities and future representations must both be balanced so that a systematic response to reassignment cannot be explained by stable preference for a particular action identity."
+    },
+    "R7_null_identifiability": {
+      "requirement": "The null condition must remove the action-to-future informational correspondence while preserving comparable surface complexity and observability.",
+      "minimum_condition": "The null must not expose a condition label that directly tells the agent whether the mapping is informative or null."
+    },
+    "R8_presentation_controls": {
+      "requirement": "Retain NEXT2 controls for order, position, orientation and neutral formatting.",
+      "minimum_condition": "Semantic future representations must remain identifiable after these presentation transformations."
+    },
+    "R9_domain_operationalisation_controls": {
+      "requirement": "Retain the four domains and five operationalisations unless a pre-specified identifiability analysis demonstrates that a specific combination is incompatible with the new semantic representation.",
+      "minimum_condition": "Any exclusion must occur before scientific execution and be documented as a design constraint, not a response to results."
+    },
+    "R10_non_normative_interface": {
+      "requirement": "No normative, reward, utility, value or performance signal may define which future representation should be selected.",
+      "minimum_condition": "Future representations describe structurally observable transformation possibilities, not desirability."
+    },
+    "R11_interface_blinding": {
+      "requirement": "Only information legitimately available to the decision agent before selection may enter the decision prompt.",
+      "minimum_condition": "Implementation-specific condition identifiers, analysis labels and post-decision variables must be absent unless explicitly part of the scientific manipulation and independently justified."
+    },
+    "R12_independent_reconstruction": {
+      "requirement": "The complete chain must be reconstructable independently.",
+      "chain": [
+        "S_t",
+        "candidate actions",
+        "semantic future representations",
+        "f",
+        "selected action",
+        "z",
+        "realized successor S_t+1",
+        "T_acc,t",
+        "T_acc,t+1"
+      ]
+    }
+  },
+  "required_pre_execution_tests": [
+    {
+      "test": "semantic_slot_identifiability",
+      "pass_condition": "An independent reviewer can distinguish every slot from the decision input alone without observing the realized successor."
+    },
+    {
+      "test": "mapping_reassignment_identifiability",
+      "pass_condition": "For the same action identity, changing f changes the semantic future representation presented as associated with that action."
+    },
+    {
+      "test": "null_blinding",
+      "pass_condition": "The decision agent cannot infer INFORMATIVE versus NULL from an explicit condition label or equivalent implementation artifact."
+    },
+    {
+      "test": "post_decision_separation",
+      "pass_condition": "Realized successor and realized T_acc are absent from all pre-decision inputs."
+    },
+    {
+      "test": "primary_contrast_reconstructability",
+      "pass_condition": "An independent analyst can reconstruct the planned action-identity × future-representation-assignment contrast from immutable records without post-hoc recoding."
+    }
+  ],
+  "execution_blockers": [
+    "Any slot remains an opaque identifier without semantic pre-decision content.",
+    "Two or more slots are not observably distinguishable before decision.",
+    "Changing f does not change the observable future representation associated with an action.",
+    "The decision agent receives realized successor, realized transformation or realized T_acc before selection.",
+    "The decision agent receives an explicit mapping-condition label that reveals informative versus null status.",
+    "The primary Q1/Q5 contrast cannot be reconstructed independently from immutable records.",
+    "A normative or performance signal determines or discloses the intended selection."
+  ],
+  "retained_NEXT2_controls": [
+    "balanced action identities",
+    "balanced action-to-future assignments",
+    "presentation randomisation",
+    "matched null condition",
+    "four domains",
+    "five operationalisations",
+    "pre-specified primary estimand",
+    "independent reconstruction",
+    "two independent complete executions",
+    "no pooling with prior experiments",
+    "no retry, substitution or post-hoc threshold"
+  ],
+  "next_gate": "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001",
+  "scientific_execution_authorized": false
+}
