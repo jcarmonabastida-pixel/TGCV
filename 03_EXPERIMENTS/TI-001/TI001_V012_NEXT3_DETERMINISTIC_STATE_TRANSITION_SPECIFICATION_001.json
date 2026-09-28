@@ -1,0 +1,43 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_DETERMINISTIC_STATE_TRANSITION_SPECIFICATION_001",
+  "status": "NEXT3_STATE_TRANSITION_SPECIFIED",
+  "scientific_execution": false,
+  "state_model": {
+    "state": "S_t = (domain_state, resource_state, graph_state, workflow_state)",
+    "canonical_serialization": "JSON with sorted object keys and deterministic array ordering",
+    "state_hash": "SHA-256 of canonical serialized S_t"
+  },
+  "transition": {
+    "inputs": ["S_t", "selected_action", "z"],
+    "deterministic": true,
+    "rule": "Apply the structural transformation profile z[selected_action] to S_t using the domain/operationalisation-specific deterministic transition operator.",
+    "no_randomness": true,
+    "no_reward_or_value_term": true
+  },
+  "realized_transformation": {
+    "definition": "The deterministic structural change applied by the selected action under z.",
+    "recorded_as": "explicit transformation descriptor",
+    "derived_after_decision": true
+  },
+  "t_acc": {
+    "definition": "The set of transformations accessible from the resulting successor state under the frozen domain/operationalisation transition rules.",
+    "derivation": "Enumerate the deterministic candidate transformations available from S_t_plus_1 and retain only structurally valid transitions.",
+    "no_value_or_performance_filter": true,
+    "deterministic": true
+  },
+  "reconstruction": {
+    "required_inputs": ["S_t", "selected_action", "z", "domain", "operationalisation"],
+    "required_outputs": ["S_t_plus_1", "realized_transformation", "T_acc_t_plus_1"],
+    "independent_reconstruction_must_match": [
+      "canonical S_t_plus_1 hash",
+      "canonical realized_transformation serialization",
+      "canonical T_acc_t_plus_1 serialization/hash"
+    ]
+  },
+  "pre_decision_boundary": "No transition output or T_acc value may enter the decision input.",
+  "authorization": {
+    "scientific_execution": false,
+    "fixture_freeze": false
+  },
+  "next_gate": "TI001_V012_NEXT3_STATE_TRANSITION_IMPLEMENTATION_PREFLIGHT_001"
+}
