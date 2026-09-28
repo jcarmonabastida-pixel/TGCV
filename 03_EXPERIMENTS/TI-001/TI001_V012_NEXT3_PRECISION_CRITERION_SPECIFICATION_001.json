@@ -1,0 +1,40 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PRECISION_CRITERION_SPECIFICATION_001",
+  "status": "PRECISION_SCALE_SPECIFIED_THRESHOLD_PENDING",
+  "scientific_execution_authorized": false,
+  "purpose": "Specify the estimand scale and uncertainty definition for the NEXT3 replication criterion without selecting a numerical precision threshold retrospectively.",
+  "primary_estimand": {
+    "description": "Action-identity × future-representation-assignment interaction on selection probability, with informative correspondence contrasted against the matched uninformative null.",
+    "model_scale": "log_odds",
+    "primary_parameter": "action_identity:future_representation_assignment interaction",
+    "decision_unit": "one decision",
+    "candidate_rows_per_decision": 4
+  },
+  "precision_definition": {
+    "criterion_mode": "TARGET_PRECISION",
+    "uncertainty_measure": "two_sided_95_percent_confidence_interval",
+    "target_quantity": "primary interaction parameter on the declared model scale",
+    "threshold_parameter": "maximum_acceptable_confidence_interval_half_width",
+    "threshold_status": "PENDING_INDEPENDENT_SCIENTIFIC_JUSTIFICATION"
+  },
+  "dependence_structure": {
+    "rule": "Candidate-action rows belonging to the same decision are not treated as independent scientific repetitions.",
+    "independent_repetition_unit": "complete experimental execution/replication as defined by the final execution protocol",
+    "within_decision_dependence": "MUST_BE_ACCOUNTED_FOR",
+    "cross_replication_independence": "MUST_BE_SPECIFIED_AND_JUSTIFIED_BEFORE_EXECUTION"
+  },
+  "prohibited_basis_for_threshold": [
+    "observed NEXT2 effect size",
+    "observed NEXT3 effect size",
+    "post-hoc confidence interval width",
+    "desired replication count",
+    "execution cost or runtime alone"
+  ],
+  "replication_count_status": "NOT_AUTHORIZED",
+  "next_required_input": "Independent scientific justification for the maximum acceptable confidence-interval half-width on the primary interaction parameter scale.",
+  "references": [
+    "TI001_V012_NEXT3_REPLICATION_CRITERION_GATE_001",
+    "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_001",
+    "TI001_V012_NEXT3_REPLICATION_DESIGN_ANALYSIS_001"
+  ]
+}
