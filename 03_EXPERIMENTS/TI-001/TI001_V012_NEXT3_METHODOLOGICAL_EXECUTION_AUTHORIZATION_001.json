@@ -1,0 +1,25 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_METHODOLOGICAL_EXECUTION_AUTHORIZATION_001",
+  "status": "METHODOLOGICAL_EXECUTION_AUTHORIZED",
+  "authorization_gate": "TI001_V012_NEXT3_METHODOLOGICAL_EXECUTION_AUTHORIZATION_GATE_001",
+  "scientific_execution_authorized": false,
+  "methodological_execution_authorized": true,
+  "authorization_scope": "NEXT3 methodological identifiability study only",
+  "authorization_basis": [
+    "Repurposing decision recorded.",
+    "IAC1-IAC8 acceptance criteria specified.",
+    "Identifiability preflight IAC1-IAC8 passed.",
+    "Replication count is not required for this methodological execution.",
+    "Confirmatory, causal, value and TGCV-wide claims are explicitly out of scope."
+  ],
+  "execution_constraints": [
+    "Use frozen design and implementation artifacts only.",
+    "Do not modify acceptance criteria after execution begins.",
+    "Do not perform scientific decision inference beyond the predefined methodological criteria.",
+    "Preserve independent reconstruction and provenance.",
+    "Record complete hashes and execution metadata.",
+    "Any failed methodological criterion blocks completion."
+  ],
+  "replication_count": "NOT_APPLICABLE",
+  "next_required_artifact": "Methodological execution result with complete provenance and IAC1-IAC8 outcomes."
+}
