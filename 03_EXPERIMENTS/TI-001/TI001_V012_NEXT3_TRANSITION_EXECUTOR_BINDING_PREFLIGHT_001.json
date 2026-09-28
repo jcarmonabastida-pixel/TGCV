@@ -1,0 +1,17 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_TRANSITION_EXECUTOR_BINDING_PREFLIGHT_001",
+  "status": "BLOCKED_PENDING_SIMULATOR_IMPLEMENTATION",
+  "decision": "DO_NOT_FREEZE",
+  "specification_blob_sha1": "df684f273b6cdd44260a1de37e496cbfeb8aedac",
+  "checks": {
+    "pre_decision_boundary": "PASS_SPECIFIED",
+    "z_post_decision_boundary": "PASS_SPECIFIED",
+    "deterministic_transition_rule": "BLOCKED_NOT_IMPLEMENTED",
+    "S_t_plus_1_reconstruction": "BLOCKED_NOT_IMPLEMENTED",
+    "T_acc_t_plus_1_derivation": "BLOCKED_NOT_IMPLEMENTED",
+    "independent_reconstruction": "BLOCKED_NOT_IMPLEMENTED"
+  },
+  "scientific_execution": false,
+  "fixture_frozen": false,
+  "next_action": "Define the deterministic simulator state/transition and T_acc derivation contract before generating or freezing the fixture."
+}
