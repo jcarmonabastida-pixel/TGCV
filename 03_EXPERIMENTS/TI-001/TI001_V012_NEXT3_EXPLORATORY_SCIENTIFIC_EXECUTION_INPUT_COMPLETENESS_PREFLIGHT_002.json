@@ -1,0 +1,51 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_INPUT_COMPLETENESS_PREFLIGHT_002",
+  "status": "PASS",
+  "decision": "SCIENTIFIC_EXECUTION_INPUT_COMPLETE",
+  "scope": "Current frozen CANDIDATE_FIXTURE_003 for authorized exploratory scientific execution with REPLICATES=3",
+  "authorization": {
+    "artifact": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+    "execution_type": "EXPLORATORY_SCIENTIFIC",
+    "replicates": 3,
+    "confirmatory": false
+  },
+  "fixture": {
+    "artifact": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "freeze": "TI001_V012_NEXT3_FIXTURE_FREEZE_002",
+    "sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "unit_count": 23040
+  },
+  "checks": {
+    "S_t_serialized": true,
+    "S_t_sha256_serialized": true,
+    "S_t_matches_bound_domain_baseline": true,
+    "task_context_serialized": true,
+    "task_context_sha256_serialized": true,
+    "task_context_matches_bound_specification": true,
+    "candidate_actions_serialized": true,
+    "presented_profiles_serialized": true,
+    "decision_input_reconstructible": true,
+    "z_serialized_postdecision": true,
+    "condition_metadata_not_in_decision_input": true,
+    "successor_not_in_decision_input": true,
+    "realized_transformation_not_in_decision_input": true,
+    "T_acc_not_in_decision_input": true,
+    "outcome_value_reward_utility_performance_not_in_decision_input": true,
+    "fixture_binding_current": true,
+    "replicates_equals_3": true,
+    "unit_count_equals_23040": true
+  },
+  "stale_gate_supersession": {
+    "artifact": "TI001_V012_NEXT3_SCIENTIFIC_EXECUTION_INPUT_COMPLETENESS_PREFLIGHT_001",
+    "status": "HISTORICAL_STALE",
+    "reason": "It evaluated the pre-amendment generator and predates the current CANDIDATE_FIXTURE_003 binding."
+  },
+  "execution_boundary": {
+    "preflight": true,
+    "scientific_execution_performed": false,
+    "decision_generated": false,
+    "inference_performed": false
+  },
+  "decision": "CURRENT_FROZEN_EXPLORATORY_EXECUTION_INPUTS_ARE_COMPLETE",
+  "next_gate": "EXECUTION_RUN_PREFLIGHT"
+}
