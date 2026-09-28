@@ -1,6 +1,6 @@
-# TGCV — Evidence-to-Claim Matrix — v1.40
+# TGCV — Evidence-to-Claim Matrix — Current v1.40
 
-**Status:** GOVERNANCE CONTROL ARTIFACT — VERSIONED  
+**Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-09-28  
 **Predecessor:** v1.39  
 **Incremental governance update:** Adds the closed TI-001 V012 NEXT2 direct primary contrast result and its secondary-MI traceability limitation to the cumulative evidence record, routed primarily to C16. No claim-level upgrade, TGCV Core modification, or TGCV-wide confirmation/falsification is introduced.
