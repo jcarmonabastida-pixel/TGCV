@@ -1,0 +1,41 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_METHODOLOGICAL_EXECUTION_AUTHORIZATION_GATE_001",
+  "status": "AUTHORIZATION_GATE_READY_PENDING_DECISION",
+  "scientific_execution_authorized": false,
+  "methodological_execution_authorized": false,
+  "purpose": "Provide a separate explicit gate for deciding whether to execute NEXT3 as a methodological identifiability study.",
+  "preconditions": {
+    "repurposing_decision_recorded": true,
+    "identifiability_acceptance_criteria_defined": true,
+    "identifiability_preflight_passed": true,
+    "replication_count_required": false,
+    "scientific_execution_false": true
+  },
+  "scope_if_authorized": [
+    "Test implementation and fixture identifiability properties.",
+    "Verify deterministic reconstruction and mapping traceability.",
+    "Verify the declared null and predecision information boundary."
+  ],
+  "explicitly_out_of_scope": [
+    "TGCV-wide confirmation or falsification.",
+    "Causal inference.",
+    "Value, utility, reward, performance, quality or success effects.",
+    "Confirmatory replication claim.",
+    "Selection of a statistically sufficient replication count."
+  ],
+  "execution_constraints": [
+    "Use only frozen design and implementation artifacts.",
+    "No post-hoc modification of acceptance criteria.",
+    "No outcome-dependent exclusion.",
+    "No scientific interpretation beyond the predefined methodological criteria.",
+    "Preserve independent reconstruction capability.",
+    "Record complete provenance and hashes for all executed artifacts."
+  ],
+  "authorization_decision": "PENDING_EXPLICIT_AUTHORIZATION",
+  "required_authorization": "An explicit decision must be recorded before any methodological execution is performed.",
+  "references": [
+    "TI001_V012_NEXT3_REPURPOSING_DECISION_001",
+    "TI001_V012_NEXT3_IDENTIFIABILITY_ACCEPTANCE_CRITERIA_001",
+    "TI001_V012_NEXT3_IDENTIFIABILITY_PREFLIGHT_RESULT_001"
+  ]
+}
