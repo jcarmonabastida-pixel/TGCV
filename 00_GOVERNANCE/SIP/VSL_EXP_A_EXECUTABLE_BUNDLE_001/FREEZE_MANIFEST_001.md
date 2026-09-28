@@ -1,6 +1,6 @@
 # A Bundle Freeze Manifest 001
 
-**Status:** FREEZE CANDIDATE — NOT FROZEN  
+**Status:** FREEZE READY — NOT FROZEN  
 **Date:** 2026-09-28
 
 ## Canonical checkout
@@ -24,26 +24,24 @@ The byte-level SHA-256 of MANIFEST_SHA256.md is intentionally not embedded here.
 
 ## Environment
 
-Python 3.x standard library only; exact interpreter version must be recorded at final freeze.  
-OS/platform must be recorded at final freeze.  
+Python 3.12.3; WSL2; Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39.  
 Network access: prohibited.
 
 ## Seeds
 
 582031 is fixed as bundle identifier. No treatment/control random assignment exists.
 
-## Freeze blockers
+## Freeze conditions
 
-- final exact execution checkout;
-- exact interpreter version;
-- OS/platform;
-- byte-level SHA-256 integrity verification of all immutable components;
-- executor-2 delivery boundary;
-- post-correction integrity audit;
-- final freeze record.
+- exact execution environment: CLOSED;
+- byte-level SHA-256 integrity verification of all immutable components: CLOSED;
+- Executor-2 delivery boundary: CLOSED;
+- post-correction integrity audit: CLOSED;
+- final freeze record: CLOSED;
+- explicit final freeze action and authorization: PENDING.
 
 ## Execution boundary
 
 **Execution authorization: NO**
 
-The bundle remains **NOT FROZEN** and no scientific execution is authorized by this manifest.
+The bundle remains **NOT FROZEN** pending the explicit final freeze action. No scientific execution is authorized by this manifest.
