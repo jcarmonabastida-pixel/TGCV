@@ -88,6 +88,7 @@ def load_fixture(path: Path) -> list[dict]:
             raise ValueError(f"f is not bijective: {row.get('unit_id')}")
         if sorted(row["z"].values()) != ["slot_1", "slot_2", "slot_3", "slot_4"]:
             raise ValueError(f"z is not bijective: {row.get('unit_id')}")
+
     return rows
 
 
@@ -154,8 +155,11 @@ def main(argv: list[str]) -> int:
             decision_input = build_decision_input(row)
             # Guard: the serialized model input must not contain fixture-only/post-decision fields.
             serialized_input = canonical(decision_input)
-            forbidden = ("mapping_condition_metadata", '" + "f" + "', '" + "z" + "', S_t_plus_1, realized_transformation, T_acc, reward, value, utility, performance, outcome")
-            if any(token in serialized_input for token in ["mapping_condition_metadata", '"f":', '"z":', "S_t_plus_1", "realized_transformation", "T_acc", "reward", "value", "utility", "performance", "outcome"]):
+            if any(token in serialized_input for token in [
+                "mapping_condition_metadata", '"f":', '"z":', "S_t_plus_1",
+                "realized_transformation", "T_acc", "reward", "value", "utility",
+                "performance", "outcome"
+            ]):
                 raise RuntimeError(f"Pre-decision projection violation at {row['unit_id']}")
 
             request_timestamp = datetime.now(timezone.utc).isoformat()
