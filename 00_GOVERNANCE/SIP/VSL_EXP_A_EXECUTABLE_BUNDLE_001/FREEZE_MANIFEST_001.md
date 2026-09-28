@@ -5,19 +5,8 @@
 
 ## Canonical checkout
 
-Repository: jcarmonabastida-pixel/TGCV  
-Commit: 9411188cbf366c68fc0dd46ab8fdf344ac4076e8
+The exact audited checkout is recorded in the post-correction integrity audit, not embedded in this manifest, to avoid recursive commit-reference dependencies.
 
-## Immutable components
-
-The executable bundle consists of:
-
-- EXECUTION_SPEC.md
-- execute.py
-- EXECUTOR_2_RECONSTRUCTION_SPEC.md
-- frozen A VSL reference
-
-MANIFEST_SHA256.md is the canonical integrity manifest. Its own byte-level SHA-256 is intentionally excluded from its inventory to avoid self-reference.
 
 ## Frozen VSL reference
 
