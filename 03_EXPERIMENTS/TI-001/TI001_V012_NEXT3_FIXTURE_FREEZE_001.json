@@ -1,0 +1,47 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_FIXTURE_FREEZE_001",
+  "status": "FIXTURE_FROZEN",
+  "decision": "FREEZE_PASS",
+  "scope": "Non-scientific NEXT3 fixture freeze only",
+  "basis": {
+    "final_fixture_binding_preflight": "TI001_V012_NEXT3_FIXTURE_BINDING_PREFLIGHT_FINAL_001",
+    "preflight_commit": "dc9b5cc0ecea2a4872adbe81847b8de105cfb3b8",
+    "preflight_status": "FINAL_FIXTURE_BINDING_PREFLIGHT_PASS"
+  },
+  "freeze": {
+    "fixture_type": "NON_SCIENTIFIC_METHODOLOGICAL_FIXTURE",
+    "scientific_execution_authorized": false,
+    "scientific_replication_count_frozen": false,
+    "generator_configuration_30_is_not_scientific_replication_count": true
+  },
+  "frozen_bindings": {
+    "decision_input_projection": "TI001_V012_NEXT3_DECISION_INPUT_PROJECTION_001",
+    "system_prompt": "TI001_V012_NEXT3_SYSTEM_PROMPT_001.txt",
+    "mapping_semantics": "TI001_V012_NEXT3_MAPPING_SEMANTICS_001.json",
+    "state_transition_specification": "TI001_V012_NEXT3_DETERMINISTIC_STATE_TRANSITION_SPECIFICATION_001.json",
+    "operator_matrix": "TI001_V012_NEXT3_DOMAIN_OPERATIONALISATION_OPERATOR_MATRIX_001.json",
+    "fixture_generator": "TI001_V012_NEXT3_FIXTURE_GENERATOR_001.py",
+    "simulator": "TI001_V012_NEXT3_DETERMINISTIC_SIMULATOR_001.py",
+    "independent_reconstruction": "TI001_V012_NEXT3_INDEPENDENT_RECONSTRUCTION_001.py"
+  },
+  "evidence": {
+    "methodological_gate": "METHODOLOGICAL_GATE_CLOSED",
+    "interface_binding": "PASS",
+    "implementation_binding": "PASS",
+    "semantic_completeness": "PASS",
+    "reconstruction_parity": "PASS",
+    "final_binding_preflight": "PASS"
+  },
+  "prohibitions": [
+    "No scientific decision generation is authorized by this freeze.",
+    "No model-mediated scientific execution is authorized by this freeze.",
+    "No scientific replication count is implied by this freeze.",
+    "The fixture must not be interpreted as scientific evidence of selection behaviour, causal effect, value, utility, performance, success, or TGCV-wide validity."
+  ],
+  "next_gate": "SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE",
+  "notes": [
+    "This freeze establishes a reproducible non-scientific fixture boundary.",
+    "Any later scientific execution requires a separate explicit authorization gate and an independently justified scientific replication criterion.",
+    "Historical preflight artifacts remain preserved and are not rewritten."
+  ]
+}
