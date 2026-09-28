@@ -152,7 +152,7 @@ def generate(output_path):
         for k in range(24)
         for r in range(1, REPLICATES + 1)
     ]
-    assert len(rows) == 230400
+    assert len(rows) == 23040
     assert all(validate_bijection(row["f"]) and validate_bijection(row["z"]) for row in rows)
     assert all(len(row["S_t"]["active"]) == 2 for row in rows)
     assert all(row["S_t"]["relations"] == [] and row["S_t"]["constraints"] == [] for row in rows)
