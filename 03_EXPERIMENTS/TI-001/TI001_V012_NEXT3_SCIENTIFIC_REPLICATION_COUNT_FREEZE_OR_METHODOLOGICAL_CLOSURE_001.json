@@ -1,0 +1,51 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SCIENTIFIC_REPLICATION_COUNT_FREEZE_OR_METHODOLOGICAL_CLOSURE_001",
+  "status": "METHODOLOGICAL_CLOSURE",
+  "decision": "RETAIN_FROZEN_METHODOLOGICAL_FIXTURE_NO_SCIENTIFIC_EXECUTION",
+  "scope": "NEXT3 replication-count and scientific-execution closure",
+  "basis": {
+    "fixture": "TI001_V012_NEXT3_FIXTURE_FREEZE_001",
+    "authorization_gate": "TI001_V012_NEXT3_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+    "independent_criterion_justification": "TI001_V012_NEXT3_INDEPENDENT_REPLICATION_CRITERION_JUSTIFICATION_001"
+  },
+  "replication": {
+    "status": "UNDETERMINED_BY_CURRENT_SPECIFICATION",
+    "scientific_replication_count": null,
+    "configured_generator_replicates": 30,
+    "configured_generator_replicates_interpretation": "UNAUTHORIZED_IMPLEMENTATION_PARAMETER_ONLY"
+  },
+  "scientific_execution": {
+    "authorized": false,
+    "decision_generation": false,
+    "model_mediated_execution": false,
+    "confirmatory_execution": false
+  },
+  "closure_rationale": [
+    "The methodological identifiability gate passed.",
+    "The non-scientific fixture binding preflight passed.",
+    "The non-scientific fixture was frozen.",
+    "No independent numerical minimum relevant effect was justified.",
+    "No independent numerical precision threshold was justified.",
+    "Therefore no scientifically defensible replication count can be frozen under the current specification.",
+    "Selecting a numerical count solely to enable execution would introduce an unsupported scientific design choice."
+  ],
+  "preserved_assets": [
+    "Frozen NEXT3 non-scientific fixture",
+    "Methodological execution result",
+    "Independent reconstruction evidence",
+    "Simulator semantic completeness evidence",
+    "Replication design sensitivity analysis",
+    "Replication criterion audits",
+    "Scientific execution authorization gate"
+  ],
+  "prohibitions": [
+    "Do not execute the frozen fixture as a confirmatory scientific experiment under the current specification.",
+    "Do not treat the generator value 30 as a scientific replication count.",
+    "Do not backfill a replication count from NEXT2.",
+    "Do not infer a replication count from runtime, cost, or desired sample size.",
+    "Do not use future observed results to define the pre-execution criterion retrospectively."
+  ],
+  "scientific_reopening_condition": "Scientific execution may be reconsidered only after an independently justified pre-execution replication criterion is established and a new authorization gate is passed.",
+  "final_interpretation": "NEXT3 is methodologically closed and reproducibly frozen, but scientifically underdetermined with respect to replication count. This is a design closure, not scientific evidence for or against the NEXT3 hypothesis.",
+  "next_gate": "NONE_UNDER_CURRENT_SPECIFICATION"
+}
