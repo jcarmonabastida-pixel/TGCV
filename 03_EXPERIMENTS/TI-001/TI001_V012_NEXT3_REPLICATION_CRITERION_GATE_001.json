@@ -1,0 +1,47 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_REPLICATION_CRITERION_GATE_001",
+  "status": "CRITERION_REQUIRED_BEFORE_REPLICATION_FREEZE",
+  "scientific_execution_authorized": false,
+  "purpose": "Pre-execution gate defining what must be specified before a replication count can be frozen for NEXT3.",
+  "primary_estimand": "Action-identity × future-representation-assignment interaction on selection probability, with informative correspondence contrasted against the matched uninformative null.",
+  "allowed_justification_modes": [
+    "MINIMUM_RELEVANT_EFFECT",
+    "TARGET_PRECISION"
+  ],
+  "minimum_relevant_effect_mode": {
+    "required_inputs": [
+      "effect_scale",
+      "minimum_relevant_effect",
+      "dependence_assumption",
+      "target_power",
+      "type_I_error_if_used",
+      "replication_allocation"
+    ],
+    "prohibition": "The minimum relevant effect must not be selected from observed NEXT3 scientific results or chosen solely to obtain a desired replication count."
+  },
+  "target_precision_mode": {
+    "required_inputs": [
+      "estimand_scale",
+      "maximum_acceptable_uncertainty",
+      "dependence_assumption",
+      "replication_allocation"
+    ],
+    "prohibition": "The precision target must be specified before scientific execution and must not be selected retrospectively from observed NEXT3 results."
+  },
+  "dependence_requirement": {
+    "status": "MANDATORY",
+    "rule": "The calculation must distinguish decision-level rows from genuinely independent scientific repetitions and must not treat the four candidate-action rows from one decision as independent observations.",
+    "current_status": "NOT_SPECIFIED"
+  },
+  "candidate_replication_counts": [3, 5, 10, 15, 30],
+  "selection_rule": {
+    "status": "NOT_YET_APPLIED",
+    "rule": "Choose the smallest candidate replication count that satisfies the pre-specified criterion under the declared assumptions; if none satisfies it, expand the candidate set rather than relaxing the criterion."
+  },
+  "current_decision": "NO_REPLICATION_COUNT_FROZEN",
+  "next_required_artifact": "A pre-execution parameterization of either MINIMUM_RELEVANT_EFFECT or TARGET_PRECISION, including explicit dependence assumptions.",
+  "references": [
+    "TI001_V012_NEXT3_REPLICATION_DESIGN_ANALYSIS_001",
+    "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001"
+  ]
+}
