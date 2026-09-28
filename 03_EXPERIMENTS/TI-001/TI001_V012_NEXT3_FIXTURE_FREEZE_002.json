@@ -1,0 +1,122 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_FIXTURE_FREEZE_002",
+  "status": "FIXTURE_FROZEN",
+  "decision": "FREEZE_PASS",
+  "freeze_type": "FIXTURE_FREEZE",
+  "scope": "Non-scientific NEXT3 current candidate fixture freeze for CANDIDATE_FIXTURE_003 / three configured repetitions",
+  "canonical_state": {
+    "repository": "jcarmonabastida-pixel/TGCV",
+    "branch": "main",
+    "freeze_commit": "b375baeefdc93180da73701e6d66d4244d196f14",
+    "freeze_commit_message": "Reconcile current NEXT3 three-replication fixture binding"
+  },
+  "fixture": {
+    "artifact_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "status": "CURRENT_CANDIDATE",
+    "sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "size_bytes": 62335069,
+    "unit_count": 23040,
+    "replicates": 3,
+    "cardinality_formula": "4 domains × 5 operationalisations × 4 conditions × 4 presentations × 24 exhaustive profile bijections × 3 repetitions",
+    "structural_preflight": "TI001_V012_NEXT3_FIXTURE_STRUCTURAL_PREFLIGHT_RESULT_001",
+    "structural_preflight_status": "PASS"
+  },
+  "frozen_bindings": {
+    "q1_q5_design_coverage_audit": {
+      "artifact": "TI001_V012_NEXT3_Q1_Q5_DESIGN_COVERAGE_AUDIT_001.json",
+      "blob_sha1": "6679831b89850b04b83ae4705cd6ddb725a88fab"
+    },
+    "decision_input_projection": {
+      "artifact": "TI001_V012_NEXT3_DECISION_INPUT_PROJECTION_001.json",
+      "blob_sha1": "bc96e3bbf01d2d5b6b386f4371def1682dea5a31"
+    },
+    "system_prompt": {
+      "artifact": "TI001_V012_NEXT3_SYSTEM_PROMPT_001.txt",
+      "blob_sha1": "c8abc3c5bbb2ec9d226b37c7e8c7cf872f8c35e4"
+    },
+    "mapping_semantics": {
+      "artifact": "TI001_V012_NEXT3_MAPPING_SEMANTICS_001.json",
+      "blob_sha1": "0115fb2bf9995dd2b1ea4c989db895d87d647bb9"
+    },
+    "state_transition_specification": {
+      "artifact": "TI001_V012_NEXT3_DETERMINISTIC_STATE_TRANSITION_SPECIFICATION_001.json",
+      "blob_sha1": "3f97bb1b1fa57b06a31140cd5f5977fd2cf74e88"
+    },
+    "domain_operationalisation_operator_matrix": {
+      "artifact": "TI001_V012_NEXT3_DOMAIN_OPERATIONALISATION_OPERATOR_MATRIX_001.json",
+      "blob_sha1": "bc8fba0957c4e245b66dcb371168423d221567f7"
+    },
+    "domain_valid_baseline_state_specification": {
+      "artifact": "TI001_V012_NEXT3_DOMAIN_VALID_BASELINE_STATE_SPECIFICATION_001.json",
+      "blob_sha1": "631f20f554af2e7eda1621822cfbfe34c387b6ab"
+    },
+    "predecision_state_context_amendment": {
+      "artifact": "TI001_V012_NEXT3_PREDECISION_STATE_CONTEXT_SPECIFICATION_AMENDMENT_001.json",
+      "blob_sha1": "3be4009e144a29a573b5ab69ac7495b1325a520e"
+    },
+    "fixture_generator": {
+      "artifact": "TI001_V012_NEXT3_FIXTURE_GENERATOR_003.py",
+      "blob_sha1": "6ac8af921320e1f4a8d37ed631e353d6b8bd2d9a",
+      "commit": "3a5c84b8528412fca1f1e41eaa37752d67ba409",
+      "configured_replicates": 3,
+      "permutation_scheme": "24 exhaustive bijections of four profiles"
+    },
+    "deterministic_simulator": {
+      "artifact": "TI001_V012_NEXT3_DETERMINISTIC_SIMULATOR_001.py",
+      "blob_sha1": "0d7813e6ad3857a91030eeb3cb4523159b9a4555"
+    },
+    "independent_reconstruction": {
+      "artifact": "TI001_V012_NEXT3_INDEPENDENT_RECONSTRUCTION_001.py",
+      "blob_sha1": "5de912cc4644d66fa3a1465f581461b3dd56b1f3"
+    },
+    "current_fixture_structural_preflight": {
+      "artifact": "TI001_V012_NEXT3_FIXTURE_STRUCTURAL_PREFLIGHT_RESULT_001.json",
+      "blob_sha1": "09598c567ba3ffc65197384ad061e7a6c23456a9"
+    },
+    "current_binding_reconciliation": {
+      "artifact": "TI001_V012_NEXT3_CURRENT_FIXTURE_BINDING_RECONCILIATION_001.json",
+      "blob_sha1": "6ce894e7537cf5a3c7aa9007cf6a826e062e5468"
+    }
+  },
+  "binding_invariants": {
+    "q1_q5_design_coverage": "PASS",
+    "predecision_boundary": "PASS",
+    "S_t_serialized_and_hashed": true,
+    "task_context_serialized_and_hashed": true,
+    "f_bijection": true,
+    "z_bijection": true,
+    "balanced_24_profile_permutations": true,
+    "null_independent_of_f": true,
+    "null_independent_of_selected_action": true,
+    "condition_labels_hidden_from_decision_input": true,
+    "postdecision_variables_hidden_from_decision_input": true,
+    "transition_deterministic": true,
+    "reward_value_performance_terms_absent": true,
+    "scientific_replication_count": 3,
+    "scientific_execution_authorized": false
+  },
+  "historical_predecessors": {
+    "TI001_V012_NEXT3_FIXTURE_FREEZE_001": {
+      "status": "HISTORICAL_SUPERSEDED_FOR_CURRENT_BINDING",
+      "reason": "Bound the earlier generator/configuration and former configured value 30; it is preserved unchanged as historical governance evidence."
+    },
+    "TI001_V012_NEXT3_FIXTURE_BINDING_PREFLIGHT_FINAL_001": {
+      "status": "HISTORICAL_SUPERSEDED_FOR_CURRENT_BINDING",
+      "reason": "Bound the earlier fixture/generator configuration and explicitly recorded configured_replicates=30; it is preserved unchanged as historical evidence."
+    }
+  },
+  "scientific_boundary": {
+    "scientific_execution": false,
+    "scientific_execution_authorized": false,
+    "scientific_decision_generated": false,
+    "scientific_inference_performed": false,
+    "interpretation": "This freeze establishes the current reproducible fixture boundary only. It does not constitute scientific execution, a scientific result, or a scientific decision."
+  },
+  "immutability_policy": "Any modification to the current candidate fixture, generator binding, decision-input contract, mapping semantics, transition specification, or other frozen binding requires a new immutable fixture version and a new binding/freeze record.",
+  "next_gate": "SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE",
+  "notes": [
+    "This freeze supersedes TI001_V012_NEXT3_FIXTURE_FREEZE_001 for current fixture binding without rewriting the historical artifact.",
+    "The current fixture is exactly CANDIDATE_FIXTURE_003 with 23040 units and three configured repetitions.",
+    "The earlier freeze remains historical and is not a binding for the current candidate."
+  ]
+}
