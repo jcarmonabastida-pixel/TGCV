@@ -1,0 +1,33 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_REPLICATION_COUNT_DECISION_001",
+  "status": "REPLICATION_COUNT_UNDETERMINED",
+  "scientific_execution_authorized": false,
+  "decision": "NO_REPLICATION_COUNT_FROZEN",
+  "rationale": {
+    "precision_route": "REJECTED_FOR_LACK_OF_INDEPENDENT_NUMERICAL_PRECISION_THRESHOLD",
+    "minimum_relevant_effect_route": "REJECTED_FOR_LACK_OF_INDEPENDENT_NUMERICAL_MRE",
+    "basis": "The current scientific specification does not provide an independent domain-specific justification for either a numerical precision threshold or a minimum relevant interaction effect."
+  },
+  "current_generator_state": {
+    "configured_replicates": 30,
+    "status": "UNAUTHORIZED_CONFIGURATION",
+    "interpretation": "The value 30 remains an implementation parameter only and is not a scientifically approved replication count."
+  },
+  "prohibited_decisions": [
+    "Do not freeze 30 because it is already present in the generator.",
+    "Do not replace 30 with 3 merely to match NEXT2.",
+    "Do not select 5, 10, 15, or any other count from runtime, cost, convenience, or expected results."
+  ],
+  "next_design_status": "NEXT3_REQUIRES_REPURPOSING_OR_INDEPENDENT_SCIENTIFIC_JUSTIFICATION",
+  "allowed_paths": [
+    "Obtain an independent scientific/domain justification for a replication criterion and then calculate the required count.",
+    "Repurpose NEXT3 as a pre-execution methodological/identifiability study without claiming a confirmatory replication-count determination."
+  ],
+  "references": [
+    "TI001_V012_NEXT3_REPLICATION_CRITERION_GATE_001",
+    "TI001_V012_NEXT3_PRECISION_CRITERION_SPECIFICATION_001",
+    "TI001_V012_NEXT3_PRECISION_THRESHOLD_JUSTIFICATION_AUDIT_001",
+    "TI001_V012_NEXT3_MINIMUM_RELEVANT_EFFECT_JUSTIFICATION_AUDIT_001",
+    "TI001_V012_NEXT3_REPLICATION_DESIGN_ANALYSIS_001"
+  ]
+}
