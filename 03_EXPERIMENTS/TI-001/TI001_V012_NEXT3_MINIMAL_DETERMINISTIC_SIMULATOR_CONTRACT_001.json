@@ -1,0 +1,47 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_MINIMAL_DETERMINISTIC_SIMULATOR_CONTRACT_001",
+  "status": "NEXT3_SIMULATOR_CONTRACT_SPECIFIED",
+  "scientific_execution": false,
+  "state": {
+    "representation": "finite labeled transition system",
+    "S_t": {
+      "nodes": "fixed finite set of integer-labeled state elements",
+      "active": "sorted list of active element identifiers",
+      "relations": "sorted list of directed labeled edges",
+      "constraints": "sorted list of integer constraint descriptors"
+    },
+    "canonicalization": "sort all lists lexicographically; JSON object keys sorted"
+  },
+  "profile_to_transition": {
+    "slot_1": {"reachable_change_count":1,"constraint_count":1,"composition_depth":1,"dependency_count":1},
+    "slot_2": {"reachable_change_count":2,"constraint_count":1,"composition_depth":1,"dependency_count":2},
+    "slot_3": {"reachable_change_count":3,"constraint_count":2,"composition_depth":2,"dependency_count":2},
+    "slot_4": {"reachable_change_count":4,"constraint_count":3,"composition_depth":3,"dependency_count":3}
+  },
+  "operator": {
+    "input": ["S_t","selected_action","z","domain","operationalisation"],
+    "rule": "For the selected action, apply exactly the finite structural edit associated with z[selected_action]. The edit modifies only structural state fields; it never consults reward, value, utility, performance, success, quality, or outcome.",
+    "determinism": "same canonical inputs produce byte-identical outputs",
+    "action_identity": "selects the candidate action only; it contributes no normative preference"
+  },
+  "t_acc": {
+    "definition": "All structurally valid one-step edits from S_t_plus_1 permitted by the same finite operator family.",
+    "enumeration": "Enumerate every candidate action A/B/C/D and every profile slot_1..slot_4; apply the corresponding deterministic edit; retain candidates satisfying the frozen structural validity predicates.",
+    "validity_predicates": [
+      "state remains within finite state bounds",
+      "all referenced elements exist",
+      "all relation endpoints exist",
+      "all declared constraints remain syntactically valid"
+    ],
+    "ordering": "canonical lexicographic ordering of serialized transformation descriptors",
+    "no_normative_filter": true
+  },
+  "reconstruction": {
+    "independent_executor": "must implement the same finite edit rules independently and compare canonical hashes of S_t_plus_1, realized_transformation, and T_acc_t_plus_1"
+  },
+  "authorization": {
+    "scientific_execution": false,
+    "fixture_freeze": false
+  },
+  "next_gate": "TI001_V012_NEXT3_SIMULATOR_CONTRACT_PREFLIGHT_001"
+}
