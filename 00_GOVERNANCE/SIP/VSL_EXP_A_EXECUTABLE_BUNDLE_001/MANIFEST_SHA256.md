@@ -6,8 +6,8 @@ Date: 2026-09-28
 
 ## Canonical checkout
 
-Repository: jcarmonabastida-pixel/TGCV
-Commit: f74119e7de2e57dbb269dee300f72df43787a15c
+The exact audited checkout is recorded in the post-correction integrity audit, not embedded in this manifest, to avoid recursive commit-reference dependencies.
+
 
 ## Frozen VSL reference
 
