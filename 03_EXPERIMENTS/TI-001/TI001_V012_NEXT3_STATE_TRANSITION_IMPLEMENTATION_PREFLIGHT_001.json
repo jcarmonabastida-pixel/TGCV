@@ -1,0 +1,23 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_STATE_TRANSITION_IMPLEMENTATION_PREFLIGHT_001",
+  "status": "BLOCKED_SPECIFICATION_UNDERDEFINED",
+  "decision": "DO_NOT_FREEZE",
+  "specification_blob_sha1": "3f97bb1b1fa57b06a31140cd5f5977fd2cf74e88",
+  "checks": {
+    "canonical_state_serialization": true,
+    "deterministic_inputs": true,
+    "explicit_transition_operator": true,
+    "transition_operator_fully_defined": false,
+    "explicit_tacc_derivation": true,
+    "tacc_candidate_set_fully_defined": false,
+    "independent_reconstruction_outputs": true,
+    "no_value_filter": true
+  },
+  "scientific_execution": false,
+  "fixture_frozen": false,
+  "blocking_reasons": [
+    "The transition operator is referenced but not defined for the four domains/five operationalisations.",
+    "The candidate transformation enumeration and structural-validity rule for T_acc are not concretely defined."
+  ],
+  "next_action": "Define the finite deterministic simulator transition operators and exact T_acc enumeration rules for every domain/operationalisation before fixture generation."
+}
