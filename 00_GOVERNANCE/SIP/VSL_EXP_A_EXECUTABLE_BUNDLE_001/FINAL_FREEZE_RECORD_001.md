@@ -28,7 +28,7 @@ The audit status is:
 | FREEZE_MANIFEST_001.md | 5747fe74f4bed458fe3db1ec0003356d0a44d569 | 9b7217e2f738609ce051a7910384a7a68750605a0b6303ab248f681b7919e59a |
 | execute.py | 4165bf5a112187e312cbd2c9c2728927fdefa888 | b1dbdd7b470e8731e48ac9acad54edaab5e7b0afd2847409a7f526a315ddf0dd |
 | Frozen A VSL reference | b4e97d5441c45ab43da879986816803e590f055e | — |
-| MANIFEST_SHA256.md | 489aaaa4a2c80adabeca9629fcba15c87ff725d3743e5be3946cbe655461f27f | 489aaaa4a2c80adabeca9629fcba15c87ff725d3743e5be3946cbe655461f27f |
+| MANIFEST_SHA256.md | 132710d4e55f9df60f89e04fe52dd6ca7575cfdc| b2bd44af8292ee22bebac0caffef5149961eabd65a1538e9282b90102ebc7800
 
 ## Exact execution environment
 
