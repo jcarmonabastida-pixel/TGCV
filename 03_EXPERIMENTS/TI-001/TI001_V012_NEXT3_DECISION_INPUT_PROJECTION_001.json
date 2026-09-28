@@ -1,0 +1,46 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_DECISION_INPUT_PROJECTION_001",
+  "status": "NEXT3_DECISION_INPUT_PROJECTION_SPECIFIED",
+  "scientific_execution": false,
+  "input_contract": {
+    "visible_pre_decision": [
+      "S_t",
+      "task_context",
+      "candidate_actions",
+      "presented_structural_transformation_profile_for_each_candidate"
+    ],
+    "profile_fields": [
+      "reachable_change_count",
+      "constraint_count",
+      "composition_depth",
+      "dependency_count"
+    ],
+    "hidden_pre_decision": [
+      "mapping_condition_metadata",
+      "f",
+      "z",
+      "S_t+1",
+      "realized_transformation",
+      "T_acc_t+1",
+      "downstream_trajectory",
+      "outcome",
+      "value",
+      "reward",
+      "utility",
+      "performance",
+      "success",
+      "quality"
+    ]
+  },
+  "projection_rule": "Construct the agent input only from S_t, task_context, candidate_actions, and the structural profile assigned to each candidate action. Do not serialize or expose the complete fixture row.",
+  "traceability": [
+    "decision_input_sha256",
+    "selected_action",
+    "unit_id",
+    "post_decision_realization_record"
+  ],
+  "authorization": {
+    "scientific_execution": false,
+    "fixture_freeze": false
+  }
+}
