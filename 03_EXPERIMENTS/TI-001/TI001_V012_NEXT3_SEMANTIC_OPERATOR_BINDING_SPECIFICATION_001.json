@@ -1,0 +1,58 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SEMANTIC_OPERATOR_BINDING_SPECIFICATION_001",
+  "status": "SEMANTIC_OPERATOR_BINDING_SPECIFIED",
+  "scientific_execution": false,
+  "fixture_freeze": false,
+  "purpose": "Define the deterministic binding from structural future-space profiles, domains and operationalisations to successor states, realized transformations and T_acc before implementation.",
+  "profile_dimensions": {
+    "reachable_change_count": "number_of_new_state_elements_added",
+    "constraint_count": "number_of_new_structural_constraints_added",
+    "composition_depth": "number_of_composition_layers_added",
+    "dependency_count": "number_of_dependency_relations_added"
+  },
+  "domain_binding": {
+    "D1_spatial_planning": "node_and_spatial_relation_structure",
+    "D2_resource_planning": "resource_node_and_allocation_relation_structure",
+    "D3_graph_reconfiguration": "graph_node_and_edge_structure",
+    "D4_workflow_state_machine": "workflow_node_and_transition_structure"
+  },
+  "operationalisation_binding": {
+    "O1_cardinality": "vary_reachable_element_cardinality",
+    "O2_topology": "vary_relation_topology",
+    "O3_depth": "vary_composition_layer_depth",
+    "O4_constraints": "vary_structural_constraint_set",
+    "O5_composition": "combine_the_above_structural_edits"
+  },
+  "transition_rule": {
+    "input": [
+      "S_t",
+      "selected_action",
+      "z[selected_action]",
+      "domain",
+      "operationalisation"
+    ],
+    "deterministic": true,
+    "normative_filter": false,
+    "rule": "Apply every profile dimension explicitly according to the selected domain and operationalisation binding; each dimension must produce a traceable structural component in the realized transformation."
+  },
+  "t_acc_rule": {
+    "definition": "All valid one-step structural transformations obtainable from S_t+1 by applying every action A/B/C/D with every profile slot under the same domain and operationalisation binding.",
+    "enumeration": "exhaustive",
+    "ordering": "canonical_lexicographic",
+    "validity": [
+      "finite_state_bounds",
+      "existing_relation_endpoints",
+      "syntactically_valid_constraints"
+    ],
+    "normative_filter": false
+  },
+  "reconstruction_requirement": {
+    "independent_implementation": true,
+    "required_outputs": [
+      "S_t_plus_1_sha256",
+      "realized_transformation_sha256",
+      "t_acc_sha256"
+    ]
+  },
+  "blocking_rule": "No fixture freeze or scientific execution is authorized until simulator and independent reconstruction both implement this binding and pass semantic completeness and parity preflights."
+}
