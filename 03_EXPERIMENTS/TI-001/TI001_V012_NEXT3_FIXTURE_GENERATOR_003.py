@@ -27,7 +27,7 @@ PRESENTATIONS = ["P1_order", "P2_position", "P3_orientation", "P4_format"]
 CONDITIONS = ["INFORMATIVE", "SURFACE_PERMUTED", "UNINFORMATIVE_NULL", "CONTRADICTORY"]
 ACTIONS = ["A", "B", "C", "D"]
 PROFILES = ["slot_1", "slot_2", "slot_3", "slot_4"]
-REPLICATES = 30  # implementation parameter only; not a scientific count
+REPLICATES = 3  # exploratory scientific execution parameter; not a claim of statistical sufficiency
 
 PROFILE_VALUES = {
     "slot_1": [1, 1, 1, 1],
