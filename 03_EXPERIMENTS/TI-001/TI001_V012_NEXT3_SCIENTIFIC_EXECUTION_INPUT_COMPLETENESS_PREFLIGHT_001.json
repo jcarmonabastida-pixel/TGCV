@@ -1,0 +1,45 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SCIENTIFIC_EXECUTION_INPUT_COMPLETENESS_PREFLIGHT_001",
+  "status": "BLOCKED_MISSING_FROZEN_DECISION_INPUT_FIELDS",
+  "scope": "NEXT3 exploratory scientific execution input completeness",
+  "scientific_execution": false,
+  "decision": "DO_NOT_CREATE_OR_RUN_SCIENTIFIC_EXECUTOR_YET",
+  "authorization_reference": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+  "checks": {
+    "decision_input_projection_requires_S_t": true,
+    "transition_specification_requires_S_t": true,
+    "transition_specification_requires_selected_action": true,
+    "transition_specification_requires_z": true,
+    "fixture_generator_contains_S_t": false,
+    "fixture_generator_contains_task_context": false,
+    "fixture_generator_contains_selected_action": false,
+    "fixture_generator_contains_z": true,
+    "scientific_executor_can_construct_complete_input_without_new_specification": false
+  },
+  "evidence": {
+    "decision_input_projection": "TI001_V012_NEXT3_DECISION_INPUT_PROJECTION_001",
+    "transition_specification": "TI001_V012_NEXT3_DETERMINISTIC_STATE_TRANSITION_SPECIFICATION_001",
+    "fixture_generator": "TI001_V012_NEXT3_FIXTURE_GENERATOR_001.py",
+    "system_prompt": "TI001_V012_NEXT3_SYSTEM_PROMPT_001.txt"
+  },
+  "blocking_reasons": [
+    "The scientific decision input contract requires S_t, but the frozen fixture generator does not serialize S_t.",
+    "The scientific decision input contract requires task_context, but the frozen fixture generator does not serialize a task_context field.",
+    "S_t is also a required input for the deterministic post-decision transition and independent reconstruction.",
+    "Constructing an initial state or task context inside the executor would introduce an execution rule not explicitly frozen in the current fixture contract."
+  ],
+  "preservation": {
+    "fixture_not_modified": true,
+    "authorization_not_modified": true,
+    "replication_count_not_modified": true,
+    "estimand_not_modified": true,
+    "historical_artifacts_not_rewritten": true
+  },
+  "required_next_artifact": "A pre-execution amendment/specification that freezes the exact S_t and task_context representation for every scientific decision unit, followed by a fresh input-completeness/binding preflight.",
+  "prohibition": [
+    "Do not infer S_t from domain or operationalisation.",
+    "Do not silently use an empty/default S_t.",
+    "Do not silently synthesize task_context inside the executor.",
+    "Do not execute scientific decisions until the missing fields are frozen and bound."
+  ]
+}
