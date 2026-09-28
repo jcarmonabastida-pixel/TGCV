@@ -1,7 +1,7 @@
 # VSL A Executable Bundle — Post-Correction Integrity Audit 001
 
 **Date:** 2026-09-28  
-**Audited canonical bundle state:** current canonical state after commit dd5b400962ad6106d468105431ab512f126f8572  
+**Audited canonical bundle state:** current canonical bundle state immediately preceding this audit update  
 **Status:** AUDIT PASS — INTEGRITY COHERENT; BUNDLE NOT FROZEN
 
 ## Scope
@@ -15,7 +15,7 @@ Audit of the canonical contents of VSL_EXP_A_EXECUTABLE_BUNDLE_001 after correct
 | EXECUTION_SPEC.md | 63e27ced5606c8e60606c695ea6d95610c59439b |
 | EXECUTOR_2_RECONSTRUCTION_SPEC.md | b87b3911e322d6d35b89fdabf0d806372c102eea |
 | FREEZE_MANIFEST_001.md | 5747fe74f4bed458fe3db1ec0003356d0a44d569 |
-| MANIFEST_SHA256.md | a50ba47ddc062967b298195aabff3cd1e29692ca |
+| MANIFEST_SHA256.md | 132710d4e55f9df60f89e04fe52dd6ca7575cfdc |
 | execute.py | 4165bf5a112187e312cbd2c9c2728927fdefa888 |
 | Frozen A VSL reference | b4e97d5441c45ab43da879986816803e590f055e |
 
@@ -27,7 +27,7 @@ Audit of the canonical contents of VSL_EXP_A_EXECUTABLE_BUNDLE_001 after correct
 | EXECUTOR_2_RECONSTRUCTION_SPEC.md | 62e90c68789ce7a6f6aa41a00879afa2d51c6702af56d1cf7cdea8ab985cd754 |
 | FREEZE_MANIFEST_001.md | 9b7217e2f738609ce051a7910384a7a68750605a0b6303ab248f681b7919e59a |
 | execute.py | b1dbdd7b470e8731e48ac9acad54edaab5e7b0afd2847409a7f526a315ddf0dd |
-| MANIFEST_SHA256.md | 489aaaa4a2c80adabeca9629fcba15c87ff725d3743e5be3946cbe655461f27f |
+| MANIFEST_SHA256.md | b2bd44af8292ee22bebac0caffef5149961eabd65a1538e9282b90102ebc7800 |
 
 ## Checks
 
@@ -45,15 +45,13 @@ Audit of the canonical contents of VSL_EXP_A_EXECUTABLE_BUNDLE_001 after correct
 
 **AUDIT PASS — INTEGRITY COHERENT; BUNDLE NOT FROZEN**
 
-The corrected integrity structure is internally coherent at the audited checkout.
+The corrected integrity structure is internally coherent at the audited canonical bundle state.
 
-This audit does not freeze the executable bundle and does not authorize scientific execution.
+This audit does not freeze the executable bundle and does not authorize scientific execution. The bundle remains pending the explicit final freeze action.
 
 ## Remaining freeze conditions
 
-- final exact execution environment;
-- independent Executor-2 delivery boundary;
-- any remaining freeze-specific governance requirements;
-- final freeze record.
+- explicit final freeze action and authorization;
+- final coherent freeze-state verification.
 
 **Execution authorization: NO**
