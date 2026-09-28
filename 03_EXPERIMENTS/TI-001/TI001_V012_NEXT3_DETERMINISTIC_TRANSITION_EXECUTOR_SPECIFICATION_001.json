@@ -1,0 +1,63 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_DETERMINISTIC_TRANSITION_EXECUTOR_SPECIFICATION_001",
+  "status": "NEXT3_TRANSITION_EXECUTOR_SPECIFIED",
+  "scientific_execution": false,
+  "purpose": "Define the deterministic post-decision chain required for independent reconstruction without performing scientific execution.",
+  "chain": [
+    "decision_input",
+    "selected_action",
+    "unit_specific_z",
+    "S_t_plus_1",
+    "T_acc_t_plus_1"
+  ],
+  "pre_decision_boundary": {
+    "visible": [
+      "S_t",
+      "task_context",
+      "candidate_actions",
+      "presented_structural_transformation_profile_for_each_candidate"
+    ],
+    "hidden": [
+      "mapping_condition_metadata",
+      "f",
+      "z",
+      "S_t_plus_1",
+      "realized_transformation",
+      "T_acc_t_plus_1",
+      "downstream_trajectory",
+      "outcome",
+      "value",
+      "reward",
+      "utility",
+      "performance",
+      "success",
+      "quality"
+    ]
+  },
+  "post_decision_execution": {
+    "step_1": "Record exactly one selected_action returned by the decision agent.",
+    "step_2": "Resolve the unit-specific z mapping from the frozen fixture; z is not available to the agent before selection.",
+    "step_3": "Apply the deterministic simulator transition to S_t using selected_action and z.",
+    "step_4": "Persist the resulting S_t_plus_1 and realized transformation.",
+    "step_5": "Derive T_acc_t_plus_1 deterministically from S_t_plus_1 under the frozen accessibility rule."
+  },
+  "reconstruction_requirements": [
+    "decision_input_sha256",
+    "selected_action",
+    "fixture_unit_id",
+    "z",
+    "S_t",
+    "S_t_plus_1",
+    "realized_transformation",
+    "T_acc_t_plus_1"
+  ],
+  "prohibitions": [
+    "No scientific execution",
+    "No stochastic transition",
+    "No post-hoc alteration of z",
+    "No reward/value/utility/performance/success/quality criterion",
+    "No use of selected_action when generating null z",
+    "No exposure of z or post-decision fields before action selection"
+  ],
+  "next_gate": "TI001_V012_NEXT3_TRANSITION_EXECUTOR_BINDING_PREFLIGHT_001"
+}
