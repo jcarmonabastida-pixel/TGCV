@@ -1,0 +1,17 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_FIXTURE_BINDING_PREFLIGHT_001",
+  "status": "PREFLIGHT_SPECIFIED",
+  "decision": "EXECUTION_BLOCKED_PENDING_RUNTIME_CHECK",
+  "fixture_generator": "TI001_V012_NEXT3_FIXTURE_GENERATOR_001.py",
+  "checks": [
+    "semantic_profile_distinction",
+    "action_profile_reassignment",
+    "null_independence_from_f_and_action",
+    "condition_label_exclusion",
+    "successor_and_T_acc_separation",
+    "bijection_invariants",
+    "independent_reconstruction_fields"
+  ],
+  "scientific_execution": false,
+  "next_action": "Run the generator preflight locally and return the complete check result before freezing any fixture."
+}
