@@ -1,0 +1,78 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_DOMAIN_OPERATIONALISATION_OPERATOR_MATRIX_001",
+  "status": "OPERATOR_MATRIX_SPECIFIED",
+  "scientific_execution": false,
+  "fixture_freeze": false,
+  "principle": "Each domain and operationalisation selects a deterministic structural edit family. The selected profile controls its magnitude. No edit encodes desirability, reward, utility, value, performance, success or quality.",
+  "domains": {
+    "D1_spatial_planning": {
+      "state_semantics": "spatial nodes and directed spatial relations",
+      "element_type": "spatial_node",
+      "relation_type": "spatial_relation"
+    },
+    "D2_resource_planning": {
+      "state_semantics": "resource nodes and directed allocation relations",
+      "element_type": "resource_node",
+      "relation_type": "allocation_relation"
+    },
+    "D3_graph_reconfiguration": {
+      "state_semantics": "graph nodes and directed graph edges",
+      "element_type": "graph_node",
+      "relation_type": "graph_edge"
+    },
+    "D4_workflow_state_machine": {
+      "state_semantics": "workflow states and directed transitions",
+      "element_type": "workflow_state",
+      "relation_type": "workflow_transition"
+    }
+  },
+  "operationalisations": {
+    "O1_cardinality": {
+      "primary_effect": "add profile.reachable_change_count new elements",
+      "secondary_effect": "none"
+    },
+    "O2_topology": {
+      "primary_effect": "add profile.dependency_count directed relations with deterministic endpoints",
+      "secondary_effect": "none"
+    },
+    "O3_depth": {
+      "primary_effect": "add profile.composition_depth ordered composition layers",
+      "secondary_effect": "one deterministic relation per layer"
+    },
+    "O4_constraints": {
+      "primary_effect": "add profile.constraint_count structural constraints",
+      "secondary_effect": "none"
+    },
+    "O5_composition": {
+      "primary_effect": "apply cardinality, topology, depth and constraint edits in that fixed order",
+      "secondary_effect": "all four components remain explicitly represented in the realized transformation"
+    }
+  },
+  "profile_binding": {
+    "reachable_change_count": "controls number of newly created domain elements",
+    "constraint_count": "controls number of structural constraints",
+    "composition_depth": "controls number of ordered composition layers",
+    "dependency_count": "controls number of directed structural dependencies"
+  },
+  "determinism": {
+    "element_ids": "lowest unused integer identifiers in ascending creation order",
+    "relation_endpoints": "deterministic canonical endpoints derived from creation order",
+    "layer_order": "ascending integer layer index",
+    "constraint_order": "ascending integer constraint index",
+    "serialization": "canonical JSON with sorted keys and deterministic arrays"
+  },
+  "t_acc": {
+    "enumeration": "all actions A/B/C/D crossed with all slots slot_1..slot_4",
+    "operator": "same D×O matrix and profile binding as the realized transition",
+    "validity": "finite bounds, existing endpoints, syntactically valid structural constraints",
+    "ordering": "canonical lexicographic"
+  },
+  "reconstruction": {
+    "independent_implementation": true,
+    "required_hashes": [
+      "S_t_plus_1_sha256",
+      "realized_transformation_sha256",
+      "T_acc_t_plus_1_sha256"
+    ]
+  }
+}
