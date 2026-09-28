@@ -27,10 +27,7 @@ The executable bundle integrity is defined by the four immutable bundle componen
 
 ## Manifest identity
 
-Current manifest Git blob SHA before this correction:
-8a2fd93ea04e9aeb0e27274838f4ab5cea9f2d5e
-
-The corrected manifest's new Git blob SHA will be established by the commit that records this correction.
+MANIFEST_SHA256.md is excluded from its own byte-level integrity inventory to avoid self-reference. Its current Git blob identity is therefore maintained by the external post-correction integrity audit and final freeze record.
 
 ## Paired-design integrity
 
