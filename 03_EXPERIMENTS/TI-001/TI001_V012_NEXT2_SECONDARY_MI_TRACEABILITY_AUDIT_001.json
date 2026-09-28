@@ -1,0 +1,28 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_SECONDARY_MI_TRACEABILITY_AUDIT_001",
+  "status": "TRACEABILITY_AUDIT_COMPLETE",
+  "analysis_name": "UNINFORMATIVE_NULL negative-control MI contrast",
+  "estimand": "MI(action;f) - MI(action;z)",
+  "classification": "SECONDARY_EXPLORATORY",
+  "documented_value_bits": 0.002143,
+  "execution_artifact_found": false,
+  "reproducible_computation_artifact_found": false,
+  "search_scope": "03_EXPERIMENTS/TI-001",
+  "search_terms": [
+    "0.002143",
+    "Delta_MI",
+    "MI(action;f)",
+    "MI(action;z)"
+  ],
+  "source_artifacts": [
+    "TI001_V012_NEXT2_PRIMARY_ANALYSIS_CONTRACT_001.json",
+    "TI001_V012_NEXT2_PRIMARY_ANALYSIS_SPECIFICATION_001.json"
+  ],
+  "interpretation": "The value 0.002143 bits is documented in the analysis contract and analysis specification, but no computational execution artifact supporting its derivation was found in the TI-001 repository scope searched.",
+  "execution_status": "NOT_EXECUTED",
+  "evidentiary_status": "DOCUMENTED_VALUE_WITHOUT_EXECUTION_ARTIFACT",
+  "primary_contrast_affected": false,
+  "primary_result_replacement_authorized": false,
+  "retroactive_recalculation_performed": false,
+  "scientific_execution_performed": false
+}
