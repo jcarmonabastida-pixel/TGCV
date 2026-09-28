@@ -1,0 +1,49 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PREDECISION_STATE_CONTEXT_BINDING_PREFLIGHT_002",
+  "status": "PASS_AMENDMENT_BINDING_ELIGIBLE",
+  "decision": "BIND_BASELINE_STATE_AND_TASK_CONTEXT",
+  "scientific_execution": false,
+  "fixture_frozen": true,
+  "checks": {
+    "baseline_state_defined_for_all_domains": true,
+    "minimum_active_elements_satisfied": true,
+    "O1_compatible": true,
+    "O2_compatible": true,
+    "O3_compatible": true,
+    "O4_compatible": true,
+    "O5_compatible": true,
+    "canonical_serialization_defined": true,
+    "state_hash_rule_defined": true,
+    "task_context_defined": true,
+    "task_context_hash_rule_defined": true,
+    "condition_leakage_absent": true,
+    "action_specific_information_absent": true,
+    "profile_specific_information_absent": true,
+    "z_information_absent": true,
+    "successor_information_absent": true,
+    "T_acc_information_absent": true,
+    "normative_information_absent": true,
+    "decision_input_reconstructible": true,
+    "estimand_preserved": true,
+    "primary_contrast_preserved": true,
+    "conditions_preserved": true,
+    "replication_count_preserved": true,
+    "replication_unit_preserved": true,
+    "scientific_authorization_unchanged": true
+  },
+  "bound_artifacts": {
+    "baseline_state": "TI001_V012_NEXT3_DOMAIN_VALID_BASELINE_STATE_SPECIFICATION_001",
+    "task_context": "TI001_V012_NEXT3_PREDECISION_STATE_CONTEXT_SPECIFICATION_AMENDMENT_001",
+    "decision_projection": "TI001_V012_NEXT3_DECISION_INPUT_PROJECTION_001",
+    "simulator": "TI001_V012_NEXT3_DETERMINISTIC_SIMULATOR_001.py",
+    "operator_matrix": "TI001_V012_NEXT3_DOMAIN_OPERATIONALISATION_OPERATOR_MATRIX_001",
+    "semantic_completeness": "TI001_V012_NEXT3_SIMULATOR_SEMANTIC_COMPLETENESS_PREFLIGHT_RESULT_001"
+  },
+  "required_implementation_change": {
+    "fixture_generator": "Must serialize the bound domain-specific S_t and task_context plus their SHA-256 values into every scientific-execution candidate unit.",
+    "scientific_executor": "Must consume these frozen fields and must not synthesize, alter, or infer them.",
+    "no_simulator_change_required": true
+  },
+  "important_boundary": "This preflight binds the representation specification; it does not regenerate or refreeze the candidate fixture and does not authorize scientific execution.",
+  "next_gate": "FIXTURE_GENERATOR_AMENDMENT_AND_REBINDING_PREFLIGHT"
+}
