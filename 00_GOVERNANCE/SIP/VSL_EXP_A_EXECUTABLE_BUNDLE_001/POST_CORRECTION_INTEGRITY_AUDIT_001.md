@@ -1,7 +1,7 @@
 # VSL A Executable Bundle — Post-Correction Integrity Audit 001
 
 **Date:** 2026-09-28  
-**Audited canonical checkout:** 1fdf21265fcbcfb18e3b23d1402dfe856c031bd1  
+**Audited canonical bundle state:** current canonical state after commit dd5b400962ad6106d468105431ab512f126f8572  
 **Status:** AUDIT PASS — INTEGRITY COHERENT; BUNDLE NOT FROZEN
 
 ## Scope
