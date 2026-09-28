@@ -1,0 +1,20 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SIMULATOR_IMPLEMENTATION_PREFLIGHT_001",
+  "status": "PASS",
+  "decision": "IMPLEMENTATION_BINDING_PASS",
+  "simulator_blob_sha1": "6fa21abbc1eaf5a8d6a3864186f093ad3786b19e",
+  "reconstruction_blob_sha1": "80eeb605d00e120eb5293b8210d0fac7985d50eb",
+  "checks": {
+    "simulator_defines_execute": true,
+    "simulator_defines_tacc": true,
+    "simulator_canonical_hash": true,
+    "simulator_no_scientific_loop": true,
+    "reconstruction_independent_source": true,
+    "reconstruction_hashes": true,
+    "reconstruction_no_scientific_execution": true,
+    "shared_canonicalization": true
+  },
+  "scientific_execution": false,
+  "fixture_frozen": false,
+  "next_action": "Run deterministic parity cases through both implementations; no scientific fixture execution."
+}
