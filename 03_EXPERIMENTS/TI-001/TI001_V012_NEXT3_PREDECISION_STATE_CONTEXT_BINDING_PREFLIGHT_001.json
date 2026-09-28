@@ -1,0 +1,52 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PREDECISION_STATE_CONTEXT_BINDING_PREFLIGHT_001",
+  "status": "BLOCKED_BASELINE_STATE_SEMANTIC_INCOMPATIBILITY",
+  "decision": "DO_NOT_BIND_AMENDMENT_001",
+  "scientific_execution": false,
+  "fixture_frozen": true,
+  "checks": {
+    "S_t_representation_defined": true,
+    "task_context_representation_defined": true,
+    "S_t_canonicalization_defined": true,
+    "task_context_canonicalization_defined": true,
+    "predecision_boundary_defined": true,
+    "condition_leakage_excluded": true,
+    "normative_signal_excluded": true,
+    "S_t_compatible_with_O1_cardinality": true,
+    "S_t_compatible_with_O2_topology": false,
+    "S_t_compatible_with_O3_depth": false,
+    "S_t_compatible_with_O4_constraints": true,
+    "S_t_compatible_with_O5_composition": true,
+    "existing_frozen_semantic_contract_preserved": false
+  },
+  "failure": {
+    "field": "S_t",
+    "proposed_value": {
+      "active": [],
+      "relations": [],
+      "constraints": []
+    },
+    "evidence": "The bound deterministic simulator requires at least two active elements before O2_topology or O3_depth can create relations. With an empty active set, those operationalisations produce no corresponding structural relation changes.",
+    "consequence": "The proposed common empty baseline does not instantiate the frozen domain/operationalisation semantic operator contract uniformly across all five operationalisations."
+  },
+  "task_context_result": {
+    "status": "PASS",
+    "note": "The proposed task_context contains no condition metadata, f, z, successor, T_acc, outcome, value, reward, utility, performance, success or quality."
+  },
+  "preservation": {
+    "fixture_not_modified": true,
+    "amendment_not_promoted_to_binding": true,
+    "estimand_not_modified": true,
+    "conditions_not_modified": true,
+    "replication_count_not_modified": true,
+    "authorization_not_modified": true
+  },
+  "required_next_action": "Define a domain-valid deterministic baseline S_t with sufficient existing elements for all frozen operationalisations, and independently verify that the baseline introduces no condition-, action-, profile-, outcome- or value-dependent information.",
+  "prohibition": [
+    "Do not bind Amendment 001 as currently written.",
+    "Do not silently change the simulator to accept the empty state.",
+    "Do not execute scientific decisions.",
+    "Do not alter the frozen fixture or replication count."
+  ],
+  "next_gate": "DOMAIN_VALID_BASELINE_STATE_SPECIFICATION"
+}
