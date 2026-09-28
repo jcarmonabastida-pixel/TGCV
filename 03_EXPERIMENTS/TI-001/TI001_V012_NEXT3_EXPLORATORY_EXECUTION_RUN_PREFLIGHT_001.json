@@ -1,0 +1,61 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_EXPLORATORY_EXECUTION_RUN_PREFLIGHT_001",
+  "status": "PASS",
+  "decision": "RUN_READY_FOR_EXPLORATORY_EXECUTION",
+  "scope": "Final operational preflight for the authorized NEXT3 exploratory scientific execution using the current frozen CANDIDATE_FIXTURE_003 and REPLICATES=3.",
+  "authorization": {
+    "execution_type": "EXPLORATORY_SCIENTIFIC",
+    "replicates": 3,
+    "total_decisions": 23040,
+    "confirmatory": false,
+    "decision_generation_authorized": true
+  },
+  "current_binding": {
+    "fixture": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "fixture_freeze": "TI001_V012_NEXT3_FIXTURE_FREEZE_002",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "unit_count": 23040,
+    "replicates": 3
+  },
+  "checks": {
+    "authorization_scope_exploratory": true,
+    "current_fixture_freeze_present": true,
+    "current_fixture_sha256_bound": true,
+    "current_fixture_cardinality_bound": true,
+    "replicates_equals_3": true,
+    "input_completeness_preflight_pass": true,
+    "decision_interface_preflight_pass": true,
+    "identifiability_preflight_pass": true,
+    "simulator_contract_preflight_pass": true,
+    "simulator_implementation_preflight_pass": true,
+    "simulator_semantic_completeness_pass": true,
+    "current_q1_q5_coverage_pass": true,
+    "predecision_boundary_pass": true,
+    "no_normative_signal": true,
+    "no_postdecision_information_preselection": true,
+    "scientific_execution_not_yet_performed": true,
+    "scientific_result_not_yet_generated": true
+  },
+  "historical_artifacts_not_binding": [
+    "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+    "TI001_V012_NEXT3_SCIENTIFIC_EXECUTION_INPUT_COMPLETENESS_PREFLIGHT_001",
+    "TI001_V012_NEXT3_FIXTURE_FREEZE_001"
+  ],
+  "execution_constraints": [
+    "Execute only against the frozen CANDIDATE_FIXTURE_003.",
+    "Do not regenerate or mutate the fixture during execution.",
+    "Use REPLICATES=3; do not restore the inherited value 30.",
+    "Record every model request/response and execution provenance required by the frozen protocol.",
+    "Do not perform primary statistical analysis during execution.",
+    "Preserve raw execution output as an immutable artifact before analysis.",
+    "Any execution interruption or binding mismatch is a run failure and must not be silently repaired."
+  ],
+  "boundary": {
+    "scientific_execution_authorized": true,
+    "run_preflight": true,
+    "execution_started": false,
+    "decisions_generated": false,
+    "inference_performed": false
+  },
+  "next_action": "EXECUTE_FROZEN_NEXT3_EXPLORATORY_RUN"
+}
