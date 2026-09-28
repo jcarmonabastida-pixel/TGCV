@@ -7,6 +7,7 @@ authorized by this generator.
 
 import hashlib
 import json
+import itertools
 import random
 from pathlib import Path
 
@@ -73,6 +74,11 @@ def deterministic_permutation(seed_material):
     rng.shuffle(values)
     return values
 
+BALANCED_F_PERMUTATIONS = [list(p) for p in itertools.permutations(PROFILES)]
+
+def balanced_f(permutation_index):
+    return dict(zip(ACTIONS, BALANCED_F_PERMUTATIONS[permutation_index]))
+
 def baseline_state(domain):
     element_type = DOMAIN_ELEMENT_TYPES[domain]
     return {
@@ -105,10 +111,7 @@ def realized_mapping(condition, f):
     raise ValueError("NULL realization requires null_mapping.")
 
 def make_unit(d, o, condition, p, permutation_index, replicate):
-    f_profiles = deterministic_permutation("|".join([
-        "F", d, o, condition, p, str(permutation_index), str(replicate)
-    ]))
-    f = dict(zip(ACTIONS, f_profiles))
+    f = balanced_f(permutation_index)
     assert validate_bijection(f)
 
     z = null_mapping(d, o, p, replicate) if condition == "UNINFORMATIVE_NULL"         else realized_mapping(condition, f)
@@ -156,6 +159,9 @@ def generate(output_path):
     assert all(validate_bijection(row["f"]) and validate_bijection(row["z"]) for row in rows)
     assert all(len(row["S_t"]["active"]) == 2 for row in rows)
     assert all(row["S_t"]["relations"] == [] and row["S_t"]["constraints"] == [] for row in rows)
+    assert len(BALANCED_F_PERMUTATIONS) == 24
+    assert len({tuple(p) for p in BALANCED_F_PERMUTATIONS}) == 24
+    assert all(sorted(p) == sorted(PROFILES) for p in BALANCED_F_PERMUTATIONS)
 
     output = {
         "fixture_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
