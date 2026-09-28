@@ -30,6 +30,13 @@ The audit status is:
 | Frozen A VSL reference | b4e97d5441c45ab43da879986816803e590f055e | — |
 | MANIFEST_SHA256.md | a50ba47ddc062967b298195aabff3cd1e29692ca | b0877b2bba769bc0aba9241ea2616603447916c123d2b094966954ca6e8df8a1 |
 
+## Exact execution environment
+
+- Python: Python 3.12.3
+- OS/kernel: Linux DESKTOP-VND1OFG 6.18.33.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026 x86_64 x86_64 GNU/Linux
+- Platform: Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39
+- Environment source: WSL2
+
 ## Freeze conditions still outstanding
 
 1. Final exact execution environment must be recorded.
