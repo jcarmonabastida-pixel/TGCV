@@ -1,0 +1,44 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_FIXTURE_GENERATOR_REBINDING_PREFLIGHT_001",
+  "status": "BLOCKED_SEMANTIC_SEED_DRIFT",
+  "decision": "DO_NOT_BIND_GENERATOR_002",
+  "scientific_execution": false,
+  "fixture_frozen": true,
+  "checks": {
+    "S_t_serialized": true,
+    "S_t_sha256_serialized": true,
+    "task_context_serialized": true,
+    "task_context_sha256_serialized": true,
+    "baseline_state_domain_binding": true,
+    "baseline_state_operationalisation_compatibility": true,
+    "scientific_authorization_absent": true,
+    "replication_count_unchanged": true,
+    "estimand_unchanged": true,
+    "null_mapping_seed_contract_preserved": false
+  },
+  "failure": {
+    "artifact": "TI001_V012_NEXT3_FIXTURE_GENERATOR_002.py",
+    "field": "null_mapping",
+    "issue": "The generator derives the UNINFORMATIVE_NULL mapping seed from VERSION=NEXT3_v002 in addition to the frozen requirements/semantics references, domain, operationalisation, presentation and replicate.",
+    "frozen_contract": "The bound mapping semantics specifies the null mapping as a frozen deterministic procedure using the requirements/semantics digest together with domain, operationalisation, presentation and replicate; the amended generator must not introduce an unbound seed component.",
+    "consequence": "The generator cannot yet be rebound as an implementation-equivalent successor to the frozen mapping semantics."
+  },
+  "secondary_observation": {
+    "task_context_copy": "No semantic failure identified.",
+    "S_t": "No semantic failure identified.",
+    "simulator": "No modification required."
+  },
+  "required_correction": [
+    "Remove VERSION from the null_mapping seed material.",
+    "Preserve the exact allowed null seed inputs from the frozen mapping semantics.",
+    "Re-run the generator rebinding preflight after correction."
+  ],
+  "preservation": {
+    "generator_001_unchanged": true,
+    "generator_002_not_bound": true,
+    "frozen_fixture_unchanged": true,
+    "scientific_authorization_unchanged": true,
+    "replication_count_unchanged": true
+  },
+  "next_gate": "TI001_V012_NEXT3_FIXTURE_GENERATOR_REBINDING_PREFLIGHT_002"
+}
