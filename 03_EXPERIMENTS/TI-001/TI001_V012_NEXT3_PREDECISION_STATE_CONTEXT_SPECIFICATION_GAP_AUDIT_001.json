@@ -1,0 +1,46 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PREDECISION_STATE_CONTEXT_SPECIFICATION_GAP_AUDIT_001",
+  "status": "SPECIFICATION_GAP_CONFIRMED",
+  "decision": "DO_NOT_AMEND_BY_INFERENCE",
+  "scope": "NEXT3 pre-decision input completeness",
+  "scientific_execution": false,
+  "basis": [
+    "TI001_V012_NEXT3_MINIMAL_IDENTIFIABILITY_REQUIREMENTS_001",
+    "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001",
+    "TI001_V012_NEXT3_DECISION_INPUT_PROJECTION_001",
+    "TI001_V012_NEXT3_FIXTURE_GENERATOR_001.py",
+    "TI001_V012_NEXT3_DETERMINISTIC_STATE_TRANSITION_SPECIFICATION_001",
+    "TI001_V012_NEXT3_FIXTURE_BINDING_PREFLIGHT_FINAL_001",
+    "TI001_V012_NEXT3_FIXTURE_FREEZE_001"
+  ],
+  "findings": {
+    "S_t_required_by_design": true,
+    "S_t_required_by_transition": true,
+    "S_t_required_by_reconstruction": true,
+    "S_t_serialized_by_current_fixture_generator": false,
+    "task_context_required_by_design": true,
+    "task_context_serialized_by_current_fixture_generator": false,
+    "task_context_defined_elsewhere_in_bound_NEXT3_artifacts": false,
+    "exact_initial_state_rule_defined": false,
+    "exact_task_context_rule_defined": false
+  },
+  "conclusion": "The current frozen NEXT3 package is internally coherent for the semantic-profile/mapping/simulator identifiability tests, but it does not freeze the concrete pre-decision S_t and task_context values required by the scientific decision interface. The omission is therefore a specification gap, not an executor implementation problem.",
+  "required_amendment_fields": [
+    "canonical representation of S_t",
+    "initial S_t generation or assignment rule",
+    "scope of S_t variation across domains and operationalisations",
+    "canonical representation of task_context",
+    "task_context assignment rule",
+    "whether task_context is constant, stratified, or unit-specific",
+    "hash/traceability representation for S_t and task_context",
+    "proof that neither field leaks hidden condition, z, successor, T_acc, outcome, value, reward, utility, performance, success or quality"
+  ],
+  "preservation": {
+    "frozen_fixture_unchanged": true,
+    "scientific_authorization_unchanged": true,
+    "replication_count_unchanged": true,
+    "estimand_unchanged": true,
+    "existing_preflight_results_not_rewritten": true
+  },
+  "next_gate": "PREDECISION_STATE_CONTEXT_SPECIFICATION_AMENDMENT"
+}
