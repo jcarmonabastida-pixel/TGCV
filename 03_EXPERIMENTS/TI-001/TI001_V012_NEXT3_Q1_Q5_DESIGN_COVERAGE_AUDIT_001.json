@@ -1,0 +1,83 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_Q1_Q5_DESIGN_COVERAGE_AUDIT_001",
+  "status": "Q1_Q5_DESIGN_COVERAGE_PASS",
+  "purpose": "Audit that the NEXT3 design retains the methodological work required to discriminate the Q1-Q5 dimensions inherited from NEXT2, before exploratory scientific fixture generation.",
+  "basis_artifacts": [
+    "TI001_V012_NEXT2_DESIGN_REQUIREMENTS_GATE_001",
+    "TI001_V012_NEXT3_MINIMAL_IDENTIFIABILITY_REQUIREMENTS_001",
+    "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001",
+    "TI001_V012_NEXT3_MAPPING_SEMANTICS_001",
+    "TI001_V012_NEXT3_SIMULATOR_IMPLEMENTATION_BINDING_RESULT_002",
+    "TI001_V012_NEXT3_SIMULATOR_RECONSTRUCTION_PARITY_RESULT_001",
+    "TI001_V012_NEXT3_SIMULATOR_SEMANTIC_COMPLETENESS_PREFLIGHT_RESULT_001",
+    "TI001_V012_NEXT3_PREDECISION_STATE_CONTEXT_BINDING_PREFLIGHT_002",
+    "TI001_V012_NEXT3_FIXTURE_GENERATOR_REBINDING_PREFLIGHT_002",
+    "TI001_V012_NEXT3_EXPLORATORY_EXECUTION_REPURPOSING_DECISION_001",
+    "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001"
+  ],
+  "coverage": [
+    {
+      "question": "Q1",
+      "status": "PASS",
+      "design_control": "Semantic future-space profiles are explicit pre-decision observable representations; balanced reassignment f breaks action-identity/future-representation equivalence."
+    },
+    {
+      "question": "Q2",
+      "status": "PASS",
+      "design_control": "Four presentation strata (order, position, orientation, neutral format) are crossed with action identity and future assignment."
+    },
+    {
+      "question": "Q3",
+      "status": "PASS",
+      "design_control": "UNINFORMATIVE_NULL removes the action-to-future informational correspondence while preserving the same profile vocabulary and comparable surface complexity; condition labels are hidden."
+    },
+    {
+      "question": "Q4",
+      "status": "PASS",
+      "design_control": "Four domains and five operationalisations are retained, with deterministic structural semantics and semantic-completeness checks."
+    },
+    {
+      "question": "Q5",
+      "status": "PASS",
+      "design_control": "Primary estimand is action_identity × future_representation_assignment interaction on selection probability; primary contrast is informative versus matched uninformative null under balanced reassignment."
+    }
+  ],
+  "boundary_controls": [
+    {
+      "control": "pre_decision_state_context",
+      "status": "PASS",
+      "evidence": "S_t and task_context are now frozen and serialized after the specification-gap correction and binding preflight."
+    },
+    {
+      "control": "post_decision_separation",
+      "status": "PASS",
+      "evidence": "z, realized successor, realized transformation and realized T_acc remain post-decision."
+    },
+    {
+      "control": "non_normative_interface",
+      "status": "PASS",
+      "evidence": "Profiles contain structural dimensions only; no value/reward/performance signal."
+    },
+    {
+      "control": "independent_reconstruction",
+      "status": "PASS",
+      "evidence": "Simulator binding, parity and semantic-completeness gates passed."
+    },
+    {
+      "control": "no_pooling_with_NEXT2",
+      "status": "PASS",
+      "evidence": "NEXT3 remains a separate experiment and the design explicitly prohibits pooling for mechanism inference."
+    }
+  ],
+  "replication_parameter_decision": {
+    "previous_generator_parameter": 30,
+    "decision": "CHANGE_TO_3",
+    "basis": "Exploratory execution authorization explicitly fixes three complete repetitions; 30 has no independent pre-execution statistical justification and must not be treated as the scientific replication count.",
+    "scientific_status": "EXPLORATORY_ONLY",
+    "decisions_per_replication": 7680,
+    "total_decisions": 23040,
+    "confirmatory": false,
+    "statistical_sufficiency_claim": false
+  },
+  "final_decision": "Q1_Q5_COVERAGE_PASS_AND_GENERATOR_PARAMETER_CHANGE_TO_3"
+}
