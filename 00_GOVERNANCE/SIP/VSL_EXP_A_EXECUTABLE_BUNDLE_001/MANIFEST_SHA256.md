@@ -22,7 +22,7 @@ The executable bundle integrity is defined by the four immutable bundle componen
 |---|---|---|
 | EXECUTION_SPEC.md | 63e27ced5606c8e60606c695ea6d95610c59439b | 7336d3f3f54bb893be4067c59885eabb786010b6d30ee5b01d9a5dfe22a2b15c |
 | EXECUTOR_2_RECONSTRUCTION_SPEC.md | b87b3911e322d6d35b89fdabf0d806372c102eea | 62e90c68789ce7a6f6aa41a00879afa2d51c6702af56d1cf7cdea8ab985cd754 |
-| FREEZE_MANIFEST_001.md | 4a73606f9695b9435ba8cb551f5590a6d4f43209 | 9e99d820f8cdcdff212a47c64e0f6b5152e7dc110ab9343ac058fdfd323343b5|
+| FREEZE_MANIFEST_001.md | 5747fe74f4bed458fe3db1ec0003356d0a44d569 | 9b7217e2f738609ce051a7910384a7a68750605a0b6303ab248f681b7919e59a |
 | execute.py | 4165bf5a112187e312cbd2c9c2728927fdefa888 | b1dbdd7b470e8731e48ac9acad54edaab5e7b0afd2847409a7f526a315ddf0dd |
 
 ## Manifest identity
