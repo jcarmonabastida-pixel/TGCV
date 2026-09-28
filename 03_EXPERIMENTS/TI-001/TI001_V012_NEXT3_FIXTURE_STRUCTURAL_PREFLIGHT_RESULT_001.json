@@ -1,0 +1,28 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_FIXTURE_STRUCTURAL_PREFLIGHT_RESULT_001",
+  "status": "STRUCTURAL_PREFLIGHT_PASS",
+  "fixture_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+  "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+  "fixture_size_bytes": 62335069,
+  "unit_count": 23040,
+  "scientific_execution": false,
+  "scientific_execution_authorized": false,
+  "checks": {
+    "unit_count": true,
+    "replication_count_3": true,
+    "f_bijection": true,
+    "z_bijection": true,
+    "state_hashes": true,
+    "task_context_hashes": true,
+    "state_valid": true,
+    "profile_semantics": true,
+    "presented_profile_parity": true,
+    "balanced_24_distinct_permutations": true,
+    "balanced_action_profile": true,
+    "null_independent_of_f": true,
+    "null_profile_marginal_balance": true,
+    "condition_hidden": true,
+    "postdecision_hidden": true
+  },
+  "decision": "CANDIDATE_FIXTURE_STRUCTURALLY_VALID_NOT_FROZEN"
+}
