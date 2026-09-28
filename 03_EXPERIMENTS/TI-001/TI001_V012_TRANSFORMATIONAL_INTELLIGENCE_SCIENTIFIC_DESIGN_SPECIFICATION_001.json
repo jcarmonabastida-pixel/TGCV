@@ -1,0 +1,161 @@
+{
+  "artifact_id": "TI001_V012_TRANSFORMATIONAL_INTELLIGENCE_SCIENTIFIC_DESIGN_SPECIFICATION_001",
+  "status": "SCIENTIFIC_DESIGN_SPECIFIED",
+  "scientific_execution": false,
+  "scientific_execution_authorized": false,
+  "construct": {
+    "name": "TRANSFORMATIONAL_INTELLIGENCE",
+    "scope": "Decision sensitivity to action-conditioned changes in future accessible transformation space",
+    "distinction_from_NEXT3": {
+      "NEXT3": "Tests response to a semantic representation of future transformation space assigned to an action.",
+      "current_design": "Tests response to a representation of how an action changes the future accessible transformation space, beyond stable action identity and static action representation."
+    }
+  },
+  "research_question": "Does action selection respond to the represented transformation induced by an action on the future accessible transformation space, beyond stable action identity and static action representation?",
+  "operational_definition": {
+    "static_representation": "A representation of transformation-space properties associated with an action at the current decision state.",
+    "dynamic_representation": "A pre-decision representation of the action-conditioned transition from the current accessible transformation space to the accessible transformation space expected after the action.",
+    "target_mechanism": "Sensitivity of action selection to action-conditioned transformation-space change."
+  },
+  "decision_unit": {
+    "state": "S_t",
+    "candidate_action": "a",
+    "decision": "Selection of one candidate action before realization of its successor state."
+  },
+  "formal_structure": {
+    "current_state": "S_t",
+    "current_transformation_space": "T_acc(S_t)",
+    "action_conditioned_successor": "S_{t+1}^{(a)}",
+    "future_transformation_space": "T_acc(S_{t+1}^{(a)})",
+    "dynamic_quantity": "Delta_T_acc^(a) = representation(T_acc(S_{t+1}^{(a)}), T_acc(S_t))",
+    "important_boundary": "The realized S_{t+1}, realized T_acc and realized transformation remain unavailable to the decision agent before action selection."
+  },
+  "dynamic_representation": {
+    "purpose": "Expose information about transformation of future accessible transformation space without exposing realized downstream state or outcome.",
+    "representation_type": "Action-conditioned transition signature",
+    "candidate_dimensions": [
+      "reachable_change_delta",
+      "constraint_change_delta",
+      "composition_depth_change_delta",
+      "dependency_change_delta",
+      "transformational_space_expansion_or_contraction",
+      "future_branching_change"
+    ],
+    "normative_information": false,
+    "value_information": false,
+    "utility_information": false,
+    "reward_information": false,
+    "performance_information": false,
+    "success_information": false
+  },
+  "static_control": {
+    "purpose": "Distinguish sensitivity to a dynamic transformation-space property from sensitivity to a static semantic profile.",
+    "requirement": "At least two candidate actions must be capable of receiving matched or equivalent current-state structural representations while differing in their represented action-conditioned transformation-space transition.",
+    "interpretation": "A response that survives the static control is compatible with sensitivity to the dynamic property rather than merely to a static profile."
+  },
+  "action_representation_reassignment": {
+    "requirement": "Dynamic transition signatures must be reassigned across action identities under balanced conditions.",
+    "purpose": "Break stable association between action identity and dynamic representation.",
+    "constraint": "Reassignment must preserve marginal frequencies of action identities and dynamic signatures."
+  },
+  "conditions": {
+    "DYNAMIC_INFORMATIVE": {
+      "description": "The visible dynamic representation corresponds to the action-conditioned transformation-space transition."
+    },
+    "DYNAMIC_NULL": {
+      "description": "The visible dynamic representation preserves surface structure and marginal frequencies but is independently reassigned so that its correspondence with the action-conditioned transition is removed."
+    },
+    "STATIC_CONTROL": {
+      "description": "Current-state/static structural information is controlled while the dynamic transition representation provides the distinguishing information."
+    },
+    "SURFACE_PERMUTED": {
+      "description": "Representation surface structure is preserved while semantic correspondence is permuted."
+    }
+  },
+  "predecision_visibility": {
+    "visible": [
+      "S_t",
+      "candidate actions",
+      "static action representation",
+      "action-conditioned dynamic transition representation",
+      "surface representation required by the experimental condition"
+    ],
+    "hidden": [
+      "realized S_{t+1}",
+      "realized transformation",
+      "realized T_acc(S_{t+1})",
+      "realized Delta_T_acc",
+      "downstream trajectory",
+      "value",
+      "reward",
+      "utility",
+      "performance",
+      "success",
+      "quality",
+      "condition identifier"
+    ]
+  },
+  "primary_estimand": {
+    "name": "ACTION_IDENTITY_X_DYNAMIC_REPRESENTATION_INTERACTION",
+    "description": "Change in action-selection probability associated with reassignment of action-conditioned dynamic transformation-space representations across action identities, relative to the matched null condition.",
+    "unit": "decision",
+    "primary_outcome": "selected_action"
+  },
+  "primary_contrast": {
+    "description": "Compare selection under balanced reassignment of dynamic transition signatures across action identities with the matched dynamic-null condition.",
+    "required_controls": [
+      "action identity",
+      "static representation",
+      "dynamic representation frequency",
+      "condition surface structure"
+    ]
+  },
+  "identifiability_requirements": [
+    "Dynamic representation must be semantically distinguishable from static representation.",
+    "Dynamic representation must describe a relation or transition between transformation spaces rather than merely another static descriptor.",
+    "Action identity and dynamic representation must be independently reassigned.",
+    "The null must remove action-to-dynamic-transition correspondence while preserving relevant surface and marginal structure.",
+    "Realized successor state and realized transformation space must remain hidden before selection.",
+    "No normative or outcome-derived signal may enter the pre-decision interface.",
+    "The implementation must permit independent reconstruction of the action-conditioned dynamic quantity.",
+    "Static-control conditions must permit separation of dynamic sensitivity from static profile preference."
+  ],
+  "interpretation_boundary": {
+    "positive": "Evidence that selection responds to the tested action-conditioned dynamic representation under the specified controls.",
+    "negative": "Failure to detect the specified response does not by itself falsify TGCV or establish absence of transformational intelligence in other operationalisations.",
+    "excluded_claims": [
+      "TGCV-wide confirmation",
+      "TGCV-wide falsification",
+      "value creation effect",
+      "utility effect",
+      "performance improvement",
+      "normative superiority of an action",
+      "general intelligence claim"
+    ]
+  },
+  "replication": {
+    "status": "UNDETERMINED",
+    "scientific_replication_count": null,
+    "criterion_status": "NOT_YET_JUSTIFIED",
+    "implementation_parameter_must_not_be_treated_as_scientific_N": true
+  },
+  "pre_execution_gates": {
+    "G1_DYNAMIC_SEMANTIC_DISTINCTION": "Required",
+    "G2_STATIC_CONTROL_IDENTIFIABILITY": "Required",
+    "G3_ACTION_DYNAMIC_REASSIGNMENT": "Required",
+    "G4_NULL_CORRESPONDENCE_BREAK": "Required",
+    "G5_SUCCESSOR_AND_REALIZED_SPACE_HIDDEN": "Required",
+    "G6_NON_NORMATIVE_INTERFACE": "Required",
+    "G7_INDEPENDENT_DYNAMIC_RECONSTRUCTION": "Required",
+    "G8_IMPLEMENTATION_TRACEABILITY": "Required",
+    "G9_REPLICATION_CRITERION": "Required before scientific execution"
+  },
+  "next_gate": "TRANSFORMATIONAL_INTELLIGENCE_DESIGN_REVIEW",
+  "notes": [
+    "This specification defines a new scientific phase and does not reopen NEXT3.",
+    "NEXT3 methodological closure and frozen fixture remain methodological foundations.",
+    "No replication count is frozen or implied by NEXT3.",
+    "No scientific execution is authorized by this artifact.",
+    "The central operational distinction is representation of a transformation of transformation space, not an additional static semantic profile."
+  ]
+}
