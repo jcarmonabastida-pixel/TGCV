@@ -1,0 +1,42 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_MINIMUM_RELEVANT_EFFECT_JUSTIFICATION_AUDIT_001",
+  "status": "NO_INDEPENDENT_NUMERICAL_MRE_IDENTIFIED",
+  "scientific_execution_authorized": false,
+  "question": "Can a numerical minimum relevant effect (MRE) for the NEXT3 primary action-identity × future-representation-assignment interaction be justified independently of NEXT2/NEXT3 observed results?",
+  "finding": "NO",
+  "literature_finding": {
+    "principle": "Sample-size planning for an interaction should be based on a pre-specified scientifically meaningful target effect and explicit assumptions.",
+    "universal_numeric_mre": "NOT PROVIDED",
+    "implication": "The methodological literature does not supply a universal log-odds interaction threshold that can be adopted for NEXT3 without domain-specific scientific justification."
+  },
+  "current_design_specific_basis": {
+    "available": [
+      "The interaction is the primary estimand.",
+      "Future representations are deliberately constructed structural transformation profiles.",
+      "The profiles differ on four declared structural dimensions.",
+      "The null preserves surface complexity while removing action-to-future information."
+    ],
+    "insufficient_for_numeric_mre": "These design facts establish the construct and contrast but do not establish how large a selection-probability interaction must be to count as scientifically meaningful."
+  },
+  "prohibited_basis": [
+    "NEXT2 observed effect",
+    "NEXT2 observed confidence interval",
+    "pilot or exploratory NEXT3 observations",
+    "replication count desired in advance",
+    "runtime or monetary cost",
+    "conventional arbitrary odds-ratio cutoff without domain justification"
+  ],
+  "decision": "DO_NOT_INVENT_NUMERICAL_MRE",
+  "replication_status": "NOT_AUTHORIZED",
+  "scientific_consequence": "The current design does not contain sufficient independent information to derive a defensible numerical replication count by either target precision or minimum relevant effect.",
+  "next_design_options": [
+    "Obtain an independent domain/scientific justification for an MRE before replication is frozen.",
+    "If no such justification exists, explicitly classify replication count as UNDETERMINED_BY_CURRENT_SPECIFICATION and do not execute NEXT3 as a confirmatory replication-counted experiment."
+  ],
+  "references": [
+    "TI001_V012_NEXT3_REPLICATION_CRITERION_GATE_001",
+    "TI001_V012_NEXT3_PRECISION_CRITERION_SPECIFICATION_001",
+    "TI001_V012_NEXT3_PRECISION_THRESHOLD_JUSTIFICATION_AUDIT_001",
+    "TI001_V012_NEXT3_REPLICATION_DESIGN_ANALYSIS_001"
+  ]
+}
