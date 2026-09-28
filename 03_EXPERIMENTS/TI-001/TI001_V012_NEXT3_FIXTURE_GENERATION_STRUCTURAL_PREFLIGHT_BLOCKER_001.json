@@ -1,0 +1,34 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_FIXTURE_GENERATION_STRUCTURAL_PREFLIGHT_BLOCKER_001",
+  "status": "BLOCKED_STRUCTURAL_PREFLIGHT",
+  "fixture": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+  "execution_not_performed": true,
+  "scientific_execution": false,
+  "checks": {
+    "unit_count_23040": true,
+    "replication_count_3": true,
+    "cell_cardinality": true,
+    "f_bijection": true,
+    "z_bijection": true,
+    "state_hashes": true,
+    "task_context_hashes": true,
+    "baseline_semantics": true,
+    "profile_semantics": true,
+    "condition_semantics": true,
+    "condition_hidden_from_task_context": true,
+    "balanced_24_distinct_permutations": false,
+    "null_noncorrespondence_per_unit": false
+  },
+  "observed": {
+    "candidate_unit_count": 23040,
+    "candidate_sha256": "e2873323533910a5d33c30fb245f2f709bd044c9e26d2283651760a6ab657efb",
+    "candidate_size_bytes": 62335069
+  },
+  "blocker": [
+    "The generator uses deterministic random shuffling for f independently at each permutation_index but does not guarantee that the 24 indices enumerate 24 distinct action-to-profile bijections.",
+    "The generated candidate therefore fails the frozen balanced-24-permutation requirement in at least one cell.",
+    "The UNINFORMATIVE_NULL mapping is independently generated, but an independent permutation can coincide with f by chance; the generated candidate contains such coincidences, so it cannot be accepted as a clean per-unit null correspondence."
+  ],
+  "decision": "DO_NOT_FREEZE_OR_EXECUTE",
+  "next_action": "Amend generator materialization so that the 24 balanced f permutations are explicitly distinct and define a deterministic null construction that satisfies the frozen null-identifiability requirement without exposing condition or post-decision information; then rerun structural preflight."
+}
