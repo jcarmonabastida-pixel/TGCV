@@ -1,0 +1,22 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SIMULATOR_SEMANTIC_COMPLETENESS_PREFLIGHT_001",
+  "status": "PREFLIGHT_SPECIFIED",
+  "scientific_execution": false,
+  "fixture_freeze": false,
+  "purpose": "Verify that the deterministic simulator and independent reconstruction implement the complete NEXT3 structural future-space semantics rather than merely sharing a simplified transition implementation.",
+  "required_checks": {
+    "reachable_change_count_effect": true,
+    "constraint_count_effect": true,
+    "composition_depth_effect": true,
+    "dependency_count_effect": true,
+    "domain_effect": true,
+    "operationalisation_effect": true,
+    "independent_t_acc_reconstruction": true,
+    "successor_hash_parity": true,
+    "realized_transformation_hash_parity": true,
+    "t_acc_hash_parity": true,
+    "no_normative_filter": true
+  },
+  "blocking_rule": "Any false check blocks fixture freeze and scientific execution.",
+  "next_gate": "NEXT3_SIMULATOR_SEMANTIC_COMPLETENESS_PREFLIGHT_RESULT_001"
+}
