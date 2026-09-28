@@ -1,0 +1,33 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_FINAL_CLOSURE_AUDIT_001",
+  "status": "FINAL_CLOSURE_AUDIT_COMPLETE",
+  "experiment": "TI-001 V012 NEXT2",
+  "canonical_repository": "origin/main",
+  "canonical_commit": "7ccc88f8b31813541e7294cea5342e22beeea137",
+  "primary_result": {
+    "artifact": "TI001_V012_NEXT2_DIRECT_CONTRAST_RESULT_001.json",
+    "sha256": "a204262ccc1ed222060fd1a11a57d10e641d1af2ecd682aff59e2032cd610eb5",
+    "status": "PRIMARY_CONTRAST_COMPLETE"
+  },
+  "secondary_mi": {
+    "artifact": "TI001_V012_NEXT2_SECONDARY_MI_TRACEABILITY_AUDIT_001.json",
+    "sha256": "144886899bcbe9e9ca73033d342eead292288150e2e83033426b22627ef8fce8",
+    "status": "DOCUMENTED_VALUE_WITHOUT_EXECUTION_ARTIFACT",
+    "execution_status": "NOT_EXECUTED"
+  },
+  "repository_sync": {
+    "head_equals_origin_main": true,
+    "synchronization_verified": true
+  },
+  "local_untracked_material": {
+    "present": true,
+    "included_in_canonical_next2_package": false
+  },
+  "scientific_execution": {
+    "primary_scientific_execution_performed": false,
+    "closure_audit_is_not_scientific_execution": true
+  },
+  "interpretation_boundary": "No TGCV-wide confirmation/falsification, no value/causal claim, and no general Transformational Intelligence claim.",
+  "closure_decision": "CLOSED_WITH_DOCUMENTED_SECONDARY_TRACEABILITY_LIMITATION",
+  "retroactive_changes": false
+}
