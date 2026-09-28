@@ -1,0 +1,59 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_METHODOLOGICAL_GATE_CLOSURE_001",
+  "status": "METHODOLOGICAL_GATE_CLOSED",
+  "scope": "NEXT3 pre-scientific methodological/identifiability phase",
+  "basis": {
+    "methodological_execution_result": "TI001_V012_NEXT3_METHODOLOGICAL_EXECUTION_RESULT_001",
+    "commit": "115f25293875146c8e6fa39b5f8d17f45cea0844"
+  },
+  "decision": "NO_ADDITIONAL_IDENTIFIABILITY_TEST_REQUIRED",
+  "acceptance": {
+    "IAC1_semantic_profile_distinguishability": "PASS",
+    "IAC2_action_profile_reassignment_integrity": "PASS",
+    "IAC3_null_information_removal": "PASS",
+    "IAC4_predecision_information_boundary": "PASS",
+    "IAC5_independent_reconstruction": "PASS",
+    "IAC6_no_normative_contamination": "PASS",
+    "IAC7_traceability": "PASS",
+    "IAC8_deterministic_reproducibility": "PASS"
+  },
+  "supporting_evidence": {
+    "independent_reconstruction_cases": 80,
+    "coverage": "5 operationalisations × 4 actions × 4 semantic profiles",
+    "hash_parity": "PASS",
+    "semantic_completeness": "PASS",
+    "implementation_binding": "PASS",
+    "scientific_execution": false,
+    "model_mediated_execution": false,
+    "replication_count": "NOT_APPLICABLE"
+  },
+  "replication_boundary": {
+    "status": "UNDETERMINED_FOR_SCIENTIFIC_EXECUTION",
+    "rule": "No scientific replication count is frozen or implied by this closure.",
+    "prohibited_inference": [
+      "Do not treat generator configuration 30 as a scientific replication count.",
+      "Do not substitute 3, 5, 10, 15 or another count without an independent pre-execution scientific justification."
+    ]
+  },
+  "historical_preflight": {
+    "fixture_binding_preflight_status": "SUPERSEDED_BY_LATER_IMPLEMENTATION_BINDING_AND_METHODOLOGICAL_EVIDENCE",
+    "interpretation": "The earlier BLOCKED_PENDING_RUNTIME_INTERFACE result is retained as historical evidence. It is not treated as the current methodological state."
+  },
+  "next_gate": "TI001_V012_NEXT3_FIXTURE_BINDING_PREFLIGHT_FINAL_001",
+  "fixture_status": "NOT_YET_FROZEN",
+  "scientific_authorization": false,
+  "claims_excluded": [
+    "selection behaviour",
+    "causal effect",
+    "value",
+    "utility",
+    "performance",
+    "success",
+    "TGCV-wide validity"
+  ],
+  "notes": [
+    "The methodological gate is closed because the predefined identifiability questions have been answered with passing evidence.",
+    "No redundant IAC rerun is required before non-scientific fixture freezing.",
+    "The remaining work is a final binding preflight for the non-scientific fixture, not a scientific execution authorization."
+  ]
+}
