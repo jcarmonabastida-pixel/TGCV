@@ -116,6 +116,8 @@ fit_full <- glmer(
 
 fit_reduced <- glmer(
   selected ~ action_identity * future_assignment +
+    action_identity:mapping_condition +
+    future_assignment:mapping_condition +
     mapping_condition +
     presentation + operationalisation + domain +
     (1 | unit_id),
@@ -160,7 +162,7 @@ out <- list(
   model="mixed-effects logistic regression",
   random_effects=list("decision_unit"),
   full_model="selected ~ action_identity * future_assignment * mapping_condition + presentation + operationalisation + domain + (1 | unit_id)",
-  reduced_model="selected ~ action_identity * future_assignment + mapping_condition + presentation + operationalisation + domain + (1 | unit_id)",
+  reduced_model="selected ~ action_identity * future_assignment + action_identity:mapping_condition + future_assignment:mapping_condition + mapping_condition + presentation + operationalisation + domain + (1 | unit_id)",
   primary_contrast="INFORMATIVE versus UNINFORMATIVE_NULL difference in action_identity × future_assignment interaction",
   three_way_interaction=three_way,
   direct_interaction_lrt=as.data.frame(lrt),
