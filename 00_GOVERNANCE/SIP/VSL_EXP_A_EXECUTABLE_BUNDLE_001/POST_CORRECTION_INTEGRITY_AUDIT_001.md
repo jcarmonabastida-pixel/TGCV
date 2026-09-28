@@ -1,7 +1,7 @@
 # VSL A Executable Bundle — Post-Correction Integrity Audit 001
 
 **Date:** 2026-09-28  
-**Audited canonical checkout:** 1fdf21265fcbcfb18e3b23d1402dfe856c031bd1  
+**Audited canonical checkout:** 50a9ee58a7904936c9fbbe21e2492bcd1081e7a8  
 **Status:** AUDIT PASS — INTEGRITY COHERENT; BUNDLE NOT FROZEN
 
 ## Scope
@@ -14,8 +14,8 @@ Audit of the canonical contents of VSL_EXP_A_EXECUTABLE_BUNDLE_001 after correct
 |---|---|
 | EXECUTION_SPEC.md | 63e27ced5606c8e60606c695ea6d95610c59439b |
 | EXECUTOR_2_RECONSTRUCTION_SPEC.md | b87b3911e322d6d35b89fdabf0d806372c102eea |
-| FREEZE_MANIFEST_001.md | a5844317787a2ec07dd4db51ab1ded29972e9bd3 |
-| MANIFEST_SHA256.md | ff3766a32bb1a0bc564ed8f4e675ca603ec7ed54 |
+| FREEZE_MANIFEST_001.md | 4a73606f9695b9435ba8cb551f5590a6d4f43209 |
+| MANIFEST_SHA256.md | a50ba47ddc062967b298195aabff3cd1e29692ca |
 | execute.py | 4165bf5a112187e312cbd2c9c2728927fdefa888 |
 | Frozen A VSL reference | b4e97d5441c45ab43da879986816803e590f055e |
 
@@ -27,7 +27,7 @@ Audit of the canonical contents of VSL_EXP_A_EXECUTABLE_BUNDLE_001 after correct
 | EXECUTOR_2_RECONSTRUCTION_SPEC.md | 62e90c68789ce7a6f6aa41a00879afa2d51c6702af56d1cf7cdea8ab985cd754 |
 | FREEZE_MANIFEST_001.md | 9e99d820f8cdcdff212a47c64e0f6b5152e7dc110ab9343ac058fdfd323343b5 |
 | execute.py | b1dbdd7b470e8731e48ac9acad54edaab5e7b0afd2847409a7f526a315ddf0dd |
-| MANIFEST_SHA256.md | 7a612f91c671a184dc89784840b1c3c68822ff46b325a30ce8a0468d55246f74 |
+| MANIFEST_SHA256.md | b0877b2bba769bc0aba9241ea2616603447916c123d2b094966954ca6e8df8a1 |
 
 ## Checks
 
