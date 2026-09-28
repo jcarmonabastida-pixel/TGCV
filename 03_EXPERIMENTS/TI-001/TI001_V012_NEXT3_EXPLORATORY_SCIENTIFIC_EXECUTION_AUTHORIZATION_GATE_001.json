@@ -1,0 +1,57 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+  "status": "EXPLORATORY_SCIENTIFIC_EXECUTION_AUTHORIZED",
+  "scope": "NEXT3 exploratory scientific execution only",
+  "basis": {
+    "repurposing_decision": "TI001_V012_NEXT3_EXPLORATORY_EXECUTION_REPURPOSING_DECISION_001",
+    "fixture": "TI001_V012_NEXT3_FIXTURE_FREEZE_001",
+    "methodological_execution": "TI001_V012_NEXT3_METHODOLOGICAL_EXECUTION_RESULT_001",
+    "prior_confirmatory_closure": "TI001_V012_NEXT3_SCIENTIFIC_REPLICATION_COUNT_FREEZE_OR_METHODOLOGICAL_CLOSURE_001"
+  },
+  "checks": {
+    "fixture_frozen": true,
+    "methodological_identifiability_passed": true,
+    "simulator_binding_passed": true,
+    "simulator_reconstruction_parity_passed": true,
+    "simulator_semantic_completeness_passed": true,
+    "repurposing_decision_explicit": true,
+    "replication_count_fixed_pre_execution": true,
+    "replication_count": 3,
+    "full_repetitions": true,
+    "decisions_per_replication": 7680,
+    "total_decisions": 23040,
+    "confirmatory": false,
+    "statistical_sufficiency_claim": false,
+    "count_derived_from_NEXT2": false,
+    "count_derived_from_runtime_or_cost": false,
+    "count_defined_from_future_results": false,
+    "original_estimand_preserved": true,
+    "primary_contrast_preserved": true,
+    "no_normative_signal": true,
+    "successor_hidden_predecision": true,
+    "realized_transformation_hidden_predecision": true,
+    "outcome_value_reward_utility_hidden_predecision": true
+  },
+  "authorization": {
+    "scientific_execution": true,
+    "execution_type": "EXPLORATORY_SCIENTIFIC",
+    "authorization_scope": "EXPLORATORY_ONLY",
+    "decision_generation_authorized": true,
+    "model_mediated_execution_authorized": true,
+    "confirmatory_execution_authorized": false
+  },
+  "interpretation_constraints": [
+    "The three-repetition execution is exploratory and is not presented as statistically sufficient for confirmatory inference.",
+    "The execution may characterize the behavior, consistency, heterogeneity, and robustness of the pre-specified NEXT3 contrast.",
+    "Observed results must not be used retrospectively to justify the replication count.",
+    "The execution must not be interpreted as general confirmation or falsification of TGCV.",
+    "Any future confirmatory execution requires a separately justified pre-execution replication criterion and a new confirmatory authorization gate."
+  ],
+  "execution_target": {
+    "design": "NEXT3",
+    "replication_count": 3,
+    "replication_unit": "FULL_NEXT3_DESIGN_REPETITION",
+    "total_decisions": 23040
+  },
+  "decision": "AUTHORIZE_EXPLORATORY_SCIENTIFIC_EXECUTION"
+}
