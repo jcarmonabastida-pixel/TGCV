@@ -1,0 +1,78 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_INDEPENDENT_REPLICATION_CRITERION_JUSTIFICATION_002",
+  "status": "NO_INDEPENDENT_NUMERICAL_CRITERION_AVAILABLE",
+  "decision": "REPLICATION_COUNT_REMAINS_UNDETERMINED",
+  "scientific_execution_authorized": false,
+  "scope": "Independent replication-criterion gate resolution for the current frozen CANDIDATE_FIXTURE_003",
+  "current_fixture": {
+    "artifact_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "freeze_artifact": "TI001_V012_NEXT3_FIXTURE_FREEZE_002",
+    "unit_count": 23040,
+    "configured_replicates": 3,
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0"
+  },
+  "primary_estimand": "Action-identity × future-representation-assignment interaction on selection probability, with informative correspondence contrasted against the matched uninformative null.",
+  "routes_assessed": {
+    "minimum_relevant_effect": {
+      "status": "NOT_JUSTIFIED",
+      "finding": "No independent domain-specific numerical minimum relevant interaction effect is available in the current specification.",
+      "prohibited_substitutes": [
+        "NEXT2 observed effect",
+        "NEXT2 confidence interval",
+        "NEXT3 observed result",
+        "arbitrary conventional odds-ratio cutoff",
+        "desired replication count",
+        "runtime or monetary cost"
+      ]
+    },
+    "target_precision": {
+      "status": "NOT_JUSTIFIED",
+      "finding": "The precision scale can be specified as the two-sided 95% confidence-interval half-width of the primary log-odds interaction parameter, but no independent numerical maximum acceptable half-width is established.",
+      "prohibited_substitutes": [
+        "generic confidence-interval convention without domain justification",
+        "threshold selected to make 3, 5, 10, 15 or 30 replications pass",
+        "post-hoc observed precision"
+      ]
+    }
+  },
+  "dependence_requirement": {
+    "status": "OPEN",
+    "decision_unit": "one decision",
+    "candidate_rows_per_decision": 4,
+    "rule": "Candidate-action rows within one decision are not independent scientific repetitions.",
+    "cross_replication_independence": "Must be specified and justified by the final execution protocol before scientific execution."
+  },
+  "replication_count": {
+    "scientific_count": null,
+    "status": "UNDETERMINED_BY_CURRENT_SPECIFICATION",
+    "configured_fixture_count": 3,
+    "configured_fixture_count_interpretation": "Methodological fixture configuration only; not scientific sufficiency.",
+    "former_generator_value": 30,
+    "former_generator_value_interpretation": "Historical implementation parameter only; not scientifically justified."
+  },
+  "conclusion": "The current evidence does not support freezing any numerical scientific replication count. The correct methodological state is to retain the frozen three-replication fixture as a non-scientific methodological artifact and keep scientific execution blocked.",
+  "non_decisions": [
+    "No scientific replication count is selected.",
+    "No scientific sufficiency claim is made for 3.",
+    "No scientific sufficiency claim is made for 30.",
+    "No scientific execution is authorized.",
+    "No scientific result or inference is generated."
+  ],
+  "governance_effect": {
+    "current_fixture_freeze": "REMAINS_VALID",
+    "historical_freezes": "REMAIN_HISTORICAL",
+    "scientific_execution_gate": "REMAINS_BLOCKED",
+    "next_status": "NO_SCIENTIFIC_EXECUTION_UNDER_CURRENT_SPECIFICATION"
+  },
+  "evidence_basis": [
+    "TI001_V012_NEXT3_REPLICATION_CRITERION_GATE_001",
+    "TI001_V012_NEXT3_REPLICATION_COUNT_DECISION_001",
+    "TI001_V012_NEXT3_REPLICATION_DESIGN_ANALYSIS_001",
+    "TI001_V012_NEXT3_MINIMUM_RELEVANT_EFFECT_JUSTIFICATION_AUDIT_001",
+    "TI001_V012_NEXT3_PRECISION_THRESHOLD_JUSTIFICATION_AUDIT_001",
+    "TI001_V012_NEXT3_PRECISION_CRITERION_SPECIFICATION_001",
+    "TI001_V012_NEXT3_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_002",
+    "TI001_V012_NEXT3_FIXTURE_FREEZE_002"
+  ],
+  "next_gate": "NO_SCIENTIFIC_EXECUTION_UNDER_CURRENT_SPECIFICATION"
+}
