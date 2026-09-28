@@ -1,0 +1,73 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_EXPLORATORY_EXECUTION_REPURPOSING_DECISION_001",
+  "status": "REPURPOSED_FOR_EXPLORATORY_SCIENTIFIC_EXECUTION",
+  "scope": "NEXT3 exploratory scientific execution",
+  "supersedes": "NONE",
+  "preserves": [
+    "TI001_V012_NEXT3_FIXTURE_FREEZE_001",
+    "TI001_V012_NEXT3_METHODOLOGICAL_EXECUTION_RESULT_001",
+    "TI001_V012_NEXT3_SCIENTIFIC_REPLICATION_COUNT_FREEZE_OR_METHODOLOGICAL_CLOSURE_001"
+  ],
+  "relationship_to_prior_closure": {
+    "prior_status": "METHODOLOGICAL_CLOSURE",
+    "interpretation": "The prior closure remains valid for the former confirmatory replication-count specification.",
+    "change": "This artifact explicitly repurposes the execution status to exploratory scientific rather than confirmatory scientific.",
+    "no_deletion_or_retroactive_redefinition": true
+  },
+  "execution": {
+    "execution_type": "EXPLORATORY_SCIENTIFIC",
+    "scientific_execution": true,
+    "confirmatory": false,
+    "model_mediated": true,
+    "replication_count": 3,
+    "replication_unit": "FULL_NEXT3_DESIGN_REPETITION",
+    "decisions_per_replication": 7680,
+    "total_decisions": 23040
+  },
+  "replication_count_basis": {
+    "count": 3,
+    "basis": "PRE_EXECUTION_EXPLORATORY_EXECUTION_PARAMETER",
+    "not_a_claim_of_statistical_sufficiency": true,
+    "not_derived_from_NEXT2": true,
+    "not_derived_from_runtime_or_cost": true,
+    "not_derived_from_future_observed_results": true,
+    "not_presented_as_minimum_relevant_effect_or_precision_criterion": true
+  },
+  "design_preservation": {
+    "estimand": "ACTION_IDENTITY_X_FUTURE_REPRESENTATION_ASSIGNMENT_INTERACTION_ON_SELECTION_PROBABILITY",
+    "primary_contrast": "INFORMATIVE_VS_UNINFORMATIVE_NULL",
+    "action_profile_reassignment": "BALANCED",
+    "future_space_profiles": [
+      [1,1,1,1],
+      [2,1,1,2],
+      [3,2,2,2],
+      [4,3,3,3]
+    ],
+    "conditions": [
+      "INFORMATIVE",
+      "UNINFORMATIVE_NULL",
+      "SURFACE_PERMUTED",
+      "CONTRADICTORY"
+    ],
+    "no_normative_signal": true,
+    "successor_hidden_predecision": true,
+    "realized_transformation_hidden_predecision": true,
+    "outcome_value_reward_utility_hidden_predecision": true
+  },
+  "interpretive_scope": [
+    "Assess the observed behavior of the pre-specified NEXT3 contrast.",
+    "Assess consistency across the three complete repetitions.",
+    "Assess heterogeneity across domains and operationalisations.",
+    "Assess robustness across balanced action-profile presentations.",
+    "Do not treat this execution as confirmatory evidence of general TGCV validity.",
+    "Do not treat absence or ambiguity in this exploratory execution as TGCV-wide falsification."
+  ],
+  "authorization": {
+    "authorized": true,
+    "authorization_scope": "EXPLORATORY_ONLY",
+    "confirmatory_authorization": false,
+    "new_gate_required_for_confirmatory_execution": true
+  },
+  "scientific_reopening_rule": "Any future confirmatory execution requires a separately justified pre-execution replication criterion and a new confirmatory authorization gate.",
+  "decision": "EXPLORATORY_EXECUTION_AUTHORIZED_WITH_THREE_FULL_REPETITIONS"
+}
