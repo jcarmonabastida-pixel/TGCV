@@ -1,0 +1,96 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PREDECISION_STATE_CONTEXT_SPECIFICATION_AMENDMENT_001",
+  "status": "AMENDMENT_PROPOSED_PENDING_PREFLIGHT",
+  "scientific_execution": false,
+  "fixture_frozen": false,
+  "purpose": "Close the identified pre-decision interface gap by specifying the concrete S_t and task_context representation required by the existing NEXT3 design, without changing the estimand, conditions, profile semantics, replication unit or scientific status.",
+  "preserves": [
+    "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001",
+    "TI001_V012_NEXT3_DECISION_INPUT_PROJECTION_001",
+    "TI001_V012_NEXT3_MAPPING_SEMANTICS_001",
+    "TI001_V012_NEXT3_DETERMINISTIC_STATE_TRANSITION_SPECIFICATION_001",
+    "TI001_V012_NEXT3_DOMAIN_OPERATIONALISATION_OPERATOR_MATRIX_001"
+  ],
+  "S_t": {
+    "representation": {
+      "active": [],
+      "relations": [],
+      "constraints": []
+    },
+    "canonical_serialization": "JSON with sorted object keys and deterministic array ordering",
+    "sha256_rule": "SHA-256 of canonical serialized S_t",
+    "assignment_rule": "Every decision unit starts from the same empty canonical state. Domain semantics are supplied by the domain identifier and the deterministic operator matrix; they are not encoded by pre-populating domain-specific elements.",
+    "variation_across_units": "none",
+    "predecision_visibility": true,
+    "postdecision_derivation": false,
+    "hidden_information_absent": true,
+    "rationale": "The empty state provides a common, deterministic baseline and prevents S_t from carrying condition-specific, action-specific, realized-profile or outcome information."
+  },
+  "task_context": {
+    "representation": {
+      "task_id": "NEXT3",
+      "task_instruction": "Select exactly one action from the candidate action set using the visible current state and the structural transformation profile presented for each candidate action.",
+      "response_constraint": "Return exactly one candidate action identifier: A, B, C, or D."
+    },
+    "canonical_serialization": "JSON with sorted object keys",
+    "sha256_rule": "SHA-256 of canonical serialized task_context",
+    "assignment_rule": "Identical task_context for every decision unit.",
+    "variation_across_units": "none",
+    "predecision_visibility": true,
+    "contains_condition_metadata": false,
+    "contains_f_or_z": false,
+    "contains_successor_or_realized_transformation": false,
+    "contains_T_acc": false,
+    "contains_outcome_or_value": false,
+    "contains_reward_utility_performance_success_quality": false
+  },
+  "domain_binding": {
+    "rule": "The domain and operationalisation fields remain fixture metadata and post-decision simulator inputs. They are not added to task_context unless already present in the frozen decision projection.",
+    "D1": "spatial node/relation semantics",
+    "D2": "resource node/allocation relation semantics",
+    "D3": "graph node/edge semantics",
+    "D4": "workflow state/transition semantics"
+  },
+  "traceability": {
+    "required_predecision_records": [
+      "unit_id",
+      "S_t",
+      "S_t_sha256",
+      "task_context",
+      "task_context_sha256",
+      "candidate_actions",
+      "presented_profiles",
+      "decision_input_sha256"
+    ],
+    "postdecision_records": [
+      "selected_action",
+      "z",
+      "S_t_plus_1",
+      "S_t_plus_1_sha256",
+      "realized_transformation",
+      "realized_transformation_sha256",
+      "T_acc_t_plus_1",
+      "T_acc_t_plus_1_sha256"
+    ]
+  },
+  "boundary_tests_required": [
+    "S_t is identical and canonical across all decision units",
+    "task_context is identical and canonical across all decision units",
+    "no condition label occurs in S_t or task_context",
+    "no f or z value occurs in task_context",
+    "no successor, realized transformation or T_acc value occurs pre-decision",
+    "no normative signal occurs in S_t or task_context",
+    "the exact decision input is reconstructible from S_t, task_context, candidate_actions and presented_profiles"
+  ],
+  "scientific_implication": {
+    "estimand_changed": false,
+    "primary_contrast_changed": false,
+    "conditions_changed": false,
+    "profile_values_changed": false,
+    "replication_count_changed": false,
+    "replication_unit_changed": false,
+    "confirmatory_status_changed": false,
+    "exploratory_authorization_changed": false
+  },
+  "next_gate": "TI001_V012_NEXT3_PREDECISION_STATE_CONTEXT_BINDING_PREFLIGHT_001"
+}
