@@ -1,0 +1,60 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_REPLICATION_DESIGN_ANALYSIS_001",
+  "status": "REPLICATION_SENSITIVITY_ANALYSIS_COMPLETE",
+  "scientific_execution": false,
+  "purpose": "Pre-execution sensitivity analysis of replication contribution for the NEXT3 primary estimand; this artifact does not authorize execution and does not select a replication count by post-hoc empirical performance.",
+  "primary_estimand": "Action-identity × future-representation-assignment interaction on selection probability, with the informative condition contrasted against the matched uninformative null.",
+  "design_constants": {
+    "domains": 4,
+    "operationalisations": 5,
+    "conditions": 4,
+    "presentations": 4,
+    "balanced_action_profile_permutations": 24,
+    "decisions_per_replication": 7680,
+    "candidate_rows_per_decision": 4
+  },
+  "replication_scenarios": [
+    {"replicates_per_cell": 3, "decisions": 23040, "action_profile_cell_n_per_condition": 1440},
+    {"replicates_per_cell": 5, "decisions": 38400, "action_profile_cell_n_per_condition": 2400},
+    {"replicates_per_cell": 10, "decisions": 76800, "action_profile_cell_n_per_condition": 4800},
+    {"replicates_per_cell": 15, "decisions": 115200, "action_profile_cell_n_per_condition": 7200},
+    {"replicates_per_cell": 30, "decisions": 230400, "action_profile_cell_n_per_condition": 14400}
+  ],
+  "precision_probe": {
+    "purpose": "Illustrate the contribution of replication without fitting the scientific model.",
+    "reference_probability": 0.25,
+    "basis": "For a single action × future-profile cell under a balanced four-action selection structure, binomial standard error is sqrt(p(1-p)/n).",
+    "approximate_95_percent_half_widths": {
+      "3": 0.0224,
+      "5": 0.0173,
+      "10": 0.0122,
+      "15": 0.0100,
+      "30": 0.0071
+    },
+    "interpretation": "Increasing replication improves nominal cell-level sampling precision approximately with the square root of n. Moving from 3 to 30 replicas multiplies n by 10 but improves this nominal half-width only by approximately sqrt(10), not by a factor of 10."
+  },
+  "independence_caveat": "The fixture's replicate identifier and deterministic reassignment do not by themselves establish statistical independence of scientific model decisions. Independence must be established by the execution protocol and reconstruction design.",
+  "power_analysis_status": "NOT_IDENTIFIABLE_FROM_CURRENT_SPECIFICATION",
+  "reason": [
+    "No minimum scientifically relevant interaction effect has been pre-specified.",
+    "No empirical or externally justified variance/dependence parameter for the primary logistic interaction has been pre-specified.",
+    "NEXT2 contains no quantitative power calculation that establishes its three-replica count as a reference standard."
+  ],
+  "decision_rule": {
+    "status": "NO_REPLICATION_COUNT_AUTHORIZED",
+    "rule": "A final replication count may be frozen only after the primary estimand, minimum relevant effect, dependence assumptions, and target precision or power criterion are pre-specified and evaluated before scientific execution.",
+    "prohibited_shortcuts": [
+      "Retaining 30 solely because it is already present in the generator",
+      "Reducing to 3 solely because NEXT2 used 3",
+      "Choosing the count after observing NEXT3 scientific results"
+    ]
+  },
+  "current_conclusion": "The current evidence supports treating 30 as an unjustified design choice, not as a validated replication requirement. The sensitivity analysis quantifies diminishing precision gains but does not provide sufficient information to select 3, 5, 10, 15, or 30 as scientifically required.",
+  "next_required_artifact": "A pre-execution replication criterion specifying either a minimum relevant primary interaction effect with explicit dependence assumptions, or a target precision for the primary estimand. No scientific execution is authorized by this artifact.",
+  "references": [
+    "TI001_V012_NEXT3_MINIMAL_IDENTIFIABILITY_REQUIREMENTS_001",
+    "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001",
+    "TI001_V012_NEXT3_MAPPING_SEMANTICS_001",
+    "TI001_V012_NEXT3_FIXTURE_GENERATOR_001.py"
+  ]
+}
