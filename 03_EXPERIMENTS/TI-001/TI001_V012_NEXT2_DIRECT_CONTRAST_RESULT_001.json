@@ -1,0 +1,109 @@
+{
+  "artifact_id": "TI001_V012_NEXT2_DIRECT_CONTRAST_RESULT_001",
+  "status": "DIRECT_PRIMARY_CONTRAST_COMPLETE",
+  "analysis_specification": "TI001_V012_NEXT2_PRIMARY_ANALYSIS_SPECIFICATION_001",
+  "authorization_gate": "TI001_V012_NEXT2_PRIMARY_ANALYSIS_AUTHORIZATION_GATE_001",
+  "result_sha256": "4d63933cd508ce1749db2a1210caf6c49fe5233c18185fce87ed7d9fcdf1c103",
+  "fixture_dir_binding": "TI001_V012_NEXT2_FIXTURE_REGENERATED_001",
+  "fixture_unit_traceability": "VALIDATED_FOR_ALL_VALID_DECISIONS_IN_TARGET_CONDITIONS",
+  "conditions_compared": ["INFORMATIVE", "UNINFORMATIVE_NULL"],
+  "valid_decisions_total": 22435,
+  "valid_decisions_compared": 11182,
+  "model": "mixed-effects logistic regression",
+  "random_effects": [
+    "decision_unit"
+  ],
+  "full_model": "selected ~ action_identity * future_assignment * mapping_condition + presentation + operationalisation + domain + (1 | unit_id)",
+  "reduced_model": "selected ~ action_identity * future_assignment + action_identity:mapping_condition + future_assignment:mapping_condition + mapping_condition + presentation + operationalisation + domain + (1 | unit_id)",
+  "primary_contrast": "INFORMATIVE versus UNINFORMATIVE_NULL difference in action_identity × future_assignment interaction",
+  "three_way_interaction": [
+    {
+      "term": "action_identityB:future_assignmentslot_2:mapping_conditionUNINFORMATIVE_NULL",
+      "estimate": -0.3052,
+      "std_error": 0.2358,
+      "z": -1.2942,
+      "p_value": 0.1956
+    },
+    {
+      "term": "action_identityC:future_assignmentslot_2:mapping_conditionUNINFORMATIVE_NULL",
+      "estimate": 0.1712,
+      "std_error": 0.1923,
+      "z": 0.8904,
+      "p_value": 0.3733
+    },
+    {
+      "term": "action_identityD:future_assignmentslot_2:mapping_conditionUNINFORMATIVE_NULL",
+      "estimate": 12.3683,
+      "std_error": 813.7838,
+      "z": 0.0152,
+      "p_value": 0.9879
+    },
+    {
+      "term": "action_identityB:future_assignmentslot_3:mapping_conditionUNINFORMATIVE_NULL",
+      "estimate": 0.5144,
+      "std_error": 0.2181,
+      "z": 2.3584,
+      "p_value": 0.0184
+    },
+    {
+      "term": "action_identityC:future_assignmentslot_3:mapping_conditionUNINFORMATIVE_NULL",
+      "estimate": 0.4168,
+      "std_error": 0.1936,
+      "z": 2.153,
+      "p_value": 0.0313
+    },
+    {
+      "term": "action_identityD:future_assignmentslot_3:mapping_conditionUNINFORMATIVE_NULL",
+      "estimate": 12.7591,
+      "std_error": 816.3537,
+      "z": 0.0156,
+      "p_value": 0.9875
+    },
+    {
+      "term": "action_identityB:future_assignmentslot_4:mapping_conditionUNINFORMATIVE_NULL",
+      "estimate": 0.1914,
+      "std_error": 0.2403,
+      "z": 0.7966,
+      "p_value": 0.4257
+    },
+    {
+      "term": "action_identityC:future_assignmentslot_4:mapping_conditionUNINFORMATIVE_NULL",
+      "estimate": 0.1131,
+      "std_error": 0.1926,
+      "z": 0.5876,
+      "p_value": 0.5568
+    },
+    {
+      "term": "action_identityD:future_assignmentslot_4:mapping_conditionUNINFORMATIVE_NULL",
+      "estimate": 0.3414,
+      "std_error": 660.0189,
+      "z": 0.0005,
+      "p_value": 0.9996
+    }
+  ],
+  "direct_interaction_lrt": [
+    {
+      "npar": 34,
+      "AIC": 32015.8285,
+      "BIC": 32311.9126,
+      "logLik": -15973.9143,
+      "deviance": 31947.8285,
+      "_row": "fit_reduced"
+    },
+    {
+      "npar": 43,
+      "AIC": 32019.8579,
+      "BIC": 32394.3171,
+      "logLik": -15966.9289,
+      "deviance": 31933.8579,
+      "Chisq": 13.9707,
+      "Df": 9,
+      "Pr(>Chisq)": 0.1234,
+      "_row": "fit_full"
+    }
+  ],
+  "replication_status": "NOT_ASSESSABLE_FROM_SINGLE_EXECUTION",
+  "interpretation_boundary": "No TGCV-wide confirmation/falsification, no value/causal claim, no Transformational Intelligence claim.",
+  "scientific_execution_performed": false,
+  "secondary_mi_contrast_status": "NOT_EXECUTED"
+}
