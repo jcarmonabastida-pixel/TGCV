@@ -1,0 +1,107 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_DOMAIN_VALID_BASELINE_STATE_SPECIFICATION_001",
+  "status": "BASELINE_STATE_SPECIFIED_PENDING_BINDING_PREFLIGHT",
+  "scientific_execution": false,
+  "purpose": "Define the minimum deterministic domain-valid S_t required by the frozen NEXT3 simulator for all four domains and five operationalisations.",
+  "design_preservation": {
+    "estimand_changed": false,
+    "primary_contrast_changed": false,
+    "conditions_changed": false,
+    "profile_values_changed": false,
+    "replication_count_changed": false,
+    "replication_unit_changed": false,
+    "task_context_changed": false,
+    "scientific_status_changed": false
+  },
+  "canonical_state_schema": {
+    "active": [
+      {
+        "id": 1,
+        "type": "<domain_element_type>",
+        "domain": "<domain_id>"
+      },
+      {
+        "id": 2,
+        "type": "<domain_element_type>",
+        "domain": "<domain_id>"
+      }
+    ],
+    "relations": [],
+    "constraints": []
+  },
+  "domain_instantiation": {
+    "D1_spatial_planning": {
+      "element_type": "spatial_node",
+      "state": {
+        "active": [
+          {"id": 1, "type": "spatial_node", "domain": "D1_spatial_planning"},
+          {"id": 2, "type": "spatial_node", "domain": "D1_spatial_planning"}
+        ],
+        "relations": [],
+        "constraints": []
+      }
+    },
+    "D2_resource_planning": {
+      "element_type": "resource_node",
+      "state": {
+        "active": [
+          {"id": 1, "type": "resource_node", "domain": "D2_resource_planning"},
+          {"id": 2, "type": "resource_node", "domain": "D2_resource_planning"}
+        ],
+        "relations": [],
+        "constraints": []
+      }
+    },
+    "D3_graph_reconfiguration": {
+      "element_type": "graph_node",
+      "state": {
+        "active": [
+          {"id": 1, "type": "graph_node", "domain": "D3_graph_reconfiguration"},
+          {"id": 2, "type": "graph_node", "domain": "D3_graph_reconfiguration"}
+        ],
+        "relations": [],
+        "constraints": []
+      }
+    },
+    "D4_workflow_state_machine": {
+      "element_type": "workflow_state",
+      "state": {
+        "active": [
+          {"id": 1, "type": "workflow_state", "domain": "D4_workflow_state_machine"},
+          {"id": 2, "type": "workflow_state", "domain": "D4_workflow_state_machine"}
+        ],
+        "relations": [],
+        "constraints": []
+      }
+    }
+  },
+  "assignment_rule": "For every decision unit, instantiate the baseline state corresponding only to its domain. The same canonical two-element structure is used for every operationalisation, condition, presentation, profile permutation and replicate within that domain.",
+  "canonicalization": {
+    "serialization": "Canonical JSON with sorted object keys and deterministic arrays.",
+    "sha256": "SHA-256 of the canonical serialized instantiated S_t."
+  },
+  "semantic_properties": {
+    "minimum_active_elements": 2,
+    "supports_O1_cardinality": true,
+    "supports_O2_topology": true,
+    "supports_O3_depth": true,
+    "supports_O4_constraints": true,
+    "supports_O5_composition": true,
+    "initial_relations": 0,
+    "initial_constraints": 0,
+    "action_specific_information": false,
+    "profile_specific_information": false,
+    "condition_specific_information": false,
+    "z_information": false,
+    "successor_information": false,
+    "T_acc_information": false,
+    "outcome_information": false,
+    "value_reward_utility_performance_information": false
+  },
+  "compatibility_basis": {
+    "operator_matrix": "TI001_V012_NEXT3_DOMAIN_OPERATIONALISATION_OPERATOR_MATRIX_001",
+    "simulator": "TI001_V012_NEXT3_DETERMINISTIC_SIMULATOR_001.py",
+    "decision_projection": "TI001_V012_NEXT3_DECISION_INPUT_PROJECTION_001"
+  },
+  "next_gate": "TI001_V012_NEXT3_PREDECISION_STATE_CONTEXT_BINDING_PREFLIGHT_002"
+}
