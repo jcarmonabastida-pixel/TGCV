@@ -1,0 +1,19 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_DECISION_INTERFACE_PREFLIGHT_RESULT_001",
+  "status": "PASS",
+  "decision": "INTERFACE_BINDING_PASS",
+  "projection_blob_sha1": "bc96e3bbf01d2d5b6b386f4371def1682dea5a31",
+  "prompt_blob_sha1": "c8abc3c5bbb2ec9d226b37c7e8c7cf872f8c35e4",
+  "checks": {
+    "visible_pre_decision": true,
+    "hidden_condition": true,
+    "hidden_postdecision": true,
+    "prompt_no_condition_labels": true,
+    "prompt_excludes_postdecision": true,
+    "prompt_non_normative": true,
+    "exact_output": true
+  },
+  "scientific_execution": false,
+  "fixture_frozen": false,
+  "next_action": "Run the complete fixture binding preflight against generator plus interface."
+}
