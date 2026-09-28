@@ -1,0 +1,38 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_FIXTURE_BINDING_PREFLIGHT_RESULT_001",
+  "status": "BLOCKED_PENDING_RUNTIME_INTERFACE",
+  "checks": {
+    "semantic_profile_distinction": {
+      "status": "PASS",
+      "detail": "The four structural profiles are pairwise distinct."
+    },
+    "action_profile_reassignment": {
+      "status": "PASS",
+      "detail": "f is constructed as a bijection from A/B/C/D to slot_1..slot_4 and 24 permutation indices are generated."
+    },
+    "null_independence_from_f_and_action": {
+      "status": "PASS",
+      "detail": "null_mapping(d,o,p,r) seed material contains no f, selected action, or z."
+    },
+    "condition_label_exclusion": {
+      "status": "BLOCKED_PENDING_RUNTIME_INTERFACE",
+      "detail": "mapping_condition_metadata is present in each fixture row; no NEXT3 decision-input projection/system prompt exists yet, so runtime exclusion cannot be verified."
+    },
+    "successor_and_t_acc_separation": {
+      "status": "PASS_AT_FIXTURE_SCHEMA",
+      "detail": "The candidate row contains no S_t+1 or T_acc field; z is post-decision metadata and must not enter the decision input."
+    },
+    "bijection_invariants": {
+      "status": "PASS",
+      "detail": "Generator asserts bijectivity of both f and z."
+    },
+    "independent_reconstruction_fields": {
+      "status": "BLOCKED_PENDING_SIMULATOR_INTERFACE",
+      "detail": "The generator currently has mappings/profiles but no S_t, transition execution, S_t+1, or derived T_acc chain."
+    }
+  },
+  "scientific_execution": false,
+  "fixture_frozen": false,
+  "decision": "DO_NOT_FREEZE",
+  "next_action": "Create the NEXT3 decision-input projection/system prompt and explicit executor traceability, then rerun this preflight."
+}
