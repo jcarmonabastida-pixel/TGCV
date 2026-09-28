@@ -1,0 +1,67 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_IDENTIFIABILITY_ACCEPTANCE_CRITERIA_001",
+  "status": "ACCEPTANCE_CRITERIA_SPECIFIED",
+  "scientific_execution_authorized": false,
+  "purpose": "Define pre-execution methodological acceptance criteria for NEXT3 after its repurposing as an identifiability study.",
+  "acceptance_criteria": [
+    {
+      "id": "IAC1",
+      "criterion": "Semantic profile distinguishability",
+      "requirement": "The four structural transformation profiles must be deterministically distinguishable from the predecision representation and must not collapse to the same semantic profile."
+    },
+    {
+      "id": "IAC2",
+      "criterion": "Action-profile reassignment integrity",
+      "requirement": "The informative and controlled reassignment conditions must implement the declared action-to-profile mappings exactly, with balanced action/profile assignment."
+    },
+    {
+      "id": "IAC3",
+      "criterion": "Null information removal",
+      "requirement": "The uninformative null must remove action-to-future correspondence while preserving the declared surface and presentation controls."
+    },
+    {
+      "id": "IAC4",
+      "criterion": "Predecision information boundary",
+      "requirement": "Successor state, realized transformation, T_acc, downstream state, outcome, value, reward, utility, performance, quality and success information must be unavailable to the decision mechanism."
+    },
+    {
+      "id": "IAC5",
+      "criterion": "Independent reconstruction",
+      "requirement": "An independently implemented reconstruction must reproduce the frozen semantic mappings, null construction, successor mapping and derived T_acc representation."
+    },
+    {
+      "id": "IAC6",
+      "criterion": "No normative contamination",
+      "requirement": "No acceptance-critical input may encode preference, reward, utility, task success, performance or quality."
+    },
+    {
+      "id": "IAC7",
+      "criterion": "Traceability",
+      "requirement": "Every primary decision input must be traceable to a declared design element, and every postdecision derived quantity must be traceable to the selected action and frozen mapping."
+    },
+    {
+      "id": "IAC8",
+      "criterion": "Deterministic reproducibility",
+      "requirement": "Given the frozen fixture inputs and identifiers, independent reconstruction must reproduce the same semantic mapping and successor/T_acc representations."
+    }
+  ],
+  "decision_rule": {
+    "type": "ALL_REQUIRED",
+    "rule": "NEXT3 methodological execution may proceed only if IAC1-IAC8 all pass.",
+    "failure_action": "BLOCK_EXECUTION_AND_REPAIR_DESIGN_OR_IMPLEMENTATION"
+  },
+  "non_claims": [
+    "Passing these criteria does not establish the TGCV mechanism as true.",
+    "Passing these criteria does not establish causality.",
+    "Passing these criteria does not establish a value effect.",
+    "Passing these criteria does not determine a statistically sufficient replication count."
+  ],
+  "replication_status": "NOT_APPLICABLE_FOR_CURRENT_METHODOLOGICAL_GATE",
+  "references": [
+    "TI001_V012_NEXT3_REPURPOSING_DECISION_001",
+    "TI001_V012_NEXT3_MINIMAL_IDENTIFIABILITY_REQUIREMENTS_001",
+    "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001",
+    "TI001_V012_NEXT3_MAPPING_SEMANTICS_001",
+    "TI001_V012_NEXT3_SIMULATOR_IMPLEMENTATION_BINDING_RESULT_002"
+  ]
+}
