@@ -1,0 +1,40 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_REPURPOSING_DECISION_001",
+  "status": "REPURPOSED_AS_METHODOLOGICAL_IDENTIFIABILITY_STUDY",
+  "scientific_execution_authorized": false,
+  "decision": "NEXT3_CONFIRMATORY_REPLICATION_STATUS_WITHDRAWN",
+  "purpose": "Assess whether the independently observable semantic future representation and its controlled reassignment provide an identifiable operational contrast for the primary mechanism, without treating the study as a confirmatory replication-counted test.",
+  "primary_question": "Can the action-identity × future-representation-assignment contrast be operationally identified while preserving the predecision boundary between selected action and realized successor?",
+  "scope": {
+    "construct": "future-representation/action correspondence",
+    "target": "identifiability and implementation validity",
+    "not_target": [
+      "TGCV-wide confirmation or falsification",
+      "causal effect estimation",
+      "value or utility effect",
+      "confirmatory replication claim",
+      "determination of a statistically sufficient replication count"
+    ]
+  },
+  "replication_status": {
+    "count": "NOT_APPLICABLE_UNTIL_A_NEW_METHODOLOGICAL_CRITERION_IS_SPECIFIED",
+    "configured_generator_value": 30,
+    "authorization": "NONE"
+  },
+  "required_pre_execution_outputs": [
+    "frozen semantic profile mapping",
+    "independent reconstruction of the mapping and successor generation",
+    "verification that the null removes action-to-future information while preserving relevant surface structure",
+    "verification that successor and T_acc remain hidden before the decision",
+    "verification that no normative, reward, utility, performance, quality, or success signal enters the decision input",
+    "pre-specified identifiability acceptance criteria"
+  ],
+  "decision_boundary": "No scientific execution may begin until the methodological acceptance criteria are explicitly specified and passed.",
+  "references": [
+    "TI001_V012_NEXT3_REPLICATION_COUNT_DECISION_001",
+    "TI001_V012_NEXT3_MINIMAL_IDENTIFIABILITY_REQUIREMENTS_001",
+    "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001",
+    "TI001_V012_NEXT3_MAPPING_SEMANTICS_001",
+    "TI001_V012_NEXT3_REPLICATION_DESIGN_ANALYSIS_001"
+  ]
+}
