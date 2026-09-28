@@ -1,0 +1,17 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_FIXTURE_GENERATION_STRUCTURAL_PREFLIGHT_CORRECTION_001",
+  "status": "PRIOR_NULL_COINCIDENCE_BLOCKER_CORRECTED",
+  "supersedes": "TI001_V012_NEXT3_FIXTURE_GENERATION_STRUCTURAL_PREFLIGHT_BLOCKER_001",
+  "correction": {
+    "prior_interpretation": "A unit-level coincidence z=f in UNINFORMATIVE_NULL was treated as a structural failure.",
+    "corrected_interpretation": "Such a coincidence is compatible with the frozen null definition because z is generated independently of f; forcing z!=f per unit would condition z on f and violate the independence requirement.",
+    "required_check": "Verify independence from f across the full deterministic generation procedure, plus balanced marginal profile frequencies."
+  },
+  "current_result": {
+    "unit_count": 23040,
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "size_bytes": 62335069,
+    "structural_preflight": "PASS"
+  },
+  "decision": "USE_CORRECTED_NULL_INTERPRETATION"
+}
