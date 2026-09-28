@@ -1,0 +1,39 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PRECISION_THRESHOLD_JUSTIFICATION_AUDIT_001",
+  "status": "NO_UNIVERSAL_THRESHOLD_IDENTIFIED",
+  "scientific_execution_authorized": false,
+  "question": "Is there an externally defensible universal numerical maximum confidence-interval half-width for the NEXT3 primary logistic interaction parameter that can be adopted without domain-specific scientific justification?",
+  "finding": "NO",
+  "evidence_summary": [
+    {
+      "source": "Design, analysis and presentation of factorial randomised controlled trials",
+      "reference": "https://pmc.ncbi.nlm.nih.gov/articles/PMC305359/",
+      "finding": "When an interaction is primary, sample size should be designed around a reasonable target interaction effect; for binary outcomes the interaction is considered on the log-odds scale when logistic regression is used."
+    },
+    {
+      "source": "Power and Sample Size for Multivariate Logistic Modeling of Unmatched Case-Control Studies",
+      "reference": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5742560/",
+      "finding": "Logistic-regression interaction sample-size calculations require specification of the interaction parameter and model/covariate structure; the source does not provide a universal precision threshold."
+    },
+    {
+      "source": "Sample Size and Power Calculations for Additive Interactions",
+      "reference": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4249707/",
+      "finding": "Interaction power calculations are parameterized by an assumed interaction effect and design characteristics rather than by a universal confidence-interval-width convention."
+    }
+  ],
+  "methodological_conclusion": "The literature supports pre-specifying a scientifically meaningful target effect or an explicitly justified precision target, but does not supply a universal numerical confidence-interval half-width applicable to this NEXT3 estimand.",
+  "decision": "DO_NOT_INVENT_PRECISION_THRESHOLD",
+  "implication_for_replication": "The current evidence base does not justify selecting a numerical replication count through a generic confidence-interval-width rule.",
+  "next_route": "Return to the MINIMUM_RELEVANT_EFFECT route and determine whether an independent scientific basis exists for defining the smallest interaction effect that would be scientifically meaningful for this experiment.",
+  "prohibitions": [
+    "Do not derive the threshold from NEXT2 observed results.",
+    "Do not derive the threshold from NEXT3 results.",
+    "Do not choose a threshold to make 3, 5, 10, 15, or 30 replications fit.",
+    "Do not use runtime or monetary cost as the scientific justification."
+  ],
+  "references_to_internal_artifacts": [
+    "TI001_V012_NEXT3_REPLICATION_CRITERION_GATE_001",
+    "TI001_V012_NEXT3_PRECISION_CRITERION_SPECIFICATION_001",
+    "TI001_V012_NEXT3_REPLICATION_DESIGN_ANALYSIS_001"
+  ]
+}
