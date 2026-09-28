@@ -1,0 +1,60 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_002",
+  "status": "SCIENTIFIC_EXECUTION_NOT_AUTHORIZED",
+  "decision": "BLOCKED_PENDING_INDEPENDENT_REPLICATION_CRITERION",
+  "scope": "Current scientific execution authorization gate after freezing CANDIDATE_FIXTURE_003 / three configured repetitions",
+  "fixture": {
+    "artifact_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "freeze_artifact": "TI001_V012_NEXT3_FIXTURE_FREEZE_002",
+    "freeze_status": "FIXTURE_FROZEN",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "unit_count": 23040,
+    "configured_replicates": 3
+  },
+  "required_conditions": {
+    "current_fixture_frozen": true,
+    "methodological_design_gate_closed": true,
+    "current_binding_preflight_pass": true,
+    "independent_scientific_replication_criterion_justified": false,
+    "scientific_replication_count_scientifically_frozen": false,
+    "scientific_execution_authorization": false
+  },
+  "current_blockers": [
+    {
+      "id": "G1",
+      "condition": "Independent scientific replication criterion",
+      "status": "MISSING",
+      "reason": "No independent domain-specific numerical minimum relevant effect or defensible target precision has been established for the primary action-identity × future-representation-assignment interaction."
+    },
+    {
+      "id": "G2",
+      "condition": "Scientific replication count",
+      "status": "NOT_FROZEN",
+      "reason": "The value 3 is the current methodological fixture configuration, not a scientifically justified replication count."
+    }
+  ],
+  "explicit_non_decisions": [
+    "Do not interpret the frozen value 3 as scientifically sufficient.",
+    "Do not infer scientific sufficiency from the 23040-unit fixture cardinality.",
+    "Do not infer a scientific replication count from NEXT2.",
+    "Do not derive the replication criterion from observed NEXT3 results.",
+    "Do not authorize scientific execution merely because the current fixture is frozen."
+  ],
+  "evidence_basis": [
+    "TI001_V012_NEXT3_FIXTURE_FREEZE_002",
+    "TI001_V012_NEXT3_CURRENT_FIXTURE_BINDING_RECONCILIATION_001",
+    "TI001_V012_NEXT3_FIXTURE_STRUCTURAL_PREFLIGHT_RESULT_001",
+    "TI001_V012_NEXT3_REPLICATION_COUNT_DECISION_001",
+    "TI001_V012_NEXT3_REPLICATION_CRITERION_GATE_001",
+    "TI001_V012_NEXT3_MINIMUM_RELEVANT_EFFECT_JUSTIFICATION_AUDIT_001",
+    "TI001_V012_NEXT3_PRECISION_THRESHOLD_JUSTIFICATION_AUDIT_001"
+  ],
+  "scientific_execution": false,
+  "scientific_decision_generated": false,
+  "scientific_inference_performed": false,
+  "next_gate": "INDEPENDENT_REPLICATION_CRITERION_JUSTIFICATION",
+  "allowed_next_actions": [
+    "Establish an independent scientific/domain justification for a replication criterion and then issue a new replication-count decision and authorization gate.",
+    "If no such criterion can be justified, retain NEXT3 as a frozen methodological fixture without scientific execution."
+  ]
+}
