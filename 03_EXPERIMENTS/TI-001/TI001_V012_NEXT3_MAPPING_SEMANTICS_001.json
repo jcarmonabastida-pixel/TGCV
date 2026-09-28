@@ -1,0 +1,121 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_MAPPING_SEMANTICS_001",
+  "status": "NEXT3_MAPPING_SEMANTICS_SPECIFIED",
+  "design_gate": "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001",
+  "scientific_execution_authorized": false,
+  "purpose": "Formalize the pre-decision semantic mapping f and the post-decision realized mapping z without exposing realized successor information before action selection.",
+  "objects": {
+    "actions": ["A","B","C","D"],
+    "profiles": ["slot_1","slot_2","slot_3","slot_4"],
+    "profile_dimensions": [
+      "reachable_change_count",
+      "constraint_count",
+      "composition_depth",
+      "dependency_count"
+    ],
+    "profile_values": {
+      "slot_1": [1,1,1,1],
+      "slot_2": [2,1,1,2],
+      "slot_3": [3,2,2,2],
+      "slot_4": [4,3,3,3]
+    }
+  },
+  "pre_decision_mapping": {
+    "f": "A bijection from action identities to semantic structural-transformation profiles.",
+    "formal_definition": "f: {A,B,C,D} -> {slot_1,slot_2,slot_3,slot_4}",
+    "constraint": "f is bijective within every decision unit.",
+    "agent_observation": "For every candidate action a, the decision input exposes the structural profile P(f(a)).",
+    "reassignment": "A permutation sigma of the four profiles changes f while preserving the action vocabulary and the marginal frequency of every profile.",
+    "identification_target": "Selection variation attributable to the reassigned semantic profile, conditional on balanced action identity."
+  },
+  "post_decision_realization": {
+    "z": "The deterministic simulator mapping from action identity to the realized successor structural profile.",
+    "formal_definition": "z: {A,B,C,D} -> {slot_1,slot_2,slot_3,slot_4}",
+    "informative_condition": "z = f",
+    "surface_permuted_condition": "z = rho_surface(f), where rho_surface is a fixed-point-free permutation used only to alter presentation realization correspondence without exposing the condition label.",
+    "contradictory_condition": "z = rho_contradictory(f), where rho_contradictory is a fixed-point-free permutation distinct from rho_surface.",
+    "null_condition": "z is generated independently of f and the selected action by a frozen deterministic procedure using the decision-unit identifiers and the requirements/semantics digest.",
+    "critical_rule": "z and every variable derived from z are generated only after the action decision and are never included in the pre-decision prompt."
+  },
+  "realized_state_and_transformation": {
+    "successor_state": "S_t+1 is generated deterministically from S_t and the selected action under z.",
+    "realized_transformation": "The realized transformation is derived only after action selection from the simulator transition.",
+    "T_acc": "T_acc,t+1 is derived from the realized successor state and simulator-defined transformation accessibility.",
+    "pre_decision_exclusion": [
+      "S_t+1",
+      "realized transformation",
+      "T_acc,t+1",
+      "downstream trajectory",
+      "outcome",
+      "value",
+      "reward",
+      "utility",
+      "performance",
+      "success",
+      "quality"
+    ]
+  },
+  "null_generation": {
+    "independence_requirements": [
+      "must not use f",
+      "must not use selected action",
+      "must not use z",
+      "must not use outcome or value variables"
+    ],
+    "allowed_inputs": [
+      "frozen requirements digest",
+      "frozen semantics digest",
+      "domain identifier",
+      "operationalisation identifier",
+      "presentation identifier",
+      "replicate identifier"
+    ],
+    "balance_requirements": [
+      "same profile vocabulary as informative condition",
+      "same number of profiles per decision unit",
+      "same presentation surface complexity",
+      "balanced profile frequencies"
+    ]
+  },
+  "invariants": [
+    "f is bijective in every decision unit.",
+    "z is bijective in every realized decision unit.",
+    "Every action is paired with exactly one semantic profile before decision.",
+    "Every profile is assigned to exactly one action before decision.",
+    "The profile descriptor contains structural properties only.",
+    "No profile descriptor encodes desirability, reward, value, utility, performance or success.",
+    "z is never exposed before selection.",
+    "The null correspondence is independent of f and selected action.",
+    "Condition identifiers are metadata for analysis and reconstruction, not decision-agent inputs."
+  ],
+  "primary_contrast_binding": {
+    "estimand": "action_identity × future_profile_assignment interaction on selection probability",
+    "informative_vs_null": "The primary null contrast compares informative correspondence against the matched uninformative correspondence.",
+    "reassignment_requirement": "The same action identity must appear across multiple profile assignments with balanced frequencies.",
+    "reconstruction_fields": [
+      "decision_unit_id",
+      "S_t",
+      "candidate_actions",
+      "presented_profiles",
+      "f",
+      "mapping_condition_metadata",
+      "selected_action",
+      "z",
+      "S_t+1",
+      "T_acc,t",
+      "T_acc,t+1"
+    ]
+  },
+  "pre_fixture_validation": {
+    "required": [
+      "verify profile semantics are identical between specification and implementation",
+      "verify f permutations are balanced",
+      "verify null generator has no f/action dependency",
+      "verify z is generated after selection",
+      "verify condition metadata is excluded from decision input",
+      "verify no post-decision variable enters the prompt"
+    ],
+    "failure_action": "Do not generate or execute the scientific fixture if any validation fails."
+  },
+  "next_artifact": "TI001_V012_NEXT3_FIXTURE_GENERATOR_001.py"
+}
