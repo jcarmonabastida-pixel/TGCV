@@ -24,14 +24,14 @@ BASE={"active":[1,2],"relations":[[1,2,"seed"]],"constraints":[["base","valid",0
 results=[]
 for i,c in enumerate(CASES,1):
  out=sim.execute_transition(BASE,c["action"],c["z"],c["domain"],c["operationalisation"])
- rh,th=rec.reconstruct(BASE,c["action"],c["z"])
+ rr=rec.reconstruct(BASE,c["action"],c["z"],c["domain"],c["operationalisation"])
  results.append({
   "case":i,
   "S_t_plus_1_sha256_simulator":out["S_t_plus_1_sha256"],
-  "S_t_plus_1_sha256_reconstruction":rh,
+  "S_t_plus_1_sha256_reconstruction":rr["successor_sha256"],
   "realized_transformation_sha256_simulator":out["realized_transformation_sha256"],
-  "realized_transformation_sha256_reconstruction":th,
-  "S_t_plus_1_match":out["S_t_plus_1_sha256"]==rh,
-  "realized_transformation_match":out["realized_transformation_sha256"]==th
+  "realized_transformation_sha256_reconstruction":rr["transformation_sha256"],
+  "S_t_plus_1_match":out["S_t_plus_1_sha256"]==rr["successor_sha256"],
+  "realized_transformation_match":out["realized_transformation_sha256"]==rr["transformation_sha256"]
  })
 print(json.dumps({"status":"PARITY_PASS" if all(x["S_t_plus_1_match"] and x["realized_transformation_match"] for x in results) else "PARITY_FAIL","scientific_execution":False,"cases":results},sort_keys=True,indent=2))

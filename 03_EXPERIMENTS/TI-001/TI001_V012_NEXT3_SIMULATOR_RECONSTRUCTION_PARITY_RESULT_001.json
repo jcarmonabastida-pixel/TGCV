@@ -1,0 +1,43 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SIMULATOR_RECONSTRUCTION_PARITY_RESULT_001",
+  "cases": [
+    {
+      "S_t_plus_1_match": true,
+      "S_t_plus_1_sha256_reconstruction": "1a208e054d4e3fdedec81724818c63854bf9f33ee4180de3d303e635c07e217e",
+      "S_t_plus_1_sha256_simulator": "1a208e054d4e3fdedec81724818c63854bf9f33ee4180de3d303e635c07e217e",
+      "case": 1,
+      "realized_transformation_match": true,
+      "realized_transformation_sha256_reconstruction": "5e4a8b8d44186753593fe8f306d9fef6483021bfcff41f683da645ae8b3565fd",
+      "realized_transformation_sha256_simulator": "5e4a8b8d44186753593fe8f306d9fef6483021bfcff41f683da645ae8b3565fd"
+    },
+    {
+      "S_t_plus_1_match": true,
+      "S_t_plus_1_sha256_reconstruction": "6804117ae713aa7db06eeca436a6117ad940471544ef2190f727029fedf0960e",
+      "S_t_plus_1_sha256_simulator": "6804117ae713aa7db06eeca436a6117ad940471544ef2190f727029fedf0960e",
+      "case": 2,
+      "realized_transformation_match": true,
+      "realized_transformation_sha256_reconstruction": "b474ee21fef8c7d5669d2a4b1ac9f3e6d30062f1950b650f6407104fddaabcaa",
+      "realized_transformation_sha256_simulator": "b474ee21fef8c7d5669d2a4b1ac9f3e6d30062f1950b650f6407104fddaabcaa"
+    },
+    {
+      "S_t_plus_1_match": true,
+      "S_t_plus_1_sha256_reconstruction": "e88f29da3432647fae71042a330ed70247e304049852a5ac904562357dd2b7ef",
+      "S_t_plus_1_sha256_simulator": "e88f29da3432647fae71042a330ed70247e304049852a5ac904562357dd2b7ef",
+      "case": 3,
+      "realized_transformation_match": true,
+      "realized_transformation_sha256_reconstruction": "93d76dd299501d9d41b79b5e31b53aad87d0cb3df9e5adab856dbfd2da6cdf77",
+      "realized_transformation_sha256_simulator": "93d76dd299501d9d41b79b5e31b53aad87d0cb3df9e5adab856dbfd2da6cdf77"
+    },
+    {
+      "S_t_plus_1_match": true,
+      "S_t_plus_1_sha256_reconstruction": "e7cffb985ea0c4a4117c60dbb0ab23e10ef6e70637f9d77c28113b971917878c",
+      "S_t_plus_1_sha256_simulator": "e7cffb985ea0c4a4117c60dbb0ab23e10ef6e70637f9d77c28113b971917878c",
+      "case": 4,
+      "realized_transformation_match": true,
+      "realized_transformation_sha256_reconstruction": "f76bdbad293653782df3decde26e3c8b40b0843c448bf7397e4dc00bd65d1730",
+      "realized_transformation_sha256_simulator": "f76bdbad293653782df3decde26e3c8b40b0843c448bf7397e4dc00bd65d1730"
+    }
+  ],
+  "scientific_execution": false,
+  "status": "PARITY_PASS"
+}

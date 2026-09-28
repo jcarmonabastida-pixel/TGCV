@@ -1,0 +1,42 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SIMULATOR_SEMANTIC_COMPLETENESS_PREFLIGHT_RESULT_001",
+  "checks": {
+    "composition_depth_effect": true,
+    "constraint_count_effect": true,
+    "dependency_count_effect": true,
+    "domain_effect": true,
+    "independent_t_acc_reconstruction": true,
+    "no_normative_filter": true,
+    "operationalisation_effect": true,
+    "reachable_change_count_effect": true,
+    "realized_transformation_hash_parity": true,
+    "successor_hash_parity": true,
+    "t_acc_hash_parity": true
+  },
+  "fixture_freeze": false,
+  "note": "Non-scientific implementation preflight only.",
+  "profile_effect_probe": {
+    "slot_1": {
+      "active": 3,
+      "constraints": 2,
+      "relations": 3
+    },
+    "slot_2": {
+      "active": 4,
+      "constraints": 2,
+      "relations": 4
+    },
+    "slot_3": {
+      "active": 5,
+      "constraints": 3,
+      "relations": 5
+    },
+    "slot_4": {
+      "active": 6,
+      "constraints": 4,
+      "relations": 7
+    }
+  },
+  "scientific_execution": false,
+  "status": "SEMANTIC_COMPLETENESS_PASS"
+}
