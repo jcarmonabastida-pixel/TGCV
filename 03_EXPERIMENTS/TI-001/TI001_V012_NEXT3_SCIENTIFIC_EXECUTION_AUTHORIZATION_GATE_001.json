@@ -1,0 +1,52 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+  "status": "SCIENTIFIC_EXECUTION_NOT_AUTHORIZED",
+  "decision": "BLOCKED_PENDING_INDEPENDENT_REPLICATION_CRITERION",
+  "scope": "Scientific execution authorization gate for frozen NEXT3 fixture",
+  "fixture": {
+    "artifact_id": "TI001_V012_NEXT3_FIXTURE_FREEZE_001",
+    "status": "FIXTURE_FROZEN",
+    "fixture_type": "NON_SCIENTIFIC_METHODOLOGICAL_FIXTURE"
+  },
+  "required_conditions": {
+    "fixture_frozen": true,
+    "methodological_gate_closed": true,
+    "final_binding_preflight_pass": true,
+    "scientific_replication_count_independently_justified": false,
+    "scientific_execution_authorization": false
+  },
+  "current_blockers": [
+    {
+      "id": "G1",
+      "condition": "Independent scientific replication criterion",
+      "status": "MISSING",
+      "reason": "NEXT3 has no independently justified numerical minimum relevant effect or precision target sufficient to determine a scientific replication count."
+    },
+    {
+      "id": "G2",
+      "condition": "Scientific replication count",
+      "status": "NOT_FROZEN",
+      "reason": "The configured generator value 30 is explicitly unauthorized as a scientific replication count."
+    }
+  ],
+  "explicit_non_decisions": [
+    "Do not adopt 30 because it is configured in the generator.",
+    "Do not substitute 3, 5, 10, 15 or another value to obtain execution readiness.",
+    "Do not infer a scientific replication count from NEXT2.",
+    "Do not authorize scientific execution based solely on methodological identifiability or fixture freeze."
+  ],
+  "evidence_basis": [
+    "TI001_V012_NEXT3_REPLICATION_COUNT_DECISION_001",
+    "TI001_V012_NEXT3_REPLICATION_CRITERION_GATE_001",
+    "TI001_V012_NEXT3_MINIMUM_RELEVANT_EFFECT_JUSTIFICATION_AUDIT_001",
+    "TI001_V012_NEXT3_PRECISION_THRESHOLD_JUSTIFICATION_AUDIT_001",
+    "TI001_V012_NEXT3_FIXTURE_BINDING_PREFLIGHT_FINAL_001",
+    "TI001_V012_NEXT3_FIXTURE_FREEZE_001"
+  ],
+  "allowed_next_actions": [
+    "Establish an independent scientific/domain justification for a replication criterion and then rerun the authorization gate.",
+    "If no such criterion can be justified, retain NEXT3 as a frozen methodological fixture without scientific execution."
+  ],
+  "scientific_execution": false,
+  "next_gate": "INDEPENDENT_REPLICATION_CRITERION_JUSTIFICATION"
+}
