@@ -1,0 +1,41 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_CURRENT_FIXTURE_BINDING_RECONCILIATION_001",
+  "status": "CURRENT_FIXTURE_BINDING_RECONCILED",
+  "scope": "Current candidate fixture and exploratory execution boundary",
+  "current_fixture": {
+    "fixture_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "unit_count": 23040,
+    "replicates": 3,
+    "structural_preflight": "PASS"
+  },
+  "generator": {
+    "artifact": "TI001_V012_NEXT3_FIXTURE_GENERATOR_003.py",
+    "commit": "3a5c84b8528412fca1f1e41eaa37752d67ba409",
+    "blob_sha1": "6ac8af921320e1f4a8d37ed631e353d6b8bd2d9a",
+    "replicates": 3,
+    "permutation_scheme": "24 exhaustive bijections of four profiles",
+    "scientific_execution_authorized": false
+  },
+  "methodological_bindings_preserved": [
+    "Q1-Q5 design coverage",
+    "decision input projection",
+    "mapping semantics",
+    "state transition specification",
+    "domain operationalisation matrix",
+    "independent reconstruction",
+    "semantic completeness",
+    "reconstruction parity",
+    "non-normative interface",
+    "pre/post-decision separation"
+  ],
+  "legacy_artifacts": {
+    "status": "HISTORICAL_NOT_CURRENT_FIXTURE_BINDING",
+    "affected": [
+      "TI001_V012_NEXT3_FIXTURE_FREEZE_001",
+      "TI001_V012_NEXT3_FIXTURE_BINDING_PREFLIGHT_FINAL_001"
+    ],
+    "reason": "These artifacts bind the earlier methodological fixture/generator configuration and explicitly record the former unauthorized configured value 30. They are preserved historically and must not be used as the current binding for the 23040-unit exploratory candidate."
+  },
+  "decision": "CURRENT_CANDIDATE_REQUIRES_NEW_FREEZE_ARTIFACT_BEFORE_EXECUTION"
+}
