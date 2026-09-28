@@ -1,0 +1,24 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_SIMULATOR_IMPLEMENTATION_BINDING_RESULT_002",
+  "status": "IMPLEMENTATION_BINDING_PASS",
+  "decision": "CURRENT_IMPLEMENTATION_BOUND",
+  "simulator": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_DETERMINISTIC_SIMULATOR_001.py",
+    "git_blob_sha1": "0d7813e6ad3857a91030eeb3cb4523159b9a4555",
+    "sha256": "8a777374f196cdf4a252f28f6b7f968474dce8d78681391058d48a0b591901ef"
+  },
+  "independent_reconstruction": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_INDEPENDENT_RECONSTRUCTION_001.py",
+    "git_blob_sha1": "5de912cc4644d66fa3a1465f581461b3dd56b1f3",
+    "sha256": "2b3f48ab8f4538733dc3da605ba332b1121424a3e3220c46faaa5f4a5cf09548"
+  },
+  "evidence": {
+    "semantic_completeness_status": "SEMANTIC_COMPLETENESS_PASS",
+    "semantic_completeness_result_sha256": "e25fc07f1f789dc50973ceb57c615dbeaa1a494f8d1c91ac9b03136f2f487c2d",
+    "parity_status": "PARITY_PASS",
+    "parity_result_sha256": "fa2a20ebbea1956a26311d14064c5d83771c08602c260d8baa818e37930d5411"
+  },
+  "scientific_execution": false,
+  "fixture_frozen": false,
+  "note": "Current implementation binding supersedes the historical implementation preflight hashes without modifying the historical artifact."
+}
