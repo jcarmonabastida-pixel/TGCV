@@ -41,7 +41,7 @@ jobs:
       - name: Verify frozen implementation
         run: |
           test "$(git rev-parse HEAD)" != ""
-          test "$(git rev-parse HEAD:03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py)" = "81e01fde401f45cf36009e6476fd771e698c8e0f"
+          test "$(git rev-parse HEAD:03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py)" = "f9723de99f0d7bd5a3169296b80bdfb5e5e0c3e3"
           test "$(sha256sum 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py | cut -d' ' -f1)" != ""
 
       - name: Verify specification and gate
@@ -50,7 +50,7 @@ jobs:
           import json
           from pathlib import Path
           spec=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002.json")
-          gate=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_003.json")
+          gate=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_004.json")
           s=json.loads(spec.read_text())
           g=json.loads(gate.read_text())
           assert s["artifact_id"]=="TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002"
