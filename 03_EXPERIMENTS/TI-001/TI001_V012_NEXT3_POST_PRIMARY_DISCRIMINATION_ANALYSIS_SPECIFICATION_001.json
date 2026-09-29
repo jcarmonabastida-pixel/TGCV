@@ -1,0 +1,156 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION",
+  "status": "SPECIFICATION_DRAFT_COMPLETE_NOT_EXECUTION_AUTHORIZED",
+  "supersedes": null,
+  "purpose": "Define the post-primary discrimination analyses required to address canonical TI-001 Q1-Q5 using the already frozen NEXT3_v003 execution result, without modifying the fixture, the completed primary estimand, or the primary result.",
+  "canonical_question_source": "TI_OPEN_QUESTIONS_AND_DISCRIMINATION_GATE_SPECIFICATION_001",
+  "design_basis": [
+    "TI001_V012_NEXT3_Q1_Q5_DESIGN_COVERAGE_AUDIT_001",
+    "TI001_V012_NEXT3_MINIMAL_IDENTIFIABILITY_REQUIREMENTS_001",
+    "TI001_V012_NEXT3_DESIGN_SPECIFICATION_GATE_001",
+    "TI001_V012_NEXT3_MAPPING_SEMANTICS_001",
+    "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002",
+    "TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001",
+    "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_AUDIT_001"
+  ],
+  "source_data": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "source_result_artifact": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "source_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "population_specification": "TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001",
+    "population_rule": "validity == VALID",
+    "total_decisions": 23040,
+    "valid_decisions": 22649,
+    "invalid_decisions_excluded": 391
+  },
+  "global_analysis_rules": {
+    "exploratory_only": true,
+    "confirmatory": false,
+    "no_fixture_regeneration": true,
+    "no_fixture_modification": true,
+    "no_primary_estimand_modification": true,
+    "no_primary_result_modification": true,
+    "no_pooling_with_NEXT2": true,
+    "no_value_signal": true,
+    "no_utility_signal": true,
+    "no_reward_signal": true,
+    "no_performance_signal": true,
+    "no_post_hoc_recoding": true,
+    "no_imputation": true,
+    "invalid_decisions_excluded": true,
+    "same_frozen_valid_population": true,
+    "same_choice_set_unit": "unit_id",
+    "model_family": "conditional_logit",
+    "profile_representation": "categorical profile_id",
+    "action_identity_controlled": true
+  },
+  "canonical_q1_q5": {
+    "Q1": "Does the V011 decision contrast isolate incorporation of future transformation structure, or can it be explained by task/interface artifacts or simpler decision heuristics?",
+    "Q2": "V011 shows presentation-stratified differences. Is the observed decision response invariant to presentation/order, or is it substantially driven by presentation effects?",
+    "Q3": "The two executions differ in null-condition behaviour. What mechanisms explain this variation, and what does it imply for interpretation of the treatment-control contrast?",
+    "Q4": "Does the observed decision-level pattern persist under independently specified tasks, fixtures, models, or equivalent operationalisations?",
+    "Q5": "If future-structure information affects present decisions, what identifiable mechanism mediates that effect?"
+  },
+  "analysis_plan": {
+    "Q1": {
+      "target": "Discriminate semantic future-structure sensitivity from surface/null alternatives.",
+      "primary_contrast": "INFORMATIVE versus UNINFORMATIVE_NULL under balanced action-profile reassignment.",
+      "required_model": "Conditional-logit model with action_identity and profile_id, plus mapping_condition and the pre-specified condition-by-profile/future-assignment term required to test whether profile-associated selection differs between informative and null correspondence.",
+      "interpretation_target": "Whether the profile-associated selection pattern is specifically dependent on informative future-to-action correspondence rather than merely on the presence of structural profile descriptions.",
+      "non_claim": "A condition contrast cannot by itself establish a cognitive mechanism or universal Transformational Intelligence capability."
+    },
+    "Q2": {
+      "target": "Discriminate semantic profile sensitivity from presentation/order effects.",
+      "primary_contrast": "Presentation strata: order, position, orientation and neutral_format.",
+      "required_model": "Conditional-logit model retaining action_identity and profile_id, with presentation main effects and the pre-specified profile-by-presentation interaction(s) needed to test whether profile-associated selection changes materially with presentation.",
+      "interpretation_target": "Whether the profile-associated pattern is stable across the retained presentation manipulations.",
+      "non_claim": "Absence of a detectable presentation interaction does not establish universal presentation invariance."
+    },
+    "Q3": {
+      "target": "Characterize null-condition behaviour and its implications for treatment-control interpretation.",
+      "primary_contrasts": [
+        "INFORMATIVE versus UNINFORMATIVE_NULL",
+        "SURFACE_PERMUTED versus UNINFORMATIVE_NULL",
+        "CONTRADICTORY versus UNINFORMATIVE_NULL"
+      ],
+      "required_model": "Condition-stratified conditional-logit analyses with action_identity controlled and profile-associated selection estimated consistently across conditions.",
+      "interpretation_target": "Separate treatment sensitivity from baseline profile-selection variability and identify whether null/control behaviour differs systematically across the retained conditions.",
+      "non_claim": "These contrasts do not introduce a value, utility, reward or performance endpoint."
+    },
+    "Q4": {
+      "target": "Assess robustness/generalisation within the independently specified NEXT3 design factors.",
+      "factors": [
+        "domain",
+        "operationalisation",
+        "presentation",
+        "replicate"
+      ],
+      "required_model": "The same conditional-choice framework, with profile-associated selection estimated within and across the retained factors; factor interactions are used only where identifiable from the frozen design.",
+      "interpretation_target": "Whether the profile-associated pattern is materially dependent on a particular retained domain or operationalisation.",
+      "boundary": "Within-fixture factor analysis is robustness evidence, not an independent replication claim."
+    },
+    "Q5": {
+      "target": "Identify the mechanism-level relationship between future-profile assignment and present action selection.",
+      "primary_contrast": "Action identity by future-representation assignment interaction under balanced reassignment, with INFORMATIVE versus matched UNINFORMATIVE_NULL as the critical correspondence contrast.",
+      "required_model": "Conditional-logit model that retains action_identity while explicitly modelling the identifiable action-by-assigned-profile/correspondence structure; any interaction must be estimable from the frozen permutation design.",
+      "interpretation_target": "Determine whether selection changes with reassigned future representation conditional on stable action identity and whether that change depends on informative correspondence.",
+      "non_claim": "A statistical interaction identifies an association in the tested mechanism model; it does not by itself establish a unique cognitive or agent-level mediator."
+    }
+  },
+  "condition_definitions": {
+    "INFORMATIVE": "Presented structural profile is the profile realized by the corresponding action.",
+    "UNINFORMATIVE_NULL": "Presented profiles are generated independently of action-to-realized-future correspondence while preserving profile vocabulary, frequency and comparable surface complexity.",
+    "SURFACE_PERMUTED": "Presentation properties are permuted while semantic profile identity remains recoverable.",
+    "CONTRADICTORY": "Presented structural profile is systematically different from the realized profile; condition identity remains hidden."
+  },
+  "presentation_definition": [
+    "order",
+    "position",
+    "orientation",
+    "neutral_format"
+  ],
+  "identification_constraints": {
+    "profile_permutation_count": 24,
+    "conditions": 4,
+    "profile_assignment_balance": true,
+    "action_balance": true,
+    "profile_semantics_pre_decision": true,
+    "condition_label_hidden_from_agent": true,
+    "realized_successor_hidden_pre_decision": true,
+    "realized_T_acc_hidden_pre_decision": true
+  },
+  "multiple_comparison_policy": {
+    "status": "PRE_SPECIFIED_FOR_THIS_EXPLORATORY_ANALYSIS",
+    "reporting": "Report effect estimates and confidence intervals for every declared contrast. Report raw p-values and Holm-adjusted p-values across the finite set of declared inferential contrasts. Do not use an adjusted threshold to convert this exploratory analysis into confirmatory evidence.",
+    "families": [
+      "Q1 primary informative-versus-null correspondence test",
+      "Q2 presentation interaction tests",
+      "Q3 declared condition contrasts",
+      "Q4 declared domain/operationalisation robustness interactions",
+      "Q5 mechanism-level correspondence interaction"
+    ]
+  },
+  "missing_data_and_exclusions": {
+    "rule": "validity == VALID",
+    "invalid_decisions": 391,
+    "imputation": false,
+    "recoding": false,
+    "substitution": false,
+    "post_hoc_repair": false
+  },
+  "execution_gate": {
+    "scientific_execution_authorized": false,
+    "required_before_execution": [
+      "Commit this specification to main.",
+      "Compute and record its SHA-256.",
+      "Verify every model term is identifiable from the frozen NEXT3 result fields.",
+      "Verify the declared contrasts do not require fixture regeneration or modification.",
+      "Verify implementation against this specification without executing on scientific data.",
+      "Create a dedicated pre-execution gate and obtain explicit scientific authorization."
+    ],
+    "execution_blocker": "Any requested contrast that cannot be reconstructed from immutable NEXT3 records without post-hoc recoding is blocked and must not be executed under this specification."
+  },
+  "final_boundary": "This specification operationalises the canonical Q1-Q5 discrimination programme after the completed NEXT3 primary analysis. It does not alter the primary analysis, does not close Q1-Q5 in advance, does not establish Transformational Intelligence, and does not authorize scientific execution."
+}
