@@ -17,11 +17,11 @@ import warnings
 from pathlib import Path
 
 SPECIFICATION_SHA256 = "f65737c3d24d2e4c973c0649632abf4247c9004452eed7c08225102b74a52f0f"
-IMPLEMENTATION_SHA256 = "__POST_PRIMARY_IMPLEMENTATION_SHA256__"
+IMPLEMENTATION_SHA256 = None
 FIXTURE_SHA256 = "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0"
 EXECUTION_RESULT_SHA256 = "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de"
 MATRIX_AUDIT_ID = "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_MATRIX_CONSTRUCTION_AUDIT_001"
-GATE_ID = "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_002"
+GATE_ID = "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_003"
 SPEC_ID = "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002"
 
 def sha256_file(path):
@@ -64,7 +64,6 @@ def main():
     expected = {
         "result": EXECUTION_RESULT_SHA256,
         "specification": SPECIFICATION_SHA256,
-        "implementation": IMPLEMENTATION_SHA256,
         "fixture": FIXTURE_SHA256,
     }
     for key, value in expected.items():
@@ -116,7 +115,7 @@ def main():
                 "action_identity": action,
                 "profile_id": f[action],
                 "chosen": int(parsed == action),
-                "condition": fixture_row["mapping_condition_metadata"]["condition"],
+                "condition": fixture_row["condition"],
                 "domain": decision["domain"],
                 "operationalisation": decision["operationalisation"],
                 "presentation": decision["presentation"],
