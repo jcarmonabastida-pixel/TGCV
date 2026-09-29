@@ -1,0 +1,30 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_AUTHORIZATION_GATE_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_AUTHORIZATION_GATE",
+  "status": "SCIENTIFIC_EXECUTION_AUTHORIZED",
+  "scientific_execution_authorized": true,
+  "statistical_model_executed": false,
+  "authorization_basis": {
+    "explicit_user_authorization": true,
+    "authorization_statement": "Autorizo la ejecución científica real del análisis primario de TI-001 NEXT3 conforme a SPECIFICATION_002 y al PRE_EXECUTION_GATE_001.",
+    "scope": "TI-001 NEXT3 primary analysis only",
+    "analysis_specification": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002",
+    "pre_execution_gate": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_PRE_EXECUTION_GATE_001"
+  },
+  "canonical_source": {
+    "repository": "jcarmonabastida-pixel/TGCV",
+    "branch": "main",
+    "pre_execution_gate_commit": "a8f149e68b48c69d156574b7e37f7f27abf4c1d1"
+  },
+  "execution_constraints": {
+    "exploratory_only": true,
+    "confirmatory": false,
+    "no_pooling_with_NEXT2": true,
+    "mapping_condition_in_model": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false
+  },
+  "authorization_note": "This artifact authorizes execution only. It does not contain statistical results."
+}
