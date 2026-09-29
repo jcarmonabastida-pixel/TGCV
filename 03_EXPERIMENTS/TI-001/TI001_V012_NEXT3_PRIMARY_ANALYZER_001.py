@@ -1,302 +1,156 @@
 #!/usr/bin/env python3
-"""TI-001 V012 NEXT3 primary statistical analyzer.
+"""TI-001 V012 NEXT3 primary analysis adapter.
 
-This analyzer is specific to TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002.
-It does not reuse NEXT2 analysis logic, results, estimands, or model terms.
-
-Scientific analysis is disabled unless --execute-analysis is explicitly supplied.
+Implements the frozen NEXT3 PRIMARY_ANALYSIS_SPECIFICATION_002 data contract.
+No NEXT2 result, model, or statistical definition is imported.
 """
 
 import argparse
 import hashlib
 import json
-import math
 from pathlib import Path
 
-SPEC_ARTIFACT = "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002"
+SPEC_ID = "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002"
 SPEC_SHA256 = "f65737c3d24d2e4c973c0649632abf4247c9004452eed7c08225102b74a52f0f"
 FIXTURE_ID = "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003"
 FIXTURE_VERSION = "NEXT3_v003"
-UNIT_COUNT = 23040
+FIXTURE_SHA256 = "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0"
 ACTIONS = ("A", "B", "C", "D")
-PROFILES = ("slot_1", "slot_2", "slot_3", "slot_4")
-VALIDITY = "VALID"
-
-
-def canonical(obj):
-    return json.dumps(obj, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
-
+PROFILE_IDS = ("slot_1", "slot_2", "slot_3", "slot_4")
+REQUIRED_DECISION_FIELDS = (
+    "unit_id", "domain", "operationalisation", "presentation",
+    "permutation_index", "replicate", "parsed_action", "validity",
+)
 
 def sha256_bytes(data):
     return hashlib.sha256(data).hexdigest()
 
-
 def load_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
-
-def verify_spec(path):
-    data = Path(path).read_bytes()
-    observed = sha256_bytes(data)
-    if observed != SPEC_SHA256:
-        raise ValueError(
-            f"Primary specification SHA-256 mismatch: {observed} != {SPEC_SHA256}"
-        )
-    spec = json.loads(data)
-    if spec.get("artifact_id") != SPEC_ARTIFACT:
-        raise ValueError("Unexpected primary specification artifact_id.")
-    if spec.get("exploratory_only") is not True or spec.get("confirmatory") is not False:
-        raise ValueError("NEXT3 analysis must remain exploratory/non-confirmatory.")
-    if spec.get("no_pooling_with_NEXT2") is not True:
-        raise ValueError("NEXT3 specification does not permit pooling with NEXT2.")
-    return spec
-
-
 def load_fixture(path):
-    fixture = load_json(path)
-    if fixture.get("fixture_id") != FIXTURE_ID:
-        raise ValueError("Unexpected NEXT3 fixture_id.")
-    if fixture.get("version") != FIXTURE_VERSION:
-        raise ValueError("Unexpected NEXT3 fixture version.")
-    rows = fixture.get("rows")
-    if not isinstance(rows, list):
-        raise ValueError("Fixture rows are missing or not a list.")
-    if len(rows) != UNIT_COUNT:
-        raise ValueError(f"Fixture unit count {len(rows)} != {UNIT_COUNT}.")
+    raw = Path(path).read_bytes()
+    if sha256_bytes(raw) != FIXTURE_SHA256:
+        raise ValueError("Fixture SHA-256 does not match frozen NEXT3_v003 binding.")
+    obj = json.loads(raw.decode("utf-8"))
+    if obj.get("fixture_id") != FIXTURE_ID or obj.get("version") != FIXTURE_VERSION:
+        raise ValueError("Fixture identity/version does not match frozen binding.")
+    rows = obj.get("rows")
+    if not isinstance(rows, list) or len(rows) != 23040:
+        raise ValueError("Fixture row count is not the frozen 23040.")
     by_unit = {}
     for row in rows:
-        uid = row.get("unit_id")
-        if not uid or uid in by_unit:
-            raise ValueError("Fixture contains missing or duplicate unit_id.")
+        unit_id = row["unit_id"]
+        if unit_id in by_unit:
+            raise ValueError(f"Duplicate unit_id: {unit_id}")
         f = row.get("f")
-        if not isinstance(f, dict) or tuple(sorted(f)) != tuple(sorted(ACTIONS)):
-            raise ValueError(f"Invalid f mapping for {uid}.")
-        if tuple(sorted(f.values())) != tuple(sorted(PROFILES)):
-            raise ValueError(f"Non-bijective f mapping for {uid}.")
-        by_unit[uid] = row
-    return fixture, by_unit
+        if set(f or {}) != set(ACTIONS) or sorted(f.values()) != sorted(PROFILE_IDS):
+            raise ValueError(f"Invalid f bijection in {unit_id}")
+        by_unit[unit_id] = row
+    return obj, by_unit
 
-
-def extract_decisions(result):
-    if not isinstance(result, dict):
-        raise ValueError("Scientific execution result must be a JSON object.")
-    decisions = result.get("decisions")
+def load_result(path):
+    obj = load_json(path)
+    decisions = obj.get("decisions")
     if not isinstance(decisions, list):
-        raise ValueError("Scientific execution result has no decisions list.")
-    return decisions
-
+        raise ValueError("Scientific result must contain a decisions list.")
+    if obj.get("scientific_execution") is not True:
+        raise ValueError("Input is not marked scientific_execution=true.")
+    for i, decision in enumerate(decisions):
+        missing = [k for k in REQUIRED_DECISION_FIELDS if k not in decision]
+        if missing:
+            raise ValueError(f"Decision {i} missing fields: {missing}")
+    return obj, decisions
 
 def build_choice_rows(decisions, fixture_by_unit):
     rows = []
     invalid = 0
-    seen_units = set()
-
     for decision in decisions:
-        uid = decision.get("unit_id")
-        validity = decision.get("validity")
-        if not uid:
-            raise ValueError("Decision without unit_id.")
-        if uid not in fixture_by_unit:
-            raise ValueError(f"Decision unit_id not found in frozen fixture: {uid}")
-
-        if validity != VALIDITY:
+        unit_id = decision["unit_id"]
+        fixture = fixture_by_unit.get(unit_id)
+        if fixture is None:
+            raise ValueError(f"Decision unit_id absent from frozen fixture: {unit_id}")
+        if decision["validity"] != "VALID":
             invalid += 1
             continue
-
-        chosen_action = decision.get("parsed_action")
-        if chosen_action not in ACTIONS:
-            raise ValueError(
-                f"VALID decision has invalid parsed_action for {uid}: {chosen_action}"
-            )
-
-        if uid in seen_units:
-            raise ValueError(f"Duplicate valid decision for unit_id: {uid}")
-        seen_units.add(uid)
-
-        fixture_row = fixture_by_unit[uid]
-        f = fixture_row["f"]
-
+        selected = decision["parsed_action"]
+        if selected not in ACTIONS:
+            raise ValueError(f"VALID decision has invalid parsed_action: {selected}")
         for action in ACTIONS:
-            rows.append(
-                {
-                    "unit_id": uid,
-                    "action_identity": action,
-                    "profile_id": f[action],
-                    "chosen": int(action == chosen_action),
-                    "presentation": fixture_row["presentation"],
-                    "operationalisation": fixture_row["operationalisation"],
-                    "domain": fixture_row["domain"],
-                    "permutation_index": fixture_row["permutation_index"],
-                    "replicate": fixture_row["replicate"],
-                }
-            )
-
-    if rows:
-        group_sizes = {}
-        for row in rows:
-            group_sizes[row["unit_id"]] = group_sizes.get(row["unit_id"], 0) + 1
-        bad = [uid for uid, n in group_sizes.items() if n != 4]
-        if bad:
-            raise ValueError(f"Choice sets without exactly four alternatives: {bad[:5]}")
-        for uid, n in group_sizes.items():
-            chosen = sum(r["chosen"] for r in rows if r["unit_id"] == uid)
-            if chosen != 1:
-                raise ValueError(f"Choice set {uid} does not contain exactly one choice.")
-
+            rows.append({
+                "unit_id": unit_id,
+                "action_identity": action,
+                "profile_id": fixture["f"][action],
+                "chosen": int(action == selected),
+                "domain": decision["domain"],
+                "operationalisation": decision["operationalisation"],
+                "presentation": decision["presentation"],
+                "permutation_index": decision["permutation_index"],
+                "replicate": decision["replicate"],
+            })
     return rows, invalid
 
-
-def fit_models(rows):
-    try:
-        import pandas as pd
-        import statsmodels.api as sm
-        from statsmodels.discrete.conditional_models import ConditionalLogit
-    except ImportError as exc:
-        raise RuntimeError(
-            "NEXT3 primary analysis requires pandas and statsmodels."
-        ) from exc
-
-    df = pd.DataFrame(rows)
-
-    # Reference coding is required because each categorical predictor is
-    # constant-sum within a conditional-choice stratum.
-    action_dummies = pd.get_dummies(
-        df["action_identity"], prefix="action", dtype=float
-    )
-    profile_dummies = pd.get_dummies(
-        df["profile_id"], prefix="profile", dtype=float
-    )
-
-    action_cols = [f"action_{x}" for x in ACTIONS[1:]]
-    profile_cols = [f"profile_{x}" for x in PROFILES[1:]]
-
-    X_restricted = action_dummies[action_cols].copy()
-    X_primary = pd.concat(
-        [action_dummies[action_cols], profile_dummies[profile_cols]], axis=1
-    )
-
-    restricted = ConditionalLogit(
-        df["chosen"], X_restricted, groups=df["unit_id"]
-    ).fit(disp=False)
-    primary = ConditionalLogit(
-        df["chosen"], X_primary, groups=df["unit_id"]
-    ).fit(disp=False)
-
-    llr = 2.0 * (primary.llf - restricted.llf)
-    df_diff = len(primary.params) - len(restricted.params)
-
-    try:
-        from scipy.stats import chi2
-        lr_p = float(chi2.sf(llr, df_diff))
-    except ImportError:
-        lr_p = None
-
-    return {
-        "restricted_action_identity_only": {
-            "log_likelihood": float(restricted.llf),
-            "aic": float(restricted.aic),
-            "parameters": {k: float(v) for k, v in restricted.params.items()},
-        },
-        "primary_action_identity_plus_profile_id": {
-            "log_likelihood": float(primary.llf),
-            "aic": float(primary.aic),
-            "parameters": {k: float(v) for k, v in primary.params.items()},
-        },
-        "profile_id_joint_likelihood_ratio_test": {
-            "log_likelihood_difference": float(primary.llf - restricted.llf),
-            "lr_statistic": float(llr),
-            "df": int(df_diff),
-            "p_value": lr_p,
-        },
-    }
-
+def audit_choice_rows(rows):
+    by_unit = {}
+    for row in rows:
+        by_unit.setdefault(row["unit_id"], []).append(row)
+    for unit_id, group in by_unit.items():
+        if len(group) != 4:
+            raise ValueError(f"Choice set {unit_id} does not contain four alternatives.")
+        if sum(row["chosen"] for row in group) != 1:
+            raise ValueError(f"Choice set {unit_id} does not contain exactly one choice.")
+        if {row["action_identity"] for row in group} != set(ACTIONS):
+            raise ValueError(f"Action identities incomplete in {unit_id}.")
+        if {row["profile_id"] for row in group} != set(PROFILE_IDS):
+            raise ValueError(f"Profile identities incomplete in {unit_id}.")
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--spec", required=True, type=Path)
-    parser.add_argument("--fixture", required=True, type=Path)
     parser.add_argument("--result", required=True, type=Path)
+    parser.add_argument("--fixture", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--execute-analysis", action="store_true")
+    parser.add_argument(
+        "--execute", action="store_true",
+        help="Reserved for the separately authorized statistical-analysis gate."
+    )
     args = parser.parse_args()
 
-    spec = verify_spec(args.spec)
+    if not args.execute:
+        raise SystemExit(
+            "PREPARATION_ONLY: statistical execution requires the explicit analysis gate."
+        )
+
     fixture, fixture_by_unit = load_fixture(args.fixture)
-    result = load_json(args.result)
+    result, decisions = load_result(args.result)
+    declared_fixture_sha = result.get("fixture", {}).get("sha256")
+    if declared_fixture_sha not in (None, FIXTURE_SHA256):
+        raise ValueError("Scientific result declares an inconsistent fixture SHA-256.")
 
-    if result.get("scientific_execution") is not True:
-        raise ValueError("Input result is not marked scientific_execution=true.")
+    rows, invalid = build_choice_rows(decisions, fixture_by_unit)
+    audit_choice_rows(rows)
 
-    decisions = extract_decisions(result)
-
-    if not args.execute_analysis:
-        print(json.dumps({
-            "status": "ANALYZER_INPUT_VALIDATION_PASS",
-            "analysis_executed": False,
-            "spec_artifact": SPEC_ARTIFACT,
-            "spec_sha256": SPEC_SHA256,
-            "fixture_id": fixture["fixture_id"],
-            "fixture_version": fixture["version"],
-            "fixture_sha256": fixture.get("sha256"),
-            "fixture_units": len(fixture["rows"]),
-            "result_decisions": len(decisions),
-            "next_action": "Re-run with --execute-analysis only after scientific analysis authorization.",
-        }, sort_keys=True, indent=2))
-        return
-
-    choice_rows, invalid_count = build_choice_rows(decisions, fixture_by_unit)
-    if not choice_rows:
-        raise ValueError("No VALID decisions available for analysis.")
-
-    model_result = fit_models(choice_rows)
-
+    # Model fitting is deliberately not performed by this initial adapter.
+    # This commit freezes the NEXT3 input transformation and audit boundary.
     output = {
-        "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT_001",
-        "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT",
-        "analysis_specification": SPEC_ARTIFACT,
+        "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_INPUT_AUDIT_001",
+        "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_INPUT_AUDIT",
+        "analysis_specification": SPEC_ID,
         "analysis_specification_sha256": SPEC_SHA256,
-        "fixture_id": fixture["fixture_id"],
-        "fixture_version": fixture["version"],
-        "fixture_sha256": fixture.get("sha256"),
-        "source_result_artifact": result.get("artifact_id"),
-        "scientific_execution": True,
-        "analysis_executed": True,
-        "exploratory_only": True,
-        "confirmatory": False,
-        "no_pooling_with_NEXT2": True,
-        "analysis_population": "validity == VALID",
+        "fixture_id": FIXTURE_ID,
+        "fixture_version": FIXTURE_VERSION,
+        "fixture_sha256": FIXTURE_SHA256,
         "decision_count": len(decisions),
-        "invalid_decisions_excluded": invalid_count,
-        "valid_choice_sets": len(choice_rows) // 4,
-        "alternative_rows": len(choice_rows),
-        "primary_model": (
-            "Conditional choice model stratified by unit_id, with "
-            "action_identity and profile_id as alternative-level predictors."
-        ),
-        "mapping_condition_in_primary_model": False,
-        "design_factors_retained": [
-            "presentation", "operationalisation", "domain",
-            "permutation_index", "replicate"
-        ],
-        "composite_score": False,
-        "value_signal": False,
-        "utility_signal": False,
-        "reward_signal": False,
-        "performance_signal": False,
-        "post_hoc_recoding": False,
-        "model_result": model_result,
+        "valid_decision_count": len(decisions) - invalid,
+        "invalid_decision_count": invalid,
+        "alternative_row_count": len(rows),
+        "unit_count": len({row["unit_id"] for row in rows}),
+        "next2_pooling": False,
+        "scientific_execution": False,
+        "status": "INPUT_AUDIT_COMPLETE_MODEL_NOT_EXECUTED",
     }
-
     args.output.write_text(
-        json.dumps(output, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
-        encoding="utf-8",
+        json.dumps(output, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
-    print(json.dumps({
-        "status": "PRIMARY_ANALYSIS_COMPLETE",
-        "output": str(args.output),
-        "valid_choice_sets": len(choice_rows) // 4,
-    }, sort_keys=True))
-
 
 if __name__ == "__main__":
     main()
