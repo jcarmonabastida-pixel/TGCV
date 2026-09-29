@@ -1,0 +1,26 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE",
+  "status": "IMPLEMENTATION_FROZEN_FOR_EXECUTION",
+  "implementation": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+  "implementation_commit": "52655c0f691cc7de7fccb37baf391e637586cda6",
+  "implementation_git_blob_sha": "81e01fde401f45cf36009e6476fd771e698c8e0f",
+  "specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "specification_declared_sha256": "f65737c3d24d2e4c973c0649632abf4247c9004452eed7c08225102b74a52f0f",
+  "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+  "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+  "corrections_since_initial_implementation": [
+    "Q2 now uses the explicitly declared joint likelihood-ratio test.",
+    "Canonical frozen presentation levels are P1_order, P2_position, P3_orientation, P4_format.",
+    "Canonical frozen domain, operationalisation and replicate levels are explicitly bound."
+  ],
+  "preservation": {
+    "primary_result_modified": false,
+    "primary_implementation_modified": false,
+    "fixture_modified": false,
+    "specification_modified": false,
+    "next2_pooling": false
+  },
+  "scientific_execution_performed": false,
+  "next_action": "Create execution workflow bound to this exact implementation commit/blob and perform hash/cardinality/rank preflight before scientific fitting."
+}
