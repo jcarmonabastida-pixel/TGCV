@@ -1,0 +1,107 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_IMPLEMENTATION_RECORD_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_IMPLEMENTATION_RECORD",
+  "status": "IMPLEMENTATION_FROZEN_FOR_SCIENTIFIC_EXECUTION",
+  "scientific_execution": false,
+  "statistical_model_executed": false,
+  "analysis_specification": {
+    "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002",
+    "sha256": "f65737c3d24d2e4c973c0649632abf4247c9004452eed7c08225102b74a52f0f"
+  },
+  "analysis_population": {
+    "artifact_id": "TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001",
+    "sha256": "dceb6065a723a37db235b3ea496e087e711f3e8bdb9d7d6731b949d2a22c04f8"
+  },
+  "source_result": {
+    "artifact_id": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de"
+  },
+  "analysis_implementation": {
+    "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_001.py",
+    "sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d",
+    "model_family": "conditional_logit",
+    "choice_set": "unit_id",
+    "restricted_model": {
+      "predictors": [
+        "action_identity"
+      ]
+    },
+    "primary_model": {
+      "predictors": [
+        "action_identity",
+        "profile_id"
+      ]
+    },
+    "primary_test": {
+      "test": "likelihood_ratio",
+      "null_model": "action_identity_only",
+      "alternative_model": "action_identity_plus_profile_id",
+      "tested_term": "profile_id",
+      "degrees_of_freedom": 3
+    },
+    "encoding": {
+      "action_reference_level": "A",
+      "profile_reference_level": "slot_1",
+      "action_dummy_columns": [
+        "action_B",
+        "action_C",
+        "action_D"
+      ],
+      "profile_dummy_columns": [
+        "profile_slot_2",
+        "profile_slot_3",
+        "profile_slot_4"
+      ]
+    },
+    "optimizer": {
+      "method": "BFGS",
+      "maxiter": 500,
+      "disp": false
+    },
+    "model_software": {
+      "package": "statsmodels",
+      "version": "0.14.6",
+      "class": "statsmodels.discrete.conditional_models.ConditionalLogit"
+    },
+    "numerical_dependencies": {
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "pandas": "2.2.3"
+    }
+  },
+  "runtime_environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "implementation": "CPython"
+  },
+  "scientific_exclusion_controls": {
+    "mapping_condition_in_model": false,
+    "fixture_f_in_model": false,
+    "z_in_model": false,
+    "realized_transformation_in_model": false,
+    "T_acc_in_model": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false,
+    "pooling_with_NEXT2": false
+  },
+  "verification": {
+    "structural_audit": "PASS",
+    "implementation_smoke_test": {
+      "status": "PASS",
+      "scientific_data_used": false,
+      "choice_sets": 200,
+      "alternatives": 800,
+      "restricted_parameter_count": 3,
+      "primary_parameter_count": 6,
+      "degrees_of_freedom": 3,
+      "lr_statistic": 3.5124105250815774,
+      "p_value": 0.3191560808902178
+    }
+  },
+  "execution_gate": {
+    "scientific_execution_authorized": false,
+    "authorization_required_before_real_data_execution": true
+  }
+}
