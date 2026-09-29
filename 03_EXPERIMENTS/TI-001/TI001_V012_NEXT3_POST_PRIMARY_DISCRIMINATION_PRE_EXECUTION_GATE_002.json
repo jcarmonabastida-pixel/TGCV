@@ -1,0 +1,50 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_002",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE",
+  "status": "READY_FOR_EXPLICIT_SCIENTIFIC_AUTHORIZATION",
+  "decision": "ALLOW_PENDING_EXPLICIT_AUTHORIZATION",
+  "analysis_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "matrix_construction_audit": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_MATRIX_CONSTRUCTION_AUDIT_001",
+  "inputs": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de"
+  },
+  "prechecks": {
+    "immutable_join": "PASS",
+    "valid_population": "PASS_22649_VALID_391_INVALID",
+    "choice_set_cardinality": "PASS_4_PER_UNIT",
+    "q1_rank": "PASS_15_15",
+    "q2_rank": "PASS_15_15",
+    "q3_rank": "PASS_15_15",
+    "q4_domain_rank": "PASS_15_15",
+    "q4_operationalisation_rank": "PASS_18_18",
+    "q4_presentation_rank": "PASS_15_15",
+    "q4_replicate_rank": "PASS_12_12",
+    "q5_rank": "PASS_45_45",
+    "primary_contrast_family_count": "PASS_8",
+    "holm_adjustment": "PASS_DECLARED",
+    "fixture_modification": false,
+    "post_hoc_recoding": false,
+    "next2_pooling": false,
+    "scientific_fitting_during_prechecks": false,
+    "p_values_during_prechecks": false
+  },
+  "execution_scope": {
+    "q1": "declared_model_and_contrast_family",
+    "q2": "declared_model_and_joint_presentation_interaction",
+    "q3": "three_declared_condition_contrasts",
+    "q4": "domain_and_operationalisation_primary; presentation_and_replicate_secondary",
+    "q5": "declared_action_by_profile_by_condition_interaction"
+  },
+  "governance": {
+    "scientific_execution_authorized": false,
+    "authorization_required": true,
+    "confirmatory": false,
+    "exploratory": true,
+    "no_next2_pooling": true,
+    "no_value_utility_reward_performance_signal": true
+  },
+  "next_required_action": "Obtain explicit scientific authorization for execution of the frozen post-primary Q1-Q5 statistical analysis plan."
+}
