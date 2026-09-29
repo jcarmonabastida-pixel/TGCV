@@ -1,0 +1,106 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002",
+  "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION",
+  "supersedes": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_001",
+  "source_result_artifact": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+  "population_specification": "TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001",
+
+  "estimand": "Selection probability associated with the semantic structural-transformation profile assigned to an action, conditional on stable action identity.",
+
+  "scientific_question": "Does selection respond to the semantic future representation assigned to an action, beyond stable action identity?",
+
+  "unit_of_analysis": "alternative within decision choice set",
+
+  "choice_set": "unit_id",
+
+  "observed_outcome": "chosen",
+
+  "outcome_definition": "chosen = 1 if parsed_action equals the alternative action; chosen = 0 otherwise.",
+
+  "alternative_predictors": [
+    "action_identity",
+    "profile_id"
+  ],
+
+  "profile_semantics": {
+    "slot_1": {
+      "reachable_change_count": 1,
+      "constraint_count": 1,
+      "composition_depth": 1,
+      "dependency_count": 1
+    },
+    "slot_2": {
+      "reachable_change_count": 2,
+      "constraint_count": 1,
+      "composition_depth": 1,
+      "dependency_count": 2
+    },
+    "slot_3": {
+      "reachable_change_count": 3,
+      "constraint_count": 2,
+      "composition_depth": 2,
+      "dependency_count": 2
+    },
+    "slot_4": {
+      "reachable_change_count": 4,
+      "constraint_count": 3,
+      "composition_depth": 3,
+      "dependency_count": 3
+    }
+  },
+
+  "primary_model": "Conditional choice model stratified by unit_id, with action_identity and profile_id as alternative-level predictors.",
+
+  "primary_test": "Joint contribution of profile_id to action selection after accounting for stable action identity.",
+
+  "primary_comparison": "Profile-sensitive choice model versus action-identity-only choice model.",
+
+  "mapping_condition": {
+    "primary_model_inclusion": false,
+    "reason": "The complete pre-decision visible input is identical across INFORMATIVE, UNINFORMATIVE_NULL, SURFACE_PERMUTED and CONTRADICTORY conditions. The condition modifies post-decision realization correspondence and is not available to the decision agent."
+  },
+
+  "design_factors_retained": [
+    "presentation",
+    "operationalisation",
+    "domain",
+    "permutation_index",
+    "replicate"
+  ],
+
+  "profile_dimension_modeling": {
+    "primary_representation": "categorical profile_id",
+    "reason": "The profile vocabulary is deliberately structural and slot ordering is not a normative or reward scale.",
+    "joint_linear_entry_of_four_dimensions": false,
+    "reason_for_exclusion": "constraint_count and composition_depth are identical across all four profiles and therefore are not independently identifiable; profile dimensions also form a deliberately coupled structural descriptor."
+  },
+
+  "identification": {
+    "action_profile_reassignment": "The 24 balanced permutations of f provide repeated reassignment of semantic profiles across stable action identities.",
+    "balance_verified": true,
+    "profiles_permutation_count": 24,
+    "conditions": 4,
+    "profile_assignment_frequency_per_condition": 240
+  },
+
+  "analysis_population": "validity == VALID",
+
+  "missing_data_handling": "Exclude INVALID decisions according to the preregistered population specification; no imputation, recoding or substitution.",
+
+  "exploratory_only": true,
+  "confirmatory": false,
+
+  "composite_score": false,
+  "value_signal": false,
+  "utility_signal": false,
+  "reward_signal": false,
+  "performance_signal": false,
+
+  "post_hoc_recoding": false,
+
+  "no_pooling_with_NEXT2": true,
+
+  "raw_result_preservation": true,
+
+  "software_execution": "Analysis must be executed only after this specification is committed and its SHA-256 is recorded."
+}
