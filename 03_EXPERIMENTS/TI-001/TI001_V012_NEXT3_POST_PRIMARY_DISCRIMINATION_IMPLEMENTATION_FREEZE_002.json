@@ -1,0 +1,37 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_002",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE",
+  "status": "IMPLEMENTATION_FROZEN_FOR_EXECUTION",
+  "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_001",
+  "implementation": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+  "implementation_commit": "e09c6b39ad3a8ccbfee1509757a1ab2b97ddfee1",
+  "implementation_git_blob_sha": "f9723de99f0d7bd5a3169296b80bdfb5e5e0c3e3",
+  "specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "specification_declared_sha256": "f65737c3d24d2e4c973c0649632abf4247c9004452eed7c08225102b74a52f0f",
+  "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+  "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+  "correction": {
+    "type": "TECHNICAL_IMPLEMENTATION_BUG_FIX",
+    "scope": "preserve pandas DataFrame X in ConditionalLogit construction so statsmodels retains coefficient names in result.params/result.bse/result.pvalues",
+    "affected_functions": [
+      "fit_model",
+      "coefficient_report",
+      "joint_wald"
+    ],
+    "scientific_contract_modified": false,
+    "estimand_modified": false,
+    "specification_modified": false,
+    "fixture_modified": false,
+    "primary_analysis_modified": false,
+    "next2_pooling": false
+  },
+  "preservation": {
+    "primary_result_modified": false,
+    "primary_implementation_modified": false,
+    "fixture_modified": false,
+    "specification_modified": false,
+    "next2_pooling": false
+  },
+  "scientific_execution_performed": false,
+  "next_action": "Supersede the execution gate and bind the execution workflow to this corrected implementation before scientific fitting."
+}
