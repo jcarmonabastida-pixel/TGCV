@@ -51,6 +51,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          import os
           from pathlib import Path
           spec=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002.json")
           freeze=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_006.json")
@@ -174,7 +175,7 @@ jobs:
               and g["decision"] == "ALLOW_AND_EXECUTE"
               and g["governance"]["scientific_execution_authorized"] is True
           )
-          with open("${GITHUB_OUTPUT}", "a") as fh:
+          with open(os.environ["GITHUB_OUTPUT"], "a") as fh:
               fh.write(f"authorized={'true' if authorized else 'false'}\n")
           print("SCIENTIFIC_EXECUTION_AUTHORIZED" if authorized else "SCIENTIFIC_EXECUTION_BLOCKED_PENDING_EXPLICIT_AUTHORIZATION")
           PY
