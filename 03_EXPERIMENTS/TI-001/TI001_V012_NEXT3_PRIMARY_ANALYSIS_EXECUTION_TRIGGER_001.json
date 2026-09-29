@@ -1,0 +1,10 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_EXECUTION_TRIGGER_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_EXECUTION_TRIGGER",
+  "status": "EXECUTION_TRIGGERED",
+  "authorization_gate": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_AUTHORIZATION_GATE_001",
+  "authorization_commit": "69afbc3b7784418764408042e21d8ef4369bf912",
+  "scope": "TI-001 NEXT3 primary analysis only",
+  "exploratory_only": true,
+  "confirmatory": false
+}
