@@ -1,0 +1,47 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_004",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE",
+  "status": "AUTHORIZED_FOR_SCIENTIFIC_EXECUTION",
+  "decision": "ALLOW_AND_EXECUTE",
+  "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_003",
+  "analysis_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "implementation_freeze": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_002",
+  "implementation_commit": "e09c6b39ad3a8ccbfee1509757a1ab2b97ddfee1",
+  "implementation_git_blob_sha": "f9723de99f0d7bd5a3169296b80bdfb5e5e0c3e3",
+  "inputs": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de"
+  },
+  "governance": {
+    "scientific_execution_authorized": true,
+    "authorization_required": true,
+    "authorization_basis": "Existing explicit user authorization for scientific execution of the post-primary Q1-Q5 analysis, carried forward to this minimal technical bug fix because the scientific specification, estimand, fixture, execution result, and analytical design are unchanged.",
+    "confirmatory": false,
+    "exploratory": true,
+    "no_next2_pooling": true,
+    "no_value_utility_reward_performance_signal": true
+  },
+  "correction_binding": {
+    "type": "TECHNICAL_IMPLEMENTATION_BUG_FIX",
+    "scientific_contract_modified": false,
+    "estimand_modified": false,
+    "specification_modified": false,
+    "fixture_modified": false,
+    "primary_analysis_modified": false,
+    "correction": "Preserve X as a pandas DataFrame when constructing ConditionalLogit so coefficient names remain available for coefficient_report and joint_wald."
+  },
+  "prechecks_required": [
+    "Verify exact corrected implementation commit/blob.",
+    "Compute and record implementation SHA-256 at runtime.",
+    "Verify fixture and execution-result SHA-256.",
+    "Verify specification binding.",
+    "Verify immutable join and 22649/391 population.",
+    "Construct all declared design matrices and verify rank before fitting.",
+    "Verify exactly eight primary inferential tests and Holm adjustment.",
+    "Do not modify any closed primary artifact."
+  ],
+  "execution_boundary": "Scientific fitting is permitted only after all runtime prechecks pass. Any precheck failure blocks execution.",
+  "next_required_action": "Run the isolated post-primary Q1-Q5 workflow bound to implementation e09c6b39ad3a8ccbfee1509757a1ab2b97ddfee1 / blob f9723de99f0d7bd5a3169296b80bdfb5e5e0c3e3."
+}
