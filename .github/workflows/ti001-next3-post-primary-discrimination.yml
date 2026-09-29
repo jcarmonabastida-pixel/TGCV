@@ -42,7 +42,10 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" != ""
           test "$(git rev-parse HEAD:03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py)" = "18db309ee4d25f9db2358a687812f90d24ed333f"
-          test "$(sha256sum 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py | cut -d' ' -f1)" != ""
+          IMPL_SHA256="$(sha256sum 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py | cut -d' ' -f1)"
+          test -n "$IMPL_SHA256"
+          echo "IMPLEMENTATION_SHA256=$IMPL_SHA256"
+          echo "IMPLEMENTATION_GIT_BLOB_SHA=18db309ee4d25f9db2358a687812f90d24ed333f"
 
       - name: Verify specification, freeze and Gate 008
         run: |
