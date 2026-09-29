@@ -1,0 +1,23 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_CANONICAL_EXECUTION_RESULT_RECOVERY_VERIFICATION_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_CANONICAL_EXECUTION_RESULT_RECOVERY_VERIFICATION",
+  "status": "RECOVERED_SHA256_VERIFIED",
+  "execution_result_id": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+  "recovered_materialization": "/tmp/TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001.json",
+  "declared_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+  "observed_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+  "verification": {
+    "method": "sha256sum",
+    "match": true,
+    "regenerated": false,
+    "modified": false,
+    "byte_identity_verified": true
+  },
+  "governance_boundary": {
+    "repository_reference_present_on_main": true,
+    "repository_content_retrieval_via_connector": "empty_content",
+    "local_materialization_verified": true,
+    "scientific_execution_authorized": false
+  },
+  "next_required_action": "Run the frozen post-primary Q1-Q5 pre-execution matrix-construction audit using the two recovered SHA-verified inputs, without fitting scientific models."
+}
