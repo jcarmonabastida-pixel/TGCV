@@ -1,0 +1,48 @@
+name: TI-001 NEXT3 primary scientific analysis
+
+on:
+  push:
+    paths:
+      - "03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_EXECUTION_TRIGGER_001.json"
+
+permissions:
+  contents: write
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install frozen analysis environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy==2.2.6 scipy==1.15.3 pandas==2.2.3 statsmodels==0.14.6
+
+      - name: Regenerate and verify frozen fixture
+        run: |
+          python 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_FIXTURE_GENERATOR_003.py /tmp/TI001_V012_NEXT3_CANDIDATE_FIXTURE_003.json
+          sha256sum /tmp/TI001_V012_NEXT3_CANDIDATE_FIXTURE_003.json
+          test "$(sha256sum /tmp/TI001_V012_NEXT3_CANDIDATE_FIXTURE_003.json | cut -d' ' -f1)" = "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0"
+
+      - name: Execute authorized primary analysis
+        run: |
+          python 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_EXECUTOR_001.py             --result 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001.json             --population 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001.json             --specification 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002.json             --implementation 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_001.py             --authorization 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_AUTHORIZATION_GATE_001.json             --pre-gate 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_PRE_EXECUTION_GATE_001.json             --fixture /tmp/TI001_V012_NEXT3_CANDIDATE_FIXTURE_003.json             --output 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT_001.json
+
+      - name: Verify result artifact
+        run: |
+          python -m json.tool 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT_001.json > /dev/null
+          sha256sum 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT_001.json
+
+      - name: Commit scientific result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT_001.json
+          git commit -m "TI-001 NEXT3 record primary statistical analysis result"
+          git push
