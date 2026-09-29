@@ -1,0 +1,19 @@
+{
+  "artifact_id":"TI001_V012_NEXT3_CANONICAL_ARTIFACT_ALTERNATIVE_SEARCH_AUDIT_001",
+  "record_type":"TGCV_TI001_V012_NEXT3_CANONICAL_ARTIFACT_ALTERNATIVE_SEARCH_AUDIT",
+  "status":"BLOCK_CONFIRMED_NO_RECOVERABLE_ALTERNATIVE_FOUND",
+  "searched": {
+    "repository":"jcarmonabastida-pixel/TGCV",
+    "branch":"main",
+    "recursive_git_tree":true,
+    "github_releases":true,
+    "actions_run_artifacts":true,
+    "target_fixture":"TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "target_sha256":"0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0"
+  },
+  "finding":"No repository blob, GitHub Release asset, or retained GitHub Actions artifact containing the exact frozen NEXT3_v003 fixture was found. The tree contains freeze/binding/generator records and the exploratory execution result, but not the frozen fixture bytes.",
+  "non_substitution_rule":"The existing NEXT3_V003 generator is not treated as a recovery source because regeneration would create a derived artifact rather than prove identity with the frozen bytes.",
+  "decision":"Maintain the post-primary Q1-Q5 execution BLOCK.",
+  "required_user_side_recovery":"Recover the exact frozen fixture bytes from the original governed execution environment or other approved canonical artifact source, then compute SHA-256 and confirm exact equality with 0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0.",
+  "scientific_execution_authorized":false
+}
