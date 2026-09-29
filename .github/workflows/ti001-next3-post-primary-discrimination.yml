@@ -41,7 +41,7 @@ jobs:
       - name: Verify frozen implementation
         run: |
           test "$(git rev-parse HEAD)" != ""
-          test "$(git rev-parse HEAD:03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py)" = "475f5c1c69ac6418168a5032d63fab0e792273f6e2"
+          test "$(git rev-parse HEAD:03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py)" = "475f5c1c69ac6418168a5032d63fab0e792273f6"
           test "$(sha256sum 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py | cut -d' ' -f1)" != ""
 
       - name: Verify specification and gate
