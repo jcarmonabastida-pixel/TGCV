@@ -1,0 +1,49 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_006",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE",
+  "status": "AUTHORIZED_FOR_SCIENTIFIC_EXECUTION",
+  "decision": "ALLOW_AND_EXECUTE",
+  "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_005",
+  "analysis_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "implementation_freeze": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_004",
+  "implementation_commit": "66322e1a68d24c6390aa199878c791e543babdeb",
+  "implementation_git_blob_sha": "475f5c1c69ac6418168a5032d63fab0e792273f6",
+  "inputs": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de"
+  },
+  "governance": {
+    "scientific_execution_authorized": true,
+    "authorization_required": true,
+    "authorization_basis": "Existing explicit user authorization carried forward because the correction is limited to restoring the executable REPLICATES declaration; no scientific specification, estimand, fixture, execution result, or analytical design is changed.",
+    "confirmatory": false,
+    "exploratory": true,
+    "no_next2_pooling": true,
+    "no_value_utility_reward_performance_signal": true
+  },
+  "correction_binding": {
+    "type": "TECHNICAL_IMPLEMENTATION_BUG_FIX",
+    "scientific_contract_modified": false,
+    "estimand_modified": false,
+    "specification_modified": false,
+    "fixture_modified": false,
+    "execution_result_modified": false,
+    "primary_analysis_modified": false,
+    "correction": "Restore executable REPLICATES = [1, 2, 3] declaration at module scope, matching canonical fixture integer encoding."
+  },
+  "prechecks_required": [
+    "Verify exact corrected implementation commit/blob.",
+    "Compute and record implementation SHA-256 at runtime.",
+    "Verify fixture and execution-result SHA-256.",
+    "Verify specification binding.",
+    "Verify immutable join and 22649/391 population.",
+    "Construct all declared design matrices and verify full rank before fitting, including Q4_replicate at 12/12.",
+    "Verify exactly eight primary inferential tests and Holm adjustment.",
+    "Do not modify any closed primary artifact.",
+    "Do not regenerate or modify the scientific execution result."
+  ],
+  "execution_boundary": "Scientific fitting is permitted only after every runtime precheck passes. Any precheck failure blocks execution.",
+  "next_required_action": "Update workflow and executor bindings to implementation commit/blob and Gate 006, then perform a non-scientific runtime/static preflight before relaunch."
+}
