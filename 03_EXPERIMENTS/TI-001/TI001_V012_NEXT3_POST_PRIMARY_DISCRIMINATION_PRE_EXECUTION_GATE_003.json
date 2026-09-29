@@ -1,0 +1,38 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_003",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE",
+  "status": "AUTHORIZED_FOR_SCIENTIFIC_EXECUTION",
+  "decision": "ALLOW_AND_EXECUTE",
+  "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_002",
+  "analysis_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "implementation_freeze": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_001",
+  "implementation_commit": "52655c0f691cc7de7fccb37baf391e637586cda6",
+  "implementation_git_blob_sha": "81e01fde401f45cf36009e6476fd771e698c8e0f",
+  "inputs": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de"
+  },
+  "governance": {
+    "scientific_execution_authorized": true,
+    "authorization_required": true,
+    "authorization_basis": "Explicit user authorization in conversation for scientific execution of the post-primary Q1-Q5 analysis conforme a SPECIFICATION_002 y PRE_EXECUTION_GATE_001.",
+    "confirmatory": false,
+    "exploratory": true,
+    "no_next2_pooling": true,
+    "no_value_utility_reward_performance_signal": true
+  },
+  "prechecks_required": [
+    "Verify exact implementation commit/blob.",
+    "Compute and record implementation SHA-256 at runtime.",
+    "Verify fixture and execution-result SHA-256.",
+    "Verify specification binding.",
+    "Verify immutable join and 22649/391 population.",
+    "Construct all declared design matrices and verify rank before fitting.",
+    "Verify exactly eight primary inferential tests and Holm adjustment.",
+    "Do not modify any closed primary artifact."
+  ],
+  "execution_boundary": "Scientific fitting is permitted only after all runtime prechecks pass. Any precheck failure blocks execution.",
+  "next_required_action": "Run the isolated post-primary Q1-Q5 workflow; do not modify the closed primary-analysis artifacts."
+}
