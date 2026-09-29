@@ -3,6 +3,9 @@
 
 Implements the frozen NEXT3 PRIMARY_ANALYSIS_SPECIFICATION_002 data contract.
 No NEXT2 result, model, or statistical definition is imported.
+
+This stage audits and transforms the analysis input only. It does not fit or
+execute the primary statistical models.
 """
 
 import argparse
@@ -109,16 +112,7 @@ def main():
     parser.add_argument("--result", required=True, type=Path)
     parser.add_argument("--fixture", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument(
-        "--execute", action="store_true",
-        help="Reserved for the separately authorized statistical-analysis gate."
-    )
     args = parser.parse_args()
-
-    if not args.execute:
-        raise SystemExit(
-            "PREPARATION_ONLY: statistical execution requires the explicit analysis gate."
-        )
 
     fixture, fixture_by_unit = load_fixture(args.fixture)
     result, decisions = load_result(args.result)
@@ -129,8 +123,6 @@ def main():
     rows, invalid = build_choice_rows(decisions, fixture_by_unit)
     audit_choice_rows(rows)
 
-    # Model fitting is deliberately not performed by this initial adapter.
-    # This commit freezes the NEXT3 input transformation and audit boundary.
     output = {
         "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_INPUT_AUDIT_001",
         "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_INPUT_AUDIT",
