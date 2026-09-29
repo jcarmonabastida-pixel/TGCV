@@ -1,0 +1,59 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_AUDIT",
+  "status": "POST_PRIMARY_DISCRIMINATION_AUDIT_COMPLETE",
+  "canonical_question_source": "TI_OPEN_QUESTIONS_AND_DISCRIMINATION_GATE_SPECIFICATION_001",
+  "primary_result": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT_001",
+  "primary_analysis_specification": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002",
+  "findings": {
+    "primary_analysis_status": "COMPLETE",
+    "primary_contribution": "The primary result establishes profile-associated selection beyond stable action identity within the frozen NEXT3 analysis population.",
+    "primary_limit": "It does not discriminate informative future structure from null/control behaviour, presentation effects, robustness/generalisation, or competing mechanism-level explanations."
+  },
+  "question_status": {
+    "Q1": {
+      "status": "OPEN",
+      "reason": "Profile contribution beyond action identity does not by itself exclude task/interface artifacts or simpler heuristics.",
+      "next_discrimination": "Test whether the profile-associated pattern is specifically tied to informative future-structure content rather than surface or baseline effects."
+    },
+    "Q2": {
+      "status": "OPEN",
+      "reason": "The primary model does not estimate presentation/order effects or their required interactions.",
+      "next_discrimination": "Estimate the pre-specified presentation/order contrasts using the frozen analysis population."
+    },
+    "Q3": {
+      "status": "OPEN",
+      "reason": "mapping_condition was excluded from the primary model, so INFORMATIVE versus UNINFORMATIVE_NULL was not tested.",
+      "next_discrimination": "Run the condition-level null/control contrast specified by the frozen NEXT3 design."
+    },
+    "Q4": {
+      "status": "OPEN",
+      "reason": "NEXT3 primary analysis is one frozen execution and is not an independent replication/generalisation test.",
+      "next_discrimination": "Assess robustness across already specified design factors without relabelling within-execution stratification as independent replication."
+    },
+    "Q5": {
+      "status": "OPEN",
+      "reason": "The profile term is explanatory but does not identify a mediating mechanism or separate competing mechanisms.",
+      "next_discrimination": "Test the mechanism-level interaction/contrast already implied by the frozen NEXT3 design, without introducing value or utility endpoints."
+    },
+    "Q6": {
+      "status": "OUT_OF_SCOPE_FOR_NEXT3_PRIMARY",
+      "reason": "The primary result contains no transformation-space or value endpoint.",
+      "next_discrimination": "Requires a separately justified bridge and must not be inferred from the current primary result."
+    }
+  },
+  "execution_boundary": {
+    "scientific_execution_authorized": false,
+    "new_analysis_specification_created": false,
+    "fixture_modified": false,
+    "primary_estimand_modified": false,
+    "primary_result_modified": false,
+    "pooling_with_NEXT2": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false
+  },
+  "next_action": "Create and freeze a dedicated post-primary discrimination analysis specification binding each planned Q1-Q5 contrast to canonical NEXT3 fixture variables, population rule, statistical estimand, multiple-comparison policy if applicable, and interpretation boundary.",
+  "interpretation": "No additional scientific execution is authorized by this audit."
+}
