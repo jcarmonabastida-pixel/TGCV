@@ -1,0 +1,78 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_IDENTIFIABILITY_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_IDENTIFIABILITY_AUDIT",
+  "status": "IDENTIFIABILITY_PASS_SPECIFICATION_COMPLETENESS_BLOCKED",
+  "audited_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_001",
+  "source_fixture": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "unit_count": 23040,
+    "replicates": 3
+  },
+  "source_execution_result": {
+    "artifact": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "valid_decisions": 22649
+  },
+  "reconstruction_basis": {
+    "decision_result_fields": [
+      "unit_id",
+      "domain",
+      "operationalisation",
+      "presentation",
+      "permutation_index",
+      "replicate",
+      "parsed_action",
+      "validity"
+    ],
+    "fixture_join_fields": [
+      "unit_id",
+      "condition",
+      "f",
+      "z",
+      "presented_profiles"
+    ],
+    "join_rule": "Immutable unit_id join between execution result and frozen fixture; no post-hoc recoding or imputation."
+  },
+  "question_coverage": {
+    "Q1": {
+      "identifiable_from_frozen_records": true,
+      "basis": "condition is retained in the frozen fixture and f/presented_profiles are reconstructable by unit_id; INFORMATIVE and UNINFORMATIVE_NULL are therefore distinguishable without regenerating the fixture.",
+      "blocking_issue": "The specification does not yet give one exact frozen model formula, coefficient target, reference coding and primary contrast definition for the condition-by-profile correspondence test."
+    },
+    "Q2": {
+      "identifiable_from_frozen_records": true,
+      "basis": "presentation is explicitly retained in every execution-result decision record and crossed by the frozen 24 profile permutations.",
+      "blocking_issue": "The specification leaves the set of presentation interaction terms and the declared inferential family insufficiently enumerated for an execution-ready analysis."
+    },
+    "Q3": {
+      "identifiable_from_frozen_records": true,
+      "basis": "condition is recoverable from the immutable fixture and all four conditions are part of the frozen cardinality.",
+      "blocking_issue": "The specification does not fully predefine the exact estimand/model for each of the three declared condition contrasts."
+    },
+    "Q4": {
+      "identifiable_from_frozen_records": true,
+      "basis": "domain, operationalisation, presentation, replicate and permutation_index are retained; the fixture binds all four domains, five operationalisations, four presentations and three repetitions.",
+      "blocking_issue": "The specification does not predefine which factor interactions are inferential targets versus descriptive robustness summaries, nor the exact estimand for each."
+    },
+    "Q5": {
+      "identifiable_from_frozen_records": true,
+      "basis": "action identity, f/action-to-profile assignment, condition, permutation_index and selected action are reconstructable from immutable records.",
+      "blocking_issue": "The phrase 'action-by-assigned-profile/correspondence structure' is not yet an execution-level model specification; exact coding and target coefficient/contrast must be frozen."
+    }
+  },
+  "critical_boundary_check": {
+    "fixture_regeneration_required": false,
+    "fixture_modification_required": false,
+    "primary_estimand_modified": false,
+    "primary_result_modified": false,
+    "pooling_with_NEXT2": false,
+    "post_hoc_recoding_required": false,
+    "value_utility_reward_performance_signal_required": false
+  },
+  "important_finding": "The missing condition field in the execution-result decision records does not make Q1-Q4 impossible: condition is an immutable fixture attribute and can be joined by unit_id. However, this join must be explicitly specified in the final analysis implementation contract.",
+  "execution_decision": "BLOCKED_PENDING_SPECIFICATION_COMPLETION",
+  "required_next_action": "Create a superseding post-primary discrimination analysis specification that freezes exact model formulas, reference levels, target coefficients/contrasts, factor-interaction set, contrast family cardinality, and the immutable fixture/result join before any scientific execution.",
+  "scientific_execution_authorized": false,
+  "interpretation": "The frozen NEXT3 data contain the variables required to address Q1-Q5. The current post-primary specification is not yet sufficiently exact to execute reproducibly. No scientific analysis has been executed under this specification."
+}
