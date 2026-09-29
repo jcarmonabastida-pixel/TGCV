@@ -89,11 +89,64 @@ def main():
     require(specification["exploratory_only"] is True and specification["confirmatory"] is False, "NEXT3 primary analysis must remain exploratory")
     require(specification["no_pooling_with_NEXT2"] is True, "NEXT2 pooling is prohibited")
 
-    analysis = load_module(args.implementation)
-    fixture_obj, fixture_by_unit = analysis.load_fixture(args.fixture)
-    result_obj, decisions = analysis.load_result(args.result)
-    rows, invalid = analysis.build_choice_rows(decisions, fixture_by_unit)
-    analysis.audit_choice_rows(rows)
+    # Build the analysis input using the canonical data contract in the
+    # frozen analyzer. The analyzer exposes fit_primary_analysis() as its
+    # statistical interface; input adaptation remains explicit here.
+    result_obj = load_json(args.result)
+    fixture_obj = load_json(args.fixture)
+    decisions = result_obj["decisions"]
+    fixture_rows = fixture_obj["rows"]
+    fixture_by_unit = {row["unit_id"]: row for row in fixture_rows}
+
+    require(
+        fixture_obj["fixture_id"] == "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+        "Unexpected fixture artifact",
+    )
+    require(fixture_obj["version"] == "NEXT3_v003", "Unexpected fixture version")
+    require(fixture_obj["unit_count"] == 23040, "Unexpected fixture unit count")
+    require(len(fixture_by_unit) == 23040, "Fixture unit_id uniqueness/cardinality mismatch")
+
+    valid = [d for d in decisions if d["validity"] == "VALID"]
+    invalid = len(decisions) - len(valid)
+    rows = []
+    for decision in valid:
+        unit_id = decision["unit_id"]
+        parsed_action = decision["parsed_action"]
+        fixture_row = fixture_by_unit.get(unit_id)
+        require(fixture_row is not None, f"Missing fixture row for unit {unit_id}")
+        f = fixture_row["f"]
+        require(
+            list(f.keys()) == ["A", "B", "C", "D"],
+            f"Unexpected action keys in fixture for unit {unit_id}",
+        )
+        require(
+            sorted(f.values()) == ["slot_1", "slot_2", "slot_3", "slot_4"],
+            f"Fixture f is not bijective for unit {unit_id}",
+        )
+        for action_identity in ["A", "B", "C", "D"]:
+            rows.append({
+                "unit_id": unit_id,
+                "action_identity": action_identity,
+                "profile_id": f[action_identity],
+                "chosen": int(parsed_action == action_identity),
+                "domain": decision["domain"],
+                "operationalisation": decision["operationalisation"],
+                "presentation": decision["presentation"],
+                "permutation_index": decision["permutation_index"],
+                "replicate": decision["replicate"],
+            })
+
+    require(len(rows) == 4 * len(valid), "Analysis alternative count mismatch")
+    by_unit = {}
+    for row in rows:
+        by_unit.setdefault(row["unit_id"], []).append(row)
+    require(len(by_unit) == len(valid), "Choice-set cardinality mismatch")
+    for unit_id, choice_rows in by_unit.items():
+        require(len(choice_rows) == 4, f"Choice set {unit_id} does not contain four alternatives")
+        require(
+            sum(r["chosen"] for r in choice_rows) == 1,
+            f"Choice set {unit_id} does not contain exactly one chosen alternative",
+        )
 
     require(len(decisions) == population["total_decisions"] == 23040, "Decision count mismatch")
     require(len(decisions) - invalid == population["valid_decisions"] == 22649, "Valid decision count mismatch")
