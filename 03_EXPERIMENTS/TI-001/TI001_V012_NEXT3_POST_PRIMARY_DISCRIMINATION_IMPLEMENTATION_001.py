@@ -58,7 +58,8 @@ OPERATIONALISATIONS = [
     "O1_cardinality", "O2_topology", "O3_depth",
     "O4_constraints", "O5_composition",
 ]
-# Canonical fixture encoding: replicate is stored as integer levels 1, 2, 3.\nREPLICATES = [1, 2, 3]
+# Canonical fixture encoding: replicate is stored as integer levels 1, 2, 3.
+REPLICATES = [1, 2, 3]
 FIT_METHOD = "BFGS"
 MAXITER = 500
 Z95 = 1.959963984540054
