@@ -1,0 +1,36 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_005",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE",
+  "status": "IMPLEMENTATION_FROZEN_FOR_EXECUTION",
+  "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_004",
+  "implementation": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+    "commit": "bcf052ecda15acc7d1f799a1eaaaa50151601aa8",
+    "git_blob_sha": "9c5407dfa584e0978847b60e72a00cfe8b942ca1"
+  },
+  "correction": {
+    "type": "TECHNICAL_IMPLEMENTATION_BUG_FIX",
+    "description": "Q5 ConditionalLogit reached the optimizer but statsmodels failed during post-fit observed-Hessian inversion, leaving no covariance matrix and raising ValueError in ConditionalResults. Q5 now supplies a BFGS inverse-Hessian covariance callback using the optimizer's Hinv on the full-log-likelihood scale (Hinv divided by model.nobs), symmetrized and required to be finite and positive definite. The Q5 design matrix, coefficients, estimand, primary Wald restriction, model family, fixture and all other Q1-Q5 models are unchanged.",
+    "scientific_contract_modified": false,
+    "estimand_modified": false,
+    "specification_modified": false,
+    "fixture_modified": false,
+    "execution_result_modified": false,
+    "primary_analysis_modified": false,
+    "next2_pooling": false,
+    "value_utility_reward_performance_signal": false
+  },
+  "inputs": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+    "specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695"
+  },
+  "execution_boundary": {
+    "scientific_execution_performed": false,
+    "freeze_authorizes_execution": false,
+    "next_action": "Create a new pre-execution gate bound to this freeze, update isolated workflow/executor bindings, run static preflight, then relaunch only after all runtime prechecks pass."
+  }
+}
