@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""TI-001 V012 NEXT3 post-primary Q1-Q5 scientific-analysis executor.
-
-This executor is intentionally isolated from the closed NEXT3 primary result.
-It validates the frozen specification, authorization gate, input hashes,
-immutable join/cardinality, and implementation identity before fitting Q1-Q5.
-It never writes or modifies the primary-analysis artifacts.
-"""
+"""TI-001 V012 NEXT3 post-primary Q1-Q5 scientific-analysis executor."""
 
 import argparse
 import hashlib
@@ -61,11 +55,7 @@ def main():
         "implementation": sha256_file(args.implementation),
         "fixture": sha256_file(args.fixture),
     }
-    expected = {
-        "result": EXECUTION_RESULT_SHA256,
-        "specification": SPECIFICATION_SHA256,
-        "fixture": FIXTURE_SHA256,
-    }
+    expected = {"result": EXECUTION_RESULT_SHA256, "specification": SPECIFICATION_SHA256, "fixture": FIXTURE_SHA256}
     for key, value in expected.items():
         require(hashes[key] == value, f"{key} SHA-256 mismatch: expected {value}, got {hashes[key]}")
 
@@ -109,13 +99,16 @@ def main():
         require(set(f.keys()) == {"A", "B", "C", "D"}, f"Unexpected action mapping for {unit_id}")
         require(sorted(f.values()) == ["slot_1", "slot_2", "slot_3", "slot_4"], f"Non-bijective mapping for {unit_id}")
         parsed = decision["parsed_action"]
+        condition = fixture_row["mapping_condition_metadata"]
+        require(condition in {"INFORMATIVE", "SURFACE_PERMUTED", "UNINFORMATIVE_NULL", "CONTRADICTORY"},
+                f"Unexpected mapping condition for {unit_id}: {condition}")
         for action in ["A", "B", "C", "D"]:
             rows.append({
                 "unit_id": unit_id,
                 "action_identity": action,
                 "profile_id": f[action],
                 "chosen": int(parsed == action),
-                "condition": fixture_row["condition"],
+                "condition": condition,
                 "domain": decision["domain"],
                 "operationalisation": decision["operationalisation"],
                 "presentation": decision["presentation"],
@@ -132,22 +125,19 @@ def main():
             "Invalid choice-set structure")
 
     implementation = load_module(args.implementation)
-    captured_warnings = []
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
         analysis = implementation.run_post_primary(rows)
-        captured_warnings = [
-            {"category": w.category.__name__, "message": str(w.message)}
-            for w in caught
-        ]
+        captured_warnings = [{"category": w.category.__name__, "message": str(w.message)} for w in caught]
 
-    tests = []
-    tests.append(analysis["Q1"]["primary_contrast"])
-    tests.append(analysis["Q2"]["primary_contrast"])
-    tests.extend(analysis["Q3"]["primary_contrasts"])
-    tests.append(analysis["Q4"]["domain"]["primary_contrast"])
-    tests.append(analysis["Q4"]["operationalisation"]["primary_contrast"])
-    tests.append(analysis["Q5"]["primary_contrast"])
+    tests = [
+        analysis["Q1"]["primary_contrast"],
+        analysis["Q2"]["primary_contrast"],
+        *analysis["Q3"]["primary_contrasts"],
+        analysis["Q4"]["domain"]["primary_contrast"],
+        analysis["Q4"]["operationalisation"]["primary_contrast"],
+        analysis["Q5"]["primary_contrast"],
+    ]
     require(len(tests) == 8, "Expected exactly eight primary inferential tests")
     require(all("holm_adjusted_p_value" in t for t in tests), "Holm adjustment missing")
 
@@ -191,13 +181,9 @@ def main():
         "warnings": captured_warnings,
     }
     args.output.write_text(json.dumps(output, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({
-        "status": output["status"],
-        "valid_decisions": output["valid_decisions"],
-        "choice_sets": output["choice_sets"],
-        "primary_inferential_contrasts": output["primary_inferential_contrasts"],
-        "warnings": len(captured_warnings),
-    }, sort_keys=True))
+    print(json.dumps({"status": output["status"], "valid_decisions": output["valid_decisions"],
+                      "choice_sets": output["choice_sets"], "primary_inferential_contrasts": output["primary_inferential_contrasts"],
+                      "warnings": len(captured_warnings)}, sort_keys=True))
 
 if __name__ == "__main__":
     main()
