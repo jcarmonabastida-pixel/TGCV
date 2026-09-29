@@ -41,25 +41,29 @@ jobs:
       - name: Verify frozen implementation
         run: |
           test "$(git rev-parse HEAD)" != ""
-          test "$(git rev-parse HEAD:03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py)" = "9c5407dfa584e0978847b60e72a00cfe8b942ca1"
+          test "$(git rev-parse HEAD:03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py)" = "18db309ee4d25f9db2358a687812f90d24ed333f"
           test "$(sha256sum 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py | cut -d' ' -f1)" != ""
 
-      - name: Verify specification and gate
+      - name: Verify specification, freeze and Gate 008
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           spec=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002.json")
-          gate=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_007.json")
+          freeze=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_006.json")
+          gate=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_008.json")
           s=json.loads(spec.read_text())
+          f=json.loads(freeze.read_text())
           g=json.loads(gate.read_text())
           assert s["artifact_id"]=="TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002"
-          assert g["artifact_id"]=="TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_007"
-          assert g["status"]=="AUTHORIZED_FOR_SCIENTIFIC_EXECUTION"
-          assert g["decision"]=="ALLOW_AND_EXECUTE"
-          assert g["governance"]["scientific_execution_authorized"] is True
-          assert g["implementation_git_blob_sha"]=="9c5407dfa584e0978847b60e72a00cfe8b942ca1"
-          print("GATE_VERIFY_PASS")
+          assert f["artifact_id"]=="TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_006"
+          assert g["artifact_id"]=="TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_008"
+          assert g["implementation_freeze"]==f["artifact_id"]
+          assert g["implementation_commit"]=="f0550bbb09727a4eb238fcebf636e868b705677c"
+          assert g["implementation_git_blob_sha"]=="18db309ee4d25f9db2358a687812f90d24ed333f"
+          assert g["governance"]["scientific_execution_authorized"] is False
+          assert g["decision"]=="BLOCK_UNTIL_PREFLIGHT_PASS"
+          print("GATE_008_BINDING_VERIFY_PASS")
           PY
 
       - name: Static implementation preflight (no scientific fitting)
@@ -76,11 +80,30 @@ jobs:
           print("STATIC_IMPLEMENTATION_PREFLIGHT_PASS")
           PY
 
-      - name: Run isolated post-primary Q1-Q5 analysis
+      - name: Evaluate scientific execution authorization
+        id: gate
         run: |
-          python 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_EXECUTOR_001.py             --result 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001.json             --specification 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002.json             --implementation 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py             --gate 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_007.json             --matrix-audit 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_MATRIX_CONSTRUCTION_AUDIT_001.json             --fixture /tmp/TI001_V012_NEXT3_CANDIDATE_FIXTURE_003.json             --output /tmp/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          g=json.loads(Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_008.json").read_text())
+          authorized = (
+              g["status"] == "AUTHORIZED_FOR_SCIENTIFIC_EXECUTION"
+              and g["decision"] == "ALLOW_AND_EXECUTE"
+              and g["governance"]["scientific_execution_authorized"] is True
+          )
+          with open("${GITHUB_OUTPUT}", "a") as fh:
+              fh.write(f"authorized={'true' if authorized else 'false'}\n")
+          print("SCIENTIFIC_EXECUTION_AUTHORIZED" if authorized else "SCIENTIFIC_EXECUTION_BLOCKED_PENDING_EXPLICIT_AUTHORIZATION")
+          PY
+
+      - name: Run isolated post-primary Q1-Q5 analysis
+        if: steps.gate.outputs.authorized == 'true'
+        run: |
+          python 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_EXECUTOR_001.py --result 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001.json --specification 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002.json --implementation 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py --gate 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_008.json --matrix-audit 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_MATRIX_CONSTRUCTION_AUDIT_001.json --fixture /tmp/TI001_V012_NEXT3_CANDIDATE_FIXTURE_003.json --output /tmp/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001.json
 
       - name: Publish analysis result
+        if: steps.gate.outputs.authorized == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001
