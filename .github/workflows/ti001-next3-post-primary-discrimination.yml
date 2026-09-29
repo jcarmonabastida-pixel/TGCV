@@ -83,6 +83,85 @@ jobs:
           print("STATIC_IMPLEMENTATION_PREFLIGHT_PASS")
           PY
 
+      - name: Non-scientific design-matrix rank preflight
+        run: |
+          python - <<'PY'
+          import importlib.util
+          import json
+          import numpy as np
+          from pathlib import Path
+          import pandas as pd
+
+          impl_path = "03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py"
+          spec = importlib.util.spec_from_file_location("ti001_impl", impl_path)
+          impl = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(impl)
+
+          result = json.loads(Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001.json").read_text())
+          fixture = json.loads(Path("/tmp/TI001_V012_NEXT3_CANDIDATE_FIXTURE_003.json").read_text())
+          fixture_by_unit = {row["unit_id"]: row for row in fixture["rows"]}
+
+          valid = [d for d in result["decisions"] if d["validity"] == "VALID"]
+          rows = []
+          for decision in valid:
+              unit_id = decision["unit_id"]
+              fixture_row = fixture_by_unit[unit_id]
+              mapping = fixture_row["f"]
+              parsed = decision["parsed_action"]
+              condition = fixture_row["mapping_condition_metadata"]
+              for action in impl.ACTIONS:
+                  rows.append({
+                      "unit_id": unit_id,
+                      "action_identity": action,
+                      "profile_id": mapping[action],
+                      "chosen": int(parsed == action),
+                      "condition": condition,
+                      "domain": decision["domain"],
+                      "operationalisation": decision["operationalisation"],
+                      "presentation": decision["presentation"],
+                      "replicate": decision["replicate"],
+                  })
+
+          df = pd.DataFrame(rows)
+          assert len(df) == 90596
+          assert df.groupby("unit_id").size().eq(4).all()
+          assert df.groupby("unit_id")["chosen"].sum().eq(1).all()
+
+          def rank(label, X):
+              r = int(np.linalg.matrix_rank(X.to_numpy(dtype=float)))
+              assert r == X.shape[1], f"{label}: rank deficient ({r}/{X.shape[1]})"
+              print(f"{label}_FULL_RANK={r}/{X.shape[1]}")
+
+          action, profile = impl.build_common(df)
+
+          pc = impl.interaction(df["profile_id"], df["condition"], impl.PROFILES, impl.CONDITIONS, "profile", "condition")
+          rank("Q1", pd.concat([action, profile, pc], axis=1))
+          rank("Q3", pd.concat([action, profile, pc], axis=1))
+
+          pp = impl.interaction(df["profile_id"], df["presentation"], impl.PROFILES, impl.PRESENTATIONS, "profile", "presentation")
+          rank("Q2_REDUCED", pd.concat([action, profile], axis=1))
+          rank("Q2", pd.concat([action, profile, pp], axis=1))
+
+          for factor, levels, label in [
+              ("domain", impl.DOMAINS, "Q4_DOMAIN"),
+              ("operationalisation", impl.OPERATIONALISATIONS, "Q4_OPERATIONALISATION"),
+              ("presentation", impl.PRESENTATIONS, "Q4_PRESENTATION"),
+              ("replicate", impl.REPLICATES, "Q4_REPLICATE"),
+          ]:
+              inter = impl.interaction(df["profile_id"], df[factor], impl.PROFILES, levels, "profile", factor)
+              rank(label, pd.concat([action, profile, inter], axis=1))
+
+          ap = pd.DataFrame({
+              f"action_{a}:profile_{p}":
+                  ((df["action_identity"] == a).astype(float) * (df["profile_id"] == p).astype(float))
+              for a in impl.ACTIONS[1:] for p in impl.PROFILES[1:]
+          }, index=df.index)
+          condition = impl.make_dummy(df["condition"], impl.CONDITIONS, "condition")
+          apc = impl.three_way_action_profile_condition(df)
+          rank("Q5", pd.concat([action, profile, ap, condition, apc], axis=1))
+          print("NON_SCIENTIFIC_DESIGN_MATRIX_RANK_PREFLIGHT_PASS")
+          PY
+
       - name: Evaluate scientific execution authorization
         id: gate
         run: |
