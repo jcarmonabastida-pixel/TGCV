@@ -1,8 +1,8 @@
 {
   "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_002",
   "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE",
-  "status": "READY_FOR_EXPLICIT_SCIENTIFIC_AUTHORIZATION",
-  "decision": "ALLOW_PENDING_EXPLICIT_AUTHORIZATION",
+  "status": "AUTHORIZED_FOR_SCIENTIFIC_EXECUTION",
+  "decision": "ALLOW_AND_EXECUTE",
   "analysis_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
   "matrix_construction_audit": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_MATRIX_CONSTRUCTION_AUDIT_001",
   "inputs": {
@@ -39,12 +39,13 @@
     "q5": "declared_action_by_profile_by_condition_interaction"
   },
   "governance": {
-    "scientific_execution_authorized": false,
+    "scientific_execution_authorized": true,
     "authorization_required": true,
+    "authorization_basis": "Explicit user authorization in conversation: Autorizado",
     "confirmatory": false,
     "exploratory": true,
     "no_next2_pooling": true,
     "no_value_utility_reward_performance_signal": true
   },
-  "next_required_action": "Obtain explicit scientific authorization for execution of the frozen post-primary Q1-Q5 statistical analysis plan."
+  "next_required_action": "Execute the frozen post-primary Q1-Q5 statistical analysis plan exactly as specified; record execution artifact and SHA-256."
 }
