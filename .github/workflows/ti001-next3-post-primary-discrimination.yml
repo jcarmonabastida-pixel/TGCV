@@ -64,8 +64,8 @@ jobs:
           assert g["implementation_freeze"]==f["artifact_id"]
           assert g["implementation_commit"]=="f0550bbb09727a4eb238fcebf636e868b705677c"
           assert g["implementation_git_blob_sha"]=="18db309ee4d25f9db2358a687812f90d24ed333f"
-          assert g["governance"]["scientific_execution_authorized"] is False
-          assert g["decision"]=="BLOCK_UNTIL_PREFLIGHT_PASS"
+          assert g["governance"]["scientific_execution_authorized"] is True
+          assert g["decision"]=="ALLOW_AND_EXECUTE"
           print("GATE_008_BINDING_VERIFY_PASS")
           PY
 
