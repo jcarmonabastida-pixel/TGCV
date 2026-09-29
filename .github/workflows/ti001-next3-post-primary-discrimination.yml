@@ -41,7 +41,7 @@ jobs:
       - name: Verify frozen implementation
         run: |
           test "$(git rev-parse HEAD)" != ""
-          test "$(git rev-parse HEAD:03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py)" = "8da609c08c034b7db7f076046951cc5b0e66f3e2"
+          test "$(git rev-parse HEAD:03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py)" = "475f5c1c69ac6418168a5032d63fab0e792273f6e2"
           test "$(sha256sum 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py | cut -d' ' -f1)" != ""
 
       - name: Verify specification and gate
@@ -50,7 +50,7 @@ jobs:
           import json
           from pathlib import Path
           spec=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002.json")
-          gate=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_005.json")
+          gate=Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_006.json")
           s=json.loads(spec.read_text())
           g=json.loads(gate.read_text())
           assert s["artifact_id"]=="TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002"
@@ -60,6 +60,20 @@ jobs:
           assert g["governance"]["scientific_execution_authorized"] is True
           assert g["implementation_git_blob_sha"]=="8da609c08c034b7db7f076046951cc5b0e66f3e2"
           print("GATE_VERIFY_PASS")
+          PY
+
+      - name: Static implementation preflight (no scientific fitting)
+        run: |
+          python -m py_compile 03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py
+          python - <<'PY'
+          import importlib.util
+          p="03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py"
+          spec=importlib.util.spec_from_file_location("ti001_impl",p)
+          m=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(m)
+          assert m.REPLICATES == [1, 2, 3]
+          assert all(isinstance(x, int) for x in m.REPLICATES)
+          print("STATIC_IMPLEMENTATION_PREFLIGHT_PASS")
           PY
 
       - name: Run isolated post-primary Q1-Q5 analysis
