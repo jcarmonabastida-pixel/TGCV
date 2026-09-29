@@ -1,0 +1,104 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_INTERPRETATION_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_INTERPRETATION",
+  "status": "PRIMARY_RESULT_INTERPRETATION_COMPLETE",
+  "scope": "TI-001 NEXT3 primary statistical analysis only",
+  "source_artifacts": {
+    "primary_result": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT_001",
+    "primary_result_sha256": "TO_BE_VERIFIED_FROM_CANONICAL_RESULT",
+    "primary_analysis_specification": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002",
+    "population_specification": "TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001",
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0"
+  },
+  "scientific_scope": {
+    "exploratory_only": true,
+    "confirmatory": false,
+    "pooling_with_NEXT2": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false,
+    "mapping_condition_in_primary_model": false
+  },
+  "primary_result_summary": {
+    "total_decisions": 23040,
+    "valid_decisions": 22649,
+    "invalid_decisions_excluded": 391,
+    "choice_sets": 22649,
+    "alternatives_per_choice_set": 4,
+    "restricted_model": "action_identity_only",
+    "primary_model": "action_identity_plus_profile_id",
+    "restricted_log_likelihood": -22200.889426081456,
+    "primary_log_likelihood": -20443.339959196812,
+    "likelihood_ratio": 3515.098933769288,
+    "degrees_of_freedom": 3,
+    "reported_p_value": 0.0,
+    "p_value_note": "The stored p-value is numerical underflow, not a literal probability equal to zero. No stable finite numerical p-value is asserted by this interpretation artifact.",
+    "primary_tested_term": "profile_id"
+  },
+  "interpretation_boundary": {
+    "observed": "Within the valid NEXT3 analysis population, adding the categorical semantic structural-transformation profile to a conditional-logit model that already accounts for stable action identity produced a very large likelihood improvement.",
+    "permitted_inference": "The observed choices contain information associated with the assigned structural-transformation profile beyond stable action identity, under the frozen NEXT3 design and analysis population.",
+    "not_permitted": [
+      "The result does not by itself establish Transformational Intelligence as a demonstrated cognitive or agent-level capability.",
+      "The result does not by itself establish causal use of future transformation information.",
+      "The result does not identify which individual profile dimension causes the selection pattern.",
+      "The profile slots are coupled structural descriptors and are not a monotonic value, utility, reward, or performance scale.",
+      "The result does not test a mapping-condition interaction because mapping_condition is intentionally excluded from the primary model.",
+      "The result does not establish that the observed profile effect is invariant across presentation, operationalisation, domain, or other design factors.",
+      "The result does not justify pooling with NEXT2."
+    ]
+  },
+  "question_mapping": {
+    "Q1_CONSTRUCT_IDENTIFICATION": {
+      "role": "primary_relevance",
+      "question": "Can stable preference for an action be distinguished from selection associated with represented structural transformation?",
+      "observed_evidence": "The action-identity-only model is substantially improved by adding profile_id.",
+      "permitted_inference": "Stable action identity alone is not a sufficient statistical account of the observed selection pattern in this NEXT3 population.",
+      "prohibited_inference": "This does not by itself identify the underlying construct as Transformational Intelligence."
+    },
+    "Q2_PRESENTATION": {
+      "role": "control_constraint",
+      "question": "Does the observed selection pattern depend on presentation factors rather than the intended structural representation?",
+      "observed_evidence": "The primary result does not estimate presentation effects or interactions.",
+      "permitted_inference": "Q2 remains a separate robustness/control question; the primary result is not sufficient to resolve it.",
+      "prohibited_inference": "No claim of presentation invariance may be made from the primary result alone."
+    },
+    "Q3_NULL_INFORMATIVE": {
+      "role": "control_constraint",
+      "question": "Does the observed selection pattern require informative future-structure content rather than an uninformative/null representation?",
+      "observed_evidence": "The primary model excludes mapping_condition and does not compare INFORMATIVE with UNINFORMATIVE_NULL.",
+      "permitted_inference": "The primary result establishes profile-associated selection in the pooled primary analysis population but does not establish that the effect specifically requires informative future content.",
+      "prohibited_inference": "The primary result cannot be presented as a direct INFORMATIVE-versus-UNINFORMATIVE_NULL test."
+    },
+    "Q4_ROBUSTNESS": {
+      "role": "control_constraint",
+      "question": "Does the relevant selection pattern remain stable across the planned domains, operationalisations, and presentation controls?",
+      "observed_evidence": "The primary model retains domain, presentation and operationalisation as design factors but does not estimate their interaction structure.",
+      "permitted_inference": "The primary result is compatible with a robustness programme but does not itself resolve Q4.",
+      "prohibited_inference": "No cross-domain or cross-operationalisation invariance claim follows from this primary result alone."
+    },
+    "Q5_MECHANISM_DISCRIMINATION": {
+      "role": "mechanistic_relevance_but_not_complete_test",
+      "question": "Can selection associated with action identity be distinguished from selection associated with the structural transformation represented as relevant to the future?",
+      "observed_evidence": "Profile_id contributes substantial explanatory information after stable action identity is included.",
+      "permitted_inference": "NEXT3 provides direct evidence for the mechanistic premise that action identity alone does not exhaust the information associated with choice, and that represented structural-transformation profile is additionally associated with selection.",
+      "prohibited_inference": "The primary analysis does not test the action-identity-by-future-assignment interaction specified in earlier Q5 formulations and therefore does not, by itself, close the full Q5 mechanism-discrimination question."
+    }
+  },
+  "tgcv_implication": {
+    "current_interpretation": "The primary NEXT3 result supports advancing the TGCV research programme toward explicit study of Dynamic Transformation Space and Transformational Intelligence as an explanatory direction.",
+    "claim_level": "programme-level empirical support, not theory confirmation",
+    "next_required_discrimination": "Determine whether profile-associated selection is specifically tied to semantically informative future representation, survives the planned presentation/null/robustness controls, and exhibits the predicted interaction structure.",
+    "value_link": "No value, utility, reward, or performance signal was used in the primary analysis; any later connection to value creation must be established as a separate empirical step."
+  },
+  "open_questions": [
+    "Does the profile-associated effect differ between INFORMATIVE and UNINFORMATIVE_NULL?",
+    "Does SURFACE_PERMUTED alter or preserve the effect in the way required to distinguish semantic content from surface presentation?",
+    "Does CONTRADICTORY provide the planned mechanistic discrimination?",
+    "Are the effects stable across the planned presentation, operationalisation, and domain factors?",
+    "Can the next analysis identify the intended action-identity-by-future-assignment mechanism without importing value, utility, reward, or performance signals?"
+  ],
+  "interpretation_status": "This artifact interprets the completed primary analysis without extending its estimand. It does not constitute confirmatory evidence and does not by itself establish Transformational Intelligence."
+}
