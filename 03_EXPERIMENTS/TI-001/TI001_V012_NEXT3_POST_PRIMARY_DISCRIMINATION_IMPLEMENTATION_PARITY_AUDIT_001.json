@@ -1,0 +1,39 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_PARITY_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_PARITY_AUDIT",
+  "status": "IMPLEMENTATION_PARITY_AUDIT_PASS",
+  "analysis_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "analysis_specification_sha256": "f65737c3d24d2e4c973c0649632abf4247c9004452eed7c08225102b74a52f0f",
+  "implementation": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+  "implementation_commit": "32d39865aba054353dfd78fba0c481b8cbde9acd",
+  "closed_primary_implementation": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_001.py",
+  "closed_primary_implementation_sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d",
+  "checks": {
+    "same_model_family": "PASS",
+    "same_statsmodels_conditional_logit_class": "PASS",
+    "same_fit_method": "PASS_BFGS",
+    "same_maxiter": "PASS_500",
+    "same_choice_set": "PASS_unit_id",
+    "same_outcome": "PASS_chosen",
+    "same_frozen_reference_levels": "PASS",
+    "q1_q5_formulas_mapped": "PASS",
+    "eight_primary_inferential_tests": "PASS",
+    "holm_adjustment": "PASS",
+    "rank_check_before_fit": "PASS",
+    "invalid_decisions_excluded": "GOVERNED_BY_EXECUTION_WRAPPER",
+    "fixture_immutable": "PASS_SPECIFICATION_LEVEL",
+    "no_next2_pooling": "PASS",
+    "no_value_utility_reward_performance_signal": "PASS",
+    "no_primary_implementation_modification": "PASS",
+    "no_primary_result_modification": "PASS"
+  },
+  "preservation_boundary": {
+    "primary_analysis_files_modified": false,
+    "primary_analysis_result_modified": false,
+    "primary_analysis_specification_modified": false,
+    "new_implementation_isolated": true,
+    "new_artifact_does_not_replace_primary": true,
+    "scientific_fit_performed": false
+  },
+  "important_note": "This audit establishes implementation-level parity and isolation; it does not execute Q1-Q5 and does not establish any scientific result."
+}
