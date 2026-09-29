@@ -51,54 +51,62 @@
     ]
   },
   "question_mapping": {
-    "Q1_CONSTRUCT_IDENTIFICATION": {
-      "role": "primary_relevance",
-      "question": "Can stable preference for an action be distinguished from selection associated with represented structural transformation?",
+    "Q1": {
+      "canonical_question": "Does the V011 decision contrast isolate incorporation of future transformation structure, or can it be explained by task/interface artifacts or simpler decision heuristics?",
+      "role": "partial_relevance_only",
       "observed_evidence": "The action-identity-only model is substantially improved by adding profile_id.",
-      "permitted_inference": "Stable action identity alone is not a sufficient statistical account of the observed selection pattern in this NEXT3 population.",
-      "prohibited_inference": "This does not by itself identify the underlying construct as Transformational Intelligence."
+      "permitted_inference": "The NEXT3 primary result shows that stable action identity alone is not a sufficient statistical account of the observed selection pattern in this NEXT3 population.",
+      "remaining_discrimination": "This result does not distinguish future-structure incorporation from task/interface artifacts or simpler non-TI decision heuristics. The planned control and contrast analyses remain necessary."
     },
-    "Q2_PRESENTATION": {
-      "role": "control_constraint",
-      "question": "Does the observed selection pattern depend on presentation factors rather than the intended structural representation?",
-      "observed_evidence": "The primary result does not estimate presentation effects or interactions.",
-      "permitted_inference": "Q2 remains a separate robustness/control question; the primary result is not sufficient to resolve it.",
-      "prohibited_inference": "No claim of presentation invariance may be made from the primary result alone."
+    "Q2": {
+      "canonical_question": "V011 shows presentation-stratified differences. Is the observed decision response invariant to presentation/order, or is it substantially driven by presentation effects?",
+      "role": "not_tested_by_primary_analysis",
+      "observed_evidence": "The primary result does not estimate presentation effects or the required presentation/order interactions.",
+      "permitted_inference": "Q2 remains an independent presentation-control question and is not resolved by the primary result.",
+      "remaining_discrimination": "Independently specified presentation manipulations and pre-specified comparison criteria are still required."
     },
-    "Q3_NULL_INFORMATIVE": {
-      "role": "control_constraint",
-      "question": "Does the observed selection pattern require informative future-structure content rather than an uninformative/null representation?",
+    "Q3": {
+      "canonical_question": "The two executions differ in null-condition behaviour. What mechanisms explain this variation, and what does it imply for interpretation of the treatment-control contrast?",
+      "role": "not_tested_by_primary_analysis",
       "observed_evidence": "The primary model excludes mapping_condition and does not compare INFORMATIVE with UNINFORMATIVE_NULL.",
-      "permitted_inference": "The primary result establishes profile-associated selection in the pooled primary analysis population but does not establish that the effect specifically requires informative future content.",
-      "prohibited_inference": "The primary result cannot be presented as a direct INFORMATIVE-versus-UNINFORMATIVE_NULL test."
+      "permitted_inference": "The primary result establishes profile-associated selection in the pooled primary analysis population but does not explain null-condition behaviour or establish the interpretation of a treatment-control contrast.",
+      "remaining_discrimination": "Controls distinguishing treatment sensitivity from baseline decision variability are still required."
     },
-    "Q4_ROBUSTNESS": {
-      "role": "control_constraint",
-      "question": "Does the relevant selection pattern remain stable across the planned domains, operationalisations, and presentation controls?",
-      "observed_evidence": "The primary model retains domain, presentation and operationalisation as design factors but does not estimate their interaction structure.",
-      "permitted_inference": "The primary result is compatible with a robustness programme but does not itself resolve Q4.",
-      "prohibited_inference": "No cross-domain or cross-operationalisation invariance claim follows from this primary result alone."
+    "Q4": {
+      "canonical_question": "Does the observed decision-level pattern persist under independently specified tasks, fixtures, models, or equivalent operationalisations?",
+      "role": "not_tested_by_primary_analysis",
+      "observed_evidence": "The primary analysis is based on the frozen NEXT3 design and does not constitute an independently specified replication/generalisation test.",
+      "permitted_inference": "The primary result provides one NEXT3 observation of the decision-level pattern but does not establish robustness or generalisation.",
+      "remaining_discrimination": "Independent replication/generalisation evidence is required rather than repeated identical execution solely for more observations."
     },
-    "Q5_MECHANISM_DISCRIMINATION": {
-      "role": "mechanistic_relevance_but_not_complete_test",
-      "question": "Can selection associated with action identity be distinguished from selection associated with the structural transformation represented as relevant to the future?",
+    "Q5": {
+      "canonical_question": "If future-structure information affects present decisions, what identifiable mechanism mediates that effect?",
+      "role": "partial_relevance_only",
       "observed_evidence": "Profile_id contributes substantial explanatory information after stable action identity is included.",
-      "permitted_inference": "NEXT3 provides direct evidence for the mechanistic premise that action identity alone does not exhaust the information associated with choice, and that represented structural-transformation profile is additionally associated with selection.",
-      "prohibited_inference": "The primary analysis does not test the action-identity-by-future-assignment interaction specified in earlier Q5 formulations and therefore does not, by itself, close the full Q5 mechanism-discrimination question."
+      "permitted_inference": "The primary result is compatible with the hypothesis that represented structural-transformation information is additionally associated with selection beyond stable action identity.",
+      "remaining_discrimination": "The primary analysis does not identify or separate competing mechanism-level explanations and therefore does not close Q5. In particular, it does not by itself establish the intended action-identity-by-future-assignment mechanism."
+    },
+    "Q6": {
+      "canonical_question": "Does decision-level Transformational Intelligence evidence connect to changes in accessible transformation space, and under what conditions could a later value endpoint be meaningfully introduced?",
+      "role": "out_of_scope_for_this_artifact",
+      "observed_evidence": "No value, utility, reward, performance, or transformation-space endpoint is tested in the NEXT3 primary analysis.",
+      "permitted_inference": "No Q6 bridge is established by this primary result.",
+      "remaining_discrimination": "A separately justified bridge from decision-level evidence to transformation-space and, only if warranted, value-level evidence remains necessary."
     }
   },
   "tgcv_implication": {
-    "current_interpretation": "The primary NEXT3 result supports advancing the TGCV research programme toward explicit study of Dynamic Transformation Space and Transformational Intelligence as an explanatory direction.",
+    "current_interpretation": "The primary NEXT3 result provides programme-level empirical support for continuing the investigation of Dynamic Transformation Space and Transformational Intelligence as an explanatory direction, while the canonical Q1-Q5 discrimination programme remains open.",
     "claim_level": "programme-level empirical support, not theory confirmation",
-    "next_required_discrimination": "Determine whether profile-associated selection is specifically tied to semantically informative future representation, survives the planned presentation/null/robustness controls, and exhibits the predicted interaction structure.",
+    "next_required_discrimination": "Determine whether profile-associated selection is specifically tied to semantically informative future representation, survives the planned presentation/null/robustness controls, and exhibits an identifiable mechanism rather than a simpler alternative explanation.",
     "value_link": "No value, utility, reward, or performance signal was used in the primary analysis; any later connection to value creation must be established as a separate empirical step."
   },
   "open_questions": [
-    "Does the profile-associated effect differ between INFORMATIVE and UNINFORMATIVE_NULL?",
-    "Does SURFACE_PERMUTED alter or preserve the effect in the way required to distinguish semantic content from surface presentation?",
-    "Does CONTRADICTORY provide the planned mechanistic discrimination?",
-    "Are the effects stable across the planned presentation, operationalisation, and domain factors?",
-    "Can the next analysis identify the intended action-identity-by-future-assignment mechanism without importing value, utility, reward, or performance signals?"
+    "Q1: Can future-structure incorporation be distinguished from task/interface artifacts or simpler decision heuristics?",
+    "Q2: Is the decision response invariant to presentation/order?",
+    "Q3: What explains null-condition behaviour and what does it imply for the treatment-control contrast?",
+    "Q4: Does the decision-level pattern persist under independently specified tasks, fixtures, models, or equivalent operationalisations?",
+    "Q5: What identifiable mechanism mediates any effect of future-structure information on present decisions?",
+    "Q6: Can decision-level evidence be connected to accessible transformation space and, only if warranted, a later value endpoint?"
   ],
-  "interpretation_status": "This artifact interprets the completed primary analysis without extending its estimand. It does not constitute confirmatory evidence and does not by itself establish Transformational Intelligence."
+  "interpretation_status": "This artifact interprets the completed primary analysis against the canonical TI open-question register recorded in TI_OPEN_QUESTIONS_AND_DISCRIMINATION_GATE_SPECIFICATION_001. It does not replace those canonical questions, extend the primary estimand, constitute confirmatory evidence, or by itself establish Transformational Intelligence."
 }
