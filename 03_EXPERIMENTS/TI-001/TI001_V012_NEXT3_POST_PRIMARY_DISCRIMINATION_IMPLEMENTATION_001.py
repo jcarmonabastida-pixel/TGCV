@@ -139,9 +139,12 @@ def fit_model(df, X, label):
     rank = int(np.linalg.matrix_rank(X.to_numpy(dtype=float)))
     require(rank == X.shape[1], f"{label}: rank deficient ({rank}/{X.shape[1]})")
 
+    # Preserve the pandas DataFrame so statsmodels retains coefficient names
+    # in result.params/result.bse/result.pvalues. These names are required by
+    # coefficient_report() and joint_wald() for the frozen Q1-Q5 restrictions.
     result = ConditionalLogit(
         df["chosen"].to_numpy(dtype=float),
-        X.to_numpy(dtype=float),
+        X,
         groups=df["unit_id"].to_numpy(),
     ).fit(method=FIT_METHOD, maxiter=MAXITER, disp=False)
 
