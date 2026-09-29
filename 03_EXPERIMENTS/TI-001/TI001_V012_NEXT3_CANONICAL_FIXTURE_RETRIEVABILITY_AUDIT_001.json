@@ -1,0 +1,26 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_CANONICAL_FIXTURE_RETRIEVABILITY_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_CANONICAL_FIXTURE_RETRIEVABILITY_AUDIT",
+  "status": "BLOCK_CONFIRMED",
+  "fixture": {
+    "artifact_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "version": "NEXT3_v003",
+    "sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "size_bytes": 62335069,
+    "unit_count": 23040
+  },
+  "canonical_repository_check": {
+    "repository": "jcarmonabastida-pixel/TGCV",
+    "branch": "main",
+    "fixture_filename_present_in_git_tree": false,
+    "fixture_path_present_in_git_tree": false,
+    "freeze_record_present": true,
+    "generator_003_present": true
+  },
+  "finding": "The exact frozen fixture bytes are not currently retrievable as a repository blob from main. The repository contains the freeze metadata and generator/binding records, but not the 62,335,069-byte CANDIDATE_FIXTURE_003 artifact itself.",
+  "consequence": "The Q1-Q5 post-primary pre-execution gate cannot legitimately verify the actual design matrices, rank, or implementation parity against the frozen bytes. Regenerating from the generator would be a new derivation and cannot silently substitute for the frozen artifact.",
+  "required_next_action": "Restore canonical retrievability of the exact frozen fixture bytes, preferably through the governed repository artifact mechanism (for example Git LFS or an approved immutable artifact store referenced by the repository), and verify that the retrieved bytes hash exactly to 0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0.",
+  "scientific_execution_authorized": false,
+  "fixture_modified": false,
+  "fixture_regenerated": false
+}
