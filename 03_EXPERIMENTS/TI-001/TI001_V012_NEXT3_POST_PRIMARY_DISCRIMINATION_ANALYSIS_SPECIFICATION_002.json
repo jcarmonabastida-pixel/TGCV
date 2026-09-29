@@ -1,0 +1,140 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION",
+  "status": "SPECIFICATION_COMPLETE_NOT_EXECUTION_AUTHORIZED",
+  "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_001",
+  "purpose": "Freeze execution-level statistical formulas, coding, estimands and finite contrast families for canonical TI-001 Q1-Q5 using immutable NEXT3_v003 records.",
+  "source_data": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "population_rule": "validity == VALID",
+    "valid_decisions": 22649,
+    "invalid_decisions_excluded": 391
+  },
+  "immutable_join": {
+    "key": "unit_id",
+    "execution_fields": ["unit_id","domain","operationalisation","presentation","permutation_index","replicate","parsed_action","validity"],
+    "fixture_fields": ["unit_id","condition","f","presented_profiles"],
+    "derived_analysis_fields": ["action_identity","profile_id","chosen","condition","domain","operationalisation","presentation","permutation_index","replicate"],
+    "rule": "Join execution records to the frozen fixture by unit_id only. No recoding, imputation, substitution or fixture regeneration."
+  },
+  "global_model": {
+    "family": "conditional_logit",
+    "choice_set": "unit_id",
+    "outcome": "chosen",
+    "reference_action": "A",
+    "reference_profile": "slot_1",
+    "condition_reference": "UNINFORMATIVE_NULL",
+    "presentation_reference_levels": {
+      "order": "frozen first level in canonical fixture encoding",
+      "position": "frozen first level in canonical fixture encoding",
+      "orientation": "frozen first level in canonical fixture encoding",
+      "neutral_format": "frozen first level in canonical fixture encoding"
+    },
+    "estimation": "Maximum likelihood using the same conditional-logit implementation family as NEXT3 primary analysis.",
+    "population": "same frozen valid population"
+  },
+  "Q1": {
+    "question": "Does the V011 decision contrast isolate incorporation of future transformation structure, or can it be explained by task/interface artifacts or simpler decision heuristics?",
+    "model": "chosen ~ action_identity + profile_id + profile_id:condition",
+    "reference_condition": "UNINFORMATIVE_NULL",
+    "primary_estimand": "Joint condition-dependent profile contribution, represented by the three profile_id:condition interaction coefficients for slot_2, slot_3 and slot_4 relative to slot_1 in UNINFORMATIVE_NULL.",
+    "primary_contrast": "INFORMATIVE minus UNINFORMATIVE_NULL profile contribution, jointly over the three non-reference profiles.",
+    "required_effects": ["action_identity","profile_id","profile_id:condition"],
+    "interpretation": "A non-null condition-dependent profile contribution is evidence that profile-associated selection differs between informative and null correspondence after controlling for stable action identity.",
+    "limitation": "This does not by itself exclude every task/interface artifact or identify a unique cognitive mechanism."
+  },
+  "Q2": {
+    "question": "V011 shows presentation-stratified differences. Is the observed decision response invariant to presentation/order, or is it substantially driven by presentation effects?",
+    "model": "chosen ~ action_identity + profile_id + profile_id:presentation_factor",
+    "presentation_factor": "The canonical presentation field encoded as its frozen categorical levels; no reconstruction or relabelling of presentation levels is permitted.",
+    "primary_estimand": "Joint profile_id:presentation interaction across all declared presentation levels.",
+    "declared_contrasts": "One joint likelihood-ratio test of profile_id:presentation interaction, plus coefficient-level estimates and confidence intervals for each declared interaction coefficient.",
+    "interpretation": "The interaction tests whether profile-associated selection varies by presentation stratum.",
+    "limitation": "No detectable interaction is not a proof of universal presentation invariance."
+  },
+  "Q3": {
+    "question": "The two executions differ in null-condition behaviour. What mechanisms explain this variation, and what does it imply for interpretation of the treatment-control contrast?",
+    "model": "chosen ~ action_identity + profile_id + profile_id:condition",
+    "condition_contrasts": [
+      "INFORMATIVE - UNINFORMATIVE_NULL",
+      "SURFACE_PERMUTED - UNINFORMATIVE_NULL",
+      "CONTRADICTORY - UNINFORMATIVE_NULL"
+    ],
+    "estimand": "Condition-specific profile-associated selection relative to the UNINFORMATIVE_NULL reference.",
+    "interpretation": "The three declared contrasts characterize whether profile-associated selection differs systematically across treatment/control conditions.",
+    "limitation": "Condition contrasts characterize decision-level behaviour; they do not establish downstream causal or value effects."
+  },
+  "Q4": {
+    "question": "Does the observed decision-level pattern persist under independently specified tasks, fixtures, models, or equivalent operationalisations?",
+    "model_family": "For each retained factor, chosen ~ action_identity + profile_id + profile_id:factor.",
+    "factors": ["domain","operationalisation"],
+    "secondary_robustness_factors": ["presentation","replicate"],
+    "primary_estimands": {
+      "domain": "Joint profile_id:domain interaction across the four frozen domains.",
+      "operationalisation": "Joint profile_id:operationalisation interaction across the five frozen operationalisations."
+    },
+    "secondary_estimands": {
+      "presentation": "Same Q2 profile_id:presentation interaction.",
+      "replicate": "Profile-associated selection variation across the three frozen replicate levels; descriptive unless the pre-specified interaction is estimable without singularity."
+    },
+    "interpretation": "Persistence means that the profile-associated pattern is not materially confined to one retained domain or operationalisation.",
+    "limitation": "Within-fixture factor analysis is robustness evidence, not independent replication."
+  },
+  "Q5": {
+    "question": "If future-structure information affects present decisions, what identifiable mechanism mediates that effect?",
+    "model": "chosen ~ action_identity + profile_id + action_identity:profile_id + condition + action_identity:profile_id:condition",
+    "identifiability": "All action-by-profile combinations are represented by the balanced 24 profile permutations; condition is unit-level and the four conditions are retained. Terms are estimated only if the realized design matrix has full required rank.",
+    "primary_estimand": "Difference in action_identity:profile_id association between INFORMATIVE and UNINFORMATIVE_NULL, represented by the declared action-by-profile-by-condition interaction family.",
+    "declared_contrast": "Joint informative-versus-null difference in the action-by-assigned-profile interaction structure.",
+    "interpretation": "A non-null interaction would indicate that the association between stable action identity and assigned structural profile differs with correspondence condition in the tested mechanism model.",
+    "limitation": "This identifies a statistical interaction, not a unique cognitive or agent-level mediator."
+  },
+  "rank_and_singularity_rule": {
+    "pre_execution_requirement": "Construct the declared design matrix from immutable records and verify full rank for every model before scientific fitting.",
+    "failure_action": "If a declared model is rank-deficient or singular under the frozen data, that model/contrast is blocked; no alternative recoding, term removal or post-hoc model substitution is permitted. The specification must be amended and re-gated."
+  },
+  "multiple_comparison_policy": {
+    "families": {
+      "Q1": 1,
+      "Q2": 1,
+      "Q3": 3,
+      "Q4_primary": 2,
+      "Q5": 1
+    },
+    "total_primary_inferential_contrasts": 8,
+    "adjustment": "Holm adjustment across the eight declared primary inferential contrast tests.",
+    "coefficient_level_reporting": "All coefficient estimates and 95% confidence intervals are reported; coefficient-level raw p-values may be reported descriptively but are not additional primary hypothesis tests.",
+    "exploratory_status": true,
+    "confirmatory_status": false
+  },
+  "preservation_rules": {
+    "fixture_regeneration": false,
+    "fixture_modification": false,
+    "primary_estimand_modification": false,
+    "primary_result_modification": false,
+    "next2_pooling": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false,
+    "post_hoc_recoding": false,
+    "imputation": false
+  },
+  "execution_gate": {
+    "scientific_execution_authorized": false,
+    "required_pre_execution_checks": [
+      "Compute SHA-256 of this specification.",
+      "Verify immutable unit_id join.",
+      "Construct every declared design matrix without fitting.",
+      "Verify rank/full identifiability for every declared model.",
+      "Verify the eight primary inferential contrast family cardinalities.",
+      "Verify implementation parity against this specification without executing scientific fits.",
+      "Create dedicated pre-execution gate.",
+      "Obtain explicit scientific authorization."
+    ]
+  },
+  "final_boundary": "This artifact freezes the statistical analysis plan for the post-primary Q1-Q5 discrimination work. It does not execute any scientific analysis, alter NEXT3 data, close Q1-Q5, or establish Transformational Intelligence."
+}
