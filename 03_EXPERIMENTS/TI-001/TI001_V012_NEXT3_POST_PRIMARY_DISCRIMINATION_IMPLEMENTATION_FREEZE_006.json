@@ -1,0 +1,42 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_006",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE",
+  "status": "IMPLEMENTATION_FROZEN_FOR_EXECUTION",
+  "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_005",
+  "implementation": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+    "commit": "f0550bbb09727a4eb238fcebf636e868b705677c",
+    "git_blob_sha": "18db309ee4d25f9db2358a687812f90d24ed333f"
+  },
+  "correction": {
+    "type": "TECHNICAL_IMPLEMENTATION_BUG_FIX",
+    "description": "The Q5 BFGS inverse-Hessian covariance fallback is bound to the corrected implementation. The callback is supplied directly to statsmodels 0.14.6 LikelihoodModel.fit(), where cov_params_func is accepted, and ConditionalResultsWrapper is reconstructed following native ConditionalLogit.fit() behaviour. The Q5 design matrix, coefficients, estimand, primary Wald restriction, model family, fixture and all other Q1-Q5 models are unchanged. This freeze also records the removal of two accidental syntax corruptions present in the immediately preceding implementation commit.",
+    "scientific_contract_modified": false,
+    "estimand_modified": false,
+    "specification_modified": false,
+    "fixture_modified": false,
+    "execution_result_modified": false,
+    "primary_analysis_modified": false,
+    "next2_pooling": false,
+    "value_utility_reward_performance_signal": false
+  },
+  "inputs": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+    "specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695"
+  },
+  "audit_basis": {
+    "implementation_audit": "PASS",
+    "scientific_execution_performed": false,
+    "gate_007_reuse": false,
+    "reason_gate_007_reuse_blocked": "Gate 007 is bound to the superseded implementation commit/blob and therefore cannot authorize this corrected implementation."
+  },
+  "execution_boundary": {
+    "scientific_execution_performed": false,
+    "freeze_authorizes_execution": false,
+    "next_action": "Create a new pre-execution gate bound to this freeze and corrected implementation, update isolated workflow/executor bindings, run static and runtime prechecks, then relaunch only after every precheck passes and explicit execution authorization is valid."
+  }
+}
