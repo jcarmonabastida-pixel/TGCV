@@ -49,6 +49,16 @@ CONDITIONS = [
     "SURFACE_PERMUTED",
     "CONTRADICTORY",
 ]
+PRESENTATIONS = ["P1_order", "P2_position", "P3_orientation", "P4_format"]
+DOMAINS = [
+    "D1_spatial_planning", "D2_resource_planning",
+    "D3_graph_reconfiguration", "D4_workflow_state_machine",
+]
+OPERATIONALISATIONS = [
+    "O1_cardinality", "O2_topology", "O3_depth",
+    "O4_constraints", "O5_composition",
+]
+REPLICATES = ["1", "2", "3"]
 FIT_METHOD = "BFGS"
 MAXITER = 500
 Z95 = 1.959963984540054
@@ -58,15 +68,6 @@ def require(condition, message):
     if not condition:
         raise RuntimeError(message)
 
-
-def first_seen(values):
-    out = []
-    seen = set()
-    for value in values:
-        if value not in seen:
-            seen.add(value)
-            out.append(value)
-    return out
 
 
 def make_dummy(values, levels, prefix):
@@ -162,6 +163,18 @@ def coefficient_report(result):
     }
 
 
+def joint_likelihood_ratio(reduced_result, full_result, df_difference, label):
+    statistic = float(2.0 * (full_result.llf - reduced_result.llf))
+    p = float(chi2.sf(statistic, df_difference))
+    return {
+        "test": "likelihood_ratio_chi_square",
+        "label": label,
+        "statistic": statistic,
+        "degrees_of_freedom": int(df_difference),
+        "p_value": p,
+    }
+
+
 def joint_wald(result, names):
     names = list(names)
     require(names, "Empty Wald restriction")
@@ -229,21 +242,27 @@ def fit_q1(df):
 
 def fit_q2(df):
     action, profile = build_common(df)
-    levels = first_seen(df["presentation"].tolist())
+    levels = PRESENTATIONS
     require(len(levels) >= 2, "Q2 requires at least two presentation levels")
     pp = interaction(
         df["profile_id"], df["presentation"],
         PROFILES, levels, "profile", "presentation",
     )
     X = pd.concat([action, profile, pp], axis=1)
+    reduced_X = pd.concat([action, profile], axis=1)
+    reduced_result, reduced_rank = fit_model(df, reduced_X, "Q2_reduced")
     result, rank = fit_model(df, X, "Q2")
     return {
         "model": "chosen ~ action_identity + profile_id + profile_id:presentation_factor",
         "presentation_levels": levels,
         "rank": rank,
+        "reduced_rank": reduced_rank,
         "columns": list(X.columns),
         "coefficients": coefficient_report(result),
-        "primary_contrast": joint_wald(result, list(pp.columns)),
+        "primary_contrast": joint_likelihood_ratio(
+            reduced_result, result, len(pp.columns),
+            "profile_id:presentation interaction",
+        ),
     }
 
 
@@ -272,7 +291,7 @@ def fit_q3(df):
 
 def fit_factor(df, factor, label):
     action, profile = build_common(df)
-    levels = first_seen(df[factor].tolist())
+    levels = {"domain": DOMAINS, "operationalisation": OPERATIONALISATIONS, "presentation": PRESENTATIONS, "replicate": REPLICATES}[factor]
     require(len(levels) >= 2, f"{label} requires at least two factor levels")
     inter = interaction(
         df["profile_id"], df[factor],
