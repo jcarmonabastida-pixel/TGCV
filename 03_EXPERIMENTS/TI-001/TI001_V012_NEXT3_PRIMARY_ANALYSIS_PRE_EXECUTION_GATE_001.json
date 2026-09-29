@@ -1,0 +1,85 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_PRE_EXECUTION_GATE_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_PRE_EXECUTION_GATE",
+  "status": "PRE_EXECUTION_GATE_PASS",
+  "scientific_execution_authorized": false,
+  "statistical_model_executed": false,
+  "authorization_required_before_real_data_execution": true,
+  "canonical_source": {
+    "repository": "jcarmonabastida-pixel/TGCV",
+    "branch": "main",
+    "source_commit": "0d42c0a863bb3f48a6a20d655ace2c26dc6b2b21"
+  },
+  "artifacts": {
+    "source_result": {
+      "artifact_id": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+      "sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de"
+    },
+    "population_specification": {
+      "artifact_id": "TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001",
+      "sha256": "dceb6065a723a37db235b3ea496e087e711f3e8bdb9d7d6731b949d2a22c04f8"
+    },
+    "primary_analysis_specification": {
+      "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002",
+      "sha256": "f65737c3d24d2e4c973c0649632abf4247c9004452eed7c08225102b74a52f0f"
+    },
+    "implementation_record": {
+      "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_IMPLEMENTATION_RECORD_001",
+      "sha256": "d7e25458fda4d433ae128e7e4a2df10843f473126e8427bf84fd2f622f8ae67c"
+    },
+    "analysis_implementation": {
+      "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_001.py",
+      "sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d"
+    }
+  },
+  "population_checks": {
+    "total_decisions": 23040,
+    "valid_decisions": 22649,
+    "invalid_decisions": 391,
+    "analysis_population_rule": "validity == VALID",
+    "invalid_decisions_excluded": true,
+    "imputation": false,
+    "recoding": false,
+    "substitution": false,
+    "post_hoc_repair": false,
+    "choice_sets": 22649,
+    "alternatives_per_choice_set": 4,
+    "analysis_alternatives": 90596
+  },
+  "model_checks": {
+    "model_family": "conditional_logit",
+    "choice_set": "unit_id",
+    "restricted_model_predictors": ["action_identity"],
+    "primary_model_predictors": ["action_identity", "profile_id"],
+    "primary_test": "likelihood_ratio",
+    "tested_term": "profile_id",
+    "degrees_of_freedom": 3,
+    "profile_representation": "categorical profile_id",
+    "mapping_condition_in_primary_model": false,
+    "fixture_f_in_model": false,
+    "z_in_model": false,
+    "realized_transformation_in_model": false,
+    "T_acc_in_model": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false,
+    "pooling_with_NEXT2": false
+  },
+  "design_checks": {
+    "exploratory_only": true,
+    "confirmatory": false,
+    "profiles_permutation_count": 24,
+    "conditions": 4,
+    "profile_assignment_frequency_per_condition": 240,
+    "balance_verified": true
+  },
+  "implementation_checks": {
+    "structural_audit": "PASS",
+    "implementation_smoke_test": "PASS",
+    "smoke_test_used_scientific_data": false,
+    "scientific_execution_flag": false,
+    "statistical_model_executed": false
+  },
+  "gate_interpretation": "All pre-execution integrity, population, model-specification, exclusion-control, identification and implementation checks are satisfied against the canonical GitHub artifacts. This gate does not authorize execution. Real-data statistical execution requires explicit authorization after this gate."
+}
