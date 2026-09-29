@@ -1,0 +1,50 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_008",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE",
+  "status": "PENDING_RUNTIME_PREFLIGHT",
+  "decision": "BLOCK_UNTIL_PREFLIGHT_PASS",
+  "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_007",
+  "analysis_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "implementation_freeze": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_006",
+  "implementation_commit": "f0550bbb09727a4eb238fcebf636e868b705677c",
+  "implementation_git_blob_sha": "18db309ee4d25f9db2358a687812f90d24ed333f",
+  "inputs": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695"
+  },
+  "governance": {
+    "scientific_execution_authorized": false,
+    "authorization_required": true,
+    "authorization_basis": "Gate 007 is superseded because it binds the previous implementation commit/blob. Gate 008 requires a fresh preflight and explicit authorization for the corrected implementation.",
+    "confirmatory": false,
+    "exploratory": true,
+    "no_next2_pooling": true,
+    "no_value_utility_reward_performance_signal": true
+  },
+  "correction_binding": {
+    "type": "TECHNICAL_IMPLEMENTATION_BUG_FIX",
+    "scientific_contract_modified": false,
+    "estimand_modified": false,
+    "specification_modified": false,
+    "fixture_modified": false,
+    "execution_result_modified": false,
+    "primary_analysis_modified": false,
+    "correction": "Use the BFGS inverse-Hessian covariance callback for Q5 only, after the full-rank Q5 design is constructed, without changing the Q5 model formula or primary Wald restriction."
+  },
+  "prechecks_required": [
+    "Verify exact corrected implementation commit/blob.",
+    "Compute and record implementation SHA-256 at runtime.",
+    "Verify fixture, execution-result and specification SHA-256.",
+    "Verify immutable join and 22649/391 population.",
+    "Construct all declared design matrices and verify full rank before fitting, including Q4_replicate at 12/12.",
+    "Verify Q5 covariance fallback returns a finite positive-definite covariance matrix if invoked.",
+    "Verify exactly eight primary inferential tests and Holm adjustment.",
+    "Do not modify any closed primary artifact.",
+    "Do not regenerate or modify the scientific execution result."
+  ],
+  "execution_boundary": "Scientific fitting is permitted only after every runtime precheck passes and explicit scientific authorization is present. Any precheck failure blocks execution.",
+  "next_required_action": "Update the isolated workflow/executor bindings to Gate 008 and the corrected implementation, perform static and non-scientific runtime preflight, and only then request explicit scientific execution authorization."
+}
