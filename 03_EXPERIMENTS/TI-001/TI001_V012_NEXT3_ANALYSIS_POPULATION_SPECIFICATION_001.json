@@ -1,0 +1,18 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION",
+  "source_result_artifact": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+  "source_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+  "total_decisions": 23040,
+  "valid_decisions": 22649,
+  "invalid_decisions": 391,
+  "inclusion_rule": "Include decisions with validity == VALID.",
+  "exclusion_rule": "Exclude decisions with validity == INVALID.",
+  "invalid_action_handling": "Invalid decisions have parsed_action == null and are retained in the raw execution result but excluded from decision-level analysis.",
+  "imputation": false,
+  "recoding": false,
+  "substitution": false,
+  "post_hoc_repair": false,
+  "exploratory_only": true,
+  "confirmatory": false
+}
