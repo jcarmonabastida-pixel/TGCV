@@ -1,0 +1,35 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_004",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE",
+  "status": "IMPLEMENTATION_FROZEN_FOR_EXECUTION",
+  "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_003",
+  "implementation": {
+    "path": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+    "commit": "66322e1a68d24c6390aa199878c791e543babdeb",
+    "git_blob_sha": "475f5c1c69ac6418168a5032d63fab0e792273f6"
+  },
+  "correction": {
+    "type": "TECHNICAL_IMPLEMENTATION_BUG_FIX",
+    "description": "Correct the replicate constant declaration so REPLICATES = [1, 2, 3] is an executable top-level Python assignment rather than text embedded in a comment. Static audit confirms the declaration is now effective and matches the canonical NEXT3_v003 fixture integer encoding.",
+    "scientific_contract_modified": false,
+    "estimand_modified": false,
+    "specification_modified": false,
+    "fixture_modified": false,
+    "execution_result_modified": false,
+    "primary_analysis_modified": false,
+    "next2_pooling": false,
+    "value_utility_reward_performance_signal": false
+  },
+  "inputs": {
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002"
+  },
+  "execution_boundary": {
+    "scientific_execution_performed": false,
+    "freeze_authorizes_execution": false,
+    "next_action": "Create a new pre-execution gate bound to this freeze, update the isolated workflow bindings, then run only after all runtime prechecks pass."
+  }
+}
