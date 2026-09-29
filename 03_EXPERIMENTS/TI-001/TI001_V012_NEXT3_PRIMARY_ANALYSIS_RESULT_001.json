@@ -1,0 +1,110 @@
+{
+  "alternatives_per_choice_set": 4,
+  "analysis_alternatives": 90596,
+  "analysis_implementation_sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d",
+  "analysis_population": "validity == VALID",
+  "analysis_specification": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_002",
+  "analysis_specification_sha256": "f65737c3d24d2e4c973c0649632abf4247c9004452eed7c08225102b74a52f0f",
+  "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT_001",
+  "authorization_gate": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_AUTHORIZATION_GATE_001",
+  "choice_sets": 22649,
+  "execution": {
+    "confirmatory": false,
+    "exploratory_only": true,
+    "mapping_condition_in_model": false,
+    "next2_pooling": false,
+    "performance_signal": false,
+    "reward_signal": false,
+    "scientific_execution_authorized": true,
+    "utility_signal": false,
+    "value_signal": false
+  },
+  "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+  "fixture_version": "NEXT3_v003",
+  "invalid_decisions_excluded": 391,
+  "model": {
+    "choice_set": "unit_id",
+    "model_family": "conditional_logit",
+    "primary_model": {
+      "log_likelihood": -20443.339959196812,
+      "parameter_count": 6,
+      "parameter_names": [
+        "action_B",
+        "action_C",
+        "action_D",
+        "profile_slot_2",
+        "profile_slot_3",
+        "profile_slot_4"
+      ],
+      "parameters": {
+        "action_B": -2.268643388940333,
+        "action_C": -1.3233811525849495,
+        "action_D": -2.5373270470957188,
+        "profile_slot_2": -0.8241390252795914,
+        "profile_slot_3": -1.3896267107243432,
+        "profile_slot_4": -0.6124423717876
+      },
+      "predictors": [
+        "action_identity",
+        "profile_id"
+      ],
+      "standard_errors": {
+        "action_B": 0.02612633938285136,
+        "action_C": 0.018486619587450407,
+        "action_D": 0.029116979582829113,
+        "profile_slot_2": 0.022807887737578185,
+        "profile_slot_3": 0.02577636047702281,
+        "profile_slot_4": 0.021848381456541582
+      }
+    },
+    "primary_test": {
+      "alternative_model": "action_identity_plus_profile_id",
+      "degrees_of_freedom": 3,
+      "lr_statistic": 3515.098933769288,
+      "null_model": "action_identity_only",
+      "p_value": 0.0,
+      "test": "likelihood_ratio",
+      "tested_term": "profile_id"
+    },
+    "restricted_model": {
+      "log_likelihood": -22200.889426081456,
+      "parameter_count": 3,
+      "parameter_names": [
+        "action_B",
+        "action_C",
+        "action_D"
+      ],
+      "parameters": {
+        "action_B": -2.0775629515430687,
+        "action_C": -1.1739218713211514,
+        "action_D": -2.3384611199490877
+      },
+      "predictors": [
+        "action_identity"
+      ],
+      "standard_errors": {
+        "action_B": 0.02464349753214706,
+        "action_C": 0.016918146916495447,
+        "action_D": 0.027716214122145744
+      }
+    }
+  },
+  "population_sha256": "dceb6065a723a37db235b3ea496e087e711f3e8bdb9d7d6731b949d2a22c04f8",
+  "population_specification": "TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001",
+  "pre_execution_gate": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_PRE_EXECUTION_GATE_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_RESULT",
+  "runtime": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.14 (main, Aug 13 2026, 02:47:42) [GCC 13.3.0]",
+    "scipy": "1.15.3",
+    "statsmodels": "0.14.6"
+  },
+  "source_result_artifact": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+  "source_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+  "status": "PRIMARY_STATISTICAL_ANALYSIS_COMPLETE",
+  "total_decisions": 23040,
+  "valid_decisions": 22649,
+  "warnings": []
+}
