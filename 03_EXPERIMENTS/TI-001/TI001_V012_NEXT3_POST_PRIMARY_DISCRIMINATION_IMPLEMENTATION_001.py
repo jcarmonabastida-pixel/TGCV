@@ -152,7 +152,8 @@ def bfgs_inverse_hessian_covariance(model, xopt, retvals):
     path. This callback is used only where statsmodels' post-fit numerical
     Hessian inversion fails.
     """
-    Hinv = retvals.get("Hinv") if isinstance(retvals, dict) else None    require(Hinv is not None, "BFGS covariance fallback: Hinv unavailable")
+    Hinv = retvals.get("Hinv") if isinstance(retvals, dict) else None
+    require(Hinv is not None, "BFGS covariance fallback: Hinv unavailable")
     cov = np.asarray(Hinv, dtype=float) / float(model.nobs)
     cov = (cov + cov.T) / 2.0
     require(np.all(np.isfinite(cov)), "BFGS covariance fallback: non-finite covariance")
@@ -336,7 +337,8 @@ def fit_q2(df):
         "columns": list(X.columns),
         "coefficients": coefficient_report(result),
         "primary_contrast": joint_likelihood_ratio(
-            reduced_result, result, len(pp.columns),            "profile_id:presentation interaction",
+            reduced_result, result, len(pp.columns),
+            "profile_id:presentation interaction",
         ),
     }
 
