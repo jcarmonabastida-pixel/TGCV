@@ -1,0 +1,66 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_MATRIX_CONSTRUCTION_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_MATRIX_CONSTRUCTION_AUDIT",
+  "status": "MATRIX_CONSTRUCTION_AUDIT_PASS",
+  "fixture": {
+    "artifact_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "version": "NEXT3_v003",
+    "sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0"
+  },
+  "execution_result": {
+    "artifact_id": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de"
+  },
+  "cardinality": {
+    "fixture_rows": 23040,
+    "execution_decisions": 23040,
+    "valid_decisions": 22649,
+    "invalid_decisions": 391,
+    "choice_set_size": 4,
+    "long_rows": 90596
+  },
+  "immutable_join": {
+    "key": "unit_id",
+    "fixture_ids": 23040,
+    "execution_ids": 23040,
+    "sets_equal": true
+  },
+  "balance": {
+    "unique_permutation_cells": 320,
+    "permutation_cell_min": 66,
+    "permutation_cell_max": 72,
+    "valid_condition_counts": {
+      "CONTRADICTORY": 5669,
+      "INFORMATIVE": 5677,
+      "SURFACE_PERMUTED": 5649,
+      "UNINFORMATIVE_NULL": 5654
+    }
+  },
+  "matrix_rank_reports": [
+    {"model":"Q1","rows":90596,"columns":15,"rank":15,"full_rank":true},
+    {"model":"Q2","rows":90596,"columns":15,"rank":15,"full_rank":true},
+    {"model":"Q3","rows":90596,"columns":15,"rank":15,"full_rank":true},
+    {"model":"Q4_domain","rows":90596,"columns":15,"rank":15,"full_rank":true},
+    {"model":"Q4_operationalisation","rows":90596,"columns":18,"rank":18,"full_rank":true},
+    {"model":"Q4_presentation","rows":90596,"columns":15,"rank":15,"full_rank":true},
+    {"model":"Q4_replicate","rows":90596,"columns":12,"rank":12,"full_rank":true},
+    {"model":"Q5","rows":90596,"columns":45,"rank":45,"full_rank":true}
+  ],
+  "primary_contrast_families": {
+    "Q1": 1,
+    "Q2": 1,
+    "Q3": 3,
+    "Q4_domain": 1,
+    "Q4_operationalisation": 1,
+    "Q5": 1,
+    "total": 8,
+    "adjustment": "Holm"
+  },
+  "scientific_fitting_performed": false,
+  "p_values_computed": false,
+  "fixture_modified": false,
+  "post_hoc_recoding": false,
+  "next2_pooling": false,
+  "source_audit_result": "USER_EXECUTED_MATRIX_CONSTRUCTION_AUDIT_OUTPUT",
+  "audit_computation": "Immutable join, cardinality, long-form choice-set construction, declared design-matrix construction and numerical matrix-rank checks; no model fitting."
+}
