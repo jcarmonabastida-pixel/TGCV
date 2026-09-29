@@ -1,0 +1,50 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE",
+  "status": "BLOCKED_CANONICAL_INPUT_VERIFICATION_INCOMPLETE",
+  "decision": "BLOCK",
+  "audited_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+  "fixture_binding": {
+    "fixture_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "unit_count": 23040,
+    "replicates": 3
+  },
+  "checks": {
+    "specification_present_on_main": true,
+    "fixture_freeze_record_present": true,
+    "fixture_binding_sha_declared": true,
+    "immutable_unit_id_join_specified": true,
+    "primary_contrast_family_declared": true,
+    "multiple_comparison_policy_declared": true,
+    "scientific_execution_authorized": false,
+    "canonical_fixture_bytes_available_for_matrix_reconstruction": false,
+    "canonical_execution_result_bytes_available_for_complete_matrix_reconstruction": false,
+    "design_matrix_rank_verified": false,
+    "implementation_parity_verified": false
+  },
+  "blocking_reason": "The current NEXT3 candidate fixture is frozen by SHA-256 in the canonical freeze record, but the 62,335,069-byte fixture itself is not present as a repository file on main. The post-primary specification requires construction of the actual Q1-Q5 design matrices from the immutable fixture/result join before execution. The available GitHub records establish the binding metadata but do not provide sufficient canonical bytes to perform that verification without using an unverified local /tmp copy.",
+  "important_distinction": "This is an evidence-availability block, not evidence of statistical rank deficiency. No claim about full rank or model estimability is made.",
+  "required_resolution": [
+    "Make the exact frozen CANDIDATE_FIXTURE_003 bytes canonically retrievable from the governed GitHub workflow, or provide an approved canonical materialization reference that preserves the declared SHA-256.",
+    "Make the exact frozen exploratory execution result canonically retrievable for the same immutable join.",
+    "Re-run the pre-execution matrix-construction audit against those exact bytes without fitting any scientific model.",
+    "Verify rank/full identifiability for every declared Q1-Q5 model.",
+    "Verify implementation parity and the eight primary contrast-family cardinality.",
+    "Only then create or update the scientific execution authorization gate."
+  ],
+  "preservation": {
+    "fixture_modified": false,
+    "fixture_regenerated": false,
+    "primary_result_modified": false,
+    "primary_estimand_modified": false,
+    "scientific_analysis_executed": false,
+    "pooling_with_NEXT2": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false
+  },
+  "interpretation": "The NEXT3 post-primary statistical specification is frozen, but scientific execution remains blocked until the exact canonical data bytes needed to verify the declared design matrices are retrievable and audited. No scientific authorization is implied by this gate."
+}
