@@ -29,7 +29,7 @@ SPECIFICATION_ID = (
     "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002"
 )
 SPECIFICATION_SHA256 = (
-    "f65737c3d24d2e4c973c0649632abf4247c9004452eed7c08225102b74a52f0f"
+    "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695"
 )
 PRIMARY_IMPLEMENTATION_SHA256 = (
     "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d"
@@ -135,7 +135,32 @@ def prepare_dataframe(rows):
     return df
 
 
-def fit_model(df, X, label):
+def bfgs_inverse_hessian_covariance(model, xopt, retvals):
+    """
+    Return the BFGS inverse-Hessian covariance approximation on the
+    full-log-likelihood scale.
+
+    statsmodels normalizes the objective and score by model.nobs before
+    passing them to scipy's BFGS optimizer. Therefore scipy's Hinv is on
+    the normalized objective scale and must be divided by nobs to obtain
+    the covariance scale used by statsmodels' default observed-Hessian
+    path. This callback is used only where statsmodels' post-fit numerical
+    Hessian inversion fails.
+    """
+    Hinv = retvals.get("Hinv") if isinstance(retvals, dict) else None
+    require(Hinv is not None, "BFGS covariance fallback: Hinv unavailable")
+    cov = np.asarray(Hinv, dtype=float) / float(model.nobs)
+    cov = (cov + cov.T) / 2.0
+    require(np.all(np.isfinite(cov)), "BFGS covariance fallback: non-finite covariance")
+    eigvals = np.linalg.eigvalsh(cov)
+    require(
+        float(np.min(eigvals)) > 0.0,
+        "BFGS covariance fallback: inverse-Hessian approximation is not positive definite",
+    )
+    return np.asfortranarray(cov)
+
+
+def fit_model(df, X, label, covariance_method=None):
     require(X.shape[0] == len(df), f"{label}: design-row mismatch")
     rank = int(np.linalg.matrix_rank(X.to_numpy(dtype=float)))
     require(rank == X.shape[1], f"{label}: rank deficient ({rank}/{X.shape[1]})")
@@ -143,11 +168,19 @@ def fit_model(df, X, label):
     # Preserve the pandas DataFrame so statsmodels retains coefficient names
     # in result.params/result.bse/result.pvalues. These names are required by
     # coefficient_report() and joint_wald() for the frozen Q1-Q5 restrictions.
+    fit_kwargs = {
+        "method": FIT_METHOD,
+        "maxiter": MAXITER,
+        "disp": False,
+    }
+    if covariance_method == "BFGS_INVERSE_HESSIAN":
+        fit_kwargs["cov_params_func"] = bfgs_inverse_hessian_covariance
+
     result = ConditionalLogit(
         df["chosen"].to_numpy(dtype=float),
         X,
         groups=df["unit_id"].to_numpy(),
-    ).fit(method=FIT_METHOD, maxiter=MAXITER, disp=False)
+    ).fit(**fit_kwargs)
 
     return result, rank
 
@@ -339,7 +372,7 @@ def fit_q5(df):
     condition = make_dummy(df["condition"], CONDITIONS, "condition")
     apc = three_way_action_profile_condition(df)
     X = pd.concat([action, profile, ap, condition, apc], axis=1)
-    result, rank = fit_model(df, X, "Q5")
+    result, rank = fit_model(df, X, "Q5", covariance_method="BFGS_INVERSE_HESSIAN")
 
     informative = [
         f"action_{a}:profile_{p}:condition_INFORMATIVE"
@@ -353,6 +386,7 @@ def fit_q5(df):
         ),
         "rank": rank,
         "columns": list(X.columns),
+        "covariance_method": "BFGS_INVERSE_HESSIAN",
         "coefficients": coefficient_report(result),
         "primary_contrast": joint_wald(result, informative),
     }
