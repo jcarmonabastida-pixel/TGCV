@@ -22,7 +22,12 @@ from itertools import product
 import numpy as np
 import pandas as pd
 from scipy.stats import chi2
-from statsmodels.discrete.conditional_models import ConditionalLogit
+from statsmodels.base.model import LikelihoodModel
+from statsmodels.discrete.conditional_models import (
+    ConditionalLogit,
+    ConditionalResults,
+    ConditionalResultsWrapper,
+)
 
 
 SPECIFICATION_ID = (
@@ -147,8 +152,7 @@ def bfgs_inverse_hessian_covariance(model, xopt, retvals):
     path. This callback is used only where statsmodels' post-fit numerical
     Hessian inversion fails.
     """
-    Hinv = retvals.get("Hinv") if isinstance(retvals, dict) else None
-    require(Hinv is not None, "BFGS covariance fallback: Hinv unavailable")
+    Hinv = retvals.get("Hinv") if isinstance(retvals, dict) else None    require(Hinv is not None, "BFGS covariance fallback: Hinv unavailable")
     cov = np.asarray(Hinv, dtype=float) / float(model.nobs)
     cov = (cov + cov.T) / 2.0
     require(np.all(np.isfinite(cov)), "BFGS covariance fallback: non-finite covariance")
@@ -160,6 +164,40 @@ def bfgs_inverse_hessian_covariance(model, xopt, retvals):
     return np.asfortranarray(cov)
 
 
+def fit_conditional_logit_with_covariance(model, covariance_method):
+    require(
+        covariance_method == "BFGS_INVERSE_HESSIAN",
+        f"Unsupported covariance method: {covariance_method}",
+    )
+
+    # statsmodels 0.14.6 ConditionalLogit.fit() accepts **kwargs but does not
+    # forward them to LikelihoodModel.fit(). Therefore cov_params_func supplied
+    # through ConditionalLogit.fit() is silently discarded. Call the parent
+    # LikelihoodModel.fit() directly so the frozen BFGS covariance callback is
+    # actually bound to the optimizer result, then construct the same
+    # ConditionalResults wrapper used by ConditionalLogit.fit().
+    rslt = LikelihoodModel.fit(
+        model,
+        method=FIT_METHOD,
+        maxiter=MAXITER,
+        full_output=True,
+        disp=False,
+        skip_hessian=False,
+        cov_params_func=bfgs_inverse_hessian_covariance,
+    )
+
+    crslt = ConditionalResults(model, rslt.params, rslt.cov_params(), 1)
+    crslt.method = FIT_METHOD
+    crslt.nobs = model.nobs
+    crslt.n_groups = model._n_groups
+    crslt._group_stats = [
+        "%d" % min(model._groupsize),
+        "%d" % max(model._groupsize),
+        "%.1f" % np.mean(model._groupsize),
+    ]
+    return ConditionalResultsWrapper(crslt)
+
+
 def fit_model(df, X, label, covariance_method=None):
     require(X.shape[0] == len(df), f"{label}: design-row mismatch")
     rank = int(np.linalg.matrix_rank(X.to_numpy(dtype=float)))
@@ -168,19 +206,20 @@ def fit_model(df, X, label, covariance_method=None):
     # Preserve the pandas DataFrame so statsmodels retains coefficient names
     # in result.params/result.bse/result.pvalues. These names are required by
     # coefficient_report() and joint_wald() for the frozen Q1-Q5 restrictions.
-    fit_kwargs = {
-        "method": FIT_METHOD,
-        "maxiter": MAXITER,
-        "disp": False,
-    }
-    if covariance_method == "BFGS_INVERSE_HESSIAN":
-        fit_kwargs["cov_params_func"] = bfgs_inverse_hessian_covariance
-
-    result = ConditionalLogit(
+    model = ConditionalLogit(
         df["chosen"].to_numpy(dtype=float),
         X,
         groups=df["unit_id"].to_numpy(),
-    ).fit(**fit_kwargs)
+    )
+
+    if covariance_method == "BFGS_INVERSE_HESSIAN":
+        result = fit_conditional_logit_with_covariance(model, covariance_method)
+    else:
+        result = model.fit(
+            method=FIT_METHOD,
+            maxiter=MAXITER,
+            disp=False,
+        )
 
     return result, rank
 
@@ -297,8 +336,7 @@ def fit_q2(df):
         "columns": list(X.columns),
         "coefficients": coefficient_report(result),
         "primary_contrast": joint_likelihood_ratio(
-            reduced_result, result, len(pp.columns),
-            "profile_id:presentation interaction",
+            reduced_result, result, len(pp.columns),            "profile_id:presentation interaction",
         ),
     }
 
