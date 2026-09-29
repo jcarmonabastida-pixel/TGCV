@@ -168,6 +168,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          import os
           from pathlib import Path
           g=json.loads(Path("03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_008.json").read_text())
           authorized = (
