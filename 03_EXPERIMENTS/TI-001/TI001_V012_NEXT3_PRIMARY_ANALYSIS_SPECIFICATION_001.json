@@ -1,0 +1,45 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_PRIMARY_ANALYSIS_SPECIFICATION",
+  "source_result_artifact": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+  "population_specification": "TI001_V012_NEXT3_ANALYSIS_POPULATION_SPECIFICATION_001",
+  "estimand": "Action-selection dependence on accessible structural transformation-space profile under controlled mapping and presentation manipulations.",
+  "primary_outcome": "parsed_action",
+  "unit_of_analysis": "decision",
+  "analysis_population": "validity == VALID",
+  "primary_predictors": [
+    "action_identity",
+    "future_assignment",
+    "mapping_condition",
+    "presentation",
+    "operationalisation",
+    "domain"
+  ],
+  "interaction_terms": [
+    "action_identity * future_assignment * mapping_condition"
+  ],
+  "random_effects": [
+    "decision_unit"
+  ],
+  "primary_model": "Mixed-effects logistic regression on action-level binary outcomes with decision_unit as a random effect, preserving the action_identity * future_assignment * mapping_condition interaction.",
+  "primary_contrast": "INFORMATIVE versus UNINFORMATIVE_NULL",
+  "secondary_factors": [
+    "SURFACE_PERMUTED",
+    "CONTRADICTORY",
+    "presentation",
+    "operationalisation",
+    "domain"
+  ],
+  "replicates": 3,
+  "exploratory_only": true,
+  "confirmatory": false,
+  "composite_score": false,
+  "value_signal": false,
+  "utility_signal": false,
+  "reward_signal": false,
+  "performance_signal": false,
+  "post_hoc_recoding": false,
+  "multiple_testing_correction": "Not specified as a primary confirmatory claim; exploratory estimates and uncertainty intervals will be reported.",
+  "missing_data_handling": "Exclude INVALID decisions according to the preregistered population specification; no imputation.",
+  "software_execution": "Analysis must be executed only after this specification is committed and its SHA-256 recorded."
+}
