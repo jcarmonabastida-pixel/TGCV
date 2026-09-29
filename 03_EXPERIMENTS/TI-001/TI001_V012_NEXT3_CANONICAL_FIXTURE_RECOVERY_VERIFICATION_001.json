@@ -1,0 +1,31 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_CANONICAL_FIXTURE_RECOVERY_VERIFICATION_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_CANONICAL_FIXTURE_RECOVERY_VERIFICATION",
+  "status": "RECOVERED_SHA256_VERIFIED",
+  "fixture_id": "TI001_V012_NEXT3_CANDIDATE_FIXTURE_003",
+  "fixture_version": "NEXT3_v003",
+  "recovered_materialization": "/tmp/TI001_V012_NEXT3_CANDIDATE_FIXTURE_003.json",
+  "size_bytes": 62335069,
+  "sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+  "declared_freeze_artifact": "TI001_V012_NEXT3_FIXTURE_FREEZE_002",
+  "declared_unit_count": 23040,
+  "declared_replicates": 3,
+  "verification": {
+    "method": "sha256sum",
+    "observed_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "expected_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "match": true
+  },
+  "provenance": {
+    "recovery_source": "original WSL execution environment materialization",
+    "regenerated": false,
+    "modified": false,
+    "byte_identity_verified": true
+  },
+  "governance_boundary": {
+    "repository_bytes_present_on_main": false,
+    "this_record_does_not_claim_repository_storage": true,
+    "scientific_execution_authorized": false
+  },
+  "next_required_action": "Use this exact recovered materialization for the non-fitting Q1-Q5 matrix-construction audit, subject to the existing execution gate and any required approved materialization reference."
+}
