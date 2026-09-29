@@ -1,8 +1,8 @@
 {
   "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_008",
   "record_type": "TGCV_TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE",
-  "status": "PENDING_RUNTIME_PREFLIGHT",
-  "decision": "BLOCK_UNTIL_PREFLIGHT_PASS",
+  "status": "AUTHORIZED_FOR_SCIENTIFIC_EXECUTION",
+  "decision": "ALLOW_AND_EXECUTE",
   "supersedes": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_007",
   "analysis_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
   "implementation_freeze": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_FREEZE_006",
@@ -16,9 +16,9 @@
     "specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695"
   },
   "governance": {
-    "scientific_execution_authorized": false,
+    "scientific_execution_authorized": true,
     "authorization_required": true,
-    "authorization_basis": "Gate 007 is superseded because it binds the previous implementation commit/blob. Gate 008 requires a fresh preflight and explicit authorization for the corrected implementation.",
+    "authorization_basis": "Fresh explicit scientific execution authorization supplied by the programme author after successful runtime preflight in GitHub Actions run 36645013501 (workflow run #15).",
     "confirmatory": false,
     "exploratory": true,
     "no_next2_pooling": true,
@@ -46,5 +46,23 @@
     "Do not regenerate or modify the scientific execution result."
   ],
   "execution_boundary": "Scientific fitting is permitted only after every runtime precheck passes and explicit scientific authorization is present. Any precheck failure blocks execution.",
-  "next_required_action": "Update the isolated workflow/executor bindings to Gate 008 and the corrected implementation, perform static and non-scientific runtime preflight, and only then request explicit scientific execution authorization."
+  "runtime_preflight": {
+    "workflow_run": 36645013501,
+    "workflow_run_number": 15,
+    "status": "PASS",
+    "design_matrix_rank_preflight": "PASS",
+    "ranks": {
+      "Q1": "15/15",
+      "Q2_REDUCED": "6/6",
+      "Q2": "15/15",
+      "Q3": "15/15",
+      "Q4_DOMAIN": "15/15",
+      "Q4_OPERATIONALISATION": "18/18",
+      "Q4_PRESENTATION": "15/15",
+      "Q4_REPLICATE": "12/12",
+      "Q5": "45/45"
+    },
+    "scientific_fitting_executed_during_preflight": false
+  },
+  "next_required_action": "Run the isolated scientific Q1-Q5 analysis exactly under this gate, with executor and workflow bindings unchanged to Gate 008 and the corrected implementation. Publish the analysis result only if execution completes under all declared preservation and inferential constraints."
 }
