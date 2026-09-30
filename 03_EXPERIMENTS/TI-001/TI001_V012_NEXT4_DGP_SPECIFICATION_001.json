@@ -1,0 +1,83 @@
+{
+  "artifact": "TI001_V012_NEXT4_DGP_SPECIFICATION_001",
+  "date": "2026-09-30",
+  "status": "DGP_SPECIFICATION_FROZEN_FOR_AUDIT",
+  "date_scope": "2026-09-30",
+  "design_basis": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_009",
+  "candidate_n": [
+    1728,
+    2304,
+    3456,
+    5184,
+    6912
+  ],
+  "primary_estimand": {
+    "name": "mean_permutation_mapping_reorganisation",
+    "definition": "Mean over 24 frozen permutations and 4 profiles of FUTURE_REASSIGNED action×profile surface along the permutation minus STATIC_CONTROL action×profile surface along identity.",
+    "permutation_weight": "1/24",
+    "profile_weight": "1/4"
+  },
+  "choice_model": {
+    "response": "one chosen action from four actions per choice set",
+    "likelihood": "categorical_softmax",
+    "score_form": "utility(action)=baseline_action + profile_action_surface(action,profile,condition,domain,operationalisation,presentation)",
+    "choice_rule": "P(chosen=a)=exp(score_a)/sum_b exp(score_b)",
+    "no_value_reward_utility_signal": "true"
+  },
+  "hypotheses": {
+    "H0": "STATIC_CONTROL and FUTURE_REASSIGNED have identical action×profile response surfaces; primary estimand equals 0.",
+    "H1": "FUTURE_REASSIGNED surface contains a controlled permutation-following reorganisation relative to STATIC_CONTROL; primary estimand is non-zero.",
+    "directional_effect_not_assumed": "true"
+  },
+  "effect_schedule": {
+    "parameter": "delta",
+    "values": [
+      0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.75,
+      1
+    ],
+    "interpretation": "additive logit displacement applied only to the permutation-aligned FUTURE_REASSIGNED action×profile cell relative to the STATIC identity surface"
+  },
+  "nuisance_structure": {
+    "domain_effects": [
+      0,
+      0.15,
+      -0.15
+    ],
+    "operationalisation_effects": [
+      0,
+      0.1
+    ],
+    "presentation_effects": [
+      0,
+      0.05,
+      -0.05,
+      0.02
+    ],
+    "baseline_action_effects": [
+      0,
+      0.1,
+      -0.08,
+      0.04
+    ],
+    "nuisance_effects_apply_equally_to_static_and_future": "true"
+  },
+  "null_control": "Under H0 delta=0 and all condition-specific action×profile surface differences are zero.",
+  "randomisation": "Use frozen balanced allocation and frozen 24-permutation table; DGP seed is supplied by execution manifest, never chosen adaptively.",
+  "missingness": "none in the DGP; invalid outputs are execution-layer failures, not DGP missingness.",
+  "scientific_execution_authorized": false,
+  "audit_requirements": [
+    "algebraic proof that H0 produces primary estimand 0",
+    "algebraic proof that delta contributes to the primary estimand",
+    "verify nuisance effects cancel from the primary contrast",
+    "verify probabilities sum to 1 for every choice set",
+    "verify no value/utility/reward/performance signal is introduced as an outcome",
+    "verify deterministic reproducibility for fixed seed"
+  ],
+  "next_action": "Build and run a DGP-only audit; do not execute the scientific Monte Carlo."
+}
