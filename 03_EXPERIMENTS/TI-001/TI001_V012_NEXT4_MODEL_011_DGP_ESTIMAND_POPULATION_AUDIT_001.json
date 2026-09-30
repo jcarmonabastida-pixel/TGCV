@@ -1,0 +1,84 @@
+{
+  "artifact": "TI001_V012_NEXT4_MODEL_011_DGP_ESTIMAND_POPULATION_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "FAIL",
+  "audit_type": "INDEPENDENT_POPULATION_DGP_TO_MODEL_011_ESTIMAND_RECOVERY",
+  "scientific_execution_authorized": false,
+  "inputs": {
+    "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+    "dgp_blob_sha": "3b3b43b88edf576ee8b9e0f40d21f3a5e71024c4",
+    "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011.py",
+    "model_blob_sha": "a90edc9de0f4bd11a153314e20f67128a9e1eea3",
+    "audit_script": "TI001_V012_NEXT4_MODEL_011_DGP_ESTIMAND_POPULATION_AUDIT_001.py",
+    "audit_script_commit": "23334a204c28ff600cdb67db303230221367f765",
+    "candidate_N": [
+      1728,
+      2304,
+      3456,
+      5184,
+      6912
+    ],
+    "effect_grid": [
+      0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.75,
+      1
+    ]
+  },
+  "method": {
+    "sampling_error": false,
+    "provider_calls": false,
+    "monte_carlo": false,
+    "fit": "population expected multinomial log-likelihood",
+    "gate": "recovered theta must equal 0.75*beta within 1e-8 for every N and beta"
+  },
+  "findings": {
+    "max_absolute_error": 0.0594224648957733,
+    "recovered_theta_is_N_invariant": true,
+    "recovered_theta_by_beta": {
+      "0": 0,
+      "1": 0.8094224647113596,
+      "0.1": 0.07906347785931464,
+      "0.2": 0.15847594617934962,
+      "0.3": 0.2382614763210607,
+      "0.4": 0.31844506781870624,
+      "0.5": 0.3990526323984206,
+      "0.75": 0.6026048111864047
+    },
+    "expected_theta_0_75_beta": {
+      "0": 0,
+      "1": 0.75,
+      "0.1": 0.075,
+      "0.2": 0.15,
+      "0.3": 0.225,
+      "0.4": 0.3,
+      "0.5": 0.375,
+      "0.75": 0.5625
+    },
+    "signal_coefficient_by_beta": {
+      "0": 0,
+      "1": 1.079229953828,
+      "0.1": 0.10541797047908619,
+      "0.2": 0.21130126132512927,
+      "0.3": 0.31768196842808094,
+      "0.4": 0.42459342375827497,
+      "0.5": 0.5320701765312275,
+      "0.75": 0.803473081581873
+    }
+  },
+  "diagnosis": {
+    "dgp_fixed_point_signal": true,
+    "fixed_point_count": 24,
+    "nonfixed_count": 72,
+    "model_011_indicator": "FUTURE_REASSIGNED AND future != profile AND action == future",
+    "mismatch": "The frozen DGP applies beta to all FUTURE_REASSIGNED permutation-aligned cells, including the 24 fixed-point cells. Model-011's primary signal indicator explicitly removes those fixed-point cells.",
+    "implication": "The 0.75 factor is the fraction of non-identity permutation-profile pairs, but it is not sufficient to define the population coefficient recovered by the Model-011 likelihood under the frozen DGP.",
+    "why_nuisance_does_not_fix_it": "The fixed-point contribution varies with permutation membership and is not fully represented by the model's permutation-invariant nuisance terms; the fitted signal coefficient therefore absorbs part of the omitted fixed-point contribution."
+  },
+  "conclusion": "The proposed exact mapping theta_DGP = 0.75*beta is NOT recovered by the independent population audit. Model-011 is not yet validated as the estimator of the declared DGP estimand.",
+  "next_gate": "Do not authorize or rerun Monte Carlo. Reconcile the fixed-point semantics: either extend Model-011 to represent the fixed-point FUTURE_REASSIGNED signal explicitly, or revise/freeze a DGP whose signal is restricted to non-identity mappings. Then repeat an independent population DGP-to-estimand equivalence audit before any power execution."
+}
