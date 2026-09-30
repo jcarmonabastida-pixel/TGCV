@@ -1,0 +1,24 @@
+{
+  "artifact": "TI001_V012_NEXT4_DESIGN_MATRIX_AND_PRIMARY_CONTRAST_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_REVISION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_DESIGN_MATRIX_AND_PRIMARY_CONTRAST_001.py",
+  "implementation_commit": "c15364e68f3246ffcf6a67c67ba5addb7ce46a4d",
+  "checks": {
+    "response_independent_contrast_definition": true,
+    "feature_schema_declared": true,
+    "four_actions": true,
+    "permutation_family_24": true,
+    "no_provider_calls": true,
+    "no_scientific_execution": true
+  },
+  "blockers": [
+    "The current feature schema is descriptive and is not yet a numerically constructed design matrix.",
+    "The primary contrast is specified as an estimand description but no contrast vector is computed.",
+    "The implementation does not yet encode the exact action-specific dummy/interaction columns required by the frozen model formula.",
+    "No matrix rank or contrast estimability calculation is performed.",
+    "No fitted multinomial model, covariance or convergence diagnostics are present."
+  ],
+  "gate_decision": "BLOCK. The design/contrast implementation is not yet statistically executable or auditable.",
+  "next_action": "Implement explicit numeric design columns, construct the primary contrast vector from the frozen permutation table, and compute rank/estimability on every candidate N before implementing model fitting."
+}
