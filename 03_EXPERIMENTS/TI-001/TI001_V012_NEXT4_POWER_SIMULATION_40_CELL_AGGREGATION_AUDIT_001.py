@@ -35,8 +35,14 @@ def main():
         "TI001_V012_NEXT4_POWER_SIMULATION_CELL_N*_E*.json"
     ))
     seen = {}
+    serialization_normalizations = 0
     for path in files:
-        raw_text = path.read_text(encoding="utf-8")\n        # Frozen scientific artifacts contain a literal \\n suffix from serialization.\n        if raw_text.endswith("\\\\n"):\n            raw_text = raw_text[:-2]\n            serialization_normalizations += 1\n        obj = json.loads(raw_text)
+        raw_text = path.read_text(encoding="utf-8")
+        # Frozen scientific artifacts may contain a literal \\n suffix from serialization.
+        if raw_text.endswith("\\\\n"):
+            raw_text = raw_text[:-2]
+            serialization_normalizations += 1
+        obj = json.loads(raw_text)
         key = (int(obj["N"]), float(obj["effect_size"]))
         if key in seen:
             raise SystemExit(f"Duplicate cell artifact: {key}")
