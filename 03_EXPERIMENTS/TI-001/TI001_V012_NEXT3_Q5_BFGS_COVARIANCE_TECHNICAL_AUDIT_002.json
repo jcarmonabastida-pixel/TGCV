@@ -18,7 +18,7 @@
     "scientific_reexecution_required": false
   },
   "provenance_model": {
-    "post_primary_implementation_sha256": "3d39fcf03637",
+    "post_primary_implementation_sha256": "3d39fcf03637bf70945b36d29dfe6c1aaf783aa0653591344119ad40d65eb4eb",
     "post_primary_implementation_sha256_role": "Value declared by RESULT_001 as the implementation identity associated with the post-primary analysis result. This is provenance of RESULT_001 and is not asserted here as the content hash of the currently published implementation source file.",
     "primary_implementation_sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d",
     "primary_implementation_sha256_role": "Frozen primary-analysis implementation identity explicitly declared by TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py as its parity target.",
@@ -26,7 +26,7 @@
   },
   "canonical_bindings": {
     "implementation_path": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
-    "post_primary_implementation_sha256": "3d39fcf03637",
+    "post_primary_implementation_sha256": "3d39fcf03637bf70945b36d29dfe6c1aaf783aa0653591344119ad40d65eb4eb",
     "primary_implementation_sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d",
     "specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
     "specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695",
