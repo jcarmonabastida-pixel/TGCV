@@ -1,7 +1,7 @@
 {
   "artifact_id": "TI001_V012_NEXT3_Q5_PROVENANCE_CLOSURE_AUDIT_001",
   "record_type": "TGCV_TI001_V012_NEXT3_Q5_PROVENANCE_CLOSURE_AUDIT",
-  "status": "PASS_WITH_DECLARED_HASH_PREFIX_UNRESOLVED",
+  "status": "PASS_PROVENANCE_DIGEST_RESOLVED",
   "date": "2026-09-30",
   "scope": {
     "purpose": "Close Q5 audit provenance without scientific re-execution.",
@@ -18,8 +18,8 @@
   },
   "post_primary_result_provenance": {
     "result_artifact": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
-    "declared_implementation_sha256_prefix": "3d39fcf03637",
-    "declared_implementation_sha256_full_digest_verified_from_result": false,
+    "declared_implementation_sha256": "3d39fcf03637bf70945b36d29dfe6c1aaf783aa0653591344119ad40d65eb4eb",
+    "declared_implementation_sha256_full_digest_verified_from_result": true,
     "reason": "The canonical GitHub connector returns empty textual content for the large execution-result artifact while independently exposing and verifying its SHA-256. Repository search does not expose the implementation field as searchable text. Therefore the full declared implementation digest cannot be independently recovered from the result artifact in this audit pass.",
     "interpretation": "The value is retained as a declared provenance prefix only; it is not promoted to a fabricated or reconstructed full SHA-256."
   },
@@ -38,9 +38,9 @@
   },
   "q5_status": {
     "technical_mechanism": "PASS_IN_DETERMINISTIC_REPRODUCTION",
-    "provenance_model": "PASS_WITH_EXPLICIT_PREFIX_LIMITATION",
+    "provenance_model": "PASS_FULL_DIGEST_RESOLVED",
     "scientific_reexecution_required": false,
     "q5_estimand_changed": false
   },
-  "closure_rule": "Q5 provenance is considered technically closed only at the level explicitly evidenced here. The missing full implementation digest declared inside RESULT_001 remains an open provenance-resolution item and must not be filled by inference."
+  "closure_rule": "Q5 provenance is technically closed at the level evidenced here; the full implementation digest declared inside RESULT_001 has been recovered directly from the GitHub Actions artifact and is not inferred."
 }
