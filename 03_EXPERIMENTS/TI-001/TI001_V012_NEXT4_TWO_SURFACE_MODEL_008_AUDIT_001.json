@@ -1,0 +1,21 @@
+{
+  "artifact": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_008_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_PARAMETERIZATION_REVISION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_008.py",
+  "implementation_commit": "4edeffb74a80fbd7de4cb40543cf54c7742c8002",
+  "checks": {
+    "explicit_two_surfaces": true,
+    "full_action_profile_cells": true,
+    "equal_weight_24_permutations": true,
+    "contrast_response_independent": true
+  },
+  "blockers": [
+    "Each surface is represented by a full 4×4 action×profile cell basis plus a global intercept. The intercept is therefore exactly collinear with the sum of the 16 cell indicators within each surface.",
+    "The current parameterization is structurally rank deficient before any data are considered.",
+    "The scientific two-surface estimand is conceptually correct, but the basis must be coded without a redundant intercept (or with one constrained reference cell per surface).",
+    "Numerical rank/estimability cannot yet be accepted from the current parameterization."
+  ],
+  "gate_decision": "BLOCK",
+  "next_action": "Remove the redundant global intercept from the two-surface cell basis, then execute rank and estimability for all five candidate N and record the numerical results."
+}
