@@ -1,0 +1,115 @@
+{
+  "artifact": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011R_IDENTIFIABILITY_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "PASS_IDENTIFIABLE_PRIMARY_ESTIMAND",
+  "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011R",
+  "model_commit": "d68d806964bbdf0f1dfc3ee57e92b8ec35533798",
+  "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+  "dgp_commit": "3b3b43b88edf576ee8b9e0f40d21f3a5e71024c4",
+  "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
+  "engine_commit": "06d6de5632b93c0e508a6e7b5fe5b509aa878cb3",
+  "execution_spec": "TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_001",
+  "execution_spec_commit": "b9d5eea64e1334eb5b93f8dcbecbbf99bd8b8da0",
+  "finding": "Model-011R is structurally identifiable for the declared two-component primary contrast under the frozen factorial design. The design matrix has full column rank for every candidate N, and the population-weighted contrast is estimable at numerical tolerance.",
+  "structural_details": {
+    "parameter_columns": 54,
+    "signal_components": [
+      {
+        "name": "future_reassigned_nonidentity_mapped_action",
+        "weight": 0.75
+      },
+      {
+        "name": "future_reassigned_fixedpoint_mapped_action",
+        "weight": 0.25
+      }
+    ],
+    "declared_primary_contrast": "0.75*beta_nonidentity + 0.25*beta_fixedpoint",
+    "dgp_implication": "Under DGP-002 both component coefficients represent the same beta, so the declared population contrast equals beta."
+  },
+  "identification_test": {
+    "method": "Construct the Model-011R action-level design matrix exactly from the frozen allocation/expansion semantics; compute numerical matrix rank by SVD; project the declared contrast vector onto the row space; require full column rank and estimability residual < 1e-10.",
+    "likelihood_boundary": "This is a structural design-matrix audit. It does not estimate beta from empirical or Monte Carlo outcomes.",
+    "candidate_n": [
+      1728,
+      2304,
+      3456,
+      5184,
+      6912
+    ],
+    "results": [
+      {
+        "n": 1728,
+        "rows": 27648,
+        "columns": 54,
+        "rank": 54,
+        "nullity": 0,
+        "full_column_rank": true,
+        "estimability_residual": 1.3813108231867214e-15,
+        "contrast_estimable": true,
+        "contrast_norm": 0.7905694150420949,
+        "matrix_sha256": "b277fe2bd5c793076e468b3661458b6384fd598402232e75b9d563314a4e869e",
+        "contrast_sha256": "6a5ff954509d8bd753aa031120bfd45e0aab64af648d7ed8aa4aef607d6b0601"
+      },
+      {
+        "n": 2304,
+        "rows": 36864,
+        "columns": 54,
+        "rank": 54,
+        "nullity": 0,
+        "full_column_rank": true,
+        "estimability_residual": 1.1770100088973095e-15,
+        "contrast_estimable": true,
+        "contrast_norm": 0.7905694150420949,
+        "matrix_sha256": "cfcd0d48b4260babe1d682a9beaba60a387bee5bc5659d2a452a96cfc897f620",
+        "contrast_sha256": "6a5ff954509d8bd753aa031120bfd45e0aab64af648d7ed8aa4aef607d6b0601"
+      },
+      {
+        "n": 3456,
+        "rows": 55296,
+        "columns": 54,
+        "rank": 54,
+        "nullity": 0,
+        "full_column_rank": true,
+        "estimability_residual": 1.1223367595849418e-15,
+        "contrast_estimable": true,
+        "contrast_norm": 0.7905694150420949,
+        "matrix_sha256": "189ef9498cec2ca1a6f5a7b395f11dc4569107d056b6bcf5501b06d21abb0971",
+        "contrast_sha256": "6a5ff954509d8bd753aa031120bfd45e0aab64af648d7ed8aa4aef607d6b0601"
+      },
+      {
+        "n": 5184,
+        "rows": 82944,
+        "columns": 54,
+        "rank": 54,
+        "nullity": 0,
+        "full_column_rank": true,
+        "estimability_residual": 1.3413253708662043e-15,
+        "contrast_estimable": true,
+        "contrast_sha256": "6a5ff954509d8bd753aa031120bfd45e0aab64af648d7ed8aa4aef607d6b0601",
+        "matrix_sha256": "acc8eb319691ee0fed75de209b8401656acede69c988e3fbf4c31f2f2d2c5795"
+      },
+      {
+        "n": 6912,
+        "rows": 110592,
+        "columns": 54,
+        "rank": 54,
+        "nullity": 0,
+        "full_column_rank": true,
+        "estimability_residual": 7.911858848745675e-16,
+        "contrast_estimable": true,
+        "contrast_norm": 0.7905694150420949,
+        "matrix_sha256": "2dc8004d02c21ab5a83bbbfd805ae9fb01982fb6de15059333f94be81d7e09bc",
+        "contrast_sha256": "6a5ff954509d8bd753aa031120bfd45e0aab64af648d7ed8aa4aef607d6b0601"
+      }
+    ]
+  },
+  "interpretation_boundary": [
+    "This is an algebraic/statistical design audit, not an empirical result.",
+    "The PASS resolves the identifiability gate for the Model-011R declared contrast across the five candidate N values.",
+    "DGP-SPECIFICATION-002 remains unchanged.",
+    "Model-011 and Engine-002 remain unchanged.",
+    "No Monte Carlo execution is authorized by this artifact alone; the population audit must be rerun against Model-011R before full simulation.",
+    "No NEXT3 effect estimate, value/reward/performance signal, or empirical result is imported."
+  ],
+  "required_next_action": "Update or execute the independent population/DGP audit against Model-011R. Do not launch the full Monte Carlo until the Model-011R population audit passes and the execution path is explicitly reconciled with the revised model."
+}
