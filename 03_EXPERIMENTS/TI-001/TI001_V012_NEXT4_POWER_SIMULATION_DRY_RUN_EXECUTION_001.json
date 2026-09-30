@@ -1,0 +1,19 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_DRY_RUN_EXECUTION_001",
+  "date": "2026-09-30",
+  "status": "DRY_RUN_EXECUTION_BLOCKED",
+  "engine_commit": "5a321234d5e99207249134fd63e5f1145387d480",
+  "execution_spec": "TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_001",
+  "scenario": {
+    "effect_label": "NULL",
+    "effect_size": 0,
+    "n_choice_sets": 1728,
+    "replicate": 0,
+    "master_seed": 20260930
+  },
+  "result": null,
+  "blocker": "The available repository execution path does not yet expose a canonical CI workflow or authorized scientific execution command for NEXT4 Engine 002. Static implementation is present, but executing the inferential dry-run would require an execution path not yet frozen under the TGCV README workflow.",
+  "interpretation": "No statistical result has been generated. This is an execution-governance gate, not evidence about the DGP or estimator.",
+  "scientific_execution_authorized": false,
+  "next_action": "Add a canonical NEXT4 audit-only workflow/entry point that runs Engine 002 in dry-run mode, captures stdout/result hash, and explicitly prevents the full Monte Carlo path."
+}
