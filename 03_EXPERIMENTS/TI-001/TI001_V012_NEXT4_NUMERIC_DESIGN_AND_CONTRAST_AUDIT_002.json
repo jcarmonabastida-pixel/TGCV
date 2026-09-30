@@ -1,0 +1,24 @@
+{
+  "artifact": "TI001_V012_NEXT4_NUMERIC_DESIGN_AND_CONTRAST_AUDIT_002",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_REVISION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_NUMERIC_DESIGN_AND_CONTRAST_002.py",
+  "implementation_commit": "042268e00e80443251e8ec81880ac4e9af133bb0",
+  "checks": {
+    "numeric_matrix_builder_present": true,
+    "numeric_contrast_vector_builder_present": true,
+    "response_independent_contrast": true,
+    "rank_diagnostic_present": true,
+    "estimability_diagnostic_present": true,
+    "provider_api_calls": false,
+    "scientific_execution": false
+  },
+  "blockers": [
+    "The current matrix includes mapping_signal as a main effect while also including the full condition dummy set. Under the frozen condition semantics, mapping_signal is deterministically collinear with the condition indicators (it is 0 only for UNINFORMATIVE_NULL), so the matrix is structurally rank deficient.",
+    "The primary contrast is currently constructed from action×profile coefficients alone and therefore does not yet encode the required condition-specific reorganisation term.",
+    "The current contrast compares sets of action×profile cells but does not mathematically implement the frozen STATIC_CONTROL versus FUTURE_REASSIGNED mapping-aligned difference.",
+    "No fixture-integrated rank/estimability result has yet been produced because the matrix specification itself requires revision."
+  ],
+  "gate_decision": "BLOCK. Revise the model encoding before any fit or Monte Carlo execution.",
+  "next_action": "Replace the collinear mapping_signal main effect with an explicit action×profile×mapping/condition interaction encoding and derive the primary contrast directly from the frozen permutation table; then run rank and estimability on the balanced allocation."
+}
