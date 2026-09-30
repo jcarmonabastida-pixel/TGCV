@@ -1,0 +1,26 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_DRY_RUN_SINGLE_CELL_AUDIT_001",
+  "status": "FAIL_BLOCKING",
+  "audit_type": "DRY_RUN_SINGLE_CELL",
+  "scope": {
+    "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
+    "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010.py",
+    "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002"
+  },
+  "checks": {
+    "canonical_artifacts_loaded": true,
+    "engine_model_binding": true,
+    "dgp_nuisance_consumed": true,
+    "seed_schedule_present": true,
+    "factorial_semantics": "NOT_YET_EXECUTED",
+    "single_cell_replay": "NOT_YET_EXECUTED",
+    "likelihood_fit": "NOT_YET_EXECUTED"
+  },
+  "blocking_finding": {
+    "type": "DGP_CONSUMPTION_GAP",
+    "detail": "Engine-002 reads DGP-002 nuisance coefficients for baseline_action/domain/operationalisation/presentation, but hard-codes the profile_action_formula coefficient 0.04. DGP-002 requires the exact logit equation to be consumed without conflicting hard-coded coefficients. Therefore the required pre-Monte-Carlo audit cannot PASS yet."
+  },
+  "required_fix": "Represent the DGP profile_action term as a canonical DGP parameter and consume it from the frozen DGP artifact, then rerun implementation-equivalence and dry-run audits.",
+  "scientific_execution_authorized": false,
+  "monte_carlo_authorized": false
+}
