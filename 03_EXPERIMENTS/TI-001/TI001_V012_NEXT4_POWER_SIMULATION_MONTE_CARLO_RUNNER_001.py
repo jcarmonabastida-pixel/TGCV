@@ -162,8 +162,7 @@ def main():
     raw=json.dumps(out,sort_keys=True,separators=(",",":"),allow_nan=False).encode()
     out["result_sha256"]=hashlib.sha256(raw).hexdigest()
     outpath=ROOT/f"TI001_V012_NEXT4_POWER_SIMULATION_CELL_N{args.n}_E{args.effect:g}.json"
-    outpath.write_text(json.dumps(out,sort_keys=True,indent=2)+"
-",encoding="utf-8")
+    outpath.write_text(json.dumps(out,sort_keys=True,indent=2)+"\\n",encoding="utf-8")
     print(outpath.name)
     print(json.dumps({k:out[k] for k in ("N","effect_size","replicates","convergence_count","valid_fit_count","rejection_count","empirical_rejection_rate","result_sha256")},sort_keys=True))
 
