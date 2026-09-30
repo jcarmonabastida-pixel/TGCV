@@ -76,8 +76,10 @@ def fit_cell(s, dgp, model):
             "mapping": tuple(permutation[i]) if condition in ("STATIC_CONTROL","FUTURE_REASSIGNED") else (0,1,2,3),
             "profile": int(profile[i]), "future": int(future[i]), "chosen_action": int(chosen[i]),
         })
-    X, cols = build_model_matrix(sets, model, reference=0)
-    n = len(sets); k = X.shape[1]
+
+    X, active_cols, full_cols, _ = build_model_matrix(sets, model, reference=0)
+    n = len(sets)
+    k = X.shape[1]
     Xg = X.reshape(n, 4, k)
 
     def probs(beta):
@@ -103,12 +105,19 @@ def fit_cell(s, dgp, model):
         W = np.diag(p[i]) - np.outer(p[i], p[i])
         H += Xg[i].T @ W @ Xg[i]
     cov = np.linalg.pinv(H, rcond=1e-10)
-    c = model.primary_contrast(cols)
+
+    c_full = model.primary_contrast(full_cols)
+    full_indices = {name: j for j, name in enumerate(full_cols)}
+    active_indices = np.asarray([full_indices[name] for name in active_cols], dtype=int)
+    c = c_full[active_indices]
     est = float(c @ fit.x)
     se = float(np.sqrt(max(0.0, c @ cov @ c)))
     z = est / se if se > 0 else np.nan
     pv = float(2.0 * __import__("scipy").special.ndtr(-abs(z))) if se > 0 else np.nan
-    return bool(fit.success), est, se, pv, int(np.linalg.matrix_rank(H)), hashlib.sha256(c.tobytes()).hexdigest()
+    return (
+        bool(fit.success), est, se, pv, int(np.linalg.matrix_rank(H)),
+        hashlib.sha256(c.tobytes()).hexdigest(),
+    )
 
 
 def main():
@@ -145,7 +154,7 @@ def main():
       "mean_se":float(np.mean(ses)) if ses else None,
       "diagnostics":{"fit_failures":failures,"nonfinite_estimates":sum(not np.isfinite(x["estimate"]) for x in rows),
                      "nonfinite_se":sum(not np.isfinite(x["se"]) for x in rows),
-                     "singular_or_rank_failures":sum(x["rank_hessian"]<len(cols) for x in rows),
+                     "singular_or_rank_failures":sum(x["rank_hessian"]<k for x in rows),
                      "seed_replay_hash":hashlib.sha256(json.dumps([stable_seed(MASTER_SEED,label,args.n,r,r) for r in range(REPLICATES)]).encode()).hexdigest()},
       "scientific_execution":True,"provider_api_calls":False,"adaptive_stopping":False,"parameter_tuning_after_results":False,
       "replicates_detail":rows
@@ -153,7 +162,8 @@ def main():
     raw=json.dumps(out,sort_keys=True,separators=(",",":"),allow_nan=False).encode()
     out["result_sha256"]=hashlib.sha256(raw).hexdigest()
     outpath=ROOT/f"TI001_V012_NEXT4_POWER_SIMULATION_CELL_N{args.n}_E{args.effect:g}.json"
-    outpath.write_text(json.dumps(out,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+    outpath.write_text(json.dumps(out,sort_keys=True,indent=2)+"
+",encoding="utf-8")
     print(outpath.name)
     print(json.dumps({k:out[k] for k in ("N","effect_size","replicates","convergence_count","valid_fit_count","rejection_count","empirical_rejection_rate","result_sha256")},sort_keys=True))
 
