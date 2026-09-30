@@ -36,7 +36,7 @@ def main():
     ))
     seen = {}
     for path in files:
-        obj = json.loads(path.read_text(encoding="utf-8"))
+        raw_text = path.read_text(encoding="utf-8")\n        # Frozen scientific artifacts contain a literal \\n suffix from serialization.\n        if raw_text.endswith("\\\\n"):\n            raw_text = raw_text[:-2]\n            serialization_normalizations += 1\n        obj = json.loads(raw_text)
         key = (int(obj["N"]), float(obj["effect_size"]))
         if key in seen:
             raise SystemExit(f"Duplicate cell artifact: {key}")
