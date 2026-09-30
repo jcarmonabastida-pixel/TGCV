@@ -1,0 +1,35 @@
+name: TI-001 NEXT4 Monte Carlo Aggregation Audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: "Completed NEXT4 Monte Carlo workflow run ID"
+        required: true
+        type: string
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download source Monte Carlo artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          mkdir -p artifacts
+          gh run download "$SOURCE_RUN_ID" --repo "$GITHUB_REPOSITORY" --dir artifacts
+      - name: Run 40-cell aggregation audit
+        run: |
+          python 03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_AGGREGATION_AUDIT_001.py \
+            --artifact-root artifacts \
+            --output 03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_AGGREGATION_AUDIT_RESULT_001.json
+      - name: Upload aggregation audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: next4-40-cell-aggregation-audit
+          path: 03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_AGGREGATION_AUDIT_RESULT_001.json
