@@ -11,9 +11,10 @@ EXPECTED_CELLS = {(n, e) for n in NS for e in EFFECTS}
 def seed_hash(label, n):
     seeds = [
         int.from_bytes(hashlib.sha256(
-            f"{MASTER_SEED}|{label}|{n}|{r}|{r}".encode()
+            f"{MASTER_SEED}|{label}|{n}|{r}|{i}".encode()
         ).digest()[:8], "big")
         for r in range(REPLICATES)
+        for i in [r]
     ]
     return hashlib.sha256(json.dumps(seeds).encode()).hexdigest()
 
