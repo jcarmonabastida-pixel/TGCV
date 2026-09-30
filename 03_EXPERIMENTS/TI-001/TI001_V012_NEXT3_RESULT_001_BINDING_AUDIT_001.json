@@ -1,0 +1,66 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_RESULT_001_BINDING_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_RESULT_001_BINDING_AUDIT",
+  "status": "PASS_BINDINGS_AND_EXECUTION_IDENTITY_VERIFIED",
+  "date": "2026-09-30",
+  "scope": {
+    "artifact": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001",
+    "scientific_reexecution_performed": false,
+    "result_modified": false
+  },
+  "github_actions": {
+    "run_number": 19,
+    "run_id": 36646295079,
+    "job_id": 109669945627,
+    "artifact_id": 11068768998,
+    "artifact_zip_sha256": "e9764b9527d74d5574c4206b4813a473f28bc6ba9d50b0e5736be724901fee1c"
+  },
+  "result_payload": {
+    "payload_file_sha256": "9008ae02130405428cb30e6391fd37e5cd76b8bfe835dbcfc8ad6002e073ccf4",
+    "implementation_sha256": "3d39fcf03637bf70945b36d29dfe6c1aaf783aa0653591344119ad40d65eb4eb",
+    "analysis_specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "fixture_version": "NEXT3_v003",
+    "execution_result_sha256_declared": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "execution_result_sha256_role": "Declared upstream execution-result binding; not the SHA-256 of the downloaded RESULT_001 JSON payload.",
+    "pre_execution_gate": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_008",
+    "matrix_construction_audit": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_MATRIX_CONSTRUCTION_AUDIT_001"
+  },
+  "analysis_integrity": {
+    "status": "POST_PRIMARY_Q1_Q5_ANALYSIS_COMPLETE",
+    "total_decisions": 23040,
+    "valid_decisions": 22649,
+    "invalid_decisions_excluded": 391,
+    "choice_sets": 22649,
+    "primary_inferential_contrasts": 8,
+    "primary_analysis_modified": false,
+    "next2_pooling": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false,
+    "confirmatory": false,
+    "exploratory": true,
+    "multiple_comparison_adjustment": "Holm"
+  },
+  "implementation_route": {
+    "fit_method": "BFGS",
+    "library": "statsmodels.discrete.conditional_models.ConditionalLogit",
+    "statsmodels": "0.14.6",
+    "python": "3.12.14",
+    "primary_implementation_sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d"
+  },
+  "warning_boundary": {
+    "future_warning": true,
+    "message": "cov_params_func is passed through the optimizer keyword path and is currently warned as unsupported by SciPy BFGS.",
+    "interpretation": "The published technical audit establishes that statsmodels 0.14.6 subsequently retrieves and invokes cov_params_func after optimization. This warning is retained as an execution warning; it is not silently discarded."
+  },
+  "conclusion": {
+    "binding_status": "PASS",
+    "execution_identity_status": "PASS",
+    "result_payload_identity_status": "PASS",
+    "q1_q5_result_ready_for_statistical_interpretation": true,
+    "scientific_reexecution_required": false,
+    "important_boundary": "The declared execution_result_sha256 b908abe9... is an upstream binding and must not be conflated with the downloaded RESULT_001 payload SHA 9008ae02...."
+  }
+}
