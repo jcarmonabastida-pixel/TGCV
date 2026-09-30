@@ -1,0 +1,28 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_REVISION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_001.py",
+  "implementation_commit": "0e8bda8d8a82dc337241f4ea1f741d89e166fff8",
+  "checks": {
+    "synthetic_only": true,
+    "provider_api_calls": false,
+    "scientific_executor_calls": false,
+    "deterministic_seed_derivation": true,
+    "dataset_hashing": true,
+    "four_actions": true,
+    "four_profiles": true,
+    "permutation_family_24": true,
+    "nuisance_factors_present": true
+  },
+  "blockers": [
+    "The current generator does not yet implement the exact frozen statistical model specified for NEXT4.",
+    "The generated dataset currently contains only one observation per unit and does not construct the planned choice-set/action rows required by the action-specific analysis representation.",
+    "The primary mapping-alignment contrast is described but not numerically implemented in the engine.",
+    "Rank and estimability of the exact primary design matrix are not yet checked.",
+    "Covariance, convergence and model-fit diagnostics are not yet implemented.",
+    "The current condition assignment and permutation allocation are not yet proven equivalent to the frozen factorial fixture architecture."
+  ],
+  "scientific_execution_authorized": false,
+  "next_action": "Revise the engine to construct the exact planned choice-set representation, frozen design matrix and primary contrast, then rerun the implementation audit before any Monte Carlo execution."
+}
