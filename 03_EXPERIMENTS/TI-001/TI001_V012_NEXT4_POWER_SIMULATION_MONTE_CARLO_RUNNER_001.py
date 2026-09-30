@@ -154,7 +154,7 @@ def main():
       "mean_se":float(np.mean(ses)) if ses else None,
       "diagnostics":{"fit_failures":failures,"nonfinite_estimates":sum(not np.isfinite(x["estimate"]) for x in rows),
                      "nonfinite_se":sum(not np.isfinite(x["se"]) for x in rows),
-                     "singular_or_rank_failures":sum(x["rank_hessian"]<k for x in rows),
+                     "singular_or_rank_failures":sum(x["rank_hessian"]<X.shape[1] for x in rows),
                      "seed_replay_hash":hashlib.sha256(json.dumps([stable_seed(MASTER_SEED,label,args.n,r,r) for r in range(REPLICATES)]).encode()).hexdigest()},
       "scientific_execution":True,"provider_api_calls":False,"adaptive_stopping":False,"parameter_tuning_after_results":False,
       "replicates_detail":rows
