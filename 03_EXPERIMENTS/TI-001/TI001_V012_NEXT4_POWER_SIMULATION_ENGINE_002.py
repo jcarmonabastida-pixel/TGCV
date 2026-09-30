@@ -81,6 +81,8 @@ def build_choice_set(s, i, dgp):
     profile = PROFILES[i % 4]
     future = mapping[profile]
     n = dgp["nuisance"]
+    profile_formula = n["profile_action_formula"]
+    profile_coefficient = float(profile_formula.split("*", 1)[0])
     logits = []
     for action in ACTIONS:
         baseline = (
@@ -88,7 +90,7 @@ def build_choice_set(s, i, dgp):
             + n["domain"][domain]
             + n["operationalisation"][op]
             + n["presentation"][presentation]
-            + 0.04 * ((action + profile) % 4)
+            + profile_coefficient * ((action + profile) % 4)
         )
         signal = s.effect_size * int(
             condition == "FUTURE_REASSIGNED" and action == future
