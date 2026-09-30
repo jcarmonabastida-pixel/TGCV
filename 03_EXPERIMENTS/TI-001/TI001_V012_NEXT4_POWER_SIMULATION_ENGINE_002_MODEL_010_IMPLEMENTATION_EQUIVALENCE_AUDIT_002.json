@@ -1,0 +1,29 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002_MODEL_010_IMPLEMENTATION_EQUIVALENCE_AUDIT_002",
+  "status": "PASS",
+  "scope": {
+    "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
+    "engine_commit": "fcd1876f33b9709e8f2f62fbe6664ebdd2fbdf9d",
+    "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010.py",
+    "model_commit": "9e609137db263493c976040ad16ac22b8f386609",
+    "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002"
+  },
+  "checks": {
+    "canonical_model_binding": true,
+    "parameterization_three_relative_logits_per_surface_profile": true,
+    "fixed_reference_action_0": true,
+    "primary_contrast_delegated_to_model_010": true,
+    "nuisance_columns_equivalent": true,
+    "condition_controls_equivalent": true,
+    "profile_action_coefficient_consumed_from_dgp": true,
+    "baseline_action_consumed_from_dgp": true,
+    "domain_nuisance_consumed_from_dgp": true,
+    "operationalisation_nuisance_consumed_from_dgp": true,
+    "presentation_nuisance_consumed_from_dgp": true,
+    "dgp_seed_schedule_preserved": true,
+    "no_provider_calls": true,
+    "no_scientific_execution": true
+  },
+  "finding": "Previous blocking hard-coded profile-action coefficient has been removed. Engine-002 now consumes the frozen DGP-002 profile_action_formula value.",
+  "next_gate": "DRY_RUN_SINGLE_CELL_RUNTIME_AUDIT"
+}
