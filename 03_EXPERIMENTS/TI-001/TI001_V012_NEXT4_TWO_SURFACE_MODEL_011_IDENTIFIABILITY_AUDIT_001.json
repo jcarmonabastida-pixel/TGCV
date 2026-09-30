@@ -1,0 +1,84 @@
+{
+  "artifact": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011_IDENTIFIABILITY_AUDIT_001",
+  "status": "PASS",
+  "date": "2026-09-30",
+  "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011",
+  "model_commit": "fb887b3ba567b1ce57dd18556dcf9ef6afe1cd3c",
+  "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+  "scientific_execution": false,
+  "engine_002_modified": false,
+  "design": {
+    "primary_coefficient": "future_reassigned_nonidentity_mapped_action",
+    "primary_estimand": "(3/4)*gamma",
+    "reason": "72 of 96 permutation-profile pairs are non-identity; the 24 fixed-point contributions are identically zero in the frozen difference-in-differences estimand.",
+    "expected_under_dgp": "theta_DGP = (3/4)*beta",
+    "mapping_preserved": true,
+    "permutation_dimension_preserved": true
+  },
+  "checks": {
+    "all_candidate_n_full_column_rank": true,
+    "primary_contrast_estimable": true,
+    "primary_contrast_scale_exact": true,
+    "dgp_to_estimand_mapping_algebraically_equivalent": true,
+    "no_change_to_dgp": true,
+    "no_change_to_seed_schedule": true
+  },
+  "candidate_n_audits": [
+    {
+      "n": 1728,
+      "rows": 27648,
+      "columns": 53,
+      "rank": 53,
+      "nullity": 0,
+      "estimability_residual": 1.786907386406005e-15,
+      "contrast_estimable": true,
+      "matrix_sha256": "8d080e513dc6e6cd5a9168abe7885f4f93ecb3f3efed9bda2f64418e09649aed",
+      "contrast_sha256": "54ddc7d4e30350bcccad2e79890d7905f7effaf8eb5d7b57dd56eda3256d40e6"
+    },
+    {
+      "n": 2304,
+      "rows": 36864,
+      "columns": 53,
+      "rank": 53,
+      "nullity": 0,
+      "estimability_residual": 9.803391943294884e-16,
+      "contrast_estimable": true,
+      "matrix_sha256": "c69466efbb5a4c755cd58e8a88216ccd59a57d26e46391716877d1dd7a2ec1e5",
+      "contrast_sha256": "54ddc7d4e30350bcccad2e79890d7905f7effaf8eb5d7b57dd56eda3256d40e6"
+    },
+    {
+      "n": 3456,
+      "rows": 55296,
+      "columns": 53,
+      "rank": 53,
+      "nullity": 0,
+      "estimability_residual": 1.3878389757571119e-15,
+      "contrast_estimable": true,
+      "matrix_sha256": "a73a0481612c93a4dd7ca4b8e3745254441dcdd6ac01fd18c81c7d5b1025bb76",
+      "contrast_sha256": "54ddc7d4e30350bcccad2e79890d7905f7effaf8eb5d7b57dd56eda3256d40e6"
+    },
+    {
+      "n": 5184,
+      "rows": 82944,
+      "columns": 53,
+      "rank": 53,
+      "nullity": 0,
+      "estimability_residual": 9.748387310603919e-16,
+      "contrast_estimable": true,
+      "matrix_sha256": "6c85fd5c9bc57c2a7902dc40f397602e23cd3d0042e2d3deb82d62b9dfa108a7",
+      "contrast_sha256": "54ddc7d4e30350bcccad2e79890d7905f7effaf8eb5d7b57dd56eda3256d40e6"
+    },
+    {
+      "n": 6912,
+      "rows": 110592,
+      "columns": 53,
+      "rank": 53,
+      "nullity": 0,
+      "estimability_residual": 1.63149963097966e-15,
+      "contrast_estimable": true,
+      "matrix_sha256": "d7d2e17ed5b99c45e614133aecd3cacfa3f35dbade61f48c023e7332e987cec5",
+      "contrast_sha256": "54ddc7d4e30350bcccad2e79890d7905f7effaf8eb5d7b57dd56eda3256d40e6"
+    }
+  ],
+  "next_gate": "Independent DGP-to-model implementation-equivalence audit, including synthetic population recovery of theta_DGP=0.75*beta, before any Monte Carlo authorization."
+}
