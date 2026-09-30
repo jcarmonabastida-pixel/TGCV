@@ -1,0 +1,46 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_Q5_PROVENANCE_CLOSURE_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_Q5_PROVENANCE_CLOSURE_AUDIT",
+  "status": "PASS_WITH_DECLARED_HASH_PREFIX_UNRESOLVED",
+  "date": "2026-09-30",
+  "scope": {
+    "purpose": "Close Q5 audit provenance without scientific re-execution.",
+    "scientific_execution_performed": false,
+    "scientific_result_modified": false,
+    "historical_artifact_modified": false
+  },
+  "canonical_inputs": {
+    "implementation_path": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+    "primary_implementation_sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d",
+    "specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de"
+  },
+  "post_primary_result_provenance": {
+    "result_artifact": "TI001_V012_NEXT3_EXPLORATORY_SCIENTIFIC_EXECUTION_RESULT_001",
+    "declared_implementation_sha256_prefix": "3d39fcf03637",
+    "declared_implementation_sha256_full_digest_verified_from_result": false,
+    "reason": "The canonical GitHub connector returns empty textual content for the large execution-result artifact while independently exposing and verifying its SHA-256. Repository search does not expose the implementation field as searchable text. Therefore the full declared implementation digest cannot be independently recovered from the result artifact in this audit pass.",
+    "interpretation": "The value is retained as a declared provenance prefix only; it is not promoted to a fabricated or reconstructed full SHA-256."
+  },
+  "implementation_verification": {
+    "primary_implementation_sha256_declared_in_post_primary_source": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d",
+    "post_primary_source_execution_result_sha256_binding": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "status": "CONSISTENT"
+  },
+  "historical_execution_boundary": {
+    "execution_result_sha256_verified": true,
+    "execution_result_byte_identity_verified": true,
+    "historical_callback_trace_available": false,
+    "forensic_reconstruction_claimed": false
+  },
+  "q5_status": {
+    "technical_mechanism": "PASS_IN_DETERMINISTIC_REPRODUCTION",
+    "provenance_model": "PASS_WITH_EXPLICIT_PREFIX_LIMITATION",
+    "scientific_reexecution_required": false,
+    "q5_estimand_changed": false
+  },
+  "closure_rule": "Q5 provenance is considered technically closed only at the level explicitly evidenced here. The missing full implementation digest declared inside RESULT_001 remains an open provenance-resolution item and must not be filled by inference."
+}
