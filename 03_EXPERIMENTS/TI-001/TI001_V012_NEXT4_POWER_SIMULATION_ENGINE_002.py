@@ -35,7 +35,7 @@ def load_dgp():
 def load_model():
     spec = importlib.util.spec_from_file_location("ti001_next4_model_010", MODEL_PATH)
     if spec is None or spec.loader is None:
-        raise RuntimeError("Cannot load canonical Model-010")
+        raise RuntimeError("Cannot load canonical Model-011R")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -262,7 +262,7 @@ def fit_primary_contrast(sets, reference=0):
     pval = float(1 - erf(abs(zstat) / sqrt(2))) if se > 0 else float("nan")
 
     return {
-        "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010",
+        "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011R",
         "model_commit": MODEL_COMMIT,
         "reference_action": reference,
         "parameter_columns": len(cols),
