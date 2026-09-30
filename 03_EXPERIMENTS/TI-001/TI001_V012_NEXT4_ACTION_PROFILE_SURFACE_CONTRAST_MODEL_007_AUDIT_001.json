@@ -1,0 +1,22 @@
+{
+  "artifact": "TI001_V012_NEXT4_ACTION_PROFILE_SURFACE_CONTRAST_MODEL_007_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_MODEL_SPECIFICATION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_ACTION_PROFILE_SURFACE_CONTRAST_MODEL_007.py",
+  "implementation_commit": "7194871f3a7fb3eabeb7b8155b4113fe8c22e1f6",
+  "checks": {
+    "allocation_integrated": true,
+    "all_candidate_n_integrated": true,
+    "all_24_permutations_weighted_equally": true,
+    "numeric_matrix": true,
+    "numeric_contrast": true
+  },
+  "blockers": [
+    "The expanded matrix includes all four conditions but the primary contrast compares FUTURE_REASSIGNED action×profile coefficients against STATIC_CONTROL identity cells without a corresponding condition-specific baseline parameterization for STATIC_CONTROL; the estimand therefore depends on reference coding rather than an explicitly frozen two-surface model.",
+    "The 24-permutation averaging rule is now explicit and equal-weighted, but its scientific interpretation must be frozen: it estimates average reorganisation over the complete permutation family, not a single trajectory-specific effect.",
+    "The current implementation does not yet run the actual numerical audits in the repository artifact; only the audit function is defined.",
+    "The response model and inferential family are still not frozen, so rank/estimability alone cannot authorize Monte Carlo."
+  ],
+  "gate_decision": "BLOCK",
+  "next_action": "Freeze an explicit two-surface parameterization (STATIC_CONTROL and FUTURE_REASSIGNED) with condition-specific action×profile surfaces, define the 24-permutation average as the primary estimand, execute rank/estimability for all candidate N, and record the numerical results."
+}
