@@ -1,0 +1,33 @@
+{
+  "artifact": "TI001_V012_NEXT4_STATISTICAL_IMPLEMENTATION_EQUIVALENCE_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_PASS_WITH_CONTRAST_SCOPE_LIMIT",
+  "specification": "TI001_V012_NEXT4_STATISTICAL_ANALYSIS_SPECIFICATION_001",
+  "specification_commit": "99dbeacba2923f4bbfd605b6cdf4c9786756a40d",
+  "implementation": "TI001_V012_NEXT4_MAPPING_SIGNAL_AND_PRIMARY_CONTRAST_IMPLEMENTATION_001.py",
+  "implementation_commit": "9060a8d6cd693194b821c6019e96b5cb5e306ffe",
+  "checks": {
+    "permutation_count_4_factorial": true,
+    "permutation_validation": true,
+    "deterministic_mapping_table": true,
+    "response_independence": true,
+    "mapping_signal_reproducible": true,
+    "primary_comparison": [
+      "STATIC_CONTROL",
+      "FUTURE_REASSIGNED"
+    ],
+    "alpha": 0.05,
+    "generic_condition_effect_not_primary": true,
+    "provider_api_calls": false,
+    "scientific_executor_calls": false,
+    "deterministic_manifest": true
+  },
+  "scope_limit": [
+    "The mapping signal and contrast contract pass structural equivalence.",
+    "The audit does not yet establish estimability on the final scientific fixture because the fixture does not yet exist.",
+    "The audit does not yet validate a fitted multinomial model because the complete statistical fitting implementation is not yet present.",
+    "No Monte Carlo execution has been performed."
+  ],
+  "gate_decision": "PASS for mapping/contrast contract; BLOCK for full statistical implementation-equivalence until fixture-level rank/estimability and exact model-fitting implementation are audited.",
+  "next_action": "Implement the exact multinomial/action-specific model and synthetic-data generator using this mapping signal and contrast, then audit rank, estimability, fitting, covariance and replay."
+}
