@@ -1,0 +1,67 @@
+{
+  "artifact": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_009_NUMERICAL_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "NUMERICAL_AUDIT_PASS",
+  "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_009",
+  "implementation_commit": "2aac5e6b7b3ea7586756bafbd8ae8128350e5512",
+  "candidate_n": [
+    1728,
+    2304,
+    3456,
+    5184,
+    6912
+  ],
+  "design": {
+    "columns": 40,
+    "rows_multiplier": 16,
+    "rows_by_n": {
+      "1728": 27648,
+      "2304": 36864,
+      "3456": 55296,
+      "5184": 82944,
+      "6912": 110592
+    }
+  },
+  "results": {
+    "1728": {
+      "rank": 40,
+      "full_column_rank": true,
+      "contrast_estimable": true
+    },
+    "2304": {
+      "rank": 40,
+      "full_column_rank": true,
+      "contrast_estimable": true
+    },
+    "3456": {
+      "rank": 40,
+      "full_column_rank": true,
+      "contrast_estimable": true
+    },
+    "5184": {
+      "rank": 40,
+      "full_column_rank": true,
+      "contrast_estimable": true
+    },
+    "6912": {
+      "rank": 40,
+      "full_column_rank": true,
+      "contrast_estimable": true
+    }
+  },
+  "contrast": {
+    "permutations": 24,
+    "weighting": "equal_weight_1_over_24",
+    "profiles": 4,
+    "direction": "FUTURE_REASSIGNED surface along permutation minus STATIC_CONTROL identity surface"
+  },
+  "checks": {
+    "no_redundant_intercept": true,
+    "rank_full_for_all_candidate_n": true,
+    "primary_contrast_estimable_for_all_candidate_n": true,
+    "permutation_weighting_frozen": true,
+    "scientific_execution": false
+  },
+  "gate_decision": "PASS. Numeric design and primary contrast are identifiable for every frozen candidate N.",
+  "next_action": "Freeze the primary estimand specification and implement the response-generating DGP / Monte Carlo engine against this exact design."
+}
