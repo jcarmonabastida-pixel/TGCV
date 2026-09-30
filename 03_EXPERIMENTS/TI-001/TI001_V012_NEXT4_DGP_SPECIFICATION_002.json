@@ -1,0 +1,106 @@
+{
+  "artifact": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+  "date": "2026-09-30",
+  "status": "CANONICAL_DGP_FREEZE",
+  "supersedes": [
+    "TI001_V012_NEXT4_DGP_SPECIFICATION_001.json",
+    "TI001_V012_NEXT4_POWER_SIMULATION_DGP_SPECIFICATION_001.md"
+  ],
+  "rationale": "Reconciles the newer two-surface NEXT4 estimand with the older power-simulation scaffold. The two-surface model and primary contrast are retained as the authoritative statistical design; the older scaffold is superseded rather than merged mechanically.",
+  "design_basis": {
+    "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_009",
+    "model_commit": "2aac5e6b7b3ea7586756bafbd8ae8128350e5512",
+    "primary_estimand": "Mean over 24 frozen permutations and 4 profiles of FUTURE_REASSIGNED action×profile surface along the permutation minus STATIC_CONTROL action×profile surface along identity.",
+    "permutation_weight": "1/24",
+    "profile_weight": "1/4"
+  },
+  "response": {
+    "unit": "choice_set",
+    "actions": 4,
+    "likelihood": "categorical_softmax",
+    "outcome": "chosen_action",
+    "no_value_reward_performance_signal": true
+  },
+  "conditions": {
+    "STATIC_CONTROL": "Identity profile→future structure; supplies the baseline action×profile surface.",
+    "FUTURE_REASSIGNED": "Non-identity frozen permutation; the DGP adds delta only to the permutation-aligned action×profile cell, producing the hypothesised future-linked reorganisation.",
+    "SURFACE_CONTROL": "Control condition with no delta contribution to the primary future-linked signal; retained as a nuisance/control condition.",
+    "UNINFORMATIVE_NULL": "Zero mapping-alignment contribution; no informative future-linked signal."
+  },
+  "effect_grid": {
+    "values": [
+      0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.75,
+      1
+    ],
+    "labels": [
+      "NULL",
+      "VERY_SMALL",
+      "SMALL_1",
+      "SMALL_2",
+      "MODERATE_1",
+      "MODERATE_2",
+      "LARGE_1",
+      "LARGE_2"
+    ],
+    "interpretation": "Calibration values for sensitivity analysis only; none is an empirical estimate from NEXT3."
+  },
+  "nuisance": {
+    "baseline_action": [
+      0,
+      0.1,
+      -0.08,
+      0.04
+    ],
+    "profile_action_formula": "0.04*((action+profile) mod 4)",
+    "domain": [
+      0,
+      0.15,
+      -0.15
+    ],
+    "operationalisation": [
+      0,
+      0.1
+    ],
+    "presentation": [
+      0,
+      0.05,
+      -0.05,
+      0.02
+    ],
+    "common_across_static_and_future": true
+  },
+  "logits": "baseline_action + profile_action + domain_nuisance + operationalisation_nuisance + presentation_nuisance + delta*I(condition=FUTURE_REASSIGNED and action=permutation[profile])",
+  "randomness": "Deterministic seed schedule only; no provider or wall-clock randomness.",
+  "candidate_n": [
+    1728,
+    2304,
+    3456,
+    5184,
+    6912
+  ],
+  "factorial": {
+    "conditions": 4,
+    "domains": 3,
+    "operationalisations": 2,
+    "presentations": 4,
+    "permutations": 24,
+    "balanced": true
+  },
+  "scientific_boundary": "This DGP is a sensitivity/calibration device. It is not evidence about the empirical system and does not import NEXT3 effect estimates.",
+  "execution_authorized": false,
+  "required_next_audit": [
+    "Engine 002 consumes this exact specification without hard-coded conflicting coefficients.",
+    "Exact factorial counts and balanced allocation.",
+    "Exact condition semantics.",
+    "Exact effect grid.",
+    "Exact logit equation.",
+    "Exact model-009 primary contrast vector.",
+    "Deterministic replay for fixed seed."
+  ]
+}
