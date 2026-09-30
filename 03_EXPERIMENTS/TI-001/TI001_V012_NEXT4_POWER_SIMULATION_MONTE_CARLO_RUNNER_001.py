@@ -4,7 +4,7 @@ Executes one frozen (N, effect) cell with 1000 replicates.
 No provider calls, adaptive stopping, or post-result tuning.
 """
 from __future__ import annotations
-import argparse, hashlib, json
+import argparse, hashlib, json, random
 from pathlib import Path
 import numpy as np
 from scipy.optimize import minimize
@@ -30,10 +30,8 @@ def stable_seed(master_seed, effect_label, n, replicate, choice_set_id):
 
 
 def choice_data(s, dgp):
-    rng = np.random.default_rng(
-        np.fromiter((stable_seed(s.master_seed, s.effect_label, s.n_choice_sets, s.replicate, i)
-                     for i in range(s.n_choice_sets)), dtype=np.uint64)
-    )
+    rng = [random.Random(stable_seed(s.master_seed, s.effect_label, s.n_choice_sets, s.replicate, int(i))).random()
+           for i in range(s.n_choice_sets)]
     i = np.arange(s.n_choice_sets, dtype=np.int64)
     domain = i % 3
     op = (i // 3) % 2
@@ -61,7 +59,7 @@ def choice_data(s, dgp):
     logits -= logits.max(axis=1, keepdims=True)
     p = np.exp(logits)
     p /= p.sum(axis=1, keepdims=True)
-    u = rng.random(s.n_choice_sets)
+    u = np.asarray(rng, dtype=float)
     chosen = (u[:, None] > np.cumsum(p, axis=1)).sum(axis=1)
     return chosen, domain, op, presentation, condition_idx, profile, future, permutation
 
@@ -109,7 +107,7 @@ def fit_cell(s, dgp, model):
     est = float(c @ fit.x)
     se = float(np.sqrt(max(0.0, c @ cov @ c)))
     z = est / se if se > 0 else np.nan
-    pv = float(1.0 - np.math.erf(abs(z) / np.sqrt(2.0))) if se > 0 else np.nan
+    pv = float(2.0 * __import__("scipy").special.ndtr(-abs(z))) if se > 0 else np.nan
     return bool(fit.success), est, se, pv, int(np.linalg.matrix_rank(H)), hashlib.sha256(c.tobytes()).hexdigest()
 
 
