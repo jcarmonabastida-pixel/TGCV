@@ -1,0 +1,27 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_REVISION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
+  "implementation_commit": "5da9502a6f2f93fd5579f0bde9a328121ad31e90",
+  "checks": {
+    "explicit_choice_sets": true,
+    "four_action_rows_per_choice_set": true,
+    "chosen_indicator": true,
+    "deterministic_seed": true,
+    "dataset_hash": true,
+    "provider_api_calls": false,
+    "scientific_executor_calls": false,
+    "permutation_family_24": true
+  },
+  "blockers": [
+    "The engine now has the correct choice-set/action-row representation, but its condition/mapping allocation is not yet equivalent to the frozen NEXT4 factorial architecture.",
+    "SURFACE_CONTROL and UNINFORMATIVE_NULL currently collapse the mapping to identity without implementing their separately frozen control semantics.",
+    "The engine has not yet constructed the exact statistical design matrix from the frozen model formula.",
+    "The primary mapping-alignment contrast is still represented descriptively rather than as a numerical contrast vector.",
+    "Rank and estimability have not been demonstrated.",
+    "The response-generation mechanism and nuisance coefficients remain provisional and are not yet frozen as a versioned data-generating model."
+  ],
+  "scientific_execution_authorized": false,
+  "next_action": "Freeze the synthetic factorial/control allocation and data-generating model, then implement the exact design matrix and numerical primary contrast before re-auditing."
+}
