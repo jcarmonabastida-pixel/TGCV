@@ -1,0 +1,49 @@
+{
+  "artifact": "TI001_V012_NEXT4_DGP_CANONICAL_CONSISTENCY_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "BLOCKED_CANONICAL_DGP_INCONSISTENCY",
+  "checked_artifacts": [
+    "TI001_V012_NEXT4_DGP_SPECIFICATION_001.json",
+    "TI001_V012_NEXT4_POWER_SIMULATION_DGP_SPECIFICATION_001.md",
+    "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
+    "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002_AUDIT_001.json"
+  ],
+  "conflict": [
+    {
+      "field": "effect_size_grid",
+      "json_spec": [
+        0,
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.75,
+        1
+      ],
+      "power_spec": [
+        0,
+        0.1,
+        0.25,
+        0.5,
+        0.8
+      ],
+      "consequence": "Engine 002 cannot consume both grids without changing the declared DGP."
+    },
+    {
+      "field": "DGP semantics",
+      "json_spec": "delta is applied only to FUTURE_REASSIGNED permutation-aligned action×profile cells relative to STATIC identity.",
+      "power_spec": "mapping-alignment beta operates in STATIC relative to identity and FUTURE_REASSIGNED relative to imposed permutation; zero in SURFACE_CONTROL and UNINFORMATIVE_NULL.",
+      "consequence": "The JSON DGP specification is not yet equivalent to the pre-existing power-simulation DGP specification."
+    },
+    {
+      "field": "nuisance structure",
+      "json_spec": "domain [0,0.15,-0.15], operationalisation [0,0.10], presentation [0,0.05,-0.05,0.02], baseline action [0,0.10,-0.08,0.04].",
+      "power_spec": "action 0.05×id, profile-action 0.04×((action+profile) mod 4), domain 0.03×id, operationalisation 0.02×id, presentation 0.",
+      "consequence": "The nuisance coefficients are also not equivalent."
+    }
+  ],
+  "governance_interpretation": "This is a canonical design contradiction, not an implementation bug. Under the TGCV operating model, Engine 002 must not be modified until one DGP specification is explicitly selected or the two are reconciled in a new frozen revision.",
+  "scientific_execution_authorized": false,
+  "next_action": "Reconcile the two DGP specifications, freeze one canonical NEXT4 DGP revision, then update Engine 002 against that exact artifact and re-audit."
+}
