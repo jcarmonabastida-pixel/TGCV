@@ -1,0 +1,40 @@
+name: TI-001 NEXT4 dry-run audit
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install scientific dependencies
+        run: python -m pip install --upgrade pip numpy scipy
+      - name: Run audit-only dry-run
+        working-directory: 03_EXPERIMENTS/TI-001
+        run: |
+          python - <<'PY'
+          import json, hashlib, sys
+          from TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002 import Scenario, generate_dataset, fit_primary_contrast, load_dgp
+          s=Scenario("NULL",0.0,1728,0,20260930)
+          sets,rows=generate_dataset(s)
+          fit=fit_primary_contrast(sets)
+          out={
+            "artifact":"TI001_V012_NEXT4_POWER_SIMULATION_DRY_RUN_RESULT_001",
+            "dgp_artifact":load_dgp()["artifact"],
+            "scenario":{"effect_label":s.effect_label,"effect_size":s.effect_size,"n_choice_sets":s.n_choice_sets,"replicate":s.replicate,"master_seed":s.master_seed},
+            "choice_sets":len(sets),"action_rows":len(rows),"fit":fit,
+            "scientific_execution":False
+          }
+          raw=json.dumps(out,sort_keys=True,separators=(",",":")).encode()
+          out["result_sha256"]=hashlib.sha256(raw).hexdigest()
+          print(json.dumps(out,sort_keys=True,indent=2))
+          if not fit["converged"] or not fit["se"]==fit["se"] or fit["n_parameters"]!=40:
+            sys.exit(1)
+          PY
+      - name: Assert full Monte Carlo path is not invoked
+        run: |
+          test ! -e 03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_POWER_SIMULATION_RESULT_001.json
