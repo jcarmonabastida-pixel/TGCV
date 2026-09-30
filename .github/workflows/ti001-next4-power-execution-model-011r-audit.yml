@@ -1,0 +1,24 @@
+name: TI-001 NEXT4 power execution to Model-011R reconciliation audit
+
+on:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run specification audit
+        working-directory: 03_EXPERIMENTS/TI-001
+        run: python TI001_V012_NEXT4_POWER_EXECUTION_MODEL_011R_RECONCILIATION_AUDIT_001.py
+      - name: Block Monte Carlo artifacts
+        run: |
+          test ! -f 03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_POWER_SIMULATION_RESULT_001.json
+          ! find 03_EXPERIMENTS/TI-001 -maxdepth 1 -name 'TI001_V012_NEXT4_POWER_SIMULATION_CELL_N*_E*.json' | grep -q .
