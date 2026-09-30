@@ -3,7 +3,7 @@
 No provider calls and no Monte Carlo. The audit exercises the actual
 fit_primary_contrast implementation on a deterministic NULL dataset and
 checks that the returned estimand is dimensionally and algebraically bound to
-the canonical Model-011R contrast.
+the canonical Model-011R contrast after reference-action differencing.
 """
 from __future__ import annotations
 
@@ -62,7 +62,7 @@ def audit():
 
     result = engine.fit_primary_contrast(sets, reference=0)
 
-    expected_contrast_sha = hashlib.sha256(c_full.tobytes()).hexdigest()
+    expected_contrast_sha = hashlib.sha256(c_active.tobytes()).hexdigest()
     returned_contrast_sha = result["contrast_sha256"]
 
     checks = {
@@ -78,7 +78,7 @@ def audit():
         "contrast_dimension_matches_active_design": (
             len(c_active) == X.shape[1]
         ),
-        "contrast_estimand_matches_canonical_sha": (
+        "contrast_estimand_matches_active_canonical_sha": (
             returned_contrast_sha == expected_contrast_sha
         ),
         "contrast_weights": (
