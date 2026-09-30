@@ -1,0 +1,61 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_SCIENTIFIC_POWER_AUDIT_001",
+  "run_id": 36735012219,
+  "source_integrity_audit": "TI001_V012_NEXT4_POWER_SIMULATION_MONTE_CARLO_INTEGRITY_AUDIT_001.json",
+  "status": "SCIENTIFIC_POWER_AUDIT_COMPLETE",
+  "scope": "Descriptive audit of the frozen 5x8 Monte Carlo outputs; no post-hoc exclusion, tuning, or stopping rule introduced.",
+  "null_calibration": {
+    "alpha": 0.05,
+    "N_1728": 0.061,
+    "N_2304": 0.045,
+    "N_3456": 0.05005,
+    "N_5184": 0.045272,
+    "N_6912": 0.045317,
+    "observation": "Null rejection rates remain near the nominal 0.05 level; N=1728 is the largest observed deviation at 0.061."
+  },
+  "power_by_N": {
+    "1728": [0.061,0.056,0.054,0.059,0.059,0.059,0.069,0.068],
+    "2304": [0.045,0.045,0.041,0.06,0.048,0.058,0.05,0.069],
+    "3456": [0.05005,0.041,0.054054,0.053053,0.054054,0.05511,0.081,0.096096],
+    "5184": [0.045272,0.051411,0.047523,0.049197,0.06143,0.072217,0.092277,0.114343],
+    "6912": [0.045317,0.041289,0.052578,0.063253,0.061492,0.072435,0.083754,0.138693]
+  },
+  "effect_order": [0,0.1,0.2,0.3,0.4,0.5,0.75,1],
+  "monotonicity_diagnostic": {
+    "purpose": "Descriptive only; Monte Carlo rejection rates need not be strictly monotone at 1000 replicates.",
+    "decreases_between_adjacent_effects": {
+      "1728": 3,
+      "2304": 3,
+      "3456": 2,
+      "5184": 1,
+      "6912": 2
+    },
+    "observation": "The increase with effect becomes clearer at larger N, especially from effect 0.5 upward, but finite-replicate noise remains visible."
+  },
+  "endpoint_observations": {
+    "effect_0": "Empirical rejection is approximately nominal across N.",
+    "effect_1": {
+      "N_1728": 0.068,
+      "N_2304": 0.069,
+      "N_3456": 0.096096,
+      "N_5184": 0.114343,
+      "N_6912": 0.138693
+    },
+    "observation": "Even at the largest frozen effect value (1.0), empirical rejection remains below 0.15 for every candidate N."
+  },
+  "fit_quality": {
+    "total_replications": 40000,
+    "total_fit_failures": 109,
+    "cells_with_fit_failures": 22,
+    "max_fit_failures_in_cell": 11,
+    "rule": "Failures remain included in the recorded audit and are not retrospectively reclassified."
+  },
+  "interpretation_boundary": [
+    "The DGP effect grid is a calibration/sensitivity device, not an empirical effect estimate.",
+    "The observed rejection rates characterize this frozen estimator+DGP+N design only.",
+    "No empirical NEXT3 effect has been imported.",
+    "No value, reward, utility, or performance signal is used.",
+    "No claim about an empirical system follows from this power simulation alone."
+  ],
+  "next_action": "Audit the frozen estimand/DGP-to-observed-power mapping and determine whether the low endpoint power is an intended consequence of the declared contrast dilution or a specification/implementation discrepancy, without changing the frozen Monte Carlo results."
+}
