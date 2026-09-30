@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -25,6 +26,7 @@ def load(path, name):
     if spec is None or spec.loader is None:
         raise RuntimeError(f"cannot load {path}")
     m = importlib.util.module_from_spec(spec)
+    sys.modules[name] = m
     spec.loader.exec_module(m)
     return m
 
