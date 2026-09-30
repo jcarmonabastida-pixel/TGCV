@@ -1,0 +1,85 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_EXECUTION_PROVENANCE_CLOSURE_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_EXECUTION_PROVENANCE_CLOSURE_AUDIT",
+  "status": "PASS_EXECUTION_CHAIN_VERIFIED",
+  "date": "2026-09-30",
+  "scope": {
+    "purpose": "Verify the provenance chain of the scientific NEXT3 Q1-Q5 execution that produced RESULT_001.",
+    "scientific_reexecution_performed": false,
+    "historical_result_modified": false
+  },
+  "workflow": {
+    "workflow_name": "TI-001 NEXT3 post-primary discrimination Q1-Q5",
+    "workflow_id": 370401405,
+    "run_number": 19,
+    "run_id": 36646295079,
+    "run_status": "completed",
+    "run_conclusion": "success",
+    "head_branch": "main",
+    "head_sha": "285bb04ec72a2f1ef724749204d65571a357440b",
+    "job_id": 109669945627,
+    "job_name": "execute"
+  },
+  "execution_chain": {
+    "pre_execution_gate": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_PRE_EXECUTION_GATE_008",
+    "authorization_observed": "SCIENTIFIC_EXECUTION_AUTHORIZED",
+    "design_matrix_preflight": {
+      "Q1": "15/15",
+      "Q2": "15/15",
+      "Q2_reduced": "6/6",
+      "Q3": "15/15",
+      "Q4_domain": "15/15",
+      "Q4_operationalisation": "18/18",
+      "Q4_presentation": "15/15",
+      "Q4_replicate": "12/12",
+      "Q5": "45/45"
+    },
+    "executor": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_EXECUTOR_001.py",
+    "specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002.json",
+    "implementation": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+    "fixture": "NEXT3_v003"
+  },
+  "result": {
+    "artifact_id": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "implementation_sha256": "3d39fcf03637bf70945b36d29dfe6c1aaf783aa0653591344119ad40d65eb4eb",
+    "specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "status": "POST_PRIMARY_Q1_Q5_ANALYSIS_COMPLETE",
+    "total_decisions": 23040,
+    "valid_decisions": 22649,
+    "choice_sets": 22649,
+    "primary_inferential_contrasts": 8,
+    "confirmatory": false,
+    "exploratory": true,
+    "next2_pooling": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false
+  },
+  "artifact_upload": {
+    "github_actions_artifact_id": 11068768998,
+    "artifact_name": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001",
+    "artifact_zip_sha256": "e9764b9527d74d5574c4206b4813a473f28bc6ba9d50b0e5736be724901fee1c",
+    "artifact_contains": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001.json"
+  },
+  "verification": {
+    "scientific_execution_run_verified": true,
+    "authorization_verified": true,
+    "fixture_binding_verified": true,
+    "specification_binding_verified": true,
+    "implementation_binding_verified": true,
+    "result_sha256_verified": true,
+    "full_result_declared_implementation_sha256_recovered": true,
+    "historical_callback_trace": false,
+    "forensic_reconstruction_claimed": false
+  },
+  "conclusion": {
+    "execution_provenance_status": "CLOSED",
+    "q1_q5_execution_chain_status": "VERIFIED",
+    "q5_covariance_mechanism_status": "RETAIN_TECHNICAL_AUDIT_SEPARATELY",
+    "scientific_reexecution_required": false,
+    "interpretation": "The scientific Q1-Q5 execution that produced RESULT_001 is now directly traceable to successful GitHub Actions run #19, its authorized gate, the frozen specification, implementation, and NEXT3_v003 fixture. The full implementation digest declared inside RESULT_001 has been recovered directly from the uploaded result artifact. This closes execution provenance but does not create a historical callback trace that was not logged."
+  }
+}
