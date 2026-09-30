@@ -1,0 +1,22 @@
+name: TI-001 NEXT4 Engine-002 to Model-011R equivalence audit
+
+on:
+  workflow_dispatch:
+
+jobs:
+  equivalence-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install scientific dependencies
+        run: python -m pip install --upgrade pip numpy scipy
+      - name: Run deterministic Engine-002 -> Model-011R audit
+        working-directory: 03_EXPERIMENTS/TI-001
+        run: |
+          python TI001_V012_NEXT4_ENGINE_002_MODEL_011R_IMPLEMENTATION_EQUIVALENCE_AUDIT_001.py
+      - name: Assert no scientific Monte Carlo artifact was created
+        run: |
+          test ! -e 03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_POWER_SIMULATION_RESULT_001.json
