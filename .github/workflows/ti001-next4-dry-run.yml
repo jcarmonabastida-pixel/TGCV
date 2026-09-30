@@ -32,7 +32,7 @@ jobs:
           raw=json.dumps(out,sort_keys=True,separators=(",",":")).encode()
           out["result_sha256"]=hashlib.sha256(raw).hexdigest()
           print(json.dumps(out,sort_keys=True,indent=2))
-          if not fit["converged"] or not fit["se"]==fit["se"] or fit["n_parameters"]!=40:
+          if not fit["converged"] or not fit["se"]==fit["se"] or fit["n_parameters"]!=32:
             sys.exit(1)
           PY
       - name: Assert full Monte Carlo path is not invoked
