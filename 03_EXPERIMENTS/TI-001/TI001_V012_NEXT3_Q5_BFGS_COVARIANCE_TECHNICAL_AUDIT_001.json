@@ -1,0 +1,56 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_Q5_BFGS_COVARIANCE_TECHNICAL_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_Q5_BFGS_COVARIANCE_TECHNICAL_AUDIT",
+  "status": "TECHNICAL_AUDIT_PASS",
+  "date": "2026-09-30",
+  "scope": {
+    "question": "Q5 covariance construction and identity of covariance used by joint_wald",
+    "scientific_execution_performed": false,
+    "fixture_modified": false,
+    "primary_result_modified": false,
+    "specification_modified": false
+  },
+  "canonical_bindings": {
+    "implementation": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+    "implementation_sha256": "3d39fc5f6d7e6b7a8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f708192a3b4c5d",
+    "covariance_method": "BFGS_INVERSE_HESSIAN",
+    "fit_method": "BFGS",
+    "statsmodels_version": "0.14.6"
+  },
+  "note": "The implementation SHA above is retained as the canonical binding recorded during the prior audit; this artifact does not recompute or alter it.",
+  "reproduction": {
+    "type": "minimal_deterministic_technical_reproduction",
+    "model_family": "ConditionalLogit via LikelihoodModel.fit",
+    "groups": 20,
+    "alternatives_per_group": 4,
+    "parameters": 3,
+    "random_seed": 123,
+    "callback_invocations": 1,
+    "Hinv_received": true,
+    "Hinv_shape": [
+      3,
+      3
+    ],
+    "covariance_shape": [
+      3,
+      3
+    ],
+    "positive_definite": true,
+    "finite": true,
+    "max_absolute_difference_callback_vs_result_covariance": 0,
+    "optimizer_converged": true,
+    "future_warning_observed": true,
+    "future_warning_interpretation": "The warning concerns forwarding cov_params_func to the SciPy BFGS optimizer; it does not prevent LikelihoodModel.fit from subsequently retrieving and invoking cov_params_func after optimization."
+  },
+  "source_path_verification": {
+    "statsmodels_0_14_6_LikelihoodModel_fit": "After Optimizer._fit returns, cov_params_func is retrieved from kwargs and invoked with (self, xopt, retvals); its return value is supplied to LikelihoodModelResults.",
+    "frozen_NEXT3_route": "The canonical implementation calls LikelihoodModel.fit directly with cov_params_func=bfgs_inverse_hessian_covariance, then reconstructs ConditionalResults from rslt.cov_params()."
+  },
+  "conclusion": {
+    "technical_mechanism_status": "PASS",
+    "covariance_identity_status": "PASS_IN_REPRODUCTION",
+    "historical_RESULT_001_callback_trace": "NOT_DIRECTLY_LOGGED",
+    "interpretation": "The prior technical blocker is resolved at the mechanism/code-path level. The evidence establishes that the frozen BFGS covariance route is executable in statsmodels 0.14.6, that the callback receives Hinv, that the resulting covariance is positive definite in the reproduction, and that the exact covariance returned by the callback is the covariance exposed by LikelihoodModelResults. This does not retroactively create a runtime callback trace inside RESULT_001; that limitation remains explicit.",
+    "scientific_reexecution_required": false
+  }
+}
