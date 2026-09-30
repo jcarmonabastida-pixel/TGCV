@@ -1,4 +1,4 @@
-"""NEXT4 design-stage power engine 002 consuming canonical DGP 002 and Model-010."""
+"""NEXT4 design-stage power engine 002 consuming canonical DGP 002 and Model-011R."""
 from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
@@ -24,8 +24,8 @@ PERMUTATIONS = tuple(permutations(ACTIONS))
 
 BASE_DIR = Path(__file__).resolve().parent
 DGP_PATH = BASE_DIR / "TI001_V012_NEXT4_DGP_SPECIFICATION_002.json"
-MODEL_PATH = BASE_DIR / "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010.py"
-MODEL_COMMIT = "23f00c0971bf7fd7584ff546ec523693e99c8c03"
+MODEL_PATH = BASE_DIR / "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011R.py"
+MODEL_COMMIT = "24e6b2067c5e038d30fabbc2761da6775e5de78f"
 
 
 def load_dgp():
@@ -33,10 +33,12 @@ def load_dgp():
 
 
 def load_model():
-    spec = importlib.util.spec_from_file_location("ti001_next4_model_010", MODEL_PATH)
+    spec = importlib.util.spec_from_file_location("ti001_next4_model_011r", MODEL_PATH)
     if spec is None or spec.loader is None:
         raise RuntimeError("Cannot load canonical Model-011R")
     module = importlib.util.module_from_spec(spec)
+    import sys
+    sys.modules["ti001_next4_model_011r"] = module
     spec.loader.exec_module(module)
     return module
 
@@ -158,54 +160,23 @@ def digest(obj):
 
 
 def build_model_matrix(sets, model, reference=0):
-    """Build the observed-choice likelihood matrix exactly for Model-010.
-
-    Model-010 defines three relative action logits per (surface, profile)
-    relative to reference action 0. The reference-action row therefore carries
-    no surface coefficient; action 1/2/3 carry the corresponding relative
-    coefficient. Nuisance columns are those returned by Model-010 itself.
-    """
+    """Build the action-level likelihood matrix from canonical Model-011R."""
     import numpy as np
-
-    cols = model.parameter_columns(reference=reference)
-    index = {c: i for i, c in enumerate(cols)}
-    X = []
-
-    actions = tuple(a for a in ACTIONS if a != reference)
-    for cs in sets:
-        surface = {
-            "STATIC_CONTROL": "STATIC",
-            "FUTURE_REASSIGNED": "FUTURE",
-        }.get(cs["condition"])
-
-        for action in ACTIONS:
-            row = np.zeros(len(cols))
-
-            if surface is not None and action != reference:
-                key = (
-                    f"{surface}_profile_{cs['profile']}_"
-                    f"delta_action_{action}_ref_{reference}"
-                )
-                row[index[key]] = 1.0
-
-            if cs["condition"] not in ("STATIC_CONTROL", "FUTURE_REASSIGNED"):
-                row[index[f"condition_{cs['condition']}"]] = 1.0
-
-            for d in DOMAINS[1:]:
-                if cs["domain"] == d:
-                    row[index[f"domain_{d}"]] = 1.0
-
-            if cs["operationalisation"] == 1:
-                row[index["operationalisation_1"]] = 1.0
-
-            for p in PRESENTATIONS[1:]:
-                if cs["presentation"] == p:
-                    row[index[f"presentation_{p}"]] = 1.0
-
-            X.append(row)
-
-    return np.asarray(X), cols
-
+    if reference != 0:
+        raise ValueError("Model-011R canonical reference action is fixed at 0")
+    rows = [r for cs in sets for r in choice_set_to_action_rows(cs)]
+    X_full, cols = model.build_matrix(rows)
+    n_sets = len(sets)
+    n_actions = len(ACTIONS)
+    if X_full.shape[0] != n_sets * n_actions:
+        raise AssertionError("Model-011R matrix row count does not match choice sets")
+    X4 = X_full.reshape(n_sets, n_actions, len(cols))
+    X_relative = X4 - X4[:, [reference], :]
+    active = np.any(np.abs(X_relative[:, 1:, :]) > 0, axis=(0, 1))
+    active_indices = np.flatnonzero(active)
+    active_cols = [cols[i] for i in active_indices]
+    X_active = X_relative[:, :, active_indices].reshape(n_sets * n_actions, len(active_indices))
+    return X_active, active_cols, cols, X_full
 
 def fit_primary_contrast(sets, reference=0):
     """Fit Model-010 and return its frozen primary contrast."""
