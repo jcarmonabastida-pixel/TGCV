@@ -1,9 +1,9 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.40
+# TGCV — Evidence-to-Claim Matrix — Current v1.41
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
-**Date:** 2026-09-28  
-**Predecessor:** v1.39  
-**Incremental governance update:** Adds the closed TI-001 V012 NEXT2 direct primary contrast result and its secondary-MI traceability limitation to the cumulative evidence record, routed primarily to C16. No claim-level upgrade, TGCV Core modification, or TGCV-wide confirmation/falsification is introduced.
+**Date:** 2026-09-30  
+**Predecessor:** v1.40  
+**Incremental governance update:** Adds the closed TI-001 V012 NEXT3 Q1–Q5 technical closure and scientific interpretation to the cumulative evidence record, routed primarily to C16. NEXT3 identifies a strong action–profile–condition interaction while Q1/Q3 show no marginal profile×condition effect, Q2 shows no detectable profile×presentation interaction, and Q4 shows strong domain dependence with no detectable profile×operationalisation interaction. No claim-level upgrade, TGCV Core modification, or TGCV-wide confirmation/falsification is introduced.
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
 
@@ -35,7 +35,7 @@ A material experimental result is propagated to this matrix when it adds, remove
 | C13 | TGCV contains no equivalent prior architecture | O | D-OPS-21 | No material impact. | Comparative coverage |
 | C14 | T_acc is an ontological primitive independent of S | F | TR-131 | No impact; SWIM, IT-G1, KGFS, C09 Bundle 003, C10C-002 and C10C-003 treat accessibility as derived/conditioned rather than restoring the rejected primitive. | No restoration without contrary evidence |
 | C15 | Rust demonstrates observed Cargo/runtime reachability | F | Rust evidence boundary | No impact. | Separate governed runtime test |
-|  C16  |  TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value  |  H  |   D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 + C09 Bundle 003 + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4 TSTC v004 + VSL Synthetic Minimum v0.1 + VSL Paired E1/E2 v001 + TR-131 VisitAll |  SWIM supports bounded state/context → accessibility → `T_acc` → `ΔT_acc` and bounded trajectory linkage. IT-G1 adds bounded industrial evidence preserving distinctions among internal state transformation, external enabling condition and end-to-end outcome. C09 Bundle 003 adds bounded executable causal-operationalization evidence while preserving the distinction between intervention/accessibility and downstream outcome. C10C-002 adds a reproducible real-world bounded chain `Z → ΔS → T_acc* → ΔT_acc* → frozen causal estimand`, with structural-only predicates, explicit treatment/state separation, endpoint separation, and a negative result retained without post-hoc rescue. C10C-001 adds a complementary non-software boundary case preserving distinctions among structural state, candidate transformations, accessibility and realized transformations while preventing temporal leakage. C10C-003 adds a second randomized non-software boundary case preserving the same distinctions and explicitly qualifying the bounded scope of accessibility operationalization. C10C-004 adds a worked non-software translation example preserving the distinction among instrument semantics, raw variables, derived outcomes and TGCV constructs. It does not close downstream value boundaries or establish transversal validity. MT4 adds bounded methodological evidence preserving separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables. No claim-level upgrade. TSTC v004 provides primary bounded methodological evidence for application-fit of the translation protocol across heterogeneous synthetic fixtures, including cross-domain paths and negative controls; no causal, value, superiority, generality or industrial-validation claim upgrade. C05 adds bounded synthetic application-fit evidence preserving the distinctions among candidate transformations, admissibility, `T_acc`, transition, bounded trajectory fields, negative controls and explicit non-claims; no causal, value, superiority, generality or deployment claim is inferred. VSL Synthetic Minimum v0.1 extends the translation protocol to preserve an explicit downstream Outcome/Value distinction and an external VSL interface. It demonstrates implementation-level separation without establishing transversal empirical validity or a causal value pathway. VSL paired E1/E2 adds closed, independently reconstructed methodological evidence preserving the separation among `T_acc`, realized trajectory and downstream `V*`; no transversal empirical validity or claim-level upgrade follows. TR-131 VisitAll and PRISM V007 together provide bounded cross-domain methodological evidence for an executable translation from state to accessible transformations, realised transformations, successor states and changed accessible spaces. VisitAll contributes 20 transition records and PRISM 16; both satisfy independent reconstruction/integrity checks and V007 contains zero invalid records. The common representation preserves domain-specific transformation identities while deriving comparable reconfiguration descriptors. The result supports the cross-domain analytical translation layer as an operationalisation finding only; it does not establish representational gain, transversal validity, Transformational Intelligence, value linkage or ontological necessity. V011 is methodological evidence for the decision-level Transformational Intelligence research direction, not evidence of transversal validity, causal value linkage or ontological necessity. V012_NEXT adds bounded descriptive/traceability evidence that a controlled decision-selection experiment can preserve the pre-decision/post-decision distinction and mechanically reconstruct the decision-to-successor-`T_acc` chain for every included unit. It does not identify Q1/Q5, establish a general future-space mechanism, or upgrade C16. NEXT2 adds a closed primary inferential contrast between INFORMATIVE and UNINFORMATIVE_NULL for the pre-specified action_identity × future_assignment mechanism: the direct interaction likelihood-ratio test gives chi-square(9) = 13.9707, p = 0.1234, with 11,182 compared valid decisions. This does not establish the pre-specified mechanism direction and does not upgrade C16. The secondary negative-control mutual-information contrast is documented as 0.002143 bits in the specification/contract, but its derivation is not supported by a reproducible execution artifact in the searched TI-001 scope; it is therefore retained as a documented value without independent execution evidence. The NEXT2 closure audit records this limitation. No TGCV-wide confirmation/falsification, value/causal claim, or general Transformational Intelligence claim follows. |  Closed independent-domain operationalization / downstream test  |
+|  C16  |  TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value  |  H  |   D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 + C09 Bundle 003 + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4 TSTC v004 + VSL Synthetic Minimum v0.1 + VSL Paired E1/E2 v001 + TR-131 VisitAll |  SWIM supports bounded state/context → accessibility → `T_acc` → `ΔT_acc` and bounded trajectory linkage. IT-G1 adds bounded industrial evidence preserving distinctions among internal state transformation, external enabling condition and end-to-end outcome. C09 Bundle 003 adds bounded executable causal-operationalization evidence while preserving the distinction between intervention/accessibility and downstream outcome. C10C-002 adds a reproducible real-world bounded chain `Z → ΔS → T_acc* → ΔT_acc* → frozen causal estimand`, with structural-only predicates, explicit treatment/state separation, endpoint separation, and a negative result retained without post-hoc rescue. C10C-001 adds a complementary non-software boundary case preserving distinctions among structural state, candidate transformations, accessibility and realized transformations while preventing temporal leakage. C10C-003 adds a second randomized non-software boundary case preserving the same distinctions and explicitly qualifying the bounded scope of accessibility operationalization. C10C-004 adds a worked non-software translation example preserving the distinction among instrument semantics, raw variables, derived outcomes and TGCV constructs. It does not close downstream value boundaries or establish transversal validity. MT4 adds bounded methodological evidence preserving separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables. No claim-level upgrade. TSTC v004 provides primary bounded methodological evidence for application-fit of the translation protocol across heterogeneous synthetic fixtures, including cross-domain paths and negative controls; no causal, value, superiority, generality or industrial-validation claim upgrade. C05 adds bounded synthetic application-fit evidence preserving the distinctions among candidate transformations, admissibility, `T_acc`, transition, bounded trajectory fields, negative controls and explicit non-claims; no causal, value, superiority, generality or deployment claim is inferred. VSL Synthetic Minimum v0.1 extends the translation protocol to preserve an explicit downstream Outcome/Value distinction and an external VSL interface. It demonstrates implementation-level separation without establishing transversal empirical validity or a causal value pathway. VSL paired E1/E2 adds closed, independently reconstructed methodological evidence preserving the separation among `T_acc`, realized trajectory and downstream `V*`; no transversal empirical validity or claim-level upgrade follows. TR-131 VisitAll and PRISM V007 together provide bounded cross-domain methodological evidence for an executable translation from state to accessible transformations, realised transformations, successor states and changed accessible spaces. VisitAll contributes 20 transition records and PRISM 16; both satisfy independent reconstruction/integrity checks and V007 contains zero invalid records. The common representation preserves domain-specific transformation identities while deriving comparable reconfiguration descriptors. The result supports the cross-domain analytical translation layer as an operationalisation finding only; it does not establish representational gain, transversal validity, Transformational Intelligence, value linkage or ontological necessity. V011 is methodological evidence for the decision-level Transformational Intelligence research direction, not evidence of transversal validity, causal value linkage or ontological necessity. V012_NEXT adds bounded descriptive/traceability evidence that a controlled decision-selection experiment can preserve the pre-decision/post-decision distinction and mechanically reconstruct the decision-to-successor-`T_acc` chain for every included unit. It does not identify Q1/Q5, establish a general future-space mechanism, or upgrade C16. NEXT2 adds a closed primary inferential contrast between INFORMATIVE and UNINFORMATIVE_NULL for the pre-specified action_identity × future_assignment mechanism: the direct interaction likelihood-ratio test gives chi-square(9) = 13.9707, p = 0.1234, with 11,182 compared valid decisions. This does not establish the pre-specified mechanism direction and does not upgrade C16. The secondary negative-control mutual-information contrast is documented as 0.002143 bits in the specification/contract, but its derivation is not supported by a reproducible execution artifact in the searched TI-001 scope; it is therefore retained as a documented value without independent execution evidence. The NEXT2 closure audit records this limitation. NEXT3 adds bounded post-primary decision-selection evidence that the action–profile correspondence is condition-sensitive at the higher-order interaction level while marginal profile×condition and profile×presentation effects are not detected. Q1 and the INFORMATIVE−UNINFORMATIVE_NULL component of Q3 are mathematically identical joint contrasts in RESULT_001 and are retained as separate frozen inferential entries without retrospective family modification. Q4 shows strong domain dependence but no detectable profile×operationalisation modulation. Q5 provides the strongest result: action_identity × profile_id × condition is extremely strong (chi-square(9) = 2902.9464; stored p = 0; Holm-adjusted p = 0), with BFGS inverse-Hessian covariance; historical callback trace is absent, but technical reproduction of the stored result passes. The scientific interpretation is limited to reorganisation of action–profile correspondence under condition; it does not identify a unique mechanism, establish future-transformation causality, prove Transformational Intelligence, establish value linkage, or provide generalisation beyond the frozen execution. |  Closed independent-domain operationalization / downstream test  |
 
 ## Material methodological evidence — TI-001 V012_NEXT
 
@@ -1302,3 +1302,117 @@ TR-131 Cross-Domain Operationalisation V007 is closed as **bounded cross-domain 
 The next governed sequence is therefore:
 
 `TR-131/V007 → Evidence Matrix propagation → Transformation-Space Dynamics Analysis formalisation → TI hypothesis testing (TI-001)`.
+
+## Material experimental evidence — TI-001 V012 NEXT3 Q1–Q5
+
+**Case:** `TI001_V012_NEXT3`  
+**Status:** `CLOSED — BOUNDED POST-PRIMARY INFERENTIAL EVIDENCE; Q1–Q5 TECHNICAL CLOSURE PASS`  
+**Evidence class:** controlled decision-selection analysis with frozen post-primary specification; exploratory/non-confirmatory inferential evidence.  
+**Final closure audit:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_Q1_Q5_FINAL_CLOSURE_AUDIT_001.json`  
+**Source result:** `TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001`  
+**Result payload SHA-256:** `9008ae02130405428cb30e6391fd37e5cd76b8bfe835dbcfc8ad6002e073ccf4`  
+**Fixture:** `NEXT3_v003`; fixture SHA-256 `0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0`  
+**Execution result SHA-256:** `b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de`  
+**Analysis specification:** `TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002`  
+**Specification SHA-256:** `7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695`
+
+### 1. Scope and closure
+
+NEXT3 contains **23,040 decisions**, of which **22,649 are valid** and **391 are excluded as invalid**. The frozen analysis declares **8 primary inferential contrasts** with Holm adjustment. The final closure audit records **Q1–Q5 technical closure pass** over `RESULT_001`. The analysis is explicitly marked **exploratory: true** and **confirmatory: false**.
+
+The closure audit verifies preservation of the frozen result, fixture and primary estimand, no NEXT2 pooling, and no value/utility/reward/performance signal. It also records that no scientific re-execution of `RESULT_001` is required for the Q1–Q5 technical closure.
+
+### 2. Q1 — marginal profile × condition
+
+Q1 tests whether the contribution of `profile_id` differs between INFORMATIVE and UNINFORMATIVE_NULL after controlling action identity.
+
+The joint contrast is:
+
+- chi-square(3) = **0.0900990411**
+- p = **0.9929985101**
+- Holm-adjusted p = **1.0**
+
+There is no evidence in this frozen result that the marginal/global contribution of `profile_id` is condition-sensitive. This does not imply absence of any higher-order action/profile reorganisation and does not refute the broader Transformational Intelligence research direction.
+
+### 3. Q2 — profile × presentation
+
+Q2 tests whether the profile-selection association changes across the four frozen presentation strata.
+
+The joint contrast is:
+
+- chi-square(9) = **7.5928783884**
+- p = **0.5756360601**
+- Holm-adjusted p = **1.0**
+
+No detectable `profile_id × presentation` interaction is observed in the frozen result. This is a robustness/control finding within NEXT3, not positive evidence of Transformational Intelligence and not proof of universal presentation invariance.
+
+### 4. Q3 — condition contrasts
+
+Q3 compares INFORMATIVE, SURFACE_PERMUTED and CONTRADICTORY against UNINFORMATIVE_NULL:
+
+| Contrast | df | chi-square | p | Holm p |
+|---|---:|---:|---:|---:|
+| INFORMATIVE − UNINFORMATIVE_NULL | 3 | 0.0900990411 | 0.9929985101 | 1.0 |
+| SURFACE_PERMUTED − UNINFORMATIVE_NULL | 3 | 2.6233921205 | 0.4534033565 | 1.0 |
+| CONTRADICTORY − UNINFORMATIVE_NULL | 3 | 2.6764892735 | 0.4442374931 | 1.0 |
+
+All three condition contrasts are non-significant under the frozen Holm family. The INFORMATIVE−UNINFORMATIVE_NULL contrast is mathematically identical to Q1's joint contrast in `RESULT_001`; this is preserved as a structural observation because the frozen specification declares them as distinct inferential entries, rather than retrospectively altering the family.
+
+These results do not establish that the NULL condition is mere noise and do not identify the source of condition-dependent structure detected at Q5.
+
+### 5. Q4 — domain and operationalisation
+
+Q4 separates domain dependence from operationalisation dependence:
+
+- `profile_id × operationalisation`: chi-square(12) = **11.3145510197**, p = **0.5021712621**, Holm p = **1.0**.
+- `profile_id × domain`: chi-square(9) = **248.3851538511**, p = **2.1870167307e-48**, Holm p = **1.5309117115e-47**.
+
+Thus no detectable modulation by operationalisation is present within NEXT3, while domain dependence is very strong. Q4 does not identify the mechanism generating that domain dependence and does not constitute independent cross-domain replication.
+
+### 6. Q5 — action × profile × condition
+
+Q5 tests whether the correspondence between specific actions and structural profiles changes with condition through the higher-order interaction `action_identity × profile_id × condition`.
+
+The joint contrast is:
+
+- chi-square(9) = **2902.9464378716**
+- stored p = **0.0**
+- Holm-adjusted p = **0.0**
+- covariance method: **BFGS_INVERSE_HESSIAN**
+- fit method: **BFGS**
+- statsmodels: **0.14.6**
+
+Q5 is the strongest inferential result in NEXT3. The result is consistent with a substantial reorganisation of action–profile correspondence across conditions. This is not equivalent to saying that the system simply assigns more global weight to profiles: Q1 tests a lower-order marginal profile×condition effect, whereas Q5 tests the higher-order action×profile×condition structure.
+
+The technical audit records that the historical optimizer callback trace is absent from `RESULT_001`. Nevertheless, the stored BFGS result was independently reproduced at the technical/statistical level and the Q5 audit passes. No re-execution is required on that basis.
+
+### 7. Scientific interpretation
+
+The most informative pattern is the separation between **marginal profile contribution** and **action–profile correspondence**:
+
+1. Q1/Q3 show no detectable marginal condition-dependent profile contribution.
+2. Q2 shows no detectable profile×presentation modulation.
+3. Q4 shows no detectable profile×operationalisation modulation but strong domain dependence.
+4. Q5 shows an extremely strong higher-order action×profile×condition interaction.
+
+The bounded scientific interpretation is therefore:
+
+> Under the frozen NEXT3 operationalisation, the evidence is more consistent with a reorganisation of the correspondence between structural profiles and candidate actions across conditions than with a global increase in profile use.
+
+This pattern is relevant to the Transformational Intelligence research programme because it localises the unresolved mechanism at the level of **conditional action selection structured by profiles**, rather than at the level of a simple marginal information-weighting effect. It remains a hypothesis-generating result, not identification of a unique cognitive/agent mechanism.
+
+### 8. Evidence-to-claim propagation
+
+**C16 — bounded methodological/mechanism qualification.** NEXT3 materially extends the decision-level translation evidence by showing that a frozen structural profile variable can participate in a strong higher-order action-selection interaction while lower-order and presentation-control contrasts remain non-significant. This supports a more precise formulation of the unresolved decision-level mechanism: the key observable may be conditional reorganisation of action–profile correspondence rather than a marginal increase in profile use.
+
+No positive propagation is made to C02, C07, C08, C09, C10, C11, C12, C13, C14 or C15. NEXT3 does not operationalize `T_acc` directly, does not estimate a trajectory or value endpoint, does not establish transversal validity, and does not establish explanatory superiority.
+
+No claim-level status or level changes.
+
+### 9. Governance disposition
+
+NEXT3 Q1–Q5 is closed as **bounded exploratory/non-confirmatory inferential evidence**. The result should now be used to formulate NEXT4 around the discriminating question:
+
+> Can the observed action–profile–condition reorganisation be specifically linked to an explicit representation of future transformation/trajectory, while separating it from a static profile→action rule and controlling domain dependence?
+
+The matrix therefore records NEXT3 as a material evidentiary qualification and uses it to motivate the next governed experimental design without treating NEXT3 as a confirmation of Transformational Intelligence.
