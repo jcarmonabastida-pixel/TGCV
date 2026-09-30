@@ -1,0 +1,21 @@
+{
+  "artifact": "TI001_V012_NEXT4_ENGINE_002_DGP_CONSUMPTION_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_PASS_SOURCE_BINDING",
+  "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
+  "engine_commit": "591980720272635e42c6afe555fcbedbc848557b",
+  "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+  "checks": {
+    "dgp_loaded_from_canonical_json": true,
+    "effect_grid_not_hardcoded": true,
+    "nuisance_coefficients_loaded_from_dgp": true,
+    "condition_semantics_match_dgp": true,
+    "no_provider_calls": true,
+    "no_scientific_executor_calls": true,
+    "no_next3_empirical_effect_imported": true
+  },
+  "note": "The engine still contains the algebraic profile-action nuisance formula 0.04*((action+profile) mod 4), matching the canonical DGP specification. The audit establishes source binding, not full factorial/output equivalence.",
+  "gate_decision": "PASS FOR NEXT FACTORIAL/DGP EQUIVALENCE AUDIT",
+  "scientific_execution_authorized": false,
+  "next_action": "Run deterministic factorial/DGP equivalence audit against DGP_SPECIFICATION_002 and MODEL_009; verify counts, condition allocation, permutation balance, logits, probabilities, and fixed-seed replay."
+}
