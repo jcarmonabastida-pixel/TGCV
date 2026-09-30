@@ -1,7 +1,7 @@
 {
   "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_002",
   "date": "2026-09-30",
-  "status": "DESIGN_REVIEW_FROZEN_NOT_EXECUTION_AUTHORIZED",
+  "status": "MONTE_CARLO_EXECUTION_AUTHORIZED",
   "supersedes": "TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_001.json",
   "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
   "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
@@ -9,15 +9,33 @@
   "model_commit": "23f00c0971bf7fd7584ff546ec523693e99c8c03",
   "identifiability_audit": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010_IDENTIFIABILITY_AUDIT_001.json",
   "identifiability_audit_commit": "dfdb352fad1dd8bd620ac8240c8000c3969de1b8",
-  "candidate_n": [1728,2304,3456,5184,6912],
-  "effect_grid": [0,0.1,0.2,0.3,0.4,0.5,0.75,1],
+  "candidate_n": [
+    1728,
+    2304,
+    3456,
+    5184,
+    6912
+  ],
+  "effect_grid": [
+    0,
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.75,
+    1
+  ],
   "replicates_per_cell": 1000,
   "master_seed": 20260930,
   "seed_schedule": "SHA256(master_seed|effect_label|N|replicate|choice_set_id), first 64 bits interpreted as unsigned integer",
   "alpha": 0.05,
   "estimator": {
     "parameterization": "three within-profile action-logit differences per surface/profile relative to fixed reference action 0, plus declared nuisance terms",
-    "surface_blocks": ["STATIC","FUTURE"],
+    "surface_blocks": [
+      "STATIC",
+      "FUTURE"
+    ],
     "reference_action": 0,
     "primary_contrast": "mean over 24 frozen permutations × 4 profiles of [d_F(p,pi(p))-d_F(p,p)] - [d_S(p,pi(p))-d_S(p,p)], with d_s(p,0)=0",
     "equivalent_absolute_logit_form": "+eta_F(p,pi(p))-eta_F(p,p)-eta_S(p,pi(p))+eta_S(p,p), weighted 1/(24*4)",
@@ -40,7 +58,13 @@
   ],
   "outputs": {
     "per_cell": "N, delta, replicates, convergence_count, valid_fit_count, rejection_count, empirical_rejection_rate, mean_estimate, sd_estimate, mean_se",
-    "diagnostics": ["fit_failures","nonfinite_estimates","nonfinite_se","singular_or_rank_failures","seed_replay_hash"]
+    "diagnostics": [
+      "fit_failures",
+      "nonfinite_estimates",
+      "nonfinite_se",
+      "singular_or_rank_failures",
+      "seed_replay_hash"
+    ]
   },
   "validity": {
     "no_adaptive_stopping": true,
@@ -50,6 +74,17 @@
     "no_value_reward_performance_signal": true,
     "scientific_interpretation_after_completion_only": true
   },
-  "scientific_execution_authorized": false,
-  "next_action": "Update Engine 002 to consume Model-010, then run implementation-equivalence audit and a dry-run/single-cell execution audit. Full 5×8×1000 Monte Carlo remains blocked until those audits pass."
+  "scientific_execution_authorized": true,
+  "next_action": "Execute the frozen 5×8×1000 Monte Carlo exactly as specified; no adaptive stopping, parameter tuning, empirical NEXT3 effect importation, provider calls, or value/reward signal.",
+  "authorization": {
+    "authorized_on": "2026-09-30",
+    "prerequisite_audits": {
+      "model_010_identifiability": "PASS",
+      "implementation_equivalence_engine_002_model_010": "PASS",
+      "dgp_002_exact_consumption": "PASS",
+      "dry_run_single_cell": "PASS"
+    },
+    "dry_run_workflow_run_id": 36731485819,
+    "dry_run_audit_commit": "ecb433dae4005006ca28868acb1825515d7f2966"
+  }
 }
