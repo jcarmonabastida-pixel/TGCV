@@ -1,0 +1,40 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002_MODEL_010_IMPLEMENTATION_EQUIVALENCE_AUDIT_001.json",
+  "audit_type": "IMPLEMENTATION_EQUIVALENCE_AUDIT",
+  "status": "PASS",
+  "scope": {
+    "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
+    "engine_commit": "306ac9a58960bc91c38e31464c5879e5b8f77b8f",
+    "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010.py",
+    "model_commit": "23f00c0971bf7fd7584ff546ec523693e99c8c03",
+    "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+    "execution_specification": "TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_002"
+  },
+  "checks": {
+    "canonical_model_loaded_by_engine": true,
+    "three_relative_logits_per_surface_profile": true,
+    "fixed_reference_action_zero": true,
+    "static_surface_parameterisation_equivalent": true,
+    "future_surface_parameterisation_equivalent": true,
+    "nuisance_columns_equivalent": true,
+    "control_condition_semantics_equivalent": true,
+    "primary_contrast_delegated_to_model_010": true,
+    "reference_action_parameterisation_not_reimplemented_in_conflict": true,
+    "dgp_path_remains_canonical": true,
+    "seed_schedule_unchanged": true,
+    "no_provider_calls": true,
+    "no_scientific_executor_calls": true
+  },
+  "equivalence_basis": {
+    "matrix_construction": "Engine-002 reproduces Model-010 build_matrix semantics for observed choice rows, using Model-010 parameter_columns() as the canonical column definition.",
+    "contrast_construction": "Engine-002 delegates primary_contrast() to canonical Model-010 rather than retaining the superseded Model-009 32-absolute-logit contrast implementation.",
+    "boundary": "DGP-002 generation remains unchanged; only the estimation/model-consumption layer was replaced."
+  },
+  "execution_boundary": {
+    "static_source_equivalence_audit": true,
+    "runtime_execution": false,
+    "scientific_execution": false,
+    "monte_carlo_executed": false
+  },
+  "next_gate": "DRY_RUN_SINGLE_CELL_AUDIT_REQUIRED"
+}
