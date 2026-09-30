@@ -39,7 +39,7 @@ def main():
     for path in files:
         raw_text = path.read_text(encoding="utf-8")
         # Frozen scientific artifacts may contain a literal \\n suffix from serialization.
-        if raw_text.endswith("\\\\n"):
+        if raw_text.endswith("\\n"):
             raw_text = raw_text[:-2]
             serialization_normalizations += 1
         obj = json.loads(raw_text)
