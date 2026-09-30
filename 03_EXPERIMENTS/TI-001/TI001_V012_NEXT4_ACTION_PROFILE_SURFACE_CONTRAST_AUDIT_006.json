@@ -1,0 +1,24 @@
+{
+  "artifact": "TI001_V012_NEXT4_ACTION_PROFILE_SURFACE_CONTRAST_AUDIT_006",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_RANK_REVISION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_ACTION_PROFILE_SURFACE_CONTRAST_MODEL_006.py",
+  "implementation_commit": "efcd48b81b947aa086f8606672e384cdad6c4f08",
+  "checks": {
+    "mapping_columns_removed_from_X": true,
+    "action_profile_surface_explicit": true,
+    "permutation_used_only_for_contrast": true,
+    "condition_specific_surface": true,
+    "numeric_contrast": true,
+    "rank_diagnostic": true,
+    "estimability_diagnostic": true
+  },
+  "blockers": [
+    "The difference-in-surfaces formulation is conceptually cleaner, but the current matrix encodes both the global action×profile surface and condition-specific action×profile interactions while also retaining condition main effects; this parameterisation requires an explicit treatment-coding audit before rank can be accepted.",
+    "The contrast is estimable only if every referenced condition-specific coefficient is identified under the chosen reference coding and every required action×profile cell has positive support.",
+    "The implementation currently has no integrated balanced-fixture construction or numerical rank result for the five frozen N values.",
+    "The scientific estimand still needs a precise rule for whether the contrast averages one permutation, all 24 permutations, or a predeclared permutation-weighted family."
+  ],
+  "gate_decision": "BLOCK",
+  "next_action": "Integrate the frozen balanced allocation into the model, compute numerical rank/estimability for all candidate N, and freeze the permutation-family weighting rule before fitting."
+}
