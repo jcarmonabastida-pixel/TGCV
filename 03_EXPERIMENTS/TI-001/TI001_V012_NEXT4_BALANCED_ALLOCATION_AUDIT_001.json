@@ -1,0 +1,54 @@
+{
+  "artifact": "TI001_V012_NEXT4_BALANCED_ALLOCATION_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_PASS",
+  "implementation": "TI001_V012_NEXT4_BALANCED_ALLOCATION_001.py",
+  "implementation_commit": "234b22f3f2b35d8d6d535003875a86794b3ac430",
+  "candidate_n": [
+    1728,
+    2304,
+    3456,
+    5184,
+    6912
+  ],
+  "factorial_cells": 96,
+  "checks": {
+    "every_n_divisible_by_96": true,
+    "equal_cell_counts": true,
+    "all_four_conditions_each_n": true,
+    "all_three_domains_each_n": true,
+    "both_operationalisations_each_n": true,
+    "all_four_presentations_each_n": true,
+    "all_24_permutations_each_condition": true,
+    "deterministic_allocation": true
+  },
+  "results": {
+    "1728": {
+      "per_cell": 18,
+      "condition_n": 432,
+      "permutation_count_per_condition": 18
+    },
+    "2304": {
+      "per_cell": 24,
+      "condition_n": 576,
+      "permutation_count_per_condition": 24
+    },
+    "3456": {
+      "per_cell": 36,
+      "condition_n": 864,
+      "permutation_count_per_condition": 36
+    },
+    "5184": {
+      "per_cell": 54,
+      "condition_n": 1296,
+      "permutation_count_per_condition": 54
+    },
+    "6912": {
+      "per_cell": 72,
+      "condition_n": 1728,
+      "permutation_count_per_condition": 72
+    }
+  },
+  "gate_decision": "PASS. Allocation is frozen and balanced for every candidate N.",
+  "next_action": "Implement exact statistical design matrix and numerical primary contrast using this frozen allocation."
+}
