@@ -1,0 +1,54 @@
+{
+  "artifact": "TI001_V012_NEXT4_MODEL_011R_DGP_ESTIMAND_POPULATION_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "PASS",
+  "audit_type": "INDEPENDENT_ALGEBRAIC_DGP_TO_MODEL_011R_REPRESENTABILITY",
+  "scientific_execution_authorized": false,
+  "inputs": {
+    "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+    "dgp_blob_sha": "3b3b43b88edf576ee8b9e0f40d21f3a5e71024c4",
+    "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011R.py",
+    "model_blob_sha": "24e6b2067c5e038d30fabbc2761da6775e5de78f",
+    "audit_script": "TI001_V012_NEXT4_MODEL_011R_DGP_ESTIMAND_POPULATION_AUDIT_001.py",
+    "audit_script_commit": "1d6101afde1f8ec0ec52fe4ad21f75f1b67cb4c3",
+    "candidate_N": [
+      1728,
+      2304,
+      3456,
+      5184,
+      6912
+    ],
+    "effect_grid": [
+      0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.75,
+      1
+    ]
+  },
+  "method": {
+    "sampling_error": false,
+    "provider_calls": false,
+    "monte_carlo": false,
+    "gate": "Exact DGP-002 logit representation in Model-011R and theta=delta for every N and delta."
+  },
+  "findings": {
+    "signal_weights": {
+      "nonidentity": 0.75,
+      "fixedpoint": 0.25
+    },
+    "beta_nonidentity_equals_delta": true,
+    "beta_fixedpoint_equals_delta": true,
+    "theta_equals_delta": true,
+    "max_logit_representation_error": 2.220446049250313e-16,
+    "max_nonidentity_coefficient_error": 0,
+    "max_fixedpoint_coefficient_error": 0,
+    "max_theta_error": 0,
+    "checked_cells": "5 candidate N × 8 effects × full expanded action-level design",
+    "fixedpoint_semantics": "Included explicitly; 24 fixed-point mapping cells and 72 non-identity mapping cells per 96 permutation-profile allocation unit."
+  },
+  "conclusion": "DGP-002 is exactly representable by Model-011R. Both explicit signal components carry delta, and the declared 0.75/0.25 population contrast therefore equals delta across the full N × effect grid. The DGP freeze remains unchanged."
+}
