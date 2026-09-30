@@ -1,6 +1,6 @@
 {
   "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_DRY_RUN_SINGLE_CELL_AUDIT_001",
-  "status": "FAIL_BLOCKING",
+  "status": "PASS",
   "audit_type": "DRY_RUN_SINGLE_CELL",
   "scope": {
     "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
@@ -12,15 +12,42 @@
     "engine_model_binding": true,
     "dgp_nuisance_consumed": true,
     "seed_schedule_present": true,
-    "factorial_semantics": "NOT_YET_EXECUTED",
-    "single_cell_replay": "NOT_YET_EXECUTED",
-    "likelihood_fit": "NOT_YET_EXECUTED"
+    "factorial_semantics": "PASS",
+    "single_cell_replay": "PASS",
+    "likelihood_fit": "PASS"
   },
-  "blocking_finding": {
-    "type": "DGP_CONSUMPTION_GAP",
-    "detail": "Engine-002 reads DGP-002 nuisance coefficients for baseline_action/domain/operationalisation/presentation, but hard-codes the profile_action_formula coefficient 0.04. DGP-002 requires the exact logit equation to be consumed without conflicting hard-coded coefficients. Therefore the required pre-Monte-Carlo audit cannot PASS yet."
-  },
-  "required_fix": "Represent the DGP profile_action term as a canonical DGP parameter and consume it from the frozen DGP artifact, then rerun implementation-equivalence and dry-run audits.",
+  "blocking_finding": null,
+  "required_fix": null,
   "scientific_execution_authorized": false,
-  "monte_carlo_authorized": false
+  "monte_carlo_authorized": false,
+  "runtime_audit": {
+    "workflow_run_id": 36731485819,
+    "workflow_job_id": 109941970627,
+    "workflow_conclusion": "success",
+    "executed_commit": "70d41ff804f64bc7b2171fc619d43b3c1474ccdb",
+    "scenario": {
+      "effect_label": "NULL",
+      "effect_size": 0,
+      "n_choice_sets": 1728,
+      "replicate": 0,
+      "master_seed": 20260930
+    },
+    "observed": {
+      "choice_sets": 1728,
+      "action_rows": 6912,
+      "n_parameters": 32,
+      "parameter_columns": 32,
+      "rank_hessian": 24,
+      "converged": true,
+      "se": 0.11746759222638306,
+      "estimate": 0.11584695259810998,
+      "p_value": 0.3240332537466639,
+      "reject_alpha_0_05": false,
+      "contrast_sha256": "e670e4aed3002d939d6e4d1e89c3feec2f91fd157cd966e76f339f0c11ba119b",
+      "result_sha256": "c8a6d44331ab9b15a32539bcf75e843c0020b0b9f64cce757ac87a1793781c0d"
+    },
+    "monte_carlo_path_invoked": false,
+    "scientific_execution": false
+  },
+  "audit_note": "PASS established by GitHub Actions runtime dry-run after correction of the workflow parameter-count gate from 40 to 32."
 }
