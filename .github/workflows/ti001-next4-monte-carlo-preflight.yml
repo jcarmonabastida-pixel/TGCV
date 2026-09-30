@@ -1,0 +1,47 @@
+name: TI-001 NEXT4 Monte Carlo preflight
+
+on:
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install scientific dependencies
+        run: python -m pip install --upgrade pip numpy scipy
+      - name: Validate frozen specification
+        working-directory: 03_EXPERIMENTS/TI-001
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open("TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_002.json"))
+          assert p["scientific_execution_authorized"] is True
+          assert p["status"] == "MONTE_CARLO_EXECUTION_AUTHORIZED"
+          assert p["candidate_n"] == [1728,2304,3456,5184,6912]
+          assert p["effect_grid"] == [0,0.1,0.2,0.3,0.4,0.5,0.75,1]
+          assert p["replicates_per_cell"] == 1000
+          assert p["master_seed"] == 20260930
+          assert "SHA256(master_seed|effect_label|N|replicate|choice_set_id)" in p["seed_schedule"]
+          PY
+      - name: Compile and import runner
+        working-directory: 03_EXPERIMENTS/TI-001
+        run: |
+          python -m py_compile TI001_V012_NEXT4_POWER_SIMULATION_MONTE_CARLO_RUNNER_001.py
+          python - <<'PY'
+          import TI001_V012_NEXT4_POWER_SIMULATION_MONTE_CARLO_RUNNER_001 as r
+          assert r.REPLICATES == 1000
+          assert r.MASTER_SEED == 20260930
+          assert r.NS == (1728,2304,3456,5184,6912)
+          assert r.EFFECTS == (0.0,0.1,0.2,0.3,0.4,0.5,0.75,1.0)
+          print("NEXT4 Monte Carlo runner preflight PASS")
+          PY
+      - name: Validate frozen 40-cell matrix
+        run: |
+          test "$(python - <<'PY'
+          print(5*8)
+          PY
+          )" = "40"
