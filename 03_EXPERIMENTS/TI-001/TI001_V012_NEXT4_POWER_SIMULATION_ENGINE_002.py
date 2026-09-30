@@ -178,13 +178,17 @@ def build_model_matrix(sets, model, reference=0):
     X_active = X_relative[:, :, active_indices].reshape(n_sets * n_actions, len(active_indices))
     return X_active, active_cols, cols, X_full
 
+
 def fit_primary_contrast(sets, reference=0):
-    """Fit Model-010 and return its frozen primary contrast."""
+    """Fit Model-011R and return its frozen primary contrast."""
     import numpy as np
     from scipy.optimize import minimize
 
+    if reference != 0:
+        raise ValueError("Model-011R canonical reference action is fixed at 0")
+
     model = load_model()
-    X, cols = build_model_matrix(sets, model, reference=reference)
+    X, cols, _, _ = build_model_matrix(sets, model, reference=reference)
     n_sets = len(sets)
     n_parameters = X.shape[1]
 
@@ -224,7 +228,7 @@ def fit_primary_contrast(sets, reference=0):
         H += Xi.T @ W @ Xi
 
     cov = np.linalg.pinv(H, rcond=1e-10)
-    c = model.primary_contrast(cols, reference=reference)
+    c = model.primary_contrast(cols)
     est = float(c @ beta)
     se = float(np.sqrt(max(0.0, c @ cov @ c)))
     zstat = est / se if se > 0 else float("nan")
@@ -258,11 +262,11 @@ if __name__ == "__main__":
     print(
         json.dumps(
             {
-                "status": "CHOICE_SET_ENGINE_READY_MODEL_010",
+                "status": "CHOICE_SET_ENGINE_READY_MODEL_011R",
                 "dgp_artifact": dgp["artifact"],
-                "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010",
+                "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011R",
                 "model_commit": MODEL_COMMIT,
-                "model_parameter_columns": len(model.parameter_columns(reference=0)),
+                "model_parameter_columns": len(model.build_matrix(rows)[1]),
                 "choice_sets": len(sets),
                 "action_rows": len(rows),
                 "dataset_sha256": digest(rows),
