@@ -1,0 +1,129 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_Q1_Q5_FINAL_CLOSURE_AUDIT_001",
+  "record_type": "TGCV_TI001_V012_NEXT3_Q1_Q5_FINAL_CLOSURE_AUDIT",
+  "status": "Q1_Q5_TECHNICAL_CLOSURE_PASS",
+  "date": "2026-09-30",
+  "scope": {
+    "source_result": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001",
+    "result_payload_sha256": "9008ae02130405428cb30e6391fd37e5cd76b8bfe835dbcfc8ad6002e073ccf4",
+    "fixture_version": "NEXT3_v003",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "analysis_specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+    "analysis_specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695",
+    "total_decisions": 23040,
+    "valid_decisions": 22649,
+    "invalid_decisions_excluded": 391,
+    "choice_sets": 22649,
+    "primary_inferential_contrasts": 8,
+    "multiple_comparison_adjustment": "Holm",
+    "exploratory": true,
+    "confirmatory": false
+  },
+  "checks": {
+    "Q1": {
+      "degrees_of_freedom": 3,
+      "statistic": 0.09009904105961163,
+      "p_value": 0.992998510146081,
+      "holm_adjusted_p_value": 1.0,
+      "status": "PASS"
+    },
+    "Q2": {
+      "degrees_of_freedom": 9,
+      "statistic": 7.592878388364625,
+      "p_value": 0.5756360601384486,
+      "holm_adjusted_p_value": 1.0,
+      "status": "PASS"
+    },
+    "Q3": {
+      "INFORMATIVE_minus_UNINFORMATIVE_NULL": {
+        "degrees_of_freedom": 3,
+        "statistic": 0.09009904105961163,
+        "p_value": 0.992998510146081,
+        "holm_adjusted_p_value": 1.0
+      },
+      "SURFACE_PERMUTED_minus_UNINFORMATIVE_NULL": {
+        "degrees_of_freedom": 3,
+        "statistic": 2.623392120501482,
+        "p_value": 0.4534033564847215,
+        "holm_adjusted_p_value": 1.0
+      },
+      "CONTRADICTORY_minus_UNINFORMATIVE_NULL": {
+        "degrees_of_freedom": 3,
+        "statistic": 2.6764892735108345,
+        "p_value": 0.44423749311045224,
+        "holm_adjusted_p_value": 1.0
+      },
+      "status": "PASS"
+    },
+    "Q4": {
+      "domain": {
+        "degrees_of_freedom": 9,
+        "statistic": 248.38515385114962,
+        "p_value": 2.1870167307095227e-48,
+        "holm_adjusted_p_value": 1.530911711496666e-47
+      },
+      "operationalisation": {
+        "degrees_of_freedom": 12,
+        "statistic": 11.314551019717602,
+        "p_value": 0.502171262067171,
+        "holm_adjusted_p_value": 1.0
+      },
+      "status": "PASS"
+    },
+    "Q5": {
+      "degrees_of_freedom": 9,
+      "statistic": 2902.9464378715948,
+      "p_value": 0.0,
+      "holm_adjusted_p_value": 0.0,
+      "status": "PASS"
+    }
+  },
+  "holm_reproduction": {
+    "method": "Holm",
+    "input_p_values_in_declared_order": [
+      0.992998510146081,
+      0.5756360601384486,
+      0.992998510146081,
+      0.4534033564847215,
+      0.44423749311045224,
+      2.1870167307095227e-48,
+      0.502171262067171,
+      0.0
+    ],
+    "recomputed_adjusted_p_values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.530911711496666e-47,
+      1.0,
+      0.0
+    ],
+    "matches_published_adjustment": true
+  },
+  "structural_observation": {
+    "Q1_Q3_overlap": "Q1 and the INFORMATIVE-minus-UNINFORMATIVE_NULL Q3 contrast are mathematically identical joint contrasts in RESULT_001. This is retained because the frozen specification declares them as distinct question-level inferential entries within the eight-test Holm family; no retrospective family modification is permitted."
+  },
+  "q5_bfgs_boundary": {
+    "covariance_method": "BFGS_INVERSE_HESSIAN",
+    "fit_method": "BFGS",
+    "statsmodels_version": "0.14.6",
+    "historical_callback_trace_in_result": false,
+    "technical_reproduction_status": "PASS",
+    "scientific_reexecution_required": false
+  },
+  "preservation_controls": {
+    "result_modified": false,
+    "fixture_modified": false,
+    "primary_estimand_modified": false,
+    "next2_pooling": false,
+    "value_signal": false,
+    "utility_signal": false,
+    "reward_signal": false,
+    "performance_signal": false
+  },
+  "interpretation_boundary": "This artifact closes the technical/statistical audit of Q1-Q5 over RESULT_001. It does not by itself establish Transformational Intelligence, a unique mechanism, causal value effects, generalisation beyond the frozen execution, or a confirmatory result.",
+  "next_action": "Proceed to scientific interpretation of the audited Q1-Q5 pattern without re-executing RESULT_001."
+}
