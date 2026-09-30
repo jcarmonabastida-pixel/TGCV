@@ -5,9 +5,9 @@
   "supersedes": "TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_001.json",
   "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
   "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
-  "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010",
-  "model_commit": "23f00c0971bf7fd7584ff546ec523693e99c8c03",
-  "identifiability_audit": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010_IDENTIFIABILITY_AUDIT_001.json",
+  "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011R",
+  "model_commit": "24e6b2067c5e038d30fabbc2761da6775e5de78f",
+  "identifiability_audit": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_011R_IDENTIFIABILITY_AUDIT_001.json",
   "identifiability_audit_commit": "dfdb352fad1dd8bd620ac8240c8000c3969de1b8",
   "candidate_n": [
     1728,
@@ -47,14 +47,16 @@
     "UNINFORMATIVE_NULL": "control analysis; no informative future-linked signal"
   },
   "required_pre_monte_carlo_audits": [
-    "Model-010 identifiability audit PASS",
-    "implementation equivalence between Engine 002 and Model-010 specification",
+    "Model-011R identifiability audit PASS",
+    "implementation equivalence between Engine 002 and Model-011R specification",
     "exact DGP consumption without conflicting hard-coded coefficients",
     "exact factorial counts and balanced allocation",
     "exact seed replay",
     "exact primary contrast construction",
     "reference-action invariance retained",
-    "additive-kappa invariance retained"
+    "additive-kappa invariance retained",
+    "Engine-002 fit/estimand reconciliation with Model-011R PASS",
+    "power execution protocol reconciliation with Model-011R PASS"
   ],
   "outputs": {
     "per_cell": "N, delta, replicates, convergence_count, valid_fit_count, rejection_count, empirical_rejection_rate, mean_estimate, sd_estimate, mean_se",
@@ -79,12 +81,12 @@
   "authorization": {
     "authorized_on": "2026-09-30",
     "prerequisite_audits": {
-      "model_010_identifiability": "PASS",
-      "implementation_equivalence_engine_002_model_010": "PASS",
+      "model_011R_identifiability": "PASS",
+      "implementation_equivalence_engine_002_model_011R": "PASS",
       "dgp_002_exact_consumption": "PASS",
-      "dry_run_single_cell": "PASS"
-    },
-    "dry_run_workflow_run_id": 36731485819,
-    "dry_run_audit_commit": "ecb433dae4005006ca28868acb1825515d7f2966"
+      "engine_002_fit_estimand_model_011R": "PASS",
+      "dry_run_workflow_run_id": 36731485819,
+      "dry_run_audit_commit": "ecb433dae4005006ca28868acb1825515d7f2966"
+    }
   }
 }
