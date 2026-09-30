@@ -18,12 +18,8 @@ EXPECTED_CELLS = {(n, e) for n in NS for e in EFFECTS}
 
 
 def expected_seed_replay_hash(effect_label: str, n: int) -> str:
-    # Must mirror the frozen runner exactly.
-    import random  # noqa: F401
     seeds = []
     for r in range(REPLICATES):
-        # The runner's choice-set seed depends on replicate and choice_set_id.
-        # Audit only verifies the stored hash against the exact frozen formula.
         seeds.append(
             int.from_bytes(
                 hashlib.sha256(
@@ -32,9 +28,7 @@ def expected_seed_replay_hash(effect_label: str, n: int) -> str:
                 "big",
             )
         )
-    return hashlib.sha256(
-        json.dumps(seeds).encode()
-    ).hexdigest()
+    return hashlib.sha256(json.dumps(seeds).encode()).hexdigest()
 
 
 def result_sha_without_result_sha(obj: dict) -> str:
@@ -50,6 +44,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--artifact-root", type=Path, required=True)
     ap.add_argument("--output", type=Path, required=True)
+    ap.add_argument("--source-run-id", type=int, required=True)
     args = ap.parse_args()
 
     files = sorted(
@@ -123,7 +118,7 @@ def main() -> None:
 
     out = {
         "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_AGGREGATION_AUDIT_001",
-        "source_run_id": int(args.source_run_id) if hasattr(args, "source_run_id") else None,
+        "source_run_id": args.source_run_id,
         "master_seed": MASTER_SEED,
         "replicates_per_cell": REPLICATES,
         "expected_cell_count": 40,
@@ -134,7 +129,8 @@ def main() -> None:
     }
     raw = json.dumps(out, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
     out["audit_result_sha256"] = hashlib.sha256(raw).hexdigest()
-    args.output.write_text(json.dumps(out, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    args.output.write_text(json.dumps(out, indent=2, sort_keys=True) + "
+", encoding="utf-8")
     print(json.dumps({
         "status": "PASS",
         "observed_cell_count": len(cells),
