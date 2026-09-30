@@ -1,0 +1,23 @@
+{
+  "artifact": "TI001_V012_NEXT4_PERMUTATION_ACTION_PROFILE_MODEL_AUDIT_004",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_SCIENTIFIC_ESTIMAND_REVISION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_PERMUTATION_ACTION_PROFILE_MODEL_004.py",
+  "implementation_commit": "97778ce626ebbcd27caeb288d30535c9d609245c",
+  "checks": {
+    "profile_specific_mapping_terms": true,
+    "condition_mapping_main_effect_avoided": true,
+    "numeric_matrix": true,
+    "numeric_contrast": true,
+    "rank_diagnostic": true,
+    "estimability_diagnostic": true
+  },
+  "blockers": [
+    "The mapping-following columns correctly preserve profile specificity, but they collapse identity and reassigned mappings into the same feature definition.",
+    "The primary contrast therefore represents average mapping-following preference, not the differential reorganisation between STATIC_CONTROL and FUTURE_REASSIGNED.",
+    "The model must include a frozen interaction between mapping-following action×profile cells and the reassignment indicator, or an algebraically equivalent permutation-specific contrast.",
+    "Rank/estimability must be audited only after that interaction is defined."
+  ],
+  "gate_decision": "BLOCK",
+  "next_action": "Add the explicit FUTURE_REASSIGNED × mapped_action_for_profile interaction while retaining STATIC_CONTROL as the identity reference, then audit rank and contrast estimability."
+}
