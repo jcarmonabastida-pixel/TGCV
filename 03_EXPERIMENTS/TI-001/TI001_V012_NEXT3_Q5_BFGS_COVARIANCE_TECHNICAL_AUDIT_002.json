@@ -1,0 +1,76 @@
+{
+  "artifact_id": "TI001_V012_NEXT3_Q5_BFGS_COVARIANCE_TECHNICAL_AUDIT_002",
+  "record_type": "TGCV_TI001_V012_NEXT3_Q5_BFGS_COVARIANCE_TECHNICAL_AUDIT",
+  "status": "TECHNICAL_AUDIT_PASS_PROVENANCE_CORRECTED",
+  "date": "2026-09-30",
+  "supersedes_for_canonical_binding": "TI001_V012_NEXT3_Q5_BFGS_COVARIANCE_TECHNICAL_AUDIT_001",
+  "historical_preservation": {
+    "previous_artifact": "TI001_V012_NEXT3_Q5_BFGS_COVARIANCE_TECHNICAL_AUDIT_001",
+    "previous_artifact_preserved_unchanged": true,
+    "reason_for_new_version": "The previous audit recorded an implementation_sha256 value that does not correspond to the canonical post-primary implementation or to the implementation identity declared by RESULT_001. The historical artifact is retained unchanged; this version corrects only the provenance/binding representation."
+  },
+  "scope": {
+    "question": "Q5 covariance construction and identity of covariance used by joint_wald",
+    "scientific_execution_performed": false,
+    "fixture_modified": false,
+    "primary_result_modified": false,
+    "specification_modified": false,
+    "scientific_reexecution_required": false
+  },
+  "provenance_model": {
+    "post_primary_implementation_sha256": "3d39fcf03637",
+    "post_primary_implementation_sha256_role": "Value declared by RESULT_001 as the implementation identity associated with the post-primary analysis result. This is provenance of RESULT_001 and is not asserted here as the content hash of the currently published implementation source file.",
+    "primary_implementation_sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d",
+    "primary_implementation_sha256_role": "Frozen primary-analysis implementation identity explicitly declared by TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py as its parity target.",
+    "distinction_required": true
+  },
+  "canonical_bindings": {
+    "implementation_path": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_IMPLEMENTATION_001.py",
+    "post_primary_implementation_sha256": "3d39fcf03637",
+    "primary_implementation_sha256": "1d29894b1ccb49c0dfce8b389fedb3a1f4d7d1bf83d5d38b5d24d5e3802ae22d",
+    "specification": "TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002",
+    "specification_sha256": "7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695",
+    "fixture_sha256": "0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0",
+    "execution_result_sha256": "b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de",
+    "covariance_method": "BFGS_INVERSE_HESSIAN",
+    "fit_method": "BFGS",
+    "statsmodels_version": "0.14.6"
+  },
+  "reproduction": {
+    "type": "minimal_deterministic_technical_reproduction",
+    "model_family": "ConditionalLogit via LikelihoodModel.fit",
+    "groups": 20,
+    "alternatives_per_group": 4,
+    "parameters": 3,
+    "random_seed": 123,
+    "callback_invocations": 1,
+    "Hinv_received": true,
+    "Hinv_shape": [3, 3],
+    "covariance_shape": [3, 3],
+    "positive_definite": true,
+    "finite": true,
+    "max_absolute_difference_callback_vs_result_covariance": 0,
+    "optimizer_converged": true,
+    "future_warning_observed": true,
+    "future_warning_interpretation": "The warning concerns forwarding cov_params_func to the SciPy BFGS optimizer; it does not prevent LikelihoodModel.fit from subsequently retrieving and invoking cov_params_func after optimization."
+  },
+  "source_path_verification": {
+    "statsmodels_0_14_6_LikelihoodModel_fit": "After Optimizer._fit returns, cov_params_func is retrieved from kwargs and invoked with (self, xopt, retvals); its return value is supplied to LikelihoodModelResults.",
+    "frozen_NEXT3_route": "The canonical post-primary implementation calls LikelihoodModel.fit directly with cov_params_func=bfgs_inverse_hessian_covariance, then reconstructs ConditionalResults from rslt.cov_params()."
+  },
+  "conclusion": {
+    "technical_mechanism_status": "PASS",
+    "covariance_identity_status": "PASS_IN_REPRODUCTION",
+    "provenance_correction_status": "PASS",
+    "historical_RESULT_001_callback_trace": "NOT_DIRECTLY_LOGGED",
+    "interpretation": "The technical evidence establishes that the frozen BFGS covariance route is executable in statsmodels 0.14.6, that the callback receives Hinv, that the resulting covariance is positive definite in the deterministic reproduction, and that the covariance returned by the callback is the covariance exposed by LikelihoodModelResults. The corrected provenance model separates the implementation identity declared by RESULT_001 from the primary implementation SHA targeted by the published post-primary implementation. This correction does not retroactively create a runtime callback trace inside RESULT_001 and does not constitute a forensic reconstruction of that historical callback invocation.",
+    "scientific_reexecution_required": false
+  },
+  "boundary": {
+    "execution_repeated": false,
+    "historical_RESULT_001_modified": false,
+    "Q5_estimand_modified": false,
+    "fixture_modified": false,
+    "scientific_claim_upgraded": false
+  }
+}
