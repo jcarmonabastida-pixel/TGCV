@@ -1,0 +1,39 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_CANONICALIZATION_AUDIT_GATE_001",
+  "status": "PASS",
+  "date": "2026-09-30",
+  "scope": "Audit of the canonized 40-cell aggregation artifact preserved on main against the frozen NEXT4 Monte Carlo contract.",
+  "canonical_artifact": "TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_AGGREGATION_AUDIT_RESULT_001.json",
+  "canonical_artifact_ref": "main",
+  "source_run_id": 36746875918,
+  "checks": {
+    "coverage_pass": true,
+    "cell_integrity_pass": true,
+    "expected_cell_count": 40,
+    "observed_cell_count": 40,
+    "unique_declared_cells": 40,
+    "unique_internal_result_sha256": 40,
+    "internal_result_sha256_format_valid": true,
+    "master_seed": 20260930,
+    "replicates_per_cell": 1000,
+    "contract_master_seed": 20260930,
+    "contract_replicates_per_cell": 1000,
+    "contract_source_run_id": 36746875918,
+    "audit_result_sha256": "93736faca037711040b70b4c249c46dd56a070f27fe64c05925ac8010f905f21",
+    "contract_audit_result_sha256": "93736faca037711040b70b4c249c46dd56a070f27fe64c05925ac8010f905f21"
+  },
+  "preservation": {
+    "canonical_json_modified": false,
+    "canonical_json_regenerated": false,
+    "scientific_simulation_launched": false,
+    "scientific_conclusion_updated": false
+  },
+  "basis": [
+    "README.md main confirms the repository is the canonical continuity and reproducibility layer and frozen material is not silently overwritten.",
+    "The canonical aggregation artifact on main declares coverage_pass=true, cell_integrity_pass=true, expected_cell_count=40 and observed_cell_count=40.",
+    "The 40 declared (N,effect_size) cells are unique and the 40 embedded result_sha256 values are unique, valid 64-hex SHA-256 strings.",
+    "The aggregation audit implementation defines result_sha256 as the hash of each validated cell result after removing result_sha256 itself, and constructs the 40-cell aggregate from those validated cell artifacts.",
+    "The preserved aggregate declares the contractual audit_result_sha256 and its value matches the frozen contractual value."
+  ],
+  "gate_conclusion": "PASS — canonization and aggregation traceability gate closed. Proceed to the next frozen scientific gate; do not alter or regenerate the canonical aggregation JSON."
+}
