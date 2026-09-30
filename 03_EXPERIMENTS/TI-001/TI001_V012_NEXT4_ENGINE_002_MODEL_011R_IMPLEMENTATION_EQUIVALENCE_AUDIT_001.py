@@ -52,7 +52,15 @@ def audit_one(engine, model, n):
     X_expected_active = X_expected[:, :, expected_indices]
     expected_active_cols = [all_cols[i] for i in expected_indices]
 
-    design_error = float(np.max(np.abs(X_engine - X_expected_active)))
+    # Engine-002 returns one flat row per action in choice-set/action order;
+    # canonical Model-011R construction is grouped as (choice_set, action,
+    # parameter). Flatten the latter in C order before exact comparison.
+    X_expected_active_flat = X_expected_active.reshape(
+        n * 4, len(expected_indices)
+    )
+    design_error = float(
+        np.max(np.abs(X_engine - X_expected_active_flat))
+    )
     active_column_match = active_cols == expected_active_cols
 
     c_full = model.primary_contrast(all_cols)
