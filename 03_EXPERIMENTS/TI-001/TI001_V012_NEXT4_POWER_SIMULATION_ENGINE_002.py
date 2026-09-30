@@ -37,3 +37,76 @@ def digest(obj): return hashlib.sha256(json.dumps(obj,sort_keys=True,separators=
 if __name__=="__main__":
  dgp=load_dgp(); s=Scenario("NULL",0.0,1728,0,410927); sets,rows=generate_dataset(s)
  print(json.dumps({"status":"CHOICE_SET_ENGINE_READY","dgp_artifact":dgp["artifact"],"choice_sets":len(sets),"action_rows":len(rows),"dataset_sha256":digest(rows),"provider_api_calls":False,"scientific_executor_calls":False},sort_keys=True))
+
+
+def fit_primary_contrast(sets):
+    """Fit the frozen model-009 surface contrast by multinomial choice likelihood.
+
+    This implementation uses scipy.optimize.minimize when available. The
+    parameterization is the 32 surface cells plus the declared nuisance terms,
+    with no redundant intercept. The primary contrast is the mean FUTURE
+    permutation-aligned cell minus STATIC identity cell across 24 permutations
+    and 4 profiles.
+    """
+    import numpy as np
+    from scipy.optimize import minimize
+
+    cells=[(a,p) for a in ACTIONS for p in PROFILES]
+    cols=[("STATIC",a,p) for a,p in cells]+[("FUTURE",a,p) for a,p in cells]
+    cols += [("condition",c) for c in ("SURFACE_CONTROL","UNINFORMATIVE_NULL")]
+    cols += [("domain",d) for d in (1,2)]
+    cols += [("op",1)]
+    cols += [("presentation",p) for p in (1,2,3)]
+    index={c:i for i,c in enumerate(cols)}
+    X=[]; y=[]
+    for cs in sets:
+        for a in ACTIONS:
+            row=np.zeros(len(cols))
+            # Condition-specific two-surface basis.
+            if cs["condition"]=="STATIC_CONTROL":
+                row[index[("STATIC",a,cs["profile"])]]=1
+            elif cs["condition"]=="FUTURE_REASSIGNED":
+                row[index[("FUTURE",a,cs["profile"])]]=1
+            if cs["condition"]=="SURFACE_CONTROL": row[index[("condition","SURFACE_CONTROL")]]=1
+            if cs["condition"]=="UNINFORMATIVE_NULL": row[index[("condition","UNINFORMATIVE_NULL")]]=1
+            if cs["domain"] in (1,2): row[index[("domain",cs["domain"])]]=1
+            if cs["operationalisation"]==1: row[index[("op",1)]]=1
+            if cs["presentation"] in (1,2,3): row[index[("presentation",cs["presentation"])]]=1
+            X.append(row); y.append(cs["chosen_action"]==a)
+    X=np.asarray(X); y=np.asarray(y,dtype=float)
+    groups=np.repeat(np.arange(len(sets)),4)
+    def nll(beta):
+        z=(X@beta).reshape(-1,4)
+        z-=z.max(axis=1,keepdims=True)
+        lse=np.log(np.exp(z).sum(axis=1))
+        chosen=np.asarray([cs["chosen_action"] for cs in sets])
+        return float(np.sum(-z[np.arange(len(sets)),chosen]+lse))
+    def grad(beta):
+        z=(X@beta).reshape(-1,4); z-=z.max(axis=1,keepdims=True)
+        e=np.exp(z); pr=e/e.sum(axis=1,keepdims=True)
+        target=np.zeros_like(pr)
+        chosen=np.asarray([cs["chosen_action"] for cs in sets]); target[np.arange(len(sets)),chosen]=1
+        return (X.reshape(-1,4,X.shape[1])*(pr-target)[:,:,None]).sum(axis=(0,1))
+    fit=minimize(nll,np.zeros(X.shape[1]),jac=grad,method="BFGS")
+    beta=fit.x
+    # Observed information from multinomial Hessian.
+    z=(X@beta).reshape(-1,4); z-=z.max(axis=1,keepdims=True)
+    e=np.exp(z); pr=e/e.sum(axis=1,keepdims=True)
+    H=np.zeros((X.shape[1],X.shape[1]))
+    Xg=X.reshape(-1,4,X.shape[1])
+    for i in range(len(sets)):
+        Xi=Xg[i]; W=np.diag(pr[i])-np.outer(pr[i],pr[i]); H+=Xi.T@W@Xi
+    cov=np.linalg.pinv(H,rcond=1e-10)
+    c=np.zeros(X.shape[1])
+    w=1/(24*4)
+    for perm in PERMUTATIONS:
+        for p in PROFILES:
+            c[index[("FUTURE",perm[p],p)]]+=w
+            c[index[("STATIC",p,p)]]-=w
+    est=float(c@beta); se=float(np.sqrt(max(0,c@cov@c)))
+    zstat=est/se if se>0 else float("nan")
+    from math import erf,sqrt
+    pval=float(1-erf(abs(zstat)/sqrt(2))) if se>0 else float("nan")
+    return {"converged":bool(fit.success),"message":str(fit.message),"estimate":est,
+            "se":se,"wald_z":zstat,"p_value":pval,"reject_alpha_0_05":bool(pval<0.05),
+            "rank_hessian":int(np.linalg.matrix_rank(H)),"n_parameters":int(X.shape[1])}
