@@ -1,0 +1,22 @@
+{
+  "artifact": "TI001_V012_NEXT4_MAPPING_REORGANISATION_MODEL_AUDIT_003",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_SCIENTIFIC_ESTIMAND_REVISION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_MAPPING_REORGANISATION_MODEL_003.py",
+  "implementation_commit": "54a42409c9e819ba3de1e25981af1b3b31dbcf24",
+  "checks": {
+    "collinear_mapping_main_effect_removed": true,
+    "action_alignment_terms_explicit": true,
+    "condition_dummies_retained": true,
+    "numeric_rank_diagnostic_present": true,
+    "response_independent_alignment": true
+  },
+  "blockers": [
+    "The revised matrix removes the previous structural collinearity, but the proposed action-alignment terms are not sufficient to identify the required profile-specific reorganisation.",
+    "The primary contrast currently averages action-alignment coefficients and therefore tests generic action–future alignment, not the frozen action×profile×future permutation reorganisation.",
+    "The model must encode mapping alignment at the action×profile level (or an algebraically equivalent permutation-indexed interaction) while avoiding deterministic redundancy with condition.",
+    "No scientific execution is authorized."
+  ],
+  "gate_decision": "BLOCK. The estimand must be represented at action×profile level before rank/estimability can be accepted.",
+  "next_action": "Implement permutation-indexed action×profile alignment features that distinguish identity alignment from reassigned alignment, then derive the primary contrast as the frozen mapping-following reorganisation."
+}
