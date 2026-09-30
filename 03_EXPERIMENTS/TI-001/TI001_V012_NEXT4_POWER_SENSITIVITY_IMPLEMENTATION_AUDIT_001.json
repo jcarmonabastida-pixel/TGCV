@@ -1,0 +1,39 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SENSITIVITY_IMPLEMENTATION_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "IMPLEMENTATION_AUDIT_PASS_WITH_SCOPE_LIMIT",
+  "implementation": "TI001_V012_NEXT4_POWER_SENSITIVITY_IMPLEMENTATION_001.py",
+  "implementation_commit": "914f16ae4eb9f6fc8f72331a68ff34eed18333c1",
+  "checks": {
+    "provider_api_calls": false,
+    "scientific_executor_calls": false,
+    "scientific_fixture_reads": false,
+    "next3_effect_coefficients_used": false,
+    "declared_effect_labels": [
+      "NULL",
+      "VERY_SMALL",
+      "SMALL",
+      "MODERATE",
+      "OPTIMISTIC"
+    ],
+    "declared_sample_sizes": [
+      1728,
+      2304,
+      3456,
+      5184,
+      6912
+    ],
+    "minimum_replicates": 2000,
+    "deterministic_seed_derivation": true,
+    "null_effect_exact_zero": true,
+    "configuration_validation_present": true
+  },
+  "scope_limit": [
+    "The current implementation is a contract-validation scaffold, not the complete Monte Carlo engine.",
+    "No scientific execution was performed.",
+    "No power estimates exist yet.",
+    "The exact primary contrast/coding remains to be frozen in a separate statistical analysis specification."
+  ],
+  "gate_decision": "PASS for isolation/configuration contract; BLOCK for Monte Carlo execution until the complete simulator and exact analysis contrast are implemented and audited.",
+  "next_action": "Complete the deterministic synthetic-data generator, frozen primary model/contrast implementation, Monte Carlo loop, diagnostics, and replay audit."
+}
