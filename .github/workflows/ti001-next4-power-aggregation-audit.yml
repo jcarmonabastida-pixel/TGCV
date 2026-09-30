@@ -24,10 +24,13 @@ jobs:
           mkdir -p artifacts
           gh run download "$SOURCE_RUN_ID" --repo "$GITHUB_REPOSITORY" --dir artifacts
       - name: Run 40-cell aggregation audit
+        env:
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
         run: |
           python 03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_AGGREGATION_AUDIT_001.py \
             --artifact-root artifacts \
-            --output 03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_AGGREGATION_AUDIT_RESULT_001.json
+            --output 03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_AGGREGATION_AUDIT_RESULT_001.json \
+            --source-run-id "$SOURCE_RUN_ID"
       - name: Upload aggregation audit
         uses: actions/upload-artifact@v4
         with:
