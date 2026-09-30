@@ -1,0 +1,47 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_003_DGP_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_PASS_WITH_ALLOCATION_LIMIT",
+  "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_003.py",
+  "engine_commit": "4e1dd0d5be37008abee4f7120c0d33815b6c2911",
+  "dgp_spec": "TI001_V012_NEXT4_POWER_SIMULATION_DGP_SPECIFICATION_001.md",
+  "dgp_commit": "96781300994307bb2b38833529442fee65903862",
+  "checks": {
+    "effect_grid_exact": true,
+    "four_actions": true,
+    "four_profiles": true,
+    "permutation_family_24": true,
+    "condition_semantics_explicit": true,
+    "static_control_identity_mapping": true,
+    "future_reassigned_permutation_mapping": true,
+    "surface_control_identity_latent_mapping": true,
+    "uninformative_null_zero_mapping_signal": true,
+    "baseline_coefficients_match_dgp": true,
+    "presentation_direct_effect_zero": true,
+    "deterministic_seed": true,
+    "synthetic_only": true,
+    "provider_api_calls": false,
+    "scientific_executor_calls": false
+  },
+  "observed_1728_audit": {
+    "choice_sets": 1728,
+    "action_rows": 6912,
+    "all_4x3x2x4_cells_present": true,
+    "min_cell_count": 18,
+    "max_cell_count": 18,
+    "unique_permutations": 24,
+    "condition_counts": {
+      "STATIC_CONTROL": 432,
+      "FUTURE_REASSIGNED": 432,
+      "SURFACE_CONTROL": 432,
+      "UNINFORMATIVE_NULL": 432
+    }
+  },
+  "blockers": [
+    "The current allocation uses a deterministic sequential index and has not yet been formally proven to preserve the exact intended 24-permutation allocation within every condition/domain/operationalisation/presentation cell for every candidate N.",
+    "The numerical design matrix and primary contrast are still not implemented.",
+    "No rank/estimability or fitted-model audit has yet been performed."
+  ],
+  "gate_decision": "PASS for DGP semantics and observed 1,728-unit factorial balance; BLOCK for full Monte Carlo until allocation is formally frozen for all candidate N and the exact statistical design matrix/contrast are implemented and audited.",
+  "next_action": "Freeze a general balanced allocation function for all candidate N, then implement and audit the exact design matrix and numerical primary contrast."
+}
