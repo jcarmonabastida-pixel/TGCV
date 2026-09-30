@@ -1,0 +1,22 @@
+{
+  "artifact": "TI001_V012_NEXT4_REASSIGNMENT_PROFILE_INTERACTION_MODEL_AUDIT_005",
+  "date": "2026-09-30",
+  "status": "AUDIT_FAIL_MODEL_IDENTIFIABILITY_REVISION_REQUIRED",
+  "implementation": "TI001_V012_NEXT4_REASSIGNMENT_PROFILE_INTERACTION_MODEL_005.py",
+  "implementation_commit": "691a3983cca7a1e838fae5cbd6682b0f66e9f608",
+  "checks": {
+    "explicit_reassignment_interaction": true,
+    "numeric_matrix": true,
+    "numeric_contrast": true,
+    "rank_diagnostic": true,
+    "estimability_diagnostic": true
+  },
+  "blockers": [
+    "The explicit reassignment × mapped-action/profile interaction is deterministically nested in the FUTURE_REASSIGNED condition and therefore duplicates information already represented by condition-specific structure unless the baseline mapped-action term is defined differently.",
+    "The current model still conflates a structural feature (mapped action under a permutation) with the experimental manipulation indicator.",
+    "The primary contrast is therefore not yet a clean difference-in-differences estimand of action×profile correspondence.",
+    "A cleaner formulation should define the action×profile response surface first and express the frozen permutation as a linear contrast over that surface, rather than adding a deterministic interaction column."
+  ],
+  "gate_decision": "BLOCK",
+  "next_action": "Reformulate NEXT4 as a permutation-indexed linear contrast over the action×profile coefficient surface: estimate the same action×profile surface across conditions, then contrast the coefficients along identity versus reassigned permutation cells. Do not add deterministic mapping columns to the design matrix."
+}
