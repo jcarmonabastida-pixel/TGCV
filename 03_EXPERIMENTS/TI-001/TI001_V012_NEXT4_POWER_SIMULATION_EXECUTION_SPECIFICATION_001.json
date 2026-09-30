@@ -1,0 +1,57 @@
+{
+  "artifact": "TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_001",
+  "date": "2026-09-30",
+  "status": "EXECUTION_SPECIFICATION_FROZEN",
+  "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+  "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
+  "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_009",
+  "candidate_n": [
+    1728,
+    2304,
+    3456,
+    5184,
+    6912
+  ],
+  "effect_grid": [
+    0,
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.75,
+    1
+  ],
+  "replicates_per_cell": 1000,
+  "master_seed": 20260930,
+  "seed_schedule": "SHA256(master_seed|effect_label|N|replicate|choice_set_id), first 64 bits interpreted as unsigned integer",
+  "alpha": 0.05,
+  "estimator": {
+    "model": "categorical choice regression aligned to model-009 action×profile two-surface parameterization",
+    "primary_contrast": "mean over 24 frozen permutations × 4 profiles: FUTURE_REASSIGNED permutation-aligned surface minus STATIC_CONTROL identity surface",
+    "covariance": "model-based covariance from the declared estimator",
+    "rejection_rule": "two-sided Wald test of primary contrast at alpha=0.05"
+  },
+  "outputs": {
+    "per_cell": "N, delta, replicates, convergence_count, valid_fit_count, rejection_count, empirical_rejection_rate, mean_estimate, sd_estimate, mean_se",
+    "diagnostics": [
+      "fit_failures",
+      "nonfinite_estimates",
+      "nonfinite_se",
+      "singular_or_rank_failures",
+      "seed_replay_hash"
+    ],
+    "h0_focus": "empirical type-I error at delta=0",
+    "h1_focus": "empirical rejection rate for each positive delta"
+  },
+  "validity": {
+    "no_adaptive_stopping": true,
+    "no_parameter_tuning_after_results": true,
+    "no_provider_calls": true,
+    "no_empirical_next3_effect_importation": true,
+    "no_value_reward_performance_signal": true,
+    "scientific_interpretation_after_completion_only": true
+  },
+  "scientific_execution_authorized": false,
+  "next_action": "Run a dry-run/single-cell execution audit using the frozen seed schedule and estimator before launching the full 5×8×1000 simulation."
+}
