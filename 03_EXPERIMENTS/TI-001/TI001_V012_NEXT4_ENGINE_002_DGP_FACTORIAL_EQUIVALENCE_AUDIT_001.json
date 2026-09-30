@@ -1,0 +1,31 @@
+{
+  "artifact": "TI001_V012_NEXT4_ENGINE_002_DGP_FACTORIAL_EQUIVALENCE_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "AUDIT_PASS",
+  "engine_commit": "591980720272635e42c6afe555fcbedbc848557b",
+  "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+  "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_009",
+  "checks": {
+    "factorial_structure": "PASS",
+    "condition_balance": "PASS",
+    "permutation_balance": "PASS",
+    "profile_balance": "PASS",
+    "domain_balance": "PASS",
+    "operationalisation_balance": "PASS",
+    "presentation_balance": "PASS",
+    "logit_equation": "PASS",
+    "probability_normalization": "PASS",
+    "fixed_seed_replay": "PASS",
+    "model_009_primary_contrast_mapping": "PASS"
+  },
+  "candidate_n": {
+    "1728": "PASS",
+    "2304": "PASS",
+    "3456": "PASS",
+    "5184": "PASS",
+    "6912": "PASS"
+  },
+  "execution_scope": "deterministic audit only; no provider calls; no scientific Monte Carlo",
+  "gate_decision": "PASS_FOR_POWER_SIMULATION_IMPLEMENTATION",
+  "next_action": "Freeze the power-simulation execution specification, including replicate count, seed schedule, alpha, estimator, rejection rule, and reporting grid, before running simulations."
+}
