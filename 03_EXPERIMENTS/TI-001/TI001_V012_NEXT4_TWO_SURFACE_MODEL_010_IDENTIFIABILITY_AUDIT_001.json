@@ -1,0 +1,42 @@
+{
+  "artifact": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010_IDENTIFIABILITY_AUDIT_001.json",
+  "audit_type": "IDENTIFIABILITY_AUDIT",
+  "status": "PASS",
+  "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_010",
+  "model_commit": "23f00c0971bf7fd7584ff546ec523693e99c8c03",
+  "audit_specification": "03_EXPERIMENTS/TI-001/TI001_V012_NEXT4_TWO_SURFACE_MODEL_010_IDENTIFIABILITY_AUDIT_SPECIFICATION_001.md",
+  "audit_specification_commit": "e1567006968df9ff3c100b936597fecd91062af8",
+  "execution_boundary": {
+    "monte_carlo_executed": false,
+    "scientific_execution": false,
+    "engine_002_modified": false
+  },
+  "checks": {
+    "within_profile_three_relative_logits": true,
+    "primary_contrast_difference_in_differences": true,
+    "absolute_logit_block_sum_zero": true,
+    "estimable_all_candidate_n": true,
+    "reference_action_invariant": true,
+    "additive_kappa_invariant": true
+  },
+  "candidate_n_audits": [
+    {"n":1728,"rows":27648,"columns":32,"rank":32,"nullity":0,"singular_values_min":13.383382613148612,"estimability_residual":3.032544750318459e-16,"contrast_estimable":true,"matrix_sha256":"b84ec57650170180f4ff071b12c71640aad030bdde616ecdcf1cde7b6a62f6f6","contrast_sha256":"e670e4aed3002d939d6e4d1e89c3feec2f91fd157cd966e76f339f0c11ba119b"},
+    {"n":2304,"rows":36864,"columns":32,"rank":32,"nullity":0,"singular_values_min":15.453799108738217,"estimability_residual":3.830363538262371e-16,"contrast_estimable":true,"matrix_sha256":"5defc710a30fc2c84ee8859b83c480857accf81ff29ed7e71979c251f633f6ab","contrast_sha256":"e670e4aed3002d939d6e4d1e89c3feec2f91fd157cd966e76f339f0c11ba119b"},
+    {"n":3456,"rows":55296,"columns":32,"rank":32,"nullity":0,"singular_values_min":18.926961201943048,"estimability_residual":4.488865525363378e-16,"contrast_estimable":true,"matrix_sha256":"70733e49b7ebdc0a4c2f991a4cc85acafb73d28f2c17a3db2d4f9ca0463b428b","contrast_sha256":"e670e4aed3002d939d6e4d1e89c3feec2f91fd157cd966e76f339f0c11ba119b"},
+    {"n":5184,"rows":82944,"columns":32,"rank":32,"nullity":0,"singular_values_min":23.180698663107346,"estimability_residual":3.604079542800712e-16,"contrast_estimable":true,"matrix_sha256":"6186bbe2c68042d1deea92cbdaeb32f1ee97fa1dd888a431e211062567804837","contrast_sha256":"e670e4aed3002d939d6e4d1e89c3feec2f91fd157cd966e76f339f0c11ba119b"},
+    {"n":6912,"rows":110592,"columns":32,"rank":32,"nullity":0,"singular_values_min":26.766765226297238,"estimability_residual":3.317278028016465e-16,"contrast_estimable":true,"matrix_sha256":"030f516c55ff3e42667b4014892c232ab116ec3ae723792b4e92515ce328dcc1","contrast_sha256":"e670e4aed3002d939d6e4d1e89c3feec2f91fd157cd966e76f339f0c11ba119b"}
+  ],
+  "reference_change": {
+    "references_tested": [1,2,3],
+    "max_equivalence_inf_norm": 4.163336342344337e-17,
+    "all_invariant": true
+  },
+  "additive_shift": {
+    "algebraic_condition": "contrast coefficient sum is zero within every (surface, profile) absolute-logit block",
+    "max_block_sum_abs": 1.3877787807814457e-17,
+    "deterministic_numeric_check": true,
+    "numeric_absolute_difference": 0.0,
+    "invariant": true
+  },
+  "next_gate": "Eligible for execution-specification revision/audit continuation; this artifact does not authorize Monte Carlo or scientific execution."
+}
