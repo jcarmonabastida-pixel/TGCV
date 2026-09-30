@@ -103,7 +103,7 @@ def fit_cell(s, dgp, model):
         W = np.diag(p[i]) - np.outer(p[i], p[i])
         H += Xg[i].T @ W @ Xg[i]
     cov = np.linalg.pinv(H, rcond=1e-10)
-    c = model.primary_contrast(cols, reference=0)
+    c = model.primary_contrast(cols)
     est = float(c @ fit.x)
     se = float(np.sqrt(max(0.0, c @ cov @ c)))
     z = est / se if se > 0 else np.nan
@@ -135,7 +135,7 @@ def main():
       "artifact":"TI001_V012_NEXT4_POWER_SIMULATION_CELL_RESULT_001",
       "specification":"TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_002",
       "engine":"TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
-      "model":"TI001_V012_NEXT4_TWO_SURFACE_MODEL_010",
+      "model":"TI001_V012_NEXT4_TWO_SURFACE_MODEL_011R",
       "dgp":"TI001_V012_NEXT4_DGP_SPECIFICATION_002",
       "master_seed":MASTER_SEED,"N":args.n,"effect_size":args.effect,"effect_label":label,
       "replicates":REPLICATES,"convergence_count":REPLICATES-failures,"valid_fit_count":valid,
@@ -145,7 +145,7 @@ def main():
       "mean_se":float(np.mean(ses)) if ses else None,
       "diagnostics":{"fit_failures":failures,"nonfinite_estimates":sum(not np.isfinite(x["estimate"]) for x in rows),
                      "nonfinite_se":sum(not np.isfinite(x["se"]) for x in rows),
-                     "singular_or_rank_failures":sum(x["rank_hessian"]<len(model.parameter_columns(reference=0)) for x in rows),
+                     "singular_or_rank_failures":sum(x["rank_hessian"]<len(cols) for x in rows),
                      "seed_replay_hash":hashlib.sha256(json.dumps([stable_seed(MASTER_SEED,label,args.n,r,r) for r in range(REPLICATES)]).encode()).hexdigest()},
       "scientific_execution":True,"provider_api_calls":False,"adaptive_stopping":False,"parameter_tuning_after_results":False,
       "replicates_detail":rows
