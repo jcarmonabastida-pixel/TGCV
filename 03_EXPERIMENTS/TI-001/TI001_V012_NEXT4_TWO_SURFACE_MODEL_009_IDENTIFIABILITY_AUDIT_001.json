@@ -1,0 +1,41 @@
+{
+  "artifact": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_009_IDENTIFIABILITY_AUDIT_001",
+  "date": "2026-09-30",
+  "status": "BLOCKED_NON_IDENTIFIABLE_PRIMARY_ESTIMAND",
+  "model": "TI001_V012_NEXT4_TWO_SURFACE_MODEL_009",
+  "model_commit": "2aac5e6b7b3ea7586756bafbd8ae8128350e5512",
+  "dgp": "TI001_V012_NEXT4_DGP_SPECIFICATION_002",
+  "engine": "TI001_V012_NEXT4_POWER_SIMULATION_ENGINE_002.py",
+  "execution_spec": "TI001_V012_NEXT4_POWER_SIMULATION_EXECUTION_SPECIFICATION_001",
+  "finding": "The frozen primary contrast is not estimable under the multinomial categorical-choice likelihood because each action×profile surface has an additive within-profile logit invariance.",
+  "structural_details": {
+    "surface_parameters": 32,
+    "nuisance_parameters": 8,
+    "declared_parameters": 40,
+    "dry_run_hessian_rank": 24,
+    "dry_run_parameter_count": 40,
+    "structural_identifiability_deficit": 16
+  },
+  "invariance": "For each profile p and surface s, adding the same constant to all four action logits leaves the categorical probabilities unchanged.",
+  "primary_contrast": "Mean over 24 permutations × 4 profiles of FUTURE_REASSIGNED surface cell (permutation-aligned action, profile) minus STATIC_CONTROL identity surface cell (profile, profile).",
+  "estimability_test": "The contrast has non-zero projection onto the likelihood null space; therefore its value changes under an observationally equivalent logit reparameterization.",
+  "dry_run_reference": {
+    "run_id": 36728232394,
+    "estimate": -0.1073691388,
+    "se": 0.0815518368,
+    "rank_hessian": 24,
+    "n_parameters": 40
+  },
+  "interpretation_boundary": [
+    "This is an algebraic/statistical design audit, not an empirical result.",
+    "No Monte Carlo power or type-I-error simulation is authorized by this finding.",
+    "The DGP, seed schedule, candidate N grid, and scientific execution specification remain frozen.",
+    "No NEXT3 effect estimate, value/reward/performance signal, or empirical result is imported."
+  ],
+  "required_next_action": "Revise the NEXT4 estimand/model specification so the primary contrast is invariant under the categorical-logit identification group, or formally justify an equivalent identifiable parameterization without changing the scientific target. Do not modify Engine 002 or launch Monte Carlo before this gate is resolved.",
+  "hashes": {
+    "model_commit": "2aac5e6b7b3ea7586756bafbd8ae8128350e5512",
+    "dgp_spec_commit": "a62bde6ac7916debd60e55e30653181c96ec9a7b",
+    "execution_spec_commit": "59d10b649df7f124367f5c01950ea14bab4749fe"
+  }
+}
