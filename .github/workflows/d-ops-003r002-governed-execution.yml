@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   dops-003r002:
@@ -18,22 +19,49 @@ jobs:
       - name: Verify runtime
         run: python3 --version
 
+      - name: Download R002 freeze-preflight provenance
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/r002-provenance
+          curl -fsSL \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer \${GH_TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/jcarmonabastida-pixel/TGCV/actions/artifacts/11175061698/zip" \
+            -o /tmp/r002-provenance/artifact.zip
+          unzip -qo /tmp/r002-provenance/artifact.zip -d /tmp/r002-provenance
+          test -f /tmp/r002-provenance/D-OPS_PACKAGE_003R002_PROVENANCE_MANIFEST_001.json
+
       - name: Verify frozen R002 SHA-256 boundary
         shell: python
         run: |
           import hashlib, json
           from pathlib import Path
-          root=Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003R002")
-          files=list(root.iterdir())
-          if sum(p.is_file() for p in files)!=12:
-              raise SystemExit("R002_PACKAGE_BOUNDARY_INVALID")
-          manifest=json.loads(Path("/tmp/nonexistent").read_text()) if False else None
-          # Recompute and pin the frozen package boundary directly from the 12-file package.
-          for p in sorted(files):
-              if not p.is_file(): continue
+          manifest=Path("/tmp/r002-provenance/D-OPS_PACKAGE_003R002_PROVENANCE_MANIFEST_001.json")
+          m=json.loads(manifest.read_text(encoding="utf-8"))
+          if m["repository"]!="jcarmonabastida-pixel/TGCV" or m["ref"]!="main":
+              raise SystemExit("R002_PROVENANCE_SCOPE_INVALID")
+          if m["package"]!="00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003R002" or m["revision"]!="R002":
+              raise SystemExit("R002_PROVENANCE_PACKAGE_INVALID")
+          root=Path(".")
+          actual={str(p) for p in Path(m["package"]).iterdir() if p.is_file()}
+          expected={e["path"] for e in m["files"]}
+          if actual!=expected:
+              raise SystemExit(f"R002_PACKAGE_BOUNDARY_MISMATCH: {sorted(actual ^ expected)}")
+          for e in m["files"]:
+              p=root/Path(e["path"])
+              if not p.is_file():
+                  raise SystemExit(f"MISSING_FROZEN_INPUT: {e['path']}")
               data=p.read_bytes()
-              if not data: raise SystemExit(f"EMPTY_FROZEN_INPUT: {p}")
-          print("FROZEN_R002_BOUNDARY_PASS")
+              if len(data)!=e["bytes"]:
+                  raise SystemExit(f"BYTE_COUNT_MISMATCH: {e['path']}")
+              got=hashlib.sha256(data).hexdigest()
+              if got!=e["sha256"]:
+                  raise SystemExit(f"SHA256_MISMATCH: {e['path']}: {got} != {e['sha256']}")
+          print(f"FROZEN_R002_SHA256_AND_BOUNDARY_PASS: {len(m['files'])} files")
 
       - name: Verify R002 execution authorization
         shell: python
