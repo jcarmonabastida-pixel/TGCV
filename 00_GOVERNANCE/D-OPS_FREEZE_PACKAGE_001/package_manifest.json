@@ -1,0 +1,9 @@
+{
+  "package_id": "D-OPS-FORMAL-CONFORMANCE-001",
+  "design": "D-OPS_FORMAL_CONFORMANCE_TEST_DESIGN_004.md",
+  "preflight": "D-OPS_FORMAL_CONFORMANCE_FREEZE_PREFLIGHT_001.md",
+  "execution_authorized": false,
+  "source_fixture": "D0_FORMAL_SOURCE.json",
+  "components": ["dops_sut.py","dops_gs.py","dops_oracle.py","perturbation_manifest.json","expected_results.json"],
+  "hash_status": "PENDING_PREFLIGHT"
+}
