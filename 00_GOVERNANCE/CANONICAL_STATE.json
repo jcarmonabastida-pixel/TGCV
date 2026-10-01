@@ -46,7 +46,8 @@
     "architectural_d1_synthetic_world": "00_GOVERNANCE/architecture/TGCV_D1_MINIMAL_CONTROLLED_SYNTHETIC_WORLD_v0.1.md",
     "architectural_d1_transformation_semantics": "00_GOVERNANCE/architecture/TGCV_D1_TRANSFORMATION_SEMANTICS_STATE_TRANSITIONS_v0.1.md",
     "architectural_d1_reconstruction_audit": "00_GOVERNANCE/architecture/TGCV_D1_NONDEGENERACY_A_RECONSTRUCTION_AUDIT_v0.1.md",
-    "architectural_admissibility_boundary": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_ADMISSIBILITY_BOUNDARY_v0.1.md"
+    "architectural_admissibility_boundary": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_ADMISSIBILITY_BOUNDARY_v0.1.md",
+    "inherited_architecture_admissibility_spec": "00_GOVERNANCE/architecture/TGCV_INHERITED_ARCHITECTURE_ADMISSIBILITY_SPEC_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
