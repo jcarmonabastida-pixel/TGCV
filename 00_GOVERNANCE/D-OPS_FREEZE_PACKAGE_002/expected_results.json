@@ -1,0 +1,10 @@
+{
+  "persistence":"PERSISTENCE",
+  "expansion":"EXPANSION",
+  "contraction":"CONTRACTION",
+  "reconfiguration":"RECONFIGURATION_ONLY",
+  "mixed_identity_change":"OTHER_STRUCTURAL_CHANGE",
+  "representation":"INVARIANT",
+  "state_only_variation":"NO_OMEGA_CHANGE",
+  "incomparable":"NON_COMPARABLE"
+}
