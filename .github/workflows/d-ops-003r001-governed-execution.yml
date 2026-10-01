@@ -57,9 +57,11 @@ jobs:
           expected=json.loads((root/"expected_results.json").read_text(encoding="utf-8"))
           perturb=json.loads((root/"perturbation_manifest.json").read_text(encoding="utf-8"))
           schema=json.loads((root/"result_schema.json").read_text(encoding="utf-8"))
-          keys=["persistence","expansion","contraction","reconfiguration","mixed_identity_change"]
-          if list(expected)!=keys or list(perturb)!=keys: raise SystemExit("R001_CONTRACT_KEYS_INVALID")
+          keys={"persistence","expansion","contraction","reconfiguration","mixed_identity_change"}
+          if set(expected)!=keys or set(perturb)!=keys: raise SystemExit("R001_CONTRACT_KEYS_INVALID")
           if set(schema["required"])!={"test_id","expected_classification"}: raise SystemExit("R001_RESULT_SCHEMA_INVALID")
+          allowed=set(schema["allowed_classifications"])
+          if set(expected.values())-allowed: raise SystemExit("R001_EXPECTED_CLASSIFICATIONS_INVALID")
           print("R001_CONTRACT_PASS")
 
       - name: Execute five frozen R001 conformance cases
