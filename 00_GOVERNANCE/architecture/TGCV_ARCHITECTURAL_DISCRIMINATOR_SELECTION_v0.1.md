@@ -80,3 +80,14 @@ Before any scientific preflight, the next document must freeze:
 9. replication requirements.
 
 **No scientific execution is authorized by this record.**
+
+
+## 10. Supersession by transition-layer findings
+
+**Status of ARCH-DISC-001 selection:** HISTORICAL / SUPERSEDED / NON-OPERATIVE.
+
+The selected D1 construction was subsequently audited and closed as NON-DISCRIMINATING. The later ARCH-DISC-002 construction (G_T/O_T) was also audited and closed as A-EQUIVALENT because it is deterministically reconstructible from T_acc.
+
+Accordingly, this document must not be used to authorize or motivate an experiment using D1 or G_tau as an independent B object.
+
+The current Architectural Discrimination Criteria govern future candidate selection. No qualifying B object is currently selected.
