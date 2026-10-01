@@ -76,7 +76,7 @@ jobs:
           expected=json.loads((root/"expected_results.json").read_text(encoding="utf-8"))
           sys.path.insert(0,str(root))
           import dops_canonical, dops_oracle, dops_perturbations
-          base=dops_canonical.canonical_omega(fixture,r3)
+          base=dops_oracle.oracle_canonicalize(fixture,r3)
           cases={
             "persistence":(fixture,r3),
             "expansion":(dops_perturbations.expansion(fixture),r3),
