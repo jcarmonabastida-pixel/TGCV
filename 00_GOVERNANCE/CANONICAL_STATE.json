@@ -60,7 +60,8 @@
     "candidate_b_transformation_organisation_graph_assessment": "00_GOVERNANCE/architecture/TGCV_CANDIDATE_B_TRANSFORMATION_ORGANISATION_GRAPH_ASSESSMENT_v0.1.md",
     "nr8c2_bounded_identifiability_probe_spec": "00_GOVERNANCE/architecture/TGCV_NR8C2_BOUNDED_IDENTIFIABILITY_PROBE_SPEC_v0.1.md",
     "arch_disc_002_a_reconstruction_gate_readiness": "00_GOVERNANCE/architecture/TGCV_ARCH_DISC_002_A_RECONSTRUCTION_GATE_READINESS_v0.1.md",
-    "arch_disc_002_a_reconstruction_audit_spec": "00_GOVERNANCE/architecture/TGCV_ARCH_DISC_002_A_RECONSTRUCTION_AUDIT_SPEC_v0.1.md"
+    "arch_disc_002_a_reconstruction_audit_spec": "00_GOVERNANCE/architecture/TGCV_ARCH_DISC_002_A_RECONSTRUCTION_AUDIT_SPEC_v0.1.md",
+    "arch_disc_002_a_reconstruction_audit_result": "00_GOVERNANCE/architecture/TGCV_ARCH_DISC_002_A_RECONSTRUCTION_AUDIT_RESULT_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -69,5 +70,5 @@
     "experiment_authorization": "NONE_BY_THIS_LAYER",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md"
   },
-  "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_IDENTIFIABILITY_PASS_A_RECONSTRUCTION_SPECIFIED_NOT_EXECUTED"
+  "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_A_EQUIVALENT_RR3_NOT_SATISFIED"
 }
