@@ -1,0 +1,1518 @@
+# TGCV — Evidence-to-Claim Matrix — Current v1.44
+
+**Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
+**Date:** 2026-10-01  
+**Predecessor:** v1.43  
+**Incremental governance update:** Refines the NEXT3 Q5 scientific interpretation to explicitly describe the condition-dependent reorganisation of the action→profile correspondence under reassignment of future transformational structures, while preserving the bounded non-confirmatory scope. No claim-level upgrade or TGCV Core modification is introduced. NEXT4 uses the frozen DGP-002 / Engine-002 / Model-011R / Execution Spec-002 chain and scientific run 36746875918; all 40 design cells are covered with 1,000 replicates per cell, with null calibration and expected monotonic power-surface behavior documented. No claim-level upgrade, TGCV Core modification, or TGCV-wide confirmation/falsification is introduced.
+## Matrix preservation rule
+This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
+
+`EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` is a stable alias of the complete versioned current matrix; it MUST NOT be a simplified derivative.
+
+## Material evidence propagation rule
+A material experimental result is propagated to this matrix when it adds, removes, qualifies, bounds, or otherwise changes the evidentiary basis or interpretation of a claim, even when no claim status/level changes. Claim upgrade is a separate decision and is never inferred merely from evidence propagation.
+
+**Operational rule:** Evidence propagation does not imply claim upgrade. A claim-level upgrade requires an explicit claim-level consolidation record.
+
+**Material-section completeness rule:** Every material evidence item propagated into one or more claim rows MUST have a corresponding enriched `Material ... evidence` section in the same matrix version. The claim table is the routing/index layer; the material-evidence section is the developed evidentiary record. Table-only references are insufficient. This rule applies equally to foundational/base experiments that originally established claims and to later experiments. Where a foundational material result was previously represented only by a compressed table reference, the result MUST be restored cumulatively with its quantitative findings, provenance, operational scope, reproducibility boundary, interpretation limits and claim propagation. The integrity check is bidirectional: `material evidence item in claim table ↔ corresponding enriched material-evidence section`.
+
+## MT5 — material evidence propagation
+
+**MT5 Dynamic Transformation Space reconstruction — bounded partial result.** The frozen Acayucan source permits an ex-ante candidate transformation universe based on vehicle, pedestrian and cyclist access, parking and commercial delivery functions of first-time street paving. Longitudinal structural/connectivity variables permit reconstruction of state change, while downstream transportation, vehicle, migration, labour and related variables remain outcomes/resources and are not used to define accessibility. The evidence does not identify a complete outcome-independent `P_tau`, realised transformation set, `T_acc`, or `Delta T_acc`. Disposition: **B — PARTIAL DYNAMIC TRANSFORMATION SPACE**. This is methodological/case-reconstruction evidence and does not establish Transformational Intelligence, causal `Delta T_acc -> Value`, or a claim-level upgrade.
+
+**Governance boundary:** assignment ≠ accessibility; realised pavement ≠ complete `T_acc`; connectivity state ≠ transformation; outcome ≠ accessibility predicate; observed structural change ≠ `Delta T_acc` without independent accessibility identification.
+
+## Current claim matrix
+
+| ID | Claim | Status | Current evidence / basis | Evidence impact / interpretation | Next requirement |
+|---|---|---|---|---|---|
+| C01 | TGCV represents system state/context/conditions and constraints/resources | E0 | Formal architecture + bounded cross-domain traces + IT-G1 bounded industrial case + C10C-004 + MT4| IT-G1 adds material bounded evidence for reconstruction of internal state and external enabling conditions. C10C-004 adds bounded methodological evidence that an empirical construct can be traced from instrument semantics through physical variables to an executable derived outcome, without establishing TGCV state representation. No claim-level upgrade. MT4 adds bounded methodological evidence for identifying and preserving a technical constraint/state layer in a heterogeneous electricity-system domain. No claim-level upgrade.| Further independent operational confirmation |
+| C02 | Accessibility is represented by transformations satisfying an independently defined admissibility predicate | E0 |  Formalization + Rust + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + IT-G1 + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4 TSTC v004 + MT5 Dynamic Transformation Space reconstruction + VSL Paired E1/E2 v001 + TR-131 VisitAll + TR-131 PRISM V007| SWIM provides bounded accessibility operationalization; IT-G1 adds bounded evidence that end-to-end accessibility/function can depend on conditions external to the internal remediation target; C10C-002 adds an independent real-world bounded reconstruction of `T_acc*` from six structural infrastructure dimensions using pre-outcome structural predicates across 342 polygons and two observed rounds. C10C-001 independently demonstrates in a distinct non-software case that structural state reconstruction and observed configuration changes do not identify `Pτ`/`T_acc` without an explicit admissibility predicate. C10C-003 adds a distinct randomized non-software boundary case in which rich longitudinal structural data and treatment/take-up variables do not identify a non-circular accessibility predicate within the bounded operational search. General `T_acc` remains unclosed. C10C-004 adds no direct positive accessibility evidence: its women's-empowerment construct is not an independently defined TGCV admissibility predicate and must not be relabeled as `T_acc`. No claim-level upgrade is implied. MT4 adds a bounded methodological qualification through the partially formalized CORE6 candidate layer with 92.58% complete coverage; full `P_tau` remains undetermined. No claim-level upgrade. TSTC v004 adds bounded synthetic application-fit evidence for explicit transformation, admissibility/accessibility and `T_acc` representation; methodological only, no claim upgrade. C05 adds bounded synthetic application-fit evidence for explicit candidate transformations, admissibility/accessibility and `T_acc`, including the T3 `T_acc` reduction from 8 to 6; baseline equivalence is not independent evidence and no claim-level upgrade is inferred. VSL paired E1/E2 adds bounded synthetic evidence that a frozen intervention can increase `T_acc` by one transformation under the specified admissibility construction; methodological only, no claim-level upgrade. TR-131 VisitAll provides bounded first-domain instrumentation evidence, and PRISM V007 provides bounded second-domain evidence from an independently reconstructed operational subgraph; together they show that `T_acc`, realised transformations and successor accessibility can be represented and checked under domain-specific semantics without assuming a common raw transformation identity. This supports the bounded cross-domain operational interpretation of C02, but does not establish a domain-independent `P_tau` or trigger a claim-level upgrade.| Independent operationalization across a distinct exemplar |
+| C03 | T_acc is analytically distinct from downstream Reach in bounded Rust | E1 | Rust RUST-DYN-2 / EXEC-1A; ND-1 = 159,921 and ND-2 = 278,282 adjacent temporal pairs with `Delta T_acc != 0`, distinguishing zero-change and nonzero-change bounded potential Reach outcomes | The enriched RUST-DYN-2 record makes the bounded structural distinction quantitatively explicit. SWIM does not alter the bounded Rust claim level; IT-G1 does not test the Rust-specific Reach separation; C10C-002 does not operationalize downstream Reach identity; C10C-003 does not test Reach identity. No claim-level upgrade.| Independent replication |
+| C04 | ΔT_acc can occur without ΔReach¹_pot | E1 | Rust RUST-DYN-2 / EXEC-1A ND-1 = **159,921 adjacent temporal pairs** with `Delta T_acc != 0` and `Delta Reach^1_pot = 0` | Direct bounded empirical evidence in the frozen Rust representation that transformation-space change can occur without a change in bounded H=1 potential Reach. No direct test by SWIM, IT-G1, C10C-002 or C10C-003. No claim-level upgrade.| Independent replication |
+| C05 | ΔT_acc can occur with ΔReach¹_pot change | E1 | Rust RUST-DYN-2 / EXEC-1A ND-2 = **278,282 adjacent temporal pairs** with `Delta T_acc != 0` and `Delta Reach^1_pot != 0` | Direct bounded empirical evidence in the frozen Rust representation that transformation-space change can coincide with a change in bounded H=1 potential Reach. No direct test by SWIM, IT-G1, C10C-002 or C10C-003. No claim-level upgrade.| Independent replication |
+| C06 | Reach identity is not characterized by cardinality alone | E1 | Rust RUST-DYN-2 / EXEC-1A ND-4 = **266,201 adjacent pairs** with equal Reach cardinality but different Reach membership | Direct bounded structural evidence that equal cardinality does not imply Reach identity. C10C-002 uses a scalar net cardinality outcome only for its frozen bounded causal test and does not establish Reach identity; C10C-003 does not test Reach identity. No claim-level upgrade.| Independent replication |
+| C07 | Accessible transformation spaces change over time in Rust | E1 |  Rust RUST-DYN-2 / EXEC-1A: **438,203 non-persistent of 516,061 adjacent pairs (~84.91%)**, with PERSISTENCE 77,858, EXPANSION 8,295, CONTRACTION 3,786 and RECONFIGURATION 426,122 + VSL Paired E1/E2 v001 + TR-131 VisitAll| The enriched Rust record supplies the quantitative temporal evidence underlying the bounded claim. SWIM provides bounded non-Rust evidence that accessible transformation spaces can change across observed state transitions; IT-G1 adds a bounded industrial state-transformation sequence; C10C-002 adds independent real-world longitudinal evidence from 342 polygons in which a bounded universe of 12 elementary structural transformations yields non-empty `ΔT_acc*` in 238 polygons, including 104 openings and 171 closures. C10C-001 adds a distinct non-software boundary case in which observed structural changes are reconstructible but `T_acc` and `ΔT_acc` are not identified. MT5 adds a further real-world boundary case: structural/connectivity change and ex-ante intervention semantics are recoverable, but complete `P_tau`/`T_acc` are not independently identified. It therefore qualifies, rather than upgrades, the general accessibility representation. C10C-003 adds a second distinct non-software boundary case in which observed longitudinal configuration changes are available but `T_acc` and `ΔT_acc` remain unidentified within the bounded operational search. These cases qualify the distinction between observed structural change and accessible transformation-space change and are not evidence of `ΔT_acc`. C10C-004 is an endline operationalisation audit and does not reconstruct `U_tau`, `P_tau` or `ΔT_acc`. MT4 adds a bounded boundary qualification separating candidate technical constraints from realized technology changes; it does not establish a complete `T_acc` or positive `Delta T_acc` result. No claim-level upgrade. C05 adds bounded synthetic evidence of `Delta T_acc != 0` under T3 (8→6, with `accept_B` and `redirect_A_to_B` closed) and no accessibility delta under T1/T2/T4/T5/T6/NC1/NC2; this is synthetic methodological evidence only. VSL paired E1/E2 adds bounded synthetic evidence of `Delta T_acc = +1` reproduced across 100 fixtures in both A and B; controlled synthetic change only, no claim-level upgrade. TR-131 VisitAll and PRISM V007 together provide bounded cross-domain methodological evidence that `T_acc`, realised transformations and successive `Delta T_acc` can be instrumented and independently reconstructed using a common transition-level representation. VisitAll contributes 20 analysed records and PRISM contributes 16, with zero invalid records; this is operationalisation evidence, not representational-gain evidence or a claim-level upgrade.| Independent closed operationalization / replication |
+| C08 | Accessibility changes modify reachable future trajectories | H |  Formal chain + bounded Rust H=1 + SWIM trajectory-linkage reconstruction + IT-G1 bounded state/trajectory observation + C10C-001 + C10C-003 + MT4 TSTC v004 + VSL Paired E1/E2 v001 + TR-131 VisitAll| SWIM adds bounded reconstructability of ordered subsequent transformations and state transitions; IT-G1 provides a bounded industrial state/trajectory observation. KGFS supplies the causal layer now reflected in C09. C10C-002 does not add a trajectory outcome. MT5 likewise does not identify `T_acc` sufficiently to establish a trajectory causal estimand; it is retained as a boundary reconstruction. C10C-001 and C10C-003 add complementary empirical boundary qualifications: structural change, realized intervention and conventional longitudinal outcomes cannot substitute for identified accessibility and reachable-trajectory evidence. No trajectory causal estimand is established by either case. No claim-level upgrade is implied. MT4 adds bounded methodological separation among candidate constraints, realized transformations and state/trajectory variables, but does not establish a trajectory causal estimand. No claim-level upgrade. TSTC v004 adds bounded synthetic representation of transition and subsequent trajectory fields; no causal trajectory estimand or claim upgrade. C05 adds bounded synthetic transition/trajectory representation; NC2 is not a trajectory-policy sensitivity test because `trajectory()` does not consume `selection_tiebreak`; no causal trajectory estimand is established. VSL paired E1/E2 adds a bounded negative/qualifying result: `Delta T_acc = +1` while the specified realized trajectory remains unchanged; no causal trajectory estimand is established. TR-131 VisitAll and PRISM V007 provide bounded cross-domain methodological evidence that a realised transformation can be linked to a reconstructed successor state and successor `T_acc` within the same transition-level record. The result demonstrates instrumentation of the trajectory/accessibility linkage, not that accessibility changes modify trajectories causally.| Independent valid trajectory test with explicit trajectory criterion beyond bounded exemplars |
+| C09 | Accessibility changes causally affect subsequent trajectories | **PASS — BOUNDED EMPIRICAL CAUSAL SUPPORT** | SWIM trajectory-linkage reconstruction + RUST-DYN-2 bounded structural evidence + KGFS randomized structural accessibility intervention with D5-A identified contribution + KGFS exact 74/74 trajectory-variable reproducibility audit + C09 Bundle 003 Executor-2 reconstruction + FOS methodological/reference evidence + MT4| Claim-level consolidation establishes bounded empirical causal support. KGFS provides the decisive real-world causal layer: randomized early expansion of KGFS banking infrastructure, reconstructable structural accessibility change, D5.2-S applicability, D5-A identified contribution, and reproducible longitudinal trajectory variables. SWIM and RUST-DYN-2 provide complementary bounded structural/trajectory-linkage support. Bundle 003 remains synthetic causal-operationalization evidence and FOS remains non-reportable under its frozen estimator. C10C-002 is deliberately excluded from positive C09 support because its estimand tests the intervention effect on `ΔT_acc*`, not the effect of `ΔT_acc*` on subsequent trajectories. C10C-003 adds no positive causal support because `ΔT_acc` is not identified. MT4 provides no positive causal evidence for `Delta T_acc -> subsequent trajectory`; the existing bounded causal status remains unchanged.| Independent real-world replication across a distinct domain; broader generality; no automatic value claim |
+| C10 | Accessibility changes generate/predict value | H |  No Value evidence + MT4 + VSL Synthetic Minimum v0.1 + VSL Paired E1/E2 v001| SWIM, RUST-DYN-2, KGFS, IT-G1, C10C-002 and C10C-003 do not establish causal `ΔT_acc → ΔV` or predictive value. C10C-002 explicitly did not execute a value regression. C10C-003 does not identify the TGCV accessibility layer required for a value pathway. No value claim is established. MT4-8 isolates `Inv`, `Fixed_OM_annual` and `Variable_OM` from the CORE6 candidate accessibility rule, but does not establish a downstream TGCV value endpoint or `Delta T_acc -> Delta V`. VSL Synthetic Minimum v0.1 adds bounded methodological/qualifying evidence that an independently frozen Outcome→Value mapping can be operationalized separately from the transformation/accessibility path. It does not establish real-world Value, causal `ΔT_acc → ΔV`, predictive value, a universal Value function, or cross-domain comparability, and therefore does not constitute positive evidence for the C10 proposition. C10 remains open. VSL paired E1/E2 adds bounded synthetic evidence that `Delta T_acc = +1` can coexist with `Delta V* = 0` under the frozen construction. This does not establish causal or predictive `Delta T_acc -> Delta V`; C10 remains open.| Value-linked test |
+| C11 | TGCV is domain-independent / transversal | H | C-01 A-C + I-01 Gate C + bounded cross-domain evidence + C10C-002 + TR-131 VisitAll + C10C-001 + C10C-003 + MT4 TSTC v004| SWIM is a bounded self-adaptive software exemplar, IT-G1 a bounded industrial AWS exemplar, KGFS a bounded real-world rural-finance intervention, C10C-002 a bounded urban-infrastructure/real-estate empirical case, C10C-001 a non-software export experiment and C10C-003 a randomized rural-energy-access experiment. C10C-001 and C10C-003 both add boundary evidence showing that structural state/change can be recovered while accessibility remains unidentified unless an explicit admissibility predicate is available. This strengthens documented heterogeneity and boundary evidence only; it does not establish transversal validity or justify a claim upgrade. MT4 adds bounded methodological cross-domain evidence from a heterogeneous electricity-system domain and strengthens documented transfer/boundary evidence only; it does not establish transversal validity or justify a claim upgrade. TSTC v004 adds bounded synthetic heterogeneity and domain-specific baseline comparison; TR-131 VisitAll and PRISM V007 now provide two bounded executable domain exemplars for the cross-domain programme, with structurally distinct source semantics and a common analytical representation. This supports bounded cross-domain operationalisation only; it does not establish transversal validity or a claim upgrade.| Independent operationalization across broader domains |
+| C12 | TGCV provides superior explanatory representation | H | Comparative evidence absent | IUT M1 provides bounded decision-performance evidence but U2-NULL; SWIM, IT-G1, KGFS, C10C-002 and C10C-003 are non-comparative for explanatory superiority. | Controlled differentiated comparison |
+| C13 | TGCV contains no equivalent prior architecture | O | D-OPS-21 | No material impact. | Comparative coverage |
+| C14 | T_acc is an ontological primitive independent of S | F | TR-131 | No impact; SWIM, IT-G1, KGFS, C09 Bundle 003, C10C-002 and C10C-003 treat accessibility as derived/conditioned rather than restoring the rejected primitive. | No restoration without contrary evidence |
+| C15 | Rust demonstrates observed Cargo/runtime reachability | F | Rust evidence boundary | No impact. | Separate governed runtime test |
+|  C16  |  TGCV provides a transversal analytical translation protocol preserving distinctions among state, candidate transformations, accessibility, Reach, Trajectory, Outcome and Value  |  H  |   D-OPS-22/23 + C-01 A-C + I-01 Gate C + IT-NOSD-010 G0/G1/G2 + EXT-UPD-4.8 + SWIM Reactive-0 + SWIM Reactive2 + SWIM trajectory-linkage reconstruction + IT-G1 + C09 Bundle 003 + C10C-002 + C10C-001 + C10C-003 + C10C-004 + MT4 TSTC v004 + VSL Synthetic Minimum v0.1 + VSL Paired E1/E2 v001 + TR-131 VisitAll |  SWIM supports bounded state/context → accessibility → `T_acc` → `ΔT_acc` and bounded trajectory linkage. IT-G1 adds bounded industrial evidence preserving distinctions among internal state transformation, external enabling condition and end-to-end outcome. C09 Bundle 003 adds bounded executable causal-operationalization evidence while preserving the distinction between intervention/accessibility and downstream outcome. C10C-002 adds a reproducible real-world bounded chain `Z → ΔS → T_acc* → ΔT_acc* → frozen causal estimand`, with structural-only predicates, explicit treatment/state separation, endpoint separation, and a negative result retained without post-hoc rescue. C10C-001 adds a complementary non-software boundary case preserving distinctions among structural state, candidate transformations, accessibility and realized transformations while preventing temporal leakage. C10C-003 adds a second randomized non-software boundary case preserving the same distinctions and explicitly qualifying the bounded scope of accessibility operationalization. C10C-004 adds a worked non-software translation example preserving the distinction among instrument semantics, raw variables, derived outcomes and TGCV constructs. It does not close downstream value boundaries or establish transversal validity. MT4 adds bounded methodological evidence preserving separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables. No claim-level upgrade. TSTC v004 provides primary bounded methodological evidence for application-fit of the translation protocol across heterogeneous synthetic fixtures, including cross-domain paths and negative controls; no causal, value, superiority, generality or industrial-validation claim upgrade. C05 adds bounded synthetic application-fit evidence preserving the distinctions among candidate transformations, admissibility, `T_acc`, transition, bounded trajectory fields, negative controls and explicit non-claims; no causal, value, superiority, generality or deployment claim is inferred. VSL Synthetic Minimum v0.1 extends the translation protocol to preserve an explicit downstream Outcome/Value distinction and an external VSL interface. It demonstrates implementation-level separation without establishing transversal empirical validity or a causal value pathway. VSL paired E1/E2 adds closed, independently reconstructed methodological evidence preserving the separation among `T_acc`, realized trajectory and downstream `V*`; no transversal empirical validity or claim-level upgrade follows. TR-131 VisitAll and PRISM V007 together provide bounded cross-domain methodological evidence for an executable translation from state to accessible transformations, realised transformations, successor states and changed accessible spaces. VisitAll contributes 20 transition records and PRISM 16; both satisfy independent reconstruction/integrity checks and V007 contains zero invalid records. The common representation preserves domain-specific transformation identities while deriving comparable reconfiguration descriptors. The result supports the cross-domain analytical translation layer as an operationalisation finding only; it does not establish representational gain, transversal validity, Transformational Intelligence, value linkage or ontological necessity. V011 is methodological evidence for the decision-level Transformational Intelligence research direction, not evidence of transversal validity, causal value linkage or ontological necessity. V012_NEXT adds bounded descriptive/traceability evidence that a controlled decision-selection experiment can preserve the pre-decision/post-decision distinction and mechanically reconstruct the decision-to-successor-`T_acc` chain for every included unit. It does not identify Q1/Q5, establish a general future-space mechanism, or upgrade C16. NEXT2 adds a closed primary inferential contrast between INFORMATIVE and UNINFORMATIVE_NULL for the pre-specified action_identity × future_assignment mechanism: the direct interaction likelihood-ratio test gives chi-square(9) = 13.9707, p = 0.1234, with 11,182 compared valid decisions. This does not establish the pre-specified mechanism direction and does not upgrade C16. The secondary negative-control mutual-information contrast is documented as 0.002143 bits in the specification/contract, but its derivation is not supported by a reproducible execution artifact in the searched TI-001 scope; it is therefore retained as a documented value without independent execution evidence. The NEXT2 closure audit records this limitation. NEXT3 adds bounded post-primary decision-selection evidence that the action–profile correspondence is condition-sensitive at the higher-order interaction level while marginal profile×condition and profile×presentation effects are not detected. Q1 and the INFORMATIVE−UNINFORMATIVE_NULL component of Q3 are mathematically identical joint contrasts in RESULT_001 and are retained as separate frozen inferential entries without retrospective family modification. Q4 shows strong domain dependence but no detectable profile×operationalisation modulation. Q5 provides the strongest result: action_identity × profile_id × condition is extremely strong (chi-square(9) = 2902.9464; stored p = 0; Holm-adjusted p = 0), with BFGS inverse-Hessian covariance; historical callback trace is absent, but technical reproduction of the stored result passes. The scientific interpretation is limited to reorganisation of action–profile correspondence under condition; it does not identify a unique mechanism, establish future-transformation causality, prove Transformational Intelligence, establish value linkage, or provide generalisation beyond the frozen execution. NEXT4 adds bounded methodological evidence that the frozen TI-001 design has been power-characterized and null-calibrated across the registered 5×8 grid; it does not constitute empirical evidence of Transformational Intelligence, causal value linkage, or substantive effect in real data. |  Closed independent-domain operationalization / downstream test  |
+
+## Material methodological evidence — TI-001 V012_NEXT
+
+**Case:** `TI001_V012_NEXT`  
+**Status:** `CLOSED — BOUNDED DESCRIPTIVE / TRACEABILITY EVIDENCE`  
+**Evidence class:** controlled experimental decision-selection and decision-to-`T_acc` traceability evidence; not construct validation, causal, value, superiority or TGCV-wide confirmation/falsification evidence.  
+**Closure record:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_CLOSURE_GATE_001.json`  
+**Post-closure decision:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_POST_CLOSURE_DECISION_GATE_001.json`  
+**Result:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT_SCIENTIFIC_EXECUTION_RESULT_001.json`  
+**Result SHA-256:** `b45920191f4e7f25853606c0e719c73702145e2496254163d2b2fed504232c50`  
+**Fixture SHA-256:** `7782e7652001ec8a64cd1f231c37e6c3c7cd065e672564140fdfa4626b185a5b`
+
+### 1. Purpose and frozen scope
+
+V012_NEXT was designed to discriminate an action-conditioned future-space correspondence mechanism from stable action preference while preserving a decision-before-realized-future boundary. It was executed as a controlled 72-unit experiment under the frozen fixture, executor, system prompt and response-validation bindings.
+
+### 2. Quantitative findings
+
+- Decision units: **72**; valid responses: **72/72**.
+- Informative mapping-consistent selection rate: **18/36 = 0.50**.
+- Informative action A selection rate: **18/18 = 1.00**.
+- Informative action B selection rate: **0/18 = 0.00**.
+- Baseline action A selection rate: **1.00**.
+- Decision-to-realized-`T_acc` reconstruction: **72/72 = 1.00**.
+- The observed mapping-consistent rate therefore arose from fixed selection of action A while the informative correspondence was balanced across A and B.
+
+### 3. Scientific interpretation
+
+The result does **not** discriminate Q1 or Q5: the observed fixed-action pattern is compatible with stable action preference and does not provide positive mechanism evidence for action-conditioned future-space tracking. Q2 and Q4 were descriptively stable across the tested presentation and operationalisation strata; Q3 showed no descriptive difference in mapping consistency under the tested baseline. Q6 is closed at the traceability/reconstruction level for this experiment.
+
+### 4. Evidence-to-claim routing
+
+**C16 — bounded methodological qualification.** V012_NEXT adds material evidence that a controlled decision-selection experiment can preserve the separation between the pre-decision information boundary and the post-decision realization layer, while mechanically reconstructing `S_t → selected action → S_t+1 → T_acc,t+1` for every included unit. This strengthens the bounded translation/traceability evidence but does not establish transversal validity or a claim-level upgrade.
+
+**C02/C07/C08/C10/C11 — no claim-level upgrade.** V012_NEXT does not independently identify a general admissibility predicate, establish general temporal `T_acc` dynamics, estimate a causal trajectory effect, test a value pathway, or establish cross-domain validity.
+
+### 5. Reproducibility and boundaries
+
+The execution result, fixture, prompt and validation bindings were hash-checked by the scientific execution result gate; the primary descriptive analysis and its audit passed. No retry, recoding, substitution, imputation, pooling or post-hoc inferential threshold was used in the registered analysis.
+
+The evidence is bounded to the frozen operational construct and 72-unit execution. It does not constitute TGCV-wide confirmation or falsification and does not modify the TGCV Core.
+
+### 6. Governance disposition
+
+V012_NEXT is admissible as **material bounded descriptive/traceability evidence**. Q1 and Q5 remain unresolved; Q6 remains established at the traceability level. The governed next step is NEXT2, whose design is registered separately and is required to make the competing mechanisms generate distinguishable predictions.
+
+## Material experimental evidence — TI-001 V012 NEXT2
+
+**Case:** TI001_V012_NEXT2  
+**Status:** CLOSED — BOUNDED PRIMARY INFERENTIAL CONTRAST  
+**Evidence class:** controlled decision-selection contrast with a pre-specified negative control; bounded mechanism test, not TGCV-wide confirmation/falsification, value/causal evidence, superiority evidence, or general Transformational Intelligence evidence.  
+**Final closure audit:** 03_EXPERIMENTS/TI-001/TI001_V012_NEXT2_FINAL_CLOSURE_AUDIT_001.json  
+**Final closure commit:** 65b42a1dba188078672784b2c0a0c70de5f84b94  
+**Primary result:** 03_EXPERIMENTS/TI-001/TI001_V012_NEXT2_DIRECT_CONTRAST_RESULT_001.json  
+**Primary result SHA-256:** a204262ccc1ed222060fd1a11a57d10e641d1af2ecd682aff59e2032cd610eb5  
+**Secondary MI traceability audit:** 03_EXPERIMENTS/TI-001/TI001_V012_NEXT2_SECONDARY_MI_TRACEABILITY_AUDIT_001.json  
+**Secondary MI audit SHA-256:** 144886899bcbe9e9ca73033d342eead292288150e2e83033426b22627ef8fce8
+
+### 1. Experimental object and scope
+
+NEXT2 was the pre-specified direct primary contrast intended to test whether the action_identity × future_assignment interaction differs between the INFORMATIVE condition and the UNINFORMATIVE_NULL negative-control condition. The registered model is a mixed-effects logistic regression with decision-unit random effects. The result artifact reports 22,435 valid decisions overall and 11,182 valid decisions in the primary comparison.
+
+### 2. Primary quantitative finding
+
+The pre-specified direct interaction likelihood-ratio test comparing the full and reduced models gave:
+
+- chi-square(9) = 13.9707
+- p = 0.1234
+- reduced model AIC = 32015.8285
+- full model AIC = 32019.8579
+
+The result therefore does not establish the pre-specified mechanism direction of stronger action-selection dependence on reassigned future correspondence under INFORMATIVE than under UNINFORMATIVE_NULL. Individual three-way terms were heterogeneous, including nominal p-values below 0.05 for two slot-3 terms, but these do not replace the pre-specified global primary contrast.
+
+### 3. Secondary negative-control MI
+
+The analysis specification and contract document 0.002143 bits for MI(action;f) - MI(action;z) within UNINFORMATIVE_NULL. A repository search found no computational execution artifact supporting derivation of that value. The dedicated traceability audit therefore records the status as DOCUMENTED_VALUE_WITHOUT_EXECUTION_ARTIFACT and NOT_EXECUTED. The documented value is not treated as independently reproduced computational evidence and cannot replace the primary contrast.
+
+### 4. Interpretation and evidence boundary
+
+NEXT2 provides a bounded negative/non-confirmatory result for the specific pre-specified mechanism contrast. It does not establish that the broader TGCV proposition is false, because the experiment tests one operationalization of one mechanism rather than the theory as a whole. It provides no value or causal claim and no general Transformational Intelligence claim.
+
+### 5. Evidence-to-claim routing
+
+**C16 — bounded methodological/mechanism qualification.** NEXT2 adds material evidence to the decision-level translation programme by testing a pre-specified action/future-correspondence contrast under an explicit negative-control condition. The primary contrast does not establish the predicted mechanism direction, so the evidence is retained as a bounded non-confirmatory result. No claim-level upgrade or downgrade is inferred from this experiment alone.
+
+**C02/C07/C08/C10/C11 — no claim-level change.** NEXT2 does not independently identify a general admissibility predicate, establish general temporal T_acc dynamics, estimate a causal trajectory effect, establish a value pathway, or establish transversal/domain-independent validity.
+
+### 6. Reproducibility and governance disposition
+
+The primary contrast and final closure audit are canonically registered. The primary result SHA-256 is preserved above, as is the secondary MI traceability audit. The final closure explicitly records the secondary-MI evidentiary limitation. NEXT2 is admissible as material bounded primary inferential evidence with a non-confirmatory primary result. No retroactive recalculation or modification of the closed result was performed.
+
+## Material experimental evidence — TI-001 V011 Transformational Intelligence
+
+**Case:** `TI001_V011`  
+**Status:** `CLOSED — BOUNDED TRANSFORMATIONAL-INTELLIGENCE EXPERIMENTAL EVIDENCE`  
+**Closure gate:** `TI001-V011-SCIENTIFIC-CLOSURE-GATE-001`  
+**Consolidation gate:** `TI-EVIDENCE-CONSOLIDATION-GATE-001`  
+**Fixture SHA-256:** `30268ab425aaeff23f0a719126765f832653d37dfb45746388a272d054549ee1`
+
+### 1. Experimental object and scope
+
+V011 tests whether an agent incorporates an explicitly available future transformation structure into its present decision. Treatment exposes the future structure; control does not. The evidence is bounded to the frozen task, interface, fixture, model/runtime configuration and decision rule.
+
+### 2. Execution and audit evidence
+
+E1-R and E2-R each contain **420/420 valid decisions**. Both primary execution audits passed. The independent E1-R/E2-R concordance audit passed. Scientific analysis was performed and its primary audit passed **15/15**. The scientific closure gate passed **14/14**.
+
+Response-level agreement was **380/420**. The two executions remained analytically separate; no pooling, recoding, retry, imputation or outcome-dependent filtering was introduced.
+
+### 3. Quantitative findings
+
+- E1-R: `TI_DC = -0.06428571428571428`
+- E2-R: `TI_DC = -0.0357142857142857`
+
+These are descriptive contrasts under the frozen construction. They are not general capability estimates.
+
+### 4. Evidence contribution
+
+V011 adds bounded experimental evidence that the proposed decision-level Transformational Intelligence operationalisation can be executed, audited and independently reproduced while preserving the distinction among present decision, future transformation structure and downstream value. The cross-execution agreement is reproducibility evidence for the executed record; it is not, by itself, construct validation.
+
+### 5. Claim routing
+
+**C16:** V011 provides a methodological qualification to the evidence base surrounding the proposed Transformational Intelligence research direction. It does **not** establish transversal validity, explanatory/predictive superiority, causal value linkage or ontological necessity, and therefore does not upgrade C16.
+
+**C10:** V011 contains no Value endpoint and does not establish or estimate `Delta T_acc -> Delta V`; C10 remains open.
+
+No other C01–C16 claim receives a positive upgrade from V011.
+
+### 6. Interpretation limits
+
+The observed negative `TI_DC` estimates do not establish absence or presence of a universal Transformational Intelligence capability. V011 does not establish that the tested decision contrast is a general property of generative systems. It does not modify the TGCV Core.
+
+### 7. Governance disposition
+
+V011 is scientifically closed and consolidated as bounded experimental evidence. Existing claim statuses remain unchanged. Any future TI experiment must address a specifically identified unresolved question rather than repeat V011 solely to obtain another estimate.
+
+
+## Material methodological evidence — TR-131 VisitAll Transformation-Space Instrumentation
+
+**Case:** `TR-131 VisitAll — Dynamic Transformation Space`  
+**Status:** `CLOSED — BOUNDED METHODOLOGICAL INSTRUMENTATION EVIDENCE`  
+**Experiment scope:** frozen VisitAll / PDDL `grid-5`, exhaustive depth-2 tree  
+**Primary scientific audit:** `03_EXPERIMENTS/TR-131/execution/TR131_VISITALL_DYNAMIC_SPACE_SCIENTIFIC_EVALUATION_AUDIT_001.md`  
+**Scientific evaluation commit:** `2d8dd7b72245e7dc747bfb848ecda1de409b09fc`  
+**Scientific evaluation content SHA:** `4e4cff8a07904877cafca86ba701d7476212a3f3`
+
+### 1. Source and frozen experimental object
+
+The experiment used the source-defined VisitAll planning instance:
+
+- **Source repository:** `potassco/pddl-instances`
+- **Revision:** `cf19edf7c53d1540ddbb396c642595e0926ee552`
+- **PDDL problem blob:** `f49fb86fb3f7dd4aba5a6ed79fdddc240097ec34`
+- **Problem:** `grid-5`
+- **Depth:** 2
+- **Root state:** robot at `loc-x2-y2`
+
+The relevant source-defined transformation is the action:
+
+`move(?curpos ?nextpos)`
+
+with preconditions:
+
+- `at-robot(?curpos)`
+- `connected(?curpos,?nextpos)`
+
+and effects that move the robot and mark the visited location.
+
+At the root, four outgoing moves are accessible under the frozen source semantics.
+
+The experiment therefore did not invent a transformation universe independently of the domain. It instrumented the source-defined transformation possibilities and their evolution through the source-defined state transitions.
+
+### 2. Experimental question
+
+The operational question was whether the following sequence could be explicitly instrumented and reconstructed:
+
+`S_t → T_acc,t → T_real,t → S_(t+1) → T_acc,t+1`
+
+and, consequently:
+
+`T_acc,t → T_acc,t+1`
+
+with `Delta T_acc` observable along realized transitions.
+
+The original scientific evaluation additionally tested whether this explicit instrumentation produced a representational distinction not already recoverable from the conventional domain-native state/action representation.
+
+These are separate questions. The latter failed in this fixture; the former succeeded as a bounded instrumentation result.
+
+### 3. Execution design
+
+Two independent executions were performed:
+
+- **Executor-1:** persisted stdout SHA-256 `735a4b6d13c763bbf6211bc9aebdf8ba5f6e00397e08ffa815df7edd601a3afa`
+- **Executor-2:** persisted stdout SHA-256 `6c2a0dd29764c41c7aa5264cda4c9c070edbf096813b38fe90fc447c2615d95c`
+
+The independent comparison audit established agreement on:
+
+- source revision;
+- source problem/blob;
+- execution depth;
+- node count;
+- root `T_acc`;
+- reconstructed tree structure.
+
+The final comparison was PASS after excluding redundant parent-state provenance that duplicated the baseline `S_t`.
+
+### 4. Observed transformation-space structure
+
+The independently reconstructed exhaustive depth-2 tree contained:
+
+- **21 nodes**;
+- **20 edges**;
+- **16 leaves**;
+- root `|T_acc| = 4`;
+- **4 distinct root realizations**;
+- **4 distinct first-step successor states**;
+- **16 depth-2 nodes**;
+- **20 observed non-empty `Delta T_acc` transitions**;
+- **0 reconstruction mismatches**.
+
+Thus the experiment operationally captured:
+
+1. the accessible transformations at a state;
+2. a realized transformation selected from those alternatives;
+3. the resulting successor state;
+4. the accessible transformation space of that successor state;
+5. the change between the two accessible spaces.
+
+### 5. Scientific evaluation
+
+The frozen scientific audit evaluated four representation cases:
+
+**C1 — Same state, different accessible transformation space:** `NOT_TESTABLE`.
+
+Applicability was deterministic from `S_t` and the frozen connectivity relation. No independent context variable was present that could produce different `T_acc` for the same state.
+
+**C2 — Same state and `T_acc`, different realization:** `OBSERVED`.
+
+At the root, four applicable moves were available and all four were realized across the exhaustive branches.
+
+**C3 — Same current state and `T_acc`, different trajectories:** `OBSERVED`.
+
+The four root realizations generated four distinct first-step successor states and 16 depth-2 nodes.
+
+**C4 — Realized transformation changes subsequent `T_acc`:** `OBSERVED`.
+
+All 20 realized edges had non-empty `Delta T_acc`.
+
+### 6. Reconstruction and representational boundary
+
+The critical audit result was that all observed transformation-space changes were reconstructible from the conventional source-defined state/connectivity/action semantics.
+
+Therefore:
+
+`representation_gain_result = FAIL_NO_DISTINCT_REPRESENTATIONAL_GAIN`
+
+This means that VisitAll did **not** demonstrate that `T_acc` constitutes an analytically independent or superior representation relative to the domain-native baseline.
+
+It does **not** mean that the transformation-space instrumentation failed.
+
+The two findings are deliberately separated:
+
+- **Instrumentation:** demonstrated in this bounded fixture.
+- **Distinct representational gain:** not demonstrated.
+
+This distinction is now the governing interpretation of the VisitAll evidence.
+
+### 7. Evidence-to-claim propagation
+
+**C02 — bounded methodological qualification.** VisitAll demonstrates that, in the frozen VisitAll domain, source-defined applicable `move` transformations can be enumerated as `T_acc` under explicit preconditions (`at-robot` and `connected`) and independently reconstructed at the root and successive states. This is positive first-domain instrumentation evidence for the operational form of accessibility, not evidence that the admissibility predicate is domain-independent or that general `P_tau` has been validated. No claim-level upgrade.\n\n**C07 — bounded methodological qualification.** VisitAll demonstrates that successive `T_acc` states and non-empty `Delta T_acc` can be explicitly instrumented over realized transitions in a concrete planning domain.
+
+**C08 — bounded methodological qualification.** VisitAll demonstrates an executable finite linkage among accessible transformations, realized transformations, successor states and subsequent accessible transformations. It does not establish a causal trajectory estimand.
+
+**C11 — bounded first-domain foundation.** VisitAll is the first operational anchor for the new cross-domain programme. It does not establish transversal validity. Its purpose is to define a concrete instrumentation pattern against which a materially different second domain can be tested in Gate A.
+
+**C16 — bounded methodological qualification.** VisitAll demonstrates preservation of distinctions among state, candidate/accessibility space, realized transformation and successor state within an executable domain translation.
+
+**C12 — explicitly not supported.** The experiment found no distinct representational gain relative to the conventional baseline and must not be used as evidence of explanatory or representational superiority.
+
+No claim-level status or level is changed by this evidence propagation.
+
+### 8. Reproducibility, scope and exclusions
+
+The result is bounded to the frozen `grid-5` VisitAll instance and its source-defined semantics.
+
+It does not establish:
+
+- cross-domain or transversal validity;
+- generality of transformation-space dynamics;
+- Transformational Intelligence;
+- value linkage;
+- causal `Delta T_acc → Delta Value`;
+- ontological irreducibility of `T_acc`, `T_real`, selection or any other candidate construct;
+- superiority over domain-native representations.
+
+No new scientific execution was performed during the final scientific evaluation audit.
+
+### 9. Governance disposition
+
+VisitAll is **closed** as a bounded methodological instrumentation result. It is not reopened to seek representational gain in the same fixture.
+
+Its role is now explicitly:
+
+> **First-domain demonstration that TGCV can instrument a transformation space and observe its evolution through realized transformations.**
+
+The next question is therefore not whether VisitAll can be made to show representational superiority, but whether the instrumentation logic survives a **materially different second domain** under Gate A — Cross-domain operationalisation.
+
+Any implication for TGCV's scientific Core remains deferred to Gate F and governed by:
+
+> **Evidence first → conceptual differentiation second → ontological review third → Core modification only if warranted by accumulated evidence.**
+
+## Material empirical evidence — C10C-001 Structural Reconstruction
+
+**Case:** `C10C-001 — Egypt`  
+**Status:** `PARTIAL — STRUCTURAL STATE RECONSTRUCTIBLE, ACCESSIBILITY PREDICATE NOT IDENTIFIED`  
+**Result artifact:** `00_GOVERNANCE/SIP/TGCV_C10C001_STRUCTURAL_RECONSTRUCTION_RESULT_001.md`  
+**Protocol:** `00_GOVERNANCE/SIP/TGCV_C10C001_STRUCTURAL_RECONSTRUCTION_PROTOCOL_001.md`  
+**Source freeze:** `00_GOVERNANCE/SIP/TGCV_C10C001_SOURCE_VERSION_FREEZE_001.md`  
+**Propagation record:** `00_GOVERNANCE/SIP/TGCV_C10C001_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`
+
+The controlled reconstruction was conducted on the frozen C10C-001 Egypt source. The baseline and identified longitudinal subset permit reconstruction of structural state and observed state changes, but the source does not expose an independently defined accessibility predicate `Pτ(S,C,τ)`. The audited variables identified as treatment/assignment, realized take-up/adoption, observed configuration identity, orders/production, or implementation detail cannot be promoted to an accessibility predicate without an additional admissibility rule.
+
+The reconstruction therefore establishes a bounded non-software empirical boundary: `S0`, `S1` and observed `ΔS` are reconstructible for the identified sample, while `Uτ` cannot be defined as a cross-temporal union, `Pτ` is not identified, and consequently `T_acc,0`, `T_acc,1` and `ΔT_acc` are not reconstructible from the frozen evidence. Observed realization is not treated as accessibility; treatment assignment is not treated as availability; take-up/adoption is not treated as availability; observed configuration identity is not treated as the accessible transformation universe; and later-observed configurations are not used to define earlier accessibility because of temporal leakage.
+
+This is material empirical evidence because it independently qualifies the boundary between structural-state reconstruction and accessibility-space reconstruction in a non-software domain. It does **not** establish positive evidence of `ΔT_acc`, a trajectory effect, a value pathway, causal effect on subsequent trajectories, transversal validity, or a Core modification. No claim-level upgrade follows from this propagation.
+
+### Evidence-to-claim propagation
+
+- **C02:** Material qualification. Structural reconstruction and observed configuration changes do not identify `Pτ`/`T_acc`; an explicit admissibility predicate remains required. No upgrade.
+- **C07:** Bounded negative/limiting qualification. The case does not identify `ΔT_acc`; observed structural changes are not substituted for accessible transformation-space changes. No upgrade.
+- **C08:** Material boundary qualification. Structural change/realized transformation cannot substitute for reachable trajectory evidence, and no trajectory causal estimand is established. No upgrade.
+- **C11:** Material methodological qualification. The case is a distinct non-software empirical reconstruction boundary, strengthening the documented cross-domain evidence base only by showing where accessibility reconstruction fails. No transversal-validity upgrade.
+- **C16:** Material methodological evidence. The case reinforces preservation of the distinctions among state, candidate transformations, accessibility, realized transformations and temporal leakage controls. No upgrade.
+
+No positive propagation is made to C01, C03, C04, C05, C06, C09, C10, C12, C13, C14 or C15. The Core/RMA status is unchanged.
+
+## Material empirical evidence — C10C-003 India Static Inspection
+
+**Case:** `C10C-003 — Does basic energy access generate socioeconomic benefits? A field experiment with off-grid solar power in India`  
+**Status:** `CLOSED — DATA-LEVEL STATIC INSPECTION; STRUCTURAL READINESS LIMITATION CONFIRMED`  
+**Source freeze:** `00_GOVERNANCE/SIP/TGCV_C10C003_SOURCE_VERSION_FREEZE_003.md`  
+**Inspection request:** `00_GOVERNANCE/SIP/TGCV_C10C003_STATIC_INSPECTION_REQUEST_001.md`  
+**Result:** `00_GOVERNANCE/SIP/TGCV_C10C003_STATIC_INSPECTION_RESULT_001.md`  
+**Propagation:** `00_GOVERNANCE/SIP/TGCV_C10C003_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`
+
+The frozen Harvard Dataverse replication package provides rich longitudinal household data, treatment/installation/adoption variables, structural electricity and lighting variables and conventional causal-analysis code. Static inspection established only partial TGCV-specific state reconstruction: `S0` and `S1` remain `PARTIAL`; `U_tau` and `P_tau(S,C,L)` are `NOT_IDENTIFIED`; and `T_acc,0`, `T_acc,1` and `Delta T_acc` are `NOT_TESTABLE_FROM_PACKAGE`.
+
+### Scope qualification
+
+The inspection was **bounded by design**. It did not attempt exhaustive enumeration of the complete universe of transformations potentially conceivable for the experiment. It searched instead for a finite, prospectively defensible operational transformation space derivable from the frozen replication package and capable of supporting an independent pair `(U_tau, P_tau(S,C,L))` without using treatment realization, installation, subscription/take-up or downstream outcomes.
+
+Failure to close `U_tau` and `P_tau` therefore **must not** be interpreted as proof that the complete transformation universe is intrinsically unbounded, intractable or incompatible with TGCV. The result establishes only that the frozen package did not provide enough information to close the required TGCV operationalization within the bounded search space justified by the available evidence.
+
+### Material evidence
+
+The package distinguishes treatment offer, installation and adoption/take-up and contains longitudinal observations of electricity status, primary lighting source, electricity hours, charging access, kerosene expenditure, savings, expenses, business, study, work time and household characteristics. These observations support structural-state inspection but do not define accessibility. In particular, `tvitt` is treatment assignment, `tvinstalled` is realized installation, `tvadopted` is take-up, and observed `lighttype`, electricity status or electricity hours are state observations rather than a prospective accessibility predicate.
+
+Conventional ITT/LATE, spillover, waiting-list, exclusion, second-order and placebo procedures strengthen the original experiment's conventional causal identification but do not construct TGCV accessibility. No positive `Delta T_acc` evidence, trajectory causal estimand or value pathway is established.
+
+### Evidence-to-claim propagation
+
+- **C02:** Material bounded qualification. Rich longitudinal structural data and treatment/take-up variables do not identify a non-circular `P_tau(S,C,L)` within the bounded operational search. No upgrade.
+- **C07:** Material boundary qualification. Observed longitudinal configuration changes do not establish `T_acc` or `Delta T_acc`; no positive accessibility-space-change evidence is propagated. No upgrade.
+- **C08:** Material boundary qualification. Conventional longitudinal outcomes cannot substitute for identified accessibility and reachable-trajectory evidence; no trajectory causal estimand is established. No upgrade.
+- **C11:** Material bounded cross-domain qualification. C10C-003 adds a randomized non-software rural-energy-access case showing that the state/accessibility distinction remains operationally relevant while also exposing a concrete identification boundary. No transversal-validity upgrade.
+- **C16:** Material methodological evidence. The case reinforces the distinction among structural state, candidate transformation, accessibility, realized intervention and downstream outcome, including the prohibition against using treatment realization, take-up or later observed configurations to define accessibility retrospectively.
+
+No positive propagation is made to C01, C03, C04, C05, C06, C09, C10, C12, C13, C14 or C15. No claim-level status is changed and no Core/RMA modification is implied.
+
+## Material methodological evidence — IUT-A-01 U2 FULL_PILOT 001
+
+**Case:** `IUT-A-01`  
+**Status:** `CLOSED — U2-NULL`  
+**Evidence artifact:** `03_EXPERIMENTS/IUT-A-01/IUT_A01_U2_FULL_PILOT_RESULT_001.json`  
+**Closure audit:** `03_EXPERIMENTS/IUT-A-01/IUT_A01_U2_FULL_PILOT_CLOSURE_AUDIT_001.md`
+
+The frozen FULL_PILOT completed with execution integrity `PASS`. M1 decision correctness was `60.0%` control versus `100.0%` TGCV, a `+40.0` percentage-point difference, with the predeclared M1 gate passing. M2 used the declared single-invocation microbenchmark and failed its predeclared improvement threshold: control median `0.00155 ms`, TGCV median `0.00485 ms`. The overall classification is `U2-NULL`.
+
+This is material comparative methodological evidence bounded to Fixture 002 and the executed criteria. It does not upgrade C12 or any other claim.
+
+## Material methodological evidence — IT-NOSD-010
+
+**Case:** `IT-NOSD-010 — ETSI TS 23.502 / 3GPP 5GS`  
+**Status:** `IT-G0 CLOSED — BOUNDED PRE-OUTCOME CASE-DEFINITION PASS`; `IT-G1 CLOSED — BOUNDED REPRODUCIBILITY / ADMISSION PASS`; `IT-G2 CLOSED — BOUNDED DOWNSTREAM-SEPARATION PASS`.
+
+The independent G1 and G2 executions reproduced the frozen event, provenance, bounded pre-state, transformation identity, temporal boundary and downstream separation. Accessibility was not reused as outcome evidence, outcome was not used to define post-state, and complete ex-ante enumeration of `T_acc(S_t)` was not required under TR-132-MOD-1.
+
+This is material bounded methodological evidence for reconstruction and separation of accessibility from downstream evidence in one frozen 5G event. It does not establish complete `T_acc`, normative 3GPP admissibility, utility, causal effect, value effect, comparative superiority, transversal validity or scientific validation.
+
+## Material methodological evidence — EXT-UPD-4.8 O3 accessibility closure reassessment
+
+**Case:** `IUT-A-01`  
+**Option:** `O3`  
+**Status:** `CLOSED — INDETERMINATE / H-B — HS-AC01`  
+**Execution artifact:** `03_EXPERIMENTS/IUT-A-01/IUT_A01_O3_ACCESSIBILITY_CLOSURE_RESULT_001.json`  
+**Governance closure:** `00_GOVERNANCE/D-OPS-24_EXT-UPD-4.8_STAGE_B_ACCESSIBILITY_CLOSURE_REASSESSMENT_EXECUTION_RESULT_v0.1.md`
+
+The bounded corrective assessment executed with integrity `PASS`. RF-AC01 through RF-AC04 all passed. O3 was confirmed as a native candidate alternative from frozen Stage-A evidence, but two material decision-time conditions remained unresolved: availability/accessibility of alternative tooling T-C and ability to perform the required additional setup within the decision-time boundary. The available rule that partial setup plus an explicit alternative-tool requirement implies accessibility was classified as `ANALYST-INTERPRETATION`, so the hard stop `HS-AC01` was correctly triggered.
+
+The result is `INDETERMINATE / H-B`: a bounded deeper operationalization boundary persists. It is material methodological evidence because it qualifies the evidence boundary for accessibility closure. It does not establish complete `T_acc`, industrial utility, superiority, causality, value, transversal validity or any Core modification. No additional constructive attempt or comparative IUT is authorized by this closure.
+
+## Material methodological evidence — Class-II AWS-PatchAsgInstance
+
+**Fixture:** `IT-METH-I-CLASS-II-AWS-PATCHASGINSTANCE`  
+**Phase-A status:** `CLOSED — PREDECISION RECONSTRUCTION REPRODUCIBILITY PASS`  
+**B0 accessibility preflight:** `CLOSED — NO ADMISSIBLE RESOLVED ACCESSIBILITY DIFFERENCE IDENTIFIED`  
+**B0 permissions audit:** `CLOSED — PARTIAL / EFFECTIVE CANDIDATE PERMISSION UNRESOLVED`
+
+The primary Phase-A predecision freeze and independently executed R002 reconstruction recovered the same governed target/ASG identity and exactly the same 21 compared reconstruction fields. The subsequent B0 read-only accessibility preflight found no admissible resolved predicate difference; the permissions audit left effective candidate permission unresolved.
+
+This evidence remains Class-II fixture-level methodological evidence and is not an observed industrial-case result.
+
+## Material methodological evidence — SWIM Reactive-0
+
+**Case:** `SWIM Reactive-0`  
+**Run:** `Reactive-0-20260911-17:49:20-1`  
+**Status:** `CLOSED — BOUNDED TGCV OPERATIONALIZATION RESULT`  
+**Disposition:** `00_GOVERNANCE/SIP/TGCV_SWIM_REACTIVE0_OPERATIONALIZATION_DISPOSITION_001.md`
+
+The frozen SWIM Reactive-0 execution completed successfully with a reproducible `.sca/.vec` result bundle. Existing run evidence and deterministic source semantics were used to reconstruct candidate transformation identities, pre-outcome accessibility predicates, multiple accessible-transformation snapshots and observed changes in that space.
+
+Bounded candidate universe: `Uτ = {AddServer, RemoveServer, SetDimmer(k)}` with only observed dimmer targets represented in the bounded reconstruction.
+
+The reconstruction yielded multiple `T_acc,t` snapshots and non-empty `ΔT_acc` transitions, including: `t=600 → 660` AddServer enters `T_acc`; `t=660 → 3960` RemoveServer leaves `T_acc`; `t=3960 → 4680` RemoveServer re-enters `T_acc`; `t=4680 → 4740` AddServer leaves `T_acc` at `maxServers=3`.
+
+This is material evidence because it operationalizes the bounded chain `S_t,C_t → Pτ(S_t,C_t) → T_acc,t → ΔT_acc` without using downstream outcome to define accessibility.
+
+### Interpretation boundary
+
+The result supports bounded operational reconstructability of accessible transformation space and its change over time in this SWIM exemplar. It does **not** establish transversal novelty, causal effects on trajectories, value creation or prediction, explanatory superiority, general validity across self-adaptive systems, or industrial utility/production benefit.
+
+## Material methodological evidence — SWIM trajectory linkage
+
+**Case:** `SWIM Reactive-0 — bounded trajectory-linkage reconstruction`  
+**Status:** `CLOSED — BOUNDED TRAJECTORY-LINKAGE RECONSTRUCTION`  
+**Disposition:** `00_GOVERNANCE/SIP/TGCV_SWIM_TRAJECTORY_LINKAGE_DISPOSITION_001.md`  
+**Matrix reconciliation:** `00_GOVERNANCE/SIP/TGCV_SWIM_TRAJECTORY_LINKAGE_MATRIX_RECONCILIATION_001.md`
+
+Existing Reactive-0 evidence was further reconstructed without new execution to test whether already established accessibility-space changes could be followed by distinguishable bounded trajectories of selected transformations and system-state transitions.
+
+The result establishes the bounded analytical linkage `S_t,C_t → Pτ(S_t,C_t) → T_acc,t → ΔT_acc,t → selected τ_t → S_{t+1},C_{t+1} → bounded subsequent trajectory`. At the recorded accessibility transitions, the evidence permits reconstruction of ordered subsequent selected transformations and state transitions.
+
+This result is an observed association/reconstructability result. It does **not** establish that `ΔT_acc` causes the subsequent trajectory, general modification of all reachable future trajectories, counterfactual trajectory differences, value creation or prediction, explanatory superiority, transversal validity, or industrial utility.
+
+## Material methodological evidence — SWIM Reactive2
+
+**Case:** `SWIM Reactive2`  
+**Run:** `Reactive2-0`  
+**Status:** `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE; A8 NOT_COMPARABLE`  
+**Disposition:** `00_GOVERNANCE/SIP/TGCV_SWIM_REACTIVE2_POLICY_INDEPENDENCE_GATE_DISPOSITION_001.md`  
+**Matrix reconciliation:** `00_GOVERNANCE/SIP/TGCV_SWIM_REACTIVE2_MATRIX_RECONCILIATION_001.md`
+
+Reactive2 completed under the authorized Run-0 scope using the same frozen SWIM infrastructure and inputs. The evidence supports a bounded separation between `candidate identity → pre-outcome accessibility → T_acc → native policy selection → execution` for the observed candidate families `{AddServer, RemoveServer, SetDimmer(k)}`.
+
+The result is material because it adds a methodological qualification not established by Reactive-0 alone: native adaptation-manager policy can change the selected action sequence while candidate/accessibility representation remains analytically separable from downstream policy selection at inspected points.
+
+### Comparability boundary
+
+Criterion A8 is `NOT_COMPARABLE`. Timestamp coincidence and partial vector-state coincidence are insufficient to establish identical predecision `(S_t,C_t)` because zero-latency/event-ordering effects and differing preceding adaptation histories can make same-timestamp observations represent different transition positions. Therefore Reactive2 does **not** establish policy-independent accessibility under an identical matched state/context with Reactive-0.
+
+### Interpretation boundary
+
+Reactive2 provides bounded methodological support for analytical separation of accessibility from native policy selection. It does **not** establish general policy-independent accessibility, identical predicates at matched state/context, downstream trajectory effects, causal effects, value creation or prediction, explanatory superiority, transversal validity, or industrial utility/production benefit.
+
+## Material industrial evidence — IT-G1 AWSSupport-ExecuteEC2Rescue
+
+**Case:** `IT-G1-AWSSUPPORT-EXECUTEEC2RESCUE`  
+**Candidate:** `AWSSupport-ExecuteEC2Rescue`  
+**Status:** `CLOSED — FUNCTIONAL RECOVERY DEMONSTRATED`  
+**Canonical integration:** `00_GOVERNANCE/INDUSTRIAL_TRACK/execution/IT-G1_AWSSUPPORT_EXECUTEEC2RESCUE_FINAL_RESULT_INTEGRATION_001.md`
+
+### Governed evidence sequence
+
+`AWSSupport-ExecuteEC2Rescue SUCCESS → internal Windows/RDP state repaired → read-only diagnostic attribution to Security Group inbound policy → explicit narrow remediation authorization → TCP/3389 ingress rule applied → same-observation-point functional verification PASS`
+
+### Evidence content
+
+The authorized EC2Rescue execution repaired the internal Windows/RDP state of the target instance. The historical execution result recorded internal remediation success but did not demonstrate end-to-end functional recovery. A subsequent read-only diagnostic identified the primary observed blocker as the target Security Group inbound policy: `sg-05c212fdd50abc3fc` had no inbound rule, while the main route table provided an Internet gateway path, the NACL allowed IPv4 traffic, Windows `TermService` was running and TCP/3389 was listening, and Windows Firewall profiles had been disabled by the remediation.
+
+A separate explicit remediation authorization then permitted only a narrow ingress rule on `sg-05c212fdd50abc3fc`: TCP port `3389`, source `113.203.180.202/32`. AWS created rule `sgr-0fbb978cecdef01e9`. No NACL, route, Windows RDP, firewall, root-volume, stop/start or EC2Rescue changes were included in that remediation.
+
+Functional verification was performed from the same observation point. Before the narrow remediation, external TCP/3389 verification failed. After the rule was applied, `Test-NetConnection 18.100.134.191 -Port 3389` returned `TcpTestSucceeded : True`. The final case closure therefore records `FUNCTIONAL RECOVERY = PASS`.
+
+### Material methodological significance
+
+IT-G1 is material evidence because it preserves analytically distinct states and conditions across a governed sequence: (1) internal transformation/remediation of target state; (2) persistence of an external enabling-condition blocker; (3) read-only attribution of that blocker; (4) separately authorized interaction with the enabling condition; and (5) functional end-to-end outcome.
+
+The case therefore strengthens the bounded distinction between transformation of internal system state and the conditions required for that transformation to become externally functional. It also provides a bounded industrial observation of a change in the effective conditions surrounding a target transformation.
+
+### Interpretation boundary
+
+IT-G1 is one governed industrial case and remains a bounded exemplar. It does **not** establish complete `T_acc`, general trajectory modification, causal identification, value creation, predictive value, explanatory superiority, transversal validity, or general industrial utility.
+
+The historical execution-result artifact remains immutable. The later diagnostic, authorization, remediation and verification artifacts establish the subsequent governed state transition; they do not rewrite the earlier result.
+
+No claim status/level is upgraded by IT-G1.
+
+## Material methodological evidence — FOS C09
+# FOS C09 — Evidence Disposition 001
+
+**Status:** CLOSED — NOT REPORTABLE UNDER FROZEN ESTIMATOR
+
+FOS provides material bounded evidence for reconstructing intervention availability, randomized SUB/UC assignment, linkage to the 37-month endpoint, and weighted ITT arithmetic. It does not provide a reportable C09 causal estimate under the currently frozen TGCV estimator because a design-consistent randomization variance could not be demonstrated from the public-use files and frozen design information.
+
+Frozen disposition:
+- retain FOS as methodological/reference evidence;
+- do not report SE, CI, p-value, or final causal effect;
+- do not impute the single determinately unresolved SUB/UC endpoint;
+- preserve the reconstructed weighted ITT only as arithmetic reconstruction, not as a causal result;
+- no C09 claim upgrade;
+- no TGCV Core change;
+- no execution authorization;
+- resume C09 candidate screening.
+
+### Interpretation boundary
+
+FOS is material methodological/reference evidence for reconstruction and evaluation of a candidate causal-design pathway. Its closure is specifically an estimator/reportability boundary: it does not constitute a reportable causal estimate for C09 and must not be used to infer one. Evidence propagation does not imply claim upgrade.
+
+## Material methodological evidence — C09 Bundle 003 + independent Executor-2 reconstruction
+
+**Case:** `C09_OPERATIONAL_BUNDLE_003`  
+**Status:** `CLOSED — EXECUTOR-2 RECONSTRUCTION PASS / CAUSAL CLAIM REMAINS OPEN`  
+**Execution result:** `03_EXPERIMENTS/C09_EXECUTOR_2_RECONSTRUCTION_RESULT_001.md`  
+**Closure audit:** `00_GOVERNANCE/SIP/TGCV_C09_EXECUTOR_2_RECONSTRUCTION_CLOSURE_AUDIT_001.md`  
+**Evidence registration:** `00_GOVERNANCE/SIP/TGCV_C09_EXECUTOR_2_RECONSTRUCTION_EVIDENCE_REGISTRATION_001.md`  
+**Propagation record:** `00_GOVERNANCE/SIP/TGCV_C09_EVIDENCE_MATRIX_PROPAGATION_RECORD_001.md`
+
+The frozen Bundle 003 causal-operationalization test specifies the bounded intervention `Z → ΔT_acc → Y` at `H=1`, with `U={A,B,C}`, control accessibility `T_acc=[A,C]`, treatment accessibility `T_acc=[A,B,C]`, deterministic balanced assignment and a fixed transformation-selection policy independent of the treatment flag except through the accessibility predicate. Bundle 003 is frozen and immutable.
+
+Executor-2 independently reconstructed the frozen design using the subsequently frozen exact randomization specification. The reconstruction completed with `PASS_RECONSTRUCTION`, `n_control=128`, `n_treatment=128`, `mean_control=5.671875`, `mean_treatment=7.3203125`, and `tau_hat=1.6484375`. The retained null observation was `null_tau_hat=-0.3515625`; Bundle 003 explicitly does not impose a zero-null gate, so this value is not a failure condition.
+
+All 13 Executor-2 integrity checks returned `true`, including accessibility intervention, balanced assignment, baseline definition, bundle-hash integrity, canonical row schema, transition/policy integrity, null no-accessibility-change, randomization-specification presence, and confirmation that Executor-1 output was not used as an input.
+
+### Material methodological significance
+
+This is material evidence because C09 moves from causal-design specification plus prior estimator-boundary evidence to a frozen, executable bounded causal-operationalization with an independent reconstruction. The result demonstrates that the specified intervention can produce a measurable bounded contrast in the frozen synthetic system while preserving the information firewall between treatment assignment, accessibility, transition, policy, observation and outcome.
+
+The result is therefore evidence of **bounded causal operationalization and independent reconstruction**, not evidence of real-world causal identification. The positive `tau_hat` is a result of the governed synthetic reconstruction and must not be generalized to empirical causal effectiveness. The nonzero null is retained as a control observation under the frozen specification and does not invalidate the execution.
+
+### Interpretation boundary
+
+The reconstruction does **not** close C09 scientifically. It does not establish an admissible real-world intervention, external validity, empirical causal effect, transversal validity, value creation, predictive value, explanatory superiority, or TGCV Core modification. It also does not supersede the FOS C09 estimator/reportability boundary; FOS remains methodological/reference evidence only.
+
+## Material empirical causal evidence — KGFS Rural Banking
+
+**Case:** `KGFS Rural Banking — Barboni, Field, Pande`  
+**Status:** `CLOSED — D5-A IDENTIFIED CONTRIBUTION`  
+**Operationalisation audit:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_TACC_OPERATIONALISATION_AUDIT_001.md`  
+**D5-A closure:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_D5A_CLOSURE_RECORD_001.md`  
+**Trajectory bridge:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_ACCESSIBILITY_TO_TRAJECTORY_BRIDGE_001.md`  
+**Exact variable audit:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_TRAJECTORY_VARIABLE_AUDIT_001.md`  
+**Download manifest:** `03_EXPERIMENTS/C09_KGFS_TRAJECTORY_AUDIT/output/KGFS_D178_DOWNLOAD_MANIFEST.json`  
+**Source reconciliation:** `00_GOVERNANCE/SIP/TGCV_C09_KGFS_D178F70_SOURCE_INCONSISTENCY_AUDIT_001.md`
+
+KGFS provides the decisive real-world causal layer for C09. The study uses randomized expansion of banking infrastructure at the service-area level, with treatment consisting of early opening of a KGFS branch. The intervention is a structural accessibility intervention under D5.2-S: it changes the local financial-access system itself rather than merely encouraging downstream use.
+
+The TGCV reconstruction is:
+
+`S0 = absence of KGFS branch/service system`  
+`T_acc,0 = financial transformations structurally accessible pre-opening`  
+`Z = randomized early branch assignment/opening`  
+`S1 = branch/service system present`  
+`T_acc,1 = T_acc,0 + structural financial-access capabilities introduced by KGFS`  
+`ΔT_acc = T_acc,1 − T_acc,0`
+
+The structural accessibility representation includes the introduced local branch access and associated formal financial capabilities: formal loans, formal savings, formal insurance and tailored financial advice/wealth-management services. Downstream take-up, investment, employment, income and poverty variables are not substituted for `T_acc`.
+
+D5.0 and D5.1 are PASS. D5.2-S is PASS because assignment is randomized, the intervention implements a structural accessibility change, pre/post accessibility can be characterized independently of downstream outcomes, the estimand is the causal effect of the structural intervention, and downstream adoption is not used as the accessibility construct. D5.3 pathway audit is PASS and D5.4 classification is `D5-A IDENTIFIED CONTRIBUTION`.
+
+The public longitudinal trajectory architecture was independently audited at exact variable level: `technical_status=PASS`, `files_audited=74`, `missing=[]`, `scientific_claim_status=NO_C09_UPGRADE` at the technical-audit stage. The 74 public `.dta` files were reconciled against the Yale D178 inventory; D178F70 retained a documented catalogue-size discrepancy while the current Dataverse object and checksum were verified. No fabricated padding or byte repair was used.
+
+### Causal interpretation
+
+KGFS therefore supplies an admissible real-world causal architecture in which a randomized structural change in accessibility is followed by observed downstream household/economic trajectories over the study's post-intervention period. This supports the bounded C09 proposition that accessibility changes causally affect subsequent trajectories in the studied setting.
+
+The result is deliberately bounded. It does not establish universal causality across all generative systems, sole causation, universal effect magnitude, that every accessibility change changes a trajectory, or causal `ΔT_acc → ΔV`. It also does not by itself establish full transversal validation of TGCV Core.
+
+## Material empirical causal evidence — C10C-002 Urban Mexico infrastructure
+
+**Case:** `C10C-002 — The Neighborhood Impacts of Local Infrastructure Investment: Evidence from Urban Mexico`  
+**Study:** McIntosh, Alegría, Ordóñez & Zenteno (2018), AEJ Applied Economics  
+**Replication deposit:** `OpenICPSR 113705, V1`  
+**Status:** `CLOSED — NEGATIVE BOUNDED CAUSAL RESULT`  
+**Closure artifact:** `00_GOVERNANCE/SIP/C10C002_BOUNDED_CAUSAL_EXPERIMENT_CLOSURE_001.md`
+
+C10C-002 is material empirical evidence for the bounded structural reconstruction of accessibility and for the methodological ability to execute a falsifiable causal test without post-hoc rescue after a negative result. It is propagated to C02, C07, C11 and C16, but it does **not** upgrade any claim level.
+
+### Source and design boundary
+
+The public V1 deposit was acquired and audited under the frozen C10-C controlled-acquisition authorization. The intervention was randomized at polygon level: 370 eligible polygons, 176 treatment and 194 control, with two-level municipality-saturation randomization. The study contains baseline 2009 and follow-up 2012 household/block data and separate professional valuations of the same 464 unbuilt lots at baseline/follow-up. The V1 replication deposit contains the eight governed files recorded in the closure artifact, with their acquisition sizes and SHA-256 hashes preserved there.
+
+### Bounded structural reconstruction
+
+The admitted bounded transformation universe is:
+
+`U_τ* = {A+, A−, D+, D−, L+, L−, G+, G−, B+, B−, P+, P−}`
+
+corresponding to opening/closing six structural infrastructure dimensions: piped water, sewerage, electricity, curbs/medians, sidewalks and paved streets. The aggregate infrastructure index and downstream outcomes were not used as elementary transformations, and value/rent/private-investment/social-capital/crime/satisfaction outcomes were excluded from `P_τ`.
+
+For each dimension the minimal structural feasibility predicates were frozen as:
+
+`P_{τ_j+}(S_t)=1 if S_{j,t}<1`  
+`P_{τ_j−}(S_t)=1 if S_{j,t}>0`
+
+This yields structural-only `T_acc,t*` snapshots and deterministic `ΔT_acc*` without fabricating ex-ante mechanistic accessibility. The bounded reconstruction covered all 342 `sample_panel` polygons observed in both rounds. There were 64 unique `T_acc,0*` signatures, 53 unique `T_acc,1*` signatures, 104 polygons with openings, 171 with closures, and 238 polygons with non-empty `ΔT_acc*`. Treatment was never used in the accessibility predicate and value variables were not used in `T_acc*` construction.
+
+The T10–T15 gate chain established source identity, structural-variable recovery, temporal linkage, treatment/state separation, bounded transformation-universe construction, predicate integrity, endpoint separation, deterministic reconstruction, causal-unit linkage, positivity and a frozen polygon-level ITT specification. The scalar causal outcome was frozen as:
+
+`ΔT_acc_net = |T_acc,1*| − |T_acc,0*|`
+
+with N=342, range −3 to +4, mean −0.2368421053 and 217 polygons with nonzero net change.
+
+### Causal execution and closure
+
+The frozen treatment was polygon-level randomized treatment `treat`, with municipality-clustered ITT and no post-treatment covariates, saturation, value or downstream variables in the specification. The direct OLS estimate was:
+
+`β_ITT = −0.031421139101862026`  
+`cluster SE = 0.1645865990128021`  
+`normal p = 0.848596526762317`  
+`normal 95% CI = [−0.3540108731669541, 0.2911685949632301]`
+
+The pre-specified Rademacher wild-cluster bootstrap with 9,999 draws produced:
+
+`p = 0.8354`  
+`critical 95% = 1.6846375446998223`  
+`95% CI = [−0.3086899031532831, 0.24584762494955906]`
+
+The scientific closure is therefore `C10C002_CLOSED_NEGATIVE_BOUNDED_CAUSAL_RESULT`: no statistically detectable treatment effect on the frozen net number of accessible transformations under the bounded operationalization. This is **not** evidence that the true effect is exactly zero, is **not** positive causal support for TGCV, and is **not** a refutation of TGCV. The experiment is closed and must not be repeated merely to seek a positive result.
+
+### Methodological significance
+
+C10C-002 demonstrates the bounded methodological progression `bounded universe → operationalizable real case → structural reconstruction → frozen causal estimand → causal execution → negative bounded result`, while preserving the separation between structural accessibility and downstream/value outcomes. It therefore materially supports the programme's methodological criterion that the minimum sufficient bounded transformation universe can be preferable to attempting to operationalize the maximum theoretically conceivable universe at the outset.
+
+### Interpretation boundaries
+
+The value pathway was not executed. Municipal treatment saturation/interference remains unresolved: all 60 municipalities contain mixed treatment/control and the available saturation variables could not be fully reconstructed from deposited code, so broader causal interpretation is conditional on this unresolved interference issue. C10C-002 does not establish trajectory modification, does not provide evidence for `ΔT_acc → ΔV`, does not establish transversal validity, and does not modify the TGCV Core.
+
+## Material methodological evidence — C10C-004 Morocco Gate G4
+
+**Case:** `C10C-004 — Morocco microcredit / women's empowerment`  
+**Gate:** `G4`  
+**Status:** `CLOSED — OPERATIONAL RECONSTRUCTION VERIFIED`  
+**Result artifact:** `00_GOVERNANCE/SIP/TGCV_C10C004_MOROCCO_G4_WOMENS_EMPOWERMENT_RECONSTRUCTION_RESULT_001.md`  
+**Propagation record:** `00_GOVERNANCE/SIP/TGCV_C10C004_MOROCCO_G4_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`
+
+C10C-004 provides a closed independent reconstruction of the historical endline women's-empowerment construct from `Microcredit_EL_mini_anonym.dta` (N=5,551). The reconstruction linked questionnaire semantics, physical variables, observed coding, the historical Stata construction block and an independent Python implementation. J1-J9 were reconstructed across the F1-F11 household slots; J9b was reconstructed separately as `women_10`; J10-J13 were reconstructed under the documented 3/4 rule as `women_11`-`women_14`. Standardisation and the historical `women_index` row-total specification were reproduced, including the duplicate `outcome2` and omission of `outcome3`, without post-hoc correction.
+
+The reconstructed `women_index` had N=5,551, mean 0, sample SD 8.218129454, minimum -5.965017097, maximum 53.466739700 and zero missing values. J1-J9 showed no observed nonmissing coding outside `{1,2,-99}`. The result is bounded to operational reconstruction; it is not a TGCV accessibility, trajectory or value result.
+
+### Evidence-to-claim propagation
+
+- **C01:** Material methodological evidence, bounded. The case demonstrates explicit tracing from instrument semantics through physical variables to an executable derived outcome, but does not establish TGCV state representation. No upgrade.
+- **C02:** No direct positive evidence; bounded methodological relevance only. The empowerment construct is not an independently defined TGCV admissibility predicate `P_tau(S,C,L)` and must not be promoted to `T_acc`. No upgrade.
+- **C07:** No direct evidence. The case does not reconstruct a TGCV transformation universe, admissibility predicate or `Delta T_acc`. No upgrade.
+- **C08:** No direct evidence. The empowerment index is not a TGCV reachable-trajectory variable and no trajectory causal estimand is established. No upgrade.
+- **C09:** No evidence contribution. No TGCV causal estimate is produced.
+- **C10:** No evidence contribution. No `Delta T_acc → Delta V` causal or predictive pathway is tested.
+- **C11:** Bounded methodological contribution. The case adds a distinct non-software empirical domain for explicit construct translation, but does not establish transversal validity. No upgrade.
+- **C16:** Material methodological evidence. The reconstruction preserves distinctions among instrument semantics, raw variables, derived outcomes and TGCV constructs, and preserves a historical code anomaly rather than silently correcting it. No upgrade.
+
+C10C-004 does not modify TGCV Core, RMA, the accessibility definition, the causal chain or any claim-level status.
+
+## Claim boundary
+
+The v1.10 update preserves the full evidence/claim structure of v1.9 and adds the C10C-003 empirical/methodological evidence record plus bounded propagation to C02, C07, C08, C11 and C16. The complete C10C-002 and C10C-001 evidence records and prior bounded propagations remain preserved. No C01–C16 status is upgraded by C10C-003. C09 and C10 are not positively supported by C10C-003. The TGCV Core remains unchanged.
+
+## Gate state
+
+- G1 Independent replication: OPEN at general scientific level; bounded fixture/event closures remain separately recorded.
+- G2 Cross-domain generalisation: BOUNDED / PARTIAL.
+- G3 Trajectory sufficiency: OPEN; bounded trajectory-linkage and IT-G1 state-transition observations do not close the general gate; C10C-002 and C10C-003 do not establish trajectory causality.
+- G4 Causal identification: **BOUNDED PASS at C09 claim level** through KGFS D5-A; C10C-002 provides a separate negative bounded causal test of intervention → `ΔT_acc*` and does not extend C09; C10C-003 adds no positive causal identification.
+- G5 Value linkage: OPEN; C10C-002 value pathway not executed and C10C-003 does not identify the accessibility layer required for a value pathway.
+- G6 Originality/comparative architecture: BOUNDED / PARTIAL.
+- G7 Transversal translation protocol: BOUNDED operational support; C10C-002 and C10C-003 add distinct non-software domains but general/transversal closure remains OPEN.
+
+## Current methodological routing
+
+- IUT-A-01 U2 FULL_PILOT 001: `CLOSED — U2-NULL`; no rerun.
+- IT-NOSD-010: G0/G1/G2 closed for one bounded frozen event; industrial execution authorization `NONE`.
+- EXT-UPD-4.8 O3 accessibility closure: `CLOSED — INDETERMINATE / H-B / HS-AC01`; no reopening or additional attempt under this closure.
+- Class-II AWS-PatchAsgInstance: fixture-level closure as previously governed.
+- SWIM Reactive-0: `CLOSED — BOUNDED TGCV OPERATIONALIZATION RESULT`; no repeat run for current claim.
+- SWIM trajectory linkage: `CLOSED — BOUNDED TRAJECTORY-LINKAGE RECONSTRUCTION`; no repeat run for current bounded reconstruction.
+- SWIM Reactive2: `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE; A8 NOT_COMPARABLE`; no additional execution under current gate.
+- IT-G1 `AWSSupport-ExecuteEC2Rescue`: `CLOSED — FUNCTIONAL RECOVERY DEMONSTRATED`; no rerun implied.
+- C09 Bundle 003 Executor-2 reconstruction: `CLOSED — PASS`; no further Bundle 003 rerun justified.
+- KGFS Rural Banking: `CLOSED — D5-A IDENTIFIED CONTRIBUTION`; no repeat of existing local reproducibility audit justified.
+- C10C-002 Urban Mexico infrastructure: `CLOSED — NEGATIVE BOUNDED CAUSAL RESULT`; no rerun to seek a positive result; value pathway and unresolved interference remain boundaries.
+- C10C-003 India: `CLOSED — DATA-LEVEL STATIC INSPECTION; STRUCTURAL READINESS LIMITATION CONFIRMED`; no causal execution under the current closure; any future revisit requires a separately justified bounded operationalization space and independent admission decision.
+- IT-METH-I FAA AMOC: `CLOSED — INCONCLUSIVE`.
+- Utility scoring and new industrial execution: `NOT AUTHORIZED`.
+
+## Current scientific position
+
+The evidence base includes bounded comparative methodological evidence from IUT-A-01 U2, bounded downstream-separation/reconstructability evidence from IT-NOSD-010, bounded accessibility-closure boundary evidence from EXT-UPD-4.8, Class-II AWS fixture evidence, bounded self-adaptive software operationalization from SWIM Reactive-0 and Reactive2, bounded SWIM trajectory-linkage reconstruction, the closed IT-G1 industrial case, FOS C09 methodological/reference evidence, the closed C09 Bundle 003 Executor-2 independent reconstruction, the closed KGFS real-world causal architecture, the closed C10C-002 urban-infrastructure bounded causal experiment, and the closed C10C-003 India static inspection. These are cumulative material evidence records. The only claim-level change in the cumulative matrix remains the prior C09 consolidation; v1.8 added C10C-002 evidence propagation, v1.9 added C10C-001 evidence propagation, v1.10 added C10C-003 bounded evidence propagation, and v1.11 adds C10C-004 bounded methodological evidence propagation, while v1.12 adds MT4 bounded methodological domain-transfer evidence propagation and restores/enriches the foundational RUST-DYN-2 material evidence record. None of these C10-C/MT4/Rust propagations changes any claim status. The scientific Core remains unchanged.
+
+## Material empirical evidence — RUST-DYN-2 / EXEC-1A foundational Rust structural experiment
+
+**Case:** `RUST-DYN-2 / EXEC-1A`  
+**Status:** `CLOSED — BOUNDED STRUCTURAL EMPIRICAL TEST`  
+**Operational horizon:** `H=1`  
+**Frozen temporal rule:** `DR-035-v0.1-ADJACENT-CREATED-AT`  
+**Frozen dataset SHA-256:** `823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224`
+
+### Purpose and operational scope
+
+RUST-DYN-2 / EXEC-1A is the foundational empirical Rust experiment underlying the bounded C03–C07 evidence layer. It tests structural distinguishability between changes in the accessible transformation space `T_acc` and changes in bounded one-step potential Reach, while also characterizing temporal change in the frozen Rust package ecosystem. The operational Reach object is `Reach¹_pot`; the experiment does **not** execute Cargo or runtime behavior and therefore does not establish observed runtime reachability.
+
+The frozen temporal population contains **516,061 adjacent package-version pairs** under `DR-035-v0.1-ADJACENT-CREATED-AT`, with `H=1`. The transition classification is:
+
+- `PERSISTENCE`: **77,858**
+- `EXPANSION`: **8,295**
+- `CONTRACTION`: **3,786**
+- `RECONFIGURATION`: **426,122**
+- `NON-PERSISTENCE`: **438,203 / 516,061 ≈ 84.91%**
+
+These counts are the bounded empirical population used for the Rust temporal claims and are not a sample-based estimate of a broader software ecosystem.
+
+### ND-1 — transformation-space change without bounded Reach change
+
+`ND-1 = 159,921` adjacent temporal pairs satisfy:
+
+`Delta T_acc != 0` and `Delta Reach^1_pot = 0`.
+
+This is the direct quantitative basis for **C04**. It establishes, within the frozen Rust representation and H=1 operationalization, that a change in accessible transformation space can occur without a change in the bounded potential Reach cardinal/identity outcome used by this test.
+
+### ND-2 — transformation-space change with bounded Reach change
+
+`ND-2 = 278,282` adjacent temporal pairs satisfy:
+
+`Delta T_acc != 0` and `Delta Reach^1_pot != 0`.
+
+This is the direct quantitative basis for **C05**. It establishes, within the frozen Rust representation and H=1 operationalization, that transformation-space change can also coincide with a change in bounded potential Reach.
+
+### ND-4 — Reach identity is not reducible to cardinality
+
+`ND-4 = 266,201` adjacent pairs have **equal Reach cardinality but different Reach membership**.
+
+This is the direct quantitative basis for **C06**. Equal cardinality therefore does not establish identity of the reachable transformation set in the frozen representation. This is a structural identity result, not a claim about observed runtime execution.
+
+### Temporal change and non-persistence
+
+The **438,203 non-persistent pairs (84.91%)** provide the direct quantitative basis for **C07** within the frozen Rust operationalization. The classification shows that adjacent package-version transitions are dominated by reconfiguration in this historical technical ecosystem, with additional persistence, expansion and contraction classes. The result establishes bounded temporal change of the represented accessible transformation space; it does not by itself identify a causal mechanism for each change.
+
+### Reproducibility and execution firewall
+
+Primary and replay structured outputs were field-identical under the governed closure. The closure does **not** claim byte-level raw-file equality because independent raw JSON artifacts were not supplied during coordination. The experiment firewall reports no sampling, downstream outcome/value, future/predictive, Cargo-runtime or lockfile access. `Reach¹_pot` is a frozen analytical potential-Reach object, not an observed execution result.
+
+The earlier immutable Rust source snapshots used in the foundational programme remain governed separately, including the 2018-09-26 snapshot `9110daee6752e903379f3af955506d6116315273` and the 2021-05-05 snapshot `a5dcd8438da2d8f99e3661a1956afbfb8f026fa0`, with the documented snapshot scale of 79,053 files / 449,893,157 bytes. These source snapshots are provenance for the broader Rust experimental lineage; the quantitative C03–C07 results above are specifically the closed RUST-DYN-2 / EXEC-1A evidence.
+
+### Scientific interpretation
+
+The strongest empirical result supported by RUST-DYN-2 is **bounded structural distinguishability between `Delta T_acc` and `Delta Reach^1_pot` in the frozen Rust representation**, together with bounded temporal change in the represented accessibility space. The experiment supports C03–C07 only within its stated operational scope.
+
+The result must **not** be rewritten as evidence for:
+
+- causality;
+- predictive superiority;
+- positive value creation;
+- universal domain independence;
+- complete prior-art absence;
+- observed Cargo/runtime reachability;
+- H>1 trajectory sufficiency.
+
+In particular, C08 remains a hypothesis, C09's causal support comes from its separately governed evidence layer, C10 remains open, and C15 remains falsified for the observed-runtime interpretation.
+
+### Evidence-to-claim propagation
+
+- **C03:** Material quantitative support. ND-1 and ND-2 provide the bounded structural distinguishability evidence separating `T_acc` change from downstream H=1 potential Reach behavior. No upgrade beyond E1.
+- **C04:** Material direct support. ND-1 = 159,921 pairs with `Delta T_acc != 0` and `Delta Reach^1_pot = 0`. No upgrade beyond E1.
+- **C05:** Material direct support. ND-2 = 278,282 pairs with `Delta T_acc != 0` and `Delta Reach^1_pot != 0`. No upgrade beyond E1.
+- **C06:** Material direct support. ND-4 = 266,201 pairs with equal Reach cardinality but different membership. No upgrade beyond E1.
+- **C07:** Material direct support. 438,203 of 516,061 adjacent pairs are non-persistent (~84.91%), with the complete transition classification preserved above. No upgrade beyond E1.
+- **C08:** Bounded structural antecedent only. The experiment uses H=1 potential Reach and does not establish H>1 trajectory sufficiency or a causal accessibility-to-trajectory effect. No upgrade.
+- **C09:** Complementary bounded structural evidence only. RUST-DYN-2 is not a causal intervention and does not independently establish C09. The existing C09 bounded causal status is unchanged.
+- **C10:** No value evidence. Outcome/value variables are excluded by the experiment firewall; no `Delta T_acc -> Delta V` result is available.
+- **C15:** Boundary confirmation. The experiment uses `Reach^1_pot`, not observed Cargo/runtime execution; C15 remains F.
+
+No positive propagation is made to C01, C02, C11, C12, C13, C14 or C16 beyond the bounded evidentiary basis already recorded. No claim-level status is changed and no TGCV Core/RMA modification is implied.
+
+## Material methodological evidence — MT4 Domain Transfer
+
+**Case:** `MT4 — Historical national electricity-system transitions / energy-system technology change`  
+**Status:** `BOUNDED PASS — METHODOLOGICAL TRANSFER DEMONSTRATED WITH EXPLICIT LIMITS`  
+**Primary frozen source:** Jaxa-Rozen, Wen & Trutnevyte, historic national electricity-system transitions dataset, Zenodo 6696776 v2.  
+**Source SHA256:** `691F950A314015A7DE9D4CBABCC177846D74ABF7036B6A89E192B152A88E6D30`
+
+### MT4 objective and domain transfer
+
+MT4 tests whether the candidate transversal analytical methodology can be transferred to a genuinely heterogeneous electricity-system domain without collapsing TGCV distinctions or importing downstream/value information into the accessibility layer. The frozen source covers national electricity-system transitions in Europe across 31 countries and 1990–2019.
+
+### Gate summary and meaning
+
+- **MT4-1 — Domain novelty: PASS.** The case provides a genuinely heterogeneous domain relative to the previously used exemplars.
+- **MT4-2 — Frozen evidence: PASS.** The source package, version and hash were frozen before methodological interpretation.
+- **MT4-3 — Structural inspection: PASS.** Country, technology, resource and technical/economic parameter structures were reproducibly identified.
+- **MT4-4 — Semantic non-substitution: PASS — BOUNDED.** Candidate technical constraints were kept separate from realized transformations, state/trajectory variables and economic/value-related variables; observed realization was not relabeled as `T_acc`.
+- **MT4-5 — `P_tau` technical formalization: OPEN / BOUNDED.** CORE6 provides a partially formalized technical candidate layer with 92.58% complete coverage, but full `P_tau` sufficiency remains undetermined.
+- **MT4-6 — Independent reproducibility: PASS.** The frozen structural representation, coverage, missingness and discrimination results were independently reproduced.
+- **MT4-7 — Downstream separation: BOUNDED PASS.** Candidate constraints, realized technology changes and state/trajectory variables were structurally separated; no trajectory causal estimand was established.
+- **MT4-8 — Value isolation: BOUNDED PASS.** `Inv`, `Fixed_OM_annual` and `Variable_OM` were isolated from the CORE6 candidate accessibility rule; no downstream TGCV value endpoint was established.
+
+### Consolidated methodological finding
+
+The candidate TGCV analytical methodology can be transferred to a heterogeneous electricity-system domain while preserving explicit separation between candidate technical constraints, admissibility/accessibility, realized transformations, state/trajectory variables and economic/value-related variables. CORE6 provides a partially formalized technical admissibility candidate with 92.58% complete country-technology-year coverage, while full `P_tau` remains undetermined. Economic variables are structurally isolated from CORE6, but no independently established downstream TGCV `Delta V` endpoint has been demonstrated.
+
+### MT4 material contribution to the claim matrix
+
+- **C01 — bounded methodological support:** identifies and preserves a technical constraint/state layer in a heterogeneous electricity-system domain; no claim-level upgrade.
+- **C02 — bounded qualification:** provides a partially formalized candidate admissibility layer through CORE6; full `P_tau` remains undetermined; no upgrade.
+- **C07 — boundary qualification:** separates candidate technical constraints from realized technology changes and does not establish positive `Delta T_acc`; no upgrade.
+- **C08 — bounded methodological support:** separates candidate constraints, realized transformations and state/trajectory variables, without establishing a trajectory causal estimand; no upgrade.
+- **C09 — no positive causal propagation:** MT4 does not estimate `Delta T_acc -> subsequent trajectory`; the existing bounded causal status is unchanged.
+- **C10 — material boundary qualification:** MT4-8 isolates economic parameters from CORE6 but does not establish `Delta T_acc -> Delta V`; C10 remains open.
+- **C11 — bounded cross-domain evidence:** adds a heterogeneous electricity-system domain and strengthens documented methodological transfer/boundary evidence, but does not establish transversal validity.
+- **C16 — bounded methodological evidence:** preserves the separation among state, candidate transformations, accessibility, realized transformations, trajectory and economic/value-related variables; no upgrade.
+
+### Boundaries and research disposition
+
+MT4 does not establish transversal causal validity, full `P_tau` sufficiency, `Delta T_acc -> Delta V`, or a general causal value mechanism. It does not promote observed adoption, installed capacity, generation, investment cost or operating-cost parameters into accessibility or value constructs by semantic substitution. MT4 is closed as a bounded methodological domain-transfer result; further work should target full `P_tau` formalization where feasible and a genuinely downstream, independently defined outcome/value endpoint.
+
+# TGCV MT4 — Domain Transfer Result 001
+
+## Status
+**BOUNDED PASS — METHODOLOGICAL TRANSFER DEMONSTRATED WITH EXPLICIT LIMITS**
+
+## Frozen source
+Jaxa-Rozen, Wen & Trutnevyte, historic national electricity-system transitions dataset, Zenodo 6696776 v2.
+
+SHA256:
+`691F950A314015A7DE9D4CBABCC177846D74ABF7036B6A89E192B152A88E6D30`
+
+## Gate reconciliation
+- MT4-1 Domain novelty: PASS
+- MT4-2 Frozen evidence: PASS
+- MT4-3 Structural inspection: PASS
+- MT4-4 Semantic non-substitution: PASS — BOUNDED
+- MT4-5 P_tau technical formalization: OPEN / BOUNDED
+- MT4-6 Independent reproducibility: PASS
+- MT4-7 Downstream separation: BOUNDED PASS
+- MT4-8 Value isolation: BOUNDED PASS
+
+## Consolidated finding
+The candidate TGCV analytical methodology can be transferred to a genuinely heterogeneous electricity-system domain while preserving explicit separation between candidate technical constraints, realized transformations, state/trajectory variables, and economic/value-related variables.
+
+The transfer is reproducible for the frozen structural representation. CORE6 provides a partially formalized technical admissibility candidate with 92.58 percent complete country-technology-year coverage, but full P_tau remains undetermined. Economic variables are structurally disjoint from CORE6, but no independently established downstream TGCV Delta V endpoint has been demonstrated.
+
+## Boundaries
+This result does not establish transversal causal validity, full P_tau sufficiency, Delta T_acc -> Delta V, or a general causal value mechanism. It does not promote observed adoption, installed capacity, generation, investment cost, or operating-cost parameters into accessibility or value constructs by semantic substitution.
+
+## Research disposition
+MT4 is closed as a **bounded methodological domain-transfer result**. Further work should target the unresolved analytical bottlenecks rather than repeat the completed MT4 gates: (1) independent formalization of full P_tau where feasible, and (2) a genuinely downstream, independently defined value/outcome endpoint capable of testing the accessibility-to-value layer.
+
+## Material methodological evidence — TSTC v004 Application-Fit Demonstrator
+
+**Case:** `TSTC — Synthetic Fixture-003 / Freeze-003`  
+**Status:** `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE REGISTERED`  
+**Execution mode:** `TSTC_SYNTHETIC_EXECUTION_V004`  
+**Fixture version:** `003`  
+**Execution artifact:** `03_EXPERIMENTS/TSTC/tstc_execution_v004.py`  
+**Post-execution audit:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_POST_EXECUTION_AUDIT_002.md`  
+**Evidence-to-claim propagation:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_EVIDENCE_TO_CLAIM_PROPAGATION_001.md`  
+**Execution source commit:** `bdb8477089b3b141ebf8231a9ad678cca9cbdce8`  
+**Fixture manifest SHA-256:** `1ac8e7ca8c8a3e7afdc125a1d5021b386206205ec486664b362be0136e90bced`  
+**Ruleset SHA-256:** `9a0c757ee8e166e991f60d898018a4ee424fae0e0e9c955458252ce7f56221c2`  
+**Transformation-universe SHA-256:** `c6d4dfec24877318f466f7736f587557111d8524170f76b71e9596fe42868d3c`  
+**Configuration SHA-256:** `ce274a9bc723989451b0ae2a5318efa92ccca86cf30c4403267a1c1123afaa84`  
+**Output SHA-256:** `6afaffa091984b9b2e7823194b9170cfcdbef98f337d38d6f143f8c3e887bb38`  
+**Environment:** Windows `10.0.26200`; Python `3.8.10`  
+**Random seed:** `null`
+
+### 1. Purpose and frozen scope
+TSTC v004 is the executed form of the frozen **TGCV Application Fit — WP2 TSTC Minimum Demonstrator Specification 001**, using **Synthetic Fixtures Freeze-003** and **Execution Authorization Gate 003**. Its purpose is methodological application-fit: instantiate the TGCV translation representation reproducibly across heterogeneous synthetic domains while explicitly representing state/context, candidate transformations, admissibility, `T_acc`, transition, `Delta_T_acc` and bounded subsequent trajectory.
+
+The demonstrator is not a scientific validation experiment, causal identification study, explanatory-superiority comparison, value/ROI test, industrial validation or deployment-readiness test. It covers **FX-C01 technical orchestration**, **FX-C03 agent/tool/permission**, and **FX-C05 resource/constraint**.
+
+The frozen output contract requires explicit `fixture_id`, `fixture_version`, `connector_id`, `intervention_id`, `S0`, `C0`, `L_version`, `U_tau`, `T_acc_0`, transition, `S1`, `C1`, `T_acc_1`, `Delta_T_acc`, trajectory, baseline model, baseline representation, baseline reconstruction, comparison observations, limitations, non-claims and execution metadata.
+
+### 2. Execution integrity and comparison contract
+The result is `TSTC_EXECUTION_COMPLETE` under `TSTC_SYNTHETIC_EXECUTION_V004`, fixture version `003`, with the provenance hashes recorded above. The v004 execution corrected the earlier v003 output-contract deficiency. The post-execution audit PASS covers schema completeness, execution metadata, independent baseline reconstruction, all eight comparison dimensions, negative controls, controlled cross-domain propagation and trajectory/boundary checks.
+
+The eight comparison dimensions are **(1)** transformation identities, **(2)** admissibility conditions, **(3)** state/context dependencies, **(4)** transition causing accessibility change, **(5)** cross-domain dependency, **(6)** trajectory consequence, **(7)** assumptions, and **(8)** information omitted. The conventional baseline is independently reconstructed; the three local comparisons are `EQUIVALENT_REPRESENTATION` within the frozen synthetic universes. This is representational agreement, not explanatory or predictive superiority.
+
+### 3. Fixture-level results
+**FX-C01 — technical orchestration.** Baseline: finite-state/orchestration rule model. Intervention: `trust_B: trusted → untrusted`. Result: `c01.deploy_B` closes; `c01.deploy_A` and `c01.restrict_security` remain admissible. `T_acc_1` changes through an explicit state/context-dependent admissibility rule and the bounded post-transition trajectory is restricted accordingly. Independent baseline reconstruction matches the feasible set.
+
+**FX-C03 — agent/tool/permission.** Baseline: capability/access-control matrix plus workflow model. Intervention: `permission_repo: granted → denied`. Result: `c03.inspect_repo`, `c03.open_pr` and `c03.modify_repo` close; `c03.query_db` and `c03.complete_task` remain admissible. The record separates enabling condition, accessibility-space change and subsequent trajectory. Baseline reconstruction matches.
+
+**FX-C05 — resource/constraint.** Baseline: finite constrained-resource feasibility model. Intervention: `grid_capacity: high → low`. Result: `c05.start_A` and `c05.start_B` close. The transition is represented as a bounded accessibility change without equating it with a downstream outcome. Baseline reconstruction matches.
+
+### 4. Negative controls
+`N-C01`, `N-C03` and `N-C05` all pass with empty `Delta_T_acc` and no opened, closed or changed transformations. `N-C01` changes `routing` while accessibility remains unchanged. Thus a context/state change is not automatically classified as an accessibility change; the admissibility predicate must change the feasible transformation set.
+
+### 5. Controlled cross-domain paths
+**C01 → C03:** the declared synthetic rule `security = restricted → permission_repo = denied` propagates the source condition into C03 and closes `c03.modify_repo`.  
+**C03 → C05:** the C03 transition `c03.modify_repo` changes `repo` to `changed`; the declared rule propagates to `mobility_requirement_A = urgent` in C05 and closes `c05.redirect_A_to_B`.
+Both are synthetic rule propagation, not empirical causal estimates or evidence of a universal mechanism.
+
+### 6. Trajectory and representation checks
+Each local record keeps transition, post-transition state/context, `T_acc_1` and bounded subsequent trajectory separate. Trajectories contain only transformations admissible under the post-transition space. The baseline independently reconstructs the same feasible transformation sets. `EQUIVALENT_REPRESENTATION` therefore means agreement under frozen synthetic rules; no explanatory, predictive, computational or downstream-performance superiority metric was executed.
+
+### 7. Evidence-to-claim routing
+**C10 — bounded methodological qualification.** The result adds bounded methodological evidence that an independently frozen Outcome→Value mapping can be operationalized separately from the transformation/accessibility path. It does not establish real-world Value, causal `ΔT_acc → ΔV`, predictive value, a universal Value function, or cross-domain comparability, and does not constitute positive evidence for the C10 proposition.
+
+**C16 — bounded methodological contribution.** VSL Synthetic Minimum v0.1 is material evidence for C16: it demonstrates, under a frozen synthetic contract and controlled execution, that the translation protocol can preserve an explicit downstream Outcome/Value distinction and an external VSL interface without allowing the valuation functions to inspect accessibility, treatment, selected transformation or transformation identity. This is bounded implementation/reproducibility evidence for the translation protocol, not evidence of transversal empirical validity, causal `ΔT_acc → ΔV`, or a universal Value definition. The experiment provides bounded methodological evidence that one frozen contract can be instantiated across three heterogeneous synthetic connector types while preserving distinctions among state/context, `U_tau`, admissibility/accessibility, `T_acc`, intervention, `Delta_T_acc`, trajectory, baseline reconstruction, cross-domain dependency, omitted information and non-claims.
+
+**C02:** bounded qualification only; deterministic synthetic admissibility predicates and `T_acc` are explicitly represented, but general empirical accessibility is not validated.  
+**C08:** bounded qualification only; accessibility change and bounded trajectory are represented, but no causal trajectory estimand is identified.  
+**C11:** bounded qualification only; synthetic heterogeneity and two cross-domain paths are covered, but no transversal empirical validity is established.
+
+Claim statuses remain **C02 = E0, C08 = H, C11 = H, C16 = H**. No TGCV Core primitive, relation, threshold or falsification criterion changes.
+
+### 8. Scientific and interpretive boundaries
+TSTC v004 does **not** establish scientific validity; empirical causality; a causal `Delta_T_acc → trajectory` estimand; `Delta_T_acc → Delta_V`; value creation; ROI; explanatory superiority; predictive superiority; real-world generality; industrial validation; or deployment readiness. Predicates and transformation universes are rule-defined and frozen; trajectories are generated within the demonstrator; cross-domain links are declared synthetic propagation rules. Negative controls validate only the frozen implementation logic, not external-world accessibility predicates.
+
+### 9. Reproducibility and closure
+The provenance fields and hashes identify the exact execution inputs, ruleset, transformation universe, configuration and output. The post-execution audit closes the execution as conformant, and the propagation record closes registration as **`CLOSED — BOUNDED METHODOLOGICAL CONTRIBUTION`**. This is closed methodological/application-fit evidence and **not authorization to reopen or repeat TSTC**.
+
+### 10. Canonical governance effect
+This v1.14 change corrects documentation completeness only. The v1.13 cumulative evidence is preserved, the TSTC material record is made autocontained, and no experiment is rerun. Canonical claim statuses, TGCV Core and RMA remain unchanged.
+
+## Material empirical evidence — C05 EV–Grid Minimum Demonstrator v001
+
+**Case:** `C05_EV_GRID_SYNTHETIC_MINIMUM_DEMONSTRATOR_V001`  
+**Status:** `EXECUTION COMPLETE — PASS WITH METHODOLOGICAL LIMITATIONS`  
+**Evidence class:** bounded synthetic application-fit / methodological evidence; not empirical causal evidence.  
+**Runner:** `03_EXPERIMENTS/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_MINIMUM_DEMONSTRATOR_V001.py`  
+**Runner commit:** `e8e55f50f82b9bdf69eeca4d48deb9d23799672e`  
+**SPEC_COMMIT:** `5aa2c7e20ea3f5775b2d6e60797f9be9efe10e05`  
+**FIXTURE_COMMIT:** `9dd6e9b6bb8d0b7a7e686c4dc61926fc627fa8b6`  
+**Execution:** `C05_EXECUTION_COMPLETE`  
+**Python:** `3.8.10`  
+**Platform:** `Windows-10-10.0.26200-SP0`  
+**Output SHA-256:** `27025e638c05458e19a125c00d9d86d89906bc418eec5670eddec14c89e96880`  
+**Preflight:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_RUNNER_PREFLIGHT_001.md`  
+**Post-execution audit:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_C05_EV_GRID_POST_EXECUTION_AUDIT_001.md`
+
+## 1. Purpose, research role and frozen scope
+
+C05 is the executed EV–Grid Minimum Demonstrator for TGCV application-fit. Its purpose is to instantiate the TGCV translation chain in a compact synthetic domain while preserving the distinction among system/context state, candidate transformations, admissibility, accessible transformation space (`T_acc`), transition, post-transition state/context and bounded subsequent trajectory.
+
+Its evidentiary role is methodological and application-fit oriented. It is not a real-world EV-grid study, causal identification experiment, value/ROI test, explanatory- or predictive-superiority comparison, generality test, industrial validation, or deployment-readiness assessment. No claim-level validation is inferred from execution completion. The synthetic nature of the domain, transformation universe, admissibility predicates, transitions and trajectory generation is part of the evidence boundary.
+
+## 2. Frozen transformation universe and operational contract
+
+The frozen candidate transformation universe `U_tau` contains exactly:
+
+`accept_A`, `accept_B`, `defer`, `reduce_power`, `shift_window`, `redirect_A_to_B`, `redirect_B_to_A`, `reserve_capacity`, `release_capacity`, `v1g_discharge`, `v2g_discharge`, `reject`.
+
+For each frozen scenario, candidate transformations are evaluated through an explicit admissibility rule and `T_acc` is the admissible subset of `U_tau`. The execution contract records initial state/context, candidate transformation universe, admissibility/accessibility results, transition identifier, post-transition state/context, `T_acc_1`, `Delta T_acc`, bounded trajectory fields, baseline fields, controls and explicit non-claims.
+
+The analytical separation tested by the demonstrator is therefore:
+
+`state/context → admissibility → T_acc → transition → post-transition state/context → bounded trajectory fields`.
+
+The experiment does not treat downstream outcome or value as a substitute for accessibility.
+
+## 3. Provenance and execution integrity
+
+The frozen runner executed to `C05_EXECUTION_COMPLETE` under Python `3.8.10` on `Windows-10-10.0.26200-SP0`. Runner, specification and fixture provenance are pinned by the commits above. The execution output is identified by SHA-256 `27025e638c05458e19a125c00d9d86d89906bc418eec5670eddec14c89e96880`.
+
+The preflight and post-execution audit record execution-integrity PASS, runtime-contract PASS, transition-coverage PASS, negative-control PASS and observed-accessibility-delta PASS. These are execution/audit classifications within the frozen demonstrator and do not constitute broader scientific validity.
+
+## 4. Scenario coverage and quantitative findings
+
+The frozen execution contains scenarios `T1`–`T6` plus negative controls `NC1` and `NC2`. The material positive result is concentrated in T3.
+
+Under **T3**:
+
+- `|T_acc,0| = 8`;
+- `|T_acc,1| = 6`;
+- `Delta |T_acc| = -2`;
+- closed transformations: `accept_B` and `redirect_A_to_B`.
+
+Under **T1, T2, T4, T5 and T6**, the frozen execution reports no accessibility delta. The same absence of an accessibility delta is reported for **NC1 and NC2**.
+
+Thus the demonstrator does not classify every represented state/context change as an accessibility-space change. The observed delta depends on the frozen admissibility structure.
+
+## 5. Interpretation of the result
+
+The T3 result concerns the identity and cardinality of the accessible candidate-transformation space, not downstream operational outcomes. Closing `accept_B` and `redirect_A_to_B` is evidence of a bounded synthetic `T_acc` change. It is not evidence that an EV-grid intervention caused a real-world reliability, mobility, energy, economic or value outcome.
+
+The principal methodological contribution is the executable preservation of distinctions among `U_tau`, admissibility, `T_acc`, transition, post-transition state/context and bounded trajectory fields.
+
+## 6. Baseline reconstruction limitation
+
+The frozen implementation defines `baseline(s,c,l)` by returning `admissible(s,c,l)`. Consequently `baseline_equivalent=true` is an implementation identity, not an independently constructed baseline model.
+
+It cannot be counted as independent baseline evidence and cannot support independent validation, explanatory superiority, predictive superiority or comparative advantage. The baseline comparison establishes consistency with the same admissibility implementation rather than an independent comparator.
+
+## 7. Negative controls and trajectory-policy limitation
+
+`NC1` and `NC2` show no accessibility delta in the frozen execution. `NC2` specifies `selection_tiebreak=reverse_lexical`, but the frozen `trajectory()` implementation does **not consume that field**.
+
+Consequently NC2 is **not** a valid trajectory-policy sensitivity test. It is only a negative-control execution under the frozen implementation. C05 therefore does not establish trajectory-policy robustness, sensitivity of trajectory conclusions to selection policy, a causal `Delta T_acc -> trajectory` estimand, or any downstream causal trajectory effect.
+
+## 8. Evidence-to-claim propagation
+
+**C02 — bounded qualification.** C05 supplies synthetic application-fit evidence that explicit candidate transformations, admissibility/accessibility and `T_acc` can be represented and executed, including the T3 reduction from 8 to 6. It does not establish general empirical accessibility or an independently validated admissibility predicate.
+
+**C07 — bounded qualification.** C05 supplies synthetic evidence that `T_acc` can change between frozen states/contexts, specifically 8→6 under T3, with `accept_B` and `redirect_A_to_B` closing. It does not establish temporal change of accessible transformation spaces in real systems.
+
+**C08 — bounded qualification.** C05 represents transition, post-transition accessibility and bounded trajectory fields. Because the demonstrator is synthetic and NC2 is not a genuine trajectory-policy sensitivity test, it does not establish a causal `Delta T_acc -> trajectory` estimand.
+
+**C16 — bounded methodological contribution.** C05 preserves an executable distinction among candidate transformations, admissibility, `T_acc`, transition, bounded trajectory, controls and explicit non-claims in an EV-grid application-fit domain. It strengthens the translation-protocol evidence without establishing transversal validity.
+
+No propagation is made to C01, C03, C04, C05, C06, C09, C10, C11, C12, C13, C14 or C15. No claim-level status or level is changed.
+
+## 9. Scientific boundaries and explicit non-claims
+
+C05 does **not** establish empirical causality, generality, transversal validity, value creation, ROI, downstream operational performance, explanatory superiority, predictive superiority, real-world EV-grid validity, industrial validation, deployment readiness, or a causal `Delta T_acc -> Delta V` pathway.
+
+It does not independently validate the baseline because the baseline implementation is identical to the admissibility function. It does not establish trajectory-policy robustness because `selection_tiebreak` is not consumed by `trajectory()`. It does not establish that the synthetic admissibility predicates correspond to an independently identified real-world EV-grid mechanism.
+
+## 10. Governance disposition and closure
+
+C05 is closed as **bounded synthetic methodological/application-fit evidence**. Its material result is retained because it qualifies the evidentiary basis of C02, C07, C08 and C16 without warranting a claim-level upgrade. No completed C05 gate is reopened by this enrichment, and no Core/RMA modification follows.
+
+**Claim routing:** `C02`, `C07`, `C08`, `C16` only.
+
+## 11. GL-07 disposition
+
+This file is the developed material expediente for C05 and is intended to support restoration of the full autocontained C05 section in the cumulative Evidence-to-Claim Matrix. The matrix section itself remains the canonical routing/index layer and must contain the developed evidence, not merely a reference to this file, under persistent GL-07.
+
+
+## Material methodological evidence — VSL Synthetic Minimum v0.1
+
+**Case:** `VSL_SYNTHETIC_MIN_v0.1`  
+**Status:** `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE`  
+**Evidence class:** synthetic methodological / implementation evidence; not empirical causal evidence.  
+**Specification:** `00_GOVERNANCE/SIP/TGCV_VSL_SYNTHETIC_MIN_v0.1_SPECIFICATION.md`  
+**Outcome definition:** `00_GOVERNANCE/SIP/TGCV_VSL_SYNTHETIC_MIN_OUTCOME_DEFINITION_v0.1.md`  
+**Freeze record:** `00_GOVERNANCE/SIP/TGCV_VSL_SYNTHETIC_MIN_v0.1_FREEZE_RECORD_001.md`  
+**Fixture:** `03_EXPERIMENTS/VSL_SYNTHETIC_MIN_V001/vsl_synthetic_min_fixture_v01.py`  
+**Runner:** `03_EXPERIMENTS/VSL_SYNTHETIC_MIN_V001/vsl_synthetic_min_runner_v01.py`  
+**Runner commit:** `617646497518dba30c0ba721d4bdd24823c0e2ea`  
+**Runner blob:** `eebade9075aa286f22249015443397fb83d069bf`  
+**Fixture runtime audit:** `TGCV_VSL_SYNTHETIC_MIN_FIXTURE_RUNTIME_AUDIT_001.md`  
+**Runner runtime audit:** `TGCV_VSL_SYNTHETIC_MIN_RUNNER_RUNTIME_AUDIT_001.md`  
+**Source/runtime integrity audit:** `TGCV_VSL_SYNTHETIC_MIN_RUNNER_SOURCE_RUNTIME_INTEGRITY_AUDIT_001.md`  
+
+### 1. Purpose and frozen scope
+The experiment is a deliberately artificial minimum demonstration of an external Value Specification Layer (VSL). Its purpose is to test whether an outcome-to-Value mapping can be frozen and executed without allowing the valuation functions to inspect accessibility, treatment, selected transformation or transformation identity. It is not a real-world valuation study and does not establish a universal definition of Value.
+
+The frozen architecture is:
+
+`C → T_acc → selection → τ → S' → O → V*`
+
+with the VSL restricted to the downstream path `S' → O → V*` and external to the TGCV transformational core.
+
+### 2. Operational valuation contract
+The synthetic state is `S=(q,r)`, with baseline `S0=(10,10)`. The frozen outcome is `O(S)=q+0.5r`, so `O0=15`. Value is defined as `V*=O`, hence `Delta V*=Delta O`. The outcome function receives only the final state; the Value function receives only the outcome.
+
+The valuation objective, direction, reference frame and mapping are artificial, versioned and frozen before execution. The construct is explicitly domain-bounded to the synthetic system.
+
+### 3. Fixture and runner controls
+The fixture runtime validated T1, T2, T3, T4, NC1 and NC2. The corrected runner preflight passed after T4 was changed to generate its final state through `apply_exogenous_factor(S0, 2)` rather than a parallel hard-coded final state. The runner then executed successfully with all six cases and no assertion failure.
+
+### 4. Quantitative runtime findings
+
+| Case | Accessibility changed | Selected transform | Final state | ΔO | ΔV* | Exogenous factor |
+|---|---:|---|---|---:|---:|---:|
+| T1 | False | A | (10,10) | 0 | 0 | 0 |
+| T2 | True | A | (10,10) | 0 | 0 | 0 |
+| T3 | True | B | (14,10) | +4 | +4 | 0 |
+| T4 | False | A | (12,10) | +2 | +2 | 2 |
+| NC1 | False | A | (10,10) | 0 | 0 | 0 |
+| NC2 | True | A | (10,10) | 0 | 0 | 0 |
+
+T2 provides the required accessibility-change/zero-Value contrast. T3 realizes the specified synthetic accessibility/selection/value pathway. T4 provides a non-accessibility exogenous outcome/value change. NC1 and NC2 remain zero-effect controls.
+
+### 5. Source/runtime separation
+Source inspection confirms that `outcome(state)` receives only `State(q,r)`, while `value(outcome_value)` receives only the outcome. Neither function receives accessibility, treatment, case identifier, selected transformation, exogenous factor or transformation identity. Accessibility, selection and state transition are generated upstream. The source/runtime audit confirms correspondence between this source structure and the supplied runtime output.
+
+### 6. Interpretation
+The result demonstrates a bounded implementation property: a synthetic VSL can be specified and executed as an external downstream valuation layer without direct computational access to the accessibility/transformation variables. This is methodological evidence about separation and operational reproducibility.
+
+The T3 result is **not** an independent causal estimate of accessibility on Value. The synthetic runner deliberately encodes the transformation/accessibility pathway, so the execution cannot establish empirical causal validity.
+
+### 7. Evidence-to-claim routing
+**C10 — bounded methodological qualification.** The result shows that an independently frozen outcome-to-Value mapping can be operationalized separately from the transformation/accessibility path. It does not establish real-world Value, `Delta T_acc → Delta V`, a universal Value function, or predictive validity.
+
+**C16 — bounded methodological contribution.** The result extends the translation protocol to preserve an explicit downstream Outcome/Value distinction and an external VSL interface. It demonstrates implementation-level separation without establishing transversal empirical validity or a causal value pathway.
+
+No routing is added to C02, C07, C08 or C09. The experiment does not test accessibility, Reach or trajectory causality as its primary endpoint. No TGCV Core primitive or relation changes.
+
+### 8. Reproducibility and boundaries
+The specification, outcome definition, freeze record, fixture, runner and audits are versioned in the canonical repository. Runtime evidence is the supplied controlled local execution under the corrected runner. The result is synthetic and domain-bounded. No real-world population, empirical valuation objective, monetary interpretation, ROI or cross-domain Value comparability is claimed.
+
+### 9. Governance disposition
+The VSL Synthetic Minimum v0.1 is closed as **bounded methodological evidence**. Its propagation to C10 and C16 changes the evidentiary basis by adding an implementation-level demonstration of external valuation-layer separation, but **does not change claim status or level**. C09, TGCV Core and RMA remain unchanged.
+
+### 10. GL-07 completeness
+This section is the autocontained material expediente for the VSL Synthetic Minimum result. It contains identity/status, purpose and frozen scope, provenance, operational contract, methods and controls, quantitative findings, interpretation, observation-versus-inference boundaries, evidence-to-claim routing and governance disposition. External artifacts supplement rather than replace this record.
+
+
+## Material methodological evidence — VSL Paired E1/E2 v001
+
+**Case:** `VSL_PAIRED_E1_E2_v001`  
+**Status:** `CLOSED — BOUNDED SYNTHETIC METHODOLOGICAL EVIDENCE`  
+**Evidence class:** synthetic methodological / controlled reconstruction evidence; not empirical causal evidence.  
+**Closure record:** `00_GOVERNANCE/SIP/TGCV_VSL_EXPEDIENTE_CLOSURE_003.md`  
+**Post-E2 gate:** `00_GOVERNANCE/SIP/TGCV_VSL_POST_E2_GATE_003.md`  
+**Scientific interpretation gate:** `00_GOVERNANCE/SIP/TGCV_VSL_SCIENTIFIC_INTERPRETATION_GATE_003.md`
+
+### 1. Purpose and frozen scope
+
+The paired VSL A/B experiment tests, within the frozen synthetic construction, whether an intervention that changes accessible transformation space necessarily changes the realized trajectory and downstream value under the specified deterministic realization policy. The experiment is methodological and synthetic; it is not a real-world causal value study.
+
+### 2. Controlled execution and independent reconstruction
+
+Executor-1 completed both A and B bundles with 100 fixtures each. Executor-2 independently reconstructed both channels under the authorized boundary. The corresponding E1 and E2 dataset hashes matched exactly within each channel.
+
+A dataset SHA-256: `6b51f7f46e75c76bf9e0428f8828d0b2641805c545f8cd7436a59b2cfdea58`  
+B dataset SHA-256: `a3c7cefa75cf01ce7bd6944d845a578b652d499e6fa01ff38443c7c15e5cda03`
+
+The E1/E2 result-file hashes are distinct artifacts and are not required to match.
+
+### 3. Quantitative findings
+
+For both A and B:
+
+- N = 100 fixtures.
+- Rows = 100.
+- `Delta T_acc = +1` for every fixture.
+- `Delta V* = 0` for every fixture.
+- Structural audit = PASS.
+- Independent E2 reconstruction = PASS.
+- Post-E2 integrity gate = PASS.
+
+Thus the frozen construction exhibits:
+
+`Delta T_acc > 0` while `Delta trajectory = 0` and `Delta V* = 0`.
+
+### 4. Scientific interpretation
+
+Within the tested construction, accessibility-space change is analytically distinguishable from realized trajectory change and downstream value change. An additional accessible transformation need not be selected by the frozen realization policy and therefore need not alter the resulting value measure.
+
+This is a bounded methodological result. It does not imply that accessibility changes generally have no value effect, nor does it establish a general decision-policy result.
+
+### 5. Evidence-to-claim propagation
+
+**C02:** bounded synthetic evidence for explicit accessibility-space modification under a frozen admissibility construction.
+
+**C07:** bounded synthetic evidence that `T_acc` can change, with `Delta T_acc = +1` across both paired bundles.
+
+**C08:** bounded negative/qualifying evidence that accessibility-space change can occur without realized trajectory change under the specified policy. No causal trajectory estimand is established.
+
+**C10:** bounded evidence that `Delta T_acc` and `Delta V*` can be separated under the frozen construction. No causal, predictive or universal value relationship is established; C10 remains open.
+
+**C16:** bounded methodological evidence preserving the distinction among accessibility, realized trajectory and downstream Value.
+
+No positive propagation is made to C09, C11, C12 or other claims outside these bounded routes. No claim-level status changes.
+
+### 6. Reproducibility and boundaries
+
+The E1/E2 execution and reconstruction chain was frozen and audited before closure. E2 did not use E1 result files as reconstruction inputs. Canonical executable bundle components were not modified.
+
+The result is synthetic, policy-dependent and domain-bounded. It does not establish empirical causality, industrial validity, transversal empirical validity, explanatory/predictive superiority, deployment readiness or a universal Value function.
+
+### 7. Governance disposition
+
+The paired VSL dossier is closed as **bounded synthetic methodological evidence**. Under GL-07, this section is the autocontained material-evidence record corresponding to the VSL entries added to the claim table. It preserves provenance, quantitative findings, operational scope, reproducibility boundary, interpretation limits and claim propagation.
+
+No TGCV Core, RMA or claim-level status is changed.
+
+
+## Material methodological evidence — TR-131 Cross-Domain Operationalisation V007
+
+**Case:** `TR-131_CROSS_DOMAIN_OPERATIONALISATION_V007`  
+**Status:** `CLOSED — BOUNDED CROSS-DOMAIN METHODOLOGICAL EVIDENCE`  
+**Evidence class:** bounded cross-domain operationalisation / analytical-method evidence; not causal, value, superiority or Transformational Intelligence evidence.  
+**Protocol freeze:** `03_EXPERIMENTS/TR-131/execution/TR131_CROSS_DOMAIN_COMPARISON_PROTOCOL_FREEZE_001.md`  
+**Preflight:** `03_EXPERIMENTS/TR-131/execution/TR131_CROSS_DOMAIN_COMPARISON_PACKAGE_PREFLIGHT_001.md`  
+**V006 construction audit:** `03_EXPERIMENTS/TR-131/execution/TR131_RUNNER_V006_CONSTRUCTION_FREEZE_AUDIT_001.md`  
+**Traceability audit:** `03_EXPERIMENTS/TR-131/execution/TR131_V006_ANALYSIS_IMPLEMENTATION_TRACEABILITY_AUDIT_002.md`  
+**VisitAll source evidence:** `03_EXPERIMENTS/TR-131/execution/results/TR131_VISITALL_DYNAMIC_SPACE_EXECUTOR1_RUN_001.json` and `TR131_VISITALL_DYNAMIC_SPACE_EXECUTOR2_RECONSTRUCTION_001.json`  
+**PRISM source evidence:** `03_EXPERIMENTS/TR-131/execution/A6_EXECUTOR_1_OUTPUT.json` and `A6_EXECUTOR_2_OUTPUT.json`  
+**V007 input:** `03_EXPERIMENTS/TR-131/execution/TR131_CROSS_DOMAIN_COMPARISON_PACKAGE_V007_INPUT_001.json`  
+**V007 output:** `03_EXPERIMENTS/TR-131/execution/TR131_CROSS_DOMAIN_COMPARISON_PACKAGE_V007_ANALYSIS_001.json`
+
+### 1. Purpose and frozen scope
+
+V007 is a secondary analysis of already-frozen VisitAll and PRISM evidence. It does not constitute a new scientific executor run, does not modify the frozen TR-131 package and does not reopen the TR-131 scientific execution authorisation boundary.
+
+Its purpose is to test whether the transition-level analytical representation
+
+`S_t → T_acc,t → T_real,t → S_(t+1) → T_acc,t+1 → Delta T_acc,t`
+
+can be constructed from two structurally distinct domain exemplars and whether bounded transformation-space reconfiguration descriptors can then be derived mechanically.
+
+### 2. Evidence coverage and integrity
+
+The analysis contains **36 records**: **20 VisitAll records** and **16 PRISM records**. The V007 runner reports `invalid = 0`. The independent mathematical audit reports **36 checked records and 0 descriptor mismatches**.
+
+The PRISM A6 evidence consists of 25 E1 rows and 25 E2 rows, with matching fixture SHA-256 and zero reconstruction deviations. VisitAll E1/E2 evidence contains 21 nodes per executor and agrees on the operationally relevant transformation-space reconstruction.
+
+The principal persisted source hashes are:
+
+- VisitAll E1: `735a4b6d13c763bbf6211bc9aebdf8ba5f6e00397e08ffa815df7edd601a3afa`;
+- VisitAll E2: `6c2a0dd29764c41c7aa5264cda4c9c070edbf096813b38fe90fc447c2615d95c`;
+- PRISM E1: `7b3d04e71deff77a68b25d0888b1cd4aeaff46042cf677b38f93f1b17cb0c36d`;
+- PRISM E2: `5f7b11daad809acc8b70bc64dee32e7e34ae292c5a3a6be4553728e9c807ca6a`.
+
+The V007 input package SHA-256 is `1d4d8f744459f2e1253a40996d47d1329c27a3356b62332186eeaaeb943fa9be4`, and the V007 analysis output SHA-256 is `4c113a310ea3b29feb00f7a8dc8e32440f5d5cec78c957b448c25d0cb79068c5`.
+
+### 3. Analytical correction from V006 to V007
+
+The V006 construction contained a representational error in the PRISM transition mapping: it assigned `T_acc,t` from the transition row's `t_acc` field, although that field represents accessibility associated with the row's successor state. V007 corrects this by deriving:
+
+- `T_acc,t = accessibility[source_state]`;
+- `T_acc,t+1 = accessibility[successor_state]`.
+
+The correction changes the analytical construction only; it does not alter the frozen source evidence or any scientific executor run. The V006 frozen construction is preserved as historical audit evidence, while V007 is the corrected secondary-analysis artifact.
+
+### 4. Quantitative findings
+
+V007 reports:
+
+| Domain | Records | Mean `|T_acc,t|` | Mean `|T_acc,t+1|` | Added identities | Removed identities | Turnover records | Stability records |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| VisitAll | 20 | 4.0 | 3.8 | 20 | 20 | 20 | 0 |
+| PRISM | 16 | 1.0 | 1.0 | 16 | 16 | 16 | 0 |
+
+The labels **added/removed identities** refer to transformation-identity turnover. They must not be read as net cardinality expansion/contraction. VisitAll exhibits turnover together with some net cardinality reduction; PRISM exhibits turnover with cardinality conservation.
+
+For every analysed record, `Delta T_acc` is mechanically derivable. PRISM therefore demonstrates that transformation-space identity turnover can occur while cardinality remains constant. VisitAll demonstrates turnover together with changes in the size of the accessible space.
+
+### 5. Cross-domain operationalisation finding
+
+The bounded finding is:
+
+> The evolution of an accessible transformation space can be operationally represented across at least two structurally distinct domains by a common transition-level representation linking source state, accessible transformations, realised transformation, successor state and successor accessibility, from which transformation-space reconfiguration descriptors can be mechanically derived.
+
+This is an **operationalisation finding**, not a claim that the two domains share identical transformation semantics, ontological primitives or value mechanisms.
+
+### 6. Interpretation and boundaries
+
+V007 provides bounded evidence for a working analytical layer of **Transformation-Space Dynamics**: expansion/contraction of identity sets, turnover/reconfiguration and related transition-level descriptors are observable when the domain supplies reconstructable state and accessibility semantics.
+
+The result does not establish a new ontological primitive. It does not establish **Transformational Intelligence**. It does not establish a causal relation from `Delta T_acc` to Value, nor does it establish explanatory superiority, predictive superiority, transversal validity or a universal transformation-capability score.
+
+No raw transformation identities are pooled across domains as if they had common semantics. Cross-domain comparison is performed through structural descriptors and the preserved transition-level relation.
+
+### 7. Evidence-to-claim propagation
+
+**C02 — bounded qualification.** The combined VisitAll/PRISM evidence strengthens the operational interpretation that accessibility can be represented as a state-conditioned transformation set when the domain supplies explicit admissibility/guard semantics. It does not close a domain-independent `P_tau`.
+
+**C07 — bounded qualification.** The two-domain evidence strengthens the bounded observation that accessible transformation spaces can reconfigure over successive transitions. The evidence is still limited to two analysed exemplars and does not establish universal temporal dynamics.
+
+**C08 — bounded qualification.** The common transition-level representation preserves the linkage from realised transformation to successor state and successor accessibility. It supports instrumentation of trajectory/accessibility linkage but does not establish a causal trajectory effect.
+
+**C11 — bounded qualification.** VisitAll and PRISM provide two structurally distinct executable exemplars for the same analytical representation. This supports cross-domain operationalisation with an explicit boundary; it does not establish transversal validity.
+
+**C16 — bounded methodological qualification.** V007 provides the first bounded two-domain operational demonstration of the transition-level translation chain used by the cross-domain programme. It supports the analytical translation layer while preserving domain-specific transformation identities and explicit state/accessibility/trajectory distinctions.
+
+No propagation is made to C09, C10, C12, C13, C14 or C15. No claim-level status or level changes.
+
+### 8. Governance disposition
+
+TR-131 Cross-Domain Operationalisation V007 is closed as **bounded cross-domain methodological evidence**. It is admissible as evidence supporting the emergence of Transformation-Space Dynamics as a working analytical layer. It does not by itself justify formalisation of Transformational Intelligence, modification of the TGCV Core, a value pathway, or a claim-level upgrade.
+
+The next governed sequence is therefore:
+
+`TR-131/V007 → Evidence Matrix propagation → Transformation-Space Dynamics Analysis formalisation → TI hypothesis testing (TI-001)`.
+
+## Material experimental evidence — TI-001 V012 NEXT3 Q1–Q5
+
+**Case:** `TI001_V012_NEXT3`  
+**Status:** `CLOSED — BOUNDED POST-PRIMARY INFERENTIAL EVIDENCE; Q1–Q5 TECHNICAL CLOSURE PASS`  
+**Evidence class:** controlled decision-selection analysis with frozen post-primary specification; exploratory/non-confirmatory inferential evidence.  
+**Final closure audit:** `03_EXPERIMENTS/TI-001/TI001_V012_NEXT3_Q1_Q5_FINAL_CLOSURE_AUDIT_001.json`  
+**Source result:** `TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_RESULT_001`  
+**Result payload SHA-256:** `9008ae02130405428cb30e6391fd37e5cd76b8bfe835dbcfc8ad6002e073ccf4`  
+**Fixture:** `NEXT3_v003`; fixture SHA-256 `0f16ebd02275ed32c481d34f92f704bb375dbe21e90d807483904ca73a9912d0`  
+**Execution result SHA-256:** `b908abe936bbfd19232a1436f8a308ac5dd23ca7df418c55715520c80ec9f5de`  
+**Analysis specification:** `TI001_V012_NEXT3_POST_PRIMARY_DISCRIMINATION_ANALYSIS_SPECIFICATION_002`  
+**Specification SHA-256:** `7ef25f94a2d2935a3091267946cf52f9c4c9a3c39bedca5c2820300360bfc695`
+
+### 1. Scope and closure
+
+NEXT3 contains **23,040 decisions**, of which **22,649 are valid** and **391 are excluded as invalid**. The frozen analysis declares **8 primary inferential contrasts** with Holm adjustment. The final closure audit records **Q1–Q5 technical closure pass** over `RESULT_001`. The analysis is explicitly marked **exploratory: true** and **confirmatory: false**.
+
+The closure audit verifies preservation of the frozen result, fixture and primary estimand, no NEXT2 pooling, and no value/utility/reward/performance signal. It also records that no scientific re-execution of `RESULT_001` is required for the Q1–Q5 technical closure.
+
+### 2. Q1 — marginal profile × condition
+
+Q1 tests whether the contribution of `profile_id` differs between INFORMATIVE and UNINFORMATIVE_NULL after controlling action identity.
+
+The joint contrast is:
+
+- chi-square(3) = **0.0900990411**
+- p = **0.9929985101**
+- Holm-adjusted p = **1.0**
+
+There is no evidence in this frozen result that the marginal/global contribution of `profile_id` is condition-sensitive. This does not imply absence of any higher-order action/profile reorganisation and does not refute the broader Transformational Intelligence research direction.
+
+### 3. Q2 — profile × presentation
+
+Q2 tests whether the profile-selection association changes across the four frozen presentation strata.
+
+The joint contrast is:
+
+- chi-square(9) = **7.5928783884**
+- p = **0.5756360601**
+- Holm-adjusted p = **1.0**
+
+No detectable `profile_id × presentation` interaction is observed in the frozen result. This is a robustness/control finding within NEXT3, not positive evidence of Transformational Intelligence and not proof of universal presentation invariance.
+
+### 4. Q3 — condition contrasts
+
+Q3 compares INFORMATIVE, SURFACE_PERMUTED and CONTRADICTORY against UNINFORMATIVE_NULL:
+
+| Contrast | df | chi-square | p | Holm p |
+|---|---:|---:|---:|---:|
+| INFORMATIVE − UNINFORMATIVE_NULL | 3 | 0.0900990411 | 0.9929985101 | 1.0 |
+| SURFACE_PERMUTED − UNINFORMATIVE_NULL | 3 | 2.6233921205 | 0.4534033565 | 1.0 |
+| CONTRADICTORY − UNINFORMATIVE_NULL | 3 | 2.6764892735 | 0.4442374931 | 1.0 |
+
+All three condition contrasts are non-significant under the frozen Holm family. The INFORMATIVE−UNINFORMATIVE_NULL contrast is mathematically identical to Q1's joint contrast in `RESULT_001`; this is preserved as a structural observation because the frozen specification declares them as distinct inferential entries, rather than retrospectively altering the family.
+
+These results do not establish that the NULL condition is mere noise and do not identify the source of condition-dependent structure detected at Q5.
+
+### 5. Q4 — domain and operationalisation
+
+Q4 separates domain dependence from operationalisation dependence:
+
+- `profile_id × operationalisation`: chi-square(12) = **11.3145510197**, p = **0.5021712621**, Holm p = **1.0**.
+- `profile_id × domain`: chi-square(9) = **248.3851538511**, p = **2.1870167307e-48**, Holm p = **1.5309117115e-47**.
+
+Thus no detectable modulation by operationalisation is present within NEXT3, while domain dependence is very strong. Q4 does not identify the mechanism generating that domain dependence and does not constitute independent cross-domain replication.
+
+### 6. Q5 — action × profile × condition
+
+Q5 tests whether the correspondence between specific actions and structural profiles changes with condition through the higher-order interaction `action_identity × profile_id × condition`.
+
+The joint contrast is:
+
+- chi-square(9) = **2902.9464378716**
+- stored p = **0.0**
+- Holm-adjusted p = **0.0**
+- covariance method: **BFGS_INVERSE_HESSIAN**
+- fit method: **BFGS**
+- statsmodels: **0.14.6**
+
+Q5 is the strongest inferential result in NEXT3. The result is consistent with a substantial, condition-dependent reorganisation of the correspondence between action identity and profile under the reassignment of future transformational structures. In other words, the profile associated with an action is not stable across the reassignment conditions: the observed action→profile mapping changes systematically with the future-structure condition. This is not equivalent to saying that the system simply assigns more global weight to profiles: Q1 tests a lower-order marginal profile×condition effect, whereas Q5 tests the higher-order action×profile×condition structure.
+
+The technical audit records that the historical optimizer callback trace is absent from `RESULT_001`. Nevertheless, the stored BFGS result was independently reproduced at the technical/statistical level and the Q5 audit passes. No re-execution is required on that basis.
+
+### 7. Scientific interpretation
+
+The most informative pattern is the separation between **marginal profile contribution** and **action–profile correspondence**:
+
+1. Q1/Q3 show no detectable marginal condition-dependent profile contribution.
+2. Q2 shows no detectable profile×presentation modulation.
+3. Q4 shows no detectable profile×operationalisation modulation but strong domain dependence.
+4. Q5 shows an extremely strong higher-order action×profile×condition interaction.
+
+The bounded scientific interpretation is therefore:
+
+> Under the frozen NEXT3 operationalisation, reassignment of future transformational structures is associated with a strong, condition-dependent reorganisation of the action→profile correspondence: the profile associated with a selected action changes systematically across reassignment conditions rather than reflecting a simple global increase in profile use.
+
+This pattern is relevant to the Transformational Intelligence research programme because it localises the unresolved mechanism at the level of **conditional action→profile correspondence under future-structure reassignment**, rather than at the level of a simple marginal information-weighting effect. It remains a hypothesis-generating result, not identification of a unique mechanism, and does not by itself establish future-transformation causality or Transformational Intelligence.
+
+### 8. Evidence-to-claim propagation
+
+**C16 — bounded methodological/mechanism qualification.** NEXT3 materially extends the decision-level translation evidence by showing that reassignment of future transformational structures is accompanied, under the frozen conditions, by a strong higher-order reorganisation of the action→profile correspondence while lower-order and presentation-control contrasts remain non-significant. This supports a more precise formulation of the unresolved decision-level mechanism: the key observable is the condition-dependent mapping between action identity and profile under future-structure reassignment, rather than a marginal increase in profile use.
+
+No positive propagation is made to C02, C07, C08, C09, C10, C11, C12, C13, C14 or C15. NEXT3 does not operationalize `T_acc` directly, does not estimate a trajectory or value endpoint, does not establish transversal validity, and does not establish explanatory superiority.
+
+No claim-level status or level changes.
+
+### 9. Governance disposition
+
+NEXT3 Q1–Q5 is closed as **bounded exploratory/non-confirmatory inferential evidence**. The result should now be used to formulate NEXT4 around the discriminating question:
+
+> Can the observed action–profile–condition reorganisation be specifically linked to an explicit representation of future transformation/trajectory, while separating it from a static profile→action rule and controlling domain dependence?
+
+The matrix therefore records NEXT3 as a material evidentiary qualification and uses it to motivate the next governed experimental design without treating NEXT3 as a confirmation of Transformational Intelligence.
+
+
+## Material methodological evidence — TI-001 V012 NEXT4 Monte Carlo power simulation
+
+**Case:** `TI001_V012_NEXT4`  
+**Status:** `CLOSED — BOUNDED DESIGN POWER / CALIBRATION EVIDENCE`  
+**Evidence class:** Monte Carlo power simulation and null-calibration evidence for the frozen TI-001 design; methodological evidence only, not empirical evidence from real data, construct validation, causal/value evidence, superiority evidence or TGCV-wide confirmation/falsification.  
+**Scientific execution run:** GitHub Actions run `36746875918`  
+**Canonical aggregation artifact:** `TI001_V012_NEXT4_POWER_SIMULATION_40_CELL_AGGREGATION_AUDIT_001`  
+**Source contract:** DGP-002 / Engine-002 / Model-011R / Execution Spec-002  
+**Canonical aggregate SHA-256:** `93736faca037711040b70b4c249c46dd56a070f27fe64c05925ac8010f905f21`
+
+### 1.1 Plain-language research question
+
+In ordinary language, NEXT4 asks:
+
+> **Before using the TI-001 experimental design to interpret results, is the statistical test sufficiently characterized to know how it behaves when there is no real effect, and how often it detects effects of different sizes with the planned sample sizes?**
+
+The question is deliberately methodological. NEXT4 does **not** ask whether generative systems actually possess Transformational Intelligence, nor does it test the TGCV theory against observations from real systems. Instead, it asks whether the registered experimental design has been quantitatively stress-tested under controlled simulated conditions so that later empirical results can be interpreted against a known reference.
+
+### 1.2 What this experiment does
+
+NEXT4 repeatedly generates synthetic datasets from the **pre-registered data-generating process** specified for TI-001, applies the **same statistical analysis procedure that the experiment is designed to use**, and records how often that procedure rejects the null hypothesis.
+
+Two quantities are especially important:
+
+- **False-positive behaviour under the null:** when the simulated data contain no effect (Delta = 0), the rejection rate should be close to the nominal significance level of 5%. This checks whether the registered analysis is approximately calibrated.
+- **Detection behaviour when an effect is present:** when the simulated data contain progressively larger effects (Delta > 0), the rejection rate should increase. This characterizes the design's statistical power — its ability to detect effects of the sizes it was designed to study.
+
+The simulation varies both the planned sample size (N) and the simulated effect size (Delta), producing a two-dimensional map of expected detection behaviour rather than relying on a single illustrative simulation.
+
+### 1.3 What the experiment allows us to demonstrate
+
+Within the limits of the frozen simulation model, NEXT4 demonstrates that:
+
+1. the registered TI-001 analysis has been **quantitatively characterized before interpretation of empirical evidence**;
+2. under the simulated no-effect condition, its observed rejection rate is approximately the intended 5% level;
+3. across the registered grid, the simulated ability to detect the specified effect behaves as expected: larger effects are not harder to detect, and increasing sample size does not reduce detection rates;
+4. the complete 40-cell design has been executed and aggregated with the expected number of Monte Carlo replicates per cell;
+5. the resulting power/calibration surface provides a reproducible reference against which future empirical TI-001 results can be interpreted.
+
+The appropriate scientific conclusion is therefore about the **measurement properties and operating characteristics of the experimental design**, not about the phenomenon being investigated.
+
+NEXT4 does not demonstrate that the target effect exists in real generative systems. It does not demonstrate that Transformational Intelligence exists, that a TGCV mechanism is causally operative, or that any change in accessible transformations produces value. Those questions require empirical evidence from the corresponding experiments and cannot be answered by a Monte Carlo simulation alone.
+
+### 1. Frozen scope and execution
+
+NEXT4 evaluates the registered 5×8 `N × Delta` design under the canonical DGP-002 / Engine-002 / Model-011R / Execution Spec-002 chain. The scientific execution completed successfully in run `36746875918`, with **40 design cells** and **1,000 Monte Carlo replicates per cell**.
+
+The registered sample sizes are `N = 1728, 2304, 3456, 5184, 6912`; the effect-grid values are `Delta = 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1`; and the master seed is `20260930`.
+
+### 2. Aggregation and integrity
+
+The canonical 40-cell aggregation audit records:
+
+- `expected_cell_count = 40`;
+- `observed_cell_count = 40`;
+- `coverage_pass = true`;
+- `cell_integrity_pass = true`;
+- `replicates_per_cell = 1000`;
+- `source_run_id = 36746875918`.
+
+All 40 registered cells are therefore represented in the canonical aggregate with the expected replicate count and passed cell-integrity/coverage checks.
+
+### 3. Null calibration and power-surface behavior
+
+At `Delta = 0`, the five rejection rates are approximately **0.042, 0.047, 0.052, 0.058 and 0.05105** for increasing `N`, with mean approximately **0.05001**. The `N=6912, Delta=0` value is `51/999 = 0.051051...` because one replicate in that cell is invalid; this is a documented cell-level validity detail, not an aggregation discrepancy.
+
+For every fixed positive `Delta`, rejection rate is nondecreasing with `N`; for every fixed `N`, rejection rate is nondecreasing across the registered `Delta` grid. This is the expected qualitative behavior of the simulated power surface under the frozen design.
+
+### 4. Scientific interpretation and boundary
+
+NEXT4 provides bounded evidence that the registered design has been power-characterized over the specified `N × Delta` grid and that the simulated null is approximately calibrated at alpha = 0.05. It supports interpretation of the design's sensitivity under the frozen DGP/model, not the existence or magnitude of an effect in real data.
+
+NEXT4 therefore does **not** establish Transformational Intelligence, does not establish a TGCV causal/value pathway, does not provide empirical evidence about real generative systems, and does not upgrade any TGCV claim.
+
+### 5. Evidence-to-claim propagation
+
+**C16 — bounded methodological qualification.** NEXT4 adds material evidence that the TI-001 experimental design is quantitatively characterized for null calibration and power across the registered grid, with complete 40-cell coverage and canonical aggregation integrity. This strengthens the methodological basis for subsequent TI-001 inferential testing but does not establish the target mechanism itself.
+
+No positive propagation is made to C02, C07, C08, C09, C10, C11, C12, C13, C14 or C15. No claim-level status or level changes.
+
+### 6. Governance disposition
+
+NEXT4 Monte Carlo power simulation and its 40-cell aggregation audit are closed as **bounded design-power/calibration evidence**. The scientific execution is not to be repeated merely for evidence-matrix propagation. The canonical evidence chain remains DGP-002 → Engine-002 → Model-011R → Execution Spec-002 → run `36746875918` → 40-cell aggregation audit.
+
+Older NEXT4 artifacts superseded by the frozen governance marker remain historical and are not operative merely by filename chronology.
+
+
+## MT5 propagation disposition
+
+MT5 is propagated as **bounded methodological boundary evidence**, primarily qualifying C02, C07, C08 and C16. No claim status or level changes. C09 is not altered. C10 is not altered. The result does not reopen completed gates and does not authorize further outcome mining within this case for full `T_acc` identification.
+
+Canonical MT5 result artifact: `00_GOVERNANCE/SIP/TGCV_MT5_DYNAMIC_TRANSFORMATION_SPACE_RECONSTRUCTION_RESULT_001.md`.
