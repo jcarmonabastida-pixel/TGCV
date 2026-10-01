@@ -1,0 +1,38 @@
+{
+  "domain_id": "D0",
+  "types": ["robot", "location"],
+  "objects": {
+    "robot": ["r1"],
+    "location": ["l1", "l2", "l3"]
+  },
+  "predicates": [
+    {"name": "at", "args": ["robot", "location"]},
+    {"name": "connected", "args": ["location", "location"]}
+  ],
+  "actions": [
+    {
+      "name": "move",
+      "parameters": [["r", "robot"], ["from", "location"], ["to", "location"]],
+      "preconditions": [
+        ["at", "r", "from"],
+        ["connected", "from", "to"]
+      ],
+      "add_effects": [["at", "r", "to"]],
+      "delete_effects": [["at", "r", "from"]]
+    },
+    {
+      "name": "wait",
+      "parameters": [["r", "robot"], ["where", "location"]],
+      "preconditions": [["at", "r", "where"]],
+      "add_effects": [],
+      "delete_effects": []
+    }
+  ],
+  "initial_state": [
+    ["at", "r1", "l1"],
+    ["connected", "l1", "l2"],
+    ["connected", "l2", "l1"],
+    ["connected", "l2", "l3"],
+    ["connected", "l3", "l2"]
+  ]
+}
