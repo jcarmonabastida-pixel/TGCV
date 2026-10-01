@@ -1,0 +1,54 @@
+name: D-OPS 003 R001 provenance audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  provenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Verify R001 materialization manifest against parent frozen bytes
+        shell: python
+        run: |
+          import hashlib
+          from pathlib import Path
+
+          parent = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003")
+          rev = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003R001")
+
+          expected = {
+              "D0_FORMAL_FIXTURE.json": (833, "3b3cda0590916abd988f0208213b9490844ef56d389a1806c89591eb5f297a64"),
+              "G_S_SPECIFICATION.md": (531, "d778b6d4a6eff581bf3adb8ac15e855ea847f0f72ce6381671af4f240d35b595"),
+              "R3_manifest_D0.json": (205, "af0ebae16d7fa2b6cc54303393755dbbd45db99bf69b39bbdcc942bb4637796e"),
+              "README.md": (629, "4cdfdc1f6d7ec8f8d3dd9cd071dce6b5b140409b27aff2c330a7c905215e67b2"),
+              "dops_canonical.py": (806, "4649bdc95b6fb68a9ac087fc8d4d6b9e5141c8c34ed21bbd63c2533293b1af31"),
+              "dops_gs.py": (866, "dc3621ea14e289a30554f7e0bdc584f045f79cb2a8f858d2749df4c76ab968ef"),
+              "dops_oracle.py": (2012, "0dba85e656074575eaacda02e6d7d6b48ed6ad14e564f57b108dc18f61294ffc"),
+              "dops_perturbations.py": (617, "e7e04da1a83bab58417a6bd96978ca7fdd2176e385f1bc948f6a103ae7c6fd40"),
+              "executor_environment_manifest.json": (599, "3170b2c8373cc5dbc6eeb93d5d9f4ef890a70c4acfc723df08eaa90a5751030b"),
+              "expected_results.json": (188, "f52055c06378dc2999025a9bccb4d530d07dfbb30207d28224d11a467a9b9385"),
+              "oracle_specification.md": (580, "a6098cebc4b68521e05af0e3193baed88bfcfe76accb1590a12d02629bcd7e50"),
+              "perturbation_manifest.json": (474, "41bc8b2e7469c5b6be70ad65e8335a21dab45ba6e3fe8a3669efd3a35a20d376"),
+              "result_schema.json": (387, "208cf37c41bd9966db638f81329d2d68c9c71711b56132f675fa6fda1b0d2221"),
+          }
+
+          for name, (n, h) in expected.items():
+              a = (parent/name).read_bytes()
+              b = (rev/name).read_bytes()
+              if len(b) != n or hashlib.sha256(b).hexdigest() != h:
+                  raise SystemExit(f"R001_MISMATCH: {name}")
+              if a != b:
+                  raise SystemExit(f"R001_NOT_BYTE_IDENTICAL_TO_PARENT: {name}")
+
+          if set(p.name for p in rev.iterdir()) != set(expected):
+              raise SystemExit("R001_BOUNDARY_MISMATCH")
+
+          print("D-OPS-003-R001 PROVENANCE AUDIT PASS")
+          print("All 13 members are byte-identical to the original pre-mutation Package 003 materialization.")
