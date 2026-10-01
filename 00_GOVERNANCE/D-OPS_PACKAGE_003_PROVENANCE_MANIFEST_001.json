@@ -1,0 +1,22 @@
+{
+  "manifest_type": "D-OPS_PACKAGE_003_EXACT_BYTE_SHA256_PROVENANCE",
+  "repository": "jcarmonabastida-pixel/TGCV",
+  "ref": "main",
+  "materialization_commit": "2dc6713c538c988f48c4c1c0eb8573b2359aa4fc",
+  "package": "00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003",
+  "files": [
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/D0_FORMAL_FIXTURE.json","bytes":833,"sha256":"3b3cda0590916abd988f0208213b9490844ef56d389a1806c89591eb5f297a64"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/G_S_SPECIFICATION.md","bytes":531,"sha256":"d778b6d4a6eff581bf3adb8ac15e855ea847f0f72ce6381671af4f240d35b595"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/R3_manifest_D0.json","bytes":205,"sha256":"af0ebae16d7fa2b6cc54303393755dbbd45db99bf69b39bbdcc942bb4637796e"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/README.md","bytes":629,"sha256":"4cdfdc1f6d7ec8f8d3dd9cd071dce6b5b140409b27aff2c330a7c905215e67b2"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/dops_canonical.py","bytes":806,"sha256":"4649bdc95b6fb68a9ac087fc8d4d6b9e5141c8c34ed21bbd63c2533293b1af31"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/dops_gs.py","bytes":866,"sha256":"dc3621ea14e289a30554f7e0bdc584f045f79cb2a8f858d2749df4c76ab968ef"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/dops_oracle.py","bytes":2012,"sha256":"0dba85e656074575eaacda02e6d7d6b48ed6ad14e564f57b108dc18f61294ffc"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/dops_perturbations.py","bytes":617,"sha256":"e7e04da1a83bab58417a6bd96978ca7fdd2176e385f1bc948f6a103ae7c6fd40"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/executor_environment_manifest.json","bytes":599,"sha256":"3170b2c8373cc5dbc6eeb93d5d9f4ef890a70c4acfc723df08eaa90a5751030b"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/expected_results.json","bytes":188,"sha256":"f52055c06378dc2999025a9bccb4d530d07dfbb30207d28224d11a467a9b9385"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/oracle_specification.md","bytes":580,"sha256":"a6098cebc4b68521e05af0e3193baed88bfcfe76accb1590a12d02629bcd7e50"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/perturbation_manifest.json","bytes":474,"sha256":"41bc8b2e7469c5b6be70ad65e8335a21dab45ba6e3fe8a3669efd3a35a20d376"},
+    {"path":"00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/result_schema.json","bytes":387,"sha256":"208cf37c41bd9966db638f81329d2d68c9c71711b56132f675fa6fda1b0d2221"}
+  ]
+}
