@@ -51,7 +51,8 @@
     "candidate_structural_object_admissibility_audit": "00_GOVERNANCE/architecture/TGCV_CANDIDATE_STRUCTURAL_OBJECT_ADMISSIBILITY_AUDIT_v0.1.md",
     "o4_structural_connectivity_spec": "00_GOVERNANCE/architecture/TGCV_O4_STRUCTURAL_CONNECTIVITY_OBJECT_SPEC_v0.1.md",
     "o4_reconstruction_audit": "00_GOVERNANCE/architecture/TGCV_O4_PREEXPERIMENTAL_RECONSTRUCTION_AUDIT_v0.1.md",
-    "e3_evidence_availability_audit": "00_GOVERNANCE/architecture/TGCV_E3_EVIDENCE_AVAILABILITY_AUDIT_v0.1.md"
+    "e3_evidence_availability_audit": "00_GOVERNANCE/architecture/TGCV_E3_EVIDENCE_AVAILABILITY_AUDIT_v0.1.md",
+    "architectural_transition_gate_record": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_TRANSITION_GATE_RECORD_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -60,5 +61,5 @@
     "experiment_authorization": "NONE_BY_THIS_LAYER",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md"
   },
-  "architectural_transition_d1_gate": "CLOSED_E3_NOT_PRESENT_IN_CURRENT_EVIDENCE"
+  "architectural_transition_d1_gate": "OPEN_GOVERNANCE_FORMALIZATION_CLOSED_SCIENTIFIC_EXECUTION"
 }
