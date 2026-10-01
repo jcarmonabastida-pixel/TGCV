@@ -83,7 +83,8 @@
     "architectural_discriminator_feasibility_review": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_DISCRIMINATOR_FEASIBILITY_REVIEW_v0.1.md",
     "architectural_boundary_redesign_review": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_BOUNDARY_REDESIGN_REVIEW_v0.1.md",
     "omega_primary_boundary_admissibility_review": "00_GOVERNANCE/architecture/TGCV_OMEGA_PRIMARY_BOUNDARY_ADMISSIBILITY_REVIEW_v0.1.md",
-    "omega_primary_domain_instantiability_review": "00_GOVERNANCE/architecture/TGCV_OMEGA_PRIMARY_DOMAIN_INSTANTIABILITY_REVIEW_v0.1.md"
+    "omega_primary_domain_instantiability_review": "00_GOVERNANCE/architecture/TGCV_OMEGA_PRIMARY_DOMAIN_INSTANTIABILITY_REVIEW_v0.1.md",
+    "rust_omega_primary_semantic_instantiability_review": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_SEMANTIC_INSTANTIABILITY_REVIEW_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -92,8 +93,8 @@
     "experiment_authorization": "NONE",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md",
     "current_qualifying_b_object": "NONE",
-    "next_gate": "RUST_OMEGA_PRIMARY_SEMANTIC_INSTANTIABILITY_REVIEW",
-    "bridge_status": "NO_DOMAIN_FULLY_INSTANTIABLE_RUST_RETAINED_AS_CONDITIONAL_CANDIDATE"
+    "next_gate": "RUST_OMEGA_PRIMARY_TRANSFORMATION_EQUIVALENCE_AND_RELATION_SCHEMA_REVIEW",
+    "bridge_status": "RUST_OMEGA_PRIMARY_CONDITIONALLY_INSTANTIABLE_EQUIVALENCE_RELATION_SCHEMA_OPEN"
   },
   "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_A_EQUIVALENT_RR3_NOT_SATISFIED"
 }
