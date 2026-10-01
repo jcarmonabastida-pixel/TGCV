@@ -1,0 +1,75 @@
+name: D-OPS 002 governed conformance execution
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dops-002:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout frozen package
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Verify runtime
+        run: python3 --version
+
+      - name: Verify frozen package SHA-256 boundary
+        shell: python
+        run: |
+          import hashlib, json, pathlib, sys
+          root = pathlib.Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_002")
+          manifest = json.loads((root / "provenance_manifest.json").read_text(encoding="utf-8"))
+          for rel, expected in manifest["files"].items():
+              p = root / rel
+              if not p.is_file():
+                  raise SystemExit(f"MISSING_FROZEN_INPUT: {rel}")
+              got = hashlib.sha256(p.read_bytes()).hexdigest()
+              if got != expected:
+                  raise SystemExit(f"SHA256_MISMATCH: {rel}: {got} != {expected}")
+          print("FROZEN_PACKAGE_SHA256_PASS")
+
+      - name: Verify execution authorization record
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_002_EXECUTION_AUTHORIZATION_001.md")
+          if not p.is_file():
+              raise SystemExit("EXECUTION_AUTHORIZATION_RECORD_MISSING")
+          text = p.read_text(encoding="utf-8")
+          if "Status: EXECUTION AUTHORIZED" not in text or "execution_authorized: true" not in text:
+              raise SystemExit("EXECUTION_AUTHORIZATION_NOT_CONFIRMED")
+          print("EXECUTION_AUTHORIZATION_PASS")
+
+      - name: Validate frozen result schema
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          root = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_002")
+          schema = json.loads((root / "result_schema.json").read_text(encoding="utf-8"))
+          required = set(schema["required"])
+          if required != {"test_id", "expected_classification"}:
+              raise SystemExit("UNEXPECTED_RESULT_SCHEMA_REQUIRED_FIELDS")
+          print("RESULT_SCHEMA_PASS")
+
+      - name: Fail closed unless every expected case has a governed execution mapping
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          root = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_002")
+          expected = json.loads((root / "expected_results.json").read_text(encoding="utf-8"))
+          oracle = (root / "dops_oracle.py").read_text(encoding="utf-8")
+          # Package 002 contains the expected-result contract, but no frozen
+          # case-to-execution mapping artifact. Do not invent one post-freeze.
+          raise SystemExit(
+              "EXECUTION_BLOCKED: no frozen case-to-execution mapping artifact exists; "
+              f"{len(expected)} expected-result keys are present. "
+              "A governed mapping must be supplied by a new versioned package; "
+              "the frozen package is not modified."
+          )
