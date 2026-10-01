@@ -120,3 +120,38 @@ The review identified three issues requiring correction before freeze:
 Until these are resolved, the boundary remains **BOUNDARY-BLOCKED**. No source admission or experiment design is permitted.
 
 These are specification defects, not empirical findings, and do not alter the current Core, Matrix or RMA.
+
+
+## 15. Corrected boundary formulation — candidate v0.2
+
+To resolve the review defects, the candidate boundary is reformulated with explicit interval and identity layers.
+
+### 15.1 Transformation instances
+`U_[t,t+1]` is the set of transformation instances evidenced over interval `[t,t+1]`. An instance `u` has a frozen event/provenance identity and records source configuration, operation/change, target configuration, type/domain and interval provenance.
+
+`U_t` is reserved for transformations already evidenced at or attributable to an observation instant `t`; it is not used as shorthand for an interval transition.
+
+### 15.2 Three distinct identity relations
+`id(u)` is the exact provenance identity of an observed transformation instance.
+
+`u ≡_T v` is a frozen transformation-type equivalence relation derived only from pre-specified identity/type fields; it does not assert that the two events are the same instance.
+
+`π(u)` is the longitudinal persistence/provenance mapping used to determine whether instances at different intervals represent continuation, replacement, split or merge under a frozen rule.
+
+These three relations must not be collapsed.
+
+### 15.3 Structural relation
+`R_[t,t+1]` is a typed relation over the transformation instances in `U_[t,t+1]`, with each edge carrying a frozen relation type, semantic predicate, temporal scope and provenance.
+
+Longitudinal change is represented by the transition between `R_[t,t+1]` and `R_[t+1,t+2]`, after applying the frozen persistence mapping `π`.
+
+The candidate B object is therefore treated as the longitudinal structure:
+
+`Ω_T = { (U_[t,t+1], ≡_T, R_[t,t+1], π_[t,t+1]) }_t`
+
+rather than a single graph at an isolated time point.
+
+### 15.4 Remaining freeze condition
+This correction resolves the three identified specification defects at the conceptual level. Before freeze, the exact admissible relation vocabulary, persistence cases and serialization schema must be reviewed for circularity, A-reconstructibility and observation parity.
+
+**Status: CORRECTED CANDIDATE — NOT YET FROZEN.**
