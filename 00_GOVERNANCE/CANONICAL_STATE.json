@@ -37,7 +37,8 @@
     "changelog": "CHANGELOG.md",
     "scientific_registry": "02_EXTERNAL_SCIENCE/SCIENTIFIC_ASSET_REGISTRY_v0.1.md",
     "validator": "00_GOVERNANCE/tools/validate_current_state.py",
-    "architectural_transition_register": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_TRANSITION_REGISTER_v0.1.md"
+    "architectural_transition_register": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_TRANSITION_REGISTER_v0.1.md",
+    "architectural_transition_evidence_assessment": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_TRANSITION_EVIDENCE_ASSESSMENT_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
