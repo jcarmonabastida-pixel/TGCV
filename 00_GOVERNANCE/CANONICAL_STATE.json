@@ -80,8 +80,8 @@
     "experiment_authorization": "NONE",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md",
     "current_qualifying_b_object": "NONE",
-    "next_gate": "RULE_LAYER_PRIMITIVE_BRIDGE_DISCOVERY",
-    "bridge_status": "NO_OMEGA_T_BOUNDARY_PASS"
+    "next_gate": "RAILWAY_OMEGA_T_SOURCE_SPECIFIC_AUDIT",
+    "bridge_status": "RULE_LAYER_CANDIDATE_IDENTIFIED_LONGITUDINAL_BRIDGE_UNVALIDATED"
   },
   "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_A_EQUIVALENT_RR3_NOT_SATISFIED"
 }
