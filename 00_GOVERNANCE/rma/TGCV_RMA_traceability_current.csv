@@ -9,8 +9,9 @@ RMA-v3.31,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.31.md,RMA-c
 RMA-v3.32,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.32.md,RMA-current,Historical operative RMA preserved immutable
 RMA-v3.33,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.33.md,RMA-current,Historical operative RMA preserved immutable
 RMA-v3.34,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.34.md,RMA-current,Historical operative RMA preserved immutable
-RMA-v3.35,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.35.md,RMA-current,Current operative RMA; propagates C09 bounded empirical causal support and controlled candidate transversal methodology; Core unchanged
-RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.35,Points to TGCV_RMA_v3.35.md
+RMA-v3.35,governance_master,HISTORICAL,00_GOVERNANCE/rma/TGCV_RMA_v3.35.md,RMA-current,Historical operative RMA preserved immutable
+RMA-v3.36,governance_master,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_v3.36.md,RMA-current,Current operative RMA; propagates TI-001 NEXT3/Q5 and NEXT4 bounded evidence; Core and claim statuses unchanged
+RMA-current,pointer,CURRENT,00_GOVERNANCE/rma/TGCV_RMA_current.md,RMA-v3.36,Points to TGCV_RMA_v3.36.md
 CLAIM-MATRIX-v0.8,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v0.8.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v0.9,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v0.9.md,,Historical matrix preserved immutable
 CLAIM-MATRIX-v1.0,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.0.md,,Historical matrix preserved immutable
@@ -22,8 +23,9 @@ CLAIM-MATRIX-v1.7,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_C
 CLAIM-MATRIX-v1.11,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.11.md,RMA-v3.35,Historical matrix preserved immutable; predecessor of v1.12
 CLAIM-MATRIX-v1.12,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.12.md,RMA-v3.35,Historical cumulative matrix preserved immutable
 CLAIM-MATRIX-v1.21,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.21.md,RMA-v3.35,Historical cumulative matrix preserved immutable; immediate predecessor of v1.22
-CLAIM-MATRIX-v1.22,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.22.md,RMA-v3.35,Current cumulative matrix; VSL Synthetic Minimum v0.1 C16 claim-table evidentiary-impact routing completed; no claim upgrade
-CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.22,Current matrix alias must resolve to complete v1.22; not a simplified derivative
+CLAIM-MATRIX-v1.22,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.22.md,RMA-v3.35,Historical cumulative matrix preserved immutable
+CLAIM-MATRIX-v1.43,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.43.md,RMA-v3.36,Current cumulative matrix; NEXT3/Q5 interpretation refined and NEXT4 bounded methodological evidence registered; no claim upgrade
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.43,Current matrix alias resolves to complete v1.43; not a simplified derivative
 ARM-v0.1,external_asset,HISTORICAL,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.1.md,ARM-current,Historical ARM state preserved immutable
 ARM-v0.2,external_asset,CURRENT,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.2.md,RMA-current,Current controlled ARM; architectural reconciliation only; Core and C01-C16 unchanged
 ARM-current,pointer,CURRENT,05_ASSETS/ARM/README.md,ARM-v0.2,Current ARM pointer; RII follows as current controlled external asset
