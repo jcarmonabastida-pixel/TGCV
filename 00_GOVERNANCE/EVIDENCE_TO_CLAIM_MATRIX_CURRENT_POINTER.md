@@ -4,7 +4,7 @@
 **Current matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
 **Current version:** v1.44  
 **Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.44.md`  
-**Predecessor:** v1.42  
+**Predecessor:** v1.43  
 **Established:** 2026-10-01
 
 v1.40 cumulatively preserves v1.39 and incorporates the closed TI-001 V012 NEXT2 direct primary contrast as bounded material evidence, with the secondary MI traceability limitation explicitly recorded. NEXT2 routes primarily to C16 as a bounded non-confirmatory mechanism qualification. No claim-level status or level changes and no TGCV Core modification is introduced.
@@ -17,4 +17,4 @@ v1.42 cumulatively preserves v1.41 and incorporates the closed TI-001 V012 NEXT4
 
 v1.43 cumulatively preserves v1.42 and incorporates the closed NEXT3 Q1–Q5 technical closure and bounded scientific interpretation. NEXT3 is routed primarily to C16 as a bounded decision-level mechanism qualification; no claim-level status/level changes and no TGCV Core modification are introduced.
 
-v1.44 cumulatively preserves v1.43 and incorporates the bounded MT5 Dynamic Transformation Space reconstruction. MT5 is propagated as partial Dynamic Transformation Space / methodological boundary evidence, qualifying C02, C07, C08 and C16 without any claim-level status or level change or TGCV Core modification. The case does not identify a complete outcome-independent P_tau, realised transformation set, T_acc or Delta T_acc, and no further outcome mining is authorized for full T_acc identification within MT5.
+v1.44 cumulatively preserves v1.43 and incorporates the closed MT5 Dynamic Transformation Space reconstruction with enriched material evidence and propagation to C02, C07, C08 and C16. MT5 is propagated as partial Dynamic Transformation Space / methodological boundary evidence, qualifying C02, C07, C08 and C16 without any claim-level status or level change or TGCV Core modification. The case does not identify a complete outcome-independent P_tau, realised transformation set, T_acc or Delta T_acc, and no further outcome mining is authorized for full T_acc identification within MT5.
