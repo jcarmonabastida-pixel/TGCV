@@ -1,0 +1,63 @@
+name: D-OPS 003 R001 freeze preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Verify R001 governance prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f 00_GOVERNANCE/D-OPS_PACKAGE_003_FULL_CONFORMANCE_AUDIT_001.md
+          test -f 00_GOVERNANCE/D-OPS_PACKAGE_003_EXPECTED_RESULTS_AUDIT_001.md
+          test -f 00_GOVERNANCE/D-OPS_PACKAGE_003R001_PROVENANCE_MANIFEST_001.json
+          test -f 00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003R001/README.md
+          grep -q "PASS — NO OPEN CONTRACT CONFORMANCE ISSUES" 00_GOVERNANCE/D-OPS_PACKAGE_003_FULL_CONFORMANCE_AUDIT_001.md
+          grep -q "PASS — EXPECTED-RESULTS CONSISTENT WITH DESIGN 007" 00_GOVERNANCE/D-OPS_PACKAGE_003_EXPECTED_RESULTS_AUDIT_001.md
+          grep -q "Status: REVISION CANDIDATE — NOT FROZEN" 00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003R001/README.md
+          grep -q "Execution authorized: NO" 00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003R001/README.md
+
+      - name: Verify exact-byte provenance of R001
+        shell: python
+        run: |
+          import hashlib, json
+          from pathlib import Path
+          manifest=json.loads(Path("00_GOVERNANCE/D-OPS_PACKAGE_003R001_PROVENANCE_MANIFEST_001.json").read_text(encoding="utf-8"))
+          assert manifest["repository"]=="jcarmonabastida-pixel/TGCV"
+          assert manifest["ref"]=="main"
+          assert manifest["package"]=="00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003R001"
+          for e in manifest["files"]:
+              p=Path(e["path"]); data=p.read_bytes()
+              assert len(data)==e["bytes"], f"byte length mismatch: {p}"
+              assert hashlib.sha256(data).hexdigest()==e["sha256"], f"SHA-256 mismatch: {p}"
+          root=Path(manifest["package"])
+          actual={str(p) for p in root.iterdir() if p.is_file()}
+          expected={e["path"] for e in manifest["files"]}
+          assert actual==expected, f"boundary mismatch: {sorted(actual ^ expected)}"
+          print(f"PASS: {len(manifest['files'])} R001 package files match exact-byte provenance")
+
+      - name: Verify clean checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --short)"
+          echo "PASS: clean checkout"
+
+      - name: Emit R001 freeze-preflight result
+        shell: bash
+        run: |
+          echo "D-OPS PACKAGE 003 R001 — FREEZE PREFLIGHT ELIGIBLE"
+          echo "No scientific execution performed."
+          echo "No execution authorization created."
