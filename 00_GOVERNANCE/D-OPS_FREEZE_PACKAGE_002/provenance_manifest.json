@@ -5,7 +5,20 @@
   "superseded_status":"INVALID",
   "execution_authorized":false,
   "hash_algorithm":"SHA-256",
-  "hashes_status":"PENDING_EXACT_BYTE_MATERIALIZATION",
+  "hashes_status":"EXACT_BYTE_MATERIALIZED",
   "required_hash_scope":"all package inputs and executable components",
-  "note":"Hashes must be computed from the exact UTF-8 bytes present in the frozen package. Git blob SHAs are not accepted as substitutes."
+  "files":{
+    "D0_FORMAL_FIXTURE.json":"3b3cda0590916abd988f0208213b9490844ef56d389a1806c89591eb5f297a64",
+    "G_S_SPECIFICATION.md":"b3bf8256086fcef5fca528c1f5d47a684ecef256223078e22b677d2514478c1d",
+    "R3_manifest_D0.json":"af0ebae16d7fa2b6cc54303393755dbbd45db99bf69b39bbdcc942bb4637796e",
+    "README.md":"da1e66db8b77bbf67d2799580239ae808c26cd157f6e356d64326ce769bac56b",
+    "dops_canonical.py":"4649bdc95b6fb68a9ac087fc8d4d6b9e5141c8c34ed21bbd63c2533293b1af31",
+    "dops_gs.py":"af6571ab8508797c70dc8e55680eed1fccb8226d34a6c69cea753893d024610f",
+    "dops_oracle.py":"e3f8f7ad41ce00c41c88953cda96e4f3e6076507811d443b47423379af0ed5d2",
+    "dops_perturbations.py":"e7e04da1a83bab58417a6bd96978ca7fdd2176e385f1bc948f6a103ae7c6fd40",
+    "expected_results.json":"ca8055cf0a889e6111d81798f81e0ff8ab51c16abbfe2311135084e530827955",
+    "oracle_specification.md":"8dd381deecda3594b86e8af32adf6b77a2eba07ab182c30518684dc9bf42a514",
+    "perturbation_manifest.json":"366ad526a181baa7f0847ee71d83acbcd28036030e88de1f707bc7f9e3ffeac8"
+  },
+  "note":"Hashes are computed from the exact UTF-8 bytes present in the frozen package on main. Git blob SHAs are not used as substitutes. The provenance manifest itself is the hash record and is therefore excluded from its own input-hash set."
 }
