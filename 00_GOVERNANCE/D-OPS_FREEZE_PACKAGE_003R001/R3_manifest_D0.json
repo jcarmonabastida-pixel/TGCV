@@ -1,0 +1,6 @@
+{
+  "schema_version":"002",
+  "fixture_id":"D0",
+  "provenance":{"mode":"EX_ANTE_AUTHORED","record":"D-OPS-FORMAL-CONFORMANCE-002-R3-D0-v001"},
+  "edges":[["tau_move","tau_wait"],["tau_wait","tau_move"]]
+}
