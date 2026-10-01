@@ -82,3 +82,41 @@ No experiment is authorized by this document.
 
 The next governed activity is to formalize the discrimination criteria and candidate observables. Only after that should a new experimental package be drafted.
 
+## 6. Post-D1 / ARCH-DISC-002 reconciliation
+
+The transition gate has now been tested against two concrete candidate constructions.
+
+### D1 — dependency/precondition relation E_tau
+**Disposition:** CLOSED — NON-DISCRIMINATING.
+The relation can be absorbed into an admissible transition mechanism.
+
+### ARCH-DISC-002 — transformation-organisation graph G_T / O_T
+**Disposition:** CLOSED — A-EQUIVALENT.
+The bounded identifiability result is retained, but O_T is deterministically reconstructible from T_acc under the frozen inherited architecture.
+
+These are negative results for the candidate constructions, not negative results for TSDI as a research hypothesis.
+
+## 7. Consequence for candidate search
+
+The transition layer must now exclude two shortcuts:
+
+- adding a relation that is merely another encoding of the transition mechanism;
+- defining a structural descriptor as a deterministic function of T_acc and then treating that descriptor as an independent architectural object.
+
+The remaining admissibility question is narrower:
+
+> Is there a structural/dynamic object with its own independently observable identity and temporal evolution whose information is not determined by the frozen A representation?
+
+The current evidence assessment identifies no such object as already established. O3/O4/O6 remain hypotheses requiring an independently justified measurement boundary; none is selected or ranked here.
+
+## 8. Current transition status
+
+**Architectural hypothesis:** TSDI remains OPEN FOR EVALUATION.
+
+**Inherited Core:** CURRENT / UNCHANGED.
+
+**Evidence→Claim Matrix v1.44:** CURRENT / UNCHANGED.
+
+**RMA v3.37:** CURRENT / UNCHANGED.
+
+**Scientific execution:** NOT AUTHORIZED by this assessment.
