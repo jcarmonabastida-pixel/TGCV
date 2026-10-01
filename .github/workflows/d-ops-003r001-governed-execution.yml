@@ -58,7 +58,8 @@ jobs:
           perturb=json.loads((root/"perturbation_manifest.json").read_text(encoding="utf-8"))
           schema=json.loads((root/"result_schema.json").read_text(encoding="utf-8"))
           keys={"persistence","expansion","contraction","reconfiguration","mixed_identity_change"}
-          if set(expected)!=keys or set(perturb)!=keys: raise SystemExit("R001_CONTRACT_KEYS_INVALID")
+          if set(expected)!=keys or (set(perturb)-{"schema_version"})!=keys: raise SystemExit("R001_CONTRACT_KEYS_INVALID")
+          if perturb.get("schema_version")!="003": raise SystemExit("R001_PERTURBATION_SCHEMA_VERSION_INVALID")
           if set(schema["required"])!={"test_id","expected_classification"}: raise SystemExit("R001_RESULT_SCHEMA_INVALID")
           allowed=set(schema["allowed_classifications"])
           if set(expected.values())-allowed: raise SystemExit("R001_EXPECTED_CLASSIFICATIONS_INVALID")
