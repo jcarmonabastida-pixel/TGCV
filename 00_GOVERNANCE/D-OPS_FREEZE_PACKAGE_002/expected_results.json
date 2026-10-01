@@ -6,5 +6,9 @@
   "mixed_identity_change":"OTHER_STRUCTURAL_CHANGE",
   "representation":"INVARIANT",
   "state_only_variation":"NO_OMEGA_CHANGE",
-  "incomparable":"NON_COMPARABLE"
+  "incomparable":"NON_COMPARABLE",
+  "structural_null":"NO_OMEGA_CHANGE",
+  "structural_change_fixed_state":"OTHER_STRUCTURAL_CHANGE",
+  "conditional_H0":"CONDITIONAL_H0",
+  "conditional_H1":"CONDITIONAL_H1"
 }
