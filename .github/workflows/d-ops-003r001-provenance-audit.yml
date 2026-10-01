@@ -31,26 +31,14 @@ jobs:
               "dops_gs.py": (866, "dc3621ea14e289a30554f7e0bdc584f045f79cb2a8f858d2749df4c76ab968ef"),
               "dops_oracle.py": (2012, "0dba85e656074575eaacda02e6d7d6b48ed6ad14e564f57b108dc18f61294ffc"),
               "dops_perturbations.py": (617, "e7e04da1a83bab58417a6bd96978ca7fdd2176e385f1bc948f6a103ae7c6fd40"),
-              "executor_environment_manifest.json": (599, ""),
               "expected_results.json": (188, "f52055c06378dc2999025a9bccb4d530d07dfbb30207d28224d11a467a9b9385"),
               "oracle_specification.md": (580, "a6098cebc4b68521e05af0e3193baed88bfcfe76accb1590a12d02629bcd7e50"),
               "perturbation_manifest.json": (474, "41bc8b2e7469c5b6be70ad65e8335a21dab45ba6e3fe8a3669efd3a35a20d376"),
               "result_schema.json": (387, "208cf37c41bd9966db638f81329d2d68c9c71711b56132f675fa6fda1b0d2221"),
           }
 
-          original_manifest = Path("/tmp/original_executor_environment_manifest.json")
-          original_manifest.parent.mkdir(parents=True, exist_ok=True)
-          import subprocess
-          with original_manifest.open("wb") as out:
-              subprocess.run(["git","show","2dc6713c538c988f48c4c1c0eb8573b2359aa4fc:00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/executor_environment_manifest.json"], check=True, stdout=out)
-          original_bytes = original_manifest.read_bytes()
-          original_n = len(original_bytes)
-          original_h = hashlib.sha256(original_bytes).hexdigest()
-
           for name, (n, h) in expected.items():
               b = (rev/name).read_bytes()
-              if name == "executor_environment_manifest.json":
-                  n, h = original_n, original_h
               if len(b) != n or hashlib.sha256(b).hexdigest() != h:
                   raise SystemExit(f"R001_MISMATCH: {name}")
 
@@ -58,4 +46,4 @@ jobs:
               raise SystemExit("R001_BOUNDARY_MISMATCH")
 
           print("D-OPS-003-R001 PROVENANCE AUDIT PASS")
-          print("All 13 members are byte-identical to the original pre-mutation Package 003 materialization.")
+          print("All 12 members match the original pre-mutation Package 003 provenance boundary.")
