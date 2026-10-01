@@ -128,3 +128,12 @@ A single significant result, improved model fit, or successful implementation of
 **Status: OPEN — CRITERIA DEFINED, EXPERIMENT NOT DESIGNED.**
 
 The next activity, if authorized, is to select one candidate discrimination class and formalize its minimal observable and controls. No scientific execution is authorized by this document.
+
+
+## 8. Transition-layer admissibility constraint
+
+The criteria above are subordinate to the inherited-architecture admissibility specification. A candidate B object is not discriminating merely because it is represented explicitly. It must first survive the pre-specified A-reconstruction test. The relevant statuses are **A-equivalent**, **A-non-equivalent**, **NON-DISCRIMINATING**, and **UNDERDETERMINED**.
+
+An AGAINST-A result may trigger Core review only when the candidate object is independently measured, non-reconstructible under the frozen admissibility boundary, reproducibly informative, and not introduced post hoc. This remains a trigger for review, not an automatic Core revision.
+
+The current O4/E3 route is closed because the canonical evidence does not currently contain an independently measured E3 relation. Future discrimination must therefore obtain an independently justified observable rather than inventing one to satisfy these criteria.
