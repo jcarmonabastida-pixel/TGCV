@@ -79,7 +79,7 @@ jobs:
           schema=json.loads((root/"result_schema.json").read_text(encoding="utf-8"))
           keys={"persistence","expansion","contraction","reconfiguration","mixed_identity_change"}
           if set(expected)!=keys: raise SystemExit("R002_EXPECTED_RESULT_KEYS_INVALID")
-          if set(perturb)!=keys: raise SystemExit("R002_PERTURBATION_KEYS_INVALID")
+          if set(perturb)-keys != {"schema_version"} or not keys.issubset(set(perturb)): raise SystemExit("R002_PERTURBATION_KEYS_INVALID")
           if set(schema["required"])!={"test_id","expected_classification"}: raise SystemExit("R002_RESULT_SCHEMA_INVALID")
           print("R002_CONTRACT_PASS")
 
