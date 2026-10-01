@@ -1,0 +1,151 @@
+name: D-OPS 003 governed conformance execution
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dops-003:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout frozen package
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Verify runtime
+        run: python3 --version
+
+      - name: Verify frozen Package 003 SHA-256 boundary
+        shell: python
+        run: |
+          import hashlib, json
+          from pathlib import Path
+
+          manifest = json.loads(
+              Path("00_GOVERNANCE/D-OPS_PACKAGE_003_PROVENANCE_MANIFEST_001.json")
+              .read_text(encoding="utf-8")
+          )
+          root = Path(".")
+          for item in manifest["files"]:
+              rel = Path(item["path"])
+              p = root / rel
+              if not p.is_file():
+                  raise SystemExit(f"MISSING_FROZEN_INPUT: {rel}")
+              data = p.read_bytes()
+              got = hashlib.sha256(data).hexdigest()
+              if len(data) != item["bytes"]:
+                  raise SystemExit(
+                      f"BYTE_COUNT_MISMATCH: {rel}: {len(data)} != {item['bytes']}"
+                  )
+              if got != item["sha256"]:
+                  raise SystemExit(
+                      f"SHA256_MISMATCH: {rel}: {got} != {item['sha256']}"
+                  )
+          print("FROZEN_PACKAGE_SHA256_PASS")
+
+      - name: Verify execution authorization
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003_EXECUTION_AUTHORIZATION_001.md")
+          if not p.is_file():
+              raise SystemExit("EXECUTION_AUTHORIZATION_RECORD_MISSING")
+          text = p.read_text(encoding="utf-8")
+          if "Status: EXECUTION AUTHORIZED" not in text:
+              raise SystemExit("EXECUTION_AUTHORIZATION_STATUS_MISSING")
+          if "execution_authorized: true" not in text:
+              raise SystemExit("EXECUTION_AUTHORIZATION_FLAG_MISSING")
+          print("EXECUTION_AUTHORIZATION_PASS")
+
+      - name: Verify frozen package contract
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          root = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003")
+          expected = json.loads((root / "expected_results.json").read_text(encoding="utf-8"))
+          perturb = json.loads((root / "perturbation_manifest.json").read_text(encoding="utf-8"))
+          schema = json.loads((root / "result_schema.json").read_text(encoding="utf-8"))
+
+          expected_keys = [
+              "persistence",
+              "expansion",
+              "contraction",
+              "reconfiguration",
+              "mixed_identity_change",
+          ]
+          if list(expected) != expected_keys:
+              raise SystemExit(f"UNEXPECTED_EXPECTED_RESULT_KEYS: {list(expected)}")
+          if list(perturb) != expected_keys:
+              raise SystemExit(f"UNEXPECTED_PERTURBATION_KEYS: {list(perturb)}")
+          if set(schema["required"]) != {"test_id", "expected_classification"}:
+              raise SystemExit("UNEXPECTED_RESULT_SCHEMA_REQUIRED_FIELDS")
+          print("PACKAGE_003_CONTRACT_PASS")
+
+      - name: Execute five frozen conformance cases
+        shell: python
+        run: |
+          import json
+          import hashlib
+          from pathlib import Path
+
+          root = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003")
+          fixture = json.loads((root / "D0_FORMAL_FIXTURE.json").read_text(encoding="utf-8"))
+          r3 = json.loads((root / "R3_manifest_D0.json").read_text(encoding="utf-8"))
+          expected = json.loads((root / "expected_results.json").read_text(encoding="utf-8"))
+
+          import sys
+          sys.path.insert(0, str(root))
+          import dops_canonical
+          import dops_oracle
+          import dops_perturbations
+
+          base = dops_canonical.canonical_omega(fixture, r3)
+
+          cases = {
+              "persistence": (fixture, r3),
+              "expansion": (dops_perturbations.expansion(fixture), r3),
+              "contraction": (dops_perturbations.contraction(fixture), r3),
+              "reconfiguration": (fixture, dops_perturbations.reconfiguration_r3(r3)),
+              "mixed_identity_change": (dops_perturbations.mixed_identity(fixture), r3),
+          }
+
+          rows = []
+          for test_id, (new_fixture, new_r3) in cases.items():
+              new = dops_oracle.oracle_canonicalize(new_fixture, new_r3)
+              observed = dops_oracle.classify(base, new)
+              exp = expected[test_id]
+              if observed != exp:
+                  raise SystemExit(
+                      f"CLASSIFICATION_MISMATCH: {test_id}: {observed} != {exp}"
+                  )
+              rows.append({
+                  "test_id": test_id,
+                  "expected_classification": exp,
+                  "observed_classification": observed,
+                  "pass": True,
+              })
+
+          result = {
+              "status": "D-OPS-003_CONFORMANCE_EXECUTION_COMPLETE",
+              "package": "D-OPS_FREEZE_PACKAGE_003",
+              "cases": rows,
+          }
+          out = Path("d-ops-003-execution-result.json")
+          out.write_text(
+              json.dumps(result, sort_keys=True, separators=(",", ":")) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(result, indent=2, sort_keys=True))
+          print("RESULT_SHA256", hashlib.sha256(out.read_bytes()).hexdigest())
+
+      - name: Upload execution result
+        uses: actions/upload-artifact@v4
+        with:
+          name: d-ops-003-conformance-execution-result
+          path: d-ops-003-execution-result.json
+          if-no-files-found: error
