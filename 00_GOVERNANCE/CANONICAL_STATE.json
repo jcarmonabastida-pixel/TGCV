@@ -42,7 +42,8 @@
     "architectural_discrimination_criteria": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_DISCRIMINATION_CRITERIA_v0.1.md",
     "architectural_discriminator_selection": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_DISCRIMINATOR_SELECTION_v0.1.md",
     "architectural_discriminator_spec": "00_GOVERNANCE/architecture/TGCV_D1_ARCHITECTURAL_DISCRIMINATOR_SPEC_v0.1.md",
-    "architectural_d1_relation_observable": "00_GOVERNANCE/architecture/TGCV_D1_STRUCTURAL_RELATION_OBSERVABLE_SELECTION_v0.1.md"
+    "architectural_d1_relation_observable": "00_GOVERNANCE/architecture/TGCV_D1_STRUCTURAL_RELATION_OBSERVABLE_SELECTION_v0.1.md",
+    "architectural_d1_synthetic_world": "00_GOVERNANCE/architecture/TGCV_D1_MINIMAL_CONTROLLED_SYNTHETIC_WORLD_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
