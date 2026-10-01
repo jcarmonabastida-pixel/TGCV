@@ -4,5 +4,8 @@
   "supersedes":"D-OPS_FREEZE_PACKAGE_001",
   "superseded_status":"INVALID",
   "execution_authorized":false,
-  "hashes":"PENDING_MATERIALIZATION_AUDIT"
+  "hash_algorithm":"SHA-256",
+  "hashes_status":"PENDING_EXACT_BYTE_MATERIALIZATION",
+  "required_hash_scope":"all package inputs and executable components",
+  "note":"Hashes must be computed from the exact UTF-8 bytes present in the frozen package. Git blob SHAs are not accepted as substitutes."
 }
