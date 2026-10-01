@@ -25,7 +25,7 @@ Forbidden inputs: outcomes, trajectories, learner predictions or losses, N-R7/N-
 
 ## 4. Bounded search domain
 
-The first probe shall use only a microscopic exhaustive fixture family: fixed 3-component directed-edge systems, fixed resources, fixed objective, all directed-edge subsets permitted by the N-R1.2 state constructor, and deterministic lexicographic enumeration.
+The first probe shall use only a microscopic exhaustive fixture family: fixed 3-component directed-edge systems, fixed resources, fixed objective, all directed-edge subsets permitted by the N-R1.2 state constructor over the fixed 4-component fixture, and deterministic lexicographic enumeration.
 
 The domain boundary must be encoded explicitly in the execution artifact. No expansion of the domain is permitted within the same version.
 
@@ -82,3 +82,9 @@ It does not establish A-non-equivalence, a new Core, TSDI validity, causality, p
 **N-R8-C2 IDENTIFIABILITY PROBE: SPECIFIED — NOT EXECUTED.**
 
 No scientific execution, corpus generation, statistical design, workflow dispatch, or authorization is implied.
+
+## 13. Reconciliation with pre-existing canonical D1/N-R8-C2 records
+
+The repository already contains a frozen N-R8-C2 vNext package and an immutable bounded identifiability result. Therefore this governance specification is not an authorization to rerun that probe. The canonical result records a PASS / IDENTIFIABLE outcome over the fixed 4-component, 4,096-state exhaustive fixture, with 1,194 collision pairs examined and `K_C2_vNext(A)=K_C2_vNext(B)` plus `O_T(A)≠O_T(B)` for a deterministic witness. That result is bounded and does not establish A-non-equivalence.
+
+Accordingly, the existing result is treated as the evidence record for the identifiability gate. No duplicate execution is required merely to satisfy this transition layer.
