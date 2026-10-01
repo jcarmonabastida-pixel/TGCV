@@ -1,0 +1,10 @@
+{
+  "schema_version":"002",
+  "persistence":{"fixture":"D0"},
+  "expansion":{"add_identity":"tau_extra","definition":{"parameters":[["r","robot"],["where","location"]],"preconditions":[["at","r","where"]],"add_effects":[],"delete_effects":[]}},
+  "contraction":{"remove_identity":"tau_scan"},
+  "reconfiguration":{"remove_edge":["tau_move","tau_wait"],"add_edge":["tau_wait","tau_scan"]},
+  "representation":{"operations":["rename_symbols","reorder_declarations","reorder_literals","whitespace_only"]},
+  "state_only_variation":{"operations":["initial_state_nonstructural_view"]},
+  "mixed_identity_change":{"add_identity":"tau_extra","remove_identity":"tau_scan"}
+}
