@@ -16,7 +16,7 @@
     "dops_gs.py": "fce2208912ce63efb4728d1b4a9f31746f9ff34218086d6597f2194d08b1edae",
     "dops_oracle.py": "945fa79a50619ec2dc36d6c173c6714f066cf6cd7381fa2c31e0c767b86a52d8",
     "dops_perturbations.py": "e7e04da1a83bab58417a6bd96978ca7fdd2176e385f1bc948f6a103ae7c6fd40",
-    "expected_results.json": "ca8055cf0a889e6111d81798f81e0ff8ab51c16abbfe2311135084e530827955",
+    "expected_results.json": "87876641ce2d8dd8874a8c78deda7a3b40e208b6b7b241bb755e8f0bff9272be",
     "oracle_specification.md": "8dd381deecda3594b86e8af32adf6b77a2eba07ab182c30518684dc9bf42a514",
     "perturbation_manifest.json": "366ad526a181baa7f0847ee71d83acbcd28036030e88de1f707bc7f9e3ffeac8",
     "executor_environment_manifest.json": "0b5455d46236c8e57a2ba36ae28a3deaa7b4321ce8171b15eaee910617301309",
