@@ -1,0 +1,7 @@
+{
+  "schema_version":"002",
+  "serialization":{"encoding":"UTF-8","sort_keys":true,"separators":[",",":"]},
+  "required":["test_id","expected_classification"],
+  "properties":{"test_id":{"type":"string"},"expected_classification":{"type":"string"}},
+  "allowed_classifications":["PERSISTENCE","EXPANSION","CONTRACTION","RECONFIGURATION_ONLY","INVARIANT","NO_OMEGA_CHANGE","OTHER_STRUCTURAL_CHANGE","NON_COMPARABLE","CONDITIONAL_H0","CONDITIONAL_H1"]
+}
