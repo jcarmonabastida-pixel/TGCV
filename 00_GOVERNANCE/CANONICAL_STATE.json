@@ -63,7 +63,8 @@
     "arch_disc_002_a_reconstruction_audit_spec": "00_GOVERNANCE/architecture/TGCV_ARCH_DISC_002_A_RECONSTRUCTION_AUDIT_SPEC_v0.1.md",
     "arch_disc_002_a_reconstruction_audit_result": "00_GOVERNANCE/architecture/TGCV_ARCH_DISC_002_A_RECONSTRUCTION_AUDIT_RESULT_v0.1.md",
     "architectural_discriminator_selection_status": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_DISCRIMINATOR_SELECTION_v0.1.md",
-    "architectural_candidate_evidence_inventory_audit": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_CANDIDATE_EVIDENCE_INVENTORY_AUDIT_v0.1.md"
+    "architectural_candidate_evidence_inventory_audit": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_CANDIDATE_EVIDENCE_INVENTORY_AUDIT_v0.1.md",
+    "formal_to_empirical_bridge_audit_spec": "00_GOVERNANCE/architecture/TGCV_FORMAL_TO_EMPIRICAL_BRIDGE_AUDIT_SPEC_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -72,7 +73,7 @@
     "experiment_authorization": "NONE",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md",
     "current_qualifying_b_object": "NONE",
-    "next_gate": "FORMAL_TO_EMPIRICAL_BRIDGE_AUDIT"
+    "next_gate": "FORMAL_TO_EMPIRICAL_BRIDGE_AUDIT_SPECIFIED_NOT_EXECUTED"
   },
   "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_A_EQUIVALENT_RR3_NOT_SATISFIED"
 }
