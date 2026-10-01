@@ -1,0 +1,7 @@
+{
+  "persistence":"PERSISTENCE",
+  "expansion":"EXPANSION",
+  "contraction":"CONTRACTION",
+  "reconfiguration":"RECONFIGURATION_ONLY",
+  "mixed_identity_change":"OTHER_STRUCTURAL_CHANGE"
+}
