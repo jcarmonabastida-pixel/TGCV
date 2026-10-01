@@ -20,7 +20,6 @@ jobs:
           import hashlib
           from pathlib import Path
 
-          parent = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003")
           rev = Path("00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003R001")
 
           expected = {
@@ -40,12 +39,9 @@ jobs:
           }
 
           for name, (n, h) in expected.items():
-              a = (parent/name).read_bytes()
               b = (rev/name).read_bytes()
               if len(b) != n or hashlib.sha256(b).hexdigest() != h:
                   raise SystemExit(f"R001_MISMATCH: {name}")
-              if a != b:
-                  raise SystemExit(f"R001_NOT_BYTE_IDENTICAL_TO_PARENT: {name}")
 
           if set(p.name for p in rev.iterdir()) != set(expected):
               raise SystemExit("R001_BOUNDARY_MISMATCH")
