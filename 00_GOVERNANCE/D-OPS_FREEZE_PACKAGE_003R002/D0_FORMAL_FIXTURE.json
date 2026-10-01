@@ -1,0 +1,12 @@
+{
+  "fixture_id":"D0",
+  "schema_version":"002",
+  "types":["location","robot"],
+  "objects":{"location":["l1","l2","l3"],"robot":["r1"]},
+  "transformations":[
+    {"id":"tau_move","parameters":[["r","robot"],["from","location"],["to","location"]],"preconditions":[["at","r","from"],["connected","from","to"]],"add_effects":[["at","r","to"]],"delete_effects":[["at","r","from"]]},
+    {"id":"tau_wait","parameters":[["r","robot"],["where","location"]],"preconditions":[["at","r","where"]],"add_effects":[],"delete_effects":[]},
+    {"id":"tau_scan","parameters":[["r","robot"],["where","location"]],"preconditions":[["at","r","where"]],"add_effects":[["scanned","where"]],"delete_effects":[]}
+  ],
+  "initial_state":[["at","r1","l1"],["connected","l1","l2"],["connected","l2","l1"],["connected","l2","l3"],["connected","l3","l2"]]
+}
