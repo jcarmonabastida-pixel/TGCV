@@ -8,7 +8,7 @@ Classification precedence:
 3. pure U loss = CONTRACTION
 4. simultaneous U gain and U loss = OTHER_STRUCTURAL_CHANGE
 5. U unchanged + all relations unchanged = PERSISTENCE
-6. U unchanged + only one R3 deletion and one R3 addition = RECONFIGURATION_ONLY
+6. U unchanged + only one directed R3 deletion and one directed R3 addition = RECONFIGURATION_ONLY
 7. otherwise OTHER_STRUCTURAL_CHANGE
 
-R3 is read from its own ex-ante manifest and is never inferred from R1/R2.
+R3 is a directed relation. Endpoint order is semantic and is never sorted within an edge.
