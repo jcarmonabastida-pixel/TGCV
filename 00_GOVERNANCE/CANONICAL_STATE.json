@@ -71,7 +71,8 @@
     "omega_t_representation_boundary": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_REPRESENTATION_BOUNDARY_v0.2.md",
     "omega_t_rust_source_admission_audit": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_RUST_SOURCE_ADMISSION_AUDIT_v0.1.md",
     "omega_t_rust_source_specific_representation_decision": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_RUST_SOURCE_SPECIFIC_REPRESENTATION_DECISION_v0.1.md",
-    "cross_source_primitive_sufficiency_review": "00_GOVERNANCE/architecture/TGCV_CROSS_SOURCE_PRIMITIVE_SUFFICIENCY_REVIEW_v0.1.md"
+    "cross_source_primitive_sufficiency_review": "00_GOVERNANCE/architecture/TGCV_CROSS_SOURCE_PRIMITIVE_SUFFICIENCY_REVIEW_v0.1.md",
+    "omega_t_railway_source_specific_representation_decision": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_RAILWAY_SOURCE_SPECIFIC_REPRESENTATION_DECISION_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -80,8 +81,8 @@
     "experiment_authorization": "NONE",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md",
     "current_qualifying_b_object": "NONE",
-    "next_gate": "RAILWAY_OMEGA_T_SOURCE_SPECIFIC_AUDIT",
-    "bridge_status": "RULE_LAYER_CANDIDATE_IDENTIFIED_LONGITUDINAL_BRIDGE_UNVALIDATED"
+    "next_gate": "CROSS_DOMAIN_RULE_LAYER_LONGITUDINAL_ARCHIVE_DISCOVERY",
+    "bridge_status": "RAILWAY_OMEGA_T_BLOCKED_PUBLIC_LONGITUDINAL_STATE"
   },
   "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_A_EQUIVALENT_RR3_NOT_SATISFIED"
 }
