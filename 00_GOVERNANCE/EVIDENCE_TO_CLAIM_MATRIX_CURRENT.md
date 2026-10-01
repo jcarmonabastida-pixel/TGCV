@@ -1,9 +1,9 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.42
+# TGCV — Evidence-to-Claim Matrix — Current v1.43
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-10-01  
-**Predecessor:** v1.41  
-**Incremental governance update:** Adds the closed TI-001 V012 NEXT4 Monte Carlo power-simulation evidence and its bounded methodological interpretation to the cumulative evidence record, routed primarily to C16. NEXT4 uses the frozen DGP-002 / Engine-002 / Model-011R / Execution Spec-002 chain and scientific run 36746875918; all 40 design cells are covered with 1,000 replicates per cell, with null calibration and expected monotonic power-surface behavior documented. No claim-level upgrade, TGCV Core modification, or TGCV-wide confirmation/falsification is introduced.
+**Predecessor:** v1.42  
+**Incremental governance update:** Refines the NEXT3 Q5 scientific interpretation to explicitly describe the condition-dependent reorganisation of the action→profile correspondence under reassignment of future transformational structures, while preserving the bounded non-confirmatory scope. No claim-level upgrade or TGCV Core modification is introduced. NEXT4 uses the frozen DGP-002 / Engine-002 / Model-011R / Execution Spec-002 chain and scientific run 36746875918; all 40 design cells are covered with 1,000 replicates per cell, with null calibration and expected monotonic power-surface behavior documented. No claim-level upgrade, TGCV Core modification, or TGCV-wide confirmation/falsification is introduced.
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
 
@@ -1382,7 +1382,7 @@ The joint contrast is:
 - fit method: **BFGS**
 - statsmodels: **0.14.6**
 
-Q5 is the strongest inferential result in NEXT3. The result is consistent with a substantial reorganisation of action–profile correspondence across conditions. This is not equivalent to saying that the system simply assigns more global weight to profiles: Q1 tests a lower-order marginal profile×condition effect, whereas Q5 tests the higher-order action×profile×condition structure.
+Q5 is the strongest inferential result in NEXT3. The result is consistent with a substantial, condition-dependent reorganisation of the correspondence between action identity and profile under the reassignment of future transformational structures. In other words, the profile associated with an action is not stable across the reassignment conditions: the observed action→profile mapping changes systematically with the future-structure condition. This is not equivalent to saying that the system simply assigns more global weight to profiles: Q1 tests a lower-order marginal profile×condition effect, whereas Q5 tests the higher-order action×profile×condition structure.
 
 The technical audit records that the historical optimizer callback trace is absent from `RESULT_001`. Nevertheless, the stored BFGS result was independently reproduced at the technical/statistical level and the Q5 audit passes. No re-execution is required on that basis.
 
@@ -1397,13 +1397,13 @@ The most informative pattern is the separation between **marginal profile contri
 
 The bounded scientific interpretation is therefore:
 
-> Under the frozen NEXT3 operationalisation, the evidence is more consistent with a reorganisation of the correspondence between structural profiles and candidate actions across conditions than with a global increase in profile use.
+> Under the frozen NEXT3 operationalisation, reassignment of future transformational structures is associated with a strong, condition-dependent reorganisation of the action→profile correspondence: the profile associated with a selected action changes systematically across reassignment conditions rather than reflecting a simple global increase in profile use.
 
-This pattern is relevant to the Transformational Intelligence research programme because it localises the unresolved mechanism at the level of **conditional action selection structured by profiles**, rather than at the level of a simple marginal information-weighting effect. It remains a hypothesis-generating result, not identification of a unique cognitive/agent mechanism.
+This pattern is relevant to the Transformational Intelligence research programme because it localises the unresolved mechanism at the level of **conditional action→profile correspondence under future-structure reassignment**, rather than at the level of a simple marginal information-weighting effect. It remains a hypothesis-generating result, not identification of a unique mechanism, and does not by itself establish future-transformation causality or Transformational Intelligence.
 
 ### 8. Evidence-to-claim propagation
 
-**C16 — bounded methodological/mechanism qualification.** NEXT3 materially extends the decision-level translation evidence by showing that a frozen structural profile variable can participate in a strong higher-order action-selection interaction while lower-order and presentation-control contrasts remain non-significant. This supports a more precise formulation of the unresolved decision-level mechanism: the key observable may be conditional reorganisation of action–profile correspondence rather than a marginal increase in profile use.
+**C16 — bounded methodological/mechanism qualification.** NEXT3 materially extends the decision-level translation evidence by showing that reassignment of future transformational structures is accompanied, under the frozen conditions, by a strong higher-order reorganisation of the action→profile correspondence while lower-order and presentation-control contrasts remain non-significant. This supports a more precise formulation of the unresolved decision-level mechanism: the key observable is the condition-dependent mapping between action identity and profile under future-structure reassignment, rather than a marginal increase in profile use.
 
 No positive propagation is made to C02, C07, C08, C09, C10, C11, C12, C13, C14 or C15. NEXT3 does not operationalize `T_acc` directly, does not estimate a trajectory or value endpoint, does not establish transversal validity, and does not establish explanatory superiority.
 
