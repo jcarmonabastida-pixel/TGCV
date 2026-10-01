@@ -81,7 +81,8 @@
     "o4_e3_primitive_measurement_specification_review": "00_GOVERNANCE/architecture/TGCV_O4_E3_PRIMITIVE_MEASUREMENT_SPECIFICATION_REVIEW_v0.1.md",
     "o4_e3_a_reconstruction_and_non_circularity_audit": "00_GOVERNANCE/architecture/TGCV_O4_E3_A_RECONSTRUCTION_AND_NON_CIRCULARITY_AUDIT_v0.1.md",
     "architectural_discriminator_feasibility_review": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_DISCRIMINATOR_FEASIBILITY_REVIEW_v0.1.md",
-    "architectural_boundary_redesign_review": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_BOUNDARY_REDESIGN_REVIEW_v0.1.md"
+    "architectural_boundary_redesign_review": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_BOUNDARY_REDESIGN_REVIEW_v0.1.md",
+    "omega_primary_boundary_admissibility_review": "00_GOVERNANCE/architecture/TGCV_OMEGA_PRIMARY_BOUNDARY_ADMISSIBILITY_REVIEW_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -90,8 +91,8 @@
     "experiment_authorization": "NONE",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md",
     "current_qualifying_b_object": "NONE",
-    "next_gate": "OMEGA_PRIMARY_BOUNDARY_ADMISSIBILITY_REVIEW",
-    "bridge_status": "OMEGA_PRIMARY_CANDIDATE_BOUNDARY_IDENTIFIED_E3_ISOLATED_ROUTE_CLOSED"
+    "next_gate": "OMEGA_PRIMARY_DOMAIN_INSTANTIABILITY_REVIEW",
+    "bridge_status": "OMEGA_PRIMARY_FORMALLY_ADMISSIBLE_EMPIRICAL_IDENTIFICATION_OPEN"
   },
   "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_A_EQUIVALENT_RR3_NOT_SATISFIED"
 }
