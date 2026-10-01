@@ -1,0 +1,9 @@
+{
+  "version": "001",
+  "persistence": {"source": "D0_FORMAL_SOURCE.json"},
+  "expansion": {"add_action": "inspect", "parameters": [["r","robot"],["where","location"]], "preconditions": [["at","r","where"]], "add_effects": [], "delete_effects": []},
+  "contraction": {"remove_action": "wait"},
+  "reconfiguration": {"remove_r3": ["move","wait"], "add_r3": ["wait","move"], "required_identity_invariant": true, "required_R1_invariant": true, "required_R2_invariant": true},
+  "representation_perturbations": ["rename_symbols", "reorder_declarations", "reorder_literals", "whitespace_only"],
+  "null_variants": ["initial_state_change", "irrelevant_state_variable", "execution_order_change"]
+}
