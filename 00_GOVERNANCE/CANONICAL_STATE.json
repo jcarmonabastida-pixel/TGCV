@@ -45,7 +45,8 @@
     "architectural_d1_relation_observable": "00_GOVERNANCE/architecture/TGCV_D1_STRUCTURAL_RELATION_OBSERVABLE_SELECTION_v0.1.md",
     "architectural_d1_synthetic_world": "00_GOVERNANCE/architecture/TGCV_D1_MINIMAL_CONTROLLED_SYNTHETIC_WORLD_v0.1.md",
     "architectural_d1_transformation_semantics": "00_GOVERNANCE/architecture/TGCV_D1_TRANSFORMATION_SEMANTICS_STATE_TRANSITIONS_v0.1.md",
-    "architectural_d1_reconstruction_audit": "00_GOVERNANCE/architecture/TGCV_D1_NONDEGENERACY_A_RECONSTRUCTION_AUDIT_v0.1.md"
+    "architectural_d1_reconstruction_audit": "00_GOVERNANCE/architecture/TGCV_D1_NONDEGENERACY_A_RECONSTRUCTION_AUDIT_v0.1.md",
+    "architectural_admissibility_boundary": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_ADMISSIBILITY_BOUNDARY_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -54,5 +55,5 @@
     "experiment_authorization": "NONE_BY_THIS_LAYER",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md"
   },
-  "architectural_transition_d1_gate": "CLOSED_REDESIGN_REQUIRED"
+  "architectural_transition_d1_gate": "CLOSED_ADMISSIBILITY_BOUNDARY_REQUIRED"
 }
