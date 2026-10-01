@@ -44,3 +44,13 @@ The next operation is **RULE-LAYER / PRIMITIVE BRIDGE DISCOVERY**: search the ex
 This is a governance/source-admissibility operation, not experiment design.
 
 **Scientific execution: NOT AUTHORIZED.**
+
+## 6. Rule-layer bridge discovery result
+
+The existing governed evidence base already contains a materially stronger rule-layer candidate than the previously screened sources: the railway engineering/signalling family. D-OPS-8 and D-OPS-9 document versioned EULYNX engineering/interlocking rules with explicit safety/compatibility semantics, alongside public ADIF/RINF state resources.
+
+However, D-OPS-9 also establishes that the longitudinal state-identity bridge is not yet validated. Therefore this finding does **not** constitute a Ω_T boundary pass.
+
+Classical PDDL remains formally clean but lacks the required longitudinal empirical state archive under the existing audit. Rust remains blocked at the Ω_T representation layer.
+
+**Controlled disposition:** railway rule-layer family is retained for a source-specific Ω_T audit; no source is admitted and no experiment is designed or authorized.
