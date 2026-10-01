@@ -1428,6 +1428,39 @@ The matrix therefore records NEXT3 as a material evidentiary qualification and u
 **Source contract:** DGP-002 / Engine-002 / Model-011R / Execution Spec-002  
 **Canonical aggregate SHA-256:** `93736faca037711040b70b4c249c46dd56a070f27fe64c05925ac8010f905f21`
 
+### 1.1 Plain-language research question
+
+In ordinary language, NEXT4 asks:
+
+> **Before using the TI-001 experimental design to interpret results, is the statistical test sufficiently characterized to know how it behaves when there is no real effect, and how often it detects effects of different sizes with the planned sample sizes?**
+
+The question is deliberately methodological. NEXT4 does **not** ask whether generative systems actually possess Transformational Intelligence, nor does it test the TGCV theory against observations from real systems. Instead, it asks whether the registered experimental design has been quantitatively stress-tested under controlled simulated conditions so that later empirical results can be interpreted against a known reference.
+
+### 1.2 What this experiment does
+
+NEXT4 repeatedly generates synthetic datasets from the **pre-registered data-generating process** specified for TI-001, applies the **same statistical analysis procedure that the experiment is designed to use**, and records how often that procedure rejects the null hypothesis.
+
+Two quantities are especially important:
+
+- **False-positive behaviour under the null:** when the simulated data contain no effect (Delta = 0), the rejection rate should be close to the nominal significance level of 5%. This checks whether the registered analysis is approximately calibrated.
+- **Detection behaviour when an effect is present:** when the simulated data contain progressively larger effects (Delta > 0), the rejection rate should increase. This characterizes the design's statistical power — its ability to detect effects of the sizes it was designed to study.
+
+The simulation varies both the planned sample size (N) and the simulated effect size (Delta), producing a two-dimensional map of expected detection behaviour rather than relying on a single illustrative simulation.
+
+### 1.3 What the experiment allows us to demonstrate
+
+Within the limits of the frozen simulation model, NEXT4 demonstrates that:
+
+1. the registered TI-001 analysis has been **quantitatively characterized before interpretation of empirical evidence**;
+2. under the simulated no-effect condition, its observed rejection rate is approximately the intended 5% level;
+3. across the registered grid, the simulated ability to detect the specified effect behaves as expected: larger effects are not harder to detect, and increasing sample size does not reduce detection rates;
+4. the complete 40-cell design has been executed and aggregated with the expected number of Monte Carlo replicates per cell;
+5. the resulting power/calibration surface provides a reproducible reference against which future empirical TI-001 results can be interpreted.
+
+The appropriate scientific conclusion is therefore about the **measurement properties and operating characteristics of the experimental design**, not about the phenomenon being investigated.
+
+NEXT4 does not demonstrate that the target effect exists in real generative systems. It does not demonstrate that Transformational Intelligence exists, that a TGCV mechanism is causally operative, or that any change in accessible transformations produces value. Those questions require empirical evidence from the corresponding experiments and cannot be answered by a Monte Carlo simulation alone.
+
 ### 1. Frozen scope and execution
 
 NEXT4 evaluates the registered 5×8 `N × Delta` design under the canonical DGP-002 / Engine-002 / Model-011R / Execution Spec-002 chain. The scientific execution completed successfully in run `36746875918`, with **40 design cells** and **1,000 Monte Carlo replicates per cell**.
