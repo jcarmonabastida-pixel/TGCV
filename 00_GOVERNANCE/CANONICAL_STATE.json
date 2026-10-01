@@ -74,7 +74,8 @@
     "cross_source_primitive_sufficiency_review": "00_GOVERNANCE/architecture/TGCV_CROSS_SOURCE_PRIMITIVE_SUFFICIENCY_REVIEW_v0.1.md",
     "omega_t_railway_source_specific_representation_decision": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_RAILWAY_SOURCE_SPECIFIC_REPRESENTATION_DECISION_v0.1.md",
     "omega_t_cross_domain_discovery": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_CROSS_DOMAIN_RULE_LAYER_LONGITUDINAL_ARCHIVE_DISCOVERY_v0.1.md",
-    "omega_t_primitive_observation_bridge_audit": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_PRIMITIVE_OBSERVATION_BRIDGE_AUDIT_v0.1.md"
+    "omega_t_primitive_observation_bridge_audit": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_PRIMITIVE_OBSERVATION_BRIDGE_AUDIT_v0.1.md",
+    "omega_t_new_primitive_bridge_design_review": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_NEW_PRIMITIVE_BRIDGE_DESIGN_REVIEW_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -83,8 +84,8 @@
     "experiment_authorization": "NONE",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md",
     "current_qualifying_b_object": "NONE",
-    "next_gate": "NEW_PRIMITIVE_BRIDGE_DESIGN_REVIEW",
-    "bridge_status": "NO_QUALIFYING_EXISTING_PRIMITIVE_BRIDGE"
+    "next_gate": "OMEGA_T_PRIMITIVE_FEASIBILITY_AUDIT",
+    "bridge_status": "MINIMUM_PRIMITIVE_BRIDGE_SPECIFIED_NO_SOURCE_ADMITTED"
   },
   "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_A_EQUIVALENT_RR3_NOT_SATISFIED"
 }
