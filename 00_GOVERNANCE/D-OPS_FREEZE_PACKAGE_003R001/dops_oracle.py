@@ -26,7 +26,7 @@ def oracle_canonicalize(fixture, r3):
         "equivalence": [],
         "R1": _canon(R1),
         "R2": _canon(R2),
-        "R3": sorted([list(edge) for edge in r3["edges"]], key=lambda e: json.dumps(e, separators=(",", ":"))),
+        "R3": _canon(r3["edges"]),
     }
 
 def classify(old, new):
