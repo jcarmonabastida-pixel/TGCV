@@ -78,7 +78,8 @@
     "omega_t_new_primitive_bridge_design_review": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_NEW_PRIMITIVE_BRIDGE_DESIGN_REVIEW_v0.1.md",
     "omega_t_primitive_feasibility_audit": "00_GOVERNANCE/architecture/TGCV_OMEGA_T_PRIMITIVE_FEASIBILITY_AUDIT_v0.1.md",
     "controlled_synthetic_observation_environment_design_review": "00_GOVERNANCE/architecture/TGCV_CONTROLLED_SYNTHETIC_OBSERVATION_ENVIRONMENT_DESIGN_REVIEW_v0.1.md",
-    "o4_e3_primitive_measurement_specification_review": "00_GOVERNANCE/architecture/TGCV_O4_E3_PRIMITIVE_MEASUREMENT_SPECIFICATION_REVIEW_v0.1.md"
+    "o4_e3_primitive_measurement_specification_review": "00_GOVERNANCE/architecture/TGCV_O4_E3_PRIMITIVE_MEASUREMENT_SPECIFICATION_REVIEW_v0.1.md",
+    "o4_e3_a_reconstruction_and_non_circularity_audit": "00_GOVERNANCE/architecture/TGCV_O4_E3_A_RECONSTRUCTION_AND_NON_CIRCULARITY_AUDIT_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -87,8 +88,8 @@
     "experiment_authorization": "NONE",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md",
     "current_qualifying_b_object": "NONE",
-    "next_gate": "O4_E3_A_RECONSTRUCTION_AND_NON_CIRCULARITY_AUDIT",
-    "bridge_status": "E3_CONDITIONALLY_SPECIFIED_NOT_ADMITTED"
+    "next_gate": "ARCHITECTURAL_DISCRIMINATOR_FEASIBILITY_REVIEW",
+    "bridge_status": "E3_RECONSTRUCTION_NOT_PASSED_EMPIRICAL_INDEPENDENCE_UNDEMONSTRATED"
   },
   "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_A_EQUIVALENT_RR3_NOT_SATISFIED"
 }
