@@ -1,0 +1,68 @@
+name: D-OPS 003 freeze preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freeze-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Verify governance prerequisites
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f 00_GOVERNANCE/D-OPS_PACKAGE_003_FULL_CONFORMANCE_AUDIT_001.md
+          test -f 00_GOVERNANCE/D-OPS_PACKAGE_003_EXPECTED_RESULTS_AUDIT_001.md
+          test -f 00_GOVERNANCE/D-OPS_PACKAGE_003_PROVENANCE_MANIFEST_001.json
+          test -f 00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/README.md
+          grep -q "PASS — NO OPEN CONTRACT CONFORMANCE ISSUES" 00_GOVERNANCE/D-OPS_PACKAGE_003_FULL_CONFORMANCE_AUDIT_001.md
+          grep -q "PASS — EXPECTED-RESULTS CONSISTENT WITH DESIGN 007" 00_GOVERNANCE/D-OPS_PACKAGE_003_EXPECTED_RESULTS_AUDIT_001.md
+          grep -q "Execution authorized: NO" 00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003/README.md
+
+      - name: Verify exact-byte provenance against current checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+
+          manifest = json.loads(Path("00_GOVERNANCE/D-OPS_PACKAGE_003_PROVENANCE_MANIFEST_001.json").read_text(encoding="utf-8"))
+          assert manifest["repository"] == "jcarmonabastida-pixel/TGCV"
+          assert manifest["ref"] == "main"
+          assert manifest["package"] == "00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003"
+
+          for e in manifest["files"]:
+              p = Path(e["path"])
+              data = p.read_bytes()
+              got_sha = hashlib.sha256(data).hexdigest()
+              got_bytes = len(data)
+              assert got_bytes == e["bytes"], f"byte length mismatch: {p}"
+              assert got_sha == e["sha256"], f"SHA-256 mismatch: {p}"
+
+          print(f"PASS: {len(manifest['files'])} package files match exact-byte provenance")
+          PY
+
+      - name: Verify package boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --short
+          test -z "$(git status --short)"
+          echo "PASS: clean checkout; no working-tree modifications"
+
+      - name: Emit freeze-preflight result
+        shell: bash
+        run: |
+          echo "D-OPS PACKAGE 003 — FREEZE PREFLIGHT ELIGIBLE"
+          echo "No scientific execution performed."
+          echo "No execution authorization created."
