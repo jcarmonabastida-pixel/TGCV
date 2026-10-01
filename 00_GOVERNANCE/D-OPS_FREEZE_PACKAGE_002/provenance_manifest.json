@@ -1,0 +1,8 @@
+{
+  "package_id":"D-OPS-FORMAL-CONFORMANCE-002",
+  "design":"D-OPS_FORMAL_CONFORMANCE_TEST_DESIGN_007.md",
+  "supersedes":"D-OPS_FREEZE_PACKAGE_001",
+  "superseded_status":"INVALID",
+  "execution_authorized":false,
+  "hashes":"PENDING_MATERIALIZATION_AUDIT"
+}
