@@ -1,0 +1,77 @@
+name: D-OPS 003 exact-byte provenance audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  provenance-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Verify package scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          PKG="00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003"
+          test -d "$PKG"
+          for f in README.md D0_FORMAL_FIXTURE.json G_S_SPECIFICATION.md R3_manifest_D0.json dops_canonical.py dops_gs.py dops_oracle.py dops_perturbations.py oracle_specification.md perturbation_manifest.json expected_results.json executor_environment_manifest.json result_schema.json; do
+            test -f "$PKG/$f"
+          done
+
+      - name: Compute exact-byte SHA-256 provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PKG="00_GOVERNANCE/D-OPS_FREEZE_PACKAGE_003"
+          export OUT="D-OPS_PACKAGE_003_PROVENANCE_MANIFEST_CANDIDATE.json"
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          pkg = Path(os.environ["PKG"])
+          files = sorted(p for p in pkg.rglob("*") if p.is_file())
+          entries = []
+          for p in files:
+              data = p.read_bytes()
+              entries.append({"path": p.as_posix(), "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()})
+          manifest = {
+              "manifest_type": "D-OPS_PACKAGE_003_EXACT_BYTE_SHA256_PROVENANCE_CANDIDATE",
+              "repository": "jcarmonabastida-pixel/TGCV",
+              "ref": "main",
+              "commit": os.environ["GITHUB_SHA"],
+              "package": pkg.as_posix(),
+              "files": entries,
+          }
+          Path(os.environ["OUT"]).write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          PY
+
+      - name: Validate manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          m = json.loads(Path("D-OPS_PACKAGE_003_PROVENANCE_MANIFEST_CANDIDATE.json").read_text(encoding="utf-8"))
+          assert m["repository"] == "jcarmonabastida-pixel/TGCV"
+          assert m["ref"] == "main"
+          assert m["commit"] == __import__("os").environ["GITHUB_SHA"]
+          assert m["files"]
+          for e in m["files"]:
+              assert len(e["sha256"]) == 64
+              int(e["sha256"], 16)
+          print("PASS:", len(m["files"]), "files")
+
+      - name: Upload provenance candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: d-ops-003-exact-byte-provenance-candidate
+          path: D-OPS_PACKAGE_003_PROVENANCE_MANIFEST_CANDIDATE.json
+          if-no-files-found: error
