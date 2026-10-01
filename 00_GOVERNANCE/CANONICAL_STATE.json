@@ -54,7 +54,8 @@
     "e3_evidence_availability_audit": "00_GOVERNANCE/architecture/TGCV_E3_EVIDENCE_AVAILABILITY_AUDIT_v0.1.md",
     "architectural_transition_gate_record": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_TRANSITION_GATE_RECORD_v0.1.md",
     "candidate_b_object_selection_audit": "00_GOVERNANCE/architecture/TGCV_CANDIDATE_B_OBJECT_SELECTION_AUDIT_v0.1.md",
-    "architecture_revision_readiness_register": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURE_REVISION_READINESS_REGISTER_v0.1.md"
+    "architecture_revision_readiness_register": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURE_REVISION_READINESS_REGISTER_v0.1.md",
+    "d1_candidate_b_reconciliation_audit": "00_GOVERNANCE/architecture/TGCV_D1_CANDIDATE_B_RECONCILIATION_AUDIT_v0.1.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -63,5 +64,5 @@
     "experiment_authorization": "NONE_BY_THIS_LAYER",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md"
   },
-  "architectural_transition_d1_gate": "CLOSED_ARCHITECTURE_REVISION_NOT_READY"
+  "architectural_transition_d1_gate": "CLOSED_D1_CANDIDATE_B_NOT_YET_QUALIFIED"
 }
