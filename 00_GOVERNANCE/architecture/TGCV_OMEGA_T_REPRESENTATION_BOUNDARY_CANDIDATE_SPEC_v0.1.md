@@ -107,3 +107,16 @@ No source is selected.
 No experiment is designed.
 No execution is authorized.
 No Core, Matrix or RMA revision follows from this specification.
+
+
+## 14. Boundary-review finding — NOT YET FROZEN
+
+The review identified three issues requiring correction before freeze:
+
+1. **Temporal indexing:** defining `u = φ(P_t,P_{t+1})` while calling `U_t` observable at time `t` conflates a time state with an interval transition. The canonical candidate must use an explicit transition interval index (for example `U_[t,t+1]`) or an event-time convention.
+2. **Identity versus equivalence:** the specification must distinguish transformation instance identity, transformation-type equivalence, and longitudinal persistence. Otherwise `≡_t` risks becoming a second name for exact identity rather than an independently useful relation.
+3. **Relation domain:** `R_t` over instances and `π_t : U_t → I` are not yet sufficient to specify how relations persist/change across time. The temporal relation semantics must be frozen explicitly.
+
+Until these are resolved, the boundary remains **BOUNDARY-BLOCKED**. No source admission or experiment design is permitted.
+
+These are specification defects, not empirical findings, and do not alter the current Core, Matrix or RMA.
