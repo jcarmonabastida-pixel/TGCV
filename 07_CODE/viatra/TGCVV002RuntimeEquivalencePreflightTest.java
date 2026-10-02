@@ -154,7 +154,7 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     int traceCount = root.getElementsByTagNameNS("*", "traces").getLength();
     if (traceCount != 1) throw new AssertionError("EXPECTED traceability XMI must contain exactly one trace");
 
-    Element trace = (Element) root.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "traces").item(0);
+    Element trace = (Element) root.getElementsByTagNameNS("*", "traces").item(0);
     Element cps = (Element) trace.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "cpsElements").item(0);
     Element dep = (Element) trace.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "deploymentElements").item(0);
     int cpsElementCount = trace.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "cpsElements").getLength();
