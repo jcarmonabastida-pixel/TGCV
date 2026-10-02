@@ -2,7 +2,7 @@
 Reads only the two admitted CSV members from the retained historical ZIP.
 """
 from __future__ import annotations
-import argparse, csv, hashlib, json, zipfile
+import argparse, csv, hashlib, json, sqlite3, tempfile, zipfile
 from pathlib import Path
 from omega_u_constructor_v01 import build_u_t, CONSTRUCTION_VERSION, TEMPORAL_RULE_ID
 
@@ -37,15 +37,32 @@ def main():
         if m not in names:
             z.close()
             raise SystemExit(f"required member missing: {m}")
-    versions=list(read_csv(z,VERSIONS_MEMBER))
-    dependencies=read_csv(z,DEPENDENCIES_MEMBER)
-    valid_times=[str(row["created_at"]) for row in versions if str(row.get("created_at",""))]
-    if not valid_times: raise SystemExit("no valid created_at values in package_versions.csv")
-    cutoff=max(valid_times)
-    try:
-        result=build_u_t(versions,dependencies,cutoff=cutoff,complete_target_packages=())
-    finally:
-        z.close()
+    with tempfile.TemporaryDirectory(prefix="tgcv-rust-omega-") as td:
+        db_path=Path(td) / "versions.sqlite3"
+        conn=sqlite3.connect(db_path)
+        try:
+            conn.execute("CREATE TABLE versions (id INTEGER PRIMARY KEY, package_id INTEGER NOT NULL, version_str TEXT NOT NULL, created_at TEXT NOT NULL)")
+            conn.execute("CREATE INDEX idx_versions_pkg_time ON versions(package_id, created_at, id, version_str)")
+            v_count=0
+            cutoff=None
+            for idx,row in enumerate(read_csv(z,VERSIONS_MEMBER)):
+                try:
+                    vid=int(row["id"]); package_id=int(row["package_id"])
+                    version_str=str(row["version_str"]); created_at=str(row["created_at"])
+                except (KeyError,TypeError,ValueError) as exc:
+                    raise SystemExit(f"invalid package_versions row {idx}: {exc}") from exc
+                if not created_at: raise SystemExit(f"missing created_at at row {idx}")
+                conn.execute("INSERT INTO versions VALUES (?,?,?,?)",(vid,package_id,version_str,created_at))
+                v_count+=1
+                if cutoff is None or created_at>cutoff: cutoff=created_at
+            conn.commit()
+            if cutoff is None: raise SystemExit("no valid created_at values in package_versions.csv")
+            versions=conn.execute("SELECT id,package_id,version_str,created_at FROM versions").fetchall()
+            dependencies=read_csv(z,DEPENDENCIES_MEMBER)
+            result=build_u_t(versions,dependencies,cutoff=cutoff,complete_target_packages=())
+        finally:
+            conn.close()
+            z.close()
     result["status"]="PASS"
     result["execution_authorized"]=True
     result["scientific_execution_authorized"]=True
@@ -54,8 +71,9 @@ def main():
     result["implementation"]="07_CODE/src/omega_u_constructor_v01.py"
     result["implementation_version"]=CONSTRUCTION_VERSION
     result["dependency_processing"]="streaming"
+    result["version_index"]="temporary_sqlite"
     result["temporal_rule"]=TEMPORAL_RULE_ID
-    result["input_rows"]={"package_versions":len(versions),"package_dependencies":len(dependencies)}
+    result["input_rows"]={"package_versions":v_count,"package_dependencies":len(dependencies)}
     result["cutoff_rule"]="max(created_at) over valid package_versions.csv records"
     result["complete_target_packages"]=[]
     result["real_data_execution"]="U_T_CONSTRUCTION_ONLY"
