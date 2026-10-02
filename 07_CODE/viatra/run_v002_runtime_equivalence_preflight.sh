@@ -60,7 +60,8 @@ EOF
 cat > "$HARNESS_BUILD" <<'EOF'
 source.. = src/
 output.. = bin/
-bin.includes = META-INF/,               .
+bin.includes = META-INF/,\
+               .
 EOF
 
 python3 - <<'PY'
