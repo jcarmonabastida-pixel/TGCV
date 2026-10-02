@@ -23,7 +23,6 @@ def read_csv(z,m):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("zip_path")
-    ap.add_argument("--cutoff",required=True)
     ap.add_argument("--output",required=True)
     a=ap.parse_args()
     p=Path(a.zip_path)
@@ -36,7 +35,10 @@ def main():
             if m not in names: raise SystemExit(f"required member missing: {m}")
         versions=read_csv(z,VERSIONS_MEMBER)
         dependencies=read_csv(z,DEPENDENCIES_MEMBER)
-    result=build_u_t(versions,dependencies,cutoff=a.cutoff,complete_target_packages=())
+    valid_times=[str(row["created_at"]) for row in versions if str(row.get("created_at",""))]
+    if not valid_times: raise SystemExit("no valid created_at values in package_versions.csv")
+    cutoff=max(valid_times)
+    result=build_u_t(versions,dependencies,cutoff=cutoff,complete_target_packages=())
     result["status"]="PASS"
     result["execution_authorized"]=True
     result["scientific_execution_authorized"]=True
@@ -46,6 +48,7 @@ def main():
     result["implementation_version"]=CONSTRUCTION_VERSION
     result["temporal_rule"]=TEMPORAL_RULE_ID
     result["input_rows"]={"package_versions":len(versions),"package_dependencies":len(dependencies)}
+    result["cutoff_rule"]="max(created_at) over valid package_versions.csv records"
     result["complete_target_packages"]=[]
     result["real_data_execution"]="U_T_CONSTRUCTION_ONLY"
     Path(a.output).write_text(json.dumps(result,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8")
