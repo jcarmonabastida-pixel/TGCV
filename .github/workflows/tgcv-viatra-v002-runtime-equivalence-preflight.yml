@@ -76,13 +76,13 @@ jobs:
           mvn -version | tee maven-version.txt
 
       - name: Build pinned VIATRA example transformation and test bundles
-        working-directory: _viatra-examples
+        working-directory: _viatra-examples/cps
         shell: bash
         run: |
           set -euo pipefail
           mvn -B -pl \
-            cps/transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,\
-            cps/tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
+            transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,\
+            tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
             -am test -DskipTests=false
 
       - name: Run dedicated TGCV runtime adapter
