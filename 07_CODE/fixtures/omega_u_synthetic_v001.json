@@ -1,0 +1,16 @@
+{
+  "fixture_version": "OMEGA_U_SYNTHETIC_v001",
+  "cutoff": "2022-09-01T00:00:00Z",
+  "versions": [
+    {"id": 1, "package_id": 10, "version_str": "1.0.0", "created_at": "2022-08-01T00:00:00Z"},
+    {"id": 2, "package_id": 20, "version_str": "1.0.0", "created_at": "2022-08-02T00:00:00Z"},
+    {"id": 3, "package_id": 20, "version_str": "2.0.0", "created_at": "2022-08-03T00:00:00Z"},
+    {"id": 4, "package_id": 30, "version_str": "1.0.0", "created_at": "2022-09-02T00:00:00Z"}
+  ],
+  "dependencies": [
+    {"depending_version": 1, "depending_on_package": 20, "semver_str": "^1.0.0"},
+    {"depending_version": 1, "depending_on_package": 20, "semver_str": "^1.0.0"},
+    {"depending_version": 999, "depending_on_package": 20, "semver_str": "^1.0.0"},
+    {"depending_version": 1, "depending_on_package": 30, "semver_str": "*"}
+  ]
+}
