@@ -8,7 +8,7 @@ import json
 from typing import Iterable, Mapping, Sequence
 
 TEMPORAL_RULE_ID = "DR-035-v0.1-ADJACENT-CREATED-AT"
-CONSTRUCTION_VERSION = "RUST_OMEGA_U_CONSTRUCTOR_v0.3"
+CONSTRUCTION_VERSION = "RUST_OMEGA_U_CONSTRUCTOR_v0.4"
 COVERAGE_STATES = ("OBSERVED_PRESENT", "OBSERVED_ABSENT_COMPLETE", "UNKNOWN_MISSING", "OUT_OF_SCOPE")
 
 @dataclass(frozen=True)
@@ -35,7 +35,7 @@ def _adjacent_target(source: Mapping[str, object], targets: Sequence[Mapping[str
         return None
     return min(later, key=lambda r: (str(r["created_at"]), int(r["id"]), str(r["version_str"])))
 
-def build_u_t(versions: Iterable[Mapping[str, object]], dependencies: Iterable[Mapping[str, object]], *, cutoff: str) -> dict[str, object]:
+def build_u_t(versions: Iterable[Mapping[str, object]], dependencies: Iterable[Mapping[str, object]], *, cutoff: str, complete_target_packages: Iterable[int] = ()) -> dict[str, object]:
     version_rows = [dict(row) for row in versions]
     dependency_rows = [dict(row) for row in dependencies]
     by_id: dict[int, Mapping[str, object]] = {}
@@ -58,6 +58,7 @@ def build_u_t(versions: Iterable[Mapping[str, object]], dependencies: Iterable[M
         b.sort(key=lambda r: (str(r["created_at"]), int(r["id"]), str(r["version_str"])))
     seen: dict[tuple[int,int,int], Candidate] = {}
     coverage_counts = {state: 0 for state in COVERAGE_STATES}
+    complete_targets = {int(x) for x in complete_target_packages}
     unresolved = 0
     for d_idx, dep in enumerate(dependency_rows):
         try:
@@ -73,7 +74,10 @@ def build_u_t(versions: Iterable[Mapping[str, object]], dependencies: Iterable[M
             continue
         target = _adjacent_target(source, by_pkg.get(target_package, ()), cutoff)
         if target is None:
-            coverage_counts["OBSERVED_ABSENT_COMPLETE"] += 1
+            if target_package in complete_targets:
+                coverage_counts["OBSERVED_ABSENT_COMPLETE"] += 1
+            else:
+                coverage_counts["UNKNOWN_MISSING"] += 1
             continue
         tau = _canonical_tau(source_id, target_package, int(target["id"]))
         cand = Candidate(
