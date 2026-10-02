@@ -20,7 +20,7 @@ def test_valid_adjacent_construction_and_duplicate_collapse():
 def test_out_of_scope_target_is_not_emitted():
     result=run([{"depending_version":1,"depending_on_package":30,"semver_str":"*"}])
     assert result["u_count"]==0
-    assert result["coverage_counts"]["OBSERVED_ABSENT_COMPLETE"]==1
+    assert result["coverage_counts"]["UNKNOWN_MISSING"]==1
 
 def test_missing_origin_fails_closed():
     result=run([{"depending_version":999,"depending_on_package":20,"semver_str":"*"}])
@@ -67,6 +67,13 @@ def test_schema_error_is_explicit():
 
 def test_constructor_version_and_rule_are_emitted():
     result=run()
-    assert result["construction_version"]=="RUST_OMEGA_U_CONSTRUCTOR_v0.3"
+    assert result["construction_version"]=="RUST_OMEGA_U_CONSTRUCTOR_v0.4"
     assert result["temporal_rule"]=="DR-035-v0.1-ADJACENT-CREATED-AT"
     assert result["coverage_states"]==["OBSERVED_PRESENT","OBSERVED_ABSENT_COMPLETE","UNKNOWN_MISSING","OUT_OF_SCOPE"]
+
+
+def test_complete_absence_requires_explicit_certificate():
+    result=run([{"depending_version":1,"depending_on_package":30,"semver_str":"*"}])
+    assert result["coverage_counts"]["OBSERVED_ABSENT_COMPLETE"]==0
+    certified=run([{"depending_version":1,"depending_on_package":30,"semver_str":"*"}])
+    assert certified["coverage_counts"]["UNKNOWN_MISSING"]==1
