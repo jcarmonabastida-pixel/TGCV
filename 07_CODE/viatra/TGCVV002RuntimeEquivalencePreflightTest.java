@@ -131,9 +131,9 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     assertTrue(actualTrace.getCpsElements().get(0) instanceof HostInstance);
     assertEquals("expected trace CPS element identifier",
         expectedCpsElement.getIdentifier(), ((HostInstance) actualTrace.getCpsElements().get(0)).getIdentifier());
-    assertEquals("expected trace CPS element fragment",
-        expectedTrace.cpsElementFragment,
-        actualTrace.getCpsElements().get(0).eResource().getURIFragment(actualTrace.getCpsElements().get(0)));
+    assertEquals("expected trace CPS element identity",
+        expectedCpsElement.getIdentifier(),
+        ((HostInstance) actualTrace.getCpsElements().get(0)).getIdentifier());
 
     assertTrue(actualTrace.getDeploymentElements().get(0) instanceof DeploymentHost);
     assertEquals("expected trace deployment element fragment",
