@@ -67,7 +67,7 @@ def test_schema_error_is_explicit():
 
 def test_constructor_version_and_rule_are_emitted():
     result=run()
-    assert result["construction_version"]=="RUST_OMEGA_U_CONSTRUCTOR_v0.4"
+    assert result["construction_version"]=="RUST_OMEGA_U_CONSTRUCTOR_v0.5"
     assert result["temporal_rule"]=="DR-035-v0.1-ADJACENT-CREATED-AT"
     assert result["coverage_states"]==["OBSERVED_PRESENT","OBSERVED_ABSENT_COMPLETE","UNKNOWN_MISSING","OUT_OF_SCOPE"]
 
