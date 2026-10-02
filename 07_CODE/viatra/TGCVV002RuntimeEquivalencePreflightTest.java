@@ -195,6 +195,7 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
         String cpsElementFragment, String deploymentElementFragment, String deploymentHostIp) {
       this.traceCount = traceCount;
       this.cpsElementCount = cpsElementCount;
+      this.deploymentElementCount = deploymentElementCount;
       this.deploymentElementFragment = deploymentElementFragment;
       this.cpsElementFragment = cpsElementFragment;
       this.deploymentHostIp = deploymentHostIp;
