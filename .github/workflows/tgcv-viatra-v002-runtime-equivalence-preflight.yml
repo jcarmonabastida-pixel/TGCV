@@ -118,6 +118,8 @@ jobs:
         run: |
           set -euo pipefail
           mvn -B -f releng/org.eclipse.viatra.parent.core/pom.xml \
+            -pl ../../releng/org.eclipse.viatra.target.all -am install -DskipTests
+          mvn -B -f releng/org.eclipse.viatra.parent.core/pom.xml \
             -pl ../../maven/viatra-maven-plugin -am install -DskipTests
 
       - name: Build pinned VIATRA example transformation and test bundles
