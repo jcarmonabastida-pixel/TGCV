@@ -56,6 +56,9 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     CPSToDeployment root = (CPSToDeployment) traceRes.getContents().get(0);
     Deployment expectedDeployment = (Deployment) expectedDepRes.getContents().get(0);
     CPSToDeployment expectedRoot = (CPSToDeployment) expectedTraceRes.getContents().get(0);
+    assertNotNull(expectedRoot.getCps());
+    assertNotNull(expectedRoot.getDeployment());
+    assertEquals(expectedDeployment, expectedRoot.getDeployment());
     assertNotNull(root.getCps());
     assertNotNull(root.getDeployment());
     assertEquals(0, root.getTraces().size());
