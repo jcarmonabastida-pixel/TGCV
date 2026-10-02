@@ -115,3 +115,52 @@ def build_u_t(versions: Iterable[Mapping[str, object]], dependencies: Iterable[M
         "cutoff": cutoff,
         "output_sha256": _output_hash(records),
     }
+
+
+def build_u_t_from_sqlite(conn, dependencies, *, cutoff, complete_target_packages=()):
+    """Build U_t from a disk-backed SQLite version index."""
+    def fetch_version(vid):
+        return conn.execute("SELECT id,package_id,version_str,created_at FROM versions WHERE id=?", (vid,)).fetchone()
+    def adjacent_target(package_id, source_time):
+        return conn.execute(
+            "SELECT id,package_id,version_str,created_at FROM versions "
+            "WHERE package_id=? AND created_at>? AND created_at<=? "
+            "ORDER BY created_at,id,version_str LIMIT 1",
+            (package_id, source_time, cutoff),
+        ).fetchone()
+    seen = {}
+    coverage_counts = {state: 0 for state in COVERAGE_STATES}
+    complete_targets = {int(x) for x in complete_target_packages}
+    unresolved = 0
+    for d_idx, dep in enumerate(dependencies):
+        try:
+            source_id, target_package = int(dep["depending_version"]), int(dep["depending_on_package"])
+            str(dep["semver_str"])
+        except (KeyError, TypeError, ValueError):
+            unresolved += 1
+            coverage_counts["UNKNOWN_MISSING"] += 1
+            continue
+        source = fetch_version(source_id)
+        if source is None or str(source[3]) > cutoff:
+            coverage_counts["OUT_OF_SCOPE"] += 1
+            continue
+        target = adjacent_target(target_package, str(source[3]))
+        if target is None:
+            coverage_counts["OBSERVED_ABSENT_COMPLETE" if target_package in complete_targets else "UNKNOWN_MISSING"] += 1
+            continue
+        tau = _canonical_tau(source_id, target_package, int(target[0]))
+        cand = Candidate(tau=tau, snapshot_time=cutoff,
+            provenance=(f"package_versions.csv:id:{source_id}", f"package_dependencies.csv:row:{d_idx}", f"package_versions.csv:id:{int(target[0])}"),
+            coverage_state="OBSERVED_PRESENT", resolution_status="RESOLVED")
+        previous = seen.get(tau)
+        if previous is None or cand.provenance < previous.provenance:
+            seen[tau] = cand
+    coverage_counts["OBSERVED_PRESENT"] = len(seen)
+    records = [{"tau":list(c.tau),"snapshot_time":c.snapshot_time,"provenance":list(c.provenance),
+                "coverage_state":c.coverage_state,"resolution_status":c.resolution_status,
+                "construction_version":CONSTRUCTION_VERSION,"temporal_rule":TEMPORAL_RULE_ID}
+               for c in (seen[k] for k in sorted(seen))]
+    return {"U_t":records,"u_count":len(records),"unresolved_count":unresolved,
+            "coverage_counts":coverage_counts,"coverage_states":list(COVERAGE_STATES),
+            "construction_version":CONSTRUCTION_VERSION,"temporal_rule":TEMPORAL_RULE_ID,
+            "cutoff":cutoff,"output_sha256":_output_hash(records)}
