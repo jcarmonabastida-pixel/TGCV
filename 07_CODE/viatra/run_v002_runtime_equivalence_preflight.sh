@@ -52,8 +52,7 @@ Require-Bundle: org.junit,
  org.eclipse.viatra.examples.cps.deployment,
  org.eclipse.viatra.examples.cps.traceability,
  org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,
- org.eclipse.viatra.query.runtime,
- org.eclipse.viatra.query.runtime.emf
+ org.eclipse.viatra.query.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 EOF
 
