@@ -7,26 +7,6 @@
     "rma_traceability": "v3.37",
     "governance_operating_principles": "v0.1"
   },
-  "analytical_synthesis": {
-    "cross_domain_map": "00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_END_TO_END_ACCESSIBILITY_OUTCOME_VALUE_MAP_001.md",
-    "evaluation": "00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_MAP_EVALUATION_AND_PERSISTENCE_DECISION_001.md",
-    "status": "CURRENT_INDEPENDENT_ANALYSIS",
-    "disposition": "RETAINED_AS_INDEPENDENT ANALYTICAL SYNTHESIS; NOT_YET_NORMATIVE_METHODOLOGY",
-    "next_authorized_analysis": "NONE_WITHIN_MT5_FOR_FULL_TACC_IDENTIFICATION"
-  },
-  "instrument_status": {
-    "rainbow": "ABANDONED_AS_EXPERIMENTAL_INSTRUMENT",
-    "rainbow_runtime_diagnosis": "CLOSED — AUTOMATIC PROBE ACTIVATION UNRESOLVED / NON-OPERATIONAL",
-    "swim_interface": "VERIFIED_INDEPENDENTLY",
-    "scientific_execution_through_rainbow": "NOT_PERFORMED / NOT_AUTHORIZED"
-  },
-  "scientific_boundary": {
-    "tgcv_core": "UNCHANGED",
-    "existing_scientific_evidence": "UNCHANGED",
-    "claim_statuses": "UNCHANGED_BY_RAINBOW_CLOSURE",
-    "delta_tacc_to_value": "OPEN",
-    "transformational_dynamics_direction": "REQUIRES_SEPARATE_FORMALIZATION_AND_FALSIFIABLE_TEST_DESIGN"
-  },
   "pointers": {
     "rma": "00_GOVERNANCE/rma/TGCV_RMA_current.md",
     "claim_matrix": "00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md",
@@ -41,7 +21,7 @@
     "architectural_transition_evidence_assessment": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_TRANSITION_EVIDENCE_ASSESSMENT_v0.1.md",
     "architectural_discrimination_criteria": "00_GOVERNANCE/architecture/TGCV_ARCHITECTURAL_DISCRIMINATION_CRITERIA_v0.1.md",
     "omega_primary_u_synthetic_execution_closure": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_U_IMPLEMENTATION_SYNTHETIC_TEST_EXECUTION_CLOSURE_001.md",
-    "rust_omega_primary_semantic_instantiability_review": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_SEMANTIC_INSTANTIABILITY_REVIEW_v0.1.md",
+    "omega_primary_real_data_preflight_execution_closure": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_REAL_DATA_PREFLIGHT_EXECUTION_CLOSURE_001.md",
     "rust_omega_primary_u_implementation_specification_review": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_U_IMPLEMENTATION_SPECIFICATION_REVIEW_v0.1.md",
     "rust_omega_primary_u_implementation_preflight_review": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_U_IMPLEMENTATION_PREFLIGHT_REVIEW_v0.1.md"
   },
@@ -52,8 +32,7 @@
     "experiment_authorization": "NONE",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md",
     "current_qualifying_b_object": "NONE",
-    "next_gate": "RUST_OMEGA_PRIMARY_REAL_DATA_PREFLIGHT_REVIEW",
-    "bridge_status": "RUST_OMEGA_PRIMARY_U_SYNTHETIC_IMPLEMENTATION_GATE_PASSED_REAL_DATA_PREFLIGHT_OPEN"
-  },
-  "architectural_transition_d1_gate": "D1_CLOSED_ARCH_DISC_002_A_EQUIVALENT_RR3_NOT_SATISFIED"
+    "next_gate": "RUST_OMEGA_PRIMARY_U_REAL_DATA_CONSTRUCTION_REVIEW",
+    "bridge_status": "RUST_OMEGA_PRIMARY_REAL_SNAPSHOT_PREFLIGHT_PASS_U_CONSTRUCTION_REVIEW_OPEN"
+  }
 }
