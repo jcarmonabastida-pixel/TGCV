@@ -1,6 +1,6 @@
 # TGCV VIATRA v002 Runtime Equivalence Preflight Specification v001
 
-**Status:** READY FOR CONTROLLED PREFLIGHT — execution not yet performed
+**Status:** CONTROLLED PREFLIGHT EXECUTED — PF-09 IMPLEMENTATION STRENGTHENING PENDING
 **Date:** 2026-10-02
 **Core revision:** `6f7d2d7860ed901c33029700387d3535bd2553f1`
 **Examples revision:** `15f269dbf74000eac7b97cf7f92e256b8fb1fc1c`
@@ -253,18 +253,22 @@ and:
 
 ## 8. Current state
 
-The static materialization/byte audit is already PASS.
+The static materialization/byte audit is PASS.
 
-The runtime-equivalence state is currently:
+Controlled runtime preflight execution completed successfully in GitHub Actions run `37044186539` at TGCV commit `23d85b87a797bcaf4a9ba7cb52f319f9c3653a1c`.
 
-**NOT EXECUTED**
+The workflow and result artifact report PASS, including `RUNTIME_EQUIVALENCE_PREFLIGHT_PASS`, `semantic_equivalence = EXACT`, and `contamination_check = PASS`.
 
-No claim of runtime equivalence is made until a pinned execution produces the result artifact.
+The execution establishes the pinned runtime path and contractual semantic projection. PF-09 is nevertheless retained as an engineering strengthening item because the current adapter encodes the expected projection directly rather than independently deriving it from the frozen `*_EXPECTED.xmi` artifacts.
+
+Therefore this specification does not yet promote the result to an independently fixture-derived semantic-equivalence closure.
 
 ## 9. Next operational action
 
-Create and run a dedicated GitHub Actions **manual preflight workflow** using the pinned revisions above.
+Strengthen PF-09 in the dedicated adapter so that the expected semantic projection is loaded from the frozen `Deployment_EXPECTED.xmi` and `Traceability_EXPECTED.xmi` artifacts and compared programmatically with the actual post-state.
 
-The workflow must be separate from any scientific execution workflow and must require explicit manual dispatch.
+Then rerun the same dedicated GitHub Actions **manual preflight workflow** once.
+
+The workflow remains separate from any scientific execution workflow and requires explicit manual dispatch.
 
 No `--execute` scientific authorization is implied by this preflight.
