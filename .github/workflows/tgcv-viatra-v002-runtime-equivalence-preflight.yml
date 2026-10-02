@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     env:
-      VIATRA_CORE_REVISION: ffa111dbb160c0bc55e89ea16430e97a38908662
+      VIATRA_CORE_REVISION: 6f7d2d7860ed901c33029700387d3535bd2553f1
       VIATRA_EXAMPLES_REVISION: 15f269dbf74000eac7b97cf7f92e256b8fb1fc1c
       FIXTURE_DIR: 00_GOVERNANCE/architecture/fixtures
       RESULT: TGCV_VIATRA_V002_RUNTIME_EQUIVALENCE_PREFLIGHT_RESULT_001.json
@@ -112,6 +112,13 @@ jobs:
           java -version 2>&1 | tee java-version.txt
           mvn -version | tee maven-version.txt
 
+      - name: Build and install pinned VIATRA Maven plugin
+        working-directory: _viatra-core
+        shell: bash
+        run: |
+          set -euo pipefail
+          mvn -B -pl maven/viatra-maven-plugin -am install -DskipTests
+
       - name: Build pinned VIATRA example transformation and test bundles
         working-directory: _viatra-examples/cps
         shell: bash
@@ -152,7 +159,7 @@ jobs:
           missing = [k for k in required if k not in d]
           if missing:
               raise SystemExit("Missing required result fields: " + ", ".join(missing))
-          if d["core_revision"] != "ffa111dbb160c0bc55e89ea16430e97a38908662":
+          if d["core_revision"] != "6f7d2d7860ed901c33029700387d3535bd2553f1":
               raise SystemExit("core_revision mismatch")
           if d["examples_revision"] != "15f269dbf74000eac7b97cf7f92e256b8fb1fc1c":
               raise SystemExit("examples_revision mismatch")
