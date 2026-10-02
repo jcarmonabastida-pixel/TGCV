@@ -8,13 +8,14 @@ import json
 from typing import Iterable, Mapping, Sequence
 
 TEMPORAL_RULE_ID = "DR-035-v0.1-ADJACENT-CREATED-AT"
-CONSTRUCTION_VERSION = "RUST_OMEGA_U_CONSTRUCTOR_v0.2"
+CONSTRUCTION_VERSION = "RUST_OMEGA_U_CONSTRUCTOR_v0.3"
+COVERAGE_STATES = ("OBSERVED_PRESENT", "OBSERVED_ABSENT_COMPLETE", "UNKNOWN_MISSING", "OUT_OF_SCOPE")
 
 @dataclass(frozen=True)
 class Candidate:
     tau: tuple[int, int, int]
     snapshot_time: str
-    provenance: tuple[str, str]
+    provenance: tuple[str, str, str]
     coverage_state: str
     resolution_status: str
 
@@ -56,33 +57,40 @@ def build_u_t(versions: Iterable[Mapping[str, object]], dependencies: Iterable[M
     for b in by_pkg.values():
         b.sort(key=lambda r: (str(r["created_at"]), int(r["id"]), str(r["version_str"])))
     seen: dict[tuple[int,int,int], Candidate] = {}
+    coverage_counts = {state: 0 for state in COVERAGE_STATES}
     unresolved = 0
-    skipped_out_of_scope = 0
     for d_idx, dep in enumerate(dependency_rows):
         try:
             source_id, target_package = int(dep["depending_version"]), int(dep["depending_on_package"])
             str(dep["semver_str"])
         except (KeyError, TypeError, ValueError):
             unresolved += 1
+            coverage_counts["UNKNOWN_MISSING"] += 1
             continue
         source = by_id.get(source_id)
         if source is None or str(source["created_at"]) > cutoff:
-            skipped_out_of_scope += 1
+            coverage_counts["OUT_OF_SCOPE"] += 1
             continue
         target = _adjacent_target(source, by_pkg.get(target_package, ()), cutoff)
         if target is None:
+            coverage_counts["OBSERVED_ABSENT_COMPLETE"] += 1
             continue
         tau = _canonical_tau(source_id, target_package, int(target["id"]))
         cand = Candidate(
             tau=tau,
             snapshot_time=cutoff,
-            provenance=(f"package_dependencies.csv:row:{d_idx}", f"package_versions.csv:id:{int(target['id'])}"),
+            provenance=(
+                f"package_versions.csv:id:{source_id}",
+                f"package_dependencies.csv:row:{d_idx}",
+                f"package_versions.csv:id:{int(target['id'])}",
+            ),
             coverage_state="OBSERVED_PRESENT",
             resolution_status="RESOLVED",
         )
         previous = seen.get(tau)
         if previous is None or cand.provenance < previous.provenance:
             seen[tau] = cand
+    coverage_counts["OBSERVED_PRESENT"] = len(seen)
     records = [{
         "tau": list(c.tau),
         "snapshot_time": c.snapshot_time,
@@ -96,7 +104,8 @@ def build_u_t(versions: Iterable[Mapping[str, object]], dependencies: Iterable[M
         "U_t": records,
         "u_count": len(records),
         "unresolved_count": unresolved,
-        "skipped_out_of_scope_count": skipped_out_of_scope,
+        "coverage_counts": coverage_counts,
+        "coverage_states": list(COVERAGE_STATES),
         "construction_version": CONSTRUCTION_VERSION,
         "temporal_rule": TEMPORAL_RULE_ID,
         "cutoff": cutoff,
