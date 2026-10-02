@@ -86,9 +86,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mvn -B -pl \
-            transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,\
-            tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
+          mvn -B -pl transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
             -am test -DskipTests=false
 
       - name: Run dedicated TGCV runtime adapter
