@@ -120,9 +120,8 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
       HostInstance expectedCpsElement, Deployment actualDeployment, CPS2DeploymentTrace actualTrace) {
     assertEquals("expected deployment host count",
         expectedDeployment.getHosts().size(), actualDeployment.getHosts().size());
-    assertEquals("expected trace count", 1, expectedTrace.traceCount);
+    assertEquals("expected trace count", expectedTrace.traceCount, 1);
     assertEquals(1, expectedDeployment.getHosts().size());
-    assertEquals(1, expectedTrace.traceCount);
 
     DeploymentHost expectedHost = expectedDeployment.getHosts().get(0);
     DeploymentHost actualHost = actualDeployment.getHosts().get(0);
@@ -164,6 +163,8 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     Element trace = (Element) root.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "traces").item(0);
     Element cps = (Element) trace.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "cpsElements").item(0);
     Element dep = (Element) trace.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "deploymentElements").item(0);
+    int cpsElementCount = trace.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "cpsElements").getLength();
+    int deploymentElementCount = trace.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "deploymentElements").getLength();
     if (cps == null || dep == null) throw new AssertionError("EXPECTED trace must contain cpsElements and deploymentElements");
 
     String cpsHref = cps.getAttribute("href");
@@ -172,7 +173,7 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     String depFragment = fragment(depHref);
 
     assertEquals(1, expectedDeployment.getHosts().size());
-    return new ExpectedTraceProjection(1, 1, 1, cpsFragment, depFragment,
+    return new ExpectedTraceProjection(traceCount, cpsElementCount, deploymentElementCount, cpsFragment, depFragment,
         expectedDeployment.getHosts().get(0).getIp());
   }
 
@@ -219,9 +220,9 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
       "  \"host_mapping_created_activation_count\": 1,\n" +
       "  \"unexpected_relevant_activation_count\": 0,\n" +
       "  \"actual_post_state_projection\": {\n" +
-      "    \"deployment_hosts\": 1,\n" +
+      "    \"deployment_hosts\": " + deployment.getHosts().size() + ",\n" +
       "    \"deployment_host_ip\": \"" + esc(deployment.getHosts().get(0).getIp()) + "\",\n" +
-      "    \"traces\": 1,\n" +
+      "    \"traces\": " + (trace == null ? 0 : 1) + ",\n" +
       "    \"trace_cps_element\": \"" + esc(((HostInstance) trace.getCpsElements().get(0)).getIdentifier()) + "\",\n" +
       "    \"trace_deployment_element\": \"" + esc(deployment.getHosts().get(0).getIp()) + "\"\n" +
       "  },\n" +
