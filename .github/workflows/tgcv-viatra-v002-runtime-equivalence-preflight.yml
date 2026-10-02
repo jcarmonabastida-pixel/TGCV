@@ -136,7 +136,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mvn -B -pl releng/org.eclipse.viatra.examples.cps.target -am install -DskipTests
+          mvn -B -pl maven/CPS-models-with-edit-and-editor -am install -DskipTests
           mvn -B -pl transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
             -am test -DskipTests=false
 
