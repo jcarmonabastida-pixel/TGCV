@@ -58,6 +58,16 @@ jobs:
           test -z "$(git -C _viatra-core status --porcelain)"
           test -z "$(git -C _viatra-examples status --porcelain)"
 
+      - name: Verify canonical HostMapping artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          HOST_RULE="_viatra-examples/cps/transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl/src/org/eclipse/viatra/examples/cps/xform/m2m/incr/expl/rules/HostRules.xtend"
+          TRANSFORM="_viatra-examples/cps/transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl/src/org/eclipse/viatra/examples/cps/xform/m2m/incr/expl/CPS2DeploymentTransformation.xtend"
+          test -f "$HOST_RULE"
+          test -f "$TRANSFORM"
+          test "$(sha1sum "$HOST_RULE" | cut -d' ' -f1)" = "d61d845885450a73251d66a685e2328e3028ee29"
+
       - name: Toolchain
         shell: bash
         run: |
@@ -79,12 +89,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ ! -x "07_CODE/viatra/run_v002_runtime_equivalence_preflight.sh" ]; then
-            echo "FAIL-CLOSED: dedicated TGCV runtime adapter is not present."
-            echo "The workflow is intentionally prevented from substituting a different test or reconstructing the fixture."
-            exit 2
-          fi
-          07_CODE/viatra/run_v002_runtime_equivalence_preflight.sh \
+          test -f "07_CODE/viatra/run_v002_runtime_equivalence_preflight.sh"
+          bash 07_CODE/viatra/run_v002_runtime_equivalence_preflight.sh \
             "$VIATRA_CORE_REVISION" \
             "$VIATRA_EXAMPLES_REVISION" \
             "$GITHUB_WORKSPACE/$FIXTURE_DIR" \
@@ -115,6 +121,18 @@ jobs:
               raise SystemExit("core_revision mismatch")
           if d["examples_revision"] != "15f269dbf74000eac7b97cf7f92e256b8fb1fc1c":
               raise SystemExit("examples_revision mismatch")
+          if d["status"] != "RUNTIME_EQUIVALENCE_PREFLIGHT_PASS":
+              raise SystemExit("preflight did not PASS")
+          if d["semantic_equivalence"] != "EXACT":
+              raise SystemExit("semantic equivalence is not EXACT")
+          if d["contamination_check"] != "PASS":
+              raise SystemExit("contamination check did not PASS")
+          if d["root_mapping_count"] != 1 or d["unmapped_host_instance_count"] != 1:
+              raise SystemExit("unexpected pre-state mapping counts")
+          if d["host_mapping_created_activation_count"] != 1:
+              raise SystemExit("unexpected HostMapping CREATED count")
+          if d["unexpected_relevant_activation_count"] != 0:
+              raise SystemExit("unexpected relevant activation detected")
           forbidden = ("scientific_outcome", "value", "reward", "utility", "score")
           blob = json.dumps(d).lower()
           for token in forbidden:
