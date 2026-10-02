@@ -4,7 +4,7 @@ Reads only the two admitted CSV members from the retained historical ZIP.
 from __future__ import annotations
 import argparse, csv, hashlib, json, sqlite3, tempfile, zipfile
 from pathlib import Path
-from omega_u_constructor_v01 import build_u_t, CONSTRUCTION_VERSION, TEMPORAL_RULE_ID
+from omega_u_constructor_v01 import build_u_t_from_sqlite, CONSTRUCTION_VERSION, TEMPORAL_RULE_ID
 
 EXPECTED_SHA256="823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224"
 VERSIONS_MEMBER="rust_repos_2022_09_07/dumps/postgresql/data/package_versions.csv"
@@ -57,9 +57,8 @@ def main():
                 if cutoff is None or created_at>cutoff: cutoff=created_at
             conn.commit()
             if cutoff is None: raise SystemExit("no valid created_at values in package_versions.csv")
-            versions=conn.execute("SELECT id,package_id,version_str,created_at FROM versions").fetchall()
             dependencies=read_csv(z,DEPENDENCIES_MEMBER)
-            result=build_u_t(versions,dependencies,cutoff=cutoff,complete_target_packages=())
+            result=build_u_t_from_sqlite(conn,dependencies,cutoff=cutoff,complete_target_packages=())
         finally:
             conn.close()
             z.close()
@@ -73,7 +72,7 @@ def main():
     result["dependency_processing"]="streaming"
     result["version_index"]="temporary_sqlite"
     result["temporal_rule"]=TEMPORAL_RULE_ID
-    result["input_rows"]={"package_versions":v_count,"package_dependencies":len(dependencies)}
+    result["input_rows"]={"package_versions":v_count,"package_dependencies":"streamed"}
     result["cutoff_rule"]="max(created_at) over valid package_versions.csv records"
     result["complete_target_packages"]=[]
     result["real_data_execution"]="U_T_CONSTRUCTION_ONLY"
