@@ -132,7 +132,7 @@ jobs:
             -pl ../../maven/viatra-maven-plugin -am install -DskipTests
 
       - name: Build pinned VIATRA example transformation and test bundles
-        working-directory: _viatra-examples/cps
+        working-directory: _viatra-examples
         shell: bash
         run: |
           set -euo pipefail
