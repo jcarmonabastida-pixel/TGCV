@@ -1,4 +1,4 @@
-name: Rust Omega U correction revalidation v0.5
+name: Rust Omega U correction revalidation v0.6
 
 on:
   workflow_dispatch:
@@ -23,4 +23,4 @@ jobs:
           PYTHONPATH: ../src
         run: |
           set -euo pipefail
-          python -m pytest -q test_omega_u_constructor_v01.py
+          python -m pytest -q test_omega_u_constructor_v01.py test_rust_omega_u_real_data_execution_v01.py
