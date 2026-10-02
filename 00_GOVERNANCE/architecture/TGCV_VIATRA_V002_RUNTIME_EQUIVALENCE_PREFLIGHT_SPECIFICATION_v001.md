@@ -2,7 +2,7 @@
 
 **Status:** READY FOR CONTROLLED PREFLIGHT — execution not yet performed
 **Date:** 2026-10-02
-**Core revision:** `ffa111dbb160c0bc55e89ea16430e97a38908662`
+**Core revision:** `6f7d2d7860ed901c33029700387d3535bd2553f1`
 **Examples revision:** `15f269dbf74000eac7b97cf7f92e256b8fb1fc1c`
 **Fixture:** `TGCV_VIATRA_MINIMAL_FIXTURE_v002`
 
@@ -24,7 +24,7 @@ The canonical TGCV README requires reproducibility through repository-controlled
 
 Revision:
 
-`ffa111dbb160c0bc55e89ea16430e97a38908662`
+`6f7d2d7860ed901c33029700387d3535bd2553f1`
 
 ### VIATRA examples
 
@@ -209,6 +209,8 @@ The preflight may record:
 It must not record a scientific observation as a result of this gate.
 
 ## 6. Required output artifact
+
+The pinned VIATRA core must first provide the exact `2.9.0-SNAPSHOT` Maven plugin required by the pinned examples revision. The preflight must build/install that plugin from the pinned core checkout into the isolated Maven local repository before building the examples. This prevents dependency resolution from silently using an external or floating VIATRA build.
 
 The execution must produce:
 
