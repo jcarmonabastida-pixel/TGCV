@@ -4,7 +4,7 @@ Reads only the two admitted CSV members from the retained historical ZIP.
 from __future__ import annotations
 import argparse, csv, hashlib, json, sqlite3, tempfile, zipfile
 from pathlib import Path
-from omega_u_constructor_v01 import build_u_t_from_sqlite, CONSTRUCTION_VERSION, TEMPORAL_RULE_ID
+from omega_u_constructor_v01 import build_u_t_from_sqlite_disk, CONSTRUCTION_VERSION, TEMPORAL_RULE_ID
 
 EXPECTED_SHA256="823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224"
 VERSIONS_MEMBER="rust_repos_2022_09_07/dumps/postgresql/data/package_versions.csv"
@@ -21,6 +21,35 @@ def read_csv(z,m):
         reader = csv.DictReader((x.decode("utf-8") for x in f))
         for row in reader:
             yield row
+
+def _write_result(path, result, conn):
+    metadata = dict(result)
+    metadata.pop("U_t", None)
+    prefix = json.dumps(metadata, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    with open(path, "w", encoding="utf-8") as out:
+        out.write(prefix[:-1])
+        out.write(',"U_t":[')
+        first = True
+        for row in conn.execute(
+            "SELECT origin_version_id,target_package_id,target_version_id,snapshot_time,"
+            "provenance_source,provenance_dependency,provenance_target,coverage_state,"
+            "resolution_status,construction_version,temporal_rule "
+            "FROM u_records ORDER BY origin_version_id,target_package_id,target_version_id"
+        ):
+            record = {
+                "tau": [row[0], row[1], row[2]],
+                "snapshot_time": row[3],
+                "provenance": [row[4], row[5], row[6]],
+                "coverage_state": row[7],
+                "resolution_status": row[8],
+                "construction_version": row[9],
+                "temporal_rule": row[10],
+            }
+            if not first:
+                out.write(",")
+            first = False
+            out.write(json.dumps(record, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+        out.write("]}\n")
 
 def main():
     ap=argparse.ArgumentParser()
@@ -58,24 +87,27 @@ def main():
             conn.commit()
             if cutoff is None: raise SystemExit("no valid created_at values in package_versions.csv")
             dependencies=read_csv(z,DEPENDENCIES_MEMBER)
-            result=build_u_t_from_sqlite(conn,dependencies,cutoff=cutoff,complete_target_packages=())
+            result=build_u_t_from_sqlite_disk(conn,dependencies,cutoff=cutoff,complete_target_packages=())
+            result["status"]="PASS"
+            result["execution_authorized"]=True
+            result["scientific_execution_authorized"]=True
+            result["snapshot_sha256"]=observed
+            result["snapshot_path"]=str(p)
+            result["implementation"]="07_CODE/src/omega_u_constructor_v01.py"
+            result["implementation_version"]=CONSTRUCTION_VERSION
+            result["dependency_processing"]="streaming"
+            result["version_index"]="temporary_sqlite"
+            result["u_storage"]="temporary_sqlite"
+            result["ram_strategy"]="constant-memory construction; U_t records never materialized in Python"
+            result["temporal_rule"]=TEMPORAL_RULE_ID
+            result["input_rows"]={"package_versions":v_count,"package_dependencies":"streamed"}
+            result["cutoff_rule"]="max(created_at) over valid package_versions.csv records"
+            result["complete_target_packages"]=[]
+            result["real_data_execution"]="U_T_CONSTRUCTION_ONLY"
+            _write_result(a.output,result,conn)
         finally:
             conn.close()
             z.close()
-    result["status"]="PASS"
-    result["execution_authorized"]=True
-    result["scientific_execution_authorized"]=True
-    result["snapshot_sha256"]=observed
-    result["snapshot_path"]=str(p)
-    result["implementation"]="07_CODE/src/omega_u_constructor_v01.py"
-    result["implementation_version"]=CONSTRUCTION_VERSION
-    result["dependency_processing"]="streaming"
-    result["version_index"]="temporary_sqlite"
-    result["temporal_rule"]=TEMPORAL_RULE_ID
-    result["input_rows"]={"package_versions":v_count,"package_dependencies":"streamed"}
-    result["cutoff_rule"]="max(created_at) over valid package_versions.csv records"
-    result["complete_target_packages"]=[]
-    result["real_data_execution"]="U_T_CONSTRUCTION_ONLY"
-    Path(a.output).write_text(json.dumps(result,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8")
     print(json.dumps({"status":"PASS","u_count":result["u_count"],"output":a.output,"output_sha256":result["output_sha256"]},indent=2))
+
 if __name__=="__main__": main()
