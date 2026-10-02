@@ -23,7 +23,8 @@
     "omega_primary_u_synthetic_execution_closure": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_U_IMPLEMENTATION_SYNTHETIC_TEST_EXECUTION_CLOSURE_001.md",
     "omega_primary_real_data_preflight_execution_closure": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_REAL_DATA_PREFLIGHT_EXECUTION_CLOSURE_001.md",
     "rust_omega_primary_u_implementation_specification_review": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_U_IMPLEMENTATION_SPECIFICATION_REVIEW_v0.1.md",
-    "rust_omega_primary_u_implementation_preflight_review": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_U_IMPLEMENTATION_PREFLIGHT_REVIEW_v0.1.md"
+    "rust_omega_primary_u_implementation_preflight_review": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_U_IMPLEMENTATION_PREFLIGHT_REVIEW_v0.1.md",
+    "omega_primary_real_data_u_construction_execution_closure": "00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_U_REAL_DATA_CONSTRUCTION_EXECUTION_CLOSURE_001.md"
   },
   "architectural_transition": {
     "status": "OPEN_ARCHITECTURAL_TRANSITION_UNDER_EMPIRICAL_EVALUATION",
@@ -32,7 +33,7 @@
     "experiment_authorization": "NONE",
     "decision_record": "00_GOVERNANCE/decisions/ARCH-TRANS-001_EXPLICIT_ARCHITECTURAL_TRANSITION_LAYER.md",
     "current_qualifying_b_object": "NONE",
-    "next_gate": "RUST_OMEGA_PRIMARY_U_REAL_DATA_CONSTRUCTION_REVIEW",
-    "bridge_status": "RUST_OMEGA_PRIMARY_REAL_SNAPSHOT_PREFLIGHT_PASS_U_CONSTRUCTION_REVIEW_OPEN"
+    "next_gate": "SEPARATE_GOVERNED_U_T_DERIVED_OPERATIONALISATION_GATE",
+    "bridge_status": "RUST_OMEGA_PRIMARY_REAL_DATA_U_T_CONSTRUCTION_PASS_U_T_FROZEN_FOR_NEXT_GOVERNED_DERIVATION"
   }
 }
