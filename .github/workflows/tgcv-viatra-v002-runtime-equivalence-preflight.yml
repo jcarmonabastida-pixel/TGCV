@@ -131,14 +131,12 @@ jobs:
           mvn -B -f releng/org.eclipse.viatra.parent.core/pom.xml \
             -pl ../../maven/viatra-maven-plugin -am install -DskipTests
 
-      - name: Build pinned VIATRA example transformation and test bundles
+      - name: Build pinned VIATRA CPS reactor
         working-directory: _viatra-examples
         shell: bash
         run: |
           set -euo pipefail
-          mvn -B -f cps/pom.xml -pl releng/org.eclipse.viatra.examples.cps.target,releng/org.eclipse.viatra.examples.cps.domain.parent -am install -DskipTests
-          mvn -B -f cps/pom.xml -pl transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
-            -am test -DskipTests=false
+          mvn -B -f cps/pom.xml clean install -DskipTests=false
 
       - name: Run dedicated TGCV runtime adapter
         shell: bash
