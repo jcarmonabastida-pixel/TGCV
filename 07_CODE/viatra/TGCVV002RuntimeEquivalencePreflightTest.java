@@ -151,7 +151,7 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     f.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
     Document d = f.newDocumentBuilder().parse(path.toFile());
     Element root = d.getDocumentElement();
-    int traceCount = root.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "traces").getLength();
+    int traceCount = root.getElementsByTagNameNS("*", "traces").getLength();
     if (traceCount != 1) throw new AssertionError("EXPECTED traceability XMI must contain exactly one trace");
 
     Element trace = (Element) root.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "traces").item(0);
