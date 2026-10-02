@@ -129,18 +129,25 @@ jobs:
           mvn -B -f releng/org.eclipse.viatra.parent.core/pom.xml \
             clean install -DskipTests
 
-      - name: Build pinned VIATRA CPS runtime target
+      - name: Build pinned VIATRA CPS runtime closure
         working-directory: _viatra-examples
         shell: bash
         run: |
           set -euo pipefail
+
+          # Build only the Tycho reactor closure required by incr.expl.
+          # The upstream CPS test bundle is deliberately excluded because it
+          # requires unrelated batch/incremental transformation variants.
           mvn -B -f cps/pom.xml \
-            -pl releng/org.eclipse.viatra.examples.cps.target -am install -DskipTests
-          mvn -B -f cps/releng/org.eclipse.viatra.examples.cps.domain.parent/pom.xml \
-            clean install -DskipTests
-          mvn -B -f cps/pom.xml \
-            -pl transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
-            -am test -DskipTests=false
+            -pl releng/org.eclipse.viatra.examples.cps.target,domains/org.eclipse.viatra.examples.cps.deployment,domains/org.eclipse.viatra.examples.cps.model,domains/org.eclipse.viatra.examples.cps.traceability,transformations/org.eclipse.viatra.examples.cps.xform.m2m.util,transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl \
+            -am install -DskipTests
+
+      - name: Verify selected runtime closure and exclusions
+        working-directory: _viatra-examples
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -d "tests/org.eclipse.viatra.examples.cps.xform.m2m.tests/target"
 
       - name: Run dedicated TGCV runtime adapter
         shell: bash
