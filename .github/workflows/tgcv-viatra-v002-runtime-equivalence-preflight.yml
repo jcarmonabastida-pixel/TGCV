@@ -127,9 +127,7 @@ jobs:
           grep -Fq 'de.itemis.xtext.antlr.feature.feature.group' "$target_file"
           grep -Fq 'version="2.1.1.v201405091103"' "$target_file"
           mvn -B -f releng/org.eclipse.viatra.parent.core/pom.xml \
-            -pl ../../releng/org.eclipse.viatra.target.all -am install -DskipTests
-          mvn -B -f releng/org.eclipse.viatra.parent.core/pom.xml \
-            -pl ../../maven/viatra-maven-plugin -am install -DskipTests
+            clean install -DskipTests
 
       - name: Build pinned VIATRA CPS reactor
         working-directory: _viatra-examples
