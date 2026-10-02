@@ -106,8 +106,8 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
       throws Exception {
     String json = "{\n" +
       "  \"status\": \"RUNTIME_EQUIVALENCE_PREFLIGHT_PASS\",\n" +
-      "  \"core_revision\": \"ffa111dbb160c0bc55e89ea16430e97a38908662\",\n" +
-      "  \"examples_revision\": \"15f269dbf74000eac7b97cf7f92e256b8fb1fc1c\",\n" +
+            "  \"core_revision\": \"" + esc(System.getenv("TGCV_VIATRA_CORE_REVISION")) + "\",\n" +
+            "  \"examples_revision\": \"" + esc(System.getenv("TGCV_VIATRA_EXAMPLES_REVISION")) + "\",\n" +
       "  \"tgcv_fixture_revision\": \"TGCV_VIATRA_MINIMAL_FIXTURE_v002\",\n" +
       "  \"java_version\": \"" + esc(System.getProperty("java.version")) + "\",\n" +
       "  \"build_tool_version\": \"maven-test-runner\",\n" +
