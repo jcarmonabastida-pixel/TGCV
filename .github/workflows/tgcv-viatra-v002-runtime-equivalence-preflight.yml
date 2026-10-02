@@ -68,6 +68,12 @@ jobs:
           test -f "$TRANSFORM"
           test "$(git hash-object "$HOST_RULE")" = "d61d845885450a73251d66a685e2328e3028ee29"
 
+      - name: Set Java 17 toolchain
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
       - name: Toolchain
         shell: bash
         run: |
