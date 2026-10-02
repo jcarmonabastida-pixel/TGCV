@@ -66,7 +66,7 @@ jobs:
           TRANSFORM="_viatra-examples/cps/transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl/src/org/eclipse/viatra/examples/cps/xform/m2m/incr/expl/CPS2DeploymentTransformation.xtend"
           test -f "$HOST_RULE"
           test -f "$TRANSFORM"
-          test "$(sha1sum "$HOST_RULE" | cut -d' ' -f1)" = "d61d845885450a73251d66a685e2328e3028ee29"
+          test "$(git hash-object "$HOST_RULE")" = "d61d845885450a73251d66a685e2328e3028ee29"
 
       - name: Toolchain
         shell: bash
