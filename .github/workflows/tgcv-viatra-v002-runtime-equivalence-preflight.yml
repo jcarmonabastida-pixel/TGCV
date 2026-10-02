@@ -135,7 +135,9 @@ jobs:
         run: |
           set -euo pipefail
           mvn -B -f cps/pom.xml \
-            -pl releng/org.eclipse.viatra.examples.cps.target,releng/org.eclipse.viatra.examples.cps.domain.parent -am install -DskipTests
+            -pl releng/org.eclipse.viatra.examples.cps.target -am install -DskipTests
+          mvn -B -f cps/releng/org.eclipse.viatra.examples.cps.domain.parent/pom.xml \
+            clean install -DskipTests
           mvn -B -f cps/pom.xml \
             -pl transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
             -am test -DskipTests=false
