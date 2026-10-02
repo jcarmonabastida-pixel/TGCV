@@ -73,7 +73,10 @@ def test_constructor_version_and_rule_are_emitted():
 
 
 def test_complete_absence_requires_explicit_certificate():
-    result=run([{"depending_version":1,"depending_on_package":30,"semver_str":"*"}])
+    deps=[{"depending_version":1,"depending_on_package":30,"semver_str":"*"}]
+    result=run(deps)
     assert result["coverage_counts"]["OBSERVED_ABSENT_COMPLETE"]==0
-    certified=run([{"depending_version":1,"depending_on_package":30,"semver_str":"*"}])
-    assert certified["coverage_counts"]["UNKNOWN_MISSING"]==1
+    assert result["coverage_counts"]["UNKNOWN_MISSING"]==1
+    certified=build_u_t(VERSIONS, deps, cutoff="2022-09-01T00:00:00Z", complete_target_packages=[30])
+    assert certified["coverage_counts"]["OBSERVED_ABSENT_COMPLETE"]==1
+    assert certified["coverage_counts"]["UNKNOWN_MISSING"]==0
