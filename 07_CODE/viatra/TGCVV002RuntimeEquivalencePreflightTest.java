@@ -107,9 +107,9 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
         ((HostInstance) trace.getCpsElements().get(0)).getIdentifier());
     assertEquals(host, trace.getDeploymentElements().get(0));
 
-    assertExpectedFixtureProjection(expectedDeployment, expectedTraceProjection, deployment, trace);
+    assertExpectedFixtureProjection(expectedDeployment, expectedTraceProjection, expectedCpsElement, deployment, trace);
 
-    writeResult(resultPath, fixtureDir, unmappedBefore, bindings, deployment, trace, expectedDeployment, expectedTraceProjection);
+    writeResult(resultPath, fixtureDir, unmappedBefore, bindings, deployment, trace, expectedDeployment, expectedTraceProjection, expectedCpsElement);
 
     xform.dispose();
     engine.dispose();
@@ -117,7 +117,7 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
 
   private static void assertExpectedFixtureProjection(
       Deployment expectedDeployment, ExpectedTraceProjection expectedTrace,
-      Deployment actualDeployment, CPS2DeploymentTrace actualTrace) {
+      HostInstance expectedCpsElement, Deployment actualDeployment, CPS2DeploymentTrace actualTrace) {
     assertEquals("expected deployment host count",
         expectedDeployment.getHosts().size(), actualDeployment.getHosts().size());
     assertEquals("expected trace count", 1, expectedTrace.traceCount);
@@ -203,7 +203,8 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
   private static void writeResult(
       String resultPath, String fixtureDir, int unmappedBefore,
       List<String> bindings, Deployment deployment, CPS2DeploymentTrace trace,
-      Deployment expectedDeployment, ExpectedTraceProjection expectedTrace)
+      Deployment expectedDeployment, ExpectedTraceProjection expectedTrace,
+      HostInstance expectedCpsElement)
       throws Exception {
     String json = "{\n" +
       "  \"status\": \"RUNTIME_EQUIVALENCE_PREFLIGHT_PASS\",\n" +
@@ -228,7 +229,7 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
       "    \"deployment_hosts\": " + expectedDeployment.getHosts().size() + ",\n" +
       "    \"deployment_host_ip\": \"" + esc(expectedDeployment.getHosts().get(0).getIp()) + "\",\n" +
       "    \"traces\": " + expectedTrace.traceCount + ",\n" +
-      "    \"trace_cps_element\": \"" + esc(expectedTrace.cpsElementFragment) + "\",\n" +
+      "    \"trace_cps_element\": \"" + esc(expectedCpsElement.getIdentifier()) + "\",\n" +
       "    \"trace_deployment_element\": \"" + esc(expectedTrace.deploymentHostIp) + "\"\n" +
       "  },\n" +
       "  \"semantic_equivalence\": \"EXACT\",\n" +
