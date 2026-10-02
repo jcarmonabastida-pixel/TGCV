@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.StringReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -107,7 +105,7 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
         ((HostInstance) trace.getCpsElements().get(0)).getIdentifier());
     assertEquals(host, trace.getDeploymentElements().get(0));
 
-    assertExpectedFixtureProjection(expectedDeployment, expectedTraceProjection, expectedCpsElement, deployment, trace);
+    assertExpectedFixtureProjection(expectedDeployment, expectedTraceProjection, expectedCpsElement, deployment, trace, root.getTraces().size());
 
     writeResult(resultPath, fixtureDir, unmappedBefore, bindings, deployment, trace, expectedDeployment, expectedTraceProjection, expectedCpsElement);
 
@@ -117,11 +115,10 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
 
   private static void assertExpectedFixtureProjection(
       Deployment expectedDeployment, ExpectedTraceProjection expectedTrace,
-      HostInstance expectedCpsElement, Deployment actualDeployment, CPS2DeploymentTrace actualTrace) {
+      HostInstance expectedCpsElement, Deployment actualDeployment, CPS2DeploymentTrace actualTrace, int actualTraceCount) {
     assertEquals("expected deployment host count",
         expectedDeployment.getHosts().size(), actualDeployment.getHosts().size());
-    assertEquals("expected trace count", expectedTrace.traceCount, 1);
-    assertEquals(1, expectedDeployment.getHosts().size());
+    assertEquals("expected trace count", expectedTrace.traceCount, actualTraceCount);
 
     DeploymentHost expectedHost = expectedDeployment.getHosts().get(0);
     DeploymentHost actualHost = actualDeployment.getHosts().get(0);
@@ -131,9 +128,6 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
         expectedTrace.cpsElementCount, actualTrace.getCpsElements().size());
     assertEquals("expected trace deployment element count",
         expectedTrace.deploymentElementCount, actualTrace.getDeploymentElements().size());
-    assertEquals(1, expectedTrace.cpsElementCount);
-    assertEquals(1, expectedTrace.deploymentElementCount);
-
     assertTrue(actualTrace.getCpsElements().get(0) instanceof HostInstance);
     assertEquals("expected trace CPS element identifier",
         expectedCpsElement.getIdentifier(), ((HostInstance) actualTrace.getCpsElements().get(0)).getIdentifier());
@@ -172,7 +166,9 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     String cpsFragment = fragment(cpsHref);
     String depFragment = fragment(depHref);
 
-    assertEquals(1, expectedDeployment.getHosts().size());
+    if (expectedDeployment.getHosts().isEmpty()) {
+      throw new AssertionError("EXPECTED deployment XMI contains no DeploymentHost");
+    }
     return new ExpectedTraceProjection(traceCount, cpsElementCount, deploymentElementCount, cpsFragment, depFragment,
         expectedDeployment.getHosts().get(0).getIp());
   }
