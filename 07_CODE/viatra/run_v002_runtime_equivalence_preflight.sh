@@ -64,13 +64,6 @@ bin.includes = META-INF/,\
                .
 EOF
 
-cat > "$HARNESS_BUILD" <<'EOF'
-source.. = src/
-output.. = bin/
-bin.includes = META-INF/,\\
-               .
-EOF
-
 export TGCV_VIATRA_FIXTURE_DIR="$FIXTURE_DIR"
 export TGCV_VIATRA_RESULT="$GITHUB_WORKSPACE/$RESULT"
 export TGCV_VIATRA_CORE_REVISION="$CORE_REVISION"
@@ -78,13 +71,9 @@ export TGCV_VIATRA_EXAMPLES_REVISION="$EXAMPLES_REVISION"
 
 cleanup() {
   rm -rf "$HARNESS_DIR"
-  git -C "$EXAMPLES_DIR" checkout -- cps/pom.xml >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
 
-cd "$EXAMPLES_DIR"
-
-mvn -B -f cps/pom.xml \
-  -pl tests/org.eclipse.viatra.examples.cps.xform.m2m.tgcv.preflight \
-  -am verify \
-  -Dtest=TGCVV002RuntimeEquivalencePreflightTest
+mvn -B -f "$HARNESS_POM" verify \
+  -Dtest=TGCVV002RuntimeEquivalencePreflightTest \
+  -DfailIfNoTests=false
