@@ -132,8 +132,16 @@ jobs:
           grep -Fq "${new_url}" "$target_file"
           grep -Fq 'de.itemis.xtext.antlr.feature.feature.group' "$target_file"
           grep -Fq 'version="2.1.1.v201405091103"' "$target_file"
+          set +e
           mvn -B -f releng/org.eclipse.viatra.parent.core/pom.xml \
-            clean install -DskipTests
+            clean install -DskipTests 2>&1 | tee maven-core-build.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          if [ "$rc" -ne 0 ]; then
+            echo "===== Maven core build log ====="
+            cat maven-core-build.log
+            exit "$rc"
+          fi
 
       - name: Build pinned VIATRA CPS runtime closure
         working-directory: _viatra-examples
@@ -215,5 +223,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TGCV_VIATRA_V002_CANONICAL_RUNTIME_EQUIVALENCE_PREFLIGHT_RESULT_001
-          path: TGCV_VIATRA_V002_RUNTIME_EQUIVALENCE_PREFLIGHT_RESULT_001.json
+          path: ${{ env.RESULT }}
           if-no-files-found: error
