@@ -10,6 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -40,6 +43,8 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     Path cpsPath = dir.resolve("TGCV_VIATRA_MINIMAL_FIXTURE_v002_CPS.xmi");
     Path depPath = dir.resolve("TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_INITIAL.xmi");
     Path tracePath = dir.resolve("TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_INITIAL.xmi");
+    Path expectedDepPath = dir.resolve("TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_EXPECTED.xmi");
+    Path expectedTracePath = dir.resolve("TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_EXPECTED.xmi");
 
     Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
         .put("xmi", new XMIResourceFactoryImpl());
@@ -48,8 +53,14 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     Resource cpsRes = rs.getResource(URI.createFileURI(cpsPath.toFile().getAbsolutePath()), true);
     Resource depRes = rs.getResource(URI.createFileURI(depPath.toFile().getAbsolutePath()), true);
     Resource traceRes = rs.getResource(URI.createFileURI(tracePath.toFile().getAbsolutePath()), true);
-
+    Resource expectedDepRes = rs.getResource(URI.createFileURI(expectedDepPath.toFile().getAbsolutePath()), true);
     CPSToDeployment root = (CPSToDeployment) traceRes.getContents().get(0);
+    Deployment expectedDeployment = (Deployment) expectedDepRes.getContents().get(0);
+    ExpectedTraceProjection expectedTraceProjection = readExpectedTraceProjection(expectedTracePath, expectedDeployment);
+    HostInstance expectedCpsElement =
+        (HostInstance) rs.getEObject(URI.createFileURI(cpsPath.toFile().getAbsolutePath())
+            .appendFragment(expectedTraceProjection.cpsElementFragment), true);
+    assertNotNull(expectedCpsElement);
     assertNotNull(root.getCps());
     assertNotNull(root.getDeployment());
     assertEquals(0, root.getTraces().size());
@@ -94,15 +105,99 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
         ((HostInstance) trace.getCpsElements().get(0)).getIdentifier());
     assertEquals(host, trace.getDeploymentElements().get(0));
 
-    writeResult(resultPath, fixtureDir, unmappedBefore, bindings, deployment, trace);
+    assertExpectedFixtureProjection(expectedDeployment, expectedTraceProjection, expectedCpsElement, deployment, trace, root.getTraces().size());
+
+    writeResult(resultPath, fixtureDir, unmappedBefore, bindings, deployment, trace, expectedDeployment, expectedTraceProjection, expectedCpsElement);
 
     xform.dispose();
     engine.dispose();
   }
 
+  private static void assertExpectedFixtureProjection(
+      Deployment expectedDeployment, ExpectedTraceProjection expectedTrace,
+      HostInstance expectedCpsElement, Deployment actualDeployment, CPS2DeploymentTrace actualTrace, int actualTraceCount) {
+    assertEquals("expected deployment host count",
+        expectedDeployment.getHosts().size(), actualDeployment.getHosts().size());
+    assertEquals("expected trace count", expectedTrace.traceCount, actualTraceCount);
+
+    DeploymentHost expectedHost = expectedDeployment.getHosts().get(0);
+    DeploymentHost actualHost = actualDeployment.getHosts().get(0);
+    assertEquals("expected deployment host IP", expectedHost.getIp(), actualHost.getIp());
+
+    assertEquals("expected trace CPS element count",
+        expectedTrace.cpsElementCount, actualTrace.getCpsElements().size());
+    assertEquals("expected trace deployment element count",
+        expectedTrace.deploymentElementCount, actualTrace.getDeploymentElements().size());
+    assertTrue(actualTrace.getCpsElements().get(0) instanceof HostInstance);
+    assertEquals("expected trace CPS element identifier",
+        expectedCpsElement.getIdentifier(), ((HostInstance) actualTrace.getCpsElements().get(0)).getIdentifier());
+
+    assertTrue(actualTrace.getDeploymentElements().get(0) instanceof DeploymentHost);
+    assertEquals("expected trace deployment host IP",
+        expectedTrace.deploymentHostIp, ((DeploymentHost) actualTrace.getDeploymentElements().get(0)).getIp());
+  }
+
+  private static ExpectedTraceProjection readExpectedTraceProjection(
+      Path path, Deployment expectedDeployment) throws Exception {
+    DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+    f.setNamespaceAware(true);
+    f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+    f.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    f.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+    Document d = f.newDocumentBuilder().parse(path.toFile());
+    Element root = d.getDocumentElement();
+    int traceCount = root.getElementsByTagNameNS("*", "traces").getLength();
+    if (traceCount != 1) throw new AssertionError("EXPECTED traceability XMI must contain exactly one trace");
+
+    Element trace = (Element) root.getElementsByTagNameNS("*", "traces").item(0);
+    Element cps = (Element) trace.getElementsByTagNameNS("*", "cpsElements").item(0);
+    Element dep = (Element) trace.getElementsByTagNameNS("*", "deploymentElements").item(0);
+    int cpsElementCount = trace.getElementsByTagNameNS("*", "cpsElements").getLength();
+    int deploymentElementCount = trace.getElementsByTagNameNS("*", "deploymentElements").getLength();
+    if (cps == null || dep == null) throw new AssertionError("EXPECTED trace must contain cpsElements and deploymentElements");
+
+    String cpsHref = cps.getAttribute("href");
+    String depHref = dep.getAttribute("href");
+    String cpsFragment = fragment(cpsHref);
+    String depFragment = fragment(depHref);
+
+    if (expectedDeployment.getHosts().isEmpty()) {
+      throw new AssertionError("EXPECTED deployment XMI contains no DeploymentHost");
+    }
+    return new ExpectedTraceProjection(traceCount, cpsElementCount, deploymentElementCount, cpsFragment, depFragment,
+        expectedDeployment.getHosts().get(0).getIp());
+  }
+
+  private static String fragment(String href) {
+    int i = href.indexOf('#');
+    if (i < 0 || i + 1 >= href.length()) throw new AssertionError("EXPECTED XMI href has no fragment: " + href);
+    return href.substring(i + 1);
+  }
+
+  private static final class ExpectedTraceProjection {
+    final int traceCount;
+    final int cpsElementCount;
+    final int deploymentElementCount;
+    final String cpsElementFragment;
+    final String deploymentElementFragment;
+    final String deploymentHostIp;
+
+    ExpectedTraceProjection(int traceCount, int cpsElementCount, int deploymentElementCount,
+        String cpsElementFragment, String deploymentElementFragment, String deploymentHostIp) {
+      this.traceCount = traceCount;
+      this.cpsElementCount = cpsElementCount;
+      this.deploymentElementCount = deploymentElementCount;
+      this.deploymentElementFragment = deploymentElementFragment;
+      this.cpsElementFragment = cpsElementFragment;
+      this.deploymentHostIp = deploymentHostIp;
+    }
+  }
+
   private static void writeResult(
       String resultPath, String fixtureDir, int unmappedBefore,
-      List<String> bindings, Deployment deployment, CPS2DeploymentTrace trace)
+      List<String> bindings, Deployment deployment, CPS2DeploymentTrace trace,
+      Deployment expectedDeployment, ExpectedTraceProjection expectedTrace,
+      HostInstance expectedCpsElement)
       throws Exception {
     String json = "{\n" +
       "  \"status\": \"RUNTIME_EQUIVALENCE_PREFLIGHT_PASS\",\n" +
@@ -117,18 +212,18 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
       "  \"host_mapping_created_activation_count\": 1,\n" +
       "  \"unexpected_relevant_activation_count\": 0,\n" +
       "  \"actual_post_state_projection\": {\n" +
-      "    \"deployment_hosts\": 1,\n" +
+      "    \"deployment_hosts\": " + deployment.getHosts().size() + ",\n" +
       "    \"deployment_host_ip\": \"" + esc(deployment.getHosts().get(0).getIp()) + "\",\n" +
-      "    \"traces\": 1,\n" +
+      "    \"traces\": " + (trace == null ? 0 : 1) + ",\n" +
       "    \"trace_cps_element\": \"" + esc(((HostInstance) trace.getCpsElements().get(0)).getIdentifier()) + "\",\n" +
       "    \"trace_deployment_element\": \"" + esc(deployment.getHosts().get(0).getIp()) + "\"\n" +
       "  },\n" +
       "  \"expected_post_state_projection\": {\n" +
-      "    \"deployment_hosts\": 1,\n" +
-      "    \"deployment_host_ip\": \"152.66.102.6\",\n" +
-      "    \"traces\": 1,\n" +
-      "    \"trace_cps_element\": \"Aragorn\",\n" +
-      "    \"trace_deployment_element\": \"152.66.102.6\"\n" +
+      "    \"deployment_hosts\": " + expectedDeployment.getHosts().size() + ",\n" +
+      "    \"deployment_host_ip\": \"" + esc(expectedDeployment.getHosts().get(0).getIp()) + "\",\n" +
+      "    \"traces\": " + expectedTrace.traceCount + ",\n" +
+      "    \"trace_cps_element\": \"" + esc(expectedCpsElement.getIdentifier()) + "\",\n" +
+      "    \"trace_deployment_element\": \"" + esc(expectedTrace.deploymentHostIp) + "\"\n" +
       "  },\n" +
       "  \"semantic_equivalence\": \"EXACT\",\n" +
       "  \"contamination_check\": \"PASS\",\n" +
