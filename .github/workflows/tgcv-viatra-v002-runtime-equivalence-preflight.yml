@@ -1,0 +1,131 @@
+name: TGCV VIATRA V002 Runtime Equivalence Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-equivalence-preflight:
+    name: Runtime equivalence preflight (manual only)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      VIATRA_CORE_REVISION: ffa111dbb160c0bc55e89ea16430e97a38908662
+      VIATRA_EXAMPLES_REVISION: 15f269dbf74000eac7b97cf7f92e256b8fb1fc1c
+      FIXTURE_DIR: 00_GOVERNANCE/architecture/fixtures
+      RESULT: TGCV_VIATRA_V002_RUNTIME_EQUIVALENCE_PREFLIGHT_RESULT_001.json
+
+    steps:
+      - name: Checkout TGCV at workflow revision
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify TGCV fixture inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$FIXTURE_DIR/TGCV_VIATRA_MINIMAL_FIXTURE_v002_CPS.xmi"
+          test -f "$FIXTURE_DIR/TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_INITIAL.xmi"
+          test -f "$FIXTURE_DIR/TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_INITIAL.xmi"
+          test -f "$FIXTURE_DIR/TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_EXPECTED.xmi"
+          test -f "$FIXTURE_DIR/TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_EXPECTED.xmi"
+
+      - name: Checkout pinned VIATRA core
+        uses: actions/checkout@v4
+        with:
+          repository: eclipse-viatra/org.eclipse.viatra
+          ref: ${{ env.VIATRA_CORE_REVISION }}
+          path: _viatra-core
+          fetch-depth: 0
+
+      - name: Checkout pinned VIATRA examples
+        uses: actions/checkout@v4
+        with:
+          repository: eclipse-viatra/org.eclipse.viatra.examples
+          ref: ${{ env.VIATRA_EXAMPLES_REVISION }}
+          path: _viatra-examples
+          fetch-depth: 0
+
+      - name: Verify immutable revisions and clean trees
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C _viatra-core rev-parse HEAD)" = "$VIATRA_CORE_REVISION"
+          test "$(git -C _viatra-examples rev-parse HEAD)" = "$VIATRA_EXAMPLES_REVISION"
+          test -z "$(git -C _viatra-core status --porcelain)"
+          test -z "$(git -C _viatra-examples status --porcelain)"
+
+      - name: Toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          java -version 2>&1 | tee java-version.txt
+          mvn -version | tee maven-version.txt
+
+      - name: Build pinned VIATRA example transformation and test bundles
+        working-directory: _viatra-examples
+        shell: bash
+        run: |
+          set -euo pipefail
+          mvn -B -pl \
+            cps/transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,\
+            cps/tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
+            -am test -DskipTests=false
+
+      - name: Run dedicated TGCV runtime adapter
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -x "07_CODE/viatra/run_v002_runtime_equivalence_preflight.sh" ]; then
+            echo "FAIL-CLOSED: dedicated TGCV runtime adapter is not present."
+            echo "The workflow is intentionally prevented from substituting a different test or reconstructing the fixture."
+            exit 2
+          fi
+          07_CODE/viatra/run_v002_runtime_equivalence_preflight.sh \
+            "$VIATRA_CORE_REVISION" \
+            "$VIATRA_EXAMPLES_REVISION" \
+            "$GITHUB_WORKSPACE/$FIXTURE_DIR" \
+            "$GITHUB_WORKSPACE/$RESULT"
+
+      - name: Validate required result artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$RESULT"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("TGCV_VIATRA_V002_RUNTIME_EQUIVALENCE_PREFLIGHT_RESULT_001.json")
+          d = json.loads(p.read_text())
+          required = [
+              "status", "core_revision", "examples_revision", "tgcv_fixture_revision",
+              "java_version", "build_tool_version", "metamodel_load_status",
+              "root_mapping_count", "unmapped_host_instance_count",
+              "host_mapping_created_activation_count", "unexpected_relevant_activation_count",
+              "actual_post_state_projection", "expected_post_state_projection",
+              "semantic_equivalence", "contamination_check", "failure_details",
+          ]
+          missing = [k for k in required if k not in d]
+          if missing:
+              raise SystemExit("Missing required result fields: " + ", ".join(missing))
+          if d["core_revision"] != "ffa111dbb160c0bc55e89ea16430e97a38908662":
+              raise SystemExit("core_revision mismatch")
+          if d["examples_revision"] != "15f269dbf74000eac7b97cf7f92e256b8fb1fc1c":
+              raise SystemExit("examples_revision mismatch")
+          forbidden = ("scientific_outcome", "value", "reward", "utility", "score")
+          blob = json.dumps(d).lower()
+          for token in forbidden:
+              if token in blob:
+                  raise SystemExit("Forbidden scientific field detected: " + token)
+          PY
+
+      - name: Upload preflight result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TGCV_VIATRA_V002_RUNTIME_EQUIVALENCE_PREFLIGHT_RESULT_001
+          path: TGCV_VIATRA_V002_RUNTIME_EQUIVALENCE_PREFLIGHT_RESULT_001.json
+          if-no-files-found: error
