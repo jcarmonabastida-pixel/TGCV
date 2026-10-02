@@ -31,16 +31,21 @@ def main():
     observed=sha256_file(p)
     if observed!=EXPECTED_SHA256:
         raise SystemExit(f"snapshot SHA-256 mismatch: {observed}")
-    with zipfile.ZipFile(p) as z:
-        names=set(z.namelist())
-        for m in (VERSIONS_MEMBER,DEPENDENCIES_MEMBER):
-            if m not in names: raise SystemExit(f"required member missing: {m}")
-        versions=list(read_csv(z,VERSIONS_MEMBER))
-        dependencies=read_csv(z,DEPENDENCIES_MEMBER)
+    z=zipfile.ZipFile(p)
+    names=set(z.namelist())
+    for m in (VERSIONS_MEMBER,DEPENDENCIES_MEMBER):
+        if m not in names:
+            z.close()
+            raise SystemExit(f"required member missing: {m}")
+    versions=list(read_csv(z,VERSIONS_MEMBER))
+    dependencies=read_csv(z,DEPENDENCIES_MEMBER)
     valid_times=[str(row["created_at"]) for row in versions if str(row.get("created_at",""))]
     if not valid_times: raise SystemExit("no valid created_at values in package_versions.csv")
     cutoff=max(valid_times)
-    result=build_u_t(versions,dependencies,cutoff=cutoff,complete_target_packages=())
+    try:
+        result=build_u_t(versions,dependencies,cutoff=cutoff,complete_target_packages=())
+    finally:
+        z.close()
     result["status"]="PASS"
     result["execution_authorized"]=True
     result["scientific_execution_authorized"]=True
