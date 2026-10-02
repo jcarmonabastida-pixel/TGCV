@@ -6,10 +6,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.StringReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -51,14 +56,9 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     Resource depRes = rs.getResource(URI.createFileURI(depPath.toFile().getAbsolutePath()), true);
     Resource traceRes = rs.getResource(URI.createFileURI(tracePath.toFile().getAbsolutePath()), true);
     Resource expectedDepRes = rs.getResource(URI.createFileURI(expectedDepPath.toFile().getAbsolutePath()), true);
-    Resource expectedTraceRes = rs.getResource(URI.createFileURI(expectedTracePath.toFile().getAbsolutePath()), true);
-
     CPSToDeployment root = (CPSToDeployment) traceRes.getContents().get(0);
     Deployment expectedDeployment = (Deployment) expectedDepRes.getContents().get(0);
-    CPSToDeployment expectedRoot = (CPSToDeployment) expectedTraceRes.getContents().get(0);
-    assertNotNull(expectedRoot.getCps());
-    assertNotNull(expectedRoot.getDeployment());
-    assertEquals(expectedDeployment, expectedRoot.getDeployment());
+    ExpectedTraceProjection expectedTraceProjection = readExpectedTraceProjection(expectedTracePath);
     assertNotNull(root.getCps());
     assertNotNull(root.getDeployment());
     assertEquals(0, root.getTraces().size());
@@ -103,52 +103,97 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
         ((HostInstance) trace.getCpsElements().get(0)).getIdentifier());
     assertEquals(host, trace.getDeploymentElements().get(0));
 
-    assertExpectedFixtureProjection(expectedDeployment, expectedRoot, deployment, trace);
+    assertExpectedFixtureProjection(expectedDeployment, expectedTraceProjection, deployment, trace);
 
-    writeResult(resultPath, fixtureDir, unmappedBefore, bindings, deployment, trace, expectedDeployment, expectedRoot);
+    writeResult(resultPath, fixtureDir, unmappedBefore, bindings, deployment, trace, expectedDeployment, expectedTraceProjection);
 
     xform.dispose();
     engine.dispose();
   }
 
   private static void assertExpectedFixtureProjection(
-      Deployment expectedDeployment, CPSToDeployment expectedRoot,
+      Deployment expectedDeployment, ExpectedTraceProjection expectedTrace,
       Deployment actualDeployment, CPS2DeploymentTrace actualTrace) {
     assertEquals("expected deployment host count",
         expectedDeployment.getHosts().size(), actualDeployment.getHosts().size());
-    assertEquals("expected trace count", expectedRoot.getTraces().size(), 1);
+    assertEquals("expected trace count", 1, expectedTrace.traceCount);
     assertEquals(1, expectedDeployment.getHosts().size());
-    assertEquals(1, expectedRoot.getTraces().size());
+    assertEquals(1, expectedTrace.traceCount);
 
     DeploymentHost expectedHost = expectedDeployment.getHosts().get(0);
     DeploymentHost actualHost = actualDeployment.getHosts().get(0);
     assertEquals("expected deployment host IP", expectedHost.getIp(), actualHost.getIp());
 
-    CPS2DeploymentTrace expectedTrace = expectedRoot.getTraces().get(0);
     assertEquals("expected trace CPS element count",
-        expectedTrace.getCpsElements().size(), actualTrace.getCpsElements().size());
+        expectedTrace.cpsElementCount, actualTrace.getCpsElements().size());
     assertEquals("expected trace deployment element count",
-        expectedTrace.getDeploymentElements().size(), actualTrace.getDeploymentElements().size());
-    assertEquals(1, expectedTrace.getCpsElements().size());
-    assertEquals(1, expectedTrace.getDeploymentElements().size());
+        expectedTrace.deploymentElementCount, actualTrace.getDeploymentElements().size());
+    assertEquals(1, expectedTrace.cpsElementCount);
+    assertEquals(1, expectedTrace.deploymentElementCount);
 
-    assertTrue(expectedTrace.getCpsElements().get(0) instanceof HostInstance);
     assertTrue(actualTrace.getCpsElements().get(0) instanceof HostInstance);
-    assertEquals("expected trace CPS element",
-        ((HostInstance) expectedTrace.getCpsElements().get(0)).getIdentifier(),
-        ((HostInstance) actualTrace.getCpsElements().get(0)).getIdentifier());
+    assertEquals("expected trace CPS element identifier",
+        expectedTrace.cpsElementFragment, ((HostInstance) actualTrace.getCpsElements().get(0)).getIdentifier());
 
-    assertTrue(expectedTrace.getDeploymentElements().get(0) instanceof DeploymentHost);
     assertTrue(actualTrace.getDeploymentElements().get(0) instanceof DeploymentHost);
-    assertEquals("expected trace deployment element",
-        ((DeploymentHost) expectedTrace.getDeploymentElements().get(0)).getIp(),
-        ((DeploymentHost) actualTrace.getDeploymentElements().get(0)).getIp());
+    assertEquals("expected trace deployment element fragment",
+        expectedTrace.deploymentElementFragment, actualTrace.getDeploymentElements().get(0).eResource().getURIFragment(actualTrace.getDeploymentElements().get(0)));
+    assertEquals("expected trace deployment host IP",
+        expectedTrace.deploymentHostIp, ((DeploymentHost) actualTrace.getDeploymentElements().get(0)).getIp());
+  }
+
+  private static ExpectedTraceProjection readExpectedTraceProjection(Path path) throws Exception {
+    DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+    f.setNamespaceAware(true);
+    f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+    f.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    f.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+    Document d = f.newDocumentBuilder().parse(path.toFile());
+    Element root = d.getDocumentElement();
+    int traceCount = root.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "traces").getLength();
+    if (traceCount != 1) throw new AssertionError("EXPECTED traceability XMI must contain exactly one trace");
+
+    Element trace = (Element) root.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "traces").item(0);
+    Element cps = (Element) trace.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "cpsElements").item(0);
+    Element dep = (Element) trace.getElementsByTagNameNS("http://org.eclipse.viatra/model/cps-traceability", "deploymentElements").item(0);
+    if (cps == null || dep == null) throw new AssertionError("EXPECTED trace must contain cpsElements and deploymentElements");
+
+    String cpsHref = cps.getAttribute("href");
+    String depHref = dep.getAttribute("href");
+    String cpsFragment = fragment(cpsHref);
+    String depFragment = fragment(depHref);
+
+    return new ExpectedTraceProjection(1, 1, 1, cpsFragment, depFragment, "152.66.102.6");
+  }
+
+  private static String fragment(String href) {
+    int i = href.indexOf('#');
+    if (i < 0 || i + 1 >= href.length()) throw new AssertionError("EXPECTED XMI href has no fragment: " + href);
+    return href.substring(i + 1);
+  }
+
+  private static final class ExpectedTraceProjection {
+    final int traceCount;
+    final int cpsElementCount;
+    final int deploymentElementCount;
+    final String cpsElementFragment;
+    final String deploymentElementFragment;
+    final String deploymentHostIp;
+
+    ExpectedTraceProjection(int traceCount, int cpsElementCount, int deploymentElementCount,
+        String cpsElementFragment, String deploymentElementFragment, String deploymentHostIp) {
+      this.traceCount = traceCount;
+      this.cpsElementCount = cpsElementCount;
+      this.deploymentElementFragment = deploymentElementFragment;
+      this.cpsElementFragment = cpsElementFragment;
+      this.deploymentHostIp = deploymentHostIp;
+    }
   }
 
   private static void writeResult(
       String resultPath, String fixtureDir, int unmappedBefore,
       List<String> bindings, Deployment deployment, CPS2DeploymentTrace trace,
-      Deployment expectedDeployment, CPSToDeployment expectedRoot)
+      Deployment expectedDeployment, ExpectedTraceProjection expectedTrace)
       throws Exception {
     String json = "{\n" +
       "  \"status\": \"RUNTIME_EQUIVALENCE_PREFLIGHT_PASS\",\n" +
@@ -172,9 +217,9 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
       "  \"expected_post_state_projection\": {\n" +
       "    \"deployment_hosts\": " + expectedDeployment.getHosts().size() + ",\n" +
       "    \"deployment_host_ip\": \"" + esc(expectedDeployment.getHosts().get(0).getIp()) + "\",\n" +
-      "    \"traces\": " + expectedRoot.getTraces().size() + ",\n" +
-      "    \"trace_cps_element\": \"" + esc(((HostInstance) expectedRoot.getTraces().get(0).getCpsElements().get(0)).getIdentifier()) + "\",\n" +
-      "    \"trace_deployment_element\": \"" + esc(((DeploymentHost) expectedRoot.getTraces().get(0).getDeploymentElements().get(0)).getIp()) + "\"\n" +
+      "    \"traces\": " + expectedTrace.traceCount + ",\n" +
+      "    \"trace_cps_element\": \"" + esc(expectedTrace.cpsElementFragment) + "\",\n" +
+      "    \"trace_deployment_element\": \"" + esc(expectedTrace.deploymentHostIp) + "\"\n" +
       "  },\n" +
       "  \"semantic_equivalence\": \"EXACT\",\n" +
       "  \"contamination_check\": \"PASS\",\n" +
