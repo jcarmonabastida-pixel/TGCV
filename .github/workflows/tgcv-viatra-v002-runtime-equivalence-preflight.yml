@@ -68,7 +68,43 @@ jobs:
           test -f "$TRANSFORM"
           test "$(git hash-object "$HOST_RULE")" = "d61d845885450a73251d66a685e2328e3028ee29"
 
-      - name: Set Java 17 toolchain
+      - name: Set Java 11 and Java 17 toolchains
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            11
+            17
+
+      - name: Configure Maven Java 11 toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.m2"
+          cat > "$HOME/.m2/toolchains.xml" <<'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <toolchains xmlns="http://maven.apache.org/TOOLCHAINS/1.1.0">
+            <toolchain>
+              <type>jdk</type>
+              <provides>
+                <version>11</version>
+                <id>JavaSE-11</id>
+              </provides>
+              <configuration>
+                <jdkHome>\${JAVA_HOME_11_X64}</jdkHome>
+              </configuration>
+            </toolchain>
+          </toolchains>
+          EOF
+          test -x "$JAVA_HOME_11_X64/bin/java"
+          "$JAVA_HOME_11_X64/bin/java" -version 2>&1
+
+      - name: Set Java 17 for Maven runtime
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
         uses: actions/setup-java@v4
         with:
           distribution: temurin
