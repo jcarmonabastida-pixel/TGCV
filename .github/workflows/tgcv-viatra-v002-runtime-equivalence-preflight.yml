@@ -117,6 +117,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          target_file="releng/org.eclipse.viatra.target.all/org.eclipse.viatra.target.all.target"
+          old_url="https://download.itemis.com/updates/releases/2.1.1/"
+          new_url="https://artifacts.itemis.cloud/repository/p2/xtext-updates/releases/2.1.1"
+          grep -Fq "${old_url}" "$target_file"
+          sed -i "s#${old_url}#${new_url}#" "$target_file"
+          test "$(git diff --numstat -- "$target_file" | awk '{print $1 "+" $2}')" = "1+1"
+          grep -Fq "${new_url}" "$target_file"
+          grep -Fq 'de.itemis.xtext.antlr.feature.feature.group' "$target_file"
+          grep -Fq 'version="2.1.1.v201405091103"' "$target_file"
           mvn -B -f releng/org.eclipse.viatra.parent.core/pom.xml \
             -pl ../../releng/org.eclipse.viatra.target.all -am install -DskipTests
           mvn -B -f releng/org.eclipse.viatra.parent.core/pom.xml \
