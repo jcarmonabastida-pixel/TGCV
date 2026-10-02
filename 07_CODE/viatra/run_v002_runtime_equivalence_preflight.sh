@@ -64,16 +64,12 @@ bin.includes = META-INF/,\
                .
 EOF
 
-python3 - <<'PY'
-from pathlib import Path
-p = Path("cps/pom.xml")
-s = p.read_text()
-module = "tests/org.eclipse.viatra.examples.cps.xform.m2m.tgcv.preflight"
-if module not in s:
-    s = s.replace("\t\t<module>tests/org.eclipse.viatra.examples.cps.xform.m2m.tests</module>",
-                  "\t\t<module>tests/org.eclipse.viatra.examples.cps.xform.m2m.tests</module>\n\t\t<module>"+module+"</module>")
-    p.write_text(s)
-PY
+cat > "$HARNESS_BUILD" <<'EOF'
+source.. = src/
+output.. = bin/
+bin.includes = META-INF/,\\
+               .
+EOF
 
 export TGCV_VIATRA_FIXTURE_DIR="$FIXTURE_DIR"
 export TGCV_VIATRA_RESULT="$GITHUB_WORKSPACE/$RESULT"
