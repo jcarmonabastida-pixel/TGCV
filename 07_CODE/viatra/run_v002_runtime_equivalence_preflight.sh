@@ -45,7 +45,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TGCV VIATRA V002 Runtime Equivalence Preflight
 Bundle-SymbolicName: org.eclipse.viatra.examples.cps.xform.m2m.tgcv.preflight
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Require-Bundle: org.junit,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.viatra.examples.cps.model,
