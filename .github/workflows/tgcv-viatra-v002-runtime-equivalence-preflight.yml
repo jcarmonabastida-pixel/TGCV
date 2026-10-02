@@ -137,7 +137,7 @@ jobs:
         run: |
           set -euo pipefail
           mvn -B -f cps/pom.xml -pl releng/org.eclipse.viatra.examples.cps.target,releng/org.eclipse.viatra.examples.cps.domain.parent -am install -DskipTests
-          mvn -B -pl cps/transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,cps/tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
+          mvn -B -f cps/pom.xml -pl transformations/org.eclipse.viatra.examples.cps.xform.m2m.incr.expl,tests/org.eclipse.viatra.examples.cps.xform.m2m.tests \
             -am test -DskipTests=false
 
       - name: Run dedicated TGCV runtime adapter
