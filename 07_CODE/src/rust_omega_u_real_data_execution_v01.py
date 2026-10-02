@@ -18,7 +18,9 @@ def sha256_file(p):
 
 def read_csv(z,m):
     with z.open(m) as f:
-        return list(csv.DictReader((x.decode("utf-8") for x in f)))
+        reader = csv.DictReader((x.decode("utf-8") for x in f))
+        for row in reader:
+            yield row
 
 def main():
     ap=argparse.ArgumentParser()
@@ -33,7 +35,7 @@ def main():
         names=set(z.namelist())
         for m in (VERSIONS_MEMBER,DEPENDENCIES_MEMBER):
             if m not in names: raise SystemExit(f"required member missing: {m}")
-        versions=read_csv(z,VERSIONS_MEMBER)
+        versions=list(read_csv(z,VERSIONS_MEMBER))
         dependencies=read_csv(z,DEPENDENCIES_MEMBER)
     valid_times=[str(row["created_at"]) for row in versions if str(row.get("created_at",""))]
     if not valid_times: raise SystemExit("no valid created_at values in package_versions.csv")
@@ -46,6 +48,7 @@ def main():
     result["snapshot_path"]=str(p)
     result["implementation"]="07_CODE/src/omega_u_constructor_v01.py"
     result["implementation_version"]=CONSTRUCTION_VERSION
+    result["dependency_processing"]="streaming"
     result["temporal_rule"]=TEMPORAL_RULE_ID
     result["input_rows"]={"package_versions":len(versions),"package_dependencies":len(dependencies)}
     result["cutoff_rule"]="max(created_at) over valid package_versions.csv records"
