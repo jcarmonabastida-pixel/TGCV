@@ -58,7 +58,11 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     Resource expectedDepRes = rs.getResource(URI.createFileURI(expectedDepPath.toFile().getAbsolutePath()), true);
     CPSToDeployment root = (CPSToDeployment) traceRes.getContents().get(0);
     Deployment expectedDeployment = (Deployment) expectedDepRes.getContents().get(0);
-    ExpectedTraceProjection expectedTraceProjection = readExpectedTraceProjection(expectedTracePath);
+    ExpectedTraceProjection expectedTraceProjection = readExpectedTraceProjection(expectedTracePath, expectedDeployment);
+    HostInstance expectedCpsElement =
+        (HostInstance) rs.getEObject(URI.createFileURI(cpsPath.toFile().getAbsolutePath())
+            .appendFragment(expectedTraceProjection.cpsElementFragment), true);
+    assertNotNull(expectedCpsElement);
     assertNotNull(root.getCps());
     assertNotNull(root.getDeployment());
     assertEquals(0, root.getTraces().size());
@@ -133,7 +137,10 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
 
     assertTrue(actualTrace.getCpsElements().get(0) instanceof HostInstance);
     assertEquals("expected trace CPS element identifier",
-        expectedTrace.cpsElementFragment, ((HostInstance) actualTrace.getCpsElements().get(0)).getIdentifier());
+        expectedCpsElement.getIdentifier(), ((HostInstance) actualTrace.getCpsElements().get(0)).getIdentifier());
+    assertEquals("expected trace CPS element fragment",
+        expectedTrace.cpsElementFragment,
+        actualTrace.getCpsElements().get(0).eResource().getURIFragment(actualTrace.getCpsElements().get(0)));
 
     assertTrue(actualTrace.getDeploymentElements().get(0) instanceof DeploymentHost);
     assertEquals("expected trace deployment element fragment",
@@ -142,7 +149,8 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
         expectedTrace.deploymentHostIp, ((DeploymentHost) actualTrace.getDeploymentElements().get(0)).getIp());
   }
 
-  private static ExpectedTraceProjection readExpectedTraceProjection(Path path) throws Exception {
+  private static ExpectedTraceProjection readExpectedTraceProjection(
+      Path path, Deployment expectedDeployment) throws Exception {
     DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
     f.setNamespaceAware(true);
     f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -163,7 +171,9 @@ public class TGCVV002RuntimeEquivalencePreflightTest {
     String cpsFragment = fragment(cpsHref);
     String depFragment = fragment(depHref);
 
-    return new ExpectedTraceProjection(1, 1, 1, cpsFragment, depFragment, "152.66.102.6");
+    assertEquals(1, expectedDeployment.getHosts().size());
+    return new ExpectedTraceProjection(1, 1, 1, cpsFragment, depFragment,
+        expectedDeployment.getHosts().get(0).getIp());
   }
 
   private static String fragment(String href) {
