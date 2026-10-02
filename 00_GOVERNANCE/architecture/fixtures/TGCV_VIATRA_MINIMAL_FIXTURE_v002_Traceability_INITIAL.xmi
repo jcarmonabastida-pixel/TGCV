@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cpstraceability:CPSToDeployment xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:cps="http://org.eclipse.viatra/model/cps"
+    xmlns:cpstraceability="http://org.eclipse.viatra/model/cps-traceability"
+    xmlns:deployment="http://org.eclipse.viatra/model/deployment">
+  <cps href="TGCV_VIATRA_MINIMAL_FIXTURE_v002_CPS.xmi#/"/>
+  <deployment href="TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_INITIAL.xmi#/"/>
+</cpstraceability:CPSToDeployment>
