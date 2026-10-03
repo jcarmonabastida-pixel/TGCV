@@ -2,7 +2,9 @@
 
 ## Status
 
-SOURCE-VERIFIED CORRECTION.
+**SUPERSEDED — HISTORICAL RUNTIME DEPENDENCY RECONCILIATION**
+
+This reconciliation is tied to the earlier VIATRA core revision `ffa111db...` and is not the current Observer Host packaging dependency contract. The current host build is based on the pinned historical examples revision `eb68158a...` and has been verified by run `37123064623`.
 
 ## Finding
 
