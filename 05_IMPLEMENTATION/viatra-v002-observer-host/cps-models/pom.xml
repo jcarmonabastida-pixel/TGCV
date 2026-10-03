@@ -30,7 +30,7 @@
             <artifact>
               <groupId>org.tgcv</groupId>
               <artifactId>tgcv-viatra-v002-target</artifactId>
-              <version>${project.version}</version>
+              <version>${parent.version}</version>
             </artifact>
           </target>
         </configuration>
