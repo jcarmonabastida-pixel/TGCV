@@ -38,6 +38,7 @@ do
   grep -Fq "source.. = src/" "$b/build.properties"
   grep -Fq "<packaging>eclipse-plugin</packaging>" "$b/pom.xml"
   grep -Fq "<artifactId>$bundle</artifactId>" "$b/pom.xml"
+  grep -Fq "<version>2.1.0-SNAPSHOT</version>" "$b/pom.xml"
   grep -Fq "<artifactId>tgcv-viatra-v002-cps-models</artifactId>" "$b/pom.xml"
 done
 
