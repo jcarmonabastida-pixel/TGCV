@@ -38,12 +38,17 @@ jobs:
           from pathlib import Path
           p = Path("releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target")
           s = p.read_text()
-          old = "http://download.itemis.com/updates/releases/2.1.1/"
-          new = "https://artifacts.itemis.cloud/repository/p2/xtext-updates/releases/2.1.1/"
-          assert old in s
-          p.write_text(s.replace(old, new))
+          replacements = {
+              "http://download.itemis.com/updates/releases/2.1.1/": "https://artifacts.itemis.cloud/repository/p2/xtext-updates/releases/2.1.1/",
+              "http://download.eclipse.org/modeling/tmf/xtext/updates/releases/xpand/R201406030414": "https://mirror.twds.com.tw/eclipse/modeling/m2t/xpand/updates/releases/R201406030414",
+          }
+          for old, new in replacements.items():
+              assert old in s, old
+              s = s.replace(old, new)
+          p.write_text(s)
           PY
           grep -F "https://artifacts.itemis.cloud/repository/p2/xtext-updates/releases/2.1.1/" releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
+          grep -F "https://mirror.twds.com.tw/eclipse/modeling/m2t/xpand/updates/releases/R201406030414" releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
 
       - name: Build historical core pass
         shell: bash
