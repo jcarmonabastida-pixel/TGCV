@@ -2,7 +2,9 @@
 
 ## Status
 
-SPECIFICATION — host project not yet materialized or executed.
+SUPERSEDED — HOST PROJECT MATERIALIZED AND BUILD VERIFIED
+
+This specification records the pre-materialization design state. The canonical host is now materialized and its packaging/build chain was verified by run `37123064623`.
 
 ## Purpose
 
