@@ -49,6 +49,7 @@ echo "== Target-platform configuration placement =="
 grep -Fq '<artifactId>tycho-maven-plugin</artifactId>' pom.xml
 ! grep -Fq '<artifactId>target-platform-configuration</artifactId>' pom.xml
 grep -Fq '<artifactId>target-platform-configuration</artifactId>' cps-models/pom.xml
+grep -Fq '<version>${parent.version}</version>' cps-models/pom.xml
 grep -Fq '<artifactId>target-platform-configuration</artifactId>' observer/pom.xml
 ! grep -Fq '<relativePath>target-definition/pom.xml</relativePath>' cps-models/pom.xml
 ! grep -Fq '<relativePath>target-definition/pom.xml</relativePath>' observer/pom.xml
