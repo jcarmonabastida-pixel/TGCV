@@ -48,8 +48,8 @@ TRANSFORMATION_ID = (
 )
 
 FORBIDDEN_TERMS = re.compile(
-    r"(?i)\\b(value|utility|reward|performance[_ -]?score|downstream[_ -]?outcome|"
-    r"market|business[_ -]?variable|value[_ -]?construction)\\b"
+    r"(?i)\b(value|utility|reward|performance[_ -]?score|downstream[_ -]?outcome|"
+    r"market|business[_ -]?variable|value[_ -]?construction)\b"
 )
 
 
@@ -82,10 +82,6 @@ def href_target(value: str) -> tuple[str, str]:
     return Path(filename).name, fragment
 
 
-def children(root: ET.Element, name: str) -> list[ET.Element]:
-    return [e for e in root if local_name(e.tag) == name]
-
-
 def all_named(root: ET.Element, name: str) -> list[ET.Element]:
     return [e for e in root.iter() if local_name(e.tag) == name]
 
@@ -102,9 +98,15 @@ def check_manifest(raws: dict[str, bytes]) -> None:
             fail(f"F1 missing fixture: {path}")
         digest = hashlib.sha256(raws[key]).hexdigest()
         size = len(raws[key])
+        labels = {
+            "TGCV_VIATRA_MINIMAL_FIXTURE_v002_CPS.xmi": "CPS",
+            "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_INITIAL.xmi": "Deployment INITIAL",
+            "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_EXPECTED.xmi": "Deployment EXPECTED",
+            "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_INITIAL.xmi": "Traceability INITIAL",
+            "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_EXPECTED.xmi": "Traceability EXPECTED",
+        }
         if digest not in text:
             fail(f"F1 SHA-256 for {path.name} is absent from canonical manifest: {digest}")
-            labels = {"TGCV_VIATRA_MINIMAL_FIXTURE_v002_CPS.xmi": "CPS", "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_INITIAL.xmi": "Deployment INITIAL", "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_EXPECTED.xmi": "Deployment EXPECTED", "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_INITIAL.xmi": "Traceability INITIAL", "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_EXPECTED.xmi": "Traceability EXPECTED"}
         label = labels[path.name]
         line = next((x for x in text.splitlines() if f"| {label} |" in x), "")
         if not line:
@@ -190,7 +192,7 @@ def check_trace_expected(root: ET.Element) -> None:
     assert_exactly(target_refs, 1, "F8 deploymentElements")
     cfile, cfrag = href_target(cps_refs)
     dfile, dfrag = href_target(dep_refs)
-    if cfile != FILES["cps"].name or cfrag != root_id(CPS_ROOT):
+    if cfile != FILES["cps"].name or cfrag != "/":
         fail("F8 expected trace CPS reference mismatch")
     if dfile != FILES["deployment_expected"].name or dfrag != "/":
         fail("F8 expected trace Deployment reference mismatch")
