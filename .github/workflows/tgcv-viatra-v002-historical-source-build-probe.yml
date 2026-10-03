@@ -1,0 +1,37 @@
+name: TGCV VIATRA V002 Historical Source Build Probe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout VIATRA 2.0.2 source
+        uses: actions/checkout@v4
+        with:
+          repository: eclipse-viatra/org.eclipse.viatra
+          ref: 2.0.2
+          fetch-depth: 1
+
+      - name: Set Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+
+      - name: Verify pinned source
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "TAG_COMMIT=$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD)" = "a304b8ec0d94ff1aee79b6651bf298f612d09e50"
+          test -f transformation/plugins/org.eclipse.viatra.transformation.evm/META-INF/MANIFEST.MF
+          test -f transformation/plugins/org.eclipse.viatra.transformation.runtime.emf/META-INF/MANIFEST.MF
+          test -f query/plugins/org.eclipse.viatra.query.runtime/META-INF/MANIFEST.MF
+
+      - name: Build historical core pass
+        shell: bash
+        run: |
+          set -euo pipefail
+          mvn -B -U clean install -f releng/org.eclipse.viatra.parent.core/pom.xml -DskipTests
