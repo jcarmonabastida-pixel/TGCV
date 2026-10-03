@@ -94,6 +94,59 @@ grep -Fq 'org.eclipse.viatra.examples.cps.model;bundle-version="0.1.0";visibilit
 grep -Fq 'org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0";visibility:=reexport' cps-models/org.eclipse.viatra.examples.cps.traceability/META-INF/MANIFEST.MF
 grep -Fq 'org.eclipse.emf.ecore;visibility:=reexport' cps-models/org.eclipse.viatra.examples.cps.traceability/META-INF/MANIFEST.MF
 
+
+echo "== Build closure audit =="
+
+ROOT_GROUP_ID="$(sed -n 's:.*<groupId>\\([^<]*\\)</groupId>.*:\\1:p' pom.xml | head -n1)"
+ROOT_ARTIFACT_ID="$(sed -n 's:.*<artifactId>\\([^<]*\\)</artifactId>.*:\\1:p' pom.xml | head -n1)"
+ROOT_VERSION="$(sed -n 's:.*<version>\\([^<]*\\)</version>.*:\\1:p' pom.xml | head -n1)"
+
+TARGET_GROUP_ID="$(grep -B20 -A20 '<artifactId>tgcv-viatra-v002-target</artifactId>' target-definition/pom.xml | sed -n 's:.*<groupId>\\([^<]*\\)</groupId>.*:\\1:p' | tail -n1)"
+TARGET_ARTIFACT_ID="$(grep -B20 -A20 '<artifactId>tgcv-viatra-v002-target</artifactId>' target-definition/pom.xml | sed -n 's:.*<artifactId>\\([^<]*\\)</artifactId>.*:\\1:p' | tail -n1)"
+TARGET_VERSION="$(grep -B20 -A20 '<artifactId>tgcv-viatra-v002-target</artifactId>' target-definition/pom.xml | sed -n 's:.*<version>\\([^<]*\\)</version>.*:\\1:p' | tail -n1)"
+
+test "$ROOT_GROUP_ID" = "org.tgcv"
+test "$ROOT_ARTIFACT_ID" = "viatra-v002-observer-host"
+test "$ROOT_VERSION" = "0.1.0-SNAPSHOT"
+test "$TARGET_GROUP_ID" = "$ROOT_GROUP_ID"
+test "$TARGET_ARTIFACT_ID" = "tgcv-viatra-v002-target"
+test "$TARGET_VERSION" = "$ROOT_VERSION"
+
+for consumer in cps-models observer
+do
+  grep -Fq '<groupId>org.tgcv</groupId>' "$consumer/pom.xml"
+  grep -Fq '<artifactId>tgcv-viatra-v002-target</artifactId>' "$consumer/pom.xml"
+  grep -Fq '<version>${parent.version}</version>' "$consumer/pom.xml"
+  ! grep -Fq '<version>${project.version}</version>' "$consumer/pom.xml"
+done
+
+test "$(grep -Fc '<artifactId>tgcv-viatra-v002-target</artifactId>' cps-models/pom.xml)" = "1"
+test "$(grep -Fc '<artifactId>tgcv-viatra-v002-target</artifactId>' observer/pom.xml)" = "1"
+
+for bundle in   org.eclipse.viatra.examples.cps.model   org.eclipse.viatra.examples.cps.deployment   org.eclipse.viatra.examples.cps.traceability
+do
+  grep -Fq '<version>2.1.0-SNAPSHOT</version>' "cps-models/$bundle/pom.xml"
+  grep -Fq 'Bundle-Version: 2.1.0.qualifier' "cps-models/$bundle/META-INF/MANIFEST.MF"
+done
+
+echo "== Reactor artifact identity closure =="
+
+for bundle in   org.eclipse.viatra.examples.cps.model   org.eclipse.viatra.examples.cps.deployment   org.eclipse.viatra.examples.cps.traceability
+do
+  test "$(grep -Fc "<artifactId>$bundle</artifactId>" "cps-models/$bundle/pom.xml")" = "1"
+  test "$(grep -Fc "<module>$bundle</module>" cps-models/pom.xml)" = "1"
+done
+
+echo "== Target filename/artifact identity closure =="
+
+test -f "target-definition/$TARGET_ARTIFACT_ID.target"
+test "$(find target-definition -maxdepth 1 -type f -name '*.target' | wc -l)" = "1"
+
+echo "== No unresolved target-coordinate interpolation =="
+
+! grep -R -Fq '<version>${project.version}</version>' cps-models observer
+grep -R -Fq '<version>${parent.version}</version>' cps-models observer
+
 echo "== Target immutability =="
 test "$(git hash-object target-definition/tgcv-viatra-v002-target.target)" = "$TARGET_BLOB_SHA"
 
