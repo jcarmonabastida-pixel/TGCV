@@ -1,0 +1,88 @@
+name: TGCV VIATRA V002 Observer Prototype Static Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout TGCV
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Static prototype preflight
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          import sys
+
+          root = Path("05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer")
+          files = [
+              "V002TransformationIdentity.java",
+              "V002CanonicalStateSerializer.java",
+              "V002ObserverEvent.java",
+              "V002SerialObserver.java",
+          ]
+
+          forbidden = re.compile(
+              r"(?i)\b(value|utility|reward|performance[_ -]?score|downstream[_ -]?outcome|"
+              r"market|business[_ -]?variable|value[_ -]?construction)\b"
+          )
+
+          for name in files:
+              p = root / name
+              if not p.is_file():
+                  raise SystemExit(f"FAIL: missing prototype component: {p}")
+              text = p.read_text(encoding="utf-8")
+              if "package org.tgcv.viatra.v002.observer;" not in text:
+                  raise SystemExit(f"FAIL: package declaration: {name}")
+              if forbidden.search(text):
+                  raise SystemExit(f"FAIL: scientific-firewall term in {name}")
+
+          identity = (root / "V002TransformationIdentity.java").read_text(encoding="utf-8")
+          for token in (
+              "org.eclipse.viatra.examples.cps.xform.m2m.batch.viatra",
+              "CPS2DeploymentTransformationViatra",
+              "hostRule",
+              "V002",
+              "SHA-256",
+          ):
+              if token not in identity:
+                  raise SystemExit(f"FAIL: identity token missing: {token}")
+
+          serializer = (root / "V002CanonicalStateSerializer.java").read_text(encoding="utf-8")
+          for token in ("StandardCharsets.UTF_8", "TGCV_VIATRA_V002_STATE_v001", "sha256"):
+              if token not in serializer:
+                  raise SystemExit(f"FAIL: serializer contract token missing: {token}")
+
+          observer = (root / "V002SerialObserver.java").read_text(encoding="utf-8")
+          for token in ("beforeFiring", "afterFiring", "AtomicLong", "synchronized",
+                        "overlapping transformation execution"):
+              if token not in observer:
+                  raise SystemExit(f"FAIL: serial observer contract token missing: {token}")
+
+          event = (root / "V002ObserverEvent.java").read_text(encoding="utf-8")
+          for token in ("TRANSFORMATION_BEGIN", "TRANSFORMATION_END",
+                        "activationInstanceId", "preStateDigest", "postStateDigest"):
+              if token not in event:
+                  raise SystemExit(f"FAIL: event contract token missing: {token}")
+
+          host = Path("05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer/ViatraV002ObserverHost.java")
+          if not host.is_file():
+              raise SystemExit("FAIL: observer host missing")
+          host_text = host.read_text(encoding="utf-8")
+          if "UnsupportedOperationException" not in host_text:
+              raise SystemExit("FAIL: runtime execution guard missing")
+          if re.search(r"\b(IEVMListener|beforeFiring|afterFiring|fireAllCurrent)\b", host_text):
+              raise SystemExit("FAIL: runtime execution was introduced into guarded host")
+
+          print("TGCV_VIATRA_V002_PROTOTYPE_STATIC_PREFLIGHT=PASS")
+          PY
