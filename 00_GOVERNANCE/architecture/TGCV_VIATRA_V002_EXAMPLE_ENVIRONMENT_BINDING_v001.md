@@ -2,7 +2,9 @@
 
 ## Status
 
-FROZEN — SOURCE-VERIFIED EXAMPLE ENVIRONMENT.
+SUPERSEDED — HISTORICAL EXAMPLE ENVIRONMENT BINDING
+
+This record is tied to the earlier tutorial revision `ffa111db...`. The current V002 source/packaging binding is anchored to `eb68158a...`.
 
 ## Purpose
 
