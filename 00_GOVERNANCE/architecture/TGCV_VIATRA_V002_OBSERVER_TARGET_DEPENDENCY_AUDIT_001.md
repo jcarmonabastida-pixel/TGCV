@@ -1,6 +1,8 @@
 # TGCV VIATRA V002 Observer Target Dependency Audit 001
 
-Status: BLOCKED — MODEL BUNDLES NOT SUPPLIED
+SUPERSEDED — PRE-BUILD TARGET DEPENDENCY AUDIT
+
+The model bundles were subsequently materialized and the complete Tycho host build was verified by run `37123064623`.
 
 ## Scope
 
