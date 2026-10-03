@@ -153,8 +153,12 @@ def check_deployment_initial(root: ET.Element) -> None:
 
 def check_trace_initial(root: ET.Element) -> None:
     assert_exactly([root], 1, "F6 trace root")
-    cps_refs = root.get("cps") or root.get("cpsSystem")
-    dep_refs = root.get("deployment")
+    cps_nodes = all_named(root, "cps")
+    dep_nodes = all_named(root, "deployment")
+    assert_exactly(cps_nodes, 1, "F6 CPS root reference")
+    assert_exactly(dep_nodes, 1, "F6 Deployment root reference")
+    cps_refs = cps_nodes[0].get("href")
+    dep_refs = dep_nodes[0].get("href")
     if not cps_refs or not dep_refs:
         fail("F6 initial trace root references are incomplete")
     if all_named(root, "traces"):
@@ -177,8 +181,12 @@ def check_deployment_expected(root: ET.Element) -> None:
 
 
 def check_trace_expected(root: ET.Element) -> None:
-    cps_refs = root.get("cps") or root.get("cpsSystem")
-    dep_refs = root.get("deployment")
+    cps_nodes = all_named(root, "cps")
+    dep_nodes = all_named(root, "deployment")
+    assert_exactly(cps_nodes, 1, "F8 CPS root reference")
+    assert_exactly(dep_nodes, 1, "F8 Deployment root reference")
+    cps_refs = cps_nodes[0].get("href")
+    dep_refs = dep_nodes[0].get("href")
     if not cps_refs or not dep_refs:
         fail("F8 expected trace root references are incomplete")
     traces = all_named(root, "traces")
