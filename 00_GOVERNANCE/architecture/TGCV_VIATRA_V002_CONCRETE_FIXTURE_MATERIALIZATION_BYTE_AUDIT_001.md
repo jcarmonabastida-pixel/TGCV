@@ -1,6 +1,8 @@
 # TGCV VIATRA v002 Concrete Fixture Materialization & Byte Audit
 
-**Status:** PASS — materialized candidate artifacts structurally consistent; byte hashes recorded
+**Status:** SUPERSEDED — HISTORICAL MATERIALIZATION AUDIT
+
+The byte hashes recorded here remain useful provenance, but the audit's source revisions are not the current canonical V002 packaging/source chain. The canonical fixture byte identity is maintained by `fixtures/TGCV_VIATRA_V002_FIXTURE_BYTE_HASH_MANIFEST_001.md`.
 **Date:** 2026-10-02
 **Core revision:** `ffa111dbb160c0bc55e89ea16430e97a38908662`
 **Examples revision:** `15f269dbf74000eac7b97cf7f92e256b8fb1fc1c`
