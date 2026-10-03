@@ -1,8 +1,8 @@
 # TGCV VIATRA V002 Minimal Concrete Fixture Specification
 
-**Status:** DESIGN DRAFT — fixture not yet frozen; implementation and scientific execution not authorized  
+**Status:** FROZEN — fixture bytes frozen; implementation and scientific execution remain separately gated  
 **Date:** 2026-10-03  
-**Branch:** `viatra-v002-provenance-canonical-closure`
+**Canonical branch:** `main`
 
 ## 1. Purpose
 
@@ -203,10 +203,12 @@ Before implementation, a fixture-level preflight must verify:
 
 ## 13. Decision
 
-**DESIGN SPECIFICATION READY FOR FIXTURE-LEVEL PREFLIGHT.**
+**FIXTURE FROZEN — STATIC CONTRACT GATE PASSED.**
 
-This document does not freeze fixture bytes, authorize instrumentation implementation, or authorize scientific execution.
+The fixture-level preflight run `37125835462` passed all F1–F12 checks on `main`, including byte identity, semantic fixture invariants, transformation identity, and the scientific firewall. The five fixture artefacts are bound to the verified SHA-256 manifest `TGCV_VIATRA_V002_FIXTURE_BYTE_HASH_MANIFEST_001.md`.
+
+The fixture bytes are therefore frozen for the subsequent instrumentation gate. Any change to a fixture artefact requires a new fixture revision and a new byte-hash manifest. This freeze does not authorize scientific execution or runtime transformation execution.
 
 ## Next gate
 
-Perform the **VIATRA Minimal Fixture-Level Instrumentation Contract Preflight** against the actual XMI artefacts and source revision. If any referenced fixture artefact is absent or cannot be resolved deterministically, stop and report the missing dependency rather than reconstructing it implicitly.
+Perform the **VIATRA Minimal Fixture-Level Instrumentation Contract Preflight** against the frozen fixture and pinned source revision. If any referenced artefact is absent or cannot be resolved deterministically, stop and report the missing dependency rather than reconstructing it implicitly.
