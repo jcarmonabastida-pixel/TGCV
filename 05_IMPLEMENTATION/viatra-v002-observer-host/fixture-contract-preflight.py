@@ -13,7 +13,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 
-ROOT = Path(__file__).resolve().parent.parent.parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 FIX = ROOT / "00_GOVERNANCE" / "architecture" / "fixtures"
 
 FILES = {
