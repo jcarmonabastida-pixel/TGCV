@@ -1,6 +1,6 @@
 # TGCV VIATRA V002 Observer Host Build Construction Review 001
 
-Status: CONSTRUCTION REVIEW PASS — BUILD NOT EXECUTED
+Status: CONSTRUCTION REVIEW PASS — BUILD VERIFIED
 
 Date: 2026-10-03
 
@@ -93,4 +93,12 @@ This construction review contains no runtime execution, transformation outcome, 
 
 The package construction contract is now closed for the current configuration. No build has been launched as part of this review.
 
-The next action is one controlled build workflow run. If it fails, the failure must be classified against the construction matrix above before any correction or rerun.
+A controlled build workflow was executed as run `37123064623` after the static construction and preflight gates were closed. The result was:
+
+1. historical materialization — PASS;
+2. static build-readiness preflight — PASS;
+3. `mvn -B -ntp -DskipTests validate` — PASS;
+4. `mvn -B -ntp clean verify` — PASS;
+5. workflow job — SUCCESS.
+
+This closes the current packaging/build construction contract. It does not constitute runtime execution or scientific evidence. Any future build failure must be classified against the construction matrix before a correction or rerun.
