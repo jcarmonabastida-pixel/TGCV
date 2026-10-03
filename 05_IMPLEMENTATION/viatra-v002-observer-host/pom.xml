@@ -8,25 +8,20 @@
   <properties>
     <maven.compiler.release>11</maven.compiler.release>
     <viatra.source.commit>ffa111dbb160c0bc55e89ea16430e97a38908662</viatra.source.commit>
-    <viatra.query.runtime.version>1.2.0</viatra.query.runtime.version>
     <cps.model.version>1.2.0</cps.model.version>
-    <cps.traceability.version>0.1.0</cps.traceability.version>
+    <cps.traceability.bundle.version>0.1.0</cps.traceability.bundle.version>
+    <viatra.query.runtime.bundle.version>1.2.0</viatra.query.runtime.bundle.version>
   </properties>
+  <!--
+    Metadata-only POM at this stage.
+    The pinned VIATRA tutorial identifies traceability and query runtime
+    as Eclipse/OSGi bundles. A Tycho/OSGi host packaging is required before build.
+  -->
   <dependencies>
     <dependency>
       <groupId>org.eclipse.viatra.examples.cps</groupId>
       <artifactId>org.eclipse.viatra.examples.cps.model</artifactId>
-      <version>1.2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.viatra.examples.cps</groupId>
-      <artifactId>org.eclipse.viatra.examples.cps.traceability</artifactId>
-      <version>0.1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.viatra</groupId>
-      <artifactId>org.eclipse.viatra.query.runtime</artifactId>
-      <version>1.2.0</version>
+      <version>${cps.model.version}</version>
     </dependency>
   </dependencies>
 </project>
