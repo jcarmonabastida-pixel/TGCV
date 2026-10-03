@@ -8,11 +8,11 @@ SOURCE BINDING — FROZEN.
 
 Repository: `eclipse-viatra/org.eclipse.viatra`
 
-Revision: `ffa111dbb160c0bc55e89ea16430e97a38908662`
+Revision: `eb68158a3d74581f69ccb8bc4f47673b12abdf85`
 
 Source artifact:
 
-`documentation/org.eclipse.viatra.documentation.help/src/main/asciidoc/tutorial/batch-transformations.adoc`
+`cps/transformations/org.eclipse.viatra.examples.cps.xform.m2m.batch.viatra/src/org/eclipse/viatra/examples/cps/xform/m2m/batch/viatra/CPS2DeploymentBatchViatra.xtend`
 
 ## Concrete rule
 
