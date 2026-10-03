@@ -2,7 +2,9 @@
 
 ## Status
 
-STATIC AUDIT — BLOCKED FOR BUILD UNTIL TARGET CONSUMPTION IS MATERIALIZED.
+SUPERSEDED — PRE-BUILD STATIC PACKAGING AUDIT
+
+This audit records the earlier blocked state before target consumption was materialized. The current host packaging was subsequently reconciled and verified by build run `37123064623`.
 
 ## Findings
 
