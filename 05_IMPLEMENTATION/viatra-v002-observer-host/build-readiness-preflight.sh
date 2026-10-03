@@ -228,9 +228,9 @@ required_observer = [
     "org.eclipse.emf.common",
     "org.eclipse.emf.ecore",
     "org.eclipse.emf.ecore.xmi",
-    "org.eclipse.viatra.examples.cps.model;bundle-version="0.1.0"",
-    "org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0"",
-    "org.eclipse.viatra.examples.cps.traceability;bundle-version="0.1.0"",
+    'org.eclipse.viatra.examples.cps.model;bundle-version="0.1.0"',
+    'org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0"',
+    'org.eclipse.viatra.examples.cps.traceability;bundle-version="0.1.0"',
 ]
 for item in required_observer:
     if item not in observer_manifest:
