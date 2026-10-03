@@ -2,7 +2,9 @@
 
 ## Status
 
-BLOCKED — pinned runtime preflight inputs are version-incompatible.
+**SUPERSEDED — HISTORICAL RUNTIME-EQUIVALENCE PIN REVIEW**
+
+This blocked review belongs to the earlier runtime-equivalence chain using core `ffa111db...` and examples `15f269db...`. It is retained as execution history and does not describe the current Observer Host build chain.
 
 ## Observed execution
 
