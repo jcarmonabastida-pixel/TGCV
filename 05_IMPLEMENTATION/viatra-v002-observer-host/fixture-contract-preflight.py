@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import hashlib
 import re
-import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import unquote
@@ -83,10 +82,6 @@ def href_target(value: str) -> tuple[str, str]:
     return Path(filename).name, fragment
 
 
-def root_id(root: ET.Element) -> str:
-    return root.get(f"{{{NS['xmi']}}}id") or root.get("xmi:id") or ""
-
-
 def children(root: ET.Element, name: str) -> list[ET.Element]:
     return [e for e in root if local_name(e.tag) == name]
 
@@ -109,13 +104,20 @@ def check_manifest(raws: dict[str, bytes]) -> None:
         size = len(raws[key])
         if digest not in text:
             fail(f"F1 SHA-256 for {path.name} is absent from canonical manifest: {digest}")
-        # The manifest records the exact byte count on the same logical line.
-        line = next((x for x in text.splitlines() if digest in x), "")
-        m = re.search(r"(\\d+)\\s*bytes", line)
-        if not m:
-            fail(f"F1 byte count for {path.name} is absent beside its SHA-256")
-        if int(m.group(1)) != size:
-            fail(f"F1 byte count mismatch for {path.name}: {size} != {m.group(1)}")
+            labels = {"TGCV_VIATRA_MINIMAL_FIXTURE_v002_CPS.xmi": "CPS", "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_INITIAL.xmi": "Deployment INITIAL", "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Deployment_EXPECTED.xmi": "Deployment EXPECTED", "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_INITIAL.xmi": "Traceability INITIAL", "TGCV_VIATRA_MINIMAL_FIXTURE_v002_Traceability_EXPECTED.xmi": "Traceability EXPECTED"}
+        label = labels[path.name]
+        line = next((x for x in text.splitlines() if f"| {label} |" in x), "")
+        if not line:
+            fail(f"F1 manifest row missing for {path.name}")
+        fields = [x.strip().strip("`") for x in line.strip().strip("|").split("|")]
+        if len(fields) != 3 or fields[1] != digest:
+            fail(f"F1 SHA-256 manifest mismatch for {path.name}: {digest}")
+        try:
+            recorded_size = int(fields[2])
+        except ValueError:
+            fail(f"F1 invalid byte count in manifest for {path.name}: {fields[2]!r}")
+        if recorded_size != size:
+            fail(f"F1 byte count mismatch for {path.name}: {size} != {recorded_size}")
         print(f"F1 PASS {path.name}: {size} bytes sha256={digest}")
 
 
@@ -157,9 +159,9 @@ def check_trace_initial(root: ET.Element) -> None:
         fail("F6 initial trace unexpectedly contains traces")
     cfile, cfrag = href_target(cps_refs)
     dfile, dfrag = href_target(dep_refs)
-    if cfile != FILES["cps"].name or cfrag != root_id(CPS_ROOT):
+    if cfile != FILES["cps"].name or cfrag != "/":
         fail("F6 initial trace CPS reference mismatch")
-    if dfile != FILES["deployment_initial"].name or dfrag != root_id(DEP_INIT_ROOT):
+    if dfile != FILES["deployment_initial"].name or dfrag != "/":
         fail("F6 initial trace Deployment reference mismatch")
     print("F6 PASS initial Traceability")
 
@@ -190,15 +192,15 @@ def check_trace_expected(root: ET.Element) -> None:
     dfile, dfrag = href_target(dep_refs)
     if cfile != FILES["cps"].name or cfrag != root_id(CPS_ROOT):
         fail("F8 expected trace CPS reference mismatch")
-    if dfile != FILES["deployment_expected"].name or dfrag != root_id(DEP_EXP_ROOT):
+    if dfile != FILES["deployment_expected"].name or dfrag != "/":
         fail("F8 expected trace Deployment reference mismatch")
     sfile, sfrag = href_target(source_refs[0])
     tfile, tfrag = href_target(target_refs[0])
-    if sfile != FILES["cps"].name or sfrag != "Aragorn":
+    if sfile != FILES["cps"].name or sfrag != "//@hostTypes.0/@instances.0":
         fail("F8 trace source reference mismatch")
     expected_hosts = all_named(DEP_EXP_ROOT, "hosts")
     assert_exactly(expected_hosts, 1, "F8 expected host")
-    if tfile != FILES["deployment_expected"].name or tfrag != root_id(expected_hosts[0]):
+    if tfile != FILES["deployment_expected"].name or tfrag != "//@hosts.0":
         fail("F8 trace target reference mismatch")
     print("F8 PASS expected Traceability")
 
