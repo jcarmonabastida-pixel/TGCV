@@ -2,7 +2,9 @@
 
 ## Status
 
-SOURCE RECOVERED — PACKAGING STILL UNRESOLVED.
+SUPERSEDED — HISTORICAL PRE-HOST PACKAGING DISCOVERY.
+
+The previously open packaging question was subsequently resolved for the current Observer Host using the pinned historical examples revision `eb68158a...`; the host packaging has been build-verified by run `37123064623`.
 
 ## Recovered source
 
