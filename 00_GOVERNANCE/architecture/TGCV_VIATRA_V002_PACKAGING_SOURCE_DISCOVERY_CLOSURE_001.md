@@ -2,7 +2,9 @@
 
 ## Status
 
-SOURCE NOT MATERIALIZED — DISCOVERY CLOSED.
+SUPERSEDED — PRE-CANONICAL PACKAGING DISCOVERY
+
+The later source recovery at `eb68158a...` established the materialized historical packaging used by the current V002 Observer Host.
 
 ## Scope
 
