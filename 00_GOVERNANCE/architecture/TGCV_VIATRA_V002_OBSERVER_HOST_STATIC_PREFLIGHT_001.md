@@ -2,7 +2,9 @@
 
 ## Status
 
-BLOCKED — dependency coordinates are not source-verified.
+SUPERSEDED — HISTORICAL PREFLIGHT; CURRENT BUILD CHAIN VERIFIED
+
+This document records an earlier blocked state and is retained for provenance. Its source revision and dependency-coordinate conclusions are not the current canonical state.
 
 ## Scope
 
