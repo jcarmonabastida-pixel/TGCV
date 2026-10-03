@@ -3,8 +3,8 @@ set -euo pipefail
 
 SOURCE_REPO="https://github.com/eclipse-viatra/org.eclipse.viatra.examples.git"
 SOURCE_REV="eb68158a3d74581f69ccb8bc4f47673b12abdf85"
-HOST_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-DEST_ROOT="$HOST_ROOT/cps-models"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+DEST_ROOT="$SCRIPT_DIR/cps-models"
 TMP_DIR="$(mktemp -d)"
 
 cleanup() {
@@ -20,6 +20,8 @@ git -C "$TMP_DIR/source" sparse-checkout set \
   cps/domains/org.eclipse.viatra.examples.cps.traceability
 git -C "$TMP_DIR/source" checkout --detach "$SOURCE_REV"
 
+test "$(git -C "$TMP_DIR/source" rev-parse HEAD)" = "$SOURCE_REV"
+
 for bundle in \
   org.eclipse.viatra.examples.cps.model \
   org.eclipse.viatra.examples.cps.deployment \
@@ -27,6 +29,14 @@ for bundle in \
 do
   src="$TMP_DIR/source/cps/domains/$bundle"
   dst="$DEST_ROOT/$bundle"
+
+  test -d "$src/META-INF"
+  test -f "$src/META-INF/MANIFEST.MF"
+  test -f "$src/build.properties"
+  test -d "$src/model"
+  test -d "$src/src"
+  test -f "$src/plugin.xml"
+  test -f "$src/plugin.properties"
 
   rm -rf "$dst/META-INF" "$dst/model" "$dst/src" "$dst/plugin.xml" "$dst/plugin.properties" "$dst/build.properties"
   mkdir -p "$dst"
