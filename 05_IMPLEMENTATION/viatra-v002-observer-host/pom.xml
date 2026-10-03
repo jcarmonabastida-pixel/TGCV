@@ -13,6 +13,7 @@
   </properties>
   <modules>
     <module>target-definition</module>
+    <module>cps-models</module>
     <module>observer</module>
   </modules>
   <build>
