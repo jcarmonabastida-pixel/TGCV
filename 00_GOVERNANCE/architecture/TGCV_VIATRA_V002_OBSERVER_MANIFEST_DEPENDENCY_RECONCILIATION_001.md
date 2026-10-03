@@ -2,7 +2,9 @@
 
 ## Status
 
-RECONCILIATION COMPLETE — CURRENT MINIMAL MANIFEST IS INSUFFICIENT FOR THE PLANNED OBSERVER.
+SUPERSEDED — PRE-BUILD MANIFEST RECONCILIATION.
+
+The observer manifest was subsequently materialized and the complete Tycho host build was verified by run `37123064623`. This document records the earlier dependency-design state and is not the current manifest contract.
 
 ## Evidence boundaries
 
