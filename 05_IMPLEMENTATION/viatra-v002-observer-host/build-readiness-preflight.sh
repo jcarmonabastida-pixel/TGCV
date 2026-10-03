@@ -105,49 +105,60 @@ TARGET_GROUP_ID="$(grep -B20 -A20 '<artifactId>tgcv-viatra-v002-target</artifact
 TARGET_ARTIFACT_ID="$(grep -B20 -A20 '<artifactId>tgcv-viatra-v002-target</artifactId>' target-definition/pom.xml | sed -n 's:.*<artifactId>\\([^<]*\\)</artifactId>.*:\\1:p' | tail -n1)"
 TARGET_VERSION="$(grep -B20 -A20 '<artifactId>tgcv-viatra-v002-target</artifactId>' target-definition/pom.xml | sed -n 's:.*<version>\\([^<]*\\)</version>.*:\\1:p' | tail -n1)"
 
-test "$ROOT_GROUP_ID" = "org.tgcv"
-test "$ROOT_ARTIFACT_ID" = "viatra-v002-observer-host"
-test "$ROOT_VERSION" = "0.1.0-SNAPSHOT"
-test "$TARGET_GROUP_ID" = "$ROOT_GROUP_ID"
-test "$TARGET_ARTIFACT_ID" = "tgcv-viatra-v002-target"
-test "$TARGET_VERSION" = "$ROOT_VERSION"
+echo "ROOT_GAV=$ROOT_GROUP_ID:$ROOT_ARTIFACT_ID:$ROOT_VERSION"
+echo "TARGET_GAV=$TARGET_GROUP_ID:$TARGET_ARTIFACT_ID:$TARGET_VERSION"
+
+assert_eq() {
+  local name="$1" actual="$2" expected="$3"
+  if [ "$actual" != "$expected" ]; then
+    echo "FAIL: $name actual='$actual' expected='$expected'"
+    exit 1
+  fi
+}
+
+assert_eq "root.groupId" "$ROOT_GROUP_ID" "org.tgcv"
+assert_eq "root.artifactId" "$ROOT_ARTIFACT_ID" "viatra-v002-observer-host"
+assert_eq "root.version" "$ROOT_VERSION" "0.1.0-SNAPSHOT"
+assert_eq "target.groupId" "$TARGET_GROUP_ID" "$ROOT_GROUP_ID"
+assert_eq "target.artifactId" "$TARGET_ARTIFACT_ID" "tgcv-viatra-v002-target"
+assert_eq "target.version" "$TARGET_VERSION" "$ROOT_VERSION"
 
 for consumer in cps-models observer
 do
-  grep -Fq '<groupId>org.tgcv</groupId>' "$consumer/pom.xml"
-  grep -Fq '<artifactId>tgcv-viatra-v002-target</artifactId>' "$consumer/pom.xml"
-  grep -Fq '<version>${parent.version}</version>' "$consumer/pom.xml"
+  grep -Fq '<groupId>org.tgcv</groupId>' "$consumer/pom.xml" || { echo "FAIL: $consumer target groupId"; exit 1; }
+  grep -Fq '<artifactId>tgcv-viatra-v002-target</artifactId>' "$consumer/pom.xml" || { echo "FAIL: $consumer target artifactId"; exit 1; }
+  grep -Fq '<version>${parent.version}</version>' "$consumer/pom.xml" || { echo "FAIL: $consumer target version is not parent.version"; exit 1; }
   if grep -Fq '<version>${project.version}</version>' "$consumer/pom.xml"; then echo "FAIL: $consumer still uses project.version for target coordinate"; exit 1; fi
 done
 
-test "$(grep -Fc '<artifactId>tgcv-viatra-v002-target</artifactId>' cps-models/pom.xml)" = "1"
-test "$(grep -Fc '<artifactId>tgcv-viatra-v002-target</artifactId>' observer/pom.xml)" = "1"
+assert_eq "cps-models target artifact reference count" "$(grep -Fc '<artifactId>tgcv-viatra-v002-target</artifactId>' cps-models/pom.xml)" "1"
+assert_eq "observer target artifact reference count" "$(grep -Fc '<artifactId>tgcv-viatra-v002-target</artifactId>' observer/pom.xml)" "1"
 
-for bundle in   org.eclipse.viatra.examples.cps.model   org.eclipse.viatra.examples.cps.deployment   org.eclipse.viatra.examples.cps.traceability
+for bundle in org.eclipse.viatra.examples.cps.model org.eclipse.viatra.examples.cps.deployment org.eclipse.viatra.examples.cps.traceability
 do
-  grep -Fq '<version>2.1.0-SNAPSHOT</version>' "cps-models/$bundle/pom.xml"
-  grep -Fq 'Bundle-Version: 2.1.0.qualifier' "cps-models/$bundle/META-INF/MANIFEST.MF"
+  grep -Fq '<version>2.1.0-SNAPSHOT</version>' "cps-models/$bundle/pom.xml" || { echo "FAIL: $bundle Maven version"; exit 1; }
+  grep -Fq 'Bundle-Version: 2.1.0.qualifier' "cps-models/$bundle/META-INF/MANIFEST.MF" || { echo "FAIL: $bundle OSGi version"; exit 1; }
 done
 
 echo "== Reactor artifact identity closure =="
 
-for bundle in   org.eclipse.viatra.examples.cps.model   org.eclipse.viatra.examples.cps.deployment   org.eclipse.viatra.examples.cps.traceability
+for bundle in org.eclipse.viatra.examples.cps.model org.eclipse.viatra.examples.cps.deployment org.eclipse.viatra.examples.cps.traceability
 do
-  test "$(grep -Fc "<artifactId>$bundle</artifactId>" "cps-models/$bundle/pom.xml")" = "1"
-  test "$(grep -Fc "<module>$bundle</module>" cps-models/pom.xml)" = "1"
+  assert_eq "$bundle artifactId count" "$(grep -Fc "<artifactId>$bundle</artifactId>" "cps-models/$bundle/pom.xml")" "1"
+  assert_eq "$bundle module count" "$(grep -Fc "<module>$bundle</module>" cps-models/pom.xml)" "1"
 done
 
 echo "== Target filename/artifact identity closure =="
 
-test -f "target-definition/$TARGET_ARTIFACT_ID.target"
-test "$(find target-definition -maxdepth 1 -type f -name '*.target' | wc -l)" = "1"
+test -f "target-definition/$TARGET_ARTIFACT_ID.target" || { echo "FAIL: target file does not match artifactId"; exit 1; }
+assert_eq "target file count" "$(find target-definition -maxdepth 1 -type f -name '*.target' | wc -l)" "1"
 
 echo "== No unresolved target-coordinate interpolation =="
 
 if grep -R -Fq '<version>${project.version}</version>' cps-models observer; then echo 'FAIL: unresolved project.version target interpolation remains'; exit 1; fi
-grep -R -Fq '<version>${parent.version}</version>' cps-models observer
+grep -R -Fq '<version>${parent.version}</version>' cps-models observer || { echo 'FAIL: parent.version target interpolation missing'; exit 1; }
 
 echo "== Target immutability =="
-test "$(git hash-object target-definition/tgcv-viatra-v002-target.target)" = "$TARGET_BLOB_SHA"
+assert_eq "target SHA" "$(git hash-object target-definition/tgcv-viatra-v002-target.target)" "$TARGET_BLOB_SHA"
 
 echo "BUILD_READINESS_PREFLIGHT=PASS"
