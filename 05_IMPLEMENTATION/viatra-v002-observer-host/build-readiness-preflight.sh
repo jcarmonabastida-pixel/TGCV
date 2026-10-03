@@ -11,7 +11,7 @@ OBSERVER_MANIFEST="observer/META-INF/MANIFEST.MF"
 echo "== Repository structure =="
 test -f pom.xml
 test -f target-definition/pom.xml
-test -f target-definition/org.eclipse.viatra.examples.cps.target.target
+test -f target-definition/tgcv-viatra-v002-target.target
 test -f "$OBSERVER_MANIFEST"
 test -f observer/pom.xml
 
@@ -85,6 +85,6 @@ grep -Fq 'org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0";visi
 grep -Fq 'org.eclipse.emf.ecore;visibility:=reexport' cps-models/org.eclipse.viatra.examples.cps.traceability/META-INF/MANIFEST.MF
 
 echo "== Target immutability =="
-test "$(git hash-object target-definition/org.eclipse.viatra.examples.cps.target.target)" = "$TARGET_BLOB_SHA"
+test "$(git hash-object target-definition/tgcv-viatra-v002-target.target)" = "$TARGET_BLOB_SHA"
 
 echo "BUILD_READINESS_PREFLIGHT=PASS"
