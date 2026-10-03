@@ -1,0 +1,32 @@
+name: TGCV VIATRA V002 Eclipse Access Probe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe exact historical VIATRA artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base="http://download.eclipse.org/viatra/updates/integration"
+          version="2.0.2.201808291256"
+
+          urls=(
+            "$base/plugins/org.eclipse.viatra.query.runtime_${version}.jar"
+            "$base/plugins/org.eclipse.viatra.transformation.evm_${version}.jar"
+            "$base/plugins/org.eclipse.viatra.transformation.runtime.emf_${version}.jar"
+          )
+
+          mkdir -p probe
+          for url in "${urls[@]}"; do
+            echo "=== PROBE: $url"
+            curl --fail --location --silent --show-error --head "$url"
+            name="${url##*/}"
+            curl --fail --location --silent --show-error --output "probe/$name" "$url"
+            sha256sum "probe/$name"
+            unzip -p "probe/$name" META-INF/MANIFEST.MF | grep -E '^(Bundle-SymbolicName|Bundle-Version|Require-Bundle):'
+          done
