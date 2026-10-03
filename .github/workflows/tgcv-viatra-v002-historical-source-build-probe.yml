@@ -72,6 +72,8 @@ jobs:
           PY
           grep -F "https://artifacts.itemis.cloud/repository/p2/xtext-updates/releases/2.1.1/" releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
           grep -F "https://mirror.twds.com.tw/eclipse/modeling/m2t/xpand/updates/releases/R201406030414" releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
+          sed -i 's/<targetJRE name="JavaSE-1.7"/>/<targetJRE name="JavaSE-1.8"\/>/' releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
+          grep -F '<targetJRE name="JavaSE-1.8"/>' releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
 
       - name: Build historical core pass
         shell: bash
