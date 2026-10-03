@@ -30,6 +30,21 @@ jobs:
           test -f transformation/plugins/org.eclipse.viatra.transformation.runtime.emf/META-INF/MANIFEST.MF
           test -f query/plugins/org.eclipse.viatra.query.runtime/META-INF/MANIFEST.MF
 
+      - name: Rewrite inaccessible historical Itemis repository for isolated probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target")
+          s = p.read_text()
+          old = "http://download.itemis.com/updates/releases/2.1.1/"
+          new = "https://artifacts.itemis.cloud/repository/p2/xtext-updates/releases/2.1.1/"
+          assert old in s
+          p.write_text(s.replace(old, new))
+          PY
+          grep -F "https://artifacts.itemis.cloud/repository/p2/xtext-updates/releases/2.1.1/" releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
+
       - name: Build historical core pass
         shell: bash
         run: |
