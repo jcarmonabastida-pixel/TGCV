@@ -76,8 +76,8 @@ jobs:
           from pathlib import Path
           p = Path("releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target")
           s = p.read_text()
-          old_jre = '<targetJRE name="JavaSE-1.7"/>'
-          new_jre = '<targetJRE name="JavaSE-1.8"/>'
+          old_jre = 'JavaSE-1.7'
+          new_jre = 'JavaSE-1.8'
           assert old_jre in s
           p.write_text(s.replace(old_jre, new_jre))
           PY
