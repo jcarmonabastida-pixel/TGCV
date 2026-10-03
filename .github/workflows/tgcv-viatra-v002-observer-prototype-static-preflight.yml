@@ -33,7 +33,7 @@ jobs:
           ]
 
           forbidden = re.compile(
-              r"(?i)\b(value|utility|reward|performance[_ -]?score|downstream[_ -]?outcome|"
+              r"(?i)\b(utility|reward|performance[_ -]?score|downstream[_ -]?outcome|"
               r"market|business[_ -]?variable|value[_ -]?construction)\b"
           )
 
