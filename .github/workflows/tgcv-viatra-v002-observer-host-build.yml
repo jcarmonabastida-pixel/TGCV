@@ -1,0 +1,39 @@
+name: TGCV VIATRA V002 Observer Host Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout TGCV
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Materialize pinned historical CPS model bundles
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: bash materialize-historical-cps-models.sh
+
+      - name: Verify required CPS model bundles are present
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -euo pipefail
+          for bundle in \
+            org.eclipse.viatra.examples.cps.model \
+            org.eclipse.viatra.examples.cps.deployment \
+            org.eclipse.viatra.examples.cps.traceability
+          do
+            test -f "cps-models/$bundle/META-INF/MANIFEST.MF"
+            test -f "cps-models/$bundle/build.properties"
+            test -d "cps-models/$bundle/src"
+            test -d "cps-models/$bundle/model"
+          done
+
+      - name: Build Tycho reactor
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: mvn -B -ntp clean verify
