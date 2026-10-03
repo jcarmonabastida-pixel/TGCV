@@ -81,7 +81,7 @@ jobs:
           assert old_jre in s
           p.write_text(s.replace(old_jre, new_jre))
           PY
-          grep -F '<targetJRE name="JavaSE-1.8"/>' releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
+          grep -n 'targetJRE' releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
 
       - name: Build historical core pass
         shell: bash
