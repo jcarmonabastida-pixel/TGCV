@@ -172,11 +172,16 @@ assert_eq("target parent", parent_gav(target_pom), EXPECTED_ROOT)
 assert_eq("cps parent", parent_gav(cps_pom), EXPECTED_ROOT)
 assert_eq("observer parent", parent_gav(observer_pom), EXPECTED_ROOT)
 
-if child(parse(target_pom), "relativePath") is None:
-    fail("target parent relativePath is missing")
-assert_eq("target parent relativePath", text(parse(target_pom).find("m:parent", NS), "relativePath"), "../pom.xml")
-assert_eq("cps parent relativePath", text(parse(cps_pom).find("m:parent", NS), "relativePath"), "../pom.xml")
-assert_eq("observer parent relativePath", text(parse(observer_pom).find("m:parent", NS), "relativePath"), "../pom.xml")
+def assert_default_or_explicit_parent_path(path, expected):
+    p = parse(path)
+    parent = child(p, "parent")
+    actual = text(parent, "relativePath") if parent is not None else None
+    if actual not in (None, expected):
+        fail(f"{path}: parent relativePath actual={actual!r} expected absent(default) or {expected!r}")
+
+assert_default_or_explicit_parent_path(target_pom, "../pom.xml")
+assert_default_or_explicit_parent_path(cps_pom, "../pom.xml")
+assert_default_or_explicit_parent_path(observer_pom, "../pom.xml")
 
 if not plugin_present(root_pom, "org.eclipse.tycho", "tycho-maven-plugin"):
     fail("root Tycho extension is missing")
