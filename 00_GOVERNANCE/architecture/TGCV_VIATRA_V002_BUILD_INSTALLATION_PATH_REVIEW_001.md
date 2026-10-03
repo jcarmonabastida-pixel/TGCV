@@ -2,7 +2,9 @@
 
 ## Status
 
-**Review complete. Workflow modification not yet applied.**
+**SUPERSEDED — HISTORICAL RUNTIME-EQUIVALENCE BUILD PATH**
+
+This review concerns an earlier runtime-equivalence path using VIATRA core `6f7d2d...` and examples `15f269...`. It is not the canonical packaging/build path for the current V002 Observer Host, which is pinned to historical examples revision `eb68158a...` and has now been build-verified by run `37123064623`.
 
 ## Scope
 
