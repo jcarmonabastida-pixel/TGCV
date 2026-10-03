@@ -2,7 +2,9 @@
 
 ## Status
 
-SOURCE-VERIFIED BINDING.
+SUPERSEDED — HISTORICAL DEPENDENCY BINDING.
+
+This record is tied to the earlier VIATRA source revision `ffa111db...` and dependency set. It is retained for provenance and is not the current Observer Host dependency contract.
 
 ## Source revision
 
