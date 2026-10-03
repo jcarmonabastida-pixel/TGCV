@@ -1,0 +1,20 @@
+name: TGCV VIATRA V002 Xpand Repository Probe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe historical Xpand mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://mirror.twds.com.tw/eclipse/modeling/m2t/xpand/updates/releases/R201406030414"
+          curl -fsSLI "$base/content.jar"
+          curl -fsSL "$base/content.jar" -o /tmp/xpand-content.jar
+          test -s /tmp/xpand-content.jar
+          unzip -t /tmp/xpand-content.jar
+          unzip -p /tmp/xpand-content.jar content.xml | grep -F "org.eclipse.xpand"
+          sha256sum /tmp/xpand-content.jar
