@@ -47,12 +47,12 @@ grep -Fq "$SOURCE_REV" materialize-historical-cps-models.sh
 
 echo "== Target-platform configuration placement =="
 grep -Fq '<artifactId>tycho-maven-plugin</artifactId>' pom.xml
-! grep -Fq '<artifactId>target-platform-configuration</artifactId>' pom.xml
+if grep -Fq '<artifactId>target-platform-configuration</artifactId>' pom.xml; then echo 'FAIL: root POM must not configure target-platform-configuration'; exit 1; fi
 grep -Fq '<artifactId>target-platform-configuration</artifactId>' cps-models/pom.xml
 grep -Fq '<version>${parent.version}</version>' cps-models/pom.xml
 grep -Fq '<artifactId>target-platform-configuration</artifactId>' observer/pom.xml
-! grep -Fq '<relativePath>target-definition/pom.xml</relativePath>' cps-models/pom.xml
-! grep -Fq '<relativePath>target-definition/pom.xml</relativePath>' observer/pom.xml
+if grep -Fq '<relativePath>target-definition/pom.xml</relativePath>' cps-models/pom.xml; then echo 'FAIL: cps-models must not use target-definition relativePath'; exit 1; fi
+if grep -Fq '<relativePath>target-definition/pom.xml</relativePath>' observer/pom.xml; then echo 'FAIL: observer must not use target-definition relativePath'; exit 1; fi
 
 echo "== Reactor wiring =="
 grep -Fq '<module>target-definition</module>' pom.xml
@@ -117,7 +117,7 @@ do
   grep -Fq '<groupId>org.tgcv</groupId>' "$consumer/pom.xml"
   grep -Fq '<artifactId>tgcv-viatra-v002-target</artifactId>' "$consumer/pom.xml"
   grep -Fq '<version>${parent.version}</version>' "$consumer/pom.xml"
-  ! grep -Fq '<version>${project.version}</version>' "$consumer/pom.xml"
+  if grep -Fq '<version>${project.version}</version>' "$consumer/pom.xml"; then echo "FAIL: $consumer still uses project.version for target coordinate"; exit 1; fi
 done
 
 test "$(grep -Fc '<artifactId>tgcv-viatra-v002-target</artifactId>' cps-models/pom.xml)" = "1"
@@ -144,7 +144,7 @@ test "$(find target-definition -maxdepth 1 -type f -name '*.target' | wc -l)" = 
 
 echo "== No unresolved target-coordinate interpolation =="
 
-! grep -R -Fq '<version>${project.version}</version>' cps-models observer
+if grep -R -Fq '<version>${project.version}</version>' cps-models observer; then echo 'FAIL: unresolved project.version target interpolation remains'; exit 1; fi
 grep -R -Fq '<version>${parent.version}</version>' cps-models observer
 
 echo "== Target immutability =="
