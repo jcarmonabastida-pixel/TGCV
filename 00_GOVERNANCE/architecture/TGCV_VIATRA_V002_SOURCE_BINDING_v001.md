@@ -12,7 +12,7 @@ Freeze the concrete VIATRA source artifact to which the V002 serial runtime obse
 
 Canonical VIATRA source revision:
 
-`ffa111dbb160c0bc55e89ea16430e97a38908662`
+`eb68158a3d74581f69ccb8bc4f47673b12abdf85`
 
 Repository:
 
