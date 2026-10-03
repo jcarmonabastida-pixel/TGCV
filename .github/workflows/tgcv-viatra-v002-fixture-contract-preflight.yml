@@ -1,0 +1,22 @@
+name: TGCV VIATRA V002 Fixture Contract Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixture-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout TGCV
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Fixture contract preflight
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: python3 fixture-contract-preflight.py
