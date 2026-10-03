@@ -1,5 +1,11 @@
 # TGCV VIATRA V002 Build Installation Path Review 002
 
+## Status
+
+**SUPERSEDED — HISTORICAL RUNTIME-EQUIVALENCE BUILD PATH**
+
+This review concerns the earlier `incr.expl` runtime-equivalence execution chain and must not be used as the current Observer Host packaging specification.
+
 ## Purpose
 
 Determine the exact Maven/Tycho build path required to make the pinned VIATRA CPS runtime `incr.expl` executable for the V002 runtime-equivalence preflight, without building unrelated CPS transformations or tests.
