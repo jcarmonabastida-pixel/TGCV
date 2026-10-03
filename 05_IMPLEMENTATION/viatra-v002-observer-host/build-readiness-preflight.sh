@@ -121,6 +121,8 @@ def plugin_configs(path):
 
 def target_artifacts(path):
     p = parse(path)
+    parent = child(p, "parent")
+    parent_version = text(parent, "version") if parent is not None else None
     out = []
     for plugin in plugin_configs(path):
         if text(plugin, "groupId") == "org.eclipse.tycho" and text(plugin, "artifactId") == "target-platform-configuration":
@@ -129,7 +131,14 @@ def target_artifacts(path):
             if target is None:
                 fail(f"{path}: target-platform-configuration has no <target>")
             for artifact in direct_children(target, "artifact"):
-                out.append((text(artifact, "groupId"), text(artifact, "artifactId"), text(artifact, "version")))
+                version = text(artifact, "version")
+                if version == "${parent.version}":
+                    if parent_version is None:
+                        fail(f"{path}: ${parent.version} used but parent version is unavailable")
+                    version = parent_version
+                elif version == "${project.version}":
+                    fail(f"{path}: ${project.version} is forbidden for target artifact version")
+                out.append((text(artifact, "groupId"), text(artifact, "artifactId"), version))
     return out
 
 def plugin_present(path, group, artifact):
