@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TGCV VIATRA V002 Observer
+Bundle-SymbolicName: org.tgcv.viatra.v002.observer;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.tgcv.viatra.v002.observer
+Require-Bundle: org.eclipse.emf.ecore
+Automatic-Module-Name: org.tgcv.viatra.v002.observer
