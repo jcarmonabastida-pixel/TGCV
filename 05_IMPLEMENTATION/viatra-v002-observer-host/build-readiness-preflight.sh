@@ -16,7 +16,10 @@ test -f "$OBSERVER_MANIFEST"
 test -f observer/pom.xml
 
 echo "== Historical CPS bundle materialization =="
-for bundle in   org.eclipse.viatra.examples.cps.model   org.eclipse.viatra.examples.cps.deployment   org.eclipse.viatra.examples.cps.traceability
+for bundle in \
+  org.eclipse.viatra.examples.cps.model \
+  org.eclipse.viatra.examples.cps.deployment \
+  org.eclipse.viatra.examples.cps.traceability
 do
   b="cps-models/$bundle"
   test -f "$b/pom.xml"
@@ -39,7 +42,6 @@ do
 done
 
 echo "== Historical source revision provenance =="
-test "$(git -C "$(mktemp -d)" rev-parse HEAD 2>/dev/null || true)" = "" || true
 grep -Fq "$SOURCE_REV" materialize-historical-cps-models.sh
 
 echo "== Reactor wiring =="
@@ -51,7 +53,13 @@ grep -Fq '<module>org.eclipse.viatra.examples.cps.deployment</module>' cps-model
 grep -Fq '<module>org.eclipse.viatra.examples.cps.traceability</module>' cps-models/pom.xml
 
 echo "== Observer dependency closure =="
-for dep in org.eclipse.emf.common org.eclipse.emf.ecore org.eclipse.emf.ecore.xmi   org.eclipse.viatra.examples.cps.model   org.eclipse.viatra.examples.cps.deployment   org.eclipse.viatra.examples.cps.traceability
+for dep in \
+  org.eclipse.emf.common \
+  org.eclipse.emf.ecore \
+  org.eclipse.emf.ecore.xmi \
+  org.eclipse.viatra.examples.cps.model \
+  org.eclipse.viatra.examples.cps.deployment \
+  org.eclipse.viatra.examples.cps.traceability
 do
   grep -Fq "$dep" "$OBSERVER_MANIFEST"
 done
