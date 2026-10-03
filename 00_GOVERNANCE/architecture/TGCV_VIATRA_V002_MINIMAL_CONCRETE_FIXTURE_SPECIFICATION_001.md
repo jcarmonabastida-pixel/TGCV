@@ -120,7 +120,18 @@ It must not contain:
 
 For the fixture, the semantic transformation is the single host-mapping operation represented by `CPS2DeploymentTransformation`.
 
-The exact canonical encoding of `transformation_id` remains a fixture-contract item to be frozen before implementation.
+The canonical semantic encoding for `transformation_id` is the ordered tuple:
+
+`(implementation_id, transformation_id, rule_id, fixture_contract_revision)`
+
+For V002:
+
+- `implementation_id` = `org.eclipse.viatra.examples.cps.xform.m2m.batch.viatra`
+- `transformation_id` = `CPS2DeploymentTransformationViatra`
+- `rule_id` = `hostRule`
+- `fixture_contract_revision` = `V002`
+
+The encoding is semantic metadata only. It must not include the concrete HostInstance identifier, generated IP, activation identity, EMF URI fragment, Java object identity, timestamp, execution result, outcome, value, or reward.
 
 ## 8. Activation identity
 
