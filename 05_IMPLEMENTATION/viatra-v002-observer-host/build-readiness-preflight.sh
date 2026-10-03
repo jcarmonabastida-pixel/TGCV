@@ -77,7 +77,22 @@ def direct_children(el, name):
 
 def gav(path):
     p = parse(path)
-    return (text(p, "groupId"), text(p, "artifactId"), text(p, "version"))
+    group = text(p, "groupId")
+    artifact = text(p, "artifactId")
+    version = text(p, "version")
+    if group is None or version is None:
+        parent = child(p, "parent")
+        if parent is None:
+            fail(f"{path}: missing groupId/version and no parent")
+        rel = text(parent, "relativePath") or "../pom.xml"
+        parent_path = (path.parent / rel).resolve()
+        if group is None:
+            group = gav(parent_path)[0]
+        if version is None:
+            version = gav(parent_path)[2]
+    if artifact is None:
+        fail(f"{path}: missing artifactId")
+    return (group, artifact, version)
 
 def parent_gav(path):
     p = parse(path)
