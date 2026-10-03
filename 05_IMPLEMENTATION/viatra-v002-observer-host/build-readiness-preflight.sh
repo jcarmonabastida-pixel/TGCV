@@ -64,6 +64,26 @@ do
   grep -Fq "$dep" "$OBSERVER_MANIFEST"
 done
 
+echo "== OSGi version compatibility =="
+grep -Fq 'org.eclipse.viatra.examples.cps.model;bundle-version="0.1.0"' "$OBSERVER_MANIFEST"
+grep -Fq 'org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0"' "$OBSERVER_MANIFEST"
+grep -Fq 'org.eclipse.viatra.examples.cps.traceability;bundle-version="0.1.0"' "$OBSERVER_MANIFEST"
+grep -Fq 'Bundle-Version: 2.1.0.qualifier' cps-models/org.eclipse.viatra.examples.cps.model/META-INF/MANIFEST.MF
+grep -Fq 'Bundle-Version: 2.1.0.qualifier' cps-models/org.eclipse.viatra.examples.cps.deployment/META-INF/MANIFEST.MF
+grep -Fq 'Bundle-Version: 2.1.0.qualifier' cps-models/org.eclipse.viatra.examples.cps.traceability/META-INF/MANIFEST.MF
+
+echo "== Historical model-bundle dependency closure =="
+for bundle in \
+  org.eclipse.viatra.examples.cps.model \
+  org.eclipse.viatra.examples.cps.deployment
+do
+  grep -Fq 'org.eclipse.core.runtime' "cps-models/$bundle/META-INF/MANIFEST.MF"
+  grep -Fq 'org.eclipse.emf.ecore;visibility:=reexport' "cps-models/$bundle/META-INF/MANIFEST.MF"
+done
+grep -Fq 'org.eclipse.viatra.examples.cps.model;bundle-version="0.1.0";visibility:=reexport' cps-models/org.eclipse.viatra.examples.cps.traceability/META-INF/MANIFEST.MF
+grep -Fq 'org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0";visibility:=reexport' cps-models/org.eclipse.viatra.examples.cps.traceability/META-INF/MANIFEST.MF
+grep -Fq 'org.eclipse.emf.ecore;visibility:=reexport' cps-models/org.eclipse.viatra.examples.cps.traceability/META-INF/MANIFEST.MF
+
 echo "== Target immutability =="
 test "$(git hash-object target-definition/org.eclipse.viatra.examples.cps.target.target)" = "$TARGET_BLOB_SHA"
 
