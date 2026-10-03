@@ -2,7 +2,9 @@
 
 ## Status
 
-STATIC PACKAGING COHERENCE PASS.
+SUPERSEDED — PRE-BUILD AUDIT
+
+This audit records an earlier pre-build coherence state. Its statement that the root reactor itself references the target-definition artifact is superseded by the current canonical separation: target-platform configuration is present in `cps-models/pom.xml` and `observer/pom.xml`, not in the root POM.
 
 ## Verified
 
