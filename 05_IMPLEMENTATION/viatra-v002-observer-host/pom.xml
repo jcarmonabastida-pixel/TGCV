@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -5,23 +6,23 @@
   <groupId>org.tgcv</groupId>
   <artifactId>viatra-v002-observer-host</artifactId>
   <version>0.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
   <properties>
-    <maven.compiler.release>11</maven.compiler.release>
-    <viatra.source.commit>ffa111dbb160c0bc55e89ea16430e97a38908662</viatra.source.commit>
-    <cps.model.version>1.2.0</cps.model.version>
-    <cps.traceability.bundle.version>0.1.0</cps.traceability.bundle.version>
-    <viatra.query.runtime.bundle.version>1.2.0</viatra.query.runtime.bundle.version>
+    <tycho.version>1.0.0</tycho.version>
+    <java.version>1.8</java.version>
   </properties>
-  <!--
-    Metadata-only POM at this stage.
-    The pinned VIATRA tutorial identifies traceability and query runtime
-    as Eclipse/OSGi bundles. A Tycho/OSGi host packaging is required before build.
-  -->
-  <dependencies>
-    <dependency>
-      <groupId>org.eclipse.viatra.examples.cps</groupId>
-      <artifactId>org.eclipse.viatra.examples.cps.model</artifactId>
-      <version>${cps.model.version}</version>
-    </dependency>
-  </dependencies>
+  <modules>
+    <module>target-definition</module>
+    <module>observer</module>
+  </modules>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
