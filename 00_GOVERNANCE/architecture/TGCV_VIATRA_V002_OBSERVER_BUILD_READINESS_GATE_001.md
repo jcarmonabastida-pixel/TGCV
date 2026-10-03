@@ -1,6 +1,6 @@
 # TGCV VIATRA V002 Observer Host Build Readiness Gate 001
 
-Status: READY FOR RE-RUN
+Status: SUPERSEDED — BUILD VERIFIED BY RUN 37123064623
 
 ## Scope
 
