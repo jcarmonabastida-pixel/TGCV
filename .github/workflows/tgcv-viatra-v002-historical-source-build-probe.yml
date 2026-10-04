@@ -63,6 +63,23 @@ jobs:
           grep -R -n -E 'JavaSE-1\.8|JavaSE-1\.7|org\.eclipse\.jdt\.launching|org\.eclipse\.jdt\.core' target-platform-configuration releng 2>/dev/null | head -200 || true
           echo "=== END TARGET PLATFORM / JDT INSPECTION ==="
 
+      - name: Microprobe Java 8 Stream availability
+        run: |
+          echo "=== MICROPROBE JAVA 8 STREAM ==="
+          cat > /tmp/StreamProbe.java <<'EOF'
+          import java.util.stream.Stream;
+          public class StreamProbe {
+              Stream<String> stream;
+              public static void main(String[] args) {
+                  Stream<String> s = Stream.of("ok");
+                  System.out.println(s.findFirst().get());
+              }
+          }
+          EOF
+          javac -source 1.8 -target 1.8 /tmp/StreamProbe.java
+          java -cp /tmp StreamProbe
+          echo "=== MICROPROBE END ==="
+
       - name: Rewrite inaccessible historical Itemis repository for isolated probe
         shell: bash
         run: |
