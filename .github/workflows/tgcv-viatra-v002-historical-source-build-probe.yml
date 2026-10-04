@@ -397,6 +397,28 @@ jobs:
           grep -E -i "tycho-compiler-plugin|classpath|bootclasspath|execution environment|JavaSE-|JRE" /tmp/viatra-build-debug.log | tail -300 || true
           echo "=== END TYCHO COMPILER DEBUG EXTRACT ==="
 
+      - name: Extract maven-plugin-plugin 3.5 realm from failed build log
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG=/tmp/viatra-build-debug.log
+          test -f "$LOG"
+          echo "=== MAVEN-PLUGIN-PLUGIN 3.5 REALM ==="
+          awk '
+            /maven-plugin-plugin:3.5:descriptor/ {p=1}
+            p && /maven-plugin-plugin:3.5/ {print}
+            p && /Created new class realm/ {print}
+            p && /Populating class realm/ {print}
+            p && /Included artifacts/ {print}
+            p && /org\.eclipse\.jdt|org\.eclipse\.emf|org\.eclipse\.xtext/ {print}
+            p && /--- plugin realm|---.*realm/ {print}
+            p && /IllegalArgumentException/ {print; exit}
+          ' "$LOG" | tail -500
+          echo "=== DIRECT REALM/JDT LINES ==="
+          grep -E -i "Created new class realm.*maven-plugin-plugin|Populating class realm.*maven-plugin-plugin|Included artifacts.*maven-plugin-plugin|maven-plugin-plugin.*(jdt|emf|xtext)|org\.eclipse\.jdt.*3\.47\.0|org\.eclipse\.emf\.codegen|org\.eclipse\.jdt\.compiler\.apt" "$LOG" | tail -300 || true
+          echo "=== END MAVEN-PLUGIN-PLUGIN 3.5 REALM ==="
+
       - name: Inspect resolved Xtend 2.12.0 plugin POM
         if: always()
         shell: bash
