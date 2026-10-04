@@ -426,6 +426,48 @@ jobs:
           grep -n -E 'org\.eclipse\.platform|org\.eclipse\.core\.resources|\[3\.11|\[3\.12|4\.0\.0' "$JDT_POM" || true
           echo "=== END JDT ENTRY TRACE ==="
 
+      - name: Pin historical core.resources for Maven plugin descriptor
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          p = Path('maven/viatra-maven-plugin/pom.xml')
+          assert p.exists(), f'VIATRA Maven plugin POM not found: {p}'
+          ET.register_namespace('', 'http://maven.apache.org/POM/4.0.0')
+          tree = ET.parse(p)
+          root = tree.getroot()
+          ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
+          plugins = [plugin for plugin in root.findall('.//m:plugin', ns)
+                     if plugin.findtext('m:artifactId', default='', namespaces=ns) == 'maven-plugin-plugin']
+          assert len(plugins) == 1, f'expected exactly one maven-plugin-plugin, found {len(plugins)}'
+          plugin = plugins[0]
+          assert plugin.findtext('m:version', default='', namespaces=ns) == '3.5'
+          deps = plugin.find('m:dependencies', ns)
+          if deps is None:
+              deps = ET.SubElement(plugin, '{http://maven.apache.org/POM/4.0.0}dependencies')
+          key = ('org.eclipse.platform', 'org.eclipse.core.resources')
+          matches = [d for d in deps.findall('m:dependency', ns)
+                     if (d.findtext('m:groupId', default='', namespaces=ns),
+                         d.findtext('m:artifactId', default='', namespaces=ns)) == key]
+          assert len(matches) <= 1, 'duplicate core.resources plugin dependency'
+          if matches:
+              v = matches[0].find('m:version', ns)
+              if v is None:
+                  v = ET.SubElement(matches[0], '{http://maven.apache.org/POM/4.0.0}version')
+              v.text = '3.11.1'
+          else:
+              d = ET.SubElement(deps, '{http://maven.apache.org/POM/4.0.0}dependency')
+              ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}groupId').text = key[0]
+              ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}artifactId').text = key[1]
+              ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}version').text = '3.11.1'
+          tree.write(p, encoding='utf-8', xml_declaration=True)
+          PY
+          grep -A5 -B2 -F '<artifactId>org.eclipse.core.resources</artifactId>' maven/viatra-maven-plugin/pom.xml
+
+
       - name: Build historical core pass
         shell: bash
         run: |
