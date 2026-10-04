@@ -92,6 +92,18 @@ jobs:
           p.write_text(s)
           PY
           grep -F '<executionEnvironment>JavaSE-1.8</executionEnvironment>' releng/org.eclipse.viatra.parent.core/pom.xml
+          echo "=== JAVA ENVIRONMENT ==="
+          java -version
+          javac -version
+          echo "JAVA_HOME=$JAVA_HOME"
+          echo "JAVA_HOME_8_X64=$JAVA_HOME_8_X64"
+          echo "=== TOOLCHAIN ==="
+          cat "$HOME/.m2/toolchains.xml"
+          echo "=== MAVEN/JAVA PROPERTIES ==="
+          mvn -version
+          echo "=== EFFECTIVE TYCHO CONFIGURATION MARKERS ==="
+          grep -R -n -E 'useJDK|executionEnvironment|maven.compiler.source|maven.compiler.target|java.version' releng/org.eclipse.viatra.parent/pom.xml releng/org.eclipse.viatra.parent.core/pom.xml | head -80
+          echo "=== END DIAGNOSTICS ==="
 
       - name: Build historical core pass
         shell: bash
