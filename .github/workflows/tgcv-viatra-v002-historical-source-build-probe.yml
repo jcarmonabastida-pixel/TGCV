@@ -167,36 +167,43 @@ jobs:
           m = re.search(r'(?s)<plugin>.*?<artifactId>xtend-maven-plugin</artifactId>.*?</plugin>', s)
           assert m, f"xtend-maven-plugin block not found in {p}"
           block = m.group(0)
-          assert '<artifactId>org.eclipse.jdt.core</artifactId>' not in block
-          deps = """
-                  <dependency>
-                    <groupId>org.eclipse.jdt</groupId>
-                    <artifactId>org.eclipse.jdt.core</artifactId>
-                    <version>3.12.2</version>
-                  </dependency>
-                  <dependency>
-                    <groupId>org.eclipse.jdt</groupId>
-                    <artifactId>org.eclipse.jdt.compiler.apt</artifactId>
-                    <version>1.2.100</version>
-                  </dependency>
-                  <dependency>
-                    <groupId>org.eclipse.emf</groupId>
-                    <artifactId>org.eclipse.emf.codegen</artifactId>
-                    <version>2.11.0</version>
-                  </dependency>
-                  <dependency>
-                    <groupId>org.eclipse.platform</groupId>
-                    <artifactId>org.eclipse.core.runtime</artifactId>
-                    <version>3.12.0</version>
-                  </dependency>
-                  <dependency>
-                    <groupId>org.eclipse.platform</groupId>
-                    <artifactId>org.eclipse.equinox.common</artifactId>
-                    <version>3.9.0</version>
-                  </dependency>"""
           deps_close = block.rfind('</dependencies>')
           assert deps_close >= 0, 'existing plugin dependencies block not found'
-          new_block = block[:deps_close] + deps + '\n                ' + block[deps_close:]
+
+          deps = [
+              ('org.eclipse.jdt', 'org.eclipse.jdt.core', '3.12.2'),
+              ('org.eclipse.jdt', 'org.eclipse.jdt.compiler.apt', '1.2.100'),
+              ('org.eclipse.emf', 'org.eclipse.emf.codegen', '2.11.0'),
+              ('org.eclipse.platform', 'org.eclipse.core.runtime', '3.12.0'),
+              ('org.eclipse.platform', 'org.eclipse.equinox.common', '3.9.0'),
+          ]
+
+          dep_xml = """
+                  <dependency>
+                    <groupId>{gid}</groupId>
+                    <artifactId>{aid}</artifactId>
+                    <version>{version}</version>
+                  </dependency>"""
+
+          dep_block = block[:deps_close]
+          for gid, aid, version in deps:
+              pattern = (
+                  rf'(?s)<dependency>\\s*'
+                  rf'<groupId>{re.escape(gid)}</groupId>\\s*'
+                  rf'<artifactId>{re.escape(aid)}</artifactId>\\s*'
+                  rf'<version>[^<]+</version>\\s*'
+                  rf'</dependency>'
+              )
+              matches = list(re.finditer(pattern, dep_block))
+              if matches:
+                  assert len(matches) == 1, f'duplicate plugin dependency: {gid}:{aid}'
+                  mdep = matches[0]
+                  replacement = dep_xml.format(gid=gid, aid=aid, version=version)
+                  dep_block = dep_block[:mdep.start()] + replacement + dep_block[mdep.end():]
+              else:
+                  dep_block += dep_xml.format(gid=gid, aid=aid, version=version)
+
+          new_block = dep_block + block[deps_close:]
           p.write_text(s[:m.start()] + new_block + s[m.end():])
           print(f"PATCHED_POM={p}")
           PY
