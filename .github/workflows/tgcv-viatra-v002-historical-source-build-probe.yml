@@ -374,16 +374,22 @@ jobs:
           exclusions = xtext.find("m:exclusions", ns)
           if exclusions is None:
               exclusions = ET.SubElement(xtext, "{%s}exclusions" % ns["m"])
-          if not any((e.findtext("m:groupId", default="", namespaces=ns) == "org.eclipse.jdt" and
-                      e.findtext("m:artifactId", default="", namespaces=ns) == "org.eclipse.jdt.core")
-                     for e in exclusions.findall("m:exclusion", ns)):
-              e = ET.SubElement(exclusions, "{%s}exclusion" % ns["m"])
-              ET.SubElement(e, "{%s}groupId" % ns["m"]).text = "org.eclipse.jdt"
-              ET.SubElement(e, "{%s}artifactId" % ns["m"]).text = "org.eclipse.jdt.core"
+          wanted = {
+              ("org.eclipse.jdt", "org.eclipse.jdt.core"),
+              ("org.eclipse.jdt", "org.eclipse.jdt.compiler.apt"),
+              ("org.eclipse.jdt", "org.eclipse.jdt.launching"),
+          }
+          for gid_text, aid_text in sorted(wanted):
+              if not any((e.findtext("m:groupId", default="", namespaces=ns) == gid_text and
+                          e.findtext("m:artifactId", default="", namespaces=ns) == aid_text)
+                         for e in exclusions.findall("m:exclusion", ns)):
+                  e = ET.SubElement(exclusions, "{%s}exclusion" % ns["m"])
+                  ET.SubElement(e, "{%s}groupId" % ns["m"]).text = gid_text
+                  ET.SubElement(e, "{%s}artifactId" % ns["m"]).text = aid_text
           tree.write(p, encoding="utf-8", xml_declaration=True)
           PY
-          echo "=== XTEXT MAVEN PLUGIN PROJECT-DEPENDENCY JDT EXCLUSION ==="
-          grep -A18 -B4 -F '<artifactId>xtext-maven-plugin</artifactId>' maven/viatra-maven-plugin/pom.xml
+          echo "=== XTEXT MAVEN PLUGIN JDT EXCLUSIONS ==="
+          grep -A24 -B4 -F '<artifactId>xtext-maven-plugin</artifactId>' maven/viatra-maven-plugin/pom.xml
           echo "=== JDT PROJECT TREE AFTER EXCLUSION ==="
           mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.jdt:org.eclipse.jdt.core
           echo "=== END JDT PROJECT TREE AFTER EXCLUSION ==="
