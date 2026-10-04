@@ -173,7 +173,6 @@ jobs:
           p.write_text(s[:m.start()] + new_block + s[m.end():])
           print(f"PATCHED_POM={p}")
           PY
-          grep -R -n -A18 -B3 '<artifactId>xtend-maven-plugin</artifactId>' --include=pom.xml . | head -80
 
 
       - name: Build historical core pass
