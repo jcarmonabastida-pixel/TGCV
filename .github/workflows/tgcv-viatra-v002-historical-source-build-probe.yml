@@ -152,6 +152,34 @@ jobs:
 
 
 
+      - name: Inject historical Xtend 2.12 JDT compatibility dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          candidates = list(Path('.').rglob('pom.xml'))
+          matches = []
+          for p in candidates:
+              s = p.read_text()
+              if '<artifactId>xtend-maven-plugin</artifactId>' in s and '<version>2.12.0</version>' in s:
+                  matches.append(p)
+          assert len(matches) == 1, f"expected exactly one Xtend 2.12.0 POM, found: {matches}"
+          p = matches[0]
+          s = p.read_text()
+          m = re.search(r'(?s)<plugin>.*?<artifactId>xtend-maven-plugin</artifactId>.*?</plugin>', s)
+          assert m, f"xtend-maven-plugin block not found in {p}"
+          block = m.group(0)
+          assert '<artifactId>org.eclipse.jdt.core</artifactId>' not in block
+          deps = '''\n                <dependencies>\n                  <dependency>\n                    <groupId>org.eclipse.jdt</groupId>\n                    <artifactId>org.eclipse.jdt.core</artifactId>\n                    <version>3.12.2</version>\n                  </dependency>\n                  <dependency>\n                    <groupId>org.eclipse.jdt</groupId>\n                    <artifactId>org.eclipse.jdt.compiler.apt</artifactId>\n                    <version>1.2.100</version>\n                  </dependency>\n                </dependencies>'''
+          new_block = block[:-len('</plugin>')] + deps + '\n            </plugin>'
+          p.write_text(s[:m.start()] + new_block + s[m.end():])
+          print(f"PATCHED_POM={p}")
+          PY
+          grep -R -n -A18 -B3 '<artifactId>xtend-maven-plugin</artifactId>' --include=pom.xml . | head -80
+
       - name: Build historical core pass
         shell: bash
         run: |
