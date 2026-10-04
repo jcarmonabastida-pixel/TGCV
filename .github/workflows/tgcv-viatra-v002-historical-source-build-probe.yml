@@ -187,6 +187,41 @@ jobs:
           PY
 
 
+
+      - name: Inspect effective Xtend plugin dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          mvn -B -U help:effective-pom -f query/plugins/org.eclipse.viatra.query.patternlanguage.emf/pom.xml -Doutput=/tmp/effective-pom.xml
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          p='/tmp/effective-pom.xml'
+          root=ET.parse(p).getroot()
+          ns={'m':'http://maven.apache.org/POM/4.0.0'}
+          found=[]
+          for plugin in root.findall('.//m:plugin', ns):
+              gid=plugin.findtext('m:groupId', default='', namespaces=ns)
+              aid=plugin.findtext('m:artifactId', default='', namespaces=ns)
+              if gid == 'org.eclipse.xtend' and aid == 'xtend-maven-plugin':
+                  deps=[]
+                  for d in plugin.findall('./m:dependencies/m:dependency', ns):
+                      deps.append((
+                          d.findtext('m:groupId', default='', namespaces=ns),
+                          d.findtext('m:artifactId', default='', namespaces=ns),
+                          d.findtext('m:version', default='', namespaces=ns)
+                      ))
+                  found.append(deps)
+          assert found, 'effective xtend-maven-plugin not found'
+          print('=== EFFECTIVE XTEND-MAVEN-PLUGIN DEPENDENCIES ===')
+          for deps in found:
+              for d in deps:
+                  print(f'{d[0]}:{d[1]}:{d[2]}')
+          print('=== END EFFECTIVE XTEND-MAVEN-PLUGIN DEPENDENCIES ===')
+          assert any(d[0]=='org.eclipse.jdt' and d[1]=='org.eclipse.jdt.core' and d[2]=='3.12.2' for deps in found for d in deps), 'JDT core 3.12.2 absent from effective Xtend plugin'
+          assert any(d[0]=='org.eclipse.jdt' and d[1]=='org.eclipse.jdt.compiler.apt' and d[2]=='1.2.100' for deps in found for d in deps), 'JDT compiler.apt 1.2.100 absent from effective Xtend plugin'
+          PY
+
+
       - name: Build historical core pass
         shell: bash
         run: |
