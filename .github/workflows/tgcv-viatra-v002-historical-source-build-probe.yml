@@ -121,4 +121,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mvn -B -U clean install -f releng/org.eclipse.viatra.parent.core/pom.xml -DskipTests -Dtycho.debug.resolution=true
+          mvn -B -U -X clean install -f releng/org.eclipse.viatra.parent.core/pom.xml -DskipTests -Dtycho.debug.resolution=true 2>&1 | tee /tmp/viatra-build-debug.log
+          echo "=== TYCHO COMPILER DEBUG EXTRACT ==="
+          grep -E -i "tycho-compiler-plugin|classpath|bootclasspath|execution environment|JavaSE-|JRE" /tmp/viatra-build-debug.log | tail -300 || true
+          echo "=== END TYCHO COMPILER DEBUG EXTRACT ==="
