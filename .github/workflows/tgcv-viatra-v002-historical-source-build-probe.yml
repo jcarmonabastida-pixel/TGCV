@@ -228,6 +228,40 @@ jobs:
 
 
 
+      - name: Inspect resolved Xtend 2.12.0 plugin POM
+        shell: bash
+        run: |
+          set -euo pipefail
+          POM="$HOME/.m2/repository/org/eclipse/xtend/xtend-maven-plugin/2.12.0/xtend-maven-plugin-2.12.0.pom"
+          test -f "$POM"
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          p = Path.home() / '.m2/repository/org/eclipse/xtend/xtend-maven-plugin/2.12.0/xtend-maven-plugin-2.12.0.pom'
+          root = ET.parse(p).getroot()
+          ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
+
+          print('=== XTEND 2.12.0 PLUGIN POM DEPENDENCIES ===')
+          for d in root.findall('./m:dependencies/m:dependency', ns):
+              gid = d.findtext('m:groupId', default='', namespaces=ns)
+              aid = d.findtext('m:artifactId', default='', namespaces=ns)
+              ver = d.findtext('m:version', default='', namespaces=ns)
+              scope = d.findtext('m:scope', default='', namespaces=ns)
+              print(f'{gid}:{aid}:{ver}:scope={scope or "compile"}')
+          print('=== END XTEND 2.12.0 PLUGIN POM DEPENDENCIES ===')
+
+          deps = [
+              (
+                  d.findtext('m:groupId', default='', namespaces=ns),
+                  d.findtext('m:artifactId', default='', namespaces=ns),
+                  d.findtext('m:version', default='', namespaces=ns)
+              )
+              for d in root.findall('./m:dependencies/m:dependency', ns)
+          ]
+          assert ('org.eclipse.emf', 'org.eclipse.emf.codegen', '2.29.0') in deps, 'Expected EMF Codegen 2.29.0 is not a direct Xtend 2.12.0 plugin dependency'
+          PY
+
       - name: Build historical core pass
         shell: bash
         run: |
