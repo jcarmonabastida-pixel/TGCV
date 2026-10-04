@@ -53,6 +53,16 @@ jobs:
           test -x "$java_home/bin/java"
           grep -F "<id>JavaSE-1.8</id>" "$HOME/.m2/toolchains.xml"
 
+      - name: Inspect resolved JDT and Java execution environment
+        run: |
+          echo "=== TARGET PLATFORM / JDT INSPECTION ==="
+          find ~/.m2/repository -type f \( -name 'org.eclipse.jdt.launching*.jar' -o -name 'org.eclipse.jdt.core*.jar' \) -print | sort | head -100
+          echo "--- resolved JDT/JRE artifacts ---"
+          find ~/.m2/repository -type f \( -name '*jdt*launching*.jar' -o -name '*jdt*core*.jar' \) -print | sort | head -100
+          echo "--- target platform configuration ---"
+          grep -R -n -E 'JavaSE-1\.8|JavaSE-1\.7|org\.eclipse\.jdt\.launching|org\.eclipse\.jdt\.core' target-platform-configuration releng 2>/dev/null | head -200 || true
+          echo "=== END TARGET PLATFORM / JDT INSPECTION ==="
+
       - name: Rewrite inaccessible historical Itemis repository for isolated probe
         shell: bash
         run: |
@@ -104,13 +114,7 @@ jobs:
           echo "=== EFFECTIVE TYCHO CONFIGURATION MARKERS ==="
           grep -R -n -E 'useJDK|executionEnvironment|maven.compiler.source|maven.compiler.target|java.version' releng/org.eclipse.viatra.parent/pom.xml releng/org.eclipse.viatra.parent.core/pom.xml | head -80
           echo "=== END DIAGNOSTICS ==="
-          echo "=== TARGET PLATFORM / JDT INSPECTION ==="
-          find ~/.m2/repository -type f \( -name 'org.eclipse.jdt.launching*.jar' -o -name 'org.eclipse.jdt.core*.jar' \) -print | sort | head -100
-          echo "--- resolved JDT/JRE artifacts ---"
-          find ~/.m2/repository -type f \( -name '*jdt*launching*.jar' -o -name '*jdt*core*.jar' \) -print | sort | head -100
-          echo "--- target platform configuration ---"
-          grep -R -n -E 'JavaSE-1\.8|JavaSE-1\.7|org\.eclipse\.jdt\.launching|org\.eclipse\.jdt\.core' target-platform-configuration releng 2>/dev/null | head -200 || true
-          echo "=== END TARGET PLATFORM / JDT INSPECTION ==="
+
 
 
       - name: Build historical core pass
