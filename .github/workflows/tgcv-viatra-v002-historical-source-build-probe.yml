@@ -87,4 +87,4 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mvn -B -U clean install -f releng/org.eclipse.viatra.parent.core/pom.xml -DskipTests
+          mvn -B -U clean install -f releng/org.eclipse.viatra.parent.core/pom.xml -DskipTests -Dtycho.debug.resolution=true
