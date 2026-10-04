@@ -160,14 +160,9 @@ jobs:
           from pathlib import Path
           import re
 
-          candidates = list(Path('.').rglob('pom.xml'))
-          matches = []
-          for p in candidates:
-              s = p.read_text()
-              if '<artifactId>xtend-maven-plugin</artifactId>' in s:
-                  matches.append(p)
-          assert len(matches) == 1, f"expected exactly one Xtend Maven plugin POM, found: {matches}"
-          p = matches[0]
+          p = Path('releng/org.eclipse.viatra.parent/pom.xml')
+          assert p.exists(), f"historical parent POM not found: {p}"
+          matches = [p]
           s = p.read_text()
           m = re.search(r'(?s)<plugin>.*?<artifactId>xtend-maven-plugin</artifactId>.*?</plugin>', s)
           assert m, f"xtend-maven-plugin block not found in {p}"
