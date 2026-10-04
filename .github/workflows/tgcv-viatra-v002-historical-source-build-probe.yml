@@ -378,6 +378,7 @@ jobs:
               ("org.eclipse.jdt", "org.eclipse.jdt.core"),
               ("org.eclipse.jdt", "org.eclipse.jdt.compiler.apt"),
               ("org.eclipse.jdt", "org.eclipse.jdt.launching"),
+              ("org.eclipse.platform", "org.eclipse.debug.core"),
           }
           for gid_text, aid_text in sorted(wanted):
               if not any((e.findtext("m:groupId", default="", namespaces=ns) == gid_text and
