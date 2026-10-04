@@ -82,6 +82,16 @@ jobs:
           p.write_text(s.replace(old_jre, new_jre))
           PY
           grep -n 'targetJRE' releng/org.eclipse.viatra.target.core/org.eclipse.viatra.target.core.target
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("releng/org.eclipse.viatra.parent.core/pom.xml")
+          s = p.read_text()
+          marker = '                    <resolver>p2</resolver>\n'
+          assert marker in s
+          s = s.replace(marker, marker + '                    <executionEnvironment>JavaSE-1.8</executionEnvironment>\n', 1)
+          p.write_text(s)
+          PY
+          grep -F '<executionEnvironment>JavaSE-1.8</executionEnvironment>' releng/org.eclipse.viatra.parent.core/pom.xml
 
       - name: Build historical core pass
         shell: bash
