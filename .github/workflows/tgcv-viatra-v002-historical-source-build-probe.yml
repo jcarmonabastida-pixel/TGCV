@@ -340,6 +340,19 @@ jobs:
           grep -A4 -B2 -F '<artifactId>org.eclipse.jdt.core</artifactId>' maven/viatra-maven-plugin/pom.xml
 
 
+      - name: Diagnose origin of modern JDT Core 3.47.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "=== JDT CORE DEPENDENCY TREE ==="
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.jdt:org.eclipse.jdt.core
+          echo "=== EFFECTIVE POM JDT REFERENCES ==="
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml help:effective-pom -Doutput=/tmp/viatra-maven-plugin-effective-pom.xml
+          grep -n -C 5 -E 'org\\.eclipse\\.jdt|3\\.47\\.0' /tmp/viatra-maven-plugin-effective-pom.xml || true
+          echo "=== SOURCE POM JDT REFERENCES ==="
+          grep -R -n -C 4 -E 'org\\.eclipse\\.jdt|3\\.47\\.0' maven/viatra-maven-plugin/pom.xml maven 2>/dev/null | head -300 || true
+          echo "=== END JDT ORIGIN DIAGNOSIS ==="
+
       - name: Build historical core pass
         shell: bash
         run: |
