@@ -130,6 +130,16 @@ jobs:
           mvn -version
           echo "=== EFFECTIVE TYCHO CONFIGURATION MARKERS ==="
           grep -R -n -E 'useJDK|executionEnvironment|maven.compiler.source|maven.compiler.target|java.version' releng/org.eclipse.viatra.parent/pom.xml releng/org.eclipse.viatra.parent.core/pom.xml | head -80
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("releng/org.eclipse.viatra.parent/pom.xml")
+          s = p.read_text()
+          old = '<useJDK>BREE</useJDK>'
+          new = '<useJDK>SYSTEM</useJDK>'
+          assert old in s
+          p.write_text(s.replace(old, new, 1))
+          PY
+          grep -F '<useJDK>SYSTEM</useJDK>' releng/org.eclipse.viatra.parent/pom.xml
           echo "=== END DIAGNOSTICS ==="
 
 
