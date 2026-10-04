@@ -375,6 +375,7 @@ jobs:
           if exclusions is None:
               exclusions = ET.SubElement(xtext, "{%s}exclusions" % ns["m"])
           wanted = {
+              ("org.eclipse.emf", "org.eclipse.emf.codegen"),
               ("org.eclipse.jdt", "org.eclipse.jdt.core"),
               ("org.eclipse.jdt", "org.eclipse.jdt.compiler.apt"),
               ("org.eclipse.jdt", "org.eclipse.jdt.launching"),
