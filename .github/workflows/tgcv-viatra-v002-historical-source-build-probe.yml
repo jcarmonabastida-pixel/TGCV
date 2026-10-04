@@ -510,6 +510,69 @@ jobs:
           echo '=== PROJECT CORE.RESOURCES TREE AFTER MANAGEMENT ==='
           mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.platform:org.eclipse.core.resources
 
+
+      - name: Normalize historical Eclipse and EMF dependency realm
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          p = Path('maven/viatra-maven-plugin/pom.xml')
+          assert p.exists(), f'VIATRA Maven plugin POM not found: {p}'
+          ET.register_namespace('', 'http://maven.apache.org/POM/4.0.0')
+          tree = ET.parse(p)
+          root = tree.getroot()
+          ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
+
+          dm = root.find('m:dependencyManagement', ns)
+          if dm is None:
+              dm = ET.SubElement(root, '{http://maven.apache.org/POM/4.0.0}dependencyManagement')
+          deps = dm.find('m:dependencies', ns)
+          if deps is None:
+              deps = ET.SubElement(dm, '{http://maven.apache.org/POM/4.0.0}dependencies')
+
+          historical = {
+              ('org.eclipse.platform', 'org.eclipse.core.resources'): '3.11.1',
+              ('org.eclipse.platform', 'org.eclipse.core.runtime'): '3.12.0',
+              ('org.eclipse.platform', 'org.eclipse.core.jobs'): '3.8.0',
+              ('org.eclipse.platform', 'org.eclipse.core.filesystem'): '1.6.1',
+              ('org.eclipse.platform', 'org.eclipse.equinox.common'): '3.9.0',
+              ('org.eclipse.platform', 'org.eclipse.equinox.registry'): '3.6.100',
+              ('org.eclipse.platform', 'org.eclipse.equinox.preferences'): '3.6.1',
+              ('org.eclipse.platform', 'org.eclipse.text'): '3.6.0',
+              ('org.eclipse.emf', 'org.eclipse.emf.common'): '2.12.0',
+              ('org.eclipse.emf', 'org.eclipse.emf.ecore'): '2.12.0',
+          }
+
+          for key, version in historical.items():
+              matches = [
+                  d for d in deps.findall('m:dependency', ns)
+                  if (d.findtext('m:groupId', default='', namespaces=ns),
+                      d.findtext('m:artifactId', default='', namespaces=ns)) == key
+              ]
+              assert len(matches) <= 1, f'duplicate managed dependency: {key}'
+              if matches:
+                  v = matches[0].find('m:version', ns)
+                  if v is None:
+                      v = ET.SubElement(matches[0], '{http://maven.apache.org/POM/4.0.0}version')
+                  v.text = version
+              else:
+                  d = ET.SubElement(deps, '{http://maven.apache.org/POM/4.0.0}dependency')
+                  ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}groupId').text = key[0]
+                  ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}artifactId').text = key[1]
+                  ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}version').text = version
+
+          tree.write(p, encoding='utf-8', xml_declaration=True)
+          PY
+
+          echo '=== HISTORICAL ECLIPSE/EMF MANAGEMENT ==='
+          grep -A3 -B1 -E '<artifactId>(org\.eclipse\.core\.(resources|runtime|jobs|filesystem)|org\.eclipse\.equinox\.(common|registry|preferences)|org\.eclipse\.text|org\.eclipse\.emf\.(common|ecore))</artifactId>' maven/viatra-maven-plugin/pom.xml
+          echo '=== RESOLVED HISTORICAL PLATFORM/EMF TREE ==='
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose \
+            -Dincludes=org.eclipse.platform:org.eclipse.core.resources,org.eclipse.platform:org.eclipse.core.runtime,org.eclipse.platform:org.eclipse.core.jobs,org.eclipse.platform:org.eclipse.core.filesystem,org.eclipse.platform:org.eclipse.equinox.common,org.eclipse.platform:org.eclipse.equinox.registry,org.eclipse.platform:org.eclipse.equinox.preferences,org.eclipse.text:org.eclipse.text,org.eclipse.emf:org.eclipse.emf.common,org.eclipse.emf.ecore
+
       - name: Build historical core pass
         shell: bash
         run: |
