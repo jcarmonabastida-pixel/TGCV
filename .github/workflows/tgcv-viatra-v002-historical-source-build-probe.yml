@@ -177,7 +177,7 @@ jobs:
           exclusions = xtext.find("m:exclusions", ns)
           if exclusions is None:
               exclusions = ET.SubElement(xtext, "{%s}exclusions" % ns["m"])
-          wanted = {("org.eclipse.jdt", "org.eclipse.jdt.core"), ("org.eclipse.jdt", "org.eclipse.jdt.compiler.apt")}
+          wanted = {("org.eclipse.jdt", "org.eclipse.jdt.core"), ("org.eclipse.jdt", "org.eclipse.jdt.compiler.apt"), ("org.eclipse.jdt", "org.eclipse.jdt.launching")}
           found = set()
           for e in exclusions.findall("m:exclusion", ns):
               gid = e.find("m:groupId", ns)
