@@ -192,7 +192,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mvn -B -U help:effective-pom -f query/plugins/org.eclipse.viatra.query.patternlanguage.emf/pom.xml -Doutput=/tmp/effective-pom.xml
+          mvn -N -B -U help:effective-pom -f query/plugins/org.eclipse.viatra.query.patternlanguage.emf/pom.xml -Doutput=/tmp/effective-pom.xml
           python3 - <<'PY'
           import xml.etree.ElementTree as ET
           p='/tmp/effective-pom.xml'
