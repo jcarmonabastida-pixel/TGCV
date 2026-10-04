@@ -353,6 +353,40 @@ jobs:
           grep -R -n -C 4 -E 'org\\.eclipse\\.jdt|3\\.47\\.0' maven/viatra-maven-plugin/pom.xml maven 2>/dev/null | head -300 || true
           echo "=== END JDT ORIGIN DIAGNOSIS ==="
 
+      - name: Isolate JDT 3.47.0 from historical Maven plugin project realm
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          p = Path("maven/viatra-maven-plugin/pom.xml")
+          ns = {"m": "http://maven.apache.org/POM/4.0.0"}
+          ET.register_namespace("", ns["m"])
+          tree = ET.parse(p)
+          root = tree.getroot()
+          plugins = root.find("m:build/m:plugins", ns)
+          assert plugins is not None
+          xtext = next((p for p in plugins.findall("m:plugin", ns)
+                        if (p.find("m:artifactId", ns) is not None and p.find("m:artifactId", ns).text == "xtext-maven-plugin")), None)
+          assert xtext is not None, "xtext-maven-plugin not found"
+          exclusions = xtext.find("m:exclusions", ns)
+          if exclusions is None:
+              exclusions = ET.SubElement(xtext, "{%s}exclusions" % ns["m"])
+          if not any((e.find("m:groupId", ns) is not None and e.find("m:groupId", ns).text == "org.eclipse.jdt" and
+                      e.find("m:artifactId", ns) is not None and e.find("m:artifactId", ns).text == "org.eclipse.jdt.core")
+                     for e in exclusions.findall("m:exclusion", ns)):
+              e = ET.SubElement(exclusions, "{%s}exclusion" % ns["m"])
+              ET.SubElement(e, "{%s}groupId" % ns["m"]).text = "org.eclipse.jdt"
+              ET.SubElement(e, "{%s}artifactId" % ns["m"]).text = "org.eclipse.jdt.core"
+          tree.write(p, encoding="utf-8", xml_declaration=True)
+          PY
+          echo "=== XTEXT MAVEN PLUGIN JDT EXCLUSION ==="
+          grep -A14 -B4 -F '<artifactId>xtext-maven-plugin</artifactId>' maven/viatra-maven-plugin/pom.xml
+          echo "=== JDT PROJECT TREE AFTER EXCLUSION ==="
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.jdt:org.eclipse.jdt.core
+          echo "=== END JDT PROJECT TREE AFTER EXCLUSION ==="
+
       - name: Build historical core pass
         shell: bash
         run: |
