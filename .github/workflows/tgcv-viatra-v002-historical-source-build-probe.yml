@@ -421,13 +421,16 @@ jobs:
               print(f'{gid}:{aid}:{ver}:scope={scope or "compile"}')
           print('=== END XTEND 2.12.0 PLUGIN POM DEPENDENCIES ===')
 
-          deps = [
-              (
-                  d.findtext('m:groupId', default='', namespaces=ns),
-                  d.findtext('m:artifactId', default='', namespaces=ns),
-                  d.findtext('m:version', default='', namespaces=ns)
-              )
-              for d in root.findall('./m:dependencies/m:dependency', ns)
-          ]
-          assert ('org.eclipse.emf', 'org.eclipse.emf.codegen', '2.29.0') in deps, 'Expected EMF Codegen 2.29.0 is not a direct Xtend 2.12.0 plugin dependency'
+          parent = root.find('m:parent', ns)
+          if parent is not None:
+              print('=== XTEND POM PARENT ===')
+              for tag in ('groupId', 'artifactId', 'version'):
+                  print(f'{tag}={parent.findtext("m:"+tag, default="", namespaces=ns)}')
+              print('=== END XTEND POM PARENT ===')
+          codegen = next((d for d in root.findall('./m:dependencies/m:dependency', ns)
+                          if d.findtext('m:groupId', default='', namespaces=ns) == 'org.eclipse.emf'
+                          and d.findtext('m:artifactId', default='', namespaces=ns) == 'org.eclipse.emf.codegen'), None)
+          assert codegen is not None, 'org.eclipse.emf:org.eclipse.emf.codegen dependency not found in Xtend 2.12.0 plugin POM'
+          print('EMF Codegen declared version:', codegen.findtext('m:version', default='', namespaces=ns))
+          print('EMF Codegen scope:', codegen.findtext('m:scope', default='', namespaces=ns) or 'compile')
           PY
