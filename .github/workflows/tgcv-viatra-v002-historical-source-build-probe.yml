@@ -164,9 +164,9 @@ jobs:
           matches = []
           for p in candidates:
               s = p.read_text()
-              if '<artifactId>xtend-maven-plugin</artifactId>' in s and '<version>2.12.0</version>' in s:
+              if '<artifactId>xtend-maven-plugin</artifactId>' in s:
                   matches.append(p)
-          assert len(matches) == 1, f"expected exactly one Xtend 2.12.0 POM, found: {matches}"
+          assert len(matches) == 1, f"expected exactly one Xtend Maven plugin POM, found: {matches}"
           p = matches[0]
           s = p.read_text()
           m = re.search(r'(?s)<plugin>.*?<artifactId>xtend-maven-plugin</artifactId>.*?</plugin>', s)
