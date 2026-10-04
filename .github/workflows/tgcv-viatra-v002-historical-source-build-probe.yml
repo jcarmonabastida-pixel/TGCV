@@ -152,51 +152,6 @@ jobs:
 
 
 
-      - name: Isolate JDT 3.47.0 from historical Maven plugin project realm
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import xml.etree.ElementTree as ET
-
-          p = Path("maven/viatra-maven-plugin/pom.xml")
-          ns = {"m": "http://maven.apache.org/POM/4.0.0"}
-          ET.register_namespace("", ns["m"])
-          tree = ET.parse(p)
-          root = tree.getroot()
-          plugins = root.find("m:build/m:plugins", ns)
-          assert plugins is not None
-          xtext = None
-          for plugin in plugins.findall("m:plugin", ns):
-              aid = plugin.find("m:artifactId", ns)
-              if aid is not None and aid.text == "xtext-maven-plugin":
-                  xtext = plugin
-                  break
-          assert xtext is not None, "xtext-maven-plugin not found"
-          exclusions = xtext.find("m:exclusions", ns)
-          if exclusions is None:
-              exclusions = ET.SubElement(xtext, "{%s}exclusions" % ns["m"])
-          wanted = {("org.eclipse.jdt", "org.eclipse.jdt.core"), ("org.eclipse.jdt", "org.eclipse.jdt.compiler.apt"), ("org.eclipse.jdt", "org.eclipse.jdt.launching")}
-          found = set()
-          for e in exclusions.findall("m:exclusion", ns):
-              gid = e.find("m:groupId", ns)
-              aid = e.find("m:artifactId", ns)
-              key = (gid.text, aid.text) if gid is not None and aid is not None else None
-              if key in wanted:
-                  found.add(key)
-          for gid_text, aid_text in sorted(wanted - found):
-              e = ET.SubElement(exclusions, "{%s}exclusion" % ns["m"])
-              ET.SubElement(e, "{%s}groupId" % ns["m"]).text = gid_text
-              ET.SubElement(e, "{%s}artifactId" % ns["m"]).text = aid_text
-          tree.write(p, encoding="utf-8", xml_declaration=True)
-          PY
-          echo "=== XTEXT MAVEN PLUGIN JDT EXCLUSION ==="
-          grep -A14 -B4 -F '<artifactId>xtext-maven-plugin</artifactId>' maven/viatra-maven-plugin/pom.xml
-          echo "=== JDT PROJECT TREE AFTER EXCLUSION ==="
-          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.jdt:org.eclipse.jdt.core
-          echo "=== END JDT PROJECT TREE AFTER EXCLUSION ==="
-
       - name: Build historical core pass
         shell: bash
         run: |
