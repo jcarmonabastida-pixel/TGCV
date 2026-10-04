@@ -158,20 +158,23 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          import re
+          import xml.etree.ElementTree as ET
 
           p = Path('releng/org.eclipse.viatra.parent/pom.xml')
           assert p.exists(), f"historical parent POM not found: {p}"
-          matches = [p]
-          s = p.read_text()
-          plugin_blocks = list(re.finditer(r'(?s)<plugin>.*?</plugin>', s))
+
+          ET.register_namespace('', 'http://maven.apache.org/POM/4.0.0')
+          tree = ET.parse(p)
+          root = tree.getroot()
+          ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
+
+          plugins = root.findall('.//m:plugin', ns)
           matches = [
-              m for m in plugin_blocks
-              if re.search(r'<artifactId>\\s*xtend-maven-plugin\\s*</artifactId>', m.group(0))
+              plugin for plugin in plugins
+              if plugin.findtext('m:artifactId', default='', namespaces=ns) == 'xtend-maven-plugin'
           ]
-          assert len(matches) == 1, f"expected exactly one xtend-maven-plugin block, found {len(matches)}"
-          m = matches[0]
-          block = m.group(0)
+          assert len(matches) == 1, f"expected exactly one xtend-maven-plugin, found {len(matches)}"
+          plugin = matches[0]
 
           deps = [
               ('org.eclipse.jdt', 'org.eclipse.jdt.core', '3.12.2'),
@@ -181,43 +184,31 @@ jobs:
               ('org.eclipse.platform', 'org.eclipse.equinox.common', '3.9.0'),
           ]
 
-          deps_match = re.search(r'(?s)<dependencies>.*?</dependencies>', block)
-          if deps_match:
-              dep_block = deps_match.group(0)
-          else:
-              dep_block = '<dependencies></dependencies>'
+          dependencies = plugin.find('m:dependencies', ns)
+          if dependencies is None:
+              dependencies = ET.SubElement(plugin, '{http://maven.apache.org/POM/4.0.0}dependencies')
 
           for gid, aid, version in deps:
-              pattern = (
-                  rf'(?s)<dependency>\\s*'
-                  rf'<groupId>{re.escape(gid)}</groupId>\\s*'
-                  rf'<artifactId>{re.escape(aid)}</artifactId>\\s*'
-                  rf'<version>[^<]+</version>\\s*'
-                  rf'</dependency>'
-              )
-              dep_matches = list(re.finditer(pattern, dep_block))
-              assert len(dep_matches) <= 1, f'duplicate plugin dependency: {gid}:{aid}'
-              replacement = (
-                  f'                  <dependency>\\n'
-                  f'                    <groupId>{gid}</groupId>\\n'
-                  f'                    <artifactId>{aid}</artifactId>\\n'
-                  f'                    <version>{version}</version>\\n'
-                  f'                  </dependency>'
-              )
-              if dep_matches:
-                  dm = dep_matches[0]
-                  dep_block = dep_block[:dm.start()] + replacement + dep_block[dm.end():]
+              found = [
+                  d for d in dependencies.findall('m:dependency', ns)
+                  if d.findtext('m:groupId', default='', namespaces=ns) == gid
+                  and d.findtext('m:artifactId', default='', namespaces=ns) == aid
+              ]
+              assert len(found) <= 1, f'duplicate plugin dependency: {gid}:{aid}'
+              if found:
+                  version_node = found[0].find('m:version', ns)
+                  if version_node is None:
+                      version_node = ET.SubElement(found[0], '{http://maven.apache.org/POM/4.0.0}version')
+                  version_node.text = version
               else:
-                  dep_block = dep_block[:-len('</dependencies>')] + '\\n' + replacement + '\\n                </dependencies>'
+                  d = ET.SubElement(dependencies, '{http://maven.apache.org/POM/4.0.0}dependency')
+                  ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}groupId').text = gid
+                  ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}artifactId').text = aid
+                  ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}version').text = version
 
-          if deps_match:
-              new_block = block[:deps_match.start()] + dep_block + block[deps_match.end():]
-          else:
-              new_block = block.replace('</plugin>', '                ' + dep_block + '\\n              </plugin>')
-
-          p.write_text(s[:m.start()] + new_block + s[m.end():])
+          tree.write(p, encoding='utf-8', xml_declaration=True)
           print(f"PATCHED_POM={p}")
-          PY
+          PYY
 
 
 
