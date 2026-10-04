@@ -208,7 +208,7 @@ jobs:
 
           tree.write(p, encoding='utf-8', xml_declaration=True)
           print(f"PATCHED_POM={p}")
-          PYY
+          PY
 
 
 
