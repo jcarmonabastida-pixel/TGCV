@@ -252,57 +252,6 @@ jobs:
 
 
 
-      - name: Pin historical JDT Core for Maven plugin descriptor probe
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import xml.etree.ElementTree as ET
-
-          p = Path('releng/org.eclipse.viatra.parent/pom.xml')
-          assert p.exists(), f'historical parent POM not found: {p}'
-
-          ET.register_namespace('', 'http://maven.apache.org/POM/4.0.0')
-          tree = ET.parse(p)
-          root = tree.getroot()
-          ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
-          plugins = [
-              plugin for plugin in root.findall('.//m:plugin', ns)
-              if plugin.findtext('m:artifactId', default='', namespaces=ns) == 'maven-plugin-plugin'
-          ]
-          assert plugins, 'maven-plugin-plugin not found in historical parent POM'
-
-          for plugin in plugins:
-              dependencies = plugin.find('m:dependencies', ns)
-              if dependencies is None:
-                  dependencies = ET.SubElement(plugin, '{http://maven.apache.org/POM/4.0.0}dependencies')
-
-              matches = [
-                  d for d in dependencies.findall('m:dependency', ns)
-                  if d.findtext('m:groupId', default='', namespaces=ns) == 'org.eclipse.jdt'
-                  and d.findtext('m:artifactId', default='', namespaces=ns) == 'org.eclipse.jdt.core'
-              ]
-              assert len(matches) <= 1, 'duplicate maven-plugin-plugin JDT Core dependency'
-              if matches:
-                  version = matches[0].find('m:version', ns)
-                  if version is None:
-                      version = ET.SubElement(matches[0], '{http://maven.apache.org/POM/4.0.0}version')
-                  version.text = '3.12.2'
-              else:
-                  d = ET.SubElement(dependencies, '{http://maven.apache.org/POM/4.0.0}dependency')
-                  ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}groupId').text = 'org.eclipse.jdt'
-                  ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}artifactId').text = 'org.eclipse.jdt.core'
-                  ET.SubElement(d, '{http://maven.apache.org/POM/4.0.0}version').text = '3.12.2'
-
-          tree.write(p, encoding='utf-8', xml_declaration=True)
-          print('=== MAVEN PLUGIN JDT CORE PIN ===')
-          print('org.eclipse.jdt:org.eclipse.jdt.core:3.12.2')
-          print('=== END MAVEN PLUGIN JDT CORE PIN ===')
-          PY
-
-
-
       - name: Build historical core pass
         shell: bash
         run: |
