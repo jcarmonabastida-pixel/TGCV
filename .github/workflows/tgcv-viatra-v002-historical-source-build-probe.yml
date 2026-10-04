@@ -228,6 +228,8 @@ jobs:
 
 
 
+      - name: Build historical core pass
+
       - name: Inspect resolved Xtend 2.12.0 plugin POM
         shell: bash
         run: |
@@ -262,7 +264,6 @@ jobs:
           assert ('org.eclipse.emf', 'org.eclipse.emf.codegen', '2.29.0') in deps, 'Expected EMF Codegen 2.29.0 is not a direct Xtend 2.12.0 plugin dependency'
           PY
 
-      - name: Build historical core pass
         shell: bash
         run: |
           set -euo pipefail
