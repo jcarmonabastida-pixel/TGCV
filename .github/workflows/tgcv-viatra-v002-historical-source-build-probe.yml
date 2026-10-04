@@ -80,6 +80,14 @@ jobs:
           java -cp /tmp StreamProbe
           echo "=== MICROPROBE END ==="
 
+      - name: Inspect duplicate signed Eclipse runtime classes
+        run: |
+          echo "=== DUPLICATE ECLIPSE RUNTIME CLASS INSPECTION ==="
+          find ~/.m2 /tmp -type f -name '*.jar' -print0 2>/dev/null | xargs -0 -r -n1 sh -c 'jar tf "$0" 2>/dev/null | grep -qx "org/eclipse/core/runtime/OperationCanceledException.class" && echo "$0"' | sort -u
+          echo "--- signer metadata ---"
+          find ~/.m2 /tmp -type f -name '*.jar' -print0 2>/dev/null | xargs -0 -r -n1 sh -c 'if jar tf "$0" 2>/dev/null | grep -qx "org/eclipse/core/runtime/OperationCanceledException.class"; then echo "### $0"; unzip -p "$0" META-INF/MANIFEST.MF 2>/dev/null | grep -E "^(Bundle-SymbolicName|Bundle-Version|Bundle-Vendor|Bundle-ManifestVersion):"; fi' | sort
+          echo "=== END DUPLICATE ECLIPSE RUNTIME CLASS INSPECTION ==="
+
       - name: Rewrite inaccessible historical Itemis repository for isolated probe
         shell: bash
         run: |
