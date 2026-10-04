@@ -353,6 +353,34 @@ jobs:
           grep -R -n -C 4 -E 'org\\.eclipse\\.jdt|3\\.47\\.0' maven/viatra-maven-plugin/pom.xml maven 2>/dev/null | head -300 || true
           echo "=== END JDT ORIGIN DIAGNOSIS ==="
 
+      - name: Replace historical Eclipse core.resources coordinate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          p = Path('maven/viatra-maven-plugin/pom.xml')
+          ET.register_namespace('', 'http://maven.apache.org/POM/4.0.0')
+          tree = ET.parse(p)
+          root = tree.getroot()
+          ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
+          deps = root.find('m:dependencies', ns)
+          assert deps is not None, 'project dependencies not found'
+          matches = [d for d in deps.findall('m:dependency', ns)
+                     if d.findtext('m:groupId', default='', namespaces=ns) == 'org.eclipse.core'
+                     and d.findtext('m:artifactId', default='', namespaces=ns) == 'org.eclipse.core.resources']
+          assert len(matches) == 1, f'expected exactly one historical core.resources dependency, found {len(matches)}'
+          d = matches[0]
+          d.find('m:groupId', ns).text = 'org.eclipse.platform'
+          v = d.find('m:version', ns)
+          assert v is not None
+          v.text = '3.11.1'
+          tree.write(p, encoding='utf-8', xml_declaration=True)
+          PY
+          echo '=== DIRECT CORE.RESOURCES COORDINATE ==='
+          grep -A4 -B2 -F '<artifactId>org.eclipse.core.resources</artifactId>' maven/viatra-maven-plugin/pom.xml
+
       - name: Isolate JDT 3.47.0 from historical Maven plugin project realm
         shell: bash
         run: |
@@ -375,8 +403,15 @@ jobs:
           if exclusions is None:
               exclusions = ET.SubElement(xtext, "{%s}exclusions" % ns["m"])
           wanted = {
+              # Remove only the historical coordinates observed in the failed realm.
               ("org.eclipse.emf", "org.eclipse.emf.codegen"),
-              ("org.eclipse.platform", "org.eclipse.core.resources"),
+              ("org.eclipse.core", "org.eclipse.core.resources"),
+              ("org.eclipse.core", "org.eclipse.core.runtime"),
+              ("org.eclipse.core", "org.eclipse.core.jobs"),
+              ("org.eclipse.core", "org.eclipse.core.filesystem"),
+              ("org.eclipse.equinox", "org.eclipse.equinox.common"),
+              ("org.eclipse.equinox", "org.eclipse.equinox.registry"),
+              ("org.eclipse.equinox", "org.eclipse.equinox.preferences"),
               ("org.eclipse.jdt", "org.eclipse.jdt.core"),
               ("org.eclipse.jdt", "org.eclipse.jdt.compiler.apt"),
               ("org.eclipse.jdt", "org.eclipse.jdt.launching"),
