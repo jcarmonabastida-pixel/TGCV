@@ -164,11 +164,14 @@ jobs:
           assert p.exists(), f"historical parent POM not found: {p}"
           matches = [p]
           s = p.read_text()
-          m = re.search(r'(?s)<plugin>.*?<artifactId>xtend-maven-plugin</artifactId>.*?</plugin>', s)
-          assert m, f"xtend-maven-plugin block not found in {p}"
+          plugin_blocks = list(re.finditer(r'(?s)<plugin>.*?</plugin>', s))
+          matches = [
+              m for m in plugin_blocks
+              if re.search(r'<artifactId>\\s*xtend-maven-plugin\\s*</artifactId>', m.group(0))
+          ]
+          assert len(matches) == 1, f"expected exactly one xtend-maven-plugin block, found {len(matches)}"
+          m = matches[0]
           block = m.group(0)
-          deps_close = block.rfind('</dependencies>')
-          assert deps_close >= 0, 'existing plugin dependencies block not found'
 
           deps = [
               ('org.eclipse.jdt', 'org.eclipse.jdt.core', '3.12.2'),
@@ -178,14 +181,12 @@ jobs:
               ('org.eclipse.platform', 'org.eclipse.equinox.common', '3.9.0'),
           ]
 
-          dep_xml = """
-                  <dependency>
-                    <groupId>{gid}</groupId>
-                    <artifactId>{aid}</artifactId>
-                    <version>{version}</version>
-                  </dependency>"""
+          deps_match = re.search(r'(?s)<dependencies>.*?</dependencies>', block)
+          if deps_match:
+              dep_block = deps_match.group(0)
+          else:
+              dep_block = '<dependencies></dependencies>'
 
-          dep_block = block[:deps_close]
           for gid, aid, version in deps:
               pattern = (
                   rf'(?s)<dependency>\\s*'
@@ -194,16 +195,26 @@ jobs:
                   rf'<version>[^<]+</version>\\s*'
                   rf'</dependency>'
               )
-              matches = list(re.finditer(pattern, dep_block))
-              if matches:
-                  assert len(matches) == 1, f'duplicate plugin dependency: {gid}:{aid}'
-                  mdep = matches[0]
-                  replacement = dep_xml.format(gid=gid, aid=aid, version=version)
-                  dep_block = dep_block[:mdep.start()] + replacement + dep_block[mdep.end():]
+              dep_matches = list(re.finditer(pattern, dep_block))
+              assert len(dep_matches) <= 1, f'duplicate plugin dependency: {gid}:{aid}'
+              replacement = (
+                  f'                  <dependency>\\n'
+                  f'                    <groupId>{gid}</groupId>\\n'
+                  f'                    <artifactId>{aid}</artifactId>\\n'
+                  f'                    <version>{version}</version>\\n'
+                  f'                  </dependency>'
+              )
+              if dep_matches:
+                  dm = dep_matches[0]
+                  dep_block = dep_block[:dm.start()] + replacement + dep_block[dm.end():]
               else:
-                  dep_block += dep_xml.format(gid=gid, aid=aid, version=version)
+                  dep_block = dep_block[:-len('</dependencies>')] + '\\n' + replacement + '\\n                </dependencies>'
 
-          new_block = dep_block + block[deps_close:]
+          if deps_match:
+              new_block = block[:deps_match.start()] + dep_block + block[deps_match.end():]
+          else:
+              new_block = block.replace('</plugin>', '                ' + dep_block + '\\n              </plugin>')
+
           p.write_text(s[:m.start()] + new_block + s[m.end():])
           print(f"PATCHED_POM={p}")
           PY
