@@ -112,6 +112,7 @@ jobs:
           grep -R -n -E 'JavaSE-1\.8|JavaSE-1\.7|org\.eclipse\.jdt\.launching|org\.eclipse\.jdt\.core' target-platform-configuration releng 2>/dev/null | head -200 || true
           echo "=== END TARGET PLATFORM / JDT INSPECTION ==="
 
+
       - name: Build historical core pass
         shell: bash
         run: |
