@@ -178,6 +178,21 @@ jobs:
                     <groupId>org.eclipse.jdt</groupId>
                     <artifactId>org.eclipse.jdt.compiler.apt</artifactId>
                     <version>1.2.100</version>
+                  </dependency>
+                  <dependency>
+                    <groupId>org.eclipse.emf</groupId>
+                    <artifactId>org.eclipse.emf.codegen</artifactId>
+                    <version>2.11.0</version>
+                  </dependency>
+                  <dependency>
+                    <groupId>org.eclipse.platform</groupId>
+                    <artifactId>org.eclipse.core.runtime</artifactId>
+                    <version>3.12.0</version>
+                  </dependency>
+                  <dependency>
+                    <groupId>org.eclipse.platform</groupId>
+                    <artifactId>org.eclipse.equinox.common</artifactId>
+                    <version>3.9.0</version>
                   </dependency>"""
           deps_close = block.rfind('</dependencies>')
           assert deps_close >= 0, 'existing plugin dependencies block not found'
