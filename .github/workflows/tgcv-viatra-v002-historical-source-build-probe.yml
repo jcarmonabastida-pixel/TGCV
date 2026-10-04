@@ -177,16 +177,18 @@ jobs:
           exclusions = xtext.find("m:exclusions", ns)
           if exclusions is None:
               exclusions = ET.SubElement(xtext, "{%s}exclusions" % ns["m"])
-          found = False
+          wanted = {("org.eclipse.jdt", "org.eclipse.jdt.core"), ("org.eclipse.jdt", "org.eclipse.jdt.compiler.apt")}
+          found = set()
           for e in exclusions.findall("m:exclusion", ns):
               gid = e.find("m:groupId", ns)
               aid = e.find("m:artifactId", ns)
-              if gid is not None and aid is not None and gid.text == "org.eclipse.jdt" and aid.text == "org.eclipse.jdt.core":
-                  found = True
-          if not found:
+              key = (gid.text, aid.text) if gid is not None and aid is not None else None
+              if key in wanted:
+                  found.add(key)
+          for gid_text, aid_text in sorted(wanted - found):
               e = ET.SubElement(exclusions, "{%s}exclusion" % ns["m"])
-              ET.SubElement(e, "{%s}groupId" % ns["m"]).text = "org.eclipse.jdt"
-              ET.SubElement(e, "{%s}artifactId" % ns["m"]).text = "org.eclipse.jdt.core"
+              ET.SubElement(e, "{%s}groupId" % ns["m"]).text = gid_text
+              ET.SubElement(e, "{%s}artifactId" % ns["m"]).text = aid_text
           tree.write(p, encoding="utf-8", xml_declaration=True)
           PY
           echo "=== XTEXT MAVEN PLUGIN JDT EXCLUSION ==="
