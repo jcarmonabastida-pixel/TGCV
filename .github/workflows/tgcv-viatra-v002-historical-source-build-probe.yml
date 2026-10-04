@@ -397,6 +397,35 @@ jobs:
           mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.jdt:org.eclipse.jdt.core
           echo "=== END JDT PROJECT TREE AFTER EXCLUSION ==="
 
+      - name: Trace modern core.resources entry through JDT 3.12.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "=== JDT 3.12.2 POM DEPENDENCIES ==="
+          JDT_POM="$HOME/.m2/repository/org/eclipse/jdt/org.eclipse.jdt.core/3.12.2/org.eclipse.jdt.core-3.12.2.pom"
+          test -f "$JDT_POM"
+          python3 - "$JDT_POM" <<'PY'
+          import sys
+          import xml.etree.ElementTree as ET
+          p = sys.argv[1]
+          root = ET.parse(p).getroot()
+          ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
+          for d in root.findall('./m:dependencies/m:dependency', ns):
+              gid = d.findtext('m:groupId', default='', namespaces=ns)
+              aid = d.findtext('m:artifactId', default='', namespaces=ns)
+              ver = d.findtext('m:version', default='', namespaces=ns)
+              scope = d.findtext('m:scope', default='', namespaces=ns) or 'compile'
+              if gid.startswith('org.eclipse') or gid.startswith('org.osgi'):
+                  print(f'{gid}:{aid}:{ver}:scope={scope}')
+          PY
+          echo "=== RESOLVED CORE.RESOURCES TREE ==="
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.platform:org.eclipse.core.resources
+          echo "=== RESOLVED ECLIPSE PLATFORM TREE ==="
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.platform:org.eclipse.core.resources,org.eclipse.platform:org.eclipse.core.runtime,org.eclipse.platform:org.eclipse.core.filesystem,org.eclipse.text:org.eclipse.text
+          echo "=== JDT/CORE.RESOURCE LOCAL POM REFERENCES ==="
+          grep -n -E 'org\.eclipse\.platform|org\.eclipse\.core\.resources|\[3\.11|\[3\.12|4\.0\.0' "$JDT_POM" || true
+          echo "=== END JDT ENTRY TRACE ==="
+
       - name: Build historical core pass
         shell: bash
         run: |
