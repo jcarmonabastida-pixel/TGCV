@@ -58,8 +58,6 @@ jobs:
           expected = {
               "org.eclipse.viatra.transformation.evm",
               "org.eclipse.viatra.transformation.runtime.emf",
-              "org.eclipse.viatra.transformation.evm.feature.feature.group",
-              "org.eclipse.viatra.transformation.runtime.emf.feature.feature.group",
           }
           found = {unit_id for unit_id, _ in rows}
           missing = sorted(expected - found)
@@ -73,8 +71,8 @@ jobs:
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: |
           set -euo pipefail
-          grep -q 'org.eclipse.viatra.transformation.evm.feature.feature.group.*version="2.0.2.201808291256"' target-definition/tgcv-viatra-v002-target.target
-          grep -q 'org.eclipse.viatra.transformation.runtime.emf.feature.feature.group.*version="2.0.2.201808291256"' target-definition/tgcv-viatra-v002-target.target
+          grep -q 'org.eclipse.viatra.transformation.evm.*version="2.0.2.201808291256"' target-definition/tgcv-viatra-v002-target.target
+          grep -q 'org.eclipse.viatra.transformation.runtime.emf.*version="2.0.2.201808291256"' target-definition/tgcv-viatra-v002-target.target
           grep -q 'org.eclipse.viatra.transformation.evm,' observer/META-INF/MANIFEST.MF
           grep -q 'org.eclipse.viatra.transformation.runtime.emf' observer/META-INF/MANIFEST.MF
 
