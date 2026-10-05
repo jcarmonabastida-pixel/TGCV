@@ -72,6 +72,7 @@ jobs:
         run: |
           set -euo pipefail
           grep -q 'org.eclipse.viatra.query.runtime.*version="2.0.2.201808291256"' target-definition/tgcv-viatra-v002-target.target
+          grep -q 'org.eclipse.viatra.query.patternlanguage.emf.*version="2.0.2.201808291256"' target-definition/tgcv-viatra-v002-target.target
           grep -q 'org.eclipse.viatra.transformation.evm.*version="2.0.2.201808291256"' target-definition/tgcv-viatra-v002-target.target
           grep -q 'org.eclipse.viatra.transformation.runtime.emf.*version="2.0.2.201808291256"' target-definition/tgcv-viatra-v002-target.target
           grep -q 'org.eclipse.viatra.query.runtime,' observer/META-INF/MANIFEST.MF
