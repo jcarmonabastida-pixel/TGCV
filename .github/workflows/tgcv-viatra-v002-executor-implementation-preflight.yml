@@ -38,6 +38,7 @@ jobs:
           grep -q 'BatchTransformation.forEngine(engine)' 05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer/V002SerialExecutor.java
           grep -q 'addListener' 05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer/V002SerialExecutor.java
           grep -q 'fireAllCurrent(hostRule)' 05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer/V002SerialExecutor.java
+          test "$(git hash-object 05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql)" = "48033b9a6ddfd89bc875e1bbd4a505bd2411ff41"
           grep -q 'UnsupportedOperationException' 05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer/ViatraV002ObserverHost.java
           if grep -RniE 'value|utility|reward|T_acc|future.?assignment|scientific.?score' 05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer/V002SerialExecutor.java; then
             echo "Scientific firewall violation in executor"
