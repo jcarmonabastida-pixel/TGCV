@@ -15,12 +15,17 @@ import org.eclipse.viatra.transformation.evm.api.event.AbstractTransformationLis
 public final class V002ExternalListener extends AbstractTransformationListener {
 
     private final V002SerialObserver observer;
+    private final V002StateCapture stateCapture;
 
-    public V002ExternalListener(V002SerialObserver observer) {
+    public V002ExternalListener(V002SerialObserver observer, V002StateCapture stateCapture) {
         if (observer == null) {
             throw new IllegalArgumentException("observer must not be null");
         }
+        if (stateCapture == null) {
+            throw new IllegalArgumentException("stateCapture must not be null");
+        }
         this.observer = observer;
+        this.stateCapture = stateCapture;
     }
 
     @Override
@@ -33,7 +38,7 @@ public final class V002ExternalListener extends AbstractTransformationListener {
 
         observer.beforeFiring(
             activationIdentity,
-            "PRE_STATE_CAPTURE_DEFERRED_TO_HOST");
+            stateCapture.capturePreState(activation));
     }
 
     @Override
@@ -46,6 +51,6 @@ public final class V002ExternalListener extends AbstractTransformationListener {
 
         observer.afterFiring(
             activationIdentity,
-            "POST_STATE_CAPTURE_DEFERRED_TO_HOST");
+            stateCapture.capturePostState(activation));
     }
 }
