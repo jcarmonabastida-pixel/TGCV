@@ -150,6 +150,23 @@ jobs:
           grep -F '<useJDK>SYSTEM</useJDK>' releng/org.eclipse.viatra.parent/pom.xml
           echo "=== END DIAGNOSTICS ==="
 
+      - name: Add missing EMF Codegen runtime dependency to VIATRA Maven plugin
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("maven/viatra-maven-plugin/pom.xml")
+          s = p.read_text()
+          marker = """        <dependency>\n            <groupId>org.eclipse.emf</groupId>\n            <artifactId>org.eclipse.emf.codegen.ecore</artifactId>\n            <version>[2.11.0,2.12.0)</version>\n        </dependency>\n"""
+          addition = marker + """\n        <dependency>\n            <groupId>org.eclipse.emf</groupId>\n            <artifactId>org.eclipse.emf.codegen</artifactId>\n            <version>2.11.0</version>\n        </dependency>\n"""
+          assert s.count(marker) == 1, "Expected exactly one EMF Codegen Ecore dependency block"
+          assert "<artifactId>org.eclipse.emf.codegen</artifactId>" not in s, "Dependency already present"
+          p.write_text(s.replace(marker, addition, 1))
+          PY
+          grep -A4 -B2 -F '<artifactId>org.eclipse.emf.codegen</artifactId>' maven/viatra-maven-plugin/pom.xml
+
+
 
 
       - name: Build historical core pass
