@@ -3,23 +3,13 @@ package org.tgcv.viatra.v002.observer.historical;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Java-equivalent materialization of the pinned historical VIATRA example
- * SignalUtil semantics used by the V002 ActionPair pattern.
- *
- * The implementation intentionally preserves the historical regular
- * expressions, match behavior, group extraction, and trimming semantics.
- */
 public final class SignalUtil {
-
     private static final Pattern WAIT_PATTERN =
-        Pattern.compile("^waitForSignal((.*))$");
-
+        Pattern.compile("^waitForSignal\\((.*)\\)$");
     private static final Pattern SEND_PATTERN =
-        Pattern.compile("^sendSignal((.*),(.*))$");
+        Pattern.compile("^sendSignal\\((.*),(.*)\\)$");
 
-    private SignalUtil() {
-    }
+    private SignalUtil() {}
 
     public static boolean isSend(String action) {
         return SEND_PATTERN.matcher(action).matches();
