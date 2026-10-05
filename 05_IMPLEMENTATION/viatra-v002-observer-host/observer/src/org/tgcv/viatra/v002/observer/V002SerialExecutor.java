@@ -130,7 +130,8 @@ public final class V002SerialExecutor {
             String name, String patternName, Consumer<IPatternMatch> action) throws Exception {
         IQuerySpecification specification = findSpecification(patternName);
         BatchTransformationRuleFactory factory = new BatchTransformationRuleFactory();
-        return (BatchTransformationRule) factory.createRule(specification)
+        return (BatchTransformationRule) factory.createRule()
+            .precondition(specification)
             .name(name).action(action).build();
     }
 
