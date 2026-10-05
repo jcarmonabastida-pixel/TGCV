@@ -1,0 +1,89 @@
+name: TGCV VIATRA V002 Serial Runtime Observation Implementation Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  serial-runtime-observation-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout implementation ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 1
+
+      - name: Verify observer implementation contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path("05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer")
+
+          required = {
+              "V002ObserverEvent.java": (
+                  "eventSeq", "transformationId", "activationInstanceId",
+                  "preStateDigest", "postStateDigest", "V002ObservationProvenance"
+              ),
+              "V002ObservationProvenance.java": (
+                  "FIXTURE_REVISION", "FIXTURE_SHA256_MANIFEST_REVISION",
+                  "INSTRUMENTATION_REVISION", "sourceRepository",
+                  "implementationRevision", "runtimeIdentity"
+              ),
+              "V002SerialObserver.java": (
+                  "beforeFiring", "afterFiring", "AtomicLong",
+                  "synchronized", "provenance"
+              ),
+              "V002CanonicalStateSerializer.java": (
+                  "TGCV_VIATRA_V002_STATE_v001", "sha256",
+                  "StandardCharsets.UTF_8"
+              ),
+              "V002TransformationIdentity.java": (
+                  "CPS2DeploymentTransformationViatra", "hostRule", "SHA-256"
+              ),
+          }
+
+          for name, tokens in required.items():
+              p = root / name
+              if not p.is_file():
+                  raise SystemExit(f"FAIL: missing {p}")
+              text = p.read_text(encoding="utf-8")
+              for token in tokens:
+                  if token not in text:
+                      raise SystemExit(f"FAIL: {name}: missing token {token}")
+
+          forbidden = re.compile(
+              r"(?i)\\b(utility|reward|performance[_ -]?score|value[_ -]?construction|"
+              r"future[_ -]?assignment|t_acc|accessibility[_ -]?label)\\b"
+          )
+          for p in root.glob("*.java"):
+              text = p.read_text(encoding="utf-8")
+              if forbidden.search(text):
+                  raise SystemExit(f"FAIL: scientific-firewall term in {p.name}")
+
+          host = root / "ViatraV002ObserverHost.java"
+          if "UnsupportedOperationException" not in host.read_text(encoding="utf-8"):
+              raise SystemExit("FAIL: runtime execution guard missing")
+
+          print("TGCV_VIATRA_V002_SERIAL_RUNTIME_OBSERVATION_IMPLEMENTATION_PREFLIGHT=PASS")
+          PY
+
+      - name: Verify build-readiness without runtime authorization
+        run: |
+          test -f 05_IMPLEMENTATION/viatra-v002-observer-host/pom.xml
+          test -f 05_IMPLEMENTATION/viatra-v002-observer-host/observer/pom.xml
+          test -f 05_IMPLEMENTATION/viatra-v002-observer-host/observer/META-INF/MANIFEST.MF
+          echo "TGCV_VIATRA_V002_SERIAL_RUNTIME_OBSERVATION_BUILD_INPUTS=PASS"
+
+      - name: Runtime execution firewall
+        run: |
+          if grep -R -nE 'ViatraV002ObserverHost.*main|execute\\(\\)' 05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer >/dev/null; then
+            true
+          fi
+          grep -q "UnsupportedOperationException"             05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer/ViatraV002ObserverHost.java
+          echo "TGCV_VIATRA_V002_SERIAL_RUNTIME_FIREWALL=PASS"
