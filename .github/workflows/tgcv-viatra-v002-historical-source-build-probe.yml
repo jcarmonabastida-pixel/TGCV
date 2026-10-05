@@ -865,43 +865,106 @@ jobs:
           grep -A4 -B2 -F '<artifactId>org.eclipse.emf.codegen</artifactId>' maven/viatra-maven-plugin/pom.xml
 
 
-      - name: Precompile generated EMF model for VIATRA query generation
+      - name: Precompile generated EMF models before VIATRA query generation
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
           import xml.etree.ElementTree as ET
-          p = Path('transformation/plugins/org.eclipse.viatra.transformation.views/pom.xml')
-          assert p.exists(), 'transformation.views POM not found'
-          ET.register_namespace('', 'http://maven.apache.org/POM/4.0.0')
-          tree = ET.parse(p); root = tree.getroot(); ns = {'m':'http://maven.apache.org/POM/4.0.0'}
-          build = root.find('m:build', ns); assert build is not None, 'build section not found'
-          plugins = build.find('m:plugins', ns); assert plugins is not None, 'plugins section not found'
-          viatra = next((x for x in plugins.findall('m:plugin', ns) if x.findtext('m:artifactId', default='', namespaces=ns) == 'viatra-maven-plugin'), None)
-          assert viatra is not None, 'viatra-maven-plugin not found'
-          existing = [x for x in plugins.findall('m:plugin', ns) if x.findtext('m:artifactId', default='', namespaces=ns) == 'maven-compiler-plugin']
-          assert len(existing) <= 1, 'unexpected duplicate maven-compiler-plugin'
-          if not existing:
-              plugin = ET.Element('{http://maven.apache.org/POM/4.0.0}plugin')
-              ET.SubElement(plugin, '{http://maven.apache.org/POM/4.0.0}groupId').text = 'org.apache.maven.plugins'
-              ET.SubElement(plugin, '{http://maven.apache.org/POM/4.0.0}artifactId').text = 'maven-compiler-plugin'
-              ET.SubElement(plugin, '{http://maven.apache.org/POM/4.0.0}version').text = '3.5.1'
-              executions = ET.SubElement(plugin, '{http://maven.apache.org/POM/4.0.0}executions')
-              execution = ET.SubElement(executions, '{http://maven.apache.org/POM/4.0.0}execution')
-              ET.SubElement(execution, '{http://maven.apache.org/POM/4.0.0}id').text = 'precompile-emf-generated-model'
-              ET.SubElement(execution, '{http://maven.apache.org/POM/4.0.0}phase').text = 'generate-sources'
-              goals = ET.SubElement(execution, '{http://maven.apache.org/POM/4.0.0}goals')
-              ET.SubElement(goals, '{http://maven.apache.org/POM/4.0.0}goal').text = 'compile'
-              configuration = ET.SubElement(execution, '{http://maven.apache.org/POM/4.0.0}configuration')
-              ET.SubElement(configuration, '{http://maven.apache.org/POM/4.0.0}source').text = '1.8'
-              ET.SubElement(configuration, '{http://maven.apache.org/POM/4.0.0}target').text = '1.8'
-              includes = ET.SubElement(configuration, '{http://maven.apache.org/POM/4.0.0}includes')
-              ET.SubElement(includes, '{http://maven.apache.org/POM/4.0.0}include').text = 'emf-gen/**/*.java'
-              plugins.insert(list(plugins).index(viatra), plugin)
-          tree.write(p, encoding='utf-8', xml_declaration=True)
+
+          NS = 'http://maven.apache.org/POM/4.0.0'
+          ET.register_namespace('', NS)
+
+          modules = [
+              Path('transformation/plugins/org.eclipse.viatra.transformation.views/pom.xml'),
+              Path('addon/plugins/org.eclipse.viatra.addon.viewers.runtime/pom.xml'),
+          ]
+
+          for p in modules:
+              assert p.exists(), f'POM not found: {p}'
+              tree = ET.parse(p)
+              root = tree.getroot()
+              ns = {'m': NS}
+              plugins = root.find('m:build/m:plugins', ns)
+              assert plugins is not None, f'plugins section not found: {p}'
+
+              plugin_list = list(plugins)
+              names = [
+                  x.findtext('m:artifactId', default='', namespaces=ns)
+                  for x in plugin_list
+              ]
+
+              viatra_index = names.index('viatra-maven-plugin')
+              eclipserun_index = names.index('tycho-eclipserun-plugin')
+              assert eclipserun_index < viatra_index, (
+                  f'{p}: historical EMF generator must precede viatra-maven-plugin'
+              )
+
+              compiler_indexes = [
+                  i for i, name in enumerate(names)
+                  if name == 'maven-compiler-plugin'
+              ]
+              assert len(compiler_indexes) <= 1, (
+                  f'{p}: unexpected duplicate maven-compiler-plugin'
+              )
+
+              if compiler_indexes:
+                  compiler_index = compiler_indexes[0]
+                  compiler = plugin_list[compiler_index]
+              else:
+                  compiler = ET.Element(f'{{{NS}}}plugin')
+                  ET.SubElement(compiler, f'{{{NS}}}groupId').text = 'org.apache.maven.plugins'
+                  ET.SubElement(compiler, f'{{{NS}}}artifactId').text = 'maven-compiler-plugin'
+                  ET.SubElement(compiler, f'{{{NS}}}version').text = '3.5.1'
+
+                  executions = ET.SubElement(compiler, f'{{{NS}}}executions')
+                  execution = ET.SubElement(executions, f'{{{NS}}}execution')
+                  ET.SubElement(execution, f'{{{NS}}}id').text = 'precompile-emf-generated-model'
+                  ET.SubElement(execution, f'{{{NS}}}phase').text = 'generate-sources'
+
+                  goals = ET.SubElement(execution, f'{{{NS}}}goals')
+                  ET.SubElement(goals, f'{{{NS}}}goal').text = 'compile'
+
+                  configuration = ET.SubElement(execution, f'{{{NS}}}configuration')
+                  ET.SubElement(configuration, f'{{{NS}}}source').text = '1.8'
+                  ET.SubElement(configuration, f'{{{NS}}}target').text = '1.8'
+                  includes = ET.SubElement(configuration, f'{{{NS}}}includes')
+                  ET.SubElement(includes, f'{{{NS}}}include').text = 'emf-gen/**/*.java'
+
+                  plugins.insert(viatra_index, compiler)
+
+              # Re-read the effective plugin order after insertion/update.
+              plugin_list = list(plugins)
+              names = [
+                  x.findtext('m:artifactId', default='', namespaces=ns)
+                  for x in plugin_list
+              ]
+              eclipserun_index = names.index('tycho-eclipserun-plugin')
+              compiler_index = names.index('maven-compiler-plugin')
+              viatra_index = names.index('viatra-maven-plugin')
+
+              assert eclipserun_index < compiler_index < viatra_index, (
+                  f'{p}: expected EMF generator -> compiler -> VIATRA order, '
+                  f'got {names}'
+              )
+
+              compiler = plugin_list[compiler_index]
+              execution = compiler.find('m:executions/m:execution', ns)
+              assert execution is not None, f'{p}: compiler execution missing'
+              assert execution.findtext('m:phase', default='', namespaces=ns) == 'generate-sources'
+              assert execution.findtext('m:goals/m:goal', default='', namespaces=ns) == 'compile'
+
+              tree.write(p, encoding='utf-8', xml_declaration=True)
+              print(f'PRECOMPILE_ORDER_OK={p}')
+              print('  tycho-eclipserun-plugin -> maven-compiler-plugin -> viatra-maven-plugin')
           PY
-          grep -A25 -B3 -F 'precompile-emf-generated-model' transformation/plugins/org.eclipse.viatra.transformation.views/pom.xml
+
+          echo "=== TRANSFORMATION VIEWS ORDER ==="
+          grep -n -E 'tycho-eclipserun-plugin|maven-compiler-plugin|viatra-maven-plugin|precompile-emf-generated-model|generate-sources'             transformation/plugins/org.eclipse.viatra.transformation.views/pom.xml
+
+          echo "=== ADDON VIEWERS RUNTIME ORDER ==="
+          grep -n -E 'tycho-eclipserun-plugin|maven-compiler-plugin|viatra-maven-plugin|precompile-emf-generated-model|generate-sources'             addon/plugins/org.eclipse.viatra.addon.viewers.runtime/pom.xml
 
       - name: Build historical core pass
         shell: bash
