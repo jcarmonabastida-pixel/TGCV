@@ -935,6 +935,9 @@ jobs:
                   configuration = ET.SubElement(execution, f'{{{NS}}}configuration')
                   ET.SubElement(configuration, f'{{{NS}}}source').text = '1.8'
                   ET.SubElement(configuration, f'{{{NS}}}target').text = '1.8'
+                  source_roots = ET.SubElement(configuration, f'{{{NS}}}compileSourceRoots')
+                  source_root = ET.SubElement(source_roots, f'{{{NS}}}compileSourceRoot')
+                  source_root.text = '${project.basedir}/emf-gen'
                   includes = ET.SubElement(configuration, f'{{{NS}}}includes')
                   for pattern in generated_includes:
                       ET.SubElement(includes, f'{{{NS}}}include').text = pattern
@@ -961,6 +964,13 @@ jobs:
               assert execution is not None, f'{p}: compiler execution missing'
               assert execution.findtext('m:phase', default='', namespaces=ns) == 'generate-sources'
               assert execution.findtext('m:goals/m:goal', default='', namespaces=ns) == 'compile'
+
+              compile_roots = execution.find('m:configuration/m:compileSourceRoots', ns)
+              assert compile_roots is not None, f'{p}: compileSourceRoots missing'
+              roots = [node.text for node in compile_roots.findall('m:compileSourceRoot', ns)]
+              assert roots == ['${project.basedir}/emf-gen'], (
+                  f'{p}: expected compileSourceRoots to be emf-gen, got {roots}'
+              )
 
               includes = execution.find('m:configuration/m:includes', ns)
               assert includes is not None, f'{p}: compiler includes missing'
