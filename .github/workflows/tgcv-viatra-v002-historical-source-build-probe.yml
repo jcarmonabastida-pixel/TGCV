@@ -842,8 +842,25 @@ jobs:
           marker = """        <dependency>\n            <groupId>org.eclipse.emf</groupId>\n            <artifactId>org.eclipse.emf.codegen.ecore</artifactId>\n            <version>[2.11.0,2.12.0)</version>\n        </dependency>\n"""
           addition = marker + """\n        <dependency>\n            <groupId>org.eclipse.emf</groupId>\n            <artifactId>org.eclipse.emf.codegen</artifactId>\n            <version>2.11.0</version>\n        </dependency>\n"""
           assert s.count(marker) == 1, "Expected exactly one EMF Codegen Ecore dependency block"
-          assert "<artifactId>org.eclipse.emf.codegen</artifactId>" not in s, "Dependency already present"
-          p.write_text(s.replace(marker, addition, 1))
+          import xml.etree.ElementTree as ET
+          root = ET.fromstring(s)
+          ns = {"m": "http://maven.apache.org/POM/4.0.0"}
+          project_deps = root.find("m:dependencies", ns)
+          assert project_deps is not None, "Project dependencies section not found"
+          direct = [d for d in project_deps.findall("m:dependency", ns)
+                    if d.findtext("m:groupId", default="", namespaces=ns) == "org.eclipse.emf"
+                    and d.findtext("m:artifactId", default="", namespaces=ns) == "org.eclipse.emf.codegen"]
+          assert len(direct) <= 1, "Duplicate direct org.eclipse.emf:org.eclipse.emf.codegen dependency"
+          if direct:
+              v = direct[0].find("m:version", ns)
+              assert v is not None and v.text == "2.11.0", "Existing direct EMF Codegen dependency has unexpected version"
+          else:
+              p.write_text(s.replace(marker, addition, 1))
+              s = p.read_text()
+          assert len([d for d in ET.fromstring(s).find("m:dependencies", ns).findall("m:dependency", ns)
+                       if d.findtext("m:groupId", default="", namespaces=ns) == "org.eclipse.emf"
+                       and d.findtext("m:artifactId", default="", namespaces=ns) == "org.eclipse.emf.codegen"]) == 1
+
           PY
           grep -A4 -B2 -F '<artifactId>org.eclipse.emf.codegen</artifactId>' maven/viatra-maven-plugin/pom.xml
 
