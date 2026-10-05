@@ -1,0 +1,40 @@
+name: TGCV VIATRA V002 Historical VQL Parser Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  historical-vql-parser:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout TGCV
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Set Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+
+      - name: Materialize pinned historical CPS model bundles
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: bash materialize-historical-cps-models.sh
+
+      - name: Verify parser API and historical VQL surface
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -euo pipefail
+          grep -q 'org.eclipse.viatra.query.patternlanguage.emf,' observer/META-INF/MANIFEST.MF
+          grep -q 'PatternParser.parser()' observer/src/org/tgcv/viatra/v002/observer/V002HistoricalVqlParserProbe.java
+          test -s observer/src/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql
+
+      - name: Compile targeted observer module
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: mvn -B -ntp -DskipTests -pl observer -am package
