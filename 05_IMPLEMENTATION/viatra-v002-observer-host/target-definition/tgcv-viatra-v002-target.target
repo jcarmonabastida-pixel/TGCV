@@ -37,6 +37,7 @@
           <repository location="http://download.eclipse.org/cbi/updates/license/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+            <unit id="org.eclipse.viatra.query.runtime" version="2.0.2.201808291256"/>
             <unit id="org.eclipse.viatra.transformation.evm" version="2.0.2.201808291256"/>
             <unit id="org.eclipse.viatra.transformation.runtime.emf" version="2.0.2.201808291256"/>
             <repository location="https://download.eclipse.org/viatra/updates/release/2.0.2/"/>
