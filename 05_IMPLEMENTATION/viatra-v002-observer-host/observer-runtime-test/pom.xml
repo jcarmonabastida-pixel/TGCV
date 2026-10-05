@@ -23,14 +23,14 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>target-platform-configuration</artifactId>
-        <version>\${tycho.version}</version>
+        <version>${tycho.version}</version>
         <configuration>
           <pomDependencies>consider</pomDependencies>
           <target>
             <artifact>
               <groupId>org.tgcv</groupId>
               <artifactId>tgcv-viatra-v002-target</artifactId>
-              <version>\${parent.version}</version>
+              <version>${parent.version}</version>
             </artifact>
           </target>
         </configuration>
