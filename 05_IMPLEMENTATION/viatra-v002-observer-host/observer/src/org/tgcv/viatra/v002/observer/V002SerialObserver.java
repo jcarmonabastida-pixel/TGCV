@@ -8,7 +8,15 @@ import java.util.concurrent.atomic.AtomicLong;
 public final class V002SerialObserver {
     private final AtomicLong sequence = new AtomicLong();
     private final List<V002ObserverEvent> events = new ArrayList<V002ObserverEvent>();
+    private final V002ObservationProvenance provenance;
     private boolean firing;
+
+    public V002SerialObserver(V002ObservationProvenance provenance) {
+        if (provenance == null) {
+            throw new IllegalArgumentException("provenance must not be null");
+        }
+        this.provenance = provenance;
+    }
 
     public synchronized V002ObserverEvent beforeFiring(String activationInstanceId, String preStateDigest) {
         if (firing) {
@@ -21,7 +29,8 @@ public final class V002SerialObserver {
         long seq = sequence.incrementAndGet();
         V002ObserverEvent event = new V002ObserverEvent(
             seq, V002ObserverEvent.Type.TRANSFORMATION_BEGIN,
-            V002TransformationIdentity.digest(), activationInstanceId, preStateDigest, null);
+            V002TransformationIdentity.digest(), activationInstanceId, preStateDigest, null,
+            provenance);
         events.add(event);
         return event;
     }
@@ -36,7 +45,8 @@ public final class V002SerialObserver {
         long seq = sequence.incrementAndGet();
         V002ObserverEvent event = new V002ObserverEvent(
             seq, V002ObserverEvent.Type.TRANSFORMATION_END,
-            V002TransformationIdentity.digest(), activationInstanceId, null, postStateDigest);
+            V002TransformationIdentity.digest(), activationInstanceId, null, postStateDigest,
+            provenance);
         events.add(event);
         firing = false;
         return event;
