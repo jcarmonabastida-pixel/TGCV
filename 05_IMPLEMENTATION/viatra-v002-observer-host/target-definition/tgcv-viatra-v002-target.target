@@ -37,8 +37,8 @@
           <repository location="http://download.eclipse.org/cbi/updates/license/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <unit id="org.eclipse.viatra.transformation.evm.feature.group" version="2.0.2"/>
-            <unit id="org.eclipse.viatra.transformation.runtime.emf.feature.group" version="2.0.2"/>
+            <unit id="org.eclipse.viatra.transformation.evm.feature.feature.group" version="2.0.2.201808291256"/>
+            <unit id="org.eclipse.viatra.transformation.runtime.emf.feature.feature.group" version="2.0.2.201808291256"/>
             <repository location="https://download.eclipse.org/viatra/updates/release/2.0.2/"/>
         </location>
     </locations>
