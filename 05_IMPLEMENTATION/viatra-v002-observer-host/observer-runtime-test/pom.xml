@@ -22,6 +22,22 @@
     <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>\${tycho.version}</version>
+        <configuration>
+          <pomDependencies>consider</pomDependencies>
+          <target>
+            <artifact>
+              <groupId>org.tgcv</groupId>
+              <artifactId>tgcv-viatra-v002-target</artifactId>
+              <version>\${parent.version}</version>
+            </artifact>
+          </target>
+        </configuration>
+      </plugin>
+      <plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho.version}</version>
       </plugin>
