@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT"
 
 SOURCE_REV="eb68158a3d74581f69ccb8bc4f47673b12abdf85"
-TARGET_BLOB_SHA="7481dee30f1ae07d7dd9212d7891dc336f1e96ae"
+TARGET_BLOB_SHA="5b546b5cd510a899578861de4a268514f97eb261"
 
 echo "== Repository structure =="
 test -f pom.xml
@@ -242,9 +242,9 @@ required_observer = [
     "org.eclipse.emf.common",
     "org.eclipse.emf.ecore",
     "org.eclipse.emf.ecore.xmi",
-    'org.eclipse.viatra.examples.cps.model;bundle-version="0.1.0"',
-    'org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0"',
-    'org.eclipse.viatra.examples.cps.traceability;bundle-version="0.1.0"',
+    'org.eclipse.viatra.examples.cps.model;bundle-version="[2.1.0,3.0.0)"',
+    'org.eclipse.viatra.examples.cps.deployment;bundle-version="[2.1.0,3.0.0)"',
+    'org.eclipse.viatra.examples.cps.traceability;bundle-version="[2.1.0,3.0.0)"',
 ]
 for item in required_observer:
     if item not in observer_manifest:
@@ -268,7 +268,7 @@ for bundle in ["org.eclipse.viatra.examples.cps.model", "org.eclipse.viatra.exam
 actual_sha = hashlib.sha1(
     b"blob " + str(target_file.stat().st_size).encode() + b"\0" + target_file.read_bytes()
 ).hexdigest()
-assert_eq("target Git blob SHA", actual_sha, "7481dee30f1ae07d7dd9212d7891dc336f1e96ae")
+assert_eq("target Git blob SHA", actual_sha, "5b546b5cd510a899578861de4a268514f97eb261")
 
 print("STATIC_XML_REACTOR_AUDIT=PASS")
 PY
