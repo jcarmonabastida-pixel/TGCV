@@ -35,6 +35,6 @@ jobs:
           grep -q 'PatternParser.parser()' observer/src/org/tgcv/viatra/v002/observer/V002HistoricalVqlParserProbe.java
           test -s observer/src/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql
 
-      - name: Compile targeted observer module
+      - name: Compile target, models, and observer modules
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
-        run: mvn -B -ntp -DskipTests -pl observer -am package
+        run: mvn -B -ntp -DskipTests -pl target-definition,cps-models,observer -am package
