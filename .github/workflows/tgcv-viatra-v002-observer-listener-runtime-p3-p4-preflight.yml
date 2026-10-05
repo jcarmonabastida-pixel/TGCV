@@ -1,0 +1,41 @@
+name: TGCV VIATRA V002 Observer Listener Runtime P3 P4 Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  observer-listener-runtime:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout development ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 1
+
+      - name: Set Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+
+      - name: Materialize pinned historical CPS model bundles
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: bash materialize-historical-cps-models.sh
+
+      - name: Build and execute gated Observer Listener runtime tests
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: mvn -B -ntp -pl observer-runtime-test -am clean verify
+
+      - name: Runtime scientific firewall
+        run: |
+          if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)'             05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test             05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer; then
+            echo "FAIL: scientific-firewall term found"
+            exit 1
+          fi
+          grep -q "V002SerialExecutor"             05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ObserverRuntimeTest.java
+          echo "TGCV_VIATRA_V002_RUNTIME_P3_P4_FIREWALL=PASS"
