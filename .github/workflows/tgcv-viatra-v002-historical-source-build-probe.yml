@@ -461,6 +461,44 @@ jobs:
           grep -n -E 'org\.eclipse\.platform|org\.eclipse\.core\.resources|\[3\.11|\[3\.12|4\.0\.0' "$JDT_POM" || true
           echo "=== END JDT ENTRY TRACE ==="
 
+      - name: Isolate core.expressions from historical Maven plugin realm
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "=== CORE.EXPRESSIONS ORIGIN BEFORE EXCLUSION ==="
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.platform:org.eclipse.core.expressions,org.eclipse.core.expressions || true
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          p = Path('maven/viatra-maven-plugin/pom.xml')
+          ns = {'m': 'http://maven.apache.org/POM/4.0.0'}
+          ET.register_namespace('', ns['m'])
+          tree = ET.parse(p)
+          root = tree.getroot()
+          deps = root.find('m:dependencies', ns)
+          assert deps is not None, 'project dependencies not found'
+          xtext = next((d for d in deps.findall('m:dependency', ns)
+                        if d.findtext('m:groupId', default='', namespaces=ns) == 'org.eclipse.xtext'
+                        and d.findtext('m:artifactId', default='', namespaces=ns) == 'xtext-maven-plugin'), None)
+          assert xtext is not None, 'xtext-maven-plugin project dependency not found'
+          exclusions = xtext.find('m:exclusions', ns)
+          if exclusions is None:
+              exclusions = ET.SubElement(xtext, '{%s}exclusions' % ns['m'])
+          key = ('org.eclipse.platform', 'org.eclipse.core.expressions')
+          existing = any((e.findtext('m:groupId', default='', namespaces=ns),
+                          e.findtext('m:artifactId', default='', namespaces=ns)) == key
+                         for e in exclusions.findall('m:exclusion', ns))
+          if not existing:
+              e = ET.SubElement(exclusions, '{%s}exclusion' % ns['m'])
+              ET.SubElement(e, '{%s}groupId' % ns['m']).text = key[0]
+              ET.SubElement(e, '{%s}artifactId' % ns['m']).text = key[1]
+          tree.write(p, encoding='utf-8', xml_declaration=True)
+          print('EXCLUDED=org.eclipse.platform:org.eclipse.core.expressions')
+          PY
+          echo "=== CORE.EXPRESSIONS PROJECT TREE AFTER EXCLUSION ==="
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.platform:org.eclipse.core.expressions,org.eclipse.core.expressions || true
+          echo "=== END CORE.EXPRESSIONS ISOLATION ==="
+
       - name: Pin historical core.resources for Maven plugin descriptor
         shell: bash
         run: |
