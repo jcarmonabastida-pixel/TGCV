@@ -32,7 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           grep -q 'org.eclipse.viatra.query.patternlanguage.emf,' observer/META-INF/MANIFEST.MF
-          grep -q 'PatternParserBuilder' observer/src/org/tgcv/viatra/v002/observer/V002HistoricalVqlParserProbe.java
+          grep -q 'PatternParser.parser()' observer/src/org/tgcv/viatra/v002/observer/V002HistoricalVqlParserProbe.java
           test -s observer/src/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql
 
       - name: Compile full V002 reactor with historical CPS bundles
