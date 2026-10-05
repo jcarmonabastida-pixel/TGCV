@@ -105,7 +105,7 @@ public final class V002SerialExecutor {
             transformation.getTransformationStatements().fireAllCurrent(actionRule);
             assertMinimalV002Outcome();
         } finally {
-            transformation.ruleEngine.dispose();
+            transformation.dispose();
             transformation = null;
         }
     }
