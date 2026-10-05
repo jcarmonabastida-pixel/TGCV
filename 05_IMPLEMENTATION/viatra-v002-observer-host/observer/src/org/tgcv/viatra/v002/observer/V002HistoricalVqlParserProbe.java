@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParserBuilder;
+import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParser;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParsingResults;
 import org.eclipse.viatra.query.patternlanguage.emf.vql.Pattern;
 import org.eclipse.viatra.query.runtime.api.IQuerySpecification;
@@ -17,7 +17,7 @@ public final class V002HistoricalVqlParserProbe {
 
     public static void assertHistoricalVql(Path vqlFile) throws Exception {
         String text = new String(Files.readAllBytes(vqlFile), StandardCharsets.UTF_8);
-        PatternParsingResults results = new PatternParserBuilder().parse(text);
+        PatternParsingResults results = PatternParser.parser().parse(text);
 
         if (!results.validationOK()) {
             throw new IllegalStateException("Historical VQL validation failed: " + results);
