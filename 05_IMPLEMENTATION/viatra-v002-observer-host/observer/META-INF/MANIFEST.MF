@@ -10,5 +10,7 @@ Require-Bundle: org.eclipse.emf.common,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.viatra.examples.cps.model;bundle-version="0.1.0",
  org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0",
- org.eclipse.viatra.examples.cps.traceability;bundle-version="0.1.0"
+ org.eclipse.viatra.examples.cps.traceability;bundle-version="0.1.0",
+ org.eclipse.viatra.transformation.evm,
+ org.eclipse.viatra.transformation.runtime.emf
 Automatic-Module-Name: org.tgcv.viatra.v002.observer
