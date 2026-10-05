@@ -876,12 +876,18 @@ jobs:
           NS = 'http://maven.apache.org/POM/4.0.0'
           ET.register_namespace('', NS)
 
-          modules = [
-              Path('transformation/plugins/org.eclipse.viatra.transformation.views/pom.xml'),
-              Path('addon/plugins/org.eclipse.viatra.addon.viewers.runtime/pom.xml'),
-          ]
+          modules = {
+              Path('transformation/plugins/org.eclipse.viatra.transformation.views/pom.xml'): [
+                  'org/eclipse/viatra/transformation/views/Traceability*.java',
+                  'org/eclipse/viatra/transformation/views/traceability/**/*.java',
+              ],
+              Path('addon/plugins/org.eclipse.viatra.addon.viewers.runtime/pom.xml'): [
+                  'org/eclipse/viatra/addon/viewers/runtime/Notation*.java',
+                  'org/eclipse/viatra/addon/viewers/runtime/notation/**/*.java',
+              ],
+          }
 
-          for p in modules:
+          for p, generated_includes in modules.items():
               assert p.exists(), f'POM not found: {p}'
               tree = ET.parse(p)
               root = tree.getroot()
@@ -930,7 +936,8 @@ jobs:
                   ET.SubElement(configuration, f'{{{NS}}}source').text = '1.8'
                   ET.SubElement(configuration, f'{{{NS}}}target').text = '1.8'
                   includes = ET.SubElement(configuration, f'{{{NS}}}includes')
-                  ET.SubElement(includes, f'{{{NS}}}include').text = 'emf-gen/**/*.java'
+                  for pattern in generated_includes:
+                      ET.SubElement(includes, f'{{{NS}}}include').text = pattern
 
                   plugins.insert(viatra_index, compiler)
 
@@ -954,6 +961,16 @@ jobs:
               assert execution is not None, f'{p}: compiler execution missing'
               assert execution.findtext('m:phase', default='', namespaces=ns) == 'generate-sources'
               assert execution.findtext('m:goals/m:goal', default='', namespaces=ns) == 'compile'
+
+              includes = execution.find('m:configuration/m:includes', ns)
+              assert includes is not None, f'{p}: compiler includes missing'
+              actual_includes = [
+                  node.text for node in includes.findall('m:include', ns)
+              ]
+              assert actual_includes == generated_includes, (
+                  f'{p}: expected generated-source includes {generated_includes}, '
+                  f'got {actual_includes}'
+              )
 
               tree.write(p, encoding='utf-8', xml_declaration=True)
               print(f'PRECOMPILE_ORDER_OK={p}')
