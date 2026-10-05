@@ -18,6 +18,7 @@ import org.eclipse.viatra.examples.cps.deployment.Deployment;
 import org.eclipse.viatra.examples.cps.deployment.DeploymentFactory;
 import org.eclipse.viatra.examples.cps.traceability.CPSToDeployment;
 import org.eclipse.viatra.examples.cps.traceability.TraceabilityFactory;
+import org.eclipse.viatra.query.patternlanguage.emf.EMFPatternLanguageStandaloneSetup;
 import org.eclipse.viatra.query.runtime.api.ViatraQueryEngine;
 import org.eclipse.viatra.query.runtime.emf.EMFScope;
 import org.junit.Test;
@@ -72,6 +73,7 @@ public class V002ObserverRuntimeTest {
     }
 
     private Observation runOnce() throws Exception {
+        EMFPatternLanguageStandaloneSetup.doSetup();
         ResourceSet resourceSet = new ResourceSetImpl();
 
         CyberPhysicalSystem cps = CyberPhysicalSystemFactory.eINSTANCE.createCyberPhysicalSystem();
