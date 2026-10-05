@@ -641,6 +641,38 @@ jobs:
           mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.platform:org.eclipse.core.commands,org.eclipse.core:org.eclipse.core.commands || true
           echo '=== END CORE.COMMANDS ISOLATION ==='
 
+      - name: Isolate core.commands from normalized core.text
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '=== CORE.COMMANDS ORIGIN VIA CORE.TEXT ==='
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.platform:org.eclipse.text,org.eclipse.platform:org.eclipse.core.commands || true
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          p=Path('maven/viatra-maven-plugin/pom.xml')
+          ns={'m':'http://maven.apache.org/POM/4.0.0'}
+          ET.register_namespace('',ns['m'])
+          tree=ET.parse(p); root=tree.getroot(); deps=root.find('m:dependencies',ns)
+          assert deps is not None, 'project dependencies not found'
+          text_dep=next((d for d in deps.findall('m:dependency',ns)
+                         if d.findtext('m:groupId',default='',namespaces=ns)=='org.eclipse.platform'
+                         and d.findtext('m:artifactId',default='',namespaces=ns)=='org.eclipse.text'),None)
+          assert text_dep is not None, 'normalized org.eclipse.platform:org.eclipse.text dependency not found'
+          ex=text_dep.find('m:exclusions',ns)
+          if ex is None: ex=ET.SubElement(text_dep,'{%s}exclusions'%ns['m'])
+          key=('org.eclipse.platform','org.eclipse.core.commands')
+          if not any((e.findtext('m:groupId',default='',namespaces=ns),e.findtext('m:artifactId',default='',namespaces=ns))==key for e in ex.findall('m:exclusion',ns)):
+              e=ET.SubElement(ex,'{%s}exclusion'%ns['m'])
+              ET.SubElement(e,'{%s}groupId'%ns['m']).text=key[0]
+              ET.SubElement(e,'{%s}artifactId'%ns['m']).text=key[1]
+          tree.write(p,encoding='utf-8',xml_declaration=True)
+          print('EXCLUDED_FROM_TEXT=org.eclipse.platform:org.eclipse.core.commands')
+          PY
+          echo '=== CORE.COMMANDS TREE AFTER TEXT EXCLUSION ==='
+          mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose -Dincludes=org.eclipse.platform:org.eclipse.text,org.eclipse.platform:org.eclipse.core.commands || true
+          echo '=== END CORE.COMMANDS VIA CORE.TEXT ISOLATION ==='
+
       - name: Pin historical core.resources for Maven plugin descriptor
         shell: bash
         run: |
