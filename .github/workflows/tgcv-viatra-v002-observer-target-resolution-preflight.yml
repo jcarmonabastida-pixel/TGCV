@@ -33,6 +33,41 @@ jobs:
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: bash materialize-historical-cps-models.sh
 
+      - name: Inspect actual VIATRA 2.0.2 p2 metadata
+        run: |
+          set -euo pipefail
+          url="https://download.eclipse.org/viatra/updates/release/2.0.2/content.xml.xz"
+          curl -fsSL "$url" -o viatra-content.xml.xz
+          xz -dc viatra-content.xml.xz > viatra-content.xml
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+
+          root = ET.parse("viatra-content.xml").getroot()
+          rows = []
+          for element in root.iter():
+              if element.tag.rsplit("}", 1)[-1] != "unit":
+                  continue
+              unit_id = element.attrib.get("id", "")
+              if unit_id.startswith("org.eclipse.viatra.transformation."):
+                  rows.append((unit_id, element.attrib.get("version", "")))
+
+          rows.sort()
+          for unit_id, version in rows:
+              print(f"{unit_id} {version}")
+
+          expected = {
+              "org.eclipse.viatra.transformation.evm",
+              "org.eclipse.viatra.transformation.runtime.emf",
+              "org.eclipse.viatra.transformation.runtime.emf.feature.feature.group",
+          }
+          found = {unit_id for unit_id, _ in rows}
+          missing = sorted(expected - found)
+          if missing:
+              raise SystemExit(
+                  "Missing expected VIATRA transformation IUs: " + ", ".join(missing)
+              )
+          PY
+
       - name: Target and manifest inspection
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: |
