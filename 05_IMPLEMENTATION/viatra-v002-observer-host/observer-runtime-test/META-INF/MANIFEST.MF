@@ -4,5 +4,5 @@ Bundle-Name: TGCV VIATRA V002 Observer Runtime Tests
 Bundle-SymbolicName: org.tgcv.viatra.v002.observer.runtime.test
 Bundle-Version: 0.1.0.qualifier
 Fragment-Host: org.tgcv.viatra.v002.observer
-Require-Bundle: org.junit4
+Require-Bundle: org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
