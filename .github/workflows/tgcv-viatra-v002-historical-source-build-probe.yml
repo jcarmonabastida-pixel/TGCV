@@ -831,6 +831,23 @@ jobs:
           mvn -B -U -f maven/viatra-maven-plugin/pom.xml dependency:tree -Dverbose \
             -Dincludes=org.eclipse.platform:org.eclipse.core.resources,org.eclipse.platform:org.eclipse.core.runtime,org.eclipse.platform:org.eclipse.core.jobs,org.eclipse.platform:org.eclipse.core.filesystem,org.eclipse.platform:org.eclipse.equinox.common,org.eclipse.platform:org.eclipse.equinox.registry,org.eclipse.platform:org.eclipse.equinox.preferences,org.eclipse.text:org.eclipse.text,org.eclipse.emf:org.eclipse.emf.common,org.eclipse.emf.ecore
 
+      - name: Add missing EMF Codegen runtime dependency to VIATRA Maven plugin
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("maven/viatra-maven-plugin/pom.xml")
+          s = p.read_text()
+          marker = """        <dependency>\n            <groupId>org.eclipse.emf</groupId>\n            <artifactId>org.eclipse.emf.codegen.ecore</artifactId>\n            <version>[2.11.0,2.12.0)</version>\n        </dependency>\n"""
+          addition = marker + """\n        <dependency>\n            <groupId>org.eclipse.emf</groupId>\n            <artifactId>org.eclipse.emf.codegen</artifactId>\n            <version>2.11.0</version>\n        </dependency>\n"""
+          assert s.count(marker) == 1, "Expected exactly one EMF Codegen Ecore dependency block"
+          assert "<artifactId>org.eclipse.emf.codegen</artifactId>" not in s, "Dependency already present"
+          p.write_text(s.replace(marker, addition, 1))
+          PY
+          grep -A4 -B2 -F '<artifactId>org.eclipse.emf.codegen</artifactId>' maven/viatra-maven-plugin/pom.xml
+
+
       - name: Build historical core pass
         shell: bash
         run: |
