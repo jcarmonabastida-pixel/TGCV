@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <category-def name="tgcv.viatra.v002.cps" label="TGCV VIATRA V002 Historical CPS"/>
+  <category name="tgcv.viatra.v002.cps"/>
+</site>
