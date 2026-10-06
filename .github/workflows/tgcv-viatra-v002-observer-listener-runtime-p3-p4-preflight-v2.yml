@@ -82,6 +82,10 @@ jobs:
               '        <location includeAllPlatforms="false" '
               'includeConfigurePhase="false" includeMode="planner" '
               'includeSource="false" type="InstallableUnit">\n'
+              '          <unit id="org.eclipse.viatra.examples.cps.model" version="0.0.0"/>\n'
+              '          <unit id="org.eclipse.viatra.examples.cps.deployment" version="0.0.0"/>\n'
+              '          <unit id="org.eclipse.viatra.examples.cps.traceability" version="0.0.0"/>\n'
+              '          <unit id="org.eclipse.viatra.examples.cps.xform.m2m.util" version="0.0.0"/>\n'
               f'          <repository location="file://{repo}"/>\n'
               '        </location>\n'
           )
