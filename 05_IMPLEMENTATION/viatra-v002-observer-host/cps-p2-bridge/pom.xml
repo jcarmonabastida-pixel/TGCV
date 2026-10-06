@@ -19,9 +19,23 @@
         <version>${tycho.version}</version>
         <extensions>true</extensions>
       </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho.version}</version>
+        <configuration>
+          <target>
+            <file>../target-definition/tgcv-viatra-v002-target.target</file>
+          </target>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <modules>
+    <module>bundles/org.eclipse.viatra.examples.cps.model</module>
+    <module>bundles/org.eclipse.viatra.examples.cps.deployment</module>
+    <module>bundles/org.eclipse.viatra.examples.cps.traceability</module>
+    <module>bundles/org.eclipse.viatra.examples.cps.xform.m2m.util</module>
     <module>features/org.tgcv.viatra.v002.cps.feature</module>
     <module>repository</module>
   </modules>
