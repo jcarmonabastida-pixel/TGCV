@@ -43,6 +43,11 @@ do
 
     cp -R "$src/META-INF" "$dst/META-INF"
     cp -R "$src/src" "$dst/src"
+    sed -i \
+      -e 's/org.eclipse.viatra.examples.cps.model;bundle-version="0.1.0"/org.eclipse.viatra.examples.cps.model;bundle-version="[2.1.0,3.0.0)"/' \
+      -e 's/org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0"/org.eclipse.viatra.examples.cps.deployment;bundle-version="[2.1.0,3.0.0)"/' \
+      -e 's/org.eclipse.viatra.examples.cps.traceability;bundle-version="0.1.0"/org.eclipse.viatra.examples.cps.traceability;bundle-version="[2.1.0,3.0.0)"/' \
+      "$dst/META-INF/MANIFEST.MF"
     mkdir -p "$dst/src/org/eclipse/viatra/examples/cps/xform/m2m/util"
     cat > "$dst/src/org/eclipse/viatra/examples/cps/xform/m2m/util/SignalUtil.java" <<'EOF'
 package org.eclipse.viatra.examples.cps.xform.m2m.util;
@@ -99,6 +104,10 @@ EOF
     cp -R "$src/META-INF" "$dst/META-INF"
     cp -R "$src/model" "$dst/model"
     cp -R "$src/src" "$dst/src"
+    sed -i \
+      -e 's/org.eclipse.viatra.examples.cps.model;bundle-version="0.1.0"/org.eclipse.viatra.examples.cps.model;bundle-version="[2.1.0,3.0.0)"/' \
+      -e 's/org.eclipse.viatra.examples.cps.deployment;bundle-version="0.1.0"/org.eclipse.viatra.examples.cps.deployment;bundle-version="[2.1.0,3.0.0)"/' \
+      "$dst/META-INF/MANIFEST.MF"
     cp "$src/plugin.xml" "$dst/plugin.xml"
     cp "$src/plugin.properties" "$dst/plugin.properties"
     cp "$src/build.properties" "$dst/build.properties"
