@@ -108,7 +108,7 @@ jobs:
 
       - name: Build and execute gated Observer Listener runtime tests
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
-        run: mvn -B -ntp -Dtycho.debug.resolver=true -pl target-definition,observer-runtime-test -am clean verify
+        run: mvn -B -ntp -X -Dtycho.debug.resolver=true -pl target-definition,observer-runtime-test -am clean verify
 
       - name: Diagnose runtime provisioning
         if: ${{ always() }}
