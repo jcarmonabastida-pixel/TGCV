@@ -33,20 +33,15 @@
               <version>${parent.version}</version>
             </artifact>
           </target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-surefire-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <configuration>
-          <dependencies>
-            <dependency>
-              <type>eclipse-plugin</type>
-              <artifactId>org.eclipse.viatra.examples.cps.xform.m2m.util</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-          </dependencies>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>org.eclipse.viatra.examples.cps.xform.m2m.util</id>
+                <versionRange>[2.1.0,3.0.0)</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
         </configuration>
       </plugin>
     </plugins>
