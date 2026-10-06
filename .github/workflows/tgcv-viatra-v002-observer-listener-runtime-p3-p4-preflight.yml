@@ -27,6 +27,29 @@ jobs:
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: bash materialize-historical-cps-models.sh
 
+      - name: Stage materialized CPS sources into standalone P2 bridge reactor
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          for bundle in \
+            org.eclipse.viatra.examples.cps.model \
+            org.eclipse.viatra.examples.cps.deployment \
+            org.eclipse.viatra.examples.cps.traceability \
+            org.eclipse.viatra.examples.cps.xform.m2m.util; do
+            src="cps-models/$bundle"
+            dst="cps-p2-bridge/bundles/$bundle"
+            test -d "$src/META-INF"
+            test -d "$src/src"
+            mkdir -p "$dst"
+            rm -rf "$dst/META-INF" "$dst/src" "$dst/model" "$dst/plugin.xml" "$dst/plugin.properties" "$dst/build.properties"
+            cp -R "$src/META-INF" "$dst/META-INF"
+            cp -R "$src/src" "$dst/src"
+            test -f "$src/build.properties"
+            cp "$src/build.properties" "$dst/build.properties"
+            if [ -d "$src/model" ]; then cp -R "$src/model" "$dst/model"; fi
+            if [ -f "$src/plugin.xml" ]; then cp "$src/plugin.xml" "$dst/plugin.xml"; fi
+            if [ -f "$src/plugin.properties" ]; then cp "$src/plugin.properties" "$dst/plugin.properties"; fi
+          done
+
       - name: Build P2 bridge from materialized historical CPS bundles
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: mvn -B -ntp -f cps-p2-bridge/pom.xml package
