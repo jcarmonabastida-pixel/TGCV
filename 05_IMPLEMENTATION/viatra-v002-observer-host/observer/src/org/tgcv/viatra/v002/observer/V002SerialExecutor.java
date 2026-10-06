@@ -15,9 +15,7 @@ import org.eclipse.viatra.examples.cps.traceability.CPS2DeploymentTrace;
 import org.eclipse.viatra.examples.cps.traceability.CPSToDeployment;
 import org.eclipse.viatra.examples.cps.traceability.TraceabilityFactory;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.viatra.query.patternlanguage.emf.EMFPatternLanguageStandaloneSetup;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParser;
-import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParserBuilder;
 
 import com.google.inject.Injector;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParsingResults;
@@ -163,10 +161,9 @@ public final class V002SerialExecutor {
                 if (in == null) {
                     throw new IllegalStateException("Frozen historical VQL resource is missing");
                 }
-                PatternParsingResults results = PatternParserBuilder.instance()
-                .withInjector(patternParserInjector)
-                .parse(
-                    new String(readAll(in), StandardCharsets.UTF_8));
+                PatternParsingResults results = PatternParser.parser()
+                    .withInjector(patternParserInjector)
+                    .parse(new String(readAll(in), StandardCharsets.UTF_8));
                 if (!results.validationOK()) {
                     throw new IllegalStateException("Historical VQL validation failed: " + results);
                 }
