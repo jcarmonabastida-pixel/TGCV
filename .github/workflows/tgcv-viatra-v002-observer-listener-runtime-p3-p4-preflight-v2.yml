@@ -197,6 +197,39 @@ jobs:
                 unzip -p "$cache_jar" "$entry" 2>/dev/null | head -c 32 | od -An -tx1 -v || true
               done
 
+
+          echo "== XtypeGrammarAccess.internalFindGrammar() bytecode =="
+          javap -classpath "$cache_jar" -c -p org.eclipse.xtext.xbase.services.XtypeGrammarAccess \\
+            | sed -n '/internalFindGrammar/,/^  [^ ].*(/p' | head -120
+
+          echo "== Locate GrammarProvider class in P2 cache =="
+          grammar_provider_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/service/GrammarProvider.class"; then
+              grammar_provider_jar="$jar"; break
+            fi
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "grammar_provider_jar=${grammar_provider_jar:-NOT_FOUND}"
+          test -n "$grammar_provider_jar"
+
+          echo "== GrammarProvider.getGrammar() bytecode =="
+          javap -classpath "$grammar_provider_jar" -c -p org.eclipse.xtext.service.GrammarProvider \\
+            | sed -n '/getGrammar/,/^  [^ ].*(/p' | head -160
+
+          echo "== Locate BaseEPackageAccess class in P2 cache =="
+          base_access_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/parser/BaseEPackageAccess.class"; then
+              base_access_jar="$jar"; break
+            fi
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "base_access_jar=${base_access_jar:-NOT_FOUND}"
+          test -n "$base_access_jar"
+
+          echo "== BaseEPackageAccess grammar/resource loading bytecode =="
+          javap -classpath "$base_access_jar" -c -p org.eclipse.xtext.parser.BaseEPackageAccess \\
+            | sed -n '/loadGrammarFile/,/^  [^ ].*(/p; /loadResource/,/^  [^ ].*(/p' | head -240
+
           echo "TGCV_VIATRA_V002_XTYPE_RESOURCE_DIAGNOSTIC=COMPLETE"
       - name: Runtime scientific firewall
         run: |
