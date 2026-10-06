@@ -21,7 +21,6 @@ import org.eclipse.viatra.query.patternlanguage.emf.util.IClassLoaderProvider;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParser;
 import org.eclipse.xtext.xbase.XbaseStandaloneSetup;
 
-import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParsingResults;
