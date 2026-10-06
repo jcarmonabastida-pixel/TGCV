@@ -26,31 +26,44 @@ test "$(git -C "$TMP_DIR/source" rev-parse HEAD)" = "$SOURCE_REV"
 for bundle in \
   org.eclipse.viatra.examples.cps.model \
   org.eclipse.viatra.examples.cps.deployment \
-  org.eclipse.viatra.examples.cps.traceability
+  org.eclipse.viatra.examples.cps.traceability \
   org.eclipse.viatra.examples.cps.xform.m2m.util
 do
   if [[ "$bundle" == "org.eclipse.viatra.examples.cps.xform.m2m.util" ]]; then
     src="$TMP_DIR/source/cps/transformations/$bundle"
+    dst="$DEST_ROOT/$bundle"
+
+    test -d "$src/META-INF"
+    test -f "$src/META-INF/MANIFEST.MF"
+    test -f "$src/build.properties"
+    test -d "$src/src"
+
+    rm -rf "$dst/META-INF" "$dst/src" "$dst/build.properties"
+    mkdir -p "$dst"
+
+    cp -R "$src/META-INF" "$dst/META-INF"
+    cp -R "$src/src" "$dst/src"
+    cp "$src/build.properties" "$dst/build.properties"
   else
     src="$TMP_DIR/source/cps/domains/$bundle"
+    dst="$DEST_ROOT/$bundle"
+
+    test -d "$src/META-INF"
+    test -f "$src/META-INF/MANIFEST.MF"
+    test -f "$src/build.properties"
+    test -d "$src/model"
+    test -d "$src/src"
+    test -f "$src/plugin.xml"
+    test -f "$src/plugin.properties"
+
+    rm -rf "$dst/META-INF" "$dst/model" "$dst/src" "$dst/plugin.xml" "$dst/plugin.properties" "$dst/build.properties"
+    mkdir -p "$dst"
+
+    cp -R "$src/META-INF" "$dst/META-INF"
+    cp -R "$src/model" "$dst/model"
+    cp -R "$src/src" "$dst/src"
+    cp "$src/plugin.xml" "$dst/plugin.xml"
+    cp "$src/plugin.properties" "$dst/plugin.properties"
+    cp "$src/build.properties" "$dst/build.properties"
   fi
-  dst="$DEST_ROOT/$bundle"
-
-  test -d "$src/META-INF"
-  test -f "$src/META-INF/MANIFEST.MF"
-  test -f "$src/build.properties"
-  test -d "$src/model"
-  test -d "$src/src"
-  test -f "$src/plugin.xml"
-  test -f "$src/plugin.properties"
-
-  rm -rf "$dst/META-INF" "$dst/model" "$dst/src" "$dst/plugin.xml" "$dst/plugin.properties" "$dst/build.properties"
-  mkdir -p "$dst"
-
-  cp -R "$src/META-INF" "$dst/META-INF"
-  cp -R "$src/model" "$dst/model"
-  cp -R "$src/src" "$dst/src"
-  cp "$src/plugin.xml" "$dst/plugin.xml"
-  cp "$src/plugin.properties" "$dst/plugin.properties"
-  cp "$src/build.properties" "$dst/build.properties"
 done
