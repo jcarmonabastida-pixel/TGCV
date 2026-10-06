@@ -23,6 +23,18 @@ jobs:
           distribution: temurin
           java-version: "8"
 
+      - name: Set Maven 3.6.3 for Tycho 1.0.0 compatibility probe
+        run: |
+          MAVEN_VERSION="3.6.3"
+          MAVEN_HOME="$RUNNER_TEMP/apache-maven-$MAVEN_VERSION"
+          if [ ! -x "$MAVEN_HOME/bin/mvn" ]; then
+            curl -fsSL "https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" -o "$RUNNER_TEMP/apache-maven.tar.gz"
+            tar -xzf "$RUNNER_TEMP/apache-maven.tar.gz" -C "$RUNNER_TEMP"
+          fi
+          echo "$MAVEN_HOME/bin" >> "$GITHUB_PATH"
+          export PATH="$MAVEN_HOME/bin:$PATH"
+          mvn -version
+
       - name: Materialize pinned historical CPS model bundles
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: bash materialize-historical-cps-models.sh
