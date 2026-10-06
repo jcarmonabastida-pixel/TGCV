@@ -1,0 +1,119 @@
+name: TGCV VIATRA V002 P3 P4 Runtime Preflight V2
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  observer-listener-runtime:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout selected ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 1
+
+      - name: Set Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+
+      - name: Materialize pinned historical CPS model bundles
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: bash materialize-historical-cps-models.sh
+
+      - name: Stage materialized CPS sources into standalone P2 bridge reactor
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          for bundle in \
+            org.eclipse.viatra.examples.cps.model \
+            org.eclipse.viatra.examples.cps.deployment \
+            org.eclipse.viatra.examples.cps.traceability \
+            org.eclipse.viatra.examples.cps.xform.m2m.util; do
+            src="cps-models/$bundle"
+            dst="cps-p2-bridge/bundles/$bundle"
+            test -d "$src/META-INF"
+            test -d "$src/src"
+            mkdir -p "$dst"
+            rm -rf "$dst/META-INF" "$dst/src" "$dst/model" "$dst/plugin.xml" "$dst/plugin.properties" "$dst/build.properties"
+            cp -R "$src/META-INF" "$dst/META-INF"
+            cp -R "$src/src" "$dst/src"
+            test -f "$src/build.properties"
+            cp "$src/build.properties" "$dst/build.properties"
+            if [ -d "$src/model" ]; then cp -R "$src/model" "$dst/model"; fi
+            if [ -f "$src/plugin.xml" ]; then cp "$src/plugin.xml" "$dst/plugin.xml"; fi
+            if [ -f "$src/plugin.properties" ]; then cp "$src/plugin.properties" "$dst/plugin.properties"; fi
+          done
+
+      - name: Build P2 bridge from materialized historical CPS bundles
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: mvn -B -ntp -f cps-p2-bridge/pom.xml package
+
+      - name: Verify P2 bridge contents
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          test -f cps-p2-bridge/repository/target/repository/content.jar
+          test -f cps-p2-bridge/repository/target/repository/artifacts.jar
+          for bundle in \
+            org.eclipse.viatra.examples.cps.model \
+            org.eclipse.viatra.examples.cps.deployment \
+            org.eclipse.viatra.examples.cps.traceability \
+            org.eclipse.viatra.examples.cps.xform.m2m.util; do
+            find cps-p2-bridge/repository/target/repository -type f -name "${bundle}_*.jar" -print -quit | grep -q .
+          done
+          echo "TGCV_VIATRA_V002_CPS_P2_BRIDGE=PASS"
+
+      - name: Inject built CPS P2 bridge into runtime target platform
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          target = Path("target-definition/tgcv-viatra-v002-target.target")
+          repo = Path.cwd() / "cps-p2-bridge/repository/target/repository"
+          text = target.read_text(encoding="utf-8")
+          marker = "    </locations>"
+          injection = """        <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="false" type="InstallableUnit">
+              <repository location="file://""" + str(repo) + """"/>
+          </location>
+  """
+          if "cps-p2-bridge/repository/target/repository" in text:
+              raise SystemExit("bridge P2 repository already present in target definition")
+          target.write_text(text.replace(marker, injection + marker), encoding="utf-8")
+          print(f"Injected runtime P2 repository: {repo}")
+          PY
+
+      - name: Build and execute gated Observer Listener runtime tests
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: mvn -B -ntp -Dtycho.debug.resolver=true -pl target-definition,observer-runtime-test -am clean verify
+
+      - name: Diagnose runtime provisioning
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          echo "== Runtime work directory =="
+          if [ -d observer-runtime-test/target/work ]; then
+            find observer-runtime-test/target/work -type f -printf '%p\n' | sort
+          else
+            echo "target/work not present"
+          fi
+          echo "== Historical util bundle / SignalUtil =="
+          find observer-runtime-test/target/work -type f \( -iname '*org.eclipse.viatra.examples.cps.xform.m2m.util*' -o -iname '*SignalUtil*' \) -printf '%p\n' 2>/dev/null | sort || true
+          echo "== Installed OSGi bundles =="
+          find observer-runtime-test/target/work -type f \( -name 'MANIFEST.MF' -o -name '*.jar' \) -printf '%p\n' 2>/dev/null | grep -E 'org\.eclipse\.viatra|org\.tgcv|org\.eclipse\.emf' | sort || true
+
+      - name: Runtime scientific firewall
+        run: |
+          if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)' \
+            05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test \
+            05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer; then
+            echo "FAIL: scientific-firewall term found"
+            exit 1
+          fi
+          grep -q "V002SerialExecutor" \
+            05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ObserverRuntimeTest.java
+          echo "TGCV_VIATRA_V002_RUNTIME_P3_P4_FIREWALL=PASS"
