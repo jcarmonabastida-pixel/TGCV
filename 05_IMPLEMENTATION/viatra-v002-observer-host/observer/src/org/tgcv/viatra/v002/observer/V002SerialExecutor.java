@@ -136,13 +136,17 @@ public final class V002SerialExecutor {
     }
 
     private IQuerySpecification<?> findSpecification(String patternName) throws Exception {
-        try (InputStream in = getClass().getResourceAsStream(
-                "/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql")) {
-            if (in == null) {
-                throw new IllegalStateException("Frozen historical VQL resource is missing");
-            }
-            PatternParsingResults results = PatternParser.parser().parse(
-                new String(readAll(in), StandardCharsets.UTF_8));
+        ClassLoader previous = Thread.currentThread().getContextClassLoader();
+        ClassLoader observerLoader = getClass().getClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(observerLoader);
+            try (InputStream in = getClass().getResourceAsStream(
+                    "/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql")) {
+                if (in == null) {
+                    throw new IllegalStateException("Frozen historical VQL resource is missing");
+                }
+                PatternParsingResults results = PatternParser.parser().parse(
+                    new String(readAll(in), StandardCharsets.UTF_8));
             if (!results.validationOK()) {
                 throw new IllegalStateException("Historical VQL validation failed: " + results);
             }
@@ -155,8 +159,12 @@ public final class V002SerialExecutor {
                     }
                 }
             }
+                }
+                throw new IllegalStateException("Historical VQL pattern not found: " + patternName);
+            }
+        } finally {
+            Thread.currentThread().setContextClassLoader(previous);
         }
-        throw new IllegalStateException("Historical VQL pattern not found: " + patternName);
     }
 
     private byte[] readAll(InputStream input) throws Exception {
