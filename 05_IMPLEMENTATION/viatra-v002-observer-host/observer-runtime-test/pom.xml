@@ -39,7 +39,15 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho.version}</version>
-        <configuration />
+        <configuration>
+          <dependencies>
+            <dependency>
+              <type>eclipse-plugin</type>
+              <artifactId>org.eclipse.viatra.examples.cps.xform.m2m.util</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+          </dependencies>
+        </configuration>
       </plugin>
     </plugins>
   </build>
