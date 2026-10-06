@@ -64,6 +64,25 @@ jobs:
           done
           echo "TGCV_VIATRA_V002_CPS_P2_BRIDGE=PASS"
 
+      - name: Inject built CPS P2 bridge into runtime target platform
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          target = Path("target-definition/tgcv-viatra-v002-target.target")
+          repo = Path.cwd() / "cps-p2-bridge/repository/target/repository"
+          text = target.read_text(encoding="utf-8")
+          marker = "    </locations>"
+          injection = """        <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="false" type="InstallableUnit">
+            <repository location="file://""" + str(repo) + """"/>
+        </location>
+"""
+          if "cps-p2-bridge/repository/target/repository" in text:
+              raise SystemExit("bridge P2 repository already present in target definition")
+          target.write_text(text.replace(marker, injection + marker), encoding="utf-8")
+          print(f"Injected runtime P2 repository: {repo}")
+          PY
+
       - name: Build and execute gated Observer Listener runtime tests
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: mvn -B -ntp -Dtycho.debug.resolver=true -pl target-definition,observer-runtime-test -am clean verify
