@@ -72,7 +72,17 @@ public class V002ObserverRuntimeTest {
             first.events.get(0).getProvenance().getInstrumentationRevision());
     }
 
+    private void assertHistoricalSignalUtilVisible() throws Exception {
+        Class<?> signalUtil = Class.forName(
+            "org.eclipse.viatra.examples.cps.xform.m2m.util.SignalUtil");
+        assertNotNull(signalUtil);
+        System.out.println("TGCV_SIGNAL_UTIL_CLASS=" + signalUtil.getName());
+        System.out.println("TGCV_SIGNAL_UTIL_CLASSLOADER=" + signalUtil.getClassLoader());
+        System.out.println("TGCV_CONTEXT_CLASSLOADER=" + Thread.currentThread().getContextClassLoader());
+    }
+
     private Observation runOnce() throws Exception {
+        assertHistoricalSignalUtilVisible();
         EMFPatternLanguageStandaloneSetup.doSetup();
         ResourceSet resourceSet = new ResourceSetImpl();
 
