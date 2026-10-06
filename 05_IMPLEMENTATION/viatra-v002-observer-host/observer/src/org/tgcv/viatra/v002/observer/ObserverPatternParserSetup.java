@@ -1,5 +1,6 @@
 package org.tgcv.viatra.v002.observer;
 
+import java.io.InputStream;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.viatra.query.patternlanguage.emf.EMFPatternLanguageStandaloneSetup;
 import org.eclipse.viatra.query.patternlanguage.emf.util.IClassLoaderProvider;
@@ -48,6 +49,32 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
                 throw new IllegalStateException(
                     "Observer bundle classloader is unavailable");
             }
+
+            String resourceName = "org/eclipse/xtext/xbase/Xtype.xtextbin";
+            System.out.println("TGCV_CLASSLOADER_DIAGNOSTIC=loader=" + loader.getClass().getName());
+            System.out.println("TGCV_CLASSLOADER_DIAGNOSTIC=loaderToString=" + loader);
+            System.out.println("TGCV_CLASSLOADER_DIAGNOSTIC=resource=" + resourceName);
+            java.net.URL resource = loader.getResource(resourceName);
+            System.out.println("TGCV_CLASSLOADER_DIAGNOSTIC=resourceUrl=" + resource);
+
+            if (resource != null) {
+                try (InputStream in = resource.openStream()) {
+                    byte[] head = new byte[16];
+                    int n = in.read(head);
+                    StringBuilder hex = new StringBuilder();
+                    for (int i = 0; i < n; i++) {
+                        if (i > 0) {
+                            hex.append(' ');
+                        }
+                        hex.append(String.format("%02x", head[i] & 0xff));
+                    }
+                    System.out.println("TGCV_CLASSLOADER_DIAGNOSTIC=resourceHead=" + hex);
+                } catch (Exception e) {
+                    System.out.println("TGCV_CLASSLOADER_DIAGNOSTIC=resourceReadError=" +
+                        e.getClass().getName() + ":" + e.getMessage());
+                }
+            }
+
             return loader;
         }
     }
