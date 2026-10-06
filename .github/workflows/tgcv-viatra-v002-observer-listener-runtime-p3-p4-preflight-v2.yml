@@ -150,6 +150,44 @@ jobs:
           echo "== Resolved historical P2 artifacts in local Maven cache =="
           find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.viatra.examples.cps."* -maxdepth 2 -type f -name '*.jar' -print 2>/dev/null | sort || true
 
+      - name: Diagnose XtypeGrammarAccess resource resolution
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -e
+          work="observer-runtime-test/target/work"
+          echo "== Locate exact XtypeGrammarAccess provider =="
+          xtype_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q 'org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class'; then
+              xtype_jar="$jar"
+              break
+            fi
+          done < <(find "$work" -type f -name '*.jar' -print 2>/dev/null | sort)
+          test -n "$xtype_jar"
+          echo "XTYPE_JAR=$xtype_jar"
+          sha256sum "$xtype_jar"
+
+          echo "== XtypeGrammarAccess bytecode resource references =="
+          javap -classpath "$xtype_jar" -verbose org.eclipse.xtext.xbase.services.XtypeGrammarAccess \
+            | grep -E -i 'String.*(xtext|ecore|xmi|grammar|Xtype)|Utf8.*(xtext|ecore|xmi|grammar|Xtype)' \
+            | head -200 || true
+
+          echo "== Candidate grammar/resource entries in exact provider JAR =="
+          unzip -l "$xtype_jar" \
+            | grep -E -i '(xtextbin|\\.xtext$|\\.ecore$|\\.xmi$|grammar)' \
+            | head -300 || true
+
+          echo "== First bytes of candidate XML/resource entries =="
+          unzip -Z1 "$xtype_jar" \
+            | grep -E -i '(xtextbin|\\.xtext$|\\.ecore$|\\.xmi$|grammar)' \
+            | while IFS= read -r entry; do
+                echo "--- $entry ---"
+                unzip -p "$xtype_jar" "$entry" 2>/dev/null | head -c 32 | od -An -tx1 -v || true
+              done
+
+          echo "TGCV_VIATRA_V002_XTYPE_RESOURCE_DIAGNOSTIC=COMPLETE"
+
       - name: Runtime scientific firewall
         run: |
           if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)' \
