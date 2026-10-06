@@ -48,7 +48,7 @@
             <dependency>
               <type>eclipse-plugin</type>
               <artifactId>org.eclipse.viatra.examples.cps.xform.m2m.util</artifactId>
-              <versionRange>[2.1.0,3.0.0)</versionRange>
+              <version>2.1.0-SNAPSHOT</version>
             </dependency>
           </dependencies>
         </configuration>
