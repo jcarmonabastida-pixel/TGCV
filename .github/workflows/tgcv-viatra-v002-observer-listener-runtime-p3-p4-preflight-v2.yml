@@ -150,6 +150,47 @@ jobs:
           echo "== Resolved historical P2 artifacts in local Maven cache =="
           find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.viatra.examples.cps."* -maxdepth 2 -type f -name '*.jar' -print 2>/dev/null | sort || true
 
+      - name: Diagnose Xtext Xbase runtime provisioning
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set +e
+          work=observer-runtime-test/target/work
+          echo "== Xtext/Xbase JARs =="
+          find "$work" -type f -name '*.jar' -print 2>/dev/null | grep -E '/org\.eclipse\.(xtext|xbase)' | sort
+          echo "== Effective bundles.info Xtext/Xbase =="
+          bundles_info="$work/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+          if [ -f "$bundles_info" ]; then grep -E 'org\.eclipse\.(xtext|xbase)' "$bundles_info" | sort; else echo "bundles.info not present"; fi
+          echo "== XtypeGrammarAccess provider =="
+          xtype_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q 'org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class'; then xtype_jar="$jar"; break; fi
+          done < <(find "$work" -type f -name '*.jar' -print 2>/dev/null)
+          if [ -n "$xtype_jar" ]; then
+            echo "provider=$xtype_jar"
+            unzip -p "$xtype_jar" META-INF/MANIFEST.MF 2>/dev/null | sed -n '1,80p'
+            echo "== grammar resources =="
+            unzip -l "$xtype_jar" 2>/dev/null | grep -E '\.(xtextbin|ecore|genmodel)
+        run: |
+          if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)' \
+            05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test \
+            05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer; then
+            echo "FAIL: scientific-firewall term found"
+            exit 1
+          fi
+          grep -q "V002SerialExecutor" \
+            05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ObserverRuntimeTest.java
+          echo "TGCV_VIATRA_V002_RUNTIME_P3_P4_FIREWALL=PASS"
+ || true
+            echo "== provider SHA256 =="
+            sha256sum "$xtype_jar"
+          else
+            echo "XtypeGrammarAccess provider: NOT FOUND"
+          fi
+          echo "== Xtext/Xbase runtime JAR SHA256 =="
+          find "$work" -type f -name '*.jar' -print 2>/dev/null | grep -E '/org\.eclipse\.(xtext|xbase)' | sort | while read -r jar; do sha256sum "$jar"; done
+          echo "TGCV_VIATRA_V002_XTEXT_DIAGNOSTIC=COMPLETE"
+
       - name: Runtime scientific firewall
         run: |
           if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)' \
