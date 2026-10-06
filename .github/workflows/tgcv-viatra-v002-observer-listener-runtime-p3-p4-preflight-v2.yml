@@ -199,8 +199,8 @@ jobs:
 
 
           echo "== XtypeGrammarAccess.internalFindGrammar() bytecode =="
-          javap -classpath "$cache_jar" -c -p org.eclipse.xtext.xbase.services.XtypeGrammarAccess \\
-            | sed -n '/internalFindGrammar/,/^  [^ ].*(/p' | head -120
+          javap -classpath "$cache_jar" -c -p org.eclipse.xtext.xbase.services.XtypeGrammarAccess > /tmp/xtype.javap
+          grep -n -A55 -B2 "internalFindGrammar" /tmp/xtype.javap || true
 
           echo "== Locate GrammarProvider class in P2 cache =="
           grammar_provider_jar=""
@@ -211,10 +211,11 @@ jobs:
           done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
           echo "grammar_provider_jar=${grammar_provider_jar:-NOT_FOUND}"
           test -n "$grammar_provider_jar"
+          ls -l "$grammar_provider_jar"
 
-          echo "== GrammarProvider.getGrammar() bytecode =="
-          javap -classpath "$grammar_provider_jar" -c -p org.eclipse.xtext.service.GrammarProvider \\
-            | sed -n '/getGrammar/,/^  [^ ].*(/p' | head -160
+          echo "== GrammarProvider full bytecode =="
+          javap -classpath "$grammar_provider_jar" -c -p org.eclipse.xtext.service.GrammarProvider > /tmp/grammar-provider.javap
+          grep -n -A80 -B5 "getGrammar" /tmp/grammar-provider.javap || true
 
           echo "== Locate BaseEPackageAccess class in P2 cache =="
           base_access_jar=""
@@ -225,10 +226,12 @@ jobs:
           done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
           echo "base_access_jar=${base_access_jar:-NOT_FOUND}"
           test -n "$base_access_jar"
+          ls -l "$base_access_jar"
 
-          echo "== BaseEPackageAccess grammar/resource loading bytecode =="
-          javap -classpath "$base_access_jar" -c -p org.eclipse.xtext.parser.BaseEPackageAccess \\
-            | sed -n '/loadGrammarFile/,/^  [^ ].*(/p; /loadResource/,/^  [^ ].*(/p' | head -240
+          echo "== BaseEPackageAccess full bytecode =="
+          javap -classpath "$base_access_jar" -c -p org.eclipse.xtext.parser.BaseEPackageAccess > /tmp/base-access.javap
+          grep -n -A100 -B5 "loadGrammarFile" /tmp/base-access.javap || true
+          grep -n -A100 -B5 "loadResource" /tmp/base-access.javap || true
 
           echo "TGCV_VIATRA_V002_XTYPE_RESOURCE_DIAGNOSTIC=COMPLETE"
       - name: Runtime scientific firewall
