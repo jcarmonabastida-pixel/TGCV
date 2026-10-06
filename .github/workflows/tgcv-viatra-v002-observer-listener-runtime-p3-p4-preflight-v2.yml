@@ -128,6 +128,15 @@ jobs:
           find observer-runtime-test/target/work -type f \( -iname '*org.eclipse.viatra.examples.cps.xform.m2m.util*' -o -iname '*SignalUtil*' \) -printf '%p\n' 2>/dev/null | sort || true
           echo "== Installed OSGi bundles =="
           find observer-runtime-test/target/work -type f \( -name 'MANIFEST.MF' -o -name '*.jar' \) -printf '%p\n' 2>/dev/null | grep -E 'org\.eclipse\.viatra|org\.tgcv|org\.eclipse\.emf' | sort || true
+          echo "== Equinox simpleconfigurator provisioning list =="
+          bundles_info="observer-runtime-test/target/work/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+          if [ -f "$bundles_info" ]; then
+            grep -E 'org\.eclipse\.viatra\.examples\.cps\.(model|deployment|traceability|xform\.m2m\.util)' "$bundles_info" || true
+          else
+            echo "bundles.info not present"
+          fi
+          echo "== Resolved historical P2 artifacts in local Maven cache =="
+          find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.viatra.examples.cps."* -maxdepth 2 -type f -name '*.jar' -print 2>/dev/null | sort || true
 
       - name: Runtime scientific firewall
         run: |
