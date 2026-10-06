@@ -14,7 +14,16 @@ import org.eclipse.viatra.examples.cps.deployment.DeploymentHost;
 import org.eclipse.viatra.examples.cps.traceability.CPS2DeploymentTrace;
 import org.eclipse.viatra.examples.cps.traceability.CPSToDeployment;
 import org.eclipse.viatra.examples.cps.traceability.TraceabilityFactory;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.viatra.query.patternlanguage.emf.EMFPatternLanguageStandaloneSetup;
+import org.eclipse.viatra.query.patternlanguage.emf.internal.XtextInjectorProvider;
+import org.eclipse.viatra.query.patternlanguage.emf.util.IClassLoaderProvider;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParser;
+import org.eclipse.xtext.xbase.XbaseStandaloneSetup;
+
+import com.google.inject.Binder;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParsingResults;
 import org.eclipse.viatra.query.patternlanguage.emf.vql.Pattern;
 import org.eclipse.viatra.query.runtime.api.IPatternMatch;
@@ -45,6 +54,46 @@ public final class V002SerialExecutor {
     private final V002SerialObserver observer;
     private final V002StateCapture stateCapture;
     private BatchTransformation transformation;
+
+    private static boolean patternParserInitialized;
+
+    /**
+     * Initializes VIATRA 2.0.2's historical parser with the observer bundle
+     * classloader. The default SimpleClassLoaderProvider resolves the classloader
+     * from the parsed VQL model objects, which cannot see the historical CPS
+     * utility bundle in this OSGi layout.
+     */
+    private static synchronized void initializePatternParser() {
+        if (patternParserInitialized) {
+            return;
+        }
+
+        XbaseStandaloneSetup.doSetup();
+        EMFPatternLanguageStandaloneSetup setup =
+            new EMFPatternLanguageStandaloneSetup();
+        Injector injector = Guice.createInjector(
+            new EMFPatternLanguageStandaloneSetup.StandaloneParserModule() {
+                @Override
+                public Class<? extends IClassLoaderProvider> bindIClassLoaderProvider() {
+                    return ObserverClassLoaderProvider.class;
+                }
+            });
+        setup.register(injector);
+        patternParserInitialized = true;
+    }
+
+    private static final class ObserverClassLoaderProvider
+            implements IClassLoaderProvider {
+        @Override
+        public ClassLoader getClassLoader(EObject context) {
+            ClassLoader loader = V002SerialExecutor.class.getClassLoader();
+            if (loader == null) {
+                throw new IllegalStateException(
+                    "Observer bundle classloader is unavailable");
+            }
+            return loader;
+        }
+    }
 
     public V002SerialExecutor(CPSToDeployment mapping, ViatraQueryEngine engine,
             V002SerialObserver observer) {
@@ -140,6 +189,7 @@ public final class V002SerialExecutor {
         ClassLoader observerLoader = getClass().getClassLoader();
         try {
             Thread.currentThread().setContextClassLoader(observerLoader);
+            initializePatternParser();
             try (InputStream in = getClass().getResourceAsStream(
                     "/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql")) {
                 if (in == null) {
