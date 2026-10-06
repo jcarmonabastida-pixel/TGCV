@@ -16,12 +16,9 @@ import org.eclipse.viatra.examples.cps.traceability.CPSToDeployment;
 import org.eclipse.viatra.examples.cps.traceability.TraceabilityFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.viatra.query.patternlanguage.emf.EMFPatternLanguageStandaloneSetup;
-import org.eclipse.viatra.query.patternlanguage.emf.internal.XtextInjectorProvider;
-import org.eclipse.viatra.query.patternlanguage.emf.util.IClassLoaderProvider;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParser;
-import org.eclipse.xtext.xbase.XbaseStandaloneSetup;
+import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParserBuilder;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParsingResults;
 import org.eclipse.viatra.query.patternlanguage.emf.vql.Pattern;
@@ -55,43 +52,15 @@ public final class V002SerialExecutor {
     private BatchTransformation transformation;
 
     private static boolean patternParserInitialized;
+    private static Injector patternParserInjector;
 
-    /**
-     * Initializes VIATRA 2.0.2's historical parser with the observer bundle
-     * classloader. The default SimpleClassLoaderProvider resolves the classloader
-     * from the parsed VQL model objects, which cannot see the historical CPS
-     * utility bundle in this OSGi layout.
-     */
     private static synchronized void initializePatternParser() {
         if (patternParserInitialized) {
             return;
         }
-
-        XbaseStandaloneSetup.doSetup();
-        EMFPatternLanguageStandaloneSetup setup =
-            new EMFPatternLanguageStandaloneSetup();
-        Injector injector = Guice.createInjector(
-            new EMFPatternLanguageStandaloneSetup.StandaloneParserModule() {
-                @Override
-                public Class<? extends IClassLoaderProvider> bindIClassLoaderProvider() {
-                    return ObserverClassLoaderProvider.class;
-                }
-            });
-        setup.register(injector);
+        ObserverPatternParserSetup setup = new ObserverPatternParserSetup();
+        patternParserInjector = setup.createObserverInjector();
         patternParserInitialized = true;
-    }
-
-    private static final class ObserverClassLoaderProvider
-            implements IClassLoaderProvider {
-        @Override
-        public ClassLoader getClassLoader(EObject context) {
-            ClassLoader loader = V002SerialExecutor.class.getClassLoader();
-            if (loader == null) {
-                throw new IllegalStateException(
-                    "Observer bundle classloader is unavailable");
-            }
-            return loader;
-        }
     }
 
     public V002SerialExecutor(CPSToDeployment mapping, ViatraQueryEngine engine,
@@ -194,7 +163,9 @@ public final class V002SerialExecutor {
                 if (in == null) {
                     throw new IllegalStateException("Frozen historical VQL resource is missing");
                 }
-                PatternParsingResults results = PatternParser.parser().parse(
+                PatternParsingResults results = PatternParserBuilder.instance()
+                .withInjector(patternParserInjector)
+                .parse(
                     new String(readAll(in), StandardCharsets.UTF_8));
                 if (!results.validationOK()) {
                     throw new IllegalStateException("Historical VQL validation failed: " + results);
