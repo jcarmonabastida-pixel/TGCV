@@ -66,6 +66,10 @@ jobs:
             org.eclipse.viatra.examples.cps.xform.m2m.util; do
             find cps-p2-bridge/repository/target/repository -type f -name "${bundle}_*.jar" -print -quit | grep -q .
           done
+          util_jar="$(find cps-p2-bridge/repository/target/repository -type f -name 'org.eclipse.viatra.examples.cps.xform.m2m.util_*.jar' -print -quit)"
+          test -n "$util_jar"
+          echo "Historical util JAR: $util_jar"
+          unzip -l "$util_jar" | grep -F 'org/eclipse/viatra/examples/cps/xform/m2m/util/SignalUtil.class'
           echo "TGCV_VIATRA_V002_CPS_P2_BRIDGE=PASS"
 
       - name: Inject built CPS P2 bridge into runtime target platform
