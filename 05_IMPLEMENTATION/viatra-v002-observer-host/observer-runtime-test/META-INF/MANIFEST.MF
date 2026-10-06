@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: TGCV VIATRA V002 Observer Runtime Tests
 Bundle-SymbolicName: org.tgcv.viatra.v002.observer.runtime.test
 Bundle-Version: 0.1.0.qualifier
-Fragment-Host: org.tgcv.viatra.v002.observer
-Require-Bundle: org.junit,
- org.eclipse.viatra.examples.cps.xform.m2m.util;bundle-version="[2.1.0,3.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ org.tgcv.viatra.v002.observer,
+ org.eclipse.viatra.examples.cps.xform.m2m.util;bundle-version="[2.1.0,3.0.0)"
