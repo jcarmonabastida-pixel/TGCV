@@ -26,7 +26,7 @@
           </dependency>
         </dependencies>
         <configuration>
-          <outputDirectory>\${basedir}/xtend-gen</outputDirectory>
+          <outputDirectory>${basedir}/xtend-gen</outputDirectory>
         </configuration>
         <executions>
           <execution>
