@@ -31,6 +31,21 @@ jobs:
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: mvn -B -ntp -pl target-definition,observer-runtime-test -am clean verify
 
+      - name: Diagnose runtime provisioning
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          echo "== Runtime work directory =="
+          if [ -d observer-runtime-test/target/work ]; then
+            find observer-runtime-test/target/work -type f -printf '%p\n' | sort
+          else
+            echo "target/work not present"
+          fi
+          echo "== Historical util bundle / SignalUtil =="
+          find observer-runtime-test/target/work -type f \( -iname '*org.eclipse.viatra.examples.cps.xform.m2m.util*' -o -iname '*SignalUtil*' \) -printf '%p\n' 2>/dev/null | sort || true
+          echo "== Installed OSGi bundles =="
+          find observer-runtime-test/target/work -type f \( -name 'MANIFEST.MF' -o -name '*.jar' \) -printf '%p\n' 2>/dev/null | grep -E 'org\\.eclipse\\.viatra|org\\.tgcv|org\\.eclipse\\.emf' | sort || true
+
       - name: Runtime scientific firewall
         run: |
           if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)'             05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test             05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer; then
