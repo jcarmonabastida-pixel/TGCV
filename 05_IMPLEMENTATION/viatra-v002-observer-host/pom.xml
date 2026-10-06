@@ -30,6 +30,15 @@
         <version>${tycho.version}</version>
         <configuration>
           <pomDependencies>consider</pomDependencies>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>org.eclipse.viatra.examples.cps.xform.m2m.util</id>
+                <versionRange>[2.1.0,3.0.0)</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
           <target>
             <artifact>
               <groupId>org.tgcv</groupId>
