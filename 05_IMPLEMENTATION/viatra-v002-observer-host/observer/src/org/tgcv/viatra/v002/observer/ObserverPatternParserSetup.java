@@ -23,6 +23,20 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
         public Class<? extends IClassLoaderProvider> bindIClassLoaderProvider() {
             return ObserverClassLoaderProvider.class;
         }
+
+        @Override
+        public void configure() {
+            super.configure();
+            org.eclipse.xtext.resource.XtextResourceSet rs = new org.eclipse.xtext.resource.XtextResourceSet();
+            org.eclipse.emf.ecore.resource.Resource.Factory.Registry registry = rs.getResourceFactoryRegistry();
+            System.out.println("TGCV_XTEXT_FACTORY_DIAGNOSTIC=xtextbin=" + registry.getExtensionToFactoryMap().get("xtextbin"));
+            System.out.println("TGCV_XTEXT_FACTORY_DIAGNOSTIC=ecore=" + registry.getExtensionToFactoryMap().get("ecore"));
+            System.out.println("TGCV_XTEXT_FACTORY_DIAGNOSTIC=xmi=" + registry.getExtensionToFactoryMap().get("xmi"));
+            System.out.println("TGCV_XTEXT_FACTORY_DIAGNOSTIC=registryClass=" + registry.getClass().getName());
+            System.out.println("TGCV_XTEXT_FACTORY_DIAGNOSTIC=xtextbinFactoryClass=" +
+                (registry.getExtensionToFactoryMap().get("xtextbin") == null ? "null" :
+                    registry.getExtensionToFactoryMap().get("xtextbin").getClass().getName()));
+        }
     }
 
     public static final class ObserverClassLoaderProvider
