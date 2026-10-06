@@ -147,21 +147,20 @@ public final class V002SerialExecutor {
                 }
                 PatternParsingResults results = PatternParser.parser().parse(
                     new String(readAll(in), StandardCharsets.UTF_8));
-            if (!results.validationOK()) {
-                throw new IllegalStateException("Historical VQL validation failed: " + results);
-            }
-            for (Pattern pattern : results.getPatterns()) {
-                if (patternName.equals(pattern.getName())) {
-                    for (IQuerySpecification<?> specification : results.getQuerySpecifications()) {
-                        if (specification.getFullyQualifiedName().endsWith("." + patternName)) {
-                            return specification;
+                if (!results.validationOK()) {
+                    throw new IllegalStateException("Historical VQL validation failed: " + results);
+                }
+                for (Pattern pattern : results.getPatterns()) {
+                    if (patternName.equals(pattern.getName())) {
+                        for (IQuerySpecification<?> specification : results.getQuerySpecifications()) {
+                            if (specification.getFullyQualifiedName().endsWith("." + patternName)) {
+                                return specification;
+                            }
                         }
                     }
                 }
             }
-                }
-                throw new IllegalStateException("Historical VQL pattern not found: " + patternName);
-            }
+            throw new IllegalStateException("Historical VQL pattern not found: " + patternName);
         } finally {
             Thread.currentThread().setContextClassLoader(previous);
         }
