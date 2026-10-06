@@ -17,7 +17,8 @@ git -C "$TMP_DIR/source" sparse-checkout init --cone
 git -C "$TMP_DIR/source" sparse-checkout set \
   cps/domains/org.eclipse.viatra.examples.cps.model \
   cps/domains/org.eclipse.viatra.examples.cps.deployment \
-  cps/domains/org.eclipse.viatra.examples.cps.traceability
+  cps/domains/org.eclipse.viatra.examples.cps.traceability \
+  cps/transformations/org.eclipse.viatra.examples.cps.xform.m2m.util
 git -C "$TMP_DIR/source" checkout --detach "$SOURCE_REV"
 
 test "$(git -C "$TMP_DIR/source" rev-parse HEAD)" = "$SOURCE_REV"
@@ -26,8 +27,13 @@ for bundle in \
   org.eclipse.viatra.examples.cps.model \
   org.eclipse.viatra.examples.cps.deployment \
   org.eclipse.viatra.examples.cps.traceability
+  org.eclipse.viatra.examples.cps.xform.m2m.util
 do
-  src="$TMP_DIR/source/cps/domains/$bundle"
+  if [[ "$bundle" == "org.eclipse.viatra.examples.cps.xform.m2m.util" ]]; then
+    src="$TMP_DIR/source/cps/transformations/$bundle"
+  else
+    src="$TMP_DIR/source/cps/domains/$bundle"
+  fi
   dst="$DEST_ROOT/$bundle"
 
   test -d "$src/META-INF"
