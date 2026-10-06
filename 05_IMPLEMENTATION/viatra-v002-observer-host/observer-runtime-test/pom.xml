@@ -51,10 +51,9 @@
         <configuration>
           <dependencies>
             <dependency>
-              <groupId>org.tgcv</groupId>
-              <type>eclipse-plugin</type>
+              <type>p2-installable-unit</type>
               <artifactId>org.eclipse.viatra.examples.cps.xform.m2m.util</artifactId>
-              <version>[2.1.0,3.0.0)</version>
+              <version>0.0.0</version>
             </dependency>
           </dependencies>
         </configuration>
