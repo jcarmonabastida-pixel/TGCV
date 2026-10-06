@@ -156,38 +156,48 @@ jobs:
         run: |
           set -e
           work="observer-runtime-test/target/work"
-          echo "== Locate exact XtypeGrammarAccess provider =="
+          echo "== Locate XtypeGrammarAccess provider in runtime work =="
           xtype_jar=""
+          if [ -d "$work" ]; then
+            while IFS= read -r jar; do
+              if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then
+                xtype_jar="$jar"; break
+              fi
+            done < <(find "$work" -type f -name "*.jar" -print 2>/dev/null | sort)
+          fi
+          echo "runtime_work_provider=${xtype_jar:-NOT_FOUND}"
+
+          echo "== Locate exact Xbase 2.13 provider in Maven/P2 cache =="
+          cache_jar=""
           while IFS= read -r jar; do
-            if unzip -l "$jar" 2>/dev/null | grep -q 'org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class'; then
-              xtype_jar="$jar"
-              break
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then
+              cache_jar="$jar"; break
             fi
-          done < <(find "$work" -type f -name '*.jar' -print 2>/dev/null | sort)
-          test -n "$xtype_jar"
-          echo "XTYPE_JAR=$xtype_jar"
-          sha256sum "$xtype_jar"
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.xtext.xbase" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "cache_provider=${cache_jar:-NOT_FOUND}"
+          test -n "$cache_jar"
+          echo "XTYPE_JAR=$cache_jar"
+          sha256sum "$cache_jar"
 
           echo "== XtypeGrammarAccess bytecode resource references =="
-          javap -classpath "$xtype_jar" -verbose org.eclipse.xtext.xbase.services.XtypeGrammarAccess \
-            | grep -E -i 'String.*(xtext|ecore|xmi|grammar|Xtype)|Utf8.*(xtext|ecore|xmi|grammar|Xtype)' \
+          javap -classpath "$cache_jar" -verbose org.eclipse.xtext.xbase.services.XtypeGrammarAccess \
+            | grep -E -i "String.*(xtext|ecore|xmi|grammar|Xtype)|Utf8.*(xtext|ecore|xmi|grammar|Xtype)" \
             | head -200 || true
 
           echo "== Candidate grammar/resource entries in exact provider JAR =="
-          unzip -l "$xtype_jar" \
-            | grep -E -i '(xtextbin|\\.xtext$|\\.ecore$|\\.xmi$|grammar)' \
+          unzip -l "$cache_jar" \
+            | grep -E -i "(xtextbin|\\.xtext$|\\.ecore$|\\.xmi$|grammar)" \
             | head -300 || true
 
           echo "== First bytes of candidate XML/resource entries =="
-          unzip -Z1 "$xtype_jar" \
-            | grep -E -i '(xtextbin|\\.xtext$|\\.ecore$|\\.xmi$|grammar)' \
+          unzip -Z1 "$cache_jar" \
+            | grep -E -i "(xtextbin|\\.xtext$|\\.ecore$|\\.xmi$|grammar)" \
             | while IFS= read -r entry; do
                 echo "--- $entry ---"
-                unzip -p "$xtype_jar" "$entry" 2>/dev/null | head -c 32 | od -An -tx1 -v || true
+                unzip -p "$cache_jar" "$entry" 2>/dev/null | head -c 32 | od -An -tx1 -v || true
               done
 
           echo "TGCV_VIATRA_V002_XTYPE_RESOURCE_DIAGNOSTIC=COMPLETE"
-
       - name: Runtime scientific firewall
         run: |
           if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)' \
