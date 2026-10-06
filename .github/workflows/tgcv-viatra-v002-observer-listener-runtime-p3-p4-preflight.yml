@@ -111,3 +111,4 @@ jobs:
           grep -q "V002SerialExecutor"             05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ObserverRuntimeTest.java
           echo "TGCV_VIATRA_V002_RUNTIME_P3_P4_FIREWALL=PASS"
         
+# Workflow registration refresh: 2026-10-06
