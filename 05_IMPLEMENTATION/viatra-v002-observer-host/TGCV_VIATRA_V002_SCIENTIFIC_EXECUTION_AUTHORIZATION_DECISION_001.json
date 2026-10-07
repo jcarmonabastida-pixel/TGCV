@@ -15,15 +15,13 @@
     "seed_policy": "NOT_APPLICABLE_DETERMINISTIC_SERIAL_EXECUTION"
   },
   "preflight_evidence": {
-    "package_preflight_run": 37694181151,
-    "entry_point_preflight_run": 37695779062,
+    "package_preflight_run": 37705100626,
     "observer_listener_p3_p4_run": 37665561065,
     "pf09_runtime_equivalence_run": 37074926235,
     "scientific_firewall": "PASS"
   },
   "authorization_conditions": {
     "technical_preflights_pass": true,
-    "entry_point_preflight_pass": true,
     "fixture_frozen": true,
     "implementation_frozen": true,
     "explicit_human_decision": false
