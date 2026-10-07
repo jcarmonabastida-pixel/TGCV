@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+    id="org.tgcv.viatra.v002.cps.feature"
+    label="TGCV VIATRA V002 Historical CPS Bundles"
+    version="0.1.0.qualifier">
+  <plugin id="org.eclipse.viatra.examples.cps.model"/>
+  <plugin id="org.eclipse.viatra.examples.cps.deployment"/>
+  <plugin id="org.eclipse.viatra.examples.cps.traceability"/>
+  <plugin id="org.eclipse.viatra.examples.cps.xform.m2m.util"/>
+</feature>

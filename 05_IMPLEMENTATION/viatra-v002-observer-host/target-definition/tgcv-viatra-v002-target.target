@@ -32,12 +32,13 @@
             <unit id="org.eclipse.collections" version="9.2.0.v20180518-1448"/>
             <repository location="http://download.eclipse.org/collections/9.2.0/repository/"/>
         </location>
-        <location includeMode="planner" includeAllPlatforms="false" includeConfigurePhase="false" includeSource="true" type="InstallableUnit">
+        <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
           <unit id="org.eclipse.license.feature.group" version="1.0.1.v20140414-1359"/>
           <repository location="http://download.eclipse.org/cbi/updates/license/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
             <unit id="org.eclipse.viatra.query.runtime" version="2.0.2.201808291256"/>
+            <unit id="org.eclipse.viatra.query.runtime.rete" version="2.0.2.201808291256"/>
             <unit id="org.eclipse.viatra.query.patternlanguage.emf" version="2.0.2.201808291256"/>
             <unit id="org.eclipse.viatra.transformation.evm" version="2.0.2.201808291256"/>
             <unit id="org.eclipse.viatra.transformation.runtime.emf" version="2.0.2.201808291256"/>

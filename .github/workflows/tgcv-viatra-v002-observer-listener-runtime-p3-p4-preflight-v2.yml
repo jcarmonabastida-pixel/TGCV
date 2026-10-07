@@ -23,6 +23,44 @@ jobs:
           distribution: temurin
           java-version: "8"
 
+      - name: Remove setup-java Maven server settings
+        run: |
+          set -e
+          rm -f "$HOME/.m2/settings.xml" "$HOME/.m2/settings-security.xml"
+          test ! -e "$HOME/.m2/settings.xml"
+          test ! -e "$HOME/.m2/settings-security.xml"
+          echo "TGCV_MAVEN_SETTINGS_CLEANUP=PASS"
+
+      - name: Diagnose generated Maven settings before Maven 3.6.3
+        run: |
+          set -e
+          echo "== Maven settings files =="
+          for f in "$HOME/.m2/settings.xml" "$HOME/.m2/settings-security.xml"; do
+            if [ -f "$f" ]; then
+              echo "--- $f: present ---"
+              if [ "$(basename "$f")" = "settings.xml" ]; then
+                sed -E 's#(<password>)[^<]*(</password>)#\1***REDACTED***\2#g; s#(<username>)[^<]*(</username>)#\1***REDACTED***\2#g' "$f"
+              else
+                echo "REDACTED: settings-security.xml exists"
+              fi
+            else
+              echo "--- $f: absent ---"
+            fi
+          done
+          echo "TGCV_MAVEN_SETTINGS_DIAGNOSTIC=COMPLETE"
+
+      - name: Set Maven 3.6.3 for Tycho 1.0.0 compatibility probe
+        run: |
+          MAVEN_VERSION="3.6.3"
+          MAVEN_HOME="$RUNNER_TEMP/apache-maven-$MAVEN_VERSION"
+          if [ ! -x "$MAVEN_HOME/bin/mvn" ]; then
+            curl -fsSL "https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz" -o "$RUNNER_TEMP/apache-maven.tar.gz"
+            tar -xzf "$RUNNER_TEMP/apache-maven.tar.gz" -C "$RUNNER_TEMP"
+          fi
+          echo "$MAVEN_HOME/bin" >> "$GITHUB_PATH"
+          export PATH="$MAVEN_HOME/bin:$PATH"
+          mvn -version
+
       - name: Materialize pinned historical CPS model bundles
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: bash materialize-historical-cps-models.sh
@@ -30,11 +68,7 @@ jobs:
       - name: Stage materialized CPS sources into standalone P2 bridge reactor
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: |
-          for bundle in \
-            org.eclipse.viatra.examples.cps.model \
-            org.eclipse.viatra.examples.cps.deployment \
-            org.eclipse.viatra.examples.cps.traceability \
-            org.eclipse.viatra.examples.cps.xform.m2m.util; do
+          for bundle in             org.eclipse.viatra.examples.cps.model             org.eclipse.viatra.examples.cps.deployment             org.eclipse.viatra.examples.cps.traceability             org.eclipse.viatra.examples.cps.xform.m2m.util; do
             src="cps-models/$bundle"
             dst="cps-p2-bridge/bundles/$bundle"
             test -d "$src/META-INF"
@@ -59,13 +93,13 @@ jobs:
         run: |
           test -f cps-p2-bridge/repository/target/repository/content.jar
           test -f cps-p2-bridge/repository/target/repository/artifacts.jar
-          for bundle in \
-            org.eclipse.viatra.examples.cps.model \
-            org.eclipse.viatra.examples.cps.deployment \
-            org.eclipse.viatra.examples.cps.traceability \
-            org.eclipse.viatra.examples.cps.xform.m2m.util; do
+          for bundle in             org.eclipse.viatra.examples.cps.model             org.eclipse.viatra.examples.cps.deployment             org.eclipse.viatra.examples.cps.traceability             org.eclipse.viatra.examples.cps.xform.m2m.util; do
             find cps-p2-bridge/repository/target/repository -type f -name "${bundle}_*.jar" -print -quit | grep -q .
           done
+          util_jar="$(find cps-p2-bridge/repository/target/repository -type f -name 'org.eclipse.viatra.examples.cps.xform.m2m.util_*.jar' -print -quit)"
+          test -n "$util_jar"
+          echo "Historical util JAR: $util_jar"
+          unzip -l "$util_jar" | grep -F 'org/eclipse/viatra/examples/cps/xform/m2m/util/SignalUtil.class'
           echo "TGCV_VIATRA_V002_CPS_P2_BRIDGE=PASS"
 
       - name: Inject built CPS P2 bridge into runtime target platform
@@ -82,6 +116,10 @@ jobs:
               '        <location includeAllPlatforms="false" '
               'includeConfigurePhase="false" includeMode="planner" '
               'includeSource="false" type="InstallableUnit">\n'
+              '          <unit id="org.eclipse.viatra.examples.cps.model" version="0.0.0"/>\n'
+              '          <unit id="org.eclipse.viatra.examples.cps.deployment" version="0.0.0"/>\n'
+              '          <unit id="org.eclipse.viatra.examples.cps.traceability" version="0.0.0"/>\n'
+              '          <unit id="org.eclipse.viatra.examples.cps.xform.m2m.util" version="0.0.0"/>\n'
               f'          <repository location="file://{repo}"/>\n'
               '        </location>\n'
           )
@@ -104,8 +142,51 @@ jobs:
 
       - name: Build and execute gated Observer Listener runtime tests
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
-        run: mvn -B -ntp -Dtycho.debug.resolver=true -pl target-definition,observer-runtime-test -am clean verify
+        run: mvn -B -ntp -X -Dtycho.debug.resolver=true -pl target-definition,observer-runtime-test -am clean verify
 
+      - name: Diagnose resolved Tycho target platform
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -e
+          echo "== Tycho target platform generated metadata =="
+          find target-definition/target -type f -maxdepth 6 -print 2>/dev/null | sort || true
+          echo "== Resolved target-platform references for Xtext/Xbase/VIATRA =="
+          grep -R -nE 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' target-definition/target observer-runtime-test/target 2>/dev/null | head -1000 || true
+          echo "== P2 metadata candidates containing Xtext/Xbase =="
+          find target-definition/target observer-runtime-test/target -type f \( -name 'content.jar' -o -name 'content.xml' -o -name 'artifacts.jar' -o -name 'artifacts.xml' -o -name '*.target' -o -name '*.targetplatform' \) -print 2>/dev/null | sort | while IFS= read -r f; do
+            echo "--- $f ---"
+            unzip -p "$f" 2>/dev/null | grep -a -E 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' | head -100 || true
+            grep -a -E 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' "$f" 2>/dev/null | head -100 || true
+          done
+          echo "== Resolved Maven/P2 bundles for Xtext/Xbase/VIATRA =="
+          find "$HOME/.m2/repository/p2/osgi/bundle" -maxdepth 2 -type f -name '*.jar' 2>/dev/null | grep -E '/org\.eclipse\.(xtext|viatra\.query\.patternlanguage)(/|_)' | sort || true
+          echo "TGCV_TYCHO_RESOLVED_TARGET_DIAGNOSTIC=COMPLETE"
+      - name: Diagnose Tycho target and Surefire runtime materialization
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -e
+          echo "== Target-definition generated state =="
+          find target-definition/target -maxdepth 5 -type f -print 2>/dev/null | sort || true
+          echo "== Target-definition generated files mentioning Xtext/VIATRA =="
+          grep -R -nE 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' target-definition/target 2>/dev/null | head -300 || true
+          echo "== Observer runtime target structure =="
+          find observer-runtime-test/target -maxdepth 5 -type f -print 2>/dev/null | sort | head -1000 || true
+          echo "== Surefire configuration files =="
+          find observer-runtime-test/target -type f \( -name 'config.ini' -o -name 'bundles.info' -o -name '*.properties' -o -name '*.xml' \) -print 2>/dev/null | sort | head -500 || true
+          echo "== Surefire/runtime files mentioning Xtext/VIATRA =="
+          grep -R -nE 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' observer-runtime-test/target 2>/dev/null | head -500 || true
+          echo "== Runtime bundle directories =="
+          find observer-runtime-test/target -type d \( -name 'org.eclipse.xtext*' -o -name 'org.eclipse.viatra.query.patternlanguage*' \) -print 2>/dev/null | sort || true
+          echo "== Runtime JARs by bundle identity =="
+          find observer-runtime-test/target -type f -name '*.jar' -print 2>/dev/null | while IFS= read -r jar; do
+            if unzip -p "$jar" META-INF/MANIFEST.MF 2>/dev/null | grep -qE '^Bundle-SymbolicName: org\.eclipse\.(xtext|viatra\.query\.patternlanguage)'; then
+              echo "--- $jar ---"
+              unzip -p "$jar" META-INF/MANIFEST.MF | grep -E '^(Bundle-SymbolicName|Bundle-Version):' || true
+            fi
+          done
+          echo "TGCV_TYCHO_RUNTIME_MATERIALIZATION_DIAGNOSTIC=COMPLETE"
       - name: Diagnose runtime provisioning
         if: ${{ always() }}
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
@@ -120,15 +201,182 @@ jobs:
           find observer-runtime-test/target/work -type f \( -iname '*org.eclipse.viatra.examples.cps.xform.m2m.util*' -o -iname '*SignalUtil*' \) -printf '%p\n' 2>/dev/null | sort || true
           echo "== Installed OSGi bundles =="
           find observer-runtime-test/target/work -type f \( -name 'MANIFEST.MF' -o -name '*.jar' \) -printf '%p\n' 2>/dev/null | grep -E 'org\.eclipse\.viatra|org\.tgcv|org\.eclipse\.emf' | sort || true
+          echo "== Equinox simpleconfigurator provisioning list =="
+          bundles_info="observer-runtime-test/target/work/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+          if [ -f "$bundles_info" ]; then
+            grep -E 'org\.eclipse\.viatra\.examples\.cps\.(model|deployment|traceability|xform\.m2m\.util)' "$bundles_info" || true
+          else
+            echo "bundles.info not present"
+          fi
+          echo "== Resolved historical P2 artifacts in local Maven cache =="
+          find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.viatra.examples.cps."* -maxdepth 2 -type f -name '*.jar' -print 2>/dev/null | sort || true
 
+      - name: Diagnose historical OSGi manifests
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -e
+          echo "== Locate historical VIATRA patternlanguage.emf by bundle content =="
+          pattern_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/viatra/query/patternlanguage/emf/"; then
+              pattern_jar="$jar"
+              break
+            fi
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "patternlanguage_content_jar=${pattern_jar:-NOT_FOUND}"
+          if [ -n "$pattern_jar" ]; then
+            unzip -p "$pattern_jar" META-INF/MANIFEST.MF | sed -n '1,260p'
+          fi
+          echo "== Locate historical Xbase by XtypeGrammarAccess content =="
+          xbase_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then
+              xbase_jar="$jar"
+              break
+            fi
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "xbase_content_jar=${xbase_jar:-NOT_FOUND}"
+          if [ -n "$xbase_jar" ]; then
+            unzip -p "$xbase_jar" META-INF/MANIFEST.MF | sed -n '1,260p'
+          fi
+          echo "== Locate installed runtime copies by bundle content =="
+          runtime_pattern=""
+          runtime_xbase=""
+          if [ -d observer-runtime-test/target/work ]; then
+            while IFS= read -r jar; do
+              if [ -z "$runtime_pattern" ] && unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/viatra/query/patternlanguage/emf/"; then runtime_pattern="$jar"; fi
+              if [ -z "$runtime_xbase" ] && unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then runtime_xbase="$jar"; fi
+              [ -n "$runtime_pattern" ] && [ -n "$runtime_xbase" ] && break
+            done < <(find observer-runtime-test/target/work -type f -name "*.jar" -print 2>/dev/null | sort)
+          fi
+          echo "runtime_patternlanguage_content_jar=${runtime_pattern:-NOT_FOUND}"
+          echo "runtime_xbase_content_jar=${runtime_xbase:-NOT_FOUND}"
+          echo "== Runtime bundles.info entries for Xtext/VIATRA patternlanguage =="
+          bundles_info="observer-runtime-test/target/work/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+          if [ -f "$bundles_info" ]; then
+            grep -E 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' "$bundles_info" || true
+          else
+            echo "bundles.info not present"
+          fi
+          echo "TGCV_OSGI_MANIFEST_DIAGNOSTIC=COMPLETE"
+      - name: Diagnose XtypeGrammarAccess resource resolution
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -e
+          work="observer-runtime-test/target/work"
+          echo "== Locate XtypeGrammarAccess provider in runtime work =="
+          xtype_jar=""
+          if [ -d "$work" ]; then
+            while IFS= read -r jar; do
+              if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then
+                xtype_jar="$jar"; break
+              fi
+            done < <(find "$work" -type f -name "*.jar" -print 2>/dev/null | sort)
+          fi
+          echo "runtime_work_provider=${xtype_jar:-NOT_FOUND}"
+          echo "== Locate exact Xbase 2.13 provider in Maven/P2 cache =="
+          cache_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then cache_jar="$jar"; break; fi
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.xtext.xbase" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "cache_provider=${cache_jar:-NOT_FOUND}"
+          test -n "$cache_jar"
+          echo "XTYPE_JAR=$cache_jar"
+          sha256sum "$cache_jar"
+          echo "== XtypeGrammarAccess bytecode resource references =="
+          javap -classpath "$cache_jar" -verbose org.eclipse.xtext.xbase.services.XtypeGrammarAccess | grep -E -i "String.*(xtext|ecore|xmi|grammar|Xtype)|Utf8.*(xtext|ecore|xmi|grammar|Xtype)" | head -200 || true
+          echo "== Candidate grammar/resource entries in exact provider JAR =="
+          unzip -l "$cache_jar" | grep -E -i "(xtextbin|\\.xtext$|\\.ecore$|\\.xmi$|grammar)" | head -300 || true
+          echo "== First bytes of candidate XML/resource entries =="
+          unzip -Z1 "$cache_jar" | grep -E -i "(xtextbin|\\.xtext$|\\.ecore$|\\.xmi$|grammar)" | while IFS= read -r entry; do
+            echo "--- $entry ---"
+            unzip -p "$cache_jar" "$entry" 2>/dev/null | head -c 32 | od -An -tx1 -v || true
+          done
+          echo "== XtypeGrammarAccess.internalFindGrammar() bytecode =="
+          javap -classpath "$cache_jar" -c -p org.eclipse.xtext.xbase.services.XtypeGrammarAccess > /tmp/xtype.javap
+          grep -n -A55 -B2 "internalFindGrammar" /tmp/xtype.javap || true
+          echo "== Locate GrammarProvider class in P2 cache =="
+          grammar_provider_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/service/GrammarProvider.class"; then grammar_provider_jar="$jar"; break; fi
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "grammar_provider_jar=${grammar_provider_jar:-NOT_FOUND}"
+          test -n "$grammar_provider_jar"
+          ls -l "$grammar_provider_jar"
+          echo "== GrammarProvider full bytecode =="
+          javap -classpath "$grammar_provider_jar" -c -p org.eclipse.xtext.service.GrammarProvider > /tmp/grammar-provider.javap
+          grep -n -A80 -B5 "getGrammar" /tmp/grammar-provider.javap || true
+          echo "== Locate BaseEPackageAccess class in P2 cache =="
+          base_access_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/parser/BaseEPackageAccess.class"; then base_access_jar="$jar"; break; fi
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "base_access_jar=${base_access_jar:-NOT_FOUND}"
+          test -n "$base_access_jar"
+          ls -l "$base_access_jar"
+          echo "== BaseEPackageAccess full bytecode =="
+          javap -classpath "$base_access_jar" -c -p org.eclipse.xtext.parser.BaseEPackageAccess > /tmp/base-access.javap
+          grep -n -A100 -B5 "loadGrammarFile" /tmp/base-access.javap || true
+          grep -n -A100 -B5 "loadResource" /tmp/base-access.javap || true
+          echo "TGCV_VIATRA_V002_XTYPE_RESOURCE_DIAGNOSTIC=COMPLETE"
+      - name: Compact runtime diagnostic summary
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          {
+            echo "## TGCV VIATRA V002 compact runtime diagnostics"
+            echo
+            echo "### Diagnostic step completion"
+            echo "- Tycho target diagnostic: completed"
+            echo "- Tycho/Surefire materialization diagnostic: completed"
+            echo "- Runtime provisioning diagnostic: completed"
+            echo "- Historical OSGi manifest diagnostic: completed"
+            echo "- Xtype resource diagnostic: completed"
+            echo
+            echo "### Runtime work presence"
+            if [ -d observer-runtime-test/target/work ]; then
+              echo "- observer-runtime-test/target/work: PRESENT"
+              echo "- Runtime JAR count: $(find observer-runtime-test/target/work -type f -name '*.jar' 2>/dev/null | wc -l)"
+            else
+              echo "- `observer-runtime-test/target/work`: NOT PRESENT"
+            fi
+            echo
+            echo "### Xtext/Xbase runtime providers"
+            runtime_xbase=""
+            runtime_pattern=""
+            if [ -d observer-runtime-test/target/work ]; then
+              while IFS= read -r jar; do
+                if [ -z "$runtime_xbase" ] && unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then runtime_xbase="$jar"; fi
+                if [ -z "$runtime_pattern" ] && unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/viatra/query/patternlanguage/emf/"; then runtime_pattern="$jar"; fi
+                [ -n "$runtime_xbase" ] && [ -n "$runtime_pattern" ] && break
+              done < <(find observer-runtime-test/target/work -type f -name '*.jar' -print 2>/dev/null | sort)
+            fi
+            echo "- Runtime Xbase provider: ${runtime_xbase:-NOT_FOUND}"
+            echo "- Runtime Pattern Language provider: ${runtime_pattern:-NOT_FOUND}"
+            echo
+            echo "### Historical Xbase cache provider"
+            cache_xbase=""
+            while IFS= read -r jar; do
+              if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then cache_xbase="$jar"; break; fi
+            done < <(find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.xtext.xbase" -type f -name '*.jar' -print 2>/dev/null | sort)
+            echo "- Cache Xbase provider: ${cache_xbase:-NOT_FOUND}"
+            if [ -n "$cache_xbase" ]; then echo "- SHA-256: $(sha256sum "$cache_xbase" | awk '{print $1}')"; fi
+            echo
+            echo "### bundles.info"
+            bundles_info="observer-runtime-test/target/work/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+            if [ -f "$bundles_info" ]; then
+              grep -E 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' "$bundles_info" || echo "No Xtext/Pattern Language entries"
+            else
+              echo "bundles.info: NOT PRESENT"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Runtime scientific firewall
         run: |
-          if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)' \
-            05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test \
-            05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer; then
+          if grep -R -nE --exclude-dir=target --exclude-dir=.git '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)'             05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test             05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer; then
             echo "FAIL: scientific-firewall term found"
             exit 1
           fi
-          grep -q "V002SerialExecutor" \
-            05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ObserverRuntimeTest.java
+          grep -q "V002SerialExecutor"             05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ObserverRuntimeTest.java
           echo "TGCV_VIATRA_V002_RUNTIME_P3_P4_FIREWALL=PASS"

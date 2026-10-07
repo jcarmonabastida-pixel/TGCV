@@ -14,7 +14,10 @@ import org.eclipse.viatra.examples.cps.deployment.DeploymentHost;
 import org.eclipse.viatra.examples.cps.traceability.CPS2DeploymentTrace;
 import org.eclipse.viatra.examples.cps.traceability.CPSToDeployment;
 import org.eclipse.viatra.examples.cps.traceability.TraceabilityFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParser;
+
+import com.google.inject.Injector;
 import org.eclipse.viatra.query.patternlanguage.emf.util.PatternParsingResults;
 import org.eclipse.viatra.query.patternlanguage.emf.vql.Pattern;
 import org.eclipse.viatra.query.runtime.api.IPatternMatch;
@@ -45,6 +48,18 @@ public final class V002SerialExecutor {
     private final V002SerialObserver observer;
     private final V002StateCapture stateCapture;
     private BatchTransformation transformation;
+
+    private static boolean patternParserInitialized;
+    private static Injector patternParserInjector;
+
+    private static synchronized void initializePatternParser() {
+        if (patternParserInitialized) {
+            return;
+        }
+        ObserverPatternParserSetup setup = new ObserverPatternParserSetup();
+        patternParserInjector = setup.createObserverInjector();
+        patternParserInitialized = true;
+    }
 
     public V002SerialExecutor(CPSToDeployment mapping, ViatraQueryEngine engine,
             V002SerialObserver observer) {
@@ -135,28 +150,64 @@ public final class V002SerialExecutor {
             .name(name).action(action).build();
     }
 
+    private static void diagnoseHistoricalSignalUtil() {
+        System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=begin");
+        try {
+            Class<?> signalUtil = Class.forName(
+                "org.eclipse.viatra.examples.cps.xform.m2m.util.SignalUtil");
+            System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=class=" + signalUtil.getName());
+            System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=classLoader=" + signalUtil.getClassLoader());
+            System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=codeSource=" +
+                (signalUtil.getProtectionDomain().getCodeSource() == null
+                    ? "null"
+                    : signalUtil.getProtectionDomain().getCodeSource().getLocation()));
+            for (String methodName : new String[] {
+                    "isSend", "isWait", "getAppId", "getSignalId" }) {
+                java.lang.reflect.Method method = signalUtil.getMethod(methodName, String.class);
+                System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=method=" +
+                    methodName + "|declaringClass=" + method.getDeclaringClass().getName() +
+                    "|modifiers=" + java.lang.reflect.Modifier.toString(method.getModifiers()) +
+                    "|annotations=" + java.util.Arrays.toString(method.getAnnotations()));
+            }
+        } catch (Throwable t) {
+            System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=error=" +
+                t.getClass().getName() + ":" + t.getMessage());
+        }
+        System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=end");
+    }
+
     private IQuerySpecification<?> findSpecification(String patternName) throws Exception {
-        try (InputStream in = getClass().getResourceAsStream(
-                "/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql")) {
-            if (in == null) {
-                throw new IllegalStateException("Frozen historical VQL resource is missing");
-            }
-            PatternParsingResults results = PatternParser.parser().parse(
-                new String(readAll(in), StandardCharsets.UTF_8));
-            if (!results.validationOK()) {
-                throw new IllegalStateException("Historical VQL validation failed: " + results);
-            }
-            for (Pattern pattern : results.getPatterns()) {
-                if (patternName.equals(pattern.getName())) {
-                    for (IQuerySpecification<?> specification : results.getQuerySpecifications()) {
-                        if (specification.getFullyQualifiedName().endsWith("." + patternName)) {
-                            return specification;
+        ClassLoader previous = Thread.currentThread().getContextClassLoader();
+        ClassLoader observerLoader = getClass().getClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(observerLoader);
+            initializePatternParser();
+            diagnoseHistoricalSignalUtil();
+            try (InputStream in = getClass().getResourceAsStream(
+                    "/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql")) {
+                if (in == null) {
+                    throw new IllegalStateException("Frozen historical VQL resource is missing");
+                }
+                PatternParsingResults results = PatternParser.parser()
+                    .withInjector(patternParserInjector)
+                    .parse(new String(readAll(in), StandardCharsets.UTF_8));
+                if (!results.validationOK()) {
+                    throw new IllegalStateException("Historical VQL validation failed: " + results);
+                }
+                for (Pattern pattern : results.getPatterns()) {
+                    if (patternName.equals(pattern.getName())) {
+                        for (IQuerySpecification<?> specification : results.getQuerySpecifications()) {
+                            if (specification.getFullyQualifiedName().endsWith("." + patternName)) {
+                                return specification;
+                            }
                         }
                     }
                 }
             }
+            throw new IllegalStateException("Historical VQL pattern not found: " + patternName);
+        } finally {
+            Thread.currentThread().setContextClassLoader(previous);
         }
-        throw new IllegalStateException("Historical VQL pattern not found: " + patternName);
     }
 
     private byte[] readAll(InputStream input) throws Exception {

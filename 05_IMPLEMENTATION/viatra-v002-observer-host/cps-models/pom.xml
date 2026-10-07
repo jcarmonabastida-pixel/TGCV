@@ -18,6 +18,7 @@
     <module>org.eclipse.viatra.examples.cps.model</module>
     <module>org.eclipse.viatra.examples.cps.deployment</module>
     <module>org.eclipse.viatra.examples.cps.traceability</module>
+    <module>org.eclipse.viatra.examples.cps.xform.m2m.util</module>
   </modules>
   <build>
     <plugins>
