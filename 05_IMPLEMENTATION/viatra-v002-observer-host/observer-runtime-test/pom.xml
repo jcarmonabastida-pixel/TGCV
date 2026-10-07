@@ -40,6 +40,11 @@
                 <id>org.eclipse.viatra.examples.cps.xform.m2m.util</id>
                 <versionRange>[2.1.0,3.0.0)</versionRange>
               </requirement>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>org.eclipse.xtext.xbase</id>
+                <versionRange>[2.13.0,2.14.0)</versionRange>
+              </requirement>
             </extraRequirements>
           </dependency-resolution>
         </configuration>
