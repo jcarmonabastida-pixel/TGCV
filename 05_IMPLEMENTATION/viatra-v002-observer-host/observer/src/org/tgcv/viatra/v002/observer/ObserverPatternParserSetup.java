@@ -186,7 +186,8 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
             implements IClassLoaderProvider {
         @Override
         public ClassLoader getClassLoader(EObject context) {
-            ClassLoader loader = ObserverPatternParserSetup.class.getClassLoader();
+            ClassLoader loader =
+                EMFPatternLanguageStandaloneSetup.class.getClassLoader();
             if (loader == null) {
                 throw new IllegalStateException(
                     "Observer bundle classloader is unavailable");
