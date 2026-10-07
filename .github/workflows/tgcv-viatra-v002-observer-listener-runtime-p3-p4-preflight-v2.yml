@@ -23,6 +23,24 @@ jobs:
           distribution: temurin
           java-version: "8"
 
+      - name: Diagnose generated Maven settings before Maven 3.6.3
+        run: |
+          set -e
+          echo "== Maven settings files =="
+          for f in "$HOME/.m2/settings.xml" "$HOME/.m2/settings-security.xml"; do
+            if [ -f "$f" ]; then
+              echo "--- $f: present ---"
+              if [ "$(basename "$f")" = "settings.xml" ]; then
+                sed -E 's#(<password>)[^<]*(</password>)#\1***REDACTED***\2#g; s#(<username>)[^<]*(</username>)#\1***REDACTED***\2#g' "$f"
+              else
+                echo "REDACTED: settings-security.xml exists"
+              fi
+            else
+              echo "--- $f: absent ---"
+            fi
+          done
+          echo "TGCV_MAVEN_SETTINGS_DIAGNOSTIC=COMPLETE"
+
       - name: Set Maven 3.6.3 for Tycho 1.0.0 compatibility probe
         run: |
           MAVEN_VERSION="3.6.3"
