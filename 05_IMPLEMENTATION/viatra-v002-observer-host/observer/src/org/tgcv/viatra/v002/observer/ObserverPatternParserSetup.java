@@ -14,6 +14,7 @@ import com.google.inject.Injector;
 public final class ObserverPatternParserSetup extends EMFPatternLanguageStandaloneSetup {
 
     public Injector createObserverInjector() {
+        System.out.println("TGCV_CREATE_INJECTOR_DIAGNOSTIC=beforeGuiceCreateInjector");
         Injector injector = Guice.createInjector(new ObserverParserModule());
         register(injector);
         return injector;
