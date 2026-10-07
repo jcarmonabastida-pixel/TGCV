@@ -248,6 +248,28 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
 
         System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=END");
 
+        System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=begin");
+        try {
+            org.eclipse.emf.ecore.resource.Resource.Factory.Registry registry =
+                org.eclipse.emf.ecore.resource.Resource.Factory.Registry.INSTANCE;
+            Object extensionFactory = registry.getExtensionToFactoryMap().get("xtextbin");
+            System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=extensionFactory=" +
+                (extensionFactory == null ? "null" : extensionFactory.getClass().getName()));
+            Object defaultFactory = registry.getExtensionToFactoryMap().get("*");
+            System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=defaultFactory=" +
+                (defaultFactory == null ? "null" : defaultFactory.getClass().getName()));
+            org.eclipse.emf.common.util.URI xtextbinUri =
+                org.eclipse.emf.common.util.URI.createURI("classpath:/org/eclipse/xtext/xbase/Xtype.xtextbin");
+            org.eclipse.emf.ecore.resource.Resource.Factory factory =
+                registry.getResourceFactory(xtextbinUri);
+            System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=uriFactory=" +
+                (factory == null ? "null" : factory.getClass().getName()));
+        } catch (Throwable t) {
+            System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=exception=" + t.getClass().getName());
+            System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=message=" + String.valueOf(t.getMessage()));
+        }
+        System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=END");
+
         ClassLoader previousContextLoader = Thread.currentThread().getContextClassLoader();
         ClassLoader patternLanguageLoader =
             EMFPatternLanguageStandaloneSetup.class.getClassLoader();
