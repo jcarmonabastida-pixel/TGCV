@@ -82,6 +82,7 @@ public class V002ObserverRuntimeTest {
 
     private Observation runOnce() throws Exception {
         assertHistoricalSignalUtilVisible();
+        assertObserverRuntimeClassesLoadedFromExpectedBundle();
         ResourceSet resourceSet = new ResourceSetImpl();
 
         CyberPhysicalSystem cps = CyberPhysicalSystemFactory.eINSTANCE.createCyberPhysicalSystem();
@@ -117,6 +118,18 @@ public class V002ObserverRuntimeTest {
 
         List<V002ObserverEvent> events = executor.observationSnapshot();
         return new Observation(events, deployment.getHosts().size(), mapping.getTraces().size());
+    }
+
+    private void assertObserverRuntimeClassesLoadedFromExpectedBundle() {
+        Class<?> executorClass = V002SerialExecutor.class;
+        Class<?> parserSetupClass = org.tgcv.viatra.v002.observer.ObserverPatternParserSetup.class;
+        System.out.println("TGCV_OBSERVER_BUNDLE_IDENTITY=executorClass=" + executorClass.getName());
+        System.out.println("TGCV_OBSERVER_BUNDLE_IDENTITY=executorClassLoader=" + executorClass.getClassLoader());
+        System.out.println("TGCV_OBSERVER_BUNDLE_IDENTITY=executorCodeSource=" + executorClass.getProtectionDomain().getCodeSource());
+        System.out.println("TGCV_OBSERVER_BUNDLE_IDENTITY=parserSetupClass=" + parserSetupClass.getName());
+        System.out.println("TGCV_OBSERVER_BUNDLE_IDENTITY=parserSetupClassLoader=" + parserSetupClass.getClassLoader());
+        System.out.println("TGCV_OBSERVER_BUNDLE_IDENTITY=parserSetupCodeSource=" + parserSetupClass.getProtectionDomain().getCodeSource());
+        System.out.println("TGCV_OBSERVER_BUNDLE_IDENTITY=parserSetupResource=" + parserSetupClass.getResource("ObserverPatternParserSetup.class"));
     }
 
     private static final class Observation {
