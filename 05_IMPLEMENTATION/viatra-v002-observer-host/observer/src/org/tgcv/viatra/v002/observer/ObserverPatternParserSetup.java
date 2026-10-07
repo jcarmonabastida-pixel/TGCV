@@ -2,6 +2,7 @@ package org.tgcv.viatra.v002.observer;
 
 import java.io.InputStream;
 import java.net.URL;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.viatra.query.patternlanguage.emf.EMFPatternLanguageStandaloneSetup;
 import org.eclipse.viatra.query.patternlanguage.emf.util.IClassLoaderProvider;
@@ -130,6 +131,16 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
             Object resolver = resolverClass.getDeclaredConstructor().newInstance();
             System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=loader=" + resolverLoader);
             System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=resolverClass=" + resolverClass.getName());
+            URI inputUri = URI.createURI("classpath:/org/eclipse/xtext/xbase/Xtype.xtextbin");
+            java.lang.reflect.Method findMethod = resolverClass.getMethod(
+                "findResourceOnClasspath", ClassLoader.class, URI.class);
+            URI resolvedUri = (URI) findMethod.invoke(resolver, resolverLoader, inputUri);
+            System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=inputUri=" + inputUri);
+            System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=resolvedUri=" + resolvedUri);
+            System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=resolvedScheme=" +
+                (resolvedUri == null ? null : resolvedUri.scheme()));
+            System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=resolvedExists=" +
+                (resolvedUri != null && resolverLoader.getResource(resolvedUri.path()) != null));
             for (java.lang.reflect.Method method : resolverClass.getMethods()) {
                 if (method.getName().equals("resolve") || method.getName().equals("findResourceOnClasspath")) {
                     System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=method=" + method);
