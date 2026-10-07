@@ -10,10 +10,8 @@
     "observer_listener_p3_p4_status": "PASS",
     "pf09_runtime_equivalence_workflow_run": 37074926235,
     "pf09_status": "RUNTIME_EQUIVALENCE_PREFLIGHT_PASS",
-    "scientific_execution_package_preflight_run": 37694181151,
-    "scientific_execution_package_preflight_status": "BLOCKED_PENDING_ENTRY_POINT_PREFLIGHT",
-    "scientific_entry_point_preflight_run": 37695779062,
-    "scientific_entry_point_preflight_status": "PASS",
+    "scientific_execution_package_preflight_run": 37705100626,
+    "scientific_execution_package_preflight_status": "PASS",
     "scientific_firewall_status": "PASS"
   },
   "fixture": {
@@ -53,13 +51,13 @@
       "id": "G2",
       "condition": "Explicit scientific authorization",
       "status": "PENDING",
-      "reason": "Technical and entry-point preflights PASS, but scientific execution requires a separate explicit authorization decision."
+      "reason": "The consolidated technical package preflight PASS does not itself authorize scientific execution; a separate explicit authorization decision is required."
     }
   ],
   "non_decisions": [
     "Do not infer scientific authorization from the P3/P4 runtime PASS.",
     "Do not infer scientific authorization from PF-09 runtime equivalence PASS.",
-    "Do not infer scientific authorization from the package or entry-point preflight PASS.",
+    "Do not infer scientific authorization from the consolidated package preflight PASS.",
     "Do not execute scientific fitting or inference while this gate remains pending.",
     "Do not modify fixture bytes or implementation to obtain execution readiness."
   ],
