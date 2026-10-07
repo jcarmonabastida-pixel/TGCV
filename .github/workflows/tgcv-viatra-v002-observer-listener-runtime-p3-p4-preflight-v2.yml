@@ -150,6 +150,39 @@ jobs:
           echo "== Resolved historical P2 artifacts in local Maven cache =="
           find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.viatra.examples.cps."* -maxdepth 2 -type f -name '*.jar' -print 2>/dev/null | sort || true
 
+      - name: Diagnose historical OSGi manifests
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -e
+          echo "== Historical VIATRA patternlanguage.emf manifest =="
+          pattern_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q "META-INF/MANIFEST.MF"; then
+              pattern_jar="$jar"
+              break
+            fi
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.viatra.query.patternlanguage.emf" -type f -name "org.eclipse.viatra.query.patternlanguage.emf_*.jar" -print 2>/dev/null | sort)
+          echo "patternlanguage_manifest_jar=${pattern_jar:-NOT_FOUND}"
+          if [ -n "$pattern_jar" ]; then
+            unzip -p "$pattern_jar" META-INF/MANIFEST.MF | sed -n '1,240p'
+          fi
+
+          echo "== Historical Xbase 2.13 manifest =="
+          xbase_jar=""
+          while IFS= read -r jar; do
+            if unzip -l "$jar" 2>/dev/null | grep -q "META-INF/MANIFEST.MF"; then
+              xbase_jar="$jar"
+              break
+            fi
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.xtext.xbase" -type f -name "org.eclipse.xtext.xbase_*.jar" -print 2>/dev/null | sort)
+          echo "xbase_manifest_jar=${xbase_jar:-NOT_FOUND}"
+          if [ -n "$xbase_jar" ]; then
+            unzip -p "$xbase_jar" META-INF/MANIFEST.MF | sed -n '1,240p'
+          fi
+
+          echo "TGCV_OSGI_MANIFEST_DIAGNOSTIC=COMPLETE"
+
       - name: Diagnose XtypeGrammarAccess resource resolution
         if: ${{ always() }}
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
