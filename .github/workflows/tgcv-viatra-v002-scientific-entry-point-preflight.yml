@@ -56,7 +56,8 @@ jobs:
           test -f "$TEST"
           grep -q 'class V002SerialExecutor' "$EXECUTOR"
           grep -q 'void execute' "$EXECUTOR"
-          grep -q 'V002SerialExecutor.execute' "$TEST"
+          grep -q 'V002SerialExecutor executor = new V002SerialExecutor' "$TEST"
+          grep -q 'executor.execute()' "$TEST"
           echo "TGCV_V002_SOURCE_TEST_BINDING=PASS"
 
       - name: Verify scientific execution is not invoked
