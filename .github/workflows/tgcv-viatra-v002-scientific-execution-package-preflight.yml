@@ -31,11 +31,15 @@ jobs:
         run: |
           set -euo pipefail
           CONTRACT="05_IMPLEMENTATION/viatra-v002-observer-host/TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_WORKFLOW_CONTRACT_v001.md"
+          ENTRY_POINT="05_IMPLEMENTATION/viatra-v002-observer-host/TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_ENTRY_POINT_v001.md"
           GATE="05_IMPLEMENTATION/viatra-v002-observer-host/TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001.json"
           test -f "$CONTRACT"
+          test -f "$ENTRY_POINT"
           test -f "$GATE"
           grep -q '"scientific_execution_authorized": false' "$GATE"
           grep -q "This contract does not authorize scientific execution." "$CONTRACT"
+          grep -q 'org.tgcv.viatra.v002.observer.V002SerialExecutor.execute()' "$ENTRY_POINT"
+          grep -q 'scientific_execution_authorized.*false' "$ENTRY_POINT"
           echo "TGCV_V002_EXECUTION_AUTHORIZATION_FIREWALL=PASS"
 
       - name: Verify frozen fixture manifest
@@ -67,8 +71,10 @@ jobs:
         run: |
           set -euo pipefail
           CONTRACT="05_IMPLEMENTATION/viatra-v002-observer-host/TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_WORKFLOW_CONTRACT_v001.md"
-          grep -q "exact scientific entry point" "$CONTRACT"
-          grep -q "once that entry point has been separately defined and preflighted" "$CONTRACT"
+          ENTRY_POINT="05_IMPLEMENTATION/viatra-v002-observer-host/TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_ENTRY_POINT_v001.md"
+          grep -q 'exact scientific entry point, defined in' "$CONTRACT"
+          grep -q 'V002SerialExecutor.execute()' "$ENTRY_POINT"
+          grep -q 'no tunable scientific parameters' "$ENTRY_POINT"
           echo "TGCV_V002_ENTRY_POINT_GOVERNANCE=PASS"
 
       - name: Scientific firewall
@@ -87,5 +93,5 @@ jobs:
           set -euo pipefail
           echo "TGCV_V002_SCIENTIFIC_EXECUTION_PACKAGE_PREFLIGHT=BLOCKED"
           echo "TGCV_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION=NOT_GRANTED"
-          echo "TGCV_V002_BLOCKER=SCIENTIFIC_ENTRY_POINT_NOT_YET_DEFINED"
+          echo "TGCV_V002_BLOCKER=ENTRY_POINT_PREFLIGHT_REQUIRED"
           exit 1
