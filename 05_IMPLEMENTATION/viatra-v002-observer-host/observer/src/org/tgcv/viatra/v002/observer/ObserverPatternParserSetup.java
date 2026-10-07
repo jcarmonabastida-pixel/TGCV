@@ -152,6 +152,54 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
         }
         System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=END");
 
+        System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=begin");
+        try {
+            ClassLoader resourceSetLoader = EMFPatternLanguageStandaloneSetup.class.getClassLoader();
+            Class<?> resourceSetClass = Class.forName(
+                "org.eclipse.xtext.resource.XtextResourceSet", false, resourceSetLoader);
+            Object resourceSet = resourceSetClass.getDeclaredConstructor().newInstance();
+            URI inputUri = URI.createURI("classpath:/org/eclipse/xtext/xbase/Xtype.xtextbin");
+
+            java.lang.reflect.Method setContext = resourceSetClass.getMethod(
+                "setClasspathURIContext", Object.class);
+            setContext.invoke(resourceSet, resourceSetLoader);
+
+            java.lang.reflect.Method getConverter = resourceSetClass.getMethod("getURIConverter");
+            Object converter = getConverter.invoke(resourceSet);
+            java.lang.reflect.Method normalize = converter.getClass().getMethod("normalize", URI.class);
+            URI normalized = (URI) normalize.invoke(converter, inputUri);
+
+            System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=resourceSetClass=" +
+                resourceSetClass.getName());
+            System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=contextLoader=" +
+                resourceSetLoader);
+            System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=inputUri=" + inputUri);
+            System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=normalizedUri=" + normalized);
+            System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=normalizedScheme=" +
+                (normalized == null ? null : normalized.scheme()));
+
+            java.lang.reflect.Method getResource = resourceSetClass.getMethod(
+                "getResource", URI.class, boolean.class);
+            try {
+                Object resource = getResource.invoke(resourceSet, normalized, false);
+                System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=existingResource=" +
+                    (resource != null ? resource.getClass().getName() : "null"));
+            } catch (Throwable t) {
+                Throwable c = t.getCause() == null ? t : t.getCause();
+                System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=getResourceException=" +
+                    c.getClass().getName());
+                System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=getResourceMessage=" +
+                    String.valueOf(c.getMessage()));
+            }
+        } catch (Throwable t) {
+            Throwable c = t.getCause() == null ? t : t.getCause();
+            System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=exception=" +
+                c.getClass().getName());
+            System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=message=" +
+                String.valueOf(c.getMessage()));
+        }
+        System.out.println("TGCV_XTEXT_RESOURCESET_DIAGNOSTIC=END");
+
         System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=begin");
         try {
             ClassLoader patternLanguageLoader =
