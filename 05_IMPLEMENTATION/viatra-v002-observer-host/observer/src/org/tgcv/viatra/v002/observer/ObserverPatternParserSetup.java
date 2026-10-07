@@ -122,6 +122,52 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
             System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=message=" +
                 String.valueOf(t.getMessage()));
         }
+        System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=begin");
+        try {
+            ClassLoader patternLanguageLoader =
+                EMFPatternLanguageStandaloneSetup.class.getClassLoader();
+            System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=loader=" +
+                patternLanguageLoader);
+
+            Class<?> patternXtypeClass = Class.forName(
+                "org.eclipse.xtext.xbase.services.XtypeGrammarAccess",
+                false,
+                patternLanguageLoader);
+            System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=classFound=true");
+            System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=classLoader=" +
+                patternXtypeClass.getClassLoader());
+
+            URL patternResource = patternLanguageLoader == null ? null :
+                patternLanguageLoader.getResource(resourceName);
+            System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=resourceUrl=" +
+                patternResource);
+
+            if (patternResource != null) {
+                try (InputStream in = patternResource.openStream()) {
+                    byte[] head = new byte[16];
+                    int n = in.read(head);
+                    StringBuilder hex = new StringBuilder();
+                    for (int i = 0; i < n; i++) {
+                        if (i > 0) hex.append(' ');
+                        hex.append(String.format("%02x", head[i] & 0xff));
+                    }
+                    System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=resourceHead=" +
+                        hex);
+                    System.out.println(
+                        "TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=resourceReadable=true");
+                }
+            } else {
+                System.out.println(
+                    "TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=resourceReadable=false");
+            }
+        } catch (Throwable t) {
+            System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=exception=" +
+                t.getClass().getName());
+            System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=message=" +
+                String.valueOf(t.getMessage()));
+        }
+        System.out.println("TGCV_PATTERNLANGUAGE_CLASSLOADER_DIAGNOSTIC=END");
+
         System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=END");
 
         Injector injector = Guice.createInjector(new ObserverParserModule());
