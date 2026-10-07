@@ -26,7 +26,7 @@ jobs:
           echo "TGCV_V002_CANONICAL_IMPLEMENTATION_COMMIT=$EXPECTED"
           echo "TGCV_V002_EXECUTION_PACKAGE_HEAD=$(git rev-parse HEAD)"
 
-      - name: Verify scientific execution contract
+      - name: Verify scientific execution contract and entry point
         shell: bash
         run: |
           set -euo pipefail
@@ -40,7 +40,9 @@ jobs:
           grep -q "This contract does not authorize scientific execution." "$CONTRACT"
           grep -q 'org.tgcv.viatra.v002.observer.V002SerialExecutor.execute()' "$ENTRY_POINT"
           grep -q 'scientific_execution_authorized.*false' "$ENTRY_POINT"
+          grep -q 'seed_policy = NOT_APPLICABLE_DETERMINISTIC_SERIAL_EXECUTION' "$ENTRY_POINT"
           echo "TGCV_V002_EXECUTION_AUTHORIZATION_FIREWALL=PASS"
+          echo "TGCV_V002_ENTRY_POINT_DECLARATION=PASS"
 
       - name: Verify frozen fixture manifest
         shell: bash
@@ -66,22 +68,25 @@ jobs:
           grep -q '"scientific_firewall_status": "PASS"' "$MANIFEST"
           echo "TGCV_V002_TECHNICAL_EVIDENCE=PASS"
 
-      - name: Verify scientific entry point governance
+      - name: Verify executor source and runtime-test binding
         shell: bash
         run: |
           set -euo pipefail
-          CONTRACT="05_IMPLEMENTATION/viatra-v002-observer-host/TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_WORKFLOW_CONTRACT_v001.md"
-          ENTRY_POINT="05_IMPLEMENTATION/viatra-v002-observer-host/TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_ENTRY_POINT_v001.md"
-          grep -q 'exact scientific entry point, defined in' "$CONTRACT"
-          grep -q 'V002SerialExecutor.execute()' "$ENTRY_POINT"
-          grep -q 'no tunable scientific parameters' "$ENTRY_POINT"
-          echo "TGCV_V002_ENTRY_POINT_GOVERNANCE=PASS"
+          EXECUTOR="05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer/V002SerialExecutor.java"
+          TEST="05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ObserverRuntimeTest.java"
+          test -f "$EXECUTOR"
+          test -f "$TEST"
+          grep -q 'class V002SerialExecutor' "$EXECUTOR"
+          grep -q 'void execute' "$EXECUTOR"
+          grep -q 'V002SerialExecutor executor = new V002SerialExecutor' "$TEST"
+          grep -q 'executor.execute()' "$TEST"
+          echo "TGCV_V002_SOURCE_TEST_BINDING=PASS"
 
-      - name: Scientific firewall
+      - name: Scientific execution firewall
         shell: bash
         run: |
           set -euo pipefail
-          if grep -R -nE --exclude-dir=target --exclude-dir=.git 'scientific_execution_authorized[[:space:]]*:[[:space:]]*true|ALLOW_AND_EXECUTE' 05_IMPLEMENTATION/viatra-v002-observer-host; then
+          if grep -R -nE --exclude-dir=target --exclude-dir=.git             'scientific_execution_authorized[[:space:]]*:[[:space:]]*true|ALLOW_AND_EXECUTE'             05_IMPLEMENTATION/viatra-v002-observer-host; then
             echo "FAIL: scientific execution authorization marker detected"
             exit 1
           fi
@@ -91,7 +96,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "TGCV_V002_SCIENTIFIC_EXECUTION_PACKAGE_PREFLIGHT=BLOCKED"
+          echo "TGCV_V002_SCIENTIFIC_EXECUTION_PACKAGE_PREFLIGHT=PASS"
           echo "TGCV_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION=NOT_GRANTED"
-          echo "TGCV_V002_BLOCKER=ENTRY_POINT_PREFLIGHT_REQUIRED"
-          exit 1
+          echo "TGCV_V002_NEXT_GATE=EXPLICIT_AUTHORIZATION_REQUIRED"
