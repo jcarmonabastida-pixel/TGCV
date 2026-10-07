@@ -140,6 +140,43 @@ jobs:
           print(f"Injected runtime P2 repository: {repo}")
           PY
 
+      - name: Inject temporary xtextbin Resource.Factory diagnostic
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("observer/src/org/tgcv/viatra/v002/observer/ObserverPatternParserSetup.java")
+          text = p.read_text(encoding="utf-8")
+          marker = "        ClassLoader previousContextLoader = Thread.currentThread().getContextClassLoader();"
+          if marker not in text:
+              raise SystemExit("FAIL: diagnostic insertion marker not found")
+          if "TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=begin" in text:
+              raise SystemExit("FAIL: temporary diagnostic already present")
+          block = '''        System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=begin");
+          try {
+              org.eclipse.emf.ecore.resource.Resource.Factory.Registry registry =
+                  org.eclipse.emf.ecore.resource.Resource.Factory.Registry.INSTANCE;
+              Object extensionFactory = registry.getExtensionToFactoryMap().get("xtextbin");
+              System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=extensionFactory=" +
+                  (extensionFactory == null ? "null" : extensionFactory.getClass().getName()));
+              Object defaultFactory = registry.getExtensionToFactoryMap().get("*");
+              System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=defaultFactory=" +
+                  (defaultFactory == null ? "null" : defaultFactory.getClass().getName()));
+              URI xtextbinUri = URI.createURI("bundleresource://113.fwk1501587365/org/eclipse/xtext/xbase/Xtype.xtextbin");
+              org.eclipse.emf.ecore.resource.Resource.Factory factory = registry.getResourceFactory(xtextbinUri);
+              System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=uriFactory=" +
+                  (factory == null ? "null" : factory.getClass().getName()));
+          } catch (Throwable t) {
+              System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=exception=" + t.getClass().getName());
+              System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=message=" + String.valueOf(t.getMessage()));
+          }
+          System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=END");
+
+'''
+          p.write_text(text.replace(marker, block + marker, 1), encoding="utf-8")
+          print("TGCV_TEMP_XTEXTBIN_DIAGNOSTIC_INJECTED=PASS")
+          PY
+
       - name: Build and execute gated Observer Listener runtime tests
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: mvn -B -ntp -X -Dtycho.debug.resolver=true -pl target-definition,observer-runtime-test -am clean verify
