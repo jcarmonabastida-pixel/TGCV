@@ -1,0 +1,46 @@
+{
+  "artifact_id": "TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_DECISION_001",
+  "record_type": "TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_DECISION",
+  "status": "PENDING_EXPLICIT_DECISION",
+  "decision": "NOT_AUTHORIZED",
+  "scientific_execution_authorized": false,
+  "scope": "Explicit authorization decision for one isolated scientific execution package of the frozen VIATRA V002 implementation",
+  "frozen_execution_package": {
+    "canonical_implementation_commit": "8bef1d02c23b58dc5d5165b8aff51b264d4fd52f",
+    "fixture_artifact_id": "TGCV_VIATRA_MINIMAL_FIXTURE_v002",
+    "fixture_byte_manifest_blob": "83019cb86e41a3277dbd59b651c1bd5d2c810561",
+    "entry_point_definition": "05_IMPLEMENTATION/viatra-v002-observer-host/TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_ENTRY_POINT_v001.md",
+    "entry_point": "org.tgcv.viatra.v002.observer.V002SerialExecutor.execute()",
+    "execution_mode": "SINGLE_ISOLATED_SERIAL_DETERMINISTIC_INVOCATION",
+    "seed_policy": "NOT_APPLICABLE_DETERMINISTIC_SERIAL_EXECUTION"
+  },
+  "preflight_evidence": {
+    "package_preflight_run": 37694181151,
+    "entry_point_preflight_run": 37695779062,
+    "observer_listener_p3_p4_run": 37665561065,
+    "pf09_runtime_equivalence_run": 37074926235,
+    "scientific_firewall": "PASS"
+  },
+  "authorization_conditions": {
+    "technical_preflights_pass": true,
+    "entry_point_preflight_pass": true,
+    "fixture_frozen": true,
+    "implementation_frozen": true,
+    "explicit_human_decision": false
+  },
+  "execution_boundary": "No scientific execution is authorized by this record in its current state.",
+  "required_decision_fields": [
+    "decision",
+    "scientific_execution_authorized",
+    "authorized_execution_ref",
+    "workflow_revision",
+    "decision_rationale",
+    "decision_timestamp"
+  ],
+  "non_decisions": [
+    "This record does not establish scientific validity.",
+    "This record does not establish causal validity.",
+    "This record does not establish TGCV effect or value.",
+    "This record does not constitute scientific result acceptance."
+  ]
+}
