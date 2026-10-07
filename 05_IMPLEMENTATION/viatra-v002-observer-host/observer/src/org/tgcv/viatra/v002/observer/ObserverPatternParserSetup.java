@@ -59,6 +59,41 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
 
         System.out.println("TGCV_DIRECT_XTEXT_RESOURCE_DIAGNOSTIC=END");
 
+        System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=begin");
+        try {
+            Class<?> xtypeClass = Class.forName(
+                "org.eclipse.xtext.xbase.services.XtypeGrammarAccess",
+                false,
+                ObserverPatternParserSetup.class.getClassLoader());
+            ClassLoader xtypeLoader = xtypeClass.getClassLoader();
+            System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=class=" + xtypeClass.getName());
+            System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=classLoader=" + xtypeLoader);
+            URL xtypeResource = xtypeLoader == null ? null :
+                xtypeLoader.getResource(resourceName);
+            System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=resourceUrl=" + xtypeResource);
+            if (xtypeResource != null) {
+                try (InputStream in = xtypeResource.openStream()) {
+                    byte[] head = new byte[16];
+                    int n = in.read(head);
+                    StringBuilder hex = new StringBuilder();
+                    for (int i = 0; i < n; i++) {
+                        if (i > 0) hex.append(' ');
+                        hex.append(String.format("%02x", head[i] & 0xff));
+                    }
+                    System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=resourceHead=" + hex);
+                    System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=resourceReadable=true");
+                }
+            } else {
+                System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=resourceReadable=false");
+            }
+        } catch (Throwable t) {
+            System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=exception=" +
+                t.getClass().getName());
+            System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=message=" +
+                String.valueOf(t.getMessage()));
+        }
+        System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=END");
+
         Injector injector = Guice.createInjector(new ObserverParserModule());
         register(injector);
         return injector;
