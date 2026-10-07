@@ -337,7 +337,7 @@ jobs:
             echo
             echo "### Runtime work presence"
             if [ -d observer-runtime-test/target/work ]; then
-              echo "- `observer-runtime-test/target/work`: PRESENT"
+              echo "- observer-runtime-test/target/work: PRESENT"
               echo "- Runtime JAR count: $(find observer-runtime-test/target/work -type f -name '*.jar' 2>/dev/null | wc -l)"
             else
               echo "- `observer-runtime-test/target/work`: NOT PRESENT"
