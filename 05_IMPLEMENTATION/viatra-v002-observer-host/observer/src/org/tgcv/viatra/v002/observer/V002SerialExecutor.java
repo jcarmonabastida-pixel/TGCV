@@ -150,12 +150,39 @@ public final class V002SerialExecutor {
             .name(name).action(action).build();
     }
 
+    private static void diagnoseHistoricalSignalUtil() {
+        System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=begin");
+        try {
+            Class<?> signalUtil = Class.forName(
+                "org.eclipse.viatra.examples.cps.xform.m2m.util.SignalUtil");
+            System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=class=" + signalUtil.getName());
+            System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=classLoader=" + signalUtil.getClassLoader());
+            System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=codeSource=" +
+                (signalUtil.getProtectionDomain().getCodeSource() == null
+                    ? "null"
+                    : signalUtil.getProtectionDomain().getCodeSource().getLocation()));
+            for (String methodName : new String[] {
+                    "isSend", "isWait", "getAppId", "getSignalId" }) {
+                java.lang.reflect.Method method = signalUtil.getMethod(methodName, String.class);
+                System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=method=" +
+                    methodName + "|declaringClass=" + method.getDeclaringClass().getName() +
+                    "|modifiers=" + java.lang.reflect.Modifier.toString(method.getModifiers()) +
+                    "|annotations=" + java.util.Arrays.toString(method.getAnnotations()));
+            }
+        } catch (Throwable t) {
+            System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=error=" +
+                t.getClass().getName() + ":" + t.getMessage());
+        }
+        System.out.println("TGCV_SIGNAL_UTIL_DIAGNOSTIC=end");
+    }
+
     private IQuerySpecification<?> findSpecification(String patternName) throws Exception {
         ClassLoader previous = Thread.currentThread().getContextClassLoader();
         ClassLoader observerLoader = getClass().getClassLoader();
         try {
             Thread.currentThread().setContextClassLoader(observerLoader);
             initializePatternParser();
+            diagnoseHistoricalSignalUtil();
             try (InputStream in = getClass().getResourceAsStream(
                     "/org/tgcv/viatra/v002/observer/historical/cpsXformM2M.vql")) {
                 if (in == null) {
