@@ -85,5 +85,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "TGCV_V002_SCIENTIFIC_EXECUTION_PACKAGE_PREFLIGHT=PASS"
+          echo "TGCV_V002_SCIENTIFIC_EXECUTION_PACKAGE_PREFLIGHT=BLOCKED"
           echo "TGCV_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION=NOT_GRANTED"
+          echo "TGCV_V002_BLOCKER=SCIENTIFIC_ENTRY_POINT_NOT_YET_DEFINED"
+          exit 1
