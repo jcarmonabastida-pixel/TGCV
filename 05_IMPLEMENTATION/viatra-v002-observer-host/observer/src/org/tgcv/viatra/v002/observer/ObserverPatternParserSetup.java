@@ -261,7 +261,7 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
             org.eclipse.emf.common.util.URI xtextbinUri =
                 org.eclipse.emf.common.util.URI.createURI("classpath:/org/eclipse/xtext/xbase/Xtype.xtextbin");
             org.eclipse.emf.ecore.resource.Resource.Factory factory =
-                registry.getResourceFactory(xtextbinUri);
+                registry.getEFactory(xtextbinUri);
             System.out.println("TGCV_XTEXTBIN_FACTORY_DIAGNOSTIC=uriFactory=" +
                 (factory == null ? "null" : factory.getClass().getName()));
         } catch (Throwable t) {
