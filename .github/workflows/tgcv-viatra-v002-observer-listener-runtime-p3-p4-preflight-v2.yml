@@ -374,7 +374,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Runtime scientific firewall
         run: |
-          if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)'             05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test             05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer; then
+          if grep -R -nE --exclude-dir=target --exclude-dir=.git '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)'             05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test             05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer; then
             echo "FAIL: scientific-firewall term found"
             exit 1
           fi
