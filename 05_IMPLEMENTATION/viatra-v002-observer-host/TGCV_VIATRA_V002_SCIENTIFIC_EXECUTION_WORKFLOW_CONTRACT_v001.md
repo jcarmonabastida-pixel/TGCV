@@ -24,7 +24,8 @@ The future scientific execution workflow MUST:
 - verify the requested execution ref before any scientific execution;
 - verify the frozen fixture bytes before any scientific execution;
 - fail closed on any implementation, fixture, or package mismatch;
-- execute only the canonical V002 scientific entry point once that entry point has been separately defined and preflighted;
+- resolve exactly `org.tgcv.viatra.v002.observer.V002SerialExecutor.execute()` as the scientific execution entry point;
+- invoke that entry point only after separate explicit authorization;
 - preserve raw execution outputs and cryptographic hashes;
 - run the scientific firewall independently of the scientific result;
 - publish no scientific interpretation as part of the execution workflow.
@@ -45,14 +46,12 @@ Before explicit authorization, the package MUST establish:
 
 - exact implementation and fixture identity checks;
 - deterministic environment capture;
-- exact scientific entry point;
+- exact scientific entry point, defined in `TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_ENTRY_POINT_v001.md`;
 - explicit parameters and seed policy;
 - expected artifact manifest;
 - clean-workspace and contamination check;
 - scientific firewall coverage;
 - fail-closed behavior.
-
-The exact scientific entry point and scientific parameters are intentionally NOT defined by this contract. They must be separately specified and preflighted rather than inferred from the existing technical runtime gate.
 
 ## Evidence required for every authorized run
 
