@@ -291,6 +291,31 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
         return Guice.createInjector(new ObserverParserModule());
     }
 
+    @Override
+    public Injector createInjectorAndDoEMFRegistration() {
+        System.out.println("TGCV_CANONICAL_REGISTRATION_DIAGNOSTIC=beforeSuper");
+        Injector injector = super.createInjectorAndDoEMFRegistration();
+        try {
+            org.eclipse.emf.ecore.resource.Resource.Factory.Registry registry =
+                org.eclipse.emf.ecore.resource.Resource.Factory.Registry.INSTANCE;
+            Object extensionFactory = registry.getExtensionToFactoryMap().get("xtextbin");
+            org.eclipse.emf.ecore.resource.Resource.Factory factory =
+                registry.getFactory(
+                    org.eclipse.emf.common.util.URI.createURI(
+                        "classpath:/org/eclipse/xtext/xbase/Xtype.xtextbin"));
+            System.out.println("TGCV_CANONICAL_REGISTRATION_DIAGNOSTIC=extensionFactory=" +
+                (extensionFactory == null ? "null" : extensionFactory.getClass().getName()));
+            System.out.println("TGCV_CANONICAL_REGISTRATION_DIAGNOSTIC=uriFactory=" +
+                (factory == null ? "null" : factory.getClass().getName()));
+        } catch (Throwable t) {
+            System.out.println("TGCV_CANONICAL_REGISTRATION_DIAGNOSTIC=exception=" +
+                t.getClass().getName());
+            System.out.println("TGCV_CANONICAL_REGISTRATION_DIAGNOSTIC=message=" +
+                String.valueOf(t.getMessage()));
+        }
+        return injector;
+    }
+
     public static final class ObserverParserModule extends StandaloneParserModule {
         @Override
         public Class<? extends IClassLoaderProvider> bindIClassLoaderProvider() {
