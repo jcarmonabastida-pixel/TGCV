@@ -2,9 +2,7 @@ package org.tgcv.viatra.v002.observer;
 
 import java.io.InputStream;
 import java.net.URL;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.resource.ClassloaderClasspathUriResolver;
 import org.eclipse.viatra.query.patternlanguage.emf.EMFPatternLanguageStandaloneSetup;
 import org.eclipse.viatra.query.patternlanguage.emf.util.IClassLoaderProvider;
 
@@ -127,14 +125,16 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
         System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=begin");
         try {
             ClassLoader resolverLoader = EMFPatternLanguageStandaloneSetup.class.getClassLoader();
-            URI inputUri = URI.createURI("classpath:/org/eclipse/xtext/xbase/Xtype.xtextbin");
-            ClassloaderClasspathUriResolver resolver = new ClassloaderClasspathUriResolver();
-            URI resolvedUri = resolver.resolve(resolverLoader, inputUri);
+            Class<?> resolverClass = Class.forName(
+                "org.eclipse.xtext.resource.ClassloaderClasspathUriResolver", false, resolverLoader);
+            Object resolver = resolverClass.getDeclaredConstructor().newInstance();
             System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=loader=" + resolverLoader);
-            System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=inputUri=" + inputUri);
-            System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=resolvedUri=" + resolvedUri);
-            System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=resolvedScheme=" +
-                (resolvedUri == null ? null : resolvedUri.scheme()));
+            System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=resolverClass=" + resolverClass.getName());
+            for (java.lang.reflect.Method method : resolverClass.getMethods()) {
+                if (method.getName().equals("resolve") || method.getName().equals("findResourceOnClasspath")) {
+                    System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=method=" + method);
+                }
+            }
         } catch (Throwable t) {
             System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=exception=" + t.getClass().getName());
             System.out.println("TGCV_CLASSPATH_URI_RESOLVER_DIAGNOSTIC=message=" + String.valueOf(t.getMessage()));
