@@ -34,7 +34,7 @@ jobs:
           GATE="05_IMPLEMENTATION/viatra-v002-observer-host/TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001.json"
           test -f "$CONTRACT"
           test -f "$GATE"
-          grep -q "scientific_execution_authorized: false" "$GATE"
+          grep -q '"scientific_execution_authorized": false' "$GATE"
           grep -q "This contract does not authorize scientific execution." "$CONTRACT"
           echo "TGCV_V002_EXECUTION_AUTHORIZATION_FIREWALL=PASS"
 
