@@ -126,6 +126,31 @@ jobs:
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: mvn -B -ntp -X -Dtycho.debug.resolver=true -pl target-definition,observer-runtime-test -am clean verify
 
+      - name: Diagnose Tycho target and Surefire runtime materialization
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -e
+          echo "== Target-definition generated state =="
+          find target-definition/target -maxdepth 5 -type f -print 2>/dev/null | sort || true
+          echo "== Target-definition generated files mentioning Xtext/VIATRA =="
+          grep -R -nE 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' target-definition/target 2>/dev/null | head -300 || true
+          echo "== Observer runtime target structure =="
+          find observer-runtime-test/target -maxdepth 5 -type f -print 2>/dev/null | sort | head -1000 || true
+          echo "== Surefire configuration files =="
+          find observer-runtime-test/target -type f \( -name 'config.ini' -o -name 'bundles.info' -o -name '*.properties' -o -name '*.xml' \) -print 2>/dev/null | sort | head -500 || true
+          echo "== Surefire/runtime files mentioning Xtext/VIATRA =="
+          grep -R -nE 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' observer-runtime-test/target 2>/dev/null | head -500 || true
+          echo "== Runtime bundle directories =="
+          find observer-runtime-test/target -type d \( -name 'org.eclipse.xtext*' -o -name 'org.eclipse.viatra.query.patternlanguage*' \) -print 2>/dev/null | sort || true
+          echo "== Runtime JARs by bundle identity =="
+          find observer-runtime-test/target -type f -name '*.jar' -print 2>/dev/null | while IFS= read -r jar; do
+            if unzip -p "$jar" META-INF/MANIFEST.MF 2>/dev/null | grep -qE '^Bundle-SymbolicName: org\.eclipse\.(xtext|viatra\.query\.patternlanguage)'; then
+              echo "--- $jar ---"
+              unzip -p "$jar" META-INF/MANIFEST.MF | grep -E '^(Bundle-SymbolicName|Bundle-Version):' || true
+            fi
+          done
+          echo "TGCV_TYCHO_RUNTIME_MATERIALIZATION_DIAGNOSTIC=COMPLETE"
       - name: Diagnose runtime provisioning
         if: ${{ always() }}
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
