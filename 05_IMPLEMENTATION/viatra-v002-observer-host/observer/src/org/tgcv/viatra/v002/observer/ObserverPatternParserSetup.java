@@ -170,9 +170,22 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
 
         System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=END");
 
-        Injector injector = Guice.createInjector(new ObserverParserModule());
-        register(injector);
-        return injector;
+        ClassLoader previousContextLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader patternLanguageLoader =
+            EMFPatternLanguageStandaloneSetup.class.getClassLoader();
+        try {
+            Thread.currentThread().setContextClassLoader(patternLanguageLoader);
+            System.out.println("TGCV_GUICE_CONTEXT_CLASSLOADER_DIAGNOSTIC=loader=" +
+                Thread.currentThread().getContextClassLoader());
+
+            Injector injector = Guice.createInjector(new ObserverParserModule());
+            register(injector);
+            return injector;
+        } finally {
+            Thread.currentThread().setContextClassLoader(previousContextLoader);
+            System.out.println("TGCV_GUICE_CONTEXT_CLASSLOADER_DIAGNOSTIC=restored=" +
+                Thread.currentThread().getContextClassLoader());
+        }
     }
 
     public static final class ObserverParserModule extends StandaloneParserModule {
