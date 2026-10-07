@@ -321,6 +321,57 @@ jobs:
           grep -n -A100 -B5 "loadGrammarFile" /tmp/base-access.javap || true
           grep -n -A100 -B5 "loadResource" /tmp/base-access.javap || true
           echo "TGCV_VIATRA_V002_XTYPE_RESOURCE_DIAGNOSTIC=COMPLETE"
+      - name: Compact runtime diagnostic summary
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          {
+            echo "## TGCV VIATRA V002 compact runtime diagnostics"
+            echo
+            echo "### Diagnostic step completion"
+            echo "- Tycho target diagnostic: completed"
+            echo "- Tycho/Surefire materialization diagnostic: completed"
+            echo "- Runtime provisioning diagnostic: completed"
+            echo "- Historical OSGi manifest diagnostic: completed"
+            echo "- Xtype resource diagnostic: completed"
+            echo
+            echo "### Runtime work presence"
+            if [ -d observer-runtime-test/target/work ]; then
+              echo "- `observer-runtime-test/target/work`: PRESENT"
+              echo "- Runtime JAR count: $(find observer-runtime-test/target/work -type f -name '*.jar' 2>/dev/null | wc -l)"
+            else
+              echo "- `observer-runtime-test/target/work`: NOT PRESENT"
+            fi
+            echo
+            echo "### Xtext/Xbase runtime providers"
+            runtime_xbase=""
+            runtime_pattern=""
+            if [ -d observer-runtime-test/target/work ]; then
+              while IFS= read -r jar; do
+                if [ -z "$runtime_xbase" ] && unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then runtime_xbase="$jar"; fi
+                if [ -z "$runtime_pattern" ] && unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/viatra/query/patternlanguage/emf/"; then runtime_pattern="$jar"; fi
+                [ -n "$runtime_xbase" ] && [ -n "$runtime_pattern" ] && break
+              done < <(find observer-runtime-test/target/work -type f -name '*.jar' -print 2>/dev/null | sort)
+            fi
+            echo "- Runtime Xbase provider: ${runtime_xbase:-NOT_FOUND}"
+            echo "- Runtime Pattern Language provider: ${runtime_pattern:-NOT_FOUND}"
+            echo
+            echo "### Historical Xbase cache provider"
+            cache_xbase=""
+            while IFS= read -r jar; do
+              if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then cache_xbase="$jar"; break; fi
+            done < <(find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.xtext.xbase" -type f -name '*.jar' -print 2>/dev/null | sort)
+            echo "- Cache Xbase provider: ${cache_xbase:-NOT_FOUND}"
+            if [ -n "$cache_xbase" ]; then echo "- SHA-256: $(sha256sum "$cache_xbase" | awk '{print $1}')"; fi
+            echo
+            echo "### bundles.info"
+            bundles_info="observer-runtime-test/target/work/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+            if [ -f "$bundles_info" ]; then
+              grep -E 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' "$bundles_info" || echo "No Xtext/Pattern Language entries"
+            else
+              echo "bundles.info: NOT PRESENT"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Runtime scientific firewall
         run: |
           if grep -R -nE '(utility|reward|performance[_ -]?score|value[_ -]?construction|future[_ -]?assignment|t_acc|accessibility[_ -]?label)'             05_IMPLEMENTATION/viatra-v002-observer-host/observer-runtime-test             05_IMPLEMENTATION/viatra-v002-observer-host/observer/src/org/tgcv/viatra/v002/observer; then
