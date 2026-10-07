@@ -126,6 +126,28 @@ jobs:
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: mvn -B -ntp -X -Dtycho.debug.resolver=true -pl target-definition,observer-runtime-test -am clean verify
 
+      - name: Diagnose resolved Tycho target platform
+        if: ${{ always() }}
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: |
+          set -e
+          echo "== Tycho target platform generated metadata =="
+          find target-definition/target -type f -maxdepth 6 -print 2>/dev/null | sort || true
+
+          echo "== Resolved target-platform references for Xtext/Xbase/VIATRA =="
+          grep -R -nE 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' target-definition/target observer-runtime-test/target 2>/dev/null | head -1000 || true
+
+          echo "== P2 metadata candidates containing Xtext/Xbase =="
+          find target-definition/target observer-runtime-test/target -type f \( -name 'content.jar' -o -name 'content.xml' -o -name 'artifacts.jar' -o -name 'artifacts.xml' -o -name '*.target' -o -name '*.targetplatform' \) -print 2>/dev/null | sort | while IFS= read -r f; do
+            echo "--- $f ---"
+            unzip -p "$f" 2>/dev/null | grep -a -E 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' | head -100 || true
+            grep -a -E 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' "$f" 2>/dev/null | head -100 || true
+          done
+
+          echo "== Resolved Maven/P2 bundles for Xtext/Xbase/VIATRA =="
+          find "$HOME/.m2/repository/p2/osgi/bundle" -maxdepth 2 -type f -name '*.jar' 2>/dev/null | grep -E '/org\.eclipse\.(xtext|viatra\.query\.patternlanguage)(/|_)' | sort || true
+
+          echo "TGCV_TYCHO_RESOLVED_TARGET_DIAGNOSTIC=COMPLETE"
       - name: Diagnose Tycho target and Surefire runtime materialization
         if: ${{ always() }}
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
