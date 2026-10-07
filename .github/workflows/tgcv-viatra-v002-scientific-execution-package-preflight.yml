@@ -75,7 +75,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -R -nE --exclude-dir=target --exclude-dir=.git             'scientific_execution_authorized[[:space:]]*:[[:space:]]*true|ALLOW_AND_EXECUTE'             05_IMPLEMENTATION/viatra-v002-observer-host; then
+          if grep -R -nE --exclude-dir=target --exclude-dir=.git 'scientific_execution_authorized[[:space:]]*:[[:space:]]*true|ALLOW_AND_EXECUTE' 05_IMPLEMENTATION/viatra-v002-observer-host; then
             echo "FAIL: scientific execution authorization marker detected"
             exit 1
           fi
