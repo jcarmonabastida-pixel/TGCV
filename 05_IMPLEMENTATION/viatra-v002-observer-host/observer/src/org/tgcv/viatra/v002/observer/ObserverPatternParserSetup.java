@@ -94,6 +94,36 @@ public final class ObserverPatternParserSetup extends EMFPatternLanguageStandalo
         }
         System.out.println("TGCV_XTYPE_CLASS_DIAGNOSTIC=END");
 
+        System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=begin");
+        try {
+            ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+            System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=loader=" + contextLoader);
+            URL contextResource = contextLoader == null ? null :
+                contextLoader.getResource(resourceName);
+            System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=resourceUrl=" + contextResource);
+            try {
+                Class<?> contextXtypeClass = Class.forName(
+                    "org.eclipse.xtext.xbase.services.XtypeGrammarAccess",
+                    false,
+                    contextLoader);
+                System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=classLoader=" +
+                    contextXtypeClass.getClassLoader());
+                System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=classFound=true");
+            } catch (Throwable t) {
+                System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=classFound=false");
+                System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=classException=" +
+                    t.getClass().getName());
+                System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=classMessage=" +
+                    String.valueOf(t.getMessage()));
+            }
+        } catch (Throwable t) {
+            System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=exception=" +
+                t.getClass().getName());
+            System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=message=" +
+                String.valueOf(t.getMessage()));
+        }
+        System.out.println("TGCV_CONTEXT_CLASSLOADER_DIAGNOSTIC=END");
+
         Injector injector = Guice.createInjector(new ObserverParserModule());
         register(injector);
         return injector;
