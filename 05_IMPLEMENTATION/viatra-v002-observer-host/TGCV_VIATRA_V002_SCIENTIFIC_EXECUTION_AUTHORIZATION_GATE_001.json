@@ -10,6 +10,10 @@
     "observer_listener_p3_p4_status": "PASS",
     "pf09_runtime_equivalence_workflow_run": 37074926235,
     "pf09_status": "RUNTIME_EQUIVALENCE_PREFLIGHT_PASS",
+    "scientific_execution_package_preflight_run": 37694181151,
+    "scientific_execution_package_preflight_status": "BLOCKED_PENDING_ENTRY_POINT_PREFLIGHT",
+    "scientific_entry_point_preflight_run": 37695779062,
+    "scientific_entry_point_preflight_status": "PASS",
     "scientific_firewall_status": "PASS"
   },
   "fixture": {
@@ -19,26 +23,11 @@
     "freeze_decision_commit": "eda3786ab1e4c6a44846f1fd5eb47898b1c2cff5",
     "byte_manifest_blob": "83019cb86e41a3277dbd59b651c1bd5d2c810561",
     "artifacts": {
-      "CPS": {
-        "sha256": "8d432da0d3fd49ba88f809611f222614ef588809691e66bcc954a4cd509f66bb",
-        "bytes": 316
-      },
-      "Deployment_INITIAL": {
-        "sha256": "fea5bc84929e99145ebe07f4eabeb1d04eaceb805b3e35d7975aff793bd9af8e",
-        "bytes": 187
-      },
-      "Deployment_EXPECTED": {
-        "sha256": "92addffad49e828a8c3c7f0ca7b00c870f00e9c419415c3b997e06cc36b0e966",
-        "bytes": 240
-      },
-      "Traceability_INITIAL": {
-        "sha256": "1ce4c0c69f324e43d87b41dee2561a55668d06c815294919011a2d5c3d1d88c1",
-        "bytes": 500
-      },
-      "Traceability_EXPECTED": {
-        "sha256": "29ebb291e72ff061618aa809af2e16527464f2475e21bfe558de00bd36de33e3",
-        "bytes": 720
-      }
+      "CPS": {"sha256": "8d432da0d3fd49ba88f809611f222614ef588809691e66bcc954a4cd509f66bb", "bytes": 316},
+      "Deployment_INITIAL": {"sha256": "fea5bc84929e99145ebe07f4eabeb1d04eaceb805b3e35d7975aff793bd9af8e", "bytes": 187},
+      "Deployment_EXPECTED": {"sha256": "92addffad49e828a8c3c7f0ca7b00c870f00e9c419415c3b997e06cc36b0e966", "bytes": 240},
+      "Traceability_INITIAL": {"sha256": "1ce4c0c69f324e43d87b41dee2561a55668d06c815294919011a2d5c3d1d88c1", "bytes": 500},
+      "Traceability_EXPECTED": {"sha256": "29ebb291e72ff061618aa809af2e16527464f2475e21bfe558de00bd36de33e3", "bytes": 720}
     }
   },
   "required_conditions": {
@@ -47,7 +36,7 @@
     "pf09_runtime_equivalence_pass": true,
     "scientific_firewall_pass": true,
     "canonical_implementation_commit_frozen": true,
-    "scientific_execution_workflow_defined_and_validated": false,
+    "scientific_execution_workflow_defined_and_validated": true,
     "explicit_scientific_authorization": false
   },
   "execution_boundary": "No scientific execution, fitting, inference, or scientific result publication is authorized by this gate until a separate explicit authorization record is persisted.",
@@ -61,24 +50,19 @@
   ],
   "current_blockers": [
     {
-      "id": "G1",
-      "condition": "Scientific execution workflow",
-      "status": "MISSING",
-      "reason": "No V002-specific scientific execution workflow has yet been identified and validated in the canonical repository."
-    },
-    {
       "id": "G2",
       "condition": "Explicit scientific authorization",
       "status": "PENDING",
-      "reason": "Technical preflight PASS does not constitute scientific authorization."
+      "reason": "Technical and entry-point preflights PASS, but scientific execution requires a separate explicit authorization decision."
     }
   ],
   "non_decisions": [
     "Do not infer scientific authorization from the P3/P4 runtime PASS.",
     "Do not infer scientific authorization from PF-09 runtime equivalence PASS.",
+    "Do not infer scientific authorization from the package or entry-point preflight PASS.",
     "Do not execute scientific fitting or inference while this gate remains pending.",
     "Do not modify fixture bytes or implementation to obtain execution readiness."
   ],
-  "next_required_action": "Define and validate the isolated V002 scientific execution workflow and its frozen execution package; then perform a separate explicit authorization decision.",
+  "next_required_action": "Review the frozen execution package and perform the separate explicit scientific authorization decision; no execution occurs unless that decision is explicitly persisted as authorized.",
   "scientific_execution_authorized": false
 }
