@@ -155,34 +155,58 @@ jobs:
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: |
           set -e
-          echo "== Historical VIATRA patternlanguage.emf manifest =="
+          echo "== Locate historical VIATRA patternlanguage.emf by bundle content =="
           pattern_jar=""
           while IFS= read -r jar; do
-            if unzip -l "$jar" 2>/dev/null | grep -q "META-INF/MANIFEST.MF"; then
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/viatra/query/patternlanguage/emf/"; then
               pattern_jar="$jar"
               break
             fi
-          done < <(find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.viatra.query.patternlanguage.emf" -type f -name "org.eclipse.viatra.query.patternlanguage.emf_*.jar" -print 2>/dev/null | sort)
-          echo "patternlanguage_manifest_jar=${pattern_jar:-NOT_FOUND}"
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "patternlanguage_content_jar=${pattern_jar:-NOT_FOUND}"
           if [ -n "$pattern_jar" ]; then
-            unzip -p "$pattern_jar" META-INF/MANIFEST.MF | sed -n '1,240p'
+            unzip -p "$pattern_jar" META-INF/MANIFEST.MF | sed -n '1,260p'
           fi
 
-          echo "== Historical Xbase 2.13 manifest =="
+          echo "== Locate historical Xbase by XtypeGrammarAccess content =="
           xbase_jar=""
           while IFS= read -r jar; do
-            if unzip -l "$jar" 2>/dev/null | grep -q "META-INF/MANIFEST.MF"; then
+            if unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then
               xbase_jar="$jar"
               break
             fi
-          done < <(find "$HOME/.m2/repository/p2/osgi/bundle/org.eclipse.xtext.xbase" -type f -name "org.eclipse.xtext.xbase_*.jar" -print 2>/dev/null | sort)
-          echo "xbase_manifest_jar=${xbase_jar:-NOT_FOUND}"
+          done < <(find "$HOME/.m2/repository/p2/osgi/bundle" -type f -name "*.jar" -print 2>/dev/null | sort)
+          echo "xbase_content_jar=${xbase_jar:-NOT_FOUND}"
           if [ -n "$xbase_jar" ]; then
-            unzip -p "$xbase_jar" META-INF/MANIFEST.MF | sed -n '1,240p'
+            unzip -p "$xbase_jar" META-INF/MANIFEST.MF | sed -n '1,260p'
+          fi
+
+          echo "== Locate installed runtime copies by bundle content =="
+          runtime_pattern=""
+          runtime_xbase=""
+          if [ -d observer-runtime-test/target/work ]; then
+            while IFS= read -r jar; do
+              if [ -z "$runtime_pattern" ] && unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/viatra/query/patternlanguage/emf/"; then
+                runtime_pattern="$jar"
+              fi
+              if [ -z "$runtime_xbase" ] && unzip -l "$jar" 2>/dev/null | grep -q "org/eclipse/xtext/xbase/services/XtypeGrammarAccess.class"; then
+                runtime_xbase="$jar"
+              fi
+              [ -n "$runtime_pattern" ] && [ -n "$runtime_xbase" ] && break
+            done < <(find observer-runtime-test/target/work -type f -name "*.jar" -print 2>/dev/null | sort)
+          fi
+          echo "runtime_patternlanguage_content_jar=${runtime_pattern:-NOT_FOUND}"
+          echo "runtime_xbase_content_jar=${runtime_xbase:-NOT_FOUND}"
+
+          echo "== Runtime bundles.info entries for Xtext/VIATRA patternlanguage =="
+          bundles_info="observer-runtime-test/target/work/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+          if [ -f "$bundles_info" ]; then
+            grep -E 'org\.eclipse\.(xtext|viatra\.query\.patternlanguage)' "$bundles_info" || true
+          else
+            echo "bundles.info not present"
           fi
 
           echo "TGCV_OSGI_MANIFEST_DIAGNOSTIC=COMPLETE"
-
       - name: Diagnose XtypeGrammarAccess resource resolution
         if: ${{ always() }}
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
