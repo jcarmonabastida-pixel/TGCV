@@ -108,6 +108,9 @@ public final class V002FixtureLoader {
         registerMetamodels();
 
         ResourceSet resourceSet = new ResourceSetImpl();
+        resourceSet.getPackageRegistry().put(CPS_NS_URI, CyberPhysicalSystemPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put(DEPLOYMENT_NS_URI, DeploymentPackage.eINSTANCE);
+        resourceSet.getPackageRegistry().put(TRACEABILITY_NS_URI, TraceabilityPackage.eINSTANCE);
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
             .put("xmi", new XMIResourceFactoryImpl());
 
