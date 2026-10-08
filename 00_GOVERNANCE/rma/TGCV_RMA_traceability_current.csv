@@ -25,8 +25,9 @@ CLAIM-MATRIX-v1.12,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_
 CLAIM-MATRIX-v1.21,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.21.md,RMA-v3.35,Historical cumulative matrix preserved immutable; immediate predecessor of v1.22
 CLAIM-MATRIX-v1.22,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.22.md,RMA-v3.35,Historical cumulative matrix preserved immutable
 CLAIM-MATRIX-v1.43,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.43.md,RMA-v3.37,Historical cumulative matrix preserved immutable; predecessor of v1.44
-CLAIM-MATRIX-v1.44,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.44.md,RMA-v3.37,Current cumulative matrix; MT5 Dynamic Transformation Space propagation recorded; no claim-status upgrade
-CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.44,Current matrix alias resolves to complete v1.44; not a simplified derivative
+CLAIM-MATRIX-v1.44,claim_control_versioned,HISTORICAL,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.44.md,RMA-v3.37,Historical cumulative matrix; MT5 Dynamic Transformation Space propagation recorded; no claim-status upgrade
+CLAIM-MATRIX-v1.47,claim_control_versioned,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.47.md,RMA-v3.37,Current cumulative matrix; v1.47 structural reorganization only; scientific evidence and claim statuses unchanged
+CLAIM-MATRIX,current_claim_control,CURRENT,00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md,CLAIM-MATRIX-v1.47,Current matrix alias resolves to complete v1.47; not a simplified derivative
 ARM-v0.1,external_asset,HISTORICAL,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.1.md,ARM-current,Historical ARM state preserved immutable
 ARM-v0.2,external_asset,CURRENT,05_ASSETS/ARM/TGCV-EXT-ARM-001_v0.2.md,RMA-current,Current controlled ARM; architectural reconciliation only; Core and C01-C16 unchanged
 ARM-current,pointer,CURRENT,05_ASSETS/ARM/README.md,ARM-v0.2,Current ARM pointer; RII follows as current controlled external asset
