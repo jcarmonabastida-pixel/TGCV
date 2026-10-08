@@ -84,3 +84,14 @@ A failed or incomplete criterion keeps empirical reuse blocked. No requirement i
 `00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_ADMISSION_CHAIN_RECONCILIATION_REVIEW_001.md`
 
 This decision is a governance record only. It does not process data, rerun code, reconstruct U_t, or perform scientific execution.
+
+
+## 8. Follow-up field-level assessment — 2026-10-09
+
+A documentary field-level inventory has been added at:
+
+`00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_FIELD_LEVEL_PRIVACY_AND_REUSE_ASSESSMENT_001.md`
+
+It maps the two input CSV schemas and emitted U_t fields, including numeric identifiers, timestamps, dependency structure, and dependency-row provenance ordinals. It finds no direct personal identifier explicitly listed in those two documented schemas, but does not conclude that the data are anonymous: external linkage and structural/timestamp inference remain unassessed.
+
+**Privacy/identifiability clearance remains NOT GRANTED.** The existing U_t artifact remains restricted to documentary provenance/audit review; structural scientific reuse, longitudinal claims, further processing, and external disclosure remain blocked pending a prospective decision. This assessment did not inspect data bytes or execute scientific code.
