@@ -87,3 +87,12 @@ This source-level review cannot determine actual re-identification likelihood or
 - `07_CODE/src/rust_omega_u_real_data_execution_v01.py`
 
 No dataset bytes were accessed. No scientific code or existing artifact was changed. This review does not authorize a rebuild, data transformation, or empirical analysis.
+
+
+## 9. Operational evidence follow-up — 2026-10-09
+
+The non-sensitive operational controls evidence template is linked at:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_OPERATIONAL_CONTROLS_EVIDENCE_RECORD_TEMPLATE_001.md`
+
+This addresses the documentary gap by specifying the evidence to collect, not by claiming controls are active. Storage/access, encryption, backup/sync, retention and accountable role remain UNKNOWN until verified. No data use is authorised by the template.
