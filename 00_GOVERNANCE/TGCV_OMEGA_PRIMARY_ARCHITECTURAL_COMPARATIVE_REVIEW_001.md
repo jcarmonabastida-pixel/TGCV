@@ -765,3 +765,162 @@ Its current conclusion is narrower and more useful:
 > **Ω-primary has crossed the threshold of a serious architectural candidate, but has not crossed the threshold of demonstrated non-reducibility, analytical necessity, or architectural necessity.**
 
 Accordingly, the current TGCV architecture remains unchanged while Ω-primary remains under governed investigation.
+
+
+## 31. Final comparative audit: what would actually change
+
+The review must distinguish **what Ω changes in representation** from **what Ω changes in the scientific object of inquiry**.
+
+### 31.1 If Ω is only a reordering
+
+If:
+
+Core representation is derivable from the same information
+
+and:
+
+T_acc is recoverable from Ω plus the same conditions,
+
+without introducing an independently discriminating object, then Ω primarily changes the order in which the same information is represented.
+
+In that case the appropriate disposition is:
+
+**representational reformulation / auxiliary notation.**
+
+No architectural transition is warranted.
+
+### 31.2 If Ω exposes relations hidden by T_acc
+
+If Ω makes explicit:
+
+- transformation identity;
+- equivalence classes;
+- dependencies;
+- compatibility/incompatibility;
+- compositional structure;
+- temporal correspondence;
+
+and those relations cannot be adequately recovered from the inherited A representation, then Ω may constitute a genuine **analytical layer**.
+
+The relevant consequence would not be “Ω is more elegant”, but:
+
+> a scientific question about transformation-space structure becomes materially tractable only when Ω is explicitly represented.
+
+That would justify an analytical architecture review while leaving the current ontological Core intact.
+
+### 31.3 If Ω changes the primitive of explanation
+
+A much stronger result would occur if the target phenomenon could no longer be adequately formulated as:
+
+state → accessible transformations → reachable trajectories
+
+and instead required:
+
+transformation-space → space dynamics → subsequent accessibility
+
+as the explanatory primitive.
+
+Only that result would provide a serious basis for considering Ω-primary as an architectural transition.
+
+Even then, the transition would require its own governance gate.
+
+## 32. Information accounting
+
+The comparative test should therefore record, for each representation, four distinct categories:
+
+| Category | Question |
+|---|---|
+| Input information | What must already be known to construct the representation? |
+| Explicit information | What structure is directly represented? |
+| Derived information | What can be reconstructed from it? |
+| Lost/implicit information | What distinctions disappear or become inaccessible? |
+
+This is more informative than comparing formulas alone.
+
+A representation can be mathematically equivalent while being scientifically different in **observability**, **auditability**, or **construct isolation**.
+
+Conversely, a representation can be operationally convenient while containing no genuinely new information.
+
+## 33. The critical asymmetry
+
+The review identifies an important asymmetry:
+
+> To reject Ω as architecturally necessary, it is sufficient to show that its claimed scientific distinctions are reproducibly recoverable from the inherited architecture under the frozen reconstruction rule.
+
+> To promote Ω architecturally, it is not sufficient merely to show that Ω is richer or easier to use; one must demonstrate a non-reducible, scientifically consequential structural distinction.
+
+This asymmetry should govern any subsequent experiment and prevents the burden of proof from being inverted.
+
+## 34. Architectural status after comparative audit
+
+The review therefore records the following provisional state:
+
+**Current TGCV architecture**
+
+Core = S
+
+T_acc = F(S,C,L)
+
+ΔT_acc → ΔReach → ΔTrajectory
+
+**Ω-primary**
+
+Ω_T,t = (U_t, ≡_T, R_t)
+
+Status:
+
+**PROPOSED / NON-CANONICAL / ANALYTICAL-CANDIDATE / NON-DISCRIMINATED**
+
+**Architectural transition:**
+
+**NOT JUSTIFIED**
+
+**Scientific execution:**
+
+**NOT AUTHORIZED**
+
+## 35. Closure condition for this review
+
+This comparative review should not be kept open indefinitely merely because Ω-primary is interesting.
+
+It can be closed in either of two scientifically clean ways:
+
+### Closure A — reduction
+
+A controlled analysis demonstrates that every claimed Ω distinction relevant to TGCV can be recovered from the inherited architecture under the frozen reconstruction rule.
+
+Disposition:
+
+**Ω-primary closed as non-essential reformulation/auxiliary representation.**
+
+### Closure B — transition evidence
+
+A controlled analysis demonstrates a reproducible non-reducible Ω distinction with material scientific consequence, followed by independent replication and architectural analysis.
+
+Disposition:
+
+**Open formal architectural transition gate.**
+
+Until one of these conditions is met, the correct state is:
+
+**OPEN / NON-DISCRIMINATED.**
+
+## 36. Review boundary
+
+This document deliberately does **not** decide:
+
+- whether transformational space exists as an ontological entity in nature;
+- whether Transformational Space Dynamics is a valid scientific construct;
+- whether Transformational Intelligence follows from such dynamics;
+- whether Ω-related dynamics cause Value;
+- whether any observed Ω distinction has downstream causal significance.
+
+Those are subsequent scientific questions.
+
+The present review asks only:
+
+> **Does Ω-primary provide a sufficiently distinct and necessary representation to justify changing TGCV's current architecture?**
+
+At present, the answer is:
+
+**Not yet demonstrated.**
