@@ -1,9 +1,9 @@
 {
   "artifact_id": "TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_DECISION_001",
   "record_type": "TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_DECISION",
-  "status": "PENDING_EXPLICIT_DECISION",
-  "decision": "NOT_AUTHORIZED",
-  "scientific_execution_authorized": false,
+  "status": "AUTHORIZED",
+  "decision": "AUTHORIZED",
+  "scientific_execution_authorized": true,
   "scope": "Explicit authorization decision for one isolated scientific execution package of the frozen VIATRA V002 implementation",
   "frozen_execution_package": {
     "canonical_implementation_commit": "8bef1d02c23b58dc5d5165b8aff51b264d4fd52f",
@@ -15,7 +15,7 @@
     "seed_policy": "NOT_APPLICABLE_DETERMINISTIC_SERIAL_EXECUTION"
   },
   "preflight_evidence": {
-    "package_preflight_run": 37705100626,
+    "package_preflight_run": 37706216848,
     "observer_listener_p3_p4_run": 37665561065,
     "pf09_runtime_equivalence_run": 37074926235,
     "scientific_firewall": "PASS"
@@ -24,17 +24,13 @@
     "technical_preflights_pass": true,
     "fixture_frozen": true,
     "implementation_frozen": true,
-    "explicit_human_decision": false
+    "explicit_human_decision": true
   },
-  "execution_boundary": "No scientific execution is authorized by this record in its current state.",
-  "required_decision_fields": [
-    "decision",
-    "scientific_execution_authorized",
-    "authorized_execution_ref",
-    "workflow_revision",
-    "decision_rationale",
-    "decision_timestamp"
-  ],
+  "authorized_execution_ref": "8bef1d02c23b58dc5d5165b8aff51b264d4fd52f",
+  "workflow_revision": "89d4eeccdeca0b3d49cf77022cce098c5e27b2c6",
+  "decision_rationale": "Explicit human authorization provided after successful technical package preflight on main.",
+  "decision_timestamp": "2026-10-07T18:09:00+02:00",
+  "execution_boundary": "Authorization permits the defined single isolated deterministic scientific execution only. It does not establish scientific validity, causal validity, TGCV effect or value, or result acceptance.",
   "non_decisions": [
     "This record does not establish scientific validity.",
     "This record does not establish causal validity.",
