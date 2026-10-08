@@ -425,3 +425,189 @@ Only after this comparison should the programme decide whether a dedicated archi
 **Decision:** pending completion of the comparative discrimination described above.
 
 **Integrity rule:** historical continuity, representational convenience, implementation success, or conceptual elegance are not by themselves grounds for architectural promotion.
+
+
+## 20. Material evidence reconciliation
+
+The preceding sections define the comparison logic. This section anchors that logic to governed material records already present in the repository. These records are evidence inputs to the review; listing them does not create new claims.
+
+### 20.1 Current inherited architecture
+
+**Primary records:**
+
+- `01_CORE/architecture/TGCV_CORE_v_current.md`
+- `01_CORE/architecture/TGCV_ARCHITECTURE_CURRENT.md`
+
+These establish the current baseline:
+
+`Core_ontological = S`
+
+`T_acc = F(S,C,L)`
+
+`τ ∈ T_acc iff P_τ(S,C,L)=1`
+
+and:
+
+`ΔT_acc → ΔReach → ΔTrajectory`
+
+The current architecture treats `T_acc` as an analytical representation rather than an independently postulated ontological primitive.
+
+**Review implication:** Ω-primary must demonstrate something more specific than the already admitted ability to represent changes in `T_acc`.
+
+### 20.2 Ω-primary candidate definition
+
+**Primary record:**
+
+`00_GOVERNANCE/architecture/TGCV_OMEGA_PRIMARY_DEFINITION_AND_ARCHITECTURAL_MEANING_001.md`
+
+This defines:
+
+`Ω_T,t = (U_t, ≡_T, R_t)`
+
+and explicitly distinguishes Ω from `T_acc`, Reach and `ΔReach`.
+
+It proposes:
+
+`Ω_T,t → T_acc,t`
+
+with accessibility derived from Ω and current conditions.
+
+**Review implication:** this is the conceptual definition being compared, not empirical proof of its necessity.
+
+### 20.3 Ω-primary boundary admissibility
+
+**Primary record:**
+
+`00_GOVERNANCE/architecture/TGCV_OMEGA_PRIMARY_BOUNDARY_ADMISSIBILITY_REVIEW_v0.1.md`
+
+Disposition:
+
+**FORMALLY ADMISSIBLE / EMPIRICALLY NOT YET ADMITTED.**
+
+The record identifies four empirical bottlenecks:
+
+1. reproducible transformation identity;
+2. independently observable structural relations;
+3. longitudinal correspondence;
+4. survival of a state-only reconstruction test.
+
+**Review implication:** formal coherence is established at the governance-design level; empirical discrimination remains unresolved.
+
+### 20.4 Rust Ω-primary sequence
+
+The governed Rust sequence decomposes the problem as follows:
+
+| Record | Established contribution | Limitation for architectural discrimination |
+|---|---|---|
+| `TGCV_OMEGA_PRIMARY_DOMAIN_INSTANTIABILITY_REVIEW_v0.1.md` | Rust is the strongest retained domain candidate; package/version/dependency records are native structural observations | Complete Ω tuple not yet instantiated |
+| `TGCV_RUST_OMEGA_PRIMARY_SEMANTIC_INSTANTIABILITY_REVIEW_v0.1.md` | Candidate transformation `τ=(origin_version_id,target_package_id,target_version_id)` can be defined independently of accessibility | `≡_T` semantic adequacy remains open |
+| `TGCV_RUST_OMEGA_PRIMARY_TRANSFORMATION_EQUIVALENCE_AND_RELATION_SCHEMA_REVIEW_v0.1.md` | Canonicalisation rule, typed `R_t`, provenance and outcome-blind construction are specified | Longitudinal `κ` and empirical independence remain open |
+| `TGCV_RUST_OMEGA_PRIMARY_STATE_REDUCIBILITY_AND_NON_CIRCULARITY_AUDIT_v0.1.md` | Explicit A-vs-Ω reducibility test is defined; non-circularity requirements are frozen | Matched `A_1=A_2` / `Ω_1≠Ω_2` construction was not demonstrated |
+
+The decisive Rust result is therefore **NOT DISCRIMINATED**, not refuted.
+
+### 20.5 Domain-level evidence
+
+`TGCV_OMEGA_PRIMARY_DOMAIN_INSTANTIABILITY_REVIEW_v0.1.md` reports:
+
+- MT5: blocked;
+- C10C-004: blocked;
+- KGFS: blocked;
+- Rust: conditional candidate.
+
+This prevents combining partial observations from different domains into a synthetic Ω-primary proof.
+
+### 20.6 VIATRA evidence
+
+**Primary record:**
+
+`00_GOVERNANCE/architecture/TGCV_RUNTIME_SYSTEM_CANDIDATE_VIATRA_EVIDENCE_REVIEW_001.md`
+
+The record establishes that VIATRA exposes transformation activity and runtime callbacks around activation firing, but at the evaluated candidate-selection stage it remained **DEFERRED** for scientific admission.
+
+The key limitation was the absence, at that stage, of an independently frozen temporal observation boundary suitable for the TGCV architectural discrimination programme.
+
+Later V002 work may provide relevant operational evidence of transformation observation and replay, but it must not be retroactively interpreted as proof of Ω-primary's ontological superiority.
+
+**Review implication:** VIATRA is evidence for operational observability of transformation events, not by itself evidence for architectural non-reducibility.
+
+### 20.7 Architectural transition evidence already assessed
+
+**Primary records:**
+
+- `TGCV_ARCHITECTURAL_TRANSITION_EVIDENCE_ASSESSMENT_v0.1.md`
+- `TGCV_ARCHITECTURAL_TRANSITION_GATE_RECORD_v0.1.md`
+- `TGCV_ARCHITECTURAL_DISCRIMINATION_CRITERIA_v0.1.md`
+
+These records already distinguish bounded evidence, non-discriminating evidence, A-equivalent constructions, the closed O4/E3 shortcut, and the requirement for independent measurement plus A-reconstruction failure.
+
+In particular, ARCH-DISC-002 is recorded as **A-EQUIVALENT**, and the isolated E3 route is closed.
+
+**Review implication:** the present Ω-primary review must not reopen either path by relabelling an A-derived descriptor as an independent Ω object.
+
+## 21. Consolidated comparison matrix
+
+| Dimension | Current Core / A | Ω-primary candidate | Rust evidence | VIATRA evidence |
+|---|---|---|---|---|
+| Primary object | `S` | `Ω_T=(U,≡_T,R)` | Candidate constructible conditionally | Transformation events observable operationally |
+| Accessibility | Primary analytical object `T_acc=F(S,C,L)` | Derived from Ω plus conditions | Candidate accessibility separated from U | Runtime execution provides event context, not complete Ω boundary |
+| Transformation identity | Defined relative to accessibility predicate | Explicit canonical identity/equivalence required | Observational identity specified; semantic equivalence open | TGCV identity schema required independently |
+| Relations | Auxiliary/mechanistic where governed | Explicit typed `R_t` | Dependency relation is native candidate | Runtime/event relations observable, but independence must be demonstrated |
+| Longitudinal correspondence | Via state/time and derived contrasts | Explicit `κ` required | Conditional/open | Temporal observation boundary was initially not admitted |
+| Outcome blindness | Required | Explicit firewall | Design satisfied conditionally | Candidate can be evaluated without value/reward |
+| Reducibility test | Baseline | Must survive A reconstruction | Not passed | Not yet a discriminating result |
+| Architectural status | Current | Proposed/non-canonical | Conditional candidate | Operationally supportive, not architectural proof |
+| Empirical admission | Current | Not granted | Not granted | Not granted as Ω-primary evidence |
+
+## 22. Updated discrimination statement
+
+The material record permits a sharper conclusion than the initial conceptual review:
+
+**Ω-primary is formally coherent and operationally motivated, but the decisive architectural discriminator has not yet passed.**
+
+The strongest existing negative evidence is not that Ω cannot be constructed. It is that the current candidate Rust `Ω` has **not demonstrated information irreducible to the inherited `A=(S,T_acc)` representation** under a frozen reconstruction rule.
+
+The strongest positive evidence is that the Ω construction changes the observation boundary conceptually: candidate transformations can be defined before accessibility, and structural relations can be represented explicitly.
+
+These two facts are compatible.
+
+Therefore the present comparative review should not force a binary choice between “Ω is false” and “Ω replaces A”. The evidence supports the intermediate status:
+
+> **Ω-primary remains an open candidate analytical architecture whose non-reducibility has not yet been demonstrated.**
+
+## 23. Architectural decision checkpoint
+
+The review therefore reaches the following checkpoint:
+
+**Current disposition: ANALYTICAL-CANDIDATE / NON-CANONICAL / NON-DISCRIMINATED.**
+
+This is stronger than merely “conceptually interesting” but weaker than “architectural transition justified”.
+
+A transition gate should be opened only if a future controlled comparison establishes all of the following:
+
+1. an independently observable Ω component;
+2. a frozen construction independent of accessibility and outcomes;
+3. a reproducible longitudinal correspondence;
+4. failure of the admissible A-reconstruction;
+5. a scientific consequence of that non-reducible structure;
+6. independent or materially distinct replication.
+
+Until then:
+
+`Core = S`
+
+`T_acc = F(S,C,L)`
+
+and the inherited dynamic chain remain current.
+
+## 24. Governance correction
+
+This review uses **Evidence→Claim Matrix v1.47** as its current governance baseline. Several inherited historical records retain older version references (notably v1.44); those labels are preserved for traceability and are not rewritten merely to synchronize historical documents.
+
+Thus:
+
+- **current governance state:** Matrix v1.47;
+- **historical evidence records:** preserve their original version labels;
+- **this review:** uses v1.47 as its current governance baseline.
+
+No scientific content or claim is altered by this correction.
