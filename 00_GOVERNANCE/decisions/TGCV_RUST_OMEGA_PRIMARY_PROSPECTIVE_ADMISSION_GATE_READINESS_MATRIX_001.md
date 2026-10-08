@@ -108,3 +108,12 @@ The result is recorded at:
 `00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_PUBLIC_REPOSITORY_EXPOSURE_CHECK_001.md`
 
 The repository is public. A bounded path-name search of the reviewed branch tree did not find the raw source ZIP or an obvious full real-data U_t JSON path. This is not a content/history scan and does not verify local storage, permissions, encryption, backups, or retention. All those items remain UNKNOWN; the admission gate remains blocked.
+
+
+## 10. Local controls verification procedure — 2026-10-09
+
+The read-only, privacy-conscious local verification procedure is recorded at:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_LOCAL_CONTROLS_VERIFICATION_PROCEDURE_001.md`
+
+It provides local PowerShell checks for artifact existence/metadata, an initial ACL inventory, and system-drive encryption, plus a manual process for sync/backup and retention. It has **not** been executed on the user's machine. No local-control result is claimed; these criteria remain OPEN until sanitised evidence is supplied and reviewed.
