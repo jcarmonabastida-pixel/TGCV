@@ -1,0 +1,66 @@
+{
+  "artifact_id": "TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
+  "record_type": "TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE",
+  "status": "PENDING_EXPLICIT_AUTHORIZATION",
+  "decision": "BLOCKED_PENDING_EXPLICIT_AUTHORIZATION",
+  "scope": "Scientific execution authorization gate for the frozen VIATRA V002 implementation and fixture",
+  "canonical_commit": "8bef1d02c23b58dc5d5165b8aff51b264d4fd52f",
+  "technical_preflight": {
+    "observer_listener_p3_p4_workflow_run": 37665561065,
+    "observer_listener_p3_p4_status": "PASS",
+    "pf09_runtime_equivalence_workflow_run": 37074926235,
+    "pf09_status": "RUNTIME_EQUIVALENCE_PREFLIGHT_PASS",
+    "scientific_execution_package_preflight_run": 37705100626,
+    "scientific_execution_package_preflight_status": "PASS",
+    "scientific_firewall_status": "PASS"
+  },
+  "fixture": {
+    "artifact_id": "TGCV_VIATRA_MINIMAL_FIXTURE_v002",
+    "status": "FIXTURE_FROZEN",
+    "freeze_audit_commit": "ebc46fe21f2ca1585e0fa169de240d64241726d6",
+    "freeze_decision_commit": "eda3786ab1e4c6a44846f1fd5eb47898b1c2cff5",
+    "byte_manifest_blob": "83019cb86e41a3277dbd59b651c1bd5d2c810561",
+    "artifacts": {
+      "CPS": {"sha256": "8d432da0d3fd49ba88f809611f222614ef588809691e66bcc954a4cd509f66bb", "bytes": 316},
+      "Deployment_INITIAL": {"sha256": "fea5bc84929e99145ebe07f4eabeb1d04eaceb805b3e35d7975aff793bd9af8e", "bytes": 187},
+      "Deployment_EXPECTED": {"sha256": "92addffad49e828a8c3c7f0ca7b00c870f00e9c419415c3b997e06cc36b0e966", "bytes": 240},
+      "Traceability_INITIAL": {"sha256": "1ce4c0c69f324e43d87b41dee2561a55668d06c815294919011a2d5c3d1d88c1", "bytes": 500},
+      "Traceability_EXPECTED": {"sha256": "29ebb291e72ff061618aa809af2e16527464f2475e21bfe558de00bd36de33e3", "bytes": 720}
+    }
+  },
+  "required_conditions": {
+    "fixture_frozen": true,
+    "observer_listener_p3_p4_pass": true,
+    "pf09_runtime_equivalence_pass": true,
+    "scientific_firewall_pass": true,
+    "canonical_implementation_commit_frozen": true,
+    "scientific_execution_workflow_defined_and_validated": true,
+    "explicit_scientific_authorization": false
+  },
+  "execution_boundary": "No scientific execution, fitting, inference, or scientific result publication is authorized by this gate until a separate explicit authorization record is persisted.",
+  "preservation_requirements": [
+    "Do not modify the frozen fixture bytes.",
+    "Do not modify the canonical implementation commit after authorization.",
+    "Persist the exact workflow revision and execution ref for every authorized run.",
+    "Persist executor identity, runtime metadata, outputs, hashes, and deviations.",
+    "Any deviation from the frozen package invalidates authorization for the affected run until formally resolved.",
+    "Do not change the primary estimand or inferential protocol after observing scientific outcomes."
+  ],
+  "current_blockers": [
+    {
+      "id": "G2",
+      "condition": "Explicit scientific authorization",
+      "status": "PENDING",
+      "reason": "The consolidated technical package preflight PASS does not itself authorize scientific execution; a separate explicit authorization decision is required."
+    }
+  ],
+  "non_decisions": [
+    "Do not infer scientific authorization from the P3/P4 runtime PASS.",
+    "Do not infer scientific authorization from PF-09 runtime equivalence PASS.",
+    "Do not infer scientific authorization from the consolidated package preflight PASS.",
+    "Do not execute scientific fitting or inference while this gate remains pending.",
+    "Do not modify fixture bytes or implementation to obtain execution readiness."
+  ],
+  "next_required_action": "Review the frozen execution package and perform the separate explicit scientific authorization decision; no execution occurs unless that decision is explicitly persisted as authorized.",
+  "scientific_execution_authorized": false
+}
