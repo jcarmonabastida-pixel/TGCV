@@ -1261,3 +1261,86 @@ It should be a **primitive-input audit**:
 This is a governance/data-definition audit, not scientific execution.
 
 No execution authorization is created.
+
+
+## 45. Primitive-input audit for U_t
+
+The previous section identified the primitive input required to construct U_t as the decisive object of analysis. The existing Rust records allow its inputs to be partitioned without new execution.
+
+| U_t input | Function in construction | Relation to current A | Audit status |
+|---|---|---|---|
+| Current Rust package/version state | Defines the observed system boundary and temporal state | Already represented by S_t | **A-ADMITTED** |
+| Dependency/package observations | Supply candidate transformation endpoints and structural constraints | Available through current state/context mechanisms | **A-ADMITTED / AUXILIARY** |
+| Temporal registry boundary | Determines which candidate transformations are in the candidate universe before accessibility filtering | Not shown to be a component of S_t or T_acc,t | **DISCRIMINATOR CANDIDATE** |
+| Transformation identity tuple | Identifies candidate substitution observations | Constructible from the registry observations | **DERIVED FROM CANDIDATE INPUT** |
+| Outcome/accessibility status | Filters U_t into T_acc,t | Downstream of candidate construction | **EXCLUDED FROM U_t CONSTRUCTION** |
+| Semantic equivalence ≡_T | Groups observationally equivalent candidates | Current rule is canonicalisation-based | **DERIVED / NOT PRIMARY DISCRIMINATOR** |
+| Typed relations R_t | Describes structural relations among candidates | Candidate relation over observed transformation structure | **SECONDARY CANDIDATE** |
+| Longitudinal correspondence κ | Links Ω structures across time | Required for dynamics, not needed to instantiate one U_t | **DYNAMIC INFRASTRUCTURE** |
+
+### 45.1 The temporal registry boundary is the only currently unresolved primitive
+
+The audit therefore reduces the question further.
+
+The current evidence does not indicate that state, package/dependency observations, transformation identity, equivalence, or relations by themselves force a new Ω primitive.
+
+The unresolved item is the **temporal registry boundary**: an observation rule that enumerates candidate transformations before accessibility is applied.
+
+This boundary can have two interpretations.
+
+**Interpretation A — derived boundary.**
+
+If the registry is deterministically generated from S_t plus already-admitted C_t/L_t/mechanism information, then it adds no primitive information. U_t remains an explicit reorganisation of the current architecture.
+
+**Interpretation B — independent observation boundary.**
+
+If the registry records candidate transformations that cannot be generated from the complete A boundary without additional empirical observation, then the registry is the actual candidate Ω primitive.
+
+The notation U_t would then be a representation of that primitive, rather than its source.
+
+### 45.2 Why this matters
+
+This prevents a subtle circularity:
+
+> Defining a temporal registry as “the set of all candidate transformations” and then using that registry to prove that candidate transformations exist independently of accessibility would merely encode the desired conclusion.
+
+The registry must therefore be justified by an observation procedure whose inputs and boundary are frozen independently of the Ω hypothesis.
+
+### 45.3 Current primitive-input disposition
+
+The audit yields:
+
+**State/package/dependency inputs:** A-admitted or auxiliary.
+
+**Transformation identity:** derived.
+
+**Equivalence:** derived/semantic infrastructure.
+
+**Relations:** secondary candidate.
+
+**Temporal registry boundary:** **OPEN / DISCRIMINATOR CANDIDATE.**
+
+Consequently:
+
+> **The present Ω-primary discrimination problem has been reduced from “is U_t irreducible?” to “is the temporal registry boundary an independently observable primitive not reconstructible from A?”**
+
+That is the narrowest currently defensible question.
+
+## 46. Next preflight: registry independence
+
+Before any A₁=A₂ / Ω₁≠Ω₂ construction, the next governance operation is a **temporal-registry independence preflight**.
+
+It must establish, from existing material where possible:
+
+1. exact source observations entering the registry;
+2. whether those observations are already represented in S_t, C_t or L_t;
+3. whether registry membership is a deterministic function of those observations;
+4. whether registry construction depends on accessibility, outcome, value, or future information;
+5. whether two systems can share A while differing in registry membership;
+6. whether the registry boundary is reproducible and auditable.
+
+A positive answer to (3) closes this route as A-reducible.
+
+A negative answer to (3), together with independent observability under (4)–(6), makes the registry the first legitimate Ω-primary discriminator candidate.
+
+No scientific execution is authorized.
