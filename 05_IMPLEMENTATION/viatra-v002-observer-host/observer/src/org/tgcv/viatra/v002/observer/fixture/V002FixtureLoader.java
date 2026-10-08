@@ -7,6 +7,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -67,7 +71,7 @@ public final class V002FixtureLoader {
         private final Resource deploymentInitial;
         private final Resource deploymentExpected;
         private final Resource traceabilityInitial;
-        private final Resource traceabilityExpected;
+        private final Path traceabilityExpected;
 
         private SemanticFixtureSet(ResourceSet resourceSet, Resource cps,
                                     Resource deploymentInitial, Resource deploymentExpected,
@@ -85,7 +89,7 @@ public final class V002FixtureLoader {
         public Resource deploymentInitial() { return deploymentInitial; }
         public Resource deploymentExpected() { return deploymentExpected; }
         public Resource traceabilityInitial() { return traceabilityInitial; }
-        public Resource traceabilityExpected() { return traceabilityExpected; }
+        public Path traceabilityExpected() { return traceabilityExpected; }
     }
 
     public FixtureSet bind(Path cps, Path deploymentInitial, Path deploymentExpected,
@@ -121,13 +125,48 @@ public final class V002FixtureLoader {
             load(resourceSet, fixtures.deploymentExpected(), DEPLOYMENT_NS_URI);
         Resource traceabilityInitial =
             load(resourceSet, fixtures.traceabilityInitial(), TRACEABILITY_NS_URI);
-        Resource traceabilityExpected =
-            load(resourceSet, fixtures.traceabilityExpected(), TRACEABILITY_NS_URI);
+        validateExpectedTraceabilityProjection(
+            fixtures.traceabilityExpected(), deploymentExpected);
 
         org.eclipse.emf.ecore.util.EcoreUtil.resolveAll(resourceSet);
 
         return new SemanticFixtureSet(resourceSet, cps, deploymentInitial,
-            deploymentExpected, traceabilityInitial, traceabilityExpected);
+            deploymentExpected, traceabilityInitial, fixtures.traceabilityExpected());
+    }
+
+    private void validateExpectedTraceabilityProjection(Path path,
+            Resource expectedDeployment) throws IOException {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            Document document = factory.newDocumentBuilder().parse(path.toFile());
+            Element root = document.getDocumentElement();
+            if (root.getElementsByTagNameNS("*", "traces").getLength() != 1) {
+                throw new IllegalStateException(
+                    "EXPECTED traceability XMI must contain exactly one trace: " + path);
+            }
+            Element trace = (Element) root.getElementsByTagNameNS("*", "traces").item(0);
+            Element cps = (Element) trace.getElementsByTagNameNS("*", "cpsElements").item(0);
+            Element deployment = (Element) trace.getElementsByTagNameNS("*", "deploymentElements").item(0);
+            if (cps == null || deployment == null
+                    || cps.getAttribute("href").indexOf('#') < 0
+                    || deployment.getAttribute("href").indexOf('#') < 0) {
+                throw new IllegalStateException(
+                    "EXPECTED traceability XMI must contain valid cps/deployment hrefs: " + path);
+            }
+            if (expectedDeployment.getContents().isEmpty()) {
+                throw new IllegalStateException(
+                    "EXPECTED deployment fixture has no root object: " + expectedDeployment.getURI());
+            }
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                "Unable to validate EXPECTED traceability projection: " + path, e);
+        }
     }
 
     private void registerMetamodels() {
