@@ -108,7 +108,7 @@ jobs:
           set -euo pipefail
           test_class="observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ScientificExecutionTest.java"
           test -f "$test_class"
-          count="$(grep -Ec '\\bexecutor\.execute\\s*\\(' "$test_class")"
+          count="$(grep -Fc 'executor.execute(' "$test_class")"
           test "$count" -eq 1
           echo "TGCV_V002_SCIENTIFIC_EXECUTOR_INVOCATIONS=$count"
 
