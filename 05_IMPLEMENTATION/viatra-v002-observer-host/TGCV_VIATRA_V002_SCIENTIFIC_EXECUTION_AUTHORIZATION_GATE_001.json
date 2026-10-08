@@ -1,8 +1,8 @@
 {
   "artifact_id": "TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE_001",
   "record_type": "TGCV_VIATRA_V002_SCIENTIFIC_EXECUTION_AUTHORIZATION_GATE",
-  "status": "PENDING_EXPLICIT_AUTHORIZATION",
-  "decision": "BLOCKED_PENDING_EXPLICIT_AUTHORIZATION",
+  "status": "AUTHORIZED",
+  "decision": "AUTHORIZED",
   "scope": "Scientific execution authorization gate for the frozen VIATRA V002 implementation and fixture",
   "canonical_commit": "8bef1d02c23b58dc5d5165b8aff51b264d4fd52f",
   "technical_preflight": {
@@ -10,7 +10,7 @@
     "observer_listener_p3_p4_status": "PASS",
     "pf09_runtime_equivalence_workflow_run": 37074926235,
     "pf09_status": "RUNTIME_EQUIVALENCE_PREFLIGHT_PASS",
-    "scientific_execution_package_preflight_run": 37705100626,
+    "scientific_execution_package_preflight_run": 37706216848,
     "scientific_execution_package_preflight_status": "PASS",
     "scientific_firewall_status": "PASS"
   },
@@ -35,9 +35,16 @@
     "scientific_firewall_pass": true,
     "canonical_implementation_commit_frozen": true,
     "scientific_execution_workflow_defined_and_validated": true,
-    "explicit_scientific_authorization": false
+    "explicit_scientific_authorization": true
   },
-  "execution_boundary": "No scientific execution, fitting, inference, or scientific result publication is authorized by this gate until a separate explicit authorization record is persisted.",
+  "authorization_record": {
+    "decision": "AUTHORIZED",
+    "decision_commit": "d722633a87b91d050ac1053d7d184e87b8665d42",
+    "authorized_execution_ref": "8bef1d02c23b58dc5d5165b8aff51b264d4fd52f",
+    "workflow_revision": "89d4eeccdeca0b3d49cf77022cce098c5e27b2c6",
+    "decision_timestamp": "2026-10-07T18:09:00+02:00"
+  },
+  "execution_boundary": "Scientific execution is authorized only for the frozen package and defined single isolated deterministic execution. This authorization does not establish scientific validity, causal validity, TGCV effect or value, or result acceptance.",
   "preservation_requirements": [
     "Do not modify the frozen fixture bytes.",
     "Do not modify the canonical implementation commit after authorization.",
@@ -46,21 +53,6 @@
     "Any deviation from the frozen package invalidates authorization for the affected run until formally resolved.",
     "Do not change the primary estimand or inferential protocol after observing scientific outcomes."
   ],
-  "current_blockers": [
-    {
-      "id": "G2",
-      "condition": "Explicit scientific authorization",
-      "status": "PENDING",
-      "reason": "The consolidated technical package preflight PASS does not itself authorize scientific execution; a separate explicit authorization decision is required."
-    }
-  ],
-  "non_decisions": [
-    "Do not infer scientific authorization from the P3/P4 runtime PASS.",
-    "Do not infer scientific authorization from PF-09 runtime equivalence PASS.",
-    "Do not infer scientific authorization from the consolidated package preflight PASS.",
-    "Do not execute scientific fitting or inference while this gate remains pending.",
-    "Do not modify fixture bytes or implementation to obtain execution readiness."
-  ],
-  "next_required_action": "Review the frozen execution package and perform the separate explicit scientific authorization decision; no execution occurs unless that decision is explicitly persisted as authorized.",
-  "scientific_execution_authorized": false
+  "current_blockers": [],
+  "scientific_execution_authorized": true
 }
