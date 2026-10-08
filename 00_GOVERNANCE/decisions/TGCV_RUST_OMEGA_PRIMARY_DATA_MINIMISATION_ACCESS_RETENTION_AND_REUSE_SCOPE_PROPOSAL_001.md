@@ -112,3 +112,12 @@ This document itself chooses none of A/B/C and does not imply approval.
 - `00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_DATASET_IDENTIFIABILITY_AND_PRIVACY_ADMISSION_REVIEW_v0.1.md`
 
 No dataset bytes were opened, downloaded, transformed, or reprocessed to prepare this proposal. No scientific code was executed. No current artifact was changed, and TGCV Core / Ω-primary status remain unchanged.
+
+
+## 10. Readiness matrix follow-up — 2026-10-09
+
+The evidence status for each admission criterion is tabulated in:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_PROSPECTIVE_ADMISSION_GATE_READINESS_MATRIX_001.md`
+
+That matrix distinguishes supported provenance facts from controls that are merely proposed or remain unverified. It finds the gate **NOT READY FOR EMPIRICAL REUSE APPROVAL**, principally because linkage threat modelling, field necessity/minimisation, actual storage/access controls, retention, and exact intended use are still OPEN. This does not select an admission outcome.
