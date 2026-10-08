@@ -239,3 +239,14 @@ The documentary field-level assessment is recorded at:
 It inventories the two CSV schemas read by the historical runner and the emitted U_t fields. Numeric package/version identifiers, release timestamps, dependency structure, and row-level provenance are treated as potentially linkable; the documented schemas do not explicitly list direct personal identifiers, but this is not proof of anonymity or absence of indirect identification risk.
 
 **Disposition:** privacy/identifiability clearance remains **NOT GRANTED**. The existing U_t artifact is not cleared for structural scientific reuse or longitudinal inference. No raw data were opened or reprocessed, no scientific code was run, and the historical sequencing deviation remains acknowledged.
+
+
+## 15. Proposed minimisation/access/retention/reuse controls — 2026-10-09
+
+The prospective control proposal is recorded at:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_DATA_MINIMISATION_ACCESS_RETENTION_AND_REUSE_SCOPE_PROPOSAL_001.md`
+
+It separates documentary metadata review from row-level access, structural research reuse, longitudinal claims, and external disclosure. Access/storage controls are marked unverified unless supported by evidence; the proposal does not assert encryption, deletion, or restricted access has already been implemented.
+
+The proposal is **NOT AN ADMISSION DECISION**. Privacy clearance remains not granted, existing U_t empirical reuse remains blocked, and no additional data processing or scientific execution is authorised.
