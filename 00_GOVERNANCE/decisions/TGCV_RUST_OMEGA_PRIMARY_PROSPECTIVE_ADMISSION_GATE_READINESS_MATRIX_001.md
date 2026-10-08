@@ -90,3 +90,12 @@ The source-level field necessity and minimisation review is recorded at:
 `00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_FIELD_NECESSITY_AND_MINIMISATION_REVIEW_001.md`
 
 It identifies `semver_str` access, repeated artifact constants, duplicate provenance references, and the dependency row ordinal as candidates for a future versioned minimisation design. No change is made to the frozen runner or U_t. Linkage risk and operational controls remain OPEN; empirical reuse remains blocked.
+
+
+## 8. Operational controls evidence template — 2026-10-09
+
+A non-sensitive evidence collection template is recorded at:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_OPERATIONAL_CONTROLS_EVIDENCE_RECORD_TEMPLATE_001.md`
+
+It records artifact classes, access/storage controls, backup/synchronisation, retention/accountability, research scope and decision sign-off. All currently unverified values remain `UNKNOWN`; the template does not attest that controls exist and does not grant admission or execution authorization.
