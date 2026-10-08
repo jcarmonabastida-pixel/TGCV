@@ -1068,3 +1068,88 @@ It is:
 This is a materially narrower and safer route than launching another broad architectural experiment.
 
 No execution authorization is created by this review.
+
+
+## 41. Ω-component inventory and discriminator ranking
+
+The current material record permits the first explicit inventory of the three components of Ω and the longitudinal correspondence required for dynamics.
+
+| Candidate component | What it adds relative to A=(S,T_acc) | Current evidence | Main reducibility risk | Discriminator status |
+|---|---|---|---|---|
+| U_t | Candidate transformations that are not currently accessible, plus their pre-accessibility identity | Rust: conditionally instantiable from pre-outcome temporal registry | U_t may be reconstructible from the same state/context/domain records used to derive accessibility | ADMISSIBLE CANDIDATE / NOT DISCRIMINATED |
+| ≡_T | Explicit equivalence over transformation observations | Canonicalisation rule specified | May collapse to observational identity or to an A-derivable classification | NOT YET A DISCRIMINATOR |
+| R_t | Explicit structural relations among transformations | Typed schema; dependency relation is candidate primitive | Relation may be reconstructed from state/context/accessibility mechanisms | ADMISSIBLE CANDIDATE / NOT DISCRIMINATED |
+| κ | Cross-time identity/correspondence of Ω structures | Conditional in Rust | Correspondence may be derivable from stable identifiers already admitted by A | REQUIRED FOR DYNAMICS / NOT DISCRIMINATED |
+
+### 41.1 U_t — strongest candidate for the next discrimination
+
+U_t is the most direct candidate because it introduces a distinction that the instantaneous accessibility set does not contain by definition:
+
+U_t \ T_acc,t
+
+contains transformations that exist as candidate structural possibilities but are not currently accessible.
+
+This makes U_t more promising than simply adding another relation over T_acc.
+
+However, this is **not yet evidence of non-reducibility**.
+
+The decisive question is:
+
+> Can the complete candidate universe U_t, including inaccessible candidates, be reconstructed from the inherited A boundary without effectively importing an equivalent candidate-universe representation?
+
+If yes, U_t is a richer representation but not an architectural discriminator.
+
+If no, and the non-reducibility is independently observable and scientifically consequential, U_t becomes the strongest candidate for an Ω discrimination test.
+
+### 41.2 ≡_T — currently insufficient as an independent discriminator
+
+The current Rust rule uses conservative canonicalisation for transformation identity. That is appropriate for reproducibility, but means the current relation may add little beyond canonical observational identity.
+
+A richer semantic equivalence relation would require additional assumptions and could become circular.
+
+Therefore ≡_T should **not** be selected as the first discriminator at this stage.
+
+### 41.3 R_t — promising but exposed to the old A-equivalence problem
+
+R_t is conceptually richer than T_acc, but the historical discriminator work demonstrates why this route is dangerous.
+
+If the proposed relation is deterministically reconstructible from inherited state, context, dependencies or accessibility mechanisms, then it is not independent evidence for Ω-primary.
+
+The Rust dependency relation is therefore retained as a candidate primitive relation, but not promoted to a discriminator.
+
+### 41.4 κ — necessary for dynamics, not sufficient for primary architecture
+
+Longitudinal correspondence is required to compare Ω_T,t → Ω_T,t+1, but a correspondence rule alone does not establish that Ω is primary.
+
+κ should therefore be treated as a **measurement requirement for Ω dynamics**, not as the primary architectural discriminator.
+
+## 42. Candidate ranking
+
+The current ranking is:
+
+**1. U_t — first candidate to audit**
+
+**2. R_t — second candidate, conditional on passing A-reconstruction**
+
+**3. κ — necessary infrastructure, not a standalone discriminator**
+
+**4. ≡_T — semantic infrastructure, not currently a useful independent discriminator**
+
+This ranking is methodological, not a scientific result.
+
+## 43. Next controlled operation
+
+The next operation should therefore be a **U_t A-reconstruction audit**, using the already governed Rust primitive observations.
+
+The audit must ask:
+
+1. Can U_t be reconstructed from the complete inherited A representation?
+2. If not, exactly which component of U_t is missing from A?
+3. Is that missing component independently observable before accessibility?
+4. Does constructing it require any Ω-specific information that is simply being smuggled into A?
+5. Does the difference survive an outcome-blind reconstruction?
+6. Does the difference define a scientific question that the inherited architecture cannot express without equivalent enrichment?
+
+Only if U_t survives this audit should a matched A_1=A_2, Ω_1≠Ω_2 construction be designed around it.
+
+No scientific execution is authorized.
