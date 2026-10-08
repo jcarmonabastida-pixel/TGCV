@@ -102,20 +102,16 @@ jobs:
           target.write_text(text.replace(marker, location + marker, 1), encoding="utf-8")
           PY
 
-      - name: Compile scientific JUnit execution test without running tests
-        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
-        run: mvn -B -ntp -X -Dtycho.debug.resolver=true -DskipTests -pl target-definition,observer-runtime-test -am test-compile
-
       - name: Verify scientific JUnit invokes executor exactly once
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
         run: |
           set -euo pipefail
           test_class="observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ScientificExecutionTest.java"
           test -f "$test_class"
-          count="$(grep -Ec '\bexecutor\.execute\s*\(' "$test_class")"
+          count="$(grep -Ec '\\bexecutor\.execute\\s*\\(' "$test_class")"
           test "$count" -eq 1
           echo "TGCV_V002_SCIENTIFIC_EXECUTOR_INVOCATIONS=$count"
 
-      - name: Execute canonical V002 scientific JUnit test exactly once
+      - name: Compile and execute canonical V002 scientific JUnit test in one Tycho reactor
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
-        run: mvn -B -ntp -DskipTests=false -Dtest=V002ScientificExecutionTest -pl observer-runtime-test -am test
+        run: mvn -B -ntp -DskipTests=false -Dtest=V002ScientificExecutionTest -pl target-definition,observer-runtime-test -am test
