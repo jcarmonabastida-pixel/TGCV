@@ -173,3 +173,17 @@ The Figshare record explicitly declares CC0 for the dataset item. Record that as
 - Historical admission-sequence reconciliation: **OPEN**; no retroactive admission inferred.
 
 This cross-check used only public Figshare metadata supplied by the user. No dataset bytes were inspected or transformed, no dataset was downloaded, no scientific code was run, and no TGCV Core or Ω-primary status was changed.
+
+## 11. Local file-size consistency check — 2026-10-09
+
+The user-provided PowerShell `Get-Item` output for `C:\Users\pedri\Downloads\rust_repos_2022_09_07.zip` reports `Length = 6047715996` bytes. This equals the Figshare Full dataset file size reported for file ID `37887018` (`rust_repos_2022_09_07.zip`), also `6047715996` bytes.
+
+### Interpretation boundary
+
+- Local filename and byte size: **MATCH** the published Figshare Full dataset metadata.
+- Exact byte identity: **NOT YET VERIFIED**. Equal filename and size do not establish byte-for-byte identity.
+- Published MD5 available for comparison: `a6b9feffdc3dafc86fa80ec23de38c10`.
+- Local SHA-256 previously recorded: `823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224`. This is a different algorithm and cannot be compared directly to the published MD5.
+- The file's reported `LastWriteTime` (`05/09/2026 1:48:37`) is local filesystem metadata, not evidence of the dataset's publication date or its contents.
+
+No local file bytes were read or hashed in this step. The comparison used only the user-supplied file metadata and the published Figshare API metadata. Dataset admission remains **NOT GRANTED** pending the remaining governance gates; no scientific execution or processing was performed.
