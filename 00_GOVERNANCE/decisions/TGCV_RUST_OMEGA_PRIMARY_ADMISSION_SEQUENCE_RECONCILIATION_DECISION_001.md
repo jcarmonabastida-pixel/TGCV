@@ -104,3 +104,12 @@ A proposed control and reuse-scope matrix is recorded at:
 `00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_DATA_MINIMISATION_ACCESS_RETENTION_AND_REUSE_SCOPE_PROPOSAL_001.md`
 
 It proposes conservative boundaries for raw/derived artifacts, identifier and provenance minimisation, access verification, retention/deletion decisions, and use-specific approval. It does not select or grant any future reuse category. Privacy clearance remains **NOT GRANTED**, structural/longitudinal empirical reuse remains **BLOCKED**, and any new processing still requires separate prospective approval.
+
+
+## 10. Prospective admission readiness matrix — 2026-10-09
+
+The criterion-by-criterion readiness register is available at:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_PROSPECTIVE_ADMISSION_GATE_READINESS_MATRIX_001.md`
+
+It records which source/provenance facts are supported and which operational or privacy controls remain unverified. It does not reopen or retroactively change the historical admission decision. Empirical reuse remains blocked until a separate prospective decision resolves the OPEN criteria.
