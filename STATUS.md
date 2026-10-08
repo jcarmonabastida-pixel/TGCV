@@ -2,8 +2,8 @@
 
 **Date:** 2026-09-28  
 **Governance state:** CURRENT — VSL-KGFS-02 formally closed as `COMPATIBILITY_NOT_ESTABLISHED`; no claim-level status was upgraded. TI-001 V012_NEXT2 is closed as bounded non-confirmatory primary inferential evidence with a documented secondary MI traceability limitation. No claim-level status, TGCV Core element, or falsification criterion was modified. The independent cross-domain accessibility → execution → outcome/value map remains registered as an independent analytical synthesis.  
-**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.35  
-**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` → v1.40  
+**Current RMA:** `00_GOVERNANCE/rma/TGCV_RMA_current.md` → v3.37  
+**Current Evidence→Claim Matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` → v1.47  
 **Independent analytical synthesis:** `00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_END_TO_END_ACCESSIBILITY_OUTCOME_VALUE_MAP_001.md`
 **Map evaluation:** `00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_MAP_EVALUATION_AND_PERSISTENCE_DECISION_001.md`
 **TSTC evidence propagation:** `00_GOVERNANCE/SIP/TGCV_APPLICATION_FIT_WP2_TSTC_EVIDENCE_TO_CLAIM_PROPAGATION_001.md` → `CLOSED — BOUNDED METHODOLOGICAL EVIDENCE REGISTERED`
@@ -31,9 +31,9 @@
 - The downstream `ΔT_acc → ΔV / Value` linkage remains open.
 
 ## Governance integrity
-- Canonical current versions: RMA `v3.35`, Evidence→Claim Matrix `v1.40`, RMA traceability `v3.35`, governance operating principles `v0.1`.
-- `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` is the stable alias of complete Matrix v1.40 and has the corresponding immutable versioned artifact.
-- Historical matrix versions remain immutable; v1.13 is preserved unchanged; v1.39 remains preserved as the immediate predecessor of current v1.40.
+- Canonical current versions: RMA `v3.37`, Evidence→Claim Matrix `v1.47`, RMA traceability `v3.37`, governance operating principles `v0.1`.
+- `EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md` is the stable alias of complete Matrix v1.47 and has the corresponding immutable versioned artifact.
+- Historical matrix versions remain immutable; v1.13 is preserved unchanged; v1.46 remains preserved as the immediate predecessor of current v1.47.
 - The canonical chain remains: `CANONICAL_STATE → RMA → Evidence→Claim Matrix → RMA traceability → STATUS → validator`.
 - The current matrix contains the TI-001 V012_NEXT2 material evidence section and bounded routing primarily to C16, with no claim-level status change.
 - GL-07 was applied: evidentiary content is cumulative; version-header novelty is current-cycle-only.
