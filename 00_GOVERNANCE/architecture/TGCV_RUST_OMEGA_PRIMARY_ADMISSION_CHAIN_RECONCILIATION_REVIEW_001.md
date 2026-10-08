@@ -187,3 +187,31 @@ The user-provided PowerShell `Get-Item` output for `C:\Users\pedri\Downloads\rus
 - The file's reported `LastWriteTime` (`05/09/2026 1:48:37`) is local filesystem metadata, not evidence of the dataset's publication date or its contents.
 
 No local file bytes were read or hashed in this step. The comparison used only the user-supplied file metadata and the published Figshare API metadata. Dataset admission remains **NOT GRANTED** pending the remaining governance gates; no scientific execution or processing was performed.
+
+
+## 12. Local MD5 comparison — 2026-10-09
+
+The user ran PowerShell `Get-FileHash -Algorithm MD5` against the retained local file `C:\\Users\\pedri\\Downloads\\rust_repos_2022_09_07.zip` and supplied this result:
+
+- Local MD5: `a6b9feffdc3dafc86fa80ec23de38c10`
+- Figshare Full dataset file ID `37887018` published/computed MD5: `a6b9feffdc3dafc86fa80ec23de38c10`
+- Local file size reported in the preceding metadata check: `6,047,715,996` bytes.
+- Published file size: `6,047,715,996` bytes.
+
+### Finding and boundary
+
+The local MD5 matches the published Figshare MD5 exactly, and the filename and byte size also match. This is strong integrity evidence that the retained local ZIP corresponds to the published full-dataset artifact. MD5 is not collision-resistant against deliberate adversarial substitution, so this is not a claim of cryptographic proof against intentional collision attacks.
+
+This closes the previously open **local ZIP ↔ published Figshare file identity check** for the operational provenance record. It does not resolve privacy/identifiability adequacy for TGCV's exact retained fields and intended use, does not satisfy or retroactively pass the historical admission gate, and does not authorize additional processing or scientific execution.
+
+### Updated evidence disposition
+
+- Published collection and article linkage: **SUPPORTED**.
+- Exact Figshare full-dataset item/version/file identity: **SUPPORTED**.
+- Local ZIP filename and size consistency: **MATCH**.
+- Local ZIP MD5 ↔ published file MD5: **MATCH**.
+- Published item-level license metadata: **SUPPORTED — CC0 declared by Figshare**.
+- Privacy/identifiability adequacy for TGCV's exact retained fields and intended use: **OPEN**.
+- Historical admission-sequence reconciliation: **OPEN**; longitudinal empirical admission remains **NOT GRANTED**.
+
+This update records the user-supplied hash output only. No dataset bytes were downloaded, transformed, or processed by this step; no scientific code was run; TGCV Core and Ω-primary status remain unchanged.
