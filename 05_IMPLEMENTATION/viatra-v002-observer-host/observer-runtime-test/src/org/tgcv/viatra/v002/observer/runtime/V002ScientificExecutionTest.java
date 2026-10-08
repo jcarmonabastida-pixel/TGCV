@@ -15,8 +15,11 @@ public class V002ScientificExecutionTest {
 
     @Test
     public void executeCanonicalScientificRunExactlyOnce() throws Exception {
-        Path fixtureDirectory = Paths.get(
-            "../../../../00_GOVERNANCE/architecture/fixtures");
+        String configuredFixtureDirectory =
+            System.getProperty("tgcv.fixture.directory");
+        Path fixtureDirectory = configuredFixtureDirectory == null
+            ? Paths.get("../../../../00_GOVERNANCE/architecture/fixtures")
+            : Paths.get(configuredFixtureDirectory);
 
         V002ScientificRunner.Binding binding =
             V002ScientificRunner.bind(fixtureDirectory);
