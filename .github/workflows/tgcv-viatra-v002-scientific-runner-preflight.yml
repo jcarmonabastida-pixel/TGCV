@@ -1,0 +1,42 @@
+name: TGCV VIATRA V002 Scientific Runner Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runner-preflight:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout runner development ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 1
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: maven
+
+      - name: Verify runner source boundary
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ScientificRunner.java
+          if grep -nE '\\b(executor|binding\\.executor\\(\\))\\.execute\\s*\\(' observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ScientificRunner.java; then
+            echo "FAIL: scientific executor invocation detected in runner"
+            exit 1
+          fi
+          grep -q 'TGCV_V002_RUNNER_EXECUTION=NOT_PERFORMED'             observer-runtime-test/src/org/tgcv/viatra/v002/observer/runtime/V002ScientificRunner.java
+          echo "TGCV_V002_RUNNER_SOURCE_BOUNDARY=PASS"
+
+      - name: Compile and package runner without tests
+        working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
+        run: mvn -B -pl observer-runtime-test -am test-compile -DskipTests
