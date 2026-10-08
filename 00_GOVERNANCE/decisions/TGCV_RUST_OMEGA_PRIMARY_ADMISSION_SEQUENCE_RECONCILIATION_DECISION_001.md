@@ -95,3 +95,12 @@ A documentary field-level inventory has been added at:
 It maps the two input CSV schemas and emitted U_t fields, including numeric identifiers, timestamps, dependency structure, and dependency-row provenance ordinals. It finds no direct personal identifier explicitly listed in those two documented schemas, but does not conclude that the data are anonymous: external linkage and structural/timestamp inference remain unassessed.
 
 **Privacy/identifiability clearance remains NOT GRANTED.** The existing U_t artifact remains restricted to documentary provenance/audit review; structural scientific reuse, longitudinal claims, further processing, and external disclosure remain blocked pending a prospective decision. This assessment did not inspect data bytes or execute scientific code.
+
+
+## 9. Proposed controls for prospective reuse decision — 2026-10-09
+
+A proposed control and reuse-scope matrix is recorded at:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_DATA_MINIMISATION_ACCESS_RETENTION_AND_REUSE_SCOPE_PROPOSAL_001.md`
+
+It proposes conservative boundaries for raw/derived artifacts, identifier and provenance minimisation, access verification, retention/deletion decisions, and use-specific approval. It does not select or grant any future reuse category. Privacy clearance remains **NOT GRANTED**, structural/longitudinal empirical reuse remains **BLOCKED**, and any new processing still requires separate prospective approval.
