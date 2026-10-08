@@ -114,4 +114,4 @@ jobs:
 
       - name: Compile and execute canonical V002 scientific JUnit test in one Tycho reactor
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
-        run: mvn -B -ntp -DskipTests=false -Dtest=V002ScientificExecutionTest -pl target-definition,observer-runtime-test -am test
+        run: mvn -B -ntp -DskipTests=false -Dtest=V002ScientificExecutionTest -pl target-definition,observer-runtime-test -am clean verify
