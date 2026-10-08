@@ -924,3 +924,77 @@ The present review asks only:
 At present, the answer is:
 
 **Not yet demonstrated.**
+
+
+## 37. Evidence sufficiency audit
+
+The decisive question is now whether the material already accumulated is sufficient to close Ω-primary by reduction, or whether the minimum discrimination test remains necessary.
+
+### 37.1 Evidence sufficient for Closure A?
+
+**No.**
+
+The existing material does establish that:
+
+- Ω can be formally specified;
+- parts of Ω can be instantiated conditionally;
+- transformation identity and relations can be operationally discussed;
+- the inherited architecture can represent accessible transformations;
+- prior A-equivalent constructions do not establish Ω non-reducibility.
+
+However, the existing material does **not** establish the stronger proposition:
+
+> every scientifically relevant Ω distinction can be reconstructed from A under a frozen, outcome-blind reconstruction rule.
+
+Absence of an observed counterexample is not equivalent to a proof of reducibility.
+
+Therefore Closure A would currently be premature.
+
+### 37.2 Evidence sufficient for architectural transition?
+
+**No.**
+
+The existing material does not establish:
+
+- a reproducible A1=A2, Ω1≠Ω2 construction;
+- an independent scientific consequence of that distinction;
+- replication of such a distinction;
+- failure of the inherited architecture as an adequate analytical framework.
+
+Therefore Closure B is also premature.
+
+### 37.3 What remains genuinely unresolved?
+
+The unresolved proposition is now sharply bounded:
+
+> **Can Ω contain an empirically identifiable structural distinction that survives reconstruction from the inherited A representation?**
+
+This is narrower than asking whether Ω is philosophically real, whether Ω is useful, or whether transformation space exists.
+
+### 37.4 Minimum evidence required
+
+The minimum evidence required to resolve the question is therefore not another broad experiment.
+
+It is a **controlled architectural discrimination test** with:
+
+A1=A2
+
+and:
+
+Ω1≠Ω2
+
+plus independent verification that:
+
+1. the two cases are genuinely equivalent under A;
+2. the Ω difference is not an encoding artifact;
+3. the Ω construction is frozen before observing downstream consequences;
+4. transformation identity/equivalence is reproducible;
+5. the Ω distinction has a measurable structural consequence relevant to TGCV.
+
+### 37.5 Decision
+
+The comparative review therefore reaches a precise methodological conclusion:
+
+> **The existing evidence is insufficient to close Ω-primary by reduction and insufficient to justify an architectural transition. A minimum controlled discrimination test is therefore warranted in principle, but no scientific execution is authorized by this review.**
+
+The next governance action, if the programme chooses to continue, is to define the test specification and its pre-execution gate—not to execute it directly.
