@@ -998,3 +998,73 @@ The comparative review therefore reaches a precise methodological conclusion:
 > **The existing evidence is insufficient to close Ω-primary by reduction and insufficient to justify an architectural transition. A minimum controlled discrimination test is therefore warranted in principle, but no scientific execution is authorized by this review.**
 
 The next governance action, if the programme chooses to continue, is to define the test specification and its pre-execution gate—not to execute it directly.
+
+
+## 38. Reconciliation with prior architectural discriminators
+
+The review must explicitly prevent a false restart of previously exhausted discriminator routes.
+
+### 38.1 D1 is historical/superseded
+
+The former D1 route tested:
+
+`T_acc^(1)=T_acc^(2)`
+
+with a proposed difference in:
+
+`G_τ^(1)≠G_τ^(2)`
+
+That route is recorded as **HISTORICAL / SUPERSEDED / NON-OPERATIVE**.
+
+It must not simply be revived under Ω-primary terminology.
+
+### 38.2 ARCH-DISC-002 is not a pending Ω proof
+
+The later ARCH-DISC-002 route established bounded identifiability of its candidate `G_T/O_T`, but its decisive A-reconstruction question remained unresolved at the readiness stage and the subsequent governance record classifies the relevant construction as **A-EQUIVALENT**.
+
+Therefore it cannot serve as positive evidence of Ω non-reducibility.
+
+### 38.3 Consequence for the present review
+
+The minimum discrimination test identified in Sections 28–37 is therefore **not** a request to rerun D1 or ARCH-DISC-002.
+
+A future test must begin from the current Ω definition:
+
+`Ω_T=(U,≡_T,R)`
+
+and ask whether a component of this object remains empirically distinct **after** the strongest admissible reconstruction from:
+
+`A=(S,T_acc)`
+
+has been exhausted.
+
+The candidate must therefore be selected from the Ω structure itself, rather than inherited from a previously superseded TSDI discriminator.
+
+## 39. New discriminator-selection requirement
+
+Before drafting any execution specification, the programme must select exactly one Ω component or relation class satisfying all of the following:
+
+1. it is part of the frozen Ω definition;
+2. it is not merely a renamed `T_acc`, `ΔT_acc`, Reach or Trajectory;
+3. it is independently constructible before downstream outcome observation;
+4. it has a reproducible identity/equivalence rule;
+5. it admits an explicit A-reconstruction attempt;
+6. it has a potential scientific consequence distinct from set membership alone.
+
+The candidate-selection record must then classify it as:
+
+**ADMISSIBLE CANDIDATE / A-EQUIVALENT / A-NON-EQUIVALENT / UNDERDETERMINED**
+
+before any scientific execution is considered.
+
+## 40. Immediate methodological consequence
+
+The correct next activity is therefore **not execution design**.
+
+It is:
+
+`Ω component inventory → candidate selection → A-reconstruction preflight → only then experimental specification if necessary`
+
+This is a materially narrower and safer route than launching another broad architectural experiment.
+
+No execution authorization is created by this review.
