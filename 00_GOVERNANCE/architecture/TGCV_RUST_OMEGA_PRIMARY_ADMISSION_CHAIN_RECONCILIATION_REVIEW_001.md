@@ -124,3 +124,52 @@ The Figshare DOI could not be resolved to item-level metadata through the availa
 
 This is a documentary cross-check only. No dataset bytes were inspected or transformed, no scientific code was run, and no TGCV Core or Ω-primary status was changed.
 
+
+## 10. Figshare item/version/file metadata cross-check — 2026-10-09
+
+The public Figshare collection API returned collection `5983534`, DOI `10.6084/m9.figshare.c.5983534.v1`, linked to the scientific data descriptor DOI `10.1038/s41597-022-01819-z`. Its public articles endpoint lists two separate dataset records:
+
+### Full dataset — candidate exact published file
+
+- Item title: `Full dataset`
+- Item DOI: `10.6084/m9.figshare.21345990.v1`
+- Item ID: `21345990`; version: `1`
+- File ID: `37887018`
+- Published filename: `rust_repos_2022_09_07.zip`
+- Published file size: `6,047,715,996` bytes
+- Figshare supplied MD5 and computed MD5: both `a6b9feffdc3dafc86fa80ec23de38c10`
+- Item license metadata: `CC0`, linking to `https://creativecommons.org/publicdomain/zero/1.0/`
+- Public item page: https://springernature.figshare.com/articles/dataset/Full_dataset/21345990
+- File download URL (recorded as provenance only; no download performed): https://ndownloader.figshare.com/files/37887018
+
+### Sample dataset — distinct item, not the full dataset
+
+- Item title: `Sample Dataset`
+- Item DOI: `10.6084/m9.figshare.21345993.v1`
+- Item ID: `21345993`; version: `1`
+- File ID: `37887000`
+- Published filename: `rust_repos_sample_2022_09_07.zip`
+- Published file size: `174,313,664` bytes
+- Published supplied/computed MD5: `c06f416f13f9f6c736b075ae715f7c47`
+- Item license metadata: `CC0`, linking to `https://creativecommons.org/publicdomain/zero/1.0/`
+- Public item page: https://springernature.figshare.com/articles/dataset/Sample_Dataset/21345993
+
+### Interpretation and remaining identity check
+
+The official metadata now identifies the exact published full-dataset item, version, filename, size, file ID, and item-level CC0 license. This resolves the earlier uncertainty about which Figshare item represents the full dataset and provides an authoritative published MD5 for a possible identity check.
+
+It does **not yet prove** the locally retained ZIP is byte-identical to the published file: the local ZIP's previously recorded SHA-256 (`823b74d779c83f2b46dc02e8168c259d5701dca106465533b82277e29d852224`) is a different hash algorithm and cannot be compared directly with the published MD5. No local file bytes were read or hashed as part of this metadata cross-check. A non-content metadata comparison of the local file's exact byte size against `6,047,715,996` bytes remains to be recorded; even equal size would be consistency evidence, not proof of byte identity.
+
+The Figshare record explicitly declares CC0 for the dataset item. Record that as the published item-level license metadata; do not infer additional privacy clearance, fitness for every TGCV use, or admission-gate satisfaction from the license.
+
+### Updated evidence disposition
+
+- Published collection and article linkage: **SUPPORTED**.
+- Exact Figshare full-dataset item/version/file identity: **SUPPORTED** as a published source record.
+- Local ZIP ↔ published file byte identity: **OPEN**.
+- Local file exact-size comparison: **OPEN**.
+- Published item-level license metadata: **SUPPORTED — CC0 declared by Figshare**.
+- Privacy/identifiability adequacy for TGCV's exact retained fields and intended use: **OPEN**.
+- Historical admission-sequence reconciliation: **OPEN**; no retroactive admission inferred.
+
+This cross-check used only public Figshare metadata supplied by the user. No dataset bytes were inspected or transformed, no dataset was downloaded, no scientific code was run, and no TGCV Core or Ω-primary status was changed.
