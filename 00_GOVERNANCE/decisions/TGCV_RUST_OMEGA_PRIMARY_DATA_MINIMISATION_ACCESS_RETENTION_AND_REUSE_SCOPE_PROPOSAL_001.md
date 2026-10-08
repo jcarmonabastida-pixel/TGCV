@@ -121,3 +121,12 @@ The evidence status for each admission criterion is tabulated in:
 `00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_PROSPECTIVE_ADMISSION_GATE_READINESS_MATRIX_001.md`
 
 That matrix distinguishes supported provenance facts from controls that are merely proposed or remain unverified. It finds the gate **NOT READY FOR EMPIRICAL REUSE APPROVAL**, principally because linkage threat modelling, field necessity/minimisation, actual storage/access controls, retention, and exact intended use are still OPEN. This does not select an admission outcome.
+
+
+## 11. Confirmed purpose boundary — 2026-10-09
+
+The purpose to evaluate is recorded in:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_PROPOSED_RESEARCH_PURPOSE_AND_USE_BOUNDARY_001.md`
+
+The scope is limited to assessing structural transformation-space and reachability analysis using the existing U_t, with no causal/value claims and no inference of absence from `UNKNOWN_MISSING`. Purpose confirmation is not data admission or permission to execute. Field necessity, linkage risk, access, retention and final reuse decision remain OPEN.
