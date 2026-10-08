@@ -1153,3 +1153,111 @@ The audit must ask:
 Only if U_t survives this audit should a matched A_1=A_2, Ω_1≠Ω_2 construction be designed around it.
 
 No scientific execution is authorized.
+
+
+## 44. U_t A-reconstruction audit
+
+The existing governed Rust records allow a more precise audit of the strongest candidate, U_t, without creating a new fixture.
+
+### 44.1 What U_t actually contains
+
+The retained semantic review defines candidate transformations from pre-outcome Rust observations:
+
+`τ = (origin_version_id, target_package_id, target_version_id)`
+
+with candidate membership determined by a pre-outcome temporal registry boundary.
+
+Therefore U_t is not simply the set of currently accessible transformations.
+
+At minimum, it contains candidate substitutions whose accessibility has not yet been applied.
+
+This establishes a genuine **representational distinction** between U_t and T_acc,t.
+
+It does not yet establish architectural non-reducibility.
+
+### 44.2 Strongest admissible reconstruction from A
+
+The inherited comparison object is:
+
+`A_t = (S_t,T_acc,t)`
+
+with only already-governed auxiliary context/mechanism information permitted.
+
+The strongest admissible reconstruction question is therefore:
+
+> Can a deterministic function of the complete information already admitted to A reconstruct the same U_t candidate universe without introducing an equivalent candidate-universe object as hidden auxiliary input?
+
+There are two logically distinct cases.
+
+**Case A — reconstruction succeeds.**
+
+If the candidate universe can be generated deterministically from S_t and already-admitted C_t/L_t/Pτ information, then U_t is an explicit reorganisation of information already available to the current architecture.
+
+In that case U_t is not an architectural discriminator.
+
+**Case B — reconstruction fails.**
+
+If U_t contains candidates that cannot be generated from the complete inherited boundary without an additional primitive observational input, then the missing input is a candidate for genuine Ω structural content.
+
+But even this would not yet establish architectural necessity. The missing primitive would first have to be independently observed, frozen, shown non-circular, and connected to a material scientific distinction.
+
+### 44.3 What the existing evidence establishes
+
+The current Rust governance records establish:
+
+- a pre-outcome source from which candidate transformations can be defined;
+- observationally unique transformation identity;
+- a temporal registry boundary;
+- an outcome-blind construction rule;
+- a distinction between candidate membership and later accessibility.
+
+They do **not** establish either of the two decisive propositions:
+
+1. that U_t is reconstructible from the complete inherited A boundary; or
+2. that U_t contains an empirically observed primitive component absent from that boundary.
+
+Therefore the current result is:
+
+**U_t = REPRESENTATIONALLY DISTINCT / ARCHITECTURALLY UNDERDETERMINED.**
+
+### 44.4 Critical methodological finding
+
+The phrase “inaccessible transformations exist in U_t” must not itself be used as evidence for Ω-primary.
+
+If those candidates are generated from the same state/context/mechanism records that the current architecture is already allowed to use when evaluating Pτ, then the distinction may be entirely representational:
+
+`U_t → T_acc,t`
+
+can simply be an explicit reorganisation of already admissible information.
+
+Conversely, if the candidate universe requires a primitive temporal or structural registry that is not part of A, that registry—not the notation U_t itself—is the actual candidate discriminator.
+
+This identifies the correct unit of analysis:
+
+> **The discriminator is not “U_t versus T_acc”. The discriminator is the primitive information required to construct U_t that cannot be recovered from A.**
+
+### 44.5 Current decision
+
+The existing material is insufficient to classify U_t as either A-equivalent or A-non-equivalent.
+
+The correct status is therefore:
+
+**U_t — UNDERDETERMINED / ADMISSIBLE CANDIDATE.**
+
+No claim of Ω non-reducibility follows.
+
+### 44.6 Consequence for the next operation
+
+The next operation should not be a broad Ω experiment.
+
+It should be a **primitive-input audit**:
+
+1. enumerate every input used to construct U_t;
+2. classify each input as already admitted to A, admissible auxiliary context, or new primitive observation;
+3. test whether the complete U_t construction can be reproduced without the new primitive;
+4. if a new primitive remains, freeze its observation boundary and provenance;
+5. only then determine whether an A_1=A_2 / Ω_1≠Ω_2 construction is possible.
+
+This is a governance/data-definition audit, not scientific execution.
+
+No execution authorization is created.
