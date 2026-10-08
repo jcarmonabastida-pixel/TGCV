@@ -124,4 +124,4 @@ jobs:
 
       - name: Compile and package runner without tests
         working-directory: 05_IMPLEMENTATION/viatra-v002-observer-host
-        run: mvn -B -ntp -DskipTests -pl target-definition,cps-models,observer-runtime-test -am package
+        run: mvn -B -ntp -X -Dtycho.debug.resolver=true -DskipTests -pl target-definition,observer-runtime-test -am test-compile
