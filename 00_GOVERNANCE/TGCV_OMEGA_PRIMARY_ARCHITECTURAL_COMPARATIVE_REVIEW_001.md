@@ -611,3 +611,157 @@ Thus:
 - **this review:** uses v1.47 as its current governance baseline.
 
 No scientific content or claim is altered by this correction.
+
+
+## 25. Three-stage architectural discrimination
+
+The comparative review now separates three questions that must not be collapsed:
+
+### 25.1 Representability
+
+**Question:** Can the proposed Ω object be instantiated, observed or reconstructed in a real domain?
+
+This is the weakest threshold.
+
+A positive result establishes that Ω is not merely syntactically defined. It does **not** establish that Ω adds information beyond the current architecture.
+
+Current disposition:
+
+**Conditionally supported.**
+
+Rust provides the strongest retained candidate for domain instantiation, while VIATRA provides bounded evidence that transformation events can be operationally observed and replayed. Neither result establishes the complete Ω tuple independently.
+
+### 25.2 Reducibility
+
+**Question:** When Ω is instantiated, can the relevant Ω information be reconstructed from the inherited architecture under a frozen, outcome-blind rule?
+
+The relevant inherited object is:
+
+`A = (S,T_acc)`
+
+The test is therefore not whether Ω can be computed from the state in some unrestricted sense. The test is whether the Ω information that is claimed to matter can be recovered from A without introducing the very Ω information being tested.
+
+The decisive comparison is consequently:
+
+`A_1 = A_2`
+
+versus
+
+`Ω_1 ≠ Ω_2`
+
+under a pre-registered construction and without access to downstream outcomes.
+
+If such a pair is reproducibly demonstrated, Ω has passed the key non-reducibility discriminator.
+
+If no such pair can be constructed, that does not prove that Ω is conceptually false; it means that the proposed architectural distinction has not been demonstrated.
+
+Current disposition:
+
+**NOT DEMONSTRATED.**
+
+### 25.3 Architectural necessity
+
+**Question:** Even if Ω is representable and non-reducible, does the scientific programme require Ω to occupy a primary architectural position?
+
+This is a stronger threshold than non-reducibility.
+
+A structure may be non-reducible for a particular representation while still being appropriately governed as an analytical layer rather than as an ontological or canonical Core primitive.
+
+Architectural necessity therefore requires an additional argument:
+
+1. Ω contains a discriminating structural component;
+2. that component cannot be recovered from the inherited architecture;
+3. the component changes or enables a scientific question central to TGCV;
+4. the scientific consequence survives alternative representations and controls;
+5. treating Ω as merely auxiliary would materially obscure or invalidate the target analysis.
+
+Current disposition:
+
+**NOT ESTABLISHED.**
+
+## 26. Discrimination ladder
+
+The review can therefore be represented as the following ladder:
+
+`Representability → Reducibility → Analytical necessity → Architectural necessity`
+
+The thresholds have different meanings:
+
+| Threshold | What a PASS establishes | What it does not establish |
+|---|---|---|
+| Representability | Ω can be instantiated/observed | Ω adds indispensable information |
+| Non-reducibility | Ω contains information not recovered by A under the frozen test | Ω must become canonical |
+| Analytical necessity | Ω materially enables a scientific analysis not adequately supported by A | New ontology |
+| Architectural necessity | Current architecture is inadequate without Ω as a primary structure | Any downstream value/causal claim |
+
+This ladder prevents a common category error: treating successful implementation as evidence of architectural necessity.
+
+## 27. Consequence for the current decision
+
+The present evidence occupies the ladder approximately as follows:
+
+- **Representability:** conditionally supported;
+- **Non-reducibility:** not demonstrated;
+- **Analytical necessity:** not established;
+- **Architectural necessity:** not established.
+
+Therefore the current evidence cannot legitimately trigger an architectural transition gate.
+
+At the same time, the review has identified a precise empirical discriminator rather than leaving Ω-primary at the level of conceptual preference.
+
+## 28. Minimum decisive test
+
+If the programme later decides that an experiment is warranted, the experiment should be designed around the smallest possible discriminating construction:
+
+`A_1 = A_2`
+
+while:
+
+`Ω_1 ≠ Ω_2`
+
+with the following controls:
+
+- Ω construction frozen before execution;
+- no downstream outcome/value information;
+- identical state representation;
+- identical accessibility representation;
+- identical observation window;
+- independently defined transformation identity/equivalence;
+- reproducible relation construction;
+- deterministic reconstruction procedure;
+- explicit audit of leakage from Ω into A.
+
+A failed attempt to produce the pair is informative only if the search space and reconstruction rule were sufficiently complete to support the conclusion.
+
+No scientific execution is authorized by this section.
+
+## 29. Decision rule after the minimum test
+
+The future result should be interpreted as follows:
+
+| Result | Disposition |
+|---|---|
+| No reproducible `A_1=A_2, Ω_1≠Ω_2` pair | Ω remains non-discriminated |
+| Pair exists, but distinction has no scientific consequence | Ω may remain an analytical auxiliary |
+| Pair exists and enables a material scientific distinction | Open analytical architecture review |
+| Pair exists, distinction is indispensable to the target construct, and auxiliary treatment fails | Consider formal architectural transition gate |
+| Construction depends on outcome/future information | Reject the discrimination as circular |
+| Identity/equivalence is unstable or non-reproducible | Ω-primary remains non-operationalized |
+
+This preserves the asymmetry between **evidence for non-reducibility** and **evidence for architectural promotion**.
+
+## 30. Interim architectural conclusion
+
+The comparative review therefore does not conclude:
+
+> “Ω-primary is the new architecture.”
+
+Nor does it conclude:
+
+> “Ω-primary has been refuted.”
+
+Its current conclusion is narrower and more useful:
+
+> **Ω-primary has crossed the threshold of a serious architectural candidate, but has not crossed the threshold of demonstrated non-reducibility, analytical necessity, or architectural necessity.**
+
+Accordingly, the current TGCV architecture remains unchanged while Ω-primary remains under governed investigation.
