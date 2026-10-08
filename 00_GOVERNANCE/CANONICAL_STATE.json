@@ -3,7 +3,7 @@
   "status": "CURRENT",
   "current_versions": {
     "rma": "v3.37",
-    "claim_matrix": "v1.44",
+    "claim_matrix": "v1.47",
     "rma_traceability": "v3.37",
     "governance_operating_principles": "v0.1"
   },
