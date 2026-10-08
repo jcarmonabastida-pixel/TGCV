@@ -98,3 +98,29 @@ The author-described anonymization process is not an independent privacy audit o
 
 This cross-check is documentary only. No dataset bytes were inspected or transformed, no scientific code was run, and no TGCV Core or Ω-primary status was changed.
 
+## 9. Publisher/article-level cross-check — 2026-10-09
+
+The published data descriptor identifies the dataset citation as Schueller et al., *Replication Data for Evolving collaboration, dependencies, and use in the Rust Open Source Software ecosystem*, Figshare collection DOI `10.6084/m9.figshare.c.5983534.v1`. The article states that the data are hosted on Figshare, that several distribution formats are provided, and that no format exceeds 6 GB when compressed. It describes pseudonymisation as discarding name attributes and hashing email addresses and GitHub/GitLab logins using MD5 with a random salt.
+
+Sources:
+- Article / data descriptor: https://www.nature.com/articles/s41597-022-01819-z
+- Associated PubMed Central full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC9668998/
+- Authors' release README: https://github.com/wschuell/repo_datasets/blob/main/rust_repos_2022_09_07/README.md
+
+### Interpretation boundary
+
+The publisher-level size statement is compatible with the locally recorded approximate ZIP size (~5.7 GB), but this is only a coarse consistency check. It is not proof of byte identity, exact file identity, version identity, or license. The cited DOI is a **collection DOI**, not yet the verified article/file/version identifier corresponding to the local ZIP. The article's own CC BY 4.0 statement licenses the article and must not be assumed to license the separate dataset file.
+
+### Current evidence disposition
+
+- Published dataset collection and author repository linkage: **SUPPORTED**.
+- Intended 2022-09-07 release provenance: **PARTIALLY SUPPORTED**.
+- Exact Figshare item/file/version and local ZIP correspondence: **OPEN**.
+- Applicable dataset/file license: **OPEN**.
+- Privacy/identifiability adequacy for TGCV's exact retained fields and intended use: **OPEN**.
+- Admission-chain reconciliation: **OPEN**; no retroactive admission inferred.
+
+The Figshare DOI could not be resolved to item-level metadata through the available lookup route in this review. The next evidence-bearing action is to retrieve item/version/file metadata from Figshare's collection API or landing page and compare it against the existing local manifest. Do not re-download or reprocess the dataset merely to settle this metadata question.
+
+This is a documentary cross-check only. No dataset bytes were inspected or transformed, no scientific code was run, and no TGCV Core or Ω-primary status was changed.
+
