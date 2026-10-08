@@ -26,11 +26,11 @@
     "implementation_frozen": true,
     "explicit_human_decision": true
   },
-  "authorized_execution_ref": "8bef1d02c23b58dc5d5165b8aff51b264d4fd52f",
-  "workflow_revision": "89d4eeccdeca0b3d49cf77022cce098c5e27b2c6",
-  "decision_rationale": "Explicit human authorization provided after successful technical package preflight on main.",
-  "decision_timestamp": "2026-10-07T18:09:00+02:00",
-  "execution_boundary": "Authorization permits the defined single isolated deterministic scientific execution only. It does not establish scientific validity, causal validity, TGCV effect or value, or result acceptance.",
+  "authorized_execution_ref": "main@1bb8d2ef7e8668095218d361cff2fb13fa62cf96",
+  "workflow_revision": "main:.github/workflows/tgcv-viatra-v002-scientific-execution-package-preflight.yml@89d4eeccdeca0b3d49cf77022cce098c5e27b2c6",
+  "decision_rationale": "Explicit human authorization provided by the user after successful final package preflight on main (run 37706216848). Authorization applies only to the frozen execution package and exact execution boundary recorded here.",
+  "decision_timestamp": "2026-10-08T00:13:27.335Z",
+  "execution_boundary": "Scientific execution is authorized for the frozen execution package and exact entry point only. No modification of the fixture, canonical implementation, execution mode, or inferential protocol is authorized by this decision.",
   "non_decisions": [
     "This record does not establish scientific validity.",
     "This record does not establish causal validity.",
