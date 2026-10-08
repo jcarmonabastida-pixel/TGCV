@@ -1344,3 +1344,79 @@ A positive answer to (3) closes this route as A-reducible.
 A negative answer to (3), together with independent observability under (4)–(6), makes the registry the first legitimate Ω-primary discriminator candidate.
 
 No scientific execution is authorized.
+
+
+## 47. Temporal-registry independence preflight
+
+The governed Rust records permit a partial audit of the temporal registry boundary, but they do not establish it as an independent primitive observation.
+
+### 47.1 What is actually evidenced
+
+The Rust semantic review establishes that candidate membership can be defined using a **pre-outcome temporal registry boundary** and that release timestamps provide an outcome-independent temporal ordering.
+
+The retained candidate transformation is:
+
+`τ = (origin_version_id, target_package_id, target_version_id)`
+
+and candidate membership is evaluated before accessibility.
+
+This is sufficient to support the construction of a candidate universe distinct in definition from `T_acc`.
+
+It is not sufficient to establish that the registry itself contains information unavailable to the inherited architecture.
+
+### 47.2 Reconstruction analysis
+
+The currently evidenced registry ingredients are:
+
+- package/version observations;
+- dependency relations;
+- release/version identity;
+- temporal ordering;
+- a frozen pre-outcome membership rule.
+
+The existing records do not demonstrate that any one of these ingredients is unavailable to the current architecture's admitted state/context/mechanism boundary.
+
+Consequently, the strongest currently supportable interpretation is:
+
+**the temporal registry is an explicit construction rule over observed Rust records, not yet an independently demonstrated primitive observation.**
+
+### 47.3 Independence test result
+
+The six required checks are classified as follows:
+
+| Check | Current disposition |
+|---|---|
+| Exact source observations entering registry | **IDENTIFIED IN PRINCIPLE; COMPLETE INPUT AUDIT NOT FROZEN** |
+| Already represented in S/C/L? | **NOT DECIDED** |
+| Deterministic reconstruction from admitted inputs? | **NOT DEMONSTRATED** |
+| Dependence on accessibility/outcome/future information | **OUTCOME-BLIND IN PRINCIPLE; NO CIRCULARITY FOUND IN CURRENT RULE** |
+| Possibility of A-equivalent / registry-different pair | **NOT DEMONSTRATED** |
+| Reproducibility/auditability | **CONDITIONALLY SUPPORTED** |
+
+The decisive middle two rows remain unresolved.
+
+### 47.4 Important negative finding
+
+The present evidence does **not** justify saying:
+
+> “The temporal registry is outside A.”
+
+Nor does it justify saying:
+
+> “The temporal registry is reducible to A.”
+
+Both propositions remain unproven.
+
+This is precisely the state expected from a preflight whose purpose is to identify the missing proof obligation rather than to manufacture a discriminator.
+
+### 47.5 Consequence
+
+The Ω-primary route therefore remains:
+
+**OPEN / UNDERDETERMINED / NON-DISCRIMINATED.**
+
+The temporal registry remains the strongest current primitive candidate, but it has not yet earned the status of an independent Ω primitive.
+
+The next governance operation is consequently a **source-level registry reconstruction audit** over the existing Rust records. That audit should enumerate the exact fields/records used to define registry membership and determine, field by field, whether each is already recoverable under the inherited A boundary.
+
+No new fixture, implementation, or scientific execution is authorized.
