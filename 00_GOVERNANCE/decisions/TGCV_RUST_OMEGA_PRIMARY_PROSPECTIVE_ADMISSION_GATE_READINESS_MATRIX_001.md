@@ -99,3 +99,12 @@ A non-sensitive evidence collection template is recorded at:
 `00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_OPERATIONAL_CONTROLS_EVIDENCE_RECORD_TEMPLATE_001.md`
 
 It records artifact classes, access/storage controls, backup/synchronisation, retention/accountability, research scope and decision sign-off. All currently unverified values remain `UNKNOWN`; the template does not attest that controls exist and does not grant admission or execution authorization.
+
+
+## 9. Bounded public-repository exposure check — 2026-10-09
+
+The result is recorded at:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_PUBLIC_REPOSITORY_EXPOSURE_CHECK_001.md`
+
+The repository is public. A bounded path-name search of the reviewed branch tree did not find the raw source ZIP or an obvious full real-data U_t JSON path. This is not a content/history scan and does not verify local storage, permissions, encryption, backups, or retention. All those items remain UNKNOWN; the admission gate remains blocked.
