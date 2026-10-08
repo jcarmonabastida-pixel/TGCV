@@ -83,3 +83,12 @@ Any OPEN criterion keeps the corresponding empirical use blocked.
 - `00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_ADMISSION_SEQUENCE_RECONCILIATION_DECISION_001.md`
 
 No dataset bytes were accessed or processed to create this record. No scientific code was executed. This is a purpose-boundary decision for the admission review only.
+
+
+## 8. Field necessity follow-up — 2026-10-09
+
+The source-level field necessity review is available at:
+
+`00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_FIELD_NECESSITY_AND_MINIMISATION_REVIEW_001.md`
+
+It records which fields are functionally necessary under the current construction contract and which could be candidates for a future versioned schema. This review did not change the current artifact or authorise any data access, transformation, or empirical analysis.
