@@ -25,7 +25,7 @@ public final class V002FixtureLoader {
     public static final String DEPLOYMENT_INITIAL_SHA256 =
         "fea5bc84929e99145ebe07f4eabeb1d04eaceb805b3e35d7975aff793bd9af8e";
     public static final String DEPLOYMENT_EXPECTED_SHA256 =
-        "92addffad49e828a8c3f7c0ca7b00c870f00e9c419415c3b997e06cc36b0e966";
+        "92addffad49e828a8c3c7f0ca7b00c870f00e9c419415c3b997e06cc36b0e966";
     public static final String TRACEABILITY_INITIAL_SHA256 =
         "1ce4c0c69f324e43d87b41dee2561a55668d06c815294919011a2d5c3d1d88c1";
     public static final String TRACEABILITY_EXPECTED_SHA256 =
