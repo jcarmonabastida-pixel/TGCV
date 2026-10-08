@@ -81,3 +81,12 @@ The proposed research purpose is now confirmed for admission assessment only in:
 `00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_PROPOSED_RESEARCH_PURPOSE_AND_USE_BOUNDARY_001.md`
 
 Purpose: assess whether existing U_t can support structural transformation-space and reachability analysis, without causal/value claims and without interpreting `UNKNOWN_MISSING` as absence. This resolves the purpose-definition question for the next review; it does not resolve linkage risk, minimisation, operational controls, retention, or admission. The gate remains **NOT READY FOR EMPIRICAL REUSE APPROVAL**.
+
+
+## 7. Field necessity review — 2026-10-09
+
+The source-level field necessity and minimisation review is recorded at:
+
+`00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_FIELD_NECESSITY_AND_MINIMISATION_REVIEW_001.md`
+
+It identifies `semver_str` access, repeated artifact constants, duplicate provenance references, and the dependency row ordinal as candidates for a future versioned minimisation design. No change is made to the frozen runner or U_t. Linkage risk and operational controls remain OPEN; empirical reuse remains blocked.
