@@ -75,7 +75,7 @@ public final class V002FixtureLoader {
 
         private SemanticFixtureSet(ResourceSet resourceSet, Resource cps,
                                     Resource deploymentInitial, Resource deploymentExpected,
-                                    Resource traceabilityInitial, Resource traceabilityExpected) {
+                                    Resource traceabilityInitial, Path traceabilityExpected) {
             this.resourceSet = resourceSet;
             this.cps = cps;
             this.deploymentInitial = deploymentInitial;
