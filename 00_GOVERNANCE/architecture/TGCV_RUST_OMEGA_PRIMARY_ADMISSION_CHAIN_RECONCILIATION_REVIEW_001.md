@@ -228,3 +228,14 @@ Decision: the historical sequence is recorded as a **governance sequencing devia
 The existing U_t artifact is retained for provenance, audit and reproducibility review only. Further scientific processing and empirical reuse remain blocked pending a new prospective decision on the exact retained fields, privacy/identifiability, minimisation, access/retention, and permitted reuse. The local ZIP ↔ Figshare full-dataset identity check is now **MATCHED**, but privacy clearance remains **OPEN**.
 
 No historical gate or execution closure was rewritten. No data were processed, U_t rebuilt, scientific code run, or TGCV Core/Ω-primary status changed in this update.
+
+
+## 14. Field-level privacy and reuse assessment — 2026-10-09
+
+The documentary field-level assessment is recorded at:
+
+`00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_FIELD_LEVEL_PRIVACY_AND_REUSE_ASSESSMENT_001.md`
+
+It inventories the two CSV schemas read by the historical runner and the emitted U_t fields. Numeric package/version identifiers, release timestamps, dependency structure, and row-level provenance are treated as potentially linkable; the documented schemas do not explicitly list direct personal identifiers, but this is not proof of anonymity or absence of indirect identification risk.
+
+**Disposition:** privacy/identifiability clearance remains **NOT GRANTED**. The existing U_t artifact is not cleared for structural scientific reuse or longitudinal inference. No raw data were opened or reprocessed, no scientific code was run, and the historical sequencing deviation remains acknowledged.
