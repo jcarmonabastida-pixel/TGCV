@@ -215,3 +215,16 @@ This closes the previously open **local ZIP ↔ published Figshare file identity
 - Historical admission-sequence reconciliation: **OPEN**; longitudinal empirical admission remains **NOT GRANTED**.
 
 This update records the user-supplied hash output only. No dataset bytes were downloaded, transformed, or processed by this step; no scientific code was run; TGCV Core and Ω-primary status remain unchanged.
+
+
+## 13. Admission-sequence reconciliation decision — 2026-10-09
+
+The separate governance decision record is now available at:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_ADMISSION_SEQUENCE_RECONCILIATION_DECISION_001.md`
+
+Decision: the historical sequence is recorded as a **governance sequencing deviation**. The 2026-10-01 admission gate was not evidenced as passed before the 2026-10-02 preflight and U_t construction. The technical closures remain historical evidence of what ran and passed within their stated scopes; they do not retroactively grant admission.
+
+The existing U_t artifact is retained for provenance, audit and reproducibility review only. Further scientific processing and empirical reuse remain blocked pending a new prospective decision on the exact retained fields, privacy/identifiability, minimisation, access/retention, and permitted reuse. The local ZIP ↔ Figshare full-dataset identity check is now **MATCHED**, but privacy clearance remains **OPEN**.
+
+No historical gate or execution closure was rewritten. No data were processed, U_t rebuilt, scientific code run, or TGCV Core/Ω-primary status changed in this update.
