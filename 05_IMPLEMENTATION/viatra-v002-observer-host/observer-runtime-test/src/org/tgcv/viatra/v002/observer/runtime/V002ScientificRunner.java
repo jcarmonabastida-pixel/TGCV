@@ -11,7 +11,6 @@ import org.eclipse.viatra.examples.cps.traceability.CPSToDeployment;
 import org.eclipse.viatra.examples.cps.traceability.TraceabilityFactory;
 import org.eclipse.viatra.query.runtime.api.ViatraQueryEngine;
 import org.eclipse.viatra.query.runtime.emf.EMFScope;
-import org.tgcv.viatra.v002.observer.V002FixtureStateCapture;
 import org.tgcv.viatra.v002.observer.V002ObservationProvenance;
 import org.tgcv.viatra.v002.observer.V002SerialExecutor;
 import org.tgcv.viatra.v002.observer.V002SerialObserver;
