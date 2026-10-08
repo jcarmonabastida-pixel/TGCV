@@ -1,9 +1,10 @@
-# TGCV — Evidence-to-Claim Matrix — Current v1.46
+# TGCV — Evidence-to-Claim Matrix — Current v1.47
 
 **Status:** GOVERNANCE CONTROL ARTIFACT — CURRENT  
 **Date:** 2026-10-08  
-**Predecessor:** v1.45  
-**Incremental governance update:** Corrective cumulative update following v1.45. It explicitly integrates the same TI experimental chain across **Rust Omega / RUST-DYN-2**, **TI-001 / NEXT2–NEXT4**, **MT5 Dynamic Transformation Space reconstruction**, and **VIATRA V002 canonical scientific execution + independent replay**. Rust Omega preserves the bounded C03–C07 structural evidence already established; TI-001/NEXT2–NEXT4 and MT5 remain cumulatively preserved; VIATRA V002 adds bounded execution/reproducibility evidence routed to C16. No claim status or level changes and no TGCV Core modification. The update also makes the external-facing naming and table propagation explicit.
+**Predecessor:** v1.46  
+**Incremental governance update:** Structural reorganization only. The complete evidentiary content, claim matrix, claim statuses/levels, material evidence records, evidence interpretations, claim propagations, TGCV Core and governance boundaries are preserved unchanged. The purpose of v1.47 is to separate the matrix's routing/synthesis layers from its material-evidence repository; no scientific content is added, removed, rewritten, upgraded, downgraded, superseded or reinterpreted.
+
 ## Matrix preservation rule
 This matrix is cumulative. Every new version MUST preserve the full evidentiary content and schema of its predecessor and add, qualify, bound, supersede, or explicitly retire information. A version MUST NOT silently reduce the number of claim-matrix columns, remove material evidence descriptions, collapse evidence basis into summary-only fields, or replace detailed evidence records with a short status table.
 
