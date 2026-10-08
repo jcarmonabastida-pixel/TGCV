@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-09 — Canonical pointer reconciliation for Evidence→Claim Matrix v1.47
+
+- Restored the immutable versioned artifact `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.47.md` as an exact copy of the complete stable current alias.
+- Aligned the matrix pointer, `CANONICAL_STATE.json`, `STATUS.md` and current RMA traceability alias to v1.47; marked v1.44 historical in current traceability.
+- This is governance/pointer reconciliation only. Matrix scientific content, claim statuses/levels and TGCV Core are unchanged; no scientific execution is authorized or repeated.
+
+
 ## 2026-09-19 — VSL-KGFS-02 formal closure
 
 - Formally closed `VSL-KGFS-02` as `CLOSED — COMPATIBILITY_NOT_ESTABLISHED` after the controlled source, population, site, translation/equivalence and administration audits.
