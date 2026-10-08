@@ -72,3 +72,12 @@ If any item remains unknown, keep the corresponding use blocked. Do not inspect 
 - `00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_DATASET_SNAPSHOT_MANIFEST_AND_PROVENANCE_REVIEW_v0.1.md`
 
 No dataset bytes were accessed or processed. No scientific code was executed. No existing artifact was modified. This matrix does not change TGCV Core, Ω-primary status, the historical admission decision, or the acknowledged sequencing deviation.
+
+
+## 6. Confirmed purpose boundary — 2026-10-09
+
+The proposed research purpose is now confirmed for admission assessment only in:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_PROPOSED_RESEARCH_PURPOSE_AND_USE_BOUNDARY_001.md`
+
+Purpose: assess whether existing U_t can support structural transformation-space and reachability analysis, without causal/value claims and without interpreting `UNKNOWN_MISSING` as absence. This resolves the purpose-definition question for the next review; it does not resolve linkage risk, minimisation, operational controls, retention, or admission. The gate remains **NOT READY FOR EMPIRICAL REUSE APPROVAL**.
