@@ -17,6 +17,14 @@ public class V002ScientificExecutionTest {
     public void executeCanonicalScientificRunExactlyOnce() throws Exception {
         String configuredFixtureDirectory =
             System.getProperty("tgcv.fixture.directory");
+        if (configuredFixtureDirectory == null) {
+            configuredFixtureDirectory =
+                System.getenv("GITHUB_WORKSPACE");
+            if (configuredFixtureDirectory != null) {
+                configuredFixtureDirectory +=
+                    "/00_GOVERNANCE/architecture/fixtures";
+            }
+        }
         Path fixtureDirectory = configuredFixtureDirectory == null
             ? Paths.get("../../../../00_GOVERNANCE/architecture/fixtures")
             : Paths.get(configuredFixtureDirectory);
