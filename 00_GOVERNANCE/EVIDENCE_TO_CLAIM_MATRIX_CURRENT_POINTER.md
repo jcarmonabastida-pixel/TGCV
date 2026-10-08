@@ -2,10 +2,10 @@
 
 **Status:** CURRENT CONTROL POINTER  
 **Current matrix:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_CURRENT.md`  
-**Current version:** v1.46  
-**Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.46.md`  
-**Predecessor:** v1.45  
-**Established:** 2026-10-01
+**Current version:** v1.47  
+**Versioned artifact:** `00_GOVERNANCE/EVIDENCE_TO_CLAIM_MATRIX_v1.47.md`  
+**Predecessor:** v1.46  
+**Established:** 2026-10-08
 
 v1.40 cumulatively preserves v1.39 and incorporates the closed TI-001 V012 NEXT2 direct primary contrast as bounded material evidence, with the secondary MI traceability limitation explicitly recorded. NEXT2 routes primarily to C16 as a bounded non-confirmatory mechanism qualification. No claim-level status or level changes and no TGCV Core modification is introduced.
 
@@ -23,3 +23,6 @@ v1.45 cumulatively preserves v1.44 and incorporates the closed VIATRA V002 canon
 
 
 v1.46 corrects the v1.45 propagation/naming omissions. It explicitly names the cumulative TI experimental chain (Rust Omega / RUST-DYN-2, TI-001 / NEXT2–NEXT4, MT5, VIATRA V002), routes VIATRA V002 to C16 in the claim table using an external-facing name, and retains the Rust Omega material record with explicit external-facing naming. No claim status/level or TGCV Core change is introduced.
+
+
+v1.47 preserves the complete evidentiary content and claim matrix of v1.46; this increment is a structural reorganization only. The versioned artifact and stable current alias are byte-for-byte identical. No scientific content, claim status/level or TGCV Core element changes.
