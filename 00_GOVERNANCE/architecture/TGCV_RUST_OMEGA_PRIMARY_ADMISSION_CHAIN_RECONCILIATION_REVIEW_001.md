@@ -68,3 +68,33 @@ TGCV Core remains unchanged. Ω-primary remains a proposed, non-canonical candid
 ## 7. Next gate
 
 `RUST_OMEGA_PRIMARY_ADMISSION_EVIDENCE_RECONCILIATION_DECISION`
+
+## 8. Published-source cross-check — 2026-10-09
+
+The authors' public repository contains the release-specific README:
+
+- Source: https://github.com/wschuell/repo_datasets/blob/main/rust_repos_2022_09_07/README.md
+- Dataset release directory: `rust_repos_2022_09_07`
+- Declared data validity upper bound: `2022-09-07`, described as the timestamp of the crates.io database dump used.
+- Declared `repodepo` version: `0.1.3`
+- Declared `repodepo` commit: `5c592800cbbb09f5b43c91f937f03141140f3c78`
+- Documented published formats: SQLite export and PostgreSQL dump files.
+- The README describes the export process as anonymizing and cleaning the database; the associated `export_dataset.py` script invokes export, anonymization, cleaning, and dump steps.
+
+### Interpretation and limitations
+
+This is release-specific provenance evidence and supports identifying the intended 2022-09-07 source release. It does **not** prove that the locally retained ZIP is byte-identical to a particular Figshare file/version, nor does it establish the license applicable to that exact file. The release README inspected does not itself state a dataset license. Absence of a license statement in that README is not evidence that no license exists elsewhere.
+
+The author-described anonymization process is not an independent privacy audit of the local ZIP or every field retained in the TGCV processing path.
+
+### Updated evidence disposition
+
+- Source release identity: **PARTIALLY SUPPORTED** by the authors' release-specific README.
+- Exact Figshare article/file/version ↔ local ZIP identity: **OPEN**.
+- Applicable dataset/file license: **OPEN**.
+- Local artifact hash ↔ published file hash or other authoritative identity evidence: **OPEN**.
+- Privacy/identifiability adequacy for TGCV's specific retained fields and intended reuse: **OPEN**.
+- Historical admission-sequence reconciliation: **OPEN**; no retroactive admission inferred.
+
+This cross-check is documentary only. No dataset bytes were inspected or transformed, no scientific code was run, and no TGCV Core or Ω-primary status was changed.
+
