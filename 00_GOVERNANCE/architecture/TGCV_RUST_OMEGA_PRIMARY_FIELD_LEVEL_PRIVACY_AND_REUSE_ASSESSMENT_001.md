@@ -120,3 +120,12 @@ Incomplete evidence keeps the relevant reuse category blocked.
 - `07_CODE/src/rust_omega_u_real_data_execution_v01.py`
 
 This is a documentary field-level assessment. No dataset bytes were opened, downloaded, transformed, or reprocessed; no scientific code was executed; no existing artifact was modified.
+
+
+## 10. Proposed operational controls — 2026-10-09
+
+The proposed minimisation, access, retention and permitted-reuse controls are documented separately at:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_DATA_MINIMISATION_ACCESS_RETENTION_AND_REUSE_SCOPE_PROPOSAL_001.md`
+
+The proposal distinguishes documentary governance review from opening/parsing row-level content, structural scientific reuse, longitudinal inference, and external disclosure. It records storage/access/retention settings as unverified where no evidence was available. It is **PROPOSED**, not an admission decision or execution authorization; the existing U_t remains blocked from empirical reuse.
