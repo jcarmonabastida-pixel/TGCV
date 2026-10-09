@@ -120,7 +120,7 @@ The evidence status for each admission criterion is tabulated in:
 
 `00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_PROSPECTIVE_ADMISSION_GATE_READINESS_MATRIX_001.md`
 
-That matrix distinguishes supported provenance facts from controls that are merely proposed or remain unverified. It finds the gate **NOT READY FOR EMPIRICAL REUSE APPROVAL**, principally because linkage threat modelling, field necessity/minimisation, actual storage/access controls, retention, and exact intended use are still OPEN. This does not select an admission outcome.
+That matrix distinguishes supported provenance facts from controls that are merely proposed or remain unverified. It finds the gate **NOT READY FOR EMPIRICAL REUSE APPROVAL**, principally because linkage threat modelling, field necessity/minimisation, and actual storage/access controls remain OPEN; the research purpose is defined but not approved; and retention is settled only for the existing U_t JSON, not for the raw ZIP, unknown copies/backups, or all operational handling. This does not select an admission outcome.
 
 
 ## 11. Confirmed purpose boundary — 2026-10-09
