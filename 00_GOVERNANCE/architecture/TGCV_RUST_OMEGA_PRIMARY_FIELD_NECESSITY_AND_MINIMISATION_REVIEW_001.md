@@ -64,7 +64,7 @@ The canonical U_t hash identifies the canonical record sequence; the physical JS
 
 ## 6. Unresolved decision evidence
 
-This source-level review cannot determine actual re-identification likelihood or verify operational controls. Still open are: threat actor and auxiliary sources; actual storage/access controls; encryption, backup and sync handling; retention owner and review/deletion trigger; independent privacy review; sharing restrictions; and whether a future decision permits historical U_t as-is, audit-only retention, or a separately authorised minimised derivative.
+This source-level review cannot determine actual re-identification likelihood or verify operational controls. Still open are: threat actor and auxiliary sources; actual storage/access controls; encryption, backup and sync handling; accountable role; raw-ZIP and unknown-copy retention; verified backup/deletion handling; independent privacy review; and sharing restrictions. The existing U_t JSON already has a separate audit-only retention decision for its current location, with six-month and change-triggered review and no automatic deletion. That decision does not authorise structural reuse or a minimised derivative; either would require a separate prospective decision.
 
 ## 7. Outcome
 
