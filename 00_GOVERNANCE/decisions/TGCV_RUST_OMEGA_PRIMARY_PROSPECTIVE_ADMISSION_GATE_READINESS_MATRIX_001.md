@@ -145,3 +145,14 @@ A preliminary documentary threat model has been recorded at:
 It identifies plausible, untested linkage paths through numeric package/version identifiers, release timestamps, dependency graph structure, dependency-row ordinals, and combinations of these fields. It does not claim successful re-identification, estimate probabilities, or establish anonymity. No public registry was queried and no dataset rows or JSON content were inspected.
 
 Independent privacy/re-identification review is currently unavailable, as reported by the user. This is recorded as a limitation; it does not establish that independent review is unnecessary. The threat model is documentary and preliminary. Privacy/identifiability clearance remains **NOT GRANTED**, and empirical reuse, further processing, and external disclosure remain **BLOCKED**. The existing U_t artifact remains retained only for audit/documentary traceability under the separate retention decision.
+
+## 13. Documentary governance phase closure — 2026-10-09
+
+The bounded documentary governance phase is recorded as **CLOSED WITH RESTRICTIONS** in:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_DOCUMENTARY_GOVERNANCE_PHASE_CLOSURE_DECISION_001.md`
+
+This is a closure of the documentary review work possible with the evidence currently available, **not** a grant of scientific admission and not a finding that the source data or U_t are anonymous or safe for reuse. The gate result above therefore remains **NOT READY FOR EMPIRICAL REUSE APPROVAL**. Privacy/identifiability clearance remains **NOT GRANTED**; scientific inspection, structural reuse, further processing, new scientific execution, and external disclosure remain blocked or unauthorised under the existing retention decision.
+
+The closure does not retroactively cure the historical admission-sequencing deviation, change TGCV Core, or promote Ω-primary to canonical status. Reopening requires a separate prospective decision if the proposed use, storage/access conditions, retention boundary, external sharing, or material evidence changes.
+
