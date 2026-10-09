@@ -51,7 +51,7 @@ Current technical access controls have not been independently verified by this d
 
 ## 5. Proposed retention and deletion controls
 
-No retention/deletion policy is currently evidenced as frozen for these artifacts. The following conservative policy is proposed for prospective approval:
+The retention state is not identical across artifact classes. A separate decision, `TGCV_RUST_OMEGA_PRIMARY_EXISTING_U_ARTIFACT_RETENTION_DECISION_001.md`, has already selected audit-only retention for the existing U_t JSON at its current location, with review every six months and on specified changes, no automatic deletion date, and separate explicit decisions required for deletion, relocation, additional copies, or changes of use. That decision does **not** establish a complete retention/deletion policy for the raw ZIP, unknown copies/backups, or all operational handling. The following controls therefore address the remaining cross-artifact and operational gaps; they do not supersede the existing U_t decision.
 
 1. Preserve the existing artifacts unchanged as historical evidence while the admission-sequence reconciliation and audit obligations remain open.
 2. During this blocked period, allow documentary governance review only; do not inspect row-level content for scientific purposes.
