@@ -134,3 +134,14 @@ For the existing U_t artifact:
 - Scientific inspection, structural derivation, longitudinal claims, external disclosure, and new processing: **BLOCKED** pending a separate prospective decision and any required execution authorization.
 
 This decision does not retroactively cure the acknowledged sequencing deviation, grant privacy clearance, or change Core / Ω-primary status.
+
+
+## 12. Indirect-linkage threat model — 2026-10-09
+
+A preliminary documentary threat model has been recorded at:
+
+`00_GOVERNANCE/architecture/TGCV_RUST_OMEGA_PRIMARY_INDIRECT_LINKAGE_THREAT_MODEL_001.md`
+
+It identifies plausible, untested linkage paths through numeric package/version identifiers, release timestamps, dependency graph structure, dependency-row ordinals, and combinations of these fields. It does not claim successful re-identification, estimate probabilities, or establish anonymity. No public registry was queried and no dataset rows or JSON content were inspected.
+
+Independent privacy/re-identification review is currently unavailable, as reported by the user. This is recorded as a limitation; it does not establish that independent review is unnecessary. The threat model is documentary and preliminary. Privacy/identifiability clearance remains **NOT GRANTED**, and empirical reuse, further processing, and external disclosure remain **BLOCKED**. The existing U_t artifact remains retained only for audit/documentary traceability under the separate retention decision.
