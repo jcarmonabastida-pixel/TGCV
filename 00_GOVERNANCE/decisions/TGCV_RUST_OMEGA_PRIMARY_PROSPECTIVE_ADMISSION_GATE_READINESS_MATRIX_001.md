@@ -117,3 +117,20 @@ The read-only, privacy-conscious local verification procedure is recorded at:
 `00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_LOCAL_CONTROLS_VERIFICATION_PROCEDURE_001.md`
 
 It provides local PowerShell checks for artifact existence/metadata, an initial ACL inventory, and system-drive encryption, plus a manual process for sync/backup and retention. It has **not** been executed on the user's machine. No local-control result is claimed; these criteria remain OPEN until sanitised evidence is supplied and reviewed.
+
+## 11. Existing U_t artifact retention decision — 2026-10-09
+
+The user has explicitly selected **audit-only retention in the current location** for the existing JSON artifact. The decision is recorded in:
+
+`00_GOVERNANCE/decisions/TGCV_RUST_OMEGA_PRIMARY_EXISTING_U_ARTIFACT_RETENTION_DECISION_001.md`
+
+This closes the user's choice of retention outcome for the existing U_t artifact, but it does not establish a complete local-storage audit or resolve the admission gate. Additional copies remain **UNKNOWN**; the user reports no backup tool configured in Ubuntu/WSL, but this is not an independent audit and does not rule out other copy/sync paths. The user's current sole use of the computer is recorded as a declaration; no inference is made about historical access.
+
+For the existing U_t artifact:
+- Retention choice: **DECIDED — AUDIT/DOCUMENTARY REVIEW ONLY**.
+- Existing artifact physical SHA-256: recorded in the retention decision from the user's prior local output; not recalculated.
+- Retention review: every six months and on change of purpose, storage location, or access conditions.
+- Automatic deletion: **NOT AUTHORIZED**; deletion requires a separate explicit decision.
+- Scientific inspection, structural derivation, longitudinal claims, external disclosure, and new processing: **BLOCKED** pending a separate prospective decision and any required execution authorization.
+
+This decision does not retroactively cure the acknowledged sequencing deviation, grant privacy clearance, or change Core / Ω-primary status.
