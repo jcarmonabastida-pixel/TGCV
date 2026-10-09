@@ -43,7 +43,7 @@ The matrix is **not ready** for an empirical-reuse approval because linkage risk
 
 The next gate must choose one of these bounded outcomes:
 
-- **Audit-only retention:** retain raw ZIP and U_t as restricted historical evidence; no scientific reuse.
+- **Existing U_t retention:** audit-only in its current location under the separate recorded retention decision; no scientific reuse. **Raw ZIP retention and the handling of unknown copies/backups remain unresolved** and require a separate decision.
 - **Restricted prospective reuse:** only after the OPEN controls are evidenced and the decision names the exact artifact, fields, research purpose, operator/access boundary, retention and output restrictions.
 - **Reject / securely dispose:** if the required controls cannot be established, document the decision and preserve only the audit evidence that must remain.
 
