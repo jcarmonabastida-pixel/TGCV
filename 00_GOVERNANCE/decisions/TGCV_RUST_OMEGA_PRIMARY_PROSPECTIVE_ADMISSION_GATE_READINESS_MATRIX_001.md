@@ -39,7 +39,7 @@ This matrix converts the existing admission criteria and field-level assessment 
 
 ## 3. Decision rule
 
-The matrix is **not ready** for an empirical-reuse approval because linkage risk, minimisation necessity, operational access controls, retention, and exact purpose remain OPEN or merely PROPOSED.
+The matrix is **not ready** for an empirical-reuse approval because linkage risk, minimisation necessity, and operational access controls remain OPEN; the exact research purpose is defined only as a proposal and is not approved; and retention is decided only for the existing U_t JSON (audit-only, current location), while raw-ZIP retention, unknown copies/backups, and cross-artifact operational handling remain OPEN.
 
 The next gate must choose one of these bounded outcomes:
 
