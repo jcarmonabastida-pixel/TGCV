@@ -124,7 +124,7 @@ function fixtures() {
 
   const relationGuardMonotonicity = clone(base);
   relationGuardMonotonicity.model_id = "relation-guard-intervention-monotonicity";
-  relationGuardMonotonicity.rule_profile = { type: "relation_guarded_graph", version: "2" };
+  relationGuardMonotonicity.rule_profile = { type: "relation_guarded_graph", version: "1" };
   relationGuardMonotonicity.relations = [
     { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
     { id: "r_guard_cd_by_ac", type: "requires_transition_enabled", transition_id: "t_cd", requires_transition_id: "t_ac" }
