@@ -353,6 +353,55 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(altered["reachable_states"], ["A"])
         self.assertIn("D", baseline["reachable_states"])
 
+    def test_multiple_guards_for_same_transition_use_explicit_interventions(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
+            {"id": "r_guard_bd_by_ac", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ac"},
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab_only", "disabled_transitions": ["t_ab"]},
+        ]
+        result = run_model(model)
+        altered = result["scenario_results"]["disable_ab_only"]
+        self.assertEqual(
+            [(effect["relation_id"], effect["status"]) for effect in altered["relation_effects"]],
+            [("r_guard_bd_by_ab", "BLOCKED"), ("r_guard_bd_by_ac", "APPLIED")],
+        )
+        self.assertEqual(altered["effective_disabled_transitions"], ["t_ab", "t_bd"])
+        self.assertNotIn("t_cd", altered["effective_disabled_transitions"])
+
+    def test_cyclic_guard_relations_are_not_recursively_evaluated(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_ab_requires_bd", "type": "requires_transition_enabled",
+             "transition_id": "t_ab", "requires_transition_id": "t_bd"},
+            {"id": "r_bd_requires_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab_only", "disabled_transitions": ["t_ab"]},
+        ]
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        altered = result["scenario_results"]["disable_ab_only"]
+        self.assertEqual(
+            [(effect["relation_id"], effect["status"]) for effect in baseline["relation_effects"]],
+            [("r_ab_requires_bd", "APPLIED"), ("r_bd_requires_ab", "APPLIED")],
+        )
+        self.assertEqual(
+            [(effect["relation_id"], effect["status"]) for effect in altered["relation_effects"]],
+            [("r_ab_requires_bd", "APPLIED"), ("r_bd_requires_ab", "BLOCKED")],
+        )
+        self.assertEqual(altered["effective_disabled_transitions"], ["t_ab", "t_bd"])
+        self.assertNotIn("t_ac", altered["effective_disabled_transitions"])
+
     def test_relation_guarded_profile_cycle_and_exploration_caps_are_explicit(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
