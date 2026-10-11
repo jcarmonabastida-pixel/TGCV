@@ -67,6 +67,27 @@ function fixtures() {
     { id: "block_both", disabled_transitions: ["t_ab", "t_ac"] }
   );
   cases.push({ name: "multiple-interventions", model: multiple });
+  const interventionOrderReference = clone(base);
+  interventionOrderReference.model_id = "intervention-order-invariance";
+  interventionOrderReference.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  interventionOrderReference.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
+    { id: "r_guard_cd_by_ac", type: "requires_transition_enabled", transition_id: "t_cd", requires_transition_id: "t_ac" }
+  ];
+  interventionOrderReference.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_both", disabled_transitions: ["t_ab", "t_ac"] }
+  ];
+  cases.push({ name: "intervention-order-reference", model: interventionOrderReference });
+
+  const interventionOrderPermuted = clone(interventionOrderReference);
+  interventionOrderPermuted.scenarios[1].disabled_transitions.reverse();
+  cases.push({
+    name: "intervention-order-permuted",
+    model: interventionOrderPermuted,
+    interventionPermutationOf: "intervention-order-reference"
+  });
+
 
   const directAndGuardChain = clone(base);
   directAndGuardChain.model_id = "direct-intervention-and-nonrecursive-guard-chain";
@@ -798,6 +819,18 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
         fixture.name + ": input SHA-256 differs");
       assert.equal(browserPackage.result.result_sha256, pyResult.result_sha256,
         fixture.name + ": result SHA-256 differs");
+      if (fixture.interventionPermutationOf) {
+        const original = semanticResults.get(fixture.interventionPermutationOf);
+        assert.ok(original, fixture.name + ": original intervention order must run first");
+        assert.deepEqual(browserPackage.result.scenario_results, original.scenario_results,
+          fixture.name + ": reordering disabled transitions changed scenario semantics");
+        assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
+          fixture.name + ": reordering disabled transitions changed baseline comparisons");
+        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
+          fixture.name + ": reordering disabled transitions changed result SHA-256");
+        assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
+          fixture.name + ": reordering serialized disabled transitions should change input SHA-256");
+      }
       if (fixture.permutationOf) {
         const original = semanticResults.get(fixture.permutationOf);
         assert.ok(original, fixture.name + ": original relation ordering must run first");
@@ -813,6 +846,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
                  fixture.name.startsWith("generated-cyclic-guards-")) {
         semanticResults.set(fixture.model.model_id, browserPackage.result);
       }
+      semanticResults.set(fixture.name, browserPackage.result);
       report.push(fixture.name + ": PASS");
     }
     const invalidReport = [];
