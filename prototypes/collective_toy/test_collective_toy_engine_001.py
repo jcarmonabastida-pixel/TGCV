@@ -234,6 +234,33 @@ class CollectiveToyEngineTests(unittest.TestCase):
         model["rule_profile"]["unexpected"] = True
         cases.append(("unknown-rule-profile-field", model))
 
+        # Systematic missing-required-field and wrong-container-type cases.
+        for field in ("schema_version", "model_id", "states", "transitions",
+                      "rule_profile", "scenarios", "exploration"):
+            model = copy.deepcopy(self.model)
+            model.pop(field)
+            cases.append(("missing-required-" + field, model))
+
+        model = copy.deepcopy(self.model)
+        model["states"] = "A"
+        cases.append(("states-not-list", model))
+
+        model = copy.deepcopy(self.model)
+        model["transitions"] = {}
+        cases.append(("transitions-not-list", model))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = None
+        cases.append(("rule-profile-not-object", model))
+
+        model = copy.deepcopy(self.model)
+        model["relations"] = {}
+        cases.append(("relations-not-list", model))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0]["disabled_transitions"] = ["t_ab", "t_ab"]
+        cases.append(("duplicate-disabled-transition", model))
+
         for name, candidate in cases:
             with self.subTest(name=name):
                 with self.assertRaises(ModelValidationError):
