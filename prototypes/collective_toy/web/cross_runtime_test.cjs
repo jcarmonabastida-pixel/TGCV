@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const os = require("node:os");
 const assert = require("node:assert/strict");
+const crypto = require("node:crypto");
 
 function fixtures() {
   const base = {
@@ -230,6 +231,42 @@ function runPython(engineDir, model) {
   return JSON.parse(result.stdout.trim());
 }
 
+function canonicalJson(value) {
+  if (Array.isArray(value)) return "[" + value.map(canonicalJson).join(",") + "]";
+  if (value !== null && typeof value === "object") {
+    return "{" + Object.keys(value).sort().map(
+      key => JSON.stringify(key) + ":" + canonicalJson(value[key])
+    ).join(",") + "}";
+  }
+  return JSON.stringify(value);
+}
+
+function sha256Canonical(value) {
+  return crypto.createHash("sha256").update(canonicalJson(value), "utf8").digest("hex");
+}
+
+function verifyExportedPackage(engineDir, exportedPackage, label) {
+  assert.equal(exportedPackage.package_version, "collective-toy-run-package-001",
+    label + ": unsupported package version");
+  const packagePayload = structuredClone(exportedPackage);
+  delete packagePayload.package_sha256;
+  assert.equal(sha256Canonical(packagePayload), exportedPackage.package_sha256,
+    label + ": exported package SHA-256 does not verify");
+
+  assert.equal(sha256Canonical(exportedPackage.input), exportedPackage.result.input_sha256,
+    label + ": input SHA-256 does not verify");
+  const resultPayload = structuredClone(exportedPackage.result);
+  delete resultPayload.input_sha256;
+  delete resultPayload.result_sha256;
+  assert.equal(sha256Canonical(resultPayload), exportedPackage.result.result_sha256,
+    label + ": result SHA-256 does not verify");
+
+  const replayed = runPython(engineDir, exportedPackage.input);
+  assert.deepEqual(replayed, exportedPackage.result,
+    label + ": independently replayed Python result differs from exported result");
+  return true;
+}
+
 (async () => {
   const root = path.resolve(__dirname, "../../..");
   const htmlPath = path.join(root, "prototypes/collective_toy/web/index.html");
@@ -265,6 +302,7 @@ function runPython(engineDir, model) {
     await guardedDownload.saveAs(outputPath);
     let editorPackage = JSON.parse(fs.readFileSync(outputPath, "utf8"));
     fs.unlinkSync(outputPath);
+    verifyExportedPackage(engineDir, editorPackage, "visual relation-editor profile 2 export");
     const guardedScenario = editorPackage.result.scenario_results.block_ac;
     assert.ok(guardedScenario.effective_disabled_transitions.includes("t_bd"),
       "profile 2 should block the guarded transition when its required transition is disabled");
@@ -288,6 +326,7 @@ function runPython(engineDir, model) {
     await profileOneDownload.saveAs(outputPath);
     editorPackage = JSON.parse(fs.readFileSync(outputPath, "utf8"));
     fs.unlinkSync(outputPath);
+    verifyExportedPackage(engineDir, editorPackage, "visual relation-editor profile 1 export");
     const profileOneScenario = editorPackage.result.scenario_results.block_ac;
     assert.equal(profileOneScenario.effective_disabled_transitions, undefined,
       "profile 1 must not apply relation guards");
@@ -303,7 +342,7 @@ function runPython(engineDir, model) {
     await page.locator('[data-remove-relation="r_guard_1"]').click();
     editorParsed = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(editorParsed.relations.length, 0, "visual editor should remove selected relation");
-    console.log("PASS: relation editor profile switching, add/remove, profile 2 execution, and profile 1 inertness.");
+    console.log("PASS: relation editor profile switching, add/remove, profile 2 execution, profile 1 inertness, and independent export replay.");
 
     const validFixtures = [...fixtures(), ...generatedFixtures()];
     for (const fixture of validFixtures) {
@@ -318,6 +357,7 @@ function runPython(engineDir, model) {
       await download.saveAs(outputPath);
       const browserPackage = JSON.parse(fs.readFileSync(outputPath, "utf8"));
       fs.unlinkSync(outputPath);
+      verifyExportedPackage(engineDir, browserPackage, fixture.name + " exported package");
 
       const pyResult = runPython(engineDir, fixture.model);
       assert.deepEqual(browserPackage.result.scenario_results, pyResult.scenario_results,
