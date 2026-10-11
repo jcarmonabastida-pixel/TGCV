@@ -232,6 +232,11 @@ function runPython(engineDir, model) {
     assert.ok(guardedScenario.effective_disabled_transitions.includes("t_bd"),
       "profile 2 should block the guarded transition when its required transition is disabled");
     assert.equal(guardedScenario.relation_effects[0].status, "BLOCKED");
+    assert.equal(
+      await page.locator('#graph path[data-transition-id="t_bd"]').getAttribute("stroke-opacity"),
+      "0.22",
+      "graph should visually dim a relation-blocked transition in profile 2"
+    );
 
     await page.locator("#profile-editor").selectOption("1");
     editorParsed = JSON.parse(await page.locator("#model").inputValue());
@@ -250,6 +255,11 @@ function runPython(engineDir, model) {
       "profile 1 must not apply relation guards");
     assert.deepEqual(profileOneScenario.disabled_transitions, ["t_ac"],
       "profile 1 should preserve only the explicit scenario intervention");
+    assert.equal(
+      await page.locator('#graph path[data-transition-id="t_bd"]').getAttribute("stroke-opacity"),
+      "0.72",
+      "graph should not dim a transition because of inert metadata in profile 1"
+    );
 
     await page.locator("#profile-editor").selectOption("2");
     await page.locator('[data-remove-relation="r_guard_1"]').click();
