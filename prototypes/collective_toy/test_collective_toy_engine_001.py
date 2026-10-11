@@ -738,6 +738,31 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
+    def test_combined_disabling_interventions_are_monotone(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
+            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
+             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
+            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
+            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
+        ]
+        result = run_model(model)["scenario_results"]
+        combined = result["disable_both"]
+        for single_id in ("disable_ab", "disable_ac"):
+            single = result[single_id]
+            self.assertLessEqual(set(combined["reachable_states"]), set(single["reachable_states"]))
+            self.assertLessEqual(
+                {tuple(path) for path in combined["trajectories"]},
+                {tuple(path) for path in single["trajectories"]},
+            )
+
     def test_disconnected_component_does_not_change_existing_scenario_outcomes(self):
         model = copy.deepcopy(self.model)
         augmented = copy.deepcopy(model)
