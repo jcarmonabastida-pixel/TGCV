@@ -111,6 +111,17 @@ function fixtures() {
     transitionPermutationOf: "transition-order-reference"
   });
 
+  const stateOrderReference = clone(base);
+  stateOrderReference.model_id = "state-order-invariance";
+  cases.push({ name: "state-order-reference", model: stateOrderReference });
+  const stateOrderPermuted = clone(stateOrderReference);
+  stateOrderPermuted.states.reverse();
+  cases.push({
+    name: "state-order-permuted",
+    model: stateOrderPermuted,
+    statePermutationOf: "state-order-reference"
+  });
+
   const directAndGuardChain = clone(base);
   directAndGuardChain.model_id = "direct-intervention-and-nonrecursive-guard-chain";
   directAndGuardChain.states = ["A", "B", "C", "D"];
@@ -852,6 +863,18 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering disabled transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized disabled transitions should change input SHA-256");
+      }
+      if (fixture.statePermutationOf) {
+        const original = semanticResults.get(fixture.statePermutationOf);
+        assert.ok(original, fixture.name + ": original state order must run first");
+        assert.deepEqual(browserPackage.result.scenario_results, original.scenario_results,
+          fixture.name + ": reordering states changed scenario semantics");
+        assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
+          fixture.name + ": reordering states changed baseline comparisons");
+        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
+          fixture.name + ": reordering states changed result SHA-256");
+        assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
+          fixture.name + ": reordering serialized states should change input SHA-256");
       }
       if (fixture.transitionPermutationOf) {
         const original = semanticResults.get(fixture.transitionPermutationOf);
