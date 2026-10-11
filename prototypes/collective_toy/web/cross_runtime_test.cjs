@@ -470,6 +470,43 @@ function invalidFixtures() {
     cases.push({ name: "missing-exploration-" + field, model: missing });
   }
 
+  // Deterministic malformed-input mutation matrix mirrored by Python unit tests.
+  const mutationCases = [];
+  const addMutation = (name, mutate) => {
+    const model = clone(base);
+    mutate(model);
+    mutationCases.push({ name, model });
+  };
+  addMutation("mutated-states-container", m => { m.states = {}; });
+  addMutation("mutated-transitions-container", m => { m.transitions = null; });
+  addMutation("mutated-transition-item", m => { m.transitions = [null]; });
+  addMutation("mutated-transition-id-type", m => { m.transitions[0].id = 7; });
+  addMutation("mutated-transition-source-type", m => { m.transitions[0].source = null; });
+  addMutation("mutated-transition-target-type", m => { m.transitions[0].target = []; });
+  addMutation("mutated-scenarios-container", m => { m.scenarios = {}; });
+  addMutation("mutated-scenario-item", m => { m.scenarios = [null]; });
+  addMutation("mutated-scenario-id-empty", m => { m.scenarios[0].id = ""; });
+  addMutation("mutated-disabled-transition-item", m => { m.scenarios[0].disabled_transitions = [null]; });
+  addMutation("mutated-exploration-container", m => { m.exploration = null; });
+  addMutation("mutated-depth-type", m => { m.exploration.max_depth = "2"; });
+  addMutation("mutated-trajectory-cap-negative", m => { m.exploration.max_trajectories = -1; });
+  addMutation("mutated-relations-container", m => { m.relations = {}; });
+  addMutation("mutated-relation-item", m => {
+    m.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    m.relations = [null];
+  });
+  addMutation("mutated-relation-type", m => {
+    m.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    m.relations = [{ id: "r_mut", type: "unknown", transition_id: "t_ab", requires_transition_id: "t_ac" }];
+  });
+  addMutation("mutated-relation-reference", m => {
+    m.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    m.relations = [{ id: "r_mut", type: "requires_transition_enabled", transition_id: "missing", requires_transition_id: "t_ab" }];
+  });
+  addMutation("mutated-duplicate-scenario-id", m => { m.scenarios.push(clone(m.scenarios[0])); });
+  addMutation("mutated-initial-state-boolean", m => { m.initial_state = false; });
+  cases.push(...mutationCases);
+
   return cases;
 }
 
