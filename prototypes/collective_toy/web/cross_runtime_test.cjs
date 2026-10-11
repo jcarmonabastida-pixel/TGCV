@@ -307,7 +307,7 @@ function invalidFixtures() {
   cases.push({ name: "unsafe-integer-metadata", model: unsafeIntegerMetadata });
 
   const unpairedSurrogateMetadata = clone(base);
-  unpairedSurrogateMetadata.relations = [{ id: "descriptive", metadata: { label: "\\ud800" } }];
+  unpairedSurrogateMetadata.relations = [{ id: "descriptive", metadata: { label: "\ud800" } }];
   cases.push({ name: "unpaired-surrogate-metadata", model: unpairedSurrogateMetadata });
 
   const unknownTopLevel = clone(base); unknownTopLevel.unexpected_top_level = true;
