@@ -138,12 +138,12 @@ function fixtures() {
   exactTrajectoryCap.states = ["A", "B"];
   exactTrajectoryCap.transitions = [{ id: "t_ab", source: "A", target: "B" }];
   exactTrajectoryCap.scenarios = [{ id: "baseline", disabled_transitions: [] }];
-  exactTrajectoryCap.exploration = { max_depth: 1, max_trajectories: 1 };
+  exactTrajectoryCap.exploration = { max_depth: 4, max_trajectories: 1 };
   cases.push({ name: "exact-trajectory-cap-is-complete", model: exactTrajectoryCap });
 
   const terminalAtDepth = clone(exactTrajectoryCap);
   terminalAtDepth.model_id = "terminal-at-depth-boundary-is-complete";
-  terminalAtDepth.exploration.max_depth = 1;
+  terminalAtDepth.exploration = { max_depth: 1, max_trajectories: 10 };
   cases.push({ name: "terminal-at-depth-boundary-is-complete", model: terminalAtDepth });
 
   return cases;
