@@ -122,6 +122,14 @@ function fixtures() {
     statePermutationOf: "state-order-reference"
   });
 
+  const unreachableIntervention = clone(base);
+  unreachableIntervention.model_id = "unreachable-transition-non-interference";
+  unreachableIntervention.scenarios.push({
+    id: "block_ac_and_cd",
+    disabled_transitions: ["t_ac", "t_cd"]
+  });
+  cases.push({ name: "unreachable-transition-non-interference", model: unreachableIntervention });
+
   const directAndGuardChain = clone(base);
   directAndGuardChain.model_id = "direct-intervention-and-nonrecursive-guard-chain";
   directAndGuardChain.states = ["A", "B", "C", "D"];
@@ -863,6 +871,19 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering disabled transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized disabled transitions should change input SHA-256");
+      }
+      if (fixture.name === "unreachable-transition-non-interference") {
+        const blockAc = browserPackage.result.scenario_results.block_ac;
+        const blockAcAndCd = browserPackage.result.scenario_results.block_ac_and_cd;
+        assert.deepEqual(blockAcAndCd.reachable_states, blockAc.reachable_states,
+          "disabling unreachable t_cd changed reachable states when t_ac already blocks its branch");
+        assert.deepEqual(blockAcAndCd.trajectories, blockAc.trajectories,
+          "disabling unreachable t_cd changed trajectories when t_ac already blocks its branch");
+        assert.deepEqual(
+          blockAcAndCd.enabled_transitions_at_initial_state,
+          blockAc.enabled_transitions_at_initial_state,
+          "disabling unreachable t_cd changed initial enabled transitions"
+        );
       }
       if (fixture.statePermutationOf) {
         const original = semanticResults.get(fixture.statePermutationOf);
