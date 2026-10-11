@@ -738,6 +738,28 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
+    def test_duplicate_semantic_guard_does_not_change_graph_outcomes(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        guard = {
+            "id": "r_guard_bd_by_ab",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_bd",
+            "requires_transition_id": "t_ab",
+        }
+        model["relations"] = [guard]
+        duplicate = copy.deepcopy(guard)
+        duplicate["id"] = "r_guard_bd_by_ab_duplicate"
+        duplicated_model = copy.deepcopy(model)
+        duplicated_model["relations"].append(duplicate)
+        original = run_model(model)
+        duplicated = run_model(duplicated_model)
+        for scenario_id in original["scenario_results"]:
+            left = original["scenario_results"][scenario_id]
+            right = duplicated["scenario_results"][scenario_id]
+            for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
+                self.assertEqual(left[key], right[key], f"{key} changed in {scenario_id}")
+
     def test_relation_declaration_order_does_not_change_semantics(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
