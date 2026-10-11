@@ -452,13 +452,9 @@ function invalidFixtures() {
   nonObjectRelation.relations = [null];
   cases.push({ name: "non-object-relation", model: nonObjectRelation });
 
-  const unknownRelationField = clone(base);
-  unknownRelationField.rule_profile = { type: "relation_guarded_graph", version: "1" };
-  unknownRelationField.relations = [{
-    id: "r_schema", type: "requires_transition_enabled",
-    transition_id: "t_ab", requires_transition_id: "t_ba", unexpected: true
-  }];
-  cases.push({ name: "unknown-relation-field", model: unknownRelationField });
+  const emptyScenarioId = clone(base);
+  emptyScenarioId.scenarios[0].id = "";
+  cases.push({ name: "empty-scenario-id", model: emptyScenarioId });
 
   const missingScenarioId = clone(base);
   delete missingScenarioId.scenarios[0].id;
