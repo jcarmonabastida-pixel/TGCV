@@ -10,6 +10,7 @@ from collections import deque
 from dataclasses import dataclass
 import hashlib
 import json
+import math
 from typing import Any
 
 
@@ -27,9 +28,58 @@ def _reject_unknown_keys(value: dict[str, Any], allowed: set[str], context: str)
         raise ModelValidationError(f"{context} contains unknown fields: {unknown}")
 
 
+MAX_SAFE_JSON_INTEGER = 9_007_199_254_740_991
+
+
+def _validate_canonical_domain(value: Any, path: str = "$") -> None:
+    """Limit inputs to a JSON domain with matching Python/JavaScript number and string behavior."""
+    if value is None or isinstance(value, bool):
+        return
+    if isinstance(value, int):
+        if abs(value) > MAX_SAFE_JSON_INTEGER:
+            raise ModelValidationError(f"{path} contains an integer outside JavaScript's safe integer range")
+        return
+    if isinstance(value, float):
+        if not math.isfinite(value) or not value.is_integer() or abs(value) > MAX_SAFE_JSON_INTEGER:
+            raise ModelValidationError(f"{path} contains a number that is not a finite safe integer")
+        return
+    if isinstance(value, str):
+        if any(0xD800 <= ord(char) <= 0xDFFF for char in value):
+            raise ModelValidationError(f"{path} contains an unpaired Unicode surrogate")
+        return
+    if isinstance(value, list):
+        for index, item in enumerate(value):
+            _validate_canonical_domain(item, f"{path}[{index}]")
+        return
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise ModelValidationError(f"{path} contains a non-string object key")
+            _validate_canonical_domain(key, f"{path}.<key>")
+            _validate_canonical_domain(item, f"{path}.{key}")
+        return
+    raise ModelValidationError(f"{path} contains a non-JSON value")
+
+
+def _normalize_integral_floats(value: Any) -> Any:
+    if isinstance(value, float):
+        return int(value)
+    if isinstance(value, list):
+        return [_normalize_integral_floats(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _normalize_integral_floats(item) for key, item in value.items()}
+    return value
+
+
 def canonical_json(value: Any) -> str:
-    """Serialize JSON-compatible values deterministically for this engine."""
-    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    """Serialize the supported JSON domain deterministically across Python and JavaScript."""
+    _validate_canonical_domain(value)
+    return json.dumps(
+        _normalize_integral_floats(value),
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
 
 
 def sha256_json(value: Any) -> str:
@@ -46,6 +96,7 @@ class Transition:
 def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Transition]]:
     if not isinstance(model, dict):
         raise ModelValidationError("model must be a JSON object")
+    _validate_canonical_domain(model)
     _reject_unknown_keys(model, {"schema_version", "model_id", "initial_state", "states", "transitions", "relations", "rule_profile", "scenarios", "exploration"}, "model")
     if model.get("schema_version") != SUPPORTED_SCHEMA:
         raise ModelValidationError(f"schema_version must be {SUPPORTED_SCHEMA!r}")
