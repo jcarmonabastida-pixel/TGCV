@@ -352,6 +352,35 @@ function invalidFixtures() {
   }];
   cases.push({ name: "self-referential-guard", model: selfGuard });
 
+  // Systematic missing-required-field and wrong-container-type cases.
+  for (const field of ["schema_version", "model_id", "states", "transitions",
+                       "rule_profile", "scenarios", "exploration"]) {
+    const missing = clone(base);
+    missing.model_id = "missing-required-" + field;
+    delete missing[field];
+    cases.push({ name: "missing-required-" + field, model: missing });
+  }
+  const statesNotList = clone(base);
+  statesNotList.states = "A";
+  cases.push({ name: "states-not-list", model: statesNotList });
+
+  const transitionsNotList = clone(base);
+  transitionsNotList.transitions = {};
+  cases.push({ name: "transitions-not-list", model: transitionsNotList });
+
+  const profileNotObject = clone(base);
+  profileNotObject.rule_profile = null;
+  cases.push({ name: "rule-profile-not-object", model: profileNotObject });
+
+  const relationsNotList = clone(base);
+  relationsNotList.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  relationsNotList.relations = {};
+  cases.push({ name: "relations-not-list", model: relationsNotList });
+
+  const duplicateDisabled = clone(base);
+  duplicateDisabled.scenarios[0].disabled_transitions = ["t_ab", "t_ab"];
+  cases.push({ name: "duplicate-disabled-transition", model: duplicateDisabled });
+
   return cases;
 }
 
