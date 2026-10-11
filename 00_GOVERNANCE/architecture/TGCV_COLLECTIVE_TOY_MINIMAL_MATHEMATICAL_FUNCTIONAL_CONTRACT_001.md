@@ -133,6 +133,18 @@ For a valid model/scenario pair, the engine shall:
 
 The first engine must use a stable traversal order (for example, lexicographic ordering by stable IDs) so output ordering is reproducible. The choice of order is an implementation detail that must be versioned, not a theoretical property.
 
+### 5.1 Current executable conventions (draft; not a schema freeze)
+
+The current implementation has the following observable conventions, which must be reviewed before freezing:
+
+- Scenario results are processed and keyed by scenario ID in lexicographic order. Outgoing transitions are explored by transition ID in lexicographic order; the current trajectory enumerator is depth-first, with the stack arranged to emit that order. Reachable state IDs, enabled transition IDs, disabled transition IDs, and effective disabled transition IDs are returned sorted lexicographically.
+- `max_depth` counts transition edges. At the depth boundary, the current path is retained; if an outgoing enabled transition remains, the result is marked `truncated: true`. A terminal path is retained without a depth-truncation warning when no outgoing enabled transition remains. `max_trajectories` is an output cap; if additional paths remain unexplored because the cap is reached, the result is marked truncated. Reachability is calculated separately from bounded trajectory enumeration.
+- In profile 2, relation guards are evaluated independently against the scenario's explicit `disabled_transitions` set only. If any guard targeting a transition finds its prerequisite explicitly disabled, that guarded transition is added to the effective disabled set. An `APPLIED` guard does not cancel a different guard's `BLOCKED` effect. Guard-derived disablements are not recursively used as prerequisites for other guards; cycles between guard relations therefore do not trigger recursive propagation.
+- The current validator checks required fields and supported value types/ranges but does not reject every unrecognized extra key. Whether the frozen schema should be strict about unknown keys is still an open decision.
+- Python hashes use deterministic JSON serialization with sorted object keys, compact separators, UTF-8 encoding, and non-ASCII characters preserved. Cross-runtime agreement has been tested on the current fixture set; this is not yet a claim of canonical equivalence for every possible JSON number, Unicode sequence, or malformed input.
+
+These conventions describe the present prototype and are not yet frozen normative rules. Any change to traversal, truncation, guard composition, unknown-key policy, or serialization must update both runtimes, tests, and this contract together.
+
 ## 6. Canonical input schema (conceptual)
 
 The JSON shape below documents the current prototype input shape; the contract remains a draft and schema-freeze review is still pending:
@@ -219,8 +231,8 @@ Remaining explicit gaps before contract freeze:
 - no remaining dedicated gap for multiple guards on the same guarded transition or cycles among guard relations in the current fixture set; coverage is finite and does not exhaust arbitrary relation graphs;
 - recursive guard evaluation remains explicitly out of scope: guards are evaluated only against the scenario's explicit disabled-transition set, not against disablements caused by other guards; the new tests cover same-target guards and a cyclic guard-reference fixture;
 - the export-and-replay check is now confirmed passing in the recorded CI snapshot for the tested package paths; broader long-term archival and independent replay outside CI are not yet a separate acceptance gate;
-- a review of deterministic ordering/serialization assumptions across supported Python/browser runtimes;
-- a formal decision on whether graph-level global availability guards remain the intended experimental semantics.
+- a review of deterministic ordering/serialization assumptions across supported Python/browser runtimes, including JSON numeric/Unicode edge cases and whether unknown keys should be rejected;
+- a formal decision on whether graph-level global availability guards remain the intended experimental semantics; the current OR-style blocking behavior for multiple guards is documented above but remains experimental.
 
 The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them. Latest confirming CI snapshot: browser/Python cross-runtime run 38156848896 and Python unit run 38156848887. The browser log reports 24 valid fixtures matched exactly, 25 invalid fixtures rejected by both runtimes, and the export/replay check passed; Python reports 25 tests passed.
 
