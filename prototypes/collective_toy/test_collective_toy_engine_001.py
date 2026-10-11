@@ -738,6 +738,28 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
+    def test_disabled_transition_declaration_order_does_not_change_semantics(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
+            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
+             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
+        ]
+        permuted = copy.deepcopy(model)
+        permuted["scenarios"][1]["disabled_transitions"].reverse()
+        original = run_model(model)
+        reordered = run_model(permuted)
+        self.assertEqual(original["scenario_results"], reordered["scenario_results"])
+        self.assertEqual(original["comparisons_to_baseline"], reordered["comparisons_to_baseline"])
+        self.assertEqual(original["result_sha256"], reordered["result_sha256"])
+        self.assertNotEqual(original["input_sha256"], reordered["input_sha256"])
+
     def test_combined_disabling_interventions_are_monotone(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
