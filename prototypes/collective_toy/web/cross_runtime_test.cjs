@@ -148,6 +148,22 @@ function fixtures() {
   cases.push({ name: "duplicated-semantic-guard", model: duplicatedSemanticGuard,
     duplicateSemanticGuardOf: "single-semantic-guard" });
 
+  const combinedInterventions = clone(base);
+  combinedInterventions.model_id = "combined-disabling-interventions-monotonicity";
+  combinedInterventions.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  combinedInterventions.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
+    { id: "r_guard_cd_by_ac", type: "requires_transition_enabled", transition_id: "t_cd", requires_transition_id: "t_ac" }
+  ];
+  combinedInterventions.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab", disabled_transitions: ["t_ab"] },
+    { id: "disable_ac", disabled_transitions: ["t_ac"] },
+    { id: "disable_both", disabled_transitions: ["t_ab", "t_ac"] }
+  ];
+  cases.push({ name: "combined-disabling-interventions-monotonicity", model: combinedInterventions,
+    monotonicInterventions: true });
+
   const disconnectedReference = clone(base);
   disconnectedReference.model_id = "disconnected-component-reference";
   cases.push({ name: "disconnected-component-reference", model: disconnectedReference });
@@ -1054,6 +1070,18 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
+      }
+      if (fixture.monotonicInterventions) {
+        const scenarios = browserPackage.result.scenario_results;
+        const combined = scenarios.disable_both;
+        for (const id of ["disable_ab", "disable_ac"]) {
+          const single = scenarios[id];
+          assert.ok(combined.reachable_states.every(state => single.reachable_states.includes(state)),
+            "combined interventions added a reachable state relative to " + id);
+          const singlePaths = new Set(single.trajectories.map(path => JSON.stringify(path)));
+          assert.ok(combined.trajectories.every(path => singlePaths.has(JSON.stringify(path))),
+            "combined interventions added a trajectory relative to " + id);
+        }
       }
       if (fixture.disconnectedComponentOf) {
         const reference = semanticResults.get(fixture.disconnectedComponentOf);
