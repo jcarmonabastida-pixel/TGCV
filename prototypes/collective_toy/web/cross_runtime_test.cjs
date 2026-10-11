@@ -1078,9 +1078,18 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           const single = scenarios[id];
           assert.ok(combined.reachable_states.every(state => single.reachable_states.includes(state)),
             "combined interventions added a reachable state relative to " + id);
-          const singlePaths = new Set(single.trajectories.map(path => JSON.stringify(path)));
-          assert.ok(combined.trajectories.every(path => singlePaths.has(JSON.stringify(path))),
-            "combined interventions added a trajectory relative to " + id);
+          // Edge removal may create new terminal paths; compare path edges, not terminal-list membership.
+          const explicitlyDisabled = new Set(id === "disable_ab" ? ["t_ab"] : ["t_ac"]);
+          const relationDisabled = new Set(combinedInterventions.relations
+            .filter(relation => explicitlyDisabled.has(relation.requires_transition_id))
+            .map(relation => relation.transition_id));
+          const singleDisabled = new Set([...explicitlyDisabled, ...relationDisabled]);
+          for (const path of combined.trajectories) {
+            const pathTransitions = path.filter(step => Object.prototype.hasOwnProperty.call(step, "transition"))
+              .map(step => step.transition);
+            assert.ok(pathTransitions.every(transitionId => !singleDisabled.has(transitionId)),
+              "combined trajectory used an edge disabled in " + id);
+          }
         }
       }
       if (fixture.disconnectedComponentOf) {
