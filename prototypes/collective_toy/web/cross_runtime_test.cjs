@@ -229,6 +229,33 @@ function generatedFixtures() {
       { id: "disable_both_prerequisites", disabled_transitions: [transitions[0].id, transitions[1].id] }
     ];
     cases.push({ name: multiGuardModel.model_id, model: multiGuardModel });
+
+    // Relation-dependency cycle: each guard targets the other transition.
+    // Evaluation remains non-recursive and reads only explicit scenario disables.
+    const cyclicGuardModel = clone(model);
+    cyclicGuardModel.model_id = "generated-cyclic-guards-" + String(n + 1).padStart(2, "0");
+    cyclicGuardModel.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    cyclicGuardModel.relations = [
+      {
+        id: "generated_cycle_guard_a_" + n,
+        type: "requires_transition_enabled",
+        transition_id: transitions[0].id,
+        requires_transition_id: transitions[1].id
+      },
+      {
+        id: "generated_cycle_guard_b_" + n,
+        type: "requires_transition_enabled",
+        transition_id: transitions[1].id,
+        requires_transition_id: transitions[0].id
+      }
+    ];
+    cyclicGuardModel.scenarios = [
+      { id: "baseline", disabled_transitions: [] },
+      { id: "disable_a", disabled_transitions: [transitions[0].id] },
+      { id: "disable_b", disabled_transitions: [transitions[1].id] },
+      { id: "disable_both", disabled_transitions: [transitions[0].id, transitions[1].id] }
+    ];
+    cases.push({ name: cyclicGuardModel.model_id, model: cyclicGuardModel });
   }
   return cases;
 }
