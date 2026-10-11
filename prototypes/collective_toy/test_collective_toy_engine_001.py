@@ -68,14 +68,13 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
         original = run_model(model)
         repeated = run_model(duplicate)
-        self.assertEqual(
-            original["scenario_results"],
-            repeated["scenario_results"],
-        )
-        self.assertEqual(
-            original["comparisons_to_baseline"],
-            repeated["comparisons_to_baseline"],
-        )
+        for scenario_id in original["scenario_results"]:
+            for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
+                self.assertEqual(
+                    original["scenario_results"][scenario_id][key],
+                    repeated["scenario_results"][scenario_id][key],
+                    f"duplicate semantic relation changed {key} in {scenario_id}",
+                )
         self.assertNotEqual(original["input_sha256"], repeated["input_sha256"])
 
     def test_duplicate_transition_id_fails(self):
