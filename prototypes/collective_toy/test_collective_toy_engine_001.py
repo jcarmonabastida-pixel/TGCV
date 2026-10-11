@@ -6,6 +6,8 @@ from collective_toy_engine_001 import (
     demo_model,
     export_run,
     run_model,
+    canonical_json,
+    sha256_json,
 )
 
 
@@ -83,6 +85,29 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(package["input"], self.model)
         self.assertIn("result_sha256", package["result"])
         self.assertIn("package_sha256", package)
+
+    def test_export_package_hashes_verify_and_export_replays_independently(self):
+        package = export_run(self.model)
+
+        package_payload = copy.deepcopy(package)
+        del package_payload["package_sha256"]
+        self.assertEqual(sha256_json(package_payload), package["package_sha256"])
+
+        self.assertEqual(sha256_json(package["input"]), package["result"]["input_sha256"])
+        result_payload = copy.deepcopy(package["result"])
+        del result_payload["input_sha256"]
+        del result_payload["result_sha256"]
+        self.assertEqual(sha256_json(result_payload), package["result"]["result_sha256"])
+
+        replayed = run_model(package["input"])
+        self.assertEqual(replayed, package["result"])
+
+        tampered = copy.deepcopy(package)
+        tampered["input"]["transitions"][0]["target"] = "D"
+        tampered_payload = copy.deepcopy(tampered)
+        del tampered_payload["package_sha256"]
+        self.assertNotEqual(sha256_json(tampered_payload), tampered["package_sha256"])
+        self.assertNotEqual(sha256_json(tampered["input"]), tampered["result"]["input_sha256"])
 
     def test_duplicate_state_id_fails(self):
         model = copy.deepcopy(self.model)
