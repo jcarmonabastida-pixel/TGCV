@@ -92,6 +92,32 @@ function fixtures() {
   ];
   cases.push({ name: "multiple-relation-guards", model: multiGuard });
 
+  const sameGuarded = clone(base);
+  sameGuarded.model_id = "multiple-guards-same-transition";
+  sameGuarded.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  sameGuarded.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
+    { id: "r_guard_bd_by_ac", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ac" }
+  ];
+  sameGuarded.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab_only", disabled_transitions: ["t_ab"] }
+  ];
+  cases.push({ name: "multiple-guards-same-transition", model: sameGuarded });
+
+  const cyclicGuards = clone(base);
+  cyclicGuards.model_id = "cyclic-guard-relations-explicit-only";
+  cyclicGuards.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  cyclicGuards.relations = [
+    { id: "r_ab_requires_bd", type: "requires_transition_enabled", transition_id: "t_ab", requires_transition_id: "t_bd" },
+    { id: "r_bd_requires_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" }
+  ];
+  cyclicGuards.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab_only", disabled_transitions: ["t_ab"] }
+  ];
+  cases.push({ name: "cyclic-guard-relations-explicit-only", model: cyclicGuards });
+
   const guardedCycle = clone(guarded);
   guardedCycle.model_id = "relation-guarded-cycle-and-bounds";
   guardedCycle.transitions.push({ id: "t_ba", source: "B", target: "A" });
