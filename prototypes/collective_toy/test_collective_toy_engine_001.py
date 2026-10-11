@@ -96,6 +96,21 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaises(ModelValidationError):
             run_model(model)
 
+    def test_disabled_transition_ids_must_be_strings(self):
+        for invalid_ids in ([{}], [None], [1], [""]):
+            with self.subTest(invalid_ids=invalid_ids):
+                model = copy.deepcopy(self.model)
+                model["scenarios"][1]["disabled_transitions"] = invalid_ids
+                with self.assertRaises(ModelValidationError):
+                    run_model(model)
+
+    def test_relations_are_inert_metadata_in_profile_one(self):
+        baseline = run_model(self.model)["scenario_results"]
+        model = copy.deepcopy(self.model)
+        model["relations"] = [{"id": "r1", "type": "descriptive-only", "from": "A", "to": "D"}]
+        with_relations = run_model(model)["scenario_results"]
+        self.assertEqual(baseline, with_relations)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
