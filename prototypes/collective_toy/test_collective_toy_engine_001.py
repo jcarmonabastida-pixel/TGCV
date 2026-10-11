@@ -172,6 +172,26 @@ class CollectiveToyEngineTests(unittest.TestCase):
         ]
         cases.append(("transition-count-over-resource-cap", model))
 
+        model = copy.deepcopy(self.model)
+        model["unexpected_top_level"] = True
+        cases.append(("unknown-top-level-field", model))
+
+        model = copy.deepcopy(self.model)
+        model["transitions"][0]["unexpected"] = True
+        cases.append(("unknown-transition-field", model))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0]["unexpected"] = True
+        cases.append(("unknown-scenario-field", model))
+
+        model = copy.deepcopy(self.model)
+        model["exploration"]["unexpected"] = True
+        cases.append(("unknown-exploration-field", model))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"]["unexpected"] = True
+        cases.append(("unknown-rule-profile-field", model))
+
         for name, candidate in cases:
             with self.subTest(name=name):
                 with self.assertRaises(ModelValidationError):
