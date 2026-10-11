@@ -68,6 +68,28 @@ function fixtures() {
   );
   cases.push({ name: "multiple-interventions", model: multiple });
 
+  const directAndGuardChain = clone(base);
+  directAndGuardChain.model_id = "direct-intervention-and-nonrecursive-guard-chain";
+  directAndGuardChain.states = ["A", "B", "C", "D"];
+  directAndGuardChain.initial_state = "A";
+  directAndGuardChain.transitions = [
+    { id: "t_ab", source: "A", target: "B" },
+    { id: "t_bc", source: "B", target: "C" },
+    { id: "t_cd", source: "C", target: "D" }
+  ];
+  directAndGuardChain.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  directAndGuardChain.relations = [
+    { id: "r_bc_requires_ab", type: "requires_transition_enabled", transition_id: "t_bc", requires_transition_id: "t_ab" },
+    { id: "r_cd_requires_bc", type: "requires_transition_enabled", transition_id: "t_cd", requires_transition_id: "t_bc" }
+  ];
+  directAndGuardChain.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab", disabled_transitions: ["t_ab"] },
+    { id: "disable_bc", disabled_transitions: ["t_bc"] },
+    { id: "disable_cd", disabled_transitions: ["t_cd"] }
+  ];
+  cases.push({ name: "direct-intervention-and-nonrecursive-guard-chain", model: directAndGuardChain });
+
   const guarded = clone(base);
   guarded.model_id = "relation-guarded-availability";
   guarded.rule_profile = { type: "relation_guarded_graph", version: "1" };
