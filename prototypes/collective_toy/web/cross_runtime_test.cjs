@@ -1080,7 +1080,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
             "combined interventions added a reachable state relative to " + id);
           // Edge removal may create new terminal paths; compare path edges, not terminal-list membership.
           const explicitlyDisabled = new Set(id === "disable_ab" ? ["t_ab"] : ["t_ac"]);
-          const relationDisabled = new Set(combinedInterventions.relations
+          const relationDisabled = new Set(fixture.model.relations
             .filter(relation => explicitlyDisabled.has(relation.requires_transition_id))
             .map(relation => relation.transition_id));
           const singleDisabled = new Set([...explicitlyDisabled, ...relationDisabled]);
