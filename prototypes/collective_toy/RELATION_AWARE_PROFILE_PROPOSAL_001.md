@@ -1,6 +1,6 @@
 # Collective Toy — relation-aware execution profile proposal 001
 
-**Status:** Option A selected by the user for experimental implementation on the prototype branch; not canonical TGCV architecture and not a scientific claim.  
+**Status:** Option A implemented experimentally on the prototype branch; current covered Python and browser/cross-runtime CI checks pass. The full test plan below is not yet exhausted. Not canonical TGCV architecture and not a scientific claim.  
 **Scope:** Synthetic-only executable demonstrator. No Rust dataset or (U_t) processing is permitted or required.
 
 ## 1. Why a second profile
@@ -9,7 +9,7 @@ Profile 1 (`finite_deterministic_graph`, version `1`) treats `relations` as desc
 
 This proposal defines a separate profile so that operational semantics are explicit and opt-in. Existing profile-1 inputs must not silently change meaning.
 
-## 2. Proposed semantics: guarded transitions
+## 2. Implemented experimental semantics: guarded transitions
 
 Proposed profile identifier:
 
@@ -43,7 +43,7 @@ The actual candidate for a minimal first rule is a scenario-level transition gua
 
 Interpretation: `t_bd` may be used in a scenario only if `t_ab` is not disabled in that same scenario. This is a global scenario guard, not a state-local causal mechanism. It can alter the enabled transition set and therefore reachable states and trajectories. It must not be described as TGCV's `T_acc`.
 
-## 3. Minimum normative rules if the candidate is approved
+## 3. Normative rules for the experimental profile
 
 1. The profile must be explicitly selected; unknown profiles fail closed.
 2. Profile 1 remains byte-for-byte semantically unchanged: relation metadata is inert.
@@ -60,11 +60,7 @@ Interpretation: `t_bd` may be used in a scenario only if `t_ab` is not disabled 
 
 The candidate rule `requires_transition_enabled` means “the required transition is not disabled by this scenario,” not “the required transition occurs earlier in a trajectory.” Those meanings are different. A dependency between transition *availability* and transition *occurrence* would require a separate temporal/stateful semantics and additional tests.
 
-Before implementation, decide whether this prototype needs:
-- **A. Scenario-level availability dependency** (smallest demonstrator; the required transition is not listed as disabled); or
-- **B. Trajectory-level prerequisite** (a transition can occur only after another transition has occurred earlier in that trajectory).
-
-Recommendation for a minimal first executable: option A, named explicitly as a scenario-level availability dependency. Do not use terms like causal dependency, value creation, or system-level `T_acc` for this rule.
+Option A is the selected and implemented rule for this prototype: scenario-level availability dependency. Option B, a trajectory-level prerequisite, is not implemented and would require a separate profile, stateful semantics, and its own tests. Do not describe this rule as causal dependency, value creation, or system-level `T_acc`.
 
 ## 5. Required test plan
 
@@ -92,9 +88,9 @@ Recommendation for a minimal first executable: option A, named explicitly as a s
 ### Cross-runtime
 Every valid fixture must compare scenario results, baseline comparisons, input hashes, and result hashes between Python and Chromium. Every invalid fixture must be rejected by both runtimes with no partial successful result.
 
-## 6. Implementation and verification gate
+## 6. Implementation and verification status
 
-Implementation is permitted on the existing prototype branch for option A only. Keep profile 1 as the stable baseline. Required Python unit tests and browser/Python cross-runtime tests must pass for valid and invalid profile-2 fixtures before describing the implementation as passing. No merge to `main` is implied by this document.
+Option A is implemented on the prototype branch. The current CI battery for the editor and relation semantics passes on the recorded head commit, including Python unit tests, browser/Python cross-runtime tests, and governance consistency. This is a bounded software-conformance result, not proof that every case listed in Section 5 is covered. Keep profile 1 as the stable baseline. The PR remains unmerged; no merge to `main` is implied.
 
 ## 7. Limits
 
