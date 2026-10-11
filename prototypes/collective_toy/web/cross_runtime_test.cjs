@@ -447,7 +447,13 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     for (const fixture of invalidFixtures()) {
       const pythonReject = pythonRejects(engineDir, fixture.model);
       assert.equal(pythonReject, true, fixture.name + ": Python must reject invalid input");
-      await page.locator("#model").fill(JSON.stringify(fixture.model, null, 2));
+      const fixtureJson = JSON.stringify(fixture.model, null, 2);
+      if ((fixture.model.transitions || []).length > 2000 || (fixture.model.states || []).length > 500) {
+        // Set oversized fixtures without firing the editor's per-keystroke input handler.
+        await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
+      } else {
+        await page.locator("#model").fill(fixtureJson, { timeout: 15000 });
+      }
       await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
       await page.locator("#status").getByText(/No se ha podido ejecutar/).waitFor({ timeout: 5000 });
       const status = await page.locator("#status").innerText();
