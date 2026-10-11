@@ -74,6 +74,30 @@ class CollectiveToyEngineTests(unittest.TestCase):
         result = run_model(model)
         self.assertTrue(result["scenario_results"]["baseline"]["truncated"])
 
+    def test_exact_trajectory_cap_does_not_mark_complete_enumeration_truncated(self):
+        model = copy.deepcopy(self.model)
+        model["states"] = ["A", "B"]
+        model["initial_state"] = "A"
+        model["transitions"] = [{"id": "t_ab", "source": "A", "target": "B"}]
+        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
+        model["exploration"] = {"max_depth": 4, "max_trajectories": 1}
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        self.assertEqual(baseline["trajectories"], [[{"state": "A"}, {"transition": "t_ab", "state": "B"}]])
+        self.assertFalse(baseline["truncated"])
+
+    def test_terminal_path_at_depth_boundary_is_not_truncated(self):
+        model = copy.deepcopy(self.model)
+        model["states"] = ["A", "B"]
+        model["initial_state"] = "A"
+        model["transitions"] = [{"id": "t_ab", "source": "A", "target": "B"}]
+        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
+        model["exploration"] = {"max_depth": 1, "max_trajectories": 10}
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        self.assertEqual(len(baseline["trajectories"]), 1)
+        self.assertFalse(baseline["truncated"])
+
     def test_deterministic_result_hash(self):
         first = run_model(self.model)
         second = run_model(self.model)
