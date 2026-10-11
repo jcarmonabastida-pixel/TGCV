@@ -148,6 +148,24 @@ function fixtures() {
   cases.push({ name: "duplicated-semantic-guard", model: duplicatedSemanticGuard,
     duplicateSemanticGuardOf: "single-semantic-guard" });
 
+  const disabledOrder = clone(base);
+  disabledOrder.model_id = "disabled-transition-order";
+  disabledOrder.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  disabledOrder.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
+    { id: "r_guard_cd_by_ac", type: "requires_transition_enabled", transition_id: "t_cd", requires_transition_id: "t_ac" }
+  ];
+  disabledOrder.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_both", disabled_transitions: ["t_ab", "t_ac"] }
+  ];
+  cases.push({ name: "disabled-transition-order", model: disabledOrder });
+  const reversedDisabledOrder = clone(disabledOrder);
+  reversedDisabledOrder.model_id = "disabled-transition-order-reversed";
+  reversedDisabledOrder.scenarios[1].disabled_transitions.reverse();
+  cases.push({ name: "disabled-transition-order-reversed", model: reversedDisabledOrder,
+    disabledTransitionOrderOf: "disabled-transition-order" });
+
   const combinedInterventions = clone(base);
   combinedInterventions.model_id = "combined-disabling-interventions-monotonicity";
   combinedInterventions.rule_profile = { type: "relation_guarded_graph", version: "1" };
@@ -1070,6 +1088,18 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
+      }
+      if (fixture.disabledTransitionOrderOf) {
+        const original = semanticResults.get(fixture.disabledTransitionOrderOf);
+        assert.ok(original, fixture.name + ": original disabled-transition order must run first");
+        assert.deepEqual(browserPackage.result.scenario_results, original.scenario_results,
+          "reordering disabled transitions changed scenario outcomes");
+        assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
+          "reordering disabled transitions changed baseline comparisons");
+        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
+          "reordering disabled transitions changed result SHA-256");
+        assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
+          "reordering serialized disabled transitions should change input SHA-256");
       }
       if (fixture.monotonicInterventions) {
         const scenarios = browserPackage.result.scenario_results;
