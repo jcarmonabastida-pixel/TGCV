@@ -211,6 +211,70 @@ function invalidFixtures() {
   }];
   cases.push({ name: "malformed-relation-fields", model: malformedRelation });
 
+  const invalidModelId = clone(base);
+  invalidModelId.model_id = "   ";
+  cases.push({ name: "blank-model-id", model: invalidModelId });
+
+  const missingInitial = clone(base);
+  delete missingInitial.initial_state;
+  cases.push({ name: "missing-initial-state", model: missingInitial });
+
+  const nonObjectTransition = clone(base);
+  nonObjectTransition.transitions = [null];
+  cases.push({ name: "non-object-transition", model: nonObjectTransition });
+
+  const nonObjectScenario = clone(base);
+  nonObjectScenario.scenarios = [null];
+  cases.push({ name: "non-object-scenario", model: nonObjectScenario });
+
+  const duplicateScenario = clone(base);
+  duplicateScenario.scenarios.push({ id: "baseline", disabled_transitions: [] });
+  cases.push({ name: "duplicate-scenario-id", model: duplicateScenario });
+
+  const wrongDisabledType = clone(base);
+  wrongDisabledType.scenarios[0].disabled_transitions = "t_ab";
+  cases.push({ name: "disabled-transitions-not-list", model: wrongDisabledType });
+
+  const wrongExploration = clone(base);
+  wrongExploration.exploration = [];
+  cases.push({ name: "exploration-not-object", model: wrongExploration });
+
+  const booleanDepth = clone(base);
+  booleanDepth.exploration.max_depth = true;
+  cases.push({ name: "boolean-depth", model: booleanDepth });
+
+  const zeroTrajectoryCap = clone(base);
+  zeroTrajectoryCap.exploration.max_trajectories = 0;
+  cases.push({ name: "zero-trajectory-cap", model: zeroTrajectoryCap });
+
+  const depthOverCap = clone(base);
+  depthOverCap.exploration.max_depth = 101;
+  cases.push({ name: "depth-over-resource-cap", model: depthOverCap });
+
+  const trajectoriesOverCap = clone(base);
+  trajectoriesOverCap.exploration.max_trajectories = 10001;
+  cases.push({ name: "trajectory-cap-over-resource-limit", model: trajectoriesOverCap });
+
+  const tooManyStates = clone(base);
+  tooManyStates.states = Array.from({ length: 501 }, (_, i) => "S" + i);
+  tooManyStates.initial_state = "S0";
+  tooManyStates.transitions = [];
+  cases.push({ name: "state-count-over-resource-cap", model: tooManyStates });
+
+  const tooManyTransitions = clone(base);
+  tooManyTransitions.transitions = Array.from({ length: 2001 }, (_, i) => ({
+    id: "t" + i, source: "A", target: "A"
+  }));
+  cases.push({ name: "transition-count-over-resource-cap", model: tooManyTransitions });
+
+  const selfGuard = clone(base);
+  selfGuard.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  selfGuard.relations = [{
+    id: "r_self", type: "requires_transition_enabled",
+    transition_id: "t_ab", requires_transition_id: "t_ab"
+  }];
+  cases.push({ name: "self-referential-guard", model: selfGuard });
+
   return cases;
 }
 
