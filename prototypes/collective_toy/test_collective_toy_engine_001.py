@@ -261,6 +261,33 @@ class CollectiveToyEngineTests(unittest.TestCase):
         model["scenarios"][0]["disabled_transitions"] = ["t_ab", "t_ab"]
         cases.append(("duplicate-disabled-transition", model))
 
+        # Nested-field presence, non-empty identifiers, and numeric type boundaries.
+        for field in ("id", "source", "target"):
+            model = copy.deepcopy(self.model)
+            model["transitions"][0].pop(field)
+            cases.append(("missing-transition-" + field, model))
+
+        for field in ("id", "source", "target"):
+            model = copy.deepcopy(self.model)
+            model["transitions"][0][field] = ""
+            cases.append(("empty-transition-" + field, model))
+
+        model = copy.deepcopy(self.model)
+        model["exploration"]["max_depth"] = 1.5
+        cases.append(("fractional-max-depth", model))
+
+        model = copy.deepcopy(self.model)
+        model["exploration"]["max_trajectories"] = True
+        cases.append(("boolean-max-trajectories", model))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "unknown_graph", "version": "1"}
+        cases.append(("unknown-rule-profile-type", model))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0]["disabled_transitions"] = [""]
+        cases.append(("empty-disabled-transition-id", model))
+
         for name, candidate in cases:
             with self.subTest(name=name):
                 with self.assertRaises(ModelValidationError):
