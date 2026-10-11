@@ -246,8 +246,10 @@ function sha256Canonical(value) {
 }
 
 function verifyExportedPackage(engineDir, exportedPackage, label) {
-  assert.equal(exportedPackage.package_version, "collective-toy-run-package-001",
-    label + ": unsupported package version");
+  assert.ok(
+    ["collective-toy-run-package-001", "collective-toy-browser-run-001"].includes(exportedPackage.package_version),
+    label + ": unsupported package version"
+  );
   const packagePayload = structuredClone(exportedPackage);
   delete packagePayload.package_sha256;
   assert.equal(sha256Canonical(packagePayload), exportedPackage.package_sha256,
