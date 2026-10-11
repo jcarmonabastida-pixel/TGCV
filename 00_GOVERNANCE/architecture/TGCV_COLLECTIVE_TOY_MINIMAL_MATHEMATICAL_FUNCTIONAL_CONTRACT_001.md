@@ -293,3 +293,8 @@ As of commit `aafb7c3aa31d33616d3faad06a68436b00c152b0`, the three associated ch
 ### Deterministic malformed-input mutation matrix — pending CI
 
 The current browser/Python invalid-input battery has been extended from 71 to 90 named fixtures. The added 19-case fixed mutation catalogue perturbs container types, transition fields, scenario IDs and intervention elements, exploration bounds, relation containers/types/references, duplicate scenario IDs, and the initial-state type. Matching Python unit tests assert that every mutated model raises the explicit validation exception; the browser cross-runtime suite asserts Python rejection and browser rejection for the same named fixtures. The mutation catalogue is deterministic and does not use runtime randomness. This is targeted robustness coverage, not exhaustive property-based testing. The 90-fixture snapshot requires its own CI run before being treated as passing.
+
+
+### Generated relation-guarded graph parity extension — pending CI
+
+The deterministic generated valid-fixture suite now pairs each of the 12 generated finite graphs with a profile-2 variant. Each paired variant adds one valid availability guard from the second chain transition to the first and checks both the baseline and a scenario disabling that prerequisite. This adds 12 relation-aware generated fixtures to the existing 27 valid fixtures (39 total), while retaining the 90 named invalid fixtures. The same models are run through the browser UI/export path and the Python engine; scenario results, baseline comparisons, input hashes, and result hashes must match exactly. This is a deterministic targeted suite, not exhaustive graph coverage. CI for the updated snapshot is pending.
