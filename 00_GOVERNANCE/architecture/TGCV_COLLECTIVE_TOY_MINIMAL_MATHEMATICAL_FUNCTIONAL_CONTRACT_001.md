@@ -194,6 +194,36 @@ The implementation is not accepted until automated tests cover:
 10. exported run package contains enough information to reproduce the result;
 11. invalid input yields a clear error and does not produce a misleading partial PASS.
 
+### 8.1 Requirement-to-test coverage matrix (branch snapshot 2026-10-11)
+
+The following matrix maps the minimum acceptance criteria to tests present in the current prototype branch. “Covered” means an automated test exists and passed in the recorded CI snapshot; it does not imply exhaustive verification of all possible inputs.
+
+| Contract criterion | Current evidence | Status / boundary |
+|---|---|---|
+| 1. Valid fixture produces expected results | test_diamond_fixture_matches_expected_reachability_and_paths; browser fixture diamond-reference | Covered for the hand-checkable diamond fixture |
+| 2. Unknown state/transition references are rejected | test_unknown_state_reference_fails; browser invalid fixtures unknown-endpoint, unknown-relation-prerequisite, unknown-guarded-transition | Covered for these reference types; not every malformed schema shape |
+| 3. Duplicate IDs are rejected | test_duplicate_state_id_fails, test_duplicate_transition_id_fails, test_relation_guarded_profile_rejects_duplicate_relation_ids; browser invalid fixtures | Covered for state, transition, and relation IDs |
+| 4. Disabling a transition removes paths requiring it | test_diamond_fixture_matches_expected_reachability_and_paths; browser fixtures diamond-reference, multiple-interventions | Covered for tested deterministic graph cases |
+| 5. An unrelated transition is unchanged by an intervention | test_intervention_does_not_change_unrelated_transition | Covered by the named unit test |
+| 6. Cycles terminate under the exploration policy | test_cycle_terminates_and_marks_depth_truncation; browser fixtures cycle-depth-bound, relation-guarded-cycle-and-bounds | Covered with explicit bounds, not an unbounded enumeration claim |
+| 7. Depth/trajectory caps set truncation explicitly | test_trajectory_limit_is_explicit; browser fixtures depth-zero, trajectory-limit | Covered for tested boundary cases |
+| 8. Identical canonical input gives deterministic output | test_deterministic_result_hash; test_relation_guarded_profile_applies_multiple_guards_deterministically | Covered for tested fixtures and current engine version |
+| 9. Canonical serialization and result hashes are stable | test_deterministic_result_hash; browser/Python checks compare input and result SHA-256 values across 21 valid fixtures | Covered across the current cross-runtime fixture set; not a formal proof for all JSON values |
+| 10. Export contains reproduction inputs and hashes | test_export_contains_reproduction_inputs_and_hashes; browser test downloads and parses exported run packages | Covered for package presence and tested export paths; long-term archival and independent replay workflow are not yet a separate acceptance gate |
+| 11. Invalid input is rejected without a misleading partial PASS | Browser/Python test checks 11 invalid fixtures are rejected by both runtimes; unit tests cover selected validation errors | Covered for the 11 named invalid fixtures; not exhaustive schema fuzzing |
+
+Current browser/Python fixture battery: 9 named hand-authored valid fixtures plus 12 deterministic generated graphs (21 valid fixtures total), and 11 named invalid fixtures. The UI test also checks relation add/remove, profile switching, profile-2 execution, profile-1 inertness, and visual attenuation of a relation-blocked transition. These counts describe the checked-in test definitions, not the number of every internal assertion.
+
+Remaining explicit gaps before contract freeze:
+- full schema/type/range validation matrix for every field, including malformed top-level/scenario/exploration objects;
+- combinations of multiple guards that refer to the same guarded transition, and cycles among guard relations;
+- a documented policy for whether guard relations are evaluated against explicit interventions only (current implementation) or recursively against other relation-derived disablements;
+- an independent export-and-replay test that recomputes all hashes from the exported package and verifies the same canonical result;
+- a review of deterministic ordering/serialization assumptions across supported Python/browser runtimes;
+- a formal decision on whether graph-level global availability guards remain the intended experimental semantics.
+
+The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them.
+
 ## 9. Audit and reproduction record
 
 Every run shall record at least:
