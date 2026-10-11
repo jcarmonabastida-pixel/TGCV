@@ -184,6 +184,22 @@ function generatedFixtures() {
       exploration: { max_depth: 3 + (n % 3), max_trajectories: 20 + n }
     };
     cases.push({ name: model.model_id, model });
+
+    // A paired profile-2 fixture exercises relation semantics on the same generated graph.
+    const relationModel = clone(model);
+    relationModel.model_id = "generated-relation-guard-" + String(n + 1).padStart(2, "0");
+    relationModel.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    relationModel.relations = [{
+      id: "generated_guard_" + n,
+      type: "requires_transition_enabled",
+      transition_id: transitions[1].id,
+      requires_transition_id: transitions[0].id
+    }];
+    relationModel.scenarios = [
+      { id: "baseline", disabled_transitions: [] },
+      { id: "disable_prerequisite", disabled_transitions: [transitions[0].id] }
+    ];
+    cases.push({ name: relationModel.model_id, model: relationModel });
   }
   return cases;
 }
