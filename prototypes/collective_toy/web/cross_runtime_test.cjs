@@ -161,7 +161,8 @@ function fixtures() {
   ];
   cases.push({ name: "disabled-transition-order", model: disabledOrder });
   const reversedDisabledOrder = clone(disabledOrder);
-  reversedDisabledOrder.model_id = "disabled-transition-order-reversed";
+  // Preserve model identity so only disabled-transition serialization order differs.
+  reversedDisabledOrder.model_id = disabledOrder.model_id;
   reversedDisabledOrder.scenarios[1].disabled_transitions.reverse();
   cases.push({ name: "disabled-transition-order-reversed", model: reversedDisabledOrder,
     disabledTransitionOrderOf: "disabled-transition-order" });
