@@ -617,6 +617,18 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
+    def test_state_declaration_order_does_not_change_semantics(self):
+        model = copy.deepcopy(self.model)
+        permuted = copy.deepcopy(model)
+        permuted["states"].reverse()
+
+        original_result = run_model(model)
+        permuted_result = run_model(permuted)
+        self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
+        self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
+        self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
+        self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
+
     def test_transition_declaration_order_does_not_change_semantics(self):
         model = copy.deepcopy(self.model)
         permuted = copy.deepcopy(model)
