@@ -204,6 +204,28 @@ function runPython(engineDir, model) {
 
   try {
     await page.goto("file://" + htmlPath);
+
+    // UI acceptance: switch profile, create a guarded relation, and remove it again.
+    await page.locator("#profile-editor").selectOption("2");
+    await page.locator("#guarded-transition").selectOption("t_bd");
+    await page.locator("#required-transition").selectOption("t_ab");
+    await page.getByRole("button", { name: "Añadir relación" }).click();
+    let editorModel = await page.locator("#model").inputValue();
+    let editorParsed = JSON.parse(editorModel);
+    assert.deepEqual(editorParsed.rule_profile, { type: "relation_guarded_graph", version: "1" });
+    assert.equal(editorParsed.relations.length, 1, "visual editor should add exactly one relation");
+    assert.deepEqual(
+      { transition_id: editorParsed.relations[0].transition_id, requires_transition_id: editorParsed.relations[0].requires_transition_id },
+      { transition_id: "t_bd", requires_transition_id: "t_ab" }
+    );
+    await page.locator('[data-remove-relation="r_guard_1"]').click();
+    editorParsed = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(editorParsed.relations.length, 0, "visual editor should remove selected relation");
+    await page.locator("#profile-editor").selectOption("1");
+    editorParsed = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(editorParsed.rule_profile, { type: "finite_deterministic_graph", version: "1" });
+    console.log("PASS: relation editor profile switching, add, and remove controls.");
+
     const validFixtures = [...fixtures(), ...generatedFixtures()];
     for (const fixture of validFixtures) {
       await page.locator("#model").fill(JSON.stringify(fixture.model, null, 2));
