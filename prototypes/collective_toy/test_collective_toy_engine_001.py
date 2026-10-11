@@ -758,10 +758,21 @@ class CollectiveToyEngineTests(unittest.TestCase):
         for single_id in ("disable_ab", "disable_ac"):
             single = result[single_id]
             self.assertLessEqual(set(combined["reachable_states"]), set(single["reachable_states"]))
-            self.assertLessEqual(
-                {tuple(path) for path in combined["trajectories"]},
-                {tuple(path) for path in single["trajectories"]},
-            )
+            # Removing edges can create new terminal paths, so complete trajectory
+            # lists are not subsets. Every edge in a combined-case path must,
+            # however, remain available in either single-intervention graph.
+            single_enabled = {
+                transition["id"] for transition in model["transitions"]
+                if transition["id"] not in set(model["scenarios"][1 if single_id == "disable_ab" else 2]["disabled_transitions"])
+                and all(
+                    relation["transition_id"] == transition["id"]
+                    or relation["requires_transition_id"] not in set(model["scenarios"][1 if single_id == "disable_ab" else 2]["disabled_transitions"])
+                    for relation in model["relations"]
+                )
+            }
+            for path in combined["trajectories"]:
+                path_transitions = {step["transition"] for step in path if "transition" in step}
+                self.assertTrue(path_transitions <= single_enabled)
 
     def test_disconnected_component_does_not_change_existing_scenario_outcomes(self):
         model = copy.deepcopy(self.model)
