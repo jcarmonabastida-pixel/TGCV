@@ -256,6 +256,14 @@ function invalidFixtures() {
   }];
   cases.push({ name: "malformed-relation-fields", model: malformedRelation });
 
+  const listInitialState = clone(base);
+  listInitialState.initial_state = [];
+  cases.push({ name: "initial-state-list", model: listInitialState });
+
+  const objectInitialState = clone(base);
+  objectInitialState.initial_state = {};
+  cases.push({ name: "initial-state-object", model: objectInitialState });
+
   const invalidModelId = clone(base);
   invalidModelId.model_id = "   ";
   cases.push({ name: "blank-model-id", model: invalidModelId });
