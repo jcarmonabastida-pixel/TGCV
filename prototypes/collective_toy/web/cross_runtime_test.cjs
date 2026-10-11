@@ -132,6 +132,22 @@ function fixtures() {
     statePermutationOf: "state-order-reference"
   });
 
+  const singleSemanticGuard = clone(base);
+  singleSemanticGuard.model_id = "single-semantic-guard";
+  singleSemanticGuard.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  singleSemanticGuard.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" }
+  ];
+  cases.push({ name: "single-semantic-guard", model: singleSemanticGuard });
+  const duplicatedSemanticGuard = clone(singleSemanticGuard);
+  duplicatedSemanticGuard.model_id = "duplicated-semantic-guard";
+  duplicatedSemanticGuard.relations.push({
+    id: "r_guard_bd_by_ab_duplicate", type: "requires_transition_enabled",
+    transition_id: "t_bd", requires_transition_id: "t_ab"
+  });
+  cases.push({ name: "duplicated-semantic-guard", model: duplicatedSemanticGuard,
+    duplicateSemanticGuardOf: "single-semantic-guard" });
+
   const relationGuardMonotonicity = clone(base);
   relationGuardMonotonicity.model_id = "relation-guard-intervention-monotonicity";
   relationGuardMonotonicity.rule_profile = { type: "relation_guarded_graph", version: "1" };
@@ -963,6 +979,18 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
+      }
+      if (fixture.duplicateSemanticGuardOf) {
+        const reference = semanticResults.get(fixture.duplicateSemanticGuardOf);
+        for (const scenarioId of Object.keys(reference.scenario_results)) {
+          for (const key of ["reachable_states", "trajectories", "effective_disabled_transitions"]) {
+            assert.deepEqual(
+              browserPackage.result.scenario_results[scenarioId][key],
+              reference.scenario_results[scenarioId][key],
+              `duplicate semantic guard changed ${key} in ${scenarioId}`
+            );
+          }
+        }
       }
       if (fixture.scenarioPermutationOf) {
         const original = semanticResults.get(fixture.scenarioPermutationOf);
