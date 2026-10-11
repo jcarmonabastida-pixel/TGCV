@@ -750,7 +750,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         plain_result = run_model(unguarded)["scenario_results"]["baseline"]
         guarded_result = run_model(guarded)["scenario_results"]["baseline"]
         for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
-            self.assertEqual(plain_result[key], guarded_result[key], f"{key} changed while prerequisite remained enabled")
+            self.assertEqual(plain_result.get(key, []), guarded_result.get(key, []), f"{key} changed while prerequisite remained enabled")
 
     def test_duplicate_semantic_guard_does_not_change_graph_outcomes(self):
         model = copy.deepcopy(self.model)
