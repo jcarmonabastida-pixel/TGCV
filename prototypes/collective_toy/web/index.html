@@ -103,7 +103,7 @@ $("relation-list").addEventListener("click",function(event){
 });
 $("model").addEventListener("input",function(){var m=currentModelForEditor();if(m&&m.rule_profile){$("profile-editor").value=m.rule_profile.type==="relation_guarded_graph"?"2":"1"}syncRelationEditor()});
 
-$("load").addEventListener("click",function(){$("model").value=JSON.stringify(example(),null,2);$("status").textContent="Ejemplo cargado. Pulsa Ejecutar escenarios."});
+$("load").addEventListener("click",function(){$("model").value=JSON.stringify(example(),null,2);$("profile-editor").value="1";syncRelationEditor();$("status").textContent="Ejemplo cargado. Pulsa Ejecutar escenarios."});
 $("model").value=JSON.stringify(example(),null,2);syncRelationEditor();
 $("model").value=JSON.stringify(example(),null,2);syncRelationEditor();
 $("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage)draw(lastModel,lastPackage.result,$("which").value)});
