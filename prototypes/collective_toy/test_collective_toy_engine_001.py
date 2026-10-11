@@ -56,6 +56,26 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaises(ModelValidationError):
             run_model(model)
 
+    def test_disabling_unreachable_transition_does_not_change_intervened_scenario(self):
+        model = copy.deepcopy(self.model)
+        model["scenarios"].append({
+            "id": "block_ac_and_cd",
+            "disabled_transitions": ["t_ac", "t_cd"],
+        })
+        result = run_model(model)
+        self.assertEqual(
+            result["scenario_results"]["block_ac"]["reachable_states"],
+            result["scenario_results"]["block_ac_and_cd"]["reachable_states"],
+        )
+        self.assertEqual(
+            result["scenario_results"]["block_ac"]["trajectories"],
+            result["scenario_results"]["block_ac_and_cd"]["trajectories"],
+        )
+        self.assertEqual(
+            result["scenario_results"]["block_ac"]["enabled_transitions_at_initial_state"],
+            result["scenario_results"]["block_ac_and_cd"]["enabled_transitions_at_initial_state"],
+        )
+
     def test_intervention_does_not_change_unrelated_transition(self):
         result = run_model(self.model)
         base = result["scenario_results"]["baseline"]
