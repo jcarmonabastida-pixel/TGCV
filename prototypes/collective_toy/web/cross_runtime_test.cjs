@@ -65,6 +65,43 @@ function fixtures() {
   return cases;
 }
 
+function invalidFixtures() {
+  const base = {
+    schema_version: "collective-toy-input-001",
+    model_id: "invalid-base",
+    initial_state: "A",
+    states: ["A", "B"],
+    transitions: [{ id: "t_ab", source: "A", target: "B" }],
+    relations: [],
+    rule_profile: { type: "finite_deterministic_graph", version: "1" },
+    scenarios: [{ id: "baseline", disabled_transitions: [] }],
+    exploration: { max_depth: 2, max_trajectories: 10 }
+  };
+  const clone = x => JSON.parse(JSON.stringify(x));
+  const cases = [];
+  let m = clone(base); m.model_id = "duplicate-state"; m.states.push("A");
+  cases.push({ name: "duplicate-state", model: m });
+  m = clone(base); m.model_id = "unknown-endpoint"; m.transitions[0].target = "Z";
+  cases.push({ name: "unknown-endpoint", model: m });
+  m = clone(base); m.model_id = "unknown-disabled-transition"; m.scenarios[0].disabled_transitions = ["nope"];
+  cases.push({ name: "unknown-disabled-transition", model: m });
+  m = clone(base); m.model_id = "missing-baseline"; m.scenarios = [{ id: "alt", disabled_transitions: [] }];
+  cases.push({ name: "missing-baseline", model: m });
+  m = clone(base); m.model_id = "negative-depth"; m.exploration.max_depth = -1;
+  cases.push({ name: "negative-depth", model: m });
+  m = clone(base); m.model_id = "duplicate-transition-id"; m.transitions.push({ id: "t_ab", source: "B", target: "A" });
+  cases.push({ name: "duplicate-transition-id", model: m });
+  return cases;
+}
+
+function pythonRejects(engineDir, model) {
+  const script = "import json, sys; from collective_toy_engine_001 import run_model; run_model(json.load(sys.stdin))";
+  const result = spawnSync("python", ["-c", script], {
+    cwd: engineDir, input: JSON.stringify(model), encoding: "utf8"
+  });
+  return result.status !== 0;
+}
+
 function runPython(engineDir, model) {
   const script = "import json, sys; from collective_toy_engine_001 import run_model; print(json.dumps(run_model(json.load(sys.stdin)), sort_keys=True, ensure_ascii=False))";
   const result = spawnSync("python", ["-c", script], {
@@ -109,7 +146,20 @@ function runPython(engineDir, model) {
         fixture.name + ": result SHA-256 differs");
       report.push(fixture.name + ": PASS");
     }
-    console.log("PASS: " + report.length + " cross-runtime fixtures matched exactly.\n" + report.join("\n"));
+    const invalidReport = [];
+    for (const fixture of invalidFixtures()) {
+      const pythonReject = pythonRejects(engineDir, fixture.model);
+      assert.equal(pythonReject, true, fixture.name + ": Python must reject invalid input");
+      await page.locator("#model").fill(JSON.stringify(fixture.model, null, 2));
+      await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+      await page.getByText(/No se ha podido ejecutar/).waitFor({ timeout: 5000 });
+      const status = await page.locator("#status").innerText();
+      assert.match(status, /No se ha podido ejecutar/, fixture.name + ": browser must reject invalid input");
+      invalidReport.push(fixture.name + ": REJECTED in both runtimes");
+    }
+    console.log("PASS: " + report.length + " valid cross-runtime fixtures matched exactly.\n" +
+      "PASS: " + invalidReport.length + " invalid fixtures rejected in both runtimes.\n" +
+      report.join("\n") + "\n" + invalidReport.join("\n"));
   } finally {
     if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
     await browser.close();
