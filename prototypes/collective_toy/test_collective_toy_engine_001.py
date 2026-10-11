@@ -670,6 +670,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
             {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
         ]
         permuted = copy.deepcopy(model)
+        # Keep semantic identity fixed; only serialized list order changes.
         permuted["scenarios"][1]["disabled_transitions"].reverse()
 
         original_result = run_model(model)
