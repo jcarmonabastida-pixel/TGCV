@@ -349,6 +349,7 @@ function invalidFixtures() {
 
   const unknownRelationField = clone(base);
   unknownRelationField.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  unknownRelationField.transitions.push({ id: "t_ba", source: "B", target: "A" });
   unknownRelationField.relations = [{ id: "r", type: "requires_transition_enabled", transition_id: "t_ab", requires_transition_id: "t_ab", unexpected: true }];
   cases.push({ name: "unknown-relation-field", model: unknownRelationField });
 
@@ -420,11 +421,12 @@ function invalidFixtures() {
   // Nested relation/scenario/exploration field coverage.
   const validRelation = {
     id: "r_schema", type: "requires_transition_enabled",
-    transition_id: "t_ab", requires_transition_id: "t_ab_missing"
+    transition_id: "t_ab", requires_transition_id: "t_ba"
   };
   for (const field of ["id", "type", "transition_id", "requires_transition_id"]) {
     const missing = clone(base);
     missing.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    missing.transitions.push({ id: "t_ba", source: "B", target: "A" });
     const relation = clone(validRelation);
     delete relation[field];
     missing.relations = [relation];
@@ -434,6 +436,7 @@ function invalidFixtures() {
   for (const field of ["id", "transition_id", "requires_transition_id"]) {
     const empty = clone(base);
     empty.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    empty.transitions.push({ id: "t_ba", source: "B", target: "A" });
     const relation = clone(validRelation);
     relation[field] = "";
     empty.relations = [relation];
@@ -442,6 +445,7 @@ function invalidFixtures() {
 
   const nonObjectRelation = clone(base);
   nonObjectRelation.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  nonObjectRelation.transitions.push({ id: "t_ba", source: "B", target: "A" });
   nonObjectRelation.relations = [null];
   cases.push({ name: "non-object-relation", model: nonObjectRelation });
 
@@ -449,7 +453,7 @@ function invalidFixtures() {
   unknownRelationField.rule_profile = { type: "relation_guarded_graph", version: "1" };
   unknownRelationField.relations = [{
     id: "r_schema", type: "requires_transition_enabled",
-    transition_id: "t_ab", requires_transition_id: "t_ab_missing", unexpected: true
+    transition_id: "t_ab", requires_transition_id: "t_ba", unexpected: true
   }];
   cases.push({ name: "unknown-relation-field", model: unknownRelationField });
 
