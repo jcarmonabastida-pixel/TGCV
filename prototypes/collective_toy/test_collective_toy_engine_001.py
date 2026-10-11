@@ -519,6 +519,27 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertNotEqual(without_result["input_sha256"], with_result["input_sha256"])
         self.assertEqual(without_result["result_sha256"], with_result["result_sha256"])
 
+    def test_two_relations_guarding_same_transition_form_conjunctive_requirements(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_bd_requires_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
+            {"id": "r_bd_requires_ac", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ac"},
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
+            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
+            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
+        ]
+        result = run_model(model)["scenario_results"]
+        self.assertNotIn("t_bd", result["baseline"]["effective_disabled_transitions"])
+        for scenario_id in ("disable_ab", "disable_ac", "disable_both"):
+            with self.subTest(scenario=scenario_id):
+                self.assertIn("t_bd", result[scenario_id]["effective_disabled_transitions"])
+
     def test_relation_guarded_intervention_preserves_reachability_monotonicity(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
