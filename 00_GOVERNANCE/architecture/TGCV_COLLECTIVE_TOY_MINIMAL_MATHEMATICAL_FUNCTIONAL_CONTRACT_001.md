@@ -234,7 +234,7 @@ Remaining explicit gaps before contract freeze:
 - a review of deterministic ordering/serialization assumptions across supported Python/browser runtimes, including broader malformed-input fuzzing; numeric/Unicode edge cases now have explicit cross-runtime fixtures for code-point key ordering, integral-float normalization, fractional/unsafe-number rejection, and unpaired-surrogate rejection; strict rejection of unknown keys is implemented as the current draft policy, pending formal schema freeze;
 - a formal decision on whether graph-level global availability guards remain the intended experimental semantics; the current OR-style blocking behavior for multiple guards is documented above but remains experimental.
 
-The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them. Prior baseline CI snapshot (before serialization edge cases): browser/Python run 38156848896 reported 24 valid fixtures matched and 25 invalid fixtures rejected by both runtimes; Python run 38156848887 reported 25 tests passed. The expanded serialization suite now defines 25 valid fixtures, 34 invalid fixtures, and three additional Python unit tests; the updated CI result is pending and must be recorded only after completion.
+The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them. Prior baseline CI snapshot (before serialization edge cases): browser/Python run 38156848896 reported 24 valid fixtures matched and 25 invalid fixtures rejected by both runtimes; Python run 38156848887 reported 25 tests passed. The expanded serialization suite defines 25 valid fixtures, 34 invalid fixtures, and three additional Python unit tests. After correcting the Unicode fixture, the current recorded CI snapshot is: browser/Python run 38158428420 PASS, Python run 38158428394 PASS, and governance consistency run 38158428409 PASS. These results cover the checked-in test battery only and do not prove all-input correctness.
 
 ## 9. Audit and reproduction record
 
@@ -268,7 +268,7 @@ These may be considered later only with separate specifications and gates.
 
 A synthetic finite-graph engine and two experimental relation profiles now exist on the development branch. The following contract work remains before freezing this document:
 1. review the contract against current canonical/working TGCV definitions and the architectural admissibility boundary;
-2. explicitly review the mapping between the engine's state-local enabled transitions and system-level `T_acc`;
+2. explicitly review the mapping between the engine's state-local enabled transitions and system-level `T_acc`; the proposed mapping review is recorded in [TGCV_COLLECTIVE_TOY_TACC_MAPPING_REVIEW_001.md](TGCV_COLLECTIVE_TOY_TACC_MAPPING_REVIEW_001.md) and is not frozen;
 3. freeze the input schema and deterministic exploration/truncation rules;
 4. reconcile the acceptance tests in this contract with the implemented Python and browser test batteries, recording uncovered cases.
 
