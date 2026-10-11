@@ -366,3 +366,7 @@ The relation-free baseline and the relation-guarded baseline produced equal reac
 
 The same relation-guarded model was evaluated with scenario declarations in forward and reverse order. Per-scenario outcomes and comparisons to baseline remained equal, while the serialized input SHA-256 changed as expected. All three CI checks passed on revision `8c5d460058e1427dc6ca03275f58a0cc72531405`: engine [38184751441](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38184751441), browser/cross-runtime [38184751468](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38184751468), and governance [38184751447](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38184751447). Evidence is limited to the deterministic fixture and current semantics; it does not establish scientific validity of TGCV.
 
+### Disconnected-component invariance — PASS
+
+Adding an isolated component with states `X`, `Y` and transition `t_xy` preserved reachable states, trajectories, and truncation status for every original scenario. The input SHA-256 changed as expected. All three CI checks passed on commit `2f242baecfefb51343f9bd7c360f5fb95e6cff6a`: Python engine [38184882608](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38184882608), browser/cross-runtime [38184882625](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38184882625), and governance [38184882613](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38184882613). Evidence is restricted to the tested fixture and current semantics, not scientific validation of TGCV.
+
