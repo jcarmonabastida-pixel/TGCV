@@ -150,6 +150,8 @@ function fixtures() {
 }
 
 function generatedFixtures() {
+  // Keep this helper local: fixtures() defines its own scoped clone helper.
+  const clone = x => JSON.parse(JSON.stringify(x));
   // Deterministic pseudo-random generation: identical inputs on every CI run.
   let seed = 20261011;
   const random = () => {
