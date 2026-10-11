@@ -760,6 +760,34 @@ class CollectiveToyEngineTests(unittest.TestCase):
             for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
                 self.assertEqual(left[key], right[key], f"{key} changed in {scenario_id}")
 
+    def test_adding_guard_cannot_expand_reachability_or_trajectories(self):
+        single = copy.deepcopy(self.model)
+        single["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        single["relations"] = [
+            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
+        ]
+        single["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
+            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
+            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
+        ]
+        extended = copy.deepcopy(single)
+        extended["relations"].append(
+            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
+             "transition_id": "t_cd", "requires_transition_id": "t_ac"}
+        )
+        single_result = run_model(single)
+        extended_result = run_model(extended)
+        for scenario_id in single_result["scenario_results"]:
+            before = single_result["scenario_results"][scenario_id]
+            after = extended_result["scenario_results"][scenario_id]
+            self.assertLessEqual(set(after["reachable_states"]), set(before["reachable_states"]))
+            before_paths = {canonical_json(path) for path in before["trajectories"]}
+            after_paths = {canonical_json(path) for path in after["trajectories"]}
+            self.assertLessEqual(after_paths, before_paths)
+
     def test_relation_declaration_order_does_not_change_semantics(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
