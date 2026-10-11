@@ -180,6 +180,72 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertNotEqual(without_result["input_sha256"], with_result["input_sha256"])
         self.assertEqual(without_result["result_sha256"], with_result["result_sha256"])
 
+    def test_relation_guarded_profile_blocks_transition_when_prerequisite_disabled(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [{
+            "id": "r_guard_bd",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_bd",
+            "requires_transition_id": "t_ab",
+        }]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_prerequisite", "disabled_transitions": ["t_ab"]},
+        ]
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        intervention = result["scenario_results"]["disable_prerequisite"]
+        self.assertNotIn("t_bd", baseline["effective_disabled_transitions"])
+        self.assertIn("t_bd", intervention["effective_disabled_transitions"])
+        self.assertNotIn("D", intervention["reachable_states"])
+        self.assertEqual(intervention["relation_effects"], [{
+            "relation_id": "r_guard_bd",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_bd",
+            "requires_transition_id": "t_ab",
+            "status": "BLOCKED",
+            "reason": "prerequisite_transition_disabled",
+        }])
+        self.assertEqual(baseline["relation_effects"][0]["status"], "APPLIED")
+
+    def test_relation_guarded_profile_rejects_unknown_relation_references(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [{
+            "id": "r_bad",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_bd",
+            "requires_transition_id": "missing",
+        }]
+        with self.assertRaises(ModelValidationError):
+            run_model(model)
+
+    def test_relation_guarded_profile_rejects_unknown_relation_types(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [{
+            "id": "r_bad",
+            "type": "mystery",
+            "transition_id": "t_bd",
+            "requires_transition_id": "t_ab",
+        }]
+        with self.assertRaises(ModelValidationError):
+            run_model(model)
+
+    def test_relation_guarded_profile_rejects_duplicate_relation_ids(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        relation = {
+            "id": "r_duplicate",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_bd",
+            "requires_transition_id": "t_ab",
+        }
+        model["relations"] = [relation, copy.deepcopy(relation)]
+        with self.assertRaises(ModelValidationError):
+            run_model(model)
+
     def test_relations_are_inert_metadata_in_profile_one(self):
         baseline = run_model(self.model)["scenario_results"]
         model = copy.deepcopy(self.model)
