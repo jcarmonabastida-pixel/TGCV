@@ -56,6 +56,19 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaises(ModelValidationError):
             run_model(model)
 
+    def test_disabling_transitions_cannot_expand_reachability_or_trajectories(self):
+        result = run_model(self.model)
+        baseline = result["scenario_results"]["baseline"]
+        intervention = result["scenario_results"]["block_ac"]
+
+        self.assertLessEqual(
+            set(intervention["reachable_states"]),
+            set(baseline["reachable_states"]),
+        )
+        baseline_trajectories = {canonical_json(path) for path in baseline["trajectories"]}
+        intervention_trajectories = {canonical_json(path) for path in intervention["trajectories"]}
+        self.assertLessEqual(intervention_trajectories, baseline_trajectories)
+
     def test_disabling_unreachable_transition_does_not_change_intervened_scenario(self):
         model = copy.deepcopy(self.model)
         model["scenarios"].append({
