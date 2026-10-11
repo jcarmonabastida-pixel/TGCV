@@ -74,10 +74,12 @@ function syncRelationEditor(){
  var m=currentModelForEditor(),profile=$("profile-editor"),guarded=$("guarded-transition"),required=$("required-transition"),list=$("relation-list"),help=$("relation-help"),add=$("add-relation");
  var isGuarded=profile.value==="2";guarded.replaceChildren();required.replaceChildren();list.replaceChildren();
  var transitions=m&&Array.isArray(m.transitions)?m.transitions:[];
- transitions.forEach(function(t){[guarded,required].forEach(function(sel){var o=document.createElement("option");o.value=t.id;o.textContent=t.id+" ("+t.source+" → "+t.target+")";sel.append(o)})});
+ var transitionsOverLimit=transitions.length>2000;
+ // Do not materialize thousands of select options while the user edits an invalid oversized model.
+ if(!transitionsOverLimit){transitions.forEach(function(t){[guarded,required].forEach(function(sel){var o=document.createElement("option");o.value=t.id;o.textContent=t.id+" ("+t.source+" → "+t.target+")";sel.append(o)})})}
  if(m&&Array.isArray(m.relations)){m.relations.forEach(function(r){var li=document.createElement("li");li.className="relation-item";var label=document.createElement("span");label.textContent=r.id+": "+r.transition_id+" requiere que "+r.requires_transition_id+" no esté deshabilitada";li.append(label);if(isGuarded){var remove=document.createElement("button");remove.type="button";remove.textContent="Eliminar";remove.setAttribute("data-remove-relation",r.id);remove.setAttribute("aria-label","Eliminar relación "+r.id);li.append(remove)}list.append(li)})}
- guarded.disabled=required.disabled=add.disabled=!isGuarded||!transitions.length;
- help.textContent=isGuarded?"Regla de escenario: la transición condicionada se bloquea si la transición requerida está explícitamente deshabilitada. No es un prerrequisito temporal.":"Perfil 1 activo: las relaciones se conservan como metadatos y no cambian la simulación.";
+ guarded.disabled=required.disabled=add.disabled=!isGuarded||!transitions.length||transitionsOverLimit;
+ help.textContent=transitionsOverLimit?"Modelo demasiado grande para el editor visual: máximo 2000 transiciones. Puedes corregir el JSON; la ejecución también rechazará este modelo.":(isGuarded?"Regla de escenario: la transición condicionada se bloquea si la transición requerida está explícitamente deshabilitada. No es un prerrequisito temporal.":"Perfil 1 activo: las relaciones se conservan como metadatos y no cambian la simulación.");
 }
 function updateProfileFromEditor(){
  var m=currentModelForEditor();if(!m){$("status").className="error";$("status").textContent="JSON no válido: corrígelo antes de cambiar el perfil.";return}
