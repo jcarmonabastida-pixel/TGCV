@@ -50,6 +50,34 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaises(ModelValidationError):
             run_model(model)
 
+    def test_duplicate_semantic_relation_is_operationally_idempotent(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        relation = {
+            "id": "r_guard_bd_by_ab",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_bd",
+            "requires_transition_id": "t_ab",
+        }
+        model["relations"] = [relation]
+        duplicate = copy.deepcopy(model)
+        duplicate["relations"].append({
+            **relation,
+            "id": "r_guard_bd_by_ab_duplicate",
+        })
+
+        original = run_model(model)
+        repeated = run_model(duplicate)
+        self.assertEqual(
+            original["scenario_results"],
+            repeated["scenario_results"],
+        )
+        self.assertEqual(
+            original["comparisons_to_baseline"],
+            repeated["comparisons_to_baseline"],
+        )
+        self.assertNotEqual(original["input_sha256"], repeated["input_sha256"])
+
     def test_duplicate_transition_id_fails(self):
         model = copy.deepcopy(self.model)
         model["transitions"].append(dict(model["transitions"][0]))
