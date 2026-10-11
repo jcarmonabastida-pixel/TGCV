@@ -194,7 +194,7 @@ The implementation is not accepted until automated tests cover:
 10. exported run package contains enough information to reproduce the result;
 11. invalid input yields a clear error and does not produce a misleading partial PASS.
 
-### 8.1 Requirement-to-test coverage matrix (branch snapshot 2026-10-11)
+### 8.1 Requirement-to-test coverage matrix (branch snapshot 2026-10-11; CI confirmed in runs 38156848896 and 38156848887)
 
 The following matrix maps the minimum acceptance criteria to tests present in the current prototype branch. “Covered” means an automated test exists and passed in the recorded CI snapshot; it does not imply exhaustive verification of all possible inputs.
 
@@ -218,11 +218,11 @@ Remaining explicit gaps before contract freeze:
 - complete schema/type/range validation matrix for every field and all malformed nested shapes; current fixtures broaden coverage but are not exhaustive;
 - no remaining dedicated gap for multiple guards on the same guarded transition or cycles among guard relations in the current fixture set; coverage is finite and does not exhaust arbitrary relation graphs;
 - recursive guard evaluation remains explicitly out of scope: guards are evaluated only against the scenario's explicit disabled-transition set, not against disablements caused by other guards; the new tests cover same-target guards and a cyclic guard-reference fixture;
-- an independent export-and-replay test that recomputes all hashes from the exported package and verifies the same canonical result (implemented in tests; confirm the latest CI run before marking the gate closed);
+- the export-and-replay check is now confirmed passing in the recorded CI snapshot for the tested package paths; broader long-term archival and independent replay outside CI are not yet a separate acceptance gate;
 - a review of deterministic ordering/serialization assumptions across supported Python/browser runtimes;
 - a formal decision on whether graph-level global availability guards remain the intended experimental semantics.
 
-The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them.
+The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them. Latest confirming CI snapshot: browser/Python cross-runtime run 38156848896 and Python unit run 38156848887. The browser log reports 24 valid fixtures matched exactly, 25 invalid fixtures rejected by both runtimes, and the export/replay check passed; Python reports 25 tests passed.
 
 ## 9. Audit and reproduction record
 
