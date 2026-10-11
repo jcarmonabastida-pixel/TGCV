@@ -268,7 +268,7 @@ These may be considered later only with separate specifications and gates.
 
 A synthetic finite-graph engine and two experimental relation profiles now exist on the development branch. The following contract work remains before freezing this document:
 1. review the contract against current canonical/working TGCV definitions and the architectural admissibility boundary;
-2. explicitly review the mapping between the engine's state-local enabled transitions and system-level `T_acc`; the proposed mapping review is recorded in [TGCV_COLLECTIVE_TOY_TACC_MAPPING_REVIEW_001.md](TGCV_COLLECTIVE_TOY_TACC_MAPPING_REVIEW_001.md) and is not frozen;
+2. explicitly review the mapping between the engine's state-local enabled transitions and system-level `T_acc`; the proposed conceptual review is recorded in [TGCV_COLLECTIVE_TOY_TACC_MAPPING_REVIEW_001.md](TGCV_COLLECTIVE_TOY_TACC_MAPPING_REVIEW_001.md), with the field-by-field input/output crosswalk and proposed graph-demonstration scope in [TGCV_COLLECTIVE_TOY_FIELD_MAPPING_AND_MVP_SCOPE_001.md](TGCV_COLLECTIVE_TOY_FIELD_MAPPING_AND_MVP_SCOPE_001.md); both remain proposed and are not frozen;
 3. freeze the input schema and deterministic exploration/truncation rules;
 4. reconcile the acceptance tests in this contract with the implemented Python and browser test batteries, recording uncovered cases.
 
