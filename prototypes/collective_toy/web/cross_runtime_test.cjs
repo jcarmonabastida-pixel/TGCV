@@ -65,6 +65,45 @@ function fixtures() {
   return cases;
 }
 
+function generatedFixtures() {
+  // Deterministic pseudo-random generation: identical inputs on every CI run.
+  let seed = 20261011;
+  const random = () => {
+    seed = (1664525 * seed + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+  const cases = [];
+  const states = ["S0", "S1", "S2", "S3"];
+  for (let n = 0; n < 12; n++) {
+    const transitions = [];
+    let id = 0;
+    for (let i = 0; i < states.length - 1; i++) {
+      transitions.push({ id: "g" + n + "_t" + id++, source: states[i], target: states[i + 1] });
+    }
+    for (let i = 0; i < states.length; i++) {
+      for (let j = 0; j < states.length; j++) {
+        if (random() < 0.22 && j !== i + 1) {
+          transitions.push({ id: "g" + n + "_t" + id++, source: states[i], target: states[j] });
+        }
+      }
+    }
+    const disabled = transitions.length ? [transitions[Math.floor(random() * transitions.length)].id] : [];
+    const model = {
+      schema_version: "collective-toy-input-001",
+      model_id: "generated-graph-" + String(n + 1).padStart(2, "0"),
+      initial_state: "S0", states, transitions, relations: [],
+      rule_profile: { type: "finite_deterministic_graph", version: "1" },
+      scenarios: [
+        { id: "baseline", disabled_transitions: [] },
+        { id: "generated_intervention", disabled_transitions: disabled }
+      ],
+      exploration: { max_depth: 3 + (n % 3), max_trajectories: 20 + n }
+    };
+    cases.push({ name: model.model_id, model });
+  }
+  return cases;
+}
+
 function invalidFixtures() {
   const base = {
     schema_version: "collective-toy-input-001",
@@ -122,7 +161,8 @@ function runPython(engineDir, model) {
 
   try {
     await page.goto("file://" + htmlPath);
-    for (const fixture of fixtures()) {
+    const validFixtures = [...fixtures(), ...generatedFixtures()];
+    for (const fixture of validFixtures) {
       await page.locator("#model").fill(JSON.stringify(fixture.model, null, 2));
       await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
       await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
