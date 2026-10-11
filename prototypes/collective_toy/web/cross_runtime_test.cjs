@@ -6,7 +6,7 @@ const os = require("node:os");
 const assert = require("node:assert/strict");
 
 (async () => {
-  const root = path.resolve(__dirname, "../..");
+  const root = path.resolve(__dirname, "../../..");
   const htmlPath = path.join(root, "prototypes/collective_toy/web/index.html");
   const engineDir = path.join(root, "prototypes/collective_toy");
   const python = spawnSync("python", ["-c",
