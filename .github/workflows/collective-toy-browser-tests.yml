@@ -1,0 +1,42 @@
+name: Collective Toy browser and cross-runtime tests
+
+on:
+  push:
+    branches:
+      - prototype/collective-toy-cross-runtime-tests-001-20261011
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'prototypes/collective_toy/**'
+      - '.github/workflows/collective-toy-browser-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  browser-cross-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Python test requirements
+        run: python -m pip install --upgrade pip
+      - name: Install browser test dependency
+        working-directory: prototypes/collective_toy/web
+        run: npm install
+      - name: Install Chromium
+        working-directory: prototypes/collective_toy/web
+        run: npx playwright install --with-deps chromium
+      - name: Run browser and Python concordance test
+        working-directory: prototypes/collective_toy/web
+        run: npm test
