@@ -148,6 +148,24 @@ function fixtures() {
   cases.push({ name: "duplicated-semantic-guard", model: duplicatedSemanticGuard,
     duplicateSemanticGuardOf: "single-semantic-guard" });
 
+  const scenarioOrderIsolation = clone(base);
+  scenarioOrderIsolation.model_id = "scenario-order-isolation";
+  scenarioOrderIsolation.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  scenarioOrderIsolation.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" }
+  ];
+  scenarioOrderIsolation.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab", disabled_transitions: ["t_ab"] },
+    { id: "disable_ac", disabled_transitions: ["t_ac"] }
+  ];
+  cases.push({ name: "scenario-order-isolation", model: scenarioOrderIsolation });
+  const reversedScenarioOrder = clone(scenarioOrderIsolation);
+  reversedScenarioOrder.model_id = "scenario-order-isolation-reversed";
+  reversedScenarioOrder.scenarios.reverse();
+  cases.push({ name: "scenario-order-isolation-reversed", model: reversedScenarioOrder,
+    scenarioOrderIsolationOf: "scenario-order-isolation" });
+
   const unguardedBaseline = clone(base);
   unguardedBaseline.model_id = "unguarded-baseline-neutrality";
   unguardedBaseline.scenarios = [{ id: "baseline", disabled_transitions: [] }];
@@ -1026,6 +1044,16 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
+      }
+      if (fixture.scenarioOrderIsolationOf) {
+        const original = semanticResults.get(fixture.scenarioOrderIsolationOf);
+        assert.ok(original, fixture.name + ": original scenario order must run first");
+        assert.deepEqual(browserPackage.result.scenario_results, original.scenario_results,
+          "reordering scenarios changed per-scenario outcomes");
+        assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
+          "reordering scenarios changed baseline comparisons");
+        assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
+          "reordering serialized scenarios should change input SHA-256");
       }
       if (fixture.guardNeutralityOf) {
         const reference = semanticResults.get(fixture.guardNeutralityOf);
