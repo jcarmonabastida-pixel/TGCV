@@ -288,3 +288,8 @@ The development branch includes browser/Python parity fixtures and matching Pyth
 ### Latest CI reconciliation
 
 As of commit `aafb7c3aa31d33616d3faad06a68436b00c152b0`, the three associated checks completed successfully: synthetic engine tests [38166544143](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38166544143), browser/cross-runtime tests [38166544196](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38166544196), and governance consistency [38166544137](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38166544137). This updates the evidence snapshot only; it does not freeze the contract, prove correctness for all inputs, or validate TGCV scientifically. Any subsequent commit requires its own CI check before its changes can be treated as passing.
+
+
+### Deterministic malformed-input mutation matrix — pending CI
+
+The current browser/Python invalid-input battery has been extended from 71 to 90 named fixtures. The added 19-case fixed mutation catalogue perturbs container types, transition fields, scenario IDs and intervention elements, exploration bounds, relation containers/types/references, duplicate scenario IDs, and the initial-state type. Matching Python unit tests assert that every mutated model raises the explicit validation exception; the browser cross-runtime suite asserts Python rejection and browser rejection for the same named fixtures. The mutation catalogue is deterministic and does not use runtime randomness. This is targeted robustness coverage, not exhaustive property-based testing. The 90-fixture snapshot requires its own CI run before being treated as passing.
