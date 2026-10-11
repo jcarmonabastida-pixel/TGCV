@@ -78,6 +78,28 @@ function fixtures() {
   ];
   cases.push({ name: "relation-guarded-availability", model: guarded });
 
+  const multiGuard = clone(base);
+  multiGuard.model_id = "multiple-relation-guards";
+  multiGuard.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  multiGuard.relations = [
+    { id: "r_guard_bd", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
+    { id: "r_guard_cd", type: "requires_transition_enabled", transition_id: "t_cd", requires_transition_id: "t_ac" }
+  ];
+  multiGuard.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_both_prerequisites", disabled_transitions: ["t_ab", "t_ac"] }
+  ];
+  cases.push({ name: "multiple-relation-guards", model: multiGuard });
+
+  const guardedCycle = clone(guarded);
+  guardedCycle.model_id = "relation-guarded-cycle-and-bounds";
+  guardedCycle.transitions.push({ id: "t_ba", source: "B", target: "A" });
+  guardedCycle.relations = [
+    { id: "r_guard_bd", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" }
+  ];
+  guardedCycle.exploration = { max_depth: 3, max_trajectories: 2 };
+  cases.push({ name: "relation-guarded-cycle-and-bounds", model: guardedCycle });
+
   return cases;
 }
 
@@ -172,6 +194,21 @@ function invalidFixtures() {
   };
   duplicateRelation.relations = [relation, { ...relation }];
   cases.push({ name: "duplicate-relation-id", model: duplicateRelation });
+
+  const unknownGuarded = clone(base);
+  unknownGuarded.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  unknownGuarded.relations = [{
+    id: "r_unknown_guarded", type: "requires_transition_enabled",
+    transition_id: "missing", requires_transition_id: "t_ab"
+  }];
+  cases.push({ name: "unknown-guarded-transition", model: unknownGuarded });
+
+  const malformedRelation = clone(base);
+  malformedRelation.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  malformedRelation.relations = [{
+    id: "r_missing_field", type: "requires_transition_enabled", transition_id: "t_ab"
+  }];
+  cases.push({ name: "malformed-relation-fields", model: malformedRelation });
 
   return cases;
 }
