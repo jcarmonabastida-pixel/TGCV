@@ -148,6 +148,21 @@ function fixtures() {
   cases.push({ name: "duplicated-semantic-guard", model: duplicatedSemanticGuard,
     duplicateSemanticGuardOf: "single-semantic-guard" });
 
+  const conjunctiveGuards = clone(base);
+  conjunctiveGuards.model_id = "same-target-conjunctive-guards";
+  conjunctiveGuards.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  conjunctiveGuards.relations = [
+    { id: "r_bd_requires_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
+    { id: "r_bd_requires_ac", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ac" }
+  ];
+  conjunctiveGuards.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab", disabled_transitions: ["t_ab"] },
+    { id: "disable_ac", disabled_transitions: ["t_ac"] },
+    { id: "disable_both", disabled_transitions: ["t_ab", "t_ac"] }
+  ];
+  cases.push({ name: "same-target-conjunctive-guards", model: conjunctiveGuards });
+
   const disabledOrder = clone(base);
   disabledOrder.model_id = "disabled-transition-order";
   disabledOrder.rule_profile = { type: "relation_guarded_graph", version: "1" };
@@ -1089,6 +1104,15 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
+      }
+      if (fixture.name === "same-target-conjunctive-guards") {
+        const scenarios = browserPackage.result.scenario_results;
+        assert.ok(!scenarios.baseline.effective_disabled_transitions.includes("t_bd"),
+          "target transition should remain enabled when both prerequisites are enabled");
+        for (const scenarioId of ["disable_ab", "disable_ac", "disable_both"]) {
+          assert.ok(scenarios[scenarioId].effective_disabled_transitions.includes("t_bd"),
+            "either disabled prerequisite should disable the shared target transition in " + scenarioId);
+        }
       }
       if (fixture.disabledTransitionOrderOf) {
         const original = semanticResults.get(fixture.disabledTransitionOrderOf);
