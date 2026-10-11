@@ -36,6 +36,14 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertFalse(base["truncated"])
         self.assertFalse(intervention["truncated"])
 
+    def test_initial_state_must_be_a_string_id_and_malformed_containers_raise_validation_error(self):
+        for invalid_initial_state in ([], {}, None, 1):
+            with self.subTest(initial_state=invalid_initial_state):
+                model = copy.deepcopy(self.model)
+                model["initial_state"] = invalid_initial_state
+                with self.assertRaises(ModelValidationError):
+                    run_model(model)
+
     def test_unknown_state_reference_fails(self):
         model = copy.deepcopy(self.model)
         model["transitions"][0]["target"] = "UNKNOWN"
