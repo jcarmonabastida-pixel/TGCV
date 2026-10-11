@@ -31,7 +31,7 @@ function fixtures() {
 
   const unicodeMetadata = clone(base);
   unicodeMetadata.model_id = "unicode-metadata-canonical-order";
-  unicodeMetadata.relations = [{ id: "descriptive", metadata: { "\\uE000": "bmp", "𐀀": "supplementary", count: 9007199254740991 } }];
+  unicodeMetadata.relations = [{ id: "descriptive", metadata: { "\uE000": "bmp", "𐀀": "supplementary", count: 9007199254740991 } }];
   cases.push({ name: "unicode-metadata-canonical-order", model: unicodeMetadata });
 
   const cycle = clone(base);
