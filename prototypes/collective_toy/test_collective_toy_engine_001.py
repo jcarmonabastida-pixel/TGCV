@@ -84,7 +84,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         value = {"n": 1.0, "negative_zero": -0.0, "\U00010000": "supplementary", "\uE000": "bmp"}
         self.assertEqual(
             canonical_json(value),
-            '{"n":1,"negative_zero":0,"\\ue000":"bmp","𐀀":"supplementary"}',
+            '{"n":1,"negative_zero":0,"\uE000":"bmp","𐀀":"supplementary"}',
         )
         self.assertEqual(sha256_json({"n": 1.0}), sha256_json({"n": 1}))
 
@@ -96,7 +96,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
     def test_canonical_json_rejects_unpaired_surrogates(self):
         with self.assertRaises(ModelValidationError):
-            canonical_json({"label": "\\ud800"})
+            canonical_json({"label": "\ud800"})
 
     def test_export_contains_reproduction_inputs_and_hashes(self):
         package = export_run(self.model)
