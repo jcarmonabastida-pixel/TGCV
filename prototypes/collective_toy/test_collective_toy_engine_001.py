@@ -109,6 +109,86 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertNotEqual(sha256_json(tampered_payload), tampered["package_sha256"])
         self.assertNotEqual(sha256_json(tampered["input"]), tampered["result"]["input_sha256"])
 
+    def test_schema_type_and_required_field_validation_matrix(self):
+        cases = []
+
+        model = copy.deepcopy(self.model)
+        model["schema_version"] = "unsupported"
+        cases.append(("schema-version", model))
+
+        model = copy.deepcopy(self.model)
+        model["model_id"] = "   "
+        cases.append(("blank-model-id", model))
+
+        model = copy.deepcopy(self.model)
+        model.pop("initial_state")
+        cases.append(("missing-initial-state", model))
+
+        model = copy.deepcopy(self.model)
+        model["transitions"] = [None]
+        cases.append(("non-object-transition", model))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"] = [None]
+        cases.append(("non-object-scenario", model))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"].append({"id": "baseline", "disabled_transitions": []})
+        cases.append(("duplicate-scenario-id", model))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][1]["disabled_transitions"] = "t_ac"
+        cases.append(("disabled-transitions-not-list", model))
+
+        model = copy.deepcopy(self.model)
+        model["exploration"] = []
+        cases.append(("exploration-not-object", model))
+
+        model = copy.deepcopy(self.model)
+        model["exploration"]["max_depth"] = True
+        cases.append(("boolean-depth", model))
+
+        model = copy.deepcopy(self.model)
+        model["exploration"]["max_trajectories"] = 0
+        cases.append(("zero-trajectory-cap", model))
+
+        model = copy.deepcopy(self.model)
+        model["exploration"]["max_depth"] = 101
+        cases.append(("depth-over-resource-cap", model))
+
+        model = copy.deepcopy(self.model)
+        model["exploration"]["max_trajectories"] = 10001
+        cases.append(("trajectory-cap-over-resource-limit", model))
+
+        model = copy.deepcopy(self.model)
+        model["states"] = ["S" + str(i) for i in range(501)]
+        model["initial_state"] = "S0"
+        model["transitions"] = []
+        cases.append(("state-count-over-resource-cap", model))
+
+        model = copy.deepcopy(self.model)
+        model["transitions"] = [
+            {"id": "t" + str(i), "source": "A", "target": "A"} for i in range(2001)
+        ]
+        cases.append(("transition-count-over-resource-cap", model))
+
+        for name, candidate in cases:
+            with self.subTest(name=name):
+                with self.assertRaises(ModelValidationError):
+                    run_model(candidate)
+
+    def test_relation_guard_cannot_reference_itself(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [{
+            "id": "r_self",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_ab",
+            "requires_transition_id": "t_ab",
+        }]
+        with self.assertRaises(ModelValidationError):
+            run_model(model)
+
     def test_duplicate_state_id_fails(self):
         model = copy.deepcopy(self.model)
         model["states"].append("A")
