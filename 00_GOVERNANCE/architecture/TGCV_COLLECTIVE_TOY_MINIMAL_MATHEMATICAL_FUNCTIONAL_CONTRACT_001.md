@@ -79,7 +79,7 @@ The MVP begins with deterministic transitions. Nondeterministic or probabilistic
 A transformation is **locally accessible** at a state if it is in \(T_{acc}(s\mid M,q)\) under the frozen scenario and rule profile. A state is **reachable** from \(s_0\) if at least one permitted finite sequence of locally accessible transitions leads from \(s_0\) to that state.
 
 The engine must report separately:
-- locally accessible transformations at the current state;
+- transitions enabled at the current state under the MVP rule profile;
 - reachable states under the exploration policy;
 - trajectories discovered within the declared bounds.
 
@@ -109,7 +109,7 @@ A scenario may not silently alter the state inventory, transformation definition
 Compare a named baseline scenario with one or more intervention scenarios under the same model version, exploration bounds, and engine version.
 
 Minimum comparison outputs:
-- differences in locally accessible transformation sets at the specified comparison state(s);
+- differences in state-local enabled-transition sets at the specified comparison state(s);
 - differences in reachable-state sets;
 - trajectory-set differences under the same enumeration bound;
 - explicit indication of truncation, cycles, or unexplored space;
@@ -122,7 +122,7 @@ A count difference alone is not an explanation or a scientific conclusion.
 For a valid model/scenario pair, the engine shall:
 
 1. validate schema, unique IDs, references, initial state, and rule parameters;
-2. calculate locally accessible transformations under the declared rule profile;
+2. calculate state-local enabled transitions under the declared MVP rule profile;
 3. explore reachable states with a deterministic, documented traversal order;
 4. enumerate trajectories only within explicit depth/count bounds;
 5. compute scenario differences from canonicalized result sets;
