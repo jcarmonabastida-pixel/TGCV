@@ -347,11 +347,12 @@ function invalidFixtures() {
   const unknownProfileField = clone(base); unknownProfileField.rule_profile.unexpected = true;
   cases.push({ name: "unknown-rule-profile-field", model: unknownProfileField });
 
-  const unknownRelationField = clone(base);
-  unknownRelationField.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  const unknownRelationFieldNested = clone(base);
+  unknownRelationFieldNested.rule_profile = { type: "relation_guarded_graph", version: "1" };
   unknownRelationField.transitions.push({ id: "t_ba", source: "B", target: "A" });
-  unknownRelationField.relations = [{ id: "r", type: "requires_transition_enabled", transition_id: "t_ab", requires_transition_id: "t_ab", unexpected: true }];
-  cases.push({ name: "unknown-relation-field", model: unknownRelationField });
+  unknownRelationFieldNested.transitions.push({ id: "t_ba", source: "B", target: "A" });
+  unknownRelationFieldNested.relations = [{ id: "r", type: "requires_transition_enabled", transition_id: "t_ab", requires_transition_id: "t_ab", unexpected: true }];
+  cases.push({ name: "unknown-relation-field", model: unknownRelationFieldNested });
 
   const selfGuard = clone(base);
   selfGuard.rule_profile = { type: "relation_guarded_graph", version: "1" };
