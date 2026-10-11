@@ -122,6 +122,10 @@ function fixtures() {
     statePermutationOf: "state-order-reference"
   });
 
+  const interventionMonotonicity = clone(base);
+  interventionMonotonicity.model_id = "intervention-reachability-monotonicity";
+  cases.push({ name: "intervention-reachability-monotonicity", model: interventionMonotonicity });
+
   const unreachableIntervention = clone(base);
   unreachableIntervention.model_id = "unreachable-transition-non-interference";
   unreachableIntervention.scenarios.push({
@@ -871,6 +875,20 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering disabled transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized disabled transitions should change input SHA-256");
+      }
+      if (fixture.name === "intervention-reachability-monotonicity") {
+        const baseline = browserPackage.result.scenario_results.baseline;
+        const intervention = browserPackage.result.scenario_results.block_ac;
+        assert.ok(
+          intervention.reachable_states.every(state => baseline.reachable_states.includes(state)),
+          "disabling a transition expanded reachable states"
+        );
+        const encode = value => JSON.stringify(value);
+        const baselinePaths = new Set(baseline.trajectories.map(encode));
+        assert.ok(
+          intervention.trajectories.every(path => baselinePaths.has(encode(path))),
+          "disabling a transition introduced a trajectory absent from baseline"
+        );
       }
       if (fixture.name === "unreachable-transition-non-interference") {
         const blockAc = browserPackage.result.scenario_results.block_ac;
