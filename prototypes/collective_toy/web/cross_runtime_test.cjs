@@ -417,6 +417,56 @@ function invalidFixtures() {
   emptyDisabledId.scenarios[0].disabled_transitions = [""];
   cases.push({ name: "empty-disabled-transition-id", model: emptyDisabledId });
 
+  // Nested relation/scenario/exploration field coverage.
+  const validRelation = {
+    id: "r_schema", type: "requires_transition_enabled",
+    transition_id: "t_ab", requires_transition_id: "t_ab_missing"
+  };
+  for (const field of ["id", "type", "transition_id", "requires_transition_id"]) {
+    const missing = clone(base);
+    missing.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    const relation = clone(validRelation);
+    delete relation[field];
+    missing.relations = [relation];
+    cases.push({ name: "missing-relation-" + field, model: missing });
+  }
+
+  for (const field of ["id", "transition_id", "requires_transition_id"]) {
+    const empty = clone(base);
+    empty.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    const relation = clone(validRelation);
+    relation[field] = "";
+    empty.relations = [relation];
+    cases.push({ name: "empty-relation-" + field, model: empty });
+  }
+
+  const nonObjectRelation = clone(base);
+  nonObjectRelation.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  nonObjectRelation.relations = [null];
+  cases.push({ name: "non-object-relation", model: nonObjectRelation });
+
+  const unknownRelationField = clone(base);
+  unknownRelationField.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  unknownRelationField.relations = [{
+    id: "r_schema", type: "requires_transition_enabled",
+    transition_id: "t_ab", requires_transition_id: "t_ab_missing", unexpected: true
+  }];
+  cases.push({ name: "unknown-relation-field", model: unknownRelationField });
+
+  const missingScenarioId = clone(base);
+  delete missingScenarioId.scenarios[0].id;
+  cases.push({ name: "missing-scenario-id", model: missingScenarioId });
+
+  const nonStringDisabled = clone(base);
+  nonStringDisabled.scenarios[0].disabled_transitions = [1];
+  cases.push({ name: "non-string-disabled-transition-id", model: nonStringDisabled });
+
+  for (const field of ["max_depth", "max_trajectories"]) {
+    const missing = clone(base);
+    delete missing.exploration[field];
+    cases.push({ name: "missing-exploration-" + field, model: missing });
+  }
+
   return cases;
 }
 
