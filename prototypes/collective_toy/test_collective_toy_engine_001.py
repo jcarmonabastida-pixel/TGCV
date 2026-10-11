@@ -760,6 +760,30 @@ class CollectiveToyEngineTests(unittest.TestCase):
             for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
                 self.assertEqual(left[key], right[key], f"{key} changed in {scenario_id}")
 
+    def test_relation_guard_effect_is_local_to_guarded_transition(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"}
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
+        ]
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        intervention = result["scenario_results"]["disable_ab"]
+        self.assertIn("D", baseline["reachable_states"])
+        self.assertIn("D", intervention["reachable_states"])
+        self.assertNotIn("t_bd", intervention["effective_disabled_transitions"])
+        self.assertIn("t_cd", {transition["id"] for transition in model["transitions"]})
+        baseline_paths = {tuple(item.get("state") for item in path) for path in baseline["trajectories"]}
+        intervention_paths = {tuple(item.get("state") for item in path) for path in intervention["trajectories"]}
+        self.assertIn(("A", "C", "D"), baseline_paths)
+        self.assertIn(("A", "C", "D"), intervention_paths)
+        self.assertNotIn(("A", "B", "D"), intervention_paths)
+
     def test_adding_guard_cannot_expand_reachability_or_trajectories(self):
         single = copy.deepcopy(self.model)
         single["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
