@@ -36,7 +36,7 @@ M = (S, T, R, C, L, s_0)
 where:
 
 - \(S\) is a finite set of explicitly defined system configurations/states.
-- \(T\) is a finite set of candidate transformations. Each transformation has a stable identifier and declared source/target configuration or a deterministic applicability/effect rule.
+- \(T\) is the finite set of transition records declared by this prototype. In schema `collective-toy-input-001`, each record has exactly `id`, `source`, and `target`, representing one directed graph edge. Separate applicability/effect functions and other transformation fields are not supported by this schema; they require a separately versioned extension.
 - \(R\) is the set of declared relations among transformations and/or system elements that the selected MVP rule profile actually uses.
 - \(C\) is the set of explicit scenario conditions/constraints.
 - \(L\) is the declared rule/mechanism profile used to evaluate availability and transition effects.
@@ -66,13 +66,12 @@ A state is a uniquely identified configuration admitted by the finite model. Its
 
 ### 4.2 Transformation
 
-Each transformation has:
-- stable ID;
-- source/applicability specification;
-- target/effect specification;
-- enabled/disabled status or an explicit enablement rule;
-- optional declared relation IDs;
-- optional human-readable description.
+Each transition record supported by the current schema has exactly:
+- `id`: stable, unique transition identifier;
+- `source`: declared source-state ID;
+- `target`: declared target-state ID.
+
+The current validator rejects additional transition fields. Enablement is determined by the selected rule profile and scenario-level disabled-transition IDs; relation records live in the top-level `relations` list. Per-transition descriptions, explicit effect functions, and embedded relation IDs are not part of schema v001.
 
 The MVP begins with deterministic transitions. Nondeterministic or probabilistic effects are out of scope until separately specified.
 
@@ -99,12 +98,9 @@ Every transition in a reported trajectory must satisfy the scenario's enablement
 
 ### 4.5 Scenario
 
-A scenario is a versioned, explicit intervention over a common base model. MVP interventions may:
-- enable or disable specified transformation IDs;
-- add/remove a declared constraint;
-- change a declared rule parameter within its permitted domain.
+A scenario is an explicit intervention over a common base model. In schema `collective-toy-input-001`, the only supported intervention is the `disabled_transitions` list of known transition IDs. Profile 2 may derive additional effective disablements from its declared relation guards, according to the documented guard rule.
 
-A scenario may not silently alter the state inventory, transformation definitions, or rule implementation. Such edits create a new model version and must be recorded as such.
+Adding/removing arbitrary constraints, changing rule parameters, or changing the state inventory, transition definitions, or rule implementation is not supported by schema v001. Such capabilities require a separately versioned schema and contract rather than being implied by this draft.
 
 ### 4.6 Comparison
 
@@ -224,7 +220,7 @@ The following matrix maps the minimum acceptance criteria to tests present in th
 | 10. Export contains reproduction inputs and hashes | test_export_contains_reproduction_inputs_and_hashes; browser test downloads and parses exported run packages | Covered for package presence and tested export paths; long-term archival and independent replay workflow are not yet a separate acceptance gate |
 | 11. Invalid input is rejected without a misleading partial PASS | Browser/Python test checks 34 named invalid fixtures are rejected by both runtimes; Python includes a table-driven schema/resource-boundary test | Expanded coverage for required fields, types, duplicate scenario IDs, self-guards, and documented resource caps; not exhaustive schema fuzzing |
 
-Current browser/Python fixture battery: 13 named hand-authored valid fixtures plus 12 deterministic generated graphs (25 valid fixtures total), and 34 named invalid fixtures. The UI test also checks relation add/remove, profile switching, profile-2 execution, profile-1 inertness, and visual attenuation of a relation-blocked transition. These counts describe the checked-in test definitions, not the number of every internal assertion.
+Current browser/Python fixture battery: 15 named hand-authored valid fixtures plus 12 deterministic generated graphs (27 valid fixtures total), and 34 named invalid fixtures. The UI test also checks relation add/remove, profile switching, profile-2 execution, profile-1 inertness, and visual attenuation of a relation-blocked transition. These counts describe the checked-in test definitions, not the number of every internal assertion.
 
 Remaining explicit gaps before contract freeze:
 - complete schema/type/range validation matrix for every field and all malformed nested shapes; current fixtures broaden coverage but are not exhaustive;
@@ -234,7 +230,7 @@ Remaining explicit gaps before contract freeze:
 - a review of deterministic ordering/serialization assumptions across supported Python/browser runtimes, including broader malformed-input fuzzing; numeric/Unicode edge cases now have explicit cross-runtime fixtures for code-point key ordering, integral-float normalization, fractional/unsafe-number rejection, and unpaired-surrogate rejection; strict rejection of unknown keys is implemented as the current draft policy, pending formal schema freeze;
 - a formal decision on whether graph-level global availability guards remain the intended experimental semantics; the current OR-style blocking behavior for multiple guards is documented above but remains experimental.
 
-The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them. Prior baseline CI snapshot (before serialization edge cases): browser/Python run 38156848896 reported 24 valid fixtures matched and 25 invalid fixtures rejected by both runtimes; Python run 38156848887 reported 25 tests passed. The expanded suite defines 27 valid fixtures and 34 invalid fixtures, with two additional Python unit tests covering exact-cap completeness and a terminal path at the depth boundary. The latest recorded browser/cross-runtime run passed for commit 88c9f0c5fb4fa06ce91a5947b75637e683b932b5. After correcting the Unicode fixture, the current recorded CI snapshot is: browser/Python run 38158428420 PASS, Python run 38158428394 PASS, and governance consistency run 38158428409 PASS. These results cover the checked-in test battery only and do not prove all-input correctness.
+The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them. Historical baseline snapshots are retained as chronology, not as current evidence: browser/Python run 38156848896 reported 24 valid fixtures matched and 25 invalid fixtures rejected; Python run 38156848887 reported 25 tests passed. The current checked-in battery defines 27 valid fixtures (15 named plus 12 deterministic generated graphs) and 34 invalid fixtures, including exact-cap and terminal-depth-boundary cases. For implementation head `c3a3f451f418487c543da2f4bceb7d7bcebc9da5`, the recorded current CI snapshot passed: browser/cross-runtime run [38159900945](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38159900945), Python engine run [38159900920](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38159900920), and governance consistency run [38159900917](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38159900917). This evidence applies to the tested code and fixtures only; it does not prove all-input correctness. The scope corrections in this document do not change engine code.
 
 ## 9. Audit and reproduction record
 
