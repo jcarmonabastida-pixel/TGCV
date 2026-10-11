@@ -42,7 +42,7 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         raise ModelValidationError("model must be a JSON object")
     if model.get("schema_version") != SUPPORTED_SCHEMA:
         raise ModelValidationError(f"schema_version must be {SUPPORTED_SCHEMA!r}")
-    if not isinstance(model.get("model_id"), str) or not model["model_id"]:
+    if not isinstance(model.get("model_id"), str) or not model["model_id"].strip():
         raise ModelValidationError("model_id must be a non-empty string")
     states = model.get("states")
     if not isinstance(states, list) or not states:
@@ -140,6 +140,11 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         raise ModelValidationError("max_depth must be a non-negative integer")
     if not isinstance(max_trajectories, int) or isinstance(max_trajectories, bool) or max_trajectories < 1:
         raise ModelValidationError("max_trajectories must be a positive integer")
+    # Keep Python's accepted domain identical to the browser UI's documented resource caps.
+    if len(states) > 500 or len(transitions) > 2000:
+        raise ModelValidationError("model exceeds limits: at most 500 states and 2000 transitions")
+    if max_depth > 100 or max_trajectories > 10000:
+        raise ModelValidationError("exploration exceeds limits: max_depth <= 100 and max_trajectories <= 10000")
     return {s: s for s in states}, transitions
 
 
