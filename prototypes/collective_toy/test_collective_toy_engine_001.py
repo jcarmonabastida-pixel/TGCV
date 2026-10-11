@@ -459,6 +459,51 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertNotEqual(without_result["input_sha256"], with_result["input_sha256"])
         self.assertEqual(without_result["result_sha256"], with_result["result_sha256"])
 
+    def test_direct_intervention_and_guard_chain_do_not_propagate_recursively(self):
+        model = copy.deepcopy(self.model)
+        model["states"] = ["A", "B", "C", "D"]
+        model["initial_state"] = "A"
+        model["transitions"] = [
+            {"id": "t_ab", "source": "A", "target": "B"},
+            {"id": "t_bc", "source": "B", "target": "C"},
+            {"id": "t_cd", "source": "C", "target": "D"},
+        ]
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_bc_requires_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bc", "requires_transition_id": "t_ab"},
+            {"id": "r_cd_requires_bc", "type": "requires_transition_enabled",
+             "transition_id": "t_cd", "requires_transition_id": "t_bc"},
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
+            {"id": "disable_bc", "disabled_transitions": ["t_bc"]},
+            {"id": "disable_cd", "disabled_transitions": ["t_cd"]},
+        ]
+
+        result = run_model(model)["scenario_results"]
+        self.assertEqual(result["baseline"]["effective_disabled_transitions"], [])
+        self.assertEqual(result["disable_ab"]["effective_disabled_transitions"], ["t_ab", "t_bc"])
+        self.assertEqual(
+            [(effect["relation_id"], effect["status"])
+             for effect in result["disable_ab"]["relation_effects"]],
+            [("r_bc_requires_ab", "BLOCKED"), ("r_cd_requires_bc", "APPLIED")],
+            "a relation-derived disablement must not be treated as an explicit prerequisite disablement",
+        )
+        self.assertEqual(result["disable_bc"]["effective_disabled_transitions"], ["t_bc", "t_cd"])
+        self.assertEqual(
+            [(effect["relation_id"], effect["status"])
+             for effect in result["disable_bc"]["relation_effects"]],
+            [("r_bc_requires_ab", "APPLIED"), ("r_cd_requires_bc", "BLOCKED")],
+        )
+        self.assertEqual(result["disable_cd"]["effective_disabled_transitions"], ["t_cd"])
+        self.assertEqual(
+            [effect["status"] for effect in result["disable_cd"]["relation_effects"]],
+            ["APPLIED", "APPLIED"],
+            "a directly disabled target does not change whether its guards' prerequisites are explicitly disabled",
+        )
+
     def test_relation_guarded_profile_blocks_transition_when_prerequisite_disabled(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
