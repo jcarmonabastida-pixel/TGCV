@@ -55,8 +55,10 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         raise ModelValidationError("initial_state must reference a declared state")
 
     profile = model.get("rule_profile")
-    if profile != {"type": "finite_deterministic_graph", "version": "1"}:
-        raise ModelValidationError("unsupported rule_profile; expected finite_deterministic_graph v1")
+    profile1 = {"type": "finite_deterministic_graph", "version": "1"}
+    profile2 = {"type": "relation_guarded_graph", "version": "1"}
+    if profile not in (profile1, profile2):
+        raise ModelValidationError("unsupported rule_profile; expected finite_deterministic_graph v1 or relation_guarded_graph v1")
 
     raw_transitions = model.get("transitions")
     if not isinstance(raw_transitions, list):
@@ -74,10 +76,34 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
             raise ModelValidationError(f"transition {tid} references an unknown state")
         transitions[tid] = Transition(tid, source, target)
 
-    # Profile 1 allows relations only as inert descriptive metadata.
     relations = model.get("relations", [])
     if not isinstance(relations, list):
-        raise ModelValidationError("relations must be a list (descriptive metadata only)")
+        raise ModelValidationError("relations must be a list")
+    if profile == profile1:
+        # Profile 1 preserves relations as inert descriptive metadata.
+        pass
+    else:
+        relation_ids: set[str] = set()
+        for relation in relations:
+            if not isinstance(relation, dict):
+                raise ModelValidationError("each relation must be an object")
+            rid, rtype = relation.get("id"), relation.get("type")
+            guarded, prerequisite = relation.get("transition_id"), relation.get("requires_transition_id")
+            if not isinstance(rid, str) or not rid:
+                raise ModelValidationError("relation id must be a non-empty string")
+            if rid in relation_ids:
+                raise ModelValidationError(f"duplicate relation ID: {rid}")
+            relation_ids.add(rid)
+            if rtype != "requires_transition_enabled":
+                raise ModelValidationError(f"unsupported relation type: {rtype!r}")
+            if not isinstance(guarded, str) or not guarded or not isinstance(prerequisite, str) or not prerequisite:
+                raise ModelValidationError("relation_guarded_graph relations require transition_id and requires_transition_id")
+            if guarded not in transitions:
+                raise ModelValidationError(f"relation {rid} references unknown guarded transition: {guarded}")
+            if prerequisite not in transitions:
+                raise ModelValidationError(f"relation {rid} references unknown prerequisite transition: {prerequisite}")
+            if guarded == prerequisite:
+                raise ModelValidationError(f"relation {rid} cannot require a transition to enable itself")
     scenarios = model.get("scenarios")
     if not isinstance(scenarios, list) or not scenarios:
         raise ModelValidationError("scenarios must be a non-empty list")
@@ -120,7 +146,22 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
 def _scenario_result(
     model: dict[str, Any], transitions: dict[str, Transition], scenario: dict[str, Any]
 ) -> dict[str, Any]:
-    disabled = set(scenario.get("disabled_transitions", []))
+    explicit_disabled = set(scenario.get("disabled_transitions", []))
+    disabled = set(explicit_disabled)
+    relation_effects: list[dict[str, str]] = []
+    if model["rule_profile"] == {"type": "relation_guarded_graph", "version": "1"}:
+        for relation in sorted(model.get("relations", []), key=lambda item: item["id"]):
+            blocked = relation["requires_transition_id"] in explicit_disabled
+            relation_effects.append({
+                "relation_id": relation["id"],
+                "type": relation["type"],
+                "transition_id": relation["transition_id"],
+                "requires_transition_id": relation["requires_transition_id"],
+                "status": "BLOCKED" if blocked else "APPLIED",
+                "reason": "prerequisite_transition_disabled" if blocked else "prerequisite_transition_not_disabled",
+            })
+            if blocked:
+                disabled.add(relation["transition_id"])
     max_depth = model["exploration"]["max_depth"]
     max_trajectories = model["exploration"]["max_trajectories"]
     initial = model["initial_state"]
@@ -177,15 +218,19 @@ def _scenario_result(
 
     # Current-state enabled set is local and is not TGCV's system-level T_acc.
     enabled_at_initial = sorted(t.id for t in adjacency[initial])
-    return {
+    result = {
         "scenario_id": scenario["id"],
-        "disabled_transitions": sorted(disabled),
+        "disabled_transitions": sorted(explicit_disabled),
         "enabled_transitions_at_initial_state": enabled_at_initial,
         "reachable_states": sorted(reached),
         "trajectories": trajectories,
         "truncated": truncated,
         "exploration_bounds": {"max_depth": max_depth, "max_trajectories": max_trajectories},
     }
+    if model["rule_profile"] == {"type": "relation_guarded_graph", "version": "1"}:
+        result["relation_effects"] = relation_effects
+        result["effective_disabled_transitions"] = sorted(disabled)
+    return result
 
 
 def run_model(model: dict[str, Any]) -> dict[str, Any]:
