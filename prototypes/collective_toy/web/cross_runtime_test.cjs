@@ -29,6 +29,11 @@ function fixtures() {
   const clone = x => JSON.parse(JSON.stringify(x));
   const cases = [{ name: "diamond-reference", model: clone(base) }];
 
+  const unicodeMetadata = clone(base);
+  unicodeMetadata.model_id = "unicode-metadata-canonical-order";
+  unicodeMetadata.relations = [{ id: "descriptive", metadata: { "\\uE000": "bmp", "𐀀": "supplementary", count: 9007199254740991 } }];
+  cases.push({ name: "unicode-metadata-canonical-order", model: unicodeMetadata });
+
   const cycle = clone(base);
   cycle.model_id = "cycle";
   cycle.transitions.push({ id: "t_ba", source: "B", target: "A" });
@@ -293,6 +298,18 @@ function invalidFixtures() {
   }));
   cases.push({ name: "transition-count-over-resource-cap", model: tooManyTransitions });
 
+  const fractionalMetadata = clone(base);
+  fractionalMetadata.relations = [{ id: "descriptive", metadata: { score: 1.5 } }];
+  cases.push({ name: "fractional-metadata-number", model: fractionalMetadata });
+
+  const unsafeIntegerMetadata = clone(base);
+  unsafeIntegerMetadata.relations = [{ id: "descriptive", metadata: { count: 9007199254740992 } }];
+  cases.push({ name: "unsafe-integer-metadata", model: unsafeIntegerMetadata });
+
+  const unpairedSurrogateMetadata = clone(base);
+  unpairedSurrogateMetadata.relations = [{ id: "descriptive", metadata: { label: "\\ud800" } }];
+  cases.push({ name: "unpaired-surrogate-metadata", model: unpairedSurrogateMetadata });
+
   const unknownTopLevel = clone(base); unknownTopLevel.unexpected_top_level = true;
   cases.push({ name: "unknown-top-level-field", model: unknownTopLevel });
 
@@ -341,10 +358,18 @@ function runPython(engineDir, model) {
   return JSON.parse(result.stdout.trim());
 }
 
+function compareCodePoints(a, b) {
+  const aa = Array.from(a, ch => ch.codePointAt(0));
+  const bb = Array.from(b, ch => ch.codePointAt(0));
+  for (let i = 0; i < Math.min(aa.length, bb.length); i++) {
+    if (aa[i] !== bb[i]) return aa[i] - bb[i];
+  }
+  return aa.length - bb.length;
+}
 function canonicalJson(value) {
   if (Array.isArray(value)) return "[" + value.map(canonicalJson).join(",") + "]";
   if (value !== null && typeof value === "object") {
-    return "{" + Object.keys(value).sort().map(
+    return "{" + Object.keys(value).sort(compareCodePoints).map(
       key => JSON.stringify(key) + ":" + canonicalJson(value[key])
     ).join(",") + "}";
   }
