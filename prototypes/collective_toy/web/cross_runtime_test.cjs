@@ -293,6 +293,26 @@ function invalidFixtures() {
   }));
   cases.push({ name: "transition-count-over-resource-cap", model: tooManyTransitions });
 
+  const unknownTopLevel = clone(base); unknownTopLevel.unexpected_top_level = true;
+  cases.push({ name: "unknown-top-level-field", model: unknownTopLevel });
+
+  const unknownTransitionField = clone(base); unknownTransitionField.transitions[0].unexpected = true;
+  cases.push({ name: "unknown-transition-field", model: unknownTransitionField });
+
+  const unknownScenarioField = clone(base); unknownScenarioField.scenarios[0].unexpected = true;
+  cases.push({ name: "unknown-scenario-field", model: unknownScenarioField });
+
+  const unknownExplorationField = clone(base); unknownExplorationField.exploration.unexpected = true;
+  cases.push({ name: "unknown-exploration-field", model: unknownExplorationField });
+
+  const unknownProfileField = clone(base); unknownProfileField.rule_profile.unexpected = true;
+  cases.push({ name: "unknown-rule-profile-field", model: unknownProfileField });
+
+  const unknownRelationField = clone(base);
+  unknownRelationField.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  unknownRelationField.relations = [{ id: "r", type: "requires_transition_enabled", transition_id: "t_ab", requires_transition_id: "t_ab", unexpected: true }];
+  cases.push({ name: "unknown-relation-field", model: unknownRelationField });
+
   const selfGuard = clone(base);
   selfGuard.rule_profile = { type: "relation_guarded_graph", version: "1" };
   selfGuard.relations = [{
