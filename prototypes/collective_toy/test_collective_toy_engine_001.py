@@ -540,6 +540,34 @@ class CollectiveToyEngineTests(unittest.TestCase):
             with self.subTest(scenario=scenario_id):
                 self.assertIn("t_bd", result[scenario_id]["effective_disabled_transitions"])
 
+    def test_conjunctive_guard_relation_order_does_not_change_operational_semantics(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_bd_requires_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
+            {"id": "r_bd_requires_ac", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ac"},
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
+            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
+            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
+        ]
+        reversed_model = copy.deepcopy(model)
+        reversed_model["relations"].reverse()
+        original = run_model(model)
+        reversed_result = run_model(reversed_model)
+        for scenario_id in original["scenario_results"]:
+            for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
+                self.assertEqual(
+                    original["scenario_results"][scenario_id][key],
+                    reversed_result["scenario_results"][scenario_id][key],
+                    f"relation order changed {key} in {scenario_id}",
+                )
+        self.assertNotEqual(original["input_sha256"], reversed_result["input_sha256"])
+
     def test_relation_guarded_intervention_preserves_reachability_monotonicity(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
