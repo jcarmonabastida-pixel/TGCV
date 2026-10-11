@@ -1,6 +1,6 @@
 # Collective Toy — relation-aware execution profile proposal 001
 
-**Status:** Experimental design proposal; not implemented, not canonical TGCV architecture, and not a scientific claim.  
+**Status:** Option A selected by the user for experimental implementation on the prototype branch; not canonical TGCV architecture and not a scientific claim.  
 **Scope:** Synthetic-only executable demonstrator. No Rust dataset or (U_t) processing is permitted or required.
 
 ## 1. Why a second profile
@@ -56,7 +56,7 @@ Interpretation: `t_bd` may be used in a scenario only if `t_ab` is not disabled 
 9. Exported packages retain the full input, engine/profile versions, output, and SHA-256 fingerprints.
 10. No claim about value, causal effect, empirical validity, or TGCV Core follows from passing software tests.
 
-## 4. Key design issue — do not implement yet
+## 4. Selected semantics — option A
 
 The candidate rule `requires_transition_enabled` means “the required transition is not disabled by this scenario,” not “the required transition occurs earlier in a trajectory.” Those meanings are different. A dependency between transition *availability* and transition *occurrence* would require a separate temporal/stateful semantics and additional tests.
 
@@ -92,9 +92,9 @@ Recommendation for a minimal first executable: option A, named explicitly as a s
 ### Cross-runtime
 Every valid fixture must compare scenario results, baseline comparisons, input hashes, and result hashes between Python and Chromium. Every invalid fixture must be rejected by both runtimes with no partial successful result.
 
-## 6. Gate to implementation
+## 6. Implementation and verification gate
 
-Do not implement this proposal until the semantics in section 4 are accepted and the test contract is reviewed. Implement on the existing prototype branch only; retain the current PR and profile 1 as the stable baseline. No merge to `main` is implied by this document.
+Implementation is permitted on the existing prototype branch for option A only. Keep profile 1 as the stable baseline. Required Python unit tests and browser/Python cross-runtime tests must pass for valid and invalid profile-2 fixtures before describing the implementation as passing. No merge to `main` is implied by this document.
 
 ## 7. Limits
 
