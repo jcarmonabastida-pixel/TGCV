@@ -94,6 +94,10 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         disabled = scenario.get("disabled_transitions", [])
         if not isinstance(disabled, list):
             raise ModelValidationError(f"disabled_transitions for {sid} must be a list")
+        if any(not isinstance(tid, str) or not tid for tid in disabled):
+            raise ModelValidationError(
+                f"disabled_transitions for {sid} must contain non-empty transition ID strings"
+            )
         unknown = set(disabled) - set(transitions)
         if unknown:
             raise ModelValidationError(f"scenario {sid} references unknown transitions: {sorted(unknown)}")
@@ -137,7 +141,7 @@ def _scenario_result(
                 reached.add(transition.target)
                 queue.append(transition.target)
 
-    # Enumerate bounded finite walks, including prefixes; max_depth counts edges.
+    # Enumerate bounded finite walks, recording terminal paths and depth-limited paths; max_depth counts edges.
     trajectories: list[list[dict[str, str]]] = []
     truncated = False
     stack: list[tuple[str, list[dict[str, str]], int]] = [
