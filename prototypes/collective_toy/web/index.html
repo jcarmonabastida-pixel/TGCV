@@ -105,8 +105,6 @@ $("model").addEventListener("input",function(){var m=currentModelForEditor();if(
 
 $("load").addEventListener("click",function(){$("model").value=JSON.stringify(example(),null,2);$("profile-editor").value="1";syncRelationEditor();$("status").textContent="Ejemplo cargado. Pulsa Ejecutar escenarios."});
 $("model").value=JSON.stringify(example(),null,2);syncRelationEditor();
-$("model").value=JSON.stringify(example(),null,2);syncRelationEditor();
 $("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage)draw(lastModel,lastPackage.result,$("which").value)});
 $("export").addEventListener("click",function(){if(!lastPackage)return;var blob=new Blob([JSON.stringify(lastPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
-$("model").value=JSON.stringify(example(),null,2);
 </script></body></html>
