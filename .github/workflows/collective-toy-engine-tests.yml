@@ -1,0 +1,32 @@
+name: Collective Toy synthetic engine tests
+
+on:
+  push:
+    branches:
+      - prototype/collective-toy-engine-001-20261011
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'prototypes/collective_toy/**'
+      - '.github/workflows/collective-toy-engine-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-engine-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile engine and tests
+        run: python -m py_compile prototypes/collective_toy/collective_toy_engine_001.py prototypes/collective_toy/test_collective_toy_engine_001.py
+      - name: Run unit tests
+        working-directory: prototypes/collective_toy
+        run: python -m unittest -v test_collective_toy_engine_001.py

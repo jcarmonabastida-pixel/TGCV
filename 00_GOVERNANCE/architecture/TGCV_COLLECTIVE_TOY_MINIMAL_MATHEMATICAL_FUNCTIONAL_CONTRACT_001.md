@@ -1,0 +1,241 @@
+# TGCV Collective Toy — Minimal Mathematical and Functional Contract 001
+
+- **Status:** PROPOSAL / ENGINEERING CONTRACT DRAFT
+- **Date:** 2026-10-11
+- **Scope:** Synthetic-only minimum executable demonstrator
+- **Canonical effect:** None. This document does not amend TGCV Core, make Ω-primary canonical, or settle the architectural transition question.
+- **Scientific execution:** Not authorized by this document. No real dataset, including the existing Rust-derived \(U_t\), is an input to this MVP.
+
+## 1. Purpose
+
+Specify the smallest executable contract for the TGCV “Collective Toy”: an interactive tool in which a developer or scientist can define a test system, inspect its accessible transformations and relations, intervene through controlled scenarios, compare resulting trajectories, and reproduce/audit the computation.
+
+The MVP demonstrates what the implemented model computes under explicit rules. It does not, by itself, validate TGCV as a theory or establish claims about value, intelligence, causality, or empirical systems.
+
+## 2. Design principles
+
+1. **Inspectable:** inputs, rules, and intermediate/output objects are visible.
+2. **Deterministic by default:** identical canonical inputs and engine version yield identical canonical outputs.
+3. **Small and finite:** the initial engine operates on a finite declared state space and bounded exploration.
+4. **Explicit semantics:** a transformation is not treated as available merely because it is drawn on screen; availability follows the model's declared rules.
+5. **Scenario comparison:** each scenario is an explicit intervention against a shared baseline model.
+6. **Reproducible:** every run can be exported with all inputs needed to repeat it.
+7. **No scientific overclaim:** software conformance, model behavior, and empirical/theoretical evidence are reported separately.
+8. **Synthetic-only boundary:** MVP fixtures are authored/artificial. No connection to \(U_t\) or other real-data processing is implemented in this phase.
+
+## 3. Representation boundary
+
+### 3.1 Engineering representation for MVP
+
+The MVP uses a finite transition system as a deliberately limited computational representation:
+
+\[
+M = (S, T, R, C, L, s_0)
+\]
+
+where:
+
+- \(S\) is a finite set of explicitly defined system configurations/states.
+- \(T\) is a finite set of candidate transformations. Each transformation has a stable identifier and declared source/target configuration or a deterministic applicability/effect rule.
+- \(R\) is the set of declared relations among transformations and/or system elements that the selected MVP rule profile actually uses.
+- \(C\) is the set of explicit scenario conditions/constraints.
+- \(L\) is the declared rule/mechanism profile used to evaluate availability and transition effects.
+- \(s_0\in S\) is the initial configuration.
+
+For the first fixture, a state may be represented by a node label and a transformation by a directed edge. This is a special case of the finite transition-system interface, not a claim that all TGCV systems reduce ontologically to graphs.
+
+### 3.2 Relationship to the current TGCV working representation
+
+The current working TGCV formulation includes \(T_{acc}=F(S,C,L)\), with \((S,T_{acc})\) as the working Core candidate and \(C/L/P_\tau\) as auxiliary elements; Reach and trajectories are derived/analytical structures. The MVP must not silently equate its state-local enabled transitions with the system-level TGCV object \(T_{acc}\), nor revise or canonize that formulation.
+
+For implementation, define a **state-local enabled-transition set** separately from the TGCV working object \(T_{acc}\):
+
+\[
+T_{enabled}(s\mid M,q)=\{t\in T : enabled(t,s,M,q)=\mathrm{true}\}.
+\]
+
+This local set is an MVP operational term, not a claim that the canonical/working TGCV \(T_{acc}\) is itself state-indexed. The mapping between the state-local enabled sets produced by the engine and the system-level \(T_{acc}=F(S,C,L)\) must be explicitly reviewed before the contract is frozen. The engine must not use the same symbol for these objects until that mapping is settled.
+
+For MVP profile 1, relations \(R\) are recorded as descriptive metadata only and do not change transition enablement or effects. The initial graph profile uses only the explicitly listed transitions and scenario disablement. A later profile may give relations or constraints operative semantics only after those rules are specified, versioned, and tested.
+
+## 4. Core concepts and outputs
+
+### 4.1 State/configuration
+
+A state is a uniquely identified configuration admitted by the finite model. Its identity and fields are explicit in the input. The initial MVP may use symbolic states. Continuous-valued or unbounded state spaces are out of scope.
+
+### 4.2 Transformation
+
+Each transformation has:
+- stable ID;
+- source/applicability specification;
+- target/effect specification;
+- enabled/disabled status or an explicit enablement rule;
+- optional declared relation IDs;
+- optional human-readable description.
+
+The MVP begins with deterministic transitions. Nondeterministic or probabilistic effects are out of scope until separately specified.
+
+### 4.3 Accessibility
+
+A transition is **enabled at a state** if it is in \(T_{enabled}(s\mid M,q)\) under the frozen scenario and rule profile. This engine-level term is not interchangeable with TGCV's system-level \(T_{acc}\). A state is **reachable** from \(s_0\) if at least one permitted finite sequence of enabled transitions leads from \(s_0\) to that state.
+
+The engine must report separately:
+- transitions enabled at the current state under the MVP rule profile;
+- reachable states under the exploration policy;
+- trajectories discovered within the declared bounds.
+
+These are related but non-interchangeable outputs.
+
+### 4.4 Trajectory
+
+A trajectory is an ordered finite sequence of states and the transformations connecting consecutive states:
+
+\[
+\tau=(s_0,t_1,s_1,\ldots,t_n,s_n).
+\]
+
+Every transition in a reported trajectory must satisfy the scenario's enablement and effect rules. The MVP reports finite trajectories only. If cycles exist, enumeration requires explicit maximum depth and/or a declared cycle policy.
+
+### 4.5 Scenario
+
+A scenario is a versioned, explicit intervention over a common base model. MVP interventions may:
+- enable or disable specified transformation IDs;
+- add/remove a declared constraint;
+- change a declared rule parameter within its permitted domain.
+
+A scenario may not silently alter the state inventory, transformation definitions, or rule implementation. Such edits create a new model version and must be recorded as such.
+
+### 4.6 Comparison
+
+Compare a named baseline scenario with one or more intervention scenarios under the same model version, exploration bounds, and engine version.
+
+Minimum comparison outputs:
+- differences in state-local enabled-transition sets at the specified comparison state(s);
+- differences in reachable-state sets;
+- trajectory-set differences under the same enumeration bound;
+- explicit indication of truncation, cycles, or unexplored space;
+- the exact intervention that distinguishes each scenario.
+
+A count difference alone is not an explanation or a scientific conclusion.
+
+## 5. Engine behavior
+
+For a valid model/scenario pair, the engine shall:
+
+1. validate schema, unique IDs, references, initial state, and rule parameters;
+2. calculate state-local enabled transitions under the declared MVP rule profile;
+3. explore reachable states with a deterministic, documented traversal order;
+4. enumerate trajectories only within explicit depth/count bounds;
+5. compute scenario differences from canonicalized result sets;
+6. emit a structured result and audit record;
+7. return explicit validation errors or truncation warnings rather than silently dropping invalid elements.
+
+The first engine must use a stable traversal order (for example, lexicographic ordering by stable IDs) so output ordering is reproducible. The choice of order is an implementation detail that must be versioned, not a theoretical property.
+
+## 6. Canonical input schema (conceptual)
+
+The initial JSON shape is illustrative; final field names may change during implementation before the schema is frozen:
+
+~~~json
+{
+  "schema_version": "collective-toy-input-001",
+  "model_id": "toy-diamond-001",
+  "initial_state": "A",
+  "states": ["A", "B", "C", "D"],
+  "transitions": [
+    {"id": "t_ab", "source": "A", "target": "B"},
+    {"id": "t_ac", "source": "A", "target": "C"},
+    {"id": "t_bd", "source": "B", "target": "D"},
+    {"id": "t_cd", "source": "C", "target": "D"}
+  ],
+  "relations": [],
+  "rule_profile": {"type": "finite_deterministic_graph", "version": "1"},
+  "scenarios": [
+    {"id": "baseline", "disabled_transitions": []},
+    {"id": "block_ac", "disabled_transitions": ["t_ac"]}
+  ],
+  "exploration": {"max_depth": 4, "max_trajectories": 1000}
+}
+~~~
+
+This schema is a proposal for the MVP only. If relations or constraints are present, their semantics must be defined by the selected rule profile; arbitrary relation metadata must not be presented as causally operative.
+
+## 7. Hand-checkable acceptance fixture
+
+Base model: states \(A,B,C,D\), initial state \(A\), transitions \(A\to B\), \(A\to C\), \(B\to D\), \(C\to D\).
+
+- Baseline scenario: all four transitions enabled.
+- Intervention scenario: disable only \(A\to C\).
+
+Expected outcomes under the finite deterministic graph rule profile:
+- Baseline reachable states: \(\{A,B,C,D\}\).
+- Intervention reachable states: \(\{A,B,D\}\).
+- Baseline complete paths from \(A\) to \(D\): \(A\to B\to D\) and \(A\to C\to D\).
+- Intervention complete paths from \(A\) to \(D\): \(A\to B\to D\).
+- \(D\) remains reachable after the intervention.
+- The engine reports the disabled transition and the resulting differences explicitly.
+
+These are expected outputs from a synthetic fixture, not observed scientific findings.
+
+## 8. Minimum acceptance tests
+
+The implementation is not accepted until automated tests cover:
+
+1. valid input produces the expected fixture results;
+2. unknown state/transition references fail validation;
+3. duplicate IDs fail validation;
+4. disabling a transition removes paths that require it;
+5. an unrelated transition is not changed by an intervention;
+6. cycles terminate under the declared exploration policy;
+7. depth/trajectory limits produce an explicit truncation flag;
+8. same canonical input + same engine version produces the same canonical result;
+9. canonical serialization and result hashes are stable for identical results;
+10. exported run package contains enough information to reproduce the result;
+11. invalid input yields a clear error and does not produce a misleading partial PASS.
+
+## 9. Audit and reproduction record
+
+Every run shall record at least:
+- run ID and timestamp (timestamp is metadata, not part of deterministic result identity);
+- input schema version and canonical input;
+- model and scenario IDs;
+- rule-profile and engine versions;
+- exploration bounds and traversal/cycle policy;
+- validation result;
+- canonical outputs and comparison report;
+- truncation/error status;
+- code revision identifier, when available;
+- cryptographic hashes of canonical input, output, and exported package.
+
+The implementation must define canonical serialization before treating hashes as comparable. A hash proves byte identity for the hashed representation, not scientific validity or model correctness.
+
+## 10. Out of scope for MVP
+
+- processing or importing the real Rust-derived \(U_t\);
+- claims of privacy clearance or scientific data admission;
+- probabilistic/continuous/unbounded systems;
+- automatic inference of relations or causal mechanisms;
+- value, reward, utility, outcome, intelligence, or causal-effect calculations;
+- declaring Ω-primary or another candidate architecture canonical;
+- proof that the implementation's abstractions adequately represent any particular real system.
+
+These may be considered later only with separate specifications and gates.
+
+## 11. Immediate implementation gate
+
+Before coding the engine:
+1. review this contract against the current canonical/working TGCV definitions and the architectural admissibility boundary;
+2. resolve ambiguities in relation semantics and the mapping from system configurations to \(T_{acc}\);
+3. freeze the input schema and deterministic exploration rules;
+4. turn the acceptance fixture into automated tests.
+
+Only then implement the smallest engine. Keep this work on a development branch. Do not modify main or run scientific workflows as part of this prototype step.
+
+## 12. Decision status
+
+- Mathematical/functional contract: **PROPOSED; NOT FROZEN**.
+- MVP implementation: **NOT STARTED BY THIS DOCUMENT**.
+- Synthetic fixture: **SPECIFIED; implementation tests pending**.
+- \(U_t\) use: **NOT AUTHORIZED**.
+- TGCV Core / Ω-primary canonical status: **UNCHANGED**.
