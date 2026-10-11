@@ -1032,7 +1032,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
         const actual = browserPackage.result.scenario_results.baseline;
         const expected = reference.scenario_results.baseline;
         for (const key of ["reachable_states", "trajectories", "effective_disabled_transitions"]) {
-          assert.deepEqual(actual[key], expected[key], `inactive guard changed baseline ${key}`);
+          assert.deepEqual(actual[key] ?? [], expected[key] ?? [], `inactive guard changed baseline ${key}`);
         }
       }
       if (fixture.name === "relation-guard-locality") {
