@@ -334,6 +334,10 @@ class CollectiveToyEngineTests(unittest.TestCase):
         cases.append(("missing-scenario-id", model))
 
         model = copy.deepcopy(self.model)
+        model["scenarios"][0]["id"] = ""
+        cases.append(("empty-scenario-id", model))
+
+        model = copy.deepcopy(self.model)
         model["scenarios"][0]["disabled_transitions"] = [1]
         cases.append(("non-string-disabled-transition-id", model))
 
