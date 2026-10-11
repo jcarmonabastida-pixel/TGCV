@@ -738,6 +738,26 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
+    def test_scenario_declaration_order_does_not_couple_scenarios(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"}
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
+            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
+        ]
+        reversed_model = copy.deepcopy(model)
+        reversed_model["scenarios"].reverse()
+        original = run_model(model)
+        reversed_result = run_model(reversed_model)
+        self.assertEqual(original["scenario_results"], reversed_result["scenario_results"])
+        self.assertEqual(original["comparisons_to_baseline"], reversed_result["comparisons_to_baseline"])
+        self.assertNotEqual(original["input_sha256"], reversed_result["input_sha256"])
+
     def test_guard_is_inert_when_prerequisite_is_enabled(self):
         unguarded = copy.deepcopy(self.model)
         unguarded["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
