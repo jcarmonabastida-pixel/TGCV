@@ -48,13 +48,13 @@ For the first fixture, a state may be represented by a node label and a transfor
 
 The current working TGCV formulation includes \(T_{acc}=F(S,C,L)\), with \((S,T_{acc})\) as the working Core candidate and \(C/L/P_\tau\) as auxiliary elements; Reach and trajectories are derived/analytical structures. This MVP may expose the calculated accessible transformation set as \(T_{acc}\), but it must not silently revise or canonize that formulation.
 
-For an input model \(M\), scenario \(q\), and evaluation point \(s\), define the MVP accessible set operationally as:
+For implementation, define a **state-local enabled-transition set** separately from the TGCV working object \\(T_{acc}\\):
 
-\[
-T_{acc}(s\mid M,q)=\{t\in T : enabled(t,s,M,q)=\mathrm{true}\}.
-\]
+\\[
+T_{enabled}(s\\mid M,q)=\\{t\\in T : enabled(t,s,M,q)=\\mathrm{true}\\}.
+\\]
 
-This is an operational definition for the prototype. The exact role of relations \(R\), conditions \(C\), and rule profile \(L\) must be declared in the model/rule configuration; the engine must not infer undocumented semantics from relation labels.
+This local set is an MVP operational term, not a claim that the canonical/working TGCV \\(T_{acc}\\) is itself state-indexed. The mapping between the state-local enabled sets produced by the engine and the system-level \\(T_{acc}=F(S,C,L)\\) must be explicitly reviewed before the contract is frozen. The engine must not use the same symbol for these objects until that mapping is settled. The exact role of relations \(R\), conditions \(C\), and rule profile \(L\) must be declared in the model/rule configuration; the engine must not infer undocumented semantics from relation labels.
 
 ## 4. Core concepts and outputs
 
