@@ -296,6 +296,52 @@ class CollectiveToyEngineTests(unittest.TestCase):
         model["scenarios"][0]["disabled_transitions"] = [""]
         cases.append(("empty-disabled-transition-id", model))
 
+        # Nested relation/scenario/exploration field coverage (profile 2 where applicable).
+        valid_relation = {
+            "id": "r_schema", "type": "requires_transition_enabled",
+            "transition_id": "t_bd", "requires_transition_id": "t_ab"
+        }
+        for field in ("id", "type", "transition_id", "requires_transition_id"):
+            model = copy.deepcopy(self.model)
+            model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            relation = copy.deepcopy(valid_relation)
+            relation.pop(field)
+            model["relations"] = [relation]
+            cases.append(("missing-relation-" + field, model))
+
+        for field in ("id", "transition_id", "requires_transition_id"):
+            model = copy.deepcopy(self.model)
+            model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            relation = copy.deepcopy(valid_relation)
+            relation[field] = ""
+            model["relations"] = [relation]
+            cases.append(("empty-relation-" + field, model))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [None]
+        cases.append(("non-object-relation", model))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        relation = copy.deepcopy(valid_relation)
+        relation["unexpected"] = True
+        model["relations"] = [relation]
+        cases.append(("unknown-relation-field", model))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0].pop("id")
+        cases.append(("missing-scenario-id", model))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0]["disabled_transitions"] = [1]
+        cases.append(("non-string-disabled-transition-id", model))
+
+        for field in ("max_depth", "max_trajectories"):
+            model = copy.deepcopy(self.model)
+            model["exploration"].pop(field)
+            cases.append(("missing-exploration-" + field, model))
+
         for name, candidate in cases:
             with self.subTest(name=name):
                 with self.assertRaises(ModelValidationError):
