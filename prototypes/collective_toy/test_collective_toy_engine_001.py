@@ -210,6 +210,62 @@ class CollectiveToyEngineTests(unittest.TestCase):
         }])
         self.assertEqual(baseline["relation_effects"][0]["status"], "APPLIED")
 
+    def test_relation_guarded_profile_applies_multiple_guards_deterministically(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {
+                "id": "r_guard_bd",
+                "type": "requires_transition_enabled",
+                "transition_id": "t_bd",
+                "requires_transition_id": "t_ab",
+            },
+            {
+                "id": "r_guard_cd",
+                "type": "requires_transition_enabled",
+                "transition_id": "t_cd",
+                "requires_transition_id": "t_ac",
+            },
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_both_prerequisites", "disabled_transitions": ["t_ab", "t_ac"]},
+        ]
+        first = run_model(model)
+        second = run_model(model)
+        baseline = first["scenario_results"]["baseline"]
+        altered = first["scenario_results"]["disable_both_prerequisites"]
+        self.assertEqual(first["result_sha256"], second["result_sha256"])
+        self.assertEqual(
+            [effect["relation_id"] for effect in altered["relation_effects"]],
+            ["r_guard_bd", "r_guard_cd"],
+        )
+        self.assertEqual(
+            [effect["status"] for effect in altered["relation_effects"]],
+            ["BLOCKED", "BLOCKED"],
+        )
+        self.assertEqual(altered["effective_disabled_transitions"], ["t_ab", "t_ac", "t_bd", "t_cd"])
+        self.assertEqual(altered["reachable_states"], ["A"])
+        self.assertIn("D", baseline["reachable_states"])
+
+    def test_relation_guarded_profile_cycle_and_exploration_caps_are_explicit(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["transitions"].append({"id": "t_ba", "source": "B", "target": "A"})
+        model["relations"] = [{
+            "id": "r_guard_bd",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_bd",
+            "requires_transition_id": "t_ab",
+        }]
+        model["exploration"] = {"max_depth": 3, "max_trajectories": 2}
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        self.assertEqual(set(baseline["reachable_states"]), {"A", "B", "C", "D"})
+        self.assertTrue(baseline["truncated"])
+        self.assertLessEqual(len(baseline["trajectories"]), 2)
+        self.assertEqual(baseline["exploration_bounds"], {"max_depth": 3, "max_trajectories": 2})
+
     def test_relation_guarded_profile_rejects_unknown_relation_references(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
