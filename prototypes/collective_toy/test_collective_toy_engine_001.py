@@ -738,6 +738,20 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
+    def test_guard_is_inert_when_prerequisite_is_enabled(self):
+        unguarded = copy.deepcopy(self.model)
+        unguarded["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
+        guarded = copy.deepcopy(unguarded)
+        guarded["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        guarded["relations"] = [
+            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"}
+        ]
+        plain_result = run_model(unguarded)["scenario_results"]["baseline"]
+        guarded_result = run_model(guarded)["scenario_results"]["baseline"]
+        for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
+            self.assertEqual(plain_result[key], guarded_result[key], f"{key} changed while prerequisite remained enabled")
+
     def test_duplicate_semantic_guard_does_not_change_graph_outcomes(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
