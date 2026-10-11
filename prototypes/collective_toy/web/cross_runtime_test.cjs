@@ -91,6 +91,16 @@ function fixtures() {
 
   const scenarioOrderReference = clone(base);
   scenarioOrderReference.model_id = "scenario-order-invariance";
+  scenarioOrderReference.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  scenarioOrderReference.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
+    { id: "r_guard_cd_by_ac", type: "requires_transition_enabled", transition_id: "t_cd", requires_transition_id: "t_ac" }
+  ];
+  scenarioOrderReference.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab", disabled_transitions: ["t_ab"] },
+    { id: "disable_ac", disabled_transitions: ["t_ac"] }
+  ];
   cases.push({ name: "scenario-order-reference", model: scenarioOrderReference });
   const scenarioOrderPermuted = clone(scenarioOrderReference);
   scenarioOrderPermuted.scenarios.reverse();
