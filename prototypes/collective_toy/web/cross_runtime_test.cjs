@@ -416,6 +416,19 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
   try {
     await page.goto("file://" + htmlPath);
 
+    // Terminology acceptance: user-facing language must describe toy-local outputs,
+    // not present them as system-level TGCV T_acc or as scientific validation.
+    const notice = await page.locator(".notice").innerText();
+    assert.match(notice, /grafo finito en el navegador/i,
+      "UI must identify the implementation as a finite-graph demonstrator");
+    assert.match(notice, /No procesa datos reales ni implementa por sí solo T_acc de TGCV/i,
+      "UI must explicitly preserve the boundary with system-level T_acc");
+    assert.match(notice, /No es una validación científica/i,
+      "UI must not imply scientific validation");
+    assert.match(await page.locator("#metrics").innerText(), /Estados alcanzables/);
+    assert.match(await page.locator("#metrics").innerText(), /Trayectorias enumeradas/);
+    assert.match(await page.locator("#metrics").innerText(), /Exploración completa/);
+
     // UI acceptance: edit, execute, and remove a guarded relation; confirm profile 1 stays inert.
     await page.locator("#profile-editor").selectOption("2");
     await page.locator("#guarded-transition").selectOption("t_bd");
