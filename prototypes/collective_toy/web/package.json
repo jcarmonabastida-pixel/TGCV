@@ -1,0 +1,11 @@
+{
+  "name": "tgcv-collective-toy-browser-tests",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "test": "node cross_runtime_test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.55.0"
+  }
+}
