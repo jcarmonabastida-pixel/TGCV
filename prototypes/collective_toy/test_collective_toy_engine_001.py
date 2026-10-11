@@ -104,6 +104,82 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 with self.assertRaises(ModelValidationError):
                     run_model(model)
 
+    def test_reachability_invariants_across_deterministic_generated_graphs(self):
+        # Fixed-seed graph generation keeps this property suite reproducible.
+        import random
+
+        rng = random.Random(20261011)
+        states = [f"S{i}" for i in range(5)]
+        for case_index in range(30):
+            transitions = []
+            for source in states:
+                for target in states:
+                    if rng.random() < 0.24:
+                        transitions.append({
+                            "id": f"c{case_index}_t{len(transitions)}",
+                            "source": source,
+                            "target": target,
+                        })
+            disabled = [t["id"] for t in transitions if rng.random() < 0.18]
+            model = {
+                "schema_version": "collective-toy-input-001",
+                "model_id": f"property-graph-{case_index:02d}",
+                "initial_state": "S0",
+                "states": states,
+                "transitions": transitions,
+                "relations": [],
+                "rule_profile": {"type": "finite_deterministic_graph", "version": "1"},
+                "scenarios": [
+                    {"id": "baseline", "disabled_transitions": []},
+                    {"id": "intervention", "disabled_transitions": disabled},
+                ],
+                "exploration": {"max_depth": 5, "max_trajectories": 500},
+            }
+            with self.subTest(case=case_index):
+                result = run_model(model)
+                base = result["scenario_results"]["baseline"]
+                altered = result["scenario_results"]["intervention"]
+
+                # Initial state is always reachable, and reachability never
+                # includes an undeclared state.
+                self.assertIn(model["initial_state"], base["reachable_states"])
+                self.assertIn(model["initial_state"], altered["reachable_states"])
+                self.assertLessEqual(set(base["reachable_states"]), set(states))
+                self.assertLessEqual(set(altered["reachable_states"]), set(states))
+
+                # Removing transitions cannot add reachable states in this
+                # graph semantics, regardless of bounded trajectory output.
+                self.assertLessEqual(
+                    set(altered["reachable_states"]), set(base["reachable_states"])
+                )
+
+                # Every emitted path starts at the initial state and every
+                # transition/state pair is a declared edge in that scenario.
+                enabled = {
+                    t["id"]: t for t in transitions if t["id"] not in set(disabled)
+                }
+                for path in altered["trajectories"]:
+                    self.assertEqual(path[0], {"state": model["initial_state"]})
+                    for previous, current in zip(path, path[1:]):
+                        tid = current.get("transition")
+                        self.assertIn(tid, enabled)
+                        self.assertEqual(enabled[tid]["source"], previous["state"])
+                        self.assertEqual(enabled[tid]["target"], current["state"])
+
+    def test_relation_metadata_does_not_change_hashes_or_execution_in_profile_one(self):
+        model_without = copy.deepcopy(self.model)
+        model_with = copy.deepcopy(self.model)
+        model_with["relations"] = [
+            {"id": "r1", "type": "descriptive-only", "from": "A", "to": "D"}
+        ]
+        without_result = run_model(model_without)
+        with_result = run_model(model_with)
+        self.assertEqual(
+            without_result["scenario_results"], with_result["scenario_results"]
+        )
+        self.assertNotEqual(without_result["input_sha256"], with_result["input_sha256"])
+        self.assertEqual(without_result["result_sha256"], with_result["result_sha256"])
+
     def test_relations_are_inert_metadata_in_profile_one(self):
         baseline = run_model(self.model)["scenario_results"]
         model = copy.deepcopy(self.model)
