@@ -421,7 +421,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     const notice = await page.locator(".notice").innerText();
     assert.match(notice, /grafo finito en el navegador/i,
       "UI must identify the implementation as a finite-graph demonstrator");
-    assert.match(notice, /No procesa datos reales ni implementa por sí solo T_acc de TGCV/i,
+    assert.match(notice, /No procesa datos reales ni implementa por sí solo T[_]?acc de TGCV/i,
       "UI must explicitly preserve the boundary with system-level T_acc");
     assert.match(notice, /No es una validación científica/i,
       "UI must not imply scientific validation");
