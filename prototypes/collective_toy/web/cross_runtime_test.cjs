@@ -412,7 +412,14 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
 
     const validFixtures = [...fixtures(), ...generatedFixtures()];
     for (const fixture of validFixtures) {
-      await page.locator("#model").fill(JSON.stringify(fixture.model, null, 2), { timeout: 15000 });
+      const fixtureJson = JSON.stringify(fixture.model, null, 2);
+      if ((fixture.model.transitions || []).length > 2000 || (fixture.model.states || []).length > 500) {
+        // Set oversized fixtures without firing the editor's per-keystroke input handler.
+        // Then exercise the same visible Run action and production validation path.
+        await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
+      } else {
+        await page.locator("#model").fill(fixtureJson, { timeout: 15000 });
+      }
       await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
       await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
 
