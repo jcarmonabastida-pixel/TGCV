@@ -494,7 +494,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
     def test_relation_guarded_intervention_preserves_reachability_monotonicity(self):
         model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "2"}
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
         model["relations"] = [
             {
                 "id": "r_guard_bd_by_ab",
