@@ -109,8 +109,9 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         raise ModelValidationError("each state ID must be a non-empty string")
     if len(set(states)) != len(states):
         raise ModelValidationError("duplicate state IDs")
-    if model.get("initial_state") not in set(states):
-        raise ModelValidationError("initial_state must reference a declared state")
+    initial_state = model.get("initial_state")
+    if not isinstance(initial_state, str) or initial_state not in set(states):
+        raise ModelValidationError("initial_state must be a state ID string referencing a declared state")
 
     profile = model.get("rule_profile")
     profile1 = {"type": "finite_deterministic_graph", "version": "1"}
