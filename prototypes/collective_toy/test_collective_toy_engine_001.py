@@ -638,6 +638,49 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with_relations = run_model(model)["scenario_results"]
         self.assertEqual(baseline, with_relations)
 
+    def test_deterministic_malformed_input_mutation_matrix(self):
+        # Fixed mutation catalogue: reproducible malformed-input property battery.
+        cases = []
+        def add(name, mutate):
+            model = copy.deepcopy(self.model)
+            mutate(model)
+            cases.append((name, model))
+
+        add("mutated-states-container", lambda m: m.__setitem__("states", {}))
+        add("mutated-transitions-container", lambda m: m.__setitem__("transitions", None))
+        add("mutated-transition-item", lambda m: m.__setitem__("transitions", [None]))
+        add("mutated-transition-id-type", lambda m: m["transitions"][0].__setitem__("id", 7))
+        add("mutated-transition-source-type", lambda m: m["transitions"][0].__setitem__("source", None))
+        add("mutated-transition-target-type", lambda m: m["transitions"][0].__setitem__("target", []))
+        add("mutated-scenarios-container", lambda m: m.__setitem__("scenarios", {}))
+        add("mutated-scenario-item", lambda m: m.__setitem__("scenarios", [None]))
+        add("mutated-scenario-id-empty", lambda m: m["scenarios"][0].__setitem__("id", ""))
+        add("mutated-disabled-transition-item", lambda m: m["scenarios"][0].__setitem__("disabled_transitions", [None]))
+        add("mutated-exploration-container", lambda m: m.__setitem__("exploration", None))
+        add("mutated-depth-type", lambda m: m["exploration"].__setitem__("max_depth", "2"))
+        add("mutated-trajectory-cap-negative", lambda m: m["exploration"].__setitem__("max_trajectories", -1))
+        add("mutated-relations-container", lambda m: m.__setitem__("relations", {}))
+        def relation_item(m):
+            m["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            m["relations"] = [None]
+        add("mutated-relation-item", relation_item)
+        def relation_type(m):
+            m["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            m["relations"] = [{"id": "r_mut", "type": "unknown", "transition_id": "t_ab", "requires_transition_id": "t_ac"}]
+        add("mutated-relation-type", relation_type)
+        def relation_reference(m):
+            m["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            m["relations"] = [{"id": "r_mut", "type": "requires_transition_enabled", "transition_id": "missing", "requires_transition_id": "t_ab"}]
+        add("mutated-relation-reference", relation_reference)
+        add("mutated-duplicate-scenario-id", lambda m: m["scenarios"].append(copy.deepcopy(m["scenarios"][0])))
+        add("mutated-initial-state-boolean", lambda m: m.__setitem__("initial_state", False))
+
+        self.assertEqual(len(cases), 19)
+        for name, candidate in cases:
+            with self.subTest(name=name):
+                with self.assertRaises(ModelValidationError):
+                    run_model(candidate)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
