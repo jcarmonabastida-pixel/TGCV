@@ -232,6 +232,7 @@ function runPython(engineDir, model) {
     assert.ok(guardedScenario.effective_disabled_transitions.includes("t_bd"),
       "profile 2 should block the guarded transition when its required transition is disabled");
     assert.equal(guardedScenario.relation_effects[0].status, "BLOCKED");
+    await page.locator("#which").selectOption("block_ac");
     assert.equal(
       await page.locator('#graph path[data-transition-id="t_bd"]').getAttribute("stroke-opacity"),
       "0.22",
