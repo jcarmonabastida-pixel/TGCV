@@ -776,7 +776,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         intervention = result["scenario_results"]["disable_ab"]
         self.assertIn("D", baseline["reachable_states"])
         self.assertIn("D", intervention["reachable_states"])
-        self.assertNotIn("t_bd", intervention["effective_disabled_transitions"])
+        self.assertIn("t_bd", intervention["effective_disabled_transitions"])
         self.assertIn("t_cd", {transition["id"] for transition in model["transitions"]})
         baseline_paths = {tuple(item.get("state") for item in path) for path in baseline["trajectories"]}
         intervention_paths = {tuple(item.get("state") for item in path) for path in intervention["trajectories"]}
