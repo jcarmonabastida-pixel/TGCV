@@ -381,6 +381,34 @@ function invalidFixtures() {
   duplicateDisabled.scenarios[0].disabled_transitions = ["t_ab", "t_ab"];
   cases.push({ name: "duplicate-disabled-transition", model: duplicateDisabled });
 
+  // Nested-field presence, non-empty identifiers, and numeric type boundaries.
+  for (const field of ["id", "source", "target"]) {
+    const missing = clone(base);
+    delete missing.transitions[0][field];
+    cases.push({ name: "missing-transition-" + field, model: missing });
+  }
+  for (const field of ["id", "source", "target"]) {
+    const empty = clone(base);
+    empty.transitions[0][field] = "";
+    cases.push({ name: "empty-transition-" + field, model: empty });
+  }
+
+  const fractionalDepth = clone(base);
+  fractionalDepth.exploration.max_depth = 1.5;
+  cases.push({ name: "fractional-max-depth", model: fractionalDepth });
+
+  const booleanTrajectories = clone(base);
+  booleanTrajectories.exploration.max_trajectories = true;
+  cases.push({ name: "boolean-max-trajectories", model: booleanTrajectories });
+
+  const unknownProfileType = clone(base);
+  unknownProfileType.rule_profile = { type: "unknown_graph", version: "1" };
+  cases.push({ name: "unknown-rule-profile-type", model: unknownProfileType });
+
+  const emptyDisabledId = clone(base);
+  emptyDisabledId.scenarios[0].disabled_transitions = [""];
+  cases.push({ name: "empty-disabled-transition-id", model: emptyDisabledId });
+
   return cases;
 }
 
