@@ -56,7 +56,7 @@ T_{enabled}(s\mid M,q)=\{t\in T : enabled(t,s,M,q)=\mathrm{true}\}.
 
 This local set is an MVP operational term, not a claim that the canonical/working TGCV \(T_{acc}\) is itself state-indexed. The mapping between the state-local enabled sets produced by the engine and the system-level \(T_{acc}=F(S,C,L)\) must be explicitly reviewed before the contract is frozen. The engine must not use the same symbol for these objects until that mapping is settled.
 
-For MVP profile 1, relations \(R\) are recorded as descriptive metadata only and do not change transition enablement or effects. The initial graph profile uses only the explicitly listed transitions and scenario disablement. A later profile may give relations or constraints operative semantics only after those rules are specified, versioned, and tested.
+For MVP profile 1, relations are recorded as descriptive metadata only and do not change transition enablement or effects. The experimental profile 2 (`relation_guarded_graph`, version `1`) adds a narrowly scoped scenario-level guard: a named transition is blocked if its `requires_transition_id` is explicitly disabled in that scenario. This is a prototype-specific global availability rule, not a temporal prerequisite and not a definition of TGCV's system-level `T_acc`. Its implementation is experimental and does not change canonical TGCV architecture.
 
 ## 4. Core concepts and outputs
 
@@ -135,7 +135,7 @@ The first engine must use a stable traversal order (for example, lexicographic o
 
 ## 6. Canonical input schema (conceptual)
 
-The initial JSON shape is illustrative; final field names may change during implementation before the schema is frozen:
+The JSON shape below documents the current prototype input shape; the contract remains a draft and schema-freeze review is still pending:
 
 ~~~json
 {
@@ -222,20 +222,20 @@ The implementation must define canonical serialization before treating hashes as
 
 These may be considered later only with separate specifications and gates.
 
-## 11. Immediate implementation gate
+## 11. Remaining contract gate
 
-Before coding the engine:
-1. review this contract against the current canonical/working TGCV definitions and the architectural admissibility boundary;
-2. resolve ambiguities in relation semantics and the mapping from system configurations to \(T_{acc}\);
-3. freeze the input schema and deterministic exploration rules;
-4. turn the acceptance fixture into automated tests.
+A synthetic finite-graph engine and two experimental relation profiles now exist on the development branch. The following contract work remains before freezing this document:
+1. review the contract against current canonical/working TGCV definitions and the architectural admissibility boundary;
+2. explicitly review the mapping between the engine's state-local enabled transitions and system-level `T_acc`;
+3. freeze the input schema and deterministic exploration/truncation rules;
+4. reconcile the acceptance tests in this contract with the implemented Python and browser test batteries, recording uncovered cases.
 
-Only then implement the smallest engine. Keep this work on a development branch. Do not modify main or run scientific workflows as part of this prototype step.
+Keep development on a non-main branch. Do not treat software CI as scientific validation or run scientific workflows as part of this prototype step.
 
 ## 12. Decision status
 
 - Mathematical/functional contract: **PROPOSED; NOT FROZEN**.
-- MVP implementation: **NOT STARTED BY THIS DOCUMENT**.
-- Synthetic fixture: **SPECIFIED; implementation tests pending**.
+- MVP implementation: **PARTIALLY IMPLEMENTED on a development branch; contract remains draft**.
+- Synthetic fixture: **implemented and covered by current CI for selected cases; full acceptance matrix pending**.
 - \(U_t\) use: **NOT AUTHORIZED**.
 - TGCV Core / Ω-primary canonical status: **UNCHANGED**.
