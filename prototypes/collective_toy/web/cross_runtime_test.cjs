@@ -256,6 +256,15 @@ function generatedFixtures() {
       { id: "disable_both", disabled_transitions: [transitions[0].id, transitions[1].id] }
     ];
     cases.push({ name: cyclicGuardModel.model_id, model: cyclicGuardModel });
+    // Permuting relation declaration order must preserve semantic outputs and result hash.
+    // Input hash must change because the serialized input array order changed.
+    const permutedCycleModel = clone(cyclicGuardModel);
+    permutedCycleModel.relations.reverse();
+    cases.push({
+      name: cyclicGuardModel.model_id + "-relation-order-permuted",
+      model: permutedCycleModel,
+      permutationOf: cyclicGuardModel.model_id
+    });
   }
   return cases;
 }
@@ -736,6 +745,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     console.log("PASS: relation editor profile switching, add/remove, profile 2 execution, profile 1 inertness, and independent export replay.");
 
     const validFixtures = [...fixtures(), ...generatedFixtures()];
+    const semanticResults = new Map();
     for (const fixture of validFixtures) {
       const fixtureJson = JSON.stringify(fixture.model, null, 2);
       if ((fixture.model.transitions || []).length > 2000 || (fixture.model.states || []).length > 500) {
@@ -766,6 +776,21 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
         fixture.name + ": input SHA-256 differs");
       assert.equal(browserPackage.result.result_sha256, pyResult.result_sha256,
         fixture.name + ": result SHA-256 differs");
+      if (fixture.permutationOf) {
+        const original = semanticResults.get(fixture.permutationOf);
+        assert.ok(original, fixture.name + ": original relation ordering must run first");
+        assert.deepEqual(browserPackage.result.scenario_results, original.scenario_results,
+          fixture.name + ": permuting relation order changed scenario semantics");
+        assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
+          fixture.name + ": permuting relation order changed baseline comparisons");
+        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
+          fixture.name + ": permuting relation order changed result SHA-256");
+        assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
+          fixture.name + ": permuting serialized relation order should change input SHA-256");
+      } else if (fixture.model.rule_profile?.type === "relation_guarded_graph" &&
+                 fixture.name.startsWith("generated-cyclic-guards-")) {
+        semanticResults.set(fixture.model.model_id, browserPackage.result);
+      }
       report.push(fixture.name + ": PASS");
     }
     const invalidReport = [];
