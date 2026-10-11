@@ -206,9 +206,9 @@ The implementation is not accepted until automated tests cover:
 10. exported run package contains enough information to reproduce the result;
 11. invalid input yields a clear error and does not produce a misleading partial PASS.
 
-### 8.1 Requirement-to-test coverage matrix (branch snapshot 2026-10-11; CI confirmed in runs 38156848896 and 38156848887)
+### 8.1 Requirement-to-test coverage matrix (branch snapshot 2026-10-11; latest recorded CI for commit 88c9f0c5fb4fa06ce91a5947b75637e683b932b5)
 
-The following matrix maps the minimum acceptance criteria to tests present in the current prototype branch. “Covered” means an automated test exists and passed in the recorded CI snapshot; it does not imply exhaustive verification of all possible inputs.
+The following matrix maps the minimum acceptance criteria to tests present in the current prototype branch. For the commit named above, CI runs 38159673034 (synthetic engine tests), 38159673063 (browser/cross-runtime tests), and 38159673003 (governance consistency) all completed with success. “Covered” means an automated test exists and passed in that recorded CI snapshot; it does not imply exhaustive verification of all possible inputs.
 
 | Contract criterion | Current evidence | Status / boundary |
 |---|---|---|
@@ -234,7 +234,7 @@ Remaining explicit gaps before contract freeze:
 - a review of deterministic ordering/serialization assumptions across supported Python/browser runtimes, including broader malformed-input fuzzing; numeric/Unicode edge cases now have explicit cross-runtime fixtures for code-point key ordering, integral-float normalization, fractional/unsafe-number rejection, and unpaired-surrogate rejection; strict rejection of unknown keys is implemented as the current draft policy, pending formal schema freeze;
 - a formal decision on whether graph-level global availability guards remain the intended experimental semantics; the current OR-style blocking behavior for multiple guards is documented above but remains experimental.
 
-The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them. Prior baseline CI snapshot (before serialization edge cases): browser/Python run 38156848896 reported 24 valid fixtures matched and 25 invalid fixtures rejected by both runtimes; Python run 38156848887 reported 25 tests passed. The expanded suite now defines 27 valid fixtures and 34 invalid fixtures, with two additional Python unit tests covering exact-cap completeness and a terminal path at the depth boundary. After correcting the Unicode fixture, the current recorded CI snapshot is: browser/Python run 38158428420 PASS, Python run 38158428394 PASS, and governance consistency run 38158428409 PASS. These results cover the checked-in test battery only and do not prove all-input correctness.
+The mapping to TGCV's system-level T_acc and schema freeze remain separate conceptual/contract gates; a passing coverage matrix does not settle them. Prior baseline CI snapshot (before serialization edge cases): browser/Python run 38156848896 reported 24 valid fixtures matched and 25 invalid fixtures rejected by both runtimes; Python run 38156848887 reported 25 tests passed. The expanded suite defines 27 valid fixtures and 34 invalid fixtures, with two additional Python unit tests covering exact-cap completeness and a terminal path at the depth boundary. The latest recorded browser/cross-runtime run passed for commit 88c9f0c5fb4fa06ce91a5947b75637e683b932b5. After correcting the Unicode fixture, the current recorded CI snapshot is: browser/Python run 38158428420 PASS, Python run 38158428394 PASS, and governance consistency run 38158428409 PASS. These results cover the checked-in test battery only and do not prove all-input correctness.
 
 ## 9. Audit and reproduction record
 
@@ -286,3 +286,8 @@ Keep development on a non-main branch. Do not treat software CI as scientific va
 ### Latest exact-boundary coverage update
 
 The development branch now includes two additional browser/Python parity fixtures and matching Python unit tests: (1) a complete single-path run with max_trajectories=1 must remain untruncated when no work is omitted; (2) a terminal path ending exactly at max_depth must remain untruncated when no enabled continuation exists. The normative interpretation is stated in §5.1. CI for this update must be checked against the resulting latest commit before treating these additions as passing. The contract remains proposed and the schema is not frozen.
+
+
+### Latest CI reconciliation
+
+As of commit `88c9f0c5fb4fa06ce91a5947b75637e683b932b5`, the three associated checks completed successfully: synthetic engine tests [38159673034](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38159673034), browser/cross-runtime tests [38159673063](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38159673063), and governance consistency [38159673003](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38159673003). This updates the evidence snapshot only; it does not freeze the contract, prove correctness for all inputs, or validate TGCV scientifically. Any subsequent commit requires its own CI check before its changes can be treated as passing.
