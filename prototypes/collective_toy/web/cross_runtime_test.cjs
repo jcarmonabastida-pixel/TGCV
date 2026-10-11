@@ -62,6 +62,22 @@ function fixtures() {
   );
   cases.push({ name: "multiple-interventions", model: multiple });
 
+  const guarded = clone(base);
+  guarded.model_id = "relation-guarded-availability";
+  guarded.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  guarded.relations = [{
+    id: "r_guard_bd",
+    type: "requires_transition_enabled",
+    transition_id: "t_bd",
+    requires_transition_id: "t_ab"
+  }];
+  guarded.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_prerequisite", disabled_transitions: ["t_ab"] },
+    { id: "block_ac", disabled_transitions: ["t_ac"] }
+  ];
+  cases.push({ name: "relation-guarded-availability", model: guarded });
+
   return cases;
 }
 
@@ -130,6 +146,33 @@ function invalidFixtures() {
   cases.push({ name: "negative-depth", model: m });
   m = clone(base); m.model_id = "duplicate-transition-id"; m.transitions.push({ id: "t_ab", source: "B", target: "A" });
   cases.push({ name: "duplicate-transition-id", model: m });
+  const guarded = clone(base);
+  guarded.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  guarded.relations = [{
+    id: "r_bad",
+    type: "requires_transition_enabled",
+    transition_id: "t_ab",
+    requires_transition_id: "missing"
+  }];
+  cases.push({ name: "unknown-relation-prerequisite", model: guarded });
+
+  const badType = clone(base);
+  badType.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  badType.relations = [{
+    id: "r_bad", type: "unknown_relation",
+    transition_id: "t_ab", requires_transition_id: "t_ab"
+  }];
+  cases.push({ name: "unknown-relation-type", model: badType });
+
+  const duplicateRelation = clone(base);
+  duplicateRelation.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  const relation = {
+    id: "r_dup", type: "requires_transition_enabled",
+    transition_id: "t_ab", requires_transition_id: "t_ab"
+  };
+  duplicateRelation.relations = [relation, { ...relation }];
+  cases.push({ name: "duplicate-relation-id", model: duplicateRelation });
+
   return cases;
 }
 
