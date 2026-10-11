@@ -148,6 +148,28 @@ function fixtures() {
   cases.push({ name: "duplicated-semantic-guard", model: duplicatedSemanticGuard,
     duplicateSemanticGuardOf: "single-semantic-guard" });
 
+  const singleGuardMonotonicity = clone(base);
+  singleGuardMonotonicity.model_id = "single-guard-monotonicity";
+  singleGuardMonotonicity.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  singleGuardMonotonicity.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" }
+  ];
+  singleGuardMonotonicity.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab", disabled_transitions: ["t_ab"] },
+    { id: "disable_ac", disabled_transitions: ["t_ac"] },
+    { id: "disable_both", disabled_transitions: ["t_ab", "t_ac"] }
+  ];
+  cases.push({ name: "single-guard-monotonicity", model: singleGuardMonotonicity });
+  const extendedGuardMonotonicity = clone(singleGuardMonotonicity);
+  extendedGuardMonotonicity.model_id = "extended-guard-monotonicity";
+  extendedGuardMonotonicity.relations.push({
+    id: "r_guard_cd_by_ac", type: "requires_transition_enabled",
+    transition_id: "t_cd", requires_transition_id: "t_ac"
+  });
+  cases.push({ name: "extended-guard-monotonicity", model: extendedGuardMonotonicity,
+    relationAdditionMonotonicityOf: "single-guard-monotonicity" });
+
   const relationGuardMonotonicity = clone(base);
   relationGuardMonotonicity.model_id = "relation-guard-intervention-monotonicity";
   relationGuardMonotonicity.rule_profile = { type: "relation_guarded_graph", version: "1" };
@@ -979,6 +1001,18 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
+      }
+      if (fixture.relationAdditionMonotonicityOf) {
+        const reference = semanticResults.get(fixture.relationAdditionMonotonicityOf);
+        for (const scenarioId of Object.keys(reference.scenario_results)) {
+          const before = reference.scenario_results[scenarioId];
+          const after = browserPackage.result.scenario_results[scenarioId];
+          assert.ok(after.reachable_states.every(state => before.reachable_states.includes(state)),
+            `adding a guard expanded reachable states in ${scenarioId}`);
+          const beforePaths = new Set(before.trajectories.map(path => JSON.stringify(path)));
+          assert.ok(after.trajectories.every(path => beforePaths.has(JSON.stringify(path))),
+            `adding a guard introduced a trajectory in ${scenarioId}`);
+        }
       }
       if (fixture.duplicateSemanticGuardOf) {
         const reference = semanticResults.get(fixture.duplicateSemanticGuardOf);
