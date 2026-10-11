@@ -148,6 +148,16 @@ function fixtures() {
   cases.push({ name: "duplicated-semantic-guard", model: duplicatedSemanticGuard,
     duplicateSemanticGuardOf: "single-semantic-guard" });
 
+  const disconnectedReference = clone(base);
+  disconnectedReference.model_id = "disconnected-component-reference";
+  cases.push({ name: "disconnected-component-reference", model: disconnectedReference });
+  const disconnectedAugmented = clone(disconnectedReference);
+  disconnectedAugmented.model_id = "disconnected-component-augmented";
+  disconnectedAugmented.states.push("X", "Y");
+  disconnectedAugmented.transitions.push({ id: "t_xy", source: "X", target: "Y" });
+  cases.push({ name: "disconnected-component-augmented", model: disconnectedAugmented,
+    disconnectedComponentOf: "disconnected-component-reference" });
+
   const scenarioOrderIsolation = clone(base);
   scenarioOrderIsolation.model_id = "scenario-order-isolation";
   scenarioOrderIsolation.rule_profile = { type: "relation_guarded_graph", version: "1" };
@@ -1044,6 +1054,21 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
+      }
+      if (fixture.disconnectedComponentOf) {
+        const reference = semanticResults.get(fixture.disconnectedComponentOf);
+        assert.ok(reference, fixture.name + ": reference fixture must run first");
+        for (const [scenarioId, expected] of Object.entries(reference.scenario_results)) {
+          const actual = browserPackage.result.scenario_results[scenarioId];
+          assert.deepEqual(actual.reachable_states, expected.reachable_states,
+            "disconnected component changed reachable states for " + scenarioId);
+          assert.deepEqual(actual.trajectories, expected.trajectories,
+            "disconnected component changed trajectories for " + scenarioId);
+          assert.equal(actual.truncated, expected.truncated,
+            "disconnected component changed truncation status for " + scenarioId);
+        }
+        assert.notEqual(browserPackage.result.input_sha256, reference.input_sha256,
+          "adding a disconnected component should change input SHA-256");
       }
       if (fixture.scenarioOrderIsolationOf) {
         const original = semanticResults.get(fixture.scenarioOrderIsolationOf);
