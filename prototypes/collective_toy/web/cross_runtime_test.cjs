@@ -202,6 +202,33 @@ function generatedFixtures() {
       { id: "disable_prerequisite", disabled_transitions: [transitions[0].id] }
     ];
     cases.push({ name: relationModel.model_id, model: relationModel });
+
+    // A second paired variant tests conjunction-like composition of two guards
+    // on the same target transition; each guard observes explicit intervention.
+    const multiGuardModel = clone(model);
+    multiGuardModel.model_id = "generated-multi-guard-" + String(n + 1).padStart(2, "0");
+    multiGuardModel.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    multiGuardModel.relations = [
+      {
+        id: "generated_multi_guard_a_" + n,
+        type: "requires_transition_enabled",
+        transition_id: transitions[2].id,
+        requires_transition_id: transitions[0].id
+      },
+      {
+        id: "generated_multi_guard_b_" + n,
+        type: "requires_transition_enabled",
+        transition_id: transitions[2].id,
+        requires_transition_id: transitions[1].id
+      }
+    ];
+    multiGuardModel.scenarios = [
+      { id: "baseline", disabled_transitions: [] },
+      { id: "disable_first_prerequisite", disabled_transitions: [transitions[0].id] },
+      { id: "disable_second_prerequisite", disabled_transitions: [transitions[1].id] },
+      { id: "disable_both_prerequisites", disabled_transitions: [transitions[0].id, transitions[1].id] }
+    ];
+    cases.push({ name: multiGuardModel.model_id, model: multiGuardModel });
   }
   return cases;
 }
