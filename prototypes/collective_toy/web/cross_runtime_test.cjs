@@ -148,6 +148,19 @@ function fixtures() {
   cases.push({ name: "duplicated-semantic-guard", model: duplicatedSemanticGuard,
     duplicateSemanticGuardOf: "single-semantic-guard" });
 
+  const unguardedBaseline = clone(base);
+  unguardedBaseline.model_id = "unguarded-baseline-neutrality";
+  unguardedBaseline.scenarios = [{ id: "baseline", disabled_transitions: [] }];
+  cases.push({ name: "unguarded-baseline-neutrality", model: unguardedBaseline });
+  const guardedBaseline = clone(unguardedBaseline);
+  guardedBaseline.model_id = "guarded-baseline-neutrality";
+  guardedBaseline.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  guardedBaseline.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" }
+  ];
+  cases.push({ name: "guarded-baseline-neutrality", model: guardedBaseline,
+    guardNeutralityOf: "unguarded-baseline-neutrality" });
+
   const relationGuardLocality = clone(base);
   relationGuardLocality.model_id = "relation-guard-locality";
   relationGuardLocality.rule_profile = { type: "relation_guarded_graph", version: "1" };
@@ -1013,6 +1026,14 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
+      }
+      if (fixture.guardNeutralityOf) {
+        const reference = semanticResults.get(fixture.guardNeutralityOf);
+        const actual = browserPackage.result.scenario_results.baseline;
+        const expected = reference.scenario_results.baseline;
+        for (const key of ["reachable_states", "trajectories", "effective_disabled_transitions"]) {
+          assert.deepEqual(actual[key], expected[key], `inactive guard changed baseline ${key}`);
+        }
       }
       if (fixture.name === "relation-guard-locality") {
         const baseline = browserPackage.result.scenario_results.baseline;
