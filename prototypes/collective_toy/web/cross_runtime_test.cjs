@@ -205,10 +205,10 @@ function runPython(engineDir, model) {
   try {
     await page.goto("file://" + htmlPath);
 
-    // UI acceptance: switch profile, create a guarded relation, and remove it again.
+    // UI acceptance: edit, execute, and remove a guarded relation; confirm profile 1 stays inert.
     await page.locator("#profile-editor").selectOption("2");
     await page.locator("#guarded-transition").selectOption("t_bd");
-    await page.locator("#required-transition").selectOption("t_ab");
+    await page.locator("#required-transition").selectOption("t_ac");
     await page.getByRole("button", { name: "Añadir relación" }).click();
     let editorModel = await page.locator("#model").inputValue();
     let editorParsed = JSON.parse(editorModel);
@@ -216,15 +216,46 @@ function runPython(engineDir, model) {
     assert.equal(editorParsed.relations.length, 1, "visual editor should add exactly one relation");
     assert.deepEqual(
       { transition_id: editorParsed.relations[0].transition_id, requires_transition_id: editorParsed.relations[0].requires_transition_id },
-      { transition_id: "t_bd", requires_transition_id: "t_ab" }
+      { transition_id: "t_bd", requires_transition_id: "t_ac" }
     );
-    await page.locator('[data-remove-relation="r_guard_1"]').click();
-    editorParsed = JSON.parse(await page.locator("#model").inputValue());
-    assert.equal(editorParsed.relations.length, 0, "visual editor should remove selected relation");
+
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
+    let [guardedDownload] = await Promise.all([
+      page.waitForEvent("download"),
+      page.getByRole("button", { name: "Exportar entrada y resultados (JSON)" }).click()
+    ]);
+    await guardedDownload.saveAs(outputPath);
+    let editorPackage = JSON.parse(fs.readFileSync(outputPath, "utf8"));
+    fs.unlinkSync(outputPath);
+    const guardedScenario = editorPackage.result.scenario_results.block_ac;
+    assert.ok(guardedScenario.effective_disabled_transitions.includes("t_bd"),
+      "profile 2 should block the guarded transition when its required transition is disabled");
+    assert.equal(guardedScenario.relation_effects[0].status, "BLOCKED");
+
     await page.locator("#profile-editor").selectOption("1");
     editorParsed = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(editorParsed.rule_profile, { type: "finite_deterministic_graph", version: "1" });
-    console.log("PASS: relation editor profile switching, add, and remove controls.");
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
+    let [profileOneDownload] = await Promise.all([
+      page.waitForEvent("download"),
+      page.getByRole("button", { name: "Exportar entrada y resultados (JSON)" }).click()
+    ]);
+    await profileOneDownload.saveAs(outputPath);
+    editorPackage = JSON.parse(fs.readFileSync(outputPath, "utf8"));
+    fs.unlinkSync(outputPath);
+    const profileOneScenario = editorPackage.result.scenario_results.block_ac;
+    assert.equal(profileOneScenario.effective_disabled_transitions, undefined,
+      "profile 1 must not apply relation guards");
+    assert.deepEqual(profileOneScenario.disabled_transitions, ["t_ac"],
+      "profile 1 should preserve only the explicit scenario intervention");
+
+    await page.locator("#profile-editor").selectOption("2");
+    await page.locator('[data-remove-relation="r_guard_1"]').click();
+    editorParsed = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(editorParsed.relations.length, 0, "visual editor should remove selected relation");
+    console.log("PASS: relation editor profile switching, add/remove, profile 2 execution, and profile 1 inertness.");
 
     const validFixtures = [...fixtures(), ...generatedFixtures()];
     for (const fixture of validFixtures) {
