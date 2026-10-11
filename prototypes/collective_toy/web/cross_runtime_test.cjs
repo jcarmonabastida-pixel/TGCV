@@ -412,7 +412,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
 
     const validFixtures = [...fixtures(), ...generatedFixtures()];
     for (const fixture of validFixtures) {
-      await page.locator("#model").fill(JSON.stringify(fixture.model, null, 2));
+      await page.locator("#model").fill(JSON.stringify(fixture.model, null, 2), { timeout: 15000 });
       await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
       await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
 
