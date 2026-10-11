@@ -198,7 +198,8 @@ class CollectiveToyEngineTests(unittest.TestCase):
         intervention = result["scenario_results"]["disable_prerequisite"]
         self.assertNotIn("t_bd", baseline["effective_disabled_transitions"])
         self.assertIn("t_bd", intervention["effective_disabled_transitions"])
-        self.assertNotIn("D", intervention["reachable_states"])
+        self.assertIn("D", intervention["reachable_states"])  # alternate route A -> C -> D remains available
+        self.assertFalse(any(step.get("transition") == "t_bd" for path in intervention["trajectories"] for step in path))
         self.assertEqual(intervention["relation_effects"], [{
             "relation_id": "r_guard_bd",
             "type": "requires_transition_enabled",
