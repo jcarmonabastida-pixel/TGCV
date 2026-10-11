@@ -152,7 +152,7 @@ function runPython(engineDir, model) {
       assert.equal(pythonReject, true, fixture.name + ": Python must reject invalid input");
       await page.locator("#model").fill(JSON.stringify(fixture.model, null, 2));
       await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-      await page.getByText(/No se ha podido ejecutar/).waitFor({ timeout: 5000 });
+      await page.locator("#status").getByText(/No se ha podido ejecutar/).waitFor({ timeout: 5000 });
       const status = await page.locator("#status").innerText();
       assert.match(status, /No se ha podido ejecutar/, fixture.name + ": browser must reject invalid input");
       invalidReport.push(fixture.name + ": REJECTED in both runtimes");
