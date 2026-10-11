@@ -148,6 +148,18 @@ function fixtures() {
   cases.push({ name: "duplicated-semantic-guard", model: duplicatedSemanticGuard,
     duplicateSemanticGuardOf: "single-semantic-guard" });
 
+  const relationGuardLocality = clone(base);
+  relationGuardLocality.model_id = "relation-guard-locality";
+  relationGuardLocality.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  relationGuardLocality.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" }
+  ];
+  relationGuardLocality.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab", disabled_transitions: ["t_ab"] }
+  ];
+  cases.push({ name: "relation-guard-locality", model: relationGuardLocality });
+
   const singleGuardMonotonicity = clone(base);
   singleGuardMonotonicity.model_id = "single-guard-monotonicity";
   singleGuardMonotonicity.rule_profile = { type: "relation_guarded_graph", version: "1" };
@@ -1001,6 +1013,16 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
+      }
+      if (fixture.name === "relation-guard-locality") {
+        const baseline = browserPackage.result.scenario_results.baseline;
+        const intervention = browserPackage.result.scenario_results.disable_ab;
+        const states = intervention.reachable_states;
+        assert.ok(states.includes("D"), "guard on t_bd unexpectedly removed D despite alternate A-C-D path");
+        const pathStates = scenario => new Set(scenario.trajectories.map(path => JSON.stringify(path.map(step => step.state))));
+        assert.ok(pathStates(baseline).has(JSON.stringify(["A", "C", "D"])));
+        assert.ok(pathStates(intervention).has(JSON.stringify(["A", "C", "D"])));
+        assert.ok(!pathStates(intervention).has(JSON.stringify(["A", "B", "D"])));
       }
       if (fixture.relationAdditionMonotonicityOf) {
         const reference = semanticResults.get(fixture.relationAdditionMonotonicityOf);
