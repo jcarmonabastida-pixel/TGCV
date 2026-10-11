@@ -21,6 +21,12 @@ class ModelValidationError(ValueError):
     """Raised when a model or scenario violates the input contract."""
 
 
+def _reject_unknown_keys(value: dict[str, Any], allowed: set[str], context: str) -> None:
+    unknown = sorted(set(value) - allowed)
+    if unknown:
+        raise ModelValidationError(f"{context} contains unknown fields: {unknown}")
+
+
 def canonical_json(value: Any) -> str:
     """Serialize JSON-compatible values deterministically for this engine."""
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
@@ -40,6 +46,7 @@ class Transition:
 def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Transition]]:
     if not isinstance(model, dict):
         raise ModelValidationError("model must be a JSON object")
+    _reject_unknown_keys(model, {"schema_version", "model_id", "initial_state", "states", "transitions", "relations", "rule_profile", "scenarios", "exploration"}, "model")
     if model.get("schema_version") != SUPPORTED_SCHEMA:
         raise ModelValidationError(f"schema_version must be {SUPPORTED_SCHEMA!r}")
     if not isinstance(model.get("model_id"), str) or not model["model_id"].strip():
@@ -57,6 +64,9 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     profile = model.get("rule_profile")
     profile1 = {"type": "finite_deterministic_graph", "version": "1"}
     profile2 = {"type": "relation_guarded_graph", "version": "1"}
+    if not isinstance(profile, dict):
+        raise ModelValidationError("rule_profile must be an object")
+    _reject_unknown_keys(profile, {"type", "version"}, "rule_profile")
     if profile not in (profile1, profile2):
         raise ModelValidationError("unsupported rule_profile; expected finite_deterministic_graph v1 or relation_guarded_graph v1")
 
@@ -67,6 +77,7 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     for item in raw_transitions:
         if not isinstance(item, dict):
             raise ModelValidationError("each transition must be an object")
+        _reject_unknown_keys(item, {"id", "source", "target"}, "transition")
         tid, source, target = item.get("id"), item.get("source"), item.get("target")
         if any(not isinstance(x, str) or not x for x in (tid, source, target)):
             raise ModelValidationError("transition id, source, and target must be non-empty strings")
@@ -87,6 +98,7 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         for relation in relations:
             if not isinstance(relation, dict):
                 raise ModelValidationError("each relation must be an object")
+            _reject_unknown_keys(relation, {"id", "type", "transition_id", "requires_transition_id"}, "relation")
             rid, rtype = relation.get("id"), relation.get("type")
             guarded, prerequisite = relation.get("transition_id"), relation.get("requires_transition_id")
             if not isinstance(rid, str) or not rid:
@@ -111,6 +123,7 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     for scenario in scenarios:
         if not isinstance(scenario, dict):
             raise ModelValidationError("each scenario must be an object")
+        _reject_unknown_keys(scenario, {"id", "disabled_transitions"}, "scenario")
         sid = scenario.get("id")
         if not isinstance(sid, str) or not sid:
             raise ModelValidationError("scenario id must be a non-empty string")
@@ -135,6 +148,7 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     exploration = model.get("exploration")
     if not isinstance(exploration, dict):
         raise ModelValidationError("exploration must be an object")
+    _reject_unknown_keys(exploration, {"max_depth", "max_trajectories"}, "exploration")
     max_depth, max_trajectories = exploration.get("max_depth"), exploration.get("max_trajectories")
     if not isinstance(max_depth, int) or isinstance(max_depth, bool) or max_depth < 0:
         raise ModelValidationError("max_depth must be a non-negative integer")
