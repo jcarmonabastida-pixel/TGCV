@@ -492,6 +492,35 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertNotEqual(without_result["input_sha256"], with_result["input_sha256"])
         self.assertEqual(without_result["result_sha256"], with_result["result_sha256"])
 
+    def test_relation_guarded_intervention_preserves_reachability_monotonicity(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "2"}
+        model["relations"] = [
+            {
+                "id": "r_guard_bd_by_ab",
+                "type": "requires_transition_enabled",
+                "transition_id": "t_bd",
+                "requires_transition_id": "t_ab",
+            },
+            {
+                "id": "r_guard_cd_by_ac",
+                "type": "requires_transition_enabled",
+                "transition_id": "t_cd",
+                "requires_transition_id": "t_ac",
+            },
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
+        ]
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        intervention = result["scenario_results"]["disable_ab"]
+        self.assertLessEqual(set(intervention["reachable_states"]), set(baseline["reachable_states"]))
+        baseline_paths = {canonical_json(path) for path in baseline["trajectories"]}
+        intervention_paths = {canonical_json(path) for path in intervention["trajectories"]}
+        self.assertLessEqual(intervention_paths, baseline_paths)
+
     def test_direct_intervention_and_guard_chain_do_not_propagate_recursively(self):
         model = copy.deepcopy(self.model)
         model["states"] = ["A", "B", "C", "D"]
