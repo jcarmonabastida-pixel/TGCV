@@ -1379,6 +1379,29 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       await assessInBrowser(malformedNestedPackage, "rejected", malformedNested.message);
     }
 
+    for (const malformedReference of [
+      { label: "unknown-trajectory-state", mutate: pkg => {
+          const sid = Object.keys(pkg.result.scenario_results)[0];
+          pkg.result.scenario_results[sid].trajectories[0][0].state = "state-not-in-input";
+        }, message: "rutas válidas y transiciones coherentes con la entrada" },
+      { label: "unknown-comparison-state", mutate: pkg => {
+          const sid = Object.keys(pkg.result.comparisons_to_baseline)[0];
+          pkg.result.comparisons_to_baseline[sid].reachable_states_added = ["state-not-in-input"];
+        }, message: "IDs de estado declarados" }
+    ]) {
+      const malformedReferencePackage = structuredClone(validImportedPackage);
+      malformedReferencePackage.result.engine_version = "collective-toy-engine-999";
+      malformedReference.mutate(malformedReferencePackage);
+      const referenceResultPayload = structuredClone(malformedReferencePackage.result);
+      delete referenceResultPayload.input_sha256;
+      delete referenceResultPayload.result_sha256;
+      malformedReferencePackage.result.result_sha256 = sha256Canonical(referenceResultPayload);
+      const referencePackagePayload = structuredClone(malformedReferencePackage);
+      delete referencePackagePayload.package_sha256;
+      malformedReferencePackage.package_sha256 = sha256Canonical(referencePackagePayload);
+      await assessInBrowser(malformedReferencePackage, "rejected", malformedReference.message);
+    }
+
     const malformedSchemaPackage = structuredClone(validImportedPackage);
     malformedSchemaPackage.package_version = "collective-toy-browser-run-999";
     const malformedSchemaPayload = structuredClone(malformedSchemaPackage);
