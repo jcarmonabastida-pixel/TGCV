@@ -84,7 +84,27 @@ const assert = require("node:assert/strict");
     assert.match(baselineOutput, /Alcanzables: A, B, D/);
     assert.doesNotMatch(baselineOutput, /Alcanzables: A, B, C, D/);
 
-    console.log("PASS: UI terminology, synthetic-only caveat, output labels, profile default, edit/run behavior, real export/import, replay verification, and tamper rejection.");
+    // Exercise the visual relation editor in profile 2 and verify its operational effect.
+    await page.locator("#profile-editor").selectOption("2");
+    await page.locator("#guarded-transition").selectOption("t_cd");
+    await page.locator("#required-transition").selectOption("t_ac");
+    await page.getByRole("button", { name: "Añadir relación" }).click();
+    const relationModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(relationModel.relations, [{
+      id: "rel_1",
+      type: "requires_transition_enabled",
+      transition_id: "t_cd",
+      requires_transition_id: "t_ac"
+    }]);
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
+    const relationPackage = await page.evaluate(() => window.lastPackage);
+    const baselineEffects = relationPackage.result.scenario_results.baseline.relation_effects;
+    assert.equal(baselineEffects.length, 1);
+    assert.equal(baselineEffects[0].status, "BLOCKED");
+    assert.deepEqual(relationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac", "t_cd"]);
+
+    console.log("PASS: UI terminology, synthetic-only caveat, profile switching, visual relation effects, edit/run behavior, real export/import, replay verification, and tamper rejection.");
   } finally {
     await browser.close();
   }
