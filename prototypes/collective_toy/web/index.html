@@ -96,6 +96,37 @@ async function assessImportedBrowserPackage(pkg){
  assert(pkg.result.scenario_results&&typeof pkg.result.scenario_results==="object"&&!Array.isArray(pkg.result.scenario_results),"scenario_results ausente o malformado.");
  assert(pkg.result.comparisons_to_baseline&&typeof pkg.result.comparisons_to_baseline==="object"&&!Array.isArray(pkg.result.comparisons_to_baseline),"comparisons_to_baseline ausente o malformado.");
  assert(typeof pkg.result.scientific_interpretation==="string","scientific_interpretation ausente o malformado.");
+ var allowedScenarioKeys=["scenario_id","disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories","truncated","exploration_bounds","relation_effects","effective_disabled_transitions"];
+ var inputScenarioIds=pkg.input&&Array.isArray(pkg.input.scenarios)?pkg.input.scenarios.map(function(s){return s&&s.id}):[];
+ assert(inputScenarioIds.length>0,"La entrada debe declarar escenarios antes de validar resultados.");
+ assert(Object.keys(pkg.result.scenario_results).every(function(id){return inputScenarioIds.includes(id)}),"scenario_results contiene escenarios que no están en la entrada.");
+ assert(inputScenarioIds.every(function(id){return Object.prototype.hasOwnProperty.call(pkg.result.scenario_results,id)}),"scenario_results no contiene todos los escenarios de la entrada.");
+ Object.keys(pkg.result.scenario_results).forEach(function(id){
+  var sr=pkg.result.scenario_results[id];
+  assert(sr&&typeof sr==="object"&&!Array.isArray(sr),"El resultado del escenario "+id+" debe ser un objeto.");
+  assert(Object.keys(sr).every(function(k){return allowedScenarioKeys.includes(k)}),"El resultado del escenario "+id+" contiene campos desconocidos.");
+  assert(sr.scenario_id===id,"scenario_id no coincide con la clave "+id+".");
+  ["disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories"].forEach(function(k){assert(Array.isArray(sr[k]),"El campo "+k+" del escenario "+id+" debe ser una lista.")});
+  assert(typeof sr.truncated==="boolean","truncated del escenario "+id+" debe ser booleano.");
+  assert(sr.exploration_bounds&&typeof sr.exploration_bounds==="object"&&!Array.isArray(sr.exploration_bounds),"exploration_bounds del escenario "+id+" debe ser un objeto.");
+  assert(Object.keys(sr.exploration_bounds).every(function(k){return ["max_depth","max_trajectories"].includes(k)}),"exploration_bounds contiene campos desconocidos.");
+  assert(Number.isInteger(sr.exploration_bounds.max_depth)&&Number.isInteger(sr.exploration_bounds.max_trajectories),"exploration_bounds debe declarar límites enteros.");
+  if(Object.prototype.hasOwnProperty.call(sr,"relation_effects"))assert(Array.isArray(sr.relation_effects),"relation_effects debe ser una lista.");
+  if(Object.prototype.hasOwnProperty.call(sr,"effective_disabled_transitions"))assert(Array.isArray(sr.effective_disabled_transitions),"effective_disabled_transitions debe ser una lista.");
+ });
+ var allowedComparisonKeys=["intervention","enabled_at_initial_added","enabled_at_initial_removed","reachable_states_added","reachable_states_removed","trajectories_added","trajectories_removed","truncated"];
+ assert(Object.keys(pkg.result.comparisons_to_baseline).every(function(id){return inputScenarioIds.includes(id)&&id!=="baseline"}),"comparisons_to_baseline contiene una clave de escenario no compatible.");
+ inputScenarioIds.filter(function(id){return id!=="baseline"}).forEach(function(id){assert(Object.prototype.hasOwnProperty.call(pkg.result.comparisons_to_baseline,id),"Falta comparación baseline para "+id+".")});
+ Object.keys(pkg.result.comparisons_to_baseline).forEach(function(id){
+  var cr=pkg.result.comparisons_to_baseline[id];
+  assert(cr&&typeof cr==="object"&&!Array.isArray(cr),"La comparación "+id+" debe ser un objeto.");
+  assert(Object.keys(cr).every(function(k){return allowedComparisonKeys.includes(k)}),"La comparación "+id+" contiene campos desconocidos.");
+  ["enabled_at_initial_added","enabled_at_initial_removed","reachable_states_added","reachable_states_removed","trajectories_added","trajectories_removed"].forEach(function(k){assert(Array.isArray(cr[k]),"El campo "+k+" de la comparación "+id+" debe ser una lista.")});
+  assert(typeof cr.truncated==="boolean","truncated de la comparación "+id+" debe ser booleano.");
+  assert(cr.intervention&&typeof cr.intervention==="object"&&!Array.isArray(cr.intervention),"intervention de la comparación "+id+" debe ser un objeto.");
+  assert(Object.keys(cr.intervention).every(function(k){return k==="disabled_transitions"}),"intervention contiene campos desconocidos.");
+  assert(Array.isArray(cr.intervention.disabled_transitions),"disabled_transitions de intervention debe ser una lista.");
+ });
  var packageBody=Object.assign({},pkg);delete packageBody.package_sha256;
  assert(await hash(packageBody)===pkg.package_sha256,"El hash del paquete no coincide.");
  assert(typeof pkg.result.input_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.input_sha256),"input_sha256 ausente o malformado.");
