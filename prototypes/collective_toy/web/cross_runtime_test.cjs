@@ -215,7 +215,8 @@ function fixtures() {
 
   const cappedDisconnectedReference = clone(base);
   cappedDisconnectedReference.model_id = "disconnected-component-capped-reference";
-  cappedDisconnectedReference.exploration.max_trajectories = 1;
+  cappedDisconnectedReference.transitions.push({ id: "t_ba", source: "B", target: "A" });
+  cappedDisconnectedReference.exploration.max_depth = 3;
   cases.push({ name: "disconnected-component-capped-reference", model: cappedDisconnectedReference,
     expectedTruncation: true });
   const cappedDisconnectedAugmented = clone(cappedDisconnectedReference);
