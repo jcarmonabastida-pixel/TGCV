@@ -122,6 +122,16 @@ const assert = require("node:assert/strict");
     assert.equal(await page.evaluate(() => window.lastPackage), null);
     assert.match(await page.locator("#results").innerText(), /No se ha podido ejecutar/);
 
+    // Malformed imported package text must fail closed in the import assessment.
+    await page.locator("#package-file").setInputFiles({
+      name: "malformed-package.json",
+      mimeType: "application/json",
+      buffer: Buffer.from("{ not valid JSON")
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /JSON válido/i);
+
     // The UI must recover normally after the user reloads the example.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
