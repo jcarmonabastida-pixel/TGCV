@@ -875,7 +875,8 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
     def test_disconnected_component_preserves_truncation_under_trajectory_cap(self):
         model = copy.deepcopy(self.model)
-        model["exploration"]["max_trajectories"] = 1
+        model["transitions"].append({"id": "t_ba", "source": "B", "target": "A"})
+        model["exploration"]["max_depth"] = 3
         augmented = copy.deepcopy(model)
         augmented["model_id"] = "toy-diamond-with-disconnected-component-capped"
         augmented["states"].extend(["X", "Y"])
