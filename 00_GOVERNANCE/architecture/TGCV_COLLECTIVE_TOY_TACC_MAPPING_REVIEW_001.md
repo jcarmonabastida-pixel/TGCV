@@ -2,7 +2,7 @@
 
 **Status:** CONCEPTUAL MAPPING REVIEW — PROPOSED / NOT FROZEN  
 **Scope:** Synthetic-only Collective Toy, profiles 1 and 2  
-**Branch:** `prototype/collective-toy-relation-editor-001-20261011`  
+**Review artifact:** PR #52, clean promotion candidate `prototype/collective-toy-promotion-clean-001-20261012`  
 **Scientific execution:** NOT AUTHORIZED  
 **Core / Ω-primary status:** UNCHANGED
 
