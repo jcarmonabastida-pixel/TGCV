@@ -61,6 +61,23 @@ class CollectiveToyEngineTests(unittest.TestCase):
         result = run_model(self.model)
         comparison = result["comparisons_to_baseline"]["block_ac"]
 
+        # Pin the complete baseline-delta contract as one independent literal oracle.
+        self.assertEqual(
+            comparison,
+            {
+                "enabled_at_initial_added": [],
+                "enabled_at_initial_removed": ["t_ac"],
+                "reachable_states_added": [],
+                "reachable_states_removed": ["C"],
+                "trajectories_added": [],
+                "trajectories_removed": [[
+                    {"state": "A"},
+                    {"transition": "t_ac", "state": "C"},
+                    {"transition": "t_cd", "state": "D"},
+                ]],
+                "truncated": False,
+            },
+        )
         self.assertEqual(comparison["enabled_at_initial_added"], [])
         self.assertEqual(comparison["enabled_at_initial_removed"], ["t_ac"])
         self.assertEqual(comparison["reachable_states_added"], [])
