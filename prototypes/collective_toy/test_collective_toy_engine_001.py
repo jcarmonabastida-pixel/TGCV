@@ -1639,11 +1639,10 @@ class CollectiveToyEngineTests(unittest.TestCase):
     def test_canonical_json_rejects_unpaired_surrogates_and_non_json_values(self):
         from collective_toy_engine_001 import canonical_json
 
-        for value in ("\\ud800", {"key": object()}, {1: "non-string key"}):
+        for value in (chr(0xD800), {"key": object()}, {1: "non-string key"}):
             with self.subTest(value=repr(value)):
                 with self.assertRaises(ModelValidationError):
                     canonical_json(value)
-
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
