@@ -89,6 +89,22 @@ function fixtures() {
   });
 
 
+  const interventionComposition = clone(base);
+  interventionComposition.model_id = "intervention-composition-order";
+  interventionComposition.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  interventionComposition.relations = [
+    { id: "r_guard_bd_by_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
+    { id: "r_guard_cd_by_ac", type: "requires_transition_enabled", transition_id: "t_cd", requires_transition_id: "t_ac" }
+  ];
+  interventionComposition.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_ab", disabled_transitions: ["t_ab"] },
+    { id: "disable_ac", disabled_transitions: ["t_ac"] },
+    { id: "disable_both", disabled_transitions: ["t_ab", "t_ac"] },
+    { id: "disable_both_reversed", disabled_transitions: ["t_ac", "t_ab"] }
+  ];
+  cases.push({ name: "intervention-composition-order", model: interventionComposition });
+
   const scenarioOrderReference = clone(base);
   scenarioOrderReference.model_id = "scenario-order-invariance";
   scenarioOrderReference.rule_profile = { type: "relation_guarded_graph", version: "1" };
@@ -1098,6 +1114,19 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering disabled transitions changed result SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized disabled transitions should change input SHA-256");
+      }
+      if (fixture.name === "intervention-composition-order") {
+        const scenarios = browserPackage.result.scenario_results;
+        const ab = new Set(scenarios.disable_ab.effective_disabled_transitions);
+        const ac = new Set(scenarios.disable_ac.effective_disabled_transitions);
+        const both = new Set(scenarios.disable_both.effective_disabled_transitions);
+        const reversed = new Set(scenarios.disable_both_reversed.effective_disabled_transitions);
+        assert.deepEqual([...both].sort(), [...new Set([...ab, ...ac])].sort(),
+          "combined intervention must equal the union of single-intervention effects");
+        assert.deepEqual([...both].sort(), [...reversed].sort(),
+          "reversing disabled-transition declaration order changed effective effects");
+        assert.deepEqual(scenarios.disable_both, scenarios.disable_both_reversed,
+          "reversing disabled-transition declaration order changed scenario result");
       }
       if (fixture.name === "relation-guard-intervention-monotonicity") {
         const baseline = browserPackage.result.scenario_results.baseline;
