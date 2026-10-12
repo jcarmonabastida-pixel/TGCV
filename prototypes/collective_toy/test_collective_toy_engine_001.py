@@ -1805,6 +1805,27 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 ):
                     run_model(model)
 
+    def test_top_level_model_and_required_string_fields_reject_wrong_types(self):
+        # Assert exact Python-validator outcomes for branches not isolated by the
+        # existing broad schema matrix (top-level type and scalar field types).
+        cases = [
+            ("top-level-list", [], "model must be a JSON object"),
+            (
+                "non-string-schema-version",
+                {**copy.deepcopy(self.model), "schema_version": 7},
+                "schema_version must be 'collective-toy-input-001'",
+            ),
+            (
+                "non-string-model-id",
+                {**copy.deepcopy(self.model), "model_id": 7},
+                "model_id must be a non-empty string",
+            ),
+        ]
+        for name, candidate, expected_message in cases:
+            with self.subTest(case=name):
+                with self.assertRaisesRegex(ModelValidationError, expected_message):
+                    run_model(candidate)
+
     def test_non_string_nested_relation_and_scenario_identifiers_fail(self):
         # These validator branches were previously represented mainly by browser fixtures;
         # assert the Python validator's specific contract outcome independently.
