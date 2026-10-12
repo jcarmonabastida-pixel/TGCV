@@ -51,7 +51,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
     def test_unknown_state_reference_fails(self):
         model = copy.deepcopy(self.model)
         model["transitions"][0]["target"] = "UNKNOWN"
-        with self.assertRaises(ModelValidationError):
+        with self.assertRaisesRegex(ModelValidationError, "transition t_ab references an unknown state"):
             run_model(model)
 
     def test_duplicate_semantic_relation_is_operationally_idempotent(self):
