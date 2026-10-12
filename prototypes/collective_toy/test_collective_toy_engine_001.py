@@ -873,6 +873,24 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 path_transitions = {step["transition"] for step in path if "transition" in step}
                 self.assertTrue(path_transitions <= single_enabled)
 
+    def test_disconnected_component_preserves_truncation_under_trajectory_cap(self):
+        model = copy.deepcopy(self.model)
+        model["exploration"]["max_trajectories"] = 1
+        augmented = copy.deepcopy(model)
+        augmented["model_id"] = "toy-diamond-with-disconnected-component-capped"
+        augmented["states"].extend(["X", "Y"])
+        augmented["transitions"].append({"id": "t_xy", "source": "X", "target": "Y"})
+        original_result = run_model(model)
+        augmented_result = run_model(augmented)
+        for scenario_id, original in original_result["scenario_results"].items():
+            actual = augmented_result["scenario_results"][scenario_id]
+            self.assertTrue(original["truncated"])
+            self.assertTrue(actual["truncated"])
+            self.assertEqual(original["reachable_states"], actual["reachable_states"])
+            self.assertEqual(original["trajectories"], actual["trajectories"])
+            self.assertEqual(original["truncated"], actual["truncated"])
+        self.assertNotEqual(original_result["input_sha256"], augmented_result["input_sha256"])
+
     def test_disconnected_component_does_not_change_existing_scenario_outcomes(self):
         model = copy.deepcopy(self.model)
         augmented = copy.deepcopy(model)
