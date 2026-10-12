@@ -1,7 +1,7 @@
 # Collective Toy Branch-to-Test Expected-Outcome Audit 001
 
 Status: **preliminary audit; contract freeze remains blocked**.
-Audited source snapshot: `88b7c6849d18465232da9b8d215c260033f4ecb0`.
+Audited source snapshot: `4dd49328d02dd011233cf0f4bfb8920df6ce89a6`.
 Scope: map major validator/evaluator branches to existing tests and identify evidence gaps. This is not a claim of exhaustive branch coverage, a formal proof, or scientific validation.
 
 ## Method and evidence boundary
@@ -34,14 +34,26 @@ The audit cross-reads `collective_toy_engine_001.py`, `test_collective_toy_engin
 | Baseline comparison: added/removed enabled transitions, reachable states, trajectories; truncation propagation | `test_baseline_comparison_reports_expected_reachability_and_trajectory_differences`, `test_baseline_comparison_propagates_truncation_from_either_scenario`, `test_baseline_comparison_propagates_truncation_when_only_intervention_is_truncated` | Direct expected results exist for representative branches. |
 | Export, integrity, engine compatibility, independent replay | `test_export_contains_reproduction_inputs_and_hashes`, `test_export_package_hashes_verify_and_export_replays_independently`, `test_export_package_detects_tampering_of_input_result_and_package`, `test_unknown_engine_can_be_integrity_verified_but_not_replayed`, `test_valid_hashes_do_not_make_divergent_result_replay_verified` | Integrity and replay outcomes are separately tested; long-term archive/replay outside CI is not covered. |
 
+## Audit delta at commit `4dd49328d02dd011233cf0f4bfb8920df6ce89a6`
+
+The following targeted checks were added after the original audited snapshot. They improve named-outcome precision but do not establish exhaustive branch coverage:
+
+- Schema-container outcomes now assert specific errors for malformed `states`, `rule_profile`, `transitions`, `relations`, `scenarios`, and `exploration` containers.
+- Semantic validation outcomes now assert specific errors for unknown initial states, unknown transition sources, self-guard relations, unknown guarded transitions, missing baseline, malformed transition/relation/scenario entries, malformed `disabled_transitions`, and duplicate scenario IDs.
+- The diamond evaluator fixture asserts the complete literal trajectory objects in deterministic DFS order, not only a set of state paths.
+- The baseline comparison fixture asserts the complete literal comparison object, including intervention metadata, enabled-transition deltas, reachable-state deltas, removed trajectory, and truncation flag. The initial oracle omitted `intervention`; CI exposed the mismatch and the expectation was corrected to include `{"disabled_transitions": ["t_ac"]}`.
+- Truncation propagation is already covered for baseline-only truncation and intervention-only truncation; depth boundary, terminal path, exact trajectory cap, and cycle/depth cases also have targeted tests. Do not add another truncation test unless a new distinct uncovered branch is demonstrated.
+
+CI on `4dd49328d02dd011233cf0f4bfb8920df6ce89a6` passed all three gates: engine unit suite plus clean-source replay, browser/Python concordance plus clean-source replay, and governance consistency. These are engineering checks only.
+
 ## Demonstrated remaining gaps
 
 1. **Independent oracle matrix incomplete.** The existing suite has 91 Python test functions and extensive browser fixtures, but test count is not branch coverage. The audit has not yet mapped every validator/evaluator conditional to a uniquely identified expected outcome.
-2. **Nested schema matrix incomplete.** Existing tests cover many nested fields and mutation cases, while the schema coverage inventory explicitly says nested-field coverage is not exhaustive. This is the clearest validator-side gap; next work should enumerate the exact uncovered nested branches before adding tests.
-3. **Independent evaluator outputs incomplete as a single review artifact.** Hand-checkable diamond and boundary fixtures exist, but not every evaluator branch is traced in one matrix to expected literal outputs derived from the written contract.
+2. **Nested schema matrix still not exhaustive.** Recent commits add exact-error assertions for several nested/container branches, but the inventory does not yet prove every validator conditional has a distinct oracle. Only add further cases after the branch inventory identifies a concrete missing outcome.
+3. **Independent evaluator outputs remain incomplete as a single review artifact.** The diamond traversal and baseline comparison now have full literal oracles, and truncation cases have targeted coverage. The next review should trace remaining evaluator conditionals to the contract and decide whether any have a distinct untested outcome; do not duplicate existing truncation tests.
 4. **Guard semantics remain a governance decision.** The current profile-2 rule uses explicit scenario disablements as guard inputs and applies a local, non-recursive blocking rule. The draft contract labels this experimental; tests passing cannot decide whether this is the intended semantics.
 5. **No scientific validation is implied.** All outcomes are for a finite synthetic graph. They do not validate system-level TGCV `T_acc`, causality, value construction, Core, or Ω-primary.
 
 ## Next action
 
-Continue the audit by enumerating the precise uncovered nested validator branches and evaluator outputs. Add tests only for confirmed gaps, using hand-calculated expected values. Do not change engine behavior, frozen fixtures, TGCV architecture, or scientific authorization as part of this audit. Keep contract freeze and PR promotion gated on review.
+Continue the audit by mapping each remaining validator/evaluator conditional to an existing named outcome assertion. Prefer completing the traceability matrix over adding more tests where existing outcomes already cover the branch. Add tests only for confirmed gaps, using hand-calculated expected values. Do not change engine behavior, frozen fixtures, TGCV architecture, or scientific authorization as part of this audit. Keep contract freeze and PR promotion gated on review.
