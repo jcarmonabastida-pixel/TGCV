@@ -30,3 +30,12 @@ jobs:
       - name: Run unit tests
         working-directory: prototypes/collective_toy
         run: python -m unittest -v test_collective_toy_engine_001.py
+      - name: Replay frozen baseline from clean source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          clean_root="$RUNNER_TEMP/collective-toy-clean-room"
+          mkdir -p "$clean_root"
+          git archive "$GITHUB_SHA" prototypes/collective_toy | tar -x -C "$clean_root"
+          cd "$clean_root/prototypes/collective_toy"
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_collective_toy_engine_001.CollectiveToyEngineTests.test_current_baseline_package_fixture_is_canonical_and_replay_verified
