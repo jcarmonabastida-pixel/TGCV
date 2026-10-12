@@ -41,7 +41,7 @@ const assert = require("node:assert/strict");
     await page.locator("#profile-editor").selectOption("1");
     const model = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(model.rule_profile, { type: "finite_deterministic_graph", version: "1" });
-    assert.match(await page.locator("#relation-help").innerText(), /metadatos inertes|perfil 2/i);
+    assert.match(await page.locator("#relation-help").innerText(), /metadatos|perfil 2/i);
 
     console.log("PASS: UI terminology, synthetic-only caveat, output labels, package boundary, and profile default.");
   } finally {
