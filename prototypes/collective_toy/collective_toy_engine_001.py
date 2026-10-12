@@ -391,13 +391,36 @@ def verify_exported_package_integrity(package: dict[str, Any]) -> bool:
     return True
 
 
-def verify_exported_package(package: dict[str, Any]) -> bool:
-    """Verify integrity, require the exact supported engine, and independently replay."""
+def assess_exported_package(package: dict[str, Any]) -> dict[str, Any]:
+    """Return an explicit lifecycle status without conflating integrity and replay.
+
+    Unknown package formats or integrity failures raise ModelValidationError.
+    A known, intact package with an unavailable engine is inspect-only: its data
+    may be inspected, but this function does not claim replay compatibility.
+    """
     verify_exported_package_integrity(package)
     if package["engine_version"] != ENGINE_VERSION:
-        raise ModelValidationError("Unsupported exported package engine version")
+        return {
+            "status": "inspect-only/replay-unavailable",
+            "integrity_verified": True,
+            "replay_verified": False,
+            "reason": "Unsupported exported package engine version",
+        }
     if run_model(package["input"]) != package["result"]:
         raise ModelValidationError("Exported result does not match independent replay")
+    return {
+        "status": "replay-verified",
+        "integrity_verified": True,
+        "replay_verified": True,
+        "reason": None,
+    }
+
+
+def verify_exported_package(package: dict[str, Any]) -> bool:
+    """Strict boolean verifier retained for callers requiring successful replay."""
+    assessment = assess_exported_package(package)
+    if assessment["status"] != "replay-verified":
+        raise ModelValidationError(assessment["reason"] or "Exported package is not replay-verified")
     return True
 
 
