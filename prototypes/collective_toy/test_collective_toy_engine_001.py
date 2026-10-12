@@ -734,6 +734,14 @@ class CollectiveToyEngineTests(unittest.TestCase):
         cases.append(("unknown-rule-profile-type", model))
 
         model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "unsupported"}
+        cases.append(("unsupported-rule-profile-version", model))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "finite_deterministic_graph", "version": "unsupported"}
+        cases.append(("supported-rule-profile-type-with-unsupported-version", model))
+
+        model = copy.deepcopy(self.model)
         model["scenarios"][0]["disabled_transitions"] = [""]
         cases.append(("empty-disabled-transition-id", model))
 
