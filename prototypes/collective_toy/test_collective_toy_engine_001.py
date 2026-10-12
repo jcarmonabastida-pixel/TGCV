@@ -8,6 +8,7 @@ from collective_toy_engine_001 import (
     run_model,
     canonical_json,
     sha256_json,
+    verify_exported_package,
 )
 
 
@@ -291,6 +292,33 @@ class CollectiveToyEngineTests(unittest.TestCase):
             sha256_json(altered_package_payload),
             altered_package_metadata["package_sha256"],
         )
+
+    def test_exported_package_rejects_truncated_or_incomplete_documents(self):
+        package = export_run(self.model)
+        self.assertTrue(verify_exported_package(package))
+
+        for field in ("package_version", "engine_version", "input", "result", "package_sha256"):
+            with self.subTest(missing_top_level=field):
+                incomplete = copy.deepcopy(package)
+                del incomplete[field]
+                with self.assertRaises(ModelValidationError):
+                    verify_exported_package(incomplete)
+
+        incomplete_result = copy.deepcopy(package)
+        del incomplete_result["result"]["result_sha256"]
+        incomplete_result_payload = copy.deepcopy(incomplete_result)
+        del incomplete_result_payload["package_sha256"]
+        incomplete_result["package_sha256"] = sha256_json(incomplete_result_payload)
+        with self.assertRaises(ModelValidationError):
+            verify_exported_package(incomplete_result)
+
+        incomplete_input = copy.deepcopy(package)
+        del incomplete_input["input"]["transitions"]
+        incomplete_input_payload = copy.deepcopy(incomplete_input)
+        del incomplete_input_payload["package_sha256"]
+        incomplete_input["package_sha256"] = sha256_json(incomplete_input_payload)
+        with self.assertRaises(ModelValidationError):
+            verify_exported_package(incomplete_input)
 
     def test_export_contains_reproduction_inputs_and_hashes(self):
         package = export_run(self.model)
