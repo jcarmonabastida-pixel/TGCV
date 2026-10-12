@@ -104,7 +104,17 @@ const assert = require("node:assert/strict");
     assert.equal(baselineEffects[0].status, "BLOCKED");
     assert.deepEqual(relationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac", "t_cd"]);
 
-    console.log("PASS: UI terminology, synthetic-only caveat, profile switching, visual relation effects, edit/run behavior, real export/import, replay verification, and tamper rejection.");
+    // Removing the relation through the real UI must remove its effect on the next run.
+    await page.getByRole("button", { name: "Eliminar relación r_guard_1" }).click();
+    const relationRemovedModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(relationRemovedModel.relations, []);
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
+    const removedRelationPackage = await page.evaluate(() => window.lastPackage);
+    assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.relation_effects, []);
+    assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac"]);
+
+    console.log("PASS: UI terminology, profile switching, relation add/remove effects, edit/run behavior, real export/import, replay verification, and tamper rejection.");
   } finally {
     await browser.close();
   }
