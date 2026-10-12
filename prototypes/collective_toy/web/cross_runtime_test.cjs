@@ -1310,6 +1310,26 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     assert.match(await assessInBrowser(inspectOnlyPackage, "inspect-only/replay-unavailable", "inspect-only/replay-unavailable"),
       /Integridad verificada/i);
 
+    for (const inconsistent of [
+      { label: "schema", mutate: pkg => { pkg.result.schema_version = "collective-toy-input-999"; }, message: "La versión de esquema del resultado no coincide con la entrada" },
+      { label: "model", mutate: pkg => { pkg.result.model_id = "different-model"; }, message: "El model_id del resultado no coincide con la entrada" },
+      { label: "profile", mutate: pkg => { pkg.result.rule_profile = { type: "unknown_profile", version: "1" }; }, message: "El perfil de reglas del resultado no coincide con la entrada" },
+      { label: "validation", mutate: pkg => { pkg.result.validation = "UNKNOWN"; }, message: "El resultado no declara validation=PASS" }
+    ]) {
+      const inconsistentPackage = structuredClone(validImportedPackage);
+      // Unsupported engine ensures consistency is checked before inspect-only fallback.
+      inconsistentPackage.result.engine_version = "collective-toy-engine-999";
+      inconsistent.mutate(inconsistentPackage);
+      const resultBody = structuredClone(inconsistentPackage.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      inconsistentPackage.result.result_sha256 = sha256Canonical(resultBody);
+      const packageBody = structuredClone(inconsistentPackage);
+      delete packageBody.package_sha256;
+      inconsistentPackage.package_sha256 = sha256Canonical(packageBody);
+      await assessInBrowser(inconsistentPackage, "rejected", inconsistent.message);
+    }
+
     const malformedSchemaPackage = structuredClone(validImportedPackage);
     malformedSchemaPackage.package_version = "collective-toy-browser-run-999";
     const malformedSchemaPayload = structuredClone(malformedSchemaPackage);
