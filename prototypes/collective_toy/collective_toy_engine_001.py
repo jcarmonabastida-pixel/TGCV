@@ -357,15 +357,19 @@ def export_run(model: dict[str, Any]) -> dict[str, Any]:
 
 
 
-def verify_exported_package(package: dict[str, Any]) -> bool:
-    """Validate package completeness, hashes, and deterministic replay."""
+def verify_exported_package_integrity(package: dict[str, Any]) -> bool:
+    """Verify a known package format's hashes without claiming engine replay compatibility.
+
+    This permits inspection of a package whose engine version is unavailable, while
+    still rejecting unknown package formats and any integrity mismatch.
+    """
     required = {"package_version", "engine_version", "input", "result", "package_sha256"}
     if not isinstance(package, dict) or not required.issubset(package):
         raise ModelValidationError("Exported package is missing required fields")
     if package["package_version"] != "collective-toy-run-package-001":
         raise ModelValidationError("Unsupported exported package version")
-    if package["engine_version"] != ENGINE_VERSION:
-        raise ModelValidationError("Unsupported exported package engine version")
+    if not isinstance(package["engine_version"], str) or not package["engine_version"]:
+        raise ModelValidationError("Exported package engine_version must be a non-empty string")
     if not isinstance(package["input"], dict) or not isinstance(package["result"], dict):
         raise ModelValidationError("Exported package input and result must be objects")
 
@@ -384,7 +388,15 @@ def verify_exported_package(package: dict[str, Any]) -> bool:
     expected_result_sha256 = result_payload.pop("result_sha256")
     if sha256_json(result_payload) != expected_result_sha256:
         raise ModelValidationError("Exported result SHA-256 does not verify")
-    if run_model(package["input"]) != result:
+    return True
+
+
+def verify_exported_package(package: dict[str, Any]) -> bool:
+    """Verify integrity, require the exact supported engine, and independently replay."""
+    verify_exported_package_integrity(package)
+    if package["engine_version"] != ENGINE_VERSION:
+        raise ModelValidationError("Unsupported exported package engine version")
+    if run_model(package["input"]) != package["result"]:
         raise ModelValidationError("Exported result does not match independent replay")
     return True
 
