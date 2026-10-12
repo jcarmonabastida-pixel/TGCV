@@ -848,6 +848,14 @@ function invalidFixtures() {
   unknownProfileType.rule_profile = { type: "unknown_graph", version: "1" };
   cases.push({ name: "unknown-rule-profile-type", model: unknownProfileType });
 
+  const unsupportedProfileVersion = clone(base);
+  unsupportedProfileVersion.rule_profile = { type: "finite_deterministic_graph", version: "2" };
+  cases.push({ name: "unsupported-rule-profile-version", model: unsupportedProfileVersion });
+
+  const nonStringSchemaVersion = clone(base);
+  nonStringSchemaVersion.schema_version = 1;
+  cases.push({ name: "non-string-schema-version", model: nonStringSchemaVersion });
+
   const emptyDisabledId = clone(base);
   emptyDisabledId.scenarios[0].disabled_transitions = [""];
   cases.push({ name: "empty-disabled-transition-id", model: emptyDisabledId });
