@@ -202,9 +202,9 @@ The implementation is not accepted until automated tests cover:
 10. exported run package contains enough information to reproduce the result;
 11. invalid input yields a clear error and does not produce a misleading partial PASS.
 
-### 8.1 Requirement-to-test coverage matrix (branch snapshot 2026-10-11; latest recorded CI for commit aafb7c3aa31d33616d3faad06a68436b00c152b0)
+### 8.1 Requirement-to-test coverage matrix (test inventory at commit eb70fe71e7379b9fd258e8eefdfa2fe2feaf3778; latest recorded CI: 2026-10-12)
 
-The following matrix maps the minimum acceptance criteria to tests present in the current prototype branch. For the commit named above, CI runs 38166544143 (synthetic engine tests), 38166544196 (browser/cross-runtime tests), and 38166544137 (governance consistency) all completed with success. “Covered” means an automated test exists and passed in that recorded CI snapshot; it does not imply exhaustive verification of all possible inputs.
+The following matrix maps the minimum acceptance criteria to tests present in the clean promotion candidate. The latest recorded CI for commit `eb70fe71e7379b9fd258e8eefdfa2fe2feaf3778` completed successfully: run 38304322696 (synthetic engine tests and clean-source replay), run 38304322646 (browser/Python concordance and clean-source replay), and run 38304322605 (governance current-state consistency). “Covered” means an automated test exists and passed in the recorded CI snapshot; it does not imply exhaustive verification of all possible inputs.
 
 | Contract criterion | Current evidence | Status / boundary |
 |---|---|---|
