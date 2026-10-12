@@ -68,6 +68,7 @@ const summarize = values => ({
         const interactionSamples = [];
         const heartbeatGapSamples = [];
         const hashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] };
+        const observationHashOperations = Object.fromEntries(["input", "result", "package"].map(operation => [operation, Object.fromEntries(Object.keys(hashPhaseSamples).map(name => [name, []]))]));
         await page.evaluate(m => window.execute(m), model); // warm engine
         await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
         await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
@@ -81,7 +82,7 @@ const summarize = values => ({
           engineSamples.push(engineMs);
           await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
           await page.evaluate(() => {
-            window.__toyHashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] };
+            window.__toyHashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [], by_operation: { input: { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] }, result: { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] }, package: { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] } } };
             window.__toyHeartbeat = { last: performance.now(), maxGap: 0, running: true };
             const beat = () => {
               const h = window.__toyHeartbeat;
@@ -107,6 +108,9 @@ const summarize = values => ({
           }
           heartbeatGapSamples.push(observation.maxGap);
           for (const name of Object.keys(hashPhaseSamples)) hashPhaseSamples[name].push(...(observation.hashPhases?.[name] || []));
+          for (const operation of Object.keys(observation.hashPhases?.by_operation || {})) {
+            for (const name of Object.keys(observation.hashPhases.by_operation[operation])) observationHashOperations[operation][name].push(...observation.hashPhases.by_operation[operation][name]);
+          }
         }
         const phaseSummary = Object.fromEntries(phaseNames.filter(n => phaseSamples[n].length).map(n => [n, summarize(phaseSamples[n])]));
         reports.push({
@@ -120,6 +124,7 @@ const summarize = values => ({
           interaction_wall_ms: summarize(interactionSamples),
           phase_timings: phaseSummary,
           hash_subphase_timings: Object.fromEntries(Object.keys(hashPhaseSamples).map(name => [name, summarize(hashPhaseSamples[name])])),
+          hash_operation_timings: Object.fromEntries(Object.entries(observationHashOperations).map(([operation, samples]) => [operation, Object.fromEntries(Object.entries(samples).map(([name, values]) => [name, summarize(values)]))])),
           main_thread_frame_gap: summarize(heartbeatGapSamples)
         });
       }
