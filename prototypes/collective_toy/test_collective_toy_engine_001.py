@@ -1805,6 +1805,48 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 ):
                     run_model(model)
 
+    def test_schema_container_branches_report_specific_expected_errors(self):
+        # The broad malformed-input matrix only asserted rejection. These cases
+        # pin the exact contract outcome for distinct container-validation branches.
+        cases = [
+            (
+                "states-not-list",
+                {"states": "A"},
+                "states must be a non-empty list",
+            ),
+            (
+                "rule-profile-not-object",
+                {"rule_profile": None},
+                "rule_profile must be an object",
+            ),
+            (
+                "transitions-not-list",
+                {"transitions": {}},
+                "transitions must be a list",
+            ),
+            (
+                "relations-not-list",
+                {"relations": {}},
+                "relations must be a list",
+            ),
+            (
+                "scenarios-not-list",
+                {"scenarios": []},
+                "scenarios must be a non-empty list",
+            ),
+            (
+                "exploration-not-object",
+                {"exploration": []},
+                "exploration must be an object",
+            ),
+        ]
+        for name, updates, expected_message in cases:
+            with self.subTest(case=name):
+                candidate = copy.deepcopy(self.model)
+                candidate.update(updates)
+                with self.assertRaisesRegex(ModelValidationError, expected_message):
+                    run_model(candidate)
+
     def test_top_level_model_and_required_string_fields_reject_wrong_types(self):
         # Assert exact Python-validator outcomes for branches not isolated by the
         # existing broad schema matrix (top-level type and scalar field types).
