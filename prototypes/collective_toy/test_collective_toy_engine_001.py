@@ -1805,6 +1805,51 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 ):
                     run_model(model)
 
+    def test_relation_and_baseline_validation_report_specific_expected_errors(self):
+        # Pin distinct semantic validation branches with exact expected outcomes.
+        cases = []
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [{
+            "id": "r_self",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_ab",
+            "requires_transition_id": "t_ab",
+        }]
+        cases.append((
+            "self-guard",
+            model,
+            "relation r_self cannot require a transition to enable itself",
+        ))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [{
+            "id": "r_unknown_guarded",
+            "type": "requires_transition_enabled",
+            "transition_id": "missing_guarded",
+            "requires_transition_id": "t_ab",
+        }]
+        cases.append((
+            "unknown-guarded-transition",
+            model,
+            "relation r_unknown_guarded references unknown guarded transition: missing_guarded",
+        ))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0]["id"] = "reference"
+        cases.append((
+            "missing-baseline-scenario",
+            model,
+            "a scenario with id 'baseline' is required",
+        ))
+
+        for name, candidate, expected_message in cases:
+            with self.subTest(case=name):
+                with self.assertRaisesRegex(ModelValidationError, expected_message):
+                    run_model(candidate)
+
     def test_schema_container_branches_report_specific_expected_errors(self):
         # The broad malformed-input matrix only asserted rejection. These cases
         # pin the exact contract outcome for distinct container-validation branches.
