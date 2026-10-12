@@ -1125,8 +1125,10 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           "combined intervention must equal the union of single-intervention effects");
         assert.deepEqual([...both].sort(), [...reversed].sort(),
           "reversing disabled-transition declaration order changed effective effects");
-        assert.deepEqual(scenarios.disable_both, scenarios.disable_both_reversed,
-          "reversing disabled-transition declaration order changed scenario result");
+        const semanticView = value => Object.fromEntries(Object.entries(value)
+          .filter(([key]) => key !== "scenario_id" && key !== "disabled_transitions"));
+        assert.deepEqual(semanticView(scenarios.disable_both), semanticView(scenarios.disable_both_reversed),
+          "reversing disabled-transition declaration order changed semantic scenario result");
       }
       if (fixture.name === "relation-guard-intervention-monotonicity") {
         const baseline = browserPackage.result.scenario_results.baseline;
