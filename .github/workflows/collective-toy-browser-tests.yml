@@ -40,3 +40,13 @@ jobs:
       - name: Run browser and Python concordance test
         working-directory: prototypes/collective_toy/web
         run: npm test
+      - name: Replay browser and Python suite from clean source archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          clean_root="$RUNNER_TEMP/collective-toy-browser-clean-room"
+          mkdir -p "$clean_root"
+          git archive "$GITHUB_SHA" prototypes/collective_toy | tar -x -C "$clean_root"
+          cd "$clean_root/prototypes/collective_toy/web"
+          npm install
+          npm test
