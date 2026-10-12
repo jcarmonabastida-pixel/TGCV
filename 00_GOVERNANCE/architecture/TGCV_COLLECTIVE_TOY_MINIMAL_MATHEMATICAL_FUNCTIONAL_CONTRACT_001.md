@@ -274,20 +274,25 @@ Keep development on a non-main branch. Do not treat software CI as scientific va
 
 - Mathematical/functional contract: **PROPOSED; NOT FROZEN**.
 - Engineering freeze decision: **DEFERRED**. The latest CI is green, but green CI alone is insufficient: the complete schema/type/range matrix is not exhaustive; broader malformed-input/serialization robustness review remains open; the global availability-guard semantics (including multiple-guard composition) remain experimental; and the proposed mapping to system-level TGCV `T_acc` is not canonical and remains separate from this finite-graph MVP.
-- MVP implementation: **PARTIALLY IMPLEMENTED on a development branch; contract remains draft**.
-- Synthetic fixture: **implemented and covered by current CI for selected cases; full acceptance matrix pending**.
+- MVP implementation: **implemented as a clean promotion candidate in PR #52; PR remains draft and promotion is deferred pending explicit governance review**.
+- Synthetic fixture: **implemented; selected cases pass current CI, while the full acceptance matrix and contract freeze remain pending**.
 - \(U_t\) use: **NOT AUTHORIZED**.
 - TGCV Core / Ω-primary canonical status: **UNCHANGED**.
 
 
-### Latest exact-boundary coverage update
+### Historical exact-boundary coverage snapshot
 
-The development branch includes browser/Python parity fixtures and matching Python unit tests for exact exploration boundaries, nested relation/scenario/exploration fields, numeric type boundaries, malformed initial_state containers, and empty scenario IDs. The latest 71-fixture snapshot passed CI at browser/cross-runtime run [38168736943](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38168736943), Python engine run [38168736951](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38168736951), and governance consistency run [38168736948](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38168736948). The normative exploration interpretation is stated in §5.1. The contract remains proposed and the schema is not frozen.
+The earlier development-branch snapshot included browser/Python parity fixtures and matching Python unit tests for exact exploration boundaries, nested relation/scenario/exploration fields, numeric type boundaries, malformed initial_state containers, and empty scenario IDs. The latest 71-fixture snapshot passed CI at browser/cross-runtime run [38168736943](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38168736943), Python engine run [38168736951](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38168736951), and governance consistency run [38168736948](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38168736948). The normative exploration interpretation is stated in §5.1. The contract remains proposed and the schema is not frozen.
 
 
-### Latest CI reconciliation
+### Historical CI reconciliation
 
-As of commit `aafb7c3aa31d33616d3faad06a68436b00c152b0`, the three associated checks completed successfully: synthetic engine tests [38166544143](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38166544143), browser/cross-runtime tests [38166544196](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38166544196), and governance consistency [38166544137](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38166544137). This updates the evidence snapshot only; it does not freeze the contract, prove correctness for all inputs, or validate TGCV scientifically. Any subsequent commit requires its own CI check before its changes can be treated as passing.
+The following is a historical evidence snapshot for commit `aafb7c3aa31d33616d3faad06a68436b00c152b0`: synthetic engine tests [38166544143](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38166544143), browser/cross-runtime tests [38166544196](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38166544196), and governance consistency [38166544137](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38166544137) all completed successfully. This updates the evidence snapshot only; it does not freeze the contract, prove correctness for all inputs, or validate TGCV scientifically. Any subsequent commit requires its own CI check before its changes can be treated as passing.
+
+
+### Current clean-promotion CI snapshot — PASS
+
+At commit `ef9154aa8e51dbb655b50cba68b2ad0d6b542c8d` on the clean promotion candidate, all three workflows passed: engine tests and clean-source replay [38305294431](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38305294431), browser/Python concordance and clean-source replay [38305294376](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38305294376), and governance current-state consistency [38305294381](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38305294381). This snapshot records engineering CI only; the contract remains proposed, the PR remains draft, and no scientific validity or promotion approval is implied.
 
 
 ### Deterministic malformed-input mutation matrix — PASS
