@@ -17,7 +17,7 @@ const assert = require("node:assert/strict");
     assert.match(notice, /grafo finito/i);
     assert.match(notice, /No procesa datos reales/i);
     assert.match(notice, /No es una validación científica/i);
-    assert.match(notice, /no implementa por sí solo T.?acc de TGCV/i);
+    assert.match(notice, /no implementa por sí solo Tacc de TGCV/i);
 
     // Output labels must not silently promote graph-local results to system-level TGCV claims.
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
