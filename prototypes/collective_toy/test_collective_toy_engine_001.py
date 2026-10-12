@@ -142,6 +142,25 @@ class CollectiveToyEngineTests(unittest.TestCase):
         result = run_model(model)
         self.assertTrue(result["scenario_results"]["baseline"]["truncated"])
 
+    def test_depth_boundary_distinguishes_pending_transition_from_terminal_path(self):
+        model = copy.deepcopy(self.model)
+        model["states"] = ["A", "B", "C"]
+        model["initial_state"] = "A"
+        model["transitions"] = [
+            {"id": "t_ab", "source": "A", "target": "B"},
+            {"id": "t_bc", "source": "B", "target": "C"},
+        ]
+        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
+        model["exploration"] = {"max_depth": 1, "max_trajectories": 10}
+        at_one = run_model(model)["scenario_results"]["baseline"]
+        self.assertTrue(at_one["truncated"])
+        self.assertEqual(at_one["reachable_states"], ["A", "B"])
+        model["exploration"]["max_depth"] = 2
+        at_two = run_model(model)["scenario_results"]["baseline"]
+        self.assertFalse(at_two["truncated"])
+        self.assertEqual(at_two["reachable_states"], ["A", "B", "C"])
+        self.assertEqual(len(at_two["trajectories"]), 1)
+
     def test_exact_trajectory_cap_does_not_mark_complete_enumeration_truncated(self):
         model = copy.deepcopy(self.model)
         model["states"] = ["A", "B"]
