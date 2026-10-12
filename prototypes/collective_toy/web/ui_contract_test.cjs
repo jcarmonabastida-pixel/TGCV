@@ -83,6 +83,12 @@ const assert = require("node:assert/strict");
     const baselineOutput = await page.locator(".scenario").filter({ hasText: "Escenario: baseline" }).innerText();
     assert.match(baselineOutput, /Alcanzables: A, B, D/);
     assert.doesNotMatch(baselineOutput, /Alcanzables: A, B, C, D/);
+    const editedPackage = await page.evaluate(() => window.lastPackage);
+    const editedPathsToD = editedPackage.result.scenario_results.baseline.trajectories
+      .filter(path => path[path.length - 1].state === "D")
+      .map(path => path.map(step => step.state));
+    assert.deepEqual(editedPathsToD, [["A", "B", "D"]]);
+    assert.doesNotMatch(baselineOutput, /A → C → D/);
 
     // Exercise the visual relation editor in profile 2 and verify its operational effect.
     await page.locator("#profile-editor").selectOption("2");
