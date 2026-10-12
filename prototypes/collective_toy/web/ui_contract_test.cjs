@@ -80,6 +80,9 @@ const assert = require("node:assert/strict");
       mimeType: "application/json",
       buffer: Buffer.from(JSON.stringify(unknownEnginePackage))
     });
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "idle");
+    assert.match(await page.locator("#package-assessment").innerText(), /Archivo seleccionado/i);
+    assert.doesNotMatch(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i);
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
     await page.locator("#package-assessment[data-state=" + '"inspect-only/replay-unavailable"' + "]").waitFor();
     assert.match(await page.locator("#package-assessment").innerText(), /no se ha intentado reproducir/i);
