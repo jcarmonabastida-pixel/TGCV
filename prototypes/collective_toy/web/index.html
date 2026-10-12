@@ -103,16 +103,24 @@ async function assessImportedBrowserPackage(pkg){
  assert(canonical(replay)===canonical(pkg.result),"La reproducción independiente difiere del resultado exportado.");
  return {status:"replay-verified",message:"Integridad verificada y reproducción independiente coincidente.",integrity:true,replay:true};
 }
+function setPackageAssessment(state,message){
+ var status=$("package-assessment");status.dataset.state=state;status.textContent=message;
+}
+$("package-file").addEventListener("change",function(){
+ var file=$("package-file").files[0];
+ setPackageAssessment("idle",file?"Archivo seleccionado: "+file.name+". Pulsa «Validar paquete importado» para evaluar su contenido.":"No se ha seleccionado ningún archivo.");
+});
 async function handleImportedPackage(){
- var status=$("package-assessment"),file=$("package-file").files[0];
- status.dataset.state="rejected";
- if(!file){status.textContent="Selecciona primero un archivo JSON.";return}
- status.textContent="Leyendo y validando paquete…";
+ var file=$("package-file").files[0];
+ if(!file){setPackageAssessment("idle","Selecciona primero un archivo JSON.");return}
+ if(file.size>5*1024*1024){setPackageAssessment("rejected","rejected: el archivo supera el límite de 5 MiB.");return}
+ setPackageAssessment("validating","Leyendo y validando paquete…");
  try{
-  var text=await file.text(),pkg=JSON.parse(text),assessment=await assessImportedBrowserPackage(pkg);
-  status.dataset.state=assessment.replay?"replay-verified":"inspect-only/replay-unavailable";
-  status.textContent=assessment.status+": "+assessment.message;
- }catch(e){status.dataset.state="rejected";status.textContent="rejected: "+(e&&e.message?e.message:String(e))}
+  var text=await file.text(),pkg;
+  try{pkg=JSON.parse(text)}catch(_parseError){throw new Error("El archivo no contiene JSON válido.")}
+  var assessment=await assessImportedBrowserPackage(pkg);
+  setPackageAssessment(assessment.replay?"replay-verified":"inspect-only/replay-unavailable",assessment.status+": "+assessment.message);
+ }catch(e){setPackageAssessment("rejected","rejected: "+(e&&e.message?e.message:String(e)))}
 }
 $("assess-package").addEventListener("click",handleImportedPackage);
 
