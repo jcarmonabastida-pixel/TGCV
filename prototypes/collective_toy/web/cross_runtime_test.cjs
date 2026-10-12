@@ -1248,6 +1248,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     assert.ok(guardedScenario.effective_disabled_transitions.includes("t_bd"),
       "profile 2 should block the guarded transition when its required transition is disabled");
     assert.equal(guardedScenario.relation_effects[0].status, "BLOCKED");
+    const guardedPackageForImport = structuredClone(editorPackage);
     await page.locator("#which").selectOption("block_ac");
     assert.equal(
       await page.locator('#graph path[data-transition-id="t_bd"]').getAttribute("stroke-opacity"),
@@ -1383,6 +1384,36 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       delete nestedPackagePayload.package_sha256;
       malformedNestedPackage.package_sha256 = sha256Canonical(nestedPackagePayload);
       await assessInBrowser(malformedNestedPackage, "rejected", malformedNested.message);
+    }
+
+    for (const malformedRelationResult of [
+      { label: "relation-effect-status", mutate: pkg => {
+          const sid = Object.keys(pkg.result.scenario_results).find(id =>
+            Array.isArray(pkg.result.scenario_results[id].relation_effects) &&
+            pkg.result.scenario_results[id].relation_effects.length > 0);
+          assert.ok(sid, "guarded fixture must contain relation effects");
+          const effect = pkg.result.scenario_results[sid].relation_effects[0];
+          effect.status = effect.status === "BLOCKED" ? "APPLIED" : "BLOCKED";
+        }, message: "relation_effects no coincide con los efectos" },
+      { label: "effective-disabled-transitions", mutate: pkg => {
+          const sid = Object.keys(pkg.result.scenario_results).find(id =>
+            Array.isArray(pkg.result.scenario_results[id].effective_disabled_transitions) &&
+            pkg.result.scenario_results[id].effective_disabled_transitions.length > 0);
+          assert.ok(sid, "guarded fixture must contain effective disabled transitions");
+          pkg.result.scenario_results[sid].effective_disabled_transitions = [];
+        }, message: "effective_disabled_transitions no coincide" }
+    ]) {
+      const malformedRelationPackage = structuredClone(guardedPackageForImport);
+      malformedRelationPackage.result.engine_version = "collective-toy-engine-999";
+      malformedRelationResult.mutate(malformedRelationPackage);
+      const relationResultPayload = structuredClone(malformedRelationPackage.result);
+      delete relationResultPayload.input_sha256;
+      delete relationResultPayload.result_sha256;
+      malformedRelationPackage.result.result_sha256 = sha256Canonical(relationResultPayload);
+      const relationPackagePayload = structuredClone(malformedRelationPackage);
+      delete relationPackagePayload.package_sha256;
+      malformedRelationPackage.package_sha256 = sha256Canonical(relationPackagePayload);
+      await assessInBrowser(malformedRelationPackage, "rejected", malformedRelationResult.message);
     }
 
     for (const malformedReference of [
