@@ -65,6 +65,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(
             comparison,
             {
+                "intervention": {"disabled_transitions": ["t_ac"]},
                 "enabled_at_initial_added": [],
                 "enabled_at_initial_removed": ["t_ac"],
                 "reachable_states_added": [],
