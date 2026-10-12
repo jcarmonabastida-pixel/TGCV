@@ -447,3 +447,28 @@ Added Python and browser/cross-runtime regression checks that recursively revers
 ### Exported package completeness and truncation rejection — CI PASS
 
 The export verifier now rejects incomplete packages and verifies the package version, engine version where required by the package schema, package/input/result SHA-256 values, and deterministic replay of the exported input. Negative tests remove required top-level fields, the result hash, or a required input field and require rejection. The browser-specific export schema `collective-toy-browser-run-001` does not declare `engine_version`; the Python package schema `collective-toy-run-package-001` does. The browser test was aligned to this distinction after an initial false failure caused by treating both schemas as identical. All three CI checks passed on revision `b913bf4d9807bc8280c7ce287e93911c83333da7`: Python [38190918135](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38190918135), governance [38190918138](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38190918138), browser/cross-runtime [38190918141](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38190918141). Evidence covers the tested package formats and malformed cases; it is not a general guarantee for arbitrary future package schemas.
+
+
+### Package lifecycle compatibility matrix — implementation evidence (2026-10-12)
+
+The current prototype separates package integrity assessment from replay assessment. This matrix records the intended interpretation of the tested Python and browser package formats; it is an engineering contract for the synthetic MVP, not a canonical TGCV or archival standard.
+
+| Case | Integrity requirement | Replay requirement | Expected outcome |
+|---|---|---|---|
+| Known package schema; all package/input/result hashes valid; supported engine; independent replay matches | Pass | Pass | `replay-verified` |
+| Known package schema; all hashes valid; well-formed but unsupported engine version | Pass | Not attempted as compatible replay | `inspect-only/replay-unavailable` |
+| Known package schema; all hashes valid; supported engine version; independently replayed result differs | Pass | Fail | Reject; must not return `replay-verified` |
+| Package, input, or result hash invalid | Fail | Not attempted | Reject with validation error |
+| Package schema version unknown, even if outer hash is recomputed | Schema check fails | Not attempted | Reject with validation error |
+| Engine-version declaration missing, null, empty, or wrong type, even if package hash is recomputed | Declaration check fails | Not attempted | Reject with validation error |
+| Required fields missing or required objects malformed | Schema/shape check fails | Not attempted | Reject with validation error |
+| Integrity-only assessment of a valid known-schema package | Pass | Not attempted by definition | `integrity-verified`; must not imply replay |
+| Browser package assessed without an explicit versioned adapter to Python schema | Validate browser schema as browser schema | Replay only through the defined cross-runtime test path | Never coerce implicitly into the Python package schema |
+
+Schema-specific version locations are intentionally distinct: `collective-toy-run-package-001` declares `engine_version` at the package top level; `collective-toy-browser-run-001` declares it inside `result.engine_version`. Test helpers must read and mutate the correct field for each schema.
+
+The malformed-version negative tests recompute the package hash before asserting rejection. The replay-divergence negative tests modify a semantic result field and recompute result/package hashes before asserting that independent replay still rejects the package. Thus those tests do not pass merely because the outer hash is stale.
+
+For head `b3a4a6058326f20f802057678f6e29f80ed2aeeb`, the synthetic engine, browser/cross-runtime, and governance workflows all passed: [engine 38192436457](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38192436457), [cross-runtime 38192436373](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38192436373), [governance 38192436520](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38192436520).
+
+**Boundary:** this matrix covers the named cases exercised by current tests. It does not establish exhaustive validation, replay across historical engine implementations, or scientific validity. Cross-version replay policy remains a separate gate and must not infer compatibility from a matching schema or a valid hash alone.
