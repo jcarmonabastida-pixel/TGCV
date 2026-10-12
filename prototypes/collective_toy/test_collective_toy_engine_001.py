@@ -4,6 +4,7 @@ import unittest
 from collective_toy_engine_001 import (
     ModelValidationError,
     assess_exported_package,
+    assess_exported_package_integrity,
     demo_model,
     export_run,
     run_model,
@@ -350,6 +351,18 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertTrue(verify_exported_package_integrity(package))
         with self.assertRaisesRegex(ModelValidationError, "Unsupported exported package engine version"):
             verify_exported_package(package)
+
+    def test_integrity_only_assessment_does_not_claim_replay(self):
+        package = export_run(self.model)
+        self.assertEqual(
+            assess_exported_package_integrity(package),
+            {
+                "status": "integrity-verified",
+                "integrity_verified": True,
+                "replay_verified": False,
+                "reason": None,
+            },
+        )
 
     def test_package_assessment_reports_inspect_only_when_engine_is_unavailable(self):
         package = export_run(self.model)
