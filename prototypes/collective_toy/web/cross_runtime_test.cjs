@@ -720,6 +720,9 @@ function invalidFixtures() {
   const missingInitial = clone(base);
   delete missingInitial.initial_state;
   cases.push({ name: "missing-initial-state", model: missingInitial });
+  const missingRuleProfile = clone(base);
+  delete missingRuleProfile.rule_profile;
+  cases.push({ name: "missing-rule-profile", model: missingRuleProfile });
 
   const nonObjectTransition = clone(base);
   nonObjectTransition.transitions = [null];
