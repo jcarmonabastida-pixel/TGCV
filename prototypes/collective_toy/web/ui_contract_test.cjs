@@ -74,7 +74,17 @@ const assert = require("node:assert/strict");
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
     assert.match(await page.locator("#package-assessment").innerText(), /hash del paquete no coincide/i);
 
-    console.log("PASS: UI terminology, synthetic-only caveat, output labels, profile default, verified package replay, and tamper rejection.");
+    // Exercise the user-facing edit -> run path: disable A->C in baseline.
+    const editedModel = JSON.parse(await page.locator("#model").inputValue());
+    editedModel.scenarios.find(s => s.id === "baseline").disabled_transitions = ["t_ac"];
+    await page.locator("#model").fill(JSON.stringify(editedModel, null, 2));
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
+    const baselineOutput = await page.locator(".scenario").filter({ hasText: "Escenario: baseline" }).innerText();
+    assert.match(baselineOutput, /Alcanzables: A, B, D/);
+    assert.doesNotMatch(baselineOutput, /Alcanzables: A, B, C, D/);
+
+    console.log("PASS: UI terminology, synthetic-only caveat, output labels, profile default, edit/run behavior, real export/import, replay verification, and tamper rejection.");
   } finally {
     await browser.close();
   }
