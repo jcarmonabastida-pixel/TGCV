@@ -1550,5 +1550,100 @@ class CollectiveToyEngineTests(unittest.TestCase):
                     validate_model(candidate)
 
 
+    def test_schema_rejects_boolean_and_negative_exploration_bounds(self):
+        from collective_toy_engine_001 import validate_model
+
+        cases = [
+            ("depth-boolean", lambda m: m["exploration"].__setitem__("max_depth", True)),
+            ("depth-negative", lambda m: m["exploration"].__setitem__("max_depth", -1)),
+            ("trajectory-boolean", lambda m: m["exploration"].__setitem__("max_trajectories", False)),
+            ("trajectory-zero", lambda m: m["exploration"].__setitem__("max_trajectories", 0)),
+        ]
+        for name, mutate in cases:
+            with self.subTest(name=name):
+                candidate = copy.deepcopy(self.model)
+                mutate(candidate)
+                with self.assertRaises(ModelValidationError):
+                    validate_model(candidate)
+
+    def test_schema_rejects_unknown_nested_fields(self):
+        from collective_toy_engine_001 import validate_model
+
+        cases = []
+        candidate = copy.deepcopy(self.model)
+        candidate["rule_profile"]["unexpected"] = "x"
+        cases.append(("rule-profile", candidate))
+
+        candidate = copy.deepcopy(self.model)
+        candidate["transitions"][0]["unexpected"] = "x"
+        cases.append(("transition", candidate))
+
+        candidate = copy.deepcopy(self.model)
+        candidate["scenarios"][0]["unexpected"] = "x"
+        cases.append(("scenario", candidate))
+
+        candidate = copy.deepcopy(self.model)
+        candidate["exploration"]["unexpected"] = 1
+        cases.append(("exploration", candidate))
+
+        candidate = copy.deepcopy(self.model)
+        candidate["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        candidate["relations"] = [{
+            "id": "r1", "type": "requires_transition_enabled",
+            "transition_id": "t_bd", "requires_transition_id": "t_ab",
+            "unexpected": True,
+        }]
+        cases.append(("relation", candidate))
+
+        for name, candidate in cases:
+            with self.subTest(name=name):
+                with self.assertRaises(ModelValidationError):
+                    validate_model(candidate)
+
+    def test_schema_rejects_duplicate_disabled_transition_ids(self):
+        from collective_toy_engine_001 import validate_model
+
+        candidate = copy.deepcopy(self.model)
+        candidate["scenarios"][1]["disabled_transitions"] = ["t_ac", "t_ac"]
+        with self.assertRaises(ModelValidationError):
+            validate_model(candidate)
+
+    def test_schema_rejects_missing_baseline_and_empty_state_ids(self):
+        from collective_toy_engine_001 import validate_model
+
+        no_baseline = copy.deepcopy(self.model)
+        no_baseline["scenarios"] = [{"id": "other", "disabled_transitions": []}]
+        with self.assertRaises(ModelValidationError):
+            validate_model(no_baseline)
+
+        empty_state = copy.deepcopy(self.model)
+        empty_state["states"][0] = ""
+        with self.assertRaises(ModelValidationError):
+            validate_model(empty_state)
+
+    def test_canonical_json_rejects_unsafe_and_non_finite_numbers(self):
+        from collective_toy_engine_001 import canonical_json, MAX_SAFE_JSON_INTEGER
+
+        for value in (
+            MAX_SAFE_JSON_INTEGER + 1,
+            -(MAX_SAFE_JSON_INTEGER + 1),
+            float("nan"),
+            float("inf"),
+            float("-inf"),
+            1.5,
+        ):
+            with self.subTest(value=repr(value)):
+                with self.assertRaises(ModelValidationError):
+                    canonical_json({"value": value})
+
+    def test_canonical_json_rejects_unpaired_surrogates_and_non_json_values(self):
+        from collective_toy_engine_001 import canonical_json
+
+        for value in ("\\ud800", {"key": object()}, {1: "non-string key"}):
+            with self.subTest(value=repr(value)):
+                with self.assertRaises(ModelValidationError):
+                    canonical_json(value)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
