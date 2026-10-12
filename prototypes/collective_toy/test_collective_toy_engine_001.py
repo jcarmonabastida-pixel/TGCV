@@ -1741,5 +1741,17 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertTrue(baseline["truncated"])
 
 
+    def test_state_ids_must_be_strings(self):
+        # The non-string branch is distinct from the already-covered empty-string case.
+        for invalid_state_id in (None, 7, True, {}):
+            with self.subTest(state_id=repr(invalid_state_id)):
+                model = copy.deepcopy(self.model)
+                model["states"][0] = invalid_state_id
+                with self.assertRaisesRegex(
+                    ModelValidationError, "each state ID must be a non-empty string"
+                ):
+                    run_model(model)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
