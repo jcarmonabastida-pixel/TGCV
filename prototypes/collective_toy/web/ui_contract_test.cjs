@@ -62,6 +62,29 @@ const assert = require("node:assert/strict");
     await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i);
 
+    // A structurally valid, self-consistent package from an unknown engine is inspect-only.
+    const unknownEnginePackage = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.engine_version = "collective-toy-engine-future-999";
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody);
+      const packageBody = structuredClone(candidate);
+      delete packageBody.package_sha256;
+      candidate.package_sha256 = await window.hash(packageBody);
+      return candidate;
+    }, packageData);
+    await page.locator("#package-file").setInputFiles({
+      name: "unknown-engine-run.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(unknownEnginePackage))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"inspect-only/replay-unavailable"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /no se ha intentado reproducir/i);
+    assert.doesNotMatch(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i);
+
     // A changed result with stale package/result hashes must fail closed.
     const tamperedPackage = structuredClone(packageData);
     tamperedPackage.result.scientific_interpretation += " tampered";
