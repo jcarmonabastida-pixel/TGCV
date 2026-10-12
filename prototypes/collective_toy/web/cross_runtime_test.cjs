@@ -1333,6 +1333,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
 
     const unsupportedProfilePackage = structuredClone(validImportedPackage);
     unsupportedProfilePackage.input.rule_profile = { type: "relation_guarded_graph", version: "999" };
+    unsupportedProfilePackage.result.rule_profile = structuredClone(unsupportedProfilePackage.input.rule_profile);
     unsupportedProfilePackage.result.input_sha256 = sha256Canonical(unsupportedProfilePackage.input);
     const unsupportedProfileResultPayload = structuredClone(unsupportedProfilePackage.result);
     delete unsupportedProfileResultPayload.input_sha256;
