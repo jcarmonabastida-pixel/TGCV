@@ -628,6 +628,8 @@ function invalidFixtures() {
   cases.push({ name: "unknown-disabled-transition", model: m });
   m = clone(base); m.model_id = "missing-baseline"; m.scenarios = [{ id: "alt", disabled_transitions: [] }];
   cases.push({ name: "missing-baseline", model: m });
+  m = clone(base); m.model_id = "scenarios-empty-list"; m.scenarios = [];
+  cases.push({ name: "scenarios-empty-list", model: m });
   m = clone(base); m.model_id = "negative-depth"; m.exploration.max_depth = -1;
   cases.push({ name: "negative-depth", model: m });
 
