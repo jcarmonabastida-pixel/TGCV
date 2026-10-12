@@ -1215,6 +1215,30 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
         assert.ok(pathStates(intervention).has(JSON.stringify(["A", "C", "D"])));
         assert.ok(!pathStates(intervention).has(JSON.stringify(["A", "B", "D"])));
       }
+      if (fixture.monotonicInterventions) {
+        const model = fixture.model;
+        const outcomes = browserPackage.result.scenario_results;
+        const combined = outcomes.disable_both;
+        assert.ok(combined, "combined intervention scenario must exist");
+        for (const singleId of ["disable_ab", "disable_ac"]) {
+          const single = outcomes[singleId];
+          assert.ok(single, "single intervention scenario must exist: " + singleId);
+          assert.ok(combined.reachable_states.every(state => single.reachable_states.includes(state)),
+            "combined interventions expanded reachable states relative to " + singleId);
+          const disabled = new Set(model.scenarios.find(scenario => scenario.id === singleId).disabled_transitions);
+          const enabledTransitions = new Set((model.transitions || [])
+            .filter(transition => !disabled.has(transition.id))
+            .filter(transition => (model.relations || []).every(relation =>
+              relation.transition_id === transition.id || !disabled.has(relation.requires_transition_id)))
+            .map(transition => transition.id));
+          for (const path of combined.trajectories) {
+            const pathTransitions = new Set(path.filter(step => Object.prototype.hasOwnProperty.call(step, "transition"))
+              .map(step => step.transition));
+            assert.ok([...pathTransitions].every(id => enabledTransitions.has(id)),
+              "combined trajectory used a transition unavailable under " + singleId);
+          }
+        }
+      }
       if (fixture.relationAdditionMonotonicityOf) {
         const reference = semanticResults.get(fixture.relationAdditionMonotonicityOf);
         for (const scenarioId of Object.keys(reference.scenario_results)) {
