@@ -1031,22 +1031,20 @@ function assertTruncatedPackagesRejected(engineDir, exportedPackage, label) {
     label + ": incomplete input accepted without transitions");
 }
 
-function verifyExportedPackage(engineDir, exportedPackage, label) {
+function verifyExportedPackageIntegrity(exportedPackage, label) {
   assert.ok(exportedPackage && typeof exportedPackage === "object" && !Array.isArray(exportedPackage),
     label + ": exported package must be an object");
   const packageVersion = exportedPackage.package_version;
+  assert.ok(
+    ["collective-toy-run-package-001", "collective-toy-browser-run-001"].includes(packageVersion),
+    label + ": unsupported package version"
+  );
   const requiredFields = ["package_version", "input", "result", "package_sha256"];
-  if (packageVersion === "collective-toy-run-package-001") {
-    requiredFields.push("engine_version");
-  }
+  if (packageVersion === "collective-toy-run-package-001") requiredFields.push("engine_version");
   for (const field of requiredFields) {
     if (!Object.prototype.hasOwnProperty.call(exportedPackage, field)) {
       throw new Error(label + ": exported package is missing required field " + field);
     }
-  }
-  if (packageVersion === "collective-toy-run-package-001") {
-    assert.equal(exportedPackage.engine_version, "collective-toy-engine-001",
-      label + ": unsupported engine version");
   }
   assert.ok(exportedPackage.input && typeof exportedPackage.input === "object" && !Array.isArray(exportedPackage.input),
     label + ": exported input must be an object");
@@ -1056,15 +1054,14 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     assert.ok(Object.prototype.hasOwnProperty.call(exportedPackage.result, field),
       label + ": exported result is missing required field " + field);
   }
-  assert.ok(
-    ["collective-toy-run-package-001", "collective-toy-browser-run-001"].includes(exportedPackage.package_version),
-    label + ": unsupported package version"
-  );
+  const engineVersion = packageVersion === "collective-toy-run-package-001"
+    ? exportedPackage.engine_version : exportedPackage.result.engine_version;
+  assert.ok(typeof engineVersion === "string" && engineVersion.length > 0,
+    label + ": engine version must be declared");
   const packagePayload = structuredClone(exportedPackage);
   delete packagePayload.package_sha256;
   assert.equal(sha256Canonical(packagePayload), exportedPackage.package_sha256,
     label + ": exported package SHA-256 does not verify");
-
   assert.equal(sha256Canonical(exportedPackage.input), exportedPackage.result.input_sha256,
     label + ": input SHA-256 does not verify");
   const resultPayload = structuredClone(exportedPackage.result);
@@ -1072,16 +1069,40 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
   delete resultPayload.result_sha256;
   assert.equal(sha256Canonical(resultPayload), exportedPackage.result.result_sha256,
     label + ": result SHA-256 does not verify");
+  return { packageVersion, engineVersion };
+}
 
+function assessExportedPackage(engineDir, exportedPackage, label) {
+  const integrity = verifyExportedPackageIntegrity(exportedPackage, label);
+  if (integrity.engineVersion !== "collective-toy-engine-001") {
+    return {
+      status: "inspect-only/replay-unavailable",
+      integrity_verified: true,
+      replay_verified: false,
+      reason: "Unsupported exported package engine version"
+    };
+  }
   const replayed = runPython(engineDir, exportedPackage.input);
   assert.deepEqual(replayed, exportedPackage.result,
     label + ": independently replayed Python result differs from exported result");
+  return {
+    status: "replay-verified",
+    integrity_verified: true,
+    replay_verified: true,
+    reason: null
+  };
+}
+
+function verifyExportedPackage(engineDir, exportedPackage, label) {
+  const assessment = assessExportedPackage(engineDir, exportedPackage, label);
+  if (assessment.status !== "replay-verified") {
+    throw new Error(label + ": " + assessment.reason);
+  }
   assertExportedPackageHashFailures(exportedPackage, label);
   assertTruncatedPackagesRejected(engineDir, exportedPackage, label);
   assertUnsupportedExportVersionsRejected(engineDir, exportedPackage, label);
   return true;
 }
-
 (async () => {
   const root = path.resolve(__dirname, "../../..");
   const htmlPath = path.join(root, "prototypes/collective_toy/web/index.html");
