@@ -1439,7 +1439,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
             "transition_id": "t_bd",
             "requires_transition_id": "t_ab",
         }]
-        with self.assertRaises(ModelValidationError):
+        with self.assertRaisesRegex(ModelValidationError, "unsupported relation type"):
             run_model(model)
 
     def test_relation_guarded_profile_rejects_duplicate_relation_ids(self):
