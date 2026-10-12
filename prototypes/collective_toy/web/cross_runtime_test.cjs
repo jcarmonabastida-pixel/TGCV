@@ -65,6 +65,11 @@ function fixtures() {
   minimumValid.exploration = { max_depth: 0, max_trajectories: 1 };
   cases.push({ name: "minimum-valid-single-state", model: minimumValid });
 
+  const scenarioDisabledListDefault = clone(base);
+  scenarioDisabledListDefault.model_id = "scenario-disabled-list-default";
+  scenarioDisabledListDefault.scenarios = [{ id: "baseline" }];
+  cases.push({ name: "scenario-disabled-list-default", model: scenarioDisabledListDefault });
+
   const capped = clone(base);
   capped.model_id = "trajectory-cap";
   capped.exploration.max_trajectories = 1;
