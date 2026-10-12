@@ -91,7 +91,7 @@ const assert = require("node:assert/strict");
     await page.getByRole("button", { name: "Añadir relación" }).click();
     const relationModel = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(relationModel.relations, [{
-      id: "rel_1",
+      id: "r_guard_1",
       type: "requires_transition_enabled",
       transition_id: "t_cd",
       requires_transition_id: "t_ac"
