@@ -1688,7 +1688,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         baseline = result["scenario_results"]["baseline"]
         self.assertEqual(baseline["reachable_states"], ["A"])
         self.assertEqual(baseline["trajectories"], [[{"state": "A"}]])
-        self.assertEqual(baseline["effective_disabled_transitions"], [])
+        self.assertEqual(baseline["disabled_transitions"], [])
         self.assertFalse(baseline["truncated"])
 
     def test_zero_depth_with_enabled_outgoing_transition_is_explicitly_truncated(self):
