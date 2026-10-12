@@ -215,11 +215,24 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertFalse(neither_cap["truncated"])
         self.assertEqual(len(neither_cap["trajectories"]), 2)
 
-    def test_capture_current_baseline_package_for_review(self):
-        package = export_run(self.model)
-        print("CURRENT_BASELINE_FIXTURE_JSON_BEGIN")
-        print(canonical_json(package))
-        print("CURRENT_BASELINE_FIXTURE_JSON_END")
+    def test_current_baseline_package_fixture_is_canonical_and_replay_verified(self):
+        from pathlib import Path
+        import hashlib
+        import json
+
+        fixture_path = Path(__file__).with_name("fixtures") / "current_baseline_package_001.json"
+        raw = fixture_path.read_bytes()
+        package = json.loads(raw.decode("utf-8"))
+        self.assertEqual(raw.decode("utf-8"), canonical_json(package))
+        self.assertEqual(package["package_version"], "collective-toy-run-package-001")
+        self.assertEqual(package["engine_version"], "collective-toy-engine-001")
+        self.assertEqual(package["input_sha256"], package["result"]["input_sha256"] if "input_sha256" in package else package["result"]["input_sha256"])
+        self.assertEqual(package["package_sha256"], "4f56aa1618d9a9aadbb68ee5f456950dfaf4898c94bbf7672be3d9d0bba9c9b8")
+        self.assertEqual(package["result"]["result_sha256"], "bb937763a3e8bd3e5aa9ae4b461f10ae2d6b655f17a9f735f5ae8f930ad93a84")
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), "TO_BE_LOCKED")
+        self.assertEqual(assess_exported_package(package)["status"], "replay-verified")
+        self.assertEqual(package["result"]["scenario_results"]["baseline"]["reachable_states"], ["A", "B", "C", "D"])
+        self.assertEqual(package["result"]["scenario_results"]["block_ac"]["reachable_states"], ["A", "B", "D"])
 
     def test_deterministic_result_hash(self):
         first = run_model(self.model)
