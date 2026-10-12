@@ -1330,6 +1330,19 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       await assessInBrowser(inconsistentPackage, "rejected", inconsistent.message);
     }
 
+    const unsupportedEngineInvalidInput = structuredClone(validImportedPackage);
+    unsupportedEngineInvalidInput.result.engine_version = "collective-toy-engine-999";
+    delete unsupportedEngineInvalidInput.input.initial_state;
+    unsupportedEngineInvalidInput.result.input_sha256 = sha256Canonical(unsupportedEngineInvalidInput.input);
+    const unsupportedInvalidResultBody = structuredClone(unsupportedEngineInvalidInput.result);
+    delete unsupportedInvalidResultBody.input_sha256;
+    delete unsupportedInvalidResultBody.result_sha256;
+    unsupportedEngineInvalidInput.result.result_sha256 = sha256Canonical(unsupportedInvalidResultBody);
+    const unsupportedInvalidPackageBody = structuredClone(unsupportedEngineInvalidInput);
+    delete unsupportedInvalidPackageBody.package_sha256;
+    unsupportedEngineInvalidInput.package_sha256 = sha256Canonical(unsupportedInvalidPackageBody);
+    await assessInBrowser(unsupportedEngineInvalidInput, "rejected", "initial_state debe ser un ID de estado");
+
     const malformedSchemaPackage = structuredClone(validImportedPackage);
     malformedSchemaPackage.package_version = "collective-toy-browser-run-999";
     const malformedSchemaPayload = structuredClone(malformedSchemaPackage);
