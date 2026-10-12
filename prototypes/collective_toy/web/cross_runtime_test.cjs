@@ -1008,6 +1008,22 @@ function assertTruncatedPackagesRejected(engineDir, exportedPackage, label) {
 }
 
 function verifyExportedPackage(engineDir, exportedPackage, label) {
+  assert.ok(exportedPackage && typeof exportedPackage === "object" && !Array.isArray(exportedPackage),
+    label + ": exported package must be an object");
+  for (const field of ["package_version", "engine_version", "input", "result", "package_sha256"]) {
+    assert.ok(Object.prototype.hasOwnProperty.call(exportedPackage, field),
+      label + ": exported package is missing required field " + field);
+  }
+  assert.equal(exportedPackage.engine_version, "collective-toy-engine-001",
+    label + ": unsupported engine version");
+  assert.ok(exportedPackage.input && typeof exportedPackage.input === "object" && !Array.isArray(exportedPackage.input),
+    label + ": exported input must be an object");
+  assert.ok(exportedPackage.result && typeof exportedPackage.result === "object" && !Array.isArray(exportedPackage.result),
+    label + ": exported result must be an object");
+  for (const field of ["input_sha256", "result_sha256"]) {
+    assert.ok(Object.prototype.hasOwnProperty.call(exportedPackage.result, field),
+      label + ": exported result is missing required field " + field);
+  }
   assert.ok(
     ["collective-toy-run-package-001", "collective-toy-browser-run-001"].includes(exportedPackage.package_version),
     label + ": unsupported package version"
