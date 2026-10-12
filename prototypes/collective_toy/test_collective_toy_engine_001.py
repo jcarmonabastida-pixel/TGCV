@@ -1515,6 +1515,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
             {"id": "t" + str(i), "source": "S0", "target": "S0"}
             for i in range(2000)
         ]
+        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
         model["exploration"] = {"max_depth": 100, "max_trajectories": 10000}
         from collective_toy_engine_001 import validate_model
         validate_model(model)
