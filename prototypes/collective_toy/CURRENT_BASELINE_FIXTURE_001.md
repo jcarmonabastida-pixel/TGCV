@@ -1,6 +1,7 @@
 # Collective Toy — current baseline fixture 001
 
-**Fixture class:** Current baseline (not historical).  
+**Record status:** SUPERSEDED for frozen package fingerprints by `CURRENT_BASELINE_FIXTURE_002.md`.  
+**Fixture class:** Original semantic baseline register (not historical).  
 **Purpose:** Preserve a named, reviewable baseline for the current synthetic diamond model before any future compatibility adapter is proposed.  
 **Captured from source commit:** `2a3dc6f1e68d5221199590bb2d64ce8c630d70d5`.  
 **Source of expected invariants:** `prototypes/collective_toy/test_collective_toy_engine_001.py`, test `test_diamond_fixture_matches_expected_reachability_and_paths`.  
@@ -8,9 +9,9 @@
 
 ## 1. Provenance and limits
 
-This is a source-pinned current baseline record, not a preserved export from a prior release. It must not be described as a historical fixture or evidence of cross-version compatibility.
+This is the earlier source-pinned semantic baseline register, not a preserved export from a prior release. It must not be described as a historical fixture or evidence of cross-version compatibility. Its statements that exact export bytes and package/result fingerprints were not yet recorded describe the state of this record at that revision only.
 
-The source commit and expected invariants below are recorded explicitly. This document does not claim a package SHA-256 or result SHA-256: the exact serialized export bytes and their hashes have not been captured as immutable fixture artifacts in this record. Do not derive or invent such hashes from source identifiers.
+The later `CURRENT_BASELINE_FIXTURE_002.md` records the separately preserved package bytes and frozen file/package/input/result fingerprints. Use fixture 002 as the authoritative record for those artifacts and fingerprints; retain this file for provenance and semantic-baseline history. Do not infer that fixture 001 and fixture 002 are separate incompatible models merely because their provenance commits differ.
 
 ## 2. Expected semantic invariants
 
@@ -26,7 +27,7 @@ For the current `demo_model()` diamond fixture:
 
 These are software-level invariants of the synthetic fixture, not measurements of an empirical system and not evidence for TGCV's scientific hypotheses.
 
-## 3. Admission status
+## 3. Admission status at the time of fixture 001
 
 | Evidence item | Status |
 |---|---|
@@ -37,8 +38,8 @@ These are software-level invariants of the synthetic fixture, not measurements o
 | Result SHA-256 independently frozen as golden value | Not yet recorded |
 | Historical engine/schema compatibility | Untested |
 
-## 4. Next capture step
+## 4. Subsequent capture and current authority
 
-A future fixture-capture change should export the baseline package using the supported deterministic path, preserve the exact bytes as a versioned fixture, and record SHA-256 values calculated from those exact bytes in CI. The expected output fingerprints should be reviewed and frozen separately from the code that generates them. Until that capture is reviewed, this file remains a semantic baseline register only.
+The capture step described in the original record was subsequently completed and documented in `CURRENT_BASELINE_FIXTURE_002.md`, including the exact fixture-file SHA-256 and the canonical package, input, and result fingerprints. The current CI suite checks those frozen values and independently replays the package. Do not overwrite those values silently; any future change requires a new versioned fixture and reviewed expected fingerprints.
 
-No compatibility adapter, promotion to `main`, empirical-data execution, or scientific authorization is implied.
+This record remains useful for the original semantic invariants and provenance, but it is not the authority for frozen package fingerprints. No compatibility adapter, empirical-data execution, or scientific authorization is implied.
