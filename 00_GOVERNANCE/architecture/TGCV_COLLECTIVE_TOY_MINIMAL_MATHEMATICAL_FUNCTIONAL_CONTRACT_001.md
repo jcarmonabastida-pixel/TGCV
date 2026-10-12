@@ -472,3 +472,38 @@ The malformed-version negative tests recompute the package hash before asserting
 For head `b3a4a6058326f20f802057678f6e29f80ed2aeeb`, the synthetic engine, browser/cross-runtime, and governance workflows all passed: [engine 38192436457](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38192436457), [cross-runtime 38192436373](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38192436373), [governance 38192436520](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38192436520).
 
 **Boundary:** this matrix covers the named cases exercised by current tests. It does not establish exhaustive validation, replay across historical engine implementations, or scientific validity. Cross-version replay policy remains a separate gate and must not infer compatibility from a matching schema or a valid hash alone.
+
+
+## Cross-version replay policy — proposal (2026-10-12)
+
+This policy is deliberately conservative and applies only to the synthetic Collective Toy package lifecycle. A schema version and a cryptographic hash are necessary integrity metadata; neither establishes that two engine versions have equivalent semantics.
+
+### Replay classes
+
+| Class | Admission conditions | Permitted outcome |
+|---|---|---|
+| Native replay | Package schema is recognized; required fields and all hashes validate; declared engine version exactly matches the available engine version; independent replay matches the exported result | `replay-verified` |
+| Inspect-only | Package schema is recognized and integrity checks pass, but its declared engine is unsupported/unavailable or has no approved compatibility entry | `inspect-only/replay-unavailable`; do not execute it under a different engine and call that historical replay |
+| Approved compatibility replay | A versioned compatibility entry explicitly names source engine, target runner/adapter, package schema, compatibility scope, and immutable golden fixtures; all fixture checks pass; the replay result matches under the stated contract | A distinct status such as `compatibility-replay-verified`, never silently collapsed into `replay-verified` |
+| Reject | Unknown schema; missing/malformed required version declaration; malformed required fields; failed hash; failed fixture; or replay mismatch | Validation/replay error; no verified status |
+
+### Compatibility-entry requirements
+
+A future compatibility entry must be reviewed and version-controlled. At minimum it records:
+
+1. Exact source engine version and target engine/adapter version (no wildcard ranges).
+2. Supported source package schema and any explicit migration/normalization steps.
+3. Declared semantic scope and known exclusions; it must not claim broader equivalence than the fixtures exercise.
+4. Immutable golden inputs and expected outputs, with hashes and provenance.
+5. Test evidence for successful fixtures, malformed packages, and deliberate result divergence.
+6. The status and rationale of the review, plus a revocation path if a later defect is found.
+
+A schema migration is not itself engine-semantic compatibility. If the input package must be transformed, the transformation must be explicit and versioned, and both the original package and normalized replay input must remain auditable. Original hashes must be verified before transformation; derived artifacts receive their own hashes and provenance.
+
+### Current registry state
+
+No historical engine compatibility entry is approved by this proposal. Therefore, the implementation's current conservative behavior is to permit native replay only for the exact supported engine version, classify an intact known-schema package with another engine version as inspect-only, and reject a native replay whose result diverges. This is a policy boundary, not evidence that historical engines are impossible to support.
+
+### Verification boundary
+
+The current CI suite verifies selected synthetic fixtures and negative cases. Until an explicit compatibility entry and its tests exist, no package may be described as historically replayed or cross-version equivalent. This proposal does not change TGCV Core, does not authorize scientific execution, and does not authorize merging the draft PR.
