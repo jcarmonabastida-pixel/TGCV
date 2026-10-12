@@ -28,7 +28,7 @@ A relation is an explicit guard that can enable or disable a named transition fo
 }
 ```
 
-Interpretation: transition `t_bd` is enabled only when the current state is `B`. Since the transition itself already has a source, this example is redundant and is **not a useful first rule**. To avoid pretending a tautology adds semantics, implementation is blocked until the relation type is non-redundant and unambiguous.
+Interpretation: transition `t_bd` is enabled only when the current state is `B`. Since the transition itself already has a source, this example is redundant and is **not part of the implemented profile-2 semantics**. The implemented rule is the scenario-level availability guard defined in the next example; it is evaluated against the scenario's explicit disabled-transition set, not the current state or trajectory history.
 
 The actual candidate for a minimal first rule is a scenario-level transition guard:
 
