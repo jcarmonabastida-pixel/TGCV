@@ -1805,6 +1805,56 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 ):
                     run_model(model)
 
+    def test_nested_object_and_scenario_validation_report_specific_errors(self):
+        # Fill remaining explicit nested-container branches identified in the audit.
+        cases = []
+
+        model = copy.deepcopy(self.model)
+        model["transitions"][0] = None
+        cases.append((
+            "transition-not-object",
+            model,
+            "each transition must be an object",
+        ))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [None]
+        cases.append((
+            "relation-not-object",
+            model,
+            "each relation must be an object",
+        ))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0] = None
+        cases.append((
+            "scenario-not-object",
+            model,
+            "each scenario must be an object",
+        ))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0]["disabled_transitions"] = None
+        cases.append((
+            "disabled-transitions-not-list",
+            model,
+            "disabled_transitions for baseline must be a list",
+        ))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][1]["id"] = "baseline"
+        cases.append((
+            "duplicate-scenario-id",
+            model,
+            "duplicate scenario ID: baseline",
+        ))
+
+        for name, candidate, expected_message in cases:
+            with self.subTest(case=name):
+                with self.assertRaisesRegex(ModelValidationError, expected_message):
+                    run_model(candidate)
+
     def test_relation_and_baseline_validation_report_specific_expected_errors(self):
         # Pin distinct semantic validation branches with exact expected outcomes.
         cases = []
