@@ -391,6 +391,17 @@ def verify_exported_package_integrity(package: dict[str, Any]) -> bool:
     return True
 
 
+def assess_exported_package_integrity(package: dict[str, Any]) -> dict[str, Any]:
+    """Return the integrity-only lifecycle state for a known, hash-valid package."""
+    verify_exported_package_integrity(package)
+    return {
+        "status": "integrity-verified",
+        "integrity_verified": True,
+        "replay_verified": False,
+        "reason": None,
+    }
+
+
 def assess_exported_package(package: dict[str, Any]) -> dict[str, Any]:
     """Return an explicit lifecycle status without conflating integrity and replay.
 
@@ -398,11 +409,11 @@ def assess_exported_package(package: dict[str, Any]) -> dict[str, Any]:
     A known, intact package with an unavailable engine is inspect-only: its data
     may be inspected, but this function does not claim replay compatibility.
     """
-    verify_exported_package_integrity(package)
+    integrity = assess_exported_package_integrity(package)
     if package["engine_version"] != ENGINE_VERSION:
         return {
             "status": "inspect-only/replay-unavailable",
-            "integrity_verified": True,
+            "integrity_verified": integrity["integrity_verified"],
             "replay_verified": False,
             "reason": "Unsupported exported package engine version",
         }
