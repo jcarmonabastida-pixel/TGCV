@@ -1307,8 +1307,10 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     const inspectPackagePayload = structuredClone(inspectOnlyPackage);
     delete inspectPackagePayload.package_sha256;
     inspectOnlyPackage.package_sha256 = sha256Canonical(inspectPackagePayload);
-    assert.match(await assessInBrowser(inspectOnlyPackage, "inspect-only/replay-unavailable", "inspect-only/replay-unavailable"),
-      /Integridad verificada/i);
+    const inspectOnlyMessage = await assessInBrowser(inspectOnlyPackage, "inspect-only/replay-unavailable", "inspect-only/replay-unavailable");
+    assert.match(inspectOnlyMessage, /Consistencia interna de hashes verificada/i);
+    assert.match(inspectOnlyMessage, /no autentica el origen/i);
+    assert.match(inspectOnlyMessage, /no se ha intentado reproducir/i);
 
     for (const inconsistent of [
       { label: "schema", mutate: pkg => { pkg.result.schema_version = "collective-toy-input-999"; }, message: "La versión de esquema del resultado no coincide con la entrada" },
