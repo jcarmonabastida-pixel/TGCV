@@ -1670,7 +1670,9 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     const semanticResults = new Map();
     for (const fixture of validFixtures) {
       const fixtureJson = JSON.stringify(fixture.model, null, 2);
-      if ((fixture.model.transitions || []).length > 2000 || (fixture.model.states || []).length > 500) {
+      const modelTransitions = fixture.model && Array.isArray(fixture.model.transitions) ? fixture.model.transitions : [];
+      const modelStates = fixture.model && Array.isArray(fixture.model.states) ? fixture.model.states : [];
+      if (modelTransitions.length > 2000 || modelStates.length > 500) {
         // Set oversized fixtures without firing the editor's per-keystroke input handler.
         // Then exercise the same visible Run action and production validation path.
         await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
