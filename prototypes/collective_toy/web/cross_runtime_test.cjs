@@ -1331,6 +1331,22 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       "Esquema de paquete desconocido o no compatible"
     );
 
+    const unsupportedProfilePackage = structuredClone(validImportedPackage);
+    unsupportedProfilePackage.input.rule_profile = { type: "relation_guarded_graph", version: "999" };
+    unsupportedProfilePackage.result.input_sha256 = sha256Canonical(unsupportedProfilePackage.input);
+    const unsupportedProfileResultPayload = structuredClone(unsupportedProfilePackage.result);
+    delete unsupportedProfileResultPayload.input_sha256;
+    delete unsupportedProfileResultPayload.result_sha256;
+    unsupportedProfilePackage.result.result_sha256 = sha256Canonical(unsupportedProfileResultPayload);
+    const unsupportedProfilePackagePayload = structuredClone(unsupportedProfilePackage);
+    delete unsupportedProfilePackagePayload.package_sha256;
+    unsupportedProfilePackage.package_sha256 = sha256Canonical(unsupportedProfilePackagePayload);
+    await assessInBrowser(
+      unsupportedProfilePackage,
+      "rejected",
+      "unsupported rule_profile"
+    );
+
     for (const inconsistent of [
       { label: "schema", mutate: pkg => { pkg.result.schema_version = "collective-toy-input-999"; }, message: "La versión de esquema del resultado no coincide con la entrada" },
       { label: "model", mutate: pkg => { pkg.result.model_id = "different-model"; }, message: "El model_id del resultado no coincide con la entrada" },
