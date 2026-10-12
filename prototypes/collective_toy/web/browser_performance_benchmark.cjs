@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 "use strict";
 
-// Engineering-only browser benchmark. Measures synchronous JS engine time and
-// user-visible execution-button latency in Chromium. No scientific claims.
+// Engineering-only browser benchmark. Phase timings come from the page's
+// performance.now() instrumentation; Playwright wall time is kept separate.
 const { chromium } = require("playwright");
-const fs = require("node:fs");
 const path = require("node:path");
 
 function makeModel(size, cap = 10, kind = "cyclic_branching") {
@@ -36,12 +35,20 @@ function makeModel(size, cap = 10, kind = "cyclic_branching") {
 
 const median = values => {
   const sorted = [...values].sort((a, b) => a - b);
-  return sorted[Math.floor(sorted.length / 2)];
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
 };
-const p95 = values => {
+const percentile = (values, p) => {
   const sorted = [...values].sort((a, b) => a - b);
-  return sorted[Math.max(0, Math.ceil(sorted.length * 0.95) - 1)];
+  return sorted[Math.max(0, Math.ceil(sorted.length * p) - 1)];
 };
+const summarize = values => ({
+  median_ms: Number(median(values).toFixed(3)),
+  p95_ms: Number(percentile(values, 0.95).toFixed(3)),
+  min_ms: Number(Math.min(...values).toFixed(3)),
+  max_ms: Number(Math.max(...values).toFixed(3)),
+  samples_ms: values.map(v => Number(v.toFixed(3)))
+});
 
 (async () => {
   const browser = await chromium.launch({ headless: true });
@@ -50,17 +57,21 @@ const p95 = values => {
     const page = await browser.newPage();
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
-    const fileUrl = "file://" + path.resolve(__dirname, "index.html");
-    await page.goto(fileUrl);
+    await page.goto("file://" + path.resolve(__dirname, "index.html"));
+    const phaseNames = ["parse_json_ms", "validate_and_engine_ms", "input_hash_ms", "result_hash_ms", "package_hash_ms", "render_dom_ms", "total_until_status_ms"];
     for (const kind of ["chain", "branching_dag", "cyclic_branching"]) {
       for (const size of [100, 250, 500]) {
         const model = makeModel(size, 10, kind);
         const json = JSON.stringify(model);
+        const phaseSamples = Object.fromEntries(phaseNames.map(name => [name, []]));
         const engineSamples = [];
         const interactionSamples = [];
-        // Warm-up both the pure engine call and the full UI path.
-        await page.evaluate(m => window.execute(m), model);
-        for (let i = 0; i < 5; i++) {
+        const heartbeatGapSamples = [];
+        await page.evaluate(m => window.execute(m), model); // warm engine
+        await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
+        await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+        await page.locator("#status").getByText("Ejecución completada.", { exact: false }).waitFor(); // warm UI and hashes
+        for (let i = 0; i < 15; i++) {
           const engineMs = await page.evaluate(m => {
             const start = performance.now();
             window.execute(m);
@@ -68,29 +79,54 @@ const p95 = values => {
           }, model);
           engineSamples.push(engineMs);
           await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
-          const start = Date.now();
+          await page.evaluate(() => {
+            window.__toyHeartbeat = { last: performance.now(), maxGap: 0, running: true };
+            const beat = () => {
+              const h = window.__toyHeartbeat;
+              if (!h || !h.running) return;
+              const now = performance.now();
+              h.maxGap = Math.max(h.maxGap, now - h.last);
+              h.last = now;
+              requestAnimationFrame(beat);
+            };
+            requestAnimationFrame(beat);
+          });
+          const start = process.hrtime.bigint();
           await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
           await page.locator("#status").getByText("Ejecución completada.", { exact: false }).waitFor();
-          interactionSamples.push(Date.now() - start);
+          const wallMs = Number(process.hrtime.bigint() - start) / 1e6;
+          interactionSamples.push(wallMs);
+          const observation = await page.evaluate(() => {
+            window.__toyHeartbeat.running = false;
+            return { phases: window.__toyPerfLastRun, maxGap: window.__toyHeartbeat.maxGap };
+          });
+          for (const name of phaseNames) {
+            if (typeof observation.phases?.[name] === "number") phaseSamples[name].push(observation.phases[name]);
+          }
+          heartbeatGapSamples.push(observation.maxGap);
         }
+        const phaseSummary = Object.fromEntries(phaseNames.filter(n => phaseSamples[n].length).map(n => [n, summarize(phaseSamples[n])]));
         reports.push({
           graph_kind: kind, states: size, transitions: model.transitions.length,
-          max_depth: 100, max_trajectories: 10, repeats: 5,
+          max_depth: 100, max_trajectories: 10, repeats: 15,
           engine_median_ms: Number(median(engineSamples).toFixed(3)),
-          engine_p95_ms: Number(p95(engineSamples).toFixed(3)),
-          button_to_completed_median_ms: median(interactionSamples),
-          button_to_completed_p95_ms: p95(interactionSamples),
-          engine_samples_ms: engineSamples,
-          interaction_samples_ms: interactionSamples
+          engine_p95_ms: Number(percentile(engineSamples, 0.95).toFixed(3)),
+          button_to_completed_median_ms: Number(median(interactionSamples).toFixed(3)),
+          button_to_completed_p95_ms: Number(percentile(interactionSamples, 0.95).toFixed(3)),
+          engine_samples_ms: engineSamples.map(v => Number(v.toFixed(3))),
+          interaction_wall_ms: summarize(interactionSamples),
+          phase_timings: phaseSummary,
+          main_thread_frame_gap: summarize(heartbeatGapSamples)
         });
       }
     }
     if (errors.length) throw new Error("Browser page errors: " + errors.join("; "));
     console.log(JSON.stringify({
-      benchmark: "collective-toy-browser-engineering-v1",
+      benchmark: "collective-toy-browser-phase-instrumentation-v2",
       scientific_execution: false,
       browser: "Chromium via Playwright",
-      note: "Hosted CI timings are comparative diagnostics, not user-device guarantees.",
+      timing_method: "page phases use performance.now(); Playwright wall time uses Node hrtime.bigint(); frame-gap is an approximate rAF heartbeat gap, not a direct user-device latency guarantee.",
+      note: "Hosted CI timings are comparative diagnostics, not user-device guarantees. P95 with 15 samples remains a coarse upper-tail diagnostic.",
       reports
     }, null, 2));
   } finally {
