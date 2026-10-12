@@ -723,6 +723,10 @@ function invalidFixtures() {
   booleanDepth.exploration.max_depth = true;
   cases.push({ name: "boolean-depth", model: booleanDepth });
 
+  const booleanTrajectoryCap = clone(base);
+  booleanTrajectoryCap.exploration.max_trajectories = false;
+  cases.push({ name: "boolean-trajectory-cap", model: booleanTrajectoryCap });
+
   const zeroTrajectoryCap = clone(base);
   zeroTrajectoryCap.exploration.max_trajectories = 0;
   cases.push({ name: "zero-trajectory-cap", model: zeroTrajectoryCap });
