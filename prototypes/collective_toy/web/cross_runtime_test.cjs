@@ -1393,7 +1393,19 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       { label: "unknown-comparison-state", mutate: pkg => {
           const sid = Object.keys(pkg.result.comparisons_to_baseline)[0];
           pkg.result.comparisons_to_baseline[sid].reachable_states_added = ["state-not-in-input"];
-        }, message: "IDs de estado declarados" }
+        }, message: "IDs de estado declarados" },
+      { label: "trajectory-edge-mismatch", mutate: pkg => {
+          const sid = Object.keys(pkg.result.scenario_results)[0];
+          const paths = pkg.result.scenario_results[sid].trajectories;
+          const path = paths.find(candidate => candidate.length > 1);
+          assert.ok(path, "fixture must include a trajectory with an edge");
+          const previous = path[0].state;
+          const current = path[1].state;
+          const incompatible = pkg.input.transitions.find(edge =>
+            edge.id !== path[1].transition && !(edge.source === previous && edge.target === current));
+          assert.ok(incompatible, "fixture must include an incompatible declared edge");
+          path[1].transition = incompatible.id;
+        }, message: "rutas válidas y transiciones coherentes con la entrada" }
     ]) {
       const malformedReferencePackage = structuredClone(validImportedPackage);
       malformedReferencePackage.result.engine_version = "collective-toy-engine-999";
