@@ -76,11 +76,20 @@ A new, versioned design must specify before implementation:
 
 Do not infer these primitives from existing graph field names or add them implicitly in the UI.
 
-## 6. Recommended next implementation gate
+## 6. Gate status and remaining work
 
-1. Complete the current CI round after the documentation update.
-2. Add a small UI/export terminology check ensuring the current output is described as state-local.
-3. Verify that the editor preserves the selected rule profile and does not silently turn profile-1 descriptive metadata into operative guards.
-4. Freeze neither this mapping nor the wider mathematical contract until schema and acceptance coverage are reconciled.
+The following engineering checks are already present in the clean promotion candidate and passed at commit `0fc10f5c583fb2036645379ffea5eaeb0fdc1775`:
 
-**Decision status:** retain graph-demonstration scope for the current MVP — proposed, not frozen. No change to TGCV Core, Evidence→Claim Matrix, RMA, or Ω-primary status. Scientific execution remains unauthorized.
+1. CI round: engine and clean-source replay [38305668063](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38305668063), browser/Python concordance and clean-source replay [38305668363](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38305668363), and governance consistency [38305668047](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38305668047).
+2. UI/export terminology and the distinction between state-local outputs and system-level TGCV claims are exercised by the UI contract tests.
+3. Profile switching, relation add/remove, and profile-1 descriptive-metadata inertness are exercised through the browser UI contract tests.
+
+These results close the named engineering checks for that commit only. They do not freeze the schema or approve promotion.
+
+Remaining gates:
+
+1. Reconcile the full schema/acceptance matrix and any remaining uncovered requirements before freezing the contract.
+2. Obtain explicit governance review of this mapping, the mathematical/functional contract, and the promotion scope.
+3. Keep any future system-level `T_acc` operationalization behind a separately versioned mapping and architecture gate.
+
+**Decision status:** retain graph-demonstration scope for the current MVP — proposed, not frozen. No change to TGCV Core, Evidence→Claim Matrix, RMA, or Ω-primary status. Scientific execution remains unauthorized; promotion is not approved by these engineering checks.
