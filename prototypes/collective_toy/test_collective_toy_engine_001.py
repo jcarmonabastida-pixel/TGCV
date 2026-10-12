@@ -1805,6 +1805,73 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 ):
                     run_model(model)
 
+    def test_non_string_nested_relation_and_scenario_identifiers_fail(self):
+        # These validator branches were previously represented mainly by browser fixtures;
+        # assert the Python validator's specific contract outcome independently.
+        valid_relation = {
+            "id": "r_schema",
+            "type": "requires_transition_enabled",
+            "transition_id": "t_bd",
+            "requires_transition_id": "t_ab",
+        }
+        cases = []
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {
+            "type": "relation_guarded_graph",
+            "version": "1",
+        }
+        relation = copy.deepcopy(valid_relation)
+        relation["id"] = 7
+        model["relations"] = [relation]
+        cases.append((
+            "non-string-relation-id",
+            model,
+            "relation id must be a non-empty string",
+        ))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {
+            "type": "relation_guarded_graph",
+            "version": "1",
+        }
+        relation = copy.deepcopy(valid_relation)
+        relation["transition_id"] = 7
+        model["relations"] = [relation]
+        cases.append((
+            "non-string-guarded-transition-id",
+            model,
+            "relation_guarded_graph relations require transition_id and requires_transition_id",
+        ))
+
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {
+            "type": "relation_guarded_graph",
+            "version": "1",
+        }
+        relation = copy.deepcopy(valid_relation)
+        relation["requires_transition_id"] = None
+        model["relations"] = [relation]
+        cases.append((
+            "non-string-prerequisite-transition-id",
+            model,
+            "relation_guarded_graph relations require transition_id and requires_transition_id",
+        ))
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0]["id"] = 7
+        cases.append((
+            "non-string-scenario-id",
+            model,
+            "scenario id must be a non-empty string",
+        ))
+
+        for name, candidate, expected_message in cases:
+            with self.subTest(case=name):
+                with self.assertRaisesRegex(ModelValidationError, expected_message):
+                    run_model(candidate)
+
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
