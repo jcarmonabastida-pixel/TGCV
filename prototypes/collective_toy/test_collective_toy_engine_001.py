@@ -1675,6 +1675,22 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(baseline["trajectories"], [[{"state": "A"}]])
         self.assertFalse(baseline["truncated"])
 
+    def test_optional_relations_and_disabled_transitions_default_empty(self):
+        model = copy.deepcopy(self.model)
+        model["states"] = ["A"]
+        model["initial_state"] = "A"
+        model["transitions"] = []
+        model.pop("relations", None)
+        model["scenarios"] = [{"id": "baseline"}]
+        model["exploration"] = {"max_depth": 0, "max_trajectories": 1}
+
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        self.assertEqual(baseline["reachable_states"], ["A"])
+        self.assertEqual(baseline["trajectories"], [[{"state": "A"}]])
+        self.assertEqual(baseline["effective_disabled_transitions"], [])
+        self.assertFalse(baseline["truncated"])
+
     def test_zero_depth_with_enabled_outgoing_transition_is_explicitly_truncated(self):
         from collective_toy_engine_001 import run_model
 
