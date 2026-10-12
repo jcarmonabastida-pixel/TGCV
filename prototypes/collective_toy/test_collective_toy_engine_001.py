@@ -2094,7 +2094,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         model["initial_state"] = states[0]
         model["transitions"] = transitions
         model["relations"] = []
-        model["rule_profile"] = {"type": "descriptive_only", "version": "1"}
+        model["rule_profile"] = {"type": "finite_deterministic_graph", "version": "1"}
         model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
         model["exploration"] = {"max_depth": 100, "max_trajectories": 1}
 
