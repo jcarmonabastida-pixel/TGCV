@@ -1358,6 +1358,27 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     unknownNestedResultField.package_sha256 = sha256Canonical(nestedPackageBody);
     await assessInBrowser(unknownNestedResultField, "rejected", "contiene campos desconocidos");
 
+    for (const malformedNested of [
+      { label: "trajectory-step", mutate: pkg => {
+          pkg.result.scenario_results[Object.keys(pkg.result.scenario_results)[0]].trajectories[0][0] = { state: 17, unknown: true };
+        }, message: "trajectories del escenario" },
+      { label: "negative-bound", mutate: pkg => {
+          pkg.result.scenario_results[Object.keys(pkg.result.scenario_results)[0]].exploration_bounds.max_depth = -1;
+        }, message: "límites enteros no negativos" }
+    ]) {
+      const malformedNestedPackage = structuredClone(validImportedPackage);
+      malformedNestedPackage.result.engine_version = "collective-toy-engine-999";
+      malformedNested.mutate(malformedNestedPackage);
+      const nestedResultPayload = structuredClone(malformedNestedPackage.result);
+      delete nestedResultPayload.input_sha256;
+      delete nestedResultPayload.result_sha256;
+      malformedNestedPackage.result.result_sha256 = sha256Canonical(nestedResultPayload);
+      const nestedPackagePayload = structuredClone(malformedNestedPackage);
+      delete nestedPackagePayload.package_sha256;
+      malformedNestedPackage.package_sha256 = sha256Canonical(nestedPackagePayload);
+      await assessInBrowser(malformedNestedPackage, "rejected", malformedNested.message);
+    }
+
     const malformedSchemaPackage = structuredClone(validImportedPackage);
     malformedSchemaPackage.package_version = "collective-toy-browser-run-999";
     const malformedSchemaPayload = structuredClone(malformedSchemaPackage);
