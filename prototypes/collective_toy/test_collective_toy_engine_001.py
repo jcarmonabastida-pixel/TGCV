@@ -320,6 +320,23 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaises(ModelValidationError):
             verify_exported_package(incomplete_input)
 
+    def test_exported_package_rejects_unsupported_package_version_even_with_recomputed_hash(self):
+        package = export_run(self.model)
+        package["package_version"] = "collective-toy-run-package-999"
+        package_payload = copy.deepcopy(package)
+        del package_payload["package_sha256"]
+        package["package_sha256"] = sha256_json(package_payload)
+        with self.assertRaises(ModelValidationError):
+            verify_exported_package(package)
+
+        wrong_engine = export_run(self.model)
+        wrong_engine["engine_version"] = "collective-toy-engine-999"
+        engine_payload = copy.deepcopy(wrong_engine)
+        del engine_payload["package_sha256"]
+        wrong_engine["package_sha256"] = sha256_json(engine_payload)
+        with self.assertRaises(ModelValidationError):
+            verify_exported_package(wrong_engine)
+
     def test_export_contains_reproduction_inputs_and_hashes(self):
         package = export_run(self.model)
         self.assertEqual(package["input"], self.model)
