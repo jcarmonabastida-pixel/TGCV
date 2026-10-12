@@ -1401,7 +1401,17 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
             pkg.result.scenario_results[id].effective_disabled_transitions.length > 0);
           assert.ok(sid, "guarded fixture must contain effective disabled transitions");
           pkg.result.scenario_results[sid].effective_disabled_transitions = [];
-        }, message: "effective_disabled_transitions no coincide" }
+        }, message: "effective_disabled_transitions no coincide" },
+      { label: "relation-effect-reason", mutate: pkg => {
+          const sid = Object.keys(pkg.result.scenario_results).find(id =>
+            Array.isArray(pkg.result.scenario_results[id].relation_effects) &&
+            pkg.result.scenario_results[id].relation_effects.length > 0);
+          assert.ok(sid, "guarded fixture must contain relation effects");
+          const effect = pkg.result.scenario_results[sid].relation_effects[0];
+          effect.reason = effect.reason === "prerequisite_transition_disabled"
+            ? "prerequisite_transition_not_disabled"
+            : "prerequisite_transition_disabled";
+        }, message: "relation_effects no coincide con los efectos" }
     ]) {
       const malformedRelationPackage = structuredClone(guardedPackageForImport);
       malformedRelationPackage.result.engine_version = "collective-toy-engine-999";
