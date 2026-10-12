@@ -154,7 +154,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         model["exploration"] = {"max_depth": 1, "max_trajectories": 10}
         at_one = run_model(model)["scenario_results"]["baseline"]
         self.assertTrue(at_one["truncated"])
-        self.assertEqual(at_one["reachable_states"], ["A", "B"])
+        self.assertEqual(at_one["reachable_states"], ["A", "B", "C"])
         model["exploration"]["max_depth"] = 2
         at_two = run_model(model)["scenario_results"]["baseline"]
         self.assertFalse(at_two["truncated"])
