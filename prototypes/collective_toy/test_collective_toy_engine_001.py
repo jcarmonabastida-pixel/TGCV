@@ -215,6 +215,12 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertFalse(neither_cap["truncated"])
         self.assertEqual(len(neither_cap["trajectories"]), 2)
 
+    def test_capture_current_baseline_package_for_review(self):
+        package = export_run(self.model)
+        print("CURRENT_BASELINE_FIXTURE_JSON_BEGIN")
+        print(canonical_json(package))
+        print("CURRENT_BASELINE_FIXTURE_JSON_END")
+
     def test_deterministic_result_hash(self):
         first = run_model(self.model)
         second = run_model(self.model)
