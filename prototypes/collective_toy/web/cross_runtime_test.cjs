@@ -1011,8 +1011,9 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
   assert.ok(exportedPackage && typeof exportedPackage === "object" && !Array.isArray(exportedPackage),
     label + ": exported package must be an object");
   for (const field of ["package_version", "engine_version", "input", "result", "package_sha256"]) {
-    assert.ok(Object.prototype.hasOwnProperty.call(exportedPackage, field),
-      label + ": exported package is missing required field " + field);
+    if (!Object.prototype.hasOwnProperty.call(exportedPackage, field)) {
+      throw new Error(label + ": exported package is missing required field " + field);
+    }
   }
   assert.equal(exportedPackage.engine_version, "collective-toy-engine-001",
     label + ": unsupported engine version");
