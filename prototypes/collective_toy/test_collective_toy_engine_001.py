@@ -414,6 +414,38 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaisesRegex(ModelValidationError, "Unsupported exported package version"):
             verify_exported_package_integrity(package)
 
+    def test_integrity_rejects_missing_or_malformed_engine_version_even_with_recomputed_package_hash(self):
+        for invalid_version in ("missing", None, "", 17):
+            with self.subTest(engine_version=invalid_version):
+                package = export_run(self.model)
+                if invalid_version == "missing":
+                    del package["engine_version"]
+                else:
+                    package["engine_version"] = invalid_version
+                payload = copy.deepcopy(package)
+                del payload["package_sha256"]
+                package["package_sha256"] = sha256_json(payload)
+                with self.assertRaises(ModelValidationError):
+                    verify_exported_package_integrity(package)
+
+    def test_valid_hashes_do_not_make_divergent_result_replay_verified(self):
+        package = export_run(self.model)
+        package["result"]["scenario_results"]["baseline"]["reachable_states"].append(
+            "FORGED_STATE_NOT_IN_MODEL"
+        )
+        result_payload = copy.deepcopy(package["result"])
+        del result_payload["input_sha256"]
+        del result_payload["result_sha256"]
+        package["result"]["result_sha256"] = sha256_json(result_payload)
+        package_payload = copy.deepcopy(package)
+        del package_payload["package_sha256"]
+        package["package_sha256"] = sha256_json(package_payload)
+
+        # The package, input, and result hashes are internally consistent.
+        self.assertTrue(verify_exported_package_integrity(package))
+        with self.assertRaisesRegex(ModelValidationError, "does not match independent replay"):
+            assess_exported_package(package)
+
     def test_export_contains_reproduction_inputs_and_hashes(self):
         package = export_run(self.model)
         self.assertEqual(package["input"], self.model)
