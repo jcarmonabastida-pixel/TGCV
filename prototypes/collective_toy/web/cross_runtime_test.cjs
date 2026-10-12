@@ -55,6 +55,16 @@ function fixtures() {
   zeroDepth.exploration.max_depth = 0;
   cases.push({ name: "depth-zero", model: zeroDepth });
 
+  const minimumValid = clone(base);
+  minimumValid.model_id = "minimum-valid-single-state";
+  minimumValid.initial_state = "A";
+  minimumValid.states = ["A"];
+  minimumValid.transitions = [];
+  minimumValid.relations = [];
+  minimumValid.scenarios = [{ id: "baseline", disabled_transitions: [] }];
+  minimumValid.exploration = { max_depth: 0, max_trajectories: 1 };
+  cases.push({ name: "minimum-valid-single-state", model: minimumValid });
+
   const capped = clone(base);
   capped.model_id = "trajectory-cap";
   capped.exploration.max_trajectories = 1;
