@@ -37,6 +37,23 @@ class CollectiveToyEngineTests(unittest.TestCase):
         }
         self.assertEqual(base_paths, {("A", "B", "D"), ("A", "C", "D")})
         self.assertEqual(intervention_paths, {("A", "B", "D")})
+        # Assert deterministic traversal order and the complete literal path shape,
+        # not only set equality (which would hide an ordering regression).
+        self.assertEqual(
+            base["trajectories"],
+            [
+                [
+                    {"state": "A"},
+                    {"transition": "t_ab", "state": "B"},
+                    {"transition": "t_bd", "state": "D"},
+                ],
+                [
+                    {"state": "A"},
+                    {"transition": "t_ac", "state": "C"},
+                    {"transition": "t_cd", "state": "D"},
+                ],
+            ],
+        )
         self.assertFalse(base["truncated"])
         self.assertFalse(intervention["truncated"])
 
