@@ -3,6 +3,7 @@ import unittest
 
 from collective_toy_engine_001 import (
     ModelValidationError,
+    assess_exported_package,
     demo_model,
     export_run,
     run_model,
@@ -349,6 +350,35 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertTrue(verify_exported_package_integrity(package))
         with self.assertRaisesRegex(ModelValidationError, "Unsupported exported package engine version"):
             verify_exported_package(package)
+
+    def test_package_assessment_reports_inspect_only_when_engine_is_unavailable(self):
+        package = export_run(self.model)
+        package["engine_version"] = "collective-toy-engine-999"
+        payload = copy.deepcopy(package)
+        del payload["package_sha256"]
+        package["package_sha256"] = sha256_json(payload)
+
+        self.assertEqual(
+            assess_exported_package(package),
+            {
+                "status": "inspect-only/replay-unavailable",
+                "integrity_verified": True,
+                "replay_verified": False,
+                "reason": "Unsupported exported package engine version",
+            },
+        )
+
+    def test_package_assessment_reports_replay_verified_for_current_engine(self):
+        package = export_run(self.model)
+        self.assertEqual(
+            assess_exported_package(package),
+            {
+                "status": "replay-verified",
+                "integrity_verified": True,
+                "replay_verified": True,
+                "reason": None,
+            },
+        )
 
     def test_integrity_verification_rejects_tampering_even_for_unknown_engine(self):
         package = export_run(self.model)
