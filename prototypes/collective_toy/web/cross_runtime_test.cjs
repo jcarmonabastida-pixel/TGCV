@@ -992,15 +992,32 @@ function assertUnsupportedExportVersionsRejected(engineDir, exportedPackage, lab
   assert.throws(() => verifyExportedPackage(engineDir, unsupportedPackage, label + " unsupported package version"),
     label + ": unsupported package version accepted with a recomputed valid package hash");
 
+  const unsupportedEngine = structuredClone(exportedPackage);
   if (exportedPackage.package_version === "collective-toy-run-package-001") {
-    const unsupportedEngine = structuredClone(exportedPackage);
     unsupportedEngine.engine_version = "collective-toy-engine-999";
-    const unsupportedEnginePayload = structuredClone(unsupportedEngine);
-    delete unsupportedEnginePayload.package_sha256;
-    unsupportedEngine.package_sha256 = sha256Canonical(unsupportedEnginePayload);
-    assert.throws(() => verifyExportedPackage(engineDir, unsupportedEngine, label + " unsupported engine version"),
-      label + ": unsupported engine version accepted with a recomputed valid package hash");
+  } else {
+    // Browser schema declares engine_version inside result, unlike the Python package.
+    unsupportedEngine.result.engine_version = "collective-toy-engine-999";
+    const resultPayload = structuredClone(unsupportedEngine.result);
+    delete resultPayload.input_sha256;
+    delete resultPayload.result_sha256;
+    unsupportedEngine.result.result_sha256 = sha256Canonical(resultPayload);
   }
+  const unsupportedEnginePayload = structuredClone(unsupportedEngine);
+  delete unsupportedEnginePayload.package_sha256;
+  unsupportedEngine.package_sha256 = sha256Canonical(unsupportedEnginePayload);
+  assert.deepEqual(
+    assessExportedPackage(engineDir, unsupportedEngine, label + " unknown engine"),
+    {
+      status: "inspect-only/replay-unavailable",
+      integrity_verified: true,
+      replay_verified: false,
+      reason: "Unsupported exported package engine version"
+    },
+    label + ": intact package with unknown engine must be inspect-only"
+  );
+  assert.throws(() => verifyExportedPackage(engineDir, unsupportedEngine, label + " unsupported engine version"),
+    label + ": unsupported engine version accepted for replay despite recomputed valid hashes");
 }
 
 function assertTruncatedPackagesRejected(engineDir, exportedPackage, label) {
