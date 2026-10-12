@@ -969,7 +969,7 @@ function sha256Canonical(value) {
 
 function assertExportedPackageHashFailures(exportedPackage, label) {
   const alteredInput = structuredClone(exportedPackage);
-  alteredInput.input.transitions[0].target = "__tampered_target__";
+  alteredInput.input.model_id = "__tampered_model_id__";
   assert.notEqual(sha256Canonical(alteredInput.input), alteredInput.result.input_sha256,
     label + ": input tampering did not invalidate input hash");
   const alteredInputPayload = structuredClone(alteredInput);
