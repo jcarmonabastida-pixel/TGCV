@@ -75,6 +75,12 @@ function fixtures() {
   delete relationsListDefault.relations;
   cases.push({ name: "relations-list-default", model: relationsListDefault });
 
+  const guardedProfileRelationsDefault = clone(base);
+  guardedProfileRelationsDefault.model_id = "guarded-profile-relations-default";
+  guardedProfileRelationsDefault.rule_profile = { type: "relation_guarded_graph", version: "1" };
+  delete guardedProfileRelationsDefault.relations;
+  cases.push({ name: "guarded-profile-relations-default", model: guardedProfileRelationsDefault });
+
   const capped = clone(base);
   capped.model_id = "trajectory-cap";
   capped.exploration.max_trajectories = 1;
