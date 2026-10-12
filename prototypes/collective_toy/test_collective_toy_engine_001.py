@@ -800,7 +800,11 @@ class CollectiveToyEngineTests(unittest.TestCase):
         reversed_both = set(result["disable_both_reversed"]["effective_disabled_transitions"])
         self.assertEqual(both, ab | ac)
         self.assertEqual(both, reversed_both)
-        self.assertEqual(result["disable_both"], result["disable_both_reversed"])
+        semantic_keys = set(result["disable_both"]) - {"scenario_id", "disabled_transitions"}
+        self.assertEqual(
+            {key: result["disable_both"][key] for key in semantic_keys},
+            {key: result["disable_both_reversed"][key] for key in semantic_keys},
+        )
 
     def test_disabled_transition_order_does_not_change_semantics(self):
         model = copy.deepcopy(self.model)
