@@ -217,6 +217,28 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(first["result_sha256"], second["result_sha256"])
         self.assertEqual(first["input_sha256"], second["input_sha256"])
 
+    def test_object_key_insertion_order_does_not_change_hashes_or_semantics(self):
+        model = copy.deepcopy(self.model)
+
+        def reverse_object_key_order(value):
+            if isinstance(value, dict):
+                return {
+                    key: reverse_object_key_order(value[key])
+                    for key in reversed(list(value.keys()))
+                }
+            if isinstance(value, list):
+                return [reverse_object_key_order(item) for item in value]
+            return value
+
+        permuted = reverse_object_key_order(model)
+        self.assertEqual(canonical_json(model), canonical_json(permuted))
+        original = run_model(model)
+        reordered = run_model(permuted)
+        self.assertEqual(original["input_sha256"], reordered["input_sha256"])
+        self.assertEqual(original["result_sha256"], reordered["result_sha256"])
+        self.assertEqual(original["scenario_results"], reordered["scenario_results"])
+        self.assertEqual(original["comparisons_to_baseline"], reordered["comparisons_to_baseline"])
+
     def test_canonical_json_normalizes_integral_floats_and_codepoint_sorts_unicode_keys(self):
         value = {"n": 1.0, "negative_zero": -0.0, "\U00010000": "supplementary", "\uE000": "bmp"}
         self.assertEqual(
