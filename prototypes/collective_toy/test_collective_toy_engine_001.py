@@ -1506,5 +1506,48 @@ class CollectiveToyEngineTests(unittest.TestCase):
                     run_model(candidate)
 
 
+    def test_schema_resource_limits_accept_exact_upper_bounds(self):
+        # Boundary checks call validation only; they do not alter the frozen fixture.
+        model = copy.deepcopy(self.model)
+        model["states"] = ["S" + str(i) for i in range(500)]
+        model["initial_state"] = "S0"
+        model["transitions"] = [
+            {"id": "t" + str(i), "source": "S0", "target": "S0"}
+            for i in range(2000)
+        ]
+        model["exploration"] = {"max_depth": 100, "max_trajectories": 10000}
+        from collective_toy_engine_001 import validate_model
+        validate_model(model)
+
+    def test_schema_resource_limits_reject_values_above_upper_bounds(self):
+        from collective_toy_engine_001 import validate_model
+
+        cases = []
+        too_many_states = copy.deepcopy(self.model)
+        too_many_states["states"] = ["S" + str(i) for i in range(501)]
+        too_many_states["initial_state"] = "S0"
+        cases.append(("states-501", too_many_states))
+
+        too_many_transitions = copy.deepcopy(self.model)
+        too_many_transitions["transitions"] = [
+            {"id": "t" + str(i), "source": "A", "target": "A"}
+            for i in range(2001)
+        ]
+        cases.append(("transitions-2001", too_many_transitions))
+
+        excessive_depth = copy.deepcopy(self.model)
+        excessive_depth["exploration"]["max_depth"] = 101
+        cases.append(("max-depth-101", excessive_depth))
+
+        excessive_trajectories = copy.deepcopy(self.model)
+        excessive_trajectories["exploration"]["max_trajectories"] = 10001
+        cases.append(("max-trajectories-10001", excessive_trajectories))
+
+        for name, candidate in cases:
+            with self.subTest(name=name):
+                with self.assertRaises(ModelValidationError):
+                    validate_model(candidate)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
