@@ -67,7 +67,7 @@ const summarize = values => ({
         const engineSamples = [];
         const interactionSamples = [];
         const heartbeatGapSamples = [];
-        const hashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [] };
+        const hashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] };
         await page.evaluate(m => window.execute(m), model); // warm engine
         await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
         await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
@@ -81,7 +81,7 @@ const summarize = values => ({
           engineSamples.push(engineMs);
           await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
           await page.evaluate(() => {
-            window.__toyHashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [] };
+            window.__toyHashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] };
             window.__toyHeartbeat = { last: performance.now(), maxGap: 0, running: true };
             const beat = () => {
               const h = window.__toyHeartbeat;
