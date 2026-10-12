@@ -1427,7 +1427,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
             "transition_id": "t_bd",
             "requires_transition_id": "missing",
         }]
-        with self.assertRaises(ModelValidationError):
+        with self.assertRaisesRegex(ModelValidationError, "relation r_bad references unknown prerequisite transition: missing"):
             run_model(model)
 
     def test_relation_guarded_profile_rejects_unknown_relation_types(self):
