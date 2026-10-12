@@ -1644,5 +1644,36 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 with self.assertRaises(ModelValidationError):
                     canonical_json(value)
 
+    def test_schema_accepts_minimum_valid_graph_and_zero_depth(self):
+        from collective_toy_engine_001 import run_model
+
+        model = copy.deepcopy(self.model)
+        model["states"] = ["A"]
+        model["initial_state"] = "A"
+        model["transitions"] = []
+        model["relations"] = []
+        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
+        model["exploration"] = {"max_depth": 0, "max_trajectories": 1}
+
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        self.assertEqual(baseline["reachable_states"], ["A"])
+        self.assertEqual(baseline["trajectories"], [[{"state": "A"}]])
+        self.assertFalse(baseline["truncated"])
+
+    def test_zero_depth_with_enabled_outgoing_transition_is_explicitly_truncated(self):
+        from collective_toy_engine_001 import run_model
+
+        model = copy.deepcopy(self.model)
+        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
+        model["exploration"] = {"max_depth": 0, "max_trajectories": 1}
+
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        self.assertEqual(baseline["reachable_states"], ["A", "B", "C", "D"])
+        self.assertEqual(baseline["trajectories"], [[{"state": "A"}]])
+        self.assertTrue(baseline["truncated"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
