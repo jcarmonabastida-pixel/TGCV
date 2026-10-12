@@ -229,7 +229,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(sha256_json(package["input"]), package["result"]["input_sha256"])
         self.assertEqual(package["package_sha256"], "4f56aa1618d9a9aadbb68ee5f456950dfaf4898c94bbf7672be3d9d0bba9c9b8")
         self.assertEqual(package["result"]["result_sha256"], "bb937763a3e8bd3e5aa9ae4b461f10ae2d6b655f17a9f735f5ae8f930ad93a84")
-        print("CURRENT_BASELINE_FILE_SHA256=" + hashlib.sha256(raw).hexdigest())
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), "cda406ad711caef3e0d6fb87a429bf329ae99ca35254747166c5b6c61056ab19")
         self.assertEqual(assess_exported_package(package)["status"], "replay-verified")
         self.assertEqual(package["result"]["scenario_results"]["baseline"]["reachable_states"], ["A", "B", "C", "D"])
         self.assertEqual(package["result"]["scenario_results"]["block_ac"]["reachable_states"], ["A", "B", "D"])
