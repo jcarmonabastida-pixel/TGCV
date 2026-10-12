@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - prototype/collective-toy-engine-001-20261011
+      - prototype/collective-toy-clean-room-suite-001-20261012
   pull_request:
     branches:
       - main
@@ -38,4 +39,4 @@ jobs:
           mkdir -p "$clean_root"
           git archive "$GITHUB_SHA" prototypes/collective_toy | tar -x -C "$clean_root"
           cd "$clean_root/prototypes/collective_toy"
-          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_collective_toy_engine_001.CollectiveToyEngineTests.test_current_baseline_package_fixture_is_canonical_and_replay_verified
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_collective_toy_engine_001.py
