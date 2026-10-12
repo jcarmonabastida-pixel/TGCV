@@ -64,9 +64,6 @@ function fixtures() {
   minimumValid.scenarios = [{ id: "baseline", disabled_transitions: [] }];
   minimumValid.exploration = { max_depth: 0, max_trajectories: 1 };
   cases.push({ name: "minimum-valid-single-state", model: minimumValid });
-  cases.push({ name: "non-object-top-level-model", model: [] });
-  cases.push({ name: "null-top-level-model", model: null });
-
   const scenarioDisabledListDefault = clone(base);
   scenarioDisabledListDefault.model_id = "scenario-disabled-list-default";
   scenarioDisabledListDefault.scenarios = [{ id: "baseline" }];
@@ -725,6 +722,8 @@ function invalidFixtures() {
   const missingRuleProfile = clone(base);
   delete missingRuleProfile.rule_profile;
   cases.push({ name: "missing-rule-profile", model: missingRuleProfile });
+  cases.push({ name: "non-object-top-level-model", model: [] });
+  cases.push({ name: "null-top-level-model", model: null });
 
   const nonObjectTransition = clone(base);
   nonObjectTransition.transitions = [null];
