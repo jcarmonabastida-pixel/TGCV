@@ -707,7 +707,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
     def test_unknown_disabled_transition_fails(self):
         model = copy.deepcopy(self.model)
         model["scenarios"][1]["disabled_transitions"] = ["no_such_transition"]
-        with self.assertRaises(ModelValidationError):
+        with self.assertRaisesRegex(ModelValidationError, "references unknown transitions"):
             run_model(model)
 
     def test_disabled_transition_ids_must_be_strings(self):
