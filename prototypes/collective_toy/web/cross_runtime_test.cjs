@@ -1345,6 +1345,19 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     unsupportedEngineInvalidInput.package_sha256 = sha256Canonical(unsupportedInvalidPackageBody);
     await assessInBrowser(unsupportedEngineInvalidInput, "rejected", "initial_state debe ser un ID de estado");
 
+    const unknownNestedResultField = structuredClone(validImportedPackage);
+    unknownNestedResultField.result.engine_version = "collective-toy-engine-999";
+    const nestedScenarioId = Object.keys(unknownNestedResultField.result.scenario_results)[0];
+    unknownNestedResultField.result.scenario_results[nestedScenarioId].unrecognized_extension = "not in scenario result schema";
+    const nestedResultBody = structuredClone(unknownNestedResultField.result);
+    delete nestedResultBody.input_sha256;
+    delete nestedResultBody.result_sha256;
+    unknownNestedResultField.result.result_sha256 = sha256Canonical(nestedResultBody);
+    const nestedPackageBody = structuredClone(unknownNestedResultField);
+    delete nestedPackageBody.package_sha256;
+    unknownNestedResultField.package_sha256 = sha256Canonical(nestedPackageBody);
+    await assessInBrowser(unknownNestedResultField, "rejected", "contiene campos desconocidos");
+
     const malformedSchemaPackage = structuredClone(validImportedPackage);
     malformedSchemaPackage.package_version = "collective-toy-browser-run-999";
     const malformedSchemaPayload = structuredClone(malformedSchemaPackage);
