@@ -213,6 +213,18 @@ function fixtures() {
   cases.push({ name: "disconnected-component-augmented", model: disconnectedAugmented,
     disconnectedComponentOf: "disconnected-component-reference" });
 
+  const cappedDisconnectedReference = clone(base);
+  cappedDisconnectedReference.model_id = "disconnected-component-capped-reference";
+  cappedDisconnectedReference.exploration.max_trajectories = 1;
+  cases.push({ name: "disconnected-component-capped-reference", model: cappedDisconnectedReference,
+    expectedTruncation: true });
+  const cappedDisconnectedAugmented = clone(cappedDisconnectedReference);
+  cappedDisconnectedAugmented.model_id = "disconnected-component-capped-augmented";
+  cappedDisconnectedAugmented.states.push("X", "Y");
+  cappedDisconnectedAugmented.transitions.push({ id: "t_xy", source: "X", target: "Y" });
+  cases.push({ name: "disconnected-component-capped-augmented", model: cappedDisconnectedAugmented,
+    disconnectedComponentOf: "disconnected-component-capped-reference", expectedTruncation: true });
+
   const scenarioOrderIsolation = clone(base);
   scenarioOrderIsolation.model_id = "scenario-order-isolation";
   scenarioOrderIsolation.rule_profile = { type: "relation_guarded_graph", version: "1" };
@@ -1165,6 +1177,11 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
             assert.ok(pathTransitions.every(transitionId => !singleDisabled.has(transitionId)),
               "combined trajectory used an edge disabled in " + id);
           }
+        }
+      }
+      if (fixture.expectedTruncation) {
+        for (const [scenarioId, outcome] of Object.entries(browserPackage.result.scenario_results)) {
+          assert.equal(outcome.truncated, true, fixture.name + ": expected truncation in " + scenarioId);
         }
       }
       if (fixture.disconnectedComponentOf) {
