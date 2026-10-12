@@ -43,11 +43,20 @@ const assert = require("node:assert/strict");
     assert.deepEqual(model.rule_profile, { type: "finite_deterministic_graph", version: "1" });
     assert.match(await page.locator("#relation-help").innerText(), /metadatos|perfil 2/i);
 
-    // Exercise the actual import UI with a package produced by the current browser run.
+    // Verify the real export button produces a readable package, not only window state.
+    const downloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Exportar entrada y resultados (JSON)" }).click();
+    const download = await downloadPromise;
+    assert.match(download.suggestedFilename(), /-run\.json$/);
+    const exportedText = fs.readFileSync(await download.path(), "utf8");
+    const exportedPackage = JSON.parse(exportedText);
+    assert.deepEqual(exportedPackage, packageData, "Downloaded JSON must match the inspectable browser package");
+
+    // Exercise the actual import UI with the package produced by the export button.
     await page.locator("#package-file").setInputFiles({
-      name: "current-run.json",
+      name: download.suggestedFilename(),
       mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(packageData))
+      buffer: Buffer.from(exportedText)
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
     await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
