@@ -1345,7 +1345,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     await assessInBrowser(
       unsupportedProfilePackage,
       "rejected",
-      "unsupported rule_profile"
+      "rule_profile no compatible"
     );
 
     for (const inconsistent of [
