@@ -988,6 +988,29 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({ acceptDownloads: true });
   const outputPath = path.join(os.tmpdir(), "collective-toy-browser-" + process.pid + ".json");
+  function reverseObjectKeyOrder(value) {
+    if (Array.isArray(value)) return value.map(reverseObjectKeyOrder);
+    if (value !== null && typeof value === "object") {
+      return Object.fromEntries(Object.keys(value).reverse()
+        .map(key => [key, reverseObjectKeyOrder(value[key])]));
+    }
+    return value;
+  }
+  const keyOrderFixture = fixtures()[0].model;
+  const keyOrderPermuted = reverseObjectKeyOrder(keyOrderFixture);
+  assert.equal(canonicalJson(keyOrderFixture), canonicalJson(keyOrderPermuted),
+    "reordering JSON object keys changed canonical representation");
+  const keyOrderOriginalResult = runPython(engineDir, keyOrderFixture);
+  const keyOrderPermutedResult = runPython(engineDir, keyOrderPermuted);
+  assert.equal(keyOrderOriginalResult.input_sha256, keyOrderPermutedResult.input_sha256,
+    "reordering JSON object keys changed input SHA-256");
+  assert.equal(keyOrderOriginalResult.result_sha256, keyOrderPermutedResult.result_sha256,
+    "reordering JSON object keys changed result SHA-256");
+  assert.deepEqual(keyOrderOriginalResult.scenario_results, keyOrderPermutedResult.scenario_results,
+    "reordering JSON object keys changed scenario semantics");
+  assert.deepEqual(keyOrderOriginalResult.comparisons_to_baseline, keyOrderPermutedResult.comparisons_to_baseline,
+    "reordering JSON object keys changed baseline comparisons");
+
   const report = [];
 
   try {
