@@ -84,7 +84,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
     def test_duplicate_transition_id_fails(self):
         model = copy.deepcopy(self.model)
         model["transitions"].append(dict(model["transitions"][0]))
-        with self.assertRaises(ModelValidationError):
+        with self.assertRaisesRegex(ModelValidationError, "duplicate transition ID"):
             run_model(model)
 
     def test_disabling_transitions_cannot_expand_reachability_or_trajectories(self):
