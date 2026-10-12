@@ -43,7 +43,29 @@ const assert = require("node:assert/strict");
     assert.deepEqual(model.rule_profile, { type: "finite_deterministic_graph", version: "1" });
     assert.match(await page.locator("#relation-help").innerText(), /metadatos|perfil 2/i);
 
-    console.log("PASS: UI terminology, synthetic-only caveat, output labels, package boundary, and profile default.");
+    // Exercise the actual import UI with a package produced by the current browser run.
+    await page.locator("#package-file").setInputFiles({
+      name: "current-run.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(packageData))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i);
+
+    // A changed result with stale package/result hashes must fail closed.
+    const tamperedPackage = structuredClone(packageData);
+    tamperedPackage.result.scientific_interpretation += " tampered";
+    await page.locator("#package-file").setInputFiles({
+      name: "tampered-run.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(tamperedPackage))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /hash del paquete no coincide/i);
+
+    console.log("PASS: UI terminology, synthetic-only caveat, output labels, profile default, verified package replay, and tamper rejection.");
   } finally {
     await browser.close();
   }
