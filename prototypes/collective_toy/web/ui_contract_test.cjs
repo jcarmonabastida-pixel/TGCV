@@ -114,7 +114,21 @@ const assert = require("node:assert/strict");
     assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.relation_effects, []);
     assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac"]);
 
-    console.log("PASS: UI terminology, profile switching, relation add/remove effects, edit/run behavior, real export/import, replay verification, and tamper rejection.");
+    // A failed run must not leave the previous successful package exposed as current.
+    await page.locator("#model").fill("{ invalid JSON");
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.locator("#status").filter({ hasText: "No se ha podido ejecutar" }).waitFor();
+    assert.equal(await page.locator("#export").isDisabled(), true);
+    assert.equal(await page.evaluate(() => window.lastPackage), null);
+    assert.match(await page.locator("#results").innerText(), /No se ha podido ejecutar/);
+
+    // The UI must recover normally after the user reloads the example.
+    await page.getByRole("button", { name: "Cargar ejemplo" }).click();
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
+    assert.ok(await page.evaluate(() => window.lastPackage));
+
+    console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed error recovery, real export/import, replay verification, and tamper rejection.");
   } finally {
     await browser.close();
   }
