@@ -983,6 +983,30 @@ function assertExportedPackageHashFailures(exportedPackage, label) {
     label + ": package metadata tampering did not invalidate package hash");
 }
 
+function assertTruncatedPackagesRejected(engineDir, exportedPackage, label) {
+  for (const field of ["package_version", "engine_version", "input", "result", "package_sha256"]) {
+    const incomplete = structuredClone(exportedPackage);
+    delete incomplete[field];
+    assert.throws(() => verifyExportedPackage(engineDir, incomplete, label + " missing " + field),
+      label + ": incomplete package accepted when missing " + field);
+  }
+  const incompleteResult = structuredClone(exportedPackage);
+  delete incompleteResult.result.result_sha256;
+  const incompleteResultPayload = structuredClone(incompleteResult);
+  delete incompleteResultPayload.package_sha256;
+  incompleteResult.package_sha256 = sha256Canonical(incompleteResultPayload);
+  assert.throws(() => verifyExportedPackage(engineDir, incompleteResult, label + " missing result hash"),
+    label + ": incomplete result accepted without result_sha256");
+
+  const incompleteInput = structuredClone(exportedPackage);
+  delete incompleteInput.input.transitions;
+  const incompleteInputPayload = structuredClone(incompleteInput);
+  delete incompleteInputPayload.package_sha256;
+  incompleteInput.package_sha256 = sha256Canonical(incompleteInputPayload);
+  assert.throws(() => verifyExportedPackage(engineDir, incompleteInput, label + " missing input field"),
+    label + ": incomplete input accepted without transitions");
+}
+
 function verifyExportedPackage(engineDir, exportedPackage, label) {
   assert.ok(
     ["collective-toy-run-package-001", "collective-toy-browser-run-001"].includes(exportedPackage.package_version),
@@ -1005,6 +1029,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
   assert.deepEqual(replayed, exportedPackage.result,
     label + ": independently replayed Python result differs from exported result");
   assertExportedPackageHashFailures(exportedPackage, label);
+  assertTruncatedPackagesRejected(engineDir, exportedPackage, label);
   return true;
 }
 
