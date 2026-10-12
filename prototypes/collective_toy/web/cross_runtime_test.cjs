@@ -1283,7 +1283,58 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     await page.locator('[data-remove-relation="r_guard_1"]').click();
     editorParsed = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(editorParsed.relations.length, 0, "visual editor should remove selected relation");
-    console.log("PASS: relation editor profile switching, add/remove, profile 2 execution, profile 1 inertness, and independent export replay.");
+    // Browser import lifecycle: native replay, inspect-only, malformed schema, hash failure, and semantic divergence.
+    async function assessInBrowser(testPackage, expectedState, expectedMessage) {
+      fs.writeFileSync(outputPath, JSON.stringify(testPackage, null, 2));
+      await page.locator("#package-file").setInputFiles(outputPath);
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      const assessment = page.locator("#package-assessment");
+      await assessment.getByText(expectedMessage, { exact: false }).waitFor({ timeout: 5000 });
+      assert.equal(await assessment.getAttribute("data-state"), expectedState,
+        "unexpected browser import lifecycle state for " + expectedMessage);
+      return await assessment.innerText();
+    }
+    const validImportedPackage = structuredClone(editorPackage);
+    assert.match(await assessInBrowser(validImportedPackage, "replay-verified", "replay-verified"),
+      /reproducción independiente coincidente/i);
+
+    const inspectOnlyPackage = structuredClone(validImportedPackage);
+    inspectOnlyPackage.result.engine_version = "collective-toy-engine-999";
+    const inspectResultPayload = structuredClone(inspectOnlyPackage.result);
+    delete inspectResultPayload.input_sha256;
+    delete inspectResultPayload.result_sha256;
+    inspectOnlyPackage.result.result_sha256 = sha256Canonical(inspectResultPayload);
+    const inspectPackagePayload = structuredClone(inspectOnlyPackage);
+    delete inspectPackagePayload.package_sha256;
+    inspectOnlyPackage.package_sha256 = sha256Canonical(inspectPackagePayload);
+    assert.match(await assessInBrowser(inspectOnlyPackage, "inspect-only/replay-unavailable", "inspect-only/replay-unavailable"),
+      /Integridad verificada/i);
+
+    const malformedSchemaPackage = structuredClone(validImportedPackage);
+    malformedSchemaPackage.package_version = "collective-toy-browser-run-999";
+    const malformedSchemaPayload = structuredClone(malformedSchemaPackage);
+    delete malformedSchemaPayload.package_sha256;
+    malformedSchemaPackage.package_sha256 = sha256Canonical(malformedSchemaPayload);
+    await assessInBrowser(malformedSchemaPackage, "rejected", "Esquema de paquete desconocido");
+
+    const invalidHashPackage = structuredClone(validImportedPackage);
+    invalidHashPackage.package_sha256 = "0".repeat(64);
+    await assessInBrowser(invalidHashPackage, "rejected", "El hash del paquete no coincide");
+
+    const divergentPackage = structuredClone(validImportedPackage);
+    divergentPackage.result.scenario_results.baseline.reachable_states.push("FORGED_STATE_NOT_IN_MODEL");
+    const divergentResultPayload = structuredClone(divergentPackage.result);
+    delete divergentResultPayload.input_sha256;
+    delete divergentResultPayload.result_sha256;
+    divergentPackage.result.result_sha256 = sha256Canonical(divergentResultPayload);
+    const divergentPackagePayload = structuredClone(divergentPackage);
+    delete divergentPackagePayload.package_sha256;
+    divergentPackage.package_sha256 = sha256Canonical(divergentPackagePayload);
+    await assessInBrowser(divergentPackage, "rejected", "La reproducción independiente difiere");
+
+    fs.unlinkSync(outputPath);
+    console.log("PASS: browser import lifecycle verified native replay, inspect-only unsupported engine, unknown schema rejection, invalid hash rejection, and hash-valid replay divergence.");
+
 
     const validFixtures = [...fixtures(), ...generatedFixtures()];
     const semanticResults = new Map();
