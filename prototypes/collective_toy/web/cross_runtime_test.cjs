@@ -957,6 +957,32 @@ function sha256Canonical(value) {
   return crypto.createHash("sha256").update(canonicalJson(value), "utf8").digest("hex");
 }
 
+function assertExportedPackageHashFailures(exportedPackage, label) {
+  const alteredInput = structuredClone(exportedPackage);
+  alteredInput.input.transitions[0].target = "D";
+  assert.notEqual(sha256Canonical(alteredInput.input), alteredInput.result.input_sha256,
+    label + ": input tampering did not invalidate input hash");
+  const alteredInputPayload = structuredClone(alteredInput);
+  delete alteredInputPayload.package_sha256;
+  assert.notEqual(sha256Canonical(alteredInputPayload), alteredInput.package_sha256,
+    label + ": input tampering did not invalidate package hash");
+
+  const alteredResult = structuredClone(exportedPackage);
+  alteredResult.result.scenario_results = {};
+  const alteredResultPayload = structuredClone(alteredResult.result);
+  delete alteredResultPayload.input_sha256;
+  delete alteredResultPayload.result_sha256;
+  assert.notEqual(sha256Canonical(alteredResultPayload), alteredResult.result.result_sha256,
+    label + ": result tampering did not invalidate result hash");
+
+  const alteredMetadata = structuredClone(exportedPackage);
+  alteredMetadata.package_version = "tampered-version";
+  const alteredMetadataPayload = structuredClone(alteredMetadata);
+  delete alteredMetadataPayload.package_sha256;
+  assert.notEqual(sha256Canonical(alteredMetadataPayload), alteredMetadata.package_sha256,
+    label + ": package metadata tampering did not invalidate package hash");
+}
+
 function verifyExportedPackage(engineDir, exportedPackage, label) {
   assert.ok(
     ["collective-toy-run-package-001", "collective-toy-browser-run-001"].includes(exportedPackage.package_version),
@@ -978,6 +1004,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
   const replayed = runPython(engineDir, exportedPackage.input);
   assert.deepEqual(replayed, exportedPackage.result,
     label + ": independently replayed Python result differs from exported result");
+  assertExportedPackageHashFailures(exportedPackage, label);
   return true;
 }
 
