@@ -806,6 +806,12 @@ class CollectiveToyEngineTests(unittest.TestCase):
             {key: result["disable_both_reversed"][key] for key in semantic_keys},
         )
 
+    def test_duplicate_disabled_transition_ids_are_rejected(self):
+        model = copy.deepcopy(self.model)
+        model["scenarios"][0]["disabled_transitions"] = ["t_ab", "t_ab"]
+        with self.assertRaises(ModelValidationError):
+            run_model(model)
+
     def test_disabled_transition_order_does_not_change_semantics(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
