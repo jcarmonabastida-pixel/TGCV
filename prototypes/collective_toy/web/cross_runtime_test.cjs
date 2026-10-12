@@ -1360,6 +1360,24 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     invalidResultHashPackage.package_sha256 = sha256Canonical(invalidResultHashPayload);
     await assessInBrowser(invalidResultHashPackage, "rejected", "El hash del resultado no coincide");
 
+    const unknownPackageField = structuredClone(validImportedPackage);
+    unknownPackageField.unrecognized_extension = { meaning: "not part of the browser package schema" };
+    const unknownPackagePayload = structuredClone(unknownPackageField);
+    delete unknownPackagePayload.package_sha256;
+    unknownPackageField.package_sha256 = sha256Canonical(unknownPackagePayload);
+    await assessInBrowser(unknownPackageField, "rejected", "El paquete contiene campos desconocidos");
+
+    const unknownResultField = structuredClone(validImportedPackage);
+    unknownResultField.result.unrecognized_extension = "not in the result schema";
+    const unknownResultBody = structuredClone(unknownResultField.result);
+    delete unknownResultBody.input_sha256;
+    delete unknownResultBody.result_sha256;
+    unknownResultField.result.result_sha256 = sha256Canonical(unknownResultBody);
+    const unknownResultPayload = structuredClone(unknownResultField);
+    delete unknownResultPayload.package_sha256;
+    unknownResultField.package_sha256 = sha256Canonical(unknownResultPayload);
+    await assessInBrowser(unknownResultField, "rejected", "El resultado contiene campos desconocidos");
+
     const invalidHashPackage = structuredClone(validImportedPackage);
     invalidHashPackage.package_sha256 = "0".repeat(64);
     await assessInBrowser(invalidHashPackage, "rejected", "El hash del paquete no coincide");
