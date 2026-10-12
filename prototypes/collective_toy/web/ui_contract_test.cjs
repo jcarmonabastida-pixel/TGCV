@@ -161,6 +161,16 @@ const assert = require("node:assert/strict");
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
     assert.match(await page.locator("#package-assessment").innerText(), /JSON válido/i);
 
+    // The import size limit must be enforced before parsing or replay.
+    await page.locator("#package-file").setInputFiles({
+      name: "oversized-package.json",
+      mimeType: "application/json",
+      buffer: Buffer.alloc(5 * 1024 * 1024 + 1, 0x20)
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /supera el límite de 5 MiB/i);
+
     // The UI must recover normally after the user reloads the example.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
