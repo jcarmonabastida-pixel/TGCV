@@ -984,7 +984,11 @@ function assertExportedPackageHashFailures(exportedPackage, label) {
 }
 
 function assertTruncatedPackagesRejected(engineDir, exportedPackage, label) {
-  for (const field of ["package_version", "engine_version", "input", "result", "package_sha256"]) {
+  const requiredFields = ["package_version", "input", "result", "package_sha256"];
+  if (exportedPackage.package_version === "collective-toy-run-package-001") {
+    requiredFields.push("engine_version");
+  }
+  for (const field of requiredFields) {
     const incomplete = structuredClone(exportedPackage);
     delete incomplete[field];
     assert.throws(() => verifyExportedPackage(engineDir, incomplete, label + " missing " + field),
@@ -1010,13 +1014,20 @@ function assertTruncatedPackagesRejected(engineDir, exportedPackage, label) {
 function verifyExportedPackage(engineDir, exportedPackage, label) {
   assert.ok(exportedPackage && typeof exportedPackage === "object" && !Array.isArray(exportedPackage),
     label + ": exported package must be an object");
-  for (const field of ["package_version", "engine_version", "input", "result", "package_sha256"]) {
+  const packageVersion = exportedPackage.package_version;
+  const requiredFields = ["package_version", "input", "result", "package_sha256"];
+  if (packageVersion === "collective-toy-run-package-001") {
+    requiredFields.push("engine_version");
+  }
+  for (const field of requiredFields) {
     if (!Object.prototype.hasOwnProperty.call(exportedPackage, field)) {
       throw new Error(label + ": exported package is missing required field " + field);
     }
   }
-  assert.equal(exportedPackage.engine_version, "collective-toy-engine-001",
-    label + ": unsupported engine version");
+  if (packageVersion === "collective-toy-run-package-001") {
+    assert.equal(exportedPackage.engine_version, "collective-toy-engine-001",
+      label + ": unsupported engine version");
+  }
   assert.ok(exportedPackage.input && typeof exportedPackage.input === "object" && !Array.isArray(exportedPackage.input),
     label + ": exported input must be an object");
   assert.ok(exportedPackage.result && typeof exportedPackage.result === "object" && !Array.isArray(exportedPackage.result),
