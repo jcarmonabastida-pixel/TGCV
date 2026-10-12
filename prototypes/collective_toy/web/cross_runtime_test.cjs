@@ -1375,8 +1375,22 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     divergentPackage.package_sha256 = sha256Canonical(divergentPackagePayload);
     await assessInBrowser(divergentPackage, "rejected", "La reproducción independiente difiere");
 
+    fs.writeFileSync(outputPath, "{ invalid JSON");
+    await page.locator("#package-file").setInputFiles(outputPath);
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    const malformedJsonAssessment = page.locator("#package-assessment");
+    await malformedJsonAssessment.getByText("El archivo no contiene JSON válido", { exact: false }).waitFor({ timeout: 5000 });
+    assert.equal(await malformedJsonAssessment.getAttribute("data-state"), "rejected");
+
+    fs.writeFileSync(outputPath, Buffer.alloc(5 * 1024 * 1024 + 1, 32));
+    await page.locator("#package-file").setInputFiles(outputPath);
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    const oversizedAssessment = page.locator("#package-assessment");
+    await oversizedAssessment.getByText("supera el límite de 5 MiB", { exact: false }).waitFor({ timeout: 5000 });
+    assert.equal(await oversizedAssessment.getAttribute("data-state"), "rejected");
+
     fs.unlinkSync(outputPath);
-    console.log("PASS: browser import lifecycle verified native replay, inspect-only unsupported engine, unknown schema rejection, invalid hash rejection, and hash-valid replay divergence.");
+    console.log("PASS: browser import lifecycle verified native replay, inspect-only unsupported engine, schema/version/hash rejection, replay divergence, malformed JSON, and oversized file rejection.");
 
 
     const validFixtures = [...fixtures(), ...generatedFixtures()];
