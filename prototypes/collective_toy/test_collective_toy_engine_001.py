@@ -2074,5 +2074,48 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
 
 
+    def test_high_branching_cyclic_graph_stress_respects_output_cap(self):
+        # Engineering stress regression for the admitted maximum transition count.
+        # Measure peak Python allocations to make stack growth visible in CI logs.
+        import tracemalloc
+
+        model = copy.deepcopy(self.model)
+        states = [f"s{i:03d}" for i in range(100)]
+        transitions = []
+        for source_index, source in enumerate(states):
+            target = states[(source_index + 1) % len(states)]
+            for branch in range(20):
+                transitions.append({
+                    "id": f"t_{source_index:03d}_{branch:02d}",
+                    "source": source,
+                    "target": target,
+                })
+        model["states"] = states
+        model["initial_state"] = states[0]
+        model["transitions"] = transitions
+        model["relations"] = []
+        model["rule_profile"] = {"type": "descriptive_only", "version": "1"}
+        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
+        model["exploration"] = {"max_depth": 100, "max_trajectories": 1}
+
+        tracemalloc.start()
+        try:
+            result = run_model(model)
+            _, peak_bytes = tracemalloc.get_traced_memory()
+        finally:
+            tracemalloc.stop()
+
+        scenario = result["scenario_results"]["baseline"]
+        self.assertEqual(len(scenario["trajectories"]), 1)
+        self.assertTrue(scenario["truncated"])
+        self.assertEqual(scenario["exploration_bounds"], {
+            "max_depth": 100,
+            "max_trajectories": 1,
+        })
+        # Conservative CI guard; intended to catch pathological growth, not
+        # to claim a portable benchmark of total process RSS.
+        self.assertLess(peak_bytes, 64 * 1024 * 1024)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
