@@ -54,6 +54,24 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaisesRegex(ModelValidationError, "transition t_ab references an unknown state"):
             run_model(model)
 
+    def test_unknown_initial_state_string_fails(self):
+        model = copy.deepcopy(self.model)
+        model["initial_state"] = "UNKNOWN"
+        with self.assertRaisesRegex(
+            ModelValidationError,
+            "initial_state must be a state ID string referencing a declared state",
+        ):
+            run_model(model)
+
+    def test_unknown_transition_source_state_fails(self):
+        model = copy.deepcopy(self.model)
+        model["transitions"][0]["source"] = "UNKNOWN"
+        with self.assertRaisesRegex(
+            ModelValidationError,
+            "transition t_ab references an unknown state",
+        ):
+            run_model(model)
+
     def test_duplicate_semantic_relation_is_operationally_idempotent(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
