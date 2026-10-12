@@ -1319,6 +1319,18 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     assert.match(inspectOnlyMessage, /no autentica el origen/i);
     assert.match(inspectOnlyMessage, /no se ha intentado reproducir/i);
 
+    // Version policy: unknown engine permits integrity-only inspection; unknown package schema is rejected.
+    const unsupportedPackageSchema = structuredClone(validImportedPackage);
+    unsupportedPackageSchema.package_version = "collective-toy-browser-run-999";
+    const unsupportedSchemaPayload = structuredClone(unsupportedPackageSchema);
+    delete unsupportedSchemaPayload.package_sha256;
+    unsupportedPackageSchema.package_sha256 = sha256Canonical(unsupportedSchemaPayload);
+    await assessInBrowser(
+      unsupportedPackageSchema,
+      "rejected",
+      "Esquema de paquete desconocido o no compatible"
+    );
+
     for (const inconsistent of [
       { label: "schema", mutate: pkg => { pkg.result.schema_version = "collective-toy-input-999"; }, message: "La versión de esquema del resultado no coincide con la entrada" },
       { label: "model", mutate: pkg => { pkg.result.model_id = "different-model"; }, message: "El model_id del resultado no coincide con la entrada" },
