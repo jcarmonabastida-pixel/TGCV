@@ -1604,6 +1604,23 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       verifyExportedPackage(engineDir, browserPackage, fixture.name + " exported package");
 
       const pyResult = runPython(engineDir, fixture.model);
+      const repeatedPyResult = runPython(engineDir, fixture.model);
+      assert.deepEqual(repeatedPyResult, pyResult,
+        fixture.name + ": repeated Python executions must produce identical complete results and hashes");
+      if (fixture.name === "diamond-reference") {
+        await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+        await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
+        const [repeatDownload] = await Promise.all([
+          page.waitForEvent("download"),
+          page.getByRole("button", { name: "Exportar entrada y resultados (JSON)" }).click()
+        ]);
+        const repeatOutputPath = path.join(os.tmpdir(), "collective-toy-deterministic-repeat-" + process.pid + ".json");
+        await repeatDownload.saveAs(repeatOutputPath);
+        const repeatedBrowserPackage = JSON.parse(fs.readFileSync(repeatOutputPath, "utf8"));
+        fs.unlinkSync(repeatOutputPath);
+        assert.deepEqual(repeatedBrowserPackage, browserPackage,
+          "repeated browser execution/export must produce identical package contents and hashes");
+      }
       assert.deepEqual(browserPackage.result.scenario_results, pyResult.scenario_results,
         fixture.name + ": scenario results differ");
       assert.deepEqual(browserPackage.result.comparisons_to_baseline, pyResult.comparisons_to_baseline,
