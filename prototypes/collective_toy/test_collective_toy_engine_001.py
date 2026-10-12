@@ -185,6 +185,32 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(len(baseline["trajectories"]), 1)
         self.assertFalse(baseline["truncated"])
 
+    def test_depth_and_trajectory_caps_interact_without_false_complete_result(self):
+        model = copy.deepcopy(self.model)
+        model["states"] = ["A", "B", "C", "D", "E"]
+        model["initial_state"] = "A"
+        model["transitions"] = [
+            {"id": "t_ab", "source": "A", "target": "B"},
+            {"id": "t_bd", "source": "B", "target": "D"},
+            {"id": "t_ac", "source": "A", "target": "C"},
+            {"id": "t_ce", "source": "C", "target": "E"},
+        ]
+        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
+        model["exploration"] = {"max_depth": 1, "max_trajectories": 1}
+        both_caps = run_model(model)["scenario_results"]["baseline"]
+        self.assertTrue(both_caps["truncated"])
+        self.assertEqual(len(both_caps["trajectories"]), 1)
+
+        model["exploration"] = {"max_depth": 2, "max_trajectories": 1}
+        trajectory_cap_only = run_model(model)["scenario_results"]["baseline"]
+        self.assertTrue(trajectory_cap_only["truncated"])
+        self.assertEqual(len(trajectory_cap_only["trajectories"]), 1)
+
+        model["exploration"] = {"max_depth": 2, "max_trajectories": 2}
+        neither_cap = run_model(model)["scenario_results"]["baseline"]
+        self.assertFalse(neither_cap["truncated"])
+        self.assertEqual(len(neither_cap["trajectories"]), 2)
+
     def test_deterministic_result_hash(self):
         first = run_model(self.model)
         second = run_model(self.model)
