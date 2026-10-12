@@ -64,6 +64,8 @@ function fixtures() {
   minimumValid.scenarios = [{ id: "baseline", disabled_transitions: [] }];
   minimumValid.exploration = { max_depth: 0, max_trajectories: 1 };
   cases.push({ name: "minimum-valid-single-state", model: minimumValid });
+  cases.push({ name: "non-object-top-level-model", model: [] });
+  cases.push({ name: "null-top-level-model", model: null });
 
   const scenarioDisabledListDefault = clone(base);
   scenarioDisabledListDefault.model_id = "scenario-disabled-list-default";
