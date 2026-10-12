@@ -257,6 +257,41 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaises(ModelValidationError):
             canonical_json({"label": "\ud800"})
 
+    def test_export_package_detects_tampering_of_input_result_and_package(self):
+        package = export_run(self.model)
+
+        altered_input = copy.deepcopy(package)
+        altered_input["input"]["transitions"][0]["target"] = "D"
+        self.assertNotEqual(
+            sha256_json(altered_input["input"]),
+            altered_input["result"]["input_sha256"],
+        )
+        altered_input_payload = copy.deepcopy(altered_input)
+        del altered_input_payload["package_sha256"]
+        self.assertNotEqual(
+            sha256_json(altered_input_payload),
+            altered_input["package_sha256"],
+        )
+
+        altered_result = copy.deepcopy(package)
+        altered_result["result"]["scenario_results"] = {}
+        altered_result_payload = copy.deepcopy(altered_result["result"])
+        del altered_result_payload["input_sha256"]
+        del altered_result_payload["result_sha256"]
+        self.assertNotEqual(
+            sha256_json(altered_result_payload),
+            altered_result["result"]["result_sha256"],
+        )
+
+        altered_package_metadata = copy.deepcopy(package)
+        altered_package_metadata["package_version"] = "tampered-version"
+        altered_package_payload = copy.deepcopy(altered_package_metadata)
+        del altered_package_payload["package_sha256"]
+        self.assertNotEqual(
+            sha256_json(altered_package_payload),
+            altered_package_metadata["package_sha256"],
+        )
+
     def test_export_contains_reproduction_inputs_and_hashes(self):
         package = export_run(self.model)
         self.assertEqual(package["input"], self.model)
