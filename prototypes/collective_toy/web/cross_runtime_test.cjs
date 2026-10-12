@@ -1407,8 +1407,24 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     await oversizedAssessment.getByText("supera el límite de 5 MiB", { exact: false }).waitFor({ timeout: 5000 });
     assert.equal(await oversizedAssessment.getAttribute("data-state"), "rejected");
 
+    // State must not remain verified after a failed assessment or a new file selection.
+    await assessInBrowser(validImportedPackage, "replay-verified", "replay-verified");
+    fs.writeFileSync(outputPath, "{ invalid JSON");
+    await page.locator("#package-file").setInputFiles(outputPath);
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment").getByText("El archivo no contiene JSON válido", { exact: false }).waitFor({ timeout: 5000 });
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "rejected");
+    fs.writeFileSync(outputPath, JSON.stringify(validImportedPackage, null, 2));
+    await page.locator("#package-file").setInputFiles(outputPath);
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "idle",
+      "selecting a new package must clear any previous verification/rejection state");
+    assert.match(await page.locator("#package-assessment").innerText(), /Archivo seleccionado/i);
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment").getByText("replay-verified", { exact: false }).waitFor({ timeout: 5000 });
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified");
+
     fs.unlinkSync(outputPath);
-    console.log("PASS: browser import lifecycle verified native replay, inspect-only unsupported engine, schema/version/hash rejection, replay divergence, malformed JSON, and oversized file rejection.");
+    console.log("PASS: browser import lifecycle verifies replay, inspect-only, schema/version/hash rejection, divergence, malformed/oversized imports, and stale-state clearing.");
 
 
     const validFixtures = [...fixtures(), ...generatedFixtures()];
