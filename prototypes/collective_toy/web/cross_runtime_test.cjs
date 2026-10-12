@@ -1317,6 +1317,49 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     malformedSchemaPackage.package_sha256 = sha256Canonical(malformedSchemaPayload);
     await assessInBrowser(malformedSchemaPackage, "rejected", "Esquema de paquete desconocido");
 
+    for (const malformedVersion of [
+      { label: "missing", mutate: pkg => { delete pkg.result.engine_version; } },
+      { label: "null", mutate: pkg => { pkg.result.engine_version = null; } },
+      { label: "blank", mutate: pkg => { pkg.result.engine_version = "   "; } },
+      { label: "wrong-type", mutate: pkg => { pkg.result.engine_version = 7; } }
+    ]) {
+      const malformedVersionPackage = structuredClone(validImportedPackage);
+      malformedVersion.mutate(malformedVersionPackage);
+      const malformedVersionResult = structuredClone(malformedVersionPackage.result);
+      delete malformedVersionResult.input_sha256;
+      delete malformedVersionResult.result_sha256;
+      malformedVersionPackage.result.result_sha256 = sha256Canonical(malformedVersionResult);
+      const malformedVersionPayload = structuredClone(malformedVersionPackage);
+      delete malformedVersionPayload.package_sha256;
+      malformedVersionPackage.package_sha256 = sha256Canonical(malformedVersionPayload);
+      await assessInBrowser(malformedVersionPackage, "rejected", "Declaración de versión del motor ausente o malformada");
+    }
+
+    const pythonSchemaPackage = structuredClone(validImportedPackage);
+    pythonSchemaPackage.package_version = "collective-toy-run-package-001";
+    const pythonSchemaPayload = structuredClone(pythonSchemaPackage);
+    delete pythonSchemaPayload.package_sha256;
+    pythonSchemaPackage.package_sha256 = sha256Canonical(pythonSchemaPayload);
+    await assessInBrowser(pythonSchemaPackage, "rejected", "Esquema de paquete desconocido");
+
+    const invalidInputHashPackage = structuredClone(validImportedPackage);
+    invalidInputHashPackage.result.input_sha256 = "0".repeat(64);
+    const invalidInputHashResult = structuredClone(invalidInputHashPackage.result);
+    delete invalidInputHashResult.input_sha256;
+    delete invalidInputHashResult.result_sha256;
+    invalidInputHashPackage.result.result_sha256 = sha256Canonical(invalidInputHashResult);
+    const invalidInputHashPayload = structuredClone(invalidInputHashPackage);
+    delete invalidInputHashPayload.package_sha256;
+    invalidInputHashPackage.package_sha256 = sha256Canonical(invalidInputHashPayload);
+    await assessInBrowser(invalidInputHashPackage, "rejected", "El hash de la entrada no coincide");
+
+    const invalidResultHashPackage = structuredClone(validImportedPackage);
+    invalidResultHashPackage.result.result_sha256 = "0".repeat(64);
+    const invalidResultHashPayload = structuredClone(invalidResultHashPackage);
+    delete invalidResultHashPayload.package_sha256;
+    invalidResultHashPackage.package_sha256 = sha256Canonical(invalidResultHashPayload);
+    await assessInBrowser(invalidResultHashPackage, "rejected", "El hash del resultado no coincide");
+
     const invalidHashPackage = structuredClone(validImportedPackage);
     invalidHashPackage.package_sha256 = "0".repeat(64);
     await assessInBrowser(invalidHashPackage, "rejected", "El hash del paquete no coincide");
