@@ -635,6 +635,10 @@ function invalidFixtures() {
 
   m = clone(base); m.model_id = "empty-state-id"; m.states[0] = "";
   cases.push({ name: "empty-state-id", model: m });
+  m = clone(base); m.model_id = "empty-states-list"; m.states = [];
+  cases.push({ name: "empty-states-list", model: m });
+  m = clone(base); m.model_id = "unknown-initial-state"; m.initial_state = "Z";
+  cases.push({ name: "unknown-initial-state", model: m });
 
   m = clone(base); m.model_id = "transitions-not-list"; m.transitions = {};
   cases.push({ name: "transitions-not-list", model: m });
