@@ -40,6 +40,25 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertFalse(base["truncated"])
         self.assertFalse(intervention["truncated"])
 
+    def test_baseline_comparison_reports_expected_reachability_and_trajectory_differences(self):
+        result = run_model(self.model)
+        comparison = result["comparisons_to_baseline"]["block_ac"]
+
+        self.assertEqual(comparison["enabled_at_initial_added"], [])
+        self.assertEqual(comparison["enabled_at_initial_removed"], ["t_ac"])
+        self.assertEqual(comparison["reachable_states_added"], [])
+        self.assertEqual(comparison["reachable_states_removed"], ["C"])
+        self.assertEqual(comparison["trajectories_added"], [])
+        self.assertEqual(
+            comparison["trajectories_removed"],
+            [[
+                {"state": "A"},
+                {"transition": "t_ac", "state": "C"},
+                {"transition": "t_cd", "state": "D"},
+            ]],
+        )
+        self.assertFalse(comparison["truncated"])
+
     def test_initial_state_must_be_a_string_id_and_malformed_containers_raise_validation_error(self):
         for invalid_initial_state in ([], {}, None, 1):
             with self.subTest(initial_state=invalid_initial_state):
