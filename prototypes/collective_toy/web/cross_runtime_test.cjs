@@ -983,6 +983,26 @@ function assertExportedPackageHashFailures(exportedPackage, label) {
     label + ": package metadata tampering did not invalidate package hash");
 }
 
+function assertUnsupportedExportVersionsRejected(engineDir, exportedPackage, label) {
+  const unsupportedPackage = structuredClone(exportedPackage);
+  unsupportedPackage.package_version = "collective-toy-run-package-999";
+  const unsupportedPayload = structuredClone(unsupportedPackage);
+  delete unsupportedPayload.package_sha256;
+  unsupportedPackage.package_sha256 = sha256Canonical(unsupportedPayload);
+  assert.throws(() => verifyExportedPackage(engineDir, unsupportedPackage, label + " unsupported package version"),
+    label + ": unsupported package version accepted with a recomputed valid package hash");
+
+  if (exportedPackage.package_version === "collective-toy-run-package-001") {
+    const unsupportedEngine = structuredClone(exportedPackage);
+    unsupportedEngine.engine_version = "collective-toy-engine-999";
+    const unsupportedEnginePayload = structuredClone(unsupportedEngine);
+    delete unsupportedEnginePayload.package_sha256;
+    unsupportedEngine.package_sha256 = sha256Canonical(unsupportedEnginePayload);
+    assert.throws(() => verifyExportedPackage(engineDir, unsupportedEngine, label + " unsupported engine version"),
+      label + ": unsupported engine version accepted with a recomputed valid package hash");
+  }
+}
+
 function assertTruncatedPackagesRejected(engineDir, exportedPackage, label) {
   const requiredFields = ["package_version", "input", "result", "package_sha256"];
   if (exportedPackage.package_version === "collective-toy-run-package-001") {
@@ -1058,6 +1078,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     label + ": independently replayed Python result differs from exported result");
   assertExportedPackageHashFailures(exportedPackage, label);
   assertTruncatedPackagesRejected(engineDir, exportedPackage, label);
+  assertUnsupportedExportVersionsRejected(engineDir, exportedPackage, label);
   return true;
 }
 
