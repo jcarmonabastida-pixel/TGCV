@@ -419,6 +419,30 @@ function fixtures() {
   depthBoundaryTerminal.exploration.max_depth = 2;
   cases.push({ name: "depth-boundary-terminal-after-one-more-level", model: depthBoundaryTerminal, expectedTruncation: false });
 
+  const combinedCaps = clone(base);
+  combinedCaps.model_id = "combined-depth-and-trajectory-caps";
+  combinedCaps.states = ["A", "B", "C", "D", "E"];
+  combinedCaps.initial_state = "A";
+  combinedCaps.transitions = [
+    { id: "t_ab", source: "A", target: "B" },
+    { id: "t_bd", source: "B", target: "D" },
+    { id: "t_ac", source: "A", target: "C" },
+    { id: "t_ce", source: "C", target: "E" }
+  ];
+  combinedCaps.scenarios = [{ id: "baseline", disabled_transitions: [] }];
+  combinedCaps.exploration = { max_depth: 1, max_trajectories: 1 };
+  cases.push({ name: "combined-depth-and-trajectory-caps", model: combinedCaps, expectedTruncation: true });
+
+  const trajectoryCapAfterDepthRelaxed = clone(combinedCaps);
+  trajectoryCapAfterDepthRelaxed.model_id = "trajectory-cap-after-depth-relaxed";
+  trajectoryCapAfterDepthRelaxed.exploration = { max_depth: 2, max_trajectories: 1 };
+  cases.push({ name: "trajectory-cap-after-depth-relaxed", model: trajectoryCapAfterDepthRelaxed, expectedTruncation: true });
+
+  const bothCapsRelaxed = clone(combinedCaps);
+  bothCapsRelaxed.model_id = "both-exploration-caps-relaxed";
+  bothCapsRelaxed.exploration = { max_depth: 2, max_trajectories: 2 };
+  cases.push({ name: "both-exploration-caps-relaxed", model: bothCapsRelaxed, expectedTruncation: false });
+
   const exactTrajectoryCap = clone(base);
   exactTrajectoryCap.model_id = "exact-trajectory-cap-is-complete";
   exactTrajectoryCap.initial_state = "A";
