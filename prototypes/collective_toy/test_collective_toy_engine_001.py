@@ -777,6 +777,31 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(altered["effective_disabled_transitions"], ["t_ab", "t_bd"])
         self.assertNotIn("t_cd", altered["effective_disabled_transitions"])
 
+    def test_disabling_interventions_compose_independently_of_declaration_order(self):
+        model = copy.deepcopy(self.model)
+        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["relations"] = [
+            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
+             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
+            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
+             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
+        ]
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
+            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
+            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
+            {"id": "disable_both_reversed", "disabled_transitions": ["t_ac", "t_ab"]},
+        ]
+        result = run_model(model)["scenario_results"]
+        ab = set(result["disable_ab"]["effective_disabled_transitions"])
+        ac = set(result["disable_ac"]["effective_disabled_transitions"])
+        both = set(result["disable_both"]["effective_disabled_transitions"])
+        reversed_both = set(result["disable_both_reversed"]["effective_disabled_transitions"])
+        self.assertEqual(both, ab | ac)
+        self.assertEqual(both, reversed_both)
+        self.assertEqual(result["disable_both"], result["disable_both_reversed"])
+
     def test_disabled_transition_order_does_not_change_semantics(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
