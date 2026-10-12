@@ -402,6 +402,23 @@ function fixtures() {
   guardedCycle.exploration = { max_depth: 3, max_trajectories: 2 };
   cases.push({ name: "relation-guarded-cycle-and-bounds", model: guardedCycle });
 
+  const depthBoundaryPending = clone(base);
+  depthBoundaryPending.model_id = "depth-boundary-pending-transition";
+  depthBoundaryPending.states = ["A", "B", "C"];
+  depthBoundaryPending.initial_state = "A";
+  depthBoundaryPending.transitions = [
+    { id: "t_ab", source: "A", target: "B" },
+    { id: "t_bc", source: "B", target: "C" }
+  ];
+  depthBoundaryPending.scenarios = [{ id: "baseline", disabled_transitions: [] }];
+  depthBoundaryPending.exploration = { max_depth: 1, max_trajectories: 10 };
+  cases.push({ name: "depth-boundary-pending-transition", model: depthBoundaryPending, expectedTruncation: true });
+
+  const depthBoundaryTerminal = clone(depthBoundaryPending);
+  depthBoundaryTerminal.model_id = "depth-boundary-terminal-after-one-more-level";
+  depthBoundaryTerminal.exploration.max_depth = 2;
+  cases.push({ name: "depth-boundary-terminal-after-one-more-level", model: depthBoundaryTerminal, expectedTruncation: false });
+
   const exactTrajectoryCap = clone(base);
   exactTrajectoryCap.model_id = "exact-trajectory-cap-is-complete";
   exactTrajectoryCap.initial_state = "A";
