@@ -261,7 +261,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         package = export_run(self.model)
 
         altered_input = copy.deepcopy(package)
-        altered_input["input"]["transitions"][0]["target"] = "D"
+        altered_input["input"]["transitions"][0]["target"] = "__tampered_target__"
         self.assertNotEqual(
             sha256_json(altered_input["input"]),
             altered_input["result"]["input_sha256"],
