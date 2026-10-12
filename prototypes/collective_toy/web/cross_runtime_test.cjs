@@ -1203,6 +1203,11 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       if (fixture.name === "relation-guard-locality") {
         const baseline = browserPackage.result.scenario_results.baseline;
         const intervention = browserPackage.result.scenario_results.disable_ab;
+        assert.ok(intervention.reachable_states.every(state => baseline.reachable_states.includes(state)),
+          "direct intervention expanded reachable states");
+        const baselinePaths = new Set(baseline.trajectories.map(path => JSON.stringify(path)));
+        assert.ok(intervention.trajectories.every(path => baselinePaths.has(JSON.stringify(path))),
+          "direct intervention introduced a trajectory absent from baseline");
         const states = intervention.reachable_states;
         assert.ok(states.includes("D"), "guard on t_bd unexpectedly removed D despite alternate A-C-D path");
         const pathStates = scenario => new Set(scenario.trajectories.map(path => JSON.stringify(path.map(step => step.state))));
