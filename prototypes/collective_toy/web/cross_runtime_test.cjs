@@ -70,6 +70,11 @@ function fixtures() {
   scenarioDisabledListDefault.scenarios = [{ id: "baseline" }];
   cases.push({ name: "scenario-disabled-list-default", model: scenarioDisabledListDefault });
 
+  const relationsListDefault = clone(base);
+  relationsListDefault.model_id = "relations-list-default";
+  delete relationsListDefault.relations;
+  cases.push({ name: "relations-list-default", model: relationsListDefault });
+
   const capped = clone(base);
   capped.model_id = "trajectory-cap";
   capped.exploration.max_trajectories = 1;
