@@ -1110,6 +1110,56 @@ function assessExportedPackage(engineDir, exportedPackage, label) {
   };
 }
 
+function recomputePackageHashes(exportedPackage) {
+  const resultPayload = structuredClone(exportedPackage.result);
+  delete resultPayload.input_sha256;
+  delete resultPayload.result_sha256;
+  exportedPackage.result.result_sha256 = sha256Canonical(resultPayload);
+  const packagePayload = structuredClone(exportedPackage);
+  delete packagePayload.package_sha256;
+  exportedPackage.package_sha256 = sha256Canonical(packagePayload);
+  return exportedPackage;
+}
+
+function assertEngineVersionDeclarationsRejected(exportedPackage, label) {
+  const isPythonSchema = exportedPackage.package_version === "collective-toy-run-package-001";
+  for (const invalidVersion of [undefined, null, "", 17]) {
+    const malformed = structuredClone(exportedPackage);
+    if (isPythonSchema) {
+      if (invalidVersion === undefined) delete malformed.engine_version;
+      else malformed.engine_version = invalidVersion;
+    } else {
+      if (invalidVersion === undefined) delete malformed.result.engine_version;
+      else malformed.result.engine_version = invalidVersion;
+    }
+    recomputePackageHashes(malformed);
+    assert.throws(
+      () => verifyExportedPackageIntegrity(malformed, label + " malformed engine version"),
+      label + ": malformed or missing engine version was accepted"
+    );
+  }
+}
+
+function assertReplayDivergenceRejected(engineDir, exportedPackage, label) {
+  const divergent = structuredClone(exportedPackage);
+  // Keep every hash internally valid so rejection exercises replay comparison.
+  const baseline = divergent.result.scenario_results && divergent.result.scenario_results.baseline;
+  assert.ok(baseline && Array.isArray(baseline.reachable_states),
+    label + ": fixture lacks baseline reachable_states for divergence test");
+  baseline.reachable_states.push("FORGED_STATE_NOT_IN_MODEL");
+  recomputePackageHashes(divergent);
+  assert.equal(
+    verifyExportedPackageIntegrity(divergent, label + " divergent result").engineVersion,
+    "collective-toy-engine-001",
+    label + ": divergent fixture must retain valid integrity and supported engine"
+  );
+  assert.throws(
+    () => assessExportedPackage(engineDir, divergent, label + " divergent result"),
+    /independently replayed Python result differs from exported result/,
+    label + ": validly hashed but divergent result was accepted as replay-verified"
+  );
+}
+
 function verifyExportedPackage(engineDir, exportedPackage, label) {
   const assessment = assessExportedPackage(engineDir, exportedPackage, label);
   if (assessment.status !== "replay-verified") {
@@ -1118,6 +1168,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
   assertExportedPackageHashFailures(exportedPackage, label);
   assertTruncatedPackagesRejected(engineDir, exportedPackage, label);
   assertUnsupportedExportVersionsRejected(engineDir, exportedPackage, label);
+  assertEngineVersionDeclarationsRejected(exportedPackage, label);
+  assertReplayDivergenceRejected(engineDir, exportedPackage, label);
   return true;
 }
 (async () => {
