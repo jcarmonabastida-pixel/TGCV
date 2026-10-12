@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TGCV · Juguete Colectivo</title>
+<style>
+:root{color-scheme:light dark;--bg:#101820;--panel:#182630;--ink:#eef4f7;--muted:#aabac5;--line:#38505f;--accent:#72d5bd;--warn:#f4c875}@media(prefers-color-scheme:light){:root{color-scheme:light;--bg:#f4f7f8;--panel:#fff;--ink:#182630;--muted:#526571;--line:#d5e0e5;--accent:#087e69;--warn:#8c5a00}}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif}main{max-width:1180px;margin:auto;padding:24px 16px 48px}h1{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.1;margin:0 0 8px}h2{font-size:1.15rem;margin:0 0 12px}.sub,.muted{color:var(--muted)}.notice{border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:10px;padding:12px 14px;margin:16px 0 20px;background:var(--panel)}.layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}.wide{grid-column:1/-1}textarea{width:100%;min-height:330px;resize:vertical;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);padding:12px;font:13px/1.5 ui-monospace,monospace}button,select{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:10px 14px;font-weight:650;cursor:pointer}.primary{background:var(--accent);color:#06251f}.actions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.relation-editor{border-top:1px solid var(--line);margin-top:18px;padding-top:16px}.relation-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.relation-fields select{width:100%;margin-top:6px}.relation-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}.relation-item span{overflow-wrap:anywhere}.relation-item button{padding:5px 9px}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.metric,.scenario{padding:12px;border:1px solid var(--line);border-radius:10px}.metric strong{display:block;font-size:1.4rem}.metric span{font-size:.85rem;color:var(--muted)}.scenario{margin:10px 0}.scenario h3{margin:0 0 8px;font-size:1rem}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:.86rem}.paths{overflow-wrap:anywhere;font:13px/1.5 ui-monospace,monospace}.path{padding:7px 9px;border-bottom:1px solid var(--line)}#graph{width:100%;min-height:180px;overflow:visible}.error{color:#ff9d9d;white-space:pre-wrap}.ok{color:var(--accent)}.lifecycle-status{border:1px solid var(--line);border-radius:9px;padding:10px;margin-top:10px;overflow-wrap:anywhere}.lifecycle-status[data-state="replay-verified"]{border-color:var(--accent)}.lifecycle-status[data-state="rejected"]{border-color:#d66}footer{margin-top:20px;color:var(--muted);font-size:.85rem}@media(max-width:760px){.layout{grid-template-columns:1fr}.wide{grid-column:auto}textarea{min-height:280px}}
+</style></head><body><main>
+<h1>Juguete Colectivo</h1><p class="sub">Prototipo interactivo · perfiles sintéticos 1 y 2 · estados, transformaciones, relaciones operativas y trayectorias</p>
+<div class="notice"><strong>Límite explícito:</strong> este demostrador ejecuta un grafo finito en el navegador. No procesa datos reales ni implementa por sí solo T<sub>acc</sub> de TGCV. En el perfil 1 las relaciones son metadatos inertes; el perfil 2 aplica dependencias de disponibilidad de escenario explícitas. No es una validación científica.</div>
+<div class="layout"><section class="panel"><h2>1 · Define el sistema</h2><p class="muted">Edita el JSON o carga el ejemplo A → B/C → D.</p><textarea id="model" spellcheck="false" aria-label="Modelo JSON editable"></textarea><div class="relation-editor" aria-labelledby="relation-heading">
+<h2 id="relation-heading">Editor visual de relaciones</h2>
+<p class="muted">Elige el perfil 2 para crear reglas de disponibilidad. En el perfil 1, las relaciones siguen siendo metadatos inertes.</p>
+<label for="profile-editor">Perfil de ejecución</label><br>
+<select id="profile-editor" style="margin:8px 0 12px;max-width:100%">
+<option value="1">Perfil 1 · relaciones descriptivas</option>
+<option value="2">Perfil 2 · disponibilidad condicionada</option>
+</select>
+<div class="relation-fields">
+<div><label for="guarded-transition">Transición condicionada</label><select id="guarded-transition"></select></div>
+<div><label for="required-transition">Transición requerida</label><select id="required-transition"></select></div>
+</div>
+<div class="actions"><button id="add-relation" type="button">Añadir relación</button></div>
+<div id="relation-help" class="muted" role="status">Selecciona el perfil 2 para editar relaciones operativas.</div>
+<ul id="relation-list" aria-label="Relaciones definidas"></ul>
+</div>
+<div class="actions"><button id="load">Cargar ejemplo</button><button id="run" class="primary">Ejecutar escenarios</button></div><div id="status" role="status" aria-live="polite" class="muted">Preparado para ejecutar el ejemplo sintético.</div></section>
+<section class="panel"><h2>2 · Grafo del sistema</h2><p class="muted">Las flechas atenuadas están deshabilitadas en el escenario seleccionado.</p><label for="which">Escenario visualizado</label><br><select id="which" style="margin:8px 0 12px;max-width:100%"><option value="baseline">baseline</option></select><svg id="graph" viewBox="0 0 620 260" role="img" aria-label="Representación del grafo"></svg><div id="graph-note" class="muted">Ejecuta el modelo para visualizarlo.</div></section>
+<section class="panel wide"><h2>3 · Resultados y comparación</h2><div class="relation-editor"><h2>Importar paquete exportado</h2><p class="muted">Evalúa un paquete del navegador sin convertir paquetes Python a este esquema. La integridad no implica reproducción.</p><label for="package-file">Paquete JSON</label> <input id="package-file" type="file" accept="application/json,.json"><div class="actions"><button id="assess-package" type="button">Validar paquete importado</button></div><div id="package-assessment" class="lifecycle-status" data-state="idle" role="status" aria-live="polite">No se ha evaluado ningún paquete.</div></div><div id="metrics" class="metrics"><div class="metric"><strong>—</strong><span>Estados alcanzables</span></div><div class="metric"><strong>—</strong><span>Trayectorias enumeradas</span></div><div class="metric"><strong>—</strong><span>Exploración completa</span></div></div><div id="results"><p class="muted">Los resultados aparecerán aquí después de ejecutar el modelo.</p></div><div class="actions"><button id="export" disabled>Exportar entrada y resultados (JSON)</button></div></section></div>
+<footer>Perfiles: grafo dirigido finito v1 (relaciones descriptivas) y relation_guarded_graph v1 (dependencias de disponibilidad de escenario) · exploración acotada · uso exclusivamente sintético. Los hashes apoyan la reproducibilidad, no certifican la integridad externa.</footer></main>
+<script>
+"use strict";
+var $=function(id){return document.getElementById(id)};
+function example(){return {schema_version:"collective-toy-input-001",model_id:"toy-diamond-001",initial_state:"A",states:["A","B","C","D"],transitions:[{id:"t_ab",source:"A",target:"B"},{id:"t_ac",source:"A",target:"C"},{id:"t_bd",source:"B",target:"D"},{id:"t_cd",source:"C",target:"D"}],relations:[],rule_profile:{type:"finite_deterministic_graph",version:"1"},scenarios:[{id:"baseline",disabled_transitions:[]},{id:"block_ac",disabled_transitions:["t_ac"]}],exploration:{max_depth:4,max_trajectories:1000}}}
+function compareCodePoints(a,b){var aa=Array.from(a,function(c){return c.codePointAt(0)}),bb=Array.from(b,function(c){return c.codePointAt(0)}),n=Math.min(aa.length,bb.length);for(var i=0;i<n;i++){if(aa[i]!==bb[i])return aa[i]-bb[i]}return aa.length-bb.length}
+function canonical(v){if(Array.isArray(v))return "["+v.map(canonical).join(",")+"]";if(v&&typeof v==="object")return "{"+Object.keys(v).sort(compareCodePoints).map(function(k){return JSON.stringify(k)+":"+canonical(v[k])}).join(",")+"}";return JSON.stringify(v)}
+async function hash(v){var d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(canonical(v)));return Array.from(new Uint8Array(d)).map(function(b){return b.toString(16).padStart(2,"0")}).join("")}
+function assert(ok,msg){if(!ok)throw new Error(msg)}
+function validateCanonicalDomain(value,path){
+ if(value===null||typeof value==="boolean")return;
+ if(typeof value==="number"){assert(Number.isSafeInteger(value),path+" contiene un número que no es un entero seguro.");return}
+ if(typeof value==="string"){for(var i=0;i<value.length;i++){var c=value.charCodeAt(i);if(c>=0xD800&&c<=0xDBFF){assert(i+1<value.length&&value.charCodeAt(i+1)>=0xDC00&&value.charCodeAt(i+1)<=0xDFFF,path+" contiene un sustituto Unicode no emparejado.");i++}else{assert(c<0xDC00||c>0xDFFF,path+" contiene un sustituto Unicode no emparejado.")}}return}
+ if(Array.isArray(value)){value.forEach(function(item,i){validateCanonicalDomain(item,path+"["+i+"]")});return}
+ assert(value&&typeof value==="object","La entrada contiene un valor que no es JSON en "+path+".");
+ Object.keys(value).forEach(function(k){validateCanonicalDomain(k,path+".<clave>");validateCanonicalDomain(value[k],path+"."+k)});
+}
+function validate(m){
+ validateCanonicalDomain(m,"$");
+ function knownKeys(value,allowed,context){assert(Object.keys(value).every(function(k){return allowed.indexOf(k)>=0}),context+" contiene campos desconocidos.")}
+ assert(m&&typeof m==="object"&&!Array.isArray(m),"La entrada debe ser un objeto JSON.");knownKeys(m,["schema_version","model_id","initial_state","states","transitions","relations","rule_profile","scenarios","exploration"],"El modelo");assert(m.schema_version==="collective-toy-input-001","schema_version no compatible.");assert(typeof m.model_id==="string"&&m.model_id.trim(),"model_id debe ser texto no vacío.");assert(Array.isArray(m.states)&&m.states.length>0,"states debe ser una lista no vacía.");assert(m.states.length<=500,"El modelo no puede superar 500 estados.");assert(m.states.every(function(s){return typeof s==="string"&&s.length>0}),"Cada estado debe tener un ID no vacío.");assert(new Set(m.states).size===m.states.length,"Hay IDs de estado duplicados.");assert(typeof m.initial_state==="string"&&m.states.indexOf(m.initial_state)>=0,"initial_state debe ser un ID de estado declarado.");var profile1={type:"finite_deterministic_graph",version:"1"},profile2={type:"relation_guarded_graph",version:"1"};assert(m.rule_profile&&typeof m.rule_profile==="object"&&!Array.isArray(m.rule_profile),"rule_profile debe ser un objeto.");knownKeys(m.rule_profile,["type","version"],"rule_profile");assert(canonical(m.rule_profile)===canonical(profile1)||canonical(m.rule_profile)===canonical(profile2),"rule_profile no compatible.");assert(Array.isArray(m.transitions),"transitions debe ser una lista.");assert(m.transitions.length<=2000,"El modelo no puede superar 2000 transiciones.");assert(m.exploration&&typeof m.exploration==="object"&&!Array.isArray(m.exploration),"exploration debe ser un objeto.");knownKeys(m.exploration,["max_depth","max_trajectories"],"exploration");assert(Number.isInteger(m.exploration.max_depth)&&m.exploration.max_depth>=0&&m.exploration.max_depth<=100,"max_depth debe ser un entero entre 0 y 100.");assert(Number.isInteger(m.exploration.max_trajectories)&&m.exploration.max_trajectories>=1&&m.exploration.max_trajectories<=10000,"max_trajectories debe ser un entero entre 1 y 10000.");var tids=new Set();
+ m.transitions.forEach(function(t){assert(t&&typeof t==="object"&&!Array.isArray(t),"Cada transición debe ser un objeto.");knownKeys(t,["id","source","target"],"Transición");assert([t.id,t.source,t.target].every(function(v){return typeof v==="string"&&v.length>0}),"ID, origen y destino deben ser textos no vacíos.");assert(!tids.has(t.id),"ID de transición duplicado: "+t.id);tids.add(t.id);assert(m.states.indexOf(t.source)>=0&&m.states.indexOf(t.target)>=0,"Transición "+t.id+" referencia estado desconocido.")});
+ assert(m.relations===undefined||Array.isArray(m.relations),"relations debe ser una lista.");
+ if(canonical(m.rule_profile)===canonical(profile2)){var rids=new Set();(m.relations||[]).forEach(function(r){assert(r&&typeof r==="object"&&!Array.isArray(r),"Cada relación debe ser un objeto.");knownKeys(r,["id","type","transition_id","requires_transition_id"],"Relación");assert(typeof r.id==="string"&&r.id.length>0,"Cada relación necesita ID no vacío.");assert(!rids.has(r.id),"ID de relación duplicado: "+r.id);rids.add(r.id);assert(r.type==="requires_transition_enabled","Tipo de relación no compatible: "+r.type);assert(typeof r.transition_id==="string"&&r.transition_id.length>0&&typeof r.requires_transition_id==="string"&&r.requires_transition_id.length>0,"La relación requiere transition_id y requires_transition_id.");assert(tids.has(r.transition_id),"Transición guardada desconocida: "+r.transition_id);assert(tids.has(r.requires_transition_id),"Transición prerrequisito desconocida: "+r.requires_transition_id);assert(r.transition_id!==r.requires_transition_id,"Una relación no puede habilitarse a sí misma.")})}
+ assert(Array.isArray(m.scenarios)&&m.scenarios.length>0,"scenarios debe ser una lista no vacía.");var sids=new Set();
+ m.scenarios.forEach(function(s){assert(s&&typeof s==="object"&&!Array.isArray(s),"Cada escenario debe ser un objeto.");knownKeys(s,["id","disabled_transitions"],"Escenario");assert(typeof s.id==="string"&&s.id.length>0,"Cada escenario necesita ID.");assert(!sids.has(s.id),"ID de escenario duplicado: "+s.id);sids.add(s.id);var ds=s.disabled_transitions===undefined?[]:s.disabled_transitions;assert(Array.isArray(ds),"disabled_transitions debe ser una lista.");assert(ds.every(function(t){return typeof t==="string"&&t.length>0}),"IDs deshabilitados deben ser textos no vacíos.");assert(new Set(ds).size===ds.length,"El escenario "+s.id+" repite un ID.");ds.forEach(function(id){assert(tids.has(id),"Transición desconocida: "+id)})});
+ assert(sids.has("baseline"),"Debe existir baseline.");assert(m.exploration&&typeof m.exploration==="object","exploration debe ser un objeto.");assert(Number.isInteger(m.exploration.max_depth)&&m.exploration.max_depth>=0,"max_depth debe ser entero no negativo.");assert(Number.isInteger(m.exploration.max_trajectories)&&m.exploration.max_trajectories>=1,"max_trajectories debe ser entero positivo.");assert(m.states.length<=500&&m.transitions.length<=2000,"Límite: 500 estados y 2000 transiciones.");assert(m.exploration.max_depth<=100&&m.exploration.max_trajectories<=10000,"Límite: profundidad ≤100 y trayectorias ≤10000.");
+}
+function runScenario(m,s){
+ var explicitDisabled=new Set(s.disabled_transitions||[]),disabled=new Set(explicitDisabled),relationEffects=[];if(canonical(m.rule_profile)===canonical({type:"relation_guarded_graph",version:"1"})){(m.relations||[]).slice().sort(function(a,b){return a.id.localeCompare(b.id)}).forEach(function(r){var blocked=explicitDisabled.has(r.requires_transition_id);relationEffects.push({relation_id:r.id,type:r.type,transition_id:r.transition_id,requires_transition_id:r.requires_transition_id,status:blocked?"BLOCKED":"APPLIED",reason:blocked?"prerequisite_transition_disabled":"prerequisite_transition_not_disabled"});if(blocked)disabled.add(r.transition_id)})}var adj={};m.states.forEach(function(x){adj[x]=[]});m.transitions.forEach(function(t){if(!disabled.has(t.id))adj[t.source].push(t)});Object.keys(adj).forEach(function(k){adj[k].sort(function(a,b){return a.id.localeCompare(b.id)})});
+ var reached=new Set([m.initial_state]),q=[m.initial_state];for(var i=0;i<q.length;i++)adj[q[i]].forEach(function(t){if(!reached.has(t.target)){reached.add(t.target);q.push(t.target)}});
+ var paths=[],truncated=false,stack=[{state:m.initial_state,path:[{state:m.initial_state}],depth:0}],cap=m.exploration.max_trajectories,depthMax=m.exploration.max_depth;
+ while(stack.length){var cur=stack.pop(),out=adj[cur.state];if(cur.depth>=depthMax){if(out.length)truncated=true;if(paths.length<cap)paths.push(cur.path);else{truncated=true;break}continue}if(!out.length){if(paths.length<cap)paths.push(cur.path);else{truncated=true;break}continue}for(var j=out.length-1;j>=0;j--){var t=out[j];stack.push({state:t.target,path:cur.path.concat([{transition:t.id,state:t.target}]),depth:cur.depth+1})}if(paths.length>=cap&&stack.length){truncated=true;break}}
+ var result={scenario_id:s.id,disabled_transitions:Array.from(explicitDisabled).sort(),enabled_transitions_at_initial_state:adj[m.initial_state].map(function(t){return t.id}).sort(),reachable_states:Array.from(reached).sort(),trajectories:paths,truncated:truncated,exploration_bounds:{max_depth:depthMax,max_trajectories:cap}};if(canonical(m.rule_profile)===canonical({type:"relation_guarded_graph",version:"1"})){result.relation_effects=relationEffects;result.effective_disabled_transitions=Array.from(disabled).sort()}return result
+}
+function execute(m){validate(m);var ss=m.scenarios.slice().sort(function(a,b){return a.id.localeCompare(b.id)}),results={};ss.forEach(function(s){results[s.id]=runScenario(m,s)});var base=results.baseline,comparisons={};
+ Object.keys(results).forEach(function(id){if(id==="baseline")return;var r=results[id],bp=new Set(base.trajectories.map(canonical)),rp=new Set(r.trajectories.map(canonical));comparisons[id]={intervention:{disabled_transitions:r.disabled_transitions},enabled_at_initial_added:r.enabled_transitions_at_initial_state.filter(function(x){return !base.enabled_transitions_at_initial_state.includes(x)}),enabled_at_initial_removed:base.enabled_transitions_at_initial_state.filter(function(x){return !r.enabled_transitions_at_initial_state.includes(x)}),reachable_states_added:r.reachable_states.filter(function(x){return !base.reachable_states.includes(x)}),reachable_states_removed:base.reachable_states.filter(function(x){return !r.reachable_states.includes(x)}),trajectories_added:r.trajectories.filter(function(p){return !bp.has(canonical(p))}),trajectories_removed:base.trajectories.filter(function(p){return !rp.has(canonical(p))}),truncated:base.truncated||r.truncated}});
+ return {engine_version:"collective-toy-engine-001",schema_version:m.schema_version,model_id:m.model_id,rule_profile:m.rule_profile,validation:"PASS",scenario_results:results,comparisons_to_baseline:comparisons,scientific_interpretation:"NONE: synthetic model execution only; no empirical or TGCV validity claim."}
+}
+function node(tag,cls,txt){var n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n}
+function draw(m,r,sid){
+ var svg=$("graph");svg.replaceChildren();var ns="http://www.w3.org/2000/svg";function make(tag,attrs,txt){var n=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){n.setAttribute(k,attrs[k])});if(txt!==undefined)n.textContent=txt;svg.append(n);return n}
+ var cols=4,rows=Math.ceil(m.states.length/cols),h=Math.max(220,rows*95+80);svg.setAttribute("viewBox","0 0 620 "+h);var pos={};m.states.forEach(function(s,i){pos[s]={x:78+(i%cols)*155,y:55+Math.floor(i/cols)*95}});
+ var defs=make("defs",{}),marker=document.createElementNS(ns,"marker");marker.setAttribute("id","arrow");marker.setAttribute("markerWidth","8");marker.setAttribute("markerHeight","8");marker.setAttribute("refX","6");marker.setAttribute("refY","3");marker.setAttribute("orient","auto");var mp=document.createElementNS(ns,"path");mp.setAttribute("d","M0,0 L6,3 L0,6 Z");mp.setAttribute("fill","currentColor");marker.append(mp);defs.append(marker);
+ var scenario=m.scenarios.find(function(s){return s.id===sid}),res=r.scenario_results[sid],disabled=new Set(res.effective_disabled_transitions||scenario.disabled_transitions||[]);
+ m.transitions.forEach(function(t){var a=pos[t.source],b=pos[t.target],off=disabled.has(t.id),x1=a.x+38,y1=a.y+18,x2=b.x-38,y2=b.y+18,d;if(t.source===t.target)d="M "+(a.x-10)+" "+a.y+" C "+(a.x-48)+" "+(a.y-45)+", "+(a.x+48)+" "+(a.y-45)+", "+(a.x+10)+" "+a.y;else d="M "+x1+" "+y1+" Q "+((x1+x2)/2)+" "+((y1+y2)/2-12)+" "+x2+" "+y2;make("path",{d:d,"data-transition-id":t.id,fill:"none",stroke:"currentColor","stroke-width":1.6,"stroke-opacity":off?.22:.72,"marker-end":"url(#arrow)"});make("text",{"data-transition-id":t.id,x:(x1+x2)/2,y:(y1+y2)/2-8,"text-anchor":"middle","font-size":11,fill:"currentColor","fill-opacity":off?.45:1},t.id)});
+ m.states.forEach(function(s){var p=pos[s],reach=res.reachable_states.includes(s);make("rect",{x:p.x-38,y:p.y-18,width:76,height:36,rx:10,fill:reach?"#16856f":"#778899","fill-opacity":reach?.24:.12,stroke:"currentColor","stroke-opacity":.7});make("text",{x:p.x,y:p.y+5,"text-anchor":"middle","font-size":13,fill:"currentColor"},s);if(s===m.initial_state)make("text",{x:p.x,y:p.y-26,"text-anchor":"middle","font-size":10,fill:"currentColor"},"INICIO")});
+ $("graph-note").textContent=sid+": "+res.reachable_states.length+" estado(s) alcanzable(s); transiciones deshabilitadas efectivas: "+(Array.from(disabled).sort().join(", ")||"ninguna")+".";
+}
+function render(m,r){var sel=$("which"),old=sel.value;sel.replaceChildren();m.scenarios.slice().sort(function(a,b){return a.id.localeCompare(b.id)}).forEach(function(s){var o=node("option","",s.id);o.value=s.id;sel.append(o)});sel.value=r.scenario_results[old]?old:"baseline";draw(m,r,sel.value);
+ var base=r.scenario_results.baseline; $("metrics").replaceChildren();[[base.reachable_states.length,"Estados alcanzables en baseline"],[base.trajectories.length,"Trayectorias enumeradas"],[base.truncated?"Sí":"No","Límite alcanzado"]].forEach(function(pair){var card=node("div","metric");card.append(node("strong","",String(pair[0])),node("span","",pair[1]));$("metrics").append(card)});
+ var out=$("results");out.replaceChildren();Object.keys(r.scenario_results).forEach(function(id){var res=r.scenario_results[id],box=node("div","scenario");box.append(node("h3","","Escenario: "+id));var chips=node("div","chips");chips.append(node("span","chip","Alcanzables: "+res.reachable_states.join(", ")),node("span","chip","Habilitadas en inicio: "+(res.enabled_transitions_at_initial_state.join(", ")||"—")));box.append(chips);if(res.truncated)box.append(node("p","error","Exploración truncada: no se garantiza enumeración completa."));box.append(node("p","muted","Trayectorias enumeradas: "+res.trajectories.length));var paths=node("div","paths");res.trajectories.forEach(function(p,i){paths.append(node("div","path",(i+1)+". "+p.map(function(x){return x.state}).join(" → ")+(p.length===1?" (sin transiciones)":"")))});box.append(paths);if(id!=="baseline"){var c=r.comparisons_to_baseline[id];box.append(node("p","muted","Vs. baseline — estados añadidos: "+(c.reachable_states_added.join(", ")||"ninguno")+"; eliminados: "+(c.reachable_states_removed.join(", ")||"ninguno")+"; transiciones iniciales retiradas: "+(c.enabled_at_initial_removed.join(", ")||"ninguna")+"."))}out.append(box)})}
+var lastPackage=null,lastModel=null;
+
+async function run(){var status=$("status");status.className="muted";status.textContent="Validando y ejecutando…";$("export").disabled=true;try{var m=JSON.parse($("model").value),result=execute(m);result.input_sha256=await hash(m);var body=Object.assign({},result);delete body.input_sha256;result.result_sha256=await hash(body);lastModel=m;lastPackage={package_version:"collective-toy-browser-run-001",input:m,result:result};lastPackage.package_sha256=await hash(lastPackage);render(m,result);$("export").disabled=false;status.className="ok";status.textContent="Ejecución completada. Input SHA-256: "+result.input_sha256.slice(0,16)+"… · Result SHA-256: "+result.result_sha256.slice(0,16)+"…"}catch(e){status.className="error";status.textContent="No se ha podido ejecutar: "+(e.message||String(e));$("results").replaceChildren(node("p","error",status.textContent))}}
+
+async function assessImportedBrowserPackage(pkg){
+ assert(pkg&&typeof pkg==="object"&&!Array.isArray(pkg),"El paquete debe ser un objeto JSON.");
+ assert(Object.keys(pkg).every(function(k){return ["package_version","input","result","package_sha256"].includes(k)}),"El paquete contiene campos desconocidos.");
+ assert(pkg.package_version==="collective-toy-browser-run-001","Esquema de paquete desconocido o no compatible.");
+ assert(pkg.input&&typeof pkg.input==="object"&&!Array.isArray(pkg.input),"Falta input o no es un objeto.");
+ assert(pkg.result&&typeof pkg.result==="object"&&!Array.isArray(pkg.result),"Falta result o no es un objeto.");
+ assert(Object.keys(pkg.result).every(function(k){return ["engine_version","schema_version","model_id","rule_profile","validation","scenario_results","comparisons_to_baseline","scientific_interpretation","input_sha256","result_sha256"].includes(k)}),"El resultado contiene campos desconocidos.");
+ assert(typeof pkg.package_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.package_sha256),"package_sha256 ausente o malformado.");
+ assert(typeof pkg.result.engine_version==="string"&&pkg.result.engine_version.trim().length>0,"Declaración de versión del motor ausente o malformada.");
+ assert(pkg.result.schema_version===pkg.input.schema_version,"La versión de esquema del resultado no coincide con la entrada.");
+ assert(pkg.result.model_id===pkg.input.model_id,"El model_id del resultado no coincide con la entrada.");
+ assert(canonical(pkg.result.rule_profile)===canonical(pkg.input.rule_profile),"El perfil de reglas del resultado no coincide con la entrada.");
+ assert(pkg.result.validation==="PASS","El resultado no declara validation=PASS.");
+ assert(pkg.result.scenario_results&&typeof pkg.result.scenario_results==="object"&&!Array.isArray(pkg.result.scenario_results),"scenario_results ausente o malformado.");
+ assert(pkg.result.comparisons_to_baseline&&typeof pkg.result.comparisons_to_baseline==="object"&&!Array.isArray(pkg.result.comparisons_to_baseline),"comparisons_to_baseline ausente o malformado.");
+ assert(typeof pkg.result.scientific_interpretation==="string","scientific_interpretation ausente o malformado.");
+ var allowedScenarioKeys=["scenario_id","disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories","truncated","exploration_bounds","relation_effects","effective_disabled_transitions"];
+ var inputScenarioIds=pkg.input&&Array.isArray(pkg.input.scenarios)?pkg.input.scenarios.map(function(s){return s&&s.id}):[];
+ assert(inputScenarioIds.length>0,"La entrada debe declarar escenarios antes de validar resultados.");
+ assert(Object.keys(pkg.result.scenario_results).every(function(id){return inputScenarioIds.includes(id)}),"scenario_results contiene escenarios que no están en la entrada.");
+ assert(inputScenarioIds.every(function(id){return Object.prototype.hasOwnProperty.call(pkg.result.scenario_results,id)}),"scenario_results no contiene todos los escenarios de la entrada.");
+ var inputStateIds=new Set(pkg.input.states),inputTransitions=new Map(pkg.input.transitions.map(function(t){return [t.id,t]}));
+ Object.keys(pkg.result.scenario_results).forEach(function(id){
+  var sr=pkg.result.scenario_results[id];
+  assert(sr&&typeof sr==="object"&&!Array.isArray(sr),"El resultado del escenario "+id+" debe ser un objeto.");
+  assert(Object.keys(sr).every(function(k){return allowedScenarioKeys.includes(k)}),"El resultado del escenario "+id+" contiene campos desconocidos.");
+  assert(sr.scenario_id===id,"scenario_id no coincide con la clave "+id+".");
+  ["disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories"].forEach(function(k){assert(Array.isArray(sr[k]),"El campo "+k+" del escenario "+id+" debe ser una lista.")});
+  ["disabled_transitions","enabled_transitions_at_initial_state","reachable_states"].forEach(function(k){assert(sr[k].every(function(v){return typeof v==="string"&&v.length>0}),"Todos los elementos de "+k+" en "+id+" deben ser cadenas no vacías.")});
+  if(inputStateIds.has(pkg.input.initial_state))assert(sr.trajectories.every(function(path){return Array.isArray(path)&&path.length>0&&path.every(function(step,i){if(!(step&&typeof step==="object"&&!Array.isArray(step)&&typeof step.state==="string"&&inputStateIds.has(step.state)&&(!Object.prototype.hasOwnProperty.call(step,"transition")||typeof step.transition==="string")&&Object.keys(step).every(function(k){return k==="state"||k==="transition"})))return false;if(i===0)return !Object.prototype.hasOwnProperty.call(step,"transition")&&step.state===pkg.input.initial_state;var edge=inputTransitions.get(step.transition),prev=path[i-1];return !!edge&&edge.source===prev.state&&edge.target===step.state})}),"trajectories del escenario "+id+" debe contener rutas válidas y transiciones coherentes con la entrada.");
+  assert(typeof sr.truncated==="boolean","truncated del escenario "+id+" debe ser booleano.");
+  assert(sr.exploration_bounds&&typeof sr.exploration_bounds==="object"&&!Array.isArray(sr.exploration_bounds),"exploration_bounds del escenario "+id+" debe ser un objeto.");
+  assert(Object.keys(sr.exploration_bounds).every(function(k){return ["max_depth","max_trajectories"].includes(k)}),"exploration_bounds contiene campos desconocidos.");
+  assert(Number.isInteger(sr.exploration_bounds.max_depth)&&sr.exploration_bounds.max_depth>=0&&Number.isInteger(sr.exploration_bounds.max_trajectories)&&sr.exploration_bounds.max_trajectories>=0,"exploration_bounds debe declarar límites enteros no negativos.");
+   var guardedProfile=canonical(pkg.input.rule_profile)===canonical({type:"relation_guarded_graph",version:"1"});
+   if(guardedProfile){
+    var expectedEffects=(pkg.input.relations||[]).slice().sort(function(a,b){return a.id.localeCompare(b.id)}).map(function(r){var blocked=sr.disabled_transitions.includes(r.requires_transition_id);return {relation_id:r.id,type:r.type,transition_id:r.transition_id,requires_transition_id:r.requires_transition_id,status:blocked?"BLOCKED":"APPLIED",reason:blocked?"prerequisite_transition_disabled":"prerequisite_transition_not_disabled"}});
+    assert(Array.isArray(sr.relation_effects)&&canonical(sr.relation_effects)===canonical(expectedEffects),"relation_effects no coincide con los efectos que determinan las relaciones de entrada y las deshabilitaciones explícitas.");
+    var expectedEffectiveDisabled=Array.from(new Set(sr.disabled_transitions.concat(expectedEffects.filter(function(v){return v.status==="BLOCKED"}).map(function(v){return v.transition_id})))).sort();
+    assert(Array.isArray(sr.effective_disabled_transitions)&&canonical(sr.effective_disabled_transitions)===canonical(expectedEffectiveDisabled),"effective_disabled_transitions no coincide con las relaciones aplicadas.");
+   }else{
+    assert(!Object.prototype.hasOwnProperty.call(sr,"relation_effects")&&!Object.prototype.hasOwnProperty.call(sr,"effective_disabled_transitions"),"Un perfil sin guardas no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas.");
+   }
+ });
+ var allowedComparisonKeys=["intervention","enabled_at_initial_added","enabled_at_initial_removed","reachable_states_added","reachable_states_removed","trajectories_added","trajectories_removed","truncated"];
+ assert(Object.keys(pkg.result.comparisons_to_baseline).every(function(id){return inputScenarioIds.includes(id)&&id!=="baseline"}),"comparisons_to_baseline contiene una clave de escenario no compatible.");
+ inputScenarioIds.filter(function(id){return id!=="baseline"}).forEach(function(id){assert(Object.prototype.hasOwnProperty.call(pkg.result.comparisons_to_baseline,id),"Falta comparación baseline para "+id+".")});
+ Object.keys(pkg.result.comparisons_to_baseline).forEach(function(id){
+  var cr=pkg.result.comparisons_to_baseline[id];
+  assert(cr&&typeof cr==="object"&&!Array.isArray(cr),"La comparación "+id+" debe ser un objeto.");
+  assert(Object.keys(cr).every(function(k){return allowedComparisonKeys.includes(k)}),"La comparación "+id+" contiene campos desconocidos.");
+  ["enabled_at_initial_added","enabled_at_initial_removed","reachable_states_added","reachable_states_removed","trajectories_added","trajectories_removed"].forEach(function(k){assert(Array.isArray(cr[k]),"El campo "+k+" de la comparación "+id+" debe ser una lista.")});
+  ["enabled_at_initial_added","enabled_at_initial_removed"].forEach(function(k){assert(cr[k].every(function(v){return typeof v==="string"&&inputTransitions.has(v)}),"Todos los elementos de "+k+" en "+id+" deben ser IDs de transición declarados.")});
+  ["reachable_states_added","reachable_states_removed"].forEach(function(k){assert(cr[k].every(function(v){return typeof v==="string"&&inputStateIds.has(v)}),"Todos los elementos de "+k+" en "+id+" deben ser IDs de estado declarados.")});
+  ["trajectories_added","trajectories_removed"].forEach(function(k){if(inputStateIds.has(pkg.input.initial_state))assert(cr[k].every(function(path){return Array.isArray(path)&&path.length>0&&path.every(function(step,i){if(!(step&&typeof step==="object"&&!Array.isArray(step)&&typeof step.state==="string"&&inputStateIds.has(step.state)&&(!Object.prototype.hasOwnProperty.call(step,"transition")||typeof step.transition==="string")&&Object.keys(step).every(function(key){return key==="state"||key==="transition"})))return false;if(i===0)return !Object.prototype.hasOwnProperty.call(step,"transition")&&step.state===pkg.input.initial_state;var edge=inputTransitions.get(step.transition),prev=path[i-1];return !!edge&&edge.source===prev.state&&edge.target===step.state})}),k+" en "+id+" debe contener rutas coherentes con las transiciones de entrada.")});
+  assert(typeof cr.truncated==="boolean","truncated de la comparación "+id+" debe ser booleano.");
+  assert(cr.intervention&&typeof cr.intervention==="object"&&!Array.isArray(cr.intervention),"intervention de la comparación "+id+" debe ser un objeto.");
+  assert(Object.keys(cr.intervention).every(function(k){return k==="disabled_transitions"}),"intervention contiene campos desconocidos.");
+  assert(Array.isArray(cr.intervention.disabled_transitions),"disabled_transitions de intervention debe ser una lista.");
+ });
+ var packageBody=Object.assign({},pkg);delete packageBody.package_sha256;
+ assert(await hash(packageBody)===pkg.package_sha256,"El hash del paquete no coincide.");
+ assert(typeof pkg.result.input_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.input_sha256),"input_sha256 ausente o malformado.");
+ assert(await hash(pkg.input)===pkg.result.input_sha256,"El hash de la entrada no coincide.");
+ assert(typeof pkg.result.result_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.result_sha256),"result_sha256 ausente o malformado.");
+ var resultBody=Object.assign({},pkg.result);delete resultBody.input_sha256;delete resultBody.result_sha256;
+ assert(await hash(resultBody)===pkg.result.result_sha256,"El hash del resultado no coincide.");
+ // Validate the declared input schema before any compatibility fallback. A valid hash
+ // proves byte-level consistency, not that the input is a supported model.
+ validate(pkg.input);
+ var supportedEngine="collective-toy-engine-001";
+ if(pkg.result.engine_version!==supportedEngine)return {status:"inspect-only/replay-unavailable",message:"Consistencia interna de hashes verificada; esto no autentica el origen ni demuestra la corrección del resultado. Entrada estructuralmente válida. Motor declarado no compatible con este ejecutor; no se ha intentado reproducir.",integrity:true,replay:false};
+ var replay=execute(pkg.input);replay.input_sha256=await hash(pkg.input);
+ var replayBody=Object.assign({},replay);delete replayBody.input_sha256;
+ replay.result_sha256=await hash(replayBody);
+ assert(canonical(replay)===canonical(pkg.result),"La reproducción independiente difiere del resultado exportado.");
+ return {status:"replay-verified",message:"Integridad verificada y reproducción independiente coincidente.",integrity:true,replay:true};
+}
+function setPackageAssessment(state,message){
+ var status=$("package-assessment");status.dataset.state=state;status.textContent=message;
+}
+$("package-file").addEventListener("change",function(){
+ var file=$("package-file").files[0];
+ setPackageAssessment("idle",file?"Archivo seleccionado: "+file.name+". Pulsa «Validar paquete importado» para evaluar su contenido.":"No se ha seleccionado ningún archivo.");
+});
+async function handleImportedPackage(){
+ var file=$("package-file").files[0];
+ if(!file){setPackageAssessment("idle","Selecciona primero un archivo JSON.");return}
+ if(file.size>5*1024*1024){setPackageAssessment("rejected","rejected: el archivo supera el límite de 5 MiB.");return}
+ setPackageAssessment("validating","Leyendo y validando paquete…");
+ try{
+  var text=await file.text(),pkg;
+  try{pkg=JSON.parse(text)}catch(_parseError){throw new Error("El archivo no contiene JSON válido.")}
+  var assessment=await assessImportedBrowserPackage(pkg);
+  setPackageAssessment(assessment.replay?"replay-verified":"inspect-only/replay-unavailable",assessment.status+": "+assessment.message);
+ }catch(e){setPackageAssessment("rejected","rejected: "+(e&&e.message?e.message:String(e)))}
+}
+$("assess-package").addEventListener("click",handleImportedPackage);
+
+function currentModelForEditor(){try{return JSON.parse($("model").value)}catch(_e){return null}}
+function syncRelationEditor(){
+ var m=currentModelForEditor(),profile=$("profile-editor"),guarded=$("guarded-transition"),required=$("required-transition"),list=$("relation-list"),help=$("relation-help"),add=$("add-relation");
+ var isGuarded=profile.value==="2";guarded.replaceChildren();required.replaceChildren();list.replaceChildren();
+ var transitions=m&&Array.isArray(m.transitions)?m.transitions:[];
+ var transitionsOverLimit=transitions.length>2000;
+ // Do not materialize thousands of select options while the user edits an invalid oversized model.
+ if(!transitionsOverLimit){transitions.forEach(function(t){[guarded,required].forEach(function(sel){var o=document.createElement("option");o.value=t.id;o.textContent=t.id+" ("+t.source+" → "+t.target+")";sel.append(o)})})}
+ if(m&&Array.isArray(m.relations)){m.relations.forEach(function(r){var li=document.createElement("li");li.className="relation-item";var label=document.createElement("span");label.textContent=r.id+": "+r.transition_id+" requiere que "+r.requires_transition_id+" no esté deshabilitada";li.append(label);if(isGuarded){var remove=document.createElement("button");remove.type="button";remove.textContent="Eliminar";remove.setAttribute("data-remove-relation",r.id);remove.setAttribute("aria-label","Eliminar relación "+r.id);li.append(remove)}list.append(li)})}
+ guarded.disabled=required.disabled=add.disabled=!isGuarded||!transitions.length||transitionsOverLimit;
+ help.textContent=transitionsOverLimit?"Modelo demasiado grande para el editor visual: máximo 2000 transiciones. Puedes corregir el JSON; la ejecución también rechazará este modelo.":(isGuarded?"Regla de escenario: la transición condicionada se bloquea si la transición requerida está explícitamente deshabilitada. No es un prerrequisito temporal.":"Perfil 1 activo: las relaciones se conservan como metadatos y no cambian la simulación.");
+}
+function updateProfileFromEditor(){
+ var m=currentModelForEditor();if(!m){$("status").className="error";$("status").textContent="JSON no válido: corrígelo antes de cambiar el perfil.";return}
+ m.rule_profile=$("profile-editor").value==="2"?{type:"relation_guarded_graph",version:"1"}:{type:"finite_deterministic_graph",version:"1"};
+ $("model").value=JSON.stringify(m,null,2);syncRelationEditor();
+}
+$("profile-editor").addEventListener("change",updateProfileFromEditor);
+$("add-relation").addEventListener("click",function(){
+ var m=currentModelForEditor();if(!m){$("relation-help").textContent="Corrige primero el JSON.";return}
+ if($("profile-editor").value!=="2"){ $("relation-help").textContent="Activa el perfil 2 antes de añadir relaciones.";return}
+ var target=$("guarded-transition").value,required=$("required-transition").value;
+ if(!target||!required||target===required){$("relation-help").textContent="Selecciona dos transiciones distintas.";return}
+ m.relations=Array.isArray(m.relations)?m.relations:[];
+ var n=1,ids=new Set(m.relations.map(function(r){return r.id}));while(ids.has("r_guard_"+n))n++;
+ m.relations.push({id:"r_guard_"+n,type:"requires_transition_enabled",transition_id:target,requires_transition_id:required});
+ $("model").value=JSON.stringify(m,null,2);syncRelationEditor();$("relation-help").textContent="Relación añadida al modelo. Ejecuta los escenarios para calcular sus efectos.";
+});
+$("relation-list").addEventListener("click",function(event){
+ var button=event.target.closest("button[data-remove-relation]");if(!button)return;
+ var m=currentModelForEditor();if(!m||!Array.isArray(m.relations))return;
+ m.relations=m.relations.filter(function(r){return r.id!==button.getAttribute("data-remove-relation")});
+ $("model").value=JSON.stringify(m,null,2);syncRelationEditor();$("relation-help").textContent="Relación eliminada del modelo. Ejecuta los escenarios para actualizar resultados.";
+});
+$("model").addEventListener("input",function(){var m=currentModelForEditor();if(m&&m.rule_profile){$("profile-editor").value=m.rule_profile.type==="relation_guarded_graph"?"2":"1"}syncRelationEditor()});
+
+$("load").addEventListener("click",function(){$("model").value=JSON.stringify(example(),null,2);$("profile-editor").value="1";syncRelationEditor();$("status").textContent="Ejemplo cargado. Pulsa Ejecutar escenarios."});
+$("model").value=JSON.stringify(example(),null,2);syncRelationEditor();
+$("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage)draw(lastModel,lastPackage.result,$("which").value)});
+$("export").addEventListener("click",function(){if(!lastPackage)return;var blob=new Blob([JSON.stringify(lastPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
+</script></body></html>
