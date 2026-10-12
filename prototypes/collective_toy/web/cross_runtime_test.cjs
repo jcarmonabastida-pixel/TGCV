@@ -163,20 +163,6 @@ function fixtures() {
   ];
   cases.push({ name: "same-target-conjunctive-guards", model: conjunctiveGuards });
 
-  const conjunctiveGuards = clone(base);
-  conjunctiveGuards.model_id = "same-target-conjunctive-guards";
-  conjunctiveGuards.rule_profile = { type: "relation_guarded_graph", version: "1" };
-  conjunctiveGuards.relations = [
-    { id: "r_bd_requires_ab", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ab" },
-    { id: "r_bd_requires_ac", type: "requires_transition_enabled", transition_id: "t_bd", requires_transition_id: "t_ac" }
-  ];
-  conjunctiveGuards.scenarios = [
-    { id: "baseline", disabled_transitions: [] },
-    { id: "disable_ab", disabled_transitions: ["t_ab"] },
-    { id: "disable_ac", disabled_transitions: ["t_ac"] },
-    { id: "disable_both", disabled_transitions: ["t_ab", "t_ac"] }
-  ];
-  cases.push({ name: "same-target-conjunctive-guards", model: conjunctiveGuards });
   const reversedConjunctiveGuards = clone(conjunctiveGuards);
   reversedConjunctiveGuards.relations.reverse();
   cases.push({ name: "same-target-conjunctive-guards-reversed",
