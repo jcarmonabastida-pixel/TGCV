@@ -1452,7 +1452,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
             "requires_transition_id": "t_ab",
         }
         model["relations"] = [relation, copy.deepcopy(relation)]
-        with self.assertRaisesRegex(ModelValidationError, "duplicate relation id"):
+        with self.assertRaisesRegex(ModelValidationError, "duplicate relation ID"):
             run_model(model)
 
     def test_relations_are_inert_metadata_in_profile_one(self):
