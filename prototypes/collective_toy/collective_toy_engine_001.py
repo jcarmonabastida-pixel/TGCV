@@ -356,6 +356,39 @@ def export_run(model: dict[str, Any]) -> dict[str, Any]:
     return package
 
 
+
+def verify_exported_package(package: dict[str, Any]) -> bool:
+    """Validate package completeness, hashes, and deterministic replay."""
+    required = {"package_version", "engine_version", "input", "result", "package_sha256"}
+    if not isinstance(package, dict) or not required.issubset(package):
+        raise ModelValidationError("Exported package is missing required fields")
+    if package["package_version"] != "collective-toy-run-package-001":
+        raise ModelValidationError("Unsupported exported package version")
+    if package["engine_version"] != ENGINE_VERSION:
+        raise ModelValidationError("Unsupported exported package engine version")
+    if not isinstance(package["input"], dict) or not isinstance(package["result"], dict):
+        raise ModelValidationError("Exported package input and result must be objects")
+
+    package_payload = dict(package)
+    del package_payload["package_sha256"]
+    if sha256_json(package_payload) != package["package_sha256"]:
+        raise ModelValidationError("Exported package SHA-256 does not verify")
+
+    result = package["result"]
+    if not {"input_sha256", "result_sha256"}.issubset(result):
+        raise ModelValidationError("Exported result is missing required hashes")
+    if sha256_json(package["input"]) != result["input_sha256"]:
+        raise ModelValidationError("Exported input SHA-256 does not verify")
+    result_payload = dict(result)
+    del result_payload["input_sha256"]
+    expected_result_sha256 = result_payload.pop("result_sha256")
+    if sha256_json(result_payload) != expected_result_sha256:
+        raise ModelValidationError("Exported result SHA-256 does not verify")
+    if run_model(package["input"]) != result:
+        raise ModelValidationError("Exported result does not match independent replay")
+    return True
+
+
 def demo_model() -> dict[str, Any]:
     """The hand-checkable diamond fixture from the contract."""
     return {
