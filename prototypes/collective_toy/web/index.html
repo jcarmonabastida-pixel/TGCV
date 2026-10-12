@@ -103,9 +103,11 @@ async function assessImportedBrowserPackage(pkg){
  assert(typeof pkg.result.result_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.result_sha256),"result_sha256 ausente o malformado.");
  var resultBody=Object.assign({},pkg.result);delete resultBody.input_sha256;delete resultBody.result_sha256;
  assert(await hash(resultBody)===pkg.result.result_sha256,"El hash del resultado no coincide.");
- var supportedEngine="collective-toy-engine-001";
- if(pkg.result.engine_version!==supportedEngine)return {status:"inspect-only/replay-unavailable",message:"Integridad verificada. Motor declarado no compatible con este ejecutor; no se ha intentado reproducir.",integrity:true,replay:false};
+ // Validate the declared input schema before any compatibility fallback. A valid hash
+ // proves byte-level consistency, not that the input is a supported model.
  validate(pkg.input);
+ var supportedEngine="collective-toy-engine-001";
+ if(pkg.result.engine_version!==supportedEngine)return {status:"inspect-only/replay-unavailable",message:"Integridad verificada y entrada estructuralmente válida. Motor declarado no compatible con este ejecutor; no se ha intentado reproducir.",integrity:true,replay:false};
  var replay=execute(pkg.input);replay.input_sha256=await hash(pkg.input);
  var replayBody=Object.assign({},replay);delete replayBody.input_sha256;
  replay.result_sha256=await hash(replayBody);
