@@ -701,7 +701,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
     def test_duplicate_state_id_fails(self):
         model = copy.deepcopy(self.model)
         model["states"].append("A")
-        with self.assertRaisesRegex(ModelValidationError, "duplicate state id"):
+        with self.assertRaisesRegex(ModelValidationError, "duplicate state IDs"):
             run_model(model)
 
     def test_unknown_disabled_transition_fails(self):
