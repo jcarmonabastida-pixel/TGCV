@@ -630,6 +630,15 @@ function invalidFixtures() {
   cases.push({ name: "missing-baseline", model: m });
   m = clone(base); m.model_id = "negative-depth"; m.exploration.max_depth = -1;
   cases.push({ name: "negative-depth", model: m });
+
+  m = clone(base); m.model_id = "empty-state-id"; m.states[0] = "";
+  cases.push({ name: "empty-state-id", model: m });
+
+  m = clone(base); m.model_id = "transitions-not-list"; m.transitions = {};
+  cases.push({ name: "transitions-not-list", model: m });
+
+  m = clone(base); m.model_id = "fractional-depth"; m.exploration.max_depth = 1.5;
+  cases.push({ name: "fractional-depth", model: m });
   m = clone(base); m.model_id = "duplicate-transition-id"; m.transitions.push({ id: "t_ab", source: "B", target: "A" });
   cases.push({ name: "duplicate-transition-id", model: m });
   const guarded = clone(base);
