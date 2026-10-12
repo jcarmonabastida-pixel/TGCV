@@ -9,6 +9,7 @@ from collective_toy_engine_001 import (
     canonical_json,
     sha256_json,
     verify_exported_package,
+    verify_exported_package_integrity,
 )
 
 
@@ -336,6 +337,39 @@ class CollectiveToyEngineTests(unittest.TestCase):
         wrong_engine["package_sha256"] = sha256_json(engine_payload)
         with self.assertRaises(ModelValidationError):
             verify_exported_package(wrong_engine)
+
+    def test_unknown_engine_can_be_integrity_verified_but_not_replayed(self):
+        package = export_run(self.model)
+        package["engine_version"] = "collective-toy-engine-999"
+        payload = copy.deepcopy(package)
+        del payload["package_sha256"]
+        package["package_sha256"] = sha256_json(payload)
+
+        # Known package format and all hashes are valid; this says nothing about replay.
+        self.assertTrue(verify_exported_package_integrity(package))
+        with self.assertRaisesRegex(ModelValidationError, "Unsupported exported package engine version"):
+            verify_exported_package(package)
+
+    def test_integrity_verification_rejects_tampering_even_for_unknown_engine(self):
+        package = export_run(self.model)
+        package["engine_version"] = "collective-toy-engine-999"
+        package["result"]["model_id"] = "tampered-result"
+        payload = copy.deepcopy(package)
+        del payload["package_sha256"]
+        package["package_sha256"] = sha256_json(payload)
+
+        with self.assertRaisesRegex(ModelValidationError, "Exported result SHA-256 does not verify"):
+            verify_exported_package_integrity(package)
+
+    def test_integrity_verification_rejects_unknown_package_format_even_with_recomputed_hash(self):
+        package = export_run(self.model)
+        package["package_version"] = "collective-toy-run-package-999"
+        payload = copy.deepcopy(package)
+        del payload["package_sha256"]
+        package["package_sha256"] = sha256_json(payload)
+
+        with self.assertRaisesRegex(ModelValidationError, "Unsupported exported package version"):
+            verify_exported_package_integrity(package)
 
     def test_export_contains_reproduction_inputs_and_hashes(self):
         package = export_run(self.model)
