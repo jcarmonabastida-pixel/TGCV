@@ -59,6 +59,23 @@ class CollectiveToyEngineTests(unittest.TestCase):
         )
         self.assertFalse(comparison["truncated"])
 
+    def test_baseline_comparison_propagates_truncation_from_either_scenario(self):
+        model = copy.deepcopy(self.model)
+        model["exploration"] = {"max_depth": 0, "max_trajectories": 10}
+        model["scenarios"] = [
+            {"id": "baseline", "disabled_transitions": []},
+            {"id": "block_initial", "disabled_transitions": ["t_ab", "t_ac"]},
+        ]
+
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        intervention = result["scenario_results"]["block_initial"]
+        comparison = result["comparisons_to_baseline"]["block_initial"]
+
+        self.assertTrue(baseline["truncated"])
+        self.assertFalse(intervention["truncated"])
+        self.assertTrue(comparison["truncated"])
+
     def test_initial_state_must_be_a_string_id_and_malformed_containers_raise_validation_error(self):
         for invalid_initial_state in ([], {}, None, 1):
             with self.subTest(initial_state=invalid_initial_state):
