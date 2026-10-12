@@ -1644,6 +1644,20 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 with self.assertRaises(ModelValidationError):
                     canonical_json(value)
 
+    def test_schema_rejects_empty_states_and_scenarios(self):
+        # Empty containers exercise distinct non-empty-list invariants.
+        empty_states = copy.deepcopy(self.model)
+        empty_states["states"] = []
+        with self.subTest(case="empty-states"):
+            with self.assertRaisesRegex(ModelValidationError, "states must be a non-empty list"):
+                run_model(empty_states)
+
+        empty_scenarios = copy.deepcopy(self.model)
+        empty_scenarios["scenarios"] = []
+        with self.subTest(case="empty-scenarios"):
+            with self.assertRaisesRegex(ModelValidationError, "scenarios must be a non-empty list"):
+                run_model(empty_scenarios)
+
     def test_schema_accepts_minimum_valid_graph_and_zero_depth(self):
         from collective_toy_engine_001 import run_model
 
