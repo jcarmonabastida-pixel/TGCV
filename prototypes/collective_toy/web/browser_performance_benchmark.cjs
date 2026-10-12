@@ -67,6 +67,7 @@ const summarize = values => ({
         const engineSamples = [];
         const interactionSamples = [];
         const heartbeatGapSamples = [];
+        const hashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [] };
         await page.evaluate(m => window.execute(m), model); // warm engine
         await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
         await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
@@ -80,6 +81,7 @@ const summarize = values => ({
           engineSamples.push(engineMs);
           await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
           await page.evaluate(() => {
+            window.__toyHashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [] };
             window.__toyHeartbeat = { last: performance.now(), maxGap: 0, running: true };
             const beat = () => {
               const h = window.__toyHeartbeat;
@@ -98,12 +100,13 @@ const summarize = values => ({
           interactionSamples.push(wallMs);
           const observation = await page.evaluate(() => {
             window.__toyHeartbeat.running = false;
-            return { phases: window.__toyPerfLastRun, maxGap: window.__toyHeartbeat.maxGap };
+            return { phases: window.__toyPerfLastRun, hashPhases: window.__toyHashPhaseSamples, maxGap: window.__toyHeartbeat.maxGap };
           });
           for (const name of phaseNames) {
             if (typeof observation.phases?.[name] === "number") phaseSamples[name].push(observation.phases[name]);
           }
           heartbeatGapSamples.push(observation.maxGap);
+          for (const name of Object.keys(hashPhaseSamples)) hashPhaseSamples[name].push(...(observation.hashPhases?.[name] || []));
         }
         const phaseSummary = Object.fromEntries(phaseNames.filter(n => phaseSamples[n].length).map(n => [n, summarize(phaseSamples[n])]));
         reports.push({
@@ -116,6 +119,7 @@ const summarize = values => ({
           engine_samples_ms: engineSamples.map(v => Number(v.toFixed(3))),
           interaction_wall_ms: summarize(interactionSamples),
           phase_timings: phaseSummary,
+          hash_subphase_timings: Object.fromEntries(Object.keys(hashPhaseSamples).map(name => [name, summarize(hashPhaseSamples[name])])),
           main_thread_frame_gap: summarize(heartbeatGapSamples)
         });
       }
