@@ -8,15 +8,14 @@
 async function detectGraphCandidates(imagePath, options = {}) {
   const { chromium } = require("playwright");
   const fs = require("node:fs");
-  const path = require("node:path");
+  const bytes = fs.readFileSync(imagePath);
+  const imageDataUrl = "data:image/png;base64," + bytes.toString("base64");
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage();
-    const absolute = path.resolve(imagePath);
-    const url = "file://" + absolute.replace(/\\/g, "/");
-    return await page.evaluate(async ({ url, threshold, minNodeSize, maxNodeSize }) => {
+    return await page.evaluate(async ({ imageDataUrl, threshold, minNodeSize, maxNodeSize }) => {
       const image = new Image();
-      image.src = url;
+      image.src = imageDataUrl;
       await image.decode();
       const canvas = document.createElement("canvas");
       canvas.width = image.naturalWidth;
@@ -30,9 +29,6 @@ async function detectGraphCandidates(imagePath, options = {}) {
         if ((r + g + b) / 3 < threshold) dark[i] = 1;
       }
 
-      // Find closed rectangular/elliptical outline candidates by horizontal
-      // and vertical dark-pixel runs. This avoids treating every line crossing
-      // as a node; candidates are provisional and still require review.
       const runs = [];
       for (let y = 2; y < height - 2; y++) {
         let start = -1;
@@ -67,8 +63,6 @@ async function detectGraphCandidates(imagePath, options = {}) {
           bbox: [g.x1, y1, g.x2, y2], confidence: "low", review_required: true });
       }
 
-      // Report straight-line candidates using long horizontal/vertical runs.
-      // Diagonal runs and arrowheads remain explicitly unclassified in v0.1.
       const lineCandidates = [];
       for (let y = 0; y < height; y++) {
         let start = -1;
@@ -96,7 +90,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
         ]
       };
     }, {
-      url,
+      imageDataUrl,
       threshold: options.threshold ?? 100,
       minNodeSize: options.minNodeSize ?? 18,
       maxNodeSize: options.maxNodeSize ?? 50
