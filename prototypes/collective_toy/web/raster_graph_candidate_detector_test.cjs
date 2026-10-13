@@ -56,6 +56,46 @@ const { chromium } = require("playwright");
   }
   testOneToOneMetricMatching();
 
+  function matchNodesOneToOne(candidates, refs, close) {
+    const matchedReferenceIds = new Set();
+    let matchedCandidates = 0;
+    for (const candidate of candidates) {
+      const match = refs.find(reference =>
+        !matchedReferenceIds.has(reference.id) && close(candidate.center, reference.center));
+      if (match) {
+        matchedCandidates++;
+        matchedReferenceIds.add(match.id);
+      }
+    }
+    return { matchedCandidates, matchedReferenceCount: matchedReferenceIds.size, matchedReferenceIds };
+  }
+
+  function testNodeMetricMatching() {
+    const close = (a,b) => Math.hypot(a[0]-b[0],a[1]-b[1]) <= 2;
+    const refs = [
+      {id:"A",center:[0,0]}, {id:"B",center:[10,0]}, {id:"C",center:[20,0]}
+    ];
+    const node = (center) => ({center});
+    const candidates = matchNodesOneToOne([
+      node([0,0]), node([0,0]), node([90,90])
+    ], refs, close);
+    assert.equal(candidates.matchedCandidates, 1,
+      "METRIC-NODE-ONE-TO-ONE-001: duplicate node candidates must not both count as true positives");
+    assert.equal(candidates.matchedReferenceCount, 1,
+      "METRIC-NODE-ONE-TO-ONE-001: only one reference node is recovered");
+    assert.equal(3-candidates.matchedCandidates, 2,
+      "METRIC-NODE-ONE-TO-ONE-001: duplicate and unrelated node candidates are false positives");
+    assert.equal(3-candidates.matchedReferenceCount, 2,
+      "METRIC-NODE-ONE-TO-ONE-001: two reference nodes are missed");
+    const allCorrect = matchNodesOneToOne([
+      node([0,0]), node([10,0]), node([20,0])
+    ], refs, close);
+    assert.equal(allCorrect.matchedCandidates, 3,
+      "METRIC-NODE-ONE-TO-ONE-001: exact node candidates should all match");
+    process.stdout.write("METRIC-NODE-ONE-TO-ONE-001: duplicate nodes, false positives and omissions scored correctly.\\n");
+  }
+  testNodeMetricMatching();
+
   function reportEdgeGeometry(name, result) {
     const reference = referenceByFile.get(name);
     const endpoints = edge => [edge.polyline[0], edge.polyline[edge.polyline.length - 1]];
