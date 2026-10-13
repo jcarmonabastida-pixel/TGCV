@@ -1672,13 +1672,10 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       const fixtureJson = JSON.stringify(fixture.model, null, 2);
       const modelTransitions = fixture.model && Array.isArray(fixture.model.transitions) ? fixture.model.transitions : [];
       const modelStates = fixture.model && Array.isArray(fixture.model.states) ? fixture.model.states : [];
-      if (modelTransitions.length > 2000 || modelStates.length > 500) {
-        // Set oversized fixtures without firing the editor's per-keystroke input handler.
-        // Then exercise the same visible Run action and production validation path.
-        await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
-      } else {
-        await page.locator("#model").fill(fixtureJson, { timeout: 15000 });
-      }
+      // The JSON editor is intentionally collapsed under <details>; assign fixtures
+      // directly so cross-runtime checks do not depend on editor visibility.
+      // Keep exercising the visible Run action and the production execution path.
+      await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
       await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
       await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
 
