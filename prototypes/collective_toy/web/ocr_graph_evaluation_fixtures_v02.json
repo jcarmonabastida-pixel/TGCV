@@ -1,0 +1,432 @@
+{
+  "protocol_version": "0.2",
+  "description": "Deterministic contract fixtures separating topology from text. IDs are pre-established correspondence identities, not detected from pixels.",
+  "cases": [
+    {
+      "id": "STRUCT-001-exact-topology",
+      "expected_status": "STRUCTURE_PASS",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "Inicio"
+          },
+          {
+            "id": "n2",
+            "label": "Fin"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": "sigue"
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "Inicio"
+          },
+          {
+            "id": "n2",
+            "label": "Fin"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": "sigue"
+          }
+        ]
+      }
+    },
+    {
+      "id": "STRUCT-002-labels-wrong-topology-right",
+      "expected_status": "STRUCTURE_PASS",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "Inicio"
+          },
+          {
+            "id": "n2",
+            "label": "Fin"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": "condición"
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A",
+            "provisional_label": true
+          },
+          {
+            "id": "n2",
+            "label": "B",
+            "provisional_label": true
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "STRUCT-003-reversed-arrow",
+      "expected_status": "CRITICAL_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n2",
+            "target": "n1",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "STRUCT-004-missing-edge",
+      "expected_status": "STRUCTURE_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": []
+      }
+    },
+    {
+      "id": "STRUCT-005-extra-edge",
+      "expected_status": "STRUCTURE_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          },
+          {
+            "id": "n3",
+            "label": "C"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          },
+          {
+            "id": "n3",
+            "label": "C"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": ""
+          },
+          {
+            "source": "n2",
+            "target": "n3",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "STRUCT-006-duplicate-edge",
+      "expected_status": "CRITICAL_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": ""
+          },
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "STRUCT-007-missing-node",
+      "expected_status": "CRITICAL_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": []
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          }
+        ],
+        "edges": []
+      }
+    },
+    {
+      "id": "STRUCT-008-unknown-endpoint",
+      "expected_status": "CRITICAL_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": []
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "STRUCT-009-undirected-equivalence",
+      "expected_status": "STRUCTURE_PASS",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "undirected",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n2",
+            "target": "n1",
+            "direction": "undirected",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "STRUCT-010-edge-label-wrong-topology-right",
+      "expected_status": "STRUCTURE_PASS",
+      "reference": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": "x > 0"
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "A"
+          },
+          {
+            "id": "n2",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "n1",
+            "target": "n2",
+            "direction": "directed",
+            "label": "x > O"
+          }
+        ]
+      }
+    }
+  ]
+}
