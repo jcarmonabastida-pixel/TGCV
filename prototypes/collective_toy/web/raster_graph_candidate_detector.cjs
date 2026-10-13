@@ -303,6 +303,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
             from: pa, to: pb, orientation: Math.abs(pa[1]-pb[1]) <= 3 ? "horizontal" : "diagonal",
             line_support_ratio: Number(support.ratio.toFixed(3)), evidence_pixels: support.supported,
             arrowhead_evidence: { at_from: arrowheadEvidence(pa, unitAB), at_to: arrowheadEvidence(pb, unitBA) },
+            direction_status: "unresolved", direction_reason: "No validated arrowhead evidence; absence of a detected arrow does not establish an undirected relation.",
             confidence: "low", review_required: true, direction: "undetermined" });
         }
       }
