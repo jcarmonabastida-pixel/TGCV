@@ -63,6 +63,8 @@ const assert = require("node:assert/strict");
     ];
     await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(reviewModel, null, 2));
     await page.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión review_ab_duplicate/ }).click();
+    const removalStatus = await page.locator("#graph-edit-status").innerText();
+    assert.match(removalStatus, /Conexión eliminada: review_ab_duplicate/, "Edge removal must be accepted by model validation; status: " + removalStatus);
     let reviewed = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(reviewed.transitions.length, 2);
     assert.doesNotMatch(await page.locator("#graph-review-warnings").innerText(), /par\(es\).*duplicado/i);
