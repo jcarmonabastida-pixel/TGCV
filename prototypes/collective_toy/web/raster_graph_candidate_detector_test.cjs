@@ -34,6 +34,8 @@ const { chromium } = require("playwright");
     const precision = candidates.length ? matchedCandidates / candidates.length : 0;
     const recall = refs.length ? matchedRef.size / refs.length : 0;
     process.stdout.write(name + ": edge candidate endpoints=" + JSON.stringify(candidates.map(edge => ({ from: edge.from, to: edge.to, support: edge.line_support_ratio }))) + "\\n");
+    assert.ok(candidates.every(candidate => candidate.direction_status === "unresolved"),
+      name + ": direction must remain explicitly unresolved until arrowhead classification is validated");
     const unresolved = candidates.filter(candidate => !candidate.direction || candidate.direction === "undetermined").length;
     assert.equal(candidates.length, refs.length,
       name + ": candidate count must match reference edge count before direction is evaluated");
