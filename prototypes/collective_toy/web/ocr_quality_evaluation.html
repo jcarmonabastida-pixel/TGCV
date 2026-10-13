@@ -108,6 +108,7 @@ async function run(){
   const worker_init_ms=Math.round(performance.now()-initStart);
   const segmentation_diagnostics=[];
   const preprocessing_diagnostics=[];
+  const character_case_preprocessing_diagnostics=[];
   try{
    for(const f of fixtures){
     const blob=await new Promise(resolve=>f.canvas.toBlob(resolve,"image/png"));if(!blob)throw new Error("No se pudo generar PNG para "+f.id);
@@ -141,6 +142,14 @@ async function run(){
     const raw=String(out.data.text||""),ref=normalize(diagnosticFixture.expected),got=normalize(raw);
     preprocessing_diagnostics.push({id:diagnosticFixture.id,variant:variant.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(wordTokens(ref),wordTokens(got)).toFixed(6)),elapsed_ms:elapsed});
    }
+   for(const characterFixture of fixtures.filter(f=>f.id==="OCR-TXT-002"||f.id==="OCR-TXT-003")){
+    for(const variant of [{name:"original",mode:"original"},{name:"upscale_2x",mode:"upscale_2x"},{name:"grayscale_contrast",mode:"grayscale_contrast"}]){
+     const image=variant.mode==="original"?characterFixture.canvas:preprocessVariant(characterFixture.canvas,variant.mode);
+     const started=performance.now();const out=await worker.recognize(image);const elapsed=Math.round(performance.now()-started);
+     const raw=String(out.data.text||""),ref=normalize(characterFixture.expected),got=normalize(raw);
+     character_case_preprocessing_diagnostics.push({id:characterFixture.id,variant:variant.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(wordTokens(ref),wordTokens(got)).toFixed(6)),elapsed_ms:elapsed,scope:"Comparación diagnóstica; no sustituye el OCR primario ni modifica la puerta de calidad."});
+    }
+   }
   }finally{await worker.terminate()}
   const notationFixture=fixtures.find(f=>f.id==="OCR-TXT-004");
   const notationResult=results.find(r=>r.id==="OCR-TXT-004");
@@ -150,7 +159,7 @@ async function run(){
   const targeted_character_diagnostics=targetedCharacterDiagnostics(results);
   const meanCER=results.reduce((s,r)=>s+r.cer,0)/results.length,meanWER=results.reduce((s,r)=>s+r.wer,0)/results.length;
   const metricValidation=validateMetrics();if(metricValidation.passed!==metricValidation.total)throw new Error("Falló la autocomprobación CER/WER: "+JSON.stringify(metricValidation));
-  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),notation_spacing_diagnostic,segmentation_diagnostics,preprocessing_diagnostics,targeted_character_diagnostics,results};
+  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),notation_spacing_diagnostic,segmentation_diagnostics,preprocessing_diagnostics,character_case_preprocessing_diagnostics,targeted_character_diagnostics,results};
   showResults(report);window.__tgcvOcrReport=report;$("export").disabled=false;$("status").className="ok";$("status").textContent="OCR real completado. Revisa cada caso; los resultados no evalúan flechas ni conectividad.";
  }catch(e){$("status").className="error";$("status").textContent="Evaluación fallida: "+(e&&e.message?e.message:String(e))}finally{$("run").disabled=fixtures.length===0;$("generate").disabled=false}
 }
@@ -161,6 +170,8 @@ function showResults(report){
  const notation=report.notation_spacing_diagnostic;const notationSummary=document.createElement("p");notationSummary.textContent="CER diagnóstico: "+(notation.cer*100).toFixed(2)+"%, WER diagnóstico: "+(notation.wer*100).toFixed(2)+"%; coincidencia tras normalización de espacios: "+(notation.exact_after_spacing_normalization?"sí":"no")+"; texto: "+notation.recognized_spacing_canonical;root.append(notationSummary);
  const diagnosticHeading=document.createElement("h3");diagnosticHeading.textContent="Diagnóstico de segmentación (OCR-TXT-004; no altera el gate principal)";root.append(diagnosticHeading);
  const diagnosticList=document.createElement("ul");for(const d of report.segmentation_diagnostics||[]){const li=document.createElement("li");li.textContent=d.mode+": CER "+(d.cer*100).toFixed(2)+"%, WER "+(d.wer*100).toFixed(2)+"%, "+d.elapsed_ms+" ms; texto: "+d.recognized_normalized;diagnosticList.append(li)}root.append(diagnosticList);
+ const variantHeading=document.createElement("h3");variantHeading.textContent="Comparación de preprocesamiento en los casos C/Cc y 0/O (diagnóstico; no altera el gate)";root.append(variantHeading);
+ const variantList=document.createElement("ul");for(const d of report.character_case_preprocessing_diagnostics||[]){const li=document.createElement("li");li.textContent=d.id+" · "+d.variant+": CER "+(d.cer*100).toFixed(2)+"%, WER "+(d.wer*100).toFixed(2)+"%, "+d.elapsed_ms+" ms; texto: "+d.recognized_raw;variantList.append(li)}root.append(variantList);
  const charHeading=document.createElement("h3");charHeading.textContent="Diagnóstico de confusiones de caracteres (OCR-TXT-002 C/Cc y OCR-TXT-003 0/O; no altera el gate)";root.append(charHeading);
  const charList=document.createElement("ul");for(const d of report.targeted_character_diagnostics||[]){const li=document.createElement("li");li.textContent=d.id+" ("+d.confusion+"): "+(d.c_exact_occurrences!==undefined?("tokens C="+d.c_exact_occurrences+", Cc="+d.cc_exact_occurrences+", línea C exacta="+d.contains_expected_line):("tokens 0="+d.zero_occurrences+", O="+d.capital_o_occurrences+", condición con 0="+d.contains_expected_condition+", condición con O="+d.contains_letter_o_condition))+"; texto reconocido literal: "+d.recognized_raw;charList.append(li)}root.append(charList);
  const prepHeading=document.createElement("h3");prepHeading.textContent="Diagnóstico de preprocesamiento (exploratorio; no altera el gate principal)";root.append(prepHeading);
