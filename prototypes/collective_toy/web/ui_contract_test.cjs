@@ -49,6 +49,26 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#image-transcription").inputValue(), "");
     await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeTranscription);
 
+    // Manual graph review: enumerate edges, remove an incorrect edge, and flag duplicate pairs.
+    const reviewModel = JSON.parse(await page.locator("#model").inputValue());
+    reviewModel.states = ["A", "B", "C", "D"];
+    reviewModel.initial_state = "A";
+    reviewModel.transitions = [
+      { id: "review_ab", source: "A", target: "B" },
+      { id: "review_ab_duplicate", source: "A", target: "B" },
+      { id: "review_bc", source: "B", target: "C" }
+    ];
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(reviewModel, null, 2));
+    await page.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión review_ab_duplicate/ }).click();
+    let reviewed = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(reviewed.transitions.length, 2);
+    assert.doesNotMatch(await page.locator("#graph-review-warnings").innerText(), /par\(es\).*duplicado/i);
+    await page.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión review_bc/ }).click();
+    reviewed = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(reviewed.transitions.length, 1);
+    assert.match(await page.locator("#graph-review-warnings").innerText(), /solo hay una conexión/i);
+    assert.match(await page.locator("#graph-review-warnings").innerText(), /estados aislados/i);
+
     // Output labels must not silently promote graph-local results to system-level TGCV claims.
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.getByText("Estados alcanzables en baseline", { exact: true }).waitFor();
