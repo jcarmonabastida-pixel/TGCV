@@ -19,6 +19,19 @@ const assert = require("node:assert/strict");
     assert.match(notice, /No es una validación científica/i);
     assert.match(notice, /ni implementa por sí solo Tacc de TGCV/i);
 
+    // Image reference upload is explicitly manual (no OCR) and rejects unsupported/oversized files.
+    const imageInput = page.locator("#image-file");
+    await imageInput.setInputFiles({ name: "reference.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jW5sAAAAASUVORK5CYII=", "base64") });
+    await page.locator("#image-preview:not([hidden])").waitFor();
+    assert.match(await page.locator("#image-status").innerText(), /Sin OCR/i);
+    assert.equal(await page.locator("#clear-image").isEnabled(), true);
+    await page.getByRole("button", { name: "Quitar imagen" }).click();
+    assert.equal(await page.locator("#image-preview").isVisible(), false);
+    await imageInput.setInputFiles({ name: "reference.svg", mimeType: "image/svg+xml", buffer: Buffer.from("<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>") });
+    assert.match(await page.locator("#image-status").innerText(), /Formato no admitido/i);
+    await imageInput.setInputFiles({ name: "oversized.png", mimeType: "image/png", buffer: Buffer.alloc(5 * 1024 * 1024 + 1, 0x20) });
+    assert.match(await page.locator("#image-status").innerText(), /supera el límite de 5 MiB/i);
+
     // Output labels must not silently promote graph-local results to system-level TGCV claims.
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.getByText("Estados alcanzables en baseline", { exact: true }).waitFor();
