@@ -291,5 +291,40 @@ const { chromium } = require("playwright");
   process.stdout.write("SYN-BIDIRECTIONAL-001: nodes=" + bidirectionalResult.nodes.length +
     ", connections=" + bidirectionalResult.edge_candidates.length +
     ", opposing arrowheads present; direction classification provisional.\\n");
+  // Crossing lines without a junction marker must not automatically be
+  // interpreted as a graph node. The current detector is candidate-only, so
+  // this fixture records the structural behavior for review.
+  const crossingPath = path.join(tempRoot, "SYN-CROSSING-NO-JUNCTION-001.png");
+  const crossBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await crossBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 320; canvas.height = 220;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 320, 220);
+      ctx.strokeStyle = "#111111"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(40, 110); ctx.lineTo(280, 110); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(160, 25); ctx.lineTo(160, 195); ctx.stroke();
+      for (const [x,y] of [[25,110],[295,110],[160,10],[160,210]]) {
+        ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff"; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(crossingPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await crossBrowser.close(); }
+  const crossingResult = await detectGraphCandidates(crossingPath);
+  assert.equal(crossingResult.status, "experimental-candidates-only");
+  assert.ok(crossingResult.nodes.length >= 4,
+    "SYN-CROSSING-NO-JUNCTION-001: four endpoint nodes should yield candidates");
+  assert.ok(crossingResult.edge_candidates.length >= 2,
+    "SYN-CROSSING-NO-JUNCTION-001: crossing lines should yield connection candidates");
+  assert.ok(crossingResult.edge_candidates.every(edge =>
+    edge.direction_status === "unresolved" && edge.direction === "undetermined" && edge.review_required === true),
+    "SYN-CROSSING-NO-JUNCTION-001: crossing geometry must not invent edge direction");
+  process.stdout.write("SYN-CROSSING-NO-JUNCTION-001: nodes=" + crossingResult.nodes.length +
+    ", connections=" + crossingResult.edge_candidates.length +
+    ", no automatic direction inference.\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
