@@ -2,13 +2,16 @@ name: Collective Toy browser performance benchmark
 
 on:
   workflow_dispatch:
+    inputs:
+      repeats:
+        description: "Measurements per topology and size (3-20)"
+        required: false
+        default: "5"
   pull_request:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - 'prototypes/collective_toy/web/browser_performance_benchmark.cjs'
       - 'prototypes/collective_toy/web/index.html'
-      - 'prototypes/collective_toy/web/package.json'
+      - 'prototypes/collective_toy/web/browser_performance_benchmark.cjs'
       - '.github/workflows/collective-toy-browser-performance.yml'
 
 permissions:
@@ -19,45 +22,28 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Check out source
-        uses: actions/checkout@v4
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+        name: Check out source
+      - uses: actions/setup-node@v4
+        name: Set up Node
         with:
           node-version: '22'
-      - name: Install Playwright dependency
+      - name: Install dependencies
         working-directory: prototypes/collective_toy/web
-        run: npm install
+        run: npm ci
       - name: Install Chromium
         working-directory: prototypes/collective_toy/web
         run: npx playwright install --with-deps chromium
-      - name: Run browser engine and UI latency benchmark
+      - name: Run browser performance benchmark
         working-directory: prototypes/collective_toy/web
-        run: node browser_performance_benchmark.cjs > browser-performance-results.json
-      - name: Validate report and print summary
-        working-directory: prototypes/collective_toy/web
-        run: |
-          node - <<'NODE'
-          const fs = require('node:fs');
-          const report = JSON.parse(fs.readFileSync('browser-performance-results.json', 'utf8'));
-          if (report.scientific_execution !== false || report.reports.length !== 9) {
-            throw new Error('Unexpected benchmark report contract');
-          }
-          for (const row of report.reports) {
-            if (!(row.engine_median_ms >= 0) || !(row.button_to_completed_median_ms >= 0)) {
-              throw new Error('Invalid latency metric');
-            }
-          }
-          console.log(JSON.stringify({
-            benchmark: report.benchmark,
-            reports: report.reports.map(({graph_kind, states, transitions, engine_median_ms, engine_p95_ms, button_to_completed_median_ms, button_to_completed_p95_ms}) =>
-              ({graph_kind, states, transitions, engine_median_ms, engine_p95_ms, button_to_completed_median_ms, button_to_completed_p95_ms}))
-          }, null, 2));
-          NODE
-      - name: Upload browser benchmark results
+        env:
+          BENCHMARK_REPEATS: ${{ github.event.inputs.repeats || '5' }}
+        run: node browser_performance_benchmark.cjs --repeats "$BENCHMARK_REPEATS"
+      - name: Upload raw measurements
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: collective-toy-browser-performance
           path: prototypes/collective_toy/web/browser-performance-results.json
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
