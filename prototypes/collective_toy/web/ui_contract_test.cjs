@@ -388,6 +388,29 @@ const assert = require("node:assert/strict");
     assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /solo hay una conexión/i);
     await orderPage.close();
 
+    // OCR interpretation is a separate, non-destructive layer: suggestions never alter raw OCR or the primary transcription automatically.
+    const rawOCR = "Condición: x > O\\nCc";
+    await page.evaluate((raw) => {
+      document.querySelector("#ocr-raw-text").value = raw;
+      window.renderOcrInterpretation(raw, 87.5);
+    }, rawOCR);
+    assert.equal(await page.locator("#ocr-raw-text").inputValue(), rawOCR);
+    assert.equal(await page.locator("#image-transcription").inputValue(), "");
+    assert.match(await page.locator("#ocr-engine-confidence").innerText(), /87.5%/);
+    assert.equal(await page.locator("#ocr-suggestions li").count(), 2);
+    assert.match(await page.locator("#ocr-suggestions").innerText(), /«O» → posible «0»/);
+    assert.match(await page.locator("#ocr-suggestions").innerText(), /«Cc» → posible «C»/);
+    assert.match(await page.locator("#ocr-suggestions").innerText(), /Confianza de la sugerencia: no disponible/);
+    await page.locator("#ocr-suggestions li").nth(0).getByRole("button", { name: /Aplicar esta alternativa manualmente/ }).click();
+    assert.equal(await page.locator("#image-transcription").inputValue(), "Condición: x > 0\\nCc");
+    assert.equal(await page.locator("#ocr-raw-text").inputValue(), rawOCR, "manual interpretation must not mutate raw OCR");
+    await page.locator("#ocr-suggestions li").nth(1).getByRole("button", { name: /Aplicar esta alternativa manualmente/ }).click();
+    assert.equal(await page.locator("#image-transcription").inputValue(), "Condición: x > 0\\nC");
+    assert.equal(await page.locator("#ocr-raw-text").inputValue(), rawOCR, "raw OCR must remain unchanged after all manual suggestions");
+    assert.match(await page.locator("#ocr-interpretation-status").innerText(), /aplicada manualmente/);
+    await page.evaluate(() => window.renderOcrInterpretation("Etiqueta O normal", null));
+    assert.equal(await page.locator("#ocr-suggestions li").count(), 1, "heuristics must be bounded and must not invent an interpretation for arbitrary O");
+    assert.match(await page.locator("#ocr-engine-confidence").innerText(), /no disponible/i);
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
