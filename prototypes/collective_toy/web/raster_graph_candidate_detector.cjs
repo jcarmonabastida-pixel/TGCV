@@ -65,8 +65,6 @@ async function detectGraphCandidates(imagePath, options = {}) {
         cluster.maxY = Math.max(cluster.maxY, run.y);
         cluster.cx = cluster.runs.reduce((sum, r) => sum + r.cx, 0) / cluster.runs.length;
       }
-      const clusterDiagnostics = clusters.map(c => ({ rows: c.runs.length, minX: c.minX, maxX: c.maxX, minY: c.minY, maxY: c.maxY, width: c.maxX - c.minX + 1, height: c.maxY - c.minY + 1, centerX: Math.round(c.cx), firstY: c.runs[0]?.y, lastY: c.lastY }));
-      const rejectionCounts = { tooFewRows: 0, heightOutOfRange: 0, widthOutOfRange: 0, duplicateCenter: 0, accepted: 0 };
       // Merge left/right arc fragments that share a vertical span. Rounded
       // outlines often produce two short scanline runs per row rather than one.
       const mergedClusters = [];
