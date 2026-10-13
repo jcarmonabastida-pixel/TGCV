@@ -90,16 +90,33 @@ async function run(){
     const cer=rate(ref,got),refWords=ref.split(/\s+/).filter(Boolean),gotWords=got.split(/\s+/).filter(Boolean),wer=rate(refWords,gotWords);
     results.push({id:f.id,difficulty:f.difficulty,fixture_sha256:hash,expected:f.expected,first_recognized_raw:String(firstOut.data.text||""),first_call_elapsed_ms:firstElapsed,recognized_raw:actual,expected_normalized:ref,recognized_normalized:got,cer:Number(cer.toFixed(6)),wer:Number(wer.toFixed(6)),warm_elapsed_ms_samples:samples.map(s=>s.elapsed_ms),warm_elapsed_ms_mean:Math.round(samples.reduce((sum,s)=>sum+s.elapsed_ms,0)/samples.length),identifier_exact:f.lines.filter(x=>/^(Estado|Nodo|A$|B$|C$)/.test(x)).every(x=>got.includes(x))});
    }
+   const diagnosticFixture=fixtures.find(f=>f.id==="OCR-TXT-004");
+   if(!diagnosticFixture)throw new Error("No existe el fixture OCR-TXT-004 para comparar segmentación.");
+   const segmentation_diagnostics=[];
+   const psmModes=[
+    {name:"single_block",value:window.Tesseract.PSM.SINGLE_BLOCK},
+    {name:"sparse_text",value:window.Tesseract.PSM.SPARSE_TEXT}
+   ];
+   for(const mode of psmModes){
+    if(typeof mode.value==="undefined")throw new Error("Tesseract.js no expone el modo PSM requerido: "+mode.name);
+    await worker.setParameters({tessedit_pageseg_mode:mode.value});
+    const started=performance.now();const out=await worker.recognize(diagnosticFixture.canvas);const elapsed=Math.round(performance.now()-started);
+    const raw=String(out.data.text||""),ref=normalize(diagnosticFixture.expected),got=normalize(raw);
+    segmentation_diagnostics.push({id:diagnosticFixture.id,mode:mode.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(ref.split(/\\s+/).filter(Boolean),got.split(/\\s+/).filter(Boolean)).toFixed(6)),elapsed_ms:elapsed});
+   }
+   await worker.setParameters({tessedit_pageseg_mode:window.Tesseract.PSM.AUTO});
   }finally{await worker.terminate()}
   const meanCER=results.reduce((s,r)=>s+r.cer,0)/results.length,meanWER=results.reduce((s,r)=>s+r.wer,0)/results.length;
   const metricValidation=validateMetrics();if(metricValidation.passed!==metricValidation.total)throw new Error("Falló la autocomprobación CER/WER: "+JSON.stringify(metricValidation));
-  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),results};
+  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),segmentation_diagnostics,results};
   showResults(report);window.__tgcvOcrReport=report;$("export").disabled=false;$("status").className="ok";$("status").textContent="OCR real completado. Revisa cada caso; los resultados no evalúan flechas ni conectividad.";
  }catch(e){$("status").className="error";$("status").textContent="Evaluación fallida: "+(e&&e.message?e.message:String(e))}finally{$("run").disabled=fixtures.length===0;$("generate").disabled=false}
 }
 function showResults(report){
  const root=$("results");root.replaceChildren();const h=document.createElement("h2");h.textContent="Resultados";root.append(h);const validation=document.createElement("p");validation.textContent="Autocomprobación de métricas: "+report.metric_validation.passed+"/"+report.metric_validation.total+" casos PASS";root.append(validation);
  const summary=document.createElement("p");summary.textContent="Inicialización del worker: "+report.worker_init_ms+" ms · CER medio: "+(report.mean_cer*100).toFixed(2)+"% · WER medio: "+(report.mean_wer*100).toFixed(2)+"% · Umbral provisional: "+(report.gate_pass?"CUMPLIDO":"NO CUMPLIDO");root.append(summary);
+ const diagnosticHeading=document.createElement("h3");diagnosticHeading.textContent="Diagnóstico de segmentación (OCR-TXT-004; no altera el gate principal)";root.append(diagnosticHeading);
+ const diagnosticList=document.createElement("ul");for(const d of report.segmentation_diagnostics||[]){const li=document.createElement("li");li.textContent=d.mode+": CER "+(d.cer*100).toFixed(2)+"%, WER "+(d.wer*100).toFixed(2)+"%, "+d.elapsed_ms+" ms; texto: "+d.recognized_normalized;diagnosticList.append(li)}root.append(diagnosticList);
  const table=document.createElement("table");table.innerHTML="<thead><tr><th>Caso</th><th>CER</th><th>WER</th><th>Media caliente (ms)</th><th>Identificadores</th><th>Texto reconocido</th></tr></thead>";const body=document.createElement("tbody");
  for(const r of report.results){const tr=document.createElement("tr");for(const value of [r.id,(r.cer*100).toFixed(2)+"%",(r.wer*100).toFixed(2)+"%",String(r.warm_elapsed_ms_mean)+" (3 rep.)",r.identifier_exact?"Exactos":"Revisar",r.recognized_raw]){const td=document.createElement("td");td.textContent=value;tr.append(td)}body.append(tr)}table.append(body);root.append(table);
 }
