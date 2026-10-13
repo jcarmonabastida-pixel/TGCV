@@ -39,6 +39,17 @@ const assert = require("node:assert/strict");
     assert.equal(report.segmentation_diagnostics.length, 2, "Both diagnostic segmentation modes must be recorded");
     assert.equal(report.preprocessing_diagnostics.length, 3, "All three preprocessing variants must be recorded");
     assert.ok(report.notation_spacing_diagnostic, "Transition-notation spacing diagnostic must be recorded");
+    assert.ok(Array.isArray(report.targeted_character_diagnostics), "Targeted character-confusion diagnostics must be recorded");
+    assert.equal(report.targeted_character_diagnostics.length, 2, "Both targeted character-confusion diagnostics must be recorded");
+    const cConfusion = report.targeted_character_diagnostics.find(x => x.id === "OCR-TXT-002");
+    const zeroConfusion = report.targeted_character_diagnostics.find(x => x.id === "OCR-TXT-003");
+    assert.ok(cConfusion && cConfusion.confusion === "C_vs_Cc", "C/Cc diagnostic must be tied to OCR-TXT-002");
+    assert.ok(zeroConfusion && zeroConfusion.confusion === "zero_vs_letter_O", "0/O diagnostic must be tied to OCR-TXT-003");
+    assert.ok(Number.isInteger(cConfusion.c_exact_occurrences) && Number.isInteger(cConfusion.cc_exact_occurrences));
+    assert.ok(Number.isInteger(zeroConfusion.zero_occurrences) && Number.isInteger(zeroConfusion.capital_o_occurrences));
+    assert.match(cConfusion.scope, /no normaliza ni altera CER\/WER primarios o el gate/);
+    assert.match(zeroConfusion.scope, /no normaliza ni altera CER\/WER primarios o el gate/);
+
     assert.equal(report.notation_spacing_diagnostic.id, "OCR-TXT-004");
     assert.ok(Number.isFinite(report.notation_spacing_diagnostic.cer) && Number.isFinite(report.notation_spacing_diagnostic.wer));
     assert.equal(report.notation_spacing_diagnostic.expected_spacing_canonical, "Nodo_01\nNodo-02\nT1: A -> B");
