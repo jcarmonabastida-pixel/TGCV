@@ -45,6 +45,19 @@ function distance(a,b){
  return prev[b.length]
 }
 function rate(reference,actual){return reference.length?distance(reference,actual)/reference.length:(actual.length?1:0)}
+function validateMetrics(){
+ const checks=[
+  {name:"CER idéntico",pass:rate("abc","abc")===0},
+  {name:"CER una sustitución de tres caracteres",pass:Math.abs(rate("abc","axc")-1/3)<1e-12},
+  {name:"CER una inserción",pass:Math.abs(rate("abc","abxc")-1/3)<1e-12},
+  {name:"WER una sustitución de tres palabras",pass:Math.abs(rate(["uno","dos","tres"],["uno","X","tres"])-1/3)<1e-12},
+  {name:"WER una eliminación de palabra",pass:Math.abs(rate(["uno","dos","tres"],["uno","tres"])-1/3)<1e-12},
+  {name:"Referencia vacía y resultado vacío",pass:rate("","")===0},
+  {name:"Referencia vacía y resultado no vacío",pass:rate("","x")===1},
+  {name:"Normalización conserva acentos y puntuación",pass:normalize("  Transición: x > 0\\r\\n") === "Transición: x > 0"}
+ ];
+ return {passed:checks.filter(x=>x.pass).length,total:checks.length,checks};
+}
 async function sha256(blob){const bytes=await blob.arrayBuffer();const digest=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,"0")).join("")}
 function renderFixtures(){
  fixtures=[];results=[];$("results").replaceChildren();const root=$("fixtures");root.replaceChildren();
@@ -79,12 +92,13 @@ async function run(){
    }
   }finally{await worker.terminate()}
   const meanCER=results.reduce((s,r)=>s+r.cer,0)/results.length,meanWER=results.reduce((s,r)=>s+r.wer,0)/results.length;
-  const report={schema:"tgcv-ocr-quality-result-v1",created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),results};
+  const metricValidation=validateMetrics();if(metricValidation.passed!==metricValidation.total)throw new Error("Falló la autocomprobación CER/WER: "+JSON.stringify(metricValidation));
+  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),results};
   showResults(report);window.__tgcvOcrReport=report;$("export").disabled=false;$("status").className="ok";$("status").textContent="OCR real completado. Revisa cada caso; los resultados no evalúan flechas ni conectividad.";
  }catch(e){$("status").className="error";$("status").textContent="Evaluación fallida: "+(e&&e.message?e.message:String(e))}finally{$("run").disabled=fixtures.length===0;$("generate").disabled=false}
 }
 function showResults(report){
- const root=$("results");root.replaceChildren();const h=document.createElement("h2");h.textContent="Resultados";root.append(h);
+ const root=$("results");root.replaceChildren();const h=document.createElement("h2");h.textContent="Resultados";root.append(h);const validation=document.createElement("p");validation.textContent="Autocomprobación de métricas: "+report.metric_validation.passed+"/"+report.metric_validation.total+" casos PASS";root.append(validation);
  const summary=document.createElement("p");summary.textContent="Inicialización del worker: "+report.worker_init_ms+" ms · CER medio: "+(report.mean_cer*100).toFixed(2)+"% · WER medio: "+(report.mean_wer*100).toFixed(2)+"% · Umbral provisional: "+(report.gate_pass?"CUMPLIDO":"NO CUMPLIDO");root.append(summary);
  const table=document.createElement("table");table.innerHTML="<thead><tr><th>Caso</th><th>CER</th><th>WER</th><th>Media caliente (ms)</th><th>Identificadores</th><th>Texto reconocido</th></tr></thead>";const body=document.createElement("tbody");
  for(const r of report.results){const tr=document.createElement("tr");for(const value of [r.id,(r.cer*100).toFixed(2)+"%",(r.wer*100).toFixed(2)+"%",String(r.warm_elapsed_ms_mean)+" (3 rep.)",r.identifier_exact?"Exactos":"Revisar",r.recognized_raw]){const td=document.createElement("td");td.textContent=value;tr.append(td)}body.append(tr)}table.append(body);root.append(table);
