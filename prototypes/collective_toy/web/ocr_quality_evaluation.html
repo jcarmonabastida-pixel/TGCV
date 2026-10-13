@@ -104,6 +104,12 @@ function showResults(report){
  for(const r of report.results){const tr=document.createElement("tr");for(const value of [r.id,(r.cer*100).toFixed(2)+"%",(r.wer*100).toFixed(2)+"%",String(r.warm_elapsed_ms_mean)+" (3 rep.)",r.identifier_exact?"Exactos":"Revisar",r.recognized_raw]){const td=document.createElement("td");td.textContent=value;tr.append(td)}body.append(tr)}table.append(body);root.append(table);
 }
 $("generate").addEventListener("click",renderFixtures);$("run").addEventListener("click",run);$("export").addEventListener("click",()=>{if(!window.__tgcvOcrReport)return;const blob=new Blob([JSON.stringify(window.__tgcvOcrReport,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="tgcv-ocr-quality-result.json";a.click();URL.revokeObjectURL(url)});
+const metricStartupCheck=validateMetrics();
+if(metricStartupCheck.passed!==metricStartupCheck.total){
+ $("run").disabled=true;$("status").className="error";$("status").textContent="Autocomprobación CER/WER fallida ("+metricStartupCheck.passed+"/"+metricStartupCheck.total+"). No se ejecutará OCR.";
+}else{
+ $("status").className="ok";$("status").textContent="Métricas verificadas: "+metricStartupCheck.passed+"/"+metricStartupCheck.total+" autocomprobaciones PASS. Genera las imágenes y ejecuta OCR real cuando quieras.";
+}
 renderFixtures();
 })();
 </script>
