@@ -31,6 +31,17 @@ const assert = require("node:assert/strict");
     await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).click();
     await page.locator("#image-status").filter({ hasText: /OCR completado/ }).waitFor();
     assert.match(await page.locator("#image-transcription").inputValue(), /A --> B/);
+    // Empty OCR output must fail visibly and must not overwrite the last reviewed transcription.
+    await page.evaluate(() => { window.Tesseract = { recognize: async () => ({ data: { text: "   " } }) }; });
+    await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).click();
+    await page.locator("#image-status").filter({ hasText: /No se pudo completar el OCR.*No se detectó texto legible/i }).waitFor();
+    assert.match(await page.locator("#image-transcription").inputValue(), /A --> B/);
+    // Library failure must also be surfaced to the user without a stuck disabled button.
+    await page.evaluate(() => { delete window.Tesseract; const script = document.createElement("script"); script.src = "https://invalid.invalid/tesseract-test.js"; document.head.appendChild(script); });
+    await page.evaluate(() => { window.Tesseract = { recognize: async () => { throw new Error("synthetic OCR failure"); } }; });
+    await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).click();
+    await page.locator("#image-status").filter({ hasText: /synthetic OCR failure/i }).waitFor();
+    assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), true);
     await page.getByRole("button", { name: "Quitar imagen" }).click();
     assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), false);
     assert.equal(await page.locator("#image-preview").isVisible(), false);
