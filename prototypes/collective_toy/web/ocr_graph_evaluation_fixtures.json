@@ -1,6 +1,6 @@
 {
-  "protocol_version": "0.1",
-  "description": "Deterministic graph-evaluation fixtures. Candidate graphs are deliberately controlled test inputs, not OCR output or evidence of engine quality.",
+  "protocol_version": "0.2",
+  "description": "Deterministic topology-first fixtures. Candidate graphs are controlled inputs, not OCR output or evidence of engine quality. Topology is evaluated separately from semantic labels.",
   "cases": [
     {
       "id": "GRAPH-001-exact-match",
@@ -150,7 +150,7 @@
     },
     {
       "id": "GRAPH-004-missing-edge",
-      "expected_status": "FAIL",
+      "expected_status": "CRITICAL_FAIL",
       "reference": {
         "nodes": [
           {
@@ -187,7 +187,7 @@
     },
     {
       "id": "GRAPH-005-wrong-node-label",
-      "expected_status": "FAIL",
+      "expected_status": "PASS",
       "reference": {
         "nodes": [
           {
@@ -303,7 +303,7 @@
     },
     {
       "id": "GRAPH-008-critical-identifier-confusion",
-      "expected_status": "CRITICAL_FAIL",
+      "expected_status": "PASS",
       "reference": {
         "nodes": [
           {
@@ -339,6 +339,50 @@
           {
             "source": "Node_O1",
             "target": "B",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "GRAPH-009-provisional-node-ids-and-unreadable-transition-label",
+      "expected_status": "PASS",
+      "reference": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Inicio"
+          },
+          {
+            "id": "B",
+            "label": "Fin"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": "si x > 0"
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "S1",
+            "label": "[etiqueta no reconocida]"
+          },
+          {
+            "id": "S2",
+            "label": "[etiqueta no reconocida]"
+          }
+        ],
+        "edges": [
+          {
+            "source": "S1",
+            "target": "S2",
             "direction": "directed",
             "label": ""
           }
