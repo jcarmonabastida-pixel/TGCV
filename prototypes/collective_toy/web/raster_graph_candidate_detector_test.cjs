@@ -74,6 +74,7 @@ const { chromium } = require("playwright");
       ", reference edges=" + refs.length + ".\\n");
     return { precision, recall, candidates: candidates.length, referenceEdges: refs.length };
   }
+  const evaluatedStructuralFixtures = [];
   function assertNodeGeometry(name, result) {
     const reference = referenceByFile.get(name);
     assert.ok(reference, name + ": reference annotation must exist");
@@ -146,7 +147,12 @@ const { chromium } = require("playwright");
     assert.ok(result.limitations.length >= 3);
     assert.ok(result.nodes.every(n => n.review_required === true));
     assertNodeGeometry(name, result);
-    reportEdgeGeometry(name, result);
+    const edgeMetrics = reportEdgeGeometry(name, result);
+    evaluatedStructuralFixtures.push({ fixture: name, node_candidates: result.nodes.length,
+      reference_nodes: referenceByFile.get(name).nodes.length,
+      edge_candidates: edgeMetrics.candidates, reference_edges: edgeMetrics.referenceEdges,
+      edge_precision: edgeMetrics.precision, edge_recall: edgeMetrics.recall,
+      direction_scored: false });
     process.stdout.write(name + ": " + result.nodes.length + " provisional node candidates; " +
       result.edge_candidates.length + " horizontal stroke candidates.\n");
   }
@@ -158,7 +164,12 @@ const { chromium } = require("playwright");
     assert.ok(result.nodes.length > 0, fixture.name + ": colored-node variant must yield provisional candidates");
     assert.ok(result.nodes.every(n => n.review_required === true));
     assertNodeGeometry(fixture.name, result);
-    reportEdgeGeometry(fixture.name, result);
+    const edgeMetrics = reportEdgeGeometry(fixture.name, result);
+    evaluatedStructuralFixtures.push({ fixture: fixture.name, node_candidates: result.nodes.length,
+      reference_nodes: referenceByFile.get(fixture.name).nodes.length,
+      edge_candidates: edgeMetrics.candidates, reference_edges: edgeMetrics.referenceEdges,
+      edge_precision: edgeMetrics.precision, edge_recall: edgeMetrics.recall,
+      direction_scored: false });
     process.stdout.write(fixture.name + ": " + result.nodes.length + " provisional candidates on colored-node variant.\\n");
   }
   // Generated raster fixture: two outlined nodes connected by a plain line,
@@ -493,5 +504,17 @@ const { chromium } = require("playwright");
     fixtures: structuralSummary
   }, null, 2) + "\\n");
   process.stdout.write("STRUCTURAL-SUMMARY: " + JSON.stringify(structuralSummary) + "\\n");
+  const evaluationReport = {
+    schema_version: "tgcv-raster-structural-evaluation-0.2",
+    status: "synthetic-and-color-variant-fixtures",
+    metrics: { edge_precision: "matched candidate edges / all proposed candidate edges",
+      edge_recall: "matched reference edges / all reference edges",
+      node_metrics: "asserted independently by geometric matching",
+      direction: "not scored; inference disabled" },
+    fixtures: evaluatedStructuralFixtures
+  };
+  const reportPath = path.join(tempRoot, "raster_graph_structural_evaluation.json");
+  fs.writeFileSync(reportPath, JSON.stringify(evaluationReport, null, 2) + "\\n");
+  process.stdout.write("STRUCTURAL-EVALUATION: " + JSON.stringify(evaluationReport) + "\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
