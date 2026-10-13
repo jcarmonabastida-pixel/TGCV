@@ -611,6 +611,49 @@ const { chromium } = require("playwright");
     return source && target && (source.id === centerNode.id || target.id === centerNode.id);
   }), "SYN-BRANCH-3-LEAVES-001: every edge must touch the center; no leaf-to-leaf shortcuts");
   process.stdout.write("SYN-BRANCH-3-LEAVES-001: exactly 4 nodes and 3 center-to-leaf connections.\\n");
+  // Controlled line-thickness probe: same topology and node geometry,
+  // with only connector stroke width changed from 2 px to 5 px.
+  const thickBranchPath = path.join(tempRoot, "SYN-BRANCH-THICK-LINES-001.png");
+  const thickBranchBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await thickBranchBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 360; canvas.height = 260;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 360, 260);
+      ctx.strokeStyle = "#111111"; ctx.lineWidth = 5;
+      const center = [180, 130], leaves = [[45, 130], [300, 45], [300, 215]];
+      for (const [x,y] of leaves) {
+        const dx = x-center[0], dy = y-center[1], len = Math.hypot(dx,dy);
+        ctx.beginPath(); ctx.moveTo(center[0]+dx/len*15,center[1]+dy/len*15);
+        ctx.lineTo(x-dx/len*13,y-dy/len*13); ctx.stroke();
+      }
+      for (const [x,y] of [center,...leaves]) {
+        ctx.beginPath(); ctx.arc(x,y,13,0,Math.PI*2);
+        ctx.fillStyle = "#ffffff"; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(thickBranchPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await thickBranchBrowser.close(); }
+  const thickBranchResult = await detectGraphCandidates(thickBranchPath);
+  assert.equal(thickBranchResult.status, "experimental-candidates-only",
+    "SYN-BRANCH-THICK-LINES-001: thick-line result remains provisional");
+  assert.equal(thickBranchResult.nodes.length, 4,
+    "SYN-BRANCH-THICK-LINES-001: line thickness must preserve four-node count");
+  assert.equal(thickBranchResult.edge_candidates.length, 3,
+    "SYN-BRANCH-THICK-LINES-001: 5px lines must preserve three-connection count");
+  const thickCenter = thickBranchResult.nodes.find(node =>
+    Math.hypot(node.center[0]-180,node.center[1]-130) < 18);
+  assert.ok(thickCenter, "SYN-BRANCH-THICK-LINES-001: center node must be detected");
+  const thickNodes = new Map(thickBranchResult.nodes.map(node => [node.id,node]));
+  assert.ok(thickBranchResult.edge_candidates.every(edge => {
+    const source=thickNodes.get(edge.source_candidate_node_id);
+    const target=thickNodes.get(edge.target_candidate_node_id);
+    return source && target && (source.id===thickCenter.id || target.id===thickCenter.id);
+  }), "SYN-BRANCH-THICK-LINES-001: thick lines must not introduce leaf-to-leaf shortcuts");
+  process.stdout.write("SYN-BRANCH-THICK-LINES-001: 5px connector stroke preserves branch topology.\\n");
   // Same branched topology with differently colored nodes. Color is visual
   // styling, not a reason to change the graph structure.
   const coloredBranchPath = path.join(tempRoot, "SYN-BRANCH-COLORED-NODES-001.png");
