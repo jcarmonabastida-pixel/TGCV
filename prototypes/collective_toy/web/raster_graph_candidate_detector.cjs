@@ -236,6 +236,36 @@ async function detectGraphCandidates(imagePath, options = {}) {
         }
         return { ratio: tested ? supported / tested : 0, supported, tested };
       };
+      const arrowheadEvidence = (tip, inwardUnit) => {
+        // Diagnostic only: look for two short dark arms near a possible tip.
+        // This evidence does not yet resolve edge direction.
+        const scores = [];
+        for (const angle of [25, 35, 45, 55, 65]) {
+          const rad = angle * Math.PI / 180;
+          let hits = 0, tested = 0;
+          for (const sign of [-1, 1]) {
+            const ux = inwardUnit[0] * Math.cos(rad) - sign * inwardUnit[1] * Math.sin(rad);
+            const uy = inwardUnit[1] * Math.cos(rad) + sign * inwardUnit[0] * Math.sin(rad);
+            for (let d = 3; d <= 9; d++) {
+              const x = Math.round(tip[0] + ux * d), y = Math.round(tip[1] + uy * d);
+              tested++;
+              let found = false;
+              for (let oy = -1; oy <= 1 && !found; oy++) {
+                for (let ox = -1; ox <= 1; ox++) {
+                  const px = x + ox, py = y + oy;
+                  if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
+                    found = true; break;
+                  }
+                }
+              }
+              if (found) hits++;
+            }
+          }
+          scores.push({ angle_degrees: angle, support_ratio: tested ? hits / tested : 0,
+            supported_samples: hits, tested_samples: tested });
+        }
+        return scores.sort((a, b) => b.support_ratio - a.support_ratio)[0];
+      };
       const boundaryPoint = (node, target) => {
         const c = node.center, dx = target[0] - c[0], dy = target[1] - c[1];
         const halfW = Math.max(1, (node.bbox[2] - node.bbox[0]) / 2);
@@ -265,10 +295,14 @@ async function detectGraphCandidates(imagePath, options = {}) {
           const key = [a.id, b.id].sort().join("--");
           if (nodePairs.includes(key)) continue;
           nodePairs.push(key);
+          const edgeLength = Math.max(1, Math.hypot(pb[0]-pa[0], pb[1]-pa[1]));
+          const unitAB = [(pb[0]-pa[0]) / edgeLength, (pb[1]-pa[1]) / edgeLength];
+          const unitBA = [-unitAB[0], -unitAB[1]];
           edgeCandidates.push({ id: "candidate-edge-" + (edgeCandidates.length + 1),
             source_candidate_node_id: a.id, target_candidate_node_id: b.id,
             from: pa, to: pb, orientation: Math.abs(pa[1]-pb[1]) <= 3 ? "horizontal" : "diagonal",
             line_support_ratio: Number(support.ratio.toFixed(3)), evidence_pixels: support.supported,
+            arrowhead_evidence: { at_from: arrowheadEvidence(pa, unitAB), at_to: arrowheadEvidence(pb, unitBA) },
             confidence: "low", review_required: true, direction: "undetermined" });
         }
       }
