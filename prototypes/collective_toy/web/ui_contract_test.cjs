@@ -27,7 +27,7 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#clear-image").isEnabled(), true);
     assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), true);
     // Stub the OCR engine to test the browser integration deterministically without network access.
-    await page.evaluate(() => { window.Tesseract = { recognize: async (image, language) => { if (language !== "spa+eng") throw new Error("Unexpected OCR language"); if (!image || !String(image).startsWith("data:image/")) throw new Error("OCR did not receive the uploaded image data URL"); return { data: { text: "Nodo A\\nNodo B\\nA --> B" } }; } }; });
+    await page.evaluate(() => { window.Tesseract = { recognize: async (image, language) => { if (language !== "spa+eng") throw new Error("Unexpected OCR language"); if (!image || !String(image).startsWith("data:image/")) throw new Error("OCR did not receive the uploaded image data URL"); return { data: { text: "Nodo A\nNodo B\nA --> B" } }; } }; });
     await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).click();
     await page.locator("#image-status").filter({ hasText: /OCR completado/ }).waitFor();
     assert.match(await page.locator("#image-transcription").inputValue(), /A --> B/);
@@ -389,7 +389,7 @@ const assert = require("node:assert/strict");
     await orderPage.close();
 
     // OCR interpretation is a separate, non-destructive layer: suggestions never alter raw OCR or the primary transcription automatically.
-    const rawOCR = "Condición: x > O\\nCc";
+    const rawOCR = "Condición: x > O\nCc";
     await page.evaluate((raw) => {
       document.querySelector("#ocr-raw-text").value = raw;
       window.renderOcrInterpretation(raw, 87.5);
@@ -402,10 +402,10 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#ocr-suggestions").innerText(), /«Cc» → posible «C»/);
     assert.match(await page.locator("#ocr-suggestions").innerText(), /Confianza de la sugerencia: no disponible/);
     await page.locator("#ocr-suggestions li").nth(0).getByRole("button", { name: /Aplicar esta alternativa manualmente/ }).click();
-    assert.equal(await page.locator("#image-transcription").inputValue(), "Condición: x > 0\\nCc");
+    assert.equal(await page.locator("#image-transcription").inputValue(), "Condición: x > 0\nCc");
     assert.equal(await page.locator("#ocr-raw-text").inputValue(), rawOCR, "manual interpretation must not mutate raw OCR");
     await page.locator("#ocr-suggestions li").nth(1).getByRole("button", { name: /Aplicar esta alternativa manualmente/ }).click();
-    assert.equal(await page.locator("#image-transcription").inputValue(), "Condición: x > 0\\nC");
+    assert.equal(await page.locator("#image-transcription").inputValue(), "Condición: x > 0\nC");
     assert.equal(await page.locator("#ocr-raw-text").inputValue(), rawOCR, "raw OCR must remain unchanged after all manual suggestions");
     assert.match(await page.locator("#ocr-interpretation-status").innerText(), /aplicada manualmente/);
     await page.evaluate(() => window.renderOcrInterpretation("Etiqueta O normal", null));
