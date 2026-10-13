@@ -129,10 +129,10 @@ const { chromium } = require("playwright");
   }
   testNodeMetricMatching();
 
-  function reportEdgeGeometry(name, result) {
+  function reportEdgeGeometry(name, result, endpointTolerance = 14) {
     const reference = referenceByFile.get(name);
     const endpoints = edge => [edge.polyline[0], edge.polyline[edge.polyline.length - 1]];
-    const close = (a, b, tolerance = 14) => Math.hypot(a[0] - b[0], a[1] - b[1]) <= tolerance;
+    const close = (a, b, tolerance = endpointTolerance) => Math.hypot(a[0] - b[0], a[1] - b[1]) <= tolerance;
     const refs = reference.edges.map(edge => ({ edge, ends: endpoints(edge) }));
     const candidates = result.edge_candidates || [];
     const matching = matchEdgesOneToOne(candidates, refs, close);
@@ -290,7 +290,9 @@ const { chromium } = require("playwright");
   assert.ok(scaledResult.nodes.every(node => node.review_required === true),
     "SCALE-ROBUSTNESS-001: scaled candidates still require user review");
   const scaledNodeMetrics = assertNodeGeometry(scaleProbeName, scaledResult);
-  const scaledEdgeMetrics = reportEdgeGeometry(scaleProbeName, scaledResult);
+  // Scale the geometric matching tolerance with the raster so the metric
+  // does not penalize the same pixel-localization error more harshly at 150%.
+  const scaledEdgeMetrics = reportEdgeGeometry(scaleProbeName, scaledResult, 14 * scaleFactor);
   evaluatedStructuralFixtures.push({fixture: scaleProbeName, scale_factor: scaleFactor,
     node_candidates: scaledNodeMetrics.candidates, reference_nodes: scaledNodeMetrics.referenceNodes,
     node_precision: scaledNodeMetrics.precision, node_recall: scaledNodeMetrics.recall,
