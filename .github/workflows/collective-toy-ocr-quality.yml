@@ -1,0 +1,43 @@
+name: Collective Toy real OCR quality evaluation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - development/collective-toy-ui-controls-001-20261013
+    paths:
+      - 'prototypes/collective_toy/web/ocr_quality_evaluation.html'
+      - 'prototypes/collective_toy/web/ocr_quality_ci_test.cjs'
+      - '.github/workflows/collective-toy-ocr-quality.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  real-ocr-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependency
+        working-directory: prototypes/collective_toy/web
+        run: npm install
+      - name: Install Chromium
+        working-directory: prototypes/collective_toy/web
+        run: npx playwright install --with-deps chromium
+      - name: Run Tesseract.js against reference images
+        working-directory: prototypes/collective_toy/web
+        run: node ocr_quality_ci_test.cjs
+      - name: Upload reproducible OCR results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgcv-ocr-quality-result
+          path: prototypes/collective_toy/web/ocr-quality-output/tgcv-ocr-quality-result.json
+          if-no-files-found: warn
+          retention-days: 30
