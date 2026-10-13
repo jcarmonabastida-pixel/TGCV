@@ -214,6 +214,51 @@ async function detectGraphCandidates(imagePath, options = {}) {
           }
         }
       }
+      // Node-pair edge hypotheses: sample the corridor between each pair
+      // of node boxes. This filters arbitrary long strokes into graph-shaped
+      // hypotheses; the support score is diagnostic and does not assert direction.
+      const edgeCandidates = [];
+      const nodePairs = [];
+      const lineSupport = (a, b) => {
+        const dx = b[0] - a[0], dy = b[1] - a[1];
+        const length = Math.hypot(dx, dy);
+        const steps = Math.max(1, Math.ceil(length));
+        let supported = 0, tested = 0;
+        for (let i = 2; i < steps - 2; i++) {
+          const x = Math.round(a[0] + dx * i / steps), y = Math.round(a[1] + dy * i / steps);
+          let found = false;
+          for (let oy = -1; oy <= 1 && !found; oy++) for (let ox = -1; ox <= 1; ox++) {
+            const px = x + ox, py = y + oy;
+            if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) { found = true; break; }
+          }
+          tested++;
+          if (found) supported++;
+        }
+        return { ratio: tested ? supported / tested : 0, supported, tested };
+      };
+      const boundaryPoint = (node, target) => {
+        const c = node.center, dx = target[0] - c[0], dy = target[1] - c[1];
+        const halfW = Math.max(1, (node.bbox[2] - node.bbox[0]) / 2);
+        const halfH = Math.max(1, (node.bbox[3] - node.bbox[1]) / 2);
+        const scale = 1 / Math.max(Math.abs(dx) / halfW || 0, Math.abs(dy) / halfH || 0);
+        return [Math.round(c[0] + dx * scale), Math.round(c[1] + dy * scale)];
+      };
+      for (let i = 0; i < candidates.length; i++) {
+        for (let j = i + 1; j < candidates.length; j++) {
+          const a = candidates[i], b = candidates[j];
+          const pa = boundaryPoint(a, b.center), pb = boundaryPoint(b, a.center);
+          const support = lineSupport(pa, pb);
+          if (support.tested < 20 || support.ratio < 0.42) continue;
+          const key = [a.id, b.id].sort().join("--");
+          if (nodePairs.includes(key)) continue;
+          nodePairs.push(key);
+          edgeCandidates.push({ id: "candidate-edge-" + (edgeCandidates.length + 1),
+            source_candidate_node_id: a.id, target_candidate_node_id: b.id,
+            from: pa, to: pb, orientation: Math.abs(pa[1]-pb[1]) <= 3 ? "horizontal" : "diagonal",
+            line_support_ratio: Number(support.ratio.toFixed(3)), evidence_pixels: support.supported,
+            confidence: "low", review_required: true, direction: "undetermined" });
+        }
+      }
       return {
         detector: "TGCV-RASTER-GRAPH-CANDIDATES-001",
         status: "experimental-candidates-only",
@@ -221,7 +266,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
         method: "Canvas grayscale threshold; vertically clustered horizontal runs for rounded/box node candidates; long horizontal stroke candidates",
         nodes: candidates,
         diagnostics: { runCount: runs.length, clusterCount: clusters.length, enclosedRegionCount: interiorRegions.length, enclosedRegions: interiorRegions, rejectionCounts, largestClusters: clusterDiagnostics.sort((a, b) => b.rows - a.rows).slice(0, 20) },
-        edge_candidates: lineCandidates,
+        edge_candidates: edgeCandidates,\n        raw_line_candidates: lineCandidates,
         limitations: [
           "Not a complete node detector: connected outlines may be fragmented or merged.",
           "Diagonal edges, arrowhead direction, edge-to-node attachment and crossing topology are not yet inferred.",
