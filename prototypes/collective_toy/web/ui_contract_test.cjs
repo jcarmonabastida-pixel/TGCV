@@ -63,7 +63,7 @@ const assert = require("node:assert/strict");
     await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
     assert.match(await page.locator("#transcription-status").innerText(), /No se encontraron conexiones dirigidas/i);
     await page.getByRole("button", { name: "Borrar transcripción" }).click();
-    assert.equal(await page.locator("#image-transcription").inputValue(), rawOCR, "OCR completion may populate the editable transcription, but interpretation suggestions must not change it automatically");
+    assert.equal(await page.locator("#image-transcription").inputValue(), "");
     await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeTranscription);
 
     // Manual graph review: enumerate edges, remove an incorrect edge, and flag duplicate pairs.
