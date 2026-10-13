@@ -172,6 +172,7 @@ const { chromium } = require("playwright");
         "crossing intersection must not be hallucinated as a node");
     }
     process.stdout.write(name + ": node precision=" + precision.toFixed(3) + ", recall=" + recall.toFixed(3) + ".\\n");
+    return { precision, recall, candidates: result.nodes.length, referenceNodes: reference.nodes.length };
   }
   const colorVariants = [
     { name: "SYN-LINEAR-001.png", boxes: [[35,75,65,105],[145,75,175,105],[255,75,285,105]] },
@@ -220,12 +221,17 @@ const { chromium } = require("playwright");
     assert.ok(result.nodes.length > 0, name + ": detector must find at least one provisional node box");
     assert.ok(result.limitations.length >= 3);
     assert.ok(result.nodes.every(n => n.review_required === true));
-    assertNodeGeometry(name, result);
+    const nodeMetrics = assertNodeGeometry(name, result);
     const edgeMetrics = reportEdgeGeometry(name, result);
-    evaluatedStructuralFixtures.push({ fixture: name, node_candidates: result.nodes.length,
-      reference_nodes: referenceByFile.get(name).nodes.length,
+    evaluatedStructuralFixtures.push({ fixture: name,
+      node_candidates: nodeMetrics.candidates, reference_nodes: nodeMetrics.referenceNodes,
+      node_precision: nodeMetrics.precision, node_recall: nodeMetrics.recall,
       edge_candidates: edgeMetrics.candidates, reference_edges: edgeMetrics.referenceEdges,
       edge_precision: edgeMetrics.precision, edge_recall: edgeMetrics.recall,
+      false_positive_nodes: nodeMetrics.candidates - Math.round(nodeMetrics.precision * nodeMetrics.candidates),
+      missed_nodes: nodeMetrics.referenceNodes - Math.round(nodeMetrics.recall * nodeMetrics.referenceNodes),
+      false_positive_edges: edgeMetrics.candidates - Math.round(edgeMetrics.precision * edgeMetrics.candidates),
+      missed_edges: edgeMetrics.referenceEdges - Math.round(edgeMetrics.recall * edgeMetrics.referenceEdges),
       direction_scored: false });
     process.stdout.write(name + ": " + result.nodes.length + " provisional node candidates; " +
       result.edge_candidates.length + " horizontal stroke candidates.\n");
@@ -237,12 +243,17 @@ const { chromium } = require("playwright");
     assert.equal(result.status, "experimental-candidates-only");
     assert.ok(result.nodes.length > 0, fixture.name + ": colored-node variant must yield provisional candidates");
     assert.ok(result.nodes.every(n => n.review_required === true));
-    assertNodeGeometry(fixture.name, result);
+    const nodeMetrics = assertNodeGeometry(fixture.name, result);
     const edgeMetrics = reportEdgeGeometry(fixture.name, result);
-    evaluatedStructuralFixtures.push({ fixture: fixture.name, node_candidates: result.nodes.length,
-      reference_nodes: referenceByFile.get(fixture.name).nodes.length,
+    evaluatedStructuralFixtures.push({ fixture: fixture.name,
+      node_candidates: nodeMetrics.candidates, reference_nodes: nodeMetrics.referenceNodes,
+      node_precision: nodeMetrics.precision, node_recall: nodeMetrics.recall,
       edge_candidates: edgeMetrics.candidates, reference_edges: edgeMetrics.referenceEdges,
       edge_precision: edgeMetrics.precision, edge_recall: edgeMetrics.recall,
+      false_positive_nodes: nodeMetrics.candidates - Math.round(nodeMetrics.precision * nodeMetrics.candidates),
+      missed_nodes: nodeMetrics.referenceNodes - Math.round(nodeMetrics.recall * nodeMetrics.referenceNodes),
+      false_positive_edges: edgeMetrics.candidates - Math.round(edgeMetrics.precision * edgeMetrics.candidates),
+      missed_edges: edgeMetrics.referenceEdges - Math.round(edgeMetrics.recall * edgeMetrics.referenceEdges),
       direction_scored: false });
     process.stdout.write(fixture.name + ": " + result.nodes.length + " provisional candidates on colored-node variant.\\n");
   }
@@ -579,8 +590,16 @@ const { chromium } = require("playwright");
   }, null, 2) + "\\n");
   process.stdout.write("STRUCTURAL-SUMMARY: " + JSON.stringify(structuralSummary) + "\\n");
   const evaluationReport = {
-    schema_version: "tgcv-raster-structural-evaluation-0.2",
+    schema_version: "tgcv-raster-structural-evaluation-0.3",
     status: "synthetic-and-color-variant-fixtures",
+    aggregate: {
+      fixture_count: evaluatedStructuralFixtures.length,
+      node_candidates: evaluatedStructuralFixtures.reduce((sum, item) => sum + item.node_candidates, 0),
+      reference_nodes: evaluatedStructuralFixtures.reduce((sum, item) => sum + item.reference_nodes, 0),
+      edge_candidates: evaluatedStructuralFixtures.reduce((sum, item) => sum + item.edge_candidates, 0),
+      reference_edges: evaluatedStructuralFixtures.reduce((sum, item) => sum + item.reference_edges, 0),
+      direction_scored: false
+    },
     metrics: { edge_precision: "matched candidate edges / all proposed candidate edges",
       edge_recall: "matched reference edges / all reference edges",
       node_metrics: "asserted independently by geometric matching",
