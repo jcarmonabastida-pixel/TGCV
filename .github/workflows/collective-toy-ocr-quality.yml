@@ -16,6 +16,8 @@ on:
       - 'prototypes/collective_toy/web/ocr_graph_image_fixture_test.cjs'
       - 'prototypes/collective_toy/web/graph_structure_evaluator.cjs'
       - 'prototypes/collective_toy/web/graph_structure_evaluator_test.cjs'
+      - 'prototypes/collective_toy/web/raster_graph_candidate_detector.cjs'
+      - 'prototypes/collective_toy/web/raster_graph_candidate_detector_test.cjs'
       - 'prototypes/collective_toy/web/fixtures/ocr_graph_images/**'
       - '.github/workflows/collective-toy-ocr-quality.yml'
 
@@ -45,6 +47,9 @@ jobs:
       - name: Test structural graph evaluator
         working-directory: prototypes/collective_toy/web
         run: node graph_structure_evaluator_test.cjs
+      - name: Execute raster graph candidate detector on fixtures
+        working-directory: prototypes/collective_toy/web
+        run: node raster_graph_candidate_detector_test.cjs
       - name: Run Tesseract.js against reference images
         working-directory: prototypes/collective_toy/web
         run: node ocr_quality_ci_test.cjs
