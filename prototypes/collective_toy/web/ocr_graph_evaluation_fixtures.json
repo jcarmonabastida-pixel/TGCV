@@ -1,0 +1,349 @@
+{
+  "protocol_version": "0.1",
+  "description": "Deterministic graph-evaluation fixtures. Candidate graphs are deliberately controlled test inputs, not OCR output or evidence of engine quality.",
+  "cases": [
+    {
+      "id": "GRAPH-001-exact-match",
+      "expected_status": "PASS",
+      "reference": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Inicio"
+          },
+          {
+            "id": "B",
+            "label": "Fin"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": "sigue"
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Inicio"
+          },
+          {
+            "id": "B",
+            "label": "Fin"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": "sigue"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GRAPH-002-reversed-arrow",
+      "expected_status": "CRITICAL_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Inicio"
+          },
+          {
+            "id": "B",
+            "label": "Fin"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Inicio"
+          },
+          {
+            "id": "B",
+            "label": "Fin"
+          }
+        ],
+        "edges": [
+          {
+            "source": "B",
+            "target": "A",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "GRAPH-003-spurious-edge",
+      "expected_status": "CRITICAL_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          },
+          {
+            "id": "C",
+            "label": "C"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": ""
+          },
+          {
+            "source": "B",
+            "target": "C",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "GRAPH-004-missing-edge",
+      "expected_status": "FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          }
+        ],
+        "edges": []
+      }
+    },
+    {
+      "id": "GRAPH-005-wrong-node-label",
+      "expected_status": "FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Condición x > 0"
+          }
+        ],
+        "edges": []
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "Condición x > O"
+          }
+        ],
+        "edges": []
+      }
+    },
+    {
+      "id": "GRAPH-006-duplicate-edge",
+      "expected_status": "CRITICAL_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": ""
+          },
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "GRAPH-007-undirected-match",
+      "expected_status": "PASS",
+      "reference": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "A",
+            "target": "B",
+            "direction": "undirected",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "A",
+            "label": "A"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "B",
+            "target": "A",
+            "direction": "undirected",
+            "label": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "GRAPH-008-critical-identifier-confusion",
+      "expected_status": "CRITICAL_FAIL",
+      "reference": {
+        "nodes": [
+          {
+            "id": "Node_01",
+            "label": "Node_01"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "Node_01",
+            "target": "B",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      },
+      "candidate": {
+        "nodes": [
+          {
+            "id": "Node_O1",
+            "label": "Node_O1"
+          },
+          {
+            "id": "B",
+            "label": "B"
+          }
+        ],
+        "edges": [
+          {
+            "source": "Node_O1",
+            "target": "B",
+            "direction": "directed",
+            "label": ""
+          }
+        ]
+      }
+    }
+  ]
+}
