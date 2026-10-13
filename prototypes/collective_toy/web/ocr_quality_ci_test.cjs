@@ -36,6 +36,13 @@ const assert = require("node:assert/strict");
     assert.ok(report, "Evaluation report must exist");
     assert.equal(report.results.length, 5, "All five reference fixtures must be measured");
     assert.equal(report.metric_validation.passed, report.metric_validation.total, "CER/WER self-checks must all pass");
+    assert.equal(report.segmentation_diagnostics.length, 2, "Both diagnostic segmentation modes must be recorded");
+    assert.deepEqual(report.segmentation_diagnostics.map(x => x.mode).sort(), ["single_block", "sparse_text"]);
+    for (const diagnostic of report.segmentation_diagnostics) {
+      assert.equal(diagnostic.id, "OCR-TXT-004");
+      assert.ok(Number.isFinite(diagnostic.cer) && Number.isFinite(diagnostic.wer));
+      assert.ok(Number.isFinite(diagnostic.elapsed_ms));
+    }
     for (const row of report.results) {
       assert.match(row.fixture_sha256, /^[a-f0-9]{64}$/);
       assert.ok(Number.isFinite(row.cer) && Number.isFinite(row.wer));
