@@ -179,6 +179,48 @@ const { chromium } = require("playwright");
   }
   testNodeMetricMatching();
 
+  function reportTopologyByNodeIdentity(name, result) {
+    const reference = referenceByFile.get(name);
+    const unmatchedRefs = new Set(reference.nodes.map(node => node.id));
+    const candidateToReference = new Map();
+    for (const candidate of result.nodes) {
+      const nearest = reference.nodes
+        .map(node => ({node, distance: Math.hypot(candidate.center[0]-node.center[0], candidate.center[1]-node.center[1])}))
+        .filter(item => unmatchedRefs.has(item.node.id) && item.distance <= 12)
+        .sort((a,b) => a.distance-b.distance)[0];
+      if (nearest) {
+        candidateToReference.set(candidate.id, nearest.node.id);
+        unmatchedRefs.delete(nearest.node.id);
+      }
+    }
+    const pairKey = (a,b) => [a,b].sort().join("|");
+    const referencePairs = new Set(reference.edges.map(edge => pairKey(edge.source_node_id, edge.target_node_id)));
+    const matchedPairs = new Set();
+    let matchedCandidateEdges = 0;
+    for (const edge of (result.edge_candidates || [])) {
+      const source = candidateToReference.get(edge.source_candidate_node_id);
+      const target = candidateToReference.get(edge.target_candidate_node_id);
+      if (!source || !target || source === target) continue;
+      const pair = pairKey(source,target);
+      if (referencePairs.has(pair) && !matchedPairs.has(pair)) {
+        matchedPairs.add(pair);
+        matchedCandidateEdges++;
+      }
+    }
+    const candidateCount = (result.edge_candidates || []).length;
+    const referenceCount = reference.edges.length;
+    return {
+      matched_node_identities: candidateToReference.size,
+      reference_nodes: reference.nodes.length,
+      topology_edge_true_positives: matchedCandidateEdges,
+      topology_edge_false_positives: candidateCount - matchedCandidateEdges,
+      topology_edge_false_negatives: referenceCount - matchedPairs.size,
+      topology_edge_precision: candidateCount ? matchedCandidateEdges / candidateCount : 0,
+      topology_edge_recall: referenceCount ? matchedPairs.size / referenceCount : 0,
+      topology_scoring: "undirected endpoint identity; node matches are geometric and one-to-one"
+    };
+  }
+
   function reportEdgeGeometry(name, result, endpointTolerance = 14) {
     const reference = referenceByFile.get(name);
     const endpoints = edge => [edge.polyline[0], edge.polyline[edge.polyline.length - 1]];
@@ -343,13 +385,15 @@ const { chromium } = require("playwright");
   // Scale the geometric matching tolerance with the raster so the metric
   // does not penalize the same pixel-localization error more harshly at 150%.
   const scaledEdgeMetrics = reportEdgeGeometry(scaleProbeName, scaledResult, 14 * scaleFactor);
+  const scaledTopologyMetrics = reportTopologyByNodeIdentity(scaleProbeName, scaledResult);
   evaluatedStructuralFixtures.push({fixture: scaleProbeName, scale_factor: scaleFactor,
     node_candidates: scaledNodeMetrics.candidates, reference_nodes: scaledNodeMetrics.referenceNodes,
     node_precision: scaledNodeMetrics.precision, node_recall: scaledNodeMetrics.recall,
     node_true_positives: scaledNodeMetrics.truePositives,
     edge_candidates: scaledEdgeMetrics.candidates, reference_edges: scaledEdgeMetrics.referenceEdges,
     edge_precision: scaledEdgeMetrics.precision, edge_recall: scaledEdgeMetrics.recall,
-    edge_true_positives: scaledEdgeMetrics.truePositives, direction_scored: false});
+    edge_true_positives: scaledEdgeMetrics.truePositives,
+    ...scaledTopologyMetrics, direction_scored: false});
   for (const name of ["SYN-LINEAR-001.png", "SYN-BRANCH-001.png", "SYN-CROSSING-001.png"]) {
     const result = await detectGraphCandidates(path.join(root, "images", name));
     assert.equal(result.detector, "TGCV-RASTER-GRAPH-CANDIDATES-001");
@@ -364,6 +408,7 @@ const { chromium } = require("playwright");
     assert.ok(result.nodes.every(n => n.review_required === true));
     const nodeMetrics = assertNodeGeometry(name, result);
     const edgeMetrics = reportEdgeGeometry(name, result);
+    const topologyMetrics = reportTopologyByNodeIdentity(name, result);
     evaluatedStructuralFixtures.push({ fixture: name,
       node_candidates: nodeMetrics.candidates, reference_nodes: nodeMetrics.referenceNodes,
       node_precision: nodeMetrics.precision, node_recall: nodeMetrics.recall,
@@ -371,6 +416,7 @@ const { chromium } = require("playwright");
       edge_candidates: edgeMetrics.candidates, reference_edges: edgeMetrics.referenceEdges,
       edge_precision: edgeMetrics.precision, edge_recall: edgeMetrics.recall,
       edge_true_positives: edgeMetrics.truePositives,
+      ...topologyMetrics,
       false_positive_nodes: nodeMetrics.candidates - Math.round(nodeMetrics.precision * nodeMetrics.candidates),
       missed_nodes: nodeMetrics.referenceNodes - Math.round(nodeMetrics.recall * nodeMetrics.referenceNodes),
       false_positive_edges: edgeMetrics.candidates - Math.round(edgeMetrics.precision * edgeMetrics.candidates),
