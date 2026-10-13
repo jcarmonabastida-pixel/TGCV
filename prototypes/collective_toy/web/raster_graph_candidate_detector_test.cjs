@@ -316,8 +316,8 @@ const { chromium } = require("playwright");
   } finally { await crossBrowser.close(); }
   const crossingResult = await detectGraphCandidates(crossingPath);
   assert.equal(crossingResult.status, "experimental-candidates-only");
-  assert.ok(crossingResult.nodes.length >= 4,
-    "SYN-CROSSING-NO-JUNCTION-001: four endpoint nodes should yield candidates");
+  assert.equal(crossingResult.nodes.length, 4,
+    "SYN-CROSSING-NO-JUNCTION-001: exactly four endpoint nodes should be proposed; extra candidates are topological false positives");
   assert.ok(crossingResult.nodes.every(node =>
     Math.hypot(node.center[0] - 160, node.center[1] - 110) > 18),
     "SYN-CROSSING-NO-JUNCTION-001: line intersection must not be proposed as a node");
