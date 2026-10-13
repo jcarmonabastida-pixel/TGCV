@@ -77,6 +77,7 @@ async function run(){
   const initStart=performance.now();
   const worker=await window.Tesseract.createWorker("spa+eng",1,{logger:m=>{if(m&&m.status)$("status").textContent="OCR: "+m.status+(typeof m.progress==="number"?" "+Math.round(m.progress*100)+"%":"")}});
   const worker_init_ms=Math.round(performance.now()-initStart);
+  const segmentation_diagnostics=[];
   try{
    for(const f of fixtures){
     const blob=await new Promise(resolve=>f.canvas.toBlob(resolve,"image/png"));if(!blob)throw new Error("No se pudo generar PNG para "+f.id);
@@ -92,7 +93,6 @@ async function run(){
    }
    const diagnosticFixture=fixtures.find(f=>f.id==="OCR-TXT-004");
    if(!diagnosticFixture)throw new Error("No existe el fixture OCR-TXT-004 para comparar segmentación.");
-   const segmentation_diagnostics=[];
    const psmModes=[
     {name:"single_block",value:window.Tesseract.PSM.SINGLE_BLOCK},
     {name:"sparse_text",value:window.Tesseract.PSM.SPARSE_TEXT}
