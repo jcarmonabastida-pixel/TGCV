@@ -396,7 +396,7 @@ const assert = require("node:assert/strict");
       window.renderOcrInterpretation(raw, 87.5);
     }, rawOCR);
     assert.equal(await page.locator("#ocr-raw-text").inputValue(), rawOCR);
-    assert.equal(await page.locator("#image-transcription").inputValue(), "");
+    assert.equal(await page.locator("#image-transcription").inputValue(), rawOCR, "OCR may populate the transcription; rendering suggestions must not change it");
     assert.match(await page.locator("#ocr-engine-confidence").innerText(), /87.5%/);
     assert.equal(await page.locator("#ocr-suggestions li").count(), 2);
     assert.match(await page.locator("#ocr-suggestions").innerText(), /«O» → posible «0»/);
