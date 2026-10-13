@@ -13,6 +13,31 @@ const { chromium } = require("playwright");
   const annotationFile = path.join(root, "synthetic_graph_image_annotations_v0.1.json");
   const annotations = JSON.parse(fs.readFileSync(annotationFile, "utf8"));
   const referenceByFile = new Map(annotations.images.map(item => [path.basename(item.file), item]));
+  function reportEdgeGeometry(name, result) {
+    const reference = referenceByFile.get(name);
+    const endpoints = edge => [edge.polyline[0], edge.polyline[edge.polyline.length - 1]];
+    const close = (a, b, tolerance = 14) => Math.hypot(a[0] - b[0], a[1] - b[1]) <= tolerance;
+    const refs = reference.edges.map(edge => ({ edge, ends: endpoints(edge) }));
+    const candidates = result.edge_candidates || [];
+    const matchedRef = new Set();
+    let matchedCandidates = 0;
+    for (const candidate of candidates) {
+      const ends = [candidate.from, candidate.to];
+      const match = refs.find(({ edge, ends: refEnds }) =>
+        close(ends[0], refEnds[0]) && close(ends[1], refEnds[1]) ||
+        close(ends[0], refEnds[1]) && close(ends[1], refEnds[0]));
+      if (match) {
+        matchedCandidates++;
+        matchedRef.add(match.edge.id);
+      }
+    }
+    const precision = candidates.length ? matchedCandidates / candidates.length : 0;
+    const recall = refs.length ? matchedRef.size / refs.length : 0;
+    process.stdout.write(name + ": edge candidate precision=" + precision.toFixed(3) +
+      ", endpoint recall=" + recall.toFixed(3) + ", candidates=" + candidates.length +
+      ", reference edges=" + refs.length + ".\\n");
+    return { precision, recall, candidates: candidates.length, referenceEdges: refs.length };
+  }
   function assertNodeGeometry(name, result) {
     const reference = referenceByFile.get(name);
     assert.ok(reference, name + ": reference annotation must exist");
@@ -85,6 +110,7 @@ const { chromium } = require("playwright");
     assert.ok(result.limitations.length >= 3);
     assert.ok(result.nodes.every(n => n.review_required === true));
     assertNodeGeometry(name, result);
+    reportEdgeGeometry(name, result);
     process.stdout.write(name + ": " + result.nodes.length + " provisional node candidates; " +
       result.edge_candidates.length + " horizontal stroke candidates.\n");
   }
@@ -96,6 +122,7 @@ const { chromium } = require("playwright");
     assert.ok(result.nodes.length > 0, fixture.name + ": colored-node variant must yield provisional candidates");
     assert.ok(result.nodes.every(n => n.review_required === true));
     assertNodeGeometry(fixture.name, result);
+    reportEdgeGeometry(fixture.name, result);
     process.stdout.write(fixture.name + ": " + result.nodes.length + " provisional candidates on colored-node variant.\\n");
   }
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
