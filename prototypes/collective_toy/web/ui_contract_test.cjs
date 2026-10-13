@@ -19,7 +19,7 @@ const assert = require("node:assert/strict");
     assert.match(notice, /No es una validación científica/i);
     assert.match(notice, /ni implementa por sí solo Tacc de TGCV/i);
 
-    // Image reference upload is explicitly manual (no OCR) and rejects unsupported/oversized files.
+    // OCR image upload accepts supported formats, rejects unsupported/oversized files, and keeps OCR failures recoverable.
     const imageInput = page.locator("#image-file");
     await imageInput.setInputFiles({ name: "reference.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jW5sAAAAASUVORK5CYII=", "base64") });
     await page.locator("#image-preview:not([hidden])").waitFor();
@@ -27,7 +27,7 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#clear-image").isEnabled(), true);
     assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), true);
     // Stub the OCR engine to test the browser integration deterministically without network access.
-    await page.evaluate(() => { window.Tesseract = { recognize: async (_image, language) => { if (language !== "spa+eng") throw new Error("Unexpected OCR language"); return { data: { text: "Nodo A\\nNodo B\\nA --> B" } }; } }; });
+    await page.evaluate(() => { window.Tesseract = { recognize: async (image, language) => { if (language !== "spa+eng") throw new Error("Unexpected OCR language"); if (!image || !String(image).startsWith("data:image/")) throw new Error("OCR did not receive the uploaded image data URL"); return { data: { text: "Nodo A\\nNodo B\\nA --> B" } }; } }; });
     await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).click();
     await page.locator("#image-status").filter({ hasText: /OCR completado/ }).waitFor();
     assert.match(await page.locator("#image-transcription").inputValue(), /A --> B/);
