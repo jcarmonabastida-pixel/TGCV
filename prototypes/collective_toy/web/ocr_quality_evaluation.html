@@ -46,6 +46,7 @@ function distance(a,b){
 }
 function rate(reference,actual){return reference.length?distance(reference,actual)/reference.length:(actual.length?1:0)}
 function wordTokens(s){return String(s||"").split(/\s+/).filter(Boolean)}
+function normalizeTransitionSpacing(s){return normalize(s).split("\n").map(line=>{if(!/^\s*T\d+\s*:/i.test(line))return line;return line.replace(/^\s*(T\d+)\s*:\s*/i,"$1: ").replace(/\s*->\s*/g," -> ")}).join("\n")}
 function validateMetrics(){
  const checks=[
   {name:"CER idéntico",pass:rate("abc","abc")===0},
@@ -129,15 +130,22 @@ async function run(){
     preprocessing_diagnostics.push({id:diagnosticFixture.id,variant:variant.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(wordTokens(ref),wordTokens(got)).toFixed(6)),elapsed_ms:elapsed});
    }
   }finally{await worker.terminate()}
+  const notationFixture=fixtures.find(f=>f.id==="OCR-TXT-004");
+  const notationResult=results.find(r=>r.id==="OCR-TXT-004");
+  if(!notationFixture||!notationResult)throw new Error("No existe OCR-TXT-004 para el diagnóstico de espaciado de notación.");
+  const expectedSpacing=normalizeTransitionSpacing(notationFixture.expected),recognizedSpacing=normalizeTransitionSpacing(notationResult.recognized_normalized);
+  const notation_spacing_diagnostic={id:"OCR-TXT-004",scope:"Diagnóstico complementario; no modifica CER/WER primarios ni la puerta de calidad.",expected_spacing_canonical:expectedSpacing,recognized_spacing_canonical:recognizedSpacing,cer:Number(rate(expectedSpacing,recognizedSpacing).toFixed(6)),wer:Number(rate(wordTokens(expectedSpacing),wordTokens(recognizedSpacing)).toFixed(6)),exact_after_spacing_normalization:expectedSpacing===recognizedSpacing};
   const meanCER=results.reduce((s,r)=>s+r.cer,0)/results.length,meanWER=results.reduce((s,r)=>s+r.wer,0)/results.length;
   const metricValidation=validateMetrics();if(metricValidation.passed!==metricValidation.total)throw new Error("Falló la autocomprobación CER/WER: "+JSON.stringify(metricValidation));
-  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),segmentation_diagnostics,preprocessing_diagnostics,results};
+  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),notation_spacing_diagnostic,segmentation_diagnostics,preprocessing_diagnostics,results};
   showResults(report);window.__tgcvOcrReport=report;$("export").disabled=false;$("status").className="ok";$("status").textContent="OCR real completado. Revisa cada caso; los resultados no evalúan flechas ni conectividad.";
  }catch(e){$("status").className="error";$("status").textContent="Evaluación fallida: "+(e&&e.message?e.message:String(e))}finally{$("run").disabled=fixtures.length===0;$("generate").disabled=false}
 }
 function showResults(report){
  const root=$("results");root.replaceChildren();const h=document.createElement("h2");h.textContent="Resultados";root.append(h);const validation=document.createElement("p");validation.textContent="Autocomprobación de métricas: "+report.metric_validation.passed+"/"+report.metric_validation.total+" casos PASS";root.append(validation);
  const summary=document.createElement("p");summary.textContent="Inicialización del worker: "+report.worker_init_ms+" ms · CER medio: "+(report.mean_cer*100).toFixed(2)+"% · WER medio: "+(report.mean_wer*100).toFixed(2)+"% · Umbral provisional: "+(report.gate_pass?"CUMPLIDO":"NO CUMPLIDO");root.append(summary);
+ const notationHeading=document.createElement("h3");notationHeading.textContent="Diagnóstico de espaciado de notación (OCR-TXT-004; no altera métricas primarias ni el gate)";root.append(notationHeading);
+ const notation=report.notation_spacing_diagnostic;const notationSummary=document.createElement("p");notationSummary.textContent="CER diagnóstico: "+(notation.cer*100).toFixed(2)+"%, WER diagnóstico: "+(notation.wer*100).toFixed(2)+"%; coincidencia tras normalización de espacios: "+(notation.exact_after_spacing_normalization?"sí":"no")+"; texto: "+notation.recognized_spacing_canonical;root.append(notationSummary);
  const diagnosticHeading=document.createElement("h3");diagnosticHeading.textContent="Diagnóstico de segmentación (OCR-TXT-004; no altera el gate principal)";root.append(diagnosticHeading);
  const diagnosticList=document.createElement("ul");for(const d of report.segmentation_diagnostics||[]){const li=document.createElement("li");li.textContent=d.mode+": CER "+(d.cer*100).toFixed(2)+"%, WER "+(d.wer*100).toFixed(2)+"%, "+d.elapsed_ms+" ms; texto: "+d.recognized_normalized;diagnosticList.append(li)}root.append(diagnosticList);
  const prepHeading=document.createElement("h3");prepHeading.textContent="Diagnóstico de preprocesamiento (exploratorio; no altera el gate principal)";root.append(prepHeading);
