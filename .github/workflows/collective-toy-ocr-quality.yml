@@ -8,6 +8,8 @@ on:
       - development/collective-toy-ocr-preprocessing-001-20261013
     paths:
       - 'prototypes/collective_toy/web/ocr_quality_evaluation.html'
+      - 'prototypes/collective_toy/web/index.html'
+      - 'prototypes/collective_toy/web/ui_contract_test.cjs'
       - 'prototypes/collective_toy/web/ocr_quality_ci_test.cjs'
       - '.github/workflows/collective-toy-ocr-quality.yml'
 
@@ -34,6 +36,9 @@ jobs:
       - name: Run Tesseract.js against reference images
         working-directory: prototypes/collective_toy/web
         run: node ocr_quality_ci_test.cjs
+      - name: Run Collective Toy UI contract and OCR interpretation regressions
+        working-directory: prototypes/collective_toy/web
+        run: node ui_contract_test.cjs
       - name: Upload reproducible OCR results
         if: always()
         uses: actions/upload-artifact@v4
