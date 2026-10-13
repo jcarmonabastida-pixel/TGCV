@@ -321,8 +321,8 @@ const { chromium } = require("playwright");
   assert.ok(crossingResult.nodes.every(node =>
     Math.hypot(node.center[0] - 160, node.center[1] - 110) > 18),
     "SYN-CROSSING-NO-JUNCTION-001: line intersection must not be proposed as a node");
-  assert.ok(crossingResult.edge_candidates.length >= 2,
-    "SYN-CROSSING-NO-JUNCTION-001: crossing lines should yield connection candidates");
+  assert.equal(crossingResult.edge_candidates.length, 2,
+    "SYN-CROSSING-NO-JUNCTION-001: exactly two intended line connections should be proposed; extra candidates are topological false positives");
   assert.ok(crossingResult.edge_candidates.every(edge =>
     edge.direction_status === "unresolved" && edge.direction === "undetermined" && edge.review_required === true),
     "SYN-CROSSING-NO-JUNCTION-001: crossing geometry must not invent edge direction");
