@@ -32,6 +32,8 @@ const assert = require("node:assert/strict");
     await imageInput.setInputFiles({ name: "oversized.png", mimeType: "image/png", buffer: Buffer.alloc(5 * 1024 * 1024 + 1, 0x20) });
     assert.match(await page.locator("#image-status").innerText(), /supera el límite de 5 MiB/i);
 
+    // Preserve the canonical fixture: transcription import intentionally replaces the editor model.
+    const modelBeforeTranscription = await page.locator("#model").inputValue();
     // Image transcription is user-supplied text, converted only into a reviewable draft.
     await page.locator("#image-transcription").fill("A --> B" + String.fromCharCode(10) + "B --> C");
     await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
@@ -45,6 +47,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#transcription-status").innerText(), /No se encontraron conexiones dirigidas/i);
     await page.getByRole("button", { name: "Borrar transcripción" }).click();
     assert.equal(await page.locator("#image-transcription").inputValue(), "");
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeTranscription);
 
     // Output labels must not silently promote graph-local results to system-level TGCV claims.
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
