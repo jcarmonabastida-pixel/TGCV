@@ -54,6 +54,8 @@ const assert = require("node:assert/strict");
     reviewModel.states = ["A", "B", "C", "D"];
     reviewModel.initial_state = "A";
     reviewModel.relations = [];
+    reviewModel.scenarios = [];
+    reviewModel.disabled_transition_ids = [];
     reviewModel.transitions = [
       { id: "review_ab", source: "A", target: "B" },
       { id: "review_ab_duplicate", source: "A", target: "B" },
