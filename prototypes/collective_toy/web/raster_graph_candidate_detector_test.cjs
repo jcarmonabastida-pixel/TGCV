@@ -379,5 +379,48 @@ const { chromium } = require("playwright");
     [Math.round(linearNodes[1].center[0]), Math.round(linearNodes[2].center[0])].sort((a,b)=>a-b).join("--")
   ]), "SYN-LINEAR-3-NODES-001: edges must connect adjacent nodes only");
   process.stdout.write("SYN-LINEAR-3-NODES-001: exactly 3 nodes and 2 adjacent connections; no shortcut.\\n");
+  // Branched graph: a central node connected to three leaves. Expect one
+  // edge per drawn branch and no leaf-to-leaf shortcuts.
+  const branchPath = path.join(tempRoot, "SYN-BRANCH-3-LEAVES-001.png");
+  const branchBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await branchBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 360; canvas.height = 260;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 360, 260);
+      ctx.strokeStyle = "#111111"; ctx.lineWidth = 2;
+      const center = [180, 130], leaves = [[45, 130], [300, 45], [300, 215]];
+      for (const [x,y] of leaves) {
+        const dx = x-center[0], dy = y-center[1], len = Math.hypot(dx,dy);
+        ctx.beginPath();
+        ctx.moveTo(center[0] + dx/len*15, center[1] + dy/len*15);
+        ctx.lineTo(x - dx/len*13, y - dy/len*13);
+        ctx.stroke();
+      }
+      for (const [x,y] of [center,...leaves]) {
+        ctx.beginPath(); ctx.arc(x,y,13,0,Math.PI*2);
+        ctx.fillStyle = "#ffffff"; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(branchPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await branchBrowser.close(); }
+  const branchResult = await detectGraphCandidates(branchPath);
+  assert.equal(branchResult.status, "experimental-candidates-only");
+  assert.equal(branchResult.nodes.length, 4,
+    "SYN-BRANCH-3-LEAVES-001: exactly one center and three leaves should be proposed");
+  assert.equal(branchResult.edge_candidates.length, 3,
+    "SYN-BRANCH-3-LEAVES-001: exactly three drawn branch connections should be proposed");
+  const branchNodes = new Map(branchResult.nodes.map(node => [node.id, node]));
+  const centerNode = branchResult.nodes.find(node => Math.hypot(node.center[0]-180,node.center[1]-130) < 18);
+  assert.ok(centerNode, "SYN-BRANCH-3-LEAVES-001: central node must be detected");
+  assert.ok(branchResult.edge_candidates.every(edge => {
+    const source = branchNodes.get(edge.source_candidate_node_id);
+    const target = branchNodes.get(edge.target_candidate_node_id);
+    return source && target && (source.id === centerNode.id || target.id === centerNode.id);
+  }), "SYN-BRANCH-3-LEAVES-001: every edge must touch the center; no leaf-to-leaf shortcuts");
+  process.stdout.write("SYN-BRANCH-3-LEAVES-001: exactly 4 nodes and 3 center-to-leaf connections.\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
