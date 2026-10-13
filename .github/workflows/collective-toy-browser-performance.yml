@@ -28,9 +28,9 @@ jobs:
         name: Set up Node
         with:
           node-version: '22'
-      - name: Install dependencies
+      - name: Install browser test dependency
         working-directory: prototypes/collective_toy/web
-        run: npm ci
+        run: npm install --no-audit --no-fund
       - name: Install Chromium
         working-directory: prototypes/collective_toy/web
         run: npx playwright install --with-deps chromium
