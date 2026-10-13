@@ -39,6 +39,27 @@ const { chromium } = require("playwright");
       name + ": candidate count must match reference edge count before direction is evaluated");
     assert.equal(matchedRef.size, refs.length,
       name + ": every reference edge must have a geometric candidate before direction is evaluated");
+    let arrowTipComparisons = 0, arrowTipWins = 0, arrowTipTies = 0;
+    for (const { edge, ends: refEnds } of refs) {
+      const candidate = candidates.find(item => {
+        const direct = close(item.from, refEnds[0]) && close(item.to, refEnds[1]);
+        const reverse = close(item.from, refEnds[1]) && close(item.to, refEnds[0]);
+        return direct || reverse;
+      });
+      if (!candidate || !candidate.arrowhead_evidence) continue;
+      const candidateStartsAtSource = close(candidate.from, refEnds[0]);
+      const sourceEvidence = candidateStartsAtSource
+        ? candidate.arrowhead_evidence.at_from : candidate.arrowhead_evidence.at_to;
+      const targetEvidence = candidateStartsAtSource
+        ? candidate.arrowhead_evidence.at_to : candidate.arrowhead_evidence.at_from;
+      if (!sourceEvidence || !targetEvidence) continue;
+      arrowTipComparisons++;
+      if (targetEvidence.support_ratio > sourceEvidence.support_ratio) arrowTipWins++;
+      else if (targetEvidence.support_ratio === sourceEvidence.support_ratio) arrowTipTies++;
+    }
+    process.stdout.write(name + ": arrow-tip evidence target>source=" + arrowTipWins + "/" +
+      arrowTipComparisons + ", ties=" + arrowTipTies +
+      ". Diagnostic only; direction inference remains disabled.\\n");
     const directionResolved = candidates.filter(candidate => candidate.direction && candidate.direction !== "undetermined").length;
     process.stdout.write(name + ": directed reference edges=" + refs.filter(({edge}) => edge.direction === "directed").length +
       ", candidates with resolved direction=" + directionResolved + "/" + candidates.length +
