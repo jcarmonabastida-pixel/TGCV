@@ -46,6 +46,48 @@ const { chromium } = require("playwright");
   }
   testAggregateMetricEdgeCases();
 
+  function scoreTopologyByNodeIdentity(candidateEdges, referenceEdges, nodeMatch) {
+    const matchedReferenceIds = new Set();
+    let matchedCandidates = 0;
+    const key = (a,b) => [a,b].sort().join("|");
+    const referenceByPair = new Map(referenceEdges.map(edge =>
+      [key(edge.source, edge.target), edge]));
+    for (const edge of candidateEdges) {
+      const source = nodeMatch.get(edge.source_candidate_node_id);
+      const target = nodeMatch.get(edge.target_candidate_node_id);
+      if (!source || !target || source === target) continue;
+      const reference = referenceByPair.get(key(source,target));
+      if (reference && !matchedReferenceIds.has(reference.id)) {
+        matchedReferenceIds.add(reference.id);
+        matchedCandidates++;
+      }
+    }
+    return {matchedCandidates, matchedReferenceIds, matchedReferenceCount: matchedReferenceIds.size};
+  }
+
+  function testTopologyUsesCorrectEndpoints() {
+    const nodeMatch = new Map([["a","A"],["b","B"],["c","C"],["d","D"]]);
+    const refs = [
+      {id:"AB",source:"A",target:"B"},
+      {id:"BC",source:"B",target:"C"}
+    ];
+    const edge = (source_candidate_node_id,target_candidate_node_id) =>
+      ({source_candidate_node_id,target_candidate_node_id});
+    const correct = scoreTopologyByNodeIdentity([edge("a","b"),edge("b","c")],refs,nodeMatch);
+    assert.equal(correct.matchedCandidates,2,
+      "TOPOLOGY-ENDPOINTS-001: correctly linked endpoints must match both reference edges");
+    const sameCountsWrongTopology = scoreTopologyByNodeIdentity([edge("a","c"),edge("b","d")],refs,nodeMatch);
+    assert.equal(sameCountsWrongTopology.matchedCandidates,0,
+      "TOPOLOGY-ENDPOINTS-001: equal edge counts with wrong endpoints must not score as correct topology");
+    const duplicate = scoreTopologyByNodeIdentity([edge("a","b"),edge("a","b")],refs,nodeMatch);
+    assert.equal(duplicate.matchedCandidates,1,
+      "TOPOLOGY-ENDPOINTS-001: duplicate endpoint pairs must not inflate true positives");
+    assert.equal(refs.length - duplicate.matchedReferenceCount,1,
+      "TOPOLOGY-ENDPOINTS-001: missing reference endpoint pair must count as a false negative");
+    process.stdout.write("TOPOLOGY-ENDPOINTS-001: endpoint identity, wrong topology, and duplicate links scored correctly.\\n");
+  }
+  testTopologyUsesCorrectEndpoints();
+
   function matchEdgesOneToOne(candidates, refs, close) {
     const matchedRef = new Set();
     let matchedCandidates = 0;
