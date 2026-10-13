@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - development/collective-toy-ui-controls-001-20261013
+      - development/collective-toy-ocr-preprocessing-001-20261013
     paths:
       - 'prototypes/collective_toy/web/ocr_quality_evaluation.html'
       - 'prototypes/collective_toy/web/ocr_quality_ci_test.cjs'
