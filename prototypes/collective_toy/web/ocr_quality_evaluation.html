@@ -47,6 +47,18 @@ function distance(a,b){
 function rate(reference,actual){return reference.length?distance(reference,actual)/reference.length:(actual.length?1:0)}
 function wordTokens(s){return String(s||"").split(/\s+/).filter(Boolean)}
 function normalizeTransitionSpacing(s){return normalize(s).split("\n").map(line=>{if(!/^\s*T\d+\s*:/i.test(line))return line;return line.replace(/^\s*(T\d+)\s*:\s*/i,"$1: ").replace(/\s*->\s*/g," -> ")}).join("\n")}
+function targetedCharacterDiagnostics(allResults){
+ const byId=new Map(allResults.map(r=>[r.id,r]));
+ const cCase=byId.get("OCR-TXT-002"), zeroCase=byId.get("OCR-TXT-003");
+ if(!cCase||!zeroCase)throw new Error("Faltan fixtures para diagnósticos de confusión C/Cc y 0/O.");
+ const count=(text,re)=>((String(text||"").match(re)||[]).length);
+ const cText=cCase.recognized_raw;
+ const zeroText=zeroCase.recognized_raw;
+ return [
+  {id:"OCR-TXT-002",confusion:"C_vs_Cc",scope:"Diagnóstico literal; no normaliza ni altera CER/WER primarios o el gate.",expected_target:"C",recognized_raw:cText,c_exact_occurrences:count(cText,/(?<![A-Za-z])C(?![A-Za-z])/g),cc_exact_occurrences:count(cText,/(?<![A-Za-z])Cc(?![A-Za-z])/g),contains_expected_line:cText.split(/\\r?\\n/).some(line=>line.trim()==="C"),interpretation:"Conteo literal de tokens; la presencia de Cc no se considera equivalente a C."},
+  {id:"OCR-TXT-003",confusion:"zero_vs_letter_O",scope:"Diagnóstico literal; no normaliza ni altera CER/WER primarios o el gate.",expected_target:"0",recognized_raw:zeroText,zero_occurrences:count(zeroText,/(?<![A-Za-z0-9])0(?![A-Za-z0-9])/g),capital_o_occurrences:count(zeroText,/(?<![A-Za-z0-9])O(?![A-Za-z0-9])/g),contains_expected_condition:/Condición:\\s*x\\s*>\\s*0/.test(zeroText),contains_letter_o_condition:/Condición:\\s*x\\s*>\\s*O/.test(zeroText),interpretation:"Conteo literal de tokens en el texto reconocido; 0 y O permanecen distintos."}
+ ];
+}
 function validateMetrics(){
  const checks=[
   {name:"CER idéntico",pass:rate("abc","abc")===0},
@@ -135,9 +147,10 @@ async function run(){
   if(!notationFixture||!notationResult)throw new Error("No existe OCR-TXT-004 para el diagnóstico de espaciado de notación.");
   const expectedSpacing=normalizeTransitionSpacing(notationFixture.expected),recognizedSpacing=normalizeTransitionSpacing(notationResult.recognized_normalized);
   const notation_spacing_diagnostic={id:"OCR-TXT-004",scope:"Diagnóstico complementario; no modifica CER/WER primarios ni la puerta de calidad.",expected_spacing_canonical:expectedSpacing,recognized_spacing_canonical:recognizedSpacing,cer:Number(rate(expectedSpacing,recognizedSpacing).toFixed(6)),wer:Number(rate(wordTokens(expectedSpacing),wordTokens(recognizedSpacing)).toFixed(6)),exact_after_spacing_normalization:expectedSpacing===recognizedSpacing};
+  const targeted_character_diagnostics=targetedCharacterDiagnostics(results);
   const meanCER=results.reduce((s,r)=>s+r.cer,0)/results.length,meanWER=results.reduce((s,r)=>s+r.wer,0)/results.length;
   const metricValidation=validateMetrics();if(metricValidation.passed!==metricValidation.total)throw new Error("Falló la autocomprobación CER/WER: "+JSON.stringify(metricValidation));
-  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),notation_spacing_diagnostic,segmentation_diagnostics,preprocessing_diagnostics,results};
+  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),notation_spacing_diagnostic,segmentation_diagnostics,preprocessing_diagnostics,targeted_character_diagnostics,results};
   showResults(report);window.__tgcvOcrReport=report;$("export").disabled=false;$("status").className="ok";$("status").textContent="OCR real completado. Revisa cada caso; los resultados no evalúan flechas ni conectividad.";
  }catch(e){$("status").className="error";$("status").textContent="Evaluación fallida: "+(e&&e.message?e.message:String(e))}finally{$("run").disabled=fixtures.length===0;$("generate").disabled=false}
 }
@@ -148,6 +161,8 @@ function showResults(report){
  const notation=report.notation_spacing_diagnostic;const notationSummary=document.createElement("p");notationSummary.textContent="CER diagnóstico: "+(notation.cer*100).toFixed(2)+"%, WER diagnóstico: "+(notation.wer*100).toFixed(2)+"%; coincidencia tras normalización de espacios: "+(notation.exact_after_spacing_normalization?"sí":"no")+"; texto: "+notation.recognized_spacing_canonical;root.append(notationSummary);
  const diagnosticHeading=document.createElement("h3");diagnosticHeading.textContent="Diagnóstico de segmentación (OCR-TXT-004; no altera el gate principal)";root.append(diagnosticHeading);
  const diagnosticList=document.createElement("ul");for(const d of report.segmentation_diagnostics||[]){const li=document.createElement("li");li.textContent=d.mode+": CER "+(d.cer*100).toFixed(2)+"%, WER "+(d.wer*100).toFixed(2)+"%, "+d.elapsed_ms+" ms; texto: "+d.recognized_normalized;diagnosticList.append(li)}root.append(diagnosticList);
+ const charHeading=document.createElement("h3");charHeading.textContent="Diagnóstico de confusiones de caracteres (OCR-TXT-002 C/Cc y OCR-TXT-003 0/O; no altera el gate)";root.append(charHeading);
+ const charList=document.createElement("ul");for(const d of report.targeted_character_diagnostics||[]){const li=document.createElement("li");li.textContent=d.id+" ("+d.confusion+"): "+(d.c_exact_occurrences!==undefined?("tokens C="+d.c_exact_occurrences+", Cc="+d.cc_exact_occurrences+", línea C exacta="+d.contains_expected_line):("tokens 0="+d.zero_occurrences+", O="+d.capital_o_occurrences+", condición con 0="+d.contains_expected_condition+", condición con O="+d.contains_letter_o_condition))+"; texto reconocido literal: "+d.recognized_raw;charList.append(li)}root.append(charList);
  const prepHeading=document.createElement("h3");prepHeading.textContent="Diagnóstico de preprocesamiento (exploratorio; no altera el gate principal)";root.append(prepHeading);
  const prepList=document.createElement("ul");for(const d of report.preprocessing_diagnostics||[]){const li=document.createElement("li");li.textContent=d.variant+": CER "+(d.cer*100).toFixed(2)+"%, WER "+(d.wer*100).toFixed(2)+"%, "+d.elapsed_ms+" ms; texto: "+d.recognized_normalized;prepList.append(li)}root.append(prepList);
  const table=document.createElement("table");table.innerHTML="<thead><tr><th>Caso</th><th>CER</th><th>WER</th><th>Media caliente (ms)</th><th>Identificadores</th><th>Texto reconocido</th></tr></thead>";const body=document.createElement("tbody");
