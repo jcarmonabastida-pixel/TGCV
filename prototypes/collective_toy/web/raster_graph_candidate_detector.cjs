@@ -67,8 +67,33 @@ async function detectGraphCandidates(imagePath, options = {}) {
       }
       const clusterDiagnostics = clusters.map(c => ({ rows: c.runs.length, minX: c.minX, maxX: c.maxX, minY: c.minY, maxY: c.maxY, width: c.maxX - c.minX + 1, height: c.maxY - c.minY + 1, centerX: Math.round(c.cx), firstY: c.runs[0]?.y, lastY: c.lastY }));
       const rejectionCounts = { tooFewRows: 0, heightOutOfRange: 0, widthOutOfRange: 0, duplicateCenter: 0, accepted: 0 };
-      const candidates = [];
+      // Merge left/right arc fragments that share a vertical span. Rounded
+      // outlines often produce two short scanline runs per row rather than one.
+      const mergedClusters = [];
       for (const cluster of clusters) {
+        let target = mergedClusters.find(c => {
+          const overlap = Math.max(0, Math.min(c.maxY, cluster.maxY) - Math.max(c.minY, cluster.minY) + 1);
+          const minHeight = Math.min(c.maxY - c.minY + 1, cluster.maxY - cluster.minY + 1);
+          const horizontalGap = Math.max(0, Math.max(c.minX, cluster.minX) - Math.min(c.maxX, cluster.maxX) - 1);
+          return minHeight > 0 && overlap / minHeight >= 0.6 && horizontalGap <= maxNodeSize;
+        });
+        if (!target) {
+          target = { ...cluster, runs: [...cluster.runs] };
+          mergedClusters.push(target);
+        } else {
+          target.runs.push(...cluster.runs);
+          target.minX = Math.min(target.minX, cluster.minX);
+          target.maxX = Math.max(target.maxX, cluster.maxX);
+          target.minY = Math.min(target.minY, cluster.minY);
+          target.maxY = Math.max(target.maxY, cluster.maxY);
+          target.cx = (target.minX + target.maxX) / 2;
+          target.lastY = Math.max(target.lastY, cluster.lastY);
+        }
+      }
+      const clusterDiagnostics = mergedClusters.map(c => ({ rows: c.runs.length, minX: c.minX, maxX: c.maxX, minY: c.minY, maxY: c.maxY, width: c.maxX - c.minX + 1, height: c.maxY - c.minY + 1, centerX: Math.round(c.cx), firstY: c.runs[0]?.y, lastY: c.lastY }));
+      const rejectionCounts = { tooFewRows: 0, heightOutOfRange: 0, widthOutOfRange: 0, duplicateCenter: 0, accepted: 0 };
+      const candidates = [];
+      for (const cluster of mergedClusters) {
         const w = cluster.maxX - cluster.minX + 1;
         const h = cluster.maxY - cluster.minY + 1;
         if (cluster.runs.length < 8) { rejectionCounts.tooFewRows++; continue; }
