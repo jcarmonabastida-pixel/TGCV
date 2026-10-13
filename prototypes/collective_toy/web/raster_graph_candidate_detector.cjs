@@ -42,25 +42,37 @@ async function detectGraphCandidates(imagePath, options = {}) {
           }
         }
       }
-      const groups = [];
-      for (const run of runs) {
-        let group = groups.find(g => Math.abs(g.y - run.y) <= 2 &&
-          Math.abs(g.x1 - run.x1) <= 3 && Math.abs(g.x2 - run.x2) <= 3);
-        if (!group) { group = { rows: [], x1: run.x1, x2: run.x2, y: run.y }; groups.push(group); }
-        group.rows.push(run.y);
-        group.x1 = Math.min(group.x1, run.x1);
-        group.x2 = Math.max(group.x2, run.x2);
-      }
+      // Pair top/bottom horizontal border runs with similar x extents.
+      // This detects simple outlined node boxes without reading labels.
       const candidates = [];
-      for (const g of groups) {
-        if (g.rows.length < 3) continue;
-        const y1 = Math.min(...g.rows), y2 = Math.max(...g.rows);
-        const w = g.x2 - g.x1 + 1, h = y2 - y1 + 1;
-        if (h < minNodeSize || h > maxNodeSize || w < minNodeSize || w > maxNodeSize) continue;
-        const cx = Math.round((g.x1 + g.x2) / 2), cy = Math.round((y1 + y2) / 2);
+      const usedBottom = new Set();
+      for (let i = 0; i < runs.length; i++) {
+        const top = runs[i];
+        let best = -1;
+        let bestScore = Infinity;
+        for (let j = i + 1; j < runs.length; j++) {
+          const bottom = runs[j];
+          const dy = bottom.y - top.y;
+          if (dy < minNodeSize - 2) continue;
+          if (dy > maxNodeSize) break;
+          if (usedBottom.has(j)) continue;
+          const xError = Math.abs(top.x1 - bottom.x1) + Math.abs(top.x2 - bottom.x2);
+          if (xError > 10) continue;
+          const score = xError + Math.abs(top.len - bottom.len);
+          if (score < bestScore) { best = j; bestScore = score; }
+        }
+        if (best < 0) continue;
+        const bottom = runs[best];
+        usedBottom.add(best);
+        const x1 = Math.min(top.x1, bottom.x1);
+        const x2 = Math.max(top.x2, bottom.x2);
+        const y1 = top.y, y2 = bottom.y;
+        const w = x2 - x1 + 1, h = y2 - y1 + 1;
+        if (w < minNodeSize || w > maxNodeSize || h < minNodeSize || h > maxNodeSize) continue;
+        const cx = Math.round((x1 + x2) / 2), cy = Math.round((y1 + y2) / 2);
         if (candidates.some(n => Math.hypot(n.center[0] - cx, n.center[1] - cy) < 12)) continue;
         candidates.push({ id: "candidate-node-" + (candidates.length + 1), center: [cx, cy],
-          bbox: [g.x1, y1, g.x2, y2], confidence: "low", review_required: true });
+          bbox: [x1, y1, x2, y2], confidence: "low", review_required: true });
       }
 
       const lineCandidates = [];
@@ -79,7 +91,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
         detector: "TGCV-RASTER-GRAPH-CANDIDATES-001",
         status: "experimental-candidates-only",
         image: { width, height },
-        method: "Canvas grayscale threshold; horizontal-run node-outline candidates; long horizontal stroke candidates",
+        method: "Canvas grayscale threshold; paired horizontal border runs for provisional box nodes; long horizontal stroke candidates",
         nodes: candidates,
         edge_candidates: lineCandidates,
         limitations: [
