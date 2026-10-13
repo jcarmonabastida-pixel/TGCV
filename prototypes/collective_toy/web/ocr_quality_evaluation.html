@@ -62,7 +62,7 @@ async function sha256(blob){const bytes=await blob.arrayBuffer();const digest=aw
 function renderFixtures(){
  fixtures=[];results=[];$("results").replaceChildren();const root=$("fixtures");root.replaceChildren();
  for(const c of cases){const canvas=render(c);const wrap=document.createElement("section");wrap.className="fixture";const left=document.createElement("div"),right=document.createElement("div");const heading=document.createElement("h3");heading.textContent=c.id+" — "+c.difficulty;left.append(heading);const p=document.createElement("p");p.textContent="Texto esperado: "+expected(c);left.append(p);right.append(canvas);wrap.append(left,right);root.append(wrap);fixtures.push({id:c.id,lines:c.lines,difficulty:c.difficulty,canvas,expected:expected(c)})}
- $("run").disabled=false;$("export").disabled=true;$("status").className="";$("status").textContent="Generadas "+fixtures.length+" imágenes sintéticas. Pulsa «Ejecutar OCR real» para medirlas.";
+ $("run").disabled=metricStartupCheck.passed!==metricStartupCheck.total;$("export").disabled=true;$("status").className=metricStartupCheck.passed===metricStartupCheck.total?"ok":"error";$("status").textContent=metricStartupCheck.passed===metricStartupCheck.total?"Generadas "+fixtures.length+" imágenes sintéticas. Métricas verificadas: "+metricStartupCheck.passed+"/"+metricStartupCheck.total+". Pulsa «Ejecutar OCR real» para medirlas.":"Autocomprobación CER/WER fallida ("+metricStartupCheck.passed+"/"+metricStartupCheck.total+"). No se ejecutará OCR.";
 }
 async function loadTesseract(){
  if(window.Tesseract)return;
