@@ -246,6 +246,19 @@ async function detectGraphCandidates(imagePath, options = {}) {
       for (let i = 0; i < candidates.length; i++) {
         for (let j = i + 1; j < candidates.length; j++) {
           const a = candidates[i], b = candidates[j];
+          // Do not propose a long edge that passes through an intervening node.
+          // This removes the linear fixture's A->C shortcut when B lies on A-C.
+          const vx = b.center[0] - a.center[0], vy = b.center[1] - a.center[1];
+          const lengthSquared = vx * vx + vy * vy;
+          const interveningNode = candidates.some((node, k) => {
+            if (k === i || k === j || lengthSquared === 0) return false;
+            const wx = node.center[0] - a.center[0], wy = node.center[1] - a.center[1];
+            const t = (wx * vx + wy * vy) / lengthSquared;
+            if (t <= 0.08 || t >= 0.92) return false;
+            const perpendicular = Math.abs(vx * wy - vy * wx) / Math.sqrt(lengthSquared);
+            return perpendicular <= 10;
+          });
+          if (interveningNode) continue;
           const pa = boundaryPoint(a, b.center), pb = boundaryPoint(b, a.center);
           const support = lineSupport(pa, pb);
           if (support.tested < 20 || support.ratio < 0.42) continue;
