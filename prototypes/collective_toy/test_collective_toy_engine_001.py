@@ -271,6 +271,26 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(at_two["reachable_states"], ["A", "B", "C"])
         self.assertEqual(len(at_two["trajectories"]), 1)
 
+    def test_nonterminal_trajectory_cap_marks_omitted_terminal_path_truncated(self):
+        model = copy.deepcopy(self.model)
+        model["states"] = ["A", "B", "C"]
+        model["initial_state"] = "A"
+        model["transitions"] = [
+            {"id": "t_ab", "source": "A", "target": "B"},
+            {"id": "t_ac", "source": "A", "target": "C"},
+        ]
+        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
+        model["exploration"] = {"max_depth": 4, "max_trajectories": 1}
+
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        self.assertEqual(
+            baseline["trajectories"],
+            [[{"state": "A"}, {"transition": "t_ab", "state": "B"}]],
+        )
+        # The second terminal path (A -> C) is pending when the output cap is reached.
+        self.assertTrue(baseline["truncated"])
+
     def test_exact_trajectory_cap_does_not_mark_complete_enumeration_truncated(self):
         model = copy.deepcopy(self.model)
         model["states"] = ["A", "B"]
