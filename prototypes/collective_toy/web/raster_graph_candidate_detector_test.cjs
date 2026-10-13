@@ -33,6 +33,7 @@ const { chromium } = require("playwright");
     }
     const precision = candidates.length ? matchedCandidates / candidates.length : 0;
     const recall = refs.length ? matchedRef.size / refs.length : 0;
+    process.stdout.write(name + ": edge candidate endpoints=" + JSON.stringify(candidates.map(edge => ({ from: edge.from, to: edge.to, support: edge.line_support_ratio }))) + "\\n");
     process.stdout.write(name + ": edge candidate precision=" + precision.toFixed(3) +
       ", endpoint recall=" + recall.toFixed(3) + ", candidates=" + candidates.length +
       ", reference edges=" + refs.length + ".\\n");
