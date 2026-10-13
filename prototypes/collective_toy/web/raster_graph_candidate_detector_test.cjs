@@ -13,18 +13,12 @@ const { chromium } = require("playwright");
   const annotationFile = path.join(root, "synthetic_graph_image_annotations_v0.1.json");
   const annotations = JSON.parse(fs.readFileSync(annotationFile, "utf8"));
   const referenceByFile = new Map(annotations.images.map(item => [path.basename(item.file), item]));
-  function reportEdgeGeometry(name, result) {
-    const reference = referenceByFile.get(name);
-    const endpoints = edge => [edge.polyline[0], edge.polyline[edge.polyline.length - 1]];
-    const close = (a, b, tolerance = 14) => Math.hypot(a[0] - b[0], a[1] - b[1]) <= tolerance;
-    const refs = reference.edges.map(edge => ({ edge, ends: endpoints(edge) }));
-    const candidates = result.edge_candidates || [];
+  function matchEdgesOneToOne(candidates, refs, close) {
     const matchedRef = new Set();
     let matchedCandidates = 0;
     for (const candidate of candidates) {
       const ends = [candidate.from, candidate.to];
-      // One-to-one greedy matching: each reference edge can explain at most
-      // one candidate. Duplicate candidates therefore remain false positives.
+      // Each reference edge can explain at most one candidate.
       const match = refs.find(({ edge, ends: refEnds }) => !matchedRef.has(edge.id) && (
         close(ends[0], refEnds[0]) && close(ends[1], refEnds[1]) ||
         close(ends[0], refEnds[1]) && close(ends[1], refEnds[0])));
@@ -33,8 +27,46 @@ const { chromium } = require("playwright");
         matchedRef.add(match.edge.id);
       }
     }
+    return { matchedCandidates, matchedReferenceEdges: matchedRef.size, matchedReferenceIds: matchedRef };
+  }
+
+  function testOneToOneMetricMatching() {
+    const close = (a,b) => Math.hypot(a[0]-b[0],a[1]-b[1]) <= 1;
+    const refs = [
+      { edge: { id: "AB" }, ends: [[0,0],[10,0]] },
+      { edge: { id: "BC" }, ends: [[10,0],[20,0]] }
+    ];
+    const edge = (from,to) => ({from,to});
+    const duplicateAndMissing = matchEdgesOneToOne([
+      edge([0,0],[10,0]), edge([0,0],[10,0]), edge([50,50],[60,60])
+    ], refs, close);
+    assert.equal(duplicateAndMissing.matchedCandidates, 1,
+      "METRIC-ONE-TO-ONE-001: duplicate candidates must not both count as true positives");
+    assert.equal(duplicateAndMissing.matchedReferenceEdges, 1,
+      "METRIC-ONE-TO-ONE-001: only one reference edge is recovered");
+    assert.equal(3 - duplicateAndMissing.matchedCandidates, 2,
+      "METRIC-ONE-TO-ONE-001: duplicate and unrelated candidate are false positives");
+    assert.equal(2 - duplicateAndMissing.matchedReferenceEdges, 1,
+      "METRIC-ONE-TO-ONE-001: unmatched reference edge is a false negative");
+    const reversed = matchEdgesOneToOne([edge([10,0],[0,0]), edge([20,0],[10,0])], refs, close);
+    assert.equal(reversed.matchedCandidates, 2,
+      "METRIC-ONE-TO-ONE-001: undirected geometric matching must tolerate endpoint order");
+    assert.equal(reversed.matchedReferenceEdges, 2);
+    process.stdout.write("METRIC-ONE-TO-ONE-001: duplicates, false positives, omissions and reversed endpoints scored correctly.\\n");
+  }
+  testOneToOneMetricMatching();
+
+  function reportEdgeGeometry(name, result) {
+    const reference = referenceByFile.get(name);
+    const endpoints = edge => [edge.polyline[0], edge.polyline[edge.polyline.length - 1]];
+    const close = (a, b, tolerance = 14) => Math.hypot(a[0] - b[0], a[1] - b[1]) <= tolerance;
+    const refs = reference.edges.map(edge => ({ edge, ends: endpoints(edge) }));
+    const candidates = result.edge_candidates || [];
+    const matching = matchEdgesOneToOne(candidates, refs, close);
+    const matchedCandidates = matching.matchedCandidates;
+    const matchedRef = matching.matchedReferenceIds;
     const precision = candidates.length ? matchedCandidates / candidates.length : 0;
-    const recall = refs.length ? matchedRef.size / refs.length : 0;
+    const recall = refs.length ? matching.matchedReferenceEdges / refs.length : 0;
     process.stdout.write(name + ": edge candidate endpoints=" + JSON.stringify(candidates.map(edge => ({ from: edge.from, to: edge.to, support: edge.line_support_ratio }))) + "\\n");
     assert.ok(candidates.every(candidate => candidate.direction_status === "unresolved"),
       name + ": direction must remain explicitly unresolved until arrowhead classification is validated");
