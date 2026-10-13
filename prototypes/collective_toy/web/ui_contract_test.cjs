@@ -23,9 +23,16 @@ const assert = require("node:assert/strict");
     const imageInput = page.locator("#image-file");
     await imageInput.setInputFiles({ name: "reference.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jW5sAAAAASUVORK5CYII=", "base64") });
     await page.locator("#image-preview:not([hidden])").waitFor();
-    assert.match(await page.locator("#image-status").innerText(), /Sin OCR/i);
+    assert.match(await page.locator("#image-status").innerText(), /OCR opcional|OCR/i);
     assert.equal(await page.locator("#clear-image").isEnabled(), true);
+    assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), true);
+    // Stub the OCR engine to test the browser integration deterministically without network access.
+    await page.evaluate(() => { window.Tesseract = { recognize: async (_image, language) => { if (language !== "spa+eng") throw new Error("Unexpected OCR language"); return { data: { text: "Nodo A\\nNodo B\\nA --> B" } }; } }; });
+    await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).click();
+    await page.locator("#image-status").filter({ hasText: /OCR completado/ }).waitFor();
+    assert.match(await page.locator("#image-transcription").inputValue(), /A --> B/);
     await page.getByRole("button", { name: "Quitar imagen" }).click();
+    assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), false);
     assert.equal(await page.locator("#image-preview").isVisible(), false);
     await imageInput.setInputFiles({ name: "reference.svg", mimeType: "image/svg+xml", buffer: Buffer.from("<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>") });
     assert.match(await page.locator("#image-status").innerText(), /Formato no admitido/i);
