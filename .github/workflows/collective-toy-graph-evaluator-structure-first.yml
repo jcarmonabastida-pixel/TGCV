@@ -1,0 +1,37 @@
+name: Collective Toy structure-first graph evaluator contract
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structure-first-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out selected ref
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate structure-first fixture JSON
+        working-directory: prototypes/collective_toy/web
+        run: |
+          node -e "const fs=require('node:fs'); JSON.parse(fs.readFileSync('ocr_graph_evaluation_fixtures_v02.json','utf8')); console.log('PASS: structure-first fixture JSON is valid');"
+      - name: Run structure-first contract tests
+        working-directory: prototypes/collective_toy/web
+        run: node ocr_graph_evaluator_test_v02.cjs
+      - name: Produce structure-first report
+        working-directory: prototypes/collective_toy/web
+        run: node ocr_graph_evaluator_v02.cjs ocr_graph_evaluation_fixtures_v02.json structure-first-graph-report.json
+      - name: Upload structure-first report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgcv-structure-first-graph-evaluation-v02
+          path: prototypes/collective_toy/web/structure-first-graph-report.json
+          if-no-files-found: warn
+          retention-days: 30
