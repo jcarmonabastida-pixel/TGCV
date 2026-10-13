@@ -126,7 +126,7 @@ async function run(){
     const image=variant.mode==="original"?diagnosticFixture.canvas:preprocessVariant(diagnosticFixture.canvas,variant.mode);
     const started=performance.now();const out=await worker.recognize(image);const elapsed=Math.round(performance.now()-started);
     const raw=String(out.data.text||""),ref=normalize(diagnosticFixture.expected),got=normalize(raw);
-    preprocessing_diagnostics.push({id:diagnosticFixture.id,variant:variant.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(wordTokens(ref),gotWords=wordTokens(got)).toFixed(6)),elapsed_ms:elapsed});
+    preprocessing_diagnostics.push({id:diagnosticFixture.id,variant:variant.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(wordTokens(ref),wordTokens(got)).toFixed(6)),elapsed_ms:elapsed});
    }
   }finally{await worker.terminate()}
   const meanCER=results.reduce((s,r)=>s+r.cer,0)/results.length,meanWER=results.reduce((s,r)=>s+r.wer,0)/results.length;
