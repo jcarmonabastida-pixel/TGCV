@@ -236,8 +236,11 @@ const assert = require("node:assert/strict");
     assert.equal(importedGraph.initial_state, "B");
 
     // A failed run must not leave the previous successful package exposed as current.
-    await page.locator("summary").click();
-    await page.locator("#model").fill("{ invalid JSON");
+    // Set the advanced editor value directly so this assertion is independent of <details> visibility.
+    await page.locator("#model").evaluate((el) => {
+      el.value = "{ invalid JSON";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    });
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "No se ha podido ejecutar" }).waitFor();
     assert.equal(await page.locator("#export").isDisabled(), true);
