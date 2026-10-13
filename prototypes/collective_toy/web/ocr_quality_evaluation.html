@@ -45,7 +45,7 @@ function distance(a,b){
  return prev[b.length]
 }
 function rate(reference,actual){return reference.length?distance(reference,actual)/reference.length:(actual.length?1:0)}
-function wordTokens(s){return String(s||"").split(/\\s+/).filter(Boolean)}
+function wordTokens(s){return String(s||"").split(/\s+/).filter(Boolean)}
 function validateMetrics(){
  const checks=[
   {name:"CER idéntico",pass:rate("abc","abc")===0},
@@ -53,7 +53,7 @@ function validateMetrics(){
   {name:"CER una inserción",pass:Math.abs(rate("abc","abxc")-1/3)<1e-12},
   {name:"WER una sustitución de tres palabras",pass:Math.abs(rate(["uno","dos","tres"],["uno","X","tres"])-1/3)<1e-12},
   {name:"WER una eliminación de palabra",pass:Math.abs(rate(["uno","dos","tres"],["uno","tres"])-1/3)<1e-12},
-  {name:"Tokenización WER separa espacios y saltos de línea",pass:JSON.stringify(wordTokens("Nodo_01\\n\\nNodo-02\\nT1: A -> B"))===JSON.stringify(["Nodo_01","Nodo-02","T1:","A","->","B"])},
+  {name:"Tokenización WER separa espacios y saltos de línea",pass:JSON.stringify(wordTokens("Nodo_01\n\nNodo-02\nT1: A -> B"))===JSON.stringify(["Nodo_01","Nodo-02","T1:","A","->","B"])},
   {name:"Referencia vacía y resultado vacío",pass:rate("","")===0},
   {name:"Referencia vacía y resultado no vacío",pass:rate("","x")===1},
   {name:"Normalización conserva acentos y puntuación",pass:normalize("  Transición: x > 0\r\n") === "Transición: x > 0"}
