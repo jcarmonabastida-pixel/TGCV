@@ -193,5 +193,37 @@ const { chromium } = require("playwright");
   process.stdout.write("SYN-NO-ARROWS-001: nodes=" + noArrowResult.nodes.length +
     ", connections=" + noArrowResult.edge_candidates.length +
     ", all directions unresolved; human review required.\\n");
+  // Same topology with differently colored node fills: color must not create
+  // an arrow or cause direction to be guessed.
+  const coloredNoArrowPath = path.join(tempRoot, "SYN-NO-ARROWS-COLORED-001.png");
+  const colorBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await colorBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 320; canvas.height = 180;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 320, 180);
+      ctx.strokeStyle = "#111111"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(65, 90); ctx.lineTo(255, 90); ctx.stroke();
+      for (const [x, fill] of [[50, "#8ecae6"], [270, "#ffb703"]]) {
+        ctx.beginPath(); ctx.arc(x, 90, 15, 0, Math.PI * 2); ctx.fillStyle = fill; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(coloredNoArrowPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await colorBrowser.close(); }
+  const coloredNoArrowResult = await detectGraphCandidates(coloredNoArrowPath);
+  assert.equal(coloredNoArrowResult.status, "experimental-candidates-only");
+  assert.ok(coloredNoArrowResult.nodes.length >= 2,
+    "SYN-NO-ARROWS-COLORED-001: both colored nodes should yield provisional candidates");
+  assert.ok(coloredNoArrowResult.edge_candidates.length >= 1,
+    "SYN-NO-ARROWS-COLORED-001: plain line should yield a provisional connection");
+  assert.ok(coloredNoArrowResult.edge_candidates.every(edge =>
+    edge.direction_status === "unresolved" && edge.direction === "undetermined" && edge.review_required === true),
+    "SYN-NO-ARROWS-COLORED-001: colored nodes without arrowheads must not produce an invented direction");
+  process.stdout.write("SYN-NO-ARROWS-COLORED-001: nodes=" + coloredNoArrowResult.nodes.length +
+    ", connections=" + coloredNoArrowResult.edge_candidates.length +
+    ", all directions unresolved; human review required.\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
