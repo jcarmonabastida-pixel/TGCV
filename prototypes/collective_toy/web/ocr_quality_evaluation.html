@@ -71,6 +71,20 @@ async function loadTesseract(){
  await new Promise((resolve,reject)=>{const script=document.createElement("script");script.src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";script.onload=resolve;script.onerror=()=>reject(new Error("No se pudo cargar Tesseract.js desde CDN."));document.head.append(script)});
  if(!window.Tesseract||typeof window.Tesseract.createWorker!=="function")throw new Error("Tesseract.js no ofrece la API esperada.");
 }
+function preprocessVariant(source,mode){
+ const scale=mode==="upscale_2x"?2:1;
+ const canvas=document.createElement("canvas");canvas.width=source.width*scale;canvas.height=source.height*scale;
+ const ctx=canvas.getContext("2d",{willReadFrequently:true});
+ ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);
+ ctx.imageSmoothingEnabled=mode==="upscale_2x";ctx.imageSmoothingQuality="high";
+ ctx.drawImage(source,0,0,canvas.width,canvas.height);
+ if(mode==="grayscale_contrast"){
+  const image=ctx.getImageData(0,0,canvas.width,canvas.height),d=image.data;
+  for(let i=0;i<d.length;i+=4){const gray=.299*d[i]+.587*d[i+1]+.114*d[i+2];const value=gray<180?0:255;d[i]=d[i+1]=d[i+2]=value}
+  ctx.putImageData(image,0,0);
+ }
+ return canvas;
+}
 async function run(){
  $("run").disabled=true;$("generate").disabled=true;results=[];
  try{
@@ -107,10 +121,17 @@ async function run(){
     segmentation_diagnostics.push({id:diagnosticFixture.id,mode:mode.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(wordTokens(ref),wordTokens(got)).toFixed(6)),elapsed_ms:elapsed});
    }
    await worker.setParameters({tessedit_pageseg_mode:window.Tesseract.PSM.AUTO});
+   const preprocessing_diagnostics=[];
+   for(const variant of [{name:"original",mode:"original"},{name:"upscale_2x",mode:"upscale_2x"},{name:"grayscale_contrast",mode:"grayscale_contrast"}]){
+    const image=variant.mode==="original"?diagnosticFixture.canvas:preprocessVariant(diagnosticFixture.canvas,variant.mode);
+    const started=performance.now();const out=await worker.recognize(image);const elapsed=Math.round(performance.now()-started);
+    const raw=String(out.data.text||""),ref=normalize(diagnosticFixture.expected),got=normalize(raw);
+    preprocessing_diagnostics.push({id:diagnosticFixture.id,variant:variant.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(wordTokens(ref),gotWords=wordTokens(got)).toFixed(6)),elapsed_ms:elapsed});
+   }
   }finally{await worker.terminate()}
   const meanCER=results.reduce((s,r)=>s+r.cer,0)/results.length,meanWER=results.reduce((s,r)=>s+r.wer,0)/results.length;
   const metricValidation=validateMetrics();if(metricValidation.passed!==metricValidation.total)throw new Error("Falló la autocomprobación CER/WER: "+JSON.stringify(metricValidation));
-  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),segmentation_diagnostics,results};
+  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),segmentation_diagnostics,preprocessing_diagnostics,results};
   showResults(report);window.__tgcvOcrReport=report;$("export").disabled=false;$("status").className="ok";$("status").textContent="OCR real completado. Revisa cada caso; los resultados no evalúan flechas ni conectividad.";
  }catch(e){$("status").className="error";$("status").textContent="Evaluación fallida: "+(e&&e.message?e.message:String(e))}finally{$("run").disabled=fixtures.length===0;$("generate").disabled=false}
 }
@@ -119,6 +140,8 @@ function showResults(report){
  const summary=document.createElement("p");summary.textContent="Inicialización del worker: "+report.worker_init_ms+" ms · CER medio: "+(report.mean_cer*100).toFixed(2)+"% · WER medio: "+(report.mean_wer*100).toFixed(2)+"% · Umbral provisional: "+(report.gate_pass?"CUMPLIDO":"NO CUMPLIDO");root.append(summary);
  const diagnosticHeading=document.createElement("h3");diagnosticHeading.textContent="Diagnóstico de segmentación (OCR-TXT-004; no altera el gate principal)";root.append(diagnosticHeading);
  const diagnosticList=document.createElement("ul");for(const d of report.segmentation_diagnostics||[]){const li=document.createElement("li");li.textContent=d.mode+": CER "+(d.cer*100).toFixed(2)+"%, WER "+(d.wer*100).toFixed(2)+"%, "+d.elapsed_ms+" ms; texto: "+d.recognized_normalized;diagnosticList.append(li)}root.append(diagnosticList);
+ const prepHeading=document.createElement("h3");prepHeading.textContent="Diagnóstico de preprocesamiento (exploratorio; no altera el gate principal)";root.append(prepHeading);
+ const prepList=document.createElement("ul");for(const d of report.preprocessing_diagnostics||[]){const li=document.createElement("li");li.textContent=d.variant+": CER "+(d.cer*100).toFixed(2)+"%, WER "+(d.wer*100).toFixed(2)+"%, "+d.elapsed_ms+" ms; texto: "+d.recognized_normalized;prepList.append(li)}root.append(prepList);
  const table=document.createElement("table");table.innerHTML="<thead><tr><th>Caso</th><th>CER</th><th>WER</th><th>Media caliente (ms)</th><th>Identificadores</th><th>Texto reconocido</th></tr></thead>";const body=document.createElement("tbody");
  for(const r of report.results){const tr=document.createElement("tr");for(const value of [r.id,(r.cer*100).toFixed(2)+"%",(r.wer*100).toFixed(2)+"%",String(r.warm_elapsed_ms_mean)+" (3 rep.)",r.identifier_exact?"Exactos":"Revisar",r.recognized_raw]){const td=document.createElement("td");td.textContent=value;tr.append(td)}body.append(tr)}table.append(body);root.append(table);
 }
