@@ -29,6 +29,8 @@ async function detectGraphCandidates(imagePath, options = {}) {
         if ((r + g + b) / 3 < threshold) dark[i] = 1;
       }
 
+      // Gather all moderate horizontal runs, including short runs at the
+      // rounded caps of circular/elliptical nodes.
       const runs = [];
       for (let y = 2; y < height - 2; y++) {
         let start = -1;
@@ -37,42 +39,42 @@ async function detectGraphCandidates(imagePath, options = {}) {
           if (on && start < 0) start = x;
           if ((!on || x === width) && start >= 0) {
             const len = x - start;
-            if (len >= minNodeSize && len <= maxNodeSize) runs.push({ y, x1: start, x2: x - 1, len });
+            if (len >= 3 && len <= maxNodeSize) runs.push({ y, x1: start, x2: x - 1, len, cx: (start + x - 1) / 2 });
             start = -1;
           }
         }
       }
-      // Pair top/bottom horizontal border runs with similar x extents.
-      // This detects simple outlined node boxes without reading labels.
-      const candidates = [];
-      const usedBottom = new Set();
-      for (let i = 0; i < runs.length; i++) {
-        const top = runs[i];
-        let best = -1;
-        let bestScore = Infinity;
-        for (let j = i + 1; j < runs.length; j++) {
-          const bottom = runs[j];
-          const dy = bottom.y - top.y;
-          if (dy < minNodeSize - 2) continue;
-          if (dy > maxNodeSize) break;
-          if (usedBottom.has(j)) continue;
-          const xError = Math.abs(top.x1 - bottom.x1) + Math.abs(top.x2 - bottom.x2);
-          if (xError > 10) continue;
-          const score = xError + Math.abs(top.len - bottom.len);
-          if (score < bestScore) { best = j; bestScore = score; }
+
+      // Cluster row runs by approximate center x and continuity in y. A node's
+      // rounded outline changes width by row, so exact run-end matching is
+      // inappropriate. Wide connector strokes are excluded from node clusters.
+      const clusters = [];
+      for (const run of runs) {
+        if (run.len > maxNodeSize) continue;
+        let cluster = clusters.find(c => Math.abs(c.cx - run.cx) <= 5 &&
+          run.y >= c.lastY && run.y - c.lastY <= 3);
+        if (!cluster) {
+          cluster = { runs: [], cx: run.cx, lastY: run.y, minX: run.x1, maxX: run.x2, minY: run.y, maxY: run.y };
+          clusters.push(cluster);
         }
-        if (best < 0) continue;
-        const bottom = runs[best];
-        usedBottom.add(best);
-        const x1 = Math.min(top.x1, bottom.x1);
-        const x2 = Math.max(top.x2, bottom.x2);
-        const y1 = top.y, y2 = bottom.y;
-        const w = x2 - x1 + 1, h = y2 - y1 + 1;
-        if (w < minNodeSize || w > maxNodeSize || h < minNodeSize || h > maxNodeSize) continue;
-        const cx = Math.round((x1 + x2) / 2), cy = Math.round((y1 + y2) / 2);
+        cluster.runs.push(run);
+        cluster.lastY = run.y;
+        cluster.minX = Math.min(cluster.minX, run.x1);
+        cluster.maxX = Math.max(cluster.maxX, run.x2);
+        cluster.minY = Math.min(cluster.minY, run.y);
+        cluster.maxY = Math.max(cluster.maxY, run.y);
+        cluster.cx = cluster.runs.reduce((sum, r) => sum + r.cx, 0) / cluster.runs.length;
+      }
+      const candidates = [];
+      for (const cluster of clusters) {
+        const w = cluster.maxX - cluster.minX + 1;
+        const h = cluster.maxY - cluster.minY + 1;
+        if (cluster.runs.length < 8 || h < minNodeSize || h > maxNodeSize || w < minNodeSize || w > maxNodeSize) continue;
+        const cx = Math.round((cluster.minX + cluster.maxX) / 2);
+        const cy = Math.round((cluster.minY + cluster.maxY) / 2);
         if (candidates.some(n => Math.hypot(n.center[0] - cx, n.center[1] - cy) < 12)) continue;
         candidates.push({ id: "candidate-node-" + (candidates.length + 1), center: [cx, cy],
-          bbox: [x1, y1, x2, y2], confidence: "low", review_required: true });
+          bbox: [cluster.minX, cluster.minY, cluster.maxX, cluster.maxY], confidence: "low", review_required: true });
       }
 
       const lineCandidates = [];
@@ -91,7 +93,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
         detector: "TGCV-RASTER-GRAPH-CANDIDATES-001",
         status: "experimental-candidates-only",
         image: { width, height },
-        method: "Canvas grayscale threshold; paired horizontal border runs for provisional box nodes; long horizontal stroke candidates",
+        method: "Canvas grayscale threshold; vertically clustered horizontal runs for rounded/box node candidates; long horizontal stroke candidates",
         nodes: candidates,
         edge_candidates: lineCandidates,
         limitations: [
