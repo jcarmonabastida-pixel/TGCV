@@ -2005,12 +2005,9 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       const fixtureJson = JSON.stringify(fixture.model, null, 2);
       const modelTransitions = fixture.model && Array.isArray(fixture.model.transitions) ? fixture.model.transitions : [];
       const modelStates = fixture.model && Array.isArray(fixture.model.states) ? fixture.model.states : [];
-      if (modelTransitions.length > 2000 || modelStates.length > 500) {
-        // Set oversized fixtures without firing the editor's per-keystroke input handler.
-        await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
-      } else {
-        await page.locator("#model").fill(fixtureJson, { timeout: 15000 });
-      }
+      // The JSON editor is intentionally collapsed under <details>; assign the fixture
+      // directly so validation tests do not depend on editor visibility or trigger redraws.
+      await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
       await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
       await page.locator("#status").getByText(/No se ha podido ejecutar/).waitFor({ timeout: 5000 });
       const status = await page.locator("#status").innerText();
