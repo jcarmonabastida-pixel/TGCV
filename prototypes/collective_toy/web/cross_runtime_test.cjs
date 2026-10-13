@@ -987,7 +987,7 @@ function pythonValidationOutcome(engineDir, model, scriptOverride = null) {
     "except Exception as exc:",
     "    print('UNEXPECTED_EXCEPTION:' + type(exc).__name__)",
     "    sys.exit(3)"
-  ].join("\\n");
+  ].join("\n");
   const result = spawnSync("python", ["-c", script], {
     cwd: engineDir, input: JSON.stringify(model), encoding: "utf8"
   });
