@@ -734,6 +734,49 @@ const { chromium } = require("playwright");
   assert.equal(noisyBackgroundResult.edge_candidates.length,3,
     "SYN-BRANCH-SPARSE-NOISE-001: sparse background noise must preserve three-edge count");
   process.stdout.write("SYN-BRANCH-SPARSE-NOISE-001: sparse background noise preserves expected candidate counts.\\n");
+  // Ambiguous junction probe: four arms meet at a shared central junction.
+  // Expected topology is four center-to-leaf connections, never leaf-to-leaf shortcuts.
+  const junctionPath = path.join(tempRoot, "SYN-CROSS-JUNCTION-001.png");
+  const junctionBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await junctionBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas=document.createElement("canvas"); canvas.width=360; canvas.height=260;
+      const ctx=canvas.getContext("2d");
+      ctx.fillStyle="#ffffff";ctx.fillRect(0,0,360,260);
+      ctx.strokeStyle="#111111";ctx.lineWidth=2;
+      const center=[180,130], leaves=[[45,130],[315,130],[180,35],[180,225]];
+      for(const [x,y] of leaves) {
+        const dx=x-center[0],dy=y-center[1],len=Math.hypot(dx,dy);
+        ctx.beginPath();ctx.moveTo(center[0]+dx/len*14,center[1]+dy/len*14);
+        ctx.lineTo(x-dx/len*13,y-dy/len*13);ctx.stroke();
+      }
+      for(const [x,y] of [center,...leaves]) {
+        ctx.beginPath();ctx.arc(x,y,13,0,Math.PI*2);
+        ctx.fillStyle="#ffffff";ctx.fill();ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(junctionPath,Buffer.from(base64,"base64"));
+    await page.close();
+  } finally { await junctionBrowser.close(); }
+  const junctionResult=await detectGraphCandidates(junctionPath);
+  assert.equal(junctionResult.status,"experimental-candidates-only",
+    "SYN-CROSS-JUNCTION-001: junction candidates remain provisional");
+  assert.equal(junctionResult.nodes.length,5,
+    "SYN-CROSS-JUNCTION-001: shared junction must preserve five nodes");
+  assert.equal(junctionResult.edge_candidates.length,4,
+    "SYN-CROSS-JUNCTION-001: shared junction must yield four arms");
+  const junctionNodes=new Map(junctionResult.nodes.map(node=>[node.id,node]));
+  const centerCandidate=junctionResult.nodes.find(node=>
+    Math.hypot(node.center[0]-180,node.center[1]-130)<18);
+  assert.ok(centerCandidate,"SYN-CROSS-JUNCTION-001: central junction node must be detected");
+  assert.ok(junctionResult.edge_candidates.every(edge=>{
+    const source=junctionNodes.get(edge.source_candidate_node_id);
+    const target=junctionNodes.get(edge.target_candidate_node_id);
+    return source&&target&&(source.id===centerCandidate.id||target.id===centerCandidate.id);
+  }),"SYN-CROSS-JUNCTION-001: junction must not create leaf-to-leaf shortcuts");
+  process.stdout.write("SYN-CROSS-JUNCTION-001: central four-arm junction preserves expected topology.\\n");
   // Same branched topology with differently colored nodes. Color is visual
   // styling, not a reason to change the graph structure.
   const coloredBranchPath = path.join(tempRoot, "SYN-BRANCH-COLORED-NODES-001.png");
