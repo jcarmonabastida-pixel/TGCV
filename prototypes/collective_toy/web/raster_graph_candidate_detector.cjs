@@ -177,15 +177,40 @@ async function detectGraphCandidates(imagePath, options = {}) {
         }
       }
 
+      // Multi-angle line evidence: accumulate dark pixels along candidate
+      // directions, excluding pixels well inside accepted node boxes. These
+      // are geometric hypotheses only; node attachment/direction are not inferred.
       const lineCandidates = [];
-      for (let y = 0; y < height; y++) {
-        let start = -1;
-        for (let x = 0; x <= width; x++) {
-          const on = x < width && dark[y * width + x] === 1;
-          if (on && start < 0) start = x;
-          if ((!on || x === width) && start >= 0) {
-            if (x - start >= 24) lineCandidates.push({ orientation: "horizontal", from: [start, y], to: [x - 1, y] });
-            start = -1;
+      const seenLines = new Set();
+      const angles = [-45, -30, -20, -10, 0, 10, 20, 30, 45];
+      for (const angle of angles) {
+        const slope = Math.tan(angle * Math.PI / 180);
+        for (let x0 = 0; x0 < width; x0 += 2) {
+          for (let y0 = 0; y0 < height; y0 += 2) {
+            let points = [], misses = 0;
+            for (let step = 0; step < Math.max(width, height); step++) {
+              const x = Math.round(x0 + step);
+              const y = Math.round(y0 + slope * step);
+              if (x < 0 || x >= width || y < 0 || y >= height) break;
+              const insideNode = candidates.some(n => x > n.bbox[0] + 2 && x < n.bbox[2] - 2 &&
+                y > n.bbox[1] + 2 && y < n.bbox[3] - 2);
+              if (!insideNode && dark[y * width + x]) {
+                points.push([x,y]); misses = 0;
+              } else if (points.length) {
+                misses++;
+                if (misses > 2) break;
+              }
+            }
+            if (points.length < 24) continue;
+            const from = points[0], to = points[points.length - 1];
+            if (Math.hypot(to[0]-from[0],to[1]-from[1]) < 24) continue;
+            const key = [from[0],from[1],to[0],to[1]].join(",");
+            const reverseKey = [to[0],to[1],from[0],from[1]].join(",");
+            if (seenLines.has(key) || seenLines.has(reverseKey)) continue;
+            seenLines.add(key);
+            lineCandidates.push({ orientation: angle === 0 ? "horizontal" : angle === 45 || angle === -45 ? "diagonal" : "oblique",
+              angle_degrees: angle, from, to, evidence_pixels: points.length,
+              confidence: "low", review_required: true });
           }
         }
       }
