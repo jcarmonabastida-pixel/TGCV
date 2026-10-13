@@ -161,5 +161,37 @@ const { chromium } = require("playwright");
     reportEdgeGeometry(fixture.name, result);
     process.stdout.write(fixture.name + ": " + result.nodes.length + " provisional candidates on colored-node variant.\\n");
   }
+  // Generated raster fixture: two outlined nodes connected by a plain line,
+  // intentionally without arrowheads. This tests the no-arrow import case.
+  const noArrowPath = path.join(tempRoot, "SYN-NO-ARROWS-001.png");
+  const fixtureBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await fixtureBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 320; canvas.height = 180;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 320, 180);
+      ctx.strokeStyle = "#111111"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(65, 90); ctx.lineTo(255, 90); ctx.stroke();
+      for (const x of [50, 270]) {
+        ctx.beginPath(); ctx.arc(x, 90, 15, 0, Math.PI * 2); ctx.fillStyle = "#ffffff"; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(noArrowPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await fixtureBrowser.close(); }
+  const noArrowResult = await detectGraphCandidates(noArrowPath);
+  assert.equal(noArrowResult.status, "experimental-candidates-only");
+  assert.ok(noArrowResult.nodes.length >= 2,
+    "SYN-NO-ARROWS-001: both visible nodes should yield provisional candidates");
+  assert.ok(noArrowResult.edge_candidates.length >= 1,
+    "SYN-NO-ARROWS-001: plain connecting line should yield a provisional connection");
+  assert.ok(noArrowResult.edge_candidates.every(edge =>
+    edge.direction_status === "unresolved" && edge.direction === "undetermined" && edge.review_required === true),
+    "SYN-NO-ARROWS-001: no arrowheads must not produce an invented direction");
+  process.stdout.write("SYN-NO-ARROWS-001: nodes=" + noArrowResult.nodes.length +
+    ", connections=" + noArrowResult.edge_candidates.length +
+    ", all directions unresolved; human review required.\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
