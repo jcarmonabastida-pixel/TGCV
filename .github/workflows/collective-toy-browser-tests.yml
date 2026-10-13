@@ -3,6 +3,7 @@ name: Collective Toy browser and cross-runtime tests
 on:
   push:
     branches:
+      - prototype/collective-toy-branch-audit-002-20261013
       - prototype/collective-toy-cross-runtime-tests-001-20261011
   pull_request:
     branches:
