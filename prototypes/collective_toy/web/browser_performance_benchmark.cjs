@@ -119,6 +119,7 @@ const summarize = values => ({
           const renderSamples = [];
           const expectedDigest = pkg.result.input_sha256;
           for (let n = 0; n < 15; n++) {
+            const endToEndStart = performance.now();
             let t = performance.now();
             const text = window.canonical(model);
             hashSamples.canonicalize_ms.push(performance.now() - t);
@@ -131,8 +132,8 @@ const summarize = values => ({
             t = performance.now();
             const hex = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
             hashSamples.hex_encode_ms.push(performance.now() - t);
-            hashSamples.end_to_end_ms.push(hashSamples.canonicalize_ms[n] + hashSamples.encode_utf8_ms[n] + hashSamples.crypto_digest_ms[n] + hashSamples.hex_encode_ms[n]);
             if (hex !== expectedDigest) throw new Error("Isolated hash digest differs from baseline input digest");
+            hashSamples.end_to_end_ms.push(performance.now() - endToEndStart);
             const before = document.querySelector("#results").textContent;
             t = performance.now();
             window.render(model, pkg.result);
