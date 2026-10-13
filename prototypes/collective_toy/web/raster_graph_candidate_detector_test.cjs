@@ -10,6 +10,33 @@ const { chromium } = require("playwright");
   const root = path.join(__dirname, "fixtures", "ocr_graph_images");
   const tempRoot = path.join(require("node:os").tmpdir(), "tgcv-colored-node-fixtures");
   fs.mkdirSync(tempRoot, { recursive: true });
+  const annotationFile = path.join(root, "synthetic_graph_image_annotations_v0.1.json");
+  const annotations = JSON.parse(fs.readFileSync(annotationFile, "utf8"));
+  const referenceByFile = new Map(annotations.images.map(item => [path.basename(item.file), item]));
+  function assertNodeGeometry(name, result) {
+    const reference = referenceByFile.get(name);
+    assert.ok(reference, name + ": reference annotation must exist");
+    const unmatched = result.nodes.map((node, index) => index);
+    let matched = 0;
+    for (const expected of reference.nodes) {
+      const at = unmatched.findIndex(index => {
+        const center = result.nodes[index].center;
+        return Math.hypot(center[0] - expected.center[0], center[1] - expected.center[1]) <= 12;
+      });
+      assert.notEqual(at, -1, name + ": expected node " + expected.id + " missing near " + expected.center.join(","));
+      unmatched.splice(at, 1);
+      matched++;
+    }
+    const precision = matched / result.nodes.length;
+    const recall = matched / reference.nodes.length;
+    assert.equal(recall, 1, name + ": all reference nodes must be recovered");
+    assert.equal(unmatched.length, 0, name + ": false-positive node candidates are not allowed in this synthetic gate");
+    if (name === "SYN-CROSSING-001.png") {
+      assert.ok(!result.nodes.some(node => Math.hypot(node.center[0] - 160, node.center[1] - 90) <= 12),
+        "crossing intersection must not be hallucinated as a node");
+    }
+    process.stdout.write(name + ": node precision=" + precision.toFixed(3) + ", recall=" + recall.toFixed(3) + ".\\n");
+  }
   const colorVariants = [
     { name: "SYN-LINEAR-001.png", boxes: [[35,75,65,105],[145,75,175,105],[255,75,285,105]] },
     { name: "SYN-BRANCH-001.png", boxes: [[35,75,65,105],[145,30,175,60],[145,120,175,150],[255,75,285,105]] },
@@ -57,6 +84,7 @@ const { chromium } = require("playwright");
     assert.ok(result.nodes.length > 0, name + ": detector must find at least one provisional node box");
     assert.ok(result.limitations.length >= 3);
     assert.ok(result.nodes.every(n => n.review_required === true));
+    assertNodeGeometry(name, result);
     process.stdout.write(name + ": " + result.nodes.length + " provisional node candidates; " +
       result.edge_candidates.length + " horizontal stroke candidates.\n");
   }
@@ -67,6 +95,7 @@ const { chromium } = require("playwright");
     assert.equal(result.status, "experimental-candidates-only");
     assert.ok(result.nodes.length > 0, fixture.name + ": colored-node variant must yield provisional candidates");
     assert.ok(result.nodes.every(n => n.review_required === true));
+    assertNodeGeometry(fixture.name, result);
     process.stdout.write(fixture.name + ": " + result.nodes.length + " provisional candidates on colored-node variant.\\n");
   }
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
