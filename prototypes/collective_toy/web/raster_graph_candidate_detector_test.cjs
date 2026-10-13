@@ -466,5 +466,32 @@ const { chromium } = require("playwright");
     return source && target && (source.id===coloredCenter.id || target.id===coloredCenter.id);
   }), "SYN-BRANCH-COLORED-NODES-001: colored topology must retain center-to-leaf edges only");
   process.stdout.write("SYN-BRANCH-COLORED-NODES-001: color variation preserves 4-node, 3-edge branch topology.\\n");
+  // Consolidated structural summary for the explicit synthetic topology fixtures.
+  // Counts are fixture-level diagnostics; existing assertions above verify edge
+  // incidence/topology for each graph and do not resolve edge direction.
+  const structuralSummary = [
+    { fixture: "SYN-CROSSING-NO-JUNCTION-001", expected_nodes: 4, expected_edges: 2, result: crossingResult },
+    { fixture: "SYN-LINEAR-3-NODES-001", expected_nodes: 3, expected_edges: 2, result: linearResult },
+    { fixture: "SYN-BRANCH-3-LEAVES-001", expected_nodes: 4, expected_edges: 3, result: branchResult },
+    { fixture: "SYN-BRANCH-COLORED-NODES-001", expected_nodes: 4, expected_edges: 3, result: coloredBranchResult }
+  ].map(({fixture, expected_nodes, expected_edges, result}) => ({
+    fixture,
+    expected_nodes,
+    detected_nodes: result.nodes.length,
+    node_count_error: result.nodes.length - expected_nodes,
+    expected_edges,
+    proposed_edges: result.edge_candidates.length,
+    edge_count_error: result.edge_candidates.length - expected_edges,
+    counts_match: result.nodes.length === expected_nodes && result.edge_candidates.length === expected_edges,
+    direction_evaluation: "not_scored; direction remains unresolved"
+  }));
+  const structuralSummaryPath = path.join(tempRoot, "raster_graph_structural_summary.json");
+  fs.writeFileSync(structuralSummaryPath, JSON.stringify({
+    schema_version: "tgcv-raster-structural-summary-0.1",
+    status: "synthetic-fixture-evaluation",
+    interpretation: "Count metrics are not a substitute for full graph-isomorphism/topology scoring or real-image validation.",
+    fixtures: structuralSummary
+  }, null, 2) + "\\n");
+  process.stdout.write("STRUCTURAL-SUMMARY: " + JSON.stringify(structuralSummary) + "\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
