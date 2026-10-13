@@ -1,0 +1,36 @@
+name: Collective Toy graph evaluator contract tests
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  graph-evaluator-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out selected ref
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate graph fixture JSON
+        working-directory: prototypes/collective_toy/web
+        run: node -e "const fs=require('node:fs'); JSON.parse(fs.readFileSync('ocr_graph_evaluation_fixtures.json','utf8')); JSON.parse(fs.readFileSync('ocr_graph_reference.schema.json','utf8')); console.log('PASS: fixture and annotation schema are valid JSON');"
+      - name: Run graph evaluator contract tests
+        working-directory: prototypes/collective_toy/web
+        run: node ocr_graph_evaluator_test.cjs
+      - name: Produce graph evaluation report
+        working-directory: prototypes/collective_toy/web
+        run: node ocr_graph_evaluator.cjs ocr_graph_evaluation_fixtures.json graph-evaluation-report.json
+      - name: Upload graph evaluator report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgcv-graph-evaluator-contract-result
+          path: prototypes/collective_toy/web/graph-evaluation-report.json
+          if-no-files-found: warn
+          retention-days: 30
