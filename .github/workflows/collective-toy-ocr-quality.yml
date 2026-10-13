@@ -7,12 +7,15 @@ on:
       - development/collective-toy-ui-controls-001-20261013
       - development/collective-toy-ocr-preprocessing-001-20261013
       - development/collective-toy-ocr-topology-first-001-20261013
+      - development/collective-toy-visual-graph-detector-001-20261013
     paths:
       - 'prototypes/collective_toy/web/ocr_quality_evaluation.html'
       - 'prototypes/collective_toy/web/index.html'
       - 'prototypes/collective_toy/web/ui_contract_test.cjs'
       - 'prototypes/collective_toy/web/ocr_quality_ci_test.cjs'
       - 'prototypes/collective_toy/web/ocr_graph_image_fixture_test.cjs'
+      - 'prototypes/collective_toy/web/graph_structure_evaluator.cjs'
+      - 'prototypes/collective_toy/web/graph_structure_evaluator_test.cjs'
       - 'prototypes/collective_toy/web/fixtures/ocr_graph_images/**'
       - '.github/workflows/collective-toy-ocr-quality.yml'
 
@@ -39,6 +42,9 @@ jobs:
       - name: Validate synthetic graph image fixtures and annotations
         working-directory: prototypes/collective_toy/web
         run: node ocr_graph_image_fixture_test.cjs
+      - name: Test structural graph evaluator
+        working-directory: prototypes/collective_toy/web
+        run: node graph_structure_evaluator_test.cjs
       - name: Run Tesseract.js against reference images
         working-directory: prototypes/collective_toy/web
         run: node ocr_quality_ci_test.cjs
