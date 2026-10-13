@@ -975,12 +975,31 @@ function invalidFixtures() {
   return cases;
 }
 
-function pythonRejects(engineDir, model) {
-  const script = "import json, sys; from collective_toy_engine_001 import run_model; run_model(json.load(sys.stdin))";
+function pythonValidationOutcome(engineDir, model, scriptOverride = null) {
+  const script = scriptOverride || [
+    "import json, sys",
+    "from collective_toy_engine_001 import run_model, ModelValidationError",
+    "try:",
+    "    run_model(json.load(sys.stdin))",
+    "except ModelValidationError:",
+    "    print('MODEL_VALIDATION_ERROR')",
+    "    sys.exit(2)",
+    "except Exception as exc:",
+    "    print('UNEXPECTED_EXCEPTION:' + type(exc).__name__)",
+    "    sys.exit(3)"
+  ].join("\\n");
   const result = spawnSync("python", ["-c", script], {
     cwd: engineDir, input: JSON.stringify(model), encoding: "utf8"
   });
-  return result.status !== 0;
+  if (result.error) return "process_error";
+  if (result.status === 0) return "accepted";
+  if (result.status === 2 && result.stdout.trim() === "MODEL_VALIDATION_ERROR") {
+    return "validation_error";
+  }
+  if (result.status === 3 && result.stdout.trim().startsWith("UNEXPECTED_EXCEPTION:")) {
+    return "unexpected_exception";
+  }
+  return "process_error";
 }
 
 function runPython(engineDir, model) {
@@ -1998,9 +2017,17 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       report.push(fixture.name + ": PASS");
     }
     const invalidReport = [];
+    const unrelatedExceptionProbe = pythonValidationOutcome(
+      engineDir,
+      {},
+      "raise RuntimeError('intentional exception-contract probe')"
+    );
+    assert.equal(unrelatedExceptionProbe, "process_error",
+      "an unrelated Python exception must not count as a schema-validation rejection");
     for (const fixture of invalidFixtures()) {
-      const pythonReject = pythonRejects(engineDir, fixture.model);
-      assert.equal(pythonReject, true, fixture.name + ": Python must reject invalid input");
+      const pythonOutcome = pythonValidationOutcome(engineDir, fixture.model);
+      assert.equal(pythonOutcome, "validation_error",
+        fixture.name + ": Python must reject invalid input via ModelValidationError");
       const fixtureJson = JSON.stringify(fixture.model, null, 2);
       const modelTransitions = fixture.model && Array.isArray(fixture.model.transitions) ? fixture.model.transitions : [];
       const modelStates = fixture.model && Array.isArray(fixture.model.states) ? fixture.model.states : [];
@@ -2014,7 +2041,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       await page.locator("#status").getByText(/No se ha podido ejecutar/).waitFor({ timeout: 5000 });
       const status = await page.locator("#status").innerText();
       assert.match(status, /No se ha podido ejecutar/, fixture.name + ": browser must reject invalid input");
-      invalidReport.push(fixture.name + ": REJECTED in both runtimes");
+      invalidReport.push(fixture.name + ": ModelValidationError in Python; rejected in browser");
     }
     console.log("PASS: " + report.length + " valid cross-runtime fixtures matched exactly.\n" +
       "PASS: " + invalidReport.length + " invalid fixtures rejected in both runtimes.\n" +
