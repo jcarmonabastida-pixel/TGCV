@@ -23,9 +23,11 @@ const { chromium } = require("playwright");
     let matchedCandidates = 0;
     for (const candidate of candidates) {
       const ends = [candidate.from, candidate.to];
-      const match = refs.find(({ edge, ends: refEnds }) =>
+      // One-to-one greedy matching: each reference edge can explain at most
+      // one candidate. Duplicate candidates therefore remain false positives.
+      const match = refs.find(({ edge, ends: refEnds }) => !matchedRef.has(edge.id) && (
         close(ends[0], refEnds[0]) && close(ends[1], refEnds[1]) ||
-        close(ends[0], refEnds[1]) && close(ends[1], refEnds[0]));
+        close(ends[0], refEnds[1]) && close(ends[1], refEnds[0])));
       if (match) {
         matchedCandidates++;
         matchedRef.add(match.edge.id);
