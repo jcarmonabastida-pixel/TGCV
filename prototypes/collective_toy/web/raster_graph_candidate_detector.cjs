@@ -65,16 +65,21 @@ async function detectGraphCandidates(imagePath, options = {}) {
         cluster.maxY = Math.max(cluster.maxY, run.y);
         cluster.cx = cluster.runs.reduce((sum, r) => sum + r.cx, 0) / cluster.runs.length;
       }
+      const clusterDiagnostics = clusters.map(c => ({ rows: c.runs.length, minX: c.minX, maxX: c.maxX, minY: c.minY, maxY: c.maxY, width: c.maxX - c.minX + 1, height: c.maxY - c.minY + 1, centerX: Math.round(c.cx), firstY: c.runs[0]?.y, lastY: c.lastY }));
+      const rejectionCounts = { tooFewRows: 0, heightOutOfRange: 0, widthOutOfRange: 0, duplicateCenter: 0, accepted: 0 };
       const candidates = [];
       for (const cluster of clusters) {
         const w = cluster.maxX - cluster.minX + 1;
         const h = cluster.maxY - cluster.minY + 1;
-        if (cluster.runs.length < 8 || h < minNodeSize || h > maxNodeSize || w < minNodeSize || w > maxNodeSize) continue;
+        if (cluster.runs.length < 8) { rejectionCounts.tooFewRows++; continue; }
+        if (h < minNodeSize || h > maxNodeSize) { rejectionCounts.heightOutOfRange++; continue; }
+        if (w < minNodeSize || w > maxNodeSize) { rejectionCounts.widthOutOfRange++; continue; }
         const cx = Math.round((cluster.minX + cluster.maxX) / 2);
         const cy = Math.round((cluster.minY + cluster.maxY) / 2);
-        if (candidates.some(n => Math.hypot(n.center[0] - cx, n.center[1] - cy) < 12)) continue;
+        if (candidates.some(n => Math.hypot(n.center[0] - cx, n.center[1] - cy) < 12)) { rejectionCounts.duplicateCenter++; continue; }
         candidates.push({ id: "candidate-node-" + (candidates.length + 1), center: [cx, cy],
           bbox: [cluster.minX, cluster.minY, cluster.maxX, cluster.maxY], confidence: "low", review_required: true });
+        rejectionCounts.accepted++;
       }
 
       const lineCandidates = [];
@@ -95,6 +100,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
         image: { width, height },
         method: "Canvas grayscale threshold; vertically clustered horizontal runs for rounded/box node candidates; long horizontal stroke candidates",
         nodes: candidates,
+        diagnostics: { runCount: runs.length, clusterCount: clusters.length, rejectionCounts, largestClusters: clusterDiagnostics.sort((a, b) => b.rows - a.rows).slice(0, 20) },
         edge_candidates: lineCandidates,
         limitations: [
           "Not a complete node detector: connected outlines may be fragmented or merged.",
