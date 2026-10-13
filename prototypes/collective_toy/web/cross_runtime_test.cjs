@@ -2020,9 +2020,9 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     const unrelatedExceptionProbe = pythonValidationOutcome(
       engineDir,
       {},
-      "raise RuntimeError('intentional exception-contract probe')"
+      "try:\\n    raise RuntimeError('intentional exception-contract probe')\\nexcept Exception as exc:\\n    print('UNEXPECTED_EXCEPTION:' + type(exc).__name__)\\n    sys.exit(3)"
     );
-    assert.equal(unrelatedExceptionProbe, "process_error",
+    assert.equal(unrelatedExceptionProbe, "unexpected_exception",
       "an unrelated Python exception must not count as a schema-validation rejection");
     for (const fixture of invalidFixtures()) {
       const pythonOutcome = pythonValidationOutcome(engineDir, fixture.model);
