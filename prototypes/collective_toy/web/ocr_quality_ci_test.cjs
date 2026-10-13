@@ -37,7 +37,18 @@ const assert = require("node:assert/strict");
     assert.equal(report.results.length, 5, "All five reference fixtures must be measured");
     assert.equal(report.metric_validation.passed, report.metric_validation.total, "CER/WER self-checks must all pass");
     assert.equal(report.segmentation_diagnostics.length, 2, "Both diagnostic segmentation modes must be recorded");
-    assert.equal(report.preprocessing_diagnostics.length, 3, "All three preprocessing variants must be recorded");
+    assert.equal(report.preprocessing_diagnostics.length, 3, "All three OCR-TXT-004 preprocessing variants must be recorded");
+    assert.ok(Array.isArray(report.character_case_preprocessing_diagnostics), "Targeted-character preprocessing comparisons must be recorded");
+    assert.equal(report.character_case_preprocessing_diagnostics.length, 6, "Both character-confusion fixtures must be compared across three preprocessing variants");
+    assert.deepEqual(report.character_case_preprocessing_diagnostics.map(x => x.id + ":" + x.variant).sort(), [
+      "OCR-TXT-002:grayscale_contrast", "OCR-TXT-002:original", "OCR-TXT-002:upscale_2x",
+      "OCR-TXT-003:grayscale_contrast", "OCR-TXT-003:original", "OCR-TXT-003:upscale_2x"
+    ]);
+    for (const diagnostic of report.character_case_preprocessing_diagnostics) {
+      assert.ok(Number.isFinite(diagnostic.cer) && Number.isFinite(diagnostic.wer));
+      assert.ok(Number.isFinite(diagnostic.elapsed_ms));
+      assert.match(diagnostic.scope, /no sustituye el OCR primario ni modifica la puerta de calidad/);
+    }
     assert.ok(report.notation_spacing_diagnostic, "Transition-notation spacing diagnostic must be recorded");
     assert.ok(Array.isArray(report.targeted_character_diagnostics), "Targeted character-confusion diagnostics must be recorded");
     assert.equal(report.targeted_character_diagnostics.length, 2, "Both targeted character-confusion diagnostics must be recorded");
