@@ -112,6 +112,36 @@ const summarize = values => ({
             for (const name of Object.keys(observation.hashPhases.by_operation[operation])) observationHashOperations[operation][name].push(...observation.hashPhases.by_operation[operation][name]);
           }
         }
+        const isolated = await page.evaluate(async ({ model }) => {
+          const pkg = window.lastPackage;
+          if (!pkg || !pkg.result || !pkg.result.input_sha256) throw new Error("Missing completed baseline package for isolated diagnostics");
+          const hashSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], end_to_end_ms: [] };
+          const renderSamples = [];
+          const expectedDigest = pkg.result.input_sha256;
+          for (let n = 0; n < 15; n++) {
+            let t = performance.now();
+            const text = window.canonical(model);
+            hashSamples.canonicalize_ms.push(performance.now() - t);
+            t = performance.now();
+            const bytes = new TextEncoder().encode(text);
+            hashSamples.encode_utf8_ms.push(performance.now() - t);
+            t = performance.now();
+            const digest = await crypto.subtle.digest("SHA-256", bytes);
+            hashSamples.crypto_digest_ms.push(performance.now() - t);
+            t = performance.now();
+            const hex = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
+            hashSamples.hex_encode_ms.push(performance.now() - t);
+            hashSamples.end_to_end_ms.push(hashSamples.canonicalize_ms[n] + hashSamples.encode_utf8_ms[n] + hashSamples.crypto_digest_ms[n] + hashSamples.hex_encode_ms[n]);
+            if (hex !== expectedDigest) throw new Error("Isolated hash digest differs from baseline input digest");
+            const before = document.querySelector("#results").textContent;
+            t = performance.now();
+            window.render(model, pkg.result);
+            renderSamples.push(performance.now() - t);
+            const after = document.querySelector("#results").textContent;
+            if (before !== after) throw new Error("Isolated render changed semantic results text");
+          }
+          return { hashSamples, renderSamples, digest_matches_baseline: true, render_semantics_preserved: true };
+        }, { model });
         const phaseSummary = Object.fromEntries(phaseNames.filter(n => phaseSamples[n].length).map(n => [n, summarize(phaseSamples[n])]));
         reports.push({
           graph_kind: kind, states: size, transitions: model.transitions.length,
@@ -125,6 +155,7 @@ const summarize = values => ({
           phase_timings: phaseSummary,
           hash_subphase_timings: Object.fromEntries(Object.keys(hashPhaseSamples).map(name => [name, summarize(hashPhaseSamples[name])])),
           hash_operation_timings: Object.fromEntries(Object.entries(observationHashOperations).map(([operation, samples]) => [operation, Object.fromEntries(Object.entries(samples).map(([name, values]) => [name, summarize(values)]))])),
+          isolated_diagnostics: { digest_matches_baseline: isolated.digest_matches_baseline, render_semantics_preserved: isolated.render_semantics_preserved, hash_phases: Object.fromEntries(Object.entries(isolated.hashSamples).map(([name, values]) => [name, summarize(values)])), render_precomputed_result: summarize(isolated.renderSamples) },
           main_thread_frame_gap: summarize(heartbeatGapSamples)
         });
       }
