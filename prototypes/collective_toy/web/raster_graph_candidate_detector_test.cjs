@@ -422,5 +422,49 @@ const { chromium } = require("playwright");
     return source && target && (source.id === centerNode.id || target.id === centerNode.id);
   }), "SYN-BRANCH-3-LEAVES-001: every edge must touch the center; no leaf-to-leaf shortcuts");
   process.stdout.write("SYN-BRANCH-3-LEAVES-001: exactly 4 nodes and 3 center-to-leaf connections.\\n");
+  // Same branched topology with differently colored nodes. Color is visual
+  // styling, not a reason to change the graph structure.
+  const coloredBranchPath = path.join(tempRoot, "SYN-BRANCH-COLORED-NODES-001.png");
+  const coloredBranchBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await coloredBranchBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 360; canvas.height = 260;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 360, 260);
+      ctx.strokeStyle = "#111111"; ctx.lineWidth = 2;
+      const center = [180, 130], leaves = [[45, 130], [300, 45], [300, 215]];
+      for (const [x,y] of leaves) {
+        const dx = x-center[0], dy = y-center[1], len = Math.hypot(dx,dy);
+        ctx.beginPath(); ctx.moveTo(center[0]+dx/len*15,center[1]+dy/len*15);
+        ctx.lineTo(x-dx/len*13,y-dy/len*13); ctx.stroke();
+      }
+      const nodes = [{p:center,c:"#f4a261"},{p:leaves[0],c:"#8ecae6"},
+        {p:leaves[1],c:"#90be6d"},{p:leaves[2],c:"#cdb4db"}];
+      for (const {p:[x,y],c} of nodes) {
+        ctx.beginPath(); ctx.arc(x,y,13,0,Math.PI*2);
+        ctx.fillStyle=c; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(coloredBranchPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await coloredBranchBrowser.close(); }
+  const coloredBranchResult = await detectGraphCandidates(coloredBranchPath);
+  assert.equal(coloredBranchResult.status, "experimental-candidates-only");
+  assert.equal(coloredBranchResult.nodes.length, 4,
+    "SYN-BRANCH-COLORED-NODES-001: node colors must not change the expected count");
+  assert.equal(coloredBranchResult.edge_candidates.length, 3,
+    "SYN-BRANCH-COLORED-NODES-001: node colors must not change the expected connection count");
+  const coloredCenter = coloredBranchResult.nodes.find(node =>
+    Math.hypot(node.center[0]-180,node.center[1]-130) < 18);
+  assert.ok(coloredCenter, "SYN-BRANCH-COLORED-NODES-001: central colored node must be detected");
+  const coloredNodeMap = new Map(coloredBranchResult.nodes.map(node => [node.id,node]));
+  assert.ok(coloredBranchResult.edge_candidates.every(edge => {
+    const source=coloredNodeMap.get(edge.source_candidate_node_id);
+    const target=coloredNodeMap.get(edge.target_candidate_node_id);
+    return source && target && (source.id===coloredCenter.id || target.id===coloredCenter.id);
+  }), "SYN-BRANCH-COLORED-NODES-001: colored topology must retain center-to-leaf edges only");
+  process.stdout.write("SYN-BRANCH-COLORED-NODES-001: color variation preserves 4-node, 3-edge branch topology.\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
