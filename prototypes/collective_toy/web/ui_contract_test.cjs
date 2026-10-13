@@ -33,7 +33,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#image-status").innerText(), /supera el límite de 5 MiB/i);
 
     // Image transcription is user-supplied text, converted only into a reviewable draft.
-    await page.locator("#image-transcription").fill("A --> B\\nB --> C");
+    await page.locator("#image-transcription").fill("A --> B" + String.fromCharCode(10) + "B --> C");
     await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
     await page.locator("#transcription-status").filter({ hasText: /Borrador creado: 3 estados y 2 conexiones/ }).waitFor();
     const transcriptionDraft = JSON.parse(await page.locator("#model").inputValue());
