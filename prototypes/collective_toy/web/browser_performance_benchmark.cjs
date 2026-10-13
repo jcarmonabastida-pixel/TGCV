@@ -17,13 +17,13 @@ function makeModel(size, cap = 10, kind = "cyclic_branching") {
     for (let i = 0; i < size - 1; i++) add(i, i + 1, "chain");
   } else {
     for (let i = 0; i < size; i++) {
-      for (let offset = 1; offset <= 8 && transitions.length < 2000; offset++) {
+      for (let offset = 1; offset <= 8 && transitions.length < 1900; offset++) {
         const j = kind === "branching_dag" ? i + offset : (i + offset) % size;
         if (j < size) add(i, j, "f" + String(offset).padStart(2, "0"));
       }
     }
   }
-  if (transitions.length > 2000) throw new Error("transition limit exceeded");
+  if (transitions.length >= 2000) throw new Error("transition limit reached; fixture must stay below engine cap");
   return {
     schema_version: "collective-toy-input-001", model_id: "browser-benchmark-" + kind + "-" + size,
     initial_state: states[0], states, transitions, relations: [],
