@@ -1,6 +1,15 @@
 name: Collective Toy graph evaluator contract tests
 
 on:
+  push:
+    branches:
+      - development/collective-toy-ocr-topology-first-001-20261013
+    paths:
+      - 'prototypes/collective_toy/web/ocr_graph_evaluator.cjs'
+      - 'prototypes/collective_toy/web/ocr_graph_evaluator_test.cjs'
+      - 'prototypes/collective_toy/web/ocr_graph_evaluation_fixtures.json'
+      - '.github/workflows/collective-toy-graph-evaluator-contract.yml'
+
   workflow_dispatch:
 
 permissions:

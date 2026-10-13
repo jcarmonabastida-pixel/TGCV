@@ -59,6 +59,13 @@ const assert = require("node:assert/strict");
     assert.deepEqual(transcriptionDraft.states, ["A", "B", "C"]);
     assert.equal(transcriptionDraft.transitions.length, 2);
     assert.match(await page.locator("#transcription-status").innerText(), /Revisa el grafo/i);
+    // Transition labels/conditions must not be silently dropped during text-to-graph conversion.
+    await page.locator("#image-transcription").fill("A -->|si x > 0| B");
+    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
+    assert.match(await page.locator("#transcription-status").innerText(), /posible etiqueta o condición de transición.*No se importó automáticamente/i);
+    await page.locator("#image-transcription").fill("T1: A -> B");
+    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
+    assert.match(await page.locator("#transcription-status").innerText(), /posible etiqueta o condición de transición.*No se importó automáticamente/i);
     await page.locator("#image-transcription").fill("texto sin conexiones");
     await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
     assert.match(await page.locator("#transcription-status").innerText(), /No se encontraron conexiones dirigidas/i);
