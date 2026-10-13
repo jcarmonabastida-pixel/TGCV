@@ -55,7 +55,13 @@ function findTopologyMapping(reference, candidate) {
   const refIds = reference.nodes.map(n => n.id), candIds = candidate.nodes.map(n => n.id);
   const refProfiles = new Map(refIds.map(id => [id, nodeProfile(reference, id)]));
   const candProfiles = new Map(candIds.map(id => [id, nodeProfile(candidate, id)]));
-  const options = new Map(candIds.map(id => [id, refIds.filter(rid => refProfiles.get(rid) === candProfiles.get(id))]));
+  const refLabels = new Map(refIds.map(id => [id, reference.nodes.find(n => n.id === id).label]));
+  const candLabels = new Map(candIds.map(id => [id, candidate.nodes.find(n => n.id === id).label]));
+  const options = new Map(candIds.map(id => {
+    const labelMatches = refIds.filter(rid => refLabels.get(rid) === candLabels.get(id));
+    const structurallyCompatible = refIds.filter(rid => refProfiles.get(rid) === candProfiles.get(id));
+    return [id, labelMatches.length === 1 ? labelMatches : structurallyCompatible];
+  }));
   if ([...options.values()].some(a => a.length === 0)) return null;
   const order = [...candIds].sort((a, b) => options.get(a).length - options.get(b).length);
   const mapping = new Map(), used = new Set();
