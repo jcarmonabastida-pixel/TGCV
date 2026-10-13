@@ -19,7 +19,7 @@ const assert = require("node:assert/strict");
 
     await page.waitForFunction(() => {
       const status = document.querySelector("#status");
-      return status && /Métricas verificadas: 8\/8/.test(status.textContent);
+      return status && /Métricas verificadas: 9\/9/.test(status.textContent);
     }, null, { timeout: 15000 });
 
     await page.getByRole("button", { name: "Ejecutar OCR real" }).click();
