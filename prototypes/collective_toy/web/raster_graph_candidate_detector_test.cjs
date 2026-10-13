@@ -340,5 +340,44 @@ const { chromium } = require("playwright");
   process.stdout.write("SYN-CROSSING-NO-JUNCTION-001: nodes=" + crossingResult.nodes.length +
     ", connections=" + crossingResult.edge_candidates.length +
     ", no automatic direction inference.\\n");
+  // Three-node linear graph: A-B-C. The detector must propose A-B and B-C,
+  // but must not add the shortcut A-C through the intervening node.
+  const linearPath = path.join(tempRoot, "SYN-LINEAR-3-NODES-001.png");
+  const linearBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await linearBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 360; canvas.height = 180;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 360, 180);
+      ctx.strokeStyle = "#111111"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(45, 90); ctx.lineTo(315, 90); ctx.stroke();
+      for (const x of [35, 180, 325]) {
+        ctx.beginPath(); ctx.arc(x, 90, 13, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff"; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(linearPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await linearBrowser.close(); }
+  const linearResult = await detectGraphCandidates(linearPath);
+  assert.equal(linearResult.status, "experimental-candidates-only");
+  assert.equal(linearResult.nodes.length, 3,
+    "SYN-LINEAR-3-NODES-001: exactly three nodes should be proposed");
+  assert.equal(linearResult.edge_candidates.length, 2,
+    "SYN-LINEAR-3-NODES-001: exactly two adjacent connections should be proposed; no A-C shortcut");
+  const linearNodes = [...linearResult.nodes].sort((a,b) => a.center[0] - b.center[0]);
+  const linearPairs = new Set(linearResult.edge_candidates.map(edge => {
+    const source = linearResult.nodes.find(node => node.id === edge.source_candidate_node_id);
+    const target = linearResult.nodes.find(node => node.id === edge.target_candidate_node_id);
+    if (!source || !target) return "invalid";
+    return [Math.round(source.center[0]), Math.round(target.center[0])].sort((a,b)=>a-b).join("--");
+  }));
+  assert.deepEqual(linearPairs, new Set([
+    [Math.round(linearNodes[0].center[0]), Math.round(linearNodes[1].center[0])].sort((a,b)=>a-b).join("--"),
+    [Math.round(linearNodes[1].center[0]), Math.round(linearNodes[2].center[0])].sort((a,b)=>a-b).join("--")
+  ]), "SYN-LINEAR-3-NODES-001: edges must connect adjacent nodes only");
+  process.stdout.write("SYN-LINEAR-3-NODES-001: exactly 3 nodes and 2 adjacent connections; no shortcut.\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
