@@ -1998,6 +1998,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       report.push(fixture.name + ": PASS");
     }
     const invalidReport = [];
+    await page.locator("summary").filter({ hasText: "JSON avanzado" }).click();
     for (const fixture of invalidFixtures()) {
       const pythonReject = pythonRejects(engineDir, fixture.model);
       assert.equal(pythonReject, true, fixture.name + ": Python must reject invalid input");
