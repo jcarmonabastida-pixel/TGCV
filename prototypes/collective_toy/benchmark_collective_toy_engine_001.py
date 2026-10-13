@@ -121,6 +121,8 @@ def main() -> None:
             reports.append({
                 "graph_kind": kind,
                 "size": size,
+                "states": len(model["states"]),
+                "transitions": len(model["transitions"]),
                 "warmup_excluded": True,
                 "repeats": args.repeats,
                 "median_elapsed_ms": round(statistics.median(times), 3),
