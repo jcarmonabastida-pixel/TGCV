@@ -244,6 +244,60 @@ const { chromium } = require("playwright");
       fs.writeFileSync(path.join(tempRoot, fixture.name), coloredPng);
     }
   } finally { await browser.close(); }
+  // Controlled scale-robustness probe. Scale both raster pixels and reference
+  // geometry together; do not treat this probe as a real-image quality claim.
+  const scaleProbeName = "SYN-LINEAR-SCALE-150-PCT-001.png";
+  const baseName = "SYN-LINEAR-001.png";
+  const scaleFactor = 1.5;
+  const baseBytes = fs.readFileSync(path.join(root, "images", baseName));
+  const baseDataUrl = "data:image/png;base64," + baseBytes.toString("base64");
+  const scaleBrowser = await chromium.launch({ headless: true });
+  let scaledBytes;
+  try {
+    const page = await scaleBrowser.newPage();
+    const encoded = await page.evaluate(async ({dataUrl, scaleFactor}) => {
+      const img = new Image(); img.src = dataUrl; await img.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(img.naturalWidth * scaleFactor);
+      canvas.height = Math.round(img.naturalHeight * scaleFactor);
+      const ctx = canvas.getContext("2d");
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL("image/png").split(",")[1];
+    }, {dataUrl: baseDataUrl, scaleFactor});
+    scaledBytes = Buffer.from(encoded, "base64");
+    await page.close();
+  } finally { await scaleBrowser.close(); }
+  const scalePath = path.join(tempRoot, scaleProbeName);
+  fs.writeFileSync(scalePath, scaledBytes);
+  const baseReference = referenceByFile.get(baseName);
+  const scaledReference = JSON.parse(JSON.stringify(baseReference));
+  scaledReference.file = scaleProbeName;
+  scaledReference.nodes = scaledReference.nodes.map(node => ({
+    ...node, center: node.center.map(value => value * scaleFactor),
+    ...(node.bbox ? {bbox: node.bbox.map(value => value * scaleFactor)} : {})
+  }));
+  scaledReference.edges = scaledReference.edges.map(edge => ({
+    ...edge, polyline: edge.polyline.map(point => point.map(value => value * scaleFactor))
+  }));
+  referenceByFile.set(scaleProbeName, scaledReference);
+  const scaledResult = await detectGraphCandidates(scalePath);
+  assert.equal(scaledResult.status, "experimental-candidates-only",
+    "SCALE-ROBUSTNESS-001: scaled raster remains provisional");
+  assert.equal(scaledResult.image.width, 480, "SCALE-ROBUSTNESS-001: width reflects 150% scale");
+  assert.equal(scaledResult.image.height, 270, "SCALE-ROBUSTNESS-001: height reflects 150% scale");
+  assert.ok(scaledResult.nodes.length > 0, "SCALE-ROBUSTNESS-001: detector must find nodes at 150% scale");
+  assert.ok(scaledResult.nodes.every(node => node.review_required === true),
+    "SCALE-ROBUSTNESS-001: scaled candidates still require user review");
+  const scaledNodeMetrics = assertNodeGeometry(scaleProbeName, scaledResult);
+  const scaledEdgeMetrics = reportEdgeGeometry(scaleProbeName, scaledResult);
+  evaluatedStructuralFixtures.push({fixture: scaleProbeName, scale_factor: scaleFactor,
+    node_candidates: scaledNodeMetrics.candidates, reference_nodes: scaledNodeMetrics.referenceNodes,
+    node_precision: scaledNodeMetrics.precision, node_recall: scaledNodeMetrics.recall,
+    node_true_positives: scaledNodeMetrics.truePositives,
+    edge_candidates: scaledEdgeMetrics.candidates, reference_edges: scaledEdgeMetrics.referenceEdges,
+    edge_precision: scaledEdgeMetrics.precision, edge_recall: scaledEdgeMetrics.recall,
+    edge_true_positives: scaledEdgeMetrics.truePositives, direction_scored: false});
   for (const name of ["SYN-LINEAR-001.png", "SYN-BRANCH-001.png", "SYN-CROSSING-001.png"]) {
     const result = await detectGraphCandidates(path.join(root, "images", name));
     assert.equal(result.detector, "TGCV-RASTER-GRAPH-CANDIDATES-001");
