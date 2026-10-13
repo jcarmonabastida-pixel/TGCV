@@ -53,6 +53,9 @@ const { chromium } = require("playwright");
       const targetEvidence = candidateStartsAtSource
         ? candidate.arrowhead_evidence.at_to : candidate.arrowhead_evidence.at_from;
       if (!sourceEvidence || !targetEvidence) continue;
+      process.stdout.write(name + ": edge " + edge.id + " endpoint arrow evidence source=" +
+        sourceEvidence.support_ratio.toFixed(3) + " target=" + targetEvidence.support_ratio.toFixed(3) +
+        " (best angles " + sourceEvidence.angle_degrees + "deg/" + targetEvidence.angle_degrees + "deg).\\n");
       arrowTipComparisons++;
       if (targetEvidence.support_ratio > sourceEvidence.support_ratio) arrowTipWins++;
       else if (targetEvidence.support_ratio === sourceEvidence.support_ratio) arrowTipTies++;
