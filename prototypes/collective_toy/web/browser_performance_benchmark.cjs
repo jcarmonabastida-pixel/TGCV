@@ -117,6 +117,7 @@ const summarize = values => ({
           if (!pkg || !pkg.result || !pkg.result.input_sha256) throw new Error("Missing completed baseline package for isolated diagnostics");
           const hashSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], end_to_end_ms: [] };
           const renderSamples = [];
+          const selectorPaired = { baseline_force_rebuild_ms: [], optimized_conditional_ms: [], order: [] };
           const expectedDigest = pkg.result.input_sha256;
           for (let n = 0; n < 15; n++) {
             const endToEndStart = performance.now();
@@ -141,7 +142,20 @@ const summarize = values => ({
             const after = document.querySelector("#results").textContent;
             if (before !== after) throw new Error("Isolated render changed semantic results text");
           }
-          return { hashSamples, renderSamples, digest_matches_baseline: true, render_semantics_preserved: true };
+          const expectedText = document.querySelector("#results").textContent;
+          for (let pair = 0; pair < 30; pair++) {
+            const order = pair % 2 === 0 ? ["baseline", "optimized"] : ["optimized", "baseline"];
+            selectorPaired.order.push(order.join("_then_"));
+            for (const variant of order) {
+              const force = variant === "baseline";
+              const start = performance.now();
+              window.render(model, pkg.result, force);
+              const elapsed = performance.now() - start;
+              selectorPaired[force ? "baseline_force_rebuild_ms" : "optimized_conditional_ms"].push(elapsed);
+              if (document.querySelector("#results").textContent !== expectedText) throw new Error("Paired selector variant changed semantic results text");
+            }
+          }
+          return { hashSamples, renderSamples, selectorPaired, digest_matches_baseline: true, render_semantics_preserved: true };
         }, { model });
         const phaseSummary = Object.fromEntries(phaseNames.filter(n => phaseSamples[n].length).map(n => [n, summarize(phaseSamples[n])]));
         reports.push({
@@ -156,7 +170,7 @@ const summarize = values => ({
           phase_timings: phaseSummary,
           hash_subphase_timings: Object.fromEntries(Object.keys(hashPhaseSamples).map(name => [name, summarize(hashPhaseSamples[name])])),
           hash_operation_timings: Object.fromEntries(Object.entries(observationHashOperations).map(([operation, samples]) => [operation, Object.fromEntries(Object.entries(samples).map(([name, values]) => [name, summarize(values)]))])),
-          isolated_diagnostics: { digest_matches_baseline: isolated.digest_matches_baseline, render_semantics_preserved: isolated.render_semantics_preserved, hash_phases: Object.fromEntries(Object.entries(isolated.hashSamples).map(([name, values]) => [name, summarize(values)])), render_precomputed_result: summarize(isolated.renderSamples) },
+          isolated_diagnostics: { digest_matches_baseline: isolated.digest_matches_baseline, render_semantics_preserved: isolated.render_semantics_preserved, hash_phases: Object.fromEntries(Object.entries(isolated.hashSamples).map(([name, values]) => [name, summarize(values)])), render_precomputed_result: summarize(isolated.renderSamples), paired_selector_ab: { baseline_force_rebuild: summarize(isolated.selectorPaired.baseline_force_rebuild_ms), optimized_conditional: summarize(isolated.selectorPaired.optimized_conditional_ms), alternating_order_pairs: isolated.selectorPaired.order.length, semantic_results_preserved: true } },
           main_thread_frame_gap: summarize(heartbeatGapSamples)
         });
       }
