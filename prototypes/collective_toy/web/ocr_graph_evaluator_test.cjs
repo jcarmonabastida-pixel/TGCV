@@ -1,0 +1,23 @@
+"use strict";
+const assert = require("node:assert/strict");
+const path = require("node:path");
+const { scoreGraph, evaluateCases } = require("./ocr_graph_evaluator.cjs");
+const fixtures = require("./ocr_graph_evaluation_fixtures.json");
+
+const results = evaluateCases(fixtures.cases);
+assert.equal(results.length, 8);
+assert.ok(results.every(r => r.expectation_met), results.filter(r => !r.expectation_met).map(r => r.id + ": expected " + r.expected_status + " got " + r.status).join("\n"));
+const exact = results.find(r => r.id === "GRAPH-001-exact-match");
+assert.equal(exact.node_metrics.f1, 1);
+assert.equal(exact.edge_metrics.f1, 1);
+const reverse = results.find(r => r.id === "GRAPH-002-reversed-arrow");
+assert.equal(reverse.reversed_directed_edges, 1);
+assert.ok(reverse.critical_failures.includes("directed_edge_reversal"));
+const spurious = results.find(r => r.id === "GRAPH-003-spurious-edge");
+assert.equal(spurious.edge_metrics.fp, 1);
+const duplicate = results.find(r => r.id === "GRAPH-006-duplicate-edge");
+assert.equal(duplicate.edge_metrics.fp, 1);
+const undirected = results.find(r => r.id === "GRAPH-007-undirected-match");
+assert.equal(undirected.status, "PASS");
+assert.throws(() => scoreGraph({nodes:[{id:"A",label:"A"},{id:"A",label:"dup"}],edges:[]},{nodes:[],edges:[]}), /duplicate node id/);
+process.stdout.write("PASS: " + results.length + "/" + results.length + " graph evaluation fixture expectations; validation and critical-error checks passed.\n");
