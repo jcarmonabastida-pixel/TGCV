@@ -189,8 +189,27 @@ const assert = require("node:assert/strict");
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
     assert.match(await page.locator("#package-assessment").innerText(), /hash del paquete no coincide/i);
 
-    // Exercise the user-facing edit -> run path: disable A->C in baseline.
-    const editedModel = JSON.parse(await page.locator("#model").inputValue());
+    // Reset to the canonical diamond fixture: prior graph-review assertions intentionally mutate the live model.
+    const editedModel = {
+      schema_version: "collective-toy-input-001",
+      model_id: "toy-diamond-001",
+      initial_state: "A",
+      states: ["A", "B", "C", "D"],
+      transitions: [
+        { id: "t_ab", source: "A", target: "B" },
+        { id: "t_ac", source: "A", target: "C" },
+        { id: "t_bd", source: "B", target: "D" },
+        { id: "t_cd", source: "C", target: "D" }
+      ],
+      relations: [],
+      rule_profile: { type: "finite_deterministic_graph", version: "1" },
+      scenarios: [
+        { id: "baseline", disabled_transitions: [] },
+        { id: "block_ac", disabled_transitions: ["t_ac"] }
+      ],
+      exploration: { max_depth: 4, max_trajectories: 1000 }
+    };
+    await page.locator("#model").evaluate((el, value) => { el.value = JSON.stringify(value, null, 2); el.dispatchEvent(new Event("input", { bubbles: true })); }, editedModel);
     editedModel.scenarios.find(s => s.id === "baseline").disabled_transitions = ["t_ac"];
     await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(editedModel, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
