@@ -19,7 +19,8 @@ jobs:
           node-version: '22'
       - name: Validate graph fixture JSON
         working-directory: prototypes/collective_toy/web
-        run: node -e "const fs=require('node:fs'); JSON.parse(fs.readFileSync('ocr_graph_evaluation_fixtures.json','utf8')); JSON.parse(fs.readFileSync('ocr_graph_reference.schema.json','utf8')); console.log('PASS: fixture and annotation schema are valid JSON');"
+        run: |
+          node -e "const fs=require('node:fs'); JSON.parse(fs.readFileSync('ocr_graph_evaluation_fixtures.json','utf8')); JSON.parse(fs.readFileSync('ocr_graph_reference.schema.json','utf8')); console.log('PASS: fixture and annotation schema are valid JSON');"
       - name: Run graph evaluator contract tests
         working-directory: prototypes/collective_toy/web
         run: node ocr_graph_evaluator_test.cjs
