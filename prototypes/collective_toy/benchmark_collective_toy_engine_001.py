@@ -3,10 +3,12 @@
 
 Run from this directory with:
   python benchmark_collective_toy_engine_001.py --repeats 5
+  python benchmark_collective_toy_engine_001.py --repeats 3 --sizes 100 250 500
 
-This is a performance diagnostic, not a scientific TGCV experiment. It reports
-raw timings and Python allocation peaks; it does not impose machine-dependent
-latency thresholds.
+The optional scale profile exercises the engine's full documented state and
+transition bounds. This is a performance diagnostic, not a scientific TGCV
+experiment. It reports raw timings and Python allocation peaks and imposes no
+machine-dependent latency thresholds.
 """
 from __future__ import annotations
 
@@ -17,6 +19,11 @@ import time
 import tracemalloc
 
 from collective_toy_engine_001 import demo_model, run_model
+
+
+MAX_STATES = 500
+MAX_TRANSITIONS = 2000
+MAX_FAN_OUT = 8
 
 
 def make_model(kind: str, size: int, max_trajectories: int, max_depth: int) -> dict:
@@ -34,22 +41,24 @@ def make_model(kind: str, size: int, max_trajectories: int, max_depth: int) -> d
     if kind == "chain":
         for i in range(size - 1):
             add(i, i + 1, "chain")
-    elif kind == "branching_dag":
-        # Bounded forward fan-out; the graph remains acyclic.
+    elif kind in ("branching_dag", "cyclic_branching"):
+        # Keep the fan-out bounded and spread it across every state so the
+        # largest fixtures stay within the engine cap without leaving a tail
+        # of states unconnected merely because an edge counter was exhausted.
+        fan_out = min(MAX_FAN_OUT, max(1, MAX_TRANSITIONS // size), size - 1)
         for i in range(size):
-            for offset in range(1, 9):
-                if i + offset < size:
-                    add(i, i + offset, f"f{offset:02d}")
-    elif kind == "cyclic_branching":
-        # Fan-out with wrap-around creates cycles while respecting transition cap.
-        for i in range(size):
-            for offset in range(1, min(9, size)):
-                add(i, (i + offset) % size, f"f{offset:02d}")
+            for offset in range(1, fan_out + 1):
+                target = i + offset
+                if kind == "branching_dag":
+                    if target < size:
+                        add(i, target, f"f{offset:02d}")
+                else:
+                    add(i, target % size, f"f{offset:02d}")
     else:
         raise ValueError(f"unsupported graph kind: {kind}")
 
-    if len(transitions) > 2000:
-        raise ValueError("benchmark fixture exceeds the engine's 2,000-transition bound")
+    if len(states) > MAX_STATES or len(transitions) > MAX_TRANSITIONS:
+        raise ValueError("benchmark fixture exceeds the engine's documented resource bounds")
 
     model["states"] = states
     model["initial_state"] = states[0]
@@ -97,8 +106,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.repeats < 1:
         parser.error("--repeats must be >= 1")
-    if any(size < 2 or size > 100 for size in args.sizes):
-        parser.error("--sizes must be between 2 and 100")
+    if any(size < 2 or size > MAX_STATES for size in args.sizes):
+        parser.error(f"--sizes must be between 2 and {MAX_STATES}")
 
     reports = []
     for kind in ("chain", "branching_dag", "cyclic_branching"):
@@ -124,6 +133,7 @@ def main() -> None:
         "benchmark": "collective-toy-engine-engineering-v1",
         "scientific_execution": False,
         "latency_threshold_enforced": False,
+        "resource_bounds": {"max_states": MAX_STATES, "max_transitions": MAX_TRANSITIONS},
         "reports": reports,
     }, indent=2, sort_keys=True))
 
