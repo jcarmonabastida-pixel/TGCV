@@ -32,6 +32,20 @@ const assert = require("node:assert/strict");
     await imageInput.setInputFiles({ name: "oversized.png", mimeType: "image/png", buffer: Buffer.alloc(5 * 1024 * 1024 + 1, 0x20) });
     assert.match(await page.locator("#image-status").innerText(), /supera el límite de 5 MiB/i);
 
+    // Image transcription is user-supplied text, converted only into a reviewable draft.
+    await page.locator("#image-transcription").fill("A --> B\\nB --> C");
+    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador creado: 3 estados y 2 conexiones/ }).waitFor();
+    const transcriptionDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(transcriptionDraft.states, ["A", "B", "C"]);
+    assert.equal(transcriptionDraft.transitions.length, 2);
+    assert.match(await page.locator("#transcription-status").innerText(), /Revisa el grafo/i);
+    await page.locator("#image-transcription").fill("texto sin conexiones");
+    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
+    assert.match(await page.locator("#transcription-status").innerText(), /No se encontraron conexiones dirigidas/i);
+    await page.getByRole("button", { name: "Borrar transcripción" }).click();
+    assert.equal(await page.locator("#image-transcription").inputValue(), "");
+
     // Output labels must not silently promote graph-local results to system-level TGCV claims.
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.getByText("Estados alcanzables en baseline", { exact: true }).waitFor();
