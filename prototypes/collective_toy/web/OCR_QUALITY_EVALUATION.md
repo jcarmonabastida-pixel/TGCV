@@ -26,7 +26,8 @@ The fixture text below is the source of truth for expected OCR content. Generate
 4. Compute character error rate (CER) and word error rate (WER) against the expected text. Normalization may standardize line endings and repeated whitespace, but must not silently remove accents or punctuation from the primary score.
 5. Report per-case values and macro-average values. Never report only the average; a failure on a short label can be consequential.
 6. Repeat each case at least three times after a cold start and three times after the OCR worker is warm. Report cold-start separately from warm latency.
-7. Inspect all cases manually and keep the raw output so scores can be reproduced.
+7. For OCR-TXT-004, additionally compare Tesseract page-segmentation modes SINGLE_BLOCK and SPARSE_TEXT. Store their raw/normalized text, CER, WER, and latency as diagnostic evidence only; do not use these two extra calls to change the primary scores or acceptance gate.
+8. Inspect all cases manually and keep the raw output so scores can be reproduced.
 
 ## Acceptance criteria (provisional engineering gate)
 
