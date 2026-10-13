@@ -60,5 +60,14 @@ const { chromium } = require("playwright");
     process.stdout.write(name + ": " + result.nodes.length + " provisional node candidates; " +
       result.edge_candidates.length + " horizontal stroke candidates.\n");
   }
-  process.stdout.write("PASS: detector executes on all three raster fixtures and returns provisional candidates only.\n");
+  for (const fixture of colorVariants) {
+    const coloredPath = path.join(tempRoot, fixture.name);
+    const result = await detectGraphCandidates(coloredPath);
+    assert.equal(result.detector, "TGCV-RASTER-GRAPH-CANDIDATES-001");
+    assert.equal(result.status, "experimental-candidates-only");
+    assert.ok(result.nodes.length > 0, fixture.name + ": colored-node variant must yield provisional candidates");
+    assert.ok(result.nodes.every(n => n.review_required === true));
+    process.stdout.write(fixture.name + ": " + result.nodes.length + " provisional candidates on colored-node variant.\\n");
+  }
+  process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
