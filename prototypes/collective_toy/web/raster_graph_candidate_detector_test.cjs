@@ -776,7 +776,12 @@ const { chromium } = require("playwright");
     const target=junctionNodes.get(edge.target_candidate_node_id);
     return source&&target&&(source.id===centerCandidate.id||target.id===centerCandidate.id);
   }),"SYN-CROSS-JUNCTION-001: junction must not create leaf-to-leaf shortcuts");
-  process.stdout.write("SYN-CROSS-JUNCTION-001: central four-arm junction preserves expected topology.\\n");
+  assert.ok(junctionResult.edge_candidates.every(edge =>
+    edge.direction_status === "unresolved" &&
+    edge.direction === "undetermined" &&
+    edge.review_required === true
+  ), "SYN-CROSS-JUNCTION-001: junction geometry must not imply edge direction; every edge remains unresolved and reviewable");
+  process.stdout.write("SYN-CROSS-JUNCTION-001: central four-arm junction preserves topology; direction remains unresolved.\\n");
   // Same branched topology with differently colored nodes. Color is visual
   // styling, not a reason to change the graph structure.
   const coloredBranchPath = path.join(tempRoot, "SYN-BRANCH-COLORED-NODES-001.png");
