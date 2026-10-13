@@ -13,7 +13,7 @@ function assertGraph(graph, label) {
   }
   for (const edge of graph.edges) {
     if (!edge || typeof edge.source !== "string" || typeof edge.target !== "string") throw new Error(label + " contains an invalid edge");
-    if (![ "directed", "undirected", "bidirectional", "unknown" ].includes(edge.direction)) throw new Error(label + " contains invalid edge direction");
+    if (!["directed", "undirected", "bidirectional", "unknown"].includes(edge.direction)) throw new Error(label + " contains invalid edge direction");
     if (typeof edge.label !== "string") throw new Error(label + " edge label must be a string");
     if (!ids.has(edge.source) || !ids.has(edge.target)) throw new Error(label + " edge references a missing node: " + edge.source + " -> " + edge.target);
   }
@@ -23,75 +23,54 @@ function counts(tp, fp, fn) {
   const recall = tp + fn ? tp / (tp + fn) : (fp === 0 ? 1 : 0);
   return { tp, fp, fn, precision, recall, f1: precision + recall ? 2 * precision * recall / (precision + recall) : 0 };
 }
-function unorderedPair(a, b) { return a < b ? [a, b] : [b, a]; }
-function edgeTopologyKey(edge, map) {
-  const s = map.get(edge.source), t = map.get(edge.target);
-  if (edge.direction === "undirected") return JSON.stringify([ ...unorderedPair(s, t), edge.direction ]);
-  return JSON.stringify([s, t, edge.direction]);
+function pair(a, b) { return a < b ? [a, b] : [b, a]; }
+function topologyKey(e) {
+  if (e.direction === "undirected") return JSON.stringify([...pair(e.source, e.target), e.direction]);
+  return JSON.stringify([e.source, e.target, e.direction]);
 }
-function edgeLabelKey(edge, map) {
-  return JSON.stringify([edgeTopologyKey(edge, map), edge.label]);
-}
-function nodeProfile(graph, nodeId) {
-  const incoming = graph.edges.filter(e => e.target === nodeId && e.direction === "directed").length;
-  const outgoing = graph.edges.filter(e => e.source === nodeId && e.direction === "directed").length;
-  const undirected = graph.edges.filter(e => e.direction === "undirected" && (e.source === nodeId || e.target === nodeId)).length;
-  const bidirectional = graph.edges.filter(e => e.direction === "bidirectional" && (e.source === nodeId || e.target === nodeId)).length;
-  const unknown = graph.edges.filter(e => e.direction === "unknown" && (e.source === nodeId || e.target === nodeId)).length;
-  return [incoming, outgoing, undirected, bidirectional, unknown].join(":");
-}
-function multisetKeys(edges, keyFn) {
-  const map = new Map();
-  for (const e of edges) { const k = keyFn(e); map.set(k, (map.get(k) || 0) + 1); }
-  return map;
-}
-function multisetCompare(reference, candidate, keyFn) {
-  const remaining = multisetKeys(reference, keyFn);
+function labelledKey(e) { return JSON.stringify([topologyKey(e), e.label]); }
+function compareMultisets(reference, candidate, keyFn) {
+  const remaining = new Map();
+  for (const e of reference) { const k = keyFn(e); remaining.set(k, (remaining.get(k) || 0) + 1); }
   let tp = 0, fp = 0;
   for (const e of candidate) {
     const k = keyFn(e), n = remaining.get(k) || 0;
-    if (n > 0) { tp++; remaining.set(k, n - 1); } else fp++;
+    if (n) { tp++; remaining.set(k, n - 1); } else fp++;
   }
   const fn = [...remaining.values()].reduce((a, b) => a + b, 0);
   return { ...counts(tp, fp, fn), remaining };
 }
+function nodeProfile(graph, id) {
+  const incident = graph.edges.filter(e => e.source === id || e.target === id);
+  return JSON.stringify([
+    incident.filter(e => e.direction === "directed" && e.target === id && e.source !== id).length,
+    incident.filter(e => e.direction === "directed" && e.source === id && e.target !== id).length,
+    incident.filter(e => e.direction === "undirected").length,
+    incident.filter(e => e.direction === "bidirectional").length,
+    incident.filter(e => e.direction === "unknown").length
+  ]);
+}
 function findTopologyMapping(reference, candidate) {
   if (reference.nodes.length !== candidate.nodes.length) return null;
-  const refIds = reference.nodes.map(n => n.id);
-  const candIds = candidate.nodes.map(n => n.id);
+  const refIds = reference.nodes.map(n => n.id), candIds = candidate.nodes.map(n => n.id);
   const refProfiles = new Map(refIds.map(id => [id, nodeProfile(reference, id)]));
   const candProfiles = new Map(candIds.map(id => [id, nodeProfile(candidate, id)]));
-  const candidatesFor = new Map(candIds.map(id => [id, refIds.filter(rid => refProfiles.get(rid) === candProfiles.get(id))]));
-  if ([...candidatesFor.values()].some(xs => xs.length === 0)) return null;
-  const ordered = [...candIds].sort((a, b) => candidatesFor.get(a).length - candidatesFor.get(b).length);
+  const options = new Map(candIds.map(id => [id, refIds.filter(rid => refProfiles.get(rid) === candProfiles.get(id))]));
+  if ([...options.values()].some(a => a.length === 0)) return null;
+  const order = [...candIds].sort((a, b) => options.get(a).length - options.get(b).length);
   const mapping = new Map(), used = new Set();
-  function consistent(candId, refId) {
-    for (const [otherCand, otherRef] of mapping) {
-      const candidatePair = multisetCompare(
-        candidate.edges.filter(e => (e.source === candId && e.target === otherCand) || (e.source === otherCand && e.target === candId)),
-        reference.edges.filter(e => (e.source === refId && e.target === otherRef) || (e.source === otherRef && e.target === refId)),
-        e => {
-          let s = e.source === candId || e.source === refId ? "X" : "Y";
-          let t = e.target === candId || e.target === refId ? "X" : "Y";
-          if (e.direction === "undirected") { const p = unorderedPair(s, t); return JSON.stringify([p, e.direction]); }
-          return JSON.stringify([s, t, e.direction]);
-        }
-      );
-      if (candidatePair.fp || candidatePair.fn) return false;
+  function visit(i) {
+    if (i === order.length) {
+      const mappedEdges = candidate.edges.map(e => ({ ...e, source: mapping.get(e.source), target: mapping.get(e.target) }));
+      const compared = compareMultisets(reference.edges, mappedEdges, topologyKey);
+      return compared.fp === 0 && compared.fn === 0;
     }
-    return true;
-  }
-  function visit(index) {
-    if (index === ordered.length) {
-      const candidateKeys = multisetCompare(reference.edges, candidate.edges, e => edgeTopologyKey(e, mapping));
-      return candidateKeys.fp === 0 && candidateKeys.fn === 0;
-    }
-    const candId = ordered[index];
-    for (const refId of candidatesFor.get(candId)) {
-      if (used.has(refId) || !consistent(candId, refId)) continue;
-      mapping.set(candId, refId); used.add(refId);
-      if (visit(index + 1)) return true;
-      mapping.delete(candId); used.delete(refId);
+    const cid = order[i];
+    for (const rid of options.get(cid)) {
+      if (used.has(rid)) continue;
+      mapping.set(cid, rid); used.add(rid);
+      if (visit(i + 1)) return true;
+      mapping.delete(cid); used.delete(rid);
     }
     return false;
   }
@@ -100,31 +79,21 @@ function findTopologyMapping(reference, candidate) {
 function scoreGraph(reference, candidate) {
   assertGraph(reference, "reference");
   assertGraph(candidate, "candidate");
-  const mapping = findTopologyMapping(reference, candidate);
   const nodeCountMatch = reference.nodes.length === candidate.nodes.length;
-  const topology = mapping
-    ? multisetCompare(reference.edges, candidate.edges, e => edgeTopologyKey(e, mapping))
-    : counts(0, candidate.edges.length, reference.edges.length);
-  let reversedEdges = 0;
-  if (!mapping) {
-    const refIds = new Set(reference.nodes.map(n => n.id));
-    const gotIds = new Set(candidate.nodes.map(n => n.id));
-    if ([...refIds].every(id => gotIds.has(id))) {
-      const refPairs = new Set(reference.edges.filter(e => e.direction === "directed").map(e => JSON.stringify([e.source, e.target])));
-      reversedEdges = candidate.edges.filter(e => e.direction === "directed" &&
-        !refPairs.has(JSON.stringify([e.source, e.target])) &&
-        refPairs.has(JSON.stringify([e.target, e.source]))).length;
-    }
-  }
-  const mapped = mapping || new Map(candidate.nodes.map(n => [n.id, n.id]));
-  const labels = mapping
-    ? multisetCompare(reference.edges, candidate.edges, e => edgeLabelKey(e, mapped))
-    : counts(0, candidate.edges.length, reference.edges.length);
+  const mapping = findTopologyMapping(reference, candidate);
+  const mappedEdges = mapping ? candidate.edges.map(e => ({ ...e, source: mapping.get(e.source), target: mapping.get(e.target) })) : candidate.edges;
+  const topology = mapping ? compareMultisets(reference.edges, mappedEdges, topologyKey) : counts(0, candidate.edges.length, reference.edges.length);
+  const edgeLabels = mapping ? compareMultisets(reference.edges, mappedEdges, labelledKey) : counts(0, candidate.edges.length, reference.edges.length);
   const refById = new Map(reference.nodes.map(n => [n.id, n]));
   let nodeLabelErrors = 0;
-  if (mapping) for (const n of candidate.nodes) {
-    const refNode = refById.get(mapping.get(n.id));
-    if (refNode && refNode.label !== n.label) nodeLabelErrors++;
+  if (mapping) for (const n of candidate.nodes) if (refById.get(mapping.get(n.id)).label !== n.label) nodeLabelErrors++;
+  let reversedEdges = 0;
+  if (!mapping && nodeCountMatch) {
+    const refIds = new Set(reference.nodes.map(n => n.id));
+    if (candidate.nodes.every(n => refIds.has(n.id))) {
+      const pairs = new Set(reference.edges.filter(e => e.direction === "directed").map(e => JSON.stringify([e.source, e.target])));
+      reversedEdges = candidate.edges.filter(e => e.direction === "directed" && !pairs.has(JSON.stringify([e.source, e.target])) && pairs.has(JSON.stringify([e.target, e.source]))).length;
+    }
   }
   const criticalFailures = [];
   if (!nodeCountMatch) criticalFailures.push("node_count_mismatch");
@@ -134,10 +103,10 @@ function scoreGraph(reference, candidate) {
   if (!mapping && nodeCountMatch) criticalFailures.push("topology_correspondence_not_established");
   const exactTopology = Boolean(mapping) && topology.fp === 0 && topology.fn === 0;
   const exactNodeLabels = Boolean(mapping) && nodeLabelErrors === 0;
-  const exactEdgeLabels = Boolean(mapping) && labels.fp === 0 && labels.fn === 0;
+  const exactEdgeLabels = Boolean(mapping) && edgeLabels.fp === 0 && edgeLabels.fn === 0;
   return {
     topology_metrics: topology,
-    edge_label_metrics: labels,
+    edge_label_metrics: edgeLabels,
     node_label_errors: nodeLabelErrors,
     node_count_match: nodeCountMatch,
     topology_match: exactTopology,
@@ -162,13 +131,7 @@ if (require.main === module) {
   const data = JSON.parse(fs.readFileSync(input, "utf8"));
   if (!Array.isArray(data.cases)) throw new Error("Fixture file must contain cases[]");
   const results = evaluateCases(data.cases);
-  const report = {
-    protocol_version: data.protocol_version,
-    fixture_count: results.length,
-    passed_expectations: results.filter(r => r.expectation_met).length,
-    all_expectations_met: results.every(r => r.expectation_met),
-    results
-  };
+  const report = { protocol_version: data.protocol_version, fixture_count: results.length, passed_expectations: results.filter(r => r.expectation_met).length, all_expectations_met: results.every(r => r.expectation_met), results };
   const serialized = JSON.stringify(report, null, 2) + "\n";
   if (output) fs.writeFileSync(output, serialized);
   process.stdout.write(serialized);
