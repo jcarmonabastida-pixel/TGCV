@@ -303,9 +303,9 @@ const { chromium } = require("playwright");
       const ctx = canvas.getContext("2d");
       ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 320, 220);
       ctx.strokeStyle = "#111111"; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(40, 110); ctx.lineTo(280, 110); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(160, 25); ctx.lineTo(160, 195); ctx.stroke();
-      for (const [x,y] of [[25,110],[295,110],[160,10],[160,210]]) {
+      ctx.beginPath(); ctx.moveTo(32, 110); ctx.lineTo(288, 110); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(160, 32); ctx.lineTo(160, 188); ctx.stroke();
+      for (const [x,y] of [[20,110],[300,110],[160,20],[160,200]]) {
         ctx.beginPath(); ctx.arc(x, y, 12, 0, Math.PI * 2);
         ctx.fillStyle = "#ffffff"; ctx.fill(); ctx.stroke();
       }
