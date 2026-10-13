@@ -105,6 +105,37 @@ async function detectGraphCandidates(imagePath, options = {}) {
         rejectionCounts.accepted++;
       }
 
+      // Fallback candidate pass: pair broad horizontal bands at similar x
+      // extents. This matches the observed rasterized rounded-node caps where
+      // the top and bottom bands are separated by the node's full height.
+      const bands = runs.filter(r => r.len >= minNodeSize && r.len <= maxNodeSize);
+      for (let i = 0; i < bands.length; i++) {
+        const top = bands[i];
+        let best = null;
+        let bestScore = Infinity;
+        for (let j = i + 1; j < bands.length; j++) {
+          const bottom = bands[j];
+          const dy = bottom.y - top.y;
+          if (dy < minNodeSize) continue;
+          if (dy > maxNodeSize) break;
+          const xError = Math.abs(top.x1 - bottom.x1) + Math.abs(top.x2 - bottom.x2);
+          if (xError > 8) continue;
+          const score = xError + Math.abs(top.len - bottom.len);
+          if (score < bestScore) { best = bottom; bestScore = score; }
+        }
+        if (!best) continue;
+        const x1 = Math.min(top.x1, best.x1), x2 = Math.max(top.x2, best.x2);
+        const y1 = top.y, y2 = best.y;
+        const w = x2 - x1 + 1, h = y2 - y1 + 1;
+        if (w < minNodeSize || w > maxNodeSize || h < minNodeSize || h > maxNodeSize) continue;
+        const cx = Math.round((x1 + x2) / 2), cy = Math.round((y1 + y2) / 2);
+        if (candidates.some(n => Math.hypot(n.center[0] - cx, n.center[1] - cy) < 12)) continue;
+        candidates.push({ id: "candidate-node-" + (candidates.length + 1), center: [cx, cy],
+          bbox: [x1, y1, x2, y2], confidence: "low", review_required: true,
+          proposal_method: "paired-horizontal-bands" });
+        rejectionCounts.accepted++;
+      }
+
       const lineCandidates = [];
       for (let y = 0; y < height; y++) {
         let start = -1;
