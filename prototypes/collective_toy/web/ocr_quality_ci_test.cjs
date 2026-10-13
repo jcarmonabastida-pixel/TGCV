@@ -38,6 +38,11 @@ const assert = require("node:assert/strict");
     assert.equal(report.metric_validation.passed, report.metric_validation.total, "CER/WER self-checks must all pass");
     assert.equal(report.segmentation_diagnostics.length, 2, "Both diagnostic segmentation modes must be recorded");
     assert.equal(report.preprocessing_diagnostics.length, 3, "All three preprocessing variants must be recorded");
+    assert.ok(report.notation_spacing_diagnostic, "Transition-notation spacing diagnostic must be recorded");
+    assert.equal(report.notation_spacing_diagnostic.id, "OCR-TXT-004");
+    assert.ok(Number.isFinite(report.notation_spacing_diagnostic.cer) && Number.isFinite(report.notation_spacing_diagnostic.wer));
+    assert.equal(report.notation_spacing_diagnostic.expected_spacing_canonical, "Nodo_01\nNodo-02\nT1: A -> B");
+    assert.equal(report.gate_pass, report.mean_cer <= 0.05 && report.mean_wer <= 0.10 && report.results.every(row => row.identifier_exact), "Diagnostic normalization must not alter the primary quality gate");
     assert.deepEqual(report.preprocessing_diagnostics.map(x => x.variant).sort(), ["grayscale_contrast", "original", "upscale_2x"]);
     for (const diagnostic of report.preprocessing_diagnostics) {
       assert.equal(diagnostic.id, "OCR-TXT-004");
