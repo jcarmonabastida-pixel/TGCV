@@ -210,6 +210,31 @@ const assert = require("node:assert/strict");
       packageData.result.scenario_results
     );
 
+    // Import a visual graph (Mermaid) without requiring the user to author JSON.
+    await page.locator("#graph-file").setInputFiles({
+      name: "sample-flow.mmd",
+      mimeType: "text/plain",
+      buffer: Buffer.from("flowchart TD\n  A --> B\n  B --> C\n")
+    });
+    await page.locator("#file-status").filter({ hasText: "3 estados y 2 conexiones" }).waitFor();
+    let importedGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(importedGraph.states, ["A", "B", "C"]);
+    assert.equal(importedGraph.transitions.length, 2);
+    assert.equal(importedGraph.initial_state, "A");
+
+    // The visual editor can add a state, connect it, and select a new initial state.
+    await page.locator("#new-state-id").fill("D");
+    await page.locator("#new-state-add").click();
+    await page.locator("#edge-source").selectOption("C");
+    await page.locator("#edge-target").selectOption("D");
+    await page.locator("#new-edge-add").click();
+    await page.locator("#edge-source").selectOption("B");
+    await page.locator("#set-initial").click();
+    importedGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.ok(importedGraph.states.includes("D"));
+    assert.ok(importedGraph.transitions.some((edge) => edge.source === "C" && edge.target === "D"));
+    assert.equal(importedGraph.initial_state, "B");
+
     // A failed run must not leave the previous successful package exposed as current.
     await page.locator("#model").fill("{ invalid JSON");
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
