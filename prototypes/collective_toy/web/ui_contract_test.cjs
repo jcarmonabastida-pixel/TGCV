@@ -138,7 +138,7 @@ const assert = require("node:assert/strict");
     // Exercise the user-facing edit -> run path: disable A->C in baseline.
     const editedModel = JSON.parse(await page.locator("#model").inputValue());
     editedModel.scenarios.find(s => s.id === "baseline").disabled_transitions = ["t_ac"];
-    await page.locator("#model").fill(JSON.stringify(editedModel, null, 2));
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(editedModel, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
     const baselineOutput = await page.locator(".scenario").filter({ hasText: "Escenario: baseline" }).innerText();
@@ -189,7 +189,7 @@ const assert = require("node:assert/strict");
       from: "A",
       to: "D"
     }];
-    await page.locator("#model").fill(JSON.stringify(descriptiveModel, null, 2));
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(descriptiveModel, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
     const descriptivePackage = await page.evaluate(() => window.lastPackage);
@@ -202,7 +202,7 @@ const assert = require("node:assert/strict");
     );
 
     // Restore the exact example before testing fail-closed behavior.
-    await page.locator("#model").fill(JSON.stringify(packageData.input, null, 2));
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(packageData.input, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
     assert.deepEqual(
