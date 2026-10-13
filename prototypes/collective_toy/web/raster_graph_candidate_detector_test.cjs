@@ -76,6 +76,14 @@ const { chromium } = require("playwright");
     const correct = scoreTopologyByNodeIdentity([edge("a","b"),edge("b","c")],refs,nodeMatch);
     assert.equal(correct.matchedCandidates,2,
       "TOPOLOGY-ENDPOINTS-001: correctly linked endpoints must match both reference edges");
+    // Candidate labels/IDs are arbitrary: topology must be invariant under
+    // one-to-one node renaming and endpoint order for undirected structure.
+    const renamedNodeMatch = new Map([["x","B"],["y","A"],["z","C"],["w","D"]]);
+    const renamed = scoreTopologyByNodeIdentity([
+      edge("x","y"), edge("z","x")
+    ], refs, renamedNodeMatch);
+    assert.equal(renamed.matchedCandidates,2,
+      "TOPOLOGY-ENDPOINTS-001: node renaming and reversed endpoint order must preserve undirected topology");
     const sameCountsWrongTopology = scoreTopologyByNodeIdentity([edge("a","c"),edge("b","d")],refs,nodeMatch);
     assert.equal(sameCountsWrongTopology.matchedCandidates,0,
       "TOPOLOGY-ENDPOINTS-001: equal edge counts with wrong endpoints must not score as correct topology");
