@@ -1,69 +1,144 @@
+#!/usr/bin/env node
 "use strict";
-// Synthetic-only Chromium benchmark. Run: node browser_performance_benchmark.cjs --repeats 5
+
+// Engineering-only browser benchmark. Phase timings come from the page's
+// performance.now() instrumentation; Playwright wall time is kept separate.
 const { chromium } = require("playwright");
-const fs = require("node:fs");
 const path = require("node:path");
-const arg = process.argv.indexOf("--repeats");
-const REPEATS = Number(arg >= 0 ? process.argv[arg + 1] : 5);
-const SIZES = [100, 250, 500];
-const TOPOLOGIES = ["chain", "branching_dag", "branching_cyclic"];
-const round = n => Number(n.toFixed(3));
-function percentile(values, p) {
-  const sorted = [...values].sort((a,b)=>a-b);
-  return sorted[Math.min(sorted.length-1, Math.ceil(p*sorted.length)-1)];
-}
-function summary(values) {
-  return {samples_ms:values.map(round),median_ms:round(percentile(values,.5)),p95_ms:round(percentile(values,.95)),min_ms:round(Math.min(...values)),max_ms:round(Math.max(...values))};
-}
-function fixture(topology,n,repeat) {
-  const states=Array.from({length:n},(_,i)=>"s"+String(i).padStart(4,"0"));
-  const transitions=[];
-  const add=(i,j)=>transitions.push({id:"t"+String(transitions.length).padStart(5,"0"),source:states[i],target:states[j]});
-  for(let i=0;i<n-1;i++) add(i,i+1);
-  if(topology!=="chain") for(let i=0;i<n;i++) for(const d of [2,3,5]) if(i+d<n) add(i,i+d);
-  if(topology==="branching_cyclic") for(let i=2;i<n;i+=7) add(i,i-2);
-  return {schema_version:"collective-toy-input-001",model_id:"browser-perf-"+topology+"-"+n+"-"+repeat,
-    initial_state:states[0],states,transitions,relations:[],
-    rule_profile:{type:"finite_deterministic_graph",version:"1"},
-    scenarios:[{id:"baseline",disabled_transitions:[]},{id:"disable_first",disabled_transitions:transitions.length?[transitions[0].id]:[]}],
-    exploration:{max_depth:100,max_trajectories:100}};
-}
-(async()=>{
-  if(!Number.isInteger(REPEATS)||REPEATS<3||REPEATS>20) throw new Error("--repeats must be an integer from 3 to 20");
-  const browser=await chromium.launch({headless:true});
-  const page=await browser.newPage({viewport:{width:1365,height:900}});
-  const errors=[]; page.on("pageerror",e=>errors.push(String(e)));
-  const reports=[];
-  try {
-    await page.goto("file://"+path.resolve(__dirname,"index.html"));
-    for(const size of SIZES) for(const topology of TOPOLOGIES) {
-      const samples=[]; let lastFixture;
-      for(let repeat=1;repeat<=REPEATS;repeat++) {
-        const model=fixture(topology,size,repeat); lastFixture=model;
-        await page.locator("#model").fill(JSON.stringify(model));
-        const wallStart=Date.now();
-        await page.locator("#run").click();
-        await page.waitForFunction(()=>{const s=document.querySelector("#status");return s&&(s.textContent.startsWith("Ejecución completada.")||s.textContent.startsWith("No se ha podido ejecutar:"));},{},{timeout:30000});
-        const observed=await page.evaluate(()=>({status:document.querySelector("#status").textContent,perf:window.__toyPerfLastRun||null,
-          svg_elements:document.querySelectorAll("#graph *").length}));
-        if(!observed.status.startsWith("Ejecución completada.")) throw new Error(observed.status);
-        if(!observed.perf||typeof observed.perf.total_until_status_ms!=="number") throw new Error("Instrumentation window.__toyPerfLastRun missing");
-        samples.push({...observed.perf,wall_clock_ms:Date.now()-wallStart,svg_elements:observed.svg_elements});
+
+function makeModel(size, cap = 10, kind = "cyclic_branching") {
+  const states = Array.from({ length: size }, (_, i) => "s" + String(i).padStart(3, "0"));
+  const transitions = [];
+  const add = (i, j, suffix) => transitions.push({
+    id: "t_" + String(i).padStart(3, "0") + "_" + String(j).padStart(3, "0") + "_" + suffix,
+    source: states[i], target: states[j]
+  });
+  if (kind === "chain") {
+    for (let i = 0; i < size - 1; i++) add(i, i + 1, "chain");
+  } else {
+    for (let i = 0; i < size; i++) {
+      for (let offset = 1; offset <= 8 && transitions.length < 2000; offset++) {
+        const j = kind === "branching_dag" ? i + offset : (i + offset) % size;
+        if (j < size) add(i, j, "f" + String(offset).padStart(2, "0"));
       }
-      const phases={};
-      for(const k of ["parse_json_ms","validate_and_engine_ms","input_hash_ms","result_hash_ms","package_hash_ms","render_dom_ms","total_until_status_ms","wall_clock_ms"]) phases[k]=summary(samples.map(s=>s[k]));
-      reports.push({topology,states:size,transitions:lastFixture.transitions.length,repeats:REPEATS,
-        exploration_caps:{max_depth:100,max_trajectories:100},phases,
-        svg_elements_median:percentile(samples.map(s=>s.svg_elements),.5),raw_samples:samples});
     }
-  } finally { await browser.close(); }
-  const output={benchmark:"collective-toy-browser-performance-001",scientific_execution:false,
-    source_html:"prototypes/collective_toy/web/index.html",browser:"Chromium via Playwright",node_version:process.version,
-    repeats:REPEATS,sizes:SIZES,topologies:TOPOLOGIES,page_errors:errors,reports};
-  const out=path.resolve(process.cwd(),"browser-performance-results.json");
-  fs.writeFileSync(out,JSON.stringify(output,null,2)+"\n");
-  console.log(JSON.stringify({output:out,cases:reports.length,reports:reports.map(r=>({topology:r.topology,states:r.states,transitions:r.transitions,
-    total_median_ms:r.phases.total_until_status_ms.median_ms,total_p95_ms:r.phases.total_until_status_ms.p95_ms,
-    engine_median_ms:r.phases.validate_and_engine_ms.median_ms,render_median_ms:r.phases.render_dom_ms.median_ms}))},null,2));
-  if(errors.length) throw new Error("Browser page errors: "+errors.join("; "));
-})().catch(e=>{console.error(e);process.exit(1)});
+  }
+  if (transitions.length > 2000) throw new Error("transition limit exceeded");
+  return {
+    schema_version: "collective-toy-input-001", model_id: "browser-benchmark-" + kind + "-" + size,
+    initial_state: states[0], states, transitions, relations: [],
+    rule_profile: { type: "finite_deterministic_graph", version: "1" },
+    scenarios: [{ id: "baseline", disabled_transitions: [] }],
+    exploration: { max_depth: 100, max_trajectories: cap }
+  };
+}
+
+const median = values => {
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+};
+const percentile = (values, p) => {
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted[Math.max(0, Math.ceil(sorted.length * p) - 1)];
+};
+const summarize = values => ({
+  median_ms: Number(median(values).toFixed(3)),
+  p95_ms: Number(percentile(values, 0.95).toFixed(3)),
+  min_ms: Number(Math.min(...values).toFixed(3)),
+  max_ms: Number(Math.max(...values).toFixed(3)),
+  samples_ms: values.map(v => Number(v.toFixed(3)))
+});
+
+(async () => {
+  const browser = await chromium.launch({ headless: true });
+  const reports = [];
+  try {
+    const page = await browser.newPage();
+    const errors = [];
+    page.on("pageerror", error => errors.push(error.message));
+    await page.goto("file://" + path.resolve(__dirname, "index.html"));
+    const phaseNames = ["parse_json_ms", "validate_and_engine_ms", "input_hash_ms", "result_hash_ms", "package_hash_ms", "render_dom_ms", "total_until_status_ms"];
+    for (const kind of ["chain", "branching_dag", "cyclic_branching"]) {
+      for (const size of [100, 250, 500]) {
+        const model = makeModel(size, 10, kind);
+        const json = JSON.stringify(model);
+        const phaseSamples = Object.fromEntries(phaseNames.map(name => [name, []]));
+        const engineSamples = [];
+        const interactionSamples = [];
+        const heartbeatGapSamples = [];
+        const hashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] };
+        const observationHashOperations = Object.fromEntries(["input", "result", "package"].map(operation => [operation, Object.fromEntries(Object.keys(hashPhaseSamples).map(name => [name, []]))]));
+        await page.evaluate(m => window.execute(m), model); // warm engine
+        await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
+        await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+        await page.locator("#status").getByText("Ejecución completada.", { exact: false }).waitFor(); // warm UI and hashes
+        for (let i = 0; i < 15; i++) {
+          const engineMs = await page.evaluate(m => {
+            const start = performance.now();
+            window.execute(m);
+            return performance.now() - start;
+          }, model);
+          engineSamples.push(engineMs);
+          await page.locator("#model").evaluate((el, value) => { el.value = value; }, json);
+          await page.evaluate(() => {
+            window.__toyHashPhaseSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [], by_operation: { input: { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] }, result: { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] }, package: { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], hash_end_to_end_ms: [] } } };
+            window.__toyHeartbeat = { last: performance.now(), maxGap: 0, running: true };
+            const beat = () => {
+              const h = window.__toyHeartbeat;
+              if (!h || !h.running) return;
+              const now = performance.now();
+              h.maxGap = Math.max(h.maxGap, now - h.last);
+              h.last = now;
+              requestAnimationFrame(beat);
+            };
+            requestAnimationFrame(beat);
+          });
+          const start = process.hrtime.bigint();
+          await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+          await page.locator("#status").getByText("Ejecución completada.", { exact: false }).waitFor();
+          const wallMs = Number(process.hrtime.bigint() - start) / 1e6;
+          interactionSamples.push(wallMs);
+          const observation = await page.evaluate(() => {
+            window.__toyHeartbeat.running = false;
+            return { phases: window.__toyPerfLastRun, hashPhases: window.__toyHashPhaseSamples, maxGap: window.__toyHeartbeat.maxGap };
+          });
+          for (const name of phaseNames) {
+            if (typeof observation.phases?.[name] === "number") phaseSamples[name].push(observation.phases[name]);
+          }
+          heartbeatGapSamples.push(observation.maxGap);
+          for (const name of Object.keys(hashPhaseSamples)) hashPhaseSamples[name].push(...(observation.hashPhases?.[name] || []));
+          for (const operation of Object.keys(observation.hashPhases?.by_operation || {})) {
+            for (const name of Object.keys(observation.hashPhases.by_operation[operation])) observationHashOperations[operation][name].push(...observation.hashPhases.by_operation[operation][name]);
+          }
+        }
+        const phaseSummary = Object.fromEntries(phaseNames.filter(n => phaseSamples[n].length).map(n => [n, summarize(phaseSamples[n])]));
+        reports.push({
+          graph_kind: kind, states: size, transitions: model.transitions.length,
+          max_depth: 100, max_trajectories: 10, repeats: 15,
+          engine_median_ms: Number(median(engineSamples).toFixed(3)),
+          engine_p95_ms: Number(percentile(engineSamples, 0.95).toFixed(3)),
+          button_to_completed_median_ms: Number(median(interactionSamples).toFixed(3)),
+          button_to_completed_p95_ms: Number(percentile(interactionSamples, 0.95).toFixed(3)),
+          engine_samples_ms: engineSamples.map(v => Number(v.toFixed(3))),
+          interaction_wall_ms: summarize(interactionSamples),
+          phase_timings: phaseSummary,
+          hash_subphase_timings: Object.fromEntries(Object.keys(hashPhaseSamples).map(name => [name, summarize(hashPhaseSamples[name])])),
+          hash_operation_timings: Object.fromEntries(Object.entries(observationHashOperations).map(([operation, samples]) => [operation, Object.fromEntries(Object.entries(samples).map(([name, values]) => [name, summarize(values)]))])),
+          main_thread_frame_gap: summarize(heartbeatGapSamples)
+        });
+      }
+    }
+    if (errors.length) throw new Error("Browser page errors: " + errors.join("; "));
+    console.log(JSON.stringify({
+      benchmark: "collective-toy-browser-phase-instrumentation-v2",
+      scientific_execution: false,
+      browser: "Chromium via Playwright",
+      timing_method: "page phases use performance.now(); Playwright wall time uses Node hrtime.bigint(); frame-gap is an approximate rAF heartbeat gap, not a direct user-device latency guarantee.",
+      note: "Hosted CI timings are comparative diagnostics, not user-device guarantees. P95 with 15 samples remains a coarse upper-tail diagnostic.",
+      reports
+    }, null, 2));
+  } finally {
+    await browser.close();
+  }
+})().catch(error => { console.error(error); process.exit(1); });
