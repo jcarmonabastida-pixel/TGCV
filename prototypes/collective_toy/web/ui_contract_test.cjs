@@ -348,7 +348,30 @@ const assert = require("node:assert/strict");
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
     assert.ok(await page.evaluate(() => window.lastPackage));
 
-    console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed error recovery, real export/import, replay verification, and tamper rejection.");
+    // Order-independence regression: execute the canonical model first, then perform graph review on a fresh page.
+    const orderPage = await browser.newPage();
+    await orderPage.goto("file://" + htmlPath);
+    await orderPage.getByRole("button", { name: "Cargar ejemplo" }).click();
+    await orderPage.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await orderPage.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
+    const orderModel = JSON.parse(await orderPage.locator("#model").inputValue());
+    orderModel.transitions = [
+      { id: "order_ab", source: "A", target: "B" },
+      { id: "order_ab_duplicate", source: "A", target: "B" },
+      { id: "order_bc", source: "B", target: "C" }
+    ];
+    orderModel.relations = [];
+    orderModel.scenarios = orderModel.scenarios.map((scenario) => ({ ...scenario, disabled_transitions: [] }));
+    await orderPage.locator("#model").evaluate((el, value) => { el.value = JSON.stringify(value, null, 2); el.dispatchEvent(new Event("input", { bubbles: true })); }, orderModel);
+    await orderPage.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión order_ab_duplicate/ }).click();
+    assert.equal(JSON.parse(await orderPage.locator("#model").inputValue()).transitions.length, 2);
+    assert.doesNotMatch(await orderPage.locator("#graph-review-warnings").innerText(), /par\(es\).*duplicado/i);
+    await orderPage.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión order_bc/ }).click();
+    assert.equal(JSON.parse(await orderPage.locator("#model").inputValue()).transitions.length, 1);
+    assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /solo hay una conexión/i);
+    await orderPage.close();
+
+    console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
   }
