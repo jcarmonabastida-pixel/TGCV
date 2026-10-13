@@ -14,6 +14,7 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     assert.equal(result.image.height, 180);
     assert.ok(Array.isArray(result.nodes));
     assert.ok(Array.isArray(result.edge_candidates));
+    assert.ok(result.nodes.length > 0, name + ": detector must find at least one provisional node box");
     assert.ok(result.limitations.length >= 3);
     assert.ok(result.nodes.every(n => n.review_required === true));
     process.stdout.write(name + ": " + result.nodes.length + " provisional node candidates; " +
