@@ -136,6 +136,47 @@ async function detectGraphCandidates(imagePath, options = {}) {
         rejectionCounts.accepted++;
       }
 
+      // Enclosed-light-region pass: node borders enclose white interior
+      // regions even when their dark outlines are split into several runs.
+      // Components touching the canvas boundary are background and ignored.
+      const visitedLight = new Uint8Array(width * height);
+      const queue = new Int32Array(width * height);
+      const interiorRegions = [];
+      for (let seed = 0; seed < width * height; seed++) {
+        if (visitedLight[seed] || dark[seed]) continue;
+        let head = 0, tail = 0;
+        queue[tail++] = seed;
+        visitedLight[seed] = 1;
+        let minX = width, maxX = -1, minY = height, maxY = -1, touchesBorder = false, area = 0;
+        while (head < tail) {
+          const p = queue[head++], x = p % width, y = Math.floor(p / width);
+          area++;
+          minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+          minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+          if (x === 0 || y === 0 || x === width - 1 || y === height - 1) touchesBorder = true;
+          const neighbors = [x > 0 ? p - 1 : -1, x + 1 < width ? p + 1 : -1,
+            y > 0 ? p - width : -1, y + 1 < height ? p + width : -1];
+          for (const q of neighbors) {
+            if (q >= 0 && !visitedLight[q] && !dark[q]) {
+              visitedLight[q] = 1;
+              queue[tail++] = q;
+            }
+          }
+        }
+        const w = maxX - minX + 1, h = maxY - minY + 1;
+        if (!touchesBorder && area >= 12 && w >= minNodeSize - 4 && w <= maxNodeSize &&
+            h >= minNodeSize - 4 && h <= maxNodeSize) {
+          interiorRegions.push({ bbox: [minX, minY, maxX, maxY], area, width: w, height: h });
+          const cx = Math.round((minX + maxX) / 2), cy = Math.round((minY + maxY) / 2);
+          if (!candidates.some(n => Math.hypot(n.center[0] - cx, n.center[1] - cy) < 12)) {
+            candidates.push({ id: "candidate-node-" + (candidates.length + 1), center: [cx, cy],
+              bbox: [minX, minY, maxX, maxY], confidence: "low", review_required: true,
+              proposal_method: "enclosed-light-region" });
+            rejectionCounts.accepted++;
+          }
+        }
+      }
+
       const lineCandidates = [];
       for (let y = 0; y < height; y++) {
         let start = -1;
@@ -154,7 +195,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
         image: { width, height },
         method: "Canvas grayscale threshold; vertically clustered horizontal runs for rounded/box node candidates; long horizontal stroke candidates",
         nodes: candidates,
-        diagnostics: { runCount: runs.length, clusterCount: clusters.length, rejectionCounts, largestClusters: clusterDiagnostics.sort((a, b) => b.rows - a.rows).slice(0, 20) },
+        diagnostics: { runCount: runs.length, clusterCount: clusters.length, enclosedRegionCount: interiorRegions.length, enclosedRegions: interiorRegions, rejectionCounts, largestClusters: clusterDiagnostics.sort((a, b) => b.rows - a.rows).slice(0, 20) },
         edge_candidates: lineCandidates,
         limitations: [
           "Not a complete node detector: connected outlines may be fragmented or merged.",
