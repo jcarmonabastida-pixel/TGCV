@@ -13,6 +13,39 @@ const { chromium } = require("playwright");
   const annotationFile = path.join(root, "synthetic_graph_image_annotations_v0.1.json");
   const annotations = JSON.parse(fs.readFileSync(annotationFile, "utf8"));
   const referenceByFile = new Map(annotations.images.map(item => [path.basename(item.file), item]));
+  function summarizeCounts(candidateCount, referenceCount, truePositives) {
+    return {
+      candidates: candidateCount,
+      references: referenceCount,
+      true_positives: truePositives,
+      false_positives: candidateCount - truePositives,
+      false_negatives: referenceCount - truePositives,
+      precision: candidateCount > 0 ? truePositives / candidateCount : 0,
+      recall: referenceCount > 0 ? truePositives / referenceCount : 0
+    };
+  }
+
+  function testAggregateMetricEdgeCases() {
+    assert.deepEqual(summarizeCounts(0, 0, 0), {
+      candidates: 0, references: 0, true_positives: 0,
+      false_positives: 0, false_negatives: 0, precision: 0, recall: 0
+    }, "METRIC-AGGREGATE-EDGE-CASES-001: empty graph metrics must be finite and explicit");
+    assert.deepEqual(summarizeCounts(0, 3, 0), {
+      candidates: 0, references: 3, true_positives: 0,
+      false_positives: 0, false_negatives: 3, precision: 0, recall: 0
+    }, "METRIC-AGGREGATE-EDGE-CASES-001: no candidates must yield zero precision and full omissions");
+    assert.deepEqual(summarizeCounts(4, 0, 0), {
+      candidates: 4, references: 0, true_positives: 0,
+      false_positives: 4, false_negatives: 0, precision: 0, recall: 0
+    }, "METRIC-AGGREGATE-EDGE-CASES-001: no references must penalize all proposed candidates");
+    assert.deepEqual(summarizeCounts(5, 4, 3), {
+      candidates: 5, references: 4, true_positives: 3,
+      false_positives: 2, false_negatives: 1, precision: 0.6, recall: 0.75
+    }, "METRIC-AGGREGATE-EDGE-CASES-001: ordinary aggregate ratios must be correct");
+    process.stdout.write("METRIC-AGGREGATE-EDGE-CASES-001: empty, no-candidate, no-reference and ordinary cases pass.\\n");
+  }
+  testAggregateMetricEdgeCases();
+
   function matchEdgesOneToOne(candidates, refs, close) {
     const matchedRef = new Set();
     let matchedCandidates = 0;
@@ -598,28 +631,24 @@ const { chromium } = require("playwright");
     status: "synthetic-and-color-variant-fixtures",
     aggregate: (() => {
       const sum = (key) => evaluatedStructuralFixtures.reduce((total, item) => total + item[key], 0);
-      const nodeCandidates = sum("node_candidates");
-      const referenceNodes = sum("reference_nodes");
-      const nodeTruePositives = sum("node_true_positives");
-      const edgeCandidates = sum("edge_candidates");
-      const referenceEdges = sum("reference_edges");
-      const edgeTruePositives = sum("edge_true_positives");
+      const nodes = summarizeCounts(sum("node_candidates"), sum("reference_nodes"), sum("node_true_positives"));
+      const edges = summarizeCounts(sum("edge_candidates"), sum("reference_edges"), sum("edge_true_positives"));
       return {
         fixture_count: evaluatedStructuralFixtures.length,
-        node_candidates: nodeCandidates,
-        reference_nodes: referenceNodes,
-        node_true_positives: nodeTruePositives,
-        node_false_positives: nodeCandidates - nodeTruePositives,
-        node_false_negatives: referenceNodes - nodeTruePositives,
-        node_precision: nodeCandidates ? nodeTruePositives / nodeCandidates : 0,
-        node_recall: referenceNodes ? nodeTruePositives / referenceNodes : 0,
-        edge_candidates: edgeCandidates,
-        reference_edges: referenceEdges,
-        edge_true_positives: edgeTruePositives,
-        edge_false_positives: edgeCandidates - edgeTruePositives,
-        edge_false_negatives: referenceEdges - edgeTruePositives,
-        edge_precision: edgeCandidates ? edgeTruePositives / edgeCandidates : 0,
-        edge_recall: referenceEdges ? edgeTruePositives / referenceEdges : 0,
+        node_candidates: nodes.candidates,
+        reference_nodes: nodes.references,
+        node_true_positives: nodes.true_positives,
+        node_false_positives: nodes.false_positives,
+        node_false_negatives: nodes.false_negatives,
+        node_precision: nodes.precision,
+        node_recall: nodes.recall,
+        edge_candidates: edges.candidates,
+        reference_edges: edges.references,
+        edge_true_positives: edges.true_positives,
+        edge_false_positives: edges.false_positives,
+        edge_false_negatives: edges.false_negatives,
+        edge_precision: edges.precision,
+        edge_recall: edges.recall,
         direction_scored: false
       };
     })(),
