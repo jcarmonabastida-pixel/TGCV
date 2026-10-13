@@ -258,5 +258,38 @@ const { chromium } = require("playwright");
   process.stdout.write("SYN-ARROW-CLEAR-001: nodes=" + arrowResult.nodes.length +
     ", connections=" + arrowResult.edge_candidates.length +
     ", arrow visible but direction remains provisional.\\n");
+  // Two opposing arrowheads represent two directed transitions, not an
+  // undirected line. Until the classifier is validated, both stay provisional.
+  const bidirectionalPath = path.join(tempRoot, "SYN-BIDIRECTIONAL-001.png");
+  const bidiBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await bidiBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 320; canvas.height = 180;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 320, 180);
+      ctx.strokeStyle = "#111111"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(65, 90); ctx.lineTo(255, 90); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(77, 82); ctx.lineTo(65, 90); ctx.lineTo(77, 98); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(243, 82); ctx.lineTo(255, 90); ctx.lineTo(243, 98); ctx.stroke();
+      for (const x of [50, 270]) {
+        ctx.beginPath(); ctx.arc(x, 90, 15, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff"; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(bidirectionalPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await bidiBrowser.close(); }
+  const bidirectionalResult = await detectGraphCandidates(bidirectionalPath);
+  assert.equal(bidirectionalResult.status, "experimental-candidates-only");
+  assert.ok(bidirectionalResult.nodes.length >= 2, "SYN-BIDIRECTIONAL-001: both nodes should be detected");
+  assert.ok(bidirectionalResult.edge_candidates.length >= 1, "SYN-BIDIRECTIONAL-001: connection should be proposed");
+  assert.ok(bidirectionalResult.edge_candidates.every(edge =>
+    edge.direction_status === "unresolved" && edge.direction === "undetermined" && edge.review_required === true),
+    "SYN-BIDIRECTIONAL-001: opposing arrows must remain provisional until direction classification is validated");
+  process.stdout.write("SYN-BIDIRECTIONAL-001: nodes=" + bidirectionalResult.nodes.length +
+    ", connections=" + bidirectionalResult.edge_candidates.length +
+    ", opposing arrowheads present; direction classification provisional.\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
