@@ -146,7 +146,8 @@ const { chromium } = require("playwright");
     process.stdout.write(name + ": edge candidate precision=" + precision.toFixed(3) +
       ", endpoint recall=" + recall.toFixed(3) + ", candidates=" + candidates.length +
       ", reference edges=" + refs.length + ".\\n");
-    return { precision, recall, candidates: candidates.length, referenceEdges: refs.length };
+    return { precision, recall, candidates: candidates.length, referenceEdges: refs.length,
+      truePositives: matchedCandidates };
   }
   const evaluatedStructuralFixtures = [];
   function assertNodeGeometry(name, result) {
@@ -172,7 +173,8 @@ const { chromium } = require("playwright");
         "crossing intersection must not be hallucinated as a node");
     }
     process.stdout.write(name + ": node precision=" + precision.toFixed(3) + ", recall=" + recall.toFixed(3) + ".\\n");
-    return { precision, recall, candidates: result.nodes.length, referenceNodes: reference.nodes.length };
+    return { precision, recall, candidates: result.nodes.length, referenceNodes: reference.nodes.length,
+      truePositives: matched };
   }
   const colorVariants = [
     { name: "SYN-LINEAR-001.png", boxes: [[35,75,65,105],[145,75,175,105],[255,75,285,105]] },
@@ -226,8 +228,10 @@ const { chromium } = require("playwright");
     evaluatedStructuralFixtures.push({ fixture: name,
       node_candidates: nodeMetrics.candidates, reference_nodes: nodeMetrics.referenceNodes,
       node_precision: nodeMetrics.precision, node_recall: nodeMetrics.recall,
+      node_true_positives: nodeMetrics.truePositives,
       edge_candidates: edgeMetrics.candidates, reference_edges: edgeMetrics.referenceEdges,
       edge_precision: edgeMetrics.precision, edge_recall: edgeMetrics.recall,
+      edge_true_positives: edgeMetrics.truePositives,
       false_positive_nodes: nodeMetrics.candidates - Math.round(nodeMetrics.precision * nodeMetrics.candidates),
       missed_nodes: nodeMetrics.referenceNodes - Math.round(nodeMetrics.recall * nodeMetrics.referenceNodes),
       false_positive_edges: edgeMetrics.candidates - Math.round(edgeMetrics.precision * edgeMetrics.candidates),
@@ -592,14 +596,33 @@ const { chromium } = require("playwright");
   const evaluationReport = {
     schema_version: "tgcv-raster-structural-evaluation-0.3",
     status: "synthetic-and-color-variant-fixtures",
-    aggregate: {
-      fixture_count: evaluatedStructuralFixtures.length,
-      node_candidates: evaluatedStructuralFixtures.reduce((sum, item) => sum + item.node_candidates, 0),
-      reference_nodes: evaluatedStructuralFixtures.reduce((sum, item) => sum + item.reference_nodes, 0),
-      edge_candidates: evaluatedStructuralFixtures.reduce((sum, item) => sum + item.edge_candidates, 0),
-      reference_edges: evaluatedStructuralFixtures.reduce((sum, item) => sum + item.reference_edges, 0),
-      direction_scored: false
-    },
+    aggregate: (() => {
+      const sum = (key) => evaluatedStructuralFixtures.reduce((total, item) => total + item[key], 0);
+      const nodeCandidates = sum("node_candidates");
+      const referenceNodes = sum("reference_nodes");
+      const nodeTruePositives = sum("node_true_positives");
+      const edgeCandidates = sum("edge_candidates");
+      const referenceEdges = sum("reference_edges");
+      const edgeTruePositives = sum("edge_true_positives");
+      return {
+        fixture_count: evaluatedStructuralFixtures.length,
+        node_candidates: nodeCandidates,
+        reference_nodes: referenceNodes,
+        node_true_positives: nodeTruePositives,
+        node_false_positives: nodeCandidates - nodeTruePositives,
+        node_false_negatives: referenceNodes - nodeTruePositives,
+        node_precision: nodeCandidates ? nodeTruePositives / nodeCandidates : 0,
+        node_recall: referenceNodes ? nodeTruePositives / referenceNodes : 0,
+        edge_candidates: edgeCandidates,
+        reference_edges: referenceEdges,
+        edge_true_positives: edgeTruePositives,
+        edge_false_positives: edgeCandidates - edgeTruePositives,
+        edge_false_negatives: referenceEdges - edgeTruePositives,
+        edge_precision: edgeCandidates ? edgeTruePositives / edgeCandidates : 0,
+        edge_recall: referenceEdges ? edgeTruePositives / referenceEdges : 0,
+        direction_scored: false
+      };
+    })(),
     metrics: { edge_precision: "matched candidate edges / all proposed candidate edges",
       edge_recall: "matched reference edges / all reference edges",
       node_metrics: "asserted independently by geometric matching",
