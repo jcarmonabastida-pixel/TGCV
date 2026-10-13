@@ -654,6 +654,40 @@ const { chromium } = require("playwright");
     return source && target && (source.id===thickCenter.id || target.id===thickCenter.id);
   }), "SYN-BRANCH-THICK-LINES-001: thick lines must not introduce leaf-to-leaf shortcuts");
   process.stdout.write("SYN-BRANCH-THICK-LINES-001: 5px connector stroke preserves branch topology.\\n");
+  // Controlled contrast probe: preserve geometry and 2px line width,
+  // changing only connector/node outline color from #111111 to #555555.
+  const lowContrastPath = path.join(tempRoot, "SYN-BRANCH-LOW-CONTRAST-001.png");
+  const lowContrastBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await lowContrastBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 360; canvas.height = 260;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 360, 260);
+      ctx.strokeStyle = "#555555"; ctx.lineWidth = 2;
+      const center = [180, 130], leaves = [[45, 130], [300, 45], [300, 215]];
+      for (const [x,y] of leaves) {
+        const dx = x-center[0], dy = y-center[1], len = Math.hypot(dx,dy);
+        ctx.beginPath(); ctx.moveTo(center[0]+dx/len*15,center[1]+dy/len*15);
+        ctx.lineTo(x-dx/len*13,y-dy/len*13); ctx.stroke();
+      }
+      for (const [x,y] of [center,...leaves]) {
+        ctx.beginPath(); ctx.arc(x,y,13,0,Math.PI*2);
+        ctx.fillStyle = "#ffffff"; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(lowContrastPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await lowContrastBrowser.close(); }
+  const lowContrastResult = await detectGraphCandidates(lowContrastPath);
+  assert.equal(lowContrastResult.status, "experimental-candidates-only",
+    "SYN-BRANCH-LOW-CONTRAST-001: low-contrast result remains provisional");
+  assert.equal(lowContrastResult.nodes.length, 4,
+    "SYN-BRANCH-LOW-CONTRAST-001: #555555 outlines must preserve four-node count");
+  assert.equal(lowContrastResult.edge_candidates.length, 3,
+    "SYN-BRANCH-LOW-CONTRAST-001: #555555 connectors must preserve three-edge count");
+  process.stdout.write("SYN-BRANCH-LOW-CONTRAST-001: contrast change preserves expected candidate counts.\\n");
   // Same branched topology with differently colored nodes. Color is visual
   // styling, not a reason to change the graph structure.
   const coloredBranchPath = path.join(tempRoot, "SYN-BRANCH-COLORED-NODES-001.png");
