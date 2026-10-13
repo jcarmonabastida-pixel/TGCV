@@ -266,7 +266,8 @@ async function detectGraphCandidates(imagePath, options = {}) {
         method: "Canvas grayscale threshold; vertically clustered horizontal runs for rounded/box node candidates; long horizontal stroke candidates",
         nodes: candidates,
         diagnostics: { runCount: runs.length, clusterCount: clusters.length, enclosedRegionCount: interiorRegions.length, enclosedRegions: interiorRegions, rejectionCounts, largestClusters: clusterDiagnostics.sort((a, b) => b.rows - a.rows).slice(0, 20) },
-        edge_candidates: edgeCandidates,\n        raw_line_candidates: lineCandidates,
+        edge_candidates: edgeCandidates,
+        raw_line_candidates: lineCandidates,
         limitations: [
           "Not a complete node detector: connected outlines may be fragmented or merged.",
           "Diagonal edges, arrowhead direction, edge-to-node attachment and crossing topology are not yet inferred.",
