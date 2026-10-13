@@ -61,26 +61,31 @@ async function run(){
  try{
   $("status").className="";$("status").textContent="Cargando Tesseract.js y los idiomas…";
   await loadTesseract();
+  const initStart=performance.now();
   const worker=await window.Tesseract.createWorker("spa+eng",1,{logger:m=>{if(m&&m.status)$("status").textContent="OCR: "+m.status+(typeof m.progress==="number"?" "+Math.round(m.progress*100)+"%":"")}});
+  const worker_init_ms=Math.round(performance.now()-initStart);
   try{
    for(const f of fixtures){
     const blob=await new Promise(resolve=>f.canvas.toBlob(resolve,"image/png"));if(!blob)throw new Error("No se pudo generar PNG para "+f.id);
-    const hash=await sha256(blob);const start=performance.now();const out=await worker.recognize(blob);const elapsed=Math.round(performance.now()-start);
-    const actual=String(out.data.text||"");const ref=normalize(f.expected),got=normalize(actual);
+    const hash=await sha256(blob);const samples=[];
+    for(let repeat=0;repeat<3;repeat++){
+     const started=performance.now();const out=await worker.recognize(blob);samples.push({elapsed_ms:Math.round(performance.now()-started),text:String(out.data.text||"")});
+    }
+    const actual=samples[samples.length-1].text;const ref=normalize(f.expected),got=normalize(actual);
     const cer=rate(ref,got),refWords=ref.split(/\s+/).filter(Boolean),gotWords=got.split(/\s+/).filter(Boolean),wer=rate(refWords,gotWords);
-    results.push({id:f.id,difficulty:f.difficulty,fixture_sha256:hash,expected:f.expected,recognized_raw:actual,expected_normalized:ref,recognized_normalized:got,cer:Number(cer.toFixed(6)),wer:Number(wer.toFixed(6)),elapsed_ms:elapsed,identifier_exact: f.lines.filter(x=>/^(Estado|Nodo|A$|B$|C$)/.test(x)).every(x=>got.includes(x))});
+    results.push({id:f.id,difficulty:f.difficulty,fixture_sha256:hash,expected:f.expected,recognized_raw:actual,expected_normalized:ref,recognized_normalized:got,cer:Number(cer.toFixed(6)),wer:Number(wer.toFixed(6)),warm_elapsed_ms_samples:samples.map(s=>s.elapsed_ms),warm_elapsed_ms_mean:Math.round(samples.reduce((sum,s)=>sum+s.elapsed_ms,0)/samples.length),identifier_exact:f.lines.filter(x=>/^(Estado|Nodo|A$|B$|C$)/.test(x)).every(x=>got.includes(x))});
    }
   }finally{await worker.terminate()}
   const meanCER=results.reduce((s,r)=>s+r.cer,0)/results.length,meanWER=results.reduce((s,r)=>s+r.wer,0)/results.length;
-  const report={schema:"tgcv-ocr-quality-result-v1",created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),results};
+  const report={schema:"tgcv-ocr-quality-result-v1",created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),results};
   showResults(report);window.__tgcvOcrReport=report;$("export").disabled=false;$("status").className="ok";$("status").textContent="OCR real completado. Revisa cada caso; los resultados no evalúan flechas ni conectividad.";
  }catch(e){$("status").className="error";$("status").textContent="Evaluación fallida: "+(e&&e.message?e.message:String(e))}finally{$("run").disabled=fixtures.length===0;$("generate").disabled=false}
 }
 function showResults(report){
  const root=$("results");root.replaceChildren();const h=document.createElement("h2");h.textContent="Resultados";root.append(h);
  const summary=document.createElement("p");summary.textContent="CER medio: "+(report.mean_cer*100).toFixed(2)+"% · WER medio: "+(report.mean_wer*100).toFixed(2)+"% · Umbral provisional: "+(report.gate_pass?"CUMPLIDO":"NO CUMPLIDO");root.append(summary);
- const table=document.createElement("table");table.innerHTML="<thead><tr><th>Caso</th><th>CER</th><th>WER</th><th>Tiempo (ms)</th><th>Identificadores</th><th>Texto reconocido</th></tr></thead>";const body=document.createElement("tbody");
- for(const r of report.results){const tr=document.createElement("tr");for(const value of [r.id,(r.cer*100).toFixed(2)+"%",(r.wer*100).toFixed(2)+"%",String(r.elapsed_ms),r.identifier_exact?"Exactos":"Revisar",r.recognized_raw]){const td=document.createElement("td");td.textContent=value;tr.append(td)}body.append(tr)}table.append(body);root.append(table);
+ const table=document.createElement("table");table.innerHTML="<thead><tr><th>Caso</th><th>CER</th><th>WER</th><th>Media caliente (ms)</th><th>Identificadores</th><th>Texto reconocido</th></tr></thead>";const body=document.createElement("tbody");
+ for(const r of report.results){const tr=document.createElement("tr");for(const value of [r.id,(r.cer*100).toFixed(2)+"%",(r.wer*100).toFixed(2)+"%",String(r.warm_elapsed_ms_mean)+" (3 rep.)",r.identifier_exact?"Exactos":"Revisar",r.recognized_raw]){const td=document.createElement("td");td.textContent=value;tr.append(td)}body.append(tr)}table.append(body);root.append(table);
 }
 $("generate").addEventListener("click",renderFixtures);$("run").addEventListener("click",run);$("export").addEventListener("click",()=>{if(!window.__tgcvOcrReport)return;const blob=new Blob([JSON.stringify(window.__tgcvOcrReport,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="tgcv-ocr-quality-result.json";a.click();URL.revokeObjectURL(url)});
 renderFixtures();
