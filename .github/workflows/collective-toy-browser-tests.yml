@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+      - development/collective-toy-ocr-preprocessing-001-20261013
     paths:
       - 'prototypes/collective_toy/**'
       - '.github/workflows/collective-toy-browser-tests.yml'
