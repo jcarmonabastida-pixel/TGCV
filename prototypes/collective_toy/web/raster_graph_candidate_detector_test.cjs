@@ -225,5 +225,38 @@ const { chromium } = require("playwright");
   process.stdout.write("SYN-NO-ARROWS-COLORED-001: nodes=" + coloredNoArrowResult.nodes.length +
     ", connections=" + coloredNoArrowResult.edge_candidates.length +
     ", all directions unresolved; human review required.\\n");
+  // Visible arrowhead fixture. The detector must preserve the connection,
+  // but must not claim a direction until a validated classifier exists.
+  const arrowPath = path.join(tempRoot, "SYN-ARROW-CLEAR-001.png");
+  const arrowBrowser = await chromium.launch({ headless: true });
+  try {
+    const page = await arrowBrowser.newPage();
+    const base64 = await page.evaluate(() => {
+      const canvas = document.createElement("canvas"); canvas.width = 320; canvas.height = 180;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 320, 180);
+      ctx.strokeStyle = "#111111"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(65, 90); ctx.lineTo(255, 90); ctx.stroke();
+      // Clear arrowhead pointing toward the right-hand node.
+      ctx.beginPath(); ctx.moveTo(243, 82); ctx.lineTo(255, 90); ctx.lineTo(243, 98); ctx.stroke();
+      for (const x of [50, 270]) {
+        ctx.beginPath(); ctx.arc(x, 90, 15, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff"; ctx.fill(); ctx.stroke();
+      }
+      return canvas.toDataURL("image/png").split(",")[1];
+    });
+    fs.writeFileSync(arrowPath, Buffer.from(base64, "base64"));
+    await page.close();
+  } finally { await arrowBrowser.close(); }
+  const arrowResult = await detectGraphCandidates(arrowPath);
+  assert.equal(arrowResult.status, "experimental-candidates-only");
+  assert.ok(arrowResult.nodes.length >= 2, "SYN-ARROW-CLEAR-001: both nodes should be detected");
+  assert.ok(arrowResult.edge_candidates.length >= 1, "SYN-ARROW-CLEAR-001: arrowed connection should be proposed");
+  assert.ok(arrowResult.edge_candidates.every(edge =>
+    edge.direction_status === "unresolved" && edge.direction === "undetermined" && edge.review_required === true),
+    "SYN-ARROW-CLEAR-001: direction remains provisional until validated classification is implemented");
+  process.stdout.write("SYN-ARROW-CLEAR-001: nodes=" + arrowResult.nodes.length +
+    ", connections=" + arrowResult.edge_candidates.length +
+    ", arrow visible but direction remains provisional.\\n");
   process.stdout.write("PASS: detector executes on baseline and colored-node raster fixtures; candidates remain provisional.\\n");
 })().catch(error => { console.error(error); process.exitCode = 1; });
