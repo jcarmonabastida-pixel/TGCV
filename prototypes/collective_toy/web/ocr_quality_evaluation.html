@@ -94,6 +94,7 @@ async function run(){
   const worker=await window.Tesseract.createWorker("spa+eng",1,{logger:m=>{if(m&&m.status)$("status").textContent="OCR: "+m.status+(typeof m.progress==="number"?" "+Math.round(m.progress*100)+"%":"")}});
   const worker_init_ms=Math.round(performance.now()-initStart);
   const segmentation_diagnostics=[];
+  const preprocessing_diagnostics=[];
   try{
    for(const f of fixtures){
     const blob=await new Promise(resolve=>f.canvas.toBlob(resolve,"image/png"));if(!blob)throw new Error("No se pudo generar PNG para "+f.id);
@@ -121,7 +122,6 @@ async function run(){
     segmentation_diagnostics.push({id:diagnosticFixture.id,mode:mode.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(wordTokens(ref),wordTokens(got)).toFixed(6)),elapsed_ms:elapsed});
    }
    await worker.setParameters({tessedit_pageseg_mode:window.Tesseract.PSM.AUTO});
-   const preprocessing_diagnostics=[];
    for(const variant of [{name:"original",mode:"original"},{name:"upscale_2x",mode:"upscale_2x"},{name:"grayscale_contrast",mode:"grayscale_contrast"}]){
     const image=variant.mode==="original"?diagnosticFixture.canvas:preprocessVariant(diagnosticFixture.canvas,variant.mode);
     const started=performance.now();const out=await worker.recognize(image);const elapsed=Math.round(performance.now()-started);
