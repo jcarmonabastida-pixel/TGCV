@@ -53,6 +53,7 @@ const assert = require("node:assert/strict");
     const reviewModel = JSON.parse(await page.locator("#model").inputValue());
     reviewModel.states = ["A", "B", "C", "D"];
     reviewModel.initial_state = "A";
+    reviewModel.relations = [];
     reviewModel.transitions = [
       { id: "review_ab", source: "A", target: "B" },
       { id: "review_ab_duplicate", source: "A", target: "B" },
