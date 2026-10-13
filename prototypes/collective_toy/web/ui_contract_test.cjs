@@ -34,6 +34,41 @@ const assert = require("node:assert/strict");
     );
     assert.equal(packageData.input.rule_profile.type, "finite_deterministic_graph");
 
+    // Exercise JSON model-file import, including validation feedback and relation-profile sync.
+    const modelForFileImport = await page.locator("#model").inputValue();
+    await page.locator("#json-file").setInputFiles({
+      name: "collective-toy-model.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(modelForFileImport)
+    });
+    await page.locator("#file-status").filter({ hasText: "Archivo cargado" }).waitFor();
+    assert.deepEqual(
+      JSON.parse(await page.locator("#model").inputValue()),
+      JSON.parse(modelForFileImport),
+      "Imported JSON model must be preserved in the editor"
+    );
+    await page.locator("#json-file").setInputFiles({
+      name: "invalid-model.json",
+      mimeType: "application/json",
+      buffer: Buffer.from("{ invalid JSON")
+    });
+    await page.locator("#file-status").filter({ hasText: "No se pudo cargar el JSON" }).waitFor();
+
+    // Layout selection must redraw the graph; zoom must change the SVG viewBox and fit must restore it.
+    await page.locator("#layout-mode").selectOption("circular");
+    await page.locator("#graph-note").filter({ hasText: "disposición circular" }).waitFor();
+    const originalViewBox = (await page.locator("#graph").getAttribute("viewBox")).split(" ").map(Number);
+    await page.getByRole("button", { name: "Acercar grafo" }).click();
+    const zoomViewBox = (await page.locator("#graph").getAttribute("viewBox")).split(" ").map(Number);
+    assert.ok(zoomViewBox[2] < originalViewBox[2], "Zoom-in must reduce the visible graph width");
+    await page.getByRole("button", { name: "Encuadrar todo" }).click();
+    assert.deepEqual(
+      (await page.locator("#graph").getAttribute("viewBox")).split(" ").map(Number),
+      originalViewBox,
+      "Fit-to-view must restore the complete graph"
+    );
+    await page.locator("#layout-mode").selectOption("auto");
+
     // Profile 1 is the default; selecting profile 2 then returning to profile 1
     // must preserve the relation as metadata without silently retaining an operative profile.
     assert.equal(await page.locator("#profile-editor").inputValue(), "1");
