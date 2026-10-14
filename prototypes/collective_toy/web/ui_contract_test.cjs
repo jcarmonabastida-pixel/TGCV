@@ -447,7 +447,8 @@ const assert = require("node:assert/strict");
     assert.equal(undirectedModel.transitions.length, 1);
     assert.equal(undirectedModel.transitions[0].source, "X");
     assert.equal(undirectedModel.transitions[0].target, "Y");
-    assert.equal(undirectedModel.transitions[0].direction_status, "unresolved");
+    assert.equal(Object.hasOwn(undirectedModel.transitions[0], "direction_status"), false,
+      "Arrowless-import review metadata must not alter the canonical input schema.");
     assert.match(await page.locator("#graph-review-warnings").innerText(), /sin dirección explícita/i);
     assert.match(await page.locator("#graph-review-summary-text").innerText(), /Direcciones pendientes: 1/);
     assert.match(await page.locator("#transition-review-list").innerText(), /dirección sin resolver/i);
