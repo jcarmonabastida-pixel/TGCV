@@ -45,6 +45,22 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
         edge.direction === "target-to-source" ? to : null;
       const predictedTo = edge.direction === "source-to-target" ? to :
         edge.direction === "target-to-source" ? from : null;
+      const endpointScore = endpoint => {
+        if (Array.isArray(endpoint)) {
+          return endpoint.reduce((best, item) => !best || item.support_ratio > best.support_ratio ? item : best, null);
+        }
+        return endpoint || null;
+      };
+      const evidenceFrom = endpointScore(edge.arrowhead_evidence?.at_from);
+      const evidenceTo = endpointScore(edge.arrowhead_evidence?.at_to);
+      const evidenceSummary = {
+        at_from_support: evidenceFrom?.support_ratio ?? null,
+        at_to_support: evidenceTo?.support_ratio ?? null,
+        support_margin: evidenceFrom && evidenceTo
+          ? Number(Math.abs(evidenceFrom.support_ratio - evidenceTo.support_ratio).toFixed(4)) : null,
+        at_from_samples: evidenceFrom?.tested_samples ?? 0,
+        at_to_samples: evidenceTo?.tested_samples ?? 0
+      };
       if (edge.direction_status !== "candidate" || !predictedFrom || !predictedTo) {
         fixtureUnresolved++; unresolved++;
       } else {
@@ -65,7 +81,34 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
       inverted_directions: fixtureInverted,
       unresolved_directions: fixtureUnresolved,
       unmatched_or_duplicate_candidates: fixtureUnmatched,
-      direction_accuracy_when_proposed: fixtureProposed ? Number((fixtureCorrect / fixtureProposed).toFixed(4)) : null
+      direction_accuracy_when_proposed: fixtureProposed ? Number((fixtureCorrect / fixtureProposed).toFixed(4)) : null,
+      matched_edge_evidence: (result.edge_candidates || []).flatMap(edge => {
+        const from = candidateToReference.get(edge.source_candidate_node_id);
+        const to = candidateToReference.get(edge.target_candidate_node_id);
+        if (!from || !to) return [];
+        const key = [from, to].sort().join("--");
+        const ref = expected.get(key);
+        if (!ref) return [];
+        const best = endpoint => Array.isArray(endpoint)
+          ? endpoint.reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null)
+          : endpoint;
+        const atFrom = best(edge.arrowhead_evidence?.at_from);
+        const atTo = best(edge.arrowhead_evidence?.at_to);
+        return [{
+          reference_edge: ref.id,
+          expected_source: ref.source_node_id,
+          expected_target: ref.target_node_id,
+          candidate_status: edge.direction_status,
+          candidate_direction: edge.direction,
+          endpoint_scores: {
+            at_candidate_from: atFrom?.support_ratio ?? null,
+            at_candidate_to: atTo?.support_ratio ?? null,
+            absolute_margin: atFrom && atTo ? Number(Math.abs(atFrom.support_ratio - atTo.support_ratio).toFixed(4)) : null,
+            tested_samples_from: atFrom?.tested_samples ?? 0,
+            tested_samples_to: atTo?.tested_samples ?? 0
+          }
+        }];
+      })
     });
   }
 
