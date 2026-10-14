@@ -225,12 +225,12 @@ function updateProfileFromEditor(){
 $("profile-editor").addEventListener("change",updateProfileFromEditor);
 $("add-relation").addEventListener("click",function(){
  var m=currentModelForEditor();if(!m){$("relation-help").textContent="Corrige primero el JSON.";return}
- $("profile-editor").value!=="2"&&$("profile-editor").value!=="3"){ $("relation-help").textContent="Activa el perfil 2 o 3 antes de añadir relaciones.";return}
+ if($("profile-editor").value!=="2"&&$("profile-editor").value!=="3"){ $("relation-help").textContent="Activa el perfil 2 o 3 antes de añadir relaciones.";return}
  var target=$("guarded-transition").value,required=$("required-transition").value;
  if(!target||!required||target===required){$("relation-help").textContent="Selecciona dos transiciones distintas.";return}
  m.relations=Array.isArray(m.relations)?m.relations:[];
- var n=1,ids=new Set(m.relations.map(function(r){return r.id}));while(ids.has("r_guard_"+n))n++;
- m.relations.push({id:($("profile-editor").value==="3"?"r_temporal_":"r_guard_")+n,type:$("profile-editor").value==="3"?"requires_prior_execution":"requires_transition_enabled",transition_id:target,requires_transition_id:required});
+ var prefix=$("profile-editor").value==="3"?"r_temporal_":"r_guard_",n=1,ids=new Set(m.relations.map(function(r){return r.id}));while(ids.has(prefix+n))n++;
+ m.relations.push({id:prefix+n,type:$("profile-editor").value==="3"?"requires_prior_execution":"requires_transition_enabled",transition_id:target,requires_transition_id:required});
  $("model").value=JSON.stringify(m,null,2);syncRelationEditor();$("relation-help").textContent="Relación añadida al modelo. Ejecuta los escenarios para calcular sus efectos.";
 });
 $("relation-list").addEventListener("click",function(event){
