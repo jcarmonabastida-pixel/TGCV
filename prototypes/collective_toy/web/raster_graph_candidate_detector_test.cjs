@@ -476,11 +476,13 @@ const { chromium } = require("playwright");
     assert.ok(result.nodes.every(n => n.review_required === true));
     const nodeMetrics = assertNodeGeometry(fixture.name, result);
     const edgeMetrics = reportEdgeGeometry(fixture.name, result);
+    const topologyMetrics = reportTopologyByNodeIdentity(fixture.name, result);
     evaluatedStructuralFixtures.push({ fixture: fixture.name,
       node_candidates: nodeMetrics.candidates, reference_nodes: nodeMetrics.referenceNodes,
       node_precision: nodeMetrics.precision, node_recall: nodeMetrics.recall,
       edge_candidates: edgeMetrics.candidates, reference_edges: edgeMetrics.referenceEdges,
       edge_precision: edgeMetrics.precision, edge_recall: edgeMetrics.recall,
+      ...topologyMetrics,
       false_positive_nodes: nodeMetrics.candidates - Math.round(nodeMetrics.precision * nodeMetrics.candidates),
       missed_nodes: nodeMetrics.referenceNodes - Math.round(nodeMetrics.recall * nodeMetrics.referenceNodes),
       false_positive_edges: edgeMetrics.candidates - Math.round(edgeMetrics.precision * edgeMetrics.candidates),
