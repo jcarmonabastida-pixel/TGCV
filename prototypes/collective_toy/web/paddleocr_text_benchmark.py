@@ -55,8 +55,8 @@ def main():
     expected = json.loads((FIXTURE_DIR / "expected.json").read_text(encoding="utf-8"))
     manifest = json.loads((FIXTURE_DIR / "manifest.json").read_text(encoding="utf-8"))
     manifest_by_id = {item["id"]: item for item in manifest["fixtures"]}
-    if len(expected) != 5 or len(manifest_by_id) != 5:
-        raise RuntimeError("Expected exactly five frozen text fixtures.")
+    if len(expected) != 10 or len(manifest_by_id) != 10:
+        raise RuntimeError("Expected five baseline and five adversarial graph-text fixtures.")
     if set(item["id"] for item in expected) != set(manifest_by_id):
         raise RuntimeError("Fixture IDs differ between expected.json and manifest.json.")
 
@@ -93,9 +93,7 @@ def main():
         recognized_lines = recognized.split("\n")
         identifier_lines = [
             line for line in expected_lines
-            if re.fullmatch(r"[A-Z]", line)
-            or line.startswith("Nodo_")
-            or line.startswith("Nodo-")
+            if re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]*", line)
             or re.match(r"^T\d+:", line)
         ]
         identifier_exact = all(line in recognized_lines for line in identifier_lines)
