@@ -25,17 +25,33 @@ const cases=[
 {id:"OCR-TXT-002",lines:["A","B","C","Inicio: A"],difficulty:"Etiquetas cortas y puntuación"},
 {id:"OCR-TXT-003",lines:["Estado inicial","Estado final","Condición: x > 0"],difficulty:"Acentos y símbolos"},
 {id:"OCR-TXT-004",lines:["Nodo_01","Nodo-02","T1: A -> B"],difficulty:"Guion bajo, guion y notación"},
-{id:"OCR-TXT-005",lines:["Sistema adaptable","Transformación accesible","Relación causal?"],difficulty:"Etiquetas largas"}
-];
+{id:"OCR-TXT-005",lines:["Sistema adaptable","Transformación accesible","Relación causal?"],difficulty:"Etiquetas largas"},
+{id:"OCR-GRAPH-006",lines:["A1","A7","AI","Al"],difficulty:"Identificadores visualmente similares",graph:"similar"},
+{id:"OCR-GRAPH-007",lines:["Inicio","Fin","T1: A -> B"],difficulty:"Flechas y etiqueta de transición",graph:"arrows"},
+{id:"OCR-GRAPH-008",lines:["A","B","C","D"],difficulty:"Cruce de aristas sin nodo en la intersección",graph:"crossing"},
+{id:"OCR-GRAPH-009",lines:["N1","N2","T1: activa"],difficulty:"Etiqueta próxima a una arista",graph:"near-edge"},
+{id:"OCR-GRAPH-010",lines:["Nodo_01","Nodo_02","x > 0"],difficulty:"Texto pequeño y símbolos",graph:"small"}
+]
 let fixtures=[], results=[];
 const $=id=>document.getElementById(id);
 function expected(c){return c.lines.join("\n")}
 function render(c){
  const canvas=document.createElement("canvas");canvas.width=1200;canvas.height=360;
  const ctx=canvas.getContext("2d",{willReadFrequently:false});ctx.fillStyle="#fff";ctx.fillRect(0,0,1200,360);
- ctx.fillStyle="#111";ctx.font="42px Arial, sans-serif";ctx.textBaseline="top";
- const lineHeight=68;const total=c.lines.length*lineHeight;let y=Math.max(24,(360-total)/2);
- for(const line of c.lines){ctx.fillText(line,48,y);y+=lineHeight}
+ ctx.fillStyle="#111";ctx.strokeStyle="#111";ctx.lineWidth=3;ctx.textBaseline="middle";
+ if(!c.graph){
+  ctx.font="42px Arial, sans-serif";ctx.textBaseline="top";
+  const lineHeight=68;const total=c.lines.length*lineHeight;let y=Math.max(24,(360-total)/2);
+  for(const line of c.lines){ctx.fillText(line,48,y);y+=lineHeight}
+  return canvas;
+ }
+ const node=(x,y,label,font=30)=>{ctx.beginPath();ctx.roundRect(x-62,y-25,124,50,12);ctx.fillStyle="#fff";ctx.fill();ctx.stroke();ctx.fillStyle="#111";ctx.font=font+"px Arial, sans-serif";ctx.textAlign="center";ctx.fillText(label,x,y);ctx.textAlign="left"};
+ const arrow=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();const a=Math.atan2(y2-y1,x2-x1),l=12;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-l*Math.cos(a-.45),y2-l*Math.sin(a-.45));ctx.lineTo(x2-l*Math.cos(a+.45),y2-l*Math.sin(a+.45));ctx.closePath();ctx.fillStyle="#111";ctx.fill()};
+ if(c.graph==="similar"){node(180,110,"A1");node(440,110,"A7");node(700,110,"AI");node(960,110,"Al");arrow(242,110,378,110);arrow(502,110,638,110);arrow(762,110,898,110)}
+ if(c.graph==="arrows"){node(300,170,"Inicio");node(900,170,"Fin");arrow(362,170,838,170);ctx.font="30px Arial, sans-serif";ctx.fillText("T1: A -> B",500,135)}
+ if(c.graph==="crossing"){node(220,75,"A");node(980,285,"B");node(220,285,"C");node(980,75,"D");arrow(282,85,918,275);arrow(282,275,918,85)}
+ if(c.graph==="near-edge"){node(260,185,"N1");node(940,185,"N2");arrow(322,185,878,185);ctx.font="27px Arial, sans-serif";ctx.fillStyle="#111";ctx.fillText("T1: activa",535,166)}
+ if(c.graph==="small"){node(300,125,"Nodo_01",22);node(900,125,"Nodo_02",22);arrow(362,125,838,125);ctx.font="18px Arial, sans-serif";ctx.fillText("x > 0",570,105)}
  return canvas;
 }
 function normalize(s){return String(s||"").replace(/\r\n?/g,"\n").replace(/[ \t]+/g," ").replace(/ *\n */g,"\n").trim()}
