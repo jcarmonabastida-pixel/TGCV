@@ -34,7 +34,8 @@ const assert = require("node:assert/strict");
 
     const report = await page.evaluate(() => window.__tgcvOcrReport);
     assert.ok(report, "Evaluation report must exist");
-    assert.equal(report.results.length, 5, "All five reference fixtures must be measured");
+    assert.equal(report.results.length, 10, "All five baseline and five adversarial graph-text fixtures must be measured");
+    assert.deepEqual(report.results.filter(row => row.id.startsWith("OCR-GRAPH-")).map(row => row.id).sort(), ["OCR-GRAPH-006", "OCR-GRAPH-007", "OCR-GRAPH-008", "OCR-GRAPH-009", "OCR-GRAPH-010"], "All adversarial graph-text fixtures must be included");
     assert.equal(report.metric_validation.passed, report.metric_validation.total, "CER/WER self-checks must all pass");
     assert.equal(report.segmentation_diagnostics.length, 2, "Both diagnostic segmentation modes must be recorded");
     assert.equal(report.preprocessing_diagnostics.length, 3, "All three OCR-TXT-004 preprocessing variants must be recorded");
