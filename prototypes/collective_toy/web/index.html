@@ -108,7 +108,7 @@ async function run(){var perf={},mark=function(name,start){perf[name]=Number((pe
 
 async function assessImportedBrowserPackage(pkg){
  assert(pkg&&typeof pkg==="object"&&!Array.isArray(pkg),"El paquete debe ser un objeto JSON.");
- assert(Object.keys(pkg).every(function(k){return ["package_version","input","result","package_sha256"].includes(k)}),"El paquete contiene campos desconocidos.");
+ assert(Object.keys(pkg).every(function(k){return ["package_version","input","result","package_sha256","concrete_execution_trace"].includes(k)}),"El paquete contiene campos desconocidos.");
  assert(pkg.package_version==="collective-toy-browser-run-001","Esquema de paquete desconocido o no compatible.");
  assert(pkg.input&&typeof pkg.input==="object"&&!Array.isArray(pkg.input),"Falta input o no es un objeto.");
  assert(pkg.result&&typeof pkg.result==="object"&&!Array.isArray(pkg.result),"Falta result o no es un objeto.");
@@ -166,6 +166,14 @@ async function assessImportedBrowserPackage(pkg){
   assert(Object.keys(cr.intervention).every(function(k){return k==="disabled_transitions"}),"intervention contiene campos desconocidos.");
   assert(Array.isArray(cr.intervention.disabled_transitions),"disabled_transitions de intervention debe ser una lista.");
  });
+ if(Object.prototype.hasOwnProperty.call(pkg,"concrete_execution_trace")){
+  var trace=pkg.concrete_execution_trace;
+  assert(trace&&typeof trace==="object"&&!Array.isArray(trace),"concrete_execution_trace debe ser un objeto.");
+  assert(trace.trace_schema==="collective-toy-sequence-trace-001"&&trace.status==="COMPLETED","La traza concreta tiene esquema o estado no compatible.");
+  assert(typeof trace.trace_sha256==="string"&&/^[0-9a-f]{64}$/.test(trace.trace_sha256),"trace_sha256 ausente o malformado.");
+  var traceBody=Object.assign({},trace);delete traceBody.trace_sha256;
+  assert(await hash(traceBody)===trace.trace_sha256,"El hash de la traza concreta no coincide.");
+ }
  var packageBody=Object.assign({},pkg);delete packageBody.package_sha256;
  assert(await hash(packageBody)===pkg.package_sha256,"El hash del paquete no coincide.");
  assert(typeof pkg.result.input_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.input_sha256),"input_sha256 ausente o malformado.");
@@ -292,5 +300,5 @@ $("execute-sequence").addEventListener("click",async function(){
  }catch(e){panel.dataset.state="rejected";panel.replaceChildren(node("p","error","No se ha podido ejecutar la secuencia: "+(e.message||String(e))))}
 });
 $("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage)draw(lastModel,lastPackage.result,$("which").value)});
-$("export").addEventListener("click",function(){if(!lastPackage)return;var trace=$("sequence-trace")._trace||null,exportPackage=Object.assign({},lastPackage,{concrete_execution_trace:trace});var blob=new Blob([JSON.stringify(exportPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
+$("export").addEventListener("click",async function(){if(!lastPackage)return;var trace=$("sequence-trace")._trace||null,exportPackage=Object.assign({},lastPackage);if(trace)exportPackage.concrete_execution_trace=trace;delete exportPackage.package_sha256;exportPackage.package_sha256=await hash(exportPackage,"package_export");var blob=new Blob([JSON.stringify(exportPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
 </script></body></html>
