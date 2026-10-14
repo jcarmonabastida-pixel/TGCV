@@ -407,7 +407,7 @@ const assert = require("node:assert/strict");
     await orderPage.locator("#new-state-id").fill("ISOLATED_TEST_STATE");
     await orderPage.locator("#new-state-add").click();
     assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /estados aislados/i);
-    assert.match(await orderPage.locator("#graph-review-summary-text").innerText(), /Estados: 4/);
+    assert.match(await orderPage.locator("#graph-review-summary-text").innerText(), /Estados: 5/);
 
     await orderPage.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión order_ab/ }).click();
     assert.equal(await orderPage.locator("#transition-review-list li").count(), 0);
