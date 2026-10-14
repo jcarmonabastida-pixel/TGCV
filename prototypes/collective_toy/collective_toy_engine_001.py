@@ -10,6 +10,7 @@ from collections import deque
 from dataclasses import dataclass
 import hashlib
 import json
+import copy
 import math
 import uuid
 from typing import Any
