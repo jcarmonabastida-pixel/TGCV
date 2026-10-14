@@ -392,7 +392,28 @@ const assert = require("node:assert/strict");
     assert.doesNotMatch(await orderPage.locator("#graph-review-warnings").innerText(), /par\(es\).*duplicado/i);
     await orderPage.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión order_bc/ }).click();
     assert.equal(JSON.parse(await orderPage.locator("#model").inputValue()).transitions.length, 1);
-    assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /solo hay una conexión/i);
+    assert.match(await orderPage.locator("#graph-review-summary-text").innerText(), /Conexiones: 1/);
+    assert.equal(await orderPage.locator("#graph-review-summary").getAttribute("data-state"), "needs-review");
+
+    // Exercise the live review summary through actual browser controls: duplicate, isolated state, and empty graph.
+    await orderPage.locator("#edge-source").selectOption("A");
+    await orderPage.locator("#edge-target").selectOption("B");
+    await orderPage.locator("#new-edge-add").click();
+    assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /duplicado/i);
+    assert.match(await orderPage.locator("#graph-review-summary-text").innerText(), /Conexiones: 2/);
+    await orderPage.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión t_visual_1/ }).click();
+    assert.doesNotMatch(await orderPage.locator("#graph-review-warnings").innerText(), /duplicado/i);
+
+    await orderPage.locator("#new-state-id").fill("ISOLATED_TEST_STATE");
+    await orderPage.locator("#new-state-add").click();
+    assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /estados aislados/i);
+    assert.match(await orderPage.locator("#graph-review-summary-text").innerText(), /Estados: 4/);
+
+    await orderPage.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión order_ab/ }).click();
+    assert.equal(await orderPage.locator("#transition-review-list li").count(), 0);
+    assert.equal(await orderPage.locator("#graph-review-summary").getAttribute("data-state"), "needs-review");
+    assert.match(await orderPage.locator("#graph-review-summary-text").innerText(), /Conexiones: 0/);
+    assert.match(await orderPage.locator("#graph-review-summary-text").innerText(), /No hay aceptación automática/i);
     await orderPage.close();
 
     // OCR interpretation is a separate, non-destructive layer: suggestions never alter raw OCR or the primary transcription automatically.
