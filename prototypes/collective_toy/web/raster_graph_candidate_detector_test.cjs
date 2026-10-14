@@ -11,6 +11,9 @@ function testArrowDirectionResolverConservativeCases() {
   const clear = resolve(score(0.10), score(0.95));
   assert.equal(clear.direction, "source-to-target");
   assert.equal(clear.direction_status, "candidate");
+  const reverseClear = resolve(score(0.95), score(0.10));
+  assert.equal(reverseClear.direction, "target-to-source", "ARROW-RESOLVER-CONSERVATIVE-001: stronger source-end evidence should propose the reverse direction");
+  assert.equal(reverseClear.direction_status, "candidate");
   const weak = resolve(score(0.10), score(0.40));
   assert.equal(weak.direction, "undetermined", "ARROW-RESOLVER-CONSERVATIVE-001: weak evidence must remain unresolved");
   assert.equal(weak.direction_status, "unresolved");
