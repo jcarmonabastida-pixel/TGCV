@@ -448,6 +448,31 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "FC-3: replay result must explicitly report a matching independently recomputed result");
 
+    // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
+    await page.getByRole("button", { name: "Cargar ejemplo" }).click();
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
+    assert.match(await page.locator("#status").innerText(), /Ejecución completada/i,
+      "FC-4: baseline/intervention fixture must execute before delta assertions");
+    const deltaDownloadPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const deltaDownload = await deltaDownloadPromise;
+    const deltaPackage = JSON.parse(fs.readFileSync(await deltaDownload.path(), "utf8"));
+    const delta = deltaPackage.result.delta_reach?.block_ac;
+    assert.ok(delta, "FC-4: export must contain an explicit delta_reach artifact for the intervention");
+    assert.match(delta.baseline_source_sha256 || "", /^[a-f0-9]{64}$/i,
+      "FC-4: delta_reach must identify the baseline source by SHA-256");
+    assert.match(delta.intervention_source_sha256 || "", /^[a-f0-9]{64}$/i,
+      "FC-4: delta_reach must identify the intervention source by SHA-256");
+    assert.deepEqual(delta.reachable_states_added, [], "FC-4: blocking A→C must not add reachable states");
+    assert.deepEqual(delta.reachable_states_removed, ["C"], "FC-4: blocking A→C must remove only state C from reachability");
+    assert.deepEqual(delta.enabled_at_initial_added, [], "FC-4: blocking A→C must not add initially enabled transitions");
+    assert.deepEqual(delta.enabled_at_initial_removed, ["t_ac"], "FC-4: delta must identify t_ac as removed from initial accessibility");
+    assert.equal(delta.truncated, false, "FC-4: delta must explicitly report whether either exploration was truncated");
+    assert.equal(delta.baseline_truncated, false, "FC-4: baseline truncation status must be explicit");
+    assert.equal(delta.intervention_truncated, false, "FC-4: intervention truncation status must be explicit");
+
+
 
 
 
