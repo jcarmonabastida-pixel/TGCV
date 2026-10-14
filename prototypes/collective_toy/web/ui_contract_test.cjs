@@ -438,6 +438,16 @@ const assert = require("node:assert/strict");
     assert.equal(evidencePackage.concrete_execution_trace.status, "COMPLETED",
       "FC-3: exported trace must preserve the execution status");
 
+    // FC-3 replay contract: import the exact downloaded artifact and independently recompute its result.
+    await page.locator("#package-file").setInputFiles(downloadedPath);
+    await page.locator("#assess-package").click();
+    await page.waitForFunction(() => /replay-verified|rejected|inspect-only\/replay-unavailable/.test(document.querySelector("#package-assessment")?.dataset.state || ""), { timeout: 10000 });
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
+      "FC-3: a freshly exported package must pass independent import/replay");
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "FC-3: replay result must explicitly report a matching independently recomputed result");
+
+
 
 
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
