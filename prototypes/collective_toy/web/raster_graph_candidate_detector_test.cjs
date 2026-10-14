@@ -3,6 +3,25 @@
 const assert = require("node:assert/strict");
 const path = require("node:path");
 const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs");
+const { resolveArrowDirection } = require("./arrow_direction_resolver.cjs");
+
+function testArrowDirectionResolverConservativeCases() {
+  const score = (support_ratio, tested_samples = 22) => ({ support_ratio, tested_samples, angle_degrees: 0 });
+  const resolve = (from, to) => resolveArrowDirection({ arrowhead_evidence: { at_from: from, at_to: to } });
+  const clear = resolve(score(0.10), score(0.95));
+  assert.equal(clear.direction, "source-to-target");
+  assert.equal(clear.direction_status, "candidate");
+  const weak = resolve(score(0.10), score(0.40));
+  assert.equal(weak.direction, "undetermined", "ARROW-RESOLVER-CONSERVATIVE-001: weak evidence must remain unresolved");
+  assert.equal(weak.direction_status, "unresolved");
+  const tied = resolve(score(0.90), score(0.90));
+  assert.equal(tied.direction, "undetermined", "ARROW-RESOLVER-CONSERVATIVE-001: opposing/equal endpoint evidence must remain unresolved");
+  const insufficient = resolve(score(0.05, 8), score(0.95, 22));
+  assert.equal(insufficient.direction, "undetermined", "ARROW-RESOLVER-CONSERVATIVE-001: insufficient samples must remain unresolved");
+  assert.match(insufficient.direction_reason, /Insufficient/);
+  process.stdout.write("ARROW-RESOLVER-CONSERVATIVE-001: clear, weak, tied and insufficient-sample cases passed.\\n");
+}
+testArrowDirectionResolverConservativeCases();
 const fs = require("node:fs");
 const { chromium } = require("playwright");
 
