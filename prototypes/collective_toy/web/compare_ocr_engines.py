@@ -59,12 +59,13 @@ def char_class(char):
 def class_errors(reference, actual):
     names = ("identifier", "symbol", "punctuation", "whitespace", "other", "unknown")
     summary = {name: {"substitutions": 0, "deletions": 0, "insertions": 0, "errors": 0} for name in names}
+    keys = {"substitution": "substitutions", "deletion": "deletions", "insertion": "insertions"}
     for kind, expected, observed in edit_alignment(reference, actual):
         if kind == "match":
             continue
         target = expected if kind in ("substitution", "deletion") else observed
         category = char_class(target)
-        summary[category][kind + "s" if kind == "deletion" else kind] += 1
+        summary[category][keys[kind]] += 1
         summary[category]["errors"] += 1
     return summary
 
