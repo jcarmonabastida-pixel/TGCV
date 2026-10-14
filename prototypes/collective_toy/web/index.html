@@ -292,5 +292,5 @@ $("execute-sequence").addEventListener("click",async function(){
  }catch(e){panel.dataset.state="rejected";panel.replaceChildren(node("p","error","No se ha podido ejecutar la secuencia: "+(e.message||String(e))))}
 });
 $("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage)draw(lastModel,lastPackage.result,$("which").value)});
-$("export").addEventListener("click",function(){if(!lastPackage)return;var blob=new Blob([JSON.stringify(lastPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
+$("export").addEventListener("click",function(){if(!lastPackage)return;var trace=$("sequence-trace")._trace||null,exportPackage=Object.assign({},lastPackage,{concrete_execution_trace:trace});var blob=new Blob([JSON.stringify(exportPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
 </script></body></html>
