@@ -21,7 +21,7 @@ const assert = require("node:assert/strict");
 
     // OCR image upload accepts supported formats, rejects unsupported/oversized files, and keeps OCR failures recoverable.
     const imageInput = page.locator("#image-file");
-    await imageInput.setInputFiles({ name: "reference.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jW5sAAAAASUVORK5CYII=", "base64") });
+    await imageInput.setInputFiles({ name: "reference.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR4nGP8//8/AwMDEwMDAwMDAwAkBgMB/DXemwAAAABJRU5ErkJggg==", "base64") });
     await page.locator("#image-preview:not([hidden])").waitFor();
     assert.match(await page.locator("#image-status").innerText(), /OCR opcional|OCR/i);
     assert.equal(await page.locator("#clear-image").isEnabled(), true);
