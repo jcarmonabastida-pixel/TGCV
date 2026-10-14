@@ -261,6 +261,55 @@ const { chromium } = require("playwright");
     };
   }
 
+  function classifyGraphCandidate(edges) {
+    const classifications = edges.map(classifyEdgeCandidate);
+    const reviewCount = classifications.filter(edge => edge.review_required).length;
+    const ambiguousCount = classifications.filter(edge => edge.structural_status === "ambiguous").length;
+    const unresolvedCount = classifications.filter(edge => edge.structural_status === "unresolved").length;
+    const directionUnresolvedCount = classifications.filter(edge => edge.direction_status === "unresolved").length;
+    let status = "review_ready";
+    if (edges.length === 0 || unresolvedCount > 0) status = "incomplete";
+    else if (reviewCount > 0 || ambiguousCount > 0) status = "needs_review";
+    return {
+      graph_status: status,
+      edge_count: classifications.length,
+      review_required_edge_count: reviewCount,
+      ambiguous_edge_count: ambiguousCount,
+      unresolved_edge_count: unresolvedCount,
+      direction_unresolved_edge_count: directionUnresolvedCount,
+      can_auto_accept: false,
+      edge_classifications: classifications
+    };
+  }
+
+  function testGraphCandidateClassification() {
+    const detected = {topology_status:"detected",direction_status:"resolved",direction:"A_to_B",confidence:0.99,review_required:false};
+    const unresolvedDirection = {topology_status:"detected",direction_status:"unresolved",confidence:0.98,review_required:false};
+    const ambiguous = {topology_status:"ambiguous",direction_status:"unresolved",confidence:0.55,review_required:true};
+    const unresolved = {topology_status:"unresolved",direction_status:"unresolved",confidence:null,review_required:true};
+    const ready = classifyGraphCandidate([detected]);
+    assert.equal(ready.graph_status,"review_ready",
+      "GRAPH-REVIEW-STATE-001: graph with resolved candidates should be marked ready for human review");
+    assert.equal(ready.can_auto_accept,false,
+      "GRAPH-REVIEW-STATE-001: classification must never automatically accept a graph");
+    const directionUnknown = classifyGraphCandidate([unresolvedDirection]);
+    assert.equal(directionUnknown.graph_status,"needs_review",
+      "GRAPH-REVIEW-STATE-001: unresolved direction must route graph to review");
+    assert.equal(directionUnknown.direction_unresolved_edge_count,1);
+    const needsReview = classifyGraphCandidate([detected,ambiguous]);
+    assert.equal(needsReview.graph_status,"needs_review");
+    assert.equal(needsReview.review_required_edge_count,1);
+    assert.equal(needsReview.ambiguous_edge_count,1);
+    const incomplete = classifyGraphCandidate([detected,unresolved]);
+    assert.equal(incomplete.graph_status,"incomplete",
+      "GRAPH-REVIEW-STATE-001: unresolved structural edge must mark graph incomplete");
+    assert.equal(incomplete.unresolved_edge_count,1);
+    assert.equal(classifyGraphCandidate([]).graph_status,"incomplete",
+      "GRAPH-REVIEW-STATE-001: empty graph must not be marked ready");
+    process.stdout.write("GRAPH-REVIEW-STATE-001: graph states combine edge uncertainty without auto-acceptance.\\n");
+  }
+  testGraphCandidateClassification();
+
   function classifyEdgeCandidate(edge) {
     const direction = edge.direction_status === "resolved" && edge.direction
       ? "resolved" : "unresolved";
@@ -1102,6 +1151,16 @@ const { chromium } = require("playwright");
       node_metrics: "asserted independently by geometric matching",
       direction: "not scored; inference disabled" },
     fixture_level_interpretation: "Review each fixture independently; aggregate precision/recall must not be used to declare every individual graph correct.",
+    graph_review_policy: {
+      graph_status_values: ["review_ready","needs_review","incomplete"],
+      automatic_acceptance: false,
+      meaning: {
+        review_ready: "No unresolved structural edge or candidate review flag remains; human confirmation is still required.",
+        needs_review: "At least one edge is ambiguous, direction-unresolved, low-confidence, or otherwise flagged for review.",
+        incomplete: "The graph has no edges or contains at least one structurally unresolved edge."
+      },
+      note: "Provisional workflow policy; not a validated quality guarantee."
+    },
     edge_candidate_review_policy: {
       structural_status_values: ["detected","ambiguous","unresolved"],
       direction_status_values: ["resolved","unresolved"],
