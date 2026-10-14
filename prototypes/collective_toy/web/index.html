@@ -134,7 +134,7 @@ async function assessImportedBrowserPackage(pkg){
  assert(pkg.package_version==="collective-toy-browser-run-001","Esquema de paquete desconocido o no compatible.");
  assert(pkg.input&&typeof pkg.input==="object"&&!Array.isArray(pkg.input),"Falta input o no es un objeto.");
  assert(pkg.result&&typeof pkg.result==="object"&&!Array.isArray(pkg.result),"Falta result o no es un objeto.");
- assert(Object.keys(pkg.result).every(function(k){return ["engine_version","schema_version","model_id","rule_profile","validation","scenario_results","comparisons_to_baseline","scientific_interpretation","input_sha256","result_sha256"].includes(k)}),"El resultado contiene campos desconocidos.");
+ assert(Object.keys(pkg.result).every(function(k){return ["engine_version","schema_version","model_id","rule_profile","validation","scenario_results","comparisons_to_baseline","delta_reach","scientific_interpretation","input_sha256","result_sha256"].includes(k)}),"El resultado contiene campos desconocidos.");
  assert(typeof pkg.package_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.package_sha256),"package_sha256 ausente o malformado.");
  assert(typeof pkg.result.engine_version==="string"&&pkg.result.engine_version.trim().length>0,"Declaración de versión del motor ausente o malformada.");
  assert(pkg.result.schema_version===pkg.input.schema_version,"La versión de esquema del resultado no coincide con la entrada.");
