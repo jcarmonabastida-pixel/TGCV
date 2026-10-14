@@ -127,6 +127,11 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     interpretation: "Unresolved directions are not counted as correct. This report measures only matched candidate edges; unmatched candidates are reported separately. Synthetic fixtures are not adjudicated."
   };
   assert.equal(correct + inverted, proposed, "direction outcome accounting must balance");
+  const clearArrowReferenceEdges = annotations.images.flatMap(fixture => fixture.edges || [])
+    .filter(edge => edge.direction === "directed" && edge.arrow_status === "clear").length;
+  assert.ok(clearArrowReferenceEdges > 0, "reference evaluation requires at least one explicitly clear directed edge");
+  assert.ok(proposed > 0,
+    "direction evaluation is inconclusive: all explicitly clear directed raster edges remained unresolved; do not report a green direction-evaluation gate");
   assert.equal(rows.length, annotations.images.length, "all annotated fixtures must be evaluated");
   process.stdout.write(JSON.stringify(report, null, 2) + "\\n");
 })().catch(error => {
