@@ -167,24 +167,24 @@ class TemporalSequentialityContractTests(unittest.TestCase):
 
     def test_12_multiple_temporal_prerequisites_must_all_have_occurred(self) -> None:
         model = base_model()
-        model["transitions"].append({"id": "t_return", "source": "B", "target": "A"})
+        model["transitions"].append({"id": "t_second_prep", "source": "B", "target": "B"})
         model["relations"].append({
-            "id": "r_use_requires_bypass",
+            "id": "r_use_requires_second_prep",
             "type": "requires_prior_execution",
             "transition_id": "t_use",
-            "requires_transition_id": "t_bypass",
+            "requires_transition_id": "t_second_prep",
         })
         execution = engine.execute_sequence(
             model, scenario_id="baseline",
-            transition_ids=["t_prep", "t_return", "t_to_c", "t_use"],
+            transition_ids=["t_prep", "t_to_c", "t_use"],
         )
         self.assertEqual("BLOCKED", execution["status"])
         self.assertEqual("temporal_prerequisite_not_satisfied", execution["blocked_step"]["reason"])
-        self.assertEqual("t_bypass", execution["blocked_step"]["required_transition_id"])
+        self.assertEqual("t_second_prep", execution["blocked_step"]["required_transition_id"])
 
         valid = engine.execute_sequence(
             model, scenario_id="baseline",
-            transition_ids=["t_prep", "t_return", "t_bypass", "t_use"],
+            transition_ids=["t_prep", "t_second_prep", "t_to_c", "t_use"],
         )
         self.assertEqual("PASS", valid["status"])
 
