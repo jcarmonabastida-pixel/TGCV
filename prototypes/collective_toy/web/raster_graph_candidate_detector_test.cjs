@@ -261,6 +261,55 @@ const { chromium } = require("playwright");
     };
   }
 
+  function classifyEdgeCandidate(edge) {
+    const direction = edge.direction_status === "resolved" && edge.direction
+      ? "resolved" : "unresolved";
+    const confidence = Number.isFinite(edge.confidence) ? edge.confidence : null;
+    const reviewRequired = edge.review_required !== false ||
+      edge.topology_status === "ambiguous" || direction === "unresolved" ||
+      confidence === null || confidence < 0.9;
+    let structuralStatus = "detected";
+    if (edge.topology_status === "ambiguous") structuralStatus = "ambiguous";
+    else if (edge.topology_status === "unresolved") structuralStatus = "unresolved";
+    return {
+      structural_status: structuralStatus,
+      direction_status: direction,
+      confidence,
+      review_required: reviewRequired
+    };
+  }
+
+  function testEdgeCandidateClassification() {
+    const certainUndirected = classifyEdgeCandidate({
+      topology_status:"detected", direction_status:"unresolved",
+      direction:"undetermined", confidence:0.97, review_required:false
+    });
+    assert.equal(certainUndirected.structural_status,"detected");
+    assert.equal(certainUndirected.direction_status,"unresolved");
+    assert.equal(certainUndirected.review_required,true,
+      "EDGE-UNCERTAINTY-CLASSIFICATION-001: unresolved direction must remain reviewable");
+    const ambiguous = classifyEdgeCandidate({
+      topology_status:"ambiguous", direction_status:"unresolved",
+      confidence:0.55, review_required:true
+    });
+    assert.equal(ambiguous.structural_status,"ambiguous");
+    assert.equal(ambiguous.review_required,true);
+    const missingConfidence = classifyEdgeCandidate({
+      topology_status:"detected", direction_status:"unresolved"
+    });
+    assert.equal(missingConfidence.confidence,null);
+    assert.equal(missingConfidence.review_required,true,
+      "EDGE-UNCERTAINTY-CLASSIFICATION-001: missing confidence must not be treated as certainty");
+    const directed = classifyEdgeCandidate({
+      topology_status:"detected", direction_status:"resolved",
+      direction:"A_to_B", confidence:0.99, review_required:false
+    });
+    assert.equal(directed.direction_status,"resolved");
+    assert.equal(directed.review_required,false);
+    process.stdout.write("EDGE-UNCERTAINTY-CLASSIFICATION-001: structural ambiguity, direction, confidence, and review remain separate.\\n");
+  }
+  testEdgeCandidateClassification();
+
   function reportEdgeGeometry(name, result, endpointTolerance = 14) {
     const reference = referenceByFile.get(name);
     const endpoints = edge => [edge.polyline[0], edge.polyline[edge.polyline.length - 1]];
@@ -1053,6 +1102,13 @@ const { chromium } = require("playwright");
       node_metrics: "asserted independently by geometric matching",
       direction: "not scored; inference disabled" },
     fixture_level_interpretation: "Review each fixture independently; aggregate precision/recall must not be used to declare every individual graph correct.",
+    edge_candidate_review_policy: {
+      structural_status_values: ["detected","ambiguous","unresolved"],
+      direction_status_values: ["resolved","unresolved"],
+      missing_confidence: "treated as unknown; requires review",
+      review_rule: "ambiguous structure, unresolved direction, missing confidence, or confidence below 0.9 requires review",
+      note: "Confidence here is candidate metadata, not a calibrated probability unless separately validated."
+    },
     fixtures: evaluatedStructuralFixtures
   };
   // Validate per-fixture accounting and ensure aggregate topology metrics
