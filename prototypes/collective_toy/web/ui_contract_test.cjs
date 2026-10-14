@@ -425,10 +425,10 @@ const assert = require("node:assert/strict");
       "FC-2: execution trace must record ordered concrete steps");
 
     // FC-3: the reproducibility package must contain the exact concrete trace, not only the explored paths.
-    const downloadPromise = page.waitForEvent("download");
+    const traceDownloadPromise = page.waitForEvent("download");
     await page.locator("#export").click();
-    const download = await downloadPromise;
-    const downloadedPath = await download.path();
+    const traceDownload = await traceDownloadPromise;
+    const downloadedPath = await traceDownload.path();
     assert.ok(downloadedPath, "FC-3: evidence export must produce a downloadable JSON file");
     const evidencePackage = JSON.parse(fs.readFileSync(downloadedPath, "utf8"));
     assert.ok(evidencePackage.concrete_execution_trace,
