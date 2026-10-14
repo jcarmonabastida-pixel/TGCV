@@ -110,8 +110,15 @@ def main():
     tess_rows = {row["id"]: row for row in tess["results"]}
     paddle_rows = {row["id"]: row for row in paddle["results"]}
     expected_ids = ["OCR-TXT-001", "OCR-TXT-002", "OCR-TXT-003", "OCR-TXT-004", "OCR-TXT-005", "OCR-GRAPH-006", "OCR-GRAPH-007", "OCR-GRAPH-008", "OCR-GRAPH-009", "OCR-GRAPH-010"]
-    if sorted(tess_rows) != expected_ids or sorted(paddle_rows) != expected_ids:
+    if set(tess_rows) != set(expected_ids) or set(paddle_rows) != set(expected_ids):
         raise RuntimeError("Fixture IDs missing, duplicated, or unexpected; paired comparison blocked.")
+    registered_legacy_hashes = {
+        "OCR-TXT-001": "c672956c286e71431c58eeee8addd5da2623e47399446f4d3eec38524b35843f",
+        "OCR-TXT-002": "efc1a617ef2da5e4cd5ca1a2d29348bbd55f784277eeadb7dbe4bb970881ad23",
+        "OCR-TXT-003": "2f6d9bbc27fca2b0cbb76e897a511226b84e6c0bc5ffd6a33c6eb70cd0b852e",
+        "OCR-TXT-004": "6cc862bde9e8237ccef423891c76e54da849d5298229c8b7edb042f60d3efa3c",
+        "OCR-TXT-005": "c39871a41970f4f434854a49cf235aab058e3c0bdfbed21a81ecbc4a6ccdd659",
+    }
 
     paired = []
     for fixture_id in expected_ids:
@@ -119,6 +126,8 @@ def main():
         p = engine_row("PaddleOCR", paddle_rows[fixture_id], "paddle")
         if not t["fixture_sha256"] or t["fixture_sha256"] != p["fixture_sha256"]:
             raise RuntimeError("Byte-identical fixture hash mismatch for " + fixture_id)
+        if fixture_id in registered_legacy_hashes and t["fixture_sha256"] != registered_legacy_hashes[fixture_id]:
+            raise RuntimeError("Registered legacy fixture hash changed for " + fixture_id)
         if t["expected"] != p["expected"]:
             raise RuntimeError("Expected text differs between engines for " + fixture_id)
         paired.append({
