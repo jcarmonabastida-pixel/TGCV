@@ -239,18 +239,21 @@ async function detectGraphCandidates(imagePath, options = {}) {
         return { ratio: tested ? supported / tested : 0, supported, tested };
       };
       const arrowheadEvidence = (tip, inwardUnit) => {
-        // Diagnostic only: look for two short dark arms near a possible tip.
-        // This evidence does not yet resolve edge direction.
+        // Look for a paired V-shaped arrowhead: both arms should contain dark
+        // pixels along rays that diverge from the edge axis. Count each arm
+        // separately so a single straight connector cannot score as a head.
         const scores = [];
         for (const angle of [25, 35, 45, 55, 65]) {
           const rad = angle * Math.PI / 180;
-          let hits = 0, tested = 0;
-          for (const sign of [-1, 1]) {
+          const armHits = [0, 0];
+          const armTested = [0, 0];
+          for (let side = 0; side < 2; side++) {
+            const sign = side === 0 ? -1 : 1;
             const ux = inwardUnit[0] * Math.cos(rad) - sign * inwardUnit[1] * Math.sin(rad);
             const uy = inwardUnit[1] * Math.cos(rad) + sign * inwardUnit[0] * Math.sin(rad);
-            for (let d = 3; d <= 9; d++) {
+            for (let d = 3; d <= 13; d++) {
               const x = Math.round(tip[0] + ux * d), y = Math.round(tip[1] + uy * d);
-              tested++;
+              armTested[side]++;
               let found = false;
               for (let oy = -1; oy <= 1 && !found; oy++) {
                 for (let ox = -1; ox <= 1; ox++) {
@@ -260,11 +263,19 @@ async function detectGraphCandidates(imagePath, options = {}) {
                   }
                 }
               }
-              if (found) hits++;
+              if (found) armHits[side]++;
             }
           }
-          scores.push({ angle_degrees: angle, support_ratio: tested ? hits / tested : 0,
-            supported_samples: hits, tested_samples: tested });
+          const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
+          scores.push({
+            angle_degrees: angle,
+            support_ratio: Math.min(...armRatios),
+            bilateral_support_ratio: Number(Math.min(...armRatios).toFixed(4)),
+            left_support_ratio: Number(armRatios[0].toFixed(4)),
+            right_support_ratio: Number(armRatios[1].toFixed(4)),
+            supported_samples: armHits.reduce((sum, n) => sum + n, 0),
+            tested_samples: armTested.reduce((sum, n) => sum + n, 0)
+          });
         }
         return scores.sort((a, b) => b.support_ratio - a.support_ratio)[0];
       };
