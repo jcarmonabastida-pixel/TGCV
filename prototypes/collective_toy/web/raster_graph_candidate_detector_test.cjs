@@ -1082,6 +1082,18 @@ const { chromium } = require("playwright");
   assert.equal(evaluationReport.topology_aggregate.false_negatives,
     topologySum("topology_edge_false_negatives"),
     "REPORT-AGGREGATE-CONSISTENCY-001: aggregate FN must equal per-fixture FN sum");
+  const aggregate = evaluationReport.topology_aggregate;
+  const aggregateCandidates = aggregate.true_positives + aggregate.false_positives;
+  const aggregateReferences = aggregate.true_positives + aggregate.false_negatives;
+  assert.ok(Number.isFinite(aggregate.precision) && aggregate.precision >= 0 && aggregate.precision <= 1,
+    "REPORT-AGGREGATE-CONSISTENCY-001: aggregate precision must be finite and bounded");
+  assert.ok(Number.isFinite(aggregate.recall) && aggregate.recall >= 0 && aggregate.recall <= 1,
+    "REPORT-AGGREGATE-CONSISTENCY-001: aggregate recall must be finite and bounded");
+  assert.ok(Math.abs(aggregate.precision - (aggregateCandidates ? aggregate.true_positives / aggregateCandidates : 0)) < 1e-12,
+    "REPORT-AGGREGATE-CONSISTENCY-001: aggregate precision must agree with aggregate counts");
+  assert.ok(Math.abs(aggregate.recall - (aggregateReferences ? aggregate.true_positives / aggregateReferences : 0)) < 1e-12,
+    "REPORT-AGGREGATE-CONSISTENCY-001: aggregate recall must agree with aggregate counts");
+
   process.stdout.write("REPORT-AGGREGATE-CONSISTENCY-001: per-fixture and aggregate topology metrics reconcile.\\n");
   const reportPath = path.join(tempRoot, "raster_graph_structural_evaluation.json");
   fs.writeFileSync(reportPath, JSON.stringify(evaluationReport, null, 2) + "\\n");
