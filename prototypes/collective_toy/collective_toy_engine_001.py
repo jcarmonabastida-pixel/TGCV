@@ -537,9 +537,12 @@ def run_model(model: dict[str, Any]) -> dict[str, Any]:
         "validation": "PASS",
         "scenario_results": results,
         "comparisons_to_baseline": comparisons,
-        "delta_reach": delta_reach,
         "scientific_interpretation": "NONE: synthetic model execution only; no empirical or TGCV validity claim.",
     }
+    # Provenance hashes identify exact source serializations; they must not redefine
+    # semantic result identity. Keep the legacy output shape when no intervention exists.
+    if delta_reach:
+        output["delta_reach"] = delta_reach
     return {
         **output,
         "input_sha256": sha256_json(model),
