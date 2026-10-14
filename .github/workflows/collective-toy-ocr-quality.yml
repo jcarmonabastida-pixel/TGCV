@@ -8,6 +8,7 @@ on:
       - development/collective-toy-ocr-preprocessing-001-20261013
       - development/collective-toy-ocr-topology-first-001-20261013
       - development/collective-toy-visual-graph-detector-001-20261013
+      - development/collective-toy-ocr-init-order-fix-001-20261014
     paths:
       - 'prototypes/collective_toy/web/ocr_quality_evaluation.html'
       - 'prototypes/collective_toy/web/index.html'
