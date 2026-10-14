@@ -475,6 +475,9 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#graph-review-warnings").innerText(), /sin dirección explícita/i);
     assert.match(await page.locator("#graph-review-summary-text").innerText(), /Direcciones pendientes: 1/);
     assert.match(await page.locator("#transition-review-list").innerText(), /dirección sin resolver/i);
+    // Conversion creates a reviewed draft; graph paths exist only after explicit execution.
+    await page.locator("#run").click();
+    await page.locator('#graph path[data-transition-id="t_import_1"]').waitFor({ state: "attached" });
     assert.equal(await page.locator('#graph path[data-transition-id="t_import_1"]').getAttribute("marker-end"), "none");
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
