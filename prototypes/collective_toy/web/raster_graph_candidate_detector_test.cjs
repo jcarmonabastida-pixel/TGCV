@@ -1017,6 +1017,35 @@ const { chromium } = require("playwright");
         direction_scored: false
       };
     })(),
+    reader_summary: {
+      title: "Informe de reconstrucción estructural del grafo",
+      scope: "Evaluación con fixtures sintéticos; no constituye validación con imágenes reales.",
+      node_detection: "Se informa por separado cuántos nodos propuestos coinciden geométricamente con la referencia.",
+      edge_topology: "Una conexión solo cuenta como acierto si enlaza el par correcto de nodos; los recuentos por sí solos no bastan.",
+      direction: "No inferida por la geometría; permanece sin resolver.",
+      required_user_action: "Revisar y confirmar los candidatos antes de aceptar el grafo.",
+      limitations: [
+        "Las correspondencias de nodos se basan en proximidad geométrica y tolerancias de fixture.",
+        "Las métricas agregadas describen únicamente el conjunto de fixtures incluidos en esta ejecución.",
+        "Los resultados sintéticos no demuestran rendimiento general en diagramas reales."
+      ]
+    },
+    topology_aggregate: (() => {
+      const sum = (key) => evaluatedStructuralFixtures.reduce((total, item) => total + (Number.isFinite(item[key]) ? item[key] : 0), 0);
+      const truePositives = sum("topology_edge_true_positives");
+      const falsePositives = sum("topology_edge_false_positives");
+      const falseNegatives = sum("topology_edge_false_negatives");
+      const candidates = truePositives + falsePositives;
+      const references = truePositives + falseNegatives;
+      return {
+        true_positives: truePositives,
+        false_positives: falsePositives,
+        false_negatives: falseNegatives,
+        precision: candidates ? truePositives / candidates : 0,
+        recall: references ? truePositives / references : 0,
+        interpretation: "Undirected endpoint identity; direction is not scored."
+      };
+    })(),
     metrics: { edge_precision: "matched candidate edges / all proposed candidate edges",
       edge_recall: "matched reference edges / all reference edges",
       node_metrics: "asserted independently by geometric matching",
