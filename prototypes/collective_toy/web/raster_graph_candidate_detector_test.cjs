@@ -1052,6 +1052,7 @@ const { chromium } = require("playwright");
       edge_recall: "matched reference edges / all reference edges",
       node_metrics: "asserted independently by geometric matching",
       direction: "not scored; inference disabled" },
+    fixture_level_interpretation: "Review each fixture independently; aggregate precision/recall must not be used to declare every individual graph correct.",
     fixtures: evaluatedStructuralFixtures
   };
   // Validate per-fixture accounting and ensure aggregate topology metrics
@@ -1072,6 +1073,18 @@ const { chromium } = require("playwright");
     assert.ok(Math.abs(fixture.topology_edge_recall - expectedRecall) < 1e-12,
       fixture.fixture + ": topology recall must agree with counts");
   }
+  assert.ok(evaluationReport.fixtures.length > 0,
+    "REPORT-PER-FIXTURE-VISIBILITY-001: report must retain individual fixture results");
+  for (const fixture of evaluationReport.fixtures) {
+    for (const field of ["topology_edge_true_positives","topology_edge_false_positives",
+      "topology_edge_false_negatives","topology_edge_precision","topology_edge_recall"]) {
+      assert.ok(Number.isFinite(fixture[field]),
+        "REPORT-PER-FIXTURE-VISIBILITY-001: " + fixture.fixture + " must expose finite " + field);
+    }
+  }
+  assert.match(evaluationReport.fixture_level_interpretation, /each fixture independently/i,
+    "REPORT-PER-FIXTURE-VISIBILITY-001: report must warn against using aggregate metrics as per-graph guarantees");
+  process.stdout.write("REPORT-PER-FIXTURE-VISIBILITY-001: per-fixture topology metrics remain visible beside aggregates.\\n");
   const topologySum = key => evaluatedStructuralFixtures.reduce((total,item)=>total+item[key],0);
   assert.equal(evaluationReport.topology_aggregate.true_positives,
     topologySum("topology_edge_true_positives"),
