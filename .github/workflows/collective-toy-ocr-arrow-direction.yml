@@ -1,0 +1,28 @@
+name: Collective Toy OCR arrow direction resolver
+
+on:
+  push:
+    branches:
+      - development/collective-toy-ocr-arrow-direction-001-20261014
+    paths:
+      - 'prototypes/collective_toy/web/arrow_direction_resolver.cjs'
+      - 'prototypes/collective_toy/web/arrow_direction_resolver_test.cjs'
+      - '.github/workflows/collective-toy-ocr-arrow-direction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  arrow-direction-resolver:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test conservative arrow direction resolver
+        working-directory: prototypes/collective_toy/web
+        run: node arrow_direction_resolver_test.cjs
