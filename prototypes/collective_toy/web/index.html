@@ -122,7 +122,7 @@ async function assessImportedBrowserPackage(pkg){
  assert(pkg.result.scenario_results&&typeof pkg.result.scenario_results==="object"&&!Array.isArray(pkg.result.scenario_results),"scenario_results ausente o malformado.");
  assert(pkg.result.comparisons_to_baseline&&typeof pkg.result.comparisons_to_baseline==="object"&&!Array.isArray(pkg.result.comparisons_to_baseline),"comparisons_to_baseline ausente o malformado.");
  assert(typeof pkg.result.scientific_interpretation==="string","scientific_interpretation ausente o malformado.");
- var allowedScenarioKeys=["scenario_id","disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories","truncated","exploration_bounds","relation_effects","effective_disabled_transitions"];
+ var allowedScenarioKeys=["scenario_id","disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories","truncated","exploration_bounds","relation_effects","effective_disabled_transitions","blocked_temporal_steps"];
  var inputScenarioIds=pkg.input&&Array.isArray(pkg.input.scenarios)?pkg.input.scenarios.map(function(s){return s&&s.id}):[];
  assert(inputScenarioIds.length>0,"La entrada debe declarar escenarios antes de validar resultados.");
  assert(Object.keys(pkg.result.scenario_results).every(function(id){return inputScenarioIds.includes(id)}),"scenario_results contiene escenarios que no están en la entrada.");
@@ -135,6 +135,17 @@ async function assessImportedBrowserPackage(pkg){
   assert(sr.scenario_id===id,"scenario_id no coincide con la clave "+id+".");
   ["disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories"].forEach(function(k){assert(Array.isArray(sr[k]),"El campo "+k+" del escenario "+id+" debe ser una lista.")});
   ["disabled_transitions","enabled_transitions_at_initial_state","reachable_states"].forEach(function(k){assert(sr[k].every(function(v){return typeof v==="string"&&v.length>0}),"Todos los elementos de "+k+" en "+id+" deben ser cadenas no vacías.")});
+  if(Object.prototype.hasOwnProperty.call(sr,"blocked_temporal_steps")){
+   assert(Array.isArray(sr.blocked_temporal_steps),"blocked_temporal_steps del escenario "+id+" debe ser una lista.");
+   sr.blocked_temporal_steps.forEach(function(step,index){
+    assert(step&&typeof step==="object"&&!Array.isArray(step),"blocked_temporal_steps["+index+"] debe ser un objeto.");
+    assert(Object.keys(step).every(function(k){return ["at_state","transition_id","missing_prerequisites","prior_transitions"].includes(k)}),"blocked_temporal_steps["+index+"] contiene campos desconocidos.");
+    assert(typeof step.at_state==="string"&&inputStateIds.has(step.at_state),"at_state de blocked_temporal_steps["+index+"] no corresponde a un estado de entrada.");
+    assert(typeof step.transition_id==="string"&&inputTransitions.has(step.transition_id),"transition_id de blocked_temporal_steps["+index+"] no corresponde a una transición de entrada.");
+    ["missing_prerequisites","prior_transitions"].forEach(function(k){assert(Array.isArray(step[k])&&step[k].every(function(v){return typeof v==="string"&&inputTransitions.has(v)}),k+" de blocked_temporal_steps["+index+"] debe contener IDs de transiciones de entrada.")});
+    assert(step.missing_prerequisites.length>0,"blocked_temporal_steps["+index+"] debe identificar al menos un prerrequisito ausente.");
+   });
+  }
   if(inputStateIds.has(pkg.input.initial_state))assert(sr.trajectories.every(function(path){return Array.isArray(path)&&path.length>0&&path.every(function(step,i){if(!(step&&typeof step==="object"&&!Array.isArray(step)&&typeof step.state==="string"&&inputStateIds.has(step.state)&&(!Object.prototype.hasOwnProperty.call(step,"transition")||typeof step.transition==="string")&&Object.keys(step).every(function(k){return k==="state"||k==="transition"})))return false;if(i===0)return !Object.prototype.hasOwnProperty.call(step,"transition")&&step.state===pkg.input.initial_state;var edge=inputTransitions.get(step.transition),prev=path[i-1];return !!edge&&edge.source===prev.state&&edge.target===step.state})}),"trajectories del escenario "+id+" debe contener rutas válidas y transiciones coherentes con la entrada.");
   assert(typeof sr.truncated==="boolean","truncated del escenario "+id+" debe ser booleano.");
   assert(sr.exploration_bounds&&typeof sr.exploration_bounds==="object"&&!Array.isArray(sr.exploration_bounds),"exploration_bounds del escenario "+id+" debe ser un objeto.");
