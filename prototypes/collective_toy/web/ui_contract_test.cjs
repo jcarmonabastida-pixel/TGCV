@@ -388,6 +388,25 @@ const assert = require("node:assert/strict");
     assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /solo hay una conexión/i);
     await orderPage.close();
 
+    // FC-1 contract-first probe: browser UI must expose a separately versioned temporal profile.
+    // This assertion is expected to fail until the browser engine implements profile 3.
+    await page.getByRole("button", { name: "Cargar ejemplo" }).click();
+    const profileOptions = await page.locator("#profile-editor option").evaluateAll(options => options.map(option => ({ value: option.value, label: option.textContent.trim() })));
+    assert.ok(profileOptions.some(option => option.value === "3" && /temporal|prerrequisito/i.test(option.label)),
+      "FC-1: browser UI must expose profile 3 for temporal prerequisites without overloading profile 2");
+    const temporalModel = structuredClone(await page.locator("#model").inputValue().then(JSON.parse));
+    temporalModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
+    temporalModel.relations = [{
+      id: "r_temporal_1",
+      type: "requires_prior_execution",
+      transition_id: "t_cd",
+      requires_transition_id: "t_ab"
+    }];
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(temporalModel, null, 2));
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    assert.match(await page.locator("#status").innerText(), /perfil.*no compatible|tipo de relación no compatible/i,
+      "FC-1 baseline probe must demonstrate profile 3 is not yet operational in browser engine");
+
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
