@@ -543,10 +543,14 @@ def run_model(model: dict[str, Any]) -> dict[str, Any]:
     # semantic result identity. Keep the legacy output shape when no intervention exists.
     if delta_reach:
         output["delta_reach"] = delta_reach
+    # Match the browser runtime: provenance-bearing delta_reach is verified
+    # as a separate artifact and is excluded from semantic result identity.
+    semantic_output = dict(output)
+    semantic_output.pop("delta_reach", None)
     return {
         **output,
         "input_sha256": sha256_json(model),
-        "result_sha256": sha256_json(output),
+        "result_sha256": sha256_json(semantic_output),
     }
 
 
