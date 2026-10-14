@@ -179,6 +179,46 @@ const { chromium } = require("playwright");
   }
   testNodeMetricMatching();
 
+  function testTopologyReportRejectsWrongEndpoints() {
+    const fixtureName = "SYN-TOPOLOGY-WRONG-ENDPOINTS-001";
+    referenceByFile.set(fixtureName, {
+      nodes: [
+        {id:"A",center:[40,40]}, {id:"B",center:[100,40]},
+        {id:"C",center:[160,40]}, {id:"D",center:[220,40]}
+      ],
+      edges: [
+        {id:"AB",source_node_id:"A",target_node_id:"B"},
+        {id:"BC",source_node_id:"B",target_node_id:"C"}
+      ]
+    });
+    const candidate = {
+      nodes: [
+        {id:"a",center:[40,40]}, {id:"b",center:[100,40]},
+        {id:"c",center:[160,40]}, {id:"d",center:[220,40]}
+      ],
+      // Same node and edge counts as the reference, deliberately wrong pairs.
+      edge_candidates: [
+        {source_candidate_node_id:"a",target_candidate_node_id:"c"},
+        {source_candidate_node_id:"b",target_candidate_node_id:"d"}
+      ]
+    };
+    const metrics = reportTopologyByNodeIdentity(fixtureName,candidate);
+    assert.equal(metrics.matched_node_identities,4,
+      "TOPOLOGY-REPORT-WRONG-ENDPOINTS-001: all four node identities should match geometrically");
+    assert.equal(metrics.topology_edge_true_positives,0,
+      "TOPOLOGY-REPORT-WRONG-ENDPOINTS-001: wrong endpoint pairs must yield zero true positives");
+    assert.equal(metrics.topology_edge_false_positives,2,
+      "TOPOLOGY-REPORT-WRONG-ENDPOINTS-001: both incorrect candidate edges must be false positives");
+    assert.equal(metrics.topology_edge_false_negatives,2,
+      "TOPOLOGY-REPORT-WRONG-ENDPOINTS-001: both reference edges must be reported missing");
+    assert.equal(metrics.topology_edge_precision,0,
+      "TOPOLOGY-REPORT-WRONG-ENDPOINTS-001: precision must be zero for entirely wrong topology");
+    assert.equal(metrics.topology_edge_recall,0,
+      "TOPOLOGY-REPORT-WRONG-ENDPOINTS-001: recall must be zero when no reference edge is recovered");
+    referenceByFile.delete(fixtureName);
+    process.stdout.write("TOPOLOGY-REPORT-WRONG-ENDPOINTS-001: report detects wrong topology despite matching counts.\\n");
+  }
+
   function reportTopologyByNodeIdentity(name, result) {
     const reference = referenceByFile.get(name);
     const unmatchedRefs = new Set(reference.nodes.map(node => node.id));
@@ -275,6 +315,8 @@ const { chromium } = require("playwright");
       truePositives: matchedCandidates };
   }
   const evaluatedStructuralFixtures = [];
+  testTopologyReportRejectsWrongEndpoints();
+
   function assertNodeGeometry(name, result) {
     const reference = referenceByFile.get(name);
     assert.ok(reference, name + ": reference annotation must exist");
