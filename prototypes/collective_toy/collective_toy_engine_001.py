@@ -543,14 +543,12 @@ def run_model(model: dict[str, Any]) -> dict[str, Any]:
     # semantic result identity. Keep the legacy output shape when no intervention exists.
     if delta_reach:
         output["delta_reach"] = delta_reach
-    # Match the browser runtime: provenance-bearing delta_reach is verified
-    # as a separate artifact and is excluded from semantic result identity.
-    semantic_output = dict(output)
-    semantic_output.pop("delta_reach", None)
+    # result_sha256 protects the exact exported result payload (minus its own
+    # hash and input hash). Source provenance remains covered by this integrity hash.
     return {
         **output,
         "input_sha256": sha256_json(model),
-        "result_sha256": sha256_json(semantic_output),
+        "result_sha256": sha256_json(output),
     }
 
 
@@ -597,9 +595,6 @@ def verify_exported_package_integrity(package: dict[str, Any]) -> bool:
     result_payload = dict(result)
     del result_payload["input_sha256"]
     expected_result_sha256 = result_payload.pop("result_sha256")
-    # delta_reach carries source provenance and has its own hashes; semantic result
-    # identity deliberately excludes it, matching run_model() and the browser runtime.
-    result_payload.pop("delta_reach", None)
     if sha256_json(result_payload) != expected_result_sha256:
         raise ModelValidationError("Exported result SHA-256 does not verify")
     return True
