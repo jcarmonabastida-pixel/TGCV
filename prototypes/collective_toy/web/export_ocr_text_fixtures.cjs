@@ -21,10 +21,10 @@ const crypto = require("node:crypto");
       { id: "OCR-TXT-004", lines: ["Nodo_01", "Nodo-02", "T1: A -> B"] },
       { id: "OCR-TXT-005", lines: ["Sistema adaptable", "Transformación accesible", "Relación causal?"] },
       { id: "OCR-GRAPH-006", lines: ["A1", "A7", "AI", "Al"] },
-      { id: "OCR-GRAPH-007", lines: ["Inicio", "T1: A -> B", "Fin"] },
+      { id: "OCR-GRAPH-007", lines: ["T1: A -> B", "Inicio", "Fin"] },
       { id: "OCR-GRAPH-008", lines: ["A", "D", "C", "B"] },
       { id: "OCR-GRAPH-009", lines: ["N1", "T1: activa", "N2"] },
-      { id: "OCR-GRAPH-010", lines: ["Nodo_01", "x > 0", "Nodo_02"] }
+      { id: "OCR-GRAPH-010", lines: ["x > 0", "Nodo_01", "Nodo_02"] }
     ];
     const manifest = { schema: "tgcv-ocr-fixture-manifest-v1", fixture_count: expected.length, fixtures: [] };
     for (let i = 0; i < expected.length; i++) {
