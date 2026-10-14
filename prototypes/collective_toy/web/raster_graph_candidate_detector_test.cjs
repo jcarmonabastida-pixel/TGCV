@@ -1052,6 +1052,35 @@ const { chromium } = require("playwright");
       direction: "not scored; inference disabled" },
     fixtures: evaluatedStructuralFixtures
   };
+  // Validate per-fixture accounting and ensure aggregate topology metrics
+  // are exactly the sums of the individual fixture metrics.
+  for (const fixture of evaluatedStructuralFixtures) {
+    assert.equal(fixture.topology_edge_true_positives + fixture.topology_edge_false_positives,
+      fixture.edge_candidates,
+      fixture.fixture + ": topology TP + FP must equal proposed edge candidates");
+    assert.equal(fixture.topology_edge_true_positives + fixture.topology_edge_false_negatives,
+      fixture.reference_edges,
+      fixture.fixture + ": topology TP + FN must equal reference edges");
+    const expectedPrecision = fixture.edge_candidates
+      ? fixture.topology_edge_true_positives / fixture.edge_candidates : 0;
+    const expectedRecall = fixture.reference_edges
+      ? fixture.topology_edge_true_positives / fixture.reference_edges : 0;
+    assert.ok(Math.abs(fixture.topology_edge_precision - expectedPrecision) < 1e-12,
+      fixture.fixture + ": topology precision must agree with counts");
+    assert.ok(Math.abs(fixture.topology_edge_recall - expectedRecall) < 1e-12,
+      fixture.fixture + ": topology recall must agree with counts");
+  }
+  const topologySum = key => evaluatedStructuralFixtures.reduce((total,item)=>total+item[key],0);
+  assert.equal(evaluationReport.topology_aggregate.true_positives,
+    topologySum("topology_edge_true_positives"),
+    "REPORT-AGGREGATE-CONSISTENCY-001: aggregate TP must equal per-fixture TP sum");
+  assert.equal(evaluationReport.topology_aggregate.false_positives,
+    topologySum("topology_edge_false_positives"),
+    "REPORT-AGGREGATE-CONSISTENCY-001: aggregate FP must equal per-fixture FP sum");
+  assert.equal(evaluationReport.topology_aggregate.false_negatives,
+    topologySum("topology_edge_false_negatives"),
+    "REPORT-AGGREGATE-CONSISTENCY-001: aggregate FN must equal per-fixture FN sum");
+  process.stdout.write("REPORT-AGGREGATE-CONSISTENCY-001: per-fixture and aggregate topology metrics reconcile.\\n");
   const reportPath = path.join(tempRoot, "raster_graph_structural_evaluation.json");
   fs.writeFileSync(reportPath, JSON.stringify(evaluationReport, null, 2) + "\\n");
   process.stdout.write("STRUCTURAL-EVALUATION: " + JSON.stringify(evaluationReport) + "\\n");
