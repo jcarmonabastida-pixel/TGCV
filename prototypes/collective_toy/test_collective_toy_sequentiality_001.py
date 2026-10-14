@@ -116,7 +116,7 @@ class TemporalSequentialityContractTests(unittest.TestCase):
             ["t_prep", "t_to_c", "t_use"],
             [step["transition_id"] for step in execution["steps"]],
         )
-        self.assertEqual(["A", "B", "C", "D"], [step["state_after"] for step in execution["steps"]])
+        self.assertEqual(["B", "C", "D"], [step["state_after"] for step in execution["steps"]])
 
     def test_07_execution_record_retains_configuration_snapshot(self) -> None:
         model = base_model()
