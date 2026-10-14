@@ -1,6 +1,6 @@
 # Temporal sequentiality profile — implementation record 001
 
-- **Status:** SYNTHETIC CONTRACT SUITE PASS on tested source commit `a40878c75faf9087386d4dde77ecc0e64615c7fc`; not a scientific validation.
+- **Status:** SYNTHETIC CONTRACT SUITE PASS on tested source commit `ba1a35d7ebbaec2598ac600d49178bf2ec5e5ee4`; not a scientific validation.
 - **Date:** 2026-10-14.
 - **Implementation origin:** `prototype/sequentiality-test-first-001-20261014`.
 - **Verification branch:** `prototype/sequentiality-contract-tests-001-20261014`.
@@ -23,9 +23,9 @@ The historical `finite_deterministic_graph` and `relation_guarded_graph` profile
 - The current execution trace is an in-memory returned record. A persistent run-history store and UX integration remain future work.
 - This implementation is an initial minimum profile; repeated/cyclic prerequisite semantics beyond “required transition occurred at least once earlier in this path” remain limited to the stated rule.
 - No performance optimization was attempted.
-- Synthetic CI verified in GitHub Actions run [38610656773](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38610656773), source commit `a40878c75faf9087386d4dde77ecc0e64615c7fc`.
-- The workflow passed Python compilation, all 96 historical engine tests, all 11 temporal sequentiality contract tests, and a clean-source-archive replay of both suites.
-- The same suites were replayed from a clean source archive; log evidence records 96 historical tests and 11 temporal contract tests as passing.
+- Synthetic CI verified in GitHub Actions run [38615368685](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38615368685), source commit `a40878c75faf9087386d4dde77ecc0e64615c7fc`.
+- The workflow passed Python compilation, all 96 historical engine tests, all 14 temporal sequentiality contract tests, and a clean-source-archive replay of both suites.
+- The same suites were replayed from a clean source archive; log evidence records 96 historical tests and 14 temporal contract tests as passing.
 - This evidence validates only the tested synthetic implementation and contract cases. It does not validate TGCV scientific claims, empirical inference, or the structural detector.
 
 ## Next gate
