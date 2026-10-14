@@ -742,6 +742,7 @@ const { chromium } = require("playwright");
   assert.equal(arrowResult.status, "experimental-candidates-only");
   assert.ok(arrowResult.nodes.length >= 2, "SYN-ARROW-CLEAR-001: both nodes should be detected");
   assert.ok(arrowResult.edge_candidates.length >= 1, "SYN-ARROW-CLEAR-001: arrowed connection should be proposed");
+  process.stdout.write("SYN-ARROW-CLEAR-001 diagnostics: " + JSON.stringify(arrowResult.edge_candidates.map(edge => ({ id: edge.id, source: edge.source_candidate_node_id, target: edge.target_candidate_node_id, direction_status: edge.direction_status, direction: edge.direction, review_required: edge.review_required, arrowhead_evidence: edge.arrowhead_evidence }))) + "\\n");
   assert.ok(arrowResult.edge_candidates.every(edge =>
     edge.direction_status === "unresolved" && edge.direction === "undetermined" && edge.review_required === true),
     "SYN-ARROW-CLEAR-001: direction remains provisional until validated classification is implemented");
