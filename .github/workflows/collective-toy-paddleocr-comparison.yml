@@ -37,7 +37,7 @@ jobs:
       - name: Install Chromium
         working-directory: prototypes/collective_toy/web
         run: npx playwright install --with-deps chromium
-      - name: Export the five fixture PNGs and exact SHA-256 manifest
+      - name: Export ten baseline/adversarial fixture PNGs and exact SHA-256 manifest
         working-directory: prototypes/collective_toy/web
         run: node export_ocr_text_fixtures.cjs
       - name: Run Tesseract.js baseline against the same fixture bytes
