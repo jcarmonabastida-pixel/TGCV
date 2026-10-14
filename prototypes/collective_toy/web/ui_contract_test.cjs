@@ -442,8 +442,9 @@ const assert = require("node:assert/strict");
     await page.locator("#package-file").setInputFiles(downloadedPath);
     await page.locator("#assess-package").click();
     await page.waitForFunction(() => /replay-verified|rejected|inspect-only\/replay-unavailable/.test(document.querySelector("#package-assessment")?.dataset.state || ""), { timeout: 10000 });
+    const replayAssessment = await page.locator("#package-assessment").innerText();
     assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
-      "FC-3: a freshly exported package must pass independent import/replay");
+      "FC-3: a freshly exported package must pass independent import/replay; assessor reported: " + replayAssessment);
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "FC-3: replay result must explicitly report a matching independently recomputed result");
 
