@@ -165,6 +165,55 @@ class TemporalSequentialityContractTests(unittest.TestCase):
         self.assertNotIn("t_use", baseline["effective_disabled_transitions"])
         self.assertIn("t_use", intervention["effective_disabled_transitions"])
 
+    def test_12_multiple_temporal_prerequisites_must_all_have_occurred(self) -> None:
+        model = base_model()
+        model["transitions"].append({"id": "t_return", "source": "B", "target": "A"})
+        model["relations"].append({
+            "id": "r_use_requires_bypass",
+            "type": "requires_prior_execution",
+            "transition_id": "t_use",
+            "requires_transition_id": "t_bypass",
+        })
+        execution = engine.execute_sequence(
+            model, scenario_id="baseline",
+            transition_ids=["t_prep", "t_return", "t_to_c", "t_use"],
+        )
+        self.assertEqual("BLOCKED", execution["status"])
+        self.assertEqual("temporal_prerequisite_not_satisfied", execution["blocked_step"]["reason"])
+        self.assertEqual("t_bypass", execution["blocked_step"]["required_transition_id"])
+
+        valid = engine.execute_sequence(
+            model, scenario_id="baseline",
+            transition_ids=["t_prep", "t_return", "t_bypass", "t_use"],
+        )
+        self.assertEqual("PASS", valid["status"])
+
+    def test_13_prerequisite_history_survives_a_cycle_in_the_same_sequence(self) -> None:
+        model = base_model()
+        model["transitions"].append({"id": "t_return", "source": "B", "target": "A"})
+        execution = engine.execute_sequence(
+            model, scenario_id="baseline",
+            transition_ids=["t_prep", "t_return", "t_prep", "t_to_c", "t_use"],
+        )
+        self.assertEqual("PASS", execution["status"])
+        self.assertEqual("D", execution["final_state"])
+        self.assertEqual(
+            ["t_prep", "t_return", "t_prep", "t_to_c", "t_use"],
+            [step["transition_id"] for step in execution["steps"]],
+        )
+
+    def test_14_unknown_transition_blocks_at_exact_position(self) -> None:
+        execution = engine.execute_sequence(
+            base_model(), scenario_id="baseline",
+            transition_ids=["t_prep", "t_missing", "t_to_c"],
+        )
+        self.assertEqual("BLOCKED", execution["status"])
+        self.assertEqual(2, execution["blocked_step"]["index"])
+        self.assertEqual("t_missing", execution["blocked_step"]["transition_id"])
+        self.assertEqual("unknown_transition", execution["blocked_step"]["reason"])
+        self.assertEqual(["t_prep"], [step["transition_id"] for step in execution["steps"]])
+        self.assertEqual("B", execution["final_state"])
+
     def test_11_unknown_rule_profile_fails_closed(self) -> None:
         model = base_model()
         model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "999"}
