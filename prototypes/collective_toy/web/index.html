@@ -152,13 +152,18 @@ async function assessImportedBrowserPackage(pkg){
   assert(Object.keys(sr.exploration_bounds).every(function(k){return ["max_depth","max_trajectories"].includes(k)}),"exploration_bounds contiene campos desconocidos.");
   assert(Number.isInteger(sr.exploration_bounds.max_depth)&&sr.exploration_bounds.max_depth>=0&&Number.isInteger(sr.exploration_bounds.max_trajectories)&&sr.exploration_bounds.max_trajectories>=0,"exploration_bounds debe declarar límites enteros no negativos.");
    var guardedProfile=canonical(pkg.input.rule_profile)===canonical({type:"relation_guarded_graph",version:"1"});
+   var temporalProfile=canonical(pkg.input.rule_profile)===canonical({type:"temporal_prerequisite_graph",version:"1"});
    if(guardedProfile){
     var expectedEffects=(pkg.input.relations||[]).slice().sort(function(a,b){return a.id.localeCompare(b.id)}).map(function(r){var blocked=sr.disabled_transitions.includes(r.requires_transition_id);return {relation_id:r.id,type:r.type,transition_id:r.transition_id,requires_transition_id:r.requires_transition_id,status:blocked?"BLOCKED":"APPLIED",reason:blocked?"prerequisite_transition_disabled":"prerequisite_transition_not_disabled"}});
     assert(Array.isArray(sr.relation_effects)&&canonical(sr.relation_effects)===canonical(expectedEffects),"relation_effects no coincide con los efectos que determinan las relaciones de entrada y las deshabilitaciones explícitas.");
     var expectedEffectiveDisabled=Array.from(new Set(sr.disabled_transitions.concat(expectedEffects.filter(function(v){return v.status==="BLOCKED"}).map(function(v){return v.transition_id})))).sort();
     assert(Array.isArray(sr.effective_disabled_transitions)&&canonical(sr.effective_disabled_transitions)===canonical(expectedEffectiveDisabled),"effective_disabled_transitions no coincide con las relaciones aplicadas.");
+   }else if(temporalProfile){
+    var expectedTemporalEffects=(pkg.input.relations||[]).slice().sort(function(a,b){return a.id.localeCompare(b.id)}).map(function(r){return {relation_id:r.id,type:r.type,transition_id:r.transition_id,requires_transition_id:r.requires_transition_id,status:"ENFORCED_TEMPORALLY",reason:"prerequisite_must_occur_earlier_in_same_trajectory"}});
+    assert(Array.isArray(sr.relation_effects)&&canonical(sr.relation_effects)===canonical(expectedTemporalEffects),"relation_effects no coincide con los prerrequisitos temporales de la secuencia.");
+    assert(!Object.prototype.hasOwnProperty.call(sr,"effective_disabled_transitions"),"El perfil temporal no debe convertir los prerrequisitos de secuencia en deshabilitaciones globales.");
    }else{
-    assert(!Object.prototype.hasOwnProperty.call(sr,"relation_effects")&&!Object.prototype.hasOwnProperty.call(sr,"effective_disabled_transitions"),"Un perfil sin guardas no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas.");
+    assert(!Object.prototype.hasOwnProperty.call(sr,"relation_effects")&&!Object.prototype.hasOwnProperty.call(sr,"effective_disabled_transitions"),"Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas.");
    }
  });
  var allowedComparisonKeys=["intervention","enabled_at_initial_added","enabled_at_initial_removed","reachable_states_added","reachable_states_removed","trajectories_added","trajectories_removed","truncated"];
