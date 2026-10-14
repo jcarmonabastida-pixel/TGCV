@@ -38,3 +38,6 @@ jobs:
       - name: Test resolver integrated with raster graph candidates
         working-directory: prototypes/collective_toy/web
         run: node raster_graph_candidate_detector_test.cjs
+      - name: Evaluate proposed directions against annotated fixtures
+        working-directory: prototypes/collective_toy/web
+        run: node arrow_direction_reference_evaluation.cjs
