@@ -1,5 +1,6 @@
 "use strict";
 
+const crypto = require("node:crypto");
 const fs = require("node:fs");
 const path = require("node:path");
 const assert = require("node:assert/strict");
@@ -9,6 +10,24 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
   const root = path.join(__dirname, "fixtures", "ocr_graph_images");
   const annotations = JSON.parse(fs.readFileSync(
     path.join(root, "synthetic_graph_image_annotations_v0.1.json"), "utf8"));
+  for (const fixture of annotations.images) {
+    const imagePath = path.join(root, fixture.file);
+    assert.ok(fs.existsSync(imagePath), `OCR-FIXTURE-INTEGRITY-001: missing image ${fixture.file}`);
+    const actualSha256 = crypto.createHash("sha256").update(fs.readFileSync(imagePath)).digest("hex");
+    assert.equal(actualSha256, fixture.sha256,
+      `OCR-FIXTURE-INTEGRITY-001: SHA-256 mismatch for ${fixture.image_id}`);
+    assert.ok(Array.isArray(fixture.nodes) && fixture.nodes.length > 0,
+      `OCR-FIXTURE-INTEGRITY-001: missing node annotations for ${fixture.image_id}`);
+    assert.ok(Array.isArray(fixture.edges) && fixture.edges.length > 0,
+      `OCR-FIXTURE-INTEGRITY-001: missing edge annotations for ${fixture.image_id}`);
+    for (const edge of fixture.edges) {
+      assert.ok(["clear", "ambiguous", "absent"].includes(edge.arrow_status),
+        `OCR-FIXTURE-INTEGRITY-001: invalid arrow_status in ${fixture.image_id}/${edge.id}`);
+      assert.ok(Array.isArray(edge.polyline) && edge.polyline.length >= 2,
+        `OCR-FIXTURE-INTEGRITY-001: invalid centerline in ${fixture.image_id}/${edge.id}`);
+    }
+  }
+  process.stdout.write(`OCR-FIXTURE-INTEGRITY-001: verified ${annotations.images.length} image hashes and annotation contracts.\\n`);
   const rows = [];
   let matched = 0, proposed = 0, correct = 0, inverted = 0, unresolved = 0, unmatched = 0;
 
