@@ -72,8 +72,7 @@ def class_errors(reference, actual):
 
 def identifier_lines(expected):
     return [line for line in expected.split("\n")
-            if re.fullmatch(r"[A-Z]", line) or line.startswith("Nodo_")
-            or line.startswith("Nodo-") or re.match(r"^T\d+:", line)]
+            if re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]*", line) or re.match(r"^T\d+:", line)]
 
 
 def engine_row(name, row, engine):
@@ -106,11 +105,11 @@ def engine_row(name, row, engine):
 def main():
     tess = json.loads(TESSERACT_PATH.read_text(encoding="utf-8"))
     paddle = json.loads(PADDLE_PATH.read_text(encoding="utf-8"))
-    if tess.get("fixture_count") != 5 or paddle.get("fixture_count") != 5:
-        raise RuntimeError("Paired comparison requires exactly the five registered fixture IDs.")
+    if tess.get("fixture_count") != 10 or paddle.get("fixture_count") != 10:
+        raise RuntimeError("Paired comparison requires five baseline and five adversarial graph-text fixtures.")
     tess_rows = {row["id"]: row for row in tess["results"]}
     paddle_rows = {row["id"]: row for row in paddle["results"]}
-    expected_ids = ["OCR-TXT-001", "OCR-TXT-002", "OCR-TXT-003", "OCR-TXT-004", "OCR-TXT-005"]
+    expected_ids = ["OCR-TXT-001", "OCR-TXT-002", "OCR-TXT-003", "OCR-TXT-004", "OCR-TXT-005", "OCR-GRAPH-006", "OCR-GRAPH-007", "OCR-GRAPH-008", "OCR-GRAPH-009", "OCR-GRAPH-010"]
     if sorted(tess_rows) != expected_ids or sorted(paddle_rows) != expected_ids:
         raise RuntimeError("Fixture IDs missing, duplicated, or unexpected; paired comparison blocked.")
 
@@ -159,7 +158,7 @@ def main():
         "character_error_classes": ["identifier", "symbol", "punctuation", "whitespace", "other"],
         "provisional_thresholds": {"mean_cer_max": 0.05, "mean_wer_max": 0.10, "all_significant_identifiers_exact": True},
         "engines": per_engine, "acceptance_gate_pass": False,
-        "acceptance_gate_note": "Kept closed: five legacy fixtures are insufficient; expanded adversarial fixtures and exact identifier verification must pass a separately governed gate.",
+        "acceptance_gate_note": "Kept closed: this is the first expanded ten-fixture comparison; thresholds, exact labels, arrows, edge-adjacent text and small-text cases require review before a separately governed acceptance gate.",
         "paired_results": paired
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
