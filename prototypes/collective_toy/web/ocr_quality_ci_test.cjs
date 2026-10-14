@@ -85,7 +85,7 @@ const assert = require("node:assert/strict");
     }
     const reportPath = path.join(outputDir, "tgcv-ocr-quality-result.json");
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + "\n", "utf8");
-    console.log(JSON.stringify({ status, reportPath, mean_cer: report.mean_cer, mean_wer: report.mean_wer, gate_pass: report.gate_pass, cases: report.results.map(({ id, cer, wer, first_call_elapsed_ms, warm_elapsed_ms_mean, identifier_exact }) => ({ id, cer, wer, first_call_elapsed_ms, warm_elapsed_ms_mean, identifier_exact })) }, null, 2));
+    console.log(JSON.stringify({ status, reportPath, mean_cer: report.mean_cer, mean_wer: report.mean_wer, gate_pass: report.gate_pass, cases: report.results.map(({ id, cer, wer, first_call_elapsed_ms, warm_elapsed_ms_mean, identifier_exact }) => ({ id, cer, wer, first_call_elapsed_ms, warm_elapsed_ms_mean, identifier_exact })), diagnostics: { notation_spacing: report.notation_spacing_diagnostic, segmentation: report.segmentation_diagnostics, preprocessing: report.preprocessing_diagnostics, targeted_characters: report.targeted_character_diagnostics } }, null, 2));
   } finally {
     await browser.close();
   }
