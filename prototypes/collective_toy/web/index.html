@@ -131,7 +131,7 @@ async function assessImportedBrowserPackage(pkg){
  Object.keys(pkg.result.scenario_results).forEach(function(id){
   var sr=pkg.result.scenario_results[id];
   assert(sr&&typeof sr==="object"&&!Array.isArray(sr),"El resultado del escenario "+id+" debe ser un objeto.");
-  assert(Object.keys(sr).every(function(k){return allowedScenarioKeys.includes(k)}),"El resultado del escenario "+id+" contiene campos desconocidos.");
+  assert(Object.keys(sr).every(function(k){return allowedScenarioKeys.includes(k)}),"El resultado del escenario "+id+" contiene campos desconocidos: "+Object.keys(sr).filter(function(k){return !allowedScenarioKeys.includes(k)}).join(", ")+".");
   assert(sr.scenario_id===id,"scenario_id no coincide con la clave "+id+".");
   ["disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories"].forEach(function(k){assert(Array.isArray(sr[k]),"El campo "+k+" del escenario "+id+" debe ser una lista.")});
   ["disabled_transitions","enabled_transitions_at_initial_state","reachable_states"].forEach(function(k){assert(sr[k].every(function(v){return typeof v==="string"&&v.length>0}),"Todos los elementos de "+k+" en "+id+" deben ser cadenas no vacías.")});
