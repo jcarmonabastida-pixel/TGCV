@@ -10,6 +10,8 @@ const assert = require("node:assert/strict");
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage();
+    page.on("pageerror", error => console.error("[ui-contract pageerror]", error.stack || error.message));
+    page.on("console", message => { if (message.type() === "error") console.error("[ui-contract console]", message.text()); });
     await page.goto("file://" + htmlPath);
 
     // Keep the MVP's state-local graph semantics and non-scientific boundary visible.
@@ -22,7 +24,28 @@ const assert = require("node:assert/strict");
     // OCR image upload accepts supported formats, rejects unsupported/oversized files, and keeps OCR failures recoverable.
     const imageInput = page.locator("#image-file");
     await imageInput.setInputFiles({ name: "reference.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR4nGP8//8/AwMDEwMDAwMDAwAkBgMB/DXemwAAAABJRU5ErkJggg==", "base64") });
-    await page.locator("#image-preview:not([hidden])").waitFor();
+    try {
+      await page.locator("#image-preview:not([hidden])").waitFor({ timeout: 5000 });
+    } catch (error) {
+      const diagnostics = await page.evaluate(() => {
+        const preview = document.querySelector("#image-preview");
+        const input = document.querySelector("#image-file");
+        return {
+          imageStatus: document.querySelector("#image-status")?.textContent,
+          previewHidden: preview?.hidden,
+          previewDisplay: preview ? getComputedStyle(preview).display : null,
+          previewSrcPresent: Boolean(preview?.getAttribute("src")),
+          previewComplete: preview?.complete,
+          previewNaturalWidth: preview?.naturalWidth,
+          previewNaturalHeight: preview?.naturalHeight,
+          clearImageDisabled: document.querySelector("#clear-image")?.disabled,
+          runOcrDisabled: document.querySelector("#run-ocr")?.disabled,
+          fileInputValueAfterChange: input?.value
+        };
+      });
+      console.error("[ui-contract image-preview diagnostics]", JSON.stringify(diagnostics));
+      throw error;
+    }
     assert.match(await page.locator("#image-status").innerText(), /OCR opcional|OCR/i);
     assert.equal(await page.locator("#clear-image").isEnabled(), true);
     assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), true);
