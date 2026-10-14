@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TGCV — Evaluación reproducible de OCR</title>
+<style>
+body{font:16px/1.5 system-ui,sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;color:#202124}h1{font-size:1.7rem}button{padding:.65rem .9rem;margin:.25rem}button:disabled{opacity:.5}table{border-collapse:collapse;width:100%;margin-top:1rem}th,td{border:1px solid #bbb;padding:.5rem;text-align:left;vertical-align:top}pre{white-space:pre-wrap;overflow-wrap:anywhere}.muted{color:#555}.fixture{display:grid;grid-template-columns:minmax(220px,1fr) minmax(220px,1fr);gap:1rem;margin:.8rem 0}.fixture canvas{width:100%;height:auto;border:1px solid #ddd}.error{color:#a11}.ok{color:#176b35}@media(max-width:650px){.fixture{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<h1>Evaluación reproducible de OCR para el Juguete Colectivo</h1>
+<p>Esta página ejecuta Tesseract.js real en el navegador sobre imágenes sintéticas generadas localmente. No mide detección de flechas ni valida grafos. La primera ejecución necesita conexión para cargar Tesseract.js y los datos lingüísticos desde CDN.</p>
+<p><strong>Privacidad:</strong> las imágenes de prueba se generan en esta página y se procesan en el navegador; no se suben a un servicio OCR. Esta página no demuestra funcionamiento sin conexión.</p>
+<p class="muted">Configuración inicial: Tesseract.js 5, idiomas spa+eng, fuente sans-serif oscura sobre fondo blanco, fixtures 1200 × 360. Los resultados dependen de navegador, plataforma y versión real de los recursos cargados; conserva el JSON para reproducibilidad.</p>
+<div><button id="generate">Generar imágenes de referencia</button><button id="run" disabled>Ejecutar OCR real</button><button id="export" disabled>Exportar resultados JSON</button></div>
+<p id="status" role="status" aria-live="polite">Listo para generar las imágenes.</p>
+<div id="fixtures"></div>
+<div id="results"></div>
+<script>
+(function(){
+"use strict";
+const cases=[
+{id:"OCR-TXT-001",lines:["Estado A","Estado B","Transición"],difficulty:"Etiquetas españolas claras"},
+{id:"OCR-TXT-002",lines:["A","B","C","Inicio: A"],difficulty:"Etiquetas cortas y puntuación"},
+{id:"OCR-TXT-003",lines:["Estado inicial","Estado final","Condición: x > 0"],difficulty:"Acentos y símbolos"},
+{id:"OCR-TXT-004",lines:["Nodo_01","Nodo-02","T1: A -> B"],difficulty:"Guion bajo, guion y notación"},
+{id:"OCR-TXT-005",lines:["Sistema adaptable","Transformación accesible","Relación causal?"],difficulty:"Etiquetas largas"}
+];
+let fixtures=[], results=[];
+const $=id=>document.getElementById(id);
+function expected(c){return c.lines.join("\n")}
+function render(c){
+ const canvas=document.createElement("canvas");canvas.width=1200;canvas.height=360;
+ const ctx=canvas.getContext("2d",{willReadFrequently:false});ctx.fillStyle="#fff";ctx.fillRect(0,0,1200,360);
+ ctx.fillStyle="#111";ctx.font="42px Arial, sans-serif";ctx.textBaseline="top";
+ const lineHeight=68;const total=c.lines.length*lineHeight;let y=Math.max(24,(360-total)/2);
+ for(const line of c.lines){ctx.fillText(line,48,y);y+=lineHeight}
+ return canvas;
+}
+function normalize(s){return String(s||"").replace(/\r\n?/g,"\n").replace(/[ \t]+/g," ").replace(/ *\n */g,"\n").trim()}
+function distance(a,b){
+ const prev=Array.from({length:b.length+1},(_,i)=>i);
+ for(let i=1;i<=a.length;i++){let diagonal=prev[0];prev[0]=i;for(let j=1;j<=b.length;j++){const old=prev[j];prev[j]=Math.min(prev[j]+1,prev[j-1]+1,diagonal+(a[i-1]===b[j-1]?0:1));diagonal=old}}
+ return prev[b.length]
+}
+function rate(reference,actual){return reference.length?distance(reference,actual)/reference.length:(actual.length?1:0)}
+function wordTokens(s){return String(s||"").split(/\s+/).filter(Boolean)}
+function validateMetrics(){
+ const checks=[
+  {name:"CER idéntico",pass:rate("abc","abc")===0},
+  {name:"CER una sustitución de tres caracteres",pass:Math.abs(rate("abc","axc")-1/3)<1e-12},
+  {name:"CER una inserción",pass:Math.abs(rate("abc","abxc")-1/3)<1e-12},
+  {name:"WER una sustitución de tres palabras",pass:Math.abs(rate(["uno","dos","tres"],["uno","X","tres"])-1/3)<1e-12},
+  {name:"WER una eliminación de palabra",pass:Math.abs(rate(["uno","dos","tres"],["uno","tres"])-1/3)<1e-12},
+  {name:"Tokenización WER separa espacios y saltos de línea",pass:JSON.stringify(wordTokens("Nodo_01\n\nNodo-02\nT1: A -> B"))===JSON.stringify(["Nodo_01","Nodo-02","T1:","A","->","B"])},
+  {name:"Referencia vacía y resultado vacío",pass:rate("","")===0},
+  {name:"Referencia vacía y resultado no vacío",pass:rate("","x")===1},
+  {name:"Normalización conserva acentos y puntuación",pass:normalize("  Transición: x > 0\r\n") === "Transición: x > 0"}
+ ];
+ return {passed:checks.filter(x=>x.pass).length,total:checks.length,checks};
+}
+async function sha256(blob){const bytes=await blob.arrayBuffer();const digest=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,"0")).join("")}
+function renderFixtures(){
+ fixtures=[];results=[];$("results").replaceChildren();const root=$("fixtures");root.replaceChildren();
+ for(const c of cases){const canvas=render(c);const wrap=document.createElement("section");wrap.className="fixture";const left=document.createElement("div"),right=document.createElement("div");const heading=document.createElement("h3");heading.textContent=c.id+" — "+c.difficulty;left.append(heading);const p=document.createElement("p");p.textContent="Texto esperado: "+expected(c);left.append(p);right.append(canvas);wrap.append(left,right);root.append(wrap);fixtures.push({id:c.id,lines:c.lines,difficulty:c.difficulty,canvas,expected:expected(c)})}
+ $("run").disabled=metricStartupCheck.passed!==metricStartupCheck.total;$("export").disabled=true;$("status").className=metricStartupCheck.passed===metricStartupCheck.total?"ok":"error";$("status").textContent=metricStartupCheck.passed===metricStartupCheck.total?"Generadas "+fixtures.length+" imágenes sintéticas. Métricas verificadas: "+metricStartupCheck.passed+"/"+metricStartupCheck.total+". Pulsa «Ejecutar OCR real» para medirlas.":"Autocomprobación CER/WER fallida ("+metricStartupCheck.passed+"/"+metricStartupCheck.total+"). No se ejecutará OCR.";
+}
+async function loadTesseract(){
+ if(window.Tesseract)return;
+ await new Promise((resolve,reject)=>{const script=document.createElement("script");script.src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";script.onload=resolve;script.onerror=()=>reject(new Error("No se pudo cargar Tesseract.js desde CDN."));document.head.append(script)});
+ if(!window.Tesseract||typeof window.Tesseract.createWorker!=="function")throw new Error("Tesseract.js no ofrece la API esperada.");
+}
+async function run(){
+ $("run").disabled=true;$("generate").disabled=true;results=[];
+ try{
+  $("status").className="";$("status").textContent="Cargando Tesseract.js y los idiomas…";
+  await loadTesseract();
+  const initStart=performance.now();
+  const worker=await window.Tesseract.createWorker("spa+eng",1,{logger:m=>{if(m&&m.status)$("status").textContent="OCR: "+m.status+(typeof m.progress==="number"?" "+Math.round(m.progress*100)+"%":"")}});
+  const worker_init_ms=Math.round(performance.now()-initStart);
+  const segmentation_diagnostics=[];
+  try{
+   for(const f of fixtures){
+    const blob=await new Promise(resolve=>f.canvas.toBlob(resolve,"image/png"));if(!blob)throw new Error("No se pudo generar PNG para "+f.id);
+    const hash=await sha256(blob);
+    const firstStart=performance.now();const firstOut=await worker.recognize(blob);const firstElapsed=Math.round(performance.now()-firstStart);
+    const samples=[];
+    for(let repeat=0;repeat<3;repeat++){
+     const started=performance.now();const out=await worker.recognize(blob);samples.push({elapsed_ms:Math.round(performance.now()-started),text:String(out.data.text||"")});
+    }
+    const actual=samples[samples.length-1].text;const ref=normalize(f.expected),got=normalize(actual);
+    const cer=rate(ref,got),refWords=wordTokens(ref),gotWords=wordTokens(got),wer=rate(refWords,gotWords);
+    results.push({id:f.id,difficulty:f.difficulty,fixture_sha256:hash,expected:f.expected,first_recognized_raw:String(firstOut.data.text||""),first_call_elapsed_ms:firstElapsed,recognized_raw:actual,expected_normalized:ref,recognized_normalized:got,cer:Number(cer.toFixed(6)),wer:Number(wer.toFixed(6)),warm_elapsed_ms_samples:samples.map(s=>s.elapsed_ms),warm_elapsed_ms_mean:Math.round(samples.reduce((sum,s)=>sum+s.elapsed_ms,0)/samples.length),identifier_exact:f.lines.filter(x=>/^(Estado|Nodo|A$|B$|C$)/.test(x)).every(x=>got.includes(x))});
+   }
+   const diagnosticFixture=fixtures.find(f=>f.id==="OCR-TXT-004");
+   if(!diagnosticFixture)throw new Error("No existe el fixture OCR-TXT-004 para comparar segmentación.");
+   const psmModes=[
+    {name:"single_block",value:window.Tesseract.PSM.SINGLE_BLOCK},
+    {name:"sparse_text",value:window.Tesseract.PSM.SPARSE_TEXT}
+   ];
+   for(const mode of psmModes){
+    if(typeof mode.value==="undefined")throw new Error("Tesseract.js no expone el modo PSM requerido: "+mode.name);
+    await worker.setParameters({tessedit_pageseg_mode:mode.value});
+    const started=performance.now();const out=await worker.recognize(diagnosticFixture.canvas);const elapsed=Math.round(performance.now()-started);
+    const raw=String(out.data.text||""),ref=normalize(diagnosticFixture.expected),got=normalize(raw);
+    segmentation_diagnostics.push({id:diagnosticFixture.id,mode:mode.name,recognized_raw:raw,recognized_normalized:got,cer:Number(rate(ref,got).toFixed(6)),wer:Number(rate(wordTokens(ref),wordTokens(got)).toFixed(6)),elapsed_ms:elapsed});
+   }
+   await worker.setParameters({tessedit_pageseg_mode:window.Tesseract.PSM.AUTO});
+  }finally{await worker.terminate()}
+  const meanCER=results.reduce((s,r)=>s+r.cer,0)/results.length,meanWER=results.reduce((s,r)=>s+r.wer,0)/results.length;
+  const metricValidation=validateMetrics();if(metricValidation.passed!==metricValidation.total)throw new Error("Falló la autocomprobación CER/WER: "+JSON.stringify(metricValidation));
+  const report={schema:"tgcv-ocr-quality-result-v1",metric_validation:metricValidation,created_at:new Date().toISOString(),engine:"Tesseract.js 5 (CDN, runtime-reported API)",languages:"spa+eng",worker_init_ms, first_call_and_warm_protocol:"one first recognition per fixture followed by three repeated recognitions; first_call_elapsed_ms is reported separately", warm_repeats_per_fixture:3,normalization:"Normalize CRLF, collapse horizontal whitespace, trim line-edge whitespace; preserve accents and punctuation",browser:navigator.userAgent,fixture_count:fixtures.length,mean_cer:Number(meanCER.toFixed(6)),mean_wer:Number(meanWER.toFixed(6)),provisional_gate:{mean_cer_max:0.05,mean_wer_max:0.10,all_identifiers_exact:true},gate_pass:meanCER<=.05&&meanWER<=.10&&results.every(r=>r.identifier_exact),segmentation_diagnostics,results};
+  showResults(report);window.__tgcvOcrReport=report;$("export").disabled=false;$("status").className="ok";$("status").textContent="OCR real completado. Revisa cada caso; los resultados no evalúan flechas ni conectividad.";
+ }catch(e){$("status").className="error";$("status").textContent="Evaluación fallida: "+(e&&e.message?e.message:String(e))}finally{$("run").disabled=fixtures.length===0;$("generate").disabled=false}
+}
+function showResults(report){
+ const root=$("results");root.replaceChildren();const h=document.createElement("h2");h.textContent="Resultados";root.append(h);const validation=document.createElement("p");validation.textContent="Autocomprobación de métricas: "+report.metric_validation.passed+"/"+report.metric_validation.total+" casos PASS";root.append(validation);
+ const summary=document.createElement("p");summary.textContent="Inicialización del worker: "+report.worker_init_ms+" ms · CER medio: "+(report.mean_cer*100).toFixed(2)+"% · WER medio: "+(report.mean_wer*100).toFixed(2)+"% · Umbral provisional: "+(report.gate_pass?"CUMPLIDO":"NO CUMPLIDO");root.append(summary);
+ const diagnosticHeading=document.createElement("h3");diagnosticHeading.textContent="Diagnóstico de segmentación (OCR-TXT-004; no altera el gate principal)";root.append(diagnosticHeading);
+ const diagnosticList=document.createElement("ul");for(const d of report.segmentation_diagnostics||[]){const li=document.createElement("li");li.textContent=d.mode+": CER "+(d.cer*100).toFixed(2)+"%, WER "+(d.wer*100).toFixed(2)+"%, "+d.elapsed_ms+" ms; texto: "+d.recognized_normalized;diagnosticList.append(li)}root.append(diagnosticList);
+ const table=document.createElement("table");table.innerHTML="<thead><tr><th>Caso</th><th>CER</th><th>WER</th><th>Media caliente (ms)</th><th>Identificadores</th><th>Texto reconocido</th></tr></thead>";const body=document.createElement("tbody");
+ for(const r of report.results){const tr=document.createElement("tr");for(const value of [r.id,(r.cer*100).toFixed(2)+"%",(r.wer*100).toFixed(2)+"%",String(r.warm_elapsed_ms_mean)+" (3 rep.)",r.identifier_exact?"Exactos":"Revisar",r.recognized_raw]){const td=document.createElement("td");td.textContent=value;tr.append(td)}body.append(tr)}table.append(body);root.append(table);
+}
+$("generate").addEventListener("click",renderFixtures);$("run").addEventListener("click",run);$("export").addEventListener("click",()=>{if(!window.__tgcvOcrReport)return;const blob=new Blob([JSON.stringify(window.__tgcvOcrReport,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="tgcv-ocr-quality-result.json";a.click();URL.revokeObjectURL(url)});
+const metricStartupCheck=validateMetrics();
+if(metricStartupCheck.passed!==metricStartupCheck.total){
+ $("run").disabled=true;$("status").className="error";$("status").textContent="Autocomprobación CER/WER fallida ("+metricStartupCheck.passed+"/"+metricStartupCheck.total+"). No se ejecutará OCR.";
+}else{
+ $("status").className="ok";$("status").textContent="Métricas verificadas: "+metricStartupCheck.passed+"/"+metricStartupCheck.total+" autocomprobaciones PASS. Genera las imágenes y ejecuta OCR real cuando quieras.";
+}
+renderFixtures();
+})();
+</script>
+</body>
+</html>
