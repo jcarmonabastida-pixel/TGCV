@@ -9,6 +9,7 @@ on:
       - 'prototypes/collective_toy/web/arrow_direction_resolver_test.cjs'
       - 'prototypes/collective_toy/web/raster_graph_candidate_detector.cjs'
       - 'prototypes/collective_toy/web/raster_graph_candidate_detector_test.cjs'
+      - 'prototypes/collective_toy/web/arrow_direction_reference_evaluation.cjs'
       - '.github/workflows/collective-toy-ocr-arrow-direction.yml'
   workflow_dispatch:
 
