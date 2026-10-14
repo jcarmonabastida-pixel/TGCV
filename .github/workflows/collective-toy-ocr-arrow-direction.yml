@@ -1,4 +1,4 @@
-name: Collective Toy OCR arrow direction resolver
+name: Collective Toy OCR arrow direction integration
 
 on:
   push:
@@ -7,6 +7,8 @@ on:
     paths:
       - 'prototypes/collective_toy/web/arrow_direction_resolver.cjs'
       - 'prototypes/collective_toy/web/arrow_direction_resolver_test.cjs'
+      - 'prototypes/collective_toy/web/raster_graph_candidate_detector.cjs'
+      - 'prototypes/collective_toy/web/raster_graph_candidate_detector_test.cjs'
       - '.github/workflows/collective-toy-ocr-arrow-direction.yml'
   workflow_dispatch:
 
@@ -14,8 +16,9 @@ permissions:
   contents: read
 
 jobs:
-  arrow-direction-resolver:
+  arrow-direction-integration:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -23,6 +26,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Install browser test dependency
+        working-directory: prototypes/collective_toy/web
+        run: npm install
+      - name: Install Chromium
+        working-directory: prototypes/collective_toy/web
+        run: npx playwright install --with-deps chromium
       - name: Test conservative arrow direction resolver
         working-directory: prototypes/collective_toy/web
         run: node arrow_direction_resolver_test.cjs
+      - name: Test resolver integrated with raster graph candidates
+        working-directory: prototypes/collective_toy/web
+        run: node raster_graph_candidate_detector_test.cjs
