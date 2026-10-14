@@ -440,6 +440,18 @@ const assert = require("node:assert/strict");
     await page.evaluate(() => window.renderOcrInterpretation("Etiqueta O normal", null));
     assert.equal(await page.locator("#ocr-suggestions li").count(), 1, "heuristics must be bounded and must not invent an interpretation for arbitrary O");
     assert.match(await page.locator("#ocr-engine-confidence").innerText(), /no disponible/i);
+    // Arrowless diagram connectors must remain direction-unknown rather than becoming inferred arrows.
+    await page.locator("#image-transcription").fill("graph LR\n  X --- Y");
+    await page.locator("#convert-transcription").click();
+    const undirectedModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(undirectedModel.transitions.length, 1);
+    assert.equal(undirectedModel.transitions[0].source, "X");
+    assert.equal(undirectedModel.transitions[0].target, "Y");
+    assert.equal(undirectedModel.transitions[0].direction_status, "unresolved");
+    assert.match(await page.locator("#graph-review-warnings").innerText(), /sin dirección explícita/i);
+    assert.match(await page.locator("#graph-review-summary-text").innerText(), /Direcciones pendientes: 1/);
+    assert.match(await page.locator("#transition-review-list").innerText(), /dirección sin resolver/i);
+    assert.equal(await page.locator('#graph path[data-transition-id="t_import_1"]').getAttribute("marker-end"), "none");
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
