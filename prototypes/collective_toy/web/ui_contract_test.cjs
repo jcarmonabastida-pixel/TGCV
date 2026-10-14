@@ -424,6 +424,21 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1/i,
       "FC-2: execution trace must record ordered concrete steps");
 
+    // FC-3: the reproducibility package must contain the exact concrete trace, not only the explored paths.
+    const downloadPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const download = await downloadPromise;
+    const downloadedPath = await download.path();
+    assert.ok(downloadedPath, "FC-3: evidence export must produce a downloadable JSON file");
+    const evidencePackage = JSON.parse(fs.readFileSync(downloadedPath, "utf8"));
+    assert.ok(evidencePackage.concrete_execution_trace,
+      "FC-3: exported evidence package must include the concrete execution trace");
+    assert.match(evidencePackage.concrete_execution_trace.trace_sha256, /^[a-f0-9]{64}$/i,
+      "FC-3: exported trace must include its SHA-256 digest");
+    assert.equal(evidencePackage.concrete_execution_trace.status, "COMPLETED",
+      "FC-3: exported trace must preserve the execution status");
+
+
 
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
