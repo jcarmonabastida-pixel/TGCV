@@ -261,6 +261,40 @@ const { chromium } = require("playwright");
     };
   }
 
+  function buildGraphReviewSummary(graphs) {
+    const items = graphs.map(graph => ({
+      graph_id: graph.graph_id,
+      ...classifyGraphCandidate(graph.edges)
+    }));
+    return {
+      graph_count: items.length,
+      incomplete_graph_count: items.filter(item => item.graph_status === "incomplete").length,
+      needs_review_graph_count: items.filter(item => item.graph_status === "needs_review").length,
+      review_ready_graph_count: items.filter(item => item.graph_status === "review_ready").length,
+      graphs: items,
+      automatic_acceptance: false
+    };
+  }
+
+  function testGraphReviewSummary() {
+    const resolved = {topology_status:"detected",direction_status:"resolved",direction:"A_to_B",confidence:0.99,review_required:false};
+    const ambiguous = {topology_status:"ambiguous",direction_status:"unresolved",confidence:0.55,review_required:true};
+    const summary = buildGraphReviewSummary([
+      {graph_id:"G1",edges:[resolved]},
+      {graph_id:"G2",edges:[resolved,ambiguous]},
+      {graph_id:"G3",edges:[]}
+    ]);
+    assert.equal(summary.graph_count,3);
+    assert.equal(summary.review_ready_graph_count,1);
+    assert.equal(summary.needs_review_graph_count,1);
+    assert.equal(summary.incomplete_graph_count,1);
+    assert.equal(summary.automatic_acceptance,false);
+    assert.deepEqual(summary.graphs.map(g=>g.graph_id),["G1","G2","G3"],
+      "GRAPH-REVIEW-SUMMARY-001: graph-specific review entries must preserve input order and identity");
+    process.stdout.write("GRAPH-REVIEW-SUMMARY-001: summary lists each graph and counts review states without auto-acceptance.\\n");
+  }
+  testGraphReviewSummary();
+
   function classifyGraphCandidate(edges) {
     const classifications = edges.map(classifyEdgeCandidate);
     const reviewCount = classifications.filter(edge => edge.review_required).length;
@@ -1151,6 +1185,12 @@ const { chromium } = require("playwright");
       node_metrics: "asserted independently by geometric matching",
       direction: "not scored; inference disabled" },
     fixture_level_interpretation: "Review each fixture independently; aggregate precision/recall must not be used to declare every individual graph correct.",
+    graph_review_summary_contract: {
+      per_graph_fields: ["graph_id","graph_status","review_required_edge_count","ambiguous_edge_count","unresolved_edge_count","direction_unresolved_edge_count","can_auto_accept"],
+      aggregate_counts: ["graph_count","incomplete_graph_count","needs_review_graph_count","review_ready_graph_count"],
+      automatic_acceptance: false,
+      note: "The current test validates the review-summary contract with controlled examples; it does not claim the UI is already wired to live OCR candidates."
+    },
     graph_review_policy: {
       graph_status_values: ["review_ready","needs_review","incomplete"],
       automatic_acceptance: false,
