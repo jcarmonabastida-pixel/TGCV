@@ -1,4 +1,4 @@
-name: Collective Toy PaddleOCR comparison
+name: Collective Toy paired OCR comparison
 
 on:
   workflow_dispatch:
@@ -7,19 +7,21 @@ on:
       - experiment/paddleocr-text-benchmark-001-20261014
     paths:
       - 'prototypes/collective_toy/web/ocr_quality_evaluation.html'
+      - 'prototypes/collective_toy/web/ocr_quality_ci_test.cjs'
       - 'prototypes/collective_toy/web/export_ocr_text_fixtures.cjs'
       - 'prototypes/collective_toy/web/paddleocr_text_benchmark.py'
+      - 'prototypes/collective_toy/web/compare_ocr_engines.py'
       - '.github/workflows/collective-toy-paddleocr-comparison.yml'
 
 permissions:
   contents: read
 
 jobs:
-  paddleocr-text-comparison:
+  paired-ocr-comparison:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
-      - name: Check out repository
+      - name: Check out experimental branch
         uses: actions/checkout@v4
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -35,21 +37,30 @@ jobs:
       - name: Install Chromium
         working-directory: prototypes/collective_toy/web
         run: npx playwright install --with-deps chromium
-      - name: Export the exact synthetic text fixtures
+      - name: Export the five fixture PNGs and exact SHA-256 manifest
         working-directory: prototypes/collective_toy/web
         run: node export_ocr_text_fixtures.cjs
+      - name: Run Tesseract.js baseline against the same fixture bytes
+        working-directory: prototypes/collective_toy/web
+        run: node ocr_quality_ci_test.cjs
       - name: Install CPU PaddleOCR
         run: python -m pip install --upgrade pip && python -m pip install paddlepaddle==2.6.2 paddleocr==2.9.1
-      - name: Run PaddleOCR benchmark locally
+      - name: Run PaddleOCR with separated initialization, first, and warm timings
         working-directory: prototypes/collective_toy/web
         run: python paddleocr_text_benchmark.py
-      - name: Upload PaddleOCR report and fixture manifest
+      - name: Build paired per-fixture and per-character comparison
+        working-directory: prototypes/collective_toy/web
+        run: python compare_ocr_engines.py
+      - name: Upload paired report and engine-level evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tgcv-paddleocr-text-comparison
+          name: tgcv-ocr-paired-comparison
           path: |
+            prototypes/collective_toy/web/ocr-quality-output/tgcv-ocr-quality-result.json
             prototypes/collective_toy/web/paddleocr-result.json
+            prototypes/collective_toy/web/ocr-paired-comparison.json
             prototypes/collective_toy/web/paddleocr-fixtures/expected.json
+            prototypes/collective_toy/web/paddleocr-fixtures/manifest.json
           if-no-files-found: warn
           retention-days: 30
