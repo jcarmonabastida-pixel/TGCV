@@ -315,25 +315,17 @@ async function detectGraphCandidates(imagePath, options = {}) {
             at_from: arrowheadEvidence(pa, unitAB),
             at_to: arrowheadEvidence(pb, unitBA)
           };
-          const strongestEndpointScore = scores => scores.reduce((best, score) =>
-            !best || score.support_ratio > best.support_ratio ? score : best, null);
-          // The resolver consumes one strongest paired-arm score per endpoint.
-          // Keep the full angle sweep in the diagnostic evidence for auditability.
-          const resolvedDirection = resolveArrowDirection({
-            arrowhead_evidence: {
-              at_from: strongestEndpointScore(arrowheadEvidenceByEndpoint.at_from),
-              at_to: strongestEndpointScore(arrowheadEvidenceByEndpoint.at_to)
-            }
-          });
+          // Direction resolution runs in Node after Canvas analysis returns.
+          // Browser evaluate has no access to CommonJS module bindings.
           edgeCandidates.push({ id: "candidate-edge-" + (edgeCandidates.length + 1),
             source_candidate_node_id: a.id, target_candidate_node_id: b.id,
             from: pa, to: pb, orientation: Math.abs(pa[1]-pb[1]) <= 3 ? "horizontal" : "diagonal",
             line_support_ratio: Number(support.ratio.toFixed(3)), evidence_pixels: support.supported,
             arrowhead_evidence: arrowheadEvidenceByEndpoint,
-            direction_status: resolvedDirection.direction_status,
-            direction_reason: resolvedDirection.direction_reason,
-            direction_evidence: resolvedDirection.direction_evidence ?? null,
-            confidence: "low", review_required: true, direction: resolvedDirection.direction });
+            direction_status: "unresolved",
+            direction_reason: "Direction resolution pending post-processing outside the browser context.",
+            direction_evidence: null,
+            confidence: "low", review_required: true, direction: "undetermined" });
         }
       }
       return {
