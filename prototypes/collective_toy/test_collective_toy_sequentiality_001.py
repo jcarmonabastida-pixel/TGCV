@@ -1,8 +1,7 @@
 """Test-first contract for temporal sequentiality in the Interactive Prototype.
 
-These tests intentionally target a proposed, not-yet-implemented engine profile.
-They must not be reported as passing until the production engine and this suite
-run together on the sequentiality development branch.
+These tests define synthetic contract expectations for temporal sequentiality.
+Passing them validates only the tested prototype behavior, not TGCV scientific claims.
 """
 from __future__ import annotations
 
@@ -218,6 +217,34 @@ class TemporalSequentialityContractTests(unittest.TestCase):
         model = base_model()
         model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "999"}
         with self.assertRaises(engine.ModelValidationError):
+            engine.run_model(model)
+
+
+    def test_15_duplicate_relation_identifiers_are_rejected(self) -> None:
+        model = base_model()
+        duplicate = copy.deepcopy(model["relations"][0])
+        duplicate["transition_id"] = "t_to_c"
+        duplicate["requires_transition_id"] = "t_prep"
+        model["relations"].append(duplicate)
+        with self.assertRaisesRegex(engine.ModelValidationError, "duplicate relation ID"):
+            engine.run_model(model)
+
+    def test_16_unknown_prerequisite_reference_is_rejected(self) -> None:
+        model = base_model()
+        model["relations"][0]["requires_transition_id"] = "t_missing"
+        with self.assertRaisesRegex(engine.ModelValidationError, "unknown prerequisite transition"):
+            engine.run_model(model)
+
+    def test_17_unknown_guarded_transition_reference_is_rejected(self) -> None:
+        model = base_model()
+        model["relations"][0]["transition_id"] = "t_missing"
+        with self.assertRaisesRegex(engine.ModelValidationError, "unknown guarded transition"):
+            engine.run_model(model)
+
+    def test_18_self_prerequisite_is_rejected(self) -> None:
+        model = base_model()
+        model["relations"][0]["requires_transition_id"] = "t_use"
+        with self.assertRaisesRegex(engine.ModelValidationError, "cannot require a transition to enable itself"):
             engine.run_model(model)
 
 
