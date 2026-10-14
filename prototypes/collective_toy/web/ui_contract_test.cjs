@@ -403,8 +403,9 @@ const assert = require("node:assert/strict");
     }];
     await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(temporalModel, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
     assert.match(await page.locator("#status").innerText(), /Ejecución completada/i,
-      "FC-1: browser engine must execute temporal profile 3");
+      "FC-1: browser engine must execute temporal profile 3 rather than leave the run pending");
     assert.match(await page.locator("#results").innerText(), /t_cd.*t_ab|t_ab.*t_cd/i,
       "FC-1: browser results must expose t_cd blocked until t_ab occurred earlier in the same trajectory");
 
