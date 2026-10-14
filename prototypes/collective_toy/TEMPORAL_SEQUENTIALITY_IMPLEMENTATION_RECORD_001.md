@@ -1,8 +1,9 @@
 # Temporal sequentiality profile — implementation record 001
 
-- **Status:** IMPLEMENTED IN DEVELOPMENT BRANCH; TESTS NOT EXECUTED.
+- **Status:** SYNTHETIC CONTRACT SUITE PASS on tested source commit `a40878c75faf9087386d4dde77ecc0e64615c7fc`; not a scientific validation.
 - **Date:** 2026-10-14.
-- **Branch:** `prototype/sequentiality-test-first-001-20261014`.
+- **Implementation origin:** `prototype/sequentiality-test-first-001-20261014`.
+- **Verification branch:** `prototype/sequentiality-contract-tests-001-20261014`.
 - **Scope:** synthetic prototype engine only. No changes to TGCV scientific Core.
 
 ## Changes
@@ -22,8 +23,11 @@ The historical `finite_deterministic_graph` and `relation_guarded_graph` profile
 - The current execution trace is an in-memory returned record. A persistent run-history store and UX integration remain future work.
 - This implementation is an initial minimum profile; repeated/cyclic prerequisite semantics beyond “required transition occurred at least once earlier in this path” remain limited to the stated rule.
 - No performance optimization was attempted.
-- No workflow/test execution is claimed. The repository operating gate requires explicit authorization before running CI; this record is documentation, not a PASS.
+- Synthetic CI verified in GitHub Actions run [38610656773](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38610656773), source commit `a40878c75faf9087386d4dde77ecc0e64615c7fc`.
+- The workflow passed Python compilation, all 96 historical engine tests, all 11 temporal sequentiality contract tests, and a clean-source-archive replay of both suites.
+- The same suites were replayed from a clean source archive; log evidence records 96 historical tests and 11 temporal contract tests as passing.
+- This evidence validates only the tested synthetic implementation and contract cases. It does not validate TGCV scientific claims, empirical inference, or the structural detector.
 
 ## Next gate
 
-Review the implementation and test expectations together, authorize the focused synthetic CI, inspect its exact run result, then correct any failures on this branch. Do not promote to `main` unless the relevant gates pass and promotion is explicitly selected.
+Next gate: perform an adversarial coverage review of the existing contract suite, especially repeated prerequisites, cyclic paths, missing/duplicate relation identifiers, and sequence truncation/termination. Add tests only where a concrete uncovered contract is established. Do not promote to `main` unless the relevant gates pass and promotion is explicitly selected.
