@@ -491,6 +491,44 @@ def run_model(model: dict[str, Any]) -> dict[str, Any]:
             "trajectories_removed": [p for p in baseline["trajectories"] if canonical_json(p) not in scenario_paths],
             "truncated": baseline["truncated"] or result["truncated"],
         }
+    # Keep the auditable baseline/intervention reachability delta in parity with the browser runtime.
+    common_source = {
+        "schema_version": model["schema_version"],
+        "model_id": model["model_id"],
+        "initial_state": model["initial_state"],
+        "states": model["states"],
+        "transitions": model["transitions"],
+        "relations": model.get("relations", []),
+        "rule_profile": model["rule_profile"],
+        "exploration": model.get("exploration", {}),
+    }
+    baseline_scenario = next((item for item in model.get("scenarios", []) if item.get("id") == "baseline"), None)
+    if baseline_scenario is None:
+        raise ModelValidationError("Cannot calculate delta_reach without a baseline scenario")
+    baseline_source_hash = sha256_json({**common_source, "scenario": baseline_scenario})
+    delta_reach: dict[str, Any] = {}
+    for sid in sorted(results):
+        if sid == "baseline":
+            continue
+        scenario = next((item for item in model.get("scenarios", []) if item.get("id") == sid), None)
+        if scenario is None:
+            raise ModelValidationError(f"Cannot identify intervention source {sid}")
+        intervention_source_hash = sha256_json({**common_source, "scenario": scenario})
+        result = results[sid]
+        comparison = comparisons[sid]
+        delta_reach[sid] = {
+            "baseline_source_sha256": baseline_source_hash,
+            "intervention_source_sha256": intervention_source_hash,
+            "reachable_states_added": comparison["reachable_states_added"],
+            "reachable_states_removed": comparison["reachable_states_removed"],
+            "enabled_at_initial_added": comparison["enabled_at_initial_added"],
+            "enabled_at_initial_removed": comparison["enabled_at_initial_removed"],
+            "trajectories_added": comparison["trajectories_added"],
+            "trajectories_removed": comparison["trajectories_removed"],
+            "truncated": bool(baseline["truncated"] or result["truncated"]),
+            "baseline_truncated": bool(baseline["truncated"]),
+            "intervention_truncated": bool(result["truncated"]),
+        }
     output = {
         "engine_version": ENGINE_VERSION,
         "schema_version": model["schema_version"],
@@ -499,6 +537,7 @@ def run_model(model: dict[str, Any]) -> dict[str, Any]:
         "validation": "PASS",
         "scenario_results": results,
         "comparisons_to_baseline": comparisons,
+        "delta_reach": delta_reach,
         "scientific_interpretation": "NONE: synthetic model execution only; no empirical or TGCV validity claim.",
     }
     return {
