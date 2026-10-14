@@ -409,6 +409,22 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#results").innerText(), /t_cd.*t_ab|t_ab.*t_cd/i,
       "FC-1: browser results must expose t_cd blocked until t_ab occurred earlier in the same trajectory");
 
+    // FC-2 contract-first: exploration must be distinguishable from an explicitly executed concrete sequence.
+    assert.ok(await page.locator("#execute-sequence").count() === 1,
+      "FC-2: UI must provide an explicit action to execute a selected trajectory");
+    assert.ok(await page.locator("#sequence-select").count() === 1,
+      "FC-2: UI must expose the candidate trajectory selected for execution");
+    assert.ok(await page.locator("#sequence-trace").count() === 1,
+      "FC-2: concrete execution must produce a separate auditable step trace");
+    await page.locator("#sequence-select").selectOption({ index: 0 });
+    await page.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+    await page.locator("#sequence-trace").filter({ hasText: /Estado inicial|Paso 1/ }).waitFor();
+    assert.match(await page.locator("#sequence-trace").innerText(), /Estado inicial/i,
+      "FC-2: execution trace must identify the starting state");
+    assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1/i,
+      "FC-2: execution trace must record ordered concrete steps");
+
+
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
