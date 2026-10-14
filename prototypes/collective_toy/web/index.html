@@ -217,7 +217,7 @@ async function assessImportedBrowserPackage(pkg){
  assert(typeof pkg.result.input_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.input_sha256),"input_sha256 ausente o malformado.");
  assert(await hash(pkg.input)===pkg.result.input_sha256,"El hash de la entrada no coincide.");
  assert(typeof pkg.result.result_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.result_sha256),"result_sha256 ausente o malformado.");
- var resultBody=Object.assign({},pkg.result);delete resultBody.input_sha256;delete resultBody.result_sha256;
+ var resultBody=Object.assign({},pkg.result);delete resultBody.input_sha256;delete resultBody.result_sha256;delete resultBody.delta_reach;
  assert(await hash(resultBody)===pkg.result.result_sha256,"El hash del resultado no coincide.");
  // Validate the declared input schema before any compatibility fallback. A valid hash
  // proves byte-level consistency, not that the input is a supported model.
@@ -225,7 +225,7 @@ async function assessImportedBrowserPackage(pkg){
  var supportedEngine="collective-toy-engine-001";
  if(pkg.result.engine_version!==supportedEngine)return {status:"inspect-only/replay-unavailable",message:"Consistencia interna de hashes verificada; esto no autentica el origen ni demuestra la corrección del resultado. Entrada estructuralmente válida. Motor declarado no compatible con este ejecutor; no se ha intentado reproducir.",integrity:true,replay:false};
  var replay=execute(pkg.input);await addDeltaReach(pkg.input,replay);replay.input_sha256=await hash(pkg.input);
- var replayBody=Object.assign({},replay);delete replayBody.input_sha256;
+ var replayBody=Object.assign({},replay);delete replayBody.input_sha256;delete replayBody.delta_reach;
  replay.result_sha256=await hash(replayBody);
  assert(canonical(replay)===canonical(pkg.result),"La reproducción independiente difiere del resultado exportado.");
  return {status:"replay-verified",message:"Integridad verificada y reproducción independiente coincidente.",integrity:true,replay:true};
