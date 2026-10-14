@@ -744,8 +744,10 @@ const { chromium } = require("playwright");
   assert.ok(arrowResult.edge_candidates.length >= 1, "SYN-ARROW-CLEAR-001: arrowed connection should be proposed");
   process.stdout.write("SYN-ARROW-CLEAR-001 diagnostics: " + JSON.stringify(arrowResult.edge_candidates.map(edge => ({ id: edge.id, source: edge.source_candidate_node_id, target: edge.target_candidate_node_id, direction_status: edge.direction_status, direction: edge.direction, review_required: edge.review_required, arrowhead_evidence: edge.arrowhead_evidence }))) + "\\n");
   assert.ok(arrowResult.edge_candidates.every(edge =>
-    edge.direction_status === "unresolved" && edge.direction === "undetermined" && edge.review_required === true),
-    "SYN-ARROW-CLEAR-001: direction remains provisional until validated classification is implemented");
+    edge.direction_status === "candidate" && edge.direction === "source-to-target" && edge.review_required === true && edge.direction_review_required === true),
+    "SYN-ARROW-CLEAR-001: clear target arrow may propose source-to-target, but must remain review-required");
+  assert.equal(arrowResult.direction_diagnostics.automatic_acceptance, false,
+    "SYN-ARROW-CLEAR-001: proposed direction must not be automatically accepted");
   process.stdout.write("SYN-ARROW-CLEAR-001: nodes=" + arrowResult.nodes.length +
     ", connections=" + arrowResult.edge_candidates.length +
     ", arrow visible but direction remains provisional.\\n");
