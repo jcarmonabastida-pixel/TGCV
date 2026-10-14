@@ -7,6 +7,28 @@ const fs = require("node:fs");
 const { chromium } = require("playwright");
 
 (async () => {
+  function testGraphReviewSummaryUiWiring() {
+    const html = fs.readFileSync(path.join(__dirname, "index.html"), "utf8");
+    for (const id of ["graph-review-summary", "graph-review-summary-text", "graph-review-warnings", "transition-review-list"]) {
+      assert.match(html, new RegExp('id="' + id + '"'),
+        "GRAPH-REVIEW-UI-WIRING-001: missing review UI element " + id);
+    }
+    assert.match(html, /function syncGraphEditor\(\)[\s\S]*?summaryText\.textContent=/,
+      "GRAPH-REVIEW-UI-WIRING-001: graph editor must recompute the visible summary");
+    assert.match(html, /function writeEditedModel\(m,message\)[\s\S]*?syncGraphEditor\(\)/,
+      "GRAPH-REVIEW-UI-WIRING-001: model edits must refresh the review summary");
+    assert.match(html, /\$\("transition-review-list"\)\.addEventListener\("click"[\s\S]*?writeEditedModel\(m,/,
+      "GRAPH-REVIEW-UI-WIRING-001: removing a connection must refresh the summary");
+    assert.match(html, /\$\("new-edge-add"\)\.addEventListener\("click"[\s\S]*?writeEditedModel\(m,/,
+      "GRAPH-REVIEW-UI-WIRING-001: adding a connection must refresh the summary");
+    assert.match(html, /\$\("graph-file"\)\.addEventListener\("change"[\s\S]*?syncGraphEditor\(\)/,
+      "GRAPH-REVIEW-UI-WIRING-001: importing a graph must refresh the summary");
+    assert.match(html, /No hay aceptación automática|No hay aceptaci[oó]n autom[aá]tica|No se acepta ning[uú]n grafo autom[aá]ticamente/,
+      "GRAPH-REVIEW-UI-WIRING-001: interface must explicitly prevent automatic acceptance");
+    process.stdout.write("GRAPH-REVIEW-UI-WIRING-001: review summary is present and wired to import/add/remove/edit paths.\\n");
+  }
+  testGraphReviewSummaryUiWiring();
+
   const root = path.join(__dirname, "fixtures", "ocr_graph_images");
   const tempRoot = path.join(require("node:os").tmpdir(), "tgcv-colored-node-fixtures");
   fs.mkdirSync(tempRoot, { recursive: true });
