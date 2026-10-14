@@ -1,5 +1,7 @@
 "use strict";
 
+const { resolveArrowDirection } = require("./arrow_direction_resolver.cjs");
+
 /**
  * First deterministic raster candidate detector for TGCV development fixtures.
  * Uses browser Canvas to inspect pixels. It is a candidate generator, not a
@@ -13,7 +15,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage();
-    return await page.evaluate(async ({ imageDataUrl, threshold, minNodeSize, maxNodeSize }) => {
+    const detected = await page.evaluate(async ({ imageDataUrl, threshold, minNodeSize, maxNodeSize }) => {
       const image = new Image();
       image.src = imageDataUrl;
       await image.decode();
@@ -329,6 +331,27 @@ async function detectGraphCandidates(imagePath, options = {}) {
       minNodeSize: options.minNodeSize ?? 18,
       maxNodeSize: options.maxNodeSize ?? 50
     });
+    detected.edge_candidates = (detected.edge_candidates || []).map(edge => {
+      const best = endpoint => Array.isArray(endpoint)
+        ? endpoint.reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null)
+        : endpoint;
+      const decision = resolveArrowDirection({
+        arrowhead_evidence: {
+          at_from: best(edge.arrowhead_evidence?.at_from),
+          at_to: best(edge.arrowhead_evidence?.at_to)
+        }
+      });
+      return { ...edge, ...decision, direction_review_required: true };
+    });
+    detected.direction_diagnostics = {
+      resolver: "TGCV-ARROW-DIRECTION-RESOLVER-001",
+      edge_candidates: detected.edge_candidates.length,
+      proposed_directions: detected.edge_candidates.filter(edge => edge.direction_status === "candidate").length,
+      unresolved_directions: detected.edge_candidates.filter(edge => edge.direction_status === "unresolved").length,
+      automatic_acceptance: false,
+      note: "Direction proposals are experimental and require human review; resolver has not been validated for real-world diagrams."
+    };
+    return detected;
   } finally {
     await browser.close();
   }
