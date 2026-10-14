@@ -36,6 +36,8 @@ function ocrInterpretationCandidates(raw){
   if(zeroContext){var at=line.lastIndexOf("O");out.push({line:lineIndex+1,from:"O",to:"0",start:at,reason:"O aparece como operando en una expresión de comparación; podría ser la cifra cero.",confidence:null})}
   var cc=/\bCc\b/g;
   while((m=cc.exec(line))!==null)out.push({line:lineIndex+1,from:"Cc",to:"C",start:m.index,reason:"Token Cc aislado: posible confusión con la etiqueta C.",confidence:null});
+  var transition=/^\s*(T\d+)\s*:\s*([\w.-]+)\s*->\s*([\w.-]+)\s*$/.exec(line);
+  if(transition){var canonical=transition[1]+": "+transition[2]+" -> "+transition[3];if(line!==canonical)out.push({line:lineIndex+1,from:line,to:canonical,start:0,reason:"Espaciado de notación de transición no canónico; la sugerencia solo normaliza separadores y no valida la conexión.",confidence:null})}
  });
  return out;
 }
