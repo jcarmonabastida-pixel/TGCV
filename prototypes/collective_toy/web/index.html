@@ -382,10 +382,10 @@ async function assessImportedBrowserPackage(pkg){
 }
 function rejectDuplicateJsonObjectKeys(source){
  var i=0;
- function ws(){while(i<source.length&&/\\s/.test(source[i]))i++}
+ function ws(){while(i<source.length&&/\s/.test(source[i]))i++}
  function stringToken(){
   var start=i;if(source[i]!=='"')throw new Error("JSON inválido");
-  i++;while(i<source.length){var ch=source[i++];if(ch==='"')return JSON.parse(source.slice(start,i));if(ch==='\\\\'){if(i>=source.length)break;i++}}
+  i++;while(i<source.length){var ch=source[i++];if(ch==='"')return JSON.parse(source.slice(start,i));if(ch==='\\'){if(i>=source.length)break;i++}}
   throw new Error("JSON inválido");
  }
  function value(){
@@ -400,7 +400,7 @@ function rejectDuplicateJsonObjectKeys(source){
   }
   if(ch==='['){i++;ws();if(source[i]===']'){i++;return}while(i<source.length){value();ws();if(source[i]===']'){i++;return}if(source[i++]!==',')throw new Error("JSON inválido")}throw new Error("JSON inválido")}
   if(ch==='"'){stringToken();return}
-  var m=/^(?:-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?|true|false|null)/.exec(source.slice(i));
+  var m=/^(?:-?(?:0|[1-9]\d*)(?:\.\\d+)?(?:[eE][+-]?\\d+)?|true|false|null)/.exec(source.slice(i));
   if(!m)throw new Error("JSON inválido");i+=m[0].length;
  }
  value();ws();if(i!==source.length)throw new Error("JSON inválido");
