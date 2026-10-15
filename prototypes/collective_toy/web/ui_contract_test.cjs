@@ -630,6 +630,23 @@ const assert = require("node:assert/strict");
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
     await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "GT-05: assessed package round-trip must confirm independently replayed semantic equivalence");
+    assert.equal(fc4Package.package_stage, "ASSESSMENT",
+      "GT-05: assessed package must export its lifecycle stage explicitly");
+    assert.equal(fc4Package.value_assessment.outcome_sha256, fc4Package.outcome_record.outcome_sha256,
+      "GT-05: assessment must retain the digest of the exact recorded outcome");
+    const firstAssessedReplay = await page.locator("#package-assessment").innerText();
+    await page.locator("#package-file").setInputFiles({
+      name: "assessed-fc4-roundtrip-repeat.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(fc4Package))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.waitForFunction(() => document.querySelector("#package-assessment")?.dataset.state === "replay-verified" &&
+      /reproducción independiente coincidente/i.test(document.querySelector("#package-assessment")?.innerText || ""), { timeout: 10000 });
+    assert.equal(await page.locator("#package-assessment").innerText(), firstAssessedReplay,
+      "GT-05: replaying the same assessed artifact twice must yield the same semantic replay assessment");
 
     // GT-04 grouped adversarial outcome/assessment schema and boundary checks.
     async function rejectGt04Mutation(name, mutation, diagnostic) {

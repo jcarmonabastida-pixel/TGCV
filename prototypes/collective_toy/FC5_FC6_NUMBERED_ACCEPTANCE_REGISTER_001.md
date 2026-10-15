@@ -218,3 +218,12 @@ Pending grouped adversaries break one link at a time across the chain: outcome e
 Previous exact-head five-workflow gate passed on `4f4a45f532e08c0f3ff13480ba61bec77552e822` (runs `38795223557`, `38795223565`, `38795223544`, `38795223577`, `38795223833`).
 
 Newly identified invariant: package v2 stage must match the highest artifact present: ASSESSMENT if a value assessment exists, else OUTCOME if an outcome exists, else EXECUTION if a concrete trace exists, else EXPLORATION. The validator and four diagnostic-specific adversarial cases now cover stage/artifact mismatch. Await exact-head five-workflow CI before considering this invariant verified; GT-04 remains open.
+
+
+### GT-04 iteration 5 — evidence recorded
+
+Exact-head five-workflow gate passed on `144c1d1332405c54b7b74e3ecd8afa29808cc6d0`: `38795907330`, `38795907082`, `38795906835`, `38795906832`, `38795906803`; all concluded success.
+
+### GT-05 iteration 1 — assessed round-trip determinism pending
+
+Added a grouped end-to-end assertion that imports the same fully assessed artifact twice and checks explicit `ASSESSMENT` stage, outcome-digest linkage, matching independent replay, and stable replay assessment. Status remains pending until the exact-head five-workflow gate passes.

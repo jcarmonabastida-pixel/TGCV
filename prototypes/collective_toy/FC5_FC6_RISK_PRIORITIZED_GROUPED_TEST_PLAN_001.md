@@ -409,3 +409,12 @@ Next coherent group targets the linked evidence chain rather than adding isolate
 The linked-evidence adversarial batch passed the exact-head five-workflow gate on `4f4a45f532e08c0f3ff13480ba61bec77552e822`: governance `38795223557`, synthetic engine `38795223565`, performance benchmark `38795223544`, browser benchmark `38795223577`, and browser/cross-runtime `38795223833`. This is engineering evidence only.
 
 Reviewing the package validator exposed a separate lifecycle invariant: v2 `package_stage` was constrained to the allowed enum but not required to agree with the artifacts actually present. This iteration adds the invariant `ASSESSMENT > OUTCOME > EXECUTION > EXPLORATION` based on the highest present artifact and groups four adversarial stage/content mismatches. Mutations recompute the outer package digest and require the stage-coherence diagnostic. GT-04 remains open until the five-workflow exact-head gate passes.
+
+
+### GT-04 iteration 5 — exact-head evidence
+
+The package-stage/artifact-coherence candidate passed all five required workflows on exact commit `144c1d1332405c54b7b74e3ecd8afa29808cc6d0`: governance `38795907330`, engine benchmark `38795907082`, browser benchmark `38795906835`, browser/cross-runtime `38795906832`, and synthetic engine `38795906803`. All runs concluded success. This verifies the current engineering gate only; GT-04 is not closed by the aggregate gate alone.
+
+### GT-05 iteration 1 — assessed-artifact round-trip determinism
+
+The next grouped scenario moves to GT-05 as specified by the plan: the same fully assessed exported package is imported/replayed twice. Assertions require explicit `ASSESSMENT` stage, outcome/assessment digest linkage, independently replayed semantic equivalence, and identical replay assessment text across both imports. This is a deterministic replay contract check; it does not claim scientific validity. Require exact-head success across all five workflows before marking the group passed.
