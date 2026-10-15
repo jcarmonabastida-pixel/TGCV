@@ -241,3 +241,14 @@ Source review found that `blocked_step.reason` only needed to be a non-empty str
 Implementation candidate: `46e6e9fa201e295e9ddd54e172759c0de0b255a0`. The importer derives the expected blocked reason from baseline scenario disablement, current state/source mismatch, and missing temporal prerequisites, and requires `required_transition_ids` to equal the actual missing prerequisite set. Adversarial test candidate: `4145df6788fd441564e83b04d23b5d650eaa9745`, which removes the missing-prerequisite IDs from a temporal-prerequisite BLOCKED trace, recomputes trace/package digests, and expects a semantic rejection.
 
 Exact-head CI pending. GT-03 remains open until the five-check battery passes on the same final head and the new forged-metadata diagnostic is observed.
+
+
+### GT-03 blocked metadata integrity — PASSED on exact head
+
+The five checks passed on the documentation head `75fd25716d6c5050fec86c3a85c31149f9eb4402`: browser/cross-runtime [38768436194](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38768436194), synthetic engine [38768436177](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38768436177), engine benchmark [38768436292](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38768436292), browser benchmark [38768436253](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38768436253), and governance [38768436201](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38768436201). The browser test confirms a BLOCKED trace that omits a genuinely missing temporal prerequisite is rejected despite recomputed trace and package digests.
+
+### GT-03 paired follow-up — forged blocked reason
+
+Added a paired adversarial test on candidate `4f782d470a4c714672d6983182f43d703785f7d4`: mutate a valid temporal-prerequisite block reason to `transition_source_mismatch`, recompute trace/package digests, and require rejection by the reason/context diagnostic. This complements the missing-prerequisite-list test and checks both dimensions of blocked metadata coherence.
+
+Exact-head CI pending. GT-03 remains open until all five checks pass on the final exact head and both forged-reason and forged-prerequisite diagnostics are observed.
