@@ -133,3 +133,12 @@ Exact-head CI is queued: browser/cross-runtime [38761076420](https://github.com/
 Run [38761131177](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38761131177) exposed the terminal message: an existing adversarial case deliberately removes `input.initial_state`, but the new `delta_reach` trajectory check rejected the derived trajectory first. The importer's stricter check masked the primary input-schema diagnostic expected by the test. This is a validation-order/diagnostic-precedence issue, not evidence that the valid profile-1 package is rejected.
 
 Corrective candidate: `ee783af3d80f1643ca7c33482ce433af4b386335`. The delta trajectory arrays remain type-checked unconditionally; path semantics are checked when `input.initial_state` identifies a valid state, matching the existing scenario/comparison validators. The input's invalid initial state remains rejected by the existing primary validation path. Exact-head CI must pass before GT-02 can be marked verified.
+
+
+### GT-02 fourth failure — validation precedence between comparison and delta artifacts
+
+Run [38761578722](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38761578722) passed the earlier malformed-initial-state case but exposed another precedence conflict. An existing adversarial fixture corrupts `comparisons_to_baseline.reachable_states_added` with an undeclared state ID; the new `delta_reach` comparison then fails first with `delta_reach de block_ac no coincide con la comparación baseline exportada`, masking the intended primary error `IDs de estado declarados`.
+
+Corrective candidate commit: `d725a88a7189e9f03766c46f474de295f93e562e`. The entire nested `delta_reach` validation block is moved to run after the comparison objects have passed their own structural and reference checks, but before trace/result completion. This preserves primary input/comparison diagnostics while still rejecting a semantically forged delta after its source comparison is valid.
+
+Exact-head browser/cross-runtime CI must pass before GT-02 can be considered verified. No scientific execution and no promotion to `main`.
