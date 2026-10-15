@@ -324,3 +324,19 @@ On exact head `664966f8c3032087b116a9e4a683e6afb46dc077`, four controls passed a
 ### GT-03 scenario-context attempt 5 — correct adversarial direction
 
 Review of the adversarial fixture exposed an inversion in the test itself: it disabled the blocked transition in `baseline` but removed the disablement from the trace-declared alternate scenario. A validator correctly using `trace.scenario_id` could therefore accept the recorded temporal-prerequisite reason, while the baseline-based validator would reject it—the opposite of the intended discrimination. Corrected the fixture so baseline permits the transition and the trace-declared `block_ac` scenario disables it, while the trace retains the stale `temporal_prerequisite_not_satisfied` reason. This is the intended adversarial direction: a baseline-based validator would accept; a scenario-aware validator must reject with the context-specific diagnostic. Integrity/replay checks must still be satisfied; run the five-control battery before claiming a pass. GT-03 remains open.
+
+
+### GT-03 scenario-context adversary — PASS on exact code head
+
+Exact code head: `d54bec8e33a7464c91dc6953b22cb6faf742d11c`.
+
+All five required workflows passed on that same SHA:
+- Browser and cross-runtime tests: [38780626151](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38780626151) — success.
+- Browser performance benchmark: [38780626003](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38780626003) — success.
+- Synthetic engine tests: [38780625943](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38780625943) — success.
+- Governance current-state consistency: [38780626010](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38780626010) — success.
+- Engine performance benchmark: [38780626013](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38780626013) — success.
+
+The browser/cross-runtime test completed successfully with the dedicated GT-03 assertion that the forged BLOCKED reason is rejected with the scenario-context-specific diagnostic after the adversarial fixture reverses baseline/alternate disablement and recomputes the linked digests. This demonstrates the tested validator uses the trace-declared scenario rather than baseline for this case. The adversarial case passes; it does not establish exhaustive FC-5/FC-6 coverage or scientific validity.
+
+GT-03 grouped execution-trace coherence is closed for the currently enumerated cases. Next grouped risk: GT-04, outcome and valuation as one linked evidence chain. Begin with source/fixture audit on the development branch, preserve main, and do not authorize scientific execution. This plan-only update does not inherit the above code-head CI evidence.
