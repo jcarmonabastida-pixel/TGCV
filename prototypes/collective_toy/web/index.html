@@ -314,6 +314,7 @@ async function assessImportedBrowserPackage(pkg){
    assert(trace.steps.length===trace.submitted_transition_ids.length&&canonical(trace.steps.map(function(s){return s.transition_id}))===canonical(trace.submitted_transition_ids),"Una traza COMPLETED debe ejecutar exactamente la secuencia enviada.");
   }else{
    var blocked=trace.blocked_step;
+   assert(canonical(trace.steps.map(function(s){return s.transition_id}))===canonical(trace.submitted_transition_ids.slice(0,trace.steps.length)),"Una traza BLOCKED debe coincidir con el prefijo de transiciones enviadas que realmente se ejecutó.");
    assert(blocked&&typeof blocked==="object"&&!Array.isArray(blocked)&&Object.keys(blocked).every(function(k){return ["index","transition_id","reason","required_transition_ids"].includes(k)}),"Una traza BLOCKED debe conservar los metadatos del bloqueo.");
    assert(Number.isInteger(blocked.index)&&blocked.index===trace.steps.length+1&&blocked.index<=trace.submitted_transition_ids.length&&blocked.transition_id===trace.submitted_transition_ids[blocked.index-1]&&typeof blocked.reason==="string"&&blocked.reason.length>0,"El paso bloqueado no es coherente con la secuencia intentada.");
    assert(Array.isArray(blocked.required_transition_ids)&&blocked.required_transition_ids.every(function(id){return typeof id==="string"&&inputTransitions.has(id)}),"required_transition_ids del bloqueo contiene IDs inválidos.");
