@@ -1349,6 +1349,53 @@ const assert = require("node:assert/strict");
       /baseline_truncated de delta_reach en block_ac debe ser booleano/i,
       "FC-5: reject non-boolean baseline truncation flag");
 
+    // Complete boolean type coverage: aggregate and intervention flags must also be actual booleans.
+    for (const field of ["truncated", "intervention_truncated"]) {
+      const wrongType = await page.evaluate(async (args) => {
+        const candidate = structuredClone(args.pkg);
+        candidate.result.delta_reach.block_ac[args.field] = "false";
+        const resultBody = structuredClone(candidate.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        candidate.result.result_sha256 = await window.hash(resultBody, "result");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return candidate;
+      }, { pkg: deltaPackage, field });
+      await page.locator("#package-file").setInputFiles({
+        name: `delta-${field}-wrong-type.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(wrongType))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(),
+        new RegExp(field + " de delta_reach en block_ac debe ser booleano", "i"),
+        `FC-5: reject non-boolean ${field}`);
+    }
+
+    // Baseline-specific consistency: a forged baseline flag must not be masked by a valid aggregate OR.
+    const inconsistentBaselineTruncation = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.delta_reach.block_ac.baseline_truncated = true;
+      candidate.result.delta_reach.block_ac.truncated = true;
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, deltaPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "delta-baseline-truncation-inconsistent.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(inconsistentBaselineTruncation))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(),
+      /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i,
+      "FC-5: reject baseline truncation flag that disagrees with the baseline scenario");
+
     const inconsistentAggregateTruncation = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
       candidate.result.delta_reach.block_ac.truncated = true;
