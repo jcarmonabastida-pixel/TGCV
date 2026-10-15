@@ -272,6 +272,9 @@ const assert = require("node:assert/strict");
     assert.equal(baselineEffects.length, 1);
     assert.equal(baselineEffects[0].status, "BLOCKED");
     assert.deepEqual(relationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac", "t_cd"]);
+    const guardedTrace = await page.locator(".scenario").filter({ hasText: "Escenario: baseline" }).innerText();
+    assert.match(guardedTrace, /t_cd.*BLOQUEADA POR REGLA.*prerequisite_transition_disabled/i,
+      "FC-2: guarded transition trace must expose the active guard and its blocking reason");
 
     // Removing the relation through the real UI must remove its effect on the next run.
     await page.getByRole("button", { name: "Eliminar relación r_guard_1" }).click();
