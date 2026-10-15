@@ -190,6 +190,9 @@ async function assessImportedBrowserPackage(pkg){
   }else{
    assert(pkg.value_assessment_status==="NOT_ASSESSED","Un paquete sin valoración debe declarar value_assessment_status=NOT_ASSESSED.");
   }
+ var inputScenarioIds=pkg.input&&Array.isArray(pkg.input.scenarios)?pkg.input.scenarios.map(function(s){return s&&s.id}):[];
+ assert(inputScenarioIds.length>0,"La entrada debe declarar escenarios antes de validar resultados.");
+ var inputStateIds=new Set(pkg.input.states),inputTransitions=new Map(pkg.input.transitions.map(function(t){return [t.id,t]}));
  assert(pkg.result.scenario_results&&typeof pkg.result.scenario_results==="object"&&!Array.isArray(pkg.result.scenario_results),"scenario_results ausente o malformado.");
  assert(pkg.result.comparisons_to_baseline&&typeof pkg.result.comparisons_to_baseline==="object"&&!Array.isArray(pkg.result.comparisons_to_baseline),"comparisons_to_baseline ausente o malformado.");
  if(Object.prototype.hasOwnProperty.call(pkg.result,"delta_reach")){
@@ -213,11 +216,8 @@ async function assessImportedBrowserPackage(pkg){
  assert(typeof pkg.result.scientific_interpretation==="string","scientific_interpretation ausente o malformado.");
  if(pkg.result.semantic_identity_version!==undefined){assert(pkg.result.semantic_identity_version==="collective-toy-semantic-identity-001","Versión de identidad semántica no admitida.");assert(typeof pkg.result.semantic_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.semantic_sha256),"semantic_sha256 ausente o malformado.");assert(await hash(semanticResultProjection(pkg.result),"result")===pkg.result.semantic_sha256,"La identidad semántica no coincide.");}else{assert(pkg.result.semantic_sha256===undefined,"semantic_sha256 requiere una versión explícita.");}
  var allowedScenarioKeys=["scenario_id","disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories","truncated","exploration_bounds","relation_effects","effective_disabled_transitions","blocked_temporal_steps","temporal_prerequisites"];
- var inputScenarioIds=pkg.input&&Array.isArray(pkg.input.scenarios)?pkg.input.scenarios.map(function(s){return s&&s.id}):[];
- assert(inputScenarioIds.length>0,"La entrada debe declarar escenarios antes de validar resultados.");
  assert(Object.keys(pkg.result.scenario_results).every(function(id){return inputScenarioIds.includes(id)}),"scenario_results contiene escenarios que no están en la entrada.");
  assert(inputScenarioIds.every(function(id){return Object.prototype.hasOwnProperty.call(pkg.result.scenario_results,id)}),"scenario_results no contiene todos los escenarios de la entrada.");
- var inputStateIds=new Set(pkg.input.states),inputTransitions=new Map(pkg.input.transitions.map(function(t){return [t.id,t]}));
  Object.keys(pkg.result.scenario_results).forEach(function(id){
   var sr=pkg.result.scenario_results[id];
   assert(sr&&typeof sr==="object"&&!Array.isArray(sr),"El resultado del escenario "+id+" debe ser un objeto.");
