@@ -438,6 +438,8 @@ const assert = require("node:assert/strict");
       "FC-2: execution trace must identify the starting state");
     assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1/i,
       "FC-2: execution trace must record ordered concrete steps");
+    assert.match(await page.locator("#sequence-trace").innerText(), /Traza SHA-256/i,
+      "FC-3: successful execution must expose a digest for its trace");
 
     // FC-3: the reproducibility package must contain the exact concrete trace, not only the explored paths.
     const traceDownloadPromise = page.waitForEvent("download");
