@@ -787,6 +787,40 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /resultado no está vinculado a la traza de ejecución exportada/i,
       "FC-5: importer must reject an outcome whose concrete execution trace is missing");
 
+    // FC-5/FC-6 grouped trace-coherence adversary: blocked traces must not smuggle unknown IDs in the unexecuted suffix.
+    const unknownBlockedTraceId = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      if (candidate.package_version !== "collective-toy-browser-run-002") {
+        throw new Error("GT-03 requires the versioned package schema that supports BLOCKED traces");
+      }
+      const trace = candidate.concrete_execution_trace;
+      trace.status = "BLOCKED";
+      trace.submitted_transition_ids = [...trace.steps.map(step => step.transition_id), "transition-not-in-model"];
+      trace.blocked_step = {
+        index: trace.steps.length + 1,
+        transition_id: "transition-not-in-model",
+        reason: "adversarial unknown transition after valid executed prefix",
+        required_transition_ids: []
+      };
+      delete candidate.outcome_record;
+      delete candidate.value_assessment;
+      candidate.value_assessment_status = "NOT_ASSESSED";
+      candidate.package_stage = "EXECUTION";
+      delete trace.trace_sha256;
+      trace.trace_sha256 = await window.hash(trace, "sequence_trace");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "blocked-trace-unknown-submitted-id.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(unknownBlockedTraceId))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
+      "FC-5/FC-6: reject a BLOCKED trace whose unexecuted submitted suffix references an unknown transition despite recomputed trace/package digests");
+
     // FC-5: reject an unsupported package schema version even if the package digest is recomputed.
     const unsupportedPackageVersion = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
