@@ -820,6 +820,31 @@ const assert = require("node:assert/strict");
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
     assert.match(await page.locator("#package-assessment").innerText(), /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
       "FC-5/FC-6: reject a BLOCKED trace whose unexecuted submitted suffix references an unknown transition despite recomputed trace/package digests");
+    // GT-03 grouped trace-coherence adversary: a BLOCKED trace must preserve the exact submitted prefix that was executed.
+    const mismatchedBlockedPrefix = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      const trace = candidate.concrete_execution_trace;
+      if (trace.status !== "BLOCKED" || trace.steps.length < 1) throw new Error("Fixture must be a BLOCKED trace with a non-empty executed prefix");
+      const executedFirst = trace.steps[0].transition_id;
+      const blockedId = trace.blocked_step.transition_id;
+      const alternate = candidate.input.transitions.find(t => t.id !== executedFirst && t.id !== blockedId);
+      if (!alternate) throw new Error("Fixture needs another known transition ID for prefix tampering");
+      trace.submitted_transition_ids[0] = alternate.id;
+      delete trace.trace_sha256;
+      trace.trace_sha256 = await window.hash(trace, "sequence_trace");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, blockedPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "blocked-trace-mismatched-submitted-prefix.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(mismatchedBlockedPrefix))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /traza BLOCKED debe coincidir con el prefijo de transiciones enviadas/i,
+      "FC-5/FC-6: reject a BLOCKED trace whose executed steps differ from the submitted sequence prefix despite recomputed digests");
+
 
     // FC-5: reject an unsupported package schema version even if the package digest is recomputed.
     const unsupportedPackageVersion = await page.evaluate(async (pkg) => {
