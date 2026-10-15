@@ -126,3 +126,10 @@ Run [38760661746](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/387
 Corrective test-instrumentation commit: `d737081841e7f2ff1db25339b6411573fc71a2c4`. The browser test now waits for a terminal assessment state and reports the actual state/message when it differs from expectation, rather than waiting for a particular expected state until timeout. This is diagnostic only; it does not relax package validation.
 
 Exact-head CI is queued: browser/cross-runtime [38761076420](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38761076420), synthetic engine [38761076359](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38761076359), browser benchmark [38761076224](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38761076224), engine benchmark [38761076451](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38761076451), governance [38761076190](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38761076190). Next step: inspect the diagnostic message from the browser/cross-runtime run, then fix only the demonstrated cause. GT-02 remains unverified.
+
+
+### GT-02 third failure — diagnostic precedence
+
+Run [38761131177](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38761131177) exposed the terminal message: an existing adversarial case deliberately removes `input.initial_state`, but the new `delta_reach` trajectory check rejected the derived trajectory first. The importer's stricter check masked the primary input-schema diagnostic expected by the test. This is a validation-order/diagnostic-precedence issue, not evidence that the valid profile-1 package is rejected.
+
+Corrective candidate: `ee783af3d80f1643ca7c33482ce433af4b386335`. The delta trajectory arrays remain type-checked unconditionally; path semantics are checked when `input.initial_state` identifies a valid state, matching the existing scenario/comparison validators. The input's invalid initial state remains rejected by the existing primary validation path. Exact-head CI must pass before GT-02 can be marked verified.
