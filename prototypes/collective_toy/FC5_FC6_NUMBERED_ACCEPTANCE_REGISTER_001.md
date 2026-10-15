@@ -166,3 +166,10 @@ These are known gaps in the atomic inventory and must be expanded before publish
 7. A contract decision for BLOCKED traces and trace-only packages.
 
 **Counting rule:** do not report a definitive total until section H has been atomized and each row in sections A–G is reconciled to exact implementation location, named test, and passing CI evidence. Do not add tests until this register is reviewed and reconciled; then work on the first proven uncovered predicate only.
+
+
+## GT-04 grouped candidate update — CI pending
+
+The development candidate now implements the closed 12-key outcome and 11-key assessment schemas, required-key checks, finite `source_kind` enum, non-empty outcome metadata and assessment ID checks. The browser test adds five grouped adversarial variants with package digest recomputed: unknown outcome key, invalid source kind, empty outcome unit, unknown assessment key, and empty assessment ID.
+
+Related predicates: FC5-OUT-002/004/005/007/008 and FC5-VAL-002/004/008/009. Their status remains **pending** until the required five workflows pass on the exact candidate SHA and diagnostic assertions are confirmed. Existing cross-link and NOT_ASSESSED checks remain in place.

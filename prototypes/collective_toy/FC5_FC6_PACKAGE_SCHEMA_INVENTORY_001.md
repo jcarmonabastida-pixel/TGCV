@@ -172,3 +172,12 @@ This register contains 16 predicate families, **not 16 atomic requirements**. Th
 - No scientific execution or empirical validation.
 - Do not modify the structural detector or OCR quality work.
 - Add tests only after the finite predicate list exists; change implementation only for a demonstrated failure.
+
+
+## 11. GT-04 grouped implementation update — awaiting CI
+
+Candidate implementation now enforces closed key sets for the 12-field `outcome_record` and 11-field `value_assessment`, rejects missing required fields, validates `source_kind` against the UI's finite values (`synthetic`, `observed`), checks trace digest format as well as equality, requires non-empty outcome value/unit/timing/uncertainty-status/provenance, and requires a non-empty `assessment_id`. The grouped browser suite adds adversarial cases for unknown outcome/assessment keys, invalid `source_kind`, empty outcome unit, and empty assessment ID with outer package digest recomputed.
+
+Clarification: the approved contract does not require a separate standalone `outcome_sha256` field inside `outcome_record`. When a value assessment exists, `value_assessment.outcome_sha256` commits to the canonical outcome record; the execution trace is separately committed through `execution_trace_sha256`. These are consistency commitments, not proof of authenticity. No cryptographic signature is introduced.
+
+The new checks and fixtures remain implementation candidates until the five required workflows pass on the exact same commit. Do not mark acceptance predicates verified before that evidence exists.

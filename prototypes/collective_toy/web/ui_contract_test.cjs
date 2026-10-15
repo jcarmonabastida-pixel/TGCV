@@ -626,6 +626,34 @@ const assert = require("node:assert/strict");
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
     await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
 
+    // GT-04 grouped adversarial outcome/assessment schema and boundary checks.
+    async function rejectGt04Mutation(name, mutation, diagnostic) {
+      const forged = await page.evaluate(async ({ pkg, mutation }) => {
+        const candidate = structuredClone(pkg);
+        if (mutation === "unknown_outcome") candidate.outcome_record.uncontracted = "forged";
+        else if (mutation === "invalid_source_kind") candidate.outcome_record.source_kind = "estimated";
+        else if (mutation === "unknown_assessment") candidate.value_assessment.uncontracted = "forged";
+        else if (mutation === "empty_assessment_id") candidate.value_assessment.assessment_id = " ";
+        else if (mutation === "empty_outcome_unit") candidate.outcome_record.unit = " ";
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return candidate;
+      }, { pkg: fc4Package, mutation });
+      await page.locator("#package-file").setInputFiles({
+        name, mimeType: "application/json", buffer: Buffer.from(JSON.stringify(forged))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.waitForFunction((needle) => {
+        const node = document.querySelector("#package-assessment");
+        return node && node.dataset.state === "rejected" && node.innerText.includes(needle);
+      }, diagnostic);
+    }
+    await rejectGt04Mutation("gt04-unknown-outcome-key.json", "unknown_outcome", "outcome_record contiene campos desconocidos");
+    await rejectGt04Mutation("gt04-invalid-outcome-source-kind.json", "invalid_source_kind", "source_kind del resultado debe ser synthetic u observed");
+    await rejectGt04Mutation("gt04-empty-outcome-unit.json", "empty_outcome_unit", "unidad, momento, incertidumbre/estado y procedencia como cadenas no vacías");
+    await rejectGt04Mutation("gt04-unknown-assessment-key.json", "unknown_assessment", "value_assessment contiene campos desconocidos");
+    await rejectGt04Mutation("gt04-empty-assessment-id.json", "empty_assessment_id", "assessment_id válido");
+
     // GT-03 grouped trace metadata adversary: step prerequisites must be exactly those declared by the active rule profile.
     const forgedStepPrerequisites = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
