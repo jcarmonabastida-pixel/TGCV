@@ -179,6 +179,7 @@ async function assessImportedBrowserPackage(pkg){
    assert(assessment.assessment_schema==="collective-toy-value-assessment-001"&&assessment.status==="ASSESSED","Esquema o estado de valoración desconocido.");
    assert(assessment.outcome_id===pkg.outcome_record.outcome_id&&assessment.execution_id===pkg.outcome_record.execution_id,"La valoración no está vinculada al resultado y ejecución exportados.");
    assert(typeof assessment.outcome_sha256==="string"&&/^[0-9a-f]{64}$/.test(assessment.outcome_sha256),"La valoración carece de hash de resultado válido.");
+   assert(await hash(pkg.outcome_record,"outcome_record")===assessment.outcome_sha256,"El hash del resultado de valoración no coincide con outcome_record.");
    assert(["observer","context","criterion","valuation_rule","rationale"].every(function(k){return typeof assessment[k]==="string"&&assessment[k].trim().length>0}),"La valoración está incompleta.");
    assert(pkg.value_assessment_status===undefined,"Un paquete evaluado no puede declarar NOT_ASSESSED.");
   }else{
