@@ -241,3 +241,56 @@ The corrected test candidate `fa15baeef941e9db679a9eca25b97a0ec4a94b5e` passed a
 ### Next action — acceptance inventory reconciliation before more tests
 
 Per the finite schema inventory governance rule, do not add further adversarial cases until the numbered acceptance register is reconciled against the actual implementation, fixtures, and CI evidence. Expand remaining `GROUP` rows, reconcile top-level optional-field types, package digest negatives, conditional package-stage/status truth table, nested input/result predicates, and FC-6 artifact inspection predicates. Keep states `verified`, `partial`, and `pending` evidence-based; no blanket upgrade from the five-workflow aggregate.
+
+
+## Reconciliation iteration 1 — expand delta, package integrity, and existing GT-04 evidence
+
+This is a denominator/traceability update only. It does not change application code and does not promote any status without mapped evidence. The current test file is `prototypes/collective_toy/web/ui_contract_test.cjs`; the GT-04 grouped adversarial helper recomputes `package_sha256` after each mutation, so those cases isolate inner predicates rather than package-integrity failures.
+
+### Package envelope gaps
+
+| ID | Atomic acceptance predicate | State | Evidence / next action |
+|---|---|---|---|
+| FC5-PKG-005 | Reject absent `package_sha256` | pending | No dedicated fixture/call mapped in current UI contract test |
+| FC5-PKG-006 | Reject malformed `package_sha256` shape | pending | No dedicated fixture/call mapped |
+| FC5-PKG-007 | Reject a well-formed but incorrect `package_sha256` | partial | Validator recomputes digest; add explicit tampered-digest fixture without recomputing it |
+| FC5-PKG-008 | Reject non-object `concrete_execution_trace` | pending | No dedicated top-level type substitution mapped |
+| FC5-PKG-009 | Reject non-object `outcome_record` | partial | GT-04 calls `gt04-outcome-array-substitution.json` and `gt04-outcome-null-substitution.json` (test lines 705–706); confirm exact-head run before upgrading |
+| FC5-PKG-010 | Reject non-object `value_assessment` | partial | GT-04 calls `gt04-assessment-array-substitution.json` (line 707); null/primitive substitutions remain unmapped |
+| FC5-PKG-011 | Enforce all legal/illegal assessment-object and status combinations | partial | Positive assessed and NOT_ASSESSED replay; negative calls at lines 708–709 and 714; full truth table remains pending |
+| FC5-PKG-012 | Reject unsupported `value_assessment_status` values | partial | `gt04-invalid-assessment-status.json` and `gt04-unknown-status-without-assessment.json` (lines 708, 714); confirm exact diagnostic/run evidence |
+
+### Delta-reach predicates — explicit denominator
+
+The finite schema inventory enumerates eleven emitted fields and twelve validation predicates. None of the predicates below is marked verified solely because engine output exists or replay compares valid generated packages.
+
+| ID | Atomic acceptance predicate | State | Evidence / gap |
+|---|---|---|---|
+| FC5-DELTA-001 | Exactly one delta entry for each declared non-baseline scenario | pending | Dedicated missing/extra-entry fixtures not mapped |
+| FC5-DELTA-002 | Reject unknown keys in a delta object | pending | Inventory reports no importer closed-key block; requires implementation review before test addition |
+| FC5-DELTA-003 | Require lowercase 64-hex baseline/intervention source hashes | pending | Malformed-hash fixtures not mapped |
+| FC5-DELTA-004 | Recompute each source hash from the correct canonical source projection and domain tag | partial | Engine computes hashes; importer tamper evidence not mapped |
+| FC5-DELTA-005 | Require state/transition delta fields to be arrays of declared IDs | pending | Wrong-type and unknown-ID fixtures not mapped |
+| FC5-DELTA-006 | Require added/removed trajectory deltas to be ordered valid paths | pending | Malformed path fixtures not mapped |
+| FC5-DELTA-007 | Require all three truncation fields to be booleans | pending | Wrong-type fixtures not mapped |
+| FC5-DELTA-008 | Require aggregate `truncated` to equal baseline OR intervention truncation | pending | Inconsistent-boolean fixture not mapped |
+| FC5-DELTA-009 | Require delta arrays to equal corresponding baseline-comparison fields | partial | Replay equality gives indirect coverage only; direct tampering fixture not mapped |
+| FC5-DELTA-010 | Forbid a baseline scenario's own delta entry | pending | Dedicated fixture not mapped |
+| FC5-DELTA-011 | Require one delta entry per intervention and no duplicate/missing scenario | pending | Dedicated fixtures not mapped |
+| FC5-DELTA-012 | Reject delta entry without a matching baseline comparison | pending | Dedicated fixture not mapped |
+
+### GT-04 evidence map (current test source, not a substitute for CI)
+
+The current browser contract test contains 32 calls to `rejectGt04Mutation`. Explicit cases include outcome/assessment type and field adversaries (lines 701–719), cross-links and digest checks (720–726), and package-stage/artifact mismatches (727–730). The corrected GT-05 replay test passed the five-workflow exact-head gate on `fa15baeef941e9db679a9eca25b97a0ec4a94b5e` (runs `38813194707`, `38813194676`, `38813194713`, `38813194700`, `38813194665`). That run predates this documentation-only commit and does not verify any later code changes.
+
+### FC-6 closure evidence remains pending
+
+| ID | Atomic acceptance predicate | State | Required evidence |
+|---|---|---|---|
+| FC6-ART-001 | Enumerate the exact exported artifacts and inspect each against its contract | partial | Attach artifact names, canonical hashes, and inspection outcome |
+| FC6-SCOPE-001 | Evidence bundle explicitly limits CI conclusions to engineering/reproducibility, not scientific validity | partial | Map exact governance text and final bundle artifact |
+| FC6-MAIN-001 | Verify `main` remains unchanged and PR #67 remains draft | pending fresh check | Capture branch SHA and PR base/head/draft state at closure |
+
+### Reconciliation decision
+
+The acceptance denominator is still **not finalized**: input, result, scenario and comparison nested predicates need the same atomic expansion and exact implementation/test mapping. The next work item remains documentation/schema reconciliation, beginning with verifying whether `delta_reach` has any import-time field-level validation. If it does not, record that as a contract gap and propose the smallest grouped implementation candidate on this development branch; do not silently treat replay as complete substitute validation. No scientific execution is authorized.
