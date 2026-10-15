@@ -702,6 +702,23 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /falta input o no es un objeto/i,
       "FC-5: importer must reject a missing required input field despite a recomputed package digest");
 
+    // FC-5: reject a missing required result field, even with a recomputed package digest.
+    const missingPackageResult = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.result;
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "missing-package-result.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(missingPackageResult))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /falta result o no es un objeto/i,
+      "FC-5: importer must reject a missing required result field despite a recomputed package digest");
+
     // FC-5: outcome execution identifier must match the exported concrete trace.
     const forgedOutcomeExecution = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
