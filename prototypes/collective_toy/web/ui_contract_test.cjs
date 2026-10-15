@@ -1458,9 +1458,16 @@ const assert = require("node:assert/strict");
         claimed.truncated === (claimed.baseline_truncated || claimed.intervention_truncated);
       // Preserve the original, known-valid export for the sole expected-accepted tuple.
       // Rehash only adversarial tuples; this keeps the positive control independent of mutation code.
-      const candidate = expectedAccepted ? deltaPackage : await page.evaluate(async (args) => {
+      const candidate = await page.evaluate(async (args) => {
         const copy = structuredClone(args.pkg);
-        Object.assign(copy.result.delta_reach.block_ac, args.claimed);
+        if (!args.expectedAccepted) {
+          Object.assign(copy.result.delta_reach.block_ac, args.claimed);
+        } else {
+          // The positive control must be self-consistent across the exported input and trace.
+          const inputHash = await window.hash(copy.input, "input");
+          copy.result.input_sha256 = inputHash;
+          if (copy.trace) copy.trace.input_sha256 = inputHash;
+        }
         const resultBody = structuredClone(copy.result);
         delete resultBody.input_sha256;
         delete resultBody.result_sha256;
@@ -1468,7 +1475,7 @@ const assert = require("node:assert/strict");
         delete copy.package_sha256;
         copy.package_sha256 = await window.hash(copy, "package_export");
         return copy;
-      }, { pkg: deltaPackage, claimed });
+      }, { pkg: deltaPackage, claimed, expectedAccepted });
       await page.locator("#package-file").setInputFiles({
         name: `delta-truncation-truth-table-${mask}.json`, mimeType: "application/json",
         buffer: Buffer.from(JSON.stringify(candidate))
