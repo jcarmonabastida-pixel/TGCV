@@ -421,6 +421,8 @@ const assert = require("node:assert/strict");
       "FC-1: browser engine must execute temporal profile 3 rather than leave the run pending");
     assert.match(await page.locator("#results").innerText(), /t_cd.*t_ab|t_ab.*t_cd/i,
       "FC-1: browser results must expose t_cd blocked until t_ab occurred earlier in the same trajectory");
+    assert.match(await page.locator("#results").innerText(), /t_cd.*CONDICIONADA POR SECUENCIA.*t_ab/i,
+      "FC-2: temporal trace must label t_cd as sequence-conditioned and identify t_ab as its prerequisite");
 
     // FC-2 contract-first: exploration must be distinguishable from an explicitly executed concrete sequence.
     assert.ok(await page.locator("#execute-sequence").count() === 1,
