@@ -568,6 +568,56 @@ const assert = require("node:assert/strict");
     assert.equal(fc4Package.value_assessment_status, undefined,
       "FC-4: an assessed package must not also claim valuation is unassessed");
 
+    // FC-5: round-trip a fully assessed FC-4 package through the actual import UI.
+    await page.locator("#package-file").setInputFiles({
+      name: "assessed-fc4-roundtrip.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(fc4Package))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "FC-5: package with complete contextual assessment must replay after import");
+
+    // FC-5: the same explicit outcome without a complete valuation must round-trip as NOT_ASSESSED.
+    const unassessedOutcomePackage = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.value_assessment;
+      candidate.value_assessment_status = "NOT_ASSESSED";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "outcome-not-assessed-roundtrip.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(unassessedOutcomePackage))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.equal(unassessedOutcomePackage.value_assessment_status, "NOT_ASSESSED",
+      "FC-5: outcome without complete contextual valuation must retain explicit NOT_ASSESSED");
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "FC-5: NOT_ASSESSED outcome package must replay after import");
+
+    // FC-5 adversarial case: a forged outcome digest must be rejected even when package hash is recomputed.
+    const forgedAssessmentDigest = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.value_assessment.outcome_sha256 = "0".repeat(64);
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "forged-assessment-outcome-digest.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedAssessmentDigest))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /hash del resultado de valoración no coincide/i,
+      "FC-5: importer must reject a forged outcome digest despite a recomputed package hash");
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
