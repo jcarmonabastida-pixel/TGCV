@@ -1721,8 +1721,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering disabled transitions changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": reordering disabled transitions changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": reordering disabled transitions changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": reordering disabled transitions changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized disabled transitions should change input SHA-256");
       }
@@ -1789,8 +1789,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering states changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": reordering states changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": reordering states changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": reordering states changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized states should change input SHA-256");
       }
@@ -1801,8 +1801,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": reordering transitions changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": reordering transitions changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": reordering transitions changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
       }
@@ -1837,8 +1837,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           "reordering disabled transitions changed scenario outcomes");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           "reordering disabled transitions changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          "reordering disabled transitions changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          "reordering disabled transitions changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           "reordering serialized disabled transitions should change input SHA-256");
       }
@@ -1971,8 +1971,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering scenarios changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": reordering scenarios changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": reordering scenarios changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": reordering scenarios changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized scenarios should change input SHA-256");
       }
@@ -1983,8 +1983,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": permuting relation order changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": permuting relation order changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": permuting relation order changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": permuting relation order changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": permuting serialized relation order should change input SHA-256");
       } else if (fixture.model.rule_profile?.type === "relation_guarded_graph" &&
