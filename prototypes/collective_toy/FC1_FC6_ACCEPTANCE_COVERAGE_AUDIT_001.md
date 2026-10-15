@@ -35,3 +35,8 @@ The numbered working register is now available at [`FC5_FC6_NUMBERED_ACCEPTANCE_
 
 
 The existing-fixture reconciliation is recorded in [`FC5_EXISTING_TEST_RECONCILIATION_001.md`](FC5_EXISTING_TEST_RECONCILIATION_001.md), commit `d22618955d7dfc97b21e3ccf4f73c890ac3453f9`. It maps named current browser fixtures to the predicates they actually exercise, distinguishes positive delta evidence from importer-side schema validation, and records a static inventory snapshot of 112 register rows (6 verified, 65 partial, 38 pending, 3 qualified). This is not the final atomic denominator or a CI result; no tests were executed and no implementation changed.
+
+
+## Test strategy clarification
+
+Atomic acceptance predicates are a traceability mechanism, **not** a one-test-per-requirement plan. Tests should group coherent contract and integration behavior, with adversarial cases added when a concrete risk is identified. See [`FC5_FC6_TEST_STRATEGY_CORRECTION_001.md`](FC5_FC6_TEST_STRATEGY_CORRECTION_001.md), commit `4ecca3b37525c763ebd8c2575ea5147389c21d25`. The numbered register's row count is not the number of tests needed or remaining. The register definitions were clarified in commit `b9464a6654b90f5a695f8f71af23d81c0448c042`. No tests were added or executed in this iteration.
