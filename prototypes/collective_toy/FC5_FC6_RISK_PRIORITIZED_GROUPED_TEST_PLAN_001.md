@@ -173,3 +173,12 @@ The awaited-loop candidate [8fa0534e](https://github.com/jcarmonabastida-pixel/T
 Corrective candidate: `152c30b72230cc7ca8c7dcf4397fc758630d7564`. The imported input schema validation is moved to immediately after verifying `input_sha256`, before result/delta structural and semantic validation. This makes the declared input contract primary while retaining source-hash recomputation for structurally valid inputs.
 
 Exact-head CI pending: browser/cross-runtime [38763981926](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763981926), engine [38763981902](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763981902), engine benchmark [38763981914](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763981914), browser benchmark [38763981900](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763981900), governance [38763982025](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763982025).
+
+
+### GT-03 second precedence failure and correction
+
+Browser/cross-runtime [run 38763981926](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763981926) failed on the malformed `rule_profile` adversarial fixture. Although `validate(pkg.input)` had been moved before replay, it still ran after the nested `delta_reach` validation (the input hash/schema block was near the end of the importer), so a stale delta source hash masked the expected `rule_profile no compatible` error. Engine, both benchmarks, and governance passed on the same head.
+
+Corrective candidate commit: `5c4202ad06f266604f6ffae786634c282977eeaf`. The importer now checks the declared input hash and validates the input schema immediately after confirming `pkg.input` is an object, before inspecting derived result/comparison/delta structures. The later duplicate input hash/schema block was removed. This preserves integrity checks while establishing the intended validation precedence.
+
+Exact-head CI pending for `5c4202ad`; GT-03 remains open until browser/cross-runtime, engine, both benchmarks, and governance all complete successfully and the forged-source-hash adversarial assertion is observed.
