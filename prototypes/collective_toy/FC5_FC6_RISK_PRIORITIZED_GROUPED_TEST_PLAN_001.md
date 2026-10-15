@@ -340,3 +340,12 @@ All five required workflows passed on that same SHA:
 The browser/cross-runtime test completed successfully with the dedicated GT-03 assertion that the forged BLOCKED reason is rejected with the scenario-context-specific diagnostic after the adversarial fixture reverses baseline/alternate disablement and recomputes the linked digests. This demonstrates the tested validator uses the trace-declared scenario rather than baseline for this case. The adversarial case passes; it does not establish exhaustive FC-5/FC-6 coverage or scientific validity.
 
 GT-03 grouped execution-trace coherence is closed for the currently enumerated cases. Next grouped risk: GT-04, outcome and valuation as one linked evidence chain. Begin with source/fixture audit on the development branch, preserve main, and do not authorize scientific execution. This plan-only update does not inherit the above code-head CI evidence.
+
+
+### GT-04 source/fixture audit — initial gap identified
+
+Audit performed against code head `d54bec8e33a7464c91dc6953b22cb6faf742d11c` (the five-workflow evidence recorded above). Existing browser contract tests already cover forged outcome execution/model/scenario links and forged assessment execution/outcome links. The importer also checks the outcome schema identifier, assessment schema/status, required non-empty assessment context strings, assessment-to-outcome digest, and the explicit `NOT_ASSESSED` state when assessment is absent.
+
+**Candidate gap for grouped adversarial coverage:** `assessImportedBrowserPackage` validates the required outcome and assessment fields individually but does not currently enforce closed key sets for `outcome_record` and `value_assessment`. It also does not show a separate digest commitment for the outcome record itself; the assessment commits to the outcome through `outcome_sha256`. Before implementation, compare these observations against the approved artifact contract and existing policy/acceptance register. If confirmed, add grouped fixtures for unknown outcome field, unknown assessment field, and outcome/assessment schema/enumeration/type boundary while preserving the already-tested cross-links and optional `NOT_ASSESSED` behavior. Do not relax existing checks or infer value from synthetic data.
+
+This is a source/fixture audit only; no code behavior was changed in this iteration. GT-04 remains open. Main remains unchanged; no scientific execution authorized.
