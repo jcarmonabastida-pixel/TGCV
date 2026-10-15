@@ -208,3 +208,8 @@ Four browser adversarial cases now exercise list type and declared-ID membership
 ### Delta-reach trajectory validation follow-up
 
 Three negative fixtures cover non-list trajectory deltas, an undeclared state in an ordered path, and a transition edge that is not applicable to the adjacent states. Fixtures recompute result/package hashes and assert the specific trajectory validation diagnostic. Do not mark verified until all five workflows pass on the exact candidate commit.
+
+
+### Delta-reach comparison correspondence follow-up
+
+Added three browser fixtures isolating semantic mismatch against `comparisons_to_baseline` after satisfying structural/type/ID/path checks. The cases use declared state/transition IDs and a valid ordered path, so rejection should occur at the final delta-versus-comparison equality predicate. Acceptance awaits all five workflows on the same commit.

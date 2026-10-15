@@ -327,3 +327,10 @@ Added four focused negative fixtures for the next grouped risk: a non-array `rea
 The state/transition delta-list candidate `044527b23cc61f9781c740b6033b944fee6c1253` passed all five workflows on the same exact commit: browser/cross-runtime `38816440366`, synthetic engine `38816440406`, governance consistency `38816440385`, browser benchmark `38816440371`, and engine benchmark `38816440375`. Browser execution and clean-source replay passed.
 
 Added three focused browser adversaries for the next grouped risk: `trajectories_added` as a non-list; a removed trajectory containing an undeclared state; and a removed trajectory whose transition edge does not connect the preceding and next states. Each case recomputes enclosing result/package digests and asserts the targeted validator diagnostic. New predicates remain pending exact-head CI.
+
+
+### FC5-DELTA-011/012 — semantic correspondence to baseline comparison
+
+The ordered-trajectory candidate `ca6ee8c48f41acd9dce4c2ff872fc6a9006c698d` passed all five exact-head workflows: browser/cross-runtime `38816955178`, synthetic engine `38816954767`, governance consistency `38816954811`, engine benchmark `38816954808`, and browser benchmark `38816954841`. Browser execution and clean-source replay passed.
+
+Added three adversarial fixtures where the delta value is structurally valid and uses declared IDs but disagrees with `comparisons_to_baseline`: a valid state ID in `reachable_states_added`, a valid transition ID in `enabled_at_initial_added`, and a valid ordered path in `trajectories_added`. Each fixture recomputes enclosing result/package hashes and expects the semantic cross-check diagnostic. Pending exact-head CI.

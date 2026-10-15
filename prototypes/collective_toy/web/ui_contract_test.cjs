@@ -1416,6 +1416,33 @@ const assert = require("node:assert/strict");
         "FC-5: reject malformed or non-applicable ordered path in delta_reach field " + item.field);
     }
 
+    // FC-5 grouped adversarial cases: well-formed delta IDs/paths must still match baseline comparisons exactly.
+    for (const item of [
+      { name: "delta-valid-state-id-comparison-mismatch.json", field: "reachable_states_added", value: ["C"] },
+      { name: "delta-valid-transition-id-comparison-mismatch.json", field: "enabled_at_initial_added", value: ["t_ac"] },
+      { name: "delta-valid-trajectory-comparison-mismatch.json", field: "trajectories_added", value: [[{ state: "A" }, { state: "B", transition: "t_ab" }]] }
+    ]) {
+      const candidate = await page.evaluate(async ({ pkg, field, value }) => {
+        const copy = structuredClone(pkg);
+        copy.result.delta_reach.block_ac[field] = value;
+        const resultBody = structuredClone(copy.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        copy.result.result_sha256 = await window.hash(resultBody, "result");
+        delete copy.package_sha256;
+        copy.package_sha256 = await window.hash(copy, "package_export");
+        return copy;
+      }, { pkg: deltaPackage, field: item.field, value: item.value });
+      await page.locator("#package-file").setInputFiles({
+        name: item.name, mimeType: "application/json", buffer: Buffer.from(JSON.stringify(candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(),
+        /delta_reach de block_ac no coincide con la comparación baseline exportada/i,
+        "FC-5: reject structurally valid delta field that differs from baseline comparison: " + item.field);
+    }
+
     // GT-03 scenario-context adversary: the blocked reason must use trace.scenario_id, not baseline.
     const forgedBlockedScenarioContext = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
