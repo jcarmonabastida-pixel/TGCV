@@ -1164,6 +1164,27 @@ const assert = require("node:assert/strict");
       if (!baseline || !alternate) throw new Error("Fixture needs baseline and block_ac scenarios");
       baseline.disabled_transitions = [...new Set([...(baseline.disabled_transitions || []), trace.blocked_step.transition_id])].sort();
       alternate.disabled_transitions = (alternate.disabled_transitions || []).filter(id => id !== trace.blocked_step.transition_id);
+      // Keep delta_reach source commitments coherent with the adversarially edited scenarios,
+      // so validation reaches the intended BLOCKED-reason diagnostic.
+      const sourceCommon = {
+        schema_version: candidate.input.schema_version,
+        model_id: candidate.input.model_id,
+        initial_state: candidate.input.initial_state,
+        states: candidate.input.states,
+        transitions: candidate.input.transitions,
+        relations: candidate.input.relations || [],
+        rule_profile: candidate.input.rule_profile,
+        exploration: candidate.input.exploration || {}
+      };
+      const baselineSource = candidate.input.scenarios.find(s => s.id === "baseline");
+      for (const id of Object.keys(candidate.result.delta_reach || {})) {
+        const interventionSource = candidate.input.scenarios.find(s => s.id === id);
+        if (!interventionSource) throw new Error("Missing delta_reach intervention scenario: " + id);
+        candidate.result.delta_reach[id].baseline_source_sha256 =
+          await window.hash({...sourceCommon, scenario: baselineSource}, "delta_reach_baseline_source");
+        candidate.result.delta_reach[id].intervention_source_sha256 =
+          await window.hash({...sourceCommon, scenario: interventionSource}, "delta_reach_intervention_source");
+      }
       trace.scenario_id = alternate.id;
       trace.input_sha256 = await window.hash(candidate.input);
       candidate.result.input_sha256 = trace.input_sha256;

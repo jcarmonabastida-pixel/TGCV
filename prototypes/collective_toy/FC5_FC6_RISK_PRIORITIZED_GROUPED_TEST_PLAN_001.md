@@ -309,3 +309,8 @@ Status: implementation and grouped adversary committed; awaiting all five exact-
 ### GT-03 scenario-context attempt 1 — diagnostic assertion mismatch
 
 On exact head `3ec65da09de3bad42b870773468b98b0d9996e6d`, four workflows passed and browser/cross-runtime failed at the pre-existing forged-blocked-reason assertion. The importer rejected the adversarial package with the new, more specific scenario-context diagnostic as intended, but that earlier assertion still expected the previous diagnostic string. This is a test expectation mismatch, not evidence that the semantic rejection failed. Updated the assertion to accept the new scenario-context wording while retaining the legacy wording compatibility. Rerun all five checks on the new exact head; GT-03 remains open until they pass and the dedicated scenario-context adversary also passes.
+
+
+### GT-03 scenario-context attempt 2 — preserve delta_reach source commitments
+
+On exact head `78838efc3466e30124400a267347116c9a53f623`, four of five controls passed; browser/cross-runtime failed because the adversarial fixture changed scenario disablement but left `result.delta_reach[*].baseline_source_sha256` and `intervention_source_sha256` stale. The importer correctly rejected that earlier inconsistency, so the test never reached the intended BLOCKED-reason diagnostic. Updated the adversary to recompute both delta_reach source commitments for every affected intervention scenario before recomputing input/trace/package digests. This preserves fail-closed validation and makes the adversarial package internally coherent up to the intended assertion. Rerun all five controls on the new exact head; GT-03 remains open.
