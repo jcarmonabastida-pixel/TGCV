@@ -195,15 +195,18 @@ const assert = require("node:assert/strict");
     assert.doesNotMatch(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i);
 
     // A changed result with stale package/result hashes must fail closed.
-    const tamperedPackage = structuredClone(packageData);
-    tamperedPackage.result.scientific_interpretation += " tampered";
-    tamperedPackage.result.semantic_sha256 = await window.hash(
-      window.semanticResultProjection(tamperedPackage.result)
-    );
-    const tamperedResultBody = structuredClone(tamperedPackage.result);
-    delete tamperedResultBody.input_sha256;
-    delete tamperedResultBody.result_sha256;
-    tamperedPackage.result.result_sha256 = await window.hash(tamperedResultBody);
+    const tamperedPackage = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.scientific_interpretation += " tampered";
+      candidate.result.semantic_sha256 = await window.hash(
+        window.semanticResultProjection(candidate.result)
+      );
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody);
+      return candidate;
+    }, packageData);
     await page.locator("#package-file").setInputFiles({
       name: "tampered-run.json",
       mimeType: "application/json",
