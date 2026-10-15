@@ -24,7 +24,31 @@
 </div>
 <div class="actions"><button id="load">Cargar ejemplo</button><button id="run" class="primary">Ejecutar escenarios</button></div><div id="status" role="status" aria-live="polite" class="muted">Preparado para ejecutar el ejemplo sintético.</div></section>
 <section class="panel"><h2>2 · Grafo del sistema</h2><p class="muted">Las flechas atenuadas están deshabilitadas en el escenario seleccionado. Cambia la disposición, usa zoom y arrastra el grafo.</p><label for="which">Escenario visualizado</label><br><select id="which" style="margin:8px 0 12px;max-width:100%"><option value="baseline">baseline</option></select><label for="layout-mode">Disposición</label> <select id="layout-mode" style="margin:8px 0 12px;max-width:100%"><option value="auto">Automática</option><option value="circular">Circular</option><option value="grid">Cuadrícula</option><option value="hierarchical">Por niveles</option></select><div class="actions"><button id="zoom-out" type="button" aria-label="Alejar grafo">−</button><button id="zoom-in" type="button" aria-label="Acercar grafo">+</button><button id="fit-graph" type="button">Encuadrar todo</button></div><div class="graph-viewport"><svg id="graph" viewBox="0 0 620 260" role="img" aria-label="Representación interactiva del grafo"></svg></div><div id="graph-note" class="muted">Ejecuta el modelo para visualizarlo.</div></section>
-<section class="panel wide"><h2>3 · Resultados y comparación</h2><div class="relation-editor"><h2>Importar paquete exportado</h2><p class="muted">Evalúa un paquete del navegador sin convertir paquetes Python a este esquema. La integridad no implica reproducción.</p><label for="package-file">Paquete JSON</label> <input id="package-file" type="file" accept="application/json,.json"><div class="actions"><button id="assess-package" type="button">Validar paquete importado</button></div><div id="package-assessment" class="lifecycle-status" data-state="idle" role="status" aria-live="polite">No se ha evaluado ningún paquete.</div></div><div id="metrics" class="metrics"><div class="metric"><strong>—</strong><span>Estados alcanzables</span></div><div class="metric"><strong>—</strong><span>Trayectorias enumeradas</span></div><div class="metric"><strong>—</strong><span>Exploración completa</span></div></div><div id="results"><p class="muted">Los resultados aparecerán aquí después de ejecutar el modelo.</p></div><div class="relation-editor" aria-labelledby="sequence-execution-heading"><h2 id="sequence-execution-heading">Ejecución concreta de una trayectoria</h2><p class="muted">La exploración enumera posibilidades; esta acción ejecuta una trayectoria seleccionada y registra sus pasos en orden. La traza es distinta del conjunto de trayectorias posibles.</p><label for="sequence-select">Trayectoria candidata de baseline</label><select id="sequence-select" disabled><option value="">Ejecuta primero el modelo</option></select><label for="sequence-input">Secuencia manual opcional (IDs separados por comas)</label><input id="sequence-input" type="text" placeholder="p. ej., t_ac, t_cd" autocomplete="off"><p class="muted">Permite auditar un intento no ejecutable; la traza conserva el paso exacto y la causa del bloqueo.</p><div class="actions"><button id="execute-sequence" type="button" disabled>Ejecutar secuencia seleccionada</button></div><div id="sequence-trace" class="lifecycle-status" data-state="idle" role="status" aria-live="polite">No se ha ejecutado una secuencia concreta.</div></div><div class="actions"><button id="export" disabled>Exportar entrada y resultados (JSON)</button></div></section></div>
+<section class="panel wide"><h2>3 · Resultados y comparación</h2><div class="relation-editor"><h2>Importar paquete exportado</h2><p class="muted">Evalúa un paquete del navegador sin convertir paquetes Python a este esquema. La integridad no implica reproducción.</p><label for="package-file">Paquete JSON</label> <input id="package-file" type="file" accept="application/json,.json"><div class="actions"><button id="assess-package" type="button">Validar paquete importado</button></div><div id="package-assessment" class="lifecycle-status" data-state="idle" role="status" aria-live="polite">No se ha evaluado ningún paquete.</div></div><div id="metrics" class="metrics"><div class="metric"><strong>—</strong><span>Estados alcanzables</span></div><div class="metric"><strong>—</strong><span>Trayectorias enumeradas</span></div><div class="metric"><strong>—</strong><span>Exploración completa</span></div></div><div id="results"><p class="muted">Los resultados aparecerán aquí después de ejecutar el modelo.</p></div><div class="relation-editor" aria-labelledby="sequence-execution-heading"><h2 id="sequence-execution-heading">Ejecución concreta de una trayectoria</h2><p class="muted">La exploración enumera posibilidades; esta acción ejecuta una trayectoria seleccionada y registra sus pasos en orden. La traza es distinta del conjunto de trayectorias posibles.</p><label for="sequence-select">Trayectoria candidata de baseline</label><select id="sequence-select" disabled><option value="">Ejecuta primero el modelo</option></select><label for="sequence-input">Secuencia manual opcional (IDs separados por comas)</label><input id="sequence-input" type="text" placeholder="p. ej., t_ac, t_cd" autocomplete="off"><p class="muted">Permite auditar un intento no ejecutable; la traza conserva el paso exacto y la causa del bloqueo.</p><div class="actions"><button id="execute-sequence" type="button" disabled>Ejecutar secuencia seleccionada</button></div><div id="sequence-trace" class="lifecycle-status" data-state="idle" role="status" aria-live="polite">No se ha ejecutado una secuencia concreta.</div></div>
+<div class="relation-editor" aria-labelledby="outcome-heading">
+<h2 id="outcome-heading">Resultado observado o sintético (FC-4)</h2>
+<p class="muted">Registra un resultado explícito vinculado a una ejecución concreta. No se infiere de la alcanzabilidad ni del número de trayectorias.</p>
+<label for="outcome-kind">Procedencia del resultado</label><select id="outcome-kind"><option value="synthetic">Sintético</option><option value="observed">Observado</option></select>
+<label for="outcome-value">Resultado</label><input id="outcome-value" type="text" placeholder="p. ej., tiempo de respuesta registrado">
+<label for="outcome-unit">Unidad de medida</label><input id="outcome-unit" type="text" placeholder="p. ej., ms, unidades, descripción cualitativa">
+<label for="outcome-timing">Momento o ventana temporal</label><input id="outcome-timing" type="text" placeholder="p. ej., después de la ejecución">
+<label for="outcome-uncertainty">Incertidumbre / estado de medición</label><input id="outcome-uncertainty" type="text" placeholder="p. ej., no cuantificada; medición ilustrativa">
+<label for="outcome-provenance">Procedencia y notas</label><textarea id="outcome-provenance" rows="2" placeholder="Fuente, método de obtención o nota sintética"></textarea>
+<div class="actions"><button id="record-outcome" type="button" disabled>Registrar resultado</button></div>
+<div id="outcome-status" class="lifecycle-status" data-state="not-assessed" role="status" aria-live="polite">NOT_ASSESSED · No se ha registrado ningún resultado.</div>
+</div>
+<div class="relation-editor" aria-labelledby="value-heading">
+<h2 id="value-heading">Valoración contextual (separada del motor)</h2>
+<p class="muted">La valoración no es una recompensa del motor. Sin observador, contexto, criterio, regla y justificación se mantiene NOT_ASSESSED.</p>
+<label for="value-observer">Observador</label><input id="value-observer" type="text">
+<label for="value-context">Contexto</label><input id="value-context" type="text">
+<label for="value-criterion">Criterio u objetivo</label><input id="value-criterion" type="text">
+<label for="value-rule">Regla de valoración</label><input id="value-rule" type="text">
+<label for="value-rationale">Justificación</label><textarea id="value-rationale" rows="2"></textarea>
+<div class="actions"><button id="assess-value" type="button" disabled>Registrar valoración contextual</button></div>
+<div id="value-status" class="lifecycle-status" data-state="not-assessed" role="status" aria-live="polite">NOT_ASSESSED · Falta resultado u otro dato contextual requerido.</div>
+</div>
+<div class="actions"><button id="export" disabled>Exportar entrada y resultados (JSON)</button></div></section></div>
 <footer>Perfiles: grafo dirigido finito v1 (relaciones descriptivas), relation_guarded_graph v1 (disponibilidad de escenario) y temporal_prerequisite_graph v1 (prerrequisitos en la misma secuencia) · exploración acotada · uso exclusivamente sintético. Los hashes apoyan la reproducibilidad, no certifican la integridad externa.</footer></main>
 <script>
 "use strict";
@@ -346,8 +370,41 @@ $("execute-sequence").addEventListener("click",async function(){
   panel.append(node("p","muted","Traza SHA-256: "+trace.trace_sha256));
   panel.dataset.state=blockedStep?"blocked-trace-recorded":"replay-verified";
   panel._trace=trace;
+  updateFc4Controls();
  }catch(e){panel.dataset.state="rejected";panel.replaceChildren(node("p","error","No se ha podido ejecutar la secuencia: "+(e.message||String(e))))}
 });
+var outcomeRecord=null,valueAssessment=null;
+function updateFc4Controls(){
+ var trace=$("sequence-trace")._trace;
+ $("record-outcome").disabled=!(trace&&trace.status==="COMPLETED");
+ $("assess-value").disabled=!(outcomeRecord&&outcomeRecord.outcome_id);
+}
+$("record-outcome").addEventListener("click",function(){
+ var trace=$("sequence-trace")._trace;
+ try{
+  assert(trace&&trace.status==="COMPLETED","Registra un resultado solo después de una ejecución completada.");
+  var value=$("outcome-value").value.trim(),unit=$("outcome-unit").value.trim(),timing=$("outcome-timing").value.trim(),uncertainty=$("outcome-uncertainty").value.trim(),provenance=$("outcome-provenance").value.trim();
+  assert(value&&unit&&timing&&uncertainty&&provenance,"Completa resultado, unidad, momento, incertidumbre/estado y procedencia.");
+  outcomeRecord={outcome_schema:"collective-toy-outcome-001",outcome_id:"outcome-"+trace.execution_id,execution_id:trace.execution_id,execution_trace_sha256:trace.trace_sha256,model_id:trace.model_id,scenario_id:trace.scenario_id,source_kind:$("outcome-kind").value,value:value,unit:unit,timing:timing,uncertainty_status:uncertainty,provenance:provenance};
+  valueAssessment=null;
+  $("outcome-status").dataset.state="recorded";
+  $("outcome-status").textContent="PASS · Resultado registrado y vinculado a "+trace.execution_id+" (traza SHA-256 "+trace.trace_sha256+").";
+  $("value-status").dataset.state="not-assessed";
+  $("value-status").textContent="NOT_ASSESSED · La valoración requiere observador, contexto, criterio, regla y justificación.";
+  updateFc4Controls();
+ }catch(e){$("outcome-status").dataset.state="rejected";$("outcome-status").textContent="ERROR · "+e.message}
+});
+$("assess-value").addEventListener("click",function(){
+ try{
+  assert(outcomeRecord,"No existe un resultado explícito que valorar.");
+  var observer=$("value-observer").value.trim(),context=$("value-context").value.trim(),criterion=$("value-criterion").value.trim(),rule=$("value-rule").value.trim(),rationale=$("value-rationale").value.trim();
+  if(!(observer&&context&&criterion&&rule&&rationale)){
+   valueAssessment=null;$("value-status").dataset.state="not-assessed";$("value-status").textContent="NOT_ASSESSED · Completa observador, contexto, criterio, regla y justificación.";return;
+  }
+  valueAssessment={assessment_schema:"collective-toy-value-assessment-001",assessment_id:"assessment-"+outcomeRecord.outcome_id,outcome_id:outcomeRecord.outcome_id,execution_id:outcomeRecord.execution_id,outcome_sha256:await hash(outcomeRecord,"outcome_record"),observer:observer,context:context,criterion:criterion,valuation_rule:rule,rationale:rationale,status:"ASSESSED"};
+  $("value-status").dataset.state="assessed";$("value-status").textContent="ASSESSED · Valoración vinculada al resultado "+outcomeRecord.outcome_id+"; no se ha enviado al motor.";
+ }catch(e){$("value-status").dataset.state="rejected";$("value-status").textContent="ERROR · "+e.message}
+});
 $("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage)draw(lastModel,lastPackage.result,$("which").value)});
-$("export").addEventListener("click",async function(){if(!lastPackage)return;var trace=$("sequence-trace")._trace||null,exportPackage=Object.assign({},lastPackage);if(trace)exportPackage.concrete_execution_trace=trace;delete exportPackage.package_sha256;exportPackage.package_sha256=await hash(exportPackage,"package_export");var blob=new Blob([JSON.stringify(exportPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
+$("export").addEventListener("click",async function(){if(!lastPackage)return;var trace=$("sequence-trace")._trace||null,exportPackage=Object.assign({},lastPackage);if(trace)exportPackage.concrete_execution_trace=trace;if(outcomeRecord)exportPackage.outcome_record=outcomeRecord;if(valueAssessment)exportPackage.value_assessment=valueAssessment;else exportPackage.value_assessment_status="NOT_ASSESSED";delete exportPackage.package_sha256;exportPackage.package_sha256=await hash(exportPackage,"package_export");var blob=new Blob([JSON.stringify(exportPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
 </script></body></html>
