@@ -380,6 +380,31 @@ async function assessImportedBrowserPackage(pkg){
  }
  return {status:"replay-verified",message:"Integridad verificada y reproducción independiente coincidente bajo el contrato declarado.",integrity:true,replay:true};
 }
+function rejectDuplicateJsonObjectKeys(source){
+ var i=0;
+ function ws(){while(i<source.length&&/\\s/.test(source[i]))i++}
+ function stringToken(){
+  var start=i;if(source[i]!=='"')throw new Error("JSON inválido");
+  i++;while(i<source.length){var ch=source[i++];if(ch==='"')return JSON.parse(source.slice(start,i));if(ch==='\\\\'){if(i>=source.length)break;i++}}
+  throw new Error("JSON inválido");
+ }
+ function value(){
+  ws();var ch=source[i];
+  if(ch==='{'){
+   i++;ws();var keys=new Set();if(source[i]==='}'){i++;return}
+   while(i<source.length){
+    ws();var key=stringToken();if(keys.has(key))throw new Error("El JSON contiene una clave de objeto duplicada: "+key);keys.add(key);
+    ws();if(source[i++]!==':')throw new Error("JSON inválido");value();ws();
+    if(source[i]==='}'){i++;return}if(source[i++]!==',')throw new Error("JSON inválido");
+   }throw new Error("JSON inválido");
+  }
+  if(ch==='['){i++;ws();if(source[i]===']'){i++;return}while(i<source.length){value();ws();if(source[i]===']'){i++;return}if(source[i++]!==',')throw new Error("JSON inválido")}throw new Error("JSON inválido")}
+  if(ch==='"'){stringToken();return}
+  var m=/^(?:-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?|true|false|null)/.exec(source.slice(i));
+  if(!m)throw new Error("JSON inválido");i+=m[0].length;
+ }
+ value();ws();if(i!==source.length)throw new Error("JSON inválido");
+}
 function setPackageAssessment(state,message){
  var status=$("package-assessment");status.dataset.state=state;status.textContent=message;
 }
@@ -394,7 +419,7 @@ async function handleImportedPackage(){
  setPackageAssessment("validating","Leyendo y validando paquete…");
  try{
   var text=await file.text(),pkg;
-  try{pkg=JSON.parse(text)}catch(_parseError){throw new Error("El archivo no contiene JSON válido.")}
+  try{rejectDuplicateJsonObjectKeys(text);pkg=JSON.parse(text)}catch(_parseError){if(_parseError&&/^El JSON contiene una clave de objeto duplicada:/.test(_parseError.message))throw _parseError;throw new Error("El archivo no contiene JSON válido.")}
   var assessment=await assessImportedBrowserPackage(pkg);
   setPackageAssessment(assessment.replay?"replay-verified":"inspect-only/replay-unavailable",assessment.status+": "+assessment.message);
  }catch(e){setPackageAssessment("rejected","rejected: "+(e&&e.message?e.message:String(e)))}
