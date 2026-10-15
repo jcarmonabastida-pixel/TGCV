@@ -197,6 +197,13 @@ const assert = require("node:assert/strict");
     // A changed result with stale package/result hashes must fail closed.
     const tamperedPackage = structuredClone(packageData);
     tamperedPackage.result.scientific_interpretation += " tampered";
+    tamperedPackage.result.semantic_sha256 = await window.hash(
+      window.semanticResultProjection(tamperedPackage.result)
+    );
+    const tamperedResultBody = structuredClone(tamperedPackage.result);
+    delete tamperedResultBody.input_sha256;
+    delete tamperedResultBody.result_sha256;
+    tamperedPackage.result.result_sha256 = await window.hash(tamperedResultBody);
     await page.locator("#package-file").setInputFiles({
       name: "tampered-run.json",
       mimeType: "application/json",
