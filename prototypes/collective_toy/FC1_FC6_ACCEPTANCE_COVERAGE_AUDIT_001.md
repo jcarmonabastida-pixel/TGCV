@@ -40,3 +40,8 @@ The existing-fixture reconciliation is recorded in [`FC5_EXISTING_TEST_RECONCILI
 ## Test strategy clarification
 
 Atomic acceptance predicates are a traceability mechanism, **not** a one-test-per-requirement plan. Tests should group coherent contract and integration behavior, with adversarial cases added when a concrete risk is identified. See [`FC5_FC6_TEST_STRATEGY_CORRECTION_001.md`](FC5_FC6_TEST_STRATEGY_CORRECTION_001.md), commit `4ecca3b37525c763ebd8c2575ea5147389c21d25`. The numbered register's row count is not the number of tests needed or remaining. The register definitions were clarified in commit `b9464a6654b90f5a695f8f71af23d81c0448c042`. No tests were added or executed in this iteration.
+
+
+## Risk-prioritized grouped test plan
+
+The next testing unit is a coherent behavior/risk scenario, not an individual atomic predicate. The proposed grouped plan is [`FC5_FC6_RISK_PRIORITIZED_GROUPED_TEST_PLAN_001.md`](FC5_FC6_RISK_PRIORITIZED_GROUPED_TEST_PLAN_001.md), commit `f82a4039a829c9b86151d4c0b41383c4661d708b`. It defines GT-01 through GT-06 and flags the trace lifecycle/optional-artifact policy as a contract decision before writing dependent tests. Documentation only: no tests were added or run, and no implementation changed.
