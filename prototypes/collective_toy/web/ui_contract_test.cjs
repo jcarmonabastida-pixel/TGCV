@@ -1154,6 +1154,31 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /baseline_source_sha256 de delta_reach en block_ac no corresponde a la fuente/i,
       "FC-5/FC-6: reject a syntactically valid but forged source hash even when enclosing hashes are recomputed");
 
+    // GT-03 scenario-context adversary: the blocked reason must use trace.scenario_id, not baseline.
+    const forgedBlockedScenarioContext = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      const trace = candidate.concrete_execution_trace;
+      if (trace.status !== "BLOCKED" || trace.blocked_step.reason !== "temporal_prerequisite_not_satisfied") throw new Error("Fixture must be a BLOCKED trace due to an unmet temporal prerequisite");
+      const baseline = candidate.input.scenarios.find(s => s.id === "baseline");
+      const alternate = candidate.input.scenarios.find(s => s.id === "block_ac");
+      if (!baseline || !alternate) throw new Error("Fixture needs baseline and block_ac scenarios");
+      baseline.disabled_transitions = [...new Set([...(baseline.disabled_transitions || []), trace.blocked_step.transition_id])].sort();
+      alternate.disabled_transitions = (alternate.disabled_transitions || []).filter(id => id !== trace.blocked_step.transition_id);
+      trace.scenario_id = alternate.id;
+      trace.input_sha256 = await window.hash(candidate.input);
+      candidate.result.input_sha256 = trace.input_sha256;
+      delete trace.trace_sha256;
+      trace.trace_sha256 = await window.hash(trace, "sequence_trace");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, blockedPackage);
+    await page.locator("#package-file").setInputFiles({name:"blocked-trace-wrong-baseline-context.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(forgedBlockedScenarioContext))});
+    await page.getByRole("button", {name:"Validar paquete importado"}).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /contexto del escenario de la traza/i,
+      "GT-03: blocked reason must be validated against trace.scenario_id, not baseline, with recomputed trace/package digests");
+
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();

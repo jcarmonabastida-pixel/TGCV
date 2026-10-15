@@ -297,3 +297,10 @@ All five required workflows passed on exact code head `cd6202508f3423343bed3cb41
 ### GT-03 next review item — scenario-context binding for BLOCKED reason
 
 The blocked-reason validator currently derives `transition_disabled_by_scenario` from the model's `baseline` scenario rather than the concrete trace's `scenario_id`. This risks validating a blocked trace against the wrong scenario context. Next iteration: resolve the exact scenario referenced by the trace, derive disabled-transition status from that scenario, and add an adversary proving the reason cannot be validated against baseline when the trace references a different scenario. Do not close GT-03 until the specific diagnostic and all five exact-head checks pass.
+
+
+### GT-03 next grouped risk — BLOCKED reason bound to trace scenario
+
+The prior validator derived `transition_disabled_by_scenario` from the model's `baseline` scenario even when the concrete trace declared another `scenario_id`. Updated the validator to resolve the trace's declared scenario and derive disablement from that scenario; an absent trace scenario is rejected explicitly. Added an adversarial import that changes baseline/alternate disablement context, points the BLOCKED trace at the alternate scenario, and recomputes linked input/trace/package digests while preserving a temporal-prerequisite block reason. The expected assertion is the scenario-context-specific diagnostic.
+
+Status: implementation and grouped adversary committed; awaiting all five exact-head checks and observation of the specific diagnostic. GT-03 remains open. No scientific execution authorized; main unchanged.
