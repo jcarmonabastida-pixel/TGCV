@@ -717,7 +717,7 @@ const assert = require("node:assert/strict");
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
-    assert.match(await page.locator("#package-assessment").innerText(), /resultado.*model_id.*no coincide/i,
+    assert.match(await page.locator("#package-assessment").innerText(), /model_id del resultado no coincide con la entrada y la traza exportadas/i,
       "FC-5: importer must reject an outcome model ID that differs from the package input/trace");
 
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
