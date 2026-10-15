@@ -753,6 +753,27 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /esquema de paquete desconocido o no compatible/i,
       "FC-5: importer must reject an unsupported package schema version despite a recomputed digest");
 
+    // FC-5: reject unknown result fields even when all enclosing package hashes are recomputed.
+    const unknownResultField = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.uncontracted_result_extension = { injected: true };
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "unknown-result-field.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(unknownResultField))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /el resultado contiene campos desconocidos/i,
+      "FC-5: importer must reject unknown result fields despite recomputed result and package hashes");
+
     // FC-5: outcome execution identifier must match the exported concrete trace.
     const forgedOutcomeExecution = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
