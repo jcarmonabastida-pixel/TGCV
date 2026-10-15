@@ -554,6 +554,8 @@ class CollectiveToyEngineTests(unittest.TestCase):
                     verify_exported_package_integrity(package)
 
     def test_valid_hashes_do_not_make_divergent_result_replay_verified(self):
+        from collective_toy_engine_001 import semantic_result_projection
+
         package = export_run(self.model)
         package["result"]["scenario_results"]["baseline"]["reachable_states"].append(
             "FORGED_STATE_NOT_IN_MODEL"
