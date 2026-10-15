@@ -1369,10 +1369,12 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       await page.locator("#package-file").setInputFiles(outputPath);
       await page.getByRole("button", { name: "Validar paquete importado" }).click();
       const assessment = page.locator("#package-assessment");
-      await page.waitForFunction(() => {
+      await page.waitForFunction(({ expectedState, expectedMessage }) => {
         const node = document.querySelector("#package-assessment");
-        return !!node && !["idle", "validating"].includes(node.dataset.state);
-      }, null, { timeout: 5000 });
+        return !!node &&
+          node.dataset.state === expectedState &&
+          node.innerText.includes(expectedMessage);
+      }, { expectedState, expectedMessage }, { timeout: 5000 });
       const actualMessage = await assessment.innerText();
       assert.ok(actualMessage.includes(expectedMessage),
         "unexpected browser import assessment; expected [" + expectedMessage + "], got [" + actualMessage + "]");
