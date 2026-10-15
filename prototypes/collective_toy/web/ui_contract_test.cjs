@@ -668,6 +668,40 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /valoración está incompleta/i,
       "FC-5: importer must reject missing contextual assessment fields");
 
+    // FC-5: outcome execution identifier must match the exported concrete trace.
+    const forgedOutcomeExecution = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.outcome_record.execution_id = "sequence-execution-not-in-trace";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "forged-outcome-execution-link.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedOutcomeExecution))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /resultado no está vinculado a la traza de ejecución exportada/i,
+      "FC-5: importer must reject an outcome execution ID that differs from its trace");
+
+    // FC-5: assessment execution identifier must match both the outcome and exported trace.
+    const forgedAssessmentExecution = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.value_assessment.execution_id = "sequence-execution-not-in-trace";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "forged-assessment-execution-link.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedAssessmentExecution))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /valoración no está vinculada al resultado y ejecución exportados/i,
+      "FC-5: importer must reject an assessment execution ID that differs from its outcome");
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
