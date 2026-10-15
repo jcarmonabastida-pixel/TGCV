@@ -1438,6 +1438,51 @@ const assert = require("node:assert/strict");
       /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i,
       "FC-5: reject intervention truncation flag that disagrees with the intervention scenario");
 
+    // Exhaust all 8 claimed boolean triples against the scenario flags in this fixture.
+    // Exactly the tuple matching both scenario results and their OR aggregate may be accepted.
+    const truncationTruthTable = await page.evaluate((pkg) => {
+      const delta = pkg.result.delta_reach.block_ac;
+      const baseline = pkg.result.scenario_results.baseline.truncated;
+      const intervention = pkg.result.scenario_results.block_ac.truncated;
+      return { baseline, intervention, expectedAggregate: baseline || intervention };
+    }, deltaPackage);
+    for (let mask = 0; mask < 8; mask++) {
+      const claimed = {
+        baseline_truncated: Boolean(mask & 1),
+        intervention_truncated: Boolean(mask & 2),
+        truncated: Boolean(mask & 4)
+      };
+      const expectedAccepted =
+        claimed.baseline_truncated === truncationTruthTable.baseline &&
+        claimed.intervention_truncated === truncationTruthTable.intervention &&
+        claimed.truncated === (claimed.baseline_truncated || claimed.intervention_truncated);
+      const candidate = await page.evaluate(async (args) => {
+        const copy = structuredClone(args.pkg);
+        Object.assign(copy.result.delta_reach.block_ac, args.claimed);
+        const resultBody = structuredClone(copy.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        copy.result.result_sha256 = await window.hash(resultBody, "result");
+        delete copy.package_sha256;
+        copy.package_sha256 = await window.hash(copy, "package_export");
+        return copy;
+      }, { pkg: deltaPackage, claimed });
+      await page.locator("#package-file").setInputFiles({
+        name: `delta-truncation-truth-table-${mask}.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state]").waitFor();
+      await page.locator(expectedAccepted
+        ? "#package-assessment[data-state='accepted']"
+        : "#package-assessment[data-state='rejected']").waitFor();
+      if (!expectedAccepted) {
+        assert.match(await page.locator("#package-assessment").innerText(),
+          /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i,
+          `FC-5: truth-table tuple ${mask} rejected for scenario/aggregate inconsistency`);
+      }
+    }
+
     // FC-5 grouped adversarial cases: delta state/transition arrays must contain declared IDs.
     for (const item of [
       { name: "delta-reachable-states-added-wrong-type.json", field: "reachable_states_added", value: "C", diagnostic: /reachable_states_added de delta_reach en block_ac debe contener IDs de estado válidos/i },
