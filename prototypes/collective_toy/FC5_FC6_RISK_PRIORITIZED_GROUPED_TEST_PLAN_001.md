@@ -191,3 +191,12 @@ Browser/cross-runtime [run 38764688276](https://github.com/jcarmonabastida-pixel
 Inspection showed the previous move was ineffective: `validate(pkg.input)` still sat after result/comparison/delta checks (around the end of the importer). Corrective candidate `76262e9d3068a9e6d50f6d997c79cf55c6c26a59` now moves input-hash verification and schema validation immediately after confirming `pkg.input` is an object, before any result-field or delta checks.
 
 Exact-head CI pending for `76262e9d`. GT-03 remains open until all browser/cross-runtime, engine, both benchmark, and governance jobs pass on this exact head, including the forged-source-hash rejection test.
+
+
+### GT-03 third exact-head run — missing-result diagnostic regression and correction
+
+Browser/cross-runtime [run 38765169557](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38765169557) failed on commit `76262e9d`. The input validation was moved earlier, but this introduced an ordering regression for a package with no `result`: the importer tried to read `pkg.result.input_sha256` before checking that `result` exists, returning a JavaScript TypeError instead of the contract diagnostic `Falta result o no es un objeto`. The engine, both benchmarks, and governance passed.
+
+Corrective candidate `9f4093d7bd41719ba969d9661d721d6a2bcea692`: check that `pkg.result` is a non-array object immediately after checking `pkg.input` is an object, then verify `input_sha256` and validate the input schema before inspecting derived result fields and deltas. This preserves the package's required-object diagnostic while establishing schema-before-derived-validation precedence.
+
+Exact-head CI pending for `9f4093d7`. GT-03 remains open until all five checks pass and both adversarial diagnostics are observed.
