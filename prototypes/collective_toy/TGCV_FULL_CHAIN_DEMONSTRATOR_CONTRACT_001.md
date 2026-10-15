@@ -96,3 +96,35 @@ Implement one stage at a time. Do not combine unrelated fixes or optimize perfor
 The repository already contains a browser graph editor/importer and synthetic profiles 1/2; the sequentiality development branch contains the Python temporal profile and 18 synthetic contract tests. The existing browser engine currently validates only profiles 1/2 and enumerates paths; the full chain is therefore not yet implemented.
 
 **Next operation:** FC-1, first add browser-engine contract tests for temporal profile v1 (including historical-profile regression cases), then implement the minimal matching semantics and run the browser CI. Do not claim end-to-end completion until FC-2 through FC-6 are verified.
+
+
+## 8.1 Approved package-stage and trace lifecycle policy (2026-10-15)
+
+The owner approved Alternative A for FC-5/FC-6. This section is normative for the development contract; implementation and CI evidence remain outstanding.
+
+### Package stage
+
+A package may represent an explicitly identified partial stage or a later stage. The package schema must identify its stage (proposed field: `package_stage`) so a model/result snapshot cannot be mistaken for a completed full-chain execution. The current closed package schema does not yet contain this field; adding it must be handled as a deliberate, versioned schema change, not as a silent extension of `collective-toy-browser-run-001`.
+
+### Artifact dependencies
+
+- A stage snapshot containing model/input and exploration result may omit trace, outcome, and assessment when its stage explicitly indicates that execution has not yet occurred.
+- An execution trace may be `COMPLETED` or `BLOCKED`; both must remain exportable and inspectable.
+- A `COMPLETED` trace may exist without an outcome.
+- An outcome record requires a `COMPLETED` trace and must link to the exact execution ID, trace digest, model and scenario.
+- A `BLOCKED` trace must preserve the blocked-step/reason and last valid state coherently; it must not have an outcome or assessment representing a completed observation from that blocked execution.
+- A value assessment requires a valid outcome and must link to that outcome and execution.
+- If no value assessment exists, `value_assessment_status` must be `NOT_ASSESSED`, independently of whether execution occurred. It does not imply that no trace exists.
+- Reject undocumented artifact combinations, contradictory statuses, malformed artefacts, and broken cross-links.
+
+### Semantic distinctions
+
+Exploration results (including reachable states and `delta_reach`) are not the same as a concrete execution's `outcome_record`. Therefore a stage snapshot may legitimately include model/exploration result without a concrete execution trace; this does not permit an explicit execution outcome without its completed trace.
+
+### Integrity boundary
+
+Hashes support integrity/consistency checks but do not establish provenance authenticity or prove that an event actually occurred. Keep provenance declarations explicit and do not overstate what package validation establishes.
+
+### Implementation and acceptance gate
+
+Implement the schema versioning and lifecycle validation on the development branch only. Reuse existing round-trip and adversarial tests; add grouped lifecycle coverage for stage snapshots, completed traces with/without outcomes, blocked traces without outcomes, and invalid dependency combinations. Run required CI on the exact candidate commit. This approval does not authorize scientific execution or promotion to `main`.
