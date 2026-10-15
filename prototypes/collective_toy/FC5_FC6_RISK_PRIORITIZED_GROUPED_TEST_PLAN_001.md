@@ -1,6 +1,6 @@
 # FC-5 / FC-6 risk-prioritized grouped test plan — 001
 
-- **Status:** proposed test plan; no tests added or executed, no implementation changes.
+- **Status:** approved grouped test plan; policy A approved 2026-10-15. No tests added or executed in this documentation iteration.
 - **Branch:** `prototype/tgcv-full-chain-001-20261014`
 - **Inputs reviewed:** full-chain contract, current browser importer and current `ui_contract_test.cjs` FC-5 section.
 - **Purpose:** choose a small number of coherent test scenarios that cover multiple acceptance predicates, rather than creating one test per predicate.
@@ -9,20 +9,20 @@
 
 Each test case represents a behavior or risk. Its assertions may map to many acceptance predicates. Keep scenarios diagnostically coherent: assertions in one case should describe one package/contract invariant or one end-to-end flow, not an unrelated collection of fields.
 
-## Priority 0 — resolve policy before implementing dependent tests
+## Priority 0 — approved contract policy; implementation gate remains
 
 ### P0-A. Execution trace lifecycle and package optional-artifact policy
 
 **Contract source:** full-chain demonstrator contract, stage 7 says a blocked attempted sequence must remain inspectable; stages 8–10 link outcomes and valuation to an execution and permit valuation to be absent.
 
-**Proposed policy for owner decision (not yet normative):**
+**Approved policy (Alternative A):**
 - A `COMPLETED` trace may be exported with no outcome; if no assessment exists, package status is `NOT_ASSESSED`.
 - A `COMPLETED` trace may have an outcome, and that outcome must link to the exact trace.
 - A `BLOCKED` attempted trace must remain inspectable/exportable, but must not carry an outcome claiming a completed observation of that blocked execution.
 - A value assessment requires a valid outcome.
 - A package without any trace may be valid only when it represents an earlier stage and the package contract explicitly permits stage-partial exports; otherwise require the trace for a full-chain run package.
 
-**Why this needs a decision:** current importer appears to require `COMPLETED` status for any imported trace, while the product contract explicitly requires blocked attempts to remain inspectable. Trace-only and stage-partial package acceptance also affects required fields and the status truth table. Do not add tests with conflicting expectations before the policy is accepted.
+**Implementation requirement:** current importer appears to require `COMPLETED` status for any imported trace. The accepted policy is now normative in the development contract. The package schema currently lacks an explicit stage field, so introduce a deliberate versioned package schema before accepting stage-partial snapshots. Do not silently extend the closed schema.
 
 ## Priority 1 — grouped tests for clear existing risks
 
@@ -48,7 +48,7 @@ Each test case represents a behavior or risk. Its assertions may map to many acc
 
 **Group assertions:** closed trace/step schemas; required field types; sequence is coherent with the input model; history/prerequisites agree with the rule profile; trace digest and outcome cross-links are consistent.
 
-**Covers:** trace and step predicates together. The blocked-trace branch is intentionally excluded until P0-A is decided.
+**Covers:** trace and step predicates together. The blocked-trace branch is now in scope under the approved policy.
 
 ### GT-04. Outcome and valuation as one linked evidence chain
 
@@ -74,10 +74,10 @@ On the exact candidate commit, confirm all required workflows pass, clean-source
 
 ## Ordering
 
-1. Obtain a decision on P0-A and record it in the contract.
-2. Map current fixtures and CI evidence to GT-01..GT-06.
-3. Identify which grouped scenarios can pass with current implementation and which expose actual code gaps.
-4. Implement only the highest-risk demonstrated gap, in isolation, after the normal development gate.
+1. Introduce the versioned package-stage schema and map current fixtures/CI evidence to GT-01..GT-06.
+2. Identify which grouped scenarios pass with current implementation and which expose actual code gaps.
+3. Implement schema/lifecycle validation as a focused change on the development branch.
+4. Reuse existing fixtures and add grouped lifecycle/adversarial coverage for the approved policy.
 5. Run required CI on the exact candidate commit and update requirement coverage from the result.
 
 ## Current conclusion
@@ -87,4 +87,4 @@ The next unit of work is a **test scenario/risk**, not an individual atomic pred
 
 ## Contract-policy dependency
 
-GT-03 and GT-04 depend on an explicit decision about blocked traces and optional artifacts. The proposal and alternatives are documented in [`FC5_FC6_TRACE_ARTIFACT_POLICY_DECISION_001.md`](FC5_FC6_TRACE_ARTIFACT_POLICY_DECISION_001.md), commit `65fe13daf16001f65db38a5e916909882f8bd663`. It is intentionally a proposal awaiting owner approval; no code/tests were changed and no test expectations should be implemented until the policy is accepted.
+GT-03 and GT-04 depend on an explicit decision about blocked traces and optional artifacts. The approved decision is documented in [`FC5_FC6_TRACE_ARTIFACT_POLICY_DECISION_001.md`](FC5_FC6_TRACE_ARTIFACT_POLICY_DECISION_001.md). Policy A is approved; code/test changes must still follow the versioned schema and development-branch gates.
