@@ -652,7 +652,26 @@ def assess_exported_package(package: dict[str, Any]) -> dict[str, Any]:
             "replay_verified": False,
             "reason": "Unsupported exported package engine version",
         }
-    if run_model(package["input"]) != package["result"]:
+    replayed = run_model(package["input"])
+    exported = package["result"]
+    if "semantic_identity_version" not in exported:
+        # Legacy packages keep their original bytes and hashes. Compare only the
+        # legacy result contract, omitting fields introduced by newer engines,
+        # then independently recompute the legacy result hash.
+        legacy_replay = dict(replayed)
+        legacy_replay.pop("delta_reach", None)
+        legacy_replay.pop("semantic_identity_version", None)
+        legacy_replay.pop("semantic_sha256", None)
+        legacy_replay.pop("input_sha256", None)
+        legacy_replay.pop("result_sha256", None)
+        legacy_replay["input_sha256"] = sha256_json(package["input"])
+        legacy_replay["result_sha256"] = sha256_json({
+            key: value for key, value in legacy_replay.items()
+            if key != "input_sha256"
+        })
+        if legacy_replay != exported:
+            raise ModelValidationError("Legacy exported result does not match compatible replay")
+    elif replayed != exported:
         raise ModelValidationError("Exported result does not match independent replay")
     return {
         "status": "replay-verified",
