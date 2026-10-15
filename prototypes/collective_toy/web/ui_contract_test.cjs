@@ -706,6 +706,7 @@ const assert = require("node:assert/strict");
     const forgedOutcomeModel = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
       candidate.outcome_record.model_id = "model-not-in-package";
+      candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
       delete candidate.package_sha256;
       candidate.package_sha256 = await window.hash(candidate, "package_export");
       return candidate;
