@@ -4,8 +4,8 @@
 - **Branch:** `prototype/tgcv-full-chain-001-20261014`
 - **Basis:** `FC5_FC6_PACKAGE_SCHEMA_INVENTORY_001.md`, contract `TGCV_FULL_CHAIN_DEMONSTRATOR_CONTRACT_001.md`, implementation `web/index.html`, tests `web/ui_contract_test.cjs`.
 - **Scope boundary:** no scientific execution; no detector/OCR changes; `main` unchanged.
-- **State meanings:** `verified` = exact predicate has a named test and passing CI evidence; `partial` = implementation or broader tests exist but exact predicate lacks dedicated mapped evidence; `pending` = not demonstrated or unresolved contract decision.
-- **Important:** identifiers below are candidate atomic acceptance predicates. Rows marked `GROUP` are explicitly not atomic and must be expanded before a final total can be published.
+- **State meanings:** `verified` = predicate is covered by mapped test evidence and passing CI on the cited commit; `partial` = relevant evidence exists but does not establish the full predicate or its interactions; `pending` = not demonstrated or unresolved contract decision. A dedicated test per predicate is not required.
+- **Important:** identifiers below are atomic acceptance predicates for traceability, not a prescription to create one test per predicate. One contract, integration, replay, or adversarial test may cover multiple predicates. Rows marked `GROUP` are explicitly not atomic and must be expanded before a final denominator can be published.
 
 ## A. Package envelope
 
