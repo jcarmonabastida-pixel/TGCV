@@ -24,7 +24,7 @@
 </div>
 <div class="actions"><button id="load">Cargar ejemplo</button><button id="run" class="primary">Ejecutar escenarios</button></div><div id="status" role="status" aria-live="polite" class="muted">Preparado para ejecutar el ejemplo sintético.</div></section>
 <section class="panel"><h2>2 · Grafo del sistema</h2><p class="muted">Las flechas atenuadas están deshabilitadas en el escenario seleccionado. Cambia la disposición, usa zoom y arrastra el grafo.</p><label for="which">Escenario visualizado</label><br><select id="which" style="margin:8px 0 12px;max-width:100%"><option value="baseline">baseline</option></select><label for="layout-mode">Disposición</label> <select id="layout-mode" style="margin:8px 0 12px;max-width:100%"><option value="auto">Automática</option><option value="circular">Circular</option><option value="grid">Cuadrícula</option><option value="hierarchical">Por niveles</option></select><div class="actions"><button id="zoom-out" type="button" aria-label="Alejar grafo">−</button><button id="zoom-in" type="button" aria-label="Acercar grafo">+</button><button id="fit-graph" type="button">Encuadrar todo</button></div><div class="graph-viewport"><svg id="graph" viewBox="0 0 620 260" role="img" aria-label="Representación interactiva del grafo"></svg></div><div id="graph-note" class="muted">Ejecuta el modelo para visualizarlo.</div></section>
-<section class="panel wide"><h2>3 · Resultados y comparación</h2><div class="relation-editor"><h2>Importar paquete exportado</h2><p class="muted">Evalúa un paquete del navegador sin convertir paquetes Python a este esquema. La integridad no implica reproducción.</p><label for="package-file">Paquete JSON</label> <input id="package-file" type="file" accept="application/json,.json"><div class="actions"><button id="assess-package" type="button">Validar paquete importado</button></div><div id="package-assessment" class="lifecycle-status" data-state="idle" role="status" aria-live="polite">No se ha evaluado ningún paquete.</div></div><div id="metrics" class="metrics"><div class="metric"><strong>—</strong><span>Estados alcanzables</span></div><div class="metric"><strong>—</strong><span>Trayectorias enumeradas</span></div><div class="metric"><strong>—</strong><span>Exploración completa</span></div></div><div id="results"><p class="muted">Los resultados aparecerán aquí después de ejecutar el modelo.</p></div><div class="relation-editor" aria-labelledby="sequence-execution-heading"><h2 id="sequence-execution-heading">Ejecución concreta de una trayectoria</h2><p class="muted">La exploración enumera posibilidades; esta acción ejecuta una trayectoria seleccionada y registra sus pasos en orden. La traza es distinta del conjunto de trayectorias posibles.</p><label for="sequence-select">Trayectoria candidata de baseline</label><select id="sequence-select" disabled><option value="">Ejecuta primero el modelo</option></select><div class="actions"><button id="execute-sequence" type="button" disabled>Ejecutar secuencia seleccionada</button></div><div id="sequence-trace" class="lifecycle-status" data-state="idle" role="status" aria-live="polite">No se ha ejecutado una secuencia concreta.</div></div><div class="actions"><button id="export" disabled>Exportar entrada y resultados (JSON)</button></div></section></div>
+<section class="panel wide"><h2>3 · Resultados y comparación</h2><div class="relation-editor"><h2>Importar paquete exportado</h2><p class="muted">Evalúa un paquete del navegador sin convertir paquetes Python a este esquema. La integridad no implica reproducción.</p><label for="package-file">Paquete JSON</label> <input id="package-file" type="file" accept="application/json,.json"><div class="actions"><button id="assess-package" type="button">Validar paquete importado</button></div><div id="package-assessment" class="lifecycle-status" data-state="idle" role="status" aria-live="polite">No se ha evaluado ningún paquete.</div></div><div id="metrics" class="metrics"><div class="metric"><strong>—</strong><span>Estados alcanzables</span></div><div class="metric"><strong>—</strong><span>Trayectorias enumeradas</span></div><div class="metric"><strong>—</strong><span>Exploración completa</span></div></div><div id="results"><p class="muted">Los resultados aparecerán aquí después de ejecutar el modelo.</p></div><div class="relation-editor" aria-labelledby="sequence-execution-heading"><h2 id="sequence-execution-heading">Ejecución concreta de una trayectoria</h2><p class="muted">La exploración enumera posibilidades; esta acción ejecuta una trayectoria seleccionada y registra sus pasos en orden. La traza es distinta del conjunto de trayectorias posibles.</p><label for="sequence-select">Trayectoria candidata de baseline</label><select id="sequence-select" disabled><option value="">Ejecuta primero el modelo</option></select><label for="sequence-input">Secuencia manual opcional (IDs separados por comas)</label><input id="sequence-input" type="text" placeholder="p. ej., t_ac, t_cd" autocomplete="off"><p class="muted">Permite auditar un intento no ejecutable; la traza conserva el paso exacto y la causa del bloqueo.</p><div class="actions"><button id="execute-sequence" type="button" disabled>Ejecutar secuencia seleccionada</button></div><div id="sequence-trace" class="lifecycle-status" data-state="idle" role="status" aria-live="polite">No se ha ejecutado una secuencia concreta.</div></div><div class="actions"><button id="export" disabled>Exportar entrada y resultados (JSON)</button></div></section></div>
 <footer>Perfiles: grafo dirigido finito v1 (relaciones descriptivas), relation_guarded_graph v1 (disponibilidad de escenario) y temporal_prerequisite_graph v1 (prerrequisitos en la misma secuencia) · exploración acotada · uso exclusivamente sintético. Los hashes apoyan la reproducibilidad, no certifican la integridad externa.</footer></main>
 <script>
 "use strict";
@@ -316,34 +316,34 @@ $("execute-sequence").addEventListener("click",async function(){
  try{
   assert(lastModel&&lastPackage,"Ejecuta y valida el modelo antes de ejecutar una secuencia.");
   var baseline=lastPackage.result.scenario_results.baseline;
-  var index=Number($("sequence-select").value);
-  assert(Number.isInteger(index)&&index>=0&&index<baseline.trajectories.length,"Selecciona una trayectoria candidata válida.");
-  var path=baseline.trajectories[index],current=lastModel.initial_state,history=[],steps=[],disabled=new Set((lastModel.scenarios.find(function(x){return x.id==="baseline"}).disabled_transitions)||[]);
-  var temporal=canonical(lastModel.rule_profile)===canonical({type:"temporal_prerequisite_graph",version:"1"}),prerequisites={};
+  var manual=$("sequence-input").value.trim();
+  var transitionIds,index=null;
+  if(manual){transitionIds=manual.split(",").map(function(id){return id.trim()}).filter(Boolean);assert(transitionIds.length>0,"Introduce al menos un ID de transición.");}
+  else{index=Number($("sequence-select").value);assert(Number.isInteger(index)&&index>=0&&index<baseline.trajectories.length,"Selecciona una trayectoria candidata válida.");var path=baseline.trajectories[index];assert(path.length>0&&path[0].state===lastModel.initial_state,"La trayectoria seleccionada no comienza en el estado inicial.");transitionIds=path.slice(1).map(function(item){return item.transition});}
+  var current=lastModel.initial_state,history=[],steps=[],disabled=new Set((lastModel.scenarios.find(function(x){return x.id==="baseline"}).disabled_transitions)||[]);
+  var temporal=canonical(lastModel.rule_profile)===canonical({type:"temporal_prerequisite_graph",version:"1"}),prerequisites={},blockedStep=null;
   (lastModel.relations||[]).forEach(function(r){(prerequisites[r.transition_id]||(prerequisites[r.transition_id]=[])).push(r.requires_transition_id)});
-  assert(path.length>0&&path[0].state===current,"La trayectoria seleccionada no comienza en el estado inicial.");
-  path.slice(1).forEach(function(item,i){
-   var t=lastModel.transitions.find(function(candidate){return candidate.id===item.transition});
-   assert(t,"Paso "+(i+1)+": transición desconocida.");
-   assert(t.source===current,"Paso "+(i+1)+": el origen de "+t.id+" no coincide con el estado actual.");
-   assert(t.target===item.state,"Paso "+(i+1)+": el destino registrado no coincide con "+t.id+".");
-   assert(!disabled.has(t.id),"Paso "+(i+1)+": "+t.id+" está deshabilitada en baseline.");
-   var required=temporal?(prerequisites[t.id]||[]):[];
-   var missing=required.filter(function(id){return history.indexOf(id)<0});
-   assert(!missing.length,"Paso "+(i+1)+": "+t.id+" bloqueada; prerrequisitos temporales ausentes: "+missing.join(", "));
-   var before=current;current=t.target;
-   steps.push({step:i+1,transition_id:t.id,state_before:before,state_after:current,prior_transitions:history.slice(),prerequisites:required.slice().sort(),status:"EXECUTED"});
-   history.push(t.id);
-  });
-  var trace={trace_schema:"collective-toy-sequence-trace-001",execution_id:"sequence-execution-"+(++concreteExecutionCounter),model_id:lastModel.model_id,input_sha256:lastPackage.result.input_sha256,scenario_id:"baseline",candidate_index:index,initial_state:lastModel.initial_state,steps:steps,final_state:current,status:"COMPLETED"};
+  for(var i=0;i<transitionIds.length;i++){
+   var id=transitionIds[i],tr=lastModel.transitions.find(function(candidate){return candidate.id===id}),reason=null,missing=[],required=temporal?(prerequisites[id]||[]):[];
+   if(!tr)reason="unknown_transition";
+   else if(disabled.has(id))reason="transition_disabled_by_scenario";
+   else if(tr.source!==current)reason="transition_source_mismatch";
+   else{missing=required.filter(function(req){return history.indexOf(req)<0}).sort();if(missing.length)reason="temporal_prerequisite_not_satisfied";}
+   if(reason){blockedStep={index:i+1,transition_id:id,reason:reason,required_transition_ids:missing};break;}
+   var before=current;current=tr.target;
+   steps.push({step:i+1,transition_id:id,state_before:before,state_after:current,prior_transitions:history.slice(),prerequisites:required.slice().sort(),status:"EXECUTED"});
+   history.push(id);
+  }
+  var trace={trace_schema:"collective-toy-sequence-trace-001",execution_id:"sequence-execution-"+(++concreteExecutionCounter),model_id:lastModel.model_id,input_sha256:lastPackage.result.input_sha256,scenario_id:"baseline",candidate_index:index,submitted_transition_ids:transitionIds,initial_state:lastModel.initial_state,steps:steps,final_state:current,status:blockedStep?"BLOCKED":"COMPLETED",blocked_step:blockedStep};
   trace.trace_sha256=await hash(trace,"sequence_trace");
-  panel.replaceChildren(node("strong","","Ejecución concreta completada"));
+  panel.replaceChildren(node("strong","",blockedStep?"Ejecución bloqueada":"Ejecución concreta completada"));
   panel.append(node("p","muted","ID: "+trace.execution_id+" · Escenario: baseline · Estado inicial: "+trace.initial_state));
   panel.append(node("p","","Estado inicial: "+trace.initial_state));
   steps.forEach(function(step){panel.append(node("p","","Paso "+step.step+": "+step.transition_id+" · "+step.state_before+" → "+step.state_after+" · prerrequisitos previos: "+(step.prerequisites.join(", ")||"ninguno")))});
-  panel.append(node("p","","Estado final: "+trace.final_state));
+  if(blockedStep)panel.append(node("p","error","Paso bloqueado "+blockedStep.index+": "+blockedStep.transition_id+" · causa: "+blockedStep.reason+(blockedStep.required_transition_ids.length?" · prerrequisito(s) ausente(s): "+blockedStep.required_transition_ids.join(", "):"")));
+  panel.append(node("p","","Estado "+(blockedStep?"al detenerse: ":"final: ")+trace.final_state));
   panel.append(node("p","muted","Traza SHA-256: "+trace.trace_sha256));
-  panel.dataset.state="replay-verified";
+  panel.dataset.state=blockedStep?"blocked-trace-recorded":"replay-verified";
   panel._trace=trace;
  }catch(e){panel.dataset.state="rejected";panel.replaceChildren(node("p","error","No se ha podido ejecutar la secuencia: "+(e.message||String(e))))}
 });
