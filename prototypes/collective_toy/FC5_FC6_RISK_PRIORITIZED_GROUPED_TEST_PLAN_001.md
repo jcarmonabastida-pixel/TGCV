@@ -319,3 +319,8 @@ On exact head `78838efc3466e30124400a267347116c9a53f623`, four of five controls 
 ### GT-03 scenario-context attempt 3 — recompute result integrity
 
 On exact head `664966f8c3032087b116a9e4a683e6afb46dc077`, four controls passed and browser/cross-runtime failed because the adversarial fixture correctly refreshed input, delta_reach source, trace, and package commitments but did not recompute `result.semantic_sha256` and `result.result_sha256`. The importer therefore rejected at result integrity before reaching the intended scenario-context diagnostic. Updated the fixture to recompute semantic projection and result integrity commitments before trace/package digests. Rerun all five controls on the next exact head; GT-03 remains open.
+
+
+### GT-03 scenario-context attempt 5 — correct adversarial direction
+
+Review of the adversarial fixture exposed an inversion in the test itself: it disabled the blocked transition in `baseline` but removed the disablement from the trace-declared alternate scenario. A validator correctly using `trace.scenario_id` could therefore accept the recorded temporal-prerequisite reason, while the baseline-based validator would reject it—the opposite of the intended discrimination. Corrected the fixture so baseline permits the transition and the trace-declared `block_ac` scenario disables it, while the trace retains the stale `temporal_prerequisite_not_satisfied` reason. This is the intended adversarial direction: a baseline-based validator would accept; a scenario-aware validator must reject with the context-specific diagnostic. Integrity/replay checks must still be satisfied; run the five-control battery before claiming a pass. GT-03 remains open.

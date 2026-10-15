@@ -1162,8 +1162,11 @@ const assert = require("node:assert/strict");
       const baseline = candidate.input.scenarios.find(s => s.id === "baseline");
       const alternate = candidate.input.scenarios.find(s => s.id === "block_ac");
       if (!baseline || !alternate) throw new Error("Fixture needs baseline and block_ac scenarios");
-      baseline.disabled_transitions = [...new Set([...(baseline.disabled_transitions || []), trace.blocked_step.transition_id])].sort();
-      alternate.disabled_transitions = (alternate.disabled_transitions || []).filter(id => id !== trace.blocked_step.transition_id);
+      // Invert the context deliberately: baseline permits the transition, while the trace's
+      // declared alternate scenario disables it. A validator that incorrectly consults baseline
+      // would accept the stale temporal-prerequisite reason; the correct validator must reject it.
+      baseline.disabled_transitions = (baseline.disabled_transitions || []).filter(id => id !== trace.blocked_step.transition_id);
+      alternate.disabled_transitions = [...new Set([...(alternate.disabled_transitions || []), trace.blocked_step.transition_id])].sort();
       // Keep delta_reach source commitments coherent with the adversarially edited scenarios,
       // so validation reaches the intended BLOCKED-reason diagnostic.
       const sourceCommon = {
