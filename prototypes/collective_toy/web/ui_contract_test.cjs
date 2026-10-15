@@ -442,7 +442,10 @@ const assert = require("node:assert/strict");
       "FC-3: successful execution must expose a digest for its trace");
     // Submit a validly connected but temporally invalid sequence: t_ac reaches C, then t_cd lacks t_ab.
     await page.locator("#sequence-input").fill("t_ac, t_cd");
+    assert.equal(await page.locator("#sequence-input").inputValue(), "t_ac, t_cd",
+      "FC-3: manual attempted sequence must be present before execution");
     await page.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+    await page.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 3000 });
     await page.locator("#sequence-trace").waitFor();
     assert.equal(await page.locator("#sequence-trace").getAttribute("data-state"), "blocked-trace-recorded",
       "FC-3: blocked attempted sequence must be retained as an auditable trace");
