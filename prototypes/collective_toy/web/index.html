@@ -172,7 +172,7 @@ async function assessImportedBrowserPackage(pkg){
    var outcome=pkg.outcome_record;
    assert(outcome&&typeof outcome==="object"&&!Array.isArray(outcome),"outcome_record debe ser un objeto.");
    assert(outcome.outcome_schema==="collective-toy-outcome-001","Esquema de resultado desconocido o no compatible.");
-   assert(pkg.concrete_execution_trace&&pkg.concrete_execution_trace.status==="COMPLETED"&&outcome.execution_id===pkg.concrete_execution_trace.execution_id,"El resultado requiere una traza COMPLETED vinculada a la ejecución exportada.");
+   assert(pkg.concrete_execution_trace&&pkg.concrete_execution_trace.status==="COMPLETED"&&outcome.execution_id===pkg.concrete_execution_trace.execution_id,"El resultado no está vinculado a la traza de ejecución exportada o requiere una traza COMPLETED.");
    assert(outcome.execution_trace_sha256===pkg.concrete_execution_trace.trace_sha256,"El hash de traza del resultado no coincide con la traza exportada.");
    assert(outcome.model_id===pkg.input.model_id&&outcome.model_id===pkg.concrete_execution_trace.model_id,"El model_id del resultado no coincide con la entrada y la traza exportadas.");
    assert(outcome.scenario_id===pkg.concrete_execution_trace.scenario_id,"El scenario_id del resultado no coincide con la traza exportada.");
@@ -260,7 +260,7 @@ async function assessImportedBrowserPackage(pkg){
   assert(trace&&typeof trace==="object"&&!Array.isArray(trace),"concrete_execution_trace debe ser un objeto.");
   var traceKeys=["trace_schema","execution_id","model_id","input_sha256","scenario_id","candidate_index","submitted_transition_ids","initial_state","steps","final_state","status","blocked_step","trace_sha256"];
   assert(Object.keys(trace).every(function(k){return traceKeys.includes(k)})&&traceKeys.every(function(k){return Object.prototype.hasOwnProperty.call(trace,k)}),"La traza contiene campos desconocidos o ausentes.");
-  assert(trace.trace_schema==="collective-toy-sequence-trace-001"&&["COMPLETED","BLOCKED"].includes(trace.status),"La traza concreta tiene esquema o estado no compatible.");
+  assert(trace.trace_schema==="collective-toy-sequence-trace-001"&&["COMPLETED","BLOCKED"].includes(trace.status)&&(packageV2||trace.status==="COMPLETED"),"La traza concreta tiene esquema o estado no compatible.");
   assert(typeof trace.execution_id==="string"&&trace.execution_id.length>0&&trace.model_id===pkg.input.model_id,"La identidad de la traza no coincide con la entrada.");
   assert(typeof trace.input_sha256==="string"&&trace.input_sha256===pkg.result.input_sha256,"input_sha256 de la traza no coincide con la entrada exportada.");
   assert(typeof trace.scenario_id==="string"&&inputScenarioIds.includes(trace.scenario_id),"scenario_id de la traza no existe en la entrada.");
