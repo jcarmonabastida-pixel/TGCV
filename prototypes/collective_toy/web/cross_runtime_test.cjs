@@ -1403,14 +1403,13 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       await page.waitForFunction(({ expectedState, expectedMessage }) => {
         const node = document.querySelector("#package-assessment");
         return !!node &&
-          node.dataset.state === expectedState &&
-          node.innerText.includes(expectedMessage);
+          !["idle", "validating"].includes(node.dataset.state);
       }, { expectedState, expectedMessage }, { timeout: 5000 });
       const actualMessage = await assessment.innerText();
-      assert.ok(actualMessage.includes(expectedMessage),
-        "unexpected browser import assessment; expected [" + expectedMessage + "], got [" + actualMessage + "]");
       assert.equal(await assessment.getAttribute("data-state"), expectedState,
         "unexpected browser import lifecycle state for " + expectedMessage + "; got [" + actualMessage + "]");
+      assert.ok(actualMessage.includes(expectedMessage),
+        "unexpected browser import assessment; expected [" + expectedMessage + "], got [" + actualMessage + "]");
       return actualMessage;
     }
     const validImportedPackage = structuredClone(editorPackage);
