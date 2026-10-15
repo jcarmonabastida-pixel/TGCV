@@ -336,6 +336,7 @@ $("execute-sequence").addEventListener("click",async function(){
   }
   var trace={trace_schema:"collective-toy-sequence-trace-001",execution_id:"sequence-execution-"+(++concreteExecutionCounter),model_id:lastModel.model_id,input_sha256:lastPackage.result.input_sha256,scenario_id:"baseline",candidate_index:index,submitted_transition_ids:transitionIds,initial_state:lastModel.initial_state,steps:steps,final_state:current,status:blockedStep?"BLOCKED":"COMPLETED",blocked_step:blockedStep};
   trace.trace_sha256=await hash(trace,"sequence_trace");
+  (function freezeTrace(value){if(value&&typeof value==="object"&&!Object.isFrozen(value)){Object.keys(value).forEach(function(key){freezeTrace(value[key])});Object.freeze(value)}})(trace);
   panel.replaceChildren(node("strong","",blockedStep?"Ejecución bloqueada":"Ejecución concreta completada"));
   panel.append(node("p","muted","ID: "+trace.execution_id+" · Escenario: baseline · Estado inicial: "+trace.initial_state));
   panel.append(node("p","","Estado inicial: "+trace.initial_state));
