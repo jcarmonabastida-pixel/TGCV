@@ -275,6 +275,11 @@ const assert = require("node:assert/strict");
     const guardedTrace = await page.locator(".scenario").filter({ hasText: "Escenario: baseline" }).innerText();
     assert.match(guardedTrace, /t_cd.*BLOQUEADA POR REGLA.*prerequisite_transition_disabled/i,
       "FC-2: guarded transition trace must expose the active guard and its blocking reason");
+    const guardedRow = page.locator('.scenario').filter({ hasText: "Escenario: baseline" }).locator('[data-accessibility-transition="t_cd"]');
+    assert.equal(await guardedRow.getAttribute("data-accessibility-status"), "BLOQUEADA POR REGLA",
+      "FC-2: the per-transition trace row must classify the guarded transition as blocked");
+    assert.match(await guardedRow.innerText(), /prerequisite_transition_disabled/i,
+      "FC-2: the per-transition row must include the actual guard-blocking reason");
 
     // Removing the relation through the real UI must remove its effect on the next run.
     await page.getByRole("button", { name: "Eliminar relación r_guard_1" }).click();
@@ -496,6 +501,12 @@ const assert = require("node:assert/strict");
       "FC-4: baseline/intervention fixture must execute before delta assertions");
     const accessTrace = page.locator("#results [data-accessibility-transition]");
     assert.ok(await accessTrace.count() >= 8, "FC-2: each transition in each scenario must expose an accessibility trace row");
+    for (const row of await accessTrace.all()) {
+      const status = await row.getAttribute("data-accessibility-status");
+      const text = await row.innerText();
+      assert.ok(status, "FC-2: every transition trace row must expose a non-empty status");
+      assert.match(text, /— .+\.$/, "FC-2: every transition trace row must expose a human-readable reason");
+    }
     assert.match(await page.locator("#results").innerText(), /Trazabilidad de accesibilidad por transición/i,
       "FC-2: result panel must label the rule/accessibility trace");
     assert.match(await page.locator("#results").innerText(), /t_ab.*HABILITADA EN INICIO/i,
