@@ -1466,6 +1466,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     unknownNestedResultField.result.engine_version = "collective-toy-engine-999";
     const nestedScenarioId = Object.keys(unknownNestedResultField.result.scenario_results)[0];
     unknownNestedResultField.result.scenario_results[nestedScenarioId].unrecognized_extension = "not in scenario result schema";
+    refreshSemanticHash(unknownNestedResultField.result);
     const nestedResultBody = structuredClone(unknownNestedResultField.result);
     delete nestedResultBody.input_sha256;
     delete nestedResultBody.result_sha256;
@@ -1486,6 +1487,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       const malformedNestedPackage = structuredClone(validImportedPackage);
       malformedNestedPackage.result.engine_version = "collective-toy-engine-999";
       malformedNested.mutate(malformedNestedPackage);
+      refreshSemanticHash(malformedNestedPackage.result);
       const nestedResultPayload = structuredClone(malformedNestedPackage.result);
       delete nestedResultPayload.input_sha256;
       delete nestedResultPayload.result_sha256;
@@ -1526,6 +1528,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       const malformedRelationPackage = structuredClone(guardedPackageForImport);
       malformedRelationPackage.result.engine_version = "collective-toy-engine-999";
       malformedRelationResult.mutate(malformedRelationPackage);
+      refreshSemanticHash(malformedRelationPackage.result);
       const relationResultPayload = structuredClone(malformedRelationPackage.result);
       delete relationResultPayload.input_sha256;
       delete relationResultPayload.result_sha256;
