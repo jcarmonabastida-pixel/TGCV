@@ -265,3 +265,10 @@ Source review found that `step.prerequisites` was checked against the input rela
 Implementation candidate: `5e274ccfde842485ce868c3d85e48403ea6f22f3`. Adversarial test candidate: `87814ca31d3a0aa202441886559cea67e7a2d3e9`; it injects an unrelated existing transition into a step's empty prerequisite list, recomputes trace/package digests, and expects rejection by the profile-coherence diagnostic.
 
 Exact-head CI pending. GT-03 remains open until all five checks pass on the final exact head and the specific forged-step-prerequisite diagnostic is observed.
+
+
+### GT-03 per-step prerequisite adversary — first CI attempt failed in test setup
+
+On candidate `87814ca31d3a0aa202441886559cea67e7a2d3e9`, four of five checks passed; browser/cross-runtime failed because the adversarial fixture recomputed the trace digest using the wrong hash input contract and did not update the linked outcome/assessment digests. The importer correctly rejected the package earlier at the outcome-to-trace link check, so the run did not yet demonstrate the intended prerequisite diagnostic. This is a test-fixture sequencing issue, not evidence that the new validator check failed.
+
+Follow-up candidate `667a0be18e0f5ce0d491bff0be915651a81335c1` corrects the fixture to hash the trace body according to the validator contract and updates the linked outcome and assessment digests before recomputing the package digest. Exact-head CI pending.
