@@ -515,6 +515,49 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "FC-3: replay result must explicitly report a matching independently recomputed result");
 
+    // FC-4: outcome and contextual valuation are explicit, execution-linked, and never inferred.
+    assert.match(await page.locator("#value-status").innerText(), /NOT_ASSESSED/i,
+      "FC-4: absent valuation inputs must explicitly remain NOT_ASSESSED");
+    assert.equal(await page.locator("#record-outcome").isEnabled(), true,
+      "FC-4: outcome recording must be available after a completed concrete execution");
+    await page.locator("#outcome-value").fill("illustrative outcome");
+    await page.locator("#outcome-unit").fill("qualitative");
+    await page.locator("#outcome-timing").fill("after execution");
+    await page.locator("#outcome-uncertainty").fill("synthetic; not measured");
+    await page.locator("#outcome-provenance").fill("synthetic acceptance fixture");
+    await page.locator("#record-outcome").click();
+    assert.equal(await page.locator("#outcome-status").getAttribute("data-state"), "recorded",
+      "FC-4: explicitly entered outcome must be recorded");
+    assert.match(await page.locator("#outcome-status").innerText(), /sequence-execution-/,
+      "FC-4: outcome must display its linked execution ID");
+    assert.equal(await page.locator("#assess-value").isEnabled(), true,
+      "FC-4: contextual assessment is available only after an outcome exists");
+    await page.locator("#assess-value").click();
+    assert.equal(await page.locator("#value-status").getAttribute("data-state"), "not-assessed",
+      "FC-4: missing observer/context/criterion/rule/rationale must remain NOT_ASSESSED");
+    await page.locator("#value-observer").fill("fixture observer");
+    await page.locator("#value-context").fill("synthetic test context");
+    await page.locator("#value-criterion").fill("criterion alpha");
+    await page.locator("#value-rule").fill("qualitative rule");
+    await page.locator("#value-rationale").fill("explicit test-only rationale");
+    await page.locator("#assess-value").click();
+    assert.equal(await page.locator("#value-status").getAttribute("data-state"), "assessed",
+      "FC-4: complete contextual assessment must be linked and recorded");
+    const fc4ExportPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const fc4Download = await fc4ExportPromise;
+    const fc4Package = JSON.parse(fs.readFileSync(await fc4Download.path(), "utf8"));
+    assert.equal(fc4Package.outcome_record.execution_id, fc4Package.concrete_execution_trace.execution_id,
+      "FC-4: exported outcome must link to the exact exported execution");
+    assert.equal(fc4Package.outcome_record.execution_trace_sha256, fc4Package.concrete_execution_trace.trace_sha256,
+      "FC-4: outcome must retain the execution trace digest");
+    assert.equal(fc4Package.value_assessment.outcome_id, fc4Package.outcome_record.outcome_id,
+      "FC-4: value assessment must reference the exact outcome");
+    assert.equal(fc4Package.value_assessment.status, "ASSESSED",
+      "FC-4: exported complete assessment must be explicit");
+    assert.equal(fc4Package.value_assessment_status, undefined,
+      "FC-4: an assessed package must not also claim valuation is unassessed");
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
