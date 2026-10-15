@@ -381,3 +381,10 @@ All five required workflows passed on exact commit `6f426724e48426b5a525764f5922
 ### GT-04 next grouped risk — artifact shape substitutions and NOT_ASSESSED coherence
 
 Next adversarial group targets schema substitution and lifecycle-state coherence: array/null substituted for `outcome_record`, array substituted for `value_assessment`, assessment status set to `NOT_ASSESSED` while a value assessment object is present, and missing assessment paired with a contradictory `value_assessment_status=ASSESSED`. Each mutation recomputes the outer package digest and must be rejected by the intended structural or status diagnostic. These cases complement the existing closed-key, required-field, enum, cross-link, and hash tests. GT-04 remains open until this grouped set and the same five-workflow exact-head gate pass.
+
+
+### GT-04 iteration 2 — field types and assessment-status domain
+
+The five-workflow exact-head gate passed on `85141c0b7648fc07b25b55001aa81ca6b50a46d9` (runs `38793015720`, `38793016043`, `38793015627`, `38793015667`, `38793015731`). The grouped shape/state mutations are now covered by that green batch; this remains an engineering result, not scientific validation.
+
+Next grouped adversarial set expands field-level type/constraint coverage and status-domain handling: numeric outcome value, object-valued outcome provenance, numeric assessment criterion, empty assessment rationale, and unsupported `value_assessment_status=PENDING` when no assessment object exists. The package digest is recomputed in every mutation so the importer must reject the specific contract violation. These tests map to FC5-OUT-005, FC5-VAL-007, FC5-PKG-012 and FC5-PKG-011. Require targeted diagnostic rejection and all five workflows passing on the same exact commit. GT-04 remains open.

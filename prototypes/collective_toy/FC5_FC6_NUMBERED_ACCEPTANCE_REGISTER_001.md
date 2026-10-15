@@ -190,3 +190,10 @@ On `6aab8a91eaf9c9296fa13b510c06a3361f492c42`, four of five workflows passed. Th
 The five required workflows passed on exact commit `6f426724e48426b5a525764f592222a13b0a5886` (runs: `38792359668`, `38792359755`, `38792359714`, `38792359847`, `38792360053`). Browser/cross-runtime includes successful clean-source replay. Engineering gate only; no scientific-validity claim.
 
 Next pending grouped adversarial cases: outcome null/array substitutions, assessment array substitution, invalid assessment status when the assessment object is present, and `value_assessment_status=ASSESSED` when no assessment object exists. The tests require targeted rejection diagnostics and recompute the outer package digest. GT-04 remains open.
+
+
+### GT-04 iteration 2 evidence and pending field/status adversaries
+
+Five required workflows passed on exact candidate commit `85141c0b7648fc07b25b55001aa81ca6b50a46d9`: browser/cross-runtime `38793015720`, synthetic engine `38793016043`, governance consistency `38793015627`, browser benchmark `38793015667`, and engine benchmark `38793015731`.
+
+Next grouped fixtures target non-string outcome value, non-string provenance, non-string assessment criterion, empty assessment rationale, and unsupported status `PENDING` when no assessment object is present. Predicates: FC5-OUT-005, FC5-VAL-007, FC5-PKG-012 and FC5-PKG-011. Status remains pending until the next exact-head five-workflow gate passes.
