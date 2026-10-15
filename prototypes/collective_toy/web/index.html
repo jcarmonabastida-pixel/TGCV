@@ -394,7 +394,7 @@ $("record-outcome").addEventListener("click",function(){
   updateFc4Controls();
  }catch(e){$("outcome-status").dataset.state="rejected";$("outcome-status").textContent="ERROR · "+e.message}
 });
-$("assess-value").addEventListener("click",function(){
+$("assess-value").addEventListener("click",async function(){
  try{
   assert(outcomeRecord,"No existe un resultado explícito que valorar.");
   var observer=$("value-observer").value.trim(),context=$("value-context").value.trim(),criterion=$("value-criterion").value.trim(),rule=$("value-rule").value.trim(),rationale=$("value-rationale").value.trim();
