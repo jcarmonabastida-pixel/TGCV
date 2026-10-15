@@ -460,6 +460,7 @@ const assert = require("node:assert/strict");
       "FC-3: blocked attempt must have a trace digest");
     await page.locator("#sequence-input").fill("");
     await page.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+    await page.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 3000 });
     assert.equal(await page.locator("#sequence-trace").getAttribute("data-state"), "replay-verified",
       "FC-3: successful trace must be restored before export/replay assertions");
 
