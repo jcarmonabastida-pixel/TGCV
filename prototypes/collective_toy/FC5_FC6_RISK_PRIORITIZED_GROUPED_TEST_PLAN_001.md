@@ -182,3 +182,12 @@ Browser/cross-runtime [run 38763981926](https://github.com/jcarmonabastida-pixel
 Corrective candidate commit: `5c4202ad06f266604f6ffae786634c282977eeaf`. The importer now checks the declared input hash and validates the input schema immediately after confirming `pkg.input` is an object, before inspecting derived result/comparison/delta structures. The later duplicate input hash/schema block was removed. This preserves integrity checks while establishing the intended validation precedence.
 
 Exact-head CI pending for `5c4202ad`; GT-03 remains open until browser/cross-runtime, engine, both benchmarks, and governance all complete successfully and the forged-source-hash adversarial assertion is observed.
+
+
+### GT-03 third precedence failure — validation was still below result-field checks
+
+Browser/cross-runtime [run 38764688276](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38764688276) failed with the exact diagnostic `baseline_source_sha256 de delta_reach en block_ac no corresponde a la fuente del escenario baseline`, while the adversarial fixture expected `rule_profile no compatible`. Engine, engine benchmark, browser benchmark, and governance passed on commit `5c4202ad`.
+
+Inspection showed the previous move was ineffective: `validate(pkg.input)` still sat after result/comparison/delta checks (around the end of the importer). Corrective candidate `76262e9d3068a9e6d50f6d997c79cf55c6c26a59` now moves input-hash verification and schema validation immediately after confirming `pkg.input` is an object, before any result-field or delta checks.
+
+Exact-head CI pending for `76262e9d`. GT-03 remains open until all browser/cross-runtime, engine, both benchmark, and governance jobs pass on this exact head, including the forged-source-hash rejection test.
