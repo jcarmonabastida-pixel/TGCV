@@ -1475,9 +1475,13 @@ const assert = require("node:assert/strict");
       });
       await page.getByRole("button", { name: "Validar paquete importado" }).click();
       await page.locator("#package-assessment[data-state]").waitFor();
-      await page.locator(expectedAccepted
-        ? "#package-assessment[data-state='accepted']"
-        : "#package-assessment[data-state='rejected']").waitFor();
+      const expectedState = expectedAccepted ? "accepted" : "rejected";
+      try {
+        await page.locator(`#package-assessment[data-state='${expectedState}']`).waitFor({ timeout: 5000 });
+      } catch (error) {
+        const diagnostic = await page.locator("#package-assessment").innerText();
+        throw new Error(`FC-5 truth-table tuple ${mask}: expected ${expectedState}; actual assessment: ${diagnostic}`);
+      }
       if (!expectedAccepted) {
         assert.match(await page.locator("#package-assessment").innerText(),
           /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i,
