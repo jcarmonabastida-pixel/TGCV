@@ -8,6 +8,8 @@
 - **Test file:** `web/ui_contract_test.cjs`
 - **No scientific execution. No change to main, detector, or OCR evaluation.**
 
+> **Reconciliation rule (2026-10-16):** The inventory includes historical iteration notes that may use older FC5-DELTA numbering/statuses. Do not treat those notes as a second active acceptance table. Use the numbered acceptance register's canonical **“Delta-reach atomic acceptance reconciliation — candidate a7813bc”** table for current predicate IDs; use this inventory to describe schema/implementation and fixture evidence. In particular, truncation coverage is not complete merely because the three existing adversarial examples pass: wrong-type coverage for `truncated` and `intervention_truncated`, plus baseline-specific flag-to-scenario consistency and the complete truth table, remain open.
+
 ## 1. Scope and counting rule
 
 Count a requirement as one independently testable acceptance predicate, not as one field name and not as one test function. Positive validity, missing-field rejection, wrong-type rejection, unknown-field rejection, cross-link consistency, hash consistency, deterministic replay, and compatibility are distinct predicates where applicable. One test may cover multiple predicates; one predicate may need multiple fixtures.
