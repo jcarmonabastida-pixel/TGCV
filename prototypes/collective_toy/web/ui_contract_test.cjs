@@ -176,8 +176,7 @@ const assert = require("node:assert/strict");
       buffer: Buffer.from(exportedText)
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
-    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i);
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i);
 
     // A structurally valid, self-consistent package from an unknown engine is inspect-only.
     const unknownEnginePackage = await page.evaluate(async (pkg) => {
