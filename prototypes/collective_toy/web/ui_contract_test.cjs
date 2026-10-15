@@ -1241,6 +1241,43 @@ const assert = require("node:assert/strict");
         "FC-5: reject missing intervention delta or extra baseline delta entry");
     }
 
+    // C12: comparison entries must match the intervention scenario set too.
+    for (const item of [
+      { name: "comparison-missing-intervention.json", kind: "missing",
+        diagnostic: /Falta comparación baseline para block_ac/i },
+      { name: "comparison-extra-baseline.json", kind: "extra",
+        diagnostic: /comparisons_to_baseline contiene una clave de escenario no compatible/i }
+    ]) {
+      const candidate = await page.evaluate(async ({ pkg, kind }) => {
+        const copy = structuredClone(pkg);
+        if (kind === "missing") delete copy.result.comparisons_to_baseline.block_ac;
+        else copy.result.comparisons_to_baseline.baseline = structuredClone(copy.result.comparisons_to_baseline.block_ac);
+        const semanticProjection = structuredClone(copy.result);
+        for (const key of ["delta_reach", "engine_version", "input_sha256", "result_sha256", "semantic_sha256", "semantic_identity_version"]) delete semanticProjection[key];
+        for (const scenario of Object.values(semanticProjection.scenario_results || {})) if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+        for (const comparison of Object.values(semanticProjection.comparisons_to_baseline || {})) {
+          const intervention = comparison.intervention || {};
+          if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+        }
+        copy.result.semantic_sha256 = await window.hash(semanticProjection, "result");
+        delete copy.result.result_sha256;
+        const resultBody = structuredClone(copy.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        copy.result.result_sha256 = await window.hash(resultBody, "result");
+        delete copy.package_sha256;
+        copy.package_sha256 = await window.hash(copy, "package_export");
+        return copy;
+      }, { pkg: deltaPackage, kind: item.kind });
+      await page.locator("#package-file").setInputFiles({
+        name: item.name, mimeType: "application/json", buffer: Buffer.from(JSON.stringify(candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), item.diagnostic,
+        "FC-5 C12: reject missing/extra comparison scenario entry after recomputing enclosing hashes");
+    }
+
     const forgedDeltaSemantics = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
       candidate.result.delta_reach.block_ac.reachable_states_removed = [];
