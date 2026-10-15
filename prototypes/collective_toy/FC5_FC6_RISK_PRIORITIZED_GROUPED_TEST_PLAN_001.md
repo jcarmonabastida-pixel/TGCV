@@ -395,3 +395,10 @@ Next grouped adversarial set expands field-level type/constraint coverage and st
 The previous exact-head five-workflow gate passed on `363557b0fc3f6e5fd8b5ecccf32cc86d731c4e00`: browser/cross-runtime `38793710973`, governance consistency `38793710906`, browser benchmark `38793710696`, engine benchmark `38793710689`, and synthetic engine `38793710676`. This is engineering evidence only.
 
 Next grouped adversaries: unsupported `outcome_schema`, blank `outcome_id`, unsupported `assessment_schema`, non-string `observer`, and blank `valuation_rule`. The fixtures mutate a valid assessed package, recompute the outer package digest, and require the contract-specific diagnostic. These target FC5-OUT-001/003 and FC5-VAL-001/007. GT-04 remains open; acceptance-register statuses are not upgraded solely by the aggregate green CI.
+
+
+### GT-04 iteration 4 — outcome/assessment cross-link integrity
+
+The exact-head five-workflow gate passed on `d3593138cfcfeb087417ab2f117b751b68eaa42e`: browser/cross-runtime `38794551912`, synthetic engine `38794551709`, governance consistency `38794551639`, browser benchmark `38794551678`, and engine benchmark `38794551659`. The browser suite also passed replay from a clean source archive. Engineering gate only; no scientific-validity claim.
+
+Next coherent group targets the linked evidence chain rather than adding isolated fields: outcome execution ID mismatch, malformed trace digest, outcome model mismatch, outcome scenario mismatch, assessment outcome ID mismatch, assessment execution ID mismatch, and a well-formed but incorrect assessment outcome digest. Each mutation recomputes the outer package digest and must reach its corresponding cross-link/hash diagnostic. This directly exercises GT-04's trace/execution/model/scenario/outcome links and digest recomputation. GT-04 remains open until diagnostic-specific assertions and the exact-head five-workflow gate pass.

@@ -204,3 +204,10 @@ Next grouped fixtures target non-string outcome value, non-string provenance, no
 Previous exact-head gate: all five workflows passed on `363557b0fc3f6e5fd8b5ecccf32cc86d731c4e00` (runs `38793710973`, `38793710676`, `38793710906`, `38793710696`, `38793710689`).
 
 Pending grouped adversaries: wrong `outcome_schema`, blank `outcome_id`, wrong `assessment_schema`, numeric `observer`, and blank `valuation_rule`. Target predicates FC5-OUT-001/003 and FC5-VAL-001/007; require diagnostic-specific rejection and the five-workflow exact-head gate before updating predicate status.
+
+
+### GT-04 iteration 4 — linked evidence-chain adversaries
+
+The five-workflow exact-head gate passed on `d3593138cfcfeb087417ab2f117b751b68eaa42e`: browser/cross-runtime `38794551912`, synthetic engine `38794551709`, governance consistency `38794551639`, browser benchmark `38794551678`, engine benchmark `38794551659`. Clean-source replay passed in the browser/cross-runtime job.
+
+Pending grouped adversaries break one link at a time across the chain: outcome execution ID, trace digest format, model ID, scenario ID, assessment outcome ID, assessment execution ID, and assessment's outcome digest (valid SHA-256 shape but wrong value). Outer package digest is recomputed. Require intended diagnostic plus all five workflows on one exact commit before claiming these predicates verified.
