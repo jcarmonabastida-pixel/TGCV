@@ -294,3 +294,12 @@ The current browser contract test contains 32 calls to `rejectGt04Mutation`. Exp
 ### Reconciliation decision
 
 The acceptance denominator is still **not finalized**: input, result, scenario and comparison nested predicates need the same atomic expansion and exact implementation/test mapping. The next work item remains documentation/schema reconciliation, beginning with verifying whether `delta_reach` has any import-time field-level validation. If it does not, record that as a contract gap and propose the smallest grouped implementation candidate on this development branch; do not silently treat replay as complete substitute validation. No scientific execution is authorized.
+
+
+## Reconciliation correction — delta_reach implementation was present
+
+A direct read of the current branch's importer (`prototypes/collective_toy/web/index.html`, lines 270–291) corrects the earlier inventory statement that no field-level `delta_reach` validation block existed. The importer validates the exact intervention key set, closed 11-field schema, lowercase SHA-256 shape, recomputed baseline/intervention source hashes, state/transition IDs, ordered paths, boolean truncation flags, semantic correspondence to `comparisons_to_baseline`, and truncation consistency. The correct gap is missing dedicated negative fixtures for several individual predicates, not missing implementation wholesale.
+
+Existing directly mapped adversarial tests in `web/ui_contract_test.cjs`: unknown delta field (lines 1195–1214), forged delta semantics (1216–1234), and forged baseline source digest (1240–1258). Their enclosing result/package hashes are recomputed to reach the intended validation branch. These establish focused evidence for those predicates only. Pending direct fixtures include malformed source-hash shape, forged intervention-source digest, wrong-type/unknown-ID arrays, malformed trajectory paths, wrong-type/inconsistent truncation flags, and missing/extra intervention keys. Keep those predicates pending until exact-head browser test evidence is linked.
+
+The previous note saying “current importer ... does not include a dedicated closed-key/field-by-field validation block” is superseded by this correction. No application code changed in this reconciliation iteration.

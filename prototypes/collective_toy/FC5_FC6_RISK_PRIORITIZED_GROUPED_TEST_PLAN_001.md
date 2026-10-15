@@ -428,3 +428,8 @@ The exact-head gate on `01497f122dbd9facc9980fd95e2a8c1b8eabdffd` produced 4/5 P
 ### GT-05 iteration 1 — PASSED on exact head
 
 The corrected candidate `fa15baeef941e9db679a9eca25b97a0ec4a94b5e` passed all five required workflows on the same commit: browser/cross-runtime `38813194707`, synthetic engine `38813194676`, governance consistency `38813194713`, browser benchmark `38813194700`, and engine benchmark `38813194665`. The assessed package was imported/replayed twice; assertions covered explicit `ASSESSMENT` stage, independent recomputation of the canonical outcome digest, replay equivalence, and stable replay assessment text. This is engineering/reproducibility evidence only, not scientific validity. Before adding further adversarial tests, reconcile the finite schema inventory and numbered acceptance register as required by the inventory's governance section.
+
+
+### Acceptance-inventory correction — delta_reach validator exists
+
+Re-reading the current branch source corrected a stale inventory claim. `web/index.html` lines 270–291 already implements field-level validation for `delta_reach`; `ui_contract_test.cjs` lines 1195–1258 contains three focused adversarial cases (unknown field, semantic mismatch, forged baseline-source hash), with enclosing digests recomputed. The remaining gap is atomized direct-negative-test coverage for individual predicates, not a wholesale missing validator. The inventory and numbered register have been corrected accordingly. No code changed; no CI status is inferred for this documentation-only commit.
