@@ -719,6 +719,23 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /falta result o no es un objeto/i,
       "FC-5: importer must reject a missing required result field despite a recomputed package digest");
 
+    // FC-5: a package with an outcome must include the concrete execution trace it references.
+    const missingPackageTrace = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.concrete_execution_trace;
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "missing-package-trace.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(missingPackageTrace))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /resultado no está vinculado a la traza de ejecución exportada/i,
+      "FC-5: importer must reject an outcome whose concrete execution trace is missing");
+
     // FC-5: outcome execution identifier must match the exported concrete trace.
     const forgedOutcomeExecution = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
