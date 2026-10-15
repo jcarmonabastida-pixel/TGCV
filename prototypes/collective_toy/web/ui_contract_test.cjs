@@ -668,6 +668,23 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /valoración está incompleta/i,
       "FC-5: importer must reject missing contextual assessment fields");
 
+    // FC-5: reject unknown top-level package fields even when the package digest is recomputed.
+    const unknownPackageField = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.uncontracted_extension = { injected: true };
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "unknown-package-field.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(unknownPackageField))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /paquete contiene campos desconocidos/i,
+      "FC-5: importer must reject unknown package fields despite a recomputed package digest");
+
     // FC-5: outcome execution identifier must match the exported concrete trace.
     const forgedOutcomeExecution = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
