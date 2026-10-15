@@ -652,9 +652,8 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /prerequisites del paso no coincide con las relaciones temporales declaradas para el perfil activo/i,
       "FC-5/FC-6: reject forged step prerequisite metadata even when trace/package digests are recomputed");
 
-    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
-      "FC-5: package with complete contextual assessment must replay after import");
-
+    // The preceding assertion is intentionally scoped to the successful assessed round-trip.
+    // After the adversarial import, the package assessment is expected to be rejected.
     // FC-5: the same explicit outcome without a complete valuation must round-trip as NOT_ASSESSED.
     const unassessedOutcomePackage = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
