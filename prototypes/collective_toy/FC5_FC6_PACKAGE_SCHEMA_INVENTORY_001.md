@@ -229,3 +229,8 @@ Current status: state/transition ID list predicates and ordered-path structure h
 ### Exact delta-reach key-set coverage
 
 Two browser adversaries now check that `delta_reach` contains exactly the declared intervention scenario IDs: missing intervention entry and illegal baseline entry. Enclosing hashes are recomputed to reach the schema predicate. Require all five workflows on the candidate commit before marking FC5-DELTA-001/011 verified.
+
+
+## Delta truncation coverage update — candidate e8e5637
+
+The browser contract suite now adds wrong-type adversaries for `truncated` and `intervention_truncated`, completing wrong-type fixture coverage across all three delta truncation booleans when combined with the existing `baseline_truncated` case. It also adds a baseline-specific mismatch adversary that sets `baseline_truncated=true` and aggregate `truncated=true` while the baseline scenario remains untruncated. Each fixture recomputes the result and package hashes and asserts the validator diagnostic. Source commit: `e8e56377f949f03415b63aa92500bf7d42e660e9`. These additions remain pending exact-HEAD CI; do not mark the predicates verified until the browser/cross-runtime workflow passes on that commit. Full truth-table coverage remains open.
