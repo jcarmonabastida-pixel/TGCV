@@ -463,6 +463,28 @@ const assert = require("node:assert/strict");
       "FC-3: trace must identify the missing prerequisite transition");
     assert.match(blockedTraceText, /Traza SHA-256/i,
       "FC-3: blocked attempt must have a trace digest");
+    const blockedTraceIntegrity = await page.evaluate(() => {
+      const trace = document.querySelector("#sequence-trace")._trace;
+      const before = trace.trace_sha256;
+      const originalReason = trace.blocked_step.reason;
+      const mutationAccepted = Reflect.set(trace.blocked_step, "reason", "tampered");
+      return {
+        frozen: Object.isFrozen(trace) && Object.isFrozen(trace.blocked_step) &&
+          Object.isFrozen(trace.steps) && Object.isFrozen(trace.steps[0]),
+        mutationAccepted,
+        reason: trace.blocked_step.reason,
+        originalReason,
+        digestUnchanged: trace.trace_sha256 === before
+      };
+    });
+    assert.equal(blockedTraceIntegrity.frozen, true,
+      "FC-3: attempted blocked trace and nested records must be immutable after digesting");
+    assert.equal(blockedTraceIntegrity.mutationAccepted, false,
+      "FC-3: mutation of a blocked trace reason must be rejected");
+    assert.equal(blockedTraceIntegrity.reason, blockedTraceIntegrity.originalReason,
+      "FC-3: attempted mutation must not alter the blocking reason");
+    assert.equal(blockedTraceIntegrity.digestUnchanged, true,
+      "FC-3: trace digest must remain attached to the immutable trace");
     await page.locator("#sequence-input").fill("");
     await page.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
     await page.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 3000 });
