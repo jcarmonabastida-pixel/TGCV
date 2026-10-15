@@ -1,6 +1,6 @@
 # FC-5 / FC-6 risk-prioritized grouped test plan — 001
 
-- **Status:** approved grouped test plan; policy A approved 2026-10-15. No tests added or executed in this documentation iteration.
+- **Status:** approved grouped test plan; policy A approved 2026-10-15. GT-02 nested-delta integrity follow-up passed on exact head `dc76bb6a`; GT-03 trace-coherence adversarial case is implemented and awaiting exact-head CI.
 - **Branch:** `prototype/tgcv-full-chain-001-20261014`
 - **Inputs reviewed:** full-chain contract, current browser importer and current `ui_contract_test.cjs` FC-5 section.
 - **Purpose:** choose a small number of coherent test scenarios that cover multiple acceptance predicates, rather than creating one test per predicate.
@@ -200,3 +200,18 @@ Browser/cross-runtime [run 38765169557](https://github.com/jcarmonabastida-pixel
 Corrective candidate `9f4093d7bd41719ba969d9661d721d6a2bcea692`: check that `pkg.result` is a non-array object immediately after checking `pkg.input` is an object, then verify `input_sha256` and validate the input schema before inspecting derived result fields and deltas. This preserves the package's required-object diagnostic while establishing schema-before-derived-validation precedence.
 
 Exact-head CI pending for `9f4093d7`. GT-03 remains open until all five checks pass and both adversarial diagnostics are observed.
+
+
+### GT-02 nested-delta integrity follow-up — CLOSED on exact head
+
+The five required checks passed on exact commit `dc76bb6a91cb9e56d75da20fe1b8fcd50889777a`: browser/cross-runtime [38765778802](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38765778802), synthetic engine [38765778720](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38765778720), engine benchmark [38765778722](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38765778722), browser benchmark [38765778819](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38765778819), and governance [38765778700](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38765778700). The browser log confirms 116 valid cross-runtime fixtures matched and 102 invalid fixtures were rejected in both runtimes; browser import lifecycle and tamper/replay checks passed. The newly added forged delta source-hash test is included in this successful browser run.
+
+**Naming clarification:** the source-hash binding work previously labeled “GT-03” in intermediate notes is a nested-delta integrity follow-up to GT-02. The canonical GT-03 below remains execution-trace semantic coherence, as defined in the approved test plan. This clarification changes tracking labels only, not scientific claims or implementation.
+
+### GT-03 — execution trace semantic coherence (new grouped adversarial case)
+
+Source review found a narrow gap: `submitted_transition_ids` required non-empty strings but did not require every submitted ID to exist in the input model. For a `BLOCKED` trace, an unknown ID in the unexecuted suffix could pass the generic string check if the trace/package digests were recomputed and the blocked-step metadata agreed.
+
+Implementation candidate: `5fd17ada1e6ad85d2452e4c38bcb3a0ef3693780`. The trace validator now requires each submitted transition ID to exist in the model. Grouped adversarial test candidate: `0075ad15801f46257835f3861f703ba900aacb36`. It constructs a version-2 `BLOCKED` trace with a valid executed prefix and an unknown transition ID at the blocked step, removes outcome/assessment artifacts per policy A, recomputes trace and package digests, and expects a specific rejection.
+
+Exact-head CI pending for the final candidate and documentation commit. GT-03 is not closed until browser/cross-runtime, engine, both benchmarks, and governance all pass on the same exact head and the adversarial diagnostic is observed.
