@@ -1265,6 +1265,35 @@ const assert = require("node:assert/strict");
 
 
 
+    // FC-5/FC-6: isolate validly typed removed-state and removed-transition
+    // mismatches. Recompute enclosing digests so each case reaches C10 semantics.
+    for (const item of [
+      { field: "reachable_states_removed", value: [], name: "removed-states" },
+      { field: "enabled_at_initial_removed", value: [], name: "removed-initial-transitions" }
+    ]) {
+      const candidate = await page.evaluate(async ({ pkg, field, value }) => {
+        const copy = structuredClone(pkg);
+        copy.result.delta_reach.block_ac[field] = value;
+        const resultBody = structuredClone(copy.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        copy.result.result_sha256 = await window.hash(resultBody, "result");
+        delete copy.package_sha256;
+        copy.package_sha256 = await window.hash(copy, "package_export");
+        return copy;
+      }, { pkg: deltaPackage, field: item.field, value: item.value });
+      await page.locator("#package-file").setInputFiles({
+        name: `delta-${item.name}-comparison-mismatch.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(),
+        /delta_reach de block_ac no coincide con la comparación baseline exportada/i,
+        `FC-5/FC-6 C10: reject validly typed ${item.field} mismatch after digest recomputation`);
+    }
+
     const forgedDeltaSource = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
       candidate.result.delta_reach.block_ac.baseline_source_sha256 = "0".repeat(64);
