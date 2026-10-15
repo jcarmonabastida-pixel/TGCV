@@ -252,3 +252,16 @@ The five checks passed on the documentation head `75fd25716d6c5050fec86c3a85c311
 Added a paired adversarial test on candidate `4f782d470a4c714672d6983182f43d703785f7d4`: mutate a valid temporal-prerequisite block reason to `transition_source_mismatch`, recompute trace/package digests, and require rejection by the reason/context diagnostic. This complements the missing-prerequisite-list test and checks both dimensions of blocked metadata coherence.
 
 Exact-head CI pending. GT-03 remains open until all five checks pass on the final exact head and both forged-reason and forged-prerequisite diagnostics are observed.
+
+
+### GT-03 forged blocked reason — PASSED on exact code head
+
+All five checks passed on exact code head `4f782d470a4c714672d6983182f43d703785f7d4`: browser/cross-runtime [38769814881](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38769814881), synthetic engine [38769814846](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38769814846), engine benchmark [38769814892](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38769814892), browser benchmark [38769814827](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38769814827), and governance [38769814806](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38769814806). Browser/cross-runtime logs confirm 116 valid fixtures matched, 102 invalid fixtures rejected in both runtimes, and the full UI import/tamper lifecycle passed. The forged-reason adversary is included in this successful exact-head run.
+
+### GT-03 follow-up — per-step prerequisite metadata coherence
+
+Source review found that `step.prerequisites` was checked against the input relations only under the temporal-prerequisite profile. Under other profiles, any list of existing transition IDs could pass. The validator now requires the step's prerequisite list to equal the relation-derived list for the active profile (empty when the profile does not define temporal prerequisites), and separately checks that all required temporal transitions appear in prior execution history.
+
+Implementation candidate: `5e274ccfde842485ce868c3d85e48403ea6f22f3`. Adversarial test candidate: `87814ca31d3a0aa202441886559cea67e7a2d3e9`; it injects an unrelated existing transition into a step's empty prerequisite list, recomputes trace/package digests, and expects rejection by the profile-coherence diagnostic.
+
+Exact-head CI pending. GT-03 remains open until all five checks pass on the final exact head and the specific forged-step-prerequisite diagnostic is observed.
