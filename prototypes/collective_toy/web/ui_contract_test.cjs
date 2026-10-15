@@ -1495,7 +1495,9 @@ const assert = require("node:assert/strict");
       });
       await page.getByRole("button", { name: "Validar paquete importado" }).click();
       await page.locator("#package-assessment[data-state]").waitFor();
-      const expectedState = expectedAccepted ? "accepted" : "rejected";
+      // Valid imported packages use the UI's documented replay-verified state,
+      // not a generic "accepted" state.
+      const expectedState = expectedAccepted ? "replay-verified" : "rejected";
       try {
         await page.locator(`#package-assessment[data-state='${expectedState}']`).waitFor({ timeout: 5000 });
       } catch (error) {
