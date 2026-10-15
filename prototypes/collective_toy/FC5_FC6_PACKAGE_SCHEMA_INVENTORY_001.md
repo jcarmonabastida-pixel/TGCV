@@ -8,6 +8,8 @@
 - **Test file:** `web/ui_contract_test.cjs`
 - **No scientific execution. No change to main, detector, or OCR evaluation.**
 
+> **Active delta-reach denominator (2026-10-16):** Use the 12 namespaced predicates `FC5-DELTA-C01`…`FC5-DELTA-C12` in the register's “Canonical delta-reach acceptance table — current register”. Earlier `FC5-DELTA-001`…`FC5-DELTA-012` tables are historical snapshots and must not be counted as active requirements. Do not infer a predicate as verified solely because a related workflow passed: map fixture, targeted diagnostic, and exact-head run together. Open truncation gaps include wrong-type tests for `truncated` and `intervention_truncated`, baseline-specific scenario consistency, and complete truth-table coverage.
+
 > **Reconciliation rule (2026-10-16):** The inventory includes historical iteration notes that may use older FC5-DELTA numbering/statuses. Do not treat those notes as a second active acceptance table. Use the numbered acceptance register's canonical **“Delta-reach atomic acceptance reconciliation — candidate a7813bc”** table for current predicate IDs; use this inventory to describe schema/implementation and fixture evidence. In particular, truncation coverage is not complete merely because the three existing adversarial examples pass: wrong-type coverage for `truncated` and `intervention_truncated`, plus baseline-specific flag-to-scenario consistency and the complete truth table, remain open.
 
 ## 1. Scope and counting rule
