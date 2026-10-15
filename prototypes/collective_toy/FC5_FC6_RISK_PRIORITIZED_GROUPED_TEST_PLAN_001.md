@@ -304,3 +304,8 @@ The blocked-reason validator currently derives `transition_disabled_by_scenario`
 The prior validator derived `transition_disabled_by_scenario` from the model's `baseline` scenario even when the concrete trace declared another `scenario_id`. Updated the validator to resolve the trace's declared scenario and derive disablement from that scenario; an absent trace scenario is rejected explicitly. Added an adversarial import that changes baseline/alternate disablement context, points the BLOCKED trace at the alternate scenario, and recomputes linked input/trace/package digests while preserving a temporal-prerequisite block reason. The expected assertion is the scenario-context-specific diagnostic.
 
 Status: implementation and grouped adversary committed; awaiting all five exact-head checks and observation of the specific diagnostic. GT-03 remains open. No scientific execution authorized; main unchanged.
+
+
+### GT-03 scenario-context attempt 1 — diagnostic assertion mismatch
+
+On exact head `3ec65da09de3bad42b870773468b98b0d9996e6d`, four workflows passed and browser/cross-runtime failed at the pre-existing forged-blocked-reason assertion. The importer rejected the adversarial package with the new, more specific scenario-context diagnostic as intended, but that earlier assertion still expected the previous diagnostic string. This is a test expectation mismatch, not evidence that the semantic rejection failed. Updated the assertion to accept the new scenario-context wording while retaining the legacy wording compatibility. Rerun all five checks on the new exact head; GT-03 remains open until they pass and the dedicated scenario-context adversary also passes.

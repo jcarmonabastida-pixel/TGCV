@@ -935,7 +935,7 @@ const assert = require("node:assert/strict");
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
-    assert.match(await page.locator("#package-assessment").innerText(), /El motivo del bloqueo no coincide con el estado, escenario y prerrequisitos de la traza/i,
+    assert.match(await page.locator("#package-assessment").innerText(), /El motivo del bloqueo no coincide con el (?:contexto del escenario de la traza, el estado y los prerrequisitos|estado, escenario y prerrequisitos de la traza)/i,
       "FC-5/FC-6: reject a forged blocked reason despite recomputed trace/package digests");
 
 
