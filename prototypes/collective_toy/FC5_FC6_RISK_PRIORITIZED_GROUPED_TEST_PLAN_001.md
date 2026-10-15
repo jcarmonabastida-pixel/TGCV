@@ -423,3 +423,8 @@ The next grouped scenario moves to GT-05 as specified by the plan: the same full
 ### GT-05 iteration 1 — failure analysis and correction
 
 The exact-head gate on `01497f122dbd9facc9980fd95e2a8c1b8eabdffd` produced 4/5 PASS. Browser/cross-runtime run `38796877033` failed at the newly added assertion comparing `value_assessment.outcome_sha256` with `outcome_record.outcome_sha256`; the latter field is not part of the outcome contract and was undefined. The failure is in the test assertion, not evidence of an application digest defect. Corrected the assertion to independently recompute the outcome's canonical SHA-256 using the same documented canonicalization/hash primitive, then compare that digest to the stored assessment digest. This preserves the invariant and does not weaken validation. Rerun the exact-head five-workflow gate before accepting GT-05.
+
+
+### GT-05 iteration 1 — PASSED on exact head
+
+The corrected candidate `fa15baeef941e9db679a9eca25b97a0ec4a94b5e` passed all five required workflows on the same commit: browser/cross-runtime `38813194707`, synthetic engine `38813194676`, governance consistency `38813194713`, browser benchmark `38813194700`, and engine benchmark `38813194665`. The assessed package was imported/replayed twice; assertions covered explicit `ASSESSMENT` stage, independent recomputation of the canonical outcome digest, replay equivalence, and stable replay assessment text. This is engineering/reproducibility evidence only, not scientific validity. Before adding further adversarial tests, reconcile the finite schema inventory and numbered acceptance register as required by the inventory's governance section.

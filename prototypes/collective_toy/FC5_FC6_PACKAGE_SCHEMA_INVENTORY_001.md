@@ -181,3 +181,10 @@ Candidate implementation now enforces closed key sets for the 12-field `outcome_
 Clarification: the approved contract does not require a separate standalone `outcome_sha256` field inside `outcome_record`. When a value assessment exists, `value_assessment.outcome_sha256` commits to the canonical outcome record; the execution trace is separately committed through `execution_trace_sha256`. These are consistency commitments, not proof of authenticity. No cryptographic signature is introduced.
 
 The new checks and fixtures remain implementation candidates until the five required workflows pass on the exact same commit. Do not mark acceptance predicates verified before that evidence exists.
+
+
+## 12. GT-05 iteration 1 — exact-head evidence and next gate
+
+Corrected round-trip/replay test passed on exact commit `fa15baeef941e9db679a9eca25b97a0ec4a94b5e`: browser/cross-runtime `38813194707`, synthetic engine `38813194676`, governance consistency `38813194713`, browser benchmark `38813194700`, engine benchmark `38813194665`; all five concluded success. The test independently recomputes the canonical outcome-record digest, checks the explicit `ASSESSMENT` stage and replay equivalence, then imports the same artifact again and checks deterministic replay assessment text. Engineering evidence only.
+
+**Next gate:** reconcile this inventory with the numbered acceptance register and actual fixture/test mappings before adding new adversarial tests. Complete the nested input/result schema predicate list, optional top-level artifact type matrix, package hash negatives, conditional stage/status truth table, and FC-6 artifact inspection. Do not infer that all predicates are verified merely because the grouped gate passed.

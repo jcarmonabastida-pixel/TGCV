@@ -232,3 +232,12 @@ Added a grouped end-to-end assertion that imports the same fully assessed artifa
 ### GT-05 iteration 1 — diagnostic correction
 
 Initial candidate `01497f122dbd9facc9980fd95e2a8c1b8eabdffd`: 4/5 workflows passed; browser/cross-runtime `38796877033` failed because the test assumed an undeclared `outcome_record.outcome_sha256` property. Replaced that invalid expectation with an independent recomputation of the canonical SHA-256 for the exact outcome object and comparison against `value_assessment.outcome_sha256`. This is a test correction only; acceptance remains pending until all five workflows pass on one exact commit.
+
+
+### GT-05 iteration 1 — corrected exact-head evidence
+
+The corrected test candidate `fa15baeef941e9db679a9eca25b97a0ec4a94b5e` passed all five workflows on the exact same commit: browser/cross-runtime `38813194707`, synthetic engine `38813194676`, governance consistency `38813194713`, browser benchmark `38813194700`, engine benchmark `38813194665`. The digest assertion independently recomputes the canonical hash of `outcome_record` and compares it with `value_assessment.outcome_sha256`. The same assessed artifact is imported/replayed twice and the replay assessment is stable. This verifies this grouped engineering scenario only; it does not close GT-04 or establish scientific validity.
+
+### Next action — acceptance inventory reconciliation before more tests
+
+Per the finite schema inventory governance rule, do not add further adversarial cases until the numbered acceptance register is reconciled against the actual implementation, fixtures, and CI evidence. Expand remaining `GROUP` rows, reconcile top-level optional-field types, package digest negatives, conditional package-stage/status truth table, nested input/result predicates, and FC-6 artifact inspection predicates. Keep states `verified`, `partial`, and `pending` evidence-based; no blanket upgrade from the five-workflow aggregate.
