@@ -550,6 +550,7 @@ const assert = require("node:assert/strict");
     await page.locator("#value-rule").fill("qualitative rule");
     await page.locator("#value-rationale").fill("explicit test-only rationale");
     await page.locator("#assess-value").click();
+    await page.locator("#value-status[data-state=" + '"assessed"' + "]").waitFor();
     assert.equal(await page.locator("#value-status").getAttribute("data-state"), "assessed",
       "FC-4: complete contextual assessment must be linked and recorded");
     const fc4ExportPromise = page.waitForEvent("download");
