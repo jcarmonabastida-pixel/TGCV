@@ -1014,6 +1014,28 @@ function sha256Canonical(value) {
   return crypto.createHash("sha256").update(canonicalJson(value), "utf8").digest("hex");
 }
 
+function semanticResultProjection(result) {
+  const projected = structuredClone(result);
+  delete projected.delta_reach;
+  delete projected.engine_version;
+  delete projected.input_sha256;
+  delete projected.result_sha256;
+  delete projected.semantic_sha256;
+  delete projected.semantic_identity_version;
+  for (const scenario of Object.values(projected.scenario_results || {})) {
+    if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+  }
+  for (const comparison of Object.values(projected.comparisons_to_baseline || {})) {
+    const intervention = comparison.intervention || {};
+    if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+  }
+  return projected;
+}
+
+function refreshSemanticHash(result) {
+  result.semantic_sha256 = sha256Canonical(semanticResultProjection(result));
+}
+
 function assertExportedPackageHashFailures(exportedPackage, label) {
   const alteredInput = structuredClone(exportedPackage);
   alteredInput.input.model_id = "__tampered_model_id__";
@@ -1391,6 +1413,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     const unsupportedProfilePackage = structuredClone(validImportedPackage);
     unsupportedProfilePackage.input.rule_profile = { type: "relation_guarded_graph", version: "999" };
     unsupportedProfilePackage.result.rule_profile = structuredClone(unsupportedProfilePackage.input.rule_profile);
+    refreshSemanticHash(unsupportedProfilePackage.result);
     unsupportedProfilePackage.result.input_sha256 = sha256Canonical(unsupportedProfilePackage.input);
     const unsupportedProfileResultPayload = structuredClone(unsupportedProfilePackage.result);
     delete unsupportedProfileResultPayload.input_sha256;
@@ -1415,6 +1438,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       // Unsupported engine ensures consistency is checked before inspect-only fallback.
       inconsistentPackage.result.engine_version = "collective-toy-engine-999";
       inconsistent.mutate(inconsistentPackage);
+      refreshSemanticHash(inconsistentPackage.result);
       const resultBody = structuredClone(inconsistentPackage.result);
       delete resultBody.input_sha256;
       delete resultBody.result_sha256;
