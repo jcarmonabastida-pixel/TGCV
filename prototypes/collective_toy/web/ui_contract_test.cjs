@@ -720,6 +720,24 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /model_id del resultado no coincide con la entrada y la traza exportadas/i,
       "FC-5: importer must reject an outcome model ID that differs from the package input/trace");
 
+    // FC-5: outcome scenario identity must match the exported concrete trace.
+    const forgedOutcomeScenario = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.outcome_record.scenario_id = "scenario-not-in-trace";
+      candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "forged-outcome-scenario-link.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedOutcomeScenario))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /scenario_id del resultado no coincide con la traza exportada/i,
+      "FC-5: importer must reject an outcome scenario ID that differs from the trace");
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
