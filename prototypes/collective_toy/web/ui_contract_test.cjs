@@ -980,6 +980,26 @@ const assert = require("node:assert/strict");
 
 
 
+    const forgedDeltaSource = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.delta_reach.block_ac.baseline_source_sha256 = "0".repeat(64);
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, deltaPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "forged-delta-source.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedDeltaSource))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /baseline_source_sha256 de delta_reach en block_ac no corresponde a la fuente/i,
+      "FC-5/FC-6: reject a syntactically valid but forged source hash even when enclosing hashes are recomputed");
+
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
