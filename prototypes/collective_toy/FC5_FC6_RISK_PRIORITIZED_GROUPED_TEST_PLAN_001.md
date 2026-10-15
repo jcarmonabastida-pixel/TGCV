@@ -83,3 +83,8 @@ On the exact candidate commit, confirm all required workflows pass, clean-source
 ## Current conclusion
 
 The next unit of work is a **test scenario/risk**, not an individual atomic predicate. The acceptance register remains a traceability index; this plan is the proposed test inventory. No tests or code were changed by this document.
+
+
+## Contract-policy dependency
+
+GT-03 and GT-04 depend on an explicit decision about blocked traces and optional artifacts. The proposal and alternatives are documented in [`FC5_FC6_TRACE_ARTIFACT_POLICY_DECISION_001.md`](FC5_FC6_TRACE_ARTIFACT_POLICY_DECISION_001.md), commit `65fe13daf16001f65db38a5e916909882f8bd663`. It is intentionally a proposal awaiting owner approval; no code/tests were changed and no test expectations should be implemented until the policy is accepted.
