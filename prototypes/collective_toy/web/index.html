@@ -145,7 +145,7 @@ async function assessImportedBrowserPackage(pkg){
  assert(pkg.result.comparisons_to_baseline&&typeof pkg.result.comparisons_to_baseline==="object"&&!Array.isArray(pkg.result.comparisons_to_baseline),"comparisons_to_baseline ausente o malformado.");
  assert(typeof pkg.result.scientific_interpretation==="string","scientific_interpretation ausente o malformado.");
  if(pkg.result.semantic_identity_version!==undefined){assert(pkg.result.semantic_identity_version==="collective-toy-semantic-identity-001","Versión de identidad semántica no admitida.");assert(typeof pkg.result.semantic_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.semantic_sha256),"semantic_sha256 ausente o malformado.");assert(await hash(semanticResultProjection(pkg.result),"result")===pkg.result.semantic_sha256,"La identidad semántica no coincide.");}else{assert(pkg.result.semantic_sha256===undefined,"semantic_sha256 requiere una versión explícita.");}
- var allowedScenarioKeys=["scenario_id","disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories","truncated","exploration_bounds","relation_effects","effective_disabled_transitions","blocked_temporal_steps"];
+ var allowedScenarioKeys=["scenario_id","disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories","truncated","exploration_bounds","relation_effects","effective_disabled_transitions","blocked_temporal_steps","temporal_prerequisites"];
  var inputScenarioIds=pkg.input&&Array.isArray(pkg.input.scenarios)?pkg.input.scenarios.map(function(s){return s&&s.id}):[];
  assert(inputScenarioIds.length>0,"La entrada debe declarar escenarios antes de validar resultados.");
  assert(Object.keys(pkg.result.scenario_results).every(function(id){return inputScenarioIds.includes(id)}),"scenario_results contiene escenarios que no están en la entrada.");
@@ -182,8 +182,9 @@ async function assessImportedBrowserPackage(pkg){
     var expectedEffectiveDisabled=Array.from(new Set(sr.disabled_transitions.concat(expectedEffects.filter(function(v){return v.status==="BLOCKED"}).map(function(v){return v.transition_id})))).sort();
     assert(Array.isArray(sr.effective_disabled_transitions)&&canonical(sr.effective_disabled_transitions)===canonical(expectedEffectiveDisabled),"effective_disabled_transitions no coincide con las relaciones aplicadas.");
    }else if(temporalProfile){
-    var expectedTemporalEffects=(pkg.input.relations||[]).slice().sort(function(a,b){return a.id.localeCompare(b.id)}).map(function(r){return {relation_id:r.id,type:r.type,transition_id:r.transition_id,requires_transition_id:r.requires_transition_id,status:"ENFORCED_TEMPORALLY",reason:"prerequisite_must_occur_earlier_in_same_trajectory"}});
-    assert(Array.isArray(sr.relation_effects)&&canonical(sr.relation_effects)===canonical(expectedTemporalEffects),"relation_effects no coincide con los prerrequisitos temporales de la secuencia.");
+    var groupedTemporal={};(pkg.input.relations||[]).forEach(function(r){(groupedTemporal[r.transition_id]||(groupedTemporal[r.transition_id]=new Set())).add(r.requires_transition_id)});
+    var expectedTemporalPrerequisites=Object.keys(groupedTemporal).sort().map(function(transitionId){return {transition_id:transitionId,requires_transition_ids:Array.from(groupedTemporal[transitionId]).sort()}});
+    assert(Array.isArray(sr.temporal_prerequisites)&&canonical(sr.temporal_prerequisites)===canonical(expectedTemporalPrerequisites),"temporal_prerequisites no coincide con las relaciones temporales de entrada.");
     assert(!Object.prototype.hasOwnProperty.call(sr,"effective_disabled_transitions"),"El perfil temporal no debe convertir los prerrequisitos de secuencia en deshabilitaciones globales.");
    }else{
     assert(!Object.prototype.hasOwnProperty.call(sr,"relation_effects")&&!Object.prototype.hasOwnProperty.call(sr,"effective_disabled_transitions"),"Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas.");
