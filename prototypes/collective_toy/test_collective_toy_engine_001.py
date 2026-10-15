@@ -364,7 +364,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         original = run_model(model)
         reordered = run_model(permuted)
         self.assertEqual(original["input_sha256"], reordered["input_sha256"])
-        self.assertEqual(original["result_sha256"], reordered["result_sha256"])
+        self.assertEqual(original["semantic_sha256"], reordered["semantic_sha256"])
         self.assertEqual(original["scenario_results"], reordered["scenario_results"])
         self.assertEqual(original["comparisons_to_baseline"], reordered["comparisons_to_baseline"])
 
@@ -906,7 +906,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
             without_result["scenario_results"], with_result["scenario_results"]
         )
         self.assertNotEqual(without_result["input_sha256"], with_result["input_sha256"])
-        self.assertEqual(without_result["result_sha256"], with_result["result_sha256"])
+        self.assertEqual(without_result["semantic_sha256"], with_result["semantic_sha256"])
 
     def test_two_relations_guarding_same_transition_form_conjunctive_requirements(self):
         model = copy.deepcopy(self.model)
@@ -1177,7 +1177,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         permuted_result = run_model(permuted)
         self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
         self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
+        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
     def test_state_declaration_order_does_not_change_semantics(self):
@@ -1189,7 +1189,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         permuted_result = run_model(permuted)
         self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
         self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
+        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
     def test_transition_declaration_order_does_not_change_semantics(self):
@@ -1201,7 +1201,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         permuted_result = run_model(permuted)
         self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
         self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
+        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
     def test_scenario_declaration_order_does_not_change_semantics(self):
@@ -1213,7 +1213,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         permuted_result = run_model(permuted)
         self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
         self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
+        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
     def test_relation_guarded_scenario_declaration_order_does_not_change_semantics(self):
@@ -1236,7 +1236,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         permuted_result = run_model(permuted)
         self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
         self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
+        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
     def test_disabled_transition_declaration_order_does_not_change_semantics(self):
@@ -1258,7 +1258,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         reordered = run_model(permuted)
         self.assertEqual(original["scenario_results"], reordered["scenario_results"])
         self.assertEqual(original["comparisons_to_baseline"], reordered["comparisons_to_baseline"])
-        self.assertEqual(original["result_sha256"], reordered["result_sha256"])
+        self.assertEqual(original["semantic_sha256"], reordered["semantic_sha256"])
         self.assertNotEqual(original["input_sha256"], reordered["input_sha256"])
 
     def test_combined_disabling_interventions_are_monotone(self):
@@ -1460,7 +1460,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         permuted_result = run_model(permuted)
         self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
         self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
+        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
     def test_relation_declaration_order_does_not_change_semantics(self):
@@ -1484,7 +1484,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         permuted_result = run_model(permuted)
         self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
         self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["result_sha256"], permuted_result["result_sha256"])
+        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
     def test_cyclic_guard_relations_are_not_recursively_evaluated(self):
