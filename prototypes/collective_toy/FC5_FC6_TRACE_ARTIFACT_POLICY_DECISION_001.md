@@ -47,6 +47,10 @@ Hashes provide consistency/integrity checking, not proof of origin or authentici
 - **B — Full-run-only package:** require a trace in every package, but permit both COMPLETED and BLOCKED. This simplifies import but conflicts with the existing ability to export before execution unless the exporter changes.
 - **C — Completed-only import:** keep the current restriction and do not import blocked traces. Not recommended: it fails to preserve the contract's inspectability requirement for blocked attempts.
 
+## Recommendation recorded — awaiting explicit approval
+
+**Recommendation: Alternative A.** It preserves useful stage snapshots and blocked-attempt evidence while keeping outcome and valuation dependencies strict. This is an architectural recommendation, not yet an accepted normative contract decision. No implementation or test changes should be made until the owner explicitly approves it.
+
 ## Approval required
 
 Approve the recommended policy (A), choose B, or provide a correction. No implementation or test changes should be made until this contract decision is accepted.
