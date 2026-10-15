@@ -85,8 +85,8 @@
 | FC5-DELTA-004 | Recompute source hashes from correct canonical source projection | partial | Engine computes; importer negative cases not mapped |
 | FC5-DELTA-005 | Validate added/removed state and transition arrays against declared IDs | pending | Dedicated importer validation/test not located |
 | FC5-DELTA-006 | Validate trajectory delta arrays as ordered valid paths | pending | Dedicated importer validation/test not located |
-| FC5-DELTA-007 | Require boolean truncation fields | pending | Dedicated importer validation/test not located |
-| FC5-DELTA-008 | Require aggregate truncated flag to equal baseline OR intervention truncation | pending | Dedicated check/test not located |
+| FC5-DELTA-007 | Require boolean truncation fields | verified | Browser adversary rejects string `baseline_truncated="false"` with a field-specific diagnostic; enclosing result/package hashes are recomputed. Exact-head CI on `495dadb6e02b2c810e0750cfebbf2a745dec418f`: browser/cross-runtime 38818696371, engine 38818696355, governance 38818696366, browser benchmark 38818696348, engine benchmark 38818696411 — all PASS. |
+| FC5-DELTA-008 | Require aggregate truncated flag to equal baseline OR intervention truncation, and both scenario flags to match their scenario results | verified | Two browser adversaries reject aggregate `truncated=true` when both scenario flags are false, and `intervention_truncated=true` when the intervention scenario is actually untruncated. Each recomputes enclosing result/package hashes and asserts the targeted diagnostic. Exact-head five-workflow CI on `495dadb6e02b2c810e0750cfebbf2a745dec418f` passed (runs 38818696371, 38818696355, 38818696366, 38818696348, 38818696411). |
 | FC5-DELTA-009 | Require delta arrays to match baseline comparison fields | partial | Replay equality indirectly checks supported-engine path; no targeted tampering fixture |
 | FC5-DELTA-010 | Reject delta entry without matching comparison | pending | Dedicated fixture not located |
 
