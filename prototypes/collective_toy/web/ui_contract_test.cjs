@@ -1466,7 +1466,20 @@ const assert = require("node:assert/strict");
           // The positive control must be self-consistent across the exported input and trace.
           const inputHash = await window.hash(copy.input, "input");
           copy.result.input_sha256 = inputHash;
-          if (copy.trace) copy.trace.input_sha256 = inputHash;
+          if (copy.concrete_execution_trace) {
+            copy.concrete_execution_trace.input_sha256 = inputHash;
+            const traceBody = structuredClone(copy.concrete_execution_trace);
+            delete traceBody.trace_sha256;
+            copy.concrete_execution_trace.trace_sha256 = await window.hash(traceBody, "sequence_trace");
+            if (copy.outcome_record) {
+              copy.outcome_record.execution_trace_sha256 = copy.concrete_execution_trace.trace_sha256;
+              copy.outcome_record = structuredClone(copy.outcome_record);
+              // If an assessment is present, refresh its digest over the updated outcome.
+              if (copy.value_assessment) {
+                copy.value_assessment.outcome_sha256 = await window.hash(copy.outcome_record, "outcome_record");
+              }
+            }
+          }
         }
         const resultBody = structuredClone(copy.result);
         delete resultBody.input_sha256;
