@@ -88,6 +88,30 @@ def sha256_json(value: Any) -> str:
     return hashlib.sha256(canonical_json(value).encode("utf-8")).hexdigest()
 
 
+SEMANTIC_IDENTITY_VERSION = "collective-toy-semantic-identity-001"
+
+
+def semantic_result_projection(output: dict[str, Any]) -> dict[str, Any]:
+    """Project result semantics while excluding provenance and normalizing known unordered lists.
+
+    This is deliberately schema-aware: trajectory and temporal step order is preserved.
+    """
+    projected = json.loads(canonical_json(output))
+    projected.pop("delta_reach", None)
+    projected.pop("input_sha256", None)
+    projected.pop("result_sha256", None)
+    projected.pop("semantic_sha256", None)
+    projected.pop("semantic_identity_version", None)
+    for scenario in projected.get("scenario_results", {}).values():
+        if isinstance(scenario.get("disabled_transitions"), list):
+            scenario["disabled_transitions"].sort()
+    for comparison in projected.get("comparisons_to_baseline", {}).values():
+        intervention = comparison.get("intervention", {})
+        if isinstance(intervention.get("disabled_transitions"), list):
+            intervention["disabled_transitions"].sort()
+    return projected
+
+
 @dataclass(frozen=True)
 class Transition:
     id: str
@@ -543,8 +567,10 @@ def run_model(model: dict[str, Any]) -> dict[str, Any]:
     # semantic result identity. Keep the legacy output shape when no intervention exists.
     if delta_reach:
         output["delta_reach"] = delta_reach
-    # result_sha256 protects the exact exported result payload (minus its own
-    # hash and input hash). Source provenance remains covered by this integrity hash.
+    # Semantic identity is separate from exact result integrity. Only the
+    # versioned projection normalizes declared unordered dimensions.
+    output["semantic_identity_version"] = SEMANTIC_IDENTITY_VERSION
+    output["semantic_sha256"] = sha256_json(semantic_result_projection(output))
     return {
         **output,
         "input_sha256": sha256_json(model),
