@@ -188,3 +188,8 @@ The new checks and fixtures remain implementation candidates until the five requ
 Corrected round-trip/replay test passed on exact commit `fa15baeef941e9db679a9eca25b97a0ec4a94b5e`: browser/cross-runtime `38813194707`, synthetic engine `38813194676`, governance consistency `38813194713`, browser benchmark `38813194700`, engine benchmark `38813194665`; all five concluded success. The test independently recomputes the canonical outcome-record digest, checks the explicit `ASSESSMENT` stage and replay equivalence, then imports the same artifact again and checks deterministic replay assessment text. Engineering evidence only.
 
 **Next gate:** reconcile this inventory with the numbered acceptance register and actual fixture/test mappings before adding new adversarial tests. Complete the nested input/result schema predicate list, optional top-level artifact type matrix, package hash negatives, conditional stage/status truth table, and FC-6 artifact inspection. Do not infer that all predicates are verified merely because the grouped gate passed.
+
+
+### Delta-reach follow-up — intervention-source digest fixtures
+
+Two new browser adversarial cases now complement the baseline-source case: malformed intervention digest shape and well-formed but forged intervention digest. Both recompute result/package integrity commitments and assert the specific importer diagnostic. They are not considered verified until the exact-head browser/cross-runtime workflow passes.

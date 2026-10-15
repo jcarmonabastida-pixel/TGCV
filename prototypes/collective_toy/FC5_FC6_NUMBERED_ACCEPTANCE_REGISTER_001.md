@@ -303,3 +303,8 @@ A direct read of the current branch's importer (`prototypes/collective_toy/web/i
 Existing directly mapped adversarial tests in `web/ui_contract_test.cjs`: unknown delta field (lines 1195–1214), forged delta semantics (1216–1234), and forged baseline source digest (1240–1258). Their enclosing result/package hashes are recomputed to reach the intended validation branch. These establish focused evidence for those predicates only. Pending direct fixtures include malformed source-hash shape, forged intervention-source digest, wrong-type/unknown-ID arrays, malformed trajectory paths, wrong-type/inconsistent truncation flags, and missing/extra intervention keys. Keep those predicates pending until exact-head browser test evidence is linked.
 
 The previous note saying “current importer ... does not include a dedicated closed-key/field-by-field validation block” is superseded by this correction. No application code changed in this reconciliation iteration.
+
+
+### FC5-DELTA-003/004 — intervention-source digest adversarial fixtures added
+
+Added two focused browser contract cases after the baseline-source digest case: (a) malformed `intervention_source_sha256` must trigger the digest-format diagnostic; (b) a syntactically valid but forged 64-hex intervention-source digest must trigger the source-correspondence diagnostic. Both fixtures recompute the enclosing result and package digests so the intended nested predicate is reached. Status remains pending exact-head CI evidence.

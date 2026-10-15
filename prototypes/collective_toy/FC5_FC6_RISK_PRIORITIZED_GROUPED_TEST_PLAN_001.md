@@ -433,3 +433,8 @@ The corrected candidate `fa15baeef941e9db679a9eca25b97a0ec4a94b5e` passed all fi
 ### Acceptance-inventory correction — delta_reach validator exists
 
 Re-reading the current branch source corrected a stale inventory claim. `web/index.html` lines 270–291 already implements field-level validation for `delta_reach`; `ui_contract_test.cjs` lines 1195–1258 contains three focused adversarial cases (unknown field, semantic mismatch, forged baseline-source hash), with enclosing digests recomputed. The remaining gap is atomized direct-negative-test coverage for individual predicates, not a wholesale missing validator. The inventory and numbered register have been corrected accordingly. No code changed; no CI status is inferred for this documentation-only commit.
+
+
+### FC5-DELTA grouped iteration 1 — intervention source digest validation
+
+Following the inventory correction, added two adversarial browser cases for the intervention-side source commitment: malformed SHA-256 shape and a well-formed but incorrect digest. The mutations recompute enclosing result/package hashes to isolate the source-hash predicate and assert distinct expected diagnostics. This is a test-only change plus coverage documentation; require all five workflows on one exact commit before upgrading acceptance states.
