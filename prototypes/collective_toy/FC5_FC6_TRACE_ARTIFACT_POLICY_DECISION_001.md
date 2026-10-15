@@ -1,6 +1,6 @@
 # FC-5 / FC-6 contract decision memo: trace and optional artifacts — 001
 
-- **Status:** proposed decision; awaiting owner approval.
+- **Status:** APPROVED by the TGCV owner on 2026-10-15; normative contract update recorded on the development branch.
 - **Branch:** `prototype/tgcv-full-chain-001-20261014`
 - **Scope:** contract clarification only. Do not change importer, UI, tests, or main until approved.
 - **Evidence reviewed:** `TGCV_FULL_CHAIN_DEMONSTRATOR_CONTRACT_001.md`, `web/index.html` importer/exporter and sequence execution, `web/ui_contract_test.cjs` round-trip and adversarial tests.
@@ -9,7 +9,7 @@
 
 The contract says an attempted but blocked sequence must remain inspectable. The engine creates a trace with status `BLOCKED` and a blocked-step description. However, import validation currently accepts a concrete trace only when `trace.status === "COMPLETED"`. Export can also produce a package before any sequence has been executed, and package status `NOT_ASSESSED` describes absence of a value assessment rather than absence of an execution trace. These are distinct states and should not be conflated.
 
-## Recommended policy (proposal, not normative until approved)
+## Accepted policy (Alternative A)
 
 ### 1. Artifact dependencies
 
@@ -47,15 +47,11 @@ Hashes provide consistency/integrity checking, not proof of origin or authentici
 - **B — Full-run-only package:** require a trace in every package, but permit both COMPLETED and BLOCKED. This simplifies import but conflicts with the existing ability to export before execution unless the exporter changes.
 - **C — Completed-only import:** keep the current restriction and do not import blocked traces. Not recommended: it fails to preserve the contract's inspectability requirement for blocked attempts.
 
-## Recommendation recorded — awaiting explicit approval
+## Approval record
 
-**Recommendation: Alternative A.** It preserves useful stage snapshots and blocked-attempt evidence while keeping outcome and valuation dependencies strict. This is an architectural recommendation, not yet an accepted normative contract decision. No implementation or test changes should be made until the owner explicitly approves it.
+The owner explicitly approved Alternative A on 2026-10-15. This approval authorizes the normative contract update on this development branch. It does not authorize scientific execution or promotion to `main`.
 
-## Approval required
-
-Approve the recommended policy (A), choose B, or provide a correction. No implementation or test changes should be made until this contract decision is accepted.
-
-## If A is approved: grouped test consequences
+## Required grouped test consequences
 
 - Extend one end-to-end lifecycle suite to round-trip a stage snapshot, completed trace without outcome, completed trace with outcome and optional assessment, and blocked trace without outcome.
 - In the same suite, reject outcome without trace, outcome attached to a blocked trace, assessment without outcome, and contradictory assessment-status combinations.
