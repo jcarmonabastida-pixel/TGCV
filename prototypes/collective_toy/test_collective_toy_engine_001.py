@@ -561,6 +561,9 @@ class CollectiveToyEngineTests(unittest.TestCase):
         result_payload = copy.deepcopy(package["result"])
         del result_payload["input_sha256"]
         del result_payload["result_sha256"]
+        package["result"]["semantic_sha256"] = sha256_json(
+            semantic_result_projection(package["result"])
+        )
         package["result"]["result_sha256"] = sha256_json(result_payload)
         package_payload = copy.deepcopy(package)
         del package_payload["package_sha256"]
