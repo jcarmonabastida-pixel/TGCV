@@ -110,3 +110,10 @@ Changes:
 - Add two grouped adversarial cases: unknown nested field with recomputed result/package hashes, and semantically forged reachable-state delta with recomputed enclosing hashes.
 
 **Evidence status:** required CI was observed in progress when this note was written. Do not mark GT-02 passed until the exact candidate run completes successfully. The previous green run remains valid only for its own commit. Preserve the existing profile 1/2 behavior; no scientific execution and no promotion to `main`.
+
+
+### GT-02 diagnosis and corrective candidate
+
+Run [38759475524](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38759475524) failed in the browser/Python concordance test at `assessInBrowser` while importing the valid profile-1 export. The nested `delta_reach` validation referenced scenario/state/transition indexes before their assignments later in the function; JavaScript hoisting left those variables undefined/empty at the point of validation. This is a validator initialization-order defect, not evidence that the adversarial assertions themselves are incorrect.
+
+Corrective candidate: `bbe63bfa2024dee9befb9478fad6f917a7a2f115`. The scenario IDs, state IDs and transition map are now initialized before the nested `delta_reach` checks, with duplicate later declarations removed. New exact-head browser/cross-runtime run: [38760661746](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38760661746) (queued at time of note). Synthetic-engine tests, both performance benchmarks, and governance consistency have also been triggered on this exact commit and are pending. Do not mark GT-02 passed until the browser/cross-runtime run completes successfully.
