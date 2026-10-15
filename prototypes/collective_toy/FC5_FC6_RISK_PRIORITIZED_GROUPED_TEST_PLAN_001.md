@@ -281,3 +281,10 @@ The first CI run on the new validator reached the adversarial assertion and corr
 Harness correction: `0fdf32cd1bc67aa027180aba264edde45368ffcd` scopes that generic replay assertion to the successful round-trip before the adversarial mutation. The adversarial rejection remains explicitly asserted.
 
 A fresh exact-head five-check battery is now required before closing this risk group.
+
+
+### GT-03 follow-up — trace initial-state binding
+
+Source review found that the importer checked whether a trace initial state existed in the model, but did not require it to equal the model's declared initial state. A forged trace could start at another declared state while keeping the package input/result binding intact. The grouped adversary changes only the trace initial state to another known state and recomputes the trace, linked outcome, assessment, and package digests. The importer now rejects the semantic mismatch with a dedicated diagnostic.
+
+Implementation/test candidate: pending exact-head CI. This risk remains open until all five required workflows pass on the same exact head and the specific diagnostic is observed. No scientific execution is authorized.

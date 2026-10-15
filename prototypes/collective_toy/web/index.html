@@ -293,6 +293,7 @@ async function assessImportedBrowserPackage(pkg){
   assert(trace.candidate_index===null||(Number.isInteger(trace.candidate_index)&&trace.candidate_index>=0),"candidate_index debe ser null o un entero no negativo.");
   assert(Array.isArray(trace.submitted_transition_ids)&&trace.submitted_transition_ids.every(function(id){return typeof id==="string"&&id.length>0&&inputTransitions.has(id)}),"submitted_transition_ids debe contener únicamente IDs de transiciones existentes.");
   assert(typeof trace.initial_state==="string"&&inputStateIds.has(trace.initial_state)&&typeof trace.final_state==="string"&&inputStateIds.has(trace.final_state),"Los estados inicial/final de la traza deben existir en la entrada.");
+  assert(trace.initial_state===pkg.input.initial_state,"initial_state de la traza no coincide con el estado inicial del modelo.");
   assert(Array.isArray(trace.steps),"steps de la traza debe ser una lista.");
   var stepKeys=["step","transition_id","state_before","state_after","prior_transitions","prerequisites","status"],stateNow=trace.initial_state,history=[];
   trace.steps.forEach(function(step,index){

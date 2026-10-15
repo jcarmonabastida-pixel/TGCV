@@ -652,6 +652,30 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /prerequisites del paso no coincide con las relaciones temporales declaradas para el perfil activo/i,
       "FC-5/FC-6: reject forged step prerequisite metadata even when trace/package digests are recomputed");
 
+    // GT-03 grouped trace-context adversary: the trace initial state must be bound to the model's declared initial state.
+    const forgedTraceInitialState = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      const trace = candidate.concrete_execution_trace;
+      const alternate = candidate.input.states.find(state => state !== candidate.input.initial_state);
+      if (!alternate) throw new Error("Fixture needs an alternate declared state");
+      trace.initial_state = alternate;
+      delete trace.trace_sha256;
+      trace.trace_sha256 = await window.hash(trace);
+      candidate.outcome_record.execution_trace_sha256 = trace.trace_sha256;
+      candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "trace-forged-initial-state.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedTraceInitialState))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /initial_state de la traza no coincide con el estado inicial del modelo/i,
+      "FC-5/FC-6: reject trace whose known initial state contradicts the declared model initial state despite recomputed dependent digests");
+
     // The preceding assertion is intentionally scoped to the successful assessed round-trip.
     // After the adversarial import, the package assessment is expected to be rejected.
     // FC-5: the same explicit outcome without a complete valuation must round-trip as NOT_ASSESSED.
