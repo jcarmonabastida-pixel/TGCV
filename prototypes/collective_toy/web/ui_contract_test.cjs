@@ -736,6 +736,23 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /resultado no está vinculado a la traza de ejecución exportada/i,
       "FC-5: importer must reject an outcome whose concrete execution trace is missing");
 
+    // FC-5: reject an unsupported package schema version even if the package digest is recomputed.
+    const unsupportedPackageVersion = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.package_version = "collective-toy-browser-run-999";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "unsupported-package-version.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(unsupportedPackageVersion))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /esquema de paquete desconocido o no compatible/i,
+      "FC-5: importer must reject an unsupported package schema version despite a recomputed digest");
+
     // FC-5: outcome execution identifier must match the exported concrete trace.
     const forgedOutcomeExecution = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
