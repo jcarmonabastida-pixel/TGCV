@@ -205,6 +205,7 @@ const assert = require("node:assert/strict");
     // A changed result with stale package/result hashes must fail closed.
     const tamperedPackage = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
+      candidate.value_assessment_status = "NOT_ASSESSED";
       candidate.result.scientific_interpretation += " tampered";
       candidate.result.semantic_sha256 = await window.hash(
         window.semanticResultProjection(candidate.result)
