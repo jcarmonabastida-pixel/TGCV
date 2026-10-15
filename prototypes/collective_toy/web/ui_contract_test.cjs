@@ -618,6 +618,56 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /hash del resultado de valoración no coincide/i,
       "FC-5: importer must reject a forged outcome digest despite a recomputed package hash");
 
+    // FC-5: trace linkage must fail closed even if the outer package digest is recomputed.
+    const forgedTraceLink = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.outcome_record.execution_trace_sha256 = "0".repeat(64);
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "forged-outcome-trace-link.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedTraceLink))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /hash de traza del resultado no coincide/i,
+      "FC-5: importer must reject a forged outcome-to-trace link");
+
+    // FC-5: assessment-to-outcome linkage and required contextual fields must be enforced.
+    const forgedAssessmentLink = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.value_assessment.outcome_id = "outcome-not-in-package";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "forged-assessment-outcome-link.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedAssessmentLink))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /no está vinculada al resultado y ejecución exportados/i,
+      "FC-5: importer must reject an assessment linked to another outcome");
+
+    const incompleteAssessment = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.value_assessment.criterion;
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "incomplete-contextual-assessment.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(incompleteAssessment))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /valoración está incompleta/i,
+      "FC-5: importer must reject missing contextual assessment fields");
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
