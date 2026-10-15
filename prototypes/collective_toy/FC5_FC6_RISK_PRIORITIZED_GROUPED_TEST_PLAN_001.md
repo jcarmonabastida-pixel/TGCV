@@ -358,3 +358,10 @@ Contract reconciliation used `TGCV_FULL_CHAIN_DEMONSTRATOR_CONTRACT_001.md`, the
 Implemented on the development branch candidate: closed-key and required-key checks for both artifacts; allowed `source_kind` enumeration; non-empty value/unit/timing/uncertainty/provenance fields; explicit 64-hex trace digest validation; non-empty `assessment_id`. Added grouped adversarial browser fixtures for unknown outcome key, invalid source kind, empty outcome unit, unknown assessment key, and empty assessment ID. Each fixture recomputes the outer package digest to ensure rejection is due to the targeted schema/semantic predicate rather than stale package integrity.
 
 Status: implementation and fixtures are committed as a candidate only; CI and diagnostic confirmation are pending. GT-04 remains open. Preserve historical profile compatibility, main remains unchanged, and no scientific execution is authorized.
+
+
+### GT-04 iteration 1 — CI diagnostic and fixture correction
+
+The five-workflow batch for candidate `2ceca81321c00dce3c142e679f388c4d535918e3` completed with four workflows passing and the browser/cross-runtime workflow failing. The failure was an existing FC-5 adversary fixture-ordering issue, not a demonstrated defect in the new validator: the test for rejecting an explicit outcome linked to a `BLOCKED` trace constructed an incomplete outcome (it omitted `source_kind`, `unit`, `timing`, `uncertainty_status`, and `provenance`). The newly enforced required-field check correctly rejected the malformed outcome first, so the test never reached its intended assertion that a validly shaped outcome requires a `COMPLETED` trace.
+
+Corrective action: complete the adversarial outcome fixture with all required schema fields while retaining the BLOCKED trace and its matching trace digest. Keep the expected diagnostic `requiere una traza COMPLETED`. This preserves validator strictness and makes the test isolate the intended predicate. Re-run the grouped CI suite on one exact commit; GT-04 remains open until diagnostic-specific checks and all five workflows pass. No scientific execution authorized; main remains untouched.

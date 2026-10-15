@@ -173,3 +173,8 @@ These are known gaps in the atomic inventory and must be expanded before publish
 The development candidate now implements the closed 12-key outcome and 11-key assessment schemas, required-key checks, finite `source_kind` enum, non-empty outcome metadata and assessment ID checks. The browser test adds five grouped adversarial variants with package digest recomputed: unknown outcome key, invalid source kind, empty outcome unit, unknown assessment key, and empty assessment ID.
 
 Related predicates: FC5-OUT-002/004/005/007/008 and FC5-VAL-002/004/008/009. Their status remains **pending** until the required five workflows pass on the exact candidate SHA and diagnostic assertions are confirmed. Existing cross-link and NOT_ASSESSED checks remain in place.
+
+
+### GT-04 candidate CI diagnostic
+
+The first grouped candidate commit `2ceca81321c00dce3c142e679f388c4d535918e3` passed four of five workflows; browser/cross-runtime failed in the pre-existing BLOCKED-trace outcome test because its adversarial outcome fixture omitted newly required outcome fields. The importer rejected it as incomplete before evaluating the expected COMPLETED-trace constraint. The fixture is being corrected to be schema-complete so the test isolates the intended predicate. No acceptance predicate is considered verified by this failed batch.

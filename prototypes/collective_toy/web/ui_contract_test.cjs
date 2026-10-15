@@ -527,7 +527,12 @@ const assert = require("node:assert/strict");
         execution_trace_sha256: candidate.concrete_execution_trace.trace_sha256,
         model_id: candidate.input.model_id,
         scenario_id: candidate.concrete_execution_trace.scenario_id,
-        value: "must reject"
+        source_kind: "synthetic",
+        value: "must reject",
+        unit: "test-unit",
+        timing: "test-only",
+        uncertainty_status: "synthetic-fixture",
+        provenance: "adversarial test fixture"
       };
       delete candidate.package_sha256;
       candidate.package_sha256 = await window.hash(candidate, "package_export");
