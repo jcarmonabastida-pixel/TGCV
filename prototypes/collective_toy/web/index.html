@@ -160,6 +160,9 @@ async function assessImportedBrowserPackage(pkg){
  if(packageV2)assert(["EXPLORATION","EXECUTION","OUTCOME","ASSESSMENT"].includes(pkg.package_stage),"package_stage ausente o no compatible.");
  else assert(pkg.package_stage===undefined,"El esquema histórico no admite package_stage.");
  assert(pkg.input&&typeof pkg.input==="object"&&!Array.isArray(pkg.input),"Falta input o no es un objeto.");
+ assert(typeof pkg.result.input_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.input_sha256),"input_sha256 ausente o malformado.");
+ assert(await hash(pkg.input)===pkg.result.input_sha256,"El hash de la entrada no coincide.");
+ validate(pkg.input);
  assert(pkg.result&&typeof pkg.result==="object"&&!Array.isArray(pkg.result),"Falta result o no es un objeto.");
  assert(Object.keys(pkg.result).every(function(k){return ["engine_version","schema_version","model_id","rule_profile","validation","scenario_results","comparisons_to_baseline","delta_reach","scientific_interpretation","semantic_identity_version","semantic_sha256","input_sha256","result_sha256"].includes(k)}),"El resultado contiene campos desconocidos.");
  assert(typeof pkg.package_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.package_sha256),"package_sha256 ausente o malformado.");
@@ -329,9 +332,6 @@ async function assessImportedBrowserPackage(pkg){
  }
  var packageBody=Object.assign({},pkg);delete packageBody.package_sha256;
  assert(await hash(packageBody)===pkg.package_sha256,"El hash del paquete no coincide.");
- assert(typeof pkg.result.input_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.input_sha256),"input_sha256 ausente o malformado.");
- assert(await hash(pkg.input)===pkg.result.input_sha256,"El hash de la entrada no coincide.");
- validate(pkg.input);
  assert(typeof pkg.result.result_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.result_sha256),"result_sha256 ausente o malformado.");
  var resultBody=Object.assign({},pkg.result);delete resultBody.input_sha256;delete resultBody.result_sha256;
  assert(await hash(resultBody)===pkg.result.result_sha256,"El hash del resultado no coincide.");
