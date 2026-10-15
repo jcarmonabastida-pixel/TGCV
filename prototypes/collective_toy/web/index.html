@@ -302,9 +302,11 @@ async function assessImportedBrowserPackage(pkg){
    assert(edge&&edge.source===stateNow&&step.state_before===stateNow&&edge.target===step.state_after,"La secuencia de estados/transiciones de la traza no es coherente con la entrada.");
    assert(Array.isArray(step.prior_transitions)&&canonical(step.prior_transitions)===canonical(history),"prior_transitions no coincide con el prefijo ejecutado.");
    assert(Array.isArray(step.prerequisites)&&step.prerequisites.every(function(id){return typeof id==="string"&&inputTransitions.has(id)}),"prerequisites del paso contiene IDs inválidos.");
-   if(canonical(pkg.input.rule_profile)===canonical({type:"temporal_prerequisite_graph",version:"1"})){
-    var expectedPrerequisites=(pkg.input.relations||[]).filter(function(rel){return rel.transition_id===step.transition_id}).map(function(rel){return rel.requires_transition_id}).sort();
-    assert(canonical(step.prerequisites)===canonical(expectedPrerequisites)&&expectedPrerequisites.every(function(id){return history.includes(id)}),"El paso no satisface los prerrequisitos temporales declarados.");
+   var temporalStepProfile=canonical(pkg.input.rule_profile)===canonical({type:"temporal_prerequisite_graph",version:"1"});
+   var expectedPrerequisites=temporalStepProfile?(pkg.input.relations||[]).filter(function(rel){return rel.transition_id===step.transition_id}).map(function(rel){return rel.requires_transition_id}).sort():[];
+   assert(canonical(step.prerequisites)===canonical(expectedPrerequisites),"prerequisites del paso no coincide con las relaciones temporales declaradas para el perfil activo.");
+   if(temporalStepProfile){
+    assert(expectedPrerequisites.every(function(id){return history.includes(id)}),"El paso no satisface los prerrequisitos temporales declarados.");
    }
    history.push(step.transition_id);stateNow=step.state_after;
   });
