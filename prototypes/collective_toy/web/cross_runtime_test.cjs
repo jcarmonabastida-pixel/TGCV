@@ -1564,6 +1564,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       const malformedReferencePackage = structuredClone(validImportedPackage);
       malformedReferencePackage.result.engine_version = "collective-toy-engine-999";
       malformedReference.mutate(malformedReferencePackage);
+      refreshSemanticHash(malformedReferencePackage.result);
       const referenceResultPayload = structuredClone(malformedReferencePackage.result);
       delete referenceResultPayload.input_sha256;
       delete referenceResultPayload.result_sha256;
