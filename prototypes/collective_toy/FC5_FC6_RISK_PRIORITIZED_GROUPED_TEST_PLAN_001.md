@@ -372,3 +372,12 @@ Corrective action: complete the adversarial outcome fixture with all required sc
 The corrected candidate `6aab8a91eaf9c9296fa13b510c06a3361f492c42` completed four of five workflows successfully; the browser/cross-runtime suite failed at an existing FC-5 assertion for an incomplete contextual assessment. The importer rejected the malformed record as intended, but the diagnostic text now says `value_assessment está incompleta.` while the older assertion only accepted `valoración está incompleta`. This is a test-message compatibility mismatch, not evidence that the invalid assessment was accepted.
 
 Correction: allow the assertion to match either the schema field name (`value_assessment`) or the Spanish label (`valoración`), retaining the rejection-state assertion. Re-run all five workflows on one exact commit. GT-04 remains open pending full green CI and diagnostic-specific confirmation. Main remains untouched; no scientific execution authorized.
+
+
+### GT-04 exact-head CI gate — first complete green batch
+
+All five required workflows passed on exact commit `6f426724e48426b5a525764f592222a13b0a5886`: browser/cross-runtime `38792359668`, synthetic engine `38792359755`, governance consistency `38792359714`, browser benchmark `38792359847`, and engine benchmark `38792360053`. The browser job passed both the browser/Python concordance test and replay from a clean source archive. This confirms the candidate's current engineering gate and the diagnostic-assertion correction; it does not establish scientific validity and does not close GT-04, which retains further grouped boundary risks.
+
+### GT-04 next grouped risk — artifact shape substitutions and NOT_ASSESSED coherence
+
+Next adversarial group targets schema substitution and lifecycle-state coherence: array/null substituted for `outcome_record`, array substituted for `value_assessment`, assessment status set to `NOT_ASSESSED` while a value assessment object is present, and missing assessment paired with a contradictory `value_assessment_status=ASSESSED`. Each mutation recomputes the outer package digest and must be rejected by the intended structural or status diagnostic. These cases complement the existing closed-key, required-field, enum, cross-link, and hash tests. GT-04 remains open until this grouped set and the same five-workflow exact-head gate pass.

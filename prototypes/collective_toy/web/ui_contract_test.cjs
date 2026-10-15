@@ -640,6 +640,11 @@ const assert = require("node:assert/strict");
         else if (mutation === "unknown_assessment") candidate.value_assessment.uncontracted = "forged";
         else if (mutation === "empty_assessment_id") candidate.value_assessment.assessment_id = " ";
         else if (mutation === "empty_outcome_unit") candidate.outcome_record.unit = " ";
+        else if (mutation === "outcome_array") candidate.outcome_record = [];
+        else if (mutation === "outcome_null") candidate.outcome_record = null;
+        else if (mutation === "assessment_array") candidate.value_assessment = [];
+        else if (mutation === "invalid_assessment_status") candidate.value_assessment.status = "NOT_ASSESSED";
+        else if (mutation === "missing_assessment_wrong_status") { delete candidate.value_assessment; candidate.value_assessment_status = "ASSESSED"; }
         delete candidate.package_sha256;
         candidate.package_sha256 = await window.hash(candidate, "package_export");
         return candidate;
@@ -658,6 +663,11 @@ const assert = require("node:assert/strict");
     await rejectGt04Mutation("gt04-empty-outcome-unit.json", "empty_outcome_unit", "unidad, momento, incertidumbre/estado y procedencia como cadenas no vacías");
     await rejectGt04Mutation("gt04-unknown-assessment-key.json", "unknown_assessment", "value_assessment contiene campos desconocidos");
     await rejectGt04Mutation("gt04-empty-assessment-id.json", "empty_assessment_id", "assessment_id válido");
+    await rejectGt04Mutation("gt04-outcome-array-substitution.json", "outcome_array", "outcome_record debe ser un objeto");
+    await rejectGt04Mutation("gt04-outcome-null-substitution.json", "outcome_null", "outcome_record debe ser un objeto");
+    await rejectGt04Mutation("gt04-assessment-array-substitution.json", "assessment_array", "La valoración requiere un resultado explícito");
+    await rejectGt04Mutation("gt04-invalid-assessment-status.json", "invalid_assessment_status", "Esquema o estado de valoración desconocido");
+    await rejectGt04Mutation("gt04-missing-assessment-wrong-status.json", "missing_assessment_wrong_status", "value_assessment_status=NOT_ASSESSED");
 
     // GT-03 grouped trace metadata adversary: step prerequisites must be exactly those declared by the active rule profile.
     const forgedStepPrerequisites = await page.evaluate(async (pkg) => {

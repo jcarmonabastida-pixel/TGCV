@@ -183,3 +183,10 @@ The first grouped candidate commit `2ceca81321c00dce3c142e679f388c4d535918e3` pa
 ### GT-04 candidate CI diagnostic — assertion wording
 
 On `6aab8a91eaf9c9296fa13b510c06a3361f492c42`, four of five workflows passed. The browser/cross-runtime workflow rejected the incomplete assessment as expected but the legacy test regex only recognized `valoración está incompleta`; the validator now emits `value_assessment está incompleta`. The test assertion is broadened to accept either label while preserving the required rejection. No acceptance predicate is considered verified by this failed batch.
+
+
+### GT-04 evidence and next grouped risk
+
+The five required workflows passed on exact commit `6f426724e48426b5a525764f592222a13b0a5886` (runs: `38792359668`, `38792359755`, `38792359714`, `38792359847`, `38792360053`). Browser/cross-runtime includes successful clean-source replay. Engineering gate only; no scientific-validity claim.
+
+Next pending grouped adversarial cases: outcome null/array substitutions, assessment array substitution, invalid assessment status when the assessment object is present, and `value_assessment_status=ASSESSED` when no assessment object exists. The tests require targeted rejection diagnostics and recompute the outer package digest. GT-04 remains open.
