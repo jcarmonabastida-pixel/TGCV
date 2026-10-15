@@ -623,6 +623,15 @@ def verify_exported_package_integrity(package: dict[str, Any]) -> bool:
     expected_result_sha256 = result_payload.pop("result_sha256")
     if sha256_json(result_payload) != expected_result_sha256:
         raise ModelValidationError("Exported result SHA-256 does not verify")
+    semantic_version = result.get("semantic_identity_version")
+    if semantic_version is not None:
+        if semantic_version != SEMANTIC_IDENTITY_VERSION:
+            raise ModelValidationError("Unsupported semantic identity version")
+        semantic_hash = result.get("semantic_sha256")
+        if not isinstance(semantic_hash, str) or sha256_json(semantic_result_projection(result)) != semantic_hash:
+            raise ModelValidationError("Exported semantic identity does not verify")
+    elif "semantic_sha256" in result:
+        raise ModelValidationError("semantic_sha256 requires a semantic identity version")
     return True
 
 
