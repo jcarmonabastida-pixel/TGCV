@@ -178,3 +178,8 @@ Related predicates: FC5-OUT-002/004/005/007/008 and FC5-VAL-002/004/008/009. The
 ### GT-04 candidate CI diagnostic
 
 The first grouped candidate commit `2ceca81321c00dce3c142e679f388c4d535918e3` passed four of five workflows; browser/cross-runtime failed in the pre-existing BLOCKED-trace outcome test because its adversarial outcome fixture omitted newly required outcome fields. The importer rejected it as incomplete before evaluating the expected COMPLETED-trace constraint. The fixture is being corrected to be schema-complete so the test isolates the intended predicate. No acceptance predicate is considered verified by this failed batch.
+
+
+### GT-04 candidate CI diagnostic — assertion wording
+
+On `6aab8a91eaf9c9296fa13b510c06a3361f492c42`, four of five workflows passed. The browser/cross-runtime workflow rejected the incomplete assessment as expected but the legacy test regex only recognized `valoración está incompleta`; the validator now emits `value_assessment está incompleta`. The test assertion is broadened to accept either label while preserving the required rejection. No acceptance predicate is considered verified by this failed batch.

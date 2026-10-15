@@ -798,7 +798,7 @@ const assert = require("node:assert/strict");
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
-    assert.match(await page.locator("#package-assessment").innerText(), /valoración está incompleta/i,
+    assert.match(await page.locator("#package-assessment").innerText(), /(?:value_assessment|valoración) está incompleta/i,
       "FC-5: importer must reject missing contextual assessment fields");
 
     // FC-5: reject unknown top-level package fields even when the package digest is recomputed.
