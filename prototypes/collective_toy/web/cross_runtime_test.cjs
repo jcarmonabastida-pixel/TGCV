@@ -1649,6 +1649,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
 
     const divergentPackage = structuredClone(validImportedPackage);
     divergentPackage.result.scenario_results.baseline.reachable_states.push("FORGED_STATE_NOT_IN_MODEL");
+    refreshSemanticHash(divergentPackage.result);
     const divergentResultPayload = structuredClone(divergentPackage.result);
     delete divergentResultPayload.input_sha256;
     delete divergentResultPayload.result_sha256;
