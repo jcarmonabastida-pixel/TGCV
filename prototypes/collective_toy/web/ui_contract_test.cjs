@@ -164,6 +164,10 @@ const assert = require("node:assert/strict");
       "Downloaded JSON must match the inspectable package plus explicit FC-4 NOT_ASSESSED status");
     assert.match(JSON.parse(exportedText).package_sha256, /^[0-9a-f]{64}$/,
       "FC-4 export must hash the complete exported package");
+    assert.equal(exportedPackage.package_version, "collective-toy-browser-run-002",
+      "FC-5: exports must use the explicitly versioned package schema");
+    assert.equal(exportedPackage.package_stage, "EXPLORATION",
+      "FC-5: a package without a concrete trace must identify the exploration stage");
 
     // Exercise the actual import UI with the package produced by the export button.
     await page.locator("#package-file").setInputFiles({
@@ -494,6 +498,52 @@ const assert = require("node:assert/strict");
       "FC-3: attempted mutation must not alter the blocking reason");
     assert.equal(blockedTraceIntegrity.digestUnchanged, true,
       "FC-3: trace digest must remain attached to the immutable trace");
+
+    // FC-5 approved policy A: blocked attempts round-trip as inspectable EXECUTION-stage packages.
+    const blockedExportPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const blockedDownload = await blockedExportPromise;
+    const blockedPackage = JSON.parse(fs.readFileSync(await blockedDownload.path(), "utf8"));
+    assert.equal(blockedPackage.package_stage, "EXECUTION");
+    assert.equal(blockedPackage.concrete_execution_trace.status, "BLOCKED");
+    assert.equal(blockedPackage.value_assessment_status, "NOT_ASSESSED");
+    await page.locator("#package-file").setInputFiles({
+      name: "blocked-trace-stage-package.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(blockedPackage))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "FC-5: a coherent BLOCKED trace must remain importable and inspectable");
+
+    // A BLOCKED trace must never be accepted as the evidence for an explicit completed outcome.
+    const blockedWithOutcome = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.package_stage = "OUTCOME";
+      candidate.outcome_record = {
+        outcome_schema: "collective-toy-outcome-001",
+        outcome_id: "invalid-outcome-for-blocked-trace",
+        execution_id: candidate.concrete_execution_trace.execution_id,
+        execution_trace_sha256: candidate.concrete_execution_trace.trace_sha256,
+        model_id: candidate.input.model_id,
+        scenario_id: candidate.concrete_execution_trace.scenario_id,
+        value: "must reject"
+      };
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, blockedPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "blocked-trace-with-outcome.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(blockedWithOutcome))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /requiere una traza COMPLETED/i,
+      "FC-5: outcome linked to a BLOCKED trace must be rejected");
+
     await page.locator("#sequence-input").fill("");
     await page.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
     await page.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 3000 });
@@ -583,6 +633,7 @@ const assert = require("node:assert/strict");
     const unassessedOutcomePackage = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
       delete candidate.value_assessment;
+      candidate.package_stage = "OUTCOME";
       candidate.value_assessment_status = "NOT_ASSESSED";
       delete candidate.package_sha256;
       candidate.package_sha256 = await window.hash(candidate, "package_export");
