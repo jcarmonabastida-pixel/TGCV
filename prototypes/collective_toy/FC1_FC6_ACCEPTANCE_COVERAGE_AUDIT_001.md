@@ -29,3 +29,6 @@ Do not alter the structural detector or OCR quality work. Do not start scientifi
 - A green CI does not establish scientific validity of TGCV, causal claims, empirical generalization, or the canonical scientific definition of (T_{acc}).
 - Synthetic outcomes must not be described as empirical findings.
 - No promotion to `main` is implied.
+
+
+The numbered working register is now available at [`FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md`](FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md), commit `7df5e9b75ba5eded601b114cb227f5abf388de15`. It maps candidate predicates to initial statuses and evidence gaps. Section H explicitly lists unatomized areas, so the denominator and overall completion percentage remain **not yet determinable**. This commit is documentation-only; no tests were added and no implementation was changed.
