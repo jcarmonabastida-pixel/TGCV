@@ -934,6 +934,47 @@ const assert = require("node:assert/strict");
     assert.equal(delta.truncated, false, "FC-4: delta must explicitly report whether either exploration was truncated");
     assert.equal(delta.baseline_truncated, false, "FC-4: baseline truncation status must be explicit");
     assert.equal(delta.intervention_truncated, false, "FC-4: intervention truncation status must be explicit");
+ 
+    // FC-5/FC-6 grouped adversarial case: delta_reach is a closed, semantically linked artifact.
+    const unknownDeltaField = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.delta_reach.block_ac.uncontracted_extension = true;
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, deltaPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "unknown-delta-field.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(unknownDeltaField))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /delta_reach de block_ac contiene campos ausentes o desconocidos/i,
+      "FC-5: reject uncontracted delta_reach fields even when result/package hashes are recomputed");
+
+    const forgedDeltaSemantics = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.delta_reach.block_ac.reachable_states_removed = [];
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, deltaPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "forged-delta-semantics.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedDeltaSemantics))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /delta_reach de block_ac no coincide con la comparación baseline exportada/i,
+      "FC-5/FC-6: reject semantically forged delta_reach despite recomputed enclosing hashes");
 
 
 
