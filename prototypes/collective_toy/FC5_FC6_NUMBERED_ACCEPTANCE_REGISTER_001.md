@@ -313,3 +313,10 @@ Added two focused browser contract cases after the baseline-source digest case: 
 ### FC5-DELTA-007/008 — truncation consistency fixtures added
 
 Added three browser adversarial cases: (1) `baseline_truncated` is the string `"false"` and must fail the boolean predicate; (2) aggregate `truncated=true` conflicts with both scenario flags remaining false; (3) `intervention_truncated=true` conflicts with the intervention scenario's actual `truncated=false`. Each fixture recomputes the enclosing result and package digests and asserts the specific importer diagnostic. State remains pending exact-head five-workflow CI evidence.
+
+
+### FC5-DELTA-005/006 — state/transition delta list predicates
+
+The previous truncation iteration passed all five required workflows on exact commit `f4cc56a5db01f52cd9f9a54223e07e24cd9b4591`: browser/cross-runtime `38815534166`, synthetic engine `38815534390`, governance consistency `38815534200`, browser benchmark `38815534257`, and engine benchmark `38815534173`. Both browser execution and clean-source replay passed.
+
+Added four focused negative fixtures for the next grouped risk: a non-array `reachable_states_added`, an unknown state ID in `reachable_states_removed`, a non-array `enabled_at_initial_added`, and an unknown transition ID in `enabled_at_initial_removed`. Each mutation recomputes the enclosing result and package hashes and asserts the field-specific rejection. These new predicates remain pending until the exact-head five-workflow gate passes.

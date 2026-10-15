@@ -1363,6 +1363,33 @@ const assert = require("node:assert/strict");
       /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i,
       "FC-5: reject intervention truncation flag that disagrees with the intervention scenario");
 
+    // FC-5 grouped adversarial cases: delta state/transition arrays must contain declared IDs.
+    for (const item of [
+      { name: "delta-reachable-states-added-wrong-type.json", field: "reachable_states_added", value: "C", diagnostic: /reachable_states_added de delta_reach en block_ac debe contener IDs de estado válidos/i },
+      { name: "delta-reachable-states-removed-unknown-id.json", field: "reachable_states_removed", value: ["UNKNOWN_STATE"], diagnostic: /reachable_states_removed de delta_reach en block_ac debe contener IDs de estado válidos/i },
+      { name: "delta-enabled-transitions-added-wrong-type.json", field: "enabled_at_initial_added", value: "t_ac", diagnostic: /enabled_at_initial_added de delta_reach en block_ac debe contener IDs de transición válidos/i },
+      { name: "delta-enabled-transitions-removed-unknown-id.json", field: "enabled_at_initial_removed", value: ["unknown_transition"], diagnostic: /enabled_at_initial_removed de delta_reach en block_ac debe contener IDs de transición válidos/i }
+    ]) {
+      const candidate = await page.evaluate(async ({ pkg, field, value }) => {
+        const copy = structuredClone(pkg);
+        copy.result.delta_reach.block_ac[field] = value;
+        const resultBody = structuredClone(copy.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        copy.result.result_sha256 = await window.hash(resultBody, "result");
+        delete copy.package_sha256;
+        copy.package_sha256 = await window.hash(copy, "package_export");
+        return copy;
+      }, { pkg: deltaPackage, field: item.field, value: item.value });
+      await page.locator("#package-file").setInputFiles({
+        name: item.name, mimeType: "application/json", buffer: Buffer.from(JSON.stringify(candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), item.diagnostic,
+        "FC-5: reject malformed or unknown IDs in delta_reach field " + item.field);
+    }
+
     // GT-03 scenario-context adversary: the blocked reason must use trace.scenario_id, not baseline.
     const forgedBlockedScenarioContext = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);

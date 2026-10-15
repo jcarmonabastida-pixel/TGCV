@@ -443,3 +443,8 @@ Following the inventory correction, added two adversarial browser cases for the 
 ### FC5-DELTA grouped iteration 2 — truncation flags
 
 After confirming the importer already validates truncation fields and scenario correspondence, added three grouped adversarial browser cases for wrong boolean type, aggregate OR inconsistency, and intervention/scenario mismatch. Mutations recompute result/package digests and assert the importer diagnostics. Require all five workflows to pass on one exact commit before upgrading acceptance states. This remains engineering contract evidence only; no scientific execution.
+
+
+### FC5-DELTA grouped iteration 3 — state and transition delta arrays
+
+The prior truncation candidate `f4cc56a5db01f52cd9f9a54223e07e24cd9b4591` passed all five controls on one exact commit, including browser suite replay from a clean source archive. The next grouped candidate adds four adversarial checks for array typing and declared-ID membership across reachable-state and initially-enabled-transition deltas. Each test recomputes result/package digests and checks the specific diagnostic. Engineering contract evidence only; no scientific execution.

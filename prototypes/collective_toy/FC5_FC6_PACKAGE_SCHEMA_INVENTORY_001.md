@@ -198,3 +198,8 @@ Two new browser adversarial cases now complement the baseline-source case: malfo
 ### Delta-reach truncation follow-up
 
 Direct-negative fixtures now cover a wrong-type `baseline_truncated`, an inconsistent aggregate `truncated`, and a specific `intervention_truncated` flag inconsistent with the scenario. All recompute enclosing hashes to reach the intended validator branch. These predicates remain pending until the exact-head browser/cross-runtime gate passes; other missing delta predicates remain pending.
+
+
+### Delta-reach state/transition ID fixture update
+
+Four browser adversarial cases now exercise list type and declared-ID membership for state and initially-enabled-transition deltas. Enclosing result/package hashes are recomputed to isolate the target predicate. Do not mark FC5-DELTA-005/006 verified until exact-head CI confirms all cases.
