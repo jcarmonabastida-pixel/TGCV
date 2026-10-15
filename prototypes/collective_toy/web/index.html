@@ -261,7 +261,7 @@ async function assessImportedBrowserPackage(pkg){
   var deltaKeys=["baseline_source_sha256","intervention_source_sha256","reachable_states_added","reachable_states_removed","enabled_at_initial_added","enabled_at_initial_removed","trajectories_added","trajectories_removed","truncated","baseline_truncated","intervention_truncated"];
   var interventionIds=inputScenarioIds.filter(function(id){return id!=="baseline"}).sort();
   assert(canonical(Object.keys(deltaReach).sort())===canonical(interventionIds),"delta_reach debe contener exactamente una entrada por escenario de intervención.");
-  Object.keys(deltaReach).forEach(function(id){
+  for(var id of Object.keys(deltaReach)){
    var delta=deltaReach[id],cmp=pkg.result.comparisons_to_baseline[id],base=pkg.result.scenario_results.baseline,intervention=pkg.result.scenario_results[id];
    assert(delta&&typeof delta==="object"&&!Array.isArray(delta)&&Object.keys(delta).length===deltaKeys.length&&Object.keys(delta).every(function(k){return deltaKeys.includes(k)}),"delta_reach de "+id+" contiene campos ausentes o desconocidos.");
    ["baseline_source_sha256","intervention_source_sha256"].forEach(function(k){assert(typeof delta[k]==="string"&&/^[0-9a-f]{64}$/.test(delta[k]),k+" de delta_reach en "+id+" debe ser SHA-256 válido.")});
@@ -276,7 +276,7 @@ async function assessImportedBrowserPackage(pkg){
    ["truncated","baseline_truncated","intervention_truncated"].forEach(function(k){assert(typeof delta[k]==="boolean",k+" de delta_reach en "+id+" debe ser booleano.")});
    assert(cmp&&canonical(delta.reachable_states_added)===canonical(cmp.reachable_states_added.slice().sort())&&canonical(delta.reachable_states_removed)===canonical(cmp.reachable_states_removed.slice().sort())&&canonical(delta.enabled_at_initial_added)===canonical(cmp.enabled_at_initial_added.slice().sort())&&canonical(delta.enabled_at_initial_removed)===canonical(cmp.enabled_at_initial_removed.slice().sort())&&canonical(delta.trajectories_added)===canonical(cmp.trajectories_added)&&canonical(delta.trajectories_removed)===canonical(cmp.trajectories_removed),"delta_reach de "+id+" no coincide con la comparación baseline exportada.");
    assert(delta.baseline_truncated===base.truncated&&delta.intervention_truncated===intervention.truncated&&delta.truncated===(base.truncated||intervention.truncated),"Los indicadores de truncamiento de delta_reach en "+id+" no coinciden con los escenarios.");
-  });
+  }
  }
  if(Object.prototype.hasOwnProperty.call(pkg,"concrete_execution_trace")){
   var trace=pkg.concrete_execution_trace;
