@@ -32,3 +32,6 @@ Do not alter the structural detector or OCR quality work. Do not start scientifi
 
 
 The numbered working register is now available at [`FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md`](FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md), commit `7df5e9b75ba5eded601b114cb227f5abf388de15`. It maps candidate predicates to initial statuses and evidence gaps. Section H explicitly lists unatomized areas, so the denominator and overall completion percentage remain **not yet determinable**. This commit is documentation-only; no tests were added and no implementation was changed.
+
+
+The existing-fixture reconciliation is recorded in [`FC5_EXISTING_TEST_RECONCILIATION_001.md`](FC5_EXISTING_TEST_RECONCILIATION_001.md), commit `d22618955d7dfc97b21e3ccf4f73c890ac3453f9`. It maps named current browser fixtures to the predicates they actually exercise, distinguishes positive delta evidence from importer-side schema validation, and records a static inventory snapshot of 112 register rows (6 verified, 65 partial, 38 pending, 3 qualified). This is not the final atomic denominator or a CI result; no tests were executed and no implementation changed.
