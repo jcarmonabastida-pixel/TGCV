@@ -104,7 +104,7 @@ The owner approved Alternative A for FC-5/FC-6. This section is normative for th
 
 ### Package stage
 
-A package may represent an explicitly identified partial stage or a later stage. The package schema must identify its stage (proposed field: `package_stage`) so a model/result snapshot cannot be mistaken for a completed full-chain execution. The current closed package schema does not yet contain this field; adding it must be handled as a deliberate, versioned schema change, not as a silent extension of `collective-toy-browser-run-001`.
+Implemented on the development branch in versioned package schema `collective-toy-browser-run-002`. Its required `package_stage` is one of `EXPLORATION`, `EXECUTION`, `OUTCOME`, or `ASSESSMENT`. The importer derives the expected stage from the actual artifacts and rejects inconsistencies. The exporter emits v002; v001 remains supported under its historical contract and does not accept `package_stage`. See `FC5_FC6_PACKAGE_SCHEMA_V002_IMPLEMENTATION_001.md`.
 
 ### Artifact dependencies
 
@@ -127,4 +127,4 @@ Hashes support integrity/consistency checks but do not establish provenance auth
 
 ### Implementation and acceptance gate
 
-Implement the schema versioning and lifecycle validation on the development branch only. Reuse existing round-trip and adversarial tests; add grouped lifecycle coverage for stage snapshots, completed traces with/without outcomes, blocked traces without outcomes, and invalid dependency combinations. Run required CI on the exact candidate commit. This approval does not authorize scientific execution or promotion to `main`.
+Schema v002, package-stage inference, and trace lifecycle validation have been implemented on the development branch; grouped tests cover the exploration-stage export, blocked-trace round-trip, and rejection of an outcome attached to a blocked trace. **CI verification remains pending** until the exact candidate commit's required workflows complete. Preserve the historical v001 importer and recheck profile 1/2 compatibility. This approval does not authorize scientific execution or promotion to `main`.
