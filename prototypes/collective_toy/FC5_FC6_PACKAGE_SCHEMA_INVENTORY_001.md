@@ -234,3 +234,8 @@ Two browser adversaries now check that `delta_reach` contains exactly the declar
 ## Delta truncation coverage update — candidate e8e5637
 
 The browser contract suite now adds wrong-type adversaries for `truncated` and `intervention_truncated`, completing wrong-type fixture coverage across all three delta truncation booleans when combined with the existing `baseline_truncated` case. It also adds a baseline-specific mismatch adversary that sets `baseline_truncated=true` and aggregate `truncated=true` while the baseline scenario remains untruncated. Each fixture recomputes the result and package hashes and asserts the validator diagnostic. Source commit: `e8e56377f949f03415b63aa92500bf7d42e660e9`. These additions remain pending exact-HEAD CI; do not mark the predicates verified until the browser/cross-runtime workflow passes on that commit. Full truth-table coverage remains open.
+
+
+## Exhaustive claimed-flag truth-table fixture — candidate 079a392
+
+The browser contract test now iterates all eight boolean triples for `truncated`, `baseline_truncated`, and `intervention_truncated` against the actual baseline and intervention scenario results in the valid fixture. The tuple matching both scenario flags and the aggregate OR must be accepted; all other tuples must be rejected with the scenario-consistency diagnostic. Each tuple recomputes result and package hashes. Source commit: `079a392470c8f9c7e40f37608adf4a778569a5ac9`. Exact-HEAD browser/cross-runtime CI is required before treating this extension as verified.
