@@ -702,6 +702,23 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /valoración no está vinculada al resultado y ejecución exportados/i,
       "FC-5: importer must reject an assessment execution ID that differs from its outcome");
 
+    // FC-5: explicit outcome model identity must match the exported input and trace.
+    const forgedOutcomeModel = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.outcome_record.model_id = "model-not-in-package";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "forged-outcome-model-link.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedOutcomeModel))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /resultado.*model_id.*no coincide/i,
+      "FC-5: importer must reject an outcome model ID that differs from the package input/trace");
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
