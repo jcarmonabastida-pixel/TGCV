@@ -29,6 +29,32 @@ function fixtures() {
   const clone = x => JSON.parse(JSON.stringify(x));
   const cases = [{ name: "diamond-reference", model: clone(base) }];
 
+  // FC-1 parity fixture: temporal prerequisites must be enforced identically in
+  // Python and browser exploration, including a route that reaches t_use without
+  // first executing t_prep and a separate route that satisfies the prerequisite.
+  const temporalSequentiality = clone(base);
+  temporalSequentiality.model_id = "temporal-sequentiality-cross-runtime";
+  temporalSequentiality.states = ["A", "B", "C", "D"];
+  temporalSequentiality.transitions = [
+    { id: "t_prep", source: "A", target: "B" },
+    { id: "t_bypass", source: "A", target: "C" },
+    { id: "t_to_c", source: "B", target: "C" },
+    { id: "t_use", source: "C", target: "D" }
+  ];
+  temporalSequentiality.relations = [{
+    id: "r_use_requires_prep",
+    type: "requires_prior_execution",
+    transition_id: "t_use",
+    requires_transition_id: "t_prep"
+  }];
+  temporalSequentiality.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
+  temporalSequentiality.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_prep", disabled_transitions: ["t_prep"] }
+  ];
+  temporalSequentiality.exploration = { max_depth: 6, max_trajectories: 100 };
+  cases.push({ name: "temporal-prerequisite-sequentiality", model: temporalSequentiality });
+
   const unicodeMetadata = clone(base);
   unicodeMetadata.model_id = "unicode-metadata-canonical-order";
   unicodeMetadata.relations = [{ id: "descriptive", metadata: { "\uE000": "bmp", "𐀀": "supplementary", count: 9007199254740991 } }];
