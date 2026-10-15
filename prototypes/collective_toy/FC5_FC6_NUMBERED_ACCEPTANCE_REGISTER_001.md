@@ -211,3 +211,10 @@ Pending grouped adversaries: wrong `outcome_schema`, blank `outcome_id`, wrong `
 The five-workflow exact-head gate passed on `d3593138cfcfeb087417ab2f117b751b68eaa42e`: browser/cross-runtime `38794551912`, synthetic engine `38794551709`, governance consistency `38794551639`, browser benchmark `38794551678`, engine benchmark `38794551659`. Clean-source replay passed in the browser/cross-runtime job.
 
 Pending grouped adversaries break one link at a time across the chain: outcome execution ID, trace digest format, model ID, scenario ID, assessment outcome ID, assessment execution ID, and assessment's outcome digest (valid SHA-256 shape but wrong value). Outer package digest is recomputed. Require intended diagnostic plus all five workflows on one exact commit before claiming these predicates verified.
+
+
+### GT-04 iteration 5 — lifecycle stage/artifact coherence
+
+Previous exact-head five-workflow gate passed on `4f4a45f532e08c0f3ff13480ba61bec77552e822` (runs `38795223557`, `38795223565`, `38795223544`, `38795223577`, `38795223833`).
+
+Newly identified invariant: package v2 stage must match the highest artifact present: ASSESSMENT if a value assessment exists, else OUTCOME if an outcome exists, else EXECUTION if a concrete trace exists, else EXPLORATION. The validator and four diagnostic-specific adversarial cases now cover stage/artifact mismatch. Await exact-head five-workflow CI before considering this invariant verified; GT-04 remains open.

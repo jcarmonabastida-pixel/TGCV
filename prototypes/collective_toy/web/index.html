@@ -352,6 +352,10 @@ async function assessImportedBrowserPackage(pkg){
   assert(pkg.package_stage===expectedStage,"package_stage no coincide con los artefactos presentes.");
   assert(!hasOutcome||hasTrace,"outcome_record requiere concrete_execution_trace.");
   assert(!hasAssessment||hasOutcome,"value_assessment requiere outcome_record.");
+  if(packageV2){
+   var expectedStage=hasAssessment?"ASSESSMENT":hasOutcome?"OUTCOME":hasTrace?"EXECUTION":"EXPLORATION";
+   assert(pkg.package_stage===expectedStage,"package_stage no coincide con los artefactos presentes: se esperaba "+expectedStage+".");
+  }
  }
  var packageBody=Object.assign({},pkg);delete packageBody.package_sha256;
  assert(await hash(packageBody)===pkg.package_sha256,"El hash del paquete no coincide.");

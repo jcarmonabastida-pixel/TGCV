@@ -402,3 +402,10 @@ Next grouped adversaries: unsupported `outcome_schema`, blank `outcome_id`, unsu
 The exact-head five-workflow gate passed on `d3593138cfcfeb087417ab2f117b751b68eaa42e`: browser/cross-runtime `38794551912`, synthetic engine `38794551709`, governance consistency `38794551639`, browser benchmark `38794551678`, and engine benchmark `38794551659`. The browser suite also passed replay from a clean source archive. Engineering gate only; no scientific-validity claim.
 
 Next coherent group targets the linked evidence chain rather than adding isolated fields: outcome execution ID mismatch, malformed trace digest, outcome model mismatch, outcome scenario mismatch, assessment outcome ID mismatch, assessment execution ID mismatch, and a well-formed but incorrect assessment outcome digest. Each mutation recomputes the outer package digest and must reach its corresponding cross-link/hash diagnostic. This directly exercises GT-04's trace/execution/model/scenario/outcome links and digest recomputation. GT-04 remains open until diagnostic-specific assertions and the exact-head five-workflow gate pass.
+
+
+### GT-04 iteration 5 — package lifecycle stage/artifact coherence
+
+The linked-evidence adversarial batch passed the exact-head five-workflow gate on `4f4a45f532e08c0f3ff13480ba61bec77552e822`: governance `38795223557`, synthetic engine `38795223565`, performance benchmark `38795223544`, browser benchmark `38795223577`, and browser/cross-runtime `38795223833`. This is engineering evidence only.
+
+Reviewing the package validator exposed a separate lifecycle invariant: v2 `package_stage` was constrained to the allowed enum but not required to agree with the artifacts actually present. This iteration adds the invariant `ASSESSMENT > OUTCOME > EXECUTION > EXPLORATION` based on the highest present artifact and groups four adversarial stage/content mismatches. Mutations recompute the outer package digest and require the stage-coherence diagnostic. GT-04 remains open until the five-workflow exact-head gate passes.
