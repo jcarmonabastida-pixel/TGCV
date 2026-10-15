@@ -98,6 +98,7 @@ def semantic_result_projection(output: dict[str, Any]) -> dict[str, Any]:
     """
     projected = json.loads(canonical_json(output))
     projected.pop("delta_reach", None)
+    projected.pop("engine_version", None)  # provenance, not model/result semantics
     projected.pop("input_sha256", None)
     projected.pop("result_sha256", None)
     projected.pop("semantic_sha256", None)
