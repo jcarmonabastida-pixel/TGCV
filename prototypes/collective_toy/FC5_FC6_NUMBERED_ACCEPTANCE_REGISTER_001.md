@@ -227,3 +227,8 @@ Exact-head five-workflow gate passed on `144c1d1332405c54b7b74e3ecd8afa29808cc6d
 ### GT-05 iteration 1 — assessed round-trip determinism pending
 
 Added a grouped end-to-end assertion that imports the same fully assessed artifact twice and checks explicit `ASSESSMENT` stage, outcome-digest linkage, matching independent replay, and stable replay assessment. Status remains pending until the exact-head five-workflow gate passes.
+
+
+### GT-05 iteration 1 — diagnostic correction
+
+Initial candidate `01497f122dbd9facc9980fd95e2a8c1b8eabdffd`: 4/5 workflows passed; browser/cross-runtime `38796877033` failed because the test assumed an undeclared `outcome_record.outcome_sha256` property. Replaced that invalid expectation with an independent recomputation of the canonical SHA-256 for the exact outcome object and comparison against `value_assessment.outcome_sha256`. This is a test correction only; acceptance remains pending until all five workflows pass on one exact commit.

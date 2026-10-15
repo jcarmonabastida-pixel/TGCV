@@ -418,3 +418,8 @@ The package-stage/artifact-coherence candidate passed all five required workflow
 ### GT-05 iteration 1 — assessed-artifact round-trip determinism
 
 The next grouped scenario moves to GT-05 as specified by the plan: the same fully assessed exported package is imported/replayed twice. Assertions require explicit `ASSESSMENT` stage, outcome/assessment digest linkage, independently replayed semantic equivalence, and identical replay assessment text across both imports. This is a deterministic replay contract check; it does not claim scientific validity. Require exact-head success across all five workflows before marking the group passed.
+
+
+### GT-05 iteration 1 — failure analysis and correction
+
+The exact-head gate on `01497f122dbd9facc9980fd95e2a8c1b8eabdffd` produced 4/5 PASS. Browser/cross-runtime run `38796877033` failed at the newly added assertion comparing `value_assessment.outcome_sha256` with `outcome_record.outcome_sha256`; the latter field is not part of the outcome contract and was undefined. The failure is in the test assertion, not evidence of an application digest defect. Corrected the assertion to independently recompute the outcome's canonical SHA-256 using the same documented canonicalization/hash primitive, then compare that digest to the stored assessment digest. This preserves the invariant and does not weaken validation. Rerun the exact-head five-workflow gate before accepting GT-05.

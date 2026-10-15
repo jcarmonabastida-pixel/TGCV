@@ -634,8 +634,9 @@ const assert = require("node:assert/strict");
       "GT-05: assessed package round-trip must confirm independently replayed semantic equivalence");
     assert.equal(fc4Package.package_stage, "ASSESSMENT",
       "GT-05: assessed package must export its lifecycle stage explicitly");
-    assert.equal(fc4Package.value_assessment.outcome_sha256, fc4Package.outcome_record.outcome_sha256,
-      "GT-05: assessment must retain the digest of the exact recorded outcome");
+    const independentlyComputedOutcomeDigest = await page.evaluate(async outcome => await hash(outcome, "gt05_test_outcome_record"), fc4Package.outcome_record);
+    assert.equal(fc4Package.value_assessment.outcome_sha256, independentlyComputedOutcomeDigest,
+      "GT-05: assessment digest must equal an independently recomputed canonical digest of the exact recorded outcome");
     const firstAssessedReplay = await page.locator("#package-assessment").innerText();
     await page.locator("#package-file").setInputFiles({
       name: "assessed-fc4-roundtrip-repeat.json",
