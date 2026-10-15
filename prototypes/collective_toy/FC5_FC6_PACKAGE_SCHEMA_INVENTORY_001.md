@@ -100,7 +100,9 @@ Nested `intervention` allows only `disabled_transitions` (array). The validator 
 
 ### `delta_reach`
 
-The engine attaches a delta artifact containing baseline/intervention source hashes, changes in reachable states and accessible transitions, and truncation metadata per contract. A complete field-by-field nested schema and dedicated adversarial test mapping have **not yet been extracted**; treat this as an explicit inventory gap rather than assuming full coverage.
+The engine emits `delta_reach[scenario_id]` for each non-baseline scenario. The current emitted field set is exactly: `baseline_source_sha256`, `intervention_source_sha256`, `reachable_states_added`, `reachable_states_removed`, `enabled_at_initial_added`, `enabled_at_initial_removed`, `trajectories_added`, `trajectories_removed`, `truncated`, `baseline_truncated`, `intervention_truncated`. The source hashes are computed over a projection containing `schema_version`, `model_id`, `initial_state`, `states`, `transitions`, `relations` (empty when absent), `rule_profile`, `exploration`, and the respective source scenario, with domain tags `delta_reach_baseline_source` and `delta_reach_intervention_source`.
+
+**Atomic predicates to verify separately:** (1) each scenario key is a declared non-baseline scenario; (2) every delta object has only the 11 listed keys; (3) both source hashes are lowercase 64-hex strings; (4) each source hash is recomputed from the correct source projection; (5) the four state/transition delta lists are arrays of declared IDs; (6) trajectory additions/removals are arrays of valid ordered paths; (7) `truncated`, `baseline_truncated`, and `intervention_truncated` are booleans; (8) `truncated === baseline_truncated || intervention_truncated`; (9) delta arrays match the corresponding `comparisons_to_baseline` fields; (10) baseline has no delta entry; (11) each intervention has exactly one delta entry; (12) no delta entry exists without a matching comparison. Current importer code shown in this branch does not include a dedicated closed-key/field-by-field validation block for `delta_reach`; deterministic replay equality indirectly covers the supported-engine path, but these predicates lack a separately mapped negative-fixture set. Mark them partial/pending, not verified.
 
 ## 6. Execution trace (`concrete_execution_trace`)
 
@@ -109,7 +111,13 @@ Creation currently emits these keys:
 
 Importer checks object shape, exact `trace_schema=collective-toy-sequence-trace-001`, exact `status=COMPLETED`, 64-hex `trace_sha256`, and hash consistency after removing `trace_sha256`. If an outcome is included, it checks execution ID, trace hash, model ID and scenario ID links.
 
-**Gap:** current importer does not apply a closed-key allowlist to trace or step objects and does not fully validate each listed trace field's type/semantics. Existing test checks missing referenced trace when an outcome is present; a trace-only package, blocked trace, unknown nested trace field, malformed step, and wrong-type matrix are not exhaustively covered. Note: the importer currently accepts only COMPLETED traces in packages, while UI can display BLOCKED traces; this contract boundary needs an explicit decision/test.
+Trace-field decomposition (fields emitted by the UI): `trace_schema`, `execution_id`, `model_id`, `input_sha256`, `scenario_id`, `candidate_index`, `submitted_transition_ids`, `initial_state`, `steps`, `final_state`, `status`, `blocked_step`, `trace_sha256`.
+
+Step objects emitted on success have `step`, `transition_id`, `state_before`, `state_after`, `prior_transitions`, `prerequisites`, `status`. A blocked attempt records `blocked_step={index, transition_id, reason, required_transition_ids}` and `status=BLOCKED`; a completed attempt has `status=COMPLETED` and `blocked_step=null` (or serialized null).
+
+**Atomic predicates to verify separately:** (1) trace is an object; (2) closed set of 13 keys; (3) exact trace schema; (4) non-empty execution/model/scenario IDs; (5) `input_sha256` is valid and equals package result/input hash; (6) scenario exists in input; (7) candidate index is null or non-negative integer; (8) submitted IDs are a string array; (9) initial/final states are declared; (10) steps is an array; (11) every step has a closed seven-key schema and valid types; (12) step numbers are ordered; (13) transition/state sequence is coherent with input edges; (14) prior-transition history is prefix-consistent; (15) prerequisites are consistent with relations and prior history; (16) status is `COMPLETED` or `BLOCKED` per policy; (17) completed traces have no block and end at the final step state; (18) blocked traces have a valid block index/reason and preserve the last successful state; (19) trace digest format; (20) trace digest recomputation; (21) outcome trace hash/execution/model/scenario cross-links; (22) trace-only packages are accepted/rejected according to an explicit policy.
+
+**Gap:** current importer does not apply a closed-key allowlist to trace or step objects and does not fully validate each listed trace field's type/semantics. Existing test checks missing referenced trace when an outcome is present; a trace-only package, blocked trace, unknown nested trace field, malformed step, and wrong-type matrix are not exhaustively covered. The importer currently accepts only `COMPLETED` traces in packages, while UI can display `BLOCKED` traces; this contract boundary needs an explicit decision/test.
 
 ## 7. Outcome record (`outcome_record`)
 
@@ -118,7 +126,7 @@ Creation currently emits:
 
 Importer checks object shape, exact `outcome_schema=collective-toy-outcome-001`, links to trace execution/hash/model/scenario, and non-empty `outcome_id` and `value`.
 
-**Gaps:** no closed-key allowlist; no complete type/non-empty validation for `source_kind`, `unit`, `timing`, `uncertainty_status`, `provenance`; unknown nested keys and wrong types are not covered by a finite test matrix.
+**Atomic predicates to verify separately:** closed 12-key schema; exact schema ID; non-empty `outcome_id`; execution ID links to trace; trace digest link; model/scenario links; `source_kind` is an allowed value from the UI control; `value`, `unit`, `timing`, `uncertainty_status`, and `provenance` have documented non-empty string/type constraints; no unknown keys; no null/array/primitive substitution; outcome digest is recomputed when assessed. Current importer explicitly checks schema and cross-links plus non-empty ID/value, but does not enforce a closed key set or the complete field/type rules.
 
 ## 8. Value assessment (`value_assessment`)
 
@@ -127,7 +135,7 @@ Creation currently emits:
 
 Importer checks object shape, exact `assessment_schema=collective-toy-value-assessment-001`, `status=ASSESSED`, outcome/execution links, 64-hex outcome hash and digest match, and non-empty `observer`, `context`, `criterion`, `valuation_rule`, `rationale`. It rejects simultaneous `value_assessment_status`.
 
-**Gaps:** no closed-key allowlist; `assessment_id` and types for all string fields lack a complete independent test mapping; unknown nested keys/wrong-type cases remain pending.
+**Atomic predicates to verify separately:** closed 11-key schema; exact schema ID; `status=ASSESSED`; non-empty `assessment_id`; outcome ID and execution ID links; `outcome_sha256` format and recomputation; observer/context/criterion/valuation_rule/rationale each non-empty strings; no unknown keys; no null/array/primitive substitution; `value_assessment_status` absent when assessed and exactly `NOT_ASSESSED` when absent. Current importer checks schema/status, links, digest, and five contextual strings but does not enforce closed keys or validate assessment_id.
 
 ## 9. Hash semantics and security boundary
 
@@ -156,7 +164,7 @@ No cryptographic authenticity/signature requirement is currently defined. Do not
 | FC6-CLEAN-01 | Clean-source archive replay | verified for commit `a90b69a6`; must rerun on any later code/test change |
 | FC6-ART-01 | Artifact inspection and scope/non-claim checks | partial; inspect exact artifacts and evidence per contract |
 
-This register contains 16 predicate families, **not 16 atomic requirements**. The remaining atomic count is intentionally not stated until nested `delta_reach`, trace steps, and field/type predicates are decomposed consistently. Next step is to finish those three sub-schema extractions, turn each row into atomic acceptance predicates, then compute the verified/partial/pending count before adding further tests.
+This register contains 16 predicate families, **not 16 atomic requirements**. The `delta_reach`, trace/step, outcome and assessment families are now decomposed into explicit candidate atomic predicates, but the complete total is still not safe to publish: the nested scenario/comparison/input/result fields, top-level optional-field type matrix, package hash negative cases, conditional package truth table, and FC-6 artifact inspections must be atomized and reconciled with actual fixtures. Next step: convert this candidate predicate list into a numbered acceptance register, mark each item `verified`, `partial`, or `pending` only after linking the exact implementation lines, test case, and CI run. Do not add more tests until that register exists.
 
 ## 11. Governance
 
