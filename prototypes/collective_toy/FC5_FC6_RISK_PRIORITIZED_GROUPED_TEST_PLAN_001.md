@@ -215,3 +215,16 @@ Source review found a narrow gap: `submitted_transition_ids` required non-empty 
 Implementation candidate: `5fd17ada1e6ad85d2452e4c38bcb3a0ef3693780`. The trace validator now requires each submitted transition ID to exist in the model. Grouped adversarial test candidate: `0075ad15801f46257835f3861f703ba900aacb36`. It constructs a version-2 `BLOCKED` trace with a valid executed prefix and an unknown transition ID at the blocked step, removes outcome/assessment artifacts per policy A, recomputes trace and package digests, and expects a specific rejection.
 
 Exact-head CI pending for the final candidate and documentation commit. GT-03 is not closed until browser/cross-runtime, engine, both benchmarks, and governance all pass on the same exact head and the adversarial diagnostic is observed.
+
+
+### GT-03 trace-ID adversary — PASSED on exact code head
+
+All five CI checks passed on exact code head `0075ad15801f46257835f3861f703ba900aacb36`: browser/cross-runtime [38766691617](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38766691617), engine benchmark [38766691594](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38766691594), browser benchmark [38766691361](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38766691361), governance [38766691410](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38766691410), and synthetic engine [38766691402](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38766691402). The blocked trace with an unknown submitted transition ID is now rejected by the specific semantic check even when trace/package digests are recomputed.
+
+### GT-03 follow-up — submitted-prefix consistency
+
+Source review found a related but distinct gap: for `BLOCKED` traces, the validator checked that the blocked transition matches the submitted item at `steps.length`, but did not assert that the executed `steps` IDs equal the prefix of `submitted_transition_ids`. A package could therefore describe a valid execution of one sequence while claiming a different submitted prefix, then recompute both digests.
+
+Implementation candidate: `96f54534f647e3461d14476da1f3e0576716e638`. The validator now requires the executed step IDs to equal the submitted sequence prefix for a `BLOCKED` trace. Adversarial test candidate: `fa28718f6fa22b8c892cecb38136380793fa36a8`, which changes the first submitted ID to a different existing transition, preserves the actual executed step and blocked step, recomputes trace/package digests, and expects rejection by the new prefix-consistency diagnostic.
+
+This follow-up remains pending exact-head CI; GT-03 is not closed until the new adversary and full five-check battery pass on the same final head.
