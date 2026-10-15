@@ -322,13 +322,14 @@ async function assessImportedBrowserPackage(pkg){
    assert(Number.isInteger(blocked.index)&&blocked.index===trace.steps.length+1&&blocked.index<=trace.submitted_transition_ids.length&&blocked.transition_id===trace.submitted_transition_ids[blocked.index-1]&&typeof blocked.reason==="string"&&blocked.reason.length>0,"El paso bloqueado no es coherente con la secuencia intentada.");
    assert(Array.isArray(blocked.required_transition_ids)&&blocked.required_transition_ids.every(function(id){return typeof id==="string"&&inputTransitions.has(id)}),"required_transition_ids del bloqueo contiene IDs inválidos.");
    var blockedTransition=inputTransitions.get(blocked.transition_id);
-   var baselineScenario=pkg.input.scenarios.find(function(s){return s.id==="baseline"});
-   var disabledAtBaseline=new Set((baselineScenario&&baselineScenario.disabled_transitions)||[]);
+   var traceScenario=pkg.input.scenarios.find(function(s){return s.id===trace.scenario_id});
+   assert(traceScenario,"El escenario de la traza no existe en la entrada.");
+   var disabledInTraceScenario=new Set((traceScenario&&traceScenario.disabled_transitions)||[]);
    var temporalProfile=canonical(pkg.input.rule_profile)===canonical({type:"temporal_prerequisite_graph",version:"1"});
    var requiredForBlocked=temporalProfile?(pkg.input.relations||[]).filter(function(rel){return rel.transition_id===blocked.transition_id}).map(function(rel){return rel.requires_transition_id}).sort():[];
    var missingForBlocked=requiredForBlocked.filter(function(id){return !history.includes(id)}).sort();
-   var expectedBlockedReason=disabledAtBaseline.has(blocked.transition_id)?"transition_disabled_by_scenario":(blockedTransition.source!==stateNow?"transition_source_mismatch":(missingForBlocked.length?"temporal_prerequisite_not_satisfied":null));
-   assert(expectedBlockedReason!==null&&blocked.reason===expectedBlockedReason,"El motivo del bloqueo no coincide con el estado, escenario y prerrequisitos de la traza.");
+   var expectedBlockedReason=disabledInTraceScenario.has(blocked.transition_id)?"transition_disabled_by_scenario":(blockedTransition.source!==stateNow?"transition_source_mismatch":(missingForBlocked.length?"temporal_prerequisite_not_satisfied":null));
+   assert(expectedBlockedReason!==null&&blocked.reason===expectedBlockedReason,"El motivo del bloqueo no coincide con el contexto del escenario de la traza, el estado y los prerrequisitos.");
    assert(canonical(blocked.required_transition_ids)===canonical(missingForBlocked),"required_transition_ids del bloqueo no coincide con los prerrequisitos realmente ausentes.");
    assert(!pkg.outcome_record&&!pkg.value_assessment,"Una traza BLOCKED no puede tener resultado ni valoración asociados.");
   }
