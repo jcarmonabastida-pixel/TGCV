@@ -156,7 +156,14 @@ const assert = require("node:assert/strict");
     assert.match(download.suggestedFilename(), /-run\.json$/);
     const exportedText = fs.readFileSync(await download.path(), "utf8");
     const exportedPackage = JSON.parse(exportedText);
-    assert.deepEqual(exportedPackage, packageData, "Downloaded JSON must match the inspectable browser package");
+    const expectedExport = structuredClone(packageData);
+    expectedExport.value_assessment_status = "NOT_ASSESSED";
+    delete expectedExport.package_sha256;
+    delete exportedPackage.package_sha256;
+    assert.deepEqual(exportedPackage, expectedExport,
+      "Downloaded JSON must match the inspectable package plus explicit FC-4 NOT_ASSESSED status");
+    assert.match(JSON.parse(exportedText).package_sha256, /^[0-9a-f]{64}$/,
+      "FC-4 export must hash the complete exported package");
 
     // Exercise the actual import UI with the package produced by the export button.
     await page.locator("#package-file").setInputFiles({
