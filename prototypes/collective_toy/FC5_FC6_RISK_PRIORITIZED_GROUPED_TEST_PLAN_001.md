@@ -388,3 +388,10 @@ Next adversarial group targets schema substitution and lifecycle-state coherence
 The five-workflow exact-head gate passed on `85141c0b7648fc07b25b55001aa81ca6b50a46d9` (runs `38793015720`, `38793016043`, `38793015627`, `38793015667`, `38793015731`). The grouped shape/state mutations are now covered by that green batch; this remains an engineering result, not scientific validation.
 
 Next grouped adversarial set expands field-level type/constraint coverage and status-domain handling: numeric outcome value, object-valued outcome provenance, numeric assessment criterion, empty assessment rationale, and unsupported `value_assessment_status=PENDING` when no assessment object exists. The package digest is recomputed in every mutation so the importer must reject the specific contract violation. These tests map to FC5-OUT-005, FC5-VAL-007, FC5-PKG-012 and FC5-PKG-011. Require targeted diagnostic rejection and all five workflows passing on the same exact commit. GT-04 remains open.
+
+
+### GT-04 iteration 3 — schema identity, explicit outcome ID, and contextual assessment fields
+
+The previous exact-head five-workflow gate passed on `363557b0fc3f6e5fd8b5ecccf32cc86d731c4e00`: browser/cross-runtime `38793710973`, governance consistency `38793710906`, browser benchmark `38793710696`, engine benchmark `38793710689`, and synthetic engine `38793710676`. This is engineering evidence only.
+
+Next grouped adversaries: unsupported `outcome_schema`, blank `outcome_id`, unsupported `assessment_schema`, non-string `observer`, and blank `valuation_rule`. The fixtures mutate a valid assessed package, recompute the outer package digest, and require the contract-specific diagnostic. These target FC5-OUT-001/003 and FC5-VAL-001/007. GT-04 remains open; acceptance-register statuses are not upgraded solely by the aggregate green CI.

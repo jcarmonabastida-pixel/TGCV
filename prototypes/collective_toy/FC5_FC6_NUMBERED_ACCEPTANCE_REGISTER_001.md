@@ -197,3 +197,10 @@ Next pending grouped adversarial cases: outcome null/array substitutions, assess
 Five required workflows passed on exact candidate commit `85141c0b7648fc07b25b55001aa81ca6b50a46d9`: browser/cross-runtime `38793015720`, synthetic engine `38793016043`, governance consistency `38793015627`, browser benchmark `38793015667`, and engine benchmark `38793015731`.
 
 Next grouped fixtures target non-string outcome value, non-string provenance, non-string assessment criterion, empty assessment rationale, and unsupported status `PENDING` when no assessment object is present. Predicates: FC5-OUT-005, FC5-VAL-007, FC5-PKG-012 and FC5-PKG-011. Status remains pending until the next exact-head five-workflow gate passes.
+
+
+### GT-04 iteration 3 — pending schema/field adversaries
+
+Previous exact-head gate: all five workflows passed on `363557b0fc3f6e5fd8b5ecccf32cc86d731c4e00` (runs `38793710973`, `38793710676`, `38793710906`, `38793710696`, `38793710689`).
+
+Pending grouped adversaries: wrong `outcome_schema`, blank `outcome_id`, wrong `assessment_schema`, numeric `observer`, and blank `valuation_rule`. Target predicates FC5-OUT-001/003 and FC5-VAL-001/007; require diagnostic-specific rejection and the five-workflow exact-head gate before updating predicate status.

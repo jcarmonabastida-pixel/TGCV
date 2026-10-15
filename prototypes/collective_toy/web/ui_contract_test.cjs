@@ -650,6 +650,11 @@ const assert = require("node:assert/strict");
         else if (mutation === "assessment_criterion_number") candidate.value_assessment.criterion = 17;
         else if (mutation === "assessment_rationale_empty") candidate.value_assessment.rationale = "";
         else if (mutation === "unknown_status_without_assessment") { delete candidate.value_assessment; candidate.value_assessment_status = "PENDING"; }
+        else if (mutation === "wrong_outcome_schema") candidate.outcome_record.outcome_schema = "collective-toy-outcome-999";
+        else if (mutation === "empty_outcome_id") candidate.outcome_record.outcome_id = " ";
+        else if (mutation === "wrong_assessment_schema") candidate.value_assessment.assessment_schema = "collective-toy-value-assessment-999";
+        else if (mutation === "observer_number") candidate.value_assessment.observer = 23;
+        else if (mutation === "valuation_rule_empty") candidate.value_assessment.valuation_rule = " ";
         delete candidate.package_sha256;
         candidate.package_sha256 = await window.hash(candidate, "package_export");
         return candidate;
@@ -678,6 +683,11 @@ const assert = require("node:assert/strict");
     await rejectGt04Mutation("gt04-assessment-criterion-number.json", "assessment_criterion_number", "La valoración está incompleta");
     await rejectGt04Mutation("gt04-assessment-rationale-empty.json", "assessment_rationale_empty", "La valoración está incompleta");
     await rejectGt04Mutation("gt04-unknown-status-without-assessment.json", "unknown_status_without_assessment", "value_assessment_status=NOT_ASSESSED");
+    await rejectGt04Mutation("gt04-wrong-outcome-schema.json", "wrong_outcome_schema", "Esquema de resultado desconocido o no compatible");
+    await rejectGt04Mutation("gt04-empty-outcome-id.json", "empty_outcome_id", "outcome_id válido");
+    await rejectGt04Mutation("gt04-wrong-assessment-schema.json", "wrong_assessment_schema", "Esquema o estado de valoración desconocido");
+    await rejectGt04Mutation("gt04-observer-number.json", "observer_number", "La valoración está incompleta");
+    await rejectGt04Mutation("gt04-empty-valuation-rule.json", "valuation_rule_empty", "La valoración está incompleta");
 
     // GT-03 grouped trace metadata adversary: step prerequisites must be exactly those declared by the active rule profile.
     const forgedStepPrerequisites = await page.evaluate(async (pkg) => {
