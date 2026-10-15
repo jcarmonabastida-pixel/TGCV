@@ -308,3 +308,8 @@ The previous note saying “current importer ... does not include a dedicated cl
 ### FC5-DELTA-003/004 — intervention-source digest adversarial fixtures added
 
 Added two focused browser contract cases after the baseline-source digest case: (a) malformed `intervention_source_sha256` must trigger the digest-format diagnostic; (b) a syntactically valid but forged 64-hex intervention-source digest must trigger the source-correspondence diagnostic. Both fixtures recompute the enclosing result and package digests so the intended nested predicate is reached. Status remains pending exact-head CI evidence.
+
+
+### FC5-DELTA-007/008 — truncation consistency fixtures added
+
+Added three browser adversarial cases: (1) `baseline_truncated` is the string `"false"` and must fail the boolean predicate; (2) aggregate `truncated=true` conflicts with both scenario flags remaining false; (3) `intervention_truncated=true` conflicts with the intervention scenario's actual `truncated=false`. Each fixture recomputes the enclosing result and package digests and asserts the specific importer diagnostic. State remains pending exact-head five-workflow CI evidence.

@@ -193,3 +193,8 @@ Corrected round-trip/replay test passed on exact commit `fa15baeef941e9db679a9ec
 ### Delta-reach follow-up — intervention-source digest fixtures
 
 Two new browser adversarial cases now complement the baseline-source case: malformed intervention digest shape and well-formed but forged intervention digest. Both recompute result/package integrity commitments and assert the specific importer diagnostic. They are not considered verified until the exact-head browser/cross-runtime workflow passes.
+
+
+### Delta-reach truncation follow-up
+
+Direct-negative fixtures now cover a wrong-type `baseline_truncated`, an inconsistent aggregate `truncated`, and a specific `intervention_truncated` flag inconsistent with the scenario. All recompute enclosing hashes to reach the intended validator branch. These predicates remain pending until the exact-head browser/cross-runtime gate passes; other missing delta predicates remain pending.

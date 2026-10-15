@@ -1299,6 +1299,70 @@ const assert = require("node:assert/strict");
       /intervention_source_sha256 de delta_reach en block_ac no corresponde a la fuente/i,
       "FC-5/FC-6: reject a well-formed but forged intervention-source digest with enclosing hashes recomputed");
 
+    // FC-5 grouped adversarial cases: delta_reach truncation fields must be typed and consistent.
+    const wrongTruncationType = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.delta_reach.block_ac.baseline_truncated = "false";
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, deltaPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "delta-baseline-truncated-wrong-type.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(wrongTruncationType))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(),
+      /baseline_truncated de delta_reach en block_ac debe ser booleano/i,
+      "FC-5: reject non-boolean baseline truncation flag");
+
+    const inconsistentAggregateTruncation = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.delta_reach.block_ac.truncated = true;
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, deltaPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "delta-aggregate-truncation-inconsistent.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(inconsistentAggregateTruncation))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(),
+      /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i,
+      "FC-5: reject aggregate truncation flag inconsistent with baseline/intervention flags");
+
+    const inconsistentInterventionTruncation = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.delta_reach.block_ac.intervention_truncated = true;
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, deltaPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "delta-intervention-truncation-inconsistent.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(inconsistentInterventionTruncation))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(),
+      /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i,
+      "FC-5: reject intervention truncation flag that disagrees with the intervention scenario");
+
     // GT-03 scenario-context adversary: the blocked reason must use trace.scenario_id, not baseline.
     const forgedBlockedScenarioContext = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);

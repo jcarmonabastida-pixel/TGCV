@@ -438,3 +438,8 @@ Re-reading the current branch source corrected a stale inventory claim. `web/ind
 ### FC5-DELTA grouped iteration 1 — intervention source digest validation
 
 Following the inventory correction, added two adversarial browser cases for the intervention-side source commitment: malformed SHA-256 shape and a well-formed but incorrect digest. The mutations recompute enclosing result/package hashes to isolate the source-hash predicate and assert distinct expected diagnostics. This is a test-only change plus coverage documentation; require all five workflows on one exact commit before upgrading acceptance states.
+
+
+### FC5-DELTA grouped iteration 2 — truncation flags
+
+After confirming the importer already validates truncation fields and scenario correspondence, added three grouped adversarial browser cases for wrong boolean type, aggregate OR inconsistency, and intervention/scenario mismatch. Mutations recompute result/package digests and assert the importer diagnostics. Require all five workflows to pass on one exact commit before upgrading acceptance states. This remains engineering contract evidence only; no scientific execution.
