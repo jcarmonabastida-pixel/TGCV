@@ -1597,7 +1597,8 @@ const assert = require("node:assert/strict");
     for (const item of [
       { name: "delta-valid-state-id-comparison-mismatch.json", field: "reachable_states_added", value: ["C"] },
       { name: "delta-valid-transition-id-comparison-mismatch.json", field: "enabled_at_initial_added", value: ["t_ac"] },
-      { name: "delta-valid-trajectory-comparison-mismatch.json", field: "trajectories_added", value: [[{ state: "A" }, { state: "B", transition: "t_ab" }]] }
+      { name: "delta-valid-trajectory-comparison-mismatch.json", field: "trajectories_added", value: [[{ state: "A" }, { state: "B", transition: "t_ab" }]] },
+      { name: "delta-valid-removed-trajectory-comparison-mismatch.json", field: "trajectories_removed", value: [] }
     ]) {
       const candidate = await page.evaluate(async ({ pkg, field, value }) => {
         const copy = structuredClone(pkg);
