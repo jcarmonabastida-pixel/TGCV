@@ -464,6 +464,16 @@ const assert = require("node:assert/strict");
     await page.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
     assert.match(await page.locator("#status").innerText(), /Ejecución completada/i,
       "FC-4: baseline/intervention fixture must execute before delta assertions");
+    const accessTrace = page.locator("#results [data-accessibility-transition]");
+    assert.ok(await accessTrace.count() >= 8, "FC-2: each transition in each scenario must expose an accessibility trace row");
+    assert.match(await page.locator("#results").innerText(), /Trazabilidad de accesibilidad por transición/i,
+      "FC-2: result panel must label the rule/accessibility trace");
+    assert.match(await page.locator("#results").innerText(), /t_ab.*HABILITADA EN INICIO/i,
+      "FC-2: trace must explain why an initially accessible transition is enabled");
+    assert.match(await page.locator("#results").innerText(), /t_bd.*NO HABILITADA EN INICIO.*origen no es el estado inicial/i,
+      "FC-2: trace must explain why a transition from a non-initial state is not initially enabled");
+    assert.match(await page.locator("#results").innerText(), /t_ac.*DESHABILITADA.*explícitamente/i,
+      "FC-2: trace must explain scenario-level transition disabling");
     const deltaDownloadPromise = page.waitForEvent("download");
     await page.locator("#export").click();
     const deltaDownload = await deltaDownloadPromise;
