@@ -1158,11 +1158,16 @@ function verifyExportedPackageIntegrity(exportedPackage, label) {
     label + ": exported package must be an object");
   const packageVersion = exportedPackage.package_version;
   assert.ok(
-    ["collective-toy-run-package-001", "collective-toy-browser-run-001"].includes(packageVersion),
+    ["collective-toy-run-package-001", "collective-toy-browser-run-001", "collective-toy-browser-run-002"].includes(packageVersion),
     label + ": unsupported package version"
   );
   const requiredFields = ["package_version", "input", "result", "package_sha256"];
   if (packageVersion === "collective-toy-run-package-001") requiredFields.push("engine_version");
+  if (packageVersion === "collective-toy-browser-run-002") {
+    requiredFields.push("package_stage");
+    assert.ok(["EXPLORATION", "EXECUTION", "OUTCOME", "ASSESSMENT"].includes(exportedPackage.package_stage),
+      label + ": v002 package_stage must be declared and supported");
+  }
   for (const field of requiredFields) {
     if (!Object.prototype.hasOwnProperty.call(exportedPackage, field)) {
       throw new Error(label + ": exported package is missing required field " + field);
