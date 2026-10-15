@@ -868,6 +868,28 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /required_transition_ids del bloqueo no coincide con los prerrequisitos realmente ausentes/i,
       "FC-5/FC-6: reject a BLOCKED trace that omits required missing prerequisites despite recomputed trace/package digests");
 
+    // GT-03 paired semantic adversary: a BLOCKED trace cannot forge its reason while keeping all IDs and digests structurally valid.
+    const forgedBlockedReason = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      const trace = candidate.concrete_execution_trace;
+      if (trace.blocked_step.reason !== "temporal_prerequisite_not_satisfied") throw new Error("Fixture must use a temporal-prerequisite block");
+      trace.blocked_step.reason = "transition_source_mismatch";
+      delete trace.trace_sha256;
+      trace.trace_sha256 = await window.hash(trace, "sequence_trace");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, blockedPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "blocked-trace-forged-reason.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedBlockedReason))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /El motivo del bloqueo no coincide con el estado, escenario y prerrequisitos de la traza/i,
+      "FC-5/FC-6: reject a forged blocked reason despite recomputed trace/package digests");
+
+
 
 
     // FC-5: reject an unsupported package schema version even if the package digest is recomputed.
