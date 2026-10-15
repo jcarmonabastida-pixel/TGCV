@@ -288,3 +288,12 @@ A fresh exact-head five-check battery is now required before closing this risk g
 Source review found that the importer checked whether a trace initial state existed in the model, but did not require it to equal the model's declared initial state. A forged trace could start at another declared state while keeping the package input/result binding intact. The grouped adversary changes only the trace initial state to another known state and recomputes the trace, linked outcome, assessment, and package digests. The importer now rejects the semantic mismatch with a dedicated diagnostic.
 
 Implementation/test candidate: pending exact-head CI. This risk remains open until all five required workflows pass on the same exact head and the specific diagnostic is observed. No scientific execution is authorized.
+
+
+### GT-03 trace initial-state binding — PASSED on exact head
+
+All five required workflows passed on exact code head `cd6202508f3423343bed3cb416ce34ffa552ca37`: browser/cross-runtime [38774669264](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38774669264), synthetic engine [38774669433](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38774669433), engine benchmark [38774669242](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38774669242), browser benchmark [38774669184](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38774669184), and governance [38774669274](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38774669274). Browser/cross-runtime logs confirm 116 valid fixtures matched, 102 invalid fixtures rejected in both runtimes, and the full UI import/tamper lifecycle passed. The trace initial-state binding adversary is included in this exact-head pass.
+
+### GT-03 next review item — scenario-context binding for BLOCKED reason
+
+The blocked-reason validator currently derives `transition_disabled_by_scenario` from the model's `baseline` scenario rather than the concrete trace's `scenario_id`. This risks validating a blocked trace against the wrong scenario context. Next iteration: resolve the exact scenario referenced by the trace, derive disabled-transition status from that scenario, and add an adversary proving the reason cannot be validated against baseline when the trace references a different scenario. Do not close GT-03 until the specific diagnostic and all five exact-head checks pass.
