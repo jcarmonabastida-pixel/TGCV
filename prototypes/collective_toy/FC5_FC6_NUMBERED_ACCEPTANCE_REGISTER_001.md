@@ -320,3 +320,10 @@ Added three browser adversarial cases: (1) `baseline_truncated` is the string `"
 The previous truncation iteration passed all five required workflows on exact commit `f4cc56a5db01f52cd9f9a54223e07e24cd9b4591`: browser/cross-runtime `38815534166`, synthetic engine `38815534390`, governance consistency `38815534200`, browser benchmark `38815534257`, and engine benchmark `38815534173`. Both browser execution and clean-source replay passed.
 
 Added four focused negative fixtures for the next grouped risk: a non-array `reachable_states_added`, an unknown state ID in `reachable_states_removed`, a non-array `enabled_at_initial_added`, and an unknown transition ID in `enabled_at_initial_removed`. Each mutation recomputes the enclosing result and package hashes and asserts the field-specific rejection. These new predicates remain pending until the exact-head five-workflow gate passes.
+
+
+### FC5-DELTA-009/010 — trajectory path validation fixtures
+
+The state/transition delta-list candidate `044527b23cc61f9781c740b6033b944fee6c1253` passed all five workflows on the same exact commit: browser/cross-runtime `38816440366`, synthetic engine `38816440406`, governance consistency `38816440385`, browser benchmark `38816440371`, and engine benchmark `38816440375`. Browser execution and clean-source replay passed.
+
+Added three focused browser adversaries for the next grouped risk: `trajectories_added` as a non-list; a removed trajectory containing an undeclared state; and a removed trajectory whose transition edge does not connect the preceding and next states. Each case recomputes enclosing result/package digests and asserts the targeted validator diagnostic. New predicates remain pending exact-head CI.

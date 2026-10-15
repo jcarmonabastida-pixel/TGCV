@@ -203,3 +203,8 @@ Direct-negative fixtures now cover a wrong-type `baseline_truncated`, an inconsi
 ### Delta-reach state/transition ID fixture update
 
 Four browser adversarial cases now exercise list type and declared-ID membership for state and initially-enabled-transition deltas. Enclosing result/package hashes are recomputed to isolate the target predicate. Do not mark FC5-DELTA-005/006 verified until exact-head CI confirms all cases.
+
+
+### Delta-reach trajectory validation follow-up
+
+Three negative fixtures cover non-list trajectory deltas, an undeclared state in an ordered path, and a transition edge that is not applicable to the adjacent states. Fixtures recompute result/package hashes and assert the specific trajectory validation diagnostic. Do not mark verified until all five workflows pass on the exact candidate commit.

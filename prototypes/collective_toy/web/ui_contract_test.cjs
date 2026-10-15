@@ -1390,6 +1390,32 @@ const assert = require("node:assert/strict");
         "FC-5: reject malformed or unknown IDs in delta_reach field " + item.field);
     }
 
+    // FC-5 grouped adversarial cases: delta trajectories must be ordered valid paths.
+    for (const item of [
+      { name: "delta-trajectories-added-wrong-type.json", field: "trajectories_added", value: "A->C", diagnostic: /trajectories_added de delta_reach en block_ac debe ser una lista/i },
+      { name: "delta-trajectories-removed-unknown-state.json", field: "trajectories_removed", value: [[{ state: "A" }, { state: "UNKNOWN_STATE", transition: "t_ac" }]], diagnostic: /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i },
+      { name: "delta-trajectories-removed-invalid-edge.json", field: "trajectories_removed", value: [[{ state: "A" }, { state: "C", transition: "t_bd" }]], diagnostic: /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i }
+    ]) {
+      const candidate = await page.evaluate(async ({ pkg, field, value }) => {
+        const copy = structuredClone(pkg);
+        copy.result.delta_reach.block_ac[field] = value;
+        const resultBody = structuredClone(copy.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        copy.result.result_sha256 = await window.hash(resultBody, "result");
+        delete copy.package_sha256;
+        copy.package_sha256 = await window.hash(copy, "package_export");
+        return copy;
+      }, { pkg: deltaPackage, field: item.field, value: item.value });
+      await page.locator("#package-file").setInputFiles({
+        name: item.name, mimeType: "application/json", buffer: Buffer.from(JSON.stringify(candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), item.diagnostic,
+        "FC-5: reject malformed or non-applicable ordered path in delta_reach field " + item.field);
+    }
+
     // GT-03 scenario-context adversary: the blocked reason must use trace.scenario_id, not baseline.
     const forgedBlockedScenarioContext = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);

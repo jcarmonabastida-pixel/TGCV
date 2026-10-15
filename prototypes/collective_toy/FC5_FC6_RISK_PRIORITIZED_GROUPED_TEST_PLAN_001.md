@@ -448,3 +448,8 @@ After confirming the importer already validates truncation fields and scenario c
 ### FC5-DELTA grouped iteration 3 — state and transition delta arrays
 
 The prior truncation candidate `f4cc56a5db01f52cd9f9a54223e07e24cd9b4591` passed all five controls on one exact commit, including browser suite replay from a clean source archive. The next grouped candidate adds four adversarial checks for array typing and declared-ID membership across reachable-state and initially-enabled-transition deltas. Each test recomputes result/package digests and checks the specific diagnostic. Engineering contract evidence only; no scientific execution.
+
+
+### FC5-DELTA grouped iteration 4 — ordered trajectory paths
+
+The previous state/transition candidate `044527b23cc61f9781c740b6033b944fee6c1253` passed all five controls on one exact commit, including clean-source browser/cross-runtime replay. The next candidate adds three adversarial cases for trajectory-delta list typing, undeclared states, and non-applicable transition edges. These test structural validity of ordered paths only; they do not establish any scientific claim. Require all five exact-head workflows before acceptance.
