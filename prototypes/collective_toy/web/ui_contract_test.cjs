@@ -440,6 +440,25 @@ const assert = require("node:assert/strict");
       "FC-2: execution trace must record ordered concrete steps");
     assert.match(await page.locator("#sequence-trace").innerText(), /Traza SHA-256/i,
       "FC-3: successful execution must expose a digest for its trace");
+    // Submit a validly connected but temporally invalid sequence: t_ac reaches C, then t_cd lacks t_ab.
+    await page.locator("#sequence-input").fill("t_ac, t_cd");
+    await page.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+    await page.locator("#sequence-trace").waitFor();
+    assert.equal(await page.locator("#sequence-trace").getAttribute("data-state"), "blocked-trace-recorded",
+      "FC-3: blocked attempted sequence must be retained as an auditable trace");
+    const blockedTraceText = await page.locator("#sequence-trace").innerText();
+    assert.match(blockedTraceText, /Paso bloqueado 2: t_cd/i,
+      "FC-3: trace must identify the exact blocked step and transition");
+    assert.match(blockedTraceText, /temporal_prerequisite_not_satisfied/i,
+      "FC-3: trace must state the temporal blocking reason");
+    assert.match(blockedTraceText, /t_ab/i,
+      "FC-3: trace must identify the missing prerequisite transition");
+    assert.match(blockedTraceText, /Traza SHA-256/i,
+      "FC-3: blocked attempt must have a trace digest");
+    await page.locator("#sequence-input").fill("");
+    await page.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+    assert.equal(await page.locator("#sequence-trace").getAttribute("data-state"), "replay-verified",
+      "FC-3: successful trace must be restored before export/replay assertions");
 
     // FC-3: the reproducibility package must contain the exact concrete trace, not only the explored paths.
     const traceDownloadPromise = page.waitForEvent("download");
