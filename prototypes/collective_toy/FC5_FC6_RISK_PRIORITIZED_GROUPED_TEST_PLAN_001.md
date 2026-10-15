@@ -142,3 +142,18 @@ Run [38761578722](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/387
 Corrective candidate commit: `d725a88a7189e9f03766c46f474de295f93e562e`. The entire nested `delta_reach` validation block is moved to run after the comparison objects have passed their own structural and reference checks, but before trace/result completion. This preserves primary input/comparison diagnostics while still rejecting a semantically forged delta after its source comparison is valid.
 
 Exact-head browser/cross-runtime CI must pass before GT-02 can be considered verified. No scientific execution and no promotion to `main`.
+
+
+### GT-02 closure — nested delta_reach schema and semantic linkage
+
+**Exact-head evidence:** commit `d725a88a7189e9f03766c46f474de295f93e562e`. Browser/cross-runtime [run 38762211152](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38762211152), engine benchmark [38762211164](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38762211164), browser benchmark [38762211381](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38762211381), synthetic engine [38762211379](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38762211379), and governance consistency [38762211439](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38762211439) all concluded `success`.
+
+This closes GT-02 for the implemented predicates on that exact head: nested closed schema, state/transition references, trajectory structure, delta/comparison consistency, truncation flags, and preservation of primary validation diagnostics. It is not exhaustive FC-5/FC-6 closure.
+
+### GT-03 — bind delta source hashes to their declared source scenarios
+
+Source review found that `baseline_source_sha256` and `intervention_source_sha256` were only checked for 64-hex syntax. A forged but well-formed hash could pass the local schema checks until independent replay. The importer should directly bind each source hash to the canonical common model plus its named baseline/intervention scenario.
+
+Implementation candidate: `cf3fb58feaa877746c7dba6522dca3b3888ed2c6`. Added direct recomputation of both source hashes from the imported input. Added a grouped adversarial test that substitutes a syntactically valid all-zero baseline hash, recomputes enclosing result/package hashes, and expects rejection specifically for source mismatch.
+
+**Exact-head CI pending:** browser/cross-runtime [run 38763028937](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763028937), synthetic engine [38763028995](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763028995), engine benchmark [38763029013](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763029013), browser benchmark [38763029216](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763029216), governance [38763029220](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38763029220). The test-only follow-up is commit `36356576ab2fb806448eac47bfa965b0b6cdd85d); its exact-head CI is also pending. GT-03 must not be marked passed until the final exact-head suite completes successfully.
