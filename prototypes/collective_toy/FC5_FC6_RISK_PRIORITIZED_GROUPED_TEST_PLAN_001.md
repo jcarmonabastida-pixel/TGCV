@@ -228,3 +228,16 @@ Source review found a related but distinct gap: for `BLOCKED` traces, the valida
 Implementation candidate: `96f54534f647e3461d14476da1f3e0576716e638`. The validator now requires the executed step IDs to equal the submitted sequence prefix for a `BLOCKED` trace. Adversarial test candidate: `fa28718f6fa22b8c892cecb38136380793fa36a8`, which changes the first submitted ID to a different existing transition, preserves the actual executed step and blocked step, recomputes trace/package digests, and expects rejection by the new prefix-consistency diagnostic.
 
 This follow-up remains pending exact-head CI; GT-03 is not closed until the new adversary and full five-check battery pass on the same final head.
+
+
+### GT-03 submitted-prefix consistency — PASSED on exact code head
+
+All five CI checks passed on exact commit `fa28718f6fa22b8c892cecb38136380793fa36a8`: browser/cross-runtime [38767560269](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38767560269), synthetic engine [38767560551](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38767560551), engine benchmark [38767560295](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38767560295), browser benchmark [38767560224](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38767560224), and governance [38767560534](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38767560534). Browser logs confirm the full import lifecycle passed, with 116 valid fixtures matched and 102 invalid fixtures rejected across runtimes. The tampered submitted-prefix adversary is included in that exact-head browser pass.
+
+### GT-03 follow-up — blocked reason and prerequisite metadata coherence
+
+Source review found that `blocked_step.reason` only needed to be a non-empty string and `required_transition_ids` only needed to contain existing IDs. A forged BLOCKED trace could omit a genuinely missing temporal prerequisite (or provide a false reason) and still pass the metadata shape checks after digest recomputation.
+
+Implementation candidate: `46e6e9fa201e295e9ddd54e172759c0de0b255a0`. The importer derives the expected blocked reason from baseline scenario disablement, current state/source mismatch, and missing temporal prerequisites, and requires `required_transition_ids` to equal the actual missing prerequisite set. Adversarial test candidate: `4145df6788fd441564e83b04d23b5d650eaa9745`, which removes the missing-prerequisite IDs from a temporal-prerequisite BLOCKED trace, recomputes trace/package digests, and expects a semantic rejection.
+
+Exact-head CI pending. GT-03 remains open until the five-check battery passes on the same final head and the new forged-metadata diagnostic is observed.
