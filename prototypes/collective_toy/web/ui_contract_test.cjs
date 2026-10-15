@@ -179,6 +179,7 @@ const assert = require("node:assert/strict");
     const unknownEnginePackage = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
       candidate.result.engine_version = "collective-toy-engine-future-999";
+      candidate.value_assessment_status = "NOT_ASSESSED";
       const resultBody = structuredClone(candidate.result);
       delete resultBody.input_sha256;
       delete resultBody.result_sha256;
