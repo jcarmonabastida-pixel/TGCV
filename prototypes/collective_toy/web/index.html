@@ -154,7 +154,7 @@ async function run(){var perf={},mark=function(name,start){perf[name]=Number((pe
 
 async function assessImportedBrowserPackage(pkg){
  assert(pkg&&typeof pkg==="object"&&!Array.isArray(pkg),"El paquete debe ser un objeto JSON.");
- assert(Object.keys(pkg).every(function(k){return ["package_version","input","result","package_sha256","concrete_execution_trace"].includes(k)}),"El paquete contiene campos desconocidos.");
+ assert(Object.keys(pkg).every(function(k){return ["package_version","input","result","package_sha256","concrete_execution_trace","outcome_record","value_assessment","value_assessment_status"].includes(k)}),"El paquete contiene campos desconocidos.");
  assert(pkg.package_version==="collective-toy-browser-run-001","Esquema de paquete desconocido o no compatible.");
  assert(pkg.input&&typeof pkg.input==="object"&&!Array.isArray(pkg.input),"Falta input o no es un objeto.");
  assert(pkg.result&&typeof pkg.result==="object"&&!Array.isArray(pkg.result),"Falta result o no es un objeto.");
@@ -165,6 +165,25 @@ async function assessImportedBrowserPackage(pkg){
  assert(pkg.result.model_id===pkg.input.model_id,"El model_id del resultado no coincide con la entrada.");
  assert(canonical(pkg.result.rule_profile)===canonical(pkg.input.rule_profile),"El perfil de reglas del resultado no coincide con la entrada.");
  assert(pkg.result.validation==="PASS","El resultado no declara validation=PASS.");
+  if(pkg.outcome_record!==undefined){
+   var outcome=pkg.outcome_record;
+   assert(outcome&&typeof outcome==="object"&&!Array.isArray(outcome),"outcome_record debe ser un objeto.");
+   assert(outcome.outcome_schema==="collective-toy-outcome-001","Esquema de resultado desconocido o no compatible.");
+   assert(pkg.concrete_execution_trace&&outcome.execution_id===pkg.concrete_execution_trace.execution_id,"El resultado no está vinculado a la traza de ejecución exportada.");
+   assert(outcome.execution_trace_sha256===pkg.concrete_execution_trace.trace_sha256,"El hash de traza del resultado no coincide con la traza exportada.");
+   assert(typeof outcome.outcome_id==="string"&&outcome.outcome_id.length>0&&typeof outcome.value==="string"&&outcome.value.length>0,"El resultado explícito carece de identificador o valor.");
+  }
+  if(pkg.value_assessment!==undefined){
+   var assessment=pkg.value_assessment;
+   assert(pkg.outcome_record&&assessment&&typeof assessment==="object"&&!Array.isArray(assessment),"La valoración requiere un resultado explícito.");
+   assert(assessment.assessment_schema==="collective-toy-value-assessment-001"&&assessment.status==="ASSESSED","Esquema o estado de valoración desconocido.");
+   assert(assessment.outcome_id===pkg.outcome_record.outcome_id&&assessment.execution_id===pkg.outcome_record.execution_id,"La valoración no está vinculada al resultado y ejecución exportados.");
+   assert(typeof assessment.outcome_sha256==="string"&&/^[0-9a-f]{64}$/.test(assessment.outcome_sha256),"La valoración carece de hash de resultado válido.");
+   assert(["observer","context","criterion","valuation_rule","rationale"].every(function(k){return typeof assessment[k]==="string"&&assessment[k].trim().length>0}),"La valoración está incompleta.");
+   assert(pkg.value_assessment_status===undefined,"Un paquete evaluado no puede declarar NOT_ASSESSED.");
+  }else{
+   assert(pkg.value_assessment_status==="NOT_ASSESSED","Un paquete sin valoración debe declarar value_assessment_status=NOT_ASSESSED.");
+  }
  assert(pkg.result.scenario_results&&typeof pkg.result.scenario_results==="object"&&!Array.isArray(pkg.result.scenario_results),"scenario_results ausente o malformado.");
  assert(pkg.result.comparisons_to_baseline&&typeof pkg.result.comparisons_to_baseline==="object"&&!Array.isArray(pkg.result.comparisons_to_baseline),"comparisons_to_baseline ausente o malformado.");
  assert(typeof pkg.result.scientific_interpretation==="string","scientific_interpretation ausente o malformado.");
