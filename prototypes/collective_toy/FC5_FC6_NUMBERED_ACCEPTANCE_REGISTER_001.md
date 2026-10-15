@@ -334,3 +334,25 @@ Added three focused browser adversaries for the next grouped risk: `trajectories
 The ordered-trajectory candidate `ca6ee8c48f41acd9dce4c2ff872fc6a9006c698d` passed all five exact-head workflows: browser/cross-runtime `38816955178`, synthetic engine `38816954767`, governance consistency `38816954811`, engine benchmark `38816954808`, and browser benchmark `38816954841`. Browser execution and clean-source replay passed.
 
 Added three adversarial fixtures where the delta value is structurally valid and uses declared IDs but disagrees with `comparisons_to_baseline`: a valid state ID in `reachable_states_added`, a valid transition ID in `enabled_at_initial_added`, and a valid ordered path in `trajectories_added`. Each fixture recomputes enclosing result/package hashes and expects the semantic cross-check diagnostic. Pending exact-head CI.
+
+
+## Delta-reach atomic acceptance reconciliation — candidate a7813bc
+
+This reconciliation follows the plan's rule to atomize the predicate register before adding another test batch. Implementation references are `web/index.html` lines 270–290 at candidate `a7813bc221f38e023936ba6c4883b877d92729b7`; adversarial fixtures are in `web/ui_contract_test.cjs`. All five exact-head workflows passed on this candidate: browser/cross-runtime `38817517560`, browser benchmark `38817517546`, engine benchmark `38817517566`, synthetic engine `38817517638`, governance consistency `38817517659`.
+
+| Atomic ID | Acceptance predicate | State | Implementation / fixture evidence and remaining gap |
+|---|---|---|---|
+| FC5-DELTA-001 | delta_reach keys equal exactly the non-baseline input scenario IDs | pending | Validator `index.html:274–275`; no direct missing/extra-key negative fixture mapped. |
+| FC5-DELTA-002 | Each delta object has exactly the 11 declared fields | partial | `index.html:273,278`; unknown-key adversary exists in earlier suite, but exact fixture/run mapping should be pinned here before full verification. |
+| FC5-DELTA-003 | Both source-hash fields have lowercase 64-hex SHA-256 syntax | pending | `index.html:279`; no direct malformed-format fixture mapped. |
+| FC5-DELTA-004 | Baseline and intervention source hashes are recomputed from their correct source projections and domain tags | partial | `index.html:280–284`; baseline forged-hash fixture exists at `ui_contract_test.cjs:1240–1258`; intervention-specific forged-hash adversary remains pending. |
+| FC5-DELTA-005 | Added/removed reachable-state deltas are lists of declared state IDs | verified | `index.html:285`; direct negative fixtures at `ui_contract_test.cjs:1368–1369`; exact-head five-workflow PASS above. |
+| FC5-DELTA-006 | Added/removed initially enabled-transition deltas are lists of declared transition IDs | verified | `index.html:286`; direct negative fixtures at `ui_contract_test.cjs:1370–1371`; exact-head five-workflow PASS above. |
+| FC5-DELTA-007 | Added/removed trajectory deltas are lists of nonempty, ordered paths whose states and edges match declared transitions | verified | `index.html:287`; direct negative fixtures at `ui_contract_test.cjs:1395–1397`; exact-head five-workflow PASS above. |
+| FC5-DELTA-008 | `truncated`, `baseline_truncated`, and `intervention_truncated` are booleans | partial | `index.html:288`; direct wrong-type fixture currently covers only `baseline_truncated` (`ui_contract_test.cjs:1315)); wrong-type cases for the other two flags remain pending. |
+| FC5-DELTA-009 | The aggregate truncation flag equals baseline OR intervention truncation, and both specific flags equal their scenario results | partial | `index.html:290`; aggregate and intervention mismatch adversaries at `ui_contract_test.cjs:1336–1363`; direct baseline-specific mismatch and all three-field truth-table coverage remain pending. |
+| FC5-DELTA-010 | State, transition, and trajectory deltas equal the exported baseline comparison | partial | `index.html:289`; valid-but-inconsistent adversaries for added states/transitions/trajectories at `ui_contract_test.cjs:1421–1442`; exhaustive mismatch coverage for every added/removed field is not established. |
+| FC5-DELTA-011 | Baseline has no delta entry | pending | Enforced indirectly by exact key set at `index.html:274–275`; no direct negative fixture mapped. |
+| FC5-DELTA-012 | Every intervention has exactly one corresponding delta entry and comparison | pending | Delta key set enforced at `index.html:274–275`; no dedicated missing/extra intervention-entry fixture mapped. |
+
+**Gate discipline:** these states concern engineering contract/fixture coverage, not scientific validity. Do not add another delta-reach adversarial batch until the evidence links above have been reconciled with the actual fixture definitions and the next risk is selected from the pending/partial predicates. This is not GT-03 closure.

@@ -213,3 +213,10 @@ Three negative fixtures cover non-list trajectory deltas, an undeclared state in
 ### Delta-reach comparison correspondence follow-up
 
 Added three browser fixtures isolating semantic mismatch against `comparisons_to_baseline` after satisfying structural/type/ID/path checks. The cases use declared state/transition IDs and a valid ordered path, so rejection should occur at the final delta-versus-comparison equality predicate. Acceptance awaits all five workflows on the same commit.
+
+
+### Atomic predicate reconciliation — candidate a7813bc
+
+The delta-reach inventory has been reconciled to the numbered acceptance register (FC5-DELTA-001 through FC5-DELTA-012). The current validator exists at `web/index.html:270–290`; coverage gaps are now distinguished from missing implementation. On exact candidate `a7813bc221f38e023936ba6c4883b877d92729b7`, all five workflows passed: browser/cross-runtime `38817517560`, browser benchmark `38817517546`, engine benchmark `38817517566`, synthetic engine `38817517638`, governance consistency `38817517659`.
+
+Current status: state/transition ID list predicates and ordered-path structure have direct adversarial coverage; source-hash syntax/intervention recomputation, exact delta key set, full truncation type/truth table, and exhaustive field-by-field comparison mismatches remain pending or partial. See the numbered register for the atomic statuses. No new adversarial tests are added in this iteration.
