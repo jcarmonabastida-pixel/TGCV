@@ -272,3 +272,12 @@ Exact-head CI pending. GT-03 remains open until all five checks pass on the fina
 On candidate `87814ca31d3a0aa202441886559cea67e7a2d3e9`, four of five checks passed; browser/cross-runtime failed because the adversarial fixture recomputed the trace digest using the wrong hash input contract and did not update the linked outcome/assessment digests. The importer correctly rejected the package earlier at the outcome-to-trace link check, so the run did not yet demonstrate the intended prerequisite diagnostic. This is a test-fixture sequencing issue, not evidence that the new validator check failed.
 
 Follow-up candidate `667a0be18e0f5ce0d491bff0be915651a81335c1` corrects the fixture to hash the trace body according to the validator contract and updates the linked outcome and assessment digests before recomputing the package digest. Exact-head CI pending.
+
+
+### GT-03 step-prerequisite adversary — diagnostic PASS, harness sequencing defect fixed
+
+The first CI run on the new validator reached the adversarial assertion and correctly rejected the forged per-step prerequisite metadata with the intended diagnostic. The browser job failed only because a later generic FC-5 replay assertion was still executed after the adversarial import had intentionally changed the assessment state to `rejected`. No validator failure was observed.
+
+Harness correction: `0fdf32cd1bc67aa027180aba264edde45368ffcd` scopes that generic replay assertion to the successful round-trip before the adversarial mutation. The adversarial rejection remains explicitly asserted.
+
+A fresh exact-head five-check battery is now required before closing this risk group.
