@@ -1456,7 +1456,9 @@ const assert = require("node:assert/strict");
         claimed.baseline_truncated === truncationTruthTable.baseline &&
         claimed.intervention_truncated === truncationTruthTable.intervention &&
         claimed.truncated === (claimed.baseline_truncated || claimed.intervention_truncated);
-      const candidate = await page.evaluate(async (args) => {
+      // Preserve the original, known-valid export for the sole expected-accepted tuple.
+      // Rehash only adversarial tuples; this keeps the positive control independent of mutation code.
+      const candidate = expectedAccepted ? deltaPackage : await page.evaluate(async (args) => {
         const copy = structuredClone(args.pkg);
         Object.assign(copy.result.delta_reach.block_ac, args.claimed);
         const resultBody = structuredClone(copy.result);
