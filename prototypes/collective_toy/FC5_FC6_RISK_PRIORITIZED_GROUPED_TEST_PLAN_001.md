@@ -314,3 +314,8 @@ On exact head `3ec65da09de3bad42b870773468b98b0d9996e6d`, four workflows passed 
 ### GT-03 scenario-context attempt 2 — preserve delta_reach source commitments
 
 On exact head `78838efc3466e30124400a267347116c9a53f623`, four of five controls passed; browser/cross-runtime failed because the adversarial fixture changed scenario disablement but left `result.delta_reach[*].baseline_source_sha256` and `intervention_source_sha256` stale. The importer correctly rejected that earlier inconsistency, so the test never reached the intended BLOCKED-reason diagnostic. Updated the adversary to recompute both delta_reach source commitments for every affected intervention scenario before recomputing input/trace/package digests. This preserves fail-closed validation and makes the adversarial package internally coherent up to the intended assertion. Rerun all five controls on the new exact head; GT-03 remains open.
+
+
+### GT-03 scenario-context attempt 3 — recompute result integrity
+
+On exact head `664966f8c3032087b116a9e4a683e6afb46dc077`, four controls passed and browser/cross-runtime failed because the adversarial fixture correctly refreshed input, delta_reach source, trace, and package commitments but did not recompute `result.semantic_sha256` and `result.result_sha256`. The importer therefore rejected at result integrity before reaching the intended scenario-context diagnostic. Updated the fixture to recompute semantic projection and result integrity commitments before trace/package digests. Rerun all five controls on the next exact head; GT-03 remains open.

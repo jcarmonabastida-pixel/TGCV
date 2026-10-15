@@ -1186,8 +1186,22 @@ const assert = require("node:assert/strict");
           await window.hash({...sourceCommon, scenario: interventionSource}, "delta_reach_intervention_source");
       }
       trace.scenario_id = alternate.id;
-      trace.input_sha256 = await window.hash(candidate.input);
+      trace.input_sha256 = await window.hash(candidate.input, "input");
       candidate.result.input_sha256 = trace.input_sha256;
+      // Recompute result semantic and integrity commitments after scenario-source edits.
+      const semanticProjection = structuredClone(candidate.result);
+      for (const key of ["delta_reach","engine_version","input_sha256","result_sha256","semantic_sha256","semantic_identity_version"]) delete semanticProjection[key];
+      for (const scenario of Object.values(semanticProjection.scenario_results || {})) if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+      for (const comparison of Object.values(semanticProjection.comparisons_to_baseline || {})) {
+        const intervention = comparison.intervention || {};
+        if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+      }
+      candidate.result.semantic_sha256 = await window.hash(semanticProjection, "result");
+      delete candidate.result.result_sha256;
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
       delete trace.trace_sha256;
       trace.trace_sha256 = await window.hash(trace, "sequence_trace");
       delete candidate.package_sha256;
