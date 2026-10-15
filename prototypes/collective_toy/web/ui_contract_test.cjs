@@ -1178,6 +1178,22 @@ const assert = require("node:assert/strict");
     await page.locator("#export").click();
     const deltaDownload = await deltaDownloadPromise;
     const deltaPackage = JSON.parse(fs.readFileSync(await deltaDownload.path(), "utf8"));
+    // C12: duplicate raw JSON keys must be rejected before JSON.parse collapses them.
+    const duplicateKeyJson = JSON.stringify(deltaPackage).replace(
+      '"package_version":',
+      '"package_version":"collective-toy-browser-run-002","package_version":'
+    );
+    assert.notEqual(duplicateKeyJson, JSON.stringify(deltaPackage),
+      "C12 duplicate-key fixture must contain an injected duplicate key");
+    await page.locator("#package-file").setInputFiles({
+      name: "duplicate-package-key.json", mimeType: "application/json",
+      buffer: Buffer.from(duplicateKeyJson)
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(),
+      /clave de objeto duplicada: package_version/i,
+      "FC-5 C12: detect duplicate raw JSON keys before object parsing");
     const delta = deltaPackage.result.delta_reach?.block_ac;
     assert.ok(delta, "FC-4: export must contain an explicit delta_reach artifact for the intervention");
     assert.match(delta.baseline_source_sha256 || "", /^[a-f0-9]{64}$/i,
