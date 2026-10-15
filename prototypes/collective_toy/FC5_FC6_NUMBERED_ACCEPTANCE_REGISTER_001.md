@@ -7,6 +7,8 @@
 - **State meanings:** `verified` = predicate is covered by mapped test evidence and passing CI on the cited commit; `partial` = relevant evidence exists but does not establish the full predicate or its interactions; `pending` = not demonstrated or unresolved contract decision. A dedicated test per predicate is not required.
 - **Important:** identifiers below are atomic acceptance predicates for traceability, not a prescription to create one test per predicate. One contract, integration, replay, or adversarial test may cover multiple predicates. Rows marked `GROUP` are explicitly not atomic and must be expanded before a final denominator can be published.
 
+> **Canonical-register rule (2026-10-16):** This document contains append-only iteration notes and older predicate tables, so repeated IDs across those historical entries are not independent active requirements. For current delta-reach acceptance, the canonical mapping is the single table under **“Delta-reach atomic acceptance reconciliation — candidate a7813bc”**, with later “FC5-DELTA-001/011 — exact intervention-key set adversaries” serving as evidence history only. Do not merge statuses from older tables or count duplicate labels as separate predicates. The canonical table's status must be updated only when exact-head test/run evidence supports it. The truncation predicates are further refined by the later direct fixture notes and must remain partial wherever baseline-specific consistency or wrong-type coverage for all three flags is missing.
+
 ## A. Package envelope
 
 | ID | Acceptance predicate | Initial state | Evidence / gap |
