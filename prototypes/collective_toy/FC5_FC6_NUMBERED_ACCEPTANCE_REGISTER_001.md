@@ -356,3 +356,10 @@ This reconciliation follows the plan's rule to atomize the predicate register be
 | FC5-DELTA-012 | Every intervention has exactly one corresponding delta entry and comparison | pending | Delta key set enforced at `index.html:274–275`; no dedicated missing/extra intervention-entry fixture mapped. |
 
 **Gate discipline:** these states concern engineering contract/fixture coverage, not scientific validity. Do not add another delta-reach adversarial batch until the evidence links above have been reconciled with the actual fixture definitions and the next risk is selected from the pending/partial predicates. This is not GT-03 closure.
+
+
+### FC5-DELTA-001/011 — exact intervention-key set adversaries
+
+The atomic-register reconciliation candidate `159a736b93fcdfa48f10f27434b61a0e0297a946` passed all five workflows on the exact head: browser/cross-runtime `38818148318`, synthetic engine `38818148346`, browser benchmark `38818148294`, engine benchmark `38818148369`, and governance consistency `38818148292`.
+
+Added two negative fixtures: remove the only intervention delta entry, and add an illegal `baseline` delta entry. Both recompute result/package hashes and require the exact scenario-key-set diagnostic. The fixtures are pending exact-head CI; this covers only missing/extra entry shape and does not by itself establish comparison semantics.

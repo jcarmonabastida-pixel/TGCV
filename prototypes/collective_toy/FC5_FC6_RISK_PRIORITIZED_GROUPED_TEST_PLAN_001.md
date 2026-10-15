@@ -463,3 +463,8 @@ The previous trajectory-path candidate `ca6ee8c48f41acd9dce4c2ff872fc6a9006c698d
 ### Next step — reconcile the atomic acceptance register before adding tests
 
 Candidate `a7813bc221f38e023936ba6c4883b877d92729b7` passed all five exact-head workflows. The next action is documentation/evidence reconciliation, not another test batch: atomize FC5-DELTA predicates, map implementation lines and exact fixtures, distinguish `verified`/`partial`/`pending`, and identify the next batch from unresolved predicates. No GT-03 closure, no scientific execution, and no changes to `main`.
+
+
+### FC5-DELTA grouped iteration 6 — exact scenario-entry set
+
+The prior atomic-register reconciliation commit `159a736b93fcdfa48f10f27434b61a0e0297a946` passed all five exact-head workflows. This batch adds paired missing/extra key adversaries for the delta scenario-entry set, recomputing enclosing digests and asserting the dedicated diagnostic. This is contract validation only; no scientific execution and no main promotion. Wait for all five exact-head workflows before accepting.

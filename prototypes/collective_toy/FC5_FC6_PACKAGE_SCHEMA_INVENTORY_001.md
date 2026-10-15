@@ -220,3 +220,8 @@ Added three browser fixtures isolating semantic mismatch against `comparisons_to
 The delta-reach inventory has been reconciled to the numbered acceptance register (FC5-DELTA-001 through FC5-DELTA-012). The current validator exists at `web/index.html:270–290`; coverage gaps are now distinguished from missing implementation. On exact candidate `a7813bc221f38e023936ba6c4883b877d92729b7`, all five workflows passed: browser/cross-runtime `38817517560`, browser benchmark `38817517546`, engine benchmark `38817517566`, synthetic engine `38817517638`, governance consistency `38817517659`.
 
 Current status: state/transition ID list predicates and ordered-path structure have direct adversarial coverage; source-hash syntax/intervention recomputation, exact delta key set, full truncation type/truth table, and exhaustive field-by-field comparison mismatches remain pending or partial. See the numbered register for the atomic statuses. No new adversarial tests are added in this iteration.
+
+
+### Exact delta-reach key-set coverage
+
+Two browser adversaries now check that `delta_reach` contains exactly the declared intervention scenario IDs: missing intervention entry and illegal baseline entry. Enclosing hashes are recomputed to reach the schema predicate. Require all five workflows on the candidate commit before marking FC5-DELTA-001/011 verified.

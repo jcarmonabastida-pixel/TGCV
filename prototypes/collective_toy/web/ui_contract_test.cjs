@@ -1213,6 +1213,34 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /delta_reach de block_ac contiene campos ausentes o desconocidos/i,
       "FC-5: reject uncontracted delta_reach fields even when result/package hashes are recomputed");
 
+    // FC-5 grouped adversaries: delta_reach must contain exactly the declared intervention IDs.
+    for (const item of [
+      { name: "delta-reach-missing-intervention-entry.json", mutate: (copy) => { delete copy.result.delta_reach.block_ac; },
+        diagnostic: /delta_reach debe contener exactamente una entrada por escenario de intervención/i },
+      { name: "delta-reach-extra-baseline-entry.json", mutate: (copy) => { copy.result.delta_reach.baseline = structuredClone(copy.result.delta_reach.block_ac); },
+        diagnostic: /delta_reach debe contener exactamente una entrada por escenario de intervención/i }
+    ]) {
+      const candidate = await page.evaluate(async ({ pkg, mutation }) => {
+        const copy = structuredClone(pkg);
+        if (mutation === "missing") delete copy.result.delta_reach.block_ac;
+        else copy.result.delta_reach.baseline = structuredClone(copy.result.delta_reach.block_ac);
+        const resultBody = structuredClone(copy.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        copy.result.result_sha256 = await window.hash(resultBody, "result");
+        delete copy.package_sha256;
+        copy.package_sha256 = await window.hash(copy, "package_export");
+        return copy;
+      }, { pkg: deltaPackage, mutation: item.name.includes("missing") ? "missing" : "extra" });
+      await page.locator("#package-file").setInputFiles({
+        name: item.name, mimeType: "application/json", buffer: Buffer.from(JSON.stringify(candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), item.diagnostic,
+        "FC-5: reject missing intervention delta or extra baseline delta entry");
+    }
+
     const forgedDeltaSemantics = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
       candidate.result.delta_reach.block_ac.reachable_states_removed = [];
