@@ -95,3 +95,18 @@ GT-03 and GT-04 depend on an explicit decision about blocked traces and optional
 The development branch now emits `collective-toy-browser-run-002` with required `package_stage` (`EXPLORATION`, `EXECUTION`, `OUTCOME`, `ASSESSMENT`), keeps v001 import compatibility, and validates trace/step structure plus the approved blocked-trace lifecycle. Grouped browser tests were added for exploration-stage export, blocked-trace round-trip, and rejection of an outcome linked to a blocked trace. Details: [`FC5_FC6_PACKAGE_SCHEMA_V002_IMPLEMENTATION_001.md`](FC5_FC6_PACKAGE_SCHEMA_V002_IMPLEMENTATION_001.md), commit `29515bea7e0cc5413bfe1c234e83927841bfaa02`.
 
 **Evidence status (updated 2026-10-15):** run [38758570843](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38758570843) passed on exact code commit `f8b6623a8ab316db092cac179966fd337ee29b39`, including browser/Python concordance and clean-source archive replay. The exact run's `browser-cross-runtime` job concluded `success`. See `SCHEMA_ACCEPTANCE_COVERAGE_AUDIT_001.md` for the evidence supplement. This supports the tested lifecycle cases, not exhaustive FC-5/FC-6 coverage or scientific validity. No scientific execution and no changes to `main`.
+
+
+## Next grouped iteration — GT-02 delta_reach nested integrity
+
+After the schema-v002 lifecycle suite passed on commit `f8b6623a8ab316db092cac179966fd337ee29b39`, source review identified a concrete gap: the browser importer allow-listed `delta_reach` at the result envelope but did not directly enforce its nested closed schema or compare its declared deltas with the exported baseline comparison. Replay could detect some forged content later, but the artifact's own contract should fail closed before replay.
+
+**Implementation candidate:** `7091c39df8acfd4014fdf77dde3d8e4f5e29fa4b`.
+
+Changes:
+- Validate that `delta_reach` is an object with exactly the intervention scenario keys.
+- Validate exact nested keys, SHA-256 source identifiers, typed/known state and transition IDs, trajectory path structure, and truncation booleans.
+- Cross-check each delta against `comparisons_to_baseline` and baseline/intervention truncation flags.
+- Add two grouped adversarial cases: unknown nested field with recomputed result/package hashes, and semantically forged reachable-state delta with recomputed enclosing hashes.
+
+**Evidence status:** required CI was observed in progress when this note was written. Do not mark GT-02 passed until the exact candidate run completes successfully. The previous green run remains valid only for its own commit. Preserve the existing profile 1/2 behavior; no scientific execution and no promotion to `main`.
