@@ -669,7 +669,9 @@ const assert = require("node:assert/strict");
         else if (mutation === "assessment_number") candidate.value_assessment = 17;
         else if (mutation === "assessment_boolean") candidate.value_assessment = false;
         else if (mutation === "invalid_assessment_status") candidate.value_assessment.status = "NOT_ASSESSED";
+        else if (mutation === "assessed_package_not_assessed_status") candidate.value_assessment_status = "NOT_ASSESSED";
         else if (mutation === "missing_assessment_wrong_status") { delete candidate.value_assessment; candidate.value_assessment_status = "ASSESSED"; }
+        else if (mutation === "missing_assessment_missing_status") { delete candidate.value_assessment; delete candidate.value_assessment_status; candidate.package_stage = "OUTCOME"; }
         else if (mutation === "outcome_value_number") candidate.outcome_record.value = 17;
         else if (mutation === "outcome_provenance_object") candidate.outcome_record.provenance = { source: "forged" };
         else if (mutation === "assessment_criterion_number") candidate.value_assessment.criterion = 17;
@@ -720,7 +722,9 @@ const assert = require("node:assert/strict");
     await rejectGt04Mutation("gt04-assessment-number-substitution.json", "assessment_number", "La valoración requiere un resultado explícito");
     await rejectGt04Mutation("gt04-assessment-boolean-substitution.json", "assessment_boolean", "La valoración requiere un resultado explícito");
     await rejectGt04Mutation("gt04-invalid-assessment-status.json", "invalid_assessment_status", "Esquema o estado de valoración desconocido");
+    await rejectGt04Mutation("gt04-assessed-package-not-assessed-status.json", "assessed_package_not_assessed_status", "Un paquete evaluado no puede declarar NOT_ASSESSED");
     await rejectGt04Mutation("gt04-missing-assessment-wrong-status.json", "missing_assessment_wrong_status", "value_assessment_status=NOT_ASSESSED");
+    await rejectGt04Mutation("gt04-missing-assessment-missing-status.json", "missing_assessment_missing_status", "value_assessment_status=NOT_ASSESSED");
     await rejectGt04Mutation("gt04-outcome-value-number.json", "outcome_value_number", "unidad, momento, incertidumbre/estado y procedencia como cadenas no vacías");
     await rejectGt04Mutation("gt04-outcome-provenance-object.json", "outcome_provenance_object", "unidad, momento, incertidumbre/estado y procedencia como cadenas no vacías");
     await rejectGt04Mutation("gt04-assessment-criterion-number.json", "assessment_criterion_number", "La valoración está incompleta");
