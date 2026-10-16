@@ -347,3 +347,12 @@ Commit `f4ebda1935bb7dbbea55bc08109392c4da00e886` adds a grouped GT-05 test for 
 ### Historical replay fixture: first CI failure and correction (2026-10-16)
 
 The first historical-v1 test run failed at the expected `replay-verified` state ([run 38930163710](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38930163710)); the job timed out waiting for acceptance, so this is a test failure, not a product defect conclusion. Inspection found the fixture calculated `result_sha256` over the wrong projection by including `input_sha256`, contrary to the validator's digest contract. Commit `b7a295429593c6caa18055be51acb878963b92bb` corrects the fixture projection to exclude both `input_sha256` and `result_sha256`. Exact-head CI is pending; the compatibility claim remains partial until the corrected test passes. The separate document-update workflow failed because it tracks the test branch while the test itself failed; do not count it as independent product evidence.
+
+
+### GT-05 legacy-shaped package fail-closed result (2026-10-16)
+
+The grouped legacy-package adversary passed in browser/cross-runtime run [38931716530](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38931716530) on exact SHA `4207f3f87bdbbae5dea6b4e643d3f87c9c12299a`. The fixture omits the required explicit `value_assessment_status=NOT_ASSESSED` field and asserts that import reaches a terminal `rejected` state with a diagnostic naming the missing status. This verifies fail-closed rejection of this incomplete legacy-shaped package only; it does not establish successful replay for historical profiles or general backwards compatibility. No production validator changed; no scientific execution; no promotion to `main`.
+
+### FC-6 required-workflow gate (2026-10-16)
+
+A single browser/cross-runtime run is iteration-level evidence, not full FC-6 acceptance. Before closing the candidate, record the required motor, browser/navigation, engine-performance, browser-performance, and governance controls against the exact candidate SHA. Controls not automatically triggered by the current path/push filters must be deliberately dispatched or have a documented, evidence-backed non-applicability decision. Do not infer a five-workflow pass from one green run.
