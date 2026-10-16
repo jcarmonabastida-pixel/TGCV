@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - prototype/collective-toy-cross-runtime-tests-001-20261011
+      - probe/gt04-isolated-browser-ci-001-20261016
   pull_request:
     branches:
       - main
