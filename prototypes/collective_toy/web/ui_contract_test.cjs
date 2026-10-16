@@ -669,6 +669,32 @@ const assert = require("node:assert/strict");
     assert.equal(exportedPackageDigest, fc4Package.package_sha256,
       "FC-6: complete exported package digest must recompute from the exported envelope");
 
+    // FC-5 grouped package-integrity adversary: absent, malformed, and incorrect outer digest.
+    const invalidPackageDigests = await page.evaluate(async (pkg) => {
+      const missing = structuredClone(pkg);
+      delete missing.package_sha256;
+      const malformed = structuredClone(pkg);
+      malformed.package_sha256 = "not-a-sha256";
+      const incorrect = structuredClone(pkg);
+      incorrect.package_sha256 = "0".repeat(64);
+      return [
+        { name: "missing", candidate: missing },
+        { name: "malformed", candidate: malformed },
+        { name: "incorrect", candidate: incorrect }
+      ];
+    }, fc4Package);
+    for (const digestCase of invalidPackageDigests) {
+      await page.locator("#package-file").setInputFiles({
+        name: `invalid-package-digest-${digestCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(digestCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /hash|digest|sha-?256|integridad/i,
+        `FC-5: importer must diagnose ${digestCase.name} package digest`);
+    }
+
     // GT-04 grouped lifecycle truth table: COMPLETED trace without outcome remains EXECUTION/NOT_ASSESSED.
     const completedWithoutOutcome = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
