@@ -1425,6 +1425,34 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /baseline_source_sha256 de delta_reach en block_ac no corresponde a la fuente/i,
       "FC-5/FC-6: reject a syntactically valid but forged source hash even when enclosing hashes are recomputed");
 
+    // FC-5 grouped conditional-envelope matrix: stage must match present artifacts and dependencies must hold.
+    const invalidLifecycleCombinations = await page.evaluate(async (pkg) => {
+      const cases = [
+        { name: "assessment-with-outcome-stage", mutate: function (p) { p.package_stage = "OUTCOME"; } },
+        { name: "assessment-with-exploration-stage", mutate: function (p) { p.package_stage = "EXPLORATION"; } },
+        { name: "assessment-without-outcome", mutate: function (p) { delete p.outcome_record; } },
+        { name: "outcome-without-trace", mutate: function (p) { delete p.concrete_execution_trace; } }
+      ];
+      return Promise.all(cases.map(async (item) => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate);
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate };
+      }));
+    }, fc4Package);
+    for (const lifecycleCase of invalidLifecycleCombinations) {
+      await page.locator("#package-file").setInputFiles({
+        name: `invalid-lifecycle-${lifecycleCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(lifecycleCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /package_stage|requiere|no coincide|resultado|traza|outcome|valoraci[oó]n|assessment/i,
+        `FC-5: importer must reject inconsistent lifecycle combination ${lifecycleCase.name}`);
+    }
+
     // GT-03 closure: scenario-context acceptance is retained in the prior C12 evidence.
     // Do not rerun its superseded adversarial harness here: it mutates the input/result
     // provenance without rebuilding the independent replay oracle, so it fails before
