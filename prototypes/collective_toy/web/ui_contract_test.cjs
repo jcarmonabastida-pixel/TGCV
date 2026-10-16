@@ -1563,6 +1563,50 @@ const assert = require("node:assert/strict");
         `FC-5: importer must reject inconsistent lifecycle combination ${lifecycleCase.name}`);
     }
 
+    // FC-5 truth table: enumerate package_stage against every trace/outcome/assessment presence combination.
+    const lifecycleTruthTable = await page.evaluate(async (pkg) => {
+      const stages = ["EXPLORATION", "EXECUTION", "OUTCOME", "ASSESSMENT"];
+      const rows = [];
+      for (let mask = 0; mask < 8; mask++) {
+        const hasTrace = Boolean(mask & 1);
+        const hasOutcome = Boolean(mask & 2);
+        const hasAssessment = Boolean(mask & 4);
+        const expectedStage = hasAssessment ? "ASSESSMENT" : hasOutcome ? "OUTCOME" : hasTrace ? "EXECUTION" : "EXPLORATION";
+        const dependenciesHold = (!hasOutcome || hasTrace) && (!hasAssessment || hasOutcome);
+        for (const stage of stages) {
+          const candidate = structuredClone(pkg);
+          if (!hasTrace) delete candidate.concrete_execution_trace;
+          if (!hasOutcome) delete candidate.outcome_record;
+          if (!hasAssessment) delete candidate.value_assessment;
+          candidate.package_stage = stage;
+          if (hasAssessment) delete candidate.value_assessment_status;
+          else candidate.value_assessment_status = "NOT_ASSESSED";
+          delete candidate.package_sha256;
+          candidate.package_sha256 = await window.hash(candidate, "package_export");
+          const valid = dependenciesHold && stage === expectedStage;
+          rows.push({ name: `stage-${stage}-trace-${hasTrace}-outcome-${hasOutcome}-assessment-${hasAssessment}`, candidate, valid });
+        }
+      }
+      return rows;
+    }, fc4Package);
+    assert.equal(lifecycleTruthTable.length, 32, "FC-5 lifecycle truth table must enumerate all 4 stages x 8 artifact-presence combinations");
+    assert.equal(lifecycleTruthTable.filter(row => row.valid).length, 4, "FC-5 lifecycle truth table must admit exactly the four contract-valid combinations");
+    for (const lifecycleRow of lifecycleTruthTable) {
+      await page.locator("#package-file").setInputFiles({
+        name: `lifecycle-truth-${lifecycleRow.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(lifecycleRow.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      if (lifecycleRow.valid) {
+        await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+      } else {
+        await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+        assert.match(await page.locator("#package-assessment").innerText(), /package_stage|requiere|no coincide|resultado|traza|outcome|valoraci[oó]n|assessment/i,
+          `FC-5: lifecycle truth-table row must reject ${lifecycleRow.name}`);
+      }
+    }
+
     // FC-5 closed-schema adversary: reject unknown fields inside outcome and assessment records.
     const unknownRecordFields = await page.evaluate(async (pkg) => {
       const outcomeExtra = structuredClone(pkg);
