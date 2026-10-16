@@ -120,22 +120,22 @@
 | ID | Acceptance predicate | Initial state | Evidence / gap |
 |---|---|---|---|
 | FC5-OUT-001 | Require exact outcome schema and object type | partial | Schema check exists; negative matrix incomplete |
-| FC5-OUT-002 | Enforce closed 12-key outcome schema | pending | Importer lacks closed-key allowlist |
+| FC5-OUT-002 | Enforce closed 12-key outcome schema | verified (candidate; exact-head CI pending after register update) | Closed-key allowlists added in production importer and both forged-field cases pass on exact SHA `781288c6c75193802a38e510acc4e20d6321b2d3`; browser/cross-runtime run [38956047097](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38956047097). Four workflows pass on this SHA; governance must be rechecked after this register update. |
 | FC5-OUT-003 | Require non-empty outcome ID and value | partial | Implemented; individual type/empty fixtures not mapped |
 | FC5-OUT-004 | Enforce allowed source_kind values | pending | UI has options; importer enum validation not located |
 | FC5-OUT-005 | Validate value/unit/timing/uncertainty/provenance types and constraints | pending | Contract constraints/test mapping incomplete |
 | FC5-OUT-006 | Enforce execution/trace hash/model/scenario links | partial | Some adversarial link tests pass; full mapping incomplete |
-| FC5-OUT-007 | Reject unknown outcome fields | pending | No closed-key validation |
+| FC5-OUT-007 | Reject unknown outcome fields | verified (candidate; exact-head CI pending after register update) | Closed-key allowlists added in production importer and both forged-field cases pass on exact SHA `781288c6c75193802a38e510acc4e20d6321b2d3`; browser/cross-runtime run [38956047097](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38956047097). Four workflows pass on this SHA; governance must be rechecked after this register update. |
 | FC5-OUT-008 | Reject null/array/primitive substitution for outcome object/fields | pending | Dedicated fixtures not located |
 | FC5-OUT-009 | Recompute outcome digest when linked assessment exists | partial | Assessment hash check exists; direct tampering coverage incomplete |
 | FC5-VAL-001 | Require exact assessment schema and object type | partial | Schema check exists; negative matrix incomplete |
-| FC5-VAL-002 | Enforce closed 11-key assessment schema | pending | Importer lacks closed-key allowlist |
+| FC5-VAL-002 | Enforce closed 11-key assessment schema | verified (candidate; exact-head CI pending after register update) | Closed-key allowlists added in production importer and both forged-field cases pass on exact SHA `781288c6c75193802a38e510acc4e20d6321b2d3`; browser/cross-runtime run [38956047097](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38956047097). Four workflows pass on this SHA; governance must be rechecked after this register update. |
 | FC5-VAL-003 | Require status exactly ASSESSED | partial | Implemented; wrong-type/value matrix incomplete |
 | FC5-VAL-004 | Require non-empty assessment ID | pending | Explicit check not located |
 | FC5-VAL-005 | Enforce outcome ID and execution ID links | partial | Adversarial tests cover links; full matrix incomplete |
 | FC5-VAL-006 | Validate outcome hash format and recomputation | partial | Implemented and forged digest tested |
 | FC5-VAL-007 | Require observer/context/criterion/rule/rationale to be non-empty strings | partial | Missing criterion tested; wrong-type and remaining fields not individually mapped |
-| FC5-VAL-008 | Reject unknown assessment fields | pending | No closed-key validation |
+| FC5-VAL-008 | Reject unknown assessment fields | verified (candidate; exact-head CI pending after register update) | Closed-key allowlists added in production importer and both forged-field cases pass on exact SHA `781288c6c75193802a38e510acc4e20d6321b2d3`; browser/cross-runtime run [38956047097](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38956047097). Four workflows pass on this SHA; governance must be rechecked after this register update. |
 | FC5-VAL-009 | Reject null/array/primitive substitution for assessment fields | pending | Dedicated fixtures not located |
 | FC5-VAL-010 | Enforce assessment/status conditional truth table | partial | GT-04 grouped cases passed on exact browser head `8c61ba4b`: assessment-without-outcome, ASSESSED-without-valuation, and valuation-with-NOT_ASSESSED rejected; complete valuation round-trip passes. Remaining combinations not exhausted; browser run [38924503511](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38924503511). |
 
