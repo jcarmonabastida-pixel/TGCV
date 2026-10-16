@@ -489,3 +489,14 @@ Test commit `166ec157d9faea2d14f5d0ad5561e22dc31851fe` adds positive import/repl
 - `ASSESSMENT`: existing complete assessed round-trip; assessment present and top-level status absent.
 
 For the new EXPLORATION and EXECUTION cases, the test recomputes the enclosing package digest, imports through the UI, and requires `replay-verified` plus the independently matching replay diagnostic. The OUTCOME case now also asserts required artifact presence/absence and stage. Candidate coverage only until all five workflows pass on the exact final code+documentation HEAD. Illegal combinations and BLOCKED subcases remain separately tracked; this does not close the full lifecycle predicate.
+
+
+## GT-04 lifecycle row-level adversarial supplement — candidate, CI pending
+
+The previous documentation HEAD `43c288196d403ce4f16a0563f33379008f4a0be0` passed all five workflows (governance `38911891448`, synthetic engine `38911891684`, engine benchmark `38911891537`, browser benchmark `38911891662`, browser/cross-runtime `38911891624`). Inspection of the exact browser test found positive replay assertions for all four legal presence patterns (EXPLORATION, EXECUTION, OUTCOME, ASSESSMENT), four wrong-stage mutations, and missing/contradictory valuation status cases. It did not directly exercise the illegal `outcome_record`-without-trace pattern or assessment-without-outcome pattern.
+
+Candidate test commit `de32a1ae3372f1e99ef99f17586ff9ce08177775` adds those two cases with recomputed package digests:
+- `gt04-outcome-without-trace.json`: remove trace and align stage to EXPLORATION; expect the explicit `outcome_record requiere concrete_execution_trace` diagnostic.
+- `gt04-assessment-without-outcome.json`: remove outcome while retaining assessment; expect rejection at the stage/artifact consistency gate.
+
+This supplements the table with direct invalid-pattern evidence. Do not upgrade lifecycle to complete until all five workflows pass on the exact final code+documentation HEAD. The BLOCKED-trace restriction remains separately covered by existing GT-03 tests and is not a substitute for this lifecycle matrix. No scientific execution; GT-03 remains open.
