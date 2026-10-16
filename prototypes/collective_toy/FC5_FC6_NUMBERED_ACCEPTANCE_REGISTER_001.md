@@ -396,3 +396,8 @@ All five workflows passed on exact HEAD `9f7aa404f8e210821227062cceca2ec276baee7
 ### FC5-PKG-009 / FC5-PKG-010 — expanded object-type adversaries (candidate; CI pending)
 
 Commit `508b82859a007a9d99f09a7127b5c28e03095a08` extends GT-04 import adversaries. `outcome_record` now has dedicated array/null/string/number/boolean substitutions; `value_assessment` has array/null/string/number/boolean substitutions. Each mutation is handled by the existing helper that recomputes `package_sha256`, isolating inner type/lifecycle validation. Existing expected diagnostics are retained: `outcome_record debe ser un objeto` for outcome types and the assessment/result linkage diagnostic for assessment substitutions. Pending exact-HEAD five-workflow gate.
+
+
+### GT-04 status-coherence follow-up — candidate added; CI pending
+
+All five workflows passed on exact HEAD `53f69fba9533c770bf2989bb157e24606f13278b`: governance `38889457544`, synthetic engine `38889457503`, browser benchmark `38889457538`, engine benchmark `38889457512`, and browser/cross-runtime `38889457552`. Follow-up commit `c5de15277296aadfe4e55dc371e565f0d37dbaf3` adds two lifecycle-state contradictions: (1) an assessment object coexisting with package-level `value_assessment_status=NOT_ASSESSED`; (2) no assessment object and no package-level status, using `package_stage=OUTCOME` to isolate the missing-status rule. Both recompute the package digest and assert the specific status diagnostic. Pending exact-HEAD five-workflow CI; no scientific execution.
