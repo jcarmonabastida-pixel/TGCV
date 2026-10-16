@@ -274,3 +274,8 @@ Use the active **“GT-04 active evidence map — reconciled 2026-10-16”** in 
 ## 13. Required-key omission matrix — candidate test evidence
 
 The browser suite now enumerates each required key in the 12-key `outcome_record` schema and 11-key `value_assessment` schema as a missing-key adversary. The test helper recomputes the package digest and asserts the importer’s specific incomplete-object diagnostic. This is candidate coverage only until the five required workflows pass on the exact final code+documentation HEAD. The matrix tests required-key presence, not unknown-key rejection, field type/value semantics, cross-links, or lifecycle truth-table completeness; those remain separate predicates.
+
+
+## 14. Exact-head evidence update — required keys, finite domain, replay pointers
+
+The 23 required-key omission cases and the existing unknown-key and `source_kind` finite-domain adversaries passed the five required workflows on exact HEAD `f6825f66fcb0c73db22308ce69866a1db5ea459f` (runs `38910347889`, `38910348206`, `38910347977`, `38910347952`, `38910347920`). The test suite also has assessed/repeated and unassessed positive replay paths at `ui_contract_test.cjs` around lines 625–650 and 851–871. This establishes those paths exist and passed; it does not yet prove every FC-5 identity/hash/status/link invariant has a dedicated assertion. Lifecycle/status remains a partial predicate pending an explicit legal/illegal combination table.
