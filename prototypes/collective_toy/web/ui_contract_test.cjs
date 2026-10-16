@@ -1453,6 +1453,34 @@ const assert = require("node:assert/strict");
         `FC-5: importer must reject inconsistent lifecycle combination ${lifecycleCase.name}`);
     }
 
+    // FC-5 closed-schema adversary: reject unknown fields inside outcome and assessment records.
+    const unknownRecordFields = await page.evaluate(async (pkg) => {
+      const outcomeExtra = structuredClone(pkg);
+      outcomeExtra.outcome_record.uncontracted_field = "must-not-be-ignored";
+      outcomeExtra.value_assessment.outcome_sha256 = await window.hash(outcomeExtra.outcome_record, "outcome_record");
+      delete outcomeExtra.package_sha256;
+      outcomeExtra.package_sha256 = await window.hash(outcomeExtra, "package_export");
+      const assessmentExtra = structuredClone(pkg);
+      assessmentExtra.value_assessment.uncontracted_field = "must-not-be-ignored";
+      delete assessmentExtra.package_sha256;
+      assessmentExtra.package_sha256 = await window.hash(assessmentExtra, "package_export");
+      return [
+        { name: "outcome", candidate: outcomeExtra },
+        { name: "assessment", candidate: assessmentExtra }
+      ];
+    }, fc4Package);
+    for (const recordCase of unknownRecordFields) {
+      await page.locator("#package-file").setInputFiles({
+        name: `unknown-record-field-${recordCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(recordCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /desconocidos|esquema|estructura|campos/i,
+        `FC-5: importer must reject unknown ${recordCase.name} field`);
+    }
+
     // GT-03 closure: scenario-context acceptance is retained in the prior C12 evidence.
     // Do not rerun its superseded adversarial harness here: it mutates the input/result
     // provenance without rebuilding the independent replay oracle, so it fails before
