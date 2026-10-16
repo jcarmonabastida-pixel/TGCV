@@ -401,3 +401,8 @@ Commit `508b82859a007a9d99f09a7127b5c28e03095a08` extends GT-04 import adversari
 ### GT-04 status-coherence follow-up — candidate added; CI pending
 
 All five workflows passed on exact HEAD `53f69fba9533c770bf2989bb157e24606f13278b`: governance `38889457544`, synthetic engine `38889457503`, browser benchmark `38889457538`, engine benchmark `38889457512`, and browser/cross-runtime `38889457552`. Follow-up commit `c5de15277296aadfe4e55dc371e565f0d37dbaf3` adds two lifecycle-state contradictions: (1) an assessment object coexisting with package-level `value_assessment_status=NOT_ASSESSED`; (2) no assessment object and no package-level status, using `package_stage=OUTCOME` to isolate the missing-status rule. Both recompute the package digest and assert the specific status diagnostic. Pending exact-HEAD five-workflow CI; no scientific execution.
+
+
+### GT-04 scalar-field type boundaries — candidate added; CI pending
+
+The five-workflow gate passed on exact HEAD `71a27e1515b92a6a9445a964291ca20cd0f81d27`: governance `38895491601`, synthetic engine `38895491641`, engine benchmark `38895491593`, browser benchmark `38895491759`, browser/cross-runtime `38895491723`. Candidate test commit `c212f3ac2ee548bae68d0aaddb347024fff7360c` extends field-level adversaries: outcome `unit:number`, `timing:null`, `uncertainty_status:boolean`; assessment `observer:number`, `context:null`, `valuation_rule:array`, and `rationale:boolean`. Each fixture uses the existing helper to recompute the package digest and expects the current field-contract diagnostic. Acceptance pending exact-HEAD five-workflow CI; no scientific execution.
