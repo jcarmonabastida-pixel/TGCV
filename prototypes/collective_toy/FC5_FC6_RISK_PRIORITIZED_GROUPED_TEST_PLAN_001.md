@@ -514,3 +514,8 @@ Candidate commit: `b3b8cb38e06693fa2213879853993c558795ead9`.
 The browser contract suite now has dedicated cases for absent `package_sha256` (FC5-PKG-005), malformed format (FC5-PKG-006), and a well-formed but incorrect digest (FC5-PKG-007). The incorrect-digest fixture replaces the digest with a different valid 64-character lowercase hex value and deliberately leaves it unrecomputed, so the test targets package integrity rather than an inner semantic predicate.
 
 Acceptance remains pending until all five controls pass on one exact resulting HEAD. If the browser control fails, diagnose validation precedence/fixture assumptions before changing validator behavior. Next after this gate: top-level type substitutions for `concrete_execution_trace` (FC5-PKG-008), then reconcile the remaining GT-01 envelope cases. No GT-03 closure and no scientific execution.
+
+
+### FC5-PKG-008 — execution-trace type substitution group
+
+Candidate test commit: `4c54aaef2a373c49b32b1ffffa936fe692c78cc4`. The browser import test replaces `concrete_execution_trace` with five invalid JSON types: `null`, array, string, number, and boolean. Every candidate has its package digest recomputed, isolating the type contract. Expected diagnostic is `concrete_execution_trace debe ser un objeto`. Gate: require browser test plus all five CI controls to pass on one exact resulting HEAD. On failure, inspect validator diagnostic precedence and test fixture assumptions before changing validator code. After this gate, reconcile remaining package-envelope cases in the acceptance register; no scientific execution and no GT-03 closure.
