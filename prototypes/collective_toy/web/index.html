@@ -173,7 +173,7 @@ async function assessImportedBrowserPackage(pkg){
  assert(pkg.result.validation==="PASS","El resultado no declara validation=PASS.");
   if(pkg.outcome_record!==undefined){
    var outcome=pkg.outcome_record;
-   assert(outcome&&typeof outcome==="object"&&!Array.isArray(outcome),"outcome_record debe ser un objeto.");
+   assert(outcome&&typeof outcome==="object"&&!Array.isArray(outcome),"outcome_record debe ser un objeto."); assert(Object.keys(outcome).every(function(k){return ["outcome_schema","outcome_id","execution_id","execution_trace_sha256","model_id","scenario_id","source_kind","value","unit","timing","uncertainty_status","provenance"].includes(k)}),"El resultado contiene campos desconocidos.");
    assert(outcome.outcome_schema==="collective-toy-outcome-001","Esquema de resultado desconocido o no compatible.");
    assert(pkg.concrete_execution_trace&&pkg.concrete_execution_trace.status==="COMPLETED"&&outcome.execution_id===pkg.concrete_execution_trace.execution_id,"El resultado no está vinculado a la traza de ejecución exportada o requiere una traza COMPLETED.");
    assert(outcome.execution_trace_sha256===pkg.concrete_execution_trace.trace_sha256,"El hash de traza del resultado no coincide con la traza exportada.");
@@ -183,7 +183,7 @@ async function assessImportedBrowserPackage(pkg){
   }
   if(pkg.value_assessment!==undefined){
    var assessment=pkg.value_assessment;
-   assert(pkg.outcome_record&&assessment&&typeof assessment==="object"&&!Array.isArray(assessment),"La valoración requiere un resultado explícito.");
+   assert(pkg.outcome_record&&assessment&&typeof assessment==="object"&&!Array.isArray(assessment),"La valoración requiere un resultado explícito."); assert(Object.keys(assessment).every(function(k){return ["assessment_schema","assessment_id","outcome_id","execution_id","outcome_sha256","observer","context","criterion","valuation_rule","rationale","status"].includes(k)}),"La valoración contiene campos desconocidos.");
    assert(assessment.assessment_schema==="collective-toy-value-assessment-001"&&assessment.status==="ASSESSED","Esquema o estado de valoración desconocido.");
    assert(assessment.outcome_id===pkg.outcome_record.outcome_id&&assessment.execution_id===pkg.outcome_record.execution_id,"La valoración no está vinculada al resultado y ejecución exportados.");
    assert(typeof assessment.outcome_sha256==="string"&&/^[0-9a-f]{64}$/.test(assessment.outcome_sha256),"La valoración carece de hash de resultado válido.");
