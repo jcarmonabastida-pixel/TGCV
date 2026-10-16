@@ -1701,6 +1701,37 @@ const assert = require("node:assert/strict");
         "FC-5: reject structurally valid delta field that differs from baseline comparison: " + item.field);
     }
 
+    // C12: comparison intervention identity must match the declared input scenario.
+    const forgedComparisonIntervention = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.comparisons_to_baseline.block_ac.intervention.disabled_transitions = [];
+      const semanticProjection = structuredClone(candidate.result);
+      for (const key of ["delta_reach","engine_version","input_sha256","result_sha256","semantic_sha256","semantic_identity_version"]) delete semanticProjection[key];
+      for (const scenario of Object.values(semanticProjection.scenario_results || {})) if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+      for (const comparison of Object.values(semanticProjection.comparisons_to_baseline || {})) {
+        const intervention = comparison.intervention || {};
+        if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+      }
+      candidate.result.semantic_sha256 = await window.hash(semanticProjection, "result");
+      delete candidate.result.result_sha256;
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, deltaPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "comparison-intervention-source-mismatch.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedComparisonIntervention))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(),
+      /intervention\.disabled_transitions de la comparación block_ac no coincide con el escenario de entrada/i,
+      "FC-5 C12: reject comparison intervention payload inconsistent with its input scenario");
+
     // GT-03 scenario-context adversary: the blocked reason must use trace.scenario_id, not baseline.
     const forgedBlockedScenarioContext = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
