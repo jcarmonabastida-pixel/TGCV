@@ -617,6 +617,83 @@ const assert = require("node:assert/strict");
     assert.equal(fc4Package.value_assessment_status, undefined,
       "FC-4: an assessed package must not also claim valuation is unassessed");
 
+    // GT-04 grouped lifecycle truth table: COMPLETED trace without outcome remains EXECUTION/NOT_ASSESSED.
+    const completedWithoutOutcome = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.outcome_record;
+      delete candidate.value_assessment;
+      candidate.package_stage = "EXECUTION";
+      candidate.value_assessment_status = "NOT_ASSESSED";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    assert.equal(completedWithoutOutcome.concrete_execution_trace.status, "COMPLETED");
+    assert.equal(completedWithoutOutcome.package_stage, "EXECUTION");
+    assert.equal(completedWithoutOutcome.value_assessment_status, "NOT_ASSESSED");
+    await page.locator("#package-file").setInputFiles({
+      name: "completed-trace-without-outcome.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(completedWithoutOutcome))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "GT-04: COMPLETED trace without outcome must import/replay as EXECUTION, NOT_ASSESSED");
+
+    // GT-04 adversary: a valuation cannot exist without its outcome, even with a recomputed package digest.
+    const assessmentWithoutOutcome = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.outcome_record;
+      candidate.package_stage = "ASSESSMENT";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "assessment-without-outcome.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(assessmentWithoutOutcome))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /la valoración requiere un resultado explícito/i,
+      "GT-04: reject assessment without outcome independently of package digest");
+
+    // GT-04 adversary: a package without valuation must not claim the ASSESSED status.
+    const assessedStatusWithoutValuation = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.value_assessment;
+      candidate.package_stage = "OUTCOME";
+      candidate.value_assessment_status = "ASSESSED";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "assessed-status-without-valuation.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(assessedStatusWithoutValuation))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /value_assessment_status=NOT_ASSESSED/i,
+      "GT-04: reject ASSESSED status when no valuation artifact exists");
+
+    // GT-04 adversary: a complete valuation cannot coexist with an explicit NOT_ASSESSED status.
+    const valuationWithNotAssessedStatus = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.value_assessment_status = "NOT_ASSESSED";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "valuation-with-not-assessed-status.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(valuationWithNotAssessedStatus))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /un paquete evaluado no puede declarar NOT_ASSESSED/i,
+      "GT-04: reject contradictory assessed artifact plus NOT_ASSESSED status");
+
     // FC-5: round-trip a fully assessed FC-4 package through the actual import UI.
     await page.locator("#package-file").setInputFiles({
       name: "assessed-fc4-roundtrip.json",
