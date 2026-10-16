@@ -753,6 +753,36 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /initial_state de la traza no coincide con el estado inicial del modelo/i,
       "FC-5/FC-6: reject trace whose known initial state contradicts the declared model initial state despite recomputed dependent digests");
 
+    // GT-05 grouped semantic trace adversary: a re-hashed trace must still follow the model's actual edges.
+    const forgedTraceEdge = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      const trace = candidate.concrete_execution_trace;
+      if (!trace.steps.length) throw new Error("Fixture needs at least one executed trace step");
+      const first = trace.steps[0];
+      const edge = candidate.input.transitions.find(t => t.id === first.transition_id);
+      if (!edge) throw new Error("Fixture trace must reference an existing transition");
+      const impossibleTarget = candidate.input.states.find(state => state !== edge.source && state !== edge.target);
+      if (!impossibleTarget) throw new Error("Fixture needs a declared non-edge target state");
+      first.state_after = impossibleTarget;
+      // Recompute every enclosing digest so the importer must validate semantic trace coherence,
+      // not merely detect a stale checksum.
+      delete trace.trace_sha256;
+      trace.trace_sha256 = await window.hash(trace);
+      candidate.outcome_record.execution_trace_sha256 = trace.trace_sha256;
+      candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "trace-forged-edge-with-recomputed-digests.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(forgedTraceEdge))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /secuencia de estados\/transiciones de la traza no es coherente con la entrada/i,
+      "GT-05/FC5-TRACE-012: reject a re-hashed trace step that does not follow its declared transition edge");
+
     // The preceding assertion is intentionally scoped to the successful assessed round-trip.
     // After the adversarial import, the package assessment is expected to be rejected.
     // FC-5: the same explicit outcome without a complete valuation must round-trip as NOT_ASSESSED.
