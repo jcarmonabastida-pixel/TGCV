@@ -387,3 +387,12 @@ Commit `4c54aaef2a373c49b32b1ffffa936fe692c78cc4` adds browser-import cases repl
 ### FC5-PKG-008 diagnostic-precedence correction — CI pending
 
 The first run on the previous candidate failed on the `null` trace case: the fixture retained an outcome record, so the importer correctly rejected the package earlier with `El resultado no está vinculado a la traza de ejecución exportada o requiere una traza COMPLETED.` This did not exercise the intended trace-type diagnostic. Commit `218b3885f0fe84831b615fb8acef86efb5005c05` adjusts each invalid-trace fixture to exploration stage, removes outcome/value records, sets `value_assessment_status=NOT_ASSESSED`, and recomputes the package digest. This isolates the type predicate. FC5-PKG-008 remains pending until exact-HEAD browser and five-workflow CI pass.
+
+
+### Exact-head gate — FC5-PKG-008 fixture correction passed
+
+All five workflows passed on exact HEAD `9f7aa404f8e210821227062cceca2ec276baee7f`: governance `38888784284`, synthetic engine `38888784297`, browser benchmark `38888784234`, engine benchmark `38888784239`, and browser/cross-runtime `38888784240`. This confirms the fixture-precedence correction reaches the intended type diagnostic under the current browser test. Engineering evidence only; no scientific closure.
+
+### FC5-PKG-009 / FC5-PKG-010 — expanded object-type adversaries (candidate; CI pending)
+
+Commit `508b82859a007a9d99f09a7127b5c28e03095a08` extends GT-04 import adversaries. `outcome_record` now has dedicated array/null/string/number/boolean substitutions; `value_assessment` has array/null/string/number/boolean substitutions. Each mutation is handled by the existing helper that recomputes `package_sha256`, isolating inner type/lifecycle validation. Existing expected diagnostics are retained: `outcome_record debe ser un objeto` for outcome types and the assessment/result linkage diagnostic for assessment substitutions. Pending exact-HEAD five-workflow gate.
