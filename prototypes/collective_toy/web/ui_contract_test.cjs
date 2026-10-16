@@ -1265,6 +1265,24 @@ const assert = require("node:assert/strict");
       candidate.result.delta_reach.block_ac.intervention_source_sha256 = await window.hash(
         { ...sourceCommon, scenario: alternate }, "delta_reach_intervention_source"
       );
+      // Re-sign result integrity after changing delta_reach provenance, preserving
+      // semantic identity rules (delta_reach is intentionally excluded there).
+      const semanticProjection = JSON.parse(JSON.stringify(candidate.result));
+      for (const key of ["delta_reach", "engine_version", "input_sha256", "result_sha256", "semantic_sha256", "semantic_identity_version"]) {
+        delete semanticProjection[key];
+      }
+      for (const scenario of Object.values(semanticProjection.scenario_results || {})) {
+        if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+      }
+      for (const comparison of Object.values(semanticProjection.comparisons_to_baseline || {})) {
+        const disabled = comparison.intervention && comparison.intervention.disabled_transitions;
+        if (Array.isArray(disabled)) disabled.sort();
+      }
+      candidate.result.semantic_sha256 = await window.hash(semanticProjection, "result");
+      const resultBody = { ...candidate.result };
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
       delete trace.trace_sha256;
       trace.trace_sha256 = await window.hash(trace, "sequence_trace");
       delete candidate.package_sha256;
