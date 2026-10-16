@@ -21,7 +21,7 @@
 | FC5-PKG-008 | Reject wrong type for `concrete_execution_trace` | pending | No dedicated type fixture mapped |
 | FC5-PKG-009 | Reject wrong type for `outcome_record` | pending | No dedicated type fixture mapped |
 | FC5-PKG-010 | Reject wrong type for `value_assessment` | pending | No dedicated type fixture mapped |
-| FC5-PKG-011 | Enforce assessment/status conditional combinations | partial | Positive assessed and NOT_ASSESSED round trips; truth table incomplete |
+| FC5-PKG-011 | Enforce assessment/status conditional combinations | partial | GT-04 exact-head browser evidence on `8c61ba4b`: COMPLETED/EXECUTION/NOT_ASSESSED round-trip; assessment without outcome rejected; ASSESSED without valuation rejected; valuation + NOT_ASSESSED rejected. Full conditional matrix still incomplete; browser run [38924503511](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38924503511). |
 | FC5-PKG-012 | Reject unknown `value_assessment_status` values | pending | Dedicated fixture not located |
 
 ## B. Input model
@@ -137,7 +137,7 @@
 | FC5-VAL-007 | Require observer/context/criterion/rule/rationale to be non-empty strings | partial | Missing criterion tested; wrong-type and remaining fields not individually mapped |
 | FC5-VAL-008 | Reject unknown assessment fields | pending | No closed-key validation |
 | FC5-VAL-009 | Reject null/array/primitive substitution for assessment fields | pending | Dedicated fixtures not located |
-| FC5-VAL-010 | Enforce assessment/status conditional truth table | partial | Round trips exist; all combinations not tested |
+| FC5-VAL-010 | Enforce assessment/status conditional truth table | partial | GT-04 grouped cases passed on exact browser head `8c61ba4b`: assessment-without-outcome, ASSESSED-without-valuation, and valuation-with-NOT_ASSESSED rejected; complete valuation round-trip passes. Remaining combinations not exhausted; browser run [38924503511](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38924503511). |
 
 ## G. Integrity/security, replay, and FC-6
 
