@@ -366,3 +366,14 @@ Implementation baseline: `web/index.html` lines 270–290 at candidate `a7813bc2
 The atomic-register reconciliation candidate `159a736b93fcdfa48f10f27434b61a0e0297a946` passed all five workflows on the exact head: browser/cross-runtime `38818148318`, synthetic engine `38818148346`, browser benchmark `38818148294`, engine benchmark `38818148369`, and governance consistency `38818148292`.
 
 Added two negative fixtures: remove the only intervention delta entry, and add an illegal `baseline` delta entry. Both recompute result/package hashes and require the exact scenario-key-set diagnostic. The fixtures are pending exact-head CI; this covers only missing/extra entry shape and does not by itself establish comparison semantics.
+
+
+### GT-01 package digest adversaries — candidate added, exact-HEAD CI pending
+
+Commit `b3b8cb38e06693fa2213879853993c558795ead9` adds three browser-import adversaries in `prototypes/collective_toy/web/ui_contract_test.cjs`:
+
+- `FC5-PKG-005`: remove `package_sha256`; expect the specific absent/malformed digest diagnostic.
+- `FC5-PKG-006`: set `package_sha256` to a non-SHA-256 string; expect the same schema diagnostic.
+- `FC5-PKG-007`: replace the digest with a different well-formed 64-character lowercase hex value and deliberately do not recompute it; expect the package-integrity mismatch diagnostic.
+
+These cases distinguish digest presence/format from digest integrity. They are implemented but remain **pending** until the browser test and the full five-workflow suite pass on one exact HEAD. No scientific execution or GT-03 closure.
