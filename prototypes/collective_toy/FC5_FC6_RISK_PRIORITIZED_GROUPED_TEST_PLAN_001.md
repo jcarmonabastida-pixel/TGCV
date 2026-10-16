@@ -578,3 +578,8 @@ The active acceptance register now includes a presence-bit truth table for trace
 ### Candidate lifecycle positive-row coverage added
 
 Commit `166ec157d9faea2d14f5d0ad5561e22dc31851fe` adds positive import/replay tests for EXPLORATION and EXECUTION rows and strengthens explicit OUTCOME row assertions. The existing ASSESSMENT round-trip covers the fourth legal row. Wait for all five workflows on exact final HEAD. If green, update the active evidence map for these four legal presence patterns; retain the illegal-combination / BLOCKED subcase predicate as partial until each relevant status/stage contradiction has direct evidence.
+
+
+### GT-04 lifecycle matrix — direct invalid-presence tests added
+
+The prior exact HEAD `43c288196d403ce4f16a0563f33379008f4a0be0` passed all five workflows. Review confirmed the four legal presence rows already have positive replay assertions, but two invalid presence patterns lacked dedicated tests. Candidate commit `de32a1ae3372f1e99ef99f17586ff9ce08177775` adds outcome-without-trace and assessment-without-outcome mutations, each recomputing package digest and asserting rejection. Run the five-workflow gate on the exact final code+documentation HEAD. Keep lifecycle partial until the gate passes and the status/stage truth table is reconciled. No scientific execution; GT-03 remains open.
