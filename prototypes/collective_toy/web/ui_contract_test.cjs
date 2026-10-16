@@ -1389,6 +1389,47 @@ const assert = require("node:assert/strict");
         `FC-5: importer must reject non-object record ${typeCase.name}`);
     }
 
+    // FC-5 grouped per-field type adversaries for mandatory outcome and valuation context.
+    const invalidRequiredFieldTypes = await page.evaluate(async (pkg) => {
+      const cases = [];
+      const invalidValues = [
+        { suffix: "null", value: null },
+        { suffix: "array", value: [] },
+        { suffix: "number", value: 17 }
+      ];
+      for (const field of ["outcome_id", "value"]) {
+        for (const invalid of invalidValues) {
+          const candidate = structuredClone(pkg);
+          candidate.outcome_record[field] = invalid.value;
+          candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
+          delete candidate.package_sha256;
+          candidate.package_sha256 = await window.hash(candidate, "package_export");
+          cases.push({ name: `outcome-${field}-${invalid.suffix}`, candidate });
+        }
+      }
+      for (const field of ["observer", "context", "criterion", "valuation_rule", "rationale"]) {
+        for (const invalid of invalidValues) {
+          const candidate = structuredClone(pkg);
+          candidate.value_assessment[field] = invalid.value;
+          delete candidate.package_sha256;
+          candidate.package_sha256 = await window.hash(candidate, "package_export");
+          cases.push({ name: `assessment-${field}-${invalid.suffix}`, candidate });
+        }
+      }
+      return cases;
+    }, fc4Package);
+    for (const fieldCase of invalidRequiredFieldTypes) {
+      await page.locator("#package-file").setInputFiles({
+        name: `invalid-required-field-type-${fieldCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(fieldCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /resultado|valoraci[oó]n|campo|incomplet|identificador|valor/i,
+        `FC-5: importer must reject invalid required-field type ${fieldCase.name}`);
+    }
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
