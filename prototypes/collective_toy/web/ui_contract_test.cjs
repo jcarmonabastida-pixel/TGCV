@@ -1481,6 +1481,50 @@ const assert = require("node:assert/strict");
         `FC-5: importer must reject unknown ${recordCase.name} field`);
     }
 
+    // FC-5 grouped outcome/assessment field contract: enums, IDs and required strings.
+    const invalidOutcomeAndAssessmentFields = await page.evaluate(async (pkg) => {
+      const cases = [];
+      for (const item of [
+        { name: "source-kind-unknown", key: "source_kind", value: "inferred" },
+        { name: "source-kind-null", key: "source_kind", value: null },
+        { name: "source-kind-number", key: "source_kind", value: 2 },
+        { name: "unit-empty", key: "unit", value: "" },
+        { name: "timing-null", key: "timing", value: null },
+        { name: "uncertainty-number", key: "uncertainty_status", value: 1 },
+        { name: "provenance-empty", key: "provenance", value: "   " }
+      ]) {
+        const candidate = structuredClone(pkg);
+        candidate.outcome_record[item.key] = item.value;
+        if (candidate.value_assessment) candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        cases.push({ name: item.name, candidate });
+      }
+      for (const item of [
+        { name: "assessment-id-empty", value: "" },
+        { name: "assessment-id-null", value: null },
+        { name: "assessment-id-number", value: 7 }
+      ]) {
+        const candidate = structuredClone(pkg);
+        candidate.value_assessment.assessment_id = item.value;
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        cases.push({ name: item.name, candidate });
+      }
+      return cases;
+    }, fc4Package);
+    for (const fieldCase of invalidOutcomeAndAssessmentFields) {
+      await page.locator("#package-file").setInputFiles({
+        name: `invalid-outcome-assessment-field-${fieldCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(fieldCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /source_kind|resultado|valoraci[oó]n|incomplet|identificador|campo|tipo|desconocido/i,
+        `FC-5: importer must reject invalid outcome/assessment field ${fieldCase.name}`);
+    }
+
     // GT-03 closure: scenario-context acceptance is retained in the prior C12 evidence.
     // Do not rerun its superseded adversarial harness here: it mutates the input/result
     // provenance without rebuilding the independent replay oracle, so it fails before
