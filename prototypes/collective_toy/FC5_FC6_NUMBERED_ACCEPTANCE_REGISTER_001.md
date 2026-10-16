@@ -377,3 +377,8 @@ Commit `b3b8cb38e06693fa2213879853993c558795ead9` adds three browser-import adve
 - `FC5-PKG-007`: replace the digest with a different well-formed 64-character lowercase hex value and deliberately do not recompute it; expect the package-integrity mismatch diagnostic.
 
 These cases distinguish digest presence/format from digest integrity. They are implemented but remain **pending** until the browser test and the full five-workflow suite pass on one exact HEAD. No scientific execution or GT-03 closure.
+
+
+### FC5-PKG-008 — execution-trace type substitution adversaries (candidate; CI pending)
+
+Commit `4c54aaef2a373c49b32b1ffffa936fe692c78cc4` adds browser-import cases replacing `concrete_execution_trace` with `null`, an array, a string, a number, and a boolean. Each case recomputes `package_sha256` so the validator must reject the trace type specifically, not merely detect package digest mismatch. Expected diagnostic: `concrete_execution_trace debe ser un objeto`. Coverage remains pending until all five controls pass on one exact HEAD.
