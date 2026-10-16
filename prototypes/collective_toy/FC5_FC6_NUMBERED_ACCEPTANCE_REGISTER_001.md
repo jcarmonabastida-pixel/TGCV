@@ -411,3 +411,12 @@ The five-workflow gate passed on exact HEAD `71a27e1515b92a6a9445a964291ca20cd0f
 ### GT-04 required-string boundary follow-up — candidate; CI pending
 
 The previous exact HEAD `2cc69608924f31790dc734761940b139bbce233b` passed all five workflows: synthetic engine `38896275927`, governance `38896276021`, engine benchmark `38896276015`, browser benchmark `38896275887`, browser/cross-runtime `38896276160`. New candidate test commit `1118ae9aca9c59aa486672c36203016c4afc2a98` adds empty/whitespace values for outcome timing, uncertainty status, provenance, and assessment observer, context, criterion, and rationale. Every mutation recomputes the package digest and asserts the field-contract diagnostic. Pending the exact-HEAD five-workflow gate; no scientific execution.
+
+
+### GT-04 required-string boundary gate — exact-head PASS
+
+The seven empty/whitespace adversaries from test commit `1118ae9aca9c59aa486672c36203016c4afc2a98` passed all five workflows on exact final code+documentation HEAD `a3c6809e8e944a9b0d2866ad82d3f30b91683229`: governance `38896875016`, synthetic engine `38896874960`, browser benchmark `38896874987`, engine benchmark `38896875141`, browser/cross-runtime `38896874980`. This confirms the grouped field-boundary cases on that exact HEAD; it does not close GT-04 or imply scientific validity.
+
+### Next action — reconcile GT-04 denominator before adding more cases
+
+Avoid another field-by-field expansion until the active acceptance predicates, schema inventory, test calls, and exact-head evidence are aligned. Current test suite now includes top-level outcome/assessment type substitutions, status contradictions, scalar wrong types, and empty/whitespace required strings, but the older table above still has stale “partial/pending” statements. Next iteration should create/update a single active GT-04 evidence map: each canonical predicate → validator location → fixture/mutation → expected diagnostic → exact-head workflow evidence. Keep historical iteration notes as history, label superseded status claims explicitly, and do not upgrade a predicate without direct mapping. No scientific execution; GT-03 remains open.
