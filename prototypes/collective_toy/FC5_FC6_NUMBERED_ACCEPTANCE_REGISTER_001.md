@@ -406,3 +406,8 @@ All five workflows passed on exact HEAD `53f69fba9533c770bf2989bb157e24606f13278
 ### GT-04 scalar-field type boundaries — candidate added; CI pending
 
 The five-workflow gate passed on exact HEAD `71a27e1515b92a6a9445a964291ca20cd0f81d27`: governance `38895491601`, synthetic engine `38895491641`, engine benchmark `38895491593`, browser benchmark `38895491759`, browser/cross-runtime `38895491723`. Candidate test commit `c212f3ac2ee548bae68d0aaddb347024fff7360c` extends field-level adversaries: outcome `unit:number`, `timing:null`, `uncertainty_status:boolean`; assessment `observer:number`, `context:null`, `valuation_rule:array`, and `rationale:boolean`. Each fixture uses the existing helper to recompute the package digest and expects the current field-contract diagnostic. Acceptance pending exact-HEAD five-workflow CI; no scientific execution.
+
+
+### GT-04 required-string boundary follow-up — candidate; CI pending
+
+The previous exact HEAD `2cc69608924f31790dc734761940b139bbce233b` passed all five workflows: synthetic engine `38896275927`, governance `38896276021`, engine benchmark `38896276015`, browser benchmark `38896275887`, browser/cross-runtime `38896276160`. New candidate test commit `1118ae9aca9c59aa486672c36203016c4afc2a98` adds empty/whitespace values for outcome timing, uncertainty status, provenance, and assessment observer, context, criterion, and rationale. Every mutation recomputes the package digest and asserts the field-contract diagnostic. Pending the exact-HEAD five-workflow gate; no scientific execution.
