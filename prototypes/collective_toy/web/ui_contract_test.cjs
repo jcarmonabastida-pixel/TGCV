@@ -1320,6 +1320,42 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /scenario_id del resultado no coincide con la traza exportada/i,
       "FC-5: importer must reject an outcome scenario ID that differs from the trace");
 
+    // FC-5 grouped linkage integrity: trace digest, assessment outcome identity, and outcome digest.
+    const forgedOutcomeAssessmentLinks = await page.evaluate(async (pkg) => {
+      const traceDigest = structuredClone(pkg);
+      traceDigest.outcome_record.execution_trace_sha256 = "f".repeat(64);
+      traceDigest.value_assessment.outcome_sha256 = await window.hash(traceDigest.outcome_record, "outcome_record");
+      delete traceDigest.package_sha256;
+      traceDigest.package_sha256 = await window.hash(traceDigest, "package_export");
+
+      const assessmentOutcome = structuredClone(pkg);
+      assessmentOutcome.value_assessment.outcome_id = "outcome-not-in-package";
+      delete assessmentOutcome.package_sha256;
+      assessmentOutcome.package_sha256 = await window.hash(assessmentOutcome, "package_export");
+
+      const assessmentDigest = structuredClone(pkg);
+      assessmentDigest.value_assessment.outcome_sha256 = "a".repeat(64);
+      delete assessmentDigest.package_sha256;
+      assessmentDigest.package_sha256 = await window.hash(assessmentDigest, "package_export");
+
+      return [
+        { name: "outcome-trace-digest-mismatch", candidate: traceDigest, diagnostic: /hash de traza del resultado no coincide/i },
+        { name: "assessment-outcome-id-mismatch", candidate: assessmentOutcome, diagnostic: /valoración no está vinculada al resultado y ejecución exportados/i },
+        { name: "assessment-outcome-digest-mismatch", candidate: assessmentDigest, diagnostic: /hash del resultado de valoración no coincide/i }
+      ];
+    }, fc4Package);
+    for (const linkCase of forgedOutcomeAssessmentLinks) {
+      await page.locator("#package-file").setInputFiles({
+        name: `forged-linkage-${linkCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(linkCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), linkCase.diagnostic,
+        `FC-5: importer must reject linkage-integrity violation ${linkCase.name}`);
+    }
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
