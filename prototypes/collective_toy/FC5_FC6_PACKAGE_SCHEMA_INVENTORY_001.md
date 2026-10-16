@@ -279,3 +279,8 @@ The browser suite now enumerates each required key in the 12-key `outcome_record
 ## 14. Exact-head evidence update — required keys, finite domain, replay pointers
 
 The 23 required-key omission cases and the existing unknown-key and `source_kind` finite-domain adversaries passed the five required workflows on exact HEAD `f6825f66fcb0c73db22308ce69866a1db5ea459f` (runs `38910347889`, `38910348206`, `38910347977`, `38910347952`, `38910347920`). The test suite also has assessed/repeated and unassessed positive replay paths at `ui_contract_test.cjs` around lines 625–650 and 851–871. This establishes those paths exist and passed; it does not yet prove every FC-5 identity/hash/status/link invariant has a dedicated assertion. Lifecycle/status remains a partial predicate pending an explicit legal/illegal combination table.
+
+
+## 15. Package lifecycle truth table pointer
+
+The package-v2 lifecycle table in `FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md` is derived from `web/index.html` importer checks: `value_assessment` implies `outcome_record`, `outcome_record` implies `concrete_execution_trace`, `package_stage` follows the highest present artifact, and top-level `value_assessment_status` is `NOT_ASSESSED` iff no assessment exists (otherwise absent). A `BLOCKED` trace additionally forbids outcome and assessment. This is a contract interpretation and test-planning aid, not evidence that every row has a dedicated assertion; exact row-level tests remain the next gate.
