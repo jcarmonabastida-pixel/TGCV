@@ -539,3 +539,8 @@ All five workflows passed on exact HEAD `53f69fba9533c770bf2989bb157e24606f13278
 ### GT-04 next iteration — outcome and assessment scalar-type boundaries
 
 All five workflows passed on exact HEAD `71a27e1515b92a6a9445a964291ca20cd0f81d27`: governance `38895491601`, synthetic engine `38895491641`, engine benchmark `38895491593`, browser benchmark `38895491759`, browser/cross-runtime `38895491723`. Candidate `c212f3ac2ee548bae68d0aaddb347024fff7360c` adds seven adversarial scalar substitutions: `outcome_record.unit=number`, `timing=null`, `uncertainty_status=boolean`; `value_assessment.observer=number`, `context=null`, `valuation_rule=array`, and `rationale=boolean`. Each mutation recomputes `package_sha256` through the existing helper. Gate: targeted diagnostic rejection plus all five workflows on one exact HEAD. No scientific execution; GT-03 remains open.
+
+
+### GT-04 next iteration — empty/whitespace required strings
+
+The five-workflow gate passed on exact HEAD `2cc69608924f31790dc734761940b139bbce233b` (runs `38896275927`, `38896276021`, `38896276015`, `38896275887`, `38896276160`). Candidate `1118ae9aca9c59aa486672c36203016c4afc2a98` expands the grouped field-contract suite to reject empty or whitespace-only outcome fields (`timing`, `uncertainty_status`, `provenance`) and assessment fields (`observer`, `context`, `criterion`, `rationale`). Existing helper recomputes `package_sha256`; acceptance remains pending until all five controls pass on the exact final code+documentation HEAD. No scientific execution; GT-03 remains open.
