@@ -529,3 +529,8 @@ The previous candidate failed before reaching the trace type predicate because i
 ### Next grouped iteration — complete object-type substitutions for outcome and assessment
 
 The five-workflow gate passed on exact HEAD `9f7aa404f8e210821227062cceca2ec276baee7f`, including the corrected FC5-PKG-008 trace-type cases (runs `38888784284`, `38888784297`, `38888784234`, `38888784239`, `38888784240`). Next candidate `508b82859a007a9d99f09a7127b5c28e03095a08` extends the existing GT-04 grouped helper to test all JSON top-level substitutions for `outcome_record` and `value_assessment`: array, null, string, number and boolean. The helper recomputes the package digest for every mutation to isolate the nested contract. Require targeted diagnostic rejection and all five workflows passing on one exact resulting HEAD. Do not upgrade acceptance statuses before that gate. No scientific execution and no GT-03 closure.
+
+
+### GT-04 next grouped risk — package-level assessment-status coherence
+
+All five workflows passed on exact HEAD `53f69fba9533c770bf2989bb157e24606f13278b` (runs `38889457544`, `38889457503`, `38889457538`, `38889457512`, `38889457552`). Candidate `c5de15277296aadfe4e55dc371e565f0d37dbaf3` adds two missing package-level state contradictions: an existing assessment paired with `value_assessment_status=NOT_ASSESSED`, and an absent assessment with the status field also absent. The latter sets stage OUTCOME so it targets the required-status predicate. Both cases recompute the package digest. Require targeted browser diagnostics and all five workflows on one exact HEAD before upgrading evidence. No scientific execution; GT-03 stays open.
