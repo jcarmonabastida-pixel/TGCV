@@ -968,6 +968,32 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /El hash del paquete no coincide/i,
       "FC5-PKG-007: importer must reject a well-formed but incorrect package digest");
 
+    // FC5-PKG-008: reject non-object concrete_execution_trace values with valid enclosing package digests.
+    // Recompute package_sha256 in every case to isolate the trace type contract from package integrity.
+    for (const [caseName, invalidTrace] of [
+      ["null", null],
+      ["array", []],
+      ["string", "not-a-trace-object"],
+      ["number", 7],
+      ["boolean", false]
+    ]) {
+      const invalidTracePackage = await page.evaluate(async ({ pkg, invalidTrace }) => {
+        const candidate = structuredClone(pkg);
+        candidate.concrete_execution_trace = invalidTrace;
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return candidate;
+      }, { pkg: fc4Package, invalidTrace });
+      await page.locator("#package-file").setInputFiles({
+        name: `invalid-trace-type-${caseName}.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(invalidTracePackage))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /concrete_execution_trace debe ser un objeto/i,
+        `FC5-PKG-008: importer must reject concrete_execution_trace type ${caseName} independently of package digest integrity`);
+    }
+
     // FC-5: a package with an outcome must include the concrete execution trace it references.
     const missingPackageTrace = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
