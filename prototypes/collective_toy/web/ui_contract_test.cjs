@@ -922,6 +922,52 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /falta result o no es un objeto/i,
       "FC-5: importer must reject a missing required result field despite a recomputed package digest");
 
+    // FC5-PKG-005: reject an absent package digest.
+    const missingPackageDigest = await page.evaluate((pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.package_sha256;
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "missing-package-sha256.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(missingPackageDigest))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /package_sha256 ausente o malformado/i,
+      "FC5-PKG-005: importer must reject a missing package digest");
+
+    // FC5-PKG-006: reject a malformed package digest, independently of digest mismatch.
+    const malformedPackageDigest = await page.evaluate((pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.package_sha256 = "not-a-sha256";
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "malformed-package-sha256.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(malformedPackageDigest))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /package_sha256 ausente o malformado/i,
+      "FC5-PKG-006: importer must reject a malformed package digest");
+
+    // FC5-PKG-007: a well-formed but incorrect digest must fail package integrity.
+    // Deliberately do not recompute package_sha256: that is the condition under test.
+    const incorrectPackageDigest = await page.evaluate((pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.package_sha256 = "0".repeat(64);
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "incorrect-package-sha256.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(incorrectPackageDigest))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /El hash del paquete no coincide/i,
+      "FC5-PKG-007: importer must reject a well-formed but incorrect package digest");
+
     // FC-5: a package with an outcome must include the concrete execution trace it references.
     const missingPackageTrace = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
