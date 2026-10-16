@@ -519,3 +519,8 @@ Acceptance remains pending until all five controls pass on one exact resulting H
 ### FC5-PKG-008 — execution-trace type substitution group
 
 Candidate test commit: `4c54aaef2a373c49b32b1ffffa936fe692c78cc4`. The browser import test replaces `concrete_execution_trace` with five invalid JSON types: `null`, array, string, number, and boolean. Every candidate has its package digest recomputed, isolating the type contract. Expected diagnostic is `concrete_execution_trace debe ser un objeto`. Gate: require browser test plus all five CI controls to pass on one exact resulting HEAD. On failure, inspect validator diagnostic precedence and test fixture assumptions before changing validator code. After this gate, reconcile remaining package-envelope cases in the acceptance register; no scientific execution and no GT-03 closure.
+
+
+### FC5-PKG-008 — fixture precedence correction
+
+The previous candidate failed before reaching the trace type predicate because its outcome record required a COMPLETED, matching trace. This was a test-fixture ordering issue, not evidence that the type validator was absent. Commit `218b3885f0fe84831b615fb8acef86efb5005c05` changes each malformed-trace fixture to an exploration-stage package, removes outcome/value records, marks value assessment NOT_ASSESSED, and recomputes the package digest. This should isolate the trace type contract. Acceptance remains pending until all five controls pass on the exact resulting HEAD; if browser CI still fails, inspect its exact diagnostic before modifying production validation.
