@@ -284,3 +284,8 @@ The 23 required-key omission cases and the existing unknown-key and `source_kind
 ## 15. Package lifecycle truth table pointer
 
 The package-v2 lifecycle table in `FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md` is derived from `web/index.html` importer checks: `value_assessment` implies `outcome_record`, `outcome_record` implies `concrete_execution_trace`, `package_stage` follows the highest present artifact, and top-level `value_assessment_status` is `NOT_ASSESSED` iff no assessment exists (otherwise absent). A `BLOCKED` trace additionally forbids outcome and assessment. This is a contract interpretation and test-planning aid, not evidence that every row has a dedicated assertion; exact row-level tests remain the next gate.
+
+
+## 16. Lifecycle positive-row test candidate
+
+Browser test commit `166ec157d9faea2d14f5d0ad5561e22dc31851fe` adds positive import/replay assertions for EXPLORATION (no artifacts), EXECUTION (trace only), and OUTCOME (trace + outcome) rows; existing ASSESSMENT round-trip supplies the fourth legal row. Each new package recomputes its enclosing package digest and requires replay verification. This is not accepted coverage until exact-head CI passes. Invalid lifecycle combinations and BLOCKED trace restrictions remain separate.
