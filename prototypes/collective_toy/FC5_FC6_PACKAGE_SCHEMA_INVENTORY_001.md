@@ -289,3 +289,8 @@ The package-v2 lifecycle table in `FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md` 
 ## 16. Lifecycle positive-row test candidate
 
 Browser test commit `166ec157d9faea2d14f5d0ad5561e22dc31851fe` adds positive import/replay assertions for EXPLORATION (no artifacts), EXECUTION (trace only), and OUTCOME (trace + outcome) rows; existing ASSESSMENT round-trip supplies the fourth legal row. Each new package recomputes its enclosing package digest and requires replay verification. This is not accepted coverage until exact-head CI passes. Invalid lifecycle combinations and BLOCKED trace restrictions remain separate.
+
+
+## 16. Lifecycle matrix — invalid artifact-presence supplements
+
+The browser test now includes candidate adversaries for `outcome_record` without `concrete_execution_trace` and `value_assessment` without `outcome_record`, in addition to the existing four positive lifecycle replay rows and wrong-stage/status cases. These additions are not accepted until all five required workflows pass on the exact final code+documentation HEAD. The BLOCKED trace restrictions are validated separately and remain within the GT-03/trace-coherence scope.
