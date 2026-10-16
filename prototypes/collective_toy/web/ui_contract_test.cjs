@@ -709,6 +709,8 @@ const assert = require("node:assert/strict");
         else if (mutation === "stage_execution_with_outcome") candidate.package_stage = "EXECUTION";
         else if (mutation === "stage_outcome_with_assessment") candidate.package_stage = "OUTCOME";
         else if (mutation === "stage_assessment_without_assessment") { delete candidate.value_assessment; candidate.value_assessment_status = "NOT_ASSESSED"; candidate.package_stage = "ASSESSMENT"; }
+        else if (mutation === "outcome_without_trace") { delete candidate.concrete_execution_trace; candidate.package_stage = "EXPLORATION"; }
+        else if (mutation === "assessment_without_outcome") { delete candidate.outcome_record; candidate.package_stage = "ASSESSMENT"; }
         delete candidate.package_sha256;
         candidate.package_sha256 = await window.hash(candidate, "package_export");
         return candidate;
@@ -795,6 +797,8 @@ const assert = require("node:assert/strict");
     await rejectGt04Mutation("gt04-stage-execution-with-outcome.json", "stage_execution_with_outcome", "package_stage no coincide con los artefactos presentes");
     await rejectGt04Mutation("gt04-stage-outcome-with-assessment.json", "stage_outcome_with_assessment", "package_stage no coincide con los artefactos presentes");
     await rejectGt04Mutation("gt04-stage-assessment-without-assessment.json", "stage_assessment_without_assessment", "package_stage no coincide con los artefactos presentes");
+    await rejectGt04Mutation("gt04-outcome-without-trace.json", "outcome_without_trace", "outcome_record requiere concrete_execution_trace");
+    await rejectGt04Mutation("gt04-assessment-without-outcome.json", "assessment_without_outcome", "package_stage no coincide con los artefactos presentes");
 
     // GT-03 grouped trace metadata adversary: step prerequisites must be exactly those declared by the active rule profile.
     const forgedStepPrerequisites = await page.evaluate(async (pkg) => {
