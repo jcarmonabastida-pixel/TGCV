@@ -642,6 +642,33 @@ const assert = require("node:assert/strict");
     assert.equal(fc4Package.value_assessment_status, undefined,
       "FC-4: an assessed package must not also claim valuation is unassessed");
 
+    // FC-6 grouped exported-artifact audit: verify the complete Full Chain envelope and digest.
+    assert.deepEqual(Object.keys(fc4Package).sort(), [
+      "concrete_execution_trace", "input", "outcome_record", "package_sha256",
+      "package_stage", "package_version", "result", "value_assessment"
+    ].sort(), "FC-6: assessed Full Chain export must contain exactly the contracted envelope fields");
+    assert.equal(fc4Package.package_stage, "ASSESSMENT",
+      "FC-6: complete outcome/value export must identify its package stage");
+    assert.equal(fc4Package.result.validation_status, "PASS",
+      "FC-6: exported successful result must retain PASS validation status");
+    assert.equal(fc4Package.result.model_id, fc4Package.input.model_id,
+      "FC-6: exported result model identity must match the input model");
+    assert.equal(fc4Package.concrete_execution_trace.model_id, fc4Package.input.model_id,
+      "FC-6: exported execution trace model identity must match the input model");
+    assert.equal(fc4Package.concrete_execution_trace.scenario_id, fc4Package.outcome_record.scenario_id,
+      "FC-6: exported outcome and execution trace must refer to the same scenario");
+    assert.equal(fc4Package.value_assessment.execution_id, fc4Package.concrete_execution_trace.execution_id,
+      "FC-6: exported valuation must link to the exact execution");
+    assert.match(fc4Package.package_sha256 || "", /^[a-f0-9]{64}$/i,
+      "FC-6: complete exported package must carry a well-formed SHA-256 digest");
+    const exportedPackageDigest = await page.evaluate(async (pkg) => {
+      const body = structuredClone(pkg);
+      delete body.package_sha256;
+      return window.hash(body, "package_export");
+    }, fc4Package);
+    assert.equal(exportedPackageDigest, fc4Package.package_sha256,
+      "FC-6: complete exported package digest must recompute from the exported envelope");
+
     // GT-04 grouped lifecycle truth table: COMPLETED trace without outcome remains EXECUTION/NOT_ASSESSED.
     const completedWithoutOutcome = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
