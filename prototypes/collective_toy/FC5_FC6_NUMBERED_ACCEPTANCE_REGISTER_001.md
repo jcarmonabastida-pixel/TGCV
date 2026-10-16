@@ -105,7 +105,7 @@
 | FC5-TRACE-009 | Require steps to be an array | pending | Dedicated validation/test not located |
 | FC5-TRACE-010 | Enforce closed seven-key schema and types for each step | pending | Importer lacks step closed-key validation |
 | FC5-TRACE-011 | Require ordered step indices | pending | Dedicated validation/test not located |
-| FC5-TRACE-012 | Require transition/state sequence to follow input edges | pending | GT-05 review confirms no independent semantic trace-validator evidence mapped; add one grouped sequence-coherence acceptance case before closure. |
+| FC5-TRACE-012 | Require transition/state sequence to follow input edges | partial | Added grouped GT-05 adversary on `9001838676306aea4a3f10be8b9914d3729b3a21`: forges a trace destination and recomputes dependent digests; requires semantic edge rejection. Awaiting exact-head CI; replay-mismatch and profile compatibility remain separate gaps. |
 | FC5-TRACE-013 | Require prior-transition history to be prefix-consistent | pending | Dedicated validation/test not located |
 | FC5-TRACE-014 | Require prerequisites to match relations and prior history | pending | Dedicated validation/test not located |
 | FC5-TRACE-015 | Define and enforce COMPLETED/BLOCKED trace policy | pending | Contract decision unresolved |
