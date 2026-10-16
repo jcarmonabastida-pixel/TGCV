@@ -944,6 +944,33 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "FC-5: NOT_ASSESSED outcome package must replay after import");
 
+    // FC-5 grouped status-enum adversary: reject unknown, null and non-string valuation states.
+    const invalidAssessmentStatuses = await page.evaluate(async (pkg) => {
+      const values = [
+        { name: "unknown-string", value: "PENDING_REVIEW" },
+        { name: "null", value: null },
+        { name: "numeric", value: 1 }
+      ];
+      return Promise.all(values.map(async (item) => {
+        const candidate = structuredClone(pkg);
+        candidate.value_assessment_status = item.value;
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate };
+      }));
+    }, unassessedOutcomePackage);
+    for (const statusCase of invalidAssessmentStatuses) {
+      await page.locator("#package-file").setInputFiles({
+        name: `invalid-assessment-status-${statusCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(statusCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /value_assessment_status=NOT_ASSESSED/i,
+        `FC-5: importer must diagnose invalid assessment status ${statusCase.name}`);
+    }
+
     // FC-5 adversarial case: a forged outcome digest must be rejected even when package hash is recomputed.
     const forgedAssessmentDigest = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
