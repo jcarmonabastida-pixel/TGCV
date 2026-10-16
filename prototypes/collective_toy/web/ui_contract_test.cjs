@@ -1294,31 +1294,34 @@ const assert = require("node:assert/strict");
         "FC-5 C12: reject missing/extra comparison scenario entry after recomputing enclosing hashes");
     }
 
-    // C12: each delta source commitment must identify the matching baseline/intervention source.
-    for (const item of [
-      { name: "delta-baseline-source-mismatch.json", field: "baseline_source_sha256",
-        diagnostic: /baseline_source_sha256 de delta_reach en block_ac no corresponde a la fuente del escenario baseline/i },
-      { name: "delta-intervention-source-mismatch.json", field: "intervention_source_sha256",
-        diagnostic: /intervention_source_sha256 de delta_reach en block_ac no corresponde a la fuente del escenario de intervención/i }
-    ]) {
-      const candidate = await page.evaluate(async ({ pkg, field }) => {
-        const copy = structuredClone(pkg);
-        copy.result.delta_reach.block_ac[field] = "0".repeat(64);
-        const resultBody = structuredClone(copy.result);
-        delete resultBody.input_sha256;
-        delete resultBody.result_sha256;
-        copy.result.result_sha256 = await window.hash(resultBody, "result");
-        delete copy.package_sha256;
-        copy.package_sha256 = await window.hash(copy, "package_export");
-        return copy;
-      }, { pkg: deltaPackage, field: item.field });
-      await page.locator("#package-file").setInputFiles({
-        name: item.name, mimeType: "application/json", buffer: Buffer.from(JSON.stringify(candidate))
-      });
-      await page.getByRole("button", { name: "Validar paquete importado" }).click();
-      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
-      assert.match(await page.locator("#package-assessment").innerText(), item.diagnostic,
-        "FC-5 C12: reject a well-formed but incorrect source identity commitment");
+    // C12: each delta source commitment must identify the matching baseline/intervention source for every intervention scenario.
+    for (const scenarioId of Object.keys(deltaPackage.result.delta_reach).sort()) {
+      for (const item of [
+        { field: "baseline_source_sha256",
+          diagnostic: new RegExp("baseline_source_sha256 de delta_reach en " + scenarioId + " no corresponde a la fuente del escenario baseline", "i") },
+        { field: "intervention_source_sha256",
+          diagnostic: new RegExp("intervention_source_sha256 de delta_reach en " + scenarioId + " no corresponde a la fuente del escenario de intervención", "i") }
+      ]) {
+        const candidate = await page.evaluate(async ({ pkg, field, scenarioId }) => {
+          const copy = structuredClone(pkg);
+          copy.result.delta_reach[scenarioId][field] = "0".repeat(64);
+          const resultBody = structuredClone(copy.result);
+          delete resultBody.input_sha256;
+          delete resultBody.result_sha256;
+          copy.result.result_sha256 = await window.hash(resultBody, "result");
+          delete copy.package_sha256;
+          copy.package_sha256 = await window.hash(copy, "package_export");
+          return copy;
+        }, { pkg: deltaPackage, field: item.field, scenarioId });
+        await page.locator("#package-file").setInputFiles({
+          name: "delta-" + scenarioId + "-" + item.field + "-source-mismatch.json",
+          mimeType: "application/json", buffer: Buffer.from(JSON.stringify(candidate))
+        });
+        await page.getByRole("button", { name: "Validar paquete importado" }).click();
+        await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+        assert.match(await page.locator("#package-assessment").innerText(), item.diagnostic,
+          "FC-5 C12: reject incorrect " + item.field + " source commitment for scenario " + scenarioId);
+      }
     }
 
     const forgedDeltaSemantics = await page.evaluate(async (pkg) => {
