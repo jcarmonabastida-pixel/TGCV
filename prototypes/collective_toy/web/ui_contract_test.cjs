@@ -1745,6 +1745,8 @@ const assert = require("node:assert/strict");
       // would accept the stale temporal-prerequisite reason; the correct validator must reject it.
       baseline.disabled_transitions = (baseline.disabled_transitions || []).filter(id => id !== trace.blocked_step.transition_id);
       alternate.disabled_transitions = [...new Set([...(alternate.disabled_transitions || []), trace.blocked_step.transition_id])].sort();
+      // Keep the comparison source identity aligned so this adversary isolates the BLOCKED-reason rule.
+      candidate.result.comparisons_to_baseline.block_ac.intervention.disabled_transitions = [...alternate.disabled_transitions].sort();
       // Keep delta_reach source commitments coherent with the adversarially edited scenarios,
       // so validation reaches the intended BLOCKED-reason diagnostic.
       const sourceCommon = {
