@@ -573,3 +573,8 @@ Next grouped gap: formalize the package lifecycle/status truth table from the ac
 ### GT-04 next action — lifecycle truth table derived from importer
 
 The active acceptance register now includes a presence-bit truth table for trace (T), outcome (O), and assessment (A), derived from current package-v2 importer predicates: O requires T, A requires O, stage is derived from artifact presence, and top-level status is `NOT_ASSESSED) exactly when A is absent and omitted when A is present. It also records the special `BLOCKED` trace restriction. Next iteration must map each legal row to a positive stage/status/import assertion and each illegal row to a focused rejection; add tests only where direct assertions are missing. The validator itself is unchanged. The five workflows passed on prior HEAD `0ddc07fe8704571906dc684991b2f0bf8a8f1d34`; documentation changes require a new exact-HEAD gate. No scientific execution; GT-03 remains open.
+
+
+### Candidate lifecycle positive-row coverage added
+
+Commit `166ec157d9faea2d14f5d0ad5561e22dc31851fe` adds positive import/replay tests for EXPLORATION and EXECUTION rows and strengthens explicit OUTCOME row assertions. The existing ASSESSMENT round-trip covers the fourth legal row. Wait for all five workflows on exact final HEAD. If green, update the active evidence map for these four legal presence patterns; retain the illegal-combination / BLOCKED subcase predicate as partial until each relevant status/stage contradiction has direct evidence.
