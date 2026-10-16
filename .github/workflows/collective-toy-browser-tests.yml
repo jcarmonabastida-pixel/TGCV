@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - prototype/collective-toy-cross-runtime-tests-001-20261011
+- prototype/tgcv-full-chain-001-20261014-scenario-context-recovery
   pull_request:
     branches:
       - main
