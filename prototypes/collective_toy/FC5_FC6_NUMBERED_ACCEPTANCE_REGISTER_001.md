@@ -458,3 +458,23 @@ The 23 per-key omission mutations (12 outcome + 11 assessment) passed all five r
 - **GT04-09:** unknown assessment key rejection is directly asserted by `gt04-unknown-assessment-key.json`; all 11 absent assessment keys now have individual mutations. Exact-head suite PASS.
 - **GT04-11:** current negative suite explicitly covers four stage/artifact contradictions, invalid status, assessed package marked not assessed, absent assessment with wrong/missing status, and unknown status without assessment. This is demonstrated negative coverage, not a complete Cartesian truth table; retain as **partial** until valid/invalid combinations are enumerated against the lifecycle contract.
 - **GT04-12:** named positive assertions exist in `ui_contract_test.cjs`: assessed round-trip and deterministic repeated replay around lines 625–650, and unassessed outcome round-trip around lines 851–871. These confirm positive replay paths on this HEAD; preserve the row as **partial** until the assertion is explicitly mapped to each identity/hash/status/link field required by the FC-5 contract.
+
+
+## GT-04 lifecycle/status truth table — contract-derived baseline (2026-10-16)
+
+Derivation is from the current importer in `web/index.html` (package validation around lines 155–204 and lifecycle checks around 351–359), not from assumptions about TGCV science. Presence bits: **T** = `concrete_execution_trace`, **O** = `outcome_record`, **A** = `value_assessment`. For package v2, stage is derived by priority A→O→T→EXPLORATION, while the importer separately requires O→T and A→O. If A is absent, `value_assessment_status` must equal `NOT_ASSESSED`; if A is present, that top-level status field must be absent and the assessment's own status must be `ASSESSED`.
+
+| T | O | A | Legal? | Required stage | Required top-level valuation status | Rationale |
+|---:|---:|---:|---|---|---|---|
+| 0 | 0 | 0 | Yes | `EXPLORATION` | `NOT_ASSESSED` | No trace or outcome exists |
+| 0 | 0 | 1 | No | — | — | Assessment requires outcome and outcome requires trace |
+| 0 | 1 | 0 | No | — | — | Outcome requires a concrete trace |
+| 0 | 1 | 1 | No | — | — | Both outcome→trace and assessment→outcome fail |
+| 1 | 0 | 0 | Yes | `EXECUTION` | `NOT_ASSESSED` | Trace exists without explicit outcome |
+| 1 | 0 | 1 | No | — | — | Assessment requires outcome |
+| 1 | 1 | 0 | Yes | `OUTCOME` | `NOT_ASSESSED` | Outcome is linked to a completed trace |
+| 1 | 1 | 1 | Yes | `ASSESSMENT` | Must be absent | Assessment is linked to outcome and execution |
+
+**Additional trace-status constraint:** a `BLOCKED` trace cannot coexist with `outcome_record` or `value_assessment`; it can only occupy the trace-present / no-outcome branch, stage `EXECUTION`, with `NOT_ASSESSED`. A `COMPLETED` trace is required by an outcome. Therefore the T=1/O=0/A=0 branch has at least two trace subcases (COMPLETED and BLOCKED), both not assessed. The table concerns package lifecycle only; it does not replace trace internal validity checks.
+
+**Candidate coverage status:** the four legal presence patterns are represented by existing positive paths (exploration export, completed execution, unassessed outcome, assessed outcome) and several illegal combinations have focused negative mutations. Do not mark the predicate complete yet: next, map each of the four legal patterns to an explicit assertion of stage + top-level status + import/replay outcome, and enumerate the illegal presence patterns and wrong status/stage variants against this table. The table is contract-derived; no validator change is proposed in this iteration. All five workflows passed on the preceding exact HEAD `0ddc07fe8704571906dc684991b2f0bf8a8f1d34` (runs `38911159000`, `38911159027`, `38911159786`, `38911159493`, `38911159393`); this new documentation still requires its own exact-HEAD CI gate. No scientific execution; GT-03 remains open.
