@@ -105,7 +105,7 @@
 | FC5-TRACE-009 | Require steps to be an array | pending | Dedicated validation/test not located |
 | FC5-TRACE-010 | Enforce closed seven-key schema and types for each step | pending | Importer lacks step closed-key validation |
 | FC5-TRACE-011 | Require ordered step indices | pending | Dedicated validation/test not located |
-| FC5-TRACE-012 | Require transition/state sequence to follow input edges | partial | Added grouped GT-05 adversary on `9001838676306aea4a3f10be8b9914d3729b3a21`: forges a trace destination and recomputes dependent digests; requires semantic edge rejection. Awaiting exact-head CI; replay-mismatch and profile compatibility remain separate gaps. |
+| FC5-TRACE-012 | Require transition/state sequence to follow input edges | verified | Grouped adversary passed in browser/cross-runtime run [38928105212](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38928105212) on test commit `9001838676306aea4a3f10be8b9914d3729b3a21`; the altered destination is rejected after dependent digests are recomputed. Profile compatibility remains separate. |
 | FC5-TRACE-013 | Require prior-transition history to be prefix-consistent | pending | Dedicated validation/test not located |
 | FC5-TRACE-014 | Require prerequisites to match relations and prior history | pending | Dedicated validation/test not located |
 | FC5-TRACE-015 | Define and enforce COMPLETED/BLOCKED trace policy | pending | Contract decision unresolved |
@@ -146,7 +146,7 @@
 | FC5-SEC-001 | Explain that unkeyed hashes provide consistency, not origin authenticity | partial | Wording exists in one UI path; contract/UI consistency incomplete |
 | FC5-SEC-002 | Regression test prevents claims of authentication based on SHA-256 alone | pending | Dedicated assertion not located |
 | FC5-REPLAY-001 | Import replays independently and matches exported result for valid package | verified | Clean-source replay PASS on exact candidate SHA `0deec788f2ae8c958c6f20fac478ec83c412507a`, run [38925343766](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38925343766). GT-05 single-scenario coverage remains a separate pending item. |
-| FC5-REPLAY-002 | Replay mismatch is rejected | partial | Implementation path exists; exact tampered-result fixture mapping incomplete |
+| FC5-REPLAY-002 | Replay mismatch is rejected | partial | Added self-consistent divergence adversary on `3d1e8019dc273b3694c816240f75e348db1fd773`: changes result and recomputes semantic/result/package digests; awaiting exact-head CI. |
 | FC5-REPLAY-003 | Legacy/optional semantic identity compatibility behaves as documented | partial | Compatibility code exists; version matrix incomplete |
 | FC6-CI-001 | All required workflows pass on the exact candidate commit | partial | Browser/cross-runtime workflow PASS on exact SHA `0deec788f2ae8c958c6f20fac478ec83c412507a`, run [38925343766](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38925343766); complete required-workflow set not yet reverified on this SHA. |
 | FC6-CLEAN-001 | Clean-source archive replay passes on exact candidate commit | verified | Clean-source archive replay PASS on exact SHA `0deec788f2ae8c958c6f20fac478ec83c412507a`, run [38925343766](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38925343766). |
