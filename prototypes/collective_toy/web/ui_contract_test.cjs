@@ -1246,6 +1246,25 @@ const assert = require("node:assert/strict");
       trace.scenario_id = alternate.id;
       trace.input_sha256 = await window.hash(candidate.input);
       candidate.result.input_sha256 = trace.input_sha256;
+      // Keep delta_reach source provenance internally valid so this adversary reaches
+      // the intended blocked-reason/scenario-context assertion rather than failing
+      // earlier on stale baseline/intervention source digests.
+      const sourceCommon = {
+        schema_version: candidate.input.schema_version,
+        model_id: candidate.input.model_id,
+        initial_state: candidate.input.initial_state,
+        states: candidate.input.states,
+        transitions: candidate.input.transitions,
+        relations: candidate.input.relations || [],
+        rule_profile: candidate.input.rule_profile,
+        exploration: candidate.input.exploration || {}
+      };
+      candidate.result.delta_reach.block_ac.baseline_source_sha256 = await window.hash(
+        { ...sourceCommon, scenario: baseline }, "delta_reach_baseline_source"
+      );
+      candidate.result.delta_reach.block_ac.intervention_source_sha256 = await window.hash(
+        { ...sourceCommon, scenario: alternate }, "delta_reach_intervention_source"
+      );
       delete trace.trace_sha256;
       trace.trace_sha256 = await window.hash(trace, "sequence_trace");
       delete candidate.package_sha256;
