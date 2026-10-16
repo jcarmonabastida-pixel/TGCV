@@ -266,6 +266,8 @@ async function assessImportedBrowserPackage(pkg){
   assert(cr.intervention&&typeof cr.intervention==="object"&&!Array.isArray(cr.intervention),"intervention de la comparación "+id+" debe ser un objeto.");
   assert(Object.keys(cr.intervention).every(function(k){return k==="disabled_transitions"}),"intervention contiene campos desconocidos.");
   assert(Array.isArray(cr.intervention.disabled_transitions),"disabled_transitions de intervention debe ser una lista.");
+  var inputIntervention=pkg.input.scenarios.find(function(s){return s.id===id});
+  assert(!!inputIntervention&&canonical(cr.intervention.disabled_transitions.slice().sort())===canonical((inputIntervention.disabled_transitions||[]).slice().sort()),"intervention.disabled_transitions de la comparación "+id+" no coincide con el escenario de entrada.");
  });
  if(Object.prototype.hasOwnProperty.call(pkg.result,"delta_reach")){
   var deltaReach=pkg.result.delta_reach;
