@@ -442,3 +442,8 @@ This is the active grouped map for the outcome/valuation evidence chain. It does
 | GT04-12 export/import/replay preservation of the linked chain | export/import/replay and positive round-trip tests; see coverage audit FC-5 | assessed and unassessed positive round trips plus linked-artifact adversaries recorded in the coverage audit | preserve identities, hashes, status, and outcome→trace→assessment links on independent replay | **Partial** — require a named positive assertion tied to this exact HEAD before upgrading |
 
 **Counting rule:** this table has 12 grouped predicates, not 12 atomic schema fields and not a completion percentage. Rows marked partial remain open despite aggregate green CI. Historical GT-04 notes above remain provenance and must not override this map. No scientific execution; GT-03 remains open.
+
+
+## GT-04 follow-up — complete required-key omission matrix (candidate, CI pending)
+
+Candidate browser-test commit `88e2a180170a3a0e848470c65cd17514c6e54b71` adds grouped loops that delete each required key from `outcome_record` (12 keys) and `value_assessment` (11 keys), recompute the enclosing package digest, and assert the specific incomplete-object diagnostic. This fills the previously identified direct-test mapping gap for absent required keys. Existing unknown-key, source_kind finite-domain, type, empty/whitespace, cross-link and lifecycle adversaries remain in the same grouped GT-04 suite. Acceptance remains pending all five workflows on the exact final code+documentation HEAD. No scientific execution; GT-03 remains open.
