@@ -480,3 +480,8 @@ The acceptance register has now been reconciled with the current code/test and d
 ### C12 follow-up — source commitments across all intervention scenarios
 
 Commit `050991d8f37f5f4ea6d48caa1da8e0d3d147c289` changes the browser adversary from hard-coded `block_ac` to iteration over every `delta_reach` scenario ID, mutating `baseline_source_sha256` and `intervention_source_sha256` independently and asserting scenario-specific diagnostics. The evidence matrix was corrected to note that comparison missing/extra tests already exist. Next: run all five controls on the exact final code+documentation HEAD; if green, add only the remaining per-scenario identity/payload correspondence adversary. Keep C12 partial until evidence is complete.
+
+
+### C12 follow-up — scenario payload identity
+
+The five workflows passed on code/test HEAD `cf3b408cf6e23dcd8ad972240c1550618f703772`. Commit `0536253f3561e7c9250be8cdd7f35077f0bb9bfd` adds a table-driven adversary over every `scenario_results` key: it changes the payload's `scenario_id`, recomputes semantic, result, and package hashes, and asserts the scenario-specific identity diagnostic. This is intended to isolate the identity predicate from checksum failures. The source commitment loop from `050991d8f37f5f4ea6d48caa1da8e0d3d147c289` is also now in the same pending code/test head. Run all five workflows on the exact final HEAD before further acceptance changes; C12 remains partial.
