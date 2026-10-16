@@ -829,9 +829,14 @@ const assert = require("node:assert/strict");
       buffer: Buffer.from(JSON.stringify(historicalV1))
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
-    assert.match(await page.locator("#package-assessment").innerText(), /replay-verified/i,
-      "GT-05/FC5-REPLAY-003: supported historical v1 package without semantic identity must replay only under the documented legacy projection");
+    await page.waitForFunction(() => {
+      const state = document.querySelector("#package-assessment")?.dataset.state;
+      return state && state !== "idle" && state !== "validating";
+    }, { timeout: 30000 });
+    const historicalAssessmentState = await page.locator("#package-assessment").getAttribute("data-state");
+    const historicalAssessmentMessage = await page.locator("#package-assessment").innerText();
+    assert.equal(historicalAssessmentState, "replay-verified",
+      "GT-05/FC5-REPLAY-003: historical v1 compatibility failed with state " + historicalAssessmentState + ": " + historicalAssessmentMessage);
 
     // The preceding assertion is intentionally scoped to the successful assessed round-trip.
     // After the adversarial import, the package assessment is expected to be rejected.
