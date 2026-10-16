@@ -468,3 +468,10 @@ Candidate `a7813bc221f38e023936ba6c4883b877d92729b7` passed all five exact-head 
 ### FC5-DELTA grouped iteration 6 — exact scenario-entry set
 
 The prior atomic-register reconciliation commit `159a736b93fcdfa48f10f27434b61a0e0297a946` passed all five exact-head workflows. This batch adds paired missing/extra key adversaries for the delta scenario-entry set, recomputing enclosing digests and asserting the dedicated diagnostic. This is contract validation only; no scientific execution and no main promotion. Wait for all five exact-head workflows before accepting.
+
+
+### C12 evidence reconciliation — current documentation HEAD `d4a1a82aea152158fa53a773e681d664176c6cc0`
+
+The acceptance register has now been reconciled with the current code/test and documentation evidence. All five workflows passed on this documentation HEAD: browser/cross-runtime `38828197960`, governance `38828198005`, synthetic engine `38828198130`, browser benchmark `38828198098`, and engine benchmark `38828198233`. C12 remains `partial`: existing guards establish exact key sets, reject duplicate raw JSON keys, verify the delta's baseline/intervention source commitments for the tested intervention, bind comparison intervention `disabled_transitions` to the input scenario, and compare delta payload fields with the baseline comparison. They do not yet constitute one independent end-to-end audit covering every intervention scenario and every identity field in one matrix.
+
+**Next grouped iteration (no code change until matrix is reviewed):** build a compact C12 predicate/evidence matrix with rows for `scenario_results`, `delta_reach`, and `comparisons_to_baseline`; columns for exact key-set/duplicate keys, `scenario_id` identity, baseline/intervention source commitments, intervention payload identity, and delta-vs-comparison field equivalence. Mark each cell as implementation-backed, adversarially tested, or still missing, with exact source lines and test names. Then add only the smallest adversarial batch needed to cover genuinely missing cells. Require all five workflows on one exact HEAD before acceptance-state changes. No GT-03 closure and no scientific execution.
