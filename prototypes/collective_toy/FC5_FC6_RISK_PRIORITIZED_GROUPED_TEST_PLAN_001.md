@@ -342,3 +342,8 @@ Next grouped gap: complete the documented package/engine compatibility matrix. E
 ### Historical package compatibility test added (2026-10-16)
 
 Commit `f4ebda1935bb7dbbea55bc08109392c4da00e886` adds a grouped GT-05 test for the explicitly supported historical package schema `collective-toy-browser-run-001`: removes `package_stage`, `delta_reach`, and optional semantic-identity fields, recomputes result/package digests, imports, and requires `replay-verified` under the validator's documented legacy projection. This tests only the compatibility path declared by `PACKAGE_REPLAY_COMPATIBILITY_POLICY_001.md`; it does not imply general backwards compatibility. Exact-head CI is pending. No production code changed; no scientific execution; no promotion to `main`.
+
+
+### Historical replay fixture: first CI failure and correction (2026-10-16)
+
+The first historical-v1 test run failed at the expected `replay-verified` state ([run 38930163710](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38930163710)); the job timed out waiting for acceptance, so this is a test failure, not a product defect conclusion. Inspection found the fixture calculated `result_sha256` over the wrong projection by including `input_sha256`, contrary to the validator's digest contract. Commit `b7a295429593c6caa18055be51acb878963b92bb` corrects the fixture projection to exclude both `input_sha256` and `result_sha256`. Exact-head CI is pending; the compatibility claim remains partial until the corrected test passes. The separate document-update workflow failed because it tracks the test branch while the test itself failed; do not count it as independent product evidence.
