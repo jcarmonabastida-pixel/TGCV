@@ -980,6 +980,12 @@ const assert = require("node:assert/strict");
       const invalidTracePackage = await page.evaluate(async ({ pkg, invalidTrace }) => {
         const candidate = structuredClone(pkg);
         candidate.concrete_execution_trace = invalidTrace;
+        // Use an exploration-stage package without an outcome: the outcome-link
+        // invariant otherwise rejects first and masks the trace type diagnostic.
+        delete candidate.outcome_record;
+        delete candidate.value_assessment;
+        candidate.value_assessment_status = "NOT_ASSESSED";
+        candidate.package_stage = "EXPLORATION";
         delete candidate.package_sha256;
         candidate.package_sha256 = await window.hash(candidate, "package_export");
         return candidate;
