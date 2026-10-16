@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - matrix-v1.9-c10c001-staging
+      - prototype/tgcv-full-chain-001-20261014-scenario-context-recovery
     paths:
       - '00_GOVERNANCE/**'
       - 'STATUS.md'
