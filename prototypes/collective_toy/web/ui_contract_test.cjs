@@ -673,8 +673,15 @@ const assert = require("node:assert/strict");
         else if (mutation === "missing_assessment_wrong_status") { delete candidate.value_assessment; candidate.value_assessment_status = "ASSESSED"; }
         else if (mutation === "missing_assessment_missing_status") { delete candidate.value_assessment; delete candidate.value_assessment_status; candidate.package_stage = "OUTCOME"; }
         else if (mutation === "outcome_value_number") candidate.outcome_record.value = 17;
+        else if (mutation === "outcome_unit_number") candidate.outcome_record.unit = 17;
+        else if (mutation === "outcome_timing_null") candidate.outcome_record.timing = null;
+        else if (mutation === "outcome_uncertainty_boolean") candidate.outcome_record.uncertainty_status = false;
         else if (mutation === "outcome_provenance_object") candidate.outcome_record.provenance = { source: "forged" };
+        else if (mutation === "assessment_observer_number") candidate.value_assessment.observer = 17;
+        else if (mutation === "assessment_context_null") candidate.value_assessment.context = null;
         else if (mutation === "assessment_criterion_number") candidate.value_assessment.criterion = 17;
+        else if (mutation === "assessment_valuation_rule_array") candidate.value_assessment.valuation_rule = [];
+        else if (mutation === "assessment_rationale_boolean") candidate.value_assessment.rationale = false;
         else if (mutation === "assessment_rationale_empty") candidate.value_assessment.rationale = "";
         else if (mutation === "unknown_status_without_assessment") { delete candidate.value_assessment; candidate.value_assessment_status = "PENDING"; }
         else if (mutation === "wrong_outcome_schema") candidate.outcome_record.outcome_schema = "collective-toy-outcome-999";
@@ -726,8 +733,15 @@ const assert = require("node:assert/strict");
     await rejectGt04Mutation("gt04-missing-assessment-wrong-status.json", "missing_assessment_wrong_status", "value_assessment_status=NOT_ASSESSED");
     await rejectGt04Mutation("gt04-missing-assessment-missing-status.json", "missing_assessment_missing_status", "value_assessment_status=NOT_ASSESSED");
     await rejectGt04Mutation("gt04-outcome-value-number.json", "outcome_value_number", "unidad, momento, incertidumbre/estado y procedencia como cadenas no vacías");
+    await rejectGt04Mutation("gt04-outcome-unit-number.json", "outcome_unit_number", "unidad, momento, incertidumbre/estado y procedencia como cadenas no vacías");
+    await rejectGt04Mutation("gt04-outcome-timing-null.json", "outcome_timing_null", "unidad, momento, incertidumbre/estado y procedencia como cadenas no vacías");
+    await rejectGt04Mutation("gt04-outcome-uncertainty-boolean.json", "outcome_uncertainty_boolean", "unidad, momento, incertidumbre/estado y procedencia como cadenas no vacías");
     await rejectGt04Mutation("gt04-outcome-provenance-object.json", "outcome_provenance_object", "unidad, momento, incertidumbre/estado y procedencia como cadenas no vacías");
+    await rejectGt04Mutation("gt04-assessment-observer-number.json", "assessment_observer_number", "La valoración está incompleta");
+    await rejectGt04Mutation("gt04-assessment-context-null.json", "assessment_context_null", "La valoración está incompleta");
     await rejectGt04Mutation("gt04-assessment-criterion-number.json", "assessment_criterion_number", "La valoración está incompleta");
+    await rejectGt04Mutation("gt04-assessment-valuation-rule-array.json", "assessment_valuation_rule_array", "La valoración está incompleta");
+    await rejectGt04Mutation("gt04-assessment-rationale-boolean.json", "assessment_rationale_boolean", "La valoración está incompleta");
     await rejectGt04Mutation("gt04-assessment-rationale-empty.json", "assessment_rationale_empty", "La valoración está incompleta");
     await rejectGt04Mutation("gt04-unknown-status-without-assessment.json", "unknown_status_without_assessment", "value_assessment_status=NOT_ASSESSED");
     await rejectGt04Mutation("gt04-wrong-outcome-schema.json", "wrong_outcome_schema", "Esquema de resultado desconocido o no compatible");
