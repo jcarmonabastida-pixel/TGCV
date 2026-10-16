@@ -478,3 +478,14 @@ Derivation is from the current importer in `web/index.html` (package validation 
 **Additional trace-status constraint:** a `BLOCKED` trace cannot coexist with `outcome_record` or `value_assessment`; it can only occupy the trace-present / no-outcome branch, stage `EXECUTION`, with `NOT_ASSESSED`. A `COMPLETED` trace is required by an outcome. Therefore the T=1/O=0/A=0 branch has at least two trace subcases (COMPLETED and BLOCKED), both not assessed. The table concerns package lifecycle only; it does not replace trace internal validity checks.
 
 **Candidate coverage status:** the four legal presence patterns are represented by existing positive paths (exploration export, completed execution, unassessed outcome, assessed outcome) and several illegal combinations have focused negative mutations. Do not mark the predicate complete yet: next, map each of the four legal patterns to an explicit assertion of stage + top-level status + import/replay outcome, and enumerate the illegal presence patterns and wrong status/stage variants against this table. The table is contract-derived; no validator change is proposed in this iteration. All five workflows passed on the preceding exact HEAD `0ddc07fe8704571906dc684991b2f0bf8a8f1d34` (runs `38911159000`, `38911159027`, `38911159786`, `38911159493`, `38911159393`); this new documentation still requires its own exact-HEAD CI gate. No scientific execution; GT-03 remains open.
+
+
+### GT-04 lifecycle row assertions — candidate tests, CI pending
+
+Test commit `166ec157d9faea2d14f5d0ad5561e22dc31851fe` adds positive import/replay assertions for the previously unmapped legal presence patterns:
+- `EXPLORATION`: no trace, outcome, or assessment; explicit `NOT_ASSESSED`.
+- `EXECUTION`: concrete trace only; explicit `NOT_ASSESSED`.
+- `OUTCOME`: trace + outcome, no assessment; explicit `NOT_ASSESSED`.
+- `ASSESSMENT`: existing complete assessed round-trip; assessment present and top-level status absent.
+
+For the new EXPLORATION and EXECUTION cases, the test recomputes the enclosing package digest, imports through the UI, and requires `replay-verified` plus the independently matching replay diagnostic. The OUTCOME case now also asserts required artifact presence/absence and stage. Candidate coverage only until all five workflows pass on the exact final code+documentation HEAD. Illegal combinations and BLOCKED subcases remain separately tracked; this does not close the full lifecycle predicate.
