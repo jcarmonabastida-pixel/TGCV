@@ -524,3 +524,8 @@ Candidate test commit: `4c54aaef2a373c49b32b1ffffa936fe692c78cc4`. The browser i
 ### FC5-PKG-008 — fixture precedence correction
 
 The previous candidate failed before reaching the trace type predicate because its outcome record required a COMPLETED, matching trace. This was a test-fixture ordering issue, not evidence that the type validator was absent. Commit `218b3885f0fe84831b615fb8acef86efb5005c05` changes each malformed-trace fixture to an exploration-stage package, removes outcome/value records, marks value assessment NOT_ASSESSED, and recomputes the package digest. This should isolate the trace type contract. Acceptance remains pending until all five controls pass on the exact resulting HEAD; if browser CI still fails, inspect its exact diagnostic before modifying production validation.
+
+
+### Next grouped iteration — complete object-type substitutions for outcome and assessment
+
+The five-workflow gate passed on exact HEAD `9f7aa404f8e210821227062cceca2ec276baee7f`, including the corrected FC5-PKG-008 trace-type cases (runs `38888784284`, `38888784297`, `38888784234`, `38888784239`, `38888784240`). Next candidate `508b82859a007a9d99f09a7127b5c28e03095a08` extends the existing GT-04 grouped helper to test all JSON top-level substitutions for `outcome_record` and `value_assessment`: array, null, string, number and boolean. The helper recomputes the package digest for every mutation to isolate the nested contract. Require targeted diagnostic rejection and all five workflows passing on one exact resulting HEAD. Do not upgrade acceptance statuses before that gate. No scientific execution and no GT-03 closure.
