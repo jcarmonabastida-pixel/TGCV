@@ -2,6 +2,8 @@
 
 Status: engineering-contract evidence only. C12 remains **partial**. No scientific execution or claim is authorized by this matrix.
 
+Latest validation: all five workflows passed on documentation HEAD `8490c7d64aada353e2b59d584877464625df2651`; browser/cross-runtime run `38885320032`, governance `38885319855`, synthetic engine `38885319843`, engine benchmark `38885319890`, browser benchmark `38885320017`.
+
 ## Evidence baseline
 
 - Code/test HEAD for the relevant validator and adversarial cases: `9540b1ac93049d443b6b0db6910229e036a9c3b1`.
@@ -30,9 +32,9 @@ Legend: **I** = implementation-backed guard; **A** = adversarially exercised wit
 
 ## Remaining gaps / next smallest test batch
 
-1. Comparison missing/extra key adversaries are implemented (`ui_contract_test.cjs` lines 1260–1295); preserve them and verify exact diagnostics in CI.
-2. Source-commitment adversaries now iterate over all non-baseline `delta_reach` IDs and test each hash independently; validate on the exact resulting HEAD.
-3. Per-scenario `scenario_results[*].scenario_id` identity adversary implemented in commit `0536253f3561e7c9250be8cdd7f35077f0bb9bfd`; it recomputes semantic/result/package hashes and expects the key-specific identity diagnostic. The inspected schema restricts `comparisons_to_baseline[*].intervention` to exactly `disabled_transitions` (validator lines 267–270), and that payload is compared with the matching input scenario. No additional intervention payload field is currently defined by this contract. The expanded source-hash and scenario-identity adversaries are covered by the passing five-workflow suite on HEAD `fb4764f2dba8bd5d48c53363a643a7d15285cbdc` (runs: governance `38884794230`, synthetic engine `38884794284`, engine benchmark `38884794290`, browser benchmark `38884794420`, browser/cross-runtime `38884794245`). This establishes current automated contract coverage, but not scientific closure.
-4. After the five workflows passed on `fb4764f2dba8bd5d48c53363a643a7d15285cbdc`, reconcile the register and matrix to that exact HEAD. Keep C12 partial until a final review confirms there are no additional identity-bearing fields in the contract.
+1. Comparison missing/extra key adversaries are implemented (`ui_contract_test.cjs` lines 1260–1295); their diagnostics are covered by the passing exact-HEAD browser/cross-runtime workflow.
+2. Source-commitment adversaries iterate over every non-baseline `delta_reach` ID and independently test both hash fields; the expanded suite passed on HEAD `8490c7d64aada353e2b59d584877464625df2651`.
+3. Per-scenario `scenario_results[*].scenario_id` identity adversary recomputes semantic/result/package hashes and expects the key-specific identity diagnostic. The inspected schema restricts `comparisons_to_baseline[*].intervention` to exactly `disabled_transitions` (validator lines 267–270), and that payload is compared with the matching input scenario. No additional intervention payload field is defined by the current contract.
+4. The final schema/validator audit should verify the complete identity-bearing field inventory and reconcile these references. Keep C12 partial until that review is recorded; passing CI establishes automated contract coverage, not scientific closure.
 
 Do not close C12 solely because the five general CI workflows pass. Do not close GT-03 based on this matrix. Do not authorize or perform scientific execution.
