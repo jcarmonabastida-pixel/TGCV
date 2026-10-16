@@ -269,3 +269,8 @@ The import validator requires `comparisons_to_baseline[id].intervention.disabled
 ## 12. GT-04 evidence reconciliation pointer (2026-10-16)
 
 Use the active **“GT-04 active evidence map — reconciled 2026-10-16”** in `FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md` as the current mapping of outcome/assessment grouped predicates to validator locations, named fixture calls, expected diagnostics, and exact-head workflow evidence. This pointer does not turn a green workflow into field-level coverage: closed-key and full missing-field matrices for outcome/assessment, direct `source_kind` evidence, complete lifecycle truth-table coverage, and a named positive replay assertion remain partial until individually mapped. Sections and notes above that report earlier implementation snapshots remain historical. No scientific execution; GT-03 remains open.
+
+
+## 13. Required-key omission matrix — candidate test evidence
+
+The browser suite now enumerates each required key in the 12-key `outcome_record` schema and 11-key `value_assessment` schema as a missing-key adversary. The test helper recomputes the package digest and asserts the importer’s specific incomplete-object diagnostic. This is candidate coverage only until the five required workflows pass on the exact final code+documentation HEAD. The matrix tests required-key presence, not unknown-key rejection, field type/value semantics, cross-links, or lifecycle truth-table completeness; those remain separate predicates.
