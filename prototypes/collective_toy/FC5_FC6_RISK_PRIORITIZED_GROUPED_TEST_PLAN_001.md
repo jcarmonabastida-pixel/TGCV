@@ -325,3 +325,8 @@ Exact current candidate SHA at the start of this review: `0deec788f2ae8c958c6f20
 ### GT-05 grouped semantic-trace adversary added (2026-10-16)
 
 Commit `9001838676306aea4a3f10be8b9914d3729b3a21` adds one grouped negative case in `web/ui_contract_test.cjs`: it changes a concrete trace step's destination to a declared but non-adjacent state, then recomputes the trace digest, outcome linkage digest, and package digest. Acceptance requires the importer to reject the semantic edge/state mismatch, not merely a stale checksum. This directly targets pending `FC5-TRACE-012` while reusing the assessed FC-4 package fixture; it does not add an atomic test per field and does not modify the production validator. Status remains pending until CI passes on the exact commit. No scientific execution; no promotion to `main`.
+
+
+### GT-05 replay-divergence adversary added (2026-10-16)
+
+Commit `3d1e8019dc273b3694c816240f75e348db1fd773` adds a grouped negative case that changes the exported scenario result while recomputing the semantic digest, result digest, and package digest. The importer must reject because independent replay differs from the exported result, not because a stale checksum was detected. This targets `FC5-REPLAY-002`; exact-head CI is pending. No production code changed; no scientific execution; no promotion to `main`.
