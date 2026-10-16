@@ -556,3 +556,8 @@ The required-string boundary candidate passed all five workflows on exact final 
 Five required workflows passed on exact HEAD `aaf4a6d6748ff64e07fec2b2a27111bd63eaa7da` (governance `38897508680`, synthetic engine `38897509073`, browser benchmark `38897509075`, engine benchmark `38897509251`, browser/cross-runtime `38897508644`). The register now has an active 12-row grouped evidence map linking validator area, fixture names, expected diagnostic, and status. It deliberately leaves closed-key/missing-field coverage, `source_kind` direct mapping, full lifecycle truth table, and positive replay mapping partial where the current evidence does not justify promotion.
 
 Next: resolve those explicitly partial rows by locating existing fixture implementations and positive replay assertions first. Add tests only for confirmed gaps; do not expand field-by-field mechanically or close GT-04 from green CI alone. No scientific execution; GT-03 remains open.
+
+
+### Next grouped test — required-key omission matrix
+
+Candidate test commit `88e2a180170a3a0e848470c65cd17514c6e54b71` enumerates all 12 required `outcome_record` keys and all 11 required `value_assessment` keys as absent one at a time. Each mutation recomputes `package_sha256` and requires the specific incomplete-object diagnostic. Run the full five-workflow gate on the exact final code+documentation HEAD. If green, reconcile the map; do not infer closure of lifecycle truth-table or positive replay rows from this matrix. No scientific execution; GT-03 remains open.
