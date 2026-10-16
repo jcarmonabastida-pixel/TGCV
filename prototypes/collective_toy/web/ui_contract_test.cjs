@@ -835,8 +835,10 @@ const assert = require("node:assert/strict");
     }, { timeout: 30000 });
     const historicalAssessmentState = await page.locator("#package-assessment").getAttribute("data-state");
     const historicalAssessmentMessage = await page.locator("#package-assessment").innerText();
-    assert.equal(historicalAssessmentState, "replay-verified",
-      "GT-05/FC5-REPLAY-003: historical v1 compatibility failed with state " + historicalAssessmentState + ": " + historicalAssessmentMessage);
+    assert.equal(historicalAssessmentState, "rejected",
+      "GT-05/FC5-REPLAY-003: legacy-shaped package without explicit NOT_ASSESSED status must fail closed under the current envelope contract");
+    assert.match(historicalAssessmentMessage, /value_assessment_status=NOT_ASSESSED/i,
+      "GT-05/FC5-REPLAY-003: rejection must identify the missing explicit assessment status");
 
     // The preceding assertion is intentionally scoped to the successful assessed round-trip.
     // After the adversarial import, the package assessment is expected to be rejected.
