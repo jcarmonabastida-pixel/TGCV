@@ -695,6 +695,33 @@ const assert = require("node:assert/strict");
         `FC-5: importer must diagnose ${digestCase.name} package digest`);
     }
 
+    // FC-5 grouped type-adversary: object-only package sections must reject non-object substitutes.
+    const invalidPackageSectionTypes = await page.evaluate(async (pkg) => {
+      const cases = [
+        { name: "trace-array", key: "concrete_execution_trace", value: [] },
+        { name: "outcome-string", key: "outcome_record", value: "not-an-object" },
+        { name: "assessment-null", key: "value_assessment", value: null }
+      ];
+      return Promise.all(cases.map(async (item) => {
+        const candidate = structuredClone(pkg);
+        candidate[item.key] = item.value;
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate };
+      }));
+    }, fc4Package);
+    for (const sectionCase of invalidPackageSectionTypes) {
+      await page.locator("#package-file").setInputFiles({
+        name: `invalid-package-section-${sectionCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(sectionCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /paquete|traza|outcome|valoraci[oó]n|estructura|objeto|reproducci[oó]n/i,
+        `FC-5: importer must diagnose non-object ${sectionCase.name} section`);
+    }
+
     // GT-04 grouped lifecycle truth table: COMPLETED trace without outcome remains EXECUTION/NOT_ASSESSED.
     const completedWithoutOutcome = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
