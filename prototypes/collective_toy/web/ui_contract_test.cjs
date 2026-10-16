@@ -1356,6 +1356,39 @@ const assert = require("node:assert/strict");
         `FC-5: importer must reject linkage-integrity violation ${linkCase.name}`);
     }
 
+    // FC-5 grouped type adversaries: outcome and assessment records must remain JSON objects.
+    const invalidRecordTypes = await page.evaluate(async (pkg) => {
+      const cases = [];
+      for (const item of [
+        { name: "outcome-null", key: "outcome_record", value: null },
+        { name: "outcome-array", key: "outcome_record", value: [] },
+        { name: "outcome-string", key: "outcome_record", value: "not-an-object" },
+        { name: "outcome-number", key: "outcome_record", value: 7 },
+        { name: "assessment-null", key: "value_assessment", value: null },
+        { name: "assessment-array", key: "value_assessment", value: [] },
+        { name: "assessment-string", key: "value_assessment", value: "not-an-object" },
+        { name: "assessment-number", key: "value_assessment", value: 7 }
+      ]) {
+        const candidate = structuredClone(pkg);
+        candidate[item.key] = item.value;
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        cases.push({ name: item.name, candidate });
+      }
+      return cases;
+    }, fc4Package);
+    for (const typeCase of invalidRecordTypes) {
+      await page.locator("#package-file").setInputFiles({
+        name: `invalid-record-type-${typeCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(typeCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /resultado|valoraci[oó]n|objeto|estructura|incomplet/i,
+        `FC-5: importer must reject non-object record ${typeCase.name}`);
+    }
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
