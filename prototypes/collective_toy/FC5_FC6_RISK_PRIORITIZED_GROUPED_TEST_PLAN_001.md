@@ -505,3 +505,12 @@ All five workflows passed on that exact HEAD: governance `38885881894`, syntheti
 ### C12 acceptance decision — verified engineering contract
 
 C12 is marked `verified` in the acceptance register and evidence matrix. The final validator-field inventory is complete for the current contract, and all five workflows passed on exact HEAD `b9066e5358627d616b3cd2acb8f111f3059434ea`: governance `38886446155`, synthetic engine `38886446220`, engine benchmark `38886446408`, browser benchmark `38886446330`, browser/cross-runtime `38886446084`. This closes C12's current engineering-contract criterion only. It does not validate TGCV scientifically, close GT-03, authorize scientific execution, or imply the whole FC5/FC6 test inventory is complete. Continue with the next pending grouped risk in the plan, preserving exact-HEAD CI gating.
+
+
+### GT-01 — package digest adversaries added; CI pending
+
+Candidate commit: `b3b8cb38e06693fa2213879853993c558795ead9`.
+
+The browser contract suite now has dedicated cases for absent `package_sha256` (FC5-PKG-005), malformed format (FC5-PKG-006), and a well-formed but incorrect digest (FC5-PKG-007). The incorrect-digest fixture replaces the digest with a different valid 64-character lowercase hex value and deliberately leaves it unrecomputed, so the test targets package integrity rather than an inner semantic predicate.
+
+Acceptance remains pending until all five controls pass on one exact resulting HEAD. If the browser control fails, diagnose validation precedence/fixture assumptions before changing validator behavior. Next after this gate: top-level type substitutions for `concrete_execution_trace` (FC5-PKG-008), then reconcile the remaining GT-01 envelope cases. No GT-03 closure and no scientific execution.
