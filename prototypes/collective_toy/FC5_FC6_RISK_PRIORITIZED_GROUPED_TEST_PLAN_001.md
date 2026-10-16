@@ -544,3 +544,8 @@ All five workflows passed on exact HEAD `71a27e1515b92a6a9445a964291ca20cd0f81d2
 ### GT-04 next iteration — empty/whitespace required strings
 
 The five-workflow gate passed on exact HEAD `2cc69608924f31790dc734761940b139bbce233b` (runs `38896275927`, `38896276021`, `38896276015`, `38896275887`, `38896276160`). Candidate `1118ae9aca9c59aa486672c36203016c4afc2a98` expands the grouped field-contract suite to reject empty or whitespace-only outcome fields (`timing`, `uncertainty_status`, `provenance`) and assessment fields (`observer`, `context`, `criterion`, `rationale`). Existing helper recomputes `package_sha256`; acceptance remains pending until all five controls pass on the exact final code+documentation HEAD. No scientific execution; GT-03 remains open.
+
+
+### GT-04 next iteration — reconcile acceptance denominator and evidence map
+
+The required-string boundary candidate passed all five workflows on exact final code+documentation HEAD `a3c6809e8e944a9b0d2866ad82d3f30b91683229`: governance `38896875016`, synthetic engine `38896874960`, browser benchmark `38896874987`, engine benchmark `38896875141`, browser/cross-runtime `38896874980`. Before expanding adversarial cases further, reconcile the active GT-04 predicate denominator against the current validator, schema inventory, concrete fixture calls, targeted diagnostics, and exact-HEAD CI evidence. Mark earlier status claims as historical where superseded; do not close GT-04 based only on aggregate green CI. No scientific execution; GT-03 remains open.
