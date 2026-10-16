@@ -228,6 +228,31 @@ const assert = require("node:assert/strict");
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
     assert.match(await page.locator("#package-assessment").innerText(), /hash del paquete no coincide/i);
 
+
+    // GT-05 replay-mismatch adversary: all hashes are internally consistent, but the result is not reproducible from the input.
+    const selfConsistentDivergence = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.value_assessment_status = "NOT_ASSESSED";
+      candidate.result.scientific_interpretation += " divergent-but-rehashed";
+      candidate.result.semantic_sha256 = await window.hash(window.semanticResultProjection(candidate.result));
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody);
+      const packageBody = structuredClone(candidate);
+      delete packageBody.package_sha256;
+      candidate.package_sha256 = await window.hash(packageBody);
+      return candidate;
+    }, packageData);
+    await page.locator("#package-file").setInputFiles({
+      name: "self-consistent-replay-divergence.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(selfConsistentDivergence))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente difiere del resultado exportado/i,
+      "GT-05/FC5-REPLAY-002: reject semantic replay divergence even when package and result digests are recomputed");
+
     // Reset to the canonical diamond fixture: prior graph-review assertions intentionally mutate the live model.
     const editedModel = {
       schema_version: "collective-toy-input-001",
