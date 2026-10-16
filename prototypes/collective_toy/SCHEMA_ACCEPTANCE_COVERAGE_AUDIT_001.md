@@ -56,3 +56,23 @@ These runs are historical evidence for that baseline only, not for the current P
 ## Governance boundary
 
 This audit supports engineering traceability only. It does not establish TGCV causality, value construction, empirical validity, or general scientific validation. The mathematical/functional contract remains a draft, PR #52 remains in draft, and promotion requires explicit governance review. Scientific execution remains unauthorized.
+
+
+## Current-head evidence supplement — schema v002 lifecycle
+
+**Verified candidate commit:** `f8b6623a8ab316db092cac179966fd337ee29b39`  
+**Workflow:** [run 38758570843](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38758570843)  
+**Observed conclusion:** `success`  
+**Job:** `browser-cross-runtime`
+
+The exact run completed successfully for both `Run browser and Python concordance test` and `Replay browser and Python suite from clean source archive`. Dependency installation and Chromium setup also completed successfully. This run verifies the v002 allowlist/stage-declaration compatibility fix together with the test suite at the recorded commit.
+
+### What this evidence supports
+
+- The cross-runtime verifier accepts `collective-toy-browser-run-002` and requires a supported `package_stage`.
+- Browser/Python concordance and clean-source replay pass for the recorded candidate commit.
+- The grouped browser contract suite in that workflow passes at this commit, including the committed v002 lifecycle tests.
+
+### Limits and remaining gate
+
+This is engineering CI evidence, not a proof of exhaustive FC-5/FC-6 coverage or scientific validity. Do not mark every predicate covered merely because the workflow passed. The residual predicate matrix must still be reconciled against the actual test assertions, with `INDIRECT` and `NOT_ASSESSED` retained where evidence is insufficient. No scientific execution or promotion to `main` is authorized by this result.

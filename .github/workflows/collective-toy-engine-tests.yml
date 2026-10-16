@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - prototype/collective-toy-engine-001-20261011
+      - prototype/sequentiality-contract-tests-001-20261014
   pull_request:
     branches:
       - main
@@ -25,12 +26,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Compile engine and tests
-        run: python -m py_compile prototypes/collective_toy/collective_toy_engine_001.py prototypes/collective_toy/test_collective_toy_engine_001.py
-      - name: Run unit tests
+      - name: Compile engine and both test suites
+        run: >-
+          python -m py_compile
+          prototypes/collective_toy/collective_toy_engine_001.py
+          prototypes/collective_toy/test_collective_toy_engine_001.py
+          prototypes/collective_toy/test_collective_toy_sequentiality_001.py
+      - name: Run historical unit tests
         working-directory: prototypes/collective_toy
         run: python -m unittest -v test_collective_toy_engine_001.py
-      - name: Replay full unit suite from clean source archive
+      - name: Run temporal sequentiality contract tests
+        working-directory: prototypes/collective_toy
+        run: python -m unittest -v test_collective_toy_sequentiality_001.py
+      - name: Replay both suites from clean source archive
         shell: bash
         run: |
           set -euo pipefail
@@ -39,3 +47,4 @@ jobs:
           git archive "$GITHUB_SHA" prototypes/collective_toy | tar -x -C "$clean_root"
           cd "$clean_root/prototypes/collective_toy"
           PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_collective_toy_engine_001.py
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_collective_toy_sequentiality_001.py
