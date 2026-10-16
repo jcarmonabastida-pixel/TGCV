@@ -382,3 +382,8 @@ These cases distinguish digest presence/format from digest integrity. They are i
 ### FC5-PKG-008 — execution-trace type substitution adversaries (candidate; CI pending)
 
 Commit `4c54aaef2a373c49b32b1ffffa936fe692c78cc4` adds browser-import cases replacing `concrete_execution_trace` with `null`, an array, a string, a number, and a boolean. Each case recomputes `package_sha256` so the validator must reject the trace type specifically, not merely detect package digest mismatch. Expected diagnostic: `concrete_execution_trace debe ser un objeto`. Coverage remains pending until all five controls pass on one exact HEAD.
+
+
+### FC5-PKG-008 diagnostic-precedence correction — CI pending
+
+The first run on the previous candidate failed on the `null` trace case: the fixture retained an outcome record, so the importer correctly rejected the package earlier with `El resultado no está vinculado a la traza de ejecución exportada o requiere una traza COMPLETED.` This did not exercise the intended trace-type diagnostic. Commit `218b3885f0fe84831b615fb8acef86efb5005c05` adjusts each invalid-trace fixture to exploration stage, removes outcome/value records, sets `value_assessment_status=NOT_ASSESSED`, and recomputes the package digest. This isolates the type predicate. FC5-PKG-008 remains pending until exact-HEAD browser and five-workflow CI pass.
