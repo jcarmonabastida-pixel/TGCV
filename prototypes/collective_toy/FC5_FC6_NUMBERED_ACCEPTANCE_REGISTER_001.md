@@ -105,7 +105,7 @@
 | FC5-TRACE-009 | Require steps to be an array | pending | Dedicated validation/test not located |
 | FC5-TRACE-010 | Enforce closed seven-key schema and types for each step | pending | Importer lacks step closed-key validation |
 | FC5-TRACE-011 | Require ordered step indices | pending | Dedicated validation/test not located |
-| FC5-TRACE-012 | Require transition/state sequence to follow input edges | pending | Dedicated replay/semantic trace validator not located |
+| FC5-TRACE-012 | Require transition/state sequence to follow input edges | pending | GT-05 review confirms no independent semantic trace-validator evidence mapped; add one grouped sequence-coherence acceptance case before closure. |
 | FC5-TRACE-013 | Require prior-transition history to be prefix-consistent | pending | Dedicated validation/test not located |
 | FC5-TRACE-014 | Require prerequisites to match relations and prior history | pending | Dedicated validation/test not located |
 | FC5-TRACE-015 | Define and enforce COMPLETED/BLOCKED trace policy | pending | Contract decision unresolved |
@@ -145,11 +145,11 @@
 |---|---|---|---|
 | FC5-SEC-001 | Explain that unkeyed hashes provide consistency, not origin authenticity | partial | Wording exists in one UI path; contract/UI consistency incomplete |
 | FC5-SEC-002 | Regression test prevents claims of authentication based on SHA-256 alone | pending | Dedicated assertion not located |
-| FC5-REPLAY-001 | Import replays independently and matches exported result for valid package | verified | Current tested round-trip fixture and clean-source CI |
+| FC5-REPLAY-001 | Import replays independently and matches exported result for valid package | verified | Clean-source replay PASS on exact candidate SHA `0deec788f2ae8c958c6f20fac478ec83c412507a`, run [38925343766](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38925343766). GT-05 single-scenario coverage remains a separate pending item. |
 | FC5-REPLAY-002 | Replay mismatch is rejected | partial | Implementation path exists; exact tampered-result fixture mapping incomplete |
 | FC5-REPLAY-003 | Legacy/optional semantic identity compatibility behaves as documented | partial | Compatibility code exists; version matrix incomplete |
-| FC6-CI-001 | All required workflows pass on the exact candidate commit | verified for a90b69a6 only | Runs 38749236634, 38749235581, 38749236114, 38749235856, 38749236050; rerun after any code/test change |
-| FC6-CLEAN-001 | Clean-source archive replay passes on exact candidate commit | verified for a90b69a6 only | Included in run 38749236634; rerun after any code/test change |
+| FC6-CI-001 | All required workflows pass on the exact candidate commit | partial | Browser/cross-runtime workflow PASS on exact SHA `0deec788f2ae8c958c6f20fac478ec83c412507a`, run [38925343766](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38925343766); complete required-workflow set not yet reverified on this SHA. |
+| FC6-CLEAN-001 | Clean-source archive replay passes on exact candidate commit | verified | Clean-source archive replay PASS on exact SHA `0deec788f2ae8c958c6f20fac478ec83c412507a`, run [38925343766](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38925343766). |
 | FC6-ART-001 | Inspect final exported package artifacts against contract | partial | Need artifact list and per-artifact evidence |
 | FC6-SCOPE-001 | CI/evidence explicitly avoid claiming scientific validity from synthetic tests | partial | Governance states boundary; final evidence bundle mapping needed |
 | FC6-MAIN-001 | Confirm main unchanged and PR #67 remains draft | pending fresh check | Must capture current PR/base/head evidence before closure |
