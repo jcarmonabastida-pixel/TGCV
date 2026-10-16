@@ -617,6 +617,33 @@ const assert = require("node:assert/strict");
     assert.equal(fc4Package.value_assessment_status, undefined,
       "FC-4: an assessed package must not also claim valuation is unassessed");
 
+    // GT-04 lifecycle positive case: COMPLETED trace without outcome/assessment remains an EXECUTION-stage package.
+    const completedWithoutOutcome = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.outcome_record;
+      delete candidate.value_assessment;
+      candidate.package_stage = "EXECUTION";
+      candidate.value_assessment_status = "NOT_ASSESSED";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    assert.equal(completedWithoutOutcome.concrete_execution_trace.status, "COMPLETED",
+      "GT-04: fixture must retain a completed execution trace");
+    assert.equal(completedWithoutOutcome.package_stage, "EXECUTION");
+    assert.equal(completedWithoutOutcome.value_assessment_status, "NOT_ASSESSED");
+    assert.equal(Object.hasOwn(completedWithoutOutcome, "outcome_record"), false);
+    assert.equal(Object.hasOwn(completedWithoutOutcome, "value_assessment"), false);
+    await page.locator("#package-file").setInputFiles({
+      name: "completed-trace-without-outcome.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(completedWithoutOutcome))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "GT-04: COMPLETED execution without outcome must import and replay without implying an outcome");
+
     // FC-5: round-trip a fully assessed FC-4 package through the actual import UI.
     await page.locator("#package-file").setInputFiles({
       name: "assessed-fc4-roundtrip.json",
