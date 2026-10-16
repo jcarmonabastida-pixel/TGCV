@@ -1,6 +1,6 @@
 # FC5-DELTA-C12 — predicate/evidence matrix 001
 
-Status: engineering-contract evidence only. C12 remains **partial**. No scientific execution or claim is authorized by this matrix.
+Status: engineering-contract evidence only. C12 is **verified for the current engineering contract** on exact HEAD `b9066e5358627d616b3cd2acb8f111f3059434ea`. This is not scientific validation. No scientific execution or claim is authorized by this matrix.
 
 Latest validation: all five workflows passed on exact documentation HEAD `013c749490b977c5e2ac784ae09503ee1b2fbc64`; browser/cross-runtime run `38885881828`, governance `38885881894`, synthetic engine `38885881901`, engine benchmark `38885881845`, browser benchmark `38885881856`.
 
