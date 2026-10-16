@@ -22,7 +22,7 @@
 | FC5-PKG-009 | Reject wrong type for `outcome_record` | verified | Grouped adversarial test rejects non-object section with a recomputed outer package digest and an explicit diagnostic; browser/cross-runtime run [38940845328](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38940845328), exact SHA `5e28277ef6ed04d70b855b1dcb5894ce21158d22`. |
 | FC5-PKG-010 | Reject wrong type for `value_assessment` | verified | Grouped adversarial test rejects non-object section with a recomputed outer package digest and an explicit diagnostic; browser/cross-runtime run [38940845328](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38940845328), exact SHA `5e28277ef6ed04d70b855b1dcb5894ce21158d22`. |
 | FC5-PKG-011 | Enforce assessment/status conditional combinations | partial | GT-04 exact-head browser evidence on `8c61ba4b`: COMPLETED/EXECUTION/NOT_ASSESSED round-trip; assessment without outcome rejected; ASSESSED without valuation rejected; valuation + NOT_ASSESSED rejected. Full conditional matrix still incomplete; browser run [38924503511](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38924503511). |
-| FC5-PKG-012 | Reject unknown `value_assessment_status` values | pending | Dedicated fixture not located |
+| FC5-PKG-012 | Reject unknown `value_assessment_status` values | verified | Grouped adversarial cases `PENDING_REVIEW`, `null`, and numeric status all rejected with explicit `value_assessment_status=NOT_ASSESSED` diagnostic after recomputing the outer package digest; browser/cross-runtime run [38953698867](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38953698867), exact SHA `8ee6cf833a0b046a83b550c2361438705cccdbd9`. |
 
 ## B. Input model
 
