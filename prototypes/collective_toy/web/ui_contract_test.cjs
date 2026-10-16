@@ -808,6 +808,29 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /secuencia de estados\/transiciones de la traza no es coherente con la entrada/i,
       "GT-05/FC5-TRACE-012: reject a re-hashed trace step that does not follow its declared transition edge");
 
+    // GT-05 historical profile: v1 package without semantic-identity fields uses only the documented legacy replay projection.
+    const historicalV1 = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.package_version = "collective-toy-browser-run-001";
+      delete candidate.package_stage;
+      delete candidate.result.delta_reach;
+      delete candidate.result.semantic_identity_version;
+      delete candidate.result.semantic_sha256;
+      delete candidate.package_sha256;
+      delete candidate.result.result_sha256;
+      candidate.result.result_sha256 = await window.hash(candidate.result);
+      candidate.package_sha256 = await window.hash(candidate);
+      return candidate;
+    }, packageData);
+    await page.locator("#package-file").setInputFiles({
+      name: "historical-v1-without-semantic-identity.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(historicalV1))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /replay-verified/i,
+      "GT-05/FC5-REPLAY-003: supported historical v1 package without semantic identity must replay only under the documented legacy projection");
+
     // The preceding assertion is intentionally scoped to the successful assessed round-trip.
     // After the adversarial import, the package assessment is expected to be rejected.
     // FC-5: the same explicit outcome without a complete valuation must round-trip as NOT_ASSESSED.
