@@ -869,6 +869,62 @@ const assert = require("node:assert/strict");
       "FC-5: outcome without complete contextual valuation must retain explicit NOT_ASSESSED");
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "FC-5: NOT_ASSESSED outcome package must replay after import");
+    assert.equal(unassessedOutcomePackage.package_stage, "OUTCOME",
+      "GT-04: explicit outcome without valuation must use OUTCOME stage");
+    assert.ok(unassessedOutcomePackage.concrete_execution_trace && unassessedOutcomePackage.outcome_record,
+      "GT-04: OUTCOME row must preserve trace and outcome artifacts");
+    assert.equal(unassessedOutcomePackage.value_assessment, undefined,
+      "GT-04: OUTCOME row must omit value_assessment");
+
+    // GT-04 lifecycle positive row: concrete execution trace without outcome or assessment.
+    const executionOnlyPackage = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.outcome_record;
+      delete candidate.value_assessment;
+      candidate.value_assessment_status = "NOT_ASSESSED";
+      candidate.package_stage = "EXECUTION";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    assert.ok(executionOnlyPackage.concrete_execution_trace,
+      "GT-04: EXECUTION row must include a concrete trace");
+    assert.equal(executionOnlyPackage.outcome_record, undefined);
+    assert.equal(executionOnlyPackage.value_assessment, undefined);
+    assert.equal(executionOnlyPackage.value_assessment_status, "NOT_ASSESSED");
+    await page.locator("#package-file").setInputFiles({
+      name: "execution-not-assessed-roundtrip.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(executionOnlyPackage))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "GT-04: EXECUTION lifecycle row must import and replay successfully");
+
+    // GT-04 lifecycle positive row: exploration without trace, outcome, or assessment.
+    const explorationPackage = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.concrete_execution_trace;
+      delete candidate.outcome_record;
+      delete candidate.value_assessment;
+      candidate.value_assessment_status = "NOT_ASSESSED";
+      candidate.package_stage = "EXPLORATION";
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    assert.equal(explorationPackage.concrete_execution_trace, undefined);
+    assert.equal(explorationPackage.outcome_record, undefined);
+    assert.equal(explorationPackage.value_assessment, undefined);
+    assert.equal(explorationPackage.value_assessment_status, "NOT_ASSESSED");
+    await page.locator("#package-file").setInputFiles({
+      name: "exploration-not-assessed-roundtrip.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(explorationPackage))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "GT-04: EXPLORATION lifecycle row must import and replay successfully");
 
     // FC-5 adversarial case: a forged outcome digest must be rejected even when package hash is recomputed.
     const forgedAssessmentDigest = await page.evaluate(async (pkg) => {
