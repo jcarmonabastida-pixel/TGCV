@@ -653,7 +653,9 @@ const assert = require("node:assert/strict");
     async function rejectGt04Mutation(name, mutation, diagnostic) {
       const forged = await page.evaluate(async ({ pkg, mutation }) => {
         const candidate = structuredClone(pkg);
-        if (mutation === "unknown_outcome") candidate.outcome_record.uncontracted = "forged";
+        if (mutation.startsWith("missing_outcome:")) delete candidate.outcome_record[mutation.slice("missing_outcome:".length)];
+        else if (mutation.startsWith("missing_assessment:")) delete candidate.value_assessment[mutation.slice("missing_assessment:".length)];
+        else if (mutation === "unknown_outcome") candidate.outcome_record.uncontracted = "forged";
         else if (mutation === "invalid_source_kind") candidate.outcome_record.source_kind = "estimated";
         else if (mutation === "unknown_assessment") candidate.value_assessment.uncontracted = "forged";
         else if (mutation === "empty_assessment_id") candidate.value_assessment.assessment_id = " ";
@@ -760,6 +762,25 @@ const assert = require("node:assert/strict");
     await rejectGt04Mutation("gt04-unknown-status-without-assessment.json", "unknown_status_without_assessment", "value_assessment_status=NOT_ASSESSED");
     await rejectGt04Mutation("gt04-wrong-outcome-schema.json", "wrong_outcome_schema", "Esquema de resultado desconocido o no compatible");
     await rejectGt04Mutation("gt04-empty-outcome-id.json", "empty_outcome_id", "outcome_id válido");
+
+    // GT-04: enumerate every required key as absent, keeping each mutation in the same
+    // grouped schema contract and recomputing package_sha256 in rejectGt04Mutation.
+    for (const key of [
+      "outcome_schema", "outcome_id", "execution_id", "execution_trace_sha256",
+      "model_id", "scenario_id", "source_kind", "value", "unit", "timing",
+      "uncertainty_status", "provenance"
+    ]) {
+      await rejectGt04Mutation(`gt04-outcome-missing-${key}.json`, `missing_outcome:${key}`,
+        "outcome_record está incompleto");
+    }
+    for (const key of [
+      "assessment_schema", "assessment_id", "outcome_id", "execution_id",
+      "outcome_sha256", "observer", "context", "criterion", "valuation_rule",
+      "rationale", "status"
+    ]) {
+      await rejectGt04Mutation(`gt04-assessment-missing-${key}.json`, `missing_assessment:${key}`,
+        "value_assessment está incompleta");
+    }
     await rejectGt04Mutation("gt04-wrong-assessment-schema.json", "wrong_assessment_schema", "Esquema o estado de valoración desconocido");
     await rejectGt04Mutation("gt04-observer-number.json", "observer_number", "La valoración está incompleta");
     await rejectGt04Mutation("gt04-empty-valuation-rule.json", "valuation_rule_empty", "La valoración está incompleta");
