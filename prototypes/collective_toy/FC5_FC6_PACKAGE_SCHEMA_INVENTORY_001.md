@@ -264,3 +264,8 @@ Browser/cross-runtime adversarial tests mutate `delta_reach.block_ac.baseline_so
 ## Comparison intervention identity and GT-03 test isolation — exact code/test HEAD `9540b1ac93049d443b6b0db6910229e036a9c3b1`
 
 The import validator requires `comparisons_to_baseline[id].intervention.disabled_transitions` to match `input.scenarios[id].disabled_transitions` (order-independent). The GT-03 adversarial test mutates an intervention to exercise blocked-reason context; it now also updates the corresponding comparison intervention, keeping the fixture valid for C12 so the intended GT-03 assertion is reached. All five workflows passed on this exact HEAD: synthetic engine `38827834889`; engine benchmark `38827834909`; governance `38827834845`; browser benchmark `38827839055`; browser/cross-runtime `38827834860`. This confirms automated suite success, not scientific closure. C12 remains partial pending independent audit of every source identity field across all scenarios.
+
+
+## 12. GT-04 evidence reconciliation pointer (2026-10-16)
+
+Use the active **“GT-04 active evidence map — reconciled 2026-10-16”** in `FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md` as the current mapping of outcome/assessment grouped predicates to validator locations, named fixture calls, expected diagnostics, and exact-head workflow evidence. This pointer does not turn a green workflow into field-level coverage: closed-key and full missing-field matrices for outcome/assessment, direct `source_kind` evidence, complete lifecycle truth-table coverage, and a named positive replay assertion remain partial until individually mapped. Sections and notes above that report earlier implementation snapshots remain historical. No scientific execution; GT-03 remains open.
