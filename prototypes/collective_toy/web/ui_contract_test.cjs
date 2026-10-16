@@ -649,7 +649,7 @@ const assert = require("node:assert/strict");
     ].sort(), "FC-6: assessed Full Chain export must contain exactly the contracted envelope fields");
     assert.equal(fc4Package.package_stage, "ASSESSMENT",
       "FC-6: complete outcome/value export must identify its package stage");
-    assert.equal(fc4Package.result.validation_status, "PASS",
+    assert.equal(fc4Package.result.validation, "PASS",
       "FC-6: exported successful result must retain PASS validation status");
     assert.equal(fc4Package.result.model_id, fc4Package.input.model_id,
       "FC-6: exported result model identity must match the input model");
