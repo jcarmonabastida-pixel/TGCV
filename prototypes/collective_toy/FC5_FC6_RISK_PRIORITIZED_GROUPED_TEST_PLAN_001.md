@@ -330,3 +330,10 @@ Commit `9001838676306aea4a3f10be8b9914d3729b3a21` adds one grouped negative case
 ### GT-05 replay-divergence adversary added (2026-10-16)
 
 Commit `3d1e8019dc273b3694c816240f75e348db1fd773` adds a grouped negative case that changes the exported scenario result while recomputing the semantic digest, result digest, and package digest. The importer must reject because independent replay differs from the exported result, not because a stale checksum was detected. This targets `FC5-REPLAY-002`; exact-head CI is pending. No production code changed; no scientific execution; no promotion to `main`.
+
+
+### GT-05 replay-divergence result and next compatibility gap (2026-10-16)
+
+The self-consistent replay-divergence adversary passed in browser/cross-runtime workflow [38929033347](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38929033347) on exact candidate SHA `0c0cecdd73502fb9699e89ed598e1eab141c516a`. The test changed the exported result and recomputed semantic/result/package digests; import was rejected because independent replay diverged. `FC5-REPLAY-002` is now verified.
+
+Next grouped gap: complete the documented package/engine compatibility matrix. Existing checks cover an unknown engine as inspect-only/no replay and an unsupported package schema as reject-even-with-recomputed-digest; `FC5-REPLAY-003` (legacy/optional semantic identity compatibility) and the historical profile matrix remain partial. Add only the missing compatibility case(s), using the policy's fail-closed semantics; do not infer backwards compatibility or silently adapt historical data. Browser/cross-runtime workflow is green on the exact SHA above; this is not evidence that every required workflow or all GT-05 acceptance is complete. No scientific execution; no promotion to `main`.
