@@ -549,3 +549,10 @@ The five-workflow gate passed on exact HEAD `2cc69608924f31790dc734761940b139bbc
 ### GT-04 next iteration — reconcile acceptance denominator and evidence map
 
 The required-string boundary candidate passed all five workflows on exact final code+documentation HEAD `a3c6809e8e944a9b0d2866ad82d3f30b91683229`: governance `38896875016`, synthetic engine `38896874960`, browser benchmark `38896874987`, engine benchmark `38896875141`, browser/cross-runtime `38896874980`. Before expanding adversarial cases further, reconcile the active GT-04 predicate denominator against the current validator, schema inventory, concrete fixture calls, targeted diagnostics, and exact-HEAD CI evidence. Mark earlier status claims as historical where superseded; do not close GT-04 based only on aggregate green CI. No scientific execution; GT-03 remains open.
+
+
+### GT-04 reconciliation result and next grouped action
+
+Five required workflows passed on exact HEAD `aaf4a6d6748ff64e07fec2b2a27111bd63eaa7da` (governance `38897508680`, synthetic engine `38897509073`, browser benchmark `38897509075`, engine benchmark `38897509251`, browser/cross-runtime `38897508644`). The register now has an active 12-row grouped evidence map linking validator area, fixture names, expected diagnostic, and status. It deliberately leaves closed-key/missing-field coverage, `source_kind` direct mapping, full lifecycle truth table, and positive replay mapping partial where the current evidence does not justify promotion.
+
+Next: resolve those explicitly partial rows by locating existing fixture implementations and positive replay assertions first. Add tests only for confirmed gaps; do not expand field-by-field mechanically or close GT-04 from green CI alone. No scientific execution; GT-03 remains open.
