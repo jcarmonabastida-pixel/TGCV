@@ -490,3 +490,8 @@ The five workflows passed on code/test HEAD `cf3b408cf6e23dcd8ad972240c1550618f7
 ### C12 exact-head validation result — `fb4764f2dba8bd5d48c53363a643a7d15285cbdc`
 
 All five workflows passed on this exact HEAD: governance `38884794230`, synthetic engine `38884794284`, engine benchmark `38884794290`, browser benchmark `38884794420`, browser/cross-runtime `38884794245`. The expanded tests cover missing/extra comparison keys, both source commitment hashes across every intervention scenario, and per-scenario `scenario_results[*].scenario_id` identity with enclosing hashes recomputed. The comparison intervention schema currently permits only `disabled_transitions`, which is checked against the matching input scenario. The acceptance register remains partial pending final contract-field audit; passing CI alone is not a reason to close C12.
+
+
+### C12 latest exact-HEAD CI result — `8490c7d64aada353e2b59d584877464625df2651`
+
+All five workflows passed on this exact documentation HEAD: governance `38885319855`, synthetic engine `38885319843`, engine benchmark `38885319890`, browser benchmark `38885320017`, browser/cross-runtime `38885320032`. The evidence matrix and acceptance register now record these results. Remaining task: final schema/validator inventory review for all identity-bearing fields; C12 remains partial until that review is recorded. No GT-03 closure and no scientific execution.
