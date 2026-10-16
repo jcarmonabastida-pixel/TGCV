@@ -561,3 +561,10 @@ Next: resolve those explicitly partial rows by locating existing fixture impleme
 ### Next grouped test — required-key omission matrix
 
 Candidate test commit `88e2a180170a3a0e848470c65cd17514c6e54b71` enumerates all 12 required `outcome_record` keys and all 11 required `value_assessment` keys as absent one at a time. Each mutation recomputes `package_sha256` and requires the specific incomplete-object diagnostic. Run the full five-workflow gate on the exact final code+documentation HEAD. If green, reconcile the map; do not infer closure of lifecycle truth-table or positive replay rows from this matrix. No scientific execution; GT-03 remains open.
+
+
+### Result and next step after required-key omission gate
+
+The exact final code+documentation HEAD `f6825f66fcb0c73db22308ce69866a1db5ea459f` passed all five required workflows: `38910347889`, `38910348206`, `38910347977`, `38910347952`, `38910347920`. The 12 outcome and 11 assessment required-key omission cases are now verified. The active evidence map has been reconciled for unknown-key rejection and the `source_kind` finite domain, and points to the existing positive assessed/unassessed replay assertions.
+
+Next grouped gap: formalize the package lifecycle/status truth table from the actual contract, enumerate legal combinations and focused invalid combinations, then map the positive replay assertions to each required identity/hash/status/link invariant. Do not label lifecycle or replay fully covered merely because aggregate CI is green. No scientific execution; GT-03 remains open.
