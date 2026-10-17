@@ -1618,6 +1618,22 @@ const assert = require("node:assert/strict");
           mutate: function (p) { p.result.delta_reach.block_ac.truncated = true; },
           expected: /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i
         }
+,
+        {
+          name: "undeclared-transition-added",
+          mutate: function (p) { p.result.delta_reach.block_ac.enabled_at_initial_added = ["TRANSITION_NOT_DECLARED"]; },
+          expected: /enabled_at_initial_added de delta_reach en block_ac debe contener IDs de transición válidos/i
+        },
+        {
+          name: "undeclared-transition-removed",
+          mutate: function (p) { p.result.delta_reach.block_ac.enabled_at_initial_removed = ["TRANSITION_NOT_DECLARED"]; },
+          expected: /enabled_at_initial_removed de delta_reach en block_ac debe contener IDs de transición válidos/i
+        },
+        {
+          name: "orphan-delta-without-comparison",
+          mutate: function (p) { delete p.result.comparisons_to_baseline.block_ac; },
+          expected: /Falta comparación baseline para block_ac/i
+        }
       ];
       return Promise.all(cases.map(async (item) => {
         const candidate = structuredClone(pkg);
@@ -1639,6 +1655,10 @@ const assert = require("node:assert/strict");
       ["invalid-trajectory-edge", /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i],
       ["non-boolean-truncation", /truncated de delta_reach en block_ac debe ser booleano/i],
       ["aggregate-truncation-mismatch", /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i]
+,
+      ["undeclared-transition-added", /enabled_at_initial_added de delta_reach en block_ac debe contener IDs de transición válidos/i],
+      ["undeclared-transition-removed", /enabled_at_initial_removed de delta_reach en block_ac debe contener IDs de transición válidos/i],
+      ["orphan-delta-without-comparison", /Falta comparación baseline para block_ac/i]
     ]);
     for (const deltaCase of deltaInvariantCases) {
       await page.locator("#package-file").setInputFiles({
