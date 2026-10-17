@@ -701,6 +701,14 @@ const assert = require("node:assert/strict");
     assert.equal(exportedPackageDigest, fc4Package.package_sha256,
       "FC-6: complete exported package digest must recompute from the exported envelope");
 
+    // Persist the exact validated Full Chain package for CI artifact inspection.
+    fs.mkdirSync("artifacts", { recursive: true });
+    fs.writeFileSync(
+      "artifacts/tgcv-full-chain-acceptance-package.json",
+      `${JSON.stringify(fc4Package, null, 2)}\\n`,
+      "utf8"
+    );
+
     // FC-5 grouped package-integrity adversary: absent, malformed, and incorrect outer digest.
     const invalidPackageDigests = await page.evaluate(async (pkg) => {
       const missing = structuredClone(pkg);
