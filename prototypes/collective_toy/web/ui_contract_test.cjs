@@ -947,6 +947,7 @@ const assert = require("node:assert/strict");
     // each malformed nested input reaches the intended schema validator.
     const inputSchemaAdversaries = await page.evaluate(async (pkg) => {
       const cases = [
+        { name: "input-schema-version-unknown-string", mutate: input => { input.schema_version = "collective-toy-input-999"; }, diagnostic: /schema_version no compatible/i },
         { name: "input-missing-states", mutate: input => { delete input.states; }, diagnostic: /states debe ser una lista no vacía/i },
         { name: "input-transitions-wrong-type", mutate: input => { input.transitions = { id: "not-an-array" }; }, diagnostic: /transitions debe ser una lista/i },
         { name: "input-scenarios-wrong-type", mutate: input => { input.scenarios = "not-an-array"; }, diagnostic: /scenarios debe ser una lista no vacía/i },

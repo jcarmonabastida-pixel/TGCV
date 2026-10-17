@@ -18,7 +18,7 @@ This is a targeted predicate-family inventory, not exhaustive branch coverage. N
 | Predicate family | Concrete predicate(s) | Existing test evidence verified in source | Status | Residual action |
 |---|---|---|---|---|
 | Top-level shape | Input object; unknown top-level keys rejected | `test_top_level_model_and_required_string_fields_reject_wrong_types`; broad schema matrix | COVERED | None identified |
-| Schema version | Only `collective-toy-input-001` accepted | `test_top_level_model_and_required_string_fields_reject_wrong_types` checks non-string version; broad schema matrix | INDIRECT | Confirm dedicated wrong-string-version assertion if broad matrix does not pin it |
+| Schema version | Only `collective-toy-input-001` accepted | Browser H1 grouped adversary `input-schema-version-unknown-string` explicitly rejects `collective-toy-input-999`; broad schema matrix also exercises invalid schema inputs | COVERED | None for unsupported string version; other H1 field/type coverage remains partial |
 | Model identifier | Non-empty string | `test_top_level_model_and_required_string_fields_reject_wrong_types`; broad schema matrix | COVERED | None identified |
 | States collection | Non-empty list; non-empty string IDs; uniqueness | `test_schema_container_branches_report_specific_expected_errors`; `test_schema_rejects_empty_states_and_scenarios`; `test_state_ids_must_be_strings`; schema matrix | COVERED | None identified |
 | Initial state | String referring to declared state | `test_initial_state_must_be_a_string_id_and_malformed_containers_raise_validation_error`; `test_unknown_initial_state_string_fails` | COVERED | None identified |

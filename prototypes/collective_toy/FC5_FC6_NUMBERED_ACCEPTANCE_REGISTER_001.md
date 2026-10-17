@@ -315,12 +315,12 @@ This plan atomizes the seven previously excluded areas into **11 candidate group
 
 | Batch | Source gap | Grouped coverage objective | Current status |
 |---|---|---|---|
-| H1 | Input fields | Missing/wrong-type nested input fields; distinguish structural rejection from digest rejection | Not yet reconciled |
-| H2 | Scenario-result fields | Missing/wrong-type nested scenario-result fields and unknown keys | Not yet reconciled |
-| H3 | Comparison fields | Missing/wrong-type comparison fields, nested projection and unknown keys | Not yet reconciled |
-| H4 | Optional package fields | Validate optional field types and legal/illegal presence combinations for trace, outcome, assessment and assessment status | Not yet reconciled |
-| H5 | Numeric limits | Lower/upper numeric boundaries, out-of-range values and maximum array sizes | Not yet reconciled |
-| H6 | Identifiers and multiplicity | Duplicate IDs, blank/malformed identifiers, and collision cases across relevant namespaces | Not yet reconciled |
+| H1 | Input fields | Missing/wrong-type nested input fields; distinguish structural rejection from digest rejection | partial; grouped cases cover missing states, wrong container types, unknown keys and unsupported string schema version; full required-field/type matrix still needs reconciliation |
+| H2 | Scenario-result fields | Missing/wrong-type nested scenario-result fields and unknown keys | partial; six grouped schema/semantic adversaries covered; not every required field/type combination is enumerated |
+| H3 | Comparison fields | Missing/wrong-type comparison fields, nested projection and unknown keys | partial; six grouped comparison adversaries cover missing/wrong-type fields, unknown keys, nested intervention and invalid trajectory topology; full required-field matrix remains open |
+| H4 | Optional package fields | Validate optional field types and legal/illegal presence combinations for trace, outcome, assessment and assessment status | partial; lifecycle truth table and required-field type/enum tests exist; optional-field presence/type cross-product remains to reconcile |
+| H5 | Numeric limits | Lower/upper numeric boundaries, out-of-range values and maximum array sizes | partial; grouped tests cover negative/over-limit/fractional exploration bounds and state/transition caps; exact boundary and all numeric/count limits need reconciliation |
+| H6 | Identifiers and multiplicity | Duplicate IDs, blank/malformed identifiers, and collision cases across relevant namespaces | partial; grouped tests cover duplicate/empty state, transition and scenario IDs plus disabled-transition duplicates/unknowns; cross-namespace collision matrix remains open |
 | H7 | Delta-reach projection | Source/result relationship coherence and digest projection for delta_reach | Existing grouped coverage verified on exact H6 gate; remaining scope documented |
 | H8 | Delta-reach derivation | Independently derive comparison and delta projections from scenario_results; reject jointly forged comparison/delta even when enclosing hashes are refreshed | verified on exact head `9d0e02da5c96828fa77f6ca913f4858efeaedbca`; five workflows PASS (evidence below) |
 | H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | verified on exact head `9d0e02da5c96828fa77f6ca913f4858efeaedbca`; five workflows PASS (evidence below) |
