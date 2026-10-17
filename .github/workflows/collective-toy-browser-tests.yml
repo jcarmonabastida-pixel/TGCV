@@ -48,6 +48,13 @@ jobs:
           path: prototypes/collective_toy/web/artifacts/tgcv-full-chain-acceptance-package.json
           if-no-files-found: error
           retention-days: 14
+      - name: Upload validated Full Chain acceptance package
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgcv-full-chain-acceptance-${{ github.sha }}
+          path: prototypes/collective_toy/web/artifacts/tgcv-full-chain-acceptance-package.json
+          if-no-files-found: error
+          retention-days: 14
       - name: Replay browser and Python suite from clean source archive
         shell: bash
         run: |
