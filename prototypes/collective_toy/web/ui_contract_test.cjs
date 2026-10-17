@@ -320,7 +320,11 @@ const assert = require("node:assert/strict");
 
     // GT-05 compatibility matrix: a package produced by supported rule profile 2
     // must survive clean import and independent replay under the same supported engine.
-    const profile2Package = structuredClone(relationPackage);
+    const profile2DownloadPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const profile2Download = await profile2DownloadPromise;
+    const profile2Package = JSON.parse(fs.readFileSync(await profile2Download.path(), "utf8"));
+    assert.equal(profile2Package.input.rule_profile.type, "relation_guard_graph");
     await page.locator("#package-file").setInputFiles({
       name: "supported-profile-2-relation-run.json",
       mimeType: "application/json",
