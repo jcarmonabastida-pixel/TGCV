@@ -1383,6 +1383,16 @@ const assert = require("node:assert/strict");
           name: "completed-final-state-disagrees-with-executed-sequence",
           candidate: await makeCandidate(trace => { trace.final_state = trace.initial_state; }),
           diagnostic: /final_state no coincide con el último estado válido de la traza/i
+        },
+        {
+          name: "executed-step-unknown-key",
+          candidate: await makeCandidate(trace => { trace.steps[0].uncontracted_field = "must-reject"; }),
+          diagnostic: /La traza contiene un paso malformado o con campos desconocidos/i
+        },
+        {
+          name: "executed-step-prerequisites-wrong-type",
+          candidate: await makeCandidate(trace => { trace.steps[0].prerequisites = "not-an-array"; }),
+          diagnostic: /prerequisites del paso contiene IDs inválidos/i
         }
       ];
     }, evidencePackage);
