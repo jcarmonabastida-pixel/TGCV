@@ -1295,7 +1295,7 @@ const assert = require("node:assert/strict");
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
-    assert.match(await page.locator("#package-assessment").innerText(), /El escenario de la traza no existe en la entrada/i,
+    assert.match(await page.locator("#package-assessment").innerText(), /scenario_id de la traza no existe en la entrada/i,
       "FC5-TRACE-005: reject unknown trace scenario even after refreshing trace and package digests");
 
     // GT-03 grouped semantic adversary: the blocked reason and missing-prerequisite list must be derived from model + executed history.
