@@ -502,11 +502,13 @@ The previous inventory note incorrectly implied the importer lacked closed step-
 
 Update FC5-TRACE-010 to verified for these two predicates only. Keep the complete missing/unknown/wrong-type field matrix partial. This documentation change needs its own exact-head five-workflow gate.
 
-### GT-03 trace schema follow-up — pending exact-head gate (2026-10-17)
+### GT-03 trace schema follow-up — three grouped predicates verified (2026-10-17)
 
-On candidate test commit `be1cc399bcfe6510910ee35bb7506753dddd9ffa`, three grouped cases were added for wrong-type `submitted_transition_ids`, undeclared `final_state`, and wrong-type `steps`. Existing coverage for an unknown top-level trace key and nested step schema remains reused; no duplicate test was added for those predicates.
+On test commit `be1cc399bcfe6510910ee35bb7506753dddd9ffa`, three grouped cases were added for wrong-type `submitted_transition_ids`, undeclared `final_state`, and wrong-type `steps`. Existing coverage for unknown top-level trace key and selected nested-step schema remains reused; no duplicate test was added for those predicates.
 
-The available GitHub status and PR-triggered workflow-run queries return no checks/runs for this exact SHA. Therefore the new cases are **not yet accepted**. Next action: obtain push-triggered CI evidence for the exact candidate head; inspect the browser job's targeted diagnostics and require all five workflows to pass on that same SHA. Only then reconcile the register/inventory as verified. No production change, scientific execution, or promotion to `main`.
+The three grouped cases are now verified on code head `a9bce4c7d404aaaee75b8a7b2e2ee638afbffe32`, which contains the cases and passed all five required workflows: governance [39062553540](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553540), synthetic engine [39062553561](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553561), browser/cross-runtime [39062553571](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553571), engine benchmark [39062553529](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553529), and browser benchmark [39062553596](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553596). The cases recompute dependent digests and verify rejection of the wrong-type `submitted_transition_ids`, an undeclared `final_state`, and wrong-type `steps`. This verifies those three predicates only; the wider trace schema/type matrix and overall FC-5/FC-6 acceptance remain partial.
+
+GT-03 is not thereby closed in full: other trace-context, semantic-coherence, and schema/type risks remain separately tracked. No scientific execution or promotion to `main`.
 
 ### FC5-REPLAY-003 — explicit historical-profile replay (2026-10-17)
 

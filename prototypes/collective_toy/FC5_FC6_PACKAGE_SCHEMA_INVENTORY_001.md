@@ -206,9 +206,11 @@ Current implementation enforces the closed seven-key schema for each step. The g
 
 ## Trace schema evidence delta — 2026-10-17
 
-The browser test source now contains grouped adversaries for wrong-type `submitted_transition_ids` (string instead of array), undeclared `final_state`, and wrong-type `steps` (string instead of array), added in test commit `be1cc399bcfe6510910ee35bb7506753dddd9ffa`. The existing `unknown-trace-key` case covers the closed top-level trace-key predicate; the existing `unknown-step-key` and `wrong-type-step-prerequisites` cases cover selected nested step predicates. These are mapped as test-source presence only.
+The browser suite contains grouped adversaries for wrong-type `submitted_transition_ids` (string instead of array), undeclared `final_state`, and wrong-type `steps` (string instead of array), introduced in test commit `be1cc399bcfe6510910ee35bb7506753dddd9ffa`. The existing `unknown-trace-key`, `unknown-step-key`, and `wrong-type-step-prerequisites` cases cover selected closed-key and nested-step predicates.
 
-**Acceptance status remains pending** for the three new cases until the targeted browser assertions and all five required workflows are observed passing on one exact SHA. No inference is made from absent workflow results. This does not close the wider 22-predicate trace inventory, all wrong-type combinations, or FC-5/FC-6 acceptance. No production changes or scientific execution.
+The three grouped cases are now verified on code head `a9bce4c7d404aaaee75b8a7b2e2ee638afbffe32`, which contains the cases and passed all five required workflows: governance [39062553540](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553540), synthetic engine [39062553561](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553561), browser/cross-runtime [39062553571](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553571), engine benchmark [39062553529](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553529), and browser benchmark [39062553596](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39062553596). The cases recompute dependent digests and verify rejection of the wrong-type `submitted_transition_ids`, an undeclared `final_state`, and wrong-type `steps`. This verifies those three predicates only; the wider trace schema/type matrix and overall FC-5/FC-6 acceptance remain partial.
+
+The broader 22-predicate trace inventory and all FC-5/FC-6 acceptance remain partial; no scientific execution or promotion to `main`.
 
 ### FC5-REPLAY-003 — explicit historical-profile replay (2026-10-17)
 
