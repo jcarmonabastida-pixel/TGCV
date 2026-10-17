@@ -2606,6 +2606,43 @@ const assert = require("node:assert/strict");
     assert.match(await temporalPage.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "GT-05 temporal: assessed package must independently replay after clean import");
 
+    // H10 grouped temporal-history adversaries: keep outer hashes valid while
+    // falsifying the execution prefix or the prerequisite evidence for t_cd.
+    const temporalHistoryAdversaries = await temporalPage.evaluate(async (pkg) => {
+      const makeCandidate = async (name, mutate) => {
+        const candidate = structuredClone(pkg);
+        mutate(candidate.concrete_execution_trace);
+        delete candidate.concrete_execution_trace.trace_sha256;
+        candidate.concrete_execution_trace.trace_sha256 = await window.hash(candidate.concrete_execution_trace, "sequence_trace");
+        candidate.outcome_record.execution_trace_sha256 = candidate.concrete_execution_trace.trace_sha256;
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name, candidate };
+      };
+      return [
+        await makeCandidate("prior-history-skips-executed-prerequisite", trace => {
+          trace.steps[2].prior_transitions = ["t_bc"];
+        }),
+        await makeCandidate("conditioned-step-omits-declared-prerequisite", trace => {
+          trace.steps[2].prerequisites = [];
+        })
+      ];
+    }, temporalPackage);
+    const temporalHistoryExpectations = {
+      "prior-history-skips-executed-prerequisite": /prior_transitions no coincide con el prefijo ejecutado/i,
+      "conditioned-step-omits-declared-prerequisite": /prerequisites del paso no coincide con las relaciones temporales declaradas para el perfil activo/i
+    };
+    for (const temporalCase of temporalHistoryAdversaries) {
+      await temporalPage.locator("#package-file").setInputFiles({
+        name: `h10-temporal-history-${temporalCase.name}.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(temporalCase.candidate))
+      });
+      await temporalPage.getByRole("button", { name: "Validar paquete importado" }).click();
+      await temporalPage.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await temporalPage.locator("#package-assessment").innerText(), temporalHistoryExpectations[temporalCase.name],
+        `H10: reject inconsistent temporal history despite recomputed trace and package digests: ${temporalCase.name}`);
+    }
+
     // FC-5 grouped package-envelope adversaries: preserve a valid exploration package,
     // vary one envelope predicate at a time, and recompute package SHA where applicable.
     const explorationEnvelope = structuredClone(temporalResult);

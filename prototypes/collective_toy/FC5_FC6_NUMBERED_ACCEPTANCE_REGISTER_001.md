@@ -281,6 +281,12 @@ The current register has 112 numbered predicate rows across sections A–G: 58 r
 
 
 
+
+
+#### H10 temporal trace semantics (2026-10-18)
+
+Existing grouped coverage exercises the temporal profile's prerequisite-before-conditioned success path, a blocked sequence with missing prerequisite IDs and derived reason, blocked/completed lifecycle coherence, final-state consistency, and independent replay. Added two import adversaries against a valid temporal package: (1) `prior_transitions` omits an already executed prerequisite from the history prefix; (2) the conditioned step omits the declared prerequisite. Both recompute the trace digest, outcome trace reference, and package digest, so rejection must come from temporal history semantics. Five-workflow gate pending on the resulting head SHA.
+
 #### H9 relation-guard semantics (2026-10-18)
 
 Existing profile-2 UI coverage verifies a disabled prerequisite blocks the guarded transition, exposes the blocking reason in the transition trace, survives export/import replay, and removes its effect when the relation is removed. Added grouped adversarial import cases forge the declared `relation_effects.reason` and omit the guarded transition from `effective_disabled_transitions`, while recomputing semantic, result, and package hashes. The importer must reject each based on the rule semantics, not stale digests. Five-workflow gate pending on the resulting head SHA.
@@ -308,7 +314,7 @@ This plan atomizes the seven previously excluded areas into **11 candidate group
 | H7 | Delta-reach projection | Source/result relationship coherence and digest projection for delta_reach | Existing grouped coverage verified on exact H6 gate; remaining scope documented |
 | H8 | Delta-reach derivation | Independently derive comparison and delta projections from scenario_results; reject jointly forged comparison/delta even when enclosing hashes are refreshed | Implemented; five-workflow gate pending |
 | H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | Grouped operational and forged-rule-effect tests added; five-workflow gate pending |
-| H10 | Temporal trace semantics | Temporal-prerequisite profile: missing prerequisite, wrong order, blocked step and terminal status coherence | Not yet reconciled |
+| H10 | Temporal trace semantics | Temporal-prerequisite profile: missing prerequisite, wrong order, blocked step and terminal status coherence | Grouped temporal-history adversaries added; five-workflow gate pending |
 | H11 | FC-6 artifact evidence | Exact artifact inventory, provenance and hashes, plus explicit non-claim boundary | Not yet reconciled |
 | Decision D1 | BLOCKED and trace-only packages | Approve normative acceptance semantics for BLOCKED traces and trace-only packages before assigning pass/fail expectations | **Must be decided first** |
 
