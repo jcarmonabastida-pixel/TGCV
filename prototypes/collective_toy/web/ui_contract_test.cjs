@@ -324,7 +324,7 @@ const assert = require("node:assert/strict");
     await page.locator("#export").click();
     const profile2Download = await profile2DownloadPromise;
     const profile2Package = JSON.parse(fs.readFileSync(await profile2Download.path(), "utf8"));
-    assert.equal(profile2Package.input.rule_profile.type, "relation_guard_graph");
+    assert.equal(profile2Package.input.rule_profile.type, "relation_guarded_graph");
     await page.locator("#package-file").setInputFiles({
       name: "supported-profile-2-relation-run.json",
       mimeType: "application/json",
