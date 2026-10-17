@@ -955,6 +955,61 @@ const assert = require("node:assert/strict");
         `H2: reject malformed scenario-result predicate ${scenarioCase.name}`);
     }
 
+    // H3 grouped comparison schema/semantic adversaries. Keep outer and semantic
+    // digests consistent so each candidate reaches its targeted comparison invariant.
+    const comparisonAdversaries = await page.evaluate(async (pkg) => {
+      const comparisonId = Object.keys(pkg.result.comparisons_to_baseline || {})[0];
+      if (!comparisonId) throw new Error("H3 fixture requires at least one baseline comparison.");
+      const cases = [
+        { name: "comparison-missing-added-list", mutate: cr => { delete cr.enabled_at_initial_added; }, expected: /El campo enabled_at_initial_added de la comparación .* debe ser una lista/i },
+        { name: "comparison-removed-states-wrong-type", mutate: cr => { cr.reachable_states_removed = "not-an-array"; }, expected: /El campo reachable_states_removed de la comparación .* debe ser una lista/i },
+        { name: "comparison-unknown-key", mutate: cr => { cr.unreviewed_extension = true; }, expected: /La comparación .* contiene campos desconocidos/i },
+        { name: "comparison-intervention-wrong-type", mutate: cr => { cr.intervention = []; }, expected: /intervention de la comparación .* debe ser un objeto/i },
+        { name: "comparison-disabled-transitions-wrong-type", mutate: cr => { cr.intervention.disabled_transitions = "not-an-array"; }, expected: /disabled_transitions de intervention debe ser una lista/i },
+        { name: "comparison-invalid-added-trajectory", mutate: cr => { cr.trajectories_added = [[{ state: pkg.input.initial_state }, { state: "STATE_NOT_DECLARED", transition: "TRANSITION_NOT_DECLARED" }]]; }, expected: /trajectories_added en .* debe contener rutas coherentes con las transiciones de entrada/i }
+      ];
+      return Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate.result.comparisons_to_baseline[comparisonId]);
+        if (candidate.result.semantic_identity_version !== undefined) {
+          const projected = structuredClone(candidate.result);
+          delete projected.delta_reach;
+          delete projected.engine_version;
+          delete projected.input_sha256;
+          delete projected.result_sha256;
+          delete projected.semantic_sha256;
+          delete projected.semantic_identity_version;
+          Object.keys(projected.scenario_results || {}).forEach(id => {
+            const scenario = projected.scenario_results[id];
+            if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+          });
+          Object.keys(projected.comparisons_to_baseline || {}).forEach(id => {
+            const intervention = projected.comparisons_to_baseline[id].intervention || {};
+            if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+          });
+          candidate.result.semantic_sha256 = await window.hash(projected, "result");
+        }
+        const resultBody = structuredClone(candidate.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        candidate.result.result_sha256 = await window.hash(resultBody, "result");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, expected: item.expected.source };
+      }));
+    }, fc4Package);
+    for (const comparisonCase of comparisonAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `h3-comparison-${comparisonCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(comparisonCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(comparisonCase.expected, "i"),
+        `H3: reject malformed comparison predicate ${comparisonCase.name}`);
+    }
+
     // FC-5: round-trip a fully assessed FC-4 package through the actual import UI.
     await page.locator("#package-file").setInputFiles({
       name: "assessed-fc4-roundtrip.json",
