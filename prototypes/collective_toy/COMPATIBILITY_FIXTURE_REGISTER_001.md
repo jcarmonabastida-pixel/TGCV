@@ -1,6 +1,6 @@
 # Collective Toy — compatibility fixture register 001
 
-**Status:** Initial register; no historical compatibility claim.  
+**Status:** Current synthetic compatibility evidence only; no verified historical artifact has been admitted.  
 **Scope:** Synthetic prototype package/replay contract only.
 
 ## 1. Version inventory at this revision
