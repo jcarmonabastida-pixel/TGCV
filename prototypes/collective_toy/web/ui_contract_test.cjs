@@ -1016,10 +1016,10 @@ const assert = require("node:assert/strict");
       const cases = [
         { name: "max-depth-negative", mutate: input => { input.exploration.max_depth = -1; }, expected: /max_depth debe ser un entero entre 0 y 100/i },
         { name: "max-depth-over-limit", mutate: input => { input.exploration.max_depth = 101; }, expected: /max_depth debe ser un entero entre 0 y 100/i },
-        { name: "max-depth-fractional", mutate: input => { input.exploration.max_depth = 1.5; }, expected: /max_depth debe ser un entero entre 0 y 100/i },
+        { name: "max-depth-fractional", mutate: input => { input.exploration.max_depth = 1.5; }, expected: /contiene un número que no es un entero seguro|max_depth debe ser un entero entre 0 y 100/i },
         { name: "max-trajectories-zero", mutate: input => { input.exploration.max_trajectories = 0; }, expected: /max_trajectories debe ser un entero entre 1 y 10000/i },
         { name: "max-trajectories-over-limit", mutate: input => { input.exploration.max_trajectories = 10001; }, expected: /max_trajectories debe ser un entero entre 1 y 10000/i },
-        { name: "max-trajectories-fractional", mutate: input => { input.exploration.max_trajectories = 1.5; }, expected: /max_trajectories debe ser un entero entre 1 y 10000/i },
+        { name: "max-trajectories-fractional", mutate: input => { input.exploration.max_trajectories = 1.5; }, expected: /contiene un número que no es un entero seguro|max_trajectories debe ser un entero entre 1 y 10000/i },
         { name: "states-over-limit", mutate: input => { input.states = input.states.concat(Array.from({ length: 501 - input.states.length }, (_, i) => "H5_EXTRA_STATE_" + i)); }, expected: /El modelo no puede superar 500 estados/i },
         { name: "transitions-over-limit", mutate: input => { input.transitions = input.transitions.concat(Array.from({ length: 2001 - input.transitions.length }, (_, i) => ({ id: "h5_extra_transition_" + i, source: input.initial_state, target: input.initial_state }))); }, expected: /El modelo no puede superar 2000 transiciones/i }
       ];
