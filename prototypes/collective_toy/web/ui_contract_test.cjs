@@ -1044,6 +1044,32 @@ const assert = require("node:assert/strict");
     assert.match(historicalAssessmentMessage, /value_assessment_status=NOT_ASSESSED/i,
       "GT-05/FC5-REPLAY-003: rejection must identify the missing explicit assessment status");
 
+    // The explicitly declared legacy profile is replayable when its required lifecycle status is present.
+    const historicalV1WithStatus = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.package_version = "collective-toy-browser-run-001";
+      delete candidate.package_stage;
+      delete candidate.result.delta_reach;
+      delete candidate.result.semantic_identity_version;
+      delete candidate.result.semantic_sha256;
+      candidate.value_assessment_status = "NOT_ASSESSED";
+      delete candidate.package_sha256;
+      delete candidate.result.result_sha256;
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody);
+      candidate.package_sha256 = await window.hash(candidate);
+      return candidate;
+    }, packageData);
+    await page.locator("#package-file").setInputFiles({
+      name: "historical-v1-explicit-not-assessed.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(historicalV1WithStatus))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "GT-05/FC5-REPLAY-003: explicitly supported historical v1 projection with NOT_ASSESSED must replay independently");
+
     // The preceding assertion is intentionally scoped to the successful assessed round-trip.
     // After the adversarial import, the package assessment is expected to be rejected.
     // FC-5: the same explicit outcome without a complete valuation must round-trip as NOT_ASSESSED.
