@@ -705,7 +705,7 @@ const assert = require("node:assert/strict");
     fs.mkdirSync("artifacts", { recursive: true });
     fs.writeFileSync(
       "artifacts/tgcv-full-chain-acceptance-package.json",
-      `${JSON.stringify(fc4Package, null, 2)}\\n`,
+      `${JSON.stringify(fc4Package, null, 2)}\n`,
       "utf8"
     );
 
