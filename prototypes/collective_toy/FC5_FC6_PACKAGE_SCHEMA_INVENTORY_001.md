@@ -217,3 +217,16 @@ The broader 22-predicate trace inventory and all FC-5/FC-6 acceptance remain par
 The browser suite exercises a constructed `collective-toy-browser-run-001`-shaped package with `value_assessment_status=NOT_ASSESSED` and rejects an incomplete variant missing that field. The positive replay and negative rejection cases passed all five workflows on exact test SHA `e327b4ae489472c3a65b2a2e4141cf71d6322d14`: governance [39059726191](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39059726191), synthetic engine [39059726181](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39059726181), browser/cross-runtime [39059726168](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39059726168), engine benchmark [39059726093](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39059726093), browser benchmark [39059726208](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39059726208).
 
 **Verified:** behavior for the constructed legacy-shaped projection. **Not verified:** replay compatibility with a real historical package artifact. No original package bytes/provenance and independently preserved expected output are registered under `COMPATIBILITY_FIXTURE_REGISTER_001.md`; historical profile compatibility remains partial/unverified until those admission criteria are met. No production change, scientific execution, or promotion to `main`.
+
+
+## 12. Latest grouped outcome/assessment evidence reconciliation — 2026-10-17
+
+Three exact-head test gates have now exercised 16 additional grouped adversarial predicates in the browser/cross-runtime suite:
+
+- `f2f403a261445e937ea923954015dc38a232be31`: six package-envelope/type predicates; five workflows PASS.
+- `67f02c9d5edfa435de81c2fdeaa8720a37dd4294`: six outcome/assessment schema predicates; five workflows PASS.
+- `9da15c5ddcdf8b88586bba800738c23805a2e8e3`: four outcome/assessment identity-link predicates; five workflows PASS.
+
+Evidence links are recorded in the numbered acceptance register. The current 16-predicate delta must be reconciled with the relevant existing rows rather than blindly added to the denominator: several rows describe broader predicate families and overlap with previous tests. These cases close only their named negative paths. Input model, nested scenario/comparison, complete `delta_reach` projection, broad trace type/semantic matrices, authentic historical package compatibility, and FC-6 final artifact inspection remain distinct coverage gaps.
+
+Do not add another test batch until the numbered register's status/evidence mapping and the seven section-H areas have been reconciled. The current literal register snapshot (112 rows: 58 labelled verified, 52 partial, 2 pending) is provisional, not a complete denominator.
