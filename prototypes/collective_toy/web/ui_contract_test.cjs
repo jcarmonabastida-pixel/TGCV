@@ -932,6 +932,48 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /secuencia de estados\/transiciones de la traza no es coherente con la entrada/i,
       "GT-05/FC5-TRACE-012: reject a re-hashed trace step that does not follow its declared transition edge");
 
+    // GT-03 grouped trace-contract adversaries: schema closure, trace metadata, ordered steps, and history.
+    const traceContractAdversaries = await page.evaluate(async (pkg) => {
+      const cases = [
+        { name: "unknown-trace-key", mutate: trace => { trace.uncontracted_field = "must-reject"; } },
+        { name: "negative-candidate-index", mutate: trace => { trace.candidate_index = -1; } },
+        { name: "unknown-submitted-transition", mutate: trace => { trace.submitted_transition_ids[0] = "TRANSITION_NOT_DECLARED"; } },
+        { name: "out-of-order-step-index", mutate: trace => { trace.steps[0].step = 2; } },
+        { name: "forged-prior-transition-history", mutate: trace => { trace.steps[1].prior_transitions = []; } }
+      ];
+      return await Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        const trace = candidate.concrete_execution_trace;
+        if (!trace || trace.steps.length < 2) throw new Error("GT-03 trace fixture needs at least two completed steps");
+        item.mutate(trace);
+        delete trace.trace_sha256;
+        trace.trace_sha256 = await window.hash(trace);
+        candidate.outcome_record.execution_trace_sha256 = trace.trace_sha256;
+        candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate };
+      }));
+    }, fc4Package);
+    const traceContractDiagnostics = {
+      "unknown-trace-key": /traza contiene campos desconocidos o ausentes/i,
+      "negative-candidate-index": /candidate_index debe ser null o un entero no negativo/i,
+      "unknown-submitted-transition": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
+      "out-of-order-step-index": /numeración o los tipos del paso son inválidos/i,
+      "forged-prior-transition-history": /prior_transitions no coincide con el prefijo ejecutado/i
+    };
+    for (const traceCase of traceContractAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `gt03-trace-contract-${traceCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(traceCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), traceContractDiagnostics[traceCase.name],
+        `GT-03: reject ${traceCase.name} after recomputing trace/outcome/assessment/package digests`);
+    }
+
     // GT-05 historical profile: v1 package without semantic-identity fields uses only the documented legacy replay projection.
     const historicalV1 = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
