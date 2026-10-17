@@ -1632,12 +1632,31 @@ const assert = require("node:assert/strict");
         {
           name: "orphan-delta-without-comparison",
           mutate: function (p) { delete p.result.comparisons_to_baseline.block_ac; },
-          expected: /Falta comparación baseline para block_ac/i
+          expected: /Falta comparación baseline para block_ac/i,
+          refreshSemanticIdentity: true
         }
       ];
       return Promise.all(cases.map(async (item) => {
         const candidate = structuredClone(pkg);
         item.mutate(candidate);
+        if (item.refreshSemanticIdentity) {
+          const projected = structuredClone(candidate.result);
+          delete projected.delta_reach;
+          delete projected.engine_version;
+          delete projected.input_sha256;
+          delete projected.result_sha256;
+          delete projected.semantic_sha256;
+          delete projected.semantic_identity_version;
+          Object.keys(projected.scenario_results || {}).forEach((id) => {
+            const scenario = projected.scenario_results[id];
+            if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+          });
+          Object.keys(projected.comparisons_to_baseline || {}).forEach((id) => {
+            const intervention = projected.comparisons_to_baseline[id].intervention || {};
+            if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+          });
+          candidate.result.semantic_sha256 = await window.hash(projected, "result");
+        }
         const resultBody = structuredClone(candidate.result);
         delete resultBody.input_sha256;
         delete resultBody.result_sha256;
