@@ -279,6 +279,19 @@ async function assessImportedBrowserPackage(pkg){
    ["truncated","baseline_truncated","intervention_truncated"].forEach(function(k){assert(typeof delta[k]==="boolean",k+" de delta_reach en "+id+" debe ser booleano.")});
    assert(cmp&&canonical(delta.reachable_states_added)===canonical(cmp.reachable_states_added.slice().sort())&&canonical(delta.reachable_states_removed)===canonical(cmp.reachable_states_removed.slice().sort())&&canonical(delta.enabled_at_initial_added)===canonical(cmp.enabled_at_initial_added.slice().sort())&&canonical(delta.enabled_at_initial_removed)===canonical(cmp.enabled_at_initial_removed.slice().sort())&&canonical(delta.trajectories_added)===canonical(cmp.trajectories_added)&&canonical(delta.trajectories_removed)===canonical(cmp.trajectories_removed),"delta_reach de "+id+" no coincide con la comparación baseline exportada.");
    assert(delta.baseline_truncated===base.truncated&&delta.intervention_truncated===intervention.truncated&&delta.truncated===(base.truncated||intervention.truncated),"Los indicadores de truncamiento de delta_reach en "+id+" no coinciden con los escenarios.");
+   // H8: independently derive the comparison and delta from the scenario results.
+   // Neither a forged comparison nor a delta copied from it is authoritative.
+   var baselineTrajectorySet=new Set(base.trajectories.map(canonical)),interventionTrajectorySet=new Set(intervention.trajectories.map(canonical));
+   var expectedDelta={
+    reachable_states_added:intervention.reachable_states.filter(function(v){return !base.reachable_states.includes(v)}).sort(),
+    reachable_states_removed:base.reachable_states.filter(function(v){return !intervention.reachable_states.includes(v)}).sort(),
+    enabled_at_initial_added:intervention.enabled_transitions_at_initial_state.filter(function(v){return !base.enabled_transitions_at_initial_state.includes(v)}).sort(),
+    enabled_at_initial_removed:base.enabled_transitions_at_initial_state.filter(function(v){return !intervention.enabled_transitions_at_initial_state.includes(v)}).sort(),
+    trajectories_added:intervention.trajectories.filter(function(path){return !baselineTrajectorySet.has(canonical(path))}),
+    trajectories_removed:base.trajectories.filter(function(path){return !interventionTrajectorySet.has(canonical(path))})
+   };
+   assert(canonical({reachable_states_added:cmp.reachable_states_added.slice().sort(),reachable_states_removed:cmp.reachable_states_removed.slice().sort(),enabled_at_initial_added:cmp.enabled_at_initial_added.slice().sort(),enabled_at_initial_removed:cmp.enabled_at_initial_removed.slice().sort(),trajectories_added:cmp.trajectories_added,trajectories_removed:cmp.trajectories_removed})===canonical(expectedDelta),"La comparación baseline de "+id+" no coincide con la derivación independiente a partir de los resultados de escenario.");
+   assert(canonical({reachable_states_added:delta.reachable_states_added,reachable_states_removed:delta.reachable_states_removed,enabled_at_initial_added:delta.enabled_at_initial_added,enabled_at_initial_removed:delta.enabled_at_initial_removed,trajectories_added:delta.trajectories_added,trajectories_removed:delta.trajectories_removed})===canonical(expectedDelta),"delta_reach de "+id+" no coincide con la derivación independiente a partir de los resultados de escenario.");
   }
  }
  if(Object.prototype.hasOwnProperty.call(pkg,"concrete_execution_trace")){
