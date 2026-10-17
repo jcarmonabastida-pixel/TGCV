@@ -1434,6 +1434,49 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /scenario_id del resultado no coincide con la traza exportada/i,
       "FC-5: importer must reject an outcome scenario ID that differs from the trace");
 
+    // FC5-TRACE-004/018: trace must bind to the exported input and its own digest must be well-formed and recomputed.
+    const traceIntegrityCases = await page.evaluate(async (pkg) => {
+      const wrongInput = structuredClone(pkg);
+      wrongInput.concrete_execution_trace.input_sha256 = "e".repeat(64);
+      delete wrongInput.concrete_execution_trace.trace_sha256;
+      wrongInput.concrete_execution_trace.trace_sha256 = await window.hash(wrongInput.concrete_execution_trace, "sequence_trace");
+      wrongInput.outcome_record.execution_trace_sha256 = wrongInput.concrete_execution_trace.trace_sha256;
+      wrongInput.value_assessment.outcome_sha256 = await window.hash(wrongInput.outcome_record, "outcome_record");
+      delete wrongInput.package_sha256;
+      wrongInput.package_sha256 = await window.hash(wrongInput, "package_export");
+
+      const malformedTraceDigest = structuredClone(pkg);
+      malformedTraceDigest.concrete_execution_trace.trace_sha256 = "not-a-sha256";
+      malformedTraceDigest.outcome_record.execution_trace_sha256 = malformedTraceDigest.concrete_execution_trace.trace_sha256;
+      malformedTraceDigest.value_assessment.outcome_sha256 = await window.hash(malformedTraceDigest.outcome_record, "outcome_record");
+      delete malformedTraceDigest.package_sha256;
+      malformedTraceDigest.package_sha256 = await window.hash(malformedTraceDigest, "package_export");
+
+      const incorrectTraceDigest = structuredClone(pkg);
+      incorrectTraceDigest.concrete_execution_trace.trace_sha256 = "f".repeat(64);
+      incorrectTraceDigest.outcome_record.execution_trace_sha256 = incorrectTraceDigest.concrete_execution_trace.trace_sha256;
+      incorrectTraceDigest.value_assessment.outcome_sha256 = await window.hash(incorrectTraceDigest.outcome_record, "outcome_record");
+      delete incorrectTraceDigest.package_sha256;
+      incorrectTraceDigest.package_sha256 = await window.hash(incorrectTraceDigest, "package_export");
+
+      return [
+        { name: "trace-input-hash-mismatch", candidate: wrongInput, diagnostic: /input_sha256 de la traza no coincide con la entrada exportada/i },
+        { name: "trace-digest-malformed", candidate: malformedTraceDigest, diagnostic: /trace_sha256 ausente o malformado/i },
+        { name: "trace-digest-incorrect", candidate: incorrectTraceDigest, diagnostic: /hash de la traza concreta no coincide/i }
+      ];
+    }, fc4Package);
+    for (const traceCase of traceIntegrityCases) {
+      await page.locator("#package-file").setInputFiles({
+        name: `forged-trace-integrity-${traceCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(traceCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), traceCase.diagnostic,
+        `FC5-TRACE-004/018: reject ${traceCase.name} after refreshing dependent digests`);
+    }
+
     // FC-5 grouped linkage integrity: trace digest, assessment outcome identity, and outcome digest.
     const forgedOutcomeAssessmentLinks = await page.evaluate(async (pkg) => {
       const traceDigest = structuredClone(pkg);
