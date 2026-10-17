@@ -1,6 +1,6 @@
 # FC-5 / FC-6 risk-prioritized grouped test plan — 001
 
-- **Status:** approved grouped test plan; policy A approved 2026-10-15. GT-02 nested-delta integrity follow-up passed on exact head `dc76bb6a`; GT-03 trace-coherence adversarial case is implemented and awaiting exact-head CI.
+- **Status:** approved grouped test plan; policy A approved 2026-10-15. GT-02 nested-delta integrity follow-up passed on exact head `dc76bb6a`; FC5-TRACE-017's two BLOCKED lifecycle predicates passed on exact test head `1813498d4adf3aa33ae5d6de63ee531acd2e867a`.
 - **Branch:** `prototype/tgcv-full-chain-001-20261014`
 - **Inputs reviewed:** full-chain contract, current browser importer and current `ui_contract_test.cjs` FC-5 section.
 - **Purpose:** choose a small number of coherent test scenarios that cover multiple acceptance predicates, rather than creating one test per predicate.
@@ -437,3 +437,10 @@ This closes only the named FC5-TRACE-004 mismatch and FC5-TRACE-018 digest forma
 The grouped browser adversary changes a BLOCKED trace's `scenario_id` to an undeclared identifier, recomputes trace and package digests, and asserts the targeted diagnostic `scenario_id de la traza no existe en la entrada.` The initial run found an assertion-message mismatch, not a validator defect; the assertion was aligned in test commit `30249281e11ad4d8cf225365c9b0ae4df13b0ef5`. All five workflows passed on that exact head: browser/cross-runtime [39043819831](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39043819831), engine [39043819794](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39043819794), engine benchmark [39043819813](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39043819813), browser benchmark [39043819903](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39043819903), governance [39043820036](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39043820036).
 
 This verifies only the specific undeclared-scenario predicate. The register and plan changes are documentation-only and require a new exact-head five-workflow gate. No production changes, no scientific execution, no promotion to `main`.
+
+
+### FC5-TRACE-017 — grouped BLOCKED lifecycle adversaries passed (2026-10-17)
+
+On exact test SHA `1813498d4adf3aa33ae5d6de63ee531acd2e867a`, the browser suite rejects a BLOCKED trace whose block index does not follow the executed prefix and a trace whose `final_state` is a valid declared state but does not equal the last valid state in the trace. The fixture was corrected after the first browser run showed that an undeclared forged state was caught earlier by state-membership validation; no production code changed. All five required workflows passed on that same SHA: browser/cross-runtime [39045108880](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39045108880), synthetic engine [39045108879](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39045108879), engine benchmark [39045108860](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39045108860), browser benchmark [39045108853](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39045108853), governance [39045108856](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39045108856).
+
+Scope is limited to these two predicates. GT-03's blocked-reason and missing-prerequisite adversaries are distinct checks; the full trace schema/type matrix remains incomplete. Documentation-only update; this commit needs its own exact-head gate. No scientific execution and no promotion to `main`.
