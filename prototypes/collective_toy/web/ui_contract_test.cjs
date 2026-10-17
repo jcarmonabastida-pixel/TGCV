@@ -664,6 +664,17 @@ const assert = require("node:assert/strict");
     await page.locator("#export").click();
     const fc4Download = await fc4ExportPromise;
     const fc4Package = JSON.parse(fs.readFileSync(await fc4Download.path(), "utf8"));
+
+    // GT-05 end-to-end linkage: the assessed export must preserve the exact explored model/result,
+    // and its concrete submitted sequence must be one of the candidate trajectories from that run.
+    assert.deepEqual(fc4Package.input, gt05ExplorationPackage.input,
+      "GT-05: final assessed package must preserve the source model used for exploration");
+    assert.deepEqual(fc4Package.result, gt05ExplorationPackage.result,
+      "GT-05: final assessed package must preserve the explored baseline/intervention and delta_reach result");
+    const executedTransitionIds = fc4Package.concrete_execution_trace.submitted_transition_ids;
+    assert.ok(gt05ExplorationPackage.result.scenario_results.baseline.trajectories.some(path =>
+      JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(executedTransitionIds)),
+      "GT-05: concrete execution must match one of the candidate trajectories explored from the same model");
     assert.equal(fc4Package.outcome_record.execution_id, fc4Package.concrete_execution_trace.execution_id,
       "FC-4: exported outcome must link to the exact exported execution");
     assert.equal(fc4Package.outcome_record.execution_trace_sha256, fc4Package.concrete_execution_trace.trace_sha256,
