@@ -58,6 +58,10 @@ These runs are historical evidence for that baseline only, not for the current P
 This audit supports engineering traceability only. It does not establish TGCV causality, value construction, empirical validity, or general scientific validation. The mathematical/functional contract remains a draft, PR #52 remains in draft, and promotion requires explicit governance review. Scientific execution remains unauthorized.
 
 
+## FC-6 artifact evidence boundary (current branch work)
+
+The current grouped browser audit checks the exact exported envelope and package digest, model/scenario/execution identity links, trace digest linkage, required non-empty outcome provenance, required non-empty observer/context/criterion/valuation-rule/rationale, and a recomputed `value_assessment.outcome_sha256` over the exact exported outcome. These assertions establish artifact-contract conformance and digest linkage only. Non-empty provenance strings are not independently verified claims; hashes provide integrity linkage, not proof of real-world truth. This is not evidence of TGCV causality, empirical validity, construction of value, or general scientific validity. Scientific execution remains unauthorized; the PR remains draft and `main` is not modified.
+
 ## Current-head evidence supplement — schema v002 lifecycle
 
 **Verified candidate commit:** `f8b6623a8ab316db092cac179966fd337ee29b39`  

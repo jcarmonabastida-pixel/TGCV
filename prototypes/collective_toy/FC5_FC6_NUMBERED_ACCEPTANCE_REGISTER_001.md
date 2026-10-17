@@ -283,6 +283,12 @@ The current register has 112 numbered predicate rows across sections A–G: 58 r
 
 
 
+
+
+#### H11 FC-6 artifact evidence (2026-10-18)
+
+The grouped export audit now verifies that all contracted outcome provenance fields and all observer/context/criterion/valuation-rule/rationale fields are present and non-empty, and independently recomputes `value_assessment.outcome_sha256` from the exact exported `outcome_record`. This supplements the existing exact envelope inventory, trace/outcome/assessment identity links, trace digest link, package-stage/status checks, and recomputed package SHA-256. Evidence is limited to artifact contract and integrity: it does not establish the truth of provenance assertions, empirical validity, TGCV causality, value construction, or scientific validation. No scientific execution or promotion to `main` is authorized by these tests.
+
 #### H10 temporal trace semantics (2026-10-18)
 
 Existing grouped coverage exercises the temporal profile's prerequisite-before-conditioned success path, a blocked sequence with missing prerequisite IDs and derived reason, blocked/completed lifecycle coherence, final-state consistency, and independent replay. Added two import adversaries against a valid temporal package: (1) `prior_transitions` omits an already executed prerequisite from the history prefix; (2) the conditioned step omits the declared prerequisite. Both recompute the trace digest, outcome trace reference, and package digest, so rejection must come from temporal history semantics. Five-workflow gate pending on the resulting head SHA.
@@ -315,7 +321,7 @@ This plan atomizes the seven previously excluded areas into **11 candidate group
 | H8 | Delta-reach derivation | Independently derive comparison and delta projections from scenario_results; reject jointly forged comparison/delta even when enclosing hashes are refreshed | Implemented; five-workflow gate pending |
 | H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | Grouped operational and forged-rule-effect tests added; five-workflow gate pending |
 | H10 | Temporal trace semantics | Temporal-prerequisite profile: missing prerequisite, wrong order, blocked step and terminal status coherence | Grouped temporal-history adversaries added; five-workflow gate pending |
-| H11 | FC-6 artifact evidence | Exact artifact inventory, provenance and hashes, plus explicit non-claim boundary | Not yet reconciled |
+| H11 | FC-6 artifact evidence | Exact artifact inventory, provenance and hashes, plus explicit non-claim boundary | Grouped export assertions added; audit scope/non-claims documented; five-workflow gate pending |
 | Decision D1 | BLOCKED and trace-only packages | Approve normative acceptance semantics for BLOCKED traces and trace-only packages before assigning pass/fail expectations | **Must be decided first** |
 
 The 11 batch count is a planning estimate, not the number of remaining test functions. Before implementation, each batch must be reconciled against validator branches, existing named tests, exact-SHA evidence and any already-closed register predicates. Split a batch only if independent predicates require materially different setup or expected behavior; do not create one test per field by default. Historical authentic-package replay remains a separate external-evidence gap and is not covered by H1–H11.

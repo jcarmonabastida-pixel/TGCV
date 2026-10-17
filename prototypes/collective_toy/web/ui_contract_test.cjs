@@ -802,6 +802,16 @@ const assert = require("node:assert/strict");
     }, fc4Package);
     assert.equal(exportedPackageDigest, fc4Package.package_sha256,
       "FC-6: complete exported package digest must recompute from the exported envelope");
+    assert.ok(["value", "unit", "timing", "uncertainty_status", "provenance"].every(key =>
+      typeof fc4Package.outcome_record[key] === "string" && fc4Package.outcome_record[key].trim().length > 0),
+      "FC-6: artifact inventory must retain the complete non-empty outcome provenance fields");
+    assert.ok(["observer", "context", "criterion", "valuation_rule", "rationale"].every(key =>
+      typeof fc4Package.value_assessment[key] === "string" && fc4Package.value_assessment[key].trim().length > 0),
+      "FC-6: artifact inventory must retain observer/context/criterion/rule/rationale provenance");
+    const exportedOutcomeDigest = await page.evaluate(async (outcome) =>
+      window.hash(outcome, "outcome_record"), fc4Package.outcome_record);
+    assert.equal(fc4Package.value_assessment.outcome_sha256, exportedOutcomeDigest,
+      "FC-6: assessment must carry the recomputable digest of the exact exported outcome");
 
     // FC-5 grouped package-integrity adversary: absent, malformed, and incorrect outer digest.
     const invalidPackageDigests = await page.evaluate(async (pkg) => {
