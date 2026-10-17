@@ -285,6 +285,10 @@ The current register has 112 numbered predicate rows across sections A–G: 58 r
 
 
 
+#### H4 optional-status type matrix (2026-10-18)
+
+Extended the grouped `value_assessment_status` adversarial set for an OUTCOME-stage package without `value_assessment`: besides unknown string, null and number, now include empty string, boolean and object. All candidates recompute the enclosing package digest, so rejection is attributable to the status contract. Existing tests already cover array-valued status, all 32 stage × trace/outcome/assessment presence combinations, and invalid lifecycle dependencies. H4 remains partial because the full optional-field type/presence cross-product across trace, outcome and assessment is not claimed complete.
+
 #### Exact-head gate for H8–H11 (2026-10-18)
 
 All five required workflows passed on exact head SHA `9d0e02da5c96828fa77f6ca913f4858efeaedbca`: governance [39077568500](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568500), synthetic engine [39077568480](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568480), browser/cross-runtime [39077568543](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568543), engine benchmark [39077568536](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568536), browser benchmark [39077568537](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568537). This gate verifies engineering conformance for the named grouped predicates only. It does not imply exhaustive coverage of H1–H6, all trace schema branches, historical authentic-package replay, or scientific validity.
@@ -318,7 +322,7 @@ This plan atomizes the seven previously excluded areas into **11 candidate group
 | H1 | Input fields | Missing/wrong-type nested input fields; distinguish structural rejection from digest rejection | partial; grouped cases cover missing states, wrong container types, unknown keys and unsupported string schema version; full required-field/type matrix still needs reconciliation |
 | H2 | Scenario-result fields | Missing/wrong-type nested scenario-result fields and unknown keys | partial; six grouped schema/semantic adversaries covered; not every required field/type combination is enumerated |
 | H3 | Comparison fields | Missing/wrong-type comparison fields, nested projection and unknown keys | partial; six grouped comparison adversaries cover missing/wrong-type fields, unknown keys, nested intervention and invalid trajectory topology; full required-field matrix remains open |
-| H4 | Optional package fields | Validate optional field types and legal/illegal presence combinations for trace, outcome, assessment and assessment status | partial; lifecycle truth table and required-field type/enum tests exist; optional-field presence/type cross-product remains to reconcile |
+| H4 | Optional package fields | Validate optional field types and legal/illegal presence combinations for trace, outcome, assessment and assessment status | partial; 32-row lifecycle truth table plus status-invalid matrix (unknown string, null, number, empty string, boolean, object); remaining optional-field type/presence cross-product still open |
 | H5 | Numeric limits | Lower/upper numeric boundaries, out-of-range values and maximum array sizes | partial; grouped tests cover negative/over-limit/fractional exploration bounds and state/transition caps; exact boundary and all numeric/count limits need reconciliation |
 | H6 | Identifiers and multiplicity | Duplicate IDs, blank/malformed identifiers, and collision cases across relevant namespaces | partial; grouped tests cover duplicate/empty state, transition and scenario IDs plus disabled-transition duplicates/unknowns; cross-namespace collision matrix remains open |
 | H7 | Delta-reach projection | Source/result relationship coherence and digest projection for delta_reach | Existing grouped coverage verified on exact H6 gate; remaining scope documented |

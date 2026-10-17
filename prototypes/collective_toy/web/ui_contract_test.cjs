@@ -1376,7 +1376,10 @@ const assert = require("node:assert/strict");
       const values = [
         { name: "unknown-string", value: "PENDING_REVIEW" },
         { name: "null", value: null },
-        { name: "numeric", value: 1 }
+        { name: "numeric", value: 1 },
+        { name: "empty-string", value: "" },
+        { name: "boolean", value: false },
+        { name: "object", value: { status: "NOT_ASSESSED" } }
       ];
       return Promise.all(values.map(async (item) => {
         const candidate = structuredClone(pkg);
@@ -1398,6 +1401,9 @@ const assert = require("node:assert/strict");
         `FC-5: importer must diagnose invalid assessment status ${statusCase.name}`);
     }
 
+    assert.equal(invalidAssessmentStatuses.length, 6,
+      "FC-5 H4: status matrix must include unknown string, null, number, empty string, boolean and object");
+    
     // FC-5 adversarial case: a forged outcome digest must be rejected even when package hash is recomputed.
     const forgedAssessmentDigest = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
