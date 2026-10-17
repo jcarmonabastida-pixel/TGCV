@@ -1043,6 +1043,38 @@ const assert = require("node:assert/strict");
         `H5: reject numeric or size limit violation ${limitCase.name}`);
     }
 
+    // H6 grouped identifier and multiplicity adversaries. Refresh input and package
+    // digests to ensure each malformed ID reaches the structural validator.
+    const identifierAdversaries = await page.evaluate(async (pkg) => {
+      const cases = [
+        { name: "duplicate-state-id", mutate: input => { input.states.push(input.states[0]); }, expected: /Hay IDs de estado duplicados/i },
+        { name: "empty-state-id", mutate: input => { input.states[1] = ""; }, expected: /Cada estado debe tener un ID no vacío/i },
+        { name: "duplicate-transition-id", mutate: input => { input.transitions[1].id = input.transitions[0].id; }, expected: /ID de transición duplicado/i },
+        { name: "empty-transition-id", mutate: input => { input.transitions[0].id = ""; }, expected: /ID, origen y destino deben ser textos no vacíos/i },
+        { name: "duplicate-scenario-id", mutate: input => { input.scenarios[1].id = input.scenarios[0].id; }, expected: /ID de escenario duplicado/i },
+        { name: "duplicate-disabled-transition-id", mutate: input => { input.scenarios[1].disabled_transitions = [input.transitions[0].id, input.transitions[0].id]; }, expected: /repite un ID/i },
+        { name: "unknown-disabled-transition-id", mutate: input => { input.scenarios[1].disabled_transitions = ["TRANSITION_NOT_DECLARED"]; }, expected: /Transición desconocida/i }
+      ];
+      return Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate.input);
+        candidate.result.input_sha256 = await window.hash(candidate.input, "input");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, expected: item.expected.source };
+      }));
+    }, fc4Package);
+    for (const idCase of identifierAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `h6-identifiers-${idCase.name}.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(idCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(idCase.expected, "i"),
+        `H6: reject malformed identifier or multiplicity ${idCase.name}`);
+    }
+
     // FC-5: round-trip a fully assessed FC-4 package through the actual import UI.
     await page.locator("#package-file").setInputFiles({
       name: "assessed-fc4-roundtrip.json",
