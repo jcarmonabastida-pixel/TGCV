@@ -1010,6 +1010,39 @@ const assert = require("node:assert/strict");
         `H3: reject malformed comparison predicate ${comparisonCase.name}`);
     }
 
+    // H5 grouped numeric-limit adversaries: test lower/upper bounds, integer-only
+    // constraints, and declared graph-size caps using correctly refreshed input digests.
+    const numericLimitAdversaries = await page.evaluate(async (pkg) => {
+      const cases = [
+        { name: "max-depth-negative", mutate: input => { input.exploration.max_depth = -1; }, expected: /max_depth debe ser un entero entre 0 y 100/i },
+        { name: "max-depth-over-limit", mutate: input => { input.exploration.max_depth = 101; }, expected: /max_depth debe ser un entero entre 0 y 100/i },
+        { name: "max-depth-fractional", mutate: input => { input.exploration.max_depth = 1.5; }, expected: /max_depth debe ser un entero entre 0 y 100/i },
+        { name: "max-trajectories-zero", mutate: input => { input.exploration.max_trajectories = 0; }, expected: /max_trajectories debe ser un entero entre 1 y 10000/i },
+        { name: "max-trajectories-over-limit", mutate: input => { input.exploration.max_trajectories = 10001; }, expected: /max_trajectories debe ser un entero entre 1 y 10000/i },
+        { name: "max-trajectories-fractional", mutate: input => { input.exploration.max_trajectories = 1.5; }, expected: /max_trajectories debe ser un entero entre 1 y 10000/i },
+        { name: "states-over-limit", mutate: input => { input.states = input.states.concat(Array.from({ length: 501 - input.states.length }, (_, i) => "H5_EXTRA_STATE_" + i)); }, expected: /El modelo no puede superar 500 estados/i },
+        { name: "transitions-over-limit", mutate: input => { input.transitions = input.transitions.concat(Array.from({ length: 2001 - input.transitions.length }, (_, i) => ({ id: "h5_extra_transition_" + i, source: input.initial_state, target: input.initial_state }))); }, expected: /El modelo no puede superar 2000 transiciones/i }
+      ];
+      return Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate.input);
+        candidate.result.input_sha256 = await window.hash(candidate.input, "input");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, expected: item.expected.source };
+      }));
+    }, fc4Package);
+    for (const limitCase of numericLimitAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `h5-numeric-limit-${limitCase.name}.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(limitCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(limitCase.expected, "i"),
+        `H5: reject numeric or size limit violation ${limitCase.name}`);
+    }
+
     // FC-5: round-trip a fully assessed FC-4 package through the actual import UI.
     await page.locator("#package-file").setInputFiles({
       name: "assessed-fc4-roundtrip.json",
