@@ -948,6 +948,11 @@ const assert = require("node:assert/strict");
     const inputSchemaAdversaries = await page.evaluate(async (pkg) => {
       const cases = [
         { name: "input-schema-version-unknown-string", mutate: input => { input.schema_version = "collective-toy-input-999"; }, diagnostic: /schema_version no compatible/i },
+        { name: "input-model-id-wrong-type", mutate: input => { input.model_id = 17; }, diagnostic: /model_id debe ser texto no vacío/i },
+        { name: "input-initial-state-wrong-type", mutate: input => { input.initial_state = ["A"]; }, diagnostic: /initial_state debe ser un ID de estado declarado/i },
+        { name: "input-relations-wrong-type", mutate: input => { input.relations = "not-an-array"; }, diagnostic: /relations debe ser una lista/i },
+        { name: "input-scenario-element-wrong-type", mutate: input => { input.scenarios[0] = "not-an-object"; }, diagnostic: /Cada escenario debe ser un objeto/i },
+        { name: "input-exploration-bound-wrong-type", mutate: input => { input.exploration.max_depth = "4"; }, diagnostic: /max_depth debe ser un entero entre 0 y 100/i },
         { name: "input-missing-states", mutate: input => { delete input.states; }, diagnostic: /states debe ser una lista no vacía/i },
         { name: "input-transitions-wrong-type", mutate: input => { input.transitions = { id: "not-an-array" }; }, diagnostic: /transitions debe ser una lista/i },
         { name: "input-scenarios-wrong-type", mutate: input => { input.scenarios = "not-an-array"; }, diagnostic: /scenarios debe ser una lista no vacía/i },
