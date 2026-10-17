@@ -1317,7 +1317,7 @@ const assert = require("node:assert/strict");
         {
           name: "blocked-index-does-not-follow-prefix",
           candidate: await makeCandidate(trace => { trace.blocked_step.index = trace.steps.length + 2; }),
-          diagnostic: /índice del bloqueo no coincide con el siguiente paso de la secuencia/i
+          diagnostic: /El paso bloqueado no es coherente con la secuencia intentada/i
         },
         {
           name: "blocked-final-state-disagrees-with-last-valid-state",
