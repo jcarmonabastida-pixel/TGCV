@@ -2299,6 +2299,49 @@ const assert = require("node:assert/strict");
     await temporalPage.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
     assert.match(await temporalPage.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "GT-05 temporal: assessed package must independently replay after clean import");
+
+    // FC-5 grouped package-envelope adversaries: preserve a valid exploration package,
+    // vary one envelope predicate at a time, and recompute package SHA where applicable.
+    const explorationEnvelope = structuredClone(temporalResult);
+    explorationEnvelope.package_version = "collective-toy-browser-run-002";
+    explorationEnvelope.package_stage = "EXPLORATION";
+    delete explorationEnvelope.concrete_execution_trace;
+    delete explorationEnvelope.outcome_record;
+    delete explorationEnvelope.value_assessment;
+    explorationEnvelope.value_assessment_status = "NOT_ASSESSED";
+    const assessEnvelopeRejection = async (candidate, expectedMessage, recalculateHash = true) => {
+      const payload = structuredClone(candidate);
+      if (recalculateHash) {
+        delete payload.package_sha256;
+        payload.package_sha256 = await temporalPage.evaluate(async value => window.hash(value), payload);
+      }
+      await temporalPage.locator("#package-file").setInputFiles({
+        name: "fc5-envelope-adversary.json",
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(payload))
+      });
+      await temporalPage.getByRole("button", { name: "Validar paquete importado" }).click();
+      await temporalPage.locator('#package-assessment[data-state="rejected"]').waitFor({ timeout: 10000 });
+      assert.match(await temporalPage.locator("#package-assessment").innerText(), expectedMessage);
+    };
+    const missingPackageHash = structuredClone(explorationEnvelope);
+    delete missingPackageHash.package_sha256;
+    await assessEnvelopeRejection(missingPackageHash, /package_sha256 ausente o malformado/i, false);
+    const malformedPackageHash = structuredClone(explorationEnvelope);
+    malformedPackageHash.package_sha256 = "not-a-sha256";
+    await assessEnvelopeRejection(malformedPackageHash, /package_sha256 ausente o malformado/i, false);
+    const wrongTypeTrace = structuredClone(explorationEnvelope);
+    wrongTypeTrace.concrete_execution_trace = "not-an-object";
+    await assessEnvelopeRejection(wrongTypeTrace, /concrete_execution_trace debe ser un objeto/i);
+    const wrongTypeOutcome = structuredClone(explorationEnvelope);
+    wrongTypeOutcome.outcome_record = "not-an-object";
+    await assessEnvelopeRejection(wrongTypeOutcome, /outcome_record debe ser un objeto/i);
+    const wrongTypeAssessment = structuredClone(explorationEnvelope);
+    wrongTypeAssessment.value_assessment = "not-an-object";
+    await assessEnvelopeRejection(wrongTypeAssessment, /La valoración requiere un resultado explícito/i);
+    const wrongTypeAssessmentStatus = structuredClone(explorationEnvelope);
+    wrongTypeAssessmentStatus.value_assessment_status = ["NOT_ASSESSED"];
+    await assessEnvelopeRejection(wrongTypeAssessmentStatus, /value_assessment_status=NOT_ASSESSED/i);
     await temporalPage.close();
 
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
