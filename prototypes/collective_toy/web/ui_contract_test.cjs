@@ -1279,6 +1279,25 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /traza BLOCKED debe coincidir con el prefijo de transiciones enviadas/i,
       "FC-5/FC-6: reject a BLOCKED trace whose executed steps differ from the submitted sequence prefix despite recomputed digests");
 
+    // FC5-TRACE-005: a trace cannot refer to a scenario absent from its own exported input.
+    const unknownTraceScenario = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.concrete_execution_trace.scenario_id = "scenario-not-declared";
+      delete candidate.concrete_execution_trace.trace_sha256;
+      candidate.concrete_execution_trace.trace_sha256 = await window.hash(candidate.concrete_execution_trace, "sequence_trace");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, blockedPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "blocked-trace-unknown-scenario.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(unknownTraceScenario))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(), /El escenario de la traza no existe en la entrada/i,
+      "FC5-TRACE-005: reject unknown trace scenario even after refreshing trace and package digests");
+
     // GT-03 grouped semantic adversary: the blocked reason and missing-prerequisite list must be derived from model + executed history.
     const forgedBlockedPrerequisites = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
