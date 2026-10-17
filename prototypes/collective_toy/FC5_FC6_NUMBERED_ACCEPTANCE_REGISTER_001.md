@@ -112,7 +112,7 @@
 | FC5-TRACE-016 | Require completed trace to have no blocked step and correct final state | pending | Dedicated validation/test not located |
 | FC5-TRACE-017 | Require blocked trace to have coherent block index/reason/last state | pending | Dedicated validation/test not located |
 | FC5-TRACE-018 | Validate trace digest format and recomputation | partial | Implemented and tested indirectly; targeted tampering case not mapped |
-| FC5-TRACE-019 | Enforce outcome-to-trace execution/hash/model/scenario cross-links | partial | Multiple cross-link adversarial tests exist; full predicate mapping needed |
+| FC5-TRACE-019 | Enforce outcome-to-trace execution/hash/model/scenario cross-links | verified (named cross-link predicates; broader trace lifecycle remains separate) | Existing grouped adversaries independently reject mismatched outcome execution ID, model ID, scenario ID, and trace digest; assessment execution/outcome IDs and outcome digest are also tested. These are linkage predicates only and do not close trace lifecycle, trace schema, or GT-05 end-to-end acceptance. The exact-head browser/cross-runtime workflow passed on test SHA `20cc48ed7366db9ab200faf34b625382c05adb7c`: [39038603637](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39038603637).
 | FC5-TRACE-020 | Define acceptance policy for trace-only package without outcome | pending | Contract decision not documented |
 
 ## F. Outcome and value assessment
