@@ -285,6 +285,10 @@ The current register has 112 numbered predicate rows across sections A–G: 58 r
 
 
 
+#### Exact-head gate for H8–H11 (2026-10-18)
+
+All five required workflows passed on exact head SHA `9d0e02da5c96828fa77f6ca913f4858efeaedbca`: governance [39077568500](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568500), synthetic engine [39077568480](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568480), browser/cross-runtime [39077568543](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568543), engine benchmark [39077568536](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568536), browser benchmark [39077568537](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39077568537). This gate verifies engineering conformance for the named grouped predicates only. It does not imply exhaustive coverage of H1–H6, all trace schema branches, historical authentic-package replay, or scientific validity.
+
 #### H11 FC-6 artifact evidence (2026-10-18)
 
 The grouped export audit now verifies that all contracted outcome provenance fields and all observer/context/criterion/valuation-rule/rationale fields are present and non-empty, and independently recomputes `value_assessment.outcome_sha256` from the exact exported `outcome_record`. This supplements the existing exact envelope inventory, trace/outcome/assessment identity links, trace digest link, package-stage/status checks, and recomputed package SHA-256. Evidence is limited to artifact contract and integrity: it does not establish the truth of provenance assertions, empirical validity, TGCV causality, value construction, or scientific validation. No scientific execution or promotion to `main` is authorized by these tests.
@@ -318,10 +322,10 @@ This plan atomizes the seven previously excluded areas into **11 candidate group
 | H5 | Numeric limits | Lower/upper numeric boundaries, out-of-range values and maximum array sizes | Not yet reconciled |
 | H6 | Identifiers and multiplicity | Duplicate IDs, blank/malformed identifiers, and collision cases across relevant namespaces | Not yet reconciled |
 | H7 | Delta-reach projection | Source/result relationship coherence and digest projection for delta_reach | Existing grouped coverage verified on exact H6 gate; remaining scope documented |
-| H8 | Delta-reach derivation | Independently derive comparison and delta projections from scenario_results; reject jointly forged comparison/delta even when enclosing hashes are refreshed | Implemented; five-workflow gate pending |
-| H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | Grouped operational and forged-rule-effect tests added; five-workflow gate pending |
-| H10 | Temporal trace semantics | Temporal-prerequisite profile: missing prerequisite, wrong order, blocked step and terminal status coherence | Grouped temporal-history adversaries added; five-workflow gate pending |
-| H11 | FC-6 artifact evidence | Exact artifact inventory, provenance and hashes, plus explicit non-claim boundary | Grouped export assertions added; audit scope/non-claims documented; five-workflow gate pending |
-| Decision D1 | BLOCKED and trace-only packages | Approve normative acceptance semantics for BLOCKED traces and trace-only packages before assigning pass/fail expectations | **Must be decided first** |
+| H8 | Delta-reach derivation | Independently derive comparison and delta projections from scenario_results; reject jointly forged comparison/delta even when enclosing hashes are refreshed | verified on exact head `9d0e02da5c96828fa77f6ca913f4858efeaedbca`; five workflows PASS (evidence below) |
+| H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | verified on exact head `9d0e02da5c96828fa77f6ca913f4858efeaedbca`; five workflows PASS (evidence below) |
+| H10 | Temporal trace semantics | Temporal-prerequisite profile: missing prerequisite, wrong order, blocked step and terminal status coherence | verified on exact head `9d0e02da5c96828fa77f6ca913f4858efeaedbca`; five workflows PASS (evidence below) |
+| H11 | FC-6 artifact evidence | Exact artifact inventory, provenance and hashes, plus explicit non-claim boundary | verified on exact head `9d0e02da5c96828fa77f6ca913f4858efeaedbca`; five workflows PASS (evidence below) |
+| Decision D1 | BLOCKED and trace-only packages | Normative acceptance semantics for BLOCKED traces and trace-only packages | **Resolved: policy A**; see FC5-TRACE-015 and FC5-TRACE-020 evidence below |
 
 The 11 batch count is a planning estimate, not the number of remaining test functions. Before implementation, each batch must be reconciled against validator branches, existing named tests, exact-SHA evidence and any already-closed register predicates. Split a batch only if independent predicates require materially different setup or expected behavior; do not create one test per field by default. Historical authentic-package replay remains a separate external-evidence gap and is not covered by H1–H11.
