@@ -1298,6 +1298,45 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /scenario_id de la traza no existe en la entrada/i,
       "FC5-TRACE-005: reject unknown trace scenario even after refreshing trace and package digests");
 
+    // FC5-TRACE-017 grouped lifecycle coherence: block index and last valid state must match the executed prefix.
+    const blockedLifecycleAdversaries = await page.evaluate(async (pkg) => {
+      const makeCandidate = async (mutate) => {
+        const candidate = structuredClone(pkg);
+        const trace = candidate.concrete_execution_trace;
+        if (trace.status !== "BLOCKED" || !trace.blocked_step || trace.steps.length < 1) {
+          throw new Error("FC5-TRACE-017 fixture must be a BLOCKED trace with a non-empty valid prefix");
+        }
+        mutate(trace);
+        delete trace.trace_sha256;
+        trace.trace_sha256 = await window.hash(trace, "sequence_trace");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return candidate;
+      };
+      return [
+        {
+          name: "blocked-index-does-not-follow-prefix",
+          candidate: await makeCandidate(trace => { trace.blocked_step.index = trace.steps.length + 2; }),
+          diagnostic: /índice del bloqueo no coincide con el siguiente paso de la secuencia/i
+        },
+        {
+          name: "blocked-final-state-disagrees-with-last-valid-state",
+          candidate: await makeCandidate(trace => { trace.final_state = "__forged_last_valid_state__"; }),
+          diagnostic: /final_state no coincide con el último estado válido de la traza/i
+        }
+      ];
+    }, blockedPackage);
+    for (const blockedCase of blockedLifecycleAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `blocked-lifecycle-${blockedCase.name}.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(blockedCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), blockedCase.diagnostic,
+        `FC5-TRACE-017: reject incoherent BLOCKED lifecycle predicate ${blockedCase.name}`);
+    }
+
     // GT-03 grouped semantic adversary: the blocked reason and missing-prerequisite list must be derived from model + executed history.
     const forgedBlockedPrerequisites = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
