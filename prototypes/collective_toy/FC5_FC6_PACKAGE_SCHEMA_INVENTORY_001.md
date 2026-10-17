@@ -183,3 +183,8 @@ The stale statement that the BLOCKED policy is unresolved is superseded. Contrac
 ### FC5-TRACE schema coverage reconciliation (2026-10-17)
 
 Reinspection of `web/index.html` confirms a top-level trace closed-key allowlist and required-key check; each step has an exact seven-key schema check; core trace/step field types, state/edge sequence, final state, COMPLETED/BLOCKED lifecycle, blocked reason/prerequisites and trace digest are validated. The inventory's prior assertion that no trace/step closed-key checks exist was stale and has been corrected. The remaining issue is evidence mapping: add grouped adversarial cases for the highest-risk untested wrong-type/unknown-key combinations rather than one test per field. This correction does not claim those combinations have all been tested.
+
+
+### BLOCKED metadata schema evidence update (2026-10-17)
+
+The latest grouped browser suite on test SHA `a5a8753f4609d4e4708ec311a20e3297bd288a2d` now covers two additional `blocked_step` adversaries: unknown key and wrong-type `required_transition_ids` (string instead of array). All five workflows passed: governance [39051214686](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39051214686), engine [39051214571](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39051214571), browser/cross-runtime [39051214639](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39051214639), engine benchmark [39051214567](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39051214567), browser benchmark [39051214613](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39051214613). These add evidence for selected predicates only; the full blocked metadata and trace schema/type matrix remains partial.
