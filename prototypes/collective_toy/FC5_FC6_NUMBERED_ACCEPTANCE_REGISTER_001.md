@@ -160,7 +160,7 @@ These are known gaps in the atomic inventory and must be expanded before publish
 1. Wrong-type and missing-field predicates for every nested scenario-result field, comparison field, and input field.
 2. Package optional-field types and the full trace/outcome/assessment/status presence truth table.
 3. All numeric lower/upper boundaries, maximum array sizes, duplicate IDs, and malformed identifiers.
-4. `delta_reach` is split into H7 projection consistency and H8 independent derivation. H7 existing grouped browser assertions cover exact intervention-key set, closed nested schema, valid source digests and source linkage, declared state/transition references, valid trajectories, comparison equality and truncation consistency; GT-02 adversaries also recompute enclosing hashes before checking targeted rejection. H8 remains open: decide whether import must independently recompute `delta_reach` from source scenarios/results rather than validate only its internal links.
+4. `delta_reach` is split into H7 projection consistency and H8 independent derivation. H7 existing grouped browser assertions cover exact intervention-key set, closed nested schema, valid source digests and source linkage, declared state/transition references, valid trajectories, comparison equality and truncation consistency; GT-02 adversaries also recompute enclosing hashes before checking targeted rejection. H8 contract decision: import must independently derive reachability, initially enabled-transition, and trajectory differences from the exported `scenario_results`, then require both `comparisons_to_baseline` and `delta_reach` to match that derivation. This protects against coordinated edits to both derived projections with refreshed semantic/result/package hashes; it does not claim to independently rerun the engine or prove the scenario results themselves are truthful.
 5. Full trace semantic checks for relation-guarded and temporal-prerequisite rule profiles.
 6. FC-6 artifact inventory: exact expected files, provenance/hash checks, and non-claim statements.
 7. A contract decision for BLOCKED traces and trace-only packages.
@@ -277,6 +277,12 @@ The current register has 112 numbered predicate rows across sections A–G: 58 r
 
 
 
+
+
+#### H8 independent derivation contract (2026-10-18)
+
+The import contract now requires `comparisons_to_baseline` and `delta_reach` to be independently derived from the exported baseline/intervention `scenario_results` for reachable states, transitions enabled at the initial state, and trajectories. The browser adversary jointly changes `delta_reach.reachable_states_removed` and `comparisons_to_baseline.reachable_states_removed`, refreshes semantic/result/package hashes, and expects import rejection because both projections disagree with the scenario results. Scope is deliberately bounded: this does not rerun the engine from `input` and therefore does not prove the exported scenario results themselves were faithfully computed. Implementation commit `e44cf90bcaf44aac693694eec60645c4f45c7e9c`; adversarial test commit `b64d65be19673e5927e158cf6f6831815272bec7`; final five-workflow evidence must be recorded on the resulting head SHA before H8 is closed.
+
 #### H7 evidence reconciliation (2026-10-18)
 
 H7 does not require a duplicate test batch: existing assertions in `prototypes/collective_toy/web/ui_contract_test.cjs` validate `delta_reach` schema closure, source digests, state/transition references, trajectory topology, equality with `comparisons_to_baseline`, and truncation flags. GT-02 grouped adversaries include missing/unexpected intervention entries, malformed source digest, undeclared state/transition references, invalid trajectory edges, non-boolean truncation, aggregate truncation mismatch, and altered projection values with enclosing hashes recomputed. The complete five-workflow gate passed on H6 SHA `67486fa27939f110f93b5cdded2a696aa4763ef9`: governance [39074837257](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837257), synthetic engine [39074837252](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837252), browser/cross-runtime [39074837231](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837231), engine benchmark [39074837209](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837209), browser benchmark [39074837268](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837268). This closes only the tested H7 projection predicates. It does not settle H8 independent derivation/recomputation, and does not imply exhaustive `delta_reach` correctness.
@@ -294,7 +300,7 @@ This plan atomizes the seven previously excluded areas into **11 candidate group
 | H5 | Numeric limits | Lower/upper numeric boundaries, out-of-range values and maximum array sizes | Not yet reconciled |
 | H6 | Identifiers and multiplicity | Duplicate IDs, blank/malformed identifiers, and collision cases across relevant namespaces | Not yet reconciled |
 | H7 | Delta-reach projection | Source/result relationship coherence and digest projection for delta_reach | Existing grouped coverage verified on exact H6 gate; remaining scope documented |
-| H8 | Delta-reach derivation | Decide and test whether imported delta_reach must be independently recomputed, not merely internally hashed | Contract/implementation review required |
+| H8 | Delta-reach derivation | Independently derive comparison and delta projections from scenario_results; reject jointly forged comparison/delta even when enclosing hashes are refreshed | Implemented; five-workflow gate pending |
 | H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | Not yet reconciled |
 | H10 | Temporal trace semantics | Temporal-prerequisite profile: missing prerequisite, wrong order, blocked step and terminal status coherence | Not yet reconciled |
 | H11 | FC-6 artifact evidence | Exact artifact inventory, provenance and hashes, plus explicit non-claim boundary | Not yet reconciled |
