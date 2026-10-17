@@ -1116,6 +1116,53 @@ const assert = require("node:assert/strict");
         `H5: reject numeric or size limit violation ${limitCase.name}`);
     }
 
+    // H5 inclusive-boundary positive checks use the live validator/engine path.
+    // A tiny graph makes the maximum trajectory budget inexpensive while still
+    // proving that every documented endpoint is accepted rather than rejected.
+    const savedModelText = await page.locator("#model").inputValue();
+    const acceptedBoundaryModels = [
+      { name: "max-depth-lower-inclusive", max_depth: 0, max_trajectories: 1 },
+      { name: "max-depth-upper-inclusive", max_depth: 100, max_trajectories: 1 },
+      { name: "max-trajectories-lower-inclusive", max_depth: 0, max_trajectories: 1 },
+      { name: "max-trajectories-upper-inclusive", max_depth: 0, max_trajectories: 10000 }
+    ];
+    for (const boundary of acceptedBoundaryModels) {
+      const model = {
+        schema_version: "collective-toy-input-001",
+        model_id: "h5-boundary-" + boundary.name,
+        initial_state: "S",
+        states: ["S"],
+        transitions: [],
+        relations: [],
+        rule_profile: { type: "finite_deterministic_graph", version: "1" },
+        scenarios: [{ id: "baseline", disabled_transitions: [] }],
+        exploration: { max_depth: boundary.max_depth, max_trajectories: boundary.max_trajectories }
+      };
+      await page.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, model);
+      await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+      await page.waitForFunction(() => {
+        const status = document.querySelector("#status");
+        return status && !/Validando y ejecutando/.test(status.textContent);
+      });
+      const boundaryStatus = await page.locator("#status").innerText();
+      assert.match(boundaryStatus, /Ejecución completada/i,
+        `H5: inclusive numeric boundary must be accepted: ${boundary.name}; got ${boundaryStatus}`);
+    }
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, savedModelText);
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.waitForFunction(() => {
+      const status = document.querySelector("#status");
+      return status && !/Validando y ejecutando/.test(status.textContent);
+    });
+    assert.match(await page.locator("#status").innerText(), /Ejecución completada/i,
+      "H5: restore canonical model after inclusive-boundary checks");
+
     // H6 grouped identifier and multiplicity adversaries. Refresh input and package
     // digests to ensure each malformed ID reaches the structural validator.
     const identifierAdversaries = await page.evaluate(async (pkg) => {
