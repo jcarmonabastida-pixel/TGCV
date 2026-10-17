@@ -160,7 +160,7 @@ These are known gaps in the atomic inventory and must be expanded before publish
 1. Wrong-type and missing-field predicates for every nested scenario-result field, comparison field, and input field.
 2. Package optional-field types and the full trace/outcome/assessment/status presence truth table.
 3. All numeric lower/upper boundaries, maximum array sizes, duplicate IDs, and malformed identifiers.
-4. Complete `delta_reach` relationship and hash projections, including whether a supplied delta must be independently recomputed on import.
+4. `delta_reach` is split into H7 projection consistency and H8 independent derivation. H7 existing grouped browser assertions cover exact intervention-key set, closed nested schema, valid source digests and source linkage, declared state/transition references, valid trajectories, comparison equality and truncation consistency; GT-02 adversaries also recompute enclosing hashes before checking targeted rejection. H8 remains open: decide whether import must independently recompute `delta_reach` from source scenarios/results rather than validate only its internal links.
 5. Full trace semantic checks for relation-guarded and temporal-prerequisite rule profiles.
 6. FC-6 artifact inventory: exact expected files, provenance/hash checks, and non-claim statements.
 7. A contract decision for BLOCKED traces and trace-only packages.
@@ -275,6 +275,12 @@ The five-workflow exact-head gate passed for each of those three test SHAs. Thes
 The current register has 112 numbered predicate rows across sections A–G: 58 rows labelled `verified`, 52 `partial`, and 2 `pending` under the literal status-label count. This is **not** the final coverage denominator: some statuses say “candidate” and explicitly require a fresh exact-head gate; section H lists seven unatomized areas; and rows need exact implementation/test/evidence reconciliation. The honest current answer to “how many tests remain” is therefore not a single count. The next task is to reconcile stale status text and atomize only section-H gaps, then publish (a) total acceptance predicates, (b) verified predicates, (c) partial/pending predicates, and (d) grouped test scenarios planned to close them. A predicate count is not a count of individual test functions or test runs.
 
 
+
+
+#### H7 evidence reconciliation (2026-10-18)
+
+H7 does not require a duplicate test batch: existing assertions in `prototypes/collective_toy/web/ui_contract_test.cjs` validate `delta_reach` schema closure, source digests, state/transition references, trajectory topology, equality with `comparisons_to_baseline`, and truncation flags. GT-02 grouped adversaries include missing/unexpected intervention entries, malformed source digest, undeclared state/transition references, invalid trajectory edges, non-boolean truncation, aggregate truncation mismatch, and altered projection values with enclosing hashes recomputed. The complete five-workflow gate passed on H6 SHA `67486fa27939f110f93b5cdded2a696aa4763ef9`: governance [39074837257](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837257), synthetic engine [39074837252](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837252), browser/cross-runtime [39074837231](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837231), engine benchmark [39074837209](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837209), browser benchmark [39074837268](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39074837268). This closes only the tested H7 projection predicates. It does not settle H8 independent derivation/recomputation, and does not imply exhaustive `delta_reach` correctness.
+
 ### Section-H atomization plan — grouped coverage batches (2026-10-17)
 
 This plan atomizes the seven previously excluded areas into **11 candidate grouped test batches**, plus one contract decision that must be resolved before a test expectation can be written. This is a work plan, not a claim that the denominator is complete or that the batches are already implemented.
@@ -287,7 +293,7 @@ This plan atomizes the seven previously excluded areas into **11 candidate group
 | H4 | Optional package fields | Validate optional field types and legal/illegal presence combinations for trace, outcome, assessment and assessment status | Not yet reconciled |
 | H5 | Numeric limits | Lower/upper numeric boundaries, out-of-range values and maximum array sizes | Not yet reconciled |
 | H6 | Identifiers and multiplicity | Duplicate IDs, blank/malformed identifiers, and collision cases across relevant namespaces | Not yet reconciled |
-| H7 | Delta-reach projection | Source/result relationship coherence and digest projection for delta_reach | Not yet reconciled |
+| H7 | Delta-reach projection | Source/result relationship coherence and digest projection for delta_reach | Existing grouped coverage verified on exact H6 gate; remaining scope documented |
 | H8 | Delta-reach derivation | Decide and test whether imported delta_reach must be independently recomputed, not merely internally hashed | Contract/implementation review required |
 | H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | Not yet reconciled |
 | H10 | Temporal trace semantics | Temporal-prerequisite profile: missing prerequisite, wrong order, blocked step and terminal status coherence | Not yet reconciled |
