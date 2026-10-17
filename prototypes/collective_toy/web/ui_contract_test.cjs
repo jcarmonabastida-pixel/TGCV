@@ -1321,7 +1321,7 @@ const assert = require("node:assert/strict");
         },
         {
           name: "blocked-final-state-disagrees-with-last-valid-state",
-          candidate: await makeCandidate(trace => { trace.final_state = "__forged_last_valid_state__"; }),
+          candidate: await makeCandidate(trace => { trace.final_state = trace.initial_state; }),
           diagnostic: /final_state no coincide con el último estado válido de la traza/i
         }
       ];
