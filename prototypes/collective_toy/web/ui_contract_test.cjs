@@ -1516,6 +1516,50 @@ const assert = require("node:assert/strict");
         `FC-5: importer must reject invalid required-field type ${fieldCase.name}`);
     }
 
+    // GT-04 grouped enum/blank-field adversaries for outcome and contextual assessment.
+    const invalidOutcomeAssessmentSemantics = await page.evaluate(async (pkg) => {
+      const cases = [];
+      for (const item of [
+        { name: "outcome-invalid-source-kind", mutate: p => { p.outcome_record.source_kind = "inferred"; } },
+        { name: "outcome-blank-unit", mutate: p => { p.outcome_record.unit = "  "; } },
+        { name: "outcome-blank-timing", mutate: p => { p.outcome_record.timing = ""; } },
+        { name: "outcome-blank-provenance", mutate: p => { p.outcome_record.provenance = " "; } },
+        { name: "assessment-invalid-status", mutate: p => { p.value_assessment.status = "NOT_ASSESSED"; } },
+        { name: "assessment-blank-observer", mutate: p => { p.value_assessment.observer = " "; } },
+        { name: "assessment-blank-context", mutate: p => { p.value_assessment.context = ""; } },
+        { name: "assessment-blank-criterion", mutate: p => { p.value_assessment.criterion = " "; } }
+      ]) {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate);
+        candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        cases.push({ name: item.name, candidate });
+      }
+      return cases;
+    }, fc4Package);
+    const invalidOutcomeAssessmentDiagnostics = {
+      "outcome-invalid-source-kind": /source_kind del resultado no es válido/i,
+      "outcome-blank-unit": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-blank-timing": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-blank-provenance": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "assessment-invalid-status": /esquema o estado de valoración desconocido/i,
+      "assessment-blank-observer": /valoración está incompleta/i,
+      "assessment-blank-context": /valoración está incompleta/i,
+      "assessment-blank-criterion": /valoración está incompleta/i
+    };
+    for (const semanticCase of invalidOutcomeAssessmentSemantics) {
+      await page.locator("#package-file").setInputFiles({
+        name: `gt04-outcome-assessment-${semanticCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(semanticCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), invalidOutcomeAssessmentDiagnostics[semanticCase.name],
+        `GT-04: reject ${semanticCase.name} after recomputing dependent digests`);
+    }
+
     // FC-4 contract-first: baseline/intervention reachability delta must be explicit and auditable.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
