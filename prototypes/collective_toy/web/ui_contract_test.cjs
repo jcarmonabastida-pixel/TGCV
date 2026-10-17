@@ -2080,6 +2080,46 @@ const assert = require("node:assert/strict");
 
 
 
+    // H8: jointly forge delta_reach and its exported comparison, then refresh all
+    // enclosing hashes. Import must independently derive both from scenario results.
+    const jointlyForgedDeltaAndComparison = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      candidate.result.delta_reach.block_ac.reachable_states_removed = [];
+      candidate.result.comparisons_to_baseline.block_ac.reachable_states_removed = [];
+      const projected = structuredClone(candidate.result);
+      delete projected.delta_reach;
+      delete projected.engine_version;
+      delete projected.input_sha256;
+      delete projected.result_sha256;
+      delete projected.semantic_sha256;
+      delete projected.semantic_identity_version;
+      Object.keys(projected.scenario_results || {}).forEach((id) => {
+        const scenario = projected.scenario_results[id];
+        if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+      });
+      Object.keys(projected.comparisons_to_baseline || {}).forEach((id) => {
+        const intervention = projected.comparisons_to_baseline[id].intervention || {};
+        if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+      });
+      candidate.result.semantic_sha256 = await window.hash(projected, "result");
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, deltaPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "jointly-forged-delta-and-comparison.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(jointlyForgedDeltaAndComparison))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(),
+      /La comparación baseline de block_ac no coincide con la derivación independiente a partir de los resultados de escenario/i,
+      "H8: reject jointly forged delta and comparison even after semantic, result, and package hashes are recomputed");
+
     const forgedDeltaSource = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
       candidate.result.delta_reach.block_ac.baseline_source_sha256 = "0".repeat(64);
