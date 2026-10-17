@@ -2342,6 +2342,45 @@ const assert = require("node:assert/strict");
     const wrongTypeAssessmentStatus = structuredClone(explorationEnvelope);
     wrongTypeAssessmentStatus.value_assessment_status = ["NOT_ASSESSED"];
     await assessEnvelopeRejection(wrongTypeAssessmentStatus, /value_assessment_status=NOT_ASSESSED/i);
+
+    // FC-5 grouped outcome/assessment contract adversaries: keep all unrelated
+    // cross-links and digests internally consistent so the intended predicate fires.
+    const assessLinkedPackageRejection = async (candidate, expectedMessage) => {
+      const payload = structuredClone(candidate);
+      if (payload.value_assessment && payload.outcome_record) {
+        payload.value_assessment.outcome_sha256 = await temporalPage.evaluate(
+          async outcome => window.hash(outcome, "outcome_record"), payload.outcome_record
+        );
+      }
+      delete payload.package_sha256;
+      payload.package_sha256 = await temporalPage.evaluate(async value => window.hash(value), payload);
+      await temporalPage.locator("#package-file").setInputFiles({
+        name: "fc5-linked-artifact-adversary.json",
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(payload))
+      });
+      await temporalPage.getByRole("button", { name: "Validar paquete importado" }).click();
+      await temporalPage.locator('#package-assessment[data-state="rejected"]').waitFor({ timeout: 10000 });
+      assert.match(await temporalPage.locator("#package-assessment").innerText(), expectedMessage);
+    };
+    const unknownOutcomeKey = structuredClone(temporalPackage);
+    unknownOutcomeKey.outcome_record.unreviewed_extension = "must fail closed";
+    await assessLinkedPackageRejection(unknownOutcomeKey, /El resultado contiene campos desconocidos/i);
+    const wrongOutcomeValueType = structuredClone(temporalPackage);
+    wrongOutcomeValueType.outcome_record.value = 17;
+    await assessLinkedPackageRejection(wrongOutcomeValueType, /carece de identificador o valor/i);
+    const invalidOutcomeSourceKind = structuredClone(temporalPackage);
+    invalidOutcomeSourceKind.outcome_record.source_kind = "inferred";
+    await assessLinkedPackageRejection(invalidOutcomeSourceKind, /source_kind del resultado no es válido/i);
+    const unknownAssessmentKey = structuredClone(temporalPackage);
+    unknownAssessmentKey.value_assessment.unreviewed_extension = true;
+    await assessLinkedPackageRejection(unknownAssessmentKey, /La valoración contiene campos desconocidos/i);
+    const blankAssessmentId = structuredClone(temporalPackage);
+    blankAssessmentId.value_assessment.assessment_id = "  ";
+    await assessLinkedPackageRejection(blankAssessmentId, /carece de un identificador válido/i);
+    const wrongAssessmentContextType = structuredClone(temporalPackage);
+    wrongAssessmentContextType.value_assessment.context = ["not", "a", "string"];
+    await assessLinkedPackageRejection(wrongAssessmentContextType, /La valoración está incompleta/i);
     await temporalPage.close();
 
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
