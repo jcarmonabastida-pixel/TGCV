@@ -1926,6 +1926,66 @@ const assert = require("node:assert/strict");
     // provenance without rebuilding the independent replay oracle, so it fails before
     // testing the GT-04 lifecycle contract. GT-04 tests above remain in the active suite.
 
+    // GT-05-E2E-001: one scenario, UI-originated full chain, export and clean re-import/replay.
+    const singleScenarioModel = {
+      schema_version: "collective-toy-input-001",
+      model_id: "gt05-single-scenario-e2e",
+      initial_state: "A",
+      states: ["A", "B"],
+      transitions: [{ id: "t_ab", source: "A", target: "B" }],
+      relations: [],
+      rule_profile: { type: "finite_deterministic_graph", version: "1" },
+      scenarios: [{ id: "baseline", disabled_transitions: [] }],
+      exploration: { max_depth: 2, max_trajectories: 10 }
+    };
+    await page.locator("#model").fill(JSON.stringify(singleScenarioModel, null, 2));
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
+    assert.match(await page.locator("#status").innerText(), /Ejecución completada/i, "GT-05: one-scenario exploration must execute from UI model input");
+    assert.equal(await page.locator("#which option").count(), 1, "GT-05: UI must expose exactly one scenario");
+    assert.equal(await page.locator("#sequence-select option").count(), 1, "GT-05: one candidate trajectory must be available");
+    await page.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
+    await page.locator("#sequence-trace[data-state=" + '"replay-verified"' + "]").waitFor();
+    assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1: t_ab.*A → B/i, "GT-05: concrete execution must preserve the ordered transition and state change");
+
+    await page.locator("#outcome-value").fill("1");
+    await page.locator("#outcome-unit").fill("synthetic-unit");
+    await page.locator("#outcome-timing").fill("after execution");
+    await page.locator("#outcome-uncertainty").fill("illustrative; not measured");
+    await page.locator("#outcome-provenance").fill("GT-05 deterministic synthetic fixture");
+    await page.getByRole("button", { name: "Registrar resultado" }).click();
+    await page.locator("#outcome-status[data-state=" + '"recorded"' + "]").waitFor();
+    await page.locator("#value-observer").fill("GT-05 test observer");
+    await page.locator("#value-context").fill("synthetic test context");
+    await page.locator("#value-criterion").fill("fixture criterion");
+    await page.locator("#value-rule").fill("fixture rule");
+    await page.locator("#value-rationale").fill("verify linkage only; no scientific interpretation");
+    await page.getByRole("button", { name: "Registrar valoración contextual" }).click();
+    await page.locator("#value-status[data-state=" + '"assessed"' + "]").waitFor();
+
+    const singleScenarioDownloadPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const singleScenarioDownload = await singleScenarioDownloadPromise;
+    const singleScenarioPackage = JSON.parse(fs.readFileSync(await singleScenarioDownload.path(), "utf8"));
+    assert.equal(singleScenarioPackage.input.scenarios.length, 1, "GT-05: exported package must contain exactly one scenario");
+    assert.equal(singleScenarioPackage.package_stage, "ASSESSMENT", "GT-05: full-chain package must declare ASSESSMENT stage");
+    assert.equal(singleScenarioPackage.concrete_execution_trace.status, "COMPLETED", "GT-05: exported concrete trace must be completed");
+    assert.deepEqual(singleScenarioPackage.concrete_execution_trace.submitted_transition_ids, ["t_ab"], "GT-05: exported trace must preserve the ordered submitted sequence");
+    assert.equal(singleScenarioPackage.outcome_record.execution_id, singleScenarioPackage.concrete_execution_trace.execution_id, "GT-05: outcome must link to the concrete execution");
+    assert.equal(singleScenarioPackage.outcome_record.execution_trace_sha256, singleScenarioPackage.concrete_execution_trace.trace_sha256, "GT-05: outcome must link to the exact trace digest");
+    assert.equal(singleScenarioPackage.value_assessment.outcome_id, singleScenarioPackage.outcome_record.outcome_id, "GT-05: assessment must link to the exported outcome");
+    assert.match(singleScenarioPackage.package_sha256, /^[a-f0-9]{64}$/i, "GT-05: exported package must carry a SHA-256 digest");
+
+    // Clean import: feed only the downloaded package to the import control and require independent replay.
+    await page.locator("#package-file").setInputFiles({
+      name: "gt05-single-scenario-round-trip.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(singleScenarioPackage))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducci[oó]n.*verificada|replay.*verified/i, "GT-05: clean import must independently verify deterministic replay");
+
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
