@@ -673,7 +673,7 @@ const assert = require("node:assert/strict");
       "GT-05: final assessed package must preserve the explored baseline/intervention and delta_reach result");
     const executedTransitionIds = fc4Package.concrete_execution_trace.submitted_transition_ids;
     assert.ok(gt05ExplorationPackage.result.scenario_results.baseline.trajectories.some(path =>
-      JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(executedTransitionIds)),
+      JSON.stringify(path.slice(1).map(step => step.transition_id)) === JSON.stringify(executedTransitionIds)),
       "GT-05: concrete execution must match one of the candidate trajectories explored from the same model");
     assert.equal(fc4Package.outcome_record.execution_id, fc4Package.concrete_execution_trace.execution_id,
       "FC-4: exported outcome must link to the exact exported execution");
