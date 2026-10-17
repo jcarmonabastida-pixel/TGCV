@@ -95,18 +95,18 @@
 | ID | Acceptance predicate | Initial state | Evidence / gap |
 |---|---|---|---|
 | FC5-TRACE-001 | Require trace object and exact trace schema | partial | Schema check exists; negative matrix incomplete |
-| FC5-TRACE-002 | Enforce closed 13-key trace schema | pending | Importer lacks closed-key allowlist |
+| FC5-TRACE-002 | Enforce closed 13-key trace schema | verified (candidate; exact-head gate refreshed after register update) | Grouped adversary adds an uncontracted trace field and is rejected after recomputing trace, outcome, assessment, and package digests; this demonstrates unknown-key rejection, while required-key completeness remains covered by the base schema validator. Browser/cross-runtime [39037992892](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39037992892) passed on exact test SHA `40ac7a1810df98459891b475bb47ad8b06dd2cad`. |
 | FC5-TRACE-003 | Require non-empty execution/model/scenario IDs | partial | Link checks exist; individual type/empty fixtures not mapped |
 | FC5-TRACE-004 | Require trace input hash to match package input/result | partial | Need exact implementation cross-check and negative fixture |
 | FC5-TRACE-005 | Require scenario to exist in input | partial | Dedicated negative fixture not mapped |
-| FC5-TRACE-006 | Require candidate index null or non-negative integer | pending | Dedicated validation/test not located |
-| FC5-TRACE-007 | Require submitted transition IDs to be a string array | pending | Dedicated validation/test not located |
+| FC5-TRACE-006 | Require candidate index null or non-negative integer | verified (candidate; exact-head gate refreshed after register update) | Grouped adversary sets `candidate_index=-1`; importer rejects with the candidate-index diagnostic after dependent digests are recomputed. Browser/cross-runtime [39037992892](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39037992892) passed on exact test SHA `40ac7a1810df98459891b475bb47ad8b06dd2cad`. |
+| FC5-TRACE-007 | Require submitted transition IDs to be a string array | partial | Grouped adversary verifies rejection of a submitted transition ID that is not declared; the wrong-type/non-string array matrix is not covered by that case. Browser/cross-runtime [39037992892](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39037992892) passed on exact test SHA `40ac7a1810df98459891b475bb47ad8b06dd2cad`. |
 | FC5-TRACE-008 | Require initial/final states to be declared | pending | Dedicated validation/test not located |
 | FC5-TRACE-009 | Require steps to be an array | pending | Dedicated validation/test not located |
 | FC5-TRACE-010 | Enforce closed seven-key schema and types for each step | pending | Importer lacks step closed-key validation |
-| FC5-TRACE-011 | Require ordered step indices | pending | Dedicated validation/test not located |
+| FC5-TRACE-011 | Require ordered step indices | verified (candidate; exact-head gate refreshed after register update) | Grouped adversary changes the first step index to `2`; importer rejects the malformed numbering after dependent digests are recomputed. Browser/cross-runtime [39037992892](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39037992892) passed on exact test SHA `40ac7a1810df98459891b475bb47ad8b06dd2cad`. |
 | FC5-TRACE-012 | Require transition/state sequence to follow input edges | verified | Grouped adversary passed in browser/cross-runtime run [38928105212](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/38928105212) on test commit `9001838676306aea4a3f10be8b9914d3729b3a21`; the altered destination is rejected after dependent digests are recomputed. Profile compatibility remains separate. |
-| FC5-TRACE-013 | Require prior-transition history to be prefix-consistent | pending | Dedicated validation/test not located |
+| FC5-TRACE-013 | Require prior-transition history to be prefix-consistent | verified (candidate; exact-head gate refreshed after register update) | Grouped adversary empties `prior_transitions` on the second step, breaking the executed prefix; importer rejects with the history-consistency diagnostic after dependent digests are recomputed. Browser/cross-runtime [39037992892](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39037992892) passed on exact test SHA `40ac7a1810df98459891b475bb47ad8b06dd2cad`. |
 | FC5-TRACE-014 | Require prerequisites to match relations and prior history | pending | Dedicated validation/test not located |
 | FC5-TRACE-015 | Define and enforce COMPLETED/BLOCKED trace policy | pending | Contract decision unresolved |
 | FC5-TRACE-016 | Require completed trace to have no blocked step and correct final state | pending | Dedicated validation/test not located |
