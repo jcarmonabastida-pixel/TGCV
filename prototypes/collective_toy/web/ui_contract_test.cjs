@@ -1579,6 +1579,79 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /baseline_source_sha256 de delta_reach en block_ac no corresponde a la fuente/i,
       "FC-5/FC-6: reject a syntactically valid but forged source hash even when enclosing hashes are recomputed");
 
+    // GT-02 grouped delta_reach schema adversaries: keep outer hashes valid so each case
+    // exercises the specific nested invariant rather than package-integrity rejection.
+    const deltaInvariantCases = await page.evaluate(async (pkg) => {
+      const cases = [
+        {
+          name: "missing-intervention-entry",
+          mutate: function (p) { delete p.result.delta_reach.block_ac; },
+          expected: /delta_reach debe contener exactamente una entrada por escenario de intervención/i
+        },
+        {
+          name: "unexpected-baseline-entry",
+          mutate: function (p) { p.result.delta_reach.baseline = structuredClone(p.result.delta_reach.block_ac); },
+          expected: /delta_reach debe contener exactamente una entrada por escenario de intervención/i
+        },
+        {
+          name: "malformed-source-hash",
+          mutate: function (p) { p.result.delta_reach.block_ac.baseline_source_sha256 = "not-a-sha256"; },
+          expected: /baseline_source_sha256 de delta_reach en block_ac debe ser SHA-256 válido/i
+        },
+        {
+          name: "undeclared-state-reference",
+          mutate: function (p) { p.result.delta_reach.block_ac.reachable_states_removed = ["STATE_NOT_DECLARED"]; },
+          expected: /reachable_states_removed de delta_reach en block_ac debe contener IDs de estado válidos/i
+        },
+        {
+          name: "invalid-trajectory-edge",
+          mutate: function (p) { p.result.delta_reach.block_ac.trajectories_removed = [[{ state: "A" }, { state: "D", transition: "t_ac" }]]; },
+          expected: /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i
+        },
+        {
+          name: "non-boolean-truncation",
+          mutate: function (p) { p.result.delta_reach.block_ac.truncated = "false"; },
+          expected: /truncated de delta_reach en block_ac debe ser booleano/i
+        },
+        {
+          name: "aggregate-truncation-mismatch",
+          mutate: function (p) { p.result.delta_reach.block_ac.truncated = true; },
+          expected: /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i
+        }
+      ];
+      return Promise.all(cases.map(async (item) => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate);
+        const resultBody = structuredClone(candidate.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        candidate.result.result_sha256 = await window.hash(resultBody, "result");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, expected: item.expected.source };
+      }));
+    }, deltaPackage);
+    const expectedDeltaDiagnostics = new Map([
+      ["missing-intervention-entry", /delta_reach debe contener exactamente una entrada por escenario de intervención/i],
+      ["unexpected-baseline-entry", /delta_reach debe contener exactamente una entrada por escenario de intervención/i],
+      ["malformed-source-hash", /baseline_source_sha256 de delta_reach en block_ac debe ser SHA-256 válido/i],
+      ["undeclared-state-reference", /reachable_states_removed de delta_reach en block_ac debe contener IDs de estado válidos/i],
+      ["invalid-trajectory-edge", /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i],
+      ["non-boolean-truncation", /truncated de delta_reach en block_ac debe ser booleano/i],
+      ["aggregate-truncation-mismatch", /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i]
+    ]);
+    for (const deltaCase of deltaInvariantCases) {
+      await page.locator("#package-file").setInputFiles({
+        name: `delta-invariant-${deltaCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(deltaCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), expectedDeltaDiagnostics.get(deltaCase.name),
+        `GT-02: reject ${deltaCase.name} by its nested delta_reach invariant after recomputing enclosing hashes`);
+    }
+
     // FC-5 grouped conditional-envelope matrix: stage must match present artifacts and dependencies must hold.
     const invalidLifecycleCombinations = await page.evaluate(async (pkg) => {
       const cases = [
