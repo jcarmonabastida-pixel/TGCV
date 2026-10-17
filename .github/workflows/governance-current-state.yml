@@ -9,6 +9,7 @@ on:
     paths:
       - '00_GOVERNANCE/**'
       - 'STATUS.md'
+      - 'prototypes/collective_toy/**'
       - 'prototypes/collective_toy/FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md'
       - 'prototypes/collective_toy/FC5_FC6_RISK_PRIORITIZED_GROUPED_TEST_PLAN_001.md'
       - 'prototypes/collective_toy/web/ui_contract_test.cjs'
