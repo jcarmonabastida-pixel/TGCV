@@ -967,7 +967,9 @@ const assert = require("node:assert/strict");
         { name: "negative-candidate-index", mutate: trace => { trace.candidate_index = -1; } },
         { name: "unknown-submitted-transition", mutate: trace => { trace.submitted_transition_ids[0] = "TRANSITION_NOT_DECLARED"; } },
         { name: "out-of-order-step-index", mutate: trace => { trace.steps[0].step = 2; } },
-        { name: "forged-prior-transition-history", mutate: trace => { trace.steps[1].prior_transitions = []; } }
+        { name: "forged-prior-transition-history", mutate: trace => { trace.steps[1].prior_transitions = []; } },
+        { name: "unknown-step-key", mutate: trace => { trace.steps[0].uncontracted_field = "must-reject"; } },
+        { name: "wrong-type-step-prerequisites", mutate: trace => { trace.steps[0].prerequisites = "not-an-array"; } }
       ];
       return await Promise.all(cases.map(async item => {
         const candidate = structuredClone(pkg);
@@ -988,7 +990,9 @@ const assert = require("node:assert/strict");
       "negative-candidate-index": /candidate_index debe ser null o un entero no negativo/i,
       "unknown-submitted-transition": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
       "out-of-order-step-index": /numeración o los tipos del paso son inválidos/i,
-      "forged-prior-transition-history": /prior_transitions no coincide con el prefijo ejecutado/i
+      "forged-prior-transition-history": /prior_transitions no coincide con el prefijo ejecutado/i,
+      "unknown-step-key": /paso malformado o con campos desconocidos/i,
+      "wrong-type-step-prerequisites": /prerequisites del paso contiene IDs inválidos/i
     };
     for (const traceCase of traceContractAdversaries) {
       await page.locator("#package-file").setInputFiles({
