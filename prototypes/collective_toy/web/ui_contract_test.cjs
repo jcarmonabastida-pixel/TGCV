@@ -466,6 +466,38 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#results").innerText(), /t_cd.*CONDICIONADA POR SECUENCIA.*t_ab/i,
       "FC-2: temporal trace must label t_cd as sequence-conditioned and identify t_ab as its prerequisite");
 
+    // GT-05 positive full-chain acceptance: one hand-checkable diamond model, temporal prerequisite,
+    // baseline/intervention, delta_reach, candidate trajectory, concrete execution, outcome/value,
+    // export/import and independent replay are verified as one connected scenario below.
+    const gt05ExplorationPackage = await page.evaluate(() => structuredClone(window.lastPackage));
+    assert.ok(gt05ExplorationPackage && gt05ExplorationPackage.input && gt05ExplorationPackage.result,
+      "GT-05: scenario exploration must produce an inspectable input/result package");
+    assert.deepEqual(gt05ExplorationPackage.input.states, ["A", "B", "C", "D"],
+      "GT-05: the hand-checkable diamond model must retain all four states");
+    assert.deepEqual(
+      gt05ExplorationPackage.input.transitions.map(t => t.id).sort(),
+      ["t_ab", "t_ac", "t_bd", "t_cd"],
+      "GT-05: the model must contain both alternative routes from A to D");
+    assert.deepEqual(gt05ExplorationPackage.input.relations, [{
+      id: "r_temporal_1",
+      type: "requires_prior_execution",
+      transition_id: "t_cd",
+      requires_transition_id: "t_ab"
+    }], "GT-05: the temporal prerequisite must be part of the exported source model");
+    assert.deepEqual(Object.keys(gt05ExplorationPackage.result.scenario_results).sort(), ["baseline", "block_ac"],
+      "GT-05: baseline and intervention results must be present together");
+    assert.deepEqual(gt05ExplorationPackage.result.scenario_results.baseline.reachable_states, ["A", "B", "C", "D"],
+      "GT-05: baseline must expose the complete reachable state set");
+    assert.deepEqual(gt05ExplorationPackage.result.scenario_results.block_ac.reachable_states, ["A", "B", "D"],
+      "GT-05: intervention must remove C from the reachable state set");
+    assert.ok(gt05ExplorationPackage.result.delta_reach.block_ac.reachable_states_removed.includes("C"),
+      "GT-05: delta_reach must explicitly report the intervention's removed reachable state");
+    assert.ok(gt05ExplorationPackage.result.comparisons_to_baseline.block_ac.trajectories_removed.length > 0,
+      "GT-05: baseline comparison must identify trajectories removed by the intervention");
+    assert.ok(gt05ExplorationPackage.result.scenario_results.baseline.trajectories.some(path =>
+      path.map(step => step.state).join("->") === "A->B->D"),
+      "GT-05: at least one candidate trajectory must be inspectable before concrete execution");
+
     // FC-2 contract-first: exploration must be distinguishable from an explicitly executed concrete sequence.
     assert.ok(await page.locator("#execute-sequence").count() === 1,
       "FC-2: UI must provide an explicit action to execute a selected trajectory");
