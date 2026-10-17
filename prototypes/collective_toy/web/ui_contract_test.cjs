@@ -871,6 +871,37 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /un paquete evaluado no puede declarar NOT_ASSESSED/i,
       "GT-04: reject contradictory assessed artifact plus NOT_ASSESSED status");
 
+    // H1 grouped input-schema adversaries. Refresh input and package digests so
+    // each malformed nested input reaches the intended schema validator.
+    const inputSchemaAdversaries = await page.evaluate(async (pkg) => {
+      const cases = [
+        { name: "input-missing-states", mutate: input => { delete input.states; }, diagnostic: /states debe ser una lista no vacía/i },
+        { name: "input-transitions-wrong-type", mutate: input => { input.transitions = { id: "not-an-array" }; }, diagnostic: /transitions debe ser una lista/i },
+        { name: "input-scenarios-wrong-type", mutate: input => { input.scenarios = "not-an-array"; }, diagnostic: /scenarios debe ser una lista no vacía/i },
+        { name: "input-exploration-wrong-type", mutate: input => { input.exploration = []; }, diagnostic: /exploration debe ser un objeto/i },
+        { name: "input-rule-profile-unknown-key", mutate: input => { input.rule_profile.unreviewed_extension = true; }, diagnostic: /rule_profile contiene campos desconocidos/i },
+        { name: "input-unknown-top-level-key", mutate: input => { input.unreviewed_extension = true; }, diagnostic: /El modelo contiene campos desconocidos/i }
+      ];
+      return await Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate.input);
+        candidate.result.input_sha256 = await window.hash(candidate.input, "input");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, diagnostic: item.diagnostic.source };
+      }));
+    }, fc4Package);
+    for (const inputCase of inputSchemaAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `h1-input-schema-${inputCase.name}.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(inputCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(inputCase.diagnostic, "i"),
+        `H1: reject malformed nested input predicate ${inputCase.name}`);
+    }
+
     // FC-5: round-trip a fully assessed FC-4 package through the actual import UI.
     await page.locator("#package-file").setInputFiles({
       name: "assessed-fc4-roundtrip.json",
