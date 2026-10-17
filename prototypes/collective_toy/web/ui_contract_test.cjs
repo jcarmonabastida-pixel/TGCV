@@ -1327,6 +1327,16 @@ const assert = require("node:assert/strict");
           name: "blocked-final-state-disagrees-with-last-valid-state",
           candidate: await makeCandidate(trace => { trace.final_state = trace.initial_state; }),
           diagnostic: /final_state no coincide con el último estado válido de la traza/i
+        },
+        {
+          name: "blocked-step-unknown-key",
+          candidate: await makeCandidate(trace => { trace.blocked_step.uncontracted_field = "must-reject"; }),
+          diagnostic: /Una traza BLOCKED debe conservar los metadatos del bloqueo/i
+        },
+        {
+          name: "blocked-step-required-transition-ids-wrong-type",
+          candidate: await makeCandidate(trace => { trace.blocked_step.required_transition_ids = "not-an-array"; }),
+          diagnostic: /required_transition_ids del bloqueo contiene IDs inválidos/i
         }
       ];
     }, blockedPackage);
