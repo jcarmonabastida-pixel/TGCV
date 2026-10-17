@@ -1938,6 +1938,7 @@ const assert = require("node:assert/strict");
       scenarios: [{ id: "baseline", disabled_transitions: [] }],
       exploration: { max_depth: 2, max_trajectories: 10 }
     };
+    await page.locator("details").filter({ has: page.getByText("JSON avanzado (editable)") }).locator("summary").click();
     await page.locator("#model").fill(JSON.stringify(singleScenarioModel, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
