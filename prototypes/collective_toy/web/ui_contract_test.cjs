@@ -318,6 +318,19 @@ const assert = require("node:assert/strict");
     assert.match(await guardedRow.innerText(), /prerequisite_transition_disabled/i,
       "FC-2: the per-transition row must include the actual guard-blocking reason");
 
+    // GT-05 compatibility matrix: a package produced by supported rule profile 2
+    // must survive clean import and independent replay under the same supported engine.
+    const profile2Package = structuredClone(relationPackage);
+    await page.locator("#package-file").setInputFiles({
+      name: "supported-profile-2-relation-run.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(profile2Package))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "GT-05/FC5-REPLAY-003: supported profile 2 package must independently replay, not merely parse");
+
     // Removing the relation through the real UI must remove its effect on the next run.
     await page.getByRole("button", { name: "Eliminar relación r_guard_1" }).click();
     const relationRemovedModel = JSON.parse(await page.locator("#model").inputValue());
