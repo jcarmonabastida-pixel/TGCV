@@ -2004,6 +2004,89 @@ const assert = require("node:assert/strict");
     await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
     assert.match(await page.locator("#package-assessment").innerText(), /reproducci[oó]n.*verificada|replay.*verified/i, "GT-05: clean import must independently verify deterministic replay");
 
+    // GT-05 temporal success path: prerequisite and conditioned transition must occur in order
+    // on the SAME concrete trajectory, then survive outcome/assessment and clean replay.
+    const temporalPage = await browser.newPage();
+    await temporalPage.goto("file://" + htmlPath);
+    await temporalPage.getByRole("button", { name: "Cargar ejemplo" }).click();
+    const temporalSuccessModel = JSON.parse(await temporalPage.locator("#model").inputValue());
+    temporalSuccessModel.model_id = "gt05-temporal-success-path";
+    temporalSuccessModel.initial_state = "A";
+    temporalSuccessModel.states = ["A", "B", "C", "D", "X"];
+    temporalSuccessModel.transitions = [
+      { id: "t_ab", source: "A", target: "B" },
+      { id: "t_bc", source: "B", target: "C" },
+      { id: "t_cd", source: "C", target: "D" },
+      { id: "t_ax", source: "A", target: "X" },
+      { id: "t_xd", source: "X", target: "D" }
+    ];
+    temporalSuccessModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
+    temporalSuccessModel.relations = [{
+      id: "r_temporal_success",
+      type: "requires_prior_execution",
+      transition_id: "t_cd",
+      requires_transition_id: "t_ab"
+    }];
+    temporalSuccessModel.scenarios = [
+      { id: "baseline", disabled_transitions: [] },
+      { id: "disable_alternative", disabled_transitions: ["t_ax"] }
+    ];
+    temporalSuccessModel.exploration = { max_depth: 5, max_trajectories: 30 };
+    await temporalPage.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(temporalSuccessModel, null, 2));
+    await temporalPage.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await temporalPage.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
+    assert.match(await temporalPage.locator("#status").innerText(), /Ejecución completada/i,
+      "GT-05 temporal: exploration must execute under temporal profile");
+    const temporalResult = await temporalPage.evaluate(() => structuredClone(window.lastPackage));
+    assert.ok(temporalResult.result.scenario_results.baseline.trajectories.some(path =>
+      JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(["t_ab", "t_bc", "t_cd"])),
+      "GT-05 temporal: candidate trajectory must include prerequisite t_ab before conditioned t_cd");
+    await temporalPage.locator("#sequence-input").fill("t_ab, t_bc, t_cd");
+    await temporalPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+    await temporalPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified" || document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 5000 });
+    assert.equal(await temporalPage.locator("#sequence-trace").getAttribute("data-state"), "replay-verified",
+      "GT-05 temporal: valid prerequisite sequence must complete, not be blocked");
+    const temporalTrace = await temporalPage.locator("#sequence-trace").evaluate(el => el._trace);
+    assert.deepEqual(temporalTrace.submitted_transition_ids, ["t_ab", "t_bc", "t_cd"],
+      "GT-05 temporal: completed trace must preserve prerequisite-before-conditioned order");
+    assert.equal(temporalTrace.status, "COMPLETED");
+    await temporalPage.locator("#outcome-value").fill("synthetic temporal path completed");
+    await temporalPage.locator("#outcome-unit").fill("qualitative");
+    await temporalPage.locator("#outcome-timing").fill("after temporal execution");
+    await temporalPage.locator("#outcome-uncertainty").fill("synthetic; not measured");
+    await temporalPage.locator("#outcome-provenance").fill("GT-05 temporal success fixture");
+    await temporalPage.getByRole("button", { name: "Registrar resultado" }).click();
+    await temporalPage.locator("#outcome-status[data-state=" + '"recorded"' + "]").waitFor();
+    await temporalPage.locator("#value-observer").fill("GT-05 temporal observer");
+    await temporalPage.locator("#value-context").fill("synthetic temporal context");
+    await temporalPage.locator("#value-criterion").fill("ordered prerequisite completion");
+    await temporalPage.locator("#value-rule").fill("test-only qualitative rule");
+    await temporalPage.locator("#value-rationale").fill("verify lifecycle linkage only; no scientific interpretation");
+    await temporalPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
+    await temporalPage.locator("#value-status[data-state=" + '"assessed"' + "]").waitFor();
+    const temporalExportPromise = temporalPage.waitForEvent("download");
+    await temporalPage.locator("#export").click();
+    const temporalExport = await temporalExportPromise;
+    const temporalPackage = JSON.parse(fs.readFileSync(await temporalExport.path(), "utf8"));
+    assert.equal(temporalPackage.package_stage, "ASSESSMENT");
+    assert.deepEqual(temporalPackage.concrete_execution_trace.submitted_transition_ids, ["t_ab", "t_bc", "t_cd"]);
+    assert.equal(temporalPackage.input.rule_profile.type, "temporal_prerequisite_graph");
+    assert.equal(temporalPackage.outcome_record.execution_trace_sha256, temporalPackage.concrete_execution_trace.trace_sha256);
+    assert.equal(temporalPackage.value_assessment.outcome_id, temporalPackage.outcome_record.outcome_id);
+    await temporalPage.locator("#package-file").setInputFiles({
+      name: "gt05-temporal-success-round-trip.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(temporalPackage))
+    });
+    await temporalPage.getByRole("button", { name: "Validar paquete importado" }).click();
+    await temporalPage.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
+    assert.match(await temporalPage.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "GT-05 temporal: assessed package must independently replay after clean import");
+    await temporalPage.close();
+
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
