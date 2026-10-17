@@ -19,6 +19,17 @@ const assert = require("node:assert/strict");
     assert.match(notice, /No es una validación científica/i);
     assert.match(notice, /ni implementa por sí solo Tacc de TGCV/i);
 
+    // FC5-SEC-001/002: unkeyed SHA-256 is consistency/reproducibility evidence,
+    // never proof of who produced a package or external origin authenticity.
+    const securityFooter = await page.locator("footer").innerText();
+    assert.match(securityFooter, /hashes apoyan la reproducibilidad/i);
+    assert.match(securityFooter, /no certifican la integridad externa/i);
+    assert.doesNotMatch(securityFooter, /SHA-?256.{0,50}(autentica|autenticidad|firma|origen autenticado)/i,
+      "FC5-SEC-002: UI must not claim unkeyed SHA-256 authenticates a package or its origin");
+    const importerSource = fs.readFileSync(htmlPath, "utf8");
+    assert.match(importerSource, /esto no autentica el origen ni demuestra la corrección del resultado/i,
+      "FC5-SEC-001: import/replay status must distinguish internal hash consistency from origin authenticity");
+
     // OCR image upload accepts supported formats, rejects unsupported/oversized files, and keeps OCR failures recoverable.
     const imageInput = page.locator("#image-file");
     await imageInput.setInputFiles({ name: "reference.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jW5sAAAAASUVORK5CYII=", "base64") });
