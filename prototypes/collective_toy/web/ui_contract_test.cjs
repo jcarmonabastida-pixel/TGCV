@@ -802,6 +802,14 @@ const assert = require("node:assert/strict");
     }, fc4Package);
     assert.equal(exportedPackageDigest, fc4Package.package_sha256,
       "FC-6: complete exported package digest must recompute from the exported envelope");
+
+    // Persist the exact validated Full Chain package for CI artifact inspection.
+    fs.mkdirSync("artifacts", { recursive: true });
+    fs.writeFileSync(
+      "artifacts/tgcv-full-chain-acceptance-package.json",
+      `${JSON.stringify(fc4Package, null, 2)}\n`,
+      "utf8"
+    );
     assert.ok(["value", "unit", "timing", "uncertainty_status", "provenance"].every(key =>
       typeof fc4Package.outcome_record[key] === "string" && fc4Package.outcome_record[key].trim().length > 0),
       "FC-6: artifact inventory must retain the complete non-empty outcome provenance fields");
