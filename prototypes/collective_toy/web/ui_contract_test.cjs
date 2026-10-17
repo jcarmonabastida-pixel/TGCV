@@ -346,6 +346,68 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "GT-05/FC5-REPLAY-003: supported profile 2 package must independently replay, not merely parse");
 
+    // H9 grouped guarded-rule adversaries: forge rule effects while refreshing every
+    // enclosing result/package digest, so rejection must come from rule semantics.
+    const forgedGuardedRuleEffects = await page.evaluate(async (pkg) => {
+      const cases = [
+        {
+          name: "guard-effect-reason",
+          mutate: candidate => { candidate.result.scenario_results.baseline.relation_effects[0].reason = "prerequisite_transition_not_disabled"; },
+          expected: /relation_effects no coincide con los efectos que determinan las relaciones de entrada y las deshabilitaciones explícitas/i
+        },
+        {
+          name: "effective-disabled-omits-guarded-transition",
+          mutate: candidate => { candidate.result.scenario_results.baseline.effective_disabled_transitions = ["t_ac"]; },
+          expected: /effective_disabled_transitions no coincide con las relaciones aplicadas/i
+        }
+      ];
+      return Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate);
+        const projected = structuredClone(candidate.result);
+        delete projected.delta_reach;
+        delete projected.engine_version;
+        delete projected.input_sha256;
+        delete projected.result_sha256;
+        delete projected.semantic_sha256;
+        delete projected.semantic_identity_version;
+        Object.keys(projected.scenario_results || {}).forEach(id => {
+          const scenario = projected.scenario_results[id];
+          if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+        });
+        Object.keys(projected.comparisons_to_baseline || {}).forEach(id => {
+          const intervention = projected.comparisons_to_baseline[id].intervention || {};
+          if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+        });
+        candidate.result.semantic_sha256 = await window.hash(projected, "result");
+        const resultBody = structuredClone(candidate.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        candidate.result.result_sha256 = await window.hash(resultBody, "result");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, expected: item.expected.source };
+      }));
+    }, profile2Package);
+    for (const guardedCase of forgedGuardedRuleEffects) {
+      await page.locator("#package-file").setInputFiles({
+        name: `h9-guarded-rule-${guardedCase.name}.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(guardedCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(guardedCase.expected, "i"),
+        `H9: reject forged relation-guard semantics after recomputing enclosing digests: ${guardedCase.name}`);
+    }
+
+    // Restore the genuine profile-2 package before the positive round-trip below.
+    await page.locator("#package-file").setInputFiles({
+      name: "supported-profile-2-relation-run.json", mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(profile2Package))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
+
     // Removing the relation through the real UI must remove its effect on the next run.
     await page.getByRole("button", { name: "Eliminar relación r_guard_1" }).click();
     const relationRemovedModel = JSON.parse(await page.locator("#model").inputValue());

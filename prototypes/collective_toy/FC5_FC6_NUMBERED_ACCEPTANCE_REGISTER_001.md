@@ -279,6 +279,12 @@ The current register has 112 numbered predicate rows across sections A–G: 58 r
 
 
 
+
+
+#### H9 relation-guard semantics (2026-10-18)
+
+Existing profile-2 UI coverage verifies a disabled prerequisite blocks the guarded transition, exposes the blocking reason in the transition trace, survives export/import replay, and removes its effect when the relation is removed. Added grouped adversarial import cases forge the declared `relation_effects.reason` and omit the guarded transition from `effective_disabled_transitions`, while recomputing semantic, result, and package hashes. The importer must reject each based on the rule semantics, not stale digests. Five-workflow gate pending on the resulting head SHA.
+
 #### H8 independent derivation contract (2026-10-18)
 
 The import contract now requires `comparisons_to_baseline` and `delta_reach` to be independently derived from the exported baseline/intervention `scenario_results` for reachable states, transitions enabled at the initial state, and trajectories. The browser adversary jointly changes `delta_reach.reachable_states_removed` and `comparisons_to_baseline.reachable_states_removed`, refreshes semantic/result/package hashes, and expects import rejection because both projections disagree with the scenario results. Scope is deliberately bounded: this does not rerun the engine from `input` and therefore does not prove the exported scenario results themselves were faithfully computed. Implementation commit `e44cf90bcaf44aac693694eec60645c4f45c7e9c`; adversarial test commit `b64d65be19673e5927e158cf6f6831815272bec7`; final five-workflow evidence must be recorded on the resulting head SHA before H8 is closed.
@@ -301,7 +307,7 @@ This plan atomizes the seven previously excluded areas into **11 candidate group
 | H6 | Identifiers and multiplicity | Duplicate IDs, blank/malformed identifiers, and collision cases across relevant namespaces | Not yet reconciled |
 | H7 | Delta-reach projection | Source/result relationship coherence and digest projection for delta_reach | Existing grouped coverage verified on exact H6 gate; remaining scope documented |
 | H8 | Delta-reach derivation | Independently derive comparison and delta projections from scenario_results; reject jointly forged comparison/delta even when enclosing hashes are refreshed | Implemented; five-workflow gate pending |
-| H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | Not yet reconciled |
+| H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | Grouped operational and forged-rule-effect tests added; five-workflow gate pending |
 | H10 | Temporal trace semantics | Temporal-prerequisite profile: missing prerequisite, wrong order, blocked step and terminal status coherence | Not yet reconciled |
 | H11 | FC-6 artifact evidence | Exact artifact inventory, provenance and hashes, plus explicit non-claim boundary | Not yet reconciled |
 | Decision D1 | BLOCKED and trace-only packages | Approve normative acceptance semantics for BLOCKED traces and trace-only packages before assigning pass/fail expectations | **Must be decided first** |
