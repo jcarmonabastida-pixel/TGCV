@@ -2345,9 +2345,9 @@ const assert = require("node:assert/strict");
 
     // FC-5 grouped outcome/assessment contract adversaries: keep all unrelated
     // cross-links and digests internally consistent so the intended predicate fires.
-    const assessLinkedPackageRejection = async (candidate, expectedMessage) => {
+    const assessLinkedPackageRejection = async (candidate, expectedMessage, recalculateAssessmentHash = true) => {
       const payload = structuredClone(candidate);
-      if (payload.value_assessment && payload.outcome_record) {
+      if (recalculateAssessmentHash && payload.value_assessment && payload.outcome_record) {
         payload.value_assessment.outcome_sha256 = await temporalPage.evaluate(
           async outcome => window.hash(outcome, "outcome_record"), payload.outcome_record
         );
@@ -2381,6 +2381,21 @@ const assert = require("node:assert/strict");
     const wrongAssessmentContextType = structuredClone(temporalPackage);
     wrongAssessmentContextType.value_assessment.context = ["not", "a", "string"];
     await assessLinkedPackageRejection(wrongAssessmentContextType, /La valoración está incompleta/i);
+
+    // FC-5 identity-link adversaries: re-hash the outer package and preserve or
+    // recompute inner hashes intentionally so each test isolates one linkage rule.
+    const wrongOutcomeTraceHash = structuredClone(temporalPackage);
+    wrongOutcomeTraceHash.outcome_record.execution_trace_sha256 = "0".repeat(64);
+    await assessLinkedPackageRejection(wrongOutcomeTraceHash, /El hash de traza del resultado no coincide/i);
+    const wrongOutcomeScenario = structuredClone(temporalPackage);
+    wrongOutcomeScenario.outcome_record.scenario_id = "undeclared-scenario";
+    await assessLinkedPackageRejection(wrongOutcomeScenario, /scenario_id del resultado no coincide/i);
+    const wrongAssessmentExecution = structuredClone(temporalPackage);
+    wrongAssessmentExecution.value_assessment.execution_id = "unrelated-execution";
+    await assessLinkedPackageRejection(wrongAssessmentExecution, /La valoración no está vinculada al resultado/i);
+    const staleAssessmentOutcomeHash = structuredClone(temporalPackage);
+    staleAssessmentOutcomeHash.value_assessment.outcome_sha256 = "0".repeat(64);
+    await assessLinkedPackageRejection(staleAssessmentOutcomeHash, /El hash del resultado de valoración no coincide/i, false);
     await temporalPage.close();
 
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
