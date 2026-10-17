@@ -414,3 +414,12 @@ Test fix `20e8c56748e22bcd2513486dd60d4a8b5bc13503` opens the advanced editor be
 The grouped test now proves this specific path: UI model input with exactly one scenario; exploration; concrete ordered transition `t_ab` from A to B; outcome creation; contextual assessment; export of an `ASSESSMENT` package; scenario cardinality and trace/outcome/assessment linkage/digest assertions; clean file import and independently verified deterministic replay. Register marks `GT-05-E2E-001` and `FC5-REPLAY-001` verified within this tested synthetic fixture's scope. It does not establish scientific validity, every package/profile compatibility, or all remaining GT-05 criteria. No production code changed, no scientific execution, no promotion to `main`.
 
 This acceptance-register/plan update is documentation-only and must itself receive a fresh exact-head five-workflow gate.
+
+
+### GT-05 temporal full-chain success path — result (2026-10-17)
+
+The grouped test at exact test SHA `c62c13c8bb97e91506e3da7ea67a37e4d981654c` exercises a successful temporal prerequisite path, not just rejection of an invalid order. Model profile `temporal_prerequisite_graph` requires `t_ab` before `t_cd`; the accepted concrete sequence is `t_ab → t_bc → t_cd` on the same trajectory. The test verifies exploration contains that path, concrete execution is `COMPLETED` / `replay-verified`, outcome and contextual assessment are recorded, the exported package has stage `ASSESSMENT` and consistent artifact links, and clean re-import independently reproduces it.
+
+All five workflows passed on the exact test SHA: browser/cross-runtime [39041867237](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39041867237), engine [39041867225](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39041867225), engine performance [39041867194](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39041867194), browser performance [39041867204](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39041867204), governance [39041867241](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39041867241).
+
+This closes the specific positive-path gap for the exercised deterministic temporal fixture. It does not close the broader inventory of temporal semantic adversaries or imply scientific validity. No production changes, no scientific execution, no promotion to `main`. Register/plan documentation changes require a fresh exact-head gate.
