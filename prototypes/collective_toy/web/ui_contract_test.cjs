@@ -902,6 +902,59 @@ const assert = require("node:assert/strict");
         `H1: reject malformed nested input predicate ${inputCase.name}`);
     }
 
+    // H2 grouped scenario-result schema adversaries. Recompute semantic/result/package
+    // digests so rejection is attributable to the nested scenario-result invariant.
+    const scenarioResultAdversaries = await page.evaluate(async (pkg) => {
+      const cases = [
+        { name: "scenario-missing-reachable-states", mutate: p => { delete p.result.scenario_results.baseline.reachable_states; }, expected: /El campo reachable_states del escenario baseline debe ser una lista/i },
+        { name: "scenario-trajectories-wrong-type", mutate: p => { p.result.scenario_results.baseline.trajectories = "not-an-array"; }, expected: /El campo trajectories del escenario baseline debe ser una lista/i },
+        { name: "scenario-unknown-key", mutate: p => { p.result.scenario_results.baseline.unreviewed_extension = true; }, expected: /El resultado del escenario baseline contiene campos desconocidos/i },
+        { name: "scenario-id-key-mismatch", mutate: p => { p.result.scenario_results.baseline.scenario_id = "not-baseline"; }, expected: /scenario_id no coincide con la clave baseline/i },
+        { name: "scenario-exploration-bounds-wrong-type", mutate: p => { p.result.scenario_results.baseline.exploration_bounds = []; }, expected: /exploration_bounds del escenario baseline debe ser un objeto/i },
+        { name: "scenario-truncated-wrong-type", mutate: p => { p.result.scenario_results.baseline.truncated = "false"; }, expected: /truncated del escenario baseline debe ser booleano/i }
+      ];
+      return Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate);
+        if (candidate.result.semantic_identity_version !== undefined) {
+          const projected = structuredClone(candidate.result);
+          delete projected.delta_reach;
+          delete projected.engine_version;
+          delete projected.input_sha256;
+          delete projected.result_sha256;
+          delete projected.semantic_sha256;
+          delete projected.semantic_identity_version;
+          Object.keys(projected.scenario_results || {}).forEach(id => {
+            const scenario = projected.scenario_results[id];
+            if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+          });
+          Object.keys(projected.comparisons_to_baseline || {}).forEach(id => {
+            const intervention = projected.comparisons_to_baseline[id].intervention || {};
+            if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+          });
+          candidate.result.semantic_sha256 = await window.hash(projected, "result");
+        }
+        const resultBody = structuredClone(candidate.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        candidate.result.result_sha256 = await window.hash(resultBody, "result");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, expected: item.expected.source };
+      }));
+    }, fc4Package);
+    for (const scenarioCase of scenarioResultAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `h2-scenario-result-${scenarioCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(scenarioCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(scenarioCase.expected, "i"),
+        `H2: reject malformed scenario-result predicate ${scenarioCase.name}`);
+    }
+
     // FC-5: round-trip a fully assessed FC-4 package through the actual import UI.
     await page.locator("#package-file").setInputFiles({
       name: "assessed-fc4-roundtrip.json",
