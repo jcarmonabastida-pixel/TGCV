@@ -230,3 +230,23 @@ Three exact-head test gates have now exercised 16 additional grouped adversarial
 Evidence links are recorded in the numbered acceptance register. The current 16-predicate delta must be reconciled with the relevant existing rows rather than blindly added to the denominator: several rows describe broader predicate families and overlap with previous tests. These cases close only their named negative paths. Input model, nested scenario/comparison, complete `delta_reach` projection, broad trace type/semantic matrices, authentic historical package compatibility, and FC-6 final artifact inspection remain distinct coverage gaps.
 
 Do not add another test batch until the numbered register's status/evidence mapping and the seven section-H areas have been reconciled. The current literal register snapshot (112 rows: 58 labelled verified, 52 partial, 2 pending) is provisional, not a complete denominator.
+
+
+## 13. Section-H atomization into grouped batches — 2026-10-17
+
+The seven uncounted gaps are now expressed as 11 candidate grouped test batches plus one normative contract decision:
+
+- H1 input nested-field schema;
+- H2 scenario-result schema;
+- H3 comparison schema;
+- H4 optional package-field types and trace/outcome/assessment/status presence truth table;
+- H5 numeric bounds and maximum array sizes;
+- H6 duplicate and malformed identifiers;
+- H7 delta_reach projection coherence;
+- H8 decision and verification on independent delta_reach recomputation;
+- H9 relation-guarded trace semantics;
+- H10 temporal-prerequisite trace semantics;
+- H11 FC-6 final artifact inventory/provenance/hash/non-claim evidence;
+- D1 normative behavior for BLOCKED traces and trace-only packages.
+
+These are candidate batches only. Existing tests may cover part of them; no remaining-test count should be derived by subtracting from the 112-row register until each candidate is mapped to exact validator code, named test(s), and exact-head passing CI. Authentic historical package compatibility remains an external evidence gap.

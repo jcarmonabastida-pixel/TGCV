@@ -273,3 +273,25 @@ The five-workflow exact-head gate passed for each of those three test SHAs. Thes
 ### Quantified register snapshot — 2026-10-17
 
 The current register has 112 numbered predicate rows across sections A–G: 58 rows labelled `verified`, 52 `partial`, and 2 `pending` under the literal status-label count. This is **not** the final coverage denominator: some statuses say “candidate” and explicitly require a fresh exact-head gate; section H lists seven unatomized areas; and rows need exact implementation/test/evidence reconciliation. The honest current answer to “how many tests remain” is therefore not a single count. The next task is to reconcile stale status text and atomize only section-H gaps, then publish (a) total acceptance predicates, (b) verified predicates, (c) partial/pending predicates, and (d) grouped test scenarios planned to close them. A predicate count is not a count of individual test functions or test runs.
+
+
+### Section-H atomization plan — grouped coverage batches (2026-10-17)
+
+This plan atomizes the seven previously excluded areas into **11 candidate grouped test batches**, plus one contract decision that must be resolved before a test expectation can be written. This is a work plan, not a claim that the denominator is complete or that the batches are already implemented.
+
+| Batch | Source gap | Grouped coverage objective | Current status |
+|---|---|---|---|
+| H1 | Input fields | Missing/wrong-type nested input fields; distinguish structural rejection from digest rejection | Not yet reconciled |
+| H2 | Scenario-result fields | Missing/wrong-type nested scenario-result fields and unknown keys | Not yet reconciled |
+| H3 | Comparison fields | Missing/wrong-type comparison fields, nested projection and unknown keys | Not yet reconciled |
+| H4 | Optional package fields | Validate optional field types and legal/illegal presence combinations for trace, outcome, assessment and assessment status | Not yet reconciled |
+| H5 | Numeric limits | Lower/upper numeric boundaries, out-of-range values and maximum array sizes | Not yet reconciled |
+| H6 | Identifiers and multiplicity | Duplicate IDs, blank/malformed identifiers, and collision cases across relevant namespaces | Not yet reconciled |
+| H7 | Delta-reach projection | Source/result relationship coherence and digest projection for delta_reach | Not yet reconciled |
+| H8 | Delta-reach derivation | Decide and test whether imported delta_reach must be independently recomputed, not merely internally hashed | Contract/implementation review required |
+| H9 | Guarded trace semantics | Relation-guarded rule profile: applicability, rejection, order and trace/result consistency | Not yet reconciled |
+| H10 | Temporal trace semantics | Temporal-prerequisite profile: missing prerequisite, wrong order, blocked step and terminal status coherence | Not yet reconciled |
+| H11 | FC-6 artifact evidence | Exact artifact inventory, provenance and hashes, plus explicit non-claim boundary | Not yet reconciled |
+| Decision D1 | BLOCKED and trace-only packages | Approve normative acceptance semantics for BLOCKED traces and trace-only packages before assigning pass/fail expectations | **Must be decided first** |
+
+The 11 batch count is a planning estimate, not the number of remaining test functions. Before implementation, each batch must be reconciled against validator branches, existing named tests, exact-SHA evidence and any already-closed register predicates. Split a batch only if independent predicates require materially different setup or expected behavior; do not create one test per field by default. Historical authentic-package replay remains a separate external-evidence gap and is not covered by H1–H11.

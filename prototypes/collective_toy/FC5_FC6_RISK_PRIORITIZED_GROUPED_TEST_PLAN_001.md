@@ -519,3 +519,11 @@ Status: verified for this explicit legacy profile and its required assessment-st
 ### Compatibility evidence scope correction (2026-10-17)
 
 The passing `FC5-REPLAY-003` test uses a constructed legacy-shaped projection. It verifies the importer's behavior for that projection, including independent replay when `value_assessment_status=NOT_ASSESSED` is present and fail-closed rejection when it is absent. It does **not** establish compatibility with an authentic historical artifact: the compatibility fixture register requires original bytes/hash, prior source provenance, and independently preserved expected output, none of which are recorded for this fixture. Historical profile 1/2 compatibility therefore remains partial/unverified. Next action: admit a genuine preserved artifact according to `COMPATIBILITY_FIXTURE_REGISTER_001.md`; if unavailable, leave the historical claim blocked and do not add a speculative adapter. The existing five-workflow pass remains evidence for the constructed test only. No production change, scientific execution, or promotion to `main`.
+
+
+## Next-work decomposition — section H (2026-10-17)
+
+The seven unatomized gap families have been organized into 11 candidate grouped test batches and one prior contract decision, with detail in the numbered acceptance register:
+H1 input schema; H2 scenario-result schema; H3 comparison schema; H4 optional package field types/presence combinations; H5 numeric boundaries and array limits; H6 identifier uniqueness/format; H7 delta_reach projection coherence; H8 independent recomputation policy for delta_reach; H9 relation-guarded trace semantics; H10 temporal-prerequisite trace semantics; H11 FC-6 artifact inventory/provenance/hash/non-claims; D1 decide normative acceptance of BLOCKED traces and trace-only packages.
+
+Priority order: D1 first, then H4/H10 (package and trace state consistency), H7/H8 (derived delta_reach integrity), H1–H3 (nested schemas), H5–H6 (limits and identity), H9 (guarded semantics), and H11 (final evidence bundle). Reconcile existing test functions before adding tests; one grouped batch may close several predicates and a candidate batch may already be partially covered. Do not claim full coverage until each row has exact implementation, test and exact-SHA CI mapping.
