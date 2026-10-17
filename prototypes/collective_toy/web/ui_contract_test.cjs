@@ -709,6 +709,14 @@ const assert = require("node:assert/strict");
       "utf8"
     );
 
+    // Persist the exact validated Full Chain package for CI artifact inspection.
+    fs.mkdirSync("artifacts", { recursive: true });
+    fs.writeFileSync(
+      "artifacts/tgcv-full-chain-acceptance-package.json",
+      `${JSON.stringify(fc4Package, null, 2)}\n`,
+      "utf8"
+    );
+
     // FC-5 grouped package-integrity adversary: absent, malformed, and incorrect outer digest.
     const invalidPackageDigests = await page.evaluate(async (pkg) => {
       const missing = structuredClone(pkg);
