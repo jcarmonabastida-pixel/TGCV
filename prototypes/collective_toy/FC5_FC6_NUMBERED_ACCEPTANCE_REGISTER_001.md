@@ -28,21 +28,21 @@
 
 | ID | Acceptance predicate | Initial state | Evidence / gap |
 |---|---|---|---|
-| FC5-IN-001 | Require exact input schema version | partial | Validator exists; dedicated negative fixture mapping incomplete |
+| FC5-IN-001 | Require exact input schema version | verified (grouped tested cases) | `input-schema-version-unknown-string` and `input-schema-version-missing` adversaries reject after recomputing input/package digests (`web/ui_contract_test.cjs` lines 951–952); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. This covers missing/unsupported versions, not every malformed type. |
 | FC5-IN-002 | Require non-empty string model ID | partial | Validator exists; dedicated wrong-type/empty fixtures not mapped |
 | FC5-IN-003 | Require initial state to reference a declared state | partial | Semantic validation exists; dedicated negative fixture not mapped |
-| FC5-IN-004 | Require non-empty states array within maximum size | partial | Validator exists; boundaries not systematically tested |
-| FC5-IN-005 | Reject duplicate or empty state IDs | partial | Validator exists; fixture mapping incomplete |
+| FC5-IN-004 | Require non-empty states array within maximum size | verified (grouped tested cases) | Missing `states` is rejected in the grouped input-schema adversaries (line 960); inclusive maximum of 500 declared states is accepted by the Gate B validator boundary test recorded in this register. Five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. |
+| FC5-IN-005 | Reject duplicate or empty state IDs | verified (grouped tested cases) | `duplicate-state-id` and `empty-state-id` adversaries assert rejection after refreshing input/package digests (`web/ui_contract_test.cjs` lines 1226–1227); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. |
 | FC5-IN-006 | Require transitions array within maximum size | partial | Validator exists; boundaries not systematically tested |
-| FC5-IN-007 | Reject duplicate/empty transition IDs | partial | Validator exists; fixture mapping incomplete |
+| FC5-IN-007 | Reject duplicate/empty transition IDs | verified (grouped tested cases) | `duplicate-transition-id` and `empty-transition-id` adversaries assert rejection after refreshing input/package digests (`web/ui_contract_test.cjs` lines 1228–1229); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. |
 | FC5-IN-008 | Require transition endpoints to reference declared states | partial | Validator exists; fixture mapping incomplete |
-| FC5-IN-009 | Enforce relation object closed-key schema | partial | Implementation uses closed keys; adversarial fixture not mapped |
+| FC5-IN-009 | Enforce relation object closed-key schema | verified (grouped tested case) | `input-relation-unknown-nested-key` adds an uncontracted field to a relation and asserts rejection (`web/ui_contract_test.cjs` line 972); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. Relation type/profile compatibility remains separate. |
 | FC5-IN-010 | Enforce relation type/profile compatibility | partial | Validator exists; negative fixture mapping incomplete |
 | FC5-IN-011 | Require relation references to exist and differ where required | partial | Validator exists; fixture mapping incomplete |
 | FC5-IN-012 | Enforce rule-profile closed-key schema and supported values | partial | Validator exists; negative fixtures not mapped |
-| FC5-IN-013 | Require non-empty scenarios and unique scenario IDs | partial | Validator exists; negative fixtures not mapped |
+| FC5-IN-013 | Require non-empty scenarios and unique scenario IDs | verified (grouped tested cases) | Missing/wrong-type `scenarios` are rejected (`web/ui_contract_test.cjs` lines 965–966), and duplicate scenario IDs are rejected (line 1230); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. Baseline-scenario presence remains a separate predicate. |
 | FC5-IN-014 | Require baseline scenario | partial | Validator exists; dedicated fixture not mapped |
-| FC5-IN-015 | Validate disabled transition references | partial | Validator exists; dedicated fixture not mapped |
+| FC5-IN-015 | Validate disabled transition references | verified (grouped tested cases) | Duplicate disabled-transition IDs and an undeclared disabled-transition ID are both rejected (`web/ui_contract_test.cjs` lines 1231–1232); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. |
 | FC5-IN-016 | Enforce exploration closed-key schema and integer bounds | partial | Validator exists; boundary matrix not mapped |
 | FC5-IN-017 | Reject unknown keys at every input nesting level | partial | Code has closed-key checks; not all nesting levels have adversarial tests |
 
@@ -434,3 +434,16 @@ This section records exact-head evidence. Because adding this record creates a n
 The five workflows previously verified on source/test HEAD `2e31964bec33915ab677e9c09a73fa70ce8cfcb7` do **not** constitute CI confirmation for this register update or for the documentation HEAD `54fd1f5b55867440d6121e99d513643b9ef1c372`. The workflow lookup for `54fd1f5b55867440d6121e99d513643b9ef1c372` returned no PR-triggered runs and no combined status entries at the time of this reconciliation. Therefore this addendum is a **documentation-level reconciliation only**, not final CI closure.
 
 Required next: confirm that all five required workflows run and pass on the current PR HEAD; then normalize the register's individual status/evidence fields from this crosswalk. Do not create duplicate tests for the grouped predicates above unless a concrete counterexample or unmapped contract predicate is found. PR #70 remains draft; `main` remains unchanged; no scientific execution or promotion is authorized.
+
+
+### FC5 input-schema row normalization — 2026-10-18
+
+Seven individual rows above were promoted from `partial` to **verified for the grouped tested predicates only**, because the register's earlier notes said fixtures were unmapped even though the current suite explicitly exercises them. Evidence was inspected in `web/ui_contract_test.cjs` at the line anchors included in each row; all five required workflows passed on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`:
+
+- Governance: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39084051371
+- Synthetic engine: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39084051382
+- Browser/cross-runtime replay: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39084051377
+- Browser benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39084051404
+- Engine benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39084051392
+
+This is deliberately not a blanket closure of FC5-IN-001–017. Rows remain partial where their full predicate is not exercised (for example baseline presence, endpoint/reference semantics, profile compatibility, and complete exploration bounds). No test code changed in this iteration.
