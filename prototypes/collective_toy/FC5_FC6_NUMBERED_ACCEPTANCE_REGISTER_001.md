@@ -343,3 +343,29 @@ The 11 batch count is a planning estimate, not the number of remaining test func
 - Add a new test only for a concrete uncovered risk or failed assertion. Do not split one requirement into one test per field, rerun already-valid historical coverage without a reason, or count the same gap in multiple groups.
 - FC6 artifact publication is implemented on this candidate, but remains unverified until CI produces the artifact. Do not mark it PASS from source inspection alone.
 - The acceptance scope remains synthetic software conformance; it is not scientific validation of TGCV. Keep main unchanged and the pull request in draft until the closeout gate is satisfied.
+
+## Exact-head grouped reconciliation — 2026-10-18
+
+Candidate head: `5d10f062a947f2567e3e00548849c17be9305af4`. The five relevant workflows completed successfully on this same SHA:
+
+- Governance: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39081344725
+- Synthetic engine tests: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39081344736
+- Engine performance benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39081344738
+- Browser performance benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39081344645
+- Browser/cross-runtime tests and package publication: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39081344787
+
+The browser run published artifact `tgcv-full-chain-acceptance-5d10f062a947f2567e3e00548849c17be9305af4` (artifact ID `12119680449`). The artifact was downloaded and inspected. Its temporal fixture contains the ordered execution `t_ab → t_bc → t_cd`, assessment-stage linkage, and mutually consistent execution, trace, outcome, assessment, and package digest references. The inspected digest values matched independent recomputation. This is a synthetic acceptance fixture, not an authentic external historical package and not scientific evidence for TGCV.
+
+### Grouped gate disposition
+
+| Gate | Disposition on this head | Covered evidence and remaining boundary |
+|---|---|---|
+| A — input/package schema and adversarial types | **PARTIAL; no blanket closure** | Existing grouped H1–H4 and package lifecycle suites cover representative wrong-type, missing-container, unknown-key, invalid-status, and optional-record presence cases. Do not reopen these as atom-by-atom tests. Remaining explicitly recorded gaps include deeper required-field/type combinations and exhaustive nested closed-key coverage; only add a case if the specific uncovered branch is judged material. |
+| B — numeric boundaries and identifiers | **PARTIAL; no blanket closure** | H5 rejects negative, over-limit and fractional exploration values and oversized state/transition arrays; inclusive exploration endpoints are accepted. H6 covers duplicate/empty state, transition and scenario identifiers plus duplicated/unknown disabled transitions. Exact maximum accepted-size boundaries (500 states/2000 transitions) and cross-namespace collision cases remain unmapped. |
+| C — integrated temporal Full Chain | **PASS for the inspected synthetic fixture** | Ordered execution, outcome, contextual assessment, export package, digest/link consistency, and replay/concordance checks passed on this head. This does not close the separately recorded authentic historical-package replay gap. |
+| D — final artifact and five-workflow reconciliation | **PASS on the exact head above** | Artifact exists, was downloaded and inspected, and all five workflows passed on the same SHA. |
+| Scientific validity | **OUT OF SCOPE** | Synthetic software conformance must not be presented as evidence of TGCV's scientific validity, causal claims, or value construction. |
+
+This reconciliation supersedes any implication that the inventory's count of partial predicates is the count of remaining test runs. It does not silently promote individual partial predicates to verified: rows remain partial where their explicitly named coverage gap is real. Next work should be limited to a decision on whether the two Gate B residuals (exact maximum accepted-size boundaries and cross-namespace ID collisions) are material enough to justify one grouped adversarial batch. No other test batch should be opened merely to reduce the number of “partial” labels.
+
+State remains: PR #70 is draft; `main` is unchanged; no scientific execution or promotion is authorized.
