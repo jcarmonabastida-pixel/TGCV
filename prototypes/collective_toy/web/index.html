@@ -210,6 +210,7 @@ async function assessImportedBrowserPackage(pkg){
   assert(sr.scenario_id===id,"scenario_id no coincide con la clave "+id+".");
   ["disabled_transitions","enabled_transitions_at_initial_state","reachable_states","trajectories"].forEach(function(k){assert(Array.isArray(sr[k]),"El campo "+k+" del escenario "+id+" debe ser una lista.")});
   ["disabled_transitions","enabled_transitions_at_initial_state","reachable_states"].forEach(function(k){assert(sr[k].every(function(v){return typeof v==="string"&&v.length>0}),"Todos los elementos de "+k+" en "+id+" deben ser cadenas no vacías.")});
+  assert(sr.reachable_states.every(function(v){return inputStateIds.has(v)}),"reachable_states del escenario "+id+" debe contener solo IDs de estado declarados.");
   if(Object.prototype.hasOwnProperty.call(sr,"blocked_temporal_steps")){
    assert(Array.isArray(sr.blocked_temporal_steps),"blocked_temporal_steps del escenario "+id+" debe ser una lista.");
    sr.blocked_temporal_steps.forEach(function(step,index){
