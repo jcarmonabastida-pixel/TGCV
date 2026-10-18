@@ -2122,6 +2122,21 @@ const assert = require("node:assert/strict");
           name: "blocked-step-required-transition-ids-wrong-type",
           candidate: await makeCandidate(trace => { trace.blocked_step.required_transition_ids = "not-an-array"; }),
           diagnostic: /required_transition_ids del bloqueo contiene IDs inválidos/i
+        },
+        {
+          name: "blocked-step-required-transition-ids-null",
+          candidate: await makeCandidate(trace => { trace.blocked_step.required_transition_ids = null; }),
+          diagnostic: /required_transition_ids del bloqueo contiene IDs inválidos/i
+        },
+        {
+          name: "blocked-step-required-transition-ids-number",
+          candidate: await makeCandidate(trace => { trace.blocked_step.required_transition_ids = 17; }),
+          diagnostic: /required_transition_ids del bloqueo contiene IDs inválidos/i
+        },
+        {
+          name: "blocked-step-required-transition-ids-unknown-reference",
+          candidate: await makeCandidate(trace => { trace.blocked_step.required_transition_ids = ["TRANSITION_NOT_DECLARED"]; }),
+          diagnostic: /required_transition_ids del bloqueo contiene IDs inválidos/i
         }
       ];
     }, blockedPackage);
