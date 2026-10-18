@@ -969,6 +969,9 @@ const assert = require("node:assert/strict");
         { name: "input-exploration-wrong-type", mutate: input => { input.exploration = []; }, diagnostic: /exploration debe ser un objeto/i },
         { name: "input-exploration-unknown-nested-key", mutate: input => { input.exploration.unreviewed_extension = true; }, diagnostic: /exploration contiene campos desconocidos/i },
         { name: "input-rule-profile-unknown-key", mutate: input => { input.rule_profile.unreviewed_extension = true; }, diagnostic: /rule_profile contiene campos desconocidos/i },
+        { name: "input-rule-profile-unknown-type", mutate: input => { input.rule_profile.type = "unreviewed_graph"; }, diagnostic: /rule_profile no compatible/i },
+        { name: "input-rule-profile-unsupported-version", mutate: input => { input.rule_profile.version = "2"; }, diagnostic: /rule_profile no compatible/i },
+        { name: "input-rule-profile-incompatible-type-version-pair", mutate: input => { input.rule_profile = { type: "relation_guarded_graph", version: "2" }; }, diagnostic: /rule_profile no compatible/i },
         { name: "input-relation-unknown-nested-key", mutate: input => { input.rule_profile = { type: "relation_guarded_graph", version: "1" }; input.relations = [{ id: "h1_relation", type: "requires_transition_enabled", transition_id: input.transitions[1].id, requires_transition_id: input.transitions[0].id, unreviewed_extension: true }]; }, diagnostic: /Relación contiene campos desconocidos/i },
         { name: "input-unknown-top-level-key", mutate: input => { input.unreviewed_extension = true; }, diagnostic: /El modelo contiene campos desconocidos/i }
       ];
