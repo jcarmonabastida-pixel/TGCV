@@ -1007,6 +1007,9 @@ const assert = require("node:assert/strict");
       return Promise.all(cases.map(async item => {
         const candidate = structuredClone(pkg);
         item.mutate(candidate);
+        if (item.refreshInputIdentity) {
+          candidate.result.input_sha256 = await window.hash(candidate.input, "input");
+        }
         if (candidate.result.semantic_identity_version !== undefined) {
           const projected = structuredClone(candidate.result);
           delete projected.delta_reach;
@@ -1312,9 +1315,9 @@ const assert = require("node:assert/strict");
         { name: "scenario-exploration-bounds-zero-count", mutate: p => { p.result.scenario_results.baseline.exploration_bounds.max_trajectories = 0; }, expected: /exploration_bounds debe respetar max_depth entre 0 y 100 y max_trajectories entre 1 y 10000/i },
         { name: "scenario-exploration-bounds-missing-count", mutate: p => { delete p.result.scenario_results.baseline.exploration_bounds.max_trajectories; }, expected: /exploration_bounds debe respetar max_depth entre 0 y 100 y max_trajectories entre 1 y 10000/i },
         { name: "scenario-truncated-wrong-type", mutate: p => { p.result.scenario_results.baseline.truncated = "false"; }, expected: /truncated del escenario baseline debe ser booleano/i },
-        { name: "finite-profile-forged-relation-effects", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.result.scenario_results.baseline.relation_effects = []; }, expected: /Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas/i },
-        { name: "finite-profile-forged-effective-disabled", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.result.scenario_results.baseline.effective_disabled_transitions = []; }, expected: /Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas/i },
-        { name: "temporal-profile-missing-prerequisite-summary", mutate: p => { p.input.rule_profile = { type: "temporal_prerequisite_graph", version: "1" }; }, expected: /temporal_prerequisites no coincide con las relaciones temporales de entrada/i }
+        { name: "finite-profile-forged-relation-effects", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.result.scenario_results.baseline.relation_effects = []; }, refreshInputIdentity: true, expected: /Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas/i },
+        { name: "finite-profile-forged-effective-disabled", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.result.scenario_results.baseline.effective_disabled_transitions = []; }, refreshInputIdentity: true, expected: /Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas/i },
+        { name: "temporal-profile-missing-prerequisite-summary", mutate: p => { p.input.rule_profile = { type: "temporal_prerequisite_graph", version: "1" }; }, refreshInputIdentity: true, expected: /temporal_prerequisites no coincide con las relaciones temporales de entrada/i }
       ];
       return Promise.all(cases.map(async item => {
         const candidate = structuredClone(pkg);
