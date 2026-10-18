@@ -1291,7 +1291,8 @@ const assert = require("node:assert/strict");
         { name: "comparison-unknown-key", mutate: cr => { cr.unreviewed_extension = true; }, expected: /La comparación .* contiene campos desconocidos/i },
         { name: "comparison-intervention-wrong-type", mutate: cr => { cr.intervention = []; }, expected: /intervention de la comparación .* debe ser un objeto/i },
         { name: "comparison-disabled-transitions-wrong-type", mutate: cr => { cr.intervention.disabled_transitions = "not-an-array"; }, expected: /disabled_transitions de intervention debe ser una lista/i },
-        { name: "comparison-invalid-added-trajectory", mutate: cr => { cr.trajectories_added = [[{ state: pkg.input.initial_state }, { state: "STATE_NOT_DECLARED", transition: "TRANSITION_NOT_DECLARED" }]]; }, expected: /trajectories_added en .* debe contener rutas coherentes con las transiciones de entrada/i }
+        { name: "comparison-invalid-added-trajectory", mutate: cr => { cr.trajectories_added = [[{ state: pkg.input.initial_state }, { state: "STATE_NOT_DECLARED", transition: "TRANSITION_NOT_DECLARED" }]]; }, expected: /trajectories_added en .* debe contener rutas coherentes con las transiciones de entrada/i },
+        { name: "comparison-disconnected-added-trajectory", mutate: cr => { cr.trajectories_added = [[{ state: "A" }, { state: "C", transition: "t_ab" }]]; }, expected: /trajectories_added en .* debe contener rutas coherentes con las transiciones de entrada/i }
       ];
       return Promise.all(cases.map(async item => {
         const candidate = structuredClone(pkg);
