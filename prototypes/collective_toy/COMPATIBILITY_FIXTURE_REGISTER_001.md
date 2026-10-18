@@ -40,7 +40,7 @@ A fixture may be called historical only if all of the following are recorded:
 6. Browser/Python comparison only for fields whose schemas and semantics are defined to correspond.
 7. CI evidence on the exact commit that adds or changes the fixture.
 
-If no original artifact and provenance exist, label a fixture **baseline/current**, not historical. Never invent historical hashes or infer old behavior from the current implementation.
+If no original artifact and provenance exist, label a fixture **baseline/current**, not historical. Never invent historical hashes or infer old behavior from the current implementation. The existing Rust Ω operationalization can support a provenance-backed real-data integration fixture once its dataset/license/identifiability gate and exact input/result manifests are reconciled; do not relabel that output as a historical package from a prior Collective Toy version.
 
 ## 4. Compatibility decision matrix
 
