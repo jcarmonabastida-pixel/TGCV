@@ -1179,6 +1179,51 @@ const assert = require("node:assert/strict");
         `FC5-RES-008: reject semantic identity pairing violation ${resultCase.name} after refreshing enclosing digests`);
     }
 
+    // FC5-RES-009/010 grouped direct hash format and recomputation adversaries.
+    // Refresh outer digests so validation reaches the intended input/result hash predicate.
+    const directHashAdversaries = await page.evaluate(async (pkg) => {
+      const cases = [
+        {
+          name: "input-hash-malformed",
+          mutate: p => { p.result.input_sha256 = "not-a-sha256"; },
+          expected: /input_sha256 ausente o malformado/i
+        },
+        {
+          name: "input-hash-wrong-but-well-formed",
+          mutate: p => { p.result.input_sha256 = "0".repeat(64); },
+          expected: /El hash de la entrada no coincide/i
+        },
+        {
+          name: "result-hash-malformed",
+          mutate: p => { p.result.result_sha256 = "not-a-sha256"; },
+          expected: /result_sha256 ausente o malformado/i
+        },
+        {
+          name: "result-hash-wrong-but-well-formed",
+          mutate: p => { p.result.result_sha256 = "0".repeat(64); },
+          expected: /El hash del resultado no coincide/i
+        }
+      ];
+      return Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate);
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, expected: item.expected.source };
+      }));
+    }, fc4Package);
+    for (const hashCase of directHashAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `fc5-direct-hash-${hashCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(hashCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(hashCase.expected, "i"),
+        `FC5-RES-009/010: reject direct hash violation ${hashCase.name} after refreshing package digest`);
+    }
+
     // H2 grouped scenario-result schema adversaries. Recompute semantic/result/package
     // digests so rejection is attributable to the nested scenario-result invariant.
     const scenarioResultAdversaries = await page.evaluate(async (pkg) => {
