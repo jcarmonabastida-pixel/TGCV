@@ -369,3 +369,13 @@ The browser run published artifact `tgcv-full-chain-acceptance-5d10f062a947f2567
 This reconciliation supersedes any implication that the inventory's count of partial predicates is the count of remaining test runs. It does not silently promote individual partial predicates to verified: rows remain partial where their explicitly named coverage gap is real. Next work should be limited to a decision on whether the two Gate B residuals (exact maximum accepted-size boundaries and cross-namespace ID collisions) are material enough to justify one grouped adversarial batch. No other test batch should be opened merely to reduce the number of “partial” labels.
 
 State remains: PR #70 is draft; `main` is unchanged; no scientific execution or promotion is authorized.
+
+
+### Gate A/B grouped residual closure candidate — 2026-10-18
+
+Implementation/test commit: `f66baa7f6adea8950076f9e5b3611aa0450a5cea`. This batch targets only the remaining material Gate A/B gaps; it does not create one test per inventory row.
+
+- **Gate A / H1:** expanded the existing grouped input-schema adversary table with missing `schema_version`, `model_id`, `initial_state`, `transitions`, `rule_profile`, `scenarios`, and `exploration`, plus unknown nested keys on transition, scenario, exploration, and relation objects. The relation case switches to the guarded profile and supplies a structurally valid relation except for the deliberately unknown key. Existing package/input hashes are recomputed before import, isolating schema validation from stale-digest rejection.
+- **Gate B / H5:** added a positive direct-validator boundary case with exactly 500 declared states and 2,000 transitions. It deliberately uses depth 0 and trajectory cap 1, and calls the contract validator rather than rendering/executing a large graph; this isolates acceptance of the inclusive size maxima from unrelated runtime cost.
+- **Gate B / H6 decision:** IDs are unique within their typed collection, not globally across state, transition, and scenario namespaces. These identifiers are interpreted through typed fields and references; equal text across namespaces is not ambiguous under the current contract. Added one positive validator case combining a state ID, transition ID, and scenario ID with the same text in different namespaces. No global-collision rejection test is warranted unless the contract is deliberately changed to require global uniqueness.
+- **Evidence status:** candidate implementation committed; the five-workflow exact-head gate must pass on the final documentation/test head before these residuals are marked verified. Until then, Gate A and Gate B remain partial. No scientific execution, historical-package claim, or promotion to `main` is implied.
