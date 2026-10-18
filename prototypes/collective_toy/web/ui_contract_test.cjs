@@ -1237,6 +1237,10 @@ const assert = require("node:assert/strict");
         { name: "scenario-unknown-key", mutate: p => { p.result.scenario_results.baseline.unreviewed_extension = true; }, expected: /El resultado del escenario baseline contiene campos desconocidos/i },
         { name: "scenario-id-key-mismatch", mutate: p => { p.result.scenario_results.baseline.scenario_id = "not-baseline"; }, expected: /scenario_id no coincide con la clave baseline/i },
         { name: "scenario-exploration-bounds-wrong-type", mutate: p => { p.result.scenario_results.baseline.exploration_bounds = []; }, expected: /exploration_bounds del escenario baseline debe ser un objeto/i },
+        { name: "scenario-exploration-bounds-unknown-key", mutate: p => { p.result.scenario_results.baseline.exploration_bounds.uncontracted_limit = 7; }, expected: /exploration_bounds contiene campos desconocidos/i },
+        { name: "scenario-exploration-bounds-negative-depth", mutate: p => { p.result.scenario_results.baseline.exploration_bounds.max_depth = -1; }, expected: /exploration_bounds debe declarar límites enteros no negativos/i },
+        { name: "scenario-exploration-bounds-fractional-count", mutate: p => { p.result.scenario_results.baseline.exploration_bounds.max_trajectories = 1.5; }, expected: /exploration_bounds debe declarar límites enteros no negativos/i },
+        { name: "scenario-exploration-bounds-missing-count", mutate: p => { delete p.result.scenario_results.baseline.exploration_bounds.max_trajectories; }, expected: /exploration_bounds debe declarar límites enteros no negativos/i },
         { name: "scenario-truncated-wrong-type", mutate: p => { p.result.scenario_results.baseline.truncated = "false"; }, expected: /truncated del escenario baseline debe ser booleano/i }
       ];
       return Promise.all(cases.map(async item => {
