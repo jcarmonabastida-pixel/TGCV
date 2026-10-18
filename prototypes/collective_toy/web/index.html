@@ -226,7 +226,7 @@ async function assessImportedBrowserPackage(pkg){
   assert(typeof sr.truncated==="boolean","truncated del escenario "+id+" debe ser booleano.");
   assert(sr.exploration_bounds&&typeof sr.exploration_bounds==="object"&&!Array.isArray(sr.exploration_bounds),"exploration_bounds del escenario "+id+" debe ser un objeto.");
   assert(Object.keys(sr.exploration_bounds).every(function(k){return ["max_depth","max_trajectories"].includes(k)}),"exploration_bounds contiene campos desconocidos.");
-  assert(Number.isInteger(sr.exploration_bounds.max_depth)&&sr.exploration_bounds.max_depth>=0&&Number.isInteger(sr.exploration_bounds.max_trajectories)&&sr.exploration_bounds.max_trajectories>=0,"exploration_bounds debe declarar límites enteros no negativos.");
+  assert(Number.isInteger(sr.exploration_bounds.max_depth)&&sr.exploration_bounds.max_depth>=0&&sr.exploration_bounds.max_depth<=100&&Number.isInteger(sr.exploration_bounds.max_trajectories)&&sr.exploration_bounds.max_trajectories>=1&&sr.exploration_bounds.max_trajectories<=10000,"exploration_bounds debe respetar max_depth entre 0 y 100 y max_trajectories entre 1 y 10000.");
    var guardedProfile=canonical(pkg.input.rule_profile)===canonical({type:"relation_guarded_graph",version:"1"});
    var temporalProfile=canonical(pkg.input.rule_profile)===canonical({type:"temporal_prerequisite_graph",version:"1"});
    if(guardedProfile){
