@@ -2386,7 +2386,11 @@ const assert = require("node:assert/strict");
         { name: "assessment-invalid-status", mutate: p => { p.value_assessment.status = "NOT_ASSESSED"; } },
         { name: "assessment-blank-observer", mutate: p => { p.value_assessment.observer = " "; } },
         { name: "assessment-blank-context", mutate: p => { p.value_assessment.context = ""; } },
-        { name: "assessment-blank-criterion", mutate: p => { p.value_assessment.criterion = " "; } }
+        { name: "assessment-blank-criterion", mutate: p => { p.value_assessment.criterion = " "; } },
+        { name: "assessment-blank-valuation-rule", mutate: p => { p.value_assessment.valuation_rule = " "; } },
+        { name: "assessment-blank-rationale", mutate: p => { p.value_assessment.rationale = ""; } },
+        { name: "outcome-uncertainty-null", mutate: p => { p.outcome_record.uncertainty_status = null; } },
+        { name: "outcome-uncertainty-array", mutate: p => { p.outcome_record.uncertainty_status = []; } }
       ]) {
         const candidate = structuredClone(pkg);
         item.mutate(candidate);
@@ -2405,7 +2409,11 @@ const assert = require("node:assert/strict");
       "assessment-invalid-status": /esquema o estado de valoración desconocido/i,
       "assessment-blank-observer": /valoración está incompleta/i,
       "assessment-blank-context": /valoración está incompleta/i,
-      "assessment-blank-criterion": /valoración está incompleta/i
+      "assessment-blank-criterion": /valoración está incompleta/i,
+      "assessment-blank-valuation-rule": /valoración está incompleta/i,
+      "assessment-blank-rationale": /valoración está incompleta/i,
+      "outcome-uncertainty-null": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-uncertainty-array": /campos obligatorios vacíos o de tipo incorrecto/i
     };
     for (const semanticCase of invalidOutcomeAssessmentSemantics) {
       await page.locator("#package-file").setInputFiles({
