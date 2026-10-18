@@ -496,3 +496,17 @@ Documentation-only change; no tests or runtime code changed. Current five-workfl
 Mapped nearby evidence for FC5-RES-002 through FC5-RES-005 without upgrading any broad requirement: nested scenario schema/unknown-key adversaries and unsupported package schema are not result-schema-version equality; a positive result model-ID assertion is not a negative mismatch fixture; canonical input-profile checks do not establish result-vs-input profile equality; and a positive PASS assertion does not establish rejection of non-PASS exported results. These distinctions keep the inventory honest and narrow the remaining candidate gaps.
 
 Documentation-only change; no tests or runtime code changed. Parent HEAD `cd22efbd318bc1274bba9a5b8c8dc5f8f0b8acc6` had five workflows PASS; this commit requires its own exact-HEAD five-workflow validation. PR #70 remains draft, main unchanged, no scientific execution authorized.
+
+
+### FC5-RES-002..005 grouped adversarial execution — 2026-10-18
+
+The grouped browser suite adds four negative result-envelope cases: schema-version mismatch, model-ID mismatch, rule-profile mismatch, and exported validation status other than PASS. For each case the semantic/result/package digests are refreshed as applicable so rejection is checked against the intended result-vs-input assertion rather than stale enclosing digests. Test source: `web/ui_contract_test.cjs` in commit `3b2a1615e899f3a3f81133fdbf9369337b4d413b`.
+
+Exact-HEAD CI completed successfully, all five workflows PASS:
+- Governance: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39086831541
+- Synthetic engine: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39086831539
+- Browser/cross-runtime: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39086831575
+- Engine benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39086831591
+- Browser benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39086831559
+
+The CI result validates the grouped test suite on this HEAD; FC5-RES-002..005 remain classified according to the acceptance predicates and should only be promoted after the evidence/status rows are reconciled. No scientific execution was authorized; PR #70 remains draft; main unchanged.
