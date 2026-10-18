@@ -1622,7 +1622,7 @@ const assert = require("node:assert/strict");
       "empty-execution-id": /resultado no está vinculado a la traza de ejecución exportada/i,
       "missing-execution-id": /resultado no está vinculado a la traza de ejecución exportada o requiere una traza COMPLETED/i,
       "wrong-type-model-id": /El model_id del resultado no coincide con la entrada y la traza exportadas/i,
-      "empty-scenario-id": /scenario_id de la traza no existe en la entrada/i,
+      "empty-scenario-id": /El scenario_id del resultado no coincide con la traza exportada/i,
       "unknown-final-state": /estados inicial\/final de la traza deben existir en la entrada/i,
       "wrong-type-steps-array": /steps de la traza debe ser una lista/i,
       "out-of-order-step-index": /numeración o los tipos del paso son inválidos/i,
