@@ -2408,7 +2408,7 @@ const assert = require("node:assert/strict");
         { name: "outcome-blank-unit", mutate: p => { p.outcome_record.unit = "  "; } },
         { name: "outcome-blank-timing", mutate: p => { p.outcome_record.timing = ""; } },
         { name: "outcome-blank-provenance", mutate: p => { p.outcome_record.provenance = " "; } },
-        { name: "outcome-blank-id", mutate: p => { p.outcome_record.outcome_id = " "; } },
+        { name: "outcome-blank-id", mutate: p => { p.outcome_record.outcome_id = " "; p.value_assessment.outcome_id = " "; } },
         { name: "outcome-blank-value", mutate: p => { p.outcome_record.value = ""; } },
         { name: "outcome-unit-wrong-type", mutate: p => { p.outcome_record.unit = 17; } },
         { name: "outcome-timing-wrong-type", mutate: p => { p.outcome_record.timing = []; } },
