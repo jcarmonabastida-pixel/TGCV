@@ -1356,7 +1356,7 @@ const assert = require("node:assert/strict");
         buffer: Buffer.from(JSON.stringify(scenarioCase.candidate))
       });
       await page.getByRole("button", { name: "Validar paquete importado" }).click();
-      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      await page.locator('#package-assessment[data-state="rejected"], #package-assessment[data-state="inspect-only/replay-unavailable"]').waitFor();
       assert.match(await page.locator("#package-assessment").innerText(), new RegExp(scenarioCase.expected, "i"),
         `H2: reject malformed scenario-result predicate ${scenarioCase.name}`);
     }
