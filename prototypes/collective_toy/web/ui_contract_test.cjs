@@ -949,16 +949,27 @@ const assert = require("node:assert/strict");
     const inputSchemaAdversaries = await page.evaluate(async (pkg) => {
       const cases = [
         { name: "input-schema-version-unknown-string", mutate: input => { input.schema_version = "collective-toy-input-999"; }, diagnostic: /schema_version no compatible/i },
+        { name: "input-schema-version-missing", mutate: input => { delete input.schema_version; }, diagnostic: /schema_version no compatible/i },
+        { name: "input-model-id-missing", mutate: input => { delete input.model_id; }, diagnostic: /model_id debe ser texto no vacío/i },
         { name: "input-model-id-wrong-type", mutate: input => { input.model_id = 17; }, diagnostic: /model_id debe ser texto no vacío/i },
+        { name: "input-initial-state-missing", mutate: input => { delete input.initial_state; }, diagnostic: /initial_state debe ser un ID de estado declarado/i },
         { name: "input-initial-state-wrong-type", mutate: input => { input.initial_state = ["A"]; }, diagnostic: /initial_state debe ser un ID de estado declarado/i },
         { name: "input-relations-wrong-type", mutate: input => { input.relations = "not-an-array"; }, diagnostic: /relations debe ser una lista/i },
         { name: "input-scenario-element-wrong-type", mutate: input => { input.scenarios[0] = "not-an-object"; }, diagnostic: /Cada escenario debe ser un objeto/i },
         { name: "input-exploration-bound-wrong-type", mutate: input => { input.exploration.max_depth = "4"; }, diagnostic: /max_depth debe ser un entero entre 0 y 100/i },
         { name: "input-missing-states", mutate: input => { delete input.states; }, diagnostic: /states debe ser una lista no vacía/i },
+        { name: "input-transitions-missing", mutate: input => { delete input.transitions; }, diagnostic: /transitions debe ser una lista/i },
         { name: "input-transitions-wrong-type", mutate: input => { input.transitions = { id: "not-an-array" }; }, diagnostic: /transitions debe ser una lista/i },
+        { name: "input-transition-unknown-nested-key", mutate: input => { input.transitions[0].unreviewed_extension = true; }, diagnostic: /Transición contiene campos desconocidos/i },
+        { name: "input-rule-profile-missing", mutate: input => { delete input.rule_profile; }, diagnostic: /rule_profile debe ser un objeto/i },
+        { name: "input-scenarios-missing", mutate: input => { delete input.scenarios; }, diagnostic: /scenarios debe ser una lista no vacía/i },
         { name: "input-scenarios-wrong-type", mutate: input => { input.scenarios = "not-an-array"; }, diagnostic: /scenarios debe ser una lista no vacía/i },
+        { name: "input-scenario-unknown-nested-key", mutate: input => { input.scenarios[0].unreviewed_extension = true; }, diagnostic: /Escenario contiene campos desconocidos/i },
+        { name: "input-exploration-missing", mutate: input => { delete input.exploration; }, diagnostic: /exploration debe ser un objeto/i },
         { name: "input-exploration-wrong-type", mutate: input => { input.exploration = []; }, diagnostic: /exploration debe ser un objeto/i },
+        { name: "input-exploration-unknown-nested-key", mutate: input => { input.exploration.unreviewed_extension = true; }, diagnostic: /exploration contiene campos desconocidos/i },
         { name: "input-rule-profile-unknown-key", mutate: input => { input.rule_profile.unreviewed_extension = true; }, diagnostic: /rule_profile contiene campos desconocidos/i },
+        { name: "input-relation-unknown-nested-key", mutate: input => { input.rule_profile = { type: "relation_guarded_graph", version: "1" }; input.relations = [{ id: "h1_relation", type: "requires_transition_enabled", transition_id: input.transitions[1].id, requires_transition_id: input.transitions[0].id, unreviewed_extension: true }]; }, diagnostic: /Relación contiene campos desconocidos/i },
         { name: "input-unknown-top-level-key", mutate: input => { input.unreviewed_extension = true; }, diagnostic: /El modelo contiene campos desconocidos/i }
       ];
       return await Promise.all(cases.map(async item => {
@@ -1168,6 +1179,45 @@ const assert = require("node:assert/strict");
     });
     assert.match(await page.locator("#status").innerText(), /Ejecución completada/i,
       "H5: restore canonical model after inclusive-boundary checks");
+
+    // Gate B exact inclusive size limits: call the contract validator directly
+    // to isolate acceptance of the documented maxima from rendering/benchmark cost.
+    const maximumSizeValidation = await page.evaluate(() => {
+      const states = Array.from({ length: 500 }, (_, i) => "MAX_STATE_" + i);
+      const transitions = Array.from({ length: 2000 }, (_, i) => ({
+        id: "MAX_TRANSITION_" + i, source: "MAX_STATE_0", target: "MAX_STATE_0"
+      }));
+      const model = {
+        schema_version: "collective-toy-input-001", model_id: "h5-inclusive-maximum-sizes",
+        initial_state: "MAX_STATE_0", states, transitions, relations: [],
+        rule_profile: { type: "finite_deterministic_graph", version: "1" },
+        scenarios: [{ id: "baseline", disabled_transitions: [] }],
+        exploration: { max_depth: 0, max_trajectories: 1 }
+      };
+      try { validate(model); return { accepted: true, error: null, states: states.length, transitions: transitions.length }; }
+      catch (error) { return { accepted: false, error: String(error && error.message || error), states: states.length, transitions: transitions.length }; }
+    });
+    assert.equal(maximumSizeValidation.accepted, true,
+      "H5: exact maximum sizes (500 states, 2000 transitions) must be accepted; " + maximumSizeValidation.error);
+    assert.equal(maximumSizeValidation.states, 500);
+    assert.equal(maximumSizeValidation.transitions, 2000);
+
+    // Gate B namespace decision: IDs are unique within their typed collection,
+    // not globally across state, transition and scenario namespaces.
+    const crossNamespaceCollisionValidation = await page.evaluate(() => {
+      const model = {
+        schema_version: "collective-toy-input-001", model_id: "h6-cross-namespace-collisions",
+        initial_state: "S", states: ["S", "baseline", "t_ab"],
+        transitions: [{ id: "S", source: "S", target: "t_ab" }],
+        relations: [], rule_profile: { type: "finite_deterministic_graph", version: "1" },
+        scenarios: [{ id: "baseline", disabled_transitions: [] }, { id: "t_ab", disabled_transitions: ["S"] }],
+        exploration: { max_depth: 1, max_trajectories: 2 }
+      };
+      try { validate(model); return { accepted: true, error: null }; }
+      catch (error) { return { accepted: false, error: String(error && error.message || error) }; }
+    });
+    assert.equal(crossNamespaceCollisionValidation.accepted, true,
+      "H6: equal text IDs across typed namespaces are permitted; " + crossNamespaceCollisionValidation.error);
 
     // H6 grouped identifier and multiplicity adversaries. Refresh input and package
     // digests to ensure each malformed ID reaches the structural validator.
