@@ -1207,6 +1207,44 @@ const assert = require("node:assert/strict");
         `FC5-RES-008: reject semantic identity pairing violation ${resultCase.name} after refreshing enclosing digests`);
     }
 
+    // FC5-RES-008 positive control: supported semantic identity pair must validate and replay.
+    const supportedSemanticIdentity = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      const projected = structuredClone(candidate.result);
+      delete projected.delta_reach;
+      delete projected.engine_version;
+      delete projected.input_sha256;
+      delete projected.result_sha256;
+      delete projected.semantic_sha256;
+      delete projected.semantic_identity_version;
+      Object.keys(projected.scenario_results || {}).forEach(id => {
+        const scenario = projected.scenario_results[id];
+        if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+      });
+      Object.keys(projected.comparisons_to_baseline || {}).forEach(id => {
+        const intervention = projected.comparisons_to_baseline[id].intervention || {};
+        if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+      });
+      candidate.result.semantic_identity_version = "collective-toy-semantic-identity-001";
+      candidate.result.semantic_sha256 = await window.hash(projected, "result");
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody, "result");
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "fc5-supported-semantic-identity-positive-control.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(supportedSemanticIdentity))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "FC5-RES-008: accept and independently replay a correctly paired supported semantic identity and hashes");
+
     // FC5-RES-009/010 grouped direct hash format and recomputation adversaries.
     // Refresh outer digests so validation reaches the intended input/result hash predicate.
     const directHashAdversaries = await page.evaluate(async (pkg) => {
