@@ -76,3 +76,36 @@ These figures are a snapshot of the current register formatting, **not a definit
 ## 6. Next permitted operation
 
 Finish atomization of section H and normalize the three qualified statuses into explicit state + evidence-commit fields. Then re-fetch current source and workflow evidence and reconcile every row. Only after that choose the first uncovered predicate with a settled contract decision, add the smallest targeted adversarial fixture, and run the required CI on the exact candidate commit.
+
+
+## 7. Superseding evidence reconciliation — 2026-10-18
+
+This section supersedes the gap snapshot in Sections 4–6 where later source/test evidence on the current candidate demonstrates that a previously named gap has been addressed. The earlier sections are retained as historical audit context; their statements must not be treated as current gaps without rechecking the evidence below.
+
+**Source/test head inspected:** `2e31964bec33915ab677e9c09a73fa70ce8cfcb7`.
+
+### Reconciled FC-5 predicates
+
+| Predicate | Current classification | Source/test evidence and boundary |
+|---|---|---|
+| Nested `delta_reach` schema, closed keys, types, IDs, hashes and semantic comparison | **COVERED for grouped tested predicates** | `web/ui_contract_test.cjs` includes grouped missing/unexpected intervention-entry cases, malformed SHA-256, undeclared state/transition IDs, invalid trajectory edges, non-boolean/mismatched truncation, unknown nested keys, and forged semantic comparison with enclosing hashes recomputed. This is not exhaustive coverage of every conceivable malformed object. |
+| Trace/step closed keys and lifecycle consistency | **COVERED for grouped tested predicates** | The same suite tests unknown trace/step fields, malformed prerequisite types, inconsistent final state, a blocked step attached to COMPLETED, and malformed BLOCKED metadata. |
+| BLOCKED export/import and inspectability | **COVERED for the tested policy-A case** | The test exports a temporal-prerequisite-blocked execution as an EXECUTION-stage package, checks trace status BLOCKED and `value_assessment_status=NOT_ASSESSED`, then imports the package. Additional adversaries reject a BLOCKED trace with an outcome, forged missing-prerequisite lists, forged block reason, and malformed blocked-step metadata. |
+| Outcome and contextual-assessment schema/linkage | **COVERED for grouped tested predicates** | Existing cases reject unknown assessment fields, invalid IDs/context types, mismatched outcome trace hash/scenario, mismatched assessment execution/outcome hash, and broken cross-links. The evidence supports only the exercised constraints. |
+| Package-stage and artifact-presence/dependency combinations | **COVERED for the declared matrix** | A 32-row truth table enumerates 4 package stages × 8 trace/outcome/assessment presence combinations and asserts exactly the contract-valid combinations; adjacent cases cover COMPLETED trace without outcome and invalid dependency combinations. |
+| Authentic historical-package replay / provenance authenticity | **OUT OF SCOPE / PARKED** | No claim of authentic origin or compatibility with an external historical package. Hashes prove consistency only, not provenance. |
+| Scientific validity of TGCV | **OUT OF SCOPE** | Synthetic software conformance is not evidence for causal claims, TGCV value construction or scientific validity. |
+
+### Exact-head CI boundary
+
+The five workflow runs recorded in PR #70's description all report success on source/test HEAD `2e31964bec33915ab677e9c09a73fa70ce8cfcb7`:
+
+- Governance: [39083142417](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39083142417)
+- Synthetic engine: [39083142378](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39083142378)
+- Browser/cross-runtime and clean-source replay: [39083142401](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39083142401)
+- Browser benchmark: [39083142421](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39083142421)
+- Engine benchmark: [39083142490](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39083142490)
+
+The browser/cross-runtime run published artifact `tgcv-full-chain-acceptance-2e31964bec33915ab677e9c09a73fa70ce8cfcb7` (artifact ID `12119513107`; digest `sha256:f593be1d06209ecfe4d07ba6f7029dca0b994d535643c88198e4affcc09b0d5c`). The artifact is evidence for synthetic acceptance only.
+
+**Disposition:** do not add another BLOCKED lifecycle test batch solely to repeat the above predicates. The immediate remaining work is to reconcile the numbered acceptance register row-by-row against this evidence and the exact-head run links, then identify any still-uncovered material predicate. Any documentation update creates a new HEAD and requires its own exact-head five-workflow confirmation before final closeout. PR #70 remains draft; `main` is unchanged; no scientific execution or promotion is authorized.
