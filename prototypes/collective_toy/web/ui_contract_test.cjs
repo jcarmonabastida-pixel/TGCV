@@ -1620,7 +1620,7 @@ const assert = require("node:assert/strict");
       "non-string-submitted-transition-id": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
       "unknown-initial-state": /estados inicial\/final de la traza deben existir en la entrada/i,
       "empty-execution-id": /resultado no está vinculado a la traza de ejecución exportada/i,
-      "missing-execution-id": /traza contiene campos desconocidos o ausentes/i,
+      "missing-execution-id": /resultado no está vinculado a la traza de ejecución exportada o requiere una traza COMPLETED/i,
       "wrong-type-model-id": /identidad de la traza no coincide con la entrada/i,
       "empty-scenario-id": /scenario_id de la traza no existe en la entrada/i,
       "unknown-final-state": /estados inicial\/final de la traza deben existir en la entrada/i,
