@@ -62,8 +62,8 @@
 | FC5-RES-010 | Validate result hash format and recomputation | partial | Existing tests cover stale package/result digest rejection and independently replay a self-consistent but divergent result after recalculating semantic, result, and package hashes (`web/ui_contract_test.cjs` lines 219–265). They establish tamper/replay integrity, but not yet a direct isolated matrix for malformed and incorrect `result_sha256`; status remains partial. |
 | FC5-SCEN-001 | Enforce scenario result closed-key schema | verified (grouped tested predicates) | Browser adversaries reject missing `reachable_states`, wrong-type `trajectories`, and an unknown scenario-result key (`web/ui_contract_test.cjs` lines 999–1001). This does not establish a complete per-field negative matrix. Five workflows passed on source HEAD `df3536c123212b50493a59499062ffad04105898`; fresh exact-HEAD CI required for this register update. |
 | FC5-SCEN-002 | Require scenario key to equal nested scenario ID | verified (grouped tested predicate) | `scenario-id-key-mismatch` rejects `scenario_id` inconsistent with the map key (`web/ui_contract_test.cjs` line 1002). Other scenario identity constraints remain separate. Five workflows passed on source HEAD `df3536c123212b50493a59499062ffad04105898`; fresh exact-HEAD CI required for this register update. |
-| FC5-SCEN-003 | Validate scenario transition/state arrays and references | partial | Validator exists; exhaustive invalid-reference cases not mapped |
-| FC5-SCEN-004 | Validate trajectory paths as ordered valid transitions | partial | Validator exists; adversarial sequence matrix incomplete |
+| FC5-SCEN-003 | Validate scenario transition/state arrays and references | partial | Explicit `reachable_states` membership check against input state IDs; adversary `scenario-undeclared-reachable-state` expects the specific diagnostic. Five workflows PASS on `4de3124d7843e727bf517756a1d5472d54570d94`. Remaining scenario arrays/reference classes are not yet mapped exhaustively. |
+| FC5-SCEN-004 | Validate trajectory paths as ordered valid transitions | partial | Existing incoherent-path adversary plus `comparison-disconnected-added-trajectory` reject a disconnected path; five workflows PASS on `4de3124d7843e727bf517756a1d5472d54570d94`. Full ordered-sequence coverage across scenario results remains unmapped. |
 | FC5-SCEN-005 | Require boolean truncation flag | verified (grouped tested predicate) | `scenario-truncated-wrong-type` rejects string `"false"` in place of a boolean (`web/ui_contract_test.cjs` line 1004). This does not close trajectory/comparison truncation predicates. Five workflows passed on source HEAD `df3536c123212b50493a59499062ffad04105898`; fresh exact-HEAD CI required for this register update. |
 | FC5-SCEN-006 | Enforce exploration_bounds closed keys and non-negative integer bounds | partial | Validator exists; boundaries/wrong types not mapped |
 | FC5-SCEN-007 | Validate relation effects and temporal-prerequisite fields against active profile | partial | Validator exists; profile-specific negative matrix incomplete |
@@ -544,3 +544,13 @@ The grouped rule-profile adversaries passed all five workflows on exact HEAD `03
 - Browser benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39088691096
 
 FC5-IN-012 is verified for the closed-key and unsupported type/version combinations exercised. This is demonstrator contract evidence only; it does not imply scientific validation. This register change requires fresh CI on its resulting commit.
+
+
+### FC5 scenario and trajectory reconciliation — 2026-10-18
+
+Evidence reviewed at exact HEAD `4de3124d7843e727bf517756a1d5472d54570d94`:
+- `scenario-undeclared-reachable-state` exercises explicit membership validation of scenario reachable-state IDs against the input graph.
+- `comparison-disconnected-added-trajectory` exercises rejection of a disconnected trajectory.
+- Governance, synthetic engine, browser/cross-runtime, engine benchmark, and browser benchmark all completed successfully.
+
+Disposition: FC5-SCEN-003 and FC5-SCEN-004 remain **partial**. These adversaries close specific demonstrated cases, not the full scenario-reference and ordered-trajectory requirement matrices. Evidence is demonstrator contract conformance only, not scientific validation. This documentation change requires its own CI verification.
