@@ -2800,7 +2800,10 @@ const assert = require("node:assert/strict");
         { name: "assessment-with-outcome-stage", mutate: function (p) { p.package_stage = "OUTCOME"; } },
         { name: "assessment-with-exploration-stage", mutate: function (p) { p.package_stage = "EXPLORATION"; } },
         { name: "assessment-without-outcome", mutate: function (p) { delete p.outcome_record; } },
-        { name: "outcome-without-trace", mutate: function (p) { delete p.concrete_execution_trace; } }
+        { name: "outcome-without-trace", mutate: function (p) { delete p.concrete_execution_trace; } },
+        { name: "trace-null", mutate: function (p) { p.concrete_execution_trace = null; } },
+        { name: "trace-array", mutate: function (p) { p.concrete_execution_trace = []; } },
+        { name: "trace-string", mutate: function (p) { p.concrete_execution_trace = "not-an-object"; } }
       ];
       return Promise.all(cases.map(async (item) => {
         const candidate = structuredClone(pkg);
