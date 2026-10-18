@@ -33,7 +33,7 @@
 | FC5-IN-003 | Require initial state to reference a declared state | partial | Semantic validation exists; dedicated negative fixture not mapped |
 | FC5-IN-004 | Require non-empty states array within maximum size | verified (grouped tested cases) | Missing `states` is rejected in the grouped input-schema adversaries (line 960); inclusive maximum of 500 declared states is accepted by the Gate B validator boundary test recorded in this register. Five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. |
 | FC5-IN-005 | Reject duplicate or empty state IDs | verified (grouped tested cases) | `duplicate-state-id` and `empty-state-id` adversaries assert rejection after refreshing input/package digests (`web/ui_contract_test.cjs` lines 1226–1227); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. |
-| FC5-IN-006 | Require transitions array within maximum size | partial | Validator exists; boundaries not systematically tested |
+| FC5-IN-006 | Require transitions array within maximum size | verified (grouped tested cases) | `transitions-over-limit` rejects 2001 transitions, and direct validator boundary test accepts exactly 2000 transitions (`web/ui_contract_test.cjs` lines 1114, 1183–1203). Five workflows PASS on source HEAD `73f0a497101824313a66ac9d4c0ce3a5a92d722b`; this verifies the declared upper bound, not every malformed array case. |
 | FC5-IN-007 | Reject duplicate/empty transition IDs | verified (grouped tested cases) | `duplicate-transition-id` and `empty-transition-id` adversaries assert rejection after refreshing input/package digests (`web/ui_contract_test.cjs` lines 1228–1229); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. |
 | FC5-IN-008 | Require transition endpoints to reference declared states | partial | Validator exists; fixture mapping incomplete |
 | FC5-IN-009 | Enforce relation object closed-key schema | verified (grouped tested case) | `input-relation-unknown-nested-key` adds an uncontracted field to a relation and asserts rejection (`web/ui_contract_test.cjs` line 972); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. Relation type/profile compatibility remains separate. |
@@ -43,8 +43,8 @@
 | FC5-IN-013 | Require non-empty scenarios and unique scenario IDs | verified (grouped tested cases) | Missing/wrong-type `scenarios` are rejected (`web/ui_contract_test.cjs` lines 965–966), and duplicate scenario IDs are rejected (line 1230); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. Baseline-scenario presence remains a separate predicate. |
 | FC5-IN-014 | Require baseline scenario | partial | Validator exists; dedicated fixture not mapped |
 | FC5-IN-015 | Validate disabled transition references | verified (grouped tested cases) | Duplicate disabled-transition IDs and an undeclared disabled-transition ID are both rejected (`web/ui_contract_test.cjs` lines 1231–1232); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. |
-| FC5-IN-016 | Enforce exploration closed-key schema and integer bounds | partial | Validator exists; boundary matrix not mapped |
-| FC5-IN-017 | Reject unknown keys at every input nesting level | partial | Code has closed-key checks; not all nesting levels have adversarial tests |
+| FC5-IN-016 | Enforce exploration closed-key schema and integer bounds | verified (grouped tested cases) | Unknown nested exploration key is rejected (line 970); wrong-type bound is rejected (line 959); negative, over-limit and fractional `max_depth`, plus zero, over-limit and fractional `max_trajectories`, are rejected (lines 1107–1112); inclusive lower/upper bounds are accepted (lines 1136–1170). Five workflows PASS on source HEAD `73f0a497101824313a66ac9d4c0ce3a5a92d722b`. |
+| FC5-IN-017 | Reject unknown keys at every input object nesting level | verified (grouped tested cases) | Unknown keys are rejected at top level, transition, scenario, exploration, rule profile, and relation object levels (`web/ui_contract_test.cjs` lines 963, 967, 970–973). Five workflows PASS on source HEAD `73f0a497101824313a66ac9d4c0ce3a5a92d722b`. This covers the declared object-valued levels represented by the contract; it is not a claim about arbitrary future extensions. |
 
 ## C. Result envelope and scenario results
 
@@ -447,3 +447,10 @@ Seven individual rows above were promoted from `partial` to **verified for the g
 - Engine benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39084051392
 
 This is deliberately not a blanket closure of FC5-IN-001–017. Rows remain partial where their full predicate is not exercised (for example baseline presence, endpoint/reference semantics, profile compatibility, and complete exploration bounds). No test code changed in this iteration.
+
+
+### FC5 bounds and closed-object schema normalization — 2026-10-18
+
+Three further partial rows were reconciled to existing grouped evidence and promoted only for the tested predicates: **FC5-IN-006**, **FC5-IN-016**, and **FC5-IN-017**. Source anchors are in `web/ui_contract_test.cjs` as stated in each row. The five workflows passed on prior source/test HEAD `73f0a497101824313a66ac9d4c0ce3a5a92d722b`; this documentation update creates a new HEAD and therefore requires a fresh exact-HEAD five-workflow run before any closeout.
+
+No test code was changed and no new test batch was added. Remaining input-schema rows stay partial where the current fixtures do not prove the full predicate (including empty `model_id`, undeclared `initial_state`, transition endpoint references, relation/profile compatibility, relation-reference constraints, and baseline-scenario presence). Do not mark those covered without locating direct evidence or a material gap requiring a grouped adversarial test.
