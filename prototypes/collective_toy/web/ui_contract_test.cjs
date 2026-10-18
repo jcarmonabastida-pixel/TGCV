@@ -1111,6 +1111,74 @@ const assert = require("node:assert/strict");
         `FC5: reject exact-set violation ${resultCase.name} after refreshing semantic/result/package digests`);
     }
 
+    // FC5-RES-008 grouped semantic identity conditional-pairing adversaries.
+    // Preserve valid outer digests so each case reaches the intended conditional predicate.
+    const semanticIdentityAdversaries = await page.evaluate(async (pkg) => {
+      const cases = [
+        {
+          name: "version-without-semantic-hash",
+          mutate: p => { p.result.semantic_identity_version = "collective-toy-semantic-identity-001"; delete p.result.semantic_sha256; },
+          expected: /semantic_sha256 ausente o malformado/i
+        },
+        {
+          name: "semantic-hash-without-version",
+          mutate: p => { delete p.result.semantic_identity_version; },
+          expected: /semantic_sha256 requiere una versión explícita/i
+        },
+        {
+          name: "unsupported-semantic-identity-version",
+          mutate: p => { p.result.semantic_identity_version = "unsupported-semantic-identity-version"; },
+          expected: /versión de identidad semántica no admitida/i
+        },
+        {
+          name: "malformed-semantic-hash",
+          mutate: p => { p.result.semantic_sha256 = "not-a-sha256"; },
+          expected: /semantic_sha256 ausente o malformado/i
+        }
+      ];
+      return Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate);
+        if (candidate.result.semantic_identity_version !== undefined && candidate.result.semantic_sha256 !== undefined &&
+            /^[0-9a-f]{64}$/.test(candidate.result.semantic_sha256)) {
+          const projected = structuredClone(candidate.result);
+          delete projected.delta_reach;
+          delete projected.engine_version;
+          delete projected.input_sha256;
+          delete projected.result_sha256;
+          delete projected.semantic_sha256;
+          delete projected.semantic_identity_version;
+          Object.keys(projected.scenario_results || {}).forEach(id => {
+            const scenario = projected.scenario_results[id];
+            if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+          });
+          Object.keys(projected.comparisons_to_baseline || {}).forEach(id => {
+            const intervention = projected.comparisons_to_baseline[id].intervention || {};
+            if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+          });
+          candidate.result.semantic_sha256 = await window.hash(projected, "result");
+        }
+        const resultBody = structuredClone(candidate.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        candidate.result.result_sha256 = await window.hash(resultBody, "result");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, expected: item.expected.source };
+      }));
+    }, fc4Package);
+    for (const resultCase of semanticIdentityAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `fc5-semantic-identity-${resultCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(resultCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(resultCase.expected, "i"),
+        `FC5-RES-008: reject semantic identity pairing violation ${resultCase.name} after refreshing enclosing digests`);
+    }
+
     // H2 grouped scenario-result schema adversaries. Recompute semantic/result/package
     // digests so rejection is attributable to the nested scenario-result invariant.
     const scenarioResultAdversaries = await page.evaluate(async (pkg) => {
