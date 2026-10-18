@@ -2496,7 +2496,7 @@ const assert = require("node:assert/strict");
         { name: "outcome-blank-value", mutate: p => { p.outcome_record.value = ""; } },
         { name: "outcome-value-null", mutate: p => { p.outcome_record.value = null; } },
         { name: "outcome-value-number", mutate: p => { p.outcome_record.value = 17; } },
-        { name: "outcome-value-boolean", mutate: p => { p.outcome_record.value = false; } }
+        { name: "outcome-value-boolean", mutate: p => { p.outcome_record.value = false; } },
         { name: "outcome-unit-wrong-type", mutate: p => { p.outcome_record.unit = 17; } },
         { name: "outcome-unit-null", mutate: p => { p.outcome_record.unit = null; } },
         { name: "outcome-unit-array", mutate: p => { p.outcome_record.unit = []; } },
@@ -2520,7 +2520,7 @@ const assert = require("node:assert/strict");
         { name: "assessment-criterion-array", mutate: p => { p.value_assessment.criterion = []; } },
         { name: "assessment-rationale-wrong-type", mutate: p => { p.value_assessment.rationale = 7; } },
         { name: "assessment-rationale-null", mutate: p => { p.value_assessment.rationale = null; } },
-        { name: "assessment-rationale-array", mutate: p => { p.value_assessment.rationale = []; } }
+        { name: "assessment-rationale-array", mutate: p => { p.value_assessment.rationale = []; } },
         { name: "outcome-value-wrong-type", mutate: p => { p.outcome_record.value = []; } },
         { name: "outcome-uncertainty-null", mutate: p => { p.outcome_record.uncertainty_status = null; } },
         { name: "outcome-uncertainty-array", mutate: p => { p.outcome_record.uncertainty_status = []; } },
