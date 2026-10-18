@@ -39,7 +39,7 @@
 | FC5-IN-009 | Enforce relation object closed-key schema | verified (grouped tested case) | `input-relation-unknown-nested-key` adds an uncontracted field to a relation and asserts rejection (`web/ui_contract_test.cjs` line 972); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. Relation type/profile compatibility remains separate. |
 | FC5-IN-010 | Enforce relation type/profile compatibility | verified (grouped tested cases) | Python invalid-input cases reject unknown profile type and unsupported versions for both supported profile families (`test_collective_toy_engine_001.py` lines 737–747); relation-shaped cases explicitly use the relation-guarded profile (lines 753–784). Matrix records profile compatibility and relation schema as covered for listed predicates. Five workflows PASS on prior HEAD `e0921397178a8d8aa9587b13ace2139681b01ee2`; this documentation change needs fresh exact-HEAD CI. |
 | FC5-IN-011 | Require relation references to exist and differ where required | verified (grouped tested cases) | Python tests cover missing/empty relation identifiers and references, non-object/unknown-key relations (`test_collective_toy_engine_001.py` lines 753–784), and reject self-referential guards (lines 808–818). Residual matrix maps known transition references and no-self-guard to named tests. Five workflows PASS on prior HEAD `e0921397178a8d8aa9587b13ace2139681b01ee2`; this documentation change needs fresh exact-HEAD CI. |
-| FC5-IN-012 | Enforce rule-profile closed-key schema and supported values | partial | Validator exists; negative fixtures not mapped |
+| FC5-IN-012 | Enforce rule-profile closed-key schema and supported values | verified | Existing unknown-key adversaries plus grouped cases `input-rule-profile-unknown-type`, `input-rule-profile-unsupported-version`, and `input-rule-profile-incompatible-type-version-pair` exercise closed-key and supported-value rejection in `web/ui_contract_test.cjs`. All five workflows passed on exact HEAD `0350c0046318f2a5054584e6357d08e554607672`; scope is demonstrator contract conformance. |
 | FC5-IN-013 | Require non-empty scenarios and unique scenario IDs | verified (grouped tested cases) | Missing/wrong-type `scenarios` are rejected (`web/ui_contract_test.cjs` lines 965–966), and duplicate scenario IDs are rejected (line 1230); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. Baseline-scenario presence remains a separate predicate. |
 | FC5-IN-014 | Require baseline scenario | verified (grouped tested cases) | Residual matrix explicitly maps required `baseline` presence to `test_relation_and_baseline_validation_report_specific_expected_errors` and `test_schema_rejects_missing_baseline_and_empty_state_ids`; grouped suite is present in `test_collective_toy_engine_001.py`. Five workflows PASS on prior HEAD `e0921397178a8d8aa9587b13ace2139681b01ee2`; this documentation change needs fresh exact-HEAD CI. |
 | FC5-IN-015 | Validate disabled transition references | verified (grouped tested cases) | Duplicate disabled-transition IDs and an undeclared disabled-transition ID are both rejected (`web/ui_contract_test.cjs` lines 1231–1232); five workflows PASS on exact HEAD `6b546ec3b1a9f33813e0ef10c00375a45a1a740b`. |
@@ -532,3 +532,15 @@ The four grouped adversarial cases in `web/ui_contract_test.cjs` were validated 
 - Browser benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39087710822
 
 FC5-RES-006 and FC5-RES-007 are verified for the exact-set predicates exercised. This establishes demonstrator contract conformance only, not scientific validation. Documentation update requires fresh exact-HEAD CI; PR #70 remains draft and main unchanged.
+
+
+### FC5-IN-012 supported rule-profile values — CI closure — 2026-10-18
+
+The grouped rule-profile adversaries passed all five workflows on exact HEAD `0350c0046318f2a5054584e6357d08e554607672`:
+- Governance: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39088691109
+- Synthetic engine: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39088691103
+- Browser/cross-runtime: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39088691153
+- Engine benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39088691092
+- Browser benchmark: https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39088691096
+
+FC5-IN-012 is verified for the closed-key and unsupported type/version combinations exercised. This is demonstrator contract evidence only; it does not imply scientific validation. This register change requires fresh CI on its resulting commit.
