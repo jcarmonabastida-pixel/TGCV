@@ -2737,6 +2737,26 @@ const assert = require("node:assert/strict");
           expected: /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i
         },
         {
+          name: "added-trajectories-wrong-type",
+          mutate: function (p) { p.result.delta_reach.block_ac.trajectories_added = "not-an-array"; },
+          expected: /trajectories_added de delta_reach en block_ac debe ser una lista/i
+        },
+        {
+          name: "removed-trajectories-wrong-type",
+          mutate: function (p) { p.result.delta_reach.block_ac.trajectories_removed = null; },
+          expected: /trajectories_removed de delta_reach en block_ac debe ser una lista/i
+        },
+        {
+          name: "added-trajectory-unknown-state",
+          mutate: function (p) { p.result.delta_reach.block_ac.trajectories_added = [[{ state: "A" }, { state: "STATE_NOT_DECLARED", transition: "t_ac" }]]; },
+          expected: /trajectories_added de delta_reach en block_ac debe contener trayectorias válidas/i
+        },
+        {
+          name: "removed-trajectory-disconnected-edge",
+          mutate: function (p) { p.result.delta_reach.block_ac.trajectories_removed = [[{ state: "A" }, { state: "C", transition: "t_ab" }]]; },
+          expected: /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i
+        },
+        {
           name: "non-boolean-truncation",
           mutate: function (p) { p.result.delta_reach.block_ac.truncated = "false"; },
           expected: /truncated de delta_reach en block_ac debe ser booleano/i
@@ -2805,6 +2825,10 @@ const assert = require("node:assert/strict");
       ["added-transitions-wrong-type", /enabled_at_initial_added de delta_reach en block_ac debe contener IDs de transición válidos/i],
       ["removed-transitions-wrong-type", /enabled_at_initial_removed de delta_reach en block_ac debe contener IDs de transición válidos/i],
       ["invalid-trajectory-edge", /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i],
+      ["added-trajectories-wrong-type", /trajectories_added de delta_reach en block_ac debe ser una lista/i],
+      ["removed-trajectories-wrong-type", /trajectories_removed de delta_reach en block_ac debe ser una lista/i],
+      ["added-trajectory-unknown-state", /trajectories_added de delta_reach en block_ac debe contener trayectorias válidas/i],
+      ["removed-trajectory-disconnected-edge", /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i],
       ["non-boolean-truncation", /truncated de delta_reach en block_ac debe ser booleano/i],
       ["aggregate-truncation-mismatch", /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i]
 ,
