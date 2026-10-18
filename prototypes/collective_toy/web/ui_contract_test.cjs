@@ -2707,6 +2707,31 @@ const assert = require("node:assert/strict");
           expected: /reachable_states_removed de delta_reach en block_ac debe contener IDs de estado válidos/i
         },
         {
+          name: "undeclared-added-state-reference",
+          mutate: function (p) { p.result.delta_reach.block_ac.reachable_states_added = ["STATE_NOT_DECLARED"]; },
+          expected: /reachable_states_added de delta_reach en block_ac debe contener IDs de estado válidos/i
+        },
+        {
+          name: "added-states-wrong-type",
+          mutate: function (p) { p.result.delta_reach.block_ac.reachable_states_added = "C"; },
+          expected: /reachable_states_added de delta_reach en block_ac debe contener IDs de estado válidos/i
+        },
+        {
+          name: "removed-states-wrong-type",
+          mutate: function (p) { p.result.delta_reach.block_ac.reachable_states_removed = null; },
+          expected: /reachable_states_removed de delta_reach en block_ac debe contener IDs de estado válidos/i
+        },
+        {
+          name: "added-transitions-wrong-type",
+          mutate: function (p) { p.result.delta_reach.block_ac.enabled_at_initial_added = "t_ac"; },
+          expected: /enabled_at_initial_added de delta_reach en block_ac debe contener IDs de transición válidos/i
+        },
+        {
+          name: "removed-transitions-wrong-type",
+          mutate: function (p) { p.result.delta_reach.block_ac.enabled_at_initial_removed = null; },
+          expected: /enabled_at_initial_removed de delta_reach en block_ac debe contener IDs de transición válidos/i
+        },
+        {
           name: "invalid-trajectory-edge",
           mutate: function (p) { p.result.delta_reach.block_ac.trajectories_removed = [[{ state: "A" }, { state: "D", transition: "t_ac" }]]; },
           expected: /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i
@@ -2774,6 +2799,11 @@ const assert = require("node:assert/strict");
       ["unexpected-baseline-entry", /delta_reach debe contener exactamente una entrada por escenario de intervención/i],
       ["malformed-source-hash", /baseline_source_sha256 de delta_reach en block_ac debe ser SHA-256 válido/i],
       ["undeclared-state-reference", /reachable_states_removed de delta_reach en block_ac debe contener IDs de estado válidos/i],
+      ["undeclared-added-state-reference", /reachable_states_added de delta_reach en block_ac debe contener IDs de estado válidos/i],
+      ["added-states-wrong-type", /reachable_states_added de delta_reach en block_ac debe contener IDs de estado válidos/i],
+      ["removed-states-wrong-type", /reachable_states_removed de delta_reach en block_ac debe contener IDs de estado válidos/i],
+      ["added-transitions-wrong-type", /enabled_at_initial_added de delta_reach en block_ac debe contener IDs de transición válidos/i],
+      ["removed-transitions-wrong-type", /enabled_at_initial_removed de delta_reach en block_ac debe contener IDs de transición válidos/i],
       ["invalid-trajectory-edge", /trajectories_removed de delta_reach en block_ac debe contener trayectorias válidas/i],
       ["non-boolean-truncation", /truncated de delta_reach en block_ac debe ser booleano/i],
       ["aggregate-truncation-mismatch", /Los indicadores de truncamiento de delta_reach en block_ac no coinciden con los escenarios/i]
