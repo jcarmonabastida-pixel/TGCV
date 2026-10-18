@@ -2389,6 +2389,9 @@ const assert = require("node:assert/strict");
         { name: "assessment-blank-criterion", mutate: p => { p.value_assessment.criterion = " "; } },
         { name: "assessment-blank-valuation-rule", mutate: p => { p.value_assessment.valuation_rule = " "; } },
         { name: "assessment-blank-rationale", mutate: p => { p.value_assessment.rationale = ""; } },
+        { name: "assessment-valuation-rule-wrong-type", mutate: p => { p.value_assessment.valuation_rule = []; } },
+        { name: "assessment-rationale-wrong-type", mutate: p => { p.value_assessment.rationale = 7; } },
+        { name: "outcome-value-wrong-type", mutate: p => { p.outcome_record.value = []; } },
         { name: "outcome-uncertainty-null", mutate: p => { p.outcome_record.uncertainty_status = null; } },
         { name: "outcome-uncertainty-array", mutate: p => { p.outcome_record.uncertainty_status = []; } }
       ]) {
@@ -2412,6 +2415,9 @@ const assert = require("node:assert/strict");
       "assessment-blank-criterion": /valoración está incompleta/i,
       "assessment-blank-valuation-rule": /valoración está incompleta/i,
       "assessment-blank-rationale": /valoración está incompleta/i,
+      "assessment-valuation-rule-wrong-type": /valoración está incompleta/i,
+      "assessment-rationale-wrong-type": /valoración está incompleta/i,
+      "outcome-value-wrong-type": /campos obligatorios vacíos o de tipo incorrecto/i,
       "outcome-uncertainty-null": /campos obligatorios vacíos o de tipo incorrecto/i,
       "outcome-uncertainty-array": /campos obligatorios vacíos o de tipo incorrecto/i
     };
