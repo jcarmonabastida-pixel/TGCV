@@ -60,11 +60,11 @@
 | FC5-RES-008 | Validate semantic identity version/hash conditional pairing | partial | Implementation exists; adversarial matrix incomplete |
 | FC5-RES-009 | Validate input hash format and recomputation | partial | Code check exists; dedicated malformed/incorrect fixtures not mapped |
 | FC5-RES-010 | Validate result hash format and recomputation | partial | Code check exists; dedicated malformed/incorrect fixtures not mapped |
-| FC5-SCEN-001 | Enforce scenario result closed-key schema | partial | Validator exists; per-key negative matrix absent |
-| FC5-SCEN-002 | Require scenario key to equal nested scenario ID | partial | Validator exists; dedicated fixture not mapped |
+| FC5-SCEN-001 | Enforce scenario result closed-key schema | verified (grouped tested predicates) | Browser adversaries reject missing `reachable_states`, wrong-type `trajectories`, and an unknown scenario-result key (`web/ui_contract_test.cjs` lines 999–1001). This does not establish a complete per-field negative matrix. Five workflows passed on source HEAD `df3536c123212b50493a59499062ffad04105898`; fresh exact-HEAD CI required for this register update. |
+| FC5-SCEN-002 | Require scenario key to equal nested scenario ID | verified (grouped tested predicate) | `scenario-id-key-mismatch` rejects `scenario_id` inconsistent with the map key (`web/ui_contract_test.cjs` line 1002). Other scenario identity constraints remain separate. Five workflows passed on source HEAD `df3536c123212b50493a59499062ffad04105898`; fresh exact-HEAD CI required for this register update. |
 | FC5-SCEN-003 | Validate scenario transition/state arrays and references | partial | Validator exists; exhaustive invalid-reference cases not mapped |
 | FC5-SCEN-004 | Validate trajectory paths as ordered valid transitions | partial | Validator exists; adversarial sequence matrix incomplete |
-| FC5-SCEN-005 | Require boolean truncation flag | partial | Validator exists; wrong-type fixture not mapped |
+| FC5-SCEN-005 | Require boolean truncation flag | verified (grouped tested predicate) | `scenario-truncated-wrong-type` rejects string `"false"` in place of a boolean (`web/ui_contract_test.cjs` line 1004). This does not close trajectory/comparison truncation predicates. Five workflows passed on source HEAD `df3536c123212b50493a59499062ffad04105898`; fresh exact-HEAD CI required for this register update. |
 | FC5-SCEN-006 | Enforce exploration_bounds closed keys and non-negative integer bounds | partial | Validator exists; boundaries/wrong types not mapped |
 | FC5-SCEN-007 | Validate relation effects and temporal-prerequisite fields against active profile | partial | Validator exists; profile-specific negative matrix incomplete |
 | FC5-SCEN-008 | Enforce blocked temporal step schema, references, and non-empty missing prerequisites | partial | Validator exists; dedicated fixtures not mapped |
@@ -75,9 +75,9 @@
 |---|---|---|---|
 | FC5-CMP-001 | Enforce comparison closed-key schema | partial | Validator exists; negative fixture not mapped |
 | FC5-CMP-002 | Require exactly one comparison per non-baseline scenario | partial | Code/replay; exhaustive fixture mapping incomplete |
-| FC5-CMP-003 | Validate intervention disabled-transition schema and references | partial | Validator exists; negative fixture not mapped |
+| FC5-CMP-003 | Validate intervention disabled-transition schema and references | verified (grouped tested predicate) | `comparison-disabled-transitions-wrong-type` rejects a string where `disabled_transitions` must be an array (`web/ui_contract_test.cjs` line 1058). Reference validity remains a separate predicate. Five workflows passed on source HEAD `df3536c123212b50493a59499062ffad04105898`; fresh exact-HEAD CI required for this register update. |
 | FC5-CMP-004 | Validate added/removed state and transition ID arrays | partial | Validator exists; wrong-type/invalid-ID matrix incomplete |
-| FC5-CMP-005 | Validate added/removed trajectories as coherent paths | partial | Validator exists; adversarial path cases incomplete |
+| FC5-CMP-005 | Validate added/removed trajectories as coherent paths | verified (grouped tested predicate) | `comparison-invalid-added-trajectory` rejects a path containing undeclared state/transition IDs (`web/ui_contract_test.cjs` line 1059). This is selected path-coherence coverage, not an exhaustive adversarial sequence matrix. Five workflows passed on source HEAD `df3536c123212b50493a59499062ffad04105898`; fresh exact-HEAD CI required for this register update. |
 | FC5-CMP-006 | Require boolean comparison truncation | partial | Validator exists; wrong-type fixture not mapped |
 | FC5-DELTA-001 | Require exactly one delta entry per non-baseline scenario and none for baseline | verified (candidate; exact-head gate refreshed after register update) | Grouped adversaries remove the intervention entry and add a baseline entry; both are rejected after recomputing result/package hashes. Browser/cross-runtime [39036611900](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39036611900) passed on exact test SHA `45871566cbd4d5ba209cd3aa68650ca8d78e20d5`. |
 | FC5-DELTA-002 | Reject unknown delta object fields | verified (candidate; exact-head gate refreshed after register update) | Existing grouped closed-key adversary adds an uncontracted delta field and is rejected with recomputed outer hashes; browser/cross-runtime [39036611900](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39036611900) passed on exact test SHA `45871566cbd4d5ba209cd3aa68650ca8d78e20d5`. |
@@ -461,3 +461,10 @@ No test code was changed and no new test batch was added. Remaining input-schema
 The six FC5-IN rows above are normalized to **verified for their named grouped predicates**, not because new tests were added, but because the prior reconciliation relied too narrowly on the browser test file and missed existing Python assertions and the residual predicate matrix. Evidence locations and scope limits are recorded row by row. This correction supersedes the prior narrative that treated these predicates as untested gaps.
 
 No source or test code changed. Exact-head CI must run on this documentation commit before treating the revised statuses as fully confirmed. Do not add duplicate browser adversaries for predicates already covered by the Python suite. This remains synthetic contract conformance, not scientific validation; PR #70 stays draft, main unchanged, no scientific execution or promotion authorized.
+
+
+### FC5 scenario-result and comparison evidence reconciliation — 2026-10-18
+
+Five more rows were reconciled against explicit existing browser adversaries: FC5-SCEN-001, FC5-SCEN-002, FC5-SCEN-005, FC5-CMP-003, and FC5-CMP-005. Their statuses mean **verified only for the named grouped predicates**; they do not imply complete validation of every subconstraint in each broad requirement. Anchors and exclusions are documented in the rows above.
+
+No tests or runtime code changed. This prevents duplicate tests for already exercised cases while leaving unproven schema/linkage/path predicates partial. The prior five workflows passed on source/test HEAD `df3536c123212b50493a59499062ffad04105898`; this documentation-only commit must receive a fresh five-workflow exact-HEAD run before the update is treated as CI-reconciled. PR #70 remains draft; main unchanged; no scientific execution authorized.
