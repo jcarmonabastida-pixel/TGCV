@@ -179,7 +179,7 @@ async function assessImportedBrowserPackage(pkg){
    assert(outcome.execution_trace_sha256===pkg.concrete_execution_trace.trace_sha256,"El hash de traza del resultado no coincide con la traza exportada.");
    assert(outcome.model_id===pkg.input.model_id&&outcome.model_id===pkg.concrete_execution_trace.model_id,"El model_id del resultado no coincide con la entrada y la traza exportadas.");
    assert(outcome.scenario_id===pkg.concrete_execution_trace.scenario_id,"El scenario_id del resultado no coincide con la traza exportada.");
-   assert(typeof outcome.outcome_id==="string"&&outcome.outcome_id.length>0&&typeof outcome.value==="string"&&outcome.value.length>0,"El resultado explícito carece de identificador o valor."); assert(["synthetic","observed"].includes(outcome.source_kind),"source_kind del resultado no es válido."); assert(["value","unit","timing","uncertainty_status","provenance"].every(function(k){return typeof outcome[k]==="string"&&outcome[k].trim().length>0}),"El resultado contiene campos obligatorios vacíos o de tipo incorrecto.");
+   assert(typeof outcome.outcome_id==="string"&&outcome.outcome_id.trim().length>0&&typeof outcome.value==="string"&&outcome.value.trim().length>0,"El resultado explícito carece de identificador o valor."); assert(["synthetic","observed"].includes(outcome.source_kind),"source_kind del resultado no es válido."); assert(["value","unit","timing","uncertainty_status","provenance"].every(function(k){return typeof outcome[k]==="string"&&outcome[k].trim().length>0}),"El resultado contiene campos obligatorios vacíos o de tipo incorrecto.");
   }
   if(pkg.value_assessment!==undefined){
    var assessment=pkg.value_assessment;
