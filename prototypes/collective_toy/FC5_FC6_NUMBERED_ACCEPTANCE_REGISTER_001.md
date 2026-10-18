@@ -333,3 +333,13 @@ This plan atomizes the seven previously excluded areas into **11 candidate group
 | Decision D1 | BLOCKED and trace-only packages | Normative acceptance semantics for BLOCKED traces and trace-only packages | **Resolved: policy A**; see FC5-TRACE-015 and FC5-TRACE-020 evidence below |
 
 The 11 batch count is a planning estimate, not the number of remaining test functions. Before implementation, each batch must be reconciled against validator branches, existing named tests, exact-SHA evidence and any already-closed register predicates. Split a batch only if independent predicates require materially different setup or expected behavior; do not create one test per field by default. Historical authentic-package replay remains a separate external-evidence gap and is not covered by H1–H11.
+
+
+## Grouped closeout rule — 2026-10-18
+
+- The register is a traceability inventory, not a count of independent test runs. A predicate marked partial or pending does not automatically require a new test.
+- Before adding tests, map each remaining predicate to existing implementation, grouped test evidence, and the exact tested commit. Reuse valid evidence when the tested code and assertions still apply.
+- Close the remaining acceptance work in four grouped gates: (A) input/package schema and adversarial types; (B) numeric boundaries and identifiers; (C) end-to-end temporal Full Chain execution, outcome, contextual assessment, export/import and deterministic replay; (D) final artifact inspection and five-workflow same-SHA CI reconciliation.
+- Add a new test only for a concrete uncovered risk or failed assertion. Do not split one requirement into one test per field, rerun already-valid historical coverage without a reason, or count the same gap in multiple groups.
+- FC6 artifact publication is implemented on this candidate, but remains unverified until CI produces the artifact. Do not mark it PASS from source inspection alone.
+- The acceptance scope remains synthetic software conformance; it is not scientific validation of TGCV. Keep main unchanged and the pull request in draft until the closeout gate is satisfied.
