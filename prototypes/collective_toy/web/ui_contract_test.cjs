@@ -803,13 +803,6 @@ const assert = require("node:assert/strict");
     assert.equal(exportedPackageDigest, fc4Package.package_sha256,
       "FC-6: complete exported package digest must recompute from the exported envelope");
 
-    // Persist the exact validated Full Chain package for CI artifact inspection.
-    fs.mkdirSync("artifacts", { recursive: true });
-    fs.writeFileSync(
-      "artifacts/tgcv-full-chain-acceptance-package.json",
-      `${JSON.stringify(fc4Package, null, 2)}\n`,
-      "utf8"
-    );
     assert.ok(["value", "unit", "timing", "uncertainty_status", "provenance"].every(key =>
       typeof fc4Package.outcome_record[key] === "string" && fc4Package.outcome_record[key].trim().length > 0),
       "FC-6: artifact inventory must retain the complete non-empty outcome provenance fields");
@@ -2682,6 +2675,26 @@ const assert = require("node:assert/strict");
     await temporalPage.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
     assert.match(await temporalPage.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "GT-05 temporal: assessed package must independently replay after clean import");
+
+    // Export the stronger temporal Full Chain fixture (ordered prerequisite path), not the earlier one-step fixture.
+    assert.equal(temporalPackage.package_stage, "ASSESSMENT");
+    assert.equal(temporalPackage.value_assessment.status, "ASSESSED");
+    assert.equal(temporalPackage.outcome_record.execution_id, temporalPackage.concrete_execution_trace.execution_id);
+    assert.equal(temporalPackage.outcome_record.execution_trace_sha256, temporalPackage.concrete_execution_trace.trace_sha256);
+    assert.equal(temporalPackage.value_assessment.outcome_id, temporalPackage.outcome_record.outcome_id);
+    const temporalPackageDigest = await temporalPage.evaluate(async (pkg) => {
+      const body = structuredClone(pkg);
+      delete body.package_sha256;
+      return window.hash(body, "package_export");
+    }, temporalPackage);
+    assert.equal(temporalPackageDigest, temporalPackage.package_sha256,
+      "FC-6: exported temporal Full Chain artifact must have a recomputable package digest");
+    fs.mkdirSync("artifacts", { recursive: true });
+    fs.writeFileSync(
+      "artifacts/tgcv-full-chain-acceptance-package.json",
+      `${JSON.stringify(temporalPackage, null, 2)}\n`,
+      "utf8"
+    );
 
     // H10 grouped temporal-history adversaries: keep outer hashes valid while
     // falsifying the execution prefix or the prerequisite evidence for t_cd.
