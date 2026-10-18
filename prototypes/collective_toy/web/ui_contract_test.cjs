@@ -2417,7 +2417,7 @@ const assert = require("node:assert/strict");
       "assessment-blank-rationale": /valoración está incompleta/i,
       "assessment-valuation-rule-wrong-type": /valoración está incompleta/i,
       "assessment-rationale-wrong-type": /valoración está incompleta/i,
-      "outcome-value-wrong-type": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-value-wrong-type": /El resultado explícito carece de identificador o valor/i,
       "outcome-uncertainty-null": /campos obligatorios vacíos o de tipo incorrecto/i,
       "outcome-uncertainty-array": /campos obligatorios vacíos o de tipo incorrecto/i
     };
