@@ -992,6 +992,57 @@ const assert = require("node:assert/strict");
         `H1: reject malformed nested input predicate ${inputCase.name}`);
     }
 
+    // FC5-RES-002..005 grouped result-envelope adversaries. Recompute semantic/result/package
+    // digests so each case reaches the intended result-vs-input contract assertion.
+    const resultEnvelopeAdversaries = await page.evaluate(async (pkg) => {
+      const cases = [
+        { name: "schema-version-mismatch", mutate: p => { p.result.schema_version = "unsupported-result-schema"; }, expected: /versión de esquema del resultado no coincide con la entrada/i },
+        { name: "model-id-mismatch", mutate: p => { p.result.model_id = "forged-model-id"; }, expected: /model_id del resultado no coincide con la entrada/i },
+        { name: "rule-profile-mismatch", mutate: p => { p.result.rule_profile = { type: "relation_guarded_graph", version: "1" }; }, expected: /perfil de reglas del resultado no coincide con la entrada/i },
+        { name: "validation-not-pass", mutate: p => { p.result.validation = "FAIL"; }, expected: /resultado no declara validation=PASS/i }
+      ];
+      return Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        item.mutate(candidate);
+        if (candidate.result.semantic_identity_version !== undefined) {
+          const projected = structuredClone(candidate.result);
+          delete projected.delta_reach;
+          delete projected.engine_version;
+          delete projected.input_sha256;
+          delete projected.result_sha256;
+          delete projected.semantic_sha256;
+          delete projected.semantic_identity_version;
+          Object.keys(projected.scenario_results || {}).forEach(id => {
+            const scenario = projected.scenario_results[id];
+            if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+          });
+          Object.keys(projected.comparisons_to_baseline || {}).forEach(id => {
+            const intervention = projected.comparisons_to_baseline[id].intervention || {};
+            if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+          });
+          candidate.result.semantic_sha256 = await window.hash(projected, "result");
+        }
+        const resultBody = structuredClone(candidate.result);
+        delete resultBody.input_sha256;
+        delete resultBody.result_sha256;
+        candidate.result.result_sha256 = await window.hash(resultBody, "result");
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { name: item.name, candidate, expected: item.expected.source };
+      }));
+    }, fc4Package);
+    for (const resultCase of resultEnvelopeAdversaries) {
+      await page.locator("#package-file").setInputFiles({
+        name: `fc5-result-envelope-${resultCase.name}.json`,
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(resultCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(resultCase.expected, "i"),
+        `FC5: reject result-envelope contract violation ${resultCase.name} after recomputing enclosing digests`);
+    }
+
     // H2 grouped scenario-result schema adversaries. Recompute semantic/result/package
     // digests so rejection is attributable to the nested scenario-result invariant.
     const scenarioResultAdversaries = await page.evaluate(async (pkg) => {
