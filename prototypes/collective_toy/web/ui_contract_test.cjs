@@ -1007,9 +1007,6 @@ const assert = require("node:assert/strict");
       return Promise.all(cases.map(async item => {
         const candidate = structuredClone(pkg);
         item.mutate(candidate);
-        if (item.refreshInputIdentity) {
-          candidate.result.input_sha256 = await window.hash(candidate.input, "input");
-        }
         if (candidate.result.semantic_identity_version !== undefined) {
           const projected = structuredClone(candidate.result);
           delete projected.delta_reach;
@@ -1322,6 +1319,9 @@ const assert = require("node:assert/strict");
       return Promise.all(cases.map(async item => {
         const candidate = structuredClone(pkg);
         item.mutate(candidate);
+        if (item.refreshInputIdentity) {
+          candidate.result.input_sha256 = await window.hash(candidate.input, "input");
+        }
         if (candidate.result.semantic_identity_version !== undefined) {
           const projected = structuredClone(candidate.result);
           delete projected.delta_reach;
