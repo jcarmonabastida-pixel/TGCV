@@ -2493,8 +2493,14 @@ const assert = require("node:assert/strict");
         { name: "outcome-blank-id", mutate: p => { p.outcome_record.outcome_id = " "; p.value_assessment.outcome_id = " "; } },
         { name: "outcome-blank-value", mutate: p => { p.outcome_record.value = ""; } },
         { name: "outcome-unit-wrong-type", mutate: p => { p.outcome_record.unit = 17; } },
+        { name: "outcome-unit-null", mutate: p => { p.outcome_record.unit = null; } },
+        { name: "outcome-unit-array", mutate: p => { p.outcome_record.unit = []; } },
         { name: "outcome-timing-wrong-type", mutate: p => { p.outcome_record.timing = []; } },
+        { name: "outcome-timing-null", mutate: p => { p.outcome_record.timing = null; } },
+        { name: "outcome-timing-number", mutate: p => { p.outcome_record.timing = 17; } },
         { name: "outcome-provenance-wrong-type", mutate: p => { p.outcome_record.provenance = null; } },
+        { name: "outcome-provenance-array", mutate: p => { p.outcome_record.provenance = []; } },
+        { name: "outcome-provenance-number", mutate: p => { p.outcome_record.provenance = 17; } },
         { name: "assessment-invalid-status", mutate: p => { p.value_assessment.status = "NOT_ASSESSED"; } },
         { name: "assessment-blank-observer", mutate: p => { p.value_assessment.observer = " "; } },
         { name: "assessment-blank-context", mutate: p => { p.value_assessment.context = ""; } },
@@ -2505,7 +2511,9 @@ const assert = require("node:assert/strict");
         { name: "assessment-rationale-wrong-type", mutate: p => { p.value_assessment.rationale = 7; } },
         { name: "outcome-value-wrong-type", mutate: p => { p.outcome_record.value = []; } },
         { name: "outcome-uncertainty-null", mutate: p => { p.outcome_record.uncertainty_status = null; } },
-        { name: "outcome-uncertainty-array", mutate: p => { p.outcome_record.uncertainty_status = []; } }
+        { name: "outcome-uncertainty-array", mutate: p => { p.outcome_record.uncertainty_status = []; } },
+        { name: "outcome-uncertainty-number", mutate: p => { p.outcome_record.uncertainty_status = 17; } },
+        { name: "outcome-uncertainty-object", mutate: p => { p.outcome_record.uncertainty_status = { status: "unknown" }; } }
       ]) {
         const candidate = structuredClone(pkg);
         item.mutate(candidate);
@@ -2524,8 +2532,14 @@ const assert = require("node:assert/strict");
       "outcome-blank-id": /El resultado explícito carece de identificador o valor/i,
       "outcome-blank-value": /El resultado explícito carece de identificador o valor/i,
       "outcome-unit-wrong-type": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-unit-null": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-unit-array": /campos obligatorios vacíos o de tipo incorrecto/i,
       "outcome-timing-wrong-type": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-timing-null": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-timing-number": /campos obligatorios vacíos o de tipo incorrecto/i,
       "outcome-provenance-wrong-type": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-provenance-array": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-provenance-number": /campos obligatorios vacíos o de tipo incorrecto/i,
       "assessment-invalid-status": /esquema o estado de valoración desconocido/i,
       "assessment-blank-observer": /valoración está incompleta/i,
       "assessment-blank-context": /valoración está incompleta/i,
@@ -2536,7 +2550,9 @@ const assert = require("node:assert/strict");
       "assessment-rationale-wrong-type": /valoración está incompleta/i,
       "outcome-value-wrong-type": /El resultado explícito carece de identificador o valor/i,
       "outcome-uncertainty-null": /campos obligatorios vacíos o de tipo incorrecto/i,
-      "outcome-uncertainty-array": /campos obligatorios vacíos o de tipo incorrecto/i
+      "outcome-uncertainty-array": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-uncertainty-number": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-uncertainty-object": /campos obligatorios vacíos o de tipo incorrecto/i
     };
     for (const semanticCase of invalidOutcomeAssessmentSemantics) {
       await page.locator("#package-file").setInputFiles({
