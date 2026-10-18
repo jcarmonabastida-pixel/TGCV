@@ -1689,7 +1689,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     const divergentPackagePayload = structuredClone(divergentPackage);
     delete divergentPackagePayload.package_sha256;
     divergentPackage.package_sha256 = sha256Canonical(divergentPackagePayload);
-    await assessInBrowser(divergentPackage, "rejected", "La comparación baseline de block_ac no coincide con la derivación independiente a partir de los resultados de escenario");
+    await assessInBrowser(divergentPackage, "rejected", "reachable_states del escenario baseline debe contener solo IDs de estado declarados");
 
     fs.writeFileSync(outputPath, "{ invalid JSON");
     await page.locator("#package-file").setInputFiles(outputPath);
