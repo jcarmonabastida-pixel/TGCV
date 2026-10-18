@@ -1232,7 +1232,7 @@ const assert = require("node:assert/strict");
     const scenarioResultAdversaries = await page.evaluate(async (pkg) => {
       const cases = [
         { name: "scenario-missing-reachable-states", mutate: p => { delete p.result.scenario_results.baseline.reachable_states; }, expected: /El campo reachable_states del escenario baseline debe ser una lista/i },
-        { name: "scenario-undeclared-reachable-state", mutate: p => { p.result.scenario_results.baseline.reachable_states = [...p.result.scenario_results.baseline.reachable_states, "STATE_NOT_DECLARED"]; }, expected: /La comparación baseline de block_ac no coincide con la derivación independiente/i },
+        { name: "scenario-undeclared-reachable-state", mutate: p => { p.result.scenario_results.baseline.reachable_states = [...p.result.scenario_results.baseline.reachable_states, "STATE_NOT_DECLARED"]; }, expected: /reachable_states del escenario baseline debe contener solo IDs de estado declarados/i },
         { name: "scenario-trajectories-wrong-type", mutate: p => { p.result.scenario_results.baseline.trajectories = "not-an-array"; }, expected: /El campo trajectories del escenario baseline debe ser una lista/i },
         { name: "scenario-unknown-key", mutate: p => { p.result.scenario_results.baseline.unreviewed_extension = true; }, expected: /El resultado del escenario baseline contiene campos desconocidos/i },
         { name: "scenario-id-key-mismatch", mutate: p => { p.result.scenario_results.baseline.scenario_id = "not-baseline"; }, expected: /scenario_id no coincide con la clave baseline/i },
