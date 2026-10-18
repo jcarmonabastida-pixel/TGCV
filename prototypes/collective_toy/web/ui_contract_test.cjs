@@ -1137,6 +1137,31 @@ const assert = require("node:assert/strict");
           name: "malformed-semantic-hash",
           mutate: p => { p.result.semantic_sha256 = "not-a-sha256"; },
           expected: /semantic_sha256 ausente o malformado/i
+        },
+        {
+          name: "semantic-hash-null",
+          mutate: p => { p.result.semantic_sha256 = null; },
+          expected: /semantic_sha256 ausente o malformado/i
+        },
+        {
+          name: "semantic-hash-array",
+          mutate: p => { p.result.semantic_sha256 = []; },
+          expected: /semantic_sha256 ausente o malformado/i
+        },
+        {
+          name: "semantic-hash-number",
+          mutate: p => { p.result.semantic_sha256 = 17; },
+          expected: /semantic_sha256 ausente o malformado/i
+        },
+        {
+          name: "semantic-version-null",
+          mutate: p => { p.result.semantic_identity_version = null; },
+          expected: /versión de identidad semántica no admitida/i
+        },
+        {
+          name: "semantic-version-number",
+          mutate: p => { p.result.semantic_identity_version = 7; },
+          expected: /versión de identidad semántica no admitida/i
         }
       ];
       return Promise.all(cases.map(async item => {
@@ -1205,6 +1230,41 @@ const assert = require("node:assert/strict");
           name: "result-hash-wrong-but-well-formed",
           mutate: p => { p.result.result_sha256 = "0".repeat(64); },
           expected: /El hash del resultado no coincide/i
+        },
+        {
+          name: "input-hash-missing",
+          mutate: p => { delete p.result.input_sha256; },
+          expected: /input_sha256 ausente o malformado/i
+        },
+        {
+          name: "input-hash-null",
+          mutate: p => { p.result.input_sha256 = null; },
+          expected: /input_sha256 ausente o malformado/i
+        },
+        {
+          name: "input-hash-number",
+          mutate: p => { p.result.input_sha256 = 17; },
+          expected: /input_sha256 ausente o malformado/i
+        },
+        {
+          name: "result-hash-missing",
+          mutate: p => { delete p.result.result_sha256; },
+          expected: /result_sha256 ausente o malformado/i
+        },
+        {
+          name: "result-hash-null",
+          mutate: p => { p.result.result_sha256 = null; },
+          expected: /result_sha256 ausente o malformado/i
+        },
+        {
+          name: "result-hash-array",
+          mutate: p => { p.result.result_sha256 = []; },
+          expected: /result_sha256 ausente o malformado/i
+        },
+        {
+          name: "result-hash-number",
+          mutate: p => { p.result.result_sha256 = 17; },
+          expected: /result_sha256 ausente o malformado/i
         }
       ];
       return Promise.all(cases.map(async item => {
