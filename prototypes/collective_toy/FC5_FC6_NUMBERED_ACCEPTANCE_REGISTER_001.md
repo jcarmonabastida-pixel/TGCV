@@ -401,3 +401,15 @@ The browser/cross-runtime job explicitly reports rejection in both runtimes for 
 - **Boundary:** these are software contract/CI results on synthetic fixtures only. No scientific execution, TGCV scientific validity claim, or promotion to `main` is implied.
 
 This section records exact-head evidence. Because adding this record creates a new documentation commit, the five-workflow exact-head gate must be reconfirmed on that resulting HEAD before this documentation commit itself is considered fully reconciled.
+
+
+### GT-04 lifecycle-matrix reconciliation — 2026-10-18
+
+**Disposition: the artifact-presence/stage conditional matrix is already implemented and verified; do not add a duplicate test.**
+
+- The existing browser contract suite at `web/ui_contract_test.cjs` contains the grouped conditional-envelope cases and a 32-row truth table: 4 declared package stages (`EXPLORATION`, `EXECUTION`, `OUTCOME`, `ASSESSMENT`) × all 8 presence combinations for execution trace, outcome record, and value assessment.
+- The table recomputes each package digest after mutation, derives the expected stage from the artifacts present, checks the dependency rules (outcome requires a trace; assessment requires an outcome), asserts exactly four valid rows, and imports all rows expecting valid rows to replay-verify and invalid rows to reject.
+- Additional adjacent cases reject assessment under the wrong stage, assessment without outcome, outcome without trace, and incomplete/invalid outcome or assessment fields. This is a grouped lifecycle test, not a claim of exhaustive arbitrary field/type coverage.
+- Exact source/test HEAD: `9570a8b45edf7936f263626e55ac1ff4dabbe8bf`. The browser/cross-runtime workflow [39082638600](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082638600) completed successfully on that SHA; its `browser-cross-runtime` job passed the browser/Python concordance test and clean-source archive replay. The complete five-workflow batch on that SHA also passed (governance [39082638499](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082638499), engine [39082638479](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082638479), browser benchmark [39082638474](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082638474), engine benchmark [39082638536](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082638536)).
+- **Scope closure:** mark the GT-04 artifact-presence/stage/dependency matrix verified for this tested contract. Keep broader FC-5 schema inventory, all possible nested wrong-type/missing-field combinations, and authentic historical artifact compatibility separate and partial where the register says so.
+- This is software contract evidence on synthetic fixtures only. No scientific execution or promotion to `main` is implied. This documentation update creates a new HEAD and therefore requires its own exact-head five-workflow confirmation before the register update itself is considered reconciled.
