@@ -379,3 +379,25 @@ Implementation/test commit: `f66baa7f6adea8950076f9e5b3611aa0450a5cea`. This bat
 - **Gate B / H5:** added a positive direct-validator boundary case with exactly 500 declared states and 2,000 transitions. It deliberately uses depth 0 and trajectory cap 1, and calls the contract validator rather than rendering/executing a large graph; this isolates acceptance of the inclusive size maxima from unrelated runtime cost.
 - **Gate B / H6 decision:** IDs are unique within their typed collection, not globally across state, transition, and scenario namespaces. These identifiers are interpreted through typed fields and references; equal text across namespaces is not ambiguous under the current contract. Added one positive validator case combining a state ID, transition ID, and scenario ID with the same text in different namespaces. No global-collision rejection test is warranted unless the contract is deliberately changed to require global uniqueness.
 - **Evidence status:** candidate implementation committed; the five-workflow exact-head gate must pass on the final documentation/test head before these residuals are marked verified. Until then, Gate A and Gate B remain partial. No scientific execution, historical-package claim, or promotion to `main` is implied.
+
+
+### Exact-head Gate A/B grouped reconciliation — 2026-10-18 (post-CI)
+
+**Test/source head:** `f9cd90064b780f2f655135db4af81d0095c407e3`. The earlier empty result from `fetch_commit_workflow_runs` was a wrapper limitation: it filters to pull-request-triggered runs and missed these `push`-triggered runs. Direct Actions API evidence resolves that uncertainty.
+
+All five workflows completed successfully on the exact test/source head:
+
+- Governance: [39082360508](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082360508)
+- Synthetic engine: [39082360549](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082360549)
+- Browser performance: [39082360545](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082360545)
+- Python engine benchmark: [39082361067](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082361067)
+- Browser/cross-runtime + clean-source archive replay + acceptance artifact: [39082360554](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39082360554)
+
+The browser/cross-runtime job explicitly reports rejection in both runtimes for the expanded required-field and unknown-nested-field adversaries. The same job completed clean-source replay and uploaded artifact `tgcv-full-chain-acceptance-f9cd90064b780f2f655135db4af81d0095c407e3` (artifact ID `12119635835`, SHA-256 `937b9d53f180253b79d6a0db8fb6b354e7ff641c3ee54839942061865039de91`).
+
+- **Gate A:** the grouped residual batch is **verified for the cases it explicitly exercises**: missing required schema/model/initial-state/containers, wrong container types, and unknown keys at top-level and nested transition/scenario/exploration/relation levels. This is not a claim that every conceivable schema/type combination is exhaustively tested.
+- **Gate B:** the exact 500-state/2,000-transition positive validator boundary and cross-namespace same-text ID acceptance assertions are included in the passing browser suite. The namespace policy is now explicit: uniqueness is scoped to typed collections; no global uniqueness constraint is intended. Existing over-limit and malformed identifier adversaries remain passing.
+- **Disposition:** close the previously named material residuals in Gates A and B for this grouped contract scope. Do not expand to atom-by-atom testing. The broader historical-package replay gap remains independent and is not a Gate A/B blocker.
+- **Boundary:** these are software contract/CI results on synthetic fixtures only. No scientific execution, TGCV scientific validity claim, or promotion to `main` is implied.
+
+This section records exact-head evidence. Because adding this record creates a new documentation commit, the five-workflow exact-head gate must be reconfirmed on that resulting HEAD before this documentation commit itself is considered fully reconciled.
