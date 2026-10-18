@@ -55,8 +55,8 @@
 | FC5-RES-003 | Require result model ID to match input | partial | Code/replay enforce; dedicated negative fixture not mapped |
 | FC5-RES-004 | Require canonical rule profile equality with input | partial | Code/replay enforce; dedicated negative fixture not mapped |
 | FC5-RES-005 | Require validation status exactly PASS for exported successful result | partial | Code check exists; dedicated negative fixture not mapped |
-| FC5-RES-006 | Require result scenario keys to match input scenarios exactly | partial | Code/replay enforce; exhaustive unknown/missing cases not mapped |
-| FC5-RES-007 | Require baseline comparisons for every non-baseline scenario and no others | partial | Code/replay enforce; exhaustive negative fixtures not mapped |
+| FC5-RES-006 | Require result scenario keys to match input scenarios exactly | partial | Existing browser adversaries reject a missing intervention entry and an unexpected baseline entry in `delta_reach` (ui_contract_test.cjs lines 2327–2338), plus an orphan delta without its baseline comparison (lines 2413–2423). These establish related linkage predicates, but do not alone prove exact equality of `scenario_results` keys with input scenarios; retain partial. |
+| FC5-RES-007 | Require baseline comparisons for every non-baseline scenario and no others | partial | Existing adversaries remove a required `comparisons_to_baseline.block_ac` entry and expect a specific missing-comparison rejection (ui_contract_test.cjs lines 2377–2423); H8 also rejects a jointly forged comparison after all enclosing hashes are recomputed (lines 2265–2303). These prove selected missing/linkage cases, not the complete exact-set invariant; retain partial. |
 | FC5-RES-008 | Validate semantic identity version/hash conditional pairing | partial | Implementation exists; adversarial matrix incomplete |
 | FC5-RES-009 | Validate input hash format and recomputation | partial | Code check exists; dedicated malformed/incorrect fixtures not mapped |
 | FC5-RES-010 | Validate result hash format and recomputation | partial | Code check exists; dedicated malformed/incorrect fixtures not mapped |
@@ -482,3 +482,10 @@ The previous five workflows passed on source/test HEAD `0041ec1dc131f1a17762c13e
 The FC5-CMP-005 evidence note now includes the existing H8 adversary, which jointly forges `delta_reach` and `comparisons_to_baseline` and recomputes the enclosing semantic, result, and package hashes before checking independent derivation. This confirms the adversary should be counted in the acceptance map rather than duplicated.
 
 No runtime/test code changed and no broad status was upgraded based on adjacent evidence. The five workflows passed on prior HEAD `8829ca3e3e4811dc040080c47e927cd9fc27fabc`; this documentation update requires a fresh exact-HEAD run. FC5-RES-002 through FC5-RES-010 remain partial until each requirement is matched to direct evidence for its complete predicate or a bounded explicit sub-predicate. PR #70 remains draft; main unchanged; no scientific execution authorized.
+
+
+### FC5 result scenario/comparison linkage evidence — 2026-10-18
+
+The evidence notes for FC5-RES-006 and FC5-RES-007 now point to existing adversaries for missing/unexpected intervention delta entries, orphan deltas, missing baseline comparisons, and jointly forged comparisons under recomputed hashes. Both requirement statuses remain **partial** because these cases do not establish every exact-set condition for the full scenario-result and comparison maps.
+
+Documentation-only change; no tests or runtime code changed. Current five-workflow CI for parent HEAD `35e4825472799fd0294c4674fd07e32f0ee690c7` must finish before treating that parent as fully validated, and this new commit requires its own exact-HEAD validation. PR #70 remains draft; main unchanged; no scientific execution authorized.
