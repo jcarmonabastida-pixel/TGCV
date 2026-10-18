@@ -19,6 +19,77 @@ const assert = require("node:assert/strict");
     assert.match(notice, /No es una validación científica/i);
     assert.match(notice, /ni implementa por sí solo Tacc de TGCV/i);
 
+    // OCR image upload accepts supported formats, rejects unsupported/oversized files, and keeps OCR failures recoverable.
+    const imageInput = page.locator("#image-file");
+    await imageInput.setInputFiles({ name: "reference.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jW5sAAAAASUVORK5CYII=", "base64") });
+    await page.locator("#image-preview:not([hidden])").waitFor();
+    assert.match(await page.locator("#image-status").innerText(), /OCR opcional|OCR/i);
+    assert.equal(await page.locator("#clear-image").isEnabled(), true);
+    assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), true);
+    // Stub the OCR engine to test the browser integration deterministically without network access.
+    await page.evaluate(() => { window.Tesseract = { recognize: async (image, language) => { if (language !== "spa+eng") throw new Error("Unexpected OCR language"); if (!image || !String(image).startsWith("data:image/")) throw new Error("OCR did not receive the uploaded image data URL"); return { data: { text: "Nodo A\\nNodo B\\nA --> B" } }; } }; });
+    await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).click();
+    await page.locator("#image-status").filter({ hasText: /OCR completado/ }).waitFor();
+    assert.match(await page.locator("#image-transcription").inputValue(), /A --> B/);
+    // Empty OCR output must fail visibly and must not overwrite the last reviewed transcription.
+    await page.evaluate(() => { window.Tesseract = { recognize: async () => ({ data: { text: "   " } }) }; });
+    await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).click();
+    await page.locator("#image-status").filter({ hasText: /No se pudo completar el OCR.*No se detectó texto legible/i }).waitFor();
+    assert.match(await page.locator("#image-transcription").inputValue(), /A --> B/);
+    // Library failure must also be surfaced to the user without a stuck disabled button.
+    await page.evaluate(() => { window.Tesseract = { recognize: async () => { throw new Error("synthetic OCR failure"); } }; });
+    await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).click();
+    await page.locator("#image-status").filter({ hasText: /synthetic OCR failure/i }).waitFor();
+    assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), true);
+    await page.getByRole("button", { name: "Quitar imagen" }).click();
+    assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), false);
+    assert.equal(await page.locator("#image-preview").isVisible(), false);
+    await imageInput.setInputFiles({ name: "reference.svg", mimeType: "image/svg+xml", buffer: Buffer.from("<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>") });
+    assert.match(await page.locator("#image-status").innerText(), /Formato no admitido/i);
+    await imageInput.setInputFiles({ name: "oversized.png", mimeType: "image/png", buffer: Buffer.alloc(5 * 1024 * 1024 + 1, 0x20) });
+    assert.match(await page.locator("#image-status").innerText(), /supera el límite de 5 MiB/i);
+
+    // Preserve the canonical fixture: transcription import intentionally replaces the editor model.
+    const modelBeforeTranscription = await page.locator("#model").inputValue();
+    // Image transcription is user-supplied text, converted only into a reviewable draft.
+    await page.locator("#image-transcription").fill("A --> B" + String.fromCharCode(10) + "B --> C");
+    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador creado: 3 estados y 2 conexiones/ }).waitFor();
+    const transcriptionDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(transcriptionDraft.states, ["A", "B", "C"]);
+    assert.equal(transcriptionDraft.transitions.length, 2);
+    assert.match(await page.locator("#transcription-status").innerText(), /Revisa el grafo/i);
+    await page.locator("#image-transcription").fill("texto sin conexiones");
+    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
+    assert.match(await page.locator("#transcription-status").innerText(), /No se encontraron conexiones dirigidas/i);
+    await page.getByRole("button", { name: "Borrar transcripción" }).click();
+    assert.equal(await page.locator("#image-transcription").inputValue(), "");
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeTranscription);
+
+    // Manual graph review: enumerate edges, remove an incorrect edge, and flag duplicate pairs.
+    const reviewModel = JSON.parse(await page.locator("#model").inputValue());
+    reviewModel.states = ["A", "B", "C", "D"];
+    reviewModel.initial_state = "A";
+    reviewModel.relations = [];
+    reviewModel.scenarios = reviewModel.scenarios.map((scenario) => ({ ...scenario, disabled_transitions: [] }));
+    reviewModel.transitions = [
+      { id: "review_ab", source: "A", target: "B" },
+      { id: "review_ab_duplicate", source: "A", target: "B" },
+      { id: "review_bc", source: "B", target: "C" }
+    ];
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(reviewModel, null, 2));
+    await page.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión review_ab_duplicate/ }).click();
+    const removalStatus = await page.locator("#graph-edit-status").innerText();
+    assert.match(removalStatus, /Conexión eliminada: review_ab_duplicate/, "Edge removal must be accepted by model validation; status: " + removalStatus);
+    let reviewed = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(reviewed.transitions.length, 2);
+    assert.doesNotMatch(await page.locator("#graph-review-warnings").innerText(), /par\(es\).*duplicado/i);
+    await page.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión review_bc/ }).click();
+    reviewed = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(reviewed.transitions.length, 1);
+    assert.match(await page.locator("#graph-review-warnings").innerText(), /solo hay una conexión/i);
+    assert.match(await page.locator("#graph-review-warnings").innerText(), /estados aislados/i);
+
     // Output labels must not silently promote graph-local results to system-level TGCV claims.
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.getByText("Estados alcanzables en baseline", { exact: true }).waitFor();
@@ -33,6 +104,41 @@ const assert = require("node:assert/strict");
       "NONE: synthetic model execution only; no empirical or TGCV validity claim."
     );
     assert.equal(packageData.input.rule_profile.type, "finite_deterministic_graph");
+
+    // Exercise JSON model-file import, including validation feedback and relation-profile sync.
+    const modelForFileImport = await page.locator("#model").inputValue();
+    await page.locator("#json-file").setInputFiles({
+      name: "collective-toy-model.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(modelForFileImport)
+    });
+    await page.locator("#file-status").filter({ hasText: "Archivo cargado" }).waitFor();
+    assert.deepEqual(
+      JSON.parse(await page.locator("#model").inputValue()),
+      JSON.parse(modelForFileImport),
+      "Imported JSON model must be preserved in the editor"
+    );
+    await page.locator("#json-file").setInputFiles({
+      name: "invalid-model.json",
+      mimeType: "application/json",
+      buffer: Buffer.from("{ invalid JSON")
+    });
+    await page.locator("#file-status").filter({ hasText: "No se pudo cargar el JSON" }).waitFor();
+
+    // Layout selection must redraw the graph; zoom must change the SVG viewBox and fit must restore it.
+    await page.locator("#layout-mode").selectOption("circular");
+    await page.locator("#graph-note").filter({ hasText: "disposición circular" }).waitFor();
+    const originalViewBox = (await page.locator("#graph").getAttribute("viewBox")).split(" ").map(Number);
+    await page.getByRole("button", { name: "Acercar grafo" }).click();
+    const zoomViewBox = (await page.locator("#graph").getAttribute("viewBox")).split(" ").map(Number);
+    assert.ok(zoomViewBox[2] < originalViewBox[2], "Zoom-in must reduce the visible graph width");
+    await page.getByRole("button", { name: "Encuadrar todo" }).click();
+    assert.deepEqual(
+      (await page.locator("#graph").getAttribute("viewBox")).split(" ").map(Number),
+      originalViewBox,
+      "Fit-to-view must restore the complete graph"
+    );
+    await page.locator("#layout-mode").selectOption("auto");
 
     // Profile 1 is the default; selecting profile 2 then returning to profile 1
     // must preserve the relation as metadata without silently retaining an operative profile.
@@ -100,12 +206,33 @@ const assert = require("node:assert/strict");
     await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
     assert.match(await page.locator("#package-assessment").innerText(), /hash del paquete no coincide/i);
 
-    // Exercise the user-facing edit -> run path: disable A->C in baseline.
-    const editedModel = JSON.parse(await page.locator("#model").inputValue());
+    // Reset to the canonical diamond fixture: prior graph-review assertions intentionally mutate the live model.
+    const editedModel = {
+      schema_version: "collective-toy-input-001",
+      model_id: "toy-diamond-001",
+      initial_state: "A",
+      states: ["A", "B", "C", "D"],
+      transitions: [
+        { id: "t_ab", source: "A", target: "B" },
+        { id: "t_ac", source: "A", target: "C" },
+        { id: "t_bd", source: "B", target: "D" },
+        { id: "t_cd", source: "C", target: "D" }
+      ],
+      relations: [],
+      rule_profile: { type: "finite_deterministic_graph", version: "1" },
+      scenarios: [
+        { id: "baseline", disabled_transitions: [] },
+        { id: "block_ac", disabled_transitions: ["t_ac"] }
+      ],
+      exploration: { max_depth: 4, max_trajectories: 1000 }
+    };
+    await page.locator("#model").evaluate((el, value) => { el.value = JSON.stringify(value, null, 2); el.dispatchEvent(new Event("input", { bubbles: true })); }, editedModel);
     editedModel.scenarios.find(s => s.id === "baseline").disabled_transitions = ["t_ac"];
-    await page.locator("#model").fill(JSON.stringify(editedModel, null, 2));
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(editedModel, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
+    await page.waitForFunction(() => { const status = document.querySelector("#status"); return status && !/Validando y ejecutando/.test(status.textContent); });
+    const executionStatus = await page.locator("#status").innerText();
+    assert.match(executionStatus, /Ejecución completada/, "Edited model execution failed: " + executionStatus);
     const baselineOutput = await page.locator(".scenario").filter({ hasText: "Escenario: baseline" }).innerText();
     assert.match(baselineOutput, /Alcanzables: A, B, D/);
     assert.doesNotMatch(baselineOutput, /Alcanzables: A, B, C, D/);
@@ -154,7 +281,7 @@ const assert = require("node:assert/strict");
       from: "A",
       to: "D"
     }];
-    await page.locator("#model").fill(JSON.stringify(descriptiveModel, null, 2));
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(descriptiveModel, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
     const descriptivePackage = await page.evaluate(() => window.lastPackage);
@@ -167,7 +294,7 @@ const assert = require("node:assert/strict");
     );
 
     // Restore the exact example before testing fail-closed behavior.
-    await page.locator("#model").fill(JSON.stringify(packageData.input, null, 2));
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(packageData.input, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
     assert.deepEqual(
@@ -175,8 +302,37 @@ const assert = require("node:assert/strict");
       packageData.result.scenario_results
     );
 
+    // Import a visual graph (Mermaid) without requiring the user to author JSON.
+    await page.locator("#graph-file").setInputFiles({
+      name: "sample-flow.mmd",
+      mimeType: "text/plain",
+      buffer: Buffer.from("flowchart TD\n  A --> B\n  B --> C\n")
+    });
+    await page.locator("#file-status").filter({ hasText: "3 estados y 2 conexiones" }).waitFor();
+    let importedGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(importedGraph.states, ["A", "B", "C"]);
+    assert.equal(importedGraph.transitions.length, 2);
+    assert.equal(importedGraph.initial_state, "A");
+
+    // The visual editor can add a state, connect it, and select a new initial state.
+    await page.locator("#new-state-id").fill("D");
+    await page.locator("#new-state-add").click();
+    await page.locator("#edge-source").selectOption("C");
+    await page.locator("#edge-target").selectOption("D");
+    await page.locator("#new-edge-add").click();
+    await page.locator("#edge-source").selectOption("B");
+    await page.locator("#set-initial").click();
+    importedGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.ok(importedGraph.states.includes("D"));
+    assert.ok(importedGraph.transitions.some((edge) => edge.source === "C" && edge.target === "D"));
+    assert.equal(importedGraph.initial_state, "B");
+
     // A failed run must not leave the previous successful package exposed as current.
-    await page.locator("#model").fill("{ invalid JSON");
+    // Set the advanced editor value directly so this assertion is independent of <details> visibility.
+    await page.locator("#model").evaluate((el) => {
+      el.value = "{ invalid JSON";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    });
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "No se ha podido ejecutar" }).waitFor();
     assert.equal(await page.locator("#export").isDisabled(), true);
@@ -209,7 +365,30 @@ const assert = require("node:assert/strict");
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
     assert.ok(await page.evaluate(() => window.lastPackage));
 
-    console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed error recovery, real export/import, replay verification, and tamper rejection.");
+    // Order-independence regression: execute the canonical model first, then perform graph review on a fresh page.
+    const orderPage = await browser.newPage();
+    await orderPage.goto("file://" + htmlPath);
+    await orderPage.getByRole("button", { name: "Cargar ejemplo" }).click();
+    await orderPage.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await orderPage.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
+    const orderModel = JSON.parse(await orderPage.locator("#model").inputValue());
+    orderModel.transitions = [
+      { id: "order_ab", source: "A", target: "B" },
+      { id: "order_ab_duplicate", source: "A", target: "B" },
+      { id: "order_bc", source: "B", target: "C" }
+    ];
+    orderModel.relations = [];
+    orderModel.scenarios = orderModel.scenarios.map((scenario) => ({ ...scenario, disabled_transitions: [] }));
+    await orderPage.locator("#model").evaluate((el, value) => { el.value = JSON.stringify(value, null, 2); el.dispatchEvent(new Event("input", { bubbles: true })); }, orderModel);
+    await orderPage.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión order_ab_duplicate/ }).click();
+    assert.equal(JSON.parse(await orderPage.locator("#model").inputValue()).transitions.length, 2);
+    assert.doesNotMatch(await orderPage.locator("#graph-review-warnings").innerText(), /par\(es\).*duplicado/i);
+    await orderPage.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión order_bc/ }).click();
+    assert.equal(JSON.parse(await orderPage.locator("#model").inputValue()).transitions.length, 1);
+    assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /solo hay una conexión/i);
+    await orderPage.close();
+
+    console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
   }
