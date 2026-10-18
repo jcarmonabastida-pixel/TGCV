@@ -1371,6 +1371,10 @@ const assert = require("node:assert/strict");
       if (!comparisonId) throw new Error("H3 fixture requires at least one baseline comparison.");
       const cases = [
         { name: "comparison-missing-added-list", mutate: cr => { delete cr.enabled_at_initial_added; }, expected: /El campo enabled_at_initial_added de la comparación .* debe ser una lista/i },
+        { name: "comparison-missing-reachable-added", mutate: cr => { delete cr.reachable_states_added; }, expected: /El campo reachable_states_added de la comparación .* debe ser una lista/i },
+        { name: "comparison-missing-enabled-removed", mutate: cr => { delete cr.enabled_at_initial_removed; }, expected: /El campo enabled_at_initial_removed de la comparación .* debe ser una lista/i },
+        { name: "comparison-missing-trajectories-removed", mutate: cr => { delete cr.trajectories_removed; }, expected: /El campo trajectories_removed de la comparación .* debe ser una lista/i },
+        { name: "comparison-missing-disabled-transitions", mutate: cr => { delete cr.intervention.disabled_transitions; }, expected: /disabled_transitions de intervention debe ser una lista/i },
         { name: "comparison-removed-states-wrong-type", mutate: cr => { cr.reachable_states_removed = "not-an-array"; }, expected: /El campo reachable_states_removed de la comparación .* debe ser una lista/i },
         { name: "comparison-unknown-key", mutate: cr => { cr.unreviewed_extension = true; }, expected: /La comparación .* contiene campos desconocidos/i },
         { name: "comparison-truncated-wrong-type", mutate: cr => { cr.truncated = "false"; }, expected: /truncated de la comparación .* debe ser booleano/i },
