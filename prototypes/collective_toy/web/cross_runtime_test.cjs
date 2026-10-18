@@ -1514,7 +1514,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
         }, message: "trajectories del escenario" },
       { label: "negative-bound", mutate: pkg => {
           pkg.result.scenario_results[Object.keys(pkg.result.scenario_results)[0]].exploration_bounds.max_depth = -1;
-        }, message: "límites enteros no negativos" }
+        }, message: "exploration_bounds debe respetar max_depth entre 0 y 100 y max_trajectories entre 1 y 10000" }
     ]) {
       const malformedNestedPackage = structuredClone(validImportedPackage);
       malformedNestedPackage.result.engine_version = "collective-toy-engine-999";
