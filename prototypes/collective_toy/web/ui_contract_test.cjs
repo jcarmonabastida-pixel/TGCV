@@ -550,8 +550,8 @@ const assert = require("node:assert/strict");
       "FC-3: replay result must explicitly report a matching independently recomputed result");
 
     // FC-4: outcome and contextual valuation are explicit, execution-linked, and never inferred.
-    assert.match(await page.locator("#value-status").innerText(), /NOT_ASSESSED/i,
-      "FC-4: absent valuation inputs must explicitly remain NOT_ASSESSED");
+    assert.match(await page.locator("#value-status").innerText(), /sin valoración contextual|no se ha registrado una valoración/i,
+      "FC-4: absent valuation inputs must be clearly presented as not assessed without exposing machine status codes");
     assert.equal(await page.locator("#record-outcome").isEnabled(), true,
       "FC-4: outcome recording must be available after a completed concrete execution");
     await page.locator("#outcome-value").fill("illustrative outcome");
