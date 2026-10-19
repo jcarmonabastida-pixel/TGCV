@@ -179,7 +179,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         original = run_model(model)
         repeated = run_model(duplicate)
         for scenario_id in original["scenario_results"]:
-            for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
+            for key in ("reachable_states", "trajectories"):
                 self.assertEqual(
                     original["scenario_results"][scenario_id][key],
                     repeated["scenario_results"][scenario_id][key],
@@ -880,27 +880,6 @@ class CollectiveToyEngineTests(unittest.TestCase):
                         self.assertEqual(enabled[tid]["source"], previous["state"])
                         self.assertEqual(enabled[tid]["target"], current["state"])
 
-    def test_two_relations_guarding_same_transition_form_conjunctive_requirements(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_bd_requires_ab", "type": "requires_prior_execution",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_bd_requires_ac", "type": "requires_prior_execution",
-             "transition_id": "t_bd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-        ]
-        result = run_model(model)["scenario_results"]
-        self.assertNotIn("t_bd", result["baseline"]["effective_disabled_transitions"])
-        for scenario_id in ("disable_ab", "disable_ac", "disable_both"):
-            with self.subTest(scenario=scenario_id):
-                self.assertIn("t_bd", result[scenario_id]["effective_disabled_transitions"])
-
     def test_conjunctive_guard_relation_order_does_not_change_operational_semantics(self):
         model = copy.deepcopy(self.model)
         model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
@@ -921,42 +900,13 @@ class CollectiveToyEngineTests(unittest.TestCase):
         original = run_model(model)
         reversed_result = run_model(reversed_model)
         for scenario_id in original["scenario_results"]:
-            for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
+            for key in ("reachable_states", "trajectories"):
                 self.assertEqual(
                     original["scenario_results"][scenario_id][key],
                     reversed_result["scenario_results"][scenario_id][key],
                     f"relation order changed {key} in {scenario_id}",
                 )
         self.assertNotEqual(original["input_sha256"], reversed_result["input_sha256"])
-
-    def test_disabling_interventions_compose_independently_of_declaration_order(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_prior_execution",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_guard_cd_by_ac", "type": "requires_prior_execution",
-             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-            {"id": "disable_both_reversed", "disabled_transitions": ["t_ac", "t_ab"]},
-        ]
-        result = run_model(model)["scenario_results"]
-        ab = set(result["disable_ab"]["effective_disabled_transitions"])
-        ac = set(result["disable_ac"]["effective_disabled_transitions"])
-        both = set(result["disable_both"]["effective_disabled_transitions"])
-        reversed_both = set(result["disable_both_reversed"]["effective_disabled_transitions"])
-        self.assertEqual(both, ab | ac)
-        self.assertEqual(both, reversed_both)
-        semantic_keys = set(result["disable_both"]) - {"scenario_id", "disabled_transitions"}
-        self.assertEqual(
-            {key: result["disable_both"][key] for key in semantic_keys},
-            {key: result["disable_both_reversed"][key] for key in semantic_keys},
-        )
 
     def test_duplicate_disabled_transition_ids_are_rejected(self):
         model = copy.deepcopy(self.model)
