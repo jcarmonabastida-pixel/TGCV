@@ -253,7 +253,30 @@ def _temporal_scenario_result(
     initial = model["initial_state"]
     max_depth = model["exploration"]["max_depth"]
     max_trajectories = model["exploration"]["max_trajectories"]
+
+    # Compute reachability independently from bounded trajectory enumeration.
+    # Temporal applicability depends on the set of transitions already executed,
+    # so the search state is (graph state, executed-transition set). This finite
+    # configuration search does not consume the user-facing depth/trajectory caps.
     reached = {initial}
+    pending_configs: list[tuple[str, frozenset[str]]] = [(initial, frozenset())]
+    visited_configs: set[tuple[str, frozenset[str]]] = set()
+    while pending_configs:
+        config_state, executed = pending_configs.pop()
+        config = (config_state, executed)
+        if config in visited_configs:
+            continue
+        visited_configs.add(config)
+        for transition in adjacency[config_state]:
+            if transition.id in explicit_disabled:
+                continue
+            if not prerequisites.get(transition.id, set()).issubset(executed):
+                continue
+            reached.add(transition.target)
+            next_config = (transition.target, executed | {transition.id})
+            if next_config not in visited_configs:
+                pending_configs.append(next_config)
+
     trajectories: list[list[dict[str, str]]] = []
     truncated = False
     stack: list[tuple[str, list[dict[str, str]], tuple[str, ...], int]] = [
