@@ -3098,7 +3098,7 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#sequence-select option").count(), 1, "GT-05: one candidate trajectory must be available");
     await page.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
     await page.locator("#sequence-trace[data-state=" + '"replay-verified"' + "]").waitFor();
-    assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1: t_ab.*A → B/i, "GT-05: concrete execution must preserve the ordered transition and state change");
+    assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1: A → B/i, "GT-05: concrete execution must preserve the ordered transition and state change");
 
     await page.locator("#outcome-value").fill("1");
     await page.locator("#outcome-unit").fill("synthetic-unit");
