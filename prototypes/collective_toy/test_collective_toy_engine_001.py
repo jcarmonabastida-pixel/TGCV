@@ -1423,50 +1423,19 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 with self.assertRaisesRegex(ModelValidationError, expected_message):
                     run_model(candidate)
 
-    def test_relation_and_baseline_validation_report_specific_expected_errors(self):
-        # Pin distinct semantic validation branches with exact expected outcomes.
-        cases = []
-
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [{
-            "id": "r_self",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_ab",
-            "requires_transition_id": "t_ab",
-        }]
-        cases.append((
-            "self-guard",
-            model,
-            "relation r_self cannot require a transition to enable itself",
-        ))
-
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [{
-            "id": "r_unknown_guarded",
-            "type": "requires_transition_enabled",
-            "transition_id": "missing_guarded",
-            "requires_transition_id": "t_ab",
-        }]
-        cases.append((
-            "unknown-guarded-transition",
-            model,
-            "relation r_unknown_guarded references unknown guarded transition: missing_guarded",
-        ))
-
+    def test_baseline_validation_reports_missing_baseline(self):
         model = copy.deepcopy(self.model)
         model["scenarios"][0]["id"] = "reference"
-        cases.append((
-            "missing-baseline-scenario",
-            model,
-            "a scenario with id 'baseline' is required",
-        ))
+        with self.assertRaisesRegex(ModelValidationError, "a scenario with id 'baseline' is required"):
+            run_model(model)
 
-        for name, candidate, expected_message in cases:
-            with self.subTest(case=name):
-                with self.assertRaisesRegex(ModelValidationError, expected_message):
-                    run_model(candidate)
+    def test_retired_profiles_are_rejected_explicitly(self):
+        for profile_type in ("finite_deterministic_graph", "relation_guarded_graph"):
+            model = copy.deepcopy(self.model)
+            model["rule_profile"] = {"type": profile_type, "version": "1"}
+            with self.subTest(profile=profile_type):
+                with self.assertRaisesRegex(ModelValidationError, "only temporal_prerequisite_graph v1 is supported"):
+                    run_model(model)
 
     def test_schema_container_branches_report_specific_expected_errors(self):
         # The broad malformed-input matrix only asserted rejection. These cases
