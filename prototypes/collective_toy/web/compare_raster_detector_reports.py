@@ -24,7 +24,7 @@ def match_segments(pred,refs,tol=14):
     pairs=[]
     for i,p in enumerate(pred):
         for j,r in enumerate(refs):
-            d=line_distance(p,r["polyline"])
+            d=line_distance(p["polyline"],r["polyline"])
             if d<=tol: pairs.append((d,i,j))
     pi=set(); rj=set(); tp=0
     for _,i,j in sorted(pairs):
