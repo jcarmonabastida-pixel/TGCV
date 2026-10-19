@@ -3152,7 +3152,18 @@ const assert = require("node:assert/strict");
         { name: "unit-empty", key: "unit", value: "" },
         { name: "timing-null", key: "timing", value: null },
         { name: "uncertainty-number", key: "uncertainty_status", value: 1 },
-        { name: "provenance-empty", key: "provenance", value: "   " }
+        { name: "provenance-empty", key: "provenance", value: "   " },
+        { name: "value-null", key: "value", value: null },
+        { name: "value-array", key: "value", value: [] },
+        { name: "value-boolean", key: "value", value: true },
+        { name: "unit-array", key: "unit", value: [] },
+        { name: "unit-boolean", key: "unit", value: false },
+        { name: "timing-array", key: "timing", value: [] },
+        { name: "timing-boolean", key: "timing", value: true },
+        { name: "uncertainty-status-null", key: "uncertainty_status", value: null },
+        { name: "uncertainty-status-array", key: "uncertainty_status", value: [] },
+        { name: "provenance-null", key: "provenance", value: null },
+        { name: "provenance-array", key: "provenance", value: [] }
       ]) {
         const candidate = structuredClone(pkg);
         candidate.outcome_record[item.key] = item.value;
@@ -3164,7 +3175,22 @@ const assert = require("node:assert/strict");
       for (const item of [
         { name: "assessment-id-empty", value: "" },
         { name: "assessment-id-null", value: null },
-        { name: "assessment-id-number", value: 7 }
+        { name: "assessment-id-number", value: 7 },
+        { name: "assessment-observer-null", key: "observer", value: null },
+        { name: "assessment-observer-array", key: "observer", value: [] },
+        { name: "assessment-observer-number", key: "observer", value: 7 },
+        { name: "assessment-context-null", key: "context", value: null },
+        { name: "assessment-context-array", key: "context", value: [] },
+        { name: "assessment-context-number", key: "context", value: 7 },
+        { name: "assessment-criterion-null", key: "criterion", value: null },
+        { name: "assessment-criterion-array", key: "criterion", value: [] },
+        { name: "assessment-criterion-number", key: "criterion", value: 7 },
+        { name: "assessment-valuation-rule-null", key: "valuation_rule", value: null },
+        { name: "assessment-valuation-rule-array", key: "valuation_rule", value: [] },
+        { name: "assessment-valuation-rule-number", key: "valuation_rule", value: 7 },
+        { name: "assessment-rationale-null", key: "rationale", value: null },
+        { name: "assessment-rationale-array", key: "rationale", value: [] },
+        { name: "assessment-rationale-number", key: "rationale", value: 7 }
       ]) {
         const candidate = structuredClone(pkg);
         candidate.value_assessment.assessment_id = item.value;
