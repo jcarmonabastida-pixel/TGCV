@@ -128,14 +128,14 @@ const assert = require("node:assert/strict");
     );
     await page.locator("#layout-mode").selectOption("auto");
 
-    // Profile 1 is the default; selecting profile 2 then returning to profile 1
-    // must preserve the relation as metadata without silently retaining an operative profile.
-    assert.equal(await page.locator("#profile-editor").inputValue(), "1");
+    // The visible demonstrator is fixed to profile 3; profile controls are implementation-only.
+    assert.equal(await page.locator("#profile-editor").inputValue(), "3");
     await page.locator("#profile-editor").selectOption("2");
     await page.locator("#profile-editor").selectOption("1");
     const model = JSON.parse(await page.locator("#model").inputValue());
-    assert.deepEqual(model.rule_profile, { type: "finite_deterministic_graph", version: "1" });
-    assert.match(await page.locator("#relation-help").innerText(), /metadatos|perfil 2/i);
+    assert.deepEqual(model.rule_profile, { type: "temporal_prerequisite_graph", version: "1" });
+    assert.equal(await page.locator(".relation-editor[aria-labelledby=\"relation-heading\"]").isVisible(), true);
+    assert.equal(await page.locator("#profile-editor").evaluate(el => el.closest("[hidden]") !== null), true);
 
     // Verify the real export button produces a readable package, not only window state.
     const downloadPromise = page.waitForEvent("download");
@@ -698,21 +698,12 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "FC-3: replay result must explicitly report a matching independently recomputed result");
 
-    // FC-4: outcome and contextual valuation are explicit, execution-linked, and never inferred.
-    assert.match(await page.locator("#value-status").innerText(), /NOT_ASSESSED/i,
-      "FC-4: absent valuation inputs must explicitly remain NOT_ASSESSED");
-    assert.equal(await page.locator("#record-outcome").isEnabled(), true,
-      "FC-4: outcome recording must be available after a completed concrete execution");
-    await page.locator("#outcome-value").fill("illustrative outcome");
-    await page.locator("#outcome-unit").fill("qualitative");
-    await page.locator("#outcome-timing").fill("after execution");
-    await page.locator("#outcome-uncertainty").fill("synthetic; not measured");
-    await page.locator("#outcome-provenance").fill("synthetic acceptance fixture");
-    await page.locator("#record-outcome").click();
-    assert.equal(await page.locator("#outcome-status").getAttribute("data-state"), "recorded",
-      "FC-4: explicitly entered outcome must be recorded");
-    assert.match(await page.locator("#outcome-status").innerText(), /sequence-execution-/,
-      "FC-4: outcome must display its linked execution ID");
+    // FC-4: execution generates its own trajectory-derived outcome; contextual valuation stays separate.
+    assert.match(await page.locator("#outcome-status").innerText(), /A → B → D/,
+      "FC-4: the result must derive from the concrete executed route");
+    assert.equal(await page.locator("#outcome-status").getAttribute("data-state"), "recorded");
+    assert.match(await page.locator("#value-status").innerText(), /opcional|separada|NOT_ASSESSED/i,
+      "FC-4: contextual valuation remains independent from engine output");
     assert.equal(await page.locator("#assess-value").isEnabled(), true,
       "FC-4: contextual assessment is available only after an outcome exists");
     await page.locator("#assess-value").click();
