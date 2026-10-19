@@ -706,7 +706,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
         model["scenarios"][0]["disabled_transitions"] = [""]
         cases.append(("empty-disabled-transition-id", model))
 
-        # Nested relation/scenario/exploration field coverage (profile 2 where applicable).
+        # Nested relation/scenario/exploration field coverage for the sole supported temporal profile.
         valid_relation = {
             "id": "r_schema", "type": "requires_prior_execution",
             "transition_id": "t_bd", "requires_transition_id": "t_ab"
