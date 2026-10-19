@@ -13,6 +13,41 @@ const assert = require("node:assert/strict");
     const page = await browser.newPage();
     await page.goto("file://" + htmlPath);
 
+    // Responsive smoke check at a narrow mobile viewport before exercising the full flow.
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.evaluate(() => document.fonts.ready);
+    const mobileLayout = await page.evaluate(() => ({
+      viewportWidth: document.documentElement.clientWidth,
+      documentWidth: document.documentElement.scrollWidth,
+      mainWidth: document.querySelector("main").getBoundingClientRect().width,
+      executeButton: (() => {
+        const r = [...document.querySelectorAll("button")].find(el => el.textContent.includes("Ejecutar escenarios")).getBoundingClientRect();
+        return { left: r.left, right: r.right, width: r.width, height: r.height };
+      })(),
+      editor: (() => {
+        const r = document.querySelector("#model").getBoundingClientRect();
+        return { left: r.left, right: r.right, width: r.width };
+      })()
+    }));
+    assert.ok(
+      mobileLayout.documentWidth <= mobileLayout.viewportWidth,
+      `Mobile layout must not cause horizontal page overflow: ${JSON.stringify(mobileLayout)}`
+    );
+    assert.ok(
+      mobileLayout.executeButton.width > 0 &&
+      mobileLayout.executeButton.height > 0 &&
+      mobileLayout.executeButton.left >= 0 &&
+      mobileLayout.executeButton.right <= mobileLayout.viewportWidth,
+      `Primary execute control must fit in mobile viewport: ${JSON.stringify(mobileLayout)}`
+    );
+    assert.ok(
+      mobileLayout.editor.width > 0 &&
+      mobileLayout.editor.left >= 0 &&
+      mobileLayout.editor.right <= mobileLayout.viewportWidth,
+      `Model editor must fit in mobile viewport: ${JSON.stringify(mobileLayout)}`
+    );
+    await page.setViewportSize({ width: 1280, height: 900 });
+
     // Keep the MVP's state-local graph semantics and non-scientific boundary visible.
     const notice = await page.locator(".notice").innerText();
     assert.match(notice, /grafo finito/i);
