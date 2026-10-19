@@ -3565,6 +3565,20 @@ const assert = require("node:assert/strict");
     assert.match(comparison, /A → C → D/);
     assert.match(comparison, /contexto sintético|criterio A/i);
     assert.match(comparison, /Sin valoración contextual: aún no se han definido/i);
+    assert.equal(await uxPage.locator("#value-dashboard .value-row").count(), 2,
+      "UX: dashboard must show each concrete execution");
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /A → B → D/);
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /A → C → D/);
+    await uxPage.locator("#value-score").fill("35");
+    await uxPage.locator("#value-observer").fill("observador de prueba");
+    await uxPage.locator("#value-context").fill("contexto sintético");
+    await uxPage.locator("#value-criterion").fill("criterio A");
+    await uxPage.locator("#value-rule").fill("regla ilustrativa");
+    await uxPage.locator("#value-rationale").fill("comparar la segunda trayectoria");
+    await uxPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
+    await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /35\/100/);
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /82\/100|50\/100/);
     await uxPage.close();
 
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
