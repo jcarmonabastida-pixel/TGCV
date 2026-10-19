@@ -36,12 +36,18 @@ function pythonJson(source, input) {
   );
   assert.equal(engineRun.input.rule_profile.type, "temporal_prerequisite_graph");
   assert.equal(engineRun.result.validation, "PASS");
-  const rejected = ["finite_deterministic_graph", "relation_guarded_graph"].map(type =>
-    pythonJson(
-      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); m['rule_profile']={'type':sys.argv[1],'version':'1'};\ntry: e.validate_model(m); print(json.dumps({'rejected':False}))\nexcept e.ModelValidationError as x: print(json.dumps({'rejected':True,'reason':str(x)}))",
-      model
-    )
-  );
+  const rejected = ["finite_deterministic_graph", "relation_guarded_graph"].map(type => {
+    const retiredModel = { ...model, rule_profile: { type, version: "1" } };
+    const script = [
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin)",
+      "try:",
+      " e.validate_model(m)",
+      " print(json.dumps({'rejected':False}))",
+      "except e.ModelValidationError as x:",
+      " print(json.dumps({'rejected':True,'reason':str(x)}))"
+    ].join("\n");
+    return pythonJson(script, retiredModel);
+  });
   assert.ok(rejected.every(x => x.rejected), "retired profiles must fail closed");
   const browser = await chromium.launch({ headless: true });
   try {
