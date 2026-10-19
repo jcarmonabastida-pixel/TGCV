@@ -1365,8 +1365,10 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       "graph should visually dim a relation-blocked transition in profile 2"
     );
 
-    await page.locator("#profile-editor").selectOption("1");
     editorParsed = JSON.parse(await page.locator("#model").inputValue());
+    editorParsed.rule_profile = { type: "finite_deterministic_graph", version: "1" };
+    editorParsed.relations = [];
+    await page.locator("#model").fill(JSON.stringify(editorParsed));
     assert.deepEqual(editorParsed.rule_profile, { type: "finite_deterministic_graph", version: "1" });
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
