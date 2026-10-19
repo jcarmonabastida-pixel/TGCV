@@ -46,7 +46,7 @@ def edge_candidates(img):
                             minLineLength=28, maxLineGap=8)
     result=[]
     if lines is not None:
-        for item in lines[:,0,:]:
+        for item in np.asarray(lines).reshape(-1, 4):
             x1,y1,x2,y2=map(int,item)
             if math.hypot(x2-x1,y2-y1) >= 28:
                 result.append([[x1,y1],[x2,y2]])
