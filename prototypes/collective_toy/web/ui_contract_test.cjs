@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 
 (async () => {
   const htmlPath = path.resolve(__dirname, "index.html");
+  const sourceHtml = fs.readFileSync(htmlPath, "utf8");
   assert.ok(fs.existsSync(htmlPath), "Collective Toy UI must exist");
 
   const browser = await chromium.launch({ headless: true });
