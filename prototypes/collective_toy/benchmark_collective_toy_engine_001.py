@@ -55,7 +55,7 @@ def make_model(kind: str, size: int, max_trajectories: int, max_depth: int) -> d
     model["initial_state"] = states[0]
     model["transitions"] = transitions
     model["relations"] = []
-    model["rule_profile"] = {"type": "finite_deterministic_graph", "version": "1"}
+    model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
     model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
     model["exploration"] = {
         "max_depth": min(max_depth, 100),

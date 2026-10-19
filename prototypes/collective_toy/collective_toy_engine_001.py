@@ -179,7 +179,7 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         if rid in relation_ids:
             raise ModelValidationError(f"duplicate relation ID: {rid}")
         relation_ids.add(rid)
-        expected_type = "requires_prior_execution" if profile == profile3 else "requires_transition_enabled"
+        expected_type = "requires_prior_execution"
         if rtype != expected_type:
             raise ModelValidationError(f"unsupported relation type for {profile['type']}: {rtype!r}; expected {expected_type!r}")
         if not isinstance(guarded, str) or not guarded or not isinstance(prerequisite, str) or not prerequisite:
