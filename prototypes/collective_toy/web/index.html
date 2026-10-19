@@ -196,12 +196,13 @@ async function assessImportedBrowserPackage(pkg){
   }
   if(pkg.value_assessment!==undefined){
    var assessment=pkg.value_assessment;
-   assert(pkg.outcome_record&&assessment&&typeof assessment==="object"&&!Array.isArray(assessment),"La valoración requiere un resultado explícito."); assert(Object.keys(assessment).every(function(k){return ["assessment_schema","assessment_id","outcome_id","execution_id","outcome_sha256","observer","context","criterion","valuation_rule","rationale","status"].includes(k)}),"La valoración contiene campos desconocidos.");
+   assert(pkg.outcome_record&&assessment&&typeof assessment==="object"&&!Array.isArray(assessment),"La valoración requiere un resultado explícito."); assert(Object.keys(assessment).every(function(k){return ["assessment_schema","assessment_id","outcome_id","execution_id","outcome_sha256","observer","context","criterion","valuation_rule","rationale","status","perceived_value_score"].includes(k)}),"La valoración contiene campos desconocidos.");
    assert(assessment.assessment_schema==="collective-toy-value-assessment-001"&&assessment.status==="ASSESSED","Esquema o estado de valoración desconocido."); assert(typeof assessment.assessment_id==="string"&&assessment.assessment_id.trim().length>0,"La valoración carece de un identificador válido.");
    assert(assessment.outcome_id===pkg.outcome_record.outcome_id&&assessment.execution_id===pkg.outcome_record.execution_id,"La valoración no está vinculada al resultado y ejecución exportados.");
    assert(typeof assessment.outcome_sha256==="string"&&/^[0-9a-f]{64}$/.test(assessment.outcome_sha256),"La valoración carece de hash de resultado válido.");
    assert(await hash(pkg.outcome_record,"outcome_record")===assessment.outcome_sha256,"El hash del resultado de valoración no coincide con outcome_record.");
    assert(["observer","context","criterion","valuation_rule","rationale"].every(function(k){return typeof assessment[k]==="string"&&assessment[k].trim().length>0}),"La valoración está incompleta.");
+   if(assessment.perceived_value_score!==undefined)assert(Number.isInteger(assessment.perceived_value_score)&&assessment.perceived_value_score>=0&&assessment.perceived_value_score<=100,"El valor percibido debe ser un entero entre 0 y 100.");
    assert(pkg.value_assessment_status===undefined,"Un paquete evaluado no puede declarar NOT_ASSESSED.");
   }else{
    assert(pkg.value_assessment_status==="NOT_ASSESSED","Un paquete sin valoración debe declarar value_assessment_status=NOT_ASSESSED.");
