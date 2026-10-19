@@ -483,7 +483,7 @@ $("execute-sequence").addEventListener("click",async function(){
   executionHistory.push(activeExecutionRecord);refreshExecutionComparison();renderValueDashboard();
   $("outcome-value").value=$("outcome-unit").value=$("outcome-timing").value=$("outcome-uncertainty").value=$("outcome-provenance").value="";
   $("value-observer").value=$("value-context").value=$("value-criterion").value=$("value-rule").value=$("value-rationale").value="";
-  $("value-status").dataset.state="not-assessed";$("value-status").textContent="La valoración contextual es opcional y se registra por separado.";
+  $("value-status").dataset.state="not-assessed";$("value-status").textContent="Sin valoración contextual: todavía no se ha registrado una valoración.";
   updateFc4Controls();renderExecutionComparison();
  }catch(e){panel.dataset.state="rejected";panel.replaceChildren(node("p","error","No se ha podido ejecutar la secuencia: "+(e.message||String(e))))}
 });
