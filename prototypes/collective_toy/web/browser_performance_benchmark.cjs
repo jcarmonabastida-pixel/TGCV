@@ -17,13 +17,13 @@ function makeModel(size, cap = 10, kind = "cyclic_branching") {
     for (let i = 0; i < size - 1; i++) add(i, i + 1, "chain");
   } else {
     for (let i = 0; i < size; i++) {
-      for (let offset = 1; offset <= 8 && transitions.length < 2000; offset++) {
+      for (let offset = 1; offset <= 8 && transitions.length < 1900; offset++) {
         const j = kind === "branching_dag" ? i + offset : (i + offset) % size;
         if (j < size) add(i, j, "f" + String(offset).padStart(2, "0"));
       }
     }
   }
-  if (transitions.length > 2000) throw new Error("transition limit exceeded");
+  if (transitions.length >= 2000) throw new Error("transition limit reached; fixture must stay below engine cap");
   return {
     schema_version: "collective-toy-input-001", model_id: "browser-benchmark-" + kind + "-" + size,
     initial_state: states[0], states, transitions, relations: [],
@@ -112,6 +112,51 @@ const summarize = values => ({
             for (const name of Object.keys(observation.hashPhases.by_operation[operation])) observationHashOperations[operation][name].push(...observation.hashPhases.by_operation[operation][name]);
           }
         }
+        const isolated = await page.evaluate(async ({ model }) => {
+          const pkg = window.lastPackage;
+          if (!pkg || !pkg.result || !pkg.result.input_sha256) throw new Error("Missing completed baseline package for isolated diagnostics");
+          const hashSamples = { canonicalize_ms: [], encode_utf8_ms: [], crypto_digest_ms: [], hex_encode_ms: [], end_to_end_ms: [] };
+          const renderSamples = [];
+          const selectorPaired = { baseline_force_rebuild_ms: [], optimized_conditional_ms: [], order: [] };
+          const expectedDigest = pkg.result.input_sha256;
+          for (let n = 0; n < 15; n++) {
+            const endToEndStart = performance.now();
+            let t = performance.now();
+            const text = window.canonical(model);
+            hashSamples.canonicalize_ms.push(performance.now() - t);
+            t = performance.now();
+            const bytes = new TextEncoder().encode(text);
+            hashSamples.encode_utf8_ms.push(performance.now() - t);
+            t = performance.now();
+            const digest = await crypto.subtle.digest("SHA-256", bytes);
+            hashSamples.crypto_digest_ms.push(performance.now() - t);
+            t = performance.now();
+            const hex = Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
+            hashSamples.hex_encode_ms.push(performance.now() - t);
+            if (hex !== expectedDigest) throw new Error("Isolated hash digest differs from baseline input digest");
+            hashSamples.end_to_end_ms.push(performance.now() - endToEndStart);
+            const before = document.querySelector("#results").textContent;
+            t = performance.now();
+            window.render(model, pkg.result);
+            renderSamples.push(performance.now() - t);
+            const after = document.querySelector("#results").textContent;
+            if (before !== after) throw new Error("Isolated render changed semantic results text");
+          }
+          const expectedText = document.querySelector("#results").textContent;
+          for (let pair = 0; pair < 30; pair++) {
+            const order = pair % 2 === 0 ? ["baseline", "optimized"] : ["optimized", "baseline"];
+            selectorPaired.order.push(order.join("_then_"));
+            for (const variant of order) {
+              const force = variant === "baseline";
+              const start = performance.now();
+              window.render(model, pkg.result, force);
+              const elapsed = performance.now() - start;
+              selectorPaired[force ? "baseline_force_rebuild_ms" : "optimized_conditional_ms"].push(elapsed);
+              if (document.querySelector("#results").textContent !== expectedText) throw new Error("Paired selector variant changed semantic results text");
+            }
+          }
+          return { hashSamples, renderSamples, selectorPaired, digest_matches_baseline: true, render_semantics_preserved: true };
+        }, { model });
         const phaseSummary = Object.fromEntries(phaseNames.filter(n => phaseSamples[n].length).map(n => [n, summarize(phaseSamples[n])]));
         reports.push({
           graph_kind: kind, states: size, transitions: model.transitions.length,
@@ -125,6 +170,7 @@ const summarize = values => ({
           phase_timings: phaseSummary,
           hash_subphase_timings: Object.fromEntries(Object.keys(hashPhaseSamples).map(name => [name, summarize(hashPhaseSamples[name])])),
           hash_operation_timings: Object.fromEntries(Object.entries(observationHashOperations).map(([operation, samples]) => [operation, Object.fromEntries(Object.entries(samples).map(([name, values]) => [name, summarize(values)]))])),
+          isolated_diagnostics: { digest_matches_baseline: isolated.digest_matches_baseline, render_semantics_preserved: isolated.render_semantics_preserved, hash_phases: Object.fromEntries(Object.entries(isolated.hashSamples).map(([name, values]) => [name, summarize(values)])), render_precomputed_result: summarize(isolated.renderSamples), paired_selector_ab: { baseline_force_rebuild: summarize(isolated.selectorPaired.baseline_force_rebuild_ms), optimized_conditional: summarize(isolated.selectorPaired.optimized_conditional_ms), alternating_order_pairs: isolated.selectorPaired.order.length, semantic_results_preserved: true } },
           main_thread_frame_gap: summarize(heartbeatGapSamples)
         });
       }
