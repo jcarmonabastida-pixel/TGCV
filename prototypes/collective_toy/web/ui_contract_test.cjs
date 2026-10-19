@@ -1783,7 +1783,7 @@ const assert = require("node:assert/strict");
       "missing-submitted-transition-array": /traza contiene campos desconocidos o ausentes/i,
       "missing-steps-array": /traza contiene campos desconocidos o ausentes/i,
       "missing-candidate-index": /traza contiene campos desconocidos o ausentes/i,
-      "missing-trace-status": /traza contiene campos desconocidos o ausentes/i,
+      "missing-trace-status": /resultado no está vinculado a la traza de ejecución exportada o requiere una traza COMPLETED/i,
       "missing-blocked-step-field": /traza contiene campos desconocidos o ausentes/i,
       "negative-candidate-index": /candidate_index debe ser null o un entero no negativo/i,
       "unknown-submitted-transition": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
