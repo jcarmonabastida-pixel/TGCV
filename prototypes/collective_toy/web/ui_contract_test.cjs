@@ -3564,8 +3564,16 @@ const assert = require("node:assert/strict");
     await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
     await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
     await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
+    const firstUxExecutionId = firstUxTrace.execution_id;
     await uxPage.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
-    await uxPage.locator('#sequence-trace[data-state="replay-verified"]').waitFor();
+    await uxPage.waitForFunction(
+      previousId => {
+        const trace = document.querySelector("#sequence-trace")._trace;
+        return trace && trace.execution_id !== previousId &&
+          document.querySelector("#sequence-trace").dataset.state === "replay-verified";
+      },
+      firstUxExecutionId
+    );
     const secondUxTrace = await uxPage.locator("#sequence-trace").evaluate(el => el._trace);
     assert.notEqual(firstUxTrace.execution_id, secondUxTrace.execution_id);
     assert.equal(await uxPage.locator("#outcome-value").inputValue(), "",
