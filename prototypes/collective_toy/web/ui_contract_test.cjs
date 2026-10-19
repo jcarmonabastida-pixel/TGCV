@@ -287,6 +287,7 @@ const assert = require("node:assert/strict");
       transition_id: "t_cd",
       requires_transition_id: "t_ac"
     }];
+    await page.locator('details:has(#model) > summary').click();
     await page.locator("#model").fill(JSON.stringify(relationModel));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
