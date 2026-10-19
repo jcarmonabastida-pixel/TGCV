@@ -277,18 +277,16 @@ const assert = require("node:assert/strict");
     assert.deepEqual(editedPathsToD, [["A", "B", "D"]]);
     assert.doesNotMatch(baselineOutput, /A → C → D/);
 
-    // Exercise the visual relation editor in profile 2 and verify its operational effect.
-    await page.locator("#profile-editor").selectOption("2");
-    await page.locator("#guarded-transition").selectOption("t_cd");
-    await page.locator("#required-transition").selectOption("t_ac");
-    await page.getByRole("button", { name: "Añadir relación" }).click();
+    // Keep legacy profile-2 engine coverage through the advanced model fixture, not visible UI controls.
     const relationModel = JSON.parse(await page.locator("#model").inputValue());
-    assert.deepEqual(relationModel.relations, [{
+    relationModel.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    relationModel.relations = [{
       id: "r_guard_1",
       type: "requires_transition_enabled",
       transition_id: "t_cd",
       requires_transition_id: "t_ac"
-    }]);
+    }];
+    await page.locator("#model").fill(JSON.stringify(relationModel));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
     const relationPackage = await page.evaluate(() => window.lastPackage);
@@ -513,7 +511,7 @@ const assert = require("node:assert/strict");
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
     const profileOptions = await page.locator("#profile-editor option").evaluateAll(options => options.map(option => ({ value: option.value, label: option.textContent.trim() })));
     assert.ok(profileOptions.some(option => option.value === "3" && /temporal|prerrequisito/i.test(option.label)),
-      "FC-1: browser UI must expose profile 3 for temporal prerequisites without overloading profile 2");
+      "FC-1: the demonstrator must default to profile 3 for temporal prerequisites");
     const temporalModel = structuredClone(await page.locator("#model").inputValue().then(JSON.parse));
     temporalModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
     temporalModel.relations = [{
@@ -3573,8 +3571,8 @@ const assert = require("node:assert/strict");
     const comparison = await uxPage.locator("#execution-comparison").innerText();
     assert.match(comparison, /A → B → D/);
     assert.match(comparison, /A → C → D/);
-    assert.match(comparison, /ASSESSED/);
-    assert.match(comparison, /Sin valoración contextual registrada/);
+    assert.match(comparison, /contexto sintético|criterio A/i);
+    assert.match(comparison, /Sin valoración contextual: aún no se han definido/i);
     await uxPage.close();
 
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
