@@ -8,6 +8,7 @@ on:
       - 'prototypes/collective_toy/web/raster_graph_candidate_detector.cjs'
       - 'prototypes/collective_toy/web/arrow_direction_resolver.cjs'
       - 'prototypes/collective_toy/web/opencv_raster_baseline.py'
+      - 'prototypes/collective_toy/web/compare_raster_detector_reports.py'
       - 'prototypes/collective_toy/web/fixtures/ocr_graph_images/**'
       - '.github/workflows/collective-toy-raster-detector-comparison.yml'
   workflow_dispatch:
