@@ -51,12 +51,11 @@ jobs:
           cp prototypes/collective_toy/web/index.html "$dist_dir/index.html"
           cp prototypes/collective_toy/DISTRIBUTION_README_001.md "$dist_dir/README.md"
           cp prototypes/collective_toy/examples/full-chain-diamond-001.json "$dist_dir/example-diamond.json"
-          (cd "$RUNNER_TEMP" && zip -qr "$dist_name.zip" "$dist_name")
       - name: Upload standalone executable Full Chain distribution
         uses: actions/upload-artifact@v4
         with:
           name: tgcv-full-chain-executable-${{ github.sha }}
-          path: ${{ runner.temp }}/tgcv-full-chain-${{ github.sha }}.zip
+          path: ${{ runner.temp }}/tgcv-full-chain-${{ github.sha }}/
           if-no-files-found: error
           retention-days: 30
       - name: Upload validated Full Chain acceptance package
