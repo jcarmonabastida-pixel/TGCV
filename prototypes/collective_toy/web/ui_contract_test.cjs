@@ -3504,7 +3504,8 @@ const assert = require("node:assert/strict");
 
     // UX regression: the accessible-trajectory carousel is visual, distinct from concrete executions,
     // and two runs with their outcomes can be compared side by side.
-    const uxPage = await page.context().newPage();
+    const uxContext = await browser.newContext();
+    const uxPage = await uxContext.newPage();
     await uxPage.goto("file://" + htmlPath);
     await uxPage.locator("summary").filter({ hasText: /JSON avanzado \(editable\)/ }).click();
     const uxModel = {
