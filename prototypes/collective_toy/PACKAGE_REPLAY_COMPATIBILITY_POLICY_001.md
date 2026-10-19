@@ -60,4 +60,6 @@ Any change to replay compatibility requires:
 
 The current prototype tests cover repeated-run determinism for selected fixtures; semantic rejection of tampered relation effects and trajectory edges; and the distinction between an unknown engine version (no replay) and an unknown package schema (reject). These checks do not establish compatibility with historical versions, cross-platform reproducibility, or scientific validity of TGCV.
 
+**Acceptance-scope clarification (2026-10-19):** for the current Full Chain demonstrator, the required compatibility target is the explicitly supported current package schema/engine/profile, including export, import, integrity/semantic validation, and independent replay. Unknown or unsupported formats must continue to fail closed. Backward compatibility with historical Full Chain execution packages is not an acceptance requirement unless an actual prior package format is identified and a future scope decision explicitly adds it. Earlier limited model/run JSON files are not automatically historical execution packages; any model-import requirement is separate.
+
 All results remain synthetic and prototype-scoped. No empirical dataset processing or scientific execution is authorized by this document.
