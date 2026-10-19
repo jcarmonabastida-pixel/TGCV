@@ -520,7 +520,7 @@ $("execute-sequence").addEventListener("click",async function(){
   }else{
    $("outcome-status").dataset.state="not-assessed";$("outcome-status").textContent="No se calcula resultado porque la trayectoria no se completó.";
   }
-  executionHistory.push(activeExecutionRecord);refreshExecutionComparison();
+  executionHistory.push(activeExecutionRecord);refreshExecutionComparison();renderValueDashboard();
   $("outcome-value").value=$("outcome-unit").value=$("outcome-timing").value=$("outcome-uncertainty").value=$("outcome-provenance").value="";
   $("value-observer").value=$("value-context").value=$("value-criterion").value=$("value-rule").value=$("value-rationale").value="";
   $("value-status").dataset.state="not-assessed";$("value-status").textContent="La valoración contextual es opcional y se registra por separado.";
@@ -556,7 +556,7 @@ $("assess-value").addEventListener("click",async function(){
    valueAssessment=null;$("value-status").dataset.state="not-assessed";$("value-status").textContent="NOT_ASSESSED · Completa observador, contexto, criterio, regla y justificación.";return;
   }
   valueAssessment={assessment_schema:"collective-toy-value-assessment-001",assessment_id:"assessment-"+outcomeRecord.outcome_id,outcome_id:outcomeRecord.outcome_id,execution_id:outcomeRecord.execution_id,outcome_sha256:await hash(outcomeRecord,"outcome_record"),observer:observer,context:context,criterion:criterion,valuation_rule:rule,rationale:rationale,perceived_value_score:Number($("value-score").value),status:"ASSESSED"};if(activeExecutionRecord&&activeExecutionRecord.trace.execution_id===outcomeRecord.execution_id)activeExecutionRecord.assessment=valueAssessment;
-  $("value-status").dataset.state="assessed";$("value-status").textContent="ASSESSED · Valoración vinculada al resultado "+outcomeRecord.outcome_id+"; no se ha enviado al motor.";renderExecutionComparison();
+  $("value-status").dataset.state="assessed";$("value-status").textContent="Valoración contextual registrada para este recorrido; no modifica el resultado de la ejecución.";renderExecutionComparison();renderValueDashboard();
  }catch(e){$("value-status").dataset.state="rejected";$("value-status").textContent="ERROR · "+e.message}
 });
 $("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage)draw(lastModel,lastPackage.result,$("which").value)});
