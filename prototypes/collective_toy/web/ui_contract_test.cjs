@@ -642,6 +642,32 @@ const assert = require("node:assert/strict");
     assert.equal(fc4Package.value_assessment.outcome_sha256, exportedOutcomeDigest,
       "FC-6: assessment must carry the recomputable digest of the exact exported outcome");
 
+    // FC-4 grouped perceived-value range adversaries: the contextual score is an integer from 0 through 100.
+    const invalidPerceivedValueScores = await page.evaluate(async (pkg) => {
+      const cases = [
+        { name: "below-zero", value: -1 },
+        { name: "above-100", value: 101 },
+        { name: "string", value: "82" }
+      ];
+      return Promise.all(cases.map(async item => {
+        const candidate = structuredClone(pkg);
+        candidate.value_assessment.perceived_value_score = item.value;
+        delete candidate.package_sha256;
+        candidate.package_sha256 = await window.hash(candidate, "package_export");
+        return { ...item, candidate };
+      }));
+    }, fc4Package);
+    for (const scoreCase of invalidPerceivedValueScores) {
+      await page.locator("#package-file").setInputFiles({
+        name: `invalid-perceived-value-${scoreCase.name}.json`, mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(scoreCase.candidate))
+      });
+      await page.getByRole("button", { name: "Validar paquete importado" }).click();
+      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+      assert.match(await page.locator("#package-assessment").innerText(), /valor percibido debe ser un entero entre 0 y 100/i,
+        `FC-4: reject invalid contextual value score ${scoreCase.name}`);
+    }
+
     // FC-5 grouped package-integrity adversary: absent, malformed, and incorrect outer digest.
     const invalidPackageDigests = await page.evaluate(async (pkg) => {
       const missing = structuredClone(pkg);
