@@ -3540,6 +3540,8 @@ const assert = require("node:assert/strict");
     await uxPage.getByRole("button", { name: "Siguiente →" }).click();
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "2 / 2");
     assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → C → D/);
+    await uxPage.getByRole("button", { name: "← Anterior" }).click();
+    assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2");
     await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
     await uxPage.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
     await uxPage.locator('#sequence-trace[data-state="replay-verified"]').waitFor();
