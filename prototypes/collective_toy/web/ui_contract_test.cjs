@@ -279,7 +279,6 @@ const assert = require("node:assert/strict");
     assert.deepEqual(editedPathsToD, [["A", "B", "D"]]);
     assert.doesNotMatch(baselineOutput, /A → C → D/);
 
-    // Full Chain acceptance uses profile 3; legacy profile-1 UI coverage is intentionally out of scope.
     assert.equal(packageData.input.rule_profile.type, "temporal_prerequisite_graph");
 
     // Restore the exact example before testing fail-closed behavior.
@@ -377,11 +376,9 @@ const assert = require("node:assert/strict");
     assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /solo hay una conexión/i);
     await orderPage.close();
 
-    // FC-1 contract: browser UI exposes and executes the separately versioned temporal profile.
+    // FC-1 contract: the product loads and executes its sole temporal profile.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
-    const selectedProfile = await page.locator("#profile-editor").inputValue();
     const loadedExample = JSON.parse(await page.locator("#model").inputValue());
-    assert.equal(selectedProfile, "3", "FC-1: the demonstrator must select profile 3 by default");
     assert.deepEqual(loadedExample.rule_profile, { type: "temporal_prerequisite_graph", version: "1" },
       "FC-1: the loaded example must use temporal prerequisites");
     const temporalModel = structuredClone(await page.locator("#model").inputValue().then(JSON.parse));
@@ -808,8 +805,8 @@ const assert = require("node:assert/strict");
         { name: "input-rule-profile-unknown-key", mutate: input => { input.rule_profile.unreviewed_extension = true; }, diagnostic: /rule_profile contiene campos desconocidos/i },
         { name: "input-rule-profile-unknown-type", mutate: input => { input.rule_profile.type = "unreviewed_graph"; }, diagnostic: /rule_profile no compatible/i },
         { name: "input-rule-profile-unsupported-version", mutate: input => { input.rule_profile.version = "2"; }, diagnostic: /rule_profile no compatible/i },
-        { name: "input-rule-profile-incompatible-type-version-pair", mutate: input => { input.rule_profile = { type: "relation_guarded_graph", version: "2" }; }, diagnostic: /rule_profile no compatible/i },
-        { name: "input-relation-unknown-nested-key", mutate: input => { input.rule_profile = { type: "relation_guarded_graph", version: "1" }; input.relations = [{ id: "h1_relation", type: "requires_transition_enabled", transition_id: input.transitions[1].id, requires_transition_id: input.transitions[0].id, unreviewed_extension: true }]; }, diagnostic: /Relación contiene campos desconocidos/i },
+        { name: "input-rule-profile-incompatible-type-version-pair", mutate: input => { input.rule_profile = { type: "temporal_prerequisite_graph", version: "2" }; }, diagnostic: /rule_profile no compatible/i },
+        { name: "input-relation-unknown-nested-key", mutate: input => { input.rule_profile = { type: "temporal_prerequisite_graph", version: "1" }; input.relations = [{ id: "h1_relation", type: "requires_prior_execution", transition_id: input.transitions[1].id, requires_transition_id: input.transitions[0].id, unreviewed_extension: true }]; }, diagnostic: /Relación contiene campos desconocidos/i },
         { name: "input-unknown-top-level-key", mutate: input => { input.unreviewed_extension = true; }, diagnostic: /El modelo contiene campos desconocidos/i }
       ];
       return await Promise.all(cases.map(async item => {
@@ -838,7 +835,7 @@ const assert = require("node:assert/strict");
       const cases = [
         { name: "schema-version-mismatch", mutate: p => { p.result.schema_version = "unsupported-result-schema"; }, expected: /versión de esquema del resultado no coincide con la entrada/i },
         { name: "model-id-mismatch", mutate: p => { p.result.model_id = "forged-model-id"; }, expected: /model_id del resultado no coincide con la entrada/i },
-        { name: "rule-profile-mismatch", mutate: p => { p.result.rule_profile = { type: "relation_guarded_graph", version: "1" }; }, expected: /perfil de reglas del resultado no coincide con la entrada/i },
+        { name: "rule-profile-mismatch", mutate: p => { p.result.rule_profile = { type: "unreviewed_profile", version: "1" }; }, expected: /perfil de reglas del resultado no coincide con la entrada/i },
         { name: "validation-not-pass", mutate: p => { p.result.validation = "FAIL"; }, expected: /resultado no declara validation=PASS/i }
       ];
       return Promise.all(cases.map(async item => {
@@ -1199,10 +1196,10 @@ const assert = require("node:assert/strict");
         { name: "scenario-exploration-bounds-zero-count", mutate: p => { p.result.scenario_results.baseline.exploration_bounds.max_trajectories = 0; }, expected: /exploration_bounds debe respetar max_depth entre 0 y 100 y max_trajectories entre 1 y 10000/i },
         { name: "scenario-exploration-bounds-missing-count", mutate: p => { delete p.result.scenario_results.baseline.exploration_bounds.max_trajectories; }, expected: /exploration_bounds debe respetar max_depth entre 0 y 100 y max_trajectories entre 1 y 10000/i },
         { name: "scenario-truncated-wrong-type", mutate: p => { p.result.scenario_results.baseline.truncated = "false"; }, expected: /truncated del escenario baseline debe ser booleano/i },
-        { name: "relation-profile-temporal-type-mismatch", mutate: p => { const ts = p.input.transitions; if (!Array.isArray(ts) || ts.length < 2) throw new Error("Profile adversary requires two distinct transitions."); p.input.rule_profile = { type: "relation_guarded_graph", version: "1" }; p.input.relations = [{ id: "adv_wrong_profile_relation", type: "requires_prior_execution", transition_id: ts[1].id, requires_transition_id: ts[0].id }]; p.result.rule_profile = structuredClone(p.input.rule_profile); }, refreshInputIdentity: true, expected: /Tipo de relación no compatible/i },
-        { name: "temporal-profile-guarded-type-mismatch", mutate: p => { const ts = p.input.transitions; if (!Array.isArray(ts) || ts.length < 2) throw new Error("Profile adversary requires two distinct transitions."); p.input.rule_profile = { type: "temporal_prerequisite_graph", version: "1" }; p.input.relations = [{ id: "adv_wrong_profile_relation", type: "requires_transition_enabled", transition_id: ts[1].id, requires_transition_id: ts[0].id }]; p.result.rule_profile = structuredClone(p.input.rule_profile); }, refreshInputIdentity: true, expected: /Tipo de relación no compatible/i },
-        { name: "finite-profile-forged-relation-effects", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.input.relations = []; p.result.rule_profile = structuredClone(p.input.rule_profile); p.result.scenario_results.baseline.relation_effects = []; }, refreshInputIdentity: true, expected: /Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas/i },
-        { name: "finite-profile-forged-effective-disabled", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.input.relations = []; p.result.rule_profile = structuredClone(p.input.rule_profile); p.result.scenario_results.baseline.effective_disabled_transitions = []; }, refreshInputIdentity: true, expected: /Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas/i },
+        { name: "retired-profile-1-rejected", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.result.rule_profile = structuredClone(p.input.rule_profile); }, refreshInputIdentity: true, expected: /rule_profile no compatible/i },
+        { name: "retired-profile-2-rejected", mutate: p => { p.input.rule_profile = { type: "relation_guarded_graph", version: "1" }; p.result.rule_profile = structuredClone(p.input.rule_profile); }, refreshInputIdentity: true, expected: /rule_profile no compatible/i },
+
+
         { name: "temporal-profile-missing-prerequisite-summary", mutate: p => { p.input.rule_profile = { type: "temporal_prerequisite_graph", version: "1" }; const ts = p.input.transitions; if (!Array.isArray(ts) || ts.length < 2) throw new Error("Temporal profile adversary requires two distinct transitions."); p.input.relations = [{ id: "adv_temporal_requires_prior", type: "requires_prior_execution", transition_id: ts[1].id, requires_transition_id: ts[0].id }]; p.result.rule_profile = structuredClone(p.input.rule_profile); p.result.scenario_results.baseline.temporal_prerequisites = []; }, refreshInputIdentity: true, expected: /temporal_prerequisites no coincide con las relaciones temporales de entrada/i }
       ];
       return Promise.all(cases.map(async item => {
@@ -1362,7 +1359,7 @@ const assert = require("node:assert/strict");
         states: ["S"],
         transitions: [],
         relations: [],
-        rule_profile: { type: "finite_deterministic_graph", version: "1" },
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
         scenarios: [{ id: "baseline", disabled_transitions: [] }],
         exploration: { max_depth: boundary.max_depth, max_trajectories: boundary.max_trajectories }
       };
@@ -1401,7 +1398,7 @@ const assert = require("node:assert/strict");
       const model = {
         schema_version: "collective-toy-input-001", model_id: "h5-inclusive-maximum-sizes",
         initial_state: "MAX_STATE_0", states, transitions, relations: [],
-        rule_profile: { type: "finite_deterministic_graph", version: "1" },
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
         scenarios: [{ id: "baseline", disabled_transitions: [] }],
         exploration: { max_depth: 0, max_trajectories: 1 }
       };
@@ -1420,7 +1417,7 @@ const assert = require("node:assert/strict");
         schema_version: "collective-toy-input-001", model_id: "h6-cross-namespace-collisions",
         initial_state: "S", states: ["S", "baseline", "t_ab"],
         transitions: [{ id: "S", source: "S", target: "t_ab" }],
-        relations: [], rule_profile: { type: "finite_deterministic_graph", version: "1" },
+        relations: [], rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
         scenarios: [{ id: "baseline", disabled_transitions: [] }, { id: "t_ab", disabled_transitions: ["S"] }],
         exploration: { max_depth: 1, max_trajectories: 2 }
       };
@@ -3062,7 +3059,7 @@ const assert = require("node:assert/strict");
       states: ["A", "B"],
       transitions: [{ id: "t_ab", source: "A", target: "B" }],
       relations: [],
-      rule_profile: { type: "finite_deterministic_graph", version: "1" },
+      rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [{ id: "baseline", disabled_transitions: [] }],
       exploration: { max_depth: 2, max_trajectories: 10 }
     };
@@ -3372,7 +3369,7 @@ const assert = require("node:assert/strict");
         { id: "ux_cd", source: "C", target: "D" }
       ],
       relations: [],
-      rule_profile: { type: "finite_deterministic_graph", version: "1" },
+      rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [
         { id: "baseline", disabled_transitions: [] },
         { id: "without_ac", disabled_transitions: ["ux_ac"] }
