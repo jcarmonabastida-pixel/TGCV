@@ -568,8 +568,8 @@ const assert = require("node:assert/strict");
       "FC-2: execution trace must identify the starting state");
     assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1/i,
       "FC-2: execution trace must record ordered concrete steps");
-    assert.match(await page.locator("#sequence-trace").innerText(), /Traza SHA-256/i,
-      "FC-3: successful execution must expose a digest for its trace");
+    assert.doesNotMatch(await page.locator("#sequence-trace").innerText(), /SHA-?256|hash|digest/i,
+      "The user-facing execution trace must not expose internal integrity metadata; retain it in the JSON export");
     // Submit a validly connected but temporally invalid sequence: t_ac reaches C, then t_cd lacks t_ab.
     await page.locator("#sequence-input").fill("t_ac, t_cd");
     assert.equal(await page.locator("#sequence-input").inputValue(), "t_ac, t_cd",
