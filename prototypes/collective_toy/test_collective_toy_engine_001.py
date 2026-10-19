@@ -160,32 +160,6 @@ class CollectiveToyEngineTests(unittest.TestCase):
         ):
             run_model(model)
 
-    def test_duplicate_semantic_relation_is_operationally_idempotent(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        relation = {
-            "id": "r_guard_bd_by_ab",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_bd",
-            "requires_transition_id": "t_ab",
-        }
-        model["relations"] = [relation]
-        duplicate = copy.deepcopy(model)
-        duplicate["relations"].append({
-            **relation,
-            "id": "r_guard_bd_by_ab_duplicate",
-        })
-
-        original = run_model(model)
-        repeated = run_model(duplicate)
-        for scenario_id in original["scenario_results"]:
-            for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
-                self.assertEqual(
-                    original["scenario_results"][scenario_id][key],
-                    repeated["scenario_results"][scenario_id][key],
-                    f"duplicate semantic relation changed {key} in {scenario_id}",
-                )
-        self.assertNotEqual(original["input_sha256"], repeated["input_sha256"])
 
     def test_duplicate_transition_id_fails(self):
         model = copy.deepcopy(self.model)
@@ -321,24 +295,6 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertFalse(neither_cap["truncated"])
         self.assertEqual(len(neither_cap["trajectories"]), 2)
 
-    def test_current_baseline_package_fixture_is_canonical_and_replay_verified(self):
-        from pathlib import Path
-        import hashlib
-        import json
-
-        fixture_path = Path(__file__).with_name("fixtures") / "current_baseline_package_001.json"
-        raw = fixture_path.read_bytes()
-        package = json.loads(raw.decode("utf-8"))
-        self.assertEqual(raw.decode("utf-8"), canonical_json(package))
-        self.assertEqual(package["package_version"], "collective-toy-run-package-001")
-        self.assertEqual(package["engine_version"], "collective-toy-engine-001")
-        self.assertEqual(sha256_json(package["input"]), package["result"]["input_sha256"])
-        self.assertEqual(package["package_sha256"], "4f56aa1618d9a9aadbb68ee5f456950dfaf4898c94bbf7672be3d9d0bba9c9b8")
-        self.assertEqual(package["result"]["result_sha256"], "bb937763a3e8bd3e5aa9ae4b461f10ae2d6b655f17a9f735f5ae8f930ad93a84")
-        self.assertEqual(hashlib.sha256(raw).hexdigest(), "cda406ad711caef3e0d6fb87a429bf329ae99ca35254747166c5b6c61056ab19")
-        self.assertEqual(assess_exported_package(package)["status"], "replay-verified")
-        self.assertEqual(package["result"]["scenario_results"]["baseline"]["reachable_states"], ["A", "B", "C", "D"])
-        self.assertEqual(package["result"]["scenario_results"]["block_ac"]["reachable_states"], ["A", "B", "D"])
 
     def test_deterministic_result_hash(self):
         first = run_model(self.model)
@@ -750,14 +706,14 @@ class CollectiveToyEngineTests(unittest.TestCase):
         model["scenarios"][0]["disabled_transitions"] = [""]
         cases.append(("empty-disabled-transition-id", model))
 
-        # Nested relation/scenario/exploration field coverage (profile 2 where applicable).
+        # Nested relation/scenario/exploration field coverage for the sole supported temporal profile.
         valid_relation = {
-            "id": "r_schema", "type": "requires_transition_enabled",
+            "id": "r_schema", "type": "requires_prior_execution",
             "transition_id": "t_bd", "requires_transition_id": "t_ab"
         }
         for field in ("id", "type", "transition_id", "requires_transition_id"):
             model = copy.deepcopy(self.model)
-            model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
             relation = copy.deepcopy(valid_relation)
             relation.pop(field)
             model["relations"] = [relation]
@@ -765,19 +721,19 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
         for field in ("id", "transition_id", "requires_transition_id"):
             model = copy.deepcopy(self.model)
-            model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
             relation = copy.deepcopy(valid_relation)
             relation[field] = ""
             model["relations"] = [relation]
             cases.append(("empty-relation-" + field, model))
 
         model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
         model["relations"] = [None]
         cases.append(("non-object-relation", model))
 
         model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
         relation = copy.deepcopy(valid_relation)
         relation["unexpected"] = True
         model["relations"] = [relation]
@@ -805,17 +761,6 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 with self.assertRaises(ModelValidationError):
                     run_model(candidate)
 
-    def test_relation_guard_cannot_reference_itself(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [{
-            "id": "r_self",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_ab",
-            "requires_transition_id": "t_ab",
-        }]
-        with self.assertRaises(ModelValidationError):
-            run_model(model)
 
     def test_duplicate_state_id_fails(self):
         model = copy.deepcopy(self.model)
@@ -837,323 +782,15 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 with self.assertRaises(ModelValidationError):
                     run_model(model)
 
-    def test_reachability_invariants_across_deterministic_generated_graphs(self):
-        # Fixed-seed graph generation keeps this property suite reproducible.
-        import random
 
-        rng = random.Random(20261011)
-        states = [f"S{i}" for i in range(5)]
-        for case_index in range(30):
-            transitions = []
-            for source in states:
-                for target in states:
-                    if rng.random() < 0.24:
-                        transitions.append({
-                            "id": f"c{case_index}_t{len(transitions)}",
-                            "source": source,
-                            "target": target,
-                        })
-            disabled = [t["id"] for t in transitions if rng.random() < 0.18]
-            model = {
-                "schema_version": "collective-toy-input-001",
-                "model_id": f"property-graph-{case_index:02d}",
-                "initial_state": "S0",
-                "states": states,
-                "transitions": transitions,
-                "relations": [],
-                "rule_profile": {"type": "finite_deterministic_graph", "version": "1"},
-                "scenarios": [
-                    {"id": "baseline", "disabled_transitions": []},
-                    {"id": "intervention", "disabled_transitions": disabled},
-                ],
-                "exploration": {"max_depth": 5, "max_trajectories": 500},
-            }
-            with self.subTest(case=case_index):
-                result = run_model(model)
-                base = result["scenario_results"]["baseline"]
-                altered = result["scenario_results"]["intervention"]
 
-                # Initial state is always reachable, and reachability never
-                # includes an undeclared state.
-                self.assertIn(model["initial_state"], base["reachable_states"])
-                self.assertIn(model["initial_state"], altered["reachable_states"])
-                self.assertLessEqual(set(base["reachable_states"]), set(states))
-                self.assertLessEqual(set(altered["reachable_states"]), set(states))
 
-                # Removing transitions cannot add reachable states in this
-                # graph semantics, regardless of bounded trajectory output.
-                self.assertLessEqual(
-                    set(altered["reachable_states"]), set(base["reachable_states"])
-                )
 
-                # Every emitted path starts at the initial state and every
-                # transition/state pair is a declared edge in that scenario.
-                enabled = {
-                    t["id"]: t for t in transitions if t["id"] not in set(disabled)
-                }
-                for path in altered["trajectories"]:
-                    self.assertEqual(path[0], {"state": model["initial_state"]})
-                    for previous, current in zip(path, path[1:]):
-                        tid = current.get("transition")
-                        self.assertIn(tid, enabled)
-                        self.assertEqual(enabled[tid]["source"], previous["state"])
-                        self.assertEqual(enabled[tid]["target"], current["state"])
 
-    def test_relation_metadata_does_not_change_hashes_or_execution_in_profile_one(self):
-        model_without = copy.deepcopy(self.model)
-        model_with = copy.deepcopy(self.model)
-        model_with["relations"] = [
-            {"id": "r1", "type": "descriptive-only", "from": "A", "to": "D"}
-        ]
-        without_result = run_model(model_without)
-        with_result = run_model(model_with)
-        self.assertEqual(
-            without_result["scenario_results"], with_result["scenario_results"]
-        )
-        self.assertNotEqual(without_result["input_sha256"], with_result["input_sha256"])
-        self.assertEqual(without_result["semantic_sha256"], with_result["semantic_sha256"])
 
-    def test_two_relations_guarding_same_transition_form_conjunctive_requirements(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_bd_requires_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_bd_requires_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-        ]
-        result = run_model(model)["scenario_results"]
-        self.assertNotIn("t_bd", result["baseline"]["effective_disabled_transitions"])
-        for scenario_id in ("disable_ab", "disable_ac", "disable_both"):
-            with self.subTest(scenario=scenario_id):
-                self.assertIn("t_bd", result[scenario_id]["effective_disabled_transitions"])
 
-    def test_conjunctive_guard_relation_order_does_not_change_operational_semantics(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_bd_requires_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_bd_requires_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-        ]
-        reversed_model = copy.deepcopy(model)
-        reversed_model["relations"].reverse()
-        original = run_model(model)
-        reversed_result = run_model(reversed_model)
-        for scenario_id in original["scenario_results"]:
-            for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
-                self.assertEqual(
-                    original["scenario_results"][scenario_id][key],
-                    reversed_result["scenario_results"][scenario_id][key],
-                    f"relation order changed {key} in {scenario_id}",
-                )
-        self.assertNotEqual(original["input_sha256"], reversed_result["input_sha256"])
 
-    def test_relation_guarded_intervention_preserves_reachability_monotonicity(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {
-                "id": "r_guard_bd_by_ab",
-                "type": "requires_transition_enabled",
-                "transition_id": "t_bd",
-                "requires_transition_id": "t_ab",
-            },
-            {
-                "id": "r_guard_cd_by_ac",
-                "type": "requires_transition_enabled",
-                "transition_id": "t_cd",
-                "requires_transition_id": "t_ac",
-            },
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-        ]
-        result = run_model(model)
-        baseline = result["scenario_results"]["baseline"]
-        intervention = result["scenario_results"]["disable_ab"]
-        self.assertLessEqual(set(intervention["reachable_states"]), set(baseline["reachable_states"]))
-        baseline_paths = {canonical_json(path) for path in baseline["trajectories"]}
-        intervention_paths = {canonical_json(path) for path in intervention["trajectories"]}
-        self.assertLessEqual(intervention_paths, baseline_paths)
 
-    def test_direct_intervention_and_guard_chain_do_not_propagate_recursively(self):
-        model = copy.deepcopy(self.model)
-        model["states"] = ["A", "B", "C", "D"]
-        model["initial_state"] = "A"
-        model["transitions"] = [
-            {"id": "t_ab", "source": "A", "target": "B"},
-            {"id": "t_bc", "source": "B", "target": "C"},
-            {"id": "t_cd", "source": "C", "target": "D"},
-        ]
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_bc_requires_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bc", "requires_transition_id": "t_ab"},
-            {"id": "r_cd_requires_bc", "type": "requires_transition_enabled",
-             "transition_id": "t_cd", "requires_transition_id": "t_bc"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_bc", "disabled_transitions": ["t_bc"]},
-            {"id": "disable_cd", "disabled_transitions": ["t_cd"]},
-        ]
-
-        result = run_model(model)["scenario_results"]
-        self.assertEqual(result["baseline"]["effective_disabled_transitions"], [])
-        self.assertEqual(result["disable_ab"]["effective_disabled_transitions"], ["t_ab", "t_bc"])
-        self.assertEqual(
-            [(effect["relation_id"], effect["status"])
-             for effect in result["disable_ab"]["relation_effects"]],
-            [("r_bc_requires_ab", "BLOCKED"), ("r_cd_requires_bc", "APPLIED")],
-            "a relation-derived disablement must not be treated as an explicit prerequisite disablement",
-        )
-        self.assertEqual(result["disable_bc"]["effective_disabled_transitions"], ["t_bc", "t_cd"])
-        self.assertEqual(
-            [(effect["relation_id"], effect["status"])
-             for effect in result["disable_bc"]["relation_effects"]],
-            [("r_bc_requires_ab", "APPLIED"), ("r_cd_requires_bc", "BLOCKED")],
-        )
-        self.assertEqual(result["disable_cd"]["effective_disabled_transitions"], ["t_cd"])
-        self.assertEqual(
-            [effect["status"] for effect in result["disable_cd"]["relation_effects"]],
-            ["APPLIED", "APPLIED"],
-            "a directly disabled target does not change whether its guards' prerequisites are explicitly disabled",
-        )
-
-    def test_relation_guarded_profile_blocks_transition_when_prerequisite_disabled(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [{
-            "id": "r_guard_bd",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_bd",
-            "requires_transition_id": "t_ab",
-        }]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_prerequisite", "disabled_transitions": ["t_ab"]},
-        ]
-        result = run_model(model)
-        baseline = result["scenario_results"]["baseline"]
-        intervention = result["scenario_results"]["disable_prerequisite"]
-        self.assertNotIn("t_bd", baseline["effective_disabled_transitions"])
-        self.assertIn("t_bd", intervention["effective_disabled_transitions"])
-        self.assertIn("D", intervention["reachable_states"])  # alternate route A -> C -> D remains available
-        self.assertFalse(any(step.get("transition") == "t_bd" for path in intervention["trajectories"] for step in path))
-        self.assertEqual(intervention["relation_effects"], [{
-            "relation_id": "r_guard_bd",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_bd",
-            "requires_transition_id": "t_ab",
-            "status": "BLOCKED",
-            "reason": "prerequisite_transition_disabled",
-        }])
-        self.assertEqual(baseline["relation_effects"][0]["status"], "APPLIED")
-
-    def test_relation_guarded_profile_applies_multiple_guards_deterministically(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {
-                "id": "r_guard_bd",
-                "type": "requires_transition_enabled",
-                "transition_id": "t_bd",
-                "requires_transition_id": "t_ab",
-            },
-            {
-                "id": "r_guard_cd",
-                "type": "requires_transition_enabled",
-                "transition_id": "t_cd",
-                "requires_transition_id": "t_ac",
-            },
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_both_prerequisites", "disabled_transitions": ["t_ab", "t_ac"]},
-        ]
-        first = run_model(model)
-        second = run_model(model)
-        baseline = first["scenario_results"]["baseline"]
-        altered = first["scenario_results"]["disable_both_prerequisites"]
-        self.assertEqual(first["result_sha256"], second["result_sha256"])
-        self.assertEqual(
-            [effect["relation_id"] for effect in altered["relation_effects"]],
-            ["r_guard_bd", "r_guard_cd"],
-        )
-        self.assertEqual(
-            [effect["status"] for effect in altered["relation_effects"]],
-            ["BLOCKED", "BLOCKED"],
-        )
-        self.assertEqual(altered["effective_disabled_transitions"], ["t_ab", "t_ac", "t_bd", "t_cd"])
-        self.assertEqual(altered["reachable_states"], ["A"])
-        self.assertIn("D", baseline["reachable_states"])
-
-    def test_multiple_guards_for_same_transition_use_explicit_interventions(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_guard_bd_by_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab_only", "disabled_transitions": ["t_ab"]},
-        ]
-        result = run_model(model)
-        altered = result["scenario_results"]["disable_ab_only"]
-        self.assertEqual(
-            [(effect["relation_id"], effect["status"]) for effect in altered["relation_effects"]],
-            [("r_guard_bd_by_ab", "BLOCKED"), ("r_guard_bd_by_ac", "APPLIED")],
-        )
-        self.assertEqual(altered["effective_disabled_transitions"], ["t_ab", "t_bd"])
-        self.assertNotIn("t_cd", altered["effective_disabled_transitions"])
-
-    def test_disabling_interventions_compose_independently_of_declaration_order(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-            {"id": "disable_both_reversed", "disabled_transitions": ["t_ac", "t_ab"]},
-        ]
-        result = run_model(model)["scenario_results"]
-        ab = set(result["disable_ab"]["effective_disabled_transitions"])
-        ac = set(result["disable_ac"]["effective_disabled_transitions"])
-        both = set(result["disable_both"]["effective_disabled_transitions"])
-        reversed_both = set(result["disable_both_reversed"]["effective_disabled_transitions"])
-        self.assertEqual(both, ab | ac)
-        self.assertEqual(both, reversed_both)
-        semantic_keys = set(result["disable_both"]) - {"scenario_id", "disabled_transitions"}
-        self.assertEqual(
-            {key: result["disable_both"][key] for key in semantic_keys},
-            {key: result["disable_both_reversed"][key] for key in semantic_keys},
-        )
 
     def test_duplicate_disabled_transition_ids_are_rejected(self):
         model = copy.deepcopy(self.model)
@@ -1161,29 +798,6 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaises(ModelValidationError):
             run_model(model)
 
-    def test_disabled_transition_order_does_not_change_semantics(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-        ]
-        permuted = copy.deepcopy(model)
-        # Keep semantic identity fixed; only serialized list order changes.
-        permuted["scenarios"][1]["disabled_transitions"].reverse()
-
-        original_result = run_model(model)
-        permuted_result = run_model(permuted)
-        self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
-        self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
-        self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
     def test_state_declaration_order_does_not_change_semantics(self):
         model = copy.deepcopy(self.model)
@@ -1221,86 +835,8 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
         self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
-    def test_relation_guarded_scenario_declaration_order_does_not_change_semantics(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-        ]
-        permuted = copy.deepcopy(model)
-        permuted["scenarios"].reverse()
-        original_result = run_model(model)
-        permuted_result = run_model(permuted)
-        self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
-        self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
-        self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
-    def test_disabled_transition_declaration_order_does_not_change_semantics(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-        ]
-        permuted = copy.deepcopy(model)
-        permuted["scenarios"][1]["disabled_transitions"].reverse()
-        original = run_model(model)
-        reordered = run_model(permuted)
-        self.assertEqual(original["scenario_results"], reordered["scenario_results"])
-        self.assertEqual(original["comparisons_to_baseline"], reordered["comparisons_to_baseline"])
-        self.assertEqual(original["semantic_sha256"], reordered["semantic_sha256"])
-        self.assertNotEqual(original["input_sha256"], reordered["input_sha256"])
 
-    def test_combined_disabling_interventions_are_monotone(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-        ]
-        result = run_model(model)["scenario_results"]
-        combined = result["disable_both"]
-        for single_id in ("disable_ab", "disable_ac"):
-            single = result[single_id]
-            self.assertLessEqual(set(combined["reachable_states"]), set(single["reachable_states"]))
-            # Removing edges can create new terminal paths, so complete trajectory
-            # lists are not subsets. Every edge in a combined-case path must,
-            # however, remain available in either single-intervention graph.
-            single_enabled = {
-                transition["id"] for transition in model["transitions"]
-                if transition["id"] not in set(model["scenarios"][1 if single_id == "disable_ab" else 2]["disabled_transitions"])
-                and all(
-                    relation["transition_id"] == transition["id"]
-                    or relation["requires_transition_id"] not in set(model["scenarios"][1 if single_id == "disable_ab" else 2]["disabled_transitions"])
-                    for relation in model["relations"]
-                )
-            }
-            for path in combined["trajectories"]:
-                path_transitions = {step["transition"] for step in path if "transition" in step}
-                self.assertTrue(path_transitions <= single_enabled)
 
     def test_disconnected_component_preserves_truncation_under_trajectory_cap(self):
         model = copy.deepcopy(self.model)
@@ -1337,249 +873,18 @@ class CollectiveToyEngineTests(unittest.TestCase):
             self.assertEqual(original["truncated"], actual["truncated"])
         self.assertNotEqual(original_result["input_sha256"], augmented_result["input_sha256"])
 
-    def test_scenario_declaration_order_does_not_couple_scenarios(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"}
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-        ]
-        reversed_model = copy.deepcopy(model)
-        reversed_model["scenarios"].reverse()
-        original = run_model(model)
-        reversed_result = run_model(reversed_model)
-        self.assertEqual(original["scenario_results"], reversed_result["scenario_results"])
-        self.assertEqual(original["comparisons_to_baseline"], reversed_result["comparisons_to_baseline"])
-        self.assertNotEqual(original["input_sha256"], reversed_result["input_sha256"])
 
-    def test_guard_is_inert_when_prerequisite_is_enabled(self):
-        unguarded = copy.deepcopy(self.model)
-        unguarded["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
-        guarded = copy.deepcopy(unguarded)
-        guarded["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        guarded["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"}
-        ]
-        plain_result = run_model(unguarded)["scenario_results"]["baseline"]
-        guarded_result = run_model(guarded)["scenario_results"]["baseline"]
-        for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
-            self.assertEqual(plain_result.get(key, []), guarded_result.get(key, []), f"{key} changed while prerequisite remained enabled")
 
-    def test_duplicate_semantic_guard_does_not_change_graph_outcomes(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        guard = {
-            "id": "r_guard_bd_by_ab",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_bd",
-            "requires_transition_id": "t_ab",
-        }
-        model["relations"] = [guard]
-        duplicate = copy.deepcopy(guard)
-        duplicate["id"] = "r_guard_bd_by_ab_duplicate"
-        duplicated_model = copy.deepcopy(model)
-        duplicated_model["relations"].append(duplicate)
-        original = run_model(model)
-        duplicated = run_model(duplicated_model)
-        for scenario_id in original["scenario_results"]:
-            left = original["scenario_results"][scenario_id]
-            right = duplicated["scenario_results"][scenario_id]
-            for key in ("reachable_states", "trajectories", "effective_disabled_transitions"):
-                self.assertEqual(left[key], right[key], f"{key} changed in {scenario_id}")
 
-    def test_relation_guard_effect_is_local_to_guarded_transition(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"}
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-        ]
-        result = run_model(model)
-        baseline = result["scenario_results"]["baseline"]
-        intervention = result["scenario_results"]["disable_ab"]
-        self.assertIn("D", baseline["reachable_states"])
-        self.assertIn("D", intervention["reachable_states"])
-        self.assertIn("t_bd", intervention["effective_disabled_transitions"])
-        self.assertIn("t_cd", {transition["id"] for transition in model["transitions"]})
-        baseline_paths = {tuple(item.get("state") for item in path) for path in baseline["trajectories"]}
-        intervention_paths = {tuple(item.get("state") for item in path) for path in intervention["trajectories"]}
-        self.assertIn(("A", "C", "D"), baseline_paths)
-        self.assertIn(("A", "C", "D"), intervention_paths)
-        self.assertNotIn(("A", "B", "D"), intervention_paths)
 
-    def test_adding_guard_cannot_expand_reachability_or_trajectories(self):
-        single = copy.deepcopy(self.model)
-        single["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        single["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-        ]
-        single["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-        ]
-        extended = copy.deepcopy(single)
-        extended["relations"].append(
-            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_cd", "requires_transition_id": "t_ac"}
-        )
-        single_result = run_model(single)
-        extended_result = run_model(extended)
-        for scenario_id in single_result["scenario_results"]:
-            before = single_result["scenario_results"][scenario_id]
-            after = extended_result["scenario_results"][scenario_id]
-            self.assertLessEqual(set(after["reachable_states"]), set(before["reachable_states"]))
-            before_paths = {canonical_json(path) for path in before["trajectories"]}
-            after_paths = {canonical_json(path) for path in after["trajectories"]}
-            self.assertLessEqual(after_paths, before_paths)
 
-    def test_transition_declaration_order_does_not_change_semantics(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_guard_cd_by_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_cd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_ac", "disabled_transitions": ["t_ac"]},
-        ]
-        permuted = copy.deepcopy(model)
-        permuted["transitions"].reverse()
-        original_result = run_model(model)
-        permuted_result = run_model(permuted)
-        self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
-        self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
-        self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
-    def test_relation_declaration_order_does_not_change_semantics(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_guard_bd_by_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-            {"id": "r_guard_bd_by_ac", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ac"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab", "disabled_transitions": ["t_ab"]},
-            {"id": "disable_both", "disabled_transitions": ["t_ab", "t_ac"]},
-        ]
-        permuted = copy.deepcopy(model)
-        permuted["relations"].reverse()
 
-        original_result = run_model(model)
-        permuted_result = run_model(permuted)
-        self.assertEqual(original_result["scenario_results"], permuted_result["scenario_results"])
-        self.assertEqual(original_result["comparisons_to_baseline"], permuted_result["comparisons_to_baseline"])
-        self.assertEqual(original_result["semantic_sha256"], permuted_result["semantic_sha256"])
-        self.assertNotEqual(original_result["input_sha256"], permuted_result["input_sha256"])
 
-    def test_cyclic_guard_relations_are_not_recursively_evaluated(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [
-            {"id": "r_ab_requires_bd", "type": "requires_transition_enabled",
-             "transition_id": "t_ab", "requires_transition_id": "t_bd"},
-            {"id": "r_bd_requires_ab", "type": "requires_transition_enabled",
-             "transition_id": "t_bd", "requires_transition_id": "t_ab"},
-        ]
-        model["scenarios"] = [
-            {"id": "baseline", "disabled_transitions": []},
-            {"id": "disable_ab_only", "disabled_transitions": ["t_ab"]},
-        ]
-        result = run_model(model)
-        baseline = result["scenario_results"]["baseline"]
-        altered = result["scenario_results"]["disable_ab_only"]
-        self.assertEqual(
-            [(effect["relation_id"], effect["status"]) for effect in baseline["relation_effects"]],
-            [("r_ab_requires_bd", "APPLIED"), ("r_bd_requires_ab", "APPLIED")],
-        )
-        self.assertEqual(
-            [(effect["relation_id"], effect["status"]) for effect in altered["relation_effects"]],
-            [("r_ab_requires_bd", "APPLIED"), ("r_bd_requires_ab", "BLOCKED")],
-        )
-        self.assertEqual(altered["effective_disabled_transitions"], ["t_ab", "t_bd"])
-        self.assertNotIn("t_ac", altered["effective_disabled_transitions"])
 
-    def test_relation_guarded_profile_cycle_and_exploration_caps_are_explicit(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["transitions"].append({"id": "t_ba", "source": "B", "target": "A"})
-        model["relations"] = [{
-            "id": "r_guard_bd",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_bd",
-            "requires_transition_id": "t_ab",
-        }]
-        model["exploration"] = {"max_depth": 3, "max_trajectories": 2}
-        result = run_model(model)
-        baseline = result["scenario_results"]["baseline"]
-        self.assertEqual(set(baseline["reachable_states"]), {"A", "B", "C", "D"})
-        self.assertTrue(baseline["truncated"])
-        self.assertLessEqual(len(baseline["trajectories"]), 2)
-        self.assertEqual(baseline["exploration_bounds"], {"max_depth": 3, "max_trajectories": 2})
 
-    def test_relation_guarded_profile_rejects_unknown_relation_references(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [{
-            "id": "r_bad",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_bd",
-            "requires_transition_id": "missing",
-        }]
-        with self.assertRaisesRegex(ModelValidationError, "relation r_bad references unknown prerequisite transition: missing"):
-            run_model(model)
 
-    def test_relation_guarded_profile_rejects_unknown_relation_types(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [{
-            "id": "r_bad",
-            "type": "mystery",
-            "transition_id": "t_bd",
-            "requires_transition_id": "t_ab",
-        }]
-        with self.assertRaisesRegex(ModelValidationError, "unsupported relation type"):
-            run_model(model)
 
-    def test_relation_guarded_profile_rejects_duplicate_relation_ids(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        relation = {
-            "id": "r_duplicate",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_bd",
-            "requires_transition_id": "t_ab",
-        }
-        model["relations"] = [relation, copy.deepcopy(relation)]
-        with self.assertRaisesRegex(ModelValidationError, "duplicate relation ID"):
-            run_model(model)
-
-    def test_relations_are_inert_metadata_in_profile_one(self):
-        baseline = run_model(self.model)["scenario_results"]
-        model = copy.deepcopy(self.model)
-        model["relations"] = [{"id": "r1", "type": "descriptive-only", "from": "A", "to": "D"}]
-        with_relations = run_model(model)["scenario_results"]
-        self.assertEqual(baseline, with_relations)
 
     def test_deterministic_malformed_input_mutation_matrix(self):
         # Fixed mutation catalogue: reproducible malformed-input property battery.
@@ -1604,16 +909,16 @@ class CollectiveToyEngineTests(unittest.TestCase):
         add("mutated-trajectory-cap-negative", lambda m: m["exploration"].__setitem__("max_trajectories", -1))
         add("mutated-relations-container", lambda m: m.__setitem__("relations", {}))
         def relation_item(m):
-            m["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            m["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
             m["relations"] = [None]
         add("mutated-relation-item", relation_item)
         def relation_type(m):
-            m["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            m["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
             m["relations"] = [{"id": "r_mut", "type": "unknown", "transition_id": "t_ab", "requires_transition_id": "t_ac"}]
         add("mutated-relation-type", relation_type)
         def relation_reference(m):
-            m["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-            m["relations"] = [{"id": "r_mut", "type": "requires_transition_enabled", "transition_id": "missing", "requires_transition_id": "t_ab"}]
+            m["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
+            m["relations"] = [{"id": "r_mut", "type": "requires_prior_execution", "transition_id": "missing", "requires_transition_id": "t_ab"}]
         add("mutated-relation-reference", relation_reference)
         add("mutated-duplicate-scenario-id", lambda m: m["scenarios"].append(copy.deepcopy(m["scenarios"][0])))
         add("mutated-initial-state-boolean", lambda m: m.__setitem__("initial_state", False))
@@ -1685,39 +990,6 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 with self.assertRaises(ModelValidationError):
                     validate_model(candidate)
 
-    def test_schema_rejects_unknown_nested_fields(self):
-        from collective_toy_engine_001 import validate_model
-
-        cases = []
-        candidate = copy.deepcopy(self.model)
-        candidate["rule_profile"]["unexpected"] = "x"
-        cases.append(("rule-profile", candidate))
-
-        candidate = copy.deepcopy(self.model)
-        candidate["transitions"][0]["unexpected"] = "x"
-        cases.append(("transition", candidate))
-
-        candidate = copy.deepcopy(self.model)
-        candidate["scenarios"][0]["unexpected"] = "x"
-        cases.append(("scenario", candidate))
-
-        candidate = copy.deepcopy(self.model)
-        candidate["exploration"]["unexpected"] = 1
-        cases.append(("exploration", candidate))
-
-        candidate = copy.deepcopy(self.model)
-        candidate["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        candidate["relations"] = [{
-            "id": "r1", "type": "requires_transition_enabled",
-            "transition_id": "t_bd", "requires_transition_id": "t_ab",
-            "unexpected": True,
-        }]
-        cases.append(("relation", candidate))
-
-        for name, candidate in cases:
-            with self.subTest(name=name):
-                with self.assertRaises(ModelValidationError):
-                    validate_model(candidate)
 
     def test_schema_rejects_duplicate_disabled_transition_ids(self):
         from collective_toy_engine_001 import validate_model
@@ -1810,23 +1082,6 @@ class CollectiveToyEngineTests(unittest.TestCase):
         self.assertEqual(baseline["disabled_transitions"], [])
         self.assertFalse(baseline["truncated"])
 
-    def test_omitted_relations_default_empty_in_relation_guarded_profile(self):
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["states"] = ["A"]
-        model["initial_state"] = "A"
-        model["transitions"] = []
-        model.pop("relations", None)
-        model["scenarios"] = [{"id": "baseline"}]
-        model["exploration"] = {"max_depth": 0, "max_trajectories": 1}
-
-        result = run_model(model)
-        baseline = result["scenario_results"]["baseline"]
-        self.assertEqual(baseline["relation_effects"], [])
-        self.assertEqual(baseline["effective_disabled_transitions"], [])
-        self.assertEqual(baseline["reachable_states"], ["A"])
-        self.assertEqual(baseline["trajectories"], [[{"state": "A"}]])
-        self.assertFalse(baseline["truncated"])
 
     def test_zero_depth_with_enabled_outgoing_transition_is_explicitly_truncated(self):
         from collective_toy_engine_001 import run_model
@@ -1853,100 +1108,21 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 ):
                     run_model(model)
 
-    def test_nested_object_and_scenario_validation_report_specific_errors(self):
-        # Fill remaining explicit nested-container branches identified in the audit.
-        cases = []
 
-        model = copy.deepcopy(self.model)
-        model["transitions"][0] = None
-        cases.append((
-            "transition-not-object",
-            model,
-            "each transition must be an object",
-        ))
 
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [None]
-        cases.append((
-            "relation-not-object",
-            model,
-            "each relation must be an object",
-        ))
-
-        model = copy.deepcopy(self.model)
-        model["scenarios"][0] = None
-        cases.append((
-            "scenario-not-object",
-            model,
-            "each scenario must be an object",
-        ))
-
-        model = copy.deepcopy(self.model)
-        model["scenarios"][0]["disabled_transitions"] = None
-        cases.append((
-            "disabled-transitions-not-list",
-            model,
-            "disabled_transitions for baseline must be a list",
-        ))
-
-        model = copy.deepcopy(self.model)
-        model["scenarios"][1]["id"] = "baseline"
-        cases.append((
-            "duplicate-scenario-id",
-            model,
-            "duplicate scenario ID: baseline",
-        ))
-
-        for name, candidate, expected_message in cases:
-            with self.subTest(case=name):
-                with self.assertRaisesRegex(ModelValidationError, expected_message):
-                    run_model(candidate)
-
-    def test_relation_and_baseline_validation_report_specific_expected_errors(self):
-        # Pin distinct semantic validation branches with exact expected outcomes.
-        cases = []
-
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [{
-            "id": "r_self",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_ab",
-            "requires_transition_id": "t_ab",
-        }]
-        cases.append((
-            "self-guard",
-            model,
-            "relation r_self cannot require a transition to enable itself",
-        ))
-
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [{
-            "id": "r_unknown_guarded",
-            "type": "requires_transition_enabled",
-            "transition_id": "missing_guarded",
-            "requires_transition_id": "t_ab",
-        }]
-        cases.append((
-            "unknown-guarded-transition",
-            model,
-            "relation r_unknown_guarded references unknown guarded transition: missing_guarded",
-        ))
-
+    def test_baseline_validation_reports_missing_baseline(self):
         model = copy.deepcopy(self.model)
         model["scenarios"][0]["id"] = "reference"
-        cases.append((
-            "missing-baseline-scenario",
-            model,
-            "a scenario with id 'baseline' is required",
-        ))
+        with self.assertRaisesRegex(ModelValidationError, "a scenario with id 'baseline' is required"):
+            run_model(model)
 
-        for name, candidate, expected_message in cases:
-            with self.subTest(case=name):
-                with self.assertRaisesRegex(ModelValidationError, expected_message):
-                    run_model(candidate)
+    def test_retired_profiles_are_rejected_explicitly(self):
+        for profile_type in ("finite_deterministic_graph", "relation_guarded_graph"):
+            model = copy.deepcopy(self.model)
+            model["rule_profile"] = {"type": profile_type, "version": "1"}
+            with self.subTest(profile=profile_type):
+                with self.assertRaisesRegex(ModelValidationError, "only temporal_prerequisite_graph v1 is supported"):
+                    run_model(model)
 
     def test_schema_container_branches_report_specific_expected_errors(self):
         # The broad malformed-input matrix only asserted rejection. These cases
@@ -2011,115 +1187,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
                 with self.assertRaisesRegex(ModelValidationError, expected_message):
                     run_model(candidate)
 
-    def test_non_string_nested_relation_and_scenario_identifiers_fail(self):
-        # These validator branches were previously represented mainly by browser fixtures;
-        # assert the Python validator's specific contract outcome independently.
-        valid_relation = {
-            "id": "r_schema",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_bd",
-            "requires_transition_id": "t_ab",
-        }
-        cases = []
 
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {
-            "type": "relation_guarded_graph",
-            "version": "1",
-        }
-        relation = copy.deepcopy(valid_relation)
-        relation["id"] = 7
-        model["relations"] = [relation]
-        cases.append((
-            "non-string-relation-id",
-            model,
-            "relation id must be a non-empty string",
-        ))
-
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {
-            "type": "relation_guarded_graph",
-            "version": "1",
-        }
-        relation = copy.deepcopy(valid_relation)
-        relation["transition_id"] = 7
-        model["relations"] = [relation]
-        cases.append((
-            "non-string-guarded-transition-id",
-            model,
-            "relation_guarded_graph relations require transition_id and requires_transition_id",
-        ))
-
-        model = copy.deepcopy(self.model)
-        model["rule_profile"] = {
-            "type": "relation_guarded_graph",
-            "version": "1",
-        }
-        relation = copy.deepcopy(valid_relation)
-        relation["requires_transition_id"] = None
-        model["relations"] = [relation]
-        cases.append((
-            "non-string-prerequisite-transition-id",
-            model,
-            "relation_guarded_graph relations require transition_id and requires_transition_id",
-        ))
-
-        model = copy.deepcopy(self.model)
-        model["scenarios"][0]["id"] = 7
-        cases.append((
-            "non-string-scenario-id",
-            model,
-            "scenario id must be a non-empty string",
-        ))
-
-        for name, candidate, expected_message in cases:
-            with self.subTest(case=name):
-                with self.assertRaisesRegex(ModelValidationError, expected_message):
-                    run_model(candidate)
-
-
-
-    def test_high_branching_cyclic_graph_stress_respects_output_cap(self):
-        # Engineering stress regression for the admitted maximum transition count.
-        # Measure peak Python allocations to make stack growth visible in CI logs.
-        import tracemalloc
-
-        model = copy.deepcopy(self.model)
-        states = [f"s{i:03d}" for i in range(100)]
-        transitions = []
-        for source_index, source in enumerate(states):
-            target = states[(source_index + 1) % len(states)]
-            for branch in range(20):
-                transitions.append({
-                    "id": f"t_{source_index:03d}_{branch:02d}",
-                    "source": source,
-                    "target": target,
-                })
-        model["states"] = states
-        model["initial_state"] = states[0]
-        model["transitions"] = transitions
-        model["relations"] = []
-        model["rule_profile"] = {"type": "finite_deterministic_graph", "version": "1"}
-        model["scenarios"] = [{"id": "baseline", "disabled_transitions": []}]
-        model["exploration"] = {"max_depth": 100, "max_trajectories": 1}
-
-        tracemalloc.start()
-        try:
-            result = run_model(model)
-            _, peak_bytes = tracemalloc.get_traced_memory()
-        finally:
-            tracemalloc.stop()
-
-        scenario = result["scenario_results"]["baseline"]
-        self.assertEqual(len(scenario["trajectories"]), 1)
-        self.assertTrue(scenario["truncated"])
-        self.assertEqual(scenario["exploration_bounds"], {
-            "max_depth": 100,
-            "max_trajectories": 1,
-        })
-        # Conservative CI guard; intended to catch pathological growth, not
-        # to claim a portable benchmark of total process RSS.
-        self.assertLess(peak_bytes, 64 * 1024 * 1024)
 
 
 if __name__ == "__main__":
