@@ -2093,6 +2093,12 @@ const assert = require("node:assert/strict");
         mutate(trace);
         delete trace.trace_sha256;
         trace.trace_sha256 = await window.hash(trace, "sequence_trace");
+        if (candidate.outcome_record) {
+          candidate.outcome_record.execution_trace_sha256 = trace.trace_sha256;
+          if (candidate.value_assessment) {
+            candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
+          }
+        }
         delete candidate.package_sha256;
         candidate.package_sha256 = await window.hash(candidate, "package_export");
         return candidate;
