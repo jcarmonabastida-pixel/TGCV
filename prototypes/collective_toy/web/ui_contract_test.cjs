@@ -3203,15 +3203,11 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#sequence-select option").count(), 1, "GT-05: one candidate trajectory must be available");
     await page.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
     await page.locator("#sequence-trace[data-state=" + '"replay-verified"' + "]").waitFor();
-    assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1: t_ab.*A → B/i, "GT-05: concrete execution must preserve the ordered transition and state change");
+    assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1: A → B/i, "GT-05: concrete execution must preserve the ordered transition and state change");
 
-    await page.locator("#outcome-value").fill("1");
-    await page.locator("#outcome-unit").fill("synthetic-unit");
-    await page.locator("#outcome-timing").fill("after execution");
-    await page.locator("#outcome-uncertainty").fill("illustrative; not measured");
-    await page.locator("#outcome-provenance").fill("GT-05 deterministic synthetic fixture");
-    await page.getByRole("button", { name: "Registrar resultado" }).click();
     await page.locator("#outcome-status[data-state=" + '"recorded"' + "]").waitFor();
+    assert.match(await page.locator("#outcome-status").innerText(), /A → B/,
+      "GT-05: outcome is generated from the executed path");
     await page.locator("#value-observer").fill("GT-05 test observer");
     await page.locator("#value-context").fill("synthetic test context");
     await page.locator("#value-criterion").fill("fixture criterion");
@@ -3292,13 +3288,9 @@ const assert = require("node:assert/strict");
     assert.deepEqual(temporalTrace.submitted_transition_ids, ["t_ab", "t_bc", "t_cd"],
       "GT-05 temporal: completed trace must preserve prerequisite-before-conditioned order");
     assert.equal(temporalTrace.status, "COMPLETED");
-    await temporalPage.locator("#outcome-value").fill("synthetic temporal path completed");
-    await temporalPage.locator("#outcome-unit").fill("qualitative");
-    await temporalPage.locator("#outcome-timing").fill("after temporal execution");
-    await temporalPage.locator("#outcome-uncertainty").fill("synthetic; not measured");
-    await temporalPage.locator("#outcome-provenance").fill("GT-05 temporal success fixture");
-    await temporalPage.getByRole("button", { name: "Registrar resultado" }).click();
     await temporalPage.locator("#outcome-status[data-state=" + '"recorded"' + "]").waitFor();
+    assert.match(await temporalPage.locator("#outcome-status").innerText(), /A → B → C → D/,
+      "GT-05 temporal: outcome must reflect the concrete ordered trajectory");
     await temporalPage.locator("#value-observer").fill("GT-05 temporal observer");
     await temporalPage.locator("#value-context").fill("synthetic temporal context");
     await temporalPage.locator("#value-criterion").fill("ordered prerequisite completion");
