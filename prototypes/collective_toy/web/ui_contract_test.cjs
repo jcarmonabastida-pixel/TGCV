@@ -1718,6 +1718,13 @@ const assert = require("node:assert/strict");
     const traceContractAdversaries = await page.evaluate(async (pkg) => {
       const cases = [
         { name: "unknown-trace-key", mutate: trace => { trace.uncontracted_field = "must-reject"; } },
+        { name: "missing-trace-schema", mutate: trace => { delete trace.trace_schema; } },
+        { name: "missing-trace-input-hash", mutate: trace => { delete trace.input_sha256; } },
+        { name: "missing-submitted-transition-array", mutate: trace => { delete trace.submitted_transition_ids; } },
+        { name: "missing-steps-array", mutate: trace => { delete trace.steps; } },
+        { name: "missing-candidate-index", mutate: trace => { delete trace.candidate_index; } },
+        { name: "missing-trace-status", mutate: trace => { delete trace.status; } },
+        { name: "missing-blocked-step-field", mutate: trace => { delete trace.blocked_step; } },
         { name: "negative-candidate-index", mutate: trace => { trace.candidate_index = -1; } },
         { name: "unknown-submitted-transition", mutate: trace => { trace.submitted_transition_ids[0] = "TRANSITION_NOT_DECLARED"; } },
         { name: "wrong-type-submitted-transition-array", mutate: trace => { trace.submitted_transition_ids = "not-an-array"; } },
@@ -1771,6 +1778,13 @@ const assert = require("node:assert/strict");
     }, fc4Package);
     const traceContractDiagnostics = {
       "unknown-trace-key": /traza contiene campos desconocidos o ausentes/i,
+      "missing-trace-schema": /traza contiene campos desconocidos o ausentes/i,
+      "missing-trace-input-hash": /traza contiene campos desconocidos o ausentes/i,
+      "missing-submitted-transition-array": /traza contiene campos desconocidos o ausentes/i,
+      "missing-steps-array": /traza contiene campos desconocidos o ausentes/i,
+      "missing-candidate-index": /traza contiene campos desconocidos o ausentes/i,
+      "missing-trace-status": /traza contiene campos desconocidos o ausentes/i,
+      "missing-blocked-step-field": /traza contiene campos desconocidos o ausentes/i,
       "negative-candidate-index": /candidate_index debe ser null o un entero no negativo/i,
       "unknown-submitted-transition": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
       "wrong-type-submitted-transition-array": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
