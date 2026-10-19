@@ -1,8 +1,7 @@
-"""Synthetic-only TGCV Collective Toy engine, profile 1.
+"""Synthetic-only TGCV Collective Toy engine, temporal profile 3 only.
 
-This module implements a finite directed transition system. Relations are
-descriptive metadata only; they have no execution semantics in profile 1.
-It does not implement TGCV T_acc, value, causality, or empirical inference.
+This module executes temporal prerequisite graphs over synthetic data. It does
+not implement TGCV T_acc, value, causality, or empirical inference.
 """
 from __future__ import annotations
 
@@ -141,14 +140,12 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         raise ModelValidationError("initial_state must be a state ID string referencing a declared state")
 
     profile = model.get("rule_profile")
-    profile1 = {"type": "finite_deterministic_graph", "version": "1"}
-    profile2 = {"type": "relation_guarded_graph", "version": "1"}
     profile3 = {"type": "temporal_prerequisite_graph", "version": "1"}
     if not isinstance(profile, dict):
         raise ModelValidationError("rule_profile must be an object")
     _reject_unknown_keys(profile, {"type", "version"}, "rule_profile")
-    if profile not in (profile1, profile2, profile3):
-        raise ModelValidationError("unsupported rule_profile; expected finite_deterministic_graph v1, relation_guarded_graph v1, or temporal_prerequisite_graph v1")
+    if profile != profile3:
+        raise ModelValidationError("unsupported rule_profile; only temporal_prerequisite_graph v1 is supported")
 
     raw_transitions = model.get("transitions")
     if not isinstance(raw_transitions, list):
@@ -170,33 +167,29 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     relations = model.get("relations", [])
     if not isinstance(relations, list):
         raise ModelValidationError("relations must be a list")
-    if profile == profile1:
-        # Profile 1 preserves relations as inert descriptive metadata.
-        pass
-    else:
-        relation_ids: set[str] = set()
-        for relation in relations:
-            if not isinstance(relation, dict):
-                raise ModelValidationError("each relation must be an object")
-            _reject_unknown_keys(relation, {"id", "type", "transition_id", "requires_transition_id"}, "relation")
-            rid, rtype = relation.get("id"), relation.get("type")
-            guarded, prerequisite = relation.get("transition_id"), relation.get("requires_transition_id")
-            if not isinstance(rid, str) or not rid:
-                raise ModelValidationError("relation id must be a non-empty string")
-            if rid in relation_ids:
-                raise ModelValidationError(f"duplicate relation ID: {rid}")
-            relation_ids.add(rid)
-            expected_type = "requires_prior_execution" if profile == profile3 else "requires_transition_enabled"
-            if rtype != expected_type:
-                raise ModelValidationError(f"unsupported relation type for {profile['type']}: {rtype!r}; expected {expected_type!r}")
-            if not isinstance(guarded, str) or not guarded or not isinstance(prerequisite, str) or not prerequisite:
-                raise ModelValidationError(f"{profile['type']} relations require transition_id and requires_transition_id")
-            if guarded not in transitions:
-                raise ModelValidationError(f"relation {rid} references unknown guarded transition: {guarded}")
-            if prerequisite not in transitions:
-                raise ModelValidationError(f"relation {rid} references unknown prerequisite transition: {prerequisite}")
-            if guarded == prerequisite:
-                raise ModelValidationError(f"relation {rid} cannot require a transition to enable itself")
+    relation_ids: set[str] = set()
+    for relation in relations:
+        if not isinstance(relation, dict):
+            raise ModelValidationError("each relation must be an object")
+        _reject_unknown_keys(relation, {"id", "type", "transition_id", "requires_transition_id"}, "relation")
+        rid, rtype = relation.get("id"), relation.get("type")
+        guarded, prerequisite = relation.get("transition_id"), relation.get("requires_transition_id")
+        if not isinstance(rid, str) or not rid:
+            raise ModelValidationError("relation id must be a non-empty string")
+        if rid in relation_ids:
+            raise ModelValidationError(f"duplicate relation ID: {rid}")
+        relation_ids.add(rid)
+        expected_type = "requires_prior_execution"
+        if rtype != expected_type:
+            raise ModelValidationError(f"unsupported relation type for {profile['type']}: {rtype!r}; expected {expected_type!r}")
+        if not isinstance(guarded, str) or not guarded or not isinstance(prerequisite, str) or not prerequisite:
+            raise ModelValidationError(f"{profile['type']} relations require transition_id and requires_transition_id")
+        if guarded not in transitions:
+            raise ModelValidationError(f"relation {rid} references unknown guarded transition: {guarded}")
+        if prerequisite not in transitions:
+            raise ModelValidationError(f"relation {rid} references unknown prerequisite transition: {prerequisite}")
+        if guarded == prerequisite:
+            raise ModelValidationError(f"relation {rid} cannot require a transition to enable itself")
     scenarios = model.get("scenarios")
     if not isinstance(scenarios, list) or not scenarios:
         raise ModelValidationError("scenarios must be a non-empty list")
@@ -243,96 +236,6 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     return {s: s for s in states}, transitions
 
 
-def _scenario_result(
-    model: dict[str, Any], transitions: dict[str, Transition], scenario: dict[str, Any]
-) -> dict[str, Any]:
-    explicit_disabled = set(scenario.get("disabled_transitions", []))
-    disabled = set(explicit_disabled)
-    relation_effects: list[dict[str, str]] = []
-    if model["rule_profile"] == {"type": "relation_guarded_graph", "version": "1"}:
-        for relation in sorted(model.get("relations", []), key=lambda item: item["id"]):
-            blocked = relation["requires_transition_id"] in explicit_disabled
-            relation_effects.append({
-                "relation_id": relation["id"],
-                "type": relation["type"],
-                "transition_id": relation["transition_id"],
-                "requires_transition_id": relation["requires_transition_id"],
-                "status": "BLOCKED" if blocked else "APPLIED",
-                "reason": "prerequisite_transition_disabled" if blocked else "prerequisite_transition_not_disabled",
-            })
-            if blocked:
-                disabled.add(relation["transition_id"])
-    max_depth = model["exploration"]["max_depth"]
-    max_trajectories = model["exploration"]["max_trajectories"]
-    initial = model["initial_state"]
-    adjacency: dict[str, list[Transition]] = {s: [] for s in model["states"]}
-    for t in transitions.values():
-        if t.id not in disabled:
-            adjacency[t.source].append(t)
-    for outgoing in adjacency.values():
-        outgoing.sort(key=lambda t: t.id)
-
-    # Reachability is graph search; cycles do not cause non-termination.
-    reached = {initial}
-    queue = deque([initial])
-    while queue:
-        state = queue.popleft()
-        for transition in adjacency[state]:
-            if transition.target not in reached:
-                reached.add(transition.target)
-                queue.append(transition.target)
-
-    # Enumerate bounded finite walks, recording terminal paths and depth-limited paths; max_depth counts edges.
-    trajectories: list[list[dict[str, str]]] = []
-    truncated = False
-    stack: list[tuple[str, list[dict[str, str]], int]] = [
-        (initial, [{"state": initial}], 0)
-    ]
-    while stack:
-        state, path, depth = stack.pop()
-        if depth >= max_depth:
-            if adjacency[state]:
-                truncated = True
-            if len(trajectories) < max_trajectories:
-                trajectories.append(path)
-            else:
-                truncated = True
-                break
-            continue
-        outgoing = adjacency[state]
-        if not outgoing:
-            if len(trajectories) < max_trajectories:
-                trajectories.append(path)
-            else:
-                truncated = True
-                break
-            continue
-        # Reverse push to make the resulting DFS lexicographic by transition ID.
-        for transition in reversed(outgoing):
-            next_path = path + [{"transition": transition.id, "state": transition.target}]
-            stack.append((transition.target, next_path, depth + 1))
-        # If pending work exceeds the output limit, stop only when output cap is hit.
-        if len(trajectories) >= max_trajectories and stack:
-            truncated = True
-            break
-
-    # Current-state enabled set is local and is not TGCV's system-level T_acc.
-    enabled_at_initial = sorted(t.id for t in adjacency[initial])
-    result = {
-        "scenario_id": scenario["id"],
-        "disabled_transitions": sorted(explicit_disabled),
-        "enabled_transitions_at_initial_state": enabled_at_initial,
-        "reachable_states": sorted(reached),
-        "trajectories": trajectories,
-        "truncated": truncated,
-        "exploration_bounds": {"max_depth": max_depth, "max_trajectories": max_trajectories},
-    }
-    if model["rule_profile"] == {"type": "relation_guarded_graph", "version": "1"}:
-        result["relation_effects"] = relation_effects
-        result["effective_disabled_transitions"] = sorted(disabled)
-    return result
-
-
 def _temporal_scenario_result(
     model: dict[str, Any], transitions: dict[str, Transition], scenario: dict[str, Any]
 ) -> dict[str, Any]:
@@ -350,7 +253,40 @@ def _temporal_scenario_result(
     initial = model["initial_state"]
     max_depth = model["exploration"]["max_depth"]
     max_trajectories = model["exploration"]["max_trajectories"]
+
+    # Compute reachability independently from bounded trajectory enumeration.
+    # Temporal applicability depends on the set of transitions already executed,
+    # so the search state is (graph state, executed-transition set). This finite
+    # configuration search does not consume the user-facing depth/trajectory caps.
     reached = {initial}
+    # Only execution of transitions that are prerequisites for another transition
+    # can affect future applicability. Discard all other history from the search
+    # key; this avoids exponential configuration growth on cyclic graphs without
+    # temporal relations (including the engineering benchmark fixtures).
+    prerequisite_ids = frozenset(
+        prerequisite
+        for required in prerequisites.values()
+        for prerequisite in required
+    )
+    pending_configs: list[tuple[str, frozenset[str]]] = [(initial, frozenset())]
+    visited_configs: set[tuple[str, frozenset[str]]] = set()
+    while pending_configs:
+        config_state, executed = pending_configs.pop()
+        config = (config_state, executed)
+        if config in visited_configs:
+            continue
+        visited_configs.add(config)
+        for transition in adjacency[config_state]:
+            if transition.id in explicit_disabled:
+                continue
+            if not prerequisites.get(transition.id, set()).issubset(executed):
+                continue
+            reached.add(transition.target)
+            next_executed = (executed | {transition.id}) & prerequisite_ids
+            next_config = (transition.target, next_executed)
+            if next_config not in visited_configs:
+                pending_configs.append(next_config)
+
     trajectories: list[list[dict[str, str]]] = []
     truncated = False
     stack: list[tuple[str, list[dict[str, str]], tuple[str, ...], int]] = [
@@ -414,7 +350,6 @@ def execute_sequence(
     """Execute one concrete ordered sequence and retain immutable replay provenance."""
     _, transitions = validate_model(model)
     profile = model["rule_profile"]
-    temporal = profile == {"type": "temporal_prerequisite_graph", "version": "1"}
     scenarios = {scenario["id"]: scenario for scenario in model["scenarios"]}
     if scenario_id not in scenarios:
         raise ModelValidationError(f"unknown scenario ID: {scenario_id}")
@@ -423,9 +358,8 @@ def execute_sequence(
     scenario = scenarios[scenario_id]
     disabled = set(scenario.get("disabled_transitions", []))
     prerequisites: dict[str, set[str]] = {}
-    if temporal:
-        for relation in model.get("relations", []):
-            prerequisites.setdefault(relation["transition_id"], set()).add(relation["requires_transition_id"])
+    for relation in model.get("relations", []):
+        prerequisites.setdefault(relation["transition_id"], set()).add(relation["requires_transition_id"])
 
     configuration = {
         "model": copy.deepcopy(model),
@@ -450,7 +384,7 @@ def execute_sequence(
             reason = "transition_disabled_by_scenario"
         elif transition.source != current:
             reason = "transition_source_mismatch"
-        elif temporal:
+        else:
             missing = sorted(prerequisites.get(transition_id, set()) - set(history))
             if missing:
                 reason = "temporal_prerequisite_not_satisfied"
@@ -491,14 +425,7 @@ def run_model(model: dict[str, Any]) -> dict[str, Any]:
     """Validate and evaluate every declared scenario; return a reproducible result."""
     _, transitions = validate_model(model)
     scenarios = sorted(model["scenarios"], key=lambda item: item["id"])
-    temporal_profile = model["rule_profile"] == {"type": "temporal_prerequisite_graph", "version": "1"}
-    results = {
-        s["id"]: (
-            _temporal_scenario_result(model, transitions, s)
-            if temporal_profile else _scenario_result(model, transitions, s)
-        )
-        for s in scenarios
-    }
+    results = {s["id"]: _temporal_scenario_result(model, transitions, s) for s in scenarios}
     baseline = results["baseline"]
     comparisons: dict[str, Any] = {}
     for sid, result in results.items():
@@ -713,7 +640,7 @@ def demo_model() -> dict[str, Any]:
             {"id": "t_cd", "source": "C", "target": "D"},
         ],
         "relations": [],
-        "rule_profile": {"type": "finite_deterministic_graph", "version": "1"},
+        "rule_profile": {"type": "temporal_prerequisite_graph", "version": "1"},
         "scenarios": [
             {"id": "baseline", "disabled_transitions": []},
             {"id": "block_ac", "disabled_transitions": ["t_ac"]},

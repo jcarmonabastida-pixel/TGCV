@@ -27,7 +27,7 @@ function makeModel(size, cap = 10, kind = "cyclic_branching") {
   return {
     schema_version: "collective-toy-input-001", model_id: "browser-benchmark-" + kind + "-" + size,
     initial_state: states[0], states, transitions, relations: [],
-    rule_profile: { type: "finite_deterministic_graph", version: "1" },
+    rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
     scenarios: [{ id: "baseline", disabled_transitions: [] }],
     exploration: { max_depth: 100, max_trajectories: cap }
   };

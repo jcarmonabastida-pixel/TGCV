@@ -32,7 +32,7 @@
   ],
   "relations": [],
   "rule_profile": {
-    "type": "finite_deterministic_graph",
+    "type": "temporal_prerequisite_graph",
     "version": "1"
   },
   "scenarios": [

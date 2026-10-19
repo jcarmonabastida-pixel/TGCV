@@ -149,20 +149,6 @@ class TemporalSequentialityContractTests(unittest.TestCase):
         result = engine.run_model(model)
         self.assertTrue(result["scenario_results"]["baseline"]["truncated"])
 
-    def test_10_historical_profile_two_guard_semantics_remain_distinct(self) -> None:
-        model = base_model()
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-        model["relations"] = [{
-            "id": "r_legacy_guard",
-            "type": "requires_transition_enabled",
-            "transition_id": "t_use",
-            "requires_transition_id": "t_prep",
-        }]
-        result = engine.run_model(model)
-        baseline = result["scenario_results"]["baseline"]
-        intervention = result["scenario_results"]["disable_prep"]
-        self.assertNotIn("t_use", baseline["effective_disabled_transitions"])
-        self.assertIn("t_use", intervention["effective_disabled_transitions"])
 
     def test_12_multiple_temporal_prerequisites_must_all_have_occurred(self) -> None:
         model = base_model()
