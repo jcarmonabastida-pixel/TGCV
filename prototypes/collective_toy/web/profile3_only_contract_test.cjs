@@ -40,6 +40,7 @@ base = {
   "states": ["A", "B", "C"],
   "transitions": [
     {"id": "t_ab", "source": "A", "target": "B"},
+    {"id": "t_ac", "source": "A", "target": "C"},
     {"id": "t_bc", "source": "B", "target": "C"}
   ],
   "relations": [
@@ -60,6 +61,19 @@ assert result["validation"] == "PASS"
 assert result["rule_profile"] == base["rule_profile"]
 assert "baseline" in result["scenario_results"]
 assert "disable_prerequisite" in result["scenario_results"]
+
+paths = result["scenario_results"]["baseline"]["trajectories"]
+for path in paths:
+    ids = [step["transition"] for step in path if "transition" in step]
+    if "t_bc" in ids:
+        assert "t_ab" in ids and ids.index("t_ab") < ids.index("t_bc"), "enumeration must enforce temporal prerequisites"
+
+blocked = engine.execute_sequence(base, "baseline", ["t_ac", "t_bc"])
+assert blocked["status"] == "BLOCKED"
+assert blocked["blocked_step"]["index"] == 2
+assert blocked["blocked_step"]["transition_id"] == "t_bc"
+assert blocked["blocked_step"]["required_transition_id"] == "t_ab"
+assert blocked["blocked_step"]["reason"] == "temporal_prerequisite_not_satisfied"
 
 for retired in (
     {"type": "finite_deterministic_graph", "version": "1"},
