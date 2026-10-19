@@ -1775,7 +1775,7 @@ const assert = require("node:assert/strict");
       "unknown-submitted-transition": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
       "wrong-type-submitted-transition-array": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
       "null-submitted-transition-array": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
-      "empty-submitted-transition-array": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
+      "empty-submitted-transition-array": /Una traza COMPLETED debe ejecutar exactamente la secuencia enviada/i,
       "non-string-submitted-transition-id": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
       "null-submitted-transition-id": /submitted_transition_ids debe contener únicamente IDs de transiciones existentes/i,
       "unknown-initial-state": /estados inicial\/final de la traza deben existir en la entrada/i,
