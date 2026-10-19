@@ -1,0 +1,77 @@
+name: Collective Toy raster detector comparison (provisional)
+
+on:
+  push:
+    branches:
+      - experiment/full-chain-image-import-comparison-harness-001-20261020
+    paths:
+      - 'prototypes/collective_toy/web/raster_graph_candidate_detector.cjs'
+      - 'prototypes/collective_toy/web/arrow_direction_resolver.cjs'
+      - 'prototypes/collective_toy/web/opencv_raster_baseline.py'
+      - 'prototypes/collective_toy/web/fixtures/ocr_graph_images/**'
+      - '.github/workflows/collective-toy-raster-detector-comparison.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  raster-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out selected ref
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install detector runtime
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+          python -m pip install --disable-pip-version-check opencv-python-headless
+      - name: Verify fixture integrity
+        working-directory: prototypes/collective_toy/web
+        run: node ocr_graph_image_fixture_test.cjs
+      - name: Run OpenCV baseline on reference images
+        working-directory: prototypes/collective_toy/web
+        run: python opencv_raster_baseline.py --output opencv-raster-baseline-report.json
+      - name: Run existing Canvas detector on the same images
+        working-directory: prototypes/collective_toy/web
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const { detectGraphCandidates } = require('./raster_graph_candidate_detector.cjs');
+          (async () => {
+            const root = path.join(__dirname, 'fixtures', 'ocr_graph_images');
+            const manifest = JSON.parse(fs.readFileSync(path.join(root, 'synthetic_graph_image_annotations_v0.1.json'), 'utf8'));
+            const images = [];
+            for (const ref of manifest.images) {
+              const result = await detectGraphCandidates(path.join(root, ref.file), {});
+              images.push({ image_id: ref.image_id, reference_nodes: ref.nodes.length,
+                reference_edges: ref.edges.length, detector_result: result });
+            }
+            fs.writeFileSync('canvas-raster-candidate-report.json', JSON.stringify({
+              dataset_id: manifest.dataset_id, dataset_status: manifest.status,
+              note: 'Raw Canvas detector output. Cross-method matched precision/recall and direction adjudication remain pending.',
+              images
+            }, null, 2) + '\n');
+            console.log('PASS: Canvas detector executed on ' + images.length + ' shared reference images; no winner decision.');
+          })().catch(e => { console.error(e); process.exit(1); });
+          NODE
+      - name: Upload provisional comparison artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgcv-raster-detector-comparison-provisional
+          path: |
+            prototypes/collective_toy/web/opencv-raster-baseline-report.json
+            prototypes/collective_toy/web/canvas-raster-candidate-report.json
+          if-no-files-found: error
+          retention-days: 30
