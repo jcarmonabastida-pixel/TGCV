@@ -3562,7 +3562,7 @@ const assert = require("node:assert/strict");
     await uxPage.locator("#value-rationale").fill("comprobar asociación de valoración");
     await uxPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
     await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
-    await uxPage.getByRole("button", { name: "Siguiente →" }).click();
+    await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
     await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
     await uxPage.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
     await uxPage.locator('#sequence-trace[data-state="replay-verified"]').waitFor();
