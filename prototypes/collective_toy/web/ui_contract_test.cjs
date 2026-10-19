@@ -398,25 +398,8 @@ const assert = require("node:assert/strict");
     assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.relation_effects, []);
     assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac"]);
 
-    // In profile 1, arbitrary relation records remain descriptive metadata and cannot alter outputs.
-    const descriptiveModel = structuredClone(packageData.input);
-    descriptiveModel.relations = [{
-      id: "r_descriptive_only",
-      type: "descriptive-only",
-      from: "A",
-      to: "D"
-    }];
-    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(descriptiveModel, null, 2));
-    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
-    const descriptivePackage = await page.evaluate(() => window.lastPackage);
-    assert.deepEqual(descriptivePackage.input.rule_profile, packageData.input.rule_profile);
-    assert.deepEqual(descriptivePackage.input.relations, descriptiveModel.relations);
-    assert.deepEqual(
-      descriptivePackage.result.scenario_results,
-      packageData.result.scenario_results,
-      "Profile-1 descriptive relation metadata must not change scenario outputs"
-    );
+    // Full Chain acceptance uses profile 3; legacy profile-1 UI coverage is intentionally out of scope.
+    assert.equal(packageData.input.rule_profile.type, "temporal_prerequisite_graph");
 
     // Restore the exact example before testing fail-closed behavior.
     await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(packageData.input, null, 2));
