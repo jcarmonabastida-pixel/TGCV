@@ -384,10 +384,13 @@ const assert = require("node:assert/strict");
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
     await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
 
-    // Removing the relation through the real UI must remove its effect on the next run.
-    await page.getByRole("button", { name: "Eliminar relación r_guard_1" }).click();
+    // Profile-2 compatibility is exercised through the advanced model, because the
+    // user-facing Full Chain UI intentionally has no separate relation editor.
+    await page.locator('details:has(#model) > summary').click();
     const relationRemovedModel = JSON.parse(await page.locator("#model").inputValue());
-    assert.deepEqual(relationRemovedModel.relations, []);
+    relationRemovedModel.relations = [];
+    await page.locator("#model").fill(JSON.stringify(relationRemovedModel));
+    assert.deepEqual(JSON.parse(await page.locator("#model").inputValue()).relations, []);
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
     const removedRelationPackage = await page.evaluate(() => window.lastPackage);
