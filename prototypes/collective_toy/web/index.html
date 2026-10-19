@@ -495,7 +495,7 @@ $("execute-sequence").addEventListener("click",async function(){
   panel.append(node("p","muted","Traza SHA-256: "+trace.trace_sha256));
   panel.dataset.state=blockedStep?"blocked-trace-recorded":"replay-verified";
   panel._trace=trace;
-  outcomeRecord=null;valueAssessment=null;activeExecutionRecord={trace:trace,outcome:null,assessment:null};executionHistory.push(activeExecutionRecord);refreshExecutionComparison();$("outcome-status").dataset.state="not-assessed";$("outcome-status").textContent="NOT_ASSESSED · Registra un resultado para "+trace.execution_id+".";$("value-status").dataset.state="not-assessed";$("value-status").textContent="NOT_ASSESSED · Requiere un resultado vinculado a esta ejecución.";
+  outcomeRecord=null;valueAssessment=null;activeExecutionRecord={trace:trace,outcome:null,assessment:null};executionHistory.push(activeExecutionRecord);refreshExecutionComparison();$("outcome-value").value=$("outcome-unit").value=$("outcome-timing").value=$("outcome-uncertainty").value=$("outcome-provenance").value="";$("value-observer").value=$("value-context").value=$("value-criterion").value=$("value-rule").value=$("value-rationale").value="";$("outcome-status").dataset.state="not-assessed";$("outcome-status").textContent="NOT_ASSESSED · Registra un resultado para "+trace.execution_id+".";$("value-status").dataset.state="not-assessed";$("value-status").textContent="NOT_ASSESSED · Requiere un resultado vinculado a esta ejecución.";
   updateFc4Controls();
  }catch(e){panel.dataset.state="rejected";panel.replaceChildren(node("p","error","No se ha podido ejecutar la secuencia: "+(e.message||String(e))))}
 });
