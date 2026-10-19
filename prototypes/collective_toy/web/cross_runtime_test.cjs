@@ -1337,6 +1337,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       id: "r_guard_1", type: "requires_transition_enabled",
       transition_id: "t_bd", requires_transition_id: "t_ac"
     }];
+    await page.locator('details:has(#model) > summary').click();
     await page.locator("#model").fill(JSON.stringify(editorParsed));
     assert.equal(await page.locator("#profile-editor").evaluate(el => el.closest("[hidden]") !== null), true);
     assert.deepEqual(editorParsed.rule_profile, { type: "relation_guarded_graph", version: "1" });
