@@ -1,8 +1,7 @@
-"""Synthetic-only TGCV Collective Toy engine, profile 1.
+"""Synthetic-only TGCV Collective Toy engine, temporal profile 3 only.
 
-This module implements a finite directed transition system. Relations are
-descriptive metadata only; they have no execution semantics in profile 1.
-It does not implement TGCV T_acc, value, causality, or empirical inference.
+This module executes temporal prerequisite graphs over synthetic data. It does
+not implement TGCV T_acc, value, causality, or empirical inference.
 """
 from __future__ import annotations
 
@@ -147,8 +146,8 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     if not isinstance(profile, dict):
         raise ModelValidationError("rule_profile must be an object")
     _reject_unknown_keys(profile, {"type", "version"}, "rule_profile")
-    if profile not in (profile1, profile2, profile3):
-        raise ModelValidationError("unsupported rule_profile; expected finite_deterministic_graph v1, relation_guarded_graph v1, or temporal_prerequisite_graph v1")
+    if profile != profile3:
+        raise ModelValidationError("unsupported rule_profile; only temporal_prerequisite_graph v1 is supported")
 
     raw_transitions = model.get("transitions")
     if not isinstance(raw_transitions, list):
@@ -713,7 +712,7 @@ def demo_model() -> dict[str, Any]:
             {"id": "t_cd", "source": "C", "target": "D"},
         ],
         "relations": [],
-        "rule_profile": {"type": "finite_deterministic_graph", "version": "1"},
+        "rule_profile": {"type": "temporal_prerequisite_graph", "version": "1"},
         "scenarios": [
             {"id": "baseline", "disabled_transitions": []},
             {"id": "block_ac", "disabled_transitions": ["t_ac"]},
