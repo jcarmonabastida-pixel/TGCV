@@ -1,6 +1,6 @@
-# FC-5 / FC-6 Final Evidence Bundle Index (working candidate)
+# FC-5 / FC-6 Final Evidence Bundle Index
 
-Status: documentation consolidation on the candidate branch; exact-HEAD CI gate is required after this commit. This index does not claim scientific validity.
+Status: acceptance scope reconciled against the grouped contract tests and the numbered acceptance register. The five-workflow exact-HEAD gate is required after this index update; until those runs pass on the resulting HEAD, formal closure remains pending. This index does not claim scientific validity.
 
 ## Artifact inventory by package stage
 
