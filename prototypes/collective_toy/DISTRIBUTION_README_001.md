@@ -1,0 +1,25 @@
+# Juguete Colectivo — distribución Full Chain
+
+Esta distribución es un demostrador web autónomo de la cadena Full Chain de TGCV. Abre `index.html` en un navegador moderno. No requiere instalar Node.js para usar la aplicación; Node.js y Playwright solo se necesitan para ejecutar las pruebas de desarrollo.
+
+## Recorrido sugerido
+
+1. Inspecciona el sistema sintético y sus estados/transiciones.
+2. Revisa las transformaciones accesibles bajo el perfil operativo seleccionado.
+3. Ejecuta el escenario base y compáralo con una intervención separada.
+4. Inspecciona estados alcanzables y trayectorias posibles; no los confundas con una ejecución concreta.
+5. Ejecuta una secuencia ordenada y revisa la traza y cualquier paso bloqueado.
+6. Registra un resultado explícito vinculado a esa ejecución.
+7. Realiza una evaluación contextual solo si defines observador, criterio y contexto.
+8. Exporta el paquete, vuelve a importarlo y verifica la reproducción.
+
+El archivo `example-diamond.json` contiene un sistema sintético pequeño en forma de diamante. Impórtalo desde el botón de JSON avanzado.
+
+## Límites
+
+- Solo grafos y escenarios sintéticos; no se autoriza ejecución científica ni se procesan datos reales.
+- La aproximación operativa de transformaciones accesibles es una regla del prototipo, no la función científica canónica de TGCV.
+- Los hashes y la reproducción apoyan consistencia y reproducibilidad; no autentican el origen ni prueban que un evento real ocurriera.
+- La importación desde imagen es una capacidad experimental separada. En esta distribución, la transcripción es manual y revisable. PaddleOCR obtuvo mejores resultados que Tesseract.js en la evaluación previa; su integración y la evaluación de OpenCV como alternativa para recuperar estructura del grafo se tratarán en otra rama. No se debe asumir que la dirección de las flechas queda detectada automáticamente.
+
+La versión del paquete se identifica por el SHA del commit que lo produjo en GitHub Actions. Este paquete no es una validación científica de TGCV.

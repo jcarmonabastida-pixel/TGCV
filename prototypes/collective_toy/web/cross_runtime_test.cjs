@@ -29,6 +29,32 @@ function fixtures() {
   const clone = x => JSON.parse(JSON.stringify(x));
   const cases = [{ name: "diamond-reference", model: clone(base) }];
 
+  // FC-1 parity fixture: temporal prerequisites must be enforced identically in
+  // Python and browser exploration, including a route that reaches t_use without
+  // first executing t_prep and a separate route that satisfies the prerequisite.
+  const temporalSequentiality = clone(base);
+  temporalSequentiality.model_id = "temporal-sequentiality-cross-runtime";
+  temporalSequentiality.states = ["A", "B", "C", "D"];
+  temporalSequentiality.transitions = [
+    { id: "t_prep", source: "A", target: "B" },
+    { id: "t_bypass", source: "A", target: "C" },
+    { id: "t_to_c", source: "B", target: "C" },
+    { id: "t_use", source: "C", target: "D" }
+  ];
+  temporalSequentiality.relations = [{
+    id: "r_use_requires_prep",
+    type: "requires_prior_execution",
+    transition_id: "t_use",
+    requires_transition_id: "t_prep"
+  }];
+  temporalSequentiality.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
+  temporalSequentiality.scenarios = [
+    { id: "baseline", disabled_transitions: [] },
+    { id: "disable_prep", disabled_transitions: ["t_prep"] }
+  ];
+  temporalSequentiality.exploration = { max_depth: 6, max_trajectories: 100 };
+  cases.push({ name: "temporal-prerequisite-sequentiality", model: temporalSequentiality });
+
   const unicodeMetadata = clone(base);
   unicodeMetadata.model_id = "unicode-metadata-canonical-order";
   unicodeMetadata.relations = [{ id: "descriptive", metadata: { "\uE000": "bmp", "𐀀": "supplementary", count: 9007199254740991 } }];
@@ -1014,6 +1040,28 @@ function sha256Canonical(value) {
   return crypto.createHash("sha256").update(canonicalJson(value), "utf8").digest("hex");
 }
 
+function semanticResultProjection(result) {
+  const projected = structuredClone(result);
+  delete projected.delta_reach;
+  delete projected.engine_version;
+  delete projected.input_sha256;
+  delete projected.result_sha256;
+  delete projected.semantic_sha256;
+  delete projected.semantic_identity_version;
+  for (const scenario of Object.values(projected.scenario_results || {})) {
+    if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
+  }
+  for (const comparison of Object.values(projected.comparisons_to_baseline || {})) {
+    const intervention = comparison.intervention || {};
+    if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
+  }
+  return projected;
+}
+
+function refreshSemanticHash(result) {
+  result.semantic_sha256 = sha256Canonical(semanticResultProjection(result));
+}
+
 function assertExportedPackageHashFailures(exportedPackage, label) {
   const alteredInput = structuredClone(exportedPackage);
   alteredInput.input.model_id = "__tampered_model_id__";
@@ -1110,11 +1158,16 @@ function verifyExportedPackageIntegrity(exportedPackage, label) {
     label + ": exported package must be an object");
   const packageVersion = exportedPackage.package_version;
   assert.ok(
-    ["collective-toy-run-package-001", "collective-toy-browser-run-001"].includes(packageVersion),
+    ["collective-toy-run-package-001", "collective-toy-browser-run-001", "collective-toy-browser-run-002"].includes(packageVersion),
     label + ": unsupported package version"
   );
   const requiredFields = ["package_version", "input", "result", "package_sha256"];
   if (packageVersion === "collective-toy-run-package-001") requiredFields.push("engine_version");
+  if (packageVersion === "collective-toy-browser-run-002") {
+    requiredFields.push("package_stage");
+    assert.ok(["EXPLORATION", "EXECUTION", "OUTCOME", "ASSESSMENT"].includes(exportedPackage.package_stage),
+      label + ": v002 package_stage must be declared and supported");
+  }
   for (const field of requiredFields) {
     if (!Object.prototype.hasOwnProperty.call(exportedPackage, field)) {
       throw new Error(label + ": exported package is missing required field " + field);
@@ -1347,15 +1400,16 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       await page.locator("#package-file").setInputFiles(outputPath);
       await page.getByRole("button", { name: "Validar paquete importado" }).click();
       const assessment = page.locator("#package-assessment");
-      await page.waitForFunction(() => {
+      await page.waitForFunction(({ expectedState, expectedMessage }) => {
         const node = document.querySelector("#package-assessment");
-        return !!node && !["idle", "validating"].includes(node.dataset.state);
-      }, null, { timeout: 5000 });
+        return !!node &&
+          !["idle", "validating"].includes(node.dataset.state);
+      }, { expectedState, expectedMessage }, { timeout: 5000 });
       const actualMessage = await assessment.innerText();
-      assert.ok(actualMessage.includes(expectedMessage),
-        "unexpected browser import assessment; expected [" + expectedMessage + "], got [" + actualMessage + "]");
       assert.equal(await assessment.getAttribute("data-state"), expectedState,
         "unexpected browser import lifecycle state for " + expectedMessage + "; got [" + actualMessage + "]");
+      assert.ok(actualMessage.includes(expectedMessage),
+        "unexpected browser import assessment; expected [" + expectedMessage + "], got [" + actualMessage + "]");
       return actualMessage;
     }
     const validImportedPackage = structuredClone(editorPackage);
@@ -1391,6 +1445,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     const unsupportedProfilePackage = structuredClone(validImportedPackage);
     unsupportedProfilePackage.input.rule_profile = { type: "relation_guarded_graph", version: "999" };
     unsupportedProfilePackage.result.rule_profile = structuredClone(unsupportedProfilePackage.input.rule_profile);
+    refreshSemanticHash(unsupportedProfilePackage.result);
     unsupportedProfilePackage.result.input_sha256 = sha256Canonical(unsupportedProfilePackage.input);
     const unsupportedProfileResultPayload = structuredClone(unsupportedProfilePackage.result);
     delete unsupportedProfileResultPayload.input_sha256;
@@ -1415,6 +1470,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       // Unsupported engine ensures consistency is checked before inspect-only fallback.
       inconsistentPackage.result.engine_version = "collective-toy-engine-999";
       inconsistent.mutate(inconsistentPackage);
+      refreshSemanticHash(inconsistentPackage.result);
       const resultBody = structuredClone(inconsistentPackage.result);
       delete resultBody.input_sha256;
       delete resultBody.result_sha256;
@@ -1442,6 +1498,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     unknownNestedResultField.result.engine_version = "collective-toy-engine-999";
     const nestedScenarioId = Object.keys(unknownNestedResultField.result.scenario_results)[0];
     unknownNestedResultField.result.scenario_results[nestedScenarioId].unrecognized_extension = "not in scenario result schema";
+    refreshSemanticHash(unknownNestedResultField.result);
     const nestedResultBody = structuredClone(unknownNestedResultField.result);
     delete nestedResultBody.input_sha256;
     delete nestedResultBody.result_sha256;
@@ -1457,11 +1514,12 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
         }, message: "trajectories del escenario" },
       { label: "negative-bound", mutate: pkg => {
           pkg.result.scenario_results[Object.keys(pkg.result.scenario_results)[0]].exploration_bounds.max_depth = -1;
-        }, message: "límites enteros no negativos" }
+        }, message: "exploration_bounds debe respetar max_depth entre 0 y 100 y max_trajectories entre 1 y 10000" }
     ]) {
       const malformedNestedPackage = structuredClone(validImportedPackage);
       malformedNestedPackage.result.engine_version = "collective-toy-engine-999";
       malformedNested.mutate(malformedNestedPackage);
+      refreshSemanticHash(malformedNestedPackage.result);
       const nestedResultPayload = structuredClone(malformedNestedPackage.result);
       delete nestedResultPayload.input_sha256;
       delete nestedResultPayload.result_sha256;
@@ -1502,6 +1560,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       const malformedRelationPackage = structuredClone(guardedPackageForImport);
       malformedRelationPackage.result.engine_version = "collective-toy-engine-999";
       malformedRelationResult.mutate(malformedRelationPackage);
+      refreshSemanticHash(malformedRelationPackage.result);
       const relationResultPayload = structuredClone(malformedRelationPackage.result);
       delete relationResultPayload.input_sha256;
       delete relationResultPayload.result_sha256;
@@ -1537,6 +1596,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       const malformedReferencePackage = structuredClone(validImportedPackage);
       malformedReferencePackage.result.engine_version = "collective-toy-engine-999";
       malformedReference.mutate(malformedReferencePackage);
+      refreshSemanticHash(malformedReferencePackage.result);
       const referenceResultPayload = structuredClone(malformedReferencePackage.result);
       delete referenceResultPayload.input_sha256;
       delete referenceResultPayload.result_sha256;
@@ -1621,6 +1681,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
 
     const divergentPackage = structuredClone(validImportedPackage);
     divergentPackage.result.scenario_results.baseline.reachable_states.push("FORGED_STATE_NOT_IN_MODEL");
+    refreshSemanticHash(divergentPackage.result);
     const divergentResultPayload = structuredClone(divergentPackage.result);
     delete divergentResultPayload.input_sha256;
     delete divergentResultPayload.result_sha256;
@@ -1628,7 +1689,7 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     const divergentPackagePayload = structuredClone(divergentPackage);
     delete divergentPackagePayload.package_sha256;
     divergentPackage.package_sha256 = sha256Canonical(divergentPackagePayload);
-    await assessInBrowser(divergentPackage, "rejected", "La reproducción independiente difiere");
+    await assessInBrowser(divergentPackage, "rejected", "reachable_states del escenario baseline debe contener solo IDs de estado declarados");
 
     fs.writeFileSync(outputPath, "{ invalid JSON");
     await page.locator("#package-file").setInputFiles(outputPath);
@@ -1672,13 +1733,10 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       const fixtureJson = JSON.stringify(fixture.model, null, 2);
       const modelTransitions = fixture.model && Array.isArray(fixture.model.transitions) ? fixture.model.transitions : [];
       const modelStates = fixture.model && Array.isArray(fixture.model.states) ? fixture.model.states : [];
-      if (modelTransitions.length > 2000 || modelStates.length > 500) {
-        // Set oversized fixtures without firing the editor's per-keystroke input handler.
-        // Then exercise the same visible Run action and production validation path.
-        await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
-      } else {
-        await page.locator("#model").fill(fixtureJson, { timeout: 15000 });
-      }
+      // The JSON editor is intentionally collapsed under <details>; assign fixtures
+      // directly so cross-runtime checks do not depend on editor visibility.
+      // Keep exercising the visible Run action and the production execution path.
+      await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
       await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
       await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
 
@@ -1724,8 +1782,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering disabled transitions changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": reordering disabled transitions changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": reordering disabled transitions changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": reordering disabled transitions changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized disabled transitions should change input SHA-256");
       }
@@ -1792,8 +1850,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering states changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": reordering states changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": reordering states changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": reordering states changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized states should change input SHA-256");
       }
@@ -1804,8 +1862,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering transitions changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": reordering transitions changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": reordering transitions changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": reordering transitions changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized transitions should change input SHA-256");
       }
@@ -1840,8 +1898,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           "reordering disabled transitions changed scenario outcomes");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           "reordering disabled transitions changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          "reordering disabled transitions changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          "reordering disabled transitions changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           "reordering serialized disabled transitions should change input SHA-256");
       }
@@ -1974,8 +2032,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": reordering scenarios changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": reordering scenarios changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": reordering scenarios changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": reordering scenarios changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": reordering serialized scenarios should change input SHA-256");
       }
@@ -1986,8 +2044,8 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
           fixture.name + ": permuting relation order changed scenario semantics");
         assert.deepEqual(browserPackage.result.comparisons_to_baseline, original.comparisons_to_baseline,
           fixture.name + ": permuting relation order changed baseline comparisons");
-        assert.equal(browserPackage.result.result_sha256, original.result_sha256,
-          fixture.name + ": permuting relation order changed result SHA-256");
+        assert.equal(browserPackage.result.semantic_sha256, original.semantic_sha256,
+          fixture.name + ": permuting relation order changed semantic SHA-256");
         assert.notEqual(browserPackage.result.input_sha256, original.input_sha256,
           fixture.name + ": permuting serialized relation order should change input SHA-256");
       } else if (fixture.model.rule_profile?.type === "relation_guarded_graph" &&
@@ -1998,18 +2056,16 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       report.push(fixture.name + ": PASS");
     }
     const invalidReport = [];
+    await page.locator("summary").filter({ hasText: "JSON avanzado" }).click();
     for (const fixture of invalidFixtures()) {
       const pythonReject = pythonRejects(engineDir, fixture.model);
       assert.equal(pythonReject, true, fixture.name + ": Python must reject invalid input");
       const fixtureJson = JSON.stringify(fixture.model, null, 2);
       const modelTransitions = fixture.model && Array.isArray(fixture.model.transitions) ? fixture.model.transitions : [];
       const modelStates = fixture.model && Array.isArray(fixture.model.states) ? fixture.model.states : [];
-      if (modelTransitions.length > 2000 || modelStates.length > 500) {
-        // Set oversized fixtures without firing the editor's per-keystroke input handler.
-        await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
-      } else {
-        await page.locator("#model").fill(fixtureJson, { timeout: 15000 });
-      }
+      // The JSON editor is intentionally collapsed under <details>; assign the fixture
+      // directly so validation tests do not depend on editor visibility or trigger redraws.
+      await page.locator("#model").evaluate((el, value) => { el.value = value; }, fixtureJson);
       await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
       await page.locator("#status").getByText(/No se ha podido ejecutar/).waitFor({ timeout: 5000 });
       const status = await page.locator("#status").innerText();

@@ -10,7 +10,9 @@ from collections import deque
 from dataclasses import dataclass
 import hashlib
 import json
+import copy
 import math
+import uuid
 from typing import Any
 
 
@@ -86,6 +88,31 @@ def sha256_json(value: Any) -> str:
     return hashlib.sha256(canonical_json(value).encode("utf-8")).hexdigest()
 
 
+SEMANTIC_IDENTITY_VERSION = "collective-toy-semantic-identity-001"
+
+
+def semantic_result_projection(output: dict[str, Any]) -> dict[str, Any]:
+    """Project result semantics while excluding provenance and normalizing known unordered lists.
+
+    This is deliberately schema-aware: trajectory and temporal step order is preserved.
+    """
+    projected = json.loads(canonical_json(output))
+    projected.pop("delta_reach", None)
+    projected.pop("engine_version", None)  # provenance, not model/result semantics
+    projected.pop("input_sha256", None)
+    projected.pop("result_sha256", None)
+    projected.pop("semantic_sha256", None)
+    projected.pop("semantic_identity_version", None)
+    for scenario in projected.get("scenario_results", {}).values():
+        if isinstance(scenario.get("disabled_transitions"), list):
+            scenario["disabled_transitions"].sort()
+    for comparison in projected.get("comparisons_to_baseline", {}).values():
+        intervention = comparison.get("intervention", {})
+        if isinstance(intervention.get("disabled_transitions"), list):
+            intervention["disabled_transitions"].sort()
+    return projected
+
+
 @dataclass(frozen=True)
 class Transition:
     id: str
@@ -116,11 +143,12 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     profile = model.get("rule_profile")
     profile1 = {"type": "finite_deterministic_graph", "version": "1"}
     profile2 = {"type": "relation_guarded_graph", "version": "1"}
+    profile3 = {"type": "temporal_prerequisite_graph", "version": "1"}
     if not isinstance(profile, dict):
         raise ModelValidationError("rule_profile must be an object")
     _reject_unknown_keys(profile, {"type", "version"}, "rule_profile")
-    if profile not in (profile1, profile2):
-        raise ModelValidationError("unsupported rule_profile; expected finite_deterministic_graph v1 or relation_guarded_graph v1")
+    if profile not in (profile1, profile2, profile3):
+        raise ModelValidationError("unsupported rule_profile; expected finite_deterministic_graph v1, relation_guarded_graph v1, or temporal_prerequisite_graph v1")
 
     raw_transitions = model.get("transitions")
     if not isinstance(raw_transitions, list):
@@ -158,10 +186,11 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
             if rid in relation_ids:
                 raise ModelValidationError(f"duplicate relation ID: {rid}")
             relation_ids.add(rid)
-            if rtype != "requires_transition_enabled":
-                raise ModelValidationError(f"unsupported relation type: {rtype!r}")
+            expected_type = "requires_prior_execution" if profile == profile3 else "requires_transition_enabled"
+            if rtype != expected_type:
+                raise ModelValidationError(f"unsupported relation type for {profile['type']}: {rtype!r}; expected {expected_type!r}")
             if not isinstance(guarded, str) or not guarded or not isinstance(prerequisite, str) or not prerequisite:
-                raise ModelValidationError("relation_guarded_graph relations require transition_id and requires_transition_id")
+                raise ModelValidationError(f"{profile['type']} relations require transition_id and requires_transition_id")
             if guarded not in transitions:
                 raise ModelValidationError(f"relation {rid} references unknown guarded transition: {guarded}")
             if prerequisite not in transitions:
@@ -304,11 +333,172 @@ def _scenario_result(
     return result
 
 
+def _temporal_scenario_result(
+    model: dict[str, Any], transitions: dict[str, Transition], scenario: dict[str, Any]
+) -> dict[str, Any]:
+    """Explore paths while carrying path-local temporal prerequisite history."""
+    explicit_disabled = set(scenario.get("disabled_transitions", []))
+    prerequisites: dict[str, set[str]] = {}
+    for relation in model.get("relations", []):
+        prerequisites.setdefault(relation["transition_id"], set()).add(relation["requires_transition_id"])
+    adjacency: dict[str, list[Transition]] = {s: [] for s in model["states"]}
+    for transition in transitions.values():
+        adjacency[transition.source].append(transition)
+    for outgoing in adjacency.values():
+        outgoing.sort(key=lambda item: item.id)
+
+    initial = model["initial_state"]
+    max_depth = model["exploration"]["max_depth"]
+    max_trajectories = model["exploration"]["max_trajectories"]
+    reached = {initial}
+    trajectories: list[list[dict[str, str]]] = []
+    truncated = False
+    stack: list[tuple[str, list[dict[str, str]], tuple[str, ...], int]] = [
+        (initial, [{"state": initial}], tuple(), 0)
+    ]
+    while stack:
+        state, path, history, depth = stack.pop()
+        available = [
+            transition for transition in adjacency[state]
+            if transition.id not in explicit_disabled
+            and prerequisites.get(transition.id, set()).issubset(set(history))
+        ]
+        if depth >= max_depth:
+            if available:
+                truncated = True
+            if len(trajectories) < max_trajectories:
+                trajectories.append(path)
+            else:
+                truncated = True
+                break
+            continue
+        if not available:
+            if len(trajectories) < max_trajectories:
+                trajectories.append(path)
+            else:
+                truncated = True
+                break
+            continue
+        for transition in reversed(available):
+            next_path = path + [{"transition": transition.id, "state": transition.target}]
+            next_history = history + (transition.id,)
+            reached.add(transition.target)
+            stack.append((transition.target, next_path, next_history, depth + 1))
+        if len(trajectories) >= max_trajectories and stack:
+            truncated = True
+            break
+
+    enabled_at_initial = sorted(
+        transition.id for transition in adjacency[initial]
+        if transition.id not in explicit_disabled
+        and prerequisites.get(transition.id, set()).issubset(set())
+    )
+    return {
+        "scenario_id": scenario["id"],
+        "disabled_transitions": sorted(explicit_disabled),
+        "enabled_transitions_at_initial_state": enabled_at_initial,
+        "reachable_states": sorted(reached),
+        "trajectories": trajectories,
+        "truncated": truncated,
+        "exploration_bounds": {"max_depth": max_depth, "max_trajectories": max_trajectories},
+        "temporal_prerequisites": [
+            {"transition_id": transition_id, "requires_transition_ids": sorted(required)}
+            for transition_id, required in sorted(prerequisites.items())
+        ],
+    }
+
+
+def execute_sequence(
+    model: dict[str, Any], scenario_id: str, transition_ids: list[str]
+) -> dict[str, Any]:
+    """Execute one concrete ordered sequence and retain immutable replay provenance."""
+    _, transitions = validate_model(model)
+    profile = model["rule_profile"]
+    temporal = profile == {"type": "temporal_prerequisite_graph", "version": "1"}
+    scenarios = {scenario["id"]: scenario for scenario in model["scenarios"]}
+    if scenario_id not in scenarios:
+        raise ModelValidationError(f"unknown scenario ID: {scenario_id}")
+    if not isinstance(transition_ids, list) or any(not isinstance(item, str) for item in transition_ids):
+        raise ModelValidationError("transition_ids must be a list of transition ID strings")
+    scenario = scenarios[scenario_id]
+    disabled = set(scenario.get("disabled_transitions", []))
+    prerequisites: dict[str, set[str]] = {}
+    if temporal:
+        for relation in model.get("relations", []):
+            prerequisites.setdefault(relation["transition_id"], set()).add(relation["requires_transition_id"])
+
+    configuration = {
+        "model": copy.deepcopy(model),
+        "scenario_id": scenario_id,
+        "rule_profile": copy.deepcopy(profile),
+        "initial_state": model["initial_state"],
+        "exploration": copy.deepcopy(model["exploration"]),
+        "engine_version": ENGINE_VERSION,
+    }
+    configuration_hash = sha256_json(configuration)
+    current = model["initial_state"]
+    history: list[str] = []
+    steps: list[dict[str, Any]] = []
+    blocked: dict[str, Any] | None = None
+    for index, transition_id in enumerate(transition_ids, start=1):
+        transition = transitions.get(transition_id)
+        reason: str | None = None
+        required_id: str | None = None
+        if transition is None:
+            reason = "unknown_transition"
+        elif transition_id in disabled:
+            reason = "transition_disabled_by_scenario"
+        elif transition.source != current:
+            reason = "transition_source_mismatch"
+        elif temporal:
+            missing = sorted(prerequisites.get(transition_id, set()) - set(history))
+            if missing:
+                reason = "temporal_prerequisite_not_satisfied"
+                required_id = missing[0]
+        if reason:
+            blocked = {"index": index, "transition_id": transition_id, "reason": reason}
+            if required_id is not None:
+                blocked["required_transition_id"] = required_id
+            break
+        assert transition is not None
+        steps.append({
+            "index": index,
+            "transition_id": transition_id,
+            "state_before": current,
+            "state_after": transition.target,
+        })
+        current = transition.target
+        history.append(transition_id)
+
+    payload = {
+        "configuration_sha256": configuration_hash,
+        "scenario_id": scenario_id,
+        "status": "BLOCKED" if blocked else "PASS",
+        "steps": steps,
+        "final_state": current,
+        "blocked_step": blocked,
+    }
+    return {
+        "execution_id": str(uuid.uuid4()),
+        **payload,
+        "configuration": configuration,
+        "configuration_sha256": configuration_hash,
+        "trace_sha256": sha256_json(payload),
+    }
+
+
 def run_model(model: dict[str, Any]) -> dict[str, Any]:
     """Validate and evaluate every declared scenario; return a reproducible result."""
     _, transitions = validate_model(model)
     scenarios = sorted(model["scenarios"], key=lambda item: item["id"])
-    results = {s["id"]: _scenario_result(model, transitions, s) for s in scenarios}
+    temporal_profile = model["rule_profile"] == {"type": "temporal_prerequisite_graph", "version": "1"}
+    results = {
+        s["id"]: (
+            _temporal_scenario_result(model, transitions, s)
+            if temporal_profile else _scenario_result(model, transitions, s)
+        )
+        for s in scenarios
+    }
     baseline = results["baseline"]
     comparisons: dict[str, Any] = {}
     for sid, result in results.items():
@@ -326,6 +516,44 @@ def run_model(model: dict[str, Any]) -> dict[str, Any]:
             "trajectories_removed": [p for p in baseline["trajectories"] if canonical_json(p) not in scenario_paths],
             "truncated": baseline["truncated"] or result["truncated"],
         }
+    # Keep the auditable baseline/intervention reachability delta in parity with the browser runtime.
+    common_source = {
+        "schema_version": model["schema_version"],
+        "model_id": model["model_id"],
+        "initial_state": model["initial_state"],
+        "states": model["states"],
+        "transitions": model["transitions"],
+        "relations": model.get("relations", []),
+        "rule_profile": model["rule_profile"],
+        "exploration": model.get("exploration", {}),
+    }
+    baseline_scenario = next((item for item in model.get("scenarios", []) if item.get("id") == "baseline"), None)
+    if baseline_scenario is None:
+        raise ModelValidationError("Cannot calculate delta_reach without a baseline scenario")
+    baseline_source_hash = sha256_json({**common_source, "scenario": baseline_scenario})
+    delta_reach: dict[str, Any] = {}
+    for sid in sorted(results):
+        if sid == "baseline":
+            continue
+        scenario = next((item for item in model.get("scenarios", []) if item.get("id") == sid), None)
+        if scenario is None:
+            raise ModelValidationError(f"Cannot identify intervention source {sid}")
+        intervention_source_hash = sha256_json({**common_source, "scenario": scenario})
+        result = results[sid]
+        comparison = comparisons[sid]
+        delta_reach[sid] = {
+            "baseline_source_sha256": baseline_source_hash,
+            "intervention_source_sha256": intervention_source_hash,
+            "reachable_states_added": comparison["reachable_states_added"],
+            "reachable_states_removed": comparison["reachable_states_removed"],
+            "enabled_at_initial_added": comparison["enabled_at_initial_added"],
+            "enabled_at_initial_removed": comparison["enabled_at_initial_removed"],
+            "trajectories_added": comparison["trajectories_added"],
+            "trajectories_removed": comparison["trajectories_removed"],
+            "truncated": bool(baseline["truncated"] or result["truncated"]),
+            "baseline_truncated": bool(baseline["truncated"]),
+            "intervention_truncated": bool(result["truncated"]),
+        }
     output = {
         "engine_version": ENGINE_VERSION,
         "schema_version": model["schema_version"],
@@ -336,6 +564,14 @@ def run_model(model: dict[str, Any]) -> dict[str, Any]:
         "comparisons_to_baseline": comparisons,
         "scientific_interpretation": "NONE: synthetic model execution only; no empirical or TGCV validity claim.",
     }
+    # Provenance hashes identify exact source serializations; they must not redefine
+    # semantic result identity. Keep the legacy output shape when no intervention exists.
+    if delta_reach:
+        output["delta_reach"] = delta_reach
+    # Semantic identity is separate from exact result integrity. Only the
+    # versioned projection normalizes declared unordered dimensions.
+    output["semantic_identity_version"] = SEMANTIC_IDENTITY_VERSION
+    output["semantic_sha256"] = sha256_json(semantic_result_projection(output))
     return {
         **output,
         "input_sha256": sha256_json(model),
@@ -388,6 +624,15 @@ def verify_exported_package_integrity(package: dict[str, Any]) -> bool:
     expected_result_sha256 = result_payload.pop("result_sha256")
     if sha256_json(result_payload) != expected_result_sha256:
         raise ModelValidationError("Exported result SHA-256 does not verify")
+    semantic_version = result.get("semantic_identity_version")
+    if semantic_version is not None:
+        if semantic_version != SEMANTIC_IDENTITY_VERSION:
+            raise ModelValidationError("Unsupported semantic identity version")
+        semantic_hash = result.get("semantic_sha256")
+        if not isinstance(semantic_hash, str) or sha256_json(semantic_result_projection(result)) != semantic_hash:
+            raise ModelValidationError("Exported semantic identity does not verify")
+    elif "semantic_sha256" in result:
+        raise ModelValidationError("semantic_sha256 requires a semantic identity version")
     return True
 
 
@@ -417,7 +662,26 @@ def assess_exported_package(package: dict[str, Any]) -> dict[str, Any]:
             "replay_verified": False,
             "reason": "Unsupported exported package engine version",
         }
-    if run_model(package["input"]) != package["result"]:
+    replayed = run_model(package["input"])
+    exported = package["result"]
+    if "semantic_identity_version" not in exported:
+        # Legacy packages keep their original bytes and hashes. Compare only the
+        # legacy result contract, omitting fields introduced by newer engines,
+        # then independently recompute the legacy result hash.
+        legacy_replay = dict(replayed)
+        legacy_replay.pop("delta_reach", None)
+        legacy_replay.pop("semantic_identity_version", None)
+        legacy_replay.pop("semantic_sha256", None)
+        legacy_replay.pop("input_sha256", None)
+        legacy_replay.pop("result_sha256", None)
+        legacy_replay["input_sha256"] = sha256_json(package["input"])
+        legacy_replay["result_sha256"] = sha256_json({
+            key: value for key, value in legacy_replay.items()
+            if key != "input_sha256"
+        })
+        if legacy_replay != exported:
+            raise ModelValidationError("Legacy exported result does not match compatible replay")
+    elif replayed != exported:
         raise ModelValidationError("Exported result does not match independent replay")
     return {
         "status": "replay-verified",
