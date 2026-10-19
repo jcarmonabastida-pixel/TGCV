@@ -447,14 +447,10 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#sequence-trace").getAttribute("data-state"), "blocked-trace-recorded",
       "FC-3: blocked attempted sequence must be retained as an auditable trace");
     const blockedTraceText = await page.locator("#sequence-trace").innerText();
-    assert.match(blockedTraceText, /Paso bloqueado 2: t_cd/i,
-      "FC-3: trace must identify the exact blocked step and transition");
-    assert.match(blockedTraceText, /temporal_prerequisite_not_satisfied/i,
-      "FC-3: trace must state the temporal blocking reason");
-    assert.match(blockedTraceText, /t_ab/i,
-      "FC-3: trace must identify the missing prerequisite transition");
-    assert.match(blockedTraceText, /Traza SHA-256/i,
-      "FC-3: blocked attempt must have a trace digest");
+    assert.match(blockedTraceText, /faltaba un prerrequisito/i,
+      "FC-3: the primary view must explain why the attempted route was blocked");
+    assert.doesNotMatch(blockedTraceText, /t_cd|t_ab|temporal_prerequisite_not_satisfied|Traza SHA-256/i,
+      "FC-3: internal transition identifiers, machine reason codes, and digests stay in the audit package, not the primary view");
     const blockedTraceIntegrity = await page.evaluate(() => {
       const trace = document.querySelector("#sequence-trace")._trace;
       const before = trace.trace_sha256;
