@@ -65,6 +65,9 @@ jobs:
             console.log('PASS: Canvas detector executed on ' + images.length + ' shared reference images; no winner decision.');
           })().catch(e => { console.error(e); process.exit(1); });
           NODE
+      - name: Score both detector reports against shared annotations
+        working-directory: prototypes/collective_toy/web
+        run: python compare_raster_detector_reports.py
       - name: Upload provisional comparison artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -73,5 +76,6 @@ jobs:
           path: |
             prototypes/collective_toy/web/opencv-raster-baseline-report.json
             prototypes/collective_toy/web/canvas-raster-candidate-report.json
+            prototypes/collective_toy/web/raster-detector-comparison-report.json
           if-no-files-found: error
           retention-days: 30
