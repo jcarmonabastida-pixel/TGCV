@@ -92,7 +92,7 @@ const assert = require("node:assert/strict");
       packageData.result.scientific_interpretation,
       "NONE: synthetic model execution only; no empirical or TGCV validity claim."
     );
-    assert.equal(packageData.input.rule_profile.type, "finite_deterministic_graph");
+    assert.equal(packageData.input.rule_profile.type, "temporal_prerequisite_graph", "The default Full Chain demonstrator must use TGCV-aligned profile 3");
 
     // Exercise JSON model-file import, including validation feedback and relation-profile sync.
     const modelForFileImport = await page.locator("#model").inputValue();
