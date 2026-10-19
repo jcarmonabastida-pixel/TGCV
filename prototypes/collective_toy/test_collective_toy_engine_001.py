@@ -708,12 +708,12 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
         # Nested relation/scenario/exploration field coverage (profile 2 where applicable).
         valid_relation = {
-            "id": "r_schema", "type": "requires_transition_enabled",
+            "id": "r_schema", "type": "requires_prior_execution",
             "transition_id": "t_bd", "requires_transition_id": "t_ab"
         }
         for field in ("id", "type", "transition_id", "requires_transition_id"):
             model = copy.deepcopy(self.model)
-            model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
             relation = copy.deepcopy(valid_relation)
             relation.pop(field)
             model["relations"] = [relation]
@@ -721,19 +721,19 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
         for field in ("id", "transition_id", "requires_transition_id"):
             model = copy.deepcopy(self.model)
-            model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
             relation = copy.deepcopy(valid_relation)
             relation[field] = ""
             model["relations"] = [relation]
             cases.append(("empty-relation-" + field, model))
 
         model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
         model["relations"] = [None]
         cases.append(("non-object-relation", model))
 
         model = copy.deepcopy(self.model)
-        model["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+        model["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
         relation = copy.deepcopy(valid_relation)
         relation["unexpected"] = True
         model["relations"] = [relation]
@@ -909,16 +909,16 @@ class CollectiveToyEngineTests(unittest.TestCase):
         add("mutated-trajectory-cap-negative", lambda m: m["exploration"].__setitem__("max_trajectories", -1))
         add("mutated-relations-container", lambda m: m.__setitem__("relations", {}))
         def relation_item(m):
-            m["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            m["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
             m["relations"] = [None]
         add("mutated-relation-item", relation_item)
         def relation_type(m):
-            m["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
+            m["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
             m["relations"] = [{"id": "r_mut", "type": "unknown", "transition_id": "t_ab", "requires_transition_id": "t_ac"}]
         add("mutated-relation-type", relation_type)
         def relation_reference(m):
-            m["rule_profile"] = {"type": "relation_guarded_graph", "version": "1"}
-            m["relations"] = [{"id": "r_mut", "type": "requires_transition_enabled", "transition_id": "missing", "requires_transition_id": "t_ab"}]
+            m["rule_profile"] = {"type": "temporal_prerequisite_graph", "version": "1"}
+            m["relations"] = [{"id": "r_mut", "type": "requires_prior_execution", "transition_id": "missing", "requires_transition_id": "t_ab"}]
         add("mutated-relation-reference", relation_reference)
         add("mutated-duplicate-scenario-id", lambda m: m["scenarios"].append(copy.deepcopy(m["scenarios"][0])))
         add("mutated-initial-state-boolean", lambda m: m.__setitem__("initial_state", False))
