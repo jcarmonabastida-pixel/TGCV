@@ -35,7 +35,7 @@ def match_nodes(pred,refs,tol=12):
     pairs=[]
     for i,p in enumerate(pred):
         for j,r in enumerate(refs):
-            d=math.dist(p,r["center"])
+            d=math.dist(p["center"],r["center"])
             if d<=tol:pairs.append((d,i,j))
     pi=set();rj=set();tp=0
     for _,i,j in sorted(pairs):
