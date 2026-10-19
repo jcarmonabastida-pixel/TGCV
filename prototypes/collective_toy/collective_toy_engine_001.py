@@ -259,6 +259,15 @@ def _temporal_scenario_result(
     # so the search state is (graph state, executed-transition set). This finite
     # configuration search does not consume the user-facing depth/trajectory caps.
     reached = {initial}
+    # Only execution of transitions that are prerequisites for another transition
+    # can affect future applicability. Discard all other history from the search
+    # key; this avoids exponential configuration growth on cyclic graphs without
+    # temporal relations (including the engineering benchmark fixtures).
+    prerequisite_ids = frozenset(
+        prerequisite
+        for required in prerequisites.values()
+        for prerequisite in required
+    )
     pending_configs: list[tuple[str, frozenset[str]]] = [(initial, frozenset())]
     visited_configs: set[tuple[str, frozenset[str]]] = set()
     while pending_configs:
@@ -273,7 +282,8 @@ def _temporal_scenario_result(
             if not prerequisites.get(transition.id, set()).issubset(executed):
                 continue
             reached.add(transition.target)
-            next_config = (transition.target, executed | {transition.id})
+            next_executed = (executed | {transition.id}) & prerequisite_ids
+            next_config = (transition.target, next_executed)
             if next_config not in visited_configs:
                 pending_configs.append(next_config)
 
