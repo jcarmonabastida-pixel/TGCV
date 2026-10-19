@@ -1818,7 +1818,7 @@ const assert = require("node:assert/strict");
       "wrong-type-steps-array": /steps de la traza debe ser una lista/i,
       "null-steps-array": /steps de la traza debe ser una lista/i,
       "numeric-steps-array": /steps de la traza debe ser una lista/i,
-      "empty-steps-array": /Una traza COMPLETED debe ejecutar exactamente la secuencia enviada/i,
+      "empty-steps-array": /final_state no coincide con el último estado válido de la traza/i,
       "out-of-order-step-index": /numeración o los tipos del paso son inválidos/i,
       "forged-prior-transition-history": /prior_transitions no coincide con el prefijo ejecutado/i,
       "unknown-step-key": /paso malformado o con campos desconocidos/i,
