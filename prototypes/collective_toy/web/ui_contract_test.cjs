@@ -389,6 +389,7 @@ const assert = require("node:assert/strict");
     await page.locator('details:has(#model) > summary').click();
     const relationRemovedModel = JSON.parse(await page.locator("#model").inputValue());
     relationRemovedModel.relations = [];
+    await page.locator("details:has(#model)").evaluate(el => { el.open = true; });
     await page.locator("#model").fill(JSON.stringify(relationRemovedModel));
     assert.deepEqual(JSON.parse(await page.locator("#model").inputValue()).relations, []);
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
