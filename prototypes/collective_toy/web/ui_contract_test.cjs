@@ -130,8 +130,7 @@ const assert = require("node:assert/strict");
 
     // The visible demonstrator is fixed to profile 3; profile controls are implementation-only.
     assert.equal(await page.locator("#profile-editor").inputValue(), "3");
-    await page.locator("#profile-editor").selectOption("2");
-    await page.locator("#profile-editor").selectOption("1");
+    assert.equal(await page.locator("#profile-editor").evaluate(el => el.closest("[hidden]") !== null), true);
     const model = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(model.rule_profile, { type: "temporal_prerequisite_graph", version: "1" });
     assert.equal(await page.locator(".relation-editor[aria-labelledby=\"relation-heading\"]").isVisible(), true);
