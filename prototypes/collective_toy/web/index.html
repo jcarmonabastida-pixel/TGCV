@@ -503,7 +503,7 @@ var outcomeRecord=null,valueAssessment=null;
 function updateFc4Controls(){
  var trace=$("sequence-trace")._trace;
  $("record-outcome").disabled=!(trace&&trace.status==="COMPLETED");
- $("assess-value").disabled=!(outcomeRecord&&outcomeRecord.outcome_id);
+ $("assess-value").disabled=!(outcomeRecord&&outcomeRecord.outcome_id);updateGuidedFlow();
 }
 $("record-outcome").addEventListener("click",function(){
  var trace=$("sequence-trace")._trace;
@@ -517,7 +517,7 @@ $("record-outcome").addEventListener("click",function(){
   $("outcome-status").textContent="PASS · Resultado registrado y vinculado a "+trace.execution_id+" (traza SHA-256 "+trace.trace_sha256+").";
   $("value-status").dataset.state="not-assessed";
   $("value-status").textContent="NOT_ASSESSED · La valoración requiere observador, contexto, criterio, regla y justificación.";
-  updateFc4Controls();
+  updateFc4Controls();renderExecutionComparison();
  }catch(e){$("outcome-status").dataset.state="rejected";$("outcome-status").textContent="ERROR · "+e.message}
 });
 $("assess-value").addEventListener("click",async function(){
@@ -528,7 +528,7 @@ $("assess-value").addEventListener("click",async function(){
    valueAssessment=null;$("value-status").dataset.state="not-assessed";$("value-status").textContent="NOT_ASSESSED · Completa observador, contexto, criterio, regla y justificación.";return;
   }
   valueAssessment={assessment_schema:"collective-toy-value-assessment-001",assessment_id:"assessment-"+outcomeRecord.outcome_id,outcome_id:outcomeRecord.outcome_id,execution_id:outcomeRecord.execution_id,outcome_sha256:await hash(outcomeRecord,"outcome_record"),observer:observer,context:context,criterion:criterion,valuation_rule:rule,rationale:rationale,status:"ASSESSED"};if(activeExecutionRecord&&activeExecutionRecord.trace.execution_id===outcomeRecord.execution_id)activeExecutionRecord.assessment=valueAssessment;
-  $("value-status").dataset.state="assessed";$("value-status").textContent="ASSESSED · Valoración vinculada al resultado "+outcomeRecord.outcome_id+"; no se ha enviado al motor.";
+  $("value-status").dataset.state="assessed";$("value-status").textContent="ASSESSED · Valoración vinculada al resultado "+outcomeRecord.outcome_id+"; no se ha enviado al motor.";renderExecutionComparison();
  }catch(e){$("value-status").dataset.state="rejected";$("value-status").textContent="ERROR · "+e.message}
 });
 $("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage)draw(lastModel,lastPackage.result,$("which").value)});
