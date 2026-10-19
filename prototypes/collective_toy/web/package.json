@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "test": "node cross_runtime_test.cjs && node ui_contract_test.cjs"
+    "test": "node profile3_only_contract_test.cjs && node cross_runtime_test.cjs && node ui_contract_test.cjs"
   },
   "devDependencies": {
     "playwright": "1.55.0"

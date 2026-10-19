@@ -22,8 +22,9 @@ const assert = require("node:assert/strict");
     // FC5-SEC-001/002: unkeyed SHA-256 is consistency/reproducibility evidence,
     // never proof of who produced a package or external origin authenticity.
     const securityFooter = await page.locator("footer").innerText();
-    assert.match(securityFooter, /hashes apoyan la reproducibilidad/i);
-    assert.match(securityFooter, /no certifican la integridad externa/i);
+    assert.match(securityFooter, /no constituye validación científica ni evidencia causal/i);
+    assert.doesNotMatch(securityFooter, /hash|SHA-?256|integridad externa/i,
+      "User-facing footer must not expose internal package-integrity details");
     assert.doesNotMatch(securityFooter, /SHA-?256.{0,50}(autentica|autenticidad|firma|origen autenticado)/i,
       "FC5-SEC-002: UI must not claim unkeyed SHA-256 authenticates a package or its origin");
     const importerSource = fs.readFileSync(htmlPath, "utf8");
@@ -46,6 +47,8 @@ const assert = require("node:assert/strict");
     const transcriptionDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(transcriptionDraft.states, ["A", "B", "C"]);
     assert.equal(transcriptionDraft.transitions.length, 2);
+    assert.deepEqual(transcriptionDraft.rule_profile, { type: "temporal_prerequisite_graph", version: "1" },
+      "newly transcribed graphs must enter the Full Chain demonstrator under profile 3");
     assert.match(await page.locator("#transcription-status").innerText(), /Revisa el grafo/i);
     await page.locator("#image-transcription").fill("texto sin conexiones");
     await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
@@ -91,7 +94,7 @@ const assert = require("node:assert/strict");
       packageData.result.scientific_interpretation,
       "NONE: synthetic model execution only; no empirical or TGCV validity claim."
     );
-    assert.equal(packageData.input.rule_profile.type, "finite_deterministic_graph");
+    assert.equal(packageData.input.rule_profile.type, "temporal_prerequisite_graph", "The default Full Chain demonstrator must use TGCV-aligned profile 3");
 
     // Exercise JSON model-file import, including validation feedback and relation-profile sync.
     const modelForFileImport = await page.locator("#model").inputValue();
@@ -128,14 +131,12 @@ const assert = require("node:assert/strict");
     );
     await page.locator("#layout-mode").selectOption("auto");
 
-    // Profile 1 is the default; selecting profile 2 then returning to profile 1
-    // must preserve the relation as metadata without silently retaining an operative profile.
-    assert.equal(await page.locator("#profile-editor").inputValue(), "1");
-    await page.locator("#profile-editor").selectOption("2");
-    await page.locator("#profile-editor").selectOption("1");
+    // The single-profile product must not ship obsolete profile or visual relation controls.
+    for (const selector of ["#profile-editor", "#guarded-transition", "#required-transition", "#add-relation", "#relation-list"]) {
+      assert.equal(await page.locator(selector).count(), 0, "obsolete product control must be absent: " + selector);
+    }
     const model = JSON.parse(await page.locator("#model").inputValue());
-    assert.deepEqual(model.rule_profile, { type: "finite_deterministic_graph", version: "1" });
-    assert.match(await page.locator("#relation-help").innerText(), /metadatos|perfil 2/i);
+    assert.deepEqual(model.rule_profile, { type: "temporal_prerequisite_graph", version: "1" });
 
     // Verify the real export button produces a readable package, not only window state.
     const downloadPromise = page.waitForEvent("download");
@@ -254,7 +255,7 @@ const assert = require("node:assert/strict");
         { id: "t_cd", source: "C", target: "D" }
       ],
       relations: [],
-      rule_profile: { type: "finite_deterministic_graph", version: "1" },
+      rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [
         { id: "baseline", disabled_transitions: [] },
         { id: "block_ac", disabled_transitions: ["t_ac"] }
@@ -278,142 +279,7 @@ const assert = require("node:assert/strict");
     assert.deepEqual(editedPathsToD, [["A", "B", "D"]]);
     assert.doesNotMatch(baselineOutput, /A → C → D/);
 
-    // Exercise the visual relation editor in profile 2 and verify its operational effect.
-    await page.locator("#profile-editor").selectOption("2");
-    await page.locator("#guarded-transition").selectOption("t_cd");
-    await page.locator("#required-transition").selectOption("t_ac");
-    await page.getByRole("button", { name: "Añadir relación" }).click();
-    const relationModel = JSON.parse(await page.locator("#model").inputValue());
-    assert.deepEqual(relationModel.relations, [{
-      id: "r_guard_1",
-      type: "requires_transition_enabled",
-      transition_id: "t_cd",
-      requires_transition_id: "t_ac"
-    }]);
-    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
-    const relationPackage = await page.evaluate(() => window.lastPackage);
-    const baselineEffects = relationPackage.result.scenario_results.baseline.relation_effects;
-    assert.equal(baselineEffects.length, 1);
-    assert.equal(baselineEffects[0].status, "BLOCKED");
-    assert.deepEqual(relationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac", "t_cd"]);
-    const guardedTrace = await page.locator(".scenario").filter({ hasText: "Escenario: baseline" }).innerText();
-    assert.match(guardedTrace, /t_cd.*BLOQUEADA POR REGLA.*prerequisite_transition_disabled/i,
-      "FC-2: guarded transition trace must expose the active guard and its blocking reason");
-    const guardedRow = page.locator('.scenario').filter({ hasText: "Escenario: baseline" }).locator('[data-accessibility-transition="t_cd"]');
-    assert.equal(await guardedRow.getAttribute("data-accessibility-status"), "BLOQUEADA POR REGLA",
-      "FC-2: the per-transition trace row must classify the guarded transition as blocked");
-    assert.match(await guardedRow.innerText(), /prerequisite_transition_disabled/i,
-      "FC-2: the per-transition row must include the actual guard-blocking reason");
-
-    // GT-05 compatibility matrix: a package produced by supported rule profile 2
-    // must survive clean import and independent replay under the same supported engine.
-    const profile2DownloadPromise = page.waitForEvent("download");
-    await page.locator("#export").click();
-    const profile2Download = await profile2DownloadPromise;
-    const profile2Package = JSON.parse(fs.readFileSync(await profile2Download.path(), "utf8"));
-    assert.equal(profile2Package.input.rule_profile.type, "relation_guarded_graph");
-    await page.locator("#package-file").setInputFiles({
-      name: "supported-profile-2-relation-run.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(profile2Package))
-    });
-    await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
-    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
-      "GT-05/FC5-REPLAY-003: supported profile 2 package must independently replay, not merely parse");
-
-    // H9 grouped guarded-rule adversaries: forge rule effects while refreshing every
-    // enclosing result/package digest, so rejection must come from rule semantics.
-    const forgedGuardedRuleEffects = await page.evaluate(async (pkg) => {
-      const cases = [
-        {
-          name: "guard-effect-reason",
-          mutate: candidate => { candidate.result.scenario_results.baseline.relation_effects[0].reason = "prerequisite_transition_not_disabled"; },
-          expected: /relation_effects no coincide con los efectos que determinan las relaciones de entrada y las deshabilitaciones explícitas/i
-        },
-        {
-          name: "effective-disabled-omits-guarded-transition",
-          mutate: candidate => { candidate.result.scenario_results.baseline.effective_disabled_transitions = ["t_ac"]; },
-          expected: /effective_disabled_transitions no coincide con las relaciones aplicadas/i
-        }
-      ];
-      return Promise.all(cases.map(async item => {
-        const candidate = structuredClone(pkg);
-        item.mutate(candidate);
-        const projected = structuredClone(candidate.result);
-        delete projected.delta_reach;
-        delete projected.engine_version;
-        delete projected.input_sha256;
-        delete projected.result_sha256;
-        delete projected.semantic_sha256;
-        delete projected.semantic_identity_version;
-        Object.keys(projected.scenario_results || {}).forEach(id => {
-          const scenario = projected.scenario_results[id];
-          if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
-        });
-        Object.keys(projected.comparisons_to_baseline || {}).forEach(id => {
-          const intervention = projected.comparisons_to_baseline[id].intervention || {};
-          if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
-        });
-        candidate.result.semantic_sha256 = await window.hash(projected, "result");
-        const resultBody = structuredClone(candidate.result);
-        delete resultBody.input_sha256;
-        delete resultBody.result_sha256;
-        candidate.result.result_sha256 = await window.hash(resultBody, "result");
-        delete candidate.package_sha256;
-        candidate.package_sha256 = await window.hash(candidate, "package_export");
-        return { name: item.name, candidate, expected: item.expected.source };
-      }));
-    }, profile2Package);
-    for (const guardedCase of forgedGuardedRuleEffects) {
-      await page.locator("#package-file").setInputFiles({
-        name: `h9-guarded-rule-${guardedCase.name}.json`, mimeType: "application/json",
-        buffer: Buffer.from(JSON.stringify(guardedCase.candidate))
-      });
-      await page.getByRole("button", { name: "Validar paquete importado" }).click();
-      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
-      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(guardedCase.expected, "i"),
-        `H9: reject forged relation-guard semantics after recomputing enclosing digests: ${guardedCase.name}`);
-    }
-
-    // Restore the genuine profile-2 package before the positive round-trip below.
-    await page.locator("#package-file").setInputFiles({
-      name: "supported-profile-2-relation-run.json", mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(profile2Package))
-    });
-    await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
-
-    // Removing the relation through the real UI must remove its effect on the next run.
-    await page.getByRole("button", { name: "Eliminar relación r_guard_1" }).click();
-    const relationRemovedModel = JSON.parse(await page.locator("#model").inputValue());
-    assert.deepEqual(relationRemovedModel.relations, []);
-    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
-    const removedRelationPackage = await page.evaluate(() => window.lastPackage);
-    assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.relation_effects, []);
-    assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac"]);
-
-    // In profile 1, arbitrary relation records remain descriptive metadata and cannot alter outputs.
-    const descriptiveModel = structuredClone(packageData.input);
-    descriptiveModel.relations = [{
-      id: "r_descriptive_only",
-      type: "descriptive-only",
-      from: "A",
-      to: "D"
-    }];
-    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(descriptiveModel, null, 2));
-    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
-    const descriptivePackage = await page.evaluate(() => window.lastPackage);
-    assert.deepEqual(descriptivePackage.input.rule_profile, packageData.input.rule_profile);
-    assert.deepEqual(descriptivePackage.input.relations, descriptiveModel.relations);
-    assert.deepEqual(
-      descriptivePackage.result.scenario_results,
-      packageData.result.scenario_results,
-      "Profile-1 descriptive relation metadata must not change scenario outputs"
-    );
+    assert.equal(packageData.input.rule_profile.type, "temporal_prerequisite_graph");
 
     // Restore the exact example before testing fail-closed behavior.
     await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, JSON.stringify(packageData.input, null, 2));
@@ -510,11 +376,11 @@ const assert = require("node:assert/strict");
     assert.match(await orderPage.locator("#graph-review-warnings").innerText(), /solo hay una conexión/i);
     await orderPage.close();
 
-    // FC-1 contract: browser UI exposes and executes the separately versioned temporal profile.
+    // FC-1 contract: the product loads and executes its sole temporal profile.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
-    const profileOptions = await page.locator("#profile-editor option").evaluateAll(options => options.map(option => ({ value: option.value, label: option.textContent.trim() })));
-    assert.ok(profileOptions.some(option => option.value === "3" && /temporal|prerrequisito/i.test(option.label)),
-      "FC-1: browser UI must expose profile 3 for temporal prerequisites without overloading profile 2");
+    const loadedExample = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(loadedExample.rule_profile, { type: "temporal_prerequisite_graph", version: "1" },
+      "FC-1: the loaded example must use temporal prerequisites");
     const temporalModel = structuredClone(await page.locator("#model").inputValue().then(JSON.parse));
     temporalModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
     temporalModel.relations = [{
@@ -580,8 +446,8 @@ const assert = require("node:assert/strict");
       "FC-2: execution trace must identify the starting state");
     assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1/i,
       "FC-2: execution trace must record ordered concrete steps");
-    assert.match(await page.locator("#sequence-trace").innerText(), /Traza SHA-256/i,
-      "FC-3: successful execution must expose a digest for its trace");
+    assert.doesNotMatch(await page.locator("#sequence-trace").innerText(), /SHA-?256|hash|digest/i,
+      "The user-facing execution trace must not expose internal integrity metadata; retain it in the JSON export");
     // Submit a validly connected but temporally invalid sequence: t_ac reaches C, then t_cd lacks t_ab.
     await page.locator("#sequence-input").fill("t_ac, t_cd");
     assert.equal(await page.locator("#sequence-input").inputValue(), "t_ac, t_cd",
@@ -698,21 +564,12 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "FC-3: replay result must explicitly report a matching independently recomputed result");
 
-    // FC-4: outcome and contextual valuation are explicit, execution-linked, and never inferred.
-    assert.match(await page.locator("#value-status").innerText(), /NOT_ASSESSED/i,
-      "FC-4: absent valuation inputs must explicitly remain NOT_ASSESSED");
-    assert.equal(await page.locator("#record-outcome").isEnabled(), true,
-      "FC-4: outcome recording must be available after a completed concrete execution");
-    await page.locator("#outcome-value").fill("illustrative outcome");
-    await page.locator("#outcome-unit").fill("qualitative");
-    await page.locator("#outcome-timing").fill("after execution");
-    await page.locator("#outcome-uncertainty").fill("synthetic; not measured");
-    await page.locator("#outcome-provenance").fill("synthetic acceptance fixture");
-    await page.locator("#record-outcome").click();
-    assert.equal(await page.locator("#outcome-status").getAttribute("data-state"), "recorded",
-      "FC-4: explicitly entered outcome must be recorded");
-    assert.match(await page.locator("#outcome-status").innerText(), /sequence-execution-/,
-      "FC-4: outcome must display its linked execution ID");
+    // FC-4: execution generates its own trajectory-derived outcome; contextual valuation stays separate.
+    assert.match(await page.locator("#outcome-status").innerText(), /A → B → D/,
+      "FC-4: the result must derive from the concrete executed route");
+    assert.equal(await page.locator("#outcome-status").getAttribute("data-state"), "recorded");
+    assert.match(await page.locator("#value-status").innerText(), /opcional|separada|NOT_ASSESSED/i,
+      "FC-4: contextual valuation remains independent from engine output");
     assert.equal(await page.locator("#assess-value").isEnabled(), true,
       "FC-4: contextual assessment is available only after an outcome exists");
     await page.locator("#assess-value").click();
@@ -948,8 +805,8 @@ const assert = require("node:assert/strict");
         { name: "input-rule-profile-unknown-key", mutate: input => { input.rule_profile.unreviewed_extension = true; }, diagnostic: /rule_profile contiene campos desconocidos/i },
         { name: "input-rule-profile-unknown-type", mutate: input => { input.rule_profile.type = "unreviewed_graph"; }, diagnostic: /rule_profile no compatible/i },
         { name: "input-rule-profile-unsupported-version", mutate: input => { input.rule_profile.version = "2"; }, diagnostic: /rule_profile no compatible/i },
-        { name: "input-rule-profile-incompatible-type-version-pair", mutate: input => { input.rule_profile = { type: "relation_guarded_graph", version: "2" }; }, diagnostic: /rule_profile no compatible/i },
-        { name: "input-relation-unknown-nested-key", mutate: input => { input.rule_profile = { type: "relation_guarded_graph", version: "1" }; input.relations = [{ id: "h1_relation", type: "requires_transition_enabled", transition_id: input.transitions[1].id, requires_transition_id: input.transitions[0].id, unreviewed_extension: true }]; }, diagnostic: /Relación contiene campos desconocidos/i },
+        { name: "input-rule-profile-incompatible-type-version-pair", mutate: input => { input.rule_profile = { type: "temporal_prerequisite_graph", version: "2" }; }, diagnostic: /rule_profile no compatible/i },
+        { name: "input-relation-unknown-nested-key", mutate: input => { input.rule_profile = { type: "temporal_prerequisite_graph", version: "1" }; input.relations = [{ id: "h1_relation", type: "requires_prior_execution", transition_id: input.transitions[1].id, requires_transition_id: input.transitions[0].id, unreviewed_extension: true }]; }, diagnostic: /Relación contiene campos desconocidos/i },
         { name: "input-unknown-top-level-key", mutate: input => { input.unreviewed_extension = true; }, diagnostic: /El modelo contiene campos desconocidos/i }
       ];
       return await Promise.all(cases.map(async item => {
@@ -978,7 +835,7 @@ const assert = require("node:assert/strict");
       const cases = [
         { name: "schema-version-mismatch", mutate: p => { p.result.schema_version = "unsupported-result-schema"; }, expected: /versión de esquema del resultado no coincide con la entrada/i },
         { name: "model-id-mismatch", mutate: p => { p.result.model_id = "forged-model-id"; }, expected: /model_id del resultado no coincide con la entrada/i },
-        { name: "rule-profile-mismatch", mutate: p => { p.result.rule_profile = { type: "relation_guarded_graph", version: "1" }; }, expected: /perfil de reglas del resultado no coincide con la entrada/i },
+        { name: "rule-profile-mismatch", mutate: p => { p.result.rule_profile = { type: "unreviewed_profile", version: "1" }; }, expected: /perfil de reglas del resultado no coincide con la entrada/i },
         { name: "validation-not-pass", mutate: p => { p.result.validation = "FAIL"; }, expected: /resultado no declara validation=PASS/i }
       ];
       return Promise.all(cases.map(async item => {
@@ -1339,10 +1196,10 @@ const assert = require("node:assert/strict");
         { name: "scenario-exploration-bounds-zero-count", mutate: p => { p.result.scenario_results.baseline.exploration_bounds.max_trajectories = 0; }, expected: /exploration_bounds debe respetar max_depth entre 0 y 100 y max_trajectories entre 1 y 10000/i },
         { name: "scenario-exploration-bounds-missing-count", mutate: p => { delete p.result.scenario_results.baseline.exploration_bounds.max_trajectories; }, expected: /exploration_bounds debe respetar max_depth entre 0 y 100 y max_trajectories entre 1 y 10000/i },
         { name: "scenario-truncated-wrong-type", mutate: p => { p.result.scenario_results.baseline.truncated = "false"; }, expected: /truncated del escenario baseline debe ser booleano/i },
-        { name: "relation-profile-temporal-type-mismatch", mutate: p => { const ts = p.input.transitions; if (!Array.isArray(ts) || ts.length < 2) throw new Error("Profile adversary requires two distinct transitions."); p.input.rule_profile = { type: "relation_guarded_graph", version: "1" }; p.input.relations = [{ id: "adv_wrong_profile_relation", type: "requires_prior_execution", transition_id: ts[1].id, requires_transition_id: ts[0].id }]; p.result.rule_profile = structuredClone(p.input.rule_profile); }, refreshInputIdentity: true, expected: /Tipo de relación no compatible/i },
-        { name: "temporal-profile-guarded-type-mismatch", mutate: p => { const ts = p.input.transitions; if (!Array.isArray(ts) || ts.length < 2) throw new Error("Profile adversary requires two distinct transitions."); p.input.rule_profile = { type: "temporal_prerequisite_graph", version: "1" }; p.input.relations = [{ id: "adv_wrong_profile_relation", type: "requires_transition_enabled", transition_id: ts[1].id, requires_transition_id: ts[0].id }]; p.result.rule_profile = structuredClone(p.input.rule_profile); }, refreshInputIdentity: true, expected: /Tipo de relación no compatible/i },
-        { name: "finite-profile-forged-relation-effects", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.input.relations = []; p.result.rule_profile = structuredClone(p.input.rule_profile); p.result.scenario_results.baseline.relation_effects = []; }, refreshInputIdentity: true, expected: /Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas/i },
-        { name: "finite-profile-forged-effective-disabled", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.input.relations = []; p.result.rule_profile = structuredClone(p.input.rule_profile); p.result.scenario_results.baseline.effective_disabled_transitions = []; }, refreshInputIdentity: true, expected: /Un perfil sin guardas ni prerrequisitos temporales no debe exportar efectos de relaciones ni deshabilitaciones efectivas derivadas/i },
+        { name: "retired-profile-1-rejected", mutate: p => { p.input.rule_profile = { type: "finite_deterministic_graph", version: "1" }; p.result.rule_profile = structuredClone(p.input.rule_profile); }, refreshInputIdentity: true, expected: /rule_profile no compatible/i },
+        { name: "retired-profile-2-rejected", mutate: p => { p.input.rule_profile = { type: "relation_guarded_graph", version: "1" }; p.result.rule_profile = structuredClone(p.input.rule_profile); }, refreshInputIdentity: true, expected: /rule_profile no compatible/i },
+
+
         { name: "temporal-profile-missing-prerequisite-summary", mutate: p => { p.input.rule_profile = { type: "temporal_prerequisite_graph", version: "1" }; const ts = p.input.transitions; if (!Array.isArray(ts) || ts.length < 2) throw new Error("Temporal profile adversary requires two distinct transitions."); p.input.relations = [{ id: "adv_temporal_requires_prior", type: "requires_prior_execution", transition_id: ts[1].id, requires_transition_id: ts[0].id }]; p.result.rule_profile = structuredClone(p.input.rule_profile); p.result.scenario_results.baseline.temporal_prerequisites = []; }, refreshInputIdentity: true, expected: /temporal_prerequisites no coincide con las relaciones temporales de entrada/i }
       ];
       return Promise.all(cases.map(async item => {
@@ -1502,7 +1359,7 @@ const assert = require("node:assert/strict");
         states: ["S"],
         transitions: [],
         relations: [],
-        rule_profile: { type: "finite_deterministic_graph", version: "1" },
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
         scenarios: [{ id: "baseline", disabled_transitions: [] }],
         exploration: { max_depth: boundary.max_depth, max_trajectories: boundary.max_trajectories }
       };
@@ -1541,7 +1398,7 @@ const assert = require("node:assert/strict");
       const model = {
         schema_version: "collective-toy-input-001", model_id: "h5-inclusive-maximum-sizes",
         initial_state: "MAX_STATE_0", states, transitions, relations: [],
-        rule_profile: { type: "finite_deterministic_graph", version: "1" },
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
         scenarios: [{ id: "baseline", disabled_transitions: [] }],
         exploration: { max_depth: 0, max_trajectories: 1 }
       };
@@ -1560,7 +1417,7 @@ const assert = require("node:assert/strict");
         schema_version: "collective-toy-input-001", model_id: "h6-cross-namespace-collisions",
         initial_state: "S", states: ["S", "baseline", "t_ab"],
         transitions: [{ id: "S", source: "S", target: "t_ab" }],
-        relations: [], rule_profile: { type: "finite_deterministic_graph", version: "1" },
+        relations: [], rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
         scenarios: [{ id: "baseline", disabled_transitions: [] }, { id: "t_ab", disabled_transitions: ["S"] }],
         exploration: { max_depth: 1, max_trajectories: 2 }
       };
@@ -3202,7 +3059,7 @@ const assert = require("node:assert/strict");
       states: ["A", "B"],
       transitions: [{ id: "t_ab", source: "A", target: "B" }],
       relations: [],
-      rule_profile: { type: "finite_deterministic_graph", version: "1" },
+      rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [{ id: "baseline", disabled_transitions: [] }],
       exploration: { max_depth: 2, max_trajectories: 10 }
     };
@@ -3215,15 +3072,11 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#sequence-select option").count(), 1, "GT-05: one candidate trajectory must be available");
     await page.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
     await page.locator("#sequence-trace[data-state=" + '"replay-verified"' + "]").waitFor();
-    assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1: t_ab.*A → B/i, "GT-05: concrete execution must preserve the ordered transition and state change");
+    assert.match(await page.locator("#sequence-trace").innerText(), /Paso 1: A → B/i, "GT-05: concrete execution must preserve the ordered transition and state change");
 
-    await page.locator("#outcome-value").fill("1");
-    await page.locator("#outcome-unit").fill("synthetic-unit");
-    await page.locator("#outcome-timing").fill("after execution");
-    await page.locator("#outcome-uncertainty").fill("illustrative; not measured");
-    await page.locator("#outcome-provenance").fill("GT-05 deterministic synthetic fixture");
-    await page.getByRole("button", { name: "Registrar resultado" }).click();
     await page.locator("#outcome-status[data-state=" + '"recorded"' + "]").waitFor();
+    assert.match(await page.locator("#outcome-status").innerText(), /A → B/,
+      "GT-05: outcome is generated from the executed path");
     await page.locator("#value-observer").fill("GT-05 test observer");
     await page.locator("#value-context").fill("synthetic test context");
     await page.locator("#value-criterion").fill("fixture criterion");
@@ -3304,13 +3157,9 @@ const assert = require("node:assert/strict");
     assert.deepEqual(temporalTrace.submitted_transition_ids, ["t_ab", "t_bc", "t_cd"],
       "GT-05 temporal: completed trace must preserve prerequisite-before-conditioned order");
     assert.equal(temporalTrace.status, "COMPLETED");
-    await temporalPage.locator("#outcome-value").fill("synthetic temporal path completed");
-    await temporalPage.locator("#outcome-unit").fill("qualitative");
-    await temporalPage.locator("#outcome-timing").fill("after temporal execution");
-    await temporalPage.locator("#outcome-uncertainty").fill("synthetic; not measured");
-    await temporalPage.locator("#outcome-provenance").fill("GT-05 temporal success fixture");
-    await temporalPage.getByRole("button", { name: "Registrar resultado" }).click();
     await temporalPage.locator("#outcome-status[data-state=" + '"recorded"' + "]").waitFor();
+    assert.match(await temporalPage.locator("#outcome-status").innerText(), /A → B → C → D/,
+      "GT-05 temporal: outcome must reflect the concrete ordered trajectory");
     await temporalPage.locator("#value-observer").fill("GT-05 temporal observer");
     await temporalPage.locator("#value-context").fill("synthetic temporal context");
     await temporalPage.locator("#value-criterion").fill("ordered prerequisite completion");
@@ -3501,6 +3350,111 @@ const assert = require("node:assert/strict");
     staleAssessmentOutcomeHash.value_assessment.outcome_sha256 = "0".repeat(64);
     await assessLinkedPackageRejection(staleAssessmentOutcomeHash, /El hash del resultado de valoración no coincide/i, false);
     await temporalPage.close();
+
+    // UX regression: the accessible-trajectory carousel is visual, distinct from concrete executions,
+    // and two runs with their outcomes can be compared side by side.
+    const uxContext = await browser.newContext();
+    const uxPage = await uxContext.newPage();
+    await uxPage.goto("file://" + htmlPath);
+    await uxPage.locator("summary").filter({ hasText: /JSON avanzado \(editable\)/ }).click();
+    const uxModel = {
+      schema_version: "collective-toy-input-001",
+      model_id: "ux-trajectory-comparison-diamond",
+      initial_state: "A",
+      states: ["A", "B", "C", "D"],
+      transitions: [
+        { id: "ux_ab", source: "A", target: "B" },
+        { id: "ux_bd", source: "B", target: "D" },
+        { id: "ux_ac", source: "A", target: "C" },
+        { id: "ux_cd", source: "C", target: "D" }
+      ],
+      relations: [],
+      rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
+      scenarios: [
+        { id: "baseline", disabled_transitions: [] },
+        { id: "without_ac", disabled_transitions: ["ux_ac"] }
+      ],
+      exploration: { max_depth: 4, max_trajectories: 100 }
+    };
+    await uxPage.locator("#model").fill(JSON.stringify(uxModel, null, 2));
+    await uxPage.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await uxPage.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
+    assert.match(await uxPage.locator("#status").innerText(), /Ejecución completada/i);
+    assert.equal(await uxPage.locator("#trajectory-scenario").inputValue(), "baseline");
+    assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2",
+      "UX: the carousel should enumerate and position the first accessible trajectory");
+    assert.equal(await uxPage.locator("#trajectory-card svg").count(), 1,
+      "UX: each trajectory must have a visual state/transition graph");
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → B → D/);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /no necesariamente ejecutada/i);
+    await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
+    assert.equal(await uxPage.locator("#trajectory-position").innerText(), "2 / 2");
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → C → D/);
+    await uxPage.getByRole("button", { name: "Trayectoria anterior" }).click();
+    assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2");
+    await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
+    await uxPage.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
+    await uxPage.locator('#sequence-trace[data-state="replay-verified"]').waitFor();
+    const firstUxTrace = await uxPage.locator("#sequence-trace").evaluate(el => el._trace);
+    assert.equal(firstUxTrace.status, "COMPLETED");
+    await uxPage.locator('#outcome-status[data-state="recorded"]').waitFor();
+    const firstOutcomeText = await uxPage.locator("#outcome-status").innerText();
+    assert.match(firstOutcomeText, /A → B → D/,
+      "UX: outcome must be generated from the executed trajectory, without a user-entered result form");
+    await uxPage.locator("#value-score").fill("82");
+    await uxPage.locator("#value-observer").fill("observador de prueba");
+    await uxPage.locator("#value-context").fill("contexto sintético");
+    await uxPage.locator("#value-criterion").fill("criterio A");
+    await uxPage.locator("#value-rule").fill("regla ilustrativa");
+    await uxPage.locator("#value-rationale").fill("comprobar asociación de valoración");
+
+    await uxPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
+    await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
+    await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
+    await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
+    const firstUxExecutionId = firstUxTrace.execution_id;
+    await uxPage.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
+    await uxPage.waitForFunction(
+      previousId => {
+        const trace = document.querySelector("#sequence-trace")._trace;
+        return trace && trace.execution_id !== previousId &&
+          document.querySelector("#sequence-trace").dataset.state === "replay-verified";
+      },
+      firstUxExecutionId
+    );
+    const secondUxTrace = await uxPage.locator("#sequence-trace").evaluate(el => el._trace);
+    assert.notEqual(firstUxTrace.execution_id, secondUxTrace.execution_id);
+    await uxPage.locator('#outcome-status[data-state="recorded"]').waitFor();
+    const secondOutcomeText = await uxPage.locator("#outcome-status").innerText();
+    assert.match(secondOutcomeText, /A → C → D/,
+      "UX: a different executed trajectory must produce its own distinct outcome");
+    assert.equal(await uxPage.locator("#compare-run-a option").count(), 2);
+    assert.equal(await uxPage.locator("#compare-run-b option").count(), 2);
+    await uxPage.getByRole("button", { name: "Comparar trazas y resultados" }).click();
+    const comparison = await uxPage.locator("#execution-comparison").innerText();
+    assert.match(comparison, /A → B → D/);
+    assert.match(comparison, /A → C → D/);
+    assert.match(comparison, /contexto sintético|criterio A/i);
+    assert.match(comparison, /Sin valoración contextual: aún no se han definido/i);
+    assert.equal(await uxPage.locator("#value-dashboard .value-row").count(), 2,
+      "UX: dashboard must show each concrete execution");
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /Alternativa 1 · 2 pasos/);
+    await uxPage.locator("#value-dashboard .route-details").nth(0).locator("summary").click();
+    assert.match(await uxPage.locator("#value-dashboard .route-sequence").nth(0).innerText(), /A → B → D/);
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /Alternativa 2 · 2 pasos/);
+    await uxPage.locator("#value-dashboard .route-details").nth(1).locator("summary").click();
+    assert.match(await uxPage.locator("#value-dashboard .route-sequence").nth(1).innerText(), /A → C → D/);
+    await uxPage.locator("#value-score").fill("35");
+    await uxPage.locator("#value-observer").fill("observador de prueba");
+    await uxPage.locator("#value-context").fill("contexto sintético");
+    await uxPage.locator("#value-criterion").fill("criterio A");
+    await uxPage.locator("#value-rule").fill("regla ilustrativa");
+    await uxPage.locator("#value-rationale").fill("comparar la segunda trayectoria");
+    await uxPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
+    await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /35\/100/);
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /82\/100/);
+    await uxPage.close();
 
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {

@@ -1330,19 +1330,18 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
     assert.match(await page.locator("#metrics").innerText(), /Trayectorias enumeradas/);
     assert.match(await page.locator("#metrics").innerText(), /Exploración completa/);
 
-    // UI acceptance: edit, execute, and remove a guarded relation; confirm profile 1 stays inert.
-    await page.locator("#profile-editor").selectOption("2");
-    await page.locator("#guarded-transition").selectOption("t_bd");
-    await page.locator("#required-transition").selectOption("t_ac");
-    await page.getByRole("button", { name: "Añadir relación" }).click();
-    let editorModel = await page.locator("#model").inputValue();
-    let editorParsed = JSON.parse(editorModel);
+    // Legacy profile-2 engine contract remains testable through advanced JSON only; the visible UI is profile 3.
+    let editorParsed = JSON.parse(await page.locator("#model").inputValue());
+    editorParsed.rule_profile = { type: "relation_guarded_graph", version: "1" };
+    editorParsed.relations = [{
+      id: "r_guard_1", type: "requires_transition_enabled",
+      transition_id: "t_bd", requires_transition_id: "t_ac"
+    }];
+    await page.locator('details:has(#model) > summary').click();
+    await page.locator("#model").fill(JSON.stringify(editorParsed));
+    assert.equal(await page.locator("#profile-editor").evaluate(el => el.closest("[hidden]") !== null), true);
     assert.deepEqual(editorParsed.rule_profile, { type: "relation_guarded_graph", version: "1" });
-    assert.equal(editorParsed.relations.length, 1, "visual editor should add exactly one relation");
-    assert.deepEqual(
-      { transition_id: editorParsed.relations[0].transition_id, requires_transition_id: editorParsed.relations[0].requires_transition_id },
-      { transition_id: "t_bd", requires_transition_id: "t_ac" }
-    );
+    assert.equal(editorParsed.relations.length, 1);
 
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
@@ -1366,8 +1365,10 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       "graph should visually dim a relation-blocked transition in profile 2"
     );
 
-    await page.locator("#profile-editor").selectOption("1");
     editorParsed = JSON.parse(await page.locator("#model").inputValue());
+    editorParsed.rule_profile = { type: "finite_deterministic_graph", version: "1" };
+    editorParsed.relations = [];
+    await page.locator("#model").fill(JSON.stringify(editorParsed));
     assert.deepEqual(editorParsed.rule_profile, { type: "finite_deterministic_graph", version: "1" });
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.getByText(/Ejecución completada/).waitFor({ timeout: 5000 });
@@ -1390,10 +1391,11 @@ function verifyExportedPackage(engineDir, exportedPackage, label) {
       "graph should not dim a transition because of inert metadata in profile 1"
     );
 
-    await page.locator("#profile-editor").selectOption("2");
-    await page.locator('[data-remove-relation="r_guard_1"]').click();
     editorParsed = JSON.parse(await page.locator("#model").inputValue());
-    assert.equal(editorParsed.relations.length, 0, "visual editor should remove selected relation");
+    editorParsed.relations = [];
+    await page.locator("#model").fill(JSON.stringify(editorParsed));
+    editorParsed = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(editorParsed.relations.length, 0, "advanced model edit should remove the relation");
     // Browser import lifecycle: native replay, inspect-only, malformed schema, hash failure, and semantic divergence.
     async function assessInBrowser(testPackage, expectedState, expectedMessage) {
       fs.writeFileSync(outputPath, JSON.stringify(testPackage, null, 2));
