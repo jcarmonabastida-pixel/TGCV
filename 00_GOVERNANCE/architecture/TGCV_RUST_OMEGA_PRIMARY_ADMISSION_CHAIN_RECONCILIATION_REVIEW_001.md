@@ -250,3 +250,32 @@ The prospective control proposal is recorded at:
 It separates documentary metadata review from row-level access, structural research reuse, longitudinal claims, and external disclosure. Access/storage controls are marked unverified unless supported by evidence; the proposal does not assert encryption, deletion, or restricted access has already been implemented.
 
 The proposal is **NOT AN ADMISSION DECISION**. Privacy clearance remains not granted, existing U_t empirical reuse remains blocked, and no additional data processing or scientific execution is authorised.
+
+## 16. Chronology and interpretation of evolving status — 2026-10-09
+
+This section clarifies the temporal scope of the status statements above. It does not rewrite or invalidate earlier records: sections 9–12 preserve the evidence state at the time each check was recorded; later sections record subsequent evidence or decisions.
+
+| Time / record | What was established at that point | What was not established |
+|---|---|---|
+| 2026-10-01 — pre-processing admission reviews | Dataset admission was **NOT GRANTED**; required identifiability/privacy evidence was insufficient. | No permission to download/process can be inferred from later technical success. |
+| 2026-10-02 — technical preflight and U_t construction closures | Historical technical preflight and U_t-only construction were recorded as PASS within their stated scopes. | These closures did not document the missing formal admission transition and do not retroactively cure it. |
+| 2026-10-09 — published-source and local-file evidence updates | Figshare full-dataset item/version/file metadata and item-level CC0 declaration were identified; the user-supplied local filename, size and MD5 match the published metadata, subject to the recorded MD5 limitation. | License metadata and file identity do not establish privacy clearance or fitness for the intended research use. |
+| 2026-10-09 — field-level and indirect-linkage reviews | Relevant emitted fields and plausible linkage vectors were documented at a preliminary, documentary level. | No empirical linkage/re-identification test or independent privacy review was performed; anonymity is not established. |
+| 2026-10-09 — U_t retention decision | Audit-only retention of the existing U_t JSON in its current location was selected, with six-month and change-triggered review; no automatic deletion was authorised. | This does not settle raw ZIP retention, unknown copies/backups, all operational controls, or scientific reuse. |
+| 2026-10-09 — documentary phase closure | The bounded documentary governance work possible with the available evidence was closed **WITH RESTRICTIONS**. | This is not scientific admission, privacy clearance, empirical reuse approval, or execution authorisation. |
+
+### Current status vocabulary — keep the gates separate
+
+- **Documentary governance phase:** `CLOSED WITH RESTRICTIONS` — bounded documentary review work is recorded as complete for the evidence currently available.
+- **Historical admission-chain reconciliation:** the sequencing deviation is **ACKNOWLEDGED**; it cannot be retroactively cured. This review remains open to the extent that the historical chain has no formal pre-processing admission transition.
+- **Source/file identity:** **MATCHED WITH MD5 LIMITATION** based on the recorded local and published metadata.
+- **Published license:** **CC0 DECLARED BY FIGSHARE**; this is source metadata, not privacy or use clearance.
+- **Privacy/identifiability clearance:** **NOT GRANTED**; indirect linkage remains empirically untested.
+- **Existing U_t retention:** **AUDIT-ONLY IN CURRENT LOCATION** under the separate retention decision.
+- **Scientific reuse, further processing, new scientific execution, and external disclosure:** **BLOCKED / NOT AUTHORISED** pending their respective prospective decisions.
+- **TGCV Core / Ω-primary:** unchanged; Ω-primary remains proposed and non-canonical.
+
+Accordingly, earlier statements that source identity or licensing were open should be read as historical, as-of-that-section snapshots where superseded by the later evidence recorded in sections 11–12. Earlier statements that privacy clearance and admission remain open/not granted are still current. The documentary phase closure does not close the scientific admission gate.
+
+No dataset bytes were opened or processed for this chronology clarification; no scientific code was executed; no historical record was deleted or rewritten.
+
