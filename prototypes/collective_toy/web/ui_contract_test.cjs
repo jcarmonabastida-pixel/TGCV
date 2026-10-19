@@ -498,9 +498,11 @@ const assert = require("node:assert/strict");
 
     // FC-1 contract: browser UI exposes and executes the separately versioned temporal profile.
     await page.getByRole("button", { name: "Cargar ejemplo" }).click();
-    const profileOptions = await page.locator("#profile-editor option").evaluateAll(options => options.map(option => ({ value: option.value, label: option.textContent.trim() })));
-    assert.ok(profileOptions.some(option => option.value === "3" && /temporal|prerrequisito/i.test(option.label)),
-      "FC-1: the demonstrator must default to profile 3 for temporal prerequisites");
+    const selectedProfile = await page.locator("#profile-editor").inputValue();
+    const loadedExample = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(selectedProfile, "3", "FC-1: the demonstrator must select profile 3 by default");
+    assert.deepEqual(loadedExample.rule_profile, { type: "temporal_prerequisite_graph", version: "1" },
+      "FC-1: the loaded example must use temporal prerequisites");
     const temporalModel = structuredClone(await page.locator("#model").inputValue().then(JSON.parse));
     temporalModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
     temporalModel.relations = [{
