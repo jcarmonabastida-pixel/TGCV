@@ -22,8 +22,9 @@ const assert = require("node:assert/strict");
     // FC5-SEC-001/002: unkeyed SHA-256 is consistency/reproducibility evidence,
     // never proof of who produced a package or external origin authenticity.
     const securityFooter = await page.locator("footer").innerText();
-    assert.match(securityFooter, /hashes apoyan la reproducibilidad/i);
-    assert.match(securityFooter, /no certifican la integridad externa/i);
+    assert.match(securityFooter, /no constituye validación científica ni evidencia causal/i);
+    assert.doesNotMatch(securityFooter, /hash|SHA-?256|integridad externa/i,
+      "User-facing footer must not expose internal package-integrity details");
     assert.doesNotMatch(securityFooter, /SHA-?256.{0,50}(autentica|autenticidad|firma|origen autenticado)/i,
       "FC5-SEC-002: UI must not claim unkeyed SHA-256 authenticates a package or its origin");
     const importerSource = fs.readFileSync(htmlPath, "utf8");
