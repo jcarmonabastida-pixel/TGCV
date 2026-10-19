@@ -47,6 +47,8 @@ const assert = require("node:assert/strict");
     const transcriptionDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(transcriptionDraft.states, ["A", "B", "C"]);
     assert.equal(transcriptionDraft.transitions.length, 2);
+    assert.deepEqual(transcriptionDraft.rule_profile, { type: "temporal_prerequisite_graph", version: "1" },
+      "newly transcribed graphs must enter the Full Chain demonstrator under profile 3");
     assert.match(await page.locator("#transcription-status").innerText(), /Revisa el grafo/i);
     await page.locator("#image-transcription").fill("texto sin conexiones");
     await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
