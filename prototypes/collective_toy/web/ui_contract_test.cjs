@@ -3532,11 +3532,13 @@ const assert = require("node:assert/strict");
     const firstOutcomeText = await uxPage.locator("#outcome-status").innerText();
     assert.match(firstOutcomeText, /A → B → D/,
       "UX: outcome must be generated from the executed trajectory, without a user-entered result form");
+    await uxPage.locator("#value-score").fill("82");
     await uxPage.locator("#value-observer").fill("observador de prueba");
     await uxPage.locator("#value-context").fill("contexto sintético");
     await uxPage.locator("#value-criterion").fill("criterio A");
     await uxPage.locator("#value-rule").fill("regla ilustrativa");
     await uxPage.locator("#value-rationale").fill("comprobar asociación de valoración");
+
     await uxPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
     await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
     await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
@@ -3578,7 +3580,7 @@ const assert = require("node:assert/strict");
     await uxPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
     await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
     assert.match(await uxPage.locator("#value-dashboard").innerText(), /35\/100/);
-    assert.match(await uxPage.locator("#value-dashboard").innerText(), /82\/100|50\/100/);
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /82\/100/);
     await uxPage.close();
 
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
