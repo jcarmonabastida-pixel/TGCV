@@ -2635,7 +2635,21 @@ const assert = require("node:assert/strict");
         { name: "outcome-uncertainty-null", mutate: p => { p.outcome_record.uncertainty_status = null; } },
         { name: "outcome-uncertainty-array", mutate: p => { p.outcome_record.uncertainty_status = []; } },
         { name: "outcome-uncertainty-number", mutate: p => { p.outcome_record.uncertainty_status = 17; } },
-        { name: "outcome-uncertainty-object", mutate: p => { p.outcome_record.uncertainty_status = { status: "unknown" }; } }
+        { name: "outcome-uncertainty-object", mutate: p => { p.outcome_record.uncertainty_status = { status: "unknown" }; } },
+        { name: "outcome-id-array", mutate: p => { p.outcome_record.outcome_id = []; p.value_assessment.outcome_id = []; } },
+        { name: "outcome-value-object", mutate: p => { p.outcome_record.value = { value: 1 }; } },
+        { name: "outcome-source-kind-null", mutate: p => { p.outcome_record.source_kind = null; } },
+        { name: "outcome-source-kind-array", mutate: p => { p.outcome_record.source_kind = []; } },
+        { name: "outcome-unit-boolean", mutate: p => { p.outcome_record.unit = false; } },
+        { name: "outcome-timing-object", mutate: p => { p.outcome_record.timing = { t: 1 }; } },
+        { name: "outcome-provenance-boolean", mutate: p => { p.outcome_record.provenance = false; } },
+        { name: "assessment-status-null", mutate: p => { p.value_assessment.status = null; } },
+        { name: "assessment-context-null", mutate: p => { p.value_assessment.context = null; } },
+        { name: "assessment-context-array", mutate: p => { p.value_assessment.context = []; } },
+        { name: "assessment-criterion-null", mutate: p => { p.value_assessment.criterion = null; } },
+        { name: "assessment-observer-number", mutate: p => { p.value_assessment.observer = 17; } },
+        { name: "assessment-valuation-rule-number", mutate: p => { p.value_assessment.valuation_rule = 17; } },
+        { name: "assessment-rationale-boolean", mutate: p => { p.value_assessment.rationale = false; } }
       ]) {
         const candidate = structuredClone(pkg);
         item.mutate(candidate);
@@ -2686,7 +2700,21 @@ const assert = require("node:assert/strict");
       "outcome-uncertainty-null": /campos obligatorios vacíos o de tipo incorrecto/i,
       "outcome-uncertainty-array": /campos obligatorios vacíos o de tipo incorrecto/i,
       "outcome-uncertainty-number": /campos obligatorios vacíos o de tipo incorrecto/i,
-      "outcome-uncertainty-object": /campos obligatorios vacíos o de tipo incorrecto/i
+      "outcome-uncertainty-object": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-id-array": /El resultado explícito carece de identificador o valor/i,
+      "outcome-value-object": /El resultado explícito carece de identificador o valor/i,
+      "outcome-source-kind-null": /source_kind del resultado no es válido/i,
+      "outcome-source-kind-array": /source_kind del resultado no es válido/i,
+      "outcome-unit-boolean": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-timing-object": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "outcome-provenance-boolean": /campos obligatorios vacíos o de tipo incorrecto/i,
+      "assessment-status-null": /esquema o estado de valoración desconocido/i,
+      "assessment-context-null": /valoración está incompleta/i,
+      "assessment-context-array": /valoración está incompleta/i,
+      "assessment-criterion-null": /valoración está incompleta/i,
+      "assessment-observer-number": /valoración está incompleta/i,
+      "assessment-valuation-rule-number": /valoración está incompleta/i,
+      "assessment-rationale-boolean": /valoración está incompleta/i
     };
     for (const semanticCase of invalidOutcomeAssessmentSemantics) {
       await page.locator("#package-file").setInputFiles({
