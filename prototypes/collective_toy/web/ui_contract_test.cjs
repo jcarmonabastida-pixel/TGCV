@@ -32,7 +32,6 @@ const assert = require("node:assert/strict");
       "FC5-SEC-001: import/replay status must distinguish internal hash consistency from origin authenticity");
 
     // Image-to-graph is a deferred extension, not a Full Chain requirement.
-    const sourceHtml = fs.readFileSync(htmlPath, "utf8");
     assert.doesNotMatch(sourceHtml, /Tesseract|tesseract\.js|run-ocr|image-file/,
       "Full Chain distribution must not bundle the superseded browser OCR route");
     await page.locator("summary").filter({ hasText: /Importación desde imagen/ }).click();
