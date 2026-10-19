@@ -1,7 +1,7 @@
 # Collective Toy — compatibility fixture register 001
 
 **Status:** Current synthetic compatibility evidence only; no verified historical artifact has been admitted.  
-**Scope:** Synthetic prototype package/replay contract only.
+**Scope:** Compatibility evidence for the current Full Chain demonstrator. Authentic historical-package replay is optional future work, not an acceptance prerequisite, because no prior Full Chain execution-package format is known to exist.
 
 ## 1. Version inventory at this revision
 
@@ -53,8 +53,12 @@ If no original artifact and provenance exist, label a fixture **baseline/current
 | Hash, structure, or semantic consistency failure | Reject |
 | Claimed historical version without original artifact/provenance | No compatibility claim; fixture admission blocked |
 
-## 5. Next evidence gate
+## 5. Scope and next evidence gate
 
-Before implementing a compatibility adapter, identify an actual prior package artifact and provenance. If none exists, first preserve a current baseline fixture with its exact source commit, original bytes, and independently recorded expected output; then continue to treat historical compatibility as untested. Any adapter proposal must add a new versioned decision and fixtures, not weaken the default fail-closed policy.
+For acceptance of the current demonstrator, prioritize the current supported Full Chain lifecycle: create a package, export it, import it, validate integrity and semantic consistency, and independently replay it when the declared schema/engine/profile are supported. Keep fail-closed behavior for unknown schemas, and do not replay packages whose engine/profile is unsupported.
+
+Do **not** block current Full Chain acceptance on admitting a historical fixture. No prior Full Chain execution-package format is currently known to exist. Earlier, limited JSON model/run files are not historical Full Chain package envelopes; any requirement to import those as model inputs must be stated and tested separately from execution-package replay.
+
+If a genuine historical Full Chain package is discovered in future, it may be admitted using the criteria in section 3 before any backward-compatibility claim or adapter is made. Until then, historical replay is **not claimed and not required**. This preserves the default fail-closed policy without inventing a legacy compatibility obligation.
 
 All examples remain synthetic. This register makes no claim about TGCV scientific validity, empirical performance, or the correctness of the theory.
