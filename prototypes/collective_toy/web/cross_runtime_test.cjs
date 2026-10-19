@@ -58,13 +58,21 @@ function pythonJson(source, input) {
     }
     const loaded = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(loaded.rule_profile, profile3);
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(model));
     await page.locator("#run").click();
     await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
     const pkg = await page.evaluate(() => window.lastPackage);
     assert.ok(pkg && pkg.input && pkg.result, "browser must export an inspectable package");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
-    const invalid = {...loaded, rule_profile:{type:"relation_guarded_graph",version:"1"}};
-    await page.locator("#model").fill(JSON.stringify(invalid));
+    assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
+    const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(invalid));
     await page.locator("#run").click();
     assert.match(await page.locator("#status").innerText(), /Perfil retirado|no compatible|temporal_prerequisite_graph/i);
   } finally { await browser.close(); }
