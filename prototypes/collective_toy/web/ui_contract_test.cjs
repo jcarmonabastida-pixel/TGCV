@@ -131,13 +131,12 @@ const assert = require("node:assert/strict");
     );
     await page.locator("#layout-mode").selectOption("auto");
 
-    // The visible demonstrator is fixed to profile 3; profile controls are implementation-only.
-    assert.equal(await page.locator("#profile-editor").inputValue(), "3");
-    assert.equal(await page.locator("#profile-editor").evaluate(el => el.closest("[hidden]") !== null), true);
+    // The single-profile product must not ship obsolete profile or visual relation controls.
+    for (const selector of ["#profile-editor", "#guarded-transition", "#required-transition", "#add-relation", "#relation-list"]) {
+      assert.equal(await page.locator(selector).count(), 0, "obsolete product control must be absent: " + selector);
+    }
     const model = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(model.rule_profile, { type: "temporal_prerequisite_graph", version: "1" });
-    assert.equal(await page.locator(".relation-editor[aria-labelledby=\"relation-heading\"]").isVisible(), true);
-    assert.equal(await page.locator("#profile-editor").evaluate(el => el.closest("[hidden]") !== null), true);
 
     // Verify the real export button produces a readable package, not only window state.
     const downloadPromise = page.waitForEvent("download");
@@ -256,7 +255,7 @@ const assert = require("node:assert/strict");
         { id: "t_cd", source: "C", target: "D" }
       ],
       relations: [],
-      rule_profile: { type: "finite_deterministic_graph", version: "1" },
+      rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [
         { id: "baseline", disabled_transitions: [] },
         { id: "block_ac", disabled_transitions: ["t_ac"] }
@@ -279,126 +278,6 @@ const assert = require("node:assert/strict");
       .map(path => path.map(step => step.state));
     assert.deepEqual(editedPathsToD, [["A", "B", "D"]]);
     assert.doesNotMatch(baselineOutput, /A → C → D/);
-
-    // Keep legacy profile-2 engine coverage through the advanced model fixture, not visible UI controls.
-    const relationModel = JSON.parse(await page.locator("#model").inputValue());
-    relationModel.rule_profile = { type: "relation_guarded_graph", version: "1" };
-    relationModel.relations = [{
-      id: "r_guard_1",
-      type: "requires_transition_enabled",
-      transition_id: "t_cd",
-      requires_transition_id: "t_ac"
-    }];
-    await page.locator('details:has(#model) > summary').click();
-    await page.locator("#model").fill(JSON.stringify(relationModel));
-    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
-    const relationPackage = await page.evaluate(() => window.lastPackage);
-    const baselineEffects = relationPackage.result.scenario_results.baseline.relation_effects;
-    assert.equal(baselineEffects.length, 1);
-    assert.equal(baselineEffects[0].status, "BLOCKED");
-    assert.deepEqual(relationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac", "t_cd"]);
-    const guardedTrace = await page.locator(".scenario").filter({ hasText: "Escenario: baseline" }).innerText();
-    assert.match(guardedTrace, /t_cd.*BLOQUEADA POR REGLA.*prerequisite_transition_disabled/i,
-      "FC-2: guarded transition trace must expose the active guard and its blocking reason");
-    const guardedRow = page.locator('.scenario').filter({ hasText: "Escenario: baseline" }).locator('[data-accessibility-transition="t_cd"]');
-    assert.equal(await guardedRow.getAttribute("data-accessibility-status"), "BLOQUEADA POR REGLA",
-      "FC-2: the per-transition trace row must classify the guarded transition as blocked");
-    assert.match(await guardedRow.innerText(), /prerequisite_transition_disabled/i,
-      "FC-2: the per-transition row must include the actual guard-blocking reason");
-
-    // GT-05 compatibility matrix: a package produced by supported rule profile 2
-    // must survive clean import and independent replay under the same supported engine.
-    const profile2DownloadPromise = page.waitForEvent("download");
-    await page.locator("#export").click();
-    const profile2Download = await profile2DownloadPromise;
-    const profile2Package = JSON.parse(fs.readFileSync(await profile2Download.path(), "utf8"));
-    assert.equal(profile2Package.input.rule_profile.type, "relation_guarded_graph");
-    await page.locator("#package-file").setInputFiles({
-      name: "supported-profile-2-relation-run.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(profile2Package))
-    });
-    await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
-    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
-      "GT-05/FC5-REPLAY-003: supported profile 2 package must independently replay, not merely parse");
-
-    // H9 grouped guarded-rule adversaries: forge rule effects while refreshing every
-    // enclosing result/package digest, so rejection must come from rule semantics.
-    const forgedGuardedRuleEffects = await page.evaluate(async (pkg) => {
-      const cases = [
-        {
-          name: "guard-effect-reason",
-          mutate: candidate => { candidate.result.scenario_results.baseline.relation_effects[0].reason = "prerequisite_transition_not_disabled"; },
-          expected: /relation_effects no coincide con los efectos que determinan las relaciones de entrada y las deshabilitaciones explícitas/i
-        },
-        {
-          name: "effective-disabled-omits-guarded-transition",
-          mutate: candidate => { candidate.result.scenario_results.baseline.effective_disabled_transitions = ["t_ac"]; },
-          expected: /effective_disabled_transitions no coincide con las relaciones aplicadas/i
-        }
-      ];
-      return Promise.all(cases.map(async item => {
-        const candidate = structuredClone(pkg);
-        item.mutate(candidate);
-        const projected = structuredClone(candidate.result);
-        delete projected.delta_reach;
-        delete projected.engine_version;
-        delete projected.input_sha256;
-        delete projected.result_sha256;
-        delete projected.semantic_sha256;
-        delete projected.semantic_identity_version;
-        Object.keys(projected.scenario_results || {}).forEach(id => {
-          const scenario = projected.scenario_results[id];
-          if (Array.isArray(scenario.disabled_transitions)) scenario.disabled_transitions.sort();
-        });
-        Object.keys(projected.comparisons_to_baseline || {}).forEach(id => {
-          const intervention = projected.comparisons_to_baseline[id].intervention || {};
-          if (Array.isArray(intervention.disabled_transitions)) intervention.disabled_transitions.sort();
-        });
-        candidate.result.semantic_sha256 = await window.hash(projected, "result");
-        const resultBody = structuredClone(candidate.result);
-        delete resultBody.input_sha256;
-        delete resultBody.result_sha256;
-        candidate.result.result_sha256 = await window.hash(resultBody, "result");
-        delete candidate.package_sha256;
-        candidate.package_sha256 = await window.hash(candidate, "package_export");
-        return { name: item.name, candidate, expected: item.expected.source };
-      }));
-    }, profile2Package);
-    for (const guardedCase of forgedGuardedRuleEffects) {
-      await page.locator("#package-file").setInputFiles({
-        name: `h9-guarded-rule-${guardedCase.name}.json`, mimeType: "application/json",
-        buffer: Buffer.from(JSON.stringify(guardedCase.candidate))
-      });
-      await page.getByRole("button", { name: "Validar paquete importado" }).click();
-      await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
-      assert.match(await page.locator("#package-assessment").innerText(), new RegExp(guardedCase.expected, "i"),
-        `H9: reject forged relation-guard semantics after recomputing enclosing digests: ${guardedCase.name}`);
-    }
-
-    // Restore the genuine profile-2 package before the positive round-trip below.
-    await page.locator("#package-file").setInputFiles({
-      name: "supported-profile-2-relation-run.json", mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(profile2Package))
-    });
-    await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor({ timeout: 10000 });
-
-    // Profile-2 compatibility is exercised through the advanced model, because the
-    // user-facing Full Chain UI intentionally has no separate relation editor.
-    await page.locator('details:has(#model) > summary').click();
-    const relationRemovedModel = JSON.parse(await page.locator("#model").inputValue());
-    relationRemovedModel.relations = [];
-    await page.locator("details:has(#model)").evaluate(el => { el.open = true; });
-    await page.locator("#model").fill(JSON.stringify(relationRemovedModel));
-    assert.deepEqual(JSON.parse(await page.locator("#model").inputValue()).relations, []);
-    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
-    const removedRelationPackage = await page.evaluate(() => window.lastPackage);
-    assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.relation_effects, []);
-    assert.deepEqual(removedRelationPackage.result.scenario_results.baseline.effective_disabled_transitions, ["t_ac"]);
 
     // Full Chain acceptance uses profile 3; legacy profile-1 UI coverage is intentionally out of scope.
     assert.equal(packageData.input.rule_profile.type, "temporal_prerequisite_graph");
