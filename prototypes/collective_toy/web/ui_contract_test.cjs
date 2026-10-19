@@ -3569,8 +3569,12 @@ const assert = require("node:assert/strict");
     assert.match(comparison, /Sin valoración contextual: aún no se han definido/i);
     assert.equal(await uxPage.locator("#value-dashboard .value-row").count(), 2,
       "UX: dashboard must show each concrete execution");
-    assert.match(await uxPage.locator("#value-dashboard").innerText(), /A → B → D/);
-    assert.match(await uxPage.locator("#value-dashboard").innerText(), /A → C → D/);
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /Alternativa 1 · 2 pasos/);
+    await uxPage.locator("#value-dashboard .route-details").nth(0).locator("summary").click();
+    assert.match(await uxPage.locator("#value-dashboard .route-sequence").nth(0).innerText(), /A → B → D/);
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /Alternativa 2 · 2 pasos/);
+    await uxPage.locator("#value-dashboard .route-details").nth(1).locator("summary").click();
+    assert.match(await uxPage.locator("#value-dashboard .route-sequence").nth(1).innerText(), /A → C → D/);
     await uxPage.locator("#value-score").fill("35");
     await uxPage.locator("#value-observer").fill("observador de prueba");
     await uxPage.locator("#value-context").fill("contexto sintético");
