@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - prototype/collective-toy-cross-runtime-tests-001-20261011
-      - development/collective-toy-ocr-topology-first-001-20261013
+      - prototype/tgcv-full-chain-001-20261014-scenario-context-recovery
   pull_request:
     branches:
       - main
@@ -41,6 +41,30 @@ jobs:
       - name: Run browser and Python concordance test
         working-directory: prototypes/collective_toy/web
         run: npm test
+      - name: Prepare standalone Full Chain distribution
+        shell: bash
+        run: |
+          set -euo pipefail
+          dist_name="tgcv-full-chain-${GITHUB_SHA}"
+          dist_dir="$RUNNER_TEMP/$dist_name"
+          mkdir -p "$dist_dir"
+          cp prototypes/collective_toy/web/index.html "$dist_dir/index.html"
+          cp prototypes/collective_toy/DISTRIBUTION_README_001.md "$dist_dir/README.md"
+          cp prototypes/collective_toy/examples/full-chain-diamond-001.json "$dist_dir/example-diamond.json"
+      - name: Upload standalone executable Full Chain distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgcv-full-chain-executable-${{ github.sha }}
+          path: ${{ runner.temp }}/tgcv-full-chain-${{ github.sha }}/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload validated Full Chain acceptance package
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgcv-full-chain-acceptance-${{ github.sha }}
+          path: prototypes/collective_toy/web/artifacts/tgcv-full-chain-acceptance-package.json
+          if-no-files-found: error
+          retention-days: 14
       - name: Replay browser and Python suite from clean source archive
         shell: bash
         run: |

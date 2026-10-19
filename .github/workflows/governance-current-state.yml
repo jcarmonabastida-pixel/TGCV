@@ -5,9 +5,14 @@ on:
     branches:
       - main
       - matrix-v1.9-c10c001-staging
+      - prototype/tgcv-full-chain-001-20261014-scenario-context-recovery
     paths:
       - '00_GOVERNANCE/**'
       - 'STATUS.md'
+      - 'prototypes/collective_toy/**'
+      - 'prototypes/collective_toy/FC5_FC6_NUMBERED_ACCEPTANCE_REGISTER_001.md'
+      - 'prototypes/collective_toy/FC5_FC6_RISK_PRIORITIZED_GROUPED_TEST_PLAN_001.md'
+      - 'prototypes/collective_toy/web/ui_contract_test.cjs'
       - '.github/workflows/governance-current-state.yml'
   pull_request:
     branches: [ main ]

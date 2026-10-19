@@ -1,6 +1,9 @@
 name: Collective Toy performance benchmark
 
 on:
+  push:
+    branches:
+      - prototype/tgcv-full-chain-001-20261014-scenario-context-recovery
   workflow_dispatch:
   pull_request:
     branches:

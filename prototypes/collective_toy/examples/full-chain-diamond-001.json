@@ -1,0 +1,54 @@
+{
+  "schema_version": "collective-toy-input-001",
+  "model_id": "full-chain-diamond-example-001",
+  "initial_state": "A",
+  "states": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "transitions": [
+    {
+      "id": "t_ab",
+      "source": "A",
+      "target": "B"
+    },
+    {
+      "id": "t_ac",
+      "source": "A",
+      "target": "C"
+    },
+    {
+      "id": "t_bd",
+      "source": "B",
+      "target": "D"
+    },
+    {
+      "id": "t_cd",
+      "source": "C",
+      "target": "D"
+    }
+  ],
+  "relations": [],
+  "rule_profile": {
+    "type": "finite_deterministic_graph",
+    "version": "1"
+  },
+  "scenarios": [
+    {
+      "id": "baseline",
+      "disabled_transitions": []
+    },
+    {
+      "id": "block_ac",
+      "disabled_transitions": [
+        "t_ac"
+      ]
+    }
+  ],
+  "exploration": {
+    "max_depth": 4,
+    "max_trajectories": 1000
+  }
+}
