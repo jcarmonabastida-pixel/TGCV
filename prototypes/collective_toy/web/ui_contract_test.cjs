@@ -3409,6 +3409,7 @@ const assert = require("node:assert/strict");
     assert.match(firstOutcomeText, /A → B → D/,
       "UX: outcome must be generated from the executed trajectory, without a user-entered result form");
     await uxPage.locator("#value-score").fill("82");
+    assert.equal(await uxPage.locator("#value-score-output").innerText(), "82 / 100", "UX: the contextual value scale must show the selected score");
     await uxPage.locator("#value-observer").fill("observador de prueba");
     await uxPage.locator("#value-context").fill("contexto sintético");
     await uxPage.locator("#value-criterion").fill("criterio A");
