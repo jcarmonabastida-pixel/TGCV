@@ -3357,7 +3357,113 @@ const assert = require("node:assert/strict");
     await assessLinkedPackageRejection(staleAssessmentOutcomeHash, /El hash del resultado de valoración no coincide/i, false);
     await temporalPage.close();
 
-    console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
+    // UX regression: the accessible-trajectory carousel is visual, distinct from concrete executions,
+    // and two runs with their outcomes can be compared side by side.
+    const uxContext = await browser.newContext();
+    const uxPage = await uxContext.newPage();
+    await uxPage.goto("file://" + htmlPath);
+    assert.equal(await uxPage.locator("#profile-editor").count(), 0, "UX: the rebuild must not expose retired profile switching");
+    await uxPage.locator("summary").filter({ hasText: /JSON avanzado \(editable\)/ }).click();
+    const uxModel = {
+      schema_version: "collective-toy-input-001",
+      model_id: "ux-trajectory-comparison-diamond",
+      initial_state: "A",
+      states: ["A", "B", "C", "D"],
+      transitions: [
+        { id: "ux_ab", source: "A", target: "B" },
+        { id: "ux_bd", source: "B", target: "D" },
+        { id: "ux_ac", source: "A", target: "C" },
+        { id: "ux_cd", source: "C", target: "D" }
+      ],
+      relations: [],
+      rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
+      scenarios: [
+        { id: "baseline", disabled_transitions: [] },
+        { id: "without_ac", disabled_transitions: ["ux_ac"] }
+      ],
+      exploration: { max_depth: 4, max_trajectories: 100 }
+    };
+    await uxPage.locator("#model").fill(JSON.stringify(uxModel, null, 2));
+    await uxPage.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await uxPage.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
+    assert.match(await uxPage.locator("#status").innerText(), /Ejecución completada/i);
+    assert.equal(await uxPage.locator("#trajectory-scenario").inputValue(), "baseline");
+    assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2",
+      "UX: the carousel should enumerate and position the first accessible trajectory");
+    assert.equal(await uxPage.locator("#trajectory-card svg").count(), 1,
+      "UX: each trajectory must have a visual state/transition graph");
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → B → D/);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /no necesariamente ejecutada/i);
+    await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
+    assert.equal(await uxPage.locator("#trajectory-position").innerText(), "2 / 2");
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → C → D/);
+    await uxPage.getByRole("button", { name: "Trayectoria anterior" }).click();
+    assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2");
+    await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
+    await uxPage.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
+    await uxPage.locator('#sequence-trace[data-state="replay-verified"]').waitFor();
+    const firstUxTrace = await uxPage.locator("#sequence-trace").evaluate(el => el._trace);
+    assert.equal(firstUxTrace.status, "COMPLETED");
+    await uxPage.locator('#outcome-status[data-state="recorded"]').waitFor();
+    const firstOutcomeText = await uxPage.locator("#outcome-status").innerText();
+    assert.match(firstOutcomeText, /A → B → D/,
+      "UX: outcome must be generated from the executed trajectory, without a user-entered result form");
+    await uxPage.locator("#value-score").fill("82");
+    await uxPage.locator("#value-observer").fill("observador de prueba");
+    await uxPage.locator("#value-context").fill("contexto sintético");
+    await uxPage.locator("#value-criterion").fill("criterio A");
+    await uxPage.locator("#value-rule").fill("regla ilustrativa");
+    await uxPage.locator("#value-rationale").fill("comprobar asociación de valoración");
+
+    await uxPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
+    await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
+    await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
+    await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
+    const firstUxExecutionId = firstUxTrace.execution_id;
+    await uxPage.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
+    await uxPage.waitForFunction(
+      previousId => {
+        const trace = document.querySelector("#sequence-trace")._trace;
+        return trace && trace.execution_id !== previousId &&
+          document.querySelector("#sequence-trace").dataset.state === "replay-verified";
+      },
+      firstUxExecutionId
+    );
+    const secondUxTrace = await uxPage.locator("#sequence-trace").evaluate(el => el._trace);
+    assert.notEqual(firstUxTrace.execution_id, secondUxTrace.execution_id);
+    await uxPage.locator('#outcome-status[data-state="recorded"]').waitFor();
+    const secondOutcomeText = await uxPage.locator("#outcome-status").innerText();
+    assert.match(secondOutcomeText, /A → C → D/,
+      "UX: a different executed trajectory must produce its own distinct outcome");
+    assert.equal(await uxPage.locator("#compare-run-a option").count(), 2);
+    assert.equal(await uxPage.locator("#compare-run-b option").count(), 2);
+    await uxPage.getByRole("button", { name: "Comparar recorridos y resultados" }).click();
+    const comparison = await uxPage.locator("#execution-comparison").innerText();
+    assert.match(comparison, /A → B → D/);
+    assert.match(comparison, /A → C → D/);
+    assert.match(comparison, /contexto sintético|criterio A/i);
+    assert.match(comparison, /Sin valoración contextual: aún no se han definido/i);
+    assert.equal(await uxPage.locator("#value-dashboard .value-row").count(), 2,
+      "UX: dashboard must show each concrete execution");
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /Alternativa 1 · 2 pasos/);
+    await uxPage.locator("#value-dashboard .route-details").nth(0).locator("summary").click();
+    assert.match(await uxPage.locator("#value-dashboard .route-sequence").nth(0).innerText(), /A → B → D/);
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /Alternativa 2 · 2 pasos/);
+    await uxPage.locator("#value-dashboard .route-details").nth(1).locator("summary").click();
+    assert.match(await uxPage.locator("#value-dashboard .route-sequence").nth(1).innerText(), /A → C → D/);
+    await uxPage.locator("#value-score").fill("35");
+    await uxPage.locator("#value-observer").fill("observador de prueba");
+    await uxPage.locator("#value-context").fill("contexto sintético");
+    await uxPage.locator("#value-criterion").fill("criterio A");
+    await uxPage.locator("#value-rule").fill("regla ilustrativa");
+    await uxPage.locator("#value-rationale").fill("comparar la segunda trayectoria");
+    await uxPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
+    await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /35\/100/);
+    assert.match(await uxPage.locator("#value-dashboard").innerText(), /82\/100/);
+    await uxPage.close();
+
+    console.log("PASS: profile-3-only UI, guided trajectory carousel, concrete execution, contextual value, alternative dashboard, import/export, replay/tamper checks, and grouped contract adversaries.");
   } finally {
     await browser.close();
   }
