@@ -283,8 +283,11 @@ async function detectGraphCandidates(imagePath, options = {}) {
             const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
             const offAxisArmRatios = armHitsOffAxis.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
             const vertexPixels = [];
+            // candidateTip can be fractional; typed-array indexing must use integer pixel coordinates.
+            const vertexCenterX = Math.round(candidateTip[0]);
+            const vertexCenterY = Math.round(candidateTip[1]);
             for (let oy = -2; oy <= 2; oy++) for (let ox = -2; ox <= 2; ox++) {
-              const px = candidateTip[0] + ox, py = candidateTip[1] + oy;
+              const px = vertexCenterX + ox, py = vertexCenterY + oy;
               if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
                 vertexPixels.push([px, py]);
               }
