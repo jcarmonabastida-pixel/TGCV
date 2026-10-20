@@ -46,7 +46,7 @@ Antes de ejecutar:
 6. Revisa también el estado inicial. El primer estado importado puede no ser el estado inicial real.
 7. Sólo cuando hayas terminado la revisión, pulsa **Ejecutar escenarios**.
 
-El editor actual permite añadir estados, eliminar conexiones y crear conexiones dirigidas mediante origen y destino. No realiza una comparación automática concluyente entre el grafo reconstruido y los píxeles de la imagen. Conserva la imagen original para la comprobación visual.
+El editor actual permite añadir estados, corregir la etiqueta del estado seleccionado (actualizando también sus conexiones y el estado inicial si corresponde), eliminar conexiones y crear conexiones dirigidas mediante origen y destino. El renombrado conserva los marcadores de revisión asociados a las conexiones. No realiza una comparación automática concluyente entre el grafo reconstruido y los píxeles de la imagen. Conserva la imagen original para la comprobación visual.
 
 ## 4. Ejecutar y exportar
 
