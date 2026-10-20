@@ -92,7 +92,7 @@ const assert = require("node:assert/strict");
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
-    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Si falla, el proceso vuelve de ejecución a reposo.");
+    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Si falla, vuelve a reposo.");
     assert.match(await page.locator("#transcription-clarification-panel").innerText(), /si una condición es esencial, no la conviertas en una transición incondicional/i);
     await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo.");
     await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
