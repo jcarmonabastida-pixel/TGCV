@@ -31,27 +31,37 @@ const assert = require("node:assert/strict");
     assert.match(importerSource, /esto no autentica el origen ni demuestra la corrección del resultado/i,
       "FC5-SEC-001: import/replay status must distinguish internal hash consistency from origin authenticity");
 
-    // Image-to-graph is a deferred extension, not a Full Chain requirement.
-    assert.doesNotMatch(sourceHtml, /Tesseract|tesseract\.js|run-ocr|image-file/,
-      "Full Chain distribution must not bundle the superseded browser OCR route");
-    await page.locator("summary").filter({ hasText: /Importación desde imagen/ }).click();
-    assert.match(await page.locator("details").filter({ hasText: /La evaluación previa favoreció PaddleOCR/ }).innerText(), /OpenCV/);
+    // The demonstrator exposes exactly the three supported entry routes: graph files, JSON, and local text-to-graph transcription.
+    assert.match(sourceHtml, /Importar grafo \(DOT \/ Mermaid \/ GraphML\)/);
+    assert.match(sourceHtml, /Importar JSON avanzado/);
+    assert.match(sourceHtml, /Transcripción asistida de texto a grafo/);
+    assert.doesNotMatch(sourceHtml, /Importación desde imagen|PaddleOCR|Tesseract\.js|OpenCV como alternativa/i,
+      "The retired image-detection/OCR workstream must not be presented as a supported entry route");
+    await page.locator("summary").filter({ hasText: /Transcripción asistida de texto a grafo/ }).click();
 
-    // Preserve the canonical fixture: transcription import intentionally replaces the editor model.
+    // Text transcription is local, explicit, and produces a reviewable draft rather than silently executing it.
     const modelBeforeTranscription = await page.locator("#model").inputValue();
-    // Image transcription is user-supplied text, converted only into a reviewable draft.
-    await page.locator("#image-transcription").fill("A --> B" + String.fromCharCode(10) + "B --> C");
+    await page.locator("#graph-file").setInputFiles({
+      name: "sample.mmd",
+      mimeType: "text/plain",
+      buffer: Buffer.from("flowchart TD\\nA --> B\\nB --> C")
+    });
+    await page.locator("#file-status").filter({ hasText: /Grafo importado desde sample\.mmd: 3 estados y 2 conexiones/ }).waitFor();
+    assert.equal(JSON.parse(await page.locator("#model").inputValue()).transitions.length, 2);
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeTranscription);
+
+    await page.locator("#text-transcription").fill("A --> B" + String.fromCharCode(10) + "B --> C");
     await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
     await page.locator("#transcription-status").filter({ hasText: /Borrador creado: 3 estados y 2 conexiones/ }).waitFor();
     const transcriptionDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(transcriptionDraft.states, ["A", "B", "C"]);
     assert.equal(transcriptionDraft.transitions.length, 2);
     assert.match(await page.locator("#transcription-status").innerText(), /Revisa el grafo/i);
-    await page.locator("#image-transcription").fill("texto sin conexiones");
+    await page.locator("#text-transcription").fill("texto sin conexiones");
     await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
     assert.match(await page.locator("#transcription-status").innerText(), /No se encontraron conexiones dirigidas/i);
     await page.getByRole("button", { name: "Borrar transcripción" }).click();
-    assert.equal(await page.locator("#image-transcription").inputValue(), "");
+    assert.equal(await page.locator("#text-transcription").inputValue(), "");
     await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeTranscription);
 
     // Manual graph review: enumerate edges, remove an incorrect edge, and flag duplicate pairs.
