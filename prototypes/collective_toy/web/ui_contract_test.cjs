@@ -103,6 +103,13 @@ const assert = require("node:assert/strict");
     assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /El sistema comienza en reposo/,
       "A recognized initial-state declaration must not remain pending");
 
+    // Generality check: the parser contract must work outside the irrigation example.
+    await page.locator("#system-description").fill("El sistema comienza en espera. Si la identidad es válida, el sistema pasa de espera a acceso autorizado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const accessDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(accessDraft.initial_state, "espera", "Initial-state parsing must be domain-independent");
+    assert.ok(accessDraft.transitions.some((edge) => edge.source === "espera" && edge.target === "acceso autorizado" && edge.condition === "la identidad es válida"), "Leading conditions should be parsed in an unrelated domain");
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
