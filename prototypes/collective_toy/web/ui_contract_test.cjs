@@ -92,7 +92,7 @@ const assert = require("node:assert/strict");
     const imageDownload = await imageDownloadPromise;
     const exportedImageDraft = JSON.parse(fs.readFileSync(await imageDownload.path(), "utf8"));
     assert.equal(exportedImageDraft.schema, "TGCV-IMAGE-GRAPH-REVIEW-DRAFT-001");
-    assert.match(exportedImageDraft.source_image.data_url, /^data:image\\/svg\\+xml/);
+    assert.ok(exportedImageDraft.source_image.data_url.startsWith("data:image/svg+xml"), "Export must preserve the original SVG image data URL");
     assert.deepEqual(exportedImageDraft.model.transitions, imageDraft.transitions);
     assert.deepEqual(exportedImageDraft.review.unresolved_transition_ids, []);
     assert.deepEqual(exportedImageDraft.review.confirmed_transition_ids, ["t_canvas_1"]);
