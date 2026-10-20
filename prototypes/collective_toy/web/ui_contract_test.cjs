@@ -37,7 +37,7 @@ const assert = require("node:assert/strict");
     assert.match(sourceHtml, /canvas-image-file/);
     assert.match(sourceHtml, /canvas-image-export-review/);
     assert.match(sourceHtml, /canvas-image-graph-preview/);
-    assert.match(sourceHtml, /visual-review-pair\\{display:grid/);
+    assert.match(sourceHtml, /\.visual-review-pair\{display:grid/);
     assert.match(sourceHtml, /max-height:360px;object-fit:contain/,
       "Canvas source image must fit the review panel without overflowing");
     assert.match(sourceHtml, /direcciones requieren confirmación humana/i);
