@@ -253,6 +253,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
             const rad = angle * Math.PI / 180;
             const armHits = [0, 0];
             const armHitsOffAxis = [0, 0];
+            const armOffAxisByDistance = [[], []];
             const armTested = [0, 0];
             for (let side = 0; side < 2; side++) {
               const sign = side === 0 ? -1 : 1;
@@ -276,6 +277,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
                 }
                 if (found) armHits[side]++;
                 if (foundOffAxis) armHitsOffAxis[side]++;
+                armOffAxisByDistance[side].push(foundOffAxis ? 1 : 0);
               }
             }
             const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
@@ -291,6 +293,9 @@ async function detectGraphCandidates(imagePath, options = {}) {
               off_axis_support_ratio: Number(Math.min(...offAxisArmRatios).toFixed(4)),
               left_off_axis_support_ratio: Number(offAxisArmRatios[0].toFixed(4)),
               right_off_axis_support_ratio: Number(offAxisArmRatios[1].toFixed(4)),
+              left_off_axis_hits_by_distance: armOffAxisByDistance[0],
+              right_off_axis_hits_by_distance: armOffAxisByDistance[1],
+              paired_off_axis_distances: armOffAxisByDistance[0].filter((hit, i) => hit && armOffAxisByDistance[1][i]).length,
               supported_samples: armHits.reduce((sum, n) => sum + n, 0),
               tested_samples: armTested.reduce((sum, n) => sum + n, 0)
             });
