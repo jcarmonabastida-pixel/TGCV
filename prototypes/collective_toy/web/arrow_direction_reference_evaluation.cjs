@@ -118,14 +118,14 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
         // Compare candidate tip coordinates against the annotated target tip.
         // tip_offset_px is relative to each candidate endpoint, so it cannot
         // establish proximity to the ground-truth arrow tip.
-        const referenceTip = Array.isArray(ref.polyline) ? ref.polyline[ref.polyline.length - 1] : null;
+        const diagnosticReferenceTip = Array.isArray(ref.polyline) ? ref.polyline[ref.polyline.length - 1] : null;
         const candidatesNearReferenceTip = endpoint => endpoint
-          .filter(item => referenceTip && Array.isArray(item.tip_candidate))
+          .filter(item => diagnosticReferenceTip && Array.isArray(item.tip_candidate))
           .map(item => ({
             ...item,
             reference_tip_error_px: Math.hypot(
-              item.tip_candidate[0] - referenceTip[0],
-              item.tip_candidate[1] - referenceTip[1]
+              item.tip_candidate[0] - diagnosticReferenceTip[0],
+              item.tip_candidate[1] - diagnosticReferenceTip[1]
             )
           }))
           .filter(item => item.reference_tip_error_px <= 4)
