@@ -1,0 +1,34 @@
+name: Collective Toy raster image fixture integrity
+
+on:
+  push:
+    branches:
+      - experiment/full-chain-image-import-paddle-opencv-001-20261020
+    paths:
+      - 'prototypes/collective_toy/web/ocr_graph_image_fixture_test.cjs'
+      - 'prototypes/collective_toy/web/fixtures/ocr_graph_images/**'
+      - 'prototypes/collective_toy/web/ocr_graph_reference.schema.json'
+      - '.github/workflows/collective-toy-image-fixture-integrity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  raster-fixture-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out selected ref
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate annotation manifest and schema JSON
+        working-directory: prototypes/collective_toy/web
+        run: |
+          node -e "const fs=require('node:fs'); JSON.parse(fs.readFileSync('fixtures/ocr_graph_images/synthetic_graph_image_annotations_v0.1.json','utf8')); JSON.parse(fs.readFileSync('ocr_graph_reference.schema.json','utf8')); console.log('PASS: image annotations and reference schema are valid JSON');"
+      - name: Verify exact PNG hashes and annotation geometry
+        working-directory: prototypes/collective_toy/web
+        run: node ocr_graph_image_fixture_test.cjs
