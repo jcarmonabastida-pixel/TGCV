@@ -167,6 +167,24 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaisesRegex(ModelValidationError, "duplicate transition ID"):
             run_model(model)
 
+    def test_conditional_transition_is_accepted_but_not_explored(self):
+        model = copy.deepcopy(self.model)
+        model["transitions"][0]["condition"] = "humidity is low"
+        result = run_model(model)
+        baseline = result["scenario_results"]["baseline"]
+        self.assertEqual(baseline["reachable_states"], ["A", "C", "D"])
+        self.assertNotIn("B", baseline["reachable_states"])
+        self.assertTrue(
+            all(step.get("state") != "B" for path in baseline["trajectories"] for step in path),
+            "The Python engine must not execute a transition whose condition it cannot evaluate",
+        )
+
+    def test_conditional_transition_condition_must_be_non_empty(self):
+        model = copy.deepcopy(self.model)
+        model["transitions"][0]["condition"] = "   "
+        with self.assertRaisesRegex(ModelValidationError, "condition must be a non-empty string"):
+            run_model(model)
+
     def test_disabling_transitions_cannot_expand_reachability_or_trajectories(self):
         result = run_model(self.model)
         baseline = result["scenario_results"]["baseline"]
