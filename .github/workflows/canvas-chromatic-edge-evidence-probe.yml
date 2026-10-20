@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - experiment/canvas-chromatic-edge-evidence-001-20261020
+      - experiment/canvas-chromatic-line-scan-002-20261020
 
 permissions:
   contents: read
