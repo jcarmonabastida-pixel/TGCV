@@ -57,6 +57,17 @@ function svgFor(item) {
       await page.locator("svg").screenshot({ path: imagePath, type: "png" });
       const result = await detectGraphCandidates(imagePath);
       const edges = result.edge_candidates || [];
+      process.stderr.write("ARROW-ADVERSARIAL-PROBE-DIAGNOSTIC " + item.id + ": " +
+        JSON.stringify(edges.map(candidate => ({
+          from: candidate.from,
+          to: candidate.to,
+          direction: candidate.direction,
+          direction_status: candidate.direction_status,
+          direction_reason: candidate.direction_reason,
+          direction_evidence: candidate.direction_evidence,
+          at_from: candidate.arrowhead_evidence?.at_from,
+          at_to: candidate.arrowhead_evidence?.at_to
+        }))) + "\\n");
       for (const edge of edges) {
         assert.equal(edge.direction_review_required, true, item.id + ": human review required");
         assert.notEqual(edge.direction_status, "accepted", item.id + ": no auto-acceptance");
