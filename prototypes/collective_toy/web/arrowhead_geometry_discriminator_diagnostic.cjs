@@ -9,15 +9,21 @@ const { chromium } = require("playwright");
 const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs");
 
 const W = 320, H = 180;
+// Controlled synthetic matrix: vary arrow angle and target contour independently.
+// This is diagnostic evidence only, not independent real-world validation.
 const cases = [
-  { id: "arrow-right-circle-25", arrow: "right", halfAngle: 25, targetShape: "circle" },
-  { id: "arrow-right-circle-35", arrow: "right", halfAngle: 35, targetShape: "circle" },
-  { id: "arrow-right-circle-45", arrow: "right", halfAngle: 45, targetShape: "circle" },
-  { id: "arrow-left-circle-35", arrow: "left", halfAngle: 35, targetShape: "circle" },
-  { id: "no-arrow-circle", arrow: "none", targetShape: "circle" },
-  { id: "no-arrow-ellipse", arrow: "none", targetShape: "ellipse" },
-  { id: "no-arrow-rectangle", arrow: "none", targetShape: "rectangle" },
-  { id: "no-arrow-rounded-rectangle", arrow: "none", targetShape: "rounded-rectangle" }
+  ...[25, 35, 45, 55].flatMap(halfAngle =>
+    ["circle", "ellipse", "rectangle", "rounded-rectangle"].map(targetShape => ({
+      id: "arrow-right-" + halfAngle + "-" + targetShape,
+      arrow: "right", halfAngle, targetShape
+    }))
+  ),
+  ...["circle", "ellipse", "rectangle", "rounded-rectangle"].map(targetShape => ({
+    id: "no-arrow-" + targetShape, arrow: "none", targetShape
+  })),
+  ...["circle", "ellipse", "rectangle", "rounded-rectangle"].map(targetShape => ({
+    id: "arrow-left-35-" + targetShape, arrow: "left", halfAngle: 35, targetShape
+  }))
 ];
 
 function svgFor(item) {
