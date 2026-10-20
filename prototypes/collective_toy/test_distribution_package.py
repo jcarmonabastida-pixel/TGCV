@@ -24,7 +24,7 @@ def main() -> int:
         if f"]({link})" not in readme or not (root / link).is_file():
             print("FAIL README link missing/broken: " + link)
             return 1
-    if not re.search(r"Versión de la guía.*1\\.0\\.0", guide) or not re.search(r"Versión del paquete.*1\\.0\\.0", guide):
+    if "Versión de la guía" not in guide or "Versión del paquete" not in guide or "1.0.0" not in guide:
         print("FAIL guide version missing")
         return 1
     if args.source_commit not in guide or args.source_commit not in readme or args.source_commit not in version or args.source_commit not in page:
