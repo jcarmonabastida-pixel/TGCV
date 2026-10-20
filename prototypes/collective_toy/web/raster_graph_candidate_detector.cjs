@@ -455,12 +455,19 @@ async function detectGraphCandidates(imagePath, options = {}) {
           item.right_support_ratio >= 0.55 &&
           item.off_axis_support_ratio >= 0.35
         );
-        return eligible.sort((a, b) =>
-          b.off_axis_support_ratio - a.off_axis_support_ratio ||
-          Math.min(b.left_support_ratio, b.right_support_ratio) - Math.min(a.left_support_ratio, a.right_support_ratio) ||
+        const byArrowheadGeometry = (a, b) =>
+          (b.off_axis_support_ratio ?? -1) - (a.off_axis_support_ratio ?? -1) ||
+          Math.min(b.left_support_ratio ?? -1, b.right_support_ratio ?? -1) -
+            Math.min(a.left_support_ratio ?? -1, a.right_support_ratio ?? -1) ||
           b.support_ratio - a.support_ratio ||
-          a.tip_offset_px - b.tip_offset_px
-        )[0] || null;
+          (a.tip_offset_px ?? Infinity) - (b.tip_offset_px ?? Infinity);
+        // Preserve a measured fallback for the weaker endpoint so the resolver
+        // can compare both endpoint scores. The bilateral geometry gate applies
+        // to the winning endpoint only; discarding the weaker endpoint here
+        // would force every otherwise-clear arrow to "unresolved".
+        return eligible.sort(byArrowheadGeometry)[0] ||
+          hypotheses.filter(item => Number.isFinite(item?.support_ratio))
+            .sort((a, b) => b.support_ratio - a.support_ratio)[0] || null;
       };
       const arrowheadPresent = inferArrowheadPresenceFromEvidence(edge);
       const decision = resolveArrowDirection({
