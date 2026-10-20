@@ -32,8 +32,8 @@ const assert = require("node:assert/strict");
       "FC5-SEC-001: import/replay status must distinguish internal hash consistency from origin authenticity");
 
     // Browser-native Canvas image import is integrated into the Full Chain UI.
-    assert.match(sourceHtml, /raster_graph_candidate_browser\\.js/);
-    assert.match(sourceHtml, /raster_graph_review_adapter\\.browser\\.js/);
+    assert.match(sourceHtml, /raster_graph_candidate_browser\.js/);
+    assert.match(sourceHtml, /raster_graph_review_adapter\.browser\.js/);
     assert.match(sourceHtml, /canvas-image-file/);
     assert.match(sourceHtml, /canvas-image-export-review/);
     assert.match(sourceHtml, /direcciones requieren confirmación humana/i);
