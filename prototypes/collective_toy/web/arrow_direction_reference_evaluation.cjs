@@ -141,6 +141,9 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
           angle_degrees: item.angle_degrees,
           left_support_ratio: item.left_support_ratio,
           right_support_ratio: item.right_support_ratio,
+          off_axis_support_ratio: item.off_axis_support_ratio ?? null,
+          left_off_axis_support_ratio: item.left_off_axis_support_ratio ?? null,
+          right_off_axis_support_ratio: item.right_off_axis_support_ratio ?? null,
           tested_samples: item.tested_samples
         });
         return [{
@@ -192,6 +195,18 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
               const fromScore = score(atFromCandidates), toScore = score(atToCandidates);
               if (fromScore === null || toScore === null || fromScore === toScore) return "inconclusive";
               return fromScore > toScore ? "candidate_from" : "candidate_to";
+            })(),
+            off_axis_comparison: (() => {
+              const score = endpoint => endpoint.filter(item => Number.isFinite(item.tip_offset_px) && item.tip_offset_px <= 4)
+                .reduce((best, item) => !best || (item.off_axis_support_ratio ?? -1) > best ? item.off_axis_support_ratio : best, null);
+              const fromScore = score(atFromCandidates), toScore = score(atToCandidates);
+              return {
+                support_from: fromScore,
+                support_to: toScore,
+                direction_favored_by_off_axis_evidence: fromScore === null || toScore === null || fromScore === toScore
+                  ? "inconclusive"
+                  : fromScore > toScore ? "candidate_from" : "candidate_to"
+              };
             })()
           }
         }];
