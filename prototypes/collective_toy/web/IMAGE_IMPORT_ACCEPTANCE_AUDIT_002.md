@@ -14,7 +14,7 @@
 | Load PNG/JPEG/WebP as a visual reference | Implemented in the browser UI | The source image remains visible beside the editable graph during review; this does not extract topology |
 | Optional OCR text extraction | Implemented with Tesseract.js (`spa+eng`) | OCR output is text, not node/edge/direction detection |
 | Convert text/connection notation into a graph draft | Implemented; end-to-end browser regression added in current revision | Test loads a source image, converts manually entered Mermaid notation, checks the persistent source preview, unresolved direction, and exported image+graph snapshot; not pixel-level graph reconstruction |
-| Edit graph and remove/create connections | Existing graph editor | Human review remains necessary |
+| Edit graph, correct state labels, and remove/create connections | Visual editor; end-to-end browser regression verifies relabeling updates edge endpoints and preserves unresolved-direction markers | Human review remains necessary |
 | Invert an edge direction | Added in PR #81 | User must compare with the original image |
 | Mark direction unresolved and confirm manually | Added in PR #81 | Unresolved and manually confirmed direction markers are session-level UI state until exported |
 | Export review snapshot, unresolved markers, manually confirmed directions and loaded source image | Added in PR #81 | Sidecar embeds the loaded image as a data URL (max 5 MiB) and records explicit direction decisions; does not modify execution-package schema |
