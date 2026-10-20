@@ -107,8 +107,19 @@ function svgFor(item) {
           direction: edge.direction,
           direction_status: edge.direction_status,
           direction_reason: edge.direction_reason,
+          direction_evidence: edge.direction_evidence,
           direction_confidence: edge.confidence,
           arrowhead_presence: edge.arrowhead_presence,
+          arrowhead_evidence: {
+            at_from: edge.arrowhead_evidence?.at_from
+              ? { support_ratio: edge.arrowhead_evidence.at_from.support_ratio,
+                  tested_samples: edge.arrowhead_evidence.at_from.tested_samples }
+              : null,
+            at_to: edge.arrowhead_evidence?.at_to
+              ? { support_ratio: edge.arrowhead_evidence.at_to.support_ratio,
+                  tested_samples: edge.arrowhead_evidence.at_to.tested_samples }
+              : null
+          },
           review_required: edge.direction_review_required
         })),
         diagnostic_only: true, ground_truth_status: "synthetic_probe_not_independently_adjudicated"
