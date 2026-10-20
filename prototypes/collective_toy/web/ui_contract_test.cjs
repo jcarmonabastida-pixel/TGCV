@@ -77,6 +77,7 @@ const assert = require("node:assert/strict");
     await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 4 estados y 2 conexiones/ }).waitFor();
     const conditionalDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(conditionalDraft.transitions.length, 2, "Recognized conditional transitions should be represented, not dropped");
+    assert.equal(conditionalDraft.schema_version, "collective-toy-input-002", "Conditional transitions must use schema v002");
     assert.ok(conditionalDraft.transitions.some((edge) => edge.source === "evaluación" && edge.target === "aprobado" && edge.condition === "cumple los criterios"));
     assert.ok(conditionalDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo" && edge.condition === "falla"));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
