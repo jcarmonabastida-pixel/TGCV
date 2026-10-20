@@ -16,7 +16,10 @@ function resolveArrowDirection(edge, options = {}) {
   }
   const valid = score => score &&
     Number.isFinite(score.support_ratio) &&
+    score.support_ratio >= 0 &&
+    score.support_ratio <= 1 &&
     Number.isFinite(score.tested_samples) &&
+    Number.isInteger(score.tested_samples) &&
     score.tested_samples >= minSamples;
 
   if (!valid(atFrom) || !valid(atTo)) {
