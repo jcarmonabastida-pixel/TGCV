@@ -22,6 +22,13 @@ function testCanvasPresenceSignalMarksNoPairedVAsNotDetected() {
   });
   assert.equal(result, false);
 }
+function testCanvasPresenceSignalDoesNotTreatMissingHypothesesAsAbsence() {
+  assert.equal(inferArrowheadPresenceFromEvidence({
+    arrowhead_hypotheses: { at_from: [], at_to: [] }
+  }), null, "missing endpoint hypotheses are unknown, not evidence of no arrowhead");
+  assert.equal(inferArrowheadPresenceFromEvidence({}), null,
+    "missing arrowhead evidence must remain unknown");
+}
 function testCanvasPresenceSignalPreservesUncertainVAsPossible() {
   const result = inferArrowheadPresenceFromEvidence({
     arrowhead_hypotheses: {
@@ -105,6 +112,7 @@ function testNonFiniteSupportStaysUnresolved() {
 
 testCanvasPresenceSignalMarksNoPairedVAsNotDetected();
 testCanvasPresenceSignalPreservesUncertainVAsPossible();
+testCanvasPresenceSignalDoesNotTreatMissingHypothesesAsAbsence();
 testForwardArrow();
 testReversedArrow();
 testAmbiguousEvidenceStaysUnresolved();
@@ -117,4 +125,4 @@ testEqualEndpointScoresStayUnresolved();
 testExactMinimumMarginStaysUnresolved();
 testInsufficientSamplesAtOnlyOneEndpointStaysUnresolved();
 testNonFiniteSupportStaysUnresolved();
-process.stdout.write("OCR-ARROW-DIRECTION-001: 14 resolver/integration-signal tests passed (Canvas no-V signal, Canvas uncertain-V preservation, forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
+process.stdout.write("OCR-ARROW-DIRECTION-001: 15 resolver/integration-signal tests passed (Canvas no-V signal, Canvas uncertain-V preservation, missing-hypothesis unknown handling, forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
