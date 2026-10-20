@@ -67,10 +67,22 @@ function svgFor(kind) {
         edge.direction === "undetermined"));
       assert.ok(detected.nodes.every((node) =>
         node.center.every((coordinate) => Number.isFinite(coordinate))));
+      assert.equal(detected.nodes.length, 3, kind + ": expected three geometric node candidates");
+      assert.equal(detected.edge_candidates.length, 2, kind + ": expected two geometric edge candidates");
+      const centersByPosition = detected.nodes.map((node) => node.center)
+        .sort((a, b) => a[1] - b[1] || a[0] - b[0]);
+      assert.deepEqual(centersByPosition, kind === "linear"
+        ? [[45, 90], [160, 90], [275, 90]]
+        : [[160, 45], [45, 90], [160, 135]],
+        kind + ": node centers should match the annotated synthetic layout");
       const reviewDraft = await page.evaluate((graph) =>
         globalThis.TGCVRasterGraphReviewAdapter.candidateGraphToReviewDraft(graph, { sourceName: "probe" }), detected);
       assert.equal(reviewDraft.unresolved_transition_ids.length, reviewDraft.model.transitions.length,
         "direction proposals from the actual detector must remain unresolved for human confirmation");
+      assert.deepEqual(reviewDraft.model.transitions.map((edge) => [edge.source, edge.target]),
+        kind === "linear" ? [["N001", "N002"], ["N002", "N003"]]
+          : [["N002", "N001"], ["N002", "N003"]],
+        kind + ": conservative resolver proposal should follow the authored arrow geometry");
       observations.push({
         fixture: kind,
         expected_nodes: 3,
