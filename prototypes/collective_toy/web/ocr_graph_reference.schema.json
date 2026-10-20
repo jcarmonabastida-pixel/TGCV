@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jcarmonabastida-pixel/TGCV/blob/development/collective-toy-ocr-preprocessing-001-20261013/prototypes/collective_toy/web/ocr_graph_reference.schema.json",
+  "title": "TGCV OCR graph reference record",
+  "description": "Versioned annotation contract for evaluating OCR transcription and extracted graph structure. This schema defines reference data; it does not validate OCR quality by itself.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "image_id",
+    "image_sha256",
+    "split",
+    "strata",
+    "reference_text",
+    "nodes",
+    "edges",
+    "annotation_status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1"
+    },
+    "image_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "image_sha256": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{64}$"
+    },
+    "source": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "enum": ["synthetic", "exported_diagram", "screenshot", "scan", "photograph", "other"]
+        },
+        "provenance": {
+          "type": "string"
+        },
+        "rights_or_permission": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "split": {
+      "enum": ["development", "validation", "locked_test"]
+    },
+    "strata": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "clean_text",
+          "accents",
+          "identifiers_punctuation",
+          "critical_operators",
+          "real_screenshot_or_document",
+          "directed_edges",
+          "bidirectional_edges",
+          "crossing_edges",
+          "edge_labels",
+          "dense_layout",
+          "negative_or_ambiguous",
+          "degraded_capture",
+          "mixed_language_or_notation"
+        ]
+      }
+    },
+    "reference_text": {
+      "type": "object",
+      "required": ["verbatim", "normalization_policy"],
+      "properties": {
+        "verbatim": {
+          "type": "string"
+        },
+        "normalization_policy": {
+          "const": "line_endings_and_repeated_whitespace_only"
+        },
+        "unreadable_regions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["description", "status"],
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "status": {
+                "enum": ["ambiguous", "illegible", "cropped", "occluded"]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string"
+          },
+          "critical_identifier": {
+            "type": "boolean",
+            "default": false
+          },
+          "annotation_notes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "source_node_id", "target_node_id", "direction", "arrow_status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_node_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_node_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "direction": {
+            "enum": ["directed", "undirected", "bidirectional", "unknown"]
+          },
+          "relation_label": {
+            "type": "string"
+          },
+          "arrow_status": {
+            "enum": ["clear", "ambiguous", "not_applicable"]
+          },
+          "critical": {
+            "type": "boolean",
+            "default": true
+          },
+          "annotation_notes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "annotation_status": {
+      "type": "object",
+      "required": ["annotator_count", "adjudicated"],
+      "properties": {
+        "annotator_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "adjudicated": {
+          "type": "boolean"
+        },
+        "adjudication_notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
