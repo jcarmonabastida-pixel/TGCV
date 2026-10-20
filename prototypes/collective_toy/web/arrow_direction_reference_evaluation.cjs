@@ -290,6 +290,15 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     "synthetic direction regression: no confidently proposed direction may contradict the annotated source/target");
   assert.equal(correct, proposed,
     "synthetic direction regression: every proposed direction must match the annotation; uncertain cases may remain unresolved");
+  for (const row of rows) {
+    const clearEdges = (annotations.images.find(fixture => fixture.image_id === row.fixture)?.edges || [])
+      .filter(edge => edge.direction === "directed" && edge.arrow_status === "clear").length;
+    const minimumFixtureCoverage = Math.ceil(clearEdges * 0.5);
+    assert.ok(row.direction_proposals >= minimumFixtureCoverage,
+      `synthetic per-fixture coverage regression for ${row.fixture}: expected at least ${minimumFixtureCoverage}/${clearEdges} proposals (50%); got ${row.direction_proposals}/${clearEdges}`);
+    assert.equal(row.inverted_directions, 0,
+      `synthetic per-fixture direction regression for ${row.fixture}: no inverted proposals permitted`);
+  }
   const minimumProposalCoverage = Math.ceil(clearArrowReferenceEdges * 0.75);
   assert.ok(proposed >= minimumProposalCoverage,
     `synthetic direction coverage regression: expected at least ${minimumProposalCoverage}/${clearArrowReferenceEdges} clear arrows proposed (75%); got ${proposed}/${clearArrowReferenceEdges}`);
