@@ -104,6 +104,21 @@ function testInsufficientSamplesAtOnlyOneEndpointStaysUnresolved() {
   assert.equal(result.direction, "undetermined");
   assert.equal(result.direction_status, "unresolved");
 }
+function testSupportAboveOneStaysUnresolved() {
+  const result = resolveArrowDirection(edge(score(0.2), score(1.01)));
+  assert.equal(result.direction, "undetermined");
+  assert.equal(result.direction_status, "unresolved");
+}
+function testNegativeSupportStaysUnresolved() {
+  const result = resolveArrowDirection(edge(score(-0.1), score(0.9)));
+  assert.equal(result.direction, "undetermined");
+  assert.equal(result.direction_status, "unresolved");
+}
+function testFractionalSampleCountStaysUnresolved() {
+  const result = resolveArrowDirection(edge(score(0.1, 40), score(0.9, 20.5)));
+  assert.equal(result.direction, "undetermined");
+  assert.equal(result.direction_status, "unresolved");
+}
 function testNonFiniteSupportStaysUnresolved() {
   const result = resolveArrowDirection(edge(score(Number.NaN), score(0.9)));
   assert.equal(result.direction, "undetermined");
@@ -124,5 +139,8 @@ testMalformedEvidenceStaysUnresolved();
 testEqualEndpointScoresStayUnresolved();
 testExactMinimumMarginStaysUnresolved();
 testInsufficientSamplesAtOnlyOneEndpointStaysUnresolved();
+testSupportAboveOneStaysUnresolved();
+testNegativeSupportStaysUnresolved();
+testFractionalSampleCountStaysUnresolved();
 testNonFiniteSupportStaysUnresolved();
-process.stdout.write("OCR-ARROW-DIRECTION-001: 15 resolver/integration-signal tests passed (Canvas no-V signal, Canvas uncertain-V preservation, missing-hypothesis unknown handling, forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
+process.stdout.write("OCR-ARROW-DIRECTION-001: 18 resolver/integration-signal tests passed (Canvas no-V signal, Canvas uncertain-V preservation, missing-hypothesis unknown handling, out-of-range support, negative support, fractional sample count, forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
