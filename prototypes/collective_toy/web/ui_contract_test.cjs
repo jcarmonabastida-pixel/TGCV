@@ -31,28 +31,99 @@ const assert = require("node:assert/strict");
     assert.match(importerSource, /esto no autentica el origen ni demuestra la corrección del resultado/i,
       "FC5-SEC-001: import/replay status must distinguish internal hash consistency from origin authenticity");
 
-    // Image-to-graph is a deferred extension, not a Full Chain requirement.
-    assert.doesNotMatch(sourceHtml, /Tesseract|tesseract\.js|run-ocr|image-file/,
-      "Full Chain distribution must not bundle the superseded browser OCR route");
-    await page.locator("summary").filter({ hasText: /Importación desde imagen/ }).click();
-    assert.match(await page.locator("details").filter({ hasText: /La evaluación previa favoreció PaddleOCR/ }).innerText(), /OpenCV/);
+    // The demonstrator exposes exactly the three supported entry routes: graph files, JSON, and local text-to-graph transcription.
+    assert.match(sourceHtml, /Importar grafo \(DOT \/ Mermaid \/ GraphML\)/);
+    assert.match(sourceHtml, /Importar JSON avanzado/);
+    assert.match(sourceHtml, /Transcripción asistida de texto a grafo/);
+    assert.doesNotMatch(sourceHtml, /Importación desde imagen|PaddleOCR|Tesseract\.js|OpenCV como alternativa/i,
+      "The retired image-detection/OCR workstream must not be presented as a supported entry route");
+    await page.locator("details.relation-editor").filter({ hasText: /Transcripción asistida de texto a grafo/ }).evaluate((el) => { el.open = true; });
 
-    // Preserve the canonical fixture: transcription import intentionally replaces the editor model.
-    const modelBeforeTranscription = await page.locator("#model").inputValue();
-    // Image transcription is user-supplied text, converted only into a reviewable draft.
-    await page.locator("#image-transcription").fill("A --> B" + String.fromCharCode(10) + "B --> C");
-    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
-    await page.locator("#transcription-status").filter({ hasText: /Borrador creado: 3 estados y 2 conexiones/ }).waitFor();
-    const transcriptionDraft = JSON.parse(await page.locator("#model").inputValue());
-    assert.deepEqual(transcriptionDraft.states, ["A", "B", "C"]);
-    assert.equal(transcriptionDraft.transitions.length, 2);
-    assert.match(await page.locator("#transcription-status").innerText(), /Revisa el grafo/i);
-    await page.locator("#image-transcription").fill("texto sin conexiones");
-    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
-    assert.match(await page.locator("#transcription-status").innerText(), /No se encontraron conexiones dirigidas/i);
-    await page.getByRole("button", { name: "Borrar transcripción" }).click();
-    assert.equal(await page.locator("#image-transcription").inputValue(), "");
-    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeTranscription);
+    // Natural-language description proposes a graph locally, exposes unparsed sentences, and remains reviewable.
+    assert.match(sourceHtml, /Describe el sistema con tus propias palabras/);
+    assert.match(sourceHtml, /No requiere API externa/);
+    assert.match(sourceHtml, /Proponer grafo desde la descripción/);
+    assert.doesNotMatch(sourceHtml, /Importación desde imagen|PaddleOCR|Tesseract\.js|OpenCV como alternativa/i,
+      "The retired image-detection/OCR workstream must not be presented as a supported entry route");
+    await page.locator("details.relation-editor").filter({ hasText: /Transcripción asistida de texto a grafo/ }).evaluate((el) => { el.open = true; });
+    const modelBeforeDescription = await page.locator("#model").inputValue();
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. La ejecución conduce a resultado. Esta frase no identifica una transición.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 3 estados y 2 conexiones/ }).waitFor();
+    assert.match(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+    assert.match(await page.locator("#transcription-status").innerText(), /NO se han incorporado al grafo/);
+    const descriptionDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(descriptionDraft.transitions.length, 2);
+    assert.deepEqual(descriptionDraft.states, ["reposo", "ejecución", "resultado"]);
+    assert.match(await page.locator("#graph-edit-status").innerText(), /pendiente de revisión humana/i);
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. El sistema no pasa de ejecución a resultado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexiones?/ }).waitFor();
+    const negationDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(negationDraft.states, ["reposo", "ejecución"]);
+    assert.equal(negationDraft.transitions.length, 1, "A negated sentence must never create a transition");
+    assert.match(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+    await page.locator("#system-description").fill("El proceso pasa de inicio a evaluación. La evaluación conduce a aprobado. La evaluación conduce a rechazado. El proceso vuelve de rechazado a evaluación.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 4 estados y 4 conexiones/ }).waitFor();
+    const branchAndReturnDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(branchAndReturnDraft.states, ["inicio", "evaluación", "aprobado", "rechazado"]);
+    assert.equal(branchAndReturnDraft.transitions.length, 4, "Explicit branches and a return edge must be retained");
+    assert.ok(branchAndReturnDraft.transitions.some((edge) => edge.source === "evaluación" && edge.target === "aprobado"));
+    assert.ok(branchAndReturnDraft.transitions.some((edge) => edge.source === "evaluación" && edge.target === "rechazado"));
+    assert.ok(branchAndReturnDraft.transitions.some((edge) => edge.source === "rechazado" && edge.target === "evaluación"));
+    await page.locator("#system-description").fill("Si cumple los criterios, el proceso pasa de evaluación a aprobado. Cuando falla, el proceso vuelve de ejecución a reposo.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /No se identificaron transiciones/ }).waitFor();
+    const conditionalStatus = await page.locator("#transcription-status").innerText();
+    assert.match(conditionalStatus, /No se identificaron transiciones/,
+      "Conditional sentences must not silently lose their conditions");
+    assert.match(conditionalStatus, /Frases pendientes de aclaración/);
+    assert.match(conditionalStatus, /Si cumple los criterios/);
+    assert.match(conditionalStatus, /Cuando falla/);
+
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, el proceso vuelve de ejecución a reposo.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
+    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Si falla, el proceso vuelve de ejecución a reposo.");
+    assert.match(await page.locator("#transcription-clarification-panel").innerText(), /si una condición es esencial, no la conviertas en una transición incondicional/i);
+    await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo.");
+    await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 2 conexiones/ }).waitFor();
+    const clarifiedDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(clarifiedDraft.transitions.length, 2, "Clarification should retain the parsed edge and add the reformulated return");
+    assert.ok(clarifiedDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"));
+    assert.ok(clarifiedDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"));
+    assert.equal(await page.locator("#transcription-clarification-panel").isVisible(), false);
+    assert.match(await page.locator("#system-description").inputValue(), /El proceso pasa de reposo a ejecución/);
+    assert.doesNotMatch(await page.locator("#system-description").inputValue(), /Si falla/);
+
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo. Cuando se recupera, continúa.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /Si falla/);
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /Cuando se recupera/);
+    await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo. Cuando se recupera, el proceso pasa de reposo a recuperación.");
+    await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
+    await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
+    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Cuando se recupera, el proceso pasa de reposo a recuperación.");
+    const partialClarification = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(partialClarification.transitions.length, 2,
+      "A second unresolved phrase must remain pending without losing recognized transitions");
+    await page.locator("#transcription-clarification").fill("El proceso pasa de reposo a recuperación.");
+    await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
+    await page.locator("#transcription-clarification-panel").waitFor({ state: "hidden" });
+    const fullyClarified = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(fullyClarified.transitions.length, 3, "Repeated clarification should retain all recognized transitions");
+    assert.ok(fullyClarified.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"));
+    assert.ok(fullyClarified.transitions.some((edge) => edge.source === "reposo" && edge.target === "recuperación"));
+    assert.doesNotMatch(await page.locator("#system-description").inputValue(), /Cuando se recupera/);
+    await page.locator("#system-description").fill("Texto vago sin relación identificable.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    assert.match(await page.locator("#transcription-status").innerText(), /No se identificaron transiciones/);
+    await page.getByRole("button", { name: "Borrar descripción" }).click();
+    assert.equal(await page.locator("#system-description").inputValue(), "");
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeDescription);
 
     // Manual graph review: enumerate edges, remove an incorrect edge, and flag duplicate pairs.
     const reviewModel = JSON.parse(await page.locator("#model").inputValue());
@@ -289,6 +360,75 @@ const assert = require("node:assert/strict");
     assert.deepEqual(importedGraph.states, ["A", "B", "C"]);
     assert.equal(importedGraph.transitions.length, 2);
     assert.equal(importedGraph.initial_state, "A");
+    const mermaidProjection = {
+      states: importedGraph.states,
+      initial_state: importedGraph.initial_state,
+      transitions: importedGraph.transitions.map(({ source, target }) => ({ source, target }))
+    };
+
+    // DOT must converge to the same internal model as Mermaid.
+    await page.locator("#graph-file").setInputFiles({
+      name: "sample-flow.dot",
+      mimeType: "text/vnd.graphviz",
+      buffer: Buffer.from("digraph G {\n  A -> B;\n  B -> C;\n}")
+    });
+    await page.locator("#file-status").filter({ hasText: "3 estados y 2 conexiones" }).waitFor();
+    const dotGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual({
+      states: dotGraph.states,
+      initial_state: dotGraph.initial_state,
+      transitions: dotGraph.transitions.map(({ source, target }) => ({ source, target }))
+    }, mermaidProjection, "DOT and Mermaid imports must produce the same editable internal graph");
+
+    // GraphML must converge to that same internal model.
+    await page.locator("#graph-file").setInputFiles({
+      name: "sample-flow.graphml",
+      mimeType: "application/graphml+xml",
+      buffer: Buffer.from('<?xml version="1.0"?><graphml><graph id="G" edgedefault="directed"><node id="A"/><node id="B"/><node id="C"/><edge id="e1" source="A" target="B"/><edge id="e2" source="B" target="C"/></graph></graphml>')
+    });
+    await page.locator("#file-status").filter({ hasText: "3 estados y 2 conexiones" }).waitFor();
+    const graphmlGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual({
+      states: graphmlGraph.states,
+      initial_state: graphmlGraph.initial_state,
+      transitions: graphmlGraph.transitions.map(({ source, target }) => ({ source, target }))
+    }, mermaidProjection, "GraphML and Mermaid imports must produce the same editable internal graph");
+
+    // The explicit JSON route must converge to the same internal model too.
+    await page.locator("#json-file").setInputFiles({
+      name: "sample-flow.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(graphmlGraph))
+    });
+    await page.locator("#file-status").filter({ hasText: "Archivo cargado y validado" }).waitFor();
+    const jsonGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual({
+      states: jsonGraph.states,
+      initial_state: jsonGraph.initial_state,
+      transitions: jsonGraph.transitions.map(({ source, target }) => ({ source, target }))
+    }, mermaidProjection, "JSON import must converge to the same editable internal graph");
+
+    // Invalid structured imports must fail closed and preserve the last valid model.
+    const lastValidModel = await page.locator("#model").inputValue();
+    await page.locator("#graph-file").setInputFiles({
+      name: "broken.graphml",
+      mimeType: "application/graphml+xml",
+      buffer: Buffer.from("<graphml><graph><node id='A'></graphml>")
+    });
+    await page.locator("#file-status").filter({ hasText: "No se pudo importar el grafo" }).waitFor();
+    assert.equal(await page.locator("#model").inputValue(), lastValidModel,
+      "Malformed GraphML must not replace the current valid model");
+    assert.match(await page.locator("#file-status").innerText(), /no es XML válido/i);
+
+    await page.locator("#json-file").setInputFiles({
+      name: "broken.json",
+      mimeType: "application/json",
+      buffer: Buffer.from('{"states": [}')
+    });
+    await page.locator("#file-status").filter({ hasText: "No se pudo cargar el JSON" }).waitFor();
+    assert.equal(await page.locator("#model").inputValue(), lastValidModel,
+      "Malformed JSON must not replace the current valid model");
+    assert.match(await page.locator("#file-status").innerText(), /JSON válido/i);
 
     // The visual editor can add a state, connect it, and select a new initial state.
     await page.locator("#new-state-id").fill("D");
