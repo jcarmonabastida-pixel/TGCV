@@ -282,10 +282,32 @@ async function detectGraphCandidates(imagePath, options = {}) {
             }
             const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
             const offAxisArmRatios = armHitsOffAxis.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
+            const vertexPixels = [];
+            for (let oy = -2; oy <= 2; oy++) for (let ox = -2; ox <= 2; ox++) {
+              const px = candidateTip[0] + ox, py = candidateTip[1] + oy;
+              if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
+                vertexPixels.push([px, py]);
+              }
+            }
+            const vertexSupportRatio = vertexPixels.length / 25;
+            const armBalanceRatio = Math.min(...armRatios) / Math.max(0.0001, Math.max(...armRatios));
+            const pairedArmSupportRatio = Math.min(
+              armOffAxisByDistance[0].reduce((sum, hit) => sum + hit, 0),
+              armOffAxisByDistance[1].reduce((sum, hit) => sum + hit, 0)
+            ) / Math.max(1, armTested[0]);
             candidates.push({
               angle_degrees: angle,
               tip_offset_px: offset,
               tip_candidate: candidateTip,
+              geometric_v_diagnostic: {
+                vertex_dark_pixels_5x5: vertexPixels.length,
+                vertex_support_ratio: Number(vertexSupportRatio.toFixed(4)),
+                left_arm_support_ratio: Number(armRatios[0].toFixed(4)),
+                right_arm_support_ratio: Number(armRatios[1].toFixed(4)),
+                arm_balance_ratio: Number(armBalanceRatio.toFixed(4)),
+                bilateral_off_axis_support_ratio: Number(pairedArmSupportRatio.toFixed(4)),
+                diagnostic_only: true
+              },
               support_ratio: Math.min(...armRatios),
               bilateral_support_ratio: Number(Math.min(...armRatios).toFixed(4)),
               left_support_ratio: Number(armRatios[0].toFixed(4)),
