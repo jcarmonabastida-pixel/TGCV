@@ -31,10 +31,17 @@ const assert = require("node:assert/strict");
     assert.match(importerSource, /esto no autentica el origen ni demuestra la corrección del resultado/i,
       "FC5-SEC-001: import/replay status must distinguish internal hash consistency from origin authenticity");
 
-    // Image-to-graph is a deferred extension, not a Full Chain requirement.
-    assert.doesNotMatch(sourceHtml, /Tesseract|tesseract\.js|run-ocr|image-file/,
-      "Full Chain distribution must not bundle the superseded browser OCR route");
-    await page.locator("summary").filter({ hasText: /Importación desde imagen/ }).click();
+    // Browser-native Canvas image import is integrated into the Full Chain UI.
+    assert.match(sourceHtml, /raster_graph_candidate_browser\\.js/);
+    assert.match(sourceHtml, /raster_graph_review_adapter\\.browser\\.js/);
+    assert.match(sourceHtml, /canvas-image-file/);
+    assert.match(sourceHtml, /canvas-image-export-review/);
+    assert.match(sourceHtml, /direcciones requieren confirmación humana/i);
+    assert.doesNotMatch(sourceHtml, /Tesseract|tesseract\\.js|run-ocr|https?:\\/\\/cdn/i,
+      "Canvas image import must not introduce OCR or a remote runtime dependency");
+    assert.equal(await page.locator("#canvas-image-detect").isDisabled(), true);
+    assert.equal(await page.locator("#canvas-image-export-review").isDisabled(), true);
+    await page.locator("summary").filter({ hasText: /Transcripción asistida/ }).click();
     assert.match(await page.locator("details").filter({ hasText: /La evaluación previa favoreció PaddleOCR/ }).innerText(), /OpenCV/);
 
     // Preserve the canonical fixture: transcription import intentionally replaces the editor model.
