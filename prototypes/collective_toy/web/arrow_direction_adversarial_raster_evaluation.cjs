@@ -69,6 +69,11 @@ function svgFor(item) {
         auto_accepted: edges.filter(e => e.direction_status === "accepted").length,
         edge_diagnostics: edges.map(edge => ({
           edge_id: edge.id,
+          source_candidate_node_id: edge.source_candidate_node_id,
+          target_candidate_node_id: edge.target_candidate_node_id,
+          from: edge.from,
+          to: edge.to,
+          orientation: edge.orientation,
           direction: edge.direction,
           direction_status: edge.direction_status,
           direction_reason: edge.direction_reason,
