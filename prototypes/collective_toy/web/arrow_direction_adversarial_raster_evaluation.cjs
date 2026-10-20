@@ -40,7 +40,7 @@ function svgFor(item) {
     drawing = node(55,90,"A")+node(265,90,"B")+line(71,90,249,90);
     if (item.arrow === "right") drawing += head(249,90,1,0);
     if (item.arrow === "left") drawing += head(71,90,-1,0);
-    if (item.arrow === "both") drawing += head(71,90,"left")+head(249,90,"right");
+    if (item.arrow === "both") drawing += head(71,90,-1,0)+head(249,90,1,0);
   }
   return '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '"><rect width="100%" height="100%" fill="white"/>' + drawing + '</svg>';
 }
