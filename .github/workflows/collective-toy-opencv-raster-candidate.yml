@@ -29,7 +29,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: pip
       - name: Install pinned OpenCV runtime
         run: python -m pip install opencv-python-headless==4.10.0.84
       - name: Verify exact raster fixture integrity
