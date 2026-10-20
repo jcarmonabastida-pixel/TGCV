@@ -6,7 +6,15 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
 const { resolveArrowDirection } = require("./arrow_direction_resolver.cjs");
 
 function testArrowDirectionResolverConservativeCases() {
-  const score = (support_ratio, tested_samples = 22) => ({ support_ratio, tested_samples, angle_degrees: 0 });
+  // A "clear" unit-test arrow must explicitly provide the bilateral tip
+  // geometry required by the conservative resolver. Endpoint ratios alone
+  // intentionally remain insufficient to propose a direction.
+  const score = (support_ratio, tested_samples = 22) => ({
+    support_ratio, tested_samples, angle_degrees: 0,
+    left_support_ratio: 0.8,
+    right_support_ratio: 0.8,
+    off_axis_support_ratio: 0.8
+  });
   const resolve = (from, to) => resolveArrowDirection({ arrowhead_evidence: { at_from: from, at_to: to } });
   const clear = resolve(score(0.10), score(0.95));
   assert.equal(clear.direction, "source-to-target");

@@ -3,6 +3,31 @@
 const { resolveArrowDirection } = require("./arrow_direction_resolver.cjs");
 
 /**
+ * Current evidence is insufficient to classify arrowhead presence or absence.
+ * Positive V-shaped evidence is only a candidate cue, and zero sampled support
+ * is not calibrated negative evidence. Return null until both positive and
+ * negative classifications have validated confidence criteria; direction
+ * proposals remain subject to human review.
+ */
+function inferArrowheadPresenceFromEvidence(edge) {
+  const endpoints = [edge?.arrowhead_hypotheses?.at_from, edge?.arrowhead_hypotheses?.at_to];
+  // Missing or malformed evidence cannot establish presence or absence.
+  if (endpoints.some(endpoint => !Array.isArray(endpoint) || endpoint.length === 0)) return null;
+  const diagnostics = endpoints.map(endpoint => endpoint.map(candidate => candidate?.geometric_v_diagnostic));
+  if (diagnostics.some(endpoint => endpoint.some(v =>
+    !Number.isFinite(v?.left_arm_support_ratio) ||
+    !Number.isFinite(v?.right_arm_support_ratio) ||
+    !Number.isFinite(v?.bilateral_off_axis_support_ratio)))) return null;
+
+  // Positive V-shaped evidence is only a candidate cue, not an adjudicated
+  // arrowhead. Conversely, zero sampled support is not proof of absence:
+  // rasterization, orientation, occlusion or sampling can hide a real tip.
+  // This detector has no calibrated negative-evidence model, so it must not
+  // emit arrowhead_present=false from these diagnostics alone.
+  return null;
+}
+
+/**
  * First deterministic raster candidate detector for TGCV development fixtures.
  * Uses browser Canvas to inspect pixels. It is a candidate generator, not a
  * production-grade graph parser; OCR labels are intentionally ignored.
@@ -239,45 +264,101 @@ async function detectGraphCandidates(imagePath, options = {}) {
         return { ratio: tested ? supported / tested : 0, supported, tested };
       };
       const arrowheadEvidence = (tip, inwardUnit) => {
-        // Look for a paired V-shaped arrowhead: both arms should contain dark
-        // pixels along rays that diverge from the edge axis. Count each arm
-        // separately so a single straight connector cannot score as a head.
-        const scores = [];
-        for (const angle of [25, 35, 45, 55, 65]) {
-          const rad = angle * Math.PI / 180;
-          const armHits = [0, 0];
-          const armTested = [0, 0];
-          for (let side = 0; side < 2; side++) {
-            const sign = side === 0 ? -1 : 1;
-            const ux = inwardUnit[0] * Math.cos(rad) - sign * inwardUnit[1] * Math.sin(rad);
-            const uy = inwardUnit[1] * Math.cos(rad) + sign * inwardUnit[0] * Math.sin(rad);
-            for (let d = 3; d <= 13; d++) {
-              const x = Math.round(tip[0] + ux * d), y = Math.round(tip[1] + uy * d);
-              armTested[side]++;
-              let found = false;
-              for (let oy = -1; oy <= 1 && !found; oy++) {
-                for (let ox = -1; ox <= 1; ox++) {
-                  const px = x + ox, py = y + oy;
-                  if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
-                    found = true; break;
+        // The visible arrow tip may sit slightly inside the edge corridor rather
+        // than exactly on the node boundary. Search a short, bounded interval
+        // along the edge axis instead of sampling only the boundary point.
+        // This is evidence localization only; it never accepts a direction.
+        const candidates = [];
+        for (let offset = 0; offset <= 18; offset += 2) {
+          const candidateTip = [
+            Math.round(tip[0] + inwardUnit[0] * offset),
+            Math.round(tip[1] + inwardUnit[1] * offset)
+          ];
+          for (const angle of [25, 35, 45, 55, 65]) {
+            const rad = angle * Math.PI / 180;
+            const armHits = [0, 0];
+            const armHitsOffAxis = [0, 0];
+            const armOffAxisByDistance = [[], []];
+            const armTested = [0, 0];
+            for (let side = 0; side < 2; side++) {
+              const sign = side === 0 ? -1 : 1;
+              const ux = inwardUnit[0] * Math.cos(rad) - sign * inwardUnit[1] * Math.sin(rad);
+              const uy = inwardUnit[1] * Math.cos(rad) + sign * inwardUnit[0] * Math.sin(rad);
+              for (let distance = 3; distance <= 13; distance++) {
+                const x = Math.round(candidateTip[0] + ux * distance);
+                const y = Math.round(candidateTip[1] + uy * distance);
+                armTested[side]++;
+                let found = false;
+                let foundOffAxis = false;
+                for (let oy = -1; oy <= 1; oy++) {
+                  for (let ox = -1; ox <= 1; ox++) {
+                    const px = x + ox, py = y + oy;
+                    if (px < 0 || px >= width || py < 0 || py >= height || !dark[py * width + px]) continue;
+                    found = true;
+                    const lateral = Math.abs((px - candidateTip[0]) * (-inwardUnit[1]) +
+                      (py - candidateTip[1]) * inwardUnit[0]);
+                    if (lateral >= 2.5) foundOffAxis = true;
                   }
                 }
+                if (found) armHits[side]++;
+                if (foundOffAxis) armHitsOffAxis[side]++;
+                armOffAxisByDistance[side].push(foundOffAxis ? 1 : 0);
               }
-              if (found) armHits[side]++;
             }
+            const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
+            const offAxisArmRatios = armHitsOffAxis.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
+            const vertexPixels = [];
+            // candidateTip can be fractional; typed-array indexing must use integer pixel coordinates.
+            const vertexCenterX = Math.round(candidateTip[0]);
+            const vertexCenterY = Math.round(candidateTip[1]);
+            for (let oy = -2; oy <= 2; oy++) for (let ox = -2; ox <= 2; ox++) {
+              const px = vertexCenterX + ox, py = vertexCenterY + oy;
+              if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
+                vertexPixels.push([px, py]);
+              }
+            }
+            const vertexSupportRatio = vertexPixels.length / 25;
+            const armBalanceRatio = Math.min(...armRatios) / Math.max(0.0001, Math.max(...armRatios));
+            const pairedArmSupportRatio = Math.min(
+              armOffAxisByDistance[0].reduce((sum, hit) => sum + hit, 0),
+              armOffAxisByDistance[1].reduce((sum, hit) => sum + hit, 0)
+            ) / Math.max(1, armTested[0]);
+            candidates.push({
+              angle_degrees: angle,
+              tip_offset_px: offset,
+              tip_candidate: candidateTip,
+              geometric_v_diagnostic: {
+                vertex_dark_pixels_5x5: vertexPixels.length,
+                vertex_support_ratio: Number(vertexSupportRatio.toFixed(4)),
+                left_arm_support_ratio: Number(armRatios[0].toFixed(4)),
+                right_arm_support_ratio: Number(armRatios[1].toFixed(4)),
+                arm_balance_ratio: Number(armBalanceRatio.toFixed(4)),
+                bilateral_off_axis_support_ratio: Number(pairedArmSupportRatio.toFixed(4)),
+                diagnostic_only: true
+              },
+              support_ratio: Math.min(...armRatios),
+              bilateral_support_ratio: Number(Math.min(...armRatios).toFixed(4)),
+              left_support_ratio: Number(armRatios[0].toFixed(4)),
+              right_support_ratio: Number(armRatios[1].toFixed(4)),
+              off_axis_support_ratio: Number(Math.min(...offAxisArmRatios).toFixed(4)),
+              left_off_axis_support_ratio: Number(offAxisArmRatios[0].toFixed(4)),
+              right_off_axis_support_ratio: Number(offAxisArmRatios[1].toFixed(4)),
+              left_off_axis_hits_by_distance: armOffAxisByDistance[0],
+              right_off_axis_hits_by_distance: armOffAxisByDistance[1],
+              paired_off_axis_distances: armOffAxisByDistance[0].filter((hit, i) => hit && armOffAxisByDistance[1][i]).length,
+              supported_samples: armHits.reduce((sum, n) => sum + n, 0),
+              tested_samples: armTested.reduce((sum, n) => sum + n, 0)
+            });
           }
-          const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
-          scores.push({
-            angle_degrees: angle,
-            support_ratio: Math.min(...armRatios),
-            bilateral_support_ratio: Number(Math.min(...armRatios).toFixed(4)),
-            left_support_ratio: Number(armRatios[0].toFixed(4)),
-            right_support_ratio: Number(armRatios[1].toFixed(4)),
-            supported_samples: armHits.reduce((sum, n) => sum + n, 0),
-            tested_samples: armTested.reduce((sum, n) => sum + n, 0)
-          });
         }
-        return scores.sort((a, b) => b.support_ratio - a.support_ratio)[0];
+        // Retain the leading hypotheses for diagnosis. The downstream resolver
+        // still selects the highest-scoring candidate, so this adds observability
+        // without changing the direction decision or its confidence thresholds.
+        return candidates.sort((a, b) =>
+          b.support_ratio - a.support_ratio ||
+          a.tip_offset_px - b.tip_offset_px ||
+          a.angle_degrees - b.angle_degrees
+        );
       };
       const boundaryPoint = (node, target) => {
         const c = node.center, dx = target[0] - c[0], dy = target[1] - c[1];
@@ -311,9 +392,16 @@ async function detectGraphCandidates(imagePath, options = {}) {
           const edgeLength = Math.max(1, Math.hypot(pb[0]-pa[0], pb[1]-pa[1]));
           const unitAB = [(pb[0]-pa[0]) / edgeLength, (pb[1]-pa[1]) / edgeLength];
           const unitBA = [-unitAB[0], -unitAB[1]];
-          const arrowheadEvidenceByEndpoint = {
+          const arrowheadHypothesesByEndpoint = {
             at_from: arrowheadEvidence(pa, unitAB),
             at_to: arrowheadEvidence(pb, unitBA)
+          };
+          // Preserve the original single-object evidence contract for the
+          // detector integration tests and resolver; expose alternatives in a
+          // separate diagnostic field so observability cannot break consumers.
+          const arrowheadEvidenceByEndpoint = {
+            at_from: arrowheadHypothesesByEndpoint.at_from[0] || null,
+            at_to: arrowheadHypothesesByEndpoint.at_to[0] || null
           };
           // Direction resolution runs in Node after Canvas analysis returns.
           // Browser evaluate has no access to CommonJS module bindings.
@@ -322,6 +410,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
             from: pa, to: pb, orientation: Math.abs(pa[1]-pb[1]) <= 3 ? "horizontal" : "diagonal",
             line_support_ratio: Number(support.ratio.toFixed(3)), evidence_pixels: support.supported,
             arrowhead_evidence: arrowheadEvidenceByEndpoint,
+            arrowhead_hypotheses: arrowheadHypothesesByEndpoint,
             direction_status: "unresolved",
             direction_reason: "Direction resolution pending post-processing outside the browser context.",
             direction_evidence: null,
@@ -339,7 +428,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
         raw_line_candidates: lineCandidates,
         limitations: [
           "Not a complete node detector: connected outlines may be fragmented or merged.",
-          "Diagonal edges, arrowhead direction, edge-to-node attachment and crossing topology are not yet inferred.",
+          "Direction proposals are generated by a separate experimental resolver after Canvas analysis; diagonal edges, edge-to-node attachment and crossing topology are not fully inferred.",
           "Text can generate false geometric candidates; OCR semantics are not used.",
           "All candidates require visual review."
         ]
@@ -351,16 +440,50 @@ async function detectGraphCandidates(imagePath, options = {}) {
       maxNodeSize: options.maxNodeSize ?? 50
     });
     detected.edge_candidates = (detected.edge_candidates || []).map(edge => {
-      const best = endpoint => Array.isArray(endpoint)
-        ? endpoint.reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null)
-        : endpoint;
+      // Select endpoint evidence by the actual two-arm arrowhead geometry,
+      // not by raw arm-pixel support alone (which often favors the connector).
+      // A candidate that does not pass these conservative gates is not used
+      // to propose direction; it remains unresolved.
+      const bestArrowhead = endpoint => {
+        const hypotheses = Array.isArray(endpoint) ? endpoint : endpoint ? [endpoint] : [];
+        const eligible = hypotheses.filter(item =>
+          Number.isFinite(item?.support_ratio) &&
+          Number.isFinite(item?.left_support_ratio) &&
+          Number.isFinite(item?.right_support_ratio) &&
+          Number.isFinite(item?.off_axis_support_ratio) &&
+          item.left_support_ratio >= 0.50 &&
+          item.right_support_ratio >= 0.50 &&
+          item.off_axis_support_ratio >= 0.25
+        );
+        const byArrowheadGeometry = (a, b) =>
+          (b.off_axis_support_ratio ?? -1) - (a.off_axis_support_ratio ?? -1) ||
+          Math.min(b.left_support_ratio ?? -1, b.right_support_ratio ?? -1) -
+            Math.min(a.left_support_ratio ?? -1, a.right_support_ratio ?? -1) ||
+          b.support_ratio - a.support_ratio ||
+          (a.tip_offset_px ?? Infinity) - (b.tip_offset_px ?? Infinity);
+        // Preserve a measured fallback for the weaker endpoint so the resolver
+        // can compare both endpoint scores. The bilateral geometry gate applies
+        // to the winning endpoint only; discarding the weaker endpoint here
+        // would force every otherwise-clear arrow to "unresolved".
+        return eligible.sort(byArrowheadGeometry)[0] ||
+          hypotheses.filter(item => Number.isFinite(item?.support_ratio))
+            .sort((a, b) => b.support_ratio - a.support_ratio)[0] || null;
+      };
+      const arrowheadPresent = inferArrowheadPresenceFromEvidence(edge);
       const decision = resolveArrowDirection({
         arrowhead_evidence: {
-          at_from: best(edge.arrowhead_evidence?.at_from),
-          at_to: best(edge.arrowhead_evidence?.at_to)
+          at_from: bestArrowhead(edge.arrowhead_hypotheses?.at_from ?? edge.arrowhead_evidence?.at_from),
+          at_to: bestArrowhead(edge.arrowhead_hypotheses?.at_to ?? edge.arrowhead_evidence?.at_to),
+          ...(arrowheadPresent === false ? { arrowhead_present: false } : {})
         }
       });
-      return { ...edge, ...decision, direction_review_required: true };
+      return {
+        ...edge,
+        arrowhead_presence: arrowheadPresent === false ? "not_detected" : "possible_or_uncertain",
+        arrowhead_presence_review_required: true,
+        ...decision,
+        direction_review_required: true
+      };
     });
     detected.direction_diagnostics = {
       resolver: "TGCV-ARROW-DIRECTION-RESOLVER-001",
@@ -376,4 +499,4 @@ async function detectGraphCandidates(imagePath, options = {}) {
   }
 }
 
-module.exports = { detectGraphCandidates };
+module.exports = { detectGraphCandidates, inferArrowheadPresenceFromEvidence };
