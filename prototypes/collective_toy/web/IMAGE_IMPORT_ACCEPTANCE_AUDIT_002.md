@@ -14,11 +14,11 @@
 | Load PNG/JPEG/WebP as a visual reference | Implemented in the browser UI | The source image remains visible beside the editable graph during review; this does not extract topology |
 | Optional OCR text extraction | Implemented with Tesseract.js (`spa+eng`) | OCR output is text, not node/edge/direction detection |
 | Convert text/connection notation into a graph draft | Implemented; end-to-end browser regression added in current revision | Test loads a source image, converts manually entered Mermaid notation, checks the persistent source preview, unresolved direction, and exported image+graph snapshot; not pixel-level graph reconstruction |
-| Edit graph, correct state labels, and remove/create connections | Visual editor; end-to-end browser regression verifies relabeling updates edge endpoints and preserves unresolved-direction markers | Human review remains necessary |
+| Edit graph, correct state labels, and remove/create connections | Visual editor; end-to-end browser regression verifies relabeling updates edge endpoints and preserves unresolved-direction markers; latest passing run [39422987457](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39422987457) | Human review remains necessary |
 | Invert an edge direction | Added in PR #81 | User must compare with the original image |
 | Mark direction unresolved and confirm manually | Added in PR #81 | Unresolved and manually confirmed direction markers are session-level UI state until exported |
 | Export review snapshot, unresolved markers, manually confirmed directions and loaded source image | Added in PR #81 | Sidecar embeds the loaded image as a data URL (max 5 MiB) and records explicit direction decisions; does not modify execution-package schema |
-| Browser/Python contract and clean-source replay | PASS, workflow run [39419668554](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39419668554), head `979c7f84a022d63c06202f2e41307c64aabdd688` | Includes explicit manual direction confirmation in the review sidecar; confirms only automated contract coverage |
+| Browser/Python contract and clean-source replay | PASS on latest state-label correction revision: [39422965546](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39422965546) (editor), [39422987457](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39422987457) (relabel regression), [39423012957](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39423012957) (guide), [39423020492](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39423020492) (audit) | Includes explicit manual direction confirmation and label-editing preservation; confirms only automated contract coverage |
 
 ## Explicitly not implemented or not established
 
