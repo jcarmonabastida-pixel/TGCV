@@ -115,6 +115,21 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
         const atToCandidates = candidates(edge.arrowhead_hypotheses?.at_to ?? edge.arrowhead_evidence?.at_to);
         const atFrom = best(atFromCandidates);
         const atTo = best(atToCandidates);
+        const bestNearEndpoint = endpoint => endpoint
+          .filter(item => Number.isFinite(item.tip_offset_px) && item.tip_offset_px <= 4)
+          .reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null);
+        const nearFrom = bestNearEndpoint(atFromCandidates);
+        const nearTo = bestNearEndpoint(atToCandidates);
+        const nearTipDirectionDiagnostic = {
+          at_candidate_from_support: nearFrom?.support_ratio ?? null,
+          at_candidate_to_support: nearTo?.support_ratio ?? null,
+          at_candidate_from_offset_px: nearFrom?.tip_offset_px ?? null,
+          at_candidate_to_offset_px: nearTo?.tip_offset_px ?? null,
+          favored_endpoint: !nearFrom && !nearTo || (nearFrom && nearTo && nearFrom.support_ratio === nearTo.support_ratio)
+            ? "inconclusive" : !nearTo || (nearFrom && nearFrom.support_ratio > nearTo.support_ratio)
+              ? "candidate_from" : "candidate_to",
+          diagnostic_only: true
+        };
         // Localization is evaluated separately from direction acceptance.
         // The annotation convention places the reference tip at the final
         // centerline point; compare only hypotheses at the annotated target node.
@@ -153,6 +168,7 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
           expected_target: ref.target_node_id,
           candidate_status: edge.direction_status,
           candidate_direction: edge.direction,
+          near_tip_direction_diagnostic: nearTipDirectionDiagnostic,
           endpoint_scores: {
             at_candidate_from: atFrom?.support_ratio ?? null,
             at_candidate_to: atTo?.support_ratio ?? null,
@@ -254,6 +270,15 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     within_4px: localizationErrors.filter(error => error <= 4).length,
     note: "Best geometric localization among enumerated hypotheses, not the resolver's selected direction; diagnostic only."
   };
+  const nearTipDiagnostics = rows.flatMap(row => row.matched_edge_evidence || [])
+    .map(item => item.near_tip_direction_diagnostic || {});
+  const nearTipDiagnosticSummary = {
+    evaluated_matched_edges: nearTipDiagnostics.length,
+    endpoint_from_favored: nearTipDiagnostics.filter(item => item.favored_endpoint === "candidate_from").length,
+    endpoint_to_favored: nearTipDiagnostics.filter(item => item.favored_endpoint === "candidate_to").length,
+    inconclusive: nearTipDiagnostics.filter(item => item.favored_endpoint === "inconclusive").length,
+    note: "Diagnostic comparison using only hypotheses with tip_offset_px <= 4; not used by operational resolver."
+  };
   const report = {
     evaluator: "TGCV-OCR-ARROW-DIRECTION-REFERENCE-EVAL-001",
     dataset_id: annotations.dataset_id,
@@ -269,6 +294,7 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     unmatched_or_duplicate_candidates: unmatched,
     direction_accuracy_when_proposed: proposed ? Number((correct / proposed).toFixed(4)) : null,
     target_endpoint_tip_localization_summary: localizationSummary,
+    near_tip_direction_diagnostic_summary: nearTipDiagnosticSummary,
     per_fixture: rows,
     interpretation: "These are diagnostic candidate-direction comparisons against non-adjudicated synthetic annotations, not directions accepted by the operational resolver. Operational direction inference remains disabled; every candidate requires human review. Unresolved directions are not counted as correct. This report measures only matched candidate edges; unmatched candidates are reported separately."
   };
