@@ -237,6 +237,23 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     });
   }
 
+  const localizationRows = rows.flatMap(row => row.matched_edge_evidence || [])
+    .map(item => item.target_endpoint_tip_localization || {})
+    .filter(item => Number.isFinite(item.best_error_px));
+  const localizationErrors = localizationRows.map(item => item.best_error_px).sort((a, b) => a - b);
+  const median = values => {
+    if (!values.length) return null;
+    const middle = Math.floor(values.length / 2);
+    return Number((values.length % 2 ? values[middle] : (values[middle - 1] + values[middle]) / 2).toFixed(3));
+  };
+  const localizationSummary = {
+    evaluated_reference_tips: localizationErrors.length,
+    median_best_candidate_error_px: median(localizationErrors),
+    max_best_candidate_error_px: localizationErrors.length ? localizationErrors[localizationErrors.length - 1] : null,
+    within_2px: localizationErrors.filter(error => error <= 2).length,
+    within_4px: localizationErrors.filter(error => error <= 4).length,
+    note: "Best geometric localization among enumerated hypotheses, not the resolver's selected direction; diagnostic only."
+  };
   const report = {
     evaluator: "TGCV-OCR-ARROW-DIRECTION-REFERENCE-EVAL-001",
     dataset_id: annotations.dataset_id,
@@ -248,6 +265,7 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     unresolved_directions: unresolved,
     unmatched_or_duplicate_candidates: unmatched,
     direction_accuracy_when_proposed: proposed ? Number((correct / proposed).toFixed(4)) : null,
+    target_endpoint_tip_localization_summary: localizationSummary,
     per_fixture: rows,
     interpretation: "Unresolved directions are not counted as correct. This report measures only matched candidate edges; unmatched candidates are reported separately. Synthetic fixtures are not adjudicated."
   };
