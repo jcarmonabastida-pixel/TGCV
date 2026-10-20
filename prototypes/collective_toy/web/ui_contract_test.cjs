@@ -110,10 +110,10 @@ const assert = require("node:assert/strict");
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
     assert.match(await page.locator("#transcription-clarification").inputValue(), /Si falla/);
     assert.match(await page.locator("#transcription-clarification").inputValue(), /Cuando se recupera/);
-    await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo. Cuando se recupera, el proceso pasa de reposo a recuperación.");
+    await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo. Cuando se recupera, continúa.");
     await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
-    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Cuando se recupera, el proceso pasa de reposo a recuperación.");
+    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Cuando se recupera, continúa.");
     const partialClarification = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(partialClarification.transitions.length, 2,
       "A second unresolved phrase must remain pending without losing recognized transitions");
