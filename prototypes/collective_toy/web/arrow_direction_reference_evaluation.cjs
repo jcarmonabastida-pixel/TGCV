@@ -277,6 +277,14 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
   assert.ok(proposed > 0,
     "direction evaluation is inconclusive: all explicitly clear directed raster edges remained unresolved; do not report a green direction-evaluation gate");
   assert.equal(rows.length, annotations.images.length, "all annotated fixtures must be evaluated");
+  assert.equal(localizationSummary.evaluated_reference_tips, clearArrowReferenceEdges,
+    "every explicitly clear annotated arrow tip must contribute to the localization summary");
+  assert.ok(localizationSummary.median_best_candidate_error_px !== null,
+    "localization summary must report a median error");
+  assert.ok(localizationSummary.max_best_candidate_error_px <= 2,
+    "synthetic localization regression: maximum best-candidate tip error must remain <= 2 px");
+  assert.equal(localizationSummary.within_2px, localizationSummary.evaluated_reference_tips,
+    "synthetic localization regression: every annotated tip must have a candidate within 2 px");
 })().catch(error => {
   console.error(error && error.stack || error);
   process.exitCode = 1;
