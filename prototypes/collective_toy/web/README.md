@@ -56,7 +56,7 @@ Con el ejemplo sintético:
 2. Pulsa **Ejecutar escenarios**.
 3. Revisa el grafo y los resultados de `baseline` y `block_ac`.
 4. Comprueba los avisos de exploración acotada y el escenario seleccionado.
-5. Exporta el paquete JSON si necesitas conservar una ejecución reproducible. Si has marcado direcciones como sin resolver, utiliza también **Exportar estado de revisión (JSON)**: genera un artefacto lateral con una copia del modelo y los marcadores pendientes, sin alterar el contrato del paquete de ejecución. Conserva la imagen original por separado; el artefacto no la incrusta ni demuestra que las conexiones restantes hayan sido revisadas.
+5. Exporta el paquete JSON si necesitas conservar una ejecución reproducible. Si has marcado direcciones como sin resolver, utiliza también **Exportar estado de revisión (JSON)**: genera un artefacto lateral con una copia del modelo, la imagen fuente cargada (incluida como data URL) y los marcadores pendientes, sin alterar el contrato del paquete de ejecución. El archivo puede ser mayor porque incluye la imagen (límite de carga: 5 MiB); si exportas sin imagen cargada, tendrás que conservarla por separado. El artefacto no demuestra que las conexiones restantes hayan sido revisadas.
 
 El estado PASS de la interfaz indica que el modelo superó la validación de entrada y que se ejecutó la simulación local. **No** significa que el grafo coincida con la imagen, que el modelo represente un sistema real o que TGCV haya sido validada científicamente.
 
