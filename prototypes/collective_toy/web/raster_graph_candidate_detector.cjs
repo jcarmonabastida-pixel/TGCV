@@ -287,11 +287,14 @@ async function detectGraphCandidates(imagePath, options = {}) {
             });
           }
         }
+        // Retain the leading hypotheses for diagnosis. The downstream resolver
+        // still selects the highest-scoring candidate, so this adds observability
+        // without changing the direction decision or its confidence thresholds.
         return candidates.sort((a, b) =>
           b.support_ratio - a.support_ratio ||
           a.tip_offset_px - b.tip_offset_px ||
           a.angle_degrees - b.angle_degrees
-        )[0];
+        ).slice(0, 5);
       };
       const boundaryPoint = (node, target) => {
         const c = node.center, dx = target[0] - c[0], dy = target[1] - c[1];
