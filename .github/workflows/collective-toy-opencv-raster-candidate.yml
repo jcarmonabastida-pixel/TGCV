@@ -21,6 +21,10 @@ jobs:
     steps:
       - name: Check out selected ref
         uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -30,7 +34,7 @@ jobs:
         run: python -m pip install opencv-python-headless==4.10.0.84
       - name: Verify exact raster fixture integrity
         working-directory: prototypes/collective_toy/web
-        run: python -m pip --version && python ocr_graph_image_fixture_test.cjs
+        run: node ocr_graph_image_fixture_test.cjs
       - name: Run diagnostic OpenCV image-level candidate benchmark
         working-directory: prototypes/collective_toy/web
         run: python opencv_raster_candidate_benchmark.py
