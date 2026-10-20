@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - development/collective-toy-ocr-arrow-direction-001-20261014
+      - experiment/canvas-arrow-tip-localization-001-20261020
     paths:
       - 'prototypes/collective_toy/web/arrow_direction_resolver.cjs'
       - 'prototypes/collective_toy/web/arrow_direction_resolver_test.cjs'
