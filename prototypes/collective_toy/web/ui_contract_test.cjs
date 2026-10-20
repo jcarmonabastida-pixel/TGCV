@@ -515,6 +515,36 @@ const assert = require("node:assert/strict");
     await page.locator("#run").click();
     await page.locator('#graph path[data-transition-id="t_import_1"]').waitFor({ state: "attached" });
     assert.equal(await page.locator('#graph path[data-transition-id="t_import_1"]').getAttribute("marker-end"), "none");
+
+    // End-to-end manual image-to-review workflow: image stays visible, transcription becomes an editable graph,
+    // direction ambiguity remains unresolved, and the exported review keeps source image plus graph snapshot.
+    const imageFlowPage = await browser.newPage();
+    await imageFlowPage.goto("file://" + htmlPath);
+    await imageFlowPage.locator("#image-file").setInputFiles({
+      name: "manual-flow-source.png",
+      mimeType: "image/png",
+      buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jLZ8AAAAASUVORK5CYII=", "base64")
+    });
+    await imageFlowPage.getByText(/Imagen cargada: manual-flow-source\.png/).waitFor();
+    assert.equal(await imageFlowPage.locator("#source-image-review-preview").isVisible(), true);
+    await imageFlowPage.locator("#image-transcription").fill("graph LR\\n  A --> B\\n  B --- C");
+    await imageFlowPage.locator("#convert-transcription").click();
+    await imageFlowPage.locator("#transcription-status").filter({ hasText: /Borrador creado: 3 estados y 2 conexiones/ }).waitFor();
+    const imageFlowModel = JSON.parse(await imageFlowPage.locator("#model").inputValue());
+    assert.deepEqual(imageFlowModel.states, ["A", "B", "C"]);
+    assert.equal(imageFlowModel.transitions.length, 2);
+    assert.equal(await imageFlowPage.locator("#source-image-review-preview").isVisible(), true,
+      "the source image must remain visible after transcription is converted to a graph");
+    assert.match(await imageFlowPage.locator("#graph-review-summary-text").innerText(), /Direcciones pendientes: 1/);
+    const imageFlowExportPromise = imageFlowPage.waitForEvent("download");
+    await imageFlowPage.getByRole("button", { name: /Exportar estado de revisión/ }).click();
+    const imageFlowDownload = await imageFlowExportPromise;
+    const imageFlowArtifact = JSON.parse(fs.readFileSync(await imageFlowDownload.path(), "utf8"));
+    assert.equal(imageFlowArtifact.source_image.filename, "manual-flow-source.png");
+    assert.equal(imageFlowArtifact.model.transitions.length, 2);
+    assert.equal(imageFlowArtifact.review.unresolved_directions.length, 1);
+    assert.equal(imageFlowArtifact.review.unresolved_directions[0].transition_id, "t_import_2");
+    await imageFlowPage.close();
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
