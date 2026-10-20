@@ -67,6 +67,18 @@ jobs:
           path: ${{ env.DIST_DIR }}/
           if-no-files-found: error
           retention-days: 30
+      - name: Download and verify the uploaded ZIP artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tgcv-full-chain-executable-${{ env.SOURCE_COMMIT }}
+          path: ${{ runner.temp }}/downloaded-full-chain-package
+      - name: Verify downloaded artifact contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prototypes/collective_toy/test_distribution_package.py \
+            --package-dir "$RUNNER_TEMP/downloaded-full-chain-package" \
+            --source-commit "$SOURCE_COMMIT"
       - name: Upload validated Full Chain acceptance package
         uses: actions/upload-artifact@v4
         with:
