@@ -93,4 +93,4 @@ function candidateGraphToReviewDraft(detected, options = {}) {
 }
 
 if (typeof module !== "undefined" && module.exports) if (typeof module !== "undefined" && module.exports) module.exports = { candidateGraphToReviewDraft };
-else globalThis.TGCVRasterGraphReviewAdapter = { candidateGraphToReviewDraft };\nelse globalThis.TGCVRasterGraphReviewAdapter = { candidateGraphToReviewDraft };
+else globalThis.TGCVRasterGraphReviewAdapter = { candidateGraphToReviewDraft };
