@@ -176,8 +176,24 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
             best_overall_support_ratio: bestOverall?.support_ratio ?? null,
             best_overall_offset_px: bestOverall?.tip_offset_px ?? null
           },
-          top_hypotheses_from: atFromCandidates.slice(0, 5).map(summarize),
-          top_hypotheses_to: atToCandidates.slice(0, 5).map(summarize)
+          hypothesis_count_from: atFromCandidates.length,
+          hypothesis_count_to: atToCandidates.length,
+          top_hypotheses_from: atFromCandidates.map(summarize),
+          top_hypotheses_to: atToCandidates.map(summarize),
+          near_tip_endpoint_comparison: {
+            offset_limit_px: 4,
+            support_from: atFromCandidates.filter(item => Number.isFinite(item.tip_offset_px) && item.tip_offset_px <= 4)
+              .reduce((best, item) => !best || item.support_ratio > best.support_ratio ? item.support_ratio : best, null),
+            support_to: atToCandidates.filter(item => Number.isFinite(item.tip_offset_px) && item.tip_offset_px <= 4)
+              .reduce((best, item) => !best || item.support_ratio > best.support_ratio ? item.support_ratio : best, null),
+            direction_favored_by_near_tip_evidence: (() => {
+              const score = endpoint => endpoint.filter(item => Number.isFinite(item.tip_offset_px) && item.tip_offset_px <= 4)
+                .reduce((best, item) => !best || item.support_ratio > best ? item.support_ratio : best, null);
+              const fromScore = score(atFromCandidates), toScore = score(atToCandidates);
+              if (fromScore === null || toScore === null || fromScore === toScore) return "inconclusive";
+              return fromScore > toScore ? "candidate_from" : "candidate_to";
+            })()
+          }
         }];
       })
     });
