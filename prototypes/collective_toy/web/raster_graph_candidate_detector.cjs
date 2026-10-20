@@ -294,7 +294,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
           b.support_ratio - a.support_ratio ||
           a.tip_offset_px - b.tip_offset_px ||
           a.angle_degrees - b.angle_degrees
-        ).slice(0, 5);
+        );
       };
       const boundaryPoint = (node, target) => {
         const c = node.center, dx = target[0] - c[0], dy = target[1] - c[1];
