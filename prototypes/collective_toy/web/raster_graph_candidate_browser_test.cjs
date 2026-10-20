@@ -32,10 +32,10 @@ function svgFor(kind) {
   } else if (kind === "chromatic") {
     // Dark node outlines, but saturated red transition strokes and arrowheads.
     drawing = node(45, 90, "A") + node(160, 90, "B") + node(275, 90, "C") +
-      '<line x1="60" y1="90" x2="145" y2="90" stroke="#e63946" stroke-width="2.5"/>' +
-      '<path d="M 136 84 L 145 90 L 136 96" fill="none" stroke="#e63946" stroke-width="2.5"/>' +
-      '<line x1="175" y1="90" x2="260" y2="90" stroke="#2878d0" stroke-width="2.5"/>' +
-      '<path d="M 251 84 L 260 90 L 251 96" fill="none" stroke="#2878d0" stroke-width="2.5"/>';
+      '<line x1="62" y1="90" x2="143" y2="90" stroke="#e63946" stroke-width="2.5"/>' +
+      '<path d="M 134 84 L 143 90 L 134 96" fill="none" stroke="#e63946" stroke-width="2.5"/>' +
+      '<line x1="177" y1="90" x2="258" y2="90" stroke="#2878d0" stroke-width="2.5"/>' +
+      '<path d="M 249 84 L 258 90 L 249 96" fill="none" stroke="#2878d0" stroke-width="2.5"/>';
   } else {
     drawing = node(45, 45, "A") + node(275, 135, "B") +
       node(45, 135, "C") + node(275, 45, "D") +
