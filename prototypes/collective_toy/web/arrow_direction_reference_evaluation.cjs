@@ -33,6 +33,14 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
 
   for (const fixture of annotations.images) {
     const result = await detectGraphCandidates(path.join(root, fixture.file));
+    for (const edge of result.edge_candidates || []) {
+      assert.equal(edge.direction_review_required, true,
+        `OCR-ARROW-DIRECTION-INTEGRATION-001: human review must remain required for ${fixture.image_id}/${edge.id || "edge"}`);
+      assert.notEqual(edge.direction_status, "accepted",
+        `OCR-ARROW-DIRECTION-INTEGRATION-001: resolver proposals must not be auto-accepted for ${fixture.image_id}/${edge.id || "edge"}`);
+      assert.equal(edge.arrowhead_presence_review_required, true,
+        `OCR-ARROW-DIRECTION-INTEGRATION-001: arrowhead presence requires review for ${fixture.image_id}/${edge.id || "edge"}`);
+    }
     const refNodes = fixture.nodes;
     const candidateToReference = new Map();
     for (const candidate of result.nodes || []) {
