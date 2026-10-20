@@ -86,8 +86,8 @@ const assert = require("node:assert/strict");
     assert.match(conditionalGraphNote, /falla/);
     const conditionalGraph = await page.locator("#graph").innerText();
     assert.match(conditionalGraph, /CONDICIÓN NO EVALUADA/);
-    const conditionalResults = await page.locator("#results").innerText();
-    assert.match(conditionalResults, /condition_not_evaluated|Condiciones bloqueadas|condiciones bloqueadas/i);
+    assert.match(conditionalGraphNote, /1 estado\(s\) alcanzable\(s\)/,
+      "Conditioned edges must not be traversed while their conditions are not evaluated");
 
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, el proceso vuelve de ejecución a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
