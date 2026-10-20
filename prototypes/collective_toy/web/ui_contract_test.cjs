@@ -51,6 +51,7 @@ const assert = require("node:assert/strict");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 3 estados y 2 conexiones/ }).waitFor();
     assert.match(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+    assert.match(await page.locator("#transcription-status").innerText(), /NO se han incorporado al grafo/);
     const descriptionDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(descriptionDraft.transitions.length, 2);
     assert.deepEqual(descriptionDraft.states, ["reposo", "ejecución", "resultado"]);
