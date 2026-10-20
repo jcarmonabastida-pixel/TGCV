@@ -440,14 +440,33 @@ async function detectGraphCandidates(imagePath, options = {}) {
       maxNodeSize: options.maxNodeSize ?? 50
     });
     detected.edge_candidates = (detected.edge_candidates || []).map(edge => {
-      const best = endpoint => Array.isArray(endpoint)
-        ? endpoint.reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null)
-        : endpoint;
+      // Select endpoint evidence by the actual two-arm arrowhead geometry,
+      // not by raw arm-pixel support alone (which often favors the connector).
+      // A candidate that does not pass these conservative gates is not used
+      // to propose direction; it remains unresolved.
+      const bestArrowhead = endpoint => {
+        const hypotheses = Array.isArray(endpoint) ? endpoint : endpoint ? [endpoint] : [];
+        const eligible = hypotheses.filter(item =>
+          Number.isFinite(item?.support_ratio) &&
+          Number.isFinite(item?.left_support_ratio) &&
+          Number.isFinite(item?.right_support_ratio) &&
+          Number.isFinite(item?.off_axis_support_ratio) &&
+          item.left_support_ratio >= 0.55 &&
+          item.right_support_ratio >= 0.55 &&
+          item.off_axis_support_ratio >= 0.35
+        );
+        return eligible.sort((a, b) =>
+          b.off_axis_support_ratio - a.off_axis_support_ratio ||
+          Math.min(b.left_support_ratio, b.right_support_ratio) - Math.min(a.left_support_ratio, a.right_support_ratio) ||
+          b.support_ratio - a.support_ratio ||
+          a.tip_offset_px - b.tip_offset_px
+        )[0] || null;
+      };
       const arrowheadPresent = inferArrowheadPresenceFromEvidence(edge);
       const decision = resolveArrowDirection({
         arrowhead_evidence: {
-          at_from: best(edge.arrowhead_evidence?.at_from),
-          at_to: best(edge.arrowhead_evidence?.at_to),
+          at_from: bestArrowhead(edge.arrowhead_hypotheses?.at_from),
+          at_to: bestArrowhead(edge.arrowhead_hypotheses?.at_to),
           ...(arrowheadPresent === false ? { arrowhead_present: false } : {})
         }
       });
