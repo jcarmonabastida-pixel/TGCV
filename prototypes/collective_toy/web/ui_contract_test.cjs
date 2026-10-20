@@ -37,7 +37,7 @@ const assert = require("node:assert/strict");
     assert.match(sourceHtml, /canvas-image-file/);
     assert.match(sourceHtml, /canvas-image-export-review/);
     assert.match(sourceHtml, /direcciones requieren confirmación humana/i);
-    assert.doesNotMatch(sourceHtml, /Tesseract|tesseract\\.js|run-ocr|https?:\\/\\/cdn/i,
+    assert.doesNotMatch(sourceHtml, /Tesseract|tesseract\.js|run-ocr|https?:\/\/cdn/i,
       "Canvas image import must not introduce OCR or a remote runtime dependency");
     assert.equal(await page.locator("#canvas-image-detect").isDisabled(), true);
     assert.equal(await page.locator("#canvas-image-export-review").isDisabled(), true);
