@@ -3,11 +3,11 @@
 const { resolveArrowDirection } = require("./arrow_direction_resolver.cjs");
 
 /**
- * Returns false only when neither endpoint has any sampled bilateral,
- * off-axis arm evidence consistent with a V-shaped arrowhead. This is a
- * conservative detector-level signal, not proof that no arrowhead exists.
- * If any such evidence exists, return null so the resolver does not treat
- * uncertain geometry as a confirmed arrowless connector.
+ * Current evidence is insufficient to classify arrowhead presence or absence.
+ * Positive V-shaped evidence is only a candidate cue, and zero sampled support
+ * is not calibrated negative evidence. Return null until both positive and
+ * negative classifications have validated confidence criteria; direction
+ * proposals remain subject to human review.
  */
 function inferArrowheadPresenceFromEvidence(edge) {
   const endpoints = [edge?.arrowhead_hypotheses?.at_from, edge?.arrowhead_hypotheses?.at_to];
