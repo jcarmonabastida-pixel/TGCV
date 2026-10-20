@@ -11,11 +11,11 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
 
 const W = 320, H = 180;
 const cases = [
-  { id: "arrow-right", kind: "clear-arrow", arrow: "right" },
-  { id: "arrow-left", kind: "clear-arrow", arrow: "left" },
-  { id: "no-arrow", kind: "connector-no-arrow", arrow: "none" },
-  { id: "ambiguous-two-heads", kind: "ambiguous", arrow: "both" },
-  { id: "branch-arrow", kind: "branch", arrow: "right" }
+  { id: "arrow-right", kind: "clear-arrow", arrow: "right", expectedDirection: "source-to-target", expectedStatus: "candidate" },
+  { id: "arrow-left", kind: "clear-arrow", arrow: "left", expectedDirection: "target-to-source", expectedStatus: "candidate" },
+  { id: "no-arrow", kind: "connector-no-arrow", arrow: "none", expectedDirection: "undetermined", expectedStatus: "unresolved" },
+  { id: "ambiguous-two-heads", kind: "ambiguous", arrow: "both", expectedDirection: "undetermined", expectedStatus: "unresolved" },
+  { id: "branch-arrow", kind: "branch", arrow: "right", expectedDirections: ["target-to-source", "target-to-source"], expectedStatus: "candidate" }
 ];
 
 function svgFor(item) {
@@ -61,6 +61,24 @@ function svgFor(item) {
         assert.equal(edge.direction_review_required, true, item.id + ": human review required");
         assert.notEqual(edge.direction_status, "accepted", item.id + ": no auto-acceptance");
         assert.equal(edge.arrowhead_presence_review_required, true, item.id + ": presence review required");
+      }
+      // These assertions validate the generated probe's known construction,
+      // not generalization to independently sourced diagrams.
+      if (item.expectedStatus) {
+        assert.ok(edges.length > 0, item.id + ": expected at least one detected edge");
+        for (const edge of edges) {
+          assert.equal(edge.direction_status, item.expectedStatus,
+            item.id + ": direction status differs from the expected probe behavior");
+          if (item.expectedDirection) assert.equal(edge.direction, item.expectedDirection,
+            item.id + ": direction differs from the generated arrow annotation");
+        }
+      }
+      if (item.expectedDirections) {
+        assert.equal(edges.length, item.expectedDirections.length,
+          item.id + ": detected edge count differs from the generated branch annotation");
+        const actual = edges.map(edge => edge.direction);
+        assert.deepEqual(actual, item.expectedDirections,
+          item.id + ": branch directions differ from the generated arrow annotations");
       }
       rows.push({
         case_id: item.id, case_kind: item.kind, edge_candidates: edges.length,
