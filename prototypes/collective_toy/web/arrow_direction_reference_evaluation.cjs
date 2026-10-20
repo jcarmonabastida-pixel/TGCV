@@ -115,20 +115,33 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
         const atToCandidates = candidates(edge.arrowhead_hypotheses?.at_to ?? edge.arrowhead_evidence?.at_to);
         const atFrom = best(atFromCandidates);
         const atTo = best(atToCandidates);
-        const bestNearEndpoint = endpoint => endpoint
-          .filter(item => Number.isFinite(item.tip_offset_px) && item.tip_offset_px <= 4)
+        // Compare candidate tip coordinates against the annotated target tip.
+        // tip_offset_px is relative to each candidate endpoint, so it cannot
+        // establish proximity to the ground-truth arrow tip.
+        const referenceTip = Array.isArray(ref.polyline) ? ref.polyline[ref.polyline.length - 1] : null;
+        const candidatesNearReferenceTip = endpoint => endpoint
+          .filter(item => referenceTip && Array.isArray(item.tip_candidate))
+          .map(item => ({
+            ...item,
+            reference_tip_error_px: Math.hypot(
+              item.tip_candidate[0] - referenceTip[0],
+              item.tip_candidate[1] - referenceTip[1]
+            )
+          }))
+          .filter(item => item.reference_tip_error_px <= 4)
           .reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null);
-        const nearFrom = bestNearEndpoint(atFromCandidates);
-        const nearTo = bestNearEndpoint(atToCandidates);
+        const nearFrom = candidatesNearReferenceTip(atFromCandidates);
+        const nearTo = candidatesNearReferenceTip(atToCandidates);
         const nearTipDirectionDiagnostic = {
           at_candidate_from_support: nearFrom?.support_ratio ?? null,
           at_candidate_to_support: nearTo?.support_ratio ?? null,
-          at_candidate_from_offset_px: nearFrom?.tip_offset_px ?? null,
-          at_candidate_to_offset_px: nearTo?.tip_offset_px ?? null,
+          at_candidate_from_reference_error_px: nearFrom ? Number(nearFrom.reference_tip_error_px.toFixed(3)) : null,
+          at_candidate_to_reference_error_px: nearTo ? Number(nearTo.reference_tip_error_px.toFixed(3)) : null,
           favored_endpoint: !nearFrom && !nearTo || (nearFrom && nearTo && nearFrom.support_ratio === nearTo.support_ratio)
             ? "inconclusive" : !nearTo || (nearFrom && nearFrom.support_ratio > nearTo.support_ratio)
               ? "candidate_from" : "candidate_to",
-          diagnostic_only: true
+          diagnostic_only: true,
+          uses_ground_truth_annotation: true
         };
         // Localization is evaluated separately from direction acceptance.
         // The annotation convention places the reference tip at the final
@@ -144,8 +157,7 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
             angle_degrees: item.angle_degrees,
             tip_candidate: item.tip_candidate
           })).sort((a, b) => a.error_px - b.error_px);
-        const nearTipHypotheses = targetEndpointHypotheses.filter(item =>
-          Number.isFinite(item.tip_offset_px) && item.tip_offset_px <= 4);
+        const nearTipHypotheses = tipErrors.filter(item => item.error_px <= 4);
         const bestNearTip = nearTipHypotheses.reduce((current, item) =>
           !current || item.support_ratio > current.support_ratio ? item : current, null);
         const bestOverall = targetEndpointHypotheses.reduce((current, item) =>
@@ -277,7 +289,7 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     endpoint_from_favored: nearTipDiagnostics.filter(item => item.favored_endpoint === "candidate_from").length,
     endpoint_to_favored: nearTipDiagnostics.filter(item => item.favored_endpoint === "candidate_to").length,
     inconclusive: nearTipDiagnostics.filter(item => item.favored_endpoint === "inconclusive").length,
-    note: "Diagnostic comparison using only hypotheses with tip_offset_px <= 4; not used by operational resolver."
+    note: "Diagnostic comparison using only hypotheses whose tip_candidate lies within 4 px of the annotated reference tip; uses ground truth and is not available to the operational resolver."
   };
   const report = {
     evaluator: "TGCV-OCR-ARROW-DIRECTION-REFERENCE-EVAL-001",
