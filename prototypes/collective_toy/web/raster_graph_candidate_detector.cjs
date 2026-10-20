@@ -328,9 +328,16 @@ async function detectGraphCandidates(imagePath, options = {}) {
           const edgeLength = Math.max(1, Math.hypot(pb[0]-pa[0], pb[1]-pa[1]));
           const unitAB = [(pb[0]-pa[0]) / edgeLength, (pb[1]-pa[1]) / edgeLength];
           const unitBA = [-unitAB[0], -unitAB[1]];
-          const arrowheadEvidenceByEndpoint = {
+          const arrowheadHypothesesByEndpoint = {
             at_from: arrowheadEvidence(pa, unitAB),
             at_to: arrowheadEvidence(pb, unitBA)
+          };
+          // Preserve the original single-object evidence contract for the
+          // detector integration tests and resolver; expose alternatives in a
+          // separate diagnostic field so observability cannot break consumers.
+          const arrowheadEvidenceByEndpoint = {
+            at_from: arrowheadHypothesesByEndpoint.at_from[0] || null,
+            at_to: arrowheadHypothesesByEndpoint.at_to[0] || null
           };
           // Direction resolution runs in Node after Canvas analysis returns.
           // Browser evaluate has no access to CommonJS module bindings.
@@ -339,6 +346,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
             from: pa, to: pb, orientation: Math.abs(pa[1]-pb[1]) <= 3 ? "horizontal" : "diagonal",
             line_support_ratio: Number(support.ratio.toFixed(3)), evidence_pixels: support.supported,
             arrowhead_evidence: arrowheadEvidenceByEndpoint,
+            arrowhead_hypotheses: arrowheadHypothesesByEndpoint,
             direction_status: "unresolved",
             direction_reason: "Direction resolution pending post-processing outside the browser context.",
             direction_evidence: null,
