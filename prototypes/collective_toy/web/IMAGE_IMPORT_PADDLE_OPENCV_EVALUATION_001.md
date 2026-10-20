@@ -32,6 +32,21 @@ The annotation manifest's blob SHA is `92bc447248b91c32fcad69e53fd46ba17b48affe`
 
 **Baseline scope clarification:** the shipped Full Chain import remains OCR/text-to-graph parsing and is not a pixel-level graph detector. The isolated custom arrowhead experiments are only local direction-discrimination diagnostics, not a full node/edge extraction pipeline. Therefore, the next benchmark must explicitly report the current shipped path as a text-only/import baseline and evaluate a first visual candidate against the annotated raster fixtures; it must not describe the comparison as two full visual detectors unless a recoverable custom end-to-end detector is identified.
 
+### First image-level OpenCV candidate result
+
+The first diagnostic candidate was executed against the exact recovered fixture set by [workflow 39425236163](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39425236163), at code commit `5a4f79ff1f7adb197af13ce3a425b9d5845d231f`. The per-image report is retained as workflow artifact `tgcv-opencv-raster-candidate-report` (artifact ID `12264839933`).
+
+| Fixture | Node matches | Undirected edges TP / FP / FN | Exact undirected topology | Runtime |
+|---|---:|---:|---|---:|
+| `SYN-LINEAR-001` | 3/3 | 2 / 0 / 0 | PASS | 7.941 ms |
+| `SYN-BRANCH-001` | 4/4 | 4 / 0 / 0 | PASS | 5.690 ms |
+| `SYN-CROSSING-001` | 4/4 | 2 / 0 / 0 | PASS | 6.938 ms |
+| **Aggregate** | **11/11; 0 FP, 0 FN** | **8 / 0 / 0** | **3/3** | **21.659 ms total** |
+
+The first run exposed one false long edge in the linear fixture (`A—C`) because the candidate treated a path through intermediate node B as a direct edge. The implementation now rejects a candidate pair when another detected node lies between its endpoints; the subsequent run recovered exact undirected topology on all three fixtures.
+
+**Interpretation is deliberately limited:** the candidate currently resolves **0/8 edge directions** and marks all directions unknown for human review. Therefore it passes only the initial synthetic *undirected topology* gate; it does not pass the directed-structure gate, does not establish real-image quality, and is not integrated into the demonstrator. The fixture set is tiny and its annotations are not adjudicated.
+
 ## 2. Target user flow
 
 1. User selects an image locally.
