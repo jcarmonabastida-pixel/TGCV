@@ -96,6 +96,18 @@ function geometryShortlist(hypotheses) {
   return eligible.slice(0, 3).map(candidateSummary);
 }
 
+// Mirror the resolver-input selection for diagnostics only: prefer eligible
+// bilateral hypotheses by off-axis support, then arm balance/support, then offset;
+// if none qualifies, preserve the same measured-support fallback as the detector.
+function resolverInputGeometry(hypotheses) {
+  const shortlisted = geometryShortlist(hypotheses);
+  if (shortlisted.length) return shortlisted[0];
+  const fallback = (Array.isArray(hypotheses) ? hypotheses : [])
+    .filter(item => Number.isFinite(item?.support_ratio))
+    .sort((a, b) => b.support_ratio - a.support_ratio)[0];
+  return candidateSummary(fallback);
+}
+
 (async () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "tgcv-arrow-geometry-"));
   const browser = await chromium.launch({ headless: true });
@@ -122,11 +134,20 @@ function geometryShortlist(hypotheses) {
         },
         edge_candidates: edges.length,
         observations: edges.map(edge => ({
+          edge_from: edge.from,
+          edge_to: edge.to,
+          source_candidate_node_id: edge.source_candidate_node_id,
+          target_candidate_node_id: edge.target_candidate_node_id,
           direction: edge.direction,
           direction_status: edge.direction_status,
           direction_evidence: edge.direction_evidence,
-          from_selected_geometry: candidateSummary(edge.arrowhead_evidence?.at_from),
-          to_selected_geometry: candidateSummary(edge.arrowhead_evidence?.at_to),
+          // Raw compatibility fields are not necessarily the resolver's chosen hypotheses.
+          raw_from_geometry: candidateSummary(edge.arrowhead_evidence?.at_from),
+          raw_to_geometry: candidateSummary(edge.arrowhead_evidence?.at_to),
+          resolver_input_from_geometry: resolverInputGeometry(
+            edge.arrowhead_hypotheses?.at_from ?? edge.arrowhead_evidence?.at_from),
+          resolver_input_to_geometry: resolverInputGeometry(
+            edge.arrowhead_hypotheses?.at_to ?? edge.arrowhead_evidence?.at_to),
           from_geometry_shortlist: geometryShortlist(edge.arrowhead_hypotheses?.at_from),
           to_geometry_shortlist: geometryShortlist(edge.arrowhead_hypotheses?.at_to),
           human_review_required: edge.direction_review_required,
