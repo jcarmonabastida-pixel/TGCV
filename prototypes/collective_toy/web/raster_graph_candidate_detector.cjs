@@ -472,8 +472,8 @@ async function detectGraphCandidates(imagePath, options = {}) {
       const arrowheadPresent = inferArrowheadPresenceFromEvidence(edge);
       const decision = resolveArrowDirection({
         arrowhead_evidence: {
-          at_from: bestArrowhead(edge.arrowhead_evidence?.at_from),
-          at_to: bestArrowhead(edge.arrowhead_evidence?.at_to),
+          at_from: bestArrowhead(edge.arrowhead_hypotheses?.at_from ?? edge.arrowhead_evidence?.at_from),
+          at_to: bestArrowhead(edge.arrowhead_hypotheses?.at_to ?? edge.arrowhead_evidence?.at_to),
           ...(arrowheadPresent === false ? { arrowhead_present: false } : {})
         }
       });
