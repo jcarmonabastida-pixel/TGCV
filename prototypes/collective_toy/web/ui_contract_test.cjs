@@ -97,10 +97,11 @@ const assert = require("node:assert/strict");
     await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 2 conexiones/ }).waitFor();
     const irrigationDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(irrigationDraft.transitions.length, 2, "Irrigation description must preserve both conditioned transitions");
+    assert.equal(irrigationDraft.initial_state, "reposo", "The initial-state declaration must be applied to the model");
     assert.ok(irrigationDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "riego activo" && edge.condition === "la humedad del suelo es baja"));
     assert.ok(irrigationDraft.transitions.some((edge) => edge.source === "riego activo" && edge.target === "reposo" && edge.condition === "la humedad del suelo es suficiente"));
-    assert.match(await page.locator("#transcription-status").innerText(), /El sistema comienza en reposo/,
-      "Unsupported initial-state wording must remain visible rather than be silently discarded");
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /El sistema comienza en reposo/,
+      "A recognized initial-state declaration must not remain pending");
 
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
