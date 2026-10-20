@@ -359,6 +359,53 @@ const assert = require("node:assert/strict");
     assert.deepEqual(importedGraph.states, ["A", "B", "C"]);
     assert.equal(importedGraph.transitions.length, 2);
     assert.equal(importedGraph.initial_state, "A");
+    const mermaidProjection = {
+      states: importedGraph.states,
+      initial_state: importedGraph.initial_state,
+      transitions: importedGraph.transitions.map(({ source, target }) => ({ source, target }))
+    };
+
+    // DOT must converge to the same internal model as Mermaid.
+    await page.locator("#graph-file").setInputFiles({
+      name: "sample-flow.dot",
+      mimeType: "text/vnd.graphviz",
+      buffer: Buffer.from("digraph G {\n  A -> B;\n  B -> C;\n}")
+    });
+    await page.locator("#file-status").filter({ hasText: "3 estados y 2 conexiones" }).waitFor();
+    const dotGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual({
+      states: dotGraph.states,
+      initial_state: dotGraph.initial_state,
+      transitions: dotGraph.transitions.map(({ source, target }) => ({ source, target }))
+    }, mermaidProjection, "DOT and Mermaid imports must produce the same editable internal graph");
+
+    // GraphML must converge to that same internal model.
+    await page.locator("#graph-file").setInputFiles({
+      name: "sample-flow.graphml",
+      mimeType: "application/graphml+xml",
+      buffer: Buffer.from('<?xml version="1.0"?><graphml><graph id="G" edgedefault="directed"><node id="A"/><node id="B"/><node id="C"/><edge id="e1" source="A" target="B"/><edge id="e2" source="B" target="C"/></graph></graphml>')
+    });
+    await page.locator("#file-status").filter({ hasText: "3 estados y 2 conexiones" }).waitFor();
+    const graphmlGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual({
+      states: graphmlGraph.states,
+      initial_state: graphmlGraph.initial_state,
+      transitions: graphmlGraph.transitions.map(({ source, target }) => ({ source, target }))
+    }, mermaidProjection, "GraphML and Mermaid imports must produce the same editable internal graph");
+
+    // The explicit JSON route must converge to the same internal model too.
+    await page.locator("#json-file").setInputFiles({
+      name: "sample-flow.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(graphmlGraph))
+    });
+    await page.locator("#file-status").filter({ hasText: "Archivo cargado y validado" }).waitFor();
+    const jsonGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual({
+      states: jsonGraph.states,
+      initial_state: jsonGraph.initial_state,
+      transitions: jsonGraph.transitions.map(({ source, target }) => ({ source, target }))
+    }, mermaidProjection, "JSON import must converge to the same editable internal graph");
 
     // The visual editor can add a state, connect it, and select a new initial state.
     await page.locator("#new-state-id").fill("D");
