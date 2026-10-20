@@ -99,6 +99,25 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
         }
       }
     }
+    const minimumFixtureCoverage = Math.ceil(
+      fixture.edges.filter(edge => edge.direction === "directed" && edge.arrow_status === "clear").length * 0.5
+    );
+    if (fixtureProposed < minimumFixtureCoverage) {
+      const diagnostic = (result.edge_candidates || []).map(edge => ({
+        edge_id: edge.id,
+        from: edge.from,
+        to: edge.to,
+        direction: edge.direction,
+        direction_status: edge.direction_status,
+        direction_reason: edge.direction_reason,
+        direction_evidence: edge.direction_evidence,
+        at_from: edge.arrowhead_evidence?.at_from,
+        at_to: edge.arrowhead_evidence?.at_to
+      }));
+      process.stderr.write(
+        `ARROW-DIRECTION-FAILURE-DIAGNOSTIC ${fixture.image_id}: ${JSON.stringify(diagnostic)}\\n`
+      );
+    }
     rows.push({
       fixture: fixture.image_id,
       reference_edges: fixture.edges.length,
