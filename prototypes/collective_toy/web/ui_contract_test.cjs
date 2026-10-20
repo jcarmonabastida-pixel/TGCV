@@ -46,6 +46,9 @@ const assert = require("node:assert/strict");
       console.error("[ui-contract image-preview diagnostics]", JSON.stringify(diagnostics));
       throw error;
     }
+    assert.equal(await page.locator("#source-image-review-preview").isVisible(), true, "the source image must stay visible beside the graph during review");
+    assert.equal(await page.locator("#source-image-review-preview").getAttribute("src"), await page.locator("#image-preview").getAttribute("src"));
+    assert.equal(await page.locator("#source-image-review-empty").isVisible(), false);
     assert.match(await page.locator("#image-status").innerText(), /OCR opcional|OCR/i);
     assert.equal(await page.locator("#clear-image").isEnabled(), true);
     assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), true);
@@ -114,6 +117,37 @@ const assert = require("node:assert/strict");
     let reviewed = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(reviewed.transitions.length, 2);
     assert.doesNotMatch(await page.locator("#graph-review-warnings").innerText(), /par\(es\).*duplicado/i);
+    await page.locator("#transition-review-list").getByRole("button", { name: /Invertir dirección review_ab/ }).click();
+    reviewed = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(reviewed.transitions.find(t => t.id === "review_ab").source, "B");
+    assert.equal(reviewed.transitions.find(t => t.id === "review_ab").target, "A");
+    await page.locator("#transition-review-list").getByRole("button", { name: /Marcar dirección sin resolver review_ab/ }).click();
+    assert.match(await page.locator("#graph-review-warnings").innerText(), /dirección sin resolver/i);
+    await page.locator("#image-file").setInputFiles({ name: "review-source.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jLZ8AAAAASUVORK5CYII=", "base64") });
+    await page.getByText(/Imagen cargada:/).waitFor();
+    const reviewDownloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", { name: /Exportar estado de revisión/ }).click();
+    const reviewDownload = await reviewDownloadPromise;
+    assert.match(reviewDownload.suggestedFilename(), /human-review\.json$/);
+    const reviewPath = await reviewDownload.path();
+    const reviewArtifact = JSON.parse(fs.readFileSync(reviewPath, "utf8"));
+    assert.equal(reviewArtifact.review_schema_version, "collective-toy-human-review-001");
+    assert.equal(reviewArtifact.source_image.filename, "review-source.png");
+    assert.match(reviewArtifact.source_image.data_url, /^data:image\/png;base64,/);
+    assert.equal(reviewArtifact.review.unresolved_directions.length, 1);
+    assert.equal(reviewArtifact.review.unresolved_directions[0].transition_id, "review_ab");
+    assert.match(reviewArtifact.review.status, /needs-review/);
+    await page.locator("#transition-review-list").getByRole("button", { name: /Confirmar orientación actual review_ab/ }).click();
+    const confirmedReviewDownloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", { name: /Exportar estado de revisión/ }).click();
+    const confirmedReviewDownload = await confirmedReviewDownloadPromise;
+    const confirmedReviewPath = await confirmedReviewDownload.path();
+    const confirmedArtifact = JSON.parse(fs.readFileSync(confirmedReviewPath, "utf8"));
+    assert.equal(confirmedArtifact.review.status, "review-decisions-recorded");
+    assert.equal(confirmedArtifact.review.unresolved_directions.length, 0);
+    assert.equal(confirmedArtifact.review.manually_confirmed_directions.length, 1);
+    assert.equal(confirmedArtifact.review.manually_confirmed_directions[0].transition_id, "review_ab");
+    assert.doesNotMatch(await page.locator("#graph-review-warnings").innerText(), /dirección sin resolver/i);
     await page.locator("#transition-review-list").getByRole("button", { name: /Eliminar conexión review_bc/ }).click();
     reviewed = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(reviewed.transitions.length, 1);
@@ -481,6 +515,45 @@ const assert = require("node:assert/strict");
     await page.locator("#run").click();
     await page.locator('#graph path[data-transition-id="t_import_1"]').waitFor({ state: "attached" });
     assert.equal(await page.locator('#graph path[data-transition-id="t_import_1"]').getAttribute("marker-end"), "none");
+
+    // End-to-end manual image-to-review workflow: image stays visible, transcription becomes an editable graph,
+    // direction ambiguity remains unresolved, and the exported review keeps source image plus graph snapshot.
+    const imageFlowPage = await browser.newPage();
+    await imageFlowPage.goto("file://" + htmlPath);
+    await imageFlowPage.locator("#image-file").setInputFiles({
+      name: "manual-flow-source.png",
+      mimeType: "image/png",
+      buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jLZ8AAAAASUVORK5CYII=", "base64")
+    });
+    await imageFlowPage.getByText(/Imagen cargada: manual-flow-source\.png/).waitFor();
+    assert.equal(await imageFlowPage.locator("#source-image-review-preview").isVisible(), true);
+    await imageFlowPage.locator("#image-transcription").fill("graph LR\\n  A --> B\\n  B --- C");
+    await imageFlowPage.locator("#convert-transcription").click();
+    await imageFlowPage.locator("#transcription-status").filter({ hasText: /Borrador creado: 3 estados y 2 conexiones/ }).waitFor();
+    const imageFlowModel = JSON.parse(await imageFlowPage.locator("#model").inputValue());
+    assert.deepEqual(imageFlowModel.states, ["A", "B", "C"]);
+    assert.equal(imageFlowModel.transitions.length, 2);
+    assert.equal(await imageFlowPage.locator("#source-image-review-preview").isVisible(), true,
+      "the source image must remain visible after transcription is converted to a graph");
+    assert.match(await imageFlowPage.locator("#graph-review-summary-text").innerText(), /Direcciones pendientes: 1/);
+    await imageFlowPage.locator("#edge-source").selectOption("C");
+    await imageFlowPage.locator("#rename-state-id").fill("C_reviewed");
+    await imageFlowPage.locator("#rename-state").click();
+    const renamedFlowModel = JSON.parse(await imageFlowPage.locator("#model").inputValue());
+    assert.deepEqual(renamedFlowModel.states, ["A", "B", "C_reviewed"]);
+    assert.equal(renamedFlowModel.transitions[1].target, "C_reviewed", "renaming a state must update edge endpoints");
+    assert.match(await imageFlowPage.locator("#graph-review-summary-text").innerText(), /Direcciones pendientes: 1/, "renaming must preserve unresolved-direction review state");
+    const imageFlowExportPromise = imageFlowPage.waitForEvent("download");
+    await imageFlowPage.getByRole("button", { name: /Exportar estado de revisión/ }).click();
+    const imageFlowDownload = await imageFlowExportPromise;
+    const imageFlowArtifact = JSON.parse(fs.readFileSync(await imageFlowDownload.path(), "utf8"));
+    assert.equal(imageFlowArtifact.source_image.filename, "manual-flow-source.png");
+    assert.equal(imageFlowArtifact.model.transitions.length, 2);
+    assert.deepEqual(imageFlowArtifact.model.states, ["A", "B", "C_reviewed"]);
+    assert.equal(imageFlowArtifact.model.transitions[1].target, "C_reviewed");
+    assert.equal(imageFlowArtifact.review.unresolved_directions.length, 1);
+    assert.equal(imageFlowArtifact.review.unresolved_directions[0].transition_id, "t_import_2");
+    await imageFlowPage.close();
     console.log("PASS: UI terminology, profile switching, relation add/remove, edit/run, fail-closed recovery, import/export, replay/tamper checks, and review/run order independence.");
   } finally {
     await browser.close();
