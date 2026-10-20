@@ -46,6 +46,9 @@ const assert = require("node:assert/strict");
       console.error("[ui-contract image-preview diagnostics]", JSON.stringify(diagnostics));
       throw error;
     }
+    assert.equal(await page.locator("#source-image-review-preview").isVisible(), true, "the source image must stay visible beside the graph during review");
+    assert.equal(await page.locator("#source-image-review-preview").getAttribute("src"), await page.locator("#image-preview").getAttribute("src"));
+    assert.equal(await page.locator("#source-image-review-empty").isVisible(), false);
     assert.match(await page.locator("#image-status").innerText(), /OCR opcional|OCR/i);
     assert.equal(await page.locator("#clear-image").isEnabled(), true);
     assert.equal(await page.getByRole("button", { name: /Reconocer texto \(OCR\)/ }).isEnabled(), true);
