@@ -77,6 +77,62 @@ def line_support(gray: np.ndarray, a: tuple[float, float], b: tuple[float, float
     return hits / total if total else 0.0
 
 
+def endpoint_arrowhead_score(gray: np.ndarray, endpoint, other) -> tuple[float, list[int]]:
+    """Estimate whether a triangular arrowhead is present at one node boundary.
+
+    Measure dark-pixel width across the edge corridor at increasing distances
+    outward from the node. A triangular head should widen behind its tip and
+    then return to the thin shaft. This is only a candidate signal; the result
+    is never auto-accepted.
+    """
+    dx, dy = other[0] - endpoint[0], other[1] - endpoint[1]
+    length = float(np.hypot(dx, dy))
+    if length == 0:
+        return 0.0, []
+    ux, uy = dx / length, dy / length
+    px, py = -uy, ux
+    widths = []
+    height, width = gray.shape
+    for distance in (2, 4, 6, 8, 10, 12, 14):
+        cx = endpoint[0] + ux * (endpoint[2] + distance)
+        cy = endpoint[1] + uy * (endpoint[2] + distance)
+        count = 0
+        for offset in range(-8, 9):
+            x = int(round(cx + px * offset))
+            y = int(round(cy + py * offset))
+            if 0 <= x < width and 0 <= y < height and int(gray[y, x]) < DARK_THRESHOLD:
+                count += 1
+        widths.append(count)
+    base_width = max(widths[1:5])
+    shaft_width = float(np.median(widths[5:]))
+    return max(0.0, base_width - shaft_width), widths
+
+
+def propose_edge_direction(gray: np.ndarray, left, right) -> dict:
+    left_score, left_profile = endpoint_arrowhead_score(gray, left, right)
+    right_score, right_profile = endpoint_arrowhead_score(gray, right, left)
+    delta = right_score - left_score
+    # A proposal is emitted only when the endpoint profiles separate clearly.
+    if delta >= 1.5:
+        direction = "left-to-right"
+        status = "candidate-needs-human-review"
+    elif delta <= -1.5:
+        direction = "right-to-left"
+        status = "candidate-needs-human-review"
+    else:
+        direction = "unknown"
+        status = "needs-human-review"
+    return {
+        "direction": direction,
+        "status": status,
+        "arrowhead_score_at_left_endpoint": round(left_score, 3),
+        "arrowhead_score_at_right_endpoint": round(right_score, 3),
+        "score_delta_right_minus_left": round(delta, 3),
+        "left_endpoint_width_profile": left_profile,
+        "right_endpoint_width_profile": right_profile,
+    }
+
+
 def match_nodes(candidates, reference_nodes):
     pairs = []
     for ci, candidate in enumerate(candidates):
@@ -155,12 +211,14 @@ def main():
                 continue
             support = line_support(image, a[:2], b[:2])
             if support >= EDGE_SUPPORT_THRESHOLD:
+                direction_proposal = propose_edge_direction(image, a, b)
                 candidate_edges.append({
                     "source_candidate": left,
                     "target_candidate": right,
                     "support": round(support, 4),
-                    "direction": "unknown",
-                    "status": "needs-human-review",
+                    "direction": direction_proposal["direction"],
+                    "status": direction_proposal["status"],
+                    "arrowhead_profile": direction_proposal,
                 })
         mapped_pairs = [
             tuple(sorted((mapping[e["source_candidate"]], mapping[e["target_candidate"]])))
@@ -168,6 +226,29 @@ def main():
             if e["source_candidate"] in mapping and e["target_candidate"] in mapping
         ]
         edge_score = score_edges(item["edges"], mapped_pairs)
+        reference_directed_pairs = {
+            (edge["source_node_id"], edge["target_node_id"])
+            for edge in item["edges"] if edge["direction"] == "directed"
+        }
+        direction_correct = 0
+        direction_wrong = 0
+        direction_unresolved = 0
+        for edge in candidate_edges:
+            left, right = edge["source_candidate"], edge["target_candidate"]
+            if left not in mapping or right not in mapping:
+                direction_unresolved += 1
+                continue
+            if edge["direction"] == "unknown":
+                direction_unresolved += 1
+                continue
+            if edge["direction"] == "left-to-right":
+                proposed = (mapping[left], mapping[right])
+            else:
+                proposed = (mapping[right], mapping[left])
+            if proposed in reference_directed_pairs:
+                direction_correct += 1
+            else:
+                direction_wrong += 1
         node_tp = len(matched_candidates)
         node_fp = len(node_candidates) - node_tp
         node_fn = len(item["nodes"]) - len(matched_refs)
@@ -197,9 +278,11 @@ def main():
             "candidate_pairs_blocked_by_intermediate_node": blocked_by_intermediate_node,
             "direction": {
                 "reference_directed_edges": sum(1 for e in item["edges"] if e["direction"] == "directed"),
-                "candidate_directions_unresolved": len(candidate_edges),
-                "directional_exact_match": False,
-                "policy": "abstain; this candidate does not infer arrow direction",
+                "candidate_directions_proposed_correct": direction_correct,
+                "candidate_directions_proposed_wrong": direction_wrong,
+                "candidate_directions_unresolved": direction_unresolved,
+                "directional_exact_match": direction_correct == len(item["edges"]) and direction_wrong == 0 and direction_unresolved == 0,
+                "policy": "arrowhead-profile direction proposals remain unaccepted until human review",
             },
             "candidate_node_to_reference_mapping_for_scoring_only": {
                 str(k): v for k, v in sorted(mapping.items())
@@ -217,7 +300,7 @@ def main():
             "version": cv2.__version__,
             "node_method": "HoughCircles on blurred grayscale",
             "edge_method": "straight-corridor dark-pixel support between candidate node centres",
-            "direction_method": "none; direction deliberately unresolved",
+            "direction_method": "candidate arrowhead profile: cross-section width expands behind a triangular tip; all proposals require human review",
             "node_match_tolerance_px": NODE_MATCH_TOLERANCE_PX,
             "edge_support_threshold": EDGE_SUPPORT_THRESHOLD,
             "dark_threshold": DARK_THRESHOLD,
@@ -232,7 +315,10 @@ def main():
             "edge_fn": sum(c["edge_topology_undirected"]["fn"] for c in cases),
             "images_with_exact_undirected_topology": sum(c["edge_topology_undirected"]["exact_undirected_topology_match"] for c in cases),
             "undirected_topology_fixture_gate_pass": all(c["edge_topology_undirected"]["exact_undirected_topology_match"] for c in cases),
-            "images_with_direction_fully_resolved": 0,
+            "images_with_direction_fully_resolved": sum(c["direction"]["directional_exact_match"] for c in cases),
+            "direction_proposals_correct": sum(c["direction"]["candidate_directions_proposed_correct"] for c in cases),
+            "direction_proposals_wrong": sum(c["direction"]["candidate_directions_proposed_wrong"] for c in cases),
+            "direction_proposals_unresolved": sum(c["direction"]["candidate_directions_unresolved"] for c in cases),
             "runtime_ms_total": round((time.perf_counter() - started_all) * 1000, 3),
         },
         "cases": cases,
