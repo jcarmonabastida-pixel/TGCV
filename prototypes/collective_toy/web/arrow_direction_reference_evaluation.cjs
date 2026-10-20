@@ -290,6 +290,11 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     "synthetic direction regression: no confidently proposed direction may contradict the annotated source/target");
   assert.equal(correct, proposed,
     "synthetic direction regression: every proposed direction must match the annotation; uncertain cases may remain unresolved");
+  const minimumProposalCoverage = Math.ceil(clearArrowReferenceEdges * 0.75);
+  assert.ok(proposed >= minimumProposalCoverage,
+    `synthetic direction coverage regression: expected at least ${minimumProposalCoverage}/${clearArrowReferenceEdges} clear arrows proposed (75%); got ${proposed}/${clearArrowReferenceEdges}`);
+  assert.ok(unresolved <= clearArrowReferenceEdges - minimumProposalCoverage,
+    "synthetic direction coverage regression: unresolved count exceeds the allowed 25% for this fixture set");
 })().catch(error => {
   console.error(error && error.stack || error);
   process.exitCode = 1;
