@@ -37,13 +37,13 @@ const assert = require("node:assert/strict");
     assert.match(sourceHtml, /Transcripción asistida de texto a grafo/);
     assert.doesNotMatch(sourceHtml, /Importación desde imagen|PaddleOCR|Tesseract\.js|OpenCV como alternativa/i,
       "The retired image-detection/OCR workstream must not be presented as a supported entry route");
-    await page.locator("summary").filter({ hasText: /Transcripción asistida de texto a grafo/ }).click();
+    await page.locator("details.relation-editor").filter({ hasText: /Transcripción asistida de texto a grafo/ }).evaluate((el) => { el.open = true; });
 
     // Natural-language description proposes a graph locally, exposes unparsed sentences, and remains reviewable.
     assert.match(sourceHtml, /Describe el sistema con tus propias palabras/);
     assert.match(sourceHtml, /No requiere API externa/);
     assert.match(sourceHtml, /Proponer grafo desde la descripción/);
-    assert.doesNotMatch(sourceHtml, /Importación desde imagen|PaddleOCR|Tesseract\\.js|OpenCV como alternativa/i,
+    assert.doesNotMatch(sourceHtml, /Importación desde imagen|PaddleOCR|Tesseract\.js|OpenCV como alternativa/i,
       "The retired image-detection/OCR workstream must not be presented as a supported entry route");
     await page.locator("summary").filter({ hasText: /Transcripción asistida de texto a grafo/ }).click();
     const modelBeforeDescription = await page.locator("#model").inputValue();
