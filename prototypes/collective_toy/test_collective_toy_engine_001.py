@@ -169,6 +169,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
     def test_conditional_transition_is_accepted_but_not_explored(self):
         model = copy.deepcopy(self.model)
+        model["schema_version"] = "collective-toy-input-002"
         model["transitions"][0]["condition"] = "humidity is low"
         result = run_model(model)
         baseline = result["scenario_results"]["baseline"]
@@ -187,6 +188,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
     def test_conditional_transition_condition_must_be_non_empty(self):
         model = copy.deepcopy(self.model)
+        model["schema_version"] = "collective-toy-input-002"
         model["transitions"][0]["condition"] = "   "
         with self.assertRaisesRegex(ModelValidationError, "condition must be a non-empty string"):
             run_model(model)
@@ -1198,7 +1200,7 @@ class CollectiveToyEngineTests(unittest.TestCase):
             (
                 "non-string-schema-version",
                 {**copy.deepcopy(self.model), "schema_version": 7},
-                "schema_version must be 'collective-toy-input-001'",
+                "schema_version must be one of",
             ),
             (
                 "non-string-model-id",
