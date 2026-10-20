@@ -10,6 +10,10 @@ function resolveArrowDirection(edge, options = {}) {
   const minSamples = options.minSamples ?? 20;
   const atFrom = edge?.arrowhead_evidence?.at_from;
   const atTo = edge?.arrowhead_evidence?.at_to;
+  if (edge?.arrowhead_evidence?.arrowhead_present === false) {
+    return { direction: "undetermined", direction_status: "unresolved",
+      direction_reason: "No arrowhead is detected; connector direction must remain unresolved." };
+  }
   const valid = score => score &&
     Number.isFinite(score.support_ratio) &&
     Number.isFinite(score.tested_samples) &&
