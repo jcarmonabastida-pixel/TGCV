@@ -75,8 +75,12 @@ const assert = require("node:assert/strict");
     await page.locator("#system-description").fill("Si cumple los criterios, el proceso pasa de evaluación a aprobado. Cuando falla, el proceso vuelve de ejecución a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-status").filter({ hasText: /No se identificaron transiciones/ }).waitFor();
-    assert.match(await page.locator("#transcription-status").innerText(), /No se identificaron transiciones/,
+    const conditionalStatus = await page.locator("#transcription-status").innerText();
+    assert.match(conditionalStatus, /No se identificaron transiciones/,
       "Conditional sentences must not silently lose their conditions");
+    assert.match(conditionalStatus, /Frases pendientes de aclaración/);
+    assert.match(conditionalStatus, /Si cumple los criterios/);
+    assert.match(conditionalStatus, /Cuando falla/);
     await page.locator("#system-description").fill("Texto vago sin relación identificable.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     assert.match(await page.locator("#transcription-status").innerText(), /No se identificaron transiciones/);
