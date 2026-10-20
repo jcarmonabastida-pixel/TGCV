@@ -11,7 +11,7 @@
 
 | Contract area | Evidence/status | Boundary |
 |---|---|---|
-| Load PNG/JPEG/WebP as a visual reference | Implemented in the browser UI | The image remains a reference; this does not extract topology |
+| Load PNG/JPEG/WebP as a visual reference | Implemented in the browser UI | The source image remains visible beside the editable graph during review; this does not extract topology |
 | Optional OCR text extraction | Implemented with Tesseract.js (`spa+eng`) | OCR output is text, not node/edge/direction detection |
 | Convert text/connection notation into a graph draft | Implemented | The user must provide/correct connection notation; conversion is not pixel-level graph reconstruction |
 | Edit graph and remove/create connections | Existing graph editor | Human review remains necessary |
