@@ -29,6 +29,13 @@ function svgFor(kind) {
     drawing = node(45, 45, "A") + node(45, 135, "B") + node(160, 90, "C") +
       line(60, 49, 145, 84) + head(145, 84, 85, 35) +
       line(60, 131, 145, 96) + head(145, 96, 85, -35);
+  } else if (kind === "chromatic") {
+    // Dark node outlines, but saturated red transition strokes and arrowheads.
+    drawing = node(45, 90, "A") + node(160, 90, "B") + node(275, 90, "C") +
+      '<line x1="60" y1="90" x2="145" y2="90" stroke="#e63946" stroke-width="2.5"/>' +
+      '<path d="M 136 84 L 145 90 L 136 96" fill="none" stroke="#e63946" stroke-width="2.5"/>' +
+      '<line x1="175" y1="90" x2="260" y2="90" stroke="#2878d0" stroke-width="2.5"/>' +
+      '<path d="M 251 84 L 260 90 L 251 96" fill="none" stroke="#2878d0" stroke-width="2.5"/>';
   } else {
     drawing = node(45, 45, "A") + node(275, 135, "B") +
       node(45, 135, "C") + node(275, 45, "D") +
@@ -62,7 +69,7 @@ function svgFor(kind) {
     // Characterization probes use the actual browser Canvas detector, not a stub.
     // They report current topology recovery without claiming general accuracy.
     const observations = [];
-    for (const kind of ["linear", "branch", "convergence", "crossing"]) {
+    for (const kind of ["linear", "branch", "convergence", "crossing", "chromatic"]) {
       const detected = await page.evaluate(async (svg) => {
         const source = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
         return globalThis.TGCVRasterGraphCandidateDetector.detectGraphCandidatesFromImage(source);
@@ -81,7 +88,7 @@ function svgFor(kind) {
       assert.equal(detected.edge_candidates.length, 2, kind + ": expected two geometric edge candidates");
       const centersByPosition = detected.nodes.map((node) => node.center)
         .sort((a, b) => a[1] - b[1] || a[0] - b[0]);
-      const expectedCenters = kind === "linear" ? [[45, 90], [160, 90], [275, 90]]
+      const expectedCenters = kind === "linear" || kind === "chromatic" ? [[45, 90], [160, 90], [275, 90]]
         : kind === "branch" ? [[160, 45], [45, 90], [160, 135]]
         : kind === "convergence" ? [[45, 45], [160, 90], [45, 135]]
         : [[45, 45], [275, 45], [45, 135], [275, 135]];
@@ -92,7 +99,7 @@ function svgFor(kind) {
       assert.equal(reviewDraft.unresolved_transition_ids.length, reviewDraft.model.transitions.length,
         "direction proposals from the actual detector must remain unresolved for human confirmation");
       assert.deepEqual(reviewDraft.model.transitions.map((edge) => [edge.source, edge.target]),
-        kind === "linear" ? [["N001", "N002"], ["N002", "N003"]]
+        kind === "linear" || kind === "chromatic" ? [["N001", "N002"], ["N002", "N003"]]
           : kind === "branch" ? [["N002", "N001"], ["N002", "N003"]]
           : kind === "convergence" ? [["N001", "N002"], ["N003", "N002"]]
           : [["N001", "N004"], ["N003", "N002"]],
