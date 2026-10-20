@@ -67,6 +67,22 @@ function svgFor(item) {
       if (item.expectedStatus) {
         assert.ok(edges.length > 0, item.id + ": expected at least one detected edge");
         for (const edge of edges) {
+          if (edge.direction_status !== item.expectedStatus ||
+              (item.expectedDirection && edge.direction !== item.expectedDirection)) {
+            process.stderr.write("ARROW-ADVERSARIAL-FAILURE-DIAGNOSTIC " + item.id + ": " +
+              JSON.stringify(edges.map(candidate => ({
+                id: candidate.id,
+                from: candidate.from,
+                to: candidate.to,
+                direction: candidate.direction,
+                direction_status: candidate.direction_status,
+                direction_reason: candidate.direction_reason,
+                direction_evidence: candidate.direction_evidence,
+                arrowhead_presence: candidate.arrowhead_presence,
+                arrowhead_evidence: candidate.arrowhead_evidence,
+                arrowhead_hypotheses: candidate.arrowhead_hypotheses
+              }))) + "\\n");
+          }
           assert.equal(edge.direction_status, item.expectedStatus,
             item.id + ": direction status differs from the expected probe behavior");
           if (item.expectedDirection) assert.equal(edge.direction, item.expectedDirection,
