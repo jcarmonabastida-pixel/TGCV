@@ -451,8 +451,8 @@ async function detectGraphCandidates(imagePath, options = {}) {
           Number.isFinite(item?.left_support_ratio) &&
           Number.isFinite(item?.right_support_ratio) &&
           Number.isFinite(item?.off_axis_support_ratio) &&
-          item.left_support_ratio >= 0.55 &&
-          item.right_support_ratio >= 0.55 &&
+          item.left_support_ratio >= 0.50 &&
+          item.right_support_ratio >= 0.50 &&
           item.off_axis_support_ratio >= 0.25
         );
         const byArrowheadGeometry = (a, b) =>
