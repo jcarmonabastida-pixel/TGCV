@@ -12,6 +12,7 @@ const { chromium } = require("playwright");
     await page.addScriptTag({
       path: path.join(__dirname, "raster_graph_candidate_browser.js")
     });
+    await page.addScriptTag({ path: path.join(__dirname, "raster_graph_review_adapter.browser.js") });
     const result = await page.evaluate(async () => {
       const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="32" height="32" fill="white"/></svg>';
       const source = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
@@ -22,6 +23,26 @@ const { chromium } = require("playwright");
     assert.deepEqual(result.nodes, []);
     assert.deepEqual(result.edge_candidates, []);
     assert.ok(result.limitations.some((item) => item.includes("visual review")));
+    const draft = await page.evaluate(() => globalThis.TGCVRasterGraphReviewAdapter.candidateGraphToReviewDraft({
+      detector: "TGCV-RASTER-GRAPH-CANDIDATES-001",
+      status: "experimental-candidates-only",
+      image: { width: 200, height: 100 },
+      nodes: [
+        { id: "candidate-node-1", center: [30, 50] },
+        { id: "candidate-node-2", center: [170, 50] }
+      ],
+      edge_candidates: [{
+        id: "candidate-edge-1",
+        source_candidate_node_id: "candidate-node-1",
+        target_candidate_node_id: "candidate-node-2",
+        direction: "candidate",
+        direction_status: "candidate"
+      }]
+    }, { sourceName: "browser-fixture" }));
+    assert.deepEqual(draft.model.states, ["N001", "N002"]);
+    assert.equal(draft.model.transitions.length, 1);
+    assert.deepEqual(draft.unresolved_transition_ids, ["t_canvas_1"]);
+    assert.equal(draft.review.automatic_acceptance, false);
     process.stdout.write("CANVAS-BROWSER-ENTRY-001: native browser Canvas entry point and candidate contract passed.\n");
   } finally {
     await browser.close();
