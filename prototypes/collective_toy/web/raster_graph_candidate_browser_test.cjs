@@ -4,6 +4,32 @@ const assert = require("node:assert/strict");
 const path = require("node:path");
 const { chromium } = require("playwright");
 
+function svgFor(kind) {
+  const node = (x, y, label) =>
+    '<circle cx="' + x + '" cy="' + y + '" r="15" fill="white" stroke="#111" stroke-width="2"/>' +
+    '<text x="' + x + '" y="' + (y + 5) + '" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#111">' + label + '</text>';
+  const line = (x1, y1, x2, y2) =>
+    '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#111" stroke-width="2.5"/>';
+  const head = (x, y, dx, dy) => {
+    const length = Math.hypot(dx, dy), ux = dx / length, uy = dy / length;
+    const bx = x - ux * 9, by = y - uy * 9, px = -uy * 6, py = ux * 6;
+    return '<path d="M ' + (bx + px) + ' ' + (by + py) + ' L ' + x + ' ' + y +
+      ' L ' + (bx - px) + ' ' + (by - py) + '" fill="none" stroke="#111" stroke-width="2.5"/>';
+  };
+  let drawing;
+  if (kind === "linear") {
+    drawing = node(45, 90, "A") + node(160, 90, "B") + node(275, 90, "C") +
+      line(60, 90, 145, 90) + head(145, 90, 1, 0) +
+      line(175, 90, 260, 90) + head(260, 90, 1, 0);
+  } else {
+    drawing = node(45, 90, "A") + node(160, 45, "B") + node(160, 135, "C") +
+      line(60, 84, 145, 49) + head(145, 49, 85, -35) +
+      line(60, 96, 145, 131) + head(145, 131, 85, 35);
+  }
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">' +
+    '<rect width="320" height="180" fill="white"/>' + drawing + '</svg>';
+}
+
 (async () => {
   const browser = await chromium.launch({ headless: true });
   try {
@@ -13,16 +39,50 @@ const { chromium } = require("playwright");
       path: path.join(__dirname, "raster_graph_candidate_browser.js")
     });
     await page.addScriptTag({ path: path.join(__dirname, "raster_graph_review_adapter.browser.js") });
-    const result = await page.evaluate(async () => {
+    const blank = await page.evaluate(async () => {
       const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="32" height="32" fill="white"/></svg>';
       const source = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
       return globalThis.TGCVRasterGraphCandidateDetector.detectGraphCandidatesFromImage(source);
     });
-    assert.equal(result.detector, "TGCV-RASTER-GRAPH-CANDIDATES-001");
-    assert.equal(result.status, "experimental-candidates-only");
-    assert.deepEqual(result.nodes, []);
-    assert.deepEqual(result.edge_candidates, []);
-    assert.ok(result.limitations.some((item) => item.includes("visual review")));
+    assert.equal(blank.detector, "TGCV-RASTER-GRAPH-CANDIDATES-001");
+    assert.equal(blank.status, "experimental-candidates-only");
+    assert.deepEqual(blank.nodes, []);
+    assert.deepEqual(blank.edge_candidates, []);
+    assert.ok(blank.limitations.some((item) => item.includes("visual review")));
+
+    // Characterization probes use the actual browser Canvas detector, not a stub.
+    // They report current topology recovery without claiming general accuracy.
+    const observations = [];
+    for (const kind of ["linear", "branch"]) {
+      const detected = await page.evaluate(async (svg) => {
+        const source = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+        return globalThis.TGCVRasterGraphCandidateDetector.detectGraphCandidatesFromImage(source);
+      }, svgFor(kind));
+      assert.equal(detected.detector, "TGCV-RASTER-GRAPH-CANDIDATES-001");
+      assert.equal(detected.status, "experimental-candidates-only");
+      assert.ok(Array.isArray(detected.nodes) && Array.isArray(detected.edge_candidates));
+      assert.ok(detected.nodes.every((node) => node.review_required === true));
+      assert.ok(detected.edge_candidates.every((edge) =>
+        edge.review_required === true && edge.direction_status === "unresolved" &&
+        edge.direction === "undetermined"));
+      assert.ok(detected.nodes.every((node) =>
+        node.center.every((coordinate) => Number.isFinite(coordinate))));
+      observations.push({
+        fixture: kind,
+        expected_nodes: kind === "linear" ? 3 : 3,
+        expected_edges: kind === "linear" ? 2 : 2,
+        detected_nodes: detected.nodes.length,
+        detected_edges: detected.edge_candidates.length,
+        node_centers: detected.nodes.map((node) => node.center),
+        edge_pairs: detected.edge_candidates.map((edge) => [
+          edge.source_candidate_node_id, edge.target_candidate_node_id
+        ]),
+        direction_statuses: detected.edge_candidates.map((edge) => edge.direction_status)
+      });
+    }
+    process.stdout.write("CANVAS-REAL-DETECTOR-CHARACTERIZATION-001 " +
+      JSON.stringify(observations) + "\\n");
+
     const draft = await page.evaluate(() => globalThis.TGCVRasterGraphReviewAdapter.candidateGraphToReviewDraft({
       detector: "TGCV-RASTER-GRAPH-CANDIDATES-001",
       status: "experimental-candidates-only",
@@ -43,11 +103,11 @@ const { chromium } = require("playwright");
     assert.equal(draft.model.transitions.length, 1);
     assert.deepEqual(draft.unresolved_transition_ids, ["t_canvas_1"]);
     assert.equal(draft.review.automatic_acceptance, false);
-    process.stdout.write("CANVAS-BROWSER-ENTRY-001: native browser Canvas entry point and candidate contract passed.\n");
+    process.stdout.write("CANVAS-BROWSER-ENTRY-001: native browser Canvas entry point and candidate contract passed.\\n");
   } finally {
     await browser.close();
   }
 })().catch((error) => {
-  process.stderr.write(String(error && error.stack || error) + "\n");
+  process.stderr.write(String(error && error.stack || error) + "\\n");
   process.exitCode = 1;
 });
