@@ -244,7 +244,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
         // along the edge axis instead of sampling only the boundary point.
         // This is evidence localization only; it never accepts a direction.
         const candidates = [];
-        for (let offset = 0; offset <= 8; offset += 2) {
+        for (let offset = 0; offset <= 18; offset += 2) {
           const candidateTip = [
             Math.round(tip[0] + inwardUnit[0] * offset),
             Math.round(tip[1] + inwardUnit[1] * offset)
