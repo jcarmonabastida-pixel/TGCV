@@ -67,17 +67,19 @@ function svgFor(kind) {
         edge.direction === "undetermined"));
       assert.ok(detected.nodes.every((node) =>
         node.center.every((coordinate) => Number.isFinite(coordinate))));
+      const reviewDraft = await page.evaluate((graph) =>
+        globalThis.TGCVRasterGraphReviewAdapter.candidateGraphToReviewDraft(graph, { sourceName: "probe" }), detected);
+      assert.equal(reviewDraft.unresolved_transition_ids.length, reviewDraft.model.transitions.length,
+        "direction proposals from the actual detector must remain unresolved for human confirmation");
       observations.push({
         fixture: kind,
-        expected_nodes: kind === "linear" ? 3 : 3,
-        expected_edges: kind === "linear" ? 2 : 2,
+        expected_nodes: 3,
+        expected_edges: 2,
         detected_nodes: detected.nodes.length,
         detected_edges: detected.edge_candidates.length,
         node_centers: detected.nodes.map((node) => node.center),
-        edge_pairs: detected.edge_candidates.map((edge) => [
-          edge.source_candidate_node_id, edge.target_candidate_node_id
-        ]),
-        direction_statuses: detected.edge_candidates.map((edge) => edge.direction_status)
+        proposed_model_transitions: reviewDraft.model.transitions,
+        unresolved_transition_ids: reviewDraft.unresolved_transition_ids
       });
     }
     process.stdout.write("CANVAS-REAL-DETECTOR-CHARACTERIZATION-001 " +
