@@ -70,7 +70,7 @@ function candidateGraphToReviewDraft(detected, options = {}) {
     states,
     transitions,
     relations: [],
-    rule_profile: { type: "finite_deterministic_graph", version: "1" },
+    rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
     scenarios: [
       { id: "baseline", disabled_transitions: [] },
       { id: "import_check", disabled_transitions: [] }
