@@ -13,7 +13,7 @@
 |---|---|---|
 | Load PNG/JPEG/WebP as a visual reference | Implemented in the browser UI | The source image remains visible beside the editable graph during review; this does not extract topology |
 | Optional OCR text extraction | Implemented with Tesseract.js (`spa+eng`) | OCR output is text, not node/edge/direction detection |
-| Convert text/connection notation into a graph draft | Implemented | The user must provide/correct connection notation; conversion is not pixel-level graph reconstruction |
+| Convert text/connection notation into a graph draft | Implemented; end-to-end browser regression added in current revision | Test loads a source image, converts manually entered Mermaid notation, checks the persistent source preview, unresolved direction, and exported image+graph snapshot; not pixel-level graph reconstruction |
 | Edit graph and remove/create connections | Existing graph editor | Human review remains necessary |
 | Invert an edge direction | Added in PR #81 | User must compare with the original image |
 | Mark direction unresolved and confirm manually | Added in PR #81 | Unresolved and manually confirmed direction markers are session-level UI state until exported |
