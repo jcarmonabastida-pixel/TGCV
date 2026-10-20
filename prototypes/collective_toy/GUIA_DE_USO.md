@@ -51,7 +51,7 @@ JSON es la modalidad más explícita y adecuada cuando necesitas controlar con p
 4. Examina las frases que queden pendientes y, si procede, reformúlalas en el panel específico.
 5. Vuelve a generar la propuesta y revisa de nuevo el resultado completo.
 
-Esta modalidad usa patrones lingüísticos locales y limitados; no es un modelo general de comprensión del lenguaje. Las bifurcaciones y retornos se pueden reconocer si están formulados claramente. Las frases no interpretadas y las que contienen condiciones como “si” o “cuando” quedan pendientes y no se incorporan al grafo. El modelo ejecutable actual no representa condiciones en las transiciones. **No elimines una condición esencial para forzar la aceptación de una frase.** Si la condición afecta al significado del sistema, conserva explícita la limitación y no ejecutes el borrador como si la condición estuviera representada. La reformulación es una ayuda, no una validación automática.
+Esta modalidad usa patrones lingüísticos locales y limitados; no es un modelo general de comprensión del lenguaje. Puede reconocer transiciones condicionadas formuladas explícitamente con patrones como “Si la humedad es baja, el proceso pasa de reposo a riego activo” o “El proceso pasa de reposo a riego activo cuando la humedad es baja”. La condición se conserva como metadato de la transición y se muestra en el grafo como **condición no evaluada**. Mientras no exista un evaluador de condiciones definido y verificable, estas transiciones no se recorren al explorar trayectorias ni se ejecutan como transiciones incondicionales. Las frases no interpretadas —incluidas las frases iniciales como “El sistema comienza en reposo” cuando no encajan en un patrón reconocido— quedan pendientes y no se incorporan al grafo. Revisa las condiciones, los extremos y la dirección de cada arista; si una frase es ambigua, aclárala en vez de inventar una conexión. La reformulación es una ayuda, no una validación automática.
 
 ## 4. Revisar y preparar el modelo
 
@@ -96,7 +96,7 @@ Los hashes y la reproducción ayudan a comprobar consistencia interna. Por sí s
 - **El archivo HTML se abre con una aplicación incorrecta:** usa el menú contextual del sistema operativo y elige un navegador moderno.
 - **No se carga el ejemplo:** confirma que `example-diamond.json` está en la misma carpeta del paquete y que no has renombrado su extensión.
 - **Un grafo importado está incompleto:** el importador reconoce un subconjunto de sintaxis; corrige el modelo o usa JSON.
-- **Una frase natural queda pendiente:** revisa la frase en el panel de pendientes. No elimines condiciones importantes para que sea aceptada.
+- **Una frase natural queda pendiente:** revisa la frase en el panel de pendientes. No elimines condiciones importantes para que sea aceptada. Si la frase contiene una condición reconocida, confirma que el grafo la etiqueta como no evaluada y que no se ejecuta.
 - **La ejecución se bloquea:** inspecciona el paso exacto, el estado actual y los requisitos temporales indicados por el prototipo.
 - **La reproducción no coincide o falla la integridad:** conserva el archivo y el mensaje de validación; no edites manualmente el contenido exportado.
 

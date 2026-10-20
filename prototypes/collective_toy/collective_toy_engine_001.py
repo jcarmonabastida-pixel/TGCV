@@ -16,7 +16,7 @@ from typing import Any
 
 
 ENGINE_VERSION = "collective-toy-engine-001"
-SUPPORTED_SCHEMA = "collective-toy-input-001"
+SUPPORTED_SCHEMAS = {"collective-toy-input-001", "collective-toy-input-002"}
 
 
 class ModelValidationError(ValueError):
@@ -117,6 +117,7 @@ class Transition:
     id: str
     source: str
     target: str
+    condition: str | None = None
 
 
 def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Transition]]:
@@ -124,8 +125,9 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         raise ModelValidationError("model must be a JSON object")
     _validate_canonical_domain(model)
     _reject_unknown_keys(model, {"schema_version", "model_id", "initial_state", "states", "transitions", "relations", "rule_profile", "scenarios", "exploration"}, "model")
-    if model.get("schema_version") != SUPPORTED_SCHEMA:
-        raise ModelValidationError(f"schema_version must be {SUPPORTED_SCHEMA!r}")
+    schema_version = model.get("schema_version")
+    if schema_version not in SUPPORTED_SCHEMAS:
+        raise ModelValidationError(f"schema_version must be one of {sorted(SUPPORTED_SCHEMAS)!r}")
     if not isinstance(model.get("model_id"), str) or not model["model_id"].strip():
         raise ModelValidationError("model_id must be a non-empty string")
     states = model.get("states")
@@ -154,7 +156,7 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     for item in raw_transitions:
         if not isinstance(item, dict):
             raise ModelValidationError("each transition must be an object")
-        _reject_unknown_keys(item, {"id", "source", "target"}, "transition")
+        _reject_unknown_keys(item, {"id", "source", "target", "condition"}, "transition")
         tid, source, target = item.get("id"), item.get("source"), item.get("target")
         if any(not isinstance(x, str) or not x for x in (tid, source, target)):
             raise ModelValidationError("transition id, source, and target must be non-empty strings")
@@ -162,7 +164,12 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
             raise ModelValidationError(f"duplicate transition ID: {tid}")
         if source not in states or target not in states:
             raise ModelValidationError(f"transition {tid} references an unknown state")
-        transitions[tid] = Transition(tid, source, target)
+        condition = item.get("condition")
+        if schema_version == "collective-toy-input-001" and "condition" in item:
+            raise ModelValidationError("condition requires schema_version 'collective-toy-input-002'")
+        if condition is not None and (not isinstance(condition, str) or not condition.strip()):
+            raise ModelValidationError(f"transition {tid} condition must be a non-empty string when provided")
+        transitions[tid] = Transition(tid, source, target, condition.strip() if condition is not None else None)
 
     relations = model.get("relations", [])
     if not isinstance(relations, list):
@@ -246,7 +253,10 @@ def _temporal_scenario_result(
         prerequisites.setdefault(relation["transition_id"], set()).add(relation["requires_transition_id"])
     adjacency: dict[str, list[Transition]] = {s: [] for s in model["states"]}
     for transition in transitions.values():
-        adjacency[transition.source].append(transition)
+        # Conditions are preserved in the model but never evaluated by this engine.
+        # Therefore conditional transitions are not traversable in reachability or trajectories.
+        if transition.condition is None:
+            adjacency[transition.source].append(transition)
     for outgoing in adjacency.values():
         outgoing.sort(key=lambda item: item.id)
 
@@ -380,6 +390,8 @@ def execute_sequence(
         required_id: str | None = None
         if transition is None:
             reason = "unknown_transition"
+        elif transition.condition is not None:
+            reason = "condition_not_evaluated"
         elif transition_id in disabled:
             reason = "transition_disabled_by_scenario"
         elif transition.source != current:
@@ -629,7 +641,7 @@ def verify_exported_package(package: dict[str, Any]) -> bool:
 def demo_model() -> dict[str, Any]:
     """The hand-checkable diamond fixture from the contract."""
     return {
-        "schema_version": SUPPORTED_SCHEMA,
+        "schema_version": "collective-toy-input-001",
         "model_id": "toy-diamond-001",
         "initial_state": "A",
         "states": ["A", "B", "C", "D"],

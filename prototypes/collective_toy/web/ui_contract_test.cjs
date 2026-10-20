@@ -74,19 +74,40 @@ const assert = require("node:assert/strict");
     assert.ok(branchAndReturnDraft.transitions.some((edge) => edge.source === "rechazado" && edge.target === "evaluación"));
     await page.locator("#system-description").fill("Si cumple los criterios, el proceso pasa de evaluación a aprobado. Cuando falla, el proceso vuelve de ejecución a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
-    await page.locator("#transcription-status").filter({ hasText: /No se identificaron transiciones/ }).waitFor();
-    const conditionalStatus = await page.locator("#transcription-status").innerText();
-    assert.match(conditionalStatus, /No se identificaron transiciones/,
-      "Conditional sentences must not silently lose their conditions");
-    assert.match(conditionalStatus, /Frases pendientes de aclaración/);
-    assert.match(conditionalStatus, /Si cumple los criterios/);
-    assert.match(conditionalStatus, /Cuando falla/);
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 4 estados y 2 conexiones/ }).waitFor();
+    const conditionalDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(conditionalDraft.transitions.length, 2, "Recognized conditional transitions should be represented, not dropped");
+    assert.equal(conditionalDraft.schema_version, "collective-toy-input-002", "Conditional transitions must use schema v002");
+    assert.ok(conditionalDraft.transitions.some((edge) => edge.source === "evaluación" && edge.target === "aprobado" && edge.condition === "cumple los criterios"));
+    assert.ok(conditionalDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo" && edge.condition === "falla"));
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.locator("#graph-note").filter({ hasText: /Condiciones bloqueadas \(no evaluadas\)/ }).waitFor();
+    const conditionalGraphNote = await page.locator("#graph-note").innerText();
+    assert.match(conditionalGraphNote, /cumple los criterios/);
+    assert.match(conditionalGraphNote, /falla/);
+    const conditionalGraph = await page.locator("#graph").evaluate((el) => el.textContent || "");
+    assert.match(conditionalGraph, /CONDICIÓN NO EVALUADA/);
+    assert.match(conditionalGraphNote, /1 estado\(s\) alcanzable\(s\)/,
+      "Conditioned edges must not be traversed while their conditions are not evaluated");
 
-    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, el proceso vuelve de ejecución a reposo.");
+    // Irrigation acceptance case: local parsing must preserve both explicit conditions
+    // and keep the unsupported initial-state sentence visible for human clarification.
+    await page.locator("#system-description").fill("El sistema comienza en reposo. El proceso pasa de reposo a riego activo cuando la humedad del suelo es baja. Cuando la humedad del suelo es suficiente, el proceso vuelve de riego activo a reposo.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 2 conexiones/ }).waitFor();
+    const irrigationDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(irrigationDraft.transitions.length, 2, "Irrigation description must preserve both conditioned transitions");
+    assert.ok(irrigationDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "riego activo" && edge.condition === "la humedad del suelo es baja"));
+    assert.ok(irrigationDraft.transitions.some((edge) => edge.source === "riego activo" && edge.target === "reposo" && edge.condition === "la humedad del suelo es suficiente"));
+    assert.match(await page.locator("#transcription-status").innerText(), /El sistema comienza en reposo/,
+      "Unsupported initial-state wording must remain visible rather than be silently discarded");
+
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
-    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Si falla, el proceso vuelve de ejecución a reposo.");
-    assert.match(await page.locator("#transcription-clarification-panel").innerText(), /si una condición es esencial, no la conviertas en una transición incondicional/i);
+    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Si falla, vuelve a reposo.");
+    assert.match(await page.locator("#transcription-clarification-panel").innerText(), /se representan como metadatos de transición y se muestran como no evaluadas/i);
+    assert.match(await page.locator("#transcription-clarification-panel").innerText(), /no se recorren ni se ejecutan como transiciones incondicionales/i);
     await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo.");
     await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
     await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 2 conexiones/ }).waitFor();
@@ -103,10 +124,10 @@ const assert = require("node:assert/strict");
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
     assert.match(await page.locator("#transcription-clarification").inputValue(), /Si falla/);
     assert.match(await page.locator("#transcription-clarification").inputValue(), /Cuando se recupera/);
-    await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo. Cuando se recupera, el proceso pasa de reposo a recuperación.");
+    await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo. Cuando se recupera, continúa.");
     await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
-    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Cuando se recupera, el proceso pasa de reposo a recuperación.");
+    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Cuando se recupera, continúa.");
     const partialClarification = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(partialClarification.transitions.length, 2,
       "A second unresolved phrase must remain pending without losing recognized transitions");
@@ -156,6 +177,9 @@ const assert = require("node:assert/strict");
     await page.getByText("Límite alcanzado", { exact: true }).waitFor();
     await page.getByText("Escenario: baseline", { exact: true }).waitFor();
 
+    await page.locator("#status").filter({ hasText: /Ejecución completada|No se ha podido ejecutar/ }).waitFor({ timeout: 10000 });
+    const runStatus = await page.locator("#status").innerText();
+    assert.match(runStatus, /Ejecución completada/, "Scenario execution must complete before inspecting its package; status: " + runStatus);
     const packageData = await page.evaluate(() => window.lastPackage);
     assert.ok(packageData, "A successful run must produce an inspectable package");
     assert.equal(

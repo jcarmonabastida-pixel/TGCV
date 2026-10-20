@@ -68,6 +68,40 @@ function pythonJson(source, input) {
     assert.ok(pkg && pkg.input && pkg.result, "browser must export an inspectable package");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
     assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
+    // Conditional transitions must survive the cross-runtime package contract,
+    // while both runtimes block them because neither evaluates their condition.
+    const conditionalModel = {
+      ...model,
+      schema_version: "collective-toy-input-002",
+      model_id: "conditional-cross-runtime",
+      transitions: [
+        { id: "t_ab", source: "A", target: "B", condition: "humidity is low" },
+        { id: "t_ac", source: "A", target: "C" },
+        { id: "t_cd", source: "C", target: "D" }
+      ],
+      relations: []
+    };
+    const conditionalEngineRun = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      conditionalModel
+    );
+    assert.equal(conditionalEngineRun.input.transitions[0].condition, "humidity is low");
+    assert.ok(!conditionalEngineRun.result.scenario_results.baseline.reachable_states.includes("B"),
+      "Python engine must not traverse an unevaluated conditional transition");
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(conditionalModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const conditionalPkg = await page.evaluate(() => window.lastPackage);
+    assert.equal(conditionalPkg.input.transitions[0].condition, "humidity is low",
+      "browser package must preserve the conditional metadata");
+    assert.ok(!conditionalPkg.result.scenario_results.baseline.reachable_states.includes("B"),
+      "browser engine must not traverse an unevaluated conditional transition");
+    assert.deepEqual(conditionalPkg.result, conditionalEngineRun.result,
+      "browser and Python conditional-transition results must be identical");
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
