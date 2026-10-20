@@ -21,19 +21,25 @@ const cases = [
 function svgFor(item) {
   const node = (x, y, label) => '<circle cx="' + x + '" cy="' + y + '" r="16" fill="white" stroke="#111" stroke-width="2"/><text x="' + x + '" y="' + (y+5) + '" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#111">' + label + '</text>';
   const line = (x1,y1,x2,y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#111" stroke-width="2.5"/>';
-  const head = (x,y,dir) => {
-    const s = dir === "left" ? -1 : 1;
-    return '<path d="M ' + (x-s*10) + ' ' + (y-7) + ' L ' + x + ' ' + y + ' L ' + (x-s*10) + ' ' + (y+7) + '" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  // Construct arrowhead arms relative to the actual edge direction.
+  // The earlier horizontal-only V was invalid for diagonal branch edges and
+  // could create an artificial ambiguity in the benchmark itself.
+  const head = (x,y,dx,dy) => {
+    const length = Math.hypot(dx,dy);
+    const ux = dx / length, uy = dy / length;
+    const bx = x - ux * 10, by = y - uy * 10;
+    const px = -uy * 7, py = ux * 7;
+    return '<path d="M ' + (bx+px) + ' ' + (by+py) + ' L ' + x + ' ' + y + ' L ' + (bx-px) + ' ' + (by-py) + '" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
   };
   let drawing = "";
   if (item.kind === "branch") {
     drawing = node(45,90,"A")+node(160,45,"B")+node(160,135,"C");
-    drawing += line(61,86,142,51)+head(142,51,"right");
-    drawing += line(61,94,142,129)+head(142,129,"right");
+    drawing += line(61,86,142,51)+head(142,51,81,-35);
+    drawing += line(61,94,142,129)+head(142,129,81,35);
   } else {
     drawing = node(55,90,"A")+node(265,90,"B")+line(71,90,249,90);
-    if (item.arrow === "right") drawing += head(249,90,"right");
-    if (item.arrow === "left") drawing += head(71,90,"left");
+    if (item.arrow === "right") drawing += head(249,90,1,0);
+    if (item.arrow === "left") drawing += head(71,90,-1,0);
     if (item.arrow === "both") drawing += head(71,90,"left")+head(249,90,"right");
   }
   return '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '"><rect width="100%" height="100%" fill="white"/>' + drawing + '</svg>';
