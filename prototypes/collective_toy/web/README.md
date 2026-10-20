@@ -38,7 +38,7 @@ Si partes de una imagen:
 
 Antes de ejecutar:
 
-1. Compara visualmente el grafo dibujado con la imagen de referencia.
+1. Compara visualmente el grafo dibujado con la imagen de referencia: el panel del grafo mantiene la imagen original junto al grafo editable mientras revisas; en pantallas estrechas aparecen uno debajo del otro.
 2. Comprueba cada nodo, bifurcación, convergencia, conexión y extremo.
 3. Lee **Conexiones del modelo** y el **Resumen de revisión estructural**. Los avisos son heurísticos: pueden señalar algo que está bien y no garantizan que se hayan encontrado todas las omisiones.
 4. Si una conexión es incorrecta, pulsa **Eliminar conexión**. Para reconstruirla, selecciona el origen en **Desde**, el destino en **Hasta** y pulsa **Conectar estados**.
