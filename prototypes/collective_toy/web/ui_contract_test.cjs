@@ -84,7 +84,7 @@ const assert = require("node:assert/strict");
     const conditionalGraphNote = await page.locator("#graph-note").innerText();
     assert.match(conditionalGraphNote, /cumple los criterios/);
     assert.match(conditionalGraphNote, /falla/);
-    const conditionalGraph = await page.locator("#graph").innerText();
+    const conditionalGraph = await page.locator("#graph").evaluate((el) => el.textContent || "");
     assert.match(conditionalGraph, /CONDICIÓN NO EVALUADA/);
     assert.match(conditionalGraphNote, /1 estado\(s\) alcanzable\(s\)/,
       "Conditioned edges must not be traversed while their conditions are not evaluated");
