@@ -41,6 +41,67 @@ const assert = require("node:assert/strict");
       "Canvas image import must not introduce OCR or a remote runtime dependency");
     assert.equal(await page.locator("#canvas-image-detect").isDisabled(), true);
     assert.equal(await page.locator("#canvas-image-export-review").isDisabled(), true);
+
+    // End-to-end UI path: local image selection -> detector -> adapter -> human review -> JSON export.
+    // Stub only the detector result so this test isolates the UI wiring; the real Canvas detector
+    // is exercised separately by raster_graph_candidate_browser_test.cjs.
+    const modelBeforeImageImport = await page.locator("#model").inputValue();
+    await page.evaluate(() => {
+      window.TGCVRasterGraphCandidateDetector.detectGraphCandidatesFromImage = async () => ({
+        detector: "TGCV-RASTER-GRAPH-CANDIDATES-001",
+        status: "experimental-candidates-only",
+        image: { width: 200, height: 100 },
+        nodes: [
+          { id: "candidate-node-1", center: [30, 50], bbox: [20, 40, 40, 60] },
+          { id: "candidate-node-2", center: [170, 50], bbox: [160, 40, 180, 60] }
+        ],
+        edge_candidates: [{
+          id: "candidate-edge-1",
+          source_candidate_node_id: "candidate-node-1",
+          target_candidate_node_id: "candidate-node-2",
+          direction: "undetermined",
+          direction_status: "unresolved"
+        }]
+      });
+    });
+    await page.locator("#canvas-image-file").setInputFiles({
+      name: "canvas-ui-fixture.svg",
+      mimeType: "image/svg+xml",
+      buffer: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><rect width="200" height="100" fill="white"/></svg>')
+    });
+    await page.locator("#canvas-image-detect").click();
+    await page.locator("#canvas-image-status").filter({ hasText: /Borrador creado/ }).waitFor();
+    let imageDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(imageDraft.states, ["N001", "N002"]);
+    assert.equal(imageDraft.transitions.length, 1);
+    assert.equal(await page.locator("#run").isDisabled(), true,
+      "Scenario execution must remain blocked while imported edge direction is unresolved");
+    const imageTransition = page.locator("#transition-review-list").getByRole("button", { name: "Invertir" });
+    await imageTransition.click();
+    imageDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(
+      [imageDraft.transitions[0].source, imageDraft.transitions[0].target],
+      ["N002", "N001"],
+      "Human review must be able to reverse a proposed edge"
+    );
+    await page.locator("#transition-review-list").getByRole("button", { name: "Confirmar dirección" }).click();
+    assert.equal(await page.locator("#run").isDisabled(), false,
+      "Scenario execution may be enabled only after explicit direction confirmation");
+    const imageDownloadPromise = page.waitForEvent("download");
+    await page.locator("#canvas-image-export-review").click();
+    const imageDownload = await imageDownloadPromise;
+    const exportedImageDraft = JSON.parse(fs.readFileSync(await imageDownload.path(), "utf8"));
+    assert.equal(exportedImageDraft.schema, "TGCV-IMAGE-GRAPH-REVIEW-DRAFT-001");
+    assert.match(exportedImageDraft.source_image.data_url, /^data:image\\/svg\\+xml/);
+    assert.deepEqual(exportedImageDraft.model.transitions, imageDraft.transitions);
+    assert.deepEqual(exportedImageDraft.review.unresolved_transition_ids, []);
+    assert.deepEqual(exportedImageDraft.review.confirmed_transition_ids, ["t_canvas_1"]);
+    assert.equal(exportedImageDraft.review.automatic_acceptance, false);
+    await page.locator("#canvas-image-clear").click();
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, modelBeforeImageImport);
     await page.locator("summary").filter({ hasText: /Transcripción asistida/ }).click();
     assert.match(await page.locator("details").filter({ hasText: /La evaluación previa favoreció PaddleOCR/ }).innerText(), /OpenCV/);
 
