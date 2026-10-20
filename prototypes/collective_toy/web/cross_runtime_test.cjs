@@ -72,6 +72,7 @@ function pythonJson(source, input) {
     // while both runtimes block them because neither evaluates their condition.
     const conditionalModel = {
       ...model,
+      schema_version: "collective-toy-input-002",
       model_id: "conditional-cross-runtime",
       transitions: [
         { id: "t_ab", source: "A", target: "B", condition: "humidity is low" },
