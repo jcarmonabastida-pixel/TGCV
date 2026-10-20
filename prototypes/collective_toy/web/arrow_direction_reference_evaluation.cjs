@@ -123,6 +123,14 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
             at_candidate_from: atFrom?.support_ratio ?? null,
             at_candidate_to: atTo?.support_ratio ?? null,
             absolute_margin: atFrom && atTo ? Number(Math.abs(atFrom.support_ratio - atTo.support_ratio).toFixed(4)) : null,
+            at_from_tip_offset_px: atFrom?.tip_offset_px ?? null,
+            at_to_tip_offset_px: atTo?.tip_offset_px ?? null,
+            at_from_angle_degrees: atFrom?.angle_degrees ?? null,
+            at_to_angle_degrees: atTo?.angle_degrees ?? null,
+            at_from_left_support: atFrom?.left_support_ratio ?? null,
+            at_from_right_support: atFrom?.right_support_ratio ?? null,
+            at_to_left_support: atTo?.left_support_ratio ?? null,
+            at_to_right_support: atTo?.right_support_ratio ?? null,
             tested_samples_from: atFrom?.tested_samples ?? 0,
             tested_samples_to: atTo?.tested_samples ?? 0
           }
