@@ -259,6 +259,9 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     dataset_id: annotations.dataset_id,
     dataset_version: annotations.dataset_version,
     scope: "synthetic development fixtures only; not real-world validation",
+    direction_metrics_kind: "diagnostic_candidate_proposals_not_operational_resolver_output",
+    operational_direction_inference_enabled: false,
+    human_review_required: true,
     direction_proposals: proposed,
     correct_directions: correct,
     inverted_directions: inverted,
@@ -267,9 +270,8 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     direction_accuracy_when_proposed: proposed ? Number((correct / proposed).toFixed(4)) : null,
     target_endpoint_tip_localization_summary: localizationSummary,
     per_fixture: rows,
-    interpretation: "Unresolved directions are not counted as correct. This report measures only matched candidate edges; unmatched candidates are reported separately. Synthetic fixtures are not adjudicated."
+    interpretation: "These are diagnostic candidate-direction comparisons against non-adjudicated synthetic annotations, not directions accepted by the operational resolver. Operational direction inference remains disabled; every candidate requires human review. Unresolved directions are not counted as correct. This report measures only matched candidate edges; unmatched candidates are reported separately."
   };
-  process.stdout.write(JSON.stringify(report, null, 2) + "\\n");
   assert.equal(correct + inverted, proposed, "direction outcome accounting must balance");
   const clearArrowReferenceEdges = annotations.images.flatMap(fixture => fixture.edges || [])
     .filter(edge => edge.direction === "directed" && edge.arrow_status === "clear").length;
@@ -304,6 +306,7 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     `synthetic direction coverage regression: expected at least ${minimumProposalCoverage}/${clearArrowReferenceEdges} clear arrows proposed (75%); got ${proposed}/${clearArrowReferenceEdges}`);
   assert.ok(unresolved <= clearArrowReferenceEdges - minimumProposalCoverage,
     "synthetic direction coverage regression: unresolved count exceeds the allowed 25% for this fixture set");
+  process.stdout.write(JSON.stringify(report, null, 2) + "\\n");
 })().catch(error => {
   console.error(error && error.stack || error);
   process.exitCode = 1;
