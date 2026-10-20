@@ -408,6 +408,28 @@ const assert = require("node:assert/strict");
       transitions: jsonGraph.transitions.map(({ source, target }) => ({ source, target }))
     }, mermaidProjection, "JSON import must converge to the same editable internal graph");
 
+    // Invalid structured imports must fail closed and preserve the last valid model.
+    const lastValidModel = await page.locator("#model").inputValue();
+    await page.locator("#graph-file").setInputFiles({
+      name: "broken.graphml",
+      mimeType: "application/graphml+xml",
+      buffer: Buffer.from("<graphml><graph><node id='A'></graphml>")
+    });
+    await page.locator("#file-status").filter({ hasText: "No se pudo importar el grafo" }).waitFor();
+    assert.equal(await page.locator("#model").inputValue(), lastValidModel,
+      "Malformed GraphML must not replace the current valid model");
+    assert.match(await page.locator("#file-status").innerText(), /no es XML válido/i);
+
+    await page.locator("#json-file").setInputFiles({
+      name: "broken.json",
+      mimeType: "application/json",
+      buffer: Buffer.from('{"states": [}')
+    });
+    await page.locator("#file-status").filter({ hasText: "No se pudo cargar el JSON" }).waitFor();
+    assert.equal(await page.locator("#model").inputValue(), lastValidModel,
+      "Malformed JSON must not replace the current valid model");
+    assert.match(await page.locator("#file-status").innerText(), /JSON válido/i);
+
     // The visual editor can add a state, connect it, and select a new initial state.
     await page.locator("#new-state-id").fill("D");
     await page.locator("#new-state-add").click();
