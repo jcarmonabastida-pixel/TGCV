@@ -40,7 +40,7 @@ function resolveArrowDirection(edge, options = {}) {
   // endpoint before proposing a direction. These are conservative geometric
   // gates, not calibrated probabilities; failures remain unresolved.
   const winner = toScore > fromScore ? atTo : atFrom;
-  const minBilateralOffAxisSupport = options.minBilateralOffAxisSupport ?? 0.35;
+  const minBilateralOffAxisSupport = options.minBilateralOffAxisSupport ?? 0.25;
   const minArmSupport = options.minArmSupport ?? 0.55;
   const leftArm = winner?.left_support_ratio;
   const rightArm = winner?.right_support_ratio;
