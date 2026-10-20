@@ -89,7 +89,7 @@ const assert = require("node:assert/strict");
     assert.match(conditionalGraphNote, /1 estado\(s\) alcanzable\(s\)/,
       "Conditioned edges must not be traversed while their conditions are not evaluated");
 
-    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, el proceso vuelve de ejecución a reposo.");
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
     assert.equal(await page.locator("#transcription-clarification").inputValue(), "Si falla, el proceso vuelve de ejecución a reposo.");
