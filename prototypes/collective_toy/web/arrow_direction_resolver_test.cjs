@@ -41,6 +41,27 @@ function testMalformedEvidenceStaysUnresolved() {
   assert.equal(result.direction_status, "unresolved");
 }
 
+function testEqualEndpointScoresStayUnresolved() {
+  const result = resolveArrowDirection(edge(score(0.8), score(0.8)));
+  assert.equal(result.direction, "undetermined");
+  assert.equal(result.direction_status, "unresolved");
+}
+function testExactMinimumMarginStaysUnresolved() {
+  const result = resolveArrowDirection(edge(score(0.55), score(0.70)));
+  assert.equal(result.direction_status, "unresolved",
+    "margin equal to threshold must remain unresolved; a strict margin is required");
+}
+function testInsufficientSamplesAtOnlyOneEndpointStaysUnresolved() {
+  const result = resolveArrowDirection(edge(score(0.1, 40), score(0.9, 19)));
+  assert.equal(result.direction, "undetermined");
+  assert.equal(result.direction_status, "unresolved");
+}
+function testNonFiniteSupportStaysUnresolved() {
+  const result = resolveArrowDirection(edge(score(Number.NaN), score(0.9)));
+  assert.equal(result.direction, "undetermined");
+  assert.equal(result.direction_status, "unresolved");
+}
+
 testForwardArrow();
 testReversedArrow();
 testAmbiguousEvidenceStaysUnresolved();
@@ -48,4 +69,8 @@ testStrokeWithoutArrowheadStaysUnresolved();
 testWeakEvidenceStaysUnresolved();
 testInsufficientSamplesStaysUnresolved();
 testMalformedEvidenceStaysUnresolved();
-process.stdout.write("OCR-ARROW-DIRECTION-001: 7 resolver tests passed (forward, reverse, ambiguous, no-arrow stroke, weak, insufficient and malformed evidence).\n");
+testEqualEndpointScoresStayUnresolved();
+testExactMinimumMarginStaysUnresolved();
+testInsufficientSamplesAtOnlyOneEndpointStaysUnresolved();
+testNonFiniteSupportStaysUnresolved();
+process.stdout.write("OCR-ARROW-DIRECTION-001: 11 resolver tests passed (forward, reverse, ambiguous, no-arrow stroke, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
