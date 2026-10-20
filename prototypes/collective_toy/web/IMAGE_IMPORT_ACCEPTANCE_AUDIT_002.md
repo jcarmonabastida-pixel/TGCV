@@ -17,7 +17,7 @@
 | Edit graph and remove/create connections | Existing graph editor | Human review remains necessary |
 | Invert an edge direction | Added in PR #81 | User must compare with the original image |
 | Mark direction unresolved and confirm manually | Added in PR #81 | The unresolved marker is session-level UI state until exported |
-| Export review snapshot and unresolved direction markers | Added in PR #81 | Separate sidecar; does not modify execution-package schema or embed the image |
+| Export review snapshot, unresolved direction markers and loaded source image | Added in PR #81 | Separate sidecar embeds the loaded image as a data URL (max source image 5 MiB); does not modify execution-package schema |
 | Browser/Python contract and clean-source replay | PASS, workflow run [39418150517](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39418150517), head `352b87ef2256b86af3a16ff09d6a35a0246066d6` | Confirms only automated tests in that workflow |
 
 ## Explicitly not implemented or not established
