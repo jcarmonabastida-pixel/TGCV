@@ -1,0 +1,30 @@
+name: Canvas chromatic edge evidence probe
+
+on:
+  push:
+    branches:
+      - experiment/canvas-chromatic-edge-evidence-001-20261020
+
+permissions:
+  contents: read
+
+jobs:
+  browser-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact pushed commit
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependency
+        working-directory: prototypes/collective_toy/web
+        run: npm install
+      - name: Install Chromium
+        working-directory: prototypes/collective_toy/web
+        run: npx playwright install --with-deps chromium
+      - name: Run complete web test suite
+        working-directory: prototypes/collective_toy/web
+        run: npm test
