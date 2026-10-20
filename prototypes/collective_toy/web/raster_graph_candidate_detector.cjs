@@ -252,6 +252,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
           for (const angle of [25, 35, 45, 55, 65]) {
             const rad = angle * Math.PI / 180;
             const armHits = [0, 0];
+            const armHitsOffAxis = [0, 0];
             const armTested = [0, 0];
             for (let side = 0; side < 2; side++) {
               const sign = side === 0 ? -1 : 1;
@@ -266,7 +267,11 @@ async function detectGraphCandidates(imagePath, options = {}) {
                   for (let ox = -1; ox <= 1; ox++) {
                     const px = x + ox, py = y + oy;
                     if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
-                      found = true; break;
+                      found = true;
+                      const lateral = Math.abs((px - candidateTip[0]) * (-inwardUnit[1]) +
+                        (py - candidateTip[1]) * inwardUnit[0]);
+                      if (lateral >= 2.5) armHitsOffAxis[side]++;
+                      break;
                     }
                   }
                 }
@@ -274,6 +279,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
               }
             }
             const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
+            const offAxisArmRatios = armHitsOffAxis.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
             candidates.push({
               angle_degrees: angle,
               tip_offset_px: offset,
@@ -282,6 +288,9 @@ async function detectGraphCandidates(imagePath, options = {}) {
               bilateral_support_ratio: Number(Math.min(...armRatios).toFixed(4)),
               left_support_ratio: Number(armRatios[0].toFixed(4)),
               right_support_ratio: Number(armRatios[1].toFixed(4)),
+              off_axis_support_ratio: Number(Math.min(...offAxisArmRatios).toFixed(4)),
+              left_off_axis_support_ratio: Number(offAxisArmRatios[0].toFixed(4)),
+              right_off_axis_support_ratio: Number(offAxisArmRatios[1].toFixed(4)),
               supported_samples: armHits.reduce((sum, n) => sum + n, 0),
               tested_samples: armTested.reduce((sum, n) => sum + n, 0)
             });
