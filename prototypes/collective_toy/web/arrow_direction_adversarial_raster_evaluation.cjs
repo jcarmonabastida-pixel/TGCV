@@ -61,6 +61,15 @@ function svgFor(item) {
         direction_candidates: edges.filter(e => e.direction_status === "candidate").length,
         unresolved_or_undetermined: edges.filter(e => e.direction_status !== "candidate").length,
         auto_accepted: edges.filter(e => e.direction_status === "accepted").length,
+        edge_diagnostics: edges.map(edge => ({
+          edge_id: edge.id,
+          direction: edge.direction,
+          direction_status: edge.direction_status,
+          direction_reason: edge.direction_reason,
+          direction_confidence: edge.confidence,
+          arrowhead_presence: edge.arrowhead_presence,
+          review_required: edge.direction_review_required
+        })),
         diagnostic_only: true, ground_truth_status: "synthetic_probe_not_independently_adjudicated"
       });
     }
