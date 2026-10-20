@@ -108,11 +108,21 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
         const key = [from, to].sort().join("--");
         const ref = expected.get(key);
         if (!ref) return [];
-        const best = endpoint => Array.isArray(endpoint)
-          ? endpoint.reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null)
-          : endpoint;
-        const atFrom = best(edge.arrowhead_evidence?.at_from);
-        const atTo = best(edge.arrowhead_evidence?.at_to);
+        const candidates = endpoint => Array.isArray(endpoint) ? endpoint : endpoint ? [endpoint] : [];
+        const best = endpoint => candidates(endpoint)
+          .reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null);
+        const atFromCandidates = candidates(edge.arrowhead_evidence?.at_from);
+        const atToCandidates = candidates(edge.arrowhead_evidence?.at_to);
+        const atFrom = best(atFromCandidates);
+        const atTo = best(atToCandidates);
+        const summarize = item => ({
+          support_ratio: item.support_ratio,
+          tip_offset_px: item.tip_offset_px,
+          angle_degrees: item.angle_degrees,
+          left_support_ratio: item.left_support_ratio,
+          right_support_ratio: item.right_support_ratio,
+          tested_samples: item.tested_samples
+        });
         return [{
           reference_edge: ref.id,
           expected_source: ref.source_node_id,
@@ -133,7 +143,9 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
             at_to_right_support: atTo?.right_support_ratio ?? null,
             tested_samples_from: atFrom?.tested_samples ?? 0,
             tested_samples_to: atTo?.tested_samples ?? 0
-          }
+          },
+          top_hypotheses_from: atFromCandidates.slice(0, 5).map(summarize),
+          top_hypotheses_to: atToCandidates.slice(0, 5).map(summarize)
         }];
       })
     });
