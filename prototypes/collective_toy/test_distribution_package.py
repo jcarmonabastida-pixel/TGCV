@@ -24,7 +24,7 @@ def main() -> int:
         if f"]({link})" not in readme or not (root / link).is_file():
             print("FAIL README link missing/broken: " + link)
             return 1
-    if "Versión de la guía: 1.0.0" not in guide or "Versión del paquete: 1.0.0" not in guide:
+    if not re.search(r"Versión de la guía.*1\\.0\\.0", guide) or not re.search(r"Versión del paquete.*1\\.0\\.0", guide):
         print("FAIL guide version missing")
         return 1
     if args.source_commit not in guide or args.source_commit not in readme or args.source_commit not in version or args.source_commit not in page:
@@ -33,7 +33,7 @@ def main() -> int:
     if "{{SOURCE_COMMIT}}" in guide or "{{SOURCE_COMMIT}}" in page or not re.search(r"source_commit=[0-9a-f]{40}", version):
         print("FAIL unresolved metadata template")
         return 1
-    if "<html lang=\"es\">" not in page or "<main>" not in page or "Tres modalidades de entrada" not in guide:
+    if "<html lang=\"es\">" not in page or "<main>" not in page or "Las tres modalidades de entrada" not in guide:
         print("FAIL HTML/guide structure incomplete")
         return 1
     if re.search(r"https?://(?:cdn\.|unpkg\.com|cdnjs\.)", page, re.I):
