@@ -84,7 +84,7 @@ function svgFor(kind) {
       assert.ok(detected.nodes.every((node) =>
         node.center.every((coordinate) => Number.isFinite(coordinate))));
       const expectedNodeCount = kind === "crossing" ? 4 : 3;
-      assert.equal(detected.nodes.length, expectedNodeCount, kind + ": expected geometric node candidate count");
+      assert.equal(detected.nodes.length, expectedNodeCount, kind + ": expected geometric node candidate count; diagnostics=" + JSON.stringify(detected.diagnostics));
       assert.equal(detected.edge_candidates.length, 2, kind + ": expected two geometric edge candidates");
       const centersByPosition = detected.nodes.map((node) => node.center)
         .sort((a, b) => a[1] - b[1] || a[0] - b[0]);
