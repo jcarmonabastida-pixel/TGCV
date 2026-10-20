@@ -89,6 +89,18 @@ const assert = require("node:assert/strict");
     assert.match(conditionalGraphNote, /1 estado\(s\) alcanzable\(s\)/,
       "Conditioned edges must not be traversed while their conditions are not evaluated");
 
+    // Irrigation acceptance case: local parsing must preserve both explicit conditions
+    // and keep the unsupported initial-state sentence visible for human clarification.
+    await page.locator("#system-description").fill("El sistema comienza en reposo. El proceso pasa de reposo a riego activo cuando la humedad del suelo es baja. Cuando la humedad del suelo es suficiente, el proceso vuelve de riego activo a reposo.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 2 conexiones/ }).waitFor();
+    const irrigationDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(irrigationDraft.transitions.length, 2, "Irrigation description must preserve both conditioned transitions");
+    assert.ok(irrigationDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "riego activo" && edge.condition === "la humedad del suelo es baja"));
+    assert.ok(irrigationDraft.transitions.some((edge) => edge.source === "riego activo" && edge.target === "reposo" && edge.condition === "la humedad del suelo es suficiente"));
+    assert.match(await page.locator("#transcription-status").innerText(), /El sistema comienza en reposo/,
+      "Unsupported initial-state wording must remain visible rather than be silently discarded");
+
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
