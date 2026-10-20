@@ -74,13 +74,20 @@ const assert = require("node:assert/strict");
     assert.ok(branchAndReturnDraft.transitions.some((edge) => edge.source === "rechazado" && edge.target === "evaluación"));
     await page.locator("#system-description").fill("Si cumple los criterios, el proceso pasa de evaluación a aprobado. Cuando falla, el proceso vuelve de ejecución a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
-    await page.locator("#transcription-status").filter({ hasText: /No se identificaron transiciones/ }).waitFor();
-    const conditionalStatus = await page.locator("#transcription-status").innerText();
-    assert.match(conditionalStatus, /No se identificaron transiciones/,
-      "Conditional sentences must not silently lose their conditions");
-    assert.match(conditionalStatus, /Frases pendientes de aclaración/);
-    assert.match(conditionalStatus, /Si cumple los criterios/);
-    assert.match(conditionalStatus, /Cuando falla/);
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 4 estados y 2 conexiones/ }).waitFor();
+    const conditionalDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(conditionalDraft.transitions.length, 2, "Recognized conditional transitions should be represented, not dropped");
+    assert.ok(conditionalDraft.transitions.some((edge) => edge.source === "evaluación" && edge.target === "aprobado" && edge.condition === "cumple los criterios"));
+    assert.ok(conditionalDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo" && edge.condition === "falla"));
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.locator("#graph-note").filter({ hasText: /Condiciones bloqueadas \(no evaluadas\)/ }).waitFor();
+    const conditionalGraphNote = await page.locator("#graph-note").innerText();
+    assert.match(conditionalGraphNote, /cumple los criterios/);
+    assert.match(conditionalGraphNote, /falla/);
+    const conditionalGraph = await page.locator("#graph").innerText();
+    assert.match(conditionalGraph, /CONDICIÓN NO EVALUADA/);
+    const conditionalResults = await page.locator("#results").innerText();
+    assert.match(conditionalResults, /condition_not_evaluated|Condiciones bloqueadas|condiciones bloqueadas/i);
 
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, el proceso vuelve de ejecución a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
