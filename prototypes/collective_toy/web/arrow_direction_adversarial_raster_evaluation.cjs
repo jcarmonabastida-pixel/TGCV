@@ -67,7 +67,7 @@ function svgFor(item) {
           direction_evidence: candidate.direction_evidence,
           at_from: candidate.arrowhead_evidence?.at_from,
           at_to: candidate.arrowhead_evidence?.at_to
-        }))) + "\\n");
+        }))) + "\n");
       for (const edge of edges) {
         assert.equal(edge.direction_review_required, true, item.id + ": human review required");
         assert.notEqual(edge.direction_status, "accepted", item.id + ": no auto-acceptance");
@@ -92,7 +92,7 @@ function svgFor(item) {
                 arrowhead_presence: candidate.arrowhead_presence,
                 arrowhead_evidence: candidate.arrowhead_evidence,
                 arrowhead_hypotheses: candidate.arrowhead_hypotheses
-              }))) + "\\n");
+              }))) + "\n");
           }
           assert.equal(edge.direction_status, item.expectedStatus,
             item.id + ": direction status differs from the expected probe behavior");
