@@ -7,7 +7,7 @@ const { inferArrowheadPresenceFromEvidence } = require("./raster_graph_candidate
 const score = (support_ratio, tested_samples = 40) => ({ support_ratio, tested_samples });
 const edge = (at_from, at_to) => ({ arrowhead_evidence: { at_from, at_to } });
 
-function testCanvasPresenceSignalMarksNoPairedVAsNotDetected() {
+function testCanvasPresenceSignalDoesNotInferAbsenceFromNoPairedV() {
   const result = inferArrowheadPresenceFromEvidence({
     arrowhead_hypotheses: {
       at_from: [{ geometric_v_diagnostic: {
@@ -20,7 +20,7 @@ function testCanvasPresenceSignalMarksNoPairedVAsNotDetected() {
       }}]
     }
   });
-  assert.equal(result, false);
+  assert.equal(result, null, "zero sampled V support cannot establish arrowhead absence");
 }
 function testCanvasPresenceSignalDoesNotTreatMissingHypothesesAsAbsence() {
   assert.equal(inferArrowheadPresenceFromEvidence({
@@ -148,7 +148,7 @@ function testNonFiniteSupportStaysUnresolved() {
   assert.equal(result.direction_status, "unresolved");
 }
 
-testCanvasPresenceSignalMarksNoPairedVAsNotDetected();
+testCanvasPresenceSignalDoesNotInferAbsenceFromNoPairedV();
 testCanvasPresenceSignalPreservesUncertainVAsPossible();
 testCanvasPresenceSignalKeepsMalformedDiagnosticsUnknown();
 testCanvasPresenceSignalDoesNotTreatMissingHypothesesAsAbsence();
@@ -167,4 +167,4 @@ testSupportAboveOneStaysUnresolved();
 testNegativeSupportStaysUnresolved();
 testFractionalSampleCountStaysUnresolved();
 testNonFiniteSupportStaysUnresolved();
-process.stdout.write("OCR-ARROW-DIRECTION-001: 19 resolver/integration-signal tests passed (Canvas no-V signal, Canvas uncertain-V preservation, malformed-diagnostic unknown handling, missing-hypothesis unknown handling, out-of-range support, negative support, fractional sample count, forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
+process.stdout.write("OCR-ARROW-DIRECTION-001: 19 resolver/integration-signal tests passed (Canvas no-V remains unknown, Canvas uncertain-V preservation, malformed-diagnostic unknown handling, missing-hypothesis unknown handling, out-of-range support, negative support, fractional sample count, forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
