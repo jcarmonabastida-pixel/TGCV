@@ -2,10 +2,38 @@
 
 const assert = require("node:assert/strict");
 const { resolveArrowDirection } = require("./arrow_direction_resolver.cjs");
+const { inferArrowheadPresenceFromEvidence } = require("./raster_graph_candidate_detector.cjs");
 
 const score = (support_ratio, tested_samples = 40) => ({ support_ratio, tested_samples });
 const edge = (at_from, at_to) => ({ arrowhead_evidence: { at_from, at_to } });
 
+function testCanvasPresenceSignalMarksNoPairedVAsNotDetected() {
+  const result = inferArrowheadPresenceFromEvidence({
+    arrowhead_hypotheses: {
+      at_from: [{ geometric_v_diagnostic: {
+        left_arm_support_ratio: 0, right_arm_support_ratio: 0,
+        bilateral_off_axis_support_ratio: 0
+      }}],
+      at_to: [{ geometric_v_diagnostic: {
+        left_arm_support_ratio: 0, right_arm_support_ratio: 0,
+        bilateral_off_axis_support_ratio: 0
+      }}]
+    }
+  });
+  assert.equal(result, false);
+}
+function testCanvasPresenceSignalPreservesUncertainVAsPossible() {
+  const result = inferArrowheadPresenceFromEvidence({
+    arrowhead_hypotheses: {
+      at_from: [{ geometric_v_diagnostic: {
+        left_arm_support_ratio: 0.2, right_arm_support_ratio: 0.3,
+        bilateral_off_axis_support_ratio: 0.1
+      }}],
+      at_to: []
+    }
+  });
+  assert.equal(result, null, "uncertain/possible arrowhead evidence must not be labelled absent");
+}
 function testForwardArrow() {
   const result = resolveArrowDirection(edge(score(0.18), score(0.82)));
   assert.equal(result.direction, "source-to-target");
@@ -75,6 +103,8 @@ function testNonFiniteSupportStaysUnresolved() {
   assert.equal(result.direction_status, "unresolved");
 }
 
+testCanvasPresenceSignalMarksNoPairedVAsNotDetected();
+testCanvasPresenceSignalPreservesUncertainVAsPossible();
 testForwardArrow();
 testReversedArrow();
 testAmbiguousEvidenceStaysUnresolved();
@@ -87,4 +117,4 @@ testEqualEndpointScoresStayUnresolved();
 testExactMinimumMarginStaysUnresolved();
 testInsufficientSamplesAtOnlyOneEndpointStaysUnresolved();
 testNonFiniteSupportStaysUnresolved();
-process.stdout.write("OCR-ARROW-DIRECTION-001: 12 resolver tests passed (forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
+process.stdout.write("OCR-ARROW-DIRECTION-001: 14 resolver/integration-signal tests passed (Canvas no-V signal, Canvas uncertain-V preservation, forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
