@@ -11,16 +11,21 @@ const { resolveArrowDirection } = require("./arrow_direction_resolver.cjs");
  */
 function inferArrowheadPresenceFromEvidence(edge) {
   const endpoints = [edge?.arrowhead_hypotheses?.at_from, edge?.arrowhead_hypotheses?.at_to];
-  const hasPairedOffAxisEvidence = endpoints.some(endpoint =>
-    Array.isArray(endpoint) && endpoint.some(candidate => {
-      const v = candidate?.geometric_v_diagnostic;
-      return Number.isFinite(v?.left_arm_support_ratio) &&
-        Number.isFinite(v?.right_arm_support_ratio) &&
-        Number.isFinite(v?.bilateral_off_axis_support_ratio) &&
-        v.left_arm_support_ratio > 0 &&
-        v.right_arm_support_ratio > 0 &&
-        v.bilateral_off_axis_support_ratio > 0;
-    }));
+  // Missing/empty endpoint hypotheses are lack of evidence, not evidence of absence.
+  if (endpoints.some(endpoint => !Array.isArray(endpoint) || endpoint.length === 0)) return null;
+
+  const diagnostics = endpoints.map(endpoint => endpoint.map(candidate => candidate?.geometric_v_diagnostic));
+  // Do not classify presence from malformed or unsampled diagnostics.
+  if (diagnostics.some(endpoint => endpoint.some(v =>
+    !Number.isFinite(v?.left_arm_support_ratio) ||
+    !Number.isFinite(v?.right_arm_support_ratio) ||
+    !Number.isFinite(v?.bilateral_off_axis_support_ratio)))) return null;
+
+  const hasPairedOffAxisEvidence = diagnostics.some(endpoint =>
+    endpoint.some(v =>
+      v.left_arm_support_ratio > 0 &&
+      v.right_arm_support_ratio > 0 &&
+      v.bilateral_off_axis_support_ratio > 0));
   return hasPairedOffAxisEvidence ? null : false;
 }
 
