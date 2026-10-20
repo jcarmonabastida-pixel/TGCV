@@ -39,30 +39,28 @@ const assert = require("node:assert/strict");
       "The retired image-detection/OCR workstream must not be presented as a supported entry route");
     await page.locator("summary").filter({ hasText: /Transcripción asistida de texto a grafo/ }).click();
 
-    // Text transcription is local, explicit, and produces a reviewable draft rather than silently executing it.
-    const modelBeforeTranscription = await page.locator("#model").inputValue();
-    await page.locator("#graph-file").setInputFiles({
-      name: "sample.mmd",
-      mimeType: "text/plain",
-      buffer: Buffer.from("flowchart TD\\nA --> B\\nB --> C")
-    });
-    await page.locator("#file-status").filter({ hasText: /Grafo importado desde sample\.mmd: 3 estados y 2 conexiones/ }).waitFor();
-    assert.equal(JSON.parse(await page.locator("#model").inputValue()).transitions.length, 2);
-    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeTranscription);
-
-    await page.locator("#text-transcription").fill("A --> B" + String.fromCharCode(10) + "B --> C");
-    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
-    await page.locator("#transcription-status").filter({ hasText: /Borrador creado: 3 estados y 2 conexiones/ }).waitFor();
-    const transcriptionDraft = JSON.parse(await page.locator("#model").inputValue());
-    assert.deepEqual(transcriptionDraft.states, ["A", "B", "C"]);
-    assert.equal(transcriptionDraft.transitions.length, 2);
-    assert.match(await page.locator("#transcription-status").innerText(), /Revisa el grafo/i);
-    await page.locator("#text-transcription").fill("texto sin conexiones");
-    await page.getByRole("button", { name: "Convertir en borrador de grafo" }).click();
-    assert.match(await page.locator("#transcription-status").innerText(), /No se encontraron conexiones dirigidas/i);
-    await page.getByRole("button", { name: "Borrar transcripción" }).click();
-    assert.equal(await page.locator("#text-transcription").inputValue(), "");
-    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeTranscription);
+    // Natural-language description proposes a graph locally, exposes unparsed sentences, and remains reviewable.
+    assert.match(sourceHtml, /Describe el sistema con tus propias palabras/);
+    assert.match(sourceHtml, /No requiere API externa/);
+    assert.match(sourceHtml, /Proponer grafo desde la descripción/);
+    assert.doesNotMatch(sourceHtml, /Importación desde imagen|PaddleOCR|Tesseract\\.js|OpenCV como alternativa/i,
+      "The retired image-detection/OCR workstream must not be presented as a supported entry route");
+    await page.locator("summary").filter({ hasText: /Transcripción asistida de texto a grafo/ }).click();
+    const modelBeforeDescription = await page.locator("#model").inputValue();
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. La ejecución conduce a resultado. Esta frase no identifica una transición.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 3 estados y 2 conexiones/ }).waitFor();
+    assert.match(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+    const descriptionDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(descriptionDraft.transitions.length, 2);
+    assert.deepEqual(descriptionDraft.states, ["reposo", "ejecución", "resultado"]);
+    assert.match(await page.locator("#graph-edit-status").innerText(), /pendiente de revisión humana/i);
+    await page.locator("#system-description").fill("Texto vago sin relación identificable.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    assert.match(await page.locator("#transcription-status").innerText(), /No se identificaron transiciones/);
+    await page.getByRole("button", { name: "Borrar descripción" }).click();
+    assert.equal(await page.locator("#system-description").inputValue(), "");
+    await page.locator("#model").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); }, modelBeforeDescription);
 
     // Manual graph review: enumerate edges, remove an incorrect edge, and flag duplicate pairs.
     const reviewModel = JSON.parse(await page.locator("#model").inputValue());
