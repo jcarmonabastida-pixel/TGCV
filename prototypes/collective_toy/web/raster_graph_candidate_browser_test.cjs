@@ -86,6 +86,10 @@ function svgFor(kind) {
       const expectedNodeCount = kind === "crossing" ? 4 : 3;
       assert.equal(detected.nodes.length, expectedNodeCount, kind + ": expected geometric node candidate count; diagnostics=" + JSON.stringify(detected.diagnostics));
       assert.equal(detected.edge_candidates.length, 2, kind + ": expected two geometric edge candidates");
+      if (kind === "chromatic") {
+        assert.ok(detected.raw_line_candidates.length > 0,
+          "chromatic: colored transition strokes must appear in raw geometric line evidence");
+      }
       const centersByPosition = detected.nodes.map((node) => node.center)
         .sort((a, b) => a[1] - b[1] || a[0] - b[0]);
       const expectedCenters = kind === "linear" || kind === "chromatic" ? [[45, 90], [160, 90], [275, 90]]

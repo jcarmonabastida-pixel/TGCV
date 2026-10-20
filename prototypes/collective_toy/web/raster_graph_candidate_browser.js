@@ -210,7 +210,7 @@ async function analyzeRasterGraphPixels({ imageDataUrl, threshold, minNodeSize, 
         }
       }
 
-      // Multi-angle line evidence: accumulate dark pixels along candidate
+      // Multi-angle line evidence: accumulate dark or chromatic edge pixels along candidate
       // directions, excluding pixels well inside accepted node boxes. These
       // are geometric hypotheses only; node attachment/direction are not inferred.
       const lineCandidates = [];
@@ -227,7 +227,7 @@ async function analyzeRasterGraphPixels({ imageDataUrl, threshold, minNodeSize, 
               if (x < 0 || x >= width || y < 0 || y >= height) break;
               const insideNode = candidates.some(n => x > n.bbox[0] + 2 && x < n.bbox[2] - 2 &&
                 y > n.bbox[1] + 2 && y < n.bbox[3] - 2);
-              if (!insideNode && dark[y * width + x]) {
+              if (!insideNode && edgeEvidence[y * width + x]) {
                 points.push([x,y]); misses = 0;
               } else if (points.length) {
                 misses++;
