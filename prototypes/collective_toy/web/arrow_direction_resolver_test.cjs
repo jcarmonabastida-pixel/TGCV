@@ -4,7 +4,13 @@ const assert = require("node:assert/strict");
 const { resolveArrowDirection } = require("./arrow_direction_resolver.cjs");
 const { inferArrowheadPresenceFromEvidence } = require("./raster_graph_candidate_detector.cjs");
 
-const score = (support_ratio, tested_samples = 40) => ({ support_ratio, tested_samples });
+// Unit fixtures for a clear arrow carry explicit bilateral V geometry.
+const score = (support_ratio, tested_samples = 40) => ({
+  support_ratio, tested_samples,
+  left_support_ratio: 0.8,
+  right_support_ratio: 0.8,
+  off_axis_support_ratio: 0.8
+});
 const edge = (at_from, at_to) => ({ arrowhead_evidence: { at_from, at_to } });
 
 function testCanvasPresenceSignalDoesNotInferAbsenceFromNoPairedV() {
