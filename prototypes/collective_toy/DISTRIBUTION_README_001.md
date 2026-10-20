@@ -20,6 +20,6 @@ El archivo `example-diamond.json` contiene un sistema sintético pequeño en for
 - Solo grafos y escenarios sintéticos; no se autoriza ejecución científica ni se procesan datos reales.
 - La aproximación operativa de transformaciones accesibles es una regla del prototipo, no la función científica canónica de TGCV.
 - Los hashes y la reproducción apoyan consistencia y reproducibilidad; no autentican el origen ni prueban que un evento real ocurriera.
-- La importación desde imagen es una capacidad experimental separada. En esta distribución, la transcripción es manual y revisable. PaddleOCR obtuvo mejores resultados que Tesseract.js en la evaluación previa; su integración y la evaluación de OpenCV como alternativa para recuperar estructura del grafo se tratarán en otra rama. No se debe asumir que la dirección de las flechas queda detectada automáticamente.
+- Hay tres vías de entrada al mismo editor: importar grafos Mermaid/DOT/GraphML, importar el modelo JSON explícito o crear un borrador mediante transcripción asistida de texto a grafo. Las conexiones importadas o transcritas deben revisarse antes de ejecutar. La transcripción de texto funciona localmente y no requiere una API externa.
 
 La versión del paquete se identifica por el SHA del commit que lo produjo en GitHub Actions. Este paquete no es una validación científica de TGCV.
