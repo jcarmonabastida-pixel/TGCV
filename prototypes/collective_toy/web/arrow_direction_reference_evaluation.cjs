@@ -111,8 +111,8 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
         const candidates = endpoint => Array.isArray(endpoint) ? endpoint : endpoint ? [endpoint] : [];
         const best = endpoint => candidates(endpoint)
           .reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null);
-        const atFromCandidates = candidates(edge.arrowhead_evidence?.at_from);
-        const atToCandidates = candidates(edge.arrowhead_evidence?.at_to);
+        const atFromCandidates = candidates(edge.arrowhead_hypotheses?.at_from ?? edge.arrowhead_evidence?.at_from);
+        const atToCandidates = candidates(edge.arrowhead_hypotheses?.at_to ?? edge.arrowhead_evidence?.at_to);
         const atFrom = best(atFromCandidates);
         const atTo = best(atToCandidates);
         const summarize = item => ({
