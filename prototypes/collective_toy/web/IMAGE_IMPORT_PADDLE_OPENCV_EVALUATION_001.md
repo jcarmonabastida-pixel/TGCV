@@ -47,6 +47,8 @@ The first run exposed one false long edge in the linear fixture (`A—C`) becaus
 
 **Interpretation is deliberately limited:** the candidate currently resolves **0/8 edge directions** and marks all directions unknown for human review. Therefore it passes only the initial synthetic *undirected topology* gate; it does not pass the directed-structure gate, does not establish real-image quality, and is not integrated into the demonstrator. The fixture set is tiny and its annotations are not adjudicated.
 
+A subsequent image-level arrowhead-profile attempt, using cross-section width around each candidate edge endpoint, was run in [workflow 39425535253](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39425535253), commit `61dbac8122f67aacbe017d0638f90ea1caf5f1d8`. It proposed **0 correct, 0 incorrect and 8 unresolved directions** (17.031 ms total). The implementation therefore abstains safely but the profile signal is not useful on these fixtures. In line with the stop rule, do not continue threshold tuning on the same tiny set; keep direction manual until a materially different discriminator and a no-arrow/ambiguous raster control can be evaluated.
+
 ## 2. Target user flow
 
 1. User selects an image locally.
