@@ -22,6 +22,12 @@ function testAmbiguousEvidenceStaysUnresolved() {
   assert.equal(result.direction, "undetermined");
   assert.equal(result.direction_status, "unresolved");
 }
+function testStrokeWithoutArrowheadStaysUnresolved() {
+  // A plain connector has no paired V-shaped tip evidence at either endpoint.
+  const result = resolveArrowDirection(edge(score(0.09), score(0.09)));
+  assert.equal(result.direction, "undetermined");
+  assert.equal(result.direction_status, "unresolved");
+}
 function testWeakEvidenceStaysUnresolved() {
   const result = resolveArrowDirection(edge(score(0.49), score(0.12)));
   assert.equal(result.direction_status, "unresolved");
@@ -38,7 +44,8 @@ function testMalformedEvidenceStaysUnresolved() {
 testForwardArrow();
 testReversedArrow();
 testAmbiguousEvidenceStaysUnresolved();
+testStrokeWithoutArrowheadStaysUnresolved();
 testWeakEvidenceStaysUnresolved();
 testInsufficientSamplesStaysUnresolved();
 testMalformedEvidenceStaysUnresolved();
-process.stdout.write("OCR-ARROW-DIRECTION-001: 6 resolver tests passed (forward, reverse, ambiguous, weak, insufficient and malformed evidence).\n");
+process.stdout.write("OCR-ARROW-DIRECTION-001: 7 resolver tests passed (forward, reverse, ambiguous, no-arrow stroke, weak, insufficient and malformed evidence).\n");
