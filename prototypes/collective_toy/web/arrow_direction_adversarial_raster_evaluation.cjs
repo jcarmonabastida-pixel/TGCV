@@ -15,7 +15,7 @@ const cases = [
   { id: "arrow-left", kind: "clear-arrow", arrow: "left", expectedDirection: "target-to-source", expectedStatus: "candidate" },
   { id: "no-arrow", kind: "connector-no-arrow", arrow: "none", expectedDirection: "undetermined", expectedStatus: "unresolved" },
   { id: "ambiguous-two-heads", kind: "ambiguous", arrow: "both", expectedDirection: "undetermined", expectedStatus: "unresolved" },
-  { id: "branch-arrow", kind: "branch", arrow: "right", expectedDirections: ["target-to-source", "target-to-source"], expectedStatus: "candidate" }
+  { id: "branch-arrow", kind: "branch", arrow: "right", arrowTips: [[142,51],[142,129]], expectedStatus: "candidate" }
 ];
 
 function svgFor(item) {
@@ -73,12 +73,24 @@ function svgFor(item) {
             item.id + ": direction differs from the generated arrow annotation");
         }
       }
-      if (item.expectedDirections) {
-        assert.equal(edges.length, item.expectedDirections.length,
+      if (item.arrowTips) {
+        assert.equal(edges.length, item.arrowTips.length,
           item.id + ": detected edge count differs from the generated branch annotation");
-        const actual = edges.map(edge => edge.direction);
-        assert.deepEqual(actual, item.expectedDirections,
-          item.id + ": branch directions differ from the generated arrow annotations");
+        // Derive each expected direction from the independently authored arrow-tip
+        // coordinate and the edge endpoint coordinates, not from a hard-coded
+        // resolver label. source-to-target means the annotated tip is nearer "to".
+        for (const edge of edges) {
+          assert.ok(Array.isArray(edge.from) && Array.isArray(edge.to),
+            item.id + ": endpoint coordinates are required for reference comparison");
+          const midpointY = (edge.from[1] + edge.to[1]) / 2;
+          const tip = item.arrowTips.reduce((best, candidate) =>
+            Math.abs(candidate[1] - midpointY) < Math.abs(best[1] - midpointY) ? candidate : best);
+          const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+          const expected = distance(edge.to, tip) < distance(edge.from, tip)
+            ? "source-to-target" : "target-to-source";
+          assert.equal(edge.direction, expected,
+            item.id + ": proposal disagrees with arrow-tip annotation " + JSON.stringify(tip));
+        }
       }
       rows.push({
         case_id: item.id, case_kind: item.kind, edge_candidates: edges.length,
