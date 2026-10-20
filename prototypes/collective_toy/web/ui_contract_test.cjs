@@ -123,7 +123,7 @@ const assert = require("node:assert/strict");
     const reviewDownloadPromise = page.waitForEvent("download");
     await page.getByRole("button", { name: /Exportar estado de revisión/ }).click();
     const reviewDownload = await reviewDownloadPromise;
-    assert.match(reviewDownload.suggestedFilename(), /human-review\\.json$/);
+    assert.match(reviewDownload.suggestedFilename(), /human-review\.json$/);
     const reviewPath = await reviewDownload.path();
     const reviewArtifact = JSON.parse(fs.readFileSync(reviewPath, "utf8"));
     assert.equal(reviewArtifact.review_schema_version, "collective-toy-human-review-001");
