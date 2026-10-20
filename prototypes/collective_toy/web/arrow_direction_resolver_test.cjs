@@ -29,6 +29,29 @@ function testCanvasPresenceSignalDoesNotTreatMissingHypothesesAsAbsence() {
   assert.equal(inferArrowheadPresenceFromEvidence({}), null,
     "missing arrowhead evidence must remain unknown");
 }
+function testCanvasPresenceSignalKeepsMalformedDiagnosticsUnknown() {
+  assert.equal(inferArrowheadPresenceFromEvidence({
+    arrowhead_hypotheses: {
+      at_from: [{ geometric_v_diagnostic: {
+        left_arm_support_ratio: 0, right_arm_support_ratio: 0,
+        bilateral_off_axis_support_ratio: 0
+      }}],
+      at_to: [{ geometric_v_diagnostic: {
+        left_arm_support_ratio: 0, right_arm_support_ratio: 0
+        // Missing bilateral support: incomplete diagnostic, not evidence of absence.
+      }}]
+    }
+  }), null, "incomplete V diagnostics must remain unknown");
+  assert.equal(inferArrowheadPresenceFromEvidence({
+    arrowhead_hypotheses: {
+      at_from: [{ geometric_v_diagnostic: null }],
+      at_to: [{ geometric_v_diagnostic: {
+        left_arm_support_ratio: 0, right_arm_support_ratio: 0,
+        bilateral_off_axis_support_ratio: 0
+      }}]
+    }
+  }), null, "missing geometric diagnostic must remain unknown");
+}
 function testCanvasPresenceSignalPreservesUncertainVAsPossible() {
   const result = inferArrowheadPresenceFromEvidence({
     arrowhead_hypotheses: {
@@ -127,6 +150,7 @@ function testNonFiniteSupportStaysUnresolved() {
 
 testCanvasPresenceSignalMarksNoPairedVAsNotDetected();
 testCanvasPresenceSignalPreservesUncertainVAsPossible();
+testCanvasPresenceSignalKeepsMalformedDiagnosticsUnknown();
 testCanvasPresenceSignalDoesNotTreatMissingHypothesesAsAbsence();
 testForwardArrow();
 testReversedArrow();
@@ -143,4 +167,4 @@ testSupportAboveOneStaysUnresolved();
 testNegativeSupportStaysUnresolved();
 testFractionalSampleCountStaysUnresolved();
 testNonFiniteSupportStaysUnresolved();
-process.stdout.write("OCR-ARROW-DIRECTION-001: 18 resolver/integration-signal tests passed (Canvas no-V signal, Canvas uncertain-V preservation, missing-hypothesis unknown handling, out-of-range support, negative support, fractional sample count, forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
+process.stdout.write("OCR-ARROW-DIRECTION-001: 19 resolver/integration-signal tests passed (Canvas no-V signal, Canvas uncertain-V preservation, malformed-diagnostic unknown handling, missing-hypothesis unknown handling, out-of-range support, negative support, fractional sample count, forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
