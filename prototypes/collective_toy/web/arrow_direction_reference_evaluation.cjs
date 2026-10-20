@@ -285,6 +285,11 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     "synthetic localization regression: maximum best-candidate tip error must remain <= 2 px");
   assert.equal(localizationSummary.within_2px, localizationSummary.evaluated_reference_tips,
     "synthetic localization regression: every annotated tip must have a candidate within 2 px");
+  assert.ok(proposed > 0, "synthetic direction regression: at least one direction must remain evaluable");
+  assert.equal(inverted, 0,
+    "synthetic direction regression: no confidently proposed direction may contradict the annotated source/target");
+  assert.equal(correct, proposed,
+    "synthetic direction regression: every proposed direction must match the annotation; uncertain cases may remain unresolved");
 })().catch(error => {
   console.error(error && error.stack || error);
   process.exitCode = 1;
