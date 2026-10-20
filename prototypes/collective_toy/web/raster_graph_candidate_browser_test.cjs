@@ -95,11 +95,11 @@ function svgFor(kind) {
         kind === "linear" ? [["N001", "N002"], ["N002", "N003"]]
           : kind === "branch" ? [["N002", "N001"], ["N002", "N003"]]
           : kind === "convergence" ? [["N001", "N002"], ["N003", "N002"]]
-          : [["N001", "N004"], ["N002", "N003"]],
+          : [["N001", "N004"], ["N003", "N002"]],
         kind + ": conservative resolver proposal should follow the authored arrow geometry");
       observations.push({
         fixture: kind,
-        expected_nodes: 3,
+        expected_nodes: expectedNodeCount,
         expected_edges: 2,
         detected_nodes: detected.nodes.length,
         detected_edges: detected.edge_candidates.length,
