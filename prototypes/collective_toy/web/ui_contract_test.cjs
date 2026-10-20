@@ -96,6 +96,27 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#transcription-clarification-panel").isVisible(), false);
     assert.match(await page.locator("#system-description").inputValue(), /El proceso pasa de reposo a ejecución/);
     assert.doesNotMatch(await page.locator("#system-description").inputValue(), /Si falla/);
+
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo. Cuando se recupera, continúa.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /Si falla/);
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /Cuando se recupera/);
+    await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo. Cuando se recupera, el proceso pasa de reposo a recuperación.");
+    await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
+    await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
+    assert.equal(await page.locator("#transcription-clarification").inputValue(), "Cuando se recupera, el proceso pasa de reposo a recuperación.");
+    const partialClarification = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(partialClarification.transitions.length, 2,
+      "A second unresolved phrase must remain pending without losing recognized transitions");
+    await page.locator("#transcription-clarification").fill("El proceso pasa de reposo a recuperación.");
+    await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
+    await page.locator("#transcription-clarification-panel").waitFor({ state: "hidden" });
+    const fullyClarified = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(fullyClarified.transitions.length, 3, "Repeated clarification should retain all recognized transitions");
+    assert.ok(fullyClarified.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"));
+    assert.ok(fullyClarified.transitions.some((edge) => edge.source === "reposo" && edge.target === "recuperación"));
+    assert.doesNotMatch(await page.locator("#system-description").inputValue(), /Cuando se recupera/);
     await page.locator("#system-description").fill("Texto vago sin relación identificable.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     assert.match(await page.locator("#transcription-status").innerText(), /No se identificaron transiciones/);
