@@ -34,6 +34,29 @@ function resolveArrowDirection(edge, options = {}) {
       direction_reason: "Arrowhead evidence is weak or the endpoint scores are too close.",
       direction_evidence: { at_from: fromScore, at_to: toScore, margin } };
   }
+
+  // A high endpoint support ratio alone can be produced by nearby connector
+  // strokes. Require a minimally plausible two-arm arrowhead at the winning
+  // endpoint before proposing a direction. These are conservative geometric
+  // gates, not calibrated probabilities; failures remain unresolved.
+  const winner = toScore > fromScore ? atTo : atFrom;
+  const minBilateralOffAxisSupport = options.minBilateralOffAxisSupport ?? 0.35;
+  const minArmSupport = options.minArmSupport ?? 0.55;
+  const leftArm = winner?.left_support_ratio;
+  const rightArm = winner?.right_support_ratio;
+  const offAxis = winner?.off_axis_support_ratio;
+  if (!Number.isFinite(offAxis) || offAxis < minBilateralOffAxisSupport ||
+      !Number.isFinite(leftArm) || leftArm < minArmSupport ||
+      !Number.isFinite(rightArm) || rightArm < minArmSupport) {
+    return { direction: "undetermined", direction_status: "unresolved",
+      direction_reason: "Endpoint support is asymmetric, but the winning endpoint lacks sufficient two-arm arrowhead geometry.",
+      direction_evidence: { at_from: fromScore, at_to: toScore, margin,
+        winning_endpoint: toScore > fromScore ? "to" : "from",
+        winning_off_axis_support: Number.isFinite(offAxis) ? offAxis : null,
+        winning_left_arm_support: Number.isFinite(leftArm) ? leftArm : null,
+        winning_right_arm_support: Number.isFinite(rightArm) ? rightArm : null } };
+  }
+
   if (toScore > fromScore) {
     return { direction: "source-to-target", direction_status: "candidate",
       direction_reason: "Arrowhead evidence is stronger at the target endpoint; human review required.",
