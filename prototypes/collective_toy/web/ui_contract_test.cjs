@@ -121,7 +121,7 @@ const assert = require("node:assert/strict");
     await page.locator("#transition-review-list").getByRole("button", { name: /Marcar dirección sin resolver review_ab/ }).click();
     assert.match(await page.locator("#graph-review-warnings").innerText(), /dirección sin resolver/i);
     await page.locator("#image-file").setInputFiles({ name: "review-source.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jLZ8AAAAASUVORK5CYII=", "base64") });
-    await page.locator("#image-status").getByText(/Imagen cargada/).waitFor();
+    await page.getByText(/Imagen cargada:/).waitFor();
     const reviewDownloadPromise = page.waitForEvent("download");
     await page.getByRole("button", { name: /Exportar estado de revisión/ }).click();
     const reviewDownload = await reviewDownloadPromise;
