@@ -93,18 +93,21 @@ def endpoint_arrowhead_score(gray: np.ndarray, endpoint, other) -> tuple[float, 
     px, py = -uy, ux
     widths = []
     height, width = gray.shape
-    for distance in (2, 4, 6, 8, 10, 12, 14):
+    for distance in (1, 3, 5, 7, 9, 11, 13):
         cx = endpoint[0] + ux * (endpoint[2] + distance)
         cy = endpoint[1] + uy * (endpoint[2] + distance)
         count = 0
         for offset in range(-8, 9):
             x = int(round(cx + px * offset))
             y = int(round(cy + py * offset))
-            if 0 <= x < width and 0 <= y < height and int(gray[y, x]) < DARK_THRESHOLD:
+            # A 3x3 neighbourhood tolerates rasterisation and sub-pixel line offsets.
+            x0, x1 = max(0, x - 1), min(width, x + 2)
+            y0, y1 = max(0, y - 1), min(height, y + 2)
+            if x0 < x1 and y0 < y1 and int(np.min(gray[y0:y1, x0:x1])) < DARK_THRESHOLD:
                 count += 1
         widths.append(count)
-    base_width = max(widths[1:5])
-    shaft_width = float(np.median(widths[5:]))
+    base_width = max(widths[1:4])
+    shaft_width = float(np.median(widths[4:]))
     return max(0.0, base_width - shaft_width), widths
 
 
