@@ -45,7 +45,7 @@ const assert = require("node:assert/strict");
     assert.match(sourceHtml, /Proponer grafo desde la descripción/);
     assert.doesNotMatch(sourceHtml, /Importación desde imagen|PaddleOCR|Tesseract\.js|OpenCV como alternativa/i,
       "The retired image-detection/OCR workstream must not be presented as a supported entry route");
-    await page.locator("summary").filter({ hasText: /Transcripción asistida de texto a grafo/ }).click();
+    await page.locator("details.relation-editor").filter({ hasText: /Transcripción asistida de texto a grafo/ }).evaluate((el) => { el.open = true; });
     const modelBeforeDescription = await page.locator("#model").inputValue();
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. La ejecución conduce a resultado. Esta frase no identifica una transición.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
