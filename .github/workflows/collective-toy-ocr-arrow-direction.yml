@@ -11,6 +11,7 @@ on:
       - 'prototypes/collective_toy/web/raster_graph_candidate_detector.cjs'
       - 'prototypes/collective_toy/web/raster_graph_candidate_detector_test.cjs'
       - 'prototypes/collective_toy/web/arrow_direction_reference_evaluation.cjs'
+      - 'prototypes/collective_toy/web/arrow_direction_adversarial_raster_evaluation.cjs'
       - '.github/workflows/collective-toy-ocr-arrow-direction.yml'
   workflow_dispatch:
 
@@ -43,3 +44,6 @@ jobs:
       - name: Evaluate proposed directions against annotated fixtures
         working-directory: prototypes/collective_toy/web
         run: node arrow_direction_reference_evaluation.cjs
+      - name: Run diagnostic adversarial raster probes
+        working-directory: prototypes/collective_toy/web
+        run: node arrow_direction_adversarial_raster_evaluation.cjs
