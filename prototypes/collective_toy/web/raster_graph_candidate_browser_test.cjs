@@ -21,10 +21,19 @@ function svgFor(kind) {
     drawing = node(45, 90, "A") + node(160, 90, "B") + node(275, 90, "C") +
       line(60, 90, 145, 90) + head(145, 90, 1, 0) +
       line(175, 90, 260, 90) + head(260, 90, 1, 0);
-  } else {
+  } else if (kind === "branch") {
     drawing = node(45, 90, "A") + node(160, 45, "B") + node(160, 135, "C") +
       line(60, 84, 145, 49) + head(145, 49, 85, -35) +
       line(60, 96, 145, 131) + head(145, 131, 85, 35);
+  } else if (kind === "convergence") {
+    drawing = node(45, 45, "A") + node(45, 135, "B") + node(160, 90, "C") +
+      line(60, 49, 145, 84) + head(145, 84, 85, 35) +
+      line(60, 131, 145, 96) + head(145, 96, 85, -35);
+  } else {
+    drawing = node(45, 45, "A") + node(275, 135, "B") +
+      node(45, 135, "C") + node(275, 45, "D") +
+      line(60, 50, 260, 130) + head(260, 130, 200, 80) +
+      line(60, 130, 260, 50) + head(260, 50, 200, -80);
   }
   return '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">' +
     '<rect width="320" height="180" fill="white"/>' + drawing + '</svg>';
@@ -53,7 +62,7 @@ function svgFor(kind) {
     // Characterization probes use the actual browser Canvas detector, not a stub.
     // They report current topology recovery without claiming general accuracy.
     const observations = [];
-    for (const kind of ["linear", "branch"]) {
+    for (const kind of ["linear", "branch", "convergence", "crossing"]) {
       const detected = await page.evaluate(async (svg) => {
         const source = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
         return globalThis.TGCVRasterGraphCandidateDetector.detectGraphCandidatesFromImage(source);
@@ -67,21 +76,26 @@ function svgFor(kind) {
         edge.direction === "undetermined"));
       assert.ok(detected.nodes.every((node) =>
         node.center.every((coordinate) => Number.isFinite(coordinate))));
-      assert.equal(detected.nodes.length, 3, kind + ": expected three geometric node candidates");
+      const expectedNodeCount = kind === "crossing" ? 4 : 3;
+      assert.equal(detected.nodes.length, expectedNodeCount, kind + ": expected geometric node candidate count");
       assert.equal(detected.edge_candidates.length, 2, kind + ": expected two geometric edge candidates");
       const centersByPosition = detected.nodes.map((node) => node.center)
         .sort((a, b) => a[1] - b[1] || a[0] - b[0]);
-      assert.deepEqual(centersByPosition, kind === "linear"
-        ? [[45, 90], [160, 90], [275, 90]]
-        : [[160, 45], [45, 90], [160, 135]],
-        kind + ": node centers should match the annotated synthetic layout");
+      const expectedCenters = kind === "linear" ? [[45, 90], [160, 90], [275, 90]]
+        : kind === "branch" ? [[160, 45], [45, 90], [160, 135]]
+        : kind === "convergence" ? [[45, 45], [160, 90], [45, 135]]
+        : [[45, 45], [275, 45], [45, 135], [275, 135]];
+      assert.deepEqual(centersByPosition, expectedCenters,
+        kind + ": node centers should match the authored synthetic layout");
       const reviewDraft = await page.evaluate((graph) =>
         globalThis.TGCVRasterGraphReviewAdapter.candidateGraphToReviewDraft(graph, { sourceName: "probe" }), detected);
       assert.equal(reviewDraft.unresolved_transition_ids.length, reviewDraft.model.transitions.length,
         "direction proposals from the actual detector must remain unresolved for human confirmation");
       assert.deepEqual(reviewDraft.model.transitions.map((edge) => [edge.source, edge.target]),
         kind === "linear" ? [["N001", "N002"], ["N002", "N003"]]
-          : [["N002", "N001"], ["N002", "N003"]],
+          : kind === "branch" ? [["N002", "N001"], ["N002", "N003"]]
+          : kind === "convergence" ? [["N001", "N002"], ["N003", "N002"]]
+          : [["N001", "N004"], ["N002", "N003"]],
         kind + ": conservative resolver proposal should follow the authored arrow geometry");
       observations.push({
         fixture: kind,
