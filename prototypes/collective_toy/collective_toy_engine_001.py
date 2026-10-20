@@ -641,7 +641,7 @@ def verify_exported_package(package: dict[str, Any]) -> bool:
 def demo_model() -> dict[str, Any]:
     """The hand-checkable diamond fixture from the contract."""
     return {
-        "schema_version": SUPPORTED_SCHEMA,
+        "schema_version": "collective-toy-input-001",
         "model_id": "toy-diamond-001",
         "initial_state": "A",
         "states": ["A", "B", "C", "D"],
