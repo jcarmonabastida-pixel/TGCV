@@ -1,7 +1,7 @@
 # Canvas image-import integration — reconciliation record 001
 
 **Date:** 2026-10-20  
-**Status:** INTEGRATION IMPLEMENTED IN PR #82; engineering CI passed on tested head `6ef6e2f141400513c8dcb6bdf95321fd051a431c`  
+**Status:** INTEGRATION IMPLEMENTED IN PR #82; conservative browser direction proposals and synthetic topology characterization pass engineering CI on code head `09eb24d44fe20c47c926a8d5704ea30cf281acff`  
 **Base:** `main` at `5768fe937fc6453098779101a0df5119e07dffbe`  
 **Branch:** `experiment/canvas-image-import-integration-reconciliation-001-20261020`
 
@@ -43,17 +43,19 @@ Both historical PRs shared the development base above, but neither was a clean i
 
 ## Current implementation and verification
 
-The integration is implemented in PR #82. The browser UI path is covered by a Playwright regression that selects a local image, calls the adapter boundary, creates an editable draft, checks execution is blocked for unresolved direction, reverses and confirms the edge manually, and exports a review JSON preserving the image and review state.
+The integration is implemented in PR #82. The browser UI path is covered by a Playwright regression that selects a local image, creates an editable draft, blocks execution while edge directions are unresolved, allows manual reversal and confirmation, and exports review JSON preserving the source image and review state.
 
-The UI end-to-end test uses a controlled detector stub to isolate integration wiring. A separate browser test invokes the actual Canvas detector, but its current fixture is a blank SVG and verifies safe empty output. **Therefore, these passing tests do not yet establish that the detector correctly extracts nodes, edges, bifurcations, convergences, or arrow directions from representative real diagrams.** Real-image topology evaluation and the existing direction benchmark remain separate acceptance work.
+The UI end-to-end test uses a controlled detector stub to isolate integration wiring. The actual browser Canvas detector is now also exercised on generated synthetic linear and branch diagrams. At code head `09eb24d44fe20c47c926a8d5704ea30cf281acff`, it found the expected 3 node candidates and 2 edge candidates in each probe, with expected topology and node centers. The conservative post-processing adapter now uses the existing geometric evidence thresholds to propose direction when supported; proposals remain unresolved until explicit human confirmation. The branch probe proposed A→B and A→C, and the linear probe proposed A→B and B→C.
 
-On PR head `6ef6e2f141400513c8dcb6bdf95321fd051a431c`, the following four GitHub Actions workflows completed successfully on 2026-10-20:
-- Collective Toy browser and cross-runtime tests — run `39441398909`.
-- Collective Toy browser performance benchmark — run `39441398860`.
-- Collective Toy synthetic engine tests — run `39441398869`.
-- TGCV governance current-state consistency — run `39441398879`.
+This is a **small synthetic regression set**, not representative real-image validation. The current browser detector test does not establish general accuracy on scans, screenshots, colored nodes, varied line styles, complex crossings, or missing/spurious connections. Arrow-direction proposal quality remains provisional and must be measured separately from topology.
 
-This evidence is specific to that exact tested head. Any subsequent commit requires CI status to be checked again on the new head.
+On code head `09eb24d44fe20c47c926a8d5704ea30cf281acff`, all four GitHub Actions workflows completed successfully on 2026-10-20:
+- Collective Toy browser and cross-runtime tests — run `39444524861`.
+- Collective Toy browser performance benchmark — run `39444524763`.
+- Collective Toy synthetic engine tests — run `39444524785`.
+- TGCV governance current-state consistency — run `39444524725`.
+
+This evidence is engineering conformance for the exact code head above, not scientific execution or a TGCV scientific-validity claim. The subsequent documentation-only update must also have its own exact-head CI checked before the branch is considered reconciled.
 
 ## Next acceptance step
 
