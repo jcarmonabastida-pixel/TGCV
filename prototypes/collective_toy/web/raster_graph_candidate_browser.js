@@ -49,9 +49,17 @@ async function analyzeRasterGraphPixels({ imageDataUrl, threshold, minNodeSize, 
       ctx.drawImage(image, 0, 0);
       const { data, width, height } = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const dark = new Uint8Array(width * height);
+      const chromatic = new Uint8Array(width * height);
+      const edgeEvidence = new Uint8Array(width * height);
       for (let i = 0; i < width * height; i++) {
         const r = data[i * 4], g = data[i * 4 + 1], b = data[i * 4 + 2];
-        if ((r + g + b) / 3 < threshold) dark[i] = 1;
+        const mean = (r + g + b) / 3;
+        const saturation = Math.max(r, g, b) - Math.min(r, g, b);
+        if (mean < threshold) dark[i] = 1;
+        // Preserve saturated colored strokes as edge evidence without changing
+        // the grayscale mask used for node extraction and enclosed regions.
+        if (saturation >= 36 && Math.max(r, g, b) >= 90) chromatic[i] = 1;
+        if (dark[i] || chromatic[i]) edgeEvidence[i] = 1;
       }
 
       // Gather all moderate horizontal runs, including short runs at the
@@ -254,7 +262,7 @@ async function analyzeRasterGraphPixels({ imageDataUrl, threshold, minNodeSize, 
           let found = false;
           for (let oy = -1; oy <= 1 && !found; oy++) for (let ox = -1; ox <= 1; ox++) {
             const px = x + ox, py = y + oy;
-            if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) { found = true; break; }
+            if (px >= 0 && px < width && py >= 0 && py < height && edgeEvidence[py * width + px]) { found = true; break; }
           }
           tested++;
           if (found) supported++;
@@ -291,7 +299,7 @@ async function analyzeRasterGraphPixels({ imageDataUrl, threshold, minNodeSize, 
                 for (let oy = -1; oy <= 1; oy++) {
                   for (let ox = -1; ox <= 1; ox++) {
                     const px = x + ox, py = y + oy;
-                    if (px < 0 || px >= width || py < 0 || py >= height || !dark[py * width + px]) continue;
+                    if (px < 0 || px >= width || py < 0 || py >= height || !edgeEvidence[py * width + px]) continue;
                     found = true;
                     const lateral = Math.abs((px - candidateTip[0]) * (-inwardUnit[1]) +
                       (py - candidateTip[1]) * inwardUnit[0]);
@@ -311,7 +319,7 @@ async function analyzeRasterGraphPixels({ imageDataUrl, threshold, minNodeSize, 
             const vertexCenterY = Math.round(candidateTip[1]);
             for (let oy = -2; oy <= 2; oy++) for (let ox = -2; ox <= 2; ox++) {
               const px = vertexCenterX + ox, py = vertexCenterY + oy;
-              if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
+              if (px >= 0 && px < width && py >= 0 && py < height && edgeEvidence[py * width + px]) {
                 vertexPixels.push([px, py]);
               }
             }
@@ -419,7 +427,7 @@ async function analyzeRasterGraphPixels({ imageDataUrl, threshold, minNodeSize, 
         detector: "TGCV-RASTER-GRAPH-CANDIDATES-001",
         status: "experimental-candidates-only",
         image: { width, height },
-        method: "Canvas grayscale threshold; vertically clustered horizontal runs for rounded/box node candidates; long horizontal stroke candidates",
+        method: "Canvas grayscale threshold for node candidates plus separate chromatic edge-evidence mask; geometric edge candidates remain provisional",
         nodes: candidates,
         diagnostics: { runCount: runs.length, clusterCount: clusters.length, enclosedRegionCount: interiorRegions.length, enclosedRegions: interiorRegions, rejectionCounts, largestClusters: clusterDiagnostics.sort((a, b) => b.rows - a.rows).slice(0, 20) },
         edge_candidates: edgeCandidates,
