@@ -257,7 +257,11 @@ async function detectGraphCandidates(imagePath, options = {}) {
               const sign = side === 0 ? -1 : 1;
               const ux = inwardUnit[0] * Math.cos(rad) - sign * inwardUnit[1] * Math.sin(rad);
               const uy = inwardUnit[1] * Math.cos(rad) + sign * inwardUnit[0] * Math.sin(rad);
-              for (let distance = 3; distance <= 13; distance++) {
+              // Skip the first pixels adjacent to the tip, where the
+              // connector stroke can masquerade as both arrowhead arms.
+              // Use a 1-pixel neighbourhood to tolerate rasterization without
+              // letting the central edge corridor dominate the score.
+              for (let distance = 5; distance <= 15; distance++) {
                 const x = Math.round(candidateTip[0] + ux * distance);
                 const y = Math.round(candidateTip[1] + uy * distance);
                 armTested[side]++;
@@ -265,7 +269,9 @@ async function detectGraphCandidates(imagePath, options = {}) {
                 for (let oy = -1; oy <= 1 && !found; oy++) {
                   for (let ox = -1; ox <= 1; ox++) {
                     const px = x + ox, py = y + oy;
-                    if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
+                    const lateral = Math.abs((px - candidateTip[0]) * (-inwardUnit[1]) +
+                      (py - candidateTip[1]) * inwardUnit[0]);
+                    if (lateral < 2.5 && px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
                       found = true; break;
                     }
                   }
