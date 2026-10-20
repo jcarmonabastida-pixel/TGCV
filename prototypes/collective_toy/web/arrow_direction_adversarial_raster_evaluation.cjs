@@ -108,7 +108,11 @@ function svgFor(item) {
           direction_status: edge.direction_status,
           direction_reason: edge.direction_reason,
           direction_evidence: edge.direction_evidence,
-          direction_confidence: edge.confidence,
+          // Keep detector confidence separate from directional confidence.
+          // The resolver currently emits no calibrated direction-confidence field.
+          edge_candidate_confidence: edge.confidence,
+          direction_confidence: Number.isFinite(edge.direction_confidence)
+            ? edge.direction_confidence : null,
           arrowhead_presence: edge.arrowhead_presence,
           arrowhead_evidence: {
             at_from: edge.arrowhead_evidence?.at_from
