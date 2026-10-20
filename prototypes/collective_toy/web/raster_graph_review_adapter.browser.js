@@ -92,5 +92,9 @@ function candidateGraphToReviewDraft(detected, options = {}) {
   };
 }
 
-if (typeof module !== "undefined" && module.exports) if (typeof module !== "undefined" && module.exports) module.exports = { candidateGraphToReviewDraft };
-else globalThis.TGCVRasterGraphReviewAdapter = { candidateGraphToReviewDraft };
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { candidateGraphToReviewDraft };
+} else {
+  globalThis.TGCVRasterGraphReviewAdapter = { candidateGraphToReviewDraft };
+}
+
