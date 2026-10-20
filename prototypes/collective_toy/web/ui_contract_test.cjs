@@ -163,6 +163,7 @@ const assert = require("node:assert/strict");
     await page.getByText("Límite alcanzado", { exact: true }).waitFor();
     await page.getByText("Escenario: baseline", { exact: true }).waitFor();
 
+    await page.locator("#status").filter({ hasText: /Ejecución completada|No se ha podido ejecutar/ }).waitFor({ timeout: 10000 });
     const runStatus = await page.locator("#status").innerText();
     assert.match(runStatus, /Ejecución completada/, "Scenario execution must complete before inspecting its package; status: " + runStatus);
     const packageData = await page.evaluate(() => window.lastPackage);
