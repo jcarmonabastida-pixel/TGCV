@@ -3,6 +3,28 @@
 const { resolveArrowDirection } = require("./arrow_direction_resolver.cjs");
 
 /**
+ * Returns false only when neither endpoint has any sampled bilateral,
+ * off-axis arm evidence consistent with a V-shaped arrowhead. This is a
+ * conservative detector-level signal, not proof that no arrowhead exists.
+ * If any such evidence exists, return null so the resolver does not treat
+ * uncertain geometry as a confirmed arrowless connector.
+ */
+function inferArrowheadPresenceFromEvidence(edge) {
+  const endpoints = [edge?.arrowhead_hypotheses?.at_from, edge?.arrowhead_hypotheses?.at_to];
+  const hasPairedOffAxisEvidence = endpoints.some(endpoint =>
+    Array.isArray(endpoint) && endpoint.some(candidate => {
+      const v = candidate?.geometric_v_diagnostic;
+      return Number.isFinite(v?.left_arm_support_ratio) &&
+        Number.isFinite(v?.right_arm_support_ratio) &&
+        Number.isFinite(v?.bilateral_off_axis_support_ratio) &&
+        v.left_arm_support_ratio > 0 &&
+        v.right_arm_support_ratio > 0 &&
+        v.bilateral_off_axis_support_ratio > 0;
+    }));
+  return hasPairedOffAxisEvidence ? null : false;
+}
+
+/**
  * First deterministic raster candidate detector for TGCV development fixtures.
  * Uses browser Canvas to inspect pixels. It is a candidate generator, not a
  * production-grade graph parser; OCR labels are intentionally ignored.
@@ -418,13 +440,21 @@ async function detectGraphCandidates(imagePath, options = {}) {
       const best = endpoint => Array.isArray(endpoint)
         ? endpoint.reduce((current, item) => !current || item.support_ratio > current.support_ratio ? item : current, null)
         : endpoint;
+      const arrowheadPresent = inferArrowheadPresenceFromEvidence(edge);
       const decision = resolveArrowDirection({
         arrowhead_evidence: {
           at_from: best(edge.arrowhead_evidence?.at_from),
-          at_to: best(edge.arrowhead_evidence?.at_to)
+          at_to: best(edge.arrowhead_evidence?.at_to),
+          ...(arrowheadPresent === false ? { arrowhead_present: false } : {})
         }
       });
-      return { ...edge, ...decision, direction_review_required: true };
+      return {
+        ...edge,
+        arrowhead_presence: arrowheadPresent === false ? "not_detected" : "possible_or_uncertain",
+        arrowhead_presence_review_required: true,
+        ...decision,
+        direction_review_required: true
+      };
     });
     detected.direction_diagnostics = {
       resolver: "TGCV-ARROW-DIRECTION-RESOLVER-001",
@@ -440,4 +470,4 @@ async function detectGraphCandidates(imagePath, options = {}) {
   }
 }
 
-module.exports = { detectGraphCandidates };
+module.exports = { detectGraphCandidates, inferArrowheadPresenceFromEvidence };
