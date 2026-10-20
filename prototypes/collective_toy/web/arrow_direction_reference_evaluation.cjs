@@ -144,6 +144,7 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
           off_axis_support_ratio: item.off_axis_support_ratio ?? null,
           left_off_axis_support_ratio: item.left_off_axis_support_ratio ?? null,
           right_off_axis_support_ratio: item.right_off_axis_support_ratio ?? null,
+          geometric_v_diagnostic: item.geometric_v_diagnostic ?? null,
           tested_samples: item.tested_samples
         });
         return [{
@@ -206,6 +207,28 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
                 direction_favored_by_off_axis_evidence: fromScore === null || toScore === null || fromScore === toScore
                   ? "inconclusive"
                   : fromScore > toScore ? "candidate_from" : "candidate_to"
+              };
+            })(),
+            geometric_v_comparison: (() => {
+              const score = endpoint => endpoint.filter(item => Number.isFinite(item.tip_offset_px) && item.tip_offset_px <= 4)
+                .reduce((best, item) => {
+                  const v = item.geometric_v_diagnostic;
+                  if (!v) return best;
+                  const value = v.bilateral_off_axis_support_ratio;
+                  return Number.isFinite(value) && (!best || value > best.score)
+                    ? { score: value, vertex_support_ratio: v.vertex_support_ratio, arm_balance_ratio: v.arm_balance_ratio,
+                        left_arm_support_ratio: v.left_arm_support_ratio, right_arm_support_ratio: v.right_arm_support_ratio,
+                        angle_degrees: item.angle_degrees, tip_offset_px: item.tip_offset_px }
+                    : best;
+                }, null);
+              const from = score(atFromCandidates), to = score(atToCandidates);
+              return {
+                candidate_from: from,
+                candidate_to: to,
+                direction_favored_by_geometric_v: !from || !to || from.score === to.score
+                  ? "inconclusive"
+                  : from.score > to.score ? "candidate_from" : "candidate_to",
+                diagnostic_only: true
               };
             })()
           }
