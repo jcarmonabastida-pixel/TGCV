@@ -129,6 +129,12 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
             angle_degrees: item.angle_degrees,
             tip_candidate: item.tip_candidate
           })).sort((a, b) => a.error_px - b.error_px);
+        const nearTipHypotheses = targetEndpointHypotheses.filter(item =>
+          Number.isFinite(item.tip_offset_px) && item.tip_offset_px <= 4);
+        const bestNearTip = nearTipHypotheses.reduce((current, item) =>
+          !current || item.support_ratio > current.support_ratio ? item : current, null);
+        const bestOverall = targetEndpointHypotheses.reduce((current, item) =>
+          !current || item.support_ratio > current.support_ratio ? item : current, null);
         const summarize = item => ({
           support_ratio: item.support_ratio,
           tip_offset_px: item.tip_offset_px,
@@ -162,7 +168,13 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
           target_endpoint_tip_localization: {
             hypotheses_evaluated: tipErrors.length,
             best_error_px: tipErrors[0]?.error_px ?? null,
-            best_hypothesis: tipErrors[0] ?? null
+            best_hypothesis: tipErrors[0] ?? null,
+            near_tip_hypotheses_evaluated: nearTipHypotheses.length,
+            best_near_tip_support_ratio: bestNearTip?.support_ratio ?? null,
+            best_near_tip_angle_degrees: bestNearTip?.angle_degrees ?? null,
+            best_near_tip_offset_px: bestNearTip?.tip_offset_px ?? null,
+            best_overall_support_ratio: bestOverall?.support_ratio ?? null,
+            best_overall_offset_px: bestOverall?.tip_offset_px ?? null
           },
           top_hypotheses_from: atFromCandidates.slice(0, 5).map(summarize),
           top_hypotheses_to: atToCandidates.slice(0, 5).map(summarize)
