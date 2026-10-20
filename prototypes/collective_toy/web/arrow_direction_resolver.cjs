@@ -5,7 +5,7 @@
  * Scores are geometric evidence, not proof; uncertain cases remain unresolved.
  */
 function resolveArrowDirection(edge, options = {}) {
-  const minSupport = options.minSupport ?? 0.55;
+  const minSupport = options.minSupport ?? 0.50;
   const minMargin = options.minMargin ?? 0.15;
   const minSamples = options.minSamples ?? 20;
   const atFrom = edge?.arrowhead_evidence?.at_from;
