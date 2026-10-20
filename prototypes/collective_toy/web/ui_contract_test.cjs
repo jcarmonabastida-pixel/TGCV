@@ -86,6 +86,7 @@ const assert = require("node:assert/strict");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
     assert.equal(await page.locator("#transcription-clarification").inputValue(), "Si falla, el proceso vuelve de ejecución a reposo.");
+    assert.match(await page.locator("#transcription-clarification-panel").innerText(), /si una condición es esencial, no la conviertas en una transición incondicional/i);
     await page.locator("#transcription-clarification").fill("El proceso vuelve de ejecución a reposo.");
     await page.getByRole("button", { name: "Sustituir frases pendientes y volver a proponer" }).click();
     await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 2 conexiones/ }).waitFor();
