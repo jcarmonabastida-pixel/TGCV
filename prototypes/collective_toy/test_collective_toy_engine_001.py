@@ -179,6 +179,12 @@ class CollectiveToyEngineTests(unittest.TestCase):
             "The Python engine must not execute a transition whose condition it cannot evaluate",
         )
 
+    def test_legacy_schema_rejects_condition_field(self):
+        model = copy.deepcopy(self.model)
+        model["transitions"][0]["condition"] = "humidity is low"
+        with self.assertRaisesRegex(ModelValidationError, "condition requires schema_version"):
+            run_model(model)
+
     def test_conditional_transition_condition_must_be_non_empty(self):
         model = copy.deepcopy(self.model)
         model["transitions"][0]["condition"] = "   "
