@@ -131,8 +131,29 @@ def main():
         node_candidates = detect_node_candidates(image)
         mapping, matched_candidates, matched_refs = match_nodes(node_candidates, item["nodes"])
         candidate_edges = []
+        blocked_by_intermediate_node = 0
         for left, right in itertools.combinations(range(len(node_candidates)), 2):
-            support = line_support(image, node_candidates[left][:2], node_candidates[right][:2])
+            a = node_candidates[left]
+            b = node_candidates[right]
+            # Do not collapse a multi-edge path through an intermediate detected node
+            # into a spurious long edge (e.g. A—B—C must not also imply A—C).
+            intermediate = False
+            dx, dy = b[0] - a[0], b[1] - a[1]
+            denom = dx * dx + dy * dy
+            for other_index, other in enumerate(node_candidates):
+                if other_index in (left, right) or denom == 0:
+                    continue
+                t = ((other[0] - a[0]) * dx + (other[1] - a[1]) * dy) / denom
+                if 0.15 < t < 0.85:
+                    px, py = a[0] + t * dx, a[1] + t * dy
+                    distance = float(np.hypot(other[0] - px, other[1] - py))
+                    if distance <= other[2] + 5.0:
+                        intermediate = True
+                        break
+            if intermediate:
+                blocked_by_intermediate_node += 1
+                continue
+            support = line_support(image, a[:2], b[:2])
             if support >= EDGE_SUPPORT_THRESHOLD:
                 candidate_edges.append({
                     "source_candidate": left,
@@ -173,6 +194,7 @@ def main():
             },
             "edge_topology_undirected": edge_score,
             "edge_candidates": candidate_edges,
+            "candidate_pairs_blocked_by_intermediate_node": blocked_by_intermediate_node,
             "direction": {
                 "reference_directed_edges": sum(1 for e in item["edges"] if e["direction"] == "directed"),
                 "candidate_directions_unresolved": len(candidate_edges),
@@ -209,6 +231,7 @@ def main():
             "edge_fp": sum(c["edge_topology_undirected"]["fp"] for c in cases),
             "edge_fn": sum(c["edge_topology_undirected"]["fn"] for c in cases),
             "images_with_exact_undirected_topology": sum(c["edge_topology_undirected"]["exact_undirected_topology_match"] for c in cases),
+            "undirected_topology_fixture_gate_pass": all(c["edge_topology_undirected"]["exact_undirected_topology_match"] for c in cases),
             "images_with_direction_fully_resolved": 0,
             "runtime_ms_total": round((time.perf_counter() - started_all) * 1000, 3),
         },
@@ -222,6 +245,8 @@ def main():
     }
     REPORT_PATH.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status": report["status"], "report": str(REPORT_PATH), "aggregate": report["aggregate"]}, indent=2))
+    if not report["aggregate"]["undirected_topology_fixture_gate_pass"]:
+        raise SystemExit("FAIL: candidate did not recover exact undirected topology on every synthetic fixture; see the uploaded per-image report.")
 
 
 if __name__ == "__main__":
