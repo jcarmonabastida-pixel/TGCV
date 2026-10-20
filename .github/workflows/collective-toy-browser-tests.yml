@@ -3,8 +3,12 @@ name: Collective Toy browser and cross-runtime tests
 on:
   push:
     branches:
+      - main
       - prototype/collective-toy-cross-runtime-tests-001-20261011
       - prototype/tgcv-full-chain-001-20261014-scenario-context-recovery
+    paths:
+      - 'prototypes/collective_toy/**'
+      - '.github/workflows/collective-toy-browser-tests.yml'
   pull_request:
     branches:
       - main
@@ -41,23 +45,40 @@ jobs:
       - name: Run browser and Python concordance test
         working-directory: prototypes/collective_toy/web
         run: npm test
-      - name: Prepare standalone Full Chain distribution
+      - name: Build reproducible standalone distribution
         shell: bash
         run: |
           set -euo pipefail
-          dist_name="tgcv-full-chain-${GITHUB_SHA}"
-          dist_dir="$RUNNER_TEMP/$dist_name"
-          mkdir -p "$dist_dir"
-          cp prototypes/collective_toy/web/index.html "$dist_dir/index.html"
-          cp prototypes/collective_toy/DISTRIBUTION_README_001.md "$dist_dir/README.md"
-          cp prototypes/collective_toy/examples/full-chain-diamond-001.json "$dist_dir/example-diamond.json"
+          python -m pip install 'Markdown==3.8.2'
+          source_commit="$(git rev-parse HEAD)"
+          dist_dir="$RUNNER_TEMP/tgcv-full-chain-$source_commit"
+          echo "SOURCE_COMMIT=$source_commit" >> "$GITHUB_ENV"
+          echo "DIST_DIR=$dist_dir" >> "$GITHUB_ENV"
+          python prototypes/collective_toy/build_distribution_guide.py \
+            --source-commit "$source_commit" \
+            --output-dir "$dist_dir"
+          python prototypes/collective_toy/test_distribution_package.py \
+            --package-dir "$dist_dir" \
+            --source-commit "$source_commit"
       - name: Upload standalone executable Full Chain distribution
         uses: actions/upload-artifact@v4
         with:
-          name: tgcv-full-chain-executable-${{ github.sha }}
-          path: ${{ runner.temp }}/tgcv-full-chain-${{ github.sha }}/
+          name: tgcv-full-chain-executable-${{ env.SOURCE_COMMIT }}
+          path: ${{ env.DIST_DIR }}/
           if-no-files-found: error
           retention-days: 30
+      - name: Download and verify the uploaded ZIP artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tgcv-full-chain-executable-${{ env.SOURCE_COMMIT }}
+          path: ${{ runner.temp }}/downloaded-full-chain-package
+      - name: Verify downloaded artifact contents
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prototypes/collective_toy/test_distribution_package.py \
+            --package-dir "$RUNNER_TEMP/downloaded-full-chain-package" \
+            --source-commit "$SOURCE_COMMIT"
       - name: Upload validated Full Chain acceptance package
         uses: actions/upload-artifact@v4
         with:
@@ -71,7 +92,7 @@ jobs:
           set -euo pipefail
           clean_root="$RUNNER_TEMP/collective-toy-browser-clean-room"
           mkdir -p "$clean_root"
-          git archive "$GITHUB_SHA" prototypes/collective_toy | tar -x -C "$clean_root"
+          git archive "$(git rev-parse HEAD)" prototypes/collective_toy | tar -x -C "$clean_root"
           cd "$clean_root/prototypes/collective_toy/web"
           npm install
           npm test
