@@ -239,45 +239,59 @@ async function detectGraphCandidates(imagePath, options = {}) {
         return { ratio: tested ? supported / tested : 0, supported, tested };
       };
       const arrowheadEvidence = (tip, inwardUnit) => {
-        // Look for a paired V-shaped arrowhead: both arms should contain dark
-        // pixels along rays that diverge from the edge axis. Count each arm
-        // separately so a single straight connector cannot score as a head.
-        const scores = [];
-        for (const angle of [25, 35, 45, 55, 65]) {
-          const rad = angle * Math.PI / 180;
-          const armHits = [0, 0];
-          const armTested = [0, 0];
-          for (let side = 0; side < 2; side++) {
-            const sign = side === 0 ? -1 : 1;
-            const ux = inwardUnit[0] * Math.cos(rad) - sign * inwardUnit[1] * Math.sin(rad);
-            const uy = inwardUnit[1] * Math.cos(rad) + sign * inwardUnit[0] * Math.sin(rad);
-            for (let d = 3; d <= 13; d++) {
-              const x = Math.round(tip[0] + ux * d), y = Math.round(tip[1] + uy * d);
-              armTested[side]++;
-              let found = false;
-              for (let oy = -1; oy <= 1 && !found; oy++) {
-                for (let ox = -1; ox <= 1; ox++) {
-                  const px = x + ox, py = y + oy;
-                  if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
-                    found = true; break;
+        // The visible arrow tip may sit slightly inside the edge corridor rather
+        // than exactly on the node boundary. Search a short, bounded interval
+        // along the edge axis instead of sampling only the boundary point.
+        // This is evidence localization only; it never accepts a direction.
+        const candidates = [];
+        for (let offset = 0; offset <= 18; offset += 2) {
+          const candidateTip = [
+            Math.round(tip[0] + inwardUnit[0] * offset),
+            Math.round(tip[1] + inwardUnit[1] * offset)
+          ];
+          for (const angle of [25, 35, 45, 55, 65]) {
+            const rad = angle * Math.PI / 180;
+            const armHits = [0, 0];
+            const armTested = [0, 0];
+            for (let side = 0; side < 2; side++) {
+              const sign = side === 0 ? -1 : 1;
+              const ux = inwardUnit[0] * Math.cos(rad) - sign * inwardUnit[1] * Math.sin(rad);
+              const uy = inwardUnit[1] * Math.cos(rad) + sign * inwardUnit[0] * Math.sin(rad);
+              for (let distance = 3; distance <= 13; distance++) {
+                const x = Math.round(candidateTip[0] + ux * distance);
+                const y = Math.round(candidateTip[1] + uy * distance);
+                armTested[side]++;
+                let found = false;
+                for (let oy = -1; oy <= 1 && !found; oy++) {
+                  for (let ox = -1; ox <= 1; ox++) {
+                    const px = x + ox, py = y + oy;
+                    if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
+                      found = true; break;
+                    }
                   }
                 }
+                if (found) armHits[side]++;
               }
-              if (found) armHits[side]++;
             }
+            const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
+            candidates.push({
+              angle_degrees: angle,
+              tip_offset_px: offset,
+              tip_candidate: candidateTip,
+              support_ratio: Math.min(...armRatios),
+              bilateral_support_ratio: Number(Math.min(...armRatios).toFixed(4)),
+              left_support_ratio: Number(armRatios[0].toFixed(4)),
+              right_support_ratio: Number(armRatios[1].toFixed(4)),
+              supported_samples: armHits.reduce((sum, n) => sum + n, 0),
+              tested_samples: armTested.reduce((sum, n) => sum + n, 0)
+            });
           }
-          const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
-          scores.push({
-            angle_degrees: angle,
-            support_ratio: Math.min(...armRatios),
-            bilateral_support_ratio: Number(Math.min(...armRatios).toFixed(4)),
-            left_support_ratio: Number(armRatios[0].toFixed(4)),
-            right_support_ratio: Number(armRatios[1].toFixed(4)),
-            supported_samples: armHits.reduce((sum, n) => sum + n, 0),
-            tested_samples: armTested.reduce((sum, n) => sum + n, 0)
-          });
         }
-        return scores.sort((a, b) => b.support_ratio - a.support_ratio)[0];
+        return candidates.sort((a, b) =>
+          b.support_ratio - a.support_ratio ||
+          a.tip_offset_px - b.tip_offset_px ||
+          a.angle_degrees - b.angle_degrees
+        )[0];
       };
       const boundaryPoint = (node, target) => {
         const c = node.center, dx = target[0] - c[0], dy = target[1] - c[1];
