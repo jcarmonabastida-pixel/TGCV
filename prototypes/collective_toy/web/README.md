@@ -42,7 +42,7 @@ Antes de ejecutar:
 2. Comprueba cada nodo, bifurcación, convergencia, conexión y extremo.
 3. Lee **Conexiones del modelo** y el **Resumen de revisión estructural**. Los avisos son heurísticos: pueden señalar algo que está bien y no garantizan que se hayan encontrado todas las omisiones.
 4. Si una conexión es incorrecta, pulsa **Eliminar conexión**. Para reconstruirla, selecciona el origen en **Desde**, el destino en **Hasta** y pulsa **Conectar estados**.
-5. Si la dirección de una flecha es ambigua, **no la adivines**. Conserva la conexión como no dirigida/sin resolver cuando el formato lo permita (por ejemplo, `B --- C` en Mermaid/DOT según el parser actual), o déjala fuera del modelo hasta poder verificarla. Si conoces la dirección, elimina la conexión incorrecta y créala con el origen y destino correctos.
+5. Si la dirección de una flecha es ambigua, **no la adivines**. Conserva la conexión como no dirigida/sin resolver cuando el formato lo permita (por ejemplo, `B --- C` en una transcripción Mermaid), o déjala fuera del modelo hasta poder verificarla. En otros formatos, no presupongas que la falta de flecha se conservará como estado sin resolver. Si conoces la dirección, elimina la conexión incorrecta y créala con el origen y destino correctos.
 6. Revisa también el estado inicial. El primer estado importado puede no ser el estado inicial real.
 7. Sólo cuando hayas terminado la revisión, pulsa **Ejecutar escenarios**.
 
