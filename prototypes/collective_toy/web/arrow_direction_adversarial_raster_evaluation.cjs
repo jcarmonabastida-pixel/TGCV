@@ -113,12 +113,36 @@ function svgFor(item) {
           arrowhead_evidence: {
             at_from: edge.arrowhead_evidence?.at_from
               ? { support_ratio: edge.arrowhead_evidence.at_from.support_ratio,
-                  tested_samples: edge.arrowhead_evidence.at_from.tested_samples }
+                  tested_samples: edge.arrowhead_evidence.at_from.tested_samples,
+                  selected_hypothesis: edge.arrowhead_evidence.at_from }
               : null,
             at_to: edge.arrowhead_evidence?.at_to
               ? { support_ratio: edge.arrowhead_evidence.at_to.support_ratio,
-                  tested_samples: edge.arrowhead_evidence.at_to.tested_samples }
-              : null
+                  tested_samples: edge.arrowhead_evidence.at_to.tested_samples,
+                  selected_hypothesis: edge.arrowhead_evidence.at_to }
+              : null,
+            hypothesis_summary: {
+              at_from: (edge.arrowhead_hypotheses?.at_from || []).slice(0, 5).map(h => ({
+                angle_degrees: h.angle_degrees,
+                tip_offset_px: h.tip_offset_px,
+                tip_candidate: h.tip_candidate,
+                support_ratio: h.support_ratio,
+                left_support_ratio: h.left_support_ratio,
+                right_support_ratio: h.right_support_ratio,
+                off_axis_support_ratio: h.off_axis_support_ratio,
+                vertex_support_ratio: h.geometric_v_diagnostic?.vertex_support_ratio
+              })),
+              at_to: (edge.arrowhead_hypotheses?.at_to || []).slice(0, 5).map(h => ({
+                angle_degrees: h.angle_degrees,
+                tip_offset_px: h.tip_offset_px,
+                tip_candidate: h.tip_candidate,
+                support_ratio: h.support_ratio,
+                left_support_ratio: h.left_support_ratio,
+                right_support_ratio: h.right_support_ratio,
+                off_axis_support_ratio: h.off_axis_support_ratio,
+                vertex_support_ratio: h.geometric_v_diagnostic?.vertex_support_ratio
+              }))
+            }
           },
           review_required: edge.direction_review_required
         })),
