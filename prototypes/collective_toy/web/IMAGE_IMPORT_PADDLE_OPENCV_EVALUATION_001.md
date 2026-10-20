@@ -18,6 +18,18 @@ Relevant prior work must be reused rather than recreated:
 
 **Baseline decision:** preserve the existing structural detector and the text-only OCR benchmark as separate baselines. Do not remove either or combine their scores while the comparison is in progress.
 
+### Exact raster-fixture recovery record
+
+The historical synthetic raster assets were recovered from `development/collective-toy-ocr-topology-first-001-20261013` and copied into this experiment branch byte-for-byte using their existing Git blob objects; no fixture image was redrawn or regenerated. Recovery commit: `1ade48b3b3c48042a2ad6662051821a86814738b`.
+
+| Image ID | Historical PNG Git blob SHA | SHA-256 in the original annotation manifest |
+|---|---|---|
+| `SYN-LINEAR-001` | `3f6af2d708a01820e7ccbb9c9518d8eea08fab4f` | `e84efc7158283fe7c3b4d9693c0be13150b2c9b36556a2451812c92578fbb456` |
+| `SYN-BRANCH-001` | `06a8e5b5d2cde72c1c73dbc04f2c795fecc3eb22` | `4166e9a1633f28ca20ff8d86f38e62f38b4bb917e6f0ef491bf003c36dca867d` |
+| `SYN-CROSSING-001` | `b289e04794a4109c85eb7305eabf2b7f763c2ece` | `ac09e35c1ecd94b1b5ee1cf0cffe1d0febb262bec26b32f9e6b9885ec9f18ba2` |
+
+The annotation manifest's blob SHA is `92bc447248b91c32fcad69e53fd46ba17b48affe`; its fixture-integrity test is `ocr_graph_image_fixture_test.cjs` (blob SHA `614dc049fca3c24be606697ea3034c78b14d4168`). The schema and fixture README were recovered with their original blob identities too. These three images remain synthetic, development-only and single-annotator/non-adjudicated. The next check is to execute the integrity test on this exact experiment-branch head before adding any detector or claiming image-level metrics.
+
 ## 2. Target user flow
 
 1. User selects an image locally.
