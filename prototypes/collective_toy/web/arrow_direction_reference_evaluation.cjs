@@ -296,8 +296,9 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     dataset_id: annotations.dataset_id,
     dataset_version: annotations.dataset_version,
     scope: "synthetic development fixtures only; not real-world validation",
-    direction_metrics_kind: "diagnostic_candidate_proposals_not_operational_resolver_output",
-    operational_direction_inference_enabled: false,
+    direction_metrics_kind: "operational_resolver_direction_proposals_compared_with_synthetic_reference",
+    direction_resolver_enabled: true,
+    automatic_direction_acceptance_enabled: false,
     human_review_required: true,
     direction_proposals: proposed,
     correct_directions: correct,
@@ -308,7 +309,7 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
     target_endpoint_tip_localization_summary: localizationSummary,
     near_tip_direction_diagnostic_summary: nearTipDiagnosticSummary,
     per_fixture: rows,
-    interpretation: "These are diagnostic candidate-direction comparisons against non-adjudicated synthetic annotations, not directions accepted by the operational resolver. Operational direction inference remains disabled; every candidate requires human review. Unresolved directions are not counted as correct. This report measures only matched candidate edges; unmatched candidates are reported separately."
+    interpretation: "The detector invokes the operational resolver to produce direction proposals; this evaluator compares those proposals with non-adjudicated synthetic annotations. Proposals are not accepted directions: automatic acceptance remains disabled and every candidate requires human review. Unresolved directions are not counted as correct. This report measures only matched candidate edges; unmatched candidates are reported separately. The fixtures are synthetic development evidence, not real-world validation."
   };
   assert.equal(correct + inverted, proposed, "direction outcome accounting must balance");
   const clearArrowReferenceEdges = annotations.images.flatMap(fixture => fixture.edges || [])
