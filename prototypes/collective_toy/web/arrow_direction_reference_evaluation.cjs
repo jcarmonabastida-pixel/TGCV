@@ -115,6 +115,20 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
         const atToCandidates = candidates(edge.arrowhead_hypotheses?.at_to ?? edge.arrowhead_evidence?.at_to);
         const atFrom = best(atFromCandidates);
         const atTo = best(atToCandidates);
+        // Localization is evaluated separately from direction acceptance.
+        // The annotation convention places the reference tip at the final
+        // centerline point; compare only hypotheses at the annotated target node.
+        const referenceTip = Array.isArray(ref.polyline) ? ref.polyline[ref.polyline.length - 1] : null;
+        const targetEndpointHypotheses = to === ref.target_node_id ? atToCandidates :
+          from === ref.target_node_id ? atFromCandidates : [];
+        const tipErrors = targetEndpointHypotheses.filter(item => Array.isArray(item.tip_candidate))
+          .map(item => ({
+            error_px: Number(Math.hypot(item.tip_candidate[0] - referenceTip[0], item.tip_candidate[1] - referenceTip[1]).toFixed(3)),
+            support_ratio: item.support_ratio,
+            tip_offset_px: item.tip_offset_px,
+            angle_degrees: item.angle_degrees,
+            tip_candidate: item.tip_candidate
+          })).sort((a, b) => a.error_px - b.error_px);
         const summarize = item => ({
           support_ratio: item.support_ratio,
           tip_offset_px: item.tip_offset_px,
@@ -143,6 +157,12 @@ const { detectGraphCandidates } = require("./raster_graph_candidate_detector.cjs
             at_to_right_support: atTo?.right_support_ratio ?? null,
             tested_samples_from: atFrom?.tested_samples ?? 0,
             tested_samples_to: atTo?.tested_samples ?? 0
+          },
+          reference_tip: referenceTip,
+          target_endpoint_tip_localization: {
+            hypotheses_evaluated: tipErrors.length,
+            best_error_px: tipErrors[0]?.error_px ?? null,
+            best_hypothesis: tipErrors[0] ?? null
           },
           top_hypotheses_from: atFromCandidates.slice(0, 5).map(summarize),
           top_hypotheses_to: atToCandidates.slice(0, 5).map(summarize)
