@@ -36,6 +36,10 @@ const assert = require("node:assert/strict");
     assert.match(sourceHtml, /raster_graph_review_adapter\.browser\.js/);
     assert.match(sourceHtml, /canvas-image-file/);
     assert.match(sourceHtml, /canvas-image-export-review/);
+    assert.match(sourceHtml, /canvas-image-graph-preview/);
+    assert.match(sourceHtml, /\.visual-review-pair\{display:grid/);
+    assert.match(sourceHtml, /max-height:360px;object-fit:contain/,
+      "Canvas source image must fit the review panel without overflowing");
     assert.match(sourceHtml, /direcciones requieren confirmación humana/i);
     assert.doesNotMatch(sourceHtml, /Tesseract|tesseract\.js|run-ocr|https?:\/\/cdn/i,
       "Canvas image import must not introduce OCR or a remote runtime dependency");
@@ -71,6 +75,13 @@ const assert = require("node:assert/strict");
     });
     await page.locator("#canvas-image-detect").click();
     await page.locator("#canvas-image-status").filter({ hasText: /Borrador creado/ }).waitFor();
+    const candidatePreview = page.locator("#canvas-image-graph-preview");
+    assert.equal(await candidatePreview.getAttribute("viewBox"), "0 0 200 100",
+      "Candidate preview must use the detected source-image coordinate space");
+    assert.equal(await candidatePreview.locator("line").count(), 1,
+      "Candidate preview must visibly draw each mapped geometric connection");
+    assert.equal(await candidatePreview.locator("circle").count(), 2,
+      "Candidate preview must visibly draw each detected node");
     let imageDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(imageDraft.states, ["N001", "N002"]);
     assert.equal(imageDraft.transitions.length, 1);
