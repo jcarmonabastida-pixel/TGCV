@@ -39,6 +39,47 @@ def node_candidates(img):
         kept.append(n)
     return kept
 
+def merge_collinear_segments(segments, max_gap=18, max_angle_deg=12, max_offset=6):
+    """Join nearby, nearly collinear Hough fragments; still geometry-only."""
+    merged = [list(map(list, seg)) for seg in segments]
+    angle_limit = math.radians(max_angle_deg)
+
+    def angle(seg):
+        (x1,y1),(x2,y2)=seg
+        return math.atan2(y2-y1,x2-x1) % math.pi
+
+    def angle_delta(a,b):
+        d=abs(a-b) % math.pi
+        return min(d, math.pi-d)
+
+    def point_line_distance(p, seg):
+        (x1,y1),(x2,y2)=seg
+        den=math.hypot(x2-x1,y2-y1)
+        return abs((y2-y1)*p[0]-(x2-x1)*p[1]+x2*y1-y2*x1)/den if den else math.dist(p,[x1,y1])
+
+    changed=True
+    while changed:
+        changed=False
+        for i in range(len(merged)):
+            if changed: break
+            for j in range(i+1,len(merged)):
+                a,b=merged[i],merged[j]
+                if angle_delta(angle(a),angle(b)) > angle_limit: continue
+                endpoints=[(math.dist(a[0],b[0]),a[0],b[0]),
+                           (math.dist(a[0],b[1]),a[0],b[1]),
+                           (math.dist(a[1],b[0]),a[1],b[0]),
+                           (math.dist(a[1],b[1]),a[1],b[1])]
+                gap,pa,pb=min(endpoints,key=lambda item:item[0])
+                if gap > max_gap: continue
+                if point_line_distance(pb,a) > max_offset or point_line_distance(pa,b) > max_offset: continue
+                points=a+b
+                farthest=max(((math.dist(p,q),p,q) for p in points for q in points),key=lambda item:item[0])
+                merged[i]=[list(farthest[1]),list(farthest[2])]
+                del merged[j]
+                changed=True
+                break
+    return merged
+
 def edge_candidates(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     edges = cv2.Canny(gray, 40, 120)
@@ -57,7 +98,7 @@ def edge_candidates(img):
         if not any(min(math.dist(a,x)+math.dist(b,y),
                        math.dist(a,y)+math.dist(b,x)) < 14 for x,y in unique):
             unique.append(line)
-    return unique
+    return merge_collinear_segments(unique)
 
 def node_score(pred, refs, tolerance=12):
     pairs=[]
