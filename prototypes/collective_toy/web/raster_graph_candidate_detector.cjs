@@ -263,19 +263,19 @@ async function detectGraphCandidates(imagePath, options = {}) {
                 const y = Math.round(candidateTip[1] + uy * distance);
                 armTested[side]++;
                 let found = false;
-                for (let oy = -1; oy <= 1 && !found; oy++) {
+                let foundOffAxis = false;
+                for (let oy = -1; oy <= 1; oy++) {
                   for (let ox = -1; ox <= 1; ox++) {
                     const px = x + ox, py = y + oy;
-                    if (px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
-                      found = true;
-                      const lateral = Math.abs((px - candidateTip[0]) * (-inwardUnit[1]) +
-                        (py - candidateTip[1]) * inwardUnit[0]);
-                      if (lateral >= 2.5) armHitsOffAxis[side]++;
-                      break;
-                    }
+                    if (px < 0 || px >= width || py < 0 || py >= height || !dark[py * width + px]) continue;
+                    found = true;
+                    const lateral = Math.abs((px - candidateTip[0]) * (-inwardUnit[1]) +
+                      (py - candidateTip[1]) * inwardUnit[0]);
+                    if (lateral >= 2.5) foundOffAxis = true;
                   }
                 }
                 if (found) armHits[side]++;
+                if (foundOffAxis) armHitsOffAxis[side]++;
               }
             }
             const armRatios = armHits.map((hits, i) => armTested[i] ? hits / armTested[i] : 0);
