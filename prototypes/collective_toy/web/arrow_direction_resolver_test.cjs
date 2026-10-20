@@ -28,6 +28,19 @@ function testStrokeWithoutArrowheadStaysUnresolved() {
   assert.equal(result.direction, "undetermined");
   assert.equal(result.direction_status, "unresolved");
 }
+function testArrowlessConnectorWithAsymmetricNoiseStaysUnresolved() {
+  // Unequal endpoint scores alone must not invent a direction when geometry says no arrowhead exists.
+  const result = resolveArrowDirection({
+    arrowhead_evidence: {
+      arrowhead_present: false,
+      at_from: score(0.88),
+      at_to: score(0.12)
+    }
+  });
+  assert.equal(result.direction, "undetermined");
+  assert.equal(result.direction_status, "unresolved");
+  assert.match(result.direction_reason, /No arrowhead is detected/);
+}
 function testWeakEvidenceStaysUnresolved() {
   const result = resolveArrowDirection(edge(score(0.49), score(0.12)));
   assert.equal(result.direction_status, "unresolved");
@@ -66,6 +79,7 @@ testForwardArrow();
 testReversedArrow();
 testAmbiguousEvidenceStaysUnresolved();
 testStrokeWithoutArrowheadStaysUnresolved();
+testArrowlessConnectorWithAsymmetricNoiseStaysUnresolved();
 testWeakEvidenceStaysUnresolved();
 testInsufficientSamplesStaysUnresolved();
 testMalformedEvidenceStaysUnresolved();
@@ -73,4 +87,4 @@ testEqualEndpointScoresStayUnresolved();
 testExactMinimumMarginStaysUnresolved();
 testInsufficientSamplesAtOnlyOneEndpointStaysUnresolved();
 testNonFiniteSupportStaysUnresolved();
-process.stdout.write("OCR-ARROW-DIRECTION-001: 11 resolver tests passed (forward, reverse, ambiguous, no-arrow stroke, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
+process.stdout.write("OCR-ARROW-DIRECTION-001: 12 resolver tests passed (forward, reverse, ambiguous, no-arrow stroke, arrowless asymmetric-noise, weak, insufficient, malformed, tied, boundary-margin, one-endpoint-insufficient and non-finite evidence).\n");
