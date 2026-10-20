@@ -99,6 +99,79 @@ function geometryShortlist(hypotheses) {
 // Mirror the resolver-input selection for diagnostics only: prefer eligible
 // bilateral hypotheses by off-axis support, then arm balance/support, then offset;
 // if none qualifies, preserve the same measured-support fallback as the detector.
+function offsetProfile(hypotheses) {
+  const all = Array.isArray(hypotheses) ? hypotheses : [];
+  const compare = (a, b) =>
+    b.off_axis_support_ratio - a.off_axis_support_ratio ||
+    Math.min(b.left_support_ratio, b.right_support_ratio) -
+      Math.min(a.left_support_ratio, a.right_support_ratio) ||
+    b.support_ratio - a.support_ratio ||
+    a.tip_offset_px - b.tip_offset_px;
+  const profile = [];
+  for (let offset = 0; offset <= 18; offset += 2) {
+    const atOffset = all.filter(item => item?.tip_offset_px === offset);
+    const eligible = atOffset.filter(item =>
+      Number.isFinite(item?.support_ratio) &&
+      Number.isFinite(item?.left_support_ratio) &&
+      Number.isFinite(item?.right_support_ratio) &&
+      Number.isFinite(item?.off_axis_support_ratio) &&
+      item.left_support_ratio >= 0.50 &&
+      item.right_support_ratio >= 0.50 &&
+      item.off_axis_support_ratio >= 0.25
+    ).sort(compare);
+    const fallback = atOffset.filter(item => Number.isFinite(item?.support_ratio))
+      .sort((a, b) => b.support_ratio - a.support_ratio)[0];
+    const best = eligible[0] || fallback;
+    profile.push({
+      tip_offset_px: offset,
+      hypothesis_count: atOffset.length,
+      eligible_under_current_geometry_gate: eligible.length > 0,
+      best_angle_degrees: best?.angle_degrees ?? null,
+      support_ratio: best?.support_ratio ?? null,
+      left_support_ratio: best?.left_support_ratio ?? null,
+      right_support_ratio: best?.right_support_ratio ?? null,
+      off_axis_support_ratio: best?.off_axis_support_ratio ?? null,
+      vertex_dark_pixels_5x5: best?.geometric_v_diagnostic?.vertex_dark_pixels_5x5 ?? null
+    });
+  }
+  const eligibleRows = profile.filter(row => row.eligible_under_current_geometry_gate);
+  const angleCounts = new Map();
+  for (const row of eligibleRows) {
+    angleCounts.set(row.best_angle_degrees, (angleCounts.get(row.best_angle_degrees) || 0) + 1);
+  }
+  let longestEligibleRun = 0, currentEligibleRun = 0;
+  let longestSameAngleRun = 0, currentSameAngleRun = 0;
+  let previousOffset = null, previousAngle = null;
+  for (const row of profile) {
+    if (!row.eligible_under_current_geometry_gate) {
+      currentEligibleRun = 0;
+      currentSameAngleRun = 0;
+      previousOffset = null;
+      previousAngle = null;
+      continue;
+    }
+    currentEligibleRun = previousOffset !== null && row.tip_offset_px === previousOffset + 2
+      ? currentEligibleRun + 1 : 1;
+    currentSameAngleRun = previousOffset !== null &&
+      row.tip_offset_px === previousOffset + 2 &&
+      row.best_angle_degrees === previousAngle
+      ? currentSameAngleRun + 1 : 1;
+    longestEligibleRun = Math.max(longestEligibleRun, currentEligibleRun);
+    longestSameAngleRun = Math.max(longestSameAngleRun, currentSameAngleRun);
+    previousOffset = row.tip_offset_px;
+    previousAngle = row.best_angle_degrees;
+  }
+  const mode = [...angleCounts.entries()].sort((a, b) => b[1] - a[1])[0] || null;
+  return {
+    eligible_offset_count: eligibleRows.length,
+    longest_consecutive_eligible_offset_count: longestEligibleRun,
+    modal_eligible_angle_degrees: mode ? mode[0] : null,
+    modal_eligible_angle_share: mode && eligibleRows.length ? mode[1] / eligibleRows.length : null,
+    longest_consecutive_same_angle_count: longestSameAngleRun,
+    profile
+  };
+}
+
 function resolverInputGeometry(hypotheses) {
   const shortlisted = geometryShortlist(hypotheses);
   if (shortlisted.length) return shortlisted[0];
@@ -150,6 +223,10 @@ function resolverInputGeometry(hypotheses) {
             edge.arrowhead_hypotheses?.at_to ?? edge.arrowhead_evidence?.at_to),
           from_geometry_shortlist: geometryShortlist(edge.arrowhead_hypotheses?.at_from),
           to_geometry_shortlist: geometryShortlist(edge.arrowhead_hypotheses?.at_to),
+          from_offset_profile: offsetProfile(
+            edge.arrowhead_hypotheses?.at_from ?? edge.arrowhead_evidence?.at_from),
+          to_offset_profile: offsetProfile(
+            edge.arrowhead_hypotheses?.at_to ?? edge.arrowhead_evidence?.at_to),
           human_review_required: edge.direction_review_required,
           automatic_acceptance: edge.direction_status === "accepted"
         })),
