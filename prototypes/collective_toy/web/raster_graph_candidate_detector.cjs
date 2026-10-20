@@ -271,7 +271,7 @@ async function detectGraphCandidates(imagePath, options = {}) {
                     const px = x + ox, py = y + oy;
                     const lateral = Math.abs((px - candidateTip[0]) * (-inwardUnit[1]) +
                       (py - candidateTip[1]) * inwardUnit[0]);
-                    if (lateral < 2.5 && px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
+                    if (lateral >= 2.5 && px >= 0 && px < width && py >= 0 && py < height && dark[py * width + px]) {
                       found = true; break;
                     }
                   }
