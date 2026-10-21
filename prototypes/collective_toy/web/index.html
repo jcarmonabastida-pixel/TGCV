@@ -461,7 +461,10 @@ $("execute-sequence").addEventListener("click",async function(){
    if(!tr)reason="unknown_transition";
    else if(disabled.has(id))reason="transition_disabled_by_scenario";
    else if(tr.source!==current)reason="transition_source_mismatch";
-   else{missing=required.filter(function(req){return history.indexOf(req)<0}).sort();if(missing.length)reason="temporal_prerequisite_not_satisfied";}
+   else{
+    if(tr.condition){var evaluated=evaluateCondition001(tr.condition,lastModel.condition_values||{});if(evaluated.status==="FALSE")reason="condition_false";else if(evaluated.status!=="TRUE")reason="condition_not_evaluable";}
+    if(!reason){missing=required.filter(function(req){return history.indexOf(req)<0}).sort();if(missing.length)reason="temporal_prerequisite_not_satisfied";}
+   }
    if(reason){blockedStep={index:i+1,transition_id:id,reason:reason,required_transition_ids:missing};break;}
    var before=current;current=tr.target;
    steps.push({step:i+1,transition_id:id,state_before:before,state_after:current,prior_transitions:history.slice(),prerequisites:required.slice().sort(),status:"EXECUTED"});
@@ -474,7 +477,7 @@ $("execute-sequence").addEventListener("click",async function(){
   
   panel.append(node("p","","Estado inicial: "+trace.initial_state));
   steps.forEach(function(step){panel.append(node("p","","Paso "+step.step+": "+step.state_before+" → "+step.state_after))});
-  if(blockedStep)panel.append(node("p","error","El recorrido no pudo continuar porque faltaba un prerrequisito."));
+  if(blockedStep){var blockMessage=blockedStep.reason==="temporal_prerequisite_not_satisfied"?"El recorrido no pudo continuar porque faltaba un prerrequisito.":blockedStep.reason==="condition_false"?"El recorrido se detuvo porque una condición era falsa.":blockedStep.reason==="condition_not_evaluable"?"El recorrido se detuvo porque una condición no pudo evaluarse con los datos disponibles.":"El recorrido se detuvo porque una transición no era aplicable.";panel.append(node("p","error",blockMessage));}
   panel.append(node("p","","Estado "+(blockedStep?"al detenerse: ":"final: ")+trace.final_state));
   
   panel.dataset.state=blockedStep?"blocked-trace-recorded":"replay-verified";
