@@ -88,6 +88,10 @@ function pythonJson(source, input) {
     assert.equal(conditionalEngineRun.input.transitions[0].condition, "humidity is low");
     assert.ok(!conditionalEngineRun.result.scenario_results.baseline.reachable_states.includes("B"),
       "Python engine must not traverse an unevaluated conditional transition");
+    assert.deepEqual(conditionalEngineRun.result.scenario_results.baseline.blocked_conditions, [{
+      transition_id: "t_ab", source: "A", target: "B", condition: "humidity is low",
+      status: "NOT_EVALUABLE", reason: "unsupported_expression"
+    }], "Python must report unsupported conditions explicitly instead of silently dropping them");
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
       el.dispatchEvent(new Event("input", { bubbles: true }));
@@ -99,6 +103,10 @@ function pythonJson(source, input) {
       "browser package must preserve the conditional metadata");
     assert.ok(!conditionalPkg.result.scenario_results.baseline.reachable_states.includes("B"),
       "browser engine must not traverse an unevaluated conditional transition");
+    assert.deepEqual(conditionalPkg.result.scenario_results.baseline.blocked_conditions, [{
+      transition_id: "t_ab", source: "A", target: "B", condition: "humidity is low",
+      status: "NOT_EVALUABLE", reason: "unsupported_expression"
+    }], "browser must report unsupported conditions explicitly instead of silently dropping them");
     assert.deepEqual(conditionalPkg.result, conditionalEngineRun.result,
       "browser and Python conditional-transition results must be identical");
 
