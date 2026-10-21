@@ -241,6 +241,44 @@ function pythonJson(source, input) {
     assert.deepEqual(pyReturnScenario.blocked_conditions.map(x => [x.transition_id,x.status]), [["t_ac","FALSE"]]);
     assert.deepEqual(browserReturnScenario.blocked_conditions.map(x => [x.transition_id,x.status]), [["t_ac","FALSE"]]);
 
+    // Fail-closed chain: a true first condition reaches B, but a missing
+    // variable on the next edge must prevent reaching C and remain auditable.
+    const chainModel = {
+      ...conditionalModel,
+      model_id: "conditional-chain-missing-value",
+      states: ["A", "B", "C"],
+      initial_state: "A",
+      condition_values: { gate: 1 },
+      transitions: [
+        { id: "chain_ab", source: "A", target: "B", condition: "gate == 1" },
+        { id: "chain_bc", source: "B", target: "C", condition: "authorization_level >= 2" }
+      ],
+      relations: [],
+      exploration: { max_depth: 5, max_trajectories: 20 }
+    };
+    const pyChain = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      chainModel
+    );
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(chainModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const browserChain = await page.evaluate(() => window.lastPackage);
+    const pyChainScenario = pyChain.result.scenario_results.baseline;
+    const browserChainScenario = browserChain.result.scenario_results.baseline;
+    assert.ok(pyChainScenario.reachable_states.includes("B"), "Python reaches B through the true first condition");
+    assert.ok(browserChainScenario.reachable_states.includes("B"), "browser reaches B through the true first condition");
+    assert.ok(!pyChainScenario.reachable_states.includes("C"), "Python must not cross the missing-value condition");
+    assert.ok(!browserChainScenario.reachable_states.includes("C"), "browser must not cross the missing-value condition");
+    assert.deepEqual(browserChain.result, pyChain.result, "conditional chain outputs must match exactly");
+    assert.deepEqual(pyChainScenario.blocked_conditions.map(x => [x.transition_id,x.status,x.reason]),
+      [["chain_bc","NOT_EVALUABLE","missing_variable"]]);
+    assert.deepEqual(browserChainScenario.blocked_conditions.map(x => [x.transition_id,x.status,x.reason]),
+      [["chain_bc","NOT_EVALUABLE","missing_variable"]]);
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
