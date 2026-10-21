@@ -319,6 +319,45 @@ function pythonJson(source, input) {
     assert.deepEqual(browserDependency.result, pyDependency.result,
       "temporal dependency outputs must match exactly");
 
+    // Complementary case: the prerequisite is executed, the path returns to
+    // the dependent transition's source, and only then may that transition fire.
+    const satisfiedDependencyModel = {
+      ...conditionalModel,
+      model_id: "conditional-prerequisite-satisfied-on-path",
+      states: ["A", "B", "D", "C"],
+      initial_state: "A",
+      condition_values: { permit: 1 },
+      transitions: [
+        { id: "t_ab", source: "A", target: "B", condition: "permit == 1" },
+        { id: "t_bd", source: "B", target: "D" },
+        { id: "t_da", source: "D", target: "A" },
+        { id: "t_ac", source: "A", target: "C", condition: "permit == 1" }
+      ],
+      relations: [
+        { id: "r_ac_requires_bd", type: "requires_prior_execution", transition_id: "t_ac", requires_transition_id: "t_bd" }
+      ],
+      exploration: { max_depth: 6, max_trajectories: 30 }
+    };
+    const pySatisfiedDependency = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      satisfiedDependencyModel
+    );
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(satisfiedDependencyModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const browserSatisfiedDependency = await page.evaluate(() => window.lastPackage);
+    const pySatisfiedScenario = pySatisfiedDependency.result.scenario_results.baseline;
+    const browserSatisfiedScenario = browserSatisfiedDependency.result.scenario_results.baseline;
+    assert.ok(pySatisfiedScenario.reachable_states.includes("C"),
+      "Python must allow t_ac after t_bd has been executed and the path returns to A");
+    assert.ok(browserSatisfiedScenario.reachable_states.includes("C"),
+      "browser must allow t_ac after t_bd has been executed and the path returns to A");
+    assert.deepEqual(browserSatisfiedDependency.result, pySatisfiedDependency.result,
+      "satisfied temporal dependency outputs must match exactly");
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
