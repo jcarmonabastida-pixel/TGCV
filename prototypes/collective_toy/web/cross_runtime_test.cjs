@@ -461,9 +461,16 @@ function pythonJson(source, input) {
         "concrete-condition-" + item.name,
         { timeout: 5000 }
       );
+      await page.waitForFunction(() => !document.querySelector("#execute-sequence").disabled, { timeout: 5000 });
       await page.locator("#sequence-input").fill("t_ab, t_bc");
       await page.locator("#execute-sequence").click();
+      await page.waitForFunction(() => {
+        const panel = document.querySelector("#sequence-trace");
+        return panel && panel.dataset.state !== "idle";
+      }, { timeout: 5000 });
       const trace = await page.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.notEqual(await page.locator("#sequence-trace").getAttribute("data-state"), "rejected",
+        item.name + ": concrete execution handler must not reject the request");
       assert.ok(trace, item.name + ": concrete trace must be retained");
       assert.equal(trace.status, item.expectedStatus, item.name + ": concrete execution status");
       assert.equal(trace.steps.length, item.expectedSteps, item.name + ": only executed steps belong in the trace");
