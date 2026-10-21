@@ -429,6 +429,49 @@ function pythonJson(source, input) {
     assert.deepEqual(browserPartialPrerequisites.result, pyPartialPrerequisites.result,
       "partial multiple-prerequisite outputs must match exactly");
 
+    // Concrete execution must distinguish true, false, and non-evaluable conditions.
+    const concreteConditionCases = [
+      { name: "true", condition: "humidity < 30", values: { humidity: 20 }, expectedStatus: "COMPLETED", expectedReason: null, expectedSteps: 2 },
+      { name: "false", condition: "humidity < 30", values: { humidity: 40 }, expectedStatus: "BLOCKED", expectedReason: "condition_false", expectedSteps: 0 },
+      { name: "not-evaluable", condition: "humidity is low", values: {}, expectedStatus: "BLOCKED", expectedReason: "condition_not_evaluable", expectedSteps: 0 }
+    ];
+    for (const item of concreteConditionCases) {
+      const sequenceModel = {
+        ...model,
+        schema_version: "collective-toy-input-002",
+        model_id: "concrete-condition-" + item.name,
+        initial_state: "A",
+        states: ["A", "B", "C"],
+        transitions: [
+          { id: "t_ab", source: "A", target: "B", condition: item.condition },
+          { id: "t_bc", source: "B", target: "C" }
+        ],
+        relations: [],
+        condition_values: item.values,
+        scenarios: [{ id: "baseline", disabled_transitions: [] }],
+        exploration: { max_depth: 4, max_trajectories: 20 }
+      };
+      await page.locator("#model").evaluate((el, value) => {
+        el.value = value;
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, JSON.stringify(sequenceModel));
+      await page.locator("#run").click();
+      await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+      await page.locator("#sequence-input").fill("t_ab, t_bc");
+      await page.locator("#execute-sequence").click();
+      const trace = await page.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.ok(trace, item.name + ": concrete trace must be retained");
+      assert.equal(trace.status, item.expectedStatus, item.name + ": concrete execution status");
+      assert.equal(trace.steps.length, item.expectedSteps, item.name + ": only executed steps belong in the trace");
+      assert.equal(trace.blocked_step && trace.blocked_step.reason || null, item.expectedReason,
+        item.name + ": the block reason must distinguish false from non-evaluable");
+      assert.equal(trace.blocked_step && trace.blocked_step.index || null,
+        item.expectedReason ? 1 : null, item.name + ": blocked index must identify the first attempted step");
+      const exported = await page.evaluate(() => window.lastPackage);
+      assert.ok(!Object.prototype.hasOwnProperty.call(exported, "outcome_record"),
+        item.name + ": a newly executed/blocked trace must not reuse an unrelated outcome");
+    }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
