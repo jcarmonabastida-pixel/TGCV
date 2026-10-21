@@ -92,7 +92,11 @@ The revised contract should pass grouped review against these criteria:
 
 Do not turn these grouped criteria into one test per sentence mechanically. Use a small number of end-to-end acceptance cases plus adversarial tests for semantic conflation, stale results, import/export, and misleading presentation.
 
-## 7. Relationship to the condition-evaluator proposal
+## 7. Minimum TGCV-first example
+
+A concrete illustrative acceptance case is now specified in [TGCV_FIRST_DEMONSTRATION_CASE_001.md](TGCV_FIRST_DEMONSTRATION_CASE_001.md). It stipulates an interaction that adds one transformation to `T_acc`, updates a compatibility relation, and makes a new transformation sequence reachable. The case is intentionally artificial and must not be presented as empirical evidence or as a universal TGCV rule. Use it to review whether the proposed graph semantics and derivation/provenance requirements are clear enough before implementation.
+
+## 8. Relationship to the condition-evaluator proposal
 
 CONDITION_EVALUATOR_CONTRACT_PROPOSAL_001.md and CONDITION_EVALUATOR_IMPLEMENTATION_AUDIT_001.md are preliminary design/audit artifacts. Their proposed typed predicates and explicit scenario context may be useful for Layer B, but their proposed v003 migration is **not approved for implementation by this review**. Reassess them after the functional contract establishes the primary TGCV object and the optional simulation boundary.
 
