@@ -1,8 +1,9 @@
 # Transcriber acceptance matrix
 
-Status snapshot: commit `7cf558c79d5a5c51dee5f36bf2e9e7e848772841`
-Evidence: browser/cross-runtime CI run succeeded for this commit; see
-https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39623410058
+Status snapshot: characterization of the unsupported passive construction added after commit `bde5d44eac28564da48d580dc35f1f4e67308b87`.
+The browser/cross-runtime CI for that probe failed because the expected graph was not produced; see
+https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39626485661.
+The test now records the current limitation without changing parser behavior.
 
 This matrix records what the current browser contract test explicitly checks.
 A passing test establishes the tested examples, not general Spanish-language
@@ -11,7 +12,8 @@ bounded examples or has not been tested as a systematic class.
 
 | Requirement group | Existing acceptance evidence in `web/ui_contract_test.cjs` | Status | Limitation / next evidence needed |
 |---|---|---|---|
-| Directed source and target | Checks explicit `source` and `target`; includes destination-before-source wording and passive “Desde reposo se pasa a ejecución” | Verified for examples | Add systematic paraphrase pairs only where a distinct grammar construction is in scope |
+| Directed source and target | Checks explicit `source` and `target`; includes destination-before-source wording and passive “Desde reposo se pasa a ejecución” | Verified for examples; bounded | Other grammatical constructions are not assumed equivalent without evidence |
+| Passive construction “es seguido por” | Characterization test records that “El estado de reposo es seguido por el estado de ejecución” remains pending clarification and does not add an edge | Known limitation | Supporting this construction requires a separate, scoped parser change and new acceptance evidence |
 | Normalized graph equivalence | Compares normalized edges for “El proceso pasa a ejecución desde reposo” and “Desde reposo se pasa a ejecución”; compares source, target and condition | Verified for this pair | Does not establish equivalence across other constructions or domains |
 | Multiple and sequential relations | Checks two explicit sequential edges plus an independent third edge | Verified for example | Broader clause ordering and coordination remain unproven |
 | Branches and return edges | Checks evaluation to approved/rejected and rejected back to evaluation | Verified for example | Not exhaustive for arbitrary graph topology |
