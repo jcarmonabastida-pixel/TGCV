@@ -3656,6 +3656,28 @@ const assert = require("node:assert/strict");
     assert.match(await uxPage.locator("#value-dashboard").innerText(), /82\/100/);
     await uxPage.close();
 
+    // Scoped passive acceptance: “el estado de A es seguido por el estado de B”.
+    await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexiones?/ }).waitFor();
+    const followedByDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(followedByDraft.states, ["reposo", "ejecución"]);
+    assert.equal(followedByDraft.transitions.length, 1);
+    assert.ok(followedByDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
+      "The subject must remain the source and the object of “por” the destination");
+    assert.ok(!followedByDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"),
+      "The passive construction must not reverse edge direction");
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+
+    await page.locator("#system-description").fill("El proceso pasa de inicio a reposo. El estado de reposo es seguido por el estado de ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 3 estados y 2 conexiones/ }).waitFor();
+    const preservedDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(preservedDraft.transitions.length, 2);
+    assert.ok(preservedDraft.transitions.some((edge) => edge.source === "inicio" && edge.target === "reposo"));
+    assert.ok(preservedDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"));
+    assert.ok(!preservedDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"));
+
     console.log("PASS: profile-3-only UI, guided trajectory carousel, concrete execution, contextual value, alternative dashboard, import/export, replay/tamper checks, and grouped contract adversaries.");
   } finally {
     await browser.close();
