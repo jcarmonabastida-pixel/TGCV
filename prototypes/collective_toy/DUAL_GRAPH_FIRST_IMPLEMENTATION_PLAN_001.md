@@ -44,8 +44,8 @@ These are integration anchors, not instructions to refactor the existing system 
 - The existing `Cargar ejemplo` action loads the system fixture and its matching TGCV view together.
 - For this illustrative fixture only, each system transition `t` has a corresponding TGCV transformation `tau_t`, recorded in an explicit mapping record with provenance `illustrative` and named rule `each-system-transition-to-one-transformation-v1`.
 - TGCV compatibility relations are derived from sequentially composable system transitions: a transition pair is compatible when the first transition's target equals the second transition's source. This is a declared teaching rule, not a universal TGCV inference.
-- The before view uses the existing `block_ac` scenario; the after view uses `baseline`. The enabled transformation difference is calculated as `ΔT_acc`, rather than hardcoded.
-- The trajectory test distinguishes `[tau_t_ab, tau_t_bd]` from `[tau_t_ac, tau_t_cd]`; the latter becomes accessible in the after scenario.
+- The before view uses the existing `block_ac` scenario; the after view uses `baseline`. For this fixture, a transformation belongs to scenario `T_acc` only if its system transition occurs in at least one trajectory enumerated by the existing system engine for that scenario. This distinguishes reachable transitions from transitions that are merely not disabled. The set difference is calculated as `ΔT_acc`, rather than hardcoded.
+- The before set is `{tau_t_ab, tau_t_bd}`; the after set is `{tau_t_ab, tau_t_ac, tau_t_bd, tau_t_cd}`. Thus `ΔT_acc={tau_t_ac, tau_t_cd}`: enabling `A→C` also makes downstream `C→D` occur in an enumerated trajectory. The trajectory test distinguishes `[tau_t_ab, tau_t_bd]` from `[tau_t_ac, tau_t_cd]`; the latter becomes reachable only in the after scenario.
 
 The model must keep declared inputs and explicit mappings separate from computed outputs. TGCV transformations are not system states, and the scenario switch `m` is illustrative rather than an executable system transition.
 
@@ -77,7 +77,7 @@ For the first increment, it is acceptable to keep the demonstration fixture loca
 | Graph separation | Browser acceptance shows the system graph first and a distinct TGCV graph second; the existing system graph remains functional |
 | Semantic typing | TGCV objects are labelled transformations, compatibility relations, and interaction/rule—not system states or executable transitions |
 | Integrated mapping | One load action renders both graphs from the same system fixture, with explicit illustrative mapping records |
-| Before/after derivation | Computed `T_acc` sets and `ΔT_acc` match the existing `block_ac` and `baseline` scenario difference |
+| Before/after derivation | Scenario `T_acc` contains only transformations whose mapped system transitions occur in an enumerated trajectory; the fixture yields before `{tau_t_ab,tau_t_bd}`, after `{tau_t_ab,tau_t_ac,tau_t_bd,tau_t_cd}`, and `ΔT_acc={tau_t_ac,tau_t_cd}` |
 | Trajectories | `[tau_t_ac, tau_t_cd]` is not reachable in `block_ac` and is reachable in `baseline`; the other branch remains consistent |
 | Provenance/limits | UI labels the fixture and rule illustrative/stipulated and makes no empirical or value-causality claim |
 | Regression | Existing system graph loading, editing, scenario exploration, concrete execution, and export tests remain passing |
