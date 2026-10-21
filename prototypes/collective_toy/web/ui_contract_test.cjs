@@ -36,6 +36,17 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#model").inputValue().then(value => JSON.parse(value).model_id), "toy-diamond-001");
     assert.equal(await page.locator("#graph rect").count(), 4, "Loading the example must populate the system graph");
     assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "The same action must populate the TGCV graph");
+    const stateLabelGeometry = await page.locator("#graph [data-state-label]").evaluateAll(labels => labels.map(label => {
+      const shape = document.querySelector(`#graph [data-state-node="${CSS.escape(label.getAttribute("data-state-label"))}"]`);
+      const textBox = label.getBBox();
+      const shapeX = Number(shape.getAttribute("x"));
+      const shapeY = Number(shape.getAttribute("y"));
+      const shapeRight = shapeX + Number(shape.getAttribute("width"));
+      const shapeBottom = shapeY + Number(shape.getAttribute("height"));
+      return { label: label.textContent, inside: textBox.x >= shapeX && textBox.x + textBox.width <= shapeRight && textBox.y >= shapeY && textBox.y + textBox.height <= shapeBottom };
+    }));
+    assert.equal(stateLabelGeometry.length, 4, "Each system node must expose its state label");
+    assert.ok(stateLabelGeometry.every(item => item.inside), "Every state name must be rendered inside its node shape");
     const tgcvLoaded = await page.locator("#tgcv-graph-section").innerText();
     assert.match(tgcvLoaded, /correspondencia se declara explícitamente/i);
     assert.match(tgcvLoaded, /no es una regla universal/i);
