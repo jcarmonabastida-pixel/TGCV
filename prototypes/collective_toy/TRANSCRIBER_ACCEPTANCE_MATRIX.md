@@ -1,9 +1,14 @@
 # Transcriber acceptance matrix
 
-Status snapshot: characterization of the unsupported passive construction added after commit `bde5d44eac28564da48d580dc35f1f4e67308b87`.
-The browser/cross-runtime CI for that probe failed because the expected graph was not produced; see
+Current evidence snapshot: commit `fab9954707081b9f61b82ae9194406a511c6ce83`.
+The initial acceptance probe failed because the parser did not produce the expected graph; that failure is retained as discovery evidence:
 https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39626485661.
-The test now records the current limitation without changing parser behavior.
+The test was then changed to characterize the current limitation without changing parser behavior. The resulting suite passed all five workflows:
+https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39627345707
+https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39627345719
+https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39627345734
+https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39627345736
+https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39627345920.
 
 This matrix records what the current browser contract test explicitly checks.
 A passing test establishes the tested examples, not general Spanish-language
