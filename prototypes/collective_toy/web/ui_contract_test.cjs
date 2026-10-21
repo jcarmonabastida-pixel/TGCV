@@ -154,19 +154,30 @@ const assert = require("node:assert/strict");
     assert.ok(resultRelationDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "resultado"),
       "A result relation must retain the explicit source and destination");
 
-    // Characterize a reproducible unsupported construction without changing the parser:
-    // "es seguido por" currently remains unresolved rather than producing an invented edge.
+    // Scoped passive acceptance: “A es seguido por B” creates only A -> B.
     await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
-    await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
-    const followedByStatus = await page.locator("#transcription-status").innerText();
-    assert.match(followedByStatus, /No se pudo proponer el grafo/);
-    assert.match(followedByStatus, /Frases pendientes de aclaración/);
-    assert.equal(await page.locator("#transcription-clarification").inputValue(),
-      "El estado de reposo es seguido por el estado de ejecución.",
-      "Unsupported passive wording must remain visible for human clarification");
-    assert.equal(JSON.parse(await page.locator("#model").inputValue()).transitions.length, 1,
-      "Unsupported passive wording must not silently add a transition");
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const followedByDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(followedByDraft.states, ["reposo", "ejecución"]);
+    assert.equal(followedByDraft.transitions.length, 1,
+      "The passive construction must create exactly one transition");
+    assert.ok(followedByDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
+      "The grammatical subject must remain the source and the object of “por” the destination");
+    assert.ok(!followedByDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"),
+      "The passive construction must not reverse the direction");
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+
+    // A recognized edge from another sentence must be preserved, with no extra edge.
+    await page.locator("#system-description").fill("El proceso pasa de inicio a reposo. El estado de reposo es seguido por el estado de ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 3 estados y 2 conexiones/ }).waitFor();
+    const followedByPreservationDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(followedByPreservationDraft.transitions.length, 2);
+    assert.ok(followedByPreservationDraft.transitions.some((edge) => edge.source === "inicio" && edge.target === "reposo"));
+    assert.ok(followedByPreservationDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"));
+    assert.ok(!followedByPreservationDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"));
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
 
     // Explicit sequencing with "y luego" may express two independent, directed edges.
     // A second clause without an identifiable destination must remain pending.
