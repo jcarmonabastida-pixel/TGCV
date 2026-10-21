@@ -158,3 +158,7 @@ The functional mapping contract is specified separately in [TGCV_GRAPH_DERIVATIO
 ## 12. Change boundary
 
 This proposal changes documentation on a design branch only. It does not change main, executable code, schema validation, model artifacts, CI, or scientific execution. No implementation should start until the revised functional contract is reviewed and explicitly accepted.
+
+## 13. Minimal dual-graph data contract
+
+The logical data contract is specified in [MINIMAL_DUAL_GRAPH_DATA_CONTRACT_001.md](MINIMAL_DUAL_GRAPH_DATA_CONTRACT_001.md). It defines the minimum typed objects, provenance labels, layer boundaries, one end-to-end illustrative acceptance case, and adversarial checks. It is a design proposal, not a final serialized schema or implementation authorization.
