@@ -1,6 +1,6 @@
 # Dual-graph first implementation plan 001
 
-**Status:** implementation plan for review; no code changes authorized by this document.  
+**Status:** scope approved by user; implementation tracked in [PR #91](https://github.com/jcarmonabastida-pixel/TGCV/pull/91). This document describes the approved target; code acceptance remains gated on CI and rendered behavior.  
 **Branch:** design/condition-evaluator-contract-001-20261021  
 **Source basis:** `main:prototypes/collective_toy/web/index.html`, fetched file blob `6e79802dec5d399638757518dfd2c8b94214613d`. The GitHub fetch did not expose the current main HEAD commit; no commit SHA is claimed.  
 **Design basis:** `MINIMAL_DUAL_GRAPH_DATA_CONTRACT_001.md`, `TGCV_GRAPH_DERIVATION_CONTRACT_001.md`, `TGCV_FIRST_DEMONSTRATION_CASE_001.md`, `DUAL_GRAPH_ADAPTATION_MATRIX_001.md`, and `DUAL_GRAPH_PERSISTENCE_CONTRACT_PROPOSAL_001.md`.
@@ -12,7 +12,7 @@ Deliver the smallest user-visible increment that demonstrates two different sema
 1. **Graph 1 — system:** retain the current state/transition graph, its editor, scenario selection, and execution behavior.
 2. **Graph 2 — TGCV:** show a separately typed, explicitly illustrative transformation-space model with its own transformations, compatibility relations, before/after accessible sets, and trajectory results.
 
-The increment must make clear that Graph 2 is not automatically inferred from Graph 1. No scientific claim, general TGCV inference, condition evaluator, or persistence migration is part of this increment.
+Both graphs start empty. One `Cargar ejemplo` action loads a single integrated illustrative case into both views. The cross-layer mapping is explicit and specific to that teaching fixture; it is not a universal rule for arbitrary user systems. No scientific claim, general TGCV inference, condition evaluator, or persistence migration is part of this increment.
 
 ## 2. Current source anchors
 
@@ -35,23 +35,19 @@ These are integration anchors, not instructions to refactor the existing system 
 - Keep the current system model and rendering behavior unchanged.
 - Rename or clarify the section title and help text only if needed to make its system-state/transition meaning explicit.
 - Keep scenario selection and condition warning behavior as-is.
-- Do not route system-graph transitions into TGCV trajectories.
+- Do not silently map arbitrary user-provided system graphs into TGCV. The example-only mapping rule applies only to the bundled integrated fixture.
+- Do not change `runTemporalScenario`, `execute(m)`, `addDeltaReach`, the condition evaluator, the value dashboard, or the current execution package.
 
-### B. Add an independent TGCV demonstration model
+### B. Load one integrated example into both models
 
-Introduce a separate in-memory object for the stipulated example:
+- Initial state: no model is preloaded; both graph canvases are empty.
+- The existing `Cargar ejemplo` action loads the system fixture and its matching TGCV view together.
+- For this illustrative fixture only, each system transition `t` has a corresponding TGCV transformation `tau_t`, recorded in an explicit mapping record with provenance `illustrative` and named rule `each-system-transition-to-one-transformation-v1`.
+- TGCV compatibility relations are derived from sequentially composable system transitions: a transition pair is compatible when the first transition's target equals the second transition's source. This is a declared teaching rule, not a universal TGCV inference.
+- The before view uses the existing `block_ac` scenario; the after view uses `baseline`. The enabled transformation difference is calculated as `ΔT_acc`, rather than hardcoded.
+- The trajectory test distinguishes `[tau_t_ab, tau_t_bd]` from `[tau_t_ac, tau_t_cd]`; the latter becomes accessible in the after scenario.
 
-- transformations: `a` (prepare), `b` (inspect), `c` (repair);
-- before set: `T_acc_before = {a,b}`;
-- before relation: `R_before = {(a,b)}`;
-- interaction: `m`;
-- explicit illustrative rule: add `c` and relation `(b,c)`;
-- after set: `T_acc_after = {a,b,c}`;
-- after relation: `R_after = {(a,b),(b,c)}`;
-- delta: `ΔT_acc = {c}`;
-- trajectory rule: a non-empty sequence is reachable only when each adjacent pair is in the declared compatibility relation and all transformations are in the corresponding accessible set.
-
-The model must keep declared inputs separate from computed outputs. Do not call these transformations system states or treat `m` as an executable system transition.
+The model must keep declared inputs and explicit mappings separate from computed outputs. TGCV transformations are not system states, and the scenario switch `m` is illustrative rather than an executable system transition.
 
 ### C. Add Graph 2 presentation after Graph 1
 
@@ -59,18 +55,17 @@ The model must keep declared inputs separate from computed outputs. Do not call 
 - Use a separate SVG/container and renderer; do not reuse the system graph's node IDs, positions, or transition renderer as the TGCV graph.
 - Show transformations and typed compatibility relations.
 - Show before/interaction-rule/after and `ΔT_acc` in a compact, mobile-readable layout.
-- Distinguish the pre-existing sequence `[a,b]` from the newly reachable sequence `[a,b,c]`.
-- Add a persistent, visible label that this is an artificial illustrative example with stipulated inputs/rule, not empirical data or scientific validation.
+- Show the explicit mapping provenance and corresponding system scenario names.
+- Add a persistent, visible label that this is one integrated artificial example, not empirical data or scientific validation.
 
 ### D. Derive, don't hardcode, displayed outputs
 
-The example's declared inputs may be fixtures, but the displayed after-set, delta, and reachable sequences must be calculated by the explicitly displayed rule. The acceptance test should fail if the rule or fixture changes but the displayed outputs remain stale.
+The integrated system model may be a fixture, but the displayed TGCV mapping, before/after sets, delta, and reachable sequences must be calculated from the explicit mapping rule and the two system scenarios. The acceptance test should fail if the fixture or rule changes but the displayed outputs remain stale. If the system model is edited after loading, the TGCV view must be marked stale rather than presented as a current correspondence.
 
 For the first increment, it is acceptable to keep the demonstration fixture local and non-editable if this is clearly labelled and the derivation is genuinely computed. User editing of TGCV objects is a later scope unless implementation review identifies it as necessary.
 
 ### E. Keep unrelated layers out of scope
 
-- Do not change `runTemporalScenario`, `execute(m)`, `addDeltaReach`, the condition evaluator, the value dashboard, or the current execution package.
 - Do not change the current schema or export format.
 - Do not compute value or claim that `ΔT_acc` causes value.
 - Do not introduce automatic system↔TGCV mapping. The first increment should explicitly state that the example is independent of the user's system model.
@@ -81,8 +76,9 @@ For the first increment, it is acceptable to keep the demonstration fixture loca
 |---|---|
 | Graph separation | Browser acceptance shows the system graph first and a distinct TGCV graph second; the existing system graph remains functional |
 | Semantic typing | TGCV objects are labelled transformations, compatibility relations, and interaction/rule—not system states or executable transitions |
-| Before/after derivation | Computed output exactly matches `{a,b}`, `{a,b,c}`, and `ΔT_acc={c}` for the stipulated fixture |
-| Trajectories | `[a,b]` is reachable before and after; `[a,b,c]` is newly reachable after; no sequence containing `c` is shown as reachable before |
+| Integrated mapping | One load action renders both graphs from the same system fixture, with explicit illustrative mapping records | 
+| Before/after derivation | Computed `T_acc` sets and `ΔT_acc` match the existing `block_ac` and `baseline` scenario difference |
+| Trajectories | `[tau_t_ac, tau_t_cd]` is not reachable in `block_ac` and is reachable in `baseline`; the other branch remains consistent |
 | Provenance/limits | UI labels the fixture and rule illustrative/stipulated and makes no empirical or value-causality claim |
 | Regression | Existing system graph loading, editing, scenario exploration, concrete execution, and export tests remain passing |
 | Adversarial checks | Invalid relation endpoint is rejected; a transformation is not silently accepted as a system state; changed rule cannot leave old derived output presented as current |
@@ -93,7 +89,7 @@ Use one end-to-end test for the demonstration chain plus a small number of adver
 ## 5. Implementation sequence after approval
 
 1. Create a dedicated implementation branch from a freshly verified main revision.
-2. Add the independent fixture/model and pure derivation functions.
+2. Add the integrated fixture, explicit example-only mapping records, and pure TGCV derivation functions.
 3. Add the second graph section and renderer.
 4. Add the grouped end-to-end and adversarial browser tests.
 5. Run the relevant existing CI checks; report synthetic/software conformance separately from scientific validity.
@@ -111,6 +107,4 @@ This plan does not authorize:
 
 ## 7. Review decision requested
 
-Review whether this scope is correct: a separately rendered, computed, illustrative TGCV graph placed after the existing system graph, with no automatic mapping and no changes to execution, conditions, value assessment, or persistence.
-
-Only after that decision should implementation begin.
+Approved scope: both graphs start blank; one button loads the integrated example into both; the mapping is explicit and fixture-specific; changing the system model marks the TGCV correspondence stale. CI and rendered behavior remain acceptance gates.
