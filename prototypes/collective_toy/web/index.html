@@ -71,7 +71,7 @@ function validate(m){
  assert(sids.has("baseline"),"Debe existir baseline.");assert(m.exploration&&typeof m.exploration==="object","exploration debe ser un objeto.");assert(Number.isInteger(m.exploration.max_depth)&&m.exploration.max_depth>=0,"max_depth debe ser entero no negativo.");assert(Number.isInteger(m.exploration.max_trajectories)&&m.exploration.max_trajectories>=1,"max_trajectories debe ser entero positivo.");assert(m.states.length<=500&&m.transitions.length<=2000,"Límite: 500 estados y 2000 transiciones.");assert(m.exploration.max_depth<=100&&m.exploration.max_trajectories<=10000,"Límite: profundidad ≤100 y trayectorias ≤10000.");
 }
 function evaluateCondition001(expression,values){
- var match=typeof expression==="string"?/^\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*(<=|>=|==|!=|<|>)\\s*(-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?)\\s*$/.exec(expression):null;
+ var match=typeof expression==="string"?/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*(<=|>=|==|!=|<|>)\s*(-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?)\s*$/.exec(expression):null;
  if(!match)return {status:"NOT_EVALUABLE",reason:"unsupported_expression",expression:expression};
  var variable=match[1],operator=match[2],threshold=Number(match[3]),observed=values&&Object.prototype.hasOwnProperty.call(values,variable)?values[variable]:undefined;
  if(observed===undefined)return {status:"NOT_EVALUABLE",reason:"missing_variable",expression:expression,variable:variable};
