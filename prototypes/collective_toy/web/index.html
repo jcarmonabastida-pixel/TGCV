@@ -534,10 +534,18 @@ function tgcvDemoFixture(systemModel){
  var beforeScenario=(systemModel.scenarios||[]).find(function(s){return s.id==="block_ac"});
  var afterScenario=(systemModel.scenarios||[]).find(function(s){return s.id==="baseline"});
  assert(beforeScenario&&afterScenario,"El ejemplo integrado necesita los escenarios block_ac y baseline.");
- var beforeDisabled=new Set(beforeScenario.disabled_transitions||[]),afterDisabled=new Set(afterScenario.disabled_transitions||[]);
- var before=transitions.filter(function(t){return !beforeDisabled.has(t.id)}).map(function(t){return "tau_"+t.id});
- var after=transitions.filter(function(t){return !afterDisabled.has(t.id)}).map(function(t){return "tau_"+t.id});
- return {schema:"tgcv-integrated-illustrative-demo-001",provenance:"illustrative",mapping_rule:"each-system-transition-to-one-transformation-v1",system_model_id:systemModel.model_id,mappings:mappings,transformations:transformations,relations:relations,before:{scenario_id:beforeScenario.id,transformations:before,relations:relations.filter(function(pair){return before.indexOf(pair[0])>=0&&before.indexOf(pair[1])>=0})},interaction:{id:"m",description:"cambiar del escenario block_ac a baseline",rule_version:"1",enable_transformations:after.filter(function(x){return before.indexOf(x)<0})},after:{scenario_id:afterScenario.id,transformations:after,relations:relations.filter(function(pair){return after.indexOf(pair[0])>=0&&after.indexOf(pair[1])>=0})}};
+ var systemResult=execute(systemModel);
+ function transitionsInEnumeratedTrajectories(scenarioId){
+  var scenarioResult=systemResult.scenario_results[scenarioId];
+  assert(scenarioResult,"No hay resultado de exploración para el escenario "+scenarioId+".");
+  var used=new Set();
+  scenarioResult.trajectories.forEach(function(path){path.forEach(function(step){if(step.transition)used.add(step.transition)})});
+  return used;
+ }
+ var beforeReachable=transitionsInEnumeratedTrajectories(beforeScenario.id),afterReachable=transitionsInEnumeratedTrajectories(afterScenario.id);
+ var before=transitions.filter(function(t){return beforeReachable.has(t.id)}).map(function(t){return "tau_"+t.id});
+ var after=transitions.filter(function(t){return afterReachable.has(t.id)}).map(function(t){return "tau_"+t.id});
+ return {schema:"tgcv-integrated-illustrative-demo-001",provenance:"illustrative",mapping_rule:"each-system-transition-to-one-transformation-v1",accessibility_basis:"transitions occurring in enumerated trajectories for each scenario",system_model_id:systemModel.model_id,mappings:mappings,transformations:transformations,relations:relations,before:{scenario_id:beforeScenario.id,transformations:before,relations:relations.filter(function(pair){return before.indexOf(pair[0])>=0&&before.indexOf(pair[1])>=0})},interaction:{id:"m",description:"cambiar del escenario block_ac a baseline",rule_version:"1",enable_transformations:after.filter(function(x){return before.indexOf(x)<0})},after:{scenario_id:afterScenario.id,transformations:after,relations:relations.filter(function(pair){return after.indexOf(pair[0])>=0&&after.indexOf(pair[1])>=0})}};
 }
 function deriveTgcvDemo(fixture){
  assert(fixture&&fixture.schema==="tgcv-integrated-illustrative-demo-001","Esquema de demostración TGCV no compatible.");
@@ -568,7 +576,7 @@ function renderTgcvDemo(systemModel){
  function metric(title,value,detail){var box=node("div","metric");box.append(node("strong","",value),node("span","",title),node("p","muted",detail));host.append(box)}
  metric("T_acc antes","{"+result.before.transformations.join(", ")+"}","Escenario del sistema: "+result.before.scenario_id+".");
  metric("T_acc después","{"+result.after.transformations.join(", ")+"}","Escenario del sistema: "+result.after.scenario_id+".");
- metric("ΔT_acc","{"+result.delta.join(", ")+"}","Transformaciones que pasan a estar accesibles en el escenario posterior.");
+ metric("ΔT_acc","{"+result.delta.join(", ")+"}","Transformaciones que pasan a aparecer en las trayectorias enumeradas del escenario posterior.");
  var routes=node("div","metric");routes.style.gridColumn="1/-1";routes.append(node("strong","","Trayectorias TGCV según relaciones declaradas"),node("p","", "[τ_ab, τ_bd]: "+(result.trajectories.before.tau_ab_bd?"accesible antes":"no accesible antes")+"; "+(result.trajectories.after.tau_ab_bd?"accesible después":"no accesible después")+"."),node("p","", "[τ_ac, τ_cd]: "+(result.trajectories.before.tau_ac_cd?"accesible antes":"no accesible antes")+"; "+(result.trajectories.after.tau_ac_cd?"accesible después":"no accesible después")+"."));host.append(routes);
  $("tgcv-provenance-note").textContent="Correspondencia explícita e ilustrativa: cada transición del ejemplo del sistema se vincula con una transformación TGCV mediante la regla "+result.mapping_rule+". La interacción m cambia de block_ac a baseline. Esto demuestra la coherencia del ejemplo de software, no una regla universal ni validación científica.";
 }
