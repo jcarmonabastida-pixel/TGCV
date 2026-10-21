@@ -126,3 +126,7 @@ This proposal does not settle:
 ## 7. Review gate
 
 Before implementation, review this logical contract alongside the functional architecture review, graph derivation contract, and first demonstration case. If accepted, the next engineering step is to map these logical entities onto the existing prototype without changing main, then implement one end-to-end case and the listed adversarial checks on a design branch. Synthetic tests establish only implementation conformance to this contract.
+
+## 8. Adaptation to the current prototype
+
+The current-to-target adaptation matrix is documented in [DUAL_GRAPH_ADAPTATION_MATRIX_001.md](DUAL_GRAPH_ADAPTATION_MATRIX_001.md). It is based on the existing source-inspection audit, distinguishes reported behavior from unverified implementation gaps, and requires a fresh source audit pinned to a main commit before code changes.
