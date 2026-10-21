@@ -32,6 +32,19 @@ bounded examples or has not been tested as a systematic class.
 | Robustness against invented edges | Checks selected negated, incomplete, sequential and multi-relation examples for expected edge counts and labels | Partial | Adversarial coverage is selected, not exhaustive |
 | General Spanish understanding | No test suite can establish unrestricted language understanding from these examples | Not established | Keep claims bounded to tested constructions; add targeted evidence only for explicit requirements |
 
+## Grouped adversarial contract: clarification lifecycle
+
+The existing `web/ui_contract_test.cjs` already exercises a bounded clarification lifecycle; do not duplicate these cases as separate phrase-level tests unless a regression exposes a gap:
+
+| Invariant | Existing evidence | Assessment |
+|---|---|---|
+| No invented edge from unresolved text | Unsupported `es seguido por` stays pending and does not add a transition; vague text yields no transitions | Verified for these examples |
+| Preserve previously recognized edges | After partial clarification, the two already recognized transitions remain in the model | Verified for this flow |
+| Keep unresolved clauses pending after partial clarification | After replacing one pending clause, the remaining `Cuando se recupera, continúa.` stays visible for clarification | Verified for this flow |
+| Add only explicitly recognized relations after clarification | Final clarified graph has three transitions, including the explicitly clarified return and recovery edges | Verified for this flow |
+
+These assertions cover the lifecycle as a grouped contract, but they do not establish robustness for arbitrary ambiguous or adversarial Spanish input. Keep the broader “Robustness against invented edges” status **Partial** until a named requirement or reproducible discrepancy justifies additional tests.
+
 ## Acceptance rule
 
 - **Verified for examples**: an explicit assertion checks the expected graph or behavior.
