@@ -279,21 +279,21 @@ function pythonJson(source, input) {
     assert.deepEqual(browserChainScenario.blocked_conditions.map(x => [x.transition_id,x.status,x.reason]),
       [["chain_bc","NOT_EVALUABLE","missing_variable"]]);
 
-    // Adversarial temporal dependency: a reachable edge must not bypass
-    // its prerequisite merely because the target state is reachable by another route.
+    // Adversarial temporal dependency: t_ac must remain unavailable because
+    // its prerequisite t_bd is executable only after leaving A, and no path returns to A.
     const dependencyModel = {
       ...conditionalModel,
       model_id: "conditional-prerequisite-not-executed-on-path",
-      states: ["A", "B", "C"],
+      states: ["A", "B", "C", "D"],
       initial_state: "A",
       condition_values: { permit: 1 },
       transitions: [
         { id: "t_ab", source: "A", target: "B", condition: "permit == 1" },
         { id: "t_ac", source: "A", target: "C", condition: "permit == 1" },
-        { id: "t_bc", source: "B", target: "C" }
+        { id: "t_bd", source: "B", target: "D" }
       ],
       relations: [
-        { id: "r_ac_requires_bc", type: "requires_prior_execution", transition_id: "t_ac", requires_transition_id: "t_bc" }
+        { id: "r_ac_requires_bd", type: "requires_prior_execution", transition_id: "t_ac", requires_transition_id: "t_bd" }
       ],
       exploration: { max_depth: 5, max_trajectories: 20 }
     };
@@ -310,12 +310,12 @@ function pythonJson(source, input) {
     const browserDependency = await page.evaluate(() => window.lastPackage);
     const pyDependencyScenario = pyDependency.result.scenario_results.baseline;
     const browserDependencyScenario = browserDependency.result.scenario_results.baseline;
-    assert.ok(pyDependencyScenario.reachable_states.includes("B"), "Python can reach B");
-    assert.ok(browserDependencyScenario.reachable_states.includes("B"), "browser can reach B");
-    assert.ok(!pyDependencyScenario.reachable_states.includes("C"),
-      "Python must not traverse t_ac before prerequisite t_bc has been executed");
-    assert.ok(!browserDependencyScenario.reachable_states.includes("C"),
-      "browser must not traverse t_ac before prerequisite t_bc has been executed");
+    for (const [scenario, runtime] of [[pyDependencyScenario, "Python"], [browserDependencyScenario, "browser"]]) {
+      assert.ok(scenario.reachable_states.includes("B"), runtime + " can reach B");
+      assert.ok(scenario.reachable_states.includes("D"), runtime + " can execute prerequisite t_bd after reaching B");
+      assert.ok(!scenario.reachable_states.includes("C"),
+        runtime + " must not traverse t_ac before prerequisite t_bd has been executed");
+    }
     assert.deepEqual(browserDependency.result, pyDependency.result,
       "temporal dependency outputs must match exactly");
 
