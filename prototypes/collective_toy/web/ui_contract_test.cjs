@@ -90,6 +90,36 @@ const assert = require("node:assert/strict");
     assert.match(conditionalGraphNote, /1 estado\(s\) alcanzable\(s\)/,
       "Conditioned edges must not be traversed while their conditions are not evaluated");
 
+    // A natural-language negation inside a condition must remain a condition,
+    // not be confused with negating the transition itself. The bounded evaluator
+    // must refuse to evaluate this prose and therefore keep the edge blocked.
+    await page.locator("#system-description").fill("El sistema comienza en espera. Si la identidad no es válida, el proceso pasa de espera a acceso autorizado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const negatedConditionDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(negatedConditionDraft.initial_state, "espera");
+    assert.equal(negatedConditionDraft.transitions.length, 1);
+    assert.ok(negatedConditionDraft.transitions.some((edge) => edge.source === "espera" && edge.target === "acceso autorizado" && edge.condition === "la identidad no es válida"),
+      "Negation inside the condition must be preserved verbatim");
+    const negatedConditionEvaluation = await page.evaluate(() => evaluateCondition001("la identidad no es válida", {}));
+    assert.equal(negatedConditionEvaluation.status, "NOT_EVALUABLE");
+    assert.equal(negatedConditionEvaluation.reason, "unsupported_expression");
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.locator("#graph-note").filter({ hasText: /Condiciones bloqueadas \(no evaluadas\)/ }).waitFor();
+    const negatedConditionNote = await page.locator("#graph-note").innerText();
+    assert.match(negatedConditionNote, /la identidad no es válida/);
+    assert.match(negatedConditionNote, /1 estado\(s\) alcanzable\(s\)/,
+      "A natural-language negated condition must not enable its transition");
+
+    // Negating the transition itself must not produce an affirmative edge.
+    await page.locator("#system-description").fill("El proceso no pasa de espera a acceso autorizado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    const negatedTransitionDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(negatedTransitionDraft.transitions.length, 0,
+      "A negated transition statement must not create an affirmative edge");
+    assert.match(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /no pasa de espera a acceso autorizado/);
+
     // Inverse wording must preserve direction: destination is mentioned before source.
     await page.locator("#system-description").fill("El proceso pasa a ejecución desde reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
