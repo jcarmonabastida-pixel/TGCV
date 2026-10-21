@@ -62,6 +62,18 @@ const assert = require("node:assert/strict");
     }, invalidTgcvFixture);
     assert.match(invalidTgcvResult, /extremo inexistente/i,
       "A TGCV relation with an unknown endpoint must fail closed");
+    await page.locator("#model").evaluate(el => {
+      const changed = JSON.parse(el.value);
+      changed.model_id = "edited-after-integrated-load";
+      el.value = JSON.stringify(changed, null, 2);
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no debe interpretarse como correspondencia vigente/i,
+      "Editing the system model must mark the previously loaded TGCV mapping as stale");
+    await page.locator("#load").click();
+    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
+    assert.doesNotMatch(await page.locator("#tgcv-provenance-note").innerText(), /AVISO:/,
+      "Reloading the integrated example must restore the declared correspondence");
 
     // FC5-SEC-001/002: unkeyed SHA-256 is consistency/reproducibility evidence,
     // never proof of who produced a package or external origin authenticity.
