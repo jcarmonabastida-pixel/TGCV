@@ -134,7 +134,7 @@ const assert = require("node:assert/strict");
     // A second clause without an identifiable destination must remain pending.
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución y luego pasa de ejecución a resultado. El proceso pasa de inicio a evaluación.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
-    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 4 estados y 3 conexiones/ }).waitFor();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 5 estados y 3 conexiones/ }).waitFor();
     const multipleRelationsDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(multipleRelationsDraft.transitions.length, 3,
       "Both explicit sequential edges and the independent edge must be retained");
