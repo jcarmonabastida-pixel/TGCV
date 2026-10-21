@@ -201,6 +201,21 @@ const assert = require("node:assert/strict");
     const accessDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(accessDraft.initial_state, "espera", "Initial-state parsing must be domain-independent");
     assert.ok(accessDraft.transitions.some((edge) => edge.source === "espera" && edge.target === "acceso autorizado" && edge.condition === "la identidad es válida"), "Leading conditions should be parsed in an unrelated domain");
+
+    // Third-domain transfer check: software deployment uses the already-supported
+    // "pasa de ... a ..." construction, without adding new parser grammar.
+    await page.locator("#system-description").fill("El sistema pasa de compilación a despliegue.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const deploymentDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(deploymentDraft.states, ["compilación", "despliegue"],
+      "A third-domain description must produce exactly the two explicitly named states");
+    assert.equal(deploymentDraft.transitions.length, 1,
+      "A third-domain description must not invent additional transitions");
+    assert.ok(deploymentDraft.transitions.some((edge) => edge.source === "compilación" && edge.target === "despliegue"),
+      "The existing transition pattern must preserve direction in the software-deployment domain");
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/,
+      "The supported construction should not remain pending in this third-domain example");
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
