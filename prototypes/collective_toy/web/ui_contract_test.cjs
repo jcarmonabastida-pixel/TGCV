@@ -3762,21 +3762,41 @@ const assert = require("node:assert/strict");
       assert.equal(falseConditionTrace.blocked_step.reason, "condition_false");
       assert.match(await conditionPage.locator("#sequence-trace").innerText(), /condición era falsa/i);
 
-      // The comparison panel must preserve the actual block reason, not label every blocked run as a missing prerequisite.
-      conditionModel.condition_values.gate = 1;
-      conditionModel.model_id = "concrete-condition-execution-true-for-comparison";
+      // The comparison panel must preserve the actual block reason. Keep both executions under one loaded model.
+      const comparisonModel = {
+        schema_version: "collective-toy-input-002",
+        model_id: "comparison-preserves-block-reason",
+        initial_state: "A",
+        states: ["A", "B", "C"],
+        transitions: [
+          { id: "t_ab", source: "A", target: "B", condition: "gate == 1" },
+          { id: "t_ac", source: "A", target: "C", condition: "gate == 0" }
+        ],
+        relations: [],
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
+        scenarios: [{ id: "baseline", disabled_transitions: [] }],
+        exploration: { max_depth: 3, max_trajectories: 10 },
+        condition_values: { gate: 1 }
+      };
       await conditionPage.locator("#model").evaluate((el, value) => {
         el.value = JSON.stringify(value);
         el.dispatchEvent(new Event("input", { bubbles: true }));
-      }, conditionModel);
+      }, comparisonModel);
       await conditionPage.locator("#run").click();
       await conditionPage.locator("#status").filter({ hasText: /Ejecución completada/i }).waitFor();
+      await conditionPage.locator("#sequence-input").fill("t_ac");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded");
+      const blockedComparisonTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(blockedComparisonTrace.blocked_step.reason, "condition_false");
       await conditionPage.locator("#sequence-input").fill("t_ab");
       await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
       await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified");
+      const completedComparisonTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(completedComparisonTrace.status, "COMPLETED");
       await conditionPage.locator("#compare-run-a").selectOption("0");
       await conditionPage.locator("#compare-run-b").selectOption("1");
-      await conditionPage.getByRole("button", { name: /Comparar recorridos y resultados/i }).click();
+      await conditionPage.locator("#compare-executions").click();
       const comparisonText = await conditionPage.locator("#execution-comparison").innerText();
       assert.match(comparisonText, /una condición era falsa/i);
       assert.doesNotMatch(comparisonText, /faltaba un prerrequisito/i,
