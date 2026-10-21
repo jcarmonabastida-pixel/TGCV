@@ -3762,6 +3762,26 @@ const assert = require("node:assert/strict");
       assert.equal(falseConditionTrace.blocked_step.reason, "condition_false");
       assert.match(await conditionPage.locator("#sequence-trace").innerText(), /condición era falsa/i);
 
+      // The comparison panel must preserve the actual block reason, not label every blocked run as a missing prerequisite.
+      conditionModel.condition_values.gate = 1;
+      conditionModel.model_id = "concrete-condition-execution-true-for-comparison";
+      await conditionPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, conditionModel);
+      await conditionPage.locator("#run").click();
+      await conditionPage.locator("#status").filter({ hasText: /Ejecución completada/i }).waitFor();
+      await conditionPage.locator("#sequence-input").fill("t_ab");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified");
+      await conditionPage.locator("#compare-run-a").selectOption("0");
+      await conditionPage.locator("#compare-run-b").selectOption("1");
+      await conditionPage.getByRole("button", { name: /Comparar recorridos y resultados/i }).click();
+      const comparisonText = await conditionPage.locator("#execution-comparison").innerText();
+      assert.match(comparisonText, /una condición era falsa/i);
+      assert.doesNotMatch(comparisonText, /faltaba un prerrequisito/i,
+        "A condition-false trace must not be misreported as a missing temporal prerequisite");
+
       // Concrete browser execution must enforce temporal prerequisites exactly as Python does.
       const temporalModel = {
         schema_version: "collective-toy-input-002",
