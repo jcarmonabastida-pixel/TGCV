@@ -154,6 +154,19 @@ const assert = require("node:assert/strict");
     assert.ok(resultRelationDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "resultado"),
       "A result relation must retain the explicit source and destination");
 
+    // Adversarial passive construction: test whether "es seguido por" preserves
+    // the explicit direction without silently inventing any additional edge.
+    await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const followedByDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(followedByDraft.states, ["reposo", "ejecución"],
+      "The passive construction must extract exactly the two named states");
+    assert.equal(followedByDraft.transitions.length, 1,
+      "The passive construction must not create additional edges");
+    assert.ok(followedByDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
+      '"es seguido por" must preserve reposo → ejecución direction');
+
     // Explicit sequencing with "y luego" may express two independent, directed edges.
     // A second clause without an identifiable destination must remain pending.
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución y luego pasa de ejecución a resultado. El proceso pasa de inicio a evaluación.");
