@@ -14,6 +14,8 @@ import math
 import uuid
 from typing import Any
 
+from condition_evaluator_001 import evaluate_condition
+
 
 ENGINE_VERSION = "collective-toy-engine-001"
 SUPPORTED_SCHEMAS = {"collective-toy-input-001", "collective-toy-input-002"}
@@ -124,7 +126,7 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     if not isinstance(model, dict):
         raise ModelValidationError("model must be a JSON object")
     _validate_canonical_domain(model)
-    _reject_unknown_keys(model, {"schema_version", "model_id", "initial_state", "states", "transitions", "relations", "rule_profile", "scenarios", "exploration"}, "model")
+    _reject_unknown_keys(model, {"schema_version", "model_id", "initial_state", "states", "transitions", "relations", "rule_profile", "scenarios", "exploration", "condition_values"}, "model")
     schema_version = model.get("schema_version")
     if schema_version not in SUPPORTED_SCHEMAS:
         raise ModelValidationError(f"schema_version must be one of {sorted(SUPPORTED_SCHEMAS)!r}")
@@ -259,16 +261,18 @@ def _temporal_scenario_result(
         if transition.condition is None:
             adjacency[transition.source].append(transition)
         else:
-            # Fail closed: until condition_values is part of the shared input
-            # contract, conditional transitions remain non-traversable.
-            blocked_conditions.append({
-                "transition_id": transition.id,
-                "source": transition.source,
-                "target": transition.target,
-                "condition": transition.condition,
-                "status": "NOT_EVALUABLE",
-                "reason": "unsupported_expression",
-            })
+            evaluated = evaluate_condition(transition.condition, model.get("condition_values", {})).to_dict()
+            if evaluated["status"] == "TRUE":
+                adjacency[transition.source].append(transition)
+            else:
+                blocked_conditions.append({
+                    "transition_id": transition.id,
+                    "source": transition.source,
+                    "target": transition.target,
+                    "condition": transition.condition,
+                    "status": evaluated["status"],
+                    "reason": evaluated["reason"],
+                })
     for outgoing in adjacency.values():
         outgoing.sort(key=lambda item: item.id)
 
