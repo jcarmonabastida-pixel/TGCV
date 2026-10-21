@@ -115,7 +115,9 @@ function pythonJson(source, input) {
     const evaluatedCases = [
       { name: "true", condition: "humidity < 30", values: { humidity: 20 }, reachable: true, status: null, reason: null },
       { name: "false", condition: "humidity < 30", values: { humidity: 40 }, reachable: false, status: "FALSE", reason: null },
-      { name: "missing", condition: "humidity < 30", values: {}, reachable: false, status: "NOT_EVALUABLE", reason: "missing_variable" }
+      { name: "missing", condition: "humidity < 30", values: {}, reachable: false, status: "NOT_EVALUABLE", reason: "missing_variable" },
+      { name: "nonnumeric", condition: "humidity < 30", values: { humidity: "20" }, reachable: false, status: "NOT_EVALUABLE", reason: "variable_not_numeric" },
+      { name: "unsupported", condition: "humidity ** 2", values: { humidity: 20 }, reachable: false, status: "NOT_EVALUABLE", reason: "unsupported_expression" }
     ];
     for (const item of evaluatedCases) {
       const caseModel = {
