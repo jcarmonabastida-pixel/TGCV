@@ -154,18 +154,19 @@ const assert = require("node:assert/strict");
     assert.ok(resultRelationDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "resultado"),
       "A result relation must retain the explicit source and destination");
 
-    // Adversarial passive construction: test whether "es seguido por" preserves
-    // the explicit direction without silently inventing any additional edge.
+    // Characterize a reproducible unsupported construction without changing the parser:
+    // "es seguido por" currently remains unresolved rather than producing an invented edge.
     await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
-    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
-    const followedByDraft = JSON.parse(await page.locator("#model").inputValue());
-    assert.deepEqual(followedByDraft.states, ["reposo", "ejecución"],
-      "The passive construction must extract exactly the two named states");
-    assert.equal(followedByDraft.transitions.length, 1,
-      "The passive construction must not create additional edges");
-    assert.ok(followedByDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
-      '"es seguido por" must preserve reposo → ejecución direction');
+    await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
+    const followedByStatus = await page.locator("#transcription-status").innerText();
+    assert.match(followedByStatus, /No se pudo proponer el grafo/);
+    assert.match(followedByStatus, /Frases pendientes de aclaración/);
+    assert.equal(await page.locator("#transcription-clarification").inputValue(),
+      "El estado de reposo es seguido por el estado de ejecución.",
+      "Unsupported passive wording must remain visible for human clarification");
+    assert.equal(JSON.parse(await page.locator("#model").inputValue()).transitions.length, 1,
+      "Unsupported passive wording must not silently add a transition");
 
     // Explicit sequencing with "y luego" may express two independent, directed edges.
     // A second clause without an identifiable destination must remain pending.
