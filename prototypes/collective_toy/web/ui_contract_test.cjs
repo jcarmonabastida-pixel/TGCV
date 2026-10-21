@@ -130,6 +130,16 @@ const assert = require("node:assert/strict");
     assert.ok(inverseDirectionDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
       "Inverse wording must map source=reposo to target=ejecución, not reverse or absorb source into target");
 
+    // Equivalent passive wording must normalize to the same directed edge.
+    // This catches accidental inclusion of the grammatical particle "se" in the source label.
+    await page.locator("#system-description").fill("Desde reposo se pasa a ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const passiveWordingDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(passiveWordingDraft.transitions.length, 1);
+    assert.ok(passiveWordingDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
+      "Passive wording must normalize to source=reposo and target=ejecución without grammatical particles");
+
     // Explicit sequencing with "y luego" may express two independent, directed edges.
     // A second clause without an identifiable destination must remain pending.
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución y luego pasa de ejecución a resultado. El proceso pasa de inicio a evaluación.");
