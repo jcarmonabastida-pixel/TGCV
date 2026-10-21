@@ -139,6 +139,11 @@ const assert = require("node:assert/strict");
     assert.equal(passiveWordingDraft.transitions.length, 1);
     assert.ok(passiveWordingDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
       "Passive wording must normalize to source=reposo and target=ejecución without grammatical particles");
+    const normalizeEdges = (draft) => draft.transitions
+      .map(({ source, target, condition = null }) => ({ source, target, condition }))
+      .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+    assert.deepEqual(normalizeEdges(passiveWordingDraft), normalizeEdges(inverseDirectionDraft),
+      "Equivalent inverse and passive formulations must produce the same normalized directed graph");
 
     // Equivalent active wording should preserve the same directed edge when expressed as a result relation.
     await page.locator("#system-description").fill("La ejecución conduce a resultado.");
