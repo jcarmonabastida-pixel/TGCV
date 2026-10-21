@@ -20,6 +20,65 @@ const assert = require("node:assert/strict");
     assert.match(notice, /No es una validación científica/i);
     assert.match(notice, /ni implementa por sí solo Tacc de TGCV/i);
 
+    // Integrated dual-graph example: both views start empty and load together.
+    const tgcvSection = page.locator("#tgcv-graph-section");
+    assert.equal(await tgcvSection.count(), 1, "A distinct TGCV graph section must exist");
+    assert.match(await tgcvSection.locator("h2").innerText(), /Grafo TGCV: espacio de transformaciones/);
+    assert.equal(await page.locator("#graph").count(), 1, "The existing system graph must remain present");
+    assert.equal(await page.locator("#graph rect").count(), 0, "The system graph must start empty");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 0, "The TGCV graph must start empty too");
+    assert.match(await page.locator("#tgcv-demo-results").innerText(), /Sin ejemplo TGCV cargado/i);
+    assert.match(await page.locator("#status").innerText(), /Ambos grafos están vacíos/i);
+
+    await page.locator("#load").click();
+    await page.locator("#graph rect").first().waitFor();
+    await page.locator("#tgcv-graph circle").first().waitFor();
+    assert.equal(await page.locator("#model").inputValue().then(value => JSON.parse(value).model_id), "toy-diamond-001");
+    assert.equal(await page.locator("#graph rect").count(), 4, "Loading the example must populate the system graph");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "The same action must populate the TGCV graph");
+    const tgcvLoaded = await page.locator("#tgcv-graph-section").innerText();
+    assert.match(tgcvLoaded, /correspondencia se declara explícitamente/i);
+    assert.match(tgcvLoaded, /no es una regla universal/i);
+    const tgcvFixture = await page.evaluate(() => window.tgcvDemoFixture(JSON.parse(document.querySelector("#model").value)));
+    const tgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), tgcvFixture);
+    assert.equal(tgcvDerived.system_model_id, "toy-diamond-001");
+    assert.equal(tgcvDerived.mappings.length, 4, "Every example transition must have an explicit illustrative mapping");
+    assert.deepEqual(tgcvDerived.before.transformations, ["tau_t_ab", "tau_t_bd"],
+      "A transformation whose source state is unreachable must not appear in scenario T_acc");
+    assert.deepEqual(tgcvDerived.after.transformations, ["tau_t_ab", "tau_t_ac", "tau_t_bd", "tau_t_cd"]);
+    assert.deepEqual(tgcvDerived.delta, ["tau_t_ac", "tau_t_cd"],
+      "Opening the A→C branch makes both A→C and the downstream C→D transition reachable");
+    assert.equal(tgcvDerived.trajectories.before.tau_ab_bd, true);
+    assert.equal(tgcvDerived.trajectories.after.tau_ab_bd, true);
+    assert.equal(tgcvDerived.trajectories.before.tau_ac_cd, false);
+    assert.equal(tgcvDerived.trajectories.after.tau_ac_cd, true);
+    const changedTgcvFixture = structuredClone(tgcvFixture);
+    changedTgcvFixture.before.transformations = changedTgcvFixture.after.transformations.slice();
+    changedTgcvFixture.before.relations = changedTgcvFixture.after.relations.map(pair => pair.slice());
+    const changedTgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), changedTgcvFixture);
+    assert.deepEqual(changedTgcvDerived.delta, [],
+      "Derived ΔT_acc must respond to changed before/after inputs instead of being hardcoded");
+    const invalidTgcvFixture = structuredClone(tgcvFixture);
+    invalidTgcvFixture.relations.push(["tau_t_ab", "tau_missing"]);
+    const invalidTgcvResult = await page.evaluate(fixture => {
+      try { window.deriveTgcvDemo(fixture); return "accepted"; }
+      catch (error) { return error.message; }
+    }, invalidTgcvFixture);
+    assert.match(invalidTgcvResult, /extremo inexistente/i,
+      "A TGCV relation with an unknown endpoint must fail closed");
+    await page.locator("#model").evaluate(el => {
+      const changed = JSON.parse(el.value);
+      changed.model_id = "edited-after-integrated-load";
+      el.value = JSON.stringify(changed, null, 2);
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no debe interpretarse como correspondencia vigente/i,
+      "Editing the system model must mark the previously loaded TGCV mapping as stale");
+    await page.locator("#load").click();
+    await page.locator("#status").filter({ hasText: "Ejemplo integrado cargado en ambos grafos" }).waitFor();
+    assert.doesNotMatch(await page.locator("#tgcv-provenance-note").innerText(), /AVISO:/,
+      "Reloading the integrated example must restore the declared correspondence");
+
     // FC5-SEC-001/002: unkeyed SHA-256 is consistency/reproducibility evidence,
     // never proof of who produced a package or external origin authenticity.
     const securityFooter = await page.locator("footer").innerText();
