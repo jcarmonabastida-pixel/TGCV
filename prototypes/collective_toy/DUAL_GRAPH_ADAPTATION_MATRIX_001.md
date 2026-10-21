@@ -1,6 +1,6 @@
 # Dual-graph adaptation matrix 001 — current prototype to proposed contract
 
-**Status:** design/audit artifact; no implementation authorized.  
+**Status:** design/audit artifact; the first implementation increment is in draft PR #91 and has passing CI at commit `02be572d1aa730171119b40264c4825bc40e3b58`.  
 **Branch:** `design/condition-evaluator-contract-001-20261021`  
 **Purpose:** map the minimal dual-graph contract to the current prototype, distinguish reusable behavior from semantic gaps, and define a bounded implementation sequence.
 
@@ -74,4 +74,4 @@ This matrix does not:
 
 ## 5. Next acceptance gate
 
-Gate A source inspection is documented in [DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md](DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md). The minimum persistence/stale-result rules are proposed in [DUAL_GRAPH_PERSISTENCE_CONTRACT_PROPOSAL_001.md](DUAL_GRAPH_PERSISTENCE_CONTRACT_PROPOSAL_001.md). The approved first increment is specified in [DUAL_GRAPH_FIRST_IMPLEMENTATION_PLAN_001.md](DUAL_GRAPH_FIRST_IMPLEMENTATION_PLAN_001.md): both canvases start blank; one action loads the same integrated illustrative example into both; the TGCV view carries explicit fixture-only mappings, computed before/after outputs, and a stale warning after system-model edits. CI and rendered behavior remain acceptance gates. No condition evaluator, persistence migration, value-causality claim, or scientific execution is in scope.
+Gate A source inspection is documented in [DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md](DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md). The minimum persistence/stale-result rules are proposed in [DUAL_GRAPH_PERSISTENCE_CONTRACT_PROPOSAL_001.md](DUAL_GRAPH_PERSISTENCE_CONTRACT_PROPOSAL_001.md). The approved first increment is specified in [DUAL_GRAPH_FIRST_IMPLEMENTATION_PLAN_001.md](DUAL_GRAPH_FIRST_IMPLEMENTATION_PLAN_001.md): both canvases start blank; one action loads the same integrated illustrative example into both; the TGCV view carries explicit fixture-only mappings, computed before/after outputs, and a stale warning after system-model edits. CI is now green for the reviewed implementation commit; the exact runs, benchmark observations, and a dependency-audit qualification are recorded in [DUAL_GRAPH_FIRST_CI_VERIFICATION_001.md](DUAL_GRAPH_FIRST_CI_VERIFICATION_001.md). Rendered interaction review and scope review remain acceptance gates. No condition evaluator, persistence migration, value-causality claim, or scientific execution is in scope.
