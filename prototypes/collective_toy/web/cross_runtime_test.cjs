@@ -400,6 +400,35 @@ function pythonJson(source, input) {
     assert.deepEqual(browserMultiplePrerequisites.result, pyMultiplePrerequisites.result,
       "multiple temporal prerequisite outputs must match exactly");
 
+    // Adversarial partial satisfaction: t_bd executes, but t_de is disabled.
+    // The guarded transition t_ac requires BOTH; satisfying only t_bd must not enable it.
+    const partialPrerequisiteModel = {
+      ...multiplePrerequisitesModel,
+      model_id: "conditional-multiple-prerequisites-partial-only",
+      scenarios: [{ id: "baseline", disabled_transitions: ["t_de"] }]
+    };
+    const pyPartialPrerequisites = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      partialPrerequisiteModel
+    );
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(partialPrerequisiteModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const browserPartialPrerequisites = await page.evaluate(() => window.lastPackage);
+    const pyPartialScenario = pyPartialPrerequisites.result.scenario_results.baseline;
+    const browserPartialScenario = browserPartialPrerequisites.result.scenario_results.baseline;
+    for (const [scenario, runtime] of [[pyPartialScenario, "Python"], [browserPartialScenario, "browser"]]) {
+      assert.ok(scenario.reachable_states.includes("D"), runtime + " executes the first prerequisite t_bd");
+      assert.ok(!scenario.reachable_states.includes("E"), runtime + " cannot execute disabled prerequisite t_de");
+      assert.ok(!scenario.reachable_states.includes("C"),
+        runtime + " must not enable t_ac when only one of its two prerequisites has executed");
+    }
+    assert.deepEqual(browserPartialPrerequisites.result, pyPartialPrerequisites.result,
+      "partial multiple-prerequisite outputs must match exactly");
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
