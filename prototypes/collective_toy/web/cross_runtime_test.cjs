@@ -110,6 +110,51 @@ function pythonJson(source, input) {
     assert.deepEqual(conditionalPkg.result, conditionalEngineRun.result,
       "browser and Python conditional-transition results must be identical");
 
+    // The shared bounded grammar must enable only TRUE predicates; FALSE and
+    // NOT_EVALUABLE predicates remain blocked and produce identical records.
+    const evaluatedCases = [
+      { name: "true", condition: "humidity < 30", values: { humidity: 20 }, reachable: true, status: null, reason: null },
+      { name: "false", condition: "humidity < 30", values: { humidity: 40 }, reachable: false, status: "FALSE", reason: null },
+      { name: "missing", condition: "humidity < 30", values: {}, reachable: false, status: "NOT_EVALUABLE", reason: "missing_variable" }
+    ];
+    for (const item of evaluatedCases) {
+      const caseModel = {
+        ...conditionalModel,
+        model_id: "conditional-evaluator-" + item.name,
+        condition_values: item.values,
+        transitions: [
+          { id: "t_ab", source: "A", target: "B", condition: item.condition },
+          { id: "t_ac", source: "A", target: "C" },
+          { id: "t_cd", source: "C", target: "D" }
+        ]
+      };
+      const pyCase = pythonJson(
+        "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+        caseModel
+      );
+      await page.locator("#model").evaluate((el, value) => {
+        el.value = value;
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, JSON.stringify(caseModel));
+      await page.locator("#run").click();
+      await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+      const browserCase = await page.evaluate(() => window.lastPackage);
+      const pyScenario = pyCase.result.scenario_results.baseline;
+      const browserScenario = browserCase.result.scenario_results.baseline;
+      assert.equal(pyScenario.reachable_states.includes("B"), item.reachable, item.name + ": Python reachability");
+      assert.equal(browserScenario.reachable_states.includes("B"), item.reachable, item.name + ": browser reachability");
+      if (item.status === null) {
+        assert.deepEqual(pyScenario.blocked_conditions, [], item.name + ": Python has no blocked condition");
+        assert.deepEqual(browserScenario.blocked_conditions, [], item.name + ": browser has no blocked condition");
+      } else {
+        assert.equal(pyScenario.blocked_conditions[0].status, item.status, item.name + ": Python condition status");
+        assert.equal(pyScenario.blocked_conditions[0].reason, item.reason, item.name + ": Python condition reason");
+        assert.equal(browserScenario.blocked_conditions[0].status, item.status, item.name + ": browser condition status");
+        assert.equal(browserScenario.blocked_conditions[0].reason, item.reason, item.name + ": browser condition reason");
+      }
+      assert.deepEqual(browserCase.result, pyCase.result, item.name + ": Python/browser outputs must match exactly");
+    }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
