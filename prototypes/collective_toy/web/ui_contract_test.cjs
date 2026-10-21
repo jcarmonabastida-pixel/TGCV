@@ -3678,6 +3678,17 @@ const assert = require("node:assert/strict");
     assert.ok(preservedDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"));
     assert.ok(!preservedDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"));
 
+
+    // Adversarial passive: a second destination in the same clause must not be swallowed into one label.
+    await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución y después por el estado de resultado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    const multiTargetStatus = await page.locator("#transcription-status").innerText();
+    const multiTargetDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.ok(!multiTargetDraft.states.some((state) => /ejecución y después por el estado de resultado/i.test(state)),
+      "An unsupported multi-destination passive clause must not be swallowed into one state label");
+    assert.match(multiTargetStatus, /Frases pendientes de interpretar/,
+      "Ambiguous multi-destination passive wording must be surfaced for human clarification");
+
     console.log("PASS: profile-3-only UI, guided trajectory carousel, concrete execution, contextual value, alternative dashboard, import/export, replay/tamper checks, and grouped contract adversaries.");
   } finally {
     await browser.close();
