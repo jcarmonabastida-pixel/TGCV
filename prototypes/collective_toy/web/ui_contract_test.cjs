@@ -86,6 +86,9 @@ const assert = require("node:assert/strict");
     });
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no debe interpretarse como correspondencia vigente/i,
       "Editing the system model must mark the previously loaded TGCV mapping as stale");
+    await page.locator("#run").click();
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no debe interpretarse como correspondencia vigente/i,
+      "Running an edited model must not silently replace the stale illustrative mapping");
     await page.locator("#load").click();
     await page.locator("#status").filter({ hasText: "Ejemplo integrado cargado en ambos grafos" }).waitFor();
     assert.doesNotMatch(await page.locator("#tgcv-provenance-note").innerText(), /AVISO:/,
