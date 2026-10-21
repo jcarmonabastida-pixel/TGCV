@@ -72,3 +72,10 @@ A follow-up inspection of the artifacts from the passing browser/cross-runtime w
 A source-level inspection confirms that the page has a responsive single-column layout breakpoint at 760px and that the TGCV graph is a separate panel following the system graph. This is not a substitute for inspecting the rendered page. In particular, visual clarity of the selected-scenario label, transformation/relationship labels, comparison section, and graph clipping at narrow widths remains unverified.
 
 **Disposition:** keep [draft PR #92](https://github.com/jcarmonabastida-pixel/TGCV/pull/92) in draft. Do not claim the visual review complete or promote to `main` until rendered desktop and mobile evidence is available and reviewed. No implementation changes were made in this documentation step.
+
+
+## State labels inside node shapes — implementation update
+
+The implementation branch now gives each system-state node a width based on its label (bounded to preserve graph spacing), aligns the label centrally inside the rectangle, adjusts transition endpoints to the corresponding node widths, and reduces font size for longer identifiers. SVG elements carry state-label/state-node identifiers for browser-level geometry assertions.
+
+A grouped browser acceptance assertion checks that all four visible state labels in the integrated example are fully inside their corresponding node shapes. The change is in implementation branch `implementation/dual-graph-sync-002-20261022`, commit `42a17e3ec78f653b984db8015cb79ce7eed6aaa2`; fresh CI on this exact head is pending. This is a source/test-level change and does not by itself establish that long arbitrary names are visually ideal on every device. Review rendered desktop/mobile evidence after CI.
