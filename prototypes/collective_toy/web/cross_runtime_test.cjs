@@ -279,6 +279,46 @@ function pythonJson(source, input) {
     assert.deepEqual(browserChainScenario.blocked_conditions.map(x => [x.transition_id,x.status,x.reason]),
       [["chain_bc","NOT_EVALUABLE","missing_variable"]]);
 
+    // Adversarial temporal dependency: a reachable edge must not bypass
+    // its prerequisite merely because the target state is reachable by another route.
+    const dependencyModel = {
+      ...conditionalModel,
+      model_id: "conditional-prerequisite-not-executed-on-path",
+      states: ["A", "B", "C"],
+      initial_state: "A",
+      condition_values: { permit: 1 },
+      transitions: [
+        { id: "t_ab", source: "A", target: "B", condition: "permit == 1" },
+        { id: "t_ac", source: "A", target: "C", condition: "permit == 1" },
+        { id: "t_bc", source: "B", target: "C" }
+      ],
+      relations: [
+        { id: "r_ac_requires_bc", type: "requires_prior_execution", transition_id: "t_ac", requires_transition_id: "t_bc" }
+      ],
+      exploration: { max_depth: 5, max_trajectories: 20 }
+    };
+    const pyDependency = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      dependencyModel
+    );
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(dependencyModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const browserDependency = await page.evaluate(() => window.lastPackage);
+    const pyDependencyScenario = pyDependency.result.scenario_results.baseline;
+    const browserDependencyScenario = browserDependency.result.scenario_results.baseline;
+    assert.ok(pyDependencyScenario.reachable_states.includes("B"), "Python can reach B");
+    assert.ok(browserDependencyScenario.reachable_states.includes("B"), "browser can reach B");
+    assert.ok(!pyDependencyScenario.reachable_states.includes("C"),
+      "Python must not traverse t_ac before prerequisite t_bc has been executed");
+    assert.ok(!browserDependencyScenario.reachable_states.includes("C"),
+      "browser must not traverse t_ac before prerequisite t_bc has been executed");
+    assert.deepEqual(browserDependency.result, pyDependency.result,
+      "temporal dependency outputs must match exactly");
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
