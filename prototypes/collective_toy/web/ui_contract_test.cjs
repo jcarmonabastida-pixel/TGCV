@@ -10,8 +10,11 @@ const assert = require("node:assert/strict");
 
   const browser = await chromium.launch({ headless: true });
   try {
-    const page = await browser.newPage();
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
     await page.goto("file://" + htmlPath);
+    const visualDir = process.env.TGCV_VISUAL_ARTIFACT_DIR || path.join(__dirname, "artifacts", "visual-review");
+    fs.mkdirSync(visualDir, { recursive: true });
+    const captureVisual = async (name) => page.screenshot({ path: path.join(visualDir, name), fullPage: true, animations: "disabled" });
 
     // Keep the MVP's state-local graph semantics and non-scientific boundary visible.
     const notice = await page.locator(".notice").innerText();
@@ -64,6 +67,12 @@ const assert = require("node:assert/strict");
     assert.equal(tgcvDerived.trajectories.before.tau_ac_cd, false);
     assert.equal(tgcvDerived.trajectories.after.tau_ac_cd, true);
 
+    // Save rendered screenshots of the actual implementation for human review.
+    await captureVisual("desktop-baseline.png");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await captureVisual("mobile-baseline.png");
+    await page.setViewportSize({ width: 1440, height: 1000 });
+
     // Changing the selected system scenario must refresh the TGCV graph from the same engine result.
     await page.locator("#run").click();
     await page.waitForFunction(() => Array.from(document.querySelectorAll("#which option")).some(option => option.value === "block_ac"));
@@ -71,6 +80,10 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#graph rect").count(), 4, "System graph must remain rendered for the selected scenario");
     assert.equal(await page.locator("#tgcv-graph circle").count(), 2, "TGCV graph must show only transformations appearing in block_ac trajectories");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: block_ac/i);
+    await captureVisual("desktop-block-ac.png");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await captureVisual("mobile-block-ac.png");
+    await page.setViewportSize({ width: 1440, height: 1000 });
     await page.locator("#which").selectOption("baseline");
     assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "Returning to baseline must restore the four accessible transformations");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: baseline/i);
