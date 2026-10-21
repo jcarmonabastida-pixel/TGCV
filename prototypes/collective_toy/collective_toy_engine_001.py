@@ -127,6 +127,8 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
         raise ModelValidationError("model must be a JSON object")
     _validate_canonical_domain(model)
     _reject_unknown_keys(model, {"schema_version", "model_id", "initial_state", "states", "transitions", "relations", "rule_profile", "scenarios", "exploration", "condition_values"}, "model")
+    if "condition_values" in model and not isinstance(model["condition_values"], dict):
+        raise ModelValidationError("condition_values must be an object when provided")
     schema_version = model.get("schema_version")
     if schema_version not in SUPPORTED_SCHEMAS:
         raise ModelValidationError(f"schema_version must be one of {sorted(SUPPORTED_SCHEMAS)!r}")
