@@ -3656,6 +3656,53 @@ const assert = require("node:assert/strict");
     assert.match(await uxPage.locator("#value-dashboard").innerText(), /82\/100/);
     await uxPage.close();
 
+    // Scoped passive acceptance: “el estado de A es seguido por el estado de B”.
+    await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexiones?/ }).waitFor();
+    const followedByDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(followedByDraft.states, ["reposo", "ejecución"]);
+    assert.equal(followedByDraft.transitions.length, 1);
+    assert.ok(followedByDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
+      "The subject must remain the source and the object of “por” the destination");
+    assert.ok(!followedByDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"),
+      "The passive construction must not reverse edge direction");
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+
+    await page.locator("#system-description").fill("El proceso pasa de inicio a reposo. El estado de reposo es seguido por el estado de ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 3 estados y 2 conexiones/ }).waitFor();
+    const preservedDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(preservedDraft.transitions.length, 2);
+    assert.ok(preservedDraft.transitions.some((edge) => edge.source === "inicio" && edge.target === "reposo"));
+    assert.ok(preservedDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"));
+    assert.ok(!preservedDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"));
+
+
+    // Adversarial passive: a second destination in the same clause must not be swallowed into one label.
+    await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución y después por el estado de resultado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    const multiTargetStatus = await page.locator("#transcription-status").innerText();
+    const multiTargetDraft = await page.locator("#model").inputValue();
+    assert.equal(multiTargetDraft, "",
+      "An unsupported multi-destination passive clause must not leave a stale model presented as current");
+    assert.match(multiTargetStatus, /Frases pendientes de (?:interpretar|aclaración)/i,
+      "Ambiguous multi-destination passive wording must be surfaced for human clarification");
+
+    // Regression: a failed new transcription must not leave a prior model presented as current.
+    await page.locator("#system-description").fill("El proceso pasa de inicio a reposo.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto:/ }).waitFor();
+    assert.ok((await page.locator("#model").inputValue()).length > 0, "A valid description should produce a model before the failure case");
+    await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución y después por el estado de resultado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /No se pudo proponer el grafo/ }).waitFor();
+    assert.equal(await page.locator("#model").inputValue(), "", "A failed transcription must clear the stale model");
+    assert.match(await page.locator("#graph-edit-status").innerText(), /grafo anterior ha quedado obsoleto/i,
+      "The UI must explicitly mark the previous graph as obsolete");
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /estado de reposo es seguido/i,
+      "The ambiguous sentence must remain available for human clarification");
+
     console.log("PASS: profile-3-only UI, guided trajectory carousel, concrete execution, contextual value, alternative dashboard, import/export, replay/tamper checks, and grouped contract adversaries.");
   } finally {
     await browser.close();
