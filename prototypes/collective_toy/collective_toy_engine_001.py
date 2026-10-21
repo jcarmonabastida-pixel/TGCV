@@ -252,11 +252,23 @@ def _temporal_scenario_result(
     for relation in model.get("relations", []):
         prerequisites.setdefault(relation["transition_id"], set()).add(relation["requires_transition_id"])
     adjacency: dict[str, list[Transition]] = {s: [] for s in model["states"]}
+    blocked_conditions: list[dict[str, Any]] = []
     for transition in transitions.values():
-        # Conditions are preserved in the model but never evaluated by this engine.
-        # Therefore conditional transitions are not traversable in reachability or trajectories.
+        if transition.id in explicit_disabled:
+            continue
         if transition.condition is None:
             adjacency[transition.source].append(transition)
+        else:
+            # Fail closed: until condition_values is part of the shared input
+            # contract, conditional transitions remain non-traversable.
+            blocked_conditions.append({
+                "transition_id": transition.id,
+                "source": transition.source,
+                "target": transition.target,
+                "condition": transition.condition,
+                "status": "NOT_EVALUABLE",
+                "reason": "unsupported_expression",
+            })
     for outgoing in adjacency.values():
         outgoing.sort(key=lambda item: item.id)
 
@@ -342,6 +354,7 @@ def _temporal_scenario_result(
     return {
         "scenario_id": scenario["id"],
         "disabled_transitions": sorted(explicit_disabled),
+        "blocked_conditions": sorted(blocked_conditions, key=lambda item: item["transition_id"]),
         "enabled_transitions_at_initial_state": enabled_at_initial,
         "reachable_states": sorted(reached),
         "trajectories": trajectories,
