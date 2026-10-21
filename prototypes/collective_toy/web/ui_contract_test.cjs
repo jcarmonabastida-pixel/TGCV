@@ -105,7 +105,7 @@ const assert = require("node:assert/strict");
     for (let i = 0; i < longLabelGeometry.length; i++) for (let j = i + 1; j < longLabelGeometry.length; j++) {
       const a = longLabelGeometry[i].box, b = longLabelGeometry[j].box;
       assert.ok(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y,
-        `State nodes must not overlap: ${longLabelGeometry[i].name} / ${longLabelGeometry[j].name}`);
+        `State nodes must not overlap: ${longLabelGeometry[i].name} ${JSON.stringify(a)} / ${longLabelGeometry[j].name} ${JSON.stringify(b)}`);
     }
     await page.locator("#load").click();
     await page.locator("#status").filter({ hasText: "Ejemplo integrado cargado en ambos grafos" }).waitFor();
