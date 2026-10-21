@@ -130,18 +130,18 @@ const assert = require("node:assert/strict");
     assert.ok(inverseDirectionDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
       "Inverse wording must map source=reposo to target=ejecución, not reverse or absorb source into target");
 
-    // A sentence containing two transition predicates is ambiguous for this bounded parser:
-    // preserve it for clarification rather than swallowing the second relation into a state label.
+    // Explicit sequencing with "y luego" may express two independent, directed edges.
+    // A second clause without an identifiable destination must remain pending.
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución y luego pasa de ejecución a resultado. El proceso pasa de inicio a evaluación.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
-    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 4 estados y 3 conexiones/ }).waitFor();
     const multipleRelationsDraft = JSON.parse(await page.locator("#model").inputValue());
-    assert.equal(multipleRelationsDraft.transitions.length, 1,
-      "Only the unambiguous sentence may contribute an edge");
+    assert.equal(multipleRelationsDraft.transitions.length, 3,
+      "Both explicit sequential edges and the independent edge must be retained");
+    assert.ok(multipleRelationsDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"));
+    assert.ok(multipleRelationsDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "resultado"));
     assert.ok(multipleRelationsDraft.transitions.some((edge) => edge.source === "inicio" && edge.target === "evaluación"));
-    assert.match(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
-    assert.match(await page.locator("#transcription-clarification").inputValue(), /pasa de reposo a ejecución y luego pasa de ejecución a resultado/,
-      "The multi-relation sentence must remain visible for clarification");
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
 
     // Irrigation acceptance case: local parsing must preserve both explicit conditions
     // and keep the unsupported initial-state sentence visible for human clarification.
