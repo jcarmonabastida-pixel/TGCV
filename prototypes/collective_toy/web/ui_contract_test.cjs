@@ -99,6 +99,19 @@ const assert = require("node:assert/strict");
     assert.ok(inverseDirectionDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
       "Inverse wording must map source=reposo to target=ejecución, not reverse or absorb source into target");
 
+    // A sentence containing two transition predicates is ambiguous for this bounded parser:
+    // preserve it for clarification rather than swallowing the second relation into a state label.
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución y luego pasa de ejecución a resultado. El proceso pasa de inicio a evaluación.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const multipleRelationsDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(multipleRelationsDraft.transitions.length, 1,
+      "Only the unambiguous sentence may contribute an edge");
+    assert.ok(multipleRelationsDraft.transitions.some((edge) => edge.source === "inicio" && edge.target === "evaluación"));
+    assert.match(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /pasa de reposo a ejecución y luego pasa de ejecución a resultado/,
+      "The multi-relation sentence must remain visible for clarification");
+
     // Irrigation acceptance case: local parsing must preserve both explicit conditions
     // and keep the unsupported initial-state sentence visible for human clarification.
     await page.locator("#system-description").fill("El sistema comienza en reposo. El proceso pasa de reposo a riego activo cuando la humedad del suelo es baja. Cuando la humedad del suelo es suficiente, el proceso vuelve de riego activo a reposo.");
