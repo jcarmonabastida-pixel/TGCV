@@ -46,7 +46,7 @@ const assert = require("node:assert/strict");
       return { label: label.textContent, inside: textBox.x >= shapeX && textBox.x + textBox.width <= shapeRight && textBox.y >= shapeY && textBox.y + textBox.height <= shapeBottom };
     }));
     assert.equal(stateLabelGeometry.length, 4, "Each system node must expose its state label");
-    assert.ok(stateLabelGeometry.every(item => item.inside), "Every state name must be rendered inside its node shape");
+    assert.ok(stateLabelGeometry.every(item => item.inside), `Every state name must be rendered inside its node shape: ${JSON.stringify(stateLabelGeometry)}`);
     const tgcvLoaded = await page.locator("#tgcv-graph-section").innerText();
     assert.match(tgcvLoaded, /correspondencia se declara explícitamente/i);
     assert.match(tgcvLoaded, /no es una regla universal/i);
