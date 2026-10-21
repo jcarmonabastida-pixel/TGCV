@@ -86,3 +86,17 @@ A grouped browser acceptance assertion checks that all four visible state labels
 The implementation width cap was increased from 112 to 140 SVG units to give longer state identifiers more room while keeping node width bounded. A new grouped browser adversarial case uses four long state names and verifies (1) every label's SVG bounding box is contained by its node, (2) label font size is at least 11px, and (3) no pair of node rectangles overlaps in the rendered layout. It then reloads the integrated demo to avoid leaking test state into later assertions.
 
 Implementation head: `4144cad99863498a7cfe7adc61a68083eb85c7c7`. Fresh CI for this exact head is pending. These geometric checks are a useful regression gate, not a replacement for human review of screenshots on actual mobile and desktop viewports.
+
+
+## Latest CI checkpoint — 2026-10-22
+
+The current draft PR #92 head is `bdf7c4208c2fad46c9838a5bc489aa05406a0382`. All four required CI workflows completed successfully on that exact commit:
+
+- [Governance current-state consistency — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39693657485)
+- [Synthetic engine tests — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39693657392)
+- [Browser and cross-runtime tests — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39693657465)
+- [Browser performance benchmark — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39693657532)
+
+The browser workflow published the full-chain acceptance JSON and standalone executable artifacts. The benchmark workflow published its performance report. These artifact sets do not include rendered desktop/mobile screenshots. Consequently, the automated software acceptance checks are green, but the rendered-interface review gate remains pending. PR #92 remains draft; do not merge or promote to `main` until that separate review is completed.
+
+This evidence is implementation and contract conformance only; it does not validate TGCV scientifically or establish the universal validity of the illustrative system-to-transformation mapping.
