@@ -202,6 +202,45 @@ function pythonJson(source, input) {
       assert.equal(browserScenario.blocked_conditions.length, 1, branchCase.name + ": browser blocks exactly one branch");
     }
 
+    // Conditional return/cycle: an enabled edge back to the initial state
+    // remains executable, while its false alternative is blocked identically.
+    const returnModel = {
+      ...conditionalModel,
+      model_id: "conditional-return-cycle",
+      states: ["A", "B", "C"],
+      initial_state: "A",
+      condition_values: { step: 1 },
+      transitions: [
+        { id: "t_ab", source: "A", target: "B", condition: "step == 1" },
+        { id: "t_ba", source: "B", target: "A", condition: "step >= 1" },
+        { id: "t_ac", source: "A", target: "C", condition: "step > 1" }
+      ],
+      relations: [],
+      exploration: { max_depth: 5, max_trajectories: 20 }
+    };
+    const pyReturn = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      returnModel
+    );
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(returnModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const browserReturn = await page.evaluate(() => window.lastPackage);
+    const pyReturnScenario = pyReturn.result.scenario_results.baseline;
+    const browserReturnScenario = browserReturn.result.scenario_results.baseline;
+    assert.ok(pyReturnScenario.reachable_states.includes("A") && pyReturnScenario.reachable_states.includes("B"),
+      "Python must preserve reachability across the enabled return cycle");
+    assert.ok(browserReturnScenario.reachable_states.includes("A") && browserReturnScenario.reachable_states.includes("B"),
+      "browser must preserve reachability across the enabled return cycle");
+    assert.ok(!pyReturnScenario.reachable_states.includes("C"), "Python must block the false branch");
+    assert.ok(!browserReturnScenario.reachable_states.includes("C"), "browser must block the false branch");
+    assert.deepEqual(browserReturn.result, pyReturn.result, "conditional return/cycle outputs must match exactly");
+    assert.deepEqual(pyReturnScenario.blocked_conditions.map(x => [x.transition_id,x.status]), [["t_ac","FALSE"]]);
+    assert.deepEqual(browserReturnScenario.blocked_conditions.map(x => [x.transition_id,x.status]), [["t_ac","FALSE"]]);
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
