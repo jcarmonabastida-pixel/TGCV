@@ -6,7 +6,7 @@
 
 ## 1. Evidence boundary
 
-This matrix uses the existing source-inspection record in `CONDITION_EVALUATOR_IMPLEMENTATION_AUDIT_001.md`, which identifies `main` / `prototypes/collective_toy/web/index.html` as its inspected base. It is not a fresh line-by-line source audit of the current main revision. Before any implementation, re-check the relevant functions against the then-current main commit and record exact source locations. No runtime behavior has been changed here.
+This matrix was initially based on `CONDITION_EVALUATOR_IMPLEMENTATION_AUDIT_001.md`. A fresh bounded inspection of `main:prototypes/collective_toy/web/index.html` is now recorded in [DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md](DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md). That audit pins the exact fetched file object by Git blob SHA `6e79802dec5d399638757518dfd2c8b94214613d`; the fetch did not provide the current main HEAD commit, so no HEAD SHA is claimed. The audit is source inspection only; no runtime behavior has changed.
 
 Status meanings:
 - **Reported present:** the existing source audit explicitly records this behavior.
@@ -74,4 +74,4 @@ This matrix does not:
 
 ## 5. Next acceptance gate
 
-Review the matrix for architectural fit. If accepted, the next task is Gate A: a fresh, narrowly scoped source audit pinned to a specific main commit, followed by an implementation plan grounded in exact source locations. No code should be changed until that audit confirms the adaptation points.
+Gate A source inspection is complete at file-object level and documented in [DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md](DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md). Before implementation, review the audit and decide whether the first increment should be limited to a separately typed TGCV model and second graph renderer, leaving system execution and condition evaluation unchanged. Then specify dual-graph import/export and stale-result behavior. No code should be changed until this design gate is accepted.
