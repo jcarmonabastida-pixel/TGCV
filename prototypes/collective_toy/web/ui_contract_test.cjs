@@ -75,6 +75,39 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "Returning to baseline must restore the four accessible transformations");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: baseline/i);
 
+    // Long state names must remain readable inside their node shapes without node overlap.
+    const longLabelModel = JSON.parse(await page.locator("#model").inputValue());
+    const longStateNames = {
+      A: "inicio_del_proceso_principal",
+      B: "evaluacion_intermedia_extensa",
+      C: "ruta_alternativa_condicionada",
+      D: "resultado_final_confirmado"
+    };
+    longLabelModel.model_id = "long-state-labels-acceptance";
+    longLabelModel.states = longLabelModel.states.map(state => longStateNames[state]);
+    longLabelModel.initial_state = longStateNames[longLabelModel.initial_state];
+    longLabelModel.transitions.forEach(edge => { edge.source = longStateNames[edge.source]; edge.target = longStateNames[edge.target]; });
+    await page.locator("#model").fill(JSON.stringify(longLabelModel, null, 2));
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
+    assert.match(await page.locator("#status").innerText(), /Ejecución completada/i, "Long-name model must execute before layout assertions");
+    const longLabelGeometry = await page.locator("#graph [data-state-label]").evaluateAll(labels => labels.map(label => {
+      const name = label.getAttribute("data-state-label");
+      const shape = document.querySelector(`#graph [data-state-node="${CSS.escape(name)}"]`);
+      const textBox = label.getBBox(), shapeBox = shape.getBBox();
+      return { name, fontSize: Number(label.getAttribute("font-size")), inside: textBox.x >= shapeBox.x && textBox.x + textBox.width <= shapeBox.x + shapeBox.width && textBox.y >= shapeBox.y && textBox.y + textBox.height <= shapeBox.y + shapeBox.height, box: shapeBox };
+    }));
+    assert.equal(longLabelGeometry.length, 4, "All long state labels must be rendered");
+    assert.ok(longLabelGeometry.every(item => item.inside), "Long state names must remain fully inside their node shapes");
+    assert.ok(longLabelGeometry.every(item => item.fontSize >= 11), "Long state names must not be reduced below 11px");
+    for (let i = 0; i < longLabelGeometry.length; i++) for (let j = i + 1; j < longLabelGeometry.length; j++) {
+      const a = longLabelGeometry[i].box, b = longLabelGeometry[j].box;
+      assert.ok(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y,
+        `State nodes must not overlap: ${longLabelGeometry[i].name} / ${longLabelGeometry[j].name}`);
+    }
+    await page.locator("#load").click();
+    await page.locator("#status").filter({ hasText: "Ejemplo integrado cargado en ambos grafos" }).waitFor();
+
     const changedTgcvFixture = structuredClone(tgcvFixture);
     changedTgcvFixture.before.transformations = changedTgcvFixture.after.transformations.slice();
     changedTgcvFixture.before.relations = changedTgcvFixture.after.relations.map(pair => pair.slice());
