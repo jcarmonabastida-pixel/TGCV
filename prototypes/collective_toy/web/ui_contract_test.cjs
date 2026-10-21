@@ -3717,6 +3717,54 @@ const assert = require("node:assert/strict");
     assert.match(await uxPage.locator("#value-dashboard").innerText(), /82\/100/);
     await uxPage.close();
 
+    // A supported TRUE condition must be executable concretely, not merely reachable during exploration.
+    const conditionPage = await browser.newPage();
+    try {
+      await conditionPage.goto("file://" + htmlPath);
+      const conditionModel = {
+        schema_version: "collective-toy-input-002",
+        model_id: "concrete-condition-execution",
+        initial_state: "A",
+        states: ["A", "B"],
+        transitions: [{ id: "t_ab", source: "A", target: "B", condition: "gate == 1" }],
+        relations: [],
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
+        scenarios: [{ id: "baseline", disabled_transitions: [] }],
+        exploration: { max_depth: 3, max_trajectories: 10 },
+        condition_values: { gate: 1 }
+      };
+      await conditionPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, conditionModel);
+      await conditionPage.locator("#run").click();
+      await conditionPage.locator("#status").filter({ hasText: /Ejecución completada/i }).waitFor();
+      assert.ok((await conditionPage.evaluate(() => window.lastPackage.result.scenario_results.baseline.reachable_states)).includes("B"),
+        "A TRUE condition must make the transition reachable");
+      await conditionPage.locator("#sequence-input").fill("t_ab");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified");
+      assert.equal(await conditionPage.locator("#sequence-trace").evaluate(el => el._trace.status), "COMPLETED",
+        "A TRUE condition must permit concrete execution");
+      conditionModel.condition_values.gate = 0;
+      conditionModel.model_id = "concrete-condition-execution-false";
+      await conditionPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, conditionModel);
+      await conditionPage.locator("#run").click();
+      await conditionPage.locator("#status").filter({ hasText: /Ejecución completada/i }).waitFor();
+      await conditionPage.locator("#sequence-input").fill("t_ab");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded");
+      const falseConditionTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(falseConditionTrace.status, "BLOCKED", "A FALSE condition must block concrete execution");
+      assert.equal(falseConditionTrace.blocked_step.reason, "condition_false");
+      assert.match(await conditionPage.locator("#sequence-trace").innerText(), /condición era falsa/i);
+    } finally {
+      await conditionPage.close();
+    }
+
     console.log("PASS: profile-3-only UI, guided trajectory carousel, concrete execution, contextual value, alternative dashboard, import/export, replay/tamper checks, and grouped contract adversaries.");
   } finally {
     await browser.close();
