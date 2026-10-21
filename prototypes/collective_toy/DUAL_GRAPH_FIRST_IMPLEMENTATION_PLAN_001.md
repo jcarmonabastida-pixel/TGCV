@@ -68,7 +68,7 @@ For the first increment, it is acceptable to keep the demonstration fixture loca
 
 - Do not change the current schema or export format.
 - Do not compute value or claim that `ΔT_acc` causes value.
-- Do not introduce automatic system↔TGCV mapping. The first increment should explicitly state that the example is independent of the user's system model.
+- Do not apply the fixture's mapping rule to arbitrary user-provided systems. The loaded example's two views are intentionally integrated; after a user edits the system model, the TGCV view must be marked stale rather than silently remapped.
 
 ## 4. Acceptance matrix
 
@@ -76,7 +76,7 @@ For the first increment, it is acceptable to keep the demonstration fixture loca
 |---|---|
 | Graph separation | Browser acceptance shows the system graph first and a distinct TGCV graph second; the existing system graph remains functional |
 | Semantic typing | TGCV objects are labelled transformations, compatibility relations, and interaction/rule—not system states or executable transitions |
-| Integrated mapping | One load action renders both graphs from the same system fixture, with explicit illustrative mapping records | 
+| Integrated mapping | One load action renders both graphs from the same system fixture, with explicit illustrative mapping records |
 | Before/after derivation | Computed `T_acc` sets and `ΔT_acc` match the existing `block_ac` and `baseline` scenario difference |
 | Trajectories | `[tau_t_ac, tau_t_cd]` is not reachable in `block_ac` and is reachable in `baseline`; the other branch remains consistent |
 | Provenance/limits | UI labels the fixture and rule illustrative/stipulated and makes no empirical or value-causality claim |
@@ -86,7 +86,7 @@ For the first increment, it is acceptable to keep the demonstration fixture loca
 
 Use one end-to-end test for the demonstration chain plus a small number of adversarial tests; do not create one test per sentence or duplicate coverage mechanically.
 
-## 5. Implementation sequence after approval
+## 5. Validation and acceptance sequence
 
 1. Create a dedicated implementation branch from a freshly verified main revision.
 2. Add the integrated fixture, explicit example-only mapping records, and pure TGCV derivation functions.
@@ -97,9 +97,8 @@ Use one end-to-end test for the demonstration chain plus a small number of adver
 
 ## 6. Out of scope / explicit non-actions
 
-This plan does not authorize:
-- any code change by itself;
-- modifications to `main`;
+The implementation scope excludes:
+- modifications to `main` except through a separately reviewed promotion decision;
 - condition-evaluator implementation or schema migration;
 - dual-graph import/export implementation;
 - a general empirical method for identifying real accessible transformations;
