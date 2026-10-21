@@ -568,21 +568,21 @@ function clearTgcvDemo(){
  tgcvSourceSnapshot=null;$("tgcv-graph").replaceChildren();$("tgcv-graph").setAttribute("viewBox","0 0 620 220");$("tgcv-demo-results").textContent="Sin ejemplo TGCV cargado.";
  $("tgcv-provenance-note").textContent="Ambos grafos están vacíos. Pulsa «Cargar ejemplo» para cargar el caso integrado.";
 }
-function renderTgcvDemo(systemModel,systemResult){
+function renderTgcvDemo(systemModel,systemResult,currentScenarioId){
  if(!systemModel){clearTgcvDemo();return}
- tgcvSourceSnapshot=canonical(systemModel);var fixture=tgcvDemoFixture(systemModel,systemResult),result=deriveTgcvDemo(fixture),svg=$("tgcv-graph"),ns="http://www.w3.org/2000/svg";svg.replaceChildren();
+ tgcvSourceSnapshot=canonical(systemModel);var fixture=tgcvDemoFixture(systemModel,systemResult,currentScenarioId),result=deriveTgcvDemo(fixture),svg=$("tgcv-graph"),ns="http://www.w3.org/2000/svg";svg.replaceChildren();
  function make(tag,attrs,text){var el=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){el.setAttribute(k,attrs[k])});if(text!==undefined)el.textContent=text;svg.append(el);return el}
- var pos={},count=result.after.transformations.length;result.after.transformations.forEach(function(id,i){pos[id]={x:60+i*(500/Math.max(1,count-1)),y:110}});
+ var current=result.current||result.after,pos={},count=current.transformations.length;current.transformations.forEach(function(id,i){pos[id]={x:60+i*(500/Math.max(1,count-1)),y:110}});
  var defs=make("defs",{}),marker=document.createElementNS(ns,"marker");marker.setAttribute("id","tgcv-arrow");marker.setAttribute("markerWidth","8");marker.setAttribute("markerHeight","8");marker.setAttribute("refX","6");marker.setAttribute("refY","3");marker.setAttribute("orient","auto");var arrow=document.createElementNS(ns,"path");arrow.setAttribute("d","M0,0 L0,6 L6,3 z");arrow.setAttribute("fill","currentColor");marker.append(arrow);defs.append(marker);
- result.after.relations.forEach(function(pair){var p=pos[pair[0]],q=pos[pair[1]];if(!p||!q)return;make("line",{x1:p.x+28,y1:p.y,x2:q.x-28,y2:q.y,stroke:"currentColor","stroke-width":"1.7","marker-end":"url(#tgcv-arrow)"});make("text",{x:(p.x+q.x)/2,y:p.y-15,"text-anchor":"middle",fill:"currentColor","font-size":"10"},pair[0]+" → "+pair[1])});
- result.after.transformations.forEach(function(id){var p=pos[id];make("circle",{cx:p.x,cy:p.y,r:27,fill:"none",stroke:"currentColor","stroke-width":"2","stroke-dasharray":result.delta.indexOf(id)>=0?"5 3":"none"});make("text",{x:p.x,y:p.y+4,"text-anchor":"middle",fill:"currentColor","font-size":"10","font-weight":"700"},id.replace(/^tau_/,""))});
+ current.relations.forEach(function(pair){var p=pos[pair[0]],q=pos[pair[1]];if(!p||!q)return;make("line",{x1:p.x+28,y1:p.y,x2:q.x-28,y2:q.y,stroke:"currentColor","stroke-width":"1.7","marker-end":"url(#tgcv-arrow)"});make("text",{x:(p.x+q.x)/2,y:p.y-15,"text-anchor":"middle",fill:"currentColor","font-size":"10"},pair[0]+" → "+pair[1])});
+ current.transformations.forEach(function(id){var p=pos[id];make("circle",{cx:p.x,cy:p.y,r:27,fill:"none",stroke:"currentColor","stroke-width":"2","stroke-dasharray":result.delta.indexOf(id)>=0&&current.scenario_id===result.after.scenario_id?"5 3":"none"});make("text",{x:p.x,y:p.y+4,"text-anchor":"middle",fill:"currentColor","font-size":"10","font-weight":"700"},id.replace(/^tau_/,""))});
  var host=$("tgcv-demo-results");host.replaceChildren();
  function metric(title,value,detail){var box=node("div","metric");box.append(node("strong","",value),node("span","",title),node("p","muted",detail));host.append(box)}
  metric("T_acc antes","{"+result.before.transformations.join(", ")+"}","Escenario del sistema: "+result.before.scenario_id+".");
  metric("T_acc después","{"+result.after.transformations.join(", ")+"}","Escenario del sistema: "+result.after.scenario_id+".");
  metric("ΔT_acc","{"+result.delta.join(", ")+"}","Transformaciones que pasan a aparecer en las trayectorias enumeradas del escenario posterior.");
  var routes=node("div","metric");routes.style.gridColumn="1/-1";routes.append(node("strong","","Trayectorias TGCV según relaciones declaradas"),node("p","", "[τ_ab, τ_bd]: "+(result.trajectories.before.tau_ab_bd?"accesible antes":"no accesible antes")+"; "+(result.trajectories.after.tau_ab_bd?"accesible después":"no accesible después")+"."),node("p","", "[τ_ac, τ_cd]: "+(result.trajectories.before.tau_ac_cd?"accesible antes":"no accesible antes")+"; "+(result.trajectories.after.tau_ac_cd?"accesible después":"no accesible después")+"."));host.append(routes);
- $("tgcv-provenance-note").textContent="Correspondencia explícita e ilustrativa: cada transición del ejemplo del sistema se vincula con una transformación TGCV mediante la regla "+result.mapping_rule+". La interacción m cambia de block_ac a baseline. Esto demuestra la coherencia del ejemplo de software, no una regla universal ni validación científica.";
+ $("tgcv-provenance-note").textContent="Escenario actual: "+current.scenario_id+". El grafo TGCV muestra las transformaciones y relaciones asociadas a las transiciones presentes en las trayectorias enumeradas de ese mismo escenario. La comparación T_acc antes/después y ΔT_acc permanece separada. Correspondencia explícita e ilustrativa mediante la regla "+result.mapping_rule+"; no es una regla universal ni una validación científica.";
 }
 window.deriveTgcvDemo=deriveTgcvDemo;
 window.tgcvDemoFixture=tgcvDemoFixture;
