@@ -115,10 +115,10 @@ const assert = require("node:assert/strict");
     // Negating the transition itself must not produce an affirmative edge.
     await page.locator("#system-description").fill("El proceso no pasa de espera a acceso autorizado.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
-    const negatedTransitionDraft = JSON.parse(await page.locator("#model").inputValue());
-    assert.equal(negatedTransitionDraft.transitions.length, 0,
-      "A negated transition statement must not create an affirmative edge");
-    assert.match(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+    const negatedTransitionStatus = await page.locator("#transcription-status").innerText();
+    assert.match(negatedTransitionStatus, /No se pudo proponer el grafo/,
+      "A negated transition statement must be rejected instead of creating a graph");
+    assert.match(negatedTransitionStatus, /Frases pendientes de aclaración/);
     assert.match(await page.locator("#transcription-clarification").inputValue(), /no pasa de espera a acceso autorizado/);
 
     // Inverse wording must preserve direction: destination is mentioned before source.
