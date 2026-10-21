@@ -10,7 +10,7 @@ The demonstrator is intended to make TGCV's proposed object inspectable: interac
 
 The current prototype includes state-like nodes, directed transitions, scenarios, temporal prerequisites, trajectory exploration/execution, and value-oriented comparisons. The existing graph therefore appears to combine concepts that need an explicit semantic distinction. A graph edge being executable under a condition is not, by itself, evidence that the set of accessible transformations has changed.
 
-**Recommendation:** use two explicitly distinguished layers, with the TGCV transformation-space layer primary and an optional domain/system execution layer secondary.
+**Recommendation:** present two distinct graphs in sequence. Graph 1 is the user's familiar system graph (states, transitions, execution conditions). Graph 2 is the TGCV graph (accessible transformations, their relations, and changes in accessibility). The first graph provides domain context; the second introduces the TGCV analytical representation. The TGCV graph must not be a relabeling of the system graph.
 
 ## 2. Proposed layers
 
@@ -43,7 +43,52 @@ Conditions naturally belong here when they mean “this system transition may ex
 
 This layer must be labeled as a domain simulation, not as the definition of TGCV. Its execution trace must not be presented as equivalent to a TGCV transformation-space trajectory unless the mapping between the two is explicitly defined.
 
-## 3. Semantic separation rules
+## 3. User-facing design: two consecutive graphs
+
+### Graph 1 — the system as the user knows it
+
+Show first the existing graph generated from user-entered information or a loaded example:
+
+- system states/configurations as nodes;
+- system transitions as directed edges;
+- execution conditions/guards and temporal prerequisites attached to the relevant transitions;
+- scenario-specific disabled transitions and, where supported, execution traces.
+
+This graph answers: **“How does this system work, and under what conditions can it change state?”** Preserve familiar labels and semantics. Conditions belong here when they govern whether a system transition can execute.
+
+### Graph 2 — the TGCV transformation-space graph
+
+Show after Graph 1 a separate graph that introduces TGCV's proposed analytical object:
+
+- transformation objects, explicitly distinct from system states;
+- relations among transformations, with each relation type defined;
+- the accessible transformation set for the declared system/domain and scenario;
+- an interaction or mechanism that changes accessibility, where the model explicitly provides one;
+- before/after accessibility and derived changes such as ΔT_acc, plus the resulting reachability/trajectory differences where the applicable rule is specified.
+
+This graph answers: **“What transformations are accessible to this system, how are they related, and how does that space change?”** It must communicate something that cannot be read merely by following the state transitions in Graph 1.
+
+### Bridge between the graphs
+
+The two graphs must be presented consecutively and connected by an explicit explanation of how the TGCV representation relates to the user's system model. Do not assume a one-to-one correspondence between system states and transformations.
+
+- Reuse domain names and concepts from Graph 1 where they help recognition, but type each TGCV object explicitly.
+- Where a transformation or mechanism is derived from the system model, show the mapping and rule that support that derivation.
+- Where TGCV objects, accessibility, or relations are supplied by the user rather than derived, label them as declared inputs.
+- If the current system graph does not contain enough information to derive the TGCV graph, ask for the missing TGCV-specific information or load a clearly labeled illustrative mapping. Do not fabricate transformations, relations, or accessibility changes from labels alone.
+- Keep the graphs visually separate; shared layout, duplicated nodes, or shared edges must not imply semantic identity.
+- Explain the distinction in plain language before or alongside Graph 2. The user should not need prior knowledge of TGCV to understand why it differs.
+
+### Demonstration flow
+
+1. User enters a system description or loads an example.
+2. The demonstrator creates Graph 1 using the existing system-graph behavior.
+3. The demonstrator introduces Graph 2 and explains its different question and object.
+4. The user inspects the declared mapping/assumptions and any TGCV-specific inputs.
+5. The demonstrator shows the accessible transformation set, relations, and a specified change scenario.
+6. The demonstrator distinguishes declared facts, rule-derived results, reachable trajectories, and executed system traces.
+
+## 4. Semantic separation rules
 
 1. **Do not conflate nodes.** A node may denote a domain/system state, a transformation, a mechanism, or another model element. The UI and schema must identify which kind it is; visual shape alone is insufficient.
 2. **Do not conflate edges.** A system transition, a transformation available to the system, and a relation that changes transformation accessibility are different semantic roles. If the interface uses a shared graph canvas, edge/node types and their legends must make those roles explicit.
@@ -54,7 +99,7 @@ This layer must be labeled as a domain simulation, not as the definition of TGCV
 7. **Preserve traceability.** Results depend on a model version, scenario/context, and applicable rules. Any relevant edit invalidates stale derived results or marks them as belonging to the previous input version.
 8. **No scientific overclaim.** Demonstrator output is a consequence of the supplied model and rules; it is not by itself evidence for TGCV's empirical validity or for value causality.
 
-## 4. What this means for condition modeling
+## 5. What this means for condition modeling
 
 The question “should conditions be modeled?” has no single answer until their semantic role is declared.
 
@@ -64,7 +109,7 @@ The question “should conditions be modeled?” has no single answer until thei
 
 Therefore, pause implementation of the current condition-evaluator proposal and schema collective-toy-input-003 until the layer boundary and graph semantics are agreed. Do not discard the earlier proposal: retain it as a possible Layer B design input, subject to review.
 
-## 5. Review questions before implementation
+## 6. Review questions before implementation
 
 These questions should be resolved in the functional contract, not guessed in code:
 
@@ -77,12 +122,14 @@ These questions should be resolved in the functional contract, not guessed in co
 7. Does the existing value dashboard depend on system execution paths, TGCV-level trajectories, or a separate observer/context evaluation? Its meaning must be made explicit before retaining it as a TGCV result.
 8. Which Layer B features are necessary for the first useful demonstration, and which can remain optional?
 
-## 6. Recommended acceptance criteria for the revised functional contract
+## 7. Recommended acceptance criteria for the revised functional contract
 
 The revised contract should pass grouped review against these criteria:
 
 - **Object clarity:** every displayed node, edge, set, and trajectory has an explicit semantic type.
-- **TGCV-first demonstration:** a user can see at least one declared interaction/mechanism, the transformation accessibility before and after it, and the resulting difference in reachable transformation trajectories.
+- **Two-graph clarity:** Graph 1 first presents the familiar system states, transitions, and execution conditions; Graph 2 then presents typed transformations, relations, accessibility, and changes without conflating their semantics.
+- **TGCV-first demonstration:** in Graph 2, a user can see at least one declared interaction/mechanism, the transformation accessibility before and after it, and the resulting difference in reachable transformation trajectories.
+- **Traceable bridge:** every asserted mapping from Graph 1 to Graph 2 is documented as derived by a stated rule or supplied as an explicit user-declared input.
 - **Derivation transparency:** each computed accessibility/reachability result identifies the rule and inputs used; supplied facts are not presented as derived results.
 - **Possibility/execution distinction:** possible, blocked, and executed sequences are separately represented.
 - **Optional simulation boundary:** conditions and state execution can be included without being confused with TGCV's primary object.
@@ -92,11 +139,11 @@ The revised contract should pass grouped review against these criteria:
 
 Do not turn these grouped criteria into one test per sentence mechanically. Use a small number of end-to-end acceptance cases plus adversarial tests for semantic conflation, stale results, import/export, and misleading presentation.
 
-## 7. Minimum TGCV-first example
+## 8. Minimum TGCV-first example
 
 A concrete illustrative acceptance case is now specified in [TGCV_FIRST_DEMONSTRATION_CASE_001.md](TGCV_FIRST_DEMONSTRATION_CASE_001.md). It stipulates an interaction that adds one transformation to `T_acc`, updates a compatibility relation, and makes a new transformation sequence reachable. The case is intentionally artificial and must not be presented as empirical evidence or as a universal TGCV rule. Use it to review whether the proposed graph semantics and derivation/provenance requirements are clear enough before implementation.
 
-## 8. Relationship to the condition-evaluator proposal
+## 9. Relationship to the condition-evaluator proposal
 
 CONDITION_EVALUATOR_CONTRACT_PROPOSAL_001.md and CONDITION_EVALUATOR_IMPLEMENTATION_AUDIT_001.md are preliminary design/audit artifacts. Their proposed typed predicates and explicit scenario context may be useful for Layer B, but their proposed v003 migration is **not approved for implementation by this review**. Reassess them after the functional contract establishes the primary TGCV object and the optional simulation boundary.
 
