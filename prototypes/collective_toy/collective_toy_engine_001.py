@@ -409,13 +409,17 @@ def execute_sequence(
         required_id: str | None = None
         if transition is None:
             reason = "unknown_transition"
-        elif transition.condition is not None:
-            reason = "condition_not_evaluated"
         elif transition_id in disabled:
             reason = "transition_disabled_by_scenario"
         elif transition.source != current:
             reason = "transition_source_mismatch"
-        else:
+        elif transition.condition is not None:
+            evaluated = evaluate_condition(transition.condition, model.get("condition_values", {}))
+            if evaluated.status == "FALSE":
+                reason = "condition_false"
+            elif evaluated.status != "TRUE":
+                reason = "condition_not_evaluable"
+        if reason is None and transition is not None:
             missing = sorted(prerequisites.get(transition_id, set()) - set(history))
             if missing:
                 reason = "temporal_prerequisite_not_satisfied"
