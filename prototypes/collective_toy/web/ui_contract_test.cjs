@@ -3683,9 +3683,9 @@ const assert = require("node:assert/strict");
     await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución y después por el estado de resultado.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     const multiTargetStatus = await page.locator("#transcription-status").innerText();
-    const multiTargetDraft = JSON.parse(await page.locator("#model").inputValue());
-    assert.ok(!multiTargetDraft.states.some((state) => /ejecución y después por el estado de resultado/i.test(state)),
-      "An unsupported multi-destination passive clause must not be swallowed into one state label");
+    const multiTargetDraft = await page.locator("#model").inputValue();
+    assert.equal(multiTargetDraft, "",
+      "An unsupported multi-destination passive clause must not leave a stale model presented as current");
     assert.match(multiTargetStatus, /Frases pendientes de (?:interpretar|aclaración)/i,
       "Ambiguous multi-destination passive wording must be surfaced for human clarification");
 
