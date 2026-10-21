@@ -52,6 +52,18 @@ const assert = require("node:assert/strict");
     assert.equal(tgcvDerived.trajectories.after.tau_ab_bd, true);
     assert.equal(tgcvDerived.trajectories.before.tau_ac_cd, false);
     assert.equal(tgcvDerived.trajectories.after.tau_ac_cd, true);
+
+    // Changing the selected system scenario must refresh the TGCV graph from the same engine result.
+    await page.locator("#run").click();
+    await page.locator("#which option").filter({ hasText: "block_ac" }).waitFor();
+    await page.locator("#which").selectOption("block_ac");
+    assert.equal(await page.locator("#graph rect").count(), 4, "System graph must remain rendered for the selected scenario");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 2, "TGCV graph must show only transformations appearing in block_ac trajectories");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: block_ac/i);
+    await page.locator("#which").selectOption("baseline");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "Returning to baseline must restore the four accessible transformations");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: baseline/i);
+
     const changedTgcvFixture = structuredClone(tgcvFixture);
     changedTgcvFixture.before.transformations = changedTgcvFixture.after.transformations.slice();
     changedTgcvFixture.before.relations = changedTgcvFixture.after.relations.map(pair => pair.slice());
