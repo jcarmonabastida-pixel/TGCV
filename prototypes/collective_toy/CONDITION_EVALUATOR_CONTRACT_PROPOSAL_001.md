@@ -1,6 +1,6 @@
 # Condition evaluator and visual graph editor — contract proposal 001
 
-**Status:** design contract agreed in principle; implementation not yet started.
+**Status:** PAUSED pending review of FUNCTIONAL_ARCHITECTURE_REVIEW_001.md; not approved for implementation. The typed-predicate design remains a candidate for the optional system/domain execution layer only.
 **Scope:** browser demonstrator only. This is not canonical TGCV semantics and does not change the scientific core, the existing graph-execution contract, or the meaning of (T_{acc}).
 
 ## 1. Problem and design boundary
