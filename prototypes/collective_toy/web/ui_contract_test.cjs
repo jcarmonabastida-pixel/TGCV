@@ -20,37 +20,40 @@ const assert = require("node:assert/strict");
     assert.match(notice, /No es una validación científica/i);
     assert.match(notice, /ni implementa por sí solo Tacc de TGCV/i);
 
-    // Dual-graph first increment: Graph 2 is a distinct, explicitly illustrative TGCV view.
+    // Integrated dual-graph example: both views start empty and load together.
     const tgcvSection = page.locator("#tgcv-graph-section");
     assert.equal(await tgcvSection.count(), 1, "A distinct TGCV graph section must exist");
     assert.match(await tgcvSection.locator("h2").innerText(), /Grafo TGCV: espacio de transformaciones/);
-    assert.match(await tgcvSection.innerText(), /no se deriva automáticamente del sistema/i);
-    assert.match(await tgcvSection.innerText(), /no constituye validación científica/i);
     assert.equal(await page.locator("#graph").count(), 1, "The existing system graph must remain present");
-    assert.equal(await page.locator("#tgcv-graph circle").count(), 3, "The TGCV graph must render its three transformations separately");
-    assert.equal(await page.locator("#tgcv-graph-section").locator("#tgcv-graph").count(), 1);
-    const tgcvInitial = await page.locator("#tgcv-demo-results").innerText();
-    assert.match(tgcvInitial, /T_acc antes/);
-    assert.match(tgcvInitial, /T_acc después/);
-    assert.match(tgcvInitial, /ΔT_acc/);
-    assert.match(tgcvInitial, /\[a,b\]: accesible antes; accesible después/i);
-    assert.match(tgcvInitial, /\[a,b,c\]: no accesible antes; accesible después/i);
-    const tgcvFixture = await page.evaluate(() => window.tgcvDemoFixture());
+    assert.equal(await page.locator("#graph rect").count(), 0, "The system graph must start empty");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 0, "The TGCV graph must start empty too");
+    assert.match(await page.locator("#tgcv-demo-results").innerText(), /Sin ejemplo TGCV cargado/i);
+    assert.match(await page.locator("#status").innerText(), /Ambos grafos están vacíos/i);
+
+    await page.locator("#load").click();
+    assert.equal(await page.locator("#model").inputValue().then(value => JSON.parse(value).model_id), "toy-diamond-001");
+    assert.equal(await page.locator("#graph rect").count(), 4, "Loading the example must populate the system graph");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "The same action must populate the TGCV graph");
+    const tgcvLoaded = await page.locator("#tgcv-graph-section").innerText();
+    assert.match(tgcvLoaded, /correspondencia se declara explícitamente/i);
+    assert.match(tgcvLoaded, /no es una regla universal/i);
+    const tgcvFixture = await page.evaluate(() => window.tgcvDemoFixture(JSON.parse(document.querySelector("#model").value)));
     const tgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), tgcvFixture);
-    assert.deepEqual(tgcvDerived.before.transformations, ["a", "b"]);
-    assert.deepEqual(tgcvDerived.after.transformations, ["a", "b", "c"]);
-    assert.deepEqual(tgcvDerived.delta, ["c"]);
-    assert.equal(tgcvDerived.trajectories.before_ab, true);
-    assert.equal(tgcvDerived.trajectories.before_abc, false);
-    assert.equal(tgcvDerived.trajectories.after_abc, true);
+    assert.equal(tgcvDerived.system_model_id, "toy-diamond-001");
+    assert.equal(tgcvDerived.mappings.length, 4, "Every example transition must have an explicit illustrative mapping");
+    assert.deepEqual(tgcvDerived.before.transformations, ["tau_t_ab", "tau_t_bd", "tau_t_cd"]);
+    assert.deepEqual(tgcvDerived.after.transformations, ["tau_t_ab", "tau_t_ac", "tau_t_bd", "tau_t_cd"]);
+    assert.deepEqual(tgcvDerived.delta, ["tau_t_ac"]);
+    assert.equal(tgcvDerived.trajectories.before.tau_ac_cd, false);
+    assert.equal(tgcvDerived.trajectories.after.tau_ac_cd, true);
     const changedTgcvFixture = structuredClone(tgcvFixture);
-    changedTgcvFixture.interaction.add_transformations.push("d");
-    changedTgcvFixture.interaction.add_relations.push(["c", "d"]);
+    changedTgcvFixture.before.transformations = changedTgcvFixture.after.transformations.slice();
+    changedTgcvFixture.before.relations = changedTgcvFixture.after.relations.map(pair => pair.slice());
     const changedTgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), changedTgcvFixture);
-    assert.deepEqual(changedTgcvDerived.delta, ["c", "d"],
-      "Derived outputs must respond to changed inputs instead of being hardcoded");
+    assert.deepEqual(changedTgcvDerived.delta, [],
+      "Derived ΔT_acc must respond to changed before/after inputs instead of being hardcoded");
     const invalidTgcvFixture = structuredClone(tgcvFixture);
-    invalidTgcvFixture.interaction.add_relations.push(["b", "missing"]);
+    invalidTgcvFixture.relations.push(["tau_t_ab", "tau_missing"]);
     const invalidTgcvResult = await page.evaluate(fixture => {
       try { window.deriveTgcvDemo(fixture); return "accepted"; }
       catch (error) { return error.message; }
