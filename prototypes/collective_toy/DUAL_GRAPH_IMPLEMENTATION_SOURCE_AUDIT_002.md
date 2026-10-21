@@ -79,3 +79,10 @@ A source-level inspection confirms that the page has a responsive single-column 
 The implementation branch now gives each system-state node a width based on its label (bounded to preserve graph spacing), aligns the label centrally inside the rectangle, adjusts transition endpoints to the corresponding node widths, and reduces font size for longer identifiers. SVG elements carry state-label/state-node identifiers for browser-level geometry assertions.
 
 A grouped browser acceptance assertion checks that all four visible state labels in the integrated example are fully inside their corresponding node shapes. The change is in implementation branch `implementation/dual-graph-sync-002-20261022`, commit `42a17e3ec78f653b984db8015cb79ce7eed6aaa2`; fresh CI on this exact head is pending. This is a source/test-level change and does not by itself establish that long arbitrary names are visually ideal on every device. Review rendered desktop/mobile evidence after CI.
+
+
+### Long-label acceptance refinement
+
+The implementation width cap was increased from 112 to 140 SVG units to give longer state identifiers more room while keeping node width bounded. A new grouped browser adversarial case uses four long state names and verifies (1) every label's SVG bounding box is contained by its node, (2) label font size is at least 11px, and (3) no pair of node rectangles overlaps in the rendered layout. It then reloads the integrated demo to avoid leaking test state into later assertions.
+
+Implementation head: `4144cad99863498a7cfe7adc61a68083eb85c7c7`. Fresh CI for this exact head is pending. These geometric checks are a useful regression gate, not a replacement for human review of screenshots on actual mobile and desktop viewports.
