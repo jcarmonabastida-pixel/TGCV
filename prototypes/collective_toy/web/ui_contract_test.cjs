@@ -97,7 +97,7 @@ const assert = require("node:assert/strict");
       const name = label.getAttribute("data-state-label");
       const shape = document.querySelector(`#graph [data-state-node="${CSS.escape(name)}"]`);
       const textBox = label.getBBox(), shapeBox = shape.getBBox();
-      return { name, fontSize: Number(label.getAttribute("font-size")), inside: textBox.x >= shapeBox.x && textBox.x + textBox.width <= shapeBox.x + shapeBox.width && textBox.y >= shapeBox.y && textBox.y + textBox.height <= shapeBox.y + shapeBox.height, box: shapeBox };
+      return { name, fontSize: Number(label.getAttribute("font-size")), inside: textBox.x >= shapeBox.x && textBox.x + textBox.width <= shapeBox.x + shapeBox.width && textBox.y >= shapeBox.y && textBox.y + textBox.height <= shapeBox.y + shapeBox.height, box: { x: shapeBox.x, y: shapeBox.y, width: shapeBox.width, height: shapeBox.height } };
     }));
     assert.equal(longLabelGeometry.length, 4, "All long state labels must be rendered");
     assert.ok(longLabelGeometry.every(item => item.inside), "Long state names must remain fully inside their node shapes");
