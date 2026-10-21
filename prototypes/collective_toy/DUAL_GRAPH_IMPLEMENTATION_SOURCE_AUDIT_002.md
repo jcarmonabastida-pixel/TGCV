@@ -39,3 +39,27 @@ The visual concept the user approved used a direct block/enable interaction that
 - No changes to `main`, TGCV Core, scientific claims, persistence, or condition evaluation.
 - Passing CI is software evidence, not scientific validation.
 - Do not claim mobile visual inspection of the actual PR implementation without direct rendered evidence.
+
+
+## Follow-up verification — synchronized scenario view
+
+**Status: implementation updated; CI verified on 2026-10-22.**
+
+The functional gap above is addressed in the separate implementation branch `implementation/dual-graph-sync-002-20261022`, currently proposed as [draft PR #92](https://github.com/jcarmonabastida-pixel/TGCV/pull/92). This does not rewrite the historical finding: it records the follow-up disposition.
+
+- The scenario selector now refreshes both graph views from the same model and engine result.
+- The TGCV current-scenario view derives its transformations from mapped system transitions present in enumerated trajectories for the selected scenario.
+- The before/after/ΔT_acc comparison remains a distinct derived comparison.
+- Custom/edited models retain the stale-mapping guard rather than silently receiving the illustrative demo mapping.
+- A grouped browser acceptance test covers `block_ac` (two accessible transformations), `baseline` (four), and preservation of the stale warning after re-execution of an edited model.
+
+### CI evidence on exact PR head
+
+Head commit: `609ebdd669abc8196b11ca7c7d9300e64c46029c`.
+
+- [Governance consistency — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39688352410)
+- [Synthetic engine tests — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39688352512)
+- [Browser performance benchmark — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39688352538)
+- [Browser and cross-runtime tests — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39688352445)
+
+This is software/contract evidence only. It is not scientific validation of TGCV, the illustrative mapping rule, or any causal/value claim. PR #92 remains draft; no promotion or merge to `main` is implied.
