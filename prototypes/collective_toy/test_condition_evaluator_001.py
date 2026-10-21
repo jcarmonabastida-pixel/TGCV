@@ -63,5 +63,46 @@ class ConcreteSequenceConditionTests(unittest.TestCase):
         self.assertEqual(result["final_state"], "A")
 
 
+class ConcreteSequencePrerequisiteTests(unittest.TestCase):
+    def _model(self):
+        return {
+            "schema_version": "collective-toy-input-002",
+            "model_id": "concrete-prerequisite-execution",
+            "initial_state": "A",
+            "states": ["A", "B", "C", "D"],
+            "transitions": [
+                {"id": "t_ab", "source": "A", "target": "B"},
+                {"id": "t_bc", "source": "B", "target": "C"},
+                {"id": "t_ac", "source": "A", "target": "C"},
+                {"id": "t_cd", "source": "C", "target": "D"},
+            ],
+            "relations": [{
+                "id": "r_cd_requires_bc",
+                "type": "requires_prior_execution",
+                "transition_id": "t_cd",
+                "requires_transition_id": "t_bc",
+            }],
+            "rule_profile": {"type": "temporal_prerequisite_graph", "version": "1"},
+            "scenarios": [{"id": "baseline", "disabled_transitions": []}],
+            "exploration": {"max_depth": 4, "max_trajectories": 10},
+        }
+
+    def test_concrete_sequence_satisfies_prerequisite_in_order(self):
+        from collective_toy_engine_001 import execute_sequence
+        result = execute_sequence(self._model(), "baseline", ["t_ab", "t_bc", "t_cd"])
+        self.assertEqual(result["status"], "PASS")
+        self.assertEqual(result["final_state"], "D")
+        self.assertEqual(len(result["steps"]), 3)
+
+    def test_concrete_sequence_blocks_transition_when_prerequisite_was_not_executed(self):
+        from collective_toy_engine_001 import execute_sequence
+        result = execute_sequence(self._model(), "baseline", ["t_ac", "t_cd"])
+        self.assertEqual(result["status"], "BLOCKED")
+        self.assertEqual(result["blocked_step"]["transition_id"], "t_cd")
+        self.assertEqual(result["blocked_step"]["reason"], "temporal_prerequisite_not_satisfied")
+        self.assertEqual(result["blocked_step"]["required_transition_id"], "t_bc")
+        self.assertEqual(result["final_state"], "C")
+
+
 if __name__ == "__main__":
     unittest.main()
