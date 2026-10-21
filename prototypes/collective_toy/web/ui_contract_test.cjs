@@ -105,7 +105,8 @@ const assert = require("node:assert/strict");
     assert.equal(negatedConditionEvaluation.status, "NOT_EVALUABLE");
     assert.equal(negatedConditionEvaluation.reason, "unsupported_expression");
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.locator("#graph-note").filter({ hasText: /Condiciones bloqueadas \(no evaluadas\)/ }).waitFor();
+    await page.locator("#status").filter({ hasText: "Ejecución completada." }).waitFor();
+    await page.locator("#graph-note").filter({ hasText: /la identidad no es válida/ }).waitFor();
     const negatedConditionNote = await page.locator("#graph-note").innerText();
     assert.match(negatedConditionNote, /la identidad no es válida/);
     assert.match(negatedConditionNote, /1 estado\(s\) alcanzable\(s\)/,
