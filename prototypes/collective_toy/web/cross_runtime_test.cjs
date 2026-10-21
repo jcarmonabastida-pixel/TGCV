@@ -164,6 +164,44 @@ function pythonJson(source, input) {
       assert.deepEqual(browserCase.result, pyCase.result, item.name + ": Python/browser outputs must match exactly");
     }
 
+    // Domain-independent branching: complementary predicates must select
+    // exactly the branch enabled by the explicit numeric input.
+    for (const branchCase of [
+      { name: "temperature_low", values: { temperature: 8 }, expected: ["A", "B"] },
+      { name: "temperature_high", values: { temperature: 12 }, expected: ["A", "C"] }
+    ]) {
+      const branchingModel = {
+        ...conditionalModel,
+        model_id: "branching-" + branchCase.name,
+        condition_values: branchCase.values,
+        states: ["A", "B", "C"],
+        transitions: [
+          { id: "t_low", source: "A", target: "B", condition: "temperature < 10" },
+          { id: "t_high", source: "A", target: "C", condition: "temperature >= 10" }
+        ],
+        relations: [],
+        exploration: { max_depth: 3, max_trajectories: 20 }
+      };
+      const pyBranch = pythonJson(
+        "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+        branchingModel
+      );
+      await page.locator("#model").evaluate((el, value) => {
+        el.value = value;
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, JSON.stringify(branchingModel));
+      await page.locator("#run").click();
+      await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+      const browserBranch = await page.evaluate(() => window.lastPackage);
+      const pyScenario = pyBranch.result.scenario_results.baseline;
+      const browserScenario = browserBranch.result.scenario_results.baseline;
+      assert.deepEqual(pyScenario.reachable_states, branchCase.expected.slice().sort(), branchCase.name + ": Python selects expected branch");
+      assert.deepEqual(browserScenario.reachable_states, branchCase.expected.slice().sort(), branchCase.name + ": browser selects expected branch");
+      assert.deepEqual(browserBranch.result, pyBranch.result, branchCase.name + ": branch outputs match exactly");
+      assert.equal(pyScenario.blocked_conditions.length, 1, branchCase.name + ": Python blocks exactly one branch");
+      assert.equal(browserScenario.blocked_conditions.length, 1, branchCase.name + ": browser blocks exactly one branch");
+    }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
