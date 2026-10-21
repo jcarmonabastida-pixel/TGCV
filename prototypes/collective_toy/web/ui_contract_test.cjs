@@ -58,7 +58,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#graph-edit-status").innerText(), /pendiente de revisión humana/i);
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. El sistema no pasa de ejecución a resultado.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
-    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexiones?/ }).waitFor();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
     const negationDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(negationDraft.states, ["reposo", "ejecución"]);
     assert.equal(negationDraft.transitions.length, 1, "A negated sentence must never create a transition");
