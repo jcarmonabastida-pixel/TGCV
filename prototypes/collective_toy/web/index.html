@@ -70,11 +70,20 @@ function validate(m){
  m.scenarios.forEach(function(s){assert(s&&typeof s==="object"&&!Array.isArray(s),"Cada escenario debe ser un objeto.");knownKeys(s,["id","disabled_transitions"],"Escenario");assert(typeof s.id==="string"&&s.id.length>0,"Cada escenario necesita ID.");assert(!sids.has(s.id),"ID de escenario duplicado: "+s.id);sids.add(s.id);var ds=s.disabled_transitions===undefined?[]:s.disabled_transitions;assert(Array.isArray(ds),"disabled_transitions debe ser una lista.");assert(ds.every(function(t){return typeof t==="string"&&t.length>0}),"IDs deshabilitados deben ser textos no vacíos.");assert(new Set(ds).size===ds.length,"El escenario "+s.id+" repite un ID.");ds.forEach(function(id){assert(tids.has(id),"Transición desconocida: "+id)})});
  assert(sids.has("baseline"),"Debe existir baseline.");assert(m.exploration&&typeof m.exploration==="object","exploration debe ser un objeto.");assert(Number.isInteger(m.exploration.max_depth)&&m.exploration.max_depth>=0,"max_depth debe ser entero no negativo.");assert(Number.isInteger(m.exploration.max_trajectories)&&m.exploration.max_trajectories>=1,"max_trajectories debe ser entero positivo.");assert(m.states.length<=500&&m.transitions.length<=2000,"Límite: 500 estados y 2000 transiciones.");assert(m.exploration.max_depth<=100&&m.exploration.max_trajectories<=10000,"Límite: profundidad ≤100 y trayectorias ≤10000.");
 }
+function evaluateCondition001(expression,values){
+ var match=typeof expression==="string"?/^\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*(<=|>=|==|!=|<|>)\\s*(-?(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?)\\s*$/.exec(expression):null;
+ if(!match)return {status:"NOT_EVALUABLE",reason:"unsupported_expression",expression:expression};
+ var variable=match[1],operator=match[2],threshold=Number(match[3]),observed=values&&Object.prototype.hasOwnProperty.call(values,variable)?values[variable]:undefined;
+ if(observed===undefined)return {status:"NOT_EVALUABLE",reason:"missing_variable",expression:expression,variable:variable};
+ if(typeof observed!=="number"||!Number.isFinite(observed))return {status:"NOT_EVALUABLE",reason:"variable_not_finite_or_numeric",expression:expression,variable:variable};
+ var result={"<":observed<threshold,"<=":observed<=threshold,"==":observed===threshold,"!=":observed!==threshold,">=":observed>=threshold,">":observed>threshold}[operator];
+ return {status:result?"TRUE":"FALSE",reason:null,expression:expression,variable:variable,value:result};
+}
 function runTemporalScenario(m,s){
- var explicitDisabled=new Set(s.disabled_transitions||[]),byTransition={},adj={};
+ var explicitDisabled=new Set(s.disabled_transitions||[]),byTransition={},adj={},blockedConditions=[];
  (m.relations||[]).forEach(function(r){(byTransition[r.transition_id]||(byTransition[r.transition_id]=[])).push(r.requires_transition_id)});
  m.states.forEach(function(state){adj[state]=[]});
- m.transitions.forEach(function(t){if(!explicitDisabled.has(t.id)&&!t.condition)adj[t.source].push(t)});
+ m.transitions.forEach(function(t){if(explicitDisabled.has(t.id))return;if(!t.condition){adj[t.source].push(t);return}var evaluated=evaluateCondition001(t.condition,m.condition_values||{});if(evaluated.status==="TRUE")adj[t.source].push(t);else blockedConditions.push({transition_id:t.id,source:t.source,target:t.target,condition:evaluated.expression,status:evaluated.status,reason:evaluated.reason})});
  Object.keys(adj).forEach(function(state){adj[state].sort(function(a,b){return a.id.localeCompare(b.id)})});
  var paths=[],blockedSteps=[],reached=new Set([m.initial_state]),truncated=false,cap=m.exploration.max_trajectories,depthMax=m.exploration.max_depth;
  var stack=[{state:m.initial_state,path:[{state:m.initial_state}],history:[],depth:0}];
@@ -92,7 +101,7 @@ function runTemporalScenario(m,s){
  blockedSteps.forEach(function(b){var k=canonical(b);if(!uniqueBlocked[k]){uniqueBlocked[k]=true;normalizedBlocked.push(b)}});
  var initialHistory=[],initialEnabled=(adj[m.initial_state]||[]).filter(function(t){return (byTransition[t.id]||[]).every(function(req){return initialHistory.indexOf(req)>=0})}).map(function(t){return t.id}).sort();
  var effects=(m.relations||[]).slice().sort(function(a,b){return a.id.localeCompare(b.id)}).map(function(r){return {relation_id:r.id,type:r.type,transition_id:r.transition_id,requires_transition_id:r.requires_transition_id,status:"ENFORCED_TEMPORALLY",reason:"prerequisite_must_occur_earlier_in_same_trajectory"}});
- return {scenario_id:s.id,disabled_transitions:Array.from(explicitDisabled).sort(),enabled_transitions_at_initial_state:initialEnabled,reachable_states:Array.from(reached).sort(),trajectories:paths,truncated:truncated,exploration_bounds:{max_depth:depthMax,max_trajectories:cap},temporal_prerequisites:(function(){var grouped={};(m.relations||[]).forEach(function(r){(grouped[r.transition_id]||(grouped[r.transition_id]=new Set())).add(r.requires_transition_id)});return Object.keys(grouped).sort().map(function(id){return {transition_id:id,requires_transition_ids:Array.from(grouped[id]).sort()}})})()};
+ return {scenario_id:s.id,disabled_transitions:Array.from(explicitDisabled).sort(),blocked_conditions:blockedConditions.sort(function(a,b){return a.transition_id.localeCompare(b.transition_id)}),enabled_transitions_at_initial_state:initialEnabled,reachable_states:Array.from(reached).sort(),trajectories:paths,truncated:truncated,exploration_bounds:{max_depth:depthMax,max_trajectories:cap},temporal_prerequisites:(function(){var grouped={};(m.relations||[]).forEach(function(r){(grouped[r.transition_id]||(grouped[r.transition_id]=new Set())).add(r.requires_transition_id)});return Object.keys(grouped).sort().map(function(id){return {transition_id:id,requires_transition_ids:Array.from(grouped[id]).sort()}})})()};
 }
 function runScenario(m,s){return runTemporalScenario(m,s)}
 function execute(m){validate(m);var ss=m.scenarios.slice().sort(function(a,b){return a.id.localeCompare(b.id)}),results={};ss.forEach(function(s){results[s.id]=runScenario(m,s)});var base=results.baseline,comparisons={};
