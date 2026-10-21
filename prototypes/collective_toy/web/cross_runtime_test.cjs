@@ -456,7 +456,11 @@ function pythonJson(source, input) {
         el.dispatchEvent(new Event("input", { bubbles: true }));
       }, JSON.stringify(sequenceModel));
       await page.locator("#run").click();
-      await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+      await page.waitForFunction(
+        id => window.lastPackage && window.lastPackage.input.model_id === id,
+        "concrete-condition-" + item.name,
+        { timeout: 5000 }
+      );
       await page.locator("#sequence-input").fill("t_ab, t_bc");
       await page.locator("#execute-sequence").click();
       const trace = await page.locator("#sequence-trace").evaluate(el => el._trace);
