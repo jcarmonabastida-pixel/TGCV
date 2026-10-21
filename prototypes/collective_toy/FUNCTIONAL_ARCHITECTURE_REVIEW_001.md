@@ -147,6 +147,6 @@ A concrete illustrative acceptance case is now specified in [TGCV_FIRST_DEMONSTR
 
 CONDITION_EVALUATOR_CONTRACT_PROPOSAL_001.md and CONDITION_EVALUATOR_IMPLEMENTATION_AUDIT_001.md are preliminary design/audit artifacts. Their proposed typed predicates and explicit scenario context may be useful for Layer B, but their proposed v003 migration is **not approved for implementation by this review**. Reassess them after the functional contract establishes the primary TGCV object and the optional simulation boundary.
 
-## 8. Change boundary
+## 10. Change boundary
 
 This proposal changes documentation on a design branch only. It does not change main, executable code, schema validation, model artifacts, CI, or scientific execution. No implementation should start until the revised functional contract is reviewed and explicitly accepted.
