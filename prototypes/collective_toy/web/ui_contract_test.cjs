@@ -43,7 +43,7 @@ const assert = require("node:assert/strict");
       const shapeY = Number(shape.getAttribute("y"));
       const shapeRight = shapeX + Number(shape.getAttribute("width"));
       const shapeBottom = shapeY + Number(shape.getAttribute("height"));
-      return { label: label.textContent, inside: textBox.x >= shapeX && textBox.x + textBox.width <= shapeRight && textBox.y >= shapeY && textBox.y + textBox.height <= shapeBottom };
+      return { label: label.textContent, textBox: { x: textBox.x, y: textBox.y, width: textBox.width, height: textBox.height }, shape: { x: shapeX, y: shapeY, width: Number(shape.getAttribute("width")), height: Number(shape.getAttribute("height")) }, inside: textBox.x >= shapeX && textBox.x + textBox.width <= shapeRight && textBox.y >= shapeY && textBox.y + textBox.height <= shapeBottom };
     }));
     assert.equal(stateLabelGeometry.length, 4, "Each system node must expose its state label");
     assert.ok(stateLabelGeometry.every(item => item.inside), `Every state name must be rendered inside its node shape: ${JSON.stringify(stateLabelGeometry)}`);
