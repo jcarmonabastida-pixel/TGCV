@@ -63,3 +63,12 @@ Head commit: `609ebdd669abc8196b11ca7c7d9300e64c46029c`.
 - [Browser and cross-runtime tests — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39688352445)
 
 This is software/contract evidence only. It is not scientific validation of TGCV, the illustrative mapping rule, or any causal/value claim. PR #92 remains draft; no promotion or merge to `main` is implied.
+
+
+## Rendered-interface review gate — pending
+
+A follow-up inspection of the artifacts from the passing browser/cross-runtime workflow found the acceptance-package JSON and standalone executable distribution, but **no desktop or mobile screenshots**. The performance workflow provides a benchmark report, not rendered screenshots. Therefore the CI PASS results do not establish visual correctness or responsive usability.
+
+A source-level inspection confirms that the page has a responsive single-column layout breakpoint at 760px and that the TGCV graph is a separate panel following the system graph. This is not a substitute for inspecting the rendered page. In particular, visual clarity of the selected-scenario label, transformation/relationship labels, comparison section, and graph clipping at narrow widths remains unverified.
+
+**Disposition:** keep [draft PR #92](https://github.com/jcarmonabastida-pixel/TGCV/pull/92) in draft. Do not claim the visual review complete or promote to `main` until rendered desktop and mobile evidence is available and reviewed. No implementation changes were made in this documentation step.
