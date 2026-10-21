@@ -55,7 +55,7 @@ const assert = require("node:assert/strict");
 
     // Changing the selected system scenario must refresh the TGCV graph from the same engine result.
     await page.locator("#run").click();
-    await page.locator("#which option").filter({ hasText: "block_ac" }).waitFor();
+    await page.waitForFunction(() => Array.from(document.querySelectorAll("#which option")).some(option => option.value === "block_ac"));
     await page.locator("#which").selectOption("block_ac");
     assert.equal(await page.locator("#graph rect").count(), 4, "System graph must remain rendered for the selected scenario");
     assert.equal(await page.locator("#tgcv-graph circle").count(), 2, "TGCV graph must show only transformations appearing in block_ac trajectories");
