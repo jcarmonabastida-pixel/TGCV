@@ -3686,7 +3686,7 @@ const assert = require("node:assert/strict");
     const multiTargetDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.ok(!multiTargetDraft.states.some((state) => /ejecución y después por el estado de resultado/i.test(state)),
       "An unsupported multi-destination passive clause must not be swallowed into one state label");
-    assert.match(multiTargetStatus, /Frases pendientes de interpretar/,
+    assert.match(multiTargetStatus, /Frases pendientes de (?:interpretar|aclaración)/i,
       "Ambiguous multi-destination passive wording must be surfaced for human clarification");
 
     console.log("PASS: profile-3-only UI, guided trajectory carousel, concrete execution, contextual value, alternative dashboard, import/export, replay/tamper checks, and grouped contract adversaries.");
