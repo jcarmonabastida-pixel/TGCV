@@ -358,6 +358,48 @@ function pythonJson(source, input) {
     assert.deepEqual(browserSatisfiedDependency.result, pySatisfiedDependency.result,
       "satisfied temporal dependency outputs must match exactly");
 
+    // All prerequisites are conjunctive: satisfying only one of two required
+    // transitions must not enable the guarded transition.
+    const multiplePrerequisitesModel = {
+      ...conditionalModel,
+      model_id: "conditional-multiple-prerequisites-conjunctive",
+      states: ["A", "B", "D", "E", "C"],
+      initial_state: "A",
+      condition_values: { permit: 1 },
+      transitions: [
+        { id: "t_ab", source: "A", target: "B", condition: "permit == 1" },
+        { id: "t_bd", source: "B", target: "D" },
+        { id: "t_de", source: "D", target: "E" },
+        { id: "t_ea", source: "E", target: "A" },
+        { id: "t_ac", source: "A", target: "C", condition: "permit == 1" }
+      ],
+      relations: [
+        { id: "r_ac_requires_bd", type: "requires_prior_execution", transition_id: "t_ac", requires_transition_id: "t_bd" },
+        { id: "r_ac_requires_de", type: "requires_prior_execution", transition_id: "t_ac", requires_transition_id: "t_de" }
+      ],
+      exploration: { max_depth: 7, max_trajectories: 40 }
+    };
+    const pyMultiplePrerequisites = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      multiplePrerequisitesModel
+    );
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(multiplePrerequisitesModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const browserMultiplePrerequisites = await page.evaluate(() => window.lastPackage);
+    const pyMultipleScenario = pyMultiplePrerequisites.result.scenario_results.baseline;
+    const browserMultipleScenario = browserMultiplePrerequisites.result.scenario_results.baseline;
+    for (const [scenario, runtime] of [[pyMultipleScenario, "Python"], [browserMultipleScenario, "browser"]]) {
+      assert.ok(scenario.reachable_states.includes("E"), runtime + " can execute both prerequisite transitions");
+      assert.ok(scenario.reachable_states.includes("C"),
+        runtime + " may traverse t_ac after both t_bd and t_de have been executed");
+    }
+    assert.deepEqual(browserMultiplePrerequisites.result, pyMultiplePrerequisites.result,
+      "multiple temporal prerequisite outputs must match exactly");
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
