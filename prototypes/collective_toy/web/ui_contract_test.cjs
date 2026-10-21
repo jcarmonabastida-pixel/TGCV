@@ -20,6 +20,44 @@ const assert = require("node:assert/strict");
     assert.match(notice, /No es una validación científica/i);
     assert.match(notice, /ni implementa por sí solo Tacc de TGCV/i);
 
+    // Dual-graph first increment: Graph 2 is a distinct, explicitly illustrative TGCV view.
+    const tgcvSection = page.locator("#tgcv-graph-section");
+    assert.equal(await tgcvSection.count(), 1, "A distinct TGCV graph section must exist");
+    assert.match(await tgcvSection.locator("h2").innerText(), /Grafo TGCV: espacio de transformaciones/);
+    assert.match(await tgcvSection.innerText(), /no se deriva automáticamente del sistema/i);
+    assert.match(await tgcvSection.innerText(), /no constituye validación científica/i);
+    assert.equal(await page.locator("#graph").count(), 1, "The existing system graph must remain present");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 3, "The TGCV graph must render its three transformations separately");
+    assert.equal(await page.locator("#tgcv-graph-section").locator("#tgcv-graph").count(), 1);
+    const tgcvInitial = await page.locator("#tgcv-demo-results").innerText();
+    assert.match(tgcvInitial, /T_acc antes/);
+    assert.match(tgcvInitial, /T_acc después/);
+    assert.match(tgcvInitial, /ΔT_acc/);
+    assert.match(tgcvInitial, /\[a,b\]: accesible antes; accesible después/i);
+    assert.match(tgcvInitial, /\[a,b,c\]: no accesible antes; accesible después/i);
+    const tgcvFixture = await page.evaluate(() => window.tgcvDemoFixture());
+    const tgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), tgcvFixture);
+    assert.deepEqual(tgcvDerived.before.transformations, ["a", "b"]);
+    assert.deepEqual(tgcvDerived.after.transformations, ["a", "b", "c"]);
+    assert.deepEqual(tgcvDerived.delta, ["c"]);
+    assert.equal(tgcvDerived.trajectories.before_ab, true);
+    assert.equal(tgcvDerived.trajectories.before_abc, false);
+    assert.equal(tgcvDerived.trajectories.after_abc, true);
+    const changedTgcvFixture = structuredClone(tgcvFixture);
+    changedTgcvFixture.interaction.add_transformations.push("d");
+    changedTgcvFixture.interaction.add_relations.push(["c", "d"]);
+    const changedTgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), changedTgcvFixture);
+    assert.deepEqual(changedTgcvDerived.delta, ["c", "d"],
+      "Derived outputs must respond to changed inputs instead of being hardcoded");
+    const invalidTgcvFixture = structuredClone(tgcvFixture);
+    invalidTgcvFixture.interaction.add_relations.push(["b", "missing"]);
+    const invalidTgcvResult = await page.evaluate(fixture => {
+      try { window.deriveTgcvDemo(fixture); return "accepted"; }
+      catch (error) { return error.message; }
+    }, invalidTgcvFixture);
+    assert.match(invalidTgcvResult, /extremo inexistente/i,
+      "A TGCV relation with an unknown endpoint must fail closed");
+
     // FC5-SEC-001/002: unkeyed SHA-256 is consistency/reproducibility evidence,
     // never proof of who produced a package or external origin authenticity.
     const securityFooter = await page.locator("footer").innerText();
