@@ -147,10 +147,14 @@ A concrete illustrative acceptance case is now specified in [TGCV_FIRST_DEMONSTR
 
 CONDITION_EVALUATOR_CONTRACT_PROPOSAL_001.md and CONDITION_EVALUATOR_IMPLEMENTATION_AUDIT_001.md are preliminary design/audit artifacts. Their proposed typed predicates and explicit scenario context may be useful for Layer B, but their proposed v003 migration is **not approved for implementation by this review**. Reassess them after the functional contract establishes the primary TGCV object and the optional simulation boundary.
 
-## 10. Derivation of the TGCV graph
+## 10. Handling missing TGCV information
+
+The derivation contract now specifies two user routes: (A) explore a curated illustrative example, clearly labeled as stipulated and not derived from the user's system; or (B) build the TGCV representation step by step by supplying only the missing information needed. Users may switch routes without silently overwriting their system graph or confusing illustrative assumptions with user-declared facts. See [TGCV_GRAPH_DERIVATION_CONTRACT_001.md](TGCV_GRAPH_DERIVATION_CONTRACT_001.md).
+
+## 11. Derivation of the TGCV graph
 
 The functional mapping contract is specified separately in [TGCV_GRAPH_DERIVATION_CONTRACT_001.md](TGCV_GRAPH_DERIVATION_CONTRACT_001.md). Its governing rule is that the second graph may use explicit TGCV-specific inputs or documented mapping rules only. If the available system graph does not support a justified mapping, the demonstrator must ask for the missing information or mark the TGCV graph incomplete; it must not fabricate transformations or relations.
 
-## 11. Change boundary
+## 12. Change boundary
 
 This proposal changes documentation on a design branch only. It does not change main, executable code, schema validation, model artifacts, CI, or scientific execution. No implementation should start until the revised functional contract is reviewed and explicitly accepted.
