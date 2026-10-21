@@ -38,7 +38,7 @@ The existing `web/ui_contract_test.cjs` already exercises a bounded clarificatio
 
 | Invariant | Existing evidence | Assessment |
 |---|---|---|
-| No invented edge from unresolved text | Unsupported `es seguido por` stays pending and does not add a transition; vague text yields no transitions | Verified for these examples |
+| No invented edge from unresolved text | Unsupported or incomplete wording remains pending without adding a transition; the specifically supported singular `es seguido por` construction is now accepted and covered separately above | Verified for these examples |
 | Preserve previously recognized edges | After partial clarification, the two already recognized transitions remain in the model | Verified for this flow |
 | Keep unresolved clauses pending after partial clarification | After replacing one pending clause, the remaining `Cuando se recupera, continúa.` stays visible for clarification | Verified for this flow |
 | Add only explicitly recognized relations after clarification | Final clarified graph has three transitions, including the explicitly clarified return and recovery edges | Verified for this flow |
@@ -54,6 +54,4 @@ These assertions cover the lifecycle as a grouped contract, but they do not esta
 
 ## Scope guard
 
-This is documentation of existing acceptance evidence. It does not change the parser,
-execution engine, condition evaluator, scientific core, or `main`. New tests should be
-added only when tied to a named requirement or a reproducible discrepancy.
+This matrix records acceptance evidence, including the narrowly scoped browser-transcriber rule for “el estado de A es seguido por el estado de B”. The change does not alter the graph-based demonstrator flow, execution engine, condition evaluator, scientific core, or `main`. New tests should be added only when tied to a named requirement or a reproducible discrepancy.
