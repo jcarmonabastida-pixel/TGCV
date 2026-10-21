@@ -56,6 +56,12 @@ function pythonJson(source, input) {
     for (const selector of ["#profile-editor", "#guarded-transition", "#required-transition", "#add-relation", "#relation-list"]) {
       assert.equal(await page.locator(selector).count(), 0, "retired control must be absent: " + selector);
     }
+    assert.equal(await page.locator("#model").inputValue(), "", "both graph models must start empty until the example is requested");
+    assert.equal(await page.locator("#graph rect").count(), 0, "system graph must start blank");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 0, "TGCV graph must start blank");
+    await page.locator("#load").click();
+    assert.equal(await page.locator("#graph rect").count(), 4, "loading the example must populate the system graph");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "loading the example must populate the TGCV graph");
     const loaded = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(loaded.rule_profile, profile3);
     await page.locator("#model").evaluate((el, value) => {
