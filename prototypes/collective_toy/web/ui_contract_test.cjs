@@ -140,6 +140,15 @@ const assert = require("node:assert/strict");
     assert.ok(passiveWordingDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
       "Passive wording must normalize to source=reposo and target=ejecución without grammatical particles");
 
+    // Equivalent active wording should preserve the same directed edge when expressed as a result relation.
+    await page.locator("#system-description").fill("La ejecución conduce a resultado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const resultRelationDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(resultRelationDraft.transitions.length, 1);
+    assert.ok(resultRelationDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "resultado"),
+      "A result relation must retain the explicit source and destination");
+
     // Explicit sequencing with "y luego" may express two independent, directed edges.
     // A second clause without an identifiable destination must remain pending.
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución y luego pasa de ejecución a resultado. El proceso pasa de inicio a evaluación.");
