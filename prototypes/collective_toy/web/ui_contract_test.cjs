@@ -43,9 +43,13 @@ const assert = require("node:assert/strict");
     const tgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), tgcvFixture);
     assert.equal(tgcvDerived.system_model_id, "toy-diamond-001");
     assert.equal(tgcvDerived.mappings.length, 4, "Every example transition must have an explicit illustrative mapping");
-    assert.deepEqual(tgcvDerived.before.transformations, ["tau_t_ab", "tau_t_bd", "tau_t_cd"]);
+    assert.deepEqual(tgcvDerived.before.transformations, ["tau_t_ab", "tau_t_bd"],
+      "A transformation whose source state is unreachable must not appear in scenario T_acc");
     assert.deepEqual(tgcvDerived.after.transformations, ["tau_t_ab", "tau_t_ac", "tau_t_bd", "tau_t_cd"]);
-    assert.deepEqual(tgcvDerived.delta, ["tau_t_ac"]);
+    assert.deepEqual(tgcvDerived.delta, ["tau_t_ac", "tau_t_cd"],
+      "Opening the A→C branch makes both A→C and the downstream C→D transition reachable");
+    assert.equal(tgcvDerived.trajectories.before.tau_ab_bd, true);
+    assert.equal(tgcvDerived.trajectories.after.tau_ab_bd, true);
     assert.equal(tgcvDerived.trajectories.before.tau_ac_cd, false);
     assert.equal(tgcvDerived.trajectories.after.tau_ac_cd, true);
     const changedTgcvFixture = structuredClone(tgcvFixture);
