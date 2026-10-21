@@ -25,21 +25,21 @@ const assert = require("node:assert/strict");
     assert.match(notice, /ni implementa por sí solo Tacc de TGCV/i);
 
     // Integrated dual-graph example: both views start empty and load together.
-    const tgcvSection = page.locator("#tgcv-canvas-section");
+    const tgcvSection = page.locator("#tgcv-graph-section");
     assert.equal(await tgcvSection.count(), 1, "A distinct TGCV graph section must exist");
     assert.match(await tgcvSection.locator("h2").innerText(), /Grafo TGCV: espacio de transformaciones/);
     assert.equal(await page.locator("#graph").count(), 1, "The existing system graph must remain present");
     assert.equal(await page.locator("#graph rect").count(), 0, "The system graph must start empty");
-    assert.equal(await page.locator("#tgcv-canvas circle").count(), 0, "The TGCV graph must start empty too");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 0, "The TGCV graph must start empty too");
     assert.match(await page.locator("#tgcv-demo-results").innerText(), /Sin ejemplo TGCV cargado/i);
     assert.match(await page.locator("#status").innerText(), /Ambos grafos están vacíos/i);
 
     await page.locator("#load").click();
     await page.locator("#graph rect").first().waitFor();
-    await page.locator("#tgcv-canvas circle").first().waitFor();
+    await page.locator("#tgcv-graph circle").first().waitFor();
     assert.equal(await page.locator("#model").inputValue().then(value => JSON.parse(value).model_id), "toy-diamond-001");
     assert.equal(await page.locator("#graph rect").count(), 4, "Loading the example must populate the system graph");
-    assert.equal(await page.locator("#tgcv-canvas circle").count(), 4, "The same action must populate the TGCV graph");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "The same action must populate the TGCV graph");
     const stateLabelGeometry = await page.locator("#graph [data-state-label]").evaluateAll(labels => labels.map(label => {
       const shape = document.querySelector(`#graph [data-state-node="${CSS.escape(label.getAttribute("data-state-label"))}"]`);
       const textBox = label.getBBox();
@@ -51,7 +51,7 @@ const assert = require("node:assert/strict");
     }));
     assert.equal(stateLabelGeometry.length, 4, "Each system node must expose its state label");
     assert.ok(stateLabelGeometry.every(item => item.inside), `Every state name must be rendered inside its node shape: ${JSON.stringify(stateLabelGeometry)}`);
-    const tgcvLoaded = await page.locator("#tgcv-canvas-section").innerText();
+    const tgcvLoaded = await page.locator("#tgcv-graph-section").innerText();
     assert.match(tgcvLoaded, /correspondencia se declara explícitamente/i);
     assert.match(tgcvLoaded, /no es una regla universal/i);
     const tgcvFixture = await page.evaluate(() => window.tgcvDemoFixture(JSON.parse(document.querySelector("#model").value)));
@@ -70,12 +70,12 @@ const assert = require("node:assert/strict");
 
     // Save rendered screenshots of the actual implementation for human review.
     await captureVisual("desktop-baseline.png");
-    await captureGraph("desktop-baseline-system-graph.png", "#system-canvas");
-    await captureGraph("desktop-baseline-tgcv-graph.png", "#tgcv-canvas");
+    await captureGraph("desktop-baseline-system-graph.png", "#graph");
+    await captureGraph("desktop-baseline-tgcv-graph.png", "#tgcv-graph");
     await page.setViewportSize({ width: 390, height: 844 });
     await captureVisual("mobile-baseline.png");
-    await captureGraph("mobile-baseline-system-graph.png", "#system-canvas");
-    await captureGraph("mobile-baseline-tgcv-graph.png", "#tgcv-canvas");
+    await captureGraph("mobile-baseline-system-graph.png", "#graph");
+    await captureGraph("mobile-baseline-tgcv-graph.png", "#tgcv-graph");
     await page.setViewportSize({ width: 1440, height: 1000 });
 
     // Changing the selected system scenario must refresh the TGCV graph from the same engine result.
@@ -83,18 +83,18 @@ const assert = require("node:assert/strict");
     await page.waitForFunction(() => Array.from(document.querySelectorAll("#which option")).some(option => option.value === "block_ac"));
     await page.locator("#which").selectOption("block_ac");
     assert.equal(await page.locator("#graph rect").count(), 4, "System graph must remain rendered for the selected scenario");
-    assert.equal(await page.locator("#tgcv-canvas circle").count(), 2, "TGCV graph must show only transformations appearing in block_ac trajectories");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 2, "TGCV graph must show only transformations appearing in block_ac trajectories");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: block_ac/i);
     await captureVisual("desktop-block-ac.png");
-    await captureGraph("desktop-block-ac-system-graph.png", "#system-canvas");
-    await captureGraph("desktop-block-ac-tgcv-graph.png", "#tgcv-canvas");
+    await captureGraph("desktop-block-ac-system-graph.png", "#graph");
+    await captureGraph("desktop-block-ac-tgcv-graph.png", "#tgcv-graph");
     await page.setViewportSize({ width: 390, height: 844 });
     await captureVisual("mobile-block-ac.png");
-    await captureGraph("mobile-block-ac-system-graph.png", "#system-canvas");
-    await captureGraph("mobile-block-ac-tgcv-graph.png", "#tgcv-canvas");
+    await captureGraph("mobile-block-ac-system-graph.png", "#graph");
+    await captureGraph("mobile-block-ac-tgcv-graph.png", "#tgcv-graph");
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.locator("#which").selectOption("baseline");
-    assert.equal(await page.locator("#tgcv-canvas circle").count(), 4, "Returning to baseline must restore the four accessible transformations");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "Returning to baseline must restore the four accessible transformations");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: baseline/i);
 
     // Long state names must remain readable inside their node shapes without node overlap.
