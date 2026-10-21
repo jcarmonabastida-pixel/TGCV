@@ -71,7 +71,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no debe interpretarse como correspondencia vigente/i,
       "Editing the system model must mark the previously loaded TGCV mapping as stale");
     await page.locator("#load").click();
-    await page.locator("#status").filter({ hasText: "Ejecución completada" }).waitFor();
+    await page.locator("#status").filter({ hasText: "Ejemplo integrado cargado en ambos grafos" }).waitFor();
     assert.doesNotMatch(await page.locator("#tgcv-provenance-note").innerText(), /AVISO:/,
       "Reloading the integrated example must restore the declared correspondence");
 
