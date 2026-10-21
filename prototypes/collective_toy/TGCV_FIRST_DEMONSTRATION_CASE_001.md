@@ -1,13 +1,13 @@
-# TGCV-first demonstration case 001 — illustrative transformation-space change
+# Second graph demonstration case 001 — illustrative TGCV transformation-space change
 
 **Status:** proposed functional acceptance case; not implemented or scientifically validated.
-**Purpose:** give the functional architecture review one small, explicit example that distinguishes TGCV transformation-space dynamics from ordinary state-transition simulation.
+**Purpose:** specify the second graph in the proposed two-graph user flow. Graph 1 first shows the familiar system states, transitions, and execution conditions. This case specifies a distinct Graph 2 that introduces TGCV's transformation-space representation; it is not a replacement for Graph 1.
 
 ## 1. Scope and interpretation
 
 This is a deliberately artificial, domain-neutral example. Its rules are stipulated for demonstrating representation and derivation, not inferred from empirical data. It makes no claim about real systems or value causality.
 
-The demonstration is successful only if a user can inspect:
+The demonstration is successful only if, after seeing the system graph, a user can inspect the TGCV graph and understand that it answers a different question. The bridge must explicitly state that the example's transformations and rules are stipulated for illustration, not automatically inferred from the system graph. The user can inspect:
 1. a declared accessible-transformation set before an interaction;
 2. a declared interaction/mechanism and the rule it applies;
 3. the accessible-transformation set after the interaction;
