@@ -1,7 +1,7 @@
 # Dual-graph first increment — CI verification 001
 
 **Initial reviewed commit:** `02be572d1aa730171119b40264c4825bc40e3b58`  
-**Latest reviewed commit:** `31dea771e4dfed30dfa138d616fcf80e2790fc4b`  
+**Latest reviewed commit:** `a436ca36ecf60f55205af8cc264128ca5ef5ca80`  
 **Pull request:** [#91 — Load integrated system and TGCV graph example together](https://github.com/jcarmonabastida-pixel/TGCV/pull/91)  
 **Review date:** 2026-10-21  
 **Scope:** engineering/UI verification only. No scientific execution or TGCV theory validation.
@@ -36,6 +36,25 @@ The corrected benchmark artifact is [collective-toy-browser-performance](https:/
 
 GitHub comparison from `main` at `988d92636e8f77b9accebbd4affefdcfb3efe837` to the latest implementation commit reports 14 commits ahead, 0 behind, and exactly three changed files: `prototypes/collective_toy/web/index.html`, `prototypes/collective_toy/web/ui_contract_test.cjs`, and `prototypes/collective_toy/web/cross_runtime_test.cjs`. No production core, schema, persistence, condition evaluator, or scientific execution file is changed in this diff.
 
+## Latest CI after reusing the scenario result
+
+Commit `a436ca36ecf60f55205af8cc264128ca5ef5ca80` updates the example-load handler to reuse the same engine result for both graph views rather than invoking the engine a second time. The status text distinguishes loading the integrated preview from running the full scenario exploration.
+
+| Check | Run | Result |
+|---|---:|---|
+| Browser and cross-runtime tests | [39685578539](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39685578539) | PASS |
+| Browser performance benchmark | [39685578440](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39685578440) | PASS |
+| Governance current-state consistency | [39685578383](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39685578383) | PASS |
+| Synthetic engine tests | [39685578574](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39685578574) | PASS |
+
+The latest benchmark artifact is [collective-toy-browser-performance](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39685578440/artifacts/12386505761). For the 500-state / 2,000-transition fixtures, button-to-completed median/p95 was 259.550/301.598 ms for the branching DAG and 259.842/290.352 ms for cyclic branching; engine median was 3.3 ms and 3.1 ms respectively. This is a synthetic engineering benchmark, not a guarantee across devices or arbitrary models.
+
+## Latest scope comparison
+
+Comparison with `main` (`988d92636e8f77b9accebbd4affefdcfb3efe837`) reports 16 commits ahead, 0 behind, and exactly three changed files: `prototypes/collective_toy/web/index.html`, `prototypes/collective_toy/web/ui_contract_test.cjs`, and `prototypes/collective_toy/web/cross_runtime_test.cjs`. No production core, schema, persistence, condition evaluator, or scientific execution file is changed in this diff.
+
+**Automated gate:** PASS for commit `a436ca36ecf60f55205af8cc264128ca5ef5ca80`. **Manual visual review remains outstanding.**
+
 ## Performance evidence (initial passing run)
 
 The benchmark run reports browser button-to-completed timings for synthetic graph fixtures:
@@ -56,7 +75,7 @@ The clean-room browser job emitted an npm audit warning reporting one high-sever
 
 ## Acceptance status
 
-**CI gate: PASS for the latest implementation commit `31dea771e4dfed30dfa138d616fcf80e2790fc4b`.**
+**CI gate: PASS for the latest implementation commit `a436ca36ecf60f55205af8cc264128ca5ef5ca80`.**
 
 This does not by itself authorize merge or promotion. Before acceptance, the remaining gate is review of the actual rendered interaction in the PR. Confirm that:
 - both graphs are blank on first load;
