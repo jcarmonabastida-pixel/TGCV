@@ -31,6 +31,8 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#status").innerText(), /Ambos grafos están vacíos/i);
 
     await page.locator("#load").click();
+    await page.locator("#graph rect").first().waitFor();
+    await page.locator("#tgcv-graph circle").first().waitFor();
     assert.equal(await page.locator("#model").inputValue().then(value => JSON.parse(value).model_id), "toy-diamond-001");
     assert.equal(await page.locator("#graph rect").count(), 4, "Loading the example must populate the system graph");
     assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "The same action must populate the TGCV graph");
