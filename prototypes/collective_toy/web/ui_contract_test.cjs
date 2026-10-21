@@ -76,6 +76,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: baseline/i);
 
     // Long state names must remain readable inside their node shapes without node overlap.
+    await page.locator("summary").filter({ hasText: "JSON avanzado" }).click();
     const longLabelModel = JSON.parse(await page.locator("#model").inputValue());
     const longStateNames = {
       A: "inicio_del_proceso_principal",
