@@ -3761,6 +3761,50 @@ const assert = require("node:assert/strict");
       assert.equal(falseConditionTrace.status, "BLOCKED", "A FALSE condition must block concrete execution");
       assert.equal(falseConditionTrace.blocked_step.reason, "condition_false");
       assert.match(await conditionPage.locator("#sequence-trace").innerText(), /condición era falsa/i);
+
+      // Concrete browser execution must enforce temporal prerequisites exactly as Python does.
+      const temporalModel = {
+        schema_version: "collective-toy-input-002",
+        model_id: "concrete-prerequisite-execution",
+        initial_state: "A",
+        states: ["A", "B", "C", "D"],
+        transitions: [
+          { id: "t_ab", source: "A", target: "B" },
+          { id: "t_bc", source: "B", target: "C" },
+          { id: "t_ac", source: "A", target: "C" },
+          { id: "t_cd", source: "C", target: "D" }
+        ],
+        relations: [{
+          id: "r_cd_requires_bc",
+          type: "requires_prior_execution",
+          transition_id: "t_cd",
+          requires_transition_id: "t_bc"
+        }],
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
+        scenarios: [{ id: "baseline", disabled_transitions: [] }],
+        exploration: { max_depth: 4, max_trajectories: 10 }
+      };
+      await conditionPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, temporalModel);
+      await conditionPage.locator("#run").click();
+      await conditionPage.locator("#status").filter({ hasText: /Ejecución completada/i }).waitFor();
+      await conditionPage.locator("#sequence-input").fill("t_ab, t_bc, t_cd");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified");
+      const validTemporalTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(validTemporalTrace.status, "COMPLETED", "A sequence executing its prerequisite first must complete");
+      assert.equal(validTemporalTrace.final_state, "D");
+      await conditionPage.locator("#sequence-input").fill("t_ac, t_cd");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded");
+      const invalidTemporalTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(invalidTemporalTrace.status, "BLOCKED", "A sequence missing its prerequisite must be blocked");
+      assert.equal(invalidTemporalTrace.blocked_step.transition_id, "t_cd");
+      assert.equal(invalidTemporalTrace.blocked_step.reason, "temporal_prerequisite_not_satisfied");
+      assert.deepEqual(invalidTemporalTrace.blocked_step.required_transition_ids, ["t_bc"]);
+      assert.equal(invalidTemporalTrace.final_state, "C");
     } finally {
       await conditionPage.close();
     }
