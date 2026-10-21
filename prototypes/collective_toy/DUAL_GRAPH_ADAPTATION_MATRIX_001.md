@@ -74,4 +74,4 @@ This matrix does not:
 
 ## 5. Next acceptance gate
 
-Gate A source inspection is complete at file-object level and documented in [DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md](DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md). Before implementation, review the audit and decide whether the first increment should be limited to a separately typed TGCV model and second graph renderer, leaving system execution and condition evaluation unchanged. Then specify dual-graph import/export and stale-result behavior. No code should be changed until this design gate is accepted.
+Gate A source inspection is documented in [DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md](DUAL_GRAPH_CURRENT_SOURCE_AUDIT_001.md). The minimum persistence/stale-result rules are now proposed separately in [DUAL_GRAPH_PERSISTENCE_CONTRACT_PROPOSAL_001.md](DUAL_GRAPH_PERSISTENCE_CONTRACT_PROPOSAL_001.md). Before implementation, review these contracts and decide whether the first increment should be limited to a separately typed TGCV model and second graph renderer, leaving system execution and condition evaluation unchanged. No code should be changed until this design gate is accepted.
