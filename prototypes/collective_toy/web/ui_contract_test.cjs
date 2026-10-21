@@ -58,7 +58,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#graph-edit-status").innerText(), /pendiente de revisión humana/i);
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. El sistema no pasa de ejecución a resultado.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
-    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexiones?/ }).waitFor();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
     const negationDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.deepEqual(negationDraft.states, ["reposo", "ejecución"]);
     assert.equal(negationDraft.transitions.length, 1, "A negated sentence must never create a transition");
@@ -90,6 +90,108 @@ const assert = require("node:assert/strict");
     assert.match(conditionalGraphNote, /1 estado\(s\) alcanzable\(s\)/,
       "Conditioned edges must not be traversed while their conditions are not evaluated");
 
+    // A natural-language negation inside a condition must remain a condition,
+    // not be confused with negating the transition itself. The bounded evaluator
+    // must refuse to evaluate this prose and therefore keep the edge blocked.
+    await page.locator("#system-description").fill("El sistema comienza en espera. Si la identidad no es válida, el proceso pasa de espera a acceso autorizado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const negatedConditionDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(negatedConditionDraft.initial_state, "espera");
+    assert.equal(negatedConditionDraft.transitions.length, 1);
+    assert.ok(negatedConditionDraft.transitions.some((edge) => edge.source === "espera" && edge.target === "acceso autorizado" && edge.condition === "la identidad no es válida"),
+      "Negation inside the condition must be preserved verbatim");
+    const negatedConditionEvaluation = await page.evaluate(() => evaluateCondition001("la identidad no es válida", {}));
+    assert.equal(negatedConditionEvaluation.status, "NOT_EVALUABLE");
+    assert.equal(negatedConditionEvaluation.reason, "unsupported_expression");
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.locator("#status").filter({ hasText: "Ejecución completada." }).waitFor();
+    await page.locator("#graph-note").filter({ hasText: /la identidad no es válida/ }).waitFor();
+    const negatedConditionNote = await page.locator("#graph-note").innerText();
+    assert.match(negatedConditionNote, /la identidad no es válida/);
+    assert.match(negatedConditionNote, /1 estado\(s\) alcanzable\(s\)/,
+      "A natural-language negated condition must not enable its transition");
+
+    // Negating the transition itself must not produce an affirmative edge.
+    await page.locator("#system-description").fill("El proceso no pasa de espera a acceso autorizado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    const negatedTransitionStatus = await page.locator("#transcription-status").innerText();
+    assert.match(negatedTransitionStatus, /No se pudo proponer el grafo/,
+      "A negated transition statement must be rejected instead of creating a graph");
+    assert.match(negatedTransitionStatus, /Frases pendientes de aclaración/);
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /no pasa de espera a acceso autorizado/);
+
+    // Inverse wording must preserve direction: destination is mentioned before source.
+    await page.locator("#system-description").fill("El proceso pasa a ejecución desde reposo.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const inverseDirectionDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(inverseDirectionDraft.transitions.length, 1);
+    assert.ok(inverseDirectionDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
+      "Inverse wording must map source=reposo to target=ejecución, not reverse or absorb source into target");
+
+    // Equivalent passive wording must normalize to the same directed edge.
+    // This catches accidental inclusion of the grammatical particle "se" in the source label.
+    await page.locator("#system-description").fill("Desde reposo se pasa a ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const passiveWordingDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(passiveWordingDraft.transitions.length, 1);
+    assert.ok(passiveWordingDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
+      "Passive wording must normalize to source=reposo and target=ejecución without grammatical particles");
+    const normalizeEdges = (draft) => draft.transitions
+      .map(({ source, target, condition = null }) => ({ source, target, condition }))
+      .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+    assert.deepEqual(normalizeEdges(passiveWordingDraft), normalizeEdges(inverseDirectionDraft),
+      "Equivalent inverse and passive formulations must produce the same normalized directed graph");
+
+    // Equivalent active wording should preserve the same directed edge when expressed as a result relation.
+    await page.locator("#system-description").fill("La ejecución conduce a resultado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const resultRelationDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(resultRelationDraft.transitions.length, 1);
+    assert.ok(resultRelationDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "resultado"),
+      "A result relation must retain the explicit source and destination");
+
+    // Scoped passive acceptance: “A es seguido por B” creates only A -> B.
+    await page.locator("#system-description").fill("El estado de reposo es seguido por el estado de ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const followedByDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(followedByDraft.states, ["reposo", "ejecución"]);
+    assert.equal(followedByDraft.transitions.length, 1,
+      "The passive construction must create exactly one transition");
+    assert.ok(followedByDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"),
+      "The grammatical subject must remain the source and the object of “por” the destination");
+    assert.ok(!followedByDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"),
+      "The passive construction must not reverse the direction");
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+
+    // A recognized edge from another sentence must be preserved, with no extra edge.
+    await page.locator("#system-description").fill("El proceso pasa de inicio a reposo. El estado de reposo es seguido por el estado de ejecución.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 3 estados y 2 conexiones/ }).waitFor();
+    const followedByPreservationDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(followedByPreservationDraft.transitions.length, 2);
+    assert.ok(followedByPreservationDraft.transitions.some((edge) => edge.source === "inicio" && edge.target === "reposo"));
+    assert.ok(followedByPreservationDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"));
+    assert.ok(!followedByPreservationDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo"));
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+
+    // Explicit sequencing with "y luego" may express two independent, directed edges.
+    // A second clause without an identifiable destination must remain pending.
+    await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución y luego pasa de ejecución a resultado. El proceso pasa de inicio a evaluación.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 5 estados y 3 conexiones/ }).waitFor();
+    const multipleRelationsDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(multipleRelationsDraft.transitions.length, 3,
+      "Both explicit sequential edges and the independent edge must be retained");
+    assert.ok(multipleRelationsDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "ejecución"));
+    assert.ok(multipleRelationsDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "resultado"));
+    assert.ok(multipleRelationsDraft.transitions.some((edge) => edge.source === "inicio" && edge.target === "evaluación"));
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/);
+
     // Irrigation acceptance case: local parsing must preserve both explicit conditions
     // and keep the unsupported initial-state sentence visible for human clarification.
     await page.locator("#system-description").fill("El sistema comienza en reposo. El proceso pasa de reposo a riego activo cuando la humedad del suelo es baja. Cuando la humedad del suelo es suficiente, el proceso vuelve de riego activo a reposo.");
@@ -97,11 +199,34 @@ const assert = require("node:assert/strict");
     await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 2 conexiones/ }).waitFor();
     const irrigationDraft = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(irrigationDraft.transitions.length, 2, "Irrigation description must preserve both conditioned transitions");
+    assert.equal(irrigationDraft.initial_state, "reposo", "The initial-state declaration must be applied to the model");
     assert.ok(irrigationDraft.transitions.some((edge) => edge.source === "reposo" && edge.target === "riego activo" && edge.condition === "la humedad del suelo es baja"));
     assert.ok(irrigationDraft.transitions.some((edge) => edge.source === "riego activo" && edge.target === "reposo" && edge.condition === "la humedad del suelo es suficiente"));
-    assert.match(await page.locator("#transcription-status").innerText(), /El sistema comienza en reposo/,
-      "Unsupported initial-state wording must remain visible rather than be silently discarded");
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /El sistema comienza en reposo/,
+      "A recognized initial-state declaration must not remain pending");
 
+    // Generality check: the parser contract must work outside the irrigation example.
+    await page.locator("#system-description").fill("El sistema comienza en espera. Si la identidad es válida, el sistema pasa de espera a acceso autorizado.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const accessDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(accessDraft.initial_state, "espera", "Initial-state parsing must be domain-independent");
+    assert.ok(accessDraft.transitions.some((edge) => edge.source === "espera" && edge.target === "acceso autorizado" && edge.condition === "la identidad es válida"), "Leading conditions should be parsed in an unrelated domain");
+
+    // Third-domain transfer check: software deployment uses the already-supported
+    // "pasa de ... a ..." construction, without adding new parser grammar.
+    await page.locator("#system-description").fill("El sistema pasa de compilación a despliegue.");
+    await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
+    await page.locator("#transcription-status").filter({ hasText: /Borrador propuesto: 2 estados y 1 conexión/ }).waitFor();
+    const deploymentDraft = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(deploymentDraft.states, ["compilación", "despliegue"],
+      "A third-domain description must produce exactly the two explicitly named states");
+    assert.equal(deploymentDraft.transitions.length, 1,
+      "A third-domain description must not invent additional transitions");
+    assert.ok(deploymentDraft.transitions.some((edge) => edge.source === "compilación" && edge.target === "despliegue"),
+      "The existing transition pattern must preserve direction in the software-deployment domain");
+    assert.doesNotMatch(await page.locator("#transcription-status").innerText(), /Frases pendientes de interpretar/,
+      "The supported construction should not remain pending in this third-domain example");
     await page.locator("#system-description").fill("El proceso pasa de reposo a ejecución. Si falla, vuelve a reposo.");
     await page.getByRole("button", { name: "Proponer grafo desde la descripción" }).click();
     await page.locator("#transcription-clarification-panel").waitFor({ state: "visible" });
@@ -3655,6 +3780,138 @@ const assert = require("node:assert/strict");
     assert.match(await uxPage.locator("#value-dashboard").innerText(), /35\/100/);
     assert.match(await uxPage.locator("#value-dashboard").innerText(), /82\/100/);
     await uxPage.close();
+
+    // A supported TRUE condition must be executable concretely, not merely reachable during exploration.
+    const conditionPage = await browser.newPage();
+    try {
+      await conditionPage.goto("file://" + htmlPath);
+      const conditionModel = {
+        schema_version: "collective-toy-input-002",
+        model_id: "concrete-condition-execution",
+        initial_state: "A",
+        states: ["A", "B"],
+        transitions: [{ id: "t_ab", source: "A", target: "B", condition: "gate == 1" }],
+        relations: [],
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
+        scenarios: [{ id: "baseline", disabled_transitions: [] }],
+        exploration: { max_depth: 3, max_trajectories: 10 },
+        condition_values: { gate: 1 }
+      };
+      await conditionPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, conditionModel);
+      await conditionPage.locator("#run").click();
+      await conditionPage.locator("#status").filter({ hasText: /Ejecución completada/i }).waitFor();
+      assert.ok((await conditionPage.evaluate(() => window.lastPackage.result.scenario_results.baseline.reachable_states)).includes("B"),
+        "A TRUE condition must make the transition reachable");
+      await conditionPage.locator("#sequence-input").fill("t_ab");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified");
+      assert.equal(await conditionPage.locator("#sequence-trace").evaluate(el => el._trace.status), "COMPLETED",
+        "A TRUE condition must permit concrete execution");
+      conditionModel.condition_values.gate = 0;
+      conditionModel.model_id = "concrete-condition-execution-false";
+      await conditionPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, conditionModel);
+      await conditionPage.locator("#run").click();
+      await conditionPage.locator("#status").filter({ hasText: /Ejecución completada/i }).waitFor();
+      await conditionPage.locator("#sequence-input").fill("t_ab");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded");
+      const falseConditionTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(falseConditionTrace.status, "BLOCKED", "A FALSE condition must block concrete execution");
+      assert.equal(falseConditionTrace.blocked_step.reason, "condition_false");
+      assert.match(await conditionPage.locator("#sequence-trace").innerText(), /condición era falsa/i);
+
+      // The comparison panel must preserve the actual block reason. Keep both executions under one loaded model.
+      const comparisonModel = {
+        schema_version: "collective-toy-input-002",
+        model_id: "comparison-preserves-block-reason",
+        initial_state: "A",
+        states: ["A", "B", "C"],
+        transitions: [
+          { id: "t_ab", source: "A", target: "B", condition: "gate == 1" },
+          { id: "t_ac", source: "A", target: "C", condition: "gate == 0" }
+        ],
+        relations: [],
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
+        scenarios: [{ id: "baseline", disabled_transitions: [] }],
+        exploration: { max_depth: 3, max_trajectories: 10 },
+        condition_values: { gate: 1 }
+      };
+      await conditionPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, comparisonModel);
+      await conditionPage.locator("#run").click();
+      await conditionPage.locator("#status").filter({ hasText: /Ejecución completada/i }).waitFor();
+      await conditionPage.locator("#sequence-input").fill("t_ac");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded");
+      const blockedComparisonTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(blockedComparisonTrace.blocked_step.reason, "condition_false");
+      await conditionPage.locator("#sequence-input").fill("t_ab");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified");
+      const completedComparisonTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(completedComparisonTrace.status, "COMPLETED");
+      await conditionPage.locator("#compare-run-a").selectOption("0");
+      await conditionPage.locator("#compare-run-b").selectOption("1");
+      await conditionPage.locator("#compare-executions").click();
+      const comparisonText = await conditionPage.locator("#execution-comparison").innerText();
+      assert.match(comparisonText, /una condición era falsa/i);
+      assert.doesNotMatch(comparisonText, /faltaba un prerrequisito/i,
+        "A condition-false trace must not be misreported as a missing temporal prerequisite");
+
+      // Concrete browser execution must enforce temporal prerequisites exactly as Python does.
+      const temporalModel = {
+        schema_version: "collective-toy-input-002",
+        model_id: "concrete-prerequisite-execution",
+        initial_state: "A",
+        states: ["A", "B", "C", "D"],
+        transitions: [
+          { id: "t_ab", source: "A", target: "B" },
+          { id: "t_bc", source: "B", target: "C" },
+          { id: "t_ac", source: "A", target: "C" },
+          { id: "t_cd", source: "C", target: "D" }
+        ],
+        relations: [{
+          id: "r_cd_requires_bc",
+          type: "requires_prior_execution",
+          transition_id: "t_cd",
+          requires_transition_id: "t_bc"
+        }],
+        rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
+        scenarios: [{ id: "baseline", disabled_transitions: [] }],
+        exploration: { max_depth: 4, max_trajectories: 10 }
+      };
+      await conditionPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value);
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, temporalModel);
+      await conditionPage.locator("#run").click();
+      await conditionPage.locator("#status").filter({ hasText: /Ejecución completada/i }).waitFor();
+      await conditionPage.locator("#sequence-input").fill("t_ab, t_bc, t_cd");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified");
+      const validTemporalTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(validTemporalTrace.status, "COMPLETED", "A sequence executing its prerequisite first must complete");
+      assert.equal(validTemporalTrace.final_state, "D");
+      await conditionPage.locator("#sequence-input").fill("t_ac, t_cd");
+      await conditionPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+      await conditionPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded");
+      const invalidTemporalTrace = await conditionPage.locator("#sequence-trace").evaluate(el => el._trace);
+      assert.equal(invalidTemporalTrace.status, "BLOCKED", "A sequence missing its prerequisite must be blocked");
+      assert.equal(invalidTemporalTrace.blocked_step.transition_id, "t_cd");
+      assert.equal(invalidTemporalTrace.blocked_step.reason, "temporal_prerequisite_not_satisfied");
+      assert.deepEqual(invalidTemporalTrace.blocked_step.required_transition_ids, ["t_bc"]);
+      assert.equal(invalidTemporalTrace.final_state, "C");
+    } finally {
+      await conditionPage.close();
+    }
 
     console.log("PASS: profile-3-only UI, guided trajectory carousel, concrete execution, contextual value, alternative dashboard, import/export, replay/tamper checks, and grouped contract adversaries.");
   } finally {

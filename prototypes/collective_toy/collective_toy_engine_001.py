@@ -14,6 +14,8 @@ import math
 import uuid
 from typing import Any
 
+from condition_evaluator_001 import evaluate_condition
+
 
 ENGINE_VERSION = "collective-toy-engine-001"
 SUPPORTED_SCHEMAS = {"collective-toy-input-001", "collective-toy-input-002"}
@@ -124,7 +126,9 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     if not isinstance(model, dict):
         raise ModelValidationError("model must be a JSON object")
     _validate_canonical_domain(model)
-    _reject_unknown_keys(model, {"schema_version", "model_id", "initial_state", "states", "transitions", "relations", "rule_profile", "scenarios", "exploration"}, "model")
+    _reject_unknown_keys(model, {"schema_version", "model_id", "initial_state", "states", "transitions", "relations", "rule_profile", "scenarios", "exploration", "condition_values"}, "model")
+    if "condition_values" in model and not isinstance(model["condition_values"], dict):
+        raise ModelValidationError("condition_values must be an object when provided")
     schema_version = model.get("schema_version")
     if schema_version not in SUPPORTED_SCHEMAS:
         raise ModelValidationError(f"schema_version must be one of {sorted(SUPPORTED_SCHEMAS)!r}")
@@ -252,11 +256,25 @@ def _temporal_scenario_result(
     for relation in model.get("relations", []):
         prerequisites.setdefault(relation["transition_id"], set()).add(relation["requires_transition_id"])
     adjacency: dict[str, list[Transition]] = {s: [] for s in model["states"]}
+    blocked_conditions: list[dict[str, Any]] = []
     for transition in transitions.values():
-        # Conditions are preserved in the model but never evaluated by this engine.
-        # Therefore conditional transitions are not traversable in reachability or trajectories.
+        if transition.id in explicit_disabled:
+            continue
         if transition.condition is None:
             adjacency[transition.source].append(transition)
+        else:
+            evaluated = evaluate_condition(transition.condition, model.get("condition_values", {})).to_dict()
+            if evaluated["status"] == "TRUE":
+                adjacency[transition.source].append(transition)
+            else:
+                blocked_conditions.append({
+                    "transition_id": transition.id,
+                    "source": transition.source,
+                    "target": transition.target,
+                    "condition": transition.condition,
+                    "status": evaluated["status"],
+                    "reason": evaluated["reason"],
+                })
     for outgoing in adjacency.values():
         outgoing.sort(key=lambda item: item.id)
 
@@ -342,6 +360,7 @@ def _temporal_scenario_result(
     return {
         "scenario_id": scenario["id"],
         "disabled_transitions": sorted(explicit_disabled),
+        "blocked_conditions": sorted(blocked_conditions, key=lambda item: item["transition_id"]),
         "enabled_transitions_at_initial_state": enabled_at_initial,
         "reachable_states": sorted(reached),
         "trajectories": trajectories,
@@ -390,13 +409,17 @@ def execute_sequence(
         required_id: str | None = None
         if transition is None:
             reason = "unknown_transition"
-        elif transition.condition is not None:
-            reason = "condition_not_evaluated"
         elif transition_id in disabled:
             reason = "transition_disabled_by_scenario"
         elif transition.source != current:
             reason = "transition_source_mismatch"
-        else:
+        elif transition.condition is not None:
+            evaluated = evaluate_condition(transition.condition, model.get("condition_values", {}))
+            if evaluated.status == "FALSE":
+                reason = "condition_false"
+            elif evaluated.status != "TRUE":
+                reason = "condition_not_evaluable"
+        if reason is None and transition is not None:
             missing = sorted(prerequisites.get(transition_id, set()) - set(history))
             if missing:
                 reason = "temporal_prerequisite_not_satisfied"
