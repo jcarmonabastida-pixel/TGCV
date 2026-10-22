@@ -324,6 +324,17 @@ function pythonJson(source, input) {
     await page.locator("#derive-tgcv-correspondences").click();
     assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: ACCEPTED/,
       "a persisted decision must be restored when regenerating candidates for the same model/catalogue");
+    const originalCatalogue = JSON.parse(await page.locator("#tgcv-target-catalogue").inputValue());
+    originalCatalogue.transformations.push({id:"T_EXTRA",source_state:"E",target_state:"F"});
+    await page.locator("#tgcv-target-catalogue").fill(JSON.stringify(originalCatalogue, null, 2));
+    await page.locator("#derive-tgcv-correspondences").click();
+    assert.match(await page.locator("#correspondence-review-status").textContent(), /catálogo cambió.*histórico/i,
+      "catalogue content changes must explicitly invalidate prior review decisions");
+    assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: PENDIENTE/,
+      "a decision from a different catalogue content hash must not be reused, even if the version label is unchanged");
+    const scopedReviewKeys = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith("tgcv-correspondence-review-001:")));
+    assert.equal(scopedReviewKeys.length, 1,
+      "the prior decision must remain archived under its original model/catalogue content scope");
 
     // The visual editor must create/edit/clear condition metadata and invalidate old evaluations.
     const visualConditionInput = page.locator('#transition-review-list input[data-condition-text="t_ab"]');
