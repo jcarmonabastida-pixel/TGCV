@@ -613,6 +613,33 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-status").textContent(), /revisa el resultado/i,
       "transcribed graph remains a human-reviewable draft");
 
+    // A negated transition clause must remain pending and must not become an edge.
+    await page.locator("#system-description").fill(
+      "El proceso pasa de reposo a ejecución. No pasa de ejecución a resultado."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /Frases pendientes de interpretar/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+    const negationModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(negationModel.transitions.length, 1,
+      "a negated unsupported transition must not be added to the graph");
+    assert.ok(!negationModel.transitions.some(t => /ejecución/i.test(t.source) && /resultado/i.test(t.target)),
+      "negated transition must not be simplified into an affirmative edge");
+    assert.match(await page.locator("#transcription-status").textContent(), /No pasa de ejecución a resultado/i,
+      "negated phrase must be explicitly reported for clarification");
+
+    // An uncertain condition is ambiguous; it must not be accepted as a normal conditional edge.
+    await page.locator("#system-description").fill(
+      "Si quizá hay autorización, el sistema pasa de espera a acceso autorizado."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /No se pudo proponer el grafo/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+    assert.equal(await page.locator("#model").inputValue(), "",
+      "ambiguous condition with no other explicit transition must not produce a graph");
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /Si quizá hay autorización/i,
+      "ambiguous conditional phrase must remain in the clarification queue");
+
     // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
