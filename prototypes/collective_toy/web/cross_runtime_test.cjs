@@ -294,6 +294,36 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#tgcv-graph").textContent(), /T_CD/,
       "deriving proposals must not modify the currently rendered TGCV graph");
 
+    // The UI must expose explicit correspondence review and persist decisions without applying mappings.
+    await page.evaluate(model => {
+      document.querySelector("#model").value = JSON.stringify(model, null, 2);
+      document.querySelector("#model").dispatchEvent(new Event("input", {bubbles:true}));
+      localStorage.clear();
+    }, explicitlyMappedModel);
+    await page.locator("#tgcv-target-catalogue").fill(JSON.stringify({
+      schema:"tgcv-target-catalogue-001",version:"ui-review-v1",transformations:[
+        {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+        {id:"T_CD",source_state:"C",target_state:"D"}
+      ]
+    }, null, 2));
+    const graphBeforeReview = await page.locator("#tgcv-graph").textContent();
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.locator("#correspondence-review-list article").first().waitFor();
+    assert.equal(await page.locator("#correspondence-review-list article").count(), 2,
+      "review UI must show all exact-boundary candidates");
+    await page.locator("#correspondence-review-list article").nth(0).getByRole("button", {name:"Aceptar propuesta"}).click();
+    assert.match(await page.locator("#correspondence-review-status").textContent(), /persistida/i,
+      "acceptance must report that the decision was persisted");
+    const persistedReview = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith("tgcv-correspondence-review-001:")).map(k => JSON.parse(localStorage.getItem(k))));
+    assert.equal(persistedReview.length, 1, "review decision must be persisted in browser storage");
+    assert.equal(Object.values(persistedReview[0].decisions)[0].decision, "ACCEPTED",
+      "accepted decision must be retrievable with its model/catalogue scope");
+    assert.equal(await page.locator("#tgcv-graph").textContent(), graphBeforeReview,
+      "accepting a candidate must not apply it to the TGCV graph automatically");
+    await page.locator("#derive-tgcv-correspondences").click();
+    assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: ACCEPTED/,
+      "a persisted decision must be restored when regenerating candidates for the same model/catalogue");
+
     // The visual editor must create/edit/clear condition metadata and invalidate old evaluations.
     const visualConditionInput = page.locator('#transition-review-list input[data-condition-text="t_ab"]');
     await visualConditionInput.fill("humidity is extremely low");
