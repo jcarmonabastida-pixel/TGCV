@@ -447,7 +447,12 @@ function pythonJson(source, input) {
     assert.equal(visuallyEditedModel.scenarios[0].condition_evaluations?.t_ab, undefined,
       "changing condition text must invalidate the previous scenario evaluation");
     await page.locator("#run").click();
-    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    await page.waitForFunction(() => {
+      const status = document.querySelector("#status")?.textContent || "";
+      return /ejecución completada|no se ha podido ejecutar/i.test(status);
+    }, null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "edited conditional model must execute; browser status: " + await page.locator("#status").textContent());
     const visuallyEditedPackage = await page.evaluate(() => window.lastPackage);
     assert.ok(!visuallyEditedPackage.result.scenario_results.baseline.reachable_states.includes("B"),
       "a visually edited condition must remain blocked until re-evaluated");
@@ -465,7 +470,12 @@ function pythonJson(source, input) {
     assert.equal(visuallyClearedModel.scenarios[0].condition_evaluations?.t_ab, undefined,
       "clearing the condition must also remove its scenario evaluation");
     await page.locator("#run").click();
-    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    await page.waitForFunction(() => {
+      const status = document.querySelector("#status")?.textContent || "";
+      return /ejecución completada|no se ha podido ejecutar/i.test(status);
+    }, null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "cleared conditional model must execute; browser status: " + await page.locator("#status").textContent());
     const visuallyClearedPackage = await page.evaluate(() => window.lastPackage);
     assert.ok(visuallyClearedPackage.result.scenario_results.baseline.reachable_states.includes("B"),
       "a cleared condition must behave as an unconditional transition");
