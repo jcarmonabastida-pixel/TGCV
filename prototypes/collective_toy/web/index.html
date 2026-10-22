@@ -595,7 +595,7 @@ function archiveEffectiveCorrespondences(state,reason){
  if(!record||!Array.isArray(record.mappings))return;
  var now=new Date().toISOString(),archived=[];
  record.mappings=record.mappings.map(function(m){
-  if(m.status!=="EFFECTIVE")return m;
+  if(m.status==="STALE")return m;
   var stale=Object.assign({},m,{status:"STALE",active:false,stale_reason:reason,invalidated_at:now});
   archived.push(stale);return stale;
  });
