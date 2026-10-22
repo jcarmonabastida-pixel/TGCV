@@ -460,6 +460,32 @@ function pythonJson(source, input) {
     const scopedReviewKeys = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith("tgcv-correspondence-review-001:")));
     assert.equal(scopedReviewKeys.length, 1,
       "the prior decision must remain archived under its original model/catalogue content scope");
+    const effectiveHistoryAfterInvalidation = await page.evaluate(() => Object.keys(localStorage)
+      .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+      .map(k => JSON.parse(localStorage.getItem(k)))
+      .flatMap(record => [...(record.mappings || []), ...(record.history || [])]));
+    assert.ok(effectiveHistoryAfterInvalidation.some(m => m.status === "STALE" && m.stale_reason),
+      "catalogue changes must mark previously effective mappings stale while preserving their history");
+
+    // Restoring an old catalogue hash must not silently reactivate the stale mapping or its old ACCEPTED decision.
+    await page.locator("#tgcv-target-catalogue").fill(JSON.stringify({
+      schema:"tgcv-target-catalogue-001",version:"ui-review-v1",transformations:[
+        {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+        {id:"T_CD",source_state:"C",target_state:"D"}
+      ]
+    }, null, 2));
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.waitForFunction(() => /Generadas 2 propuestas/i.test(
+      document.querySelector("#correspondence-review-status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: PENDIENTE/,
+      "restoring a previous catalogue must not replay an ACCEPTED decision invalidated by an intervening scope change");
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "model must execute after restoring catalogue scope");
+    assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+      "a stale effective mapping must remain inactive when the old catalogue is restored");
 
     // The visual editor must create/edit/clear condition metadata and invalidate old evaluations.
     const visualConditionInput = page.locator('#transition-review-list input[data-condition-text="t_ab"]');
