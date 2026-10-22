@@ -3889,13 +3889,14 @@ const assert = require("node:assert/strict");
     editedConditionModel.transitions.find(t => t.id === "cond_ab").condition = "permiso revocado";
     await page.locator("#model").fill(JSON.stringify(editedConditionModel, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
-    assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").inputValue(), "UNKNOWN",
-      "Changing the condition text must invalidate the old evaluation");
-    assert.match(await page.locator("#graph").textContent(), /NO EVALUADA: permiso revocado/i);
+    await page.waitForFunction(() => /No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""));
+    assert.match(await page.locator("#status").innerText(), /obsoleta|ya cambió/i,
+      "Changing the condition text must reject the stale evaluation with an explicit validation error");
+    assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").count(), 0,
+      "Invalid stale evaluation must not be presented as a valid evaluated transition");
     assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/);
     assert.equal(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab.condition,
-      "permiso concedido", "Stale provenance remains visible in the model but must not be applied to changed condition text");
+      "permiso concedido", "The stale provenance remains in input but is rejected, not silently applied");
 
     console.log("PASS: profile-3-only UI, guided trajectory carousel, concrete execution, contextual value, alternative dashboard, import/export, replay/tamper checks, and grouped contract adversaries.");
   } finally {
