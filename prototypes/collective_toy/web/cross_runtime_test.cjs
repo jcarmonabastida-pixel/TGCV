@@ -433,8 +433,14 @@ function pythonJson(source, input) {
       "review fixture must execute before checking effective graph synchronization");
     await page.locator("#derive-tgcv-correspondences").click();
     await page.locator("#apply-accepted-tgcv-correspondences").click();
-    await page.waitForFunction(() => /Correspondencias efectivas activas: 1/i.test(
-      document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
+    await page.waitForFunction(() => {
+      const status = document.querySelector("#effective-correspondence-status")?.textContent || "";
+      return /Correspondencias efectivas activas:|No se aplicaron correspondencias:/i.test(status);
+    }, null, {timeout:5000});
+    assert.match(await page.locator("#effective-correspondence-status").textContent(),
+      /Correspondencias efectivas activas: 1/i,
+      "explicit application must activate exactly one accepted mapping; status: " +
+        await page.locator("#effective-correspondence-status").textContent());
     assert.match(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "explicitly applied accepted correspondence must be reflected in the TGCV graph");
     const modelAfterApplication = JSON.parse(await page.locator("#model").inputValue());
