@@ -423,6 +423,24 @@ function pythonJson(source, input) {
     await page.locator("#derive-tgcv-correspondences").click();
     assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: ACCEPTED/,
       "a persisted decision must be restored when regenerating candidates for the same model/catalogue");
+
+    // Explicit application is a separate user action: it materializes the accepted
+    // correspondence without writing the derived mapping back into the source model.
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "review fixture must execute before checking effective graph synchronization");
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.locator("#apply-accepted-tgcv-correspondences").click();
+    await page.waitForFunction(() => /Correspondencias efectivas activas: 1/i.test(
+      document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+      "explicitly applied accepted correspondence must be reflected in the TGCV graph");
+    const modelAfterApplication = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal((modelAfterApplication.tgcv_mapping?.mappings || []).length, 0,
+      "effective derived mappings must remain separate from the original model mapping declaration");
+
     const originalCatalogue = JSON.parse(await page.locator("#tgcv-target-catalogue").inputValue());
     originalCatalogue.transformations.push({id:"T_EXTRA",source_state:"E",target_state:"F"});
     await page.locator("#tgcv-target-catalogue").fill(JSON.stringify(originalCatalogue, null, 2));
