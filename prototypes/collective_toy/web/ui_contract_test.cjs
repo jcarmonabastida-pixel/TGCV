@@ -3876,7 +3876,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#trajectory-card").innerText(), /A → B → C/,
       "TRUE must enable the transition and its downstream trajectory");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
-    assert.match(await page.locator("#tgcv-graph").innerText(), /tau_cond_ab/i,
+    assert.match(await page.locator("#tgcv-graph").textContent(), /tau_cond_ab/i,
       "TGCV graph must be regenerated from the trajectory made accessible by TRUE");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("FALSE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
