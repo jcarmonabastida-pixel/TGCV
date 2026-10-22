@@ -300,6 +300,7 @@ function pythonJson(source, input) {
       document.querySelector("#model").dispatchEvent(new Event("input", {bubbles:true}));
       localStorage.clear();
     }, explicitlyMappedModel);
+    await page.locator("#correspondence-review-section summary").click();
     await page.locator("#tgcv-target-catalogue").fill(JSON.stringify({
       schema:"tgcv-target-catalogue-001",version:"ui-review-v1",transformations:[
         {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
