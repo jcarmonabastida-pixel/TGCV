@@ -441,6 +441,27 @@ function pythonJson(source, input) {
       /Correspondencias efectivas activas: 1/i,
       "explicit application must activate exactly one accepted mapping; status: " +
         await page.locator("#effective-correspondence-status").textContent());
+    const effectiveRecordAfterFirstApply = await page.evaluate(() => Object.keys(localStorage)
+      .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+      .map(k => JSON.parse(localStorage.getItem(k))).find(record => (record.mappings || []).some(m => m.status === "EFFECTIVE")));
+    const firstEffectiveMapping = effectiveRecordAfterFirstApply.mappings.find(m => m.status === "EFFECTIVE");
+    assert.deepEqual(firstEffectiveMapping.decision_provenance && firstEffectiveMapping.decision_provenance.action, "ACCEPTED",
+      "effective mapping must retain the explicit acceptance action provenance");
+    assert.equal(firstEffectiveMapping.decision_provenance.actor, "local-user",
+      "effective mapping must identify the local user action without inventing an account identity");
+    assert.ok(firstEffectiveMapping.decision_provenance.decided_at,
+      "effective mapping must retain the persisted decision timestamp");
+    assert.equal(firstEffectiveMapping.decision_provenance.source, "tgcv-correspondence-review-001");
+    await page.locator("#apply-accepted-tgcv-correspondences").click();
+    await page.waitForFunction(() => /Correspondencias efectivas activas: 1/i.test(
+      document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
+    const effectiveRecordAfterSecondApply = await page.evaluate(() => Object.keys(localStorage)
+      .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+      .map(k => JSON.parse(localStorage.getItem(k))).find(record => (record.mappings || []).some(m => m.status === "EFFECTIVE")));
+    assert.equal(effectiveRecordAfterSecondApply.mappings.filter(m => m.status === "EFFECTIVE").length, 1,
+      "reapplying the same accepted candidate through the UI must not duplicate active mappings");
+    assert.equal(effectiveRecordAfterSecondApply.mappings.find(m => m.status === "EFFECTIVE").mapping_id, firstEffectiveMapping.mapping_id,
+      "reapplying must preserve the existing effective mapping identity");
     assert.match(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "explicitly applied accepted correspondence must be reflected in the TGCV graph");
     const modelAfterApplication = JSON.parse(await page.locator("#model").inputValue());
