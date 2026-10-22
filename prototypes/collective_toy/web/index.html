@@ -604,6 +604,18 @@ function archiveEffectiveCorrespondences(state,reason){
   archived.push(stale);return stale;
  });
  record.history=(Array.isArray(record.history)?record.history:[]).concat(archived);
+ // Record every scope invalidation as its own durable history event, even when all
+ // mappings were already moved out of record.mappings by an earlier invalidation.
+ // Mapping snapshots alone are insufficient to represent successive invalidation causes.
+ record.history.push({
+  event_type:"EFFECTIVE_SCOPE_INVALIDATED",
+  status:"STALE",
+  stale_reason:reason,
+  invalidated_at:now,
+  source_model_sha256:state.sourceModelSha256,
+  catalogue_version:state.catalogueVersion,
+  catalogue_sha256:state.catalogueSha256
+ });
  record.last_invalidation={reason:reason,invalidated_at:now,source_model_sha256:state.sourceModelSha256,catalogue_version:state.catalogueVersion,catalogue_sha256:state.catalogueSha256};
  try{localStorage.setItem(key,JSON.stringify(record))}catch(e){throw new Error("No se pudo conservar el historial de correspondencias invalidadas: "+String(e))}
 }
