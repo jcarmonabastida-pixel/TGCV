@@ -607,6 +607,23 @@ function archiveEffectiveCorrespondences(state,reason){
  record.last_invalidation={reason:reason,invalidated_at:now,source_model_sha256:state.sourceModelSha256,catalogue_version:state.catalogueVersion,catalogue_sha256:state.catalogueSha256};
  try{localStorage.setItem(key,JSON.stringify(record))}catch(e){throw new Error("No se pudo conservar el historial de correspondencias invalidadas: "+String(e))}
 }
+function archiveObsoleteEffectiveScopes(currentModel,currentCatalogue,reason){
+ var currentModelSha=null,currentCatalogueSha=null;
+ try{currentModelSha=canonical(currentModel)}catch(_e){}
+ try{currentCatalogueSha=canonical(currentCatalogue)}catch(_e){}
+ var archivedScopes=0;
+ for(var i=0;i<localStorage.length;i++){
+  var key=localStorage.key(i);
+  if(!key||!key.startsWith("tgcv-effective-mappings-001:"))continue;
+  var record;try{record=JSON.parse(localStorage.getItem(key)||"null")}catch(_e){continue}
+  if(!record||!Array.isArray(record.mappings))continue;
+  var differs=(record.source_model_sha256&&record.source_model_sha256!==currentModelSha)||(record.catalogue_sha256&&record.catalogue_sha256!==currentCatalogueSha);
+  if(!differs||!record.mappings.some(function(m){return m.status==="EFFECTIVE"}))continue;
+  var scope={sourceModelSha256:record.source_model_sha256,catalogueVersion:record.catalogue_version,catalogueSha256:record.catalogue_sha256};
+  archiveEffectiveCorrespondences(scope,reason);archivedScopes++;
+ }
+ return archivedScopes;
+}
 function hasStaleEffectiveCorrespondence(candidateId){
  for(var i=0;i<localStorage.length;i++){
   var key=localStorage.key(i);if(!key||!key.startsWith("tgcv-effective-mappings-001:"))continue;
@@ -681,6 +698,7 @@ async function deriveAndRenderTgcvCorrespondences(){
    var reason=sourceModelChanged?"El modelo de origen cambió; se requiere una nueva revisión explícita.":"El catálogo cambió; se requiere una nueva revisión explícita.";
    var priorEffectiveScope={sourceModelSha256:previous.sourceModelSha256||effectiveCorrespondenceState.sourceModelSha256,catalogueVersion:previous.catalogueVersion||effectiveCorrespondenceState.catalogueVersion,catalogueSha256:previous.catalogueSha256||effectiveCorrespondenceState.catalogueSha256};
    archiveEffectiveCorrespondences(priorEffectiveScope,reason);
+   archiveObsoleteEffectiveScopes(model,catalogue,reason);
    effectiveCorrespondenceState.mappings=effectiveCorrespondenceState.mappings.map(function(m){return Object.assign({},m,{status:"STALE",active:false,stale_reason:reason,invalidated_at:new Date().toISOString()})});
   }
   result.candidates.forEach(function(c){var prior=decisions[c.candidate_id];if(prior&&prior.source_model_sha256===result.source_model_sha256&&prior.catalogue_version===result.catalogue_version&&prior.catalogue_sha256===catalogueSha256&&(prior.decision==="ACCEPTED"||prior.decision==="REJECTED")&&!hasStaleEffectiveCorrespondence(c.candidate_id))c.decision=prior.decision});
