@@ -595,7 +595,11 @@ function archiveEffectiveCorrespondences(state,reason){
  if(!record||!Array.isArray(record.mappings))return;
  var now=new Date().toISOString(),archived=[];
  record.mappings=record.mappings.map(function(m){
-  if(m.status==="STALE")return m;
+  if(m.status==="STALE"){
+   // Preserve the earlier invalidation event and record this later scope change separately.
+   archived.push(Object.assign({},m,{active:false,stale_reason:reason,invalidated_at:now,prior_stale_reason:m.stale_reason||null}));
+   return m;
+  }
   var stale=Object.assign({},m,{status:"STALE",active:false,stale_reason:reason,invalidated_at:now});
   archived.push(stale);return stale;
  });
