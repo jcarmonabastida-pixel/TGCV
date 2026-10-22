@@ -176,7 +176,7 @@ async function run(){var perf={},mark=function(name,start){perf[name]=Number((pe
 
 async function assessImportedBrowserPackage(pkg){
  assert(pkg&&typeof pkg==="object"&&!Array.isArray(pkg),"El paquete debe ser un objeto JSON.");
- assert(Object.keys(pkg).every(function(k){return ["package_version","package_stage","input","result","package_sha256","concrete_execution_trace","outcome_record","value_assessment","value_assessment_status"].includes(k)}),"El paquete contiene campos desconocidos.");
+ assert(Object.keys(pkg).every(function(k){return ["package_version","package_stage","input","result","package_sha256","concrete_execution_trace","outcome_record","value_assessment","value_assessment_status","tgcv_correspondence_review"].includes(k)}),"El paquete contiene campos desconocidos.");
  var packageV2=pkg.package_version==="collective-toy-browser-run-002";
  assert(packageV2||pkg.package_version==="collective-toy-browser-run-001","Esquema de paquete desconocido o no compatible.");
  if(packageV2)assert(["EXPLORATION","EXECUTION","OUTCOME","ASSESSMENT"].includes(pkg.package_stage),"package_stage ausente o no compatible.");
@@ -374,13 +374,40 @@ async function assessImportedBrowserPackage(pkg){
  }
  var packageBody=Object.assign({},pkg);delete packageBody.package_sha256;
  assert(await hash(packageBody)===pkg.package_sha256,"El hash del paquete no coincide.");
+ var correspondenceReviewSummary=null;
+ if(pkg.tgcv_correspondence_review!==undefined){
+  var review=pkg.tgcv_correspondence_review;
+  assert(review&&typeof review==="object"&&!Array.isArray(review),"tgcv_correspondence_review debe ser un objeto.");
+  assert(review.schema==="tgcv-correspondence-review-001","Esquema de revisión de correspondencias desconocido.");
+  assert(review.source_model_sha256===await hash(pkg.input),"La revisión de correspondencias no está vinculada al modelo de entrada de este paquete.");
+  assert(typeof review.catalogue_version==="string"&&review.catalogue_version.trim().length>0,"catalogue_version ausente en la revisión de correspondencias.");
+  assert(typeof review.catalogue_sha256==="string"&&/^[0-9a-f]{64}$/.test(review.catalogue_sha256),"catalogue_sha256 ausente o malformado en la revisión de correspondencias.");
+  assert(Array.isArray(review.candidates),"La revisión de correspondencias debe contener una lista de candidatos.");
+  var candidateIds=new Set(),acceptedCount=0,rejectedCount=0;
+  review.candidates.forEach(function(candidate){
+   assert(candidate&&typeof candidate==="object"&&!Array.isArray(candidate),"Candidato de correspondencia malformado.");
+   assert(typeof candidate.candidate_id==="string"&&candidate.candidate_id.trim().length>0&&!candidateIds.has(candidate.candidate_id),"candidate_id ausente o duplicado en la revisión.");
+   candidateIds.add(candidate.candidate_id);
+   assert(candidate.source_model_sha256===review.source_model_sha256,"El candidato no está vinculado al modelo de origen de la revisión.");
+   assert(candidate.catalogue_version===review.catalogue_version,"La versión del catálogo del candidato no coincide con el snapshot.");
+   assert(["PROPOSED","NEEDS_REVIEW"].includes(candidate.status),"Estado de propuesta de correspondencia no compatible.");
+   assert(candidate.algorithm==="tgcv-correspondence-exact-boundary-001"&&candidate.algorithm_version==="1","Algoritmo de derivación de correspondencias no compatible.");
+   assert(typeof candidate.system_transition_id==="string"&&typeof candidate.tgcv_transformation_id==="string","La propuesta carece de referencias de transición/transformación.");
+   assert(candidate.evidence&&typeof candidate.evidence==="object"&&!Array.isArray(candidate.evidence),"La propuesta carece de evidencia estructurada.");
+   assert(candidate.decision===null||candidate.decision==="ACCEPTED"||candidate.decision==="REJECTED","Decisión de revisión no compatible.");
+   assert(candidate.decision!=="ACCEPTED"||candidate.status==="PROPOSED","Una propuesta que requiere revisión no puede figurar como aceptada.");
+   if(candidate.decision==="ACCEPTED")acceptedCount++;
+   if(candidate.decision==="REJECTED")rejectedCount++;
+  });
+  correspondenceReviewSummary={candidate_count:review.candidates.length,accepted_count:acceptedCount,rejected_count:rejectedCount,pending_count:review.candidates.filter(function(candidate){return candidate.decision===null}).length,source_model_sha256:review.source_model_sha256,catalogue_version:review.catalogue_version,catalogue_sha256:review.catalogue_sha256};
+ }
  assert(typeof pkg.result.result_sha256==="string"&&/^[0-9a-f]{64}$/.test(pkg.result.result_sha256),"result_sha256 ausente o malformado.");
  var resultBody=Object.assign({},pkg.result);delete resultBody.input_sha256;delete resultBody.result_sha256;
  assert(await hash(resultBody)===pkg.result.result_sha256,"El hash del resultado no coincide.");
  // Validate the declared input schema before any compatibility fallback. A valid hash
  // proves byte-level consistency, not that the input is a supported model.
  var supportedEngine="collective-toy-engine-001";
- if(pkg.result.engine_version!==supportedEngine)return {status:"inspect-only/replay-unavailable",message:"Consistencia interna de hashes verificada; esto no autentica el origen ni demuestra la corrección del resultado. Entrada estructuralmente válida. Motor declarado no compatible con este ejecutor; no se ha intentado reproducir.",integrity:true,replay:false};
+ if(pkg.result.engine_version!==supportedEngine)return {status:"inspect-only/replay-unavailable",message:"Consistencia interna de hashes verificada; esto no autentica el origen ni demuestra la corrección del resultado. Entrada estructuralmente válida. Motor declarado no compatible con este ejecutor; no se ha intentado reproducir."+(correspondenceReviewSummary?" Snapshot de correspondencias validado ("+correspondenceReviewSummary.candidate_count+" propuestas; "+correspondenceReviewSummary.accepted_count+" aceptadas, "+correspondenceReviewSummary.rejected_count+" rechazadas). Las decisiones se conservan como evidencia de auditoría y no se aplican al grafo TGCV.":""),integrity:true,replay:false,correspondence_review:correspondenceReviewSummary};
  var replay=execute(pkg.input);await addDeltaReach(pkg.input,replay);
  replay.semantic_identity_version="collective-toy-semantic-identity-001";replay.semantic_sha256=await hash(semanticResultProjection(replay),"result");
  replay.input_sha256=await hash(pkg.input);
@@ -393,7 +420,7 @@ async function assessImportedBrowserPackage(pkg){
  }else{
    assert(canonical(replay)===canonical(pkg.result),"La reproducción independiente difiere del resultado exportado.");
  }
- return {status:"replay-verified",message:"Integridad verificada y reproducción independiente coincidente bajo el contrato declarado.",integrity:true,replay:true};
+ return {status:"replay-verified",message:"Integridad verificada y reproducción independiente coincidente bajo el contrato declarado."+(correspondenceReviewSummary?" Snapshot de correspondencias validado ("+correspondenceReviewSummary.candidate_count+" propuestas; "+correspondenceReviewSummary.accepted_count+" aceptadas, "+correspondenceReviewSummary.rejected_count+" rechazadas). Las decisiones se conservan como evidencia de auditoría y no se aplican al grafo TGCV.":""),integrity:true,replay:true,correspondence_review:correspondenceReviewSummary};
 }
 function setPackageAssessment(state,message){
  var status=$("package-assessment");status.dataset.state=state;status.textContent=message;
