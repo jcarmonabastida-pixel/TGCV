@@ -99,7 +99,7 @@ const assert = require("node:assert/strict");
 
     // Long state names must remain readable inside their node shapes without node overlap.
     await page.locator("#layout-mode").selectOption("auto");
-    await page.locator("summary").filter({ hasText: "JSON avanzado" }).click();
+    await page.locator("summary").filter({ hasText: "JSON avanzado (editable)" }).click();
     const longLabelModel = JSON.parse(await page.locator("#model").inputValue());
     const longStateNames = {
       A: "inicio_del_proceso_principal",
