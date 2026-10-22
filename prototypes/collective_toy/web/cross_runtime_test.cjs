@@ -108,6 +108,46 @@ function pythonJson(source, input) {
     assert.deepEqual(conditionalPkg.result, conditionalEngineRun.result,
       "browser and Python conditional-transition results must be identical");
 
+    // The evaluator UI must drive actual exploration, not merely store a label.
+    const trueModel = {
+      ...conditionalModel,
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "TRUE" } }
+      }]
+    };
+    const trueEngineRun = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      trueModel
+    );
+    const evaluator = page.locator('#transition-review-list select[data-condition-evaluation="t_ab"]');
+    await evaluator.selectOption("TRUE");
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const truePkg = await page.evaluate(() => window.lastPackage);
+    assert.ok(truePkg.result.scenario_results.baseline.reachable_states.includes("B"),
+      "TRUE evaluation must enable the conditional transition in the browser");
+    assert.deepEqual(truePkg.result, trueEngineRun.result,
+      "browser and Python results must agree when the condition is TRUE");
+
+    const falseModel = {
+      ...conditionalModel,
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "FALSE" } }
+      }]
+    };
+    const falseEngineRun = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      falseModel
+    );
+    await page.locator('#transition-review-list select[data-condition-evaluation="t_ab"]').selectOption("FALSE");
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const falsePkg = await page.evaluate(() => window.lastPackage);
+    assert.ok(!falsePkg.result.scenario_results.baseline.reachable_states.includes("B"),
+      "FALSE evaluation must keep the conditional transition blocked");
+    assert.deepEqual(falsePkg.result, falseEngineRun.result,
+      "browser and Python results must agree when the condition is FALSE");
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
