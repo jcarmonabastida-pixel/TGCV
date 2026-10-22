@@ -356,7 +356,9 @@ function pythonJson(source, input) {
         schema:"tgcv-explicit-mapping-001",mapping_rule:"user-declared-map-v1",provenance:"user-declared",
         mappings:[{system_transition_id:"t_ab",tgcv_transformation_id:"T_DERIVED_AB"}],relations:[]
       }};
-      const conflict = await window.validateAcceptedCorrespondenceCandidates(conflictingModel,catalogue,derived.candidates,[]);
+      const conflictCandidate = await window.deriveTgcvCorrespondenceCandidates(conflictingModel,catalogue);
+      conflictCandidate.candidates[0].decision = "ACCEPTED";
+      const conflict = await window.validateAcceptedCorrespondenceCandidates(conflictingModel,catalogue,conflictCandidate.candidates,[]);
       const staleModel = {...unMapped,model_id:"changed-after-review"};
       const stale = await window.validateAcceptedCorrespondenceCandidates(staleModel,catalogue,derived.candidates,[]);
       return {before,after:JSON.stringify(unMapped),first,second,conflict,stale};
