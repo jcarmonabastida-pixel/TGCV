@@ -201,6 +201,45 @@ function pythonJson(source, input) {
     await page.locator("#run").click();
     await page.locator("#status").filter({hasText:/obsoleta|ya cambió/i}).waitFor({timeout:5000});
 
+    // Explicit custom mapping: evaluator state must propagate to the declared TGCV transformation.
+    const explicitlyMappedModel = {
+      ...conditionalModel,
+      tgcv_mapping: {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "user-declared-transition-transformation-map-v1",
+        provenance: "user-declared",
+        mappings: [
+          {system_transition_id:"t_ab",tgcv_transformation_id:"T_HUMIDITY"},
+          {system_transition_id:"t_ac",tgcv_transformation_id:"T_AC"},
+          {system_transition_id:"t_cd",tgcv_transformation_id:"T_CD"}
+        ],
+        relations: [["T_AC","T_CD"]]
+      },
+      scenarios: [{
+        id:"baseline",disabled_transitions:[],
+        condition_evaluations:{t_ab:{condition:"humidity is low",result:"TRUE"}}
+      }]
+    };
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(explicitlyMappedModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    assert.match(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+      "an explicitly mapped transformation must appear when its system transition is reachable");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /user-declared/,
+      "the TGCV view must preserve the declared mapping provenance");
+
+    for (const evaluation of ["FALSE", "UNKNOWN"]) {
+      await page.locator('#transition-review-list select[data-condition-evaluation="t_ab"]').selectOption(evaluation);
+      await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+      assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+        evaluation + " must remove the explicitly mapped transformation from the current TGCV graph");
+      assert.match(await page.locator("#graph").textContent(), new RegExp(evaluation === "FALSE" ? "FALSA: humidity is low" : "DESCONOCIDA: humidity is low"),
+        evaluation + " must remain visible on the system graph");
+    }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
