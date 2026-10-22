@@ -613,6 +613,14 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-status").textContent(), /revisa el resultado/i,
       "transcribed graph remains a human-reviewable draft");
 
+    // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", {bubbles:true}));
+    }, JSON.stringify(model));
+    await page.evaluate(() => syncGraphEditor());
+    await page.locator('#transition-review-list input[data-condition-text="t_ab"]').waitFor({timeout:5000});
+
     // The visual editor must create/edit/clear condition metadata and invalidate old evaluations.
     const visualConditionInput = page.locator('#transition-review-list input[data-condition-text="t_ab"]');
     await visualConditionInput.fill("humidity is extremely low");
