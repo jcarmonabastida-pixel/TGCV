@@ -514,7 +514,7 @@ function pythonJson(source, input) {
       .map(k => JSON.parse(localStorage.getItem(k)))
       .flatMap(record => [...(record.mappings || []), ...(record.history || [])]));
     assert.ok(effectiveHistoryAfterModelChange.some(m => m.status === "STALE" && /modelo de origen cambió/i.test(m.stale_reason || "")),
-      "source model content changes must invalidate active mappings while preserving a reasoned history");
+      "source model content changes must invalidate active mappings while preserving a reasoned history; observed records: " + JSON.stringify(effectiveHistoryAfterModelChange));
     await page.locator("#run").click();
     await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
       document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
