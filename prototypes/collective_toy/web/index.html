@@ -581,7 +581,7 @@ function deriveTgcvDemo(fixture){
  assert(Array.isArray(fixture.mappings)&&Array.isArray(fixture.transformations)&&Array.isArray(fixture.relations),"Faltan transformaciones, relaciones o correspondencias explícitas.");
  var all=new Set(fixture.transformations),before=new Set(fixture.before.transformations),after=new Set(fixture.after.transformations),current=new Set((fixture.current||fixture.after).transformations);
  assert(all.size===fixture.transformations.length,"Transformaciones TGCV duplicadas.");
- fixture.mappings.forEach(function(m){assert(m.provenance==="illustrative"&&m.mapping_rule===fixture.mapping_rule,"La correspondencia debe conservar su procedencia y regla.");assert(all.has(m.tgcv_transformation_id),"La correspondencia apunta a una transformación inexistente.")});
+ fixture.mappings.forEach(function(m){assert(m.provenance===fixture.provenance&&m.mapping_rule===fixture.mapping_rule,"La correspondencia debe conservar la procedencia y la regla declaradas por el modelo.");assert(all.has(m.tgcv_transformation_id),"La correspondencia apunta a una transformación inexistente.")});
  function validateRelations(relations,set,label){relations.forEach(function(pair){assert(Array.isArray(pair)&&pair.length===2,label+": relación inválida.");assert(set.has(pair[0])&&set.has(pair[1]),label+": relación con extremo inexistente ("+pair.join(", ")+").")})}
  validateRelations(fixture.relations,all,"Relaciones TGCV");validateRelations(fixture.before.relations,before,"Relaciones anteriores");validateRelations(fixture.after.relations,after,"Relaciones posteriores");validateRelations((fixture.current||fixture.after).relations,current,"Relaciones del escenario actual");
  var delta=Array.from(after).filter(function(x){return !before.has(x)}).sort();
