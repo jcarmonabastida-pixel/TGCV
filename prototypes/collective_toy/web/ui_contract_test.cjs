@@ -3866,7 +3866,7 @@ const assert = require("node:assert/strict");
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").inputValue(), "UNKNOWN");
-    assert.match(await page.locator("#graph").innerText(), /NO EVALUADA: permiso concedido/i);
+    assert.match(await page.locator("#graph").textContent(), /NO EVALUADA: permiso concedido/i);
     assert.equal(await page.locator("#trajectory-position").innerText(), "1 / 1",
       "UNKNOWN must fail closed and must not traverse the conditioned transition");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("TRUE");
@@ -3875,14 +3875,14 @@ const assert = require("node:assert/strict");
       { condition: "permiso concedido", result: "TRUE" });
     assert.match(await page.locator("#trajectory-card").innerText(), /A → B → C/,
       "TRUE must enable the transition and its downstream trajectory");
-    assert.match(await page.locator("#graph").innerText(), /VERDADERA: permiso concedido/i);
+    assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
     assert.match(await page.locator("#tgcv-graph").innerText(), /tau_cond_ab/i,
       "TGCV graph must be regenerated from the trajectory made accessible by TRUE");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("FALSE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/,
       "FALSE must block the conditioned transition");
-    assert.match(await page.locator("#graph").innerText(), /FALSA: permiso concedido/i);
+    assert.match(await page.locator("#graph").textContent(), /FALSA: permiso concedido/i);
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("TRUE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     const editedConditionModel = JSON.parse(await page.locator("#model").inputValue());
@@ -3892,7 +3892,7 @@ const assert = require("node:assert/strict");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").inputValue(), "UNKNOWN",
       "Changing the condition text must invalidate the old evaluation");
-    assert.match(await page.locator("#graph").innerText(), /NO EVALUADA: permiso revocado/i);
+    assert.match(await page.locator("#graph").textContent(), /NO EVALUADA: permiso revocado/i);
     assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/);
     assert.equal(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab.condition,
       "permiso concedido", "Stale provenance remains visible in the model but must not be applied to changed condition text");
