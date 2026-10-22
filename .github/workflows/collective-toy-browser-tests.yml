@@ -52,6 +52,11 @@ jobs:
       - name: Run browser and Python concordance test
         working-directory: prototypes/collective_toy/web
         run: npm test
+      - name: Record visual artifact provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -c 'import json,os; from pathlib import Path; p=Path(os.environ["TGCV_VISUAL_ARTIFACT_DIR"]); s=sorted(x.name for x in p.glob("*.png")); m={"source_commit":os.environ["GITHUB_SHA"],"workflow_run_id":os.environ["GITHUB_RUN_ID"],"screenshots":s}; (p/"manifest.json").write_text(json.dumps(m,indent=2)+"\\n",encoding="utf-8"); assert len(s)==12, f"Expected 12 screenshots, found {len(s)}"'
       - name: Upload rendered desktop/mobile review screenshots
         uses: actions/upload-artifact@v4
         with:
