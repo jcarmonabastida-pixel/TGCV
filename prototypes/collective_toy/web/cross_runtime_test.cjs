@@ -72,6 +72,51 @@ function pythonJson(source, input) {
     await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
     const pkg = await page.evaluate(() => window.lastPackage);
     assert.ok(pkg && pkg.input && pkg.result, "browser must export an inspectable package");
+    // Imported/replayed packages must validate and preserve correspondence-review decisions
+    // as audit evidence, without applying them to the active TGCV graph or local storage.
+    const reviewReplay = await page.evaluate(async pkg => {
+      const transition = pkg.input.transitions[0];
+      const catalogue = {
+        schema:"tgcv-target-catalogue-001", version:"import-replay-contract-v1",
+        transformations:[{id:"T_REPLAY_"+transition.id,source_state:transition.source,target_state:transition.target}]
+      };
+      const derived = await window.deriveTgcvCorrespondenceCandidates(pkg.input, catalogue);
+      if (!derived.candidates.length || derived.candidates[0].status !== "PROPOSED") {
+        throw new Error("Replay fixture did not produce a unique, reviewable candidate");
+      }
+      derived.candidates[0].decision = "ACCEPTED";
+      const review = {
+        schema:"tgcv-correspondence-review-001",
+        source_model_sha256:await window.hash(pkg.input),
+        catalogue_version:catalogue.version,
+        catalogue_sha256:await window.hash(catalogue),
+        candidates:derived.candidates
+      };
+      const imported = JSON.parse(JSON.stringify(pkg));
+      imported.tgcv_correspondence_review = review;
+      delete imported.package_sha256;
+      imported.package_sha256 = await window.hash(imported);
+      const assessment = await window.assessImportedBrowserPackage(imported);
+      const tampered = JSON.parse(JSON.stringify(imported));
+      tampered.tgcv_correspondence_review.source_model_sha256 = "0".repeat(64);
+      delete tampered.package_sha256;
+      tampered.package_sha256 = await window.hash(tampered);
+      let tamperRejected = false;
+      try { await window.assessImportedBrowserPackage(tampered); } catch (_error) { tamperRejected = true; }
+      return {
+        status:assessment.status, replay:assessment.replay,
+        review:assessment.correspondence_review,
+        message:assessment.message,
+        snapshotPreserved:JSON.stringify(imported.tgcv_correspondence_review)===JSON.stringify(review),
+        tamperRejected
+      };
+    }, pkg);
+    assert.equal(reviewReplay.status, "replay-verified", "package replay must remain verified when a valid review snapshot is attached");
+    assert.equal(reviewReplay.replay, true);
+    assert.equal(reviewReplay.review.accepted_count, 1, "accepted decision must survive import/replay validation");
+    assert.equal(reviewReplay.snapshotPreserved, true, "the imported review snapshot must remain byte-structure equivalent");
+    assert.equal(reviewReplay.tamperRejected, true, "review/model linkage tampering must be rejected");
+    assert.match(reviewReplay.message, /no se aplican al grafo TGCV/i, "replay must explicitly avoid applying accepted mappings");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
     assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
     // Conditional transitions must survive the cross-runtime package contract,
