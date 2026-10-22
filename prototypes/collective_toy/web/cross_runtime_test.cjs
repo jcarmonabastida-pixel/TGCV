@@ -370,7 +370,9 @@ function pythonJson(source, input) {
         schema:"tgcv-explicit-mapping-001",mapping_rule:"user-declared-map-v1",provenance:"user-declared",
         mappings:[{system_transition_id:"t_ab",tgcv_transformation_id:"T_DERIVED_AB"}],relations:[]
       }};
-      const conflictCandidate = await window.deriveTgcvCorrespondenceCandidates(conflictingModel,catalogue);
+      // Simulate a proposal reviewed against the unmapped model, then introduce a
+      // conflicting user-declared mapping before application; validation must reject it.
+      const conflictCandidate = await window.deriveTgcvCorrespondenceCandidates(unMapped,catalogue);
       conflictCandidate.candidates[0].decision = "ACCEPTED";
       const conflict = await window.validateAcceptedCorrespondenceCandidates(conflictingModel,catalogue,conflictCandidate.candidates,[]);
       const staleModel = {...unMapped,model_id:"changed-after-review"};
