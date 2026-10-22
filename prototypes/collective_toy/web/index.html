@@ -618,7 +618,7 @@ function archiveObsoleteEffectiveScopes(currentModel,currentModelSha,currentCata
   // The source snapshot is the authoritative fallback if a digest implementation or
   // legacy record does not reflect an edit in the model's complete canonical structure.
   if(record.source_model_snapshot&&currentModel){
-   try{modelChanged=canonical(record.source_model_snapshot)!==canonical(currentModel)}catch(_e){}
+   try{modelChanged=modelChanged||(canonical(record.source_model_snapshot)!==canonical(currentModel))}catch(_e){}
   }
   var catalogueChanged=!!record.catalogue_sha256&&record.catalogue_sha256!==currentCatalogueSha;
   // A scope may already be STALE due to an earlier catalogue/decision change.
