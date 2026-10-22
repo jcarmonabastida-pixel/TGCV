@@ -509,15 +509,26 @@ function pythonJson(source, input) {
     await page.locator("#derive-tgcv-correspondences").click();
     // The derive handler is async. Do not accept the previous catalogue-change status as
     // evidence that the model-change invalidation has completed; wait for the persisted event.
-    await page.waitForFunction(() => Object.keys(localStorage)
-      .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
-      .some(k => {
-        try {
-          const record = JSON.parse(localStorage.getItem(k));
-          return [...(record.mappings || []), ...(record.history || [])]
-            .some(m => m.status === "STALE" && /modelo de origen cambió/i.test(m.stale_reason || ""));
-        } catch (_e) { return false; }
-      }), null, {timeout:5000});
+    try {
+      await page.waitForFunction(() => Object.keys(localStorage)
+        .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+        .some(k => {
+          try {
+            const record = JSON.parse(localStorage.getItem(k));
+            return [...(record.mappings || []), ...(record.history || [])]
+              .some(m => m.status === "STALE" && /modelo de origen cambió/i.test(m.stale_reason || ""));
+          } catch (_e) { return false; }
+        }), null, {timeout:5000});
+    } catch (error) {
+      const diagnostic = await page.evaluate(() => ({
+        model: (() => { try { return JSON.parse(document.querySelector("#model").value); } catch (e) { return {parseError: String(e)}; } })(),
+        reviewStatus: document.querySelector("#correspondence-review-status")?.textContent,
+        effectiveStatus: document.querySelector("#effective-correspondence-status")?.textContent,
+        editStatus: document.querySelector("#graph-edit-status")?.textContent,
+        records: Object.keys(localStorage).filter(k => k.startsWith("tgcv-effective-mappings-001:")).map(k => ({key:k,record:JSON.parse(localStorage.getItem(k))})),
+      }));
+      throw new Error("No apareció la invalidación por cambio de modelo. Diagnóstico: " + JSON.stringify(diagnostic) + "; espera: " + error.message);
+    }
     const effectiveHistoryAfterModelChange = await page.evaluate(() => Object.keys(localStorage)
       .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
       .map(k => JSON.parse(localStorage.getItem(k)))
