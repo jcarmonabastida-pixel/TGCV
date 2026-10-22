@@ -607,7 +607,7 @@ function archiveEffectiveCorrespondences(state,reason){
  record.last_invalidation={reason:reason,invalidated_at:now,source_model_sha256:state.sourceModelSha256,catalogue_version:state.catalogueVersion,catalogue_sha256:state.catalogueSha256};
  try{localStorage.setItem(key,JSON.stringify(record))}catch(e){throw new Error("No se pudo conservar el historial de correspondencias invalidadas: "+String(e))}
 }
-function archiveObsoleteEffectiveScopes(currentModelSha,currentCatalogueSha){
+function archiveObsoleteEffectiveScopes(currentModel,currentModelSha,currentCatalogueSha){
  var archivedScopes=0;
  for(var i=0;i<localStorage.length;i++){
   var key=localStorage.key(i);
@@ -615,6 +615,11 @@ function archiveObsoleteEffectiveScopes(currentModelSha,currentCatalogueSha){
   var record;try{record=JSON.parse(localStorage.getItem(key)||"null")}catch(_e){continue}
   if(!record||!Array.isArray(record.mappings))continue;
   var modelChanged=!!record.source_model_sha256&&record.source_model_sha256!==currentModelSha;
+  // The source snapshot is the authoritative fallback if a digest implementation or
+  // legacy record does not reflect an edit in the model's complete canonical structure.
+  if(record.source_model_snapshot&&currentModel){
+   try{modelChanged=canonical(record.source_model_snapshot)!==canonical(currentModel)}catch(_e){}
+  }
   var catalogueChanged=!!record.catalogue_sha256&&record.catalogue_sha256!==currentCatalogueSha;
   // A scope may already be STALE due to an earlier catalogue/decision change.
   // Still append the subsequent model-change event to its history; stale must never mean untracked.
@@ -661,7 +666,7 @@ async function applyAcceptedTgcvCorrespondences(){try{
  assert(correspondenceReviewState.sourceModelSha256===modelSha&&correspondenceReviewState.catalogueVersion===catalogue.version&&correspondenceReviewState.catalogueSha256===catalogueSha,"El modelo o catálogo cambió desde la revisión. Vuelve a generar las propuestas.");
  var storageKey=effectiveCorrespondenceKey(modelSha,catalogue.version,catalogueSha),storedRecord={history:[]};try{storedRecord=JSON.parse(localStorage.getItem(storageKey)||JSON.stringify({history:[]}))}catch(_e){}var prior=loadEffectiveCorrespondences(modelSha,catalogue.version,catalogueSha),result=await validateAcceptedCorrespondenceCandidates(model,catalogue,correspondenceReviewState.candidates,prior),combined=result.mappings,activeIds=new Set(combined.map(function(m){return m.candidate_id})),history=(Array.isArray(storedRecord.history)?storedRecord.history:[]).concat(prior.filter(function(m){return !activeIds.has(m.candidate_id)}).map(function(m){return Object.assign({},m,{status:"STALE",active:false,stale_reason:"La decisión ya no está aceptada en la revisión vigente."})})).concat(combined);
  effectiveCorrespondenceState={sourceModelSha256:modelSha,catalogueVersion:catalogue.version,catalogueSha256:catalogueSha,sourceModelCanonical:canonical(model),catalogueCanonical:canonical(catalogue),mappings:combined};
- try{localStorage.setItem(storageKey,JSON.stringify({schema:"tgcv-effective-mappings-001",source_model_sha256:modelSha,catalogue_version:catalogue.version,catalogue_sha256:catalogueSha,mappings:combined,history:history}))}catch(e){effectiveCorrespondenceState.mappings=[];throw new Error("No se pudo persistir la capa efectiva; no se ha activado ninguna correspondencia: "+String(e))}
+ try{localStorage.setItem(storageKey,JSON.stringify({schema:"tgcv-effective-mappings-001",source_model_sha256:modelSha,source_model_snapshot:JSON.parse(JSON.stringify(model)),catalogue_version:catalogue.version,catalogue_sha256:catalogueSha,mappings:combined,history:history}))}catch(e){effectiveCorrespondenceState.mappings=[];throw new Error("No se pudo persistir la capa efectiva; no se ha activado ninguna correspondencia: "+String(e))}
  $("effective-correspondence-status").dataset.state=result.conflicts.length?"rejected":"replay-verified";$("effective-correspondence-status").textContent="Correspondencias efectivas activas: "+combined.length+". Aplicación idempotente; el modelo de entrada no se ha sobrescrito."+(result.conflicts.length?" Conflictos pendientes: "+result.conflicts.map(function(x){return x.candidate_id+" ("+x.code+")"}).join(", "):"");if(lastModel&&lastPackage&&canonical(lastModel)===canonical(model))renderTgcvDemo(model,lastPackage.result,$("which").value);else $("effective-correspondence-status").textContent+=" El grafo se actualizará tras ejecutar el modelo vigente."
 }catch(e){$("effective-correspondence-status").dataset.state="rejected";$("effective-correspondence-status").textContent="No se aplicaron correspondencias: "+(e&&e.message?e.message:String(e))}}
 $("apply-accepted-tgcv-correspondences").addEventListener("click",applyAcceptedTgcvCorrespondences);
@@ -708,7 +713,7 @@ async function deriveAndRenderTgcvCorrespondences(){
   }
   // Persisted effective records are authoritative for invalidation. Scan them even when
   // in-memory review/effective state has already moved to another scope or was reset.
-  archiveObsoleteEffectiveScopes(result.source_model_sha256,catalogueSha256);
+  archiveObsoleteEffectiveScopes(model,result.source_model_sha256,catalogueSha256);
   result.candidates.forEach(function(c){var prior=decisions[c.candidate_id];if(prior&&prior.source_model_sha256===result.source_model_sha256&&prior.catalogue_version===result.catalogue_version&&prior.catalogue_sha256===catalogueSha256&&(prior.decision==="ACCEPTED"||prior.decision==="REJECTED")&&!hasStaleEffectiveCorrespondence(c.candidate_id))c.decision=prior.decision});
   correspondenceReviewState={sourceModelSha256:result.source_model_sha256,catalogueVersion:result.catalogue_version,catalogueSha256:catalogueSha256,catalogue:JSON.parse(JSON.stringify(catalogue)),sourceModelCanonical:canonical(model),candidates:result.candidates};effectiveCorrespondenceState={sourceModelSha256:result.source_model_sha256,catalogueVersion:result.catalogue_version,catalogueSha256:catalogueSha256,sourceModelCanonical:canonical(model),catalogueCanonical:canonical(catalogue),mappings:loadEffectiveCorrespondences(result.source_model_sha256,result.catalogue_version,catalogueSha256)};
   renderCorrespondenceReview();$("correspondence-review-status").textContent="Generadas "+result.candidates.length+" propuestas. Aún no modifican el grafo TGCV."+(scopeChanged?" El modelo o catálogo cambió: las decisiones previas quedan como histórico y no se reutilizan en este ámbito.":"");
