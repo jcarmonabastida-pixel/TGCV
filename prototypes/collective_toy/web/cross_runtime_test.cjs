@@ -328,6 +328,8 @@ function pythonJson(source, input) {
     originalCatalogue.transformations.push({id:"T_EXTRA",source_state:"E",target_state:"F"});
     await page.locator("#tgcv-target-catalogue").fill(JSON.stringify(originalCatalogue, null, 2));
     await page.locator("#derive-tgcv-correspondences").click();
+    await page.waitForFunction(() => /catálogo cambió.*histórico/i.test(
+      document.querySelector("#correspondence-review-status").textContent), null, {timeout:5000});
     assert.match(await page.locator("#correspondence-review-status").textContent(), /catálogo cambió.*histórico/i,
       "catalogue content changes must explicitly invalidate prior review decisions");
     assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: PENDIENTE/,
