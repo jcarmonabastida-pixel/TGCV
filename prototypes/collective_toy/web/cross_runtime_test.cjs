@@ -213,7 +213,7 @@ function pythonJson(source, input) {
           {system_transition_id:"t_ac",tgcv_transformation_id:"T_AC"},
           {system_transition_id:"t_cd",tgcv_transformation_id:"T_CD"}
         ],
-        relations: [["T_AC","T_CD"]]
+        relations: [["T_AC","T_CD"],["T_HUMIDITY","T_CD"]]
       },
       scenarios: [{
         id:"baseline",disabled_transitions:[],
@@ -230,12 +230,19 @@ function pythonJson(source, input) {
       "an explicitly mapped transformation must appear when its system transition is reachable");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /user-declared/,
       "the TGCV view must preserve the declared mapping provenance");
+    assert.match(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY.*T_CD|T_CD.*T_HUMIDITY/,
+      "the TGCV graph must display the declared relation when both mapped transformations are accessible");
 
     for (const evaluation of ["FALSE", "UNKNOWN"]) {
       await page.locator('#transition-review-list select[data-condition-evaluation="t_ab"]').selectOption(evaluation);
       await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
-      assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+      const currentTgcvText = await page.locator("#tgcv-graph").textContent();
+      assert.doesNotMatch(currentTgcvText, /T_HUMIDITY/,
         evaluation + " must remove the explicitly mapped transformation from the current TGCV graph");
+      assert.doesNotMatch(currentTgcvText, /T_HUMIDITY\\s*→\\s*T_CD/,
+        evaluation + " must remove relations whose transformation endpoint is no longer accessible");
+      assert.match(currentTgcvText, /T_CD/,
+        evaluation + " must retain unrelated accessible TGCV transformations");
       assert.match(await page.locator("#graph").textContent(), new RegExp(evaluation === "FALSE" ? "FALSA: humidity is low" : "DESCONOCIDA: humidity is low"),
         evaluation + " must remain visible on the system graph");
     }
