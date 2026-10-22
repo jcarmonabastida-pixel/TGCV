@@ -253,6 +253,27 @@ function pythonJson(source, input) {
         evaluation + " must remain visible on the system graph");
     }
 
+    // The visual editor must create/edit/clear condition metadata and invalidate old evaluations.
+    const visualConditionInput = page.locator('#transition-review-list input[data-condition-text="t_ab"]');
+    await visualConditionInput.fill("humidity is extremely low");
+    await page.locator('#transition-review-list button[data-save-condition="t_ab"]').click();
+    const visuallyEditedModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(visuallyEditedModel.schema_version, "collective-toy-input-002",
+      "adding/editing a visual condition must upgrade to schema v002");
+    assert.equal(visuallyEditedModel.transitions.find(t => t.id === "t_ab").condition, "humidity is extremely low",
+      "visual condition editor must persist the condition text");
+    assert.equal(visuallyEditedModel.scenarios[0].condition_evaluations?.t_ab, undefined,
+      "changing condition text must invalidate the previous scenario evaluation");
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const visuallyEditedPackage = await page.evaluate(() => window.lastPackage);
+    assert.ok(!visuallyEditedPackage.result.scenario_results.baseline.reachable_states.includes("B"),
+      "a visually edited condition must remain blocked until re-evaluated");
+    assert.match(await page.locator("#graph-note").textContent(), /t_ab \(NO EVALUADA\)/,
+      "the graph note must show the edited condition as unevaluated");
+    assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+      "the old accepted mapping must not make a now-blocked transition accessible after its condition changes");
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
