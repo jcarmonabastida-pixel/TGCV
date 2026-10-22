@@ -500,10 +500,12 @@ function pythonJson(source, input) {
     await page.locator("#apply-accepted-tgcv-correspondences").click();
     await page.waitForFunction(() => /Correspondencias efectivas activas: 1/i.test(
       document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
-    const modelBeforeContentChange = JSON.parse(await page.locator("#model").inputValue());
-    modelBeforeContentChange.transitions[0].description = "source model content changed for invalidation acceptance";
-    await page.locator("#model").fill(JSON.stringify(modelBeforeContentChange, null, 2));
-    await page.locator("#model").dispatchEvent("input");
+    // Change the source model through its supported visual editor; the JSON textarea
+    // is intentionally inside a collapsed advanced-details panel.
+    await page.locator("#new-state-id").fill("StateForInvalidationCheck");
+    await page.locator("#new-state-add").click();
+    await page.waitForFunction(() => /Estado añadido: StateForInvalidationCheck/i.test(
+      document.querySelector("#graph-edit-status")?.textContent || ""), null, {timeout:5000});
     await page.locator("#derive-tgcv-correspondences").click();
     await page.waitForFunction(() => /modelo de origen cambió.*histórico/i.test(
       document.querySelector("#correspondence-review-status")?.textContent || ""), null, {timeout:5000});
