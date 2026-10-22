@@ -507,7 +507,7 @@ function pythonJson(source, input) {
     await page.waitForFunction(() => /Estado añadido: StateForInvalidationCheck/i.test(
       document.querySelector("#graph-edit-status")?.textContent || ""), null, {timeout:5000});
     await page.locator("#derive-tgcv-correspondences").click();
-    await page.waitForFunction(() => /modelo de origen cambió.*histórico/i.test(
+    await page.waitForFunction(() => /modelo o catálogo cambió.*histórico/i.test(
       document.querySelector("#correspondence-review-status")?.textContent || ""), null, {timeout:5000});
     const effectiveHistoryAfterModelChange = await page.evaluate(() => Object.keys(localStorage)
       .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
