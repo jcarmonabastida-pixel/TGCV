@@ -167,6 +167,30 @@ function pythonJson(source, input) {
     assert.deepEqual(unknownPkg.result, unknownEngineRun.result,
       "browser and Python results must agree when the condition is UNKNOWN");
 
+    const staleEvaluationModel = {
+      ...conditionalModel,
+      transitions: [
+        { id: "t_ab", source: "A", target: "B", condition: "humidity is high" },
+        ...conditionalModel.transitions.slice(1)
+      ],
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "TRUE" } }
+      }]
+    };
+    const staleEngineCheck = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); exec('try:\\n e.validate_model(m)\\n print(json.dumps({\\'rejected\\':False}))\\nexcept e.ModelValidationError as x:\\n print(json.dumps({\\'rejected\\':True,\\'reason\\':str(x)}))')",
+      staleEvaluationModel
+    );
+    assert.equal(staleEngineCheck.rejected, true,
+      "Python must reject an evaluation whose stored condition text is stale");
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(staleEvaluationModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/obsoleta|ya cambió/i}).waitFor({timeout:5000});
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
