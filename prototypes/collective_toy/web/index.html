@@ -588,6 +588,30 @@ var correspondenceReviewState={sourceModelSha256:null,catalogueVersion:null,cata
 var effectiveCorrespondenceState={sourceModelSha256:null,catalogueVersion:null,catalogueSha256:null,sourceModelCanonical:null,catalogueCanonical:null,mappings:[]};
 function effectiveCorrespondenceKey(a,b,c){return "tgcv-effective-mappings-001:"+a+":"+b+":"+c}
 function loadEffectiveCorrespondences(a,b,c){try{var raw=localStorage.getItem(effectiveCorrespondenceKey(a,b,c));if(!raw)return [];var p=JSON.parse(raw);return p&&p.schema==="tgcv-effective-mappings-001"&&p.source_model_sha256===a&&p.catalogue_version===b&&p.catalogue_sha256===c&&Array.isArray(p.mappings)?p.mappings:[]}catch(_e){return []}}
+function archiveEffectiveCorrespondences(state,reason){
+ if(!state||!state.sourceModelSha256||!state.catalogueVersion||!state.catalogueSha256)return;
+ var key=effectiveCorrespondenceKey(state.sourceModelSha256,state.catalogueVersion,state.catalogueSha256),record;
+ try{record=JSON.parse(localStorage.getItem(key)||"null")}catch(_e){record=null}
+ if(!record||!Array.isArray(record.mappings))return;
+ var now=new Date().toISOString(),archived=[];
+ record.mappings=record.mappings.map(function(m){
+  if(m.status!=="EFFECTIVE")return m;
+  var stale=Object.assign({},m,{status:"STALE",active:false,stale_reason:reason,invalidated_at:now});
+  archived.push(stale);return stale;
+ });
+ record.history=(Array.isArray(record.history)?record.history:[]).concat(archived);
+ record.last_invalidation={reason:reason,invalidated_at:now,source_model_sha256:state.sourceModelSha256,catalogue_version:state.catalogueVersion,catalogue_sha256:state.catalogueSha256};
+ try{localStorage.setItem(key,JSON.stringify(record))}catch(e){throw new Error("No se pudo conservar el historial de correspondencias invalidadas: "+String(e))}
+}
+function hasStaleEffectiveCorrespondence(candidateId){
+ for(var i=0;i<localStorage.length;i++){
+  var key=localStorage.key(i);if(!key||!key.startsWith("tgcv-effective-mappings-001:"))continue;
+  try{var record=JSON.parse(localStorage.getItem(key)||"null");var all=(record&&Array.isArray(record.mappings)?record.mappings:[]).concat(record&&Array.isArray(record.history)?record.history:[]);
+   if(all.some(function(m){return m.candidate_id===candidateId&&m.status==="STALE"}))return true;
+  }catch(_e){}
+ }
+ return false;
+}
 function effectiveCorrespondencesForModel(m){if(!m||!effectiveCorrespondenceState.mappings.length||effectiveCorrespondenceState.sourceModelCanonical!==canonical(m))return [];var cat;try{cat=JSON.parse($("tgcv-target-catalogue").value)}catch(_e){return []}if(canonical(cat)!==effectiveCorrespondenceState.catalogueCanonical)return [];return effectiveCorrespondenceState.mappings.filter(function(x){return x.status==="EFFECTIVE"&&x.source_model_sha256===effectiveCorrespondenceState.sourceModelSha256&&x.catalogue_version===effectiveCorrespondenceState.catalogueVersion&&x.catalogue_sha256===effectiveCorrespondenceState.catalogueSha256})}
 async function validateAcceptedCorrespondenceCandidates(model,catalogue,candidates,existing){
  assert(model&&catalogue&&Array.isArray(candidates),"Faltan modelo, catálogo o propuestas.");
@@ -646,8 +670,12 @@ async function deriveAndRenderTgcvCorrespondences(){
   var model=currentModelForEditor();if(!model)throw new Error("Primero corrige o carga un modelo válido.");
   var catalogue;try{catalogue=JSON.parse($("tgcv-target-catalogue").value)}catch(_e){throw new Error("El catálogo no contiene JSON válido.")}
   var result=await deriveTgcvCorrespondenceCandidates(model,catalogue),catalogueSha256=await hash(catalogue,"tgcv_correspondence_catalogue"),previous=correspondenceReviewState,decisions=loadCorrespondenceDecisions(result.source_model_sha256,result.catalogue_version,catalogueSha256);
-  result.candidates.forEach(function(c){var prior=decisions[c.candidate_id];if(prior&&prior.source_model_sha256===result.source_model_sha256&&prior.catalogue_version===result.catalogue_version&&prior.catalogue_sha256===catalogueSha256&&(prior.decision==="ACCEPTED"||prior.decision==="REJECTED"))c.decision=prior.decision});
   var scopeChanged=previous.sourceModelSha256!==null&&(previous.sourceModelSha256!==result.source_model_sha256||previous.catalogueVersion!==result.catalogue_version||previous.catalogueSha256!==catalogueSha256);
+  if(scopeChanged&&effectiveCorrespondenceState.mappings.some(function(m){return m.status==="EFFECTIVE"})){
+   var reason=previous.sourceModelSha256!==result.source_model_sha256?"El modelo de origen cambió; se requiere una nueva revisión explícita.":"El catálogo cambió; se requiere una nueva revisión explícita.";
+   archiveEffectiveCorrespondences(effectiveCorrespondenceState,reason);
+  }
+  result.candidates.forEach(function(c){var prior=decisions[c.candidate_id];if(prior&&prior.source_model_sha256===result.source_model_sha256&&prior.catalogue_version===result.catalogue_version&&prior.catalogue_sha256===catalogueSha256&&(prior.decision==="ACCEPTED"||prior.decision==="REJECTED")&&!hasStaleEffectiveCorrespondence(c.candidate_id))c.decision=prior.decision});
   correspondenceReviewState={sourceModelSha256:result.source_model_sha256,catalogueVersion:result.catalogue_version,catalogueSha256:catalogueSha256,catalogue:JSON.parse(JSON.stringify(catalogue)),sourceModelCanonical:canonical(model),candidates:result.candidates};effectiveCorrespondenceState={sourceModelSha256:result.source_model_sha256,catalogueVersion:result.catalogue_version,catalogueSha256:catalogueSha256,sourceModelCanonical:canonical(model),catalogueCanonical:canonical(catalogue),mappings:loadEffectiveCorrespondences(result.source_model_sha256,result.catalogue_version,catalogueSha256)};
   renderCorrespondenceReview();$("correspondence-review-status").textContent="Generadas "+result.candidates.length+" propuestas. Aún no modifican el grafo TGCV."+(scopeChanged?" El modelo o catálogo cambió: las decisiones previas quedan como histórico y no se reutilizan en este ámbito.":"");
  }catch(e){$("correspondence-review-status").textContent="No se pudieron generar propuestas: "+(e&&e.message?e.message:String(e))}
