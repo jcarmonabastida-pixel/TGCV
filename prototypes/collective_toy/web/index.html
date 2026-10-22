@@ -633,10 +633,12 @@ function archiveObsoleteEffectiveScopes(currentModel,currentModelSha,currentCata
    try{modelChanged=modelChanged||(canonical(record.source_model_snapshot)!==canonical(currentModel))}catch(_e){}
   }
   var catalogueChanged=!!record.catalogue_sha256&&record.catalogue_sha256!==currentCatalogueSha;
-  // A scope may already be STALE due to an earlier catalogue/decision change.
-  // Still append the subsequent model-change event to its history; stale must never mean untracked.
-  if((!modelChanged&&!catalogueChanged)||record.mappings.length===0)continue;
+  // A scope may already be STALE (and have no mappings left) after an earlier
+  // invalidation. Still record a later, distinct cause; do not repeat the same event
+  // on every render/derive call.
+  if(!modelChanged&&!catalogueChanged)continue;
   var reason=modelChanged?"El modelo de origen cambió; se requiere una nueva revisión explícita.":"El catálogo cambió; se requiere una nueva revisión explícita.";
+  if(record.mappings.length===0&&record.last_invalidation&&record.last_invalidation.reason===reason)continue;
   var scope={sourceModelSha256:record.source_model_sha256,catalogueVersion:record.catalogue_version,catalogueSha256:record.catalogue_sha256};
   archiveEffectiveCorrespondences(scope,reason);archivedScopes++;
  }
