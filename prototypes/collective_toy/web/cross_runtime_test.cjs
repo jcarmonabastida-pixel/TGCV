@@ -337,6 +337,39 @@ function pythonJson(source, input) {
     }), explicitlyMappedModel);
     assert.equal(noMatchCandidates.candidates.length, 0,
       "missing catalogue evidence must not invent correspondence candidates");
+
+    // Effective materialization requires an accepted, exact-scope proposal; it is idempotent,
+    // rejects conflicts with user-declared mappings, and never mutates the source model.
+    const materialization = await page.evaluate(async model => {
+      const unMapped = {...model, tgcv_mapping:{
+        schema:"tgcv-explicit-mapping-001", mapping_rule:"user-declared-map-v1",
+        provenance:"user-declared", mappings:[], relations:[]
+      }};
+      const catalogue = {schema:"tgcv-target-catalogue-001",version:"materialize-v1",
+        transformations:[{id:"T_DERIVED_AB",source_state:"A",target_state:"B"}]};
+      const before = JSON.stringify(unMapped);
+      const derived = await window.deriveTgcvCorrespondenceCandidates(unMapped,catalogue);
+      derived.candidates[0].decision = "ACCEPTED";
+      const first = await window.validateAcceptedCorrespondenceCandidates(unMapped,catalogue,derived.candidates,[]);
+      const second = await window.validateAcceptedCorrespondenceCandidates(unMapped,catalogue,derived.candidates,first.mappings);
+      const conflictingModel = {...unMapped,tgcv_mapping:{
+        schema:"tgcv-explicit-mapping-001",mapping_rule:"user-declared-map-v1",provenance:"user-declared",
+        mappings:[{system_transition_id:"t_ab",tgcv_transformation_id:"T_DERIVED_AB"}],relations:[]
+      }};
+      const conflict = await window.validateAcceptedCorrespondenceCandidates(conflictingModel,catalogue,derived.candidates,[]);
+      const staleModel = {...unMapped,model_id:"changed-after-review"};
+      const stale = await window.validateAcceptedCorrespondenceCandidates(staleModel,catalogue,derived.candidates,[]);
+      return {before,after:JSON.stringify(unMapped),first,second,conflict,stale};
+    }, explicitlyMappedModel);
+    assert.equal(materialization.before, materialization.after, "materialization must not rewrite the input model");
+    assert.equal(materialization.first.mappings.length, 1, "one accepted exact match should materialize as effective");
+    assert.equal(materialization.first.mappings[0].status, "EFFECTIVE");
+    assert.equal(materialization.first.mappings[0].provenance, "derived-and-accepted");
+    assert.equal(materialization.second.mappings[0].mapping_id, materialization.first.mappings[0].mapping_id,
+      "applying the same accepted candidate twice must be idempotent");
+    assert.equal(materialization.conflict.mappings.length, 0, "declared mapping conflicts must never be overwritten");
+    assert.equal(materialization.conflict.conflicts[0].code, "CONFLICT_NEEDS_REVIEW");
+    assert.equal(materialization.stale.mappings.length, 0, "a proposal from a changed model must not materialize");
     assert.match(await page.locator("#tgcv-graph").textContent(), /T_CD/,
       "deriving proposals must not modify the currently rendered TGCV graph");
 
