@@ -94,6 +94,7 @@ function pythonJson(source, input) {
       };
       const imported = JSON.parse(JSON.stringify(pkg));
       imported.tgcv_correspondence_review = review;
+      if (!imported.value_assessment && imported.value_assessment_status === undefined) imported.value_assessment_status = "NOT_ASSESSED";
       delete imported.package_sha256;
       imported.package_sha256 = await window.hash(imported);
       const assessment = await window.assessImportedBrowserPackage(imported);
