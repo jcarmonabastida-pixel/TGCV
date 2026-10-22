@@ -487,6 +487,40 @@ function pythonJson(source, input) {
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "a stale effective mapping must remain inactive when the old catalogue is restored");
 
+    // Re-accept only after the catalogue rollback has been explicitly reviewed, then
+    // prove that a source-model content change invalidates the newly effective mapping.
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.locator("#correspondence-review-list article").first().getByRole("button", {name:"Aceptar propuesta"}).click();
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "model must execute before reapplying after explicit review");
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.locator("#apply-accepted-tgcv-correspondences").click();
+    await page.waitForFunction(() => /Correspondencias efectivas activas: 1/i.test(
+      document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
+    const modelBeforeContentChange = JSON.parse(await page.locator("#model").inputValue());
+    modelBeforeContentChange.transitions[0].description = "source model content changed for invalidation acceptance";
+    await page.locator("#model").fill(JSON.stringify(modelBeforeContentChange, null, 2));
+    await page.locator("#model").dispatchEvent("input");
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.waitForFunction(() => /modelo de origen cambió.*histórico/i.test(
+      document.querySelector("#correspondence-review-status")?.textContent || ""), null, {timeout:5000});
+    const effectiveHistoryAfterModelChange = await page.evaluate(() => Object.keys(localStorage)
+      .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+      .map(k => JSON.parse(localStorage.getItem(k)))
+      .flatMap(record => [...(record.mappings || []), ...(record.history || [])]));
+    assert.ok(effectiveHistoryAfterModelChange.some(m => m.status === "STALE" && /modelo de origen cambió/i.test(m.stale_reason || "")),
+      "source model content changes must invalidate active mappings while preserving a reasoned history");
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "edited source model must still execute after effective mapping invalidation");
+    assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+      "a mapping invalidated by a source model change must not remain active in the TGCV graph");
+
     // The visual editor must create/edit/clear condition metadata and invalidate old evaluations.
     const visualConditionInput = page.locator('#transition-review-list input[data-condition-text="t_ab"]');
     await visualConditionInput.fill("humidity is extremely low");
