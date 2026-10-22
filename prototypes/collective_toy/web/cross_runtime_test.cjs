@@ -130,6 +130,8 @@ function pythonJson(source, input) {
       "browser and Python results must agree when the condition is TRUE");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: humidity is low/,
       "the system graph must display the active TRUE condition evaluation");
+    assert.doesNotMatch(await page.locator("#graph-note").textContent(), /t_ab/,
+      "a TRUE condition must not be reported as blocked in the system graph note");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no declara una correspondencia TGCV explícita/i,
       "a custom model without an explicit TGCV mapping must explain why the TGCV graph is not inferred");
     assert.equal((await page.locator("#tgcv-graph").locator("g").count()), 0,
@@ -155,6 +157,8 @@ function pythonJson(source, input) {
       "browser and Python results must agree when the condition is FALSE");
     assert.match(await page.locator("#graph").textContent(), /FALSA: humidity is low/,
       "the system graph must display the active FALSE condition evaluation");
+    assert.match(await page.locator("#graph-note").textContent(), /t_ab \(FALSA\)/,
+      "a FALSE condition must be identified as blocked, not unevaluated");
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no declara una correspondencia TGCV explícita/i,
       "the TGCV graph must remain explicitly unavailable for an unmapped custom model after FALSE evaluation");
 
@@ -176,6 +180,8 @@ function pythonJson(source, input) {
       "UNKNOWN evaluation must keep the conditional transition blocked");
     assert.deepEqual(unknownPkg.result, unknownEngineRun.result,
       "browser and Python results must agree when the condition is UNKNOWN");
+    assert.match(await page.locator("#graph-note").textContent(), /t_ab \(DESCONOCIDA\)/,
+      "an UNKNOWN condition must be distinguished from an unevaluated condition in the system graph note");
 
     const staleEvaluationModel = {
       ...conditionalModel,
