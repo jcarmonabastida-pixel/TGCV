@@ -569,8 +569,14 @@ async function deriveTgcvCorrespondenceCandidates(systemModel,catalogue){
  (systemModel.transitions||[]).forEach(function(t){assert(t&&typeof t.id==="string"&&typeof t.source==="string"&&typeof t.target==="string","Transición de origen inválida.");assert(!transitionIds.has(t.id),"ID de transición duplicado.");transitionIds.add(t.id)});
  catalogue.transformations.forEach(function(t){assert(t&&typeof t.id==="string"&&t.id.trim()&&typeof t.source_state==="string"&&t.source_state.trim()&&typeof t.target_state==="string"&&t.target_state.trim(),"Cada transformación del catálogo debe declarar id, source_state y target_state.");assert(!targetIds.has(t.id),"ID de transformación TGCV duplicado en catálogo.");targetIds.add(t.id)});
  var sourceDigest=await hash(systemModel,"correspondence_source_model"),candidates=[];
+ var declaredMappings=systemModel.tgcv_mapping&&Array.isArray(systemModel.tgcv_mapping.mappings)?systemModel.tgcv_mapping.mappings:[];
+ var declaredTransitionIds=new Set(declaredMappings.map(function(m){return m.system_transition_id}));
+ var declaredTransformationIds=new Set(declaredMappings.map(function(m){return m.tgcv_transformation_id}));
  for(var transition of (systemModel.transitions||[])){
-  var matches=catalogue.transformations.filter(function(target){return target.source_state===transition.source&&target.target_state===transition.target});
+  // Explicit user mappings are authoritative: do not generate a derived proposal
+  // for an already-mapped transition or a transformation already claimed by one.
+  if(declaredTransitionIds.has(transition.id))continue;
+  var matches=catalogue.transformations.filter(function(target){return !declaredTransformationIds.has(target.id)&&target.source_state===transition.source&&target.target_state===transition.target});
   for(var target of matches){
    var identity={algorithm:"tgcv-correspondence-exact-boundary-001",catalogue_version:catalogue.version,source_model_sha256:sourceDigest,system_transition_id:transition.id,tgcv_transformation_id:target.id};
    candidates.push({candidate_id:"tcand-"+(await hash(identity,"correspondence_candidate_id")),algorithm:identity.algorithm,algorithm_version:"1",catalogue_version:catalogue.version,source_model_id:systemModel.model_id||null,source_model_sha256:sourceDigest,system_transition_id:transition.id,tgcv_transformation_id:target.id,status:matches.length===1?"PROPOSED":"NEEDS_REVIEW",evidence:{kind:"exact_declared_state_boundary_match",system_source_state:transition.source,system_target_state:transition.target,catalogue_source_state:target.source_state,catalogue_target_state:target.target_state,condition:transition.condition||null},rationale:matches.length===1?"Los estados de origen y destino coinciden exactamente con una única transformación del catálogo declarado; la correspondencia sigue siendo una propuesta.":"Hay varias transformaciones del catálogo con los mismos estados de origen y destino; requiere revisión explícita.",decision:null});
