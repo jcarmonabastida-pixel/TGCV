@@ -535,6 +535,13 @@ function pythonJson(source, input) {
       .flatMap(record => [...(record.mappings || []), ...(record.history || [])]));
     assert.ok(effectiveHistoryAfterModelChange.some(m => m.status === "STALE" && /modelo de origen cambió/i.test(m.stale_reason || "")),
       "source model content changes must invalidate active mappings while preserving a reasoned history; observed records: " + JSON.stringify(effectiveHistoryAfterModelChange));
+    assert.ok(effectiveHistoryAfterModelChange.some(m => m.status === "STALE" && /catálogo cambió/i.test(m.stale_reason || "")),
+      "history must preserve the earlier catalogue invalidation as well as the later model invalidation");
+    const effectiveScopesAfterModelChange = await page.evaluate(() => Object.keys(localStorage)
+      .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+      .map(k => JSON.parse(localStorage.getItem(k))));
+    assert.ok(effectiveScopesAfterModelChange.every(record => !(record.mappings || []).some(m => m.status === "EFFECTIVE" && m.active !== false)),
+      "no stale effective mapping may remain active after source-model content changes");
     await page.locator("#run").click();
     await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
       document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
