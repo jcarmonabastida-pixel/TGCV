@@ -253,6 +253,47 @@ function pythonJson(source, input) {
         evaluation + " must remain visible on the system graph");
     }
 
+    // Candidate derivation is deterministic, evidence-bearing, and has no semantic side effects.
+    const derivationSnapshot = await page.evaluate(async ({model, catalogue}) => {
+      const before = JSON.stringify(model);
+      const first = await window.deriveTgcvCorrespondenceCandidates(model, catalogue);
+      const second = await window.deriveTgcvCorrespondenceCandidates(model, catalogue);
+      return {before, after:JSON.stringify(model), first, second};
+    }, {
+      model: explicitlyMappedModel,
+      catalogue: {schema:"tgcv-target-catalogue-001",version:"fixture-v1",transformations:[
+        {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+        {id:"T_CD",source_state:"C",target_state:"D"}
+      ]}
+    });
+    assert.equal(derivationSnapshot.before, derivationSnapshot.after,
+      "candidate derivation must not mutate the source model");
+    assert.deepEqual(derivationSnapshot.first, derivationSnapshot.second,
+      "candidate derivation must be deterministic for an unchanged model/catalogue");
+    assert.equal(derivationSnapshot.first.candidates.length, 2,
+      "only exact source/target matches in the declared catalogue should yield candidates");
+    assert.ok(derivationSnapshot.first.candidates.every(c => c.status === "PROPOSED" && c.decision === null),
+      "exact matches must remain proposals without user acceptance");
+    assert.ok(derivationSnapshot.first.candidates.every(c => /^[0-9a-f]{64}$/.test(c.source_model_sha256) && /^tcand-[0-9a-f]{64}$/.test(c.candidate_id)),
+      "candidates must be traceable to SHA-256 source and stable candidate IDs");
+    const ambiguousCandidates = await page.evaluate(async model => window.deriveTgcvCorrespondenceCandidates(model, {
+      schema:"tgcv-target-catalogue-001",version:"ambiguous-v1",transformations:[
+        {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+        {id:"T_HUMIDITY_ALT",source_state:"A",target_state:"B"}
+      ]
+    }), explicitlyMappedModel);
+    assert.ok(ambiguousCandidates.candidates.length === 2 && ambiguousCandidates.candidates.every(c => c.status === "NEEDS_REVIEW"),
+      "multiple exact targets for one transition must require review, never auto-accept");
+    const noMatchCandidates = await page.evaluate(async model => window.deriveTgcvCorrespondenceCandidates(model, {
+      schema:"tgcv-target-catalogue-001",version:"no-match-v1",transformations:[
+        {id:"T_UNRELATED",source_state:"X",target_state:"Y"}
+      ]
+    }), explicitlyMappedModel);
+    assert.equal(noMatchCandidates.candidates.length, 0,
+      "missing catalogue evidence must not invent correspondence candidates");
+    assert.match(await page.locator("#tgcv-graph").textContent(), /T_CD/,
+      "deriving proposals must not modify the currently rendered TGCV graph");
+
     // The visual editor must create/edit/clear condition metadata and invalidate old evaluations.
     const visualConditionInput = page.locator('#transition-review-list input[data-condition-text="t_ab"]');
     await visualConditionInput.fill("humidity is extremely low");
