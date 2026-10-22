@@ -274,6 +274,19 @@ function pythonJson(source, input) {
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "the old accepted mapping must not make a now-blocked transition accessible after its condition changes");
 
+    // Clearing a condition must remove its metadata and stale evaluation, restoring an unconditional transition.
+    await page.locator('#transition-review-list input[data-condition-text="t_ab"]').fill("");
+    await page.locator('#transition-review-list button[data-save-condition="t_ab"]').click();
+    const visuallyClearedModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(visuallyClearedModel.transitions.find(t => t.id === "t_ab").condition, undefined,
+      "clearing the visual condition must remove condition metadata");
+    assert.equal(visuallyClearedModel.scenarios[0].condition_evaluations?.t_ab, undefined,
+      "clearing the condition must also remove its scenario evaluation");
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const visuallyClearedPackage = await page.evaluate(() => window.lastPackage);
+    assert.ok(visuallyClearedPackage.result.scenario_results.baseline.reachable_states.includes("B"),
+      "a cleared condition must behave as an unconditional transition");
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
