@@ -302,7 +302,9 @@ function pythonJson(source, input) {
     // Candidate discovery must not duplicate user-declared correspondences.
     const reviewModel = {
       ...explicitlyMappedModel,
-      tgcv_mapping: {...explicitlyMappedModel.tgcv_mapping, mappings: []}
+      // An unmapped review fixture must not retain relations whose endpoints
+      // belonged to the removed user-declared mappings.
+      tgcv_mapping: {...explicitlyMappedModel.tgcv_mapping, mappings: [], relations: []}
     };
     const declaredCandidateCheck = await page.evaluate(async model => window.deriveTgcvCorrespondenceCandidates(model, {
       schema:"tgcv-target-catalogue-001",version:"declared-map-v1",transformations:[
