@@ -738,6 +738,21 @@ function pythonJson(source, input) {
     assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
       "the exported conditional package must pass independent replay: " +
       await page.locator("#package-assessment").textContent());
+
+    // Tampering with a condition after export must be rejected, never reported as verified replay.
+    const tamperedPackage = JSON.parse(exportedPackageText);
+    tamperedPackage.input.transitions.find(t => t.id === "t_ab").condition = "authorization is not valid";
+    await page.locator("#package-file").setInputFiles({
+      name: "tampered-conditional-round-trip.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(tamperedPackage))
+    });
+    await page.locator("#assess-package").click();
+    await page.waitForFunction(() => ["rejected", "inspect-only/replay-unavailable"].includes(
+      document.querySelector("#package-assessment")?.dataset.state
+    ), null, {timeout:5000});
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "rejected",
+      "tampered conditional input must be rejected, not replay-verified");
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
