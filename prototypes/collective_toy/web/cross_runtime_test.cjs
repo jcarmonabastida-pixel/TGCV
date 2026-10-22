@@ -594,6 +594,7 @@ function pythonJson(source, input) {
       "JSON import must preserve the condition-capable schema version");
 
     // Spanish text transcription must preserve recognized conditions as metadata, not as an evaluation.
+    await page.locator("details.relation-editor").filter({hasText:"Transcripción asistida de texto a grafo"}).locator("summary").click();
     await page.locator("#system-description").fill(
       "Si hay autorización, el sistema pasa de espera a acceso autorizado."
     );
