@@ -571,6 +571,47 @@ function pythonJson(source, input) {
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "a mapping invalidated by a source model change must not remain active in the TGCV graph");
 
+    // JSON import must preserve conditional metadata without fabricating an evaluation.
+    const jsonConditionalModel = {
+      ...model,
+      schema_version: "collective-toy-input-002",
+      transitions: model.transitions.map(t => t.id === "t_ab" ? {...t, condition:"authorization is valid"} : {...t}),
+      scenarios: [{id:"baseline",disabled_transitions:[]}]
+    };
+    await page.locator("#json-file").setInputFiles({
+      name:"conditional-model.json",
+      mimeType:"application/json",
+      buffer:Buffer.from(JSON.stringify(jsonConditionalModel))
+    });
+    await page.waitForFunction(() => /Archivo cargado y validado/i.test(
+      document.querySelector("#file-status")?.textContent || ""), null, {timeout:5000});
+    const jsonImportedConditionalModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(jsonImportedConditionalModel.transitions.find(t => t.id === "t_ab").condition, "authorization is valid",
+      "JSON import must preserve conditional text exactly");
+    assert.equal(jsonImportedConditionalModel.scenarios[0].condition_evaluations?.t_ab, undefined,
+      "JSON import must not invent an evaluation for a condition");
+    assert.equal(jsonImportedConditionalModel.schema_version, "collective-toy-input-002",
+      "JSON import must preserve the condition-capable schema version");
+
+    // Spanish text transcription must preserve recognized conditions as metadata, not as an evaluation.
+    await page.locator("#system-description").fill(
+      "Si hay autorización, el sistema pasa de espera a acceso autorizado."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /Borrador propuesto:/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+    const transcribedConditionalModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(transcribedConditionalModel.transitions.length, 1,
+      "transcriber fixture should yield exactly one explicitly described transition");
+    assert.equal(transcribedConditionalModel.transitions[0].condition, "hay autorización",
+      "transcriber must preserve the recognized Spanish condition as transition metadata");
+    assert.equal(transcribedConditionalModel.schema_version, "collective-toy-input-002",
+      "transcribing a condition must use the condition-capable schema version");
+    assert.equal(transcribedConditionalModel.scenarios[0].condition_evaluations?.[transcribedConditionalModel.transitions[0].id], undefined,
+      "transcriber must not fabricate a condition evaluation");
+    assert.match(await page.locator("#transcription-status").textContent(), /revisa el resultado/i,
+      "transcribed graph remains a human-reviewable draft");
+
     // The visual editor must create/edit/clear condition metadata and invalidate old evaluations.
     const visualConditionInput = page.locator('#transition-review-list input[data-condition-text="t_ab"]');
     await visualConditionInput.fill("humidity is extremely low");
