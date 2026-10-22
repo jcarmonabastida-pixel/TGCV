@@ -1,6 +1,6 @@
 # Matriz de cobertura de entrada de condiciones 001
 
-**Estado:** EJECUTADA — cobertura básica de las tres vías verificada en CI  
+**Estado:** COBERTURA BÁSICA VERIFICADA; gate contractual completo **PENDIENTE**  
 **Rama:** `integration/condition-evaluator-dual-graph-001-20261022`  
 **Commit de evidencia:** `5cc4015073694e9ae060700c385c4184f398d652`  
 **Suite principal:** [`web/cross_runtime_test.cjs`](https://github.com/jcarmonabastida-pixel/TGCV/blob/5cc4015073694e9ae060700c385c4184f398d652/prototypes/collective_toy/web/cross_runtime_test.cjs)  
@@ -25,10 +25,20 @@
 
 ## 3. Interpretación del resultado
 
-La cobertura de las tres vías queda **verificada para los casos explícitos de esta matriz**. No equivale a demostrar equivalencia semántica exhaustiva entre todas las expresiones JSON, todas las formulaciones del transcriptor y todas las operaciones del editor.
+La cobertura de las tres vías queda **verificada solo para los casos explícitos de esta matriz**. Esta matriz registra pruebas básicas de humo/regresión; no cierra la aceptación contractual completa de la sección 10 del contrato vigente. No equivale a demostrar equivalencia semántica exhaustiva entre todas las expresiones JSON, todas las formulaciones del transcriptor y todas las operaciones del editor.
 
 La evaluación de condiciones continúa sujeta a sus propias pruebas de resultado y a la regla de no ejecutar expresiones no evaluables. Un PASS de CI acredita los casos automatizados, no una garantía general sobre todas las entradas posibles.
 
-## 4. Siguiente control
+## 4. Brechas contractuales todavía abiertas
 
-Antes de cerrar la integración, comprobar la matriz contra el contrato vigente del demostrador y verificar que la nueva cobertura no altera el flujo de ejecución, el grafo del sistema ni el grafo TGCV fuera de los cambios explícitamente probados. La PR debe seguir en borrador hasta terminar esa revisión.
+La sección 10 del contrato vigente requiere más que los casos básicos anteriores. Permanecen **PENDIENTES** y no deben interpretarse como aprobados por estos PASS:
+
+- JSON: importación/exportación/replay de condición y procedencia de evaluación; rechazo de evaluaciones mal formadas u obsoletas; comparación equivalente navegador/Python.
+- Transcriptor: casos positivos, negativos, ambiguos y adversariales agrupados; negación/dirección no soportadas deben quedar pendientes y nunca simplificarse a una transición incondicional; persistencia de condición y procedencia en revisión, ejecución y exportación/importación.
+- Editor visual: recorrido add/change/clear con exportación/importación/replay, manteniendo IDs estables donde sea posible y actualizando ambas vistas.
+- Rutas cruzadas: transición condicional e incondicional en cada vía; cambio de condición invalida la evaluación ligada al texto anterior; modelos incondicionales y comportamiento histórico siguen siendo compatibles.
+- Integración: demostrar que el derivador de correspondencias y la representación TGCV solo consumen el modelo validado y las correspondencias efectivas, sin que propuestas, rechazos o entradas obsoletas cambien el grafo TGCV, T_acc, alcanzabilidad o resultados de ejecución.
+
+## 5. Siguiente control
+
+Implementar la suite agrupada de aceptación contractual (o separar formalmente el alcance como follow-up revisado, manteniendo visibles estos bloqueos). Verificar también que la cobertura añadida no altera el flujo de ejecución ni los dos grafos fuera de los cambios explícitamente probados. La PR debe seguir en borrador y sin fusionar hasta resolver o dividir explícitamente estos puntos.
