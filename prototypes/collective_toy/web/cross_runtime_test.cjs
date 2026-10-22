@@ -132,7 +132,7 @@ function pythonJson(source, input) {
       "the system graph must display the active TRUE condition evaluation");
     assert.match(await page.locator("#tgcv-demo-results").innerText(), /tau_t_ab/,
       "the TGCV graph must include the transformation enabled by the TRUE evaluation");
-    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /escenario actual/,
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /escenario actual/i,
       "a model without the example's fixed comparison scenarios must be described as a current-scenario view");
 
     const falseModel = {
