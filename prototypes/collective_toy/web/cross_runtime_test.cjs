@@ -706,6 +706,9 @@ function pythonJson(source, input) {
       el.dispatchEvent(new Event("input", {bubbles:true}));
     }, JSON.stringify(roundTripModel));
     await page.evaluate(() => syncGraphEditor());
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.waitForFunction(() => !/Sin propuestas generadas/i.test(
+      document.querySelector("#correspondence-review-status")?.textContent || ""), null, {timeout:5000});
     await page.locator("#run").click();
     await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
       document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
