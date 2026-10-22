@@ -9,6 +9,7 @@ on:
   pull_request:
     branches:
       - main
+      - implementation/dual-graph-sync-002-20261022
     paths:
       - 'prototypes/collective_toy/**'
       - '.github/workflows/collective-toy-engine-tests.yml'

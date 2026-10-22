@@ -10,8 +10,12 @@ const assert = require("node:assert/strict");
 
   const browser = await chromium.launch({ headless: true });
   try {
-    const page = await browser.newPage();
+    const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
     await page.goto("file://" + htmlPath);
+    const visualDir = process.env.TGCV_VISUAL_ARTIFACT_DIR || path.join(__dirname, "artifacts", "visual-review");
+    fs.mkdirSync(visualDir, { recursive: true });
+    const captureVisual = async (name) => page.screenshot({ path: path.join(visualDir, name), fullPage: false, animations: "disabled" });
+    const captureGraph = async (name, selector) => page.locator(selector).screenshot({ path: path.join(visualDir, name), animations: "disabled" });
 
     // Keep the MVP's state-local graph semantics and non-scientific boundary visible.
     const notice = await page.locator(".notice").innerText();
@@ -19,6 +23,144 @@ const assert = require("node:assert/strict");
     assert.match(notice, /No procesa datos reales/i);
     assert.match(notice, /No es una validación científica/i);
     assert.match(notice, /ni implementa por sí solo Tacc de TGCV/i);
+
+    // Integrated dual-graph example: both views start empty and load together.
+    const tgcvSection = page.locator("#tgcv-graph-section");
+    assert.equal(await tgcvSection.count(), 1, "A distinct TGCV graph section must exist");
+    assert.match(await tgcvSection.locator("h2").innerText(), /Grafo TGCV: espacio de transformaciones/);
+    assert.equal(await page.locator("#graph").count(), 1, "The existing system graph must remain present");
+    assert.equal(await page.locator("#graph rect").count(), 0, "The system graph must start empty");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 0, "The TGCV graph must start empty too");
+    assert.match(await page.locator("#tgcv-demo-results").innerText(), /Sin ejemplo TGCV cargado/i);
+    assert.match(await page.locator("#status").innerText(), /Ambos grafos están vacíos/i);
+
+    await page.locator("#load").click();
+    await page.locator("#graph rect").first().waitFor();
+    await page.locator("#tgcv-graph circle").first().waitFor();
+    assert.equal(await page.locator("#model").inputValue().then(value => JSON.parse(value).model_id), "toy-diamond-001");
+    assert.equal(await page.locator("#graph rect").count(), 4, "Loading the example must populate the system graph");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "The same action must populate the TGCV graph");
+    const stateLabelGeometry = await page.locator("#graph [data-state-label]").evaluateAll(labels => labels.map(label => {
+      const shape = document.querySelector(`#graph [data-state-node="${CSS.escape(label.getAttribute("data-state-label"))}"]`);
+      const textBox = label.getBBox();
+      const shapeX = Number(shape.getAttribute("x"));
+      const shapeY = Number(shape.getAttribute("y"));
+      const shapeRight = shapeX + Number(shape.getAttribute("width"));
+      const shapeBottom = shapeY + Number(shape.getAttribute("height"));
+      return { label: label.textContent, textBox: { x: textBox.x, y: textBox.y, width: textBox.width, height: textBox.height }, shape: { x: shapeX, y: shapeY, width: Number(shape.getAttribute("width")), height: Number(shape.getAttribute("height")) }, inside: textBox.x >= shapeX && textBox.x + textBox.width <= shapeRight && textBox.y >= shapeY && textBox.y + textBox.height <= shapeBottom };
+    }));
+    assert.equal(stateLabelGeometry.length, 4, "Each system node must expose its state label");
+    assert.ok(stateLabelGeometry.every(item => item.inside), `Every state name must be rendered inside its node shape: ${JSON.stringify(stateLabelGeometry)}`);
+    const tgcvLoaded = await page.locator("#tgcv-graph-section").innerText();
+    assert.match(tgcvLoaded, /correspondencia se declara explícitamente/i);
+    assert.match(tgcvLoaded, /no es una regla universal/i);
+    const tgcvFixture = await page.evaluate(() => window.tgcvDemoFixture(JSON.parse(document.querySelector("#model").value)));
+    const tgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), tgcvFixture);
+    assert.equal(tgcvDerived.system_model_id, "toy-diamond-001");
+    assert.equal(tgcvDerived.mappings.length, 4, "Every example transition must have an explicit illustrative mapping");
+    assert.deepEqual(tgcvDerived.before.transformations, ["tau_t_ab", "tau_t_bd"],
+      "A transformation whose source state is unreachable must not appear in scenario T_acc");
+    assert.deepEqual(tgcvDerived.after.transformations, ["tau_t_ab", "tau_t_ac", "tau_t_bd", "tau_t_cd"]);
+    assert.deepEqual(tgcvDerived.delta, ["tau_t_ac", "tau_t_cd"],
+      "Opening the A→C branch makes both A→C and the downstream C→D transition reachable");
+    assert.equal(tgcvDerived.trajectories.before.tau_ab_bd, true);
+    assert.equal(tgcvDerived.trajectories.after.tau_ab_bd, true);
+    assert.equal(tgcvDerived.trajectories.before.tau_ac_cd, false);
+    assert.equal(tgcvDerived.trajectories.after.tau_ac_cd, true);
+
+    // Save rendered screenshots of the actual implementation for human review.
+    await captureVisual("desktop-baseline.png");
+    await captureGraph("desktop-baseline-system-graph.png", "#graph");
+    await captureGraph("desktop-baseline-tgcv-graph.png", "#tgcv-graph");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await captureVisual("mobile-baseline.png");
+    await captureGraph("mobile-baseline-system-graph.png", "#graph");
+    await captureGraph("mobile-baseline-tgcv-graph.png", "#tgcv-graph");
+    await page.setViewportSize({ width: 1440, height: 1000 });
+
+    // Changing the selected system scenario must refresh the TGCV graph from the same engine result.
+    await page.locator("#run").click();
+    await page.waitForFunction(() => Array.from(document.querySelectorAll("#which option")).some(option => option.value === "block_ac"));
+    await page.locator("#which").selectOption("block_ac");
+    assert.equal(await page.locator("#graph rect").count(), 4, "System graph must remain rendered for the selected scenario");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 2, "TGCV graph must show only transformations appearing in block_ac trajectories");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: block_ac/i);
+    await captureVisual("desktop-block-ac.png");
+    await captureGraph("desktop-block-ac-system-graph.png", "#graph");
+    await captureGraph("desktop-block-ac-tgcv-graph.png", "#tgcv-graph");
+    await page.setViewportSize({ width: 390, height: 844 });
+    await captureVisual("mobile-block-ac.png");
+    await captureGraph("mobile-block-ac-system-graph.png", "#graph");
+    await captureGraph("mobile-block-ac-tgcv-graph.png", "#tgcv-graph");
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.locator("#which").selectOption("baseline");
+    assert.equal(await page.locator("#tgcv-graph circle").count(), 4, "Returning to baseline must restore the four accessible transformations");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Escenario actual: baseline/i);
+
+    // Long state names must remain readable inside their node shapes without node overlap.
+    await page.locator("#layout-mode").selectOption("auto");
+    await page.locator("summary").filter({ hasText: "JSON avanzado" }).click();
+    const longLabelModel = JSON.parse(await page.locator("#model").inputValue());
+    const longStateNames = {
+      A: "inicio_del_proceso_principal",
+      B: "evaluacion_intermedia_extensa",
+      C: "ruta_alternativa_condicionada",
+      D: "resultado_final_confirmado"
+    };
+    longLabelModel.model_id = "long-state-labels-acceptance";
+    longLabelModel.states = longLabelModel.states.map(state => longStateNames[state]);
+    longLabelModel.initial_state = longStateNames[longLabelModel.initial_state];
+    longLabelModel.transitions.forEach(edge => { edge.source = longStateNames[edge.source]; edge.target = longStateNames[edge.target]; });
+    await page.locator("#model").fill(JSON.stringify(longLabelModel, null, 2));
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
+    assert.match(await page.locator("#status").innerText(), /Ejecución completada/i, "Long-name model must execute before layout assertions");
+    const longLabelGeometry = await page.locator("#graph [data-state-label]").evaluateAll(labels => labels.map(label => {
+      const name = label.getAttribute("data-state-label");
+      const shape = document.querySelector(`#graph [data-state-node="${CSS.escape(name)}"]`);
+      const textBox = label.getBBox(), shapeBox = shape.getBBox();
+      return { name, fontSize: Number(label.getAttribute("font-size")), inside: textBox.x >= shapeBox.x && textBox.x + textBox.width <= shapeBox.x + shapeBox.width && textBox.y >= shapeBox.y && textBox.y + textBox.height <= shapeBox.y + shapeBox.height, box: { x: shapeBox.x, y: shapeBox.y, width: shapeBox.width, height: shapeBox.height } };
+    }));
+    assert.equal(longLabelGeometry.length, 4, "All long state labels must be rendered");
+    assert.ok(longLabelGeometry.every(item => item.inside), "Long state names must remain fully inside their node shapes");
+    assert.ok(longLabelGeometry.every(item => item.fontSize >= 11), "Long state names must not be reduced below 11px");
+    for (let i = 0; i < longLabelGeometry.length; i++) for (let j = i + 1; j < longLabelGeometry.length; j++) {
+      const a = longLabelGeometry[i].box, b = longLabelGeometry[j].box;
+      assert.ok(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y,
+        `State nodes must not overlap: ${longLabelGeometry[i].name} ${JSON.stringify(a)} / ${longLabelGeometry[j].name} ${JSON.stringify(b)}`);
+    }
+    await page.locator("#load").click();
+    await page.locator("#status").filter({ hasText: "Ejemplo integrado cargado en ambos grafos" }).waitFor();
+
+    const changedTgcvFixture = structuredClone(tgcvFixture);
+    changedTgcvFixture.before.transformations = changedTgcvFixture.after.transformations.slice();
+    changedTgcvFixture.before.relations = changedTgcvFixture.after.relations.map(pair => pair.slice());
+    const changedTgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), changedTgcvFixture);
+    assert.deepEqual(changedTgcvDerived.delta, [],
+      "Derived ΔT_acc must respond to changed before/after inputs instead of being hardcoded");
+    const invalidTgcvFixture = structuredClone(tgcvFixture);
+    invalidTgcvFixture.relations.push(["tau_t_ab", "tau_missing"]);
+    const invalidTgcvResult = await page.evaluate(fixture => {
+      try { window.deriveTgcvDemo(fixture); return "accepted"; }
+      catch (error) { return error.message; }
+    }, invalidTgcvFixture);
+    assert.match(invalidTgcvResult, /extremo inexistente/i,
+      "A TGCV relation with an unknown endpoint must fail closed");
+    await page.locator("#model").evaluate(el => {
+      const changed = JSON.parse(el.value);
+      changed.model_id = "edited-after-integrated-load";
+      el.value = JSON.stringify(changed, null, 2);
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no debe interpretarse como correspondencia vigente/i,
+      "Editing the system model must mark the previously loaded TGCV mapping as stale");
+    await page.locator("#run").click();
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no debe interpretarse como correspondencia vigente/i,
+      "Running an edited model must not silently replace the stale illustrative mapping");
+    await page.locator("#load").click();
+    await page.locator("#status").filter({ hasText: "Ejemplo integrado cargado en ambos grafos" }).waitFor();
+    assert.doesNotMatch(await page.locator("#tgcv-provenance-note").innerText(), /AVISO:/,
+      "Reloading the integrated example must restore the declared correspondence");
 
     // FC5-SEC-001/002: unkeyed SHA-256 is consistency/reproducibility evidence,
     // never proof of who produced a package or external origin authenticity.
@@ -3253,7 +3395,8 @@ const assert = require("node:assert/strict");
       scenarios: [{ id: "baseline", disabled_transitions: [] }],
       exploration: { max_depth: 2, max_trajectories: 10 }
     };
-    await page.locator("details").filter({ has: page.getByText("JSON avanzado (editable)") }).locator("summary").click();
+    const jsonAdvancedPanel = page.locator("details").filter({ has: page.getByText("JSON avanzado (editable)") });
+    if (!(await jsonAdvancedPanel.evaluate(element => element.open))) await jsonAdvancedPanel.locator("summary").click();
     await page.locator("#model").fill(JSON.stringify(singleScenarioModel, null, 2));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
     await page.waitForFunction(() => /Ejecución completada|No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""), { timeout: 10000 });
@@ -3702,6 +3845,57 @@ const assert = require("node:assert/strict");
       "The UI must explicitly mark the previous graph as obsolete");
     assert.match(await page.locator("#transcription-clarification").inputValue(), /estado de reposo es seguido/i,
       "The ambiguous sentence must remain available for human clarification");
+
+    // Grouped condition-evaluator contract: explicit TRUE/FALSE/UNKNOWN, stale-condition invalidation,
+    // and propagation from the system graph through trajectories to the illustrative TGCV graph.
+    const conditionModel = {
+      schema_version: "collective-toy-input-002",
+      model_id: "condition-evaluator-contract",
+      initial_state: "A",
+      states: ["A", "B", "C"],
+      transitions: [
+        { id: "cond_ab", source: "A", target: "B", condition: "permiso concedido" },
+        { id: "plain_bc", source: "B", target: "C" }
+      ],
+      relations: [],
+      rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
+      scenarios: [{ id: "baseline", disabled_transitions: [] }],
+      exploration: { max_depth: 4, max_trajectories: 100 }
+    };
+    await page.locator("#model").fill(JSON.stringify(conditionModel, null, 2));
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
+    assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").inputValue(), "UNKNOWN");
+    assert.match(await page.locator("#graph").textContent(), /NO EVALUADA: permiso concedido/i);
+    assert.equal(await page.locator("#trajectory-position").innerText(), "1 / 1",
+      "UNKNOWN must fail closed and must not traverse the conditioned transition");
+    await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("TRUE");
+    await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
+    assert.deepEqual(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab,
+      { condition: "permiso concedido", result: "TRUE" });
+    assert.match(await page.locator("#trajectory-card").innerText(), /A → B → C/,
+      "TRUE must enable the transition and its downstream trajectory");
+    assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /obsoleto|desactualizado|no corresponde|no se ha actualizado|no puede|aviso/i,
+      "A custom model without an explicit TGCV mapping must be marked stale rather than given invented transformations");
+    await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("FALSE");
+    await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
+    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/,
+      "FALSE must block the conditioned transition");
+    assert.match(await page.locator("#graph").textContent(), /FALSA: permiso concedido/i);
+    await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("TRUE");
+    await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
+    const editedConditionModel = JSON.parse(await page.locator("#model").inputValue());
+    editedConditionModel.transitions.find(t => t.id === "cond_ab").condition = "permiso revocado";
+    await page.locator("#model").fill(JSON.stringify(editedConditionModel, null, 2));
+    await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
+    await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
+    assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").inputValue(), "UNKNOWN",
+      "Changing the condition text must invalidate the old evaluation");
+    assert.match(await page.locator("#graph").textContent(), /NO EVALUADA: permiso revocado/i);
+    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/);
+    assert.equal(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab.condition,
+      "permiso concedido", "Stale provenance remains visible in the model but must not be applied to changed condition text");
 
     console.log("PASS: profile-3-only UI, guided trajectory carousel, concrete execution, contextual value, alternative dashboard, import/export, replay/tamper checks, and grouped contract adversaries.");
   } finally {
