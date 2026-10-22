@@ -172,3 +172,66 @@ Each candidate must carry:
 
 ### Implementation status and gate
 This section defines the required contract; it does not claim that candidate derivation or its acceptance workflow is already implemented. Treat the capability as **PENDING** until implementation and grouped adversarial tests demonstrate the criteria above. The existing evaluator CI PASS does not satisfy this gate by itself. This contract addition does not authorize scientific execution, alter the stabilized scientific Core, or authorize promotion to `main`.
+
+
+## 10. Transition-condition entry paths and correspondence integration gate (2026-10-22)
+
+### 10.1 Canonical condition contract
+
+All three entry paths must produce the same canonical transition representation. For schema `collective-toy-input-002`, the condition is `transitions[].condition` (non-empty text); the evaluation is separate, scenario-scoped data in `scenarios[].condition_evaluations[transition_id]`, bound to the exact current condition text and one of `TRUE`, `FALSE`, or `UNKNOWN`. Missing/stale evaluation is distinct from `UNKNOWN`. Changing or removing a condition invalidates its prior evaluation; no input route may silently convert a conditional transition to an unconditional one.
+
+The JSON, transcriber, and visual editor are alternative entry/edit paths over the same canonical model, not separate semantics. After any edit, validate the model, refresh both graph views, mark derived artifacts/correspondence candidates stale where affected, and require an explicit re-run before treating execution/exploration results as current.
+
+### 10.2 Input-path coverage matrix
+
+| Path | Current inspection | Required behavior / acceptance gate |
+|---|---|---|
+| JSON advanced import/editor | The schema validator accepts `condition` on a transition in input schema v002 and stores scenario evaluations separately. | Import/export/replay preserves condition and evaluation provenance; reject malformed or stale evaluation; changing condition invalidates the old evaluation; run equivalent fixtures through browser and Python/reference semantics. |
+| Text-to-graph transcriber | The local parser recognizes a limited set of explicit conditional patterns and can preserve the recognized clause as condition metadata. Unrecognized/ambiguous clauses are pending clarification, not accepted graph semantics. | Grouped positive, negative, ambiguous and adversarial cases; recognized condition must be attached to the correct directed edge; unsupported/negated/ambiguous language must remain pending and must never become an unconditional edge; condition and provenance survive review, execution, export/import. Language patterns are documented as limited, not general language understanding. |
+| Visual graph editor | It can add/remove transitions and display/evaluate an existing condition; inspection found no visual control to add/edit the condition text on a transition. | Add an explicit condition edit control for each transition, including add/change/clear; show condition text and evaluation status; changing/clearing it invalidates prior evaluation; persist via canonical schema v002; preserve stable transition IDs where possible; update both graphs and mark TGCV mapping candidates stale where relevant. |
+
+### 10.3 Grouped cross-path acceptance suite
+
+A shared fixture set must cover at least:
+1. An unconditional transition and a conditional transition entered through each supported route.
+2. Equivalent inputs across routes normalize to equivalent canonical models, apart from documented provenance/IDs.
+3. `TRUE` enables the transition; `FALSE`, `UNKNOWN`, missing evaluation, and stale evaluation each block it with distinguishable status.
+4. Editing the condition text invalidates the prior evaluation and cannot reuse a result bound to the old text.
+5. A transcriber clause with unsupported negation, ambiguous scope, missing condition, or unclear direction is held for user clarification rather than silently simplified.
+6. Visual creation/edit/clear followed by export/import/replay preserves the intended condition and status.
+7. Both system and TGCV graph views refresh consistently; no stale result is presented as current.
+8. Browser and Python/reference semantics agree on the canonical model and resulting exploration/execution.
+9. Existing unconditional models and historical schema/profile behavior remain compatible.
+
+This is grouped contract coverage; it does not require a separate test for every phrase permutation. Add adversarial cases where they test a distinct failure mode.
+
+### 10.4 Correspondence derivation integration architecture
+
+Correspondence derivation is a separate, explicit stage between validation of the system model and construction/update of the TGCV graph. It is not part of the condition evaluator and must not be triggered as an invisible side effect of executing a model.
+
+Pipeline:
+1. **Validate inputs:** canonical system model, declared TGCV transformation/relation inventory or other explicit candidate-target catalogue, and any user-supplied mapping hints.
+2. **Preserve explicit mappings:** validate and retain `tgcv_mapping` entries with their original provenance; never overwrite them with a derived result.
+3. **Generate candidates:** call a pure, deterministic, versioned derivation procedure over the validated model and declared target catalogue. It may use explicit IDs, structured pre/postconditions, condition metadata, aliases, and explicit user hints. Heuristic/lexical matching may only rank or explain reviewable candidates.
+4. **Review queue:** show candidate source, proposed target, evidence, rationale, confidence/ambiguity indicators where justified, algorithm version and source-model digest. Candidate statuses are `PROPOSED`, `NEEDS_REVIEW`, `ACCEPTED`, `REJECTED`, or `STALE`.
+5. **Explicit decision:** acceptance/rejection is a user action and is persisted with decision provenance. A candidate is not effective while proposed, needs review, rejected, or stale.
+6. **Materialize accepted mappings:** only accepted candidates are converted into the effective mapping set used to render the TGCV graph and calculate operational accessible transformations/relations. Preserve the distinction between user-declared and derived-and-accepted provenance.
+7. **Invalidation/replay:** model, condition, target inventory, mapping-hint, or derivation-version changes invalidate affected candidates and mark affected derived mappings `STALE`; require review again. Explicit user-declared mappings are not silently rewritten, though their consistency may be flagged for review.
+8. **Audit/export:** persist the candidate set, evidence, source digest, derivation version, decisions and effective mapping set; export/import/replay must preserve them.
+
+No declared target catalogue or insufficient/conflicting evidence means no fabricated target and no automatic candidate; return no proposal or `NEEDS_REVIEW`. Graph topology alone cannot establish semantic equivalence, causal direction, or scientific meaning. A candidate's ranking/confidence is a procedural hint, not a probability of scientific truth.
+
+### 10.5 Correspondence stage boundaries and acceptance
+
+The correspondence stage consumes the validated system model plus an explicitly declared TGCV target catalogue. It produces a candidate set and, after user decisions, an effective mapping set. The condition evaluator consumes condition text and explicit scenario evaluations; it must not infer correspondences. The graph renderer consumes only the validated model and effective mappings; proposed/rejected/stale candidates must not alter the TGCV graph, `T_acc`, reachability, or execution results.
+
+Acceptance requires grouped tests for: deterministic candidate generation from sufficient structured evidence; no candidates or review status for absent/ambiguous/conflicting evidence; explicit accept/reject provenance; no semantic effect before acceptance; stale invalidation; preservation of explicit mappings; export/import/replay; browser/reference agreement; and adversarial checks that lexical similarity/topology alone never auto-accept a mapping.
+
+### 10.6 Status and promotion gate
+
+- JSON condition metadata: **PARTIAL — schema/runtime behavior exists; complete three-path acceptance suite pending**.
+- Text transcriber condition metadata: **PARTIAL — bounded pattern recognition exists; grouped adversarial acceptance suite pending**.
+- Visual condition editing: **PENDING — condition add/edit/clear UI not found in the inspected branch**.
+- TGCV correspondence candidate derivation and review workflow: **PENDING — contract specified, implementation not demonstrated**.
+
+PR #95 must remain unmerged until these gates are implemented or explicitly split into a separately reviewed follow-up with no claim of full demonstrator completeness. Any split must retain the missing capabilities as visible, tracked blockers rather than silently dropping them from acceptance. No scientific execution is authorized by this contract; this does not modify the stabilized scientific Core or authorize promotion to `main`.
