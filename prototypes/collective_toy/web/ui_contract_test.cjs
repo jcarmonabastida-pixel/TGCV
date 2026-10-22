@@ -223,7 +223,7 @@ const assert = require("node:assert/strict");
     assert.ok(conditionalDraft.transitions.some((edge) => edge.source === "evaluación" && edge.target === "aprobado" && edge.condition === "cumple los criterios"));
     assert.ok(conditionalDraft.transitions.some((edge) => edge.source === "ejecución" && edge.target === "reposo" && edge.condition === "falla"));
     await page.getByRole("button", { name: "Ejecutar escenarios" }).click();
-    await page.locator("#graph-note").filter({ hasText: /Condiciones bloqueadas \(no evaluadas\)/ }).waitFor();
+    await page.locator("#graph-note").filter({ hasText: /Condiciones no habilitadas \(no evaluadas, falsas o desconocidas\)/ }).waitFor();
     const conditionalGraphNote = await page.locator("#graph-note").innerText();
     assert.match(conditionalGraphNote, /cumple los criterios/);
     assert.match(conditionalGraphNote, /falla/);
