@@ -130,10 +130,10 @@ function pythonJson(source, input) {
       "browser and Python results must agree when the condition is TRUE");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: humidity is low/,
       "the system graph must display the active TRUE condition evaluation");
-    assert.match(await page.locator("#tgcv-demo-results").innerText(), /tau_t_ab/,
-      "the TGCV graph must include the transformation enabled by the TRUE evaluation");
-    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /escenario actual/i,
-      "a model without the example's fixed comparison scenarios must be described as a current-scenario view");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no declara una correspondencia TGCV explícita/i,
+      "a custom model without an explicit TGCV mapping must explain why the TGCV graph is not inferred");
+    assert.equal((await page.locator("#tgcv-graph").locator("g").count()), 0,
+      "a custom model without an explicit TGCV mapping must not fabricate TGCV graph nodes");
 
     const falseModel = {
       ...conditionalModel,
@@ -155,8 +155,8 @@ function pythonJson(source, input) {
       "browser and Python results must agree when the condition is FALSE");
     assert.match(await page.locator("#graph").textContent(), /FALSA: humidity is low/,
       "the system graph must display the active FALSE condition evaluation");
-    assert.doesNotMatch(await page.locator("#tgcv-demo-results").innerText(), /tau_t_ab/,
-      "the TGCV graph must remove the transformation blocked by the FALSE evaluation");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no declara una correspondencia TGCV explícita/i,
+      "the TGCV graph must remain explicitly unavailable for an unmapped custom model after FALSE evaluation");
 
     const unknownModel = {
       ...conditionalModel,
