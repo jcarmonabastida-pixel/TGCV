@@ -231,7 +231,7 @@ Acceptance requires grouped tests for: deterministic candidate generation from s
 
 - JSON condition metadata: **PARTIAL — schema/runtime behavior exists; complete three-path acceptance suite pending**.
 - Text transcriber condition metadata: **PARTIAL — bounded pattern recognition exists; grouped adversarial acceptance suite pending**.
-- Visual condition editing: **PENDING — condition add/edit/clear UI not found in the inspected branch**.
+- Visual condition editing: **IMPLEMENTED IN BRANCH — add/edit/clear UI and grouped regression tests added; exact-HEAD CI acceptance pending**.
 - TGCV correspondence candidate derivation and review workflow: **PENDING — contract specified, implementation not demonstrated**.
 
 PR #95 must remain unmerged until these gates are implemented or explicitly split into a separately reviewed follow-up with no claim of full demonstrator completeness. Any split must retain the missing capabilities as visible, tracked blockers rather than silently dropping them from acceptance. No scientific execution is authorized by this contract; this does not modify the stabilized scientific Core or authorize promotion to `main`.
