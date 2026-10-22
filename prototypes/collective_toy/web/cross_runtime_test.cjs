@@ -507,8 +507,17 @@ function pythonJson(source, input) {
     await page.waitForFunction(() => /Estado añadido: StateForInvalidationCheck/i.test(
       document.querySelector("#graph-edit-status")?.textContent || ""), null, {timeout:5000});
     await page.locator("#derive-tgcv-correspondences").click();
-    await page.waitForFunction(() => /modelo o catálogo cambió.*histórico/i.test(
-      document.querySelector("#correspondence-review-status")?.textContent || ""), null, {timeout:5000});
+    // The derive handler is async. Do not accept the previous catalogue-change status as
+    // evidence that the model-change invalidation has completed; wait for the persisted event.
+    await page.waitForFunction(() => Object.keys(localStorage)
+      .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+      .some(k => {
+        try {
+          const record = JSON.parse(localStorage.getItem(k));
+          return [...(record.mappings || []), ...(record.history || [])]
+            .some(m => m.status === "STALE" && /modelo de origen cambió/i.test(m.stale_reason || ""));
+        } catch (_e) { return false; }
+      }), null, {timeout:5000});
     const effectiveHistoryAfterModelChange = await page.evaluate(() => Object.keys(localStorage)
       .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
       .map(k => JSON.parse(localStorage.getItem(k)))
