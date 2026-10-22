@@ -692,6 +692,45 @@ function pythonJson(source, input) {
     const visuallyClearedPackage = await page.evaluate(() => window.lastPackage);
     assert.ok(visuallyClearedPackage.result.scenario_results.baseline.reachable_states.includes("B"),
       "a cleared condition must behave as an unconditional transition");
+    // Export/import/replay must preserve the conditional source model and verify the package independently.
+    const roundTripModel = {
+      ...model,
+      schema_version: "collective-toy-input-002",
+      transitions: model.transitions.map(t => t.id === "t_ab"
+        ? {...t, condition: "authorization is valid"}
+        : {...t}),
+      scenarios: [{id:"baseline",disabled_transitions:[]}]
+    };
+    await page.locator("#model").fill(JSON.stringify(roundTripModel));
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "conditional round-trip fixture must execute before export");
+    const packageDownloadPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const packageDownload = await packageDownloadPromise;
+    const packagePath = await packageDownload.path();
+    assert.ok(packagePath, "export must produce a downloadable JSON package");
+    const exportedPackageText = fs.readFileSync(packagePath, "utf8");
+    const exportedPackage = JSON.parse(exportedPackageText);
+    assert.equal(exportedPackage.input.transitions.find(t => t.id === "t_ab").condition,
+      "authorization is valid", "export must preserve condition text in the source input");
+    assert.equal(exportedPackage.result.input_sha256.length, 64,
+      "export must preserve a SHA-256 provenance digest for the input");
+    await page.locator("#package-file").setInputFiles({
+      name: "conditional-round-trip.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(exportedPackageText)
+    });
+    await page.locator("#assess-package").click();
+    await page.waitForFunction(() =>
+      ["replay-verified", "rejected", "inspect-only/replay-unavailable"].includes(
+        document.querySelector("#package-assessment")?.dataset.state
+      ), null, {timeout:5000});
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
+      "the exported conditional package must pass independent replay: " +
+      await page.locator("#package-assessment").textContent());
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
