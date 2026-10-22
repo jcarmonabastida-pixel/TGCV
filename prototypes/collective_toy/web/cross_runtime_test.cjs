@@ -701,7 +701,11 @@ function pythonJson(source, input) {
         : {...t}),
       scenarios: [{id:"baseline",disabled_transitions:[]}]
     };
-    await page.locator("#model").fill(JSON.stringify(roundTripModel));
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", {bubbles:true}));
+    }, JSON.stringify(roundTripModel));
+    await page.evaluate(() => syncGraphEditor());
     await page.locator("#run").click();
     await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
       document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
