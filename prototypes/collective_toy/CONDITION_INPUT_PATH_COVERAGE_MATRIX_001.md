@@ -34,7 +34,7 @@ La evaluación de condiciones continúa sujeta a sus propias pruebas de resultad
 
 La sección 10 del contrato vigente requiere más que los casos básicos anteriores. Permanecen **PENDIENTES** y no deben interpretarse como aprobados por estos PASS:
 
-- JSON: la importación de condición está cubierta para el caso básico. Sigue pendiente demostrar el ciclo completo exportación/importación/replay con la condición y su procedencia; rechazo de evaluaciones mal formadas u obsoletas; comparación equivalente navegador/Python.
+- JSON: la importación de condición está cubierta para el caso básico. El ciclo de exportación/importación/replay con condición y hash de procedencia ya pasa en navegador (commit `36268dd`). Siguen pendientes la prueba específica de rechazo de paquetes con evaluación mal formada/obsoleta y la comparación de esa ruta de paquete con Python.
 - Transcriptor: ya pasan los casos básicos positivo, negado y ambiguo indicados arriba. Sigue pendiente ampliar el conjunto adversarial (incluida dirección no soportada) y verificar persistencia de condición y procedencia en revisión, ejecución y exportación/importación.
 - Editor visual: recorrido add/change/clear con exportación/importación/replay, manteniendo IDs estables donde sea posible y actualizando ambas vistas.
 - Rutas cruzadas: transición condicional e incondicional en cada vía; cambio de condición invalida la evaluación ligada al texto anterior; modelos incondicionales y comportamiento histórico siguen siendo compatibles.
@@ -42,4 +42,4 @@ La sección 10 del contrato vigente requiere más que los casos básicos anterio
 
 ## 5. Siguiente control
 
-El siguiente caso será el ciclo de paquete JSON: ejecutar un modelo con condición, exportar el paquete, importarlo en el validador de paquetes y verificar que se conserva la condición, que los hashes/procedencia se validan y que el resultado distingue reproducción verificada de mera inspección. Después se abordarán los rechazos de evaluaciones mal formadas/obsoletas y la concordancia navegador/Python. La PR debe seguir en borrador y sin fusionar hasta resolver o dividir explícitamente estos puntos.
+El siguiente caso será endurecer el ciclo de paquete JSON con mutaciones negativas controladas: alterar la condición sin actualizar su evaluación/procedencia, comprobar rechazo explícito y verificar que no se informa replay verificado. Después se comprobará el mismo contrato en el intercambio navegador/Python. Las pruebas existentes de estado TRUE/FALSE/UNKNOWN y evaluación obsoleta son controles de modelo/ejecución; no sustituyen estas pruebas del paquete importado. La PR debe seguir en borrador y sin fusionar hasta resolver o dividir explícitamente estos puntos.
