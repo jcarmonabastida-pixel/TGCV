@@ -695,7 +695,9 @@ async function deriveAndRenderTgcvCorrespondences(){
   var scopeChanged=sourceModelChanged||catalogueChanged;
   if(scopeChanged&&effectiveCorrespondenceState.sourceModelSha256&&effectiveCorrespondenceState.catalogueVersion&&effectiveCorrespondenceState.catalogueSha256){
    var reason=sourceModelChanged?"El modelo de origen cambió; se requiere una nueva revisión explícita.":"El catálogo cambió; se requiere una nueva revisión explícita.";
-   var priorEffectiveScope={sourceModelSha256:previous.sourceModelSha256||effectiveCorrespondenceState.sourceModelSha256,catalogueVersion:previous.catalogueVersion||effectiveCorrespondenceState.catalogueVersion,catalogueSha256:previous.catalogueSha256||effectiveCorrespondenceState.catalogueSha256};
+   // The effective layer's own persisted scope is authoritative; the review scope may already
+   // have moved to a different catalogue and must not redirect invalidation to the wrong key.
+   var priorEffectiveScope={sourceModelSha256:effectiveCorrespondenceState.sourceModelSha256||previous.sourceModelSha256,catalogueVersion:effectiveCorrespondenceState.catalogueVersion||previous.catalogueVersion,catalogueSha256:effectiveCorrespondenceState.catalogueSha256||previous.catalogueSha256};
    // Record every scope change, including a model edit after an earlier catalogue invalidation.
    // Requiring an in-memory EFFECTIVE mapping here loses later invalidation events.
    archiveEffectiveCorrespondences(priorEffectiveScope,reason);
