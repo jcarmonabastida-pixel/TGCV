@@ -299,6 +299,20 @@ function pythonJson(source, input) {
         evaluation + " must remain visible on the system graph");
     }
 
+    // Candidate discovery must not duplicate user-declared correspondences.
+    const reviewModel = {
+      ...explicitlyMappedModel,
+      tgcv_mapping: {...explicitlyMappedModel.tgcv_mapping, mappings: []}
+    };
+    const declaredCandidateCheck = await page.evaluate(async model => window.deriveTgcvCorrespondenceCandidates(model, {
+      schema:"tgcv-target-catalogue-001",version:"declared-map-v1",transformations:[
+        {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+        {id:"T_CD",source_state:"C",target_state:"D"}
+      ]
+    }), explicitlyMappedModel);
+    assert.equal(declaredCandidateCheck.candidates.length, 0,
+      "transitions and TGCV targets already covered by user-declared mappings must not be proposed again");
+
     // Candidate derivation is deterministic, evidence-bearing, and has no semantic side effects.
     const derivationSnapshot = await page.evaluate(async ({model, catalogue}) => {
       const before = JSON.stringify(model);
@@ -306,7 +320,7 @@ function pythonJson(source, input) {
       const second = await window.deriveTgcvCorrespondenceCandidates(model, catalogue);
       return {before, after:JSON.stringify(model), first, second};
     }, {
-      model: explicitlyMappedModel,
+      model: reviewModel,
       catalogue: {schema:"tgcv-target-catalogue-001",version:"fixture-v1",transformations:[
         {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
         {id:"T_CD",source_state:"C",target_state:"D"}
@@ -327,14 +341,14 @@ function pythonJson(source, input) {
         {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
         {id:"T_HUMIDITY_ALT",source_state:"A",target_state:"B"}
       ]
-    }), explicitlyMappedModel);
+    }), reviewModel);
     assert.ok(ambiguousCandidates.candidates.length === 2 && ambiguousCandidates.candidates.every(c => c.status === "NEEDS_REVIEW"),
       "multiple exact targets for one transition must require review, never auto-accept");
     const noMatchCandidates = await page.evaluate(async model => window.deriveTgcvCorrespondenceCandidates(model, {
       schema:"tgcv-target-catalogue-001",version:"no-match-v1",transformations:[
         {id:"T_UNRELATED",source_state:"X",target_state:"Y"}
       ]
-    }), explicitlyMappedModel);
+    }), reviewModel);
     assert.equal(noMatchCandidates.candidates.length, 0,
       "missing catalogue evidence must not invent correspondence candidates");
 
@@ -380,7 +394,7 @@ function pythonJson(source, input) {
       document.querySelector("#model").value = JSON.stringify(model, null, 2);
       document.querySelector("#model").dispatchEvent(new Event("input", {bubbles:true}));
       localStorage.clear();
-    }, explicitlyMappedModel);
+    }, reviewModel);
     await page.locator("#correspondence-review-section summary").click();
     await page.locator("#tgcv-target-catalogue").fill(JSON.stringify({
       schema:"tgcv-target-catalogue-001",version:"ui-review-v1",transformations:[
