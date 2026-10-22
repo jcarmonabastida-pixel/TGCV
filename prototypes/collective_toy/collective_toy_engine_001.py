@@ -409,21 +409,22 @@ def execute_sequence(
         required_id: str | None = None
         if transition is None:
             reason = "unknown_transition"
-        elif transition.condition is not None:
-            evaluation = scenario.get("condition_evaluations", {}).get(transition_id, {})
-            if evaluation.get("condition") != transition.condition or evaluation.get("result") not in {"TRUE", "FALSE", "UNKNOWN"}:
-                reason = "condition_not_evaluated"
-            elif evaluation.get("result") != "TRUE":
-                reason = "condition_not_true"
-        elif transition_id in disabled:
-            reason = "transition_disabled_by_scenario"
-        elif transition.source != current:
-            reason = "transition_source_mismatch"
         else:
-            missing = sorted(prerequisites.get(transition_id, set()) - set(history))
-            if missing:
-                reason = "temporal_prerequisite_not_satisfied"
-                required_id = missing[0]
+            if transition.condition is not None:
+                evaluation = scenario.get("condition_evaluations", {}).get(transition_id, {})
+                if evaluation.get("condition") != transition.condition or evaluation.get("result") not in {"TRUE", "FALSE", "UNKNOWN"}:
+                    reason = "condition_not_evaluated"
+                elif evaluation.get("result") != "TRUE":
+                    reason = "condition_not_true"
+            if reason is None and transition_id in disabled:
+                reason = "transition_disabled_by_scenario"
+            if reason is None and transition.source != current:
+                reason = "transition_source_mismatch"
+            if reason is None:
+                missing = sorted(prerequisites.get(transition_id, set()) - set(history))
+                if missing:
+                    reason = "temporal_prerequisite_not_satisfied"
+                    required_id = missing[0]
         if reason:
             blocked = {"index": index, "transition_id": transition_id, "reason": reason}
             if required_id is not None:
