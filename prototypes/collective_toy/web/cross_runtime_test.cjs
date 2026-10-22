@@ -128,6 +128,12 @@ function pythonJson(source, input) {
       "TRUE evaluation must enable the conditional transition in the browser");
     assert.deepEqual(truePkg.result, trueEngineRun.result,
       "browser and Python results must agree when the condition is TRUE");
+    assert.match(await page.locator("#graph").textContent(), /VERDADERA: humidity is low/,
+      "the system graph must display the active TRUE condition evaluation");
+    assert.match(await page.locator("#tgcv-demo-results").innerText(), /tau_t_ab/,
+      "the TGCV graph must include the transformation enabled by the TRUE evaluation");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /escenario actual/,
+      "a model without the example's fixed comparison scenarios must be described as a current-scenario view");
 
     const falseModel = {
       ...conditionalModel,
@@ -147,6 +153,10 @@ function pythonJson(source, input) {
       "FALSE evaluation must keep the conditional transition blocked");
     assert.deepEqual(falsePkg.result, falseEngineRun.result,
       "browser and Python results must agree when the condition is FALSE");
+    assert.match(await page.locator("#graph").textContent(), /FALSA: humidity is low/,
+      "the system graph must display the active FALSE condition evaluation");
+    assert.doesNotMatch(await page.locator("#tgcv-demo-results").innerText(), /tau_t_ab/,
+      "the TGCV graph must remove the transformation blocked by the FALSE evaluation");
 
     const unknownModel = {
       ...conditionalModel,
