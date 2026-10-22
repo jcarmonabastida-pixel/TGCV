@@ -108,6 +108,145 @@ function pythonJson(source, input) {
     assert.deepEqual(conditionalPkg.result, conditionalEngineRun.result,
       "browser and Python conditional-transition results must be identical");
 
+    // The evaluator UI must drive actual exploration, not merely store a label.
+    const trueModel = {
+      ...conditionalModel,
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "TRUE" } }
+      }]
+    };
+    const trueEngineRun = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      trueModel
+    );
+    const evaluator = page.locator('#transition-review-list select[data-condition-evaluation="t_ab"]');
+    await evaluator.selectOption("TRUE");
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const truePkg = await page.evaluate(() => window.lastPackage);
+    assert.ok(truePkg.result.scenario_results.baseline.reachable_states.includes("B"),
+      "TRUE evaluation must enable the conditional transition in the browser");
+    assert.deepEqual(truePkg.result, trueEngineRun.result,
+      "browser and Python results must agree when the condition is TRUE");
+    assert.match(await page.locator("#graph").textContent(), /VERDADERA: humidity is low/,
+      "the system graph must display the active TRUE condition evaluation");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no declara una correspondencia TGCV explícita/i,
+      "a custom model without an explicit TGCV mapping must explain why the TGCV graph is not inferred");
+    assert.equal((await page.locator("#tgcv-graph").locator("g").count()), 0,
+      "a custom model without an explicit TGCV mapping must not fabricate TGCV graph nodes");
+
+    const falseModel = {
+      ...conditionalModel,
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "FALSE" } }
+      }]
+    };
+    const falseEngineRun = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      falseModel
+    );
+    await page.locator('#transition-review-list select[data-condition-evaluation="t_ab"]').selectOption("FALSE");
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const falsePkg = await page.evaluate(() => window.lastPackage);
+    assert.ok(!falsePkg.result.scenario_results.baseline.reachable_states.includes("B"),
+      "FALSE evaluation must keep the conditional transition blocked");
+    assert.deepEqual(falsePkg.result, falseEngineRun.result,
+      "browser and Python results must agree when the condition is FALSE");
+    assert.match(await page.locator("#graph").textContent(), /FALSA: humidity is low/,
+      "the system graph must display the active FALSE condition evaluation");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /no declara una correspondencia TGCV explícita/i,
+      "the TGCV graph must remain explicitly unavailable for an unmapped custom model after FALSE evaluation");
+
+    const unknownModel = {
+      ...conditionalModel,
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "UNKNOWN" } }
+      }]
+    };
+    const unknownEngineRun = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      unknownModel
+    );
+    await page.locator('#transition-review-list select[data-condition-evaluation="t_ab"]').selectOption("UNKNOWN");
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const unknownPkg = await page.evaluate(() => window.lastPackage);
+    assert.ok(!unknownPkg.result.scenario_results.baseline.reachable_states.includes("B"),
+      "UNKNOWN evaluation must keep the conditional transition blocked");
+    assert.deepEqual(unknownPkg.result, unknownEngineRun.result,
+      "browser and Python results must agree when the condition is UNKNOWN");
+
+    const staleEvaluationModel = {
+      ...conditionalModel,
+      transitions: [
+        { id: "t_ab", source: "A", target: "B", condition: "humidity is high" },
+        ...conditionalModel.transitions.slice(1)
+      ],
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "TRUE" } }
+      }]
+    };
+    const staleEngineCheck = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); exec('try:\\n e.validate_model(m)\\n print(json.dumps({\\'rejected\\':False}))\\nexcept e.ModelValidationError as x:\\n print(json.dumps({\\'rejected\\':True,\\'reason\\':str(x)}))')",
+      staleEvaluationModel
+    );
+    assert.equal(staleEngineCheck.rejected, true,
+      "Python must reject an evaluation whose stored condition text is stale");
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(staleEvaluationModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/obsoleta|ya cambió/i}).waitFor({timeout:5000});
+
+    // Explicit custom mapping: evaluator state must propagate to the declared TGCV transformation.
+    const explicitlyMappedModel = {
+      ...conditionalModel,
+      tgcv_mapping: {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "user-declared-transition-transformation-map-v1",
+        provenance: "user-declared",
+        mappings: [
+          {system_transition_id:"t_ab",tgcv_transformation_id:"T_HUMIDITY"},
+          {system_transition_id:"t_ac",tgcv_transformation_id:"T_AC"},
+          {system_transition_id:"t_cd",tgcv_transformation_id:"T_CD"}
+        ],
+        relations: [["T_AC","T_CD"],["T_HUMIDITY","T_CD"]]
+      },
+      scenarios: [{
+        id:"baseline",disabled_transitions:[],
+        condition_evaluations:{t_ab:{condition:"humidity is low",result:"TRUE"}}
+      }]
+    };
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(explicitlyMappedModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    assert.match(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+      "an explicitly mapped transformation must appear when its system transition is reachable");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /user-declared/,
+      "the TGCV view must preserve the declared mapping provenance");
+    assert.match(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY.*T_CD|T_CD.*T_HUMIDITY/,
+      "the TGCV graph must display the declared relation when both mapped transformations are accessible");
+
+    for (const evaluation of ["FALSE", "UNKNOWN"]) {
+      await page.locator('#transition-review-list select[data-condition-evaluation="t_ab"]').selectOption(evaluation);
+      await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+      const currentTgcvText = await page.locator("#tgcv-graph").textContent();
+      assert.doesNotMatch(currentTgcvText, /T_HUMIDITY/,
+        evaluation + " must remove the explicitly mapped transformation from the current TGCV graph");
+      assert.doesNotMatch(currentTgcvText, /T_HUMIDITY\\s*→\\s*T_CD/,
+        evaluation + " must remove relations whose transformation endpoint is no longer accessible");
+      assert.match(currentTgcvText, /T_CD/,
+        evaluation + " must retain unrelated accessible TGCV transformations");
+      assert.match(await page.locator("#graph").textContent(), new RegExp(evaluation === "FALSE" ? "FALSA: humidity is low" : "DESCONOCIDA: humidity is low"),
+        evaluation + " must remain visible on the system graph");
+    }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
