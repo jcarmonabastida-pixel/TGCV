@@ -606,6 +606,17 @@ function pythonJson(source, input) {
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "a mapping invalidated by a source model change must not remain active in the TGCV graph");
 
+    // A previously accepted correspondence review is scoped to the original model.
+    // Exporting the changed model must not attach that now-stale human decision.
+    const changedModelExportPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const changedModelExport = await changedModelExportPromise;
+    const changedModelExportPath = await changedModelExport.path();
+    assert.ok(changedModelExportPath, "changed source model must export a package for scope validation");
+    const changedModelPackage = JSON.parse(fs.readFileSync(changedModelExportPath, "utf8"));
+    assert.equal(changedModelPackage.tgcv_correspondence_review, undefined,
+      "export must not carry an accepted correspondence review scoped to the prior source model");
+
     // JSON import must preserve conditional metadata without fabricating an evaluation.
     const jsonConditionalModel = {
       ...model,
