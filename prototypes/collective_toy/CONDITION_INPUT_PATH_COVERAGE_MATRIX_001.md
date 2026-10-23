@@ -52,6 +52,8 @@ El control añadido para importar un JSON con una condición `TRUE` y rutas inco
 
 ### Estado de validación más reciente
 
+**Último control de rechazo de correspondencias:** commit `fd5b5f1221ba8a02e9df72428ba5353660633572`; navegador y concordancia PASS ([run 39948586104](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39948586104)) y motor sintético PASS ([run 39948586101](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39948586101)). La regresión verifica que una propuesta rechazada conserva una decisión humana explícita y que el grafo TGCV no cambia por el rechazo. Esto no cierra el control de integración más amplio de la sección 4: todavía debe demostrarse que propuestas pendientes, rechazos y datos obsoletos no afectan T_acc, la alcanzabilidad ni los resultados de ejecución.
+
 Los workflows de navegador y motor sintético pasan para `6c0329bf8abd546e5597153b2d7a7fb3ac9f2caf`. Además del control de importación JSON de `ee111d2`, la suite verifica la procedencia de una correspondencia derivada del transcriptor: condición exacta, hash del modelo fuente, aceptación humana explícita, exportación y replay independiente.
 
 
