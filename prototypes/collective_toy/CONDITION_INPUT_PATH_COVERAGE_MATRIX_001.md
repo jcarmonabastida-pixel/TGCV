@@ -52,7 +52,9 @@ El control añadido para importar un JSON con una condición `TRUE` y rutas inco
 
 ### Estado de validación más reciente
 
-**Último control de rechazo de correspondencias:** commit `fd5b5f1221ba8a02e9df72428ba5353660633572`; navegador y concordancia PASS ([run 39948586104](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39948586104)) y motor sintético PASS ([run 39948586101](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39948586101)). La regresión verifica que una propuesta rechazada conserva una decisión humana explícita y que el grafo TGCV no cambia por el rechazo. Esto no cierra el control de integración más amplio de la sección 4: todavía debe demostrarse que propuestas pendientes, rechazos y datos obsoletos no afectan T_acc, la alcanzabilidad ni los resultados de ejecución.
+**Control de aislamiento de propuestas:** commit `5037a3c959fd31876538621604598b47cf4bf42d`; navegador y concordancia PASS ([run 39949103171](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39949103171)) y motor sintético PASS ([run 39949103170](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39949103170)). La regresión compara el grafo TGCV con su estado inicial después de derivar propuestas y después de aceptar una propuesta; también conserva el control de rechazo aprobado en `fd5b5f1`. La suite completa de navegador terminó además con capturas, ZIP autónomo verificado y replay desde fuente limpia.
+
+**Límite de la evidencia:** se verifica que estas operaciones no mutan el grafo mostrado en la prueba. Todavía debe demostrarse por controles específicos que propuestas pendientes, rechazos y datos obsoletos no afectan `T_acc`, la alcanzabilidad ni los resultados de ejecución. La PR debe seguir en borrador y sin fusionar hasta resolver o dividir explícitamente estos puntos.
 
 Los workflows de navegador y motor sintético pasan para `6c0329bf8abd546e5597153b2d7a7fb3ac9f2caf`. Además del control de importación JSON de `ee111d2`, la suite verifica la procedencia de una correspondencia derivada del transcriptor: condición exacta, hash del modelo fuente, aceptación humana explícita, exportación y replay independiente.
 
