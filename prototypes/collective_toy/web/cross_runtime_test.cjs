@@ -288,6 +288,32 @@ function pythonJson(source, input) {
     await page.locator("#run").click();
     await page.locator("#status").filter({hasText:/obsoleta|ya cambió/i}).waitFor({timeout:5000});
 
+    // Exercise the actual JSON-file input route with both conditional and unconditional
+    // transitions: TRUE must enable t_ab, while the unconditional A->C->D path remains available.
+    const jsonMixedInputModel = {
+      ...conditionalModel,
+      scenarios: [{
+        id:"baseline", disabled_transitions:[],
+        condition_evaluations:{t_ab:{condition:"humidity is low",result:"TRUE"}}
+      }]
+    };
+    await page.locator("#json-file").setInputFiles({
+      name:"json-mixed-condition-input.json",
+      mimeType:"application/json",
+      buffer:Buffer.from(JSON.stringify(jsonMixedInputModel))
+    });
+    await page.waitForFunction(() => /Archivo cargado y validado/i.test(
+      document.querySelector("#file-status")?.textContent || ""), null, {timeout:5000});
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /Ejecución completada/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    const jsonMixedInputPackage = await page.evaluate(() => window.lastPackage);
+    assert.ok(jsonMixedInputPackage.result.scenario_results.baseline.reachable_states.includes("B"),
+      "JSON file import must preserve a matching TRUE condition evaluation and enable its transition");
+    assert.ok(jsonMixedInputPackage.result.scenario_results.baseline.reachable_states.includes("C") &&
+      jsonMixedInputPackage.result.scenario_results.baseline.reachable_states.includes("D"),
+      "conditional evaluation must not block unrelated unconditional transitions imported from JSON");
+
     // Explicit custom mapping: evaluator state must propagate to the declared TGCV transformation.
     const explicitlyMappedModel = {
       ...conditionalModel,
