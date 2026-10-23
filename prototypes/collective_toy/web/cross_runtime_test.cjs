@@ -472,7 +472,6 @@ function pythonJson(source, input) {
         {id:"T_CD",source_state:"C",target_state:"D"}
       ]
     }, null, 2));
-    const graphBeforeReview = await page.locator("#tgcv-graph").textContent();
     await page.locator("#run").click();
     await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
       document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
@@ -484,6 +483,7 @@ function pythonJson(source, input) {
     });
     assert.ok(reachabilityBeforeReview,
       "baseline execution must expose reachable states before review decisions");
+    const graphBeforeReview = await page.locator("#tgcv-graph").textContent();
     await page.locator("#derive-tgcv-correspondences").click();
     await page.locator("#correspondence-review-list article").first().waitFor();
     assert.equal(await page.locator("#correspondence-review-list article").count(), 2,
