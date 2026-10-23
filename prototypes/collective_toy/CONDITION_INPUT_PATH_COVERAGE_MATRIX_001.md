@@ -80,3 +80,8 @@ Los workflows de navegador y motor sintético pasan para `6c0329bf8abd546e559715
 ### Estado posterior de los controles de importación
 
 La importación de JSON con una condición `TRUE` vinculada y una ruta incondicional independiente pasa en navegador y motor sintético (`ee111d2`). La sincronización de la prueba espera el nombre exacto del archivo importado, evitando reutilizar un mensaje de estado anterior.
+### Validación de correspondencias efectivas estructuradas
+
+El commit `30ea6abf8d5d60d61cf91221ad72396fcd4eab9c` pasa los dos workflows: motor sintético ([run 39952347843](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39952347843)) y navegador/concordancia ([run 39952348144](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39952348144)). La prueba verifica en la capa estructurada de correspondencias efectivas que `T_HUMIDITY` está presente mientras la correspondencia aceptada es efectiva y ausente después de invalidarla y restaurar el catálogo; conserva además las comprobaciones de alcanzabilidad, trayectorias y no reactivación automática. El workflow de navegador completó capturas, construcción/verificación del ZIP y replay desde fuente limpia.
+
+**Alcance:** esto verifica el conjunto estructurado de correspondencias efectivas derivadas; no debe describirse como prueba exhaustiva de la definición formal completa de `T_acc`. Siguen pendientes de cobertura explícita los efectos de decisiones pendientes/rechazadas/obsoletas sobre cada resultado de ejecución. PR #95 permanece en borrador.
