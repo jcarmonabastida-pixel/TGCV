@@ -483,6 +483,40 @@ function pythonJson(source, input) {
       "an effective-to-effective target collision must require explicit review");
     assert.match(effectiveConflict.result.conflicts[0].message, /otra correspondencia derivada efectiva/i,
       "the conflict must identify the already-effective mapping as the reason for abstention");
+
+    // Two distinct source transitions can have the same exact boundary and compete
+    // for one target transformation. The batch must abstain symmetrically rather
+    // than materializing whichever candidate happens to appear first.
+    const sameBatchConflict = await page.evaluate(async () => {
+      const model = {model_id:"same-batch-collision",states:[{id:"A"},{id:"B"}],
+        transitions:[
+          {id:"t_ab_first",source:"A",target:"B"},
+          {id:"t_ab_second",source:"A",target:"B"}
+        ],
+        tgcv_mapping:{schema:"tgcv-explicit-mapping-001",mapping_rule:"user-declared-map-v1",
+          provenance:"user-declared",mappings:[],relations:[]}};
+      const catalogue = {schema:"tgcv-target-catalogue-001",version:"same-batch-conflict-v1",
+        transformations:[{id:"T_SHARED_AB",source_state:"A",target_state:"B"}]};
+      const derived = await window.deriveTgcvCorrespondenceCandidates(model,catalogue);
+      if (derived.candidates.length !== 2) throw new Error("fixture must produce two exact candidates competing for one transformation");
+      const accepted = derived.candidates.map(candidate => ({...candidate,decision:"ACCEPTED"}));
+      const forward = await window.validateAcceptedCorrespondenceCandidates(model,catalogue,accepted,[]);
+      const reverse = await window.validateAcceptedCorrespondenceCandidates(model,catalogue,[...accepted].reverse(),[]);
+      return {forward,reverse};
+    });
+    for (const [direction,result] of Object.entries({forward:sameBatchConflict.forward,reverse:sameBatchConflict.reverse})) {
+      assert.equal(result.mappings.length, 0,
+        direction + " batch order must not arbitrarily activate one of two conflicting accepted mappings");
+      assert.equal(result.conflicts.length, 2,
+        direction + " batch order must mark both competing candidates as requiring review");
+      assert.ok(result.conflicts.every(conflict => conflict.code === "CONFLICT_NEEDS_REVIEW" &&
+        /misma operación/i.test(conflict.message)),
+        direction + " batch conflicts must carry the expected review code and reason");
+    }
+    assert.deepEqual(
+      sameBatchConflict.forward.conflicts.map(x => x.candidate_id).sort(),
+      sameBatchConflict.reverse.conflicts.map(x => x.candidate_id).sort(),
+      "conflict detection must be independent of accepted-candidate order");
     assert.equal(materialization.stale.mappings.length, 0, "a proposal from a changed model must not materialize");
     assert.match(await page.locator("#tgcv-graph").textContent(), /T_CD/,
       "deriving proposals must not modify the currently rendered TGCV graph");
