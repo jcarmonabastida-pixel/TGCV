@@ -501,11 +501,43 @@ function pythonJson(source, input) {
       "review UI must show all exact-boundary candidates");
     assert.equal(await page.locator("#tgcv-graph").textContent(), graphBeforeReview,
       "deriving pending correspondence proposals must not modify the TGCV graph");
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "pending-only correspondence proposals must leave the system executable");
+    const executionWithPendingOnly = await page.evaluate(() => {
+      const scenarios = window.lastPackage?.result?.scenario_results || {};
+      return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+        reachable_states: [...(result.reachable_states || [])].sort(),
+        trajectories: (result.trajectories || []).map(path => path.map(step => ({
+          state: step.state, transition: step.transition || null
+        })))
+      }]));
+    });
+    assert.deepEqual(executionWithPendingOnly, executionBeforeReview,
+      "pending-only proposals must preserve every scenario reachability and trajectory");
     await page.locator("#correspondence-review-list article").nth(0).getByRole("button", {name:"Aceptar propuesta"}).click();
     assert.match(await page.locator("#correspondence-review-status").textContent(), /persistida/i,
       "acceptance must report that the decision was persisted");
     assert.equal(await page.locator("#tgcv-graph").textContent(), graphBeforeReview,
       "accepting a proposal must not activate or rewrite the TGCV graph before explicit application");
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "accepted-but-not-applied correspondence must leave the system executable");
+    const executionWithAcceptedNotApplied = await page.evaluate(() => {
+      const scenarios = window.lastPackage?.result?.scenario_results || {};
+      return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+        reachable_states: [...(result.reachable_states || [])].sort(),
+        trajectories: (result.trajectories || []).map(path => path.map(step => ({
+          state: step.state, transition: step.transition || null
+        })))
+      }]));
+    });
+    assert.deepEqual(executionWithAcceptedNotApplied, executionBeforeReview,
+      "accepted-but-not-applied decisions must preserve every scenario reachability and trajectory");
     await page.locator("#correspondence-review-list article").nth(1).getByRole("button", {name:"Rechazar propuesta"}).click();
     assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
       "a rejected correspondence candidate must retain an explicit human decision");
