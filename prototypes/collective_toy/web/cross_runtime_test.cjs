@@ -1055,6 +1055,10 @@ function pythonJson(source, input) {
         "the review cycle must keep the invalidated transformation out of the TGCV graph");
     } finally { await staleContext.close(); }
 
+    // Shared acceptance matrix: all three entry routes must preserve condition metadata,
+    // avoid fabricating evaluations, and keep the conditional target unreachable by default.
+    const conditionEntryCoverage = [];
+
     // JSON import must preserve conditional metadata without fabricating an evaluation.
     const jsonConditionalModel = {
       ...model,
@@ -1076,6 +1080,14 @@ function pythonJson(source, input) {
       "JSON import must not invent an evaluation for a condition");
     assert.equal(jsonImportedConditionalModel.schema_version, "collective-toy-input-002",
       "JSON import must preserve the condition-capable schema version");
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada/i.test(document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    const jsonConditionalEntryPackage = await page.evaluate(() => window.lastPackage);
+    conditionEntryCoverage.push({
+      route:"JSON", condition:jsonImportedConditionalModel.transitions.find(t => t.id === "t_ab").condition,
+      evaluation:jsonImportedConditionalModel.scenarios[0].condition_evaluations?.t_ab ?? null,
+      targetReachable:jsonConditionalEntryPackage.result.scenario_results.baseline.reachable_states.includes("B")
+    });
 
     // Spanish text transcription must preserve recognized conditions as metadata, not as an evaluation.
     await page.locator("details.relation-editor").filter({hasText:"Transcripción asistida de texto a grafo"}).locator("summary").click();
@@ -1213,6 +1225,11 @@ function pythonJson(source, input) {
       "execution package must retain the exact condition produced by the transcriber");
     assert.ok(!transcribedPackage.result.scenario_results.baseline.reachable_states.includes("acceso autorizado"),
       "transcribed condition without an evaluation must not make its target reachable");
+    conditionEntryCoverage.push({
+      route:"Transcriptor español", condition:transcribedPackage.input.transitions[0].condition,
+      evaluation:transcribedPackage.input.scenarios[0].condition_evaluations?.[transcribedPackage.input.transitions[0].id] ?? null,
+      targetReachable:transcribedPackage.result.scenario_results.baseline.reachable_states.includes("acceso autorizado")
+    });
     const transcribedDownloadPromise = page.waitForEvent("download");
     await page.locator("#export").click();
     const transcribedDownload = await transcribedDownloadPromise;
@@ -1314,6 +1331,11 @@ function pythonJson(source, input) {
     const visuallyEditedPackage = await page.evaluate(() => window.lastPackage);
     assert.ok(!visuallyEditedPackage.result.scenario_results.baseline.reachable_states.includes("B"),
       "a visually edited condition must remain blocked until re-evaluated");
+    conditionEntryCoverage.push({
+      route:"Editor visual", condition:visuallyEditedPackage.input.transitions.find(t => t.id === "t_ab").condition,
+      evaluation:visuallyEditedPackage.input.scenarios[0].condition_evaluations?.t_ab ?? null,
+      targetReachable:visuallyEditedPackage.result.scenario_results.baseline.reachable_states.includes("B")
+    });
     assert.match(await page.locator("#graph-note").textContent(), /t_ab \(NO EVALUADA\)/,
       "the graph note must show the edited condition as unevaluated");
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
@@ -1341,6 +1363,16 @@ function pythonJson(source, input) {
     assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
       "visual-editor conditional package must pass independent replay; validator said: " +
       await page.locator("#package-assessment").textContent());
+
+    assert.deepEqual(conditionEntryCoverage.map(({route}) => route),
+      ["JSON", "Transcriptor español", "Editor visual"],
+      "the grouped condition-entry matrix must exercise all three supported input routes");
+    for (const entry of conditionEntryCoverage) {
+      assert.ok(typeof entry.condition === "string" && entry.condition.trim(), entry.route + ": condition text must be preserved");
+      assert.equal(entry.evaluation, null, entry.route + ": an unevaluated condition must not gain a fabricated evaluation");
+      assert.equal(entry.targetReachable, false, entry.route + ": an unevaluated conditional target must remain unreachable");
+    }
+    console.log("PASS: grouped condition-entry matrix — JSON, Spanish transcriber, visual editor preserve condition text without fabricated evaluation or reachability.");
 
     // Clearing a condition must remove its metadata and stale evaluation, restoring an unconditional transition.
     await page.locator('#transition-review-list input[data-condition-text="t_ab"]').fill("");
