@@ -1290,6 +1290,40 @@ function pythonJson(source, input) {
       /El acceso autorizado precede a la espera/i,
       "unsupported direction phrase must be explicitly reported for clarification");
 
+    // Equivalent Spanish formulations must produce the same directed conditional edge.
+    const equivalentConditionPhrases = [
+      {
+        phrase: "Si hay autorización, el sistema pasa de espera a acceso autorizado.",
+        label: "leading si clause"
+      },
+      {
+        phrase: "El sistema pasa de espera a acceso autorizado cuando hay autorización.",
+        label: "trailing cuando clause"
+      }
+    ];
+    const equivalentConditionGraphs = [];
+    for (const fixture of equivalentConditionPhrases) {
+      await page.locator("#system-description").fill(fixture.phrase);
+      await page.locator("#generate-system-graph").click();
+      await page.waitForFunction(() => /Borrador propuesto:/i.test(
+        document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+      const parsed = JSON.parse(await page.locator("#model").inputValue());
+      assert.equal(parsed.transitions.length, 1, fixture.label + ": expected exactly one edge");
+      const edge = parsed.transitions[0];
+      assert.equal(edge.source, "espera", fixture.label + ": source state must match");
+      assert.equal(edge.target, "acceso autorizado", fixture.label + ": target state and direction must match");
+      assert.equal(edge.condition, "hay autorización", fixture.label + ": condition must be preserved exactly");
+      assert.equal(parsed.scenarios[0].condition_evaluations?.[edge.id], undefined,
+        fixture.label + ": parsing must not invent a condition evaluation");
+      equivalentConditionGraphs.push({
+        states: parsed.states.map(state => state.id).sort(),
+        transitions: parsed.transitions.map(t => ({source:t.source,target:t.target,condition:t.condition})),
+        evaluation: parsed.scenarios[0].condition_evaluations?.[edge.id] ?? null
+      });
+    }
+    assert.deepEqual(equivalentConditionGraphs[1], equivalentConditionGraphs[0],
+      "equivalent leading/trailing Spanish condition formulations must yield identical graph semantics");
+
     // An uncertain condition is ambiguous; it must not be accepted as a normal conditional edge.
     await page.locator("#system-description").fill(
       "Si quizá hay autorización, el sistema pasa de espera a acceso autorizado."
