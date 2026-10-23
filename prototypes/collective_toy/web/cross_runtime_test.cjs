@@ -1399,6 +1399,46 @@ function pythonJson(source, input) {
       );
     }
 
+    // Editing a transcribed condition must invalidate an evaluation bound to its prior text.
+    const staleNegativeConditionId = negativeConditionModel.transitions[0].id;
+    const staleTranscribedConditionModel = {
+      ...negativeConditionModel,
+      transitions: negativeConditionModel.transitions.map(t => ({
+        ...t,
+        condition: "hay autorización"
+      })),
+      scenarios: [{
+        ...negativeConditionModel.scenarios[0],
+        condition_evaluations: {
+          [staleNegativeConditionId]: {
+            condition: "no hay autorización",
+            result: "TRUE"
+          }
+        }
+      }]
+    };
+    const staleTranscribedConditionEngineRun = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      staleTranscribedConditionModel
+    );
+    assert.ok(!staleTranscribedConditionEngineRun.result.scenario_results.baseline.reachable_states.includes("acceso autorizado"),
+      "Python engine must block a transcribed transition when its evaluation is bound to the previous condition text");
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(staleTranscribedConditionModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const staleTranscribedConditionPackage = await page.evaluate(() => window.lastPackage);
+    assert.equal(staleTranscribedConditionPackage.input.transitions[0].condition, "hay autorización");
+    assert.ok(!staleTranscribedConditionPackage.result.scenario_results.baseline.reachable_states.includes("acceso autorizado"),
+      "browser must block a transcribed transition when its evaluation is bound to the previous condition text");
+    assert.deepEqual(
+      staleTranscribedConditionPackage.result,
+      staleTranscribedConditionEngineRun.result,
+      "browser and Python must agree when a transcribed condition invalidates its prior evaluation"
+    );
+
     // Equivalent Spanish formulations must produce the same directed conditional edge.
     const equivalentConditionPhrases = [
       {
