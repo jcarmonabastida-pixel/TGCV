@@ -1467,6 +1467,18 @@ function pythonJson(source, input) {
       {
         phrase: "Cuando hay autorización, el sistema pasa de espera a acceso autorizado.",
         label: "leading cuando clause"
+      },
+      {
+        phrase: "El sistema transita de espera a acceso autorizado si hay autorización.",
+        label: "transita verb with trailing si clause"
+      },
+      {
+        phrase: "El sistema cambia de espera a acceso autorizado cuando hay autorización.",
+        label: "cambia verb with trailing cuando clause"
+      },
+      {
+        phrase: "La espera conduce a acceso autorizado cuando hay autorización.",
+        label: "conduce formulation with trailing cuando clause"
       }
     ];
     const equivalentConditionGraphs = [];
@@ -1489,12 +1501,10 @@ function pythonJson(source, input) {
         evaluation: parsed.scenarios[0].condition_evaluations?.[edge.id] ?? null
       });
     }
-    assert.deepEqual(equivalentConditionGraphs[1], equivalentConditionGraphs[0],
-      "leading si and trailing cuando formulations must yield identical graph semantics");
-    assert.deepEqual(equivalentConditionGraphs[2], equivalentConditionGraphs[0],
-      "leading si and trailing si formulations must yield identical graph semantics");
-    assert.deepEqual(equivalentConditionGraphs[3], equivalentConditionGraphs[0],
-      "leading cuando and leading si formulations must yield identical graph semantics");
+    for (let i = 1; i < equivalentConditionGraphs.length; i++) {
+      assert.deepEqual(equivalentConditionGraphs[i], equivalentConditionGraphs[0],
+        equivalentConditionPhrases[i].label + " must yield identical graph semantics to the baseline formulation");
+    }
 
     // Semantically different conditions must not be collapsed just because their edge is identical.
     const negativeConditionPhrases = [
