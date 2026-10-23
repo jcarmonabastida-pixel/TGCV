@@ -471,7 +471,7 @@ function pythonJson(source, input) {
       ]};
       const proposals = await window.deriveTgcvCorrespondenceCandidates(model,conflictCatalogue);
       const candidate = proposals.candidates.find(x => x.system_transition_id === "t_ac" && x.tgcv_transformation_id === "T_DERIVED_AC");
-      assert.ok(candidate, "fixture must derive the intended candidate before testing the collision");
+      if (!candidate) throw new Error("fixture must derive the intended candidate before testing the collision");
       candidate.decision = "ACCEPTED";
       const prior = [{candidate_id:"cand-prior-effective",status:"EFFECTIVE",
         system_transition_id:"t_ab",tgcv_transformation_id:"T_DERIVED_AC"}];
