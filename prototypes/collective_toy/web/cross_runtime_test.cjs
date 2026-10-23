@@ -1509,7 +1509,9 @@ function pythonJson(source, input) {
     // Semantically different conditions must not be collapsed just because their edge is identical.
     const negativeConditionPhrases = [
       "Si no hay autorización, el sistema pasa de espera a acceso autorizado.",
-      "El sistema pasa de espera a acceso autorizado si no hay autorización."
+      "El sistema pasa de espera a acceso autorizado si no hay autorización.",
+      "El sistema transita de espera a acceso autorizado si no hay autorización.",
+      "La espera conduce a acceso autorizado cuando no hay autorización."
     ];
     const negativeConditionGraphs = [];
     for (const phrase of negativeConditionPhrases) {
@@ -1531,8 +1533,10 @@ function pythonJson(source, input) {
         evaluation: parsed.scenarios[0].condition_evaluations?.[edge.id] ?? null
       });
     }
-    assert.deepEqual(negativeConditionGraphs[1], negativeConditionGraphs[0],
-      "leading and trailing negated condition formulations must yield identical graph semantics");
+    for (let i = 1; i < negativeConditionGraphs.length; i++) {
+      assert.deepEqual(negativeConditionGraphs[i], negativeConditionGraphs[0],
+        "negated condition formulation " + (i + 1) + " must yield identical graph semantics to the baseline");
+    }
     assert.equal(negativeConditionGraphs[0].transitions[0].condition, "no hay autorización");
     assert.notEqual(negativeConditionGraphs[0].transitions[0].condition,
       equivalentConditionGraphs[0].transitions[0].condition,
