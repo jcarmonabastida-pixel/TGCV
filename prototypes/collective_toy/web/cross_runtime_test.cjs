@@ -614,8 +614,13 @@ function pythonJson(source, input) {
     const changedModelExportPath = await changedModelExport.path();
     assert.ok(changedModelExportPath, "changed source model must export a package for scope validation");
     const changedModelPackage = JSON.parse(fs.readFileSync(changedModelExportPath, "utf8"));
-    assert.equal(changedModelPackage.tgcv_correspondence_review, undefined,
-      "export must not carry an accepted correspondence review scoped to the prior source model");
+    const changedModelReview = changedModelPackage.tgcv_correspondence_review;
+    assert.ok(changedModelReview,
+      "the current model's newly derived correspondence proposals may be exported with their provenance");
+    assert.ok(changedModelReview.candidates.every(candidate =>
+      candidate.source_model_sha256 === changedModelReview.source_model_sha256 &&
+      candidate.decision !== "ACCEPTED" && candidate.status !== "ACCEPTED"),
+      "export must not carry ACCEPTED decisions from the prior source model; only current-scope pending proposals are allowed");
 
     // JSON import must preserve conditional metadata without fabricating an evaluation.
     const jsonConditionalModel = {
