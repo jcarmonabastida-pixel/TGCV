@@ -663,6 +663,22 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-status").textContent(), /No pasa de ejecución a resultado/i,
       "negated phrase must be explicitly reported for clarification");
 
+    // Unsupported direction wording must remain pending, never be guessed or reversed.
+    await page.locator("#system-description").fill(
+      "El proceso pasa de reposo a ejecución. El acceso autorizado precede a la espera."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /Borrador propuesto:/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+    const unsupportedDirectionModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(unsupportedDirectionModel.transitions.length, 1,
+      "unsupported direction wording must not add a guessed or reversed transition");
+    assert.equal(unsupportedDirectionModel.transitions[0].source, "reposo");
+    assert.equal(unsupportedDirectionModel.transitions[0].target, "ejecución");
+    assert.match(await page.locator("#transcription-status").textContent(),
+      /El acceso autorizado precede a la espera/i,
+      "unsupported direction phrase must be explicitly reported for clarification");
+
     // An uncertain condition is ambiguous; it must not be accepted as a normal conditional edge.
     await page.locator("#system-description").fill(
       "Si quizá hay autorización, el sistema pasa de espera a acceso autorizado."
