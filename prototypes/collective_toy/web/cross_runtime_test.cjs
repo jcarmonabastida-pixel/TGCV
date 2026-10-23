@@ -1068,16 +1068,53 @@ function pythonJson(source, input) {
 
     // Applying is a separate, explicit operation: only now should the accepted
     // proposal become effective, while the source model's declared mapping stays intact.
+    const expectedEffectiveScope = await page.evaluate(() => ({
+      sourceModelSha256: window.correspondenceReviewState?.sourceModelSha256,
+      catalogueVersion: window.correspondenceReviewState?.catalogueVersion,
+      catalogueSha256: window.correspondenceReviewState?.catalogueSha256
+    }));
+    assert.ok(expectedEffectiveScope.sourceModelSha256 && expectedEffectiveScope.catalogueSha256,
+      "the apply fixture must have an explicit source-model and catalogue scope");
     await page.locator("#apply-accepted-tgcv-correspondences").click();
-    await page.waitForFunction(() => /Correspondencias efectivas activas|No se aplicaron correspondencias/i.test(
-      document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
+    // A generic status message may already be present from an earlier application.
+    // Wait for this exact scope, the expected mapping, and its durable record instead.
+    await page.waitForFunction(scope => {
+      const state = window.effectiveCorrespondenceState;
+      if (!state ||
+          state.sourceModelSha256 !== scope.sourceModelSha256 ||
+          state.catalogueVersion !== scope.catalogueVersion ||
+          state.catalogueSha256 !== scope.catalogueSha256 ||
+          !Array.isArray(state.mappings) ||
+          state.mappings.length !== 1 ||
+          state.mappings[0].status !== "EFFECTIVE" ||
+          state.mappings[0].decision !== "ACCEPTED") return false;
+      const key = "tgcv-effective-mappings-001:" + scope.sourceModelSha256 + ":" +
+        scope.catalogueVersion + ":" + scope.catalogueSha256;
+      try {
+        const record = JSON.parse(localStorage.getItem(key) || "null");
+        return record &&
+          record.source_model_sha256 === scope.sourceModelSha256 &&
+          record.catalogue_version === scope.catalogueVersion &&
+          record.catalogue_sha256 === scope.catalogueSha256 &&
+          Array.isArray(record.mappings) &&
+          record.mappings.length === 1 &&
+          record.mappings[0].status === "EFFECTIVE" &&
+          record.mappings[0].decision === "ACCEPTED";
+      } catch (_e) { return false; }
+    }, expectedEffectiveScope, {timeout:5000});
     assert.match(await page.locator("#effective-correspondence-status").textContent(), /Correspondencias efectivas activas/i,
       "explicit apply action must report successful activation for a valid accepted proposal");
-    const effectiveMappingsAfterApply = await page.evaluate(() =>
-      JSON.parse(JSON.stringify(window.effectiveCorrespondenceState?.mappings || [])));
+    const effectiveApplySnapshot = await page.evaluate(scope => {
+      const state = JSON.parse(JSON.stringify(window.effectiveCorrespondenceState || {}));
+      const key = "tgcv-effective-mappings-001:" + scope.sourceModelSha256 + ":" +
+        scope.catalogueVersion + ":" + scope.catalogueSha256;
+      return {state, persisted: JSON.parse(localStorage.getItem(key) || "null")};
+    }, expectedEffectiveScope);
+    const effectiveMappingsAfterApply = effectiveApplySnapshot.state.mappings || [];
     assert.equal(effectiveMappingsAfterApply.length, 1,
       "explicit apply action must activate exactly the accepted correspondence in this isolated fixture; status=" +
       (await page.locator("#effective-correspondence-status").textContent()) +
+      "; persisted=" + JSON.stringify(effectiveApplySnapshot.persisted).slice(0,1800) +
       "; review=" + (await page.locator("#correspondence-review-list").textContent()).slice(0,1800));
     assert.equal(effectiveMappingsAfterApply[0].status, "EFFECTIVE",
       "applied correspondence must be explicitly marked EFFECTIVE");
