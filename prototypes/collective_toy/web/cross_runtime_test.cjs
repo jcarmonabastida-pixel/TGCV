@@ -1396,6 +1396,38 @@ function pythonJson(source, input) {
       await rejectionPage.locator("#derive-tgcv-correspondences").click();
       assert.match(await rejectionPage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
         "isolated rejected decision must persist when proposals are regenerated");
+
+      // A review-required ambiguous proposal can be explicitly rejected, and that
+      // human decision must survive regeneration for the exact model/catalogue scope.
+      const reviewCatalogue = {
+        schema:"tgcv-target-catalogue-001", version:"human-conflict-review-v1",
+        transformations:[
+          {id:"T_REVIEW_AB_1",source_state:"A",target_state:"B"},
+          {id:"T_REVIEW_AB_2",source_state:"A",target_state:"B"}
+        ]
+      };
+      await rejectionPage.locator("#tgcv-target-catalogue").fill(JSON.stringify(reviewCatalogue));
+      await rejectionPage.locator("#derive-tgcv-correspondences").click();
+      const reviewRequired = rejectionPage.locator("#correspondence-review-list article").filter({hasText:"NEEDS_REVIEW"});
+      await reviewRequired.first().waitFor();
+      assert.equal(await reviewRequired.count(), 2,
+        "duplicate exact-boundary targets must create review-required candidates");
+      await reviewRequired.first().getByRole("button",{name:"Rechazar propuesta"}).click();
+      assert.match(await rejectionPage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+        "review-required proposal must accept an explicit human rejection");
+      const rejectedReviewStorage = await rejectionPage.evaluate(() =>
+        Object.fromEntries(Object.keys(localStorage).filter(k => k.startsWith("tgcv-correspondence-review-001:"))
+          .sort().map(k => [k, localStorage.getItem(k)])));
+      assert.ok(Object.values(rejectedReviewStorage).some(raw => raw && raw.includes('"decision":"REJECTED"')),
+        "human rejection of a review-required candidate must be persisted");
+      await rejectionPage.locator("#derive-tgcv-correspondences").click();
+      assert.match(await rejectionPage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+        "human rejection of a review-required candidate must survive proposal regeneration");
+      const rejectedReviewStorageAfter = await rejectionPage.evaluate(() =>
+        Object.fromEntries(Object.keys(localStorage).filter(k => k.startsWith("tgcv-correspondence-review-001:"))
+          .sort().map(k => [k, localStorage.getItem(k)])));
+      assert.deepEqual(rejectedReviewStorageAfter,rejectedReviewStorage,
+        "regenerating review-required proposals must not rewrite the persisted human decision");
     } finally { await rejectionContext.close(); }
 
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
