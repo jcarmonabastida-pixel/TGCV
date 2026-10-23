@@ -483,6 +483,17 @@ function pythonJson(source, input) {
     });
     assert.ok(reachabilityBeforeReview,
       "baseline execution must expose reachable states before review decisions");
+    const executionBeforeReview = await page.evaluate(() => {
+      const scenarios = window.lastPackage?.result?.scenario_results || {};
+      return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+        reachable_states: [...(result.reachable_states || [])].sort(),
+        trajectories: (result.trajectories || []).map(path => path.map(step => ({
+          state: step.state, transition: step.transition || null
+        })))
+      }]));
+    });
+    assert.ok(Object.keys(executionBeforeReview).length,
+      "baseline execution must expose structured scenario outcomes before review decisions");
     const graphBeforeReview = await page.locator("#tgcv-graph").textContent();
     await page.locator("#derive-tgcv-correspondences").click();
     await page.locator("#correspondence-review-list article").first().waitFor();
@@ -511,6 +522,17 @@ function pythonJson(source, input) {
     });
     assert.deepEqual(reachabilityAfterPendingAndRejected, reachabilityBeforeReview,
       "pending and rejected correspondence proposals must not change system reachability");
+    const executionAfterPendingAndRejected = await page.evaluate(() => {
+      const scenarios = window.lastPackage?.result?.scenario_results || {};
+      return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+        reachable_states: [...(result.reachable_states || [])].sort(),
+        trajectories: (result.trajectories || []).map(path => path.map(step => ({
+          state: step.state, transition: step.transition || null
+        })))
+      }]));
+    });
+    assert.deepEqual(executionAfterPendingAndRejected, executionBeforeReview,
+      "pending and rejected correspondence proposals must preserve all scenario reachability and trajectories");
     const effectiveSetAfterPendingAndRejected = await page.evaluate(() =>
       (window.effectiveCorrespondenceState?.mappings || [])
         .filter(mapping => mapping.status === "EFFECTIVE")
