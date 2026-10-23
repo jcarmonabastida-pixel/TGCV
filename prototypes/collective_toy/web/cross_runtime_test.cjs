@@ -1426,7 +1426,7 @@ function pythonJson(source, input) {
       " print(json.dumps({'rejected':False}))",
       "except e.ModelValidationError as exc:",
       " print(json.dumps({'rejected':True,'message':str(exc)}))"
-    ].join("\\n")], {
+    ].join("\n")], {
       cwd: root, input: JSON.stringify(staleTranscribedConditionModel), encoding: "utf8"
     });
     assert.equal(staleEvaluationValidation.status, 0, "stale evaluation validation probe must run");
