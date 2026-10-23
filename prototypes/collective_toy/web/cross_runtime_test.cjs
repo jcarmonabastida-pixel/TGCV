@@ -909,8 +909,14 @@ function pythonJson(source, input) {
         .flatMap(record => [...(record.mappings || []), ...(record.history || [])]));
       assert.ok(isolatedStaleHistory.some(m => m.status === "STALE" && /modelo de origen cambió/i.test(m.stale_reason || "")),
         "source model edit must invalidate the applied mapping with a persisted reason");
-      assert.ok(isolatedStaleHistory.every(m => !(m.status === "EFFECTIVE" && m.active !== false)),
-        "no active effective mapping may survive the isolated source model edit");
+      const currentIsolatedMappings = await stalePage.evaluate(() => Object.keys(localStorage)
+        .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+        .map(k => JSON.parse(localStorage.getItem(k)))
+        .flatMap(record => record.mappings || []));
+      assert.ok(currentIsolatedMappings.every(m => !(m.status === "EFFECTIVE" && m.active !== false)),
+        "no current mapping may remain active and effective after the isolated source model edit");
+      assert.ok(currentIsolatedMappings.some(m => m.status === "STALE"),
+        "the current mapping set must expose the invalidated mapping as STALE");
       await stalePage.locator("#run").click();
       await stalePage.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
         document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
