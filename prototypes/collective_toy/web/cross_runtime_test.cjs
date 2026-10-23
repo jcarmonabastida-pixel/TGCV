@@ -437,6 +437,10 @@ function pythonJson(source, input) {
       // conflicting user-declared mapping before application; validation must reject it.
       const conflictCandidate = await window.deriveTgcvCorrespondenceCandidates(unMapped,catalogue);
       conflictCandidate.candidates[0].decision = "ACCEPTED";
+      // Keep the candidate's exact evidence but bind it to the edited source snapshot so
+      // this assertion reaches the declared-mapping conflict guard rather than failing
+      // earlier at the source-hash freshness guard.
+      conflictCandidate.candidates[0].source_model_sha256 = await hash(conflictingModel,"correspondence_source_model");
       const conflictingModelBefore = JSON.stringify(conflictingModel);
       const conflict = await window.validateAcceptedCorrespondenceCandidates(conflictingModel,catalogue,conflictCandidate.candidates,[]);
       const conflictingModelAfter = JSON.stringify(conflictingModel);
