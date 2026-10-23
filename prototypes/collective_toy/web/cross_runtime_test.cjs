@@ -1066,6 +1066,28 @@ function pythonJson(source, input) {
     assert.deepEqual(effectiveMappingsAfterAcceptance, effectiveMappingsBeforeAcceptance,
       "review acceptance alone must not activate a correspondence before the separate apply action");
 
+    // Applying is a separate, explicit operation: only now should the accepted
+    // proposal become effective, while the source model's declared mapping stays intact.
+    await page.locator("#apply-accepted-tgcv-correspondences").click();
+    await page.waitForFunction(() => /correspondencias aplicadas|No se aplicaron correspondencias/i.test(
+      document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#effective-correspondence-status").textContent(), /correspondencias aplicadas/i,
+      "explicit apply action must report successful activation for a valid accepted proposal");
+    const effectiveMappingsAfterApply = await page.evaluate(() =>
+      JSON.parse(JSON.stringify(window.effectiveCorrespondenceState?.mappings || [])));
+    assert.equal(effectiveMappingsAfterApply.length, 1,
+      "explicit apply action must activate exactly the accepted correspondence in this isolated fixture");
+    assert.equal(effectiveMappingsAfterApply[0].status, "EFFECTIVE",
+      "applied correspondence must be explicitly marked EFFECTIVE");
+    assert.equal(effectiveMappingsAfterApply[0].decision, "ACCEPTED",
+      "applied correspondence must retain its human acceptance decision");
+    const declaredMappingAfterApply = await page.locator("#model").evaluate(el => {
+      const parsed = JSON.parse(el.value);
+      return JSON.parse(JSON.stringify(parsed.tgcv_mapping || null));
+    });
+    assert.deepEqual(declaredMappingAfterApply, declaredMappingBeforeAcceptance,
+      "applying a derived correspondence must not rewrite the user-declared TGCV mapping");
+
     // Carry the transcribed condition through execution and package replay, not just parsing.
     await page.locator("#run").click();
     await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
