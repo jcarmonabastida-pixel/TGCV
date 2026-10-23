@@ -758,6 +758,29 @@ function pythonJson(source, input) {
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "the old accepted mapping must not make a now-blocked transition accessible after its condition changes");
 
+    // Visual-editor condition must survive its own export/import/replay round trip.
+    const visualConditionalDownloadPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const visualConditionalDownload = await visualConditionalDownloadPromise;
+    const visualConditionalPath = await visualConditionalDownload.path();
+    assert.ok(visualConditionalPath, "visual-editor conditional model must export a JSON package");
+    const visualConditionalText = fs.readFileSync(visualConditionalPath, "utf8");
+    const visualConditionalPackage = JSON.parse(visualConditionalText);
+    assert.equal(visualConditionalPackage.input.transitions.find(t => t.id === "t_ab").condition,
+      "humidity is extremely low", "visual editor's exact condition must be preserved in the exported source input");
+    await page.locator("#package-file").setInputFiles({
+      name: "visual-conditional-round-trip.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(visualConditionalText)
+    });
+    await page.locator("#assess-package").click();
+    await page.waitForFunction(() => ["replay-verified", "rejected", "inspect-only/replay-unavailable"].includes(
+      document.querySelector("#package-assessment")?.dataset.state
+    ), null, {timeout:5000});
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
+      "visual-editor conditional package must pass independent replay; validator said: " +
+      await page.locator("#package-assessment").textContent());
+
     // Clearing a condition must remove its metadata and stale evaluation, restoring an unconditional transition.
     await page.locator('#transition-review-list input[data-condition-text="t_ab"]').fill("");
     await page.locator('#transition-review-list button[data-save-condition="t_ab"]').click();
