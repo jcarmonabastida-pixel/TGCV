@@ -556,6 +556,8 @@ function pythonJson(source, input) {
     await page.locator("#apply-accepted-tgcv-correspondences").click();
     await page.waitForFunction(() => /Correspondencias efectivas activas: 1/i.test(
       document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
+    // Preserve the exact reviewed source model so we can test rollback after invalidation.
+    const reviewedSourceModelBeforeChange = JSON.parse(await page.locator("#model").inputValue());
     // Change the source model through its supported visual editor; the JSON textarea
     // is intentionally inside a collapsed advanced-details panel.
     await page.locator("#new-state-id").fill("StateForInvalidationCheck");
@@ -621,6 +623,20 @@ function pythonJson(source, input) {
       candidate.source_model_sha256 === changedModelReview.source_model_sha256 &&
       candidate.decision !== "ACCEPTED" && candidate.status !== "ACCEPTED"),
       "export must not carry ACCEPTED decisions from the prior source model; only current-scope pending proposals are allowed");
+
+    // Rolling back the source model must not resurrect the prior ACCEPTED decision
+    // after that decision's effective mapping was invalidated by the intervening edit.
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = JSON.stringify(value, null, 2);
+      el.dispatchEvent(new Event("input", {bubbles:true}));
+    }, reviewedSourceModelBeforeChange);
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.waitForFunction(() => /Generadas 2 propuestas/i.test(
+      document.querySelector("#correspondence-review-status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: PENDIENTE/,
+      "restoring the exact prior source model must not silently restore an ACCEPTED decision invalidated by an intervening model change");
+    assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+      "restoring the prior source model must not reactivate the stale effective mapping without a new explicit acceptance");
 
     // JSON import must preserve conditional metadata without fabricating an evaluation.
     const jsonConditionalModel = {
