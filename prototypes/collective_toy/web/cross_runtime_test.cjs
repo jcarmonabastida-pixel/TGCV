@@ -1303,6 +1303,10 @@ function pythonJson(source, input) {
       {
         phrase: "El sistema pasa de espera a acceso autorizado si hay autorización.",
         label: "trailing si clause"
+      },
+      {
+        phrase: "Cuando hay autorización, el sistema pasa de espera a acceso autorizado.",
+        label: "leading cuando clause"
       }
     ];
     const equivalentConditionGraphs = [];
@@ -1329,6 +1333,8 @@ function pythonJson(source, input) {
       "leading si and trailing cuando formulations must yield identical graph semantics");
     assert.deepEqual(equivalentConditionGraphs[2], equivalentConditionGraphs[0],
       "leading si and trailing si formulations must yield identical graph semantics");
+    assert.deepEqual(equivalentConditionGraphs[3], equivalentConditionGraphs[0],
+      "leading cuando and leading si formulations must yield identical graph semantics");
 
     // An uncertain condition is ambiguous; it must not be accepted as a normal conditional edge.
     await page.locator("#system-description").fill(
