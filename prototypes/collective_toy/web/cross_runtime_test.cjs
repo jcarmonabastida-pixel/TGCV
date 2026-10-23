@@ -1354,6 +1354,51 @@ function pythonJson(source, input) {
       "browser and Python must agree on the parsed negative condition and its blocked reachability"
     );
 
+    // Explicit evaluations apply to the exact transcribed condition text:
+    // TRUE enables the edge; FALSE blocks it. This tests evaluation semantics,
+    // not an automatic linguistic inference from the phrase itself.
+    const negativeTransitionId = negativeConditionModel.transitions[0].id;
+    for (const result of ["TRUE", "FALSE"]) {
+      const evaluatedNegativeConditionModel = {
+        ...negativeConditionModel,
+        scenarios: [{
+          ...negativeConditionModel.scenarios[0],
+          condition_evaluations: {
+            [negativeTransitionId]: {
+              condition: "no hay autorización",
+              result
+            }
+          }
+        }]
+      };
+      const expectedNegativeConditionRun = pythonJson(
+        "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+        evaluatedNegativeConditionModel
+      );
+      await page.locator("#model").evaluate((el, value) => {
+        el.value = value;
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+      }, JSON.stringify(evaluatedNegativeConditionModel));
+      await page.locator("#run").click();
+      await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+      const evaluatedNegativeConditionPackage = await page.evaluate(() => window.lastPackage);
+      assert.equal(
+        evaluatedNegativeConditionPackage.input.scenarios[0].condition_evaluations[negativeTransitionId].condition,
+        "no hay autorización",
+        "explicit evaluation must remain bound to the exact transcribed condition"
+      );
+      assert.equal(
+        evaluatedNegativeConditionPackage.result.scenario_results.baseline.reachable_states.includes("acceso autorizado"),
+        result === "TRUE",
+        result + " evaluation must control reachability for the transcribed negative condition"
+      );
+      assert.deepEqual(
+        evaluatedNegativeConditionPackage.result,
+        expectedNegativeConditionRun.result,
+        "browser and Python must agree for the transcribed negative condition evaluated as " + result
+      );
+    }
+
     // Equivalent Spanish formulations must produce the same directed conditional edge.
     const equivalentConditionPhrases = [
       {
