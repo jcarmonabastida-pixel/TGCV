@@ -927,6 +927,24 @@ function pythonJson(source, input) {
       await stalePage.locator("#derive-tgcv-correspondences").click();
       assert.match(await stalePage.locator("#correspondence-review-list").textContent(), /Decisión: PENDIENTE/,
         "regenerated proposals for the edited source model must not resurrect the old accepted decision");
+      await stalePage.locator("#correspondence-review-list article").first()
+        .getByRole("button", {name:"Rechazar propuesta"}).click();
+      assert.match(await stalePage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+        "a newly derived proposal after source-model invalidation must accept a new explicit rejection");
+      await stalePage.locator("#derive-tgcv-correspondences").click();
+      assert.match(await stalePage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+        "the new rejection must persist across regeneration after the prior mapping became stale");
+      const postCycleState = await stalePage.evaluate(() => ({
+        current: Object.keys(localStorage)
+          .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+          .map(k => JSON.parse(localStorage.getItem(k)))
+          .flatMap(record => record.mappings || []),
+        graph: document.querySelector("#tgcv-graph")?.textContent || ""
+      }));
+      assert.ok(postCycleState.current.every(m => !(m.status === "EFFECTIVE" && m.active !== false)),
+        "the review cycle must not reactivate the old mapping after stale then rejected transitions");
+      assert.doesNotMatch(postCycleState.graph, /T_HUMIDITY/,
+        "the review cycle must keep the invalidated transformation out of the TGCV graph");
     } finally { await staleContext.close(); }
 
     // JSON import must preserve conditional metadata without fabricating an evaluation.
