@@ -594,6 +594,18 @@ function pythonJson(source, input) {
     });
     assert.ok(reachabilityWithEffectiveMapping,
       "baseline execution must expose reachable states while the accepted mapping is effective");
+    const executionSemanticsWithEffectiveMapping = await page.evaluate(() => {
+      const scenarios = window.lastPackage?.result?.scenario_results || {};
+      return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+        reachable_states: [...(result.reachable_states || [])].sort(),
+        trajectories: (result.trajectories || []).map(path => path.map(step => ({
+          state: step.state, transition: step.transition || null
+        })))
+      }]));
+    });
+    assert.ok(Object.keys(executionSemanticsWithEffectiveMapping).length,
+      "execution result comparison must include scenario reachability and trajectories");
+    const displayedTAccWithEffectiveMapping = await page.locator("#tgcv-demo-results").textContent();
 
     const originalCatalogue = JSON.parse(await page.locator("#tgcv-target-catalogue").inputValue());
     originalCatalogue.transformations.push({id:"T_EXTRA",source_state:"E",target_state:"F"});
@@ -638,6 +650,19 @@ function pythonJson(source, input) {
     });
     assert.deepEqual(reachabilityAfterStaleMapping, reachabilityWithEffectiveMapping,
       "invalidating a correspondence and restoring the catalogue must not change system reachability");
+    const executionSemanticsAfterStaleMapping = await page.evaluate(() => {
+      const scenarios = window.lastPackage?.result?.scenario_results || {};
+      return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+        reachable_states: [...(result.reachable_states || [])].sort(),
+        trajectories: (result.trajectories || []).map(path => path.map(step => ({
+          state: step.state, transition: step.transition || null
+        })))
+      }]));
+    });
+    assert.deepEqual(executionSemanticsAfterStaleMapping, executionSemanticsWithEffectiveMapping,
+      "invalidating a stale correspondence and restoring the catalogue must preserve execution reachability and trajectories");
+    assert.equal(await page.locator("#tgcv-demo-results").textContent(), displayedTAccWithEffectiveMapping,
+      "the displayed T_acc comparison must remain unchanged when a stale mapping is not reactivated");
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "a stale effective mapping must remain inactive when the old catalogue is restored");
 
