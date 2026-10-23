@@ -661,8 +661,11 @@ function pythonJson(source, input) {
     });
     assert.deepEqual(executionSemanticsAfterStaleMapping, executionSemanticsWithEffectiveMapping,
       "invalidating a stale correspondence and restoring the catalogue must preserve execution reachability and trajectories");
-    assert.equal(await page.locator("#tgcv-demo-results").textContent(), displayedTAccWithEffectiveMapping,
-      "the displayed T_acc comparison must remain unchanged when a stale mapping is not reactivated");
+    const displayedTAccAfterStaleMapping = await page.locator("#tgcv-demo-results").textContent();
+    assert.doesNotMatch(displayedTAccAfterStaleMapping, /T_HUMIDITY/,
+      "T_acc display must exclude the transformation supplied only by the now-stale effective mapping");
+    assert.match(displayedTAccWithEffectiveMapping, /T_HUMIDITY/,
+      "baseline T_acc display must include the transformation while its effective mapping is active");
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "a stale effective mapping must remain inactive when the old catalogue is restored");
 
