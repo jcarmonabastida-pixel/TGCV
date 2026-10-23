@@ -117,3 +117,20 @@ Commit `fe6866176a25d9becbe972735d33a9dfae72d289`: motor sintético PASS ([run 3
 Commit `44961cc00b22da59a2d0666a174330081743853c`: motor sintético PASS ([run 39959862621](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39959862621)) y navegador/concordancia PASS ([run 39959863200](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39959863200)). La prueba de navegador continúa el escenario aislado: tras aceptar y aplicar una correspondencia, cambiar el modelo y verificar su invalidación, deriva una propuesta nueva, registra un rechazo humano explícito, vuelve a derivar y comprueba que el rechazo persiste, no quedan correspondencias actuales activas y efectivas, y la transformación obsoleta sigue ausente del grafo TGCV. La suite de navegador y Python también se reproduce desde un archivo fuente limpio.
 
 **Alcance:** valida la secuencia de revisión concreta ejercitada. No sustituye una verificación formal de todas las transiciones de estado ni prueba por sí sola la equivalencia global entre las correspondencias efectivas y `T_acc`. PR #95 sigue en borrador.
+
+### Auditoría de transiciones del ciclo de correspondencias — estado de cobertura
+
+Auditoría documental del contrato `TGCV_FULL_CHAIN_DEMONSTRATOR_CONTRACT_001.md` frente a `web/cross_runtime_test.cjs`, revisada en el head `cdf9b11faa9a784327b6532e8534bae042cfc7c8`.
+
+| Transición/propiedad | Evidencia localizada | Estado |
+|---|---|---|
+| Propuesta → aceptación humana | Prueba de navegador acepta una propuesta y verifica procedencia/revisión | Cubierta en los escenarios existentes |
+| Aceptada → efectiva | Aplicación explícita por UI y comprobación de una correspondencia activa | Cubierta en el escenario de materialización probado |
+| Rechazada → sin efecto operativo | Rechazo aislado; comprueba que no entra en el conjunto efectivo y persiste al regenerar | PASS en CI del commit `c8df92afc376925259ed84be8135ec5c1e6877be` |
+| Efectiva → obsoleta por cambio de modelo | Invalida con motivo persistido, excluye estado efectivo y grafo TGCV | PASS en CI del commit `fe6866176a25d9becbe972735d33a9dfae72d289` |
+| Obsoleta → nueva propuesta pendiente → rechazo nuevo | Regeneración, rechazo explícito y segunda regeneración; sin reactivación | PASS en CI del commit `44961cc00b22da59a2d0666a174330081743853c` |
+| Restaurar el modelo anterior tras invalidación | El test integrado verifica que no se restaura automáticamente la aceptación ni la transformación en el grafo | Cubierta por el escenario integrado; no sustituye la prueba aislada anterior |
+| Importar/reproducir decisiones sin activar automáticamente | El contrato exige snapshot de auditoría y acción explícita; hay validaciones de paquete, pero no se identifica aquí una matriz exhaustiva de todas las transiciones importadas | Brecha de cobertura por transición |
+| Conflicto entre mapping declarado y mapping derivado / dos mappings efectivos incompatibles | El contrato exige `CONFLICT_NEEDS_REVIEW` y preservar el mapping declarado | No se ha demostrado cobertura exhaustiva por pares de conflicto en los tests revisados |
+
+**Conclusión de auditoría:** están validadas varias secuencias concretas de revisión, aplicación, rechazo e invalidación; no existe evidencia suficiente para marcar completa la matriz global de transiciones. Los estados contractuales `PENDING_REVIEW`, `ACCEPTED_NOT_APPLIED`, `EFFECTIVE`, `CONFLICT_NEEDS_REVIEW`, `STALE` y `REJECTED` deben mantenerse diferenciados; los nombres internos observados en las pruebas no autorizan a tratarlos como estados equivalentes. Siguiente brecha prioritaria: añadir pruebas aisladas para import/replay sin activación y para conflictos de mappings, empezando por el caso de importación sin mutación del estado local. No cambiar el motor ni promover PR #95 mientras estos gates sigan abiertos.
