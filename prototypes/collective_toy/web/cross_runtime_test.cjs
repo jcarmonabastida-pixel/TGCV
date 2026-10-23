@@ -302,7 +302,7 @@ function pythonJson(source, input) {
       mimeType:"application/json",
       buffer:Buffer.from(JSON.stringify(jsonMixedInputModel))
     });
-    await page.waitForFunction(() => /Archivo cargado y validado/i.test(
+    await page.waitForFunction(() => /Archivo cargado y validado: json-mixed-condition-input\.json/i.test(
       document.querySelector("#file-status")?.textContent || ""), null, {timeout:5000});
     await page.locator("#run").click();
     await page.waitForFunction(() => /Ejecución completada/i.test(
@@ -676,7 +676,7 @@ function pythonJson(source, input) {
       mimeType:"application/json",
       buffer:Buffer.from(JSON.stringify(jsonConditionalModel))
     });
-    await page.waitForFunction(() => /Archivo cargado y validado/i.test(
+    await page.waitForFunction(() => /Archivo cargado y validado: conditional-model\.json/i.test(
       document.querySelector("#file-status")?.textContent || ""), null, {timeout:5000});
     const jsonImportedConditionalModel = JSON.parse(await page.locator("#model").inputValue());
     assert.equal(jsonImportedConditionalModel.transitions.find(t => t.id === "t_ab").condition, "authorization is valid",
