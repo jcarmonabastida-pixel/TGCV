@@ -477,9 +477,13 @@ function pythonJson(source, input) {
     await page.locator("#correspondence-review-list article").first().waitFor();
     assert.equal(await page.locator("#correspondence-review-list article").count(), 2,
       "review UI must show all exact-boundary candidates");
+    assert.equal(await page.locator("#tgcv-graph").textContent(), graphBeforeReview,
+      "deriving pending correspondence proposals must not modify the TGCV graph");
     await page.locator("#correspondence-review-list article").nth(0).getByRole("button", {name:"Aceptar propuesta"}).click();
     assert.match(await page.locator("#correspondence-review-status").textContent(), /persistida/i,
       "acceptance must report that the decision was persisted");
+    assert.equal(await page.locator("#tgcv-graph").textContent(), graphBeforeReview,
+      "accepting a proposal must not activate or rewrite the TGCV graph before explicit application");
     await page.locator("#correspondence-review-list article").nth(1).getByRole("button", {name:"Rechazar propuesta"}).click();
     assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
       "a rejected correspondence candidate must retain an explicit human decision");
