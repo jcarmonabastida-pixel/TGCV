@@ -1069,9 +1069,9 @@ function pythonJson(source, input) {
     // Applying is a separate, explicit operation: only now should the accepted
     // proposal become effective, while the source model's declared mapping stays intact.
     await page.locator("#apply-accepted-tgcv-correspondences").click();
-    await page.waitForFunction(() => /correspondencias aplicadas|No se aplicaron correspondencias/i.test(
+    await page.waitForFunction(() => /Correspondencias efectivas activas|No se aplicaron correspondencias/i.test(
       document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
-    assert.match(await page.locator("#effective-correspondence-status").textContent(), /correspondencias aplicadas/i,
+    assert.match(await page.locator("#effective-correspondence-status").textContent(), /Correspondencias efectivas activas/i,
       "explicit apply action must report successful activation for a valid accepted proposal");
     const effectiveMappingsAfterApply = await page.evaluate(() =>
       JSON.parse(JSON.stringify(window.effectiveCorrespondenceState?.mappings || [])));
