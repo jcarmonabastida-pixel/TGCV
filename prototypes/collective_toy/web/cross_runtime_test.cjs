@@ -1046,9 +1046,25 @@ function pythonJson(source, input) {
     assert.ok(transcribedCandidateRecord, "transcribed correspondence candidate must be available for review");
     assert.equal(transcribedCandidateRecord.source_model_sha256, await page.evaluate(model => window.hash(model), transcribedConditionalModel),
       "transcribed candidate provenance must match the exact transcribed source model");
+    const declaredMappingBeforeAcceptance = await page.locator("#model").evaluate(el => {
+      const parsed = JSON.parse(el.value);
+      return JSON.parse(JSON.stringify(parsed.tgcv_mapping || null));
+    });
+    const effectiveMappingsBeforeAcceptance = await page.evaluate(() =>
+      JSON.parse(JSON.stringify(window.effectiveCorrespondenceState?.mappings || [])));
     await page.locator("#correspondence-review-list article").first().getByRole("button", {name:"Aceptar propuesta"}).click();
     assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: ACCEPTED/,
       "human review decision for a transcribed candidate must be explicit");
+    const declaredMappingAfterAcceptance = await page.locator("#model").evaluate(el => {
+      const parsed = JSON.parse(el.value);
+      return JSON.parse(JSON.stringify(parsed.tgcv_mapping || null));
+    });
+    const effectiveMappingsAfterAcceptance = await page.evaluate(() =>
+      JSON.parse(JSON.stringify(window.effectiveCorrespondenceState?.mappings || [])));
+    assert.deepEqual(declaredMappingAfterAcceptance, declaredMappingBeforeAcceptance,
+      "explicitly accepting a derived proposal must not rewrite the user-declared TGCV mapping");
+    assert.deepEqual(effectiveMappingsAfterAcceptance, effectiveMappingsBeforeAcceptance,
+      "review acceptance alone must not activate a correspondence before the separate apply action");
 
     // Carry the transcribed condition through execution and package replay, not just parsing.
     await page.locator("#run").click();
