@@ -1540,6 +1540,19 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-clarification").inputValue(), /Si quizá hay autorización/i,
       "ambiguous conditional phrase must remain in the clarification queue");
 
+    // Exception operators are not yet normalized by the parser: keep them pending rather than
+    // silently treating an exception as an ordinary positive condition.
+    await page.locator("#system-description").fill(
+      "Salvo que haya autorización, el sistema pasa de espera a acceso autorizado."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /No se pudo proponer el grafo/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+    assert.equal(await page.locator("#model").inputValue(), "",
+      "unsupported exception operator must not generate a potentially misinterpreted graph");
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /Salvo que haya autorización/i,
+      "unsupported exception operator must remain pending for human clarification");
+
     // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
