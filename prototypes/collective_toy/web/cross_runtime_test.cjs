@@ -21,6 +21,43 @@ const model = {
   scenarios: [{ id: "baseline", disabled_transitions: [] }],
   exploration: { max_depth: 5, max_trajectories: 100 }
 };
+
+async function assertStructuredTAccMatchesExecution(page, label) {
+  const comparison = await page.evaluate(() => {
+    const model = JSON.parse(document.querySelector("#model").value);
+    const scenarioId = document.querySelector("#which").value;
+    const scenarioResult = window.lastPackage?.result?.scenario_results?.[scenarioId];
+    const demo = window.lastTgcvDemoResult;
+    if (!scenarioResult || !demo) throw new Error("missing executed scenario or structured T_acc result");
+    const declared = model.tgcv_mapping;
+    const byTransition = new Map();
+    if (model.model_id === "toy-diamond-001" && !declared) {
+      for (const transition of model.transitions || []) byTransition.set(transition.id, "tau_" + transition.id);
+    } else {
+      for (const mapping of declared?.mappings || []) byTransition.set(mapping.system_transition_id, mapping.tgcv_transformation_id);
+    }
+    for (const mapping of window.effectiveCorrespondenceState?.mappings || []) {
+      if (mapping.status === "EFFECTIVE" && mapping.active !== false) {
+        byTransition.set(mapping.system_transition_id, mapping.tgcv_transformation_id);
+      }
+    }
+    const usedTransitions = new Set();
+    for (const trajectory of scenarioResult.trajectories || []) {
+      for (const step of trajectory) if (step.transition) usedTransitions.add(step.transition);
+    }
+    const expected = (model.transitions || [])
+      .filter(transition => usedTransitions.has(transition.id) && byTransition.has(transition.id))
+      .map(transition => byTransition.get(transition.id)).sort();
+    return {
+      scenario: scenarioId,
+      expected,
+      actual: [...(demo.current?.transformations || [])].sort()
+    };
+  });
+  assert.deepEqual(comparison.actual, comparison.expected,
+    label + ": structured operational T_acc must equal the transformations mapped from transitions present in the selected scenario's enumerated trajectories");
+}
+
 function pythonJson(source, input) {
   const run = spawnSync(process.env.PYTHON || "python", ["-c", source], {
     cwd: root, input: JSON.stringify(input), encoding: "utf8"
@@ -584,6 +621,7 @@ function pythonJson(source, input) {
     });
     assert.deepEqual(executionWithPendingOnly, executionBeforeReview,
       "pending-only proposals must preserve every scenario reachability and trajectory");
+    await assertStructuredTAccMatchesExecution(page, "pending-only review");
     await page.locator("#correspondence-review-list article").nth(0).getByRole("button", {name:"Aceptar propuesta"}).click();
     assert.match(await page.locator("#correspondence-review-status").textContent(), /persistida/i,
       "acceptance must report that the decision was persisted");
@@ -632,6 +670,7 @@ function pythonJson(source, input) {
     });
     assert.deepEqual(executionAfterPendingAndRejected, executionBeforeReview,
       "pending and rejected correspondence proposals must preserve all scenario reachability and trajectories");
+    await assertStructuredTAccMatchesExecution(page, "pending plus rejected review");
     const effectiveSetAfterPendingAndRejected = await page.evaluate(() =>
       (window.effectiveCorrespondenceState?.mappings || [])
         .filter(mapping => mapping.status === "EFFECTIVE")
@@ -732,6 +771,7 @@ function pythonJson(source, input) {
     });
     assert.ok(Object.keys(executionSemanticsWithEffectiveMapping).length,
       "execution result comparison must include scenario reachability and trajectories");
+    await assertStructuredTAccMatchesExecution(page, "effective mapping active");
     const displayedTAccWithEffectiveMapping = await page.locator("#tgcv-demo-results").textContent();
     const structuredTAccWithEffectiveMapping = await page.evaluate(() => {
       const mappings = window.effectiveCorrespondenceState?.mappings || [];
@@ -800,6 +840,7 @@ function pythonJson(source, input) {
     });
     assert.deepEqual(executionSemanticsAfterStaleMapping, executionSemanticsWithEffectiveMapping,
       "invalidating a stale correspondence and restoring the catalogue must preserve execution reachability and trajectories");
+    await assertStructuredTAccMatchesExecution(page, "effective mapping stale after catalogue change");
     const displayedTAccAfterStaleMapping = await page.locator("#tgcv-demo-results").textContent();
     assert.doesNotMatch(displayedTAccAfterStaleMapping, /T_HUMIDITY/,
       "T_acc display must exclude the transformation supplied only by the now-stale effective mapping");
