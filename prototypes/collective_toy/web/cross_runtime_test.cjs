@@ -1332,6 +1332,28 @@ function pythonJson(source, input) {
     assert.ok(!negativeConditionModel.transitions[0].condition_evaluation,
       "condition metadata must remain separate from evaluation");
 
+    const negativeConditionEngineRun = pythonJson(
+      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
+      negativeConditionModel
+    );
+    assert.ok(!negativeConditionEngineRun.result.scenario_results.baseline.reachable_states.includes("acceso autorizado"),
+      "Python engine must block the parsed negative condition until explicitly evaluated");
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(negativeConditionModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const negativeConditionPackage = await page.evaluate(() => window.lastPackage);
+    assert.equal(negativeConditionPackage.input.transitions[0].condition, "no hay autorización");
+    assert.ok(!negativeConditionPackage.result.scenario_results.baseline.reachable_states.includes("acceso autorizado"),
+      "browser execution must block the parsed negative condition until explicitly evaluated");
+    assert.deepEqual(
+      negativeConditionPackage.result,
+      negativeConditionEngineRun.result,
+      "browser and Python must agree on the parsed negative condition and its blocked reachability"
+    );
+
     // Equivalent Spanish formulations must produce the same directed conditional edge.
     const equivalentConditionPhrases = [
       {
