@@ -583,6 +583,17 @@ function pythonJson(source, input) {
     const modelAfterApplication = JSON.parse(await page.locator("#model").inputValue());
     assert.equal((modelAfterApplication.tgcv_mapping?.mappings || []).length, 0,
       "effective derived mappings must remain separate from the original model mapping declaration");
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "system must execute with the explicitly applied effective mapping before testing staleness");
+    const reachabilityWithEffectiveMapping = await page.evaluate(() => {
+      const result = window.lastPackage?.result?.scenario_results?.baseline;
+      return result ? [...(result.reachable_states || [])].sort() : null;
+    });
+    assert.ok(reachabilityWithEffectiveMapping,
+      "baseline execution must expose reachable states while the accepted mapping is effective");
 
     const originalCatalogue = JSON.parse(await page.locator("#tgcv-target-catalogue").inputValue());
     originalCatalogue.transformations.push({id:"T_EXTRA",source_state:"E",target_state:"F"});
@@ -621,6 +632,12 @@ function pythonJson(source, input) {
       document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
     assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
       "model must execute after restoring catalogue scope");
+    const reachabilityAfterStaleMapping = await page.evaluate(() => {
+      const result = window.lastPackage?.result?.scenario_results?.baseline;
+      return result ? [...(result.reachable_states || [])].sort() : null;
+    });
+    assert.deepEqual(reachabilityAfterStaleMapping, reachabilityWithEffectiveMapping,
+      "invalidating a correspondence and restoring the catalogue must not change system reachability");
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "a stale effective mapping must remain inactive when the old catalogue is restored");
 
