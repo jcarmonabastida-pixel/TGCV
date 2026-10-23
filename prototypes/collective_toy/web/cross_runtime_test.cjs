@@ -1616,6 +1616,37 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que haya autorización/i,
       "unsupported exception sentence must remain pending when it precedes a valid transition");
 
+    // Mixed positive and negative conditions must remain attached to their own edges,
+    // independent of sentence order; parsing records metadata but never evaluates it.
+    const mixedConditionDescriptions = [
+      "El sistema pasa de inicio a espera si hay autorización. El sistema pasa de espera a acceso autorizado si no hay autorización.",
+      "El sistema pasa de espera a acceso autorizado si no hay autorización. El sistema pasa de inicio a espera si hay autorización."
+    ];
+    const mixedConditionGraphs = [];
+    for (const description of mixedConditionDescriptions) {
+      await page.locator("#system-description").fill(description);
+      await page.locator("#generate-system-graph").click();
+      await page.waitForFunction(() => /Borrador propuesto:/i.test(
+        document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+      const parsed = JSON.parse(await page.locator("#model").inputValue());
+      assert.equal(parsed.transitions.length, 2,
+        "mixed positive/negative description must preserve exactly two explicit transitions");
+      const normalized = parsed.transitions.map(edge => ({
+        source:edge.source, target:edge.target, condition:edge.condition
+      })).sort((a,b) => (a.source+"|"+a.target).localeCompare(b.source+"|"+b.target));
+      assert.deepEqual(normalized, [
+        {source:"inicio",target:"espera",condition:"hay autorización"},
+        {source:"espera",target:"acceso autorizado",condition:"no hay autorización"}
+      ], "positive and negative conditions must stay attached to the correct directed edge");
+      assert.equal(parsed.scenarios[0].condition_evaluations && Object.keys(parsed.scenarios[0].condition_evaluations).length || 0, 0,
+        "mixed conditional parsing must not fabricate evaluations");
+      assert.equal(await page.locator("#transcription-clarification").inputValue(), "",
+        "fully explicit supported conditional sentences must not be left pending");
+      mixedConditionGraphs.push(normalized);
+    }
+    assert.deepEqual(mixedConditionGraphs[1], mixedConditionGraphs[0],
+      "reversing sentence order must not change mixed positive/negative graph semantics");
+
     // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
