@@ -698,7 +698,9 @@ function renderCorrespondenceReview(){
  if(!correspondenceReviewState.candidates.length){root.append(node("p","muted","No hay candidatos para revisar."));return}
  correspondenceReviewState.candidates.forEach(function(c){
   var card=node("article","scenario"),heading=node("h3","",c.system_transition_id+" → "+c.tgcv_transformation_id),status=node("p",c.status==="NEEDS_REVIEW"?"error":"muted","Estado: "+c.status+" · Decisión: "+(c.decision||"PENDIENTE"));
-  card.append(heading,status,node("p","","Evidencia: "+c.evidence.system_source_state+" → "+c.evidence.system_target_state+" coincide con "+c.evidence.catalogue_source_state+" → "+c.evidence.catalogue_target_state+"."),node("p","muted",c.rationale),node("p","muted","ID: "+c.candidate_id+" · Catálogo: "+c.catalogue_version+" · Algoritmo: "+c.algorithm+" v"+c.algorithm_version));
+  var evidenceText="Evidencia: "+c.evidence.system_source_state+" → "+c.evidence.system_target_state+" coincide con "+c.evidence.catalogue_source_state+" → "+c.evidence.catalogue_target_state+".";
+  if(typeof c.evidence.condition==="string"&&c.evidence.condition.trim())evidenceText+=" Condición original de la transición: "+c.evidence.condition+".";
+  card.append(heading,status,node("p","",evidenceText),node("p","muted",c.rationale),node("p","muted","ID: "+c.candidate_id+" · Catálogo: "+c.catalogue_version+" · Algoritmo: "+c.algorithm+" v"+c.algorithm_version));
   var actions=node("div","actions"),accept=node("button","primary","Aceptar propuesta"),reject=node("button","","Rechazar propuesta");
   accept.type=reject.type="button";accept.disabled=c.status==="NEEDS_REVIEW"||c.decision==="ACCEPTED";reject.disabled=c.decision==="REJECTED";
   accept.addEventListener("click",function(){c.decision="ACCEPTED";persistCorrespondenceDecisions();renderCorrespondenceReview();$("correspondence-review-status").textContent="Propuesta aceptada y decisión persistida. No se ha aplicado automáticamente al grafo TGCV."});
