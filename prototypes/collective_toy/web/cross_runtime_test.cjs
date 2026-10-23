@@ -1399,7 +1399,7 @@ function pythonJson(source, input) {
       );
     }
 
-    // Editing a transcribed condition must invalidate an evaluation bound to its prior text.
+    // Editing a transcribed condition must reject an evaluation bound to its prior text.
     const staleNegativeConditionId = negativeConditionModel.transitions[0].id;
     const staleTranscribedConditionModel = {
       ...negativeConditionModel,
@@ -1417,27 +1417,39 @@ function pythonJson(source, input) {
         }
       }]
     };
-    const staleTranscribedConditionEngineRun = pythonJson(
-      "import json,sys; import collective_toy_engine_001 as e; m=json.load(sys.stdin); print(json.dumps(e.export_run(m),sort_keys=True))",
-      staleTranscribedConditionModel
-    );
-    assert.ok(!staleTranscribedConditionEngineRun.result.scenario_results.baseline.reachable_states.includes("acceso autorizado"),
-      "Python engine must block a transcribed transition when its evaluation is bound to the previous condition text");
+    const staleEvaluationValidation = spawnSync(process.env.PYTHON || "python", ["-c", [
+      "import json,sys",
+      "import collective_toy_engine_001 as e",
+      "m=json.load(sys.stdin)",
+      "try:",
+      " e.export_run(m)",
+      " print(json.dumps({'rejected':False}))",
+      "except e.ModelValidationError as exc:",
+      " print(json.dumps({'rejected':True,'message':str(exc)}))"
+    ].join("; ")], {
+      cwd: root, input: JSON.stringify(staleTranscribedConditionModel), encoding: "utf8"
+    });
+    assert.equal(staleEvaluationValidation.status, 0, "stale evaluation validation probe must run");
+    const staleEvaluationValidationResult = JSON.parse(staleEvaluationValidation.stdout);
+    assert.equal(staleEvaluationValidationResult.rejected, true,
+      "Python engine must reject an evaluation bound to the previous condition text");
+    assert.match(staleEvaluationValidationResult.message, /does not match the current condition text/,
+      "Python engine must identify the stale condition-evaluation binding");
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
       el.dispatchEvent(new Event("input", { bubbles: true }));
     }, JSON.stringify(staleTranscribedConditionModel));
     await page.locator("#run").click();
-    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
-    const staleTranscribedConditionPackage = await page.evaluate(() => window.lastPackage);
-    assert.equal(staleTranscribedConditionPackage.input.transitions[0].condition, "hay autorización");
-    assert.ok(!staleTranscribedConditionPackage.result.scenario_results.baseline.reachable_states.includes("acceso autorizado"),
-      "browser must block a transcribed transition when its evaluation is bound to the previous condition text");
-    assert.deepEqual(
-      staleTranscribedConditionPackage.result,
-      staleTranscribedConditionEngineRun.result,
-      "browser and Python must agree when a transcribed condition invalidates its prior evaluation"
-    );
+    await page.waitForFunction(() => {
+      const status = document.querySelector("#status")?.textContent || "";
+      return /condition evaluation|current condition text|validación|inválid/i.test(status);
+    }, null, {timeout:5000});
+    const staleConditionStatus = await page.locator("#status").innerText();
+    assert.match(staleConditionStatus, /condition evaluation|current condition text|validación|inválid/i,
+      "browser must surface rejection of the stale condition evaluation");
+    assert.equal(await page.evaluate(() => window.lastPackage?.input?.transitions?.[0]?.condition),
+      "no hay autorización",
+      "rejected stale input must not replace the last valid execution package");
 
     // Equivalent Spanish formulations must produce the same directed conditional edge.
     const equivalentConditionPhrases = [
