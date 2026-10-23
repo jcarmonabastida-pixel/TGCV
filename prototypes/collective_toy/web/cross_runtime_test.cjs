@@ -1274,6 +1274,28 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-status").textContent(), /No pasa de ejecución a resultado/i,
       "negated phrase must be explicitly reported for clarification");
 
+    // Alternate negation forms must obey the same conservative parsing contract.
+    const negatedTransitionPhrases = [
+      "No se pasa de ejecución a resultado.",
+      "La transición de ejecución a resultado no está permitida."
+    ];
+    for (const phrase of negatedTransitionPhrases) {
+      await page.locator("#system-description").fill(
+        "El proceso pasa de reposo a ejecución. " + phrase
+      );
+      await page.locator("#generate-system-graph").click();
+      await page.waitForFunction(() => /Frases pendientes de interpretar/i.test(
+        document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+      const model = JSON.parse(await page.locator("#model").inputValue());
+      assert.equal(model.transitions.length, 1,
+        "negated wording must not add a transition: " + phrase);
+      assert.ok(!model.transitions.some(t => /ejecución/i.test(t.source) && /resultado/i.test(t.target)),
+        "negated wording must not be converted to an affirmative edge: " + phrase);
+      assert.match(await page.locator("#transcription-status").textContent(),
+        /Frases pendientes de interpretar/i,
+        "unsupported negation must remain visible for human clarification: " + phrase);
+    }
+
     // Unsupported direction wording must remain pending, never be guessed or reversed.
     await page.locator("#system-description").fill(
       "El proceso pasa de reposo a ejecución. El acceso autorizado precede a la espera."
