@@ -706,6 +706,31 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-status").textContent(), /revisa el resultado/i,
       "transcribed graph remains a human-reviewable draft");
 
+    // Review a correspondence derived from the transcribed graph and ensure its decision
+    // remains bound to this exact source model when exported and replayed.
+    await page.locator("#correspondence-review-section summary").click();
+    await page.locator("#tgcv-target-catalogue").fill(JSON.stringify({
+      schema:"tgcv-target-catalogue-001",version:"transcriber-review-v1",
+      transformations:transcribedConditionalModel.transitions.map(t => ({
+        id:"T_TRANSCRIBED_"+t.id,source_state:t.source,target_state:t.target
+      }))
+    }, null, 2));
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.locator("#correspondence-review-list article").first().waitFor();
+    const transcribedCandidate = await page.evaluate(() => {
+      const article = document.querySelector("#correspondence-review-list article");
+      return article ? article.textContent : "";
+    });
+    assert.match(transcribedCandidate, /hay autorización/,
+      "correspondence derived from a transcribed model must retain the source transition condition as evidence");
+    const transcribedCandidateRecord = await page.evaluate(() => window.correspondenceReviewState?.candidates?.[0] || null);
+    assert.ok(transcribedCandidateRecord, "transcribed correspondence candidate must be available for review");
+    assert.equal(transcribedCandidateRecord.source_model_sha256, await page.evaluate(model => window.hash(model), transcribedConditionalModel),
+      "transcribed candidate provenance must match the exact transcribed source model");
+    await page.locator("#correspondence-review-list article").first().getByRole("button", {name:"Aceptar propuesta"}).click();
+    assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: ACCEPTED/,
+      "human review decision for a transcribed candidate must be explicit");
+
     // Carry the transcribed condition through execution and package replay, not just parsing.
     await page.locator("#run").click();
     await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
@@ -724,8 +749,15 @@ function pythonJson(source, input) {
     assert.ok(transcribedPackagePath, "transcribed conditional export must produce a JSON package");
     const transcribedPackageText = fs.readFileSync(transcribedPackagePath, "utf8");
     const exportedTranscribedPackage = JSON.parse(transcribedPackageText);
-    assert.equal(exportedTranscribedPackage.tgcv_correspondence_review, undefined,
-      "export must not attach a correspondence review from a different source model");
+    assert.ok(exportedTranscribedPackage.tgcv_correspondence_review,
+      "export must preserve a correspondence review explicitly made for the transcribed source model");
+    assert.equal(exportedTranscribedPackage.tgcv_correspondence_review.source_model_sha256,
+      await page.evaluate(model => window.hash(model), transcribedConditionalModel),
+      "exported correspondence review must retain the transcribed model's exact source hash");
+    assert.equal(exportedTranscribedPackage.tgcv_correspondence_review.candidates[0].decision, "ACCEPTED",
+      "export must preserve the human decision with its model provenance");
+    assert.equal(exportedTranscribedPackage.tgcv_correspondence_review.candidates[0].evidence.condition, "hay autorización",
+      "exported decision evidence must preserve the exact condition recognized by the transcriber");
     await page.locator("#package-file").setInputFiles({
       name: "transcribed-conditional-round-trip.json",
       mimeType: "application/json",
