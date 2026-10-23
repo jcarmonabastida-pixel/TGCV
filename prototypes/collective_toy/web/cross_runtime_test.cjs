@@ -456,6 +456,24 @@ function pythonJson(source, input) {
       "the conflict report must explain that the user-declared mapping is the reason for abstention");
     assert.equal(materialization.conflictingModelBefore, materialization.conflictingModelAfter,
       "conflict validation must preserve the exact declared mapping and its provenance");
+    const effectiveConflict = await page.evaluate(async model => {
+      const conflictCatalogue = {schema:"tgcv-target-catalogue-001",version:"effective-conflict-v1",transformations:[
+        {id:"T_DERIVED_AB",source_state:"A",target_state:"B"},
+        {id:"T_DERIVED_AC",source_state:"A",target_state:"C"}
+      ]};
+      const proposals = await window.deriveTgcvCorrespondenceCandidates(model,conflictCatalogue);
+      const candidate = proposals.candidates.find(x => x.system_transition_id === "t_ac" && x.tgcv_transformation_id === "T_DERIVED_AC");
+      candidate.decision = "ACCEPTED";
+      const prior = [{candidate_id:"cand-prior-effective",status:"EFFECTIVE",
+        system_transition_id:"t_ab",tgcv_transformation_id:"T_DERIVED_AC"}];
+      return {candidate, result:await window.validateAcceptedCorrespondenceCandidates(model,conflictCatalogue,[candidate],prior)};
+    }, unMappedModel);
+    assert.equal(effectiveConflict.result.mappings.length, 0,
+      "a candidate reusing a transformation already assigned by another effective mapping must not materialize");
+    assert.equal(effectiveConflict.result.conflicts[0].code, "CONFLICT_NEEDS_REVIEW",
+      "an effective-to-effective target collision must require explicit review");
+    assert.match(effectiveConflict.result.conflicts[0].message, /otra correspondencia derivada efectiva/i,
+      "the conflict must identify the already-effective mapping as the reason for abstention");
     assert.equal(materialization.stale.mappings.length, 0, "a proposal from a changed model must not materialize");
     assert.match(await page.locator("#tgcv-graph").textContent(), /T_CD/,
       "deriving proposals must not modify the currently rendered TGCV graph");
