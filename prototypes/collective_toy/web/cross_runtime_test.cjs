@@ -789,7 +789,7 @@ function pythonJson(source, input) {
     // Re-accept only after the catalogue rollback has been explicitly reviewed, then
     // prove that a source-model content change invalidates the newly effective mapping.
     await page.locator("#derive-tgcv-correspondences").click();
-    await page.locator("#correspondence-review-list article").first().getByRole("button", {name:"Aceptar propuesta"}).click();
+    await transcribedCandidateArticle.getByRole("button", {name:"Aceptar propuesta"}).click();
     await page.locator("#run").click();
     await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
       document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
