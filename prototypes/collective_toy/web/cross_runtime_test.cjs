@@ -1580,6 +1580,28 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que haya autorización/i,
       "unsupported exception sentence must remain pending even when another transition is valid");
 
+    // Reverse the sentence order to ensure an unsupported exception sentence does not
+    // prevent a later, explicit transition from being parsed.
+    await page.locator("#system-description").fill(
+      "El sistema pasa de espera a acceso autorizado salvo que haya autorización. El sistema pasa de inicio a espera."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => {
+      const status = document.querySelector("#transcription-status")?.textContent || "";
+      const model = document.querySelector("#model")?.value || "";
+      return /grafo/i.test(status) && model.length > 0;
+    }, null, {timeout:5000});
+    const reverseMixedModel = JSON.parse(await page.locator("#model").inputValue());
+    const reverseMixedTransitions = reverseMixedModel.transitions || [];
+    assert.equal(reverseMixedTransitions.length, 1,
+      "reverse-order mixed description must retain only the explicitly supported transition");
+    assert.match(JSON.stringify(reverseMixedTransitions[0]), /inicio/i,
+      "valid transition after an unsupported exception sentence must still be preserved");
+    assert.doesNotMatch(JSON.stringify(reverseMixedTransitions), /acceso autorizado/i,
+      "unsupported exception transition must not be added when it precedes a valid sentence");
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que haya autorización/i,
+      "unsupported exception sentence must remain pending when it precedes a valid transition");
+
     // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
