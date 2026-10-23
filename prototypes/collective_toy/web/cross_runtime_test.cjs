@@ -606,6 +606,18 @@ function pythonJson(source, input) {
     assert.ok(Object.keys(executionSemanticsWithEffectiveMapping).length,
       "execution result comparison must include scenario reachability and trajectories");
     const displayedTAccWithEffectiveMapping = await page.locator("#tgcv-demo-results").textContent();
+    const structuredTAccWithEffectiveMapping = await page.evaluate(() => {
+      const mappings = window.effectiveCorrespondenceState?.mappings || [];
+      return mappings.filter(mapping => mapping.status === "EFFECTIVE").map(mapping => ({
+        transition: mapping.system_transition_id,
+        transformation: mapping.tgcv_transformation_id,
+        sourceModel: mapping.source_model_sha256,
+        catalogueVersion: mapping.catalogue_version,
+        catalogueHash: mapping.catalogue_sha256
+      })).sort((a, b) => a.transformation.localeCompare(b.transformation));
+    });
+    assert.ok(structuredTAccWithEffectiveMapping.some(mapping => mapping.transformation === "T_HUMIDITY"),
+      "structured effective correspondence set must include T_HUMIDITY before invalidation");
 
     const originalCatalogue = JSON.parse(await page.locator("#tgcv-target-catalogue").inputValue());
     originalCatalogue.transformations.push({id:"T_EXTRA",source_state:"E",target_state:"F"});
@@ -664,6 +676,18 @@ function pythonJson(source, input) {
     const displayedTAccAfterStaleMapping = await page.locator("#tgcv-demo-results").textContent();
     assert.doesNotMatch(displayedTAccAfterStaleMapping, /T_HUMIDITY/,
       "T_acc display must exclude the transformation supplied only by the now-stale effective mapping");
+    const structuredTAccAfterStaleMapping = await page.evaluate(() => {
+      const mappings = window.effectiveCorrespondenceState?.mappings || [];
+      return mappings.filter(mapping => mapping.status === "EFFECTIVE").map(mapping => ({
+        transition: mapping.system_transition_id,
+        transformation: mapping.tgcv_transformation_id,
+        sourceModel: mapping.source_model_sha256,
+        catalogueVersion: mapping.catalogue_version,
+        catalogueHash: mapping.catalogue_sha256
+      })).sort((a, b) => a.transformation.localeCompare(b.transformation));
+    });
+    assert.ok(!structuredTAccAfterStaleMapping.some(mapping => mapping.transformation === "T_HUMIDITY"),
+      "structured effective correspondence set must exclude T_HUMIDITY after invalidation");
     assert.match(displayedTAccWithEffectiveMapping, /T_HUMIDITY/,
       "baseline T_acc display must include the transformation while its effective mapping is active");
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
