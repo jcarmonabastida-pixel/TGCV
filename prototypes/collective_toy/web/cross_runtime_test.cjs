@@ -665,6 +665,9 @@ function pythonJson(source, input) {
     const transcribedPackagePath = await transcribedDownload.path();
     assert.ok(transcribedPackagePath, "transcribed conditional export must produce a JSON package");
     const transcribedPackageText = fs.readFileSync(transcribedPackagePath, "utf8");
+    const exportedTranscribedPackage = JSON.parse(transcribedPackageText);
+    assert.equal(exportedTranscribedPackage.tgcv_correspondence_review, undefined,
+      "export must not attach a correspondence review from a different source model");
     await page.locator("#package-file").setInputFiles({
       name: "transcribed-conditional-round-trip.json",
       mimeType: "application/json",
