@@ -1496,6 +1496,38 @@ function pythonJson(source, input) {
     assert.deepEqual(equivalentConditionGraphs[3], equivalentConditionGraphs[0],
       "leading cuando and leading si formulations must yield identical graph semantics");
 
+    // Semantically different conditions must not be collapsed just because their edge is identical.
+    const negativeConditionPhrases = [
+      "Si no hay autorización, el sistema pasa de espera a acceso autorizado.",
+      "El sistema pasa de espera a acceso autorizado si no hay autorización."
+    ];
+    const negativeConditionGraphs = [];
+    for (const phrase of negativeConditionPhrases) {
+      await page.locator("#system-description").fill(phrase);
+      await page.locator("#generate-system-graph").click();
+      await page.waitForFunction(() => /Borrador propuesto:/i.test(
+        document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+      const parsed = JSON.parse(await page.locator("#model").inputValue());
+      assert.equal(parsed.transitions.length, 1, "negative condition formulation must yield one explicit edge: " + phrase);
+      const edge = parsed.transitions[0];
+      assert.equal(edge.source, "espera", "negative condition must preserve the source state: " + phrase);
+      assert.equal(edge.target, "acceso autorizado", "negative condition must preserve the target state: " + phrase);
+      assert.equal(edge.condition, "no hay autorización", "negation in condition metadata must be preserved exactly: " + phrase);
+      assert.equal(parsed.scenarios[0].condition_evaluations?.[edge.id], undefined,
+        "negative condition parsing must not fabricate an evaluation: " + phrase);
+      negativeConditionGraphs.push({
+        states: parsed.states.map(state => state.id).sort(),
+        transitions: parsed.transitions.map(t => ({source:t.source,target:t.target,condition:t.condition})),
+        evaluation: parsed.scenarios[0].condition_evaluations?.[edge.id] ?? null
+      });
+    }
+    assert.deepEqual(negativeConditionGraphs[1], negativeConditionGraphs[0],
+      "leading and trailing negated condition formulations must yield identical graph semantics");
+    assert.equal(negativeConditionGraphs[0].transitions[0].condition, "no hay autorización");
+    assert.notEqual(negativeConditionGraphs[0].transitions[0].condition,
+      equivalentConditionGraphs[0].transitions[0].condition,
+      "positive and negative conditions must remain semantically distinguishable even when edge endpoints match");
+
     // An uncertain condition is ambiguous; it must not be accepted as a normal conditional edge.
     await page.locator("#system-description").fill(
       "Si quizá hay autorización, el sistema pasa de espera a acceso autorizado."
