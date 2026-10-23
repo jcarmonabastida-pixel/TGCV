@@ -506,7 +506,26 @@ function pythonJson(source, input) {
       document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
     assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
       "review fixture must execute before checking effective graph synchronization");
+    const resultBeforeExplicitApplication = await page.evaluate(() => {
+      const result = window.lastPackage?.result?.scenario_results?.baseline;
+      return result ? [...(result.reachable_states || [])].sort() : null;
+    });
+    assert.ok(resultBeforeExplicitApplication,
+      "baseline execution must expose reachable states before applying accepted correspondence");
     await page.locator("#derive-tgcv-correspondences").click();
+    await page.waitForFunction(() => /Decisión: ACCEPTED/.test(
+      document.querySelector("#correspondence-review-list")?.textContent || ""), null, {timeout:5000});
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "accepted-but-not-applied correspondence must leave the system executable");
+    const resultAfterReviewBeforeApplication = await page.evaluate(() => {
+      const result = window.lastPackage?.result?.scenario_results?.baseline;
+      return result ? [...(result.reachable_states || [])].sort() : null;
+    });
+    assert.deepEqual(resultAfterReviewBeforeApplication, resultBeforeExplicitApplication,
+      "deriving/restoring an accepted decision must not change system reachability before explicit application");
     await page.locator("#apply-accepted-tgcv-correspondences").click();
     await page.waitForFunction(() => {
       const status = document.querySelector("#effective-correspondence-status")?.textContent || "";
