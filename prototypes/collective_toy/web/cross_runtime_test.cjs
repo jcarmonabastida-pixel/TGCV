@@ -1352,6 +1352,10 @@ function pythonJson(source, input) {
         document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
       assert.match(await rejectionPage.locator("#status").textContent(), /ejecución completada/i,
         "isolated rejection baseline must execute successfully");
+      const declaredMappingBeforeRejection = await rejectionPage.locator("#model").evaluate(el => {
+        const parsed = JSON.parse(el.value);
+        return JSON.parse(JSON.stringify(parsed.tgcv_mapping || null));
+      });
       const executionBeforeIsolatedRejection = await rejectionPage.evaluate(() => {
         const scenarios = window.lastPackage?.result?.scenario_results || {};
         return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
@@ -1387,6 +1391,12 @@ function pythonJson(source, input) {
       });
       assert.deepEqual(executionAfterIsolatedRejection, executionBeforeIsolatedRejection,
         "rejecting a proposal in isolation must preserve every scenario reachability and trajectory");
+      const declaredMappingAfterRejection = await rejectionPage.locator("#model").evaluate(el => {
+        const parsed = JSON.parse(el.value);
+        return JSON.parse(JSON.stringify(parsed.tgcv_mapping || null));
+      });
+      assert.deepEqual(declaredMappingAfterRejection, declaredMappingBeforeRejection,
+        "rejecting a derived proposal must preserve the exact user-declared TGCV mapping");
       const effectiveAfterIsolatedRejection = await rejectionPage.evaluate(() =>
         (window.effectiveCorrespondenceState?.mappings || [])
           .filter(mapping => mapping.status === "EFFECTIVE")
