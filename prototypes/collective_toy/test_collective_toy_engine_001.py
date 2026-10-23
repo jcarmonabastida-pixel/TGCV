@@ -422,6 +422,10 @@ class CollectiveToyEngineTests(unittest.TestCase):
 
         tampered = copy.deepcopy(package)
         tampered["input"]["transitions"][0]["condition"] = "humidity is high"
+        # Recompute the outer package hash to isolate the stale input provenance check.
+        tampered_payload = copy.deepcopy(tampered)
+        del tampered_payload["package_sha256"]
+        tampered["package_sha256"] = sha256_json(tampered_payload)
         with self.assertRaisesRegex(ModelValidationError, "input SHA-256 does not verify"):
             assess_exported_package(tampered)
 
