@@ -726,12 +726,10 @@ function pythonJson(source, input) {
       }))
     }, null, 2));
     await page.locator("#derive-tgcv-correspondences").click();
-    await page.locator("#correspondence-review-list article").first().waitFor();
-    const transcribedCandidate = await page.evaluate(() => {
-      const article = document.querySelector("#correspondence-review-list article");
-      return article ? article.textContent : "";
-    });
-    assert.match(transcribedCandidate, /hay autorización/,
+    const transcribedCandidateArticle = page.locator("#correspondence-review-list article").filter({hasText: "T_TRANSCRIBED_"}).first();
+    await transcribedCandidateArticle.waitFor({state: "visible", timeout: 5000});
+    const transcribedCandidate = await transcribedCandidateArticle.textContent();
+    assert.match(transcribedCandidate || "", /hay autorización/,
       "correspondence derived from a transcribed model must retain the source transition condition as evidence");
     const transcribedCandidateRecord = await page.evaluate(() => window.correspondenceReviewState?.candidates?.[0] || null);
     assert.ok(transcribedCandidateRecord, "transcribed correspondence candidate must be available for review");
