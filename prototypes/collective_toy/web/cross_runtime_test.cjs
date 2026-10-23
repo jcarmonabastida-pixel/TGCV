@@ -437,10 +437,12 @@ function pythonJson(source, input) {
       // conflicting user-declared mapping before application; validation must reject it.
       const conflictCandidate = await window.deriveTgcvCorrespondenceCandidates(unMapped,catalogue);
       conflictCandidate.candidates[0].decision = "ACCEPTED";
+      const conflictingModelBefore = JSON.stringify(conflictingModel);
       const conflict = await window.validateAcceptedCorrespondenceCandidates(conflictingModel,catalogue,conflictCandidate.candidates,[]);
+      const conflictingModelAfter = JSON.stringify(conflictingModel);
       const staleModel = {...unMapped,model_id:"changed-after-review"};
       const stale = await window.validateAcceptedCorrespondenceCandidates(staleModel,catalogue,derived.candidates,[]);
-      return {before,after:JSON.stringify(unMapped),first,second,conflict,stale};
+      return {before,after:JSON.stringify(unMapped),first,second,conflict,stale,conflictingModelBefore,conflictingModelAfter};
     }, explicitlyMappedModel);
     assert.equal(materialization.before, materialization.after, "materialization must not rewrite the input model");
     assert.equal(materialization.first.mappings.length, 1, "one accepted exact match should materialize as effective");
@@ -450,6 +452,8 @@ function pythonJson(source, input) {
       "applying the same accepted candidate twice must be idempotent");
     assert.equal(materialization.conflict.mappings.length, 0, "declared mapping conflicts must never be overwritten");
     assert.equal(materialization.conflict.conflicts[0].code, "CONFLICT_NEEDS_REVIEW");
+    assert.equal(materialization.conflictingModelBefore, materialization.conflictingModelAfter,
+      "conflict validation must preserve the exact declared mapping and its provenance");
     assert.equal(materialization.stale.mappings.length, 0, "a proposal from a changed model must not materialize");
     assert.match(await page.locator("#tgcv-graph").textContent(), /T_CD/,
       "deriving proposals must not modify the currently rendered TGCV graph");
