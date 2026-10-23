@@ -1647,6 +1647,31 @@ function pythonJson(source, input) {
     assert.deepEqual(mixedConditionGraphs[1], mixedConditionGraphs[0],
       "reversing sentence order must not change mixed positive/negative graph semantics");
 
+    // Unsupported exception wording must remain pending without discarding supported
+    // positive/negative transitions elsewhere in the same description.
+    await page.locator("#system-description").fill(
+      "El sistema pasa de inicio a espera si hay autorización. El sistema pasa de espera a acceso autorizado si no hay autorización. El sistema pasa de acceso autorizado a final salvo que haya auditoría."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /Borrador propuesto:/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+    const mixedWithPendingModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(mixedWithPendingModel.transitions.length, 2,
+      "supported positive/negative transitions must survive beside an unsupported exception sentence");
+    const mixedWithPendingEdges = mixedWithPendingModel.transitions.map(edge => ({
+      source:edge.source, target:edge.target, condition:edge.condition
+    })).sort((a,b) => (a.source+"|"+a.target).localeCompare(b.source+"|"+b.target));
+    assert.deepEqual(mixedWithPendingEdges, [
+      {source:"espera",target:"acceso autorizado",condition:"no hay autorización"},
+      {source:"inicio",target:"espera",condition:"hay autorización"}
+    ], "supported edge directions and condition polarity must be preserved");
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que haya auditoría/i,
+      "unsupported exception sentence must remain pending for clarification");
+    assert.doesNotMatch(JSON.stringify(mixedWithPendingModel.transitions), /acceso autorizado.*final|final.*acceso autorizado/i,
+      "unsupported exception transition must not be inserted into the graph");
+    assert.equal(Object.keys(mixedWithPendingModel.scenarios[0].condition_evaluations || {}).length, 0,
+      "parsing mixed supported and pending sentences must not fabricate evaluations");
+
     // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
