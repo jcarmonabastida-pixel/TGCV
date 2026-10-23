@@ -480,6 +480,11 @@ function pythonJson(source, input) {
     await page.locator("#correspondence-review-list article").nth(0).getByRole("button", {name:"Aceptar propuesta"}).click();
     assert.match(await page.locator("#correspondence-review-status").textContent(), /persistida/i,
       "acceptance must report that the decision was persisted");
+    await page.locator("#correspondence-review-list article").nth(1).getByRole("button", {name:"Rechazar propuesta"}).click();
+    assert.match(await page.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+      "a rejected correspondence candidate must retain an explicit human decision");
+    assert.equal(await page.locator("#tgcv-graph").textContent(), graphBeforeReview,
+      "rejecting a candidate must not modify the TGCV graph");
     const persistedReview = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith("tgcv-correspondence-review-001:")).map(k => JSON.parse(localStorage.getItem(k))));
     assert.equal(persistedReview.length, 1, "review decision must be persisted in browser storage");
     assert.equal(Object.values(persistedReview[0].decisions)[0].decision, "ACCEPTED",
