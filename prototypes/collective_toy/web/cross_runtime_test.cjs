@@ -511,6 +511,12 @@ function pythonJson(source, input) {
     });
     assert.deepEqual(reachabilityAfterPendingAndRejected, reachabilityBeforeReview,
       "pending and rejected correspondence proposals must not change system reachability");
+    const effectiveSetAfterPendingAndRejected = await page.evaluate(() =>
+      (window.effectiveCorrespondenceState?.mappings || [])
+        .filter(mapping => mapping.status === "EFFECTIVE")
+        .map(mapping => mapping.tgcv_transformation_id).sort());
+    assert.ok(!effectiveSetAfterPendingAndRejected.includes("T_HUMIDITY"),
+      "accepted-but-not-applied and rejected proposals must not enter the structured effective correspondence set");
     const persistedReview = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith("tgcv-correspondence-review-001:")).map(k => JSON.parse(localStorage.getItem(k))));
     assert.equal(persistedReview.length, 1, "review decision must be persisted in browser storage");
     assert.equal(Object.values(persistedReview[0].decisions)[0].decision, "ACCEPTED",
