@@ -403,6 +403,28 @@ class CollectiveToyEngineTests(unittest.TestCase):
             altered_package_metadata["package_sha256"],
         )
 
+    def test_conditional_package_round_trip_and_condition_tampering_are_fail_closed(self):
+        model = copy.deepcopy(self.model)
+        model["schema_version"] = "collective-toy-input-002"
+        model["transitions"][0]["condition"] = "humidity is low"
+
+        package = export_run(model)
+        self.assertEqual(package["input"]["transitions"][0]["condition"], "humidity is low")
+        self.assertEqual(
+            assess_exported_package(package),
+            {
+                "status": "replay-verified",
+                "integrity_verified": True,
+                "replay_verified": True,
+                "reason": None,
+            },
+        )
+
+        tampered = copy.deepcopy(package)
+        tampered["input"]["transitions"][0]["condition"] = "humidity is high"
+        with self.assertRaisesRegex(ModelValidationError, "input SHA-256 does not verify"):
+            assess_exported_package(tampered)
+
     def test_exported_package_rejects_truncated_or_incomplete_documents(self):
         package = export_run(self.model)
         self.assertTrue(verify_exported_package(package))
