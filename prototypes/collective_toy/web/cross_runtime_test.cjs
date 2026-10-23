@@ -848,6 +848,81 @@ function pythonJson(source, input) {
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "restoring the prior source model must not reactivate the stale effective mapping without a new explicit acceptance");
 
+    // Isolated source-model invalidation regression: fresh browser context, no prior
+    // catalogue/review decisions, and a correspondence materialized only through the UI.
+    const staleContext = await browser.newContext();
+    try {
+      const stalePage = await staleContext.newPage();
+      await stalePage.goto("file://" + htmlPath);
+      await stalePage.locator("#load").click();
+      await stalePage.evaluate(model => {
+        localStorage.clear();
+        const el = document.querySelector("#model");
+        el.value = JSON.stringify(model, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      const staleCatalogue = stalePage.locator("#tgcv-target-catalogue");
+      const staleCatalogueDetails = stalePage.locator("#correspondence-review-section details").filter({has:staleCatalogue});
+      if (!(await staleCatalogueDetails.evaluate(el => el.open))) {
+        await staleCatalogueDetails.locator("summary").click();
+      }
+      await staleCatalogue.fill(JSON.stringify({
+        schema:"tgcv-target-catalogue-001",version:"isolated-model-stale-v1",
+        transformations:[
+          {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+          {id:"T_CD",source_state:"C",target_state:"D"}
+        ]
+      }, null, 2));
+      await stalePage.locator("#run").click();
+      await stalePage.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+        document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+      assert.match(await stalePage.locator("#status").textContent(), /ejecución completada/i,
+        "isolated stale fixture baseline must execute successfully");
+      await stalePage.locator("#derive-tgcv-correspondences").click();
+      await stalePage.locator("#correspondence-review-list article").first().waitFor();
+      await stalePage.locator("#correspondence-review-list article").first()
+        .getByRole("button", {name:"Aceptar propuesta"}).click();
+      await stalePage.locator("#apply-accepted-tgcv-correspondences").click();
+      await stalePage.waitForFunction(() => /Correspondencias efectivas activas: 1/i.test(
+        document.querySelector("#effective-correspondence-status")?.textContent || ""), null, {timeout:5000});
+      const effectiveBeforeSourceEdit = await stalePage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false));
+      assert.equal(effectiveBeforeSourceEdit.length, 1,
+        "isolated stale fixture must materialize one active correspondence through the supported UI flow");
+      await stalePage.locator("#new-state-id").fill("IsolatedSourceEdit");
+      await stalePage.locator("#new-state-add").click();
+      await stalePage.waitForFunction(() => /Estado añadido: IsolatedSourceEdit/i.test(
+        document.querySelector("#graph-edit-status")?.textContent || ""), null, {timeout:5000});
+      await stalePage.locator("#derive-tgcv-correspondences").click();
+      await stalePage.waitForFunction(() => Object.keys(localStorage)
+        .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+        .some(k => {
+          try {
+            const record = JSON.parse(localStorage.getItem(k));
+            return [...(record.mappings || []), ...(record.history || [])]
+              .some(m => m.status === "STALE" && /modelo de origen cambió/i.test(m.stale_reason || ""));
+          } catch (_e) { return false; }
+        }), null, {timeout:5000});
+      const isolatedStaleHistory = await stalePage.evaluate(() => Object.keys(localStorage)
+        .filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+        .map(k => JSON.parse(localStorage.getItem(k)))
+        .flatMap(record => [...(record.mappings || []), ...(record.history || [])]));
+      assert.ok(isolatedStaleHistory.some(m => m.status === "STALE" && /modelo de origen cambió/i.test(m.stale_reason || "")),
+        "source model edit must invalidate the applied mapping with a persisted reason");
+      assert.ok(isolatedStaleHistory.every(m => !(m.status === "EFFECTIVE" && m.active !== false)),
+        "no active effective mapping may survive the isolated source model edit");
+      await stalePage.locator("#run").click();
+      await stalePage.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+        document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+      assert.match(await stalePage.locator("#status").textContent(), /ejecución completada/i,
+        "edited source model must remain executable after isolated invalidation");
+      assert.doesNotMatch(await stalePage.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
+        "isolated stale mapping must not remain in the TGCV graph");
+      await stalePage.locator("#derive-tgcv-correspondences").click();
+      assert.match(await stalePage.locator("#correspondence-review-list").textContent(), /Decisión: PENDIENTE/,
+        "regenerated proposals for the edited source model must not resurrect the old accepted decision");
+    } finally { await staleContext.close(); }
+
     // JSON import must preserve conditional metadata without fabricating an evaluation.
     const jsonConditionalModel = {
       ...model,
