@@ -876,6 +876,27 @@ function pythonJson(source, input) {
     ), null, {timeout:5000});
     assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "rejected",
       "tampered conditional input must be rejected, not replay-verified");
+
+    // JSON entry must reject an evaluation whose bound condition no longer matches the transition text.
+    const staleJsonCondition = {
+      ...roundTripModel,
+      transitions: roundTripModel.transitions.map(t => t.id === "t_ab"
+        ? {...t, condition: "authorization has been revoked"}
+        : {...t}),
+      scenarios: [{id:"baseline",disabled_transitions:[],condition_evaluations:{
+        t_ab:{condition:"authorization is valid",result:"TRUE"}
+      }}]
+    };
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = JSON.stringify(value);
+      el.dispatchEvent(new Event("input", {bubbles:true}));
+    }, staleJsonCondition);
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /evaluación de condición está obsoleta/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /evaluación de condición está obsoleta/i,
+      "JSON input must not reuse TRUE from a different condition string");
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
