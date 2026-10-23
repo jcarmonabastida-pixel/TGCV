@@ -1076,7 +1076,9 @@ function pythonJson(source, input) {
     const effectiveMappingsAfterApply = await page.evaluate(() =>
       JSON.parse(JSON.stringify(window.effectiveCorrespondenceState?.mappings || [])));
     assert.equal(effectiveMappingsAfterApply.length, 1,
-      "explicit apply action must activate exactly the accepted correspondence in this isolated fixture");
+      "explicit apply action must activate exactly the accepted correspondence in this isolated fixture; status=" +
+      (await page.locator("#effective-correspondence-status").textContent()) +
+      "; review=" + (await page.locator("#correspondence-review-list").textContent()).slice(0,1800));
     assert.equal(effectiveMappingsAfterApply[0].status, "EFFECTIVE",
       "applied correspondence must be explicitly marked EFFECTIVE");
     assert.equal(effectiveMappingsAfterApply[0].decision, "ACCEPTED",
