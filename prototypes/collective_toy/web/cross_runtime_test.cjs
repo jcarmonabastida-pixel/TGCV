@@ -1635,8 +1635,8 @@ function pythonJson(source, input) {
         source:edge.source, target:edge.target, condition:edge.condition
       })).sort((a,b) => (a.source+"|"+a.target).localeCompare(b.source+"|"+b.target));
       assert.deepEqual(normalized, [
-        {source:"inicio",target:"espera",condition:"hay autorización"},
-        {source:"espera",target:"acceso autorizado",condition:"no hay autorización"}
+        {source:"espera",target:"acceso autorizado",condition:"no hay autorización"},
+        {source:"inicio",target:"espera",condition:"hay autorización"}
       ], "positive and negative conditions must stay attached to the correct directed edge");
       assert.equal(parsed.scenarios[0].condition_evaluations && Object.keys(parsed.scenarios[0].condition_evaluations).length || 0, 0,
         "mixed conditional parsing must not fabricate evaluations");
