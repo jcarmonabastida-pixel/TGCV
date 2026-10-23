@@ -152,3 +152,9 @@ Commit `ac894914b650e5db2f3a47a3e5c2bdc5447957df`: motor sintético PASS ([run 3
 Commit `bf160d494729170c69fb6dee7254df23972c3d13`: motor sintético PASS ([run 39998114312](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39998114312)) y navegador/concordancia PASS ([run 39998114360](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39998114360)). La prueba del navegador genera propuestas ambiguas `NEEDS_REVIEW`, registra el rechazo humano explícito, comprueba su persistencia en almacenamiento local y verifica que la decisión y el contenido persistido permanecen iguales tras regenerar propuestas. También pasa la reproducción desde archivo fuente limpio y la verificación del paquete autónomo.
 
 **Alcance:** demuestra persistencia del rechazo para el escenario de propuestas ambiguas del test; no demuestra todavía todas las clases de resolución de conflictos ni una aprobación general de la integración del derivador. PR #95 permanece abierta, en borrador y sin fusionar.
+
+### Integridad de mapping declarado tras rechazo de propuesta derivada — PASS
+
+Commit de prueba `df211d77e9ded682ec2d9727949bdadd6f0903e6`: motor sintético PASS ([run 39998776768](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39998776768)) y navegador/concordancia PASS ([run 39998776906](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39998776906)). La prueba compara el mapping TGCV declarado por el usuario antes y después de rechazar una propuesta derivada y exige igualdad exacta; también verifica que el rechazo no cambie estados alcanzables ni trayectorias. La reproducción desde archivo fuente limpio, la distribución autónoma y la verificación del ZIP pasaron.
+
+**Alcance:** evidencia de integridad del mapping declarado para este escenario de rechazo. No equivale a cobertura completa de todas las clases de conflicto ni a validación científica de TGCV. PR #95 continúa en borrador y sin fusionar.
