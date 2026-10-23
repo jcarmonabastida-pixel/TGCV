@@ -648,6 +648,35 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-status").textContent(), /revisa el resultado/i,
       "transcribed graph remains a human-reviewable draft");
 
+    // Carry the transcribed condition through execution and package replay, not just parsing.
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "transcribed conditional model must execute without requiring a fabricated evaluation");
+    const transcribedPackage = await page.evaluate(() => window.lastPackage);
+    assert.equal(transcribedPackage.input.transitions[0].condition, "hay autorización",
+      "execution package must retain the exact condition produced by the transcriber");
+    assert.ok(!transcribedPackage.result.scenario_results.baseline.reachable_states.includes("acceso autorizado"),
+      "transcribed condition without an evaluation must not make its target reachable");
+    const transcribedDownloadPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const transcribedDownload = await transcribedDownloadPromise;
+    const transcribedPackagePath = await transcribedDownload.path();
+    assert.ok(transcribedPackagePath, "transcribed conditional export must produce a JSON package");
+    const transcribedPackageText = fs.readFileSync(transcribedPackagePath, "utf8");
+    await page.locator("#package-file").setInputFiles({
+      name: "transcribed-conditional-round-trip.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(transcribedPackageText)
+    });
+    await page.locator("#assess-package").click();
+    await page.waitForFunction(() => ["replay-verified", "rejected", "inspect-only/replay-unavailable"].includes(
+      document.querySelector("#package-assessment")?.dataset.state
+    ), null, {timeout:5000});
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
+      "transcribed conditional package must pass independent replay");
+
     // A negated transition clause must remain pending and must not become an edge.
     await page.locator("#system-description").fill(
       "El proceso pasa de reposo a ejecución. No pasa de ejecución a resultado."
