@@ -473,6 +473,17 @@ function pythonJson(source, input) {
       ]
     }, null, 2));
     const graphBeforeReview = await page.locator("#tgcv-graph").textContent();
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "system must execute before correspondence review baseline is captured");
+    const reachabilityBeforeReview = await page.evaluate(() => {
+      const result = window.lastPackage?.result?.scenario_results?.baseline;
+      return result ? [...(result.reachable_states || [])].sort() : null;
+    });
+    assert.ok(reachabilityBeforeReview,
+      "baseline execution must expose reachable states before review decisions");
     await page.locator("#derive-tgcv-correspondences").click();
     await page.locator("#correspondence-review-list article").first().waitFor();
     assert.equal(await page.locator("#correspondence-review-list article").count(), 2,
@@ -489,6 +500,17 @@ function pythonJson(source, input) {
       "a rejected correspondence candidate must retain an explicit human decision");
     assert.equal(await page.locator("#tgcv-graph").textContent(), graphBeforeReview,
       "rejecting a candidate must not modify the TGCV graph");
+    await page.locator("#run").click();
+    await page.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+      document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+    assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
+      "pending and rejected correspondence decisions must leave the system executable");
+    const reachabilityAfterPendingAndRejected = await page.evaluate(() => {
+      const result = window.lastPackage?.result?.scenario_results?.baseline;
+      return result ? [...(result.reachable_states || [])].sort() : null;
+    });
+    assert.deepEqual(reachabilityAfterPendingAndRejected, reachabilityBeforeReview,
+      "pending and rejected correspondence proposals must not change system reachability");
     const persistedReview = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith("tgcv-correspondence-review-001:")).map(k => JSON.parse(localStorage.getItem(k))));
     assert.equal(persistedReview.length, 1, "review decision must be persisted in browser storage");
     assert.equal(Object.values(persistedReview[0].decisions)[0].decision, "ACCEPTED",
