@@ -1312,6 +1312,26 @@ function pythonJson(source, input) {
       /El acceso autorizado precede a la espera/i,
       "unsupported direction phrase must be explicitly reported for clarification");
 
+    // Negation inside a condition is not the same as negating the transition.
+    // Preserve the complete condition as metadata; do not evaluate it or drop "no".
+    await page.locator("#system-description").fill(
+      "Si no hay autorización, el sistema pasa de espera a acceso autorizado."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /Borrador propuesto:/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+    const negativeConditionModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(negativeConditionModel.transitions.length, 1,
+      "a negative condition must preserve the explicit conditional edge");
+    assert.equal(negativeConditionModel.transitions[0].source, "espera");
+    assert.equal(negativeConditionModel.transitions[0].target, "acceso autorizado");
+    assert.equal(negativeConditionModel.transitions[0].condition, "no hay autorización",
+      "negation inside condition metadata must not be removed or rewritten");
+    assert.equal(negativeConditionModel.scenarios[0].condition_evaluations, undefined,
+      "transcription must not invent an evaluation for a negative condition");
+    assert.ok(!negativeConditionModel.transitions[0].condition_evaluation,
+      "condition metadata must remain separate from evaluation");
+
     // Equivalent Spanish formulations must produce the same directed conditional edge.
     const equivalentConditionPhrases = [
       {
