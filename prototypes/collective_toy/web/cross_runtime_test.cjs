@@ -1406,7 +1406,7 @@ function pythonJson(source, input) {
           {id:"T_REVIEW_AB_2",source_state:"A",target_state:"B"}
         ]
       };
-      await rejectionPage.locator("#tgcv-target-catalogue").fill(JSON.stringify(reviewCatalogue));
+      await rejectionPage.locator("#tgcv-target-catalogue").evaluate((el, value) => { el.value = value; el.dispatchEvent(new Event("input", {bubbles:true})); el.dispatchEvent(new Event("change", {bubbles:true})); }, JSON.stringify(reviewCatalogue));
       await rejectionPage.locator("#derive-tgcv-correspondences").click();
       const reviewRequired = rejectionPage.locator("#correspondence-review-list article").filter({hasText:"NEEDS_REVIEW"});
       await reviewRequired.first().waitFor();
