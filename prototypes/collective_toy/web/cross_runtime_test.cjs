@@ -452,6 +452,8 @@ function pythonJson(source, input) {
       "applying the same accepted candidate twice must be idempotent");
     assert.equal(materialization.conflict.mappings.length, 0, "declared mapping conflicts must never be overwritten");
     assert.equal(materialization.conflict.conflicts[0].code, "CONFLICT_NEEDS_REVIEW");
+    assert.match(materialization.conflict.conflicts[0].message, /correspondencia declarada por el usuario/i,
+      "the conflict report must explain that the user-declared mapping is the reason for abstention");
     assert.equal(materialization.conflictingModelBefore, materialization.conflictingModelAfter,
       "conflict validation must preserve the exact declared mapping and its provenance");
     assert.equal(materialization.stale.mappings.length, 0, "a proposal from a changed model must not materialize");
