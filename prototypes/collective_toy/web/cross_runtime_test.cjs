@@ -1558,6 +1558,28 @@ function pythonJson(source, input) {
         "unsupported exception operator must remain pending for human clarification: " + phrase);
     }
 
+    // In a mixed description, preserve a clearly parsed transition but never add the
+    // unsupported exception transition; the latter must remain visible for clarification.
+    await page.locator("#system-description").fill(
+      "El sistema pasa de inicio a espera. El sistema pasa de espera a acceso autorizado salvo que haya autorización."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => {
+      const status = document.querySelector("#transcription-status")?.textContent || "";
+      const model = document.querySelector("#model")?.value || "";
+      return /grafo/i.test(status) && model.length > 0;
+    }, null, {timeout:5000});
+    const mixedModel = JSON.parse(await page.locator("#model").inputValue());
+    const mixedTransitions = mixedModel.transitions || [];
+    assert.equal(mixedTransitions.length, 1,
+      "mixed description must retain only the explicitly supported transition");
+    assert.match(JSON.stringify(mixedTransitions[0]), /inicio/i,
+      "the explicit valid transition must be preserved");
+    assert.doesNotMatch(JSON.stringify(mixedTransitions), /acceso autorizado/i,
+      "unsupported exception transition must not be added to the graph");
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que haya autorización/i,
+      "unsupported exception sentence must remain pending even when another transition is valid");
+
     // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
