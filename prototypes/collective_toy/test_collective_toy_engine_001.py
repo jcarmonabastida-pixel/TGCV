@@ -429,6 +429,30 @@ class CollectiveToyEngineTests(unittest.TestCase):
         with self.assertRaisesRegex(ModelValidationError, "input SHA-256 does not verify"):
             assess_exported_package(tampered)
 
+        # A self-consistent package whose condition text changes but whose stored
+        # evaluation still refers to the old text must fail model validation on replay.
+        evaluated_model = copy.deepcopy(self.model)
+        evaluated_model["schema_version"] = "collective-toy-input-002"
+        evaluated_model["transitions"][0]["condition"] = "humidity is low"
+        evaluated_model["scenarios"][0]["condition_evaluations"] = {
+            evaluated_model["transitions"][0]["id"]: {
+                "condition": "humidity is low",
+                "result": "TRUE",
+            }
+        }
+        stale_package = export_run(evaluated_model)
+        stale_package["input"]["transitions"][0]["condition"] = "humidity is high"
+        stale_package["result"]["input_sha256"] = sha256_json(stale_package["input"])
+        result_payload = copy.deepcopy(stale_package["result"])
+        del result_payload["input_sha256"]
+        del result_payload["result_sha256"]
+        stale_package["result"]["result_sha256"] = sha256_json(result_payload)
+        package_payload = copy.deepcopy(stale_package)
+        del package_payload["package_sha256"]
+        stale_package["package_sha256"] = sha256_json(package_payload)
+        with self.assertRaisesRegex(ModelValidationError, "does not match the current condition text"):
+            assess_exported_package(stale_package)
+
     def test_exported_package_rejects_truncated_or_incomplete_documents(self):
         package = export_run(self.model)
         self.assertTrue(verify_exported_package(package))
