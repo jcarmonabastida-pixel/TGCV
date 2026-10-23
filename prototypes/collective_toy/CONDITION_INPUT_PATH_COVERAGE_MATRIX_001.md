@@ -158,3 +158,9 @@ Commit `bf160d494729170c69fb6dee7254df23972c3d13`: motor sintético PASS ([run 3
 Commit de prueba `df211d77e9ded682ec2d9727949bdadd6f0903e6`: motor sintético PASS ([run 39998776768](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39998776768)) y navegador/concordancia PASS ([run 39998776906](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39998776906)). La prueba compara el mapping TGCV declarado por el usuario antes y después de rechazar una propuesta derivada y exige igualdad exacta; también verifica que el rechazo no cambie estados alcanzables ni trayectorias. La reproducción desde archivo fuente limpio, la distribución autónoma y la verificación del ZIP pasaron.
 
 **Alcance:** evidencia de integridad del mapping declarado para este escenario de rechazo. No equivale a cobertura completa de todas las clases de conflicto ni a validación científica de TGCV. PR #95 continúa en borrador y sin fusionar.
+
+### Aceptación humana no activa ni altera mappings declarados/efectivos — PASS
+
+Commit de prueba `857d18f5197e00a442356c336f7839e5323bc019`: motor sintético PASS ([run 40000012125](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40000012125)) y navegador/concordancia PASS ([run 40000012112](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40000012112)). La prueba registra la decisión humana `ACCEPTED` y verifica que aceptar la propuesta, sin ejecutar la acción separada de aplicación, no modifica el mapping TGCV declarado ni las correspondencias efectivas. La reproducción desde archivo fuente limpio y la distribución autónoma verificada también pasaron.
+
+**Alcance:** demuestra la separación entre aceptación de revisión y aplicación para el escenario probado; no acredita por sí sola todos los tipos de incompatibilidad ni el ciclo completo de aplicación. PR #95 sigue abierta, en borrador y sin fusionar.
