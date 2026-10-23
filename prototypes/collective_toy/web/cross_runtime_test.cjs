@@ -229,6 +229,41 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#graph-note").textContent(), /t_ab \(DESCONOCIDA\)/,
       "an UNKNOWN condition must be distinguished from an unevaluated condition in the system graph note");
 
+    const evaluatedPackageModel = {
+      ...conditionalModel,
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "TRUE" } }
+      }]
+    };
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(evaluatedPackageModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const stalePackageAssessment = await page.evaluate(async () => {
+      const pkg = JSON.parse(JSON.stringify(window.lastPackage));
+      pkg.input.transitions.find(t => t.id === "t_ab").condition = "humidity is high";
+      pkg.result.input_sha256 = await window.hash(pkg.input, "input");
+      const resultPayload = JSON.parse(JSON.stringify(pkg.result));
+      delete resultPayload.input_sha256;
+      delete resultPayload.result_sha256;
+      pkg.result.result_sha256 = await window.hash(resultPayload, "result");
+      delete pkg.package_sha256;
+      pkg.package_sha256 = await window.hash(pkg, "package");
+      try {
+        await window.assessImportedBrowserPackage(pkg);
+        return {rejected:false, reason:null};
+      } catch (error) {
+        return {rejected:true, reason:String(error && error.message || error)};
+      }
+    });
+    assert.equal(stalePackageAssessment.rejected, true,
+      "browser must reject a hash-consistent package with a stale condition evaluation");
+    assert.match(stalePackageAssessment.reason, /evaluación de condición está obsoleta|texto ya cambió/i,
+      "browser must identify stale condition evaluation, not merely package hash mismatch");
+
     const staleEvaluationModel = {
       ...conditionalModel,
       transitions: [
