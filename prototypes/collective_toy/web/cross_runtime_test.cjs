@@ -713,8 +713,13 @@ function pythonJson(source, input) {
 
     // Review a correspondence derived from the transcribed graph and ensure its decision
     // remains bound to this exact source model when exported and replayed.
-    await page.locator("#correspondence-review-section summary").click();
-    await page.locator("#tgcv-target-catalogue").fill(JSON.stringify({
+    const transcriberCatalogue = page.locator("#tgcv-target-catalogue");
+    const transcriberCatalogueDetails = page.locator("#correspondence-review-section details").filter({has: transcriberCatalogue});
+    if (!(await transcriberCatalogueDetails.evaluate(el => el.open))) {
+      await transcriberCatalogueDetails.locator("summary").click();
+    }
+    await transcriberCatalogue.waitFor({state: "visible"});
+    await transcriberCatalogue.fill(JSON.stringify({
       schema:"tgcv-target-catalogue-001",version:"transcriber-review-v1",
       transformations:transcribedConditionalModel.transitions.map(t => ({
         id:"T_TRANSCRIBED_"+t.id,source_state:t.source,target_state:t.target
