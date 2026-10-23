@@ -460,8 +460,13 @@ function pythonJson(source, input) {
       document.querySelector("#model").dispatchEvent(new Event("input", {bubbles:true}));
       localStorage.clear();
     }, reviewModel);
-    await page.locator("#correspondence-review-section summary").click();
-    await page.locator("#tgcv-target-catalogue").fill(JSON.stringify({
+    const catalogue = page.locator("#tgcv-target-catalogue");
+    const catalogueDetails = page.locator("#correspondence-review-section details").filter({has: catalogue});
+    if (!(await catalogueDetails.evaluate(el => el.open))) {
+      await catalogueDetails.locator("summary").click();
+    }
+    await catalogue.waitFor({state: "visible"});
+    await catalogue.fill(JSON.stringify({
       schema:"tgcv-target-catalogue-001",version:"ui-review-v1",transformations:[
         {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
         {id:"T_CD",source_state:"C",target_state:"D"}
