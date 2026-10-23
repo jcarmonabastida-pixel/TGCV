@@ -1222,6 +1222,56 @@ function pythonJson(source, input) {
       "the exported conditional package must pass independent replay: " +
       await page.locator("#package-assessment").textContent());
 
+    // Package assessment/import must not mutate local human review decisions or activate
+    // correspondences: use a separate context with an explicit rejected decision as baseline.
+    const importIsolationContext = await browser.newContext();
+    try {
+      const importIsolationPage = await importIsolationContext.newPage();
+      await importIsolationPage.goto("file://" + htmlPath);
+      await importIsolationPage.locator("#load").click();
+      await importIsolationPage.locator("#run").click();
+      await importIsolationPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+      await importIsolationPage.locator("#derive-tgcv-correspondences").click();
+      await importIsolationPage.locator("#correspondence-review-list article").first().waitFor();
+      await importIsolationPage.locator("#correspondence-review-list article").first()
+        .getByRole("button", {name:"Rechazar propuesta"}).click();
+      assert.match(await importIsolationPage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+        "import-isolation fixture must start with an explicit human rejection");
+      const reviewStateBeforeImport = await importIsolationPage.evaluate(() => Object.fromEntries(
+        Object.keys(localStorage).filter(k => /tgcv-(?:effective-mappings|correspondence-review)-001:/.test(k))
+          .sort().map(k => [k, localStorage.getItem(k)])
+      ));
+      const effectiveBeforeImport = await importIsolationPage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false));
+      await importIsolationPage.locator("#package-file").setInputFiles({
+        name: "isolated-import-assessment.json",
+        mimeType: "application/json",
+        buffer: Buffer.from(exportedPackageText)
+      });
+      await importIsolationPage.locator("#assess-package").click();
+      await importIsolationPage.waitForFunction(() =>
+        ["replay-verified", "rejected", "inspect-only/replay-unavailable"].includes(
+          document.querySelector("#package-assessment")?.dataset.state
+        ), null, {timeout:5000});
+      assert.equal(await importIsolationPage.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
+        "valid package must be assessed successfully in the isolated context");
+      const reviewStateAfterImport = await importIsolationPage.evaluate(() => Object.fromEntries(
+        Object.keys(localStorage).filter(k => /tgcv-(?:effective-mappings|correspondence-review)-001:/.test(k))
+          .sort().map(k => [k, localStorage.getItem(k)])
+      ));
+      assert.deepEqual(reviewStateAfterImport, reviewStateBeforeImport,
+        "package assessment must not mutate persisted local human review decisions");
+      const effectiveAfterImport = await importIsolationPage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false));
+      assert.deepEqual(effectiveAfterImport, effectiveBeforeImport,
+        "package assessment must not activate correspondences in the local model");
+      assert.match(await importIsolationPage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+        "package assessment must preserve the visible local rejection");
+    } finally { await importIsolationContext.close(); }
+
     // Tampering with a condition after export must be rejected, never reported as verified replay.
     const tamperedPackage = JSON.parse(exportedPackageText);
     tamperedPackage.input.transitions.find(t => t.id === "t_ab").condition = "authorization is not valid";
