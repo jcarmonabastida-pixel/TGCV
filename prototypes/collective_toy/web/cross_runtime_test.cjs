@@ -1447,9 +1447,8 @@ function pythonJson(source, input) {
     const staleConditionStatus = await page.locator("#status").innerText();
     assert.match(staleConditionStatus, /obsoleta|ya cambió|no corresponde|no coincide/i,
       "browser must surface rejection of the stale condition evaluation");
-    assert.equal(await page.evaluate(() => window.lastPackage?.input?.transitions?.[0]?.condition),
-      "no hay autorización",
-      "rejected stale input must not replace the last valid execution package");
+    assert.equal(await page.evaluate(() => window.lastPackage), null,
+      "rejected stale input must not leave an older execution package exposed as current");
 
     // Equivalent Spanish formulations must produce the same directed conditional edge.
     const equivalentConditionPhrases = [
