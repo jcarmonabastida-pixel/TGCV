@@ -48,3 +48,8 @@ El rechazo explícito de una evaluación condicional obsoleta dentro de un paque
 ### Incidencia de sincronización en pruebas de importación JSON
 
 El control añadido para importar un JSON con una condición `TRUE` y rutas incondicionales independientes no llegó a evaluar ese escenario: la suite de navegador falló antes, porque una espera genérica por `Archivo cargado y validado` podía satisfacerse con el mensaje de una importación anterior. La aserción posterior leía entonces el modelo previo (`humidity is low`) en vez del archivo recién seleccionado (`conditional-model.json`). No hay evidencia en ese fallo de un defecto del importador. Se cambió la sincronización para esperar el nombre exacto de cada archivo. Corrección en `ee111d287d9bd9205a09528cb1627165b90f7a3b`; workflows pendientes.
+
+
+### Estado de validación más reciente
+
+Los workflows de navegador y motor sintético pasan para `ee111d287d9bd9205a09528cb1627165b90f7a3b`. La prueba de importación JSON espera el nombre exacto del archivo y verifica que una condición TRUE vinculada correctamente habilita su transición sin bloquear rutas incondicionales independientes.
