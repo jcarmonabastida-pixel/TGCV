@@ -1440,12 +1440,12 @@ function pythonJson(source, input) {
       el.dispatchEvent(new Event("input", { bubbles: true }));
     }, JSON.stringify(staleTranscribedConditionModel));
     await page.locator("#run").click();
-    await page.waitForFunction(() => {
-      const status = document.querySelector("#status")?.textContent || "";
-      return /condition evaluation|current condition text|validación|inválid/i.test(status);
-    }, null, {timeout:5000});
+    await page.waitForFunction(() =>
+      /No se ha podido ejecutar/.test(document.querySelector("#status")?.innerText || ""),
+      { timeout: 10000 }
+    );
     const staleConditionStatus = await page.locator("#status").innerText();
-    assert.match(staleConditionStatus, /condition evaluation|current condition text|validación|inválid/i,
+    assert.match(staleConditionStatus, /obsoleta|ya cambió|no corresponde|no coincide/i,
       "browser must surface rejection of the stale condition evaluation");
     assert.equal(await page.evaluate(() => window.lastPackage?.input?.transitions?.[0]?.condition),
       "no hay autorización",
