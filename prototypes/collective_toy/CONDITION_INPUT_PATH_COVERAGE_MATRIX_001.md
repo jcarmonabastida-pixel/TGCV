@@ -2,10 +2,10 @@
 
 **Estado:** COBERTURA DE CASOS EXPLÍCITOS EN PROGRESO; gate contractual completo **PENDIENTE**  
 **Rama:** `integration/condition-evaluator-dual-graph-001-20261022`  
-**Último commit con ambos workflows PASS:** `ee111d287d9bd9205a09528cb1627165b90f7a3b`  
-**Suite principal:** [`web/cross_runtime_test.cjs`](https://github.com/jcarmonabastida-pixel/TGCV/blob/ee111d287d9bd9205a09528cb1627165b90f7a3b/prototypes/collective_toy/web/cross_runtime_test.cjs)  
-**CI navegador:** [PASS — run 39888670634](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39888670634)  
-**CI motor sintético:** [PASS — run 39888670578](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39888670578)
+**Último commit con ambos workflows PASS:** `6c0329bf8abd546e5597153b2d7a7fb3ac9f2caf`  
+**Suite principal:** [`web/cross_runtime_test.cjs`](https://github.com/jcarmonabastida-pixel/TGCV/blob/6c0329bf8abd546e5597153b2d7a7fb3ac9f2caf/prototypes/collective_toy/web/cross_runtime_test.cjs)  
+**CI navegador:** [PASS — run 39947686882](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39947686882)  
+**CI motor sintético:** [PASS — run 39947686918](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/39947686918)
 
 ## 1. Matriz de aceptación
 
@@ -42,7 +42,7 @@ La sección 10 del contrato vigente requiere más que los casos básicos anterio
 
 ## 5. Siguiente control
 
-El rechazo explícito de una evaluación condicional obsoleta dentro de un paquete íntegro a nivel de hashes ya pasa en navegador y Python (commit `b03971f`). El recorrido del editor visual por exportación/importación/replay pasa en el commit `5c772a0`. El control de exportación tras cambiar el modelo fuente pasa en ambos entornos en `7150903`: permite propuestas nuevas con procedencia actual y prohíbe conservar decisiones ACCEPTED del modelo anterior. El control de revisión/aceptación humana verifica persistencia de decisión, alcance modelo/catálogo, aplicación explícita, idempotencia, conflictos con declaraciones del usuario, invalidación e historial. La regresión de restauración del modelo tras invalidación pasa en `0851ee1` (navegador y motor sintético). El control específico para procedencia de una decisión humana derivada del transcriptor está en `1fe4ae8`, CI pendiente. Las pruebas de evaluación obsoleta no sustituyen este control de procedencia. La PR debe seguir en borrador y sin fusionar hasta resolver o dividir explícitamente estos puntos.
+El rechazo explícito de una evaluación condicional obsoleta dentro de un paquete íntegro a nivel de hashes ya pasa en navegador y Python (commit `b03971f`). El recorrido del editor visual por exportación/importación/replay pasa en el commit `5c772a0`. El control de exportación tras cambiar el modelo fuente pasa en ambos entornos en `7150903`: permite propuestas nuevas con procedencia actual y prohíbe conservar decisiones ACCEPTED del modelo anterior. El control de revisión/aceptación humana verifica persistencia de decisión, alcance modelo/catálogo, aplicación explícita, idempotencia, conflictos con declaraciones del usuario, invalidación e historial. La regresión de restauración del modelo tras invalidación pasa en `0851ee1` (navegador y motor sintético). El control específico para procedencia de una decisión humana derivada del transcriptor pasa en ambos workflows en `6c0329b` (runs `39947686882` y `39947686918`): verifica condición exacta `hay autorización`, hash del modelo transcrito, aceptación humana explícita, persistencia en exportación y replay independiente del paquete. La sincronización del test espera una propuesta `T_TRANSCRIBED_` y la UI expone la condición original en la evidencia. Las pruebas de evaluación obsoleta no sustituyen este control de procedencia. La PR debe seguir en borrador y sin fusionar hasta resolver o dividir explícitamente estos puntos.
 
 
 ### Incidencia de sincronización en pruebas de importación JSON
@@ -52,7 +52,7 @@ El control añadido para importar un JSON con una condición `TRUE` y rutas inco
 
 ### Estado de validación más reciente
 
-Los workflows de navegador y motor sintético pasan para `ee111d287d9bd9205a09528cb1627165b90f7a3b`. La prueba de importación JSON espera el nombre exacto del archivo y verifica que una condición TRUE vinculada correctamente habilita su transición sin bloquear rutas incondicionales independientes.
+Los workflows de navegador y motor sintético pasan para `6c0329bf8abd546e5597153b2d7a7fb3ac9f2caf`. Además del control de importación JSON de `ee111d2`, la suite verifica la procedencia de una correspondencia derivada del transcriptor: condición exacta, hash del modelo fuente, aceptación humana explícita, exportación y replay independiente.
 
 
 ### Estado posterior de los controles de importación
