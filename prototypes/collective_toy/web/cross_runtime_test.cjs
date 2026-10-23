@@ -674,8 +674,9 @@ function pythonJson(source, input) {
     await page.waitForFunction(() => ["replay-verified", "rejected", "inspect-only/replay-unavailable"].includes(
       document.querySelector("#package-assessment")?.dataset.state
     ), null, {timeout:5000});
+    const transcribedPackageAssessment = await page.locator("#package-assessment").textContent();
     assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
-      "transcribed conditional package must pass independent replay");
+      "transcribed conditional package must pass independent replay; validator said: " + transcribedPackageAssessment);
 
     // A negated transition clause must remain pending and must not become an edge.
     await page.locator("#system-description").fill(
