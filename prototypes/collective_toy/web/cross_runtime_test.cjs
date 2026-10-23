@@ -1158,6 +1158,64 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#status").textContent(), /evaluación de condición está obsoleta/i,
       "JSON input must not reuse TRUE from a different condition string");
 
+    // Isolated rejection regression: use a fresh browser context so no accepted/pending
+    // review decision from the main scenario can influence this result.
+    const rejectionContext = await browser.newContext();
+    try {
+      const rejectionPage = await rejectionContext.newPage();
+      await rejectionPage.goto("file://" + htmlPath);
+      await rejectionPage.locator("#load").click();
+      await rejectionPage.locator("#run").click();
+      await rejectionPage.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+        document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+      assert.match(await rejectionPage.locator("#status").textContent(), /ejecución completada/i,
+        "isolated rejection baseline must execute successfully");
+      const executionBeforeIsolatedRejection = await rejectionPage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+          reachable_states: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        }]));
+      });
+      assert.ok(Object.keys(executionBeforeIsolatedRejection).length,
+        "isolated rejection baseline must expose structured scenario results");
+      await rejectionPage.locator("#derive-tgcv-correspondences").click();
+      await rejectionPage.locator("#correspondence-review-list article").first().waitFor();
+      assert.equal(await rejectionPage.locator("#correspondence-review-list article").count(), 2,
+        "isolated rejection fixture must expose the expected correspondence candidates");
+      await rejectionPage.locator("#correspondence-review-list article").first()
+        .getByRole("button", {name:"Rechazar propuesta"}).click();
+      assert.match(await rejectionPage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+        "isolated rejection must persist an explicit rejected decision");
+      await rejectionPage.locator("#run").click();
+      await rejectionPage.waitForFunction(() => /ejecución completada|no se ha podido ejecutar/i.test(
+        document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+      assert.match(await rejectionPage.locator("#status").textContent(), /ejecución completada/i,
+        "a rejected-only correspondence decision must leave the system executable");
+      const executionAfterIsolatedRejection = await rejectionPage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+          reachable_states: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        }]));
+      });
+      assert.deepEqual(executionAfterIsolatedRejection, executionBeforeIsolatedRejection,
+        "rejecting a proposal in isolation must preserve every scenario reachability and trajectory");
+      const effectiveAfterIsolatedRejection = await rejectionPage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(mapping => mapping.status === "EFFECTIVE")
+          .map(mapping => mapping.tgcv_transformation_id).sort());
+      assert.ok(!effectiveAfterIsolatedRejection.includes("T_HUMIDITY"),
+        "isolated rejected proposal must not appear in the structured effective correspondence set");
+      await rejectionPage.locator("#derive-tgcv-correspondences").click();
+      assert.match(await rejectionPage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+        "isolated rejected decision must persist when proposals are regenerated");
+    } finally { await rejectionContext.close(); }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
