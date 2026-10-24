@@ -1562,7 +1562,8 @@ function pythonJson(source, input) {
       "El sistema pasa de espera a acceso autorizado excepto si hay autorización.",
       "El sistema pasa de espera a acceso autorizado a menos que haya autorización.",
       "A no ser que haya autorización, el sistema pasa de espera a acceso autorizado.",
-      "El sistema pasa de espera a acceso autorizado excepto en caso de que haya autorización."
+      "El sistema pasa de espera a acceso autorizado excepto en caso de que haya autorización.",
+      "El sistema pasa de espera a acceso autorizado salvo en el caso de que haya autorización."
     ];
     for (const phrase of unsupportedExceptionPhrases) {
       await page.locator("#system-description").fill(phrase);
@@ -1571,7 +1572,7 @@ function pythonJson(source, input) {
         document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
       assert.equal(await page.locator("#model").inputValue(), "",
         "unsupported exception operator must not generate a potentially misinterpreted graph: " + phrase);
-      assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que|excepto si|a menos que|a no ser que|excepto cuando|excepto en caso de que/i,
+      assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que|excepto si|a menos que|a no ser que|excepto cuando|excepto en caso de que|salvo en el caso de que/i,
         "unsupported exception operator must remain pending for human clarification: " + phrase);
     }
 
@@ -1650,7 +1651,8 @@ function pythonJson(source, input) {
       {operator:"a menos que", sentence:"El sistema pasa de espera a acceso autorizado a menos que haya autorización."},
       {operator:"a no ser que", sentence:"A no ser que haya autorización, el sistema pasa de espera a acceso autorizado."},
       {operator:"excepto cuando", sentence:"El sistema pasa de espera a acceso autorizado excepto cuando haya autorización."},
-      {operator:"excepto en caso de que", sentence:"El sistema pasa de espera a acceso autorizado excepto en caso de que haya autorización."}
+      {operator:"excepto en caso de que", sentence:"El sistema pasa de espera a acceso autorizado excepto en caso de que haya autorización."},
+      {operator:"salvo en el caso de que", sentence:"El sistema pasa de espera a acceso autorizado salvo en el caso de que haya autorización."}
     ];
     for (const {operator, sentence} of mixedExceptionCases) {
       for (const description of [
@@ -1672,7 +1674,7 @@ function pythonJson(source, input) {
         assert.doesNotMatch(JSON.stringify(exceptionMixedModel.transitions), /acceso autorizado/i,
           "exception operator '" + operator + "' must not create a false transition");
         assert.match(await page.locator("#transcription-clarification").inputValue(),
-          /salvo que|excepto si|a menos que|a no ser que|excepto cuando|excepto en caso de que/i,
+          /salvo que|excepto si|a menos que|a no ser que|excepto cuando|excepto en caso de que|salvo en el caso de que/i,
           "exception operator '" + operator + "' must remain pending in either sentence order");
         assert.equal(Object.keys(exceptionMixedModel.scenarios?.[0]?.condition_evaluations || {}).length, 0,
           "exception operator '" + operator + "' must not fabricate condition evaluations");
