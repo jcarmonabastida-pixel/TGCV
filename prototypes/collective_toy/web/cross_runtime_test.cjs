@@ -2181,6 +2181,80 @@ function pythonJson(source, input) {
         "the UI must report that no compatible proposals were generated");
     } finally { await declaredCollisionContext.close(); }
 
+    // Integrated conflict lifecycle: two distinct system transitions map to one TGCV target.
+    // Both are individually valid exact-boundary proposals, but cannot both become effective.
+    const applyConflictContext = await browser.newContext();
+    try {
+      const conflictPage = await applyConflictContext.newPage();
+      await conflictPage.goto("file://" + htmlPath);
+      await conflictPage.locator("#load").click();
+      await conflictPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-apply-conflict-lifecycle";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [
+          {id:"t_ab_primary",source:"A",target:"B"},
+          {id:"t_ab_duplicate",source:"A",target:"B"}
+        ];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        return parsed;
+      }, model);
+      const catalogueDetails = conflictPage.locator("#correspondence-review-section details").filter({
+        has: conflictPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await catalogueDetails.evaluate(el => el.open))) await catalogueDetails.locator("summary").click();
+      await conflictPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001", version:"ui-apply-conflict-lifecycle-v1",
+        transformations:[{id:"T_SHARED_AB",source_state:"A",target_state:"B"}]
+      });
+      await conflictPage.locator("#derive-tgcv-correspondences").click();
+      await conflictPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      const primaryCard = conflictPage.locator("#correspondence-review-list article").filter({hasText:"t_ab_primary"});
+      const duplicateCard = conflictPage.locator("#correspondence-review-list article").filter({hasText:"t_ab_duplicate"});
+      await primaryCard.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await duplicateCard.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await conflictPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await conflictPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "conflict-needs-review",
+        null, {timeout:5000});
+      const conflictState = await conflictPage.evaluate(() => ({
+        status:document.querySelector("#effective-correspondence-status")?.textContent || "",
+        mappings:(window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false),
+        storage:Object.keys(localStorage).filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+          .map(k => JSON.parse(localStorage.getItem(k))).filter(Boolean)
+      }));
+      assert.match(conflictState.status, /CONFLICT_NEEDS_REVIEW/);
+      assert.equal(conflictState.mappings.length, 1,
+        "an apply-time target collision must not activate both mappings");
+      assert.equal(conflictState.mappings[0].tgcv_transformation_id, "T_SHARED_AB");
+      assert.ok(conflictState.storage.some(record => record.mappings?.length === 1),
+        "the persisted effective layer must contain at most the non-conflicting mapping");
+
+      await duplicateCard.getByRole("button", {name:"Rechazar propuesta"}).click();
+      await conflictPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await conflictPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const resolvedState = await conflictPage.evaluate(() => ({
+        status:document.querySelector("#effective-correspondence-status")?.textContent || "",
+        mappings:(window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false)
+      }));
+      assert.match(resolvedState.status, /conflictos: 0/);
+      assert.equal(resolvedState.mappings.length, 1,
+        "explicitly rejecting one conflicting proposal must leave only the selected mapping effective");
+      assert.equal(resolvedState.mappings[0].system_transition_id, "t_ab_primary");
+    } finally { await applyConflictContext.close(); }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
