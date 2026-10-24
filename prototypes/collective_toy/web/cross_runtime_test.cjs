@@ -2240,6 +2240,15 @@ function pythonJson(source, input) {
         "the persisted effective layer must contain no mappings while the conflict is unresolved");
 
       await duplicateCard.getByRole("button", {name:"Rechazar propuesta"}).click();
+      const persistedDecisions = await conflictPage.evaluate(() => Object.keys(localStorage)
+        .filter(k => k.startsWith("tgcv-correspondence-decisions-001:"))
+        .map(k => JSON.parse(localStorage.getItem(k)))
+        .filter(Boolean)
+        .flatMap(record => Object.values(record.decisions || {})));
+      assert.ok(persistedDecisions.some(d => d.candidate_id && d.decision === "ACCEPTED"),
+        "the selected correspondence decision must be persisted");
+      assert.ok(persistedDecisions.some(d => d.candidate_id && d.decision === "REJECTED"),
+        "the explicit conflict resolution must persist the rejected candidate decision");
       await conflictPage.locator("#apply-accepted-tgcv-correspondences").click();
       await conflictPage.waitForFunction(() =>
         document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
