@@ -2270,6 +2270,20 @@ function pythonJson(source, input) {
       assert.equal(resolvedState.mappings.length, 1,
         "explicitly rejecting one conflicting proposal must leave only the selected mapping effective");
       assert.equal(resolvedState.mappings[0].system_transition_id, "t_ab_primary");
+      // Reapplying the same accepted scope must be idempotent.
+      await conflictPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await conflictPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const reappliedState = await conflictPage.evaluate(() => ({
+        mappings:(window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false),
+        storage:Object.keys(localStorage).filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+          .map(k => JSON.parse(localStorage.getItem(k))).filter(Boolean)
+      }));
+      assert.equal(reappliedState.mappings.length, 1,
+        "reapplying the same accepted mapping must not create duplicate effective entries");
+      assert.ok(reappliedState.storage.every(record => (record.mappings || []).length === 1),
+        "the persisted effective overlay must remain deduplicated after reapplication");
     } finally { await applyConflictContext.close(); }
 
     // Orthogonal ambiguity axis: one source transition with two exact-boundary
