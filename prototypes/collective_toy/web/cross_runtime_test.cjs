@@ -2325,6 +2325,12 @@ function pythonJson(source, input) {
         el.dispatchEvent(new Event("input", {bubbles:true}));
         return parsed;
       }, model);
+      // Block B/C grouped invariant: establish an execution baseline before conflict review.
+      await conflictPage.locator("#run").click();
+      await conflictPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(conflictPage, "conflict lifecycle baseline");
       const catalogueDetails = conflictPage.locator("#correspondence-review-section details").filter({
         has: conflictPage.locator("#tgcv-target-catalogue")
       });
@@ -2360,6 +2366,11 @@ function pythonJson(source, input) {
         "an unresolved apply-time target collision must fail closed and activate no mappings");
       assert.ok(conflictState.storage.every(record => (record.mappings || []).length === 0),
         "the persisted effective layer must contain no mappings while the conflict is unresolved");
+      await conflictPage.locator("#run").click();
+      await conflictPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(conflictPage, "unresolved conflict fails closed");
 
       await duplicateCard.getByRole("button", {name:"Rechazar propuesta"}).click();
       const persistedDecisions = await conflictPage.evaluate(() => Object.keys(localStorage)
@@ -2383,6 +2394,11 @@ function pythonJson(source, input) {
       assert.equal(resolvedState.mappings.length, 1,
         "explicitly rejecting one conflicting proposal must leave only the selected mapping effective");
       assert.equal(resolvedState.mappings[0].system_transition_id, "t_ab_primary");
+      await conflictPage.locator("#run").click();
+      await conflictPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(conflictPage, "conflict resolved by explicit rejection");
       // Reapplying the same accepted scope must be idempotent.
       await conflictPage.locator("#apply-accepted-tgcv-correspondences").click();
       await conflictPage.waitForFunction(() =>
