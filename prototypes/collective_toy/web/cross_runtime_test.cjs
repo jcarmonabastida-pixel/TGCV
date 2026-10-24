@@ -2146,9 +2146,13 @@ function pythonJson(source, input) {
         });
         console.error("REVOCATION_DIAGNOSTIC " + JSON.stringify(revocationDiagnostic));
         await revocationPage.locator("#apply-accepted-tgcv-correspondences").click();
-        await revocationPage.waitForFunction(() =>
-          document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
-          null, {timeout:5000});
+        // Do not accept the previous replay-verified state as completion of this
+        // async click; wait for the new, externally visible zero-active result.
+        await revocationPage.waitForFunction(() => {
+          const status = document.querySelector("#effective-correspondence-status");
+          return status?.dataset.state === "replay-verified" &&
+            /Correspondencias efectivas activas: 0\\./.test(status.textContent || "");
+        }, null, {timeout:5000});
         const afterRevocation = await revocationPage.evaluate(() => ({
           mappings:(window.effectiveCorrespondenceState?.mappings || [])
             .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false),
