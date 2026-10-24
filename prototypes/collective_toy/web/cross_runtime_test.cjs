@@ -1640,6 +1640,40 @@ function pythonJson(source, input) {
     assert.equal(Object.keys(aMenosQueMixedModel.scenarios[0].condition_evaluations || {}).length, 0,
       "mixed parsing with 'a menos que' must not fabricate condition evaluations");
 
+    // Complete the mixed-description matrix: each unsupported exception operator
+    // must remain pending whether it appears before or after a supported transition.
+    const mixedExceptionCases = [
+      {operator:"salvo que", sentence:"El sistema pasa de espera a acceso autorizado salvo que haya autorización."},
+      {operator:"excepto si", sentence:"El sistema pasa de espera a acceso autorizado excepto si hay autorización."},
+      {operator:"a menos que", sentence:"El sistema pasa de espera a acceso autorizado a menos que haya autorización."}
+    ];
+    for (const {operator, sentence} of mixedExceptionCases) {
+      for (const description of [
+        "El sistema pasa de inicio a espera. " + sentence,
+        sentence + " El sistema pasa de inicio a espera."
+      ]) {
+        await page.locator("#system-description").fill(description);
+        await page.locator("#generate-system-graph").click();
+        await page.waitForFunction(() => {
+          const status = document.querySelector("#transcription-status")?.textContent || "";
+          const model = document.querySelector("#model")?.value || "";
+          return /grafo/i.test(status) && model.length > 0;
+        }, null, {timeout:5000});
+        const exceptionMixedModel = JSON.parse(await page.locator("#model").inputValue());
+        assert.equal((exceptionMixedModel.transitions || []).length, 1,
+          "mixed description with '" + operator + "' must preserve only the supported transition: " + description);
+        assert.match(JSON.stringify(exceptionMixedModel.transitions[0]), /inicio/i,
+          "supported transition must survive exception operator '" + operator + "'");
+        assert.doesNotMatch(JSON.stringify(exceptionMixedModel.transitions), /acceso autorizado/i,
+          "exception operator '" + operator + "' must not create a false transition");
+        assert.match(await page.locator("#transcription-clarification").inputValue(),
+          /salvo que|excepto si|a menos que/i,
+          "exception operator '" + operator + "' must remain pending in either sentence order");
+        assert.equal(Object.keys(exceptionMixedModel.scenarios?.[0]?.condition_evaluations || {}).length, 0,
+          "exception operator '" + operator + "' must not fabricate condition evaluations");
+      }
+    }
+
     // Mixed positive and negative conditions must remain attached to their own edges,
     // independent of sentence order; parsing records metadata but never evaluates it.
     const mixedConditionDescriptions = [
