@@ -1570,7 +1570,7 @@ function pythonJson(source, input) {
         document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
       assert.equal(await page.locator("#model").inputValue(), "",
         "unsupported exception operator must not generate a potentially misinterpreted graph: " + phrase);
-      assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que|excepto si|a menos que|a no ser que/i,
+      assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que|excepto si|a menos que|a no ser que|excepto cuando/i,
         "unsupported exception operator must remain pending for human clarification: " + phrase);
     }
 
@@ -1647,7 +1647,8 @@ function pythonJson(source, input) {
       {operator:"salvo que", sentence:"El sistema pasa de espera a acceso autorizado salvo que haya autorización."},
       {operator:"excepto si", sentence:"El sistema pasa de espera a acceso autorizado excepto si hay autorización."},
       {operator:"a menos que", sentence:"El sistema pasa de espera a acceso autorizado a menos que haya autorización."},
-      {operator:"a no ser que", sentence:"A no ser que haya autorización, el sistema pasa de espera a acceso autorizado."}
+      {operator:"a no ser que", sentence:"A no ser que haya autorización, el sistema pasa de espera a acceso autorizado."},
+      {operator:"excepto cuando", sentence:"El sistema pasa de espera a acceso autorizado excepto cuando haya autorización."}
     ];
     for (const {operator, sentence} of mixedExceptionCases) {
       for (const description of [
