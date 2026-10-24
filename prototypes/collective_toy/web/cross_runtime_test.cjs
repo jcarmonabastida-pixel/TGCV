@@ -1744,6 +1744,29 @@ function pythonJson(source, input) {
         "unsupported exception wording must not fabricate condition evaluations: " + exceptionPhrase);
     }
 
+    // Reverse the mixed-order test for each unsupported exception variant: an
+    // exception-first sentence must remain pending without suppressing the valid edge.
+    for (const exceptionPhrase of ["excepto cuando hay auditoría", "a menos que haya auditoría", "excepto en caso de auditoría"]) {
+      await page.locator("#system-description").fill(
+        "El sistema pasa de acceso autorizado a final " + exceptionPhrase + ". El sistema pasa de inicio a espera si hay autorización."
+      );
+      await page.locator("#generate-system-graph").click();
+      await page.waitForFunction(() => /Borrador propuesto:/i.test(
+        document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+      const exceptionFirstModel = JSON.parse(await page.locator("#model").inputValue());
+      assert.equal(exceptionFirstModel.transitions.length, 1,
+        "exception-first wording must not create an unsupported edge or suppress the supported edge: " + exceptionPhrase);
+      assert.deepEqual(exceptionFirstModel.transitions.map(edge => ({
+        source:edge.source, target:edge.target, condition:edge.condition
+      })), [{source:"inicio",target:"espera",condition:"hay autorización"}],
+        "the valid transition must survive each exception-first formulation: " + exceptionPhrase);
+      assert.ok((await page.locator("#transcription-clarification").inputValue())
+        .toLowerCase().includes(exceptionPhrase.toLowerCase()),
+        "exception-first formulation must remain pending for clarification: " + exceptionPhrase);
+      assert.equal(Object.keys(exceptionFirstModel.scenarios[0].condition_evaluations || {}).length, 0,
+        "exception-first wording must not fabricate condition evaluations: " + exceptionPhrase);
+    }
+
     // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
