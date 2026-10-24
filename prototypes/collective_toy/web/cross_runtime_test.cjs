@@ -2135,7 +2135,7 @@ function pythonJson(source, input) {
         parsed.tgcv_mapping = {
           schema:"tgcv-explicit-mapping-001", mapping_rule:"user-declared-map-v1",
           provenance:"user-declared",
-          mappings:[{system_transition_id:"t_ab",tgcv_transformation_id:"T_CONFLICT_AB"}],
+          mappings:[{system_transition_id:"t_ac",tgcv_transformation_id:"T_CONFLICT_AB"}],
           relations:[]
         };
         el.value = JSON.stringify(parsed, null, 2);
@@ -2143,6 +2143,11 @@ function pythonJson(source, input) {
         return parsed;
       });
       const declaredBeforeConflictApply = JSON.parse(JSON.stringify(conflictModel.tgcv_mapping));
+      const catalogueDetails = conflictPage.locator("#correspondence-review-section details").filter({
+        has: conflictPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await catalogueDetails.evaluate(el => el.open))) await catalogueDetails.locator("summary").click();
+      await conflictPage.locator("#tgcv-target-catalogue").waitFor({state:"visible"});
       await conflictPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
         el.value = JSON.stringify(value, null, 2);
         el.dispatchEvent(new Event("input", {bubbles:true}));
