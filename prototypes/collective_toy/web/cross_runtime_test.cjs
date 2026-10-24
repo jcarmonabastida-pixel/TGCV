@@ -1649,6 +1649,7 @@ function pythonJson(source, input) {
     const mixedExceptionCases = [
       {operator:"salvo que", sentence:"El sistema pasa de espera a acceso autorizado salvo que haya autorización."},
       {operator:"excepto si", sentence:"El sistema pasa de espera a acceso autorizado excepto si hay autorización."},
+      {operator:"excepto que", sentence:"El sistema pasa de espera a acceso autorizado excepto que haya autorización."},
       {operator:"a menos que", sentence:"El sistema pasa de espera a acceso autorizado a menos que haya autorización."},
       {operator:"a no ser que", sentence:"A no ser que haya autorización, el sistema pasa de espera a acceso autorizado."},
       {operator:"excepto cuando", sentence:"El sistema pasa de espera a acceso autorizado excepto cuando haya autorización."},
@@ -1675,7 +1676,7 @@ function pythonJson(source, input) {
         assert.doesNotMatch(JSON.stringify(exceptionMixedModel.transitions), /acceso autorizado/i,
           "exception operator '" + operator + "' must not create a false transition");
         assert.match(await page.locator("#transcription-clarification").inputValue(),
-          /salvo que|excepto si|a menos que|a no ser que|excepto cuando|excepto en caso de que|salvo en el caso de que/i,
+          /salvo que|excepto si|excepto que|a menos que|a no ser que|excepto cuando|excepto en caso de que|salvo en el caso de que/i,
           "exception operator '" + operator + "' must remain pending in either sentence order");
         assert.equal(Object.keys(exceptionMixedModel.scenarios?.[0]?.condition_evaluations || {}).length, 0,
           "exception operator '" + operator + "' must not fabricate condition evaluations");
