@@ -2151,7 +2151,7 @@ function pythonJson(source, input) {
         await revocationPage.waitForFunction(() => {
           const status = document.querySelector("#effective-correspondence-status");
           return status?.dataset.state === "replay-verified" &&
-            /Correspondencias efectivas activas: 0\\./.test(status.textContent || "");
+            /Correspondencias efectivas activas: 0\./.test(status.textContent || "");
         }, null, {timeout:5000});
         const afterRevocation = await revocationPage.evaluate(() => ({
           mappings:(window.effectiveCorrespondenceState?.mappings || [])
