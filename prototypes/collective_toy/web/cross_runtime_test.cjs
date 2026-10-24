@@ -1697,6 +1697,30 @@ function pythonJson(source, input) {
     assert.equal(Object.keys(pendingFirstModel.scenarios[0].condition_evaluations || {}).length, 0,
       "exception-first mixed parsing must not fabricate condition evaluations");
 
+    // Exception formulations beyond "salvo que"/"excepto si" must not be misread
+    // as part of a destination-state label or converted into a traversable edge.
+    for (const exceptionPhrase of ["excepto cuando hay auditoría", "a menos que haya auditoría", "excepto en caso de auditoría"]) {
+      await page.locator("#system-description").fill(
+        "El sistema pasa de inicio a espera si hay autorización. El sistema pasa de acceso autorizado a final " + exceptionPhrase + "."
+      );
+      await page.locator("#generate-system-graph").click();
+      await page.waitForFunction(() => /Borrador propuesto:/i.test(
+        document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+      const exceptionVariantModel = JSON.parse(await page.locator("#model").inputValue());
+      assert.equal(exceptionVariantModel.transitions.length, 1,
+        "unsupported exception wording must not become a second transition: " + exceptionPhrase);
+      assert.deepEqual(exceptionVariantModel.transitions.map(edge => ({
+        source:edge.source, target:edge.target, condition:edge.condition
+      })), [{source:"inicio",target:"espera",condition:"hay autorización"}],
+        "only the explicit supported transition may remain: " + exceptionPhrase);
+      assert.match(await page.locator("#transcription-clarification").inputValue(),
+        new RegExp(exceptionPhrase.replace(/[.*+?^${}()|[\]\\]/g, "\\    // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
+"), "i"),
+        "unsupported exception formulation must remain pending for clarification: " + exceptionPhrase);
+      assert.equal(Object.keys(exceptionVariantModel.scenarios[0].condition_evaluations || {}).length, 0,
+        "unsupported exception wording must not fabricate condition evaluations: " + exceptionPhrase);
+    }
+
     // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
