@@ -923,6 +923,24 @@ function pythonJson(source, input) {
       document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
     assert.match(await page.locator("#status").textContent(), /ejecución completada/i,
       "edited source model must still execute after effective mapping invalidation");
+    const executionSemanticsAfterSourceModelChange = await page.evaluate(() => {
+      const scenarios = window.lastPackage?.result?.scenario_results || {};
+      return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+        reachable_states: [...(result.reachable_states || [])].sort(),
+        trajectories: (result.trajectories || []).map(path => path.map(step => ({
+          state: step.state, transition: step.transition || null
+        })))
+      }]));
+    });
+    assert.deepEqual(executionSemanticsAfterSourceModelChange, executionSemanticsWithEffectiveMapping,
+      "a source-model inventory edit must not alter execution reachability or trajectories when the transition set is unchanged");
+    await assertStructuredTAccMatchesExecution(page, "effective mapping stale after source-model change");
+    const structuredTAccAfterSourceModelChange = await page.evaluate(() =>
+      (window.effectiveCorrespondenceState?.mappings || [])
+        .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false)
+        .map(mapping => mapping.tgcv_transformation_id).sort());
+    assert.ok(!structuredTAccAfterSourceModelChange.includes("T_HUMIDITY"),
+      "structured effective mappings and operational T_acc must exclude the mapping invalidated by a source-model change");
     assert.doesNotMatch(await page.locator("#tgcv-graph").textContent(), /T_HUMIDITY/,
       "a mapping invalidated by a source model change must not remain active in the TGCV graph");
 
