@@ -2272,6 +2272,79 @@ function pythonJson(source, input) {
       assert.equal(resolvedState.mappings[0].system_transition_id, "t_ab_primary");
     } finally { await applyConflictContext.close(); }
 
+    // Orthogonal conflict axis: one system transition cannot be materialized to two
+    // distinct TGCV transformations, even when both exact-boundary candidates are accepted.
+    const sourceCollisionContext = await browser.newContext();
+    try {
+      const sourceCollisionPage = await sourceCollisionContext.newPage();
+      await sourceCollisionPage.goto("file://" + htmlPath);
+      await sourceCollisionPage.locator("#load").click();
+      await sourceCollisionPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-apply-source-collision-lifecycle";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [{id:"t_ab_single",source:"A",target:"B"}];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        return parsed;
+      }, model);
+      const catalogueDetails = sourceCollisionPage.locator("#correspondence-review-section details").filter({
+        has: sourceCollisionPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await catalogueDetails.evaluate(el => el.open))) await catalogueDetails.locator("summary").click();
+      await sourceCollisionPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001", version:"ui-apply-source-collision-v1",
+        transformations:[
+          {id:"T_SOURCE_AB_1",source_state:"A",target_state:"B"},
+          {id:"T_SOURCE_AB_2",source_state:"A",target_state:"B"}
+        ]
+      });
+      await sourceCollisionPage.locator("#derive-tgcv-correspondences").click();
+      await sourceCollisionPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      const firstCandidate = sourceCollisionPage.locator("#correspondence-review-list article").filter({hasText:"T_SOURCE_AB_1"});
+      const secondCandidate = sourceCollisionPage.locator("#correspondence-review-list article").filter({hasText:"T_SOURCE_AB_2"});
+      await firstCandidate.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await secondCandidate.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await sourceCollisionPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await sourceCollisionPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "conflict-needs-review",
+        null, {timeout:5000});
+      const unresolvedSourceCollision = await sourceCollisionPage.evaluate(() => ({
+        status:document.querySelector("#effective-correspondence-status")?.textContent || "",
+        mappings:(window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false),
+        storage:Object.keys(localStorage).filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+          .map(k => JSON.parse(localStorage.getItem(k))).filter(Boolean)
+      }));
+      assert.match(unresolvedSourceCollision.status, /CONFLICT_NEEDS_REVIEW/);
+      assert.equal(unresolvedSourceCollision.mappings.length, 0,
+        "one source transition conflicting across two TGCV targets must fail closed");
+      assert.ok(unresolvedSourceCollision.storage.every(record => (record.mappings || []).length === 0),
+        "source-transition conflict must persist no active effective mapping while unresolved");
+      await secondCandidate.getByRole("button", {name:"Rechazar propuesta"}).click();
+      await sourceCollisionPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await sourceCollisionPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const resolvedSourceCollision = await sourceCollisionPage.evaluate(() => ({
+        status:document.querySelector("#effective-correspondence-status")?.textContent || "",
+        mappings:(window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false)
+      }));
+      assert.match(resolvedSourceCollision.status, /conflictos: 0/);
+      assert.equal(resolvedSourceCollision.mappings.length, 1,
+        "explicitly resolving the source-transition conflict must materialize exactly one mapping");
+      assert.equal(resolvedSourceCollision.mappings[0].system_transition_id, "t_ab_single");
+      assert.equal(resolvedSourceCollision.mappings[0].tgcv_transformation_id, "T_SOURCE_AB_1");
+    } finally { await sourceCollisionContext.close(); }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
