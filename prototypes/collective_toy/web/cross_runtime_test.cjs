@@ -2132,6 +2132,9 @@ function pythonJson(source, input) {
       await collisionPage.locator("#load").click();
       const declaredCollisionModel = await collisionPage.locator("#model").evaluate((el, value) => {
         const parsed = JSON.parse(JSON.stringify(value));
+        // Add a second A→C transition so the declared T_CONFLICT_AB target is
+        // genuinely reserved against a distinct, otherwise matching candidate.
+        parsed.transitions.push({id:"t_ac_unmapped",source:"A",target:"C"});
         parsed.tgcv_mapping = {
           schema:"tgcv-explicit-mapping-001", mapping_rule:"user-declared-map-v1",
           provenance:"user-declared",
