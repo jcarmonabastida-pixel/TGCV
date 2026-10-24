@@ -2153,7 +2153,7 @@ function pythonJson(source, input) {
         el.dispatchEvent(new Event("change", {bubbles:true}));
       }, {
         schema:"tgcv-target-catalogue-001", version:"ui-declared-conflict-v2",
-        transformations:[{id:"T_CONFLICT_AB",source_state:"A",target_state:"B"}]
+        transformations:[{id:"T_CONFLICT_AB",source_state:"A",target_state:"C"}]
       });
       await collisionPage.locator("#derive-tgcv-correspondences").click();
       await collisionPage.waitForFunction(() =>
@@ -2174,7 +2174,7 @@ function pythonJson(source, input) {
         "the real UI must not offer a derived proposal that reuses a declared target");
       assert.equal(collisionSnapshot.effective.length, 0,
         "a declared-target collision must not create an effective derived mapping");
-      assert.match(collisionSnapshot.status, /Sin propuestas generadas/i,
+      assert.match(collisionSnapshot.status, /conflicto con correspondencias declaradas por el usuario/i,
         "the UI must report that no compatible proposals were generated");
     } finally { await declaredCollisionContext.close(); }
 
