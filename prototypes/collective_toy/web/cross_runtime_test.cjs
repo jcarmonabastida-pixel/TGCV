@@ -1617,6 +1617,29 @@ function pythonJson(source, input) {
     assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que haya autorización/i,
       "unsupported exception sentence must remain pending when it precedes a valid transition");
 
+    // The unsupported "a menos que" operator must also stay pending in a mixed
+    // description, without suppressing a separately supported transition.
+    await page.locator("#system-description").fill(
+      "El sistema pasa de inicio a espera. El sistema pasa de espera a acceso autorizado a menos que haya autorización."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => {
+      const status = document.querySelector("#transcription-status")?.textContent || "";
+      const model = document.querySelector("#model")?.value || "";
+      return /grafo/i.test(status) && model.length > 0;
+    }, null, {timeout:5000});
+    const aMenosQueMixedModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(aMenosQueMixedModel.transitions.length, 1,
+      "'a menos que' must not create an unsupported edge or discard the supported edge");
+    assert.match(JSON.stringify(aMenosQueMixedModel.transitions[0]), /inicio/i,
+      "the supported transition must survive beside an 'a menos que' sentence");
+    assert.doesNotMatch(JSON.stringify(aMenosQueMixedModel.transitions), /acceso autorizado/i,
+      "the 'a menos que' transition must not be silently interpreted as a normal conditional edge");
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /a menos que haya autorización/i,
+      "the unsupported 'a menos que' sentence must remain pending for human clarification");
+    assert.equal(Object.keys(aMenosQueMixedModel.scenarios[0].condition_evaluations || {}).length, 0,
+      "mixed parsing with 'a menos que' must not fabricate condition evaluations");
+
     // Mixed positive and negative conditions must remain attached to their own edges,
     // independent of sentence order; parsing records metadata but never evaluates it.
     const mixedConditionDescriptions = [
