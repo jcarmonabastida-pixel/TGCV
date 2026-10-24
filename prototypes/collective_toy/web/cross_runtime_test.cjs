@@ -2234,11 +2234,10 @@ function pythonJson(source, input) {
           .map(k => JSON.parse(localStorage.getItem(k))).filter(Boolean)
       }));
       assert.match(conflictState.status, /CONFLICT_NEEDS_REVIEW/);
-      assert.equal(conflictState.mappings.length, 1,
-        "an apply-time target collision must not activate both mappings");
-      assert.equal(conflictState.mappings[0].tgcv_transformation_id, "T_SHARED_AB");
-      assert.ok(conflictState.storage.some(record => record.mappings?.length === 1),
-        "the persisted effective layer must contain at most the non-conflicting mapping");
+      assert.equal(conflictState.mappings.length, 0,
+        "an unresolved apply-time target collision must fail closed and activate no mappings");
+      assert.ok(conflictState.storage.every(record => (record.mappings || []).length === 0),
+        "the persisted effective layer must contain no mappings while the conflict is unresolved");
 
       await duplicateCard.getByRole("button", {name:"Rechazar propuesta"}).click();
       await conflictPage.locator("#apply-accepted-tgcv-correspondences").click();
