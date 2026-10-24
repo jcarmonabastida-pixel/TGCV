@@ -1672,6 +1672,31 @@ function pythonJson(source, input) {
     assert.equal(Object.keys(mixedWithPendingModel.scenarios[0].condition_evaluations || {}).length, 0,
       "parsing mixed supported and pending sentences must not fabricate evaluations");
 
+    // The same mixed description must preserve supported transitions when the unsupported
+    // exception sentence comes first, not only when it comes last.
+    await page.locator("#system-description").fill(
+      "El sistema pasa de acceso autorizado a final salvo que haya auditoría. El sistema pasa de espera a acceso autorizado si no hay autorización. El sistema pasa de inicio a espera si hay autorización."
+    );
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /Borrador propuesto:/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
+    const pendingFirstModel = JSON.parse(await page.locator("#model").inputValue());
+    assert.equal(pendingFirstModel.transitions.length, 2,
+      "an unsupported exception sentence first must not suppress the two supported transitions");
+    const pendingFirstEdges = pendingFirstModel.transitions.map(edge => ({
+      source:edge.source, target:edge.target, condition:edge.condition
+    })).sort((a,b) => (a.source+"|"+a.target).localeCompare(b.source+"|"+b.target));
+    assert.deepEqual(pendingFirstEdges, [
+      {source:"espera",target:"acceso autorizado",condition:"no hay autorización"},
+      {source:"inicio",target:"espera",condition:"hay autorización"}
+    ], "supported directions and positive/negative conditions must survive when the exception sentence comes first");
+    assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que haya auditoría/i,
+      "exception sentence at the start must remain pending for clarification");
+    assert.doesNotMatch(JSON.stringify(pendingFirstModel.transitions), /acceso autorizado.*final|final.*acceso autorizado/i,
+      "unsupported exception sentence at the start must not create an edge");
+    assert.equal(Object.keys(pendingFirstModel.scenarios[0].condition_evaluations || {}).length, 0,
+      "exception-first mixed parsing must not fabricate condition evaluations");
+
     // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
