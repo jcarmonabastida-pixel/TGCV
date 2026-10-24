@@ -2130,8 +2130,8 @@ function pythonJson(source, input) {
       const conflictPage = await declaredConflictContext.newPage();
       await conflictPage.goto("file://" + htmlPath);
       await conflictPage.locator("#load").click();
-      const conflictModel = await conflictPage.locator("#model").evaluate(el => {
-        const parsed = JSON.parse(el.value);
+      const conflictModel = await conflictPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
         parsed.tgcv_mapping = {
           schema:"tgcv-explicit-mapping-001", mapping_rule:"user-declared-map-v1",
           provenance:"user-declared",
@@ -2141,7 +2141,7 @@ function pythonJson(source, input) {
         el.value = JSON.stringify(parsed, null, 2);
         el.dispatchEvent(new Event("input", {bubbles:true}));
         return parsed;
-      });
+      }, model);
       const declaredBeforeConflictApply = JSON.parse(JSON.stringify(conflictModel.tgcv_mapping));
       const catalogueDetails = conflictPage.locator("#correspondence-review-section details").filter({
         has: conflictPage.locator("#tgcv-target-catalogue")
