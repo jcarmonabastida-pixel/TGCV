@@ -1713,9 +1713,8 @@ function pythonJson(source, input) {
         source:edge.source, target:edge.target, condition:edge.condition
       })), [{source:"inicio",target:"espera",condition:"hay autorización"}],
         "only the explicit supported transition may remain: " + exceptionPhrase);
-      assert.match(await page.locator("#transcription-clarification").inputValue(),
-        new RegExp(exceptionPhrase.replace(/[.*+?^${}()|[\]\\]/g, "\\    // Restore the stable t_ab fixture after testing transcription, which replaces the current graph.
-"), "i"),
+      assert.ok((await page.locator("#transcription-clarification").inputValue())
+        .toLowerCase().includes(exceptionPhrase.toLowerCase()),
         "unsupported exception formulation must remain pending for clarification: " + exceptionPhrase);
       assert.equal(Object.keys(exceptionVariantModel.scenarios[0].condition_evaluations || {}).length, 0,
         "unsupported exception wording must not fabricate condition evaluations: " + exceptionPhrase);
