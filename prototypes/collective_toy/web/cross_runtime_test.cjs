@@ -2123,6 +2123,68 @@ function pythonJson(source, input) {
         "regenerating review-required proposals must not rewrite the persisted human decision");
     } finally { await rejectionContext.close(); }
 
+    // UI integration regression: an accepted derived proposal must not override a
+    // user-declared mapping when the explicit apply action encounters the conflict.
+    const declaredConflictContext = await browser.newContext();
+    try {
+      const conflictPage = await declaredConflictContext.newPage();
+      await conflictPage.goto("file://" + htmlPath);
+      await conflictPage.locator("#load").click();
+      const conflictModel = await conflictPage.locator("#model").evaluate(el => {
+        const parsed = JSON.parse(el.value);
+        parsed.tgcv_mapping = {
+          schema:"tgcv-explicit-mapping-001", mapping_rule:"user-declared-map-v1",
+          provenance:"user-declared",
+          mappings:[{system_transition_id:"t_ab",tgcv_transformation_id:"T_CONFLICT_AB"}],
+          relations:[]
+        };
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        return parsed;
+      });
+      const declaredBeforeConflictApply = JSON.parse(JSON.stringify(conflictModel.tgcv_mapping));
+      await conflictPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001", version:"ui-declared-conflict-v1",
+        transformations:[{id:"T_CONFLICT_AB",source_state:"A",target_state:"B"}]
+      });
+      await conflictPage.locator("#derive-tgcv-correspondences").click();
+      const conflictArticle = conflictPage.locator("#correspondence-review-list article").first();
+      await conflictArticle.waitFor({state:"visible",timeout:5000});
+      await conflictArticle.getByRole("button",{name:"Aceptar propuesta"}).click();
+      assert.match(await conflictPage.locator("#correspondence-review-list").textContent(), /Decisión: ACCEPTED/,
+        "the conflict integration fixture must record an explicit human acceptance before application");
+      await conflictPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await conflictPage.waitForFunction(() => {
+        const status = document.querySelector("#effective-correspondence-status")?.textContent || "";
+        return /No se aplicaron correspondencias:|conflicto|correspondencia declarada por el usuario/i.test(status);
+      }, null, {timeout:5000});
+      const conflictUiSnapshot = await conflictPage.evaluate(() => ({
+        status:document.querySelector("#effective-correspondence-status")?.textContent || "",
+        declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
+        effective:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => ({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}))
+      }));
+      assert.deepEqual(conflictUiSnapshot.declared, declaredBeforeConflictApply,
+        "the real UI apply flow must preserve the exact user-declared mapping on conflict");
+      assert.equal(conflictUiSnapshot.effective.length, 0,
+        "the conflicting derived proposal must not become an effective mapping through the UI");
+      assert.match(conflictUiSnapshot.status, /No se aplicaron correspondencias:|conflicto|correspondencia declarada por el usuario/i,
+        "the UI must expose the failed application rather than silently accepting the conflict");
+      await conflictPage.locator("#derive-tgcv-correspondences").click();
+      assert.match(await conflictPage.locator("#correspondence-review-list").textContent(), /Decisión: ACCEPTED/,
+        "regenerating proposals must retain the explicit review decision without activating the conflict");
+      const effectiveAfterRegeneration = await conflictPage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false));
+      assert.equal(effectiveAfterRegeneration.length, 0,
+        "regeneration must not materialize the still-conflicting accepted proposal");
+    } finally { await declaredConflictContext.close(); }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
