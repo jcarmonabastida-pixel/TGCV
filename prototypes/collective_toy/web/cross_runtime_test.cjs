@@ -1670,7 +1670,7 @@ function pythonJson(source, input) {
         assert.doesNotMatch(JSON.stringify(exceptionMixedModel.transitions), /acceso autorizado/i,
           "exception operator '" + operator + "' must not create a false transition");
         assert.match(await page.locator("#transcription-clarification").inputValue(),
-          /salvo que|excepto si|a menos que|a no ser que/i,
+          /salvo que|excepto si|a menos que|a no ser que|excepto cuando/i,
           "exception operator '" + operator + "' must remain pending in either sentence order");
         assert.equal(Object.keys(exceptionMixedModel.scenarios?.[0]?.condition_evaluations || {}).length, 0,
           "exception operator '" + operator + "' must not fabricate condition evaluations");
