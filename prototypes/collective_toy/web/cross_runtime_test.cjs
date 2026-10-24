@@ -2241,7 +2241,7 @@ function pythonJson(source, input) {
 
       await duplicateCard.getByRole("button", {name:"Rechazar propuesta"}).click();
       const persistedDecisions = await conflictPage.evaluate(() => Object.keys(localStorage)
-        .filter(k => k.startsWith("tgcv-correspondence-decisions-001:"))
+        .filter(k => k.startsWith("tgcv-correspondence-review-001:"))
         .map(k => JSON.parse(localStorage.getItem(k)))
         .filter(Boolean)
         .flatMap(record => Object.values(record.decisions || {})));
