@@ -2174,7 +2174,7 @@ function pythonJson(source, input) {
         "the real UI must not offer a derived proposal that reuses a declared target");
       assert.equal(collisionSnapshot.effective.length, 0,
         "a declared-target collision must not create an effective derived mapping");
-      assert.match(collisionSnapshot.status, /Generadas 0 propuestas/i,
+      assert.match(collisionSnapshot.status, /Sin propuestas generadas/i,
         "the UI must report that no compatible proposals were generated");
     } finally { await declaredCollisionContext.close(); }
 
