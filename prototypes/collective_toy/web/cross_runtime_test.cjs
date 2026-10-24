@@ -2063,39 +2063,74 @@ function pythonJson(source, input) {
       await rejectionPage.locator("#correspondence-review-list article").first().waitFor();
       assert.ok(await rejectionPage.locator("#correspondence-review-list article").count() >= 1,
         "isolated rejection fixture must expose at least one correspondence candidate to reject");
-      // Revocation after materialization is a separate lifecycle boundary:
-      // an accepted effective mapping must leave the active set when explicitly rejected.
-      const firstCandidate = rejectionPage.locator("#correspondence-review-list article").first();
-      await firstCandidate.getByRole("button", {name:"Aceptar propuesta"}).click();
-      await rejectionPage.locator("#apply-accepted-tgcv-correspondences").click();
-      await rejectionPage.waitForFunction(() =>
-        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
-        null, {timeout:5000});
-      const materializedBeforeRevocation = await rejectionPage.evaluate(() => ({
-        mappings:(window.effectiveCorrespondenceState?.mappings || [])
-          .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false),
-        storage:Object.keys(localStorage).filter(key => key.startsWith("tgcv-effective-mappings-001:"))
-          .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean)
-      }));
-      assert.equal(materializedBeforeRevocation.mappings.length, 1,
-        "accepted candidate must materialize before the revocation test");
-      await firstCandidate.getByRole("button", {name:"Rechazar propuesta"}).click();
-      await rejectionPage.locator("#apply-accepted-tgcv-correspondences").click();
-      await rejectionPage.waitForFunction(() =>
-        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
-        null, {timeout:5000});
-      const afterRevocation = await rejectionPage.evaluate(() => ({
-        mappings:(window.effectiveCorrespondenceState?.mappings || [])
-          .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false),
-        storage:Object.keys(localStorage).filter(key => key.startsWith("tgcv-effective-mappings-001:"))
-          .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean)
-      }));
-      assert.equal(afterRevocation.mappings.length, 0,
-        "revoking an accepted candidate must remove it from the active effective set");
-      assert.ok(afterRevocation.storage.some(record => (record.history || []).some(mapping =>
-        mapping.candidate_id && mapping.status === "STALE" && mapping.active === false &&
-        /decision is no longer accepted|ya no está aceptada/i.test(mapping.stale_reason || ""))),
-        "revocation must preserve the former effective mapping as inactive audit history");
+      // Revocation after materialization gets a clean model/catalogue scope.
+      // The default demo may contain declared mappings, so it is not a valid fixture
+      // for testing acceptance and subsequent revocation of a derived candidate.
+      const revocationContext = await browser.newContext();
+      try {
+        const revocationPage = await revocationContext.newPage();
+        await revocationPage.goto("file://" + htmlPath);
+        await revocationPage.locator("#load").click();
+        await revocationPage.locator("#model").evaluate((el, value) => {
+          const parsed = JSON.parse(JSON.stringify(value));
+          parsed.model_id = "ui-correspondence-revocation-isolated";
+          parsed.initial_state = "A";
+          parsed.states = ["A","B"];
+          parsed.transitions = [{id:"t_ab_revocation",source:"A",target:"B"}];
+          parsed.relations = [];
+          delete parsed.tgcv_mapping;
+          el.value = JSON.stringify(parsed, null, 2);
+          el.dispatchEvent(new Event("input", {bubbles:true}));
+          return parsed;
+        }, model);
+        const catalogueDetails = revocationPage.locator("#correspondence-review-section details").filter({
+          has: revocationPage.locator("#tgcv-target-catalogue")
+        });
+        if (!(await catalogueDetails.evaluate(el => el.open))) await catalogueDetails.locator("summary").click();
+        await revocationPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+          el.value = JSON.stringify(value, null, 2);
+          el.dispatchEvent(new Event("input", {bubbles:true}));
+          el.dispatchEvent(new Event("change", {bubbles:true}));
+        }, {
+          schema:"tgcv-target-catalogue-001", version:"ui-revocation-isolated-v1",
+          transformations:[{id:"T_REVOCATION_AB",source_state:"A",target_state:"B"}]
+        });
+        await revocationPage.locator("#derive-tgcv-correspondences").click();
+        await revocationPage.waitForFunction(() =>
+          document.querySelectorAll("#correspondence-review-list article").length === 1,
+          null, {timeout:5000});
+        const candidate = revocationPage.locator("#correspondence-review-list article").first();
+        await candidate.getByRole("button", {name:"Aceptar propuesta"}).click();
+        await revocationPage.locator("#apply-accepted-tgcv-correspondences").click();
+        await revocationPage.waitForFunction(() =>
+          document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+          null, {timeout:5000});
+        const beforeRevocation = await revocationPage.evaluate(() => ({
+          mappings:(window.effectiveCorrespondenceState?.mappings || [])
+            .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false),
+          storage:Object.keys(localStorage).filter(key => key.startsWith("tgcv-effective-mappings-001:"))
+            .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean)
+        }));
+        assert.equal(beforeRevocation.mappings.length, 1,
+          "isolated accepted candidate must materialize before revocation");
+        await candidate.getByRole("button", {name:"Rechazar propuesta"}).click();
+        await revocationPage.locator("#apply-accepted-tgcv-correspondences").click();
+        await revocationPage.waitForFunction(() =>
+          document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+          null, {timeout:5000});
+        const afterRevocation = await revocationPage.evaluate(() => ({
+          mappings:(window.effectiveCorrespondenceState?.mappings || [])
+            .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false),
+          storage:Object.keys(localStorage).filter(key => key.startsWith("tgcv-effective-mappings-001:"))
+            .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean)
+        }));
+        assert.equal(afterRevocation.mappings.length, 0,
+          "revoking an accepted candidate must remove it from the active effective set");
+        assert.ok(afterRevocation.storage.some(record => (record.history || []).some(mapping =>
+          mapping.candidate_id && mapping.status === "STALE" && mapping.active === false &&
+          /decision is no longer accepted|ya no está aceptada/i.test(mapping.stale_reason || ""))),
+          "revocation must preserve the former effective mapping as inactive audit history");
+      } finally { await revocationContext.close(); }
       await rejectionPage.locator("#correspondence-review-list article").first()
         .getByRole("button", {name:"Rechazar propuesta"}).click();
       assert.match(await rejectionPage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
