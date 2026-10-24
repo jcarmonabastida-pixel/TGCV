@@ -2114,37 +2114,6 @@ function pythonJson(source, input) {
         assert.equal(beforeRevocation.mappings.length, 1,
           "isolated accepted candidate must materialize before revocation");
         await candidate.getByRole("button", {name:"Rechazar propuesta"}).click();
-        const revocationDiagnostic = await revocationPage.evaluate(() => {
-          const review = window.correspondenceReviewState || null;
-          const decisions = Object.keys(localStorage)
-            .filter(key => key.startsWith("tgcv-correspondence-review-001:"))
-            .map(key => ({key, value:JSON.parse(localStorage.getItem(key))}))
-            .filter(item => item.value);
-          const effective = Object.keys(localStorage)
-            .filter(key => key.startsWith("tgcv-effective-mappings-001:"))
-            .map(key => ({key, value:JSON.parse(localStorage.getItem(key))}))
-            .filter(item => item.value);
-          return {
-            candidateDecision:review?.candidates?.map(item => ({candidate_id:item.candidate_id,decision:item.decision,status:item.status})) || [],
-            decisionRecords:decisions.map(item => ({key:item.key, value:item.value})),
-            inMemoryEffective:(window.effectiveCorrespondenceState?.mappings || []).map(item => ({
-              candidate_id:item.candidate_id,status:item.status,active:item.active,
-              system_transition_id:item.system_transition_id,tgcv_transformation_id:item.tgcv_transformation_id
-            })),
-            persistedEffective:effective.map(item => ({
-              key:item.key,
-              mappings:(item.value.mappings || []).map(mapping => ({
-                candidate_id:mapping.candidate_id,status:mapping.status,active:mapping.active,
-                system_transition_id:mapping.system_transition_id,tgcv_transformation_id:mapping.tgcv_transformation_id
-              })),
-              history:(item.value.history || []).map(mapping => ({
-                candidate_id:mapping.candidate_id,status:mapping.status,active:mapping.active,
-                stale_reason:mapping.stale_reason
-              }))
-            }))
-          };
-        });
-        console.error("REVOCATION_DIAGNOSTIC " + JSON.stringify(revocationDiagnostic));
         await revocationPage.locator("#apply-accepted-tgcv-correspondences").click();
         // Do not accept the previous replay-verified state as completion of this
         // async click; wait for the new, externally visible zero-active result.
