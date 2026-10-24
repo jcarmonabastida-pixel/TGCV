@@ -1563,7 +1563,8 @@ function pythonJson(source, input) {
       "El sistema pasa de espera a acceso autorizado a menos que haya autorización.",
       "A no ser que haya autorización, el sistema pasa de espera a acceso autorizado.",
       "El sistema pasa de espera a acceso autorizado excepto en caso de que haya autorización.",
-      "El sistema pasa de espera a acceso autorizado salvo en el caso de que haya autorización."
+      "El sistema pasa de espera a acceso autorizado salvo en el caso de que haya autorización.",
+      "El sistema pasa de espera a acceso autorizado excepto que haya autorización."
     ];
     for (const phrase of unsupportedExceptionPhrases) {
       await page.locator("#system-description").fill(phrase);
