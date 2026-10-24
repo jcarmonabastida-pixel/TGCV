@@ -2379,6 +2379,67 @@ function pythonJson(source, input) {
         "reapplying the same accepted mapping must not create duplicate effective entries");
       assert.ok(reappliedState.storage.every(record => (record.mappings || []).length === 1),
         "the persisted effective overlay must remain deduplicated after reapplication");
+
+      // Reload the page and rebuild the exact same model/catalogue scope.
+      // The explicit rejection must be restored, not silently forgotten.
+      await conflictPage.reload();
+      await conflictPage.locator("#load").click();
+      await conflictPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-apply-conflict-lifecycle";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [
+          {id:"t_ab_primary",source:"A",target:"B"},
+          {id:"t_ab_duplicate",source:"A",target:"B"}
+        ];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      const reloadCatalogueDetails = conflictPage.locator("#correspondence-review-section details").filter({
+        has: conflictPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await reloadCatalogueDetails.evaluate(el => el.open))) await reloadCatalogueDetails.locator("summary").click();
+      await conflictPage.locator("#tgcv-target-catalogue").evaluate(el => {
+        el.value = JSON.stringify({
+          schema:"tgcv-target-catalogue-001", version:"ui-apply-conflict-lifecycle-v1",
+          transformations:[{id:"T_SHARED_AB",source_state:"A",target_state:"B"}]
+        }, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      });
+      await conflictPage.locator("#derive-tgcv-correspondences").click();
+      await conflictPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      const reloadedDecisions = await conflictPage.evaluate(() => {
+        const records = Object.keys(localStorage)
+          .filter(key => key.startsWith("tgcv-correspondence-review-001:"))
+          .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean);
+        const decisions = records.flatMap(record => Object.values(record.decisions || {}));
+        return {
+          accepted:decisions.some(d => d.candidate_id && d.decision === "ACCEPTED"),
+          rejected:decisions.some(d => d.candidate_id && d.decision === "REJECTED")
+        };
+      });
+      assert.equal(reloadedDecisions.accepted, true,
+        "the accepted decision must survive page reload in the same model/catalogue scope");
+      assert.equal(reloadedDecisions.rejected, true,
+        "the rejected conflict decision must survive page reload in the same model/catalogue scope");
+      await conflictPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await conflictPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      const afterReloadApply = await conflictPage.evaluate(() => ({
+        mappings:(window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false)
+      }));
+      assert.equal(afterReloadApply.mappings.length, 1,
+        "reapplying after reload must keep exactly one effective mapping");
+      assert.equal(afterReloadApply.mappings[0].system_transition_id, "t_ab_primary",
+        "the rejected conflicting mapping must not become effective after reload");
     } finally { await applyConflictContext.close(); }
 
     // Orthogonal ambiguity axis: one source transition with two exact-boundary
