@@ -746,19 +746,20 @@ async function deriveAndRenderTgcvCorrespondences(){
 $("derive-tgcv-correspondences").addEventListener("click",deriveAndRenderTgcvCorrespondences);
 function tgcvDemoFixture(systemModel,systemResult,currentScenarioId){
  if(!systemModel)return null;
- // The built-in toy example has a declared illustrative mapping rule. Never invent
- // a transition-to-transformation correspondence for arbitrary user models.
- if(systemModel.model_id!=="toy-diamond-001"&&!systemModel.tgcv_mapping)return null;
  var transitions=systemModel.transitions||[];
  var declared=systemModel.tgcv_mapping;
+ var effectiveMappings=effectiveCorrespondencesForModel(systemModel);
+ // The built-in toy example has an illustrative implicit mapping. Arbitrary models
+ // remain unmapped unless they declare a mapping or have reviewed-effective mappings.
+ if(systemModel.model_id!=="toy-diamond-001"&&!declared&&!effectiveMappings.length)return null;
  var mappings,transformations,relations,mappingRule,provenance;
  if(systemModel.model_id==="toy-diamond-001"&&!declared){
   mappingRule="each-system-transition-to-one-transformation-v1";provenance="illustrative";
   mappings=transitions.map(function(t){return {system_transition_id:t.id,tgcv_transformation_id:"tau_"+t.id,provenance:provenance,mapping_rule:mappingRule}});
   relations=[];
   transitions.forEach(function(a){transitions.forEach(function(b){if(a.target===b.source)relations.push(["tau_"+a.id,"tau_"+b.id])})});
- }else{
-  assert(declared&&declared.schema==="tgcv-explicit-mapping-001"&&typeof declared.mapping_rule==="string"&&declared.mapping_rule.trim()&&typeof declared.provenance==="string"&&declared.provenance.trim()&&Array.isArray(declared.mappings)&&Array.isArray(declared.relations),"La correspondencia TGCV explícita debe declarar schema, mapping_rule, provenance, mappings y relations.");
+ }else if(declared){
+  assert(declared.schema==="tgcv-explicit-mapping-001"&&typeof declared.mapping_rule==="string"&&declared.mapping_rule.trim()&&typeof declared.provenance==="string"&&declared.provenance.trim()&&Array.isArray(declared.mappings)&&Array.isArray(declared.relations),"La correspondencia TGCV explícita debe declarar schema, mapping_rule, provenance, mappings y relations.");
   mappingRule=declared.mapping_rule;provenance=declared.provenance;
   mappings=declared.mappings.map(function(m){return {system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id,provenance:provenance,mapping_rule:mappingRule}});
   var transitionIds=new Set(transitions.map(function(t){return t.id}));
@@ -767,8 +768,12 @@ function tgcvDemoFixture(systemModel,systemResult,currentScenarioId){
   assert(new Set(mappings.map(function(m){return m.tgcv_transformation_id})).size===mappings.length,"Cada transición debe mapear a una transformación TGCV distinta en este contrato.");
   transformations=mappings.map(function(m){return m.tgcv_transformation_id});
   relations=declared.relations.map(function(pair){assert(Array.isArray(pair)&&pair.length===2,"Cada relación TGCV debe ser un par origen-destino.");return pair.slice()});
+ }else{
+  // No user-declared mapping exists: start empty and add only mappings explicitly
+  // accepted in the effective correspondence layer below.
+  mappingRule="tgcv-correspondence-exact-boundary-001-v1";provenance="effective";
+  mappings=[];transformations=[];relations=[];
  }
- var effectiveMappings=effectiveCorrespondencesForModel(systemModel);
   effectiveMappings.forEach(function(m){assert(!mappings.some(function(old){return old.system_transition_id===m.system_transition_id||old.tgcv_transformation_id===m.tgcv_transformation_id}),"Conflicto entre la capa efectiva y una correspondencia declarada.");mappings.push({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id,provenance:m.provenance,mapping_rule:"tgcv-correspondence-exact-boundary-001-v1",effective_mapping_id:m.mapping_id});if(transformations&&transformations.indexOf(m.tgcv_transformation_id)<0)transformations.push(m.tgcv_transformation_id)});
   if(!transformations)transformations=mappings.map(function(m){return m.tgcv_transformation_id});
  var scenarios=systemModel.scenarios||[];
