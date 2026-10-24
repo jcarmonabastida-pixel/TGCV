@@ -2165,6 +2165,29 @@ function pythonJson(source, input) {
           mapping.candidate_id && mapping.status === "STALE" && mapping.active === false &&
           /decision is no longer accepted|ya no está aceptada/i.test(mapping.stale_reason || ""))),
           "revocation must preserve the former effective mapping as inactive audit history");
+
+        // A subsequent application must not resurrect a revoked candidate or
+        // duplicate its stale audit entry.
+        await revocationPage.locator("#apply-accepted-tgcv-correspondences").click();
+        await revocationPage.waitForFunction(() => {
+          const status = document.querySelector("#effective-correspondence-status");
+          return status?.dataset.state === "replay-verified" &&
+            /Correspondencias efectivas activas: 0\./.test(status.textContent || "");
+        }, null, {timeout:5000});
+        const afterRepeatedApply = await revocationPage.evaluate(() => ({
+          mappings:(window.effectiveCorrespondenceState?.mappings || [])
+            .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false),
+          storage:Object.keys(localStorage).filter(key => key.startsWith("tgcv-effective-mappings-001:"))
+            .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean)
+        }));
+        assert.equal(afterRepeatedApply.mappings.length, 0,
+          "reapplying after revocation must not resurrect the rejected mapping");
+        assert.equal(afterRepeatedApply.storage.reduce((count, record) =>
+          count + (record.history || []).filter(mapping =>
+            mapping.candidate_id && mapping.status === "STALE" && mapping.active === false &&
+            /decision is no longer accepted|ya no está aceptada/i.test(mapping.stale_reason || "")
+          ).length, 0), 1,
+          "repeated application must not duplicate the revocation audit entry");
       } finally { await revocationContext.close(); }
       await rejectionPage.locator("#correspondence-review-list article").first()
         .getByRole("button", {name:"Rechazar propuesta"}).click();
