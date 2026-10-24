@@ -28,10 +28,12 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     const scenarioId = document.querySelector("#which").value;
     const scenarioResult = window.lastPackage?.result?.scenario_results?.[scenarioId];
     const demo = window.lastTgcvDemoResult;
-    if (!scenarioResult || !demo) throw new Error("missing executed scenario or structured T_acc result");
+    if (!scenarioResult) throw new Error("missing executed scenario result");
     const declared = model.tgcv_mapping;
     const byTransition = new Map();
-    if (!declared) {
+    // Only the built-in illustrative fixture has an implicit tau_ mapping. Custom
+    // models contribute to T_acc only through declared or reviewed-effective mappings.
+    if (model.model_id === "toy-diamond-001" && !declared) {
       for (const transition of model.transitions || []) byTransition.set(transition.id, "tau_" + transition.id);
     } else {
       for (const mapping of declared?.mappings || []) byTransition.set(mapping.system_transition_id, mapping.tgcv_transformation_id);
@@ -51,7 +53,7 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     return {
       scenario: scenarioId,
       expected,
-      actual: [...(demo.current?.transformations || [])].sort()
+      actual: [...(demo?.current?.transformations || [])].sort()
     };
   });
   assert.deepEqual(comparison.actual, comparison.expected,
