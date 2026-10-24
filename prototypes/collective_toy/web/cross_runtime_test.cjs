@@ -2160,7 +2160,7 @@ function pythonJson(source, input) {
       });
       await collisionPage.locator("#derive-tgcv-correspondences").click();
       await collisionPage.waitForFunction(() =>
-        /Generadas 0 propuestas|propuestas/i.test(
+        /conflicto con correspondencias declaradas por el usuario/i.test(
           document.querySelector("#correspondence-review-status")?.textContent || ""
         ), null, {timeout:5000});
       const collisionSnapshot = await collisionPage.evaluate(() => ({
