@@ -1573,7 +1573,7 @@ function pythonJson(source, input) {
         document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
       assert.equal(await page.locator("#model").inputValue(), "",
         "unsupported exception operator must not generate a potentially misinterpreted graph: " + phrase);
-      assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que|excepto si|a menos que|a no ser que|excepto cuando|excepto en caso de que|salvo en el caso de que/i,
+      assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que|excepto si|excepto que|a menos que|a no ser que|excepto cuando|excepto en caso de que|salvo en el caso de que/i,
         "unsupported exception operator must remain pending for human clarification: " + phrase);
     }
 
