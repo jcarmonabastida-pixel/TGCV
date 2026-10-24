@@ -1560,7 +1560,8 @@ function pythonJson(source, input) {
       "Salvo que haya autorización, el sistema pasa de espera a acceso autorizado.",
       "El sistema pasa de espera a acceso autorizado salvo que haya autorización.",
       "El sistema pasa de espera a acceso autorizado excepto si hay autorización.",
-      "El sistema pasa de espera a acceso autorizado a menos que haya autorización."
+      "El sistema pasa de espera a acceso autorizado a menos que haya autorización.",
+      "A no ser que haya autorización, el sistema pasa de espera a acceso autorizado."
     ];
     for (const phrase of unsupportedExceptionPhrases) {
       await page.locator("#system-description").fill(phrase);
@@ -1569,7 +1570,7 @@ function pythonJson(source, input) {
         document.querySelector("#transcription-status")?.textContent || ""), null, {timeout:5000});
       assert.equal(await page.locator("#model").inputValue(), "",
         "unsupported exception operator must not generate a potentially misinterpreted graph: " + phrase);
-      assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que|excepto si|a menos que/i,
+      assert.match(await page.locator("#transcription-clarification").inputValue(), /salvo que|excepto si|a menos que|a no ser que/i,
         "unsupported exception operator must remain pending for human clarification: " + phrase);
     }
 
