@@ -31,7 +31,7 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     if (!scenarioResult || !demo) throw new Error("missing executed scenario or structured T_acc result");
     const declared = model.tgcv_mapping;
     const byTransition = new Map();
-    if (model.model_id === "toy-diamond-001" && !declared) {
+    if (!declared) {
       for (const transition of model.transitions || []) byTransition.set(transition.id, "tau_" + transition.id);
     } else {
       for (const mapping of declared?.mappings || []) byTransition.set(mapping.system_transition_id, mapping.tgcv_transformation_id);
