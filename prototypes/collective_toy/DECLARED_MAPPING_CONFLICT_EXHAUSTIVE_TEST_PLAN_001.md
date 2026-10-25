@@ -134,3 +134,15 @@ En `520b82d43506cf141c880787b6713d835b897913` se añaden al mismo fixture:
 - **Idempotencia:** aceptación explícita de `t_cd`, aplicación duplicada y comparación exacta de conjunto efectivo y almacenamiento persistido; el rechazo previo debe conservarse.
 
 La implementación no abre workflows adicionales ni reejecuta las 60 permutaciones declarada↔declarada. **Pendiente de CI**: el gate solo se considera cerrado cuando ambos workflows pasan en este commit.
+
+
+## Rechazo e idempotencia — PASS confirmado
+
+Commit: `6b5ee82bb9935a051a312ea12b4bc3233c27e943`.
+
+- [Navegador y concordancia — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40203256337)
+- [Motor sintético — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40203256339)
+
+La prueba agrupada compara el snapshot operacional antes/después de rechazar `t_ab`, comprueba que `REJECTED` se persiste, y verifica que la segunda aplicación de la correspondencia aceptada `t_cd` no cambia ni el conjunto efectivo ni el almacenamiento persistido. Ambos workflows pasan.
+
+**Estado del bloque:** cerrado con evidencia de CI. No se reabren las 60 permutaciones declarada↔declarada. La PR #95 permanece en borrador y `main` intacta.
