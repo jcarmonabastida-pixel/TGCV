@@ -103,3 +103,12 @@ El test verifica que una candidata derivada no reclame una transformación ya as
 Este caso cierra únicamente esta colisión declarada↔derivada. No se ejecuta el grafo de fixture con transiciones duplicadas, por lo que no atribuye a este caso cobertura de ejecución/alcanzabilidad/trayectorias; esas propiedades se mantienen en el fixture de ciclo de vida integrado separado.
 
 **Gate contractual global: PENDIENTE.** No se consideran cerradas todas las interacciones cruzadas ni se reabren las 60 permutaciones declarada↔declarada.
+
+
+## Gate final consolidado (fuente de verdad operativa)
+
+No se reabren las 60 permutaciones declarada↔declarada ni se crean tests/workflows individuales por estado. La única brecha global a consolidar es una secuencia de un mismo fixture que compara el baseline contra: propuestas pendientes, decisión rechazada, mapping aplicado y posteriormente obsoleto por cambio de ámbito, y recarga/reaplicación.
+
+En cada fase deben compararse por separado: (1) mappings declarados y overlay efectivo con procedencia/decisiones; (2) `T_acc` operacional estructurado frente a las transformaciones de las trayectorias; (3) grafo TGCV; (4) resultado por escenario; (5) estados alcanzables; y (6) trayectorias normalizadas. La propuesta pendiente o rechazada no puede alterar resultados; el mapping `STALE` debe dejar de ser activo y no resucitar tras restaurar el ámbito; aplicar dos veces debe ser idempotente.
+
+**Mínimo planificado: un bloque de test agrupado, dos ejecuciones CI** (Navegador y concordancia y Motor sintético) en el mismo commit. La suite de 60 permutaciones queda cerrada y fuera de este bloque. Este gate permanece **PENDIENTE** hasta que el test agrupado se implemente y ambos workflows pasen; no basta con sumar PASS de fixtures independientes.
