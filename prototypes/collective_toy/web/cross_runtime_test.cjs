@@ -2439,6 +2439,15 @@ function pythonJson(source, input) {
         document.querySelector("#status")?.textContent || ""
       ), null, {timeout:5000});
       await assertStructuredTAccMatchesExecution(conflictPage, "conflict resolved by explicit rejection");
+      const resolvedExecutionBeforeReload = await conflictPage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+          reachable_states: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        }]));
+      });
       // Reapplying the same accepted scope must be idempotent.
       await conflictPage.locator("#apply-accepted-tgcv-correspondences").click();
       await conflictPage.waitForFunction(() =>
@@ -2514,6 +2523,22 @@ function pythonJson(source, input) {
         "reapplying after reload must keep exactly one effective mapping");
       assert.equal(afterReloadApply.mappings[0].system_transition_id, "t_ab_primary",
         "the rejected conflicting mapping must not become effective after reload");
+      await conflictPage.locator("#run").click();
+      await conflictPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      const resolvedExecutionAfterReload = await conflictPage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+          reachable_states: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        }]));
+      });
+      assert.deepEqual(resolvedExecutionAfterReload, resolvedExecutionBeforeReload,
+        "reloading and reapplying the persisted conflict resolution must preserve execution trajectories");
+      await assertStructuredTAccMatchesExecution(conflictPage, "conflict resolution after reload");
     } finally { await applyConflictContext.close(); }
 
     // Orthogonal ambiguity axis: one source transition with two exact-boundary
