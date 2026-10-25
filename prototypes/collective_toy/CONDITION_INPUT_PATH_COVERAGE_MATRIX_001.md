@@ -363,3 +363,31 @@ La CI confirma el bloque de invariancia al invertir el orden del catálogo en la
 El bloque pendiente debe unir en una sola secuencia/fixture controlado las fases que hoy tienen evidencia en pruebas separadas: baseline → propuestas pendientes → rechazo explícito → mapping efectivo → cambio de catálogo que lo vuelve `STALE` → restauración/recarga/reaplicación. En cada fase debe comparar por separado mapping declarado/overlay efectivo y procedencia, `T_acc`, grafo TGCV, resultados por escenario, estados alcanzables y trayectorias normalizadas; verificar persistencia de decisiones y que ni `REJECTED` ni `STALE` se reactiven indebidamente. La idempotencia ya tiene PASS separado, pero debe quedar incluida en esa secuencia integrada para cerrar el gate contractual tal como está definido.
 
 Esto es el conteo preciso del gate de integración cruzada documentado aquí; no significa que se hayan cerrado todos los límites de alcance enumerados en el contrato de aceptación §10.6.
+
+## 12. Reconciliación contractual vigente — 2026-10-25
+
+Esta sección prevalece sobre el estado histórico “queda 1 bloque” de §11, que se escribió antes de ejecutar la integración final.
+
+### Gate de integración cruzada de correspondencias: CERRADO
+
+El bloque agrupado quedó implementado y pasó los dos workflows sobre el mismo commit de código `1491c2dce624e42da3ef6fb682a4645700612764`:
+
+- Navegador y concordancia: **PASS** — [run 40208152055](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40208152055).
+- Motor sintético: **PASS** — [run 40208152054](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40208152054).
+
+La secuencia agrupada cubre propuestas/decisiones, conflicto de aplicación fail-closed, suspensión de la correspondencia previa sin confundirla con revocación, invalidación `STALE`, historial persistido y revisión/reaplicación. La aserción añadida exige que un conflicto temporal no escriba una falsa invalidación `STALE`. El rechazo sin efecto operacional y la idempotencia tienen además evidencia agrupada previa referenciada en §10 (runs 40203256337 y 40203256339). No se reabren las 60 permutaciones declarada↔declarada.
+
+**Recuento conciliado de este gate:** 1 bloque automatizado agrupado, 2 ejecuciones de CI, ambas PASS. No hay ejecuciones correctivas pendientes para este gate.
+
+### Estado contractual global de PR #95: PARCIAL / NO PROMOCIONABLE
+
+El cierre del bloque anterior no equivale a cerrar todos los criterios de aceptación del contrato del demostrador. Se mantienen visibles los blockers de §10.6 del contrato y las brechas de cobertura de esta matriz:
+
+1. **Entrada de condiciones por tres vías:** JSON, transcriptor de texto y editor visual; la matriz de aceptación adversarial completa de los tres caminos continúa pendiente/parcial.
+2. **Resolución general de conflictos:** existe cobertura integrada para los fixtures y órdenes enumerados, pero no está verificado un flujo de usuario general que resuelva todos los tipos de `CONFLICT_NEEDS_REVIEW`.
+3. **Restauración tras reinicio del navegador:** la restauración de las decisiones de resolución de conflicto tras reiniciar el contexto del navegador sigue sin verificar; no confundirla con `reload()` cubierto en los fixtures.
+4. **Límite del derivador:** la generación sigue siendo coincidencia exacta de fronteras; no se reclama inferencia semántica general ni validez científica a partir de CI.
+
+Los controles ya PASS de equivalencia operacional `T_acc`/ejecución, rechazo, idempotencia, invalidación y recarga se reutilizan; no se repiten por separado para cerrar el bloque ya aprobado.
+
+**Decisión de gobernanza:** PR #95 permanece abierta y en borrador. No fusionar ni promover sobre la base del cierre del gate mínimo. Los blockers restantes deben cerrarse con evidencia o separarse mediante una aceptación de alcance explícita que los mantenga como tareas rastreables; no se eliminan por reconciliación documental. `main` permanece intacta y no se autoriza ejecución científica.
