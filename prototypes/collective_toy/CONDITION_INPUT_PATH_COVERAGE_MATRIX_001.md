@@ -319,3 +319,15 @@ El bloque verifica snapshots del estado base y propuestas pendientes; la invalid
 **Alcance preciso:** el PASS valida estas aserciones ejecutadas. No se interpreta como evidencia de que todas las fases del gate propuesto quedaron agrupadas: la comparación explícita de una decisión rechazada contra el baseline y la idempotencia de la reaplicación no están ambas afirmadas por este nuevo tramo. Deben considerarse cubiertas solo si la suite existente correspondiente se identifica y su evidencia se referencia; no se deben declarar como parte de este bloque por inferencia.
 
 **Estado del gate:** bloque agrupado implementado y PASS; cierre global pendiente de resolver documentalmente la trazabilidad de las aserciones de rechazo e idempotencia, sin reabrir las 60 permutaciones declarada↔declarada.
+
+
+## 9. Cierre de las dos aserciones residuales — implementadas, CI pendiente
+
+Commit de implementación: `520b82d43506cf141c880787b6713d835b897913`.
+
+En el mismo fixture agrupado, tras restaurar el ámbito de catálogo:
+
+1. Se rechaza explícitamente `t_ab` y se compara con el snapshot operacional previo: mapping declarado, overlay efectivo, `T_acc`, grafo, alcanzabilidad y trayectorias deben permanecer idénticos. Se comprueba además que la decisión `REJECTED` está persistida.
+2. Se acepta explícitamente `t_cd`, se aplica una vez y se repite la aplicación. El conjunto efectivo y el almacenamiento persistido deben permanecer idénticos entre ambas aplicaciones; la decisión rechazada debe seguir presente.
+
+**Estado:** las aserciones están implementadas en el bloque agrupado; pendiente obtener PASS en Navegador y concordancia y Motor sintético sobre este commit. No declarar el gate cerrado hasta comprobar ambos resultados.
