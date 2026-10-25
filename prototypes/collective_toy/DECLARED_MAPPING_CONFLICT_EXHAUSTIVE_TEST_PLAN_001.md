@@ -64,14 +64,19 @@ Aserciones obligatorias por permutación:
 
 El test de inversión existente comprueba el número de conflictos y la no mutación, pero no compara una firma semántica normalizada completa. Por eso no se considera que haya cerrado ninguna de las 60 permutaciones bajo el criterio más estricto.
 
+## Ejecución agrupada
+
+No se requieren 63 ejecuciones de CI ni 63 tests independientes. El bloque se implementa como **una única suite agrupada** dentro del test integrado de navegador: primero ejecuta C12/C13/C23, después genera las 60 permutaciones únicas del fixture de cinco filas (incluidas la original y la inversa) y aplica las mismas aserciones a cada caso. La firma normalizada se compara por código y conjuntos de identificadores, no solo por el contador mostrado en UI.
+
+La suite agrupada se ejecuta en los dos workflows obligatorios: **2 ejecuciones de CI** en total (una de Motor sintético y una de Navegador y concordancia). Si una ejecución falla y hay que corregir el código, se repetirán los workflows afectados; ese retrabajo no puede contabilizarse por adelantado.
+
 ## Conteo operativo
 
-- **3** fixtures pendientes de combinación por pares (C12, C13, C23).
-- **60** permutaciones que deben ejecutarse bajo el oráculo semántico normalizado; dos tienen ejecuciones previas, pero requieren ampliación de aserciones.
-- **63 comprobaciones objetivo** para cerrar este bloque bajo el criterio estricto (3 combinaciones aisladas + 60 permutaciones).
-
-Si se cuentan solo nuevas ordenaciones aún no ejercitadas, son **58**; esa cifra no incluye reforzar el oráculo de las dos ya ejecutadas. No incluye otras clases globales de conflicto, variantes de catálogo, ciclos de vida, persistencia nativa ni pruebas de validez científica.
+- **1 bloque automatizado agrupado** que contiene C12/C13/C23 y las 60 permutaciones.
+- **2 ejecuciones de CI** previstas para validarlo (un workflow por motor).
+- Las 60 permutaciones son iteraciones internas del mismo test, no ejecuciones independientes de CI.
+- No incluye otras clases globales de conflicto, variantes de catálogo, ciclos de vida, persistencia nativa ni pruebas de validez científica.
 
 ## Criterio de cierre
 
-El bloque solo pasa cuando C12/C13/C23 y las 60 permutaciones pasan en ambos workflows exigidos, con firma semántica normalizada, cero mutaciones no autorizadas y evidencia ligada al commit exacto. Hasta entonces, el gate contractual global permanece **PENDIENTE**.
+El bloque solo pasa cuando la suite agrupada completa pasa en ambos workflows, con firma semántica normalizada, cero mutaciones no autorizadas y evidencia ligada al commit exacto. Hasta entonces, el gate contractual global permanece **PENDIENTE**.
