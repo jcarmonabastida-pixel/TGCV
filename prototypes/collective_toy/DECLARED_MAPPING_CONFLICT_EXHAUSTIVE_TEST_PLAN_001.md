@@ -31,15 +31,9 @@ La división por `2!` elimina el doble conteo causado por las dos filas A1 idén
 | D2 | Una transición declara más de una transformación distinta | **PASS** dentro del fixture combinado | Probar aislado y combinado por pares |
 | D3 | Varias transiciones declaran la misma transformación | **PASS** dentro del fixture combinado | Probar aislado y combinado por pares |
 
-## Combinaciones no triviales que deben probarse de forma aislada
+## Combinaciones no triviales
 
-Las tres clases aparecen simultáneamente en el fixture existente. Eso demuestra detección conjunta, pero no demuestra por sí solo el comportamiento de cada subconjunto sin la tercera clase.
-
-| ID | Combinación | Resultado esperado | Estado |
-|---|---|---|---|
-| C12 | D1 + D2 | Informar duplicado exacto y transición con varios destinos; no mutar el mapping | PENDIENTE |
-| C13 | D1 + D3 | Informar duplicado exacto y destino compartido; no mutar el mapping | PENDIENTE |
-| C23 | D2 + D3 | Informar ambos conflictos estructurales; no mutar el mapping | PENDIENTE |
+C12, C13 y C23 ya están cubiertas por la suite agrupada aprobada en ambos workflows. No se reabren ni se cuentan como ejecuciones pendientes.tos estructurales; no mutar el mapping | PENDIENTE |
 
 El fixture conjunto actual sirve como evidencia de D1 + D2 + D3; se conserva como control de combinación triple. No se cuenta como sustituto de C12, C13 ni C23.
 
@@ -80,3 +74,12 @@ La suite agrupada se ejecuta en los dos workflows obligatorios: **2 ejecuciones 
 ## Criterio de cierre
 
 El bloque queda **PASS** para el fixture y el contrato comprobados: la suite agrupada pasa en ambos workflows, con firma semántica normalizada, cero propuestas derivadas y conservación exacta del orden de entrada. El gate contractual global permanece **PENDIENTE** porque otras clases de conflicto, persistencia nativa y ciclos de vida están fuera de este bloque.
+
+
+## Minimización del cierre global pendiente
+
+No se abrirán suites individuales por cada combinación ni se repetirán las 60 permutaciones. El pendiente global identificado en `CONDITION_INPUT_PATH_COVERAGE_MATRIX_001.md` se ejecutará como **un único bloque de integración cruzada**, reutilizando los fixtures y helpers existentes para cubrir, en una sola secuencia controlada, las interacciones entre clases declarada↔derivada, derivada↔derivada y efectiva, con las aserciones comunes de decisión explícita, mapping declarado/effective, `T_acc`, ejecución, alcanzabilidad, trayectorias y recarga.
+
+**Presupuesto mínimo planificado: 2 ejecuciones de CI**, una de Motor sintético y una de Navegador y concordancia, sobre el mismo commit. Las variantes de fixture se ejecutan dentro de la suite agrupada; no se lanzan como workflows separados. Si el bloque falla, solo se repiten los workflows afectados por la corrección, no se programa por adelantado ninguna batería adicional.
+
+La persistencia de borrador tras recarga ya tiene PASS sin reinyección manual; no se repite como test aislado. Los límites de perfil/origen o almacenamiento borrado quedan fuera salvo que el contrato del producto los exija explícitamente.
