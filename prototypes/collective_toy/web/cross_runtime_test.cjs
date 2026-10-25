@@ -1564,6 +1564,65 @@ function pythonJson(source, input) {
         equivalentConditionPhrases[i].label + " must yield identical graph semantics to the baseline formulation");
     }
 
+    // Concise graph-generation instructions are a deterministic shortcut, not semantic inference.
+    const compactGraphInstructions = [
+      {phrase:"Quiero modelar un sistema de logística con 5 estados e 6 conexiones",states:5,edges:6,type:"generated-logistica"},
+      {phrase:"Construye un sistema con 4 estados y 3 transiciones",states:4,edges:3},
+      {phrase:"Genera un grafo de 6 nodos de un sistema de telecomunicaciones",states:6,edges:5,type:"generated-telecomunicaciones"},
+      {phrase:"Construye un grafo de un sistema de producción que consta de 4 estados y 5 transiciones",states:4,edges:5,type:"generated-produccion"},
+      {phrase:"Genera un grafo de 3 estados de un sistema de transporte",states:3,edges:2,type:"generated-transporte"},
+      {phrase:"Genera un grafo de 4 nodos",states:4,edges:3},
+      {phrase:"Genera un sistema de 5 estados",states:5,edges:4},
+      {phrase:"Genera un grafo de un sistema de energía que consta de 3 estados",states:3,edges:2,type:"generated-energia"}
+    ];
+    for (const fixture of compactGraphInstructions) {
+      await page.locator("#system-description").fill(fixture.phrase);
+      await page.locator("#generate-system-graph").click();
+      await page.waitForFunction(() => /Borrador propuesto:/i.test(
+        document.querySelector("#transcription-status")?.textContent || ""
+      ), null, {timeout:5000});
+      const generated = JSON.parse(await page.locator("#model").inputValue());
+      assert.equal(generated.states.length, fixture.states, "compact instruction state count: " + fixture.phrase);
+      assert.equal(generated.transitions.length, fixture.edges, "compact instruction edge count: " + fixture.phrase);
+      assert.equal(new Set(generated.states).size, fixture.states, "generated state IDs must be unique: " + fixture.phrase);
+      assert.equal(generated.initial_state, generated.states[0], "first generated state is the initial state: " + fixture.phrase);
+      assert.ok(generated.transitions.every(edge => generated.states.includes(edge.source) && generated.states.includes(edge.target)),
+        "every generated edge must reference declared states: " + fixture.phrase);
+      assert.ok(generated.transitions.every(edge => !Object.prototype.hasOwnProperty.call(edge, "condition")),
+        "dimension-only instructions must not invent conditions: " + fixture.phrase);
+      if (fixture.type) assert.equal(generated.model_id, fixture.type, "system type must be retained in the generated model ID: " + fixture.phrase);
+      assert.match(await page.locator("#transcription-status").innerText(), /topología dirigida ilustrativa y editable/i);
+    }
+
+    // Explicit arrow notation preserves labels, direction and the exact listed edge set.
+    const explicitArrowPhrase = "Genera un sistema con los siguientes estados y transiciones: Estado A --> Estado B. Estado B --> Estado C.";
+    await page.locator("#system-description").fill(explicitArrowPhrase);
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /Borrador propuesto:/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""
+    ), null, {timeout:5000});
+    const explicitArrowGraph = JSON.parse(await page.locator("#model").inputValue());
+    assert.deepEqual(explicitArrowGraph.states, ["Estado A","Estado B","Estado C"]);
+    assert.deepEqual(explicitArrowGraph.transitions.map(edge => [edge.source,edge.target]),
+      [["Estado A","Estado B"],["Estado B","Estado C"]]);
+    assert.match(await page.locator("#transcription-status").innerText(), /transiciones explícitas/i);
+
+    // Oversized or impossible requests fail closed instead of silently clamping dimensions.
+    await page.locator("#system-description").fill("Genera un grafo de 501 nodos");
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /No se pudo proponer el grafo:/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""
+    ), null, {timeout:5000});
+    assert.match(await page.locator("#transcription-status").innerText(), /entre 1 y 500/i);
+    assert.equal(await page.locator("#model").inputValue(), "", "invalid dimensions must not leave a stale graph model");
+    await page.locator("#system-description").fill("Genera un sistema con 2 estados y 5 conexiones");
+    await page.locator("#generate-system-graph").click();
+    await page.waitForFunction(() => /No se pudo proponer el grafo:/i.test(
+      document.querySelector("#transcription-status")?.textContent || ""
+    ), null, {timeout:5000});
+    assert.match(await page.locator("#transcription-status").innerText(), /no se pueden generar 5 conexiones dirigidas distintas/i);
+    assert.equal(await page.locator("#model").inputValue(), "", "impossible dimensions must fail closed");
+
     // Semantically different conditions must not be collapsed just because their edge is identical.
     const negativeConditionPhrases = [
       "Si no hay autorización, el sistema pasa de espera a acceso autorizado.",
