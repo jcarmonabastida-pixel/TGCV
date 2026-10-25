@@ -2676,6 +2676,93 @@ function pythonJson(source, input) {
         "reversing declaration order must not rewrite the declared mapping list");
       assert.equal(reversedDeclaredPairSnapshot.proposals, 0,
         "reversing declaration order must not create derived proposals");
+
+      // Exhaustive grouped block: three pairwise combinations plus every unique
+      // permutation of the five-row combined fixture (5! / 2! = 60).
+      const conflictSignature = conflicts => conflicts.map(c => ({
+        code:c.code,
+        system_transition_id:c.system_transition_id || null,
+        tgcv_transformation_id:c.tgcv_transformation_id || null,
+        system_transition_ids:[...(c.system_transition_ids || [])].sort(),
+        tgcv_transformation_ids:[...(c.tgcv_transformation_ids || [])].sort()
+      })).sort((a,b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+      const setDeclaredMappings = async mappings => {
+        const nextModel = JSON.parse(JSON.stringify(declaredPairModel));
+        nextModel.tgcv_mapping.mappings = mappings;
+        nextModel.model_id = "ui-declared-mapping-exhaustive-" + (++exhaustiveCase);
+        await declaredPairPage.locator("#model").evaluate((el, value) => {
+          el.value = JSON.stringify(value, null, 2);
+          el.dispatchEvent(new Event("input", {bubbles:true}));
+        }, nextModel);
+        await declaredPairPage.locator("#derive-tgcv-correspondences").click();
+        await declaredPairPage.waitForFunction(() => {
+          const model = JSON.parse(document.querySelector("#model").value);
+          const state = window.correspondenceReviewState;
+          return !!state && state.sourceModelCanonical === JSON.stringify(model, Object.keys(model).sort());
+        }, null, {timeout:5000}).catch(async () => {
+          // canonical() sorts recursively; compare through the app helper when available.
+          await declaredPairPage.waitForFunction(() => {
+            const model = JSON.parse(document.querySelector("#model").value);
+            return !!window.correspondenceReviewState?.sourceModelSha256 &&
+              /conflictos entre mappings declarados/i.test(
+                document.querySelector("#correspondence-review-status")?.textContent || ""
+              ) && window.correspondenceReviewState.sourceModelCanonical !== null &&
+              window.correspondenceReviewState.sourceModelCanonical.includes(model.model_id);
+          }, null, {timeout:5000});
+        });
+        return await declaredPairPage.evaluate(() => ({
+          model:JSON.parse(document.querySelector("#model").value),
+          proposals:document.querySelectorAll("#correspondence-review-list article").length,
+          conflicts:window.correspondenceReviewState?.declaredMappingConflicts || []
+        }));
+      };
+      let exhaustiveCase = 0;
+      const rows = declaredPairModel.tgcv_mapping.mappings;
+      const pairCases = [
+        {id:"C12",rows:[rows[0],rows[1],rows[3],rows[4]]},
+        {id:"C13",rows:[rows[0],rows[0],rows[1],rows[2]]},
+        {id:"C23",rows:[rows[1],rows[2],rows[3],rows[4]]}
+      ];
+      for (const pairCase of pairCases) {
+        const pairResult = await setDeclaredMappings(pairCase.rows);
+        assert.deepEqual(pairResult.model.tgcv_mapping.mappings, pairCase.rows,
+          pairCase.id + " must preserve declared mapping rows");
+        assert.equal(pairResult.proposals, 0, pairCase.id + " must not derive proposals to resolve declared conflicts");
+        const codes = new Set(pairResult.conflicts.map(c => c.code));
+        assert(codes.has("DECLARED_MAPPING_DUPLICATE") === (pairCase.id !== "C23"),
+          pairCase.id + " duplicate classification mismatch");
+        assert(codes.has("DECLARED_TRANSITION_MULTIPLE_TARGETS") === (pairCase.id !== "C13"),
+          pairCase.id + " multiple-target classification mismatch");
+        assert(codes.has("DECLARED_TARGET_MULTIPLE_TRANSITIONS") === (pairCase.id !== "C12"),
+          pairCase.id + " shared-target classification mismatch");
+      }
+
+      const uniquePermutations = [];
+      const buildPermutations = (remaining, prefix) => {
+        if (!remaining.length) { uniquePermutations.push(prefix); return; }
+        const usedAtThisDepth = new Set();
+        for (let index = 0; index < remaining.length; index++) {
+          const key = JSON.stringify(remaining[index]);
+          if (usedAtThisDepth.has(key)) continue;
+          usedAtThisDepth.add(key);
+          buildPermutations(
+            remaining.filter((_, i) => i !== index),
+            [...prefix, remaining[index]]
+          );
+        }
+      };
+      buildPermutations(rows, []);
+      assert.equal(uniquePermutations.length, 60, "fixture must enumerate exactly 60 unique permutations");
+      const baselineSignature = JSON.stringify(conflictSignature(declaredPairSnapshot.result?.declared_mapping_conflicts || []));
+      for (let index = 0; index < uniquePermutations.length; index++) {
+        const permutation = uniquePermutations[index];
+        const result = await setDeclaredMappings(permutation);
+        assert.deepEqual(result.model.tgcv_mapping.mappings, permutation,
+          "permutation " + index + " must preserve the exact input order");
+        assert.equal(result.proposals, 0, "permutation " + index + " must not create derived proposals");
+        assert.equal(JSON.stringify(conflictSignature(result.conflicts)), baselineSignature,
+          "permutation " + index + " must preserve the normalized semantic conflict signature");
+      }
     } finally { await declaredMappingPairContext.close(); }
 
     // Declared-mapping lifecycle: preserve the user's mapping and its execution semantics
