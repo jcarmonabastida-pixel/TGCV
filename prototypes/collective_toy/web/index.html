@@ -774,9 +774,9 @@ function renderCorrespondenceReview(){
    choose.disabled=c.decision==="ACCEPTED"&&c.resolution&&c.resolution.action==="SELECTED_IN_CONFLICT";
    choose.addEventListener("click",function(){
     var component=new Set([c.candidate_id]),changed=true;
-    while(changed){changed=false;state.candidates.forEach(function(other){if(component.has(other.candidate_id))return;var linked=state.candidates.some(function(member){return component.has(member.candidate_id)&&(member.system_transition_id===other.system_transition_id||member.tgcv_transformation_id===other.tgcv_transformation_id)});if(linked){component.add(other.candidate_id);changed=true}})}
+    while(changed){changed=false;correspondenceReviewState.candidates.forEach(function(other){if(component.has(other.candidate_id))return;var linked=correspondenceReviewState.candidates.some(function(member){return component.has(member.candidate_id)&&(member.system_transition_id===other.system_transition_id||member.tgcv_transformation_id===other.tgcv_transformation_id)});if(linked){component.add(other.candidate_id);changed=true}})}
     var resolution={action:"SELECTED_IN_CONFLICT",chosen_candidate_id:c.candidate_id,reason:"Selección explícita del usuario; las propuestas incompatibles conectadas se rechazan y quedan auditadas.",resolved_at:new Date().toISOString()};
-    state.candidates.forEach(function(other){if(component.has(other.candidate_id)){other.resolution=Object.assign({},resolution,{selected:other.candidate_id===c.candidate_id});other.decision=other.candidate_id===c.candidate_id?"ACCEPTED":"REJECTED"}});
+    correspondenceReviewState.candidates.forEach(function(other){if(component.has(other.candidate_id)){other.resolution=Object.assign({},resolution,{selected:other.candidate_id===c.candidate_id});other.decision=other.candidate_id===c.candidate_id?"ACCEPTED":"REJECTED"}});
     persistCorrespondenceDecisions();renderCorrespondenceReview();$("correspondence-review-status").textContent="Ambigüedad resuelta explícitamente: "+c.system_transition_id+" → "+c.tgcv_transformation_id+". Las propuestas incompatibles se han rechazado y persistido; todavía debes aplicar las correspondencias por separado.";
    });
    actions.append(choose);
