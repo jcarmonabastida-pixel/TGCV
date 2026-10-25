@@ -2005,6 +2005,141 @@ function pythonJson(source, input) {
       "the exported conditional package must pass independent replay: " +
       await page.locator("#package-assessment").textContent());
 
+    // UI lifecycle: a second source transition may not reuse a transformation
+    // already activated for the first transition. The prior effective mapping must survive.
+    const alreadyEffectiveConflictContext = await browser.newContext();
+    try {
+      const conflictUi = await alreadyEffectiveConflictContext.newPage();
+      await conflictUi.goto("file://" + htmlPath);
+      await conflictUi.locator("#load").click();
+      await conflictUi.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-already-effective-conflict";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [
+          {id:"t_ab_first",source:"A",target:"B"},
+          {id:"t_ab_second",source:"A",target:"B"}
+        ];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        parsed.scenarios = [{id:"baseline",disabled_transitions:[]}];
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      const details = conflictUi.locator("#correspondence-review-section details").filter({
+        has: conflictUi.locator("#tgcv-target-catalogue")
+      });
+      if (!(await details.evaluate(el => el.open))) await details.locator("summary").click();
+      await conflictUi.locator("#tgcv-target-catalogue").evaluate(el => {
+        el.value = JSON.stringify({
+          schema:"tgcv-target-catalogue-001",version:"ui-already-effective-conflict-v1",
+          transformations:[{id:"T_SHARED_AB",source_state:"A",target_state:"B"}]
+        }, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      });
+      await conflictUi.locator("#derive-tgcv-correspondences").click();
+      await conflictUi.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      const firstCandidate = conflictUi.locator("#correspondence-review-list article").filter({
+        hasText:"t_ab_first"
+      });
+      await firstCandidate.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await conflictUi.locator("#apply-accepted-tgcv-correspondences").click();
+      await conflictUi.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      const secondCandidate = conflictUi.locator("#correspondence-review-list article").filter({
+        hasText:"t_ab_second"
+      });
+      await secondCandidate.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await conflictUi.locator("#apply-accepted-tgcv-correspondences").click();
+      await conflictUi.waitForFunction(() =>
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || "") &&
+        /CONFLICT_NEEDS_REVIEW/.test(document.querySelector("#correspondence-review-list")?.textContent || ""),
+        null, {timeout:5000});
+      const activeAfterConflict = await conflictUi.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => ({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}))
+          .sort((a,b) => a.system_transition_id.localeCompare(b.system_transition_id)));
+      assert.deepEqual(activeAfterConflict, [{system_transition_id:"t_ab_first",tgcv_transformation_id:"T_SHARED_AB"}],
+        "a conflicting second candidate must not replace or duplicate the already-effective mapping");
+      await conflictUi.locator("#run").click();
+      await conflictUi.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+      const beforeConflictReload = await conflictUi.evaluate(() => ({
+        mappings:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => ({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}))
+          .sort((a,b) => a.system_transition_id.localeCompare(b.system_transition_id)),
+        scenarios:Object.fromEntries(Object.entries(window.lastPackage?.result?.scenario_results || {}).map(([id,result]) => [id,{
+          reachable_states:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({state:step.state,transition:step.transition || null})))
+        }]))
+      }));
+      await assertStructuredTAccMatchesExecution(conflictUi, "already-effective mapping blocks second candidate");
+      await conflictUi.reload();
+      await conflictUi.locator("#load").click();
+      await conflictUi.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-already-effective-conflict";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [
+          {id:"t_ab_first",source:"A",target:"B"},
+          {id:"t_ab_second",source:"A",target:"B"}
+        ];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        parsed.scenarios = [{id:"baseline",disabled_transitions:[]}];
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      const reloadDetails = conflictUi.locator("#correspondence-review-section details").filter({
+        has: conflictUi.locator("#tgcv-target-catalogue")
+      });
+      if (!(await reloadDetails.evaluate(el => el.open))) await reloadDetails.locator("summary").click();
+      await conflictUi.locator("#tgcv-target-catalogue").evaluate(el => {
+        el.value = JSON.stringify({
+          schema:"tgcv-target-catalogue-001",version:"ui-already-effective-conflict-v1",
+          transformations:[{id:"T_SHARED_AB",source_state:"A",target_state:"B"}]
+        }, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      });
+      await conflictUi.locator("#derive-tgcv-correspondences").click();
+      await conflictUi.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      await conflictUi.locator("#apply-accepted-tgcv-correspondences").click();
+      await conflictUi.waitForFunction(() =>
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      const afterConflictReload = await conflictUi.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => ({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}))
+          .sort((a,b) => a.system_transition_id.localeCompare(b.system_transition_id)));
+      assert.deepEqual(afterConflictReload, beforeConflictReload.mappings,
+        "the original effective mapping must persist after reload and conflict re-derivation");
+      await conflictUi.locator("#run").click();
+      await conflictUi.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+      const afterConflictReloadExecution = await conflictUi.evaluate(() =>
+        Object.fromEntries(Object.entries(window.lastPackage?.result?.scenario_results || {}).map(([id,result]) => [id,{
+          reachable_states:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({state:step.state,transition:step.transition || null})))
+        }]))
+      );
+      assert.deepEqual(afterConflictReloadExecution, beforeConflictReload.scenarios,
+        "conflict re-derivation after reload must preserve execution trajectories");
+      await assertStructuredTAccMatchesExecution(conflictUi, "already-effective conflict after reload");
+    } finally { await alreadyEffectiveConflictContext.close(); }
+
     // Package assessment/import must not mutate local human review decisions or activate
     // correspondences: use a separate context with an explicit rejected decision as baseline.
     const importIsolationContext = await browser.newContext();
