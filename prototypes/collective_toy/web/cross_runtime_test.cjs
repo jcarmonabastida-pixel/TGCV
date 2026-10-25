@@ -3984,6 +3984,47 @@ function pythonJson(source, input) {
       assert.deepEqual(ambiguityExecutionAfterDerivation, ambiguityBaselineExecution,
         "deriving unresolved single-source ambiguity must not alter reachable states or execution trajectories");
       await assertStructuredTAccMatchesExecution(sourceCollisionPage, "single-source ambiguity unresolved");
+
+      // The user-facing conflict workflow must let the user explicitly select one
+      // ambiguous candidate, persist the choice and reject incompatible candidates.
+      const selectedAmbiguousCandidate = sourceCollisionPage.locator("#correspondence-review-list article")
+        .filter({hasText:"T_SOURCE_AB_1"});
+      await selectedAmbiguousCandidate.getByRole("button", {
+        name:"Elegir esta correspondencia y resolver la ambigüedad"
+      }).click();
+      const resolvedDecisions = await sourceCollisionPage.evaluate(() => {
+        const records = Object.keys(localStorage)
+          .filter(key => key.startsWith("tgcv-correspondence-review-001:"))
+          .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean);
+        return records.flatMap(record => Object.values(record.decisions || {}))
+          .filter(decision => decision.resolution?.action === "SELECTED_IN_CONFLICT")
+          .map(decision => ({candidate_id:decision.candidate_id,decision:decision.decision,
+            chosen_candidate_id:decision.resolution.chosen_candidate_id,selected:decision.resolution.selected}));
+      });
+      assert.equal(resolvedDecisions.length, 2,
+        "explicit ambiguity resolution must persist both the selected candidate and the incompatible rejected candidate");
+      assert.equal(resolvedDecisions.filter(d => d.decision === "ACCEPTED" && d.selected).length, 1,
+        "exactly one candidate must be explicitly selected");
+      assert.equal(resolvedDecisions.filter(d => d.decision === "REJECTED" && !d.selected).length, 1,
+        "the incompatible candidate must be explicitly rejected and audited");
+      assert.ok(resolvedDecisions.every(d => d.chosen_candidate_id === resolvedDecisions[0].chosen_candidate_id),
+        "all resolution records must point to the same explicit user choice");
+      await sourceCollisionPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await sourceCollisionPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      const selectedEffective = await sourceCollisionPage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false)
+          .map(mapping => mapping.tgcv_transformation_id));
+      assert.deepEqual(selectedEffective, ["T_SOURCE_AB_1"],
+        "only the explicitly selected ambiguous mapping may become effective");
+      await sourceCollisionPage.locator("#run").click();
+      await sourceCollisionPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(sourceCollisionPage, "explicit user resolution of ambiguous correspondence");
     } finally { await sourceCollisionContext.close(); }
 
     // Integrated resolution path: disambiguate by refining the declared target catalogue,
