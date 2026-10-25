@@ -2645,6 +2645,32 @@ function pythonJson(source, input) {
         "declared mappings must not be converted into derived proposals to resolve their own conflict");
       assert.match(declaredPairSnapshot.status, /conflictos entre mappings declarados/i,
         "the UI must report conflicts between declared mappings instead of silently ignoring them");
+
+      // Reverse declaration order: conflict classification/count and non-mutation must be invariant.
+      const reversedDeclaredPairModel = JSON.parse(JSON.stringify(declaredPairModel));
+      reversedDeclaredPairModel.tgcv_mapping.mappings.reverse();
+      await declaredPairPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, reversedDeclaredPairModel);
+      await declaredPairPage.locator("#derive-tgcv-correspondences").click();
+      await declaredPairPage.waitForFunction(() =>
+        /conflictos entre mappings declarados/i.test(
+          document.querySelector("#correspondence-review-status")?.textContent || ""
+        ), null, {timeout:5000});
+      const reversedDeclaredPairSnapshot = await declaredPairPage.evaluate(() => ({
+        status:document.querySelector("#correspondence-review-status")?.textContent || "",
+        model:JSON.parse(document.querySelector("#model").value),
+        proposals:document.querySelectorAll("#correspondence-review-list article").length
+      }));
+      const conflictCount = value => Number((value.match(/detectaron (\\d+) conflictos entre mappings declarados/i) || [])[1]);
+      assert.equal(conflictCount(reversedDeclaredPairSnapshot.status), conflictCount(declaredPairSnapshot.status),
+        "reversing declared mapping order must preserve the number of conflict classes reported");
+      assert.deepEqual(reversedDeclaredPairSnapshot.model.tgcv_mapping,
+        reversedDeclaredPairModel.tgcv_mapping,
+        "reversing declaration order must not rewrite the declared mapping list");
+      assert.equal(reversedDeclaredPairSnapshot.proposals, 0,
+        "reversing declaration order must not create derived proposals");
     } finally { await declaredMappingPairContext.close(); }
 
     // Declared-mapping lifecycle: preserve the user's mapping and its execution semantics
