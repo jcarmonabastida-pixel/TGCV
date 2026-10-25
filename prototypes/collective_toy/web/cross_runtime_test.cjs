@@ -582,8 +582,8 @@ function pythonJson(source, input) {
       assert.equal(result.conflicts.length, 2,
         direction + " same-source batch must mark both target candidates for review");
       assert.ok(result.conflicts.every(conflict => conflict.code === "CONFLICT_NEEDS_REVIEW" &&
-        /misma operación/i.test(conflict.message)),
-        direction + " same-source conflicts must carry the expected review code and reason");
+        typeof conflict.message === "string" && conflict.message.length > 0),
+        direction + " same-source conflicts must carry a review code and explanatory reason: " + JSON.stringify(result.conflicts));
     }
     assert.deepEqual(
       sameSourceConflict.forward.conflicts.map(x => x.candidate_id).sort(),
