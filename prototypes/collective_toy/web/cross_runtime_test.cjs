@@ -3176,6 +3176,86 @@ function pythonJson(source, input) {
           .map(m => [m.system_transition_id, m.tgcv_transformation_id]).sort());
       assert.deepEqual(groupedRestored, [],
         "restoring the old catalogue and reapplying without fresh acceptance must not reactivate stale mappings");
+
+      // Explicit rejection must preserve the operational baseline, and repeated
+      // application of a newly accepted candidate must be idempotent.
+      const groupedBeforeReject = await crossPage.evaluate(() => {
+        const model = JSON.parse(document.querySelector("#model").value);
+        const result = window.lastPackage?.result?.scenario_results?.baseline || {};
+        return {
+          declared: model.tgcv_mapping,
+          effective: (window.effectiveCorrespondenceState?.mappings || [])
+            .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+            .map(m => [m.system_transition_id, m.tgcv_transformation_id]).sort(),
+          tAcc: [...(window.lastTgcvDemoResult?.current?.transformations || [])].sort(),
+          graph: document.querySelector("#tgcv-graph")?.textContent || "",
+          reachable: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        };
+      });
+      const groupedRejectCard = crossPage.locator("#correspondence-review-list article")
+        .filter({hasText:"t_ab"});
+      await groupedRejectCard.getByRole("button", {name:"Rechazar propuesta"}).click();
+      assert.match(await crossPage.locator("#correspondence-review-list").textContent(), /Decisión: REJECTED/,
+        "grouped lifecycle must persist an explicit rejection");
+      const groupedAfterReject = await crossPage.evaluate(() => {
+        const model = JSON.parse(document.querySelector("#model").value);
+        const result = window.lastPackage?.result?.scenario_results?.baseline || {};
+        return {
+          declared: model.tgcv_mapping,
+          effective: (window.effectiveCorrespondenceState?.mappings || [])
+            .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+            .map(m => [m.system_transition_id, m.tgcv_transformation_id]).sort(),
+          tAcc: [...(window.lastTgcvDemoResult?.current?.transformations || [])].sort(),
+          graph: document.querySelector("#tgcv-graph")?.textContent || "",
+          reachable: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        };
+      });
+      assert.deepEqual(groupedAfterReject, groupedBeforeReject,
+        "rejecting a derived proposal must leave the declared mapping, effective overlay, T_acc, graph, reachability and trajectories at baseline");
+      const rejectedDecisionStorageBeforeReapply = await crossPage.evaluate(() =>
+        Object.keys(localStorage).filter(k => k.startsWith("tgcv-correspondence-review-001:"))
+          .sort().map(k => [k, localStorage.getItem(k)]));
+      assert.ok(rejectedDecisionStorageBeforeReapply.some(([, raw]) => raw && raw.includes('"decision":"REJECTED"')),
+        "grouped rejection decision must be persisted");
+
+      const acceptedRemaining = crossPage.locator("#correspondence-review-list article").filter({hasText:"t_cd"});
+      await acceptedRemaining.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const groupedFirstApply = await crossPage.evaluate(() => ({
+        effective: (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => [m.system_transition_id, m.tgcv_transformation_id]).sort(),
+        storage: Object.keys(localStorage).filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+          .sort().map(k => [k, localStorage.getItem(k)])
+      }));
+      assert.deepEqual(groupedFirstApply.effective, [["t_cd","T_CD"]],
+        "only the newly accepted non-rejected mapping may become effective");
+      await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const groupedSecondApply = await crossPage.evaluate(() => ({
+        effective: (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => [m.system_transition_id, m.tgcv_transformation_id]).sort(),
+        storage: Object.keys(localStorage).filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+          .sort().map(k => [k, localStorage.getItem(k)])
+      }));
+      assert.deepEqual(groupedSecondApply.effective, groupedFirstApply.effective,
+        "reapplying the same accepted mapping must not change the effective set");
+      assert.deepEqual(groupedSecondApply.storage, groupedFirstApply.storage,
+        "idempotent reapplication must not duplicate or rewrite effective mapping storage");
+      assert.ok((await crossPage.locator("#correspondence-review-list").textContent()).includes("Decisión: REJECTED"),
+        "idempotent application must preserve the rejected decision alongside the accepted mapping");
     } finally { await declaredDerivedCrossContext.close(); }
 
     // Cross-class conflict: a user-declared mapping claims a TGCV target that
