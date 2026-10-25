@@ -492,30 +492,30 @@ function generatedModelFromDimensions(stateCount,edgeCount,systemType){
  for(var i=0;i<stateCount-1&&pairs.length<edgeCount;i++)add(i,i+1);
  for(var a=0;a<stateCount&&pairs.length<edgeCount;a++)for(var b=0;b<stateCount&&pairs.length<edgeCount;b++)if(a!==b)add(a,b);
  for(var c=0;c<stateCount&&pairs.length<edgeCount;c++)add(c,c);
- var slug=String(systemType||"generico").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9_-]+/g,"-").replace(/^-+|-+$/g,"").slice(0,42)||"generico";
+ var slug=String(systemType||"generico").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9_-]+/g,"-").replace(/^-+|-+$/g,"").slice(0,42)||"generico";
  var model={schema_version:"collective-toy-input-001",model_id:"generated-"+slug,initial_state:states[0],states:states,transitions:pairs.map(function(pair,i){return {id:"t_generated_"+(i+1),source:states[pair[0]],target:states[pair[1]]}}),relations:[],rule_profile:{type:"temporal_prerequisite_graph",version:"1"},scenarios:[{id:"baseline",disabled_transitions:[]},{id:"generated_check",disabled_transitions:[]}],exploration:{max_depth:100,max_trajectories:10000}};
  return {model:model,unparsed:[],summary:"Grafo genérico de inicio rápido"+(systemType?" para «"+systemType+"»":"")+"; topología dirigida ilustrativa y editable."};
 }
 function parseCompactGraphInstruction(text){
- var raw=String(text||"").trim().replace(/[.!?]+$/,"").replace(/\\s+/g," "),patterns=[
-  {re:/^(?:quiero\\s+)?modelar\\s+un\\s+sistema\\s+de\\s+(.+?)\\s+con\\s+(\\d+)\\s+(?:estados?|nodos?)\\s+(?:e|y)\\s+(\\d+)\\s+(?:conexiones?|transiciones?|aristas?)$/i,type:1,n:2,m:3},
-  {re:/^(?:construye|genera|representa|crea|modela)\\s+(?:un\\s+)?sistema\\s+con\\s+(\\d+)\\s+(?:estados?|nodos?)\\s+(?:e|y)\\s+(\\d+)\\s+(?:conexiones?|transiciones?|aristas?)(?:\\s+de\\s+(?:un\\s+)?sistema\\s+de\\s+(.+))?$/i,n:1,m:2,type:3},
-  {re:/^(?:construye|genera|representa|crea|modela)\\s+(?:un\\s+)?grafo\\s+de\\s+(\\d+)\\s+nodos?\\s+(?:de|para)\\s+(?:un\\s+)?sistema\\s+de\\s+(.+)$/i,n:1,type:2},
-  {re:/^(?:construye|genera|representa|crea|modela)\\s+(?:un\\s+)?grafo\\s+de\\s+(?:un\\s+)?sistema\\s+de\\s+(.+?)\\s+que\\s+consta\\s+de\\s+(\\d+)\\s+(?:estados?|nodos?)\\s+(?:e|y)\\s+(\\d+)\\s+(?:conexiones?|transiciones?|aristas?)$/i,type:1,n:2,m:3},
-  {re:/^(?:genera|construye|representa|crea|modela)\\s+(?:un\\s+)?grafo\\s+de\\s+(\\d+)\\s+(?:estados?|nodos?)\\s+(?:de|para)\\s+(?:un\\s+)?sistema\\s+de\\s+(.+)$/i,n:1,type:2},
-  {re:/^(?:genera|construye|representa|crea|modela)\\s+(?:un\\s+)?grafo\\s+de\\s+(\\d+)\\s+(?:estados?|nodos?)$/i,n:1},
-  {re:/^(?:genera|construye|representa|crea|modela)\\s+(?:un\\s+)?sistema\\s+de\\s+(\\d+)\\s+(?:estados?|nodos?)$/i,n:1},
-  {re:/^(?:genera|construye|representa|crea|modela)\\s+(?:un\\s+)?grafo\\s+de\\s+(?:un\\s+)?sistema\\s+de\\s+(.+?)\\s+que\\s+consta\\s+de\\s+(\\d+)\\s+(?:estados?|nodos?)$/i,type:1,n:2}
+ var raw=String(text||"").trim().replace(/[.!?]+$/,"").replace(/\s+/g," "),patterns=[
+  {re:/^(?:quiero\s+)?modelar\s+un\s+sistema\s+de\s+(.+?)\s+con\s+(\d+)\s+(?:estados?|nodos?)\s+(?:e|y)\s+(\d+)\s+(?:conexiones?|transiciones?|aristas?)$/i,type:1,n:2,m:3},
+  {re:/^(?:construye|genera|representa|crea|modela)\s+(?:un\s+)?sistema\s+con\s+(\d+)\s+(?:estados?|nodos?)\s+(?:e|y)\s+(\d+)\s+(?:conexiones?|transiciones?|aristas?)(?:\s+de\s+(?:un\s+)?sistema\s+de\s+(.+))?$/i,n:1,m:2,type:3},
+  {re:/^(?:construye|genera|representa|crea|modela)\s+(?:un\s+)?grafo\s+de\s+(\d+)\s+nodos?\s+(?:de|para)\s+(?:un\s+)?sistema\s+de\s+(.+)$/i,n:1,type:2},
+  {re:/^(?:construye|genera|representa|crea|modela)\s+(?:un\s+)?grafo\s+de\s+(?:un\s+)?sistema\s+de\s+(.+?)\s+que\s+consta\s+de\s+(\d+)\s+(?:estados?|nodos?)\s+(?:e|y)\s+(\d+)\s+(?:conexiones?|transiciones?|aristas?)$/i,type:1,n:2,m:3},
+  {re:/^(?:genera|construye|representa|crea|modela)\s+(?:un\s+)?grafo\s+de\s+(\d+)\s+(?:estados?|nodos?)\s+(?:de|para)\s+(?:un\s+)?sistema\s+de\s+(.+)$/i,n:1,type:2},
+  {re:/^(?:genera|construye|representa|crea|modela)\s+(?:un\s+)?grafo\s+de\s+(\d+)\s+(?:estados?|nodos?)$/i,n:1},
+  {re:/^(?:genera|construye|representa|crea|modela)\s+(?:un\s+)?sistema\s+de\s+(\d+)\s+(?:estados?|nodos?)$/i,n:1},
+  {re:/^(?:genera|construye|representa|crea|modela)\s+(?:un\s+)?grafo\s+de\s+(?:un\s+)?sistema\s+de\s+(.+?)\s+que\s+consta\s+de\s+(\d+)\s+(?:estados?|nodos?)$/i,type:1,n:2}
  ];
- for(var i=0;i<patterns.length;i++){var spec=patterns[i],match=spec.re.exec(raw);if(!match)continue;var n=Number(match[spec.n]),m=spec.m?Number(match[spec.m]):Math.max(0,n-1),type=spec.type?String(match[spec.type]||"").trim().replace(/[.!?]+$/,""):null;if(type&&/\\s+(?:que\\s+consta\\s+de|con)\\s+\\d+\\s+(?:estados?|nodos?)$/i.test(type))type=type.replace(/\\s+(?:que\\s+consta\\s+de|con)\\s+\\d+\\s+(?:estados?|nodos?)$/i,"").trim();var result=generatedModelFromDimensions(n,m,type);result.summary+=" Dimensiones solicitadas: "+n+" estados y "+m+" conexiones.";return result}
+ for(var i=0;i<patterns.length;i++){var spec=patterns[i],match=spec.re.exec(raw);if(!match)continue;var n=Number(match[spec.n]),m=spec.m?Number(match[spec.m]):Math.max(0,n-1),type=spec.type?String(match[spec.type]||"").trim().replace(/[.!?]+$/,""):null;if(type&&/\s+(?:que\s+consta\s+de|con)\s+\d+\s+(?:estados?|nodos?)$/i.test(type))type=type.replace(/\s+(?:que\s+consta\s+de|con)\s+\d+\s+(?:estados?|nodos?)$/i,"").trim();var result=generatedModelFromDimensions(n,m,type);result.summary+=" Dimensiones solicitadas: "+n+" estados y "+m+" conexiones.";return result}
  return null;
 }
 function parseExplicitArrowGraph(text){
  if(!/(?:-->|->|→)/.test(text))return null;
  var raw=String(text||"").trim(),firstArrow=raw.search(/(?:-->|->|→)/),colon=raw.indexOf(":");
  if(colon>=0&&colon<firstArrow&&/(?:estado|transici|grafo|sistema|conexi|arista)/i.test(raw.slice(0,colon)))raw=raw.slice(colon+1);
- var chunks=raw.split(/[\\n;]+|(?<=\\.)\\s+(?=[^.\\n;]*?(?:-->|->|→))|,(?=\\s*[^,\\n;]+?\\s*(?:-->|->|→))/),edges=[];
- chunks.forEach(function(chunk){chunk=chunk.trim().replace(/[.!?]+$/,"");if(!chunk)return;var parts=chunk.split(/\\s*(?:-->|->|→)\\s*/);if(parts.length<2)return;parts[0]=parts[0].replace(/^(?:(?:genera|construye|representa|crea|modela)\\b[^:]*:\\s*)/i,"").trim();for(var i=0;i<parts.length-1;i++){var source=parts[i].trim().replace(/^[.\\s]+|[.\\s]+$/g,""),target=parts[i+1].trim().replace(/^[.\\s]+|[.\\s]+$/g,"");if(source&&target&&source.toLowerCase()!==target.toLowerCase())edges.push([source,target])}});
+ var chunks=raw.split(/[\n;]+|(?<=\.)\s+(?=[^.\n;]*?(?:-->|->|→))|,(?=\s*[^,\n;]+?\s*(?:-->|->|→))/),edges=[];
+ chunks.forEach(function(chunk){chunk=chunk.trim().replace(/[.!?]+$/,"");if(!chunk)return;var parts=chunk.split(/\s*(?:-->|->|→)\s*/);if(parts.length<2)return;parts[0]=parts[0].replace(/^(?:(?:genera|construye|representa|crea|modela)\b[^:]*:\s*)/i,"").trim();for(var i=0;i<parts.length-1;i++){var source=parts[i].trim().replace(/^[.\s]+|[.\s]+$/g,""),target=parts[i+1].trim().replace(/^[.\s]+|[.\s]+$/g,"");if(source&&target&&source.toLowerCase()!==target.toLowerCase())edges.push([source,target])}});
  if(!edges.length)return null;
  var model=modelFromEdges(edges,"texto_grafo_explicito");
  return {model:model,unparsed:[],summary:"Grafo construido a partir de las transiciones explícitas indicadas por el usuario."};
