@@ -2645,11 +2645,13 @@ function pythonJson(source, input) {
         "user declarations must not be silently duplicated as derived-effective mappings");
 
       await declaredLifecyclePage.reload();
-      await declaredLifecyclePage.locator("#load").click();
-      await declaredLifecyclePage.locator("#model").evaluate((el, value) => {
-        el.value = JSON.stringify(value, null, 2);
-        el.dispatchEvent(new Event("input", {bubbles:true}));
-      }, declaredLifecycleModel);
+      const nativeRestoredDeclaredModel = await declaredLifecyclePage.locator("#model").evaluate(el => {
+        try { return JSON.parse(el.value); } catch (_e) { return null; }
+      });
+      assert.deepEqual(nativeRestoredDeclaredModel?.tgcv_mapping, declaredLifecycleBefore,
+        "native page reload must restore the exact declared mapping without manual model reinjection");
+      assert.deepEqual(nativeRestoredDeclaredModel, declaredLifecycleModel,
+        "native page reload must restore the complete source model snapshot");
       await declaredLifecyclePage.locator("#run").click();
       await declaredLifecyclePage.waitForFunction(() => /ejecución completada/i.test(
         document.querySelector("#status")?.textContent || ""
