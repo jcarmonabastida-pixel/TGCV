@@ -2511,6 +2511,20 @@ function pythonJson(source, input) {
         return parsed;
       }, model);
       const declaredBefore = JSON.parse(JSON.stringify(sameTransitionModel.tgcv_mapping));
+      await sameTransitionPage.locator("#run").click();
+      await sameTransitionPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      const declaredConflictExecutionBaseline = await sameTransitionPage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+          reachable_states:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state, transition:step.transition || null
+          })))
+        }]));
+      });
+      await assertStructuredTAccMatchesExecution(sameTransitionPage, "declared-transition conflict baseline");
       const catalogueDetails = sameTransitionPage.locator("#correspondence-review-section details").filter({
         has: sameTransitionPage.locator("#tgcv-target-catalogue")
       });
@@ -2546,6 +2560,22 @@ function pythonJson(source, input) {
         "an alternative target for a declared transition must not materialize an effective mapping");
       assert.match(sameTransitionSnapshot.status, /conflicto con correspondencias declaradas por el usuario/i,
         "the UI must disclose that the declared mapping reserved the transition");
+      await sameTransitionPage.locator("#run").click();
+      await sameTransitionPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      const declaredConflictExecutionAfterDerivation = await sameTransitionPage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+          reachable_states:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state, transition:step.transition || null
+          })))
+        }]));
+      });
+      assert.deepEqual(declaredConflictExecutionAfterDerivation, declaredConflictExecutionBaseline,
+        "a conflicting derived target must not alter reachable states or execution trajectories");
+      await assertStructuredTAccMatchesExecution(sameTransitionPage, "declared-transition conflict unresolved");
     } finally { await sameTransitionDeclaredContext.close(); }
 
     // Declared-mapping lifecycle: preserve the user's mapping and its execution semantics
