@@ -597,24 +597,27 @@ async function deriveTgcvCorrespondenceCandidates(systemModel,catalogue){
  var declaredMappings=systemModel.tgcv_mapping&&Array.isArray(systemModel.tgcv_mapping.mappings)?systemModel.tgcv_mapping.mappings:[];
  var declaredTransitionIds=new Set(declaredMappings.map(function(m){return m.system_transition_id}));
  var declaredTransformationIds=new Set(declaredMappings.map(function(m){return m.tgcv_transformation_id}));
- var declaredMappingConflicts=[],byDeclaredTransition=new Map(),byDeclaredTarget=new Map();
+ var declaredMappingConflicts=[],byDeclaredTransition=new Map(),byDeclaredTarget=new Map(),seenDeclaredPairs=new Set();
  declaredMappings.forEach(function(m){
-  if(m&&typeof m.system_transition_id==="string"){
-   if(!byDeclaredTransition.has(m.system_transition_id))byDeclaredTransition.set(m.system_transition_id,[]);
-   byDeclaredTransition.get(m.system_transition_id).push(m);
-  }
-  if(m&&typeof m.tgcv_transformation_id==="string"){
-   if(!byDeclaredTarget.has(m.tgcv_transformation_id))byDeclaredTarget.set(m.tgcv_transformation_id,[]);
-   byDeclaredTarget.get(m.tgcv_transformation_id).push(m);
-  }
+  if(!m||typeof m.system_transition_id!=="string"||typeof m.tgcv_transformation_id!=="string")return;
+  var pairKey=JSON.stringify([m.system_transition_id,m.tgcv_transformation_id]);
+  if(seenDeclaredPairs.has(pairKey))declaredMappingConflicts.push({
+   code:"DECLARED_MAPPING_DUPLICATE",system_transition_id:m.system_transition_id,
+   tgcv_transformation_id:m.tgcv_transformation_id
+  });
+  seenDeclaredPairs.add(pairKey);
+  if(!byDeclaredTransition.has(m.system_transition_id))byDeclaredTransition.set(m.system_transition_id,new Set());
+  byDeclaredTransition.get(m.system_transition_id).add(m.tgcv_transformation_id);
+  if(!byDeclaredTarget.has(m.tgcv_transformation_id))byDeclaredTarget.set(m.tgcv_transformation_id,new Set());
+  byDeclaredTarget.get(m.tgcv_transformation_id).add(m.system_transition_id);
  });
- byDeclaredTransition.forEach(function(group,id){if(group.length>1)declaredMappingConflicts.push({
+ byDeclaredTransition.forEach(function(targets,id){if(targets.size>1)declaredMappingConflicts.push({
   code:"DECLARED_TRANSITION_MULTIPLE_TARGETS",system_transition_id:id,
-  mappings:group.map(function(m){return {system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}})
+  tgcv_transformation_ids:Array.from(targets).sort()
  })});
- byDeclaredTarget.forEach(function(group,id){if(group.length>1)declaredMappingConflicts.push({
+ byDeclaredTarget.forEach(function(transitions,id){if(transitions.size>1)declaredMappingConflicts.push({
   code:"DECLARED_TARGET_MULTIPLE_TRANSITIONS",tgcv_transformation_id:id,
-  mappings:group.map(function(m){return {system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}})
+  system_transition_ids:Array.from(transitions).sort()
  })});
  for(var transition of (systemModel.transitions||[])){
   // Explicit user mappings are authoritative: do not generate a derived proposal
@@ -784,7 +787,7 @@ async function deriveAndRenderTgcvCorrespondences(){
   archiveObsoleteEffectiveScopes(model,result.source_model_sha256,catalogueSha256);
   result.candidates.forEach(function(c){var prior=decisions[c.candidate_id];if(prior&&prior.source_model_sha256===result.source_model_sha256&&prior.catalogue_version===result.catalogue_version&&prior.catalogue_sha256===catalogueSha256&&(prior.decision==="ACCEPTED"||prior.decision==="REJECTED")&&!hasStaleEffectiveCorrespondence(c.candidate_id))c.decision=prior.decision});
   correspondenceReviewState={sourceModelSha256:result.source_model_sha256,catalogueVersion:result.catalogue_version,catalogueSha256:catalogueSha256,catalogue:JSON.parse(JSON.stringify(catalogue)),sourceModelCanonical:canonical(model),candidates:result.candidates};effectiveCorrespondenceState={sourceModelSha256:result.source_model_sha256,catalogueVersion:result.catalogue_version,catalogueSha256:catalogueSha256,sourceModelCanonical:canonical(model),catalogueCanonical:canonical(catalogue),mappings:loadEffectiveCorrespondences(result.source_model_sha256,result.catalogue_version,catalogueSha256)};window.effectiveCorrespondenceState=effectiveCorrespondenceState;
-  renderCorrespondenceReview();var exclusionNote=result.excluded_by_declared_mapping.length?" Se han excluido "+result.excluded_by_declared_mapping.length+" coincidencias por conflicto con correspondencias declaradas por el usuario; estas reservas se conservan.":"";var declaredConflictNote=(result.declared_mapping_conflicts||[]).length?" ATENCIÓN: se detectaron "+result.declared_mapping_conflicts.length+" conflictos entre mappings declarados; no se modifican ni se resuelven automáticamente.":"";$("correspondence-review-status").textContent="Generadas "+result.candidates.length+" propuestas. Aún no modifican el grafo TGCV."+exclusionNote+declaredConflictNote+(scopeChanged?" El modelo o catálogo cambió: las decisiones previas quedan como histórico y no se reutilizan en este ámbito.":"");
+  renderCorrespondenceReview();var exclusionNote=result.excluded_by_declared_mapping.length?" Se han excluido "+result.excluded_by_declared_mapping.length+" coincidencias por conflicto con correspondencias declaradas por el usuario; estas reservas se conservan.":"";var declaredConflictNote=(result.declared_mapping_conflicts||[]).length?" ATENCIÓN: se detectaron "+result.declared_mapping_conflicts.length+" incidencias entre mappings declarados (conflictos estructurales o duplicados exactos); no se modifican ni se resuelven automáticamente.":"";$("correspondence-review-status").textContent="Generadas "+result.candidates.length+" propuestas. Aún no modifican el grafo TGCV."+exclusionNote+declaredConflictNote+(scopeChanged?" El modelo o catálogo cambió: las decisiones previas quedan como histórico y no se reutilizan en este ámbito.":"");
  }catch(e){$("correspondence-review-status").textContent="No se pudieron generar propuestas: "+(e&&e.message?e.message:String(e))}
 }
 $("derive-tgcv-correspondences").addEventListener("click",deriveAndRenderTgcvCorrespondences);
