@@ -2058,8 +2058,21 @@ function pythonJson(source, input) {
       await secondCandidate.getByRole("button", {name:"Aceptar propuesta"}).click();
       await conflictUi.locator("#apply-accepted-tgcv-correspondences").click();
       await conflictUi.waitForFunction(() =>
-        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || "") &&
-        /CONFLICT_NEEDS_REVIEW/.test(document.querySelector("#correspondence-review-list")?.textContent || ""),
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "conflict-needs-review",
+        null, {timeout:5000});
+      const blockedConflict = await conflictUi.evaluate(() => ({
+        status:document.querySelector("#effective-correspondence-status")?.textContent || "",
+        mappings:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+      }));
+      assert.match(blockedConflict.status, /CONFLICT_NEEDS_REVIEW/);
+      assert.equal(blockedConflict.mappings.length, 0,
+        "an unresolved apply-time collision must fail closed rather than retain a partially valid effective layer");
+      await secondCandidate.getByRole("button", {name:"Rechazar propuesta"}).click();
+      await conflictUi.locator("#apply-accepted-tgcv-correspondences").click();
+      await conflictUi.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
         null, {timeout:5000});
       const activeAfterConflict = await conflictUi.evaluate(() =>
         (window.effectiveCorrespondenceState?.mappings || [])
@@ -2067,7 +2080,7 @@ function pythonJson(source, input) {
           .map(m => ({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}))
           .sort((a,b) => a.system_transition_id.localeCompare(b.system_transition_id)));
       assert.deepEqual(activeAfterConflict, [{system_transition_id:"t_ab_first",tgcv_transformation_id:"T_SHARED_AB"}],
-        "a conflicting second candidate must not replace or duplicate the already-effective mapping");
+        "after explicitly rejecting the conflicting candidate, the originally selected mapping must be the only effective mapping");
       await conflictUi.locator("#run").click();
       await conflictUi.waitForFunction(() => /ejecución completada/i.test(
         document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
