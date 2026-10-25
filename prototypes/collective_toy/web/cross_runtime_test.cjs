@@ -3186,8 +3186,16 @@ function pythonJson(source, input) {
         const residualPage = await residualContext.newPage();
         await residualPage.goto("file://" + htmlPath);
         await residualPage.locator("#load").click();
-        await residualPage.locator("#model").fill(JSON.stringify(crossModel, null, 2));
-        await residualPage.locator("#tgcv-target-catalogue").fill(JSON.stringify({
+        await residualPage.locator("#model").evaluate((el, value) => {
+          el.value = JSON.stringify(value, null, 2);
+          el.dispatchEvent(new Event("input", {bubbles:true}));
+          el.dispatchEvent(new Event("change", {bubbles:true}));
+        }, crossModel);
+        await residualPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+          el.value = JSON.stringify(value, null, 2);
+          el.dispatchEvent(new Event("input", {bubbles:true}));
+          el.dispatchEvent(new Event("change", {bubbles:true}));
+        }, {
           schema:"tgcv-target-catalogue-001", version:"declared-derived-cross-lifecycle-v1",
           transformations:[
             {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
