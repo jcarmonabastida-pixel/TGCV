@@ -112,3 +112,15 @@ No se reabren las 60 permutaciones declarada↔declarada ni se crean tests/workf
 En cada fase deben compararse por separado: (1) mappings declarados y overlay efectivo con procedencia/decisiones; (2) `T_acc` operacional estructurado frente a las transformaciones de las trayectorias; (3) grafo TGCV; (4) resultado por escenario; (5) estados alcanzables; y (6) trayectorias normalizadas. La propuesta pendiente o rechazada no puede alterar resultados; el mapping `STALE` debe dejar de ser activo y no resucitar tras restaurar el ámbito; aplicar dos veces debe ser idempotente.
 
 **Mínimo planificado: un bloque de test agrupado, dos ejecuciones CI** (Navegador y concordancia y Motor sintético) en el mismo commit. La suite de 60 permutaciones queda cerrada y fuera de este bloque. Este gate permanece **PENDIENTE** hasta que el test agrupado se implemente y ambos workflows pasen; no basta con sumar PASS de fixtures independientes.
+
+
+## Resultado del bloque agrupado — 2026-10-25
+
+El bloque implementado en `d12bb02f40ac0ec841ae33bfc0fa3c445ade8aa0` pasa en ambos workflows:
+
+- [Navegador y concordancia — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40199349994)
+- [Motor sintético — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40199350007)
+
+Cubre snapshots baseline/propuestas pendientes, invalidación por cambio de catálogo, historial `STALE`, consistencia operacional posterior a la invalidación y no reactivación automática al restaurar el catálogo.
+
+**Límite:** este PASS no demuestra por sí solo que una decisión rechazada se haya comparado explícitamente con el baseline ni que la reaplicación idempotente se haya verificado dentro del mismo bloque. La cobertura global queda pendiente hasta enlazar evidencia existente para ambas propiedades o incorporarlas al bloque agrupado. No se reabren las 60 permutaciones declarada↔declarada.
