@@ -12,6 +12,7 @@ on:
   pull_request:
     branches:
       - main
+      - implementation/dual-graph-sync-002-20261022
     paths:
       - 'prototypes/collective_toy/**'
       - '.github/workflows/collective-toy-browser-tests.yml'
@@ -42,9 +43,30 @@ jobs:
       - name: Install Chromium
         working-directory: prototypes/collective_toy/web
         run: npx playwright install --with-deps chromium
+      - name: Prepare desktop/mobile visual review output
+        shell: bash
+        run: |
+          set -euo pipefail
+          visual_dir="$RUNNER_TEMP/tgcv-visual-review-$GITHUB_SHA"
+          mkdir -p "$visual_dir"
+          echo "TGCV_VISUAL_ARTIFACT_DIR=$visual_dir" >> "$GITHUB_ENV"
       - name: Run browser and Python concordance test
         working-directory: prototypes/collective_toy/web
         run: npm test
+      - name: Record visual artifact provenance
+        shell: bash
+        env:
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          python -c 'import json,os; from pathlib import Path; p=Path(os.environ["TGCV_VISUAL_ARTIFACT_DIR"]); s=sorted(x.name for x in p.glob("*.png")); m={"tested_commit":os.environ["GITHUB_SHA"],"pr_head_commit":os.environ.get("PR_HEAD_SHA",os.environ["GITHUB_SHA"]),"workflow_run_id":os.environ["GITHUB_RUN_ID"],"screenshots":s}; (p/"manifest.json").write_text(json.dumps(m,indent=2)+"\\n",encoding="utf-8"); assert len(s)==12, f"Expected 12 screenshots, found {len(s)}"'
+      - name: Upload rendered desktop/mobile review screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: tgcv-visual-review-${{ github.sha }}
+          path: ${{ env.TGCV_VISUAL_ARTIFACT_DIR }}/
+          if-no-files-found: error
+          retention-days: 30
       - name: Build reproducible standalone distribution
         shell: bash
         run: |
