@@ -193,3 +193,9 @@ Commit `4c65ae409f2d58da73e520d5691a17c626adacb4`: motor sintético PASS ([run 4
 
 **Alcance:** cierra la invariancia de ejecución para este fixture de ambigüedad de origen/destino. No cierra la matriz general de resolución humana para todos los tipos de conflicto: el escenario de conflicto efectivo-efectivo y su resolución persistente ya tiene evidencia separada, pero no deben inferirse de estos tests todas las combinaciones cruzadas posibles. PR #95 sigue abierta, en borrador y sin fusionar; `main` permanece intacta.
 
+### Resolución explícita de ambigüedad de destino con persistencia y recarga — PASS
+
+Commit de prueba `334b38f5b1ab7e2b12827e4af51cae3cb2b33639`: navegador/concordancia PASS ([run 40188192474](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40188192474)) y motor sintético PASS ([run 40188192444](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40188192444)). La prueba deriva dos candidatas con la misma frontera exacta y confirma `NEEDS_REVIEW`; después reduce el catálogo a una única transformación, acepta explícitamente la propuesta, aplica la correspondencia y compara el conjunto efectivo `T_acc` con la ejecución. Tras recargar, comprueba que la correspondencia continúa efectiva y que se conservan los estados alcanzables y las trayectorias.
+
+**Límite:** el resultado cubre esta ruta de desambiguación mediante refinamiento del catálogo y aceptación explícita. No demuestra todas las clases de conflicto ni todos los caminos de resolución. La PR #95 continúa abierta y en borrador; no se ha fusionado y `main` permanece intacta.
+
