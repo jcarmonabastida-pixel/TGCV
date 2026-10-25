@@ -2994,6 +2994,9 @@ function pythonJson(source, input) {
 
       await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
       await crossPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "applying",
+        null, {timeout:5000});
+      await crossPage.waitForFunction(() =>
         document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
         null, {timeout:5000});
       const crossApplied = await crossPage.evaluate(() => ({
@@ -3058,6 +3061,9 @@ function pythonJson(source, input) {
         document.querySelectorAll("#correspondence-review-list article").length === 2,
         null, {timeout:5000});
       await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "applying",
+        null, {timeout:5000});
       await crossPage.waitForFunction(() =>
         document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
         null, {timeout:5000});
@@ -3168,6 +3174,9 @@ function pythonJson(source, input) {
         "restoring the prior catalogue scope must not resurrect old ACCEPTED decisions");
       await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
       await crossPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "applying",
+        null, {timeout:5000});
+      await crossPage.waitForFunction(() =>
         document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
         null, {timeout:5000});
       const groupedRestored = await crossPage.evaluate(() =>
@@ -3217,6 +3226,9 @@ function pythonJson(source, input) {
          .getByRole("button", {name:"Aceptar propuesta"}).click();
        await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
        await crossPage.waitForFunction(() =>
+         document.querySelector("#effective-correspondence-status")?.dataset.state === "applying",
+         null, {timeout:5000});
+       await crossPage.waitForFunction(() =>
          document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
          null, {timeout:5000});
        const finalAfterFirstApply = await crossPage.evaluate(() => ({
@@ -3227,6 +3239,9 @@ function pythonJson(source, input) {
            .sort().map(k => [k,localStorage.getItem(k)])
        }));
        await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
+       await crossPage.waitForFunction(() =>
+         document.querySelector("#effective-correspondence-status")?.dataset.state === "applying",
+         null, {timeout:5000});
        await crossPage.waitForFunction(() =>
          document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
          null, {timeout:5000});
