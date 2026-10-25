@@ -2648,7 +2648,7 @@ function pythonJson(source, input) {
         "the UI must report conflicts between declared mappings instead of silently ignoring them");
       assert.match(declaredPairSnapshot.status, /duplicados exactos/i,
         "the UI must identify exact duplicate declarations as an issue");
-      assert.equal(Number((declaredPairSnapshot.status.match(/detectaron (\\d+) conflictos entre mappings declarados/i) || [])[1]), 3,
+      assert.equal(Number((declaredPairSnapshot.status.match(/detectaron (\d+) conflictos entre mappings declarados/i) || [])[1]), 3,
         "two structural conflict classes and one exact duplicate must be reported");
 
       // Reverse declaration order: conflict classification/count and non-mutation must be invariant.
@@ -2668,7 +2668,7 @@ function pythonJson(source, input) {
         model:JSON.parse(document.querySelector("#model").value),
         proposals:document.querySelectorAll("#correspondence-review-list article").length
       }));
-      const conflictCount = value => Number((value.match(/detectaron (\\d+) conflictos entre mappings declarados/i) || [])[1]);
+      const conflictCount = value => Number((value.match(/detectaron (\d+) conflictos entre mappings declarados/i) || [])[1]);
       assert.equal(conflictCount(reversedDeclaredPairSnapshot.status), conflictCount(declaredPairSnapshot.status),
         "reversing declared mapping order must preserve the number of conflict classes reported");
       assert.deepEqual(reversedDeclaredPairSnapshot.model.tgcv_mapping,
