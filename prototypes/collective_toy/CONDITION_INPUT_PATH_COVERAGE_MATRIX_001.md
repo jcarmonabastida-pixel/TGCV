@@ -343,3 +343,23 @@ Commit probado: `6b5ee82bb9935a051a312ea12b4bc3233c27e943`.
 La suite del navegador ejecutó las aserciones agrupadas de rechazo sin cambio del snapshot operacional, persistencia de `REJECTED`, y reaplicación idempotente (conjunto efectivo y almacenamiento persistido sin cambios entre la primera y segunda aplicación). El motor sintético también pasa.
 
 **Resultado:** los dos aspectos residuales quedan cubiertos por evidencia de CI en este commit. Esto cierra este bloque de cobertura agrupada; no equivale a afirmar validez científica general de TGCV ni recuperación automática de declaraciones desde persistencia nativa. PR #95 sigue en borrador; no se ha fusionado a `main`.
+
+
+## 11. Reconciliación de estado — fuente de verdad vigente (2026-10-25)
+
+Esta sección prevalece sobre los estados históricos de “CI pendiente” de las secciones 7–9, que describían commits anteriores.
+
+**Último commit de pruebas verificado:** `f12bf81214f90807cb8d6ce0a5f743a096ce424f`.
+
+- [Navegador y concordancia — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40204075921)
+- [Motor sintético — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40204075929)
+
+La CI confirma el bloque de invariancia al invertir el orden del catálogo en la colisión declarada↔derivada: preservación exacta del mapping declarado, conjunto normalizado de candidatas/conflictos, evidencia de exclusión y ausencia de mappings efectivos antes de aceptación. También siguen vigentes los PASS previos del bloque de rechazo sin alteración operacional e idempotencia (commit `6b5ee82bb9935a051a312ea12b4bc3233c27e943`, runs 40203256337 y 40203256339).
+
+### Pendiente exacto dentro de este gate
+
+**Queda 1 bloque de integración cruzada agrupado, con 2 ejecuciones CI** (Navegador y concordancia + Motor sintético), no una batería por permutación. No se reabren las 60 permutaciones declarada↔declarada.
+
+El bloque pendiente debe unir en una sola secuencia/fixture controlado las fases que hoy tienen evidencia en pruebas separadas: baseline → propuestas pendientes → rechazo explícito → mapping efectivo → cambio de catálogo que lo vuelve `STALE` → restauración/recarga/reaplicación. En cada fase debe comparar por separado mapping declarado/overlay efectivo y procedencia, `T_acc`, grafo TGCV, resultados por escenario, estados alcanzables y trayectorias normalizadas; verificar persistencia de decisiones y que ni `REJECTED` ni `STALE` se reactiven indebidamente. La idempotencia ya tiene PASS separado, pero debe quedar incluida en esa secuencia integrada para cerrar el gate contractual tal como está definido.
+
+Esto es el conteo preciso del gate de integración cruzada documentado aquí; no significa que se hayan cerrado todos los límites de alcance enumerados en el contrato de aceptación §10.6.
