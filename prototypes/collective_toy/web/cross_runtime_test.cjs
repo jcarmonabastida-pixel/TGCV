@@ -3337,6 +3337,45 @@ function pythonJson(source, input) {
       assert.ok(declaredCollisionEvidence.candidates.some(c =>
         c.system_transition_id === "t_bc_control" && c.tgcv_transformation_id === "T_BC_CONTROL"),
         "an unrelated exact-boundary candidate must remain derivable");
+
+      // Cross-class order invariance: reverse the catalogue order for the
+      // declared-target collision while retaining an unrelated valid candidate.
+      await declaredCollisionPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001",version:"ui-declared-target-collision-reversed-v1",
+        transformations:[
+          {id:"T_BC_CONTROL",source_state:"B",target_state:"C"},
+          {id:"T_SHARED_AB",source_state:"A",target_state:"B"}
+        ]
+      });
+      await declaredCollisionPage.locator("#derive-tgcv-correspondences").click();
+      await declaredCollisionPage.waitForFunction(() =>
+        /Generadas \d+ propuestas/i.test(document.querySelector("#correspondence-review-status")?.textContent || ""),
+        null, {timeout:5000});
+      const declaredCollisionReversed = await declaredCollisionPage.evaluate(() => ({
+        declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
+        candidates:(window.correspondenceReviewState?.candidates || [])
+          .map(c => [c.system_transition_id,c.tgcv_transformation_id,c.status || null]).sort(),
+        status:document.querySelector("#correspondence-review-status")?.textContent || "",
+        effective:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => [m.system_transition_id,m.tgcv_transformation_id]).sort()
+      }));
+      const declaredCollisionCandidates = declaredCollisionEvidence.candidates
+        .map(c => [c.system_transition_id,c.tgcv_transformation_id,c.status || null]).sort();
+      assert.deepEqual(declaredCollisionReversed.declared, declaredCollisionBefore,
+        "reversing target-catalogue order must preserve the exact declared mapping");
+      assert.deepEqual(declaredCollisionReversed.candidates, declaredCollisionCandidates,
+        "reversing target-catalogue order must preserve the normalized candidate set and conflict exclusion");
+      assert.match(declaredCollisionReversed.status,
+        /excluido[s]? 2 coincidencias por conflicto con correspondencias declaradas/i,
+        "reversing target-catalogue order must preserve explicit conflict evidence");
+      assert.deepEqual(declaredCollisionReversed.effective, [],
+        "neither catalogue order may materialize an unaccepted mapping");
+
       const controlCard = declaredCollisionPage.locator("#correspondence-review-list article").filter({hasText:"t_bc_control"});
       await controlCard.getByRole("button", {name:"Aceptar propuesta"}).click();
       await declaredCollisionPage.locator("#apply-accepted-tgcv-correspondences").click();
