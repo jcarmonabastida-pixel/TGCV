@@ -3108,7 +3108,7 @@ function pythonJson(source, input) {
       });
       await declaredCollisionPage.locator("#derive-tgcv-correspondences").click();
       await declaredCollisionPage.waitForFunction(() =>
-        /Generadas \\d+ propuestas/i.test(document.querySelector("#correspondence-review-status")?.textContent || ""),
+        /Generadas \d+ propuestas/i.test(document.querySelector("#correspondence-review-status")?.textContent || ""),
         null, {timeout:5000});
       const declaredCollisionEvidence = await declaredCollisionPage.evaluate(() => ({
         declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
