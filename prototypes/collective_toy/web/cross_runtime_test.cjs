@@ -2576,6 +2576,43 @@ function pythonJson(source, input) {
       assert.deepEqual(declaredConflictExecutionAfterDerivation, declaredConflictExecutionBaseline,
         "a conflicting derived target must not alter reachable states or execution trajectories");
       await assertStructuredTAccMatchesExecution(sameTransitionPage, "declared-transition conflict unresolved");
+
+      // Grouped order-invariance check for the declared↔derived conflict:
+      // reverse the two same-boundary catalogue candidates and require the same
+      // abstention, exact declaration, and empty effective/proposal sets.
+      const reversedCatalogue = {
+        schema:"tgcv-target-catalogue-001", version:"ui-same-transition-declared-conflict-reversed-v1",
+        transformations:[
+          {id:"T_CONFLICT_AC",source_state:"A",target_state:"C"},
+          {id:"T_CONFLICT_AB",source_state:"A",target_state:"C"}
+        ]
+      };
+      await sameTransitionPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, reversedCatalogue);
+      await sameTransitionPage.locator("#derive-tgcv-correspondences").click();
+      await sameTransitionPage.waitForFunction(() =>
+        /conflicto con correspondencias declaradas por el usuario/i.test(
+          document.querySelector("#correspondence-review-status")?.textContent || ""
+        ), null, {timeout:5000});
+      const reversedSameTransitionSnapshot = await sameTransitionPage.evaluate(() => ({
+        status:document.querySelector("#correspondence-review-status")?.textContent || "",
+        declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
+        proposalCount:document.querySelectorAll("#correspondence-review-list article").length,
+        effective:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+      }));
+      assert.deepEqual(reversedSameTransitionSnapshot.declared, declaredBefore,
+        "reversing catalogue candidate order must preserve the declared mapping exactly");
+      assert.equal(reversedSameTransitionSnapshot.proposalCount, 0,
+        "reversing catalogue candidate order must not offer a derived proposal");
+      assert.equal(reversedSameTransitionSnapshot.effective.length, 0,
+        "reversing catalogue candidate order must not create an effective mapping");
+      assert.match(reversedSameTransitionSnapshot.status,
+        /conflicto con correspondencias declaradas por el usuario/i,
+        "reversing catalogue candidate order must preserve declared-conflict abstention");
     } finally { await sameTransitionDeclaredContext.close(); }
 
     // Declared↔declared pairwise conflicts must be reported without rewriting declarations.
