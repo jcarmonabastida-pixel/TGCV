@@ -2698,18 +2698,9 @@ function pythonJson(source, input) {
         await declaredPairPage.waitForFunction(() => {
           const model = JSON.parse(document.querySelector("#model").value);
           const state = window.correspondenceReviewState;
-          return !!state && state.sourceModelCanonical === JSON.stringify(model, Object.keys(model).sort());
-        }, null, {timeout:5000}).catch(async () => {
-          // canonical() sorts recursively; compare through the app helper when available.
-          await declaredPairPage.waitForFunction(() => {
-            const model = JSON.parse(document.querySelector("#model").value);
-            return !!window.correspondenceReviewState?.sourceModelSha256 &&
-              /conflictos entre mappings declarados/i.test(
-                document.querySelector("#correspondence-review-status")?.textContent || ""
-              ) && window.correspondenceReviewState.sourceModelCanonical !== null &&
-              window.correspondenceReviewState.sourceModelCanonical.includes(model.model_id);
-          }, null, {timeout:5000});
-        });
+          return !!state?.sourceModelSha256 && state.sourceModelCanonical !== null &&
+            state.sourceModelCanonical.includes(model.model_id);
+        }, null, {timeout:5000});
         return await declaredPairPage.evaluate(() => ({
           model:JSON.parse(document.querySelector("#model").value),
           proposals:document.querySelectorAll("#correspondence-review-list article").length,
