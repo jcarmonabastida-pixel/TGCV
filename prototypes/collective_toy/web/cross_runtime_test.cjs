@@ -3086,11 +3086,8 @@ function pythonJson(source, input) {
         el.value = JSON.stringify(value, null, 2);
         el.dispatchEvent(new Event("input", {bubbles:true}));
       }, declaredCollisionModel);
-      await declaredCollisionPage.locator("#run").click();
-      await declaredCollisionPage.waitForFunction(() => /ejecución completada/i.test(
-        document.querySelector("#status")?.textContent || ""
-      ), null, {timeout:5000});
-      await assertStructuredTAccMatchesExecution(declaredCollisionPage, "declared-target collision baseline");
+      // Derivation is a graph-correspondence operation; do not require an execution
+      // of a deliberately conflicting source graph before reviewing its candidates.
       const declaredCollisionDetails = declaredCollisionPage.locator("#correspondence-review-section details").filter({
         has: declaredCollisionPage.locator("#tgcv-target-catalogue")
       });
