@@ -2060,14 +2060,28 @@ function pythonJson(source, input) {
       await conflictUi.waitForFunction(() =>
         document.querySelector("#effective-correspondence-status")?.dataset.state === "conflict-needs-review",
         null, {timeout:5000});
-      const blockedConflict = await conflictUi.evaluate(() => ({
-        status:document.querySelector("#effective-correspondence-status")?.textContent || "",
-        mappings:(window.effectiveCorrespondenceState?.mappings || [])
-          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
-      }));
+      const blockedConflict = await conflictUi.evaluate(() => {
+        const records = Array.from({length:localStorage.length}, (_,i) => localStorage.key(i))
+          .filter(key => key && key.startsWith("tgcv-effective-mappings-001:"))
+          .map(key => { try { return JSON.parse(localStorage.getItem(key) || "null"); } catch (_) { return null; } })
+          .filter(Boolean);
+        return {
+          status:document.querySelector("#effective-correspondence-status")?.textContent || "",
+          mappings:(window.effectiveCorrespondenceState?.mappings || [])
+            .filter(m => m.status === "EFFECTIVE" && m.active !== false),
+          priorHistory:records.flatMap(record => record.history || [])
+            .filter(mapping => mapping.system_transition_id === "t_ab_first")
+        };
+      });
       assert.match(blockedConflict.status, /CONFLICT_NEEDS_REVIEW/);
       assert.equal(blockedConflict.mappings.length, 0,
         "an unresolved apply-time collision must fail closed rather than retain a partially valid effective layer");
+      assert.ok(blockedConflict.priorHistory.some(mapping =>
+        mapping.status === "CONFLICT_SUSPENDED" && mapping.active === false),
+        "an accepted mapping blocked by an unresolved conflict must be suspended, not invalidated as STALE");
+      assert.equal(blockedConflict.priorHistory.some(mapping =>
+        mapping.status === "STALE" && /decision is no longer accepted|ya no está aceptada/i.test(mapping.stale_reason || "")), false,
+        "a temporary conflict must not be recorded as a revoked decision or scope invalidation");
       await secondCandidate.getByRole("button", {name:"Rechazar propuesta"}).click();
       await conflictUi.locator("#apply-accepted-tgcv-correspondences").click();
       await conflictUi.waitForFunction(() =>
