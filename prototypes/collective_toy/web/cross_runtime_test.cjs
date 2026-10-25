@@ -3611,6 +3611,144 @@ function pythonJson(source, input) {
     // Symmetric UI conflict-resolution case: reverse which candidate is accepted
     // first and retained. This complements the direct validator order-invariance
     // checks with the user-facing apply/reject/persist/reload lifecycle.
+    // A real browser-context restart must preserve explicit conflict-resolution decisions.
+    // A plain page.reload() is insufficient evidence: close the persistent Chromium profile,
+    // relaunch it with the same user-data directory, then rebuild the exact model/catalogue scope.
+    const restartProfileDir = fs.mkdtempSync(path.join(require("node:os").tmpdir(), "tgcv-correspondence-restart-"));
+    let restartContext = null;
+    try {
+      restartContext = await chromium.launchPersistentContext(restartProfileDir, {headless:true});
+      let restartPage = restartContext.pages()[0] || await restartContext.newPage();
+      await restartPage.goto("file://" + htmlPath);
+      await restartPage.locator("#load").click();
+      await restartPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-apply-conflict-context-restart";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [
+          {id:"t_ab_primary",source:"A",target:"B"},
+          {id:"t_ab_duplicate",source:"A",target:"B"}
+        ];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      const restartCatalogueDetails = restartPage.locator("#correspondence-review-section details").filter({
+        has: restartPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await restartCatalogueDetails.evaluate(el => el.open))) await restartCatalogueDetails.locator("summary").click();
+      const restartCatalogue = {
+        schema:"tgcv-target-catalogue-001", version:"ui-apply-conflict-context-restart-v1",
+        transformations:[{id:"T_SHARED_AB",source_state:"A",target_state:"B"}]
+      };
+      await restartPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, restartCatalogue);
+      await restartPage.locator("#derive-tgcv-correspondences").click();
+      await restartPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      const restartPrimary = restartPage.locator("#correspondence-review-list article").filter({hasText:"t_ab_primary"});
+      const restartDuplicate = restartPage.locator("#correspondence-review-list article").filter({hasText:"t_ab_duplicate"});
+      await restartPrimary.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await restartDuplicate.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await restartPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await restartPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "conflict-needs-review",
+        null, {timeout:5000});
+      await restartDuplicate.getByRole("button", {name:"Rechazar propuesta"}).click();
+      await restartPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await restartPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const beforeContextRestart = await restartPage.evaluate(() => {
+        const records = Object.keys(localStorage)
+          .filter(key => key.startsWith("tgcv-correspondence-review-001:"))
+          .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean);
+        const decisions = records.flatMap(record => Object.values(record.decisions || {}));
+        return {
+          modelId:JSON.parse(document.querySelector("#model").value).model_id,
+          accepted:decisions.some(d => d.candidate_id && d.decision === "ACCEPTED"),
+          rejected:decisions.some(d => d.candidate_id && d.decision === "REJECTED"),
+          mappings:(window.effectiveCorrespondenceState?.mappings || [])
+            .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+            .map(m => m.system_transition_id)
+        };
+      });
+      assert.equal(beforeContextRestart.accepted, true, "pre-restart fixture must persist an ACCEPTED decision");
+      assert.equal(beforeContextRestart.rejected, true, "pre-restart fixture must persist the explicit REJECTED conflict resolution");
+      assert.deepEqual(beforeContextRestart.mappings, ["t_ab_primary"],
+        "pre-restart effective overlay must contain only the explicitly selected mapping");
+      await restartContext.close();
+      restartContext = null;
+
+      // Relaunch Chromium with the same on-disk browser profile: this is not page.reload().
+      restartContext = await chromium.launchPersistentContext(restartProfileDir, {headless:true});
+      restartPage = restartContext.pages()[0] || await restartContext.newPage();
+      await restartPage.goto("file://" + htmlPath);
+      await restartPage.waitForFunction(() => {
+        try { return JSON.parse(document.querySelector("#model")?.value || "null")?.model_id === "ui-apply-conflict-context-restart"; }
+        catch (_) { return false; }
+      }, null, {timeout:5000});
+      const restoredRestartModel = await restartPage.locator("#model").evaluate(el => JSON.parse(el.value));
+      assert.deepEqual(restoredRestartModel.transitions, [
+        {id:"t_ab_primary",source:"A",target:"B"},
+        {id:"t_ab_duplicate",source:"A",target:"B"}
+      ], "source model draft must restore from the persistent browser profile after context restart");
+      const restoredCatalogueDetails = restartPage.locator("#correspondence-review-section details").filter({
+        has: restartPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await restoredCatalogueDetails.evaluate(el => el.open))) await restoredCatalogueDetails.locator("summary").click();
+      await restartPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, restartCatalogue);
+      await restartPage.locator("#derive-tgcv-correspondences").click();
+      await restartPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      const afterContextRestartDecisions = await restartPage.evaluate(() => {
+        const records = Object.keys(localStorage)
+          .filter(key => key.startsWith("tgcv-correspondence-review-001:"))
+          .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean);
+        const decisions = records.flatMap(record => Object.values(record.decisions || {}));
+        return {
+          accepted:decisions.some(d => d.candidate_id && d.decision === "ACCEPTED"),
+          rejected:decisions.some(d => d.candidate_id && d.decision === "REJECTED")
+        };
+      });
+      assert.equal(afterContextRestartDecisions.accepted, true,
+        "ACCEPTED decision must survive closing and relaunching the browser context");
+      assert.equal(afterContextRestartDecisions.rejected, true,
+        "REJECTED conflict-resolution decision must survive closing and relaunching the browser context");
+      await restartPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await restartPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      const afterContextRestart = await restartPage.evaluate(() => ({
+        mappings:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => m.system_transition_id)
+      }));
+      assert.deepEqual(afterContextRestart.mappings, ["t_ab_primary"],
+        "context restart must not resurrect the explicitly rejected conflicting mapping");
+      await restartPage.locator("#run").click();
+      await restartPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(restartPage, "conflict resolution after browser-context restart");
+      console.log("PASS: conflict-resolution decisions survive persistent browser-context restart without reactivating the rejected mapping.");
+    } finally {
+      if (restartContext) await restartContext.close();
+      fs.rmSync(restartProfileDir, {recursive:true, force:true});
+    }
+
     const reverseConflictContext = await browser.newContext();
     try {
       const reversePage = await reverseConflictContext.newPage();
