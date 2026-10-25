@@ -305,3 +305,17 @@ Los snapshots se comparan por contenido normalizado (IDs de mappings y transform
 **Presupuesto de cierre: 1 bloque automatizado agrupado y 2 ejecuciones de CI** sobre el mismo commit: Navegador y concordancia + Motor sintético. Las variantes se iteran dentro de la suite; no son workflows separados. Solo se repite el workflow afectado si el bloque falla.
 
 **Estado real:** PENDIENTE de implementar/verificar esta comparación consolidada y obtener PASS en ambos workflows. La evidencia existente se reutiliza, pero no se declara que cubra esta matriz conjunta hasta que la aserción agrupada se ejecute. PR #95 permanece en borrador; `main` no se modifica.
+
+
+## 8. Resultado de CI del bloque agrupado — 2026-10-25
+
+**PASS en ambos workflows** para el bloque implementado en `d12bb02f40ac0ec841ae33bfc0fa3c445ade8aa0`:
+
+- [Navegador y concordancia — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40199349994)
+- [Motor sintético — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40199350007)
+
+El bloque verifica snapshots del estado base y propuestas pendientes; la invalidación de mappings efectivos por cambio de catálogo; la conservación de historial `STALE`; coherencia de `T_acc`, alcanzabilidad y trayectorias después de invalidar; y que restaurar el catálogo no reactive mappings obsoletos sin una nueva aceptación.
+
+**Alcance preciso:** el PASS valida estas aserciones ejecutadas. No se interpreta como evidencia de que todas las fases del gate propuesto quedaron agrupadas: la comparación explícita de una decisión rechazada contra el baseline y la idempotencia de la reaplicación no están ambas afirmadas por este nuevo tramo. Deben considerarse cubiertas solo si la suite existente correspondiente se identifica y su evidencia se referencia; no se deben declarar como parte de este bloque por inferencia.
+
+**Estado del gate:** bloque agrupado implementado y PASS; cierre global pendiente de resolver documentalmente la trazabilidad de las aserciones de rechazo e idempotencia, sin reabrir las 60 permutaciones declarada↔declarada.
