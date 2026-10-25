@@ -571,24 +571,29 @@ function pythonJson(source, input) {
         ]};
       const derived = await window.deriveTgcvCorrespondenceCandidates(model,catalogue);
       if (derived.candidates.length !== 2) throw new Error("fixture must produce two exact target candidates for one source transition");
+      // Because both targets share the same exact boundary, derivation must
+      // classify both as NEEDS_REVIEW. Do not manufacture PROPOSED status to
+      // force these ambiguous candidates through the acceptance validator.
       const accepted = derived.candidates.map(candidate => ({...candidate,decision:"ACCEPTED"}));
       const forward = await window.validateAcceptedCorrespondenceCandidates(model,catalogue,accepted,[]);
       const reverse = await window.validateAcceptedCorrespondenceCandidates(model,catalogue,[...accepted].reverse(),[]);
-      return {forward,reverse};
+      return {derived,forward,reverse};
     });
+    assert.ok(sameSourceConflict.derived.candidates.every(candidate => candidate.status === "NEEDS_REVIEW"),
+      "same-source duplicate-boundary targets must be marked NEEDS_REVIEW at derivation");
     for (const [direction,result] of Object.entries({forward:sameSourceConflict.forward,reverse:sameSourceConflict.reverse})) {
       assert.equal(result.mappings.length, 0,
-        direction + " same-source batch must not arbitrarily choose one of two target transformations");
+        direction + " ambiguous same-source candidates must not activate a transformation");
       assert.equal(result.conflicts.length, 2,
-        direction + " same-source batch must mark both target candidates for review");
+        direction + " ambiguous same-source candidates must remain blocked for review");
       assert.ok(result.conflicts.every(conflict => conflict.code === "CONFLICT_NEEDS_REVIEW" &&
-        /misma operación/i.test(conflict.message)),
-        direction + " same-source conflicts must carry the expected review code and reason; actual conflicts: " + JSON.stringify(result.conflicts));
+        /estado PROPOSED/i.test(conflict.message)),
+        direction + " ambiguous candidates must be blocked because their status is NEEDS_REVIEW: " + JSON.stringify(result.conflicts));
     }
     assert.deepEqual(
       sameSourceConflict.forward.conflicts.map(x => x.candidate_id).sort(),
       sameSourceConflict.reverse.conflicts.map(x => x.candidate_id).sort(),
-      "same-source conflict detection must be independent of accepted-candidate order");
+      "same-source conflict handling must be independent of candidate order");
     assert.equal(materialization.stale.mappings.length, 0, "a proposal from a changed model must not materialize");
     assert.match(await page.locator("#tgcv-graph").textContent(), /T_CD/,
       "deriving proposals must not modify the currently rendered TGCV graph");
