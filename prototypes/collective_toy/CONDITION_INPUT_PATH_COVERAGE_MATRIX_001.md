@@ -232,6 +232,23 @@ La prueba UI declara `t_ac → T_CONFLICT_AB` y presenta una transformación alt
 
 **Límite de alcance:** esta evidencia cierra el fixture de destino alternativo para una transición declarada y su invariancia de ejecución. No demuestra recuperación automática de la declaración desde persistencia nativa: el ciclo de vida anterior restaura manualmente el modelo. Tampoco sustituye la enumeración exhaustiva de todas las clases y permutaciones de conflictos por pares.
 
+### Inventario de pares de conflicto — corte verificable
+
+Este inventario separa clases semánticas de conflicto de permutaciones exhaustivas. Los estados se asignan solo a los fixtures localizados en `web/cross_runtime_test.cjs`; no implican que todas las variantes de datos o los órdenes posibles estén cubiertos.
+
+| Par / relación en conflicto | Evidencia localizada | Estado del fixture | Falta para cerrar la clase completa |
+|---|---|---|---|
+| Derivada ↔ derivada: dos transiciones fuente compiten por una transformación TGCV | Ciclo integrado de conflicto por lote; inversión del orden y resolución explícita | **PASS** | Enumerar todas las permutaciones/candidatas equivalentes no es parte del fixture actual |
+| Derivada ↔ derivada: una transición fuente tiene más de un destino exacto candidato | Ambigüedad, abstención, refinamiento de catálogo, aceptación y recarga | **PASS** en el ciclo probado | Variantes adicionales de catálogo fuera del fixture |
+| Derivada ↔ efectiva: la nueva candidata colisiona con un mapping efectivo ya activo | Validación de materialización y ciclo de conflicto de UI | **PASS** en los casos probados | No asumir exhaustividad de todas las combinaciones/órdenes |
+| Declarada ↔ derivada: misma transición fuente, destino alternativo | Test UI `t_ac → T_CONFLICT_AB` frente a destino alternativo; ambos workflows PASS en commit `52220126663025ac0b650b89a6bdf69f2981e0b2` | **PASS**: preserva declaración, no propone/materializa alternativa y mantiene invariantes de ejecución | Persistencia nativa de la declaración aún no demostrada |
+| Declarada ↔ derivada: otra transición fuente reclama el destino TGCV declarado | Test UI de colisión con destino declarado; exige cero propuestas y cero mappings efectivos | **PASS** en el fixture localizado | Falta integrarlo en una enumeración exhaustiva por pares/órdenes |
+| Declarada ↔ derivada aceptada: aparece o cambia la declaración después de revisar la candidata | Test de validación antes de aplicar; se fuerza el guard de conflicto declarado manteniendo actualizado el hash de fuente | **PASS** en validación de materialización | No equivale a un ciclo UI persistido de extremo a extremo |
+| Efectiva ↔ efectiva: un cambio de modelo invalida una correspondencia efectiva previa | Test de invalidación por cambio de modelo y control de decisión obsoleta | **PASS** en el fixture | Variantes de cambio fuera del caso cubierto |
+| Declaración ↔ recarga de página: recuperar el modelo declarado sin volver a inyectarlo | El ciclo actual reinserta explícitamente el modelo tras recargar; no se localizó almacenamiento nativo del modelo completo | **PENDIENTE / capacidad por confirmar** | Definir el contrato de persistencia y ejecutar recarga sin reinyección |
+
+**Conteo honesto del inventario actual:** 8 clases con evidencia de fixture (PASS dentro del alcance descrito) y 1 clase pendiente de persistencia nativa. Esto no significa “8 de 9 pruebas totales”: la cobertura exhaustiva de permutaciones y variantes aún no está enumerada como un conjunto finito de casos de prueba.
+
 ### Criterios para cerrar el gate
 
 1. Mantener separados los resultados de detección, materialización, resolución humana, persistencia y ejecución. Un PASS de una columna no implica PASS de las restantes.
