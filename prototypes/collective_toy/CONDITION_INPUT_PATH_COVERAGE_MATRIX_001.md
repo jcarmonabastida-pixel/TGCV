@@ -213,3 +213,24 @@ Commit `f7f8a79535b9e81f56b51ed1af1e1f3bf56d2b92`: navegador/cross-runtime PASS 
 
 **Alcance:** el caso inverso de resolución humana ya tiene evidencia automatizada en ambos workflows. No equivale a una prueba exhaustiva de todas las permutaciones ni de todas las clases de conflicto. La PR #95 sigue abierta, en borrador y sin fusionar; `main` permanece intacta.
 
+## 6. Matriz contractual integrada de conflictos de correspondencia
+
+**Base de evidencia:** suite `web/cross_runtime_test.cjs`, commit `a0a9b2fc3907ad5aa5d1fbd9193f1d3b8c198ad3`; ambos workflows PASS ([navegador](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40190227625), [motor sintético](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40190227644)). Esta matriz clasifica evidencia existente; no declara aceptación exhaustiva del contrato.
+
+| Clase de conflicto | Detección/abstención | Orden de entrada | Resolución explícita en UI | Persistencia/recarga | `T_acc` vs ejecución y trayectorias | Estado |
+|---|---|---|---|---|---|---|
+| Lote: dos transiciones distintas compiten por una transformación | **PASS**: cero mappings; ambas candidatas reciben `CONFLICT_NEEDS_REVIEW` | **PASS**: lote directo y lote invertido generan los mismos IDs de conflicto | **PASS**: aceptación de ambas bloqueada como lote; se prueba rechazo explícito de una y aplicación de la otra | **PASS**: decisión ACCEPTED/REJECTED y mapping seleccionado se conservan tras recarga | **PASS**: comparación estructurada de `T_acc` con ejecución y trayectorias antes/después de recarga | Cubierto en los fixtures probados |
+| Ambigüedad: una transición fuente tiene varios destinos exactos posibles | **PASS**: ambas candidatas `NEEDS_REVIEW`; ninguna se materializa | **PASS**: invertir candidatas no cambia el conjunto de conflictos | **PENDIENTE como ciclo completo**: la suite prueba el bloqueo, pero esta matriz no acredita aquí todas las rutas de resolución humana de la ambigüedad | **PENDIENTE para resolución de esta clase** | **PENDIENTE para ciclo completo de esta clase** | Detección cubierta; ciclo completo no cerrado |
+| Colisión con una correspondencia efectiva previa | **PASS**: la aplicación conflictiva falla cerrada y no deja mappings efectivos parciales | **PASS** para la secuencia de conflicto probada; no equivale a enumerar todas las permutaciones | **PASS**: rechazar explícitamente la candidata conflictiva permite aplicar la selección no conflictiva | **PASS**: el mapping elegido se conserva y se reaplica tras recarga | **PASS**: `T_acc` estructurado concuerda con la ejecución y las trayectorias se conservan en el fixture probado | Cubierto en ambos órdenes de selección probados |
+| Colisión con correspondencia declarada por el usuario | **PASS**: no se genera propuesta incompatible y se preserva la declaración exacta | **No aplica al fixture actual**: no hay propuestas incompatibles entre las que ordenar | **PENDIENTE**: no se atribuye resolución humana de una declaración que no debe sobrescribirse | **PENDIENTE** para una matriz específica de declaración + recarga | **Parcial**: se comprueba ausencia de mapping derivado efectivo; no se atribuye cobertura universal de resultados de ejecución | Protección de declaración cubierta; ciclo integrado limitado |
+
+### Criterios para cerrar el gate
+
+1. Mantener separados los resultados de detección, materialización, resolución humana, persistencia y ejecución. Un PASS de una columna no implica PASS de las restantes.
+2. Para cada fila que se declare cerrada, conservar evidencia de: estado previo, estado en conflicto, decisión explícita, conjunto de mappings efectivos, `T_acc` estructurado, alcanzabilidad, trayectorias y repetición tras recarga.
+3. Para los casos de orden, comparar los resultados normalizados (IDs de candidatos/conflictos y mapping final), no solo que ambos órdenes terminen sin excepción.
+4. Completar el ciclo de ambigüedad de destino y delimitar la protección de mappings declarados antes de afirmar que la matriz de clases de conflicto está cerrada.
+5. No rebajar aserciones, no convertir automáticamente `NEEDS_REVIEW` en `PROPOSED`, y no usar los resultados de CI como evidencia de validez científica general de TGCV.
+
+**Conclusión del gate:** cobertura fuerte para lote competitivo y colisión contra mapping efectivo, con detección explícita de brechas en la ambigüedad y la declaración del usuario. El gate contractual integrado permanece **PENDIENTE**. La PR #95 permanece abierta, en borrador y sin fusionar.
+
