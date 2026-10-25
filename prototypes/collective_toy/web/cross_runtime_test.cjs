@@ -2536,6 +2536,21 @@ function pythonJson(source, input) {
         el.dispatchEvent(new Event("input", {bubbles:true}));
         return parsed;
       }, model);
+      // Establish an execution baseline before exposing the ambiguous candidates.
+      await sourceCollisionPage.locator("#run").click();
+      await sourceCollisionPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      const ambiguityBaselineExecution = await sourceCollisionPage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+          reachable_states: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        }]));
+      });
+      await assertStructuredTAccMatchesExecution(sourceCollisionPage, "single-source ambiguity baseline");
       const catalogueDetails = sourceCollisionPage.locator("#correspondence-review-section details").filter({
         has: sourceCollisionPage.locator("#tgcv-target-catalogue")
       });
@@ -2576,6 +2591,22 @@ function pythonJson(source, input) {
         "ambiguous source-transition candidates must not materialize as effective mappings");
       assert.ok(ambiguity.persisted.every(record => (record.mappings || []).length === 0),
         "ambiguous source-transition candidates must persist no active effective mapping");
+      await sourceCollisionPage.locator("#run").click();
+      await sourceCollisionPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      const ambiguityExecutionAfterDerivation = await sourceCollisionPage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id, result]) => [id, {
+          reachable_states: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        }]));
+      });
+      assert.deepEqual(ambiguityExecutionAfterDerivation, ambiguityBaselineExecution,
+        "deriving unresolved single-source ambiguity must not alter reachable states or execution trajectories");
+      await assertStructuredTAccMatchesExecution(sourceCollisionPage, "single-source ambiguity unresolved");
     } finally { await sourceCollisionContext.close(); }
 
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
