@@ -2578,6 +2578,75 @@ function pythonJson(source, input) {
       await assertStructuredTAccMatchesExecution(sameTransitionPage, "declared-transition conflict unresolved");
     } finally { await sameTransitionDeclaredContext.close(); }
 
+    // Declared↔declared pairwise conflicts must be reported without rewriting declarations.
+    const declaredMappingPairContext = await browser.newContext();
+    try {
+      const declaredPairPage = await declaredMappingPairContext.newPage();
+      await declaredPairPage.goto("file://" + htmlPath);
+      await declaredPairPage.locator("#load").click();
+      const declaredPairModel = await declaredPairPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-declared-mapping-pair-conflicts";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B","C"];
+        parsed.transitions = [
+          {id:"t_declared_ab_1",source:"A",target:"B"},
+          {id:"t_declared_ab_2",source:"A",target:"B"},
+          {id:"t_declared_ac",source:"A",target:"C"}
+        ];
+        parsed.relations = [];
+        parsed.tgcv_mapping = {
+          schema:"tgcv-explicit-mapping-001",
+          mapping_rule:"user-declared-map-v1",
+          provenance:"user-declared",
+          mappings:[
+            {system_transition_id:"t_declared_ab_1",tgcv_transformation_id:"T_SHARED_AB"},
+            {system_transition_id:"t_declared_ab_2",tgcv_transformation_id:"T_SHARED_AB"},
+            {system_transition_id:"t_declared_ac",tgcv_transformation_id:"T_AC_1"},
+            {system_transition_id:"t_declared_ac",tgcv_transformation_id:"T_AC_2"}
+          ],
+          relations:[]
+        };
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        return parsed;
+      }, model);
+      const declaredPairBefore = JSON.parse(JSON.stringify(declaredPairModel.tgcv_mapping));
+      const pairDetails = declaredPairPage.locator("#correspondence-review-section details").filter({
+        has: declaredPairPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await pairDetails.evaluate(el => el.open))) await pairDetails.locator("summary").click();
+      await declaredPairPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001",version:"declared-pair-conflicts-v1",
+        transformations:[
+          {id:"T_SHARED_AB",source_state:"A",target_state:"B"},
+          {id:"T_AC_1",source_state:"A",target_state:"C"},
+          {id:"T_AC_2",source_state:"A",target_state:"C"}
+        ]
+      });
+      await declaredPairPage.locator("#derive-tgcv-correspondences").click();
+      await declaredPairPage.waitForFunction(() =>
+        /conflictos entre mappings declarados/i.test(
+          document.querySelector("#correspondence-review-status")?.textContent || ""
+        ), null, {timeout:5000});
+      const declaredPairSnapshot = await declaredPairPage.evaluate(() => ({
+        status:document.querySelector("#correspondence-review-status")?.textContent || "",
+        model:JSON.parse(document.querySelector("#model").value),
+        proposals:document.querySelectorAll("#correspondence-review-list article").length,
+        result:window.correspondenceReviewState || null
+      }));
+      assert.deepEqual(declaredPairSnapshot.model.tgcv_mapping, declaredPairBefore,
+        "declared↔declared conflicts must preserve every original declaration");
+      assert.equal(declaredPairSnapshot.proposals, 0,
+        "declared mappings must not be converted into derived proposals to resolve their own conflict");
+      assert.match(declaredPairSnapshot.status, /conflictos entre mappings declarados/i,
+        "the UI must report conflicts between declared mappings instead of silently ignoring them");
+    } finally { await declaredMappingPairContext.close(); }
+
     // Declared-mapping lifecycle: preserve the user's mapping and its execution semantics
     // across catalogue derivation and a page reload, without converting declarations into
     // derived-effective records or silently changing condition reachability.
