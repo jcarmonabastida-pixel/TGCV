@@ -89,3 +89,17 @@ No se abrirán suites individuales por cada combinación ni se repetirán las 60
 **Presupuesto mínimo planificado: 2 ejecuciones de CI**, una de Motor sintético y una de Navegador y concordancia, sobre el mismo commit. Las variantes de fixture se ejecutan dentro de la suite agrupada; no se lanzan como workflows separados. Si el bloque falla, solo se repiten los workflows afectados por la corrección, no se programa por adelantado ninguna batería adicional.
 
 La persistencia de borrador tras recarga ya tiene PASS sin reinyección manual; no se repite como test aislado. Los límites de perfil/origen o almacenamiento borrado quedan fuera salvo que el contrato del producto los exija explícitamente.
+
+
+## Evidencia posterior: colisión declarada ↔ derivada agrupada
+
+**PASS en ambos workflows** sobre `17ac9e28f182dee6707eeb6cb31cb1bfd23de858`:
+
+- [Navegador y concordancia](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40198397842)
+- [Motor sintético](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40198397820)
+
+El test verifica que una candidata derivada no reclame una transformación ya asignada por el mapping declarado, que la exclusión quede explícita, que una propuesta no conflictiva pueda hacerse efectiva y que el mapping fuente declarado se restaure tras recarga nativa sin reinyección manual.
+
+Este caso cierra únicamente esta colisión declarada↔derivada. No se ejecuta el grafo de fixture con transiciones duplicadas, por lo que no atribuye a este caso cobertura de ejecución/alcanzabilidad/trayectorias; esas propiedades se mantienen en el fixture de ciclo de vida integrado separado.
+
+**Gate contractual global: PENDIENTE.** No se consideran cerradas todas las interacciones cruzadas ni se reabren las 60 permutaciones declarada↔declarada.
