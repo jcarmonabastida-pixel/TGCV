@@ -331,3 +331,15 @@ En el mismo fixture agrupado, tras restaurar el ámbito de catálogo:
 2. Se acepta explícitamente `t_cd`, se aplica una vez y se repite la aplicación. El conjunto efectivo y el almacenamiento persistido deben permanecer idénticos entre ambas aplicaciones; la decisión rechazada debe seguir presente.
 
 **Estado:** las aserciones están implementadas en el bloque agrupado; pendiente obtener PASS en Navegador y concordancia y Motor sintético sobre este commit. No declarar el gate cerrado hasta comprobar ambos resultados.
+
+
+## 10. Rechazo e idempotencia — PASS confirmado
+
+Commit probado: `6b5ee82bb9935a051a312ea12b4bc3233c27e943`.
+
+- [Navegador y concordancia — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40203256337)
+- [Motor sintético — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40203256339)
+
+La suite del navegador ejecutó las aserciones agrupadas de rechazo sin cambio del snapshot operacional, persistencia de `REJECTED`, y reaplicación idempotente (conjunto efectivo y almacenamiento persistido sin cambios entre la primera y segunda aplicación). El motor sintético también pasa.
+
+**Resultado:** los dos aspectos residuales quedan cubiertos por evidencia de CI en este commit. Esto cierra este bloque de cobertura agrupada; no equivale a afirmar validez científica general de TGCV ni recuperación automática de declaraciones desde persistencia nativa. PR #95 sigue en borrador; no se ha fusionado a `main`.
