@@ -171,7 +171,7 @@ Each candidate must carry:
 9. Export/import/replay preserves candidate status, evidence, provenance, and source-model linkage.
 
 ### Implementation status and gate
-This section defines the required contract; it does not claim that candidate derivation or its acceptance workflow is already implemented. Treat the capability as **PENDING** until implementation and grouped adversarial tests demonstrate the criteria above. The existing evaluator CI PASS does not satisfy this gate by itself. This contract addition does not authorize scientific execution, alter the stabilized scientific Core, or authorize promotion to `main`.
+This section defines the required contract. The bounded exact-boundary derivation/review/materialization path is implemented, and the minimum grouped correspondence lifecycle integration gate is **PASS** on code commit `1491c2dce624e42da3ef6fb682a4645700612764` (browser/cross-runtime run [40208152055](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40208152055); synthetic engine run [40208152054](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40208152054)). This does **not** close the complete acceptance criteria in §10.6: the three-path condition-entry acceptance suite, a general user-facing resolution workflow for all `CONFLICT_NEEDS_REVIEW` types, and restoration of conflict-resolution decisions after browser-context restart remain open/unverified. Derivation remains exact-boundary only, not general semantic inference. This contract does not authorize scientific execution, alter the stabilized scientific Core, or authorize promotion to `main`.
 
 
 ## 10. Transition-condition entry paths and correspondence integration gate (2026-10-22)
