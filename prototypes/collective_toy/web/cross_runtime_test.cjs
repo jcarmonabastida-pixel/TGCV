@@ -3202,7 +3202,7 @@ function pythonJson(source, input) {
             {id:"T_AC",source_state:"A",target_state:"C"},
             {id:"T_CD",source_state:"C",target_state:"D"}
           ]
-        }, null, 2));
+        });
         await residualPage.locator("#run").click();
         await residualPage.waitForFunction(() => /ejecución completada/i.test(
           document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
