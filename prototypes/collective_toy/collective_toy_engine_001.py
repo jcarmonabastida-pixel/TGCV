@@ -204,7 +204,7 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
     for scenario in scenarios:
         if not isinstance(scenario, dict):
             raise ModelValidationError("each scenario must be an object")
-        _reject_unknown_keys(scenario, {"id", "disabled_transitions"}, "scenario")
+        _reject_unknown_keys(scenario, {"id", "disabled_transitions", "condition_evaluations"}, "scenario")
         sid = scenario.get("id")
         if not isinstance(sid, str) or not sid:
             raise ModelValidationError("scenario id must be a non-empty string")
@@ -223,6 +223,20 @@ def validate_model(model: dict[str, Any]) -> tuple[dict[str, str], dict[str, Tra
             raise ModelValidationError(f"scenario {sid} references unknown transitions: {sorted(unknown)}")
         if len(disabled) != len(set(disabled)):
             raise ModelValidationError(f"scenario {sid} repeats a disabled transition")
+        evaluations = scenario.get("condition_evaluations", {})
+        if not isinstance(evaluations, dict):
+            raise ModelValidationError(f"condition_evaluations for {sid} must be an object")
+        for tid, evaluation in evaluations.items():
+            transition = transitions.get(tid)
+            if transition is None or transition.condition is None:
+                raise ModelValidationError(f"condition evaluation for {tid} requires a known conditional transition")
+            if not isinstance(evaluation, dict):
+                raise ModelValidationError(f"condition evaluation for {tid} must be an object")
+            _reject_unknown_keys(evaluation, {"condition", "result"}, f"condition evaluation for {tid}")
+            if evaluation.get("condition") != transition.condition:
+                raise ModelValidationError(f"condition evaluation for {tid} does not match the current condition text")
+            if evaluation.get("result") not in {"TRUE", "FALSE", "UNKNOWN"}:
+                raise ModelValidationError(f"condition evaluation for {tid} must be TRUE, FALSE, or UNKNOWN")
     if "baseline" not in scenario_ids:
         raise ModelValidationError("a scenario with id 'baseline' is required")
 
@@ -252,10 +266,15 @@ def _temporal_scenario_result(
     for relation in model.get("relations", []):
         prerequisites.setdefault(relation["transition_id"], set()).add(relation["requires_transition_id"])
     adjacency: dict[str, list[Transition]] = {s: [] for s in model["states"]}
+    evaluations = scenario.get("condition_evaluations", {})
     for transition in transitions.values():
-        # Conditions are preserved in the model but never evaluated by this engine.
-        # Therefore conditional transitions are not traversable in reachability or trajectories.
-        if transition.condition is None:
+        evaluation = evaluations.get(transition.id, {})
+        resolved_true = (
+            transition.condition is not None
+            and evaluation.get("condition") == transition.condition
+            and evaluation.get("result") == "TRUE"
+        )
+        if transition.condition is None or resolved_true:
             adjacency[transition.source].append(transition)
     for outgoing in adjacency.values():
         outgoing.sort(key=lambda item: item.id)
@@ -390,17 +409,22 @@ def execute_sequence(
         required_id: str | None = None
         if transition is None:
             reason = "unknown_transition"
-        elif transition.condition is not None:
-            reason = "condition_not_evaluated"
-        elif transition_id in disabled:
-            reason = "transition_disabled_by_scenario"
-        elif transition.source != current:
-            reason = "transition_source_mismatch"
         else:
-            missing = sorted(prerequisites.get(transition_id, set()) - set(history))
-            if missing:
-                reason = "temporal_prerequisite_not_satisfied"
-                required_id = missing[0]
+            if transition.condition is not None:
+                evaluation = scenario.get("condition_evaluations", {}).get(transition_id, {})
+                if evaluation.get("condition") != transition.condition or evaluation.get("result") not in {"TRUE", "FALSE", "UNKNOWN"}:
+                    reason = "condition_not_evaluated"
+                elif evaluation.get("result") != "TRUE":
+                    reason = "condition_not_true"
+            if reason is None and transition_id in disabled:
+                reason = "transition_disabled_by_scenario"
+            if reason is None and transition.source != current:
+                reason = "transition_source_mismatch"
+            if reason is None:
+                missing = sorted(prerequisites.get(transition_id, set()) - set(history))
+                if missing:
+                    reason = "temporal_prerequisite_not_satisfied"
+                    required_id = missing[0]
         if reason:
             blocked = {"index": index, "transition_id": transition_id, "reason": reason}
             if required_id is not None:
