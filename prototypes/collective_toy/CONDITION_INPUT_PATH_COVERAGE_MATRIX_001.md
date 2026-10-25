@@ -207,3 +207,9 @@ Commit `3ad79524c2b842348487d45431738b009b396024`: navegador/cross-runtime PASS 
 
 **Siguiente gate integrado:** matriz cruzada de tipos de conflicto y orden de candidatas. Para cada fixture, registrar el estado previo, verificar que el conflicto sin resolver no deja un conjunto parcial efectivo, comprobar la resolución humana correspondiente y comparar mapping declarado, mappings efectivos, `T_acc`, estados alcanzables y trayectorias antes/después de recarga. No rebajar aserciones ni inferir validez científica a partir del PASS de CI.
 
+### Colisión integrada con orden de aceptación inverso — PASS
+
+Commit `f7f8a79535b9e81f56b51ed1af1e1f3bf56d2b92`: navegador/cross-runtime PASS ([run 40190003417](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40190003417)) y motor sintético PASS ([run 40190003487](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40190003487)). La prueba UI invierte qué candidata se acepta y luego conserva: acepta primero `t_ab_duplicate`, provoca una colisión con `t_ab_primary`, exige cero mappings efectivos hasta resolver, rechaza explícitamente la candidata principal y verifica que solo `t_ab_duplicate → T_SHARED_AB` queda efectiva. Comprueba la concordancia entre `T_acc` y ejecución, recarga y confirma la misma correspondencia y las mismas trayectorias.
+
+**Alcance:** el caso inverso de resolución humana ya tiene evidencia automatizada en ambos workflows. No equivale a una prueba exhaustiva de todas las permutaciones ni de todas las clases de conflicto. La PR #95 sigue abierta, en borrador y sin fusionar; `main` permanece intacta.
+
