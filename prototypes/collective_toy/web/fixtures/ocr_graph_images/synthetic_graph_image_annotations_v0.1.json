@@ -1,0 +1,78 @@
+{
+  "dataset_id": "TGCV-OCR-SYNTHETIC-STRUCTURE-001",
+  "dataset_version": "0.1.0",
+  "status": "synthetic-development-fixtures-only",
+  "purpose": "Initial rasterized visual graph extraction benchmark scaffolding; not evidence of real-world OCR quality.",
+  "image_dimensions_px": [320, 180],
+  "coordinate_convention": "Origin at top-left; x increases rightward; y increases downward. Node bbox is [x_min,y_min,x_max,y_max]. Edge polyline coordinates describe centerline from source node boundary to target node boundary; arrowhead tip is at the final point.",
+  "images": [
+    {
+      "image_id": "SYN-LINEAR-001",
+      "file": "images/SYN-LINEAR-001.png",
+      "sha256": "e84efc7158283fe7c3b4d9693c0be13150b2c9b36556a2451812c92578fbb456",
+      "source_kind": "synthetic",
+      "split": "development",
+      "strata": ["clean_text", "directed_edges"],
+      "reference_text": "A -> B; B -> C",
+      "nodes": [
+        {"id":"A","label":"A","center":[50,90],"bbox":[35,75,65,105]},
+        {"id":"B","label":"B","center":[160,90],"bbox":[145,75,175,105]},
+        {"id":"C","label":"C","center":[270,90],"bbox":[255,75,285,105]}
+      ],
+      "edges": [
+        {"id":"e1","source_node_id":"A","target_node_id":"B","direction":"directed","arrow_status":"clear","polyline":[[65,90],[145,90]]},
+        {"id":"e2","source_node_id":"B","target_node_id":"C","direction":"directed","arrow_status":"clear","polyline":[[175,90],[255,90]]}
+      ],
+      "annotation_status":{"annotator_count":1,"adjudicated":false}
+    },
+    {
+      "image_id": "SYN-BRANCH-001",
+      "file": "images/SYN-BRANCH-001.png",
+      "sha256": "4166e9a1633f28ca20ff8d86f38e62f38b4bb917e6f0ef491bf003c36dca867d",
+      "source_kind": "synthetic",
+      "split": "development",
+      "strata": ["clean_text", "directed_edges", "dense_layout"],
+      "reference_text": "A -> B; A -> C; B -> D; C -> D",
+      "nodes": [
+        {"id":"A","label":"A","center":[50,90],"bbox":[35,75,65,105]},
+        {"id":"B","label":"B","center":[160,45],"bbox":[145,30,175,60]},
+        {"id":"C","label":"C","center":[160,135],"bbox":[145,120,175,150]},
+        {"id":"D","label":"D","center":[270,90],"bbox":[255,75,285,105]}
+      ],
+      "edges": [
+        {"id":"e1","source_node_id":"A","target_node_id":"B","direction":"directed","arrow_status":"clear","polyline":[[64,84],[146,49]]},
+        {"id":"e2","source_node_id":"A","target_node_id":"C","direction":"directed","arrow_status":"clear","polyline":[[64,96],[146,131]]},
+        {"id":"e3","source_node_id":"B","target_node_id":"D","direction":"directed","arrow_status":"clear","polyline":[[174,49],[256,84]]},
+        {"id":"e4","source_node_id":"C","target_node_id":"D","direction":"directed","arrow_status":"clear","polyline":[[174,131],[256,96]]}
+      ],
+      "annotation_status":{"annotator_count":1,"adjudicated":false}
+    },
+    {
+      "image_id": "SYN-CROSSING-001",
+      "file": "images/SYN-CROSSING-001.png",
+      "sha256": "ac09e35c1ecd94b1b5ee1cf0cffe1d0febb262bec26b32f9e6b9885ec9f18ba2",
+      "source_kind": "synthetic",
+      "split": "development",
+      "strata": ["directed_edges", "crossing_edges", "negative_or_ambiguous"],
+      "reference_text": "A -> B; C -> D",
+      "nodes": [
+        {"id":"A","label":"A","center":[50,45],"bbox":[35,30,65,60]},
+        {"id":"B","label":"B","center":[270,135],"bbox":[255,120,285,150]},
+        {"id":"C","label":"C","center":[50,135],"bbox":[35,120,65,150]},
+        {"id":"D","label":"D","center":[270,45],"bbox":[255,30,285,60]}
+      ],
+      "edges": [
+        {"id":"e1","source_node_id":"A","target_node_id":"B","direction":"directed","arrow_status":"clear","polyline":[[64,50],[256,130]]},
+        {"id":"e2","source_node_id":"C","target_node_id":"D","direction":"directed","arrow_status":"clear","polyline":[[64,130],[256,50]]}
+      ],
+      "annotation_status":{"annotator_count":1,"adjudicated":false}
+    }
+  ],
+  "limitations": [
+    "Synthetic fixtures only; no generalization claim.",
+    "The crossing fixture tests whether an intersection is incorrectly hallucinated as a node.",
+    "The branch fixture tests bifurcation and convergence.",
+    "The images are generated from simple geometry and do not represent real screenshots, scans, or photographs.",
+    "Human review is still required before accepting an imported graph."
+  ]
+}
