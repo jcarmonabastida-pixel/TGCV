@@ -2634,6 +2634,131 @@ function pythonJson(source, input) {
       await assertStructuredTAccMatchesExecution(sourceCollisionPage, "single-source ambiguity unresolved");
     } finally { await sourceCollisionContext.close(); }
 
+    // Integrated resolution path: disambiguate by refining the declared target catalogue,
+    // then explicitly accept/apply the unique candidate and verify execution + reload.
+    const resolvedSourceAmbiguityContext = await browser.newContext();
+    try {
+      const resolvedPage = await resolvedSourceAmbiguityContext.newPage();
+      await resolvedPage.goto("file://" + htmlPath);
+      await resolvedPage.locator("#load").click();
+      await resolvedPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-source-target-ambiguity-resolved";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [{id:"t_ab_single",source:"A",target:"B"}];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      const catalogueDetails = resolvedPage.locator("#correspondence-review-section details").filter({
+        has: resolvedPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await catalogueDetails.evaluate(el => el.open))) await catalogueDetails.locator("summary").click();
+      const setCatalogue = async transformations => resolvedPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001", version:"ui-source-target-ambiguity-resolution-v1",
+        transformations
+      });
+      await setCatalogue([
+        {id:"T_SOURCE_AB_1",source_state:"A",target_state:"B"},
+        {id:"T_SOURCE_AB_2",source_state:"A",target_state:"B"}
+      ]);
+      await resolvedPage.locator("#derive-tgcv-correspondences").click();
+      await resolvedPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      assert.ok(await resolvedPage.locator("#correspondence-review-list").innerText().then(t => /NEEDS_REVIEW/.test(t)),
+        "duplicate exact-boundary targets must initially require disambiguation");
+      await setCatalogue([{id:"T_SOURCE_AB_1",source_state:"A",target_state:"B"}]);
+      await resolvedPage.locator("#derive-tgcv-correspondences").click();
+      await resolvedPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 1,
+        null, {timeout:5000});
+      const uniqueCandidate = resolvedPage.locator("#correspondence-review-list article").first();
+      assert.match(await uniqueCandidate.innerText(), /PROPOSED/,
+        "catalogue refinement to one exact-boundary target must produce one reviewable proposal");
+      const acceptUnique = uniqueCandidate.getByRole("button", {name:"Aceptar propuesta"});
+      assert.equal(await acceptUnique.isDisabled(), false,
+        "the uniquely disambiguated candidate must permit explicit acceptance");
+      await acceptUnique.click();
+      await resolvedPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await resolvedPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      await resolvedPage.locator("#run").click();
+      await resolvedPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(resolvedPage, "source ambiguity resolved by catalogue refinement");
+      const resolvedBeforeReload = await resolvedPage.evaluate(() => ({
+        mappings:(window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => ({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id})),
+        scenarios:Object.fromEntries(Object.entries(window.lastPackage?.result?.scenario_results || {}).map(([id, result]) => [id, {
+          reachable_states:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({state:step.state,transition:step.transition || null})))
+        }]))
+      }));
+      await resolvedPage.reload();
+      await resolvedPage.locator("#load").click();
+      await resolvedPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-source-target-ambiguity-resolved";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [{id:"t_ab_single",source:"A",target:"B"}];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      const reloadedDetails = resolvedPage.locator("#correspondence-review-section details").filter({
+        has: resolvedPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await reloadedDetails.evaluate(el => el.open))) await reloadedDetails.locator("summary").click();
+      await resolvedPage.locator("#tgcv-target-catalogue").evaluate(el => {
+        el.value = JSON.stringify({
+          schema:"tgcv-target-catalogue-001", version:"ui-source-target-ambiguity-resolution-v1",
+          transformations:[{id:"T_SOURCE_AB_1",source_state:"A",target_state:"B"}]
+        }, null, {bubbles:true});
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      });
+      await resolvedPage.locator("#derive-tgcv-correspondences").click();
+      await resolvedPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 1,
+        null, {timeout:5000});
+      await resolvedPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await resolvedPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      const resolvedAfterReload = await resolvedPage.evaluate(() => ({
+        mappings:(window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => ({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}))
+      }));
+      assert.deepEqual(resolvedAfterReload.mappings, resolvedBeforeReload.mappings,
+        "the explicitly resolved mapping must remain effective after reload");
+      await resolvedPage.locator("#run").click();
+      await resolvedPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      const executionAfterReload = await resolvedPage.evaluate(() =>
+        Object.fromEntries(Object.entries(window.lastPackage?.result?.scenario_results || {}).map(([id, result]) => [id, {
+          reachable_states:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({state:step.state,transition:step.transition || null})))
+        }]))
+      );
+      assert.deepEqual(executionAfterReload, resolvedBeforeReload.scenarios,
+        "explicit ambiguity resolution must preserve execution trajectories after reload");
+      await assertStructuredTAccMatchesExecution(resolvedPage, "resolved source ambiguity after reload");
+    } finally { await resolvedSourceAmbiguityContext.close(); }
+
     const invalid = {...model, rule_profile:{type:"relation_guarded_graph",version:"1"}};
     await page.locator("#model").evaluate((el, value) => {
       el.value = value;
