@@ -597,6 +597,25 @@ async function deriveTgcvCorrespondenceCandidates(systemModel,catalogue){
  var declaredMappings=systemModel.tgcv_mapping&&Array.isArray(systemModel.tgcv_mapping.mappings)?systemModel.tgcv_mapping.mappings:[];
  var declaredTransitionIds=new Set(declaredMappings.map(function(m){return m.system_transition_id}));
  var declaredTransformationIds=new Set(declaredMappings.map(function(m){return m.tgcv_transformation_id}));
+ var declaredMappingConflicts=[],byDeclaredTransition=new Map(),byDeclaredTarget=new Map();
+ declaredMappings.forEach(function(m){
+  if(m&&typeof m.system_transition_id==="string"){
+   if(!byDeclaredTransition.has(m.system_transition_id))byDeclaredTransition.set(m.system_transition_id,[]);
+   byDeclaredTransition.get(m.system_transition_id).push(m);
+  }
+  if(m&&typeof m.tgcv_transformation_id==="string"){
+   if(!byDeclaredTarget.has(m.tgcv_transformation_id))byDeclaredTarget.set(m.tgcv_transformation_id,[]);
+   byDeclaredTarget.get(m.tgcv_transformation_id).push(m);
+  }
+ });
+ byDeclaredTransition.forEach(function(group,id){if(group.length>1)declaredMappingConflicts.push({
+  code:"DECLARED_TRANSITION_MULTIPLE_TARGETS",system_transition_id:id,
+  mappings:group.map(function(m){return {system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}})
+ })});
+ byDeclaredTarget.forEach(function(group,id){if(group.length>1)declaredMappingConflicts.push({
+  code:"DECLARED_TARGET_MULTIPLE_TRANSITIONS",tgcv_transformation_id:id,
+  mappings:group.map(function(m){return {system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}})
+ })});
  for(var transition of (systemModel.transitions||[])){
   // Explicit user mappings are authoritative: do not generate a derived proposal
   // for an already-mapped transition or a transformation already claimed by one.
@@ -614,7 +633,7 @@ async function deriveTgcvCorrespondenceCandidates(systemModel,catalogue){
    candidates.push({candidate_id:"tcand-"+(await hash(identity,"correspondence_candidate_id")),algorithm:identity.algorithm,algorithm_version:"1",catalogue_version:catalogue.version,source_model_id:systemModel.model_id||null,source_model_sha256:sourceDigest,system_transition_id:transition.id,tgcv_transformation_id:target.id,status:matches.length===1?"PROPOSED":"NEEDS_REVIEW",evidence:{kind:"exact_declared_state_boundary_match",system_source_state:transition.source,system_target_state:transition.target,catalogue_source_state:target.source_state,catalogue_target_state:target.target_state,condition:transition.condition||null},rationale:matches.length===1?"Los estados de origen y destino coinciden exactamente con una única transformación del catálogo declarado; la correspondencia sigue siendo una propuesta.":"Hay varias transformaciones del catálogo con los mismos estados de origen y destino; requiere revisión explícita.",decision:null});
   }
  }
- return {schema:"tgcv-correspondence-candidates-001",algorithm:"tgcv-correspondence-exact-boundary-001",algorithm_version:"1",source_model_sha256:sourceDigest,catalogue_version:catalogue.version,candidates:candidates,excluded_by_declared_mapping:excludedByDeclaredMapping};
+ return {schema:"tgcv-correspondence-candidates-001",algorithm:"tgcv-correspondence-exact-boundary-001",algorithm_version:"1",source_model_sha256:sourceDigest,catalogue_version:catalogue.version,candidates:candidates,excluded_by_declared_mapping:excludedByDeclaredMapping,declared_mapping_conflicts:declaredMappingConflicts};
 }
 var correspondenceReviewState={sourceModelSha256:null,catalogueVersion:null,catalogueSha256:null,catalogue:null,sourceModelCanonical:null,candidates:[]};
 var effectiveCorrespondenceState={sourceModelSha256:null,catalogueVersion:null,catalogueSha256:null,sourceModelCanonical:null,catalogueCanonical:null,mappings:[]};
@@ -765,7 +784,7 @@ async function deriveAndRenderTgcvCorrespondences(){
   archiveObsoleteEffectiveScopes(model,result.source_model_sha256,catalogueSha256);
   result.candidates.forEach(function(c){var prior=decisions[c.candidate_id];if(prior&&prior.source_model_sha256===result.source_model_sha256&&prior.catalogue_version===result.catalogue_version&&prior.catalogue_sha256===catalogueSha256&&(prior.decision==="ACCEPTED"||prior.decision==="REJECTED")&&!hasStaleEffectiveCorrespondence(c.candidate_id))c.decision=prior.decision});
   correspondenceReviewState={sourceModelSha256:result.source_model_sha256,catalogueVersion:result.catalogue_version,catalogueSha256:catalogueSha256,catalogue:JSON.parse(JSON.stringify(catalogue)),sourceModelCanonical:canonical(model),candidates:result.candidates};effectiveCorrespondenceState={sourceModelSha256:result.source_model_sha256,catalogueVersion:result.catalogue_version,catalogueSha256:catalogueSha256,sourceModelCanonical:canonical(model),catalogueCanonical:canonical(catalogue),mappings:loadEffectiveCorrespondences(result.source_model_sha256,result.catalogue_version,catalogueSha256)};window.effectiveCorrespondenceState=effectiveCorrespondenceState;
-  renderCorrespondenceReview();var exclusionNote=result.excluded_by_declared_mapping.length?" Se han excluido "+result.excluded_by_declared_mapping.length+" coincidencias por conflicto con correspondencias declaradas por el usuario; estas reservas se conservan.":"";$("correspondence-review-status").textContent="Generadas "+result.candidates.length+" propuestas. Aún no modifican el grafo TGCV."+exclusionNote+(scopeChanged?" El modelo o catálogo cambió: las decisiones previas quedan como histórico y no se reutilizan en este ámbito.":"");
+  renderCorrespondenceReview();var exclusionNote=result.excluded_by_declared_mapping.length?" Se han excluido "+result.excluded_by_declared_mapping.length+" coincidencias por conflicto con correspondencias declaradas por el usuario; estas reservas se conservan.":"";var declaredConflictNote=(result.declared_mapping_conflicts||[]).length?" ATENCIÓN: se detectaron "+result.declared_mapping_conflicts.length+" conflictos entre mappings declarados; no se modifican ni se resuelven automáticamente.":"";$("correspondence-review-status").textContent="Generadas "+result.candidates.length+" propuestas. Aún no modifican el grafo TGCV."+exclusionNote+declaredConflictNote+(scopeChanged?" El modelo o catálogo cambió: las decisiones previas quedan como histórico y no se reutilizan en este ámbito.":"");
  }catch(e){$("correspondence-review-status").textContent="No se pudieron generar propuestas: "+(e&&e.message?e.message:String(e))}
 }
 $("derive-tgcv-correspondences").addEventListener("click",deriveAndRenderTgcvCorrespondences);
