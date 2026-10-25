@@ -124,3 +124,13 @@ El bloque implementado en `d12bb02f40ac0ec841ae33bfc0fa3c445ade8aa0` pasa en amb
 Cubre snapshots baseline/propuestas pendientes, invalidación por cambio de catálogo, historial `STALE`, consistencia operacional posterior a la invalidación y no reactivación automática al restaurar el catálogo.
 
 **Límite:** este PASS no demuestra por sí solo que una decisión rechazada se haya comparado explícitamente con el baseline ni que la reaplicación idempotente se haya verificado dentro del mismo bloque. La cobertura global queda pendiente hasta enlazar evidencia existente para ambas propiedades o incorporarlas al bloque agrupado. No se reabren las 60 permutaciones declarada↔declarada.
+
+
+## Dos aserciones residuales añadidas al bloque agrupado
+
+En `520b82d43506cf141c880787b6713d835b897913` se añaden al mismo fixture:
+
+- **Rechazo frente al baseline:** rechazo explícito de `t_ab`, comparación exacta de snapshot operacional (mapping declarado/overlay efectivo, `T_acc`, grafo, alcanzabilidad y trayectorias) y persistencia de `REJECTED`.
+- **Idempotencia:** aceptación explícita de `t_cd`, aplicación duplicada y comparación exacta de conjunto efectivo y almacenamiento persistido; el rechazo previo debe conservarse.
+
+La implementación no abre workflows adicionales ni reejecuta las 60 permutaciones declarada↔declarada. **Pendiente de CI**: el gate solo se considera cerrado cuando ambos workflows pasan en este commit.
