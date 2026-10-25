@@ -261,3 +261,17 @@ Este inventario separa clases semánticas de conflicto de permutaciones exhausti
 
 **Conclusión del gate:** cobertura fuerte para lote competitivo, colisión contra mapping efectivo, ciclo de ambigüedad resuelto por refinamiento del catálogo, integridad del mapping declarado durante derivación/ejecución, los patrones declarada ↔ declarada con C12/C13/C23 y sus 60 permutaciones, los dos patrones declarada ↔ derivada identificados y recuperación del borrador local tras recarga. El pendiente real es integrar los tipos de conflicto entre sí en una matriz cruzada común y completar en ese ciclo las comparaciones de mappings declarados/efectivos, `T_acc`, ejecución, alcanzabilidad, trayectorias, decisiones y recarga. No se reabre la suite de 60 permutaciones. Los límites de perfiles/orígenes y borrado de almacenamiento quedan condicionados al contrato de producto. El gate contractual integrado permanece **PENDIENTE**. La PR #95 permanece abierta, en borrador y sin fusionar.
 
+
+
+## 6. Evidencia del bloque final de integración cruzada — 2026-10-25
+
+**Resultado del bloque ejecutado:** **PASS en ambos workflows**, commit `17ac9e28f182dee6707eeb6cb31cb1bfd23de858`.
+
+- [Navegador y concordancia — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40198397842)
+- [Motor sintético — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40198397820)
+
+El caso integrado nuevo comprueba una colisión entre una correspondencia declarada y una candidata derivada que intenta reclamar la misma transformación TGCV: la declaración permanece sin cambios; la candidata incompatible se excluye con evidencia visible; una candidata independiente puede aceptarse y materializarse; y el modelo declarado se recupera tras recarga nativa sin reinyección manual.
+
+**Límite de la evidencia:** el fixture de colisión contiene aristas duplicadas deliberadamente no ejecutables. Por ello, no se usa este caso para afirmar invariantes de ejecución, alcanzabilidad o trayectorias. Esas aserciones permanecen en el caso de ciclo de vida integrado independiente. Este PASS tampoco demuestra exhaustividad de todas las combinaciones entre clases de conflicto.
+
+**Estado del gate global:** **PENDIENTE**. Se cierra este bloque concreto, sin reabrir las 60 permutaciones declarada↔declarada. Para cerrar el gate global sigue siendo necesario consolidar y comprobar la matriz cruzada común de todas las clases de conflicto y sus invariantes conjuntas.
