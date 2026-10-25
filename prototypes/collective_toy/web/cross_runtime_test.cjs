@@ -3058,6 +3058,128 @@ function pythonJson(source, input) {
         "cross-class mapping composition must preserve T_acc-related execution, reachability, trajectories, graph and provenance after reload");
     } finally { await declaredDerivedCrossContext.close(); }
 
+    // Cross-class conflict: a user-declared mapping claims a TGCV target that
+    // would otherwise match a second system transition. The declared mapping wins;
+    // the derivator must exclude the conflicting candidate before it can be accepted.
+    const declaredTargetCollisionContext = await browser.newContext();
+    try {
+      const declaredCollisionPage = await declaredTargetCollisionContext.newPage();
+      await declaredCollisionPage.goto("file://" + htmlPath);
+      await declaredCollisionPage.locator("#load").click();
+      const declaredCollisionModel = JSON.parse(JSON.stringify(model));
+      declaredCollisionModel.model_id = "ui-declared-target-collision";
+      declaredCollisionModel.initial_state = "A";
+      declaredCollisionModel.states = ["A","B","C"];
+      declaredCollisionModel.transitions = [
+        {id:"t_ab_declared",source:"A",target:"B"},
+        {id:"t_ab_competing",source:"A",target:"B"},
+        {id:"t_bc_control",source:"B",target:"C"}
+      ];
+      declaredCollisionModel.relations = [];
+      declaredCollisionModel.tgcv_mapping = {
+        schema:"tgcv-declared-mapping-001",version:"1",
+        mappings:[{system_transition_id:"t_ab_declared",tgcv_transformation_id:"T_SHARED_AB"}],
+        relations:[]
+      };
+      const declaredCollisionBefore = JSON.parse(JSON.stringify(declaredCollisionModel.tgcv_mapping));
+      await declaredCollisionPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, declaredCollisionModel);
+      await declaredCollisionPage.locator("#run").click();
+      await declaredCollisionPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(declaredCollisionPage, "declared-target collision baseline");
+      const declaredCollisionDetails = declaredCollisionPage.locator("#correspondence-review-section details").filter({
+        has: declaredCollisionPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await declaredCollisionDetails.evaluate(el => el.open))) await declaredCollisionDetails.locator("summary").click();
+      await declaredCollisionPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001",version:"ui-declared-target-collision-v1",
+        transformations:[
+          {id:"T_SHARED_AB",source_state:"A",target_state:"B"},
+          {id:"T_BC_CONTROL",source_state:"B",target_state:"C"}
+        ]
+      });
+      await declaredCollisionPage.locator("#derive-tgcv-correspondences").click();
+      await declaredCollisionPage.waitForFunction(() =>
+        /propuestas generadas/i.test(document.querySelector("#correspondence-review-status")?.textContent || ""),
+        null, {timeout:5000});
+      const declaredCollisionEvidence = await declaredCollisionPage.evaluate(() => ({
+        declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
+        candidates:window.correspondenceReviewState?.candidates || [],
+        excluded:window.correspondenceReviewState?.excludedByDeclaredMapping || [],
+        cards:document.querySelectorAll("#correspondence-review-list article").length
+      }));
+      assert.deepEqual(declaredCollisionEvidence.declared, declaredCollisionBefore,
+        "derivation must not rewrite the exact user-declared mapping when another transition collides with its target");
+      assert.equal(declaredCollisionEvidence.candidates.some(c =>
+        c.system_transition_id === "t_ab_competing" && c.tgcv_transformation_id === "T_SHARED_AB"), false,
+        "a derived candidate must never claim a target already owned by a declared mapping");
+      assert.ok(declaredCollisionEvidence.excluded.some(x =>
+        x.system_transition_id === "t_ab_competing" &&
+        x.tgcv_transformation_id === "T_SHARED_AB" && x.reason === "TARGET_ALREADY_DECLARED"),
+        "the cross-class conflict must be explicit in exclusion evidence, not silently disappear");
+      assert.ok(declaredCollisionEvidence.candidates.some(c =>
+        c.system_transition_id === "t_bc_control" && c.tgcv_transformation_id === "T_BC_CONTROL"),
+        "an unrelated exact-boundary candidate must remain derivable");
+      const controlCard = declaredCollisionPage.locator("#correspondence-review-list article").filter({hasText:"t_bc_control"});
+      await controlCard.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await declaredCollisionPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await declaredCollisionPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const declaredCollisionApplied = await declaredCollisionPage.evaluate(() => ({
+        declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
+        effective:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => [m.system_transition_id,m.tgcv_transformation_id]).sort()
+      }));
+      assert.deepEqual(declaredCollisionApplied.declared, declaredCollisionBefore,
+        "applying a non-conflicting derived mapping must leave the declared mapping unchanged");
+      assert.deepEqual(declaredCollisionApplied.effective, [["t_bc_control","T_BC_CONTROL"]],
+        "only the unrelated, explicitly accepted derived mapping may become effective");
+      await declaredCollisionPage.locator("#run").click();
+      await declaredCollisionPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(declaredCollisionPage, "declared-target collision applied");
+      const declaredCollisionExecution = await declaredCollisionPage.evaluate(() => {
+        const result = window.lastPackage?.result?.scenario_results?.baseline || {};
+        return {
+          reachable:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state,transition:step.transition || null
+          })))
+        };
+      });
+      await declaredCollisionPage.reload();
+      const restoredDeclaredCollision = await declaredCollisionPage.locator("#model").evaluate(el => {
+        try { return JSON.parse(el.value); } catch (_e) { return null; }
+      });
+      assert.deepEqual(restoredDeclaredCollision, declaredCollisionModel,
+        "native reload must restore the full declared-conflict source model without reinjection");
+      assert.deepEqual(restoredDeclaredCollision?.tgcv_mapping, declaredCollisionBefore,
+        "native reload must preserve the original declared mapping verbatim");
+      await assertStructuredTAccMatchesExecution(declaredCollisionPage, "declared-target collision after native reload");
+      const declaredCollisionReloadExecution = await declaredCollisionPage.evaluate(() => {
+        const result = window.lastPackage?.result?.scenario_results?.baseline || {};
+        return {
+          reachable:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state,transition:step.transition || null
+          })))
+        };
+      });
+      assert.deepEqual(declaredCollisionReloadExecution, declaredCollisionExecution,
+        "declared-target collision must preserve reachability and trajectories across native reload");
+    } finally { await declaredTargetCollisionContext.close(); }
+
     // Integrated conflict lifecycle: two distinct system transitions map to one TGCV target.
     // Both are individually valid exact-boundary proposals, but cannot both become effective.
     const applyConflictContext = await browser.newContext();
