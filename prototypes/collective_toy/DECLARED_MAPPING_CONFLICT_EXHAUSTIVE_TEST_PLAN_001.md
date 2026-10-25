@@ -27,15 +27,21 @@ La división por `2!` elimina el doble conteo causado por las dos filas A1 idén
 
 | Código | Regla | Evidencia actual | Pendiente |
 |---|---|---|---|
-| D1 | Duplicado exacto: misma transición y misma transformación repetidas | **PASS** dentro del fixture combinado | Probar aislado y combinado por pares |
-| D2 | Una transición declara más de una transformación distinta | **PASS** dentro del fixture combinado | Probar aislado y combinado por pares |
-| D3 | Varias transiciones declaran la misma transformación | **PASS** dentro del fixture combinado | Probar aislado y combinado por pares |
+| D1 | Duplicado exacto: misma transición y misma transformación repetidas | **PASS** dentro del fixture y las combinaciones agrupadas | No pendiente en este bloque |
+| D2 | Una transición declara más de una transformación distinta | **PASS** dentro del fixture y las combinaciones agrupadas | No pendiente en este bloque |
+| D3 | Varias transiciones declaran la misma transformación | **PASS** dentro del fixture y las combinaciones agrupadas | No pendiente en este bloque |
 
 ## Combinaciones no triviales
 
-C12, C13 y C23 ya están cubiertas por la suite agrupada aprobada en ambos workflows. No se reabren ni se cuentan como ejecuciones pendientes.tos estructurales; no mutar el mapping | PENDIENTE |
+C12, C13 y C23 están cubiertas por la suite agrupada aprobada en ambos workflows. No se reabren ni se cuentan como ejecuciones pendientes.
 
-El fixture conjunto actual sirve como evidencia de D1 + D2 + D3; se conserva como control de combinación triple. No se cuenta como sustituto de C12, C13 ni C23.
+| ID | Combinación | Estado verificado |
+|---|---|---|
+| C12 | D1 + D2 | **PASS** en la suite agrupada |
+| C13 | D1 + D3 | **PASS** en la suite agrupada |
+| C23 | D2 + D3 | **PASS** en la suite agrupada |
+
+El fixture combinado D1 + D2 + D3 se conserva como control adicional. No genera ejecuciones independientes de CI.
 
 ## Permutaciones
 
@@ -60,7 +66,7 @@ La suite agrupada del commit `2ae4829273f81ab27209a52640c4fd3a3489d271` ejecutó
 
 ## Ejecución agrupada
 
-No se requieren 63 ejecuciones de CI ni 63 tests independientes. El bloque se implementa como **una única suite agrupada** dentro del test integrado de navegador: primero ejecuta C12/C13/C23, después genera las 60 permutaciones únicas del fixture de cinco filas (incluidas la original y la inversa) y aplica las mismas aserciones a cada caso. La firma normalizada se compara por código y conjuntos de identificadores, no solo por el contador mostrado en UI.
+No se requieren 63 ejecuciones de CI ni 63 tests independientes. El bloque de permutaciones ya está implementado y cerrado; no se vuelve a ejecutar para el cierre global. El pendiente global se concentra en una suite agrupada de integración cruzada dentro del test integrado existente. La firma normalizada se compara por código y conjuntos de identificadores, no solo por el contador mostrado en UI.
 
 La suite agrupada se ejecuta en los dos workflows obligatorios: **2 ejecuciones de CI** en total (una de Motor sintético y una de Navegador y concordancia). Si una ejecución falla y hay que corregir el código, se repetirán los workflows afectados; ese retrabajo no puede contabilizarse por adelantado.
 
@@ -73,7 +79,7 @@ La suite agrupada se ejecuta en los dos workflows obligatorios: **2 ejecuciones 
 
 ## Criterio de cierre
 
-El bloque queda **PASS** para el fixture y el contrato comprobados: la suite agrupada pasa en ambos workflows, con firma semántica normalizada, cero propuestas derivadas y conservación exacta del orden de entrada. El gate contractual global permanece **PENDIENTE** porque otras clases de conflicto, persistencia nativa y ciclos de vida están fuera de este bloque.
+El bloque declarado↔declarado queda **PASS** para el fixture y el contrato comprobados. El gate contractual global permanece **PENDIENTE** por la integración cruzada entre clases de conflicto y las invariantes conjuntas de ciclo de vida.
 
 
 ## Minimización del cierre global pendiente
