@@ -181,3 +181,15 @@ El bloque agrupado integra el ciclo de propuestas/decisiones, conflictos de apli
 **Resultado operativo:** se cumple el mínimo planificado de un bloque agrupado y dos ejecuciones de CI, ambas PASS. No se requieren ejecuciones correctivas para este bloque.
 
 **Límite de alcance:** este resultado cierra el gate de integración cruzada definido por este plan; no declara completa toda la etapa de correspondencias. Siguen vigentes los límites explícitos de §10.6 del contrato del demostrador: restauración tras reinicio de decisiones de resolución de conflicto y un flujo general de resolución para todos los tipos `CONFLICT_NEEDS_REVIEW` continúan sin verificar. La derivación continúa limitada a coincidencia exacta de fronteras; no se afirma inferencia semántica general. La PR #95 permanece en borrador y `main` no se modifica.
+
+
+## Reconciliación posterior — resolución general de conflictos — 2026-10-25
+
+**PASS en el commit exacto** `343f99ed02c97b71bd9c7ebe71dade636256e10a`:
+
+- [Navegador y concordancia — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40210018779).
+- [Motor sintético — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40210018783).
+
+La suite agrupada incluye ahora una prueba de conflicto derivada↔derivada en aplicación: dos propuestas aceptadas compiten por una transformación TGCV; el sistema falla cerrado con cero correspondencias efectivas, expone el flujo genérico de resolución, persiste el rechazo explícito y, tras revalidación, deja activa solo la correspondencia compatible. Se verifica la concordancia de `T_acc` con la ejecución. La misma ejecución cubre la matriz de entrada de condiciones y la persistencia de decisiones tras reinicio real del contexto del navegador.
+
+**Cierre reconciliado:** el bloque técnico integrado y los dos workflows de este gate están PASS. Las 60 permutaciones declarada↔declarada no se repitieron. La derivación sigue siendo exact-boundary, sin inferencia semántica general. PR #95 permanece abierta/en borrador y `main` no se modifica; no hay autorización de ejecución científica ni de promoción.
