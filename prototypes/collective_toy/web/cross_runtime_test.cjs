@@ -2491,6 +2491,63 @@ function pythonJson(source, input) {
         "the UI must report that no compatible proposals were generated");
     } finally { await declaredCollisionContext.close(); }
 
+    // Same-transition conflict: an existing user declaration owns t_ac, so an
+    // alternative exact-boundary target must be excluded, not offered as a derived proposal.
+    const sameTransitionDeclaredContext = await browser.newContext();
+    try {
+      const sameTransitionPage = await sameTransitionDeclaredContext.newPage();
+      await sameTransitionPage.goto("file://" + htmlPath);
+      await sameTransitionPage.locator("#load").click();
+      const sameTransitionModel = await sameTransitionPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.tgcv_mapping = {
+          schema:"tgcv-explicit-mapping-001", mapping_rule:"user-declared-map-v1",
+          provenance:"user-declared",
+          mappings:[{system_transition_id:"t_ac",tgcv_transformation_id:"T_CONFLICT_AB"}],
+          relations:[]
+        };
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        return parsed;
+      }, model);
+      const declaredBefore = JSON.parse(JSON.stringify(sameTransitionModel.tgcv_mapping));
+      const catalogueDetails = sameTransitionPage.locator("#correspondence-review-section details").filter({
+        has: sameTransitionPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await catalogueDetails.evaluate(el => el.open))) await catalogueDetails.locator("summary").click();
+      await sameTransitionPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001", version:"ui-same-transition-declared-conflict-v1",
+        transformations:[
+          {id:"T_CONFLICT_AB",source_state:"A",target_state:"C"},
+          {id:"T_CONFLICT_AC",source_state:"A",target_state:"C"}
+        ]
+      });
+      await sameTransitionPage.locator("#derive-tgcv-correspondences").click();
+      await sameTransitionPage.waitForFunction(() =>
+        /conflicto con correspondencias declaradas por el usuario/i.test(
+          document.querySelector("#correspondence-review-status")?.textContent || ""
+        ), null, {timeout:5000});
+      const sameTransitionSnapshot = await sameTransitionPage.evaluate(() => ({
+        status:document.querySelector("#correspondence-review-status")?.textContent || "",
+        declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
+        proposalCount:document.querySelectorAll("#correspondence-review-list article").length,
+        effective:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+      }));
+      assert.deepEqual(sameTransitionSnapshot.declared, declaredBefore,
+        "an alternative candidate must not rewrite the exact same-transition user declaration");
+      assert.equal(sameTransitionSnapshot.proposalCount, 0,
+        "a transition already declared by the user must not receive an alternative derived proposal");
+      assert.equal(sameTransitionSnapshot.effective.length, 0,
+        "an alternative target for a declared transition must not materialize an effective mapping");
+      assert.match(sameTransitionSnapshot.status, /conflicto con correspondencias declaradas por el usuario/i,
+        "the UI must disclose that the declared mapping reserved the transition");
+    } finally { await sameTransitionDeclaredContext.close(); }
+
     // Declared-mapping lifecycle: preserve the user's mapping and its execution semantics
     // across catalogue derivation and a page reload, without converting declarations into
     // derived-effective records or silently changing condition reachability.
