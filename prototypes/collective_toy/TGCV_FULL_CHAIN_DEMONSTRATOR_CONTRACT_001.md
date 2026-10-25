@@ -279,3 +279,19 @@ La evidencia anterior de §10.6 y las reconciliaciones precedentes queda actuali
 - La resolución de conflictos de aplicación mantiene cero mappings activos mientras existe un conflicto, persiste el rechazo elegido por el usuario y activa únicamente la correspondencia restante tras revalidar. Se conserva la concordancia estructurada de `T_acc` con la ejecución.
 - **Estado:** el gate técnico agrupado y la restauración de decisiones de conflicto quedan PASS. La resolución de aplicación es genérica para los conflictos emitidos por el validador; las correspondencias declaradas conservan prioridad y procedencia. La derivación continúa limitada a coincidencia exacta de fronteras, sin inferencia semántica general.
 - PR #95 sigue abierta y en borrador; `main` no se modifica. No se autoriza ejecución científica ni promoción por este resultado técnico.
+
+
+---
+
+## Addendum — concise text-to-graph input — 2026-10-25
+
+This addendum records a bounded usability extension after the integrated demonstrator promotion. It does not change the mathematical/functional core or imply scientific validation.
+
+- The local Spanish transcriber recognizes explicit dimension requests (number of states/nodes and, where supplied, number of directed connections/transitions/edges).
+- It recognizes explicit arrow lists such as `Estado A --> Estado B` and preserves the stated direction and labels.
+- Dimension-generated graphs use generic editable state labels and a deterministic illustrative directed topology. A stated domain (e.g. transport, logistics, energy) is retained as descriptive model identity only; it does **not** claim that the domain uniquely determines a graph topology.
+- Bounds remain 1–500 states and 0–2,000 connections; impossible requests fail closed rather than silently clamping or inventing dimensions.
+- Generated graphs remain drafts for user review. No external LLM/API is required; existing condition-safety and human-review rules remain in force.
+- Browser/cross-runtime tests cover the requested concise formulations, exact dimensions, arrow direction, and rejection of out-of-range/impossible requests.
+
+The full natural-language transcriber remains bounded pattern-based parsing, not general semantic understanding. No causal, value, or generality claim is made.

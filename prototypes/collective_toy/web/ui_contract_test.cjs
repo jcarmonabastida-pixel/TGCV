@@ -184,6 +184,12 @@ const assert = require("node:assert/strict");
     // Natural-language description proposes a graph locally, exposes unparsed sentences, and remains reviewable.
     assert.match(sourceHtml, /Describe el sistema con tus propias palabras/);
     assert.match(sourceHtml, /No requiere API externa/);
+    assert.match(sourceHtml, /Genera un grafo de 5 nodos de un sistema de transporte/,
+      "The transcriber should show a concise dimension-based graph-generation example");
+    assert.match(sourceHtml, /Quiero modelar un sistema de logística con 4 estados y 5 conexiones/,
+      "The transcriber should show a concise domain-plus-dimensions example");
+    assert.match(sourceHtml, /Estado A --> Estado B/,
+      "The transcriber should show explicit arrow notation for graph edges");
     assert.match(sourceHtml, /Proponer grafo desde la descripción/);
     assert.doesNotMatch(sourceHtml, /Importación desde imagen|PaddleOCR|Tesseract\.js|OpenCV como alternativa/i,
       "The retired image-detection/OCR workstream must not be presented as a supported entry route");
