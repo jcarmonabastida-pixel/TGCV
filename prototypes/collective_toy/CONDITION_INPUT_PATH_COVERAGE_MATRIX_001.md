@@ -199,3 +199,11 @@ Commit de prueba `334b38f5b1ab7e2b12827e4af51cae3cb2b33639`: navegador/concordan
 
 **Límite:** el resultado cubre esta ruta de desambiguación mediante refinamiento del catálogo y aceptación explícita. No demuestra todas las clases de conflicto ni todos los caminos de resolución. La PR #95 continúa abierta y en borrador; no se ha fusionado y `main` permanece intacta.
 
+### Colisión de candidata con una correspondencia ya efectiva: rechazo explícito y persistencia — PASS
+
+Commit `3ad79524c2b842348487d45431738b009b396024`: navegador/cross-runtime PASS ([run 40189464294](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40189464294)) y motor sintético PASS ([run 40189464043](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40189464043)). La prueba establece primero `t_ab_first → T_SHARED_AB` como correspondencia efectiva. Al aceptar y aplicar una segunda candidata `t_ab_second` que compite por la misma transformación, exige el estado `conflict-needs-review` y cero correspondencias efectivas mientras la colisión siga sin resolver (fail-closed). Tras rechazar explícitamente la segunda candidata, vuelve a aplicar y exige que solo `t_ab_first → T_SHARED_AB` quede efectiva; después compara `T_acc` estructurado con la ejecución y verifica la conservación de las correspondencias y trayectorias después de recargar.
+
+**Alcance y límite:** PASS para este escenario de colisión contra una correspondencia que ya era efectiva y para su resolución explícita. Combinado con las pruebas existentes de conflicto por lote, ambigüedad de destino y persistencia tras recarga, amplía la evidencia, pero no prueba exhaustivamente todas las combinaciones de conflictos entre mappings declarados, derivados y efectivos. La PR #95 sigue abierta, en borrador y sin fusionar; `main` permanece intacta.
+
+**Siguiente gate integrado:** matriz cruzada de tipos de conflicto y orden de candidatas. Para cada fixture, registrar el estado previo, verificar que el conflicto sin resolver no deja un conjunto parcial efectivo, comprobar la resolución humana correspondiente y comparar mapping declarado, mappings efectivos, `T_acc`, estados alcanzables y trayectorias antes/después de recarga. No rebajar aserciones ni inferir validez científica a partir del PASS de CI.
+
