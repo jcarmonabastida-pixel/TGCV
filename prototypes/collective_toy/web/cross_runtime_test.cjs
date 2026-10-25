@@ -556,6 +556,39 @@ function pythonJson(source, input) {
       sameBatchConflict.forward.conflicts.map(x => x.candidate_id).sort(),
       sameBatchConflict.reverse.conflicts.map(x => x.candidate_id).sort(),
       "conflict detection must be independent of accepted-candidate order");
+
+    // Complementary same-batch conflict: one source transition has two exact
+    // target candidates. Both must require review regardless of candidate order.
+    const sameSourceConflict = await page.evaluate(async () => {
+      const model = {model_id:"same-source-collision",states:[{id:"A"},{id:"B"}],
+        transitions:[{id:"t_ab",source:"A",target:"B"}],
+        tgcv_mapping:{schema:"tgcv-explicit-mapping-001",mapping_rule:"user-declared-map-v1",
+          provenance:"user-declared",mappings:[],relations:[]}};
+      const catalogue = {schema:"tgcv-target-catalogue-001",version:"same-source-conflict-v1",
+        transformations:[
+          {id:"T_AB_PRIMARY",source_state:"A",target_state:"B"},
+          {id:"T_AB_ALTERNATE",source_state:"A",target_state:"B"}
+        ]};
+      const derived = await window.deriveTgcvCorrespondenceCandidates(model,catalogue);
+      if (derived.candidates.length !== 2) throw new Error("fixture must produce two exact target candidates for one source transition");
+      const accepted = derived.candidates.map(candidate => ({...candidate,decision:"ACCEPTED"}));
+      const forward = await window.validateAcceptedCorrespondenceCandidates(model,catalogue,accepted,[]);
+      const reverse = await window.validateAcceptedCorrespondenceCandidates(model,catalogue,[...accepted].reverse(),[]);
+      return {forward,reverse};
+    });
+    for (const [direction,result] of Object.entries({forward:sameSourceConflict.forward,reverse:sameSourceConflict.reverse})) {
+      assert.equal(result.mappings.length, 0,
+        direction + " same-source batch must not arbitrarily choose one of two target transformations");
+      assert.equal(result.conflicts.length, 2,
+        direction + " same-source batch must mark both target candidates for review");
+      assert.ok(result.conflicts.every(conflict => conflict.code === "CONFLICT_NEEDS_REVIEW" &&
+        /misma operación/i.test(conflict.message)),
+        direction + " same-source conflicts must carry the expected review code and reason");
+    }
+    assert.deepEqual(
+      sameSourceConflict.forward.conflicts.map(x => x.candidate_id).sort(),
+      sameSourceConflict.reverse.conflicts.map(x => x.candidate_id).sort(),
+      "same-source conflict detection must be independent of accepted-candidate order");
     assert.equal(materialization.stale.mappings.length, 0, "a proposal from a changed model must not materialize");
     assert.match(await page.locator("#tgcv-graph").textContent(), /T_CD/,
       "deriving proposals must not modify the currently rendered TGCV graph");
