@@ -728,7 +728,7 @@ async function validateAcceptedCorrespondenceCandidates(model,catalogue,candidat
  });
  return {schema:"tgcv-effective-mappings-001",source_model_sha256:sourceSha,catalogue_version:catalogue.version,catalogue_sha256:catalogueSha,mappings:out,conflicts:conflicts}
 }
-async function applyAcceptedTgcvCorrespondences(){try{
+async function applyAcceptedTgcvCorrespondences(){$("effective-correspondence-status").dataset.state="applying";$("effective-correspondence-status").textContent="Aplicando y validando las correspondencias aceptadas…";try{
  var model=currentModelForEditor();assert(model,"Primero corrige o carga un modelo válido.");var catalogue;try{catalogue=JSON.parse($("tgcv-target-catalogue").value)}catch(_e){throw new Error("El catálogo no contiene JSON válido.")}
  assert(correspondenceReviewState.candidates.length>0,"Genera propuestas antes de aplicar correspondencias.");
  var modelSha=await hash(model,"correspondence_source_model"),catalogueSha=await hash(catalogue,"tgcv_correspondence_catalogue");
