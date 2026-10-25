@@ -275,3 +275,33 @@ El caso integrado nuevo comprueba una colisión entre una correspondencia declar
 **Límite de la evidencia:** el fixture de colisión contiene aristas duplicadas deliberadamente no ejecutables. Por ello, no se usa este caso para afirmar invariantes de ejecución, alcanzabilidad o trayectorias. Esas aserciones permanecen en el caso de ciclo de vida integrado independiente. Este PASS tampoco demuestra exhaustividad de todas las combinaciones entre clases de conflicto.
 
 **Estado del gate global:** **PENDIENTE**. Se cierra este bloque concreto, sin reabrir las 60 permutaciones declarada↔declarada. Para cerrar el gate global sigue siendo necesario consolidar y comprobar la matriz cruzada común de todas las clases de conflicto y sus invariantes conjuntas.
+
+
+## 7. Gate de cierre consolidado — un único bloque, dos workflows
+
+Esta sección sustituye la lectura dispersa de las brechas descritas en los apartados anteriores. **No se abren pruebas individuales ni se repiten permutaciones ya aprobadas.**
+
+### Cobertura reutilizable ya acreditada
+
+- Las 60 permutaciones declarada↔declarada: PASS; no reabrir.
+- Colisión declarada↔derivada y conservación de la declaración tras recarga: PASS en el bloque documentado arriba.
+- Ciclo de vida de correspondencias efectivas, aplicación explícita, idempotencia, conflicto fail-closed, decisión explícita de rechazo y restauración tras recarga: existen pruebas integradas previas.
+- El helper `assertStructuredTAccMatchesExecution` compara el `T_acc` operacional estructurado con las transformaciones de las transiciones que aparecen en las trayectorias enumeradas. Esta comprobación no equivale a una demostración formal independiente de todas las transformaciones accesibles.
+
+### Único bloque de cierre pendiente
+
+Consolidar en la suite integrada existente una secuencia con el mismo fixture controlado y comparar snapshots semánticos en estos estados:
+
+| Estado | Aserciones mínimas |
+|---|---|
+| Baseline, antes de derivar | Modelo validado, mappings declarados/efectivos, `T_acc`, resultado de ejecución, alcanzabilidad y trayectorias |
+| Propuestas pendientes | Mismos resultados operacionales que baseline; cero efecto de propuestas |
+| Propuesta rechazada | Mismos resultados operacionales que baseline; decisión rechazada persistida; ningún mapping rechazado efectivo |
+| Mapping aplicado y después obsoleto por cambio de ámbito | `T_acc`, grafo, resultado, alcanzabilidad y trayectorias coherentes con la retirada del mapping; historial `STALE` preservado |
+| Recarga/reaplicación permitida | Sin reinyección del modelo; decisiones restauradas; ningún rechazo ni mapping obsoleto reactivado; reaplicación idempotente |
+
+Los snapshots se comparan por contenido normalizado (IDs de mappings y transformaciones, resultados por escenario, estados alcanzables y secuencias de trayectorias), no por texto de estado ni por contadores de UI. Los resultados de ejecución, `T_acc` y alcanzabilidad se mantienen como dimensiones separadas.
+
+**Presupuesto de cierre: 1 bloque automatizado agrupado y 2 ejecuciones de CI** sobre el mismo commit: Navegador y concordancia + Motor sintético. Las variantes se iteran dentro de la suite; no son workflows separados. Solo se repite el workflow afectado si el bloque falla.
+
+**Estado real:** PENDIENTE de implementar/verificar esta comparación consolidada y obtener PASS en ambos workflows. La evidencia existente se reutiliza, pero no se declara que cubra esta matriz conjunta hasta que la aserción agrupada se ejecute. PR #95 permanece en borrador; `main` no se modifica.
