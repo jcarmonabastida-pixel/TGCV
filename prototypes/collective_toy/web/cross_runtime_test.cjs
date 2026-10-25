@@ -2923,6 +2923,22 @@ function pythonJson(source, input) {
         document.querySelector("#status")?.textContent || ""
       ), null, {timeout:5000});
       await assertStructuredTAccMatchesExecution(crossPage, "declared-plus-derived baseline");
+      const groupedBaseline = await crossPage.evaluate(() => {
+        const model = JSON.parse(document.querySelector("#model").value);
+        const result = window.lastPackage?.result?.scenario_results?.baseline || {};
+        return {
+          declared: model.tgcv_mapping,
+          effective: (window.effectiveCorrespondenceState?.mappings || [])
+            .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+            .map(m => [m.system_transition_id, m.tgcv_transformation_id]).sort(),
+          tAcc: [...(window.lastTgcvDemoResult?.current?.transformations || [])].sort(),
+          graph: document.querySelector("#tgcv-graph")?.textContent || "",
+          reachable: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        };
+      });
 
       const crossDetails = crossPage.locator("#correspondence-review-section details").filter({
         has: crossPage.locator("#tgcv-target-catalogue")
@@ -2944,6 +2960,24 @@ function pythonJson(source, input) {
       await crossPage.waitForFunction(() =>
         document.querySelectorAll("#correspondence-review-list article").length === 2,
         null, {timeout:5000});
+      const groupedPending = await crossPage.evaluate(() => {
+        const model = JSON.parse(document.querySelector("#model").value);
+        const result = window.lastPackage?.result?.scenario_results?.baseline || {};
+        return {
+          declared: model.tgcv_mapping,
+          effective: (window.effectiveCorrespondenceState?.mappings || [])
+            .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+            .map(m => [m.system_transition_id, m.tgcv_transformation_id]).sort(),
+          tAcc: [...(window.lastTgcvDemoResult?.current?.transformations || [])].sort(),
+          graph: document.querySelector("#tgcv-graph")?.textContent || "",
+          reachable: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        };
+      });
+      assert.deepEqual(groupedPending, groupedBaseline,
+        "pending derived proposals must leave declared/effective mappings, T_acc, graph, reachability and trajectories unchanged");
       const crossCandidates = crossPage.locator("#correspondence-review-list article");
       for (const transitionId of ["t_ab", "t_cd"]) {
         const card = crossCandidates.filter({hasText:transitionId});
@@ -3056,6 +3090,92 @@ function pythonJson(source, input) {
       });
       assert.deepEqual(crossExecutionAfterReload, crossExecutionBeforeReload,
         "cross-class mapping composition must preserve T_acc-related execution, reachability, trajectories, graph and provenance after reload");
+
+      // Complete the grouped lifecycle in the same fixture: a catalogue-scope
+      // change must stale the effective overlay, and restoring the old scope must
+      // not replay the former ACCEPTED decisions without a new explicit review.
+      const changedCatalogue = {
+        schema:"tgcv-target-catalogue-001", version:"declared-derived-cross-lifecycle-v1",
+        transformations:[
+          {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+          {id:"T_AC",source_state:"A",target_state:"C"},
+          {id:"T_CD",source_state:"C",target_state:"D"},
+          {id:"T_SCOPE_EXTRA",source_state:"X",target_state:"Y"}
+        ]
+      };
+      await crossPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, changedCatalogue);
+      await crossPage.locator("#derive-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        /catálogo cambió.*histórico/i.test(document.querySelector("#correspondence-review-status")?.textContent || ""),
+        null, {timeout:5000});
+      const groupedStale = await crossPage.evaluate(() => ({
+        effective: (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => [m.system_transition_id, m.tgcv_transformation_id]).sort(),
+        history: Object.keys(localStorage).filter(k => k.startsWith("tgcv-effective-mappings-001:"))
+          .map(k => JSON.parse(localStorage.getItem(k)))
+          .flatMap(record => [...(record.mappings || []), ...(record.history || [])])
+          .filter(m => m.status === "STALE" && m.active === false)
+          .map(m => ({transition:m.system_transition_id, transformation:m.tgcv_transformation_id, reason:m.stale_reason}))
+      }));
+      assert.equal(groupedStale.effective.length, 0,
+        "catalogue scope change must remove all cross-class mappings from the active effective overlay");
+      assert.ok(groupedStale.history.length >= 2,
+        "scope invalidation must preserve stale audit history for the former effective mappings");
+      await crossPage.locator("#run").click();
+      await crossPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(crossPage, "cross-class mappings after scope invalidation");
+      const groupedAfterInvalidation = await crossPage.evaluate(() => {
+        const result = window.lastPackage?.result?.scenario_results?.baseline || {};
+        return {
+          tAcc: [...(window.lastTgcvDemoResult?.current?.transformations || [])].sort(),
+          reachable: [...(result.reachable_states || [])].sort(),
+          trajectories: (result.trajectories || []).map(path => path.map(step => ({
+            state: step.state, transition: step.transition || null
+          })))
+        };
+      });
+      assert.deepEqual(groupedAfterInvalidation.reachable, crossExecutionBeforeReload.reachable,
+        "scope invalidation must not change system reachability");
+      assert.deepEqual(groupedAfterInvalidation.trajectories, crossExecutionBeforeReload.trajectories,
+        "scope invalidation must not change system trajectories");
+      assert.ok(!groupedAfterInvalidation.tAcc.includes("T_HUMIDITY") &&
+        !groupedAfterInvalidation.tAcc.includes("T_CD"),
+        "T_acc must exclude transformations supplied only by stale cross-class mappings");
+
+      await crossPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001", version:"declared-derived-cross-lifecycle-v1",
+        transformations:[
+          {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+          {id:"T_AC",source_state:"A",target_state:"C"},
+          {id:"T_CD",source_state:"C",target_state:"D"}
+        ]
+      });
+      await crossPage.locator("#derive-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      assert.match(await crossPage.locator("#correspondence-review-list").textContent(), /Decisión: PENDIENTE/,
+        "restoring the prior catalogue scope must not resurrect old ACCEPTED decisions");
+      await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const groupedRestored = await crossPage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => [m.system_transition_id, m.tgcv_transformation_id]).sort());
+      assert.deepEqual(groupedRestored, [],
+        "restoring the old catalogue and reapplying without fresh acceptance must not reactivate stale mappings");
     } finally { await declaredDerivedCrossContext.close(); }
 
     // Cross-class conflict: a user-declared mapping claims a TGCV target that
