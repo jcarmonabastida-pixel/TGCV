@@ -2689,6 +2689,153 @@ function pythonJson(source, input) {
       await assertStructuredTAccMatchesExecution(conflictPage, "conflict resolution after reload");
     } finally { await applyConflictContext.close(); }
 
+    // Symmetric UI conflict-resolution case: reverse which candidate is accepted
+    // first and retained. This complements the direct validator order-invariance
+    // checks with the user-facing apply/reject/persist/reload lifecycle.
+    const reverseConflictContext = await browser.newContext();
+    try {
+      const reversePage = await reverseConflictContext.newPage();
+      await reversePage.goto("file://" + htmlPath);
+      await reversePage.locator("#load").click();
+      await reversePage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-reverse-apply-conflict-lifecycle";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [
+          {id:"t_ab_primary",source:"A",target:"B"},
+          {id:"t_ab_duplicate",source:"A",target:"B"}
+        ];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        parsed.scenarios = [{id:"baseline",disabled_transitions:[]}];
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      await reversePage.locator("#run").click();
+      await reversePage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(reversePage, "reverse-order conflict baseline");
+      const reverseDetails = reversePage.locator("#correspondence-review-section details").filter({
+        has: reversePage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await reverseDetails.evaluate(el => el.open))) await reverseDetails.locator("summary").click();
+      await reversePage.locator("#tgcv-target-catalogue").evaluate(el => {
+        el.value = JSON.stringify({
+          schema:"tgcv-target-catalogue-001",version:"ui-reverse-apply-conflict-v1",
+          transformations:[{id:"T_SHARED_AB",source_state:"A",target_state:"B"}]
+        }, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      });
+      await reversePage.locator("#derive-tgcv-correspondences").click();
+      await reversePage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      const reversePrimary = reversePage.locator("#correspondence-review-list article").filter({hasText:"t_ab_primary"});
+      const reverseDuplicate = reversePage.locator("#correspondence-review-list article").filter({hasText:"t_ab_duplicate"});
+      await reverseDuplicate.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await reversePrimary.getByRole("button", {name:"Aceptar propuesta"}).click();
+      await reversePage.locator("#apply-accepted-tgcv-correspondences").click();
+      await reversePage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "conflict-needs-review",
+        null, {timeout:5000});
+      const reverseBlocked = await reversePage.evaluate(() => ({
+        status:document.querySelector("#effective-correspondence-status")?.textContent || "",
+        mappings:(window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false)
+      }));
+      assert.match(reverseBlocked.status, /CONFLICT_NEEDS_REVIEW/);
+      assert.equal(reverseBlocked.mappings.length, 0,
+        "reversing candidate acceptance order must still fail closed on an unresolved collision");
+      await reversePrimary.getByRole("button", {name:"Rechazar propuesta"}).click();
+      await reversePage.locator("#apply-accepted-tgcv-correspondences").click();
+      await reversePage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      const reverseResolved = await reversePage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => ({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}))
+      );
+      assert.deepEqual(reverseResolved, [{system_transition_id:"t_ab_duplicate",tgcv_transformation_id:"T_SHARED_AB"}],
+        "explicitly rejecting the primary candidate must leave the accepted duplicate as the only effective mapping");
+      await reversePage.locator("#run").click();
+      await reversePage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(reversePage, "reverse-order conflict resolved");
+      const reverseExecutionBeforeReload = await reversePage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id,result]) => [id,{
+          reachable_states:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state,transition:step.transition || null
+          })))
+        }]));
+      });
+      await reversePage.reload();
+      await reversePage.locator("#load").click();
+      await reversePage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-reverse-apply-conflict-lifecycle";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [
+          {id:"t_ab_primary",source:"A",target:"B"},
+          {id:"t_ab_duplicate",source:"A",target:"B"}
+        ];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        parsed.scenarios = [{id:"baseline",disabled_transitions:[]}];
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      const reverseReloadDetails = reversePage.locator("#correspondence-review-section details").filter({
+        has: reversePage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await reverseReloadDetails.evaluate(el => el.open))) await reverseReloadDetails.locator("summary").click();
+      await reversePage.locator("#tgcv-target-catalogue").evaluate(el => {
+        el.value = JSON.stringify({
+          schema:"tgcv-target-catalogue-001",version:"ui-reverse-apply-conflict-v1",
+          transformations:[{id:"T_SHARED_AB",source_state:"A",target_state:"B"}]
+        }, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      });
+      await reversePage.locator("#derive-tgcv-correspondences").click();
+      await reversePage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      await reversePage.locator("#apply-accepted-tgcv-correspondences").click();
+      await reversePage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      const reverseAfterReload = await reversePage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => ({system_transition_id:m.system_transition_id,tgcv_transformation_id:m.tgcv_transformation_id}))
+      );
+      assert.deepEqual(reverseAfterReload, reverseResolved,
+        "reverse-order resolution must persist the selected mapping across reload");
+      await reversePage.locator("#run").click();
+      await reversePage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      const reverseExecutionAfterReload = await reversePage.evaluate(() => {
+        const scenarios = window.lastPackage?.result?.scenario_results || {};
+        return Object.fromEntries(Object.entries(scenarios).map(([id,result]) => [id,{
+          reachable_states:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state,transition:step.transition || null
+          })))
+        }]));
+      });
+      assert.deepEqual(reverseExecutionAfterReload, reverseExecutionBeforeReload,
+        "reverse-order conflict resolution must preserve trajectories across reload");
+      await assertStructuredTAccMatchesExecution(reversePage, "reverse-order conflict after reload");
+    } finally { await reverseConflictContext.close(); }
+
     // Orthogonal ambiguity axis: one source transition with two exact-boundary
     // target matches must remain NEEDS_REVIEW; neither candidate may be accepted
     // or materialized while the target choice is ambiguous.
