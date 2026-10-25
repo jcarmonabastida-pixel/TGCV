@@ -2601,6 +2601,7 @@ function pythonJson(source, input) {
           provenance:"user-declared",
           mappings:[
             {system_transition_id:"t_declared_ab_1",tgcv_transformation_id:"T_SHARED_AB"},
+            {system_transition_id:"t_declared_ab_1",tgcv_transformation_id:"T_SHARED_AB"},
             {system_transition_id:"t_declared_ab_2",tgcv_transformation_id:"T_SHARED_AB"},
             {system_transition_id:"t_declared_ac",tgcv_transformation_id:"T_AC_1"},
             {system_transition_id:"t_declared_ac",tgcv_transformation_id:"T_AC_2"}
@@ -2645,6 +2646,10 @@ function pythonJson(source, input) {
         "declared mappings must not be converted into derived proposals to resolve their own conflict");
       assert.match(declaredPairSnapshot.status, /conflictos entre mappings declarados/i,
         "the UI must report conflicts between declared mappings instead of silently ignoring them");
+      assert.match(declaredPairSnapshot.status, /duplicados exactos/i,
+        "the UI must identify exact duplicate declarations as an issue");
+      assert.equal(Number((declaredPairSnapshot.status.match(/detectaron (\\d+) conflictos entre mappings declarados/i) || [])[1]), 3,
+        "two structural conflict classes and one exact duplicate must be reported");
 
       // Reverse declaration order: conflict classification/count and non-mutation must be invariant.
       const reversedDeclaredPairModel = JSON.parse(JSON.stringify(declaredPairModel));
