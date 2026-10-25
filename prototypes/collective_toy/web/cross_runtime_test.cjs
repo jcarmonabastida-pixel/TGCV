@@ -2900,6 +2900,150 @@ function pythonJson(source, input) {
         "declared mapping provenance must be unchanged across reload");
     } finally { await declaredLifecycleContext.close(); }
 
+    // Cross-class integration: one immutable user-declared mapping coexists with
+    // accepted derived mappings through execution, persistence, reload and replay.
+    const declaredDerivedCrossContext = await browser.newContext();
+    try {
+      const crossPage = await declaredDerivedCrossContext.newPage();
+      await crossPage.goto("file://" + htmlPath);
+      await crossPage.locator("#load").click();
+      const crossModel = JSON.parse(JSON.stringify(explicitlyMappedModel));
+      crossModel.model_id = "ui-declared-derived-cross-lifecycle";
+      crossModel.tgcv_mapping.mappings = [
+        {system_transition_id:"t_ac",tgcv_transformation_id:"T_AC"}
+      ];
+      crossModel.tgcv_mapping.relations = [];
+      const crossDeclaredBefore = JSON.parse(JSON.stringify(crossModel.tgcv_mapping));
+      await crossPage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, crossModel);
+      await crossPage.locator("#run").click();
+      await crossPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(crossPage, "declared-plus-derived baseline");
+
+      const crossDetails = crossPage.locator("#correspondence-review-section details").filter({
+        has: crossPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await crossDetails.evaluate(el => el.open))) await crossDetails.locator("summary").click();
+      await crossPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001", version:"declared-derived-cross-lifecycle-v1",
+        transformations:[
+          {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+          {id:"T_AC",source_state:"A",target_state:"C"},
+          {id:"T_CD",source_state:"C",target_state:"D"}
+        ]
+      });
+      await crossPage.locator("#derive-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      const crossCandidates = crossPage.locator("#correspondence-review-list article");
+      for (const transitionId of ["t_ab", "t_cd"]) {
+        const card = crossCandidates.filter({hasText:transitionId});
+        await card.getByRole("button", {name:"Aceptar propuesta"}).click();
+      }
+      const crossPreApply = await crossPage.evaluate(() => ({
+        declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
+        candidates:window.correspondenceReviewState?.candidates || []
+      }));
+      assert.deepEqual(crossPreApply.declared, crossDeclaredBefore,
+        "derivation and accepting candidates must not rewrite the user-declared mapping");
+      assert.equal(crossPreApply.candidates.filter(c => c.decision === "ACCEPTED").length, 2,
+        "both non-conflicting derived candidates must have explicit ACCEPTED decisions");
+
+      await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const crossApplied = await crossPage.evaluate(() => ({
+        declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
+        effective:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => ({system_transition_id:m.system_transition_id,
+            tgcv_transformation_id:m.tgcv_transformation_id,provenance:m.provenance})),
+        graph:document.querySelector("#tgcv-graph")?.textContent || "",
+        provenance:document.querySelector("#tgcv-provenance-note")?.textContent || ""
+      }));
+      assert.deepEqual(crossApplied.declared, crossDeclaredBefore,
+        "applying derived mappings must preserve the exact declared mapping and provenance");
+      assert.deepEqual(crossApplied.effective.map(m => [m.system_transition_id,m.tgcv_transformation_id]).sort(),
+        [["t_ab","T_HUMIDITY"],["t_cd","T_CD"]].sort(),
+        "only the two explicitly accepted, non-conflicting mappings must become effective");
+      await crossPage.locator("#run").click();
+      await crossPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(crossPage, "declared-plus-derived applied");
+      const crossExecutionBeforeReload = await crossPage.evaluate(() => {
+        const result = window.lastPackage?.result?.scenario_results?.baseline || {};
+        return {
+          reachable:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state,transition:step.transition || null
+          }))),
+          graph:document.querySelector("#tgcv-graph")?.textContent || "",
+          provenance:document.querySelector("#tgcv-provenance-note")?.textContent || ""
+        };
+      });
+
+      await crossPage.reload();
+      const restoredCrossModel = await crossPage.locator("#model").evaluate(el => {
+        try { return JSON.parse(el.value); } catch (_e) { return null; }
+      });
+      assert.deepEqual(restoredCrossModel?.tgcv_mapping, crossDeclaredBefore,
+        "native reload must restore the exact declared mapping without manual model reinjection");
+      assert.deepEqual(restoredCrossModel, crossModel,
+        "native reload must restore the complete source model used by the cross-class lifecycle");
+      const restoredCrossDetails = crossPage.locator("#correspondence-review-section details").filter({
+        has: crossPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await restoredCrossDetails.evaluate(el => el.open))) await restoredCrossDetails.locator("summary").click();
+      await crossPage.locator("#derive-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      await crossPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await crossPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified",
+        null, {timeout:5000});
+      const crossAfterReloadApply = await crossPage.evaluate(() => ({
+        declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
+        effective:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false)
+          .map(m => [m.system_transition_id,m.tgcv_transformation_id]).sort()
+      }));
+      assert.deepEqual(crossAfterReloadApply.declared, crossDeclaredBefore,
+        "reapplying after reload must preserve the user-declared mapping");
+      assert.deepEqual(crossAfterReloadApply.effective,
+        [["t_ab","T_HUMIDITY"],["t_cd","T_CD"]].sort(),
+        "the same two accepted derived mappings must be restored without duplication after reload");
+      await crossPage.locator("#run").click();
+      await crossPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(crossPage, "declared-plus-derived after reload");
+      const crossExecutionAfterReload = await crossPage.evaluate(() => {
+        const result = window.lastPackage?.result?.scenario_results?.baseline || {};
+        return {
+          reachable:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state,transition:step.transition || null
+          }))),
+          graph:document.querySelector("#tgcv-graph")?.textContent || "",
+          provenance:document.querySelector("#tgcv-provenance-note")?.textContent || ""
+        };
+      });
+      assert.deepEqual(crossExecutionAfterReload, crossExecutionBeforeReload,
+        "cross-class mapping composition must preserve T_acc-related execution, reachability, trajectories, graph and provenance after reload");
+    } finally { await declaredDerivedCrossContext.close(); }
+
     // Integrated conflict lifecycle: two distinct system transitions map to one TGCV target.
     // Both are individually valid exact-boundary proposals, but cannot both become effective.
     const applyConflictContext = await browser.newContext();
