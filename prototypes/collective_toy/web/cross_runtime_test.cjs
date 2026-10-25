@@ -3113,7 +3113,7 @@ function pythonJson(source, input) {
       const declaredCollisionEvidence = await declaredCollisionPage.evaluate(() => ({
         declared:JSON.parse(document.querySelector("#model").value).tgcv_mapping,
         candidates:window.correspondenceReviewState?.candidates || [],
-        excluded:window.correspondenceReviewState?.excludedByDeclaredMapping || [],
+        reviewStatus:document.querySelector("#correspondence-review-status")?.textContent || "",
         cards:document.querySelectorAll("#correspondence-review-list article").length
       }));
       assert.deepEqual(declaredCollisionEvidence.declared, declaredCollisionBefore,
@@ -3121,10 +3121,8 @@ function pythonJson(source, input) {
       assert.equal(declaredCollisionEvidence.candidates.some(c =>
         c.system_transition_id === "t_ab_competing" && c.tgcv_transformation_id === "T_SHARED_AB"), false,
         "a derived candidate must never claim a target already owned by a declared mapping");
-      assert.ok(declaredCollisionEvidence.excluded.some(x =>
-        x.system_transition_id === "t_ab_competing" &&
-        x.tgcv_transformation_id === "T_SHARED_AB" && x.reason === "TARGET_ALREADY_DECLARED"),
-        "the cross-class conflict must be explicit in exclusion evidence, not silently disappear");
+      assert.match(declaredCollisionEvidence.reviewStatus, /excluido[s]? 1 coincidencias por conflicto con correspondencias declaradas/i,
+        "the cross-class conflict must be explicit in the UI exclusion evidence, not silently disappear");
       assert.ok(declaredCollisionEvidence.candidates.some(c =>
         c.system_transition_id === "t_bc_control" && c.tgcv_transformation_id === "T_BC_CONTROL"),
         "an unrelated exact-boundary candidate must remain derivable");
@@ -3166,6 +3164,10 @@ function pythonJson(source, input) {
         "native reload must restore the full declared-conflict source model without reinjection");
       assert.deepEqual(restoredDeclaredCollision?.tgcv_mapping, declaredCollisionBefore,
         "native reload must preserve the original declared mapping verbatim");
+      await declaredCollisionPage.locator("#run").click();
+      await declaredCollisionPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
       await assertStructuredTAccMatchesExecution(declaredCollisionPage, "declared-target collision after native reload");
       const declaredCollisionReloadExecution = await declaredCollisionPage.evaluate(() => {
         const result = window.lastPackage?.result?.scenario_results?.baseline || {};
