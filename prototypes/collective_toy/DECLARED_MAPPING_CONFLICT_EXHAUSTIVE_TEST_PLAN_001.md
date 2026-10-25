@@ -58,11 +58,11 @@ Aserciones obligatorias por permutación:
 | Estado de permutaciones | Cantidad |
 |---|---:|
 | Permutaciones únicas del fixture | 60 |
-| Órdenes ejercitados hasta ahora (original y reverso) | 2, con aserciones parciales |
-| Órdenes no ejercitados como permutación | 58 |
-| Permutaciones con oráculo semántico normalizado acreditado | 0 de 60, según la evidencia localizada |
+| Órdenes ejercitados por suite agrupada | 60 de 60 |
+| Órdenes no ejercitados como permutación | 0 |
+| Permutaciones con oráculo semántico normalizado acreditado | 60 de 60 — PASS en ambos workflows |
 
-El test de inversión existente comprueba el número de conflictos y la no mutación, pero no compara una firma semántica normalizada completa. Por eso no se considera que haya cerrado ninguna de las 60 permutaciones bajo el criterio más estricto.
+La suite agrupada del commit `2ae4829273f81ab27209a52640c4fd3a3489d271` ejecutó las 60 permutaciones con firma semántica normalizada, conservación exacta del orden y cero propuestas. Ambos workflows finalizaron PASS: [Motor sintético, run 40195539421](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40195539421) y [Navegador y concordancia, run 40195539418](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40195539418).
 
 ## Ejecución agrupada
 
@@ -72,11 +72,11 @@ La suite agrupada se ejecuta en los dos workflows obligatorios: **2 ejecuciones 
 
 ## Conteo operativo
 
-- **1 bloque automatizado agrupado** que contiene C12/C13/C23 y las 60 permutaciones.
-- **2 ejecuciones de CI** previstas para validarlo (un workflow por motor).
+- **1 bloque automatizado agrupado — PASS**: C12/C13/C23 y las 60 permutaciones.
+- **2 ejecuciones de CI completadas — PASS** (un workflow por motor), sobre el commit `2ae4829273f81ab27209a52640c4fd3a3489d271`.
 - Las 60 permutaciones son iteraciones internas del mismo test, no ejecuciones independientes de CI.
 - No incluye otras clases globales de conflicto, variantes de catálogo, ciclos de vida, persistencia nativa ni pruebas de validez científica.
 
 ## Criterio de cierre
 
-El bloque solo pasa cuando la suite agrupada completa pasa en ambos workflows, con firma semántica normalizada, cero mutaciones no autorizadas y evidencia ligada al commit exacto. Hasta entonces, el gate contractual global permanece **PENDIENTE**.
+El bloque queda **PASS** para el fixture y el contrato comprobados: la suite agrupada pasa en ambos workflows, con firma semántica normalizada, cero propuestas derivadas y conservación exacta del orden de entrada. El gate contractual global permanece **PENDIENTE** porque otras clases de conflicto, persistencia nativa y ciclos de vida están fuera de este bloque.
