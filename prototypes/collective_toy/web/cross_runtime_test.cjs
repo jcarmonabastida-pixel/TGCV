@@ -4027,6 +4027,106 @@ function pythonJson(source, input) {
       await assertStructuredTAccMatchesExecution(sourceCollisionPage, "explicit user resolution of ambiguous correspondence");
     } finally { await sourceCollisionContext.close(); }
 
+    // General application-time conflict resolution: two PROPOSED candidates target
+    // one TGCV transformation. Applying both must fail closed, expose a generic
+    // user-facing resolver, persist the explicit rejection and activate only the
+    // remaining compatible mapping after revalidation.
+    const derivedConflictContext = await browser.newContext();
+    try {
+      const derivedConflictPage = await derivedConflictContext.newPage();
+      await derivedConflictPage.goto("file://" + htmlPath);
+      await derivedConflictPage.locator("#load").click();
+      await derivedConflictPage.locator("#model").evaluate((el, value) => {
+        const parsed = JSON.parse(JSON.stringify(value));
+        parsed.model_id = "ui-derived-derived-application-conflict";
+        parsed.initial_state = "A";
+        parsed.states = ["A","B"];
+        parsed.transitions = [
+          {id:"t_ab_conflict_1",source:"A",target:"B"},
+          {id:"t_ab_conflict_2",source:"A",target:"B"}
+        ];
+        parsed.relations = [];
+        delete parsed.tgcv_mapping;
+        el.value = JSON.stringify(parsed, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, model);
+      await derivedConflictPage.locator("#run").click();
+      await derivedConflictPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(derivedConflictPage, "derived-derived conflict baseline");
+      const conflictCatalogueDetails = derivedConflictPage.locator("#correspondence-review-section details").filter({
+        has: derivedConflictPage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await conflictCatalogueDetails.evaluate(el => el.open))) await conflictCatalogueDetails.locator("summary").click();
+      await derivedConflictPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001", version:"ui-derived-derived-application-conflict-v1",
+        transformations:[{id:"T_SHARED_AB",source_state:"A",target_state:"B"}]
+      });
+      await derivedConflictPage.locator("#derive-tgcv-correspondences").click();
+      await derivedConflictPage.waitForFunction(() =>
+        document.querySelectorAll("#correspondence-review-list article").length === 2,
+        null, {timeout:5000});
+      const candidateCards = derivedConflictPage.locator("#correspondence-review-list article");
+      for (let i=0;i<2;i++) {
+        await candidateCards.nth(i).getByRole("button", {name:"Aceptar propuesta"}).click();
+      }
+      await derivedConflictPage.locator("#apply-accepted-tgcv-correspondences").click();
+      await derivedConflictPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "conflict-needs-review" &&
+        !document.querySelector("#correspondence-conflict-resolution")?.hidden,
+        null, {timeout:5000});
+      const blockedConflict = await derivedConflictPage.evaluate(() => ({
+        active:(window.effectiveCorrespondenceState?.mappings || [])
+          .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false).length,
+        resolverButtons:[...(document.querySelectorAll("#correspondence-conflict-resolution button"))]
+          .map(button => button.textContent.trim())
+      }));
+      assert.equal(blockedConflict.active, 0,
+        "conflicting accepted mappings must remain fail-closed until explicit resolution");
+      assert.ok(blockedConflict.resolverButtons.length >= 1 &&
+        blockedConflict.resolverButtons.every(label => label === "Rechazar esta propuesta y reaplicar"),
+        "application-time conflicts must expose a generic explicit resolution action");
+      await derivedConflictPage.locator("#correspondence-conflict-resolution button").first().click();
+      await derivedConflictPage.waitForFunction(() =>
+        document.querySelector("#effective-correspondence-status")?.dataset.state === "replay-verified" &&
+        /Correspondencias efectivas activas: 1\./.test(document.querySelector("#effective-correspondence-status")?.textContent || ""),
+        null, {timeout:5000});
+      const resolvedDerivedConflict = await derivedConflictPage.evaluate(() => {
+        const records = Object.keys(localStorage)
+          .filter(key => key.startsWith("tgcv-correspondence-review-001:"))
+          .map(key => JSON.parse(localStorage.getItem(key))).filter(Boolean);
+        const decisions = records.flatMap(record => Object.values(record.decisions || {}));
+        return {
+          active:(window.effectiveCorrespondenceState?.mappings || [])
+            .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false)
+            .map(mapping => mapping.system_transition_id),
+          rejected:decisions.filter(decision => decision.resolution?.action === "REJECT_CONFLICTING_CANDIDATE" &&
+            decision.decision === "REJECTED"),
+          accepted:decisions.filter(decision => decision.decision === "ACCEPTED" &&
+            decision.resolution?.action !== "REJECT_CONFLICTING_CANDIDATE")
+        };
+      });
+      assert.equal(resolvedDerivedConflict.active.length, 1,
+        "revalidation after conflict resolution must activate exactly one mapping");
+      assert.equal(resolvedDerivedConflict.rejected.length, 1,
+        "explicit conflict rejection and its reason must be persisted");
+      assert.equal(resolvedDerivedConflict.accepted.length, 1,
+        "the compatible accepted candidate must remain accepted");
+      assert.ok(resolvedDerivedConflict.rejected[0].resolution.conflict_code === "CONFLICT_NEEDS_REVIEW",
+        "persisted resolution must retain the conflict code");
+      await derivedConflictPage.locator("#run").click();
+      await derivedConflictPage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(derivedConflictPage, "derived-derived conflict explicitly resolved");
+      console.log("PASS: general application-time conflict resolution is explicit, persisted, fail-closed and revalidated before activation.");
+    } finally { await derivedConflictContext.close(); }
+
     // Integrated resolution path: disambiguate by refining the declared target catalogue,
     // then explicitly accept/apply the unique candidate and verify execution + reload.
     const resolvedSourceAmbiguityContext = await browser.newContext();
