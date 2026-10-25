@@ -2491,6 +2491,109 @@ function pythonJson(source, input) {
         "the UI must report that no compatible proposals were generated");
     } finally { await declaredCollisionContext.close(); }
 
+    // Declared-mapping lifecycle: preserve the user's mapping and its execution semantics
+    // across catalogue derivation and a page reload, without converting declarations into
+    // derived-effective records or silently changing condition reachability.
+    const declaredLifecycleContext = await browser.newContext();
+    try {
+      const declaredLifecyclePage = await declaredLifecycleContext.newPage();
+      await declaredLifecyclePage.goto("file://" + htmlPath);
+      await declaredLifecyclePage.locator("#load").click();
+      const declaredLifecycleModel = JSON.parse(JSON.stringify(explicitlyMappedModel));
+      const declaredLifecycleBefore = JSON.parse(JSON.stringify(declaredLifecycleModel.tgcv_mapping));
+      await declaredLifecyclePage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, declaredLifecycleModel);
+      await declaredLifecyclePage.locator("#run").click();
+      await declaredLifecyclePage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(declaredLifecyclePage, "user-declared mapping baseline");
+      const declaredBaseline = await declaredLifecyclePage.evaluate(() => {
+        const pkg = window.lastPackage;
+        const model = JSON.parse(document.querySelector("#model").value);
+        const result = pkg?.result?.scenario_results?.baseline || {};
+        return {
+          declared:model.tgcv_mapping,
+          reachable:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state,transition:step.transition || null
+          }))),
+          graph:document.querySelector("#tgcv-graph")?.textContent || "",
+          provenance:document.querySelector("#tgcv-provenance-note")?.textContent || ""
+        };
+      });
+      assert.deepEqual(declaredBaseline.declared, declaredLifecycleBefore,
+        "execution must preserve the exact user-declared mapping and provenance");
+      assert.ok(declaredBaseline.reachable.includes("B") && declaredBaseline.reachable.includes("C") && declaredBaseline.reachable.includes("D"),
+        "the declared mapping fixture must exercise both evaluated conditional and unconditional paths");
+
+      const declaredDetails = declaredLifecyclePage.locator("#correspondence-review-section details").filter({
+        has: declaredLifecyclePage.locator("#tgcv-target-catalogue")
+      });
+      if (!(await declaredDetails.evaluate(el => el.open))) await declaredDetails.locator("summary").click();
+      await declaredLifecyclePage.locator("#tgcv-target-catalogue").evaluate(el => {
+        el.value = JSON.stringify({
+          schema:"tgcv-target-catalogue-001",version:"declared-lifecycle-v1",
+          transformations:[
+            {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+            {id:"T_AC",source_state:"A",target_state:"C"},
+            {id:"T_CD",source_state:"C",target_state:"D"}
+          ]
+        }, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      });
+      await declaredLifecyclePage.locator("#derive-tgcv-correspondences").click();
+      const declaredAfterDerive = await declaredLifecyclePage.locator("#model").evaluate(el =>
+        JSON.parse(JSON.stringify(JSON.parse(el.value).tgcv_mapping))
+      );
+      assert.deepEqual(declaredAfterDerive, declaredLifecycleBefore,
+        "catalogue derivation must never rewrite the declared mapping");
+      const declaredEffectiveDerived = await declaredLifecyclePage.evaluate(() =>
+        (window.effectiveCorrespondenceState?.mappings || []).filter(m => m.status === "EFFECTIVE" && m.active !== false)
+      );
+      assert.equal(declaredEffectiveDerived.length, 0,
+        "user declarations must not be silently duplicated as derived-effective mappings");
+
+      await declaredLifecyclePage.reload();
+      await declaredLifecyclePage.locator("#load").click();
+      await declaredLifecyclePage.locator("#model").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+      }, declaredLifecycleModel);
+      await declaredLifecyclePage.locator("#run").click();
+      await declaredLifecyclePage.waitForFunction(() => /ejecución completada/i.test(
+        document.querySelector("#status")?.textContent || ""
+      ), null, {timeout:5000});
+      await assertStructuredTAccMatchesExecution(declaredLifecyclePage, "user-declared mapping after reload");
+      const declaredAfterReload = await declaredLifecyclePage.evaluate(() => {
+        const pkg = window.lastPackage;
+        const model = JSON.parse(document.querySelector("#model").value);
+        const result = pkg?.result?.scenario_results?.baseline || {};
+        return {
+          declared:model.tgcv_mapping,
+          reachable:[...(result.reachable_states || [])].sort(),
+          trajectories:(result.trajectories || []).map(path => path.map(step => ({
+            state:step.state,transition:step.transition || null
+          }))),
+          graph:document.querySelector("#tgcv-graph")?.textContent || "",
+          provenance:document.querySelector("#tgcv-provenance-note")?.textContent || ""
+        };
+      });
+      assert.deepEqual(declaredAfterReload.declared, declaredBaseline.declared,
+        "the exact user-declared mapping must survive page reload and model restoration");
+      assert.deepEqual(declaredAfterReload.reachable, declaredBaseline.reachable,
+        "declared mapping execution reachability must be invariant across reload");
+      assert.deepEqual(declaredAfterReload.trajectories, declaredBaseline.trajectories,
+        "declared mapping execution trajectories must be invariant across reload");
+      assert.equal(declaredAfterReload.graph, declaredBaseline.graph,
+        "the declared TGCV graph must be unchanged across reload");
+      assert.equal(declaredAfterReload.provenance, declaredBaseline.provenance,
+        "declared mapping provenance must be unchanged across reload");
+    } finally { await declaredLifecycleContext.close(); }
+
     // Integrated conflict lifecycle: two distinct system transitions map to one TGCV target.
     // Both are individually valid exact-boundary proposals, but cannot both become effective.
     const applyConflictContext = await browser.newContext();
