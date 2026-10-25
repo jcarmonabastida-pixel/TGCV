@@ -3005,6 +3005,20 @@ function pythonJson(source, input) {
         has: crossPage.locator("#tgcv-target-catalogue")
       });
       if (!(await restoredCrossDetails.evaluate(el => el.open))) await restoredCrossDetails.locator("summary").click();
+      // The catalogue is test input, not part of the native model-draft persistence contract.
+      // Restore the same catalogue scope, but do not re-inject the declared source model.
+      await crossPage.locator("#tgcv-target-catalogue").evaluate((el, value) => {
+        el.value = JSON.stringify(value, null, 2);
+        el.dispatchEvent(new Event("input", {bubbles:true}));
+        el.dispatchEvent(new Event("change", {bubbles:true}));
+      }, {
+        schema:"tgcv-target-catalogue-001", version:"declared-derived-cross-lifecycle-v1",
+        transformations:[
+          {id:"T_HUMIDITY",source_state:"A",target_state:"B"},
+          {id:"T_AC",source_state:"A",target_state:"C"},
+          {id:"T_CD",source_state:"C",target_state:"D"}
+        ]
+      });
       await crossPage.locator("#derive-tgcv-correspondences").click();
       await crossPage.waitForFunction(() =>
         document.querySelectorAll("#correspondence-review-list article").length === 2,
