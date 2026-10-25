@@ -168,3 +168,16 @@ El bloque pendiente debe consolidar en **una sola secuencia** la evidencia hoy r
 **Límite del número:** `1 bloque / 2 workflows` es el recuento exacto para este gate, no una cifra de todas las pruebas pendientes del contrato completo. El §10.6 del contrato mantiene aparte: (a) restauración tras reinicio de las decisiones de resolución de conflicto y (b) un flujo general de resolución para todos los tipos `CONFLICT_NEEDS_REVIEW`, ambos sin verificar; la derivación sigue siendo exact-boundary, sin reclamar inferencia semántica general. Además, los gates de entrada de condiciones (JSON/texto y la cobertura agrupada de las tres vías) tienen su propio estado parcial. No hay base en estos artefactos para convertir todos esos ámbitos distintos en un número global único de ejecuciones.
 
 PR #95 permanece abierta y en borrador. `main` no se modifica; no hay autorización de promoción ni de ejecución científica.
+
+## Cierre del bloque global mínimo — 2026-10-25
+
+**PASS confirmado** en el commit exacto `1491c2dce624e42da3ef6fb682a4645700612764`:
+
+- [Navegador y concordancia — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40208152055).
+- [Motor sintético — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40208152054).
+
+El bloque agrupado integra el ciclo de propuestas/decisiones, conflictos de aplicación, suspensión fail-closed, invalidación `STALE`, persistencia y recarga/revisión, y comprueba que una suspensión temporal por conflicto no se registra falsamente como revocación. Las aserciones comparan el estado efectivo y el historial persistido; las 60 permutaciones declarada↔declarada no se reabrieron.
+
+**Resultado operativo:** se cumple el mínimo planificado de un bloque agrupado y dos ejecuciones de CI, ambas PASS. No se requieren ejecuciones correctivas para este bloque.
+
+**Límite de alcance:** este resultado cierra el gate de integración cruzada definido por este plan; no declara completa toda la etapa de correspondencias. Siguen vigentes los límites explícitos de §10.6 del contrato del demostrador: restauración tras reinicio de decisiones de resolución de conflicto y un flujo general de resolución para todos los tipos `CONFLICT_NEEDS_REVIEW` continúan sin verificar. La derivación continúa limitada a coincidencia exacta de fronteras; no se afirma inferencia semántica general. La PR #95 permanece en borrador y `main` no se modifica.
