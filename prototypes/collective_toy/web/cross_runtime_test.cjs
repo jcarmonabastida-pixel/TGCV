@@ -2689,6 +2689,8 @@ function pythonJson(source, input) {
       const setDeclaredMappings = async mappings => {
         const nextModel = JSON.parse(JSON.stringify(declaredPairModel));
         nextModel.tgcv_mapping.mappings = mappings;
+        const transitionIds = [...new Set(mappings.map(m => m.system_transition_id))];
+        nextModel.transitions = declaredPairModel.transitions.filter(t => transitionIds.includes(t.id));
         nextModel.model_id = "ui-declared-mapping-exhaustive-" + (++exhaustiveCase);
         await declaredPairPage.locator("#model").evaluate((el, value) => {
           el.value = JSON.stringify(value, null, 2);
@@ -2744,7 +2746,7 @@ function pythonJson(source, input) {
       };
       buildPermutations(rows, []);
       assert.equal(uniquePermutations.length, 60, "fixture must enumerate exactly 60 unique permutations");
-      const baselineSignature = JSON.stringify(conflictSignature(declaredPairSnapshot.result?.declared_mapping_conflicts || []));
+      const baselineSignature = JSON.stringify(conflictSignature(declaredPairSnapshot.result?.declaredMappingConflicts || []));
       for (let index = 0; index < uniquePermutations.length; index++) {
         const permutation = uniquePermutations[index];
         const result = await setDeclaredMappings(permutation);
