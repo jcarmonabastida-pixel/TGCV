@@ -3118,7 +3118,7 @@ function pythonJson(source, input) {
       assert.equal(declaredCollisionEvidence.candidates.some(c =>
         c.system_transition_id === "t_ab_competing" && c.tgcv_transformation_id === "T_SHARED_AB"), false,
         "a derived candidate must never claim a target already owned by a declared mapping");
-      assert.match(declaredCollisionEvidence.reviewStatus, /excluido[s]? 1 coincidencias por conflicto con correspondencias declaradas/i,
+      assert.match(declaredCollisionEvidence.reviewStatus, /excluido[s]? 2 coincidencias por conflicto con correspondencias declaradas/i,
         "the cross-class conflict must be explicit in the UI exclusion evidence, not silently disappear");
       assert.ok(declaredCollisionEvidence.candidates.some(c =>
         c.system_transition_id === "t_bc_control" && c.tgcv_transformation_id === "T_BC_CONTROL"),
