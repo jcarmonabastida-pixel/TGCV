@@ -146,3 +146,25 @@ Commit: `6b5ee82bb9935a051a312ea12b4bc3233c27e943`.
 La prueba agrupada compara el snapshot operacional antes/después de rechazar `t_ab`, comprueba que `REJECTED` se persiste, y verifica que la segunda aplicación de la correspondencia aceptada `t_cd` no cambia ni el conjunto efectivo ni el almacenamiento persistido. Ambos workflows pasan.
 
 **Estado del bloque:** cerrado con evidencia de CI. No se reabren las 60 permutaciones declarada↔declarada. La PR #95 permanece en borrador y `main` intacta.
+
+
+## Fuente de verdad reconciliada — 2026-10-25
+
+Esta sección prevalece sobre los estados históricos de “pendiente de CI” anteriores; describen commits y fases anteriores.
+
+**Último bloque ejecutado:** inversión del orden del catálogo en la colisión declarada↔derivada, commit `f12bf81214f90807cb8d6ce0a5f743a096ce424f`.
+
+- [Navegador y concordancia — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40204075921)
+- [Motor sintético — PASS](https://github.com/jcarmonabastida-pixel/TGCV/actions/runs/40204075929)
+
+La prueba confirma invariancia del mapping declarado, conjunto normalizado de candidatas/conflictos, exclusión explícita y ausencia de mappings efectivos antes de aceptación. Rechazo sin efecto operacional e idempotencia ya tienen PASS independiente en el commit `6b5ee82bb9935a051a312ea12b4bc3233c27e943`.
+
+### Recuento reconciliado
+
+Para **cerrar el gate de integración cruzada definido en este plan**, queda **1 bloque automatizado integrado**, ejecutado mediante **2 workflows CI** sobre el mismo commit: Navegador y concordancia + Motor sintético. No quedan 60 permutaciones por repetir; esas permutaciones declarada↔declarada no se reabren.
+
+El bloque pendiente debe consolidar en **una sola secuencia** la evidencia hoy repartida en fixtures: baseline → propuesta pendiente → rechazo explícito → mapping aplicado → cambio de catálogo e invalidación `STALE` → restauración/recarga → reaplicación idempotente. En cada fase se comparan por separado mapping declarado/overlay efectivo y procedencia, `T_acc`, grafo TGCV, resultados por escenario, alcanzabilidad y trayectorias normalizadas. El PASS del test de orden de catálogo no sustituye esta secuencia integrada.
+
+**Límite del número:** `1 bloque / 2 workflows` es el recuento exacto para este gate, no una cifra de todas las pruebas pendientes del contrato completo. El §10.6 del contrato mantiene aparte: (a) restauración tras reinicio de las decisiones de resolución de conflicto y (b) un flujo general de resolución para todos los tipos `CONFLICT_NEEDS_REVIEW`, ambos sin verificar; la derivación sigue siendo exact-boundary, sin reclamar inferencia semántica general. Además, los gates de entrada de condiciones (JSON/texto y la cobertura agrupada de las tres vías) tienen su propio estado parcial. No hay base en estos artefactos para convertir todos esos ámbitos distintos en un número global único de ejecuciones.
+
+PR #95 permanece abierta y en borrador. `main` no se modifica; no hay autorización de promoción ni de ejecución científica.
