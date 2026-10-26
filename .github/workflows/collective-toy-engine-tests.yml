@@ -31,10 +31,10 @@ jobs:
           import re
           from pathlib import Path
           html = Path("prototypes/collective_toy/web/index.html").read_text(encoding="utf-8")
-          scripts = re.findall(r"<script\\b[^>]*>(.*?)</script\\s*>", html, re.IGNORECASE | re.DOTALL)
-          if len(scripts) != 1:
-              raise SystemExit(f"Expected one inline script, found {len(scripts)}")
-          source = scripts[0]
+          scripts = html.split("<script>", 1)
+          if len(scripts) != 2 or "</script>" not in scripts[1]:
+              raise SystemExit("Expected one inline script")
+          source = scripts[1].split("</script>", 1)[0]
           required = [
               "function enumerateTgcvTrajectories(model,scenarioId)",
               'source:"tgcv-transformations"',
