@@ -146,5 +146,40 @@ class TrajectorySelectorTests(unittest.TestCase):
             select(cfg=invalid)
 
 
+    def test_substantive_ties_are_preserved_despite_stable_presentation_order(self):
+        data = scenario(trajectories=[
+            [{"state": "A"}, {"transition": "t_ax", "state": "X"}],
+            [{"state": "A"}, {"transition": "t_ay", "state": "Y"}],
+        ])
+        result = select(data)
+        self.assertEqual([item["rank"] for item in result["ranked_trajectories"]], [1, 1])
+        self.assertEqual(result["ranked_trajectories"][0]["tie_group"], result["ranked_trajectories"][1]["tie_group"])
+        self.assertTrue(all("stable presentation" in item["tie_note"] for item in result["ranked_trajectories"]))
+
+    def test_forbidden_transition_is_an_explicit_non_compensable_restriction(self):
+        cfg = config(
+            criteria=[{"id": "steps", "direction": "minimize", "source": "step_count"}],
+            restrictions=[{"id": "forbid_ab", "source": "transition_present", "transition_id": "t_ab", "must_be_present": False}],
+        )
+        result = select(cfg=cfg)
+        eligible = [item for item in result["ranked_trajectories"] if item["eligible"]]
+        ineligible = [item for item in result["ranked_trajectories"] if not item["eligible"]]
+        self.assertEqual(len(eligible), 1)
+        self.assertEqual(len(ineligible), 2)
+        self.assertTrue(all(item["status"] == "INELIGIBLE" for item in ineligible))
+
+    def test_malformed_trajectory_is_rejected_not_silently_ranked(self):
+        data = scenario(trajectories=[[{"state": "A"}, {"state": "B"}]])
+        with self.assertRaises(SelectorInputError):
+            select(data)
+
+    def test_provenance_fields_and_snapshot_digest_are_stable(self):
+        result = select()
+        self.assertEqual(result["model_sha256"], SHA_MODEL)
+        self.assertEqual(result["result_sha256"], SHA_RESULT)
+        self.assertRegex(result["input_sha256"], r"^[0-9a-f]{64}$")
+        self.assertRegex(result["config_sha256"], r"^[0-9a-f]{64}$")
+
+
 if __name__ == "__main__":
     unittest.main()
