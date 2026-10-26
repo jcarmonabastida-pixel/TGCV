@@ -3752,11 +3752,11 @@ const assert = require("node:assert/strict");
       "UX: the carousel should enumerate and position the first accessible trajectory");
     assert.equal(await uxPage.locator("#trajectory-card svg").count(), 1,
       "UX: each trajectory must have a visual state/transition graph");
-    assert.match(await uxPage.locator("#trajectory-card").innerText(), /tau_ux_ab → tau_ux_bd/);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /tau_ux_ab → B → tau_ux_bd/);
     assert.match(await uxPage.locator("#trajectory-card").innerText(), /Candidata · no ejecutada/i);
     await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "2 / 2");
-    assert.match(await uxPage.locator("#trajectory-card").innerText(), /tau_ux_ac → tau_ux_cd/);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /tau_ux_ac → C → tau_ux_cd/);
     await uxPage.getByRole("button", { name: "Trayectoria anterior" }).click();
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2");
     await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
@@ -3909,7 +3909,7 @@ const assert = require("node:assert/strict");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.deepEqual(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab,
       { condition: "permiso concedido", result: "TRUE" });
-    assert.match(await page.locator("#trajectory-card").innerText(), /tau_cond_ab → tau_plain_bc/,
+    assert.match(await page.locator("#trajectory-card").innerText(), /tau_cond_ab → B → tau_plain_bc/,
       "TRUE must enable a trajectory over TGCV transformation identities and their declared TGCV relation");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /obsoleto|desactualizado|no corresponde|no se ha actualizado|no puede|aviso/i,
