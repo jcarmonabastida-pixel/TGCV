@@ -203,5 +203,31 @@ class TrajectorySelectorTests(unittest.TestCase):
         self.assertTrue(result["ranked_trajectories"])
 
 
+    def test_real_engine_result_abstains_when_explicit_restriction_is_impossible(self):
+        model = demo_model()
+        engine_output = run_model(model)
+        baseline = engine_output["scenario_results"]["baseline"]
+        cfg = config(restrictions=[
+            {
+                "id": "must_use_nonexistent_transition",
+                "source": "transition_present",
+                "transition_id": "transition_that_does_not_exist",
+                "must_be_present": True,
+            }
+        ])
+        result = select_trajectories(
+            baseline,
+            cfg,
+            scenario_id="baseline",
+            model_sha256=sha256_json(model),
+            result_sha256=sha256_json(engine_output),
+        )
+        self.assertEqual(result["status"], "ABSTAINED")
+        self.assertEqual(result["reason"], "NO_ADMISSIBLE_TRAJECTORIES")
+        self.assertEqual(result["provenance_status"], "DECLARED_NOT_INDEPENDENTLY_VERIFIED")
+        self.assertTrue(result["ranked_trajectories"])
+        self.assertTrue(all(not item["eligible"] for item in result["ranked_trajectories"]))
+
+
 if __name__ == "__main__":
     unittest.main()
