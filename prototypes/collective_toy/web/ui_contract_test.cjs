@@ -3634,6 +3634,9 @@ const assert = require("node:assert/strict");
     const trajectoryCapCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const original = structuredClone(model.exploration);
+      model.exploration = { max_depth: 5, max_trajectories: 30 };
+      tgcvSourceSnapshot = canonical(model);
+      const uncapped = window.enumerateTgcvTrajectories(model, "baseline");
       model.exploration = { max_depth: 5, max_trajectories: 1 };
       tgcvSourceSnapshot = canonical(model);
       const first = window.enumerateTgcvTrajectories(model, "baseline");
@@ -3644,8 +3647,10 @@ const assert = require("node:assert/strict");
         paths: (result.paths || []).map(path => path.map(step => step.system_transition)),
         truncated: result.truncated
       });
-      return { first: encode(first), second: encode(second) };
+      return { uncapped: encode(uncapped), first: encode(first), second: encode(second) };
     });
+    assert.ok(trajectoryCapCheck.uncapped.paths.length > 1,
+      "GT-05 temporal: cap fixture must contain more than one valid candidate");
     assert.equal(trajectoryCapCheck.first.paths.length, 1,
       "GT-05 temporal: max_trajectories must cap emitted TGCV paths");
     assert.equal(trajectoryCapCheck.first.truncated, true,
