@@ -3493,6 +3493,25 @@ const assert = require("node:assert/strict");
       { id: "t_ax", source: "A", target: "X" },
       { id: "t_xd", source: "X", target: "D" }
     ];
+    // The custom fixture must declare its TGCV mapping explicitly: changing model_id
+    // disables the built-in toy-diamond illustrative mapping by design.
+    temporalSuccessModel.tgcv_mapping = {
+      schema: "tgcv-explicit-mapping-001",
+      mapping_rule: "gt05-temporal-fixture-explicit-v1",
+      provenance: "synthetic-test-fixture",
+      mappings: [
+        { system_transition_id: "t_ab", tgcv_transformation_id: "tau_t_ab" },
+        { system_transition_id: "t_bc", tgcv_transformation_id: "tau_t_bc" },
+        { system_transition_id: "t_cd", tgcv_transformation_id: "tau_t_cd" },
+        { system_transition_id: "t_ax", tgcv_transformation_id: "tau_t_ax" },
+        { system_transition_id: "t_xd", tgcv_transformation_id: "tau_t_xd" }
+      ],
+      relations: [
+        ["tau_t_ab", "tau_t_bc"],
+        ["tau_t_bc", "tau_t_cd"],
+        ["tau_t_ax", "tau_t_xd"]
+      ]
+    };
     temporalSuccessModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
     temporalSuccessModel.relations = [{
       id: "r_temporal_success",
