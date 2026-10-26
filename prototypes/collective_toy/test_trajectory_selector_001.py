@@ -207,7 +207,7 @@ class TrajectorySelectorTests(unittest.TestCase):
         )
         self.assertIn(result["status"], {"RANKED", "PARTIAL_TRUNCATED"})
         self.assertEqual(result["model_sha256"], sha256_json(model))
-        self.assertEqual(result["result_sha256"], sha256_json(baseline))
+        self.assertEqual(result["result_sha256"], engine_output["result_sha256"])
         self.assertTrue(result["ranked_trajectories"])
 
 
@@ -234,6 +234,32 @@ class TrajectorySelectorTests(unittest.TestCase):
         self.assertEqual(result["provenance_status"], "HASHES_COMPUTED_FROM_SUPPLIED_ARTIFACTS")
         self.assertTrue(result["ranked_trajectories"])
         self.assertTrue(all(not item["eligible"] for item in result["ranked_trajectories"]))
+
+    def test_engine_output_payload_tampering_abstains(self):
+        model = demo_model()
+        engine_output = run_model(model)
+        engine_output["scenario_results"]["baseline"]["trajectories"] = []
+        result = select_trajectories(
+            engine_output,
+            config(),
+            scenario_id="baseline",
+            model=model,
+        )
+        self.assertEqual(result["status"], "ABSTAINED")
+        self.assertEqual(result["reason"], "INVALID_INPUT_PROVENANCE")
+
+    def test_engine_output_from_different_model_abstains(self):
+        engine_output = run_model(demo_model())
+        different_model = copy.deepcopy(demo_model())
+        different_model["model_id"] = "different-model"
+        result = select_trajectories(
+            engine_output,
+            config(),
+            scenario_id="baseline",
+            model=different_model,
+        )
+        self.assertEqual(result["status"], "ABSTAINED")
+        self.assertEqual(result["reason"], "INVALID_INPUT_PROVENANCE")
 
 
 if __name__ == "__main__":
