@@ -179,12 +179,18 @@ function pythonJson(source, input) {
       forgedCorrespondence.package_sha256 = await window.hash(forgedCorrespondence);
       let forgedCorrespondenceRejected = false;
       try { await window.assessImportedBrowserPackage(forgedCorrespondence); } catch (_error) { forgedCorrespondenceRejected = true; }
+      const forgedTransition = JSON.parse(JSON.stringify(imported));
+      forgedTransition.tgcv_correspondence_review.candidates[0].system_transition_id = "TRANSITION_FORGED_NOT_IN_MODEL";
+      delete forgedTransition.package_sha256;
+      forgedTransition.package_sha256 = await window.hash(forgedTransition);
+      let forgedTransitionRejected = false;
+      try { await window.assessImportedBrowserPackage(forgedTransition); } catch (_error) { forgedTransitionRejected = true; }
       return {
         status:assessment.status, replay:assessment.replay,
         review:assessment.correspondence_review,
         message:assessment.message,
         snapshotPreserved:JSON.stringify(imported.tgcv_correspondence_review)===JSON.stringify(review),
-        tamperRejected, forgedCorrespondenceRejected
+        tamperRejected, forgedCorrespondenceRejected, forgedTransitionRejected
       };
     }, pkg);
     assert.equal(reviewReplay.status, "replay-verified", "package replay must remain verified when a valid review snapshot is attached");
@@ -193,6 +199,7 @@ function pythonJson(source, input) {
     assert.equal(reviewReplay.snapshotPreserved, true, "the imported review snapshot must remain byte-structure equivalent");
     assert.equal(reviewReplay.tamperRejected, true, "review/model linkage tampering must be rejected");
     assert.equal(reviewReplay.forgedCorrespondenceRejected, true, "a correspondence referencing a TGCV transformation absent from the rehashed catalogue snapshot must be rejected");
+    assert.equal(reviewReplay.forgedTransitionRejected, true, "a correspondence referencing a system transition absent from the model must be rejected even when the package hash is recalculated");
     assert.match(reviewReplay.message, /no se aplican al grafo TGCV/i, "replay must explicitly avoid applying accepted mappings");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
     assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
