@@ -61,6 +61,23 @@ class RecommendationAuditTests(unittest.TestCase):
                 })
             self.assertFalse(path.exists())
 
+    def test_recommendation_digest_is_checked_separately(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "recommendations.jsonl"
+            append_recommendation(path, recommendation(), created_at="2026-10-26T10:00:00Z")
+            record = json.loads(path.read_text(encoding="utf-8"))
+            record["recommendation_sha256"] = "f" * 64
+            # Recompute the outer event digest to isolate the inner snapshot-digest check.
+            import hashlib
+            import json as json_module
+            payload = dict(record)
+            payload.pop("event_sha256", None)
+            canonical = json_module.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+            record["event_sha256"] = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+            path.write_text(json.dumps(record) + "\\n", encoding="utf-8")
+            with self.assertRaisesRegex(RecommendationAuditError, "recommendation hash mismatch"):
+                verify_ledger(path)
+
 
 if __name__ == "__main__":
     unittest.main()
