@@ -47,7 +47,7 @@ jobs:
       - name: Run trajectory selector contract tests
         working-directory: prototypes/collective_toy
         run: python -m unittest -v test_trajectory_selector_001.py
-      - name: Replay both suites from clean source archive
+      - name: Replay all three suites from clean source archive
         shell: bash
         run: |
           set -euo pipefail
