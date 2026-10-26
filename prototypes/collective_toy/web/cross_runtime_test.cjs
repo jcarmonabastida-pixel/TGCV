@@ -3569,7 +3569,15 @@ function pythonJson(source, input) {
       await conflictPage.waitForFunction(() => /ejecución completada/i.test(
         document.querySelector("#status")?.textContent || ""
       ), null, {timeout:5000});
-      await assertStructuredTAccMatchesExecution(conflictPage, "unresolved conflict fails closed");
+      const unresolvedConflictGraph = await conflictPage.evaluate(() => ({
+        mappingCount: (window.effectiveCorrespondenceState?.mappings || [])
+          .filter(m => m.status === "EFFECTIVE" && m.active !== false).length,
+        graphResult: window.lastTgcvDemoResult?.current ?? null
+      }));
+      assert.equal(unresolvedConflictGraph.mappingCount, 0,
+        "unresolved conflict fails closed: no effective TGCV mappings");
+      assert.equal(unresolvedConflictGraph.graphResult, null,
+        "unresolved conflict fails closed: execution must not fabricate an effective TGCV graph");
 
       await duplicateCard.getByRole("button", {name:"Rechazar propuesta"}).click();
       const persistedDecisions = await conflictPage.evaluate(() => Object.keys(localStorage)
