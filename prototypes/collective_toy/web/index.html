@@ -615,14 +615,13 @@ $("execute-sequence").addEventListener("click",async function(){
   panel._trace=trace;
   outcomeRecord=null;valueAssessment=null;
   activeExecutionRecord={trace:trace,outcome:null,assessment:null};
-  if(trace.status==="COMPLETED"){
-   var route=[trace.initial_state].concat(trace.steps.map(function(step){return step.state_after})).join(" → ");
-   var executedTransformations=trace.tgcv_trajectory?trace.tgcv_trajectory.transformation_ids.slice():trace.steps.map(function(step){return step.transition_id});outcomeRecord={outcome_schema:"collective-toy-outcome-001",outcome_id:"outcome-"+trace.execution_id,execution_id:trace.execution_id,execution_trace_sha256:trace.trace_sha256,model_id:trace.model_id,scenario_id:trace.scenario_id,source_kind:"synthetic",value:route,unit:"recorrido ejecutado",timing:"al completar la secuencia",uncertainty_status:"resultado sintético ilustrativo derivado de la ejecución",provenance:"Generado automáticamente a partir de la traza concreta de ejecución; no es una medición empírica.",executed_transformation_ids:executedTransformations.slice(),transformation_source:trace.trajectory_source||"SYSTEM_TRANSITIONS"};
+  if(trace.status==="COMPLETED"&&trace.tgcv_trajectory){
+   var route=[trace.initial_state].concat(trace.steps.map(function(step){return step.state_after})).join(" → "),executedTransformations=trace.tgcv_trajectory.transformation_ids.slice();outcomeRecord={outcome_schema:"collective-toy-outcome-001",outcome_id:"outcome-"+trace.execution_id,execution_id:trace.execution_id,execution_trace_sha256:trace.trace_sha256,model_id:trace.model_id,scenario_id:trace.scenario_id,source_kind:"synthetic",value:route,unit:"recorrido ejecutado",timing:"al completar la secuencia",uncertainty_status:"resultado sintético ilustrativo derivado de la ejecución",provenance:"Generado automáticamente a partir de la traza concreta de ejecución de transformaciones TGCV; no es una medición empírica.",executed_transformation_ids:executedTransformations.slice(),transformation_source:"TGCV_TRANSFORMATION_GRAPH"};
    activeExecutionRecord.outcome=outcomeRecord;
    $("outcome-status").dataset.state="recorded";
-   $("outcome-status").replaceChildren(node("strong","","Resultado generado automáticamente"),node("p","",route),node("p","muted",trace.steps.length+" pasos ejecutados · estado final "+trace.final_state),node("p","muted","Transformaciones ejecutadas: "+outcomeRecord.executed_transformation_ids.join(" → ")),node("p","muted","Resultado sintético ilustrativo; no es una medición empírica."));
+   $("outcome-status").replaceChildren(node("strong","","Resultado sintético vinculado a la ejecución TGCV"),node("p","",route),node("p","muted",trace.steps.length+" pasos ejecutados · estado final "+trace.final_state),node("p","muted","Transformaciones TGCV ejecutadas: "+outcomeRecord.executed_transformation_ids.join(" → ")),node("p","muted","Resultado sintético ilustrativo; no es una medición empírica."));
   }else{
-   $("outcome-status").dataset.state="not-assessed";$("outcome-status").textContent="No se calcula resultado porque la trayectoria no se completó.";
+   $("outcome-status").dataset.state="not-assessed";$("outcome-status").textContent=trace.status!=="COMPLETED"?"No se calcula resultado porque la trayectoria no se completó.":"Ejecución completada sin trayectoria TGCV vinculada; no se habilitan resultado ni valoración contextual.";
   }
   executionHistory.push(activeExecutionRecord);refreshExecutionComparison();renderValueDashboard();
   $("outcome-value").value=$("outcome-unit").value=$("outcome-timing").value=$("outcome-uncertainty").value=$("outcome-provenance").value="";
@@ -634,16 +633,16 @@ $("execute-sequence").addEventListener("click",async function(){
 var outcomeRecord=null,valueAssessment=null;
 function updateFc4Controls(){
  var trace=$("sequence-trace")._trace;
- $("record-outcome").disabled=!(trace&&trace.status==="COMPLETED");
- $("assess-value").disabled=!(outcomeRecord&&outcomeRecord.outcome_id);updateGuidedFlow();
+ $("record-outcome").disabled=!(trace&&trace.status==="COMPLETED"&&trace.tgcv_trajectory);
+ $("assess-value").disabled=!(outcomeRecord&&outcomeRecord.outcome_id&&outcomeRecord.transformation_source==="TGCV_TRANSFORMATION_GRAPH");updateGuidedFlow();
 }
 $("record-outcome").addEventListener("click",function(){
  var trace=$("sequence-trace")._trace;
  try{
-  assert(trace&&trace.status==="COMPLETED","Registra un resultado solo después de una ejecución completada.");
+  assert(trace&&trace.status==="COMPLETED"&&trace.tgcv_trajectory&&trace.trajectory_source==="TGCV_TRANSFORMATION_GRAPH","Registra resultados únicamente después de una ejecución completada de una trayectoria TGCV.");
   var value=$("outcome-value").value.trim(),unit=$("outcome-unit").value.trim(),timing=$("outcome-timing").value.trim(),uncertainty=$("outcome-uncertainty").value.trim(),provenance=$("outcome-provenance").value.trim();
   assert(value&&unit&&timing&&uncertainty&&provenance,"Completa resultado, unidad, momento, incertidumbre/estado y procedencia.");
-  var executedTransformations=trace.tgcv_trajectory?trace.tgcv_trajectory.transformation_ids.slice():trace.steps.map(function(step){return step.transition_id});outcomeRecord={outcome_schema:"collective-toy-outcome-001",outcome_id:"outcome-"+trace.execution_id,execution_id:trace.execution_id,execution_trace_sha256:trace.trace_sha256,model_id:trace.model_id,scenario_id:trace.scenario_id,source_kind:$("outcome-kind").value,value:value,unit:unit,timing:timing,uncertainty_status:uncertainty,provenance:provenance,executed_transformation_ids:executedTransformations.slice(),transformation_source:trace.trajectory_source||"SYSTEM_TRANSITIONS"};if(activeExecutionRecord&&activeExecutionRecord.trace.execution_id===trace.execution_id)activeExecutionRecord.outcome=outcomeRecord;
+  var executedTransformations=trace.tgcv_trajectory.transformation_ids.slice();outcomeRecord={outcome_schema:"collective-toy-outcome-001",outcome_id:"outcome-"+trace.execution_id,execution_id:trace.execution_id,execution_trace_sha256:trace.trace_sha256,model_id:trace.model_id,scenario_id:trace.scenario_id,source_kind:$("outcome-kind").value,value:value,unit:unit,timing:timing,uncertainty_status:uncertainty,provenance:provenance,executed_transformation_ids:executedTransformations.slice(),transformation_source:trace.trajectory_source||"SYSTEM_TRANSITIONS"};if(activeExecutionRecord&&activeExecutionRecord.trace.execution_id===trace.execution_id)activeExecutionRecord.outcome=outcomeRecord;
   valueAssessment=null;
   $("outcome-status").dataset.state="recorded";
   $("outcome-status").textContent="PASS · Resultado vinculado a "+trace.execution_id+" (traza SHA-256 "+trace.trace_sha256+"). Transformaciones ejecutadas: "+outcomeRecord.executed_transformation_ids.join(" → ")+".";
@@ -654,7 +653,7 @@ $("record-outcome").addEventListener("click",function(){
 });
 $("assess-value").addEventListener("click",async function(){
  try{
-  assert(outcomeRecord,"No existe un resultado explícito que valorar.");
+  assert(outcomeRecord&&outcomeRecord.transformation_source==="TGCV_TRANSFORMATION_GRAPH"&&outcomeRecord.execution_id===outcomeRecord.outcome_id.replace(/^outcome-/,""),"La valoración requiere un resultado vinculado a una ejecución de transformaciones TGCV.");
   var observer=$("value-observer").value.trim(),context=$("value-context").value.trim(),criterion=$("value-criterion").value.trim(),rule=$("value-rule").value.trim(),rationale=$("value-rationale").value.trim();
   if(!(observer&&context&&criterion&&rule&&rationale)){
    valueAssessment=null;$("value-status").dataset.state="not-assessed";$("value-status").textContent="NOT_ASSESSED · Completa observador, contexto, criterio, regla y justificación.";return;
