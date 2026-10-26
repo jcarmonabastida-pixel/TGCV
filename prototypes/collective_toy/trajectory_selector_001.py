@@ -14,7 +14,7 @@ from typing import Any
 SELECTOR_VERSION = "trajectory-selector-001"
 CONTRACT_VERSION = "trajectory-selector-contract-001"
 OUTPUT_KIND = "HEURISTIC_RANKING_NOT_PREDICTION"
-PROVENANCE_STATUS = "DECLARED_NOT_INDEPENDENTLY_VERIFIED"
+PROVENANCE_STATUS = "HASHES_COMPUTED_FROM_SUPPLIED_ARTIFACTS"
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -32,6 +32,14 @@ def _sha256_json(value: Any) -> str:
     except (TypeError, ValueError) as exc:
         raise SelectorInputError("artifact is not canonical-JSON serializable") from exc
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def _can_hash(value: Any) -> bool:
+    try:
+        _sha256_json(value)
+        return True
+    except (TypeError, ValueError):
+        return False
 
 
 def _validate_sha256(value: Any, name: str) -> str:
@@ -130,8 +138,7 @@ def _select_trajectories_validated(
     criteria_config: dict[str, Any],
     *,
     scenario_id: str,
-    model_sha256: str,
-    result_sha256: str,
+    model: Any,
 ) -> dict[str, Any]:
     """Return an auditable lexicographic ranking without modifying inputs.
 
@@ -141,8 +148,8 @@ def _select_trajectories_validated(
     """
     if not isinstance(scenario_id, str) or not scenario_id.strip():
         raise SelectorInputError("scenario_id is required")
-    model_hash = _validate_sha256(model_sha256, "model_sha256")
-    result_hash = _validate_sha256(result_sha256, "result_sha256")
+    model_hash = _sha256_json(model)
+    result_hash = _sha256_json(scenario_result)
     if not isinstance(scenario_result, dict):
         raise SelectorInputError("scenario_result must be an object")
     required = {
@@ -173,7 +180,7 @@ def _select_trajectories_validated(
     }
     input_sha256 = _sha256_json(snapshot)
     warnings: list[str] = [
-        "PROVENANCE_NOT_INDEPENDENTLY_VERIFIED: supplied model/result hashes are format-checked and recorded, not recomputed from source artifacts"
+        "PROVENANCE_SCOPE: model_sha256 is computed from the supplied model object and result_sha256 from the supplied scenario-result object; hashes bind these inputs but do not independently prove the engine generated this result from that model."
     ]
     if scenario_result["truncated"]:
         warnings.append("EXPLORATION_TRUNCATED: ranking covers observed trajectories only; global optimality is not established")
@@ -323,8 +330,7 @@ def select_trajectories(
     criteria_config: dict[str, Any],
     *,
     scenario_id: str,
-    model_sha256: str,
-    result_sha256: str,
+    model: Any,
 ) -> dict[str, Any]:
     """Public fail-closed boundary: malformed input returns an explicit abstention."""
     try:
@@ -332,8 +338,7 @@ def select_trajectories(
             scenario_result,
             criteria_config,
             scenario_id=scenario_id,
-            model_sha256=model_sha256,
-            result_sha256=result_sha256,
+            model=model,
         )
     except SelectorInputError as exc:
         message = str(exc)
@@ -353,8 +358,7 @@ def select_trajectories(
                 "scenario_result": scenario_result,
                 "criteria_config": criteria_config,
                 "scenario_id": scenario_id,
-                "model_sha256": model_sha256,
-                "result_sha256": result_sha256,
+                "model": model,
             })
         except (TypeError, ValueError):
             input_digest = None
@@ -366,8 +370,8 @@ def select_trajectories(
             "reason": reason,
             "scenario_id": scenario_id if isinstance(scenario_id, str) else None,
             "input_sha256": input_digest,
-            "model_sha256": model_sha256 if isinstance(model_sha256, str) and _SHA256_RE.fullmatch(model_sha256) else None,
-            "result_sha256": result_sha256 if isinstance(result_sha256, str) and _SHA256_RE.fullmatch(result_sha256) else None,
+            "model_sha256": _sha256_json(model) if _can_hash(model) else None,
+            "result_sha256": _sha256_json(scenario_result) if _can_hash(scenario_result) else None,
             "provenance_status": "INVALID_OR_UNVERIFIABLE",
             "config_sha256": None,
             "criteria_config": None,
