@@ -3517,7 +3517,18 @@ const assert = require("node:assert/strict");
     assert.ok(temporalResult.result.scenario_results.baseline.trajectories.some(path =>
       JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(["t_ab", "t_bc", "t_cd"])),
       "GT-05 temporal: candidate trajectory must include prerequisite t_ab before conditioned t_cd");
-    await temporalPage.locator("#sequence-input").fill("t_ab, t_bc, t_cd");
+    // Select the generated TGCV trajectory instead of typing system-transition IDs.
+    // This preserves the verified transformation-to-transition correspondence required
+    // for linking the concrete execution to its outcome and contextual assessment.
+    const temporalCandidateIndex = await temporalPage.evaluate(() => {
+      const candidates = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+      return (candidates.paths || []).findIndex(path =>
+        JSON.stringify(path.map(step => step.system_transition)) === JSON.stringify(["t_ab", "t_bc", "t_cd"]));
+    });
+    assert.ok(temporalCandidateIndex >= 0,
+      "GT-05 temporal: ordered prerequisite path must be selectable from TGCV-generated candidates");
+    await temporalPage.locator("#sequence-scenario").selectOption("baseline");
+    await temporalPage.locator("#sequence-select").selectOption(String(temporalCandidateIndex));
     await temporalPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
     await temporalPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified" || document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 5000 });
     assert.equal(await temporalPage.locator("#sequence-trace").getAttribute("data-state"), "replay-verified",
