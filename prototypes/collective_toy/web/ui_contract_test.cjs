@@ -3544,6 +3544,19 @@ const assert = require("node:assert/strict");
       return (candidates.paths || []).findIndex(path =>
         JSON.stringify(path.map(step => step.system_transition)) === JSON.stringify(["t_ab", "t_bc", "t_cd"]));
     });
+    const temporalCandidatePaths = await temporalPage.evaluate(() =>
+      window.enumerateTgcvTrajectories(window.lastModel, "baseline").paths.map(path =>
+        path.map(step => step.system_transition)));
+    assert.deepEqual(temporalCandidatePaths, [
+      ["t_ab", "t_bc", "t_cd"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: enumerate every complete declared TGCV branch exactly once, without cross-branch hybrids");
+    const disabledBranchPaths = await temporalPage.evaluate(() =>
+      window.enumerateTgcvTrajectories(window.lastModel, "disable_alternative").paths.map(path =>
+        path.map(step => step.system_transition)));
+    assert.deepEqual(disabledBranchPaths, [
+      ["t_ab", "t_bc", "t_cd"]
+    ], "GT-05 temporal: scenario-disabled branch must be excluded without affecting the valid branch");
     assert.ok(temporalCandidateIndex >= 0,
       "GT-05 temporal: ordered prerequisite path must be selectable from TGCV-generated candidates");
     await temporalPage.locator("#sequence-scenario").selectOption("baseline");
