@@ -3873,7 +3873,14 @@ function pythonJson(source, input) {
       await reversePage.waitForFunction(() => /ejecución completada/i.test(
         document.querySelector("#status")?.textContent || ""
       ), null, {timeout:5000});
-      await assertStructuredTAccMatchesExecution(reversePage, "reverse-order conflict baseline");
+      const reverseBaselineGraph = await reversePage.evaluate(() => ({
+        mapping: window.lastModel?.tgcv_mapping ?? null,
+        graphResult: window.lastTgcvDemoResult?.current ?? null
+      }));
+      assert.equal(reverseBaselineGraph.mapping, null,
+        "reverse-order conflict baseline: fixture intentionally has no declared TGCV mapping");
+      assert.equal(reverseBaselineGraph.graphResult, null,
+        "reverse-order conflict baseline: no TGCV graph before correspondence acceptance");
       const reverseDetails = reversePage.locator("#correspondence-review-section details").filter({
         has: reversePage.locator("#tgcv-target-catalogue")
       });
