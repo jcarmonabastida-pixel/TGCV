@@ -343,7 +343,7 @@ def select_trajectories(
     except SelectorInputError as exc:
         message = str(exc)
         provenance_markers = (
-            "scenario_id", "scenario_result", "trajectory", "trajectories",
+            "scenario_id", "scenario_result", "artifact", "trajectory", "trajectories",
             "model_sha256", "result_sha256", "truncated", "exploration_bounds",
             "temporal_prerequisites", "reachable_states", "disabled_transitions",
             "enabled_transitions_at_initial_state",
