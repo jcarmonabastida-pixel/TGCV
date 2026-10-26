@@ -915,9 +915,15 @@ const assert = require("node:assert/strict");
       "FC-4: contextual value assessment must remain bound to the same executed transformations");
     assert.equal(fc4Package.value_assessment.transformation_source, "TGCV_TRANSFORMATION_GRAPH",
       "FC-4: contextual value assessment must preserve TGCV transformation provenance");
-    assert.ok(gt05ExplorationPackage.result.scenario_results.baseline.trajectories.some(path =>
-      JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(executedTransitionIds)),
-      "GT-05: concrete execution must match one of the candidate trajectories explored from the same model");
+    const tgcvExecutionCandidates = await page.evaluate(({ model, scenarioId }) =>
+      window.enumerateTgcvTrajectories(model, scenarioId).paths.map(path => ({
+        transformations: path.map(step => step.transformation),
+        systemTransitions: path.map(step => step.system_transition)
+      })), { model: fc4Package.input, scenarioId: executedTrace.scenario_id });
+    assert.ok(tgcvExecutionCandidates.some(path =>
+      JSON.stringify(path.transformations) === JSON.stringify(executedTrace.tgcv_trajectory.transformation_ids) &&
+      JSON.stringify(path.systemTransitions) === JSON.stringify(executedTransitionIds)),
+      "GT-05: concrete execution must match a trajectory enumerated from the TGCV transformation graph and its declared correspondences");
     assert.equal(fc4Package.outcome_record.execution_id, fc4Package.concrete_execution_trace.execution_id,
       "FC-4: exported outcome must link to the exact exported execution");
     assert.equal(fc4Package.outcome_record.execution_trace_sha256, fc4Package.concrete_execution_trace.trace_sha256,
