@@ -31,10 +31,10 @@ El selector recibe una instantánea de solo lectura que incluya:
 - identificador del escenario y estado inicial;
 - lista de trayectorias enumeradas por el motor, con sus estados y transiciones ordenados;
 - límites de exploración y señal explícita de truncamiento;
-- estado de resolución de las condiciones y prerrequisitos relevantes, tal como lo informa el motor;
+- estado de exploración y prerrequisitos temporales tal como aparecen en el resultado del motor; los metadatos condicionales del transcriptor, si existen fuera de ese resultado, no se interpretan aquí como condiciones evaluadas;
 - conjunto versionado de criterios heurísticos elegidos por el usuario, con parámetros y unidades cuando proceda.
 
-La interfaz de datos concreta debe reutilizar el esquema vigente en lugar de crear una segunda representación paralela. Los campos ausentes no se completan por inferencia. Si no puede establecerse la correspondencia entre una trayectoria y el resultado de exploración que la originó, el selector debe abstenerse.
+La interfaz de datos concreta debe reutilizar el esquema vigente en lugar de crear una segunda representación paralela. Los campos ausentes no se completan por inferencia. Si no puede establecerse la correspondencia entre una trayectoria y el resultado de exploración que la originó, el selector debe abstenerse. La implementación debe reutilizar la forma actual del resultado: `scenario_results[scenario_id].trajectories`, junto con `truncated`, `exploration_bounds` y `temporal_prerequisites`; no debe crear una segunda enumeración de trayectorias.
 
 ## 4. Criterios permitidos en la primera versión
 
@@ -67,7 +67,7 @@ El selector debe emitir estado de abstención o ranking parcial, con motivo expl
 - exploración truncada: puede ordenar las trayectorias observadas, pero debe advertir que el conjunto puede estar incompleto y no afirmar optimalidad global;
 - datos obligatorios ausentes o malformados;
 - criterio activo que no puede evaluarse para una o más trayectorias;
-- condiciones no evaluables o prerrequisitos sin resolver que impidan interpretar la exploración de forma segura;
+- incoherencia entre los prerrequisitos declarados en el modelo y los que figuran en el resultado de exploración; el selector no debe crear un estado de condición evaluada que el motor no haya emitido;
 - ausencia de trayectorias admisibles;
 - entrada inconsistente o procedencia/hash no verificable.
 
@@ -126,6 +126,19 @@ Estas pruebas validan el contrato de software y la integración, no la validez c
 - modificación de la arquitectura Core de TGCV;
 - afirmaciones de causalidad, valor universal o validación empírica.
 
-## 11. Próximo paso propuesto
+## 11. Revisión de compatibilidad con la implementación actual
 
-Revisar este contrato contra los esquemas y pruebas actuales del demostrador. Resolver discrepancias antes de implementar. Tras aprobación, implementar el selector en un módulo aislado y añadir un conjunto pequeño de pruebas deterministas agrupadas, sin cambiar el motor ni ejecutar campañas científicas.
+La inspección de `collective_toy_engine_001.py`, `web/index.html`, `web/cross_runtime_test.cjs` y `web/ui_contract_test.cjs` confirma estas interfaces y límites relevantes:
+
+- El motor devuelve por escenario `scenario_id`, `disabled_transitions`, `enabled_transitions_at_initial_state`, `reachable_states`, `trajectories`, `truncated`, `exploration_bounds` y `temporal_prerequisites`.
+- Cada trayectoria es una secuencia ordenada de pasos con estado y, salvo el paso inicial, identificador de transición. El orden de los pasos es semántico y debe conservarse.
+- El resultado actual ya expone si la exploración fue truncada y sus límites; el selector debe consumir esos campos en vez de recalcularlos.
+- El perfil de motor actual modela prerrequisitos temporales de tipo `requires_prior_execution`. Los metadatos condicionales de la transcripción son un mecanismo distinto: el selector no debe asumir que el motor los evaluó ni debe convertirlos en condiciones verdaderas.
+- Las pruebas de navegador y de concordancia entre runtimes ya protegen semánticas de exploración, ejecución y correspondencia TGCV. Las pruebas nuevas del selector deberán añadirse de forma focalizada y evitar duplicar las comprobaciones existentes del motor.
+- La UI ya separa trayectorias exploradas, ejecución concreta y valoración contextual. El selector deberá consumir el resultado de exploración y producir su propio artefacto, sin modificar esas etapas.
+
+Esta revisión es de lectura estática de archivos y contratos; no equivale a ejecutar las pruebas ni a demostrar la validez científica del ranking.
+
+## 12. Próximo paso propuesto
+
+Con estas correspondencias fijadas, implementar el selector en un módulo aislado que consuma el resultado existente, seguido de un conjunto pequeño de pruebas deterministas agrupadas. No cambiar el motor, el transcriptor, el evaluador de condiciones ni el flujo de ejecución; no lanzar campañas científicas.
