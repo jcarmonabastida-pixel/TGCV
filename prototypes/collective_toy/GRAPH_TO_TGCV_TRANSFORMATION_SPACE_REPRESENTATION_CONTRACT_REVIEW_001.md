@@ -1,121 +1,69 @@
-# Graph-to-TGCV Transformation-Space Representation — Contract Review 001
+# TGCV correspondence and trajectory-source gap — corrected review 001
 
-**Status:** PROPOSED DESIGN REVIEW — NOT FROZEN  
+**Status:** CORRECTED IMPLEMENTATION REVIEW — design review only  
 **Branch:** `proposal/graph-tgcv-representation-contract-001`  
-**Scope:** Architectural precondition for any integration of the trajectory selector into the interactive demonstrator.  
-**Execution status:** Documentation-only review. No scientific execution, no engine/UI changes, no TGCV Core change, and no claim-status change are authorized by this artifact.
+**Scope:** Clarify the actual pending integration gap before trajectory-selector integration.  
+**Execution status:** No scientific execution, no runtime test execution, no motor/UI code changes, no TGCV Core change, and no claim-status change.
 
-## 1. Decision to be resolved
+## 1. Correction to the previous review
 
-The current collective-toy demonstrator represents a finite directed graph, enumerates state paths through eligible transitions, and records paths/results. Before connecting the heuristic trajectory selector or its recommendation audit to the UI, determine whether the graph and its execution trace instantiate TGCV's distinct semantic objects—or only a conventional state-transition model.
+The earlier framing incorrectly treated the graph-to-TGCV correspondence layer as an unimplemented semantic layer. That conclusion is withdrawn.
 
-**Provisional conclusion:** the current graph is a useful operational substrate, but its present schema does not by itself establish a representation of the accessible transformation space (T_{acc}). Selector integration is therefore gated on a representation contract and a gap assessment.
+The existing demonstrator already contains correspondence candidate derivation, review/acceptance, validation and effective correspondence handling. Relevant code in `prototypes/collective_toy/web/index.html` includes:
 
-## 2. Historical reconstruction
+- `deriveTgcvCorrespondenceCandidates(systemModel, catalogue)`: derives correspondence candidates against an explicitly supplied, versioned TGCV transformation catalogue;
+- `applyAcceptedTgcvCorrespondences()` and `validateAcceptedCorrespondenceCandidates(...)`: validates and materializes accepted correspondences;
+- `effectiveCorrespondencesForModel(m)`: returns only effective mappings whose source-model and catalogue fingerprints still match.
 
-The following existing artifacts were inspected and reused; this review does not replace them:
+The derivation is a constrained candidate-generation procedure, not a universal or automatic semantic mapping. Nevertheless, the correspondence mechanism is already implemented; do not create a duplicate intermediate semantic layer to solve the current problem.
 
-1. `03_EXPERIMENTS/TR-131/execution/TR131_TRANSFORMATION_SPACE_DYNAMICS_FORMAL_SPEC_001.md` — defines (S_t), (C_t), (T_{acc,t}=A(S_t,C_t,R_t)), (T_{real,t}), trajectories, and the separation of accessibility, realization, trajectory, outcome and value. It explicitly requires transformation identity, admissibility/preconditions, state/context representation, an accessibility mapping, realization events, successor-state mapping, trajectory representation and a comparison operator for accessibility-space change.
-2. `00_GOVERNANCE/SIP/TGCV_CROSS_DOMAIN_END_TO_END_ACCESSIBILITY_OUTCOME_VALUE_MAP_001.md` — states that domain-specific constructs must not be relabelled as TGCV constructs merely because they occupy similar positions in a sequence; the end-to-end chain is only partially evidenced and the downstream value linkage remains open.
-3. `prototypes/collective_toy/collective_toy_engine_001.py` — the engine's module docstring explicitly says it does not implement TGCV (T_{acc}), value, causality or empirical inference. Its `Transition` record has `id`, `source`, `target`, and optional `condition`; these fields establish graph structure, not by themselves the domain semantics of a transformation.
-4. `prototypes/collective_toy/test_collective_toy_engine_001.py` — current tests establish finite reachability/path enumeration and ensure transitions with unevaluated conditions are not explored. Those are valid engine contracts, but they do not establish an independently specified (T_{acc}).
+## 2. Actual issue
 
-Historical classification:
-- **DEFINED:** TR-131 semantic distinction between accessible and realized transformations.
-- **DEFINED / ANALYSIS:** independent cross-domain map and its limits.
-- **IMPLEMENTED:** synthetic state/transition graph, bounded path exploration and temporal prerequisite handling.
-- **TESTED at software-contract level:** deterministic graph traversal, reachability and rejection/exclusion of unevaluated conditional transitions.
-- **OPEN:** explicit mapping from the graph model to (T_{acc}), transformation semantics, accessibility mapping and trace-level realization semantics.
-- **NOT inferred:** no scientific, causal, predictive, value or general-validity conclusion follows from the existing software tests.
+The system graph and TGCV transformation representation are already distinguished in the demonstrator. The outstanding integration issue is that trajectory exploration and selection still consume trajectories enumerated from the **system graph** rather than trajectories generated from the **TGCV transformation graph/representation using the effective correspondences**.
 
-## 3. Semantic contract required before selector integration
+The current system-graph traversal `runTemporalScenario(m, s)` constructs adjacency from `m.transitions` and produces paths through system states and transitions. The selector then ranks the trajectories supplied to it. The unresolved question is therefore not whether a new semantic layer should exist; it is where and how the trajectory-generation flow should switch to the TGCV representation, while retaining a valid mapping back to system transitions for execution.
 
-### C1 — State is not transformation
+## 3. Correct target flow
 
-A state (S_t) describes the system at a point in time. A graph node may encode a state, but a node identifier alone does not define the state's relevant variables, context or constraints. State/context fields must be explicit or refer to a documented domain schema.
+1. Validate the current system model and TGCV target catalogue.
+2. Obtain the effective, non-stale accepted correspondences using the existing mechanism.
+3. Generate candidate trajectories in the TGCV representation, using its transformation identities and applying the relevant accessibility, condition and prerequisite rules.
+4. Pass those TGCV trajectories to the heuristic selector. The selector ranks candidates; it does not define accessibility, derive mappings, or execute transformations.
+5. For a selected TGCV trajectory, resolve each selected transformation through the effective correspondence to the system transition(s) required for concrete execution. Reject missing, ambiguous or conflicting mappings rather than guessing.
+6. Record both identities in the execution trace: TGCV transformation identity and corresponding system transition identity, together with source/result state and the applicable evaluated-condition/prerequisite evidence.
 
-### C2 — Edge identity is not sufficient transformation semantics
+An accepted correspondence does not by itself prove that its transformation is accessible in the current state/context. The TGCV trajectory generator must apply the existing accessibility and constraint semantics; it must not simply traverse every accepted correspondence.
 
-A graph edge must retain a stable identifier and source/target references. To count as a TGCV transformation, it must additionally have a declared transformation identity/meaning and a specified state-change or successor mapping. An edge label or ID must not be silently treated as proof of that meaning.
+## 4. Focused acceptance tests
 
-A graph transition and a transformation may be linked one-to-one, one-to-many, or through a domain-specific mapping, but that mapping must be explicit. The implementation must not assume one-to-one equivalence without evidence.
-
-### C3 — Accessibility is specified independently of paths selected or realized
-
-The model must define an accessibility mapping of the form (T_{acc,t}=A(S_t,C_t,R_t)), where the candidate transformation universe, context, and admissibility rules are declared. It must not define (T_{acc}) from the trajectories returned by exploration, from the selector's ranking, from an executed trace, or from outcomes/value.
-
-A list of edges traversable in the current graph is only a graph-reachability result unless the mapping from those edges to the candidate transformation universe and the accessibility predicate is specified.
-
-### C4 — Admissibility and evaluator capability are distinct
-
-Known restrictions, temporal prerequisites and evaluated conditions may constrain whether a candidate transformation is admissible in a particular state/context. An unevaluated condition is not equivalent to a satisfied condition and must not silently become unconditional. The condition evaluator is one mechanism for evaluating specified predicates; it is not, by itself, the complete definition of (T_{acc}).
-
-### C5 — Realization trace records transformations, not only graph traversal
-
-A realized event must be reconstructable as at least:
-- event/step identity and order;
-- transformation identity;
-- source state and resulting state;
-- relevant context and evaluated admissibility evidence;
-- evaluator/contract version and provenance sufficient to reproduce the decision.
-
-A state sequence alone is insufficient to identify which transformation was realized when distinct transformations share endpoints or when a transition ID lacks semantic grounding.
-
-### C6 — Trajectory preserves the alternating semantic sequence
-
-The TGCV trajectory representation should distinguish states from realized transformations, e.g. (H_n=(S_0,T_{real,0},S_1,ldots,T_{real,n-1},S_n)). The current graph path format that interleaves a transition ID and the next state is structurally compatible with this idea, but compatibility is not semantic equivalence until C2 and C5 are satisfied.
-
-### C7 — Transformation-space change is a separate comparison
-
-If the demonstrator later compares (T_{acc,t}) with (T_{acc,t+1}), the comparison must operate on independently specified transformation-space representations and distinguish additions, removals, substitutions or structural changes where applicable. A change in reachable nodes/paths is not automatically (Delta T_{acc}).
-
-No assumption is made that every realized transformation changes (T_{acc}), or that (Delta T_{acc}) entails a value change.
-
-### C8 — Selector remains downstream and non-executing
-
-The heuristic selector may rank only trajectories generated by a validated exploration contract. It must not define accessibility, add transformations, repair missing semantics, or execute the selected trajectory. A ranking remains a heuristic ranking, not a prediction or proof of value.
-
-## 4. Initial gap assessment against the current synthetic engine
-
-| Requirement | Current evidence | Assessment |
+| ID | Case | Expected result |
 |---|---|---|
-| Explicit state IDs and directed graph endpoints | Model states, transition source/target | Present at graph-structure level |
-| Stable edge/transition ID | Transition `id` | Present; does not establish transformation semantics |
-| Context (C_t) and declared accessibility mapping (A(S,C,R)) | Not part of the core model contract shown by the engine | Gap to assess |
-| Candidate transformation universe distinct from explored paths | Engine explores graph transitions | Not established |
-| Independently specified admissibility predicate | Disabled transitions, temporal prerequisites, optional condition metadata | Partial, scenario-specific; not a complete (T_{acc}) definition |
-| Unevaluated conditions remain non-executable | Engine tests exclude conditional transitions without evaluator support | Present as a safety boundary |
-| Transformation identity/meaning and successor mapping | Only graph transition ID and source/target | Not established |
-| Realization trace identifies (T_{real}) separately from edge traversal | Current trajectory path records transition IDs and states | Structurally traceable, semantic mapping open |
-| (Delta T_{acc}) comparison | Reachability/path deltas are computed | Not equivalent to (Delta T_{acc}); no such claim permitted |
-| Outcome/value separation | UI displays results and perceived value as separate application fields | Presentation separation is useful; does not prove a TGCV value pathway |
+| TG-TR-01 | Correspondences are absent, stale, or invalidated after source/catalogue change | No TGCV trajectory is presented as valid; fail closed with a clear reason |
+| TG-TR-02 | Valid effective correspondences exist | Candidate trajectories are generated in TGCV transformation identities, not directly copied from system-graph path records |
+| TG-TR-03 | System graph contains a transition with no effective TGCV mapping | It cannot silently appear as a TGCV transformation in the candidate trajectory |
+| TG-TR-04 | TGCV transformation has no unique resolvable system execution mapping | Concrete execution is blocked pending explicit resolution |
+| TG-TR-05 | Multiple TGCV transformations map to the same system transition or share endpoints | Preserve distinct TGCV identities; do not collapse by endpoint pair or system transition ID |
+| TG-TR-06 | Condition is unevaluated/unknown or prerequisite unsatisfied | Candidate is not treated as accessible/executable merely because a correspondence exists |
+| TG-TR-07 | Selector ranking order changes | TGCV accessibility set and generated candidate set do not change as a side effect |
+| TG-TR-08 | Recommendation is executed | Trace preserves both TGCV transformation IDs and system transition IDs, in order |
+| TG-TR-09 | Same system-level endpoints admit different TGCV transformation sequences | Candidate generation and trace retain the distinct TGCV sequences |
+| TG-TR-10 | No TGCV path exists but system graph has a path | Do not fall back silently to a system-graph trajectory while labeling it TGCV |
+| TG-TR-11 | Repeated exploration with identical model, catalogue, effective correspondences, scenario and constraints | Deterministic candidate trajectories under the same versioned contract |
+| TG-TR-12 | Trajectory is displayed, selected, then executed | UI and audit distinguish TGCV trajectory selection from mapped system-level execution |
 
-This table is a source-level design assessment, not a runtime test result.
+These are proposed software-contract tests, not executed test results and not evidence of scientific validity.
 
-## 5. Minimal safe adaptation path
+## 5. Minimal next implementation block
 
-1. **Contract review:** resolve C1–C8 and document the domain meaning of transformations in the synthetic toy.
-2. **Schema/gap decision:** decide whether to extend the existing graph schema with transformation/context/accessibility fields, add a separate TGCV semantic layer mapped onto the graph, or retain the graph explicitly as a non-TGCV substrate. Do not choose by convenience alone.
-3. **Focused contract tests:** test semantic mapping, accessibility independence from selector/trace/outcome, rejection of missing or ambiguous transformation mappings, and preservation of unevaluated conditions. These are software contract tests, not scientific experiments.
-4. **Trace adaptation:** only after the schema decision, ensure realized steps identify (T_{real}) and preserve source/result states and admissibility evidence.
-5. **Selector and audit integration:** only then wire the selector into the demonstrator, recording the recommendation before execution and keeping selection separate from execution.
-6. **Promotion:** review the branch diff and CI, then decide explicitly whether to open/revise a draft PR. Do not modify `main` or merge PR #99 as part of this review.
+- Trace the existing UI handlers from correspondence application through exploration, selector input, trajectory selection and `execute-sequence`.
+- Identify the exact boundary where system-graph trajectories are currently passed to the selector.
+- Add a TGCV-trajectory generation/adaptation step that consumes the already existing effective correspondences; do not duplicate correspondence derivation or introduce another semantic layer.
+- Keep system-level execution behind explicit, validated mapping from each TGCV transformation to the system transition(s).
+- Add focused contract tests from TG-TR-01 to TG-TR-12, starting with the missing/stale mapping and identity-preservation cases.
+- Keep the selector disconnected from the main demo execution flow until the above passes; retain PR #99 and `main` unchanged pending review.
 
-## 6. Acceptance gate
+## 6. Governance boundary
 
-Do not integrate the selector into the interactive execution flow until all are true:
+This correction changes the diagnosis of the implementation gap, not TGCV's scientific status. It does not modify TR-131, the Core, RMA, the Evidence→Claim Matrix, or any scientific claim. No scientific execution is authorized.
 
-- [ ] C1–C8 have a documented resolution or explicit non-goal.
-- [ ] The model states whether it represents (T_{acc}), a graph approximation, or only state-transition reachability.
-- [ ] Transformation identity and semantics are not inferred from edge IDs alone.
-- [ ] Accessibility is defined independently from exploration, ranking, realized trace, outcome and value.
-- [ ] Trace semantics distinguish the realized transformation from the resulting state.
-- [ ] Tests cover ambiguous/missing mappings and unevaluated conditions.
-- [ ] UI wording does not overstate the model's TGCV status.
-- [ ] No Core, RMA, Evidence→Claim Matrix, scientific execution or claim-status change is implied.
-
-## 7. Governance boundary
-
-This proposal is an implementation-design review derived from existing formal and analytical artifacts. It does not freeze a new TGCV ontology, amend TR-131, change the Core, or authorize scientific execution. If implementation would require changing a frozen semantic contract, stop and resolve that discrepancy through the appropriate governance decision before changing code.
-
-**Disposition:** keep the selector disconnected from the demo execution flow until this representation gate is resolved.
+**Corrected disposition:** reuse the existing correspondence mechanism; adapt trajectory generation and selector input so trajectories are defined over the TGCV representation, then map selected transformations back to the system graph for concrete execution.
