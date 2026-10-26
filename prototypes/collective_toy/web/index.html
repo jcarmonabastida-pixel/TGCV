@@ -620,7 +620,7 @@ $("execute-sequence").addEventListener("click",async function(){
    var executedTransformations=trace.tgcv_trajectory?trace.tgcv_trajectory.transformation_ids.slice():trace.steps.map(function(step){return step.transition_id});outcomeRecord={outcome_schema:"collective-toy-outcome-001",outcome_id:"outcome-"+trace.execution_id,execution_id:trace.execution_id,execution_trace_sha256:trace.trace_sha256,model_id:trace.model_id,scenario_id:trace.scenario_id,source_kind:"synthetic",value:route,unit:"recorrido ejecutado",timing:"al completar la secuencia",uncertainty_status:"resultado sintético ilustrativo derivado de la ejecución",provenance:"Generado automáticamente a partir de la traza concreta de ejecución; no es una medición empírica.",executed_transformation_ids:executedTransformations.slice(),transformation_source:trace.trajectory_source||"SYSTEM_TRANSITIONS"};
    activeExecutionRecord.outcome=outcomeRecord;
    $("outcome-status").dataset.state="recorded";
-   $("outcome-status").replaceChildren(node("strong","","Resultado generado automáticamente"),node("p","",route),node("p","muted",trace.steps.length+" transiciones ejecutadas · estado final "+trace.final_state),node("p","muted","Resultado sintético ilustrativo; no es una medición empírica."));
+   $("outcome-status").replaceChildren(node("strong","","Resultado generado automáticamente"),node("p","",route),node("p","muted",trace.steps.length+" pasos ejecutados · estado final "+trace.final_state),node("p","muted","Transformaciones ejecutadas: "+outcomeRecord.executed_transformation_ids.join(" → ")),node("p","muted","Resultado sintético ilustrativo; no es una medición empírica."));
   }else{
    $("outcome-status").dataset.state="not-assessed";$("outcome-status").textContent="No se calcula resultado porque la trayectoria no se completó.";
   }
@@ -646,7 +646,7 @@ $("record-outcome").addEventListener("click",function(){
   var executedTransformations=trace.tgcv_trajectory?trace.tgcv_trajectory.transformation_ids.slice():trace.steps.map(function(step){return step.transition_id});outcomeRecord={outcome_schema:"collective-toy-outcome-001",outcome_id:"outcome-"+trace.execution_id,execution_id:trace.execution_id,execution_trace_sha256:trace.trace_sha256,model_id:trace.model_id,scenario_id:trace.scenario_id,source_kind:$("outcome-kind").value,value:value,unit:unit,timing:timing,uncertainty_status:uncertainty,provenance:provenance,executed_transformation_ids:executedTransformations.slice(),transformation_source:trace.trajectory_source||"SYSTEM_TRANSITIONS"};if(activeExecutionRecord&&activeExecutionRecord.trace.execution_id===trace.execution_id)activeExecutionRecord.outcome=outcomeRecord;
   valueAssessment=null;
   $("outcome-status").dataset.state="recorded";
-  $("outcome-status").textContent="PASS · Resultado registrado y vinculado a "+trace.execution_id+" (traza SHA-256 "+trace.trace_sha256+").";
+  $("outcome-status").textContent="PASS · Resultado vinculado a "+trace.execution_id+" (traza SHA-256 "+trace.trace_sha256+"). Transformaciones ejecutadas: "+outcomeRecord.executed_transformation_ids.join(" → ")+".";
   $("value-status").dataset.state="not-assessed";
   $("value-status").textContent="NOT_ASSESSED · La valoración requiere observador, contexto, criterio, regla y justificación.";
   updateFc4Controls();renderExecutionComparison();
@@ -660,7 +660,7 @@ $("assess-value").addEventListener("click",async function(){
    valueAssessment=null;$("value-status").dataset.state="not-assessed";$("value-status").textContent="NOT_ASSESSED · Completa observador, contexto, criterio, regla y justificación.";return;
   }
   valueAssessment={assessment_schema:"collective-toy-value-assessment-001",assessment_id:"assessment-"+outcomeRecord.outcome_id,outcome_id:outcomeRecord.outcome_id,execution_id:outcomeRecord.execution_id,outcome_sha256:await hash(outcomeRecord,"outcome_record"),observer:observer,context:context,criterion:criterion,valuation_rule:rule,rationale:rationale,perceived_value_score:Number($("value-score").value),status:"ASSESSED",executed_transformation_ids:outcomeRecord.executed_transformation_ids.slice(),transformation_source:outcomeRecord.transformation_source};if(activeExecutionRecord&&activeExecutionRecord.trace.execution_id===outcomeRecord.execution_id)activeExecutionRecord.assessment=valueAssessment;
-  $("value-status").dataset.state="assessed";$("value-status").textContent="Valoración contextual registrada para este recorrido; no modifica el resultado de la ejecución.";renderExecutionComparison();renderValueDashboard();
+  $("value-status").dataset.state="assessed";$("value-status").textContent="Valoración contextual registrada para la secuencia "+valueAssessment.executed_transformation_ids.join(" → ")+"; no modifica el resultado de la ejecución.";renderExecutionComparison();renderValueDashboard();
  }catch(e){$("value-status").dataset.state="rejected";$("value-status").textContent="ERROR · "+e.message}
 });
 $("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage){draw(lastModel,lastPackage.result,$("which").value);if(tgcvSourceSnapshot!==null&&canonical(lastModel)===tgcvSourceSnapshot)renderTgcvDemo(lastModel,lastPackage.result,$("which").value);else markTgcvStale()}});
