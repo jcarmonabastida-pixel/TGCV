@@ -52,21 +52,27 @@ async function assertStructuredTAccMatchesExecution(page, label) {
       allowed.add(id);
     }
     const allRelations = demo.relations || [];
-    const incoming = new Map(allTransformationIds.map(id => [id, 0]));
     const successors = new Map([...allowed].map(id => [id, []]));
     for (const [from, to] of allRelations) {
-      if (incoming.has(from) && incoming.has(to)) incoming.set(to, incoming.get(to) + 1);
       if (allowed.has(from) && allowed.has(to)) successors.get(from).push(to);
     }
-    const allRoots = allTransformationIds.filter(id => incoming.get(id) === 0).sort();
-    let roots = allRoots.filter(id => allowed.has(id));
-    if (!allRoots.length) roots = [...allowed].sort();
-    const reachable = new Set(roots);
-    const queue = roots.slice();
+    const starts = [...allowed].filter(id => {
+      const mapping = mappingByTransformation.get(id);
+      const transition = mapping && transitions.get(mapping.system_transition_id);
+      return transition && transition.source === model.initial_state;
+    }).sort();
+    const reachable = new Set(starts);
+    const queue = starts.slice();
     while (queue.length) {
       const id = queue.shift();
+      const mapping = mappingByTransformation.get(id);
+      const transition = mapping && transitions.get(mapping.system_transition_id);
+      if (!transition) continue;
       for (const next of successors.get(id) || []) {
         if (reachable.has(next)) continue;
+        const nextMapping = mappingByTransformation.get(next);
+        const nextTransition = nextMapping && transitions.get(nextMapping.system_transition_id);
+        if (!nextTransition || nextTransition.source !== transition.target) continue;
         reachable.add(next);
         queue.push(next);
       }
