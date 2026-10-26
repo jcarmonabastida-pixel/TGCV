@@ -117,17 +117,19 @@ class TrajectorySelectorTests(unittest.TestCase):
         self.assertEqual(result["reason"], "NO_TRAJECTORIES")
 
     def test_invalid_provenance_hash_is_rejected(self):
-        with self.assertRaises(SelectorInputError):
-            select_trajectories(
-                scenario(), config(), scenario_id="baseline",
-                model_sha256="not-a-hash", result_sha256=SHA_RESULT,
-            )
+        result = select_trajectories(
+            scenario(), config(), scenario_id="baseline",
+            model_sha256="not-a-hash", result_sha256=SHA_RESULT,
+        )
+        self.assertEqual(result["status"], "ABSTAINED")
+        self.assertEqual(result["reason"], "INVALID_INPUT_PROVENANCE")
 
     def test_scenario_mismatch_is_rejected(self):
         data = scenario()
         data["scenario_id"] = "other"
-        with self.assertRaises(SelectorInputError):
-            select(data)
+        result = select(data)
+        self.assertEqual(result["status"], "ABSTAINED")
+        self.assertEqual(result["reason"], "INVALID_INPUT_PROVENANCE")
 
     def test_input_is_not_mutated_and_output_is_bound_to_snapshot_and_configuration(self):
         data = scenario()
@@ -143,12 +145,14 @@ class TrajectorySelectorTests(unittest.TestCase):
         self.assertNotEqual(first["input_sha256"], second["input_sha256"])
 
     def test_unsupported_sources_and_unknown_configuration_fields_are_rejected(self):
-        with self.assertRaises(SelectorInputError):
-            select(cfg=config(criteria=[{"id": "cost", "direction": "minimize", "source": "invented_cost"}]))
+        unsupported = select(cfg=config(criteria=[{"id": "cost", "direction": "minimize", "source": "invented_cost"}]))
+        self.assertEqual(unsupported["status"], "ABSTAINED")
+        self.assertEqual(unsupported["reason"], "INVALID_INPUT_CONFIGURATION")
         invalid = config()
         invalid["weights"] = {"steps": 1}
-        with self.assertRaises(SelectorInputError):
-            select(cfg=invalid)
+        unknown_field = select(cfg=invalid)
+        self.assertEqual(unknown_field["status"], "ABSTAINED")
+        self.assertEqual(unknown_field["reason"], "INVALID_INPUT_CONFIGURATION")
 
 
     def test_substantive_ties_are_preserved_despite_stable_presentation_order(self):
@@ -175,8 +179,9 @@ class TrajectorySelectorTests(unittest.TestCase):
 
     def test_malformed_trajectory_is_rejected_not_silently_ranked(self):
         data = scenario(trajectories=[[{"state": "A"}, {"state": "B"}]])
-        with self.assertRaises(SelectorInputError):
-            select(data)
+        result = select(data)
+        self.assertEqual(result["status"], "ABSTAINED")
+        self.assertEqual(result["reason"], "INVALID_INPUT_PROVENANCE")
 
     def test_provenance_fields_and_snapshot_digest_are_stable(self):
         result = select()
