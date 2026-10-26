@@ -3522,7 +3522,14 @@ function pythonJson(source, input) {
       await conflictPage.waitForFunction(() => /ejecución completada/i.test(
         document.querySelector("#status")?.textContent || ""
       ), null, {timeout:5000});
-      await assertStructuredTAccMatchesExecution(conflictPage, "conflict lifecycle baseline");
+      const missingMappingBaseline = await conflictPage.evaluate(() => ({
+        mapping: window.lastModel?.tgcv_mapping ?? null,
+        graphResult: window.lastTgcvDemoResult?.current ?? null
+      }));
+      assert.equal(missingMappingBaseline.mapping, null,
+        "conflict lifecycle baseline: fixture intentionally has no declared TGCV mapping");
+      assert.equal(missingMappingBaseline.graphResult, null,
+        "conflict lifecycle baseline: absence of TGCV graph must be explicit until correspondence is accepted");
       const catalogueDetails = conflictPage.locator("#correspondence-review-section details").filter({
         has: conflictPage.locator("#tgcv-target-catalogue")
       });
