@@ -3631,6 +3631,25 @@ const assert = require("node:assert/strict");
       "GT-05 temporal: executable cycle must never exceed max_depth");
     assert.notEqual(executableCycleCheck.truncated, true,
       "GT-05 temporal: bounded executable cycle must not be mistaken for trajectory-cap truncation");
+    const cyclicPrerequisiteCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const originalRelations = structuredClone(model.relations);
+      model.relations = [{
+        id: "r_cycle_requires_alternative",
+        type: "requires_prior_execution",
+        transition_id: "t_cd",
+        requires_transition_id: "t_ax"
+      }];
+      tgcvSourceSnapshot = canonical(model);
+      const result = window.enumerateTgcvTrajectories(model, "baseline");
+      const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
+      model.relations = originalRelations;
+      tgcvSourceSnapshot = canonical(model);
+      return paths;
+    });
+    assert.deepEqual(cyclicPrerequisiteCheck, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: a cycle must not bypass a temporal prerequisite or emit a blocked prefix as complete");
     const blockedContinuationCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const originalRelations = structuredClone(model.relations);
