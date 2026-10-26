@@ -3698,23 +3698,20 @@ const assert = require("node:assert/strict");
       };
       const transition = model.transitions.find(item => item.id === "t_ab");
       transition.condition = "authorization_level >= 2";
-      const evaluate = (evaluation) => {
-        scenario.condition_evaluations = evaluation;
+      const evaluate = (resultValue) => {
+        scenario.condition_evaluations = resultValue === null ? {} : {
+          t_ab: {
+            condition: "authorization_level >= 2",
+            result: resultValue
+          }
+        };
         tgcvSourceSnapshot = canonical(model);
         const result = window.enumerateTgcvTrajectories(model, "baseline");
         return (result.paths || []).map(path => path.map(step => step.system_transition));
       };
-      const missing = evaluate([]);
-      const falseResult = evaluate([{
-        transition_id: "t_ab",
-        condition: "authorization_level >= 2",
-        result: "FALSE"
-      }]);
-      const trueResult = evaluate([{
-        transition_id: "t_ab",
-        condition: "authorization_level >= 2",
-        result: "TRUE"
-      }]);
+      const missing = evaluate(null);
+      const falseResult = evaluate("FALSE");
+      const trueResult = evaluate("TRUE");
       model.transitions = original.transitions;
       scenario.condition_evaluations = original.evaluations;
       tgcvSourceSnapshot = original.snapshot;
