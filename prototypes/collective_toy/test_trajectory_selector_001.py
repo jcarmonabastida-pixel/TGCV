@@ -47,12 +47,11 @@ def config(criteria=None, restrictions=None):
 def select(result=None, cfg=None):
     model = demo_model()
     engine_output = run_model(model)
-    if result is not None:
-        engine_output["scenario_results"]["baseline"] = result
-        payload = copy.deepcopy(engine_output)
-        payload.pop("input_sha256", None)
-        payload.pop("result_sha256", None)
-        engine_output["result_sha256"] = sha256_json(payload)
+    engine_output["scenario_results"]["baseline"] = result if result is not None else scenario()
+    payload = copy.deepcopy(engine_output)
+    payload.pop("input_sha256", None)
+    payload.pop("result_sha256", None)
+    engine_output["result_sha256"] = sha256_json(payload)
     return select_trajectories(
         engine_output,
         cfg if cfg is not None else config(),
