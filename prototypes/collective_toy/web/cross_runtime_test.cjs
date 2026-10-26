@@ -170,12 +170,21 @@ function pythonJson(source, input) {
       tampered.package_sha256 = await window.hash(tampered);
       let tamperRejected = false;
       try { await window.assessImportedBrowserPackage(tampered); } catch (_error) { tamperRejected = true; }
+      const forgedCorrespondence = JSON.parse(JSON.stringify(imported));
+      forgedCorrespondence.tgcv_correspondence_review.catalogue_snapshot.transformations[0].id = "T_FORGED_NOT_IN_CATALOGUE";
+      forgedCorrespondence.tgcv_correspondence_review.catalogue_sha256 = await window.hash(
+        forgedCorrespondence.tgcv_correspondence_review.catalogue_snapshot,"tgcv_correspondence_catalogue"
+      );
+      delete forgedCorrespondence.package_sha256;
+      forgedCorrespondence.package_sha256 = await window.hash(forgedCorrespondence);
+      let forgedCorrespondenceRejected = false;
+      try { await window.assessImportedBrowserPackage(forgedCorrespondence); } catch (_error) { forgedCorrespondenceRejected = true; }
       return {
         status:assessment.status, replay:assessment.replay,
         review:assessment.correspondence_review,
         message:assessment.message,
         snapshotPreserved:JSON.stringify(imported.tgcv_correspondence_review)===JSON.stringify(review),
-        tamperRejected
+        tamperRejected, forgedCorrespondenceRejected
       };
     }, pkg);
     assert.equal(reviewReplay.status, "replay-verified", "package replay must remain verified when a valid review snapshot is attached");
@@ -183,6 +192,7 @@ function pythonJson(source, input) {
     assert.equal(reviewReplay.review.accepted_count, 1, "accepted decision must survive import/replay validation");
     assert.equal(reviewReplay.snapshotPreserved, true, "the imported review snapshot must remain byte-structure equivalent");
     assert.equal(reviewReplay.tamperRejected, true, "review/model linkage tampering must be rejected");
+    assert.equal(reviewReplay.forgedCorrespondenceRejected, true, "a correspondence referencing a TGCV transformation absent from the rehashed catalogue snapshot must be rejected");
     assert.match(reviewReplay.message, /no se aplican al grafo TGCV/i, "replay must explicitly avoid applying accepted mappings");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
     assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
