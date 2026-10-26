@@ -40,7 +40,7 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     const disabled = new Set(scenario.disabled_transitions || []);
     const evaluations = scenario.condition_evaluations || {};
     const allowed = new Set();
-    const allTransformationIds = [...new Set((demo.mappings || []).map(mapping => mapping.tgcv_transformation_id))];
+    const allTransformationIds = [...new Set(demo.transformations || [])];
     for (const id of allTransformationIds) {
       const mapping = mappingByTransformation.get(id);
       const transition = mapping && transitions.get(mapping.system_transition_id);
@@ -51,7 +51,7 @@ async function assertStructuredTAccMatchesExecution(page, label) {
       }
       allowed.add(id);
     }
-    const allRelations = [...new Map([...(demo.before?.relations || []), ...(demo.after?.relations || []), ...(demo.current?.relations || [])].map(pair => [JSON.stringify(pair), pair])).values()];
+    const allRelations = demo.relations || [];
     const incoming = new Map(allTransformationIds.map(id => [id, 0]));
     const successors = new Map([...allowed].map(id => [id, []]));
     for (const [from, to] of allRelations) {
