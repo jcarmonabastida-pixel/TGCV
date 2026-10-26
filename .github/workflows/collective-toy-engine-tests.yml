@@ -24,6 +24,31 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Validate demonstrator JavaScript syntax and trajectory source contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path("prototypes/collective_toy/web/index.html").read_text(encoding="utf-8")
+          scripts = re.findall(r"<script\\b[^>]*>(.*?)</script\\s*>", html, re.IGNORECASE | re.DOTALL)
+          if len(scripts) != 1:
+              raise SystemExit(f"Expected one inline script, found {len(scripts)}")
+          source = scripts[0]
+          required = [
+              "function enumerateTgcvTrajectories(model,scenarioId)",
+              'source:"tgcv-transformations"',
+              'trajectory_source:selectedTgcvTrajectory?"TGCV_TRANSFORMATION_GRAPH"',
+              "condition_not_evaluated_true",
+          ]
+          missing = [item for item in required if item not in source]
+          if missing:
+              raise SystemExit(f"Missing TGCV trajectory contract markers: {missing}")
+          if "transitionsInEnumeratedTrajectories" in source:
+              raise SystemExit("TGCV graph derivation must not depend on system-enumerated trajectories")
+          Path("/tmp/collective-toy-inline.js").write_text(source, encoding="utf-8")
+          PY
+          node --check /tmp/collective-toy-inline.js
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
