@@ -3676,12 +3676,14 @@ const assert = require("node:assert/strict");
     const disabledTransitionCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const scenario = model.scenarios.find(item => item.id === "baseline");
-      const original = structuredClone(scenario.disabled_transitions || []);
-      scenario.disabled_transitions = Array.from(new Set(original.concat(["t_ab"])));
+      const hadDisabledTransitions = Object.prototype.hasOwnProperty.call(scenario, "disabled_transitions");
+      const original = hadDisabledTransitions ? structuredClone(scenario.disabled_transitions) : undefined;
+      scenario.disabled_transitions = Array.from(new Set((original || []).concat(["t_ab"])));
       tgcvSourceSnapshot = canonical(model);
       const result = window.enumerateTgcvTrajectories(model, "baseline");
       const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
-      scenario.disabled_transitions = original;
+      if (hadDisabledTransitions) scenario.disabled_transitions = original;
+      else delete scenario.disabled_transitions;
       tgcvSourceSnapshot = canonical(model);
       return paths;
     });
@@ -3691,9 +3693,10 @@ const assert = require("node:assert/strict");
     const conditionEvaluationCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const scenario = model.scenarios.find(item => item.id === "baseline");
+      const hadEvaluations = Object.prototype.hasOwnProperty.call(scenario, "condition_evaluations");
       const original = {
         transitions: structuredClone(model.transitions),
-        evaluations: structuredClone(scenario.condition_evaluations || []),
+        evaluations: hadEvaluations ? structuredClone(scenario.condition_evaluations) : undefined,
         snapshot: tgcvSourceSnapshot
       };
       const transition = model.transitions.find(item => item.id === "t_ab");
@@ -3713,7 +3716,8 @@ const assert = require("node:assert/strict");
       const falseResult = evaluate("FALSE");
       const trueResult = evaluate("TRUE");
       model.transitions = original.transitions;
-      scenario.condition_evaluations = original.evaluations;
+      if (hadEvaluations) scenario.condition_evaluations = original.evaluations;
+      else delete scenario.condition_evaluations;
       tgcvSourceSnapshot = original.snapshot;
       return { missing, falseResult, trueResult };
     });
