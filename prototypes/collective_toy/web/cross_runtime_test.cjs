@@ -4175,7 +4175,14 @@ function pythonJson(source, input) {
       await derivedConflictPage.waitForFunction(() => /ejecución completada/i.test(
         document.querySelector("#status")?.textContent || ""
       ), null, {timeout:5000});
-      await assertStructuredTAccMatchesExecution(derivedConflictPage, "derived-derived conflict baseline");
+      const derivedConflictBaselineGraph = await derivedConflictPage.evaluate(() => ({
+        mapping: window.lastModel?.tgcv_mapping ?? null,
+        graphResult: window.lastTgcvDemoResult?.current ?? null
+      }));
+      assert.equal(derivedConflictBaselineGraph.mapping, null,
+        "derived-derived conflict baseline: fixture intentionally has no declared TGCV mapping");
+      assert.equal(derivedConflictBaselineGraph.graphResult, null,
+        "derived-derived conflict baseline: no effective TGCV graph before correspondence derivation");
       const conflictCatalogueDetails = derivedConflictPage.locator("#correspondence-review-section details").filter({
         has: derivedConflictPage.locator("#tgcv-target-catalogue")
       });
