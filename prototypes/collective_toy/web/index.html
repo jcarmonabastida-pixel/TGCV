@@ -949,9 +949,9 @@ function tgcvDemoFixture(systemModel,systemResult,currentScenarioId){
   var disabled=new Set((scenario&&scenario.disabled_transitions)||[]),evaluations=scenario&&scenario.condition_evaluations||{},transitionById=new Map(transitions.map(function(t){return [t.id,t]})),mappingByTransformation=new Map(),allowed=new Set();
   mappings.forEach(function(mapping){mappingByTransformation.set(mapping.tgcv_transformation_id,mapping)});
   mappings.forEach(function(mapping){var t=transitionById.get(mapping.system_transition_id);if(!t||disabled.has(t.id))return;if(t.condition){var evaluation=evaluations[t.id];if(!evaluation||evaluation.condition!==t.condition||evaluation.result!=="TRUE")return}allowed.add(mapping.tgcv_transformation_id)});
-  var incoming=new Map(Array.from(allowed).map(function(id){return[id,0]})),successors=new Map(Array.from(allowed).map(function(id){return[id,[]]}));
-  relations.forEach(function(pair){if(allowed.has(pair[0])&&allowed.has(pair[1])){successors.get(pair[0]).push(pair[1]);incoming.set(pair[1],incoming.get(pair[1])+1)}});
-  var roots=Array.from(allowed).filter(function(id){return incoming.get(id)===0}).sort();if(!roots.length)roots=Array.from(allowed).sort();
+  var incomingAll=new Map(transformations.map(function(id){return[id,0]})),successors=new Map(Array.from(allowed).map(function(id){return[id,[]]}));
+  relations.forEach(function(pair){if(incomingAll.has(pair[0])&&incomingAll.has(pair[1]))incomingAll.set(pair[1],incomingAll.get(pair[1])+1);if(allowed.has(pair[0])&&allowed.has(pair[1]))successors.get(pair[0]).push(pair[1])});
+  var allRoots=transformations.filter(function(id){return incomingAll.get(id)===0}).sort(),roots=allRoots.filter(function(id){return allowed.has(id)});if(!allRoots.length)roots=Array.from(allowed).sort();
   var reachable=new Set(),queue=roots.slice();roots.forEach(function(id){reachable.add(id)});
   while(queue.length){var id=queue.shift();(successors.get(id)||[]).forEach(function(next){if(!reachable.has(next)){reachable.add(next);queue.push(next)}})}
   return Array.from(reachable).sort();
