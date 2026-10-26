@@ -14,6 +14,7 @@ from typing import Any
 SELECTOR_VERSION = "trajectory-selector-001"
 CONTRACT_VERSION = "trajectory-selector-contract-001"
 OUTPUT_KIND = "HEURISTIC_RANKING_NOT_PREDICTION"
+PROVENANCE_STATUS = "DECLARED_NOT_INDEPENDENTLY_VERIFIED"
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -167,7 +168,9 @@ def select_trajectories(
         "result_sha256": result_hash,
     }
     input_sha256 = _sha256_json(snapshot)
-    warnings: list[str] = []
+    warnings: list[str] = [
+        "PROVENANCE_NOT_INDEPENDENTLY_VERIFIED: supplied model/result hashes are format-checked and recorded, not recomputed from source artifacts"
+    ]
     if scenario_result["truncated"]:
         warnings.append("EXPLORATION_TRUNCATED: ranking covers observed trajectories only; global optimality is not established")
 
@@ -183,6 +186,7 @@ def select_trajectories(
             "input_sha256": input_sha256,
             "model_sha256": model_hash,
             "result_sha256": result_hash,
+            "provenance_status": PROVENANCE_STATUS,
             "config_sha256": _sha256_json(criteria_config),
             "criteria_config": copy.deepcopy(criteria_config),
             "exploration": {
@@ -227,6 +231,8 @@ def select_trajectories(
                 sort_key.append(-ordered_value if criterion["direction"] == "maximize" else ordered_value)
             else:
                 sort_key.append(-value if criterion["direction"] == "maximize" else value)
+        explanation_parts = [str(item["id"]) + "=" + repr(item["value"]) + " (" + item["direction"] + ")" for item in values]
+        restriction_summary = ("all configured restrictions satisfied" if eligible else "ineligible: " + ", ".join(item["id"] for item in restriction_results if not item["satisfied"]))
         records.append({
             "trajectory_id": f"trajectory-{trajectory_sha[:16]}",
             "trajectory_sha256": trajectory_sha,
@@ -235,6 +241,7 @@ def select_trajectories(
             "status": "ELIGIBLE" if eligible else "INELIGIBLE",
             "criteria": values,
             "restrictions": restriction_results,
+            "position_explanation": ("Lexicographic criteria: " + "; ".join(explanation_parts) + ". " if explanation_parts else "No preference criteria configured. ") + restriction_summary + ".",
             "_sort_key": tuple(sort_key),
         })
 
