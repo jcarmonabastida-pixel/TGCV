@@ -564,7 +564,7 @@ $("execute-sequence").addEventListener("click",async function(){
   assert(lastModel&&lastPackage,"Ejecuta y valida el modelo antes de ejecutar una secuencia.");
   var scenarioId=$("sequence-scenario").value||"baseline",scenarioResult=lastPackage.result.scenario_results[scenarioId];assert(scenarioResult,"Selecciona un escenario válido.");var baseline=scenarioResult;
   var manual=$("sequence-input").value.trim();
-  var transitionIds,index=null,selectedTgcvTrajectory=window.pendingTgcvTrajectory&&window.pendingTgcvTrajectory.scenario_id===scenarioId?JSON.parse(JSON.stringify(window.pendingTgcvTrajectory)):null;
+  var transitionIds,index=null,selectedTgcvTrajectory=manual&&window.pendingTgcvTrajectory&&window.pendingTgcvTrajectory.scenario_id===scenarioId?JSON.parse(JSON.stringify(window.pendingTgcvTrajectory)):null;
   if(manual){transitionIds=manual.split(",").map(function(id){return id.trim()}).filter(Boolean);assert(transitionIds.length>0,"Introduce al menos un ID de transición.");if(selectedTgcvTrajectory)assert(canonical(transitionIds)===canonical(selectedTgcvTrajectory.system_transitions),"La secuencia del sistema ya no coincide con la trayectoria TGCV seleccionada; vuelve a seleccionarla.");}
   else{index=Number($("sequence-select").value);assert(Number.isInteger(index)&&index>=0&&index<baseline.trajectories.length,"Selecciona una trayectoria candidata válida.");var path=baseline.trajectories[index];assert(path.length>0&&path[0].state===lastModel.initial_state,"La trayectoria seleccionada no comienza en el estado inicial.");transitionIds=path.slice(1).map(function(item){return item.transition});}
   var current=lastModel.initial_state,history=[],steps=[],selectedScenario=lastModel.scenarios.find(function(x){return x.id===scenarioId});assert(selectedScenario,"No se encontró el escenario seleccionado.");var disabled=new Set((selectedScenario.disabled_transitions)||[]);
@@ -577,7 +577,7 @@ $("execute-sequence").addEventListener("click",async function(){
    else if(tr.source!==current)reason="transition_source_mismatch";
    else if(tr.condition){var conditionEvaluation=(selectedScenario.condition_evaluations||{})[id];if(!conditionEvaluation||conditionEvaluation.condition!==tr.condition||conditionEvaluation.result!=="TRUE")reason="condition_not_evaluated_true";}
    if(!reason){missing=required.filter(function(req){return history.indexOf(req)<0}).sort();if(missing.length)reason="temporal_prerequisite_not_satisfied";}
-   if(reason){blockedStep={index:i+1,transition_id:id,reason:reason,required_transition_ids:missing};break;}
+   if(reason){blockedStep={index:i+1,transition_id:id,tgcv_transformation_id:selectedTgcvTrajectory?selectedTgcvTrajectory.transformations[i]:null,reason:reason,required_transition_ids:missing};break;}
    var before=current;current=tr.target;
    steps.push({step:i+1,transition_id:id,tgcv_transformation_id:selectedTgcvTrajectory?selectedTgcvTrajectory.transformations[i]:null,state_before:before,state_after:current,prior_transitions:history.slice(),prerequisites:required.slice().sort(),status:"EXECUTED"});
    history.push(id);
@@ -938,9 +938,13 @@ function tgcvDemoFixture(systemModel,systemResult,currentScenarioId){
  if(!hasComparison){beforeScenario=currentScenario;afterScenario=currentScenario}
  systemResult=systemResult||execute(systemModel);
  function availableMappedTransformations(scenario){
-  var disabled=new Set((scenario&&scenario.disabled_transitions)||[]),evaluations=scenario&&scenario.condition_evaluations||{},transitionById=new Map(transitions.map(function(t){return [t.id,t]})),available=[];
-  mappings.forEach(function(mapping){var t=transitionById.get(mapping.system_transition_id);if(!t||disabled.has(t.id))return;if(t.condition){var evaluation=evaluations[t.id];if(!evaluation||evaluation.condition!==t.condition||evaluation.result!=="TRUE")return}available.push(mapping.tgcv_transformation_id)});
-  return Array.from(new Set(available));
+  var disabled=new Set((scenario&&scenario.disabled_transitions)||[]),evaluations=scenario&&scenario.condition_evaluations||{},transitionById=new Map(transitions.map(function(t){return [t.id,t]})),mappingByTransformation=new Map(),allowed=new Set();
+  mappings.forEach(function(mapping){mappingByTransformation.set(mapping.tgcv_transformation_id,mapping)});
+  mappings.forEach(function(mapping){var t=transitionById.get(mapping.system_transition_id);if(!t||disabled.has(t.id))return;if(t.condition){var evaluation=evaluations[t.id];if(!evaluation||evaluation.condition!==t.condition||evaluation.result!=="TRUE")return}allowed.add(mapping.tgcv_transformation_id)});
+  var reachable=new Set(),queue=[];
+  Array.from(allowed).sort().forEach(function(id){var mapping=mappingByTransformation.get(id),t=mapping&&transitionById.get(mapping.system_transition_id);if(t&&t.source===systemModel.initial_state){reachable.add(id);queue.push(id)}});
+  while(queue.length){var id=queue.shift(),mapping=mappingByTransformation.get(id),t=mapping&&transitionById.get(mapping.system_transition_id);if(!t)continue;relations.forEach(function(pair){if(pair[0]!==id||!allowed.has(pair[1])||reachable.has(pair[1]))return;var nextMapping=mappingByTransformation.get(pair[1]),next=nextMapping&&transitionById.get(nextMapping.system_transition_id);if(!next||next.source!==t.target)return;reachable.add(pair[1]);queue.push(pair[1])})}
+  return Array.from(reachable).sort();
  }
  var before=availableMappedTransformations(beforeScenario),after=availableMappedTransformations(afterScenario);
  currentScenario=scenarios.find(function(s){return s.id===currentScenarioId})||currentScenario;
