@@ -3647,7 +3647,14 @@ const assert = require("node:assert/strict");
         paths: (result.paths || []).map(path => path.map(step => step.system_transition)),
         truncated: result.truncated
       });
-      return { uncapped: encode(uncapped), first: encode(first), second: encode(second) };
+      const tgcv = window.lastTgcvDemoResult.current;
+      const originalRelations = structuredClone(tgcv.relations);
+      tgcv.relations = [...originalRelations].reverse();
+      tgcvSourceSnapshot = canonical(model);
+      const reversed = window.enumerateTgcvTrajectories(model, "baseline");
+      tgcv.relations = originalRelations;
+      tgcvSourceSnapshot = canonical(model);
+      return { uncapped: encode(uncapped), first: encode(first), second: encode(second), reversed: encode(reversed) };
     });
     assert.ok(trajectoryCapCheck.uncapped.paths.length > 1,
       "GT-05 temporal: cap fixture must contain more than one valid candidate");
@@ -3657,6 +3664,8 @@ const assert = require("node:assert/strict");
       "GT-05 temporal: exceeding max_trajectories must report truncation");
     assert.deepEqual(trajectoryCapCheck.second, trajectoryCapCheck.first,
       "GT-05 temporal: capped trajectory enumeration must be deterministic");
+    assert.deepEqual(trajectoryCapCheck.reversed, trajectoryCapCheck.first,
+      "GT-05 temporal: capped trajectory selection must not depend on TGCV relation input order");
     const ambiguousMappingCheck = await temporalPage.evaluate(() => {
       const tgcvResult = window.lastTgcvDemoResult;
       const originalMappings = structuredClone(tgcvResult.mappings);
