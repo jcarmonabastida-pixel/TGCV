@@ -4097,7 +4097,14 @@ function pythonJson(source, input) {
       });
       assert.deepEqual(ambiguityExecutionAfterDerivation, ambiguityBaselineExecution,
         "deriving unresolved single-source ambiguity must not alter reachable states or execution trajectories");
-      await assertStructuredTAccMatchesExecution(sourceCollisionPage, "single-source ambiguity unresolved");
+      const unresolvedAmbiguityGraph = await sourceCollisionPage.evaluate(() => ({
+        mapping: window.lastModel?.tgcv_mapping ?? null,
+        graphResult: window.lastTgcvDemoResult?.current ?? null
+      }));
+      assert.equal(unresolvedAmbiguityGraph.mapping, null,
+        "single-source ambiguity unresolved: fixture intentionally has no declared TGCV mapping");
+      assert.equal(unresolvedAmbiguityGraph.graphResult, null,
+        "single-source ambiguity unresolved: no effective TGCV graph before explicit resolution");
 
       // The user-facing conflict workflow must let the user explicitly select one
       // ambiguous candidate, persist the choice and reject incompatible candidates.
