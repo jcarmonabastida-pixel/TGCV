@@ -29,7 +29,7 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     const scenario = (model.scenarios || []).find(item => item.id === scenarioId);
     const demo = window.lastTgcvDemoResult;
     if (!scenario) throw new Error("missing selected scenario");
-    if (!demo) return { scenario: scenarioId, expected: [], actual: [] };
+    if (!demo || !demo.current) throw new Error("missing TGCV transformation graph result");
     const transitions = new Map((model.transitions || []).map(t => [t.id, t]));
     const mappingByTransformation = new Map();
     for (const mapping of demo.mappings || []) {
