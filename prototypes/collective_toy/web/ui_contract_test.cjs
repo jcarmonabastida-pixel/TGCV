@@ -3551,6 +3551,13 @@ const assert = require("node:assert/strict");
       ["t_ab", "t_bc", "t_cd"],
       ["t_ax", "t_xd"]
     ], "GT-05 temporal: enumerate every complete declared TGCV branch exactly once, without cross-branch hybrids");
+    const scenarioBranchCheck = await temporalPage.evaluate(() => {
+      const result = window.enumerateTgcvTrajectories(window.lastModel, "disable_alternative");
+      return (result.paths || []).map(path => path.map(step => step.system_transition));
+    });
+    assert.deepEqual(scenarioBranchCheck, [
+      ["t_ab", "t_bc", "t_cd"]
+    ], "GT-05 temporal: scenario-specific disabling must remove only the disabled TGCV branch");
     const boundedEnumeration = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const original = structuredClone(model.exploration);
