@@ -6,10 +6,12 @@ on:
       - prototype/collective-toy-engine-001-20261011
       - prototype/sequentiality-contract-tests-001-20261014
       - prototype/tgcv-full-chain-001-20261014-scenario-context-recovery
+      - experiment/trajectory-selector-implementation-001
   pull_request:
     branches:
       - main
       - implementation/dual-graph-sync-002-20261022
+      - proposal/trajectory-selector-contract-001
     paths:
       - 'prototypes/collective_toy/**'
       - '.github/workflows/collective-toy-engine-tests.yml'
