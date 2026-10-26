@@ -3673,6 +3673,21 @@ const assert = require("node:assert/strict");
     assert.deepEqual(missingAndInvalidMappingCheck.invalid, [
       ["t_ax", "t_xd"]
     ], "GT-05 temporal: mapping to an unknown system transition must be rejected without hiding valid alternatives");
+    const disabledTransitionCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const scenario = model.scenarios.find(item => item.id === "baseline");
+      const original = structuredClone(scenario.disabled_transitions || []);
+      scenario.disabled_transitions = Array.from(new Set(original.concat(["t_ab"])));
+      tgcvSourceSnapshot = canonical(model);
+      const result = window.enumerateTgcvTrajectories(model, "baseline");
+      const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
+      scenario.disabled_transitions = original;
+      tgcvSourceSnapshot = canonical(model);
+      return paths;
+    });
+    assert.deepEqual(disabledTransitionCheck, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: disabled system transition must exclude its mapped TGCV transformation and preserve valid alternatives");
     const cyclicPrerequisiteCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const tgcvResult = window.lastTgcvDemoResult;
