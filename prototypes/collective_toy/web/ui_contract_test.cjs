@@ -3576,6 +3576,23 @@ const assert = require("node:assert/strict");
       "GT-05 temporal: max_trajectories must cap emitted candidates");
     assert.equal(boundedEnumeration.capTruncated, true,
       "GT-05 temporal: reaching the trajectory cap must explicitly report truncation");
+    const cyclicRelationCheck = await temporalPage.evaluate(() => {
+      const tgcv = window.lastTgcvDemoResult.current;
+      const originalRelations = structuredClone(tgcv.relations);
+      tgcv.relations.push(["tau_t_cd", "tau_t_ab"]);
+      const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+      tgcv.relations = originalRelations;
+      return {
+        paths: (result.paths || []).map(path => path.map(step => step.system_transition)),
+        truncated: result.truncated
+      };
+    });
+    assert.deepEqual(cyclicRelationCheck.paths, [
+      ["t_ab", "t_bc", "t_cd"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: cyclic TGCV relation must not create state-discontinuous or hybrid trajectories");
+    assert.notEqual(cyclicRelationCheck.truncated, true,
+      "GT-05 temporal: rejected cyclic continuation must not falsely report trajectory-cap truncation");
     assert.ok(temporalCandidateIndex >= 0,
       "GT-05 temporal: ordered prerequisite path must be selectable from TGCV-generated candidates");
     await temporalPage.locator("#sequence-scenario").selectOption("baseline");
