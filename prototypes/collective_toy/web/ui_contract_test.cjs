@@ -3688,6 +3688,47 @@ const assert = require("node:assert/strict");
     assert.deepEqual(disabledTransitionCheck, [
       ["t_ax", "t_xd"]
     ], "GT-05 temporal: disabled system transition must exclude its mapped TGCV transformation and preserve valid alternatives");
+    const conditionEvaluationCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const scenario = model.scenarios.find(item => item.id === "baseline");
+      const original = {
+        transitions: structuredClone(model.transitions),
+        evaluations: structuredClone(scenario.condition_evaluations || []),
+        snapshot: tgcvSourceSnapshot
+      };
+      const transition = model.transitions.find(item => item.id === "t_ab");
+      transition.condition = "authorization_level >= 2";
+      const evaluate = (evaluation) => {
+        scenario.condition_evaluations = evaluation;
+        tgcvSourceSnapshot = canonical(model);
+        const result = window.enumerateTgcvTrajectories(model, "baseline");
+        return (result.paths || []).map(path => path.map(step => step.system_transition));
+      };
+      const missing = evaluate([]);
+      const falseResult = evaluate([{
+        transition_id: "t_ab",
+        condition: "authorization_level >= 2",
+        result: "FALSE"
+      }]);
+      const trueResult = evaluate([{
+        transition_id: "t_ab",
+        condition: "authorization_level >= 2",
+        result: "TRUE"
+      }]);
+      model.transitions = original.transitions;
+      scenario.condition_evaluations = original.evaluations;
+      tgcvSourceSnapshot = original.snapshot;
+      return { missing, falseResult, trueResult };
+    });
+    assert.deepEqual(conditionEvaluationCheck.missing, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: unevaluated conditional transformation must not be enumerated");
+    assert.deepEqual(conditionEvaluationCheck.falseResult, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: FALSE condition must exclude the conditional transformation");
+    assert.ok(conditionEvaluationCheck.trueResult.some(path =>
+      JSON.stringify(path) === JSON.stringify(["t_ab", "t_bc", "t_cd"])),
+      "GT-05 temporal: explicitly TRUE condition may enable its transformation");
     const cyclicPrerequisiteCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const tgcvResult = window.lastTgcvDemoResult;
