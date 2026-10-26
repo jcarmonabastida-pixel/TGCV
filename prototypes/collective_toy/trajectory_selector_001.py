@@ -121,7 +121,7 @@ def _validate_config(config: Any) -> tuple[list[dict[str, Any]], list[dict[str, 
     return clean_criteria, clean_restrictions
 
 
-def select_trajectories(
+def _select_trajectories_validated(
     scenario_result: dict[str, Any],
     criteria_config: dict[str, Any],
     *,
@@ -311,3 +311,63 @@ def select_trajectories(
         "ranked_trajectories": ranked,
         "warnings": warnings,
     }
+
+
+
+def select_trajectories(
+    scenario_result: dict[str, Any],
+    criteria_config: dict[str, Any],
+    *,
+    scenario_id: str,
+    model_sha256: str,
+    result_sha256: str,
+) -> dict[str, Any]:
+    """Public fail-closed boundary: malformed input returns an explicit abstention."""
+    try:
+        return _select_trajectories_validated(
+            scenario_result,
+            criteria_config,
+            scenario_id=scenario_id,
+            model_sha256=model_sha256,
+            result_sha256=result_sha256,
+        )
+    except SelectorInputError as exc:
+        message = str(exc)
+        provenance_markers = (
+            "scenario_id", "scenario_result", "trajectory", "trajectories",
+            "model_sha256", "result_sha256", "truncated", "exploration_bounds",
+            "temporal_prerequisites", "reachable_states", "disabled_transitions",
+            "enabled_transitions_at_initial_state",
+        )
+        reason = (
+            "INVALID_INPUT_PROVENANCE"
+            if any(marker in message for marker in provenance_markers)
+            else "INVALID_INPUT_CONFIGURATION"
+        )
+        try:
+            input_digest = _sha256_json({
+                "scenario_result": scenario_result,
+                "criteria_config": criteria_config,
+                "scenario_id": scenario_id,
+                "model_sha256": model_sha256,
+                "result_sha256": result_sha256,
+            })
+        except (TypeError, ValueError):
+            input_digest = None
+        return {
+            "contract_version": CONTRACT_VERSION,
+            "selector_version": SELECTOR_VERSION,
+            "output_kind": OUTPUT_KIND,
+            "status": "ABSTAINED",
+            "reason": reason,
+            "scenario_id": scenario_id if isinstance(scenario_id, str) else None,
+            "input_sha256": input_digest,
+            "model_sha256": model_sha256 if isinstance(model_sha256, str) and _SHA256_RE.fullmatch(model_sha256) else None,
+            "result_sha256": result_sha256 if isinstance(result_sha256, str) and _SHA256_RE.fullmatch(result_sha256) else None,
+            "provenance_status": "INVALID_OR_UNVERIFIABLE",
+            "config_sha256": None,
+            "criteria_config": None,
+            "exploration": None,
+            "ranked_trajectories": [],
+            "warnings": [reason + ": " + message],
+        }
