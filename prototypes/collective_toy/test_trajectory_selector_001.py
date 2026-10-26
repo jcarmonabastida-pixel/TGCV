@@ -62,6 +62,9 @@ class TrajectorySelectorTests(unittest.TestCase):
         result = select()
         self.assertEqual(result["status"], "RANKED")
         self.assertEqual(result["output_kind"], "HEURISTIC_RANKING_NOT_PREDICTION")
+        self.assertEqual(result["provenance_status"], "DECLARED_NOT_INDEPENDENTLY_VERIFIED")
+        self.assertTrue(any("PROVENANCE_NOT_INDEPENDENTLY_VERIFIED" in warning for warning in result["warnings"]))
+        self.assertTrue(all("Lexicographic criteria:" in item["position_explanation"] for item in result["ranked_trajectories"]))
         self.assertEqual(
             [item["criteria"][0]["value"] for item in result["ranked_trajectories"]],
             [1, 2, 2],
@@ -91,6 +94,7 @@ class TrajectorySelectorTests(unittest.TestCase):
         self.assertTrue(ineligible)
         self.assertTrue(all(item["status"] == "INELIGIBLE" for item in ineligible))
         self.assertTrue(all(item["restrictions"][0]["satisfied"] is False for item in ineligible))
+        self.assertTrue(all("ineligible:" in item["position_explanation"] for item in ineligible))
 
     def test_no_admissible_trajectory_abstains(self):
         cfg = config(restrictions=[
