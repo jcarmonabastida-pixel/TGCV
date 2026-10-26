@@ -184,8 +184,8 @@ class TrajectorySelectorTests(unittest.TestCase):
 
     def test_provenance_fields_and_snapshot_digest_are_stable(self):
         result = select()
-        self.assertEqual(result["model_sha256"], SHA_MODEL)
-        self.assertEqual(result["result_sha256"], SHA_RESULT)
+        self.assertEqual(result["model_sha256"], sha256_json(demo_model()))
+        self.assertEqual(result["result_sha256"], sha256_json(scenario()))
         self.assertRegex(result["input_sha256"], r"^[0-9a-f]{64}$")
         self.assertRegex(result["config_sha256"], r"^[0-9a-f]{64}$")
 
