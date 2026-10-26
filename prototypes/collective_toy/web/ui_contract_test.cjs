@@ -3912,8 +3912,10 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#trajectory-card").innerText(), /tau_cond_ab → B → tau_plain_bc/,
       "TRUE must enable a trajectory over TGCV transformation identities and their declared TGCV relation");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
-    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /obsoleto|desactualizado|no corresponde|no se ha actualizado|no puede|aviso/i,
-      "A custom model without an explicit TGCV mapping must be marked stale rather than given invented transformations");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /condition-test-explicit-correspondence-v1/,
+      "A custom model with an explicit TGCV mapping must display its declared correspondence rule");
+    assert.doesNotMatch(await page.locator("#tgcv-provenance-note").innerText(), /no declara una correspondencia TGCV explícita/i,
+      "An explicit TGCV mapping must not be mislabeled as absent or stale");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("FALSE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /tau_cond_ab → tau_plain_bc/,
