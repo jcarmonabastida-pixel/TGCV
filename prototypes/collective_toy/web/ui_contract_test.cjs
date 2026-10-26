@@ -3633,7 +3633,23 @@ const assert = require("node:assert/strict");
       "GT-05 temporal: bounded executable cycle must not be mistaken for trajectory-cap truncation");
     const cyclicPrerequisiteCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
-      const originalRelations = structuredClone(model.relations);
+      const tgcvResult = window.lastTgcvDemoResult;
+      const tgcv = tgcvResult.current;
+      const original = {
+        transitions: structuredClone(model.transitions),
+        relations: structuredClone(model.relations),
+        transformations: structuredClone(tgcv.transformations),
+        tgcvRelations: structuredClone(tgcv.relations),
+        mappings: structuredClone(tgcvResult.mappings),
+        snapshot: tgcvSourceSnapshot
+      };
+      model.transitions.push({ id: "t_da", source: "D", target: "A" });
+      tgcv.transformations.push("tau_t_da");
+      tgcv.relations.push(["tau_t_cd", "tau_t_da"], ["tau_t_da", "tau_t_ab"]);
+      tgcvResult.mappings.push({
+        system_transition_id: "t_da",
+        tgcv_transformation_id: "tau_t_da"
+      });
       model.relations = [{
         id: "r_cycle_requires_alternative",
         type: "requires_prior_execution",
@@ -3643,8 +3659,12 @@ const assert = require("node:assert/strict");
       tgcvSourceSnapshot = canonical(model);
       const result = window.enumerateTgcvTrajectories(model, "baseline");
       const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
-      model.relations = originalRelations;
-      tgcvSourceSnapshot = canonical(model);
+      model.transitions = original.transitions;
+      model.relations = original.relations;
+      tgcv.transformations = original.transformations;
+      tgcv.relations = original.tgcvRelations;
+      tgcvResult.mappings = original.mappings;
+      tgcvSourceSnapshot = original.snapshot;
       return paths;
     });
     assert.deepEqual(cyclicPrerequisiteCheck, [
