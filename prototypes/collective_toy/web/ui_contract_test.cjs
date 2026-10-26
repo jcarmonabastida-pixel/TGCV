@@ -3554,11 +3554,13 @@ const assert = require("node:assert/strict");
     const scenarioBranchCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const scenario = model.scenarios.find(item => item.id === "baseline");
-      const original = structuredClone(scenario.disabled_transitions || []);
-      scenario.disabled_transitions = Array.from(new Set(original.concat(["t_ax"])));
+      const hadDisabledTransitions = Object.prototype.hasOwnProperty.call(scenario, "disabled_transitions");
+      const original = hadDisabledTransitions ? structuredClone(scenario.disabled_transitions) : undefined;
+      scenario.disabled_transitions = Array.from(new Set((original || []).concat(["t_ax"])));
       tgcvSourceSnapshot = canonical(model);
       const result = window.enumerateTgcvTrajectories(model, "baseline");
-      scenario.disabled_transitions = original;
+      if (hadDisabledTransitions) scenario.disabled_transitions = original;
+      else delete scenario.disabled_transitions;
       tgcvSourceSnapshot = canonical(model);
       return (result.paths || []).map(path => path.map(step => step.system_transition));
     });
