@@ -5,10 +5,6 @@ from trajectory_selector_001 import SelectorInputError, select_trajectories
 from collective_toy_engine_001 import demo_model, run_model, sha256_json
 
 
-SHA_MODEL = "a" * 64
-SHA_RESULT = "b" * 64
-
-
 def scenario(trajectories=None, truncated=False):
     return {
         "scenario_id": "baseline",
