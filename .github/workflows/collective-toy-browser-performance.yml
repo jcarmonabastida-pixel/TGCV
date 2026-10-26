@@ -33,7 +33,7 @@ jobs:
         run: npm install
       - name: Install Chromium
         working-directory: prototypes/collective_toy/web
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
       - name: Run browser engine and UI latency benchmark
         working-directory: prototypes/collective_toy/web
         run: node browser_performance_benchmark.cjs > browser-performance-results.json
