@@ -38,14 +38,15 @@ jobs:
           required = [
               "function enumerateTgcvTrajectories(model,scenarioId)",
               'source:"tgcv-transformations"',
-              'trajectory_source:selectedTgcvTrajectory?"TGCV_TRANSFORMATION_GRAPH"',
+              'trace.trajectory_source="TGCV_TRANSFORMATION_GRAPH"',
+              "path=tgcvCandidates.paths&&tgcvCandidates.paths[index]",
               "condition_not_evaluated_true",
           ]
           missing = [item for item in required if item not in source]
           if missing:
               raise SystemExit(f"Missing TGCV trajectory contract markers: {missing}")
-          if "transitionsInEnumeratedTrajectories" in source:
-              raise SystemExit("TGCV graph derivation must not depend on system-enumerated trajectories")
+          if "transitionsInEnumeratedTrajectories" in source or "path=baseline.trajectories[index]" in source:
+              raise SystemExit("TGCV trajectory generation/execution must not fall back to system-enumerated trajectories")
           Path("/tmp/collective-toy-inline.js").write_text(source, encoding="utf-8")
           PY
           node --check /tmp/collective-toy-inline.js
