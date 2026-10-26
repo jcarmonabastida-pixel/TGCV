@@ -49,15 +49,15 @@ async function assertStructuredTAccMatchesExecution(page, label) {
       }
       allowed.add(id);
     }
-    const incoming = new Map([...allowed].map(id => [id, 0]));
+    const incoming = new Map((demo.transformations || []).map(id => [id, 0]));
     const successors = new Map([...allowed].map(id => [id, []]));
     for (const [from, to] of demo.relations || []) {
-      if (!allowed.has(from) || !allowed.has(to)) continue;
-      successors.get(from).push(to);
-      incoming.set(to, incoming.get(to) + 1);
+      if (incoming.has(from) && incoming.has(to)) incoming.set(to, incoming.get(to) + 1);
+      if (allowed.has(from) && allowed.has(to)) successors.get(from).push(to);
     }
-    let roots = [...allowed].filter(id => incoming.get(id) === 0).sort();
-    if (!roots.length) roots = [...allowed].sort();
+    const allRoots = (demo.transformations || []).filter(id => incoming.get(id) === 0).sort();
+    let roots = allRoots.filter(id => allowed.has(id));
+    if (!allRoots.length) roots = [...allowed].sort();
     const reachable = new Set(roots);
     const queue = roots.slice();
     while (queue.length) {
