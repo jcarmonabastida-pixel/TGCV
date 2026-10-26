@@ -902,6 +902,19 @@ const assert = require("node:assert/strict");
     assert.deepEqual(fc4Package.result, gt05ExplorationPackage.result,
       "GT-05: final assessed package must preserve the explored baseline/intervention and delta_reach result");
     const executedTransitionIds = fc4Package.concrete_execution_trace.submitted_transition_ids;
+    const executedTrace = fc4Package.concrete_execution_trace;
+    assert.equal(executedTrace.trajectory_source, "TGCV_TRANSFORMATION_GRAPH",
+      "GT-05: concrete execution must originate from the TGCV transformation graph");
+    assert.deepEqual(executedTrace.steps.map(step => step.tgcv_transformation_id), executedTrace.tgcv_trajectory.transformation_ids,
+      "GT-05: each executed step must preserve its TGCV transformation identity");
+    assert.deepEqual(fc4Package.outcome_record.executed_transformation_ids, executedTrace.tgcv_trajectory.transformation_ids,
+      "FC-4: outcome must reference the exact TGCV transformations executed");
+    assert.equal(fc4Package.outcome_record.transformation_source, "TGCV_TRANSFORMATION_GRAPH",
+      "FC-4: outcome source must identify the TGCV transformation graph");
+    assert.deepEqual(fc4Package.value_assessment.executed_transformation_ids, fc4Package.outcome_record.executed_transformation_ids,
+      "FC-4: contextual value assessment must remain bound to the same executed transformations");
+    assert.equal(fc4Package.value_assessment.transformation_source, "TGCV_TRANSFORMATION_GRAPH",
+      "FC-4: contextual value assessment must preserve TGCV transformation provenance");
     assert.ok(gt05ExplorationPackage.result.scenario_results.baseline.trajectories.some(path =>
       JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(executedTransitionIds)),
       "GT-05: concrete execution must match one of the candidate trajectories explored from the same model");
