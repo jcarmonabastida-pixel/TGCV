@@ -49,28 +49,23 @@ async function assertStructuredTAccMatchesExecution(page, label) {
       }
       allowed.add(id);
     }
-    const reachable = new Set();
-    const queue = [];
-    for (const id of [...allowed].sort()) {
-      const mapping = mappingByTransformation.get(id);
-      const transition = mapping && transitions.get(mapping.system_transition_id);
-      if (transition && transition.source === model.initial_state) {
-        reachable.add(id);
-        queue.push(id);
-      }
+    const incoming = new Map([...allowed].map(id => [id, 0]));
+    const successors = new Map([...allowed].map(id => [id, []]));
+    for (const [from, to] of demo.relations || []) {
+      if (!allowed.has(from) || !allowed.has(to)) continue;
+      successors.get(from).push(to);
+      incoming.set(to, incoming.get(to) + 1);
     }
+    let roots = [...allowed].filter(id => incoming.get(id) === 0).sort();
+    if (!roots.length) roots = [...allowed].sort();
+    const reachable = new Set(roots);
+    const queue = roots.slice();
     while (queue.length) {
       const id = queue.shift();
-      const mapping = mappingByTransformation.get(id);
-      const transition = mapping && transitions.get(mapping.system_transition_id);
-      if (!transition) continue;
-      for (const [from, to] of demo.relations || []) {
-        if (from !== id || !allowed.has(to) || reachable.has(to)) continue;
-        const nextMapping = mappingByTransformation.get(to);
-        const next = nextMapping && transitions.get(nextMapping.system_transition_id);
-        if (!next || next.source !== transition.target) continue;
-        reachable.add(to);
-        queue.push(to);
+      for (const next of successors.get(id) || []) {
+        if (reachable.has(next)) continue;
+        reachable.add(next);
+        queue.push(next);
       }
     }
     return {
