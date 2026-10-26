@@ -3593,6 +3593,44 @@ const assert = require("node:assert/strict");
     ], "GT-05 temporal: cyclic TGCV relation must not create state-discontinuous or hybrid trajectories");
     assert.notEqual(cyclicRelationCheck.truncated, true,
       "GT-05 temporal: rejected cyclic continuation must not falsely report trajectory-cap truncation");
+    const executableCycleCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const tgcvResult = window.lastTgcvDemoResult;
+      const tgcv = tgcvResult.current;
+      const original = {
+        transitions: structuredClone(model.transitions),
+        exploration: structuredClone(model.exploration),
+        transformations: structuredClone(tgcv.transformations),
+        relations: structuredClone(tgcv.relations),
+        mappings: structuredClone(tgcvResult.mappings),
+        snapshot: tgcvSourceSnapshot
+      };
+      model.transitions.push({ id: "t_da", source: "D", target: "A" });
+      model.exploration = { max_depth: 5, max_trajectories: 30 };
+      tgcv.transformations.push("tau_t_da");
+      tgcv.relations.push(["tau_t_cd", "tau_t_da"], ["tau_t_da", "tau_t_ab"]);
+      tgcvResult.mappings.push({
+        system_transition_id: "t_da",
+        tgcv_transformation_id: "tau_t_da"
+      });
+      tgcvSourceSnapshot = canonical(model);
+      const result = window.enumerateTgcvTrajectories(model, "baseline");
+      const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
+      model.transitions = original.transitions;
+      model.exploration = original.exploration;
+      tgcv.transformations = original.transformations;
+      tgcv.relations = original.relations;
+      tgcvResult.mappings = original.mappings;
+      tgcvSourceSnapshot = original.snapshot;
+      return { paths, truncated: result.truncated };
+    });
+    assert.ok(executableCycleCheck.paths.some(path =>
+      JSON.stringify(path) === JSON.stringify(["t_ab", "t_bc", "t_cd", "t_da", "t_ab"])),
+      "GT-05 temporal: executable cycle must be traversed only up to max_depth");
+    assert.ok(executableCycleCheck.paths.every(path => path.length <= 5),
+      "GT-05 temporal: executable cycle must never exceed max_depth");
+    assert.notEqual(executableCycleCheck.truncated, true,
+      "GT-05 temporal: bounded executable cycle must not be mistaken for trajectory-cap truncation");
     const blockedContinuationCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const originalRelations = structuredClone(model.relations);
