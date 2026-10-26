@@ -2,6 +2,7 @@ import copy
 import unittest
 
 from trajectory_selector_001 import SelectorInputError, select_trajectories
+from collective_toy_engine_001 import demo_model, run_model, sha256_json
 
 
 SHA_MODEL = "a" * 64
@@ -183,6 +184,23 @@ class TrajectorySelectorTests(unittest.TestCase):
         self.assertEqual(result["result_sha256"], SHA_RESULT)
         self.assertRegex(result["input_sha256"], r"^[0-9a-f]{64}$")
         self.assertRegex(result["config_sha256"], r"^[0-9a-f]{64}$")
+
+
+    def test_integrates_with_real_engine_baseline_result(self):
+        model = demo_model()
+        engine_output = run_model(model)
+        baseline = engine_output["scenario_results"]["baseline"]
+        result = select_trajectories(
+            baseline,
+            config(),
+            scenario_id="baseline",
+            model_sha256=sha256_json(model),
+            result_sha256=sha256_json(engine_output),
+        )
+        self.assertIn(result["status"], {"RANKED", "PARTIAL_TRUNCATED"})
+        self.assertEqual(result["model_sha256"], sha256_json(model))
+        self.assertEqual(result["result_sha256"], sha256_json(engine_output))
+        self.assertTrue(result["ranked_trajectories"])
 
 
 if __name__ == "__main__":
