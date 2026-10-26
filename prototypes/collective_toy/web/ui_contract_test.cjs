@@ -3397,6 +3397,13 @@ const assert = require("node:assert/strict");
       states: ["A", "B"],
       transitions: [{ id: "t_ab", source: "A", target: "B" }],
       relations: [],
+      tgcv_mapping: {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "gt05-explicit-correspondence-v1",
+        provenance: "GT-05 browser contract fixture",
+        mappings: [{ system_transition_id: "t_ab", tgcv_transformation_id: "tau_t_ab" }],
+        relations: []
+      },
       rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [{ id: "baseline", disabled_transitions: [] }],
       exploration: { max_depth: 2, max_trajectories: 10 }
