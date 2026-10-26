@@ -64,6 +64,19 @@ def verify_ledger(path: str | os.PathLike[str]) -> dict[str, Any]:
             raise RecommendationAuditError(f"event hash mismatch at sequence {expected_sequence}")
         if event.get("event_type") != EVENT_TYPE or event.get("phase") != PHASE:
             raise RecommendationAuditError(f"invalid event type/phase at sequence {expected_sequence}")
+        recommendation = event.get("recommendation")
+        if not isinstance(recommendation, dict):
+            raise RecommendationAuditError(f"recommendation payload missing at sequence {expected_sequence}")
+        try:
+            expected_recommendation_hash = _digest(recommendation)
+        except (TypeError, ValueError) as exc:
+            raise RecommendationAuditError(
+                f"recommendation payload is not canonical JSON at sequence {expected_sequence}"
+            ) from exc
+        if event.get("recommendation_sha256") != expected_recommendation_hash:
+            raise RecommendationAuditError(
+                f"recommendation hash mismatch at sequence {expected_sequence}"
+            )
         previous_hash = declared_hash
     return {
         "valid": True,
