@@ -51,25 +51,25 @@ No se permite introducir de forma predeterminada pesos de riesgo, probabilidades
 
 ## 5. Ranking y explicación
 
-- La versión inicial debe preferir reglas deterministas simples y reproducibles.
-- La configuración de criterios y sus parámetros debe quedar visible y versionada.
-- El selector debe devolver para cada trayectoria los valores de criterios calculados, las restricciones satisfechas/incumplidas, la puntuación o clave de ordenación aplicada y una explicación legible de su posición.
-- La política de combinación (prioridad lexicográfica o puntuación ponderada) debe elegirse explícitamente y documentarse. No hay pesos predeterminados con significado científico.
-- Si se usa puntuación ponderada, todas las escalas, normalizaciones, pesos y desempates deben estar declarados; no mezclar unidades incompatibles sin una transformación explícita.
-- Empates deben conservarse como empates o resolverse con un desempate técnico estable, identificado como tal y no como superioridad sustantiva.
-- La ausencia de datos de un criterio no debe convertirse silenciosamente en cero ni en un resultado favorable.
+- La versión inicial usa **ordenación lexicográfica determinista** según el orden de prioridad explícito de los criterios configurados por el usuario. No se implementa puntuación ponderada en esta versión.
+- La configuración de criterios, su prioridad, parámetros y unidades debe quedar visible y versionada.
+- Las restricciones explícitas son filtros de admisibilidad, no preferencias compensables: una trayectoria que incumpla una restricción se marca `INELIGIBLE` y no puede superar a una admisible por otros criterios. Si ninguna trayectoria es admisible, el selector se abstiene con motivo `NO_ADMISSIBLE_TRAJECTORIES`.
+- Para cada trayectoria, el selector devuelve valores de criterios calculados, restricciones satisfechas/incumplidas, clave lexicográfica aplicada y explicación legible de su posición.
+- Los criterios de preferencia (minimizar/maximizar) se comparan en el orden configurado; no se agregan magnitudes ni se combinan unidades.
+- Los empates sustantivos se conservan como empates. Puede usarse un identificador estable solo para presentar resultados de forma reproducible, indicándolo como desempate técnico sin superioridad sustantiva.
+- La ausencia de datos de un criterio activo no se convierte en cero ni en resultado favorable. Salvo que el criterio declare de forma explícita una política de ausencia válida, la comparación afectada queda no evaluable y el selector debe abstenerse de producir un ranking total.
 - El ranking es reproducible para la misma instantánea, configuración y versión del selector.
 
 ## 6. Abstención y límites
 
 El selector debe emitir estado de abstención o ranking parcial, con motivo explícito, cuando ocurra cualquiera de estos casos:
 
-- exploración truncada: puede ordenar las trayectorias observadas, pero debe advertir que el conjunto puede estar incompleto y no afirmar optimalidad global;
+- exploración truncada: puede ofrecer un ranking de las trayectorias observadas, con estado `PARTIAL_TRUNCATED`, pero debe advertir que el conjunto puede estar incompleto y no afirmar optimalidad global;
 - datos obligatorios ausentes o malformados;
-- criterio activo que no puede evaluarse para una o más trayectorias;
+- criterio activo que no puede evaluarse para una o más trayectorias y no tiene una política explícita de ausencia;
 - incoherencia entre los prerrequisitos declarados en el modelo y los que figuran en el resultado de exploración; el selector no debe crear un estado de condición evaluada que el motor no haya emitido;
-- ausencia de trayectorias admisibles;
-- entrada inconsistente o procedencia/hash no verificable.
+- ausencia de trayectorias admisibles (`NO_ADMISSIBLE_TRAJECTORIES`);
+- entrada inconsistente o procedencia/hash no verificable (`INVALID_INPUT_PROVENANCE`).
 
 La abstención no debe bloquear ni alterar la ejecución manual normal del demostrador. El selector no debe seleccionar ni ejecutar automáticamente una trayectoria en esta primera versión.
 
@@ -103,16 +103,17 @@ La implementación futura debe demostrar, mediante pruebas focalizadas y agrupad
 
 1. el selector no muta la entrada ni los resultados del motor;
 2. con entrada y configuración idénticas produce un ranking idéntico;
-3. cambiar un criterio declarado puede cambiar el orden de forma explicable;
-4. las unidades y los pesos no se inventan y quedan registrados;
-5. datos ausentes o criterios no evaluables producen advertencia/abstención, nunca una ventaja silenciosa;
-6. el truncamiento impide declarar que se encontró la mejor trayectoria global;
-7. condiciones no evaluables no se tratan como verdaderas;
-8. los empates y desempates se representan de forma explícita;
-9. el ranking queda ligado por procedencia a la instantánea exacta de trayectorias y a la configuración;
-10. la ejecución concreta y la valoración de valor siguen siendo etapas separadas;
-11. ninguna salida presenta el ranking como probabilidad, predicción validada, prueba causal o validación científica de TGCV;
-12. no se modifica el flujo de ejecución existente para incorporar esta capa.
+3. cambiar la prioridad o dirección de un criterio declarado puede cambiar el orden de forma explicable;
+4. la primera versión aplica orden lexicográfico y no usa pesos ni normalizaciones;
+5. las restricciones incumplidas producen `INELIGIBLE` y no pueden compensarse con preferencias;
+6. datos ausentes o criterios no evaluables producen advertencia/abstención, nunca una ventaja silenciosa;
+7. el truncamiento impide declarar que se encontró la mejor trayectoria global;
+8. condiciones no evaluables no se tratan como verdaderas;
+9. los empates y desempates técnicos se representan explícitamente;
+10. el ranking queda ligado por procedencia a la instantánea exacta de trayectorias y a la configuración;
+11. la ejecución concreta y la valoración de valor siguen siendo etapas separadas;
+12. ninguna salida presenta el ranking como probabilidad, predicción validada, prueba causal o validación científica de TGCV;
+13. no se modifica el flujo de ejecución existente para incorporar esta capa.
 
 Estas pruebas validan el contrato de software y la integración, no la validez científica de la heurística.
 
