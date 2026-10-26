@@ -3649,6 +3649,30 @@ const assert = require("node:assert/strict");
     ], "GT-05 temporal: ambiguous TGCV-to-system mapping must be excluded while uniquely mapped alternative routes remain");
     assert.notEqual(ambiguousMappingCheck.truncated, true,
       "GT-05 temporal: rejecting an ambiguous mapping must not falsely report trajectory-cap truncation");
+    const missingAndInvalidMappingCheck = await temporalPage.evaluate(() => {
+      const tgcvResult = window.lastTgcvDemoResult;
+      const originalMappings = structuredClone(tgcvResult.mappings);
+      const enumerate = () => {
+        const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+        return (result.paths || []).map(path => path.map(step => step.system_transition));
+      };
+      tgcvResult.mappings = originalMappings.filter(item =>
+        item.tgcv_transformation_id !== "tau_t_ab");
+      const missing = enumerate();
+      tgcvResult.mappings = originalMappings.map(item =>
+        item.tgcv_transformation_id === "tau_t_ab"
+          ? { ...item, system_transition_id: "t_missing_system_transition" }
+          : item);
+      const invalid = enumerate();
+      tgcvResult.mappings = originalMappings;
+      return { missing, invalid };
+    });
+    assert.deepEqual(missingAndInvalidMappingCheck.missing, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: missing TGCV mapping must exclude only the unmapped route and preserve valid alternatives");
+    assert.deepEqual(missingAndInvalidMappingCheck.invalid, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: mapping to an unknown system transition must be rejected without hiding valid alternatives");
     const cyclicPrerequisiteCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const tgcvResult = window.lastTgcvDemoResult;
