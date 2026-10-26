@@ -154,7 +154,8 @@ function pythonJson(source, input) {
         schema:"tgcv-correspondence-review-001",
         source_model_sha256:await window.hash(pkg.input),
         catalogue_version:catalogue.version,
-        catalogue_sha256:await window.hash(catalogue),
+        catalogue_sha256:await window.hash(catalogue,"tgcv_correspondence_catalogue"),
+        catalogue_snapshot:JSON.parse(JSON.stringify(catalogue)),
         candidates:derived.candidates
       };
       const imported = JSON.parse(JSON.stringify(pkg));
