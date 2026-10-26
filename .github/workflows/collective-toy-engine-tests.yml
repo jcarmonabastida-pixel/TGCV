@@ -37,7 +37,9 @@ jobs:
           prototypes/collective_toy/test_collective_toy_engine_001.py
           prototypes/collective_toy/test_collective_toy_sequentiality_001.py
           prototypes/collective_toy/trajectory_selector_001.py
-          prototypes/collective_toy/test_trajectory_selector_001.py\n          prototypes/collective_toy/trajectory_recommendation_audit_001.py\n          prototypes/collective_toy/test_trajectory_recommendation_audit_001.py
+          prototypes/collective_toy/test_trajectory_selector_001.py
+          prototypes/collective_toy/trajectory_recommendation_audit_001.py
+          prototypes/collective_toy/test_trajectory_recommendation_audit_001.py
       - name: Run historical unit tests
         working-directory: prototypes/collective_toy
         run: python -m unittest -v test_collective_toy_engine_001.py
@@ -47,7 +49,10 @@ jobs:
       - name: Run trajectory selector contract tests
         working-directory: prototypes/collective_toy
         run: python -m unittest -v test_trajectory_selector_001.py
-      - name: Run recommendation audit ledger tests\n        working-directory: prototypes/collective_toy\n        run: python -m unittest -v test_trajectory_recommendation_audit_001.py\n      - name: Replay all suites from clean source archive
+      - name: Run recommendation audit ledger tests
+        working-directory: prototypes/collective_toy
+        run: python -m unittest -v test_trajectory_recommendation_audit_001.py
+      - name: Replay all suites from clean source archive
         shell: bash
         run: |
           set -euo pipefail
@@ -57,4 +62,5 @@ jobs:
           cd "$clean_root/prototypes/collective_toy"
           PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_collective_toy_engine_001.py
           PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_collective_toy_sequentiality_001.py
-          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_trajectory_selector_001.py\n          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_trajectory_recommendation_audit_001.py
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_trajectory_selector_001.py
+          PYTHONDONTWRITEBYTECODE=1 python -B -m unittest -v test_trajectory_recommendation_audit_001.py
