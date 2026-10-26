@@ -27,7 +27,11 @@ def _canonical_json(value: Any) -> str:
 
 
 def _sha256_json(value: Any) -> str:
-    return hashlib.sha256(_canonical_json(value).encode("utf-8")).hexdigest()
+    try:
+        canonical = _canonical_json(value)
+    except (TypeError, ValueError) as exc:
+        raise SelectorInputError("artifact is not canonical-JSON serializable") from exc
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def _validate_sha256(value: Any, name: str) -> str:
