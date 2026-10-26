@@ -45,11 +45,19 @@ def config(criteria=None, restrictions=None):
 
 
 def select(result=None, cfg=None):
+    model = demo_model()
+    engine_output = run_model(model)
+    if result is not None:
+        engine_output["scenario_results"]["baseline"] = result
+        payload = copy.deepcopy(engine_output)
+        payload.pop("input_sha256", None)
+        payload.pop("result_sha256", None)
+        engine_output["result_sha256"] = sha256_json(payload)
     return select_trajectories(
-        result if result is not None else scenario(),
+        engine_output,
         cfg if cfg is not None else config(),
         scenario_id="baseline",
-        model=demo_model(),
+        model=model,
     )
 
 
@@ -181,7 +189,8 @@ class TrajectorySelectorTests(unittest.TestCase):
     def test_provenance_fields_and_snapshot_digest_are_stable(self):
         result = select()
         self.assertEqual(result["model_sha256"], sha256_json(demo_model()))
-        self.assertEqual(result["result_sha256"], sha256_json(scenario()))
+        engine_output = run_model(demo_model())
+        self.assertEqual(result["result_sha256"], engine_output["result_sha256"])
         self.assertRegex(result["input_sha256"], r"^[0-9a-f]{64}$")
         self.assertRegex(result["config_sha256"], r"^[0-9a-f]{64}$")
 
@@ -191,7 +200,7 @@ class TrajectorySelectorTests(unittest.TestCase):
         engine_output = run_model(model)
         baseline = engine_output["scenario_results"]["baseline"]
         result = select_trajectories(
-            baseline,
+            engine_output,
             config(),
             scenario_id="baseline",
             model=model,
@@ -215,7 +224,7 @@ class TrajectorySelectorTests(unittest.TestCase):
             }
         ])
         result = select_trajectories(
-            baseline,
+            engine_output,
             cfg,
             scenario_id="baseline",
             model=model,
