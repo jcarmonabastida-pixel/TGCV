@@ -4034,7 +4034,14 @@ function pythonJson(source, input) {
           })))
         }]));
       });
-      await assertStructuredTAccMatchesExecution(sourceCollisionPage, "single-source ambiguity baseline");
+      const ambiguityBaselineGraph = await sourceCollisionPage.evaluate(() => ({
+        mapping: window.lastModel?.tgcv_mapping ?? null,
+        graphResult: window.lastTgcvDemoResult?.current ?? null
+      }));
+      assert.equal(ambiguityBaselineGraph.mapping, null,
+        "single-source ambiguity baseline: fixture intentionally has no declared TGCV mapping");
+      assert.equal(ambiguityBaselineGraph.graphResult, null,
+        "single-source ambiguity baseline: no TGCV graph before correspondence resolution");
       const catalogueDetails = sourceCollisionPage.locator("#correspondence-review-section details").filter({
         has: sourceCollisionPage.locator("#tgcv-target-catalogue")
       });
