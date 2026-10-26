@@ -134,22 +134,39 @@ def _validate_config(config: Any) -> tuple[list[dict[str, Any]], list[dict[str, 
 
 
 def _select_trajectories_validated(
-    scenario_result: dict[str, Any],
+    engine_output: dict[str, Any],
     criteria_config: dict[str, Any],
     *,
     scenario_id: str,
     model: Any,
 ) -> dict[str, Any]:
-    """Return an auditable lexicographic ranking without modifying inputs.
+    """Rank a scenario after checking the engine envelope's internal hashes.
 
-    Supported v1 preference sources are step count and presence of a named transition.
-    Supported restrictions require or forbid a named transition. Unsupported or missing
-    data causes explicit abstention; no defaults, weights, costs, or values are inferred.
+    Integrity checks detect inconsistent artifacts; they do not authenticate the
+    producer or prove a trusted engine executed the supplied model.
     """
     if not isinstance(scenario_id, str) or not scenario_id.strip():
         raise SelectorInputError("scenario_id is required")
+    if not isinstance(engine_output, dict):
+        raise SelectorInputError("engine_output must be an object")
+    if not isinstance(model, dict):
+        raise SelectorInputError("model artifact must be an object")
     model_hash = _sha256_json(model)
-    result_hash = _sha256_json(scenario_result)
+    if engine_output.get("input_sha256") != model_hash:
+        raise SelectorInputError("engine_output input_sha256 does not match supplied model")
+    declared_result_hash = engine_output.get("result_sha256")
+    if not isinstance(declared_result_hash, str) or not _SHA256_RE.fullmatch(declared_result_hash):
+        raise SelectorInputError("engine_output result_sha256 is missing or invalid")
+    result_payload = copy.deepcopy(engine_output)
+    result_payload.pop("input_sha256", None)
+    result_payload.pop("result_sha256", None)
+    if _sha256_json(result_payload) != declared_result_hash:
+        raise SelectorInputError("engine_output result_sha256 does not match engine output payload")
+    scenario_results = engine_output.get("scenario_results")
+    if not isinstance(scenario_results, dict) or scenario_id not in scenario_results:
+        raise SelectorInputError("engine_output scenario_results does not contain requested scenario_id")
+    scenario_result = scenario_results[scenario_id]
+    result_hash = declared_result_hash
     if not isinstance(scenario_result, dict):
         raise SelectorInputError("scenario_result must be an object")
     required = {
@@ -180,7 +197,7 @@ def _select_trajectories_validated(
     }
     input_sha256 = _sha256_json(snapshot)
     warnings: list[str] = [
-        "PROVENANCE_SCOPE: model_sha256 is computed from the supplied model object and result_sha256 from the supplied scenario-result object; hashes bind these inputs but do not independently prove the engine generated this result from that model."
+        "PROVENANCE_SCOPE: engine_output input/result hashes were checked against the supplied model and output payload. Hashes establish internal integrity, not producer authenticity or trusted execution."
     ]
     if scenario_result["truncated"]:
         warnings.append("EXPLORATION_TRUNCATED: ranking covers observed trajectories only; global optimality is not established")
@@ -326,16 +343,16 @@ def _select_trajectories_validated(
 
 
 def select_trajectories(
-    scenario_result: dict[str, Any],
+    engine_output: dict[str, Any],
     criteria_config: dict[str, Any],
     *,
     scenario_id: str,
     model: Any,
 ) -> dict[str, Any]:
-    """Public fail-closed boundary: malformed input returns an explicit abstention."""
+    """Public fail-closed boundary: verify engine-output integrity before ranking."""
     try:
         return _select_trajectories_validated(
-            scenario_result,
+            engine_output,
             criteria_config,
             scenario_id=scenario_id,
             model=model,
@@ -343,7 +360,7 @@ def select_trajectories(
     except SelectorInputError as exc:
         message = str(exc)
         provenance_markers = (
-            "scenario_id", "scenario_result", "artifact", "trajectory", "trajectories",
+            "scenario_id", "scenario_result", "engine_output", "artifact", "trajectory", "trajectories",
             "model_sha256", "result_sha256", "truncated", "exploration_bounds",
             "temporal_prerequisites", "reachable_states", "disabled_transitions",
             "enabled_transitions_at_initial_state",
@@ -355,7 +372,7 @@ def select_trajectories(
         )
         try:
             input_digest = _sha256_json({
-                "scenario_result": scenario_result,
+                "engine_output": engine_output,
                 "criteria_config": criteria_config,
                 "scenario_id": scenario_id,
                 "model": model,
@@ -371,7 +388,11 @@ def select_trajectories(
             "scenario_id": scenario_id if isinstance(scenario_id, str) else None,
             "input_sha256": input_digest,
             "model_sha256": _sha256_json(model) if _can_hash(model) else None,
-            "result_sha256": _sha256_json(scenario_result) if _can_hash(scenario_result) else None,
+            "result_sha256": (
+                engine_output.get("result_sha256")
+                if isinstance(engine_output, dict) and isinstance(engine_output.get("result_sha256"), str)
+                else None
+            ),
             "provenance_status": "INVALID_OR_UNVERIFIABLE",
             "config_sha256": None,
             "criteria_config": None,
