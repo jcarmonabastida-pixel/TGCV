@@ -53,8 +53,7 @@ def select(result=None, cfg=None):
         result if result is not None else scenario(),
         cfg if cfg is not None else config(),
         scenario_id="baseline",
-        model_sha256=SHA_MODEL,
-        result_sha256=SHA_RESULT,
+        model={"fixture": "test-model"},
     )
 
 
@@ -63,8 +62,8 @@ class TrajectorySelectorTests(unittest.TestCase):
         result = select()
         self.assertEqual(result["status"], "RANKED")
         self.assertEqual(result["output_kind"], "HEURISTIC_RANKING_NOT_PREDICTION")
-        self.assertEqual(result["provenance_status"], "DECLARED_NOT_INDEPENDENTLY_VERIFIED")
-        self.assertTrue(any("PROVENANCE_NOT_INDEPENDENTLY_VERIFIED" in warning for warning in result["warnings"]))
+        self.assertEqual(result["provenance_status"], "HASHES_COMPUTED_FROM_SUPPLIED_ARTIFACTS")
+        self.assertTrue(any("PROVENANCE_SCOPE" in warning for warning in result["warnings"]))
         self.assertTrue(all("Lexicographic criteria:" in item["position_explanation"] for item in result["ranked_trajectories"]))
         self.assertEqual(
             [item["criteria"][0]["value"] for item in result["ranked_trajectories"]],
@@ -119,7 +118,7 @@ class TrajectorySelectorTests(unittest.TestCase):
     def test_invalid_provenance_hash_is_rejected(self):
         result = select_trajectories(
             scenario(), config(), scenario_id="baseline",
-            model_sha256="not-a-hash", result_sha256=SHA_RESULT,
+            model=object(),
         )
         self.assertEqual(result["status"], "ABSTAINED")
         self.assertEqual(result["reason"], "INVALID_INPUT_PROVENANCE")
@@ -185,8 +184,8 @@ class TrajectorySelectorTests(unittest.TestCase):
 
     def test_provenance_fields_and_snapshot_digest_are_stable(self):
         result = select()
-        self.assertEqual(result["model_sha256"], SHA_MODEL)
-        self.assertEqual(result["result_sha256"], SHA_RESULT)
+        self.assertEqual(result["model_sha256"], sha256_json({"fixture": "test-model"}))
+        self.assertEqual(result["result_sha256"], sha256_json(scenario()))
         self.assertRegex(result["input_sha256"], r"^[0-9a-f]{64}$")
         self.assertRegex(result["config_sha256"], r"^[0-9a-f]{64}$")
 
@@ -199,12 +198,11 @@ class TrajectorySelectorTests(unittest.TestCase):
             baseline,
             config(),
             scenario_id="baseline",
-            model_sha256=sha256_json(model),
-            result_sha256=sha256_json(engine_output),
+            model=model,
         )
         self.assertIn(result["status"], {"RANKED", "PARTIAL_TRUNCATED"})
         self.assertEqual(result["model_sha256"], sha256_json(model))
-        self.assertEqual(result["result_sha256"], sha256_json(engine_output))
+        self.assertEqual(result["result_sha256"], sha256_json(baseline))
         self.assertTrue(result["ranked_trajectories"])
 
 
@@ -224,12 +222,11 @@ class TrajectorySelectorTests(unittest.TestCase):
             baseline,
             cfg,
             scenario_id="baseline",
-            model_sha256=sha256_json(model),
-            result_sha256=sha256_json(engine_output),
+            model=model,
         )
         self.assertEqual(result["status"], "ABSTAINED")
         self.assertEqual(result["reason"], "NO_ADMISSIBLE_TRAJECTORIES")
-        self.assertEqual(result["provenance_status"], "DECLARED_NOT_INDEPENDENTLY_VERIFIED")
+        self.assertEqual(result["provenance_status"], "HASHES_COMPUTED_FROM_SUPPLIED_ARTIFACTS")
         self.assertTrue(result["ranked_trajectories"])
         self.assertTrue(all(not item["eligible"] for item in result["ranked_trajectories"]))
 
