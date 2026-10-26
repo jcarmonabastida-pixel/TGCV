@@ -187,6 +187,38 @@ def _select_trajectories_validated(
     if not isinstance(scenario_result["temporal_prerequisites"], list):
         raise SelectorInputError("temporal_prerequisites must be a list")
 
+    # Cross-check the engine envelope against the supplied model's scenario contract.
+    scenarios = model.get("scenarios")
+    if not isinstance(scenarios, list):
+        raise SelectorInputError("model scenarios must be a list")
+    model_scenarios = [item for item in scenarios if isinstance(item, dict) and item.get("id") == scenario_id]
+    if len(model_scenarios) != 1:
+        raise SelectorInputError("scenario_id must identify exactly one scenario in model")
+    model_scenario = model_scenarios[0]
+    expected_disabled = sorted(model_scenario.get("disabled_transitions", []))
+    if scenario_result["disabled_transitions"] != expected_disabled:
+        raise SelectorInputError("scenario disabled_transitions do not match supplied model")
+    expected_prerequisites: dict[str, set[str]] = {}
+    relations = model.get("relations", [])
+    if not isinstance(relations, list):
+        raise SelectorInputError("model relations must be a list")
+    for relation in relations:
+        if not isinstance(relation, dict) or relation.get("type") != "requires_prior_execution":
+            raise SelectorInputError("model contains an unsupported temporal relation")
+        guarded = relation.get("transition_id")
+        prerequisite = relation.get("requires_transition_id")
+        if not isinstance(guarded, str) or not isinstance(prerequisite, str):
+            raise SelectorInputError("model temporal relation is malformed")
+        expected_prerequisites.setdefault(guarded, set()).add(prerequisite)
+    expected_prerequisite_rows = [
+        {"transition_id": transition_id, "requires_transition_ids": sorted(required_ids)}
+        for transition_id, required_ids in sorted(expected_prerequisites.items())
+    ]
+    if scenario_result["temporal_prerequisites"] != expected_prerequisite_rows:
+        raise SelectorInputError("scenario temporal_prerequisites do not match supplied model")
+    if not isinstance(model.get("initial_state"), str) or not model["initial_state"]:
+        raise SelectorInputError("model initial_state is missing or invalid")
+
     criteria, restrictions = _validate_config(criteria_config)
     snapshot = {
         "scenario_id": scenario_id,
@@ -228,6 +260,8 @@ def _select_trajectories_validated(
     records: list[dict[str, Any]] = []
     for index, path in enumerate(paths):
         transitions = _path_transitions(path)
+        if path[0]["state"] != model["initial_state"]:
+            raise SelectorInputError("trajectory initial state does not match supplied model")
         trajectory_sha = _sha256_json(path)
         restriction_results = []
         for restriction in restrictions:
