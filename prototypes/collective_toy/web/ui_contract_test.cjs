@@ -3551,6 +3551,31 @@ const assert = require("node:assert/strict");
       ["t_ab", "t_bc", "t_cd"],
       ["t_ax", "t_xd"]
     ], "GT-05 temporal: enumerate every complete declared TGCV branch exactly once, without cross-branch hybrids");
+    const boundedEnumeration = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const original = structuredClone(model.exploration);
+      model.exploration = { max_depth: 2, max_trajectories: 30 };
+      tgcvSourceSnapshot = canonical(model);
+      const depthLimited = window.enumerateTgcvTrajectories(model, "baseline");
+      model.exploration = { max_depth: 5, max_trajectories: 1 };
+      tgcvSourceSnapshot = canonical(model);
+      const capped = window.enumerateTgcvTrajectories(model, "baseline");
+      model.exploration = original;
+      tgcvSourceSnapshot = canonical(model);
+      return {
+        depthPaths: depthLimited.paths.map(path => path.map(step => step.system_transition)),
+        capCount: capped.paths.length,
+        capTruncated: capped.truncated
+      };
+    });
+    assert.deepEqual(boundedEnumeration.depthPaths, [
+      ["t_ab", "t_bc"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: max_depth must bound every branch without extending paths");
+    assert.equal(boundedEnumeration.capCount, 1,
+      "GT-05 temporal: max_trajectories must cap emitted candidates");
+    assert.equal(boundedEnumeration.capTruncated, true,
+      "GT-05 temporal: reaching the trajectory cap must explicitly report truncation");
     assert.ok(temporalCandidateIndex >= 0,
       "GT-05 temporal: ordered prerequisite path must be selectable from TGCV-generated candidates");
     await temporalPage.locator("#sequence-scenario").selectOption("baseline");
