@@ -63,10 +63,10 @@ const assert = require("node:assert/strict");
     assert.deepEqual(tgcvDerived.after.transformations, ["tau_t_ab", "tau_t_ac", "tau_t_bd", "tau_t_cd"]);
     assert.deepEqual(tgcvDerived.delta, ["tau_t_ac", "tau_t_cd"],
       "Opening the A→C branch makes both A→C and the downstream C→D transition reachable");
-    assert.equal(tgcvDerived.trajectories.before.tau_ab_bd, true);
-    assert.equal(tgcvDerived.trajectories.after.tau_ab_bd, true);
-    assert.equal(tgcvDerived.trajectories.before.tau_ac_cd, false);
-    assert.equal(tgcvDerived.trajectories.after.tau_ac_cd, true);
+    assert.deepEqual(tgcvDerived.before.relations, [["tau_t_ab", "tau_t_bd"]],
+      "The restricted TGCV graph must retain its declared transformation relation");
+    assert.deepEqual(tgcvDerived.after.relations, [["tau_t_ab", "tau_t_bd"], ["tau_t_ac", "tau_t_cd"]],
+      "The expanded TGCV graph must expose its declared transformation relations");
 
     // Save rendered screenshots of the actual implementation for human review.
     await captureVisual("desktop-baseline.png");
