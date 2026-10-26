@@ -3593,6 +3593,24 @@ const assert = require("node:assert/strict");
     ], "GT-05 temporal: cyclic TGCV relation must not create state-discontinuous or hybrid trajectories");
     assert.notEqual(cyclicRelationCheck.truncated, true,
       "GT-05 temporal: rejected cyclic continuation must not falsely report trajectory-cap truncation");
+    const blockedContinuationCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const originalRelations = structuredClone(model.relations);
+      model.relations = [{
+        id: "r_unmet_prerequisite",
+        type: "requires_prior_execution",
+        transition_id: "t_cd",
+        requires_transition_id: "t_ax"
+      }];
+      tgcvSourceSnapshot = canonical(model);
+      const result = window.enumerateTgcvTrajectories(model, "baseline");
+      model.relations = originalRelations;
+      tgcvSourceSnapshot = canonical(model);
+      return (result.paths || []).map(path => path.map(step => step.system_transition));
+    });
+    assert.deepEqual(blockedContinuationCheck, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: do not report a dead-end prefix as a complete trajectory when its declared continuation is blocked by an unmet prerequisite");
     assert.ok(temporalCandidateIndex >= 0,
       "GT-05 temporal: ordered prerequisite path must be selectable from TGCV-generated candidates");
     await temporalPage.locator("#sequence-scenario").selectOption("baseline");
