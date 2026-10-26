@@ -143,7 +143,10 @@ function pythonJson(source, input) {
       const transition = pkg.input.transitions[0];
       const catalogue = {
         schema:"tgcv-target-catalogue-001", version:"import-replay-contract-v1",
-        transformations:[{id:"T_REPLAY_"+transition.id,source_state:transition.source,target_state:transition.target}]
+        transformations:[
+          {id:"T_REPLAY_"+transition.id,source_state:transition.source,target_state:transition.target},
+          {id:"T_WRONG_BOUNDARY_"+transition.id,source_state:"__OTHER_SOURCE__",target_state:"__OTHER_TARGET__"}
+        ]
       };
       const derived = await window.deriveTgcvCorrespondenceCandidates(pkg.input, catalogue);
       if (!derived.candidates.length || derived.candidates[0].status !== "PROPOSED") {
@@ -185,12 +188,18 @@ function pythonJson(source, input) {
       forgedTransition.package_sha256 = await window.hash(forgedTransition);
       let forgedTransitionRejected = false;
       try { await window.assessImportedBrowserPackage(forgedTransition); } catch (_error) { forgedTransitionRejected = true; }
+      const mismatchedExistingPair = JSON.parse(JSON.stringify(imported));
+      mismatchedExistingPair.tgcv_correspondence_review.candidates[0].tgcv_transformation_id = "T_WRONG_BOUNDARY_"+transition.id;
+      delete mismatchedExistingPair.package_sha256;
+      mismatchedExistingPair.package_sha256 = await window.hash(mismatchedExistingPair);
+      let mismatchedExistingPairRejected = false;
+      try { await window.assessImportedBrowserPackage(mismatchedExistingPair); } catch (_error) { mismatchedExistingPairRejected = true; }
       return {
         status:assessment.status, replay:assessment.replay,
         review:assessment.correspondence_review,
         message:assessment.message,
         snapshotPreserved:JSON.stringify(imported.tgcv_correspondence_review)===JSON.stringify(review),
-        tamperRejected, forgedCorrespondenceRejected, forgedTransitionRejected
+        tamperRejected, forgedCorrespondenceRejected, forgedTransitionRejected, mismatchedExistingPairRejected
       };
     }, pkg);
     assert.equal(reviewReplay.status, "replay-verified", "package replay must remain verified when a valid review snapshot is attached");
@@ -200,6 +209,7 @@ function pythonJson(source, input) {
     assert.equal(reviewReplay.tamperRejected, true, "review/model linkage tampering must be rejected");
     assert.equal(reviewReplay.forgedCorrespondenceRejected, true, "a correspondence referencing a TGCV transformation absent from the rehashed catalogue snapshot must be rejected");
     assert.equal(reviewReplay.forgedTransitionRejected, true, "a correspondence referencing a system transition absent from the model must be rejected even when the package hash is recalculated");
+    assert.equal(reviewReplay.mismatchedExistingPairRejected, true, "a correspondence pairing existing but boundary-incompatible system/TGCV identifiers must be rejected after recalculating the package hash");
     assert.match(reviewReplay.message, /no se aplican al grafo TGCV/i, "replay must explicitly avoid applying accepted mappings");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
     assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
