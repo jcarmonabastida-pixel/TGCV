@@ -3631,6 +3631,24 @@ const assert = require("node:assert/strict");
       "GT-05 temporal: executable cycle must never exceed max_depth");
     assert.notEqual(executableCycleCheck.truncated, true,
       "GT-05 temporal: bounded executable cycle must not be mistaken for trajectory-cap truncation");
+    const ambiguousMappingCheck = await temporalPage.evaluate(() => {
+      const tgcvResult = window.lastTgcvDemoResult;
+      const originalMappings = structuredClone(tgcvResult.mappings);
+      const mapping = originalMappings.find(item => item.tgcv_transformation_id === "tau_t_ab");
+      tgcvResult.mappings.push({
+        system_transition_id: "t_ax",
+        tgcv_transformation_id: "tau_t_ab"
+      });
+      const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+      const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
+      tgcvResult.mappings = originalMappings;
+      return { paths, truncated: result.truncated };
+    });
+    assert.deepEqual(ambiguousMappingCheck.paths, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: ambiguous TGCV-to-system mapping must be excluded while uniquely mapped alternative routes remain");
+    assert.notEqual(ambiguousMappingCheck.truncated, true,
+      "GT-05 temporal: rejecting an ambiguous mapping must not falsely report trajectory-cap truncation");
     const cyclicPrerequisiteCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const tgcvResult = window.lastTgcvDemoResult;
