@@ -260,6 +260,29 @@ class TrajectorySelectorTests(unittest.TestCase):
         self.assertEqual(result["status"], "ABSTAINED")
         self.assertEqual(result["reason"], "INVALID_INPUT_PROVENANCE")
 
+    def test_temporal_prerequisite_mismatch_with_model_abstains(self):
+        model = demo_model()
+        engine_output = run_model(model)
+        engine_output["scenario_results"]["baseline"]["temporal_prerequisites"] = [
+            {"transition_id": "t_bd", "requires_transition_ids": ["t_ab"]}
+        ]
+        payload = copy.deepcopy(engine_output)
+        payload.pop("input_sha256", None)
+        payload.pop("result_sha256", None)
+        engine_output["result_sha256"] = sha256_json(payload)
+        result = select_trajectories(
+            engine_output, config(), scenario_id="baseline", model=model
+        )
+        self.assertEqual(result["status"], "ABSTAINED")
+        self.assertEqual(result["reason"], "INVALID_INPUT_PROVENANCE")
+
+    def test_trajectory_initial_state_mismatch_with_model_abstains(self):
+        data = scenario()
+        data["trajectories"][0][0]["state"] = "X"
+        result = select(data)
+        self.assertEqual(result["status"], "ABSTAINED")
+        self.assertEqual(result["reason"], "INVALID_INPUT_PROVENANCE")
+
 
 if __name__ == "__main__":
     unittest.main()
