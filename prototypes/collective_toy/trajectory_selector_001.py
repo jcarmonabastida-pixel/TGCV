@@ -257,6 +257,7 @@ def select_trajectories(
             "input_sha256": input_sha256,
             "model_sha256": model_hash,
             "result_sha256": result_hash,
+            "provenance_status": PROVENANCE_STATUS,
             "config_sha256": _sha256_json(criteria_config),
             "criteria_config": copy.deepcopy(criteria_config),
             "exploration": {
@@ -299,6 +300,7 @@ def select_trajectories(
         "input_sha256": input_sha256,
         "model_sha256": model_hash,
         "result_sha256": result_hash,
+        "provenance_status": PROVENANCE_STATUS,
         "config_sha256": _sha256_json(criteria_config),
         "criteria_config": copy.deepcopy(criteria_config),
         "exploration": {
