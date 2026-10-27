@@ -3868,6 +3868,29 @@ const assert = require("node:assert/strict");
     assert.equal(await uxPage.locator("#trajectory-scenario").inputValue(), "baseline");
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2",
       "UX: the carousel should enumerate and position the first accessible trajectory");
+    const candidateSnapshot = await uxPage.evaluate(async () =>
+      window.createTgcvCandidateSnapshot(window.lastModel || JSON.parse(document.querySelector("#model").value), "baseline"));
+    assert.equal(candidateSnapshot.status, "READY",
+      "TGCV adapter: valid integrated model must produce a ready candidate snapshot");
+    assert.equal(candidateSnapshot.source, "tgcv-transformations",
+      "TGCV adapter: candidates must originate from the TGCV transformation graph");
+    assert.equal(candidateSnapshot.candidates.length, 2,
+      "TGCV adapter: snapshot must contain the two TGCV paths from the integrated diamond");
+    assert.deepEqual(candidateSnapshot.candidates.map(candidate => candidate.transformation_ids), [
+      ["tau_ux_ab", "tau_ux_bd"], ["tau_ux_ac", "tau_ux_cd"]
+    ], "TGCV adapter: transformation IDs and their order must be preserved");
+    assert.match(candidateSnapshot.model_sha256, /^[a-f0-9]{64}$/);
+    assert.match(candidateSnapshot.tgcv_result_sha256, /^[a-f0-9]{64}$/);
+    assert.match(candidateSnapshot.snapshot_sha256, /^[a-f0-9]{64}$/);
+    assert.equal(await uxPage.evaluate(() => Object.isFrozen(window.createTgcvCandidateSnapshot) ), false,
+      "TGCV adapter: exported adapter remains callable");
+    assert.equal(await uxPage.evaluate(() => Object.isFrozen(window.lastTgcvDemoResult)), false,
+      "TGCV adapter: source result must not be frozen or mutated as a side effect");
+    const invalidCandidateSnapshot = await uxPage.evaluate(async () =>
+      window.createTgcvCandidateSnapshot({ model_id: "unrelated-model" }, "baseline"));
+    assert.equal(invalidCandidateSnapshot.status, "ABSTAIN",
+      "TGCV adapter: unlinked model provenance must cause explicit abstention");
+    assert.equal(invalidCandidateSnapshot.reason, "MODEL_OR_TGCV_RESULT_MISSING");
     assert.equal(await uxPage.locator("#trajectory-card svg").count(), 1,
       "UX: each trajectory must have a visual state/transition graph");
     assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → tau_ux_ab → B → tau_ux_bd → D/);
