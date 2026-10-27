@@ -952,6 +952,11 @@ const assert = require("node:assert/strict");
     const fc7Model = structuredClone(gt05ExplorationPackage.input);
     delete fc7Model.tgcv_mapping;
     await page.locator("#model").fill(JSON.stringify(fc7Model, null, 2));
+    await page.locator("#run").click();
+    await page.waitForFunction(() => {
+      const status = document.querySelector("#status");
+      return !!status && status.textContent.includes("Ejecución completada.");
+    }, null, { timeout: 10000 });
     const fc7Catalogue = {
       schema: "tgcv-target-catalogue-001",
       version: "fc7-diamond-v1",
