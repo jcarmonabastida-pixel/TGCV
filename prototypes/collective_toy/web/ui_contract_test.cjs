@@ -764,9 +764,9 @@ const assert = require("node:assert/strict");
       "FC-2: execution trace must record ordered concrete steps");
     assert.doesNotMatch(await page.locator("#sequence-trace").innerText(), /Traza SHA-256/i,
       "FC-3: keep trace digests out of the primary view; audit data remains in the exported package");
-    // Submit a validly connected but temporally invalid sequence: t_ac reaches C, then t_cd lacks t_ab.
-    await page.locator("#sequence-input").fill("t_ac, t_cd");
-    assert.equal(await page.locator("#sequence-input").inputValue(), "t_ac, t_cd",
+    // Submit TGCV transformations for a validly connected but temporally invalid route: tau_t_ac reaches C, then tau_t_cd lacks tau_t_ab.
+    await page.locator("#sequence-input").fill("tau_t_ac, tau_t_cd");
+    assert.equal(await page.locator("#sequence-input").inputValue(), "tau_t_ac, tau_t_cd",
       "FC-3: manual attempted sequence must be present before execution");
     await page.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
     await page.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 3000 });
@@ -3497,6 +3497,23 @@ const assert = require("node:assert/strict");
       { id: "t_ax", source: "A", target: "X" },
       { id: "t_xd", source: "X", target: "D" }
     ];
+    temporalSuccessModel.tgcv_mapping = {
+      schema: "tgcv-explicit-mapping-001",
+      mapping_rule: "gt05-temporal-system-to-tgcv-v1",
+      provenance: "synthetic-test-fixture",
+      mappings: [
+        { system_transition_id: "t_ab", tgcv_transformation_id: "tau_t_ab" },
+        { system_transition_id: "t_bc", tgcv_transformation_id: "tau_t_bc" },
+        { system_transition_id: "t_cd", tgcv_transformation_id: "tau_t_cd" },
+        { system_transition_id: "t_ax", tgcv_transformation_id: "tau_t_ax" },
+        { system_transition_id: "t_xd", tgcv_transformation_id: "tau_t_xd" }
+      ],
+      relations: [
+        ["tau_t_ab", "tau_t_bc"],
+        ["tau_t_bc", "tau_t_cd"],
+        ["tau_t_ax", "tau_t_xd"]
+      ]
+    };
     temporalSuccessModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
     temporalSuccessModel.relations = [{
       id: "r_temporal_success",
@@ -3521,7 +3538,7 @@ const assert = require("node:assert/strict");
     assert.ok(temporalResult.result.scenario_results.baseline.trajectories.some(path =>
       JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(["t_ab", "t_bc", "t_cd"])),
       "GT-05 temporal: candidate trajectory must include prerequisite t_ab before conditioned t_cd");
-    await temporalPage.locator("#sequence-input").fill("t_ab, t_bc, t_cd");
+    await temporalPage.locator("#sequence-input").fill("tau_t_ab, tau_t_bc, tau_t_cd");
     await temporalPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
     await temporalPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified" || document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 5000 });
     assert.equal(await temporalPage.locator("#sequence-trace").getAttribute("data-state"), "replay-verified",
