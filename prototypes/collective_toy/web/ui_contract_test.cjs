@@ -966,7 +966,7 @@ const assert = require("node:assert/strict");
     await page.locator("#derive-tgcv-correspondences").click();
     await page.waitForFunction(() => {
       const el = document.querySelector("#correspondence-review-status");
-      return !!el && /Generadas \\d+ propuestas/.test(el.textContent || "");
+      return !!el && /Generadas \d+ propuestas/.test(el.textContent || "");
     }, null, { timeout: 10000 });
     const acceptButtons = page.locator("#correspondence-review-list button").filter({ hasText: "Aceptar propuesta" });
     const acceptCount = await acceptButtons.count();
