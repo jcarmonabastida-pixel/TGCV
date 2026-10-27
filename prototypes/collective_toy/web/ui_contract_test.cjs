@@ -8,6 +8,14 @@ const assert = require("node:assert/strict");
   const sourceHtml = fs.readFileSync(htmlPath, "utf8");
   assert.ok(fs.existsSync(htmlPath), "Collective Toy UI must exist");
 
+  // Trajectory navigation must use the TGCV-derived candidate set, never system-state paths.
+  const nextTrajectoryHandler = sourceHtml.match(/\$\("trajectory-next"\)\.addEventListener\("click",function\(\)\{([^}]*)\}\);/);
+  assert.ok(nextTrajectoryHandler, "Next-trajectory handler must exist");
+  assert.match(nextTrajectoryHandler[1], /enumerateTgcvTrajectories\(lastModel/,
+    "Next-trajectory navigation must derive its bound from TGCV trajectories");
+  assert.doesNotMatch(nextTrajectoryHandler[1], /scenario_results/,
+    "Next-trajectory navigation must not use system-state trajectory counts");
+
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
