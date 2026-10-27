@@ -29,42 +29,71 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     const scenario = (model.scenarios || []).find(item => item.id === scenarioId);
     const demo = window.lastTgcvDemoResult;
     if (!scenario) throw new Error("missing selected scenario");
-    if (!demo || !demo.current) {
-      const activeMappings = (window.effectiveCorrespondenceState?.mappings || [])
-        .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false);
-      if (activeMappings.length) {
-        throw new Error("missing TGCV transformation graph result despite active effective mappings");
-      }
-      // Fail-closed is the expected TGCV result when no effective correspondence
-      // exists: there is no declared transformation graph to enumerate.
-      return {
-        scenario: scenarioId,
-        expected: [],
-        actual: [],
-        diagnostic_inputs: {
-          graph_result: null,
-          active_effective_mappings: activeMappings.length,
-          reason: "no active effective TGCV correspondences"
-        }
-      };
-    }
+
+    // Independent expected-input reconstruction: use the input contract and
+    // reviewed-effective correspondence decisions, never demo.mappings or
+    // demo.relations, which are outputs of the implementation under test.
     const transitions = new Map((model.transitions || []).map(t => [t.id, t]));
+    const expectedMappings = [];
+    const declared = model.tgcv_mapping;
+    if (declared) {
+      for (const mapping of declared.mappings || []) {
+        expectedMappings.push({
+          system_transition_id: mapping.system_transition_id,
+          tgcv_transformation_id: mapping.tgcv_transformation_id
+        });
+      }
+    } else if (model.model_id === "toy-diamond-001") {
+      // The sole implicit illustrative fixture is explicitly defined by the
+      // demo contract. No arbitrary user model receives this fallback.
+      for (const transition of model.transitions || []) {
+        expectedMappings.push({
+          system_transition_id: transition.id,
+          tgcv_transformation_id: "tau_" + transition.id
+        });
+      }
+    }
+    const activeEffectiveMappings = (window.effectiveCorrespondenceState?.mappings || [])
+      .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false)
+      .map(mapping => ({
+        system_transition_id: mapping.system_transition_id,
+        tgcv_transformation_id: mapping.tgcv_transformation_id
+      }));
+    for (const mapping of activeEffectiveMappings) {
+      if (expectedMappings.some(old =>
+        old.system_transition_id === mapping.system_transition_id ||
+        old.tgcv_transformation_id === mapping.tgcv_transformation_id)) {
+        throw new Error("ambiguous expected correspondence input; production output cannot be used as an oracle");
+      }
+      expectedMappings.push(mapping);
+    }
+
     const mappingByTransformation = new Map();
-    for (const mapping of demo.mappings || []) {
+    for (const mapping of expectedMappings) {
       if (mappingByTransformation.has(mapping.tgcv_transformation_id)) {
         mappingByTransformation.set(mapping.tgcv_transformation_id, null);
       } else mappingByTransformation.set(mapping.tgcv_transformation_id, mapping);
     }
+
+    let declaredRelations = [];
+    if (declared) {
+      declaredRelations = (declared.relations || []).map(pair => pair.slice());
+    } else if (model.model_id === "toy-diamond-001") {
+      const byId = new Map(expectedMappings.map(mapping => [mapping.system_transition_id, mapping.tgcv_transformation_id]));
+      for (const from of model.transitions || []) {
+        for (const to of model.transitions || []) {
+          if (from.target === to.source && byId.has(from.id) && byId.has(to.id)) {
+            declaredRelations.push([byId.get(from.id), byId.get(to.id)]);
+          }
+        }
+      }
+    }
     const disabled = new Set(scenario.disabled_transitions || []);
     const evaluations = scenario.condition_evaluations || {};
     const allowed = new Set();
-    // deriveTgcvDemo returns the derived contract, which intentionally exposes
-    // mappings and relations rather than a top-level transformations array.
-    // Reconstruct the universe from those contract-bearing fields.
-    const allRelations = demo.relations || [];
     const allTransformationIds = [...new Set([
-      ...(demo.mappings || []).map(mapping => mapping.tgcv_transformation_id),
-      ...allRelations.flatMap(pair => pair)
+      ...expectedMappings.map(mapping => mapping.tgcv_transformation_id),
+      ...declaredRelations.flatMap(pair => pair)
     ])].sort();
     for (const id of allTransformationIds) {
       const mapping = mappingByTransformation.get(id);
@@ -77,13 +106,12 @@ async function assertStructuredTAccMatchesExecution(page, label) {
       allowed.add(id);
     }
     const successors = new Map([...allowed].map(id => [id, []]));
-    for (const [from, to] of allRelations) {
+    for (const [from, to] of declaredRelations) {
       if (allowed.has(from) && allowed.has(to)) successors.get(from).push(to);
     }
-    // Roots come from the declared TGCV graph, even if their predecessor
-    // is disabled in this scenario. Otherwise a blocked downstream node would
-    // incorrectly become a new root and appear reachable.
-    const incoming = new Set(allRelations.map(([, to]) => to));
+    // Roots derive from input-declared TGCV relations, not the implementation's
+    // filtered graph, so blocked predecessors cannot manufacture new roots.
+    const incoming = new Set(declaredRelations.map(([, to]) => to));
     const starts = [...allowed].filter(id => !incoming.has(id)).sort();
     const reachable = new Set(starts);
     const queue = starts.slice();
@@ -101,26 +129,34 @@ async function assertStructuredTAccMatchesExecution(page, label) {
         queue.push(next);
       }
     }
+    if (!demo || !demo.current) {
+      if (reachable.size) throw new Error("missing TGCV graph result despite independently reachable transformations");
+      return {
+        scenario: scenarioId, expected: [], actual: [],
+        diagnostic_inputs: {
+          declared_mappings: (declared?.mappings || []).length,
+          active_effective_mappings: activeEffectiveMappings.length,
+          declared_relations: declaredRelations.length,
+          reason: "no independently reachable TGCV transformations"
+        }
+      };
+    }
     return {
       scenario: scenarioId,
       expected: [...reachable].sort(),
       actual: [...(demo.current?.transformations || [])].sort(),
       diagnostic_inputs: {
-        transformations: allTransformationIds,
-        mappings: (demo.mappings || []).map(mapping => ({
-          system_transition_id: mapping.system_transition_id,
-          tgcv_transformation_id: mapping.tgcv_transformation_id
-        })),
-        relations: allRelations,
-        allowed: [...allowed].sort(),
-        disabled_transitions: [...disabled].sort(),
-        condition_evaluations: evaluations
+        declared_mappings: (declared?.mappings || []).length,
+        active_effective_mappings: activeEffectiveMappings.length,
+        declared_relations: declaredRelations,
+        transformations: allTransformationIds
       }
     };
   });
   assert.deepEqual(comparison.actual, comparison.expected,
-    label + ": TGCV availability must be derived by traversing TGCV transformation relations, independent of system-enumerated trajectories; diagnostic=" + JSON.stringify(comparison));
+    label + ": TGCV availability must match an independent traversal of input-declared TGCV relations, independent of the system engine and production graph output");
 }
+
 function pythonJson(source, input) {
   const run = spawnSync(process.env.PYTHON || "python", ["-c", source], {
     cwd: root, input: JSON.stringify(input), encoding: "utf8"
