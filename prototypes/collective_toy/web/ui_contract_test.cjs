@@ -3769,6 +3769,21 @@ const assert = require("node:assert/strict");
         { id: "ux_ac", source: "A", target: "C" },
         { id: "ux_cd", source: "C", target: "D" }
       ],
+      tgcv_mapping: {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "ux-explicit-diamond-mapping-v1",
+        provenance: "synthetic-test-fixture",
+        mappings: [
+          { system_transition_id: "ux_ab", tgcv_transformation_id: "tau_ux_ab" },
+          { system_transition_id: "ux_bd", tgcv_transformation_id: "tau_ux_bd" },
+          { system_transition_id: "ux_ac", tgcv_transformation_id: "tau_ux_ac" },
+          { system_transition_id: "ux_cd", tgcv_transformation_id: "tau_ux_cd" }
+        ],
+        relations: [
+          ["tau_ux_ab", "tau_ux_bd"],
+          ["tau_ux_ac", "tau_ux_cd"]
+        ]
+      },
       relations: [],
       rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [
@@ -3787,7 +3802,7 @@ const assert = require("node:assert/strict");
     assert.equal(await uxPage.locator("#trajectory-card svg").count(), 1,
       "UX: each trajectory must have a visual state/transition graph");
     assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → B → D/);
-    assert.match(await uxPage.locator("#trajectory-card").innerText(), /no necesariamente ejecutada/i);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /Candidata · no ejecutada/i);
     await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "2 / 2");
     assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → C → D/);
