@@ -143,3 +143,17 @@ Esta revisión es de lectura estática de archivos y contratos; no equivale a ej
 ## 12. Próximo paso propuesto
 
 Con estas correspondencias fijadas, implementar el selector en un módulo aislado que consuma el resultado existente, seguido de un conjunto pequeño de pruebas deterministas agrupadas. No cambiar el motor, el transcriptor, el evaluador de condiciones ni el flujo de ejecución; no lanzar campañas científicas.
+
+## 13. Corrección de compatibilidad tras la promoción de PR #101
+
+Esta sección prevalece sobre cualquier formulación anterior de las secciones 3, 11 y 12 que pueda interpretarse como autorización para seleccionar trayectorias de estados del sistema.
+
+- **Objeto que se ordena:** exclusivamente las trayectorias de transformaciones TGCV que el demostrador ya haya derivado del grafo TGCV y de las correspondencias efectivas aceptadas. No se ordenan las trayectorias de transiciones del grafo del sistema.
+- **Frontera de integración:** el selector no debe consumir directamente `scenario_results[scenario_id].trajectories` del motor de estados como si esas secuencias fueran trayectorias TGCV. Ese resultado solo puede aportar metadatos de exploración/prerrequisitos cuando exista una correspondencia explícita y verificable; nunca sustituye la secuencia de transformaciones TGCV.
+- **Entrada requerida:** instantánea inmutable de candidatos TGCV emitidos por el flujo integrado de PR #101, con identificadores ordenados de transformaciones, escenario, procedencia/hash, estado de condiciones y requisitos temporales relevantes, límites y señal de truncamiento si aplica. Si el flujo actual no expone esos datos con procedencia verificable, el selector debe abstenerse; no debe reconstruirlos ni enumerar candidatos por su cuenta.
+- **Criterios v1:** limitarse a atributos derivados de la propia trayectoria de transformaciones o a atributos explícitos del modelo que tengan semántica documentada. No trasladar automáticamente el número de pasos o los IDs de transición del grafo de estados al grafo TGCV. Las restricciones sobre transformaciones deben referirse a IDs TGCV explícitos.
+- **Separación de etapas:** ranking heurístico previo a la ejecución; ejecución concreta de la trayectoria TGCV elegida; resultado observado; valoración contextual. Ninguna etapa se infiere de otra ni el selector altera la ejecución existente.
+- **Condiciones:** una condición pendiente o `NOT_EVALUABLE` nunca equivale a verdadera ni hace admisible una transformación. El selector no implementa ni sustituye el evaluador de condiciones.
+- **Pruebas de aceptación adicionales:** (a) una trayectoria de estados del sistema no puede entrar como candidato TGCV por semejanza de estructura; (b) cada candidato conserva el orden y los IDs TGCV de origen; (c) la ausencia de correspondencia/procedencia entre candidatos y grafo TGCV produce abstención; (d) el selector no invoca la enumeración de trayectorias de estados ni vuelve a enumerar transformaciones; (e) la ejecución y la valoración contextual siguen intactas.
+
+**Decisión de integración:** antes de promover la implementación, comprobar que el contrato de entrada coincide con la interfaz real de candidatos TGCV de PR #101. Si esa interfaz no existe aún como artefacto estructurado verificable, detenerse en la revisión del contrato y definir el adaptador mínimo como tarea separada; no asumir que el resultado de exploración del motor de estados satisface el contrato.
