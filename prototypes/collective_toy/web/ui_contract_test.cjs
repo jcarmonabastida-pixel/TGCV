@@ -1045,29 +1045,21 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "FC-6: assessed TGCV package must report matching independent replay");
 
-    // FC-7 semantic correspondence regression: change a declared mapping while preserving
-    // valid hashes, then require independent replay to reject the now-divergent result.
+    // FC-7 semantic correspondence regression: mutate the exported EFFECTIVE mapping,
+    // not input.tgcv_mapping (which is declared metadata and does not drive replay).
     const mismatchedCorrespondencePackage = await page.evaluate(async (pkg) => {
       const candidate = structuredClone(pkg);
-      const mappings = candidate.input.tgcv_mapping?.mappings || [];
-      if (mappings.length < 2) throw new Error("Fixture requires at least two explicit TGCV mappings");
-      const first = mappings[0];
-      const alternative = mappings.find(m => m.system_transition_id !== first.system_transition_id);
-      if (!alternative) throw new Error("Fixture requires distinct mapped system transitions");
-      first.system_transition_id = alternative.system_transition_id;
-      candidate.result.input_sha256 = await window.hash(candidate.input);
-      candidate.concrete_execution_trace.input_sha256 = candidate.result.input_sha256;
-      const traceBody = structuredClone(candidate.concrete_execution_trace);
-      delete traceBody.trace_sha256;
-      candidate.concrete_execution_trace.trace_sha256 = await window.hash(traceBody);
-      if (candidate.outcome_record) {
-        candidate.outcome_record.execution_trace_sha256 = candidate.concrete_execution_trace.trace_sha256;
-        candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
+      const effective = candidate.tgcv_effective_correspondences;
+      if (!effective || !Array.isArray(effective.mappings) || effective.mappings.length < 2) {
+        throw new Error("FC-7 fixture requires at least two exported effective correspondences");
       }
-      const resultBody = structuredClone(candidate.result);
-      delete resultBody.input_sha256;
-      delete resultBody.result_sha256;
-      candidate.result.result_sha256 = await window.hash(resultBody);
+      const first = effective.mappings[0];
+      const alternative = effective.mappings.find(m =>
+        m.system_transition_id !== first.system_transition_id &&
+        m.tgcv_transformation_id !== first.tgcv_transformation_id);
+      if (!alternative) throw new Error("FC-7 fixture requires distinct effective correspondence targets");
+      // Preserve the package and snapshot hashes; alter only the effective mapping claim.
+      first.system_transition_id = alternative.system_transition_id;
       delete candidate.package_sha256;
       candidate.package_sha256 = await window.hash(candidate);
       return candidate;
