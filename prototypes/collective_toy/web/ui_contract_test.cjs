@@ -16,6 +16,10 @@ const assert = require("node:assert/strict");
     "Execution selector must obtain candidates from the TGCV enumerator");
   assert.match(sourceHtml, /No se sustituirán por trayectorias del grafo del sistema/,
     "The UI must explicitly prevent fallback to system-state trajectories");
+  assert.match(sourceHtml, /outcomeRecord\.transformation_source="TGCV_TRANSFORMATION_GRAPH"/,
+    "Manual outcome recording must preserve TGCV transformation provenance");
+  assert.match(sourceHtml, /Un resultado de ejecución TGCV debe conservar su procedencia y los identificadores de transformación/,
+    "Imported TGCV packages must fail closed when outcome transformation identity is missing");
   assert.match(sourceHtml, /condition_not_evaluated_true/,
     "Execution must fail closed when a transition condition has no current TRUE evaluation");
   assert.match(sourceHtml, /condición de la transición no tiene una evaluación TRUE vigente/,
@@ -954,6 +958,31 @@ const assert = require("node:assert/strict");
       "FC-4: exported outcome must link to the exact exported execution");
     assert.equal(fc4Package.outcome_record.execution_trace_sha256, fc4Package.concrete_execution_trace.trace_sha256,
       "FC-4: outcome must retain the execution trace digest");
+    assert.equal(fc4Package.outcome_record.transformation_source, "TGCV_TRANSFORMATION_GRAPH",
+      "FC-4: manual outcome recording must preserve TGCV transformation provenance");
+    assert.deepEqual(fc4Package.outcome_record.executed_transformation_ids,
+      fc4Package.concrete_execution_trace.tgcv_trajectory.transformation_ids,
+      "FC-4: exported outcome transformation IDs must match the executed TGCV trajectory");
+
+    // FC-4 regression: a TGCV package missing outcome transformation identity must fail closed.
+    const outcomeWithoutTgcvIdentity = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      delete candidate.outcome_record.transformation_source;
+      delete candidate.outcome_record.executed_transformation_ids;
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate, "package_export");
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "tgcv-outcome-without-transformation-identity.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(outcomeWithoutTgcvIdentity))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(),
+      /resultado de ejecución TGCV debe conservar su procedencia y los identificadores de transformación/i,
+      "FC-4: imported TGCV outcome missing transformation identity must be rejected");
     assert.equal(fc4Package.value_assessment.outcome_id, fc4Package.outcome_record.outcome_id,
       "FC-4: value assessment must reference the exact outcome");
     assert.equal(fc4Package.value_assessment.status, "ASSESSED",
