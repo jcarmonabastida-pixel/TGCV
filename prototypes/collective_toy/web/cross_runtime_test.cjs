@@ -145,14 +145,11 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     const queue = starts.slice();
     while (queue.length) {
       const id = queue.shift();
-      const mapping = mappingByTransformation.get(id);
-      const transition = mapping && transitions.get(mapping.system_transition_id);
-      if (!transition) continue;
       for (const next of successors.get(id) || []) {
         if (reachable.has(next)) continue;
-        const nextMapping = mappingByTransformation.get(next);
-        const nextTransition = nextMapping && transitions.get(nextMapping.system_transition_id);
-        if (!nextTransition || nextTransition.source !== transition.target) continue;
+        // Accessibility follows TGCV transformation relations. State continuity
+        // and prerequisite feasibility are checked separately when enumerating
+        // executable TGCV trajectories, not when calculating the accessible set.
         reachable.add(next);
         queue.push(next);
       }
