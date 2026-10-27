@@ -1056,6 +1056,13 @@ const assert = require("node:assert/strict");
       if (!alternative) throw new Error("Fixture requires distinct mapped system transitions");
       first.system_transition_id = alternative.system_transition_id;
       candidate.result.input_sha256 = await window.hash(candidate.input);
+      candidate.concrete_execution_trace.input_sha256 = candidate.result.input_sha256;
+      const traceBody = structuredClone(candidate.concrete_execution_trace);
+      delete traceBody.trace_sha256;
+      candidate.concrete_execution_trace.trace_sha256 = await window.hash(traceBody);
+      if (candidate.outcome_record) {
+        candidate.outcome_record.execution_trace_sha256 = candidate.concrete_execution_trace.trace_sha256;
+      }
       const resultBody = structuredClone(candidate.result);
       delete resultBody.input_sha256;
       delete resultBody.result_sha256;
