@@ -774,6 +774,9 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#sequence-trace").getAttribute("data-state"), "blocked-trace-recorded",
       "FC-3: blocked attempted sequence must be retained as an auditable trace");
     const blockedTraceText = await page.locator("#sequence-trace").innerText();
+    const blockedTrace = await page.locator("#sequence-trace").evaluate(el => el._trace);
+    assert.equal(blockedTrace.trajectory_source, "TGCV_TRANSFORMATION_GRAPH", "FC-3: blocked execution must retain TGCV graph provenance");
+    assert.deepEqual(blockedTrace.tgcv_trajectory.transformation_ids, ["tau_t_ac", "tau_t_cd"], "FC-3: blocked execution must preserve the attempted TGCV transformations in order");
     assert.match(blockedTraceText, /faltaba un prerrequisito/i,
       "FC-3: the primary view must explain why the attempted route was blocked");
     assert.doesNotMatch(blockedTraceText, /t_cd|t_ab|temporal_prerequisite_not_satisfied|Traza SHA-256/i,
@@ -3546,6 +3549,9 @@ const assert = require("node:assert/strict");
     const temporalTrace = await temporalPage.locator("#sequence-trace").evaluate(el => el._trace);
     assert.deepEqual(temporalTrace.submitted_transition_ids, ["t_ab", "t_bc", "t_cd"],
       "GT-05 temporal: completed trace must preserve prerequisite-before-conditioned order");
+    assert.equal(temporalTrace.trajectory_source, "TGCV_TRANSFORMATION_GRAPH");
+    assert.deepEqual(temporalTrace.tgcv_trajectory.transformation_ids, ["tau_t_ab", "tau_t_bc", "tau_t_cd"],
+      "GT-05 temporal: execution must retain the ordered TGCV transformations alongside system transition IDs");
     assert.equal(temporalTrace.status, "COMPLETED");
     await temporalPage.locator("#outcome-value").fill("synthetic temporal path completed");
     await temporalPage.locator("#outcome-unit").fill("qualitative");
