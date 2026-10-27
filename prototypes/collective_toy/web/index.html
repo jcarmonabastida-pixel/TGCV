@@ -172,15 +172,25 @@ function enumerateTgcvTrajectories(model,scenarioId){
  var scenario=(model.scenarios||[]).find(function(x){return x.id===scenarioId});if(!scenario)return [];
  var mappingByTransformation=new Map(),transitionById=new Map((model.transitions||[]).map(function(t){return[t.id,t]}));
  (window.lastTgcvDemoResult.mappings||[]).forEach(function(m){if(mappingByTransformation.has(m.tgcv_transformation_id))mappingByTransformation.set(m.tgcv_transformation_id,null);else mappingByTransformation.set(m.tgcv_transformation_id,m)});
- // Enumerate TGCV candidates from the TGCV graph alone. Scenario conditions,
- // disabled system transitions, state continuity and temporal prerequisites are
- // execution-feasibility checks and must not erase an accessible TGCV candidate.
+ // TGCV candidates are enumerated from TGCV relations only. System-state continuity,
+ // disabled transitions, conditions and temporal prerequisites belong to execution.
  var mapped=new Set(Array.from(mappingByTransformation.keys()).filter(function(id){var m=mappingByTransformation.get(id);return !!m&&!!transitionById.get(m.system_transition_id)}));
- var allRelations=(tgcv.relations||[]).filter(function(pair){return Array.isArray(pair)&&pair.length===2&&typeof pair[0]==="string"&&typeof pair[1]==="string"});
- var incoming=new Set(allRelations.map(function(pair){return pair[1]})),successors=new Map();
- allRelations.forEach(function(pair){if(!successors.has(pair[0]))successors.set(pair[0],[]);successors.get(pair[0]).push(pair[1])});
+ var allRelations=(tgcv.relations||[]).filter(function(pair){return Array.isArray(pair)&&pair.length===2&&mapped.has(pair[0])&&mapped.has(pair[1])});
+ var successors=new Map(),predecessors=new Map();
+ mapped.forEach(function(id){successors.set(id,[]);predecessors.set(id,[])});
+ allRelations.forEach(function(pair){successors.get(pair[0]).push(pair[1]);predecessors.get(pair[1]).push(pair[0])});
  successors.forEach(function(ids){ids.sort()});
- var starts=Array.from(mapped).filter(function(id){return !incoming.has(id)}).sort();
+ // Find strongly connected components. A cycle must not erase all entry points
+ // merely because every node has an incoming edge. For a source cyclic component,
+ // choose its lexicographically first TGCV transformation as a deterministic seed.
+ function reachableFrom(seed){var seen=new Set([seed]),queue=[seed];while(queue.length){var current=queue.shift();(successors.get(current)||[]).forEach(function(next){if(!seen.has(next)){seen.add(next);queue.push(next)}})}return seen}
+ var reachability=new Map();mapped.forEach(function(id){reachability.set(id,reachableFrom(id))});
+ var unassigned=new Set(mapped),components=[];
+ while(unassigned.size){var seed=Array.from(unassigned).sort()[0],forward=reachability.get(seed);var component=Array.from(unassigned).filter(function(id){return forward.has(id)&&reachability.get(id).has(seed)}).sort();component.forEach(function(id){unassigned.delete(id)});components.push(component)}
+ var componentOf=new Map();components.forEach(function(component,index){component.forEach(function(id){componentOf.set(id,index)})});
+ var hasExternalIncoming=new Set();
+ allRelations.forEach(function(pair){var from=componentOf.get(pair[0]),to=componentOf.get(pair[1]);if(from!==to)hasExternalIncoming.add(to)});
+ var starts=components.filter(function(component,index){return !hasExternalIncoming.has(index)}).map(function(component){return component[0]}).sort();
  var maxDepth=model.exploration&&Number.isInteger(model.exploration.max_depth)?model.exploration.max_depth:100,cap=model.exploration&&Number.isInteger(model.exploration.max_trajectories)?model.exploration.max_trajectories:1000,paths=[],truncated=false;
  if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
  function visit(id,path,visited){
@@ -189,7 +199,7 @@ function enumerateTgcvTrajectories(model,scenarioId){
   if(!mapping||!transition)return;
   var entry={transformation:id,system_transition:transition.id,source_state:transition.source,target_state:transition.target};
   var nextPath=path.concat([entry]),nextVisited=new Set(visited);nextVisited.add(id);
-  var eligible=(successors.get(id)||[]).filter(function(nextId){return mapped.has(nextId)&&!nextVisited.has(nextId)});
+  var eligible=(successors.get(id)||[]).filter(function(nextId){return !nextVisited.has(nextId)});
   if(nextPath.length>=maxDepth){paths.push(nextPath);if(eligible.length)truncated=true;return}
   if(!eligible.length){paths.push(nextPath);return}
   eligible.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextVisited);else truncated=true});
