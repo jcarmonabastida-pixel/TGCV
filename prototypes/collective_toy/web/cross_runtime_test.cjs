@@ -40,7 +40,14 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     const disabled = new Set(scenario.disabled_transitions || []);
     const evaluations = scenario.condition_evaluations || {};
     const allowed = new Set();
-    const allTransformationIds = [...new Set(demo.transformations || [])];
+    // deriveTgcvDemo returns the derived contract, which intentionally exposes
+    // mappings and relations rather than a top-level transformations array.
+    // Reconstruct the universe from those contract-bearing fields.
+    const allRelations = demo.relations || [];
+    const allTransformationIds = [...new Set([
+      ...(demo.mappings || []).map(mapping => mapping.tgcv_transformation_id),
+      ...allRelations.flatMap(pair => pair)
+    ])].sort();
     for (const id of allTransformationIds) {
       const mapping = mappingByTransformation.get(id);
       const transition = mapping && transitions.get(mapping.system_transition_id);
@@ -51,7 +58,6 @@ async function assertStructuredTAccMatchesExecution(page, label) {
       }
       allowed.add(id);
     }
-    const allRelations = demo.relations || [];
     const successors = new Map([...allowed].map(id => [id, []]));
     for (const [from, to] of allRelations) {
       if (allowed.has(from) && allowed.has(to)) successors.get(from).push(to);
