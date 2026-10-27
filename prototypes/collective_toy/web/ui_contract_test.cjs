@@ -8,6 +8,17 @@ const assert = require("node:assert/strict");
   const sourceHtml = fs.readFileSync(htmlPath, "utf8");
   assert.ok(fs.existsSync(htmlPath), "Collective Toy UI must exist");
 
+  // The execution flow must enumerate paths from the TGCV transformation graph,
+  // not from the system-state trajectory list.
+  assert.match(sourceHtml, /function enumerateTgcvTrajectories\(model,scenarioId\)/,
+    "TGCV transformation trajectory enumerator must be present");
+  assert.match(sourceHtml, /function refreshTgcvSequenceOptions\(\)[\s\S]*?enumerateTgcvTrajectories\(lastModel,sid\)/,
+    "Execution selector must obtain candidates from the TGCV enumerator");
+  assert.match(sourceHtml, /No se sustituirán por trayectorias del grafo del sistema/,
+    "The UI must explicitly prevent fallback to system-state trajectories");
+  assert.match(sourceHtml, /condition_not_evaluated_true/,
+    "Execution must fail closed when a transition condition has no current TRUE evaluation");
+
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
