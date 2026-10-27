@@ -26,40 +26,66 @@ async function assertStructuredTAccMatchesExecution(page, label) {
   const comparison = await page.evaluate(() => {
     const model = JSON.parse(document.querySelector("#model").value);
     const scenarioId = document.querySelector("#which").value;
-    const scenarioResult = window.lastPackage?.result?.scenario_results?.[scenarioId];
+    const scenario = (model.scenarios || []).find(item => item.id === scenarioId);
     const demo = window.lastTgcvDemoResult;
-    if (!scenarioResult) throw new Error("missing executed scenario result");
-    const declared = model.tgcv_mapping;
-    const byTransition = new Map();
-    // Only the built-in illustrative fixture has an implicit tau_ mapping. Custom
-    // models contribute to T_acc only through declared or reviewed-effective mappings.
-    if (model.model_id === "toy-diamond-001" && !declared) {
-      for (const transition of model.transitions || []) byTransition.set(transition.id, "tau_" + transition.id);
-    } else {
-      for (const mapping of declared?.mappings || []) byTransition.set(mapping.system_transition_id, mapping.tgcv_transformation_id);
+    if (!scenario) throw new Error("missing selected scenario");
+    if (!demo || !demo.current) throw new Error("missing TGCV transformation graph result");
+    const transitions = new Map((model.transitions || []).map(t => [t.id, t]));
+    const mappingByTransformation = new Map();
+    for (const mapping of demo.mappings || []) {
+      if (mappingByTransformation.has(mapping.tgcv_transformation_id)) {
+        mappingByTransformation.set(mapping.tgcv_transformation_id, null);
+      } else mappingByTransformation.set(mapping.tgcv_transformation_id, mapping);
     }
-    for (const mapping of window.effectiveCorrespondenceState?.mappings || []) {
-      if (mapping.status === "EFFECTIVE" && mapping.active !== false) {
-        byTransition.set(mapping.system_transition_id, mapping.tgcv_transformation_id);
+    const disabled = new Set(scenario.disabled_transitions || []);
+    const evaluations = scenario.condition_evaluations || {};
+    const allowed = new Set();
+    const allTransformationIds = [...new Set(demo.transformations || [])];
+    for (const id of allTransformationIds) {
+      const mapping = mappingByTransformation.get(id);
+      const transition = mapping && transitions.get(mapping.system_transition_id);
+      if (!transition || disabled.has(transition.id)) continue;
+      if (transition.condition) {
+        const evaluation = evaluations[transition.id];
+        if (!evaluation || evaluation.condition !== transition.condition || evaluation.result !== "TRUE") continue;
+      }
+      allowed.add(id);
+    }
+    const allRelations = demo.relations || [];
+    const successors = new Map([...allowed].map(id => [id, []]));
+    for (const [from, to] of allRelations) {
+      if (allowed.has(from) && allowed.has(to)) successors.get(from).push(to);
+    }
+    const starts = [...allowed].filter(id => {
+      const mapping = mappingByTransformation.get(id);
+      const transition = mapping && transitions.get(mapping.system_transition_id);
+      return transition && transition.source === model.initial_state;
+    }).sort();
+    const reachable = new Set(starts);
+    const queue = starts.slice();
+    while (queue.length) {
+      const id = queue.shift();
+      const mapping = mappingByTransformation.get(id);
+      const transition = mapping && transitions.get(mapping.system_transition_id);
+      if (!transition) continue;
+      for (const next of successors.get(id) || []) {
+        if (reachable.has(next)) continue;
+        const nextMapping = mappingByTransformation.get(next);
+        const nextTransition = nextMapping && transitions.get(nextMapping.system_transition_id);
+        if (!nextTransition || nextTransition.source !== transition.target) continue;
+        reachable.add(next);
+        queue.push(next);
       }
     }
-    const usedTransitions = new Set();
-    for (const trajectory of scenarioResult.trajectories || []) {
-      for (const step of trajectory) if (step.transition) usedTransitions.add(step.transition);
-    }
-    const expected = (model.transitions || [])
-      .filter(transition => usedTransitions.has(transition.id) && byTransition.has(transition.id))
-      .map(transition => byTransition.get(transition.id)).sort();
     return {
       scenario: scenarioId,
-      expected,
-      actual: [...(demo?.current?.transformations || [])].sort()
+      expected: [...reachable].sort(),
+      actual: [...(demo.current?.transformations || [])].sort()
     };
   });
   assert.deepEqual(comparison.actual, comparison.expected,
-    label + ": structured operational T_acc must equal the transformations mapped from transitions present in the selected scenario's enumerated trajectories");
+    label + ": TGCV availability must be derived by traversing TGCV transformation relations, independent of system-enumerated trajectories");
 }
-
 function pythonJson(source, input) {
   const run = spawnSync(process.env.PYTHON || "python", ["-c", source], {
     cwd: root, input: JSON.stringify(input), encoding: "utf8"
