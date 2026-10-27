@@ -56,11 +56,14 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     for (const [from, to] of allRelations) {
       if (allowed.has(from) && allowed.has(to)) successors.get(from).push(to);
     }
-    const starts = [...allowed].filter(id => {
-      const mapping = mappingByTransformation.get(id);
-      const transition = mapping && transitions.get(mapping.system_transition_id);
-      return transition && transition.source === model.initial_state;
-    }).sort();
+    const incoming = new Set();
+    for (const [from, to] of allRelations) {
+      if (allowed.has(from) && allowed.has(to)) incoming.add(to);
+    }
+    // TGCV roots are determined by the transformation graph, not by the
+    // system model's initial state. Mapped system transitions are used only
+    // to validate continuity between consecutive TGCV transformations.
+    const starts = [...allowed].filter(id => !incoming.has(id)).sort();
     const reachable = new Set(starts);
     const queue = starts.slice();
     while (queue.length) {
