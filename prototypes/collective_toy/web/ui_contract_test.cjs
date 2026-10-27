@@ -944,6 +944,50 @@ const assert = require("node:assert/strict");
     const fc4Download = await fc4ExportPromise;
     const fc4Package = JSON.parse(fs.readFileSync(await fc4Download.path(), "utf8"));
 
+    // FC-7 uses the real correspondence review/apply flow and its own exported package.
+    // Build a versioned catalogue from actual source transitions; never fabricate mappings in JSON.
+    const fc7Catalogue = await page.evaluate(() => {
+      const model = window.currentModelForEditor();
+      if (!model || !Array.isArray(model.transitions) || model.transitions.length < 2) {
+        throw new Error("FC-7 requires at least two real source-model transitions");
+      }
+      return {
+        schema: "tgcv-target-catalogue-001",
+        version: "fc7-semantic-fixture-v1",
+        transformations: model.transitions.map((t, i) => ({
+          id: "FC7_T_" + String(i + 1).padStart(2, "0"),
+          source_state: t.source,
+          target_state: t.target
+        }))
+      };
+    });
+    await page.locator("#tgcv-target-catalogue").fill(JSON.stringify(fc7Catalogue, null, 2));
+    await page.locator("#derive-tgcv-correspondences").click();
+    await page.waitForFunction(() => {
+      const el = document.querySelector("#correspondence-review-status");
+      return !!el && /Generadas \\d+ propuestas/.test(el.textContent || "");
+    }, null, { timeout: 10000 });
+    const acceptButtons = page.locator("#correspondence-review-list button").filter({ hasText: "Aceptar propuesta" });
+    const acceptCount = await acceptButtons.count();
+    assert.ok(acceptCount >= 2, "FC-7: real correspondence derivation must produce at least two reviewable candidates");
+    for (let i = 0; i < acceptCount; i++) {
+      const button = page.locator("#correspondence-review-list button").filter({ hasText: "Aceptar propuesta" }).first();
+      if (await button.isEnabled()) await button.click();
+    }
+    await page.locator("#apply-accepted-tgcv-correspondences").click();
+    await page.waitForFunction(() => {
+      const el = document.querySelector("#effective-correspondence-status");
+      return !!el && !["idle", "applying"].includes(el.dataset.state);
+    }, null, { timeout: 10000 });
+    assert.equal(await page.locator("#effective-correspondence-status").getAttribute("data-state"), "applied",
+      "FC-7: correspondences must be materialized through the real apply flow");
+    const fc7ExportPromise = page.waitForEvent("download");
+    await page.locator("#export").click();
+    const fc7Download = await fc7ExportPromise;
+    const fc7Package = JSON.parse(fs.readFileSync(await fc7Download.path(), "utf8"));
+    assert.ok(fc7Package.tgcv_effective_correspondences?.mappings?.length >= 2,
+      "FC-7: exported package must contain at least two real effective correspondences");
+
     // GT-05 end-to-end linkage: the assessed export must preserve the exact explored model/result,
     // and its concrete submitted sequence must be one of the candidate trajectories from that run.
     assert.deepEqual(fc4Package.input, gt05ExplorationPackage.input,
@@ -1063,7 +1107,7 @@ const assert = require("node:assert/strict");
       delete candidate.package_sha256;
       candidate.package_sha256 = await window.hash(candidate);
       return candidate;
-    }, fc4Package);
+    }, fc7Package);
     await page.locator("#package-file").setInputFiles({
       name: "tgcv-package-with-divergent-correspondence.json",
       mimeType: "application/json",
