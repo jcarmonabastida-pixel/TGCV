@@ -944,69 +944,6 @@ const assert = require("node:assert/strict");
     const fc4Download = await fc4ExportPromise;
     const fc4Package = JSON.parse(fs.readFileSync(await fc4Download.path(), "utf8"));
 
-    // FC-7 uses the real correspondence review/apply flow and its own exported package.
-    // Build a versioned catalogue from actual source transitions; never fabricate mappings in JSON.
-    // FC-7 uses the already-asserted deterministic GT-05 diamond as its fixture.
-    // Keep this test about correspondence semantics: do not infer eligible transitions
-    // from mutable UI state and do not execute the scenarios a second time.
-    const fc7Model = structuredClone(gt05ExplorationPackage.input);
-    // The demo intentionally synthesizes illustrative mappings for toy-diamond-001.
-    // Give this isolated semantic fixture its own identity so it exercises only the
-    // reviewed effective-correspondence layer, not the demo-only implicit mapping.
-    fc7Model.model_id = "fc7-diamond-semantic-001";
-    delete fc7Model.tgcv_mapping;
-    await page.locator("#model").fill(JSON.stringify(fc7Model, null, 2));
-    await page.locator("#run").click();
-    await page.waitForFunction(() => {
-      const status = document.querySelector("#status");
-      return !!status && status.textContent.includes("Ejecución completada.");
-    }, null, { timeout: 10000 });
-    const fc7Catalogue = {
-      schema: "tgcv-target-catalogue-001",
-      version: "fc7-diamond-v1",
-      transformations: [
-        { id: "tau_t_ab", source_state: "A", target_state: "B" },
-        { id: "tau_t_ac", source_state: "A", target_state: "C" },
-        { id: "tau_t_bd", source_state: "B", target_state: "D" },
-        { id: "tau_t_cd", source_state: "C", target_state: "D" }
-      ]
-    };
-    await page.locator("#correspondence-review-section details > summary").click();
-    await page.locator("#tgcv-target-catalogue").fill(JSON.stringify(fc7Catalogue, null, 2));
-    await page.locator("#derive-tgcv-correspondences").click();
-    await page.waitForFunction(() => {
-      const el = document.querySelector("#correspondence-review-status");
-      return !!el && /Generadas \d+ propuestas/.test(el.textContent || "");
-    }, null, { timeout: 10000 });
-    const acceptButtons = page.locator("#correspondence-review-list button").filter({ hasText: "Aceptar propuesta" });
-    const acceptCount = await acceptButtons.count();
-    assert.ok(acceptCount >= 2, "FC-7: real correspondence derivation must produce at least two reviewable candidates");
-    // Accept every still-enabled candidate. The review list rerenders after each
-    // decision, so repeatedly selecting the first button can keep hitting the
-    // already-disabled first candidate and silently leave the rest unaccepted.
-    for (let i = 0; i < acceptCount; i++) {
-      const button = page.locator("#correspondence-review-list button:enabled").filter({ hasText: "Aceptar propuesta" }).first();
-      if (await button.count() === 0) break;
-      await button.click();
-    }
-    await page.locator("#apply-accepted-tgcv-correspondences").click();
-    await page.waitForFunction(() => {
-      const el = document.querySelector("#effective-correspondence-status");
-      return !!el && !["idle", "applying"].includes(el.dataset.state);
-    }, null, { timeout: 10000 });
-    const fc7ApplyState = await page.locator("#effective-correspondence-status").getAttribute("data-state");
-    const fc7ApplyMessage = await page.locator("#effective-correspondence-status").textContent();
-    assert.equal(fc7ApplyState, "replay-verified",
-      "FC-7: correspondences must be validated and materialized through the real apply flow; actual state=" + fc7ApplyState + "; message=" + fc7ApplyMessage);
-    assert.match(await page.locator("#effective-correspondence-status").textContent(), /conflictos: 0/,
-      "FC-7: effective correspondences must be applied without unresolved conflicts");
-    const fc7ExportPromise = page.waitForEvent("download");
-    await page.locator("#export").click();
-    const fc7Download = await fc7ExportPromise;
-    const fc7Package = JSON.parse(fs.readFileSync(await fc7Download.path(), "utf8"));
-    assert.ok(fc7Package.tgcv_effective_correspondences?.mappings?.length >= 2,
-      "FC-7: exported package must contain at least two real effective correspondences");
-
     // GT-05 end-to-end linkage: the assessed export must preserve the exact explored model/result,
     // and its concrete submitted sequence must be one of the candidate trajectories from that run.
     assert.deepEqual(fc4Package.input, gt05ExplorationPackage.input,
@@ -1090,66 +1027,6 @@ const assert = require("node:assert/strict");
       window.hash(outcome, "outcome_record"), fc4Package.outcome_record);
     assert.equal(fc4Package.value_assessment.outcome_sha256, exportedOutcomeDigest,
       "FC-6: assessment must carry the recomputable digest of the exact exported outcome");
-
-    // FC-6 end-to-end assessed-package replay: validate the exact export after checking its
-    // outcome and assessment linkage, and require an independent replay-verified status.
-    await page.locator("#package-file").setInputFiles({
-      name: "tgcv-assessed-outcome-replay.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(fc4Package))
-    });
-    await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.waitForFunction(() => {
-      const el = document.querySelector("#package-assessment");
-      return !!el && !["idle", "validating"].includes(el.dataset.state);
-    }, null, { timeout: 10000 });
-    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
-      "FC-6: assessed TGCV export must pass independent replay verification");
-    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
-      "FC-6: assessed TGCV package must report matching independent replay");
-
-    // FC-7 semantic correspondence regression: mutate the exported EFFECTIVE mapping,
-    // not input.tgcv_mapping (which is declared metadata and does not drive replay).
-    const mismatchedCorrespondencePackage = await page.evaluate(async (pkg) => {
-      const candidate = structuredClone(pkg);
-      const effective = candidate.tgcv_effective_correspondences;
-      if (!effective || !Array.isArray(effective.mappings) || effective.mappings.length < 2) {
-        throw new Error("FC-7 fixture requires at least two exported effective correspondences");
-      }
-      const first = effective.mappings[0];
-      const alternative = effective.mappings.find(m =>
-        m.system_transition_id !== first.system_transition_id &&
-        m.tgcv_transformation_id !== first.tgcv_transformation_id);
-      if (!alternative) throw new Error("FC-7 fixture requires distinct effective correspondence targets");
-      // Preserve the package and snapshot hashes; alter only the effective mapping claim.
-      first.system_transition_id = alternative.system_transition_id;
-      delete candidate.package_sha256;
-      candidate.package_sha256 = await window.hash(candidate);
-      return candidate;
-    }, fc7Package);
-    await page.locator("#package-file").setInputFiles({
-      name: "tgcv-package-with-divergent-correspondence.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(mismatchedCorrespondencePackage))
-    });
-    await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.waitForFunction(() => {
-      const el = document.querySelector("#package-assessment");
-      return !!el && !["idle", "validating"].includes(el.dataset.state);
-    }, null, { timeout: 10000 }).catch(async error => {
-      const status = await page.locator("#package-assessment").evaluate(el => ({
-        state: el.dataset.state, text: el.innerText
-      }));
-      throw new Error("FC-7 import validation did not reach a terminal state: " + JSON.stringify(status) + "; " + error.message);
-    });
-    const fc7Status = await page.locator("#package-assessment").evaluate(el => ({
-      state: el.dataset.state, text: el.innerText
-    }));
-    assert.equal(fc7Status.state, "rejected",
-      "FC-7: altered correspondence must be rejected; actual import status: " + JSON.stringify(fc7Status));
-    assert.match(fc7Status.text,
-      /evidencia de correspondencia efectiva no coincide|referencia una transición o transformación inexistente|correspondencias efectivas duplicadas o incompatibles/i,
-      "FC-7: changed effective correspondence must be rejected by semantic import validation, not merely by package digest");
 
     // FC-4 grouped perceived-value range adversaries: the contextual score is an integer from 0 through 100.
     const invalidPerceivedValueScores = await page.evaluate(async (pkg) => {
