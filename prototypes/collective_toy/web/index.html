@@ -349,8 +349,8 @@ async function assessImportedBrowserPackage(pkg){
  if(Object.prototype.hasOwnProperty.call(pkg,"concrete_execution_trace")){
   var trace=pkg.concrete_execution_trace;
   assert(trace&&typeof trace==="object"&&!Array.isArray(trace),"concrete_execution_trace debe ser un objeto.");
-  var traceKeys=["trace_schema","execution_id","model_id","input_sha256","scenario_id","candidate_index","submitted_transition_ids","initial_state","steps","final_state","status","blocked_step","trace_sha256","trajectory_source","tgcv_trajectory"];
-  assert(Object.keys(trace).every(function(k){return traceKeys.includes(k)})&&traceKeys.every(function(k){return Object.prototype.hasOwnProperty.call(trace,k)}),"La traza contiene campos desconocidos o ausentes.");
+  var traceBaseKeys=["trace_schema","execution_id","model_id","input_sha256","scenario_id","candidate_index","submitted_transition_ids","initial_state","steps","final_state","status","blocked_step","trace_sha256"],traceKeys=traceBaseKeys.concat(["trajectory_source","tgcv_trajectory"]);
+  assert(Object.keys(trace).every(function(k){return traceKeys.includes(k)})&&traceBaseKeys.every(function(k){return Object.prototype.hasOwnProperty.call(trace,k)}),"La traza contiene campos desconocidos o ausentes.");
   assert(trace.trace_schema==="collective-toy-sequence-trace-001"&&["COMPLETED","BLOCKED"].includes(trace.status)&&(packageV2||trace.status==="COMPLETED"),"La traza concreta tiene esquema o estado no compatible.");
   assert(typeof trace.execution_id==="string"&&trace.execution_id.length>0&&trace.model_id===pkg.input.model_id,"La identidad de la traza no coincide con la entrada.");
   assert(typeof trace.input_sha256==="string"&&trace.input_sha256===pkg.result.input_sha256,"input_sha256 de la traza no coincide con la entrada exportada.");
