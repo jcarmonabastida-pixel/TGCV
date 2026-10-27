@@ -1045,6 +1045,36 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
       "FC-6: assessed TGCV package must report matching independent replay");
 
+    // FC-7 semantic correspondence regression: change a declared mapping while preserving
+    // valid hashes, then require independent replay to reject the now-divergent result.
+    const mismatchedCorrespondencePackage = await page.evaluate(async (pkg) => {
+      const candidate = structuredClone(pkg);
+      const mappings = candidate.input.tgcv_mapping?.mappings || [];
+      if (mappings.length < 2) throw new Error("Fixture requires at least two explicit TGCV mappings");
+      const first = mappings[0];
+      const alternative = mappings.find(m => m.system_transition_id !== first.system_transition_id);
+      if (!alternative) throw new Error("Fixture requires distinct mapped system transitions");
+      first.system_transition_id = alternative.system_transition_id;
+      candidate.result.input_sha256 = await window.hash(candidate.input);
+      const resultBody = structuredClone(candidate.result);
+      delete resultBody.input_sha256;
+      delete resultBody.result_sha256;
+      candidate.result.result_sha256 = await window.hash(resultBody);
+      delete candidate.package_sha256;
+      candidate.package_sha256 = await window.hash(candidate);
+      return candidate;
+    }, fc4Package);
+    await page.locator("#package-file").setInputFiles({
+      name: "tgcv-package-with-divergent-correspondence.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(mismatchedCorrespondencePackage))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
+    assert.match(await page.locator("#package-assessment").innerText(),
+      /reproducción independiente difiere del resultado exportado/i,
+      "FC-7: changed TGCV-to-system correspondence must be rejected by semantic replay, not hash validation");
+
     // FC-4 grouped perceived-value range adversaries: the contextual score is an integer from 0 through 100.
     const invalidPerceivedValueScores = await page.evaluate(async (pkg) => {
       const cases = [
