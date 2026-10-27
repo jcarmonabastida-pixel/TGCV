@@ -3801,11 +3801,11 @@ const assert = require("node:assert/strict");
       "UX: the carousel should enumerate and position the first accessible trajectory");
     assert.equal(await uxPage.locator("#trajectory-card svg").count(), 1,
       "UX: each trajectory must have a visual state/transition graph");
-    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → B → D/);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → tau_ux_ab → B → tau_ux_bd → D/);
     assert.match(await uxPage.locator("#trajectory-card").innerText(), /Candidata · no ejecutada/i);
     await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "2 / 2");
-    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → C → D/);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → tau_ux_ac → C → tau_ux_cd → D/);
     await uxPage.getByRole("button", { name: "Trayectoria anterior" }).click();
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2");
     await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
@@ -3957,15 +3957,15 @@ const assert = require("node:assert/strict");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.deepEqual(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab,
       { condition: "permiso concedido", result: "TRUE" });
-    assert.match(await page.locator("#trajectory-card").innerText(), /A → B → C/,
-      "TRUE must enable the transition and its downstream trajectory");
+    assert.match(await page.locator("#trajectory-card").innerText(), /A → tau_cond_ab → B → tau_plain_bc → C/,
+      "TRUE must enable the TGCV transformation and its downstream trajectory");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
     assert.match(await page.locator("#tgcv-provenance-note").innerText(), /correspondencias vigentes/i,
       "The current TGCV trajectory must be derived only from the explicitly declared mapping");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("FALSE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
-    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/,
-      "FALSE must block the conditioned transition");
+    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /tau_cond_ab.*tau_plain_bc/,
+      "FALSE must block the conditioned TGCV transformation and its downstream trajectory");
     assert.match(await page.locator("#graph").textContent(), /FALSA: permiso concedido/i);
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("TRUE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
@@ -3978,7 +3978,7 @@ const assert = require("node:assert/strict");
       "Changing the condition text must reject the stale evaluation with an explicit validation error");
     assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").inputValue(), "UNKNOWN",
       "The stale TRUE value must not remain active in the evaluator UI after rejection");
-    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/);
+    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /tau_cond_ab.*tau_plain_bc/);
     assert.equal(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab.condition,
       "permiso concedido", "The stale provenance remains in input but is rejected, not silently applied");
 
