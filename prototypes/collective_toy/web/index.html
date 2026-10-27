@@ -606,7 +606,7 @@ $("execute-sequence").addEventListener("click",async function(){
   
   panel.append(node("p","","Estado inicial: "+trace.initial_state));
   steps.forEach(function(step){panel.append(node("p","","Paso "+step.step+": "+step.state_before+" → "+step.state_after))});
-  if(blockedStep)panel.append(node("p","error","El recorrido no pudo continuar porque faltaba un prerrequisito."));
+  if(blockedStep){var blockedMessage=blockedStep.reason==="temporal_prerequisite_not_satisfied"?"El recorrido no pudo continuar porque faltaba un prerrequisito temporal.":blockedStep.reason==="condition_not_evaluated_true"?"El recorrido se bloqueó porque la condición de la transición no tiene una evaluación TRUE vigente.":blockedStep.reason==="transition_disabled_by_scenario"?"El recorrido se bloqueó porque la transición está deshabilitada en este escenario.":blockedStep.reason==="transition_source_mismatch"?"El recorrido se bloqueó porque la transición no parte del estado actual.":blockedStep.reason==="unknown_transition"?"El recorrido se bloqueó porque la transición no existe en el modelo.":"El recorrido se bloqueó por una restricción de ejecución.";panel.append(node("p","error",blockedMessage));}
   panel.append(node("p","","Estado "+(blockedStep?"al detenerse: ":"final: ")+trace.final_state));
   
   panel.dataset.state=blockedStep?"blocked-trace-recorded":"replay-verified";
