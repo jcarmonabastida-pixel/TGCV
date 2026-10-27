@@ -212,7 +212,7 @@ async function run(){var perf={},mark=function(name,start){perf[name]=Number((pe
 
 async function assessImportedBrowserPackage(pkg){
  assert(pkg&&typeof pkg==="object"&&!Array.isArray(pkg),"El paquete debe ser un objeto JSON.");
- assert(Object.keys(pkg).every(function(k){return ["package_version","package_stage","input","result","package_sha256","concrete_execution_trace","outcome_record","value_assessment","value_assessment_status","tgcv_correspondence_review","tgcv_effective_correspondences"].includes(k)}),"El paquete contiene campos desconocidos.");
+ assert(Object.keys(pkg).every(function(k){return ["package_version","package_stage","input","result","package_sha256","concrete_execution_trace","outcome_record","value_assessment","value_assessment_status","tgcv_correspondence_review"].includes(k)}),"El paquete contiene campos desconocidos.");
  var packageV2=pkg.package_version==="collective-toy-browser-run-002";
  assert(packageV2||pkg.package_version==="collective-toy-browser-run-001","Esquema de paquete desconocido o no compatible.");
  if(packageV2)assert(["EXPLORATION","EXECUTION","OUTCOME","ASSESSMENT"].includes(pkg.package_stage),"package_stage ausente o no compatible.");
