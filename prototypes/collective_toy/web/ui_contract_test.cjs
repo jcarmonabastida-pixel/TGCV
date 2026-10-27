@@ -118,6 +118,16 @@ const assert = require("node:assert/strict");
     // Changing the selected system scenario must refresh the TGCV graph from the same engine result.
     await page.locator("#run").click();
     await page.waitForFunction(() => Array.from(document.querySelectorAll("#which option")).some(option => option.value === "block_ac"));
+    await page.locator("#trajectory-scenario").selectOption("baseline");
+    const initialTrajectoryPosition = (await page.locator("#trajectory-position").innerText()).replace(/\\s+/g, " ").trim();
+    assert.match(initialTrajectoryPosition, /^1\\s*\\/\\s*[2-9]\\d*$/, "TGCV trajectory browser must expose multiple candidates before navigation");
+    const trajectoryTotal = Number(initialTrajectoryPosition.split("/")[1].trim());
+    await page.locator("#trajectory-next").click();
+    assert.equal((await page.locator("#trajectory-position").innerText()).replace(/\\s+/g, " ").trim(), "2 / " + trajectoryTotal,
+      "Next must advance to the next TGCV transformation trajectory");
+    await page.locator("#trajectory-prev").click();
+    assert.equal((await page.locator("#trajectory-position").innerText()).replace(/\\s+/g, " ").trim(), "1 / " + trajectoryTotal,
+      "Previous must return to the first TGCV transformation trajectory");
     await page.locator("#which").selectOption("block_ac");
     assert.equal(await page.locator("#graph rect").count(), 4, "System graph must remain rendered for the selected scenario");
     assert.equal(await page.locator("#tgcv-graph circle").count(), 2, "TGCV graph must show only transformations appearing in block_ac trajectories");
@@ -3940,7 +3950,8 @@ const assert = require("node:assert/strict");
     ], "GT-05 temporal: do not report a dead-end prefix as a complete trajectory when its declared continuation is blocked by an unmet prerequisite");
     assert.ok(temporalCandidateIndex >= 0,
       "GT-05 temporal: ordered prerequisite path must be selectable from TGCV-generated candidates");
-    await temporalPage.locator("#sequence-input").fill("tau_t_ab, tau_t_bc, tau_t_cd");
+    await temporalPage.locator("#sequence-scenario").selectOption("baseline");
+    await temporalPage.locator("#sequence-select").selectOption(String(temporalCandidateIndex));
     await temporalPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
     await temporalPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified" || document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 5000 });
     assert.equal(await temporalPage.locator("#sequence-trace").getAttribute("data-state"), "replay-verified",
