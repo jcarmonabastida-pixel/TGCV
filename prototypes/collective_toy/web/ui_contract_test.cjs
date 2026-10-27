@@ -1078,8 +1078,21 @@ const assert = require("node:assert/strict");
       buffer: Buffer.from(JSON.stringify(mismatchedCorrespondencePackage))
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"rejected"' + "]").waitFor();
-    assert.match(await page.locator("#package-assessment").innerText(),
+    await page.waitForFunction(() => {
+      const el = document.querySelector("#package-assessment");
+      return !!el && !["idle", "validating"].includes(el.dataset.state);
+    }, null, { timeout: 10000 }).catch(async error => {
+      const status = await page.locator("#package-assessment").evaluate(el => ({
+        state: el.dataset.state, text: el.innerText
+      }));
+      throw new Error("FC-7 import validation did not reach a terminal state: " + JSON.stringify(status) + "; " + error.message);
+    });
+    const fc7Status = await page.locator("#package-assessment").evaluate(el => ({
+      state: el.dataset.state, text: el.innerText
+    }));
+    assert.equal(fc7Status.state, "rejected",
+      "FC-7: altered correspondence must be rejected; actual import status: " + JSON.stringify(fc7Status));
+    assert.match(fc7Status.text,
       /reproducción independiente difiere del resultado exportado/i,
       "FC-7: changed TGCV-to-system correspondence must be rejected by semantic replay, not hash validation");
 
