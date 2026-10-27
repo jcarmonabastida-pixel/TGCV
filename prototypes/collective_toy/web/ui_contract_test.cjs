@@ -1085,8 +1085,8 @@ const assert = require("node:assert/strict");
     assert.equal(fc7Status.state, "rejected",
       "FC-7: altered correspondence must be rejected; actual import status: " + JSON.stringify(fc7Status));
     assert.match(fc7Status.text,
-      /reproducción independiente difiere del resultado exportado/i,
-      "FC-7: changed TGCV-to-system correspondence must be rejected by semantic replay, not hash validation");
+      /evidencia de correspondencia efectiva no coincide|referencia una transición o transformación inexistente|correspondencias efectivas duplicadas o incompatibles/i,
+      "FC-7: changed effective correspondence must be rejected by semantic import validation, not merely by package digest");
 
     // FC-4 grouped perceived-value range adversaries: the contextual score is an integer from 0 through 100.
     const invalidPerceivedValueScores = await page.evaluate(async (pkg) => {
