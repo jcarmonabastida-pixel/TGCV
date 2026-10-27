@@ -1062,6 +1062,7 @@ const assert = require("node:assert/strict");
       candidate.concrete_execution_trace.trace_sha256 = await window.hash(traceBody);
       if (candidate.outcome_record) {
         candidate.outcome_record.execution_trace_sha256 = candidate.concrete_execution_trace.trace_sha256;
+        candidate.value_assessment.outcome_sha256 = await window.hash(candidate.outcome_record, "outcome_record");
       }
       const resultBody = structuredClone(candidate.result);
       delete resultBody.input_sha256;
