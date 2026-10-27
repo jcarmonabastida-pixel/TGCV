@@ -53,12 +53,40 @@ async function assertStructuredTAccMatchesExecution(page, label) {
         });
       }
     }
-    const activeEffectiveMappings = (window.effectiveCorrespondenceState?.mappings || [])
-      .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false)
-      .map(mapping => ({
-        system_transition_id: mapping.system_transition_id,
-        tgcv_transformation_id: mapping.tgcv_transformation_id
-      }));
+    // Effective decisions are valid only for the exact model and catalogue
+    // content scope that was reviewed. Reconstruct canonical JSON locally so
+    // stale mappings cannot leak into the oracle after either input changes.
+    const correspondenceState = window.effectiveCorrespondenceState;
+    const canonicalInput = value => {
+      if (Array.isArray(value)) return "[" + value.map(canonicalInput).join(",") + "]";
+      if (value && typeof value === "object") {
+        return "{" + Object.keys(value).sort().map(key =>
+          JSON.stringify(key) + ":" + canonicalInput(value[key])
+        ).join(",") + "}";
+      }
+      return JSON.stringify(value);
+    };
+    let correspondenceScopeMatches = false;
+    try {
+      const catalogueText = document.querySelector("#tgcv-target-catalogue")?.value;
+      const catalogue = catalogueText ? JSON.parse(catalogueText) : null;
+      correspondenceScopeMatches = !!(
+        correspondenceState &&
+        catalogue &&
+        correspondenceState.sourceModelCanonical === canonicalInput(model) &&
+        correspondenceState.catalogueCanonical === canonicalInput(catalogue)
+      );
+    } catch {
+      correspondenceScopeMatches = false;
+    }
+    const activeEffectiveMappings = correspondenceScopeMatches
+      ? (correspondenceState.mappings || [])
+        .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false)
+        .map(mapping => ({
+          system_transition_id: mapping.system_transition_id,
+          tgcv_transformation_id: mapping.tgcv_transformation_id
+        }))
+      : [];
     for (const mapping of activeEffectiveMappings) {
       if (expectedMappings.some(old =>
         old.system_transition_id === mapping.system_transition_id ||
