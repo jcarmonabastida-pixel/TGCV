@@ -3931,6 +3931,16 @@ const assert = require("node:assert/strict");
         { id: "cond_ab", source: "A", target: "B", condition: "permiso concedido" },
         { id: "plain_bc", source: "B", target: "C" }
       ],
+      tgcv_mapping: {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "condition-evaluator-explicit-mapping-v1",
+        provenance: "synthetic-test-fixture",
+        mappings: [
+          { system_transition_id: "cond_ab", tgcv_transformation_id: "tau_cond_ab" },
+          { system_transition_id: "plain_bc", tgcv_transformation_id: "tau_plain_bc" }
+        ],
+        relations: [["tau_cond_ab", "tau_plain_bc"]]
+      },
       relations: [],
       rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [{ id: "baseline", disabled_transitions: [] }],
@@ -3941,8 +3951,8 @@ const assert = require("node:assert/strict");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").inputValue(), "UNKNOWN");
     assert.match(await page.locator("#graph").textContent(), /NO EVALUADA: permiso concedido/i);
-    assert.equal(await page.locator("#trajectory-position").innerText(), "1 / 1",
-      "UNKNOWN must fail closed and must not traverse the conditioned transition");
+    assert.equal(await page.locator("#trajectory-position").innerText(), "0 / 0",
+      "UNKNOWN must fail closed and must not expose a TGCV trajectory through the conditioned transformation");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("TRUE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.deepEqual(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab,
@@ -3950,8 +3960,8 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#trajectory-card").innerText(), /A → B → C/,
       "TRUE must enable the transition and its downstream trajectory");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
-    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /obsoleto|desactualizado|no corresponde|no se ha actualizado|no puede|aviso/i,
-      "A custom model without an explicit TGCV mapping must be marked stale rather than given invented transformations");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /correspondencias vigentes/i,
+      "The current TGCV trajectory must be derived only from the explicitly declared mapping");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("FALSE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/,
