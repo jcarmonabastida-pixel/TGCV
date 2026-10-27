@@ -18,6 +18,12 @@ const assert = require("node:assert/strict");
     "The UI must explicitly prevent fallback to system-state trajectories");
   assert.match(sourceHtml, /condition_not_evaluated_true/,
     "Execution must fail closed when a transition condition has no current TRUE evaluation");
+  assert.match(sourceHtml, /condición de la transición no tiene una evaluación TRUE vigente/,
+    "Blocked execution must explain a stale or missing condition evaluation");
+  assert.match(sourceHtml, /transición está deshabilitada en este escenario/,
+    "Blocked execution must distinguish scenario-disabled transitions from temporal prerequisites");
+  assert.match(sourceHtml, /transición no parte del estado actual/,
+    "Blocked execution must distinguish source-state mismatch from temporal prerequisites");
 
   const browser = await chromium.launch({ headless: true });
   try {
