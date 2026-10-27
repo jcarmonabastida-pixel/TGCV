@@ -3661,8 +3661,9 @@ const assert = require("node:assert/strict");
       return (result.paths || []).map(path => path.map(step => step.system_transition));
     });
     assert.deepEqual(scenarioBranchCheck, [
-      ["t_ab", "t_bc", "t_cd"]
-    ], "GT-05 temporal: scenario-specific disabling must remove only the disabled TGCV branch");
+      ["t_ab", "t_bc", "t_cd"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: disabling a system transition must not erase its accessible TGCV candidate; execution feasibility is checked separately");
     const boundedEnumeration = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const original = structuredClone(model.exploration);
