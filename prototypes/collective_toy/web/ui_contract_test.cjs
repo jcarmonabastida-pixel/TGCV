@@ -3935,7 +3935,15 @@ const assert = require("node:assert/strict");
     assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → tau_ux_ac → C → tau_ux_cd → D/);
     await uxPage.getByRole("button", { name: "Trayectoria anterior" }).click();
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2");
-    await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
+    await uxPage.getByRole("button", { name: "Calcular ranking" }).click();
+    await uxPage.locator('#heuristic-ranking-results[data-state="replay-verified"]').waitFor();
+    assert.match(await uxPage.locator("#heuristic-ranking-results").innerText(), /HEURISTIC_RANKING_NOT_PREDICTION/);
+    assert.equal(await uxPage.getByRole("button", { name: "Seleccionar esta trayectoria" }).count(), 2,
+      "TGCV selector UI: ranking exposes explicit selection controls for eligible candidates");
+    await uxPage.getByRole("button", { name: "Seleccionar esta trayectoria" }).first().click();
+    assert.match(await uxPage.locator("#sequence-trace").innerText(), /seleccionada explícitamente desde el ranking/i);
+    assert.equal(await uxPage.locator('#sequence-trace[data-state="replay-verified"]').count(), 0,
+      "TGCV selector UI: choosing a ranked candidate must not execute it automatically");
     await uxPage.getByRole("button", { name: "Ejecutar secuencia seleccionada" }).click();
     await uxPage.locator('#sequence-trace[data-state="replay-verified"]').waitFor();
     const firstUxTrace = await uxPage.locator("#sequence-trace").evaluate(el => el._trace);
