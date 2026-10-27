@@ -524,6 +524,33 @@ function pythonJson(source, input) {
         evaluation + " must remain visible on the system graph");
     }
 
+    // Combined regression: a condition-blocked TGCV predecessor must not
+    // make its otherwise-valid descendant appear as a new root.
+    const blockedPredecessorModel = {
+      ...explicitlyMappedModel,
+      model_id: "condition-blocked-tgcv-predecessor",
+      tgcv_mapping: {
+        ...explicitlyMappedModel.tgcv_mapping,
+        relations: [["T_HUMIDITY", "T_CD"]]
+      },
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "FALSE" } }
+      }]
+    };
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(blockedPredecessorModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const blockedPredecessorTgcvText = await page.locator("#tgcv-graph").textContent();
+    assert.doesNotMatch(blockedPredecessorTgcvText, /T_HUMIDITY/,
+      "a FALSE condition must exclude the predecessor transformation");
+    assert.doesNotMatch(blockedPredecessorTgcvText, /T_CD/,
+      "a descendant must not become a TGCV root merely because its predecessor is condition-blocked");
+    await assertStructuredTAccMatchesExecution(page, "condition-blocked TGCV predecessor must not promote descendant to root");
+
     // Candidate discovery must not duplicate user-declared correspondences.
     const reviewModel = {
       ...explicitlyMappedModel,
