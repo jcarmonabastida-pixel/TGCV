@@ -188,6 +188,48 @@ async function createTgcvCandidateSnapshot(model,scenarioId){
  return freezeDeep(payload);
 }
 window.createTgcvCandidateSnapshot=createTgcvCandidateSnapshot;
+async function rankTgcvCandidates(snapshot,configuration){
+ function freezeDeep(value){if(value&&typeof value==="object"&&!Object.isFrozen(value)){Object.keys(value).forEach(function(key){freezeDeep(value[key])});Object.freeze(value)}return value}
+ function abstain(reason){return freezeDeep({contract_version:"tgcv-heuristic-ranking-001",status:"ABSTAIN",reason,claim:"HEURISTIC_RANKING_NOT_PREDICTION"})}
+ if(!snapshot||snapshot.status!=="READY"||snapshot.contract_version!=="tgcv-candidate-snapshot-001"||!Array.isArray(snapshot.candidates)||!snapshot.exploration)return abstain("INVALID_INPUT_PROVENANCE");
+ if(!/^[a-f0-9]{64}$/.test(snapshot.snapshot_sha256||""))return abstain("INVALID_INPUT_PROVENANCE");
+ var source={};Object.keys(snapshot).forEach(function(key){if(key!=="snapshot_sha256")source[key]=snapshot[key]});
+ if(await hash(source,"tgcv_rank_input")!==snapshot.snapshot_sha256)return abstain("INVALID_INPUT_PROVENANCE");
+ if(!configuration||configuration.contract_version!=="tgcv-heuristic-config-001"||!Array.isArray(configuration.criteria)||!Array.isArray(configuration.constraints)||configuration.criteria.length===0)return abstain("INVALID_CRITERIA_CONFIGURATION");
+ var criteria=configuration.criteria;
+ for(var i=0;i<criteria.length;i++){
+  var criterion=criteria[i];
+  if(!criterion||typeof criterion.id!=="string"||!criterion.id||!["minimize_steps","maximize_steps","prefer_transformation","avoid_transformation"].includes(criterion.type))return abstain("UNSUPPORTED_OR_MALFORMED_CRITERION");
+  if((criterion.type==="prefer_transformation"||criterion.type==="avoid_transformation")&&(typeof criterion.transformation_id!=="string"||!criterion.transformation_id))return abstain("CRITERION_PARAMETER_MISSING");
+ }
+ var constraints=configuration.constraints;
+ for(var j=0;j<constraints.length;j++){var constraint=constraints[j];if(!constraint||typeof constraint.id!=="string"||!["require_transformation","forbid_transformation"].includes(constraint.type)||typeof constraint.transformation_id!=="string"||!constraint.transformation_id)return abstain("UNSUPPORTED_OR_MALFORMED_CONSTRAINT")}
+ var seen=new Set(),evaluated=[];
+ for(var k=0;k<snapshot.candidates.length;k++){
+  var candidate=snapshot.candidates[k];
+  if(!candidate||typeof candidate.candidate_id!=="string"||!Array.isArray(candidate.transformation_ids)||!Array.isArray(candidate.steps)||candidate.transformation_ids.length!==candidate.steps.length||candidate.transformation_ids.some(function(id,index){return typeof id!=="string"||candidate.steps[index].transformation_id!==id})||seen.has(candidate.candidate_id))return abstain("MALFORMED_CANDIDATE_DATA");
+  seen.add(candidate.candidate_id);
+  var reasons=[];
+  constraints.forEach(function(rule){var contains=candidate.transformation_ids.includes(rule.transformation_id);if((rule.type==="require_transformation"&&!contains)||(rule.type==="forbid_transformation"&&contains))reasons.push(rule.id)});
+  var metrics=[];
+  criteria.forEach(function(rule){
+   var value;
+   if(rule.type==="minimize_steps"||rule.type==="maximize_steps")value=candidate.steps.length;
+   else {var found=candidate.transformation_ids.includes(rule.transformation_id);value=rule.type==="prefer_transformation"?(found?0:1):(found?1:0)}
+   metrics.push({criterion_id:rule.id,type:rule.type,value:value});
+  });
+  evaluated.push({candidate_id:candidate.candidate_id,transformation_ids:candidate.transformation_ids.slice(),eligibility:reasons.length?"INELIGIBLE":"ELIGIBLE",violated_constraints:reasons,metrics:metrics,lexicographic_key:metrics.map(function(metric){return metric.value})});
+ }
+ var eligible=evaluated.filter(function(item){return item.eligibility==="ELIGIBLE"});
+ if(!eligible.length)return abstain("NO_ADMISSIBLE_TRAJECTORIES");
+ function compare(a,b){for(var q=0;q<criteria.length;q++){var av=a.metrics[q].value,bv=b.metrics[q].value;if(av!==bv){var minimize=criteria[q].type!=="maximize_steps";return (av<bv?-1:1)*(minimize?1:-1)}}return 0}
+ eligible.sort(function(a,b){return compare(a,b)||a.candidate_id.localeCompare(b.candidate_id)});
+ var groups=[],rank=0,previous=null;
+ eligible.forEach(function(item,index){if(index===0||compare(previous,item)!==0){rank=index+1;groups.push({rank:rank,candidate_ids:[item.candidate_id]})}else groups[groups.length-1].candidate_ids.push(item.candidate_id);item.rank=rank;item.tie_size=groups[groups.length-1].candidate_ids.length;item.explanation=criteria.map(function(rule,i){return rule.id+"="+item.metrics[i].value}).join("; ")||"No preference criteria";previous=item});
+ groups.forEach(function(group){group.candidate_ids.forEach(function(id){var item=eligible.find(function(entry){return entry.candidate_id===id});if(item)item.tie_size=group.candidate_ids.length})});
+ return freezeDeep({contract_version:"tgcv-heuristic-ranking-001",status:snapshot.exploration.truncated?"PARTIAL_TRUNCATED":"RANKED",claim:"HEURISTIC_RANKING_NOT_PREDICTION",input_snapshot_sha256:snapshot.snapshot_sha256,model_sha256:snapshot.model_sha256,scenario_id:snapshot.scenario_id,exploration:{truncated:!!snapshot.exploration.truncated,max_depth:snapshot.exploration.max_depth,max_trajectories:snapshot.exploration.max_trajectories},configuration:JSON.parse(canonical(configuration)),results:evaluated.filter(function(item){return item.eligibility==="INELIGIBLE"}).concat(eligible),ranked_candidate_ids:eligible.map(function(item){return item.candidate_id}),ties:groups.filter(function(group){return group.candidate_ids.length>1}),warning:snapshot.exploration.truncated?"Exploration truncated; ranking applies only to observed candidates and does not establish global optimality.":null});
+}
+window.rankTgcvCandidates=rankTgcvCandidates;
 function refreshTgcvSequenceOptions(){
  var select=$("sequence-select"),sid=$("sequence-scenario").value||"baseline";select.replaceChildren();
  var result=enumerateTgcvTrajectories(lastModel,sid),paths=result.paths||[];
