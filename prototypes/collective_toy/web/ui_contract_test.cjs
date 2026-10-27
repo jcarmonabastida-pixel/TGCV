@@ -3529,7 +3529,6 @@ const assert = require("node:assert/strict");
       relations: [
         ["tau_t_ab", "tau_t_bc"],
         ["tau_t_bc", "tau_t_cd"],
-        ["tau_t_ac", "tau_t_cd"],
         ["tau_t_ax", "tau_t_xd"]
       ]
     };
