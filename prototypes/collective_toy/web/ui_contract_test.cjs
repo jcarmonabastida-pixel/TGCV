@@ -752,8 +752,14 @@ const assert = require("node:assert/strict");
     // baseline/intervention, delta_reach, candidate trajectory, concrete execution, outcome/value,
     // export/import and independent replay are verified as one connected scenario below.
     const gt05ExplorationPackage = await page.evaluate(() => structuredClone(window.lastPackage));
+    const gt05TgcvCandidates = await page.evaluate(async () =>
+      window.createTgcvCandidateSnapshot(window.lastModel || JSON.parse(document.querySelector("#model").value), "baseline"));
     assert.ok(gt05ExplorationPackage && gt05ExplorationPackage.input && gt05ExplorationPackage.result,
       "GT-05: scenario exploration must produce an inspectable input/result package");
+    assert.equal(gt05TgcvCandidates.status, "READY",
+      "GT-05: the same source model must produce an explicit TGCV candidate snapshot");
+    assert.equal(gt05TgcvCandidates.source, "tgcv-transformations",
+      "GT-05: candidate snapshot provenance must be the TGCV transformation graph");
     assert.deepEqual(gt05ExplorationPackage.input.states, ["A", "B", "C", "D"],
       "GT-05: the hand-checkable diamond model must retain all four states");
     assert.deepEqual(
@@ -958,10 +964,14 @@ const assert = require("node:assert/strict");
       "GT-05: final assessed package must preserve the source model used for exploration");
     assert.deepEqual(fc4Package.result, gt05ExplorationPackage.result,
       "GT-05: final assessed package must preserve the explored baseline/intervention and delta_reach result");
+    const executedTransformationIds = fc4Package.concrete_execution_trace.tgcv_trajectory.transformation_ids;
+    assert.ok(gt05TgcvCandidates.candidates.some(candidate =>
+      JSON.stringify(candidate.transformation_ids) === JSON.stringify(executedTransformationIds)),
+      "GT-05: concrete execution must match a candidate enumerated from the TGCV transformation graph for the same model and scenario");
     const executedTransitionIds = fc4Package.concrete_execution_trace.submitted_transition_ids;
     assert.ok(gt05ExplorationPackage.result.scenario_results.baseline.trajectories.some(path =>
       JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(executedTransitionIds)),
-      "GT-05: concrete execution must match one of the candidate trajectories explored from the same model");
+      "GT-05: TGCV candidate execution must also map to a valid concrete system transition path");
     assert.equal(fc4Package.outcome_record.execution_id, fc4Package.concrete_execution_trace.execution_id,
       "FC-4: exported outcome must link to the exact exported execution");
     assert.equal(fc4Package.outcome_record.execution_trace_sha256, fc4Package.concrete_execution_trace.trace_sha256,
