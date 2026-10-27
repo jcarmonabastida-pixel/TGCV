@@ -3962,6 +3962,24 @@ const assert = require("node:assert/strict");
 
     await uxPage.getByRole("button", { name: "Registrar valoración contextual" }).click();
     await uxPage.locator('#value-status[data-state="assessed"]').waitFor();
+
+    // Ranked-candidate end-to-end provenance: the selected TGCV path must survive
+    // concrete execution, outcome/value recording, and package export unchanged.
+    const rankedExportPromise = uxPage.waitForEvent("download");
+    await uxPage.locator("#export").click();
+    const rankedExportDownload = await rankedExportPromise;
+    const rankedExportPackage = JSON.parse(fs.readFileSync(await rankedExportDownload.path(), "utf8"));
+    assert.equal(rankedExportPackage.package_stage, "ASSESSMENT");
+    assert.equal(rankedExportPackage.concrete_execution_trace.trajectory_source, "TGCV_TRANSFORMATION_GRAPH");
+    assert.deepEqual(rankedExportPackage.concrete_execution_trace.tgcv_trajectory.transformation_ids, firstUxTrace.tgcv_trajectory.transformation_ids,
+      "TGCV selector E2E: exported package must preserve the exact ordered TGCV transformations selected from ranking");
+    assert.equal(rankedExportPackage.outcome_record.execution_id, firstUxTrace.execution_id,
+      "TGCV selector E2E: exported outcome must remain linked to the ranked trajectory's concrete execution");
+    assert.equal(rankedExportPackage.value_assessment.execution_id, firstUxTrace.execution_id,
+      "TGCV selector E2E: contextual value must remain linked to the ranked trajectory's concrete execution");
+    assert.match(rankedExportPackage.package_sha256 || "", /^[a-f0-9]{64}$/i,
+      "TGCV selector E2E: exported assessed package must carry its package digest");
+
     await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
     await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
     const firstUxExecutionId = firstUxTrace.execution_id;
