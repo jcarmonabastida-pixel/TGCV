@@ -3542,7 +3542,14 @@ function pythonJson(source, input) {
       await conflictPage.waitForFunction(() => /ejecución completada/i.test(
         document.querySelector("#status")?.textContent || ""
       ), null, {timeout:5000});
-      await assertStructuredTAccMatchesExecution(conflictPage, "conflict lifecycle baseline");
+      const unmappedConflictBaseline = await conflictPage.evaluate(() => ({
+        result: window.lastTgcvDemoResult,
+        note: document.querySelector("#tgcv-provenance-note")?.textContent || ""
+      }));
+      assert.equal(unmappedConflictBaseline.result, null,
+        "an arbitrary model without declared or accepted mappings must not fabricate a TGCV graph before correspondence review");
+      assert.match(unmappedConflictBaseline.note, /no declara una correspondencia TGCV explícita/i,
+        "the UI must explain why the TGCV graph is unavailable before mappings are explicitly accepted");
       const catalogueDetails = conflictPage.locator("#correspondence-review-section details").filter({
         has: conflictPage.locator("#tgcv-target-catalogue")
       });
