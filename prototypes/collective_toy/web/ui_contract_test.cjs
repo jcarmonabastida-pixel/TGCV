@@ -16,6 +16,16 @@ const assert = require("node:assert/strict");
   assert.doesNotMatch(nextTrajectoryHandler[1], /scenario_results/,
     "Next-trajectory navigation must not use system-state trajectory counts");
 
+  // The execution dropdown must expose TGCV transformation paths, not system-state paths.
+  const sequenceOptionsHelper = sourceHtml.match(/function refreshTgcvSequenceOptions\(\)\{([\s\S]*?)\n\}/);
+  assert.ok(sequenceOptionsHelper, "TGCV sequence options helper must exist");
+  assert.match(sequenceOptionsHelper[1], /enumerateTgcvTrajectories\(lastModel,sid\)/,
+    "Execution dropdown candidates must come from the TGCV trajectory enumerator");
+  assert.match(sequenceOptionsHelper[1], /path\.map\(function\(x\)\{return x\.transformation\}\)/,
+    "Execution dropdown labels must display TGCV transformation IDs");
+  assert.doesNotMatch(sequenceOptionsHelper[1], /baselinePaths|scenario_results.*trajectories/,
+    "Execution dropdown must not be populated from system-state trajectories");
+
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
