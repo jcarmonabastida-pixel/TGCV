@@ -472,7 +472,7 @@ async function assessImportedBrowserPackage(pkg){
  }else{
    assert(canonical(replay)===canonical(pkg.result),"La reproducción independiente difiere del resultado exportado.");
  }
- return {status:"replay-verified",message:"Integridad verificada y reproducción independiente coincidente bajo el contrato declarado."+(correspondenceReviewSummary?" Snapshot de correspondencias validado ("+correspondenceReviewSummary.candidate_count+" propuestas; "+correspondenceReviewSummary.accepted_count+" aceptadas, "+correspondenceReviewSummary.rejected_count+" rechazadas). Las decisiones se conservan como evidencia de auditoría y no se aplican al grafo TGCV.":""),integrity:true,replay:true,correspondence_review:correspondenceReviewSummary};
+ return {status:"replay-verified",message:"Integridad interna verificada y reproducción independiente coincidente bajo el contrato declarado. Los hashes no autentican el origen del paquete ni certifican la corrección científica del resultado."+(correspondenceReviewSummary?" Snapshot de correspondencias validado ("+correspondenceReviewSummary.candidate_count+" propuestas; "+correspondenceReviewSummary.accepted_count+" aceptadas, "+correspondenceReviewSummary.rejected_count+" rechazadas). Las decisiones se conservan como evidencia de auditoría y no se aplican al grafo TGCV.":""),integrity:true,replay:true,correspondence_review:correspondenceReviewSummary};
 }
 function setPackageAssessment(state,message){
  var status=$("package-assessment");status.dataset.state=state;status.textContent=message;
