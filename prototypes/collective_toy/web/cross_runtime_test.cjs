@@ -87,7 +87,7 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     };
   });
   assert.deepEqual(comparison.actual, comparison.expected,
-    label + ": TGCV availability must be derived by traversing TGCV transformation relations, independent of system-enumerated trajectories");
+    label + ": TGCV availability must be derived by traversing TGCV transformation relations, independent of system-enumerated trajectories; diagnostic=" + JSON.stringify(comparison));
 }
 function pythonJson(source, input) {
   const run = spawnSync(process.env.PYTHON || "python", ["-c", source], {
