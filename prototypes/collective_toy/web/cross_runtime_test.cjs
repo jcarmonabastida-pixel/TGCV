@@ -83,7 +83,18 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     return {
       scenario: scenarioId,
       expected: [...reachable].sort(),
-      actual: [...(demo.current?.transformations || [])].sort()
+      actual: [...(demo.current?.transformations || [])].sort(),
+      diagnostic_inputs: {
+        transformations: allTransformationIds,
+        mappings: (demo.mappings || []).map(mapping => ({
+          system_transition_id: mapping.system_transition_id,
+          tgcv_transformation_id: mapping.tgcv_transformation_id
+        })),
+        relations: allRelations,
+        allowed: [...allowed].sort(),
+        disabled_transitions: [...disabled].sort(),
+        condition_evaluations: evaluations
+      }
     };
   });
   assert.deepEqual(comparison.actual, comparison.expected,
