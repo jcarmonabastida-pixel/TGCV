@@ -29,7 +29,25 @@ async function assertStructuredTAccMatchesExecution(page, label) {
     const scenario = (model.scenarios || []).find(item => item.id === scenarioId);
     const demo = window.lastTgcvDemoResult;
     if (!scenario) throw new Error("missing selected scenario");
-    if (!demo || !demo.current) throw new Error("missing TGCV transformation graph result");
+    if (!demo || !demo.current) {
+      const activeMappings = (window.effectiveCorrespondenceState?.mappings || [])
+        .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false);
+      if (activeMappings.length) {
+        throw new Error("missing TGCV transformation graph result despite active effective mappings");
+      }
+      // Fail-closed is the expected TGCV result when no effective correspondence
+      // exists: there is no declared transformation graph to enumerate.
+      return {
+        scenario: scenarioId,
+        expected: [],
+        actual: [],
+        diagnostic_inputs: {
+          graph_result: null,
+          active_effective_mappings: activeMappings.length,
+          reason: "no active effective TGCV correspondences"
+        }
+      };
+    }
     const transitions = new Map((model.transitions || []).map(t => [t.id, t]));
     const mappingByTransformation = new Map();
     for (const mapping of demo.mappings || []) {
