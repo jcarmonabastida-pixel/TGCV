@@ -6,6 +6,7 @@ on:
       - prototype/collective-toy-engine-001-20261011
       - prototype/sequentiality-contract-tests-001-20261014
       - prototype/tgcv-full-chain-001-20261014-scenario-context-recovery
+      - experiment/tgcv-trajectory-source-adaptation-001
   pull_request:
     branches:
       - main
