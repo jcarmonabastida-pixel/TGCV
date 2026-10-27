@@ -172,16 +172,33 @@ function enumerateTgcvTrajectories(model,scenarioId){
  var scenario=(model.scenarios||[]).find(function(x){return x.id===scenarioId});if(!scenario)return [];
  var mappingByTransformation=new Map(),transitionById=new Map((model.transitions||[]).map(function(t){return[t.id,t]}));
  (window.lastTgcvDemoResult.mappings||[]).forEach(function(m){if(mappingByTransformation.has(m.tgcv_transformation_id))mappingByTransformation.set(m.tgcv_transformation_id,null);else mappingByTransformation.set(m.tgcv_transformation_id,m)});
- var disabled=new Set(scenario.disabled_transitions||[]),evaluations=scenario.condition_evaluations||{},allowed=new Set();
- (tgcv.transformations||[]).forEach(function(id){var m=mappingByTransformation.get(id),t=m&&transitionById.get(m.system_transition_id);if(!t||disabled.has(t.id))return;if(t.condition){var ev=evaluations[t.id];if(!ev||ev.condition!==t.condition||ev.result!=="TRUE")return}allowed.add(id)});
- var successors=new Map();(tgcv.relations||[]).filter(function(pair){return allowed.has(pair[0])&&allowed.has(pair[1])}).forEach(function(pair){if(!successors.has(pair[0]))successors.set(pair[0],[]);successors.get(pair[0]).push(pair[1])});successors.forEach(function(ids){ids.sort()});
- var prerequisites={};(model.relations||[]).forEach(function(r){(prerequisites[r.transition_id]||(prerequisites[r.transition_id]=[])).push(r.requires_transition_id)});
- var starts=Array.from(allowed).filter(function(id){var m=mappingByTransformation.get(id),t=m&&transitionById.get(m.system_transition_id);return t&&t.source===model.initial_state&&!(prerequisites[t.id]||[]).length}).sort();
- var maxDepth=model.exploration&&Number.isInteger(model.exploration.max_depth)?model.exploration.max_depth:100,cap=model.exploration&&Number.isInteger(model.exploration.max_trajectories)?model.exploration.max_trajectories:1000,paths=[],truncated=false;if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
- function visit(id,path,history,state){if(paths.length>=cap){truncated=true;return}var mapping=mappingByTransformation.get(id),t=mapping&&transitionById.get(mapping.system_transition_id);if(!mapping||!t||t.source!==state)return;var nextHistory=history.concat([t.id]),entry={transformation:id,system_transition:t.id,source_state:t.source,target_state:t.target},nextPath=path.concat([entry]),eligible=[],blockedByPrerequisite=false,hasContinuousSuccessor=false;if(nextPath.length<maxDepth)(successors.get(id)||[]).forEach(function(nextId){var nm=mappingByTransformation.get(nextId),nt=nm&&transitionById.get(nm.system_transition_id);if(!nt||nt.source!==t.target)return;hasContinuousSuccessor=true;if((prerequisites[nt.id]||[]).some(function(req){return nextHistory.indexOf(req)<0})){blockedByPrerequisite=true;return}eligible.push(nextId)});if(nextPath.length>=maxDepth){paths.push(nextPath);return}if(!eligible.length){if(!blockedByPrerequisite||!hasContinuousSuccessor)paths.push(nextPath);return}eligible.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextHistory,t.target);else truncated=true})}
- starts.forEach(function(id){if(paths.length<cap){var m=mappingByTransformation.get(id),t=m&&transitionById.get(m.system_transition_id);if(t)visit(id,[],[],t.source)}else truncated=true});
+ // Enumerate TGCV candidates from the TGCV graph alone. Scenario conditions,
+ // disabled system transitions, state continuity and temporal prerequisites are
+ // execution-feasibility checks and must not erase an accessible TGCV candidate.
+ var mapped=new Set(Array.from(mappingByTransformation.keys()).filter(function(id){var m=mappingByTransformation.get(id);return !!m&&!!transitionById.get(m.system_transition_id)}));
+ var allRelations=(tgcv.relations||[]).filter(function(pair){return Array.isArray(pair)&&pair.length===2&&typeof pair[0]==="string"&&typeof pair[1]==="string"});
+ var incoming=new Set(allRelations.map(function(pair){return pair[1]})),successors=new Map();
+ allRelations.forEach(function(pair){if(!successors.has(pair[0]))successors.set(pair[0],[]);successors.get(pair[0]).push(pair[1])});
+ successors.forEach(function(ids){ids.sort()});
+ var starts=Array.from(mapped).filter(function(id){return !incoming.has(id)}).sort();
+ var maxDepth=model.exploration&&Number.isInteger(model.exploration.max_depth)?model.exploration.max_depth:100,cap=model.exploration&&Number.isInteger(model.exploration.max_trajectories)?model.exploration.max_trajectories:1000,paths=[],truncated=false;
+ if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
+ function visit(id,path,visited){
+  if(paths.length>=cap){truncated=true;return}
+  var mapping=mappingByTransformation.get(id),transition=mapping&&transitionById.get(mapping.system_transition_id);
+  if(!mapping||!transition)return;
+  var entry={transformation:id,system_transition:transition.id,source_state:transition.source,target_state:transition.target};
+  var nextPath=path.concat([entry]),nextVisited=new Set(visited);nextVisited.add(id);
+  var eligible=(successors.get(id)||[]).filter(function(nextId){return mapped.has(nextId)&&!nextVisited.has(nextId)});
+  if(nextPath.length>=maxDepth){paths.push(nextPath);if(eligible.length)truncated=true;return}
+  if(!eligible.length){paths.push(nextPath);return}
+  eligible.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextVisited);else truncated=true});
+ }
+ starts.forEach(function(id){if(paths.length<cap)visit(id,[],new Set());else truncated=true});
  return {scenario_id:scenarioId,paths:paths,truncated:truncated,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
 }
+window.enumerateTgcvTrajectories=enumerateTgcvTrajectories;
+
 async function createTgcvCandidateSnapshot(model,scenarioId,enumeratedOverride){
  function freezeDeep(value){if(value&&typeof value==="object"&&!Object.isFrozen(value)){Object.keys(value).forEach(function(key){freezeDeep(value[key])});Object.freeze(value)}return value}
  function abstain(reason){return freezeDeep({contract_version:"tgcv-candidate-snapshot-001",status:"ABSTAIN",reason:reason})}
