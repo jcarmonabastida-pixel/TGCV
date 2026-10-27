@@ -194,12 +194,18 @@ function pythonJson(source, input) {
       mismatchedExistingPair.package_sha256 = await window.hash(mismatchedExistingPair);
       let mismatchedExistingPairRejected = false;
       try { await window.assessImportedBrowserPackage(mismatchedExistingPair); } catch (_error) { mismatchedExistingPairRejected = true; }
+      const forgedEvidence = JSON.parse(JSON.stringify(imported));
+      forgedEvidence.tgcv_correspondence_review.candidates[0].evidence.system_source_state = "__FORGED_SOURCE__";
+      delete forgedEvidence.package_sha256;
+      forgedEvidence.package_sha256 = await window.hash(forgedEvidence);
+      let forgedEvidenceRejected = false;
+      try { await window.assessImportedBrowserPackage(forgedEvidence); } catch (_error) { forgedEvidenceRejected = true; }
       return {
         status:assessment.status, replay:assessment.replay,
         review:assessment.correspondence_review,
         message:assessment.message,
         snapshotPreserved:JSON.stringify(imported.tgcv_correspondence_review)===JSON.stringify(review),
-        tamperRejected, forgedCorrespondenceRejected, forgedTransitionRejected, mismatchedExistingPairRejected
+        tamperRejected, forgedCorrespondenceRejected, forgedTransitionRejected, mismatchedExistingPairRejected, forgedEvidenceRejected
       };
     }, pkg);
     assert.equal(reviewReplay.status, "replay-verified", "package replay must remain verified when a valid review snapshot is attached");
@@ -210,6 +216,7 @@ function pythonJson(source, input) {
     assert.equal(reviewReplay.forgedCorrespondenceRejected, true, "a correspondence referencing a TGCV transformation absent from the rehashed catalogue snapshot must be rejected");
     assert.equal(reviewReplay.forgedTransitionRejected, true, "a correspondence referencing a system transition absent from the model must be rejected even when the package hash is recalculated");
     assert.equal(reviewReplay.mismatchedExistingPairRejected, true, "a correspondence pairing existing but boundary-incompatible system/TGCV identifiers must be rejected after recalculating the package hash");
+    assert.equal(reviewReplay.forgedEvidenceRejected, true, "a correspondence with forged evidence fields must be rejected after recalculating the package hash");
     assert.match(reviewReplay.message, /no se aplican al grafo TGCV/i, "replay must explicitly avoid applying accepted mappings");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
     assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
