@@ -409,7 +409,11 @@ const assert = require("node:assert/strict");
       buffer: Buffer.from(exportedText)
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i);
+    await page.waitForFunction(() => { const el = document.querySelector("#package-assessment"); return !!el && !["idle","validating"].includes(el.dataset.state); }, null, { timeout: 10000 });
+    const packageAssessmentState = await page.locator("#package-assessment").getAttribute("data-state");
+    const packageAssessmentText = await page.locator("#package-assessment").innerText();
+    assert.equal(packageAssessmentState, "replay-verified", "FC-3 imported package assessment failed: " + packageAssessmentState + " — " + packageAssessmentText);
+    assert.match(packageAssessmentText, /reproducción independiente coincidente/i);
 
     // A structurally valid, self-consistent package from an unknown engine is inspect-only.
     const unknownEnginePackage = await page.evaluate(async (pkg) => {
