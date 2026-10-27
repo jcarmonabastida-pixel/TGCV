@@ -946,41 +946,22 @@ const assert = require("node:assert/strict");
 
     // FC-7 uses the real correspondence review/apply flow and its own exported package.
     // Build a versioned catalogue from actual source transitions; never fabricate mappings in JSON.
-    // FC-7 is a correspondence contract, not a second scenario-execution test.
-    // Use the already-executed model and derive a catalogue only for transitions not
-    // covered by declared mappings; do not replace the model or trigger another run.
-    const fc7Catalogue = await page.evaluate(() => {
-      const model = window.currentModelForEditor();
-      if (!model || !Array.isArray(model.transitions)) {
-        throw new Error("FC-7 requires the current valid source model");
-      }
-      const declared = model.tgcv_mapping && Array.isArray(model.tgcv_mapping.mappings)
-        ? model.tgcv_mapping.mappings : [];
-      const declaredTransitionIds = new Set(declared.map(m => m.system_transition_id));
-      const declaredTargetIds = new Set(declared.map(m => m.tgcv_transformation_id));
-      const available = model.transitions.filter(t => !declaredTransitionIds.has(t.id));
-      const unique = [];
-      const seen = new Set();
-      for (const t of available) {
-        const key = JSON.stringify([t.source, t.target]);
-        if (seen.has(key)) continue;
-        seen.add(key);
-        unique.push(t);
-      }
-      const eligible = unique.filter(t => !declaredTargetIds.has("FC7_T_" + t.id));
-      if (eligible.length < 2) {
-        throw new Error("FC-7 requires at least two unmapped transitions with unique state boundaries");
-      }
-      return {
-        schema: "tgcv-target-catalogue-001",
-        version: "fc7-semantic-fixture-v1",
-        transformations: eligible.slice(0, 2).map((t, i) => ({
-          id: "FC7_T_" + String(i + 1).padStart(2, "0"),
-          source_state: t.source,
-          target_state: t.target
-        }))
-      };
-    });
+    // FC-7 uses the already-asserted deterministic GT-05 diamond as its fixture.
+    // Keep this test about correspondence semantics: do not infer eligible transitions
+    // from mutable UI state and do not execute the scenarios a second time.
+    const fc7Model = structuredClone(gt05ExplorationPackage.input);
+    delete fc7Model.tgcv_mapping;
+    await page.locator("#model").fill(JSON.stringify(fc7Model, null, 2));
+    const fc7Catalogue = {
+      schema: "tgcv-target-catalogue-001",
+      version: "fc7-diamond-v1",
+      transformations: [
+        { id: "tau_t_ab", source_state: "A", target_state: "B" },
+        { id: "tau_t_ac", source_state: "A", target_state: "C" },
+        { id: "tau_t_bd", source_state: "B", target_state: "D" },
+        { id: "tau_t_cd", source_state: "C", target_state: "D" }
+      ]
+    };
     await page.locator("#correspondence-review-section details > summary").click();
     await page.locator("#tgcv-target-catalogue").fill(JSON.stringify(fc7Catalogue, null, 2));
     await page.locator("#derive-tgcv-correspondences").click();
