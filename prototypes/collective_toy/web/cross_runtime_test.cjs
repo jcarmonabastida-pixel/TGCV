@@ -218,6 +218,7 @@ function pythonJson(source, input) {
     assert.equal(reviewReplay.mismatchedExistingPairRejected, true, "a correspondence pairing existing but boundary-incompatible system/TGCV identifiers must be rejected after recalculating the package hash");
     assert.equal(reviewReplay.forgedEvidenceRejected, true, "a correspondence with forged evidence fields must be rejected after recalculating the package hash");
     assert.match(reviewReplay.message, /no se aplican al grafo TGCV/i, "replay must explicitly avoid applying accepted mappings");
+    assert.match(reviewReplay.message, /hashes no autentican el origen.*ni certifican la corrección científica/i, "replay success must distinguish internal integrity from provenance/scientific validity");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
     assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
     // Conditional transitions must survive the cross-runtime package contract,
