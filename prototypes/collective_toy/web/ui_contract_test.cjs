@@ -1028,6 +1028,23 @@ const assert = require("node:assert/strict");
     assert.equal(fc4Package.value_assessment.outcome_sha256, exportedOutcomeDigest,
       "FC-6: assessment must carry the recomputable digest of the exact exported outcome");
 
+    // FC-6 end-to-end assessed-package replay: validate the exact export after checking its
+    // outcome and assessment linkage, and require an independent replay-verified status.
+    await page.locator("#package-file").setInputFiles({
+      name: "tgcv-assessed-outcome-replay.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(fc4Package))
+    });
+    await page.getByRole("button", { name: "Validar paquete importado" }).click();
+    await page.waitForFunction(() => {
+      const el = document.querySelector("#package-assessment");
+      return !!el && !["idle", "validating"].includes(el.dataset.state);
+    }, null, { timeout: 10000 });
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
+      "FC-6: assessed TGCV export must pass independent replay verification");
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "FC-6: assessed TGCV package must report matching independent replay");
+
     // FC-4 grouped perceived-value range adversaries: the contextual score is an integer from 0 through 100.
     const invalidPerceivedValueScores = await page.evaluate(async (pkg) => {
       const cases = [
