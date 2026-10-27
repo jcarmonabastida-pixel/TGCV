@@ -551,6 +551,15 @@ function pythonJson(source, input) {
       "a descendant must not become a TGCV root merely because its predecessor is condition-blocked");
     await assertStructuredTAccMatchesExecution(page, "condition-blocked TGCV predecessor must not promote descendant to root");
 
+    // Restore the explicitly mapped TRUE-condition fixture so later correspondence
+    // proposal tests begin from their own expected rendered graph.
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(explicitlyMappedModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+
     // Candidate discovery must not duplicate user-declared correspondences.
     const reviewModel = {
       ...explicitlyMappedModel,
