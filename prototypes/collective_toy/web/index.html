@@ -1076,20 +1076,44 @@ function tgcvDemoFixture(systemModel,systemResult,currentScenarioId){
  var hasComparison=!!(beforeScenario&&afterScenario);
  if(!hasComparison){beforeScenario=currentScenario;afterScenario=currentScenario}
  systemResult=systemResult||execute(systemModel);
- function transitionsInEnumeratedTrajectories(scenarioId){
-  var scenarioResult=systemResult.scenario_results[scenarioId];
-  assert(scenarioResult,"No hay resultado de exploración para el escenario "+scenarioId+".");
-  var used=new Set();
-  scenarioResult.trajectories.forEach(function(path){path.forEach(function(step){if(step.transition)used.add(step.transition)})});
-  return used;
- }
- var beforeReachable=transitionsInEnumeratedTrajectories(beforeScenario.id),afterReachable=transitionsInEnumeratedTrajectories(afterScenario.id);
  var mappedByTransition=new Map(mappings.map(function(m){return [m.system_transition_id,m.tgcv_transformation_id]}));
- var before=transitions.filter(function(t){return beforeReachable.has(t.id)&&mappedByTransition.has(t.id)}).map(function(t){return mappedByTransition.get(t.id)});
- var after=transitions.filter(function(t){return afterReachable.has(t.id)&&mappedByTransition.has(t.id)}).map(function(t){return mappedByTransition.get(t.id)});
+ function transformationsAllowedByScenario(scenario){
+  var disabled=new Set(scenario.disabled_transitions||[]),evaluations=scenario.condition_evaluations||{};
+  return transformations.filter(function(id){
+   var matches=mappings.filter(function(m){return m.tgcv_transformation_id===id});
+   if(matches.length!==1)return false;
+   var transition=transitions.find(function(t){return t.id===matches[0].system_transition_id});
+   if(!transition||disabled.has(transition.id))return false;
+   if(transition.condition){
+    var evaluation=evaluations[transition.id];
+    if(!evaluation||evaluation.condition!==transition.condition||evaluation.result!=="TRUE")return false;
+   }
+   return true;
+  });
+ }
+ // TGCV accessibility is derived from the TGCV transformation graph and its
+ // scenario restrictions, not from whichever system-state trajectories happened
+ // to be enumerated by the execution engine. System transitions are consulted
+ // only to validate each transformation's unique, current execution mapping.
+ function accessibleTransformations(scenario){
+  var allowed=new Set(transformationsAllowedByScenario(scenario));
+  var edges=relations.filter(function(pair){return allowed.has(pair[0])&&allowed.has(pair[1])});
+  if(!edges.length)return Array.from(allowed);
+  var incoming=new Set(edges.map(function(pair){return pair[1]}));
+  var starts=Array.from(allowed).filter(function(id){return !incoming.has(id)});
+  var seen=new Set(starts),queue=starts.slice();
+  while(queue.length){
+   var id=queue.shift();
+   edges.filter(function(pair){return pair[0]===id}).forEach(function(pair){
+    if(!seen.has(pair[1])){seen.add(pair[1]);queue.push(pair[1])}
+   });
+  }
+  return Array.from(seen);
+ }
+ var before=accessibleTransformations(beforeScenario);
+ var after=accessibleTransformations(afterScenario);
  currentScenario=scenarios.find(function(s){return s.id===currentScenarioId})||currentScenario;
- var currentReachable=transitionsInEnumeratedTrajectories(currentScenario.id);
- var current=transitions.filter(function(t){return currentReachable.has(t.id)&&mappedByTransition.has(t.id)}).map(function(t){return mappedByTransition.get(t.id)});
+ var current=accessibleTransformations(currentScenario);
  function relationsWithin(set){return relations.filter(function(pair){return set.indexOf(pair[0])>=0&&set.indexOf(pair[1])>=0})}
  return {schema:"tgcv-integrated-illustrative-demo-001",provenance:provenance,mapping_rule:mappingRule,accessibility_basis:"mapped system transitions occurring in enumerated trajectories for each scenario",system_model_id:systemModel.model_id,mappings:mappings,transformations:transformations,relations:relations,before:{scenario_id:beforeScenario.id,transformations:before,relations:relationsWithin(before)},interaction:{id:"m",description:hasComparison?"cambiar del escenario block_ac a baseline":"sin comparación antes/después: se representa el escenario actual",rule_version:"1",enable_transformations:after.filter(function(x){return before.indexOf(x)<0})},after:{scenario_id:afterScenario.id,transformations:after,relations:relationsWithin(after)},current:{scenario_id:currentScenario.id,transformations:current,relations:relationsWithin(current)}};
 }
