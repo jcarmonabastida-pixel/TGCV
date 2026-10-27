@@ -961,6 +961,7 @@ const assert = require("node:assert/strict");
         }))
       };
     });
+    await page.locator("#correspondence-review-section details > summary").click();
     await page.locator("#tgcv-target-catalogue").fill(JSON.stringify(fc7Catalogue, null, 2));
     await page.locator("#derive-tgcv-correspondences").click();
     await page.waitForFunction(() => {
