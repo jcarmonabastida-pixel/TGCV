@@ -14,6 +14,8 @@ const assert = require("node:assert/strict");
     "TGCV transformation trajectory enumerator must be present");
   assert.match(sourceHtml, /function refreshTgcvSequenceOptions\(\)[\s\S]*?enumerateTgcvTrajectories\(lastModel,sid\)/,
     "Execution selector must obtain candidates from the TGCV enumerator");
+  assert.match(sourceHtml, /\$\("trajectory-next"\)\.addEventListener\("click",function\(\)\{var result=enumerateTgcvTrajectories\(lastModel,\$\("trajectory-scenario"\)\.value\|\|"baseline"\),paths=result\.paths\|\|\[\]/,
+    "Trajectory navigation must use the TGCV transformation graph, not system-state trajectory counts");
   assert.match(sourceHtml, /No se sustituirán por trayectorias del grafo del sistema/,
     "The UI must explicitly prevent fallback to system-state trajectories");
   assert.match(sourceHtml, /outcomeRecord\.transformation_source="TGCV_TRANSFORMATION_GRAPH"/,
