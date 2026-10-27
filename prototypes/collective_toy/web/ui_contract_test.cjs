@@ -1017,6 +1017,25 @@ const assert = require("node:assert/strict");
     assert.equal(exportedPackageDigest, fc4Package.package_sha256,
       "FC-6: complete exported package digest must recompute from the exported envelope");
 
+    // Final end-to-end acceptance: import the completed ASSESSMENT package,
+    // including outcome and contextual value, and independently replay it.
+    await page.locator("#package-file").setInputFiles({
+      name: "full-chain-assessment-replay.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(fc4Package))
+    });
+    await page.locator("#assess-package").click();
+    await page.waitForFunction(() => {
+      const state = document.querySelector("#package-assessment")?.dataset.state || "";
+      return ["replay-verified", "rejected", "inspect-only/replay-unavailable"].includes(state);
+    }, { timeout: 10000 });
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
+      "FC-6: the final assessed Full Chain package must pass import and independent replay");
+    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+      "FC-6: final assessed package import must confirm independently matching replay");
+    assert.equal(fc4Package.package_stage, "ASSESSMENT",
+      "FC-6: final import/replay check must use the complete assessed package, not an exploration-only export");
+
     assert.ok(["value", "unit", "timing", "uncertainty_status", "provenance"].every(key =>
       typeof fc4Package.outcome_record[key] === "string" && fc4Package.outcome_record[key].trim().length > 0),
       "FC-6: artifact inventory must retain the complete non-empty outcome provenance fields");
