@@ -3891,6 +3891,41 @@ const assert = require("node:assert/strict");
     assert.equal(invalidCandidateSnapshot.status, "ABSTAIN",
       "TGCV adapter: unlinked model provenance must cause explicit abstention");
     assert.equal(invalidCandidateSnapshot.reason, "MODEL_OR_TGCV_RESULT_MISSING");
+    const heuristicRanking = await uxPage.evaluate(async snapshot => window.rankTgcvCandidates(snapshot, {
+      contract_version: "tgcv-heuristic-config-001",
+      criteria: [{ id: "prefer-ac", type: "prefer_transformation", transformation_id: "tau_ux_ac" }],
+      constraints: []
+    }), candidateSnapshot);
+    assert.equal(heuristicRanking.status, "RANKED");
+    assert.equal(heuristicRanking.claim, "HEURISTIC_RANKING_NOT_PREDICTION");
+    assert.deepEqual(heuristicRanking.ranked_candidate_ids, ["tgcv-candidate-0002", "tgcv-candidate-0001"],
+      "TGCV selector: explicit transformation preference must change order deterministically");
+    const constrainedRanking = await uxPage.evaluate(async snapshot => window.rankTgcvCandidates(snapshot, {
+      contract_version: "tgcv-heuristic-config-001",
+      criteria: [{ id: "shorter", type: "minimize_steps" }],
+      constraints: [{ id: "must-use-ac", type: "require_transformation", transformation_id: "tau_ux_ac" }]
+    }), candidateSnapshot);
+    assert.equal(constrainedRanking.ranked_candidate_ids.length, 1);
+    assert.equal(constrainedRanking.results.find(result => result.candidate_id === "tgcv-candidate-0001").eligibility, "INELIGIBLE",
+      "TGCV selector: hard constraints must not be compensated by preference criteria");
+    const tiedRanking = await uxPage.evaluate(async snapshot => window.rankTgcvCandidates(snapshot, {
+      contract_version: "tgcv-heuristic-config-001",
+      criteria: [{ id: "shorter", type: "minimize_steps" }],
+      constraints: []
+    }), candidateSnapshot);
+    assert.deepEqual(tiedRanking.ties, [{ rank: 1, candidate_ids: ["tgcv-candidate-0001", "tgcv-candidate-0002"] }],
+      "TGCV selector: substantive ties must be reported rather than presented as a winner");
+    const tamperedRanking = await uxPage.evaluate(async snapshot => {
+      const changed = JSON.parse(JSON.stringify(snapshot));
+      changed.candidates[0].transformation_ids[0] = "forged-transformation";
+      return window.rankTgcvCandidates(changed, {
+        contract_version: "tgcv-heuristic-config-001",
+        criteria: [{ id: "shorter", type: "minimize_steps" }], constraints: []
+      });
+    }, candidateSnapshot);
+    assert.equal(tamperedRanking.status, "ABSTAIN");
+    assert.equal(tamperedRanking.reason, "INVALID_INPUT_PROVENANCE",
+      "TGCV selector: changed candidate data with stale snapshot digest must be rejected");
     assert.equal(await uxPage.locator("#trajectory-card svg").count(), 1,
       "UX: each trajectory must have a visual state/transition graph");
     assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → tau_ux_ab → B → tau_ux_bd → D/);
