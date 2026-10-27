@@ -3980,6 +3980,13 @@ const assert = require("node:assert/strict");
     assert.match(rankedExportPackage.package_sha256 || "", /^[a-f0-9]{64}$/i,
       "TGCV selector E2E: exported assessed package must carry its package digest");
 
+    // Re-import that exact exported package through the public UI and require replay verification.
+    await uxPage.locator("#package-file").setInputFiles(await rankedExportDownload.path());
+    await uxPage.getByRole("button", { name: "Validar paquete importado" }).click();
+    await uxPage.locator('#package-assessment[data-state="replay-verified"]').waitFor();
+    assert.match(await uxPage.locator("#package-assessment").innerText(), /replay|reproduc/i,
+      "TGCV selector E2E: exported assessed package must be accepted for replay in the import flow");
+
     await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
     await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
     const firstUxExecutionId = firstUxTrace.execution_id;
