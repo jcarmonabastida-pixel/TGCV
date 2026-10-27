@@ -946,46 +946,41 @@ const assert = require("node:assert/strict");
 
     // FC-7 uses the real correspondence review/apply flow and its own exported package.
     // Build a versioned catalogue from actual source transitions; never fabricate mappings in JSON.
-    const fc7Fixture = await page.evaluate(() => {
+    // FC-7 is a correspondence contract, not a second scenario-execution test.
+    // Use the already-executed model and derive a catalogue only for transitions not
+    // covered by declared mappings; do not replace the model or trigger another run.
+    const fc7Catalogue = await page.evaluate(() => {
       const model = window.currentModelForEditor();
       if (!model || !Array.isArray(model.transitions)) {
-        throw new Error("FC-7 requires a valid source model with transitions");
+        throw new Error("FC-7 requires the current valid source model");
       }
-      // The integrated demo can already contain declared mappings. For an isolated
-      // derived-correspondence fixture, remove only that declared layer and choose
-      // two real transitions with unique state boundaries.
-      const boundaryCounts = new Map();
-      for (const t of model.transitions) {
+      const declared = model.tgcv_mapping && Array.isArray(model.tgcv_mapping.mappings)
+        ? model.tgcv_mapping.mappings : [];
+      const declaredTransitionIds = new Set(declared.map(m => m.system_transition_id));
+      const declaredTargetIds = new Set(declared.map(m => m.tgcv_transformation_id));
+      const available = model.transitions.filter(t => !declaredTransitionIds.has(t.id));
+      const unique = [];
+      const seen = new Set();
+      for (const t of available) {
         const key = JSON.stringify([t.source, t.target]);
-        boundaryCounts.set(key, (boundaryCounts.get(key) || 0) + 1);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        unique.push(t);
       }
-      const transitions = model.transitions.filter(t =>
-        boundaryCounts.get(JSON.stringify([t.source, t.target])) === 1
-      ).slice(0, 2);
-      if (transitions.length < 2) {
-        throw new Error("FC-7 fixture requires two source transitions with unique state boundaries");
+      const eligible = unique.filter(t => !declaredTargetIds.has("FC7_T_" + t.id));
+      if (eligible.length < 2) {
+        throw new Error("FC-7 requires at least two unmapped transitions with unique state boundaries");
       }
-      const fixtureModel = structuredClone(model);
-      fixtureModel.transitions = transitions;
-      delete fixtureModel.tgcv_mapping;
-      const catalogue = {
+      return {
         schema: "tgcv-target-catalogue-001",
         version: "fc7-semantic-fixture-v1",
-        transformations: transitions.map((t, i) => ({
+        transformations: eligible.slice(0, 2).map((t, i) => ({
           id: "FC7_T_" + String(i + 1).padStart(2, "0"),
           source_state: t.source,
           target_state: t.target
         }))
       };
-      return { model: fixtureModel, catalogue };
     });
-    await page.locator("#model").fill(JSON.stringify(fc7Fixture.model, null, 2));
-    await page.locator("#run").click();
-    await page.waitForFunction(() => {
-      const el = document.querySelector("#status");
-      return !!el && /completad|resultado|escenario/i.test(el.textContent || "");
-    }, null, { timeout: 10000 });
-    const fc7Catalogue = fc7Fixture.catalogue;
     await page.locator("#correspondence-review-section details > summary").click();
     await page.locator("#tgcv-target-catalogue").fill(JSON.stringify(fc7Catalogue, null, 2));
     await page.locator("#derive-tgcv-correspondences").click();
