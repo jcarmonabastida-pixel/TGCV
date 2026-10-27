@@ -174,7 +174,7 @@ async function createTgcvCandidateSnapshot(model,scenarioId){
  if(!enumerated||!Array.isArray(enumerated.paths)||enumerated.source!=="tgcv-transformations")return abstain("TGCV_CANDIDATE_SOURCE_INVALID");
  var mappingByTransformation=new Map(),transitionById=new Map((model.transitions||[]).map(function(t){return[t.id,t]}));
  (window.lastTgcvDemoResult.mappings||[]).forEach(function(mapping){if(mappingByTransformation.has(mapping.tgcv_transformation_id))mappingByTransformation.set(mapping.tgcv_transformation_id,null);else mappingByTransformation.set(mapping.tgcv_transformation_id,mapping)});
- var candidates=enumerated.paths.map(function(path,index){
+ var candidates;try{candidates=enumerated.paths.map(function(path,index){
   var steps=path.map(function(step,stepIndex){
    var mapping=mappingByTransformation.get(step.transformation),transition=mapping&&transitionById.get(mapping.system_transition_id);
    if(!transition||transition.id!==step.system_transition||transition.source!==step.source_state||transition.target!==step.target_state)throw new Error("TGCV candidate mapping provenance mismatch");
@@ -182,7 +182,7 @@ async function createTgcvCandidateSnapshot(model,scenarioId){
    return {step_index:stepIndex,transformation_id:step.transformation,system_transition_id:transition.id,source_state:step.source_state,target_state:step.target_state,condition:transition.condition||null,condition_status:transition.condition?(evaluation&&evaluation.condition===transition.condition?evaluation.result:"NOT_EVALUABLE"):"NOT_REQUIRED",prerequisites:((model.relations||[]).filter(function(relation){return relation.transition_id===transition.id}).map(function(relation){return relation.requires_transition_id})).sort(compareCodePoints)};
   });
   return {candidate_id:"tgcv-candidate-"+String(index+1).padStart(4,"0"),transformation_ids:steps.map(function(step){return step.transformation_id}),steps:steps};
- });
+ });}catch(error){return abstain("CANDIDATE_MAPPING_PROVENANCE_MISMATCH")}
  var payload={contract_version:"tgcv-candidate-snapshot-001",status:"READY",source:"tgcv-transformations",model_id:model.model_id,scenario_id:scenarioId,model_sha256:await hash(model,"tgcv_candidate_model"),tgcv_result_sha256:await hash(window.lastTgcvDemoResult,"tgcv_candidate_source"),mapping_rule:window.lastTgcvDemoResult.mapping_rule||null,exploration:{max_depth:model.exploration&&Number.isInteger(model.exploration.max_depth)?model.exploration.max_depth:100,max_trajectories:model.exploration&&Number.isInteger(model.exploration.max_trajectories)?model.exploration.max_trajectories:1000,truncated:!!enumerated.truncated},condition_evaluations:JSON.parse(canonical(scenario.condition_evaluations||{})),candidates:candidates};
  payload.snapshot_sha256=await hash(payload,"tgcv_candidate_snapshot");
  return freezeDeep(payload);
