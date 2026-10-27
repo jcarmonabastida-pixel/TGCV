@@ -16,7 +16,7 @@ const assert = require("node:assert/strict");
     "Execution selector must obtain candidates from the TGCV enumerator");
   assert.match(sourceHtml, /No se sustituirán por trayectorias del grafo del sistema/,
     "The UI must explicitly prevent fallback to system-state trajectories");
-  assert.match(sourceHtml, /condition_not_evaluated_true/,
+  assert.match(sourceHtml, /outcomeRecord\\.transformation_source="TGCV_TRANSFORMATION_GRAPH"/,\n    "Manual outcome recording must preserve TGCV transformation provenance");\n  assert.match(sourceHtml, /Un resultado de ejecución TGCV debe conservar su procedencia y los identificadores de transformación/,\n    "Imported TGCV packages must fail closed when outcome transformation identity is missing");\n  assert.match(sourceHtml, /condition_not_evaluated_true/,
     "Execution must fail closed when a transition condition has no current TRUE evaluation");
   assert.match(sourceHtml, /condición de la transición no tiene una evaluación TRUE vigente/,
     "Blocked execution must explain a stale or missing condition evaluation");
