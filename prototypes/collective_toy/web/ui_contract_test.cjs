@@ -698,6 +698,21 @@ const assert = require("node:assert/strict");
     }
     assert.match(sourceHtml, /temporal_prerequisite_graph v1/);
     const temporalModel = structuredClone(await page.locator("#model").inputValue().then(JSON.parse));
+    temporalModel.tgcv_mapping = {
+      schema: "tgcv-explicit-mapping-001",
+      mapping_rule: "gt05-diamond-system-to-tgcv-v1",
+      provenance: "synthetic-test-fixture",
+      mappings: [
+        { system_transition_id: "t_ab", tgcv_transformation_id: "tau_t_ab" },
+        { system_transition_id: "t_ac", tgcv_transformation_id: "tau_t_ac" },
+        { system_transition_id: "t_bd", tgcv_transformation_id: "tau_t_bd" },
+        { system_transition_id: "t_cd", tgcv_transformation_id: "tau_t_cd" }
+      ],
+      relations: [
+        ["tau_t_ab", "tau_t_bd"],
+        ["tau_t_ac", "tau_t_cd"]
+      ]
+    };
     temporalModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
     temporalModel.relations = [{
       id: "r_temporal_1",
