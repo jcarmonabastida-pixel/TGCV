@@ -8,6 +8,23 @@ const assert = require("node:assert/strict");
   const sourceHtml = fs.readFileSync(htmlPath, "utf8");
   assert.ok(fs.existsSync(htmlPath), "Collective Toy UI must exist");
 
+  // The execution flow must enumerate paths from the TGCV transformation graph,
+  // not from the system-state trajectory list.
+  assert.match(sourceHtml, /function enumerateTgcvTrajectories\(model,scenarioId\)/,
+    "TGCV transformation trajectory enumerator must be present");
+  assert.match(sourceHtml, /function refreshTgcvSequenceOptions\(\)[\s\S]*?enumerateTgcvTrajectories\(lastModel,sid\)/,
+    "Execution selector must obtain candidates from the TGCV enumerator");
+  assert.match(sourceHtml, /No se sustituirán por trayectorias del grafo del sistema/,
+    "The UI must explicitly prevent fallback to system-state trajectories");
+  assert.match(sourceHtml, /condition_not_evaluated_true/,
+    "Execution must fail closed when a transition condition has no current TRUE evaluation");
+  assert.match(sourceHtml, /condición de la transición no tiene una evaluación TRUE vigente/,
+    "Blocked execution must explain a stale or missing condition evaluation");
+  assert.match(sourceHtml, /transición está deshabilitada en este escenario/,
+    "Blocked execution must distinguish scenario-disabled transitions from temporal prerequisites");
+  assert.match(sourceHtml, /transición no parte del estado actual/,
+    "Blocked execution must distinguish source-state mismatch from temporal prerequisites");
+
   const browser = await chromium.launch({ headless: true });
   try {
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
@@ -398,7 +415,11 @@ const assert = require("node:assert/strict");
       buffer: Buffer.from(exportedText)
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i);
+    await page.waitForFunction(() => { const el = document.querySelector("#package-assessment"); return !!el && !["idle","validating"].includes(el.dataset.state); }, null, { timeout: 10000 });
+    const packageAssessmentState = await page.locator("#package-assessment").getAttribute("data-state");
+    const packageAssessmentText = await page.locator("#package-assessment").innerText();
+    assert.equal(packageAssessmentState, "replay-verified", "FC-3 imported package assessment failed: " + packageAssessmentState + " — " + packageAssessmentText);
+    assert.match(packageAssessmentText, /reproducción independiente coincidente/i);
 
     // A structurally valid, self-consistent package from an unknown engine is inspect-only.
     const unknownEnginePackage = await page.evaluate(async (pkg) => {
@@ -683,6 +704,21 @@ const assert = require("node:assert/strict");
     }
     assert.match(sourceHtml, /temporal_prerequisite_graph v1/);
     const temporalModel = structuredClone(await page.locator("#model").inputValue().then(JSON.parse));
+    temporalModel.tgcv_mapping = {
+      schema: "tgcv-explicit-mapping-001",
+      mapping_rule: "gt05-diamond-system-to-tgcv-v1",
+      provenance: "synthetic-test-fixture",
+      mappings: [
+        { system_transition_id: "t_ab", tgcv_transformation_id: "tau_t_ab" },
+        { system_transition_id: "t_ac", tgcv_transformation_id: "tau_t_ac" },
+        { system_transition_id: "t_bd", tgcv_transformation_id: "tau_t_bd" },
+        { system_transition_id: "t_cd", tgcv_transformation_id: "tau_t_cd" }
+      ],
+      relations: [
+        ["tau_t_ab", "tau_t_bd"],
+        ["tau_t_ac", "tau_t_cd"]
+      ]
+    };
     temporalModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
     temporalModel.relations = [{
       id: "r_temporal_1",
@@ -749,16 +785,19 @@ const assert = require("node:assert/strict");
       "FC-2: execution trace must record ordered concrete steps");
     assert.doesNotMatch(await page.locator("#sequence-trace").innerText(), /Traza SHA-256/i,
       "FC-3: keep trace digests out of the primary view; audit data remains in the exported package");
-    // Submit a validly connected but temporally invalid sequence: t_ac reaches C, then t_cd lacks t_ab.
-    await page.locator("#sequence-input").fill("t_ac, t_cd");
-    assert.equal(await page.locator("#sequence-input").inputValue(), "t_ac, t_cd",
+    // Submit TGCV transformations for a validly connected but temporally invalid route: tau_t_ac reaches C, then tau_t_cd lacks tau_t_ab.
+    await page.locator("#sequence-input").fill("tau_t_ac, tau_t_cd");
+    assert.equal(await page.locator("#sequence-input").inputValue(), "tau_t_ac, tau_t_cd",
       "FC-3: manual attempted sequence must be present before execution");
     await page.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
     await page.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 3000 });
     await page.locator("#sequence-trace").waitFor();
     assert.equal(await page.locator("#sequence-trace").getAttribute("data-state"), "blocked-trace-recorded",
-      "FC-3: blocked attempted sequence must be retained as an auditable trace");
+      "FC-3: blocked attempted sequence must be retained as an auditable trace; observed: " + await page.locator("#sequence-trace").innerText());
     const blockedTraceText = await page.locator("#sequence-trace").innerText();
+    const blockedTrace = await page.locator("#sequence-trace").evaluate(el => el._trace);
+    assert.equal(blockedTrace.trajectory_source, "TGCV_TRANSFORMATION_GRAPH", "FC-3: blocked execution must retain TGCV graph provenance");
+    assert.deepEqual(blockedTrace.tgcv_trajectory.transformation_ids, ["tau_t_ac", "tau_t_cd"], "FC-3: blocked execution must preserve the attempted TGCV transformations in order");
     assert.match(blockedTraceText, /faltaba un prerrequisito/i,
       "FC-3: the primary view must explain why the attempted route was blocked");
     assert.doesNotMatch(blockedTraceText, /t_cd|t_ab|temporal_prerequisite_not_satisfied|Traza SHA-256/i,
@@ -800,8 +839,14 @@ const assert = require("node:assert/strict");
       buffer: Buffer.from(JSON.stringify(blockedPackage))
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
-    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+    await page.waitForFunction(() => {
+      const state = document.querySelector("#package-assessment")?.dataset.state;
+      return !!state && !["idle", "validating"].includes(state);
+    }, null, { timeout: 10000 });
+    const blockedPackageAssessment = await page.locator("#package-assessment").innerText();
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
+      "FC-5 blocked package import failed: " + blockedPackageAssessment);
+    assert.match(blockedPackageAssessment, /reproducción independiente coincidente/i,
       "FC-5: a coherent BLOCKED trace must remain importable and inspectable");
 
     // A BLOCKED trace must never be accepted as the evidence for an explicit completed outcome.
@@ -3399,7 +3444,16 @@ const assert = require("node:assert/strict");
       relations: [],
       rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [{ id: "baseline", disabled_transitions: [] }],
-      exploration: { max_depth: 2, max_trajectories: 10 }
+      exploration: { max_depth: 2, max_trajectories: 10 },
+      // GT-05 must declare the system↔TGCV correspondence explicitly.
+      // Arbitrary models are intentionally not assigned invented transformations.
+      tgcv_mapping: {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "gt05-explicit-fixture-mapping-v1",
+        provenance: "synthetic-test-fixture",
+        mappings: [{ system_transition_id: "t_ab", tgcv_transformation_id: "tau_t_ab" }],
+        relations: []
+      }
     };
     const jsonAdvancedPanel = page.locator("details").filter({ has: page.getByText("JSON avanzado (editable)") });
     if (!(await jsonAdvancedPanel.evaluate(element => element.open))) await jsonAdvancedPanel.locator("summary").click();
@@ -3467,6 +3521,23 @@ const assert = require("node:assert/strict");
       { id: "t_ax", source: "A", target: "X" },
       { id: "t_xd", source: "X", target: "D" }
     ];
+    temporalSuccessModel.tgcv_mapping = {
+      schema: "tgcv-explicit-mapping-001",
+      mapping_rule: "gt05-temporal-system-to-tgcv-v1",
+      provenance: "synthetic-test-fixture",
+      mappings: [
+        { system_transition_id: "t_ab", tgcv_transformation_id: "tau_t_ab" },
+        { system_transition_id: "t_bc", tgcv_transformation_id: "tau_t_bc" },
+        { system_transition_id: "t_cd", tgcv_transformation_id: "tau_t_cd" },
+        { system_transition_id: "t_ax", tgcv_transformation_id: "tau_t_ax" },
+        { system_transition_id: "t_xd", tgcv_transformation_id: "tau_t_xd" }
+      ],
+      relations: [
+        ["tau_t_ab", "tau_t_bc"],
+        ["tau_t_bc", "tau_t_cd"],
+        ["tau_t_ax", "tau_t_xd"]
+      ]
+    };
     temporalSuccessModel.rule_profile = { type: "temporal_prerequisite_graph", version: "1" };
     temporalSuccessModel.relations = [{
       id: "r_temporal_success",
@@ -3491,7 +3562,7 @@ const assert = require("node:assert/strict");
     assert.ok(temporalResult.result.scenario_results.baseline.trajectories.some(path =>
       JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(["t_ab", "t_bc", "t_cd"])),
       "GT-05 temporal: candidate trajectory must include prerequisite t_ab before conditioned t_cd");
-    await temporalPage.locator("#sequence-input").fill("t_ab, t_bc, t_cd");
+    await temporalPage.locator("#sequence-input").fill("tau_t_ab, tau_t_bc, tau_t_cd");
     await temporalPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
     await temporalPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified" || document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 5000 });
     assert.equal(await temporalPage.locator("#sequence-trace").getAttribute("data-state"), "replay-verified",
@@ -3499,6 +3570,9 @@ const assert = require("node:assert/strict");
     const temporalTrace = await temporalPage.locator("#sequence-trace").evaluate(el => el._trace);
     assert.deepEqual(temporalTrace.submitted_transition_ids, ["t_ab", "t_bc", "t_cd"],
       "GT-05 temporal: completed trace must preserve prerequisite-before-conditioned order");
+    assert.equal(temporalTrace.trajectory_source, "TGCV_TRANSFORMATION_GRAPH");
+    assert.deepEqual(temporalTrace.tgcv_trajectory.transformation_ids, ["tau_t_ab", "tau_t_bc", "tau_t_cd"],
+      "GT-05 temporal: execution must retain the ordered TGCV transformations alongside system transition IDs");
     assert.equal(temporalTrace.status, "COMPLETED");
     await temporalPage.locator("#outcome-value").fill("synthetic temporal path completed");
     await temporalPage.locator("#outcome-unit").fill("qualitative");
@@ -3716,6 +3790,21 @@ const assert = require("node:assert/strict");
         { id: "ux_ac", source: "A", target: "C" },
         { id: "ux_cd", source: "C", target: "D" }
       ],
+      tgcv_mapping: {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "ux-explicit-diamond-mapping-v1",
+        provenance: "synthetic-test-fixture",
+        mappings: [
+          { system_transition_id: "ux_ab", tgcv_transformation_id: "tau_ux_ab" },
+          { system_transition_id: "ux_bd", tgcv_transformation_id: "tau_ux_bd" },
+          { system_transition_id: "ux_ac", tgcv_transformation_id: "tau_ux_ac" },
+          { system_transition_id: "ux_cd", tgcv_transformation_id: "tau_ux_cd" }
+        ],
+        relations: [
+          ["tau_ux_ab", "tau_ux_bd"],
+          ["tau_ux_ac", "tau_ux_cd"]
+        ]
+      },
       relations: [],
       rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [
@@ -3733,11 +3822,11 @@ const assert = require("node:assert/strict");
       "UX: the carousel should enumerate and position the first accessible trajectory");
     assert.equal(await uxPage.locator("#trajectory-card svg").count(), 1,
       "UX: each trajectory must have a visual state/transition graph");
-    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → B → D/);
-    assert.match(await uxPage.locator("#trajectory-card").innerText(), /no necesariamente ejecutada/i);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → tau_ux_ab → B → tau_ux_bd → D/);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /Candidata · no ejecutada/i);
     await uxPage.getByRole("button", { name: "Trayectoria siguiente" }).click();
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "2 / 2");
-    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → C → D/);
+    assert.match(await uxPage.locator("#trajectory-card").innerText(), /A → tau_ux_ac → C → tau_ux_cd → D/);
     await uxPage.getByRole("button", { name: "Trayectoria anterior" }).click();
     assert.equal(await uxPage.locator("#trajectory-position").innerText(), "1 / 2");
     await uxPage.getByRole("button", { name: "Seleccionar para ejecutar" }).click();
@@ -3863,6 +3952,16 @@ const assert = require("node:assert/strict");
         { id: "cond_ab", source: "A", target: "B", condition: "permiso concedido" },
         { id: "plain_bc", source: "B", target: "C" }
       ],
+      tgcv_mapping: {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "condition-evaluator-explicit-mapping-v1",
+        provenance: "synthetic-test-fixture",
+        mappings: [
+          { system_transition_id: "cond_ab", tgcv_transformation_id: "tau_cond_ab" },
+          { system_transition_id: "plain_bc", tgcv_transformation_id: "tau_plain_bc" }
+        ],
+        relations: [["tau_cond_ab", "tau_plain_bc"]]
+      },
       relations: [],
       rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [{ id: "baseline", disabled_transitions: [] }],
@@ -3873,21 +3972,21 @@ const assert = require("node:assert/strict");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").inputValue(), "UNKNOWN");
     assert.match(await page.locator("#graph").textContent(), /NO EVALUADA: permiso concedido/i);
-    assert.equal(await page.locator("#trajectory-position").innerText(), "1 / 1",
-      "UNKNOWN must fail closed and must not traverse the conditioned transition");
+    assert.equal(await page.locator("#trajectory-position").innerText(), "0 / 0",
+      "UNKNOWN must fail closed and must not expose a TGCV trajectory through the conditioned transformation");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("TRUE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
     assert.deepEqual(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab,
       { condition: "permiso concedido", result: "TRUE" });
-    assert.match(await page.locator("#trajectory-card").innerText(), /A → B → C/,
-      "TRUE must enable the transition and its downstream trajectory");
+    assert.match(await page.locator("#trajectory-card").innerText(), /A → tau_cond_ab → B → tau_plain_bc → C/,
+      "TRUE must enable the TGCV transformation and its downstream trajectory");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
-    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /obsoleto|desactualizado|no corresponde|no se ha actualizado|no puede|aviso/i,
-      "A custom model without an explicit TGCV mapping must be marked stale rather than given invented transformations");
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /correspondencias vigentes/i,
+      "The current TGCV trajectory must be derived only from the explicitly declared mapping");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("FALSE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
-    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/,
-      "FALSE must block the conditioned transition");
+    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /tau_cond_ab.*tau_plain_bc/,
+      "FALSE must block the conditioned TGCV transformation and its downstream trajectory");
     assert.match(await page.locator("#graph").textContent(), /FALSA: permiso concedido/i);
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("TRUE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
@@ -3900,7 +3999,7 @@ const assert = require("node:assert/strict");
       "Changing the condition text must reject the stale evaluation with an explicit validation error");
     assert.equal(await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").inputValue(), "UNKNOWN",
       "The stale TRUE value must not remain active in the evaluator UI after rejection");
-    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /A → B → C/);
+    assert.doesNotMatch(await page.locator("#trajectory-card").innerText(), /tau_cond_ab.*tau_plain_bc/);
     assert.equal(JSON.parse(await page.locator("#model").inputValue()).scenarios[0].condition_evaluations.cond_ab.condition,
       "permiso concedido", "The stale provenance remains in input but is rejected, not silently applied");
 
