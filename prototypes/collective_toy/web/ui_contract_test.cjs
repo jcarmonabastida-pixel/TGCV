@@ -3420,7 +3420,16 @@ const assert = require("node:assert/strict");
       relations: [],
       rule_profile: { type: "temporal_prerequisite_graph", version: "1" },
       scenarios: [{ id: "baseline", disabled_transitions: [] }],
-      exploration: { max_depth: 2, max_trajectories: 10 }
+      exploration: { max_depth: 2, max_trajectories: 10 },
+      // GT-05 must declare the system↔TGCV correspondence explicitly.
+      // Arbitrary models are intentionally not assigned invented transformations.
+      tgcv_mapping: {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "gt05-explicit-fixture-mapping-v1",
+        provenance: "synthetic-test-fixture",
+        mappings: [{ system_transition_id: "t_ab", tgcv_transformation_id: "tau_t_ab" }],
+        relations: []
+      }
     };
     const jsonAdvancedPanel = page.locator("details").filter({ has: page.getByText("JSON avanzado (editable)") });
     if (!(await jsonAdvancedPanel.evaluate(element => element.open))) await jsonAdvancedPanel.locator("summary").click();
