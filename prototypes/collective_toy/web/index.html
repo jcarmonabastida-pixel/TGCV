@@ -1097,9 +1097,10 @@ function tgcvDemoFixture(systemModel,systemResult,currentScenarioId){
  // only to validate each transformation's unique, current execution mapping.
  function accessibleTransformations(scenario){
   var allowed=new Set(transformationsAllowedByScenario(scenario));
+  // Roots belong to the declared TGCV graph. A disabled predecessor must not
+  // turn its downstream transformation into a new root for this scenario.
   var edges=relations.filter(function(pair){return allowed.has(pair[0])&&allowed.has(pair[1])});
-  if(!edges.length)return Array.from(allowed);
-  var incoming=new Set(edges.map(function(pair){return pair[1]}));
+  var incoming=new Set(relations.map(function(pair){return pair[1]}));
   var starts=Array.from(allowed).filter(function(id){return !incoming.has(id)});
   var seen=new Set(starts),queue=starts.slice();
   while(queue.length){
