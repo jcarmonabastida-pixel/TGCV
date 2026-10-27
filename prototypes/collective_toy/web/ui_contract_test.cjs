@@ -772,7 +772,7 @@ const assert = require("node:assert/strict");
     await page.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 3000 });
     await page.locator("#sequence-trace").waitFor();
     assert.equal(await page.locator("#sequence-trace").getAttribute("data-state"), "blocked-trace-recorded",
-      "FC-3: blocked attempted sequence must be retained as an auditable trace");
+      "FC-3: blocked attempted sequence must be retained as an auditable trace; observed: " + await page.locator("#sequence-trace").innerText());
     const blockedTraceText = await page.locator("#sequence-trace").innerText();
     const blockedTrace = await page.locator("#sequence-trace").evaluate(el => el._trace);
     assert.equal(blockedTrace.trajectory_source, "TGCV_TRANSFORMATION_GRAPH", "FC-3: blocked execution must retain TGCV graph provenance");
