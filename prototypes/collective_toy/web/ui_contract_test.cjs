@@ -981,8 +981,10 @@ const assert = require("node:assert/strict");
       const el = document.querySelector("#effective-correspondence-status");
       return !!el && !["idle", "applying"].includes(el.dataset.state);
     }, null, { timeout: 10000 });
-    assert.equal(await page.locator("#effective-correspondence-status").getAttribute("data-state"), "applied",
-      "FC-7: correspondences must be materialized through the real apply flow");
+    assert.equal(await page.locator("#effective-correspondence-status").getAttribute("data-state"), "replay-verified",
+      "FC-7: correspondences must be validated and materialized through the real apply flow");
+    assert.match(await page.locator("#effective-correspondence-status").textContent(), /conflictos: 0/,
+      "FC-7: effective correspondences must be applied without unresolved conflicts");
     const fc7ExportPromise = page.waitForEvent("download");
     await page.locator("#export").click();
     const fc7Download = await fc7ExportPromise;
