@@ -950,6 +950,10 @@ const assert = require("node:assert/strict");
     // Keep this test about correspondence semantics: do not infer eligible transitions
     // from mutable UI state and do not execute the scenarios a second time.
     const fc7Model = structuredClone(gt05ExplorationPackage.input);
+    // The demo intentionally synthesizes illustrative mappings for toy-diamond-001.
+    // Give this isolated semantic fixture its own identity so it exercises only the
+    // reviewed effective-correspondence layer, not the demo-only implicit mapping.
+    fc7Model.model_id = "fc7-diamond-semantic-001";
     delete fc7Model.tgcv_mapping;
     await page.locator("#model").fill(JSON.stringify(fc7Model, null, 2));
     await page.locator("#run").click();
