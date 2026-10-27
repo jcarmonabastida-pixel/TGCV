@@ -815,8 +815,14 @@ const assert = require("node:assert/strict");
       buffer: Buffer.from(JSON.stringify(blockedPackage))
     });
     await page.getByRole("button", { name: "Validar paquete importado" }).click();
-    await page.locator("#package-assessment[data-state=" + '"replay-verified"' + "]").waitFor();
-    assert.match(await page.locator("#package-assessment").innerText(), /reproducción independiente coincidente/i,
+    await page.waitForFunction(() => {
+      const state = document.querySelector("#package-assessment")?.dataset.state;
+      return !!state && !["idle", "validating"].includes(state);
+    }, null, { timeout: 10000 });
+    const blockedPackageAssessment = await page.locator("#package-assessment").innerText();
+    assert.equal(await page.locator("#package-assessment").getAttribute("data-state"), "replay-verified",
+      "FC-5 blocked package import failed: " + blockedPackageAssessment);
+    assert.match(blockedPackageAssessment, /reproducción independiente coincidente/i,
       "FC-5: a coherent BLOCKED trace must remain importable and inspectable");
 
     // A BLOCKED trace must never be accepted as the evidence for an explicit completed outcome.
