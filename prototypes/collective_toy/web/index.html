@@ -231,13 +231,14 @@ async function assessImportedBrowserPackage(pkg){
  assert(pkg.result.validation==="PASS","El resultado no declara validation=PASS.");
   if(pkg.outcome_record!==undefined){
    var outcome=pkg.outcome_record;
-   assert(outcome&&typeof outcome==="object"&&!Array.isArray(outcome),"outcome_record debe ser un objeto."); assert(Object.keys(outcome).every(function(k){return ["outcome_schema","outcome_id","execution_id","execution_trace_sha256","model_id","scenario_id","source_kind","value","unit","timing","uncertainty_status","provenance"].includes(k)}),"El resultado contiene campos desconocidos.");
+   assert(outcome&&typeof outcome==="object"&&!Array.isArray(outcome),"outcome_record debe ser un objeto."); assert(Object.keys(outcome).every(function(k){return ["outcome_schema","outcome_id","execution_id","execution_trace_sha256","model_id","scenario_id","source_kind","value","unit","timing","uncertainty_status","provenance","executed_transformation_ids","transformation_source"].includes(k)}),"El resultado contiene campos desconocidos.");
    assert(outcome.outcome_schema==="collective-toy-outcome-001","Esquema de resultado desconocido o no compatible.");
    assert(pkg.concrete_execution_trace&&pkg.concrete_execution_trace.status==="COMPLETED"&&outcome.execution_id===pkg.concrete_execution_trace.execution_id,"El resultado no está vinculado a la traza de ejecución exportada o requiere una traza COMPLETED.");
    assert(outcome.execution_trace_sha256===pkg.concrete_execution_trace.trace_sha256,"El hash de traza del resultado no coincide con la traza exportada.");
    assert(outcome.model_id===pkg.input.model_id&&outcome.model_id===pkg.concrete_execution_trace.model_id,"El model_id del resultado no coincide con la entrada y la traza exportadas.");
    assert(outcome.scenario_id===pkg.concrete_execution_trace.scenario_id,"El scenario_id del resultado no coincide con la traza exportada.");
    assert(typeof outcome.outcome_id==="string"&&outcome.outcome_id.trim().length>0&&typeof outcome.value==="string"&&outcome.value.trim().length>0,"El resultado explícito carece de identificador o valor."); assert(["synthetic","observed"].includes(outcome.source_kind),"source_kind del resultado no es válido."); assert(["value","unit","timing","uncertainty_status","provenance"].every(function(k){return typeof outcome[k]==="string"&&outcome[k].trim().length>0}),"El resultado contiene campos obligatorios vacíos o de tipo incorrecto.");
+   if(outcome.transformation_source!==undefined||outcome.executed_transformation_ids!==undefined){assert(outcome.transformation_source==="TGCV_TRANSFORMATION_GRAPH"&&Array.isArray(outcome.executed_transformation_ids)&&outcome.executed_transformation_ids.every(function(id){return typeof id==="string"&&id.trim().length>0}),"La procedencia TGCV del resultado está malformada.");assert(pkg.concrete_execution_trace&&pkg.concrete_execution_trace.trajectory_source==="TGCV_TRANSFORMATION_GRAPH"&&pkg.concrete_execution_trace.tgcv_trajectory&&canonical(outcome.executed_transformation_ids)===canonical(pkg.concrete_execution_trace.tgcv_trajectory.transformation_ids),"Las transformaciones del resultado no coinciden con la trayectoria TGCV exportada.");}
   }
   if(pkg.value_assessment!==undefined){
    var assessment=pkg.value_assessment;
@@ -348,7 +349,7 @@ async function assessImportedBrowserPackage(pkg){
  if(Object.prototype.hasOwnProperty.call(pkg,"concrete_execution_trace")){
   var trace=pkg.concrete_execution_trace;
   assert(trace&&typeof trace==="object"&&!Array.isArray(trace),"concrete_execution_trace debe ser un objeto.");
-  var traceKeys=["trace_schema","execution_id","model_id","input_sha256","scenario_id","candidate_index","submitted_transition_ids","initial_state","steps","final_state","status","blocked_step","trace_sha256"];
+  var traceKeys=["trace_schema","execution_id","model_id","input_sha256","scenario_id","candidate_index","submitted_transition_ids","initial_state","steps","final_state","status","blocked_step","trace_sha256","trajectory_source","tgcv_trajectory"];
   assert(Object.keys(trace).every(function(k){return traceKeys.includes(k)})&&traceKeys.every(function(k){return Object.prototype.hasOwnProperty.call(trace,k)}),"La traza contiene campos desconocidos o ausentes.");
   assert(trace.trace_schema==="collective-toy-sequence-trace-001"&&["COMPLETED","BLOCKED"].includes(trace.status)&&(packageV2||trace.status==="COMPLETED"),"La traza concreta tiene esquema o estado no compatible.");
   assert(typeof trace.execution_id==="string"&&trace.execution_id.length>0&&trace.model_id===pkg.input.model_id,"La identidad de la traza no coincide con la entrada.");
@@ -361,7 +362,8 @@ async function assessImportedBrowserPackage(pkg){
   assert(Array.isArray(trace.steps),"steps de la traza debe ser una lista.");
   var stepKeys=["step","transition_id","state_before","state_after","prior_transitions","prerequisites","status"],stateNow=trace.initial_state,history=[];
   trace.steps.forEach(function(step,index){
-   assert(step&&typeof step==="object"&&!Array.isArray(step)&&Object.keys(step).length===stepKeys.length&&Object.keys(step).every(function(k){return stepKeys.includes(k)}),"La traza contiene un paso malformado o con campos desconocidos.");
+   assert(step&&typeof step==="object"&&!Array.isArray(step)&&Object.keys(step).every(function(k){return stepKeys.includes(k)||k==="tgcv_transformation_id"})&&stepKeys.every(function(k){return Object.prototype.hasOwnProperty.call(step,k)}),"La traza contiene un paso malformado o con campos desconocidos.");
+   if(step.tgcv_transformation_id!==undefined)assert(typeof step.tgcv_transformation_id==="string"&&step.tgcv_transformation_id.trim().length>0,"tgcv_transformation_id del paso debe ser texto no vacío.");
    assert(step.step===index+1&&step.status==="EXECUTED"&&typeof step.transition_id==="string"&&typeof step.state_before==="string"&&typeof step.state_after==="string","La numeración o los tipos del paso son inválidos.");
    var edge=inputTransitions.get(step.transition_id);
    assert(edge&&edge.source===stateNow&&step.state_before===stateNow&&edge.target===step.state_after,"La secuencia de estados/transiciones de la traza no es coherente con la entrada.");
@@ -382,7 +384,8 @@ async function assessImportedBrowserPackage(pkg){
   }else{
    var blocked=trace.blocked_step;
    assert(canonical(trace.steps.map(function(s){return s.transition_id}))===canonical(trace.submitted_transition_ids.slice(0,trace.steps.length)),"Una traza BLOCKED debe coincidir con el prefijo de transiciones enviadas que realmente se ejecutó.");
-   assert(blocked&&typeof blocked==="object"&&!Array.isArray(blocked)&&Object.keys(blocked).every(function(k){return ["index","transition_id","reason","required_transition_ids"].includes(k)}),"Una traza BLOCKED debe conservar los metadatos del bloqueo.");
+   assert(blocked&&typeof blocked==="object"&&!Array.isArray(blocked)&&Object.keys(blocked).every(function(k){return ["index","transition_id","reason","required_transition_ids","tgcv_transformation_id"].includes(k)}),"Una traza BLOCKED debe conservar los metadatos del bloqueo.");
+   if(blocked.tgcv_transformation_id!==undefined)assert(typeof blocked.tgcv_transformation_id==="string"&&blocked.tgcv_transformation_id.trim().length>0,"tgcv_transformation_id del bloqueo debe ser texto no vacío.");
    assert(Number.isInteger(blocked.index)&&blocked.index===trace.steps.length+1&&blocked.index<=trace.submitted_transition_ids.length&&blocked.transition_id===trace.submitted_transition_ids[blocked.index-1]&&typeof blocked.reason==="string"&&blocked.reason.length>0,"El paso bloqueado no es coherente con la secuencia intentada.");
    assert(Array.isArray(blocked.required_transition_ids)&&blocked.required_transition_ids.every(function(id){return typeof id==="string"&&inputTransitions.has(id)}),"required_transition_ids del bloqueo contiene IDs inválidos.");
    var blockedTransition=inputTransitions.get(blocked.transition_id);
@@ -397,6 +400,7 @@ async function assessImportedBrowserPackage(pkg){
    assert(canonical(blocked.required_transition_ids)===canonical(missingForBlocked),"required_transition_ids del bloqueo no coincide con los prerrequisitos realmente ausentes.");
    assert(!pkg.outcome_record&&!pkg.value_assessment,"Una traza BLOCKED no puede tener resultado ni valoración asociados.");
   }
+  if(trace.trajectory_source!==undefined||trace.tgcv_trajectory!==undefined){assert(trace.trajectory_source==="TGCV_TRANSFORMATION_GRAPH"&&trace.tgcv_trajectory&&typeof trace.tgcv_trajectory==="object"&&!Array.isArray(trace.tgcv_trajectory),"La procedencia de trayectoria TGCV está incompleta.");assert(Object.keys(trace.tgcv_trajectory).every(function(k){return ["transformation_ids","mapping_rule"].includes(k)})&&Array.isArray(trace.tgcv_trajectory.transformation_ids)&&trace.tgcv_trajectory.transformation_ids.length===trace.submitted_transition_ids.length&&trace.tgcv_trajectory.transformation_ids.every(function(id){return typeof id==="string"&&id.trim().length>0})&&typeof trace.tgcv_trajectory.mapping_rule==="string"&&trace.tgcv_trajectory.mapping_rule.trim().length>0,"tgcv_trajectory contiene datos ausentes o incoherentes.");assert(trace.steps.every(function(step,i){return step.tgcv_transformation_id===trace.tgcv_trajectory.transformation_ids[i]})&&(!trace.blocked_step||trace.blocked_step.tgcv_transformation_id===trace.tgcv_trajectory.transformation_ids[trace.blocked_step.index-1]),"Los IDs TGCV de los pasos no coinciden con la trayectoria declarada.");}else{assert(trace.steps.every(function(step){return step.tgcv_transformation_id===undefined})&&(!trace.blocked_step||trace.blocked_step.tgcv_transformation_id===undefined),"La traza contiene IDs TGCV sin declarar su procedencia.");}
   assert(typeof trace.trace_sha256==="string"&&/^[0-9a-f]{64}$/.test(trace.trace_sha256),"trace_sha256 ausente o malformado.");
   var traceBody=Object.assign({},trace);delete traceBody.trace_sha256;
   assert(await hash(traceBody)===trace.trace_sha256,"El hash de la traza concreta no coincide.");
