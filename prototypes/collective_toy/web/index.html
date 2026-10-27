@@ -222,10 +222,11 @@ async function rankTgcvCandidates(snapshot,configuration){
  }
  var eligible=evaluated.filter(function(item){return item.eligibility==="ELIGIBLE"});
  if(!eligible.length)return abstain("NO_ADMISSIBLE_TRAJECTORIES");
- function compare(a,b){for(var q=0;q<criteria.length;q++){var av=a.metrics[q].value,bv=b.metrics[q].value;if(av!==bv){var minimize=criteria[q].type==="minimize_steps"||criteria[q].type==="avoid_transformation";return (av<bv?-1:1)*(minimize?1:-1)}}return 0}
+ function compare(a,b){for(var q=0;q<criteria.length;q++){var av=a.metrics[q].value,bv=b.metrics[q].value;if(av!==bv){var minimize=criteria[q].type!=="maximize_steps";return (av<bv?-1:1)*(minimize?1:-1)}}return 0}
  eligible.sort(function(a,b){return compare(a,b)||a.candidate_id.localeCompare(b.candidate_id)});
  var groups=[],rank=0,previous=null;
  eligible.forEach(function(item,index){if(index===0||compare(previous,item)!==0){rank=index+1;groups.push({rank:rank,candidate_ids:[item.candidate_id]})}else groups[groups.length-1].candidate_ids.push(item.candidate_id);item.rank=rank;item.tie_size=groups[groups.length-1].candidate_ids.length;item.explanation=criteria.map(function(rule,i){return rule.id+"="+item.metrics[i].value}).join("; ")||"No preference criteria";previous=item});
+ groups.forEach(function(group){group.candidate_ids.forEach(function(id){var item=eligible.find(function(entry){return entry.candidate_id===id});if(item)item.tie_size=group.candidate_ids.length})});
  return freezeDeep({contract_version:"tgcv-heuristic-ranking-001",status:snapshot.exploration.truncated?"PARTIAL_TRUNCATED":"RANKED",claim:"HEURISTIC_RANKING_NOT_PREDICTION",input_snapshot_sha256:snapshot.snapshot_sha256,model_sha256:snapshot.model_sha256,scenario_id:snapshot.scenario_id,exploration:{truncated:!!snapshot.exploration.truncated,max_depth:snapshot.exploration.max_depth,max_trajectories:snapshot.exploration.max_trajectories},configuration:JSON.parse(canonical(configuration)),results:evaluated.filter(function(item){return item.eligibility==="INELIGIBLE"}).concat(eligible),ranked_candidate_ids:eligible.map(function(item){return item.candidate_id}),ties:groups.filter(function(group){return group.candidate_ids.length>1}),warning:snapshot.exploration.truncated?"Exploration truncated; ranking applies only to observed candidates and does not establish global optimality.":null});
 }
 window.rankTgcvCandidates=rankTgcvCandidates;
