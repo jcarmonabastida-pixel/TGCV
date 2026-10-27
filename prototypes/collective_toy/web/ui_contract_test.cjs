@@ -981,9 +981,13 @@ const assert = require("node:assert/strict");
     const acceptButtons = page.locator("#correspondence-review-list button").filter({ hasText: "Aceptar propuesta" });
     const acceptCount = await acceptButtons.count();
     assert.ok(acceptCount >= 2, "FC-7: real correspondence derivation must produce at least two reviewable candidates");
+    // Accept every still-enabled candidate. The review list rerenders after each
+    // decision, so repeatedly selecting the first button can keep hitting the
+    // already-disabled first candidate and silently leave the rest unaccepted.
     for (let i = 0; i < acceptCount; i++) {
-      const button = page.locator("#correspondence-review-list button").filter({ hasText: "Aceptar propuesta" }).first();
-      if (await button.isEnabled()) await button.click();
+      const button = page.locator("#correspondence-review-list button:enabled").filter({ hasText: "Aceptar propuesta" }).first();
+      if (await button.count() === 0) break;
+      await button.click();
     }
     await page.locator("#apply-accepted-tgcv-correspondences").click();
     await page.waitForFunction(() => {
