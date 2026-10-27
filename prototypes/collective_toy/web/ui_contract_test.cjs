@@ -86,6 +86,10 @@ const assert = require("node:assert/strict");
     const tgcvFixture = await page.evaluate(() => window.tgcvDemoFixture(JSON.parse(document.querySelector("#model").value)));
     const tgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), tgcvFixture);
     assert.equal(tgcvDerived.system_model_id, "toy-diamond-001");
+    assert.match(tgcvDerived.accessibility_basis, /TGCV transformation relations/i,
+      "TGCV accessibility provenance must identify the transformation-relation basis");
+    assert.doesNotMatch(tgcvDerived.accessibility_basis, /enumerated system trajectories/i,
+      "TGCV accessibility provenance must not claim it is derived from system trajectory enumeration");
     assert.equal(tgcvDerived.mappings.length, 4, "Every example transition must have an explicit illustrative mapping");
     assert.deepEqual(tgcvDerived.before.transformations, ["tau_t_ab", "tau_t_bd"],
       "A transformation whose source state is unreachable must not appear in scenario T_acc");
