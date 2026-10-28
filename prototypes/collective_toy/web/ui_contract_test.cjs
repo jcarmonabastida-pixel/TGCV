@@ -3848,9 +3848,8 @@ const assert = require("node:assert/strict");
       return paths;
     });
     assert.deepEqual(disabledTransitionCheck, [
-      ["t_ab", "t_bc", "t_cd"],
       ["t_ax", "t_xd"]
-    ], "GT-05 temporal: disabling a system transition must not erase its TGCV candidate; execution feasibility is checked separately");
+    ], "GT-05 temporal: a disabled transition is excluded from scenario T_acc and must not be emitted as a candidate");
     const conditionEvaluationCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const scenario = model.scenarios.find(item => item.id === "baseline");
@@ -3858,18 +3857,17 @@ const assert = require("node:assert/strict");
       const original = {
         transitions: structuredClone(model.transitions),
         evaluations: hadEvaluations ? structuredClone(scenario.condition_evaluations) : undefined,
+        result: structuredClone(window.lastTgcvDemoResult),
         snapshot: tgcvSourceSnapshot
       };
       const transition = model.transitions.find(item => item.id === "t_ab");
       transition.condition = "authorization_level >= 2";
       const evaluate = (resultValue) => {
         scenario.condition_evaluations = resultValue === null ? {} : {
-          t_ab: {
-            condition: "authorization_level >= 2",
-            result: resultValue
-          }
+          t_ab: { condition: "authorization_level >= 2", result: resultValue }
         };
         tgcvSourceSnapshot = canonical(model);
+        renderTgcvDemo(model, execute(model), "baseline");
         const result = window.enumerateTgcvTrajectories(model, "baseline");
         return (result.paths || []).map(path => path.map(step => step.system_transition));
       };
@@ -3880,18 +3878,19 @@ const assert = require("node:assert/strict");
       if (hadEvaluations) scenario.condition_evaluations = original.evaluations;
       else delete scenario.condition_evaluations;
       tgcvSourceSnapshot = original.snapshot;
+      window.lastTgcvDemoResult = original.result;
       return { missing, falseResult, trueResult };
     });
-    const expectedConditionIndependentCandidates = [
+    assert.deepEqual(conditionEvaluationCheck.missing, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: missing condition evaluation excludes the conditional transformation from scenario T_acc");
+    assert.deepEqual(conditionEvaluationCheck.falseResult, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: FALSE condition excludes the conditional transformation from scenario T_acc");
+    assert.deepEqual(conditionEvaluationCheck.trueResult, [
       ["t_ab", "t_bc", "t_cd"],
       ["t_ax", "t_xd"]
-    ];
-    assert.deepEqual(conditionEvaluationCheck.missing, expectedConditionIndependentCandidates,
-      "GT-05 temporal: missing condition evaluation must not erase the TGCV accessibility candidate");
-    assert.deepEqual(conditionEvaluationCheck.falseResult, expectedConditionIndependentCandidates,
-      "GT-05 temporal: FALSE condition constrains execution, not TGCV candidate accessibility");
-    assert.deepEqual(conditionEvaluationCheck.trueResult, expectedConditionIndependentCandidates,
-      "GT-05 temporal: condition evaluation must not change the TGCV candidate set");
+    ], "GT-05 temporal: TRUE condition restores the TGCV candidate when the scenario accessibility graph is rederived");
     const cyclicPrerequisiteCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const tgcvResult = window.lastTgcvDemoResult;
