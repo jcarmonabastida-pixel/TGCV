@@ -3862,10 +3862,13 @@ const assert = require("node:assert/strict");
       const hadEvaluations = Object.prototype.hasOwnProperty.call(scenario, "condition_evaluations");
       const original = {
         transitions: structuredClone(model.transitions),
+        schemaVersion: model.schema_version,
         evaluations: hadEvaluations ? structuredClone(scenario.condition_evaluations) : undefined,
         result: structuredClone(window.lastTgcvDemoResult),
         snapshot: tgcvSourceSnapshot
       };
+      // Conditional transitions are part of the collective-toy-input-002 contract.
+      model.schema_version = "collective-toy-input-002";
       const transition = model.transitions.find(item => item.id === "t_ab");
       transition.condition = "authorization_level >= 2";
       const evaluate = (resultValue) => {
@@ -3881,6 +3884,8 @@ const assert = require("node:assert/strict");
       const falseResult = evaluate("FALSE");
       const trueResult = evaluate("TRUE");
       model.transitions = original.transitions;
+      if (original.schemaVersion === undefined) delete model.schema_version;
+      else model.schema_version = original.schemaVersion;
       if (hadEvaluations) scenario.condition_evaluations = original.evaluations;
       else delete scenario.condition_evaluations;
       tgcvSourceSnapshot = original.snapshot;
