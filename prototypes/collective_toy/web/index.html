@@ -179,12 +179,9 @@ function enumerateTgcvTrajectories(model,scenarioId){
  var mapped=new Set(Array.from(mappingByTransformation.keys()).filter(function(id){var m=mappingByTransformation.get(id);return !!m&&!!transitionById.get(m.system_transition_id)}));
  var declared=new Set((tgcv.transformations||[]).filter(function(id){return typeof id==="string"}));
  var topologyRelations=(tgcv.relations||[]).filter(function(pair){return Array.isArray(pair)&&pair.length===2&&declared.has(pair[0])&&declared.has(pair[1])});
- var allRelations=topologyRelations.filter(function(pair){return mapped.has(pair[0])&&mapped.has(pair[1])});
- var successors=new Map(),predecessors=new Map(),topologySuccessors=new Map();
- mapped.forEach(function(id){successors.set(id,[]);predecessors.set(id,[])});
- declared.forEach(function(id){topologySuccessors.set(id,[])});
- topologyRelations.forEach(function(pair){topologySuccessors.get(pair[0]).push(pair[1])});
- allRelations.forEach(function(pair){successors.get(pair[0]).push(pair[1]);predecessors.get(pair[1]).push(pair[0])});
+ var successors=new Map(),topologySuccessors=new Map();
+ declared.forEach(function(id){successors.set(id,[]);topologySuccessors.set(id,[])});
+ topologyRelations.forEach(function(pair){successors.get(pair[0]).push(pair[1]);topologySuccessors.get(pair[0]).push(pair[1])});
  successors.forEach(function(ids){ids.sort()});topologySuccessors.forEach(function(ids){ids.sort()});
  // Determine entry points from the declared TGCV topology, not from the subset
  // that happens to have valid mappings. An ambiguous/missing mapping must not
@@ -199,7 +196,7 @@ function enumerateTgcvTrajectories(model,scenarioId){
  var componentOf=new Map();components.forEach(function(component,index){component.forEach(function(id){componentOf.set(id,index)})});
  var hasExternalIncoming=new Set();
  topologyRelations.forEach(function(pair){var from=componentOf.get(pair[0]),to=componentOf.get(pair[1]);if(from!==to)hasExternalIncoming.add(to)});
- var starts=components.filter(function(component,index){return !hasExternalIncoming.has(index)}).map(function(component){return component[0]}).filter(function(id){return mapped.has(id)}).sort();
+ var starts=components.filter(function(component,index){return !hasExternalIncoming.has(index)}).map(function(component){return component[0]}).sort();
  var maxDepth=model.exploration&&Number.isInteger(model.exploration.max_depth)?model.exploration.max_depth:100,cap=model.exploration&&Number.isInteger(model.exploration.max_trajectories)?model.exploration.max_trajectories:1000,paths=[],truncated=false;
  if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
  function visit(id,path,visited){
@@ -208,16 +205,13 @@ function enumerateTgcvTrajectories(model,scenarioId){
   // TGCV topology finite without inventing repeated execution steps.
   if(visited.has(id))return;
   var mapping=mappingByTransformation.get(id),transition=mapping&&transitionById.get(mapping.system_transition_id);
-  if(!mapping||!transition)return;
-  // Candidate generation follows TGCV topology only. The system correspondence
-  // is retained as provenance for later execution, not used to decide whether
-  // a TGCV relation exists or whether its target is a candidate continuation.
-  var entry={transformation:id,system_transition:transition.id,source_state:transition.source,target_state:transition.target};
+  // Preserve TGCV accessibility even when its system correspondence is absent,
+  // ambiguous or invalid; execution must report that limitation explicitly.
+  var entry={transformation:id,system_transition:transition?transition.id:null,source_state:transition?transition.source:null,target_state:transition?transition.target:null,mapping_status:!mapping?"MISSING_OR_AMBIGUOUS":!transition?"INVALID_SYSTEM_TRANSITION":"MAPPED"};
   var nextPath=path.concat([entry]),nextVisited=new Set(visited);nextVisited.add(id);
   if(nextPath.length>=maxDepth){paths.push(nextPath);return}
-  var validNext=(successors.get(id)||[]).filter(function(nextId){
-   return !nextVisited.has(nextId)&&!!mappingByTransformation.get(nextId);
-  });
+  // Candidate continuations follow TGCV relations only; mappings are execution evidence.
+  var validNext=(successors.get(id)||[]).filter(function(nextId){return !nextVisited.has(nextId)});
   // A cyclic relation is cut at the first repeated transformation. State
   // continuity, disabled flags, conditions and temporal prerequisites are
   // evaluated only when this candidate is submitted for concrete execution.
@@ -245,9 +239,10 @@ async function createTgcvCandidateSnapshot(model,scenarioId,enumeratedOverride){
  var candidates;try{candidates=enumerated.paths.map(function(path,index){
   var steps=path.map(function(step,stepIndex){
    var mapping=mappingByTransformation.get(step.transformation),transition=mapping&&transitionById.get(mapping.system_transition_id);
-   if(!transition||transition.id!==step.system_transition||transition.source!==step.source_state||transition.target!==step.target_state)throw new Error("TGCV candidate mapping provenance mismatch");
+   if(!transition)return {step_index:stepIndex,transformation_id:step.transformation,system_transition_id:null,source_state:null,target_state:null,mapping_status:step.mapping_status||"MISSING_OR_INVALID",condition:null,condition_status:"NOT_EVALUABLE",prerequisites:[]};
+   if(transition.id!==step.system_transition||transition.source!==step.source_state||transition.target!==step.target_state)throw new Error("TGCV candidate mapping provenance mismatch");
    var evaluation=(scenario.condition_evaluations||{})[transition.id];
-   return {step_index:stepIndex,transformation_id:step.transformation,system_transition_id:transition.id,source_state:step.source_state,target_state:step.target_state,condition:transition.condition||null,condition_status:transition.condition?(evaluation&&evaluation.condition===transition.condition?evaluation.result:"NOT_EVALUABLE"):"NOT_REQUIRED",prerequisites:((model.relations||[]).filter(function(relation){return relation.transition_id===transition.id}).map(function(relation){return relation.requires_transition_id})).sort(compareCodePoints)};
+   return {step_index:stepIndex,transformation_id:step.transformation,system_transition_id:transition.id,source_state:transition.source,target_state:transition.target,mapping_status:"MAPPED",condition:transition.condition||null,condition_status:transition.condition?(evaluation&&evaluation.condition===transition.condition?evaluation.result:"NOT_EVALUABLE"):"NOT_REQUIRED",prerequisites:((model.relations||[]).filter(function(relation){return relation.transition_id===transition.id}).map(function(relation){return relation.requires_transition_id})).sort(compareCodePoints)};
   });
   return {candidate_id:"tgcv-candidate-"+String(index+1).padStart(4,"0"),transformation_ids:steps.map(function(step){return step.transformation_id}),steps:steps};
  });}catch(error){return abstain("CANDIDATE_MAPPING_PROVENANCE_MISMATCH")}
