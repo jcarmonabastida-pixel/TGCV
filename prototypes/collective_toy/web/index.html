@@ -195,17 +195,26 @@ function enumerateTgcvTrajectories(model,scenarioId){
  if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
  function visit(id,path,visited){
   if(paths.length>=cap){truncated=true;return}
+  if(visited.has(id))return;
   var mapping=mappingByTransformation.get(id),transition=mapping&&transitionById.get(mapping.system_transition_id);
   if(!mapping||!transition)return;
+  // Candidate paths follow TGCV relations, but each candidate must map to a
+  // concrete, state-continuous system path. The system graph does not generate
+  // candidates; it validates whether a TGCV continuation can actually execute.
+  if(path.length&&path[path.length-1].target_state!==transition.source)return;
   var entry={transformation:id,system_transition:transition.id,source_state:transition.source,target_state:transition.target};
   var nextPath=path.concat([entry]),nextVisited=new Set(visited);nextVisited.add(id);
   var eligible=(successors.get(id)||[]);
-  // max_depth is the deliberate traversal bound, not trajectory-cap truncation.
-  // Repeated transformations are allowed within that bound so executable cycles
-  // remain visible as bounded TGCV candidates.
+  // max_depth bounds traversal. Repeated transformations and state-discontinuous
+  // continuations are rejected rather than emitted as hybrid candidate paths.
   if(nextPath.length>=maxDepth){paths.push(nextPath);return}
-  if(!eligible.length){paths.push(nextPath);return}
-  eligible.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextVisited);else truncated=true});
+  var validNext=eligible.filter(function(nextId){
+   if(nextVisited.has(nextId))return false;
+   var nextMapping=mappingByTransformation.get(nextId),nextTransition=nextMapping&&transitionById.get(nextMapping.system_transition_id);
+   return !!nextTransition&&transition.target===nextTransition.source;
+  });
+  if(!validNext.length){paths.push(nextPath);return}
+  validNext.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextVisited);else truncated=true});
  }
  starts.forEach(function(id){if(paths.length<cap)visit(id,[],new Set());else truncated=true});
  return {scenario_id:scenarioId,paths:paths,truncated:truncated,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
