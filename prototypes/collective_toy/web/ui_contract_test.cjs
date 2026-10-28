@@ -3809,30 +3809,44 @@ const assert = require("node:assert/strict");
     ], "GT-05 temporal: ambiguous TGCV-to-system mapping must be excluded while uniquely mapped alternative routes remain");
     assert.notEqual(ambiguousMappingCheck.truncated, true,
       "GT-05 temporal: rejecting an ambiguous mapping must not falsely report trajectory-cap truncation");
-    const missingAndInvalidMappingCheck = await temporalPage.evaluate(() => {
+    const missingAndInvalidMappingCheck = await temporalPage.evaluate(async () => {
       const tgcvResult = window.lastTgcvDemoResult;
       const originalMappings = structuredClone(tgcvResult.mappings);
       const enumerate = () => {
         const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
-        return (result.paths || []).map(path => path.map(step => step.system_transition));
+        return (result.paths || []).map(path => path.map(step => step.transformation));
       };
       tgcvResult.mappings = originalMappings.filter(item =>
         item.tgcv_transformation_id !== "tau_t_ab");
       const missing = enumerate();
+      const missingSnapshot = await window.createTgcvCandidateSnapshot(window.lastModel, "baseline");
+      const missingStatuses = missingSnapshot.status === "READY"
+        ? missingSnapshot.candidates.flatMap(candidate => candidate.steps)
+            .filter(step => step.transformation_id === "tau_t_ab")
+            .map(step => step.mapping_status)
+        : [missingSnapshot.reason];
       tgcvResult.mappings = originalMappings.map(item =>
         item.tgcv_transformation_id === "tau_t_ab"
           ? { ...item, system_transition_id: "t_missing_system_transition" }
           : item);
       const invalid = enumerate();
+      const invalidSnapshot = await window.createTgcvCandidateSnapshot(window.lastModel, "baseline");
+      const invalidStatuses = invalidSnapshot.status === "READY"
+        ? invalidSnapshot.candidates.flatMap(candidate => candidate.steps)
+            .filter(step => step.transformation_id === "tau_t_ab")
+            .map(step => step.mapping_status)
+        : [invalidSnapshot.reason];
       tgcvResult.mappings = originalMappings;
-      return { missing, invalid };
+      return { missing, invalid, missingStatuses, invalidStatuses };
     });
-    assert.deepEqual(missingAndInvalidMappingCheck.missing, [
-      ["t_ax", "t_xd"]
-    ], "GT-05 temporal: missing TGCV mapping must exclude only the unmapped route and preserve valid alternatives");
-    assert.deepEqual(missingAndInvalidMappingCheck.invalid, [
-      ["t_ax", "t_xd"]
-    ], "GT-05 temporal: mapping to an unknown system transition must be rejected without hiding valid alternatives");
+    assert(missingAndInvalidMappingCheck.missing.some(path => path.includes("tau_t_ab")),
+      "GT-05 temporal: missing system correspondence must not erase an accessible TGCV transformation");
+    assert(missingAndInvalidMappingCheck.missingStatuses.includes("MISSING_OR_AMBIGUOUS"),
+      "GT-05 temporal: candidate snapshot must preserve the transformation and label its missing correspondence");
+    assert(missingAndInvalidMappingCheck.invalid.some(path => path.includes("tau_t_ab")),
+      "GT-05 temporal: invalid system correspondence must not erase an accessible TGCV transformation");
+    assert(missingAndInvalidMappingCheck.invalidStatuses.includes("INVALID_SYSTEM_TRANSITION"),
+      "GT-05 temporal: candidate snapshot must distinguish an invalid system transition from TGCV inaccessibility");
     const disabledTransitionCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const scenario = model.scenarios.find(item => item.id === "baseline");
