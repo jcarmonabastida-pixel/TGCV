@@ -3849,8 +3849,9 @@ const assert = require("node:assert/strict");
       return paths;
     });
     assert.deepEqual(disabledTransitionCheck, [
+      ["t_ab", "t_bc", "t_cd"],
       ["t_ax", "t_xd"]
-    ], "GT-05 temporal: disabled system transition must exclude its mapped TGCV transformation and preserve valid alternatives");
+    ], "GT-05 temporal: disabling a system transition must not erase its TGCV candidate; execution feasibility is checked separately");
     const conditionEvaluationCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const scenario = model.scenarios.find(item => item.id === "baseline");
@@ -3882,15 +3883,16 @@ const assert = require("node:assert/strict");
       tgcvSourceSnapshot = original.snapshot;
       return { missing, falseResult, trueResult };
     });
-    assert.deepEqual(conditionEvaluationCheck.missing, [
+    const expectedConditionIndependentCandidates = [
+      ["t_ab", "t_bc", "t_cd"],
       ["t_ax", "t_xd"]
-    ], "GT-05 temporal: unevaluated conditional transformation must not be enumerated");
-    assert.deepEqual(conditionEvaluationCheck.falseResult, [
-      ["t_ax", "t_xd"]
-    ], "GT-05 temporal: FALSE condition must exclude the conditional transformation");
-    assert.ok(conditionEvaluationCheck.trueResult.some(path =>
-      JSON.stringify(path) === JSON.stringify(["t_ab", "t_bc", "t_cd"])),
-      "GT-05 temporal: explicitly TRUE condition may enable its transformation");
+    ];
+    assert.deepEqual(conditionEvaluationCheck.missing, expectedConditionIndependentCandidates,
+      "GT-05 temporal: missing condition evaluation must not erase the TGCV accessibility candidate");
+    assert.deepEqual(conditionEvaluationCheck.falseResult, expectedConditionIndependentCandidates,
+      "GT-05 temporal: FALSE condition constrains execution, not TGCV candidate accessibility");
+    assert.deepEqual(conditionEvaluationCheck.trueResult, expectedConditionIndependentCandidates,
+      "GT-05 temporal: condition evaluation must not change the TGCV candidate set");
     const cyclicPrerequisiteCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const tgcvResult = window.lastTgcvDemoResult;
