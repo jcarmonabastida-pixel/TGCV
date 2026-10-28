@@ -3791,24 +3791,30 @@ const assert = require("node:assert/strict");
       "GT-05 temporal: complete candidate set must not depend on TGCV relation input order");
     assert.deepEqual(trajectoryCapCheck.reversed, trajectoryCapCheck.first,
       "GT-05 temporal: capped trajectory selection must not depend on TGCV relation input order");
-    const ambiguousMappingCheck = await temporalPage.evaluate(() => {
+    const ambiguousMappingCheck = await temporalPage.evaluate(async () => {
       const tgcvResult = window.lastTgcvDemoResult;
       const originalMappings = structuredClone(tgcvResult.mappings);
-      const mapping = originalMappings.find(item => item.tgcv_transformation_id === "tau_t_ab");
       tgcvResult.mappings.push({
         system_transition_id: "t_ax",
         tgcv_transformation_id: "tau_t_ab"
       });
       const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
-      const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
+      const paths = (result.paths || []).map(path => path.map(step => step.transformation));
+      const snapshot = await window.createTgcvCandidateSnapshot(window.lastModel, "baseline");
+      const statuses = snapshot.status === "READY"
+        ? snapshot.candidates.flatMap(candidate => candidate.steps)
+            .filter(step => step.transformation_id === "tau_t_ab")
+            .map(step => step.mapping_status)
+        : [snapshot.reason];
       tgcvResult.mappings = originalMappings;
-      return { paths, truncated: result.truncated };
+      return { paths, statuses, truncated: result.truncated };
     });
-    assert.deepEqual(ambiguousMappingCheck.paths, [
-      ["t_ax", "t_xd"]
-    ], "GT-05 temporal: ambiguous TGCV-to-system mapping must be excluded while uniquely mapped alternative routes remain");
+    assert(ambiguousMappingCheck.paths.some(path => path.includes("tau_t_ab")),
+      "GT-05 temporal: ambiguous mapping must not erase the TGCV transformation from candidate topology");
+    assert(ambiguousMappingCheck.statuses.includes("MISSING_OR_AMBIGUOUS"),
+      "GT-05 temporal: ambiguous correspondence must be labelled non-executable in the candidate snapshot");
     assert.notEqual(ambiguousMappingCheck.truncated, true,
-      "GT-05 temporal: rejecting an ambiguous mapping must not falsely report trajectory-cap truncation");
+      "GT-05 temporal: retaining an ambiguous candidate must not falsely report trajectory-cap truncation");
     const missingAndInvalidMappingCheck = await temporalPage.evaluate(async () => {
       const tgcvResult = window.lastTgcvDemoResult;
       const originalMappings = structuredClone(tgcvResult.mappings);
