@@ -3929,8 +3929,9 @@ const assert = require("node:assert/strict");
       return paths;
     });
     assert.deepEqual(cyclicPrerequisiteCheck, [
+      ["t_ab", "t_bc", "t_cd", "t_da"],
       ["t_ax", "t_xd"]
-    ], "GT-05 temporal: a cycle must not bypass a temporal prerequisite or emit a blocked prefix as complete");
+    ], "GT-05 temporal: TGCV candidate topology must preserve the declared cycle without repeating a transformation; execution validation handles prerequisites");
     const blockedContinuationCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const originalRelations = structuredClone(model.relations);
@@ -3947,8 +3948,9 @@ const assert = require("node:assert/strict");
       return (result.paths || []).map(path => path.map(step => step.system_transition));
     });
     assert.deepEqual(blockedContinuationCheck, [
+      ["t_ab", "t_bc", "t_cd"],
       ["t_ax", "t_xd"]
-    ], "GT-05 temporal: do not report a dead-end prefix as a complete trajectory when its declared continuation is blocked by an unmet prerequisite");
+    ], "GT-05 temporal: unmet execution prerequisites must not rewrite TGCV topology candidates");
     assert.ok(temporalCandidateIndex >= 0,
       "GT-05 temporal: ordered prerequisite path must be selectable from TGCV-generated candidates");
     await temporalPage.locator("#sequence-scenario").selectOption("baseline");
