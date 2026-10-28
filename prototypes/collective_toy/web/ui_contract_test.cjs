@@ -4313,6 +4313,30 @@ const assert = require("node:assert/strict");
     }), candidateSnapshot);
     assert.equal(heuristicRanking.status, "RANKED");
     assert.equal(heuristicRanking.claim, "HEURISTIC_RANKING_NOT_PREDICTION");
+    const mappingAwareRanking = await uxPage.evaluate(async () => {
+      const result = window.lastTgcvDemoResult;
+      const originalMappings = structuredClone(result.mappings);
+      result.mappings = originalMappings.filter(item => item.tgcv_transformation_id !== "tau_ux_ab");
+      const snapshot = await window.createTgcvCandidateSnapshot(window.lastModel, "baseline");
+      const ranking = await window.rankTgcvCandidates(snapshot, {
+        contract_version: "tgcv-heuristic-config-001",
+        criteria: [{ id: "shorter", type: "minimize_steps" }],
+        constraints: []
+      });
+      result.mappings = originalMappings;
+      return {
+        status: snapshot.status,
+        rankingStatus: ranking.status,
+        candidate: ranking.results.find(item => item.transformation_ids.includes("tau_ux_ab"))
+      };
+    });
+    assert.equal(mappingAwareRanking.status, "READY",
+      "TGCV selector: missing system correspondence must not erase the accessible candidate snapshot");
+    assert.equal(mappingAwareRanking.rankingStatus, "RANKED");
+    assert.equal(mappingAwareRanking.candidate.mapping_status, "INCOMPLETE",
+      "TGCV selector: ranking must preserve mapping completeness as a separate property");
+    assert.match(mappingAwareRanking.candidate.execution_note, /accesible, pero no ejecutable/i,
+      "TGCV selector: ranking UI data must not imply an unmapped TGCV candidate is executable");
     assert.deepEqual(heuristicRanking.ranked_candidate_ids, ["tgcv-candidate-0002", "tgcv-candidate-0001"],
       "TGCV selector: explicit transformation preference must change order deterministically");
     const constrainedRanking = await uxPage.evaluate(async snapshot => window.rankTgcvCandidates(snapshot, {
