@@ -239,7 +239,10 @@ function pythonJson(source, input) {
       const transition = pkg.input.transitions[0];
       const catalogue = {
         schema:"tgcv-target-catalogue-001", version:"import-replay-contract-v1",
-        transformations:[{id:"T_REPLAY_"+transition.id,source_state:transition.source,target_state:transition.target}]
+        transformations:[
+          {id:"T_REPLAY_"+transition.id,source_state:transition.source,target_state:transition.target},
+          {id:"T_WRONG_BOUNDARY_"+transition.id,source_state:"__OTHER_SOURCE__",target_state:"__OTHER_TARGET__"}
+        ]
       };
       const derived = await window.deriveTgcvCorrespondenceCandidates(pkg.input, catalogue);
       if (!derived.candidates.length || derived.candidates[0].status !== "PROPOSED") {
@@ -250,7 +253,8 @@ function pythonJson(source, input) {
         schema:"tgcv-correspondence-review-001",
         source_model_sha256:await window.hash(pkg.input),
         catalogue_version:catalogue.version,
-        catalogue_sha256:await window.hash(catalogue),
+        catalogue_sha256:await window.hash(catalogue,"tgcv_correspondence_catalogue"),
+        catalogue_snapshot:JSON.parse(JSON.stringify(catalogue)),
         candidates:derived.candidates
       };
       const imported = JSON.parse(JSON.stringify(pkg));
@@ -265,12 +269,40 @@ function pythonJson(source, input) {
       tampered.package_sha256 = await window.hash(tampered);
       let tamperRejected = false;
       try { await window.assessImportedBrowserPackage(tampered); } catch (_error) { tamperRejected = true; }
+      const forgedCorrespondence = JSON.parse(JSON.stringify(imported));
+      forgedCorrespondence.tgcv_correspondence_review.catalogue_snapshot.transformations[0].id = "T_FORGED_NOT_IN_CATALOGUE";
+      forgedCorrespondence.tgcv_correspondence_review.catalogue_sha256 = await window.hash(
+        forgedCorrespondence.tgcv_correspondence_review.catalogue_snapshot,"tgcv_correspondence_catalogue"
+      );
+      delete forgedCorrespondence.package_sha256;
+      forgedCorrespondence.package_sha256 = await window.hash(forgedCorrespondence);
+      let forgedCorrespondenceRejected = false;
+      try { await window.assessImportedBrowserPackage(forgedCorrespondence); } catch (_error) { forgedCorrespondenceRejected = true; }
+      const forgedTransition = JSON.parse(JSON.stringify(imported));
+      forgedTransition.tgcv_correspondence_review.candidates[0].system_transition_id = "TRANSITION_FORGED_NOT_IN_MODEL";
+      delete forgedTransition.package_sha256;
+      forgedTransition.package_sha256 = await window.hash(forgedTransition);
+      let forgedTransitionRejected = false;
+      try { await window.assessImportedBrowserPackage(forgedTransition); } catch (_error) { forgedTransitionRejected = true; }
+      const mismatchedExistingPair = JSON.parse(JSON.stringify(imported));
+      mismatchedExistingPair.tgcv_correspondence_review.candidates[0].tgcv_transformation_id = "T_WRONG_BOUNDARY_"+transition.id;
+      delete mismatchedExistingPair.package_sha256;
+      mismatchedExistingPair.package_sha256 = await window.hash(mismatchedExistingPair);
+      let mismatchedExistingPairRejected = false;
+      try { await window.assessImportedBrowserPackage(mismatchedExistingPair); } catch (_error) { mismatchedExistingPairRejected = true; }
+      const forgedEvidence = JSON.parse(JSON.stringify(imported));
+      forgedEvidence.tgcv_correspondence_review.candidates[0].evidence.system_source_state = "__FORGED_SOURCE__";
+      delete forgedEvidence.package_sha256;
+      forgedEvidence.package_sha256 = await window.hash(forgedEvidence);
+      let forgedEvidenceRejected = false;
+      try { await window.assessImportedBrowserPackage(forgedEvidence); } catch (_error) { forgedEvidenceRejected = true; }
       return {
         status:assessment.status, replay:assessment.replay,
         review:assessment.correspondence_review,
         message:assessment.message,
         snapshotPreserved:JSON.stringify(imported.tgcv_correspondence_review)===JSON.stringify(review),
-        tamperRejected
+        tamperRejected, forgedCorrespondenceRejected, forgedTransitionRejected,
+        mismatchedExistingPairRejected, forgedEvidenceRejected
       };
     }, pkg);
     assert.equal(reviewReplay.status, "replay-verified", "package replay must remain verified when a valid review snapshot is attached");
@@ -278,6 +310,10 @@ function pythonJson(source, input) {
     assert.equal(reviewReplay.review.accepted_count, 1, "accepted decision must survive import/replay validation");
     assert.equal(reviewReplay.snapshotPreserved, true, "the imported review snapshot must remain byte-structure equivalent");
     assert.equal(reviewReplay.tamperRejected, true, "review/model linkage tampering must be rejected");
+    assert.equal(reviewReplay.forgedCorrespondenceRejected, true, "rehashed catalogue snapshots must not authenticate forged transformation IDs");
+    assert.equal(reviewReplay.forgedTransitionRejected, true, "rehashed packages must reject correspondence references to absent system transitions");
+    assert.equal(reviewReplay.mismatchedExistingPairRejected, true, "rehashed packages must reject system/TGCV pairs with incompatible state boundaries");
+    assert.equal(reviewReplay.forgedEvidenceRejected, true, "rehashed packages must reject forged correspondence evidence");
     assert.match(reviewReplay.message, /no se aplican al grafo TGCV/i, "replay must explicitly avoid applying accepted mappings");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
     assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
