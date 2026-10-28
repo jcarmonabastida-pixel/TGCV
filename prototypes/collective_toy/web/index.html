@@ -209,36 +209,20 @@ function enumerateTgcvTrajectories(model,scenarioId){
   if(visited.has(id))return;
   var mapping=mappingByTransformation.get(id),transition=mapping&&transitionById.get(mapping.system_transition_id);
   if(!mapping||!transition)return;
-  // Candidate topology comes from TGCV relations. The system correspondence
-  // validates state continuity and temporal prerequisites for an executable
-  // ordered path; neither conditions nor disabled flags remove candidates.
-  if(path.length&&path[path.length-1].target_state!==transition.source)return;
-  var priorTransitions=path.map(function(step){return step.system_transition});
-  var prerequisites=(model.relations||[]).filter(function(relation){return relation.transition_id===transition.id}).map(function(relation){return relation.requires_transition_id});
-  if(!prerequisites.every(function(requiredId){return priorTransitions.indexOf(requiredId)>=0}))return;
+  // Candidate generation follows TGCV topology only. The system correspondence
+  // is retained as provenance for later execution, not used to decide whether
+  // a TGCV relation exists or whether its target is a candidate continuation.
   var entry={transformation:id,system_transition:transition.id,source_state:transition.source,target_state:transition.target};
   var nextPath=path.concat([entry]),nextVisited=new Set(visited);nextVisited.add(id);
-  var eligible=(successors.get(id)||[]);
   if(nextPath.length>=maxDepth){paths.push(nextPath);return}
-  var continuations=eligible.map(function(nextId){
-   var nextMapping=mappingByTransformation.get(nextId),nextTransition=nextMapping&&transitionById.get(nextMapping.system_transition_id);
-   return {id:nextId,transition:nextTransition};
-  }).filter(function(item){return !!item.transition&&transition.target===item.transition.source});
-  var validNext=continuations.filter(function(item){
-   if(nextVisited.has(item.id))return false;
-   var required=(model.relations||[]).filter(function(relation){return relation.transition_id===item.transition.id}).map(function(relation){return relation.requires_transition_id});
-   var history=nextPath.map(function(step){return step.system_transition});
-   return required.every(function(requiredId){return history.indexOf(requiredId)>=0});
+  var validNext=(successors.get(id)||[]).filter(function(nextId){
+   return !nextVisited.has(nextId)&&!!mappingByTransformation.get(nextId);
   });
-  // Do not turn a dead-end prefix into a completed candidate when its only
-  // state-continuous TGCV continuation is blocked by an unmet prerequisite.
-  var prerequisiteBlocked=continuations.some(function(item){
-   var required=(model.relations||[]).filter(function(relation){return relation.transition_id===item.transition.id}).map(function(relation){return relation.requires_transition_id});
-   var history=nextPath.map(function(step){return step.system_transition});
-   return !required.every(function(requiredId){return history.indexOf(requiredId)>=0});
-  });
-  if(!validNext.length){if(!prerequisiteBlocked)paths.push(nextPath);return}
-  validNext.forEach(function(item){if(paths.length<cap)visit(item.id,nextPath,nextVisited);else truncated=true});
+  // A cyclic relation is cut at the first repeated transformation. State
+  // continuity, disabled flags, conditions and temporal prerequisites are
+  // evaluated only when this candidate is submitted for concrete execution.
+  if(!validNext.length){paths.push(nextPath);return}
+  validNext.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextVisited);else truncated=true});
  }
  starts.forEach(function(id){if(paths.length<cap)visit(id,[],new Set());else truncated=true});
  return {scenario_id:scenarioId,paths:paths,truncated:truncated,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
