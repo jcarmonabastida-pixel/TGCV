@@ -195,7 +195,6 @@ function enumerateTgcvTrajectories(model,scenarioId){
  if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
  function visit(id,path,visited){
   if(paths.length>=cap){truncated=true;return}
-  if(visited.has(id))return;
   var mapping=mappingByTransformation.get(id),transition=mapping&&transitionById.get(mapping.system_transition_id);
   if(!mapping||!transition)return;
   // Candidate paths follow TGCV relations, but each candidate must map to a
@@ -209,7 +208,6 @@ function enumerateTgcvTrajectories(model,scenarioId){
   // continuations are rejected rather than emitted as hybrid candidate paths.
   if(nextPath.length>=maxDepth){paths.push(nextPath);return}
   var validNext=eligible.filter(function(nextId){
-   if(nextVisited.has(nextId))return false;
    var nextMapping=mappingByTransformation.get(nextId),nextTransition=nextMapping&&transitionById.get(nextMapping.system_transition_id);
    return !!nextTransition&&transition.target===nextTransition.source;
   });
