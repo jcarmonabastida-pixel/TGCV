@@ -204,24 +204,41 @@ function enumerateTgcvTrajectories(model,scenarioId){
  if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
  function visit(id,path,visited){
   if(paths.length>=cap){truncated=true;return}
+  // A TGCV transformation may enter a candidate only once; this makes cyclic
+  // TGCV topology finite without inventing repeated execution steps.
+  if(visited.has(id))return;
   var mapping=mappingByTransformation.get(id),transition=mapping&&transitionById.get(mapping.system_transition_id);
   if(!mapping||!transition)return;
-  // Candidate paths follow TGCV relations, but each candidate must map to a
-  // concrete, state-continuous system path. The system graph does not generate
-  // candidates; it validates whether a TGCV continuation can actually execute.
+  // Candidate topology comes from TGCV relations. The system correspondence
+  // validates state continuity and temporal prerequisites for an executable
+  // ordered path; neither conditions nor disabled flags remove candidates.
   if(path.length&&path[path.length-1].target_state!==transition.source)return;
+  var priorTransitions=path.map(function(step){return step.system_transition});
+  var prerequisites=(model.relations||[]).filter(function(relation){return relation.transition_id===transition.id}).map(function(relation){return relation.requires_transition_id});
+  if(!prerequisites.every(function(requiredId){return priorTransitions.indexOf(requiredId)>=0}))return;
   var entry={transformation:id,system_transition:transition.id,source_state:transition.source,target_state:transition.target};
   var nextPath=path.concat([entry]),nextVisited=new Set(visited);nextVisited.add(id);
   var eligible=(successors.get(id)||[]);
-  // max_depth bounds traversal. Repeated transformations and state-discontinuous
-  // continuations are rejected rather than emitted as hybrid candidate paths.
   if(nextPath.length>=maxDepth){paths.push(nextPath);return}
-  var validNext=eligible.filter(function(nextId){
+  var continuations=eligible.map(function(nextId){
    var nextMapping=mappingByTransformation.get(nextId),nextTransition=nextMapping&&transitionById.get(nextMapping.system_transition_id);
-   return !!nextTransition&&transition.target===nextTransition.source;
+   return {id:nextId,transition:nextTransition};
+  }).filter(function(item){return !!item.transition&&transition.target===item.transition.source});
+  var validNext=continuations.filter(function(item){
+   if(nextVisited.has(item.id))return false;
+   var required=(model.relations||[]).filter(function(relation){return relation.transition_id===item.transition.id}).map(function(relation){return relation.requires_transition_id});
+   var history=nextPath.map(function(step){return step.system_transition});
+   return required.every(function(requiredId){return history.indexOf(requiredId)>=0});
   });
-  if(!validNext.length){paths.push(nextPath);return}
-  validNext.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextVisited);else truncated=true});
+  // Do not turn a dead-end prefix into a completed candidate when its only
+  // state-continuous TGCV continuation is blocked by an unmet prerequisite.
+  var prerequisiteBlocked=continuations.some(function(item){
+   var required=(model.relations||[]).filter(function(relation){return relation.transition_id===item.transition.id}).map(function(relation){return relation.requires_transition_id});
+   var history=nextPath.map(function(step){return step.system_transition});
+   return !required.every(function(requiredId){return history.indexOf(requiredId)>=0});
+  });
+  if(!validNext.length){if(!prerequisiteBlocked)paths.push(nextPath);return}
+  validNext.forEach(function(item){if(paths.length<cap)visit(item.id,nextPath,nextVisited);else truncated=true});
  }
  starts.forEach(function(id){if(paths.length<cap)visit(id,[],new Set());else truncated=true});
  return {scenario_id:scenarioId,paths:paths,truncated:truncated,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
