@@ -542,13 +542,11 @@ function pythonJson(source, input) {
     await page.locator("#run").click();
     await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
     const blockedPredecessorTgcvText = await page.locator("#tgcv-graph").textContent();
-    assert.match(blockedPredecessorTgcvText, /T_HUMIDITY/,
-      "a FALSE condition must not erase the declared TGCV predecessor from the accessibility graph");
-    assert.match(blockedPredecessorTgcvText, /T_CD/,
-      "the declared descendant remains visible through its TGCV relation even when execution is blocked");
-    assert.match(blockedPredecessorTgcvText, /T_HUMIDITY.*T_CD|T_CD.*T_HUMIDITY/,
-      "the TGCV graph must preserve the declared predecessor-descendant relation");
-    await assertStructuredTAccMatchesExecution(page, "TGCV accessibility graph must preserve declared relation independently of execution conditions");
+    assert.doesNotMatch(blockedPredecessorTgcvText, /T_HUMIDITY/,
+      "a FALSE condition removes the predecessor from the current scenario T_acc view");
+    assert.doesNotMatch(blockedPredecessorTgcvText, /T_CD/,
+      "a descendant must not become an artificial root when its declared TGCV predecessor is unavailable");
+    await assertStructuredTAccMatchesExecution(page, "scenario T_acc must exclude unavailable predecessor and must not promote its descendant");
 
     // Restore the explicitly mapped TRUE-condition fixture so later correspondence
     // proposal tests begin from their own expected rendered graph.
