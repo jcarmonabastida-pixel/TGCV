@@ -281,7 +281,8 @@ async function rankTgcvCandidates(snapshot,configuration){
    else {var found=candidate.transformation_ids.includes(rule.transformation_id);value=rule.type==="prefer_transformation"?(found?0:1):(found?1:0)}
    metrics.push({criterion_id:rule.id,type:rule.type,value:value});
   });
-  evaluated.push({candidate_id:candidate.candidate_id,transformation_ids:candidate.transformation_ids.slice(),eligibility:reasons.length?"INELIGIBLE":"ELIGIBLE",violated_constraints:reasons,metrics:metrics,lexicographic_key:metrics.map(function(metric){return metric.value})});
+  var mappingComplete=candidate.steps.every(function(step){return step.mapping_status==="MAPPED"&&!!step.system_transition_id});
+  evaluated.push({candidate_id:candidate.candidate_id,transformation_ids:candidate.transformation_ids.slice(),eligibility:reasons.length?"INELIGIBLE":"ELIGIBLE",mapping_status:mappingComplete?"COMPLETE":"INCOMPLETE",execution_note:mappingComplete?"La correspondencia está disponible; condiciones, continuidad y prerrequisitos se validan al ejecutar.":"Candidata TGCV accesible, pero no ejecutable hasta resolver la correspondencia con el sistema.",violated_constraints:reasons,metrics:metrics,lexicographic_key:metrics.map(function(metric){return metric.value})});
  }
  var eligible=evaluated.filter(function(item){return item.eligibility==="ELIGIBLE"});
  if(!eligible.length)return abstain("NO_ADMISSIBLE_TRAJECTORIES");
@@ -721,6 +722,7 @@ $("rank-trajectories").addEventListener("click",async function(){
    var row=node("div","comparison-run"),heading=node("h3","",item.eligibility==="INELIGIBLE"?"No admisible · "+item.candidate_id:"Rango "+item.rank+" · "+item.candidate_id);
    row.append(heading,node("p","route-sequence",item.transformation_ids.join(" → ")));
    row.append(node("p","muted",item.eligibility==="INELIGIBLE"?"Restricciones incumplidas: "+item.violated_constraints.join(", "):"Criterios: "+item.metrics.map(function(metric){return metric.criterion_id+" = "+metric.value}).join("; ")+(item.tie_size>1?" · Empate sustantivo de "+item.tie_size:"")));
+   row.append(node("p",item.mapping_status==="COMPLETE"?"muted":"error",item.execution_note));
    if(item.eligibility==="ELIGIBLE"){var selectButton=node("button","primary","Seleccionar esta trayectoria");selectButton.type="button";selectButton.addEventListener("click",function(){var index=Number(item.candidate_id.replace("tgcv-candidate-",""))-1;trajectoryIndex=index;renderTrajectoryCard();$("sequence-scenario").value=scenarioId;$("sequence-select").value=String(index);$("sequence-input").value="";$("sequence-trace").textContent="Trayectoria seleccionada explícitamente desde el ranking. Pulsa «Ejecutar secuencia seleccionada» para ejecutarla."; $("sequence-execution-heading").scrollIntoView({behavior:"smooth",block:"start"})});row.append(selectButton)}
    panel.append(row);
   });
