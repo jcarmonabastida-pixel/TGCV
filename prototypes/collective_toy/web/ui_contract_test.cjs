@@ -3837,14 +3837,20 @@ const assert = require("node:assert/strict");
       const model = window.lastModel;
       const scenario = model.scenarios.find(item => item.id === "baseline");
       const hadDisabledTransitions = Object.prototype.hasOwnProperty.call(scenario, "disabled_transitions");
-      const original = hadDisabledTransitions ? structuredClone(scenario.disabled_transitions) : undefined;
-      scenario.disabled_transitions = Array.from(new Set((original || []).concat(["t_ab"])));
+      const original = {
+        disabledTransitions: hadDisabledTransitions ? structuredClone(scenario.disabled_transitions) : undefined,
+        result: structuredClone(window.lastTgcvDemoResult),
+        snapshot: tgcvSourceSnapshot
+      };
+      scenario.disabled_transitions = Array.from(new Set((original.disabledTransitions || []).concat(["t_ab"])));
       tgcvSourceSnapshot = canonical(model);
+      renderTgcvDemo(model, execute(model), "baseline");
       const result = window.enumerateTgcvTrajectories(model, "baseline");
       const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
-      if (hadDisabledTransitions) scenario.disabled_transitions = original;
+      if (hadDisabledTransitions) scenario.disabled_transitions = original.disabledTransitions;
       else delete scenario.disabled_transitions;
-      tgcvSourceSnapshot = canonical(model);
+      tgcvSourceSnapshot = original.snapshot;
+      window.lastTgcvDemoResult = original.result;
       return paths;
     });
     assert.deepEqual(disabledTransitionCheck, [
