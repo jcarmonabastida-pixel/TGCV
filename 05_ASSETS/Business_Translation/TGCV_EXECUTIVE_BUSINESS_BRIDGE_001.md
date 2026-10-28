@@ -5,15 +5,25 @@
 **Estado:** propuesta de trabajo; no constituye validación científica, comercial ni de impacto  
 **Propósito:** preservar las ideas esenciales de la conversación sobre mensajes ejecutivos y de negocio, diferenciación potencial de TGCV y cómo llevar la investigación a una prueba empresarial acotada.
 
-## 1. Mensaje ejecutivo central
+## 1. Mensaje de apertura: una nueva perspectiva para explorar la evolución de los sistemas
 
-**TGCV propone explorar no solo el estado actual de un sistema o cómo optimizar su funcionamiento, sino qué transformaciones están disponibles, cuáles están bloqueadas y qué tendría que cambiar para habilitar otras alternativas.**
+### Descubrir nuevas posibilidades de transformación
 
-Frase breve para negocio:
+**Una nueva perspectiva para explorar la evolución de los sistemas**
+
+Las organizaciones invierten en transformar sus procesos, productos y modelos de negocio. Sin embargo, antes de elegir una solución, existe una pregunta fundamental:
+
+> **¿Qué transformaciones tiene realmente a su alcance el sistema y qué tendría que cambiar para habilitar otras posibilidades?**
+
+Esta pregunta introduce la perspectiva TGCV: antes de decidir qué solución implementar o qué trayectoria seguir, explorar el conjunto de transformaciones que el sistema puede realizar, las relaciones y condiciones que las conectan, las restricciones que las bloquean y los cambios que podrían habilitar nuevas alternativas.
+
+El enfoque no sustituye automáticamente los métodos existentes ni presupone que una mayor cantidad de transformaciones genere más valor. Propone una pregunta analítica adicional que debe contrastarse en problemas reales.
+
+### Mensaje ejecutivo breve
 
 > **Descubrir nuevas posibilidades de transformación para crear mejores opciones de negocio.**
 
-Mensajes complementarios:
+### Mensajes complementarios
 
 - La siguiente oportunidad de innovación puede no estar en optimizar lo que hacemos, sino en descubrir qué más podríamos llegar a hacer.
 - No basta con identificar un objetivo: hay que entender qué transformaciones lo hacen alcanzable.
@@ -94,15 +104,36 @@ No afirmar sin evidencia específica que TGCV:
 
 El piloto sirve para poner a prueba la utilidad incremental en un caso concreto; no convierte por sí solo un resultado local en una validación general de la teoría.
 
-## 7. Posicionamiento profesional y comercial
+## 7. Servicio de consultoría: explorar las transformaciones que un sistema puede habilitar
 
-Posicionamiento propuesto:
+El servicio debe presentarse desde el problema y la decisión del cliente, no desde el perfil personal del consultor ni desde la promesa de que una teoría ya está validada.
 
-**Consultoría sénior en estrategia tecnológica e innovación aplicada, con una perspectiva de exploración de transformaciones y un demostrador TGCV como activo diferenciador en evaluación.**
+### Propuesta de servicio
 
-El punto de partida es combinar experiencia en estrategia, negocio, tecnología, preventa estratégica y coordinación multidisciplinar con una forma de análisis que se pueda explicar, mostrar y contrastar con un caso real.
+**Ayudamos a organizaciones a explorar qué transformaciones tienen a su alcance sus procesos, productos o modelos de negocio, qué limita otras posibilidades y qué cambios podrían habilitarlas, antes de comprometerse con una solución o una trayectoria.**
 
-No posicionarse como experto técnico en IA por el mero hecho de desarrollar TGCV, ni presentar TGCV como teoría consolidada o producto con resultados demostrados. La credibilidad debe apoyarse en el problema del cliente, la claridad del método, la comparación con alternativas existentes, la trazabilidad de los hallazgos y la honestidad sobre los límites.
+El servicio aporta una perspectiva estructurada para hacer explícitas y examinar alternativas de transformación. TGCV y su demostrador se utilizan como marco exploratorio de análisis, no como garantía de predicción, optimización o retorno económico.
+
+### Qué recibe el cliente
+
+- Una formulación compartida del reto y de la decisión que necesita tomar.
+- Un mapa explícito del sistema y de las transformaciones relevantes para ese reto.
+- Un análisis de posibilidades accesibles, restricciones, relaciones y dependencias que puedan habilitar o bloquear alternativas.
+- Una comparación documentada con el análisis o método que la organización utiliza habitualmente.
+- Un informe ejecutivo que distingue hallazgos, hipótesis, supuestos, incertidumbres y límites.
+- Una recomendación sobre qué alternativas merece la pena investigar o probar, o sobre por qué no se justifica continuar.
+
+### Formato inicial
+
+Un **piloto de exploración de transformaciones**, acotado a un sistema y una decisión de negocio. El alcance, la duración, los participantes y los criterios de evaluación se acuerdan con el cliente antes de empezar. No se presupone que el piloto vaya a encontrar alternativas nuevas ni que estas produzcan valor; eso es precisamente lo que se evalúa.
+
+### Diferenciación que debe ponerse a prueba
+
+El servicio no debe venderse como una herramienta de diagramación ni como una metodología superior por definición. La pregunta comercial verificable es si la perspectiva de transformaciones accesibles permite identificar alternativas, restricciones o dependencias relevantes que el enfoque de referencia no había hecho visibles, y si esa información resulta útil para la decisión del cliente.
+
+La experiencia en estrategia, negocio, tecnología, preventa estratégica y coordinación multidisciplinar respalda la capacidad de conducir el trabajo, traducir el análisis a decisiones y facilitar la evaluación con el cliente. No sustituye la necesidad de evidencia sobre la utilidad diferencial de TGCV.
+
+No presentar TGCV como teoría consolidada, producto científicamente validado o mecanismo que garantice valor. La oferta debe apoyarse en un problema concreto, un alcance claro, entregables trazables y una evaluación honesta de resultados y límites.
 
 ## 8. El puente entre investigación y negocio
 
@@ -118,7 +149,7 @@ Ese es el puente que necesitamos construir entre la investigación y el negocio:
 
 ## 9. Estado y próximos pasos
 
-- **Registrado como propuesta:** mensajes ejecutivos, hipótesis de diferenciación, posibles ámbitos de aplicación y diseño preliminar de un piloto.
+- **Registrado como propuesta:** mensaje de apertura de alto nivel y pregunta fundamental, hipótesis de diferenciación, posibles ámbitos de aplicación, servicio de consultoría formulado desde la necesidad del cliente y diseño preliminar de un piloto.
 - **Pendiente de evidencia:** utilidad diferencial frente a métodos de referencia, reproducibilidad en casos concretos, resultados empresariales y cualquier afirmación causal o general.
 - **No autorizado por este documento:** cambiar el Core TGCV, la RMA, el estado de las claims, ni declarar validación científica o comercial.
 - **Próximo paso recomendado:** seleccionar un problema de negocio acotado, acordar una línea base y criterios de evaluación antes de ejecutar el piloto.
