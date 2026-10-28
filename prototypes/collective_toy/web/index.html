@@ -172,10 +172,10 @@ function enumerateTgcvTrajectories(model,scenarioId){
  var scenario=(model.scenarios||[]).find(function(x){return x.id===scenarioId});if(!scenario)return [];
  var mappingByTransformation=new Map(),transitionById=new Map((model.transitions||[]).map(function(t){return[t.id,t]}));
  (window.lastTgcvDemoResult.mappings||[]).forEach(function(m){if(mappingByTransformation.has(m.tgcv_transformation_id))mappingByTransformation.set(m.tgcv_transformation_id,null);else mappingByTransformation.set(m.tgcv_transformation_id,m)});
- // TGCV candidates are enumerated from TGCV relations only. System-state continuity,
- // disabled transitions, conditions and temporal prerequisites belong to execution.
- // Accessibility candidates depend on TGCV transformations and relations plus a unique, current mapping.
- // Disabled transitions and unevaluated/false conditions constrain execution, not TGCV accessibility.
+ // Candidates are enumerated from the current scenario's TGCV accessibility graph.
+ // Scenario conditions and disabled transitions determine T_acc upstream in tgcvDemoFixture;
+ // temporal prerequisites and state continuity are checked when executing a selected candidate.
+ // Only TGCV relations generate candidate continuations; system transitions are provenance/validation.
  var mapped=new Set(Array.from(mappingByTransformation.keys()).filter(function(id){var m=mappingByTransformation.get(id);return !!m&&!!transitionById.get(m.system_transition_id)}));
  var declared=new Set((tgcv.transformations||[]).filter(function(id){return typeof id==="string"}));
  var topologyRelations=(tgcv.relations||[]).filter(function(pair){return Array.isArray(pair)&&pair.length===2&&declared.has(pair[0])&&declared.has(pair[1])});
