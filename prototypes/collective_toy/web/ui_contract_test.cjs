@@ -4189,6 +4189,50 @@ const assert = require("node:assert/strict");
     const staleAssessmentOutcomeHash = structuredClone(temporalPackage);
     staleAssessmentOutcomeHash.value_assessment.outcome_sha256 = "0".repeat(64);
     await assessLinkedPackageRejection(staleAssessmentOutcomeHash, /El hash del resultado de valoración no coincide/i, false);
+    // A TGCV-accessible candidate with a missing system correspondence must be visible,
+    // produce an auditable BLOCKED trace when selected, and never create an outcome.
+    const unmappedExecutionSetup = await temporalPage.evaluate(() => {
+      const tgcvResult = window.lastTgcvDemoResult;
+      const originalMappings = structuredClone(tgcvResult.mappings);
+      tgcvResult.mappings = originalMappings.filter(item =>
+        item.tgcv_transformation_id !== "tau_t_ab");
+      const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+      const candidateIndex = (result.paths || []).findIndex(path =>
+        path.some(step => step.transformation === "tau_t_ab"));
+      return { candidateIndex, originalMappings };
+    });
+    assert(unmappedExecutionSetup.candidateIndex >= 0,
+      "GT-05 temporal: unmapped TGCV transformation must remain selectable as an accessible candidate");
+    await temporalPage.locator("#sequence-input").fill("");
+    await temporalPage.locator("#sequence-select").selectOption({ index: unmappedExecutionSetup.candidateIndex });
+    await temporalPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+    await temporalPage.waitForFunction(() =>
+      document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded",
+      { timeout: 3000 });
+    const unmappedExecutionTrace = await temporalPage.locator("#sequence-trace").evaluate(el => ({
+      state: el.dataset.state,
+      trace: el._trace,
+      outcomeState: document.querySelector("#outcome-status")?.dataset.state,
+      activeOutcome: window.activeExecutionRecord?.outcome ?? null,
+      message: el.innerText
+    }));
+    await temporalPage.evaluate(mappings => {
+      window.lastTgcvDemoResult.mappings = mappings;
+    }, unmappedExecutionSetup.originalMappings);
+    assert.equal(unmappedExecutionTrace.state, "blocked-trace-recorded",
+      "GT-05 temporal: missing correspondence must produce an auditable blocked trace");
+    assert.equal(unmappedExecutionTrace.trace.status, "BLOCKED",
+      "GT-05 temporal: missing correspondence must never be recorded as a completed execution");
+    assert.equal(unmappedExecutionTrace.trace.blocked_step.reason, "tgcv_mapping_missing_or_invalid",
+      "GT-05 temporal: trace must identify missing/invalid TGCV correspondence as the blocking cause");
+    assert(unmappedExecutionTrace.trace.tgcv_trajectory.transformation_ids.includes("tau_t_ab"),
+      "GT-05 temporal: blocked trace must preserve the attempted TGCV transformation");
+    assert.equal(unmappedExecutionTrace.activeOutcome, null,
+      "GT-05 temporal: a blocked unmapped trajectory must not generate an outcome");
+    assert.equal(unmappedExecutionTrace.outcomeState, "not-assessed",
+      "GT-05 temporal: contextual value/outcome must remain unassessed after blocked execution");
+    assert.match(unmappedExecutionTrace.message, /accesible.*no se puede ejecutar|correspondencia única y válida/i,
+      "GT-05 temporal: user-facing trace must explain the accessibility/executability distinction");
     await temporalPage.close();
 
     // UX regression: the accessible-trajectory carousel is visual, distinct from concrete executions,
