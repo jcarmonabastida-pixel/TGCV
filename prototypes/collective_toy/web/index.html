@@ -199,8 +199,11 @@ function enumerateTgcvTrajectories(model,scenarioId){
   if(!mapping||!transition)return;
   var entry={transformation:id,system_transition:transition.id,source_state:transition.source,target_state:transition.target};
   var nextPath=path.concat([entry]),nextVisited=new Set(visited);nextVisited.add(id);
-  var eligible=(successors.get(id)||[]).filter(function(nextId){return !nextVisited.has(nextId)});
-  if(nextPath.length>=maxDepth){paths.push(nextPath);if(eligible.length)truncated=true;return}
+  var eligible=(successors.get(id)||[]);
+  // max_depth is the deliberate traversal bound, not trajectory-cap truncation.
+  // Repeated transformations are allowed within that bound so executable cycles
+  // remain visible as bounded TGCV candidates.
+  if(nextPath.length>=maxDepth){paths.push(nextPath);return}
   if(!eligible.length){paths.push(nextPath);return}
   eligible.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextVisited);else truncated=true});
  }
