@@ -191,7 +191,7 @@ function enumerateTgcvTrajectories(model,scenarioId){
  // merely because every node has an incoming edge. For a source cyclic component,
  // choose its lexicographically first TGCV transformation as a deterministic seed.
  function reachableFrom(seed){var seen=new Set([seed]),queue=[seed];while(queue.length){var current=queue.shift();(topologySuccessors.get(current)||[]).forEach(function(next){if(!seen.has(next)){seen.add(next);queue.push(next)}})}return seen}
- var reachability=new Map();mapped.forEach(function(id){reachability.set(id,reachableFrom(id))});
+ var reachability=new Map();declared.forEach(function(id){reachability.set(id,reachableFrom(id))});
  var unassigned=new Set(declared),components=[];
  while(unassigned.size){var seed=Array.from(unassigned).sort()[0],forward=reachability.get(seed);var component=Array.from(unassigned).filter(function(id){return forward.has(id)&&reachability.get(id).has(seed)}).sort();component.forEach(function(id){unassigned.delete(id)});components.push(component)}
  var componentOf=new Map();components.forEach(function(component,index){component.forEach(function(id){componentOf.set(id,index)})});
