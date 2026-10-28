@@ -1124,18 +1124,26 @@ function tgcvDemoFixture(systemModel,systemResult,currentScenarioId){
  systemResult=systemResult||execute(systemModel);
  var mappedByTransition=new Map(mappings.map(function(m){return [m.system_transition_id,m.tgcv_transformation_id]}));
  function transformationsAllowedByScenario(scenario){
-  // TGCV accessibility is a property of the declared transformation graph and
-  // its unique, valid correspondences. Scenario restrictions govern execution,
-  // not whether a declared TGCV transformation remains an accessibility candidate.
+  // The current T_acc view is scenario-dependent: a disabled transition or a
+  // condition not explicitly TRUE makes its mapped transformation unavailable
+  // in this scenario. Keep declared TGCV topology separately when finding roots,
+  // so blocked predecessors never promote descendants to artificial roots.
+  var disabled=new Set(scenario.disabled_transitions||[]),evaluations=scenario.condition_evaluations||{};
   return transformations.filter(function(id){
    var matches=mappings.filter(function(m){return m.tgcv_transformation_id===id});
    if(matches.length!==1)return false;
    var transition=transitions.find(function(t){return t.id===matches[0].system_transition_id});
-   return !!transition;
+   if(!transition||disabled.has(transition.id))return false;
+   if(transition.condition){
+    var evaluation=evaluations[transition.id];
+    if(!evaluation||evaluation.condition!==transition.condition||evaluation.result!=="TRUE")return false;
+   }
+   return true;
   });
  }
- // Traverse TGCV relations independently of system-state trajectories. Disabled
- // transitions and conditions are checked by the execution path, not here.
+ // The current TGCV graph represents scenario-accessible transformations.
+ // Candidate trajectories are still enumerated from TGCV relations, not from
+ // the system-state graph; execution conditions are checked during execution.
  function accessibleTransformations(scenario){
   var allowed=new Set(transformationsAllowedByScenario(scenario));
   // Roots belong to the declared TGCV graph. A disabled predecessor must not
