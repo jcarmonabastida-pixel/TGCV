@@ -174,7 +174,8 @@ function enumerateTgcvTrajectories(model,scenarioId){
  (window.lastTgcvDemoResult.mappings||[]).forEach(function(m){if(mappingByTransformation.has(m.tgcv_transformation_id))mappingByTransformation.set(m.tgcv_transformation_id,null);else mappingByTransformation.set(m.tgcv_transformation_id,m)});
  // TGCV candidates are enumerated from TGCV relations only. System-state continuity,
  // disabled transitions, conditions and temporal prerequisites belong to execution.
- var mapped=new Set(Array.from(mappingByTransformation.keys()).filter(function(id){var m=mappingByTransformation.get(id);return !!m&&!!transitionById.get(m.system_transition_id)}));
+ var disabledTransitions=new Set(scenario.disabled_transitions||[]),conditionEvaluations=scenario.condition_evaluations||{};
+ var mapped=new Set(Array.from(mappingByTransformation.keys()).filter(function(id){var m=mappingByTransformation.get(id),transition=m&&transitionById.get(m.system_transition_id);if(!transition||disabledTransitions.has(transition.id))return false;if(transition.condition){var evaluation=conditionEvaluations[transition.id];return !!evaluation&&evaluation.condition===transition.condition&&evaluation.result==="TRUE"}return true}));
  var declared=new Set((tgcv.transformations||[]).filter(function(id){return typeof id==="string"}));
  var topologyRelations=(tgcv.relations||[]).filter(function(pair){return Array.isArray(pair)&&pair.length===2&&declared.has(pair[0])&&declared.has(pair[1])});
  var allRelations=topologyRelations.filter(function(pair){return mapped.has(pair[0])&&mapped.has(pair[1])});
