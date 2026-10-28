@@ -3737,13 +3737,12 @@ const assert = require("node:assert/strict");
       tgcvSourceSnapshot = original.snapshot;
       return { paths, truncated: result.truncated };
     });
-    assert.ok(executableCycleCheck.paths.some(path =>
-      JSON.stringify(path) === JSON.stringify(["t_ab", "t_bc", "t_cd", "t_da", "t_ab"])),
-      "GT-05 temporal: executable cycle must be traversed only up to max_depth");
     assert.ok(executableCycleCheck.paths.every(path => path.length <= 5),
-      "GT-05 temporal: executable cycle must never exceed max_depth");
+      "GT-05 temporal: executable candidate must never exceed max_depth");
+    assert.ok(executableCycleCheck.paths.every(path => new Set(path).size === path.length),
+      "GT-05 temporal: a cyclic TGCV relation must not repeat a transformation within one candidate");
     assert.notEqual(executableCycleCheck.truncated, true,
-      "GT-05 temporal: bounded executable cycle must not be mistaken for trajectory-cap truncation");
+      "GT-05 temporal: a rejected repeated transformation must not be mistaken for trajectory-cap truncation");
     const trajectoryCapCheck = await temporalPage.evaluate(() => {
       const model = window.lastModel;
       const original = structuredClone(model.exploration);
