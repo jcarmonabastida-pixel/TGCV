@@ -4459,7 +4459,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#trajectory-card").innerText(), /A → tau_cond_ab → B → tau_plain_bc → C/,
       "TRUE must enable the TGCV transformation and its downstream trajectory");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
-    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /correspondencias vigentes/i,
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Regla de correspondencia: condition-evaluator-explicit-mapping-v1/i,
       "The current TGCV trajectory must be derived only from the explicitly declared mapping");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("FALSE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
