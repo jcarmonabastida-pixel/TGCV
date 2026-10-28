@@ -175,22 +175,29 @@ function enumerateTgcvTrajectories(model,scenarioId){
  // TGCV candidates are enumerated from TGCV relations only. System-state continuity,
  // disabled transitions, conditions and temporal prerequisites belong to execution.
  var mapped=new Set(Array.from(mappingByTransformation.keys()).filter(function(id){var m=mappingByTransformation.get(id);return !!m&&!!transitionById.get(m.system_transition_id)}));
- var allRelations=(tgcv.relations||[]).filter(function(pair){return Array.isArray(pair)&&pair.length===2&&mapped.has(pair[0])&&mapped.has(pair[1])});
- var successors=new Map(),predecessors=new Map();
+ var declared=new Set((tgcv.transformations||[]).filter(function(id){return typeof id==="string"}));
+ var topologyRelations=(tgcv.relations||[]).filter(function(pair){return Array.isArray(pair)&&pair.length===2&&declared.has(pair[0])&&declared.has(pair[1])});
+ var allRelations=topologyRelations.filter(function(pair){return mapped.has(pair[0])&&mapped.has(pair[1])});
+ var successors=new Map(),predecessors=new Map(),topologySuccessors=new Map();
  mapped.forEach(function(id){successors.set(id,[]);predecessors.set(id,[])});
+ declared.forEach(function(id){topologySuccessors.set(id,[])});
+ topologyRelations.forEach(function(pair){topologySuccessors.get(pair[0]).push(pair[1])});
  allRelations.forEach(function(pair){successors.get(pair[0]).push(pair[1]);predecessors.get(pair[1]).push(pair[0])});
- successors.forEach(function(ids){ids.sort()});
+ successors.forEach(function(ids){ids.sort()});topologySuccessors.forEach(function(ids){ids.sort()});
+ // Determine entry points from the declared TGCV topology, not from the subset
+ // that happens to have valid mappings. An ambiguous/missing mapping must not
+ // turn its descendants into artificial new roots.
  // Find strongly connected components. A cycle must not erase all entry points
  // merely because every node has an incoming edge. For a source cyclic component,
  // choose its lexicographically first TGCV transformation as a deterministic seed.
- function reachableFrom(seed){var seen=new Set([seed]),queue=[seed];while(queue.length){var current=queue.shift();(successors.get(current)||[]).forEach(function(next){if(!seen.has(next)){seen.add(next);queue.push(next)}})}return seen}
+ function reachableFrom(seed){var seen=new Set([seed]),queue=[seed];while(queue.length){var current=queue.shift();(topologySuccessors.get(current)||[]).forEach(function(next){if(!seen.has(next)){seen.add(next);queue.push(next)}})}return seen}
  var reachability=new Map();mapped.forEach(function(id){reachability.set(id,reachableFrom(id))});
- var unassigned=new Set(mapped),components=[];
+ var unassigned=new Set(declared),components=[];
  while(unassigned.size){var seed=Array.from(unassigned).sort()[0],forward=reachability.get(seed);var component=Array.from(unassigned).filter(function(id){return forward.has(id)&&reachability.get(id).has(seed)}).sort();component.forEach(function(id){unassigned.delete(id)});components.push(component)}
  var componentOf=new Map();components.forEach(function(component,index){component.forEach(function(id){componentOf.set(id,index)})});
  var hasExternalIncoming=new Set();
- allRelations.forEach(function(pair){var from=componentOf.get(pair[0]),to=componentOf.get(pair[1]);if(from!==to)hasExternalIncoming.add(to)});
- var starts=components.filter(function(component,index){return !hasExternalIncoming.has(index)}).map(function(component){return component[0]}).sort();
+ topologyRelations.forEach(function(pair){var from=componentOf.get(pair[0]),to=componentOf.get(pair[1]);if(from!==to)hasExternalIncoming.add(to)});
+ var starts=components.filter(function(component,index){return !hasExternalIncoming.has(index)}).map(function(component){return component[0]}).filter(function(id){return mapped.has(id)}).sort();
  var maxDepth=model.exploration&&Number.isInteger(model.exploration.max_depth)?model.exploration.max_depth:100,cap=model.exploration&&Number.isInteger(model.exploration.max_trajectories)?model.exploration.max_trajectories:1000,paths=[],truncated=false;
  if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
  function visit(id,path,visited){
