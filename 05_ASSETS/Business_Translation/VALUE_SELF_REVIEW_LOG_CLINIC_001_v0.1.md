@@ -379,3 +379,14 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir criterios clínicos autorizados, responsables y vías de derivación, registro de decisiones y comunicación al paciente. No se inventan umbrales ni se presume un protocolo clínico existente.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-038 — Comunicación proactiva al paciente ante reprogramación por ausencia imprevista
+
+- **Aprobación del usuario:** sí.
+- **Regla acordada:** cuando una ausencia imprevista implique reprogramar una cita, el paciente debe recibir comunicación proactiva y no tener que contactar por iniciativa propia para conocer la situación.
+- **Contenido de la comunicación:** explicar la incidencia, la alternativa prevista o el estado de su gestión y los siguientes pasos. Si todavía no hay solución confirmada, indicar cuándo y cómo recibirá nueva información.
+- **Seguimiento:** mantener el seguimiento hasta que la situación quede resuelta y comunicada al paciente.
+- **Pendiente antes de uso real:** definir responsables, canales, plazos de comunicación y actualización, contenido mínimo y registro de los contactos, respetando los requisitos aplicables de privacidad y comunicación asistencial.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
