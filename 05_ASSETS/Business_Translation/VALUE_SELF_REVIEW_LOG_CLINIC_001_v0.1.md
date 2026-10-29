@@ -181,3 +181,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Preguntas pendientes:** identificar niveles y roles existentes; criterios autorizados de escalado; capacidad por nivel; y tratamiento de casos en que tampoco haya capacidad en el nivel receptor.
 - **Límite:** el escalado no se trata como garantía de resolución más rápida ni se da por demostrado el dimensionamiento adecuado del personal.
 - **Estado:** registrado; continuar revisión A3.
+
+
+### SR-017 — Información de continuidad y tiempos acordados
+
+- **Aportación del usuario:** además del estado actual, información recibida, actuaciones realizadas, responsable actual y motivo de bloqueo, la solicitud debe llevar los tiempos de respuesta y resolución acordados.
+- **Tratamiento en A3:** incorporado como requisito funcional provisional para la información que acompaña a cada solicitud durante el flujo.
+- **Distinción necesaria:** los tiempos acordados son compromisos o referencias por confirmar; los tiempos observados son datos que deben obtenerse de registros fiables. No se inventan plazos ni valores.
+- **Pendiente:** confirmar dónde se registran, cómo se actualizan y cómo se consultan durante los traspasos entre roles.
+- **Estado:** registrado; continúa la revisión de A3.
