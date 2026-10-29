@@ -267,6 +267,12 @@ Además de mantener actualizada la información de las solicitudes, el rol o fun
 
 Esta responsabilidad transversal no sustituye la ejecución de las tareas propias de cada rol ni autoriza a cambiar criterios clínicos o reglas de prioridad. El rol concreto, su autoridad, los canales de comunicación, la frecuencia de supervisión y las reglas de escalado deben definirse y confirmarse antes de aplicar el modelo a una organización real.
 
+### Escalado por incumplimiento de niveles de servicio y por excepciones
+
+El ownership transversal debe activar el **escalado funcional y jerárquico** conforme a los umbrales de incumplimiento de los niveles de servicio acordados. También debe poder activar el escalado **bajo demanda explícita ante situaciones excepcionales**, entre ellas quejas o reclamaciones formales e insatisfacción general con el servicio.
+
+Los umbrales, los niveles funcionales y jerárquicos, los destinatarios, los tiempos de actuación y el tratamiento de cada tipo de excepción deben estar definidos y autorizados; no se inventan valores ni una matriz de escalado para este caso. La insatisfacción general debe concretarse mediante señales o criterios acordados, sin asumir una medición que aún no se haya definido.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
