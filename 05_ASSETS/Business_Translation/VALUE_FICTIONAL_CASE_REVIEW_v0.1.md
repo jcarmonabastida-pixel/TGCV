@@ -13,7 +13,7 @@
 
 El caso contiene los ocho artefactos y una cadena general ALIGN → SENSE → CONNECT → DESIGN → DECIDE → ACT → LEARN. La actualización del caso añadió un registro de ejecución narrativo simulado, identificadores para el dataset y el registro de ejecución, definiciones operativas y denominadores explícitos, y supuestos de selección y ventanas temporales.
 
-**Estado:** H1, H2, H3 y H5 tienen correcciones documentales aplicadas en el caso actualizado; no deben considerarse validados empíricamente. H4, H6 y H7 se consideran atendidos documentalmente en la versión 0.3; la existencia de criterios previos pendientes queda explícita, la frontera Sprint/prueba operativa se separa, y la decisión se distingue de la autorización real. La trazabilidad mejoró, pero el registro de ejecución sigue siendo narrativo y no equivale a evidencia auditable.
+**Estado:** H1, H2, H3, H4, H6 y H7 atendidos documentalmente; H5 atendido parcialmente. Ningún hallazgo queda validado empíricamente. La trazabilidad mejoró, pero el registro de ejecución sigue siendo narrativo y no equivale a evidencia auditable.
 
 No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los hallazgos se tratan como mejoras de contenido y trazabilidad dentro de A1–A8.
 
@@ -86,22 +86,18 @@ No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los ha
 
 | Fase / elemento | Estado documental | Observación |
 |---|---|---|
-| ALIGN / A1 | Presente | Propósito y grupos afectados; autoridad pendiente. |
+| ALIGN / A1 | Presente | Propósito y grupos afectados; autoridad real que autorice una ejecución debe identificarse antes de una prueba. |
 | SENSE / A2 | Presente | Preguntas e hipótesis iniciales diferenciadas de hechos. |
 | CONNECT / A3 | Presente | Modelo conceptual y límites descritos; relaciones no validadas. |
 | DESIGN / A4 | Presente | Alternativas y riesgos; no hay puntuación arbitraria. |
 | Evidencia transversal / A5 | Presente | Definiciones y denominadores simulados añadidos; comparabilidad no verificada. |
-| DECIDE / A6 | Presente | Decisión trazable en términos generales; faltan decisor y umbrales previos. |
+| DECIDE / A6 | Presente | Rol decisor ficticio y autorización pendiente documentados; los umbrales previos siguen pendientes de acuerdo y no se presentan como cerrados. |
 | ACT / A7 | Presente | Plan y registro narrativo de ejecución simulada; no es evidencia auditable. |
 | LEARN / A8 | Presente | Vínculo explícito con dataset y registro de ejecución simulado; límites de atribución reconocidos. |
 
-## 4. Orden recomendado de corrección
+## 4. Revisión final de los hallazgos
 
-1. Resolver H1 y H3 juntos: crear registro de ejecución simulado con ID y enlazarlo a A5/A7/A8.
-2. Resolver H2 y H5 juntos: definir indicadores y documentar el dataset ficticio y sus supuestos.
-3. Resolver H4: incorporar campos para criterios de decisión preacordados, sin inventar un umbral universal.
-4. Resolver H6: separar de manera inequívoca el aprendizaje del Sprint del resultado de la prueba operativa posterior.
-5. Resolver H7: distinguir recomendación, decisión simulada y autorización real.
+Las correcciones documentales para H1–H4 y H6–H7 están incorporadas en la versión 0.3 del caso. H5 sigue parcialmente abierto porque el conjunto es ficticio: describir supuestos de selección y ventanas no puede demostrar comparabilidad. La próxima prueba útil no es añadir más narrativa ficticia, sino comprobar con lectores o facilitadores si pueden usar los artefactos sin confundir plan, decisión, autorización, Sprint y prueba operativa.
 
 ## 5. Criterio de aceptación para una versión revisada
 
@@ -124,4 +120,4 @@ La revisión se considera cerrada documentalmente cuando:
 - **H6:** atendido documentalmente; aprendizaje del Sprint separado de resultados operativos posteriores.
 - **H7:** atendido documentalmente; A6 incluye decisor ficticio, fecha no especificada y estado de autorización pendiente.
 
-**Conclusión:** el caso está mejor trazado, pero todavía no debe considerarse ejemplo de referencia cerrado. La revisión sigue siendo documental y el dataset continúa siendo ficticio.
+**Conclusión:** el caso supera la revisión documental de coherencia con reservas: H1–H4 y H6–H7 están atendidos documentalmente y H5 permanece parcialmente abierto. No debe llamarse ejemplo validado ni referencia empírica. El siguiente paso para evaluar usabilidad es una prueba de uso del estándar con participantes, manteniendo los datos del caso como ficticios y registrando los resultados de esa prueba por separado.
