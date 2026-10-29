@@ -172,3 +172,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Preguntas pendientes:** identificar los roles por macroetapa; precisar cómo se define y registra su capacidad disponible; detectar esperas por falta de capacidad; y conocer las reglas autorizadas de escalado o reasignación, si existen.
 - **Límite:** no se inventan cifras, umbrales ni reglas operativas.
 - **Estado:** registrado; pendiente de continuar la revisión de A3.
+
+
+### SR-016 — Continuidad del flujo y escalado
+
+- **Aportación del usuario:** en la medida de lo posible, el flujo del proceso debe ser continuo; si falta capacidad para el rol requerido, debería escalarse. Esto presupone que el dimensionamiento del personal sea suficiente y adecuado por grupos o niveles de atención, soporte y resolución de solicitudes.
+- **Tratamiento en A3:** registrado como orientación provisional de diseño del flujo y como supuesto organizativo pendiente de verificación.
+- **Preguntas pendientes:** identificar niveles y roles existentes; criterios autorizados de escalado; capacidad por nivel; y tratamiento de casos en que tampoco haya capacidad en el nivel receptor.
+- **Límite:** el escalado no se trata como garantía de resolución más rápida ni se da por demostrado el dimensionamiento adecuado del personal.
+- **Estado:** registrado; continuar revisión A3.
