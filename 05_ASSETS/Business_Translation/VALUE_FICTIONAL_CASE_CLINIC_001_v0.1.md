@@ -408,6 +408,52 @@ La gestión ordinaria de citas debe resolverse mediante responsabilidades, susti
 
 Antes del uso real deben definirse las responsabilidades, sustituciones, delegaciones y límites de autoridad, así como qué circunstancias justifican la excepción. Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento organizativo aprobado ni validación empírica.
 
+### Contingencia ante indisponibilidad simultánea del responsable y de su cobertura
+
+Si la persona responsable de una función crítica y la cobertura alternativa prevista están ambas indisponibles, se considera una **situación de contingencia**, no una incidencia ordinaria de cobertura.
+
+- Debe activarse un procedimiento de contingencia predefinido, con un segundo nivel de respuesta y responsables o instancias competentes previamente identificados y autorizados.
+- Si tampoco existe capacidad de respuesta en ese nivel, se activa la vía de contingencia que determine la autoridad competente, preservando la atención necesaria y sin asignar funciones a personas no autorizadas o no capacitadas.
+- La activación, las decisiones, las responsabilidades asumidas y el seguimiento deben quedar registrados.
+- No se presume que la mera escalación garantice la resolución ni que exista autoridad ilimitada para asumir tareas.
+
+Antes del uso real deben definirse los niveles, responsables, competencias, límites y vías de activación de la contingencia, de acuerdo con las autoridades organizativas y clínicas correspondientes. Esta regla es una propuesta funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
+
+### Recuperación controlada tras una contingencia en el proceso evaluado
+
+Una vez restablecidas las condiciones habituales, el retorno a la operativa ordinaria del **proceso de concertación y gestión de citas incluido en esta evaluación** debe realizarse de forma controlada, no automática.
+
+- Confirmar que se han recuperado las condiciones necesarias para gestionar las solicitudes y citas afectadas.
+- Revisar las solicitudes pendientes o bloqueadas durante la contingencia.
+- Transferir formalmente las responsabilidades y la información a los responsables ordinarios.
+- Comprobar que ninguna solicitud o paciente afectado queda sin seguimiento dentro del proceso evaluado.
+- Registrar la recuperación y el cierre de la contingencia.
+
+Este criterio no extiende el alcance de A3 a la continuidad general de la clínica ni a otros procesos clínicos u organizativos ajenos al proceso evaluado. La recuperación de la operativa tampoco significa que todas las solicitudes afectadas estén ya resueltas.
+
+### Identificación y trazabilidad de solicitudes afectadas por la contingencia
+
+Toda contingencia debe dejar identificadas las solicitudes de cita afectadas, de modo que puedan recuperarse sin pérdida de trazabilidad. El registro debe permitir conocer:
+
+- qué solicitudes resultaron afectadas;
+- en qué etapa del proceso se encontraban;
+- qué actuaciones quedaron pendientes;
+- quién debe retomarlas;
+- qué prioridad o necesidad de seguimiento les corresponde, conforme a criterios autorizados;
+- qué actuaciones se realizaron para recuperar su tramitación.
+
+### Verificación de la reincorporación efectiva de las solicitudes al flujo
+
+Antes de considerar recuperada la operativa del proceso evaluado, debe comprobarse, para cada solicitud afectada, que:
+
+- tiene asignado un responsable efectivo;
+- está identificada la siguiente actuación pendiente;
+- conserva la información y el historial necesarios;
+- mantiene las condiciones de prioridad y seguimiento que le correspondan, conforme a criterios autorizados;
+- ha retomado efectivamente su tramitación o, si continúa bloqueada, tiene documentados el motivo, el responsable y la respuesta prevista.
+
+La recuperación de la contingencia y la resolución de las solicitudes son resultados distintos. Una solicitud puede seguir pendiente después de recuperada la operativa, pero no debe quedar sin responsable ni seguimiento.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
