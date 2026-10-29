@@ -48,6 +48,15 @@
 - La duración sugerida es una hipótesis de diseño, no un estándar validado.
 - Estado: borrador; requiere probarse en un caso y registrar el aprendizaje.
 
+### 6. CASO FICTICIO INTEGRAL — RECORRIDO A1–A8
+
+[VALUE — Caso ficticio integral: acceso a citas en una clínica](../VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md)
+
+- Recorre ALIGN → SENSE → CONNECT → DESIGN → DECIDE → ACT → LEARN y documenta A1–A8.
+- Incluye hipótesis, opciones, evidencia simulada, decisión, plan hipotético, resultados ficticios, trazabilidad y preguntas para revisar el estándar.
+- **No es evidencia real ni validación empírica** de VALUE o TGCV; no se ha ejecutado una intervención en una clínica.
+- Funciona como caso de prueba documental antes de una prueba de uso con participantes y datos reales autorizados.
+
 ## Convención de gobernanza
 
 1. El maestro es la única referencia activa para el trabajo metodológico, salvo decisión documentada.
@@ -66,5 +75,5 @@
 | `ALTERNATIVE_UNEVALUATED_VALUE_FIVE_STAGE_CYCLE_v0.1.md` | 0.1 | **ALTERNATIVA NO EVALUADA** | Explorar el ciclo mnemónico VALUE de cinco etapas. |
 | `../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` | 0.1 | **BORRADOR** | Fichas de especificación para A1–A8. |
 | `../VALUE_DISCOVERY_SPRINT_v0.1.md` | 0.1 | **BORRADOR** | Diseño inicial del servicio piloto. |
-| `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |
+| `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |\n| `../VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md` | 0.1 | **CASO FICTICIO INTEGRAL** | Ejercicio A1–A8; datos y resultados simulados, no validación empírica. |
 
