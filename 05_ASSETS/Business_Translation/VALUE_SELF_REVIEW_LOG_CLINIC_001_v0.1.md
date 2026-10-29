@@ -92,6 +92,17 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** aportaciones registradas; pendiente de revisar A1 para reflejar la cuestión del camino crítico y cerrar A2 tras contrastar fuentes y disponibilidad de datos.
 - **Decisión:** no modificar todavía el estándar maestro; registrar la ubicación propuesta del tema y continuar la autoevaluación de los artefactos.
 
+
+### SR-009 — Diferencias entre grupos de pacientes y estacionalidad del volumen
+
+- **Tarea:** identificar factores distributivos y temporales que pueden afectar a la interpretación de las demoras y al encuadre de la oportunidad.
+- **Observación del usuario:** confirma que conviene identificar diferencias entre grupos de pacientes en sus necesidades y en el impacto que las demoras tienen sobre ellos; añade que “la estacionalidad es un factor que puede afectar al volumen de solicitudes” y que debe considerarse tanto en A1 como en A2.
+- **Aportación para A2:** investigar si las necesidades de los grupos de pacientes y las consecuencias de las demoras difieren, evitando que una mejora media o agregada oculte perjuicios desiguales. Investigar asimismo la variación temporal del volumen de solicitudes, incluida la posible estacionalidad, siempre que los datos disponibles permitan evaluarla.
+- **Aportación para A1:** registrar la posible estacionalidad como factor contextual que puede condicionar la definición del reto, la interpretación de la capacidad y las restricciones, y la decisión que se pretende apoyar. No asumir de antemano la existencia, magnitud ni patrón de una estacionalidad concreta.
+- **Precaución sobre el histórico:** los tres últimos meses propuestos para A2 pueden ayudar a describir el periodo reciente, pero por sí solos podrían no bastar para distinguir una pauta estacional recurrente de una fluctuación puntual. Se deberá comprobar qué histórico adicional existe antes de concluir que hay o no estacionalidad.
+- **Estado:** aportación registrada; A2 debe recoger tanto diferencias entre grupos como variación temporal; A1 debe incluir estacionalidad entre los factores contextuales que revisar.
+- **Decisión:** registrar sin alterar todavía el estándar maestro; al terminar la revisión de A1/A2, valorar si la mejora corresponde al caso ilustrativo, a las fichas de artefacto o a ambos.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
