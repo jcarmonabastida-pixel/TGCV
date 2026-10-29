@@ -368,3 +368,14 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir responsables, mecanismo de activación, disponibilidad de sustitutos, criterios clínicos de reprogramación, comunicación al paciente y trazabilidad de la decisión.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-037 — Priorización clínica cuando no hay sustituto disponible
+
+- **Aprobación del usuario:** sí.
+- **Regla acordada:** si se produce una ausencia imprevista de un profesional sanitario el día de la cita y no hay sustituto disponible, la decisión de reprogramar debe considerar la prioridad clínica y las consecuencias de la demora para cada paciente.
+- **Derivación clínica:** cuando la demora pueda comprometer la atención necesaria, el caso debe remitirse al profesional sanitario responsable o a la instancia clínica autorizada para que determine cómo proceder. El personal administrativo no sustituye el criterio clínico.
+- **Trazabilidad:** registrar la decisión y su justificación y comunicarla al paciente conforme al procedimiento aplicable.
+- **Pendiente antes de uso real:** definir criterios clínicos autorizados, responsables y vías de derivación, registro de decisiones y comunicación al paciente. No se inventan umbrales ni se presume un protocolo clínico existente.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
