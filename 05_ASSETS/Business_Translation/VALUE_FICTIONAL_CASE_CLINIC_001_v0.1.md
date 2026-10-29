@@ -794,6 +794,17 @@ Se propone un mecanismo de control para detectar solicitudes que carecen de resp
 
 Esta regla aborda la detección durante la operativa ordinaria y complementa, sin confundirse con ella, la recuperación de solicitudes afectadas por contingencias (SR-045 y SR-046). Es una propuesta funcional del caso ficticio, no un procedimiento aprobado ni validación empírica.
 
+### SR-048 — Detección combinada por eventos y revisión periódica
+
+Para detectar las situaciones contempladas en SR-047, se acuerda combinar dos mecanismos complementarios:
+
+- **Detección por eventos:** identificar cuando una solicitud queda sin responsable o sin siguiente actuación, o cuando se produce el incumplimiento de un plazo acordado.
+- **Revisión periódica:** identificar solicitudes que continúan activas, pero acumulan un periodo que requiere revisión sin actualización o progreso.
+
+La revisión periódica actúa también como salvaguarda ante posibles fallos del mecanismo de detección por eventos. La periodicidad y los plazos deberán definirse y autorizarse antes de cualquier uso real; no se presuponen valores ni umbrales.
+
+Criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
