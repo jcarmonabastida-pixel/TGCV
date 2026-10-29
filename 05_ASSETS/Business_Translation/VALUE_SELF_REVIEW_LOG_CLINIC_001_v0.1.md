@@ -259,3 +259,11 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir niveles y destinatarios de escalado, autoridad competente, tratamiento de la falta de capacidad en el nivel receptor, comunicaciones al paciente y criterios/procedimiento clínico para activar salvaguardas. No se inventan plazos, umbrales, recursos ni reglas clínicas.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico aprobado ni evidencia de validación real.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+### SR-026 — Información pendiente entre etapas
+
+- **Aprobación del usuario:** sí.
+- **Propuesta para A3:** si falta información necesaria para iniciar la siguiente etapa, la solicitud permanece abierta y no avanza como si se cumplieran los requisitos. Se registra qué falta y, cuando sea posible, quién debe aportarlo. El responsable end-to-end mantiene el seguimiento hasta que se complete la información o exista una decisión autorizada.
+- **Pendiente:** concretar requisitos mínimos por etapa, responsabilidades y seguimiento cuando la información no esté disponible.
+- **Límite:** regla propuesta para el caso ficticio, sin plazos ni responsabilidades reales.
+- **Estado:** registrado; continúa la revisión de A3.
