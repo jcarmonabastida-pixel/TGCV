@@ -314,3 +314,15 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir plazos, responsables de revisión, disparadores de escalado y actuaciones asociadas, conforme a criterios clínicos y organizativos autorizados. No se inventan umbrales ni se asume igual prioridad para todas las citas.
 - **Límite:** propuesta para el caso ficticio; no es un protocolo clínico aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-032 — Resolución operativa ordinaria y escalado jerárquico excepcional
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** la gestión ordinaria de citas se resuelve mediante responsabilidades, sustituciones y delegaciones predefinidas; no debe depender de intervenciones jerárquicas superiores para incidencias habituales.
+- **Autoridad end-to-end:** el responsable end-to-end debe disponer de autoridad operativa suficiente para asegurar la continuidad, pudiendo asumir una tarea si está autorizado y capacitado o asignarla a otra persona autorizada, dentro de los límites establecidos.
+- **Gestión de bloqueos:** revisión y resolución en el nivel operativo correspondiente. El escalado funcional para desbloquear o coordinar una actuación se distingue del escalado jerárquico.
+- **Excepción:** la intervención de una instancia jerárquica superior se reserva a causas extraordinarias que excedan la capacidad o autoridad operativa disponible, o a circunstancias de especial gravedad.
+- **Pendiente antes de uso real:** definir responsabilidades, sustituciones, delegaciones, límites de autoridad y circunstancias que justifican la excepción.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
