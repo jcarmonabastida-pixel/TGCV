@@ -208,3 +208,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Límites:** no sustituye la ejecución de tareas propias de otros roles ni permite alterar criterios clínicos o reglas de prioridad.
 - **Pendiente:** concretar el rol, su autoridad, canales de comunicación, frecuencia de supervisión y reglas de escalado.
 - **Estado:** registrado; continúa la revisión de A3.
+
+
+### SR-020 — Escalado por incumplimiento y excepciones
+
+- **Aportación del usuario:** activar el escalado funcional y jerárquico según umbrales de incumplimiento de los niveles de servicio acordados; además, activar escalado bajo demanda explícita ante casos excepcionales como quejas y reclamaciones formales o insatisfacción general con el servicio.
+- **Tratamiento en A3:** incorporado como regla funcional provisional para el ownership end-to-end.
+- **Pendiente de definición:** umbrales, niveles y destinatarios funcionales/jerárquicos, tiempos de actuación y tratamiento de cada excepción. La insatisfacción general requiere señales o criterios acordados; no se presupone una métrica existente.
+- **Límite:** no se inventan umbrales, niveles de servicio ni una matriz operativa de escalado.
+- **Estado:** registrado; continúa la revisión de A3.
