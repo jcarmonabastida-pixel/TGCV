@@ -336,3 +336,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** identificar las funciones críticas, designar coberturas alternativas, confirmar competencias y autorizaciones, y definir activación, límites y trazabilidad.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-034 — Designación formal y activación efectiva de la cobertura alternativa
+
+- **Aprobación del usuario:** sí.
+- **Precisión acordada sobre SR-033:** no basta con que la cobertura alternativa esté designada nominalmente. Cada función crítica debe tener una cobertura formalmente designada y un protocolo de actuación predefinido que establezca cómo se activa y opera.
+- **Resultado esperado:** que la cobertura esté efectivamente disponible cuando se necesite y permita garantizar la continuidad del servicio, con personas autorizadas y competentes, responsabilidades y límites explícitos.
+- **Pendiente antes de uso real:** identificar las funciones críticas, formalizar las designaciones, definir y probar los protocolos de activación y actuación, y establecer cómo se mantiene y verifica la disponibilidad efectiva.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
