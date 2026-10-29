@@ -250,29 +250,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente crítico:** acordar y autorizar el plazo, cómo se comunica al paciente, los canales/intentos de contacto y la validez de la aceptación tácita antes de aplicarla en un proceso real. No se inventan plazos ni se presenta la regla como actualmente autorizada.
 - **Estado:** registrado; continúa la revisión de A3.
 
-### SR-025 — Rechazo de cita sin capacidad para ofrecer alternativa
-
-- **Aprobación del usuario:** sí; registrar la propuesta para mantener abierta la solicitud cuando el paciente rechaza la cita y no hay capacidad disponible para ofrecer otra.
-- **Tratamiento en A3:** la solicitud permanece abierta; el ownership end-to-end mantiene seguimiento, estado y motivo del bloqueo actualizados, y comunica la situación pertinente. Se activa el escalado funcional/jerárquico conforme a reglas autorizadas. Si el nivel receptor tampoco tiene capacidad, la solicitud sigue abierta y bajo seguimiento. Si no existe alternativa, se registra el bloqueo y queda pendiente hasta una solución o una decisión de la autoridad competente conforme a reglas previamente definidas.
-- **Salvaguarda:** si la demora pudiera comprometer la atención necesaria, activar el procedimiento clínico apropiado de priorización/escalado, sin esperar indefinidamente a que aparezca capacidad ordinaria. No se modifican reglas clínicas de prioridad.
-- **Pendiente:** definir autoridad competente, escalado cuando el nivel receptor tampoco tenga capacidad, comunicaciones al paciente y criterios de activación de salvaguardas clínicas. No se inventan plazos ni umbrales.
-- **Límite:** propuesta funcional dentro del caso ficticio; no es un procedimiento clínico aprobado ni evidencia de validación real.
-- **Estado:** registrado; continúa la revisión de A3.
-
 ### SR-025 — Rechazo de cita sin capacidad para ofrecer una alternativa
 
-- **Aportación y aprobación del usuario:** registrar el tratamiento propuesto cuando el paciente rechaza la cita y no hay capacidad disponible para ofrecer otra.
-- **Tratamiento en A3:** la solicitud permanece abierta y se activa el escalado conforme a las reglas funcionales y jerárquicas autorizadas. Si el nivel receptor tampoco dispone de capacidad, la solicitud no se considera resuelta: el responsable end-to-end mantiene el seguimiento, registra el bloqueo y las actuaciones/decisiones, y coordina la comunicación del estado hasta que exista una alternativa o una decisión autorizada.
-- **Salvaguarda:** no cerrar la solicitud solo porque se haya escalado o falte capacidad. Si la demora pudiera comprometer la atención necesaria, aplicar el procedimiento clínico de priorización y escalado correspondiente, sin esperar indefinidamente.
-- **Pendiente antes de uso real:** definir niveles y destinatarios de escalado, actuación ante falta de capacidad en el nivel receptor, criterios de decisión autorizada y procedimiento clínico aplicable ante riesgo por demora. No se inventan plazos, recursos ni reglas clínicas.
+- **Aprobación del usuario:** sí; registrar el tratamiento propuesto para el caso en que el paciente rechaza la cita y no existe capacidad disponible para ofrecer otra.
+- **Regla funcional propuesta:** la solicitud permanece abierta y no se cierra por el mero hecho de escalarla o de que no haya capacidad inmediata. El responsable end-to-end mantiene el seguimiento, actualiza el estado y el motivo del bloqueo y comunica la situación pertinente.
+- **Escalado y falta persistente de capacidad:** se activa el escalado funcional y/o jerárquico conforme a reglas autorizadas. Si el nivel receptor tampoco dispone de capacidad, la solicitud continúa abierta y bajo seguimiento. Si no hay alternativa, se registra el bloqueo y queda pendiente hasta que exista una solución adecuada o se adopte una decisión autorizada.
+- **Salvaguarda:** si la demora pudiera comprometer la atención necesaria, activar el procedimiento clínico apropiado de priorización/escalado, sin esperar indefinidamente a que aparezca capacidad ordinaria ni modificar las reglas clínicas de prioridad.
+- **Pendiente antes de uso real:** definir niveles y destinatarios de escalado, autoridad competente, tratamiento de la falta de capacidad en el nivel receptor, comunicaciones al paciente y criterios/procedimiento clínico para activar salvaguardas. No se inventan plazos, umbrales, recursos ni reglas clínicas.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico aprobado ni evidencia de validación real.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
-
-### SR-025 — Rechazo de cita sin capacidad para ofrecer alternativa
-
-- **Aprobación del usuario:** sí; se registra el tratamiento propuesto para el caso en que el paciente rechaza la cita y no hay capacidad disponible para ofrecer otra.
-- **Tratamiento en A3:** la solicitud permanece abierta; el ownership end-to-end mantiene el seguimiento, actualiza el estado y el motivo del bloqueo, y comunica el estado pertinente. Se escala conforme a las reglas autorizadas; si el nivel receptor tampoco tiene capacidad, continúa abierta y bajo seguimiento. No se cierra por el mero hecho de escalar ni por falta de capacidad inmediata.
-- **Si no hay alternativa disponible:** se registra el bloqueo y la solicitud permanece pendiente hasta que exista una solución adecuada o se adopte una decisión autorizada.
-- **Salvaguarda:** si la demora pudiera comprometer la atención necesaria, debe activarse el procedimiento autorizado de priorización o escalado clínico correspondiente.
-- **Límites y pendientes:** esta es una regla funcional propuesta para el caso ficticio, no un procedimiento aprobado. Deben confirmarse niveles/destinatarios de escalado, autoridad decisoria, tratamiento de falta persistente de capacidad y salvaguardas clínicas. No se inventan plazos ni se asume que escalar garantice una alternativa.
-- **Estado:** registrado; continúa la revisión de A3.
-
