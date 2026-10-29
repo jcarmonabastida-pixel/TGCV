@@ -249,3 +249,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Tratamiento en A3:** el rechazo devuelve la solicitud al flujo de asignación/escalado. La falta de respuesta tras vencer el plazo predefinido permite tratar la cita como tácitamente aceptada, siempre que se cumplan las demás condiciones de cierre y quede trazabilidad de la regla aplicada.
 - **Pendiente crítico:** acordar y autorizar el plazo, cómo se comunica al paciente, los canales/intentos de contacto y la validez de la aceptación tácita antes de aplicarla en un proceso real. No se inventan plazos ni se presenta la regla como actualmente autorizada.
 - **Estado:** registrado; continúa la revisión de A3.
+
+### SR-025 — Rechazo de cita sin capacidad para ofrecer alternativa
+
+- **Aprobación del usuario:** sí; registrar la propuesta para mantener abierta la solicitud cuando el paciente rechaza la cita y no hay capacidad disponible para ofrecer otra.
+- **Tratamiento en A3:** la solicitud permanece abierta; el ownership end-to-end mantiene seguimiento, estado y motivo del bloqueo actualizados, y comunica la situación pertinente. Se activa el escalado funcional/jerárquico conforme a reglas autorizadas. Si el nivel receptor tampoco tiene capacidad, la solicitud sigue abierta y bajo seguimiento. Si no existe alternativa, se registra el bloqueo y queda pendiente hasta una solución o una decisión de la autoridad competente conforme a reglas previamente definidas.
+- **Salvaguarda:** si la demora pudiera comprometer la atención necesaria, activar el procedimiento clínico apropiado de priorización/escalado, sin esperar indefinidamente a que aparezca capacidad ordinaria. No se modifican reglas clínicas de prioridad.
+- **Pendiente:** definir autoridad competente, escalado cuando el nivel receptor tampoco tenga capacidad, comunicaciones al paciente y criterios de activación de salvaguardas clínicas. No se inventan plazos ni umbrales.
+- **Límite:** propuesta funcional dentro del caso ficticio; no es un procedimiento clínico aprobado ni evidencia de validación real.
+- **Estado:** registrado; continúa la revisión de A3.
+
