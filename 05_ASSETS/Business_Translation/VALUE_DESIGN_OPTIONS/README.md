@@ -28,7 +28,14 @@
 - No sustituye al maestro ni es el flujo aprobado.
 - Requiere comparación explícita antes de adoptar cualquier elemento o reemplazar el ciclo maestro.
 
-### 4. ENTREGABLES DE ETAPA 2 — BORRADORES DE TRABAJO
+### 4. REVISIÓN DE COHERENCIA
+
+[VALUE — Revisión de coherencia entre maestro, artefactos y Sprint](../VALUE_COHERENCE_REVIEW_v0.1.md)
+
+- Registra los hallazgos documentales, dos aclaraciones aplicadas, riesgos abiertos y criterio para la prueba de uso.
+- Estado: revisión documental inicial; no equivale a validación mediante aplicación.
+
+### 5. ENTREGABLES DE ETAPA 2 — BORRADORES DE TRABAJO
 
 [VALUE — Fichas maestras de artefactos canónicos A1–A8](../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)
 
@@ -59,4 +66,5 @@
 | `ALTERNATIVE_UNEVALUATED_VALUE_FIVE_STAGE_CYCLE_v0.1.md` | 0.1 | **ALTERNATIVA NO EVALUADA** | Explorar el ciclo mnemónico VALUE de cinco etapas. |
 | `../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` | 0.1 | **BORRADOR** | Fichas de especificación para A1–A8. |
 | `../VALUE_DISCOVERY_SPRINT_v0.1.md` | 0.1 | **BORRADOR** | Diseño inicial del servicio piloto. |
+| `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |
 
