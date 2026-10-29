@@ -223,6 +223,18 @@ Estas macroetapas son una vista de alto nivel. Su secuencia exacta, los traspaso
 
 Este flujo es una representación de trabajo del escenario, no una descripción verificada de una clínica existente.
 
+### Condición transversal de avance y atención: capacidad y roles
+
+La aportación de la autoevaluación identifica una condición necesaria: **debe existir capacidad disponible y asignada a los roles adecuados para que la solicitud pueda tramitarse y atenderse**.
+
+En el modelo provisional, esto se registra como una dependencia transversal del proceso, no como una causa única ni como garantía suficiente de avance. Quedan por aclarar y contrastar:
+- qué roles intervienen en cada macroetapa y qué responsabilidad tiene cada uno;
+- qué significa capacidad disponible para cada rol y cómo se registra;
+- cómo se detecta que falta capacidad o que una solicitud está esperando a un rol;
+- qué reglas autorizadas determinan el escalado o la reasignación, si procede.
+
+No se presuponen cifras de capacidad, umbrales, reglas nuevas ni mecanismos de sustitución.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
