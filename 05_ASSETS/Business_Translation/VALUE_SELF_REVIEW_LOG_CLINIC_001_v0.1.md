@@ -163,3 +163,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Tratamiento documental:** incorporadas en el A3 del caso ficticio como macroetapas funcionales provisionales.
 - **Precaución de modelado:** no se asumen como flujo real verificado ni como etapas atómicas. Deben aclararse secuencia, traspasos, estados intermedios y condiciones de escalado. La monitorización, supervisión y comunicación pueden atravesar varias macroetapas.
 - **Estado:** registrada; continuar la revisión de A3 identificando actores, entradas/salidas y relaciones sin inventar detalles no aportados.
+
+
+### SR-015 — Capacidad disponible y asignación a roles
+
+- **Aportación del usuario:** para que una solicitud pueda cursarse y atenderse se requiere capacidad disponible asignada a los roles adecuados.
+- **Tratamiento en A3:** registrado como dependencia transversal necesaria para la tramitación y atención, sin tratarla como causa única ni como condición suficiente para que la solicitud avance.
+- **Preguntas pendientes:** identificar los roles por macroetapa; precisar cómo se define y registra su capacidad disponible; detectar esperas por falta de capacidad; y conocer las reglas autorizadas de escalado o reasignación, si existen.
+- **Límite:** no se inventan cifras, umbrales ni reglas operativas.
+- **Estado:** registrado; pendiente de continuar la revisión de A3.
