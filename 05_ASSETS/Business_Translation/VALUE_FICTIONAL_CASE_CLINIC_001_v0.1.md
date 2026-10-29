@@ -331,6 +331,12 @@ Si el paciente rechaza la cita ofrecida y no existe capacidad disponible para of
 Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento clínico u operativo aprobado. Antes de aplicarla en una organización real deben confirmarse los niveles y destinatarios de escalado, la autoridad para decidir, el tratamiento de la falta persistente de capacidad y las salvaguardas clínicas. No se inventan plazos ni se presume que el escalado garantice una alternativa.
 
 
+### Bloqueo por falta de información entre etapas
+
+Si la etapa siguiente no puede comenzar porque falta información necesaria, la solicitud permanece abierta y no avanza como si se cumplieran los requisitos. Se registra la información pendiente y, cuando sea posible, quién debe aportarla. El responsable end-to-end mantiene el seguimiento y el estado actualizado hasta que se complete la información o exista una decisión autorizada sobre cómo proceder.
+
+Antes de un uso real deben definirse los requisitos mínimos de información por etapa, las responsabilidades para aportarla y el procedimiento de seguimiento cuando no esté disponible. Esta es una regla funcional propuesta para el caso ficticio; no establece plazos ni responsabilidades reales.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
