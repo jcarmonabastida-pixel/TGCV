@@ -225,3 +225,11 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Tratamiento en A3:** incorporados como información adicional propuesta para el responsable receptor, junto al estado e historial de la solicitud.
 - **Pendiente:** concretar formato, obligatoriedad por tipo de escalado y responsabilidad de completar cada campo. No se presupone que exista una plantilla o herramienta actual.
 - **Estado:** registrado; continúa la revisión de A3.
+
+
+### SR-022 — Confirmación y seguimiento de solicitudes escaladas
+
+- **Aprobación del usuario:** sí; el responsable receptor debe confirmar que asume la solicitud escalada y registrar la actuación o decisión adoptada.
+- **Tratamiento en A3:** el ownership transversal mantiene el seguimiento end-to-end hasta el cierre, utilizando la confirmación y los registros de actuación/decisión para supervisar el progreso y comunicar el estado pertinente.
+- **Pendiente:** definir mecanismo y plazo de confirmación, y qué hacer ante una escalación no aceptada o no respondida. No se presuponen herramientas ni tiempos concretos.
+- **Estado:** registrado; continúa la revisión de A3.
