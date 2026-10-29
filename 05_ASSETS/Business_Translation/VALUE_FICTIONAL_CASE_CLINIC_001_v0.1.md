@@ -318,6 +318,19 @@ Si el paciente rechaza la cita ofrecida y no existe capacidad disponible para of
 
 Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento clínico aprobado. Quedan por definir la autoridad competente, los mecanismos de escalado cuando tampoco hay capacidad en el nivel receptor, las comunicaciones al paciente y los criterios para determinar cuándo una demora requiere activar salvaguardas clínicas. No se inventan plazos, umbrales ni soluciones de capacidad.
 
+
+### Gestión del rechazo cuando no hay capacidad para una alternativa
+
+Si el paciente rechaza la cita ofrecida y no existe capacidad disponible para ofrecer una alternativa adecuada, la solicitud **permanece abierta** y no se registra como cerrada por el mero hecho de haberse escalado o de no existir capacidad inmediata.
+
+- El ownership end-to-end mantiene el seguimiento, conserva actualizado el estado y el motivo del bloqueo, y comunica el estado pertinente.
+- La solicitud se escala al nivel funcional o jerárquico que corresponda conforme a las reglas autorizadas. Si el nivel receptor tampoco dispone de capacidad, la solicitud continúa abierta y bajo seguimiento; el escalado no se considera por sí mismo una solución.
+- Si todavía no hay alternativa disponible, se registra el bloqueo y la solicitud permanece pendiente hasta que exista una solución adecuada o se adopte una decisión autorizada conforme a las reglas aplicables.
+- Si la demora pudiera comprometer la atención necesaria, debe activarse el procedimiento autorizado de priorización o escalado clínico que corresponda, sin esperar indefinidamente a que aparezca capacidad ordinaria.
+
+Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento clínico u operativo aprobado. Antes de aplicarla en una organización real deben confirmarse los niveles y destinatarios de escalado, la autoridad para decidir, el tratamiento de la falta persistente de capacidad y las salvaguardas clínicas. No se inventan plazos ni se presume que el escalado garantice una alternativa.
+
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
