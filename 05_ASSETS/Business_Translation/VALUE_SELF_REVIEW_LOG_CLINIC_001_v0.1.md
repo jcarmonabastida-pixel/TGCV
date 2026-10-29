@@ -473,3 +473,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
 - **Estado:** aceptado por el usuario; incorporado documentalmente en la rama de trabajo.
 
+### SR-047 — Detección de solicitudes sin seguimiento durante la operativa ordinaria
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** disponer de un mecanismo de control que detecte solicitudes sin responsable actual, sin siguiente actuación definida, sin actualización durante un periodo que requiere revisión, que superen un plazo de respuesta o resolución acordado, o que permanezcan activas sin progreso ni justificación documentada del bloqueo.
+- **Actuación:** el responsable end-to-end revisa los casos detectados y activa las actuaciones o escalados previstos.
+- **Límites:** los periodos y plazos deben estar previamente acordados y autorizados; no se inventan umbrales ni se sustituyen criterios clínicos. Esta detección en operativa ordinaria complementa SR-045 y SR-046, relativos a la recuperación tras contingencia.
+- **Límite de validez:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario e incorporado documentalmente en la rama de trabajo.
+
