@@ -363,6 +363,18 @@ No se presume que el responsable end-to-end tenga autoridad para reasignar cualq
 
 Esta es una regla funcional propuesta para el caso ficticio, no una asignación real de responsabilidades.
 
+### Continuidad operativa ante la indisponibilidad de una persona responsable
+
+La continuidad de la solicitud no debe depender de la disponibilidad de una persona concreta. Para evitar bloqueos prolongados o solicitudes que queden en un limbo de responsabilidad, debe existir un procedimiento predefinido de continuidad operativa.
+
+- Cuando la persona asignada a una tarea esté ausente o no pueda actuar, el responsable end-to-end podrá asumir temporalmente la responsabilidad delegada de esa tarea, ejecutándola si está autorizado y capacitado para ello, o asignándola a otra persona autorizada.
+- Esta facultad debe estar expresamente prevista en el procedimiento y delimitada por las competencias, autorizaciones y salvaguardas aplicables; no se presume una autoridad ilimitada ni que el responsable end-to-end pueda ejecutar cualquier tarea.
+- La tarea y la solicitud permanecen trazables, con responsable actual identificado, estado, motivo del bloqueo y acciones pendientes actualizados.
+- El procedimiento debe definir también qué ocurre si el propio responsable end-to-end está indisponible, para que exista una continuidad alternativa previamente autorizada y no se genere un nuevo vacío de responsabilidad.
+- La importancia de la cita y las posibles consecuencias de la demora deben seguir tratándose conforme a los criterios y procedimientos clínicos autorizados; no se presupone que toda cita sea urgente ni que una tarea administrativa pueda sustituir una decisión clínica.
+
+Antes del uso real deben definirse el alcance de la delegación, las tareas que pueden asumirse o reasignarse, los límites de competencia, la alternativa cuando el responsable end-to-end no esté disponible y los mecanismos de registro y seguimiento. Esta es una propuesta funcional para el caso ficticio, no un procedimiento clínico u organizativo aprobado.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
