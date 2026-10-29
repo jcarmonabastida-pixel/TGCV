@@ -59,6 +59,17 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** alcance aclarado a nivel conceptual; pendiente de contraste con A1/A2 y de decidir si hace falta explicitarlo en el caso.
 - **Decisión:** no añadir la ampliación horaria como opción por defecto. Mantener como posibles decisiones intervenir dentro del alcance, realizar una prueba limitada, investigar más o no cambiar todavía.
 
+
+### SR-006 — Caracterizar la distribución de las demoras por tipología, prioridad y criticidad/impacto
+
+- **Tarea:** identificar qué análisis inicial ayudaría a comprender las demoras antes de plantear soluciones.
+- **Observación del usuario:** “Es necesario catecterizar la distribución de las demoras por tipología, prioridad y criticidad o impacto de la atención”.
+- **Lectura provisional:** no basta con calcular una demora media global. La investigación debería describir cómo se distribuyen los tiempos y las solicitudes pendientes según la tipología de cita/solicitud, la prioridad y la criticidad o impacto asistencial, para detectar diferencias relevantes y evitar que un promedio oculte retrasos en grupos con mayores necesidades.
+- **Precaución:** tipología, prioridad y criticidad/impacto no son necesariamente la misma dimensión. En un caso real habría que definirlas con criterios existentes y autorizados, y comprobar qué datos fiables hay disponibles. No se inventan categorías, umbrales ni puntuaciones; las urgencias siguen fuera del alcance del caso.
+- **Contraste con A2 existente:** la ficha ya pregunta por diferencias entre tipos de cita o grupos de pacientes y solicita tiempos de entrada/asignación y prioridad conforme a reglas existentes. La aportación concreta el análisis requerido al pedir la distribución conjunta de las demoras por tipología, prioridad y criticidad/impacto. La criticidad/impacto no aparece explícitamente como dimensión diferenciada en la lista actual y queda como posible laguna a revisar.
+- **Estado:** aportación registrada; pendiente de decidir si se explicita en A2 como pregunta de descubrimiento o como requisito de análisis.
+- **Decisión:** no cambiar todavía el estándar maestro; continuar la autoevaluación de A2 y contrastar la redacción del caso con las especificaciones.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
