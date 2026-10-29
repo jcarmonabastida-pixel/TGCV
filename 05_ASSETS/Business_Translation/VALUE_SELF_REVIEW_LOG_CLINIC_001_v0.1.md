@@ -142,15 +142,15 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Cambio realizado:** se actualizó la sección A2 de `VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md` para explicitar distribución de demoras por tipología, prioridad y criticidad/impacto; tiempos por etapas, volumen de pendientes y motivos de bloqueo agregados y por tipo; diferencias entre grupos de pacientes; histórico propuesto de doce meses y límites para inferir estacionalidad; contraste con capacidad planificada; supuesto de gestión adecuada de ausencias; comprobaciones de calidad, acceso y privacidad de datos; y la cuestión del camino crítico vinculada a A1.
 - **Control de integridad:** se mantuvieron las hipótesis como no confirmadas, las urgencias fuera de alcance y el carácter ficticio del escenario. No se añadieron datos reales, categorías clínicas, umbrales ni conclusiones causales.
 - **Verificación:** el archivo se volvió a leer tras la actualización y se comprobó que la nueva sección A2 y el encabezado A3 siguiente permanecen presentes.
-- **Estado:** actualización documental aplicada; pendiente de revisión por el usuario antes de considerar A2 cerrado. Esto no valida empíricamente el caso ni el estándar VALUE.
+- **Revisión del usuario:** aprobó el A2 actualizado sin solicitar correcciones adicionales.
+- **Estado:** A2 cerrado documentalmente para esta autoevaluación guiada del caso ficticio. El cierre confirma que el documento recoge lo acordado; no valida empíricamente el caso ni el estándar VALUE.
 - **Commit del caso:** `9961940f5f0a640c77446da5b9c6935be2f0ffe5`.
 
-## Pendiente
+## Siguiente etapa: A3
 
-- Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
-- Revisar criterios iniciales, restricciones y autoridad decisora.
-- Contrastar A1 con las especificaciones maestras A1–A8.
-- Registrar cualquier cambio acordado y su justificación.
+- Revisar cómo se representa el sistema y el proceso de solicitudes de cita, distinguiendo hechos del caso ficticio, hipótesis y datos pendientes.
+- Comprobar que el modelo no presupone causas, etapas, criterios de prioridad ni un camino crítico todavía no demostrados.
+- Registrar los ajustes acordados y su justificación.
 
 ## Nota de integridad
 
