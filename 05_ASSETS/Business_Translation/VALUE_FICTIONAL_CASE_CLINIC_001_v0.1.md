@@ -288,6 +288,14 @@ El responsable que recibe una solicitud escalada debe **confirmar que la asume**
 
 Quedan por definir el mecanismo y el plazo de confirmación, así como el tratamiento de una escalación no aceptada o no respondida. No se presuponen herramientas, automatizaciones ni tiempos concretos.
 
+### Rechazo de cita sin capacidad para ofrecer una alternativa
+
+Si el paciente rechaza la cita y no existe capacidad disponible para ofrecer otra alternativa adecuada, la solicitud **permanece abierta** y se activa el escalado conforme a las reglas funcionales y jerárquicas autorizadas. La falta de capacidad en el nivel receptor no equivale a una resolución: el responsable end-to-end mantiene el seguimiento, registra el bloqueo y las actuaciones/decisiones, y coordina la comunicación del estado hasta que exista una alternativa o una decisión autorizada.
+
+Si no puede ofrecerse una alternativa, la solicitud permanece pendiente; no se cierra únicamente porque se haya escalado o porque no haya capacidad disponible. Si la demora pudiera comprometer la atención necesaria, debe aplicarse el procedimiento clínico de priorización y escalado que corresponda, sin esperar indefinidamente a que aparezca capacidad.
+
+**Pendiente antes de uso real:** definir niveles y destinatarios de escalado, actuación cuando el nivel receptor tampoco tenga capacidad, criterios de decisión autorizada y procedimiento clínico aplicable ante riesgo por demora. No se inventan plazos, recursos ni reglas clínicas.
+
 ### Condiciones propuestas para el cierre de una solicitud
 
 El registro de cierre solo debe realizarse cuando:
