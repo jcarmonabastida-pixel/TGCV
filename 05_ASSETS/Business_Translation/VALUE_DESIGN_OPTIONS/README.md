@@ -83,5 +83,5 @@
 | `ALTERNATIVE_UNEVALUATED_VALUE_FIVE_STAGE_CYCLE_v0.1.md` | 0.1 | **ALTERNATIVA NO EVALUADA** | Explorar el ciclo mnemónico VALUE de cinco etapas. |
 | `../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` | 0.1 | **BORRADOR** | Fichas de especificación para A1–A8. |
 | `../VALUE_DISCOVERY_SPRINT_v0.1.md` | 0.1 | **BORRADOR** | Diseño inicial del servicio piloto. |
-| `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |\n| `../VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md` | 0.1 | **CASO FICTICIO INTEGRAL** | Ejercicio A1–A8 v0.2; ejecución y datos simulados con trazabilidad reforzada, no validación empírica. |\n| `../VALUE_FICTIONAL_CASE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Siete hallazgos de trazabilidad y operacionalización; pendientes de resolución. |
+| `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |\n| `../VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md` | 0.1 | **CASO FICTICIO INTEGRAL** | Ejercicio A1–A8 v0.3; criterios previos, Sprint/prueba y autorización diferenciados; datos simulados, no validación empírica. |\n| `../VALUE_FICTIONAL_CASE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Siete hallazgos revisados en v0.3; H1–H4, H6–H7 atendidos documentalmente; H5 parcialmente atendido. |
 
