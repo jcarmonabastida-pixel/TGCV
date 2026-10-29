@@ -355,6 +355,14 @@ Si existe una alternativa para proceder sin esa información, debe someterse a u
 
 Antes del uso real deben definirse los criterios para distinguir información imprescindible de información prescindible, quién puede autorizar una alternativa y cómo documentar sus límites. Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento clínico aprobado.
 
+### Ambigüedad de responsabilidad entre roles
+
+Si dos roles consideran que el siguiente paso corresponde al otro y ninguno actúa, la solicitud no debe quedar sin seguimiento. Se registra la acción pendiente y la ambigüedad de responsabilidad. El responsable end-to-end mantiene el seguimiento y promueve que se determine quién debe actuar conforme a las responsabilidades autorizadas.
+
+No se presume que el responsable end-to-end tenga autoridad para reasignar cualquier tarea. Si las reglas existentes no permiten resolver el desacuerdo, se eleva a la persona o instancia autorizada. Antes del uso real deben definirse las responsabilidades por etapa y el mecanismo para resolver estos casos.
+
+Esta es una regla funcional propuesta para el caso ficticio, no una asignación real de responsabilidades.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
