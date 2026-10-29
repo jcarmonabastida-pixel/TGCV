@@ -337,6 +337,16 @@ Si la etapa siguiente no puede comenzar porque falta información necesaria, la 
 
 Antes de un uso real deben definirse los requisitos mínimos de información por etapa, las responsabilidades para aportarla y el procedimiento de seguimiento cuando no esté disponible. Esta es una regla funcional propuesta para el caso ficticio; no establece plazos ni responsabilidades reales.
 
+### Discrepancias entre fuentes de información
+
+Si la información necesaria está disponible, pero existen contradicciones entre fuentes o registros, la solicitud permanece abierta y no se toman decisiones que dependan de ese dato como si fuera fiable.
+
+- Se registra qué información discrepa y la procedencia de las fuentes implicadas.
+- El responsable end-to-end mantiene el seguimiento hasta que la discrepancia se resuelva o una persona autorizada determine cómo proceder.
+- No se presume que una fuente prevalece sobre otra: los criterios de autoridad, verificación y resolución deben definirse antes del uso real.
+
+Esta es una regla funcional propuesta para el caso ficticio. No establece una jerarquía real de fuentes ni un procedimiento clínico aprobado.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
