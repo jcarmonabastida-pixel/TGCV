@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 0.2  
+**Versión:** 0.3  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
@@ -292,7 +292,18 @@ A5 es un registro transversal de evidencia y se usa especialmente en DESIGN y DE
 
 ### Decisión del escenario
 
-Seleccionar **O1 — Revisión diaria de pendientes**, como prueba limitada, reversible y supervisada, condicionada a confirmar capacidad y salvaguardas antes de iniciar.
+Seleccionar **O1 — Revisión diaria de pendientes**, como opción preferida para una posible prueba limitada, reversible y supervisada. La decisión es una **selección de diseño dentro del escenario ficticio**, no una autorización de ejecución. Su puesta en marcha queda condicionada a cerrar los criterios previos pendientes y obtener autorización formal.
+
+### Registro de decisión y autorización (simulado)
+
+- **ID de decisión:** `SIM-CLINIC-001-DEC-v0.1`.
+- **Decisor en el escenario:** rol ficticio de responsable de operaciones, sujeto a confirmación de la autoridad real.
+- **Fecha:** no especificada en el escenario; debe registrarse antes de una prueba.
+- **Estado de la decisión:** opción seleccionada para preparar una prueba; autorización de ejecución **NO CONCEDIDA / PENDIENTE**.
+- **Condiciones de validez:** aprobación de criterios previos; confirmación de capacidad; validación de salvaguardas clínicas y privacidad; designación de responsables; definición de parada.
+- **Trazabilidad:** decisión basada en la intención A1, las opciones A4 y el registro simulado A5; las condiciones se trasladan a A7.
+
+Este bloque distingue la decisión ilustrativa de seleccionar una opción de la autorización formal para ejecutarla. No representa una firma ni una aprobación real.
 
 ### Justificación
 
@@ -312,14 +323,26 @@ Seleccionar **O1 — Revisión diaria de pendientes**, como prueba limitada, rev
 6. Validar acceso, privacidad y calidad de los datos.
 7. Acordar los criterios de decisión con las personas responsables.
 
+### Criterios previos de decisión — registro ilustrativo
+
+Para evitar elegir retrospectivamente los criterios que mejor encajan con el resultado, el escenario debería fijarlos antes de iniciar la prueba. En este caso ficticio **no se han proporcionado umbrales cuantitativos aprobados**, por lo que quedan explícitamente pendientes y no se inventan como si fueran acuerdos de la clínica.
+
+| Criterio previo | Regla que debe acordarse antes de empezar | Estado en este caso |
+|---|---|---|
+| Mejora de acceso | Definir la reducción mínima relevante de solicitudes fuera de plazo y la comparación que se utilizará | PENDIENTE; no hay umbral aprobado |
+| Protección del acceso prioritario | Definir qué deterioro requiere detener o revisar de inmediato, respetando las reglas clínicas existentes | PENDIENTE; debe acordarlo el referente clínico autorizado |
+| Carga de trabajo | Definir cómo medir tiempo/carga y cuál es el máximo tolerable | PENDIENTE; la percepción cualitativa no basta |
+| Calidad de datos | Definir completitud mínima, tratamiento de faltantes y condiciones que invalidan la comparación | PENDIENTE |
+| Duración y revisión | Confirmar ventana, revisiones intermedias y responsable de parada | Propuesta ficticia de cuatro semanas; requiere autorización |
+
 ### Reglas de decisión propuestas
 
-- **Continuar o ampliar:** mejora de acceso acompañada de mantenimiento de salvaguardas y carga aceptable.
+- **Continuar o ampliar:** solo si se cumplen los criterios previos acordados, se mantienen las salvaguardas y la carga es aceptable.
 - **Adaptar:** mejora parcial con problemas operativos corregibles y sin deterioro de salvaguardas.
-- **Detener y revisar:** deterioro del acceso prioritario, riesgo asistencial, carga inaceptable o datos insuficientes para evaluar.
+- **Detener y revisar:** deterioro del acceso prioritario, riesgo asistencial, carga superior al límite acordado o datos insuficientes para evaluar.
 - **No concluir:** si los datos no son comparables o cambian las condiciones externas de forma importante.
 
-No se fijan umbrales clínicos universales en este documento. La organización real tendría que acordarlos según su contexto, obligaciones y capacidad.
+No se fijan umbrales clínicos universales ni se presentan criterios pendientes como acuerdos reales. En una organización real, los criterios se documentarían y aprobarían antes de iniciar.
 
 ## 10. ACT — A7 Value Blueprint & Delivery Plan
 
@@ -410,6 +433,12 @@ Bajo los supuestos inventados de A5:
 4. Las definiciones de indicadores y la comparabilidad de periodos son requisitos previos, no detalles posteriores.
 5. La decisión de escalar exige evidencia real y participación de las personas afectadas.
 
+### Separación entre el Sprint y los resultados operativos
+
+Los porcentajes y el reporte de carga descritos en este A8 pertenecen exclusivamente al escenario de prueba operativa posterior de cuatro semanas y al dataset ficticio `SIM-CLINIC-001-DATA-v0.1`. **No son resultados producidos durante el Value Discovery Sprint de cinco días.**
+
+El A8 que se cerraría al final del Sprint debe limitarse al aprendizaje de descubrimiento: qué se sabe y qué no, qué hipótesis siguen abiertas, si A3/A4 necesitan revisión, qué datos faltan, qué decisión se tomó y qué condiciones hacen falta antes de cualquier prueba. En este caso, como no hay participantes reales, ese aprendizaje del Sprint también es una reconstrucción documental ficticia.
+
 ### Siguiente decisión ilustrativa
 
 No escalar automáticamente. Si se tratara de una prueba real, revisar primero la carga de trabajo, comprobar la calidad y comparabilidad de los datos y analizar resultados segmentados. Después, decidir entre adaptar el protocolo, extender la observación o estudiar otra hipótesis.
@@ -494,3 +523,4 @@ El Sprint puede concluir con una decisión de investigar más; no obliga a ejecu
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
 - **v0.2:** añade identificadores de dataset y ejecución simulados, definiciones operativas y denominadores explícitos, supuestos de selección/ventanas y separación narrativa entre plan y ejecución ficticia. No añade datos reales ni validación empírica.
+- **v0.3:** documenta criterios previos de decisión como pendientes cuando no hay umbrales aprobados; separa selección de opción y autorización de ejecución; distingue explícitamente el aprendizaje del Sprint de los resultados de la prueba operativa posterior. No añade datos reales ni validación empírica.
