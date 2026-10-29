@@ -103,6 +103,17 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** aportación registrada; A2 debe recoger tanto diferencias entre grupos como variación temporal; A1 debe incluir estacionalidad entre los factores contextuales que revisar.
 - **Decisión:** registrar sin alterar todavía el estándar maestro; al terminar la revisión de A1/A2, valorar si la mejora corresponde al caso ilustrativo, a las fichas de artefacto o a ambos.
 
+
+### SR-010 — Ampliación del histórico y contraste de capacidad con demanda
+
+- **Tarea:** precisar el horizonte temporal útil para examinar estacionalidad y los factores necesarios para interpretar el volumen de solicitudes.
+- **Observación del usuario:** “Primeeo, ampliar el histórico a 12 meses permite valorar también el patrón de estacionalidad. Segundo, sí es necesario considerar la capacidad disponible del servicio para contrastarla con la demanda”.
+- **Aportación para A2 — horizonte histórico:** ampliar la consulta del histórico propuesto de tres a doce meses para poder examinar posibles patrones de estacionalidad a lo largo del año. Esta duración permite una primera valoración anual, pero no demuestra por sí sola que exista un patrón estacional recurrente; cuando sea posible, convendrá comprobar si hay datos de años anteriores y documentar limitaciones de cobertura/calidad.
+- **Aportación para A2 — capacidad y demanda:** contrastar el volumen y la tipología de solicitudes con la capacidad disponible del servicio, incluyendo los recursos humanos, la carga de trabajo y las variaciones de cobertura relevantes dentro del horario establecido. El análisis debe comprobar qué información existe realmente; no se presupone que todos estos datos estén registrados.
+- **Implicación para A1:** el horizonte de análisis y la relación capacidad-demanda pueden afectar a la formulación del reto, a las restricciones y a la decisión que se pretende apoyar. Se mantienen como factores contextuales que deben considerarse, sin asumir de antemano que la capacidad sea insuficiente ni que la estacionalidad sea la causa de las demoras.
+- **Estado:** aportaciones registradas; el horizonte de análisis para este caso pasa a ser doce meses como propuesta de trabajo, sujeto a disponibilidad y calidad de datos.
+- **Decisión:** no modificar todavía el estándar maestro; completar la revisión de A1/A2 y luego valorar las actualizaciones documentales necesarias.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
