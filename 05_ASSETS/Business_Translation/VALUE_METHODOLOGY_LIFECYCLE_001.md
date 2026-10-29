@@ -1,686 +1,335 @@
-# VALUE — Metodología, modelo y framework operativo de construcción de valor
+# VALUE — Diseño integrado del estándar metodológico
 
-**Identificador:** VALUE-METHOD-LIFECYCLE-001  
-**Versión:** 0.1  
-**Estado:** propuesta integrada para revisión; nomenclatura, instrumentos y métricas provisionales  
-**Tipo:** documento metodológico de continuidad y diseño  
-**Base principal:** *Conversación Investigación TGCV.pdf*, biblioteca de ChatGPT  
-**Relación con TGCV:** capa de aplicación y consultoría inspirada en la investigación TGCV; no forma parte automáticamente del Core científico ni constituye evidencia de validación de TGCV.  
-**Fecha:** 2026-10-28
+**Identificador:** VALUE-STANDARD-ARCH-001  
+**Versión:** 0.2  
+**Estado:** propuesta de normalización para revisión  
+**Tipo:** arquitectura metodológica de referencia  
+**Fuente principal:** *Conversación Investigación TGCV.pdf*, especialmente las formulaciones del VCF, Value Construction Loop, Value System Model, CCV e IVS (pp. 770–845 y referencias posteriores).  
+**Repositorio canónico:** `jcarmonabastida-pixel/TGCV`; esta especificación se mantiene como activo de aplicación/consultoría, separado del Core científico TGCV.  
+**Principio de implementación:** el estándar debe poder aplicarse sin software específico; el futuro playground lo demostrará, pero no definirá por sí solo el estándar.
 
 ---
 
-## 1. Propósito y alcance
+## 1. Propósito
 
-Este documento integra las líneas metodológicas desarrolladas en la conversación de investigación sobre VALUE: principios, modelo de sistema, ciclo de construcción de valor, framework de fases, artefactos, herramientas, entregables, medición, ejecución de servicios, aprendizaje y posible evolución hacia un producto.
+Establecer una arquitectura única para VALUE que reduzca duplicidades, normalice el lenguaje y permita desarrollar después, en orden, las fichas maestras de artefactos, el servicio piloto **Value Discovery Sprint** y un playground web del ciclo completo.
 
-El propósito es ofrecer una arquitectura de referencia coherente que pueda utilizarse más adelante para:
+Esta versión consolida la arquitectura metodológica. No es todavía un manual de facilitación completo, un instrumento psicométrico, una oferta comercial cerrada ni una especificación de software.
 
-- diseñar y probar una metodología aplicable en organizaciones;
-- estructurar servicios de consultoría y un *Value Discovery Sprint* paquetizado;
-- crear un conjunto reutilizable de artefactos y herramientas;
-- especificar, cuando exista evidencia suficiente, requisitos de un producto digital;
-- capturar conocimiento y mejorar la metodología mediante casos reales.
+## 2. Qué es VALUE
 
-**No es una declaración de metodología validada ni una especificación cerrada.** La conversación de origen contiene propuestas en momentos distintos, nombres alternativos, modelos parciales y fórmulas explícitamente conceptuales. Este documento los ordena sin convertir propuestas exploratorias en hechos probados. Las decisiones que requieren investigación o validación se marcan como pendientes.
+VALUE es el nombre paraguas de trabajo para una metodología orientada a desarrollar la capacidad de un sistema para construir valor de forma deliberada, repetible y sostenible.
 
-## 2. Idea central y posicionamiento
+La conversación de origen distingue varias piezas que deben conservarse, pero no tratarse como sinónimos:
 
-VALUE parte de una pregunta distinta de «¿qué solución debemos implantar?»:
-
-> **¿Qué capacidad necesita desarrollar este sistema para construir valor de forma repetible y sostenible, y qué debe cambiar para hacerlo posible?**
-
-La hipótesis metodológica es que las organizaciones pueden disponer de conocimiento, talento, datos y tecnología sin conseguir convertirlos de forma consistente en decisiones, acciones y resultados relevantes. VALUE pretende hacer visible el sistema que conecta esos elementos, detectar bloqueos y oportunidades, construir comprensión compartida, explorar alternativas, decidir con evidencia, llevar las decisiones a la práctica y aprender de los resultados.
-
-La unidad de trabajo no es una idea aislada ni una herramienta tecnológica. Es una **oportunidad de valor** situada en un contexto, que afecta a personas o grupos concretos, requiere capacidades y cambios, incorpora supuestos y debe poder contrastarse.
-
-### 2.1 Definiciones de trabajo
-
-- **Value Construction / Construcción de valor:** proceso deliberado por el que un sistema transforma conocimiento, capacidades y oportunidades en resultados considerados valiosos y sostenibles.
-- **Value Opportunity / Oportunidad de valor:** situación contextualizada en la que puede existir una posibilidad relevante de valor, pero que requiere comprender necesidades y restricciones, alinear capacidades y diseñar una respuesta adecuada.
-- **Value Architecture / Arquitectura de valor:** estructura que conecta propósito, necesidades, actores, capacidades, conocimiento, opciones, decisiones, ejecución y resultados.
-- **Value Construction Framework (VCF):** framework operativo propuesto para desarrollar la capacidad de construcción de valor mediante fases, actividades, artefactos y aprendizaje.
-- **Capacidad de Construcción de Valor (CCV):** capacidad de un sistema para construir valor repetidamente y renovar las capacidades que lo hacen posible. En una formulación conceptual de la conversación, se describe como una metacapacidad para desarrollar, integrar, amplificar y renovar una red de capacidades.
-- **Value System Model:** representación del sistema de valor: actores, necesidades, capacidades, conocimiento, relaciones, flujos, restricciones, decisiones y mecanismos de aprendizaje.
-- **Value Discovery Sprint:** servicio/artefacto acotado que ayuda a convertir una oportunidad difusa en hipótesis contrastables, evidencias y una decisión sobre los siguientes pasos.
-
-Los nombres son etiquetas de trabajo. Antes de utilizarlos comercialmente habrá que comprobar su claridad, diferenciación y disponibilidad legal; el uso de ™ en la conversación no demuestra registro ni titularidad de marca.
-
-## 3. Principios metodológicos propuestos
-
-Los principios siguientes sintetizan la conversación y funcionan como criterios de diseño, no como axiomas empíricamente demostrados.
-
-1. **El valor se define antes de elegir la solución.** Acordar qué se considera valioso, para quién y bajo qué restricciones.
-2. **El sistema precede a la solución.** Comprender el contexto, los actores, las capacidades, los flujos y las dependencias antes de recomendar una intervención.
-3. **El conocimiento es un activo reutilizable.** Capturar evidencia, experiencia, decisiones y lecciones para evitar que cada iniciativa empiece desde cero.
-4. **La inteligencia es colectiva.** Integrar perspectivas de negocio, cliente, operaciones, tecnología y otras partes relevantes; no confundir comprensión compartida con consenso automático.
-5. **La IA amplifica, no sustituye, el criterio responsable.** Puede ayudar a sintetizar, generar alternativas, explorar escenarios y recuperar conocimiento; las personas verifican los datos, juzgan implicaciones y asumen las decisiones.
-6. **Las alternativas se contrastan antes de comprometer recursos.** Diferenciar observaciones, hipótesis, supuestos, evidencia y opinión.
-7. **La ejecución forma parte de la construcción de valor.** Una recomendación no es un resultado; hacen falta responsables, capacidades, adopción, gobernanza y seguimiento.
-8. **El aprendizaje debe permanecer en el sistema.** Cada ciclo debe mejorar tanto la solución como la capacidad organizativa para afrontar oportunidades futuras.
-9. **El valor es multidimensional.** Considerar, según el caso, dimensiones económicas, humanas, operativas, intelectuales, tecnológicas, sociales y de futuro. No imponer una ponderación universal sin validación.
-10. **La evidencia limita las afirmaciones.** Ni el uso de una herramienta ni la ampliación de alternativas demuestran por sí solos valor realizado o causalidad.
-
-## 4. Arquitectura integrada: cuatro capas
-
-Para evitar confundir el modelo conceptual, el proceso y el producto, se distinguen cuatro capas.
-
-### Capa A — Orientación y criterios de valor
-
-Define propósito, reto, personas afectadas, resultados deseados, criterios de éxito, límites y reglas de decisión. Responde: **¿qué valor importa aquí y por qué?**
-
-### Capa B — Modelo del sistema de valor
-
-Representa el sistema actual y el deseado: actores, necesidades, capacidades, conocimiento, relaciones, flujos, fricciones, decisiones, restricciones y posibilidades. Responde: **¿cómo funciona el sistema y dónde se pierde o puede construirse valor?**
-
-### Capa C — Framework de intervención
-
-Organiza el trabajo desde el alineamiento y descubrimiento hasta diseño, validación, decisión, entrega y aprendizaje. Responde: **¿qué actividades debemos realizar, en qué orden y con qué evidencia?**
-
-### Capa D — Sistema de aprendizaje y habilitación
-
-Conserva artefactos, evidencias, decisiones, métricas, casos y lecciones; permite reutilizarlos en nuevos ciclos. Puede incorporar IA y automatización bajo supervisión. Responde: **¿cómo evita la organización repetir errores y aumenta su capacidad futura?**
-
-Estas capas se relacionan, pero no son intercambiables: un canvas no es el modelo entero; un sprint no es toda la metodología; un índice no es una prueba causal; y un producto digital no reemplaza por sí mismo el juicio ni el trabajo de cambio organizativo.
-
-## 5. El ciclo de vida integrado
-
-La conversación contiene tres representaciones complementarias:
-
-- **Value Construction Loop:** SENSE → CONNECT → DESIGN → ACT → LEARN.
-- **VCF de seis capacidades:** Sensing → Understanding → Designing → Deciding → Executing → Learning.
-- **Ciclo propuesto para un Value Discovery Sprint:** contexto y alineamiento → exploración de valor → hipótesis de valor → evidencia y validación → decisión VALUE.
-
-No son exactamente el mismo ciclo: el primero es una síntesis de alto nivel, el segundo expresa capacidades necesarias y el tercero es una intervención de descubrimiento acotada. Para integrarlos sin borrar su origen, se propone el siguiente ciclo operativo de referencia. Las fases pueden iterarse; no se exige una cascada rígida.
-
-| Fase integrada | Pregunta central | Contribución de los modelos previos |
+| Concepto canónico | Definición de trabajo | Función |
 |---|---|---|
-| 0. Encargo y gobernanza | ¿Qué reto y decisión vamos a abordar? | Condición operativa previa, explícita en el piloto |
-| 1. ALIGN — Alinear valor | ¿Qué significa valor en este contexto? | ALIGN; Value Intent |
-| 2. SENSE / DISCOVER — Percibir y explorar | ¿Qué ocurre y qué oportunidades aparecen? | SENSE; Sensing; DISCOVER |
-| 3. UNDERSTAND / CONNECT — Comprender e integrar | ¿Cómo funciona el sistema y qué comprensión compartida necesitamos? | Understanding; CONNECT |
-| 4. DESIGN — Diseñar alternativas | ¿Qué opciones e hipótesis merecen consideración? | Designing; Value Blueprint |
-| 5. VALIDATE — Contrastar | ¿Qué sabemos y qué evidencia falta? | Etapa de validación del Sprint |
-| 6. DECIDE — Elegir | ¿Qué opción, experimento o no-acción está justificado? | Deciding; decisión VALUE |
-| 7. DELIVER / ACT — Ejecutar | ¿Qué hace falta para llevarlo a la práctica? | Executing; DELIVER; ACT |
-| 8. LEARN — Aprender y renovar | ¿Qué cambió, qué aprendimos y qué capacidad debe mejorar? | Learning; Value Learning System |
+| **Value Construction** | Proceso por el que un sistema combina conocimiento, capacidades y oportunidades para producir resultados considerados valiosos en un contexto. | Concepto central. |
+| **Value Construction Framework (VCF)** | Proceso operativo que guía la intervención desde la comprensión de una oportunidad hasta la acción y el aprendizaje. | Define fases, preguntas y puertas de decisión. |
+| **Value System Model (VSM)** | Modelo del sistema que se estudia: propósito, actores, necesidades, capacidades, conocimiento, relaciones, flujos, restricciones y resultados. | Describe qué se analiza y cómo se relacionan sus elementos. |
+| **Value Architecture** | Diseño de conjunto que conecta el propósito, el modelo del sistema, las decisiones, la intervención y los resultados esperados. | Integra el VSM con el proceso VCF. |
+| **Value Opportunity** | Situación contextualizada en la que existe una posibilidad plausible de construir valor y que requiere comprensión, capacidades, hipótesis y contraste. | Unidad principal de trabajo de una intervención. |
+| **Capacidad de Construcción de Valor (CCV)** | Capacidad de un sistema para construir valor repetidamente y renovar las capacidades que lo hacen posible. | Capacidad objetivo que la metodología pretende desarrollar. |
+| **Índice de Valor Sistémico (IVS)** | Instrumento propuesto para evaluar aspectos de la capacidad de construcción de valor. | Línea de medición exploratoria; no forma parte del flujo obligatorio mientras no esté definido y validado. |
 
-### 5.1 Fase 0 — Encargo, alcance y gobernanza
+**Regla terminológica:** VCF no es el VSM; VSM no es Value Architecture; una Value Opportunity no es una solución; CCV es una capacidad objetivo y el IVS es una propuesta de medición, no el valor producido.
 
-**Objetivo:** acordar un problema concreto, la decisión que se necesita apoyar, el sistema que se analizará y las condiciones del trabajo.
+## 3. Principios metodológicos de referencia
 
-**Actividades**
-- Identificar patrocinador, responsables, participantes y personas afectadas.
-- Formular el reto sin presuponer una solución.
-- Delimitar sistema, horizonte temporal, fronteras y dependencias.
-- Acordar acceso a información, confidencialidad, restricciones y responsabilidades.
-- Definir qué constituiría un resultado útil y cómo se evaluará.
-- Establecer línea base o método de referencia cuando sea viable.
+Estos principios se conservan como compromisos de diseño de VALUE, derivados de la conversación de origen. Son principios metodológicos propuestos, no leyes científicas demostradas.
 
-**Artefactos / herramientas**
-- Brief del encargo.
-- Mapa inicial de actores.
-- Registro de alcance, restricciones, riesgos y supuestos.
-- Plan de trabajo y evaluación.
+1. **Comprender antes de prescribir.** No elegir una solución antes de entender el contexto y la oportunidad.
+2. **El valor es contextual.** Especificar quién considera valioso qué resultado, en qué horizonte y con qué restricciones.
+3. **El sistema importa.** Analizar actores, conocimiento, capacidades, relaciones, flujos y bloqueos, no solo departamentos o tecnologías aisladas.
+4. **El conocimiento debe conectarse.** Facilitar perspectivas complementarias y hacer visibles desacuerdos y lagunas.
+5. **Las alternativas son hipótesis.** Explicitar qué tendría que ser cierto y qué evidencia podría confirmarlo o contradecirlo.
+6. **La decisión debe ser trazable.** Registrar criterios, evidencia, incertidumbre, responsable y razones.
+7. **La ejecución y la adopción cuentan.** Un diseño o recomendación no equivale a un resultado realizado.
+8. **Aprender significa cambiar capacidad.** El aprendizaje organizativo debe poder modificar prácticas, criterios, herramientas o relaciones, no quedarse solo en información documentada.
+9. **La tecnología y la IA apoyan el proceso.** No sustituyen la verificación, el juicio ni la responsabilidad humana.
+10. **Las afirmaciones no exceden la evidencia.** No asumir que más datos, más alternativas o más capacidad producen automáticamente más valor ni atribuir causalidad sin evaluación adecuada.
 
-**Entregables**
-- Encargo acordado.
-- Alcance y criterios de éxito.
-- Plan de evaluación y decisiones de gobernanza.
+## 4. Ciclo de vida canónico
 
-**Puerta de salida:** existe un reto suficientemente delimitado, una decisión relevante y un acuerdo sobre cómo juzgar la utilidad del trabajo.
+### 4.1 Decisión de normalización
 
-### 5.2 Fase 1 — ALIGN: alinear propósito y valor
+La conversación contiene dos representaciones operativas:
 
-**Pregunta:** ¿qué valor queremos construir, para quién y por qué?
+- El **Value Construction Loop** de cinco pasos: **SENSE → CONNECT → DESIGN → ACT → LEARN**.
+- El **VCF** de seis capacidades: **Sensing → Understanding → Designing → Deciding → Executing → Learning**, además de una fase de alineamiento inicial denominada **ALIGN**.
 
-**Actividades**
-- Clarificar propósito y objetivos estratégicos.
-- Identificar grupos de interés y sus necesidades.
-- Distinguir resultados deseados, señales intermedias y restricciones.
-- Acordar criterios de éxito, trade-offs y posibles efectos no deseados.
-- Explicitar conflictos entre criterios de valor cuando existan.
+Para evitar dos procesos paralelos, esta versión adopta como ciclo operativo el **VCF de seis fases**, con **ALIGN como condición de entrada y gobernanza**. El Loop de cinco pasos queda como resumen comunicativo de alto nivel, no como un segundo proceso ni como una lista adicional de entregables. La decisión explícita se conserva como fase propia entre diseño y ejecución.
 
-**Artefacto principal:** **Value Purpose Canvas**, con propósito, problema relevante, personas afectadas, valor esperado, restricciones y criterios de éxito.
+### 4.2 Fases
 
-**Entregable principal:** **Value Intent Document**, documento breve que responde qué valor se busca, para quién, por qué y cómo se evaluará.
-
-**Puerta de salida:** los participantes clave pueden explicar de forma compatible el propósito, los criterios y las restricciones. No exige que todos tengan idénticas preferencias; exige que las diferencias relevantes estén registradas.
-
-### 5.3 Fase 2 — SENSE / DISCOVER: percibir señales y explorar oportunidades
-
-**Pregunta:** ¿qué está ocurriendo realmente y qué oportunidades o tensiones merecen atención?
-
-**Actividades**
-- Recoger señales de mercado, clientes, operaciones, tecnología y entorno.
-- Identificar problemas, necesidades no cubiertas, cambios y oportunidades emergentes.
-- Recoger datos y experiencias de quienes conocen el trabajo real.
-- Distinguir síntomas de problemas subyacentes.
-- Formular oportunidades sin convertir una tecnología o solución deseada en el problema.
-- Registrar incertidumbres y preguntas que todavía no tienen respuesta.
-
-**Artefactos / herramientas**
-- **Value Radar:** señales, cambios y oportunidades detectadas.
-- **Value Opportunity Map / Value Opportunity Canvas:** oportunidad, necesidad, contexto, personas afectadas, impacto potencial, capacidades requeridas, riesgos y evidencia disponible.
-- Guía de entrevistas y observación.
-- Registro de necesidades, tensiones y supuestos.
-
-**Entregables**
-- Diagnóstico inicial de oportunidad.
-- Mapa de necesidades y tensiones.
-- Lista priorizada de preguntas abiertas.
-
-**Puerta de salida:** la oportunidad está descrita en términos de contexto, personas afectadas y posible valor, no solo como una idea o una petición de tecnología.
-
-### 5.4 Fase 3 — UNDERSTAND / CONNECT: modelar el sistema e integrar inteligencia
-
-**Pregunta:** ¿cómo funciona el sistema y cómo construimos una comprensión compartida que sea suficientemente fiel para decidir?
-
-**Actividades**
-- Mapear actores, necesidades, capacidades, conocimiento, procesos y tecnología.
-- Identificar relaciones, flujos de información, decisiones y dependencias.
-- Localizar fricciones, cuellos de botella, pérdidas de conocimiento y desalineamientos.
-- Identificar qué capacidades existen, cuáles faltan y cuáles podrían integrarse o desarrollarse.
-- Contrastar perspectivas distintas con los datos disponibles.
-- Registrar desacuerdos, evidencia contradictoria y elementos desconocidos.
-- Construir una representación común del sistema actual, sin ocultar diferencias relevantes.
-
-**Artefactos / herramientas**
-- **Value System Map:** actores, relaciones, flujos, bloqueos y oportunidades.
-- **Value Network Map:** red de personas, conocimientos, experiencias, datos e IA.
-- **Collective Intelligence Map:** perspectivas, conocimientos aportados, coincidencias y diferencias.
-- **Value Capability Map:** capacidades actuales y requeridas.
-- **Value Flow Map:** recorrido del conocimiento hasta las decisiones, acciones e impacto, con fricciones por transición.
-- **Shared Value Model:** síntesis compartida de cómo se entiende el sistema.
-
-**Entregables**
-- Mapa de situación actual.
-- Inventario de capacidades, relaciones y flujos.
-- Registro de fricciones, restricciones, dependencias y lagunas de evidencia.
-- Modelo compartido del problema.
-
-**Puerta de salida:** el modelo permite explicar el problema y sus mecanismos relevantes, e identifica qué supuestos siguen abiertos. Un mapa visual no se considera verdadero por el hecho de haber sido consensuado; se contrasta con fuentes y observaciones.
-
-### 5.5 Fase 4 — DESIGN: diseñar alternativas e hipótesis de valor
-
-**Pregunta:** ¿qué posibilidades de respuesta existen y qué tendría que ser cierto para que cada una funcione?
-
-**Actividades**
-- Generar varias alternativas antes de seleccionar una.
-- Conectar cada alternativa con necesidades, criterios de valor y capacidades requeridas.
-- Explicitar supuestos, dependencias, riesgos, costes y posibles efectos secundarios.
-- Explorar escenarios y, cuando tenga sentido, prototipos.
-- Utilizar IA para ampliar opciones o sintetizar información, verificando los resultados.
-- Identificar qué transformaciones organizativas, tecnológicas o relacionales serían necesarias.
-- Evitar confundir novedad, sofisticación o número de opciones con valor.
-
-**Artefactos / herramientas**
-- **Value Opportunity Canvas.**
-- **Value Hypothesis Map / Value Hypothesis Canvas.**
-- **Value Blueprint:** diseño de la alternativa, componentes, relaciones, capacidades, dependencias, riesgos y resultados esperados.
-- **AI Value Simulator:** nombre propuesto para el apoyo a la exploración de escenarios; no implica simulación predictiva validada.
-- Matriz de alternativas y trade-offs.
-
-**Entregables**
-- Conjunto de alternativas consideradas.
-- Hipótesis de valor explícitas.
-- Diseños preliminares y requisitos de capacidad.
-- Plan de contraste para las hipótesis críticas.
-
-**Puerta de salida:** cada alternativa relevante se puede describir y comparar; los supuestos que podrían cambiar la decisión están identificados.
-
-### 5.6 Fase 5 — VALIDATE: reunir evidencia y reducir incertidumbre
-
-**Pregunta:** ¿qué evidencia respalda o contradice las hipótesis?
-
-**Actividades**
-- Convertir supuestos críticos en preguntas contrastables.
-- Determinar fuentes, métodos y criterios de evidencia.
-- Realizar entrevistas, pruebas con usuarios, análisis de datos, experimentos o prototipos según el caso.
-- Registrar resultados positivos, negativos, ambiguos y ausencias de datos.
-- Revisar hipótesis sin reinterpretar retrospectivamente el criterio de éxito.
-- Separar evidencia del cliente, juicio experto y generación de contenido mediante IA.
-
-**Artefactos / herramientas**
-- **Evidence Matrix:** hipótesis, evidencia requerida, fuente, método, resultado, calidad, limitaciones y estado.
-- Protocolo de prueba o experimento.
-- Registro de decisiones sobre cambios de hipótesis.
-- Matriz de riesgos e incertidumbres.
-
-**Entregables**
-- Evidencias recogidas y trazables.
-- Estado de cada hipótesis: respaldada provisionalmente, contradicha, inconclusa o pendiente.
-- Incertidumbres residuales y pruebas recomendadas.
-
-**Puerta de salida:** hay evidencia suficiente para la decisión concreta o se documenta expresamente por qué todavía no la hay. La ausencia de evidencia no equivale a evidencia positiva.
-
-### 5.7 Fase 6 — DECIDE: priorizar y decidir
-
-**Pregunta:** ¿dónde conviene invertir energía, recursos y capital, dadas las evidencias y restricciones?
-
-**Actividades**
-- Comparar alternativas contra los criterios acordados en ALIGN.
-- Considerar impacto esperado, esfuerzo, riesgo, reversibilidad, dependencia y capacidad disponible.
-- Hacer visibles los trade-offs y las razones de descarte.
-- Decidir entre avanzar, realizar otra prueba, reformular, aplazar o no continuar.
-- Definir quién decide y quién responde por la ejecución.
-- Registrar qué evidencia podría hacer cambiar la decisión.
-
-**Artefactos / herramientas**
-- **Opportunity Prioritization Matrix.**
-- **Decision Framework.**
-- Registro de decisión.
-- **Executive Value Report** / **VALUE Decision Report** (nombres alternativos pendientes de normalización).
-
-**Entregables**
-- Recomendación estratégica trazable.
-- Decisión y justificación.
-- Alternativa seleccionada o decisión explícita de no actuar.
-- Próximos experimentos, responsables y condiciones de revisión.
-
-**Puerta de salida:** la decisión tiene dueño, fundamento explícito, límites y siguiente paso verificable. El framework apoya la decisión; no la toma automáticamente.
-
-### 5.8 Fase 7 — DELIVER / ACT: convertir la decisión en realidad
-
-**Pregunta:** ¿qué sistema necesitamos para producir el resultado previsto?
-
-**Actividades**
-- Traducir la decisión en iniciativas, hitos, responsables y recursos.
-- Definir procesos, tecnología, gobierno, capacidades y dependencias.
-- Preparar adopción, comunicación, formación y gestión del cambio.
-- Establecer métricas de implementación y de resultados.
-- Gestionar riesgos y cambios de alcance.
-- Verificar que la solución se utiliza en el contexto real.
-- Registrar diferencias entre diseño y ejecución.
-
-**Artefactos / herramientas**
-- **Value Delivery Map:** secuencia de entrega, responsables, dependencias y condiciones.
-- Plan de ejecución y adopción.
-- Matriz de responsabilidades y gobernanza.
-- Cuadro de seguimiento de resultados y riesgos.
-
-**Entregables**
-- Plan de entrega ejecutable.
-- Solución, cambio o experimento implementado en el alcance acordado.
-- Registro de ejecución, desviaciones, adopción y resultados observados.
-
-**Puerta de salida:** existe evidencia de qué se ejecutó y en qué condiciones. Completar actividades no demuestra por sí solo que se haya producido valor.
-
-### 5.9 Fase 8 — LEARN: evaluar, capturar conocimiento y renovar capacidades
-
-**Pregunta:** ¿qué aprendimos, qué valor se observó y qué debe cambiar en el sistema para el siguiente ciclo?
-
-**Actividades**
-- Comparar resultados con la línea base y los criterios iniciales.
-- Distinguir resultados previstos, no previstos y no observados.
-- Revisar hipótesis, decisiones, supuestos y efectos secundarios.
-- Capturar lecciones reutilizables y condiciones de validez.
-- Identificar capacidades que deben adquirirse, desarrollarse, integrarse, amplificarse o renovarse.
-- Actualizar los mapas y la base de conocimiento.
-- Decidir si se escala, adapta, repite o detiene la intervención.
-
-**Artefactos / herramientas**
-- **Value Learning System:** lecciones, decisiones, resultados y conocimiento reutilizable.
-- Revisión posterior a la intervención.
-- Registro de resultados y atribución.
-- Revisión de CCV e IVS, solo si sus definiciones y métodos de evaluación han sido acordados y son adecuados.
-
-**Entregables**
-- Informe de aprendizaje.
-- Evidencias y límites de lo aprendido.
-- Activos de conocimiento actualizados.
-- Recomendación para el siguiente ciclo.
-- Cambios propuestos en capacidades, proceso o herramientas.
-
-**Puerta de salida:** el aprendizaje se conserva y se convierte en una decisión de mejora. El ciclo puede reabrir ALIGN, reformular la oportunidad o volver a una fase anterior.
-
-## 6. Modelo de sistema de valor: elementos y relaciones
-
-El **Value System Model** es la representación que conecta las fases del framework. La conversación lo plantea como el núcleo visual de la metodología; su ontología aún debe normalizarse y probarse.
-
-### 6.1 Elementos a representar
-
-1. **Propósito y criterios de valor:** qué se considera valioso, para quién y en qué horizonte.
-2. **Actores y grupos de interés:** personas, equipos, clientes, proveedores, socios y comunidades pertinentes.
-3. **Necesidades y tensiones:** problemas, objetivos en conflicto, restricciones y expectativas.
-4. **Capacidades:** conocimientos, habilidades, procesos, activos, tecnología, autonomía y recursos disponibles o requeridos.
-5. **Conocimiento e información:** datos, experiencia, evidencia, memoria organizativa y conocimiento tácito.
-6. **Relaciones:** transaccionales, coordinativas, de aprendizaje y potencialmente generativas.
-7. **Flujos de valor:** cómo señales y conocimiento se convierten en comprensión, decisiones, acciones y efectos.
-8. **Fricciones y restricciones:** silos, retrasos, falta de confianza, desalineamiento, escasez de datos, reglas o dependencias.
-9. **Oportunidades y alternativas:** cambios posibles, hipótesis y opciones de intervención.
-10. **Decisiones y ejecución:** compromisos, responsables, secuencias y condiciones.
-11. **Resultados y efectos:** resultados observados y valor percibido por los grupos pertinentes, distinguidos de los resultados esperados.
-12. **Aprendizaje y renovación:** cómo la experiencia modifica el conocimiento y las capacidades futuras.
-
-### 6.2 Capacidades y su ciclo de vida
-
-La conversación propone cinco niveles en los que pueden residir capacidades: individual, relacional, organizativo, tecnológico y ecosistémico. También propone un ciclo de vida de capacidades:
-
-1. **Adquisición:** contratación, compra, alianzas o aprendizaje externo.
-2. **Desarrollo:** práctica, experimentación y aprendizaje.
-3. **Integración:** combinación de capacidades que antes estaban separadas.
-4. **Aplicación:** uso de capacidades para producir transformaciones.
-5. **Renovación:** modificación de las capacidades a partir de la experiencia y el cambio del entorno.
-
-Este ciclo puede analizarse dentro de LEARN y alimentar el rediseño del sistema.
-
-### 6.3 Relaciones y flujos
-
-La conversación diferencia relaciones transaccionales, coordinativas, de aprendizaje y generativas. La categoría «generativa» se propone para relaciones que podrían incrementar la capacidad futura de los sistemas participantes para producir nuevas transformaciones valiosas; no debe tratarse como propiedad garantizada de una relación sin indicadores y evidencia.
-
-Un flujo de referencia es:
-
-**señal → conocimiento → comprensión compartida → decisión → acción → efecto observado → aprendizaje**
-
-No es necesariamente lineal: pueden existir bucles, retrasos, pérdidas, retornos y múltiples actores. El Value Flow Map debe hacer visibles las fricciones en las transiciones.
-
-### 6.4 Fuerzas del sistema propuestas
-
-La conversación plantea cuatro fuerzas como heurística:
-
-- **Complejidad:** incertidumbre, diversidad de actores y velocidad de cambio.
-- **Fricción:** silos, burocracia, desalineamiento y mala comunicación.
-- **Inteligencia:** experiencia, datos, IA y colaboración.
-- **Adaptabilidad:** experimentación, aprendizaje y mejora continua.
-
-También aparece la expresión conceptual **«Valor sostenible = (Inteligencia × Capacidad × Adaptabilidad) − Fricción»**. Es una metáfora de pensamiento, no una fórmula matemática validada ni una ecuación para calcular resultados. No debe implementarse como métrica hasta que se definan variables, escalas, relaciones y validación.
-
-## 7. Medición: distinguir capacidad, actividad y valor realizado
-
-La conversación propone medir la capacidad de construir valor, no atribuir automáticamente todo resultado económico a la metodología. La medición debe separar al menos cuatro objetos:
-
-1. **Actividad:** sesiones, entrevistas, talleres, prototipos y tareas realizadas.
-2. **Calidad del proceso y de los artefactos:** trazabilidad, cobertura de actores, claridad de hipótesis, calidad de evidencia y consistencia de decisiones.
-3. **Capacidad de construcción de valor:** aptitud para integrar personas, conocimiento, procesos, tecnología e inteligencia artificial y repetir el ciclo.
-4. **Valor observado o realizado:** resultados económicos, humanos, operativos, sociales u otros acordados, sujetos a contexto y factores externos.
-
-### 7.1 Capacidad de Construcción de Valor (CCV)
-
-La CCV es el objetivo de desarrollo de la metodología. La conversación la describe como capacidad para construir valor repetidamente, y como metacapacidad para desarrollar, integrar, amplificar y renovar capacidades.
-
-Aparecen dos escalas de madurez en distintos momentos:
-
-- **Tres niveles:** valor reactivo, valor gestionado y valor adaptativo.
-- **Cinco niveles:** reactivo, coordinado, sistémico, adaptativo y generativo.
-
-No son todavía una escala unificada. Para esta versión se conservan como alternativas históricas pendientes de diseño, definición observable y validación. No se deben mezclar ni asignar niveles a una organización sin un instrumento acordado.
-
-### 7.2 Índice de Valor Sistémico (IVS)
-
-El IVS se propuso como medida de la capacidad de una organización para construir valor de forma sostenible, no como medida directa del valor producido por un proyecto. La conversación contiene versiones distintas de sus dimensiones:
-
-- Una propuesta de **ocho dimensiones**: propósito, personas, conocimiento, colaboración, decisión, tecnología e IA, ejecución y aprendizaje; cada una se planteó con una puntuación de 0 a 5.
-- Otra referencia menciona **seis dimensiones**, sin una definición completa y consistente en el material recuperado.
-
-La versión de ocho dimensiones es más explícita, pero sigue siendo una propuesta. La conversación también sugiere ponderar dimensiones, penalizar desequilibrios y observar la evolución temporal; no aporta una fórmula validada ni reglas completas de puntuación.
-
-**Decisión metodológica para v0.1:** no definir una fórmula numérica definitiva, no calcular un IVS agregado automáticamente y no presentar puntuaciones como comparables entre organizaciones. Antes de usarlo se necesita:
-- definir cada dimensión y sus indicadores observables;
-- especificar escalas, anclajes, fuentes y evidencias;
-- definir quién evalúa y cómo se resuelven discrepancias;
-- comprobar consistencia, sensibilidad y utilidad;
-- determinar si la agregación y ponderación están justificadas;
-- documentar límites de comparabilidad y posibles sesgos.
-
-### 7.3 Evaluación de un piloto
-
-Antes de empezar un piloto, acordar indicadores apropiados al caso. Posibles criterios, no resultados garantizados:
-
-- alternativas adicionales relevantes identificadas y verificadas;
-- restricciones o dependencias relevantes que no aparecían en el análisis de referencia;
-- cambios en la comprensión del problema o en la decisión;
-- calidad y trazabilidad de la evidencia;
-- tiempo y esfuerzo hasta una decisión útil;
-- utilidad percibida por quienes deciden y por los grupos afectados;
-- resultados posteriores cuando puedan medirse con un diseño adecuado.
-
-El número de oportunidades o transformaciones identificadas no equivale automáticamente a valor. La atribución causal requiere un diseño de evaluación capaz de sostenerla.
-
-## 8. VALUE Discovery Sprint como servicio paquetizado
-
-El *Value Discovery Sprint* es un artefacto de servicio propuesto para probar y aplicar parte de la metodología, no la totalidad del VCF. Su función es convertir una oportunidad difusa en hipótesis contrastables y una decisión fundamentada sobre los siguientes pasos.
-
-### 8.1 Propósito y límites
-
-**Propósito:** reducir incertidumbre alrededor de una oportunidad de valor y ayudar a decidir dónde invertir el siguiente esfuerzo.
-
-**Puede ser adecuado cuando:**
-- hay una oportunidad estratégica o de negocio importante pero poco definida;
-- existen distintas perspectivas y falta una comprensión compartida;
-- se necesita comparar alternativas antes de comprometer una inversión;
-- se requiere convertir una idea o problema en hipótesis y pruebas.
-
-**No debería venderse como suficiente cuando:**
-- se requiere una implantación completa o un programa de transformación de largo recorrido;
-- no existe acceso mínimo a usuarios, datos o responsables;
-- el cliente no está dispuesto a contrastar supuestos o revisar decisiones;
-- se exige una garantía de retorno que no puede sostenerse con la evidencia disponible.
-
-### 8.2 Secuencia propuesta del Sprint
-
-| Etapa del Sprint | Actividades clave | Artefactos principales | Salida |
+| Orden | Fase canónica | Pregunta guía | Función y salida mínima |
 |---|---|---|---|
-| 1. Contexto y alineamiento | Acordar reto, alcance, actores y decisión | Brief, Value Intent / Discovery Canvas | Oportunidad delimitada |
-| 2. Exploración de valor | Entrevistas, necesidades, tensiones, sistema actual | Opportunity Map, Value System Map | Mapa de necesidades y contexto |
-| 3. Hipótesis de valor | Crear alternativas y explicitar supuestos | Value Hypothesis Map, Blueprint inicial | Hipótesis priorizadas |
-| 4. Evidencia y validación | Contrastar hipótesis críticas | Evidence Matrix, protocolo de prueba | Evidencia y límites |
-| 5. Decisión VALUE | Comparar opciones y acordar siguiente paso | Opportunity Prioritization Matrix, Decision Framework, Executive Value Report | Recomendación y plan de próximos experimentos |
+| 0 | **ALIGN — Alinear valor** (entrada/gobernanza) | ¿Qué valor buscamos, para quién y qué decisión hay que apoyar? | Propósito, alcance, actores clave, criterios, restricciones y responsable de decisión. |
+| 1 | **SENSE — Percibir y descubrir** | ¿Qué está ocurriendo y qué oportunidad merece atención? | Oportunidad contextualizada, señales, necesidades y preguntas abiertas. |
+| 2 | **CONNECT — Comprender e integrar** | ¿Cómo funciona el sistema y qué conocimiento debe conectarse? | Modelo compartido del sistema actual, capacidades, relaciones, flujos, fricciones y lagunas de evidencia. |
+| 3 | **DESIGN — Diseñar alternativas** | ¿Qué opciones plausibles podrían responder a la oportunidad? | Alternativas, hipótesis de valor, supuestos, riesgos y diseño preliminar. |
+| 4 | **DECIDE — Decidir con evidencia** | ¿Qué opción o prueba está justificada ahora? | Decisión trazable: avanzar, probar, reformular, aplazar o no continuar. |
+| 5 | **ACT — Ejecutar y adoptar** | ¿Qué hace falta para llevar la decisión a la práctica? | Plan y registro de ejecución, responsables, adopción y resultados observables. |
+| 6 | **LEARN — Aprender y renovar** | ¿Qué hemos aprendido y qué debe cambiar en la capacidad del sistema? | Resultados revisados, lecciones, capacidades a renovar y decisión sobre el siguiente ciclo. |
 
-El Sprint puede usar un subconjunto de las nueve fases del ciclo integrado. La ejecución de la solución y el aprendizaje a largo plazo pueden constituir una fase posterior o un servicio adicional; no deben prometerse como parte del Sprint si no están dentro del alcance contratado.
+El proceso es iterativo, no una cascada rígida. Una fase puede reabrirse si aparece evidencia nueva, cambia el contexto o deja de sostenerse un supuesto crítico.
 
-### 8.3 Entregables mínimos
+### 4.3 ALIGN es una condición de entrada, no un artefacto duplicado
 
-- Diagnóstico de oportunidad y contexto.
-- Mapa de necesidades, actores y tensiones.
-- Hipótesis de valor priorizadas.
-- Evidencias recogidas y registro de incertidumbres.
-- Recomendación estratégica con razones, riesgos y límites.
-- Próximos experimentos o decisión documentada de no continuar.
+ALIGN produce un único registro de intención de valor. La fase no debe generar simultáneamente un Value Purpose Canvas, un Value Intent Canvas y un Value Intent Document independientes con la misma información. Puede existir una plantilla visual para facilitar el trabajo, pero el registro canónico es uno: **Value Intent**.
 
-### 8.4 Paquetización comercial pendiente
+### 4.4 Puertas de decisión
 
-La conversación propone niveles Pilot, Standard y Enterprise. Son hipótesis comerciales, no tarifas ni ofertas cerradas. Antes de fijarlos hay que definir duración, número de sesiones, participantes, dedicación, criterios de aceptación, alcance, entregables, exclusiones, precio y capacidad real de prestación.
+- **G0 — Encargo aceptado:** reto, alcance, responsable, participantes y condiciones de trabajo acordados.
+- **G1 — Oportunidad entendible:** la oportunidad describe contexto, personas afectadas y posible valor; no es solo una solución solicitada.
+- **G2 — Sistema suficientemente comprendido:** el modelo distingue observaciones, hipótesis, desacuerdos y lagunas.
+- **G3 — Alternativas contrastables:** las opciones y sus supuestos están explícitos; las hipótesis críticas pueden ponerse a prueba.
+- **G4 — Decisión justificada:** la evidencia es suficiente para la decisión concreta o se declara qué incertidumbre impide decidir.
+- **G5 — Ejecución registrada:** se sabe qué se hizo, en qué condiciones y qué resultados se observaron.
+- **G6 — Aprendizaje convertido en acción:** se decide qué mantener, cambiar, ampliar, repetir o detener.
 
-El producto vendido es la salida útil y trazable, no el número de talleres. El precio y la promesa deben validarse con clientes reales.
+Una puerta puede concluir con “no continuar” o “evidencia insuficiente”; no obliga a avanzar.
 
-## 9. Herramientas, artefactos y entregables: catálogo integrado
+## 5. Value System Model (VSM): modelo único del sistema
 
-Los nombres que siguen proceden de propuestas de la conversación. Hay solapamientos y variantes; esta tabla los agrupa funcionalmente, sin declarar que todos deban desarrollarse como instrumentos independientes.
+El VSM es el modelo de referencia para representar la realidad que se estudia. La conversación original propone componentes, mapas y vistas diferentes. Esta versión los integra como **vistas de un mismo modelo**, no como modelos independientes que cada uno tenga que mantenerse por separado.
 
-| Dominio | Artefacto / herramienta propuesta | Función | Salida o uso |
-|---|---|---|---|
-| Orientación | Value Purpose Canvas | Alinear propósito, grupos, valor y restricciones | Entrada a Value Intent |
-| Orientación | Value Intent Document | Fijar intención y criterios de éxito | Brief de valor |
-| Descubrimiento | Value Radar | Registrar señales y cambios | Inventario de oportunidades |
-| Descubrimiento | Value Opportunity Map | Describir oportunidades en contexto | Diagnóstico inicial |
-| Descubrimiento | Value Discovery Canvas | Guiar la exploración del Sprint | Brief estructurado |
-| Modelo | Value System Map | Mapear actores, relaciones, flujos y bloqueos | Mapa del sistema |
-| Modelo | Value Network Map | Representar conexiones de inteligencia y conocimiento | Red de colaboración |
-| Modelo | Collective Intelligence Map | Integrar perspectivas y diferencias | Comprensión compartida |
-| Modelo | Value Capability Map | Identificar capacidades existentes y necesarias | Brechas de capacidad |
-| Modelo | Value Flow Map | Mostrar cómo circula el conocimiento hasta la acción y el impacto | Fricciones y puntos de pérdida |
-| Diseño | Value Opportunity Canvas | Analizar necesidad, impacto, capacidades, riesgos y evidencia | Alternativa estructurada |
-| Diseño | Value Hypothesis Map / Canvas | Explicitar hipótesis y supuestos | Hipótesis priorizadas |
-| Diseño | Value Blueprint | Diseñar solución, relaciones, requisitos y riesgos | Diseño preliminar |
-| Exploración asistida | AI Value Simulator | Apoyar escenarios y comparación de opciones | Escenarios sujetos a verificación |
-| Evidencia | Evidence Matrix | Trazar hipótesis, fuentes y resultados | Estado de evidencia |
-| Decisión | Opportunity Prioritization Matrix | Comparar oportunidades y trade-offs | Priorización |
-| Decisión | Decision Framework | Registrar criterios y razonamiento | Decisión justificable |
-| Decisión | Executive Value Report / VALUE Decision Report | Sintetizar hallazgos, evidencia y recomendación | Informe ejecutivo |
-| Ejecución | Value Delivery Map | Traducir decisión a responsables, hitos y dependencias | Plan de entrega |
-| Aprendizaje | Value Learning System | Capturar resultados, lecciones y conocimiento | Memoria reutilizable |
-| Medición | Instrumento CCV / IVS | Evaluar capacidades cuando esté definido | Diagnóstico longitudinal, sujeto a validación |
+### 5.1 Componentes canónicos
 
-**Regla de diseño:** no crear una aplicación por cada nombre. En la primera iteración conviene comprobar qué artefactos aportan decisiones diferentes, cuáles pueden integrarse en un mismo documento o vista y cuáles son redundantes.
+1. **Intención de valor:** propósito, oportunidad, grupos afectados, resultados esperados, criterios y restricciones.
+2. **Actores:** personas, equipos y organizaciones pertinentes.
+3. **Necesidades y tensiones:** problemas, expectativas, objetivos en conflicto y contexto.
+4. **Capacidades y recursos:** conocimientos, habilidades, procesos, activos, tecnología y recursos existentes o requeridos.
+5. **Conocimiento y evidencia:** datos, experiencia, observaciones, fuentes, supuestos y resultados de pruebas.
+6. **Relaciones:** vínculos de coordinación, intercambio, aprendizaje o generación conjunta de capacidades.
+7. **Flujos:** cómo señales, conocimiento y decisiones pasan a la acción y a los resultados.
+8. **Fricciones y restricciones:** bloqueos, dependencias, silos, retrasos, límites de recursos y reglas.
+9. **Alternativas e hipótesis:** cambios posibles, condiciones de éxito y efectos esperados.
+10. **Decisiones y acciones:** elecciones, responsables, compromisos y secuencias de ejecución.
+11. **Resultados y aprendizaje:** resultados observados, efectos no previstos, lecciones y cambios de capacidad.
 
-## 10. Roles y responsabilidades
+### 5.2 Vistas, no artefactos redundantes
 
-La conversación propone el rol de **Arquitecto de Valor**: no llegar con una solución prefijada, sino mapear el sistema, detectar bloqueos, activar inteligencia colectiva, diseñar opciones y ayudar a construir capacidades permanentes. Es una descripción de rol propuesta, no una certificación profesional establecida.
-
-Roles mínimos por intervención:
-
-- **Patrocinador / responsable de negocio:** establece el reto, facilita acceso y responde por la decisión.
-- **Facilitador / Arquitecto de Valor:** conduce el proceso, integra perspectivas y protege la trazabilidad.
-- **Expertos de dominio:** aportan conocimiento técnico y operativo y revisan supuestos.
-- **Clientes, usuarios y personas afectadas:** aportan necesidades, experiencia y contraste cuando proceda.
-- **Responsable de evidencia / análisis:** documenta fuentes, resultados y límites; puede coincidir con otro rol en equipos pequeños.
-- **Responsable de ejecución:** asume el plan, adopción, riesgos y seguimiento.
-- **IA y herramientas digitales:** apoyan tareas definidas; no son responsables de validar por sí mismas la evidencia ni de tomar decisiones de negocio.
-
-En equipos pequeños una persona puede asumir varios roles, pero las responsabilidades y los conflictos de interés deben seguir siendo visibles.
-
-## 11. Tecnología e IA: principios de uso
-
-La IA puede apoyar recuperación y síntesis de conocimiento, análisis de documentos, preparación de entrevistas, generación de alternativas, comparación de escenarios, prototipado y documentación. Su uso debe responder a una actividad concreta del framework, no añadirse por novedad.
-
-Controles mínimos:
-- verificar datos, citas, cálculos y afirmaciones relevantes;
-- proteger datos confidenciales y personales;
-- registrar qué contenido fue generado o transformado con IA cuando afecte a una decisión;
-- distinguir fuentes originales de síntesis;
-- no presentar escenarios generados como predicciones validadas;
-- mantener revisión humana y responsabilidad explícita;
-- preservar una ruta de auditoría desde la evidencia hasta la recomendación.
-
-## 12. De la metodología al producto
-
-La conversación contempla productos posibles —biblioteca de conocimiento, plantillas, asistentes, flujos de trabajo, ProposalOS y herramientas de evaluación de propuestas—, pero también advierte contra construir un producto antes de validar una necesidad real. Para VALUE, la secuencia recomendada es:
-
-1. **Método manual asistido:** probar el ciclo y los artefactos con un caso acotado.
-2. **Plantillas coherentes:** normalizar entradas, decisiones, evidencia y salidas.
-3. **Biblioteca de conocimiento:** capturar casos, decisiones, errores, buenas prácticas y condiciones de validez.
-4. **Automatización selectiva:** automatizar tareas repetibles que ya se entienden y cuyo resultado se puede verificar.
-5. **Producto mínimo viable:** solo después de observar uso recurrente, usuarios definidos, problema repetido y disposición a pagar.
-6. **Evaluación y evolución:** medir utilidad, calidad, adopción, coste y riesgos antes de ampliar alcance.
-
-Posibles módulos futuros, sujetos a validación: espacio de oportunidad; mapa del sistema; registro de hipótesis y evidencia; tablero de decisiones; seguimiento de ejecución; repositorio de aprendizaje; asistencia IA; evaluación longitudinal de capacidades. No son funcionalidades comprometidas ni deben implementarse todas a priori.
-
-## 13. Gobierno del método y gestión del conocimiento
-
-Cada aplicación debe dejar una trazabilidad mínima:
-
-- identificador y versión del caso;
-- reto, alcance y criterios de valor;
-- fuentes y fecha de los datos relevantes;
-- modelos y artefactos utilizados;
-- hipótesis, supuestos y estado de evidencia;
-- decisiones, responsables y justificaciones;
-- actividades ejecutadas y desviaciones;
-- resultados observados y límites de atribución;
-- lecciones y cambios propuestos al método.
-
-Los cambios en definiciones, escalas o criterios deben versionarse. No se deben reescribir retrospectivamente criterios para hacer que un caso parezca exitoso. Los casos de clientes requieren consentimiento, protección de información y reglas claras para reutilizar aprendizajes.
-
-## 14. Cómo validar VALUE sin presuponer su eficacia
-
-La validación debe ocurrir en niveles distintos:
-
-1. **Claridad:** clientes y facilitadores entienden el lenguaje y pueden usar los artefactos.
-2. **Aplicabilidad:** el ciclo se puede completar con recursos y tiempos razonables.
-3. **Repetibilidad:** diferentes facilitadores obtienen resultados trazables en casos comparables.
-4. **Utilidad decisional:** el trabajo aporta información relevante para una decisión frente a la práctica habitual.
-5. **Resultados:** se observan cambios en los resultados acordados, con límites explícitos de atribución.
-6. **Desarrollo de capacidad:** el aprendizaje persiste y mejora ciclos posteriores.
-7. **Escalabilidad:** una versión de producto o servicio mantiene utilidad sin aumentar desproporcionadamente el coste o reducir la calidad.
-
-Para el primer piloto, acordar una línea base y criterios antes de iniciar. Documentar coincidencias con el método habitual, hallazgos adicionales, omisiones, coste de aplicación, decisiones cambiadas y feedback de los participantes. Un piloto local no demuestra universalidad, causalidad ni validez general.
-
-## 15. Decisiones abiertas y riesgos de coherencia
-
-Antes de declarar VALUE como metodología estable hay que resolver, al menos, lo siguiente:
-
-1. **Nombre paraguas y acrónimo:** VALUE, Value Architecture y Value Construction Framework aparecen en momentos distintos. No se ha fijado una expansión canónica del acrónimo VALUE.
-2. **Relación entre los ciclos:** mantener como vista estratégica el loop de cinco pasos, el VCF de seis capacidades y el ciclo operativo integrado; precisar qué representación se utiliza en cada contexto.
-3. **Ontología del Value System Model:** definir tipos de elementos, relaciones, cardinalidades, límites y reglas de representación.
-4. **Unidad de análisis:** decidir cómo se identifica y versiona una Value Opportunity y cómo se relaciona con capacidades, hipótesis, decisiones y resultados.
-5. **Catálogo de artefactos:** resolver duplicidades entre Opportunity Map, Discovery Canvas, Opportunity Canvas, Hypothesis Map y Blueprint.
-6. **CCV y madurez:** escoger y validar una escala; las versiones de tres y cinco niveles no están reconciliadas.
-7. **IVS:** resolver seis frente a ocho dimensiones, indicadores, escalas, ponderación y fiabilidad antes de calcularlo.
-8. **Valor y causalidad:** definir criterios de valor por contexto y no inferir que mayor capacidad, más alternativas o más transformaciones accesibles causan automáticamente mayor valor.
-9. **Evidencia y decisión:** establecer niveles de calidad de evidencia, tratamiento de contradicciones y umbrales de decisión adecuados a cada caso.
-10. **Sprint comercial:** concretar duración, participantes, precio, exclusiones y criterios de aceptación tras aprender de pilotos.
-11. **Tecnología:** decidir qué automatizar solo después de probar el flujo manual y las necesidades reales.
-12. **Propiedad intelectual y marcas:** revisar nombres y derechos antes de cualquier explotación comercial; la conversación no acredita registro ni exclusividad.
-
-## 16. Relación con TGCV: puente, no equivalencia
-
-VALUE se plantea como metodología de aplicación para ayudar a organizaciones a comprender sistemas, identificar oportunidades, estructurar alternativas, decidir y aprender. TGCV es un programa de investigación que estudia interacciones que modifican el conjunto de transformaciones accesibles a un sistema y cómo esos cambios se relacionan con trayectorias posteriores y construcción de valor.
-
-La relación útil es una **hipótesis de puente**: en ciertos casos, modelar explícitamente las transformaciones disponibles, sus condiciones, relaciones, dependencias y restricciones podría aportar información adicional al Value System Model y a las decisiones. Esto debe evaluarse en problemas concretos frente a un método de referencia.
-
-No se debe asumir que:
-- VALUE es una traducción ya validada de TGCV;
-- un mapa de oportunidades equivale al modelo formal TGCV;
-- ampliar transformaciones accesibles produce necesariamente más valor;
-- un resultado positivo en un piloto demuestra causalidad o validez general de TGCV;
-- una prueba operativa modifica por sí misma el Core científico de TGCV.
-
-La investigación TGCV y la aplicación VALUE deben conservar trazabilidad separada: las hipótesis y evidencias científicas pertenecen al gobierno de investigación; las decisiones y resultados de negocio pertenecen al caso aplicado. Los aprendizajes pueden informar nuevas preguntas, pero no reemplazan el proceso de validación correspondiente.
-
-## 17. Hoja de ruta recomendada
-
-### Etapa A — Consolidación metodológica
-- Revisar este documento contra el material completo de origen.
-- Acordar el vocabulario canónico y el mapa de relaciones entre fases.
-- Seleccionar el conjunto mínimo de artefactos no redundantes.
-- Crear fichas maestras de cada artefacto prioritario.
-
-**Salida:** método v0.2 revisado, glosario y fichas operativas.
-
-### Etapa B — Prototipo de servicio
-- Diseñar el *Value Discovery Sprint* como intervención delimitada.
-- Definir agenda, roles, preparación, criterios de aceptación y entregables.
-- Preparar plantillas, registro de evidencia y un ejemplo sintético.
-- Especificar qué queda fuera de alcance.
-
-**Salida:** paquete de servicio listo para revisión y prueba.
-
-### Etapa C — Piloto controlado
-- Seleccionar un caso y un cliente adecuados.
-- Acordar línea base y criterios de evaluación antes de comenzar.
-- Ejecutar el Sprint, documentar desviaciones y comparar con el método de referencia.
-- Revisar utilidad, coste, claridad y límites.
-
-**Salida:** informe de piloto y decisión explícita de continuar, modificar o detener.
-
-### Etapa D — Revisión y posible producto
-- Eliminar artefactos redundantes y mejorar los que demostraron utilidad.
-- Identificar tareas repetidas susceptibles de automatización verificable.
-- Construir solo el mínimo producto necesario para un problema observado.
-- Evaluar adopción, seguridad, calidad y disposición a pagar.
-
-**Salida:** especificación de MVP basada en evidencia, si procede.
-
-### Etapa E — Aprendizaje acumulativo
-- Mantener una biblioteca de casos y decisiones con protección de datos.
-- Revisar periódicamente el método, las métricas y las condiciones de uso.
-- Diferenciar cambios metodológicos, resultados comerciales y afirmaciones científicas.
-- Publicar versiones y cambios de forma trazable.
-
-**Salida:** evolución controlada de VALUE y conocimiento reutilizable.
-
-## 18. Glosario breve
-
-| Término | Uso en este documento |
+| Nombre previo | Normalización |
 |---|---|
-| VALUE | Nombre paraguas de trabajo para la metodología y su ecosistema; expansión del acrónimo pendiente |
-| Value Construction | Construcción deliberada y repetible de valor |
-| VCF | Value Construction Framework; fases operativas de referencia |
-| Value Architecture | Arquitectura que conecta propósito, necesidades, capacidades, decisiones, ejecución y resultados |
-| Value Opportunity | Oportunidad contextualizada que requiere comprensión y contraste |
-| Value System Model | Modelo del sistema de valor que se analiza o interviene |
-| CCV | Capacidad de Construcción de Valor |
-| IVS | Índice de Valor Sistémico propuesto; instrumento no validado |
-| Value Discovery Sprint | Intervención acotada de descubrimiento, hipótesis, evidencia y decisión |
-| Value Blueprint | Diseño preliminar de una alternativa de valor |
-| Evidence Matrix | Registro de hipótesis, fuentes, resultados y límites |
-| Value Learning System | Memoria de resultados, decisiones y lecciones reutilizables |
+| Value System Map | **Vista principal del VSM**. |
+| Value Network Map | Vista de actores, relaciones y conocimiento dentro del VSM. |
+| Collective Intelligence Map | Vista de perspectivas, aportaciones, acuerdos, discrepancias y lagunas dentro del VSM. |
+| Value Capability Map | Vista de capacidades actuales y requeridas dentro del VSM. |
+| Value Flow Map / Value Flow | Vista de flujos, transiciones, bloqueos y pérdidas dentro del VSM. |
+| Value Friction | Concepto para clasificar fricciones, no un mapa independiente. |
+| Value Gap | Comparación contextual entre situación actual y situación deseada, no un modelo adicional. |
 
----
+Estas vistas pueden presentarse como capas o filtros de una misma representación. En una aplicación futura, deben reutilizar un modelo de datos compartido y evitar mantener copias divergentes de actores, relaciones y capacidades.
 
-## Nota de procedencia y estatus
+### 5.3 Flujo de referencia
 
-Este documento es una **síntesis integrada y propuesta de normalización** basada en *Conversación Investigación TGCV.pdf*. Conserva las ideas centrales de esa fuente, pero organiza en un único ciclo propuestas que surgieron en momentos distintos. Cuando la fuente contiene variantes o inconsistencias —en particular ciclos, dimensiones del IVS, niveles de madurez y nombres de artefactos— se declaran como pendientes en lugar de presentarlas como decisiones ya adoptadas.
+**Señales y necesidades → conocimiento y comprensión → hipótesis y decisiones → acción → resultados observados → aprendizaje y capacidad renovada.**
 
-La metodología, los artefactos, las métricas, el servicio y el posible producto requieren revisión y pruebas con usuarios y casos reales. Este documento no valida las afirmaciones científicas de TGCV ni autoriza cambios en su Core, claims o gobernanza.
+Es una secuencia conceptual, no una ley causal ni necesariamente lineal. El VSM debe permitir mostrar ciclos de retroalimentación, retrasos, dependencias y evidencia contradictoria.
+
+## 6. Catálogo normalizado de artefactos
+
+La regla de normalización es: **un artefacto canónico por función de gestión; distintas plantillas o vistas pueden facilitarlo, pero no crear versiones paralelas de la misma información**.
+
+### A1. Value Intent
+
+- **Fase:** ALIGN.
+- **Función:** fijar propósito, oportunidad inicial, personas afectadas, criterios de valor, restricciones, alcance y decisión que se quiere apoyar.
+- **Consolida:** Value Purpose Canvas, Value Intent Canvas, Value Intent Document y partes de Discovery Brief.
+- **Salida:** intención de valor acordada y criterios de éxito revisables con control de versión.
+
+### A2. Value Opportunity Brief
+
+- **Fase:** SENSE.
+- **Función:** describir la oportunidad en contexto: situación observada, necesidades, personas afectadas, impacto potencial, fuentes, preguntas abiertas y supuestos iniciales.
+- **Consolida:** Value Opportunity Map, Value Opportunity Canvas y Value Discovery Canvas cuando cumplen la misma función de encuadre.
+- **Salida:** oportunidad delimitada y preguntas que deben investigarse.
+
+### A3. Value System Model
+
+- **Fase principal:** CONNECT; evoluciona durante todo el ciclo.
+- **Función:** representar el sistema actual y, cuando proceda, la situación deseada mediante los componentes y vistas definidos en la sección 5.
+- **Consolida:** Value System Map, Value Network Map, Collective Intelligence Map, Value Capability Map y Value Flow Map como vistas.
+- **Salida:** modelo trazable de actores, necesidades, capacidades, conocimiento, relaciones, flujos, fricciones y lagunas.
+
+### A4. Value Hypothesis & Options Record
+
+- **Fase:** DESIGN.
+- **Función:** registrar alternativas, hipótesis de valor, supuestos, capacidades requeridas, riesgos, efectos esperados y condiciones que permitirían descartar una opción.
+- **Consolida:** Value Hypothesis Map/Canvas y las fichas de alternativas del Value Opportunity Canvas.
+- **Salida:** conjunto de alternativas comparables y sus hipótesis explícitas.
+
+### A5. Evidence Record
+
+- **Fase:** VALIDACIÓN transversal; se utiliza sobre todo en DESIGN y DECIDE.
+- **Función:** vincular cada hipótesis con la evidencia disponible, fuente, método, fecha, calidad, limitaciones, contradicciones y estado.
+- **Consolida:** Evidence Matrix y registros separados de evidencia que cubren el mismo propósito.
+- **Salida:** trazabilidad de qué se sabe, qué no se sabe y con qué fundamento.
+
+### A6. Value Decision Record
+
+- **Fase:** DECIDE.
+- **Función:** documentar criterios, alternativas consideradas, evidencia relevante, trade-offs, riesgos, decisión, responsable, condiciones y razones para revisar la decisión.
+- **Consolida:** Decision Framework, Opportunity Prioritization Matrix y VALUE Decision Report en una única decisión trazable. Los informes ejecutivos pueden ser una presentación de esta información, no otra fuente canónica.
+- **Salida:** decisión justificada y próximos pasos.
+
+### A7. Value Blueprint & Delivery Plan
+
+- **Fases:** DESIGN y ACT, con estados diferentes.
+- **Función:** describir la alternativa seleccionada y traducirla a ejecución: componentes, cambios, capacidades, dependencias, hitos, responsables, adopción, riesgos y métricas.
+- **Consolida:** Value Blueprint y Value Delivery Map. Se mantiene un único artefacto con dos secciones/estados para evitar rediseñar y volver a copiar la misma solución.
+- **Salida:** diseño aprobado y plan ejecutable.
+
+### A8. Value Learning Record
+
+- **Fase:** LEARN.
+- **Función:** comparar resultados con intención y criterios iniciales, registrar efectos previstos/no previstos, límites de atribución, lecciones y cambios de capacidad.
+- **Consolida:** Value Learning System como registro de aprendizaje y los informes retrospectivos que repitan la misma información.
+- **Salida:** aprendizaje reutilizable y decisión explícita sobre el siguiente ciclo.
+
+### 6.1 Elementos que no son artefactos canónicos
+
+- **Value Radar:** técnica de exploración y captura de señales que alimenta A2.
+- **AI Value Simulator:** posible herramienta para explorar escenarios; no es un entregable obligatorio ni una simulación validada por su nombre.
+- **Opportunity Prioritization Matrix:** vista o técnica para comparar opciones dentro de A6.
+- **Executive Value Report:** formato de comunicación que se genera a partir de los artefactos canónicos; no es una segunda fuente de verdad.
+- **Plantillas, canvas, tableros y vistas:** interfaces de trabajo para producir o consultar artefactos; no deben duplicar el registro canónico.
+
+## 7. Reglas de trazabilidad entre artefactos
+
+La cadena mínima de trazabilidad es:
+
+**Value Intent → Value Opportunity Brief → Value System Model → Value Hypothesis & Options Record → Evidence Record → Value Decision Record → Value Blueprint & Delivery Plan → Value Learning Record.**
+
+Reglas:
+
+1. Cada artefacto tiene un identificador estable, versión, estado, responsable, fecha y procedencia.
+2. Cada hipótesis debe poder vincularse con una oportunidad y con una o más entradas de evidencia.
+3. Cada decisión debe citar los criterios y la evidencia utilizados, incluidos límites y desacuerdos relevantes.
+4. La ejecución debe apuntar a la decisión que autoriza el trabajo.
+5. El aprendizaje debe apuntar a los resultados observados y a los criterios acordados en ALIGN.
+6. No sobrescribir silenciosamente decisiones anteriores: registrar cambio, motivo y responsable.
+7. Una ausencia de dato no se registra como evidencia positiva.
+8. Un resultado observado no se atribuye automáticamente a VALUE; la atribución depende del diseño de evaluación y del contexto.
+
+## 8. Medición: CCV e IVS fuera del flujo obligatorio
+
+### 8.1 CCV
+
+La **Capacidad de Construcción de Valor** es la capacidad objetivo del método. La conversación propone que se desarrolle mediante integración de conocimiento, capacidades, relaciones, acción y aprendizaje.
+
+En la fuente aparecen tanto tres niveles (reactivo, gestionado, adaptativo) como una escala posterior de cinco niveles (reactivo, coordinado, sistémico, adaptativo, generativo). No se adopta ninguna escala como canónica en esta versión: la divergencia necesita una decisión y validación específicas.
+
+### 8.2 IVS
+
+La fuente presenta el **Índice de Valor Sistémico** como una posible medida de la capacidad de una organización para transformar conocimiento distribuido en decisiones y acciones generadoras de valor. En distintos momentos menciona seis u ocho dimensiones y no mantiene una definición completa única.
+
+Por tanto, en este estándar v0.2:
+- IVS es una línea de trabajo de medición, no un KPI listo para uso.
+- No hay fórmula, ponderaciones ni escala numérica canónicas.
+- No se calculará un agregado ni se compararán organizaciones como si la medida estuviera validada.
+- El Value Discovery Sprint no requiere IVS para funcionar.
+- Una futura especificación de medición deberá definir dimensiones, indicadores, fuentes, anclajes, fiabilidad, sesgos y límites de comparación.
+
+### 8.3 Evaluación de casos
+
+Cada caso debe acordar criterios apropiados antes de empezar. Pueden observarse calidad de evidencia, cambios de comprensión o decisión, tiempo hasta una decisión útil, adopción, resultados acordados y aprendizaje reutilizable. La selección de indicadores depende del caso; más actividad, más ideas o más transformaciones posibles no equivalen automáticamente a más valor.
+
+## 9. Roles mínimos
+
+- **Patrocinador / responsable de decisión:** define el reto y responde por la decisión.
+- **Facilitador VALUE:** guía el proceso, cuida el rigor del método y la trazabilidad.
+- **Participantes de dominio y operación:** aportan conocimiento y contrastan el modelo.
+- **Personas afectadas / usuarios / clientes:** contribuyen con necesidades y evidencia cuando procede.
+- **Responsable de ejecución:** responde por el plan, adopción, riesgos y seguimiento.
+- **Apoyo analítico o IA:** realiza tareas delimitadas, con revisión y verificación humanas.
+
+Los roles pueden combinarse en equipos pequeños, pero las responsabilidades no deben quedar implícitas.
+
+## 10. Gobernanza del estándar
+
+VALUE se debe desarrollar como estándar agnóstico de herramienta, con definiciones, artefactos y reglas versionadas. La futura aplicación será una implementación de referencia, no la autoridad exclusiva sobre el significado de los conceptos.
+
+### 10.1 Tipos de cambio
+
+- **Editorial:** mejora de claridad sin cambiar significado.
+- **Terminológico:** cambio o consolidación de nombre; requiere actualizar glosario y referencias.
+- **Metodológico:** cambio de fase, puerta, actividad o regla.
+- **Estructural:** cambio de componentes del VSM o de relaciones entre artefactos.
+- **Medición:** cambio de CCV, IVS, indicadores o escalas.
+- **Implementación:** cambio técnico del playground o producto que no altera el estándar.
+
+Los cambios metodológicos, estructurales y de medición requieren justificación, impacto en artefactos y ejemplos; los cambios editoriales no deben alterar semántica de manera inadvertida.
+
+### 10.2 Contribución abierta
+
+La comunidad podrá proponer cambios mediante issues y pull requests con:
+- problema observado y contexto;
+- definición o regla afectada;
+- alternativa propuesta;
+- artefactos y fases impactados;
+- ejemplo que demuestre la necesidad;
+- riesgos, compatibilidad y criterios de aceptación.
+
+Las propuestas se revisan antes de integrarse. Una implementación de software no cambia automáticamente el estándar; las decisiones aceptadas se documentan en la especificación y se versionan. La licencia del repositorio y los derechos de uso deben comprobarse explícitamente antes de anunciar condiciones de contribución o reutilización.
+
+## 11. Camino desde el estándar hasta el playground y la comunidad
+
+El trabajo se secuencia en tres etapas, sin adelantarlas ni mezclarlas.
+
+### Etapa 1 — Normalización metodológica (actual)
+
+1. Revisar y aprobar vocabulario y definiciones.
+2. Validar las siete fases operativas/entrada ALIGN y sus puertas.
+3. Aprobar los ocho artefactos canónicos y las vistas del VSM.
+4. Resolver excepciones y conceptos que se conservan como pendientes.
+5. Añadir ejemplos y criterios de aceptación del estándar.
+
+**Salida:** estándar VALUE v0.3 candidato, coherente y revisable.
+
+### Etapa 2 — Fichas maestras y servicio piloto
+
+1. Crear una ficha por artefacto canónico: propósito, contenido, campos, relaciones, responsable, entradas/salidas, reglas de calidad y ejemplo.
+2. Diseñar el Value Discovery Sprint como un recorrido acotado por las fases que necesita; no prometer ejecución y resultados de largo plazo si no están dentro del servicio.
+3. Definir preparación, agenda, roles, criterios de aceptación, entregables y evaluación.
+4. Probar el flujo manualmente con un caso controlado y registrar cambios requeridos.
+
+**Salida:** kit de facilitación y servicio piloto especificado.
+
+### Etapa 3 — Playground web y apertura comunitaria
+
+1. Implementar el recorrido completo de fases con el estándar como referencia.
+2. Permitir consultar y editar los ocho artefactos y sus vínculos.
+3. Mostrar la trazabilidad desde intención y oportunidad hasta decisión, ejecución y aprendizaje.
+4. Hacer visibles los estados incompletos, las incertidumbres y las puertas no superadas; no simular validación automática cuando no exista.
+5. Exportar los datos en un formato documentado y portable.
+6. Publicar guía de contribución, decisiones metodológicas, ejemplos y límites conocidos.
+7. Invitar a la comunidad a desarrollar el producto más completo, proponiendo cambios al estándar mediante gobernanza explícita.
+
+**Salida:** demostrador de referencia útil para aprender, no un producto completo ni una prueba de validez del método.
+
+## 12. Decisiones explícitamente pendientes
+
+No deben ocultarse ni resolverse por conveniencia de implementación:
+
+1. Si VALUE será el nombre formal definitivo y si VCF queda como nombre del proceso operativo.
+2. Si se mantiene Value Architecture como concepto paraguas o como nombre de la arquitectura integradora.
+3. La ontología formal del VSM: tipos de relación, cardinalidades y reglas de consistencia.
+4. La escala definitiva de CCV y el diseño/validación del IVS.
+5. La relación entre el estándar VALUE y las hipótesis científicas de TGCV.
+6. Las reglas detalladas de evaluación de evidencia y de resultados.
+7. Licencia abierta, gobierno de contribuciones y política de propiedad intelectual.
+8. Duración, precio, alcance y criterios comerciales del Value Discovery Sprint.
+
+## 13. Límite de relación con TGCV
+
+VALUE es una metodología aplicada propuesta; TGCV es un programa de investigación. El posible puente consiste en estudiar si modelar explícitamente las transformaciones accesibles, sus condiciones y restricciones aporta información adicional a la comprensión de oportunidades y a la decisión. Esa utilidad debe contrastarse en casos concretos frente a una referencia adecuada.
+
+No se asume que VALUE sea una traducción validada de TGCV, que un mapa del VSM equivalga al modelo formal TGCV ni que ampliar las posibilidades de transformación produzca automáticamente más valor. Las decisiones de negocio y los resultados de un piloto no validan por sí solos las afirmaciones científicas de TGCV.
+
+## 14. Procedencia
+
+Esta normalización se apoya especialmente en la conversación de investigación donde se introducen el VCF y sus seis capacidades, ALIGN y los artefactos iniciales (pp. 770–801); se definen Value Construction, Value Opportunity, Value Architecture y el Value Construction Loop (pp. 802–820); se presentan los ocho axiomas como propuesta (pp. 824–836); y se introduce el VSM (pp. 838–845). Las divergencias posteriores de CCV, IVS y potencial generativo se mantienen como temas abiertos, no como decisiones consolidadas.
+
+Esta especificación integra y normaliza propuestas históricas para facilitar revisión. No convierte las ideas de la fuente en hechos validados ni elimina la necesidad de contraste con usuarios y casos reales.
