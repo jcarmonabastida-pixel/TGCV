@@ -273,6 +273,15 @@ El ownership transversal debe activar el **escalado funcional y jerárquico** co
 
 Los umbrales, los niveles funcionales y jerárquicos, los destinatarios, los tiempos de actuación y el tratamiento de cada tipo de excepción deben estar definidos y autorizados; no se inventan valores ni una matriz de escalado para este caso. La insatisfacción general debe concretarse mediante señales o criterios acordados, sin asumir una medición que aún no se haya definido.
 
+### Información mínima para una escalación accionable
+
+En la medida de lo posible, la información remitida al nivel funcional o jerárquico al que se escala debe incluir, además del contexto e historial de la solicitud:
+- **motivo del escalado** y regla o umbral que lo activa, cuando corresponda;
+- **actuaciones requeridas** o siguiente acción pendiente;
+- **decisión esperada** del responsable receptor.
+
+Estos campos se incorporan como requisitos funcionales propuestos. Su formato, obligatoriedad según tipo de escalado y responsables de completarlos deben concretarse; no se presume que exista ya una plantilla o herramienta que los recoja.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
