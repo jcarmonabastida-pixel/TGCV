@@ -294,3 +294,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir responsabilidades por etapa y el mecanismo para resolver desacuerdos de asignación.
 - **Límite:** propuesta para el caso ficticio; no es una asignación real de responsabilidades ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+### SR-030 — Continuidad operativa y responsabilidad delegada
+
+- **Aportación del usuario:** evitar que una solicitud de citas quede bloqueada por ausencia de una persona o por responsabilidades no definidas. El responsable end-to-end podría actuar como responsable delegado, ejecutando la tarea o asignándola.
+- **Tratamiento acordado para A3:** proponer un procedimiento predefinido de continuidad. Cuando la persona asignada no pueda actuar, el responsable end-to-end podrá asumir temporalmente la tarea si está autorizado y capacitado, o asignarla a otra persona autorizada.
+- **Salvaguardas:** la delegación debe estar expresamente autorizada y delimitada; no se presupone autoridad ilimitada ni capacidad para realizar tareas fuera de competencia. Debe existir una alternativa definida si el responsable end-to-end también está indisponible. Se mantienen actualizados responsable, estado, bloqueo y acciones pendientes.
+- **Contexto sanitario:** la importancia de la cita y las consecuencias de la demora deben gestionarse según criterios y procedimientos clínicos autorizados, sin presumir que todas las citas sean urgentes.
+- **Pendiente antes de uso real:** definir alcance y límites de delegación, tareas reasignables, requisitos de competencia, continuidad alternativa y trazabilidad.
+- **Límite:** propuesta para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
