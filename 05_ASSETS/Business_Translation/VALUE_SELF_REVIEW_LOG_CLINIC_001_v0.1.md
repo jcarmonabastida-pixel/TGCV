@@ -48,6 +48,17 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** restricción contextual añadida a la revisión; pendiente de contrastar con A1 y A2 para evitar duplicidades.
 - **Decisión:** registrar el hallazgo y completar la revisión de A1 antes de modificar el estándar maestro.
 
+
+### SR-005 — Alcance del servicio: citas programadas, no urgencias
+
+- **Tarea:** precisar el alcance operativo al revisar las restricciones y las opciones de decisión.
+- **Observación del usuario:** “El horario de servicio está delimitado, entendiendo que son citas programadas y no urgencias”.
+- **Lectura provisional:** la cobertura horaria es un límite definido del servicio de citas programadas. El caso no debe tratar una ampliación de horario como opción implícita ni confundir este proceso con la atención de urgencias.
+- **Implicación para el caso:** cualquier propuesta debe evaluarse dentro del horario establecido y preservar una separación explícita respecto de las urgencias, que quedan fuera del alcance.
+- **Dato pendiente:** el caso no especifica cuáles son los días y franjas horarias concretos; no se deben inventar.
+- **Estado:** alcance aclarado a nivel conceptual; pendiente de contraste con A1/A2 y de decidir si hace falta explicitarlo en el caso.
+- **Decisión:** no añadir la ampliación horaria como opción por defecto. Mantener como posibles decisiones intervenir dentro del alcance, realizar una prueba limitada, investigar más o no cambiar todavía.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
