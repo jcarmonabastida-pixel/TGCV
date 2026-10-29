@@ -255,6 +255,12 @@ Como requisito funcional provisional del modelo, cada solicitud debería conserv
 
 Los tiempos acordados deben distinguirse de los tiempos observados: los primeros son referencias o compromisos que deben identificarse y confirmar; los segundos deben obtenerse de registros fiables. No se presuponen aquí valores, plazos ni compromisos concretos. Queda por confirmar dónde se documentan esos datos y cómo se actualizan y consultan durante los traspasos entre roles.
 
+### Ownership transversal del proceso e integridad de la información
+
+Se propone que un **rol o función asuma el ownership de extremo a extremo del proceso**, con responsabilidad de asegurar que la información de cada solicitud se mantenga actualizada durante todo su recorrido. Este ownership transversal no implica que esa función realice personalmente todas las tareas ni sustituya la responsabilidad operativa de cada rol que interviene.
+
+Quedan por definir para el caso real o para una versión más detallada del modelo: el rol concreto que ejercerá ese ownership, su autoridad para pedir actualizaciones y resolver incumplimientos, cómo se coordinan las responsabilidades de actualización de cada etapa y qué mecanismo permite detectar información desactualizada. No se presume que el rol de coordinación de citas ya tenga formalmente esta responsabilidad.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
