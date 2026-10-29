@@ -1,8 +1,8 @@
 # VALUE — Revisión del caso ficticio integral CLINIC-001
 
 **Identificador:** VALUE-CASE-REVIEW-001  
-**Versión:** 0.1  
-**Estado:** REVISIÓN DOCUMENTAL v0.2 — seguimiento parcial; H1, H2, H3 y H5 atendidos en el caso actualizado, pendientes de verificación de cierre  
+**Versión:** 0.3  
+**Estado:** REVISIÓN DOCUMENTAL v0.3 — seguimiento actualizado; H1, H2, H3 y H4/H6/H7 atendidos documentalmente; H5 parcialmente atendido  
 **Caso revisado:** [VALUE — Caso ficticio integral: acceso a citas en una clínica](VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md)  
 **Estándar de referencia:** [VALUE Methodology Lifecycle v0.2](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Especificaciones de artefactos:** [A1–A8 Master Specifications v0.1](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)
@@ -13,7 +13,7 @@
 
 El caso contiene los ocho artefactos y una cadena general ALIGN → SENSE → CONNECT → DESIGN → DECIDE → ACT → LEARN. La actualización del caso añadió un registro de ejecución narrativo simulado, identificadores para el dataset y el registro de ejecución, definiciones operativas y denominadores explícitos, y supuestos de selección y ventanas temporales.
 
-**Estado:** H1, H2, H3 y H5 tienen correcciones documentales aplicadas en el caso actualizado; no deben considerarse validados empíricamente. H4, H6 y H7 siguen abiertos. La trazabilidad mejoró, pero el registro de ejecución sigue siendo narrativo y no equivale a evidencia auditable.
+**Estado:** H1, H2, H3 y H5 tienen correcciones documentales aplicadas en el caso actualizado; no deben considerarse validados empíricamente. H4, H6 y H7 se consideran atendidos documentalmente en la versión 0.3; la existencia de criterios previos pendientes queda explícita, la frontera Sprint/prueba operativa se separa, y la decisión se distingue de la autorización real. La trazabilidad mejoró, pero el registro de ejecución sigue siendo narrativo y no equivale a evidencia auditable.
 
 No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los hallazgos se tratan como mejoras de contenido y trazabilidad dentro de A1–A8.
 
@@ -48,6 +48,7 @@ No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los ha
 
 ### H4 — Criterios de decisión cualitativos, sin umbrales acordados
 
+**Estado tras actualización v0.3:** ATENDIDO DOCUMENTALMENTE; se incorporó una tabla de criterios previos y los umbrales no acordados permanecen como pendientes explícitos. No se inventan umbrales universales.  
 **Prioridad:** media  
 **Dónde:** A6 y A7.  
 **Hallazgo:** las reglas “mejora”, “carga aceptable” y “deterioro” no incluyen umbrales. El documento sí advierte que no deben inventarse umbrales clínicos universales, pero no muestra cómo se documentaría una decisión local antes de empezar.  
@@ -65,6 +66,7 @@ No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los ha
 
 ### H6 — El Sprint y la prueba operativa de cuatro semanas podrían confundirse
 
+**Estado tras actualización v0.3:** ATENDIDO DOCUMENTALMENTE; A8 separa el aprendizaje del Sprint de los resultados simulados de la prueba operativa posterior.  
 **Prioridad:** media  
 **Dónde:** sección 13 y A7–A8.  
 **Hallazgo:** el documento distingue Sprint y prueba posterior, pero los resultados simulados de A8 aparecen cerca del recorrido del Sprint y podrían interpretarse como entregables producidos durante los cinco días.  
@@ -73,6 +75,7 @@ No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los ha
 
 ### H7 — Autoridad y participantes todavía no concretados
 
+**Estado tras actualización v0.3:** ATENDIDO DOCUMENTALMENTE; A6 distingue decisor ficticio, fecha no especificada, selección de opción y autorización de ejecución pendiente.  
 **Prioridad:** baja  
 **Dónde:** A1 y A7.  
 **Hallazgo:** el documento reconoce que los roles son ficticios y que la autoridad real debe identificarse, por lo que no es una contradicción; sin embargo, la decisión se narra como “seleccionar O1” sin una firma o campo explícito de responsable.  
@@ -116,9 +119,9 @@ La revisión se considera cerrada documentalmente cuando:
 - **H1:** atendido documentalmente; registro de ejecución simulado añadido.
 - **H2:** atendido documentalmente; definiciones y denominadores explícitos.
 - **H3:** atendido documentalmente; IDs de dataset y ejecución enlazados.
-- **H4:** abierto; falta mostrar criterios preacordados o pendientes explícitos antes de la intervención simulada.
+- **H4:** atendido documentalmente; criterios previos visibles y umbrales pendientes explícitos.
 - **H5:** atendido parcialmente; selección y ventanas descritas, comparabilidad aún supuesta.
-- **H6:** abierto; falta separar con mayor nitidez el aprendizaje del Sprint y los resultados de la prueba posterior en A8.
-- **H7:** abierto; falta un bloque explícito de decisor, fecha y estado de autorización simulados.
+- **H6:** atendido documentalmente; aprendizaje del Sprint separado de resultados operativos posteriores.
+- **H7:** atendido documentalmente; A6 incluye decisor ficticio, fecha no especificada y estado de autorización pendiente.
 
 **Conclusión:** el caso está mejor trazado, pero todavía no debe considerarse ejemplo de referencia cerrado. La revisión sigue siendo documental y el dataset continúa siendo ficticio.
