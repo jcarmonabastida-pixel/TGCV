@@ -57,6 +57,14 @@
 - **No es evidencia real ni validación empírica** de VALUE o TGCV; no se ha ejecutado una intervención en una clínica.
 - Funciona como caso de prueba documental antes de una prueba de uso con participantes y datos reales autorizados.
 
+### 7. REVISIÓN DEL CASO FICTICIO INTEGRAL
+
+[VALUE — Revisión del caso ficticio integral CLINIC-001](../VALUE_FICTIONAL_CASE_REVIEW_v0.1.md)
+
+- Inspección documental de cobertura A1–A8 y de la trazabilidad entre decisión, plan, ejecución simulada y aprendizaje.
+- Registra siete hallazgos, prioridades, correcciones propuestas y criterios de aceptación.
+- Estado: revisión documental; los hallazgos aún requieren resolución en el caso. No es validación empírica.
+
 ## Convención de gobernanza
 
 1. El maestro es la única referencia activa para el trabajo metodológico, salvo decisión documentada.
@@ -75,5 +83,5 @@
 | `ALTERNATIVE_UNEVALUATED_VALUE_FIVE_STAGE_CYCLE_v0.1.md` | 0.1 | **ALTERNATIVA NO EVALUADA** | Explorar el ciclo mnemónico VALUE de cinco etapas. |
 | `../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` | 0.1 | **BORRADOR** | Fichas de especificación para A1–A8. |
 | `../VALUE_DISCOVERY_SPRINT_v0.1.md` | 0.1 | **BORRADOR** | Diseño inicial del servicio piloto. |
-| `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |\n| `../VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md` | 0.1 | **CASO FICTICIO INTEGRAL** | Ejercicio A1–A8; datos y resultados simulados, no validación empírica. |
+| `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |\n| `../VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md` | 0.1 | **CASO FICTICIO INTEGRAL** | Ejercicio A1–A8; datos y resultados simulados, no validación empírica. |\n| `../VALUE_FICTIONAL_CASE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Siete hallazgos de trazabilidad y operacionalización; pendientes de resolución. |
 
