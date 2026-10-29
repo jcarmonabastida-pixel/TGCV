@@ -347,6 +347,14 @@ Si la información necesaria está disponible, pero existen contradicciones entr
 
 Esta es una regla funcional propuesta para el caso ficticio. No establece una jerarquía real de fuentes ni un procedimiento clínico aprobado.
 
+### Información imprescindible no disponible ni recuperable
+
+Si una información necesaria no está disponible y tampoco es posible obtenerla, se registra qué dato falta y por qué no se ha podido obtener. Si es imprescindible para avanzar con seguridad o cumplir los requisitos del proceso, la solicitud permanece abierta y no se sustituye el dato por una suposición no declarada.
+
+Si existe una alternativa para proceder sin esa información, debe someterse a una decisión autorizada, dejando constancia de la justificación, las limitaciones y las condiciones aplicables. No se presume que la alternativa sea válida ni que la ausencia del dato pueda ignorarse.
+
+Antes del uso real deben definirse los criterios para distinguir información imprescindible de información prescindible, quién puede autorizar una alternativa y cómo documentar sus límites. Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento clínico aprobado.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
