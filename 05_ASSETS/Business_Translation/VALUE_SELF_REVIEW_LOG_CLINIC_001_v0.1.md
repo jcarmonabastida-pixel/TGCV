@@ -401,3 +401,14 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir el procedimiento ante falta de respuesta, incluidos plazos, intentos y canales de contacto, responsables, condiciones de cierre y tratamiento de casos en que la demora pueda afectar a la atención necesaria.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-040 — Falta de respuesta del paciente tras intentos de contacto
+
+- **Aprobación del usuario:** sí.
+- **Regla acordada:** si, tras los intentos de contacto previstos en el procedimiento, el paciente no responde, la solicitud permanece abierta y se activa una revisión por el responsable end-to-end.
+- **Salvaguarda:** no se cierra automáticamente por falta de respuesta. La ausencia de respuesta no equivale a aceptación ni a renuncia a la atención.
+- **Actuación:** el responsable end-to-end determina y registra los siguientes pasos conforme a las reglas autorizadas y a la situación clínica.
+- **Pendiente antes de uso real:** definir los intentos, plazos y canales de contacto, el alcance de la revisión, las actuaciones posibles y la continuidad alternativa si el responsable end-to-end no está disponible.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
