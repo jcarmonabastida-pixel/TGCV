@@ -326,3 +326,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir responsabilidades, sustituciones, delegaciones, límites de autoridad y circunstancias que justifican la excepción.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-033 — Cobertura alternativa de funciones críticas
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** cada función crítica del proceso debe disponer de una cobertura operativa alternativa previamente definida, para evitar que la ausencia de una persona concreta deje la función sin capacidad de actuación.
+- **Condiciones:** la cobertura debe asignarse a personas autorizadas y competentes, con responsabilidades y límites explícitos. Se integra con el procedimiento de continuidad y delegación end-to-end; no implica autoridad ilimitada.
+- **Pendiente antes de uso real:** identificar las funciones críticas, designar coberturas alternativas, confirmar competencias y autorizaciones, y definir activación, límites y trazabilidad.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
