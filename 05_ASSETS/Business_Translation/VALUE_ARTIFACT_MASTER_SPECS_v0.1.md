@@ -56,6 +56,7 @@ Los campos específicos siguientes se añaden a los comunes. Las fichas no presc
 
 ### Criterios de calidad
 - El reto no presupone una solución concreta sin justificación.
+- A1 mantiene la oportunidad en un nivel inicial de encuadre; la descripción contextual, las observaciones, las fuentes y las preguntas abiertas se desarrollan en A2, evitando duplicar el brief.
 - Se identifica quién define el valor y quién puede verse afectado.
 - Los criterios son suficientemente claros para orientar comparación posterior.
 - Las restricciones y desacuerdos importantes son visibles.
