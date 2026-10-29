@@ -199,3 +199,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente:** identificar el rol concreto, su autoridad, la coordinación con quienes actualizan datos en cada etapa y los mecanismos para detectar información desactualizada.
 - **Precaución:** no se da por hecho que el rol de coordinación de citas tenga ya asignado formalmente ese ownership.
 - **Estado:** registrado; continúa la revisión de A3.
+
+
+### SR-019 — Monitorización, supervisión y comunicación end-to-end
+
+- **Aportación del usuario:** el ownership transversal asume también todas las tareas de monitorización, supervisión y comunicación end-to-end.
+- **Tratamiento en A3:** se amplía la responsabilidad del rol/función propietaria para incluir seguimiento del estado y progreso, vigilancia de los tiempos acordados de respuesta y resolución, detección de desviaciones, coordinación o activación del escalado según reglas autorizadas y comunicación del estado relevante a los roles implicados y, cuando corresponda, a la persona solicitante.
+- **Límites:** no sustituye la ejecución de tareas propias de otros roles ni permite alterar criterios clínicos o reglas de prioridad.
+- **Pendiente:** concretar el rol, su autoridad, canales de comunicación, frecuencia de supervisión y reglas de escalado.
+- **Estado:** registrado; continúa la revisión de A3.
