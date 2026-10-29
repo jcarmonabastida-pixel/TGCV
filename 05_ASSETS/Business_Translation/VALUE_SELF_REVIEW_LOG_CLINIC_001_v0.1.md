@@ -259,3 +259,11 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Límite:** propuesta funcional dentro del caso ficticio; no es un procedimiento clínico aprobado ni evidencia de validación real.
 - **Estado:** registrado; continúa la revisión de A3.
 
+### SR-025 — Rechazo de cita sin capacidad para ofrecer una alternativa
+
+- **Aportación y aprobación del usuario:** registrar el tratamiento propuesto cuando el paciente rechaza la cita y no hay capacidad disponible para ofrecer otra.
+- **Tratamiento en A3:** la solicitud permanece abierta y se activa el escalado conforme a las reglas funcionales y jerárquicas autorizadas. Si el nivel receptor tampoco dispone de capacidad, la solicitud no se considera resuelta: el responsable end-to-end mantiene el seguimiento, registra el bloqueo y las actuaciones/decisiones, y coordina la comunicación del estado hasta que exista una alternativa o una decisión autorizada.
+- **Salvaguarda:** no cerrar la solicitud solo porque se haya escalado o falte capacidad. Si la demora pudiera comprometer la atención necesaria, aplicar el procedimiento clínico de priorización y escalado correspondiente, sin esperar indefinidamente.
+- **Pendiente antes de uso real:** definir niveles y destinatarios de escalado, actuación ante falta de capacidad en el nivel receptor, criterios de decisión autorizada y procedimiento clínico aplicable ante riesgo por demora. No se inventan plazos, recursos ni reglas clínicas.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
