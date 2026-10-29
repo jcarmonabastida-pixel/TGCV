@@ -114,6 +114,16 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** aportaciones registradas; el horizonte de análisis para este caso pasa a ser doce meses como propuesta de trabajo, sujeto a disponibilidad y calidad de datos.
 - **Decisión:** no modificar todavía el estándar maestro; completar la revisión de A1/A2 y luego valorar las actualizaciones documentales necesarias.
 
+
+### SR-011 — Alcance inicial del análisis de capacidad
+
+- **Tarea:** acordar el nivel de detalle inicial para contrastar capacidad y demanda.
+- **Observación del usuario:** “Es suficiente con la capacidad planificada registrada en un primer análisis, asumiendo una gestión adecuada de ausencias (planificadas y no planificadas) por parte de la clínica”.
+- **Lectura provisional:** en la primera revisión se utilizará la capacidad planificada registrada, sin exigir de entrada una reconstrucción detallada de la capacidad efectiva minuto a minuto. El análisis asume como condición de contexto que la clínica gestiona adecuadamente las ausencias planificadas y no planificadas.
+- **Límite interpretativo:** esta es una hipótesis/condición de trabajo del caso, no un hecho comprobado ni una afirmación de que las ausencias nunca afecten a la capacidad real. Si los resultados no explican las demoras o aparecen señales de desviaciones relevantes, podrá ser necesario revisar el supuesto en una fase posterior.
+- **Estado:** alcance inicial acordado para el ejercicio; pendiente de completar A2 y revisar las implicaciones para A1.
+- **Decisión:** registrar sin cambiar todavía el estándar maestro.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
