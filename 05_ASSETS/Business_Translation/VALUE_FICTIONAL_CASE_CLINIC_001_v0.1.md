@@ -306,6 +306,18 @@ El registro de cierre solo debe realizarse cuando:
 
 La aceptación expresa y confirmación por el paciente es una vía de cierre. Si el paciente **rechaza** la cita, la solicitud permanece abierta y vuelve al flujo de asignación/escalado para su gestión. Si no responde dentro de un **plazo predefinido**, se asume aceptación tácita y la solicitud puede avanzar hacia el cierre, siempre que se cumplan las demás condiciones de cierre y quede registrado el vencimiento del plazo y la regla aplicada. El plazo, la forma de comunicarlo al paciente, los intentos/canales de contacto y la validez de esta aceptación tácita deben definirse y autorizarse expresamente; no se inventan valores ni se presupone que esa regla esté actualmente aprobada.
 
+### Rechazo de cita sin capacidad disponible para una alternativa
+
+Si el paciente rechaza la cita ofrecida y no existe capacidad disponible para ofrecer una alternativa adecuada, la solicitud **permanece abierta** y no se registra como cerrada por el mero hecho de haber sido escalada o de no existir capacidad en ese momento.
+
+- El rol propietario del proceso mantiene el seguimiento end-to-end, conserva actualizado el estado y el motivo del bloqueo y comunica la situación pertinente.
+- Se activa el escalado funcional y/o jerárquico conforme a las reglas autorizadas, buscando una alternativa adecuada sin alterar las reglas clínicas de prioridad.
+- Si el nivel receptor tampoco dispone de capacidad, la solicitud continúa abierta y bajo seguimiento; la escalación no se considera resuelta por sí misma.
+- Si no puede ofrecerse una alternativa, se registra el bloqueo y la solicitud queda pendiente hasta que exista una solución o se adopte una decisión por la autoridad competente conforme a reglas previamente definidas.
+- Si la demora pudiera comprometer la atención necesaria, debe activarse el procedimiento clínico apropiado de priorización/escalado, sin esperar indefinidamente a que aparezca capacidad ordinaria.
+
+Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento clínico aprobado. Quedan por definir la autoridad competente, los mecanismos de escalado cuando tampoco hay capacidad en el nivel receptor, las comunicaciones al paciente y los criterios para determinar cuándo una demora requiere activar salvaguardas clínicas. No se inventan plazos, umbrales ni soluciones de capacidad.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
