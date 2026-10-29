@@ -241,3 +241,11 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Tratamiento en A3:** incorporado como condición explícita previa al registro de cierre, no como actividad posterior. El modelo contempla también cita asignada y comunicada, información actualizada y ausencia de actuaciones/escalados pendientes o su resolución conforme a reglas aplicables.
 - **Pendiente:** definir cómo registrar la confirmación y qué hacer ante rechazo, falta de respuesta o ausencia de confirmación. No se inventan plazos ni procedimientos.
 - **Estado:** registrado; continúa la revisión de A3.
+
+
+### SR-024 — Rechazo frente a ausencia de respuesta del paciente
+
+- **Aportación del usuario:** distinguir ambos casos: si el paciente rechaza la cita, la solicitud sigue abierta; si no responde dentro de un plazo predefinido, se asume aceptación tácita.
+- **Tratamiento en A3:** el rechazo devuelve la solicitud al flujo de asignación/escalado. La falta de respuesta tras vencer el plazo predefinido permite tratar la cita como tácitamente aceptada, siempre que se cumplan las demás condiciones de cierre y quede trazabilidad de la regla aplicada.
+- **Pendiente crítico:** acordar y autorizar el plazo, cómo se comunica al paciente, los canales/intentos de contacto y la validez de la aceptación tácita antes de aplicarla en un proceso real. No se inventan plazos ni se presenta la regla como actualmente autorizada.
+- **Estado:** registrado; continúa la revisión de A3.
