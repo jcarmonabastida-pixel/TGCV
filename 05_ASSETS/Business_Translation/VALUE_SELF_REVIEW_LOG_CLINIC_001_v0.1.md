@@ -390,3 +390,14 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir responsables, canales, plazos de comunicación y actualización, contenido mínimo y registro de los contactos, respetando los requisitos aplicables de privacidad y comunicación asistencial.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-039 — Condiciones de resolución y cierre de una cita reprogramada
+
+- **Aprobación del usuario:** sí.
+- **Regla acordada:** una cita reprogramada no se considera resuelta por el mero hecho de haber propuesto o asignado una nueva fecha. Debe constar que el paciente ha recibido la comunicación y que ha aceptado la nueva cita.
+- **Falta de respuesta:** si el paciente no responde, solo podrá aplicarse un procedimiento de seguimiento previamente definido. La solicitud no se cerrará hasta que se cumplan el resultado y las condiciones establecidos en ese procedimiento.
+- **Salvaguarda:** no se presume aceptación tácita ni se inventan plazos o reglas de cierre.
+- **Pendiente antes de uso real:** definir el procedimiento ante falta de respuesta, incluidos plazos, intentos y canales de contacto, responsables, condiciones de cierre y tratamiento de casos en que la demora pueda afectar a la atención necesaria.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
