@@ -155,3 +155,11 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 ## Nota de integridad
 
 El registro se actualiza a medida que se realiza la revisión. Las tareas no realizadas permanecen pendientes. CLINIC-001 es enteramente ficticio y no aporta evidencia clínica ni de eficacia.
+
+
+### SR-014 — Macroetapas iniciales del sistema para A3
+
+- **Aportación del usuario:** propone cuatro macroetapas: (1) recepción, clasificación y registro de la solicitud; (2) asignación y escalado de la solicitud; (3) monitorización, supervisión y comunicación del estado y progreso durante el proceso; (4) resolución, asignación y revisión de citas.
+- **Tratamiento documental:** incorporadas en el A3 del caso ficticio como macroetapas funcionales provisionales.
+- **Precaución de modelado:** no se asumen como flujo real verificado ni como etapas atómicas. Deben aclararse secuencia, traspasos, estados intermedios y condiciones de escalado. La monitorización, supervisión y comunicación pueden atravesar varias macroetapas.
+- **Estado:** registrada; continuar la revisión de A3 identificando actores, entradas/salidas y relaciones sin inventar detalles no aportados.
