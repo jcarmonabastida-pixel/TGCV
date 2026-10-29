@@ -28,6 +28,16 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** observación registrada; queda por comprobar si A1 y las especificaciones expresan esta doble condición sin duplicar innecesariamente información.
 - **Decisión:** no cambiar aún los documentos; completar el contraste de A1 antes de proponer cambios.
 
+
+### SR-003 — Satisfacción del paciente y facilidad de uso para el personal
+
+- **Tarea:** valorar si los criterios iniciales de valor cubren las dimensiones relevantes.
+- **Observación del usuario:** “La satisfacción de los pacientes y la facilidad de uso del proceso para el personal son también criterios a considerar”.
+- **Lectura provisional:** además de los resultados de acceso, las salvaguardas asistenciales y la carga de trabajo, conviene considerar la experiencia del paciente y la facilidad con que el personal puede realizar el proceso.
+- **Precaución:** “satisfacción” y “facilidad de uso” necesitan una definición y una forma de recogida adecuadas antes de convertirse en indicadores operativos. No se fijan escalas, umbrales ni fórmulas en esta autoevaluación.
+- **Estado:** criterio adicional propuesto; pendiente de contrastar con A1 y las especificaciones maestras.
+- **Decisión:** registrar como propuesta, sin modificar todavía el estándar hasta terminar la revisión de A1.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
