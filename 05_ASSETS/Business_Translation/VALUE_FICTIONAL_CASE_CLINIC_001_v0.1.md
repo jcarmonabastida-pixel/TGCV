@@ -235,6 +235,14 @@ En el modelo provisional, esto se registra como una dependencia transversal del 
 
 No se presuponen cifras de capacidad, umbrales, reglas nuevas ni mecanismos de sustitución.
 
+### Continuidad del flujo y escalado ante falta de capacidad
+
+La orientación propuesta en la autoevaluación es mantener, en la medida de lo posible, la continuidad del flujo. Cuando la capacidad del rol requerido no esté disponible, la solicitud debería escalarse conforme a mecanismos y responsabilidades definidos, en lugar de asumir que debe permanecer indefinidamente en espera.
+
+Esta orientación depende de un **supuesto que debe verificarse**: que el dimensionamiento del personal sea suficiente y adecuado por grupos o niveles de atención, soporte y resolución de solicitudes. No se da por probado que ese dimensionamiento exista ni que sea suficiente en el escenario real.
+
+Queda pendiente precisar qué niveles y roles existen, qué criterios autorizados rigen el escalado, qué capacidad tiene cada nivel y cómo se gestionan los casos en que tampoco exista capacidad en el nivel receptor. No se presume que escalar garantice por sí solo una resolución más rápida.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
