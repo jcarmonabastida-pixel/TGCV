@@ -2,23 +2,26 @@
 
 **Identificador:** VALUE-CASE-REVIEW-001  
 **Versión:** 0.1  
-**Estado:** REVISIÓN DOCUMENTAL — hallazgos para corrección antes de usar el caso como ejemplo de referencia  
+**Estado:** REVISIÓN DOCUMENTAL v0.2 — seguimiento parcial; H1, H2, H3 y H5 atendidos en el caso actualizado, pendientes de verificación de cierre  
 **Caso revisado:** [VALUE — Caso ficticio integral: acceso a citas en una clínica](VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md)  
 **Estándar de referencia:** [VALUE Methodology Lifecycle v0.2](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Especificaciones de artefactos:** [A1–A8 Master Specifications v0.1](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)
 
 > Esta revisión es una inspección documental del caso sintético. No constituye validación de VALUE, de TGCV ni de una intervención sanitaria. Los datos del caso continúan siendo inventados.
 
-## 1. Dictamen
+## 1. Dictamen y estado de seguimiento
 
-El caso contiene los ocho artefactos y una cadena general ALIGN → SENSE → CONNECT → DESIGN → DECIDE → ACT → LEARN. Sirve como primera demostración documental, pero **todavía no debe presentarse como ejemplo de referencia completamente cerrado**. Hay puntos donde se describe un plan sin registrar la ejecución simulada con el mismo nivel de detalle, y otros donde los indicadores no tienen definiciones operativas suficientes para una comparación reproducible.
+El caso contiene los ocho artefactos y una cadena general ALIGN → SENSE → CONNECT → DESIGN → DECIDE → ACT → LEARN. La actualización del caso añadió un registro de ejecución narrativo simulado, identificadores para el dataset y el registro de ejecución, definiciones operativas y denominadores explícitos, y supuestos de selección y ventanas temporales.
 
-No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los hallazgos se pueden tratar como mejoras de contenido y trazabilidad dentro de A1–A8.
+**Estado:** H1, H2, H3 y H5 tienen correcciones documentales aplicadas en el caso actualizado; no deben considerarse validados empíricamente. H4, H6 y H7 siguen abiertos. La trazabilidad mejoró, pero el registro de ejecución sigue siendo narrativo y no equivale a evidencia auditable.
+
+No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los hallazgos se tratan como mejoras de contenido y trazabilidad dentro de A1–A8.
 
 ## 2. Hallazgos
 
 ### H1 — Separación entre plan, ejecución y resultados simulados
 
+**Estado tras actualización:** ATENDIDO DOCUMENTALMENTE; registro narrativo ficticio incorporado en A7. No representa ejecución real ni evidencia auditable.  
 **Prioridad:** alta  
 **Dónde:** A7, A8 y resumen ejecutivo.  
 **Hallazgo:** A7 describe una prueba hipotética de cuatro semanas y A8 presenta resultados “después”, pero no incluye un registro explícito de qué actividades se supone que se ejecutaron, qué desviaciones ocurrieron ni si se cumplieron las condiciones previas. Aunque el documento etiqueta los datos como simulados, el puente entre plan y resultado queda implícito.  
@@ -27,6 +30,7 @@ No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los ha
 
 ### H2 — Definiciones operativas insuficientes de los indicadores
 
+**Estado tras actualización:** ATENDIDO DOCUMENTALMENTE; se añadieron numeradores, denominadores y reglas simuladas. Las definiciones siguen siendo ejemplos ficticios, no estándar clínico.  
 **Prioridad:** alta  
 **Dónde:** A5 y A6.  
 **Hallazgo:** “más allá del plazo interno de referencia”, “solicitud prioritaria dentro de plazo” y “devolución por información incompleta” no tienen una definición operacional completa, denominador y regla para datos ausentes. El 96 % de acceso prioritario no muestra numerador ni denominador.  
@@ -35,6 +39,7 @@ No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los ha
 
 ### H3 — Falta de referencia explícita al registro de ejecución en A8
 
+**Estado tras actualización:** ATENDIDO DOCUMENTALMENTE; A5 y A8 enlazan los identificadores `SIM-CLINIC-001-DATA-v0.1` y `SIM-CLINIC-001-EXEC-v0.1`.  
 **Prioridad:** media  
 **Dónde:** A8 y tabla de trazabilidad.  
 **Hallazgo:** A8 enumera resultados y límites, pero no cita un ID de registro de ejecución o un conjunto de datos simulado versionado.  
@@ -51,6 +56,7 @@ No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los ha
 
 ### H5 — Muestra y comparabilidad asumidas, no justificadas
 
+**Estado tras actualización:** ATENDIDO PARCIALMENTE; se explicitan selección, ventanas y supuestos, pero la comparabilidad continúa sin verificarse porque el conjunto es ficticio.  
 **Prioridad:** media  
 **Dónde:** A5.  
 **Hallazgo:** se suponen 200 solicitudes antes y 200 después y comparabilidad de periodos, definiciones y composición, sin mostrar cómo se seleccionaron las solicitudes ni si el volumen refleja periodos equivalentes.  
@@ -81,10 +87,10 @@ No se detecta una razón para cambiar el ciclo o crear nuevos artefactos. Los ha
 | SENSE / A2 | Presente | Preguntas e hipótesis iniciales diferenciadas de hechos. |
 | CONNECT / A3 | Presente | Modelo conceptual y límites descritos; relaciones no validadas. |
 | DESIGN / A4 | Presente | Alternativas y riesgos; no hay puntuación arbitraria. |
-| Evidencia transversal / A5 | Presente | Buen etiquetado epistemológico; faltan definiciones operativas. |
+| Evidencia transversal / A5 | Presente | Definiciones y denominadores simulados añadidos; comparabilidad no verificada. |
 | DECIDE / A6 | Presente | Decisión trazable en términos generales; faltan decisor y umbrales previos. |
-| ACT / A7 | Presente | Plan y salvaguardas; falta un registro separado de ejecución simulada. |
-| LEARN / A8 | Presente | Límites de atribución reconocidos; falta vínculo explícito con registro de ejecución. |
+| ACT / A7 | Presente | Plan y registro narrativo de ejecución simulada; no es evidencia auditable. |
+| LEARN / A8 | Presente | Vínculo explícito con dataset y registro de ejecución simulado; límites de atribución reconocidos. |
 
 ## 4. Orden recomendado de corrección
 
@@ -105,4 +111,14 @@ La revisión se considera cerrada documentalmente cuando:
 - el Sprint no se confunde con la prueba operativa posterior;
 - se mantiene visible que el caso es ficticio y no valida empíricamente VALUE/TGCV.
 
-**Conclusión:** el caso tiene cobertura de extremo a extremo en términos de estructura. Antes de considerarlo un ejemplo de referencia, conviene cerrar estos hallazgos de trazabilidad y operacionalización sin alterar la arquitectura metodológica ni convertir supuestos ficticios en hechos.
+## 6. Estado de seguimiento tras la actualización del caso
+
+- **H1:** atendido documentalmente; registro de ejecución simulado añadido.
+- **H2:** atendido documentalmente; definiciones y denominadores explícitos.
+- **H3:** atendido documentalmente; IDs de dataset y ejecución enlazados.
+- **H4:** abierto; falta mostrar criterios preacordados o pendientes explícitos antes de la intervención simulada.
+- **H5:** atendido parcialmente; selección y ventanas descritas, comparabilidad aún supuesta.
+- **H6:** abierto; falta separar con mayor nitidez el aprendizaje del Sprint y los resultados de la prueba posterior en A8.
+- **H7:** abierto; falta un bloque explícito de decisor, fecha y estado de autorización simulados.
+
+**Conclusión:** el caso está mejor trazado, pero todavía no debe considerarse ejemplo de referencia cerrado. La revisión sigue siendo documental y el dataset continúa siendo ficticio.
