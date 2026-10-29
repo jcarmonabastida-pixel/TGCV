@@ -243,6 +243,18 @@ Esta orientación depende de un **supuesto que debe verificarse**: que el dimens
 
 Queda pendiente precisar qué niveles y roles existen, qué criterios autorizados rigen el escalado, qué capacidad tiene cada nivel y cómo se gestionan los casos en que tampoco exista capacidad en el nivel receptor. No se presume que escalar garantice por sí solo una resolución más rápida.
 
+### Información que debe acompañar a la solicitud
+
+Como requisito funcional provisional del modelo, cada solicitud debería conservar durante todo el flujo:
+- su estado actual;
+- la información recibida;
+- las actuaciones ya realizadas;
+- el responsable actual;
+- el motivo de cualquier bloqueo;
+- los **tiempos de respuesta y de resolución acordados** aplicables.
+
+Los tiempos acordados deben distinguirse de los tiempos observados: los primeros son referencias o compromisos que deben identificarse y confirmar; los segundos deben obtenerse de registros fiables. No se presuponen aquí valores, plazos ni compromisos concretos. Queda por confirmar dónde se documentan esos datos y cómo se actualizan y consultan durante los traspasos entre roles.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
