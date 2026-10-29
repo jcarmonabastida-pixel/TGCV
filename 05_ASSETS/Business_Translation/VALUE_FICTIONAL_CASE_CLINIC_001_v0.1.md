@@ -237,7 +237,10 @@ No se asignan puntuaciones numéricas porque no hay datos reales ni preferencias
 ## 8. DESIGN — A5 Evidence Record
 
 **ID:** CLINIC-001-A5  
-**Estado:** conjunto de evidencia completamente simulado
+**Estado:** conjunto de evidencia completamente simulado  
+**Dataset ficticio:** `SIM-CLINIC-001-DATA-v0.1`  
+**Ventana de referencia simulada:** cuatro semanas antes y cuatro semanas después de la intervención hipotética.  
+**Registro de ejecución vinculado:** `SIM-CLINIC-001-EXEC-v0.1` (véase A7).
 
 ### Conjunto ficticio para ilustrar una comparación
 
@@ -251,12 +254,25 @@ Supóngase, solo a efectos didácticos, que se revisan 200 solicitudes antes de 
 | Solicitudes devueltas por información incompleta | 30 (15 %) | 24 (12 %) |
 | Percepción del personal de aumento de carga | No medida con escala comparable | Se reporta aumento cualitativo |
 
+### Definiciones operativas simuladas
+
+Estas definiciones se crean únicamente para que el ejemplo sea calculable; no son definiciones clínicas recomendadas.
+
+- **Unidad de análisis:** una solicitud de cita recibida por el ámbito ficticio durante cada ventana de cuatro semanas.
+- **Selección:** se supone que se incluyen todas las solicitudes recibidas en la ventana y con un estado registrable al cierre de esa ventana. No se representa cómo se tratarían en la realidad solicitudes duplicadas, reabiertas o aún sin resolución; esas reglas tendrían que acordarse antes de un piloto real.
+- **Pendiente más allá del plazo interno:** numerador = solicitudes cuyo tiempo entre recepción y asignación supera el plazo de referencia ficticio vigente; denominador = las 200 solicitudes incluidas en la ventana. Antes: 56/200 = 28 %. Después: 36/200 = 18 %.
+- **Solicitud prioritaria dentro de plazo:** numerador = solicitudes clasificadas como prioritarias según las reglas ficticias vigentes y asignadas dentro del plazo correspondiente; denominador = todas las solicitudes prioritarias incluidas en la ventana. Se supone, solo para ilustrar el cálculo, que hubo 50 solicitudes prioritarias en cada ventana: antes 48/50 = 96 % y después 48/50 = 96 %.
+- **Devolución por información incompleta:** numerador = solicitudes devueltas al menos una vez para completar información; denominador = las 200 solicitudes incluidas en la ventana. Antes: 30/200 = 15 %. Después: 24/200 = 12 %.
+- **Carga administrativa:** en el escenario no existe una escala cuantitativa comparable. El reporte cualitativo posterior es una señal de riesgo, no una medida de magnitud.
+- **Datos ausentes:** para simplificar el ejemplo se supone que no hay datos ausentes en los campos necesarios para los indicadores. En una aplicación real se informarían los faltantes y se definiría cómo afectan a cada denominador.
+
 ### Registro de calidad
 
-- **Fuente:** conjunto inventado para este documento.
-- **Método de obtención:** no se han extraído registros reales.
+- **Fuente:** conjunto inventado para este documento, `SIM-CLINIC-001-DATA-v0.1`.
+- **Método de obtención:** no se han extraído registros reales; los valores se han construido para ilustrar el registro y los cálculos.
+- **Selección y ventana:** se supone un censo de 200 solicitudes por ventana de cuatro semanas, una ventana anterior y otra posterior. No se modelan estacionalidad, cambios de demanda ni composición por tipo de cita.
 - **Comparabilidad:** se supone que periodos, definiciones y composición son comparables; el supuesto no está verificado.
-- **Datos ausentes:** no se modelan en este ejemplo.
+- **Datos ausentes:** se supone que no hay faltantes en los campos requeridos; esta simplificación no representa un resultado observado.
 - **Sesgos posibles:** variación en demanda, mezcla de tipos de cita, disponibilidad de profesionales, estacionalidad, cambios en el registro y otros factores externos.
 - **Salvaguarda:** el porcentaje agregado no sustituye el análisis por prioridad y tipo de paciente.
 - **Límite:** no se puede inferir que la intervención causó el cambio ni descartar explicaciones alternativas.
@@ -340,6 +356,20 @@ Los roles son funciones propuestas, no personas identificadas.
 4. **Seguimiento:** revisar acceso, prioridad, calidad y carga de trabajo.
 5. **Cierre:** comparar resultados, documentar desviaciones y decidir si detener, adaptar o estudiar una extensión.
 
+### Registro de ejecución simulada — `SIM-CLINIC-001-EXEC-v0.1`
+
+**Aviso:** el registro siguiente es una narración ficticia creada para conectar el plan con el dataset simulado. No demuestra que una clínica haya ejecutado estas actividades.
+
+| Momento relativo | Actividad supuestamente realizada | Registro ficticio / desviación |
+|---|---|---|
+| Antes de semana 1 | Revisión de definiciones, roles y salvaguardas | Se supone que las condiciones previas se aceptan en el escenario; no equivale a una autorización real. |
+| Semana 1 | Inicio del repaso diario de pendientes | Se supone que el equipo utiliza el registro de estado y motivo de bloqueo. |
+| Semanas 2–3 | Revisión diaria y escalado según reglas existentes | Se supone que no se cambian las reglas clínicas. No se inventan recuentos de reuniones ni de excepciones. |
+| Semana 4 | Cierre de la ventana posterior y revisión de indicadores | Se genera el dataset ficticio `SIM-CLINIC-001-DATA-v0.1` con los valores ilustrativos de A5. |
+| Cierre | Revisión de efectos no previstos | Se registra un reporte cualitativo ficticio de aumento de carga administrativa; su magnitud no se cuantifica. |
+
+**Desviaciones y límites:** el ejemplo no aporta un registro granular por solicitud, marcas temporales, actas, incidencias ni datos de carga comparables. Por tanto, el registro conecta documentalmente A6–A7–A5–A8, pero no representa evidencia auditable de una ejecución real. Si estos datos fueran reales, deberían enlazarse registros fuente autorizados y verificables.
+
 ### Riesgos y mitigaciones
 
 - **Sobrecarga:** limitar la duración de la reunión, medir tiempo invertido y parar o rediseñar si resulta excesivo.
@@ -355,7 +385,9 @@ El plan está preparado para una decisión de autorización cuando alcance, resp
 ## 11. LEARN — A8 Value Learning Record
 
 **ID:** CLINIC-001-A8  
-**Estado:** resultado de ejemplo simulado
+**Estado:** resultado de ejemplo simulado  
+**Dataset evaluado:** `SIM-CLINIC-001-DATA-v0.1`  
+**Registro de ejecución relacionado:** `SIM-CLINIC-001-EXEC-v0.1`
 
 ### Resultados ilustrativos
 
@@ -368,7 +400,7 @@ Bajo los supuestos inventados de A5:
 
 ### Interpretación prudente
 
-**[INFERENCIA]** En este escenario, los datos simulados serían compatibles con una mejora del seguimiento de pendientes, pero también revelan un coste operativo potencial. No prueban que la revisión diaria sea la causa de la mejora ni que el balance global sea positivo.
+**[INFERENCIA]** En este escenario, los datos simulados serían compatibles con una mejora del seguimiento de pendientes, pero también revelan un coste operativo potencial. No prueban que la revisión diaria sea la causa de la mejora ni que el balance global sea positivo. Los resultados proceden exclusivamente del dataset ficticio `SIM-CLINIC-001-DATA-v0.1`; la secuencia de actividades supuestas está descrita en `SIM-CLINIC-001-EXEC-v0.1`.
 
 ### Aprendizajes documentados
 
@@ -450,7 +482,7 @@ El Sprint puede concluir con una decisión de investigar más; no obliga a ejecu
 
 ## 15. Estado final del caso
 
-**Estado documental:** recorrido completo A1–A8 desarrollado para el escenario ficticio.  
+**Estado documental:** recorrido A1–A8 desarrollado para el escenario ficticio, con dataset y registro de ejecución simulada identificados.  
 **Estado metodológico:** ejemplo para revisión de coherencia y preparación de un piloto; no es una validación práctica.  
 **Estado de ejecución:** no se ha ejecutado ninguna intervención real.  
 **Estado de evidencia:** todos los resultados numéricos son simulados.  
@@ -461,3 +493,4 @@ El Sprint puede concluir con una decisión de investigar más; no obliga a ejecu
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
+- **v0.2:** añade identificadores de dataset y ejecución simulados, definiciones operativas y denominadores explícitos, supuestos de selección/ventanas y separación narrativa entre plan y ejecución ficticia. No añade datos reales ni validación empírica.
