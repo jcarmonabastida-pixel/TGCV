@@ -296,7 +296,7 @@ El registro de cierre solo debe realizarse cuando:
 - la información de la solicitud y las actuaciones relevantes esté actualizada;
 - no queden actuaciones o escalados pendientes, o estos se hayan resuelto conforme a las reglas aplicables.
 
-La aceptación y confirmación por el paciente es, por tanto, una condición explícita previa al registro de cierre, no una tarea posterior. Queda por definir cómo registrar la confirmación y cómo proceder si el paciente no confirma, rechaza la cita o no responde; no se presume un plazo ni un procedimiento para esos casos.
+La aceptación expresa y confirmación por el paciente es una vía de cierre. Si el paciente **rechaza** la cita, la solicitud permanece abierta y vuelve al flujo de asignación/escalado para su gestión. Si no responde dentro de un **plazo predefinido**, se asume aceptación tácita y la solicitud puede avanzar hacia el cierre, siempre que se cumplan las demás condiciones de cierre y quede registrado el vencimiento del plazo y la regla aplicada. El plazo, la forma de comunicarlo al paciente, los intentos/canales de contacto y la validez de esta aceptación tácita deben definirse y autorizarse expresamente; no se inventan valores ni se presupone que esa regla esté actualmente aprobada.
 
 ### Relaciones y posibles puntos de bloqueo
 
