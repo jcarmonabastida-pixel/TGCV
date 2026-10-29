@@ -788,6 +788,12 @@ El Sprint puede concluir con una decisión de investigar más; no obliga a ejecu
 
 ---
 
+### SR-047 — Detección de solicitudes sin seguimiento durante la operativa ordinaria
+
+Se propone un mecanismo de control para detectar solicitudes que carecen de responsable actual o de siguiente actuación definida; permanecen sin actualización durante un periodo que requiere revisión; superan un plazo de respuesta o resolución acordado; o figuran activas sin progreso ni justificación documentada del bloqueo. El responsable end-to-end revisa estas situaciones y activa las actuaciones o escalados previstos. Los periodos y plazos deben estar previamente acordados y autorizados: no se inventan umbrales ni se sustituyen criterios clínicos.
+
+Esta regla aborda la detección durante la operativa ordinaria y complementa, sin confundirse con ella, la recuperación de solicitudes afectadas por contingencias (SR-045 y SR-046). Es una propuesta funcional del caso ficticio, no un procedimiento aprobado ni validación empírica.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
