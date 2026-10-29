@@ -288,6 +288,16 @@ El responsable que recibe una solicitud escalada debe **confirmar que la asume**
 
 Quedan por definir el mecanismo y el plazo de confirmación, así como el tratamiento de una escalación no aceptada o no respondida. No se presuponen herramientas, automatizaciones ni tiempos concretos.
 
+### Condiciones propuestas para el cierre de una solicitud
+
+El registro de cierre solo debe realizarse cuando:
+- la cita esté asignada y comunicada al paciente;
+- el paciente haya **aceptado y confirmado la cita antes de registrar el cierre**;
+- la información de la solicitud y las actuaciones relevantes esté actualizada;
+- no queden actuaciones o escalados pendientes, o estos se hayan resuelto conforme a las reglas aplicables.
+
+La aceptación y confirmación por el paciente es, por tanto, una condición explícita previa al registro de cierre, no una tarea posterior. Queda por definir cómo registrar la confirmación y cómo proceder si el paciente no confirma, rechaza la cita o no responde; no se presume un plazo ni un procedimiento para esos casos.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
