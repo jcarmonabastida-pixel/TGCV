@@ -276,3 +276,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir criterios de autoridad de las fuentes, verificación y resolución de discrepancias; no se presume que una fuente prevalezca sobre otra.
 - **Límite:** propuesta para el caso ficticio; no establece una jerarquía real de fuentes ni un procedimiento clínico aprobado.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+### SR-028 — Información imprescindible no disponible ni recuperable
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional propuesta:** registrar qué información falta y por qué no se ha podido obtener. Si es imprescindible para avanzar, la solicitud permanece abierta y no se sustituye por una suposición no declarada.
+- **Alternativa autorizada:** si se propone proceder sin el dato, someter la alternativa a una decisión autorizada y registrar la justificación, limitaciones y condiciones aplicables. No se presume que la alternativa sea válida.
+- **Pendiente antes de uso real:** definir cómo distinguir información imprescindible de prescindible, quién puede autorizar alternativas y cómo documentar sus límites.
+- **Límite:** propuesta para el caso ficticio, no procedimiento clínico aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
