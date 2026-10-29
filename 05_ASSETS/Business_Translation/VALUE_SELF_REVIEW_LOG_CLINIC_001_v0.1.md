@@ -81,6 +81,17 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** aportación registrada; pendiente de cerrar la revisión de A2 y decidir si se actualiza la redacción del caso.
 - **Decisión:** registrar el hallazgo sin modificar todavía el estándar maestro.
 
+
+### SR-008 — Granularidad, horizonte histórico y camino crítico
+
+- **Tarea:** precisar qué datos deberían buscarse y qué elemento de proceso puede condicionar el encuadre inicial.
+- **Observación del usuario:** “El registro de solicitudes al nivel más detallado posible para un histórico de los tres últimos meses. También es importante identificar si hay un camino crítico en el proceso (esto último aplica a A1)”.
+- **Aportación para A2 — datos:** priorizar el registro de solicitudes con el mayor nivel de detalle disponible y adecuado para el análisis, considerando un histórico de los tres últimos meses. La granularidad debe permitir reconstruir tiempos y etapas, pendientes y motivos de bloqueo, con desgloses por tipo y dimensiones de prioridad/criticidad cuando esos campos existan y sean fiables.
+- **Precaución sobre datos:** los tres meses son el horizonte de análisis propuesto para este caso, no un estándar universal ni una garantía de que el histórico exista o sea suficiente. Antes de usar datos reales habrá que comprobar disponibilidad, integridad, consistencia, definiciones de campos, posibles sesgos y autorización de acceso; aplicar minimización y protección de datos personales. No se presume que cada solicitud tenga todos los campos ni que exista trazabilidad completa.
+- **Aportación para A1 — camino crítico:** el usuario señala que identificar si existe un camino crítico del proceso corresponde también al encuadre de A1. Se registra como cuestión que puede condicionar el propósito, las restricciones y la decisión a apoyar. A2 podrá investigar cómo funciona ese recorrido y qué evidencias lo sostienen, sin confundir la pregunta inicial de A1 con una conclusión ya demostrada.
+- **Estado:** aportaciones registradas; pendiente de revisar A1 para reflejar la cuestión del camino crítico y cerrar A2 tras contrastar fuentes y disponibilidad de datos.
+- **Decisión:** no modificar todavía el estándar maestro; registrar la ubicación propuesta del tema y continuar la autoevaluación de los artefactos.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
