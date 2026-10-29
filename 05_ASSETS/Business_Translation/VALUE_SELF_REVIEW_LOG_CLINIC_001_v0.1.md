@@ -433,3 +433,43 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir y autorizar el mecanismo, sus responsables, criterios, vías de activación y seguimiento. No se inventan umbrales ni reglas clínicas.
 - **Límite:** propuesta funcional para el caso ficticio; no es un protocolo clínico aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+### SR-043 — Contingencia ante indisponibilidad simultánea del responsable y de su cobertura
+
+- **Aprobación del usuario:** sí.
+- **Precisión acordada:** la indisponibilidad simultánea de la persona responsable de una función crítica y de su cobertura alternativa constituye una situación de contingencia, no una incidencia ordinaria de cobertura.
+- **Regla funcional propuesta:** activar un procedimiento de contingencia predefinido, con un segundo nivel de respuesta y responsables o instancias competentes previamente identificados y autorizados. Si tampoco existe capacidad en ese nivel, activar la vía de contingencia que determine la autoridad competente, sin asignar funciones a personas no autorizadas o no capacitadas.
+- **Trazabilidad:** registrar activación, decisiones, responsabilidades asumidas y seguimiento. La escalación no se considera por sí misma garantía de resolución.
+- **Pendiente antes de uso real:** definir niveles, responsables, competencias, límites y vías de activación de la contingencia, conforme a las autoridades organizativas y clínicas correspondientes.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario; incorporado documentalmente en la rama de trabajo.
+
+### SR-044 — Recuperación controlada tras una contingencia dentro del proceso evaluado
+
+- **Aprobación del usuario:** sí, con la precisión de mantener el alcance del proceso evaluado.
+- **Regla funcional acordada:** una vez restablecidas las condiciones habituales, el retorno a la operativa ordinaria del proceso de concertación y gestión de citas debe realizarse de forma controlada, no automática.
+- **Comprobaciones:** confirmar la recuperación de las condiciones necesarias; revisar solicitudes pendientes o bloqueadas; transferir formalmente responsabilidades e información a los responsables ordinarios; comprobar que ninguna solicitud o paciente afectado queda sin seguimiento dentro del proceso evaluado; registrar la recuperación y el cierre de la contingencia.
+- **Límite de alcance:** no extiende A3 a la continuidad general de la clínica ni a otros procesos clínicos u organizativos ajenos al proceso evaluado. La recuperación de la operativa no significa que todas las solicitudes estén resueltas.
+- **Pendiente antes de uso real:** definir responsables, comprobaciones y registro de recuperación conforme a las reglas autorizadas.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario; incorporado documentalmente en la rama de trabajo.
+
+### SR-045 — Identificación y trazabilidad de solicitudes afectadas por la contingencia
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** toda contingencia debe dejar identificadas las solicitudes de cita afectadas para que puedan recuperarse sin pérdida de trazabilidad.
+- **Información mínima:** solicitudes afectadas; etapa en que se encontraban; actuaciones pendientes; responsable que debe retomarlas; prioridad o necesidad de seguimiento conforme a criterios autorizados; actuaciones realizadas para recuperar su tramitación.
+- **Pendiente antes de uso real:** definir el registro, responsables de actualización y criterios autorizados de prioridad y seguimiento.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario; incorporado documentalmente en la rama de trabajo.
+
+### SR-046 — Verificación de la reincorporación efectiva de las solicitudes al flujo
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** antes de considerar recuperada la operativa del proceso evaluado, comprobar para cada solicitud afectada que tiene responsable efectivo, siguiente actuación identificada, información e historial conservados y condiciones de prioridad y seguimiento mantenidas conforme a criterios autorizados.
+- **Solicitudes aún bloqueadas:** deben haber retomado efectivamente su tramitación o, si continúan bloqueadas, tener documentados el motivo, el responsable y la respuesta prevista.
+- **Distinción esencial:** la recuperación de la contingencia y la resolución de las solicitudes son resultados distintos. Una solicitud puede seguir pendiente después de recuperada la operativa, pero no debe quedar sin responsable ni seguimiento.
+- **Pendiente antes de uso real:** definir cómo se realiza y registra esta comprobación y quién la valida.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario; incorporado documentalmente en la rama de trabajo.
+
