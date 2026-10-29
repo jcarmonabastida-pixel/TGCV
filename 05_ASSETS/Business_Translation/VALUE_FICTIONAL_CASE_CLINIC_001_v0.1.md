@@ -375,6 +375,17 @@ La continuidad de la solicitud no debe depender de la disponibilidad de una pers
 
 Antes del uso real deben definirse el alcance de la delegación, las tareas que pueden asumirse o reasignarse, los límites de competencia, la alternativa cuando el responsable end-to-end no esté disponible y los mecanismos de registro y seguimiento. Esta es una propuesta funcional para el caso ficticio, no un procedimiento clínico u organizativo aprobado.
 
+### Seguimiento temporal y revisión de solicitudes bloqueadas
+
+Para evitar que una solicitud permanezca bloqueada durante un tiempo excesivo, incluso cuando tiene un responsable identificado, debe existir un mecanismo predefinido de seguimiento y revisión de bloqueos.
+
+- El procedimiento debe establecer plazos autorizados para actuar, revisar el bloqueo y, cuando corresponda, escalarlo.
+- El incumplimiento de un plazo debe activar una actuación definida y trazable; no basta con registrar que la demora continúa.
+- La revisión debe comprobar el motivo del bloqueo, las acciones realizadas, la responsabilidad vigente y si procede activar la continuidad operativa o el escalado.
+- Los plazos, prioridades y actuaciones deben estar definidos y autorizados conforme a criterios clínicos y organizativos aplicables. No se inventan umbrales ni se presupone que todas las citas tengan la misma prioridad.
+
+Antes del uso real deben concretarse los plazos, responsables de revisión, disparadores de escalado y actuaciones asociadas. Esta es una propuesta funcional para el caso ficticio, no un protocolo clínico aprobado.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
