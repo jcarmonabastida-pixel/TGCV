@@ -135,6 +135,16 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Conclusión provisional:** la oportunidad está delimitada conceptualmente para pasar a modelar el sistema en A3, pero antes de considerar A2 documentalmente cerrado conviene actualizar el A2 ilustrativo para reflejar las preguntas y límites acordados. A3 no debe presentar hipótesis como hechos ni inventar etapas, datos o relaciones causales; debe representar las incertidumbres y fuentes pendientes.
 - **Estado:** síntesis registrada; A2 aún no se considera documentalmente cerrado hasta que se decida y ejecute la actualización del caso. La revisión no constituye validación empírica.
 
+
+### SR-013 — Actualización documental del A2 del caso
+
+- **Tarea:** incorporar al A2 ilustrativo las precisiones acordadas durante la autoevaluación guiada.
+- **Cambio realizado:** se actualizó la sección A2 de `VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md` para explicitar distribución de demoras por tipología, prioridad y criticidad/impacto; tiempos por etapas, volumen de pendientes y motivos de bloqueo agregados y por tipo; diferencias entre grupos de pacientes; histórico propuesto de doce meses y límites para inferir estacionalidad; contraste con capacidad planificada; supuesto de gestión adecuada de ausencias; comprobaciones de calidad, acceso y privacidad de datos; y la cuestión del camino crítico vinculada a A1.
+- **Control de integridad:** se mantuvieron las hipótesis como no confirmadas, las urgencias fuera de alcance y el carácter ficticio del escenario. No se añadieron datos reales, categorías clínicas, umbrales ni conclusiones causales.
+- **Verificación:** el archivo se volvió a leer tras la actualización y se comprobó que la nueva sección A2 y el encabezado A3 siguiente permanecen presentes.
+- **Estado:** actualización documental aplicada; pendiente de revisión por el usuario antes de considerar A2 cerrado. Esto no valida empíricamente el caso ni el estándar VALUE.
+- **Commit del caso:** `9961940f5f0a640c77446da5b9c6935be2f0ffe5`.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
