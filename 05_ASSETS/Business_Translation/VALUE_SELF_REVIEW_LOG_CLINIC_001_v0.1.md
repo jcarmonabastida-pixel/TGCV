@@ -190,3 +190,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Distinción necesaria:** los tiempos acordados son compromisos o referencias por confirmar; los tiempos observados son datos que deben obtenerse de registros fiables. No se inventan plazos ni valores.
 - **Pendiente:** confirmar dónde se registran, cómo se actualizan y cómo se consultan durante los traspasos entre roles.
 - **Estado:** registrado; continúa la revisión de A3.
+
+
+### SR-018 — Ownership transversal y actualización continua
+
+- **Aportación del usuario:** un rol o función debe asumir el ownership de todo el proceso para mantener toda la información actualizada en todo momento.
+- **Tratamiento en A3:** incorporado como responsabilidad transversal de extremo a extremo sobre la integridad y actualización de la información de las solicitudes. Se distingue de la ejecución de cada tarea operativa.
+- **Pendiente:** identificar el rol concreto, su autoridad, la coordinación con quienes actualizan datos en cada etapa y los mecanismos para detectar información desactualizada.
+- **Precaución:** no se da por hecho que el rol de coordinación de citas tenga ya asignado formalmente ese ownership.
+- **Estado:** registrado; continúa la revisión de A3.
