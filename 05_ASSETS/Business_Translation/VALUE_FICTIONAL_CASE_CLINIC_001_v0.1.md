@@ -261,6 +261,12 @@ Se propone que un **rol o función asuma el ownership de extremo a extremo del p
 
 Quedan por definir para el caso real o para una versión más detallada del modelo: el rol concreto que ejercerá ese ownership, su autoridad para pedir actualizaciones y resolver incumplimientos, cómo se coordinan las responsabilidades de actualización de cada etapa y qué mecanismo permite detectar información desactualizada. No se presume que el rol de coordinación de citas ya tenga formalmente esta responsabilidad.
 
+### Responsabilidad transversal end-to-end del ownership
+
+Además de mantener actualizada la información de las solicitudes, el rol o función propietaria del proceso asume las tareas transversales de **monitorización, supervisión y comunicación end-to-end**. Esto incluye seguir el estado y progreso de las solicitudes, vigilar los tiempos acordados de respuesta y resolución, identificar desviaciones y coordinar o activar el escalado conforme a las reglas autorizadas, y asegurar que el estado relevante se comunique a los roles implicados y, cuando corresponda, a la persona solicitante.
+
+Esta responsabilidad transversal no sustituye la ejecución de las tareas propias de cada rol ni autoriza a cambiar criterios clínicos o reglas de prioridad. El rol concreto, su autoridad, los canales de comunicación, la frecuencia de supervisión y las reglas de escalado deben definirse y confirmarse antes de aplicar el modelo a una organización real.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
