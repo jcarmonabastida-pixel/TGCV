@@ -481,3 +481,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Límites:** los periodos y plazos deben estar previamente acordados y autorizados; no se inventan umbrales ni se sustituyen criterios clínicos. Esta detección en operativa ordinaria complementa SR-045 y SR-046, relativos a la recuperación tras contingencia.
 - **Límite de validez:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
 - **Estado:** aceptado por el usuario e incorporado documentalmente en la rama de trabajo.
+
+### SR-048 — Detección combinada por eventos y revisión periódica
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** combinar dos mecanismos para detectar las situaciones de SR-047: (1) detección por eventos, cuando una solicitud queda sin responsable o sin siguiente actuación, o se incumple un plazo acordado; y (2) revisión periódica, para identificar solicitudes activas que acumulan un periodo que requiere revisión sin actualización o progreso.
+- **Salvaguarda:** la revisión periódica complementa la detección por eventos y permite identificar posibles fallos de esta última.
+- **Pendiente antes de uso real:** definir y autorizar la periodicidad y los plazos; no se presuponen valores ni umbrales.
+- **Límite de validez:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario e incorporado al caso ficticio y al registro de autoevaluación en la rama de trabajo.
