@@ -490,3 +490,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir y autorizar la periodicidad y los plazos; no se presuponen valores ni umbrales.
 - **Límite de validez:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 - **Estado:** aceptado por el usuario e incorporado al caso ficticio y al registro de autoevaluación en la rama de trabajo.
+
+### SR-049 — Registro de incidencias de seguimiento vinculadas a la solicitud
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** cuando la detección por eventos o la revisión periódica identifique una solicitud que requiere seguimiento conforme a SR-047 y SR-048, generar una incidencia de seguimiento vinculada a la solicitud original.
+- **Información mínima:** fecha de detección, motivo, responsable de revisar la incidencia y actuación requerida.
+- **Trazabilidad:** la incidencia no sustituye ni cierra la solicitud original; permite registrar la detección y gestionar su revisión.
+- **Pendiente antes de uso real:** definir mecanismo de registro, reglas de asignación y actualización y autoridad para determinar la actuación correspondiente.
+- **Límite de validez:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario e incorporado al caso ficticio y al registro de autoevaluación en la rama de trabajo.
