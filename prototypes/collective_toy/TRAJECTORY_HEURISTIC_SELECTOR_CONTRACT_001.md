@@ -157,3 +157,67 @@ Esta sección prevalece sobre cualquier formulación anterior de las secciones 3
 - **Pruebas de aceptación adicionales:** (a) una trayectoria de estados del sistema no puede entrar como candidato TGCV por semejanza de estructura; (b) cada candidato conserva el orden y los IDs TGCV de origen; (c) la ausencia de correspondencia/procedencia entre candidatos y grafo TGCV produce abstención; (d) el selector no invoca la enumeración de trayectorias de estados ni vuelve a enumerar transformaciones; (e) la ejecución y la valoración contextual siguen intactas.
 
 **Decisión de integración:** antes de promover la implementación, comprobar que el contrato de entrada coincide con la interfaz real de candidatos TGCV de PR #101. Si esa interfaz no existe aún como artefacto estructurado verificable, detenerse en la revisión del contrato y definir el adaptador mínimo como tarea separada; no asumir que el resultado de exploración del motor de estados satisface el contrato.
+
+## 14. Programa por fases del predictor y arquitectura recomendada
+
+Esta sección registra la hoja de ruta funcional del selector/predictor para que no dependa de la memoria de una conversación. Las fases son niveles de madurez distintos; completar una fase no implica que las siguientes estén validadas.
+
+### Fase A — Ranking heurístico
+
+**Objetivo:** ordenar trayectorias candidatas usando criterios explícitos, reproducibles y configurados por el usuario.
+
+- Consume candidatos TGCV estructurados y trazables producidos por el flujo integrado; no usa trayectorias del grafo de estados como sustituto de trayectorias de transformaciones TGCV.
+- Aplica restricciones y criterios deterministas documentados, con abstención ante entradas incompletas, procedencia no verificable o exploración parcial.
+- Explica el orden, los empates y las limitaciones.
+- No estima probabilidades ni afirma que la primera trayectoria vaya a tener mejores resultados.
+- No requiere un LLM.
+
+**Salida:** ranking heurístico previo a ejecución, configuración versionada, procedencia y advertencias.
+
+### Fase B — Estimación predictiva
+
+**Objetivo:** estimar resultados futuros de las trayectorias con un modelo explícito y evaluable, por ejemplo (P(éxito \mid trayectoria, condiciones iniciales)), solo cuando exista una definición operacional del resultado y datos suficientes o simulaciones justificadas.
+
+- Mantiene un contrato y módulo predictivo aislados del motor TGCV y del ranking heurístico.
+- Expone estimación, incertidumbre, dominio de aplicabilidad y abstención; no presenta estimaciones sin calibración/evaluación como probabilidades fiables.
+- Registra versión del modelo, datos/procedencia, configuración y predicción antes de la ejecución.
+- Conserva inmutable la predicción previa para compararla con el resultado observado.
+- No confunde valor contextual percibido con una etiqueta objetiva de éxito ni infiere causalidad a partir de accesibilidad o número de trayectorias.
+
+**Salida:** estimaciones predictivas versionadas y evaluables, separadas del ranking y de la valoración contextual.
+
+### Fase C — Validación comparativa y recomendación contextual avanzada
+
+**Objetivo:** comprobar si el selector mejora decisiones frente a baselines y formular recomendaciones contextualizadas sin ocultar incertidumbre ni sustituir la decisión humana.
+
+- Compara ranking y/o predictor contra baselines explícitos (por ejemplo, recorrido más corto o una heurística convencional), usando escenarios de evaluación separados de los usados para diseñar/ajustar el modelo.
+- Define previamente resultados de éxito, métricas, criterios de valor, costes y condiciones de comparación.
+- Evalúa calidad de selección, rendimiento, calibración cuando corresponda, sensibilidad a criterios y comportamiento ante casos no evaluables.
+- Integra la valoración contextual como dimensión separada: observador, contexto, criterio, regla de valoración y justificación.
+- Puede incorporar un LLM como **componente auxiliar opcional** para interpretar peticiones en lenguaje natural, ayudar a expresar criterios o explicar trade-offs. El LLM no fija por sí solo probabilidades, no altera las reglas deterministas, no sustituye evidencia y no es autoridad final para seleccionar o ejecutar.
+- La recomendación debe mostrar criterios aplicados, evidencia disponible, incertidumbre, límites y alternativas; la decisión y la ejecución siguen bajo control explícito del usuario.
+
+**Salida:** informe comparativo y recomendación contextual explicable, con límites y evidencia trazables. Esta fase no se considera validada hasta superar una evaluación empírica previamente definida.
+
+### Arquitectura recomendada
+
+El flujo se organiza en capas con responsabilidades separadas:
+
+1. **Motor TGCV:** construye/analiza el sistema de transformaciones, determina transformaciones accesibles y produce candidatos de trayectorias TGCV con procedencia verificable. No incorpora lógica de recomendación contextual ni depende de un LLM.
+2. **Capa predictiva aislada (Fase B):** estima resultados a partir de trayectorias candidatas y condiciones iniciales, si existen datos/modelo adecuados. Puede sustituirse o evolucionar sin alterar el motor.
+3. **Selector de trayectorias (Fase A y evolución):** aplica restricciones, ranking heurístico y, cuando esté validado, integra salidas predictivas mediante una política explícita y auditable. Mantiene ranking y probabilidad como campos diferentes.
+4. **LLM opcional, fuera del núcleo decisional (principalmente Fase C):** ayuda a interpretar lenguaje, estructurar criterios o redactar explicaciones. No determina la accesibilidad TGCV, no calcula por autoridad probabilidades, no modifica el resultado del motor, no decide la selección final ni ejecuta trayectorias.
+
+El flujo conceptual es:
+
+`Motor TGCV → candidatos TGCV trazables → (capa predictiva aislada, cuando proceda) → selector de trayectorias → recomendación contextual`
+
+El LLM opcional puede asistir en la interacción y explicación alrededor del selector, pero no se inserta como autoridad en la cadena de decisión. El selector debe seguir funcionando sin él.
+
+### Puertas de avance entre fases
+
+- **A → B:** solo avanzar cuando la interfaz de candidatos TGCV esté estable y trazable, el ranking sea reproducible y existan datos/simulaciones justificables con un resultado operacional definido.
+- **B → C:** solo avanzar cuando el predictor tenga evaluación fuera de muestra y calibración/incertidumbre reportadas; no basta con que produzca puntuaciones plausibles.
+- **Validación de C:** requiere comparación con baselines, protocolo definido de antemano y resultados reproducibles. La integración de un LLM, por sí sola, no constituye mejora ni evidencia.
+- Cada fase conserva sus artefactos y resultados previos; una fase posterior no reescribe retrospectivamente los rankings, predicciones o resultados anteriores.
+
