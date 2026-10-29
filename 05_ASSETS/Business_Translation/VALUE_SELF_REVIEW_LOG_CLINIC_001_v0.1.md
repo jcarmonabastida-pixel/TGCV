@@ -412,3 +412,14 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir los intentos, plazos y canales de contacto, el alcance de la revisión, las actuaciones posibles y la continuidad alternativa si el responsable end-to-end no está disponible.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-041 — Diferenciar falta de respuesta administrativa de posible necesidad asistencial no atendida
+
+- **Aprobación del usuario:** sí.
+- **Regla acordada:** en la revisión de solicitudes sin respuesta, el responsable end-to-end debe distinguir, conforme a la información disponible y sin realizar inferencias clínicas fuera de su competencia, entre una falta de respuesta asociada a cuestiones administrativas y una situación en la que la falta de contacto pueda ocultar una necesidad asistencial no atendida.
+- **Derivación clínica:** ante indicios o incertidumbre relevante sobre una posible necesidad asistencial, solicitar revisión por el profesional sanitario responsable o la instancia clínica autorizada.
+- **Trazabilidad:** registrar la clasificación, los indicios considerados, la derivación y los pasos acordados.
+- **Pendiente antes de uso real:** definir señales o criterios administrativos de detección, límites de actuación del responsable end-to-end, vías y responsables de revisión clínica, y procedimiento de seguimiento; sin convertir criterios administrativos en diagnóstico o juicio clínico.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
