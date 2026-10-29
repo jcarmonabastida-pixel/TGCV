@@ -217,3 +217,11 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente de definición:** umbrales, niveles y destinatarios funcionales/jerárquicos, tiempos de actuación y tratamiento de cada excepción. La insatisfacción general requiere señales o criterios acordados; no se presupone una métrica existente.
 - **Límite:** no se inventan umbrales, niveles de servicio ni una matriz operativa de escalado.
 - **Estado:** registrado; continúa la revisión de A3.
+
+
+### SR-021 — Contexto accionable para escalados
+
+- **Aportación del usuario:** añadir, en lo posible, el motivo del escalado, las actuaciones requeridas y la decisión esperada.
+- **Tratamiento en A3:** incorporados como información adicional propuesta para el responsable receptor, junto al estado e historial de la solicitud.
+- **Pendiente:** concretar formato, obligatoriedad por tipo de escalado y responsabilidad de completar cada campo. No se presupone que exista una plantilla o herramienta actual.
+- **Estado:** registrado; continúa la revisión de A3.
