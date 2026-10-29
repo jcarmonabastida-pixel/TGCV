@@ -1,118 +1,129 @@
-# VALUE — Protocolo de prueba de usabilidad del estándar
+# VALUE — Protocolo de autoevaluación estructurada de usabilidad
 
-**Versión:** 0.1  
-**Estado:** BORRADOR DE PROTOCOLO; no ejecutado  
-**Ámbito:** usabilidad y comprensión del estándar práctico VALUE, no validación científica de TGCV ni prueba de eficacia de una intervención.
+**Versión:** 0.2  
+**Estado:** BORRADOR DE PROTOCOLO; revisión no iniciada  
+**Modo previsto en esta fase:** una persona (autor/usuario), con acompañamiento conversacional para revisar documentos  
+**Ámbito:** comprensión y usabilidad documental del estándar VALUE. No es validación científica de TGCV ni prueba de eficacia de una intervención.
 
 ## 1. Objetivo
 
-Comprobar si personas distintas de quien diseñó el estándar pueden recorrer el Value Construction Framework (VCF), utilizar los artefactos A1–A8 y explicar las decisiones y límites del caso sin ayuda excesiva ni confundir conceptos clave.
+Realizar una primera revisión estructurada de VALUE recorriendo A1–A8 con el caso ficticio CLINIC-001. El objetivo es detectar ambigüedades, duplicidades, lagunas, dificultades de navegación y rupturas de trazabilidad antes de considerar una evaluación externa.
 
-La prueba evalúa el documento y la experiencia de uso. No demuestra que VALUE produzca mejores resultados, que los indicadores sean válidos ni que exista causalidad entre una intervención y el valor observado.
+Esta fase se adapta a la situación actual: el usuario trabaja solo. No se requiere reclutar participantes externos para avanzar.
 
-## 2. Preguntas de evaluación
+## 2. Qué puede y qué no puede concluirse
 
-1. ¿Puede una persona identificar el propósito y la decisión que debe apoyar el caso?
-2. ¿Distingue A1 (Value Intent) de A2 (Value Opportunity Brief)?
-3. ¿Entiende el Value System Model (A3) como modelo integrado con vistas, y no como una colección de modelos independientes?
-4. ¿Distingue hechos, fuentes, inferencias, hipótesis, supuestos y decisiones?
-5. ¿Puede seguir la trazabilidad entre A4–A6 y entender por qué DECIDE no equivale a autorización para ejecutar?
-6. ¿Distingue el Value Discovery Sprint de cinco días de una prueba operativa posterior?
-7. ¿Puede explicar qué evidencia falta y por qué los datos ficticios de CLINIC-001 no prueban causalidad ni eficacia?
-8. ¿Detecta campos ambiguos, redundantes, difíciles de completar o que requieren explicación del facilitador?
+Esta autoevaluación puede producir hallazgos formativos sobre la comprensión del propio autor/usuario, y una revisión documental complementaria de coherencia. No demuestra que otras personas usarían el estándar sin ayuda, no valida métricas ni hipótesis, no demuestra causalidad y no prueba eficacia.
 
-## 3. Participantes y muestra
+ChatGPT puede ayudar a localizar contradicciones, contrastar documentos y registrar hallazgos, pero **no es un participante humano independiente** y su análisis no sustituye una prueba independiente de usabilidad.
 
-- Reclutar, cuando sea posible, entre 3 y 5 personas que no hayan redactado estos documentos.
-- Buscar diversidad funcional razonable (por ejemplo, operaciones/servicios, diseño o producto, y análisis/evaluación), sin exigir perfiles concretos.
-- Registrar solo información mínima relevante para interpretar la prueba; no recopilar datos personales innecesarios.
-- Si solo participa una persona, tratar el resultado como exploratorio individual, no como señal suficiente de usabilidad general.
+## 3. Preguntas de revisión
 
-**Estado actual:** no hay participantes reclutados ni sesiones ejecutadas registradas en este documento.
+1. ¿Se entiende el propósito y la decisión que debe apoyar el caso?
+2. ¿Se distingue A1 (Value Intent) de A2 (Value Opportunity Brief)?
+3. ¿Se entiende el Value System Model (A3) como modelo integrado con vistas, no como una colección de modelos independientes?
+4. ¿Se distinguen hechos, fuentes, inferencias, hipótesis, supuestos, decisiones y resultados?
+5. ¿Se puede seguir la trazabilidad entre A4–A6 y entender por qué DECIDE no equivale a autorización para ejecutar?
+6. ¿Se distingue el Value Discovery Sprint de una prueba operativa posterior?
+7. ¿Queda claro que los datos ficticios de CLINIC-001 no prueban causalidad ni eficacia?
+8. ¿Hay campos ambiguos, redundantes, difíciles de completar o que requieren explicaciones que el estándar debería proporcionar?
 
 ## 4. Materiales
 
-- VALUE_METHODOLOGY_LIFECYCLE_001.md (estándar maestro).
-- VALUE_ARTIFACT_MASTER_SPECS_v0.1.md (especificaciones A1–A8).
-- VALUE_DISCOVERY_SPRINT_v0.1.md.
-- VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md, identificado siempre como caso y datos ficticios.
-- Este protocolo y una plantilla de registro de sesión.
+- `VALUE_METHODOLOGY_LIFECYCLE_001.md` (estándar maestro).
+- `VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` (especificaciones A1–A8).
+- `VALUE_DISCOVERY_SPRINT_v0.1.md`.
+- `VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md`, identificado siempre como caso y datos ficticios.
+- Este protocolo y el registro de hallazgos que se complete durante la revisión.
 
-No introducir soluciones ni explicaciones adicionales antes de observar la primera interpretación espontánea del participante. Las aclaraciones del facilitador se registrarán.
+## 5. Procedimiento de autoevaluación guiada
 
-## 5. Tareas de la sesión
+No se presupone una sesión única de 45–60 minutos. La revisión puede realizarse en varios turnos, una tarea cada vez, para no sobrecargar el proceso.
 
-Duración orientativa de 45–60 minutos; es una hipótesis logística que deberá revisarse después de la primera sesión.
+Para cada tarea:
 
-1. **Comprensión inicial (5 min):** describir con sus palabras el problema, la decisión que se debe apoyar y las restricciones.
-2. **Recorrido de artefactos (15–20 min):** localizar dónde registrar intención, contexto de oportunidad, modelo del sistema, hipótesis/opciones, evidencia y decisión.
-3. **Trazabilidad (10 min):** explicar cómo una evidencia apoya o limita una hipótesis y cómo se refleja en la decisión.
-4. **Límites y autorización (5–10 min):** identificar qué falta antes de autorizar una prueba y separar selección de opción, autorización, Sprint y prueba operativa.
-5. **Comentarios de uso (5–10 min):** señalar campos repetidos, vacíos, términos confusos y cambios prioritarios.
+1. **Primero, intento propio:** el usuario interpreta el documento o intenta completar la tarea con la información disponible, antes de recibir una solución sugerida.
+2. **Registro:** se anota qué resultó claro, qué bloqueó el avance, qué hubo que releer y qué información faltaba.
+3. **Contraste documental:** ChatGPT ayuda a comparar la observación con el estándar maestro, las especificaciones y el caso; diferencia contradicción textual de posible dificultad de uso.
+4. **Decisión:** clasificar el hallazgo como corregir, investigar más, mantener con justificación o posponer.
+5. **Cambio controlado:** si se acuerda una modificación, actualizar los documentos en la rama de trabajo y comprobar que no crea contradicciones en otras partes.
 
-No se pide al participante que valide la intervención clínica ni que emita juicios asistenciales. El caso es ficticio.
+### Secuencia de tareas
 
-## 6. Registro por sesión
+1. **Comprensión inicial:** explicar con palabras propias el problema ficticio, la decisión que debe apoyar y las restricciones.
+2. **Recorrido A1–A3:** localizar intención, oportunidad y modelo del sistema; anotar solapamientos o información difícil de ubicar.
+3. **Hipótesis y evidencia:** seguir un ejemplo por A4 y A5, distinguiendo evidencia de hipótesis y supuestos.
+4. **Decisión y autorización:** recorrer A6 y explicar qué se ha decidido, qué no está autorizado y qué condiciones siguen pendientes.
+5. **Plan y aprendizaje:** distinguir el Sprint de descubrimiento, el plan A7 y cualquier prueba operativa posterior; comprobar qué puede afirmarse en A8.
+6. **Revisión global:** identificar campos repetidos, términos no definidos, lagunas y cambios prioritarios.
 
-Crear un registro independiente por sesión con ID no identificativo (por ejemplo, USAB-VALUE-001). Registrar:
+El caso es ficticio. No se pide emitir juicios asistenciales ni validar una intervención clínica.
 
-- Fecha y versión exacta de los documentos utilizados.
-- Perfil funcional en categorías amplias, solo si es necesario y consentido.
-- Tarea intentada y resultado: completada / parcial / no completada.
-- Tiempo aproximado por tarea, si se mide de forma consistente.
-- Errores de interpretación observados y frase o acción que los evidencia, sin datos personales.
-- Ayudas o aclaraciones dadas por el facilitador.
-- Dudas, campos omitidos y redundancias percibidas.
-- Comentarios del participante y cambios sugeridos.
-- Limitaciones de la sesión y desviaciones del protocolo.
+## 6. Registro de hallazgos
 
-No registrar inferencias como si fueran observaciones directas. Diferenciar cita/observación, interpretación del equipo y propuesta de cambio.
+Usar un ID por hallazgo (por ejemplo, `USAB-VALUE-F001`) y registrar:
 
-## 7. Criterios de evaluación iniciales
+- Fecha y versión exacta de los documentos.
+- Tarea y artefacto afectados.
+- **Intento/observación del usuario:** qué intentó hacer, qué entendió, dónde se bloqueó y qué tuvo que releer.
+- **Análisis documental asistido:** contradicción, ambigüedad o laguna detectada al contrastar documentos.
+- **Interpretación provisional:** explicación posible, claramente separada de la observación.
+- Tipo: redacción / estructura / redundancia / trazabilidad / concepto sin definir / ejemplo insuficiente / otro.
+- Gravedad para comprender o tomar una decisión: baja / media / alta, con justificación.
+- Propuesta: aceptar / comprobar más / rechazar con motivo / posponer.
+- Estado y referencia al cambio documental, si lo hay.
 
-Los siguientes criterios son reglas exploratorias de esta prueba, no métricas validadas ni umbrales universales.
+No registrar inferencias como observaciones directas. No inventar sesiones, participantes, tiempos ni resultados. Si una tarea no se ha realizado, mantenerla como pendiente.
 
-- **Comprensión crítica:** la persona distingue al menos: A1/A2; evidencia/hipótesis; decisión/autorización; Sprint/prueba operativa; datos ficticios/evidencia real.
-- **Uso de artefactos:** puede localizar dónde registrar la información esencial sin que el facilitador le indique directamente la respuesta.
-- **Trazabilidad:** puede seguir un ejemplo desde una hipótesis hasta evidencia, decisión y aprendizaje, identificando límites.
-- **Fricción:** se documentan bloqueos, campos sin entender, duplicidades y ayudas requeridas.
-- **Seguridad de interpretación:** no presenta los resultados ficticios como prueba causal o clínica.
+## 7. Criterios formativos
 
-No sumar estos criterios en una puntuación global ni afirmar validez estadística con una muestra pequeña. Si una confusión crítica aparece en una sesión, revisar su gravedad y reproducibilidad antes de decidir el cambio documental.
+No se calculará una puntuación global ni se tratarán estos criterios como métricas validadas. En cada tarea se comprobará si:
 
-## 8. Síntesis y decisión posterior
+- La información necesaria se localiza sin que la respuesta se proporcione de antemano.
+- Los conceptos críticos se pueden explicar con palabras propias.
+- La relación entre hipótesis, evidencia, decisión y aprendizaje resulta trazable.
+- Las lagunas del estándar se pueden distinguir de información que el caso ficticio simplemente no aporta.
+- Los límites de los datos ficticios y de la autorización se interpretan correctamente.
 
-Después de las sesiones:
+Una dificultad detectada por el propio autor/usuario es una señal para investigar, no una medida independiente de usabilidad. Una ausencia de dificultad tampoco prueba que otros usuarios entenderían el material.
 
-1. Consolidar observaciones por artefacto y por tipo de confusión.
-2. Separar problemas de redacción, estructura, formación, ejemplo y carencias del estándar.
-3. Priorizar cambios por gravedad para la decisión, frecuencia observada y coste de corrección; anotar el fundamento de cada prioridad.
-4. Registrar cada propuesta como: aceptar / probar en otra sesión / rechazar con motivo.
-5. Actualizar los documentos en una rama de trabajo, conservar la versión anterior y repetir las tareas afectadas.
-6. Informar del número real de sesiones y de los límites de la muestra.
+## 8. Síntesis y decisión
 
-No cambiar el estándar solo para hacer que las respuestas coincidan con lo esperado. Si una pregunta no se puede responder porque el estándar no ofrece información suficiente, registrarlo como posible laguna.
+Al cerrar el recorrido:
+
+1. Agrupar hallazgos por artefacto y tipo.
+2. Separar defectos documentales de preguntas abiertas que requieren evidencia externa.
+3. Priorizar por gravedad para la decisión, claridad de la evidencia y coste de corrección; explicar cada prioridad.
+4. Registrar las decisiones y su fundamento.
+5. Modificar los documentos de forma controlada y volver a recorrer las tareas afectadas.
+6. Dejar explícito qué partes se han revisado y cuáles siguen pendientes.
+
+No cambiar el estándar solo para que coincida con la interpretación esperada. Si el documento no permite responder una pregunta, registrar la posible laguna.
 
 ## 9. Plantilla de conclusión
 
-- Sesiones completadas:
-- Versiones probadas:
-- Tareas completadas / parciales / no completadas:
-- Confusiones críticas observadas:
-- Campos ambiguos o redundantes:
-- Ayudas del facilitador más frecuentes:
-- Cambios aceptados:
-- Cambios pendientes de comprobar:
-- Limitaciones:
-- Decisión: mantener versión / revisar / repetir prueba:
-- Responsable de la decisión y fecha:
+- Fecha y versiones revisadas:
+- Tareas recorridas:
+- Tareas pendientes:
+- Hallazgos del usuario:
+- Hallazgos del contraste documental asistido:
+- Ambigüedades o redundancias:
+- Cambios aceptados y fundamento:
+- Cuestiones abiertas:
+- Limitaciones de esta autoevaluación:
+- Decisión: mantener / revisar / ampliar revisión:
+- Responsable y fecha:
 
-## 10. Ética, límites y estado
+## 10. Evaluación externa futura (opcional)
 
-- El caso CLINIC-001 y sus datos son ficticios.
-- No se simulan participantes, sesiones, observaciones ni resultados.
-- La prueba de usabilidad no es un piloto clínico ni autoriza una intervención real.
-- No valida empíricamente el estándar VALUE ni la teoría científica TGCV.
+Cuando existan colaboradores o usuarios potenciales, podrá plantearse una prueba independiente con 3–5 personas como primer sondeo exploratorio. No es requisito para continuar la revisión documental ni debe presentarse como validación estadística. El diseño de esa futura prueba se concretará cuando haya participantes y contexto disponibles.
+
+## 11. Límites y estado
+
+- CLINIC-001 y sus datos son ficticios.
+- No se han realizado ni simulado sesiones de evaluación.
+- La autoevaluación no es un piloto clínico ni autoriza una intervención real.
+- No valida empíricamente VALUE ni la teoría científica TGCV.
 - Cualquier futura prueba en una organización real requerirá autorización, salvaguardas y tratamiento de datos adecuados al contexto.
 
-**Estado al crear este protocolo:** diseño documental; prueba no iniciada.
+**Estado al actualizar este protocolo:** procedimiento adaptado a una revisión individual guiada; revisión todavía no iniciada.
