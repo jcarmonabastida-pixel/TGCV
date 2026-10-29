@@ -285,3 +285,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir cómo distinguir información imprescindible de prescindible, quién puede autorizar alternativas y cómo documentar sus límites.
 - **Límite:** propuesta para el caso ficticio, no procedimiento clínico aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+### SR-029 — Ambigüedad sobre quién debe realizar el siguiente paso
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional propuesta:** si dos roles consideran que el siguiente paso corresponde al otro y ninguno actúa, se registra la acción pendiente y la ambigüedad. El responsable end-to-end mantiene el seguimiento y promueve una asignación explícita conforme a las responsabilidades autorizadas.
+- **Límite de autoridad:** no se presume que el responsable end-to-end pueda reasignar cualquier tarea. Si las reglas existentes no resuelven el desacuerdo, se eleva a la persona o instancia autorizada.
+- **Pendiente antes de uso real:** definir responsabilidades por etapa y el mecanismo para resolver desacuerdos de asignación.
+- **Límite:** propuesta para el caso ficticio; no es una asignación real de responsabilidades ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
