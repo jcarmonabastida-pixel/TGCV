@@ -117,43 +117,70 @@ El propósito está suficientemente definido para explorar la oportunidad, pero 
 ## 5. SENSE — A2 Value Opportunity Brief
 
 **ID:** CLINIC-001-A2  
-**Estado:** borrador ilustrativo
+**Estado:** borrador ilustrativo revisado mediante autoevaluación guiada; no validado en una organización real
 
 ### Oportunidad delimitada
 
-Entender en qué puntos del proceso se acumulan solicitudes de cita pendientes y qué factores modificables contribuyen a ello, sin asumir que la coordinación es necesariamente la causa.
+Comprender en qué puntos del proceso de citas programadas se acumulan las solicitudes pendientes y qué factores modificables contribuyen a las demoras, sin asumir que la coordinación sea necesariamente la causa. La investigación debe contrastar la demanda con la capacidad planificada y examinar si las demoras y sus efectos difieren según el tipo de solicitud y las necesidades de los pacientes.
 
-### Síntomas iniciales
+### Síntomas iniciales y estado del conocimiento
 
-- [FICCIÓN-ESCENARIO] Existen quejas por demora.
+- [FICCIÓN-ESCENARIO] Existen quejas por demoras en la asignación de citas.
 - [FICCIÓN-ESCENARIO] La dirección sospecha problemas de coordinación.
-- [PENDIENTE REAL] No se conoce la distribución de tiempos por tipo de solicitud, prioridad, día o etapa del proceso.
+- [PENDIENTE REAL] No se conoce la distribución de los tiempos por tipología, prioridad, criticidad o impacto asistencial, etapa del proceso ni periodo temporal.
+- [PENDIENTE REAL] No se han comprobado la disponibilidad, integridad, consistencia ni fiabilidad de los registros necesarios.
+- [PENDIENTE REAL] No se ha establecido si existe un camino crítico en el proceso ni qué evidencia permitiría identificarlo.
 
 ### Preguntas de descubrimiento
 
-1. ¿Cuánto tiempo transcurre entre la recepción de una solicitud y su asignación?
-2. ¿En qué etapa se acumulan las solicitudes pendientes?
-3. ¿Cómo se identifican y escalan las solicitudes prioritarias?
-4. ¿Qué información falta con mayor frecuencia?
-5. ¿Qué tareas repetidas o interrupciones afectan a los equipos?
-6. ¿Hay diferencias relevantes entre tipos de cita o grupos de pacientes?
-7. ¿Qué indicadores y registros existen y con qué calidad?
+1. ¿Cuánto tiempo transcurre entre la recepción, las etapas intermedias relevantes y la asignación de cada solicitud?
+2. ¿En qué etapas se acumulan solicitudes pendientes y qué volumen permanece en cada una?
+3. ¿Cuáles son los motivos de bloqueo y cómo varían por tipo de solicitud?
+4. ¿Cómo se identifican y escalan las solicitudes prioritarias conforme a las reglas existentes?
+5. ¿Cómo se distribuyen los tiempos y las demoras por tipología, prioridad y criticidad o impacto asistencial? Estas dimensiones no se presuponen equivalentes.
+6. ¿Hay diferencias entre grupos de pacientes en sus necesidades y en las consecuencias que las demoras tienen para ellos?
+7. ¿Qué información falta con mayor frecuencia y qué tareas repetidas o interrupciones afectan a los equipos?
+8. ¿Qué registros e indicadores existen, qué campos contienen y con qué calidad, consistencia y fiabilidad?
+9. ¿Cómo varía el volumen de solicitudes a lo largo del tiempo? ¿Los datos permiten valorar una posible estacionalidad?
+10. ¿Cómo se relacionan la demanda y su tipología con la capacidad planificada y registrada del servicio?
+11. ¿Existe un camino crítico en el proceso? ¿Qué etapas, dependencias o esperas lo determinarían y qué evidencia permitiría confirmarlo?
+12. ¿Qué fuentes de datos pueden consultarse legítimamente y con qué autorización, minimización y controles de privacidad?
+
+### Alcance inicial del análisis de datos
+
+- **Horizonte temporal propuesto:** histórico de doce meses, sujeto a disponibilidad, calidad y cobertura de los datos. Permite una primera valoración de posibles patrones anuales, pero un único año no demuestra por sí solo que exista una pauta estacional recurrente. Si existen históricos anteriores comparables, conviene considerarlos.
+- **Granularidad:** registro de solicitudes al máximo nivel de detalle disponible y adecuado para reconstruir tiempos, etapas, estados, pendientes y motivos de bloqueo. El nivel de detalle queda condicionado por la calidad real de los registros y la protección de datos.
+- **Análisis:** examinar tiempos, volumen de pendientes y motivos de bloqueo tanto agregados como desglosados por tipo; cuando los datos y definiciones lo permitan, incluir prioridad, criticidad/impacto asistencial y diferencias relevantes entre grupos de pacientes.
+- **Capacidad:** para el primer análisis se utilizará la capacidad planificada y registrada, contrastada con el volumen y la tipología de la demanda. No se exige inicialmente reconstruir la capacidad efectiva minuto a minuto.
+- **Supuesto explícito de capacidad:** el ejercicio asume una gestión adecuada por parte de la clínica de las ausencias planificadas y no planificadas. Es una condición de trabajo no verificada, no un hecho establecido. Si los resultados no explican las demoras o aparecen indicios relevantes en contra, el supuesto deberá revisarse.
+- **Alcance asistencial:** se estudian citas programadas dentro del horario establecido; las urgencias quedan fuera de alcance. No se presupone una ampliación horaria.
 
 ### Hipótesis iniciales — no confirmadas
 
-- **H1:** parte de las demoras podría estar relacionada con solicitudes incompletas.
+- **H1:** parte de las demoras podría relacionarse con solicitudes incompletas.
 - **H2:** la ausencia de una revisión compartida de pendientes podría retrasar la detección de bloqueos.
-- **H3:** la capacidad disponible podría ser insuficiente en determinados periodos.
+- **H3:** la capacidad planificada podría no corresponderse con el volumen o la tipología de la demanda en determinados periodos.
 - **H4:** algunos pasos administrativos podrían duplicarse.
-- **H5:** las demoras podrían variar según el tipo de cita o prioridad.
+- **H5:** las demoras podrían variar por tipología, prioridad, criticidad/impacto asistencial o grupo de pacientes.
+- **H6:** el volumen de solicitudes podría mostrar variaciones temporales o estacionales.
 
-### Datos necesarios para un caso real
+Estas hipótesis son líneas de investigación, no causas demostradas. No se asignan categorías, umbrales ni puntuaciones clínicas inventadas.
 
-Tiempos de entrada y asignación, estados de solicitud, prioridad conforme a reglas existentes, motivo de pendiente, devoluciones por información incompleta, carga de trabajo y posibles efectos distributivos. El acceso a datos de pacientes requeriría autorización, minimización y controles de privacidad apropiados.
+### Datos necesarios y controles para un caso real
+
+Como mínimo, se investigará la disponibilidad de fechas y estados de las solicitudes, tiempos entre etapas, tipología, prioridad conforme a reglas existentes, motivos de bloqueo, devoluciones por información incompleta, registros de pendientes, capacidad planificada y variables temporales pertinentes. La disponibilidad de campos para caracterizar criticidad/impacto y grupos de pacientes debe comprobarse; no se presume que estén registrados.
+
+Antes de analizar datos reales habrá que confirmar definiciones, cobertura, integridad, consistencia, datos ausentes y posibles sesgos, además de la autorización de acceso y los controles adecuados de privacidad. La ausencia de un dato no debe interpretarse como evidencia de ausencia del problema.
+
+### Relación con A1
+
+A1 debe considerar desde el encuadre inicial la posible existencia de un camino crítico, la estacionalidad del volumen y la relación entre demanda, capacidad y restricciones del servicio. A2 investigará estas cuestiones con los datos y evidencias disponibles; no anticipa sus conclusiones ni sustituye la decisión de valor de A1.
 
 ### Criterio de salida de SENSE
 
-La oportunidad se considera suficientemente delimitada para modelar el sistema cuando el proceso, los grupos afectados, las preguntas abiertas y las fuentes de datos disponibles estén identificados. Este ejercicio solo demuestra la estructura documental; no demuestra que se hayan recogido datos reales.
+A2 estará suficientemente delimitado para pasar a modelar el sistema cuando estén identificados el proceso y sus límites, los grupos afectados, las preguntas de descubrimiento, los datos y fuentes potencialmente disponibles, las principales incertidumbres y los supuestos de trabajo. Si no se dispone de información suficiente para responder las preguntas, esa carencia se documentará como resultado y podrá requerir investigación adicional.
+
+Este ejercicio demuestra únicamente la estructura documental y el registro de una autoevaluación guiada. No demuestra que se hayan recogido datos reales, que exista estacionalidad o camino crítico, que la capacidad sea insuficiente ni que se haya identificado una causa raíz.
 
 ## 6. CONNECT — A3 Value System Model
 
