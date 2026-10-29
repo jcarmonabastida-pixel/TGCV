@@ -28,6 +28,19 @@
 - No sustituye al maestro ni es el flujo aprobado.
 - Requiere comparación explícita antes de adoptar cualquier elemento o reemplazar el ciclo maestro.
 
+### 4. ENTREGABLES DE ETAPA 2 — BORRADORES DE TRABAJO
+
+[VALUE — Fichas maestras de artefactos canónicos A1–A8](../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)
+
+- Desarrolla los campos, criterios de calidad, salidas y vínculos de los ocho artefactos del maestro.
+- Estado: borrador de especificación; requiere revisión y prueba de uso antes de declararse estable.
+
+[VALUE — Value Discovery Sprint](../VALUE_DISCOVERY_SPRINT_v0.1.md)
+
+- Propone un servicio piloto acotado, recorrido de trabajo, entregables, roles y criterios de aceptación.
+- La duración sugerida es una hipótesis de diseño, no un estándar validado.
+- Estado: borrador; requiere probarse en un caso y registrar el aprendizaje.
+
 ## Convención de gobernanza
 
 1. El maestro es la única referencia activa para el trabajo metodológico, salvo decisión documentada.
@@ -44,4 +57,6 @@
 | `../VALUE_METHODOLOGY_LIFECYCLE_001.md` | 0.2 | **MAESTRO DE REFERENCIA** | Normalización actual. |
 | `ARCHIVE_ORIGINAL_UNNORMALIZED_VALUE_METHODOLOGY_v0.1.md` | 0.1 | **ARCHIVO HISTÓRICO** | Trazabilidad del documento anterior. |
 | `ALTERNATIVE_UNEVALUATED_VALUE_FIVE_STAGE_CYCLE_v0.1.md` | 0.1 | **ALTERNATIVA NO EVALUADA** | Explorar el ciclo mnemónico VALUE de cinco etapas. |
+| `../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` | 0.1 | **BORRADOR** | Fichas de especificación para A1–A8. |
+| `../VALUE_DISCOVERY_SPRINT_v0.1.md` | 0.1 | **BORRADOR** | Diseño inicial del servicio piloto. |
 
