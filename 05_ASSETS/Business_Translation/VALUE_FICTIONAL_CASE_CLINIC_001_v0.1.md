@@ -386,6 +386,17 @@ Para evitar que una solicitud permanezca bloqueada durante un tiempo excesivo, i
 
 Antes del uso real deben concretarse los plazos, responsables de revisión, disparadores de escalado y actuaciones asociadas. Esta es una propuesta funcional para el caso ficticio, no un protocolo clínico aprobado.
 
+### Resolución operativa ordinaria y escalado jerárquico excepcional
+
+La gestión ordinaria de citas debe resolverse mediante responsabilidades, sustituciones y delegaciones predefinidas, sin depender de intervenciones jerárquicas superiores para incidencias habituales.
+
+- El responsable asignado ejecuta la tarea conforme a sus competencias; si no está disponible, se activa la sustitución o delegación prevista.
+- El responsable end-to-end debe disponer de autoridad operativa suficiente para asegurar la continuidad: puede asumir temporalmente una tarea si está autorizado y capacitado, o asignarla a otra persona autorizada, dentro de los límites establecidos.
+- Los bloqueos se revisan y resuelven en el nivel operativo correspondiente. El escalado funcional para desbloquear o coordinar una actuación no implica por sí mismo un escalado jerárquico.
+- La intervención de una instancia jerárquica superior queda reservada a causas extraordinarias que excedan la capacidad o autoridad operativa disponible, o a circunstancias de especial gravedad.
+
+Antes del uso real deben definirse las responsabilidades, sustituciones, delegaciones y límites de autoridad, así como qué circunstancias justifican la excepción. Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento organizativo aprobado ni validación empírica.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
