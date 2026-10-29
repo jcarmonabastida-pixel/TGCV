@@ -282,6 +282,12 @@ En la medida de lo posible, la información remitida al nivel funcional o jerár
 
 Estos campos se incorporan como requisitos funcionales propuestos. Su formato, obligatoriedad según tipo de escalado y responsables de completarlos deben concretarse; no se presume que exista ya una plantilla o herramienta que los recoja.
 
+### Confirmación de recepción y trazabilidad de la actuación escalada
+
+El responsable que recibe una solicitud escalada debe **confirmar que la asume** y registrar la actuación realizada y/o la decisión adoptada. El ownership transversal utiliza esa confirmación para mantener el seguimiento end-to-end hasta el cierre, comprobar el progreso y comunicar el estado pertinente.
+
+Quedan por definir el mecanismo y el plazo de confirmación, así como el tratamiento de una escalación no aceptada o no respondida. No se presuponen herramientas, automatizaciones ni tiempos concretos.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
