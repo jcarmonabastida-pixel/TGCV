@@ -805,6 +805,12 @@ La revisión periódica actúa también como salvaguarda ante posibles fallos de
 
 Criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 
+### SR-049 — Registro de incidencias de seguimiento vinculadas a la solicitud
+
+Cuando la detección por eventos o la revisión periódica identifique una solicitud que requiere seguimiento conforme a SR-047 y SR-048, se propone generar una incidencia de seguimiento vinculada a la solicitud original. El registro incluirá, como mínimo, la fecha de detección, el motivo, el responsable de revisar la incidencia y la actuación requerida.
+
+La incidencia no sustituye ni cierra la solicitud original: permite hacer trazable la detección y gestionar su revisión. Deben definirse antes del uso real el mecanismo de registro, las reglas de asignación y actualización y la autoridad para determinar la actuación correspondiente. Criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
