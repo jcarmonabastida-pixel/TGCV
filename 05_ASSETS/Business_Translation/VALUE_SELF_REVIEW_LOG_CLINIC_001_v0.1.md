@@ -357,3 +357,14 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** identificar las funciones concretas de atención sanitaria que requieren cobertura, dimensionar y verificar la capacidad conforme a criterios clínicos y operativos autorizados, y mantener diferenciadas estas salvaguardas de las reglas ordinarias de continuidad del proceso de concertación de citas.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-036 — Ausencia imprevista de profesionales sanitarios el día de la cita
+
+- **Aprobación del usuario:** sí.
+- **Regla acordada:** la cobertura crítica debe contemplar las ausencias imprevistas de profesionales sanitarios el mismo día de la cita.
+- **Respuesta prevista:** activar la sustitución por un profesional autorizado y competente o, cuando no sea posible, una reprogramación que preserve la atención necesaria al paciente conforme a los criterios clínicos y de prioridad aplicables.
+- **Salvaguarda:** la ausencia no debe traducirse en una cancelación sin seguimiento ni en una reprogramación automática que ignore las necesidades clínicas del paciente.
+- **Pendiente antes de uso real:** definir responsables, mecanismo de activación, disponibilidad de sustitutos, criterios clínicos de reprogramación, comunicación al paciente y trazabilidad de la decisión.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
