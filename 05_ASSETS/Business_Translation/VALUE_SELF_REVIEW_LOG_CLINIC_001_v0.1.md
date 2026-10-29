@@ -267,3 +267,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente:** concretar requisitos mínimos por etapa, responsabilidades y seguimiento cuando la información no esté disponible.
 - **Límite:** regla propuesta para el caso ficticio, sin plazos ni responsabilidades reales.
 - **Estado:** registrado; continúa la revisión de A3.
+
+### SR-027 — Información contradictoria entre fuentes
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional propuesta:** si la información necesaria contradice otras fuentes o registros, la solicitud permanece abierta y no se toman decisiones dependientes de ese dato como si fuera fiable.
+- **Trazabilidad:** registrar qué información discrepa y la procedencia de las fuentes implicadas. El responsable end-to-end mantiene el seguimiento hasta resolver la discrepancia o hasta que una persona autorizada determine cómo proceder.
+- **Pendiente antes de uso real:** definir criterios de autoridad de las fuentes, verificación y resolución de discrepancias; no se presume que una fuente prevalezca sobre otra.
+- **Límite:** propuesta para el caso ficticio; no establece una jerarquía real de fuentes ni un procedimiento clínico aprobado.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
