@@ -124,6 +124,17 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** alcance inicial acordado para el ejercicio; pendiente de completar A2 y revisar las implicaciones para A1.
 - **Decisión:** registrar sin cambiar todavía el estándar maestro.
 
+
+### SR-012 — Síntesis de cobertura de A2 y preparación para A3
+
+- **Tarea:** comprobar si la oportunidad y las preguntas de descubrimiento cubren las dimensiones identificadas durante la autoevaluación.
+- **Contraste con el A2 actual del caso:** la versión existente ya contempla tiempos entre recepción y asignación, etapa de acumulación, priorización/escalado, información incompleta, tareas repetidas/interrupciones, diferencias por tipo de cita o grupos y calidad de registros. También enumera estados, prioridad, motivos de pendiente, carga de trabajo y efectos distributivos como datos necesarios.
+- **Cobertura adicional acordada durante la revisión:** (1) distribución de demoras por tipología, prioridad y criticidad/impacto asistencial; (2) tiempos por etapas, volumen de pendientes y motivos de bloqueo, agregados y por tipo; (3) registro detallado de solicitudes para doce meses, sujeto a disponibilidad/calidad y protección de datos; (4) diferencias entre grupos de pacientes en necesidades e impacto de las demoras; (5) posible estacionalidad del volumen; (6) contraste de demanda con capacidad planificada registrada; (7) considerar si existe un camino crítico, planteado también en A1 y explorado mediante evidencia en A2.
+- **Supuesto de alcance:** para el primer análisis se usa la capacidad planificada registrada y se asume una gestión adecuada de ausencias planificadas y no planificadas. Es una condición de trabajo, no un hecho verificado; revisar si aparecen señales que la contradigan o si no explica los resultados.
+- **Brechas documentales observadas:** el A2 actual no explicita todavía de forma suficiente criticidad/impacto como dimensión diferenciada, análisis conjunto agregado/por tipo, horizonte de doce meses, contraste con capacidad planificada, posible estacionalidad ni el detalle del camino crítico. La cobertura actual es parcial, aunque la estructura general de A2 es adecuada para alojar estas precisiones.
+- **Conclusión provisional:** la oportunidad está delimitada conceptualmente para pasar a modelar el sistema en A3, pero antes de considerar A2 documentalmente cerrado conviene actualizar el A2 ilustrativo para reflejar las preguntas y límites acordados. A3 no debe presentar hipótesis como hechos ni inventar etapas, datos o relaciones causales; debe representar las incertidumbres y fuentes pendientes.
+- **Estado:** síntesis registrada; A2 aún no se considera documentalmente cerrado hasta que se decida y ejecute la actualización del caso. La revisión no constituye validación empírica.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
