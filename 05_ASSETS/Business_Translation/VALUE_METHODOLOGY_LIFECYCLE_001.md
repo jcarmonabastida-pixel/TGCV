@@ -162,7 +162,7 @@ La regla de normalización es: **un artefacto canónico por función de gestión
 
 ### A5. Evidence Record
 
-- **Fase:** VALIDACIÓN transversal; se utiliza sobre todo en DESIGN y DECIDE.
+- **Uso:** transversal a las fases; se utiliza especialmente en DESIGN y DECIDE. «Validación» describe una actividad, no una fase adicional del VCF.
 - **Función:** vincular cada hipótesis con la evidencia disponible, fuente, método, fecha, calidad, limitaciones, contradicciones y estado.
 - **Consolida:** Evidence Matrix y registros separados de evidencia que cubren el mismo propósito.
 - **Salida:** trazabilidad de qué se sabe, qué no se sabe y con qué fundamento.
