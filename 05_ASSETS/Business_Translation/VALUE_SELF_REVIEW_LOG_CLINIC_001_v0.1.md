@@ -70,6 +70,17 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** aportación registrada; pendiente de decidir si se explicita en A2 como pregunta de descubrimiento o como requisito de análisis.
 - **Decisión:** no cambiar todavía el estándar maestro; continuar la autoevaluación de A2 y contrastar la redacción del caso con las especificaciones.
 
+
+### SR-007 — Localizar acumulaciones y bloqueos en el proceso
+
+- **Tarea:** indicar qué información permitiría localizar en qué etapas se acumulan las solicitudes pendientes.
+- **Observación del usuario:** “Los tiempos, el volumen de solicitudes pendientes y los motivos de bloqueo agregados y por tipo”.
+- **Lectura provisional:** el análisis debe combinar (1) tiempos entre etapas, (2) volumen de solicitudes pendientes y (3) motivos de bloqueo. Estas variables deben examinarse tanto de forma agregada como desglosadas por tipo de solicitud/cita, para que los totales no oculten patrones distintos.
+- **Precaución:** el caso no especifica las etapas reales, categorías de bloqueo ni la disponibilidad/calidad de los registros. Se deberán identificar en un caso real, sin inventarlos ni asumir que los datos actuales permiten todos los desgloses.
+- **Contraste con A2 existente:** A2 ya pregunta en qué etapa se acumulan solicitudes pendientes, solicita tiempos de entrada y asignación y enumera datos como estado de solicitud y motivo de pendiente. La aportación conecta explícitamente estas dimensiones y pide análisis agregado y por tipo; puede incorporarse como aclaración operativa del descubrimiento, sin convertirla todavía en una métrica o fórmula universal.
+- **Estado:** aportación registrada; pendiente de cerrar la revisión de A2 y decidir si se actualiza la redacción del caso.
+- **Decisión:** registrar el hallazgo sin modificar todavía el estándar maestro.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
