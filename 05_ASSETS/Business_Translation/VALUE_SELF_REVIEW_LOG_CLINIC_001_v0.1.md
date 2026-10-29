@@ -346,3 +346,14 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** identificar las funciones críticas, formalizar las designaciones, definir y probar los protocolos de activación y actuación, y establecer cómo se mantiene y verifica la disponibilidad efectiva.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-035 — Dimensionamiento de la cobertura crítica y delimitación de su alcance
+
+- **Aprobación del usuario:** sí.
+- **Regla acordada:** dimensionar la capacidad de las coberturas alternativas para que puedan asumir la función crítica sin generar una sobrecarga que comprometa la continuidad o la calidad de la atención.
+- **Delimitación específica del caso:** al tratarse de un servicio de programación de citas, las funciones críticas que requieren este respaldo de continuidad son las directamente vinculadas a garantizar la atención sanitaria al paciente en el día y hora de la cita. El requisito no se extiende automáticamente al proceso administrativo de concertación o gestión de la cita en sí mismo.
+- **Condiciones:** cobertura formalmente designada, protocolo predefinido de activación y actuación, personas autorizadas y competentes, responsabilidades y límites explícitos, y capacidad suficiente para asumir la atención prevista.
+- **Pendiente antes de uso real:** identificar las funciones concretas de atención sanitaria que requieren cobertura, dimensionar y verificar la capacidad conforme a criterios clínicos y operativos autorizados, y mantener diferenciadas estas salvaguardas de las reglas ordinarias de continuidad del proceso de concertación de citas.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
