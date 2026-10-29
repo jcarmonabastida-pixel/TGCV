@@ -38,6 +38,16 @@ Este registro documenta una revisión individual guiada del estándar VALUE usan
 - **Estado:** criterio adicional propuesto; pendiente de contrastar con A1 y las especificaciones maestras.
 - **Decisión:** registrar como propuesta, sin modificar todavía el estándar hasta terminar la revisión de A1.
 
+
+### SR-004 — Cobertura horaria del servicio como condición de contexto
+
+- **Tarea:** revisar si las restricciones del A1 están suficientemente contextualizadas.
+- **Observación del usuario:** “Todas esas restricciones hay que entenderlas dentro de la cobertura horaria del servicio de atención a citas”.
+- **Lectura provisional:** la capacidad profesional, las reglas de priorización, la calidad/disponibilidad de datos, el tiempo del personal, los recursos y la autoridad decisora deben analizarse teniendo en cuenta el horario efectivo en que funciona el servicio de atención a citas. La cobertura horaria condiciona cuándo pueden recibirse, revisar, escalar y resolver solicitudes.
+- **Precaución:** el caso ficticio no define aún días, franjas horarias, cobertura fuera de horario ni responsabilidades en cada franja. No se deben inventar estos datos.
+- **Estado:** restricción contextual añadida a la revisión; pendiente de contrastar con A1 y A2 para evitar duplicidades.
+- **Decisión:** registrar el hallazgo y completar la revisión de A1 antes de modificar el estándar maestro.
+
 ## Pendiente
 
 - Comprobar si la decisión que A1 debe apoyar está formulada con suficiente claridad.
