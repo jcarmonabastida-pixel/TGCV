@@ -423,3 +423,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir señales o criterios administrativos de detección, límites de actuación del responsable end-to-end, vías y responsables de revisión clínica, y procedimiento de seguimiento; sin convertir criterios administrativos en diagnóstico o juicio clínico.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+
+### SR-042 — Mecanismo alternativo cuando la nueva cita no garantiza la atención necesaria
+
+- **Aprobación del usuario:** sí.
+- **Regla acordada:** cuando la revisión clínica determine que el paciente necesita atención en un plazo que no puede garantizarse con la nueva cita propuesta, debe existir un mecanismo alternativo de priorización y respuesta asistencial, definido por la autoridad clínica.
+- **Autoridad de decisión:** la definición y decisión sobre ese mecanismo corresponden a la autoridad clínica, no al personal administrativo ni al responsable end-to-end.
+- **Pendiente antes de uso real:** definir y autorizar el mecanismo, sus responsables, criterios, vías de activación y seguimiento. No se inventan umbrales ni reglas clínicas.
+- **Límite:** propuesta funcional para el caso ficticio; no es un protocolo clínico aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
