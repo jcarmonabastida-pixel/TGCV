@@ -304,3 +304,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir alcance y límites de delegación, tareas reasignables, requisitos de competencia, continuidad alternativa y trazabilidad.
 - **Límite:** propuesta para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+
+### SR-031 — Seguimiento y revisión de solicitudes bloqueadas
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional propuesta:** establecer un mecanismo predefinido de seguimiento y revisión de bloqueos, incluso cuando exista un responsable identificado.
+- **Actuación ante demoras:** el procedimiento debe fijar plazos autorizados para actuar, revisar y escalar cuando corresponda. El incumplimiento debe activar una actuación concreta y trazable, no limitarse a registrar la demora.
+- **Criterios:** revisar motivo del bloqueo, acciones realizadas, responsable vigente y necesidad de activar continuidad operativa o escalado.
+- **Pendiente antes de uso real:** definir plazos, responsables de revisión, disparadores de escalado y actuaciones asociadas, conforme a criterios clínicos y organizativos autorizados. No se inventan umbrales ni se asume igual prioridad para todas las citas.
+- **Límite:** propuesta para el caso ficticio; no es un protocolo clínico aprobado ni validación empírica.
+- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
