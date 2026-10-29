@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 0.1  
+**Versión:** 0.2  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
