@@ -199,6 +199,17 @@ Este ejercicio demuestra únicamente la estructura documental y el registro de u
 | Coordinación de citas | Supervisa el flujo y resuelve bloqueos | Autoridad y visibilidad del proceso |
 | Dirección de operaciones | Autoriza recursos y cambios operativos | Restricciones presupuestarias y de capacidad |
 
+### Macroetapas propuestas durante la autoevaluación guiada
+
+La revisión identifica cuatro macroetapas funcionales propuestas por el usuario. Se incorporan como estructura provisional del modelo, sin afirmar que describan todavía el procedimiento real ni que cada macroetapa sea una única etapa operativa:
+
+1. **Recepción, clasificación y registro de la solicitud.**
+2. **Asignación y escalado de la solicitud.**
+3. **Monitorización, supervisión y comunicación del estado y progreso de la solicitud a lo largo del proceso.**
+4. **Resolución, asignación y revisión de citas.**
+
+Estas macroetapas son una vista de alto nivel. Su secuencia exacta, los traspasos entre responsables, los estados intermedios, las condiciones de escalado y la relación entre asignación y resolución deben detallarse y contrastarse con información del proceso. La comunicación y la supervisión pueden atravesar varias macroetapas, por lo que no se presuponen como actividades aisladas de una sola fase.
+
 ### Flujo conceptual
 
 1. Recepción de la solicitud.
