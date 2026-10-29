@@ -233,3 +233,11 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Tratamiento en A3:** el ownership transversal mantiene el seguimiento end-to-end hasta el cierre, utilizando la confirmación y los registros de actuación/decisión para supervisar el progreso y comunicar el estado pertinente.
 - **Pendiente:** definir mecanismo y plazo de confirmación, y qué hacer ante una escalación no aceptada o no respondida. No se presuponen herramientas ni tiempos concretos.
 - **Estado:** registrado; continúa la revisión de A3.
+
+
+### SR-023 — Confirmación del paciente antes del cierre
+
+- **Aportación del usuario:** además de las condiciones de cierre propuestas, la cita debe estar aceptada y confirmada por el paciente antes de registrar el cierre.
+- **Tratamiento en A3:** incorporado como condición explícita previa al registro de cierre, no como actividad posterior. El modelo contempla también cita asignada y comunicada, información actualizada y ausencia de actuaciones/escalados pendientes o su resolución conforme a reglas aplicables.
+- **Pendiente:** definir cómo registrar la confirmación y qué hacer ante rechazo, falta de respuesta o ausencia de confirmación. No se inventan plazos ni procedimientos.
+- **Estado:** registrado; continúa la revisión de A3.
