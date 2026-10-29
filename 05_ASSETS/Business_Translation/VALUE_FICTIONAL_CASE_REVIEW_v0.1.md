@@ -3,7 +3,7 @@
 **Identificador:** VALUE-CASE-REVIEW-001  
 **Versión:** 0.1  
 **Estado:** REVISIÓN DOCUMENTAL v0.2 — seguimiento parcial; H1, H2, H3 y H5 atendidos en el caso actualizado, pendientes de verificación de cierre  
-**Caso revisado:** [VALUE — Caso ficticio integral: acceso a citas en una clínica](VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md)  
+**Caso revisado:** [VALUE — Caso ficticio integral: acceso a citas en una clínica](VALUE_FICTIONAL_CASE_CLINIC_001_v0.2.md)  
 **Estándar de referencia:** [VALUE Methodology Lifecycle v0.2](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Especificaciones de artefactos:** [A1–A8 Master Specifications v0.1](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)
 
