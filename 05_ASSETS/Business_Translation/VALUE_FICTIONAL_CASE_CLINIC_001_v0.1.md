@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 0.5  
+**Versión:** 0.6  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
@@ -1003,6 +1003,10 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **Reconstrucción basada en evidencia:** revisar los registros disponibles, fechas, decisiones, actuaciones, comunicaciones y evidencias de la transición. No inferir la versión aplicada ni la que correspondía por defecto. Conservar los datos y discrepancias existentes; documentar qué se ha podido reconstruir y qué información no se ha recuperado.
 - **Determinación:** cuando la evidencia no permita resolver qué regla debía aplicarse, someter la cuestión a la instancia competente según el mecanismo de autorización aplicable. La decisión debe establecer qué regla corresponde a la solicitud y cómo proceder con las actuaciones pendientes, dejando constancia del fundamento, responsable/autoridad y momento.
 - **Incertidumbre residual:** registrar expresamente cualquier aspecto que siga sin poder determinarse; no presentar una reconstrucción incompleta como certeza.
+- **Incertidumbre irresoluble tras la revisión:** documentar qué evidencias se buscaron y revisaron, qué información sigue faltando y por qué no ha sido posible reconstruirla. Mantener la solicitud abierta bajo seguimiento y elevar la cuestión a la instancia competente; no desbloquearla artificialmente ni presentar una hipótesis como decisión.
+- **Actuación provisional:** solo podrá realizarse si existe autorización expresa de la instancia competente y esta determina qué actuaciones son admisibles sin conocer la regla histórica. Registrar fundamento, autoridad, alcance, condiciones y límites de la autorización. No ejecutar actuaciones potencialmente perjudiciales o irreversibles sin esa determinación y autorización.
+- **Ausencia de vía autorizada:** si no existe una vía autorizada para continuar, mantener la solicitud bajo seguimiento y escalado, con responsable y siguiente revisión/actuación identificados, sin inventar excepciones ni aplicar arbitrariamente una versión de la regla.
+- **Reevaluación:** si aparecen nuevas evidencias, reabrir la reconstrucción y la determinación; comprobar asimismo, con evidencia, si la incertidumbre afecta a otras solicitudes.
 - **Alcance y prevención:** comprobar, con evidencia, si la falta de trazabilidad afecta a otras solicitudes y si revela una deficiencia de registro, identificación o control de versiones. Cualquier corrección sistémica seguirá el mecanismo autorizado.
 - **Relación:** complementa SR-058, que establece la transición autorizada y la trazabilidad por solicitud; se distingue de la aplicación incorrecta conocida de una regla durante la transición, porque en SR-059 la versión aplicada o la regla que correspondía no pueden determinarse con la información disponible. No crea una regla sustantiva nueva, competencias ni presunciones por defecto.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
@@ -1015,6 +1019,7 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **v0.3:** documenta criterios previos de decisión como pendientes cuando no hay umbrales aprobados; separa selección de opción y autorización de ejecución; distingue explícitamente el aprendizaje del Sprint de los resultados de la prueba operativa posterior. No añade datos reales ni validación empírica.
 - **v0.4:** incorpora una precisión de SR-058 para detectar, revisar y corregir de forma autorizada la aplicación anticipada o incorrecta de una regla durante la transición; conserva la trazabilidad y evita reversiones automáticas. No añade datos reales ni validación empírica.
 - **v0.5:** incorpora SR-059 para solicitudes abiertas cuya versión de regla aplicada no puede determinarse; establece reconstrucción basada en evidencia, decisión competente cuando persiste la incertidumbre y comprobación del alcance de la deficiencia de trazabilidad. No añade datos reales ni validación empírica.
+- **v0.6:** precisa SR-059 para los casos en que la incertidumbre persiste tras revisar evidencias: documentación de la búsqueda, seguimiento y escalado, límites de cualquier actuación provisional expresamente autorizada y reevaluación ante nueva evidencia. No añade datos reales ni validación empírica.
 
 
 ### SR-052 — Reproducibilidad escalonada de la autoevaluación
