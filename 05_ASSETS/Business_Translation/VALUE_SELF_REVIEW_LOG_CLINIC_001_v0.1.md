@@ -803,3 +803,14 @@ La revisión documental confirma que las fichas maestras A1–A8 ya cubren en lo
 **Único ajuste propuesto al documento maestro:** aclarar que seleccionar una alternativa o autorizar el desarrollo de su diseño no autoriza por sí mismo la ejecución. La autorización de ejecución debe ser explícita y especificar alcance, autoridad, recursos, condiciones, salvaguardas y límites. A7 permanece como propuesta y ACT no se inicia cuando esa autorización no existe.
 
 No se modificaron el documento maestro ni las fichas maestras. La propuesta queda pendiente de aprobación del usuario. No se añaden artefactos, fases, umbrales ni controles duplicados. El protocolo de usabilidad permanece sin cambios y el estándar continúa en estado de propuesta/borrador; no se declara validación empírica.
+
+
+## Aprobación e incorporación de la regla de autorización DECIDE → ACT — 2026-10-30
+
+**Aprobación del usuario:** sí.  
+**Documento maestro:** `VALUE_METHODOLOGY_LIFECYCLE_001.md`, actualizado de v0.2 a **v0.3**.  
+**Sección añadida:** 4.5 — «Selección de alternativa y autorización para ejecutar son decisiones distintas».
+
+La regla establece que seleccionar una alternativa o autorizar el desarrollo de su diseño no equivale a autorizar su ejecución. La autorización de ejecución debe ser explícita, emitida por la autoridad competente y especificar alcance, recursos, condiciones, salvaguardas y límites. Sin ella, A7 permanece como propuesta y ACT no se inicia. Las autorizaciones limitadas no se amplían por inferencia. A6 debe registrar si el siguiente paso autorizado es diseño, preparativos operativos expresamente autorizados o ejecución.
+
+La revisión de coherencia A1–A8 se actualizó para reflejar la aprobación e incorporación. Las fichas maestras A1–A8 y el protocolo de usabilidad permanecen sin cambios. No se declara el estándar validado ni aprobado definitivamente; la modificación es una aclaración metodológica documental.
