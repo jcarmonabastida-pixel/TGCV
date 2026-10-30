@@ -578,6 +578,7 @@ async function assessImportedBrowserPackage(pkg){
    assert(referencedTransformation,"La propuesta referencia una transformación inexistente en el snapshot del catálogo TGCV.");
    assert(referencedTransition.source===referencedTransformation.source_state&&referencedTransition.target===referencedTransformation.target_state,"La correspondencia propuesta no conserva los límites de estado declarados por la transición y la transformación del catálogo.");
    assert(candidate.evidence&&typeof candidate.evidence==="object"&&!Array.isArray(candidate.evidence),"La propuesta carece de evidencia estructurada.");
+   assert(candidate.evidence.kind==="exact_declared_state_boundary_match"&&candidate.evidence.system_source_state===referencedTransition.source&&candidate.evidence.system_target_state===referencedTransition.target&&candidate.evidence.catalogue_source_state===referencedTransformation.source_state&&candidate.evidence.catalogue_target_state===referencedTransformation.target_state,"La evidencia de correspondencia no coincide con los límites verificados del modelo y catálogo.");
    assert(candidate.decision===null||candidate.decision==="ACCEPTED"||candidate.decision==="REJECTED","Decisión de revisión no compatible.");
    assert(candidate.decision!=="ACCEPTED"||candidate.status==="PROPOSED","Una propuesta que requiere revisión no puede figurar como aceptada.");
    if(candidate.decision==="ACCEPTED")acceptedCount++;
