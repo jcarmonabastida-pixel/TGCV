@@ -4,7 +4,7 @@
 - Modalidad: guiada, secuencial y adaptada a móvil.
 - Tipo: repetición intraevaluador diferida con ocultación documental de la primera pasada; no constituye ceguera estricta porque la persona evaluadora ya conoce la primera revisión.
 - Caso: VALUE_FICTIONAL_CASE_CLINIC_001.
-- Estado: respuestas recogidas en conversación; incorporación a GitHub pendiente de verificación.
+- Estado: incorporado a la rama de trabajo y verificado mediante relectura del archivo en GitHub.
 
 ## Respuestas — Bloque 1: comprensión inicial
 
