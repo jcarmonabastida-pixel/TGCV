@@ -1,7 +1,7 @@
 # VALUE — Protocolo de autoevaluación estructurada de usabilidad
 
-**Versión:** 0.6  
-**Estado:** BORRADOR DE PROTOCOLO; comparación de revisiones realizada; cierre de la autoevaluación individual pendiente por cobertura parcial de la primera pasada  
+**Versión:** 0.7  
+**Estado:** FASE DE AUTOEVALUACIÓN INDIVIDUAL CERRADA CON COBERTURA PARCIAL DOCUMENTADA; evaluación externa e interevaluador diferida, no bloqueante para el prototipo  
 **Modo previsto en esta fase:** una persona (autor/usuario), con acompañamiento conversacional para revisar documentos  
 **Ámbito:** comprensión y usabilidad documental del estándar VALUE. No es validación científica de TGCV ni prueba de eficacia de una intervención.
 
@@ -142,22 +142,20 @@ Esta sección registra el estado real conocido de la revisión. No modifica el p
 | 5. Plan y aprendizaje A7–A8 | Separación documentada entre diseño, autorización, ejecución y datos inventados; sin ejecución real | CONTRASTE DOCUMENTAL REALIZADO; no es prueba de implementación ni aprendizaje empírico |
 | 6. Revisión global | Auditorías de coherencia A1–A8 y registro acumulado de hallazgos SR-001–SR-061; SR-062 se descartó como duplicado de SR-061 | PARCIALMENTE REALIZADA; falta una pasada final explícita de duplicidades, términos y campos transversales |
 
-### Actividades diferenciadas y pendientes
+### Actividades diferenciadas y estado
 
-- **Primera revisión individual guiada:** iniciada; observaciones y decisiones están registradas en el log. No debe describirse como una prueba independiente de usabilidad.
-- **Repetición intraevaluador diferida y ciega:** pendiente, según SR-052. Debe conservar un registro nuevo y no consultar la primera pasada hasta cerrar la segunda.
-- **Revisión auxiliar ciega por IA:** pendiente, según SR-052. Debe registrarse por separado y no contarse como segundo evaluador humano.
-- **Reproducibilidad interevaluador humana:** diferida hasta que exista una comunidad/evaluadores independientes; no realizada.
-- **Prueba externa exploratoria opcional:** no iniciada ni comprometida; no es requisito para cerrar la revisión documental actual.
+- **Primera revisión individual guiada por el autor/usuario:** REALIZADA con cobertura parcial. Existen observaciones y decisiones registradas en SR-001–SR-061 y en la síntesis. Algunas subtareas no conservan evidencia formal suficiente de intento propio, observación y contraste; se mantienen como no acreditadas, sin convertir esa ausencia de registro en un fallo del evaluador.
+- **Repetición intraevaluador diferida con ocultación documental:** REALIZADA y registrada en `VALUE_INTRA_REVIEW_REPEAT_MOBILE_2026-10-30.md`. No fue ciega en sentido estricto.
+- **Revisión auxiliar documental por IA:** REALIZADA y registrada por separado en `VALUE_AUXILIARY_AI_REVIEW_CLINIC_001_2026-10-30.md`. No es un participante humano independiente ni una revisión estrictamente ciega.
+- **Comparación de las fuentes:** REALIZADA y registrada en `VALUE_REVIEW_COMPARISON_CLINIC_001_2026-10-30.md`.
+- **Evaluación por otro evaluador humano / reproducibilidad interevaluador:** NO REALIZADA; se difiere a una fase posterior con colaboradores o comunidad. No es requisito para cerrar esta autoevaluación ni para construir o publicar un prototipo web identificado como implementación de referencia.
+- **Prueba externa con usuarios potenciales:** NO REALIZADA; queda como actividad posterior de aprendizaje y evolución comunitaria. No es requisito previo para iniciar el prototipo.
 
-### Regla de cierre
+### Regla de cierre aplicada
 
-No declarar completado el protocolo hasta:
-1. completar o marcar explícitamente como no aplicables las tareas/subtareas pendientes de la primera revisión;
-2. realizar la síntesis global prevista en la sección 8 y completar la plantilla de la sección 9;
-3. ejecutar y comparar la repetición intraevaluador y la revisión auxiliar ciega acordadas en SR-052, o registrar una decisión explícita y justificada de diferirlas sin presentarlas como realizadas.
+La fase actual se cierra como **autoevaluación individual formativa con cobertura parcial documentada**. Las subtareas de la primera pasada sin evidencia suficiente quedan marcadas como **no acreditadas**, sin repetir preguntas ni presentarlas como completadas. La repetición, la revisión auxiliar y la comparación se consideran realizadas con las limitaciones descritas.
 
-El cierre de estas actividades solo podrá respaldar conclusiones formativas sobre esta revisión y consistencia intraevaluador. No demostrará usabilidad independiente, validez empírica, causalidad ni eficacia de VALUE/TGCV.
+Este cierre no equivale a validación independiente de usabilidad, fiabilidad interevaluador, validez empírica, causalidad o eficacia de VALUE/TGCV. La ausencia de evaluación externa no bloquea la promoción de una versión documental suficientemente definida ni la construcción del prototipo; sí obliga a comunicar con claridad que se trata de una metodología propuesta y en evolución, abierta a evaluación y mejora por usuarios y comunidad.
 
 
 
@@ -241,10 +239,36 @@ La restricción de dispositivo es temporal y no altera los criterios metodológi
 
 ### Estado del protocolo
 
-La repetición, la revisión auxiliar y la comparación están realizadas. **La autoevaluación individual completa no se declara cerrada todavía**, porque la primera revisión contiene subtareas cuyo intento propio, observación y contraste no quedaron formalmente acreditados de acuerdo con la sección 5. La síntesis histórica no sustituye esa evidencia.
+La comparación de las tres fuentes está realizada. La decisión de cierre adoptada en la versión 0.7 es no reabrir la entrevista ni repetir preguntas para completar retrospectivamente registros que no existen. Las subtareas de primera pasada sin evidencia formal suficiente se clasifican como **no acreditadas**. Con ello se cierra la fase actual con cobertura parcial, no como evaluación completa de todas las tareas previstas.
 
-Para cerrar sin sobrecargar ni repetir preguntas ya contestadas, queda pendiente una decisión explícita sobre esas subtareas: recuperarlas mediante una revisión focalizada solo donde falte evidencia, o marcarlas como no recuperables/no realizadas y cerrar con limitación documentada. No se debe describir ninguna de las dos opciones como una prueba completada.
+### Límites y continuidad
 
-### Límites
+El conjunto constituye una autoevaluación humana individual, repetida de forma diferida, acompañada de análisis documental asistido por IA. No equivale a una prueba con usuarios independientes ni demuestra reproducibilidad interevaluador, validez empírica, causalidad o eficacia de VALUE/TGCV.
 
-El conjunto sigue siendo una autoevaluación de una persona, con apoyo documental de IA. No demuestra usabilidad independiente, reproducibilidad interevaluador humana, validez empírica, causalidad ni eficacia de VALUE/TGCV. La reproducibilidad interevaluador y cualquier prueba externa permanecen diferidas.
+La evaluación por otras personas y la prueba con usuarios potenciales quedan como actividades posteriores, especialmente adecuadas para el prototipo web y su apertura comunitaria. No son puertas de bloqueo para desarrollar una implementación de referencia, siempre que se identifiquen su versión, alcance, límites y carácter evolutivo.
+
+
+## 16. Decisión de cierre de la fase actual — 2026-10-30
+
+**Decisión:** cerrar la fase de autoevaluación individual con cobertura parcial documentada.
+
+### Qué se considera realizado
+
+1. Primera revisión humana individual guiada: realizada; cobertura parcial y algunas subtareas no acreditadas.
+2. Repetición intraevaluador diferida con ocultación documental: realizada, sin ceguera estricta.
+3. Revisión auxiliar documental por IA: realizada; no constituye evaluación humana independiente.
+4. Comparación cualitativa de las tres fuentes: realizada y registrada.
+
+### Qué queda diferido
+
+- Evaluación por otro evaluador humano y reproducibilidad interevaluador.
+- Pruebas de usabilidad con usuarios potenciales y evaluación comunitaria.
+- Validación empírica de resultados, causalidad o eficacia.
+
+Estas actividades son líneas posteriores de evaluación y mejora. No constituyen requisitos previos para construir el prototipo web ni para promocionar una versión documental de VALUE que supere la revisión de integridad y los controles de gobernanza del repositorio.
+
+### Condiciones de comunicación
+
+El prototipo deberá presentarse como implementación de referencia de una metodología propuesta, no como producto validado. Deberá hacer visibles las incertidumbres, los estados incompletos y los límites conocidos, y facilitar que usuarios y comunidad aporten observaciones y propuestas de evolución.
+
+Esta decisión cierra únicamente la fase de autoevaluación descrita en este protocolo. No declara VALUE validado ni altera el estado científico de TGCV.
