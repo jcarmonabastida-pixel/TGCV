@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 0.9  
+**Versión:** 1.0  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
@@ -203,6 +203,32 @@ Representar el sistema administrativo de gestión de citas programadas de la cl�
 | Sistema de registro/gestión | Conserva solicitudes, estados, fechas, reglas e historial disponible | Funciones reales, permisos, integridad y trazabilidad por comprobar |
 | Dirección de operaciones | Interviene en decisiones de recursos y cambios operativos conforme a autoridad definida | Restricciones y competencias concretas pendientes de confirmar |
 
+### Identificadores de elementos y relaciones del modelo
+
+Los identificadores siguientes hacen explícita la estructura mínima del modelo y permiten enlazar A3 con A4 y A5. Son elementos y relaciones propuestos para el caso ficticio, no un mapa organizativo verificado.
+
+| ID | Elemento | Tipo | Estado epistemológico | Base documental / validación pendiente |
+|---|---|---|---|---|
+| E01 | Paciente/cuidador | Actor / grupo afectado | Propuesto en el caso | Alcance y necesidades descritos en A1/A2; contrastar con participantes reales |
+| E02 | Recepción | Actor / función | Propuesto en el caso | Flujo conceptual del caso; validar función y límites |
+| E03 | Administración de citas | Actor / función | Propuesto en el caso | Flujo conceptual del caso; validar función, capacidad y competencias |
+| E04 | Coordinación de citas | Actor / función | Necesidad funcional inferida | Confirmar existencia, autoridad y responsabilidad end-to-end |
+| E05 | Profesional sanitario | Actor / interfaz clínica | Dependencia de alcance | Confirmar puntos de intervención clínica; decisiones clínicas fuera del modelo administrativo |
+| E06 | Sistema de registro/gestión | Recurso / soporte de información | Supuesto de trabajo | Comprobar producto, funciones, permisos, registros e historial reales |
+| E07 | Dirección de operaciones | Actor / función de gobernanza | Propuesto en el caso | Confirmar autoridad y responsabilidad sobre recursos y cambios |
+
+| ID | Relación propuesta | Elementos conectados | Significado | Estado epistemológico |
+|---|---|---|---|---|
+| R01 | Presentación de solicitud | E01 → E02 | La persona solicitante inicia el flujo mediante recepción | Supuesto del flujo; validar canales reales |
+| R02 | Registro y traspaso | E02 → E06 → E03 | La solicitud se registra y queda disponible para su revisión | Supuesto del flujo; validar sistemas y traspasos |
+| R03 | Revisión y asignación | E03 ↔ E06 | Administración consulta/actualiza información y estado de la solicitud | Inferido; validar permisos y trazabilidad |
+| R04 | Coordinación y desbloqueo | E04 ↔ E03 | Coordinación mantiene visibilidad del progreso y facilita la gestión de bloqueos | Necesidad funcional inferida; validar ownership real |
+| R05 | Interfaz clínica | E03 ↔ E05 | Determinadas solicitudes pueden requerir valoración o criterio clínico | Dependencia de alcance; validar cuándo y cómo se deriva |
+| R06 | Comunicación de estado | E03 → E01 | Se comunica a la persona solicitante el estado o resultado pertinente | Supuesto del flujo; validar canales y evidencias |
+| R07 | Capacidad y recursos | E07 → E03/E04 | Las decisiones de recursos condicionan la capacidad operativa | Dependencia propuesta; validar autoridad y datos disponibles |
+
+Las relaciones representan conexiones funcionales que A3 necesita hacer visibles; no afirman que los canales, sistemas, autoridades o secuencias estén implantados. No se añaden responsables nominales ni mecanismos técnicos no confirmados.
+
 ### Macroetapas y flujo principal
 
 Las cuatro macroetapas funcionales propuestas durante la autoevaluación son:
@@ -299,6 +325,18 @@ La hipótesis es falsable: si no se reduce la demora, empeora el acceso priorita
 | O3 — Aumentar capacidad | Ajustar recursos o franjas disponibles | Puede reducir colas por falta de capacidad | Requiere recursos y evidencia de necesidad |
 | O4 — Rediseño integral | Rediseñar el flujo de extremo a extremo | Potencial de mejora amplia | Mayor coste, complejidad y riesgo |
 
+### Trazabilidad A3 → A4: necesidad y mecanismo de cada opción
+
+| Opción | Referencia A3 | Fricción/capacidad que aborda | Mecanismo esperado | Estado |
+|---|---|---|---|---|
+| O0 — Mantener y medir | E06, R02–R03 | Incertidumbre sobre estados, tiempos y trazabilidad | Mejorar la línea base sin cambiar el flujo | Comparador; no presupone que exista un fallo |
+| O1 — Revisión diaria de pendientes | E03, E04, E06; R03–R04 | Bloqueos, falta de visibilidad y siguiente actuación | Hacer visibles pendientes y excepciones y facilitar seguimiento | Hipótesis principal H-V1; requiere definir y autorizar la rutina |
+| O2 — Mejorar completitud en la entrada | E01, E02, E06; R01–R02 | Solicitudes incompletas y retrabajo | Mejorar la información disponible al inicio | Alternativa distinta; no se atribuye a H-V1 |
+| O3 — Aumentar capacidad | E03, E04, E07; R04, R07 | Desajuste entre demanda y capacidad | Ajustar recursos o franjas disponibles | Requiere evidencia de capacidad y decisión de recursos |
+| O4 — Rediseño integral | E01–E07; R01–R07 | Fricciones potencialmente distribuidas por el flujo | Rediseñar relaciones y etapas de extremo a extremo | Opción amplia; no justificada solo por el caso ficticio |
+
+La tabla explicita la conexión con A3 sin convertir sus relaciones en requisitos operativos. Las opciones son alternativas de diseño y no descripciones de actuaciones ya implantadas.
+
 ### Criterios de comparación
 
 - Acceso oportuno.
@@ -359,6 +397,19 @@ Estas definiciones se crean únicamente para que el ejemplo sea calculable; no s
 - La reducción del 28 % al 18 % es una **diferencia descriptiva simulada**.
 - Que la revisión diaria haya contribuido a esa diferencia sería una **inferencia**, no un hecho establecido.
 - Que el efecto se reproduzca en una clínica real sigue siendo una **hipótesis**.
+
+### Cobertura de evidencia frente a hipótesis y opciones A4
+
+| Afirmación u opción | Evidencia simulada disponible | Qué permite decir | Qué no permite decir / brecha |
+|---|---|---|---|
+| H-V1 / O1 — seguimiento estructurado de pendientes | Pendientes más allá del plazo: 28 % antes y 18 % después | Diferencia descriptiva ficticia en un indicador de resultado relacionado con demora | No mide directamente solicitudes bloqueadas sin siguiente actuación, cumplimiento de revisiones diarias ni escalados; no demuestra el mecanismo ni causalidad |
+| Salvaguarda de acceso prioritario | 96 % antes y 96 % después | El ejemplo simulado no muestra variación en este indicador | No demuestra seguridad ni ausencia de daño; faltan datos reales, contexto y criterio de no deterioro aprobado |
+| Carga de trabajo de O1 | Reporte cualitativo posterior de aumento, sin escala comparable | Señala una posible carga adicional que debe investigarse | No permite determinar si la carga es aceptable ni comparar magnitud |
+| O2 — completitud en la entrada | Devoluciones por información incompleta: 15 % antes y 12 % después | Diferencia descriptiva ficticia pertinente a la hipótesis de O2 | No demuestra que O2 se aplicara ni que causara la diferencia |
+| O3 — aumento de capacidad | No hay indicador específico de capacidad, dotación, disponibilidad o utilización | Ninguna conclusión sobre el efecto de O3 | Evidencia insuficiente para comparar esta opción |
+| O4 — rediseño integral | No hay prueba específica | Ninguna conclusión sobre el efecto de O4 | No se ha diseñado ni evaluado una intervención integral |
+
+**Conclusión de cobertura:** el dataset ficticio ilustra cálculos y trazabilidad, pero no constituye una prueba suficiente de H-V1 ni una comparación completa de O0–O4. No hay datos de fidelidad de implementación (revisiones realizadas, pendientes con responsable/siguiente actuación, excepciones escaladas), ni medida comparable de carga. No se añaden valores para cubrir esas lagunas. Si el caso se utilizara para preparar una prueba real, esas variables y sus definiciones deberían acordarse antes de recoger datos; mientras tanto, se mantienen como evidencia pendiente.
 
 A5 es un registro transversal de evidencia y se usa especialmente en DESIGN y DECIDE; no constituye una fase adicional del ciclo.
 
@@ -779,6 +830,7 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **v0.7:** incorpora SR-060 para revisar solicitudes ya cerradas cuya versión de regla aplicada no puede reconstruirse; exige evaluación individual y decisión competente, sin presumir error ni reabrir o corregir automáticamente. No añade datos reales ni validación empírica.
 - **v0.8:** incorpora SR-061 para comprobar la comunicación y aplicación efectiva de correcciones documentales mediante el propio sistema de gestión de citas cuando sus funciones lo permitan; exige verificar capacidades reales y no presume notificaciones, auditoría de consultas ni confirmaciones de lectura. No añade datos reales ni validación empírica.
 - **v0.9:** consolida A3 tras la auditoría de proporcionalidad: mantiene actores, macroetapas, flujo, capacidades, responsabilidades funcionales, información, reglas, fricciones, dependencias e incertidumbres; retira del cuerpo principal la especificación detallada de contingencias y controles, conservando los hallazgos y su trazabilidad en el registro de autoevaluación. No añade evidencia real ni validación empírica.
+- **v1.0:** añade IDs estables de elementos y relaciones propuestos para A3, una correspondencia explícita de las opciones A4 con el modelo y una matriz de cobertura que identifica qué evidencia simulada informa cada hipótesis/opción y qué brechas permanecen. No se inventan datos adicionales ni se atribuye causalidad; el conjunto A5 sigue siendo ficticio.
 
 
 ### SR-052 — Reproducibilidad escalonada de la autoevaluación
