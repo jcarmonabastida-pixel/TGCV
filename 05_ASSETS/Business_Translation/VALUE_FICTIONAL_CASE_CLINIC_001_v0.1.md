@@ -371,12 +371,13 @@ Antes del uso real deben definirse los criterios para distinguir información im
 
 ### Ambigüedad de responsabilidad entre roles
 
-Si dos roles consideran que el siguiente paso corresponde al otro y ninguno actúa, la solicitud no debe quedar sin seguimiento. Se registra la acción pendiente y la ambigüedad de responsabilidad. El responsable end-to-end mantiene el seguimiento y promueve que se determine quién debe actuar conforme a las responsabilidades autorizadas.
+En un proceso correctamente diseñado, los roles, las responsabilidades, las decisiones bajo su ámbito y los traspasos entre etapas deben estar claramente delimitados. Por tanto, que dos roles discrepen sobre quién debe realizar el siguiente paso no debe tratarse como una condición ordinaria o esperable del proceso: es una excepción que puede revelar una laguna, contradicción, desactualización o falta de claridad en su diseño o documentación.
 
-No se presume que el responsable end-to-end tenga autoridad para reasignar cualquier tarea. Si las reglas existentes no permiten resolver el desacuerdo, se eleva a la persona o instancia autorizada. Antes del uso real deben definirse las responsabilidades por etapa y el mecanismo para resolver estos casos.
+Cuando ocurra, la solicitud no debe quedar sin seguimiento. Se registra la acción pendiente, los roles implicados y el punto concreto de ambigüedad. El responsable end-to-end mantiene el seguimiento y promueve que se determine quién debe actuar conforme a las responsabilidades autorizadas, mientras se identifica y corrige la causa de la ambigüedad para evitar su repetición.
 
-Esta es una regla funcional propuesta para el caso ficticio, no una asignación real de responsabilidades.
+No se presume que el responsable end-to-end tenga autoridad para reasignar cualquier tarea ni que pueda resolver unilateralmente una deficiencia de gobernanza. Si las reglas vigentes no permiten resolver el desacuerdo, se eleva a la persona o instancia autorizada. Antes del uso real deben estar definidos los roles, responsabilidades, traspasos y el mecanismo para resolver excepciones de este tipo.
 
+Esta es una regla funcional propuesta para el caso ficticio, no una asignación real de responsabilidades ni evidencia de que el proceso esté correctamente diseñado.
 ### Continuidad operativa ante la indisponibilidad de una persona responsable
 
 La continuidad de la solicitud no debe depender de la disponibilidad de una persona concreta. Para evitar bloqueos prolongados o solicitudes que queden en un limbo de responsabilidad, debe existir un procedimiento predefinido de continuidad operativa.
