@@ -872,6 +872,18 @@ El Sprint puede concluir con una decisión de investigar más; no obliga a ejecu
 
 ---
 
+#### Rebloqueo de una solicitud durante la recuperación
+
+Si una solicitud que se había considerado reincorporada vuelve a quedar bloqueada porque la actuación asignada no se ha completado:
+
+- reactivar su seguimiento operativo y registrar el nuevo bloqueo, la actuación incumplida o pendiente, su causa conocida, el responsable y la siguiente actuación;
+- conservar el historial de la reincorporación y de las actuaciones anteriores, sin borrar ni sustituir los registros;
+- determinar si se trata de una incidencia que nunca llegó a resolverse o de una nueva ocurrencia después de haber cerrado la incidencia anterior; aplicar en este último caso la distinción y vinculación previstas en SR-051;
+- revisar si la misma causa o fallo de ejecución puede afectar a otras solicitudes del lote, comprobándolas individualmente y ampliando las actuaciones solo cuando exista evidencia;
+- mantener cada solicitud afectada abierta y bajo seguimiento hasta que se complete la actuación y se verifiquen de nuevo las condiciones de reincorporación.
+
+La revisión del lote no implica declarar bloqueadas todas sus solicitudes ni cerrar automáticamente las incidencias o solicitudes. Esta precisión desarrolla SR-046 y se coordina con SR-045 y SR-051.
+
 ### SR-047 — Detección de solicitudes sin seguimiento durante la operativa ordinaria
 
 Se propone un mecanismo de control para detectar solicitudes que carecen de responsable actual o de siguiente actuación definida; permanecen sin actualización durante un periodo que requiere revisión; superan un plazo de respuesta o resolución acordado; o figuran activas sin progreso ni justificación documentada del bloqueo. El responsable end-to-end revisa estas situaciones y activa las actuaciones o escalados previstos. Los periodos y plazos deben estar previamente acordados y autorizados: no se inventan umbrales ni se sustituyen criterios clínicos.
