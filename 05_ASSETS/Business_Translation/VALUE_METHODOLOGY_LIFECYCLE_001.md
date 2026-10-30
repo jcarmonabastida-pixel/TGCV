@@ -1,7 +1,7 @@
 # VALUE — Diseño integrado del estándar metodológico
 
 **Identificador:** VALUE-STANDARD-ARCH-001  
-**Versión:** 0.2  
+**Versión:** 0.3  
 **Estado:** propuesta de normalización para revisión  
 **Tipo:** arquitectura metodológica de referencia  
 **Fuente principal:** *Conversación Investigación TGCV.pdf*, especialmente las formulaciones del VCF, Value Construction Loop, Value System Model, CCV e IVS (pp. 770–845 y referencias posteriores).  
@@ -89,6 +89,15 @@ ALIGN produce un único registro de intención de valor. La fase no debe generar
 - **G6 — Aprendizaje convertido en acción:** se decide qué mantener, cambiar, ampliar, repetir o detener.
 
 Una puerta puede concluir con “no continuar” o “evidencia insuficiente”; no obliga a avanzar.
+
+### 4.5 Selección de alternativa y autorización para ejecutar son decisiones distintas
+
+La decisión de seleccionar una alternativa o autorizar el desarrollo de su diseño no equivale a autorizar su ejecución. La autorización para ejecutar debe ser explícita, emitida por la autoridad competente y especificar alcance, recursos, condiciones, salvaguardas y límites.
+
+Si no existe autorización explícita para ejecutar, A7 permanece en estado de propuesta y ACT no se inicia. Una autorización limitada solo habilita las actividades incluidas expresamente en su alcance; no debe ampliarse por inferencia a otras actividades, personas, recursos o periodos.
+
+A6 debe registrar qué se autoriza exactamente como siguiente paso: continuar el diseño, realizar preparativos operativos expresamente autorizados o ejecutar la intervención. La selección de una opción, por sí sola, no autoriza ninguna de estas actividades posteriores.
+
 
 ## 5. Value System Model (VSM): modelo único del sistema
 
@@ -333,3 +342,7 @@ No se asume que VALUE sea una traducción validada de TGCV, que un mapa del VSM 
 Esta normalización se apoya especialmente en la conversación de investigación donde se introducen el VCF y sus seis capacidades, ALIGN y los artefactos iniciales (pp. 770–801); se definen Value Construction, Value Opportunity, Value Architecture y el Value Construction Loop (pp. 802–820); se presentan los ocho axiomas como propuesta (pp. 824–836); y se introduce el VSM (pp. 838–845). Las divergencias posteriores de CCV, IVS y potencial generativo se mantienen como temas abiertos, no como decisiones consolidadas.
 
 Esta especificación integra y normaliza propuestas históricas para facilitar revisión. No convierte las ideas de la fuente en hechos validados ni elimina la necesidad de contraste con usuarios y casos reales.
+
+## 15. Nota de versión
+
+- **v0.3 (2026-10-30):** aclara la separación entre selección de alternativa, autorización para desarrollar su diseño y autorización explícita para ejecutar. Se establece que, sin autorización de ejecución emitida por la autoridad competente y con alcance, recursos, condiciones, salvaguardas y límites definidos, A7 permanece como propuesta y ACT no se inicia. La aclaración responde a la revisión documental A1–A8 basada en CLINIC-001; no constituye validación empírica ni aprobación definitiva del estándar.
