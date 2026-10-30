@@ -674,5 +674,9 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Revisión individual y decisión:** contrastar la evidencia con las condiciones de cierre y elevar a la instancia competente cualquier caso no resoluble. La instancia determinará si permanece cerrado, se reabre para revisión o requiere actuación correctiva autorizada, dejando fundamento, responsable/autoridad y momento.
 - **Salvaguarda:** no reabrir, mantener cerrado ni corregir automáticamente; conservar el cierre histórico. Las decisiones clínicas corresponden a la autoridad clínica competente.
 - **Alcance y relación:** comprobar con evidencia si hay otras solicitudes cerradas afectadas. SR-060 complementa SR-055, SR-058 y SR-059, y se limita a solicitudes ya cerradas; no crea presunción de error ni competencias nuevas.
+- **Patrón común en varias solicitudes cerradas (aprobado por el usuario, 2026-10-30):** identificar el conjunto potencialmente afectado y documentar evidencia y criterio de inclusión, sin inferir que todos los cierres fueron incorrectos.
+- **Revisión individual:** conservar estado e historial de cada solicitud y reconstruir/evaluar cada caso frente a la regla, transición y condiciones de cierre aplicables. Registrar por separado hechos confirmados e incertidumbres; no extrapolar el resultado de un caso a los demás.
+- **Causa común:** investigar si existe una deficiencia compartida de registro, identificación de versiones o control. Mantener como hipótesis lo no demostrado. Cualquier corrección sistémica requiere autorización y verificación, y no sustituye la determinación individual ni implica reapertura automática.
+
 - **Límite:** propuesta para el caso ficticio; no procedimiento aprobado ni validación empírica.
 - **Estado:** aprobado e incorporado al caso y al registro de autoevaluación en la rama del PR #114.
