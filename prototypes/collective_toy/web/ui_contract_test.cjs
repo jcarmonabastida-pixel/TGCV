@@ -3713,7 +3713,7 @@ const assert = require("node:assert/strict");
       const current = window.lastTgcvDemoResult.current.transformations.slice().sort();
       if (hadMapping) model.tgcv_mapping = originalMapping;
       else delete model.tgcv_mapping;
-      window.lastTgcvDemoResult = originalResult;
+      window.renderTgcvDemo(model, window.lastPackage.result, "baseline");
       tgcvSourceSnapshot = originalSnapshot;
       return current;
     });
