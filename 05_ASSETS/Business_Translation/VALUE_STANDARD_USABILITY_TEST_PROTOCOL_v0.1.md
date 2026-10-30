@@ -1,7 +1,7 @@
 # VALUE — Protocolo de autoevaluación estructurada de usabilidad
 
-**Versión:** 0.5  
-**Estado:** BORRADOR DE PROTOCOLO; revisión individual guiada en curso, con cobertura parcial documentada  
+**Versión:** 0.6  
+**Estado:** BORRADOR DE PROTOCOLO; comparación de revisiones realizada; cierre de la autoevaluación individual pendiente por cobertura parcial de la primera pasada  
 **Modo previsto en esta fase:** una persona (autor/usuario), con acompañamiento conversacional para revisar documentos  
 **Ámbito:** comprensión y usabilidad documental del estándar VALUE. No es validación científica de TGCV ni prueba de eficacia de una intervención.
 
@@ -221,3 +221,30 @@ La revisión auxiliar por IA sí podrá mantenerse separada de los resultados an
 
 La restricción de dispositivo es temporal y no altera los criterios metodológicos ni constituye una razón para declarar realizada una actividad pendiente. No se fija fecha de finalización ni se exige acceso al ordenador.
 
+
+
+## 15. Repetición diferida, revisión auxiliar y comparación — 2026-10-30
+
+### Actividades realizadas y registros
+
+- **Repetición intraevaluador diferida con ocultación documental:** realizada desde móvil y preservada en `VALUE_INTRA_REVIEW_REPEAT_MOBILE_2026-10-30.md`. No se denomina ciega en sentido estricto porque el usuario ya conocía la primera pasada.
+- **Revisión auxiliar documental por IA:** realizada y registrada en `VALUE_AI_AUXILIARY_REVIEW_CLINIC_001_2026-10-30.md`. Se mantuvo separada de las respuestas como material de análisis, pero no se califica como estrictamente ciega ni como segundo evaluador humano.
+- **Comparación:** realizada y registrada en `VALUE_REVIEW_COMPARISON_CLINIC_001_2026-10-30.md`, contrastando primera revisión, repetición y revisión auxiliar.
+
+### Resultado comparativo
+
+- Se observa convergencia temática entre ambas pasadas en propósito, salvaguardas, análisis de proceso, evidencia, criterios de decisión, gobernanza, seguimiento y aprendizaje.
+- Las diferencias son principalmente de cobertura y granularidad; no se identifican contradicciones sustantivas.
+- La primera pasada aporta mayor detalle sobre horario/alcance, criticidad e impacto asistencial, estacionalidad, histórico de doce meses, camino crítico y casuística operativa.
+- La repetición vuelve a expresar el núcleo y hace más explícitos presupuesto, recursos/sistemas, demanda por franja, Owner, SLAs y seguimiento.
+- La revisión auxiliar confirma la coherencia general y aporta una aclaración nueva de medición: definir cómo se tratan las solicitudes aún abiertas y sin asignación al corte en el indicador de demora. Otros puntos identificados por IA ya estaban sustancialmente atendidos en la revisión documental previa o son mejoras editoriales de baja prioridad.
+
+### Estado del protocolo
+
+La repetición, la revisión auxiliar y la comparación están realizadas. **La autoevaluación individual completa no se declara cerrada todavía**, porque la primera revisión contiene subtareas cuyo intento propio, observación y contraste no quedaron formalmente acreditados de acuerdo con la sección 5. La síntesis histórica no sustituye esa evidencia.
+
+Para cerrar sin sobrecargar ni repetir preguntas ya contestadas, queda pendiente una decisión explícita sobre esas subtareas: recuperarlas mediante una revisión focalizada solo donde falte evidencia, o marcarlas como no recuperables/no realizadas y cerrar con limitación documentada. No se debe describir ninguna de las dos opciones como una prueba completada.
+
+### Límites
+
+El conjunto sigue siendo una autoevaluación de una persona, con apoyo documental de IA. No demuestra usabilidad independiente, reproducibilidad interevaluador humana, validez empírica, causalidad ni eficacia de VALUE/TGCV. La reproducibilidad interevaluador y cualquier prueba externa permanecen diferidas.
