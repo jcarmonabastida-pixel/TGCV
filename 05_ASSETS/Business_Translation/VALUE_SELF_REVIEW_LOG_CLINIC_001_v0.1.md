@@ -625,3 +625,17 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir y autorizar criterios, responsables y vías de resolución.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
 - **Estado:** aprobado por el usuario e incorporado al caso A3 y al registro de autoevaluación en la rama del PR #114.
+
+### SR-058 — Gestión autorizada del cambio de reglas con solicitudes en curso
+
+- **Aprobación del usuario:** sí (2026-10-30).
+- **Contexto:** se propone modificar una regla del proceso utilizada por varias solicitudes abiertas.
+- **Regla acordada:** identificar las solicitudes que utilizan la regla vigente y determinar individualmente cuáles pueden verse afectadas; revisar el impacto del cambio sobre cada caso y sobre las actuaciones ya realizadas.
+- **Transición explícita:** antes de aplicar el cambio, obtener autorización y decidir expresamente si determinados casos mantienen la regla anterior, si determinados casos pasan a la nueva regla o si cada solicitud se revisa individualmente antes de decidir. No hay aplicación retroactiva ni transición implícita.
+- **Autorización y vigencia:** documentar instancia autorizante, alcance, fecha o condición de entrada en vigor y regla de transición aprobada.
+- **Trazabilidad por solicitud:** registrar qué versión de regla se aplica, decisión, fundamento, autorización y momento de aplicación; conservar historial y actuaciones previas sin mezclar versiones.
+- **Continuidad:** comprobar que ninguna solicitud queda sin responsable, seguimiento o siguiente actuación. Los efectos no previstos requieren evaluación y autorización conforme al mecanismo aplicable.
+- **Relación:** complementa SR-054 y SR-055 ante efectos sobre información o actuaciones previas, y SR-057 cuando el cambio corrige un defecto común. No crea competencias, plazos, criterios ni autoridad nuevos.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aprobado por el usuario e incorporado documentalmente en la rama del PR #114.
+
