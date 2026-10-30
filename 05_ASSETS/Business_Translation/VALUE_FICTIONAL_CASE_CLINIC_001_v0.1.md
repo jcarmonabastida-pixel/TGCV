@@ -811,6 +811,12 @@ Cuando la detección por eventos o la revisión periódica identifique una solic
 
 La incidencia no sustituye ni cierra la solicitud original: permite hacer trazable la detección y gestionar su revisión. Deben definirse antes del uso real el mecanismo de registro, las reglas de asignación y actualización y la autoridad para determinar la actuación correspondiente. Criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 
+### SR-050 — Ciclo de vida y resolución de la incidencia de seguimiento
+
+Cada incidencia de seguimiento tendrá un ciclo propio que permita conocer su estado: **abierta**, **asignada**, **en revisión**, **con actuación pendiente** y **resuelta**. Al resolverla se dejará constancia de la actuación realizada y de la situación en que queda la solicitud original. La resolución de la incidencia no implica el cierre automático de la solicitud.
+
+Antes del uso real deberán definirse las condiciones de entrada y salida de cada estado, los responsables de las transiciones y la evidencia mínima de resolución. Criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
