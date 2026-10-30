@@ -4,13 +4,13 @@
 
 ## Estado de cada documento
 
-### 1. DOCUMENTO MAESTRO — vigente como referencia de trabajo
+### 1. DOCUMENTO MAESTRO — vigente como referencia de trabajo para prototipo
 
-[VALUE — Diseño integrado del estándar metodológico (v0.2)](../VALUE_METHODOLOGY_LIFECYCLE_001.md)
+[VALUE — Diseño integrado del estándar metodológico (v0.4)](../VALUE_METHODOLOGY_LIFECYCLE_001.md)
 
 - Es la referencia de trabajo para normalización, decisiones metodológicas y siguientes entregables.
 - Mantenerlo como maestro salvo justificación clara y documentada para cambiarlo.
-- Su estado es propuesta en revisión; no significa que la metodología esté empíricamente validada.
+- Su estado es estándar metodológico de referencia en evolución, apto para prototipo web; no significa que la metodología esté empíricamente validada.
 
 ### 2. ARCHIVO HISTÓRICO — original anterior a la normalización
 
@@ -50,12 +50,12 @@
 
 ### 6. CASO FICTICIO INTEGRAL — RECORRIDO A1–A8
 
-[VALUE — Caso ficticio integral: acceso a citas en una clínica](../VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md)
+[VALUE — Caso ficticio integral: acceso a citas en una clínica](../VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md)
 
 - Recorre ALIGN → SENSE → CONNECT → DESIGN → DECIDE → ACT → LEARN y documenta A1–A8.
 - Incluye hipótesis, opciones, evidencia simulada, decisión, plan hipotético, resultados ficticios, trazabilidad y preguntas para revisar el estándar.
 - **No es evidencia real ni validación empírica** de VALUE o TGCV; no se ha ejecutado una intervención en una clínica.
-- Funciona como caso de prueba documental antes de una prueba de uso con participantes y datos reales autorizados.
+- Funciona como caso de prueba documental; la evaluación con participantes y datos reales autorizados queda como evolución posterior, no como requisito para iniciar el prototipo.
 
 ### 7. REVISIÓN DEL CASO FICTICIO INTEGRAL
 
@@ -78,10 +78,11 @@
 
 | Documento | Versión | Estado | Función |
 |---|---|---|---|
-| `../VALUE_METHODOLOGY_LIFECYCLE_001.md` | 0.2 | **MAESTRO DE REFERENCIA** | Normalización actual. |
+| `../VALUE_METHODOLOGY_LIFECYCLE_001.md` | 0.4 | **MAESTRO DE REFERENCIA** | Estándar en evolución, base identificada para prototipo web. |
 | `ARCHIVE_ORIGINAL_UNNORMALIZED_VALUE_METHODOLOGY_v0.1.md` | 0.1 | **ARCHIVO HISTÓRICO** | Trazabilidad del documento anterior. |
 | `ALTERNATIVE_UNEVALUATED_VALUE_FIVE_STAGE_CYCLE_v0.1.md` | 0.1 | **ALTERNATIVA NO EVALUADA** | Explorar el ciclo mnemónico VALUE de cinco etapas. |
 | `../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` | 0.1 | **BORRADOR** | Fichas de especificación para A1–A8. |
 | `../VALUE_DISCOVERY_SPRINT_v0.1.md` | 0.1 | **BORRADOR** | Diseño inicial del servicio piloto. |
-| `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |\n| `../VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md` | 0.1 | **CASO FICTICIO INTEGRAL** | Ejercicio A1–A8 v0.3; criterios previos, Sprint/prueba y autorización diferenciados; datos simulados, no validación empírica. |\n| `../VALUE_FICTIONAL_CASE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Siete hallazgos revisados en v0.3; H1–H4, H6–H7 atendidos documentalmente; H5 parcialmente atendido. |
+| `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |
+| `../VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md` | 0.1 | **CASO FICTICIO INTEGRAL** | Ejercicio A1–A8 v0.3; criterios previos, Sprint/prueba y autorización diferenciados; datos simulados, no validación empírica. |\n| `../VALUE_FICTIONAL_CASE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Siete hallazgos revisados en v0.3; H1–H4, H6–H7 atendidos documentalmente; H5 parcialmente atendido. |
 
