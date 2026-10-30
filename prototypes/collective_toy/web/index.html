@@ -172,16 +172,57 @@ function enumerateTgcvTrajectories(model,scenarioId){
  var scenario=(model.scenarios||[]).find(function(x){return x.id===scenarioId});if(!scenario)return [];
  var mappingByTransformation=new Map(),transitionById=new Map((model.transitions||[]).map(function(t){return[t.id,t]}));
  (window.lastTgcvDemoResult.mappings||[]).forEach(function(m){if(mappingByTransformation.has(m.tgcv_transformation_id))mappingByTransformation.set(m.tgcv_transformation_id,null);else mappingByTransformation.set(m.tgcv_transformation_id,m)});
- var disabled=new Set(scenario.disabled_transitions||[]),evaluations=scenario.condition_evaluations||{},allowed=new Set();
- (tgcv.transformations||[]).forEach(function(id){var m=mappingByTransformation.get(id),t=m&&transitionById.get(m.system_transition_id);if(!t||disabled.has(t.id))return;if(t.condition){var ev=evaluations[t.id];if(!ev||ev.condition!==t.condition||ev.result!=="TRUE")return}allowed.add(id)});
- var successors=new Map();(tgcv.relations||[]).filter(function(pair){return allowed.has(pair[0])&&allowed.has(pair[1])}).forEach(function(pair){if(!successors.has(pair[0]))successors.set(pair[0],[]);successors.get(pair[0]).push(pair[1])});successors.forEach(function(ids){ids.sort()});
- var prerequisites={};(model.relations||[]).forEach(function(r){(prerequisites[r.transition_id]||(prerequisites[r.transition_id]=[])).push(r.requires_transition_id)});
- var starts=Array.from(allowed).filter(function(id){var m=mappingByTransformation.get(id),t=m&&transitionById.get(m.system_transition_id);return t&&t.source===model.initial_state&&!(prerequisites[t.id]||[]).length}).sort();
- var maxDepth=model.exploration&&Number.isInteger(model.exploration.max_depth)?model.exploration.max_depth:100,cap=model.exploration&&Number.isInteger(model.exploration.max_trajectories)?model.exploration.max_trajectories:1000,paths=[],truncated=false;if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
- function visit(id,path,history,state){if(paths.length>=cap){truncated=true;return}var mapping=mappingByTransformation.get(id),t=mapping&&transitionById.get(mapping.system_transition_id);if(!mapping||!t||t.source!==state)return;var nextHistory=history.concat([t.id]),entry={transformation:id,system_transition:t.id,source_state:t.source,target_state:t.target},nextPath=path.concat([entry]),eligible=[],blockedByPrerequisite=false,hasContinuousSuccessor=false;if(nextPath.length<maxDepth)(successors.get(id)||[]).forEach(function(nextId){var nm=mappingByTransformation.get(nextId),nt=nm&&transitionById.get(nm.system_transition_id);if(!nt||nt.source!==t.target)return;hasContinuousSuccessor=true;if((prerequisites[nt.id]||[]).some(function(req){return nextHistory.indexOf(req)<0})){blockedByPrerequisite=true;return}eligible.push(nextId)});if(nextPath.length>=maxDepth){paths.push(nextPath);return}if(!eligible.length){if(!blockedByPrerequisite||!hasContinuousSuccessor)paths.push(nextPath);return}eligible.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextHistory,t.target);else truncated=true})}
- starts.forEach(function(id){if(paths.length<cap){var m=mappingByTransformation.get(id),t=m&&transitionById.get(m.system_transition_id);if(t)visit(id,[],[],t.source)}else truncated=true});
+ // Candidates are enumerated from the current scenario's TGCV accessibility graph.
+ // Scenario conditions and disabled transitions determine T_acc upstream in tgcvDemoFixture;
+ // temporal prerequisites and state continuity are checked when executing a selected candidate.
+ // Only TGCV relations generate candidate continuations; system transitions are provenance/validation.
+ var mapped=new Set(Array.from(mappingByTransformation.keys()).filter(function(id){var m=mappingByTransformation.get(id);return !!m&&!!transitionById.get(m.system_transition_id)}));
+ var declared=new Set((tgcv.transformations||[]).filter(function(id){return typeof id==="string"}));
+ var topologyRelations=(tgcv.relations||[]).filter(function(pair){return Array.isArray(pair)&&pair.length===2&&declared.has(pair[0])&&declared.has(pair[1])});
+ var successors=new Map(),topologySuccessors=new Map();
+ declared.forEach(function(id){successors.set(id,[]);topologySuccessors.set(id,[])});
+ topologyRelations.forEach(function(pair){successors.get(pair[0]).push(pair[1]);topologySuccessors.get(pair[0]).push(pair[1])});
+ successors.forEach(function(ids){ids.sort()});topologySuccessors.forEach(function(ids){ids.sort()});
+ // Determine entry points from the declared TGCV topology, not from the subset
+ // that happens to have valid mappings. An ambiguous/missing mapping must not
+ // turn its descendants into artificial new roots.
+ // Find strongly connected components. A cycle must not erase all entry points
+ // merely because every node has an incoming edge. For a source cyclic component,
+ // choose its lexicographically first TGCV transformation as a deterministic seed.
+ function reachableFrom(seed){var seen=new Set([seed]),queue=[seed];while(queue.length){var current=queue.shift();(topologySuccessors.get(current)||[]).forEach(function(next){if(!seen.has(next)){seen.add(next);queue.push(next)}})}return seen}
+ var reachability=new Map();declared.forEach(function(id){reachability.set(id,reachableFrom(id))});
+ var unassigned=new Set(declared),components=[];
+ while(unassigned.size){var seed=Array.from(unassigned).sort()[0],forward=reachability.get(seed);var component=Array.from(unassigned).filter(function(id){return forward.has(id)&&reachability.get(id).has(seed)}).sort();component.forEach(function(id){unassigned.delete(id)});components.push(component)}
+ var componentOf=new Map();components.forEach(function(component,index){component.forEach(function(id){componentOf.set(id,index)})});
+ var hasExternalIncoming=new Set();
+ topologyRelations.forEach(function(pair){var from=componentOf.get(pair[0]),to=componentOf.get(pair[1]);if(from!==to)hasExternalIncoming.add(to)});
+ var starts=components.filter(function(component,index){return !hasExternalIncoming.has(index)}).map(function(component){return component[0]}).sort();
+ var maxDepth=model.exploration&&Number.isInteger(model.exploration.max_depth)?model.exploration.max_depth:100,cap=model.exploration&&Number.isInteger(model.exploration.max_trajectories)?model.exploration.max_trajectories:1000,paths=[],truncated=false;
+ if(maxDepth<=0||cap<=0)return {scenario_id:scenarioId,paths:paths,truncated:false,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
+ function visit(id,path,visited){
+  if(paths.length>=cap){truncated=true;return}
+  // A TGCV transformation may enter a candidate only once; this makes cyclic
+  // TGCV topology finite without inventing repeated execution steps.
+  if(visited.has(id))return;
+  var mapping=mappingByTransformation.get(id),transition=mapping&&transitionById.get(mapping.system_transition_id);
+  // Preserve TGCV accessibility even when its system correspondence is absent,
+  // ambiguous or invalid; execution must report that limitation explicitly.
+  var entry={transformation:id,system_transition:transition?transition.id:null,source_state:transition?transition.source:null,target_state:transition?transition.target:null,mapping_status:!mapping?"MISSING_OR_AMBIGUOUS":!transition?"INVALID_SYSTEM_TRANSITION":"MAPPED"};
+  var nextPath=path.concat([entry]),nextVisited=new Set(visited);nextVisited.add(id);
+  if(nextPath.length>=maxDepth){paths.push(nextPath);return}
+  // Candidate continuations follow TGCV relations only; mappings are execution evidence.
+  var validNext=(successors.get(id)||[]).filter(function(nextId){return !nextVisited.has(nextId)});
+  // A cyclic relation is cut at the first repeated transformation. State
+  // continuity, disabled flags, conditions and temporal prerequisites are
+  // evaluated only when this candidate is submitted for concrete execution.
+  if(!validNext.length){paths.push(nextPath);return}
+  validNext.forEach(function(nextId){if(paths.length<cap)visit(nextId,nextPath,nextVisited);else truncated=true});
+ }
+ starts.forEach(function(id){if(paths.length<cap)visit(id,[],new Set());else truncated=true});
  return {scenario_id:scenarioId,paths:paths,truncated:truncated,source:"tgcv-transformations",mapping_rule:window.lastTgcvDemoResult.mapping_rule};
 }
+window.enumerateTgcvTrajectories=enumerateTgcvTrajectories;
+
 async function createTgcvCandidateSnapshot(model,scenarioId,enumeratedOverride){
  function freezeDeep(value){if(value&&typeof value==="object"&&!Object.isFrozen(value)){Object.keys(value).forEach(function(key){freezeDeep(value[key])});Object.freeze(value)}return value}
  function abstain(reason){return freezeDeep({contract_version:"tgcv-candidate-snapshot-001",status:"ABSTAIN",reason:reason})}
@@ -198,9 +239,10 @@ async function createTgcvCandidateSnapshot(model,scenarioId,enumeratedOverride){
  var candidates;try{candidates=enumerated.paths.map(function(path,index){
   var steps=path.map(function(step,stepIndex){
    var mapping=mappingByTransformation.get(step.transformation),transition=mapping&&transitionById.get(mapping.system_transition_id);
-   if(!transition||transition.id!==step.system_transition||transition.source!==step.source_state||transition.target!==step.target_state)throw new Error("TGCV candidate mapping provenance mismatch");
+   if(!transition)return {step_index:stepIndex,transformation_id:step.transformation,system_transition_id:null,source_state:null,target_state:null,mapping_status:step.mapping_status||"MISSING_OR_INVALID",condition:null,condition_status:"NOT_EVALUABLE",prerequisites:[]};
+   if(transition.id!==step.system_transition||transition.source!==step.source_state||transition.target!==step.target_state)throw new Error("TGCV candidate mapping provenance mismatch");
    var evaluation=(scenario.condition_evaluations||{})[transition.id];
-   return {step_index:stepIndex,transformation_id:step.transformation,system_transition_id:transition.id,source_state:step.source_state,target_state:step.target_state,condition:transition.condition||null,condition_status:transition.condition?(evaluation&&evaluation.condition===transition.condition?evaluation.result:"NOT_EVALUABLE"):"NOT_REQUIRED",prerequisites:((model.relations||[]).filter(function(relation){return relation.transition_id===transition.id}).map(function(relation){return relation.requires_transition_id})).sort(compareCodePoints)};
+   return {step_index:stepIndex,transformation_id:step.transformation,system_transition_id:transition.id,source_state:transition.source,target_state:transition.target,mapping_status:"MAPPED",condition:transition.condition||null,condition_status:transition.condition?(evaluation&&evaluation.condition===transition.condition?evaluation.result:"NOT_EVALUABLE"):"NOT_REQUIRED",prerequisites:((model.relations||[]).filter(function(relation){return relation.transition_id===transition.id}).map(function(relation){return relation.requires_transition_id})).sort(compareCodePoints)};
   });
   return {candidate_id:"tgcv-candidate-"+String(index+1).padStart(4,"0"),transformation_ids:steps.map(function(step){return step.transformation_id}),steps:steps};
  });}catch(error){return abstain("CANDIDATE_MAPPING_PROVENANCE_MISMATCH")}
@@ -239,7 +281,8 @@ async function rankTgcvCandidates(snapshot,configuration){
    else {var found=candidate.transformation_ids.includes(rule.transformation_id);value=rule.type==="prefer_transformation"?(found?0:1):(found?1:0)}
    metrics.push({criterion_id:rule.id,type:rule.type,value:value});
   });
-  evaluated.push({candidate_id:candidate.candidate_id,transformation_ids:candidate.transformation_ids.slice(),eligibility:reasons.length?"INELIGIBLE":"ELIGIBLE",violated_constraints:reasons,metrics:metrics,lexicographic_key:metrics.map(function(metric){return metric.value})});
+  var mappingComplete=candidate.steps.every(function(step){return step.mapping_status==="MAPPED"&&!!step.system_transition_id});
+  evaluated.push({candidate_id:candidate.candidate_id,transformation_ids:candidate.transformation_ids.slice(),eligibility:reasons.length?"INELIGIBLE":"ELIGIBLE",mapping_status:mappingComplete?"COMPLETE":"INCOMPLETE",execution_note:mappingComplete?"La correspondencia está disponible; condiciones, continuidad y prerrequisitos se validan al ejecutar.":"Candidata TGCV accesible, pero no ejecutable hasta resolver la correspondencia con el sistema.",violated_constraints:reasons,metrics:metrics,lexicographic_key:metrics.map(function(metric){return metric.value})});
  }
  var eligible=evaluated.filter(function(item){return item.eligibility==="ELIGIBLE"});
  if(!eligible.length)return abstain("NO_ADMISSIBLE_TRAJECTORIES");
@@ -266,8 +309,8 @@ function refreshHeuristicControls(paths){
 }
 function renderTrajectoryCard(){
  var card=$("trajectory-card"),sid=$("trajectory-scenario").value||"baseline";if(lastModel&&lastPackage&&(tgcvSourceSnapshot===null||tgcvSourceSnapshot!==canonical(lastModel)||!window.lastTgcvDemoResult||!window.lastTgcvDemoResult.current||window.lastTgcvDemoResult.current.scenario_id!==sid))renderTgcvDemo(lastModel,lastPackage.result,sid);var result=enumerateTgcvTrajectories(lastModel,sid),paths=result.paths||[];lastTgcvTrajectoryEnumeration=result;card.replaceChildren();refreshHeuristicControls(paths);
- if(!paths.length){card.append(node("p","muted",!window.lastTgcvDemoResult?"No hay una correspondencia TGCV vigente. Genera y aplica las correspondencias aceptadas antes de explorar trayectorias.":"El grafo TGCV no contiene trayectorias ejecutables desde el estado inicial para este escenario."));$("trajectory-position").textContent="0 / 0";$("trajectory-prev").disabled=$("trajectory-next").disabled=$("use-trajectory").disabled=true;$("trajectory-status").textContent="Sin trayectorias TGCV.";return}
- trajectoryIndex=Math.max(0,Math.min(trajectoryIndex,paths.length-1));var p=paths[trajectoryIndex],ids=p.map(function(x){return x.transformation}),items=[{kind:"state",label:p[0].source_state}];p.forEach(function(step){items.push({kind:"transformation",label:step.transformation});items.push({kind:"state",label:step.target_state})});
+ if(!paths.length){card.append(node("p","muted",!window.lastTgcvDemoResult?"No hay una correspondencia TGCV vigente. Genera y aplica las correspondencias aceptadas antes de explorar trayectorias.":"El grafo TGCV no contiene trayectorias accesibles para este escenario."));$("trajectory-position").textContent="0 / 0";$("trajectory-prev").disabled=$("trajectory-next").disabled=$("use-trajectory").disabled=true;$("trajectory-status").textContent="Sin trayectorias TGCV.";return}
+ trajectoryIndex=Math.max(0,Math.min(trajectoryIndex,paths.length-1));var p=paths[trajectoryIndex],ids=p.map(function(x){return x.transformation}),items=[{kind:"state",label:p[0].source_state||"sin correspondencia"}];p.forEach(function(step){items.push({kind:"transformation",label:step.transformation});items.push({kind:"state",label:step.target_state||"sin correspondencia"})});
  var ns="http://www.w3.org/2000/svg",canvas=node("div","trajectory-canvas"),svg=document.createElementNS(ns,"svg"),w=Math.max(560,items.length*118+24);svg.setAttribute("viewBox","0 0 "+w+" 160");svg.setAttribute("role","img");svg.setAttribute("aria-label","Trayectoria TGCV "+(trajectoryIndex+1)+": "+items.map(function(x){return x.label}).join(" → "));
  var defs=document.createElementNS(ns,"defs"),marker=document.createElementNS(ns,"marker");marker.setAttribute("id","trajectory-arrow");marker.setAttribute("markerWidth","8");marker.setAttribute("markerHeight","8");marker.setAttribute("refX","6");marker.setAttribute("refY","3");marker.setAttribute("orient","auto");var arrow=document.createElementNS(ns,"path");arrow.setAttribute("d","M0,0 L6,3 L0,6 Z");arrow.setAttribute("fill","currentColor");marker.append(arrow);defs.append(marker);svg.append(defs);
  function el(tag,attrs,txt){var e=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){e.setAttribute(k,attrs[k])});if(txt!==undefined)e.textContent=txt;svg.append(e);return e}
@@ -518,6 +561,8 @@ async function assessImportedBrowserPackage(pkg){
   assert(review.source_model_sha256===await hash(pkg.input),"La revisión de correspondencias no está vinculada al modelo de entrada de este paquete.");
   assert(typeof review.catalogue_version==="string"&&review.catalogue_version.trim().length>0,"catalogue_version ausente en la revisión de correspondencias.");
   assert(typeof review.catalogue_sha256==="string"&&/^[0-9a-f]{64}$/.test(review.catalogue_sha256),"catalogue_sha256 ausente o malformado en la revisión de correspondencias.");
+  assert(review.catalogue_snapshot&&typeof review.catalogue_snapshot==="object"&&!Array.isArray(review.catalogue_snapshot)&&review.catalogue_snapshot.schema==="tgcv-target-catalogue-001"&&review.catalogue_snapshot.version===review.catalogue_version&&Array.isArray(review.catalogue_snapshot.transformations),"Falta un snapshot de catálogo compatible en la revisión de correspondencias.");
+  assert(await hash(review.catalogue_snapshot,"tgcv_correspondence_catalogue")===review.catalogue_sha256,"El hash del snapshot del catálogo no coincide con catalogue_sha256.");
   assert(Array.isArray(review.candidates),"La revisión de correspondencias debe contener una lista de candidatos.");
   var candidateIds=new Set(),acceptedCount=0,rejectedCount=0;
   review.candidates.forEach(function(candidate){
@@ -529,7 +574,13 @@ async function assessImportedBrowserPackage(pkg){
    assert(["PROPOSED","NEEDS_REVIEW"].includes(candidate.status),"Estado de propuesta de correspondencia no compatible.");
    assert(candidate.algorithm==="tgcv-correspondence-exact-boundary-001"&&candidate.algorithm_version==="1","Algoritmo de derivación de correspondencias no compatible.");
    assert(typeof candidate.system_transition_id==="string"&&typeof candidate.tgcv_transformation_id==="string","La propuesta carece de referencias de transición/transformación.");
+   var referencedTransition=(pkg.input.transitions||[]).find(function(transition){return transition&&transition.id===candidate.system_transition_id;});
+   assert(referencedTransition,"La propuesta referencia una transición inexistente en el modelo exportado.");
+   var referencedTransformation=(review.catalogue_snapshot.transformations||[]).find(function(transformation){return transformation&&transformation.id===candidate.tgcv_transformation_id;});
+   assert(referencedTransformation,"La propuesta referencia una transformación inexistente en el snapshot del catálogo TGCV.");
+   assert(referencedTransition.source===referencedTransformation.source_state&&referencedTransition.target===referencedTransformation.target_state,"La correspondencia propuesta no conserva los límites de estado declarados por la transición y la transformación del catálogo.");
    assert(candidate.evidence&&typeof candidate.evidence==="object"&&!Array.isArray(candidate.evidence),"La propuesta carece de evidencia estructurada.");
+   assert(candidate.evidence.kind==="exact_declared_state_boundary_match"&&candidate.evidence.system_source_state===referencedTransition.source&&candidate.evidence.system_target_state===referencedTransition.target&&candidate.evidence.catalogue_source_state===referencedTransformation.source_state&&candidate.evidence.catalogue_target_state===referencedTransformation.target_state,"La evidencia de correspondencia no coincide con los límites verificados del modelo y catálogo.");
    assert(candidate.decision===null||candidate.decision==="ACCEPTED"||candidate.decision==="REJECTED","Decisión de revisión no compatible.");
    assert(candidate.decision!=="ACCEPTED"||candidate.status==="PROPOSED","Una propuesta que requiere revisión no puede figurar como aceptada.");
    if(candidate.decision==="ACCEPTED")acceptedCount++;
@@ -679,6 +730,7 @@ $("rank-trajectories").addEventListener("click",async function(){
    var row=node("div","comparison-run"),heading=node("h3","",item.eligibility==="INELIGIBLE"?"No admisible · "+item.candidate_id:"Rango "+item.rank+" · "+item.candidate_id);
    row.append(heading,node("p","route-sequence",item.transformation_ids.join(" → ")));
    row.append(node("p","muted",item.eligibility==="INELIGIBLE"?"Restricciones incumplidas: "+item.violated_constraints.join(", "):"Criterios: "+item.metrics.map(function(metric){return metric.criterion_id+" = "+metric.value}).join("; ")+(item.tie_size>1?" · Empate sustantivo de "+item.tie_size:"")));
+   row.append(node("p",item.mapping_status==="COMPLETE"?"muted":"error",item.execution_note));
    if(item.eligibility==="ELIGIBLE"){var selectButton=node("button","primary","Seleccionar esta trayectoria");selectButton.type="button";selectButton.addEventListener("click",function(){var index=Number(item.candidate_id.replace("tgcv-candidate-",""))-1;trajectoryIndex=index;renderTrajectoryCard();$("sequence-scenario").value=scenarioId;$("sequence-select").value=String(index);$("sequence-input").value="";$("sequence-trace").textContent="Trayectoria seleccionada explícitamente desde el ranking. Pulsa «Ejecutar secuencia seleccionada» para ejecutarla."; $("sequence-execution-heading").scrollIntoView({behavior:"smooth",block:"start"})});row.append(selectButton)}
    panel.append(row);
   });
@@ -712,7 +764,8 @@ $("execute-sequence").addEventListener("click",async function(){
   (lastModel.relations||[]).forEach(function(r){(prerequisites[r.transition_id]||(prerequisites[r.transition_id]=[])).push(r.requires_transition_id)});
   for(var i=0;i<transitionIds.length;i++){
    var id=transitionIds[i],tr=lastModel.transitions.find(function(candidate){return candidate.id===id}),reason=null,missing=[],required=temporal?(prerequisites[id]||[]):[];
-   if(!tr)reason="unknown_transition";
+   if(!id&&selectedTgcvTrajectory)reason="tgcv_mapping_missing_or_invalid";
+   else if(!tr)reason="unknown_transition";
    else if(disabled.has(id))reason="transition_disabled_by_scenario";
    else if(tr.source!==current)reason="transition_source_mismatch";
    else if(tr.condition){var conditionEvaluation=(selectedScenario.condition_evaluations||{})[id];if(!conditionEvaluation||conditionEvaluation.condition!==tr.condition||conditionEvaluation.result!=="TRUE")reason="condition_not_evaluated_true";}
@@ -729,7 +782,7 @@ $("execute-sequence").addEventListener("click",async function(){
   
   panel.append(node("p","","Estado inicial: "+trace.initial_state));
   steps.forEach(function(step){panel.append(node("p","","Paso "+step.step+": "+step.state_before+" → "+step.state_after))});
-  if(blockedStep){var blockedMessage=blockedStep.reason==="temporal_prerequisite_not_satisfied"?"El recorrido no pudo continuar porque faltaba un prerrequisito temporal.":blockedStep.reason==="condition_not_evaluated_true"?"El recorrido se bloqueó porque la condición de la transición no tiene una evaluación TRUE vigente.":blockedStep.reason==="transition_disabled_by_scenario"?"El recorrido se bloqueó porque la transición está deshabilitada en este escenario.":blockedStep.reason==="transition_source_mismatch"?"El recorrido se bloqueó porque la transición no parte del estado actual.":blockedStep.reason==="unknown_transition"?"El recorrido se bloqueó porque la transición no existe en el modelo.":"El recorrido se bloqueó por una restricción de ejecución.";panel.append(node("p","error",blockedMessage));}
+  if(blockedStep){var blockedMessage=blockedStep.reason==="tgcv_mapping_missing_or_invalid"?"La transformación TGCV es accesible, pero no se puede ejecutar porque carece de una correspondencia única y válida con el sistema.":blockedStep.reason==="temporal_prerequisite_not_satisfied"?"El recorrido no pudo continuar porque faltaba un prerrequisito temporal.":blockedStep.reason==="condition_not_evaluated_true"?"El recorrido se bloqueó porque la condición de la transición no tiene una evaluación TRUE vigente.":blockedStep.reason==="transition_disabled_by_scenario"?"El recorrido se bloqueó porque la transición está deshabilitada en este escenario.":blockedStep.reason==="transition_source_mismatch"?"El recorrido se bloqueó porque la transición no parte del estado actual.":blockedStep.reason==="unknown_transition"?"El recorrido se bloqueó porque la transición no existe en el modelo.":"El recorrido se bloqueó por una restricción de ejecución.";panel.append(node("p","error",blockedMessage));}
   panel.append(node("p","","Estado "+(blockedStep?"al detenerse: ":"final: ")+trace.final_state));
   
   panel.dataset.state=blockedStep?"blocked-trace-recorded":"replay-verified";
@@ -784,7 +837,7 @@ $("assess-value").addEventListener("click",async function(){
  }catch(e){$("value-status").dataset.state="rejected";$("value-status").textContent="ERROR · "+e.message}
 });
 $("run").addEventListener("click",run);$("which").addEventListener("change",function(){if(lastModel&&lastPackage){draw(lastModel,lastPackage.result,$("which").value);if(tgcvSourceSnapshot!==null&&canonical(lastModel)===tgcvSourceSnapshot)renderTgcvDemo(lastModel,lastPackage.result,$("which").value);else markTgcvStale()}});
-$("export").addEventListener("click",async function(){if(!lastPackage)return;var trace=$("sequence-trace")._trace||null,exportPackage=Object.assign({},lastPackage);if(trace)exportPackage.concrete_execution_trace=trace;var reviewMatchesCurrentModel=!!lastModel&&correspondenceReviewState.candidates.length>0&&correspondenceReviewState.sourceModelCanonical===canonical(lastModel),reviewCatalogue=null;try{reviewCatalogue=JSON.parse($("tgcv-target-catalogue").value)}catch(_e){}var reviewMatchesCurrentCatalogue=!!reviewCatalogue&&correspondenceReviewState.catalogue&&correspondenceReviewState.catalogueVersion===reviewCatalogue.version&&correspondenceReviewState.catalogueSha256===await hash(reviewCatalogue,"tgcv_correspondence_catalogue");if(reviewMatchesCurrentModel&&reviewMatchesCurrentCatalogue){exportPackage.tgcv_correspondence_review={schema:"tgcv-correspondence-review-001",source_model_sha256:correspondenceReviewState.sourceModelSha256,catalogue_version:correspondenceReviewState.catalogueVersion,catalogue_sha256:correspondenceReviewState.catalogueSha256,candidates:correspondenceReviewState.candidates.map(function(c){return JSON.parse(JSON.stringify(c))})}}if(outcomeRecord)exportPackage.outcome_record=outcomeRecord;if(valueAssessment)exportPackage.value_assessment=valueAssessment;else exportPackage.value_assessment_status="NOT_ASSESSED";exportPackage.package_stage=valueAssessment?"ASSESSMENT":outcomeRecord?"OUTCOME":trace?"EXECUTION":"EXPLORATION";delete exportPackage.package_sha256;exportPackage.package_sha256=await hash(exportPackage,"package_export");var blob=new Blob([JSON.stringify(exportPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
+$("export").addEventListener("click",async function(){if(!lastPackage)return;var trace=$("sequence-trace")._trace||null,exportPackage=Object.assign({},lastPackage);if(trace)exportPackage.concrete_execution_trace=trace;var reviewMatchesCurrentModel=!!lastModel&&correspondenceReviewState.candidates.length>0&&correspondenceReviewState.sourceModelCanonical===canonical(lastModel),reviewCatalogue=null;try{reviewCatalogue=JSON.parse($("tgcv-target-catalogue").value)}catch(_e){}var reviewMatchesCurrentCatalogue=!!reviewCatalogue&&correspondenceReviewState.catalogue&&correspondenceReviewState.catalogueVersion===reviewCatalogue.version&&correspondenceReviewState.catalogueSha256===await hash(reviewCatalogue,"tgcv_correspondence_catalogue");if(reviewMatchesCurrentModel&&reviewMatchesCurrentCatalogue){exportPackage.tgcv_correspondence_review={schema:"tgcv-correspondence-review-001",source_model_sha256:correspondenceReviewState.sourceModelSha256,catalogue_version:correspondenceReviewState.catalogueVersion,catalogue_sha256:correspondenceReviewState.catalogueSha256,catalogue_snapshot:JSON.parse(JSON.stringify(correspondenceReviewState.catalogue)),candidates:correspondenceReviewState.candidates.map(function(c){return JSON.parse(JSON.stringify(c))})}}if(outcomeRecord)exportPackage.outcome_record=outcomeRecord;if(valueAssessment)exportPackage.value_assessment=valueAssessment;else exportPackage.value_assessment_status="NOT_ASSESSED";exportPackage.package_stage=valueAssessment?"ASSESSMENT":outcomeRecord?"OUTCOME":trace?"EXECUTION":"EXPLORATION";delete exportPackage.package_sha256;exportPackage.package_sha256=await hash(exportPackage,"package_export");var blob=new Blob([JSON.stringify(exportPackage,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=(lastModel.model_id||"collective-toy")+"-run.json";a.click();setTimeout(function(){URL.revokeObjectURL(url)},1000)});
 
 // Pure candidate generation: exact matches against an explicitly supplied TGCV catalogue only.
 // Pure candidate generation: exact matches against an explicitly supplied TGCV catalogue only.
@@ -1076,22 +1129,62 @@ function tgcvDemoFixture(systemModel,systemResult,currentScenarioId){
  var hasComparison=!!(beforeScenario&&afterScenario);
  if(!hasComparison){beforeScenario=currentScenario;afterScenario=currentScenario}
  systemResult=systemResult||execute(systemModel);
- function transitionsInEnumeratedTrajectories(scenarioId){
-  var scenarioResult=systemResult.scenario_results[scenarioId];
-  assert(scenarioResult,"No hay resultado de exploración para el escenario "+scenarioId+".");
-  var used=new Set();
-  scenarioResult.trajectories.forEach(function(path){path.forEach(function(step){if(step.transition)used.add(step.transition)})});
-  return used;
- }
- var beforeReachable=transitionsInEnumeratedTrajectories(beforeScenario.id),afterReachable=transitionsInEnumeratedTrajectories(afterScenario.id);
  var mappedByTransition=new Map(mappings.map(function(m){return [m.system_transition_id,m.tgcv_transformation_id]}));
- var before=transitions.filter(function(t){return beforeReachable.has(t.id)&&mappedByTransition.has(t.id)}).map(function(t){return mappedByTransition.get(t.id)});
- var after=transitions.filter(function(t){return afterReachable.has(t.id)&&mappedByTransition.has(t.id)}).map(function(t){return mappedByTransition.get(t.id)});
+ function transformationsAllowedByScenario(scenario){
+  // The current T_acc view is scenario-dependent: a disabled transition or a
+  // condition not explicitly TRUE makes its mapped transformation unavailable
+  // in this scenario. Keep declared TGCV topology separately when finding roots,
+  // so blocked predecessors never promote descendants to artificial roots.
+  var disabled=new Set(scenario.disabled_transitions||[]),evaluations=scenario.condition_evaluations||{};
+  return transformations.filter(function(id){
+   var matches=mappings.filter(function(m){return m.tgcv_transformation_id===id});
+   if(matches.length!==1)return false;
+   var transition=transitions.find(function(t){return t.id===matches[0].system_transition_id});
+   if(!transition||disabled.has(transition.id))return false;
+   if(transition.condition){
+    var evaluation=evaluations[transition.id];
+    if(!evaluation||evaluation.condition!==transition.condition||evaluation.result!=="TRUE")return false;
+   }
+   return true;
+  });
+ }
+ // The current TGCV graph represents scenario-accessible transformations.
+ // Candidate trajectories are still enumerated from TGCV relations, not from
+ // the system-state graph; execution conditions are checked during execution.
+ function accessibleTransformations(scenario){
+  var allowed=new Set(transformationsAllowedByScenario(scenario));
+  // Roots belong to the declared TGCV graph. A disabled predecessor must not
+  // turn its downstream transformation into a new root for this scenario.
+  var edges=relations.filter(function(pair){return allowed.has(pair[0])&&allowed.has(pair[1])});
+  // Find source strongly connected components in the declared TGCV topology.
+  // A source cycle has no zero-indegree node, so selecting roots by indegree
+  // alone would incorrectly make every transformation in that cycle inaccessible.
+  var topologySuccessors=new Map();
+  transformations.forEach(function(id){topologySuccessors.set(id,[])});
+  relations.forEach(function(pair){if(topologySuccessors.has(pair[0])&&topologySuccessors.has(pair[1]))topologySuccessors.get(pair[0]).push(pair[1])});
+  function topologyReachable(seed){var reached=new Set([seed]),pending=[seed];while(pending.length){var current=pending.shift();(topologySuccessors.get(current)||[]).forEach(function(next){if(!reached.has(next)){reached.add(next);pending.push(next)}})}return reached}
+  var reachability=new Map();transformations.forEach(function(id){reachability.set(id,topologyReachable(id))});
+  var unassigned=new Set(transformations),components=[];
+  while(unassigned.size){var seed=Array.from(unassigned).sort()[0],forward=reachability.get(seed);var component=Array.from(unassigned).filter(function(id){return forward.has(id)&&reachability.get(id).has(seed)}).sort();component.forEach(function(id){unassigned.delete(id)});components.push(component)}
+  var componentOf=new Map();components.forEach(function(component,index){component.forEach(function(id){componentOf.set(id,index)})});
+  var hasExternalIncoming=new Set();
+  relations.forEach(function(pair){var from=componentOf.get(pair[0]),to=componentOf.get(pair[1]);if(from!==to)hasExternalIncoming.add(to)});
+  var starts=components.filter(function(component,index){return !hasExternalIncoming.has(index)}).map(function(component){return component[0]}).sort();
+  var seen=new Set(starts.filter(function(id){return allowed.has(id)})),queue=Array.from(seen);
+  while(queue.length){
+   var id=queue.shift();
+   edges.filter(function(pair){return pair[0]===id}).forEach(function(pair){
+    if(!seen.has(pair[1])){seen.add(pair[1]);queue.push(pair[1])}
+   });
+  }
+  return Array.from(seen);
+ }
+ var before=accessibleTransformations(beforeScenario);
+ var after=accessibleTransformations(afterScenario);
  currentScenario=scenarios.find(function(s){return s.id===currentScenarioId})||currentScenario;
- var currentReachable=transitionsInEnumeratedTrajectories(currentScenario.id);
- var current=transitions.filter(function(t){return currentReachable.has(t.id)&&mappedByTransition.has(t.id)}).map(function(t){return mappedByTransition.get(t.id)});
+ var current=accessibleTransformations(currentScenario);
  function relationsWithin(set){return relations.filter(function(pair){return set.indexOf(pair[0])>=0&&set.indexOf(pair[1])>=0})}
- return {schema:"tgcv-integrated-illustrative-demo-001",provenance:provenance,mapping_rule:mappingRule,accessibility_basis:"mapped system transitions occurring in enumerated trajectories for each scenario",system_model_id:systemModel.model_id,mappings:mappings,transformations:transformations,relations:relations,before:{scenario_id:beforeScenario.id,transformations:before,relations:relationsWithin(before)},interaction:{id:"m",description:hasComparison?"cambiar del escenario block_ac a baseline":"sin comparación antes/después: se representa el escenario actual",rule_version:"1",enable_transformations:after.filter(function(x){return before.indexOf(x)<0})},after:{scenario_id:afterScenario.id,transformations:after,relations:relationsWithin(after)},current:{scenario_id:currentScenario.id,transformations:current,relations:relationsWithin(current)}};
+ return {schema:"tgcv-integrated-illustrative-demo-001",provenance:provenance,mapping_rule:mappingRule,accessibility_basis:"TGCV transformation relations filtered by current mappings, conditions and scenario restrictions",system_model_id:systemModel.model_id,mappings:mappings,transformations:transformations,relations:relations,before:{scenario_id:beforeScenario.id,transformations:before,relations:relationsWithin(before)},interaction:{id:"m",description:hasComparison?"cambiar del escenario block_ac a baseline":"sin comparación antes/después: se representa el escenario actual",rule_version:"1",enable_transformations:after.filter(function(x){return before.indexOf(x)<0})},after:{scenario_id:afterScenario.id,transformations:after,relations:relationsWithin(after)},current:{scenario_id:currentScenario.id,transformations:current,relations:relationsWithin(current)}};
 }
 function deriveTgcvDemo(fixture){
  assert(fixture&&fixture.schema==="tgcv-integrated-illustrative-demo-001","Esquema de demostración TGCV no compatible.");
@@ -1124,9 +1217,9 @@ function renderTgcvDemo(systemModel,systemResult,currentScenarioId){
  function metric(title,value,detail){var box=node("div","metric");box.append(node("strong","",value),node("span","",title),node("p","muted",detail));host.append(box)}
  metric("T_acc antes","{"+result.before.transformations.join(", ")+"}","Escenario del sistema: "+result.before.scenario_id+".");
  metric("T_acc después","{"+result.after.transformations.join(", ")+"}","Escenario del sistema: "+result.after.scenario_id+".");
- metric("ΔT_acc","{"+result.delta.join(", ")+"}","Diferencia entre conjuntos de transformaciones mapeadas disponibles según las restricciones de escenario; no es por sí sola una estimación canónica de ΔT_acc.");
+ metric("ΔT_acc","{"+result.delta.join(", ")+"}","Diferencia entre conjuntos de transformaciones TGCV accesibles con correspondencias válidas; las restricciones de ejecución se evalúan aparte.");
  var routes=node("div","metric");routes.style.gridColumn="1/-1";routes.append(node("strong","","Trayectorias TGCV del escenario actual"));var currentPaths=enumerateTgcvTrajectories(systemModel,current.scenario_id),pathList=currentPaths.paths||[];if(!pathList.length)routes.append(node("p","muted","No hay trayectorias TGCV disponibles bajo las restricciones y correspondencias vigentes."));else{pathList.slice(0,10).forEach(function(path,index){routes.append(node("p","",String(index+1)+". "+path.map(function(step){return step.transformation}).join(" → ")))});if(pathList.length>10||currentPaths.truncated)routes.append(node("p","muted","Mostrando hasta 10 trayectorias; el límite de exploración puede truncar el conjunto."))}host.append(routes);
- $("tgcv-provenance-note").textContent="Escenario actual: "+current.scenario_id+". El grafo TGCV muestra transformaciones de la representación TGCV con correspondencias vigentes, filtradas por transiciones deshabilitadas y condiciones explícitamente verdaderas; su composición no depende de las trayectorias enumeradas del grafo del sistema. Las trayectorias se generan recorriendo las relaciones TGCV y se mapean a transiciones del sistema solo para ejecución. La comparación de conjuntos no constituye por sí sola una estimación canónica de T_acc ni una validación científica. Regla de correspondencia: "+result.mapping_rule+".";
+ $("tgcv-provenance-note").textContent="Escenario actual: "+current.scenario_id+". La vista T_acc del grafo TGCV es específica del escenario y excluye transformaciones cuya transición esté deshabilitada o cuya condición no tenga evaluación explícita TRUE coincidente. La topología TGCV declarada se conserva al determinar raíces para evitar promover descendientes artificialmente. Las trayectorias candidatas se generan recorriendo relaciones TGCV, no enumerando trayectorias del grafo del sistema; la viabilidad concreta se comprueba durante la ejecución. La comparación de conjuntos no constituye por sí sola una estimación canónica de T_acc ni una validación científica. Regla de correspondencia: "+result.mapping_rule+".";
  refreshTgcvSequenceOptions();
 }
 window.deriveTgcvDemo=deriveTgcvDemo;

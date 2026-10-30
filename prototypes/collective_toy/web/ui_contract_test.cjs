@@ -12,8 +12,14 @@ const assert = require("node:assert/strict");
   // not from the system-state trajectory list.
   assert.match(sourceHtml, /function enumerateTgcvTrajectories\(model,scenarioId\)/,
     "TGCV transformation trajectory enumerator must be present");
-  assert.match(sourceHtml, /function refreshTgcvSequenceOptions\(\)[\s\S]*?enumerateTgcvTrajectories\(lastModel,sid\)/,
+  const sequenceOptionsHelper = sourceHtml.match(/function refreshTgcvSequenceOptions\(\)\{([\s\S]*?)\n\}/);
+  assert.ok(sequenceOptionsHelper, "TGCV execution selector helper must exist");
+  assert.match(sequenceOptionsHelper[1], /enumerateTgcvTrajectories\(lastModel,sid\)/,
     "Execution selector must obtain candidates from the TGCV enumerator");
+  assert.match(sequenceOptionsHelper[1], /path\.map\(function\(x\)\{return x\.transformation\}\)/,
+    "Execution selector labels must be TGCV transformation IDs");
+  assert.doesNotMatch(sequenceOptionsHelper[1], /baselinePaths|scenario_results|enumerateSystemTrajectories/,
+    "Execution selector must never fall back to system-state trajectory candidates");
   assert.match(sourceHtml, /\$\("trajectory-next"\)\.addEventListener\("click",function\(\)\{var result=enumerateTgcvTrajectories\(lastModel,\$\("trajectory-scenario"\)\.value\|\|"baseline"\),paths=result\.paths\|\|\[\]/,
     "Trajectory navigation must use the TGCV transformation graph, not system-state trajectory counts");
   assert.match(sourceHtml, /No se sustituirán por trayectorias del grafo del sistema/,
@@ -80,6 +86,10 @@ const assert = require("node:assert/strict");
     const tgcvFixture = await page.evaluate(() => window.tgcvDemoFixture(JSON.parse(document.querySelector("#model").value)));
     const tgcvDerived = await page.evaluate(fixture => window.deriveTgcvDemo(fixture), tgcvFixture);
     assert.equal(tgcvDerived.system_model_id, "toy-diamond-001");
+    assert.match(tgcvFixture.accessibility_basis, /TGCV transformation relations/i,
+      "TGCV accessibility provenance must identify the transformation-relation basis");
+    assert.doesNotMatch(tgcvFixture.accessibility_basis, /enumerated system trajectories/i,
+      "TGCV accessibility provenance must not claim it is derived from system trajectory enumeration");
     assert.equal(tgcvDerived.mappings.length, 4, "Every example transition must have an explicit illustrative mapping");
     assert.deepEqual(tgcvDerived.before.transformations, ["tau_t_ab", "tau_t_bd"],
       "A transformation whose source state is unreachable must not appear in scenario T_acc");
@@ -746,8 +756,14 @@ const assert = require("node:assert/strict");
     // baseline/intervention, delta_reach, candidate trajectory, concrete execution, outcome/value,
     // export/import and independent replay are verified as one connected scenario below.
     const gt05ExplorationPackage = await page.evaluate(() => structuredClone(window.lastPackage));
+    const gt05TgcvCandidates = await page.evaluate(async () =>
+      window.createTgcvCandidateSnapshot(window.lastModel || JSON.parse(document.querySelector("#model").value), "baseline"));
     assert.ok(gt05ExplorationPackage && gt05ExplorationPackage.input && gt05ExplorationPackage.result,
       "GT-05: scenario exploration must produce an inspectable input/result package");
+    assert.equal(gt05TgcvCandidates.status, "READY",
+      "GT-05: the same source model must produce an explicit TGCV candidate snapshot");
+    assert.equal(gt05TgcvCandidates.source, "tgcv-transformations",
+      "GT-05: candidate snapshot provenance must be the TGCV transformation graph");
     assert.deepEqual(gt05ExplorationPackage.input.states, ["A", "B", "C", "D"],
       "GT-05: the hand-checkable diamond model must retain all four states");
     assert.deepEqual(
@@ -952,10 +968,14 @@ const assert = require("node:assert/strict");
       "GT-05: final assessed package must preserve the source model used for exploration");
     assert.deepEqual(fc4Package.result, gt05ExplorationPackage.result,
       "GT-05: final assessed package must preserve the explored baseline/intervention and delta_reach result");
+    const executedTransformationIds = fc4Package.concrete_execution_trace.tgcv_trajectory.transformation_ids;
+    assert.ok(gt05TgcvCandidates.candidates.some(candidate =>
+      JSON.stringify(candidate.transformation_ids) === JSON.stringify(executedTransformationIds)),
+      "GT-05: concrete execution must match a candidate enumerated from the TGCV transformation graph for the same model and scenario");
     const executedTransitionIds = fc4Package.concrete_execution_trace.submitted_transition_ids;
     assert.ok(gt05ExplorationPackage.result.scenario_results.baseline.trajectories.some(path =>
       JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(executedTransitionIds)),
-      "GT-05: concrete execution must match one of the candidate trajectories explored from the same model");
+      "GT-05: TGCV candidate execution must also map to a valid concrete system transition path");
     assert.equal(fc4Package.outcome_record.execution_id, fc4Package.concrete_execution_trace.execution_id,
       "FC-4: exported outcome must link to the exact exported execution");
     assert.equal(fc4Package.outcome_record.execution_trace_sha256, fc4Package.concrete_execution_trace.trace_sha256,
@@ -3612,7 +3632,390 @@ const assert = require("node:assert/strict");
     assert.ok(temporalResult.result.scenario_results.baseline.trajectories.some(path =>
       JSON.stringify(path.slice(1).map(step => step.transition)) === JSON.stringify(["t_ab", "t_bc", "t_cd"])),
       "GT-05 temporal: candidate trajectory must include prerequisite t_ab before conditioned t_cd");
-    await temporalPage.locator("#sequence-input").fill("tau_t_ab, tau_t_bc, tau_t_cd");
+    // Select the generated TGCV trajectory instead of typing system-transition IDs.
+    // This preserves the verified transformation-to-transition correspondence required
+    // for linking the concrete execution to its outcome and contextual assessment.
+    const temporalCandidateIndex = await temporalPage.evaluate(() => {
+      const candidates = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+      return (candidates.paths || []).findIndex(path =>
+        JSON.stringify(path.map(step => step.system_transition)) === JSON.stringify(["t_ab", "t_bc", "t_cd"]));
+    });
+    const temporalCandidatePaths = await temporalPage.evaluate(() =>
+      window.enumerateTgcvTrajectories(window.lastModel, "baseline").paths.map(path =>
+        path.map(step => step.system_transition)));
+    assert.deepEqual(temporalCandidatePaths, [
+      ["t_ab", "t_bc", "t_cd"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: enumerate every complete declared TGCV branch exactly once, without cross-branch hybrids");
+    const scenarioBranchCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const scenario = model.scenarios.find(item => item.id === "baseline");
+      const hadDisabledTransitions = Object.prototype.hasOwnProperty.call(scenario, "disabled_transitions");
+      const original = hadDisabledTransitions ? structuredClone(scenario.disabled_transitions) : undefined;
+      scenario.disabled_transitions = Array.from(new Set((original || []).concat(["t_ax"])));
+      tgcvSourceSnapshot = canonical(model);
+      const result = window.enumerateTgcvTrajectories(model, "baseline");
+      if (hadDisabledTransitions) scenario.disabled_transitions = original;
+      else delete scenario.disabled_transitions;
+      tgcvSourceSnapshot = canonical(model);
+      return (result.paths || []).map(path => path.map(step => step.system_transition));
+    });
+    assert.deepEqual(scenarioBranchCheck, [
+      ["t_ab", "t_bc", "t_cd"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: disabling a system transition must not erase its accessible TGCV candidate; execution feasibility is checked separately");
+    const boundedEnumeration = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const original = structuredClone(model.exploration);
+      model.exploration = { max_depth: 2, max_trajectories: 30 };
+      tgcvSourceSnapshot = canonical(model);
+      const depthLimited = window.enumerateTgcvTrajectories(model, "baseline");
+      model.exploration = { max_depth: 5, max_trajectories: 1 };
+      tgcvSourceSnapshot = canonical(model);
+      const capped = window.enumerateTgcvTrajectories(model, "baseline");
+      model.exploration = original;
+      tgcvSourceSnapshot = canonical(model);
+      return {
+        depthPaths: depthLimited.paths.map(path => path.map(step => step.system_transition)),
+        capCount: capped.paths.length,
+        capTruncated: capped.truncated
+      };
+    });
+    assert.deepEqual(boundedEnumeration.depthPaths, [
+      ["t_ab", "t_bc"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: max_depth must bound every branch without extending paths");
+    assert.equal(boundedEnumeration.capCount, 1,
+      "GT-05 temporal: max_trajectories must cap emitted candidates");
+    assert.equal(boundedEnumeration.capTruncated, true,
+      "GT-05 temporal: reaching the trajectory cap must explicitly report truncation");
+    const integratedCycleAccessibility = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const originalMapping = model.tgcv_mapping;
+      const hadMapping = Object.prototype.hasOwnProperty.call(model, "tgcv_mapping");
+      const originalResult = window.lastTgcvDemoResult;
+      const originalSnapshot = tgcvSourceSnapshot;
+      model.tgcv_mapping = {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "cycle-accessibility-test-v1",
+        provenance: "test",
+        mappings: model.transitions.map(transition => ({
+          system_transition_id: transition.id,
+          tgcv_transformation_id: "tau_" + transition.id
+        })),
+        relations: [
+          ["tau_t_ab", "tau_t_bc"], ["tau_t_bc", "tau_t_cd"],
+          ["tau_t_cd", "tau_t_ab"], ["tau_t_ab", "tau_t_ax"],
+          ["tau_t_ax", "tau_t_xd"]
+        ]
+      };
+      window.renderTgcvDemo(model, window.lastPackage.result, "baseline");
+      const current = window.lastTgcvDemoResult.current.transformations.slice().sort();
+      if (hadMapping) model.tgcv_mapping = originalMapping;
+      else delete model.tgcv_mapping;
+      window.renderTgcvDemo(model, window.lastPackage.result, "baseline");
+      tgcvSourceSnapshot = originalSnapshot;
+      return current;
+    });
+    assert.deepEqual(integratedCycleAccessibility, [
+      "tau_t_ab", "tau_t_ax", "tau_t_bc", "tau_t_cd", "tau_t_xd"
+    ], "GT-05 integration: source cyclic TGCV component and its downstream transformations must remain accessible in the integrated T_acc derivation");
+    const cyclicRelationCheck = await temporalPage.evaluate(() => {
+      const tgcv = window.lastTgcvDemoResult.current;
+      const originalRelations = structuredClone(tgcv.relations);
+      tgcv.relations.push(["tau_t_cd", "tau_t_ab"]);
+      const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+      tgcv.relations = originalRelations;
+      return {
+        paths: (result.paths || []).map(path => path.map(step => step.system_transition)),
+        truncated: result.truncated
+      };
+    });
+    assert.deepEqual(cyclicRelationCheck.paths, [
+      ["t_ab", "t_bc", "t_cd"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: cyclic TGCV relation must not create state-discontinuous or hybrid trajectories");
+    assert.notEqual(cyclicRelationCheck.truncated, true,
+      "GT-05 temporal: rejected cyclic continuation must not falsely report trajectory-cap truncation");
+    const executableCycleCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const tgcvResult = window.lastTgcvDemoResult;
+      const tgcv = tgcvResult.current;
+      const original = {
+        transitions: structuredClone(model.transitions),
+        exploration: structuredClone(model.exploration),
+        transformations: structuredClone(tgcv.transformations),
+        relations: structuredClone(tgcv.relations),
+        mappings: structuredClone(tgcvResult.mappings),
+        snapshot: tgcvSourceSnapshot
+      };
+      model.transitions.push({ id: "t_da", source: "D", target: "A" });
+      model.exploration = { max_depth: 5, max_trajectories: 30 };
+      tgcv.transformations.push("tau_t_da");
+      tgcv.relations.push(["tau_t_cd", "tau_t_da"], ["tau_t_da", "tau_t_ab"]);
+      tgcvResult.mappings.push({
+        system_transition_id: "t_da",
+        tgcv_transformation_id: "tau_t_da"
+      });
+      tgcvSourceSnapshot = canonical(model);
+      const result = window.enumerateTgcvTrajectories(model, "baseline");
+      const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
+      model.transitions = original.transitions;
+      model.exploration = original.exploration;
+      tgcv.transformations = original.transformations;
+      tgcv.relations = original.relations;
+      tgcvResult.mappings = original.mappings;
+      tgcvSourceSnapshot = original.snapshot;
+      return { paths, truncated: result.truncated };
+    });
+    assert.ok(executableCycleCheck.paths.every(path => path.length <= 5),
+      "GT-05 temporal: executable candidate must never exceed max_depth");
+    assert.ok(executableCycleCheck.paths.every(path => new Set(path).size === path.length),
+      "GT-05 temporal: a cyclic TGCV relation must not repeat a transformation within one candidate");
+    assert.notEqual(executableCycleCheck.truncated, true,
+      "GT-05 temporal: a rejected repeated transformation must not be mistaken for trajectory-cap truncation");
+    const trajectoryCapCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const original = structuredClone(model.exploration);
+      model.exploration = { max_depth: 5, max_trajectories: 30 };
+      tgcvSourceSnapshot = canonical(model);
+      const uncapped = window.enumerateTgcvTrajectories(model, "baseline");
+      model.exploration = { max_depth: 5, max_trajectories: 1 };
+      tgcvSourceSnapshot = canonical(model);
+      const first = window.enumerateTgcvTrajectories(model, "baseline");
+      const second = window.enumerateTgcvTrajectories(model, "baseline");
+      model.exploration = original;
+      tgcvSourceSnapshot = canonical(model);
+      const encode = result => ({
+        paths: (result.paths || []).map(path => path.map(step => step.system_transition)),
+        truncated: result.truncated
+      });
+      const tgcv = window.lastTgcvDemoResult.current;
+      const originalRelations = structuredClone(tgcv.relations);
+      tgcv.relations = [...originalRelations].reverse();
+      tgcvSourceSnapshot = canonical(model);
+      const uncappedReversed = window.enumerateTgcvTrajectories(model, "baseline");
+      model.exploration = { max_depth: 5, max_trajectories: 1 };
+      tgcvSourceSnapshot = canonical(model);
+      const reversed = window.enumerateTgcvTrajectories(model, "baseline");
+      tgcv.relations = originalRelations;
+      model.exploration = original;
+      tgcvSourceSnapshot = canonical(model);
+      const normalizePaths = result => (result.paths || [])
+        .map(path => path.map(step => step.system_transition).join("->"))
+        .sort();
+      return {
+        uncapped: encode(uncapped), uncappedReversed: encode(uncappedReversed),
+        first: encode(first), second: encode(second), reversed: encode(reversed),
+        uncappedPaths: normalizePaths(uncapped), uncappedReversedPaths: normalizePaths(uncappedReversed)
+      };
+    });
+    assert.ok(trajectoryCapCheck.uncapped.paths.length > 1,
+      "GT-05 temporal: cap fixture must contain more than one valid candidate");
+    assert.equal(trajectoryCapCheck.first.paths.length, 1,
+      "GT-05 temporal: max_trajectories must cap emitted TGCV paths");
+    assert.equal(trajectoryCapCheck.first.truncated, true,
+      "GT-05 temporal: exceeding max_trajectories must report truncation");
+    assert.deepEqual(trajectoryCapCheck.second, trajectoryCapCheck.first,
+      "GT-05 temporal: capped trajectory enumeration must be deterministic");
+    assert.deepEqual(trajectoryCapCheck.uncappedReversedPaths, trajectoryCapCheck.uncappedPaths,
+      "GT-05 temporal: complete candidate set must not depend on TGCV relation input order");
+    assert.deepEqual(trajectoryCapCheck.reversed, trajectoryCapCheck.first,
+      "GT-05 temporal: capped trajectory selection must not depend on TGCV relation input order");
+    const ambiguousMappingCheck = await temporalPage.evaluate(async () => {
+      const tgcvResult = window.lastTgcvDemoResult;
+      const originalMappings = structuredClone(tgcvResult.mappings);
+      tgcvResult.mappings.push({
+        system_transition_id: "t_ax",
+        tgcv_transformation_id: "tau_t_ab"
+      });
+      const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+      const paths = (result.paths || []).map(path => path.map(step => step.transformation));
+      const snapshot = await window.createTgcvCandidateSnapshot(window.lastModel, "baseline");
+      const statuses = snapshot.status === "READY"
+        ? snapshot.candidates.flatMap(candidate => candidate.steps)
+            .filter(step => step.transformation_id === "tau_t_ab")
+            .map(step => step.mapping_status)
+        : [snapshot.reason];
+      tgcvResult.mappings = originalMappings;
+      return { paths, statuses, truncated: result.truncated };
+    });
+    assert(ambiguousMappingCheck.paths.some(path => path.includes("tau_t_ab")),
+      "GT-05 temporal: ambiguous mapping must not erase the TGCV transformation from candidate topology");
+    assert(ambiguousMappingCheck.statuses.includes("MISSING_OR_AMBIGUOUS"),
+      "GT-05 temporal: ambiguous correspondence must be labelled non-executable in the candidate snapshot");
+    assert.notEqual(ambiguousMappingCheck.truncated, true,
+      "GT-05 temporal: retaining an ambiguous candidate must not falsely report trajectory-cap truncation");
+    const missingAndInvalidMappingCheck = await temporalPage.evaluate(async () => {
+      const tgcvResult = window.lastTgcvDemoResult;
+      const originalMappings = structuredClone(tgcvResult.mappings);
+      const enumerate = () => {
+        const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+        return (result.paths || []).map(path => path.map(step => step.transformation));
+      };
+      tgcvResult.mappings = originalMappings.filter(item =>
+        item.tgcv_transformation_id !== "tau_t_ab");
+      const missing = enumerate();
+      const missingSnapshot = await window.createTgcvCandidateSnapshot(window.lastModel, "baseline");
+      const missingStatuses = missingSnapshot.status === "READY"
+        ? missingSnapshot.candidates.flatMap(candidate => candidate.steps)
+            .filter(step => step.transformation_id === "tau_t_ab")
+            .map(step => step.mapping_status)
+        : [missingSnapshot.reason];
+      tgcvResult.mappings = originalMappings.map(item =>
+        item.tgcv_transformation_id === "tau_t_ab"
+          ? { ...item, system_transition_id: "t_missing_system_transition" }
+          : item);
+      const invalid = enumerate();
+      const invalidSnapshot = await window.createTgcvCandidateSnapshot(window.lastModel, "baseline");
+      const invalidStatuses = invalidSnapshot.status === "READY"
+        ? invalidSnapshot.candidates.flatMap(candidate => candidate.steps)
+            .filter(step => step.transformation_id === "tau_t_ab")
+            .map(step => step.mapping_status)
+        : [invalidSnapshot.reason];
+      tgcvResult.mappings = originalMappings;
+      return { missing, invalid, missingStatuses, invalidStatuses };
+    });
+    assert(missingAndInvalidMappingCheck.missing.some(path => path.includes("tau_t_ab")),
+      "GT-05 temporal: missing system correspondence must not erase an accessible TGCV transformation");
+    assert(missingAndInvalidMappingCheck.missingStatuses.includes("MISSING_OR_AMBIGUOUS"),
+      "GT-05 temporal: candidate snapshot must preserve the transformation and label its missing correspondence");
+    assert(missingAndInvalidMappingCheck.invalid.some(path => path.includes("tau_t_ab")),
+      "GT-05 temporal: invalid system correspondence must not erase an accessible TGCV transformation");
+    assert(missingAndInvalidMappingCheck.invalidStatuses.includes("INVALID_SYSTEM_TRANSITION"),
+      "GT-05 temporal: candidate snapshot must distinguish an invalid system transition from TGCV inaccessibility");
+    const disabledTransitionCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const scenario = model.scenarios.find(item => item.id === "baseline");
+      const hadDisabledTransitions = Object.prototype.hasOwnProperty.call(scenario, "disabled_transitions");
+      const original = {
+        disabledTransitions: hadDisabledTransitions ? structuredClone(scenario.disabled_transitions) : undefined,
+        result: structuredClone(window.lastTgcvDemoResult),
+        snapshot: tgcvSourceSnapshot
+      };
+      scenario.disabled_transitions = Array.from(new Set((original.disabledTransitions || []).concat(["t_ab"])));
+      tgcvSourceSnapshot = canonical(model);
+      renderTgcvDemo(model, execute(model), "baseline");
+      const result = window.enumerateTgcvTrajectories(model, "baseline");
+      const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
+      if (hadDisabledTransitions) scenario.disabled_transitions = original.disabledTransitions;
+      else delete scenario.disabled_transitions;
+      tgcvSourceSnapshot = original.snapshot;
+      window.lastTgcvDemoResult = original.result;
+      return paths;
+    });
+    assert.deepEqual(disabledTransitionCheck, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: a disabled transition is excluded from scenario T_acc and must not be emitted as a candidate");
+    const conditionEvaluationCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const scenario = model.scenarios.find(item => item.id === "baseline");
+      const hadEvaluations = Object.prototype.hasOwnProperty.call(scenario, "condition_evaluations");
+      const original = {
+        transitions: structuredClone(model.transitions),
+        schemaVersion: model.schema_version,
+        evaluations: hadEvaluations ? structuredClone(scenario.condition_evaluations) : undefined,
+        result: structuredClone(window.lastTgcvDemoResult),
+        snapshot: tgcvSourceSnapshot
+      };
+      // Conditional transitions are part of the collective-toy-input-002 contract.
+      model.schema_version = "collective-toy-input-002";
+      const transition = model.transitions.find(item => item.id === "t_ab");
+      transition.condition = "authorization_level >= 2";
+      const evaluate = (resultValue) => {
+        scenario.condition_evaluations = resultValue === null ? {} : {
+          t_ab: { condition: "authorization_level >= 2", result: resultValue }
+        };
+        tgcvSourceSnapshot = canonical(model);
+        renderTgcvDemo(model, execute(model), "baseline");
+        const result = window.enumerateTgcvTrajectories(model, "baseline");
+        return (result.paths || []).map(path => path.map(step => step.system_transition));
+      };
+      const missing = evaluate(null);
+      const falseResult = evaluate("FALSE");
+      const trueResult = evaluate("TRUE");
+      model.transitions = original.transitions;
+      if (original.schemaVersion === undefined) delete model.schema_version;
+      else model.schema_version = original.schemaVersion;
+      if (hadEvaluations) scenario.condition_evaluations = original.evaluations;
+      else delete scenario.condition_evaluations;
+      tgcvSourceSnapshot = original.snapshot;
+      window.lastTgcvDemoResult = original.result;
+      return { missing, falseResult, trueResult };
+    });
+    assert.deepEqual(conditionEvaluationCheck.missing, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: missing condition evaluation excludes the conditional transformation from scenario T_acc");
+    assert.deepEqual(conditionEvaluationCheck.falseResult, [
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: FALSE condition excludes the conditional transformation from scenario T_acc");
+    assert.deepEqual(conditionEvaluationCheck.trueResult, [
+      ["t_ab", "t_bc", "t_cd"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: TRUE condition restores the TGCV candidate when the scenario accessibility graph is rederived");
+    const cyclicPrerequisiteCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const tgcvResult = window.lastTgcvDemoResult;
+      const tgcv = tgcvResult.current;
+      const original = {
+        transitions: structuredClone(model.transitions),
+        relations: structuredClone(model.relations),
+        transformations: structuredClone(tgcv.transformations),
+        tgcvRelations: structuredClone(tgcv.relations),
+        mappings: structuredClone(tgcvResult.mappings),
+        snapshot: tgcvSourceSnapshot
+      };
+      model.transitions.push({ id: "t_da", source: "D", target: "A" });
+      tgcv.transformations.push("tau_t_da");
+      tgcv.relations.push(["tau_t_cd", "tau_t_da"], ["tau_t_da", "tau_t_ab"]);
+      tgcvResult.mappings.push({
+        system_transition_id: "t_da",
+        tgcv_transformation_id: "tau_t_da"
+      });
+      model.relations = [{
+        id: "r_cycle_requires_alternative",
+        type: "requires_prior_execution",
+        transition_id: "t_cd",
+        requires_transition_id: "t_ax"
+      }];
+      tgcvSourceSnapshot = canonical(model);
+      const result = window.enumerateTgcvTrajectories(model, "baseline");
+      const paths = (result.paths || []).map(path => path.map(step => step.system_transition));
+      model.transitions = original.transitions;
+      model.relations = original.relations;
+      tgcv.transformations = original.transformations;
+      tgcv.relations = original.tgcvRelations;
+      tgcvResult.mappings = original.mappings;
+      tgcvSourceSnapshot = original.snapshot;
+      return paths;
+    });
+    assert.deepEqual(cyclicPrerequisiteCheck, [
+      ["t_ab", "t_bc", "t_cd", "t_da"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: TGCV candidate topology must preserve the declared cycle without repeating a transformation; execution validation handles prerequisites");
+    const blockedContinuationCheck = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const originalRelations = structuredClone(model.relations);
+      model.relations = [{
+        id: "r_unmet_prerequisite",
+        type: "requires_prior_execution",
+        transition_id: "t_cd",
+        requires_transition_id: "t_ax"
+      }];
+      tgcvSourceSnapshot = canonical(model);
+      const result = window.enumerateTgcvTrajectories(model, "baseline");
+      model.relations = originalRelations;
+      tgcvSourceSnapshot = canonical(model);
+      return (result.paths || []).map(path => path.map(step => step.system_transition));
+    });
+    assert.deepEqual(blockedContinuationCheck, [
+      ["t_ab", "t_bc", "t_cd"],
+      ["t_ax", "t_xd"]
+    ], "GT-05 temporal: unmet execution prerequisites must not rewrite TGCV topology candidates");
+    assert.ok(temporalCandidateIndex >= 0,
+      "GT-05 temporal: ordered prerequisite path must be selectable from TGCV-generated candidates");
+    await temporalPage.locator("#sequence-scenario").selectOption("baseline");
+    await temporalPage.locator("#sequence-select").selectOption(String(temporalCandidateIndex));
     await temporalPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
     await temporalPage.waitForFunction(() => document.querySelector("#sequence-trace")?.dataset.state === "replay-verified" || document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded" || document.querySelector("#sequence-trace")?.dataset.state === "rejected", { timeout: 5000 });
     assert.equal(await temporalPage.locator("#sequence-trace").getAttribute("data-state"), "replay-verified",
@@ -3620,9 +4023,6 @@ const assert = require("node:assert/strict");
     const temporalTrace = await temporalPage.locator("#sequence-trace").evaluate(el => el._trace);
     assert.deepEqual(temporalTrace.submitted_transition_ids, ["t_ab", "t_bc", "t_cd"],
       "GT-05 temporal: completed trace must preserve prerequisite-before-conditioned order");
-    assert.equal(temporalTrace.trajectory_source, "TGCV_TRANSFORMATION_GRAPH");
-    assert.deepEqual(temporalTrace.tgcv_trajectory.transformation_ids, ["tau_t_ab", "tau_t_bc", "tau_t_cd"],
-      "GT-05 temporal: execution must retain the ordered TGCV transformations alongside system transition IDs");
     assert.equal(temporalTrace.status, "COMPLETED");
     await temporalPage.locator("#outcome-value").fill("synthetic temporal path completed");
     await temporalPage.locator("#outcome-unit").fill("qualitative");
@@ -3820,6 +4220,50 @@ const assert = require("node:assert/strict");
     const staleAssessmentOutcomeHash = structuredClone(temporalPackage);
     staleAssessmentOutcomeHash.value_assessment.outcome_sha256 = "0".repeat(64);
     await assessLinkedPackageRejection(staleAssessmentOutcomeHash, /El hash del resultado de valoración no coincide/i, false);
+    // A TGCV-accessible candidate with a missing system correspondence must be visible,
+    // produce an auditable BLOCKED trace when selected, and never create an outcome.
+    const unmappedExecutionSetup = await temporalPage.evaluate(() => {
+      const tgcvResult = window.lastTgcvDemoResult;
+      const originalMappings = structuredClone(tgcvResult.mappings);
+      tgcvResult.mappings = originalMappings.filter(item =>
+        item.tgcv_transformation_id !== "tau_t_ab");
+      const result = window.enumerateTgcvTrajectories(window.lastModel, "baseline");
+      const candidateIndex = (result.paths || []).findIndex(path =>
+        path.some(step => step.transformation === "tau_t_ab"));
+      return { candidateIndex, originalMappings };
+    });
+    assert(unmappedExecutionSetup.candidateIndex >= 0,
+      "GT-05 temporal: unmapped TGCV transformation must remain selectable as an accessible candidate");
+    await temporalPage.locator("#sequence-input").fill("");
+    await temporalPage.locator("#sequence-select").selectOption({ index: unmappedExecutionSetup.candidateIndex });
+    await temporalPage.getByRole("button", { name: /Ejecutar secuencia seleccionada/i }).click();
+    await temporalPage.waitForFunction(() =>
+      document.querySelector("#sequence-trace")?.dataset.state === "blocked-trace-recorded",
+      { timeout: 3000 });
+    const unmappedExecutionTrace = await temporalPage.locator("#sequence-trace").evaluate(el => ({
+      state: el.dataset.state,
+      trace: el._trace,
+      outcomeState: document.querySelector("#outcome-status")?.dataset.state,
+      activeOutcome: window.activeExecutionRecord?.outcome ?? null,
+      message: el.innerText
+    }));
+    await temporalPage.evaluate(mappings => {
+      window.lastTgcvDemoResult.mappings = mappings;
+    }, unmappedExecutionSetup.originalMappings);
+    assert.equal(unmappedExecutionTrace.state, "blocked-trace-recorded",
+      "GT-05 temporal: missing correspondence must produce an auditable blocked trace");
+    assert.equal(unmappedExecutionTrace.trace.status, "BLOCKED",
+      "GT-05 temporal: missing correspondence must never be recorded as a completed execution");
+    assert.equal(unmappedExecutionTrace.trace.blocked_step.reason, "tgcv_mapping_missing_or_invalid",
+      "GT-05 temporal: trace must identify missing/invalid TGCV correspondence as the blocking cause");
+    assert(unmappedExecutionTrace.trace.tgcv_trajectory.transformation_ids.includes("tau_t_ab"),
+      "GT-05 temporal: blocked trace must preserve the attempted TGCV transformation");
+    assert.equal(unmappedExecutionTrace.activeOutcome, null,
+      "GT-05 temporal: a blocked unmapped trajectory must not generate an outcome");
+    assert.equal(unmappedExecutionTrace.outcomeState, "not-assessed",
+      "GT-05 temporal: contextual value/outcome must remain unassessed after blocked execution");
+    assert.match(unmappedExecutionTrace.message, /accesible.*no se puede ejecutar|correspondencia única y válida/i,
+      "GT-05 temporal: user-facing trace must explain the accessibility/executability distinction");
     await temporalPage.close();
 
     // UX regression: the accessible-trajectory carousel is visual, distinct from concrete executions,
@@ -3900,6 +4344,30 @@ const assert = require("node:assert/strict");
     }), candidateSnapshot);
     assert.equal(heuristicRanking.status, "RANKED");
     assert.equal(heuristicRanking.claim, "HEURISTIC_RANKING_NOT_PREDICTION");
+    const mappingAwareRanking = await uxPage.evaluate(async () => {
+      const result = window.lastTgcvDemoResult;
+      const originalMappings = structuredClone(result.mappings);
+      result.mappings = originalMappings.filter(item => item.tgcv_transformation_id !== "tau_ux_ab");
+      const snapshot = await window.createTgcvCandidateSnapshot(window.lastModel, "baseline");
+      const ranking = await window.rankTgcvCandidates(snapshot, {
+        contract_version: "tgcv-heuristic-config-001",
+        criteria: [{ id: "shorter", type: "minimize_steps" }],
+        constraints: []
+      });
+      result.mappings = originalMappings;
+      return {
+        status: snapshot.status,
+        rankingStatus: ranking.status,
+        candidate: ranking.results.find(item => item.transformation_ids.includes("tau_ux_ab"))
+      };
+    });
+    assert.equal(mappingAwareRanking.status, "READY",
+      "TGCV selector: missing system correspondence must not erase the accessible candidate snapshot");
+    assert.equal(mappingAwareRanking.rankingStatus, "RANKED");
+    assert.equal(mappingAwareRanking.candidate.mapping_status, "INCOMPLETE",
+      "TGCV selector: ranking must preserve mapping completeness as a separate property");
+    assert.match(mappingAwareRanking.candidate.execution_note, /accesible, pero no ejecutable/i,
+      "TGCV selector: ranking UI data must not imply an unmapped TGCV candidate is executable");
     assert.deepEqual(heuristicRanking.ranked_candidate_ids, ["tgcv-candidate-0002", "tgcv-candidate-0001"],
       "TGCV selector: explicit transformation preference must change order deterministically");
     const constrainedRanking = await uxPage.evaluate(async snapshot => window.rankTgcvCandidates(snapshot, {
@@ -4122,7 +4590,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#trajectory-card").innerText(), /A → tau_cond_ab → B → tau_plain_bc → C/,
       "TRUE must enable the TGCV transformation and its downstream trajectory");
     assert.match(await page.locator("#graph").textContent(), /VERDADERA: permiso concedido/i);
-    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /correspondencias vigentes/i,
+    assert.match(await page.locator("#tgcv-provenance-note").innerText(), /Regla de correspondencia: condition-evaluator-explicit-mapping-v1/i,
       "The current TGCV trajectory must be derived only from the explicitly declared mapping");
     await page.locator("#transition-review-list select[data-condition-evaluation='cond_ab']").selectOption("FALSE");
     await page.waitForFunction(() => /Ejecución completada/.test(document.querySelector("#status")?.innerText || ""));
