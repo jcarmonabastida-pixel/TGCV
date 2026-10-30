@@ -646,3 +646,16 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Relación:** precisión integrada en SR-058; complementa SR-055 para revisar actuaciones previas y SR-057 si se confirma un defecto común de implantación. No crea un requisito independiente, competencias nuevas ni reversiones automáticas.
 - **Estado:** precisión aprobada e incorporada al caso ficticio y al registro de autoevaluación en la rama del PR #114.
 
+
+
+### SR-059 — Solicitud abierta sin trazabilidad de la versión de regla aplicada
+
+- **Aprobación del usuario:** sí (2026-10-30).
+- **Escenario:** una solicitud sigue abierta, pero su registro no identifica qué versión de regla se aplicó ni permite saber si la transición autorizada a una regla nueva la incluía.
+- **Actuación acordada:** mantener responsable, seguimiento y siguiente actuación; reconstruir lo ocurrido mediante registros, fechas, decisiones, actuaciones, comunicaciones y evidencias disponibles, sin suponer qué versión se aplicó o correspondía.
+- **Integridad del registro:** conservar discrepancias e historial; documentar qué se ha podido reconstruir y qué información no se ha recuperado. Explicitar la incertidumbre residual.
+- **Decisión pendiente:** si la evidencia no basta, elevar la determinación a la instancia competente para establecer la regla aplicable y cómo proceder con actuaciones pendientes. Registrar fundamento, autoridad/responsable y momento de la decisión.
+- **Comprobación de alcance:** verificar con evidencia si otras solicitudes presentan la misma falta de trazabilidad y si existe una deficiencia de registro o control de versiones; las correcciones sistémicas requieren autorización.
+- **Relación con SR-058:** SR-058 regula la transición autorizada; SR-059 aborda el caso en que no puede reconstruirse qué versión se aplicó o correspondía. No presume regla anterior ni nueva, ni crea una regla sustantiva o competencias nuevas.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aprobado por el usuario e incorporado al caso ficticio y al registro de autoevaluación en la rama del PR #114.
