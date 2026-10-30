@@ -472,6 +472,20 @@ Toda contingencia debe dejar identificadas las solicitudes de cita afectadas, de
 - qué prioridad o necesidad de seguimiento les corresponde, conforme a criterios autorizados;
 - qué actuaciones se realizaron para recuperar su tramitación.
 
+
+### Recuperación progresiva del volumen acumulado tras la contingencia
+
+Cuando, al restablecerse la operativa habitual, el volumen de solicitudes acumuladas supere la capacidad ordinaria disponible, la recuperación debe ser progresiva y controlada; no debe suponerse que la vuelta a la operativa habitual permite absorber todo el pendiente de inmediato.
+
+- Consolidar el inventario de solicitudes acumuladas utilizando la identificación y trazabilidad previstas en SR-045, comprobando etapa, actuaciones pendientes, responsable y necesidad de seguimiento.
+- Revisar y ordenar la atención de las solicitudes conforme a criterios de prioridad y seguimiento previamente autorizados. Cualquier prioridad que dependa de valoración clínica corresponde a la autoridad clínica competente; no se crean criterios clínicos ni administrativos nuevos en esta propuesta.
+- Asignar capacidad de forma realista, teniendo en cuenta la carga vigente y la capacidad efectiva de las personas disponibles, conforme a SR-056. No sobreasignar tareas ni considerar recuperada una solicitud por el mero hecho de incluirla en una lista.
+- Recuperar la tramitación por etapas o lotes asumibles, con responsable y siguiente actuación identificados para cada solicitud, y revisar el avance hasta absorber el volumen pendiente o dejar documentados los bloqueos que persistan.
+- Si la capacidad disponible sigue siendo insuficiente, mantener las solicitudes abiertas y bajo seguimiento y activar las alternativas o contingencias autorizadas. Si una demora pudiera comprometer la atención necesaria, aplicar las salvaguardas clínicas correspondientes.
+- Registrar el volumen pendiente, los criterios autorizados aplicados, la capacidad asignada, el progreso, los bloqueos y las decisiones adoptadas.
+
+La recuperación de la operativa general y la absorción del volumen acumulado son resultados distintos. No se considera normalizada la gestión de las solicitudes afectadas solo porque se haya restablecido el servicio ordinario. Esta regla desarrolla SR-044, SR-045 y SR-046, y se apoya en SR-056; no establece plazos, umbrales, prioridades ni recursos no autorizados.
+
 ### Verificación de la reincorporación efectiva de las solicitudes al flujo
 
 Antes de considerar recuperada la operativa del proceso evaluado, debe comprobarse, para cada solicitud afectada, que:
