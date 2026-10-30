@@ -383,6 +383,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Cierre:** resolver la incidencia común no cierra automáticamente las incidencias individuales ni las solicitudes vinculadas.
 - **Relación:** complementa SR-049 y SR-050 (registro y ciclo de vida de incidencias), SR-051 (persistencia y reincidencia) y SR-045/046 (identificación y recuperación individual).
 - **Límites:** se aplica a la gestión operativa del proceso de concertación de citas; no sustituye una investigación de seguridad clínica ni la autoridad clínica cuando procedan. Propuesta para el caso ficticio, no procedimiento aprobado ni validación empírica.
+- **Reconfirmación del usuario (2026-10-30):** corregir el defecto común no significa que hayan desaparecido todos los efectos que produjo. Mantener la incidencia común hasta verificar la corrección del proceso y conservar el seguimiento individual de las solicitudes que necesiten actuaciones adicionales.
+- **Separación de verificaciones:** comprobar por separado (a) implantación y funcionamiento de la corrección del defecto común y (b) atención de los efectos residuales y cumplimiento de las condiciones de resolución de cada solicitud.
+- **Seguimiento individual:** para cada solicitud aún afectada, registrar efecto residual, actuación necesaria, responsable y siguiente actuación. Ejecutar las actuaciones adicionales conforme a competencias y procedimientos autorizados; las consecuencias clínicas corresponden a la autoridad clínica.
+- **Cierre no automático:** corregir el defecto común no cierra solicitudes individuales. La incidencia común y las solicitudes vinculadas tienen criterios de resolución distintos; puede cerrarse la incidencia común cuando se cumplan sus criterios autorizados, manteniendo abiertas y trazables las solicitudes con efectos pendientes.
+- **Control de insuficiencia:** si la revisión individual revela que la corrección no fue suficiente o que el defecto persiste, mantener o reabrir la incidencia común conforme al ciclo autorizado y revisar su alcance.
+- **Estado:** precisión aprobada e integrada en SR-057; no crea un requisito independiente ni establece plazos, criterios de cierre o competencias nuevos.
 - **Estado:** aprobado por el usuario e incorporado al caso A3 y al registro de autoevaluación en la rama del PR #114.
 
 
