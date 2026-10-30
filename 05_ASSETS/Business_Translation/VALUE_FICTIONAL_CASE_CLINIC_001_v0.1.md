@@ -994,6 +994,20 @@ Si se detecta que una o varias solicitudes recibieron anticipadamente la nueva r
 
 Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transición ya autorizada, mientras SR-058 establece cómo debe aprobarse y aplicarse el cambio. Se coordina con SR-055 para revisar actuaciones previas y con SR-057 si se identifica un defecto común de implantación. No autoriza rectificaciones automáticas ni crea competencias o criterios nuevos.
 
+
+### SR-059 — Solicitud abierta sin trazabilidad de la versión de regla aplicada
+
+- **Aprobación del usuario:** sí (2026-10-30).
+- **Contexto:** durante una revisión se identifica una solicitud abierta cuyo registro no permite determinar qué versión de regla se aplicó ni si quedó comprendida en la transición autorizada a una regla nueva.
+- **Continuidad y control:** mantener la solicitud abierta bajo seguimiento, con responsable y siguiente actuación identificados; no dejar que la incertidumbre de versionado la haga desaparecer del control operativo.
+- **Reconstrucción basada en evidencia:** revisar los registros disponibles, fechas, decisiones, actuaciones, comunicaciones y evidencias de la transición. No inferir la versión aplicada ni la que correspondía por defecto. Conservar los datos y discrepancias existentes; documentar qué se ha podido reconstruir y qué información no se ha recuperado.
+- **Determinación:** cuando la evidencia no permita resolver qué regla debía aplicarse, someter la cuestión a la instancia competente según el mecanismo de autorización aplicable. La decisión debe establecer qué regla corresponde a la solicitud y cómo proceder con las actuaciones pendientes, dejando constancia del fundamento, responsable/autoridad y momento.
+- **Incertidumbre residual:** registrar expresamente cualquier aspecto que siga sin poder determinarse; no presentar una reconstrucción incompleta como certeza.
+- **Alcance y prevención:** comprobar, con evidencia, si la falta de trazabilidad afecta a otras solicitudes y si revela una deficiencia de registro, identificación o control de versiones. Cualquier corrección sistémica seguirá el mecanismo autorizado.
+- **Relación:** complementa SR-058, que establece la transición autorizada y la trazabilidad por solicitud; se distingue de la aplicación incorrecta conocida de una regla durante la transición, porque en SR-059 la versión aplicada o la regla que correspondía no pueden determinarse con la información disponible. No crea una regla sustantiva nueva, competencias ni presunciones por defecto.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aprobado por el usuario e incorporado documentalmente en la rama del PR #114.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
