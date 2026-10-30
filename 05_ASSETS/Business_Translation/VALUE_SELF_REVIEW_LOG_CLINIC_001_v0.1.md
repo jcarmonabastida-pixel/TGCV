@@ -499,6 +499,11 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Distinción esencial:** la recuperación de la contingencia y la resolución de las solicitudes son resultados distintos. Una solicitud puede seguir pendiente después de recuperada la operativa, pero no debe quedar sin responsable ni seguimiento.
 - **Pendiente antes de uso real:** definir cómo se realiza y registra esta comprobación y quién la valida.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Reconfirmación del usuario (2026-10-30):** si una solicitud ya reincorporada vuelve a bloquearse porque la actuación asignada no se completó, reactivar su seguimiento, registrar el bloqueo y conservar el historial de actuaciones previas.
+- **Revisión de alcance:** comprobar si la misma causa o fallo de ejecución puede afectar a otras solicitudes del mismo lote, verificándolas individualmente; no asumir que todas están bloqueadas.
+- **Relación con SR-051:** distinguir una incidencia persistente que nunca se resolvió de una nueva ocurrencia después del cierre de la anterior. Solo en este último caso registrar una nueva incidencia vinculada a la anterior y a la solicitud original, conforme a SR-051.
+- **Continuidad:** mantener cada solicitud afectada abierta y bajo seguimiento hasta completar la actuación y verificar de nuevo su reincorporación.
+- **Relación:** precisión integrada en SR-046 y coordinada con SR-045 y SR-051; no crea un requisito independiente.
 - **Estado:** aceptado por el usuario; incorporado documentalmente en la rama de trabajo.
 
 ### SR-047 — Detección de solicitudes sin seguimiento durante la operativa ordinaria
