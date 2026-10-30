@@ -310,6 +310,9 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Reconfirmación del usuario (2026-10-30):** ante la ausencia imprevista de la persona asignada, activar sustitución o delegación previamente definida; la tarea debe recaer en una persona autorizada y competente, sin transferencia automática por el mero hecho de la ausencia.
 - **Trazabilidad precisada:** registrar ausencia, activación, persona sustituta, autorización y competencia aplicables, alcance/duración de la delegación y acciones pendientes. Mantener identificado al responsable vigente.
 - **Relación:** esta precisión desarrolla SR-030 y es coherente con SR-032; no crea un requisito independiente.
+- **Reconfirmación del usuario (2026-10-30):** si coinciden la indisponibilidad de la persona asignada y del responsable end-to-end, debe existir un segundo nivel de continuidad previamente definido, con persona o instancia designada, autorizada y competente para asumir la coordinación o las tareas dentro de sus límites.
+- **Contingencia de último nivel:** si tampoco está disponible el segundo nivel, activar el mecanismo previamente definido para mantener el seguimiento, identificar la autoridad operativa disponible y evitar solicitudes sin responsable. Registrar activación, decisiones, transferencias y acciones pendientes.
+- **Relación con SR-032 y SR-033:** resolver ordinariamente mediante cobertura operativa; reservar el escalado jerárquico a las excepciones definidas en SR-032. La cobertura debe ser efectiva, autorizada y competente conforme a SR-033. No se crea un requisito independiente.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
 
 ### SR-031 — Seguimiento y revisión de solicitudes bloqueadas
