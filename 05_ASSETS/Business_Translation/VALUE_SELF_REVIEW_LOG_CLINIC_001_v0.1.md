@@ -371,6 +371,21 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
 - **Estado:** aprobado por el usuario e incorporado al caso A3 y al registro de autoevaluación en la rama del PR #114.
 
+### SR-057 — Gestión de una incidencia común del proceso con múltiples solicitudes afectadas
+
+- **Aprobación del usuario:** sí.
+- **Contexto:** la revisión de varias solicitudes bloqueadas revela que comparten un mismo defecto o fallo del proceso, en lugar de tratarse únicamente de errores individuales.
+- **Regla acordada:** registrar una incidencia común del proceso y vincular a ella todas las solicitudes potencialmente afectadas, manteniendo el registro y seguimiento individual de cada una.
+- **Determinación del alcance:** comprobar individualmente qué solicitudes están afectadas y revisar, con base en evidencia, si existen otras solicitudes expuestas. No asumir que todas las solicitudes del lote están afectadas.
+- **Corrección:** analizar y corregir la causa mediante el mecanismo de cambio y autorización correspondiente. Distinguir causas confirmadas de hipótesis; no presentar una causa no demostrada como hecho ni considerar una solución provisional como corrección definitiva.
+- **Verificación:** comprobar que el defecto del proceso ha sido tratado y que cada solicitud afectada ha retomado efectivamente su tramitación, con responsable y siguiente actuación identificados. Mantener abiertas y bajo seguimiento las que sigan pendientes o bloqueadas.
+- **Trazabilidad:** registrar evidencia, alcance, solicitudes vinculadas, decisiones, acciones correctivas, verificaciones y responsables.
+- **Cierre:** resolver la incidencia común no cierra automáticamente las incidencias individuales ni las solicitudes vinculadas.
+- **Relación:** complementa SR-049 y SR-050 (registro y ciclo de vida de incidencias), SR-051 (persistencia y reincidencia) y SR-045/046 (identificación y recuperación individual).
+- **Límites:** se aplica a la gestión operativa del proceso de concertación de citas; no sustituye una investigación de seguridad clínica ni la autoridad clínica cuando procedan. Propuesta para el caso ficticio, no procedimiento aprobado ni validación empírica.
+- **Estado:** aprobado por el usuario e incorporado al caso A3 y al registro de autoevaluación en la rama del PR #114.
+
+
 ### SR-035 — Dimensionamiento de la cobertura crítica y delimitación de su alcance
 
 - **Aprobación del usuario:** sí.
