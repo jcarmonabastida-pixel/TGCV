@@ -2,8 +2,8 @@
 
 **Identificador:** VALUE-DISCOVERY-SPRINT-001  
 **Versión:** 0.1  
-**Estado:** BORRADOR DE SERVICIO PILOTO — pendiente de validación en caso real  
-**Documento rector:** [VALUE Methodology Lifecycle v0.2](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
+**Estado:** DISEÑO DE SERVICIO PILOTO EN EVOLUCIÓN — pendiente de prueba en caso real; no bloquea el prototipo web  
+**Documento rector:** [VALUE Methodology Lifecycle v0.4](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas de artefactos:** [A1–A8 Master Specifications v0.1](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)
 
 ## 1. Propósito
