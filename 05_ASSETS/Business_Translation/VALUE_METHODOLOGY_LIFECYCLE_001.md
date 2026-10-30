@@ -319,7 +319,7 @@ Las líneas de normalización, especificación de artefactos, diseño del servic
 
 No deben ocultarse ni resolverse por conveniencia de implementación:
 
-1. Si VALUE será el nombre formal definitivo y si VCF queda como nombre del proceso operativo.
+1. Identidad de trabajo acordada: VALUE se mantiene como nombre propio del framework con el descriptor **Transformational Value Framework**; VCF sigue siendo el nombre del proceso operativo. La arquitectura TGCV–VALUE–ValueLabOS y la propuesta editorial se registran en `TGCV_VALUE_VALUELABOS_IDENTITY_ARCH_v0.1.md`. Quedan pendientes las comprobaciones jurídicas y de disponibilidad antes de cualquier lanzamiento formal.
 2. Si se mantiene Value Architecture como concepto paraguas o como nombre de la arquitectura integradora.
 3. La ontología formal del VSM: tipos de relación, cardinalidades y reglas de consistencia.
 4. La escala definitiva de CCV y el diseño/validación del IVS.
