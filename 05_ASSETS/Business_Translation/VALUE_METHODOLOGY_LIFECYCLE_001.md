@@ -1,8 +1,8 @@
 # VALUE — Diseño integrado del estándar metodológico
 
 **Identificador:** VALUE-STANDARD-ARCH-001  
-**Versión:** 0.3  
-**Estado:** propuesta de normalización para revisión  
+**Versión:** 0.4  
+**Estado:** estándar metodológico de referencia en evolución; apto para implementación web de referencia, sujeto a revisión de integridad y gobernanza  
 **Tipo:** arquitectura metodológica de referencia  
 **Fuente principal:** *Conversación Investigación TGCV.pdf*, especialmente las formulaciones del VCF, Value Construction Loop, Value System Model, CCV e IVS (pp. 770–845 y referencias posteriores).  
 **Repositorio canónico:** `jcarmonabastida-pixel/TGCV`; esta especificación se mantiene como activo de aplicación/consultoría, separado del Core científico TGCV.  
@@ -346,3 +346,21 @@ Esta especificación integra y normaliza propuestas históricas para facilitar r
 ## 15. Nota de versión
 
 - **v0.3 (2026-10-30):** aclara la separación entre selección de alternativa, autorización para desarrollar su diseño y autorización explícita para ejecutar. Se establece que, sin autorización de ejecución emitida por la autoridad competente y con alcance, recursos, condiciones, salvaguardas y límites definidos, A7 permanece como propuesta y ACT no se inicia. La aclaración responde a la revisión documental A1–A8 basada en CLINIC-001; no constituye validación empírica ni aprobación definitiva del estándar.
+
+
+## 16. Decisión de promoción a prototipo web — 2026-10-30
+
+VALUE puede implementarse en un prototipo web de referencia a partir de una versión identificada de este estándar, sin esperar a completar evaluación interevaluador humana ni pruebas comunitarias. La evaluación individual CLINIC-001 se cerró con cobertura parcial documentada en el protocolo de usabilidad v0.7; las actividades con evaluadores externos y comunidad se mantienen como parte del ciclo posterior de evaluación y evolución.
+
+Esta decisión no equivale a declarar el estándar validado ni elimina los controles de integridad, consistencia documental, seguridad, privacidad, accesibilidad o gobernanza que correspondan al prototipo. La implementación debe:
+
+1. identificar la versión de VALUE que implementa y mantener trazabilidad con sus artefactos y decisiones;
+2. distinguir funciones implementadas, provisionales, incompletas y aún no soportadas;
+3. evitar presentar resultados ilustrativos o datos ficticios como evidencia real;
+4. permitir recoger observaciones, problemas, propuestas y contribuciones sin convertirlas automáticamente en cambios del estándar;
+5. mantener un proceso explícito de revisión, versionado y aceptación de cambios;
+6. comunicar que VALUE es una metodología propuesta y en evolución, abierta a evaluación por usuarios y comunidad.
+
+El prototipo es un medio para hacer VALUE examinable y mejorable en uso; no es por sí mismo una prueba de eficacia, causalidad ni validez empírica. La evaluación posterior con usuarios y colaboradores podrá aportar evidencia adicional y motivar nuevas versiones, sin que su ausencia bloquee esta primera implementación de referencia.
+
+**Alcance de la decisión:** habilita preparar y construir el prototipo web. No autoriza por sí sola la promoción a `main`: esta seguirá sujeta a revisión de integridad del PR, coherencia de los artefactos, controles de gobernanza y aprobación explícita de la promoción.
