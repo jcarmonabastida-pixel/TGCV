@@ -426,6 +426,18 @@ La gestión ordinaria de citas debe resolverse mediante responsabilidades, susti
 
 Antes del uso real deben definirse las responsabilidades, sustituciones, delegaciones y límites de autoridad, así como qué circunstancias justifican la excepción. Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento organizativo aprobado ni validación empírica.
 
+
+### Capacidad efectiva de la cobertura operativa
+
+La designación de una persona sustituta autorizada y competente no garantiza por sí sola que pueda asumir nuevas tareas. Antes de activar la cobertura debe comprobarse que dispone de capacidad efectiva, teniendo en cuenta su carga de trabajo vigente, las tareas ya comprometidas, el tiempo disponible y las competencias necesarias.
+
+- Si puede asumir la tarea sin comprometer de forma indebida sus responsabilidades actuales ni la continuidad, se activa la sustitución conforme al procedimiento.
+- Si su capacidad es insuficiente, no se le asigna la tarea de forma automática: se busca otra cobertura autorizada y competente o se activa el nivel de continuidad previsto.
+- Si no existe capacidad disponible, se mantiene la solicitud identificada y bajo seguimiento, y se activa el mecanismo autorizado de resolución o contingencia. No se inventan prioridades, umbrales ni plazos.
+- Registrar la evaluación de capacidad, la decisión, la persona finalmente asignada y las tareas pendientes.
+
+Esta regla se refiere a la cobertura operativa del proceso de concertación y gestión de citas. No amplía el alcance de SR-035, que trata la capacidad de cobertura de funciones críticas de atención sanitaria en el momento de la cita.
+
 ### Contingencia ante indisponibilidad simultánea del responsable y de su cobertura
 
 Si la persona responsable de una función crítica y la cobertura alternativa prevista están ambas indisponibles, se considera una **situación de contingencia**, no una incidencia ordinaria de cobertura.
