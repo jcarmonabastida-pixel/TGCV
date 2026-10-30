@@ -337,6 +337,17 @@ La hipótesis es falsable: si no se reduce la demora, empeora el acceso priorita
 
 La tabla explicita la conexión con A3 sin convertir sus relaciones en requisitos operativos. Las opciones son alternativas de diseño y no descripciones de actuaciones ya implantadas.
 
+### Cadena de razonamiento y contraste de H-V1
+
+- **Necesidad abordada:** mejorar la visibilidad y continuidad del seguimiento de solicitudes pendientes, sin deteriorar el acceso prioritario ni generar una carga inaceptable.
+- **Cambio propuesto en O1:** revisión estructurada de pendientes, identificación de excepciones y de la siguiente actuación, y escalado conforme a reglas y autoridades que ya estén autorizadas. Esta descripción pertenece al diseño de la alternativa, no al modelo A3 ni a un procedimiento aprobado.
+- **Mecanismo esperado:** mayor visibilidad de solicitudes y bloqueos → identificación más temprana de la siguiente actuación → posible reducción de solicitudes que superan el plazo de referencia.
+- **Personas/funciones afectadas:** pacientes/cuidadores (E01), recepción y administración (E02–E03), coordinación (E04) y profesionales sanitarios cuando exista interfaz clínica (E05). La carga y las competencias de cada función deben comprobarse.
+- **Supuestos críticos:** el registro permite identificar pendientes y fechas; existe una regla de plazo aplicable y vigente; la revisión es viable con la capacidad disponible; las funciones de coordinación y escalado tienen autoridad definida; las salvaguardas de prioridad se mantienen.
+- **Evidencia favorable/contradictoria disponible:** A5 contiene una diferencia descriptiva simulada en solicitudes fuera del plazo de referencia; no mide directamente la ejecución del mecanismo. El reporte cualitativo de aumento de carga es una señal contraria que impide dar por aceptada la carga. El indicador de prioridad no varía en el ejemplo, pero no demuestra ausencia de daño.
+- **Prueba posible:** piloto limitado y autorizado, con criterios previos definidos, registro de la realización de revisiones, solicitudes con responsable/siguiente actuación, excepciones escaladas, demora, acceso prioritario y carga comparable.
+- **Criterio de revisión/descarte:** no continuar ni ampliar si no se observa mejora relevante según criterios acordados, se deteriora el acceso prioritario, la carga supera el límite acordado o los datos no permiten una conclusión. Los umbrales no están definidos en este caso y no se inventan.
+
 ### Criterios de comparación
 
 - Acceso oportuno.
