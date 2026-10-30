@@ -663,3 +663,16 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Relación con SR-058:** SR-058 regula la transición autorizada; SR-059 aborda el caso en que no puede reconstruirse qué versión se aplicó o correspondía. No presume regla anterior ni nueva, ni crea una regla sustantiva o competencias nuevas.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
 - **Estado:** aprobado por el usuario e incorporado al caso ficticio y al registro de autoevaluación en la rama del PR #114.
+
+
+### SR-060 — Revisión de solicitudes cerradas con trazabilidad insuficiente de la regla aplicada
+
+- **Aprobación del usuario:** sí (2026-10-30).
+- **Escenario:** solicitud que figura como cerrada, pero cuyo registro no permite determinar qué versión de regla se aplicó ni si la transición autorizada la incluía.
+- **Criterio acordado:** el cierre no prueba por sí solo que la solicitud se resolviera correctamente; la falta de trazabilidad tampoco demuestra que el cierre fuera incorrecto.
+- **Actuación:** conservar el registro y reconstruir con evidencias la regla/transición, decisiones, actuaciones, comunicaciones y condiciones de cierre. Documentar lagunas e incertidumbre sin suposiciones.
+- **Revisión individual y decisión:** contrastar la evidencia con las condiciones de cierre y elevar a la instancia competente cualquier caso no resoluble. La instancia determinará si permanece cerrado, se reabre para revisión o requiere actuación correctiva autorizada, dejando fundamento, responsable/autoridad y momento.
+- **Salvaguarda:** no reabrir, mantener cerrado ni corregir automáticamente; conservar el cierre histórico. Las decisiones clínicas corresponden a la autoridad clínica competente.
+- **Alcance y relación:** comprobar con evidencia si hay otras solicitudes cerradas afectadas. SR-060 complementa SR-055, SR-058 y SR-059, y se limita a solicitudes ya cerradas; no crea presunción de error ni competencias nuevas.
+- **Límite:** propuesta para el caso ficticio; no procedimiento aprobado ni validación empírica.
+- **Estado:** aprobado e incorporado al caso y al registro de autoevaluación en la rama del PR #114.
