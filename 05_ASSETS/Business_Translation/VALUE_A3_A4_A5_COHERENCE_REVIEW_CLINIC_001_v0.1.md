@@ -66,7 +66,7 @@ La revisión de usabilidad de VALUE y la repetición intraevaluador previstas en
 
 ## 7. Referencias y cambios
 
-- Caso actualizado a versión 1.0: `VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md`.
+- Caso actualizado a versión 1.0: `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md`.
 - Registro de autoevaluación: `VALUE_SELF_REVIEW_LOG_CLINIC_001_v0.1.md`.
 - Especificación maestra: `VALUE_ARTIFACT_MASTER_SPECS_v0.1.md`.
 - Auditoría de proporcionalidad A3: `VALUE_A3_PROPORTIONALITY_AUDIT_CLINIC_001_v0.1.md`.
