@@ -3,7 +3,7 @@
 **Identificador:** VALUE-STANDARD-COHERENCE-CLINIC-001  
 **Versión:** 0.1  
 **Fecha:** 2026-10-30  
-**Estado:** REVISIÓN DOCUMENTAL REALIZADA — una aclaración arquitectónica propuesta, pendiente de aprobación  
+**Estado:** REVISIÓN DOCUMENTAL REALIZADA — aclaración aprobada e incorporada al documento maestro v0.3  
 **PR:** #114  
 **Caso contrastado:** CLINIC-001 v1.1
 
@@ -64,11 +64,11 @@ La segunda frase podría ser redundante con las fichas y el principio general de
 - No modificar el protocolo de usabilidad antes de cerrar la autoevaluación y revisar su estado real.
 - No declarar el estándar validado ni cambiar su estado de borrador por el mero hecho de completar esta revisión.
 
-## 6. Dictamen y decisión pendiente
+## 6. Dictamen y decisión
 
 **Dictamen:** las fichas maestras A1–A8 son coherentes, en lo sustancial, con las lecciones del caso. El documento maestro necesita una aclaración breve en DECIDE→ACT para evitar que una selección o autorización de diseño se interprete como permiso de ejecución.
 
-**Decisión pendiente del usuario:** aceptar, ajustar o rechazar la regla mínima propuesta antes de modificar el documento maestro. Hasta entonces, el maestro y las fichas permanecen sin cambios.
+**Decisión del usuario:** aprobó la regla mínima propuesta el 2026-10-30. Se incorporó en `VALUE_METHODOLOGY_LIFECYCLE_001.md`, versión 0.3, sección 4.5. Las fichas maestras A1–A8 permanecen sin cambios porque ya contemplaban el alcance explícito de la autorización. La incorporación no constituye aprobación definitiva ni validación empírica del estándar.
 
 ## 7. Referencias
 
