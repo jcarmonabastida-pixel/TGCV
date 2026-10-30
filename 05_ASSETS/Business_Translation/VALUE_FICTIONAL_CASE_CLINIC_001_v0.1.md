@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 1.0  
+**Versión:** 1.1  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
@@ -427,7 +427,7 @@ A5 es un registro transversal de evidencia y se usa especialmente en DESIGN y DE
 ## 9. DECIDE — A6 Value Decision Record
 
 **ID:** CLINIC-001-A6  
-**Estado:** decisión ilustrativa; no autorizada para ejecución real
+**Estado:** selección de diseño ilustrativa; autorización de ejecución no concedida; no habilita el paso a ACT real
 
 ### Decisión del escenario
 
@@ -438,11 +438,25 @@ Seleccionar **O1 — Revisión diaria de pendientes**, como opción preferida pa
 - **ID de decisión:** `SIM-CLINIC-001-DEC-v0.1`.
 - **Decisor en el escenario:** rol ficticio de responsable de operaciones, sujeto a confirmación de la autoridad real.
 - **Fecha:** no especificada en el escenario; debe registrarse antes de una prueba.
-- **Estado de la decisión:** opción seleccionada para preparar una prueba; autorización de ejecución **NO CONCEDIDA / PENDIENTE**.
+- **Estado de la decisión:** opción seleccionada únicamente para desarrollar el diseño de una posible prueba; autorización de ejecución **NO CONCEDIDA / PENDIENTE**. Esta selección no autoriza preparación operativa, comunicación al equipo ni inicio de actividad real.
 - **Condiciones de validez:** aprobación de criterios previos; confirmación de capacidad; validación de salvaguardas clínicas y privacidad; designación de responsables; definición de parada.
 - **Trazabilidad:** decisión basada en la intención A1, las opciones A4 y el registro simulado A5; las condiciones se trasladan a A7.
 
-Este bloque distingue la decisión ilustrativa de seleccionar una opción de la autorización formal para ejecutarla. No representa una firma ni una aprobación real.
+Este bloque distingue la selección de diseño de una autorización formal. La decisión ilustrativa permite desarrollar A7 como propuesta documental, pero no iniciar preparativos operativos ni ejecutar la prueba. No representa una firma ni una aprobación real.
+
+### Estado de la cadena de decisión y evidencia
+
+| Estado | Situación en CLINIC-001 | ¿Acreditado? |
+|---|---|---|
+| Opción seleccionada para desarrollar | O1 seleccionada como preferencia de diseño | Sí, solo dentro del escenario ficticio |
+| Criterios previos acordados | Umbrales de mejora, prioridad, carga y calidad de datos | No; pendientes |
+| Autorización formal | Autoridad, alcance, recursos, salvaguardas y parada | No concedida |
+| Plan A7 | Diseño documental hipotético | Sí, como propuesta |
+| Ejecución real | Actividades realizadas por un equipo autorizado | No |
+| Resultados observados | Datos procedentes de una ejecución real | No |
+| Aprendizaje empírico A8 | Comparación de resultados observados con criterios previos | No |
+
+**Regla de transición:** mientras los criterios previos y la autorización formal permanezcan pendientes, A6 no habilita el paso a ejecución real. A7 puede desarrollarse como diseño documental y A8 solo puede mostrar el ejercicio con datos inventados, sin presentar una ejecución o un resultado como observado.
 
 ### Justificación
 
@@ -486,9 +500,11 @@ No se fijan umbrales clínicos universales ni se presentan criterios pendientes 
 ## 10. ACT — A7 Value Blueprint & Delivery Plan
 
 **ID:** CLINIC-001-A7  
-**Estado:** plan hipotético, sujeto a autorización
+**Estado:** diseño/plan hipotético; no autorizado ni ejecutado en una organización real
 
-### Diseño de la prueba
+### Diseño propuesto de la prueba (no autorizado)
+
+El contenido siguiente es una propuesta de diseño para evaluación y eventual autorización. No constituye instrucción operativa ni compromiso de ejecución.
 
 - **Duración de referencia:** cuatro semanas de operación, precedidas por preparación y medición de línea base.
 - **Ámbito inicial:** un equipo o segmento acotado del proceso, elegido por responsables reales.
@@ -518,9 +534,9 @@ Los roles son funciones propuestas, no personas identificadas.
 4. **Seguimiento:** revisar acceso, prioridad, calidad y carga de trabajo.
 5. **Cierre:** comparar resultados, documentar desviaciones y decidir si detener, adaptar o estudiar una extensión.
 
-### Registro de ejecución simulada — `SIM-CLINIC-001-EXEC-v0.1`
+### Secuencia contrafactual ilustrativa — `SIM-CLINIC-001-EXEC-v0.1`
 
-**Aviso:** el registro siguiente es una narración ficticia creada para conectar el plan con el dataset simulado. No demuestra que una clínica haya ejecutado estas actividades.
+**Aviso:** el registro siguiente no es un registro de ejecución, ni siquiera una ejecución observada dentro de una organización ficticia. Es una secuencia inventada para ilustrar cómo podrían enlazarse un plan, una supuesta actividad y un conjunto de datos simulado. No acredita que se obtuviera autorización, que se realizara preparación, que participara un equipo o que se ejecutara actividad alguna.
 
 | Momento relativo | Actividad supuestamente realizada | Registro ficticio / desviación |
 |---|---|---|
@@ -547,13 +563,13 @@ El plan está preparado para una decisión de autorización cuando alcance, resp
 ## 11. LEARN — A8 Value Learning Record
 
 **ID:** CLINIC-001-A8  
-**Estado:** resultado de ejemplo simulado  
+**Estado:** reconstrucción documental LEARN con datos inventados; no hay resultado observado ni aprendizaje empírico  
 **Dataset evaluado:** `SIM-CLINIC-001-DATA-v0.1`  
 **Registro de ejecución relacionado:** `SIM-CLINIC-001-EXEC-v0.1`
 
-### Resultados ilustrativos
+### Resultados inventados para el ejercicio documental (no observaciones)
 
-Bajo los supuestos inventados de A5:
+Bajo los supuestos inventados de A5, y sin atribuirlos a una ejecución real:
 
 - Las solicitudes pendientes más allá del plazo de referencia pasan del 28 % al 18 %.
 - El indicador agregado de solicitudes prioritarias dentro de plazo permanece en el 96 %.
@@ -562,7 +578,7 @@ Bajo los supuestos inventados de A5:
 
 ### Interpretación prudente
 
-**[INFERENCIA]** En este escenario, los datos simulados serían compatibles con una mejora del seguimiento de pendientes, pero también revelan un coste operativo potencial. No prueban que la revisión diaria sea la causa de la mejora ni que el balance global sea positivo. Los resultados proceden exclusivamente del dataset ficticio `SIM-CLINIC-001-DATA-v0.1`; la secuencia de actividades supuestas está descrita en `SIM-CLINIC-001-EXEC-v0.1`.
+**[INTERPRETACIÓN DE DATOS INVENTADOS, NO INFERENCIA EMPÍRICA]** Los valores fabricados son compatibles, dentro del ejemplo, con una mejora descriptiva del indicador de demora y con un posible coste operativo. No son resultados observados, no prueban que se ejecutara la revisión diaria, no respaldan una inferencia causal y no permiten afirmar que el balance global sea positivo. Proceden exclusivamente del dataset ficticio `SIM-CLINIC-001-DATA-v0.1`. `SIM-CLINIC-001-EXEC-v0.1` es una secuencia contrafactual inventada, no una fuente de evidencia de ejecución.
 
 ### Aprendizajes documentados
 
@@ -572,9 +588,9 @@ Bajo los supuestos inventados de A5:
 4. Las definiciones de indicadores y la comparabilidad de periodos son requisitos previos, no detalles posteriores.
 5. La decisión de escalar exige evidencia real y participación de las personas afectadas.
 
-### Separación entre el Sprint y los resultados operativos
+### Separación entre Sprint, diseño, ejecución y resultados
 
-Los porcentajes y el reporte de carga descritos en este A8 pertenecen exclusivamente al escenario de prueba operativa posterior de cuatro semanas y al dataset ficticio `SIM-CLINIC-001-DATA-v0.1`. **No son resultados producidos durante el Value Discovery Sprint de cinco días.**
+Los porcentajes y el reporte de carga de este A8 son valores inventados para ilustrar una posible evaluación posterior de cuatro semanas. **No son resultados de una prueba operativa ni del Value Discovery Sprint de cinco días.** No hubo prueba real ni ejecución observada. El A8 presente es solo un ejercicio de reconstrucción documental para comprobar cómo se registrarían datos, interpretaciones y límites si existieran.
 
 El A8 que se cerraría al final del Sprint debe limitarse al aprendizaje de descubrimiento: qué se sabe y qué no, qué hipótesis siguen abiertas, si A3/A4 necesitan revisión, qué datos faltan, qué decisión se tomó y qué condiciones hacen falta antes de cualquier prueba. En este caso, como no hay participantes reales, ese aprendizaje del Sprint también es una reconstrucción documental ficticia.
 
@@ -842,6 +858,7 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **v0.8:** incorpora SR-061 para comprobar la comunicación y aplicación efectiva de correcciones documentales mediante el propio sistema de gestión de citas cuando sus funciones lo permitan; exige verificar capacidades reales y no presume notificaciones, auditoría de consultas ni confirmaciones de lectura. No añade datos reales ni validación empírica.
 - **v0.9:** consolida A3 tras la auditoría de proporcionalidad: mantiene actores, macroetapas, flujo, capacidades, responsabilidades funcionales, información, reglas, fricciones, dependencias e incertidumbres; retira del cuerpo principal la especificación detallada de contingencias y controles, conservando los hallazgos y su trazabilidad en el registro de autoevaluación. No añade evidencia real ni validación empírica.
 - **v1.0:** añade IDs estables de elementos y relaciones propuestos para A3, una correspondencia explícita de las opciones A4 con el modelo y una matriz de cobertura que identifica qué evidencia simulada informa cada hipótesis/opción y qué brechas permanecen. No se inventan datos adicionales ni se atribuye causalidad; el conjunto A5 sigue siendo ficticio.
+- **v1.1:** refuerza la separación entre selección de diseño, criterios previos, autorización, plan, ejecución y resultados. A7 queda expresamente como propuesta no autorizada; el antiguo registro de ejecución se redefine como secuencia contrafactual ilustrativa, no evidencia; A8 se identifica como reconstrucción documental con datos inventados, sin resultados observados ni aprendizaje empírico. No se añaden datos ni se modifica el contenido numérico ficticio.
 
 
 ### SR-052 — Reproducibilidad escalonada de la autoevaluación
