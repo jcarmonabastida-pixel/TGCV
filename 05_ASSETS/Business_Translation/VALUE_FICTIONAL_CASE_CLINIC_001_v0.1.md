@@ -454,6 +454,19 @@ Antes de considerar recuperada la operativa del proceso evaluado, debe comprobar
 
 La recuperación de la contingencia y la resolución de las solicitudes son resultados distintos. Una solicitud puede seguir pendiente después de recuperada la operativa, pero no debe quedar sin responsable ni seguimiento.
 
+### Gestión activa de bloqueos con responsable asignado
+
+La asignación de un responsable y de una siguiente actuación no demuestra por sí sola que una solicitud esté avanzando. Cuando la actuación dependa de información o respuesta de otro rol y el bloqueo persista, el responsable end-to-end debe gestionar activamente su desbloqueo:
+
+- Identificar y registrar qué información o respuesta falta, qué rol debe proporcionarla y desde cuándo existe el bloqueo.
+- Requerir la actuación al rol responsable y dejar constancia de la solicitud y su seguimiento.
+- Controlar el cumplimiento del plazo previamente acordado para esa actuación.
+- Si no se recibe respuesta o no se desbloquea la solicitud dentro del plazo, activar la vía de escalado correspondiente o una alternativa previamente autorizada.
+- Registrar las actuaciones, su resultado, el responsable y el siguiente paso.
+- Mantener abierta la solicitud hasta que se cumplan sus condiciones de resolución; la gestión administrativa del bloqueo no equivale a resolverla.
+
+Los plazos, niveles de escalado, alternativas y facultades del responsable end-to-end deben estar definidos y autorizados. No se fijan aquí valores ni competencias nuevas. Esta es una regla funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
+
 ### Relaciones y posibles puntos de bloqueo
 
 - La información incompleta puede provocar devoluciones y trabajo repetido.
