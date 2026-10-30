@@ -33,7 +33,7 @@ ChatGPT puede ayudar a localizar contradicciones, contrastar documentos y regist
 - `VALUE_METHODOLOGY_LIFECYCLE_001.md` (estándar maestro).
 - `VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` (especificaciones A1–A8).
 - `VALUE_DISCOVERY_SPRINT_v0.1.md`.
-- `VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md`, identificado siempre como caso y datos ficticios.
+- `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md`, identificado siempre como caso y datos ficticios.
 - Este protocolo y el registro de hallazgos que se complete durante la revisión.
 
 ## 5. Procedimiento de autoevaluación guiada
