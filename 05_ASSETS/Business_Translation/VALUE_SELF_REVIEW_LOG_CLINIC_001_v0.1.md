@@ -1,9 +1,9 @@
 # VALUE — Registro de autoevaluación guiada: CLINIC-001
 
 **Versión:** 0.1  
-**Estado:** EN CURSO — registro inicial; no equivale a validación independiente  
+**Estado:** CERRADO COMO AUTOEVALUACIÓN INDIVIDUAL CON COBERTURA PARCIAL DOCUMENTADA (protocolo v0.7); no equivale a validación independiente  
 **Caso:** VALUE-CASE-CLINIC-001 (ficticio)  
-**Protocolo:** VALUE_STANDARD_USABILITY_TEST_PROTOCOL_v0.1.md
+**Protocolo:** VALUE_STANDARD_USABILITY_TEST_PROTOCOL_v0.1.md (cierre v0.7)
 
 ## Alcance y límites
 
@@ -854,11 +854,15 @@ Se realizó la síntesis consolidada de los registros y auditorías existentes, 
 - DECIDE→ACT: regla de autorización explícita incorporada en el maestro v0.3.
 - Fichas maestras A1–A8: sin cambios porque ya recogen los controles necesarios en lo sustancial.
 
-### Resultado
+### Resultado — estado histórico actualizado por el cierre de 2026-10-30
 
-La síntesis de la primera revisión está realizada y documentada. La revisión individual guiada no se declara cerrada: quedan por completar las subtareas cuyo intento/observación/contraste no está formalmente acreditado, la repetición intraevaluador diferida y ciega, la revisión auxiliar ciega por IA y la comparación posterior. La reproducibilidad interevaluador humana permanece diferida.
+La primera revisión humana individual se realizó con cobertura parcial. Las subtareas de primera pasada sin evidencia formal suficiente de intento, observación y contraste se clasifican como **no acreditadas**; no se reconstruyen retrospectivamente ni se repiten preguntas para aparentar cobertura.
 
-No se añaden escenarios A3, fases, artefactos metodológicos ni datos ficticios. Se mantiene el estándar en estado de propuesta/borrador y no se declara validación de usabilidad independiente, validez, causalidad o eficacia.
+La repetición intraevaluador diferida con ocultación documental, la revisión auxiliar documental por IA y la comparación de las fuentes se realizaron y están registradas por separado. La evaluación por otro evaluador humano y las pruebas externas/comunitarias permanecen diferidas, no como requisitos previos para el prototipo.
+
+El estado de cierre vigente está definido en el protocolo v0.7, sección 16. Este registro conserva el historial de la primera pasada; cualquier mención anterior a actividades pendientes debe interpretarse como estado de la fecha en que se escribió, no como estado actual.
+
+No se añaden escenarios A3, fases ni artefactos metodológicos. El cierre no declara validación de usabilidad independiente, validez empírica, causalidad o eficacia.
 
 
 ## Adaptación temporal por participación exclusivamente móvil — 2026-10-30
@@ -870,3 +874,10 @@ La repetición se organizará en bloques cortos y secuenciales. El asistente rec
 **Precisión metodológica:** como el usuario ya conoce los resultados de la primera pasada, la segunda no se describirá como plenamente ciega. Se denomina «repetición intraevaluador diferida con ocultación documental de la primera pasada»: durante la repetición no se consultarán ni mostrarán log, síntesis o auditorías anteriores. Esta medida reduce el sesgo de recuerdo documental, pero no elimina la exposición previa. La revisión auxiliar por IA se hará por separado y sin acceso a los resultados anteriores.
 
 No se fija fecha ni se considera realizada ninguna repetición o revisión auxiliar hasta que se ejecute y registre. Esta adaptación queda incorporada en el protocolo v0.5.
+
+
+## Nota de cierre posterior — 2026-10-30
+
+La adaptación móvil descrita anteriormente fue ejecutada. La repetición intraevaluador, la revisión auxiliar por IA y la comparación están documentadas en sus registros específicos. El cierre adoptado es de cobertura parcial; prevalecen el protocolo v0.7 y la comparación CLINIC-001 de esta fecha sobre los estados provisionales anteriores de este log.
+
+La evaluación humana individual del autor/usuario sí se realizó. Lo que queda pendiente es la participación de otros evaluadores humanos independientes, no la primera evaluación humana.
