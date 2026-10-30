@@ -923,6 +923,21 @@ En caso de reincidencia, se conservará la incidencia anterior como antecedente 
 
 Criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 
+
+### SR-057 — Gestión de una incidencia común del proceso con múltiples solicitudes afectadas
+
+Cuando la revisión de solicitudes bloqueadas o reincorporadas revele que varias incidencias comparten un mismo defecto o fallo del proceso, no deben tratarse exclusivamente como problemas aislados de cada solicitud.
+
+- Registrar una incidencia común del proceso que describa el defecto observado, la evidencia disponible, cuándo y cómo se detectó y la persona o instancia responsable de su análisis.
+- Vincular a esa incidencia común todas las solicitudes potencialmente afectadas, conservando también el registro y seguimiento individual de cada solicitud. La vinculación no implica asumir que todas están efectivamente afectadas: comprobar cada caso.
+- Determinar el alcance conocido y potencial del defecto mediante revisión basada en evidencia; identificar otras solicitudes que puedan estar expuestas y documentar el criterio utilizado para incluirlas o descartarlas.
+- Corregir la causa del proceso mediante el mecanismo de cambio y autorización que corresponda. No modificar unilateralmente procedimientos, responsabilidades ni controles, ni dar por corregida la causa por el mero hecho de aplicar una solución provisional.
+- Tras la corrección, verificar tanto que el defecto del proceso ha sido tratado como que cada solicitud afectada ha retomado efectivamente su tramitación, con responsable y siguiente actuación definidos. Mantener abiertas y bajo seguimiento las solicitudes que sigan pendientes o bloqueadas.
+- Registrar la causa confirmada o aún no confirmada, el alcance, las solicitudes vinculadas, las decisiones, las acciones correctivas, las verificaciones y los responsables. Si la causa no está demostrada, describirla como hipótesis y no como hecho.
+- La resolución de la incidencia común no cierra automáticamente las incidencias individuales ni las solicitudes vinculadas.
+
+Esta regla complementa SR-049 y SR-050 (registro y ciclo de vida de incidencias), SR-051 (persistencia y reincidencia) y SR-045/046 (identificación y recuperación individual de solicitudes). Se limita a la gestión operativa del proceso de concertación de citas; no sustituye la investigación de seguridad clínica ni la autoridad clínica cuando procedan. Es una propuesta para el caso ficticio, no un procedimiento aprobado ni validación empírica.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
