@@ -543,6 +543,18 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Estado:** aceptado por el usuario e incorporado documentalmente en la rama del PR #114.
 
 
+### SR-055 — Revisión del impacto de información corregida sobre actuaciones previas
+
+- **Aprobación del usuario:** sí.
+- **Contexto:** tras resolver una discrepancia, se determina que el dato vigente era incorrecto o debe corregirse, y ese dato pudo haber sustentado actuaciones, decisiones o comunicaciones ya realizadas.
+- **Regla acordada:** revisar el impacto de la corrección sobre las actuaciones previas; no limitarse a actualizar el registro.
+- **Evaluación:** identificar las actuaciones que utilizaron el dato y valorar cada una individualmente: puede seguir siendo válida, requerir revisión o necesitar rectificación. La corrección no invalida automáticamente todas las actuaciones.
+- **Competencia:** asignar la revisión a la persona o instancia competente según la naturaleza de la actuación. Las consecuencias clínicas corresponden a la autoridad clínica competente.
+- **Trazabilidad y respuesta:** registrar evaluación, decisión, fundamento, autoridad/responsable y las actuaciones de corrección, repetición o rectificación que se autoricen. Informar a las personas afectadas cuando corresponda, mediante canales autorizados.
+- **Continuidad:** mantener abierta la solicitud hasta revisar las consecuencias relevantes y cumplir las condiciones de resolución aplicables.
+- **Límites:** no se crean competencias, criterios ni vías de rectificación nuevas; deben definirse y autorizarse antes del uso real. Propuesta para el caso ficticio, no procedimiento aprobado ni validación empírica.
+- **Estado:** aprobado por el usuario e incorporado al caso A3 y al registro de autoevaluación en la rama del PR #114.
+
 ### SR-054 — Resolución trazable de contradicciones entre información nueva y registros existentes
 
 - **Aprobación del usuario:** sí.
