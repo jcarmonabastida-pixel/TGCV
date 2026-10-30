@@ -3,7 +3,7 @@
 **Identificador:** VALUE-A3-PROP-CLINIC-001  
 **Versión:** 0.1  
 **Fecha:** 2026-10-30  
-**Estado:** AUDITORÍA DOCUMENTAL INICIAL — propuesta de clasificación; pendiente de decisión del usuario  
+**Estado:** ACEPTADA Y APLICADA — consolidación documental de A3 verificada  
 **Rama:** `docs/value-methodology-lifecycle-v0-1`  
 **PR:** #114  
 **Alcance:** revisión de la relación entre A3 (Value System Model), el caso ficticio CLINIC-001 y los hallazgos SR-001–SR-061; evaluación de SR-062 como escenario propuesto, aún no aprobado ni registrado.
@@ -98,9 +98,9 @@ Los escenarios de contingencia se utilizarían para comprobar que el modelo no o
 ## 8. Límites de esta auditoría
 
 - La clasificación se basa en los documentos actuales de la rama de trabajo del PR #114.
-- No se ha modificado el caso, el log, el protocolo ni el estándar como resultado de esta auditoría.
-- No se han eliminado hallazgos ni se han cambiado decisiones aprobadas.
-- Las ubicaciones propuestas son recomendaciones de arquitectura documental, no cambios ya aceptados.
+- Se modificaron el caso ficticio y el registro de autoevaluación para aplicar la consolidación aceptada.
+- No se eliminaron los hallazgos históricos del registro ni se revocaron decisiones aprobadas.
+- No se modificaron el protocolo de usabilidad ni el estándar metodológico.
 - El caso sigue siendo ficticio; esta auditoría no demuestra usabilidad independiente, validez, causalidad ni eficacia de VALUE/TGCV.
 
-**Decisión pendiente del usuario:** aceptar, ajustar o rechazar la clasificación y la secuencia de cierre antes de realizar cambios en los documentos del caso.
+**Decisión del usuario:** aceptó la clasificación como base para consolidar A3. La consolidación se aplicó al caso ficticio y al registro de autoevaluación, y se verificó mediante relectura en la rama del PR #114.
