@@ -74,7 +74,7 @@ La segunda frase podría ser redundante con las fichas y el principio general de
 
 - `VALUE_METHODOLOGY_LIFECYCLE_001.md`, v0.2.
 - `VALUE_ARTIFACT_MASTER_SPECS_v0.1.md`, v0.1.
-- `VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md`, versión 1.1.
+- `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md`, versión 1.1.
 - `VALUE_A3_A4_A5_COHERENCE_REVIEW_CLINIC_001_v0.1.md`.
 - `VALUE_A6_A7_A8_DECISION_EXECUTION_LEARNING_REVIEW_CLINIC_001_v0.1.md`.
 
