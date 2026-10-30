@@ -1,7 +1,7 @@
 # VALUE — Revisión auxiliar documental de CLINIC-001
 
 - **Fecha:** 2026-10-30
-- **Caso revisado:** `VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md`, versión documental 1.1
+- **Caso revisado:** `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md`, versión documental 1.1
 - **Documentos de referencia:** `VALUE_METHODOLOGY_LIFECYCLE_001.md` (v0.3), `VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` (v0.1), `VALUE_DISCOVERY_SPRINT_v0.1.md` (v0.1) y protocolo de autoevaluación (v0.5).
 - **Tipo:** revisión auxiliar documental por IA, separada de la comparación de respuestas del usuario.
 - **Alcance:** claridad, distinciones entre artefactos, trazabilidad, evidencia ficticia, decisiones y límites del caso.
