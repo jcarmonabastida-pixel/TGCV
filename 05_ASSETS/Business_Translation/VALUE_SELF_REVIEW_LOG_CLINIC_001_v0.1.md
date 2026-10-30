@@ -738,3 +738,26 @@ SR-062 no se aprueba ni se registra como nuevo hallazgo. Su distinción entre en
 - Los hallazgos y precisiones ya registrados se conservan como historial; su clasificación documental no implica que cada control propuesto sea necesario, implantado o aprobado en una organización real.
 - El caso sigue siendo ficticio. La consolidación no demuestra usabilidad independiente, validez, causalidad ni eficacia de VALUE/TGCV.
 - La revisión de proporcionalidad y la consolidación documental no sustituyen la repetición intraevaluador ni la revisión auxiliar previstas en SR-052; esas actividades continúan pendientes.
+
+
+## Revisión de coherencia A3 → A4 → A5 — 2026-10-30
+
+**Referencia:** `VALUE_A3_A4_A5_COHERENCE_REVIEW_CLINIC_001_v0.1.md`  
+**Estado:** revisión documental realizada y ajustes incorporados en el caso, versión 1.0.
+
+- **A3:** se añadieron IDs estables E01–E07 para actores/elementos y R01–R07 para relaciones propuestas, con significado y estado epistemológico. Son elementos conceptuales del caso ficticio; no representan una organización o flujo real verificado.
+- **A4:** cada opción O0–O4 quedó vinculada con elementos/relaciones A3 y la fricción o capacidad que aborda. Se completó para H-V1 la cadena de necesidad, cambio, mecanismo, personas/funciones afectadas, supuestos críticos, evidencia favorable/contradictoria, prueba posible y criterio de revisión.
+- **A5:** se añadió una matriz que identifica qué evidencia simulada informa cada hipótesis/opción y qué no permite concluir.
+
+### Brechas explícitas que permanecen
+
+- El indicador de solicitudes que superan el plazo de referencia no mide directamente solicitudes bloqueadas sin siguiente actuación ni la ejecución/fidelidad de la revisión diaria.
+- No se registran revisiones realizadas, pendientes con responsable/siguiente actuación ni excepciones escaladas.
+- La carga de trabajo carece de medida comparable; el reporte cualitativo es una señal, no una estimación de magnitud o aceptabilidad.
+- El indicador de devoluciones por información incompleta informa principalmente O2, no demuestra H-V1/O1.
+- No hay evidencia específica para comparar O3 (capacidad) ni O4 (rediseño integral).
+- El indicador de prioridad sin variación en datos simulados no demuestra seguridad ni ausencia de daño.
+
+No se inventan datos ni se altera el conjunto ficticio para cubrir estas brechas. Los resultados A5 siguen siendo simulados y no validan H-V1, causalidad o eficacia. No se amplía A3 con nuevos escenarios para resolver problemas que corresponden a diseño de evidencia y prueba.
+
+**Siguiente condición:** antes de cualquier prueba real, definir y autorizar fuentes, indicadores de fidelidad, demora, prioridad y carga, denominadores, ventanas y criterios de decisión. La repetición intraevaluador y la revisión auxiliar previstas en SR-052 continúan pendientes.
