@@ -785,3 +785,21 @@ Se corrigió sin añadir escenarios ni datos:
 
 La cadena A6–A7–A8 es coherente como ejemplo de selección de diseño, propuesta de plan y ejercicio documental con datos fabricados. No acredita autorización, ejecución, implantación, resultados observados, valor realizado ni aprendizaje empírico. No se modificaron los datos numéricos, el estándar ni las fichas maestras. No se autoriza ningún piloto.
 
+
+
+## Revisión de coherencia del estándar y fichas maestras A1–A8 — 2026-10-30
+
+**Referencia:** `VALUE_STANDARD_A1_A8_COHERENCE_REVIEW_CLINIC_001_v0.1.md`  
+**Caso contrastado:** CLINIC-001 v1.1.
+
+La revisión documental confirma que las fichas maestras A1–A8 ya cubren en lo sustancial las lecciones de CLINIC-001:
+- A3 prevé elementos y relaciones con IDs estables, estado epistemológico, fuentes, límites y vistas.
+- A4 prevé mecanismo, cadena de razonamiento, supuestos, evidencia favorable/contradictoria, pruebas y criterios de descarte.
+- A5 prevé trazabilidad de afirmaciones, procedencia, contexto, calidad, sesgos, contradicciones y verificación.
+- A6 prevé autoridad, criterios, evidencia, condiciones y alcance explícito de la autorización.
+- A7 distingue diseño, autorización, ejecución y aceptación.
+- A8 distingue resultados observados, efectos, límites de atribución y diferencias entre plan y ejecución.
+
+**Único ajuste propuesto al documento maestro:** aclarar que seleccionar una alternativa o autorizar el desarrollo de su diseño no autoriza por sí mismo la ejecución. La autorización de ejecución debe ser explícita y especificar alcance, autoridad, recursos, condiciones, salvaguardas y límites. A7 permanece como propuesta y ACT no se inicia cuando esa autorización no existe.
+
+No se modificaron el documento maestro ni las fichas maestras. La propuesta queda pendiente de aprobación del usuario. No se añaden artefactos, fases, umbrales ni controles duplicados. El protocolo de usabilidad permanece sin cambios y el estándar continúa en estado de propuesta/borrador; no se declara validación empírica.
