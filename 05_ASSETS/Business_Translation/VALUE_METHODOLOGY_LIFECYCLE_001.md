@@ -12,7 +12,7 @@
 
 ## 1. Propósito
 
-Establecer una arquitectura única para VALUE que reduzca duplicidades, normalice el lenguaje y permita desarrollar después, en orden, las fichas maestras de artefactos, el servicio piloto **Value Discovery Sprint** y un playground web del ciclo completo.
+Establecer una arquitectura única para VALUE que reduzca duplicidades y normalice el lenguaje. Esta base permite desarrollar de forma coordinada las fichas maestras A1–A8, el servicio **Value Discovery Sprint** y un prototipo web de referencia del ciclo completo, sin exigir que el piloto del servicio esté completado antes de iniciar el prototipo.
 
 Esta versión consolida la arquitectura metodológica. No es todavía un manual de facilitación completo, un instrumento psicométrico, una oferta comercial cerrada ni una especificación de software.
 
