@@ -697,3 +697,44 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Relación:** complementa SR-055 (impacto de correcciones sobre actuaciones previas) y SR-057 (incidencia común con varias solicitudes); no impone comunicación externa duplicada.
 - **Estado:** aprobado e incorporado documentalmente al caso ficticio y al registro de autoevaluación en la rama del PR #114.
 
+
+
+## Cierre de proporcionalidad de A3 — 2026-10-30
+
+**Referencia:** `VALUE_A3_PROPORTIONALITY_AUDIT_CLINIC_001_v0.1.md`  
+**Aprobación del usuario:** sí, se acepta la clasificación como base para consolidar A3.  
+**Alcance de la decisión:** reorganización documental y cierre de la generación de escenarios A3; no constituye validación empírica de VALUE/TGCV ni aprobación de procedimientos operativos.
+
+### Resultado aplicado
+
+- Se consolida el cuerpo principal de A3 en el caso CLINIC-001 como modelo sistémico de alto nivel: propósito y límites, actores/funciones, macroetapas y flujo, capacidades/recursos, responsabilidades funcionales, información/reglas/trazabilidad, fricciones/restricciones/dependencias, evidencia/incertidumbre y puntos de intervención para A4.
+- Se retira del cuerpo principal de A3 el desarrollo extenso de casuística y controles operativos. El registro histórico de hallazgos y precisiones se conserva en este log; no se eliminan aprobaciones ni se afirma que las propuestas sean procedimientos aprobados.
+- Se mantiene la distinción entre representación del sistema y diseño detallado de respuestas operativas. Plazos, umbrales, responsables nominales, permisos, canales y protocolos no se inventan ni se incorporan como hechos.
+- SR-052 permanece en este registro porque corresponde a la gobernanza y reproducibilidad de la autoevaluación, no al modelo del sistema de citas.
+- La consolidación no modifica A1, A2 ni los artefactos A4–A8.
+
+### Clasificación de los hallazgos
+
+- SR-014–SR-022: núcleo de A3; se conservan actores, macroetapas, capacidades, flujo, responsabilidades funcionales y lagunas. Los mecanismos operativos detallados quedan fuera del cuerpo principal.
+- SR-023–SR-029: se conservan estados, condiciones, fricciones y decisiones relevantes para comprender el sistema; las reglas detalladas de tratamiento quedan como material de diseño posterior y no como procedimiento aprobado.
+- SR-030–SR-034: se conservan continuidad, cobertura y escalado como dependencias/riesgos de alto nivel; se aparca la especificación de protocolos y niveles.
+- SR-035–SR-046: se conservan únicamente interfaces, dependencias y límites pertinentes al proceso administrativo de citas. Reglas y protocolos clínicos quedan fuera del alcance de A3.
+- SR-047–SR-051 y SR-053: se consolida el principio de seguimiento end-to-end, detección de bloqueos y gestión de incidencias; se evita mantener en A3 ciclos y variantes de control redundantes.
+- SR-054–SR-055: se conserva la calidad, consistencia, procedencia y trazabilidad de la información, así como el riesgo de efectos sobre actuaciones previas; el tratamiento operativo detallado queda fuera del cuerpo principal.
+- SR-056: se integra como dimensión de capacidad efectiva y cobertura, sin crear más escenarios derivados.
+- SR-057: se conserva la posibilidad de incidencias comunes y efectos sistémicos; la secuencia detallada de corrección y revisión se aparca para diseño posterior.
+- SR-058–SR-060: se conservan versionado de reglas, transiciones autorizadas y trazabilidad como dependencias sistémicas; la casuística de cada solicitud se mantiene en el historial, sin seguir expandiendo A3.
+- SR-061: se conserva como dimensión de vigencia, acceso y adopción verificable de información corregida; su detalle de notificación y comprobación no amplía el modelo principal.
+- SR-001–SR-013: permanecen como antecedentes de revisión de A1/A2 y preparación de A3, no como requisitos adicionales del modelo.
+- SR-052: permanece exclusivamente como decisión de gobernanza de la evaluación.
+
+### SR-062 — Disposición
+
+SR-062 no se aprueba ni se registra como nuevo hallazgo. Su distinción entre envío de una notificación y evidencia de lectura/aplicación está sustancialmente cubierta por SR-061. La falta de confirmación no demuestra que nadie haya leído la comunicación, pero tampoco acredita su aplicación. Si esta precisión se necesitara en una futura revisión, se integraría como aclaración breve de SR-061, sin crear un escenario independiente.
+
+### Estado y límites
+
+- La generación de nuevos escenarios para A3 queda cerrada en esta ronda de autoevaluación.
+- Los hallazgos y precisiones ya registrados se conservan como historial; su clasificación documental no implica que cada control propuesto sea necesario, implantado o aprobado en una organización real.
+- El caso sigue siendo ficticio. La consolidación no demuestra usabilidad independiente, validez, causalidad ni eficacia de VALUE/TGCV.
+- La revisión de proporcionalidad y la consolidación documental no sustituyen la repetición intraevaluador ni la revisión auxiliar previstas en SR-052; esas actividades continúan pendientes.
