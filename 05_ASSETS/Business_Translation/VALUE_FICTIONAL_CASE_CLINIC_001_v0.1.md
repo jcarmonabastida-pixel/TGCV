@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 0.7  
+**Versión:** 0.8  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
@@ -1030,6 +1030,20 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
 - **Estado:** aprobado por el usuario e incorporado documentalmente en la rama del PR #114.
 
+### SR-061 — Comunicación y aplicación efectiva de una corrección documental en el sistema de gestión de citas
+
+- **Aprobación del usuario:** sí (2026-10-30).
+- **Escenario:** se corrige un registro o una instrucción del proceso de citas dentro del sistema de gestión, pero algunas personas que consultan o utilizan el proceso pueden seguir trabajando con la información anterior porque no han advertido la corrección.
+- **Sistema como canal de referencia:** comprobar si el propio sistema permite identificar la versión vigente, conservar el historial de cambios, localizar a las personas/roles que consultaron o utilizaron la versión anterior y comunicarles la corrección. No exigir duplicar la información en canales externos si las funciones disponibles del sistema permiten una comunicación suficiente y trazable.
+- **Identificación del alcance:** determinar, con los registros disponibles y conforme a los permisos aplicables, quién necesita conocer el cambio y qué solicitudes, decisiones o actuaciones pudieron apoyarse en la versión anterior. Diferenciar usuarios que solo pudieron consultar el registro de quienes efectivamente lo utilizaron; no presumir uso ni impacto sin evidencia.
+- **Notificación trazable:** utilizar el mecanismo autorizado disponible en el sistema para comunicar la corrección a los destinatarios pertinentes. Registrar contenido o referencia de la corrección, destinatarios, fecha/hora, medio y resultado de la notificación. Si el sistema no permite identificar o notificar adecuadamente a los destinatarios, elevar la limitación y utilizar únicamente un canal alternativo autorizado, dejando constancia.
+- **Versión vigente y continuidad:** asegurar que la versión corregida esté claramente identificada y accesible en el punto de uso, preservando el historial y evitando que el registro anterior se confunda con el vigente. No borrar ni sobrescribir la trazabilidad histórica.
+- **Verificación de recepción y aplicación:** comprobar, mediante evidencias disponibles, que las personas destinatarias han recibido o consultado la actualización y que utilizan la versión vigente. Una notificación emitida o un indicador de envío no demuestra por sí solo lectura, comprensión ni aplicación efectiva; cuando no pueda acreditarse alguno de estos extremos, registrar la limitación y mantener el seguimiento correspondiente.
+- **Impacto de la versión anterior:** revisar las solicitudes o actuaciones que efectivamente pudieron verse afectadas por el uso del registro anterior. Evaluar individualmente las consecuencias y determinar las correcciones mediante las instancias y procedimientos autorizados; no invalidar ni rectificar automáticamente actuaciones previas.
+- **Criterio de implantación:** no considerar implantada ni eficaz la corrección por el mero hecho de editar el documento o actualizar el registro. La verificación debe cubrir, según la capacidad real del sistema, la identificación de destinatarios, comunicación, acceso a la versión vigente y aplicación efectiva; registrar las limitaciones pendientes.
+- **Límites:** no se presupone que el sistema actual disponga de auditoría de consultas, notificaciones, confirmaciones de lectura o analítica de uso. Estas capacidades deben comprobarse; no inventar funciones, permisos, responsables, plazos ni canales. Si no existen, documentar la brecha y someter la alternativa a autorización. Propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Relación:** complementa SR-055 cuando la corrección puede afectar actuaciones previas y SR-057 cuando el problema de comunicación/implantación alcanza a varias solicitudes. Se centra en asegurar que la corrección documental llega a quienes la necesitan y se aplica en el punto de uso; no crea una obligación de comunicación externa duplicada.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
@@ -1039,6 +1053,7 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **v0.5:** incorpora SR-059 para solicitudes abiertas cuya versión de regla aplicada no puede determinarse; establece reconstrucción basada en evidencia, decisión competente cuando persiste la incertidumbre y comprobación del alcance de la deficiencia de trazabilidad. No añade datos reales ni validación empírica.
 - **v0.6:** precisa SR-059 para los casos en que la incertidumbre persiste tras revisar evidencias: documentación de la búsqueda, seguimiento y escalado, límites de cualquier actuación provisional expresamente autorizada y reevaluación ante nueva evidencia. No añade datos reales ni validación empírica.
 - **v0.7:** incorpora SR-060 para revisar solicitudes ya cerradas cuya versión de regla aplicada no puede reconstruirse; exige evaluación individual y decisión competente, sin presumir error ni reabrir o corregir automáticamente. No añade datos reales ni validación empírica.
+- **v0.8:** incorpora SR-061 para comprobar la comunicación y aplicación efectiva de correcciones documentales mediante el propio sistema de gestión de citas cuando sus funciones lo permitan; exige verificar capacidades reales y no presume notificaciones, auditoría de consultas ni confirmaciones de lectura. No añade datos reales ni validación empírica.
 
 
 ### SR-052 — Reproducibilidad escalonada de la autoevaluación
