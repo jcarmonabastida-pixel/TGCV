@@ -454,6 +454,19 @@ Antes de considerar recuperada la operativa del proceso evaluado, debe comprobar
 
 La recuperación de la contingencia y la resolución de las solicitudes son resultados distintos. Una solicitud puede seguir pendiente después de recuperada la operativa, pero no debe quedar sin responsable ni seguimiento.
 
+### SR-054 — Resolución trazable de contradicciones entre información nueva y registros existentes
+
+Cuando la información nueva recibida para desbloquear o continuar una solicitud contradiga un dato que ya conste en el sistema, se tratará como una discrepancia que debe resolverse antes de tomar decisiones dependientes de ese dato o reanudar la tramitación sobre la base de una de las versiones.
+
+- Registrar el dato contradictorio, los valores en conflicto, la fuente y fecha de cada información disponible y el momento en que se detectó la discrepancia.
+- Conservar ambos valores y su historial. No sobrescribir ni descartar automáticamente el dato previo o el recién recibido.
+- Mantener la solicitud abierta y bajo seguimiento; identificar la actuación pendiente y el rol o instancia competente para verificar y resolver la discrepancia, según la naturaleza del dato. Si afecta a información o criterio clínico, la resolución corresponde a la autoridad clínica competente.
+- La persona o instancia autorizada debe determinar qué información prevalece o cómo proceder, dejando constancia de la verificación realizada, la decisión, quién la adopta y su fundamento.
+- Solo después de esa decisión podrá actualizarse el dato vigente, conservando la trazabilidad del valor anterior, el nuevo, sus fuentes y la justificación del cambio.
+- Reanudar la tramitación cuando la discrepancia esté resuelta. Si no puede resolverse, solo podrá continuarse sin ese dato cuando una persona o instancia autorizada determine expresamente que existe una vía válida para hacerlo y documente su justificación, limitaciones y condiciones.
+
+Esta regla concreta la regla general existente sobre discrepancias entre fuentes: añade la conservación explícita de los valores en conflicto, la trazabilidad de fechas y fuentes, la autoridad y fundamento de la resolución y la condición para reanudar el flujo. No establece una jerarquía universal de fuentes ni atribuye competencias nuevas. Los criterios, responsables y vías de resolución deben estar definidos y autorizados antes del uso real. Es una propuesta funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
+
 ### SR-053 — Gestión activa de bloqueos con responsable asignado
 
 La asignación de un responsable y de una siguiente actuación no demuestra por sí sola que una solicitud esté avanzando. Cuando la actuación dependa de información o respuesta de otro rol y el bloqueo persista, el responsable end-to-end debe gestionar activamente su desbloqueo:
