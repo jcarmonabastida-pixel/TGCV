@@ -761,3 +761,27 @@ SR-062 no se aprueba ni se registra como nuevo hallazgo. Su distinción entre en
 No se inventan datos ni se altera el conjunto ficticio para cubrir estas brechas. Los resultados A5 siguen siendo simulados y no validan H-V1, causalidad o eficacia. No se amplía A3 con nuevos escenarios para resolver problemas que corresponden a diseño de evidencia y prueba.
 
 **Siguiente condición:** antes de cualquier prueba real, definir y autorizar fuentes, indicadores de fidelidad, demora, prioridad y carga, denominadores, ventanas y criterios de decisión. La repetición intraevaluador y la revisión auxiliar previstas en SR-052 continúan pendientes.
+
+
+## Revisión de coherencia A6 → A7 → A8 — 2026-10-30
+
+**Referencia:** `VALUE_A6_A7_A8_DECISION_EXECUTION_LEARNING_REVIEW_CLINIC_001_v0.1.md`  
+**Caso actualizado:** versión 1.1.
+
+### Hallazgo y corrección
+
+La cadena distinguía conceptualmente la selección de O1, la autorización pendiente, el plan hipotético y los datos simulados. Sin embargo, el rótulo «registro de ejecución simulada» y la proximidad narrativa entre plan y resultado podían interpretarse como una ejecución que habría ocurrido dentro del caso.
+
+Se corrigió sin añadir escenarios ni datos:
+
+- A6: O1 queda seleccionada solo como preferencia de diseño para desarrollar una propuesta. No autoriza preparación operativa, comunicación al equipo ni ejecución. Criterios previos y autorización formal permanecen pendientes.
+- A6→A7: se explicita la tabla de estados y la regla de transición; sin criterios acordados y autorización formal no se pasa a ejecución real.
+- A7: el diseño/plan queda expresamente como propuesta no autorizada.
+- `SIM-CLINIC-001-EXEC-v0.1`: se reclasifica como secuencia contrafactual ilustrativa inventada, no registro de ejecución ni evidencia de actividad realizada.
+- A8: se clasifica como reconstrucción documental LEARN con datos inventados, sin resultados observados ni aprendizaje empírico. Los valores no se describen como inferencias empíricas.
+- Se mantiene la separación entre Sprint de cinco días y la posible prueba posterior de cuatro semanas; esta última tampoco se ha ejecutado.
+
+### Resultado y límites
+
+La cadena A6–A7–A8 es coherente como ejemplo de selección de diseño, propuesta de plan y ejercicio documental con datos fabricados. No acredita autorización, ejecución, implantación, resultados observados, valor realizado ni aprendizaje empírico. No se modificaron los datos numéricos, el estándar ni las fichas maestras. No se autoriza ningún piloto.
+
