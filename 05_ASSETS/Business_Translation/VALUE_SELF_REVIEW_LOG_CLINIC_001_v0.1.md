@@ -859,3 +859,14 @@ Se realizó la síntesis consolidada de los registros y auditorías existentes, 
 La síntesis de la primera revisión está realizada y documentada. La revisión individual guiada no se declara cerrada: quedan por completar las subtareas cuyo intento/observación/contraste no está formalmente acreditado, la repetición intraevaluador diferida y ciega, la revisión auxiliar ciega por IA y la comparación posterior. La reproducibilidad interevaluador humana permanece diferida.
 
 No se añaden escenarios A3, fases, artefactos metodológicos ni datos ficticios. Se mantiene el estándar en estado de propuesta/borrador y no se declara validación de usabilidad independiente, validez, causalidad o eficacia.
+
+
+## Adaptación temporal por participación exclusivamente móvil — 2026-10-30
+
+El usuario comunica que temporalmente no dispone de ordenador y participará desde un teléfono móvil. La repetición intraevaluador y la revisión auxiliar se adaptan para no exigir edición local, terminal, hojas de cálculo ni navegación simultánea por documentos.
+
+La repetición se organizará en bloques cortos y secuenciales. El asistente recuperará los documentos canónicos, preparará los extractos y registrará las respuestas en GitHub; el usuario revisará y responderá desde el móvil.
+
+**Precisión metodológica:** como el usuario ya conoce los resultados de la primera pasada, la segunda no se describirá como plenamente ciega. Se denomina «repetición intraevaluador diferida con ocultación documental de la primera pasada»: durante la repetición no se consultarán ni mostrarán log, síntesis o auditorías anteriores. Esta medida reduce el sesgo de recuerdo documental, pero no elimina la exposición previa. La revisión auxiliar por IA se hará por separado y sin acceso a los resultados anteriores.
+
+No se fija fecha ni se considera realizada ninguna repetición o revisión auxiliar hasta que se ejecute y registre. Esta adaptación queda incorporada en el protocolo v0.5.
