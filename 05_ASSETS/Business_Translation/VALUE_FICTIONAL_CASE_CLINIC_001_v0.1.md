@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 0.6  
+**Versión:** 0.7  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
@@ -1012,6 +1012,20 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
 - **Estado:** aprobado por el usuario e incorporado documentalmente en la rama del PR #114.
 
+### SR-060 — Revisión de solicitudes cerradas con trazabilidad insuficiente de la regla aplicada
+
+- **Aprobación del usuario:** sí (2026-10-30).
+- **Contexto:** durante la revisión de una transición de reglas se identifica una solicitud que figura como cerrada, pero cuyo registro no permite reconstruir qué versión de regla se aplicó ni comprobar si la solicitud quedó comprendida en la transición autorizada.
+- **No presumir corrección ni error:** el estado «cerrada» no demuestra por sí solo que la solicitud se resolviera conforme a la regla aplicable; la falta de trazabilidad tampoco demuestra por sí sola que la decisión de cierre fuera incorrecta.
+- **Conservación y reconstrucción:** preservar el registro original y su historial. Revisar evidencias disponibles sobre la solicitud, la regla y transición autorizadas, las decisiones, actuaciones, comunicaciones y condiciones de cierre. Documentar qué puede reconstruirse, qué falta y cualquier incertidumbre o discrepancia, sin completar lagunas mediante suposiciones.
+- **Evaluación individual:** contrastar lo reconstruido con las condiciones de cierre y la regla que correspondía según la transición autorizada. Identificar si hay actuaciones previas o consecuencias que requieran revisión; no extender la conclusión a otras solicitudes sin evidencia.
+- **Determinación competente:** si la evidencia no permite concluir si el cierre fue correcto o qué respuesta procede, elevar el caso a la instancia competente. Esta determinará y documentará si la solicitud permanece cerrada, debe reabrirse para revisión o requiere alguna actuación correctiva autorizada, con fundamento, autoridad/responsable y momento de la decisión.
+- **Sin reapertura ni corrección automáticas:** no reabrir ni mantener cerrada por defecto, no borrar ni sustituir el cierre histórico y no ejecutar rectificaciones automáticamente. Toda reapertura o actuación correctiva debe estar justificada, autorizada y trazada; las decisiones clínicas corresponden a la autoridad clínica competente.
+- **Alcance sistémico:** comprobar, con evidencia, si otras solicitudes cerradas presentan la misma falta de trazabilidad o si existe una deficiencia común de registro o control de versiones. La revisión de cada solicitud y cualquier corrección sistémica seguirán los mecanismos autorizados.
+- **Relación con SR-055, SR-058 y SR-059:** SR-055 trata el impacto de información corregida sobre actuaciones previas; SR-058 regula la transición autorizada de reglas para solicitudes en curso; SR-059 aborda solicitudes que permanecen abiertas sin trazabilidad suficiente. SR-060 delimita la revisión de solicitudes ya cerradas con esa misma incertidumbre, sin crear una presunción de error, una reapertura automática ni competencias nuevas.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aprobado por el usuario e incorporado documentalmente en la rama del PR #114.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
@@ -1020,6 +1034,7 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **v0.4:** incorpora una precisión de SR-058 para detectar, revisar y corregir de forma autorizada la aplicación anticipada o incorrecta de una regla durante la transición; conserva la trazabilidad y evita reversiones automáticas. No añade datos reales ni validación empírica.
 - **v0.5:** incorpora SR-059 para solicitudes abiertas cuya versión de regla aplicada no puede determinarse; establece reconstrucción basada en evidencia, decisión competente cuando persiste la incertidumbre y comprobación del alcance de la deficiencia de trazabilidad. No añade datos reales ni validación empírica.
 - **v0.6:** precisa SR-059 para los casos en que la incertidumbre persiste tras revisar evidencias: documentación de la búsqueda, seguimiento y escalado, límites de cualquier actuación provisional expresamente autorizada y reevaluación ante nueva evidencia. No añade datos reales ni validación empírica.
+- **v0.7:** incorpora SR-060 para revisar solicitudes ya cerradas cuya versión de regla aplicada no puede reconstruirse; exige evaluación individual y decisión competente, sin presumir error ni reabrir o corregir automáticamente. No añade datos reales ni validación empírica.
 
 
 ### SR-052 — Reproducibilidad escalonada de la autoevaluación
