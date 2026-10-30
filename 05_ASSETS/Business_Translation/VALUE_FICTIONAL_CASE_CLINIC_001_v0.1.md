@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 0.4  
+**Versión:** 0.5  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
@@ -1014,6 +1014,7 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **v0.2:** añade identificadores de dataset y ejecución simulados, definiciones operativas y denominadores explícitos, supuestos de selección/ventanas y separación narrativa entre plan y ejecución ficticia. No añade datos reales ni validación empírica.
 - **v0.3:** documenta criterios previos de decisión como pendientes cuando no hay umbrales aprobados; separa selección de opción y autorización de ejecución; distingue explícitamente el aprendizaje del Sprint de los resultados de la prueba operativa posterior. No añade datos reales ni validación empírica.
 - **v0.4:** incorpora una precisión de SR-058 para detectar, revisar y corregir de forma autorizada la aplicación anticipada o incorrecta de una regla durante la transición; conserva la trazabilidad y evita reversiones automáticas. No añade datos reales ni validación empírica.
+- **v0.5:** incorpora SR-059 para solicitudes abiertas cuya versión de regla aplicada no puede determinarse; establece reconstrucción basada en evidencia, decisión competente cuando persiste la incertidumbre y comprobación del alcance de la deficiencia de trazabilidad. No añade datos reales ni validación empírica.
 
 
 ### SR-052 — Reproducibilidad escalonada de la autoevaluación
