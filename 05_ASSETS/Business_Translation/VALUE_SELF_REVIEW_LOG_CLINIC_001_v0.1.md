@@ -837,3 +837,25 @@ Los 61 hallazgos SR-001–SR-061 son registros de observaciones, propuestas y de
 No se han realizado sesiones independientes ni externas. El trabajo corresponde a revisión individual guiada en conversación y contraste documental asistido. No se han medido tiempos, tasas de éxito, errores de participantes ni métricas de usabilidad.
 
 **Resultado:** se corrige el estado del protocolo a «revisión individual guiada en curso, con cobertura parcial documentada». No se declara cerrada la autoevaluación, validado el estándar ni demostrada la usabilidad independiente.
+
+
+## Síntesis de la primera revisión individual guiada — 2026-10-30
+
+**Referencia:** `VALUE_FIRST_REVIEW_SYNTHESIS_CLINIC_001_v0.1.md`.  
+**Protocolo:** `VALUE_STANDARD_USABILITY_TEST_PROTOCOL_v0.1.md`, actualizado a v0.4.
+
+Se realizó la síntesis consolidada de los registros y auditorías existentes, sin abrir nuevos escenarios:
+
+- SR-001–SR-061: 61 entradas históricas de observaciones, precisiones y decisiones de naturaleza distinta; no equivalen a 61 defectos ni a 61 tareas de usabilidad completadas.
+- SR-062: dispuesto como duplicado sustancial de SR-061; no aprobado como nuevo hallazgo.
+- A3: proporcionalidad y consolidación ya aplicadas; se mantiene cerrado el ciclo de generación de escenarios de esta ronda.
+- A3→A4→A5: revisión documental registrada; IDs estables, correspondencia de opciones y matriz de cobertura de evidencia simulada incorporados. Las brechas de evidencia permanecen.
+- A6→A7→A8: revisión documental registrada; selección, autorización, diseño, ejecución y resultados separados. No existe ejecución real ni aprendizaje empírico.
+- DECIDE→ACT: regla de autorización explícita incorporada en el maestro v0.3.
+- Fichas maestras A1–A8: sin cambios porque ya recogen los controles necesarios en lo sustancial.
+
+### Resultado
+
+La síntesis de la primera revisión está realizada y documentada. La revisión individual guiada no se declara cerrada: quedan por completar las subtareas cuyo intento/observación/contraste no está formalmente acreditado, la repetición intraevaluador diferida y ciega, la revisión auxiliar ciega por IA y la comparación posterior. La reproducibilidad interevaluador humana permanece diferida.
+
+No se añaden escenarios A3, fases, artefactos metodológicos ni datos ficticios. Se mantiene el estándar en estado de propuesta/borrador y no se declara validación de usabilidad independiente, validez, causalidad o eficacia.
