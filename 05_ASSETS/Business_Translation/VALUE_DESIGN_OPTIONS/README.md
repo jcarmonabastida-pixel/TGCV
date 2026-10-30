@@ -35,18 +35,18 @@
 - Registra los hallazgos documentales, dos aclaraciones aplicadas, riesgos abiertos y criterio para la prueba de uso.
 - Estado: revisión documental inicial; no equivale a validación mediante aplicación.
 
-### 5. ENTREGABLES DE ETAPA 2 — BORRADORES DE TRABAJO
+### 5. FICHAS A1–A8 Y SERVICIO VALUE DISCOVERY SPRINT — BORRADORES DE TRABAJO
 
 [VALUE — Fichas maestras de artefactos canónicos A1–A8](../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)
 
 - Desarrolla los campos, criterios de calidad, salidas y vínculos de los ocho artefactos del maestro.
-- Estado: borrador de especificación; requiere revisión y prueba de uso antes de declararse estable.
+- Estado: especificación de trabajo en evolución; puede servir de base al prototipo si se identifican las funciones provisionales y las limitaciones.
 
 [VALUE — Value Discovery Sprint](../VALUE_DISCOVERY_SPRINT_v0.1.md)
 
 - Propone un servicio piloto acotado, recorrido de trabajo, entregables, roles y criterios de aceptación.
 - La duración sugerida es una hipótesis de diseño, no un estándar validado.
-- Estado: borrador; requiere probarse en un caso y registrar el aprendizaje.
+- Estado: diseño de servicio piloto en evolución; su prueba en un caso real autorizado es posterior y no bloquea el prototipo web.
 
 ### 6. CASO FICTICIO INTEGRAL — RECORRIDO A1–A8
 
@@ -63,7 +63,7 @@
 
 - Inspección documental de cobertura A1–A8 y de la trazabilidad entre decisión, plan, ejecución simulada y aprendizaje.
 - Registra siete hallazgos, prioridades, correcciones propuestas y criterios de aceptación.
-- Estado: revisión documental; los hallazgos aún requieren resolución en el caso. No es validación empírica.
+- Estado: revisión documental v0.3; H1–H4 y H6–H7 atendidos documentalmente, H5 parcialmente atendido por los límites del caso ficticio. No es validación empírica.
 
 ## Convención de gobernanza
 
@@ -84,5 +84,6 @@
 | `../VALUE_ARTIFACT_MASTER_SPECS_v0.1.md` | 0.1 | **BORRADOR** | Fichas de especificación para A1–A8. |
 | `../VALUE_DISCOVERY_SPRINT_v0.1.md` | 0.1 | **BORRADOR** | Diseño inicial del servicio piloto. |
 | `../VALUE_COHERENCE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Coherencia y condiciones para una prueba de uso. |
-| `../VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md` | 0.1 | **CASO FICTICIO INTEGRAL** | Ejercicio A1–A8 v0.3; criterios previos, Sprint/prueba y autorización diferenciados; datos simulados, no validación empírica. |\n| `../VALUE_FICTIONAL_CASE_REVIEW_v0.1.md` | 0.1 | **REVISIÓN DOCUMENTAL** | Siete hallazgos revisados en v0.3; H1–H4, H6–H7 atendidos documentalmente; H5 parcialmente atendido. |
+| `../VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md` | 1.1 | **CASO FICTICIO INTEGRAL** | CLINIC-001 consolidado; criterios, Sprint/prueba y autorización diferenciados; datos simulados, no validación empírica. |
+| `../VALUE_FICTIONAL_CASE_REVIEW_v0.1.md` | 0.3 | **REVISIÓN DOCUMENTAL** | H1–H4 y H6–H7 atendidos documentalmente; H5 parcialmente atendido. |
 
