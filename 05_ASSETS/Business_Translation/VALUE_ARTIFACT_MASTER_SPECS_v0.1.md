@@ -2,8 +2,8 @@
 
 **Identificador:** VALUE-ARTIFACT-SPECS-001  
 **Versión:** 0.1  
-**Estado:** BORRADOR DE TRABAJO — pendiente de revisión  
-**Documento rector:** [VALUE Methodology Lifecycle v0.2](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
+**Estado:** ESPECIFICACIÓN DE TRABAJO EN EVOLUCIÓN — base para prototipo de referencia; no equivale a validación empírica  
+**Documento rector:** [VALUE Methodology Lifecycle v0.4](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Alcance:** especificación operativa inicial de A1–A8; no constituye validación empírica de VALUE ni de TGCV.
 
 ## 1. Propósito y reglas
