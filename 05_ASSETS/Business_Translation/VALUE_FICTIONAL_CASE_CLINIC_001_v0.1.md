@@ -952,6 +952,20 @@ La corrección del defecto del proceso y la resolución de sus consecuencias sob
 
 Esta precisión desarrolla SR-057 y mantiene la separación entre corrección de causa común y tratamiento de consecuencias individuales. No establece criterios de cierre, plazos ni competencias nuevos.
 
+
+#### Efectos no previstos derivados de la corrección del defecto común
+
+La corrección del defecto puede generar un efecto secundario no previsto en otra etapa del proceso. Por ello, su eficacia no se evalúa únicamente por la resolución del problema original.
+
+- Registrar el efecto observado, cuándo se detectó, la etapa afectada y la evidencia disponible; distinguir hechos confirmados de hipótesis.
+- Evaluar el alcance y comprobar qué solicitudes y controles están realmente afectados o potencialmente expuestos, sin asumir que el impacto alcanza a todo el proceso.
+- Mantener el seguimiento individual de las solicitudes afectadas y determinar las actuaciones necesarias mediante las competencias y procedimientos autorizados.
+- Someter cualquier modificación adicional del proceso al mecanismo de cambio y autorización correspondiente. No introducir ajustes unilaterales para compensar el efecto secundario.
+- Verificar que la solución revisada trata el defecto original sin introducir efectos adversos relevantes en otras etapas. Si el efecto revela que la corrección es insuficiente o insegura, revisar la solución conforme al procedimiento autorizado.
+- Registrar evaluación, alcance, decisiones, cambios autorizados, verificaciones y responsables.
+
+Esta precisión complementa SR-057 y la regla de efectos residuales: la corrección del problema original no demuestra por sí sola que la solución global sea adecuada. No crea competencias ni autoriza cambios unilaterales.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
