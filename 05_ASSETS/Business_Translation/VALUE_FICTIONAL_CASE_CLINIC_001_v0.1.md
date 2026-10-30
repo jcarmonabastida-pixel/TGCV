@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 0.8  
+**Versión:** 0.9  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
@@ -185,374 +185,98 @@ Este ejercicio demuestra únicamente la estructura documental y el registro de u
 ## 6. CONNECT — A3 Value System Model
 
 **ID:** CLINIC-001-A3  
-**Estado:** modelo conceptual provisional
+**Estado:** modelo conceptual provisional, consolidado tras auditoría de proporcionalidad (2026-10-30)
 
-### Elementos del sistema
+### Propósito y límites del sistema
 
-| Elemento | Función en el proceso | Incertidumbre |
+Representar el sistema administrativo de gestión de citas programadas de la clínica ficticia, desde la recepción de una solicitud hasta su asignación, comunicación, seguimiento y resolución. El modelo no describe un procedimiento real verificado. Las urgencias, el diagnóstico, el tratamiento y las decisiones clínicas quedan fuera del alcance administrativo; se representan únicamente las interfaces y dependencias clínicas que condicionan el proceso de citas.
+
+### Actores y funciones
+
+| Actor/elemento | Función sistémica representada | Incertidumbre o dependencia |
 |---|---|---|
-| Paciente/cuidador | Presenta solicitud y aporta información | Necesidades y barreras diversas |
-| Recepción | Recibe y registra solicitudes | Calidad y completitud de la entrada |
-| Administración de citas | Revisa pendientes y asigna según reglas | Carga, colas y criterios de escalado |
-| Profesional sanitario | Aporta criterio clínico cuando procede | Disponibilidad y tiempos de respuesta |
-| Sistema de registro | Conserva estados y fechas | Calidad y consistencia de los datos |
-| Coordinación de citas | Supervisa el flujo y resuelve bloqueos | Autoridad y visibilidad del proceso |
-| Dirección de operaciones | Autoriza recursos y cambios operativos | Restricciones presupuestarias y de capacidad |
+| Paciente/cuidador | Presenta la solicitud, aporta información, recibe comunicaciones y confirma o rechaza propuestas | Necesidades, disponibilidad y barreras diversas |
+| Recepción | Recibe, clasifica y registra solicitudes | Criterios de clasificación y calidad de la entrada |
+| Administración de citas | Revisa solicitudes, gestiona asignación y actualiza el estado | Capacidad, carga, reglas vigentes y competencias |
+| Coordinación de citas | Coordina el flujo, supervisión y resolución de bloqueos | Autoridad y alcance formal pendientes de confirmar |
+| Profesional sanitario | Aporta criterio clínico cuando la solicitud requiere valoración o priorización clínica | Disponibilidad y procedimiento clínico aplicable, fuera del alcance de este modelo |
+| Sistema de registro/gestión | Conserva solicitudes, estados, fechas, reglas e historial disponible | Funciones reales, permisos, integridad y trazabilidad por comprobar |
+| Dirección de operaciones | Interviene en decisiones de recursos y cambios operativos conforme a autoridad definida | Restricciones y competencias concretas pendientes de confirmar |
 
-### Macroetapas propuestas durante la autoevaluación guiada
+### Macroetapas y flujo principal
 
-La revisión identifica cuatro macroetapas funcionales propuestas por el usuario. Se incorporan como estructura provisional del modelo, sin afirmar que describan todavía el procedimiento real ni que cada macroetapa sea una única etapa operativa:
+Las cuatro macroetapas funcionales propuestas durante la autoevaluación son:
 
-1. **Recepción, clasificación y registro de la solicitud.**
-2. **Asignación y escalado de la solicitud.**
-3. **Monitorización, supervisión y comunicación del estado y progreso de la solicitud a lo largo del proceso.**
-4. **Resolución, asignación y revisión de citas.**
+1. Recepción, clasificación y registro de la solicitud.
+2. Asignación y escalado de la solicitud.
+3. Monitorización, supervisión y comunicación del estado y progreso durante el proceso.
+4. Resolución, asignación y revisión de citas.
 
-Estas macroetapas son una vista de alto nivel. Su secuencia exacta, los traspasos entre responsables, los estados intermedios, las condiciones de escalado y la relación entre asignación y resolución deben detallarse y contrastarse con información del proceso. La comunicación y la supervisión pueden atravesar varias macroetapas, por lo que no se presuponen como actividades aisladas de una sola fase.
+Como flujo conceptual de alto nivel:
 
-### Flujo conceptual
+**Recepción y registro → revisión de información y clasificación → asignación o derivación → comunicación y seguimiento → confirmación y resolución.**
 
-1. Recepción de la solicitud.
-2. Registro y comprobación de información.
-3. Aplicación de las reglas vigentes de prioridad.
-4. Si falta información, solicitud de aclaración y seguimiento.
-5. Si hace falta criterio clínico, derivación al profesional correspondiente.
-6. Asignación de cita conforme a las reglas y capacidad disponibles.
-7. Comunicación al paciente y actualización del estado.
-8. Revisión de pendientes y escalado de excepciones.
+La secuencia es una representación de trabajo, no un procedimiento verificado. La supervisión, comunicación, actualización de estado y coordinación atraviesan el flujo. Los traspasos, estados intermedios y condiciones exactas deben contrastarse antes de cualquier uso real.
 
-Este flujo es una representación de trabajo del escenario, no una descripción verificada de una clínica existente.
+### Capacidades, recursos y responsabilidades
 
-### Condición transversal de avance y atención: capacidad y roles
+El avance del proceso depende de que exista capacidad efectiva y adecuada en las funciones que intervienen, incluida la disponibilidad de los roles requeridos, sus competencias, carga de trabajo y medios. La designación nominal de una persona o función no demuestra por sí sola que exista cobertura operativa suficiente.
 
-La aportación de la autoevaluación identifica una condición necesaria: **debe existir capacidad disponible y asignada a los roles adecuados para que la solicitud pueda tramitarse y atenderse**.
+Se representa una función de coordinación/ownership end-to-end como necesidad sistémica: mantener visibilidad del estado y progreso, facilitar los traspasos, identificar bloqueos y asegurar que exista una siguiente actuación y un responsable operativo. Esto no implica que esa función ejecute todas las tareas, tenga autoridad clínica o disponga de facultades no confirmadas. Los roles concretos, competencias, niveles de cobertura y mecanismos de escalado son datos pendientes de verificación.
 
-En el modelo provisional, esto se registra como una dependencia transversal del proceso, no como una causa única ni como garantía suficiente de avance. Quedan por aclarar y contrastar:
-- qué roles intervienen en cada macroetapa y qué responsabilidad tiene cada uno;
-- qué significa capacidad disponible para cada rol y cómo se registra;
-- cómo se detecta que falta capacidad o que una solicitud está esperando a un rol;
-- qué reglas autorizadas determinan el escalado o la reasignación, si procede.
+### Información, reglas y trazabilidad
 
-No se presuponen cifras de capacidad, umbrales, reglas nuevas ni mecanismos de sustitución.
+Cada solicitud requiere información suficiente para comprender su estado, actuaciones y siguiente paso. El sistema de registro constituye el soporte de referencia propuesto para conservar la información y su historial, sujeto a comprobar sus capacidades reales.
 
-### Continuidad del flujo y escalado ante falta de capacidad
+Son dependencias relevantes para el modelo:
 
-La orientación propuesta en la autoevaluación es mantener, en la medida de lo posible, la continuidad del flujo. Cuando la capacidad del rol requerido no esté disponible, la solicitud debería escalarse conforme a mecanismos y responsabilidades definidos, en lugar de asumir que debe permanecer indefinidamente en espera.
+- integridad, actualidad, procedencia y consistencia de la información;
+- identificación de las reglas aplicables y de sus versiones;
+- trazabilidad de decisiones, cambios y actuaciones;
+- identificación de bloqueos, solicitudes pendientes y traspasos;
+- comunicación del estado pertinente a las funciones implicadas y a la persona solicitante;
+- identificación de la versión vigente de las instrucciones operativas y acceso a ella en el punto de uso.
 
-Esta orientación depende de un **supuesto que debe verificarse**: que el dimensionamiento del personal sea suficiente y adecuado por grupos o niveles de atención, soporte y resolución de solicitudes. No se da por probado que ese dimensionamiento exista ni que sea suficiente en el escenario real.
+No se presupone que el sistema disponga de auditoría de consultas, notificaciones, confirmaciones de lectura, analítica, automatizaciones o permisos concretos. Esas capacidades deben comprobarse; las lagunas se mantienen como incertidumbres del modelo.
 
-Queda pendiente precisar qué niveles y roles existen, qué criterios autorizados rigen el escalado, qué capacidad tiene cada nivel y cómo se gestionan los casos en que tampoco exista capacidad en el nivel receptor. No se presume que escalar garantice por sí solo una resolución más rápida.
+### Fricciones, restricciones y dependencias
 
-### Información que debe acompañar a la solicitud
+El modelo recoge como fricciones o riesgos sistémicos potenciales:
 
-Como requisito funcional provisional del modelo, cada solicitud debería conservar durante todo el flujo:
-- su estado actual;
-- la información recibida;
-- las actuaciones ya realizadas;
-- el responsable actual;
-- el motivo de cualquier bloqueo;
-- los **tiempos de respuesta y de resolución acordados** aplicables.
+- solicitudes incompletas o información contradictoria;
+- capacidad insuficiente o desajustada entre funciones;
+- bloqueos y demoras en los traspasos;
+- ausencia de responsable o siguiente actuación identificable;
+- reglas, criterios o versiones no suficientemente trazables;
+- comunicación incompleta o falta de evidencia de adopción de una corrección;
+- incidencias que pueden afectar a varias solicitudes;
+- efectos residuales sobre actuaciones previas tras una corrección;
+- dependencia de valoración o decisión clínica cuando corresponda.
 
-Los tiempos acordados deben distinguirse de los tiempos observados: los primeros son referencias o compromisos que deben identificarse y confirmar; los segundos deben obtenerse de registros fiables. No se presuponen aquí valores, plazos ni compromisos concretos. Queda por confirmar dónde se documentan esos datos y cómo se actualizan y consultan durante los traspasos entre roles.
+Estos elementos describen dimensiones que el modelo debe permitir observar. No afirman que se hayan producido en una clínica real ni especifican el procedimiento para resolver cada contingencia. Las respuestas operativas, autorizaciones, plazos, umbrales y protocolos quedan fuera del nivel de detalle de A3 y requerirían diseño y aprobación propios.
 
-### Ownership transversal del proceso e integridad de la información
+### Conocimiento, evidencia e incertidumbre
 
-Se propone que un **rol o función asuma el ownership de extremo a extremo del proceso**, con responsabilidad de asegurar que la información de cada solicitud se mantenga actualizada durante todo su recorrido. Este ownership transversal no implica que esa función realice personalmente todas las tareas ni sustituya la responsabilidad operativa de cada rol que interviene.
+El caso es ficticio. Se distinguen los elementos propuestos para representar el sistema de los hechos que habría que verificar en una organización real. Permanecen pendientes, entre otros, la estructura efectiva de roles, capacidad y carga, reglas y versiones vigentes, tiempos acordados, responsabilidades, traspasos, mecanismos de seguimiento, autoridad de escalado y funciones del sistema de gestión.
 
-Quedan por definir para el caso real o para una versión más detallada del modelo: el rol concreto que ejercerá ese ownership, su autoridad para pedir actualizaciones y resolver incumplimientos, cómo se coordinan las responsabilidades de actualización de cada etapa y qué mecanismo permite detectar información desactualizada. No se presume que el rol de coordinación de citas ya tenga formalmente esta responsabilidad.
+La ausencia de datos no se interpreta como prueba de ausencia de una capacidad ni como evidencia de un fallo. Cada incertidumbre deberá resolverse mediante fuentes autorizadas si el modelo se aplicara a un contexto real.
 
-### Responsabilidad transversal end-to-end del ownership
+### Puntos de intervención para A4
 
-Además de mantener actualizada la información de las solicitudes, el rol o función propietaria del proceso asume las tareas transversales de **monitorización, supervisión y comunicación end-to-end**. Esto incluye seguir el estado y progreso de las solicitudes, vigilar los tiempos acordados de respuesta y resolución, identificar desviaciones y coordinar o activar el escalado conforme a las reglas autorizadas, y asegurar que el estado relevante se comunique a los roles implicados y, cuando corresponda, a la persona solicitante.
+A3 permite formular hipótesis y alternativas posteriores sobre:
 
-Esta responsabilidad transversal no sustituye la ejecución de las tareas propias de cada rol ni autoriza a cambiar criterios clínicos o reglas de prioridad. El rol concreto, su autoridad, los canales de comunicación, la frecuencia de supervisión y las reglas de escalado deben definirse y confirmarse antes de aplicar el modelo a una organización real.
+- mejorar la visibilidad y continuidad end-to-end de las solicitudes;
+- reducir bloqueos y pérdidas de información en los traspasos;
+- ajustar capacidad y cobertura a las necesidades del flujo;
+- mejorar la integridad, vigencia y trazabilidad de información y reglas;
+- reforzar la comunicación y el seguimiento del estado;
+- identificar y gestionar fricciones comunes sin presumir impacto individual.
 
-### Escalado por incumplimiento de niveles de servicio y por excepciones
+Estas son áreas de exploración, no soluciones seleccionadas ni afirmaciones causales. A4 deberá formular alternativas contrastables y A5 registrar la evidencia y sus limitaciones.
 
-El ownership transversal debe activar el **escalado funcional y jerárquico** conforme a los umbrales de incumplimiento de los niveles de servicio acordados. También debe poder activar el escalado **bajo demanda explícita ante situaciones excepcionales**, entre ellas quejas o reclamaciones formales e insatisfacción general con el servicio.
+### Trazabilidad de la autoevaluación A3
 
-Los umbrales, los niveles funcionales y jerárquicos, los destinatarios, los tiempos de actuación y el tratamiento de cada tipo de excepción deben estar definidos y autorizados; no se inventan valores ni una matriz de escalado para este caso. La insatisfacción general debe concretarse mediante señales o criterios acordados, sin asumir una medición que aún no se haya definido.
-
-### Información mínima para una escalación accionable
-
-En la medida de lo posible, la información remitida al nivel funcional o jerárquico al que se escala debe incluir, además del contexto e historial de la solicitud:
-- **motivo del escalado** y regla o umbral que lo activa, cuando corresponda;
-- **actuaciones requeridas** o siguiente acción pendiente;
-- **decisión esperada** del responsable receptor.
-
-Estos campos se incorporan como requisitos funcionales propuestos. Su formato, obligatoriedad según tipo de escalado y responsables de completarlos deben concretarse; no se presume que exista ya una plantilla o herramienta que los recoja.
-
-### Confirmación de recepción y trazabilidad de la actuación escalada
-
-El responsable que recibe una solicitud escalada debe **confirmar que la asume** y registrar la actuación realizada y/o la decisión adoptada. El ownership transversal utiliza esa confirmación para mantener el seguimiento end-to-end hasta el cierre, comprobar el progreso y comunicar el estado pertinente.
-
-Quedan por definir el mecanismo y el plazo de confirmación, así como el tratamiento de una escalación no aceptada o no respondida. No se presuponen herramientas, automatizaciones ni tiempos concretos.
-
-### Rechazo de cita sin capacidad para ofrecer una alternativa
-
-Si el paciente rechaza la cita y no existe capacidad disponible para ofrecer otra alternativa adecuada, la solicitud **permanece abierta** y se activa el escalado conforme a las reglas funcionales y jerárquicas autorizadas. La falta de capacidad en el nivel receptor no equivale a una resolución: el responsable end-to-end mantiene el seguimiento, registra el bloqueo y las actuaciones/decisiones, y coordina la comunicación del estado hasta que exista una alternativa o una decisión autorizada.
-
-Si no puede ofrecerse una alternativa, la solicitud permanece pendiente; no se cierra únicamente porque se haya escalado o porque no haya capacidad disponible. Si la demora pudiera comprometer la atención necesaria, debe aplicarse el procedimiento clínico de priorización y escalado que corresponda, sin esperar indefinidamente a que aparezca capacidad.
-
-**Pendiente antes de uso real:** definir niveles y destinatarios de escalado, actuación cuando el nivel receptor tampoco tenga capacidad, criterios de decisión autorizada y procedimiento clínico aplicable ante riesgo por demora. No se inventan plazos, recursos ni reglas clínicas.
-
-### Condiciones propuestas para el cierre de una solicitud
-
-El registro de cierre solo debe realizarse cuando:
-- la cita esté asignada y comunicada al paciente;
-- el paciente haya **aceptado y confirmado la cita antes de registrar el cierre**;
-- la información de la solicitud y las actuaciones relevantes esté actualizada;
-- no queden actuaciones o escalados pendientes, o estos se hayan resuelto conforme a las reglas aplicables.
-
-La aceptación expresa y confirmación por el paciente es una vía de cierre. Si el paciente **rechaza** la cita, la solicitud permanece abierta y vuelve al flujo de asignación/escalado para su gestión. Si no responde dentro de un **plazo predefinido**, se asume aceptación tácita y la solicitud puede avanzar hacia el cierre, siempre que se cumplan las demás condiciones de cierre y quede registrado el vencimiento del plazo y la regla aplicada. El plazo, la forma de comunicarlo al paciente, los intentos/canales de contacto y la validez de esta aceptación tácita deben definirse y autorizarse expresamente; no se inventan valores ni se presupone que esa regla esté actualmente aprobada.
-
-### Rechazo de cita sin capacidad disponible para una alternativa
-
-Si el paciente rechaza la cita ofrecida y no existe capacidad disponible para ofrecer una alternativa adecuada, la solicitud **permanece abierta** y no se registra como cerrada por el mero hecho de haber sido escalada o de no existir capacidad en ese momento.
-
-- El rol propietario del proceso mantiene el seguimiento end-to-end, conserva actualizado el estado y el motivo del bloqueo y comunica la situación pertinente.
-- Se activa el escalado funcional y/o jerárquico conforme a las reglas autorizadas, buscando una alternativa adecuada sin alterar las reglas clínicas de prioridad.
-- Si el nivel receptor tampoco dispone de capacidad, la solicitud continúa abierta y bajo seguimiento; la escalación no se considera resuelta por sí misma.
-- Si no puede ofrecerse una alternativa, se registra el bloqueo y la solicitud queda pendiente hasta que exista una solución o se adopte una decisión por la autoridad competente conforme a reglas previamente definidas.
-- Si la demora pudiera comprometer la atención necesaria, debe activarse el procedimiento clínico apropiado de priorización/escalado, sin esperar indefinidamente a que aparezca capacidad ordinaria.
-
-Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento clínico aprobado. Quedan por definir la autoridad competente, los mecanismos de escalado cuando tampoco hay capacidad en el nivel receptor, las comunicaciones al paciente y los criterios para determinar cuándo una demora requiere activar salvaguardas clínicas. No se inventan plazos, umbrales ni soluciones de capacidad.
-
-
-### Gestión del rechazo cuando no hay capacidad para una alternativa
-
-Si el paciente rechaza la cita ofrecida y no existe capacidad disponible para ofrecer una alternativa adecuada, la solicitud **permanece abierta** y no se registra como cerrada por el mero hecho de haberse escalado o de no existir capacidad inmediata.
-
-- El ownership end-to-end mantiene el seguimiento, conserva actualizado el estado y el motivo del bloqueo, y comunica el estado pertinente.
-- La solicitud se escala al nivel funcional o jerárquico que corresponda conforme a las reglas autorizadas. Si el nivel receptor tampoco dispone de capacidad, la solicitud continúa abierta y bajo seguimiento; el escalado no se considera por sí mismo una solución.
-- Si todavía no hay alternativa disponible, se registra el bloqueo y la solicitud permanece pendiente hasta que exista una solución adecuada o se adopte una decisión autorizada conforme a las reglas aplicables.
-- Si la demora pudiera comprometer la atención necesaria, debe activarse el procedimiento autorizado de priorización o escalado clínico que corresponda, sin esperar indefinidamente a que aparezca capacidad ordinaria.
-
-Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento clínico u operativo aprobado. Antes de aplicarla en una organización real deben confirmarse los niveles y destinatarios de escalado, la autoridad para decidir, el tratamiento de la falta persistente de capacidad y las salvaguardas clínicas. No se inventan plazos ni se presume que el escalado garantice una alternativa.
-
-
-### Bloqueo por falta de información entre etapas
-
-Si la etapa siguiente no puede comenzar porque falta información necesaria, la solicitud permanece abierta y no avanza como si se cumplieran los requisitos. Se registra la información pendiente y, cuando sea posible, quién debe aportarla. El responsable end-to-end mantiene el seguimiento y el estado actualizado hasta que se complete la información o exista una decisión autorizada sobre cómo proceder.
-
-Antes de un uso real deben definirse los requisitos mínimos de información por etapa, las responsabilidades para aportarla y el procedimiento de seguimiento cuando no esté disponible. Esta es una regla funcional propuesta para el caso ficticio; no establece plazos ni responsabilidades reales.
-
-### Discrepancias entre fuentes de información
-
-Si la información necesaria está disponible, pero existen contradicciones entre fuentes o registros, la solicitud permanece abierta y no se toman decisiones que dependan de ese dato como si fuera fiable.
-
-- Se registra qué información discrepa y la procedencia de las fuentes implicadas.
-- El responsable end-to-end mantiene el seguimiento hasta que la discrepancia se resuelva o una persona autorizada determine cómo proceder.
-- No se presume que una fuente prevalece sobre otra: los criterios de autoridad, verificación y resolución deben definirse antes del uso real.
-
-Esta es una regla funcional propuesta para el caso ficticio. No establece una jerarquía real de fuentes ni un procedimiento clínico aprobado.
-
-
-### Impacto de una corrección sobre actuaciones ya realizadas
-
-Cuando una discrepancia se haya resuelto y posteriormente se determine que el dato vigente era incorrecto o deba corregirse, no basta con actualizar el registro: debe revisarse si alguna actuación, decisión o comunicación previa se apoyó en el dato corregido.
-
-- Identificar las actuaciones, decisiones y comunicaciones previas que utilizaron ese dato y conservar su trazabilidad.
-- Evaluar individualmente si cada actuación sigue siendo válida, requiere revisión o podría necesitar rectificación. La corrección del dato no invalida automáticamente todas las actuaciones anteriores.
-- Asignar la revisión a la persona o instancia competente según la naturaleza de la actuación. Las consecuencias que impliquen criterio o decisión clínica corresponden a la autoridad clínica competente.
-- Registrar la evaluación, la decisión adoptada, su fundamento, quién la autorizó y las actuaciones de corrección, repetición o rectificación que se determinen.
-- Informar a las personas afectadas cuando corresponda, mediante los canales autorizados.
-- Mantener la solicitud abierta hasta revisar las consecuencias relevantes y cumplir las condiciones de resolución aplicables.
-
-No se presume que toda corrección exija revertir actuaciones ni se atribuyen competencias nuevas. Los criterios, responsables, vías de rectificación y comunicaciones deben definirse y autorizarse antes del uso real. Esta es una propuesta funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
-
-### Información imprescindible no disponible ni recuperable
-
-Si una información necesaria no está disponible y tampoco es posible obtenerla, se registra qué dato falta y por qué no se ha podido obtener. Si es imprescindible para avanzar con seguridad o cumplir los requisitos del proceso, la solicitud permanece abierta y no se sustituye el dato por una suposición no declarada.
-
-Si existe una alternativa para proceder sin esa información, debe someterse a una decisión autorizada, dejando constancia de la justificación, las limitaciones y las condiciones aplicables. No se presume que la alternativa sea válida ni que la ausencia del dato pueda ignorarse.
-
-Antes del uso real deben definirse los criterios para distinguir información imprescindible de información prescindible, quién puede autorizar una alternativa y cómo documentar sus límites. Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento clínico aprobado.
-
-### Ambigüedad de responsabilidad entre roles
-
-En un proceso correctamente diseñado, los roles, las responsabilidades, las decisiones bajo su ámbito y los traspasos entre etapas deben estar claramente delimitados. Por tanto, que dos roles discrepen sobre quién debe realizar el siguiente paso no debe tratarse como una condición ordinaria o esperable del proceso: es una excepción que puede revelar una laguna, contradicción, desactualización o falta de claridad en su diseño o documentación.
-
-Cuando ocurra, la solicitud no debe quedar sin seguimiento. Se registra la acción pendiente, los roles implicados y el punto concreto de ambigüedad. El responsable end-to-end mantiene el seguimiento y promueve que se determine quién debe actuar conforme a las responsabilidades autorizadas, mientras se identifica y corrige la causa de la ambigüedad para evitar su repetición.
-
-No se presume que el responsable end-to-end tenga autoridad para reasignar cualquier tarea ni que pueda resolver unilateralmente una deficiencia de gobernanza. Si las reglas vigentes no permiten resolver el desacuerdo, se eleva a la persona o instancia autorizada. Antes del uso real deben estar definidos los roles, responsabilidades, traspasos y el mecanismo para resolver excepciones de este tipo.
-
-Esta es una regla funcional propuesta para el caso ficticio, no una asignación real de responsabilidades ni evidencia de que el proceso esté correctamente diseñado.
-### Continuidad operativa ante la indisponibilidad de una persona responsable
-
-La continuidad de la solicitud no debe depender de la disponibilidad de una persona concreta. Para evitar bloqueos prolongados o solicitudes que queden en un limbo de responsabilidad, debe existir un procedimiento predefinido de continuidad operativa.
-
-- Cuando la persona asignada a una tarea esté ausente o no pueda actuar, se activará el mecanismo de sustitución o delegación previsto para esa función. La tarea podrá ser asumida por el responsable end-to-end si está expresamente autorizado y capacitado, o asignada a una persona sustituta autorizada y competente. La asignación no se transfiere automáticamente por el mero hecho de producirse una ausencia: debe aplicarse la cobertura y el alcance definidos en el procedimiento.
-- Esta facultad debe estar expresamente prevista en el procedimiento y delimitada por las competencias, autorizaciones y salvaguardas aplicables; no se presume una autoridad ilimitada ni que el responsable end-to-end pueda ejecutar cualquier tarea.
-- La tarea y la solicitud permanecen trazables, con responsable actual identificado, estado, motivo del bloqueo y acciones pendientes actualizados.
-- Deben quedar registrados la ausencia o indisponibilidad, la activación del mecanismo de continuidad, la persona que asume la tarea, la autorización y competencia aplicables, el alcance y duración de la delegación y las acciones pendientes; la responsabilidad vigente debe permanecer identificada en todo momento.
-- En este caso, las funciones críticas que requieren respaldo de continuidad son las directamente vinculadas a garantizar la atención sanitaria al paciente en el día y hora de la cita. No se extiende automáticamente este requisito de cobertura crítica al proceso administrativo de concertación o gestión de la cita en sí mismo.
-- Las funciones críticas de atención sanitaria deben disponer de una cobertura alternativa formalmente designada, respaldada por un protocolo de actuación predefinido que establezca cómo se activa y opera. La cobertura debe estar efectivamente disponible cuando se necesite, con personas autorizadas y competentes, responsabilidades y límites explícitos; no basta con una designación nominal.
-- La capacidad de la cobertura debe dimensionarse para asumir la atención sanitaria prevista sin generar una sobrecarga que comprometa la continuidad o la calidad de la atención. La forma de dimensionarla y verificarla debe definirse con criterios operativos y clínicos autorizados; no se presuponen cifras ni umbrales.
-- El protocolo debe contemplar también las ausencias imprevistas de profesionales sanitarios el mismo día de la cita. Debe prever un mecanismo de sustitución por un profesional autorizado y competente o, cuando no sea posible, una reprogramación que preserve la atención necesaria al paciente conforme a los criterios clínicos y de prioridad aplicables. La ausencia no debe traducirse en una cancelación sin seguimiento ni en una reprogramación automática que ignore las necesidades clínicas.
-- Si no hay sustituto disponible, la decisión de reprogramar debe considerar la prioridad clínica y las consecuencias de la demora para cada paciente. Cuando la demora pueda comprometer la atención necesaria, el caso debe remitirse al profesional sanitario responsable o a la instancia clínica autorizada para que determine cómo proceder. La decisión y su justificación deben quedar registradas y comunicarse al paciente conforme al procedimiento aplicable; el personal administrativo no debe sustituir el criterio clínico.
-- Cuando una ausencia imprevista implique reprogramar la cita, el paciente debe recibir una comunicación proactiva, sin tener que contactar por iniciativa propia para conocer la situación. La comunicación debe explicar, de forma adecuada y comprensible, la incidencia, la alternativa prevista o el estado de su gestión y los siguientes pasos, incluido cuándo y cómo recibirá nueva información si todavía no hay una solución confirmada. Debe mantenerse el seguimiento hasta que la situación quede resuelta y comunicada.
-- Una cita reprogramada no se considera resuelta por el mero hecho de haber propuesto o asignado una nueva fecha. Debe constar que el paciente ha recibido la comunicación y que ha aceptado la nueva cita. Si no responde, solo podrá aplicarse el procedimiento de seguimiento previamente definido; la solicitud no se cerrará hasta que se cumpla el resultado y las condiciones establecidos en ese procedimiento. No se presume aceptación tácita ni se inventan plazos o reglas de cierre.
-- Si, tras los intentos de contacto previstos en el procedimiento, el paciente no responde, la solicitud permanece abierta y se activa una revisión por el responsable end-to-end. No debe cerrarse automáticamente por falta de respuesta. La revisión debe determinar y registrar los siguientes pasos conforme a las reglas autorizadas y a la situación clínica, sin presumir que la ausencia de respuesta equivale a aceptación o renuncia a la atención.
-- En esa revisión, el responsable end-to-end debe distinguir, conforme a la información disponible y sin hacer inferencias clínicas fuera de su competencia, entre una falta de respuesta asociada a cuestiones administrativas y una situación en la que la falta de contacto pueda ocultar una necesidad asistencial no atendida. Cuando existan indicios o incertidumbre relevante sobre una posible necesidad asistencial, debe solicitarse revisión por el profesional sanitario responsable o la instancia clínica autorizada. La clasificación, los indicios considerados, la derivación y los pasos acordados deben quedar registrados.
-- Cuando la revisión clínica determine que el paciente necesita atención en un plazo que no puede garantizarse con la nueva cita propuesta, debe existir un mecanismo alternativo de priorización y respuesta asistencial, definido por la autoridad clínica. La decisión sobre ese mecanismo corresponde a dicha autoridad, no al personal administrativo ni al responsable end-to-end. Antes del uso real deben definirse y autorizarse el mecanismo, sus responsables, criterios, vías de activación y seguimiento; no se inventan umbrales ni reglas clínicas.
-
-- El procedimiento debe definir también qué ocurre si el propio responsable end-to-end está indisponible, para que exista una continuidad alternativa previamente autorizada y no se genere un nuevo vacío de responsabilidad.
-- La continuidad debe contemplar una cadena de respaldo previamente definida: si no están disponibles ni la persona asignada ni el responsable end-to-end, se activa un segundo nivel de cobertura con una persona o instancia expresamente designada, autorizada y competente para asumir la coordinación o las tareas que correspondan dentro de sus límites. Si tampoco está disponible ese nivel, se activa el mecanismo de contingencia previsto para mantener el seguimiento, identificar la autoridad operativa disponible y evitar que las solicitudes queden sin responsable. La activación, las decisiones, las transferencias de responsabilidad y las acciones pendientes deben quedar registradas.
-- La cadena de respaldo debe resolverse en el nivel operativo ordinario siempre que sea posible, de acuerdo con SR-032. El escalado jerárquico se reserva a las circunstancias excepcionales allí definidas; no sustituye la necesidad de diseñar una cobertura operativa efectiva.
-- La importancia de la cita y las posibles consecuencias de la demora deben seguir tratándose conforme a los criterios y procedimientos clínicos autorizados; no se presupone que toda cita sea urgente ni que una tarea administrativa pueda sustituir una decisión clínica.
-
-Antes del uso real deben identificarse las funciones de atención sanitaria que requieren cobertura crítica, designar formalmente sus coberturas alternativas, definir y probar el protocolo de activación y actuación —incluido el tratamiento de ausencias imprevistas el mismo día, la derivación a criterio clínico cuando no haya sustituto o cuando la falta de respuesta pueda ocultar una necesidad asistencial, la comunicación proactiva y el seguimiento de la aceptación o falta de respuesta del paciente—, dimensionar y verificar la capacidad de respaldo, y concretar el alcance de la delegación, las tareas que pueden asumirse o reasignarse, los límites de competencia y los mecanismos de registro, seguimiento, comunicación y cierre. La continuidad del proceso de concertación de citas debe gestionarse con sus propias reglas operativas, sin confundirla con el respaldo crítico de la atención sanitaria en el momento de la cita. Esta es una propuesta funcional para el caso ficticio, no un procedimiento clínico u organizativo aprobado.
-
-### Seguimiento temporal y revisión de solicitudes bloqueadas
-
-Para evitar que una solicitud permanezca bloqueada durante un tiempo excesivo, incluso cuando tiene un responsable identificado, debe existir un mecanismo predefinido de seguimiento y revisión de bloqueos.
-
-- El procedimiento debe establecer plazos autorizados para actuar, revisar el bloqueo y, cuando corresponda, escalarlo.
-- El incumplimiento de un plazo debe activar una actuación definida y trazable; no basta con registrar que la demora continúa.
-- La revisión debe comprobar el motivo del bloqueo, las acciones realizadas, la responsabilidad vigente y si procede activar la continuidad operativa o el escalado.
-- Los plazos, prioridades y actuaciones deben estar definidos y autorizados conforme a criterios clínicos y organizativos aplicables. No se inventan umbrales ni se presupone que todas las citas tengan la misma prioridad.
-
-Antes del uso real deben concretarse los plazos, responsables de revisión, disparadores de escalado y actuaciones asociadas. Esta es una propuesta funcional para el caso ficticio, no un protocolo clínico aprobado.
-
-### Resolución operativa ordinaria y escalado jerárquico excepcional
-
-La gestión ordinaria de citas debe resolverse mediante responsabilidades, sustituciones y delegaciones predefinidas, sin depender de intervenciones jerárquicas superiores para incidencias habituales.
-
-- El responsable asignado ejecuta la tarea conforme a sus competencias; si no está disponible, se activa la sustitución o delegación prevista.
-- El responsable end-to-end debe disponer de autoridad operativa suficiente para asegurar la continuidad: puede asumir temporalmente una tarea si está autorizado y capacitado, o asignarla a otra persona autorizada, dentro de los límites establecidos.
-- Los bloqueos se revisan y resuelven en el nivel operativo correspondiente. El escalado funcional para desbloquear o coordinar una actuación no implica por sí mismo un escalado jerárquico.
-- La intervención de una instancia jerárquica superior queda reservada a causas extraordinarias que excedan la capacidad o autoridad operativa disponible, o a circunstancias de especial gravedad.
-
-Antes del uso real deben definirse las responsabilidades, sustituciones, delegaciones y límites de autoridad, así como qué circunstancias justifican la excepción. Esta es una regla funcional propuesta para el caso ficticio, no un procedimiento organizativo aprobado ni validación empírica.
-
-
-### Capacidad efectiva de la cobertura operativa
-
-La designación de una persona sustituta autorizada y competente no garantiza por sí sola que pueda asumir nuevas tareas. Antes de activar la cobertura debe comprobarse que dispone de capacidad efectiva, teniendo en cuenta su carga de trabajo vigente, las tareas ya comprometidas, el tiempo disponible y las competencias necesarias.
-
-- Si puede asumir la tarea sin comprometer de forma indebida sus responsabilidades actuales ni la continuidad, se activa la sustitución conforme al procedimiento.
-- Si su capacidad es insuficiente, no se le asigna la tarea de forma automática: se busca otra cobertura autorizada y competente o se activa el nivel de continuidad previsto.
-- Si no existe capacidad disponible, se mantiene la solicitud identificada y bajo seguimiento, y se activa el mecanismo autorizado de resolución o contingencia. No se inventan prioridades, umbrales ni plazos.
-- Registrar la evaluación de capacidad, la decisión, la persona finalmente asignada y las tareas pendientes.
-
-Esta regla se refiere a la cobertura operativa del proceso de concertación y gestión de citas. No amplía el alcance de SR-035, que trata la capacidad de cobertura de funciones críticas de atención sanitaria en el momento de la cita.
-
-### Contingencia ante indisponibilidad simultánea del responsable y de su cobertura
-
-Si la persona responsable de una función crítica y la cobertura alternativa prevista están ambas indisponibles, se considera una **situación de contingencia**, no una incidencia ordinaria de cobertura.
-
-- Debe activarse un procedimiento de contingencia predefinido, con un segundo nivel de respuesta y responsables o instancias competentes previamente identificados y autorizados.
-- Si tampoco existe capacidad de respuesta en ese nivel, se activa la vía de contingencia que determine la autoridad competente, preservando la atención necesaria y sin asignar funciones a personas no autorizadas o no capacitadas.
-- La activación, las decisiones, las responsabilidades asumidas y el seguimiento deben quedar registrados.
-- No se presume que la mera escalación garantice la resolución ni que exista autoridad ilimitada para asumir tareas.
-
-Antes del uso real deben definirse los niveles, responsables, competencias, límites y vías de activación de la contingencia, de acuerdo con las autoridades organizativas y clínicas correspondientes. Esta regla es una propuesta funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
-
-### Recuperación controlada tras una contingencia en el proceso evaluado
-
-Una vez restablecidas las condiciones habituales, el retorno a la operativa ordinaria del **proceso de concertación y gestión de citas incluido en esta evaluación** debe realizarse de forma controlada, no automática.
-
-- Confirmar que se han recuperado las condiciones necesarias para gestionar las solicitudes y citas afectadas.
-- Revisar las solicitudes pendientes o bloqueadas durante la contingencia.
-- Transferir formalmente las responsabilidades y la información a los responsables ordinarios.
-- Comprobar que ninguna solicitud o paciente afectado queda sin seguimiento dentro del proceso evaluado.
-- Registrar la recuperación y el cierre de la contingencia.
-
-Este criterio no extiende el alcance de A3 a la continuidad general de la clínica ni a otros procesos clínicos u organizativos ajenos al proceso evaluado. La recuperación de la operativa tampoco significa que todas las solicitudes afectadas estén ya resueltas.
-
-### Identificación y trazabilidad de solicitudes afectadas por la contingencia
-
-Toda contingencia debe dejar identificadas las solicitudes de cita afectadas, de modo que puedan recuperarse sin pérdida de trazabilidad. El registro debe permitir conocer:
-
-- qué solicitudes resultaron afectadas;
-- en qué etapa del proceso se encontraban;
-- qué actuaciones quedaron pendientes;
-- quién debe retomarlas;
-- qué prioridad o necesidad de seguimiento les corresponde, conforme a criterios autorizados;
-- qué actuaciones se realizaron para recuperar su tramitación.
-
-
-### Recuperación progresiva del volumen acumulado tras la contingencia
-
-Cuando, al restablecerse la operativa habitual, el volumen de solicitudes acumuladas supere la capacidad ordinaria disponible, la recuperación debe ser progresiva y controlada; no debe suponerse que la vuelta a la operativa habitual permite absorber todo el pendiente de inmediato.
-
-- Consolidar el inventario de solicitudes acumuladas utilizando la identificación y trazabilidad previstas en SR-045, comprobando etapa, actuaciones pendientes, responsable y necesidad de seguimiento.
-- Revisar y ordenar la atención de las solicitudes conforme a criterios de prioridad y seguimiento previamente autorizados. Cualquier prioridad que dependa de valoración clínica corresponde a la autoridad clínica competente; no se crean criterios clínicos ni administrativos nuevos en esta propuesta.
-- Asignar capacidad de forma realista, teniendo en cuenta la carga vigente y la capacidad efectiva de las personas disponibles, conforme a SR-056. No sobreasignar tareas ni considerar recuperada una solicitud por el mero hecho de incluirla en una lista.
-- Recuperar la tramitación por etapas o lotes asumibles, con responsable y siguiente actuación identificados para cada solicitud, y revisar el avance hasta absorber el volumen pendiente o dejar documentados los bloqueos que persistan.
-- Si la capacidad disponible sigue siendo insuficiente, mantener las solicitudes abiertas y bajo seguimiento y activar las alternativas o contingencias autorizadas. Si una demora pudiera comprometer la atención necesaria, aplicar las salvaguardas clínicas correspondientes.
-- Registrar el volumen pendiente, los criterios autorizados aplicados, la capacidad asignada, el progreso, los bloqueos y las decisiones adoptadas.
-
-La recuperación de la operativa general y la absorción del volumen acumulado son resultados distintos. No se considera normalizada la gestión de las solicitudes afectadas solo porque se haya restablecido el servicio ordinario. Esta regla desarrolla SR-044, SR-045 y SR-046, y se apoya en SR-056; no establece plazos, umbrales, prioridades ni recursos no autorizados.
-
-### Verificación de la reincorporación efectiva de las solicitudes al flujo
-
-Antes de considerar recuperada la operativa del proceso evaluado, debe comprobarse, para cada solicitud afectada, que:
-
-- tiene asignado un responsable efectivo;
-- está identificada la siguiente actuación pendiente;
-- conserva la información y el historial necesarios;
-- mantiene las condiciones de prioridad y seguimiento que le correspondan, conforme a criterios autorizados;
-- ha retomado efectivamente su tramitación o, si continúa bloqueada, tiene documentados el motivo, el responsable y la respuesta prevista.
-
-La recuperación de la contingencia y la resolución de las solicitudes son resultados distintos. Una solicitud puede seguir pendiente después de recuperada la operativa, pero no debe quedar sin responsable ni seguimiento.
-
-### SR-055 — Revisión del impacto de información corregida sobre actuaciones previas
-
-Cuando, después de resolver una discrepancia, se determine que el dato vigente era incorrecto o debe corregirse, revisar las actuaciones, decisiones y comunicaciones previas que dependieron de ese dato.
-
-- Identificar las actuaciones afectadas y conservar la trazabilidad del dato utilizado y de la corrección posterior.
-- Evaluar individualmente si cada actuación sigue siendo válida, requiere revisión o podría necesitar rectificación. La corrección no invalida automáticamente todas las actuaciones previas.
-- Asignar la revisión a la persona o instancia competente según la naturaleza de la actuación. Las consecuencias clínicas corresponden a la autoridad clínica competente.
-- Registrar evaluación, decisión, fundamento, responsable/autoridad y cualquier actuación de corrección, repetición o rectificación autorizada.
-- Informar a las personas afectadas cuando corresponda, mediante canales autorizados.
-- Mantener abierta la solicitud hasta revisar las consecuencias relevantes y cumplir las condiciones de resolución aplicables.
-- No se crean competencias ni vías de rectificación nuevas; criterios, responsables y comunicaciones deben definirse y autorizarse antes del uso real.
-
-Propuesta funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
-
-### SR-054 — Resolución trazable de contradicciones entre información nueva y registros existentes
-
-Cuando la información nueva recibida para desbloquear o continuar una solicitud contradiga un dato que ya conste en el sistema, se tratará como una discrepancia que debe resolverse antes de tomar decisiones dependientes de ese dato o reanudar la tramitación sobre la base de una de las versiones.
-
-- Registrar el dato contradictorio, los valores en conflicto, la fuente y fecha de cada información disponible y el momento en que se detectó la discrepancia.
-- Conservar ambos valores y su historial. No sobrescribir ni descartar automáticamente el dato previo o el recién recibido.
-- Mantener la solicitud abierta y bajo seguimiento; identificar la actuación pendiente y el rol o instancia competente para verificar y resolver la discrepancia, según la naturaleza del dato. Si afecta a información o criterio clínico, la resolución corresponde a la autoridad clínica competente.
-- La persona o instancia autorizada debe determinar qué información prevalece o cómo proceder, dejando constancia de la verificación realizada, la decisión, quién la adopta y su fundamento.
-- Solo después de esa decisión podrá actualizarse el dato vigente, conservando la trazabilidad del valor anterior, el nuevo, sus fuentes y la justificación del cambio.
-- Reanudar la tramitación cuando la discrepancia esté resuelta. Si no puede resolverse, solo podrá continuarse sin ese dato cuando una persona o instancia autorizada determine expresamente que existe una vía válida para hacerlo y documente su justificación, limitaciones y condiciones.
-
-Esta regla concreta la regla general existente sobre discrepancias entre fuentes: añade la conservación explícita de los valores en conflicto, la trazabilidad de fechas y fuentes, la autoridad y fundamento de la resolución y la condición para reanudar el flujo. No establece una jerarquía universal de fuentes ni atribuye competencias nuevas. Los criterios, responsables y vías de resolución deben estar definidos y autorizados antes del uso real. Es una propuesta funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
-
-### SR-053 — Gestión activa de bloqueos con responsable asignado
-
-La asignación de un responsable y de una siguiente actuación no demuestra por sí sola que una solicitud esté avanzando. Cuando la actuación dependa de información o respuesta de otro rol y el bloqueo persista, el responsable end-to-end debe gestionar activamente su desbloqueo:
-
-- Identificar y registrar qué información o respuesta falta, qué rol debe proporcionarla y desde cuándo existe el bloqueo.
-- Requerir la actuación al rol responsable y dejar constancia de la solicitud y su seguimiento.
-- Controlar el cumplimiento del plazo previamente acordado para esa actuación.
-- Si no se recibe respuesta o no se desbloquea la solicitud dentro del plazo, activar la vía de escalado correspondiente o una alternativa previamente autorizada.
-- Registrar las actuaciones, su resultado, el responsable y el siguiente paso.
-- Mantener abierta la solicitud hasta que se cumplan sus condiciones de resolución; la gestión administrativa del bloqueo no equivale a resolverla.
-
-Los plazos, niveles de escalado, alternativas y facultades del responsable end-to-end deben estar definidos y autorizados. No se fijan aquí valores ni competencias nuevas. Esta es una regla funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
-
-### Relaciones y posibles puntos de bloqueo
-
-- La información incompleta puede provocar devoluciones y trabajo repetido.
-- La falta de visibilidad compartida puede retrasar el seguimiento de solicitudes bloqueadas.
-- La capacidad disponible puede limitar la asignación aunque el proceso administrativo sea eficiente.
-- Las reglas clínicas de prioridad condicionan el orden de atención y no deben sustituirse por criterios de conveniencia administrativa.
-- Mejorar el tiempo medio global podría ocultar un empeoramiento para pacientes prioritarios; por ello se requiere seguimiento segmentado.
-
-### Fronteras del modelo
-
-El modelo cubre la asignación de citas, no la atención clínica posterior ni la eficacia de los tratamientos. Se ampliaría si los datos reales revelaran que las principales causas se encuentran fuera de esa frontera.
-
-### Revisión del VSM
-
-El modelo debe evolucionar al aprender. No se presenta como inventario completo de relaciones ni como mapa causal demostrado.
+Los hallazgos SR-014–SR-061 y sus precisiones se conservan en el registro de autoevaluación. La auditoría de proporcionalidad clasifica su aportación al modelo y distingue entre dimensiones sistémicas que deben representarse aquí y especificaciones operativas que no deben expandir el cuerpo principal de A3. El detalle histórico no se elimina ni se interpreta como conjunto de procedimientos aprobados.
 
 ## 7. DESIGN — A4 Value Hypothesis & Options Record
 
@@ -1054,6 +778,7 @@ Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transi
 - **v0.6:** precisa SR-059 para los casos en que la incertidumbre persiste tras revisar evidencias: documentación de la búsqueda, seguimiento y escalado, límites de cualquier actuación provisional expresamente autorizada y reevaluación ante nueva evidencia. No añade datos reales ni validación empírica.
 - **v0.7:** incorpora SR-060 para revisar solicitudes ya cerradas cuya versión de regla aplicada no puede reconstruirse; exige evaluación individual y decisión competente, sin presumir error ni reabrir o corregir automáticamente. No añade datos reales ni validación empírica.
 - **v0.8:** incorpora SR-061 para comprobar la comunicación y aplicación efectiva de correcciones documentales mediante el propio sistema de gestión de citas cuando sus funciones lo permitan; exige verificar capacidades reales y no presume notificaciones, auditoría de consultas ni confirmaciones de lectura. No añade datos reales ni validación empírica.
+- **v0.9:** consolida A3 tras la auditoría de proporcionalidad: mantiene actores, macroetapas, flujo, capacidades, responsabilidades funcionales, información, reglas, fricciones, dependencias e incertidumbres; retira del cuerpo principal la especificación detallada de contingencias y controles, conservando los hallazgos y su trazabilidad en el registro de autoevaluación. No añade evidencia real ni validación empírica.
 
 
 ### SR-052 — Reproducibilidad escalonada de la autoevaluación
