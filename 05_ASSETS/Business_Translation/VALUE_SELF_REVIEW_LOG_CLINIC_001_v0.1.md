@@ -307,6 +307,9 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Contexto sanitario:** la importancia de la cita y las consecuencias de la demora deben gestionarse según criterios y procedimientos clínicos autorizados, sin presumir que todas las citas sean urgentes.
 - **Pendiente antes de uso real:** definir alcance y límites de delegación, tareas reasignables, requisitos de competencia, continuidad alternativa y trazabilidad.
 - **Límite:** propuesta para el caso ficticio; no es un procedimiento clínico u organizativo aprobado ni validación empírica.
+- **Reconfirmación del usuario (2026-10-30):** ante la ausencia imprevista de la persona asignada, activar sustitución o delegación previamente definida; la tarea debe recaer en una persona autorizada y competente, sin transferencia automática por el mero hecho de la ausencia.
+- **Trazabilidad precisada:** registrar ausencia, activación, persona sustituta, autorización y competencia aplicables, alcance/duración de la delegación y acciones pendientes. Mantener identificado al responsable vigente.
+- **Relación:** esta precisión desarrolla SR-030 y es coherente con SR-032; no crea un requisito independiente.
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
 
 ### SR-031 — Seguimiento y revisión de solicitudes bloqueadas
