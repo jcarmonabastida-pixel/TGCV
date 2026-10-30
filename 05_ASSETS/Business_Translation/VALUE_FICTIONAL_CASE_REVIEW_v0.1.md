@@ -4,7 +4,7 @@
 **Versión:** 0.3  
 **Estado:** REVISIÓN DOCUMENTAL v0.3 — seguimiento actualizado; H1, H2, H3 y H4/H6/H7 atendidos documentalmente; H5 parcialmente atendido  
 **Caso revisado:** [VALUE — Caso ficticio integral: acceso a citas en una clínica](VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md)  
-**Estándar de referencia:** [VALUE Methodology Lifecycle v0.2](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
+**Estándar de referencia:** [VALUE Methodology Lifecycle v0.4](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Especificaciones de artefactos:** [A1–A8 Master Specifications v0.1](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)
 
 > Esta revisión es una inspección documental del caso sintético. No constituye validación de VALUE, de TGCV ni de una intervención sanitaria. Los datos del caso continúan siendo inventados.
