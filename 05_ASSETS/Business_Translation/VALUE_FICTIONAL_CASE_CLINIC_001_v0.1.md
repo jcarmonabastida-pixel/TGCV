@@ -454,7 +454,7 @@ Antes de considerar recuperada la operativa del proceso evaluado, debe comprobar
 
 La recuperación de la contingencia y la resolución de las solicitudes son resultados distintos. Una solicitud puede seguir pendiente después de recuperada la operativa, pero no debe quedar sin responsable ni seguimiento.
 
-### Gestión activa de bloqueos con responsable asignado
+### SR-053 — Gestión activa de bloqueos con responsable asignado
 
 La asignación de un responsable y de una siguiente actuación no demuestra por sí sola que una solicitud esté avanzando. Cuando la actuación dependa de información o respuesta de otro rol y el bloqueo persista, el responsable end-to-end debe gestionar activamente su desbloqueo:
 
