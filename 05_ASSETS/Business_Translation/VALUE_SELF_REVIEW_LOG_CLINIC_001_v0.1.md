@@ -291,11 +291,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 ### SR-029 — Ambigüedad sobre quién debe realizar el siguiente paso
 
 - **Aprobación del usuario:** sí.
-- **Regla funcional propuesta:** si dos roles consideran que el siguiente paso corresponde al otro y ninguno actúa, se registra la acción pendiente y la ambigüedad. El responsable end-to-end mantiene el seguimiento y promueve una asignación explícita conforme a las responsabilidades autorizadas.
-- **Límite de autoridad:** no se presume que el responsable end-to-end pueda reasignar cualquier tarea. Si las reglas existentes no resuelven el desacuerdo, se eleva a la persona o instancia autorizada.
-- **Pendiente antes de uso real:** definir responsabilidades por etapa y el mecanismo para resolver desacuerdos de asignación.
+- **Regla funcional propuesta:** si dos roles consideran que el siguiente paso corresponde al otro y ninguno actúa, se registra la acción pendiente, los roles implicados y el punto concreto de ambigüedad. El responsable end-to-end mantiene el seguimiento y promueve una asignación explícita conforme a las responsabilidades autorizadas.
+- **Matiz acordado por el usuario:** en un proceso bien definido, roles, responsabilidades y traspasos deberían estar claramente delimitados; por ello, esta situación no se considera ordinaria ni deseable, sino una excepción que puede revelar una laguna, contradicción, desactualización o falta de claridad en el diseño o documentación del proceso.
+- **Tratamiento de la excepción:** además de desbloquear la solicitud conforme a las competencias autorizadas, identificar y corregir la causa para evitar recurrencias.
+- **Límite de autoridad:** no se presume que el responsable end-to-end pueda reasignar cualquier tarea ni corregir unilateralmente una deficiencia de gobernanza. Si las reglas vigentes no resuelven el desacuerdo, se eleva a la persona o instancia autorizada.
+- **Pendiente antes de uso real:** definir y documentar roles, responsabilidades, traspasos y mecanismo de resolución de excepciones.
 - **Límite:** propuesta para el caso ficticio; no es una asignación real de responsabilidades ni validación empírica.
-- **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
+- **Estado:** reconfirmado y matizado por el usuario; incorporado al caso A3 y al registro de autoevaluación en la rama del PR #114.
 
 ### SR-030 — Continuidad operativa y responsabilidad delegada
 
