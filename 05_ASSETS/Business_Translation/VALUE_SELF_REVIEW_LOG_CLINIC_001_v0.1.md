@@ -475,6 +475,11 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Límite de alcance:** no extiende A3 a la continuidad general de la clínica ni a otros procesos clínicos u organizativos ajenos al proceso evaluado. La recuperación de la operativa no significa que todas las solicitudes estén resueltas.
 - **Pendiente antes de uso real:** definir responsables, comprobaciones y registro de recuperación conforme a las reglas autorizadas.
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Reconfirmación del usuario (2026-10-30):** si el volumen de solicitudes acumuladas supera la capacidad ordinaria al restablecerse el servicio, la recuperación debe ser progresiva y controlada; no se presume absorción inmediata del pendiente.
+- **Gestión del volumen acumulado:** consolidar el inventario y su trazabilidad (SR-045); revisar orden de atención conforme a criterios autorizados; asignar capacidad realista considerando carga vigente y capacidad efectiva (SR-056); recuperar solicitudes por etapas o lotes asumibles, cada una con responsable y siguiente actuación; mantener abiertas y bajo seguimiento las que sigan bloqueadas; activar alternativas autorizadas y salvaguardas clínicas cuando corresponda.
+- **Seguimiento y cierre:** registrar volumen pendiente, criterios aplicados, capacidad asignada, progreso, bloqueos y decisiones. La vuelta a la operativa ordinaria no equivale a absorber el volumen acumulado ni a resolver todas las solicitudes.
+- **Relación:** precisión integrada en SR-044 y coherente con SR-045, SR-046 y SR-056; no crea un requisito independiente.
+- **Límites:** no se fijan plazos, umbrales, prioridades, recursos ni reglas clínicas no autorizadas. Las prioridades clínicas corresponden a la autoridad clínica competente.
 - **Estado:** aceptado por el usuario; incorporado documentalmente en la rama de trabajo.
 
 ### SR-045 — Identificación y trazabilidad de solicitudes afectadas por la contingencia
