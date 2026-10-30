@@ -572,6 +572,11 @@ async function assessImportedBrowserPackage(pkg){
    assert(["PROPOSED","NEEDS_REVIEW"].includes(candidate.status),"Estado de propuesta de correspondencia no compatible.");
    assert(candidate.algorithm==="tgcv-correspondence-exact-boundary-001"&&candidate.algorithm_version==="1","Algoritmo de derivación de correspondencias no compatible.");
    assert(typeof candidate.system_transition_id==="string"&&typeof candidate.tgcv_transformation_id==="string","La propuesta carece de referencias de transición/transformación.");
+   var referencedTransition=(pkg.input.transitions||[]).find(function(transition){return transition&&transition.id===candidate.system_transition_id;});
+   assert(referencedTransition,"La propuesta referencia una transición inexistente en el modelo exportado.");
+   var referencedTransformation=(review.catalogue_snapshot.transformations||[]).find(function(transformation){return transformation&&transformation.id===candidate.tgcv_transformation_id;});
+   assert(referencedTransformation,"La propuesta referencia una transformación inexistente en el snapshot del catálogo TGCV.");
+   assert(referencedTransition.source===referencedTransformation.source_state&&referencedTransition.target===referencedTransformation.target_state,"La correspondencia propuesta no conserva los límites de estado declarados por la transición y la transformación del catálogo.");
    assert(candidate.evidence&&typeof candidate.evidence==="object"&&!Array.isArray(candidate.evidence),"La propuesta carece de evidencia estructurada.");
    assert(candidate.decision===null||candidate.decision==="ACCEPTED"||candidate.decision==="REJECTED","Decisión de revisión no compatible.");
    assert(candidate.decision!=="ACCEPTED"||candidate.status==="PROPOSED","Una propuesta que requiere revisión no puede figurar como aceptada.");
