@@ -126,7 +126,7 @@ Cuando existan colaboradores o usuarios potenciales, podrá plantearse una prueb
 - No valida empíricamente VALUE ni la teoría científica TGCV.
 - Cualquier futura prueba en una organización real requerirá autorización, salvaguardas y tratamiento de datos adecuados al contexto.
 
-**Estado al actualizar este protocolo (v0.3):** revisión individual guiada iniciada y en curso. Hay observaciones del usuario y decisiones documentadas en el log, junto con revisiones de coherencia asistidas. La cobertura del procedimiento no está completa y no se declara cierre de la autoevaluación.
+**Nota histórica (estado registrado en v0.3):** en esa fecha la revisión individual guiada estaba iniciada y no se declaraba cerrada. Ese estado fue actualizado por las actividades registradas en las secciones 15 y 16; prevalece la decisión de cierre con cobertura parcial de la versión 0.7.
 
 
 ## 12. Estado de ejecución del protocolo — 2026-10-30
@@ -176,7 +176,7 @@ Este cierre no equivale a validación independiente de usabilidad, fiabilidad in
 
 - **Fecha y versiones revisadas:** 2026-10-30; caso CLINIC-001 v1.1; maestro VALUE Lifecycle v0.3; fichas A1–A8 v0.1; protocolo v0.4; log de autoevaluación vigente en PR #114.
 - **Tareas recorridas:** comprensión inicial; revisión guiada A1–A3; contrastes documentales A3→A4→A5 y A6→A7→A8; revisión de coherencia A1–A8; consolidación y clasificación de hallazgos.
-- **Tareas pendientes:** completar las subtareas del primer recorrido sin evidencia formal de intento/observación/contraste; repetición intraevaluador diferida y ciega; revisión auxiliar ciega por IA; comparación y conclusión final.
+- **Tareas pendientes en la fecha de esta síntesis:** completar o delimitar las subtareas sin evidencia formal; realizar la repetición diferida; efectuar la revisión auxiliar; comparar las fuentes y adoptar una conclusión. Las actividades posteriores y su estado final se registran en las secciones 15 y 16.
 - **Hallazgos del usuario:** observaciones y decisiones registradas en SR-001–SR-061; SR-062 descartado como nuevo hallazgo.
 - **Hallazgos del contraste documental asistido:** desproporción inicial de A3; necesidad de trazabilidad A3→A4→A5; ambigüedad en la separación entre selección, autorización, ejecución y resultados; corrección del estado del protocolo.
 - **Ambigüedades o redundancias:** detalle operativo excesivo en A3; duplicidad sustancial SR-062/SR-061; riesgo de interpretar una secuencia contrafactual como registro de ejecución; riesgo de confundir datos fabricados con resultados observados.
@@ -188,7 +188,7 @@ Este cierre no equivale a validación independiente de usabilidad, fiabilidad in
 
 ### Estado tras la síntesis
 
-La síntesis de la primera revisión está realizada y registrada. Esto no significa que la primera revisión formal esté completa en todos sus pasos ni que el protocolo esté cerrado. La siguiente actividad prevista es preparar y ejecutar la repetición intraevaluador diferida y ciega, respetando la separación respecto de los resultados de la primera pasada. La revisión auxiliar ciega por IA se realizará por separado y no se contará como evaluación humana independiente.
+La síntesis de la primera revisión quedó realizada y registrada en esta fase histórica. La previsión de repetir y revisar con IA fue posteriormente ejecutada con las limitaciones documentadas en la sección 15. La decisión final de cierre de la autoevaluación individual se encuentra en la sección 16 y prevalece sobre esta previsión provisional.
 
 
 ## 14. Adaptación temporal de la repetición a trabajo exclusivamente móvil — 2026-10-30
