@@ -500,3 +500,12 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir mecanismo de registro, reglas de asignación y actualización y autoridad para determinar la actuación correspondiente.
 - **Límite de validez:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 - **Estado:** aceptado por el usuario e incorporado al caso ficticio y al registro de autoevaluación en la rama de trabajo.
+
+### SR-050 — Ciclo de vida y resolución de la incidencia de seguimiento
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** cada incidencia de seguimiento tendrá un ciclo propio con los estados: abierta, asignada, en revisión, con actuación pendiente y resuelta.
+- **Cierre de incidencia:** registrar la actuación realizada y la situación en que queda la solicitud original. Resolver la incidencia no implica cerrar automáticamente la solicitud.
+- **Pendiente antes de uso real:** definir condiciones de entrada y salida de cada estado, responsables de las transiciones y evidencia mínima de resolución.
+- **Límite de validez:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario e incorporado al caso ficticio y al registro de autoevaluación en la rama de trabajo.
