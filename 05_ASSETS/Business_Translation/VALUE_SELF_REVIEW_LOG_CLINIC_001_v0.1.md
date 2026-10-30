@@ -358,6 +358,19 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Estado:** registrado en la rama de trabajo; continúa la revisión de A3.
 
 
+### SR-056 — Capacidad efectiva de la cobertura operativa del proceso de citas
+
+- **Aprobación del usuario:** sí.
+- **Contexto:** una persona sustituta está formalmente disponible y autorizada, pero su carga de trabajo vigente podría impedirle asumir nuevas tareas sin comprometer sus responsabilidades actuales o la continuidad del proceso.
+- **Regla acordada:** la cobertura operativa debe evaluarse por su capacidad efectiva, no solo por su designación nominal o autorización.
+- **Comprobación:** considerar carga de trabajo vigente, tareas comprometidas, tiempo disponible y competencias necesarias antes de asignar nuevas tareas.
+- **Si la capacidad es insuficiente:** no asignar automáticamente la tarea; buscar otra cobertura autorizada y competente o activar el siguiente nivel de continuidad previsto. Si no existe capacidad disponible, mantener la solicitud identificada y bajo seguimiento y activar el mecanismo autorizado de resolución o contingencia.
+- **Trazabilidad:** registrar evaluación de capacidad, decisión, persona finalmente asignada y tareas pendientes.
+- **Alcance:** se aplica a la cobertura operativa del proceso de concertación y gestión de citas. No amplía SR-035, que se limita a dimensionar la cobertura de funciones críticas de atención sanitaria en el momento de la cita.
+- **Pendiente antes de uso real:** definir método, responsables y criterios autorizados para evaluar capacidad, así como alternativas y condiciones de activación. No se fijan umbrales ni plazos en esta autoevaluación.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aprobado por el usuario e incorporado al caso A3 y al registro de autoevaluación en la rama del PR #114.
+
 ### SR-035 — Dimensionamiento de la cobertura crítica y delimitación de su alcance
 
 - **Aprobación del usuario:** sí.
