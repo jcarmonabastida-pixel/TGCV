@@ -279,6 +279,8 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 
 ### SR-028 — Información imprescindible no disponible ni recuperable
 
+- **Reconfirmación en la autoevaluación A3 (2026-10-30):** el usuario confirma el criterio de mantener abierta la solicitud cuando falta información imprescindible no recuperable, registrar el dato ausente y el motivo, y someter cualquier alternativa a autorización expresa con justificación, limitaciones y condiciones. La revisión no identifica un requisito adicional respecto de SR-028; se conserva el identificador para evitar duplicidad.
+
 - **Aprobación del usuario:** sí.
 - **Regla funcional propuesta:** registrar qué información falta y por qué no se ha podido obtener. Si es imprescindible para avanzar, la solicitud permanece abierta y no se sustituye por una suposición no declarada.
 - **Alternativa autorizada:** si se propone proceder sin el dato, someter la alternativa a una decisión autorizada y registrar la justificación, limitaciones y condiciones aplicables. No se presume que la alternativa sea válida.
