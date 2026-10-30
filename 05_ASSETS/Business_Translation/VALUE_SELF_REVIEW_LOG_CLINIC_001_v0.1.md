@@ -541,3 +541,17 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir y autorizar plazos, niveles de escalado, alternativas y facultades del responsable end-to-end. No se fijan valores ni competencias nuevas.
 - **Límite:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 - **Estado:** aceptado por el usuario e incorporado documentalmente en la rama del PR #114.
+
+
+### SR-054 — Resolución trazable de contradicciones entre información nueva y registros existentes
+
+- **Aprobación del usuario:** sí.
+- **Contexto:** la información nueva recibida para desbloquear o continuar una solicitud contradice un dato que ya consta en el sistema.
+- **Regla acordada:** tratarlo como una discrepancia que debe resolverse antes de tomar decisiones dependientes del dato o reanudar la tramitación basándose en una de las versiones.
+- **Registro y conservación:** documentar los valores en conflicto, las fuentes y fechas disponibles y el momento de detección; conservar ambos valores y su historial, sin sobrescritura ni descarte automático.
+- **Resolución:** mantener la solicitud abierta y bajo seguimiento; identificar la actuación pendiente y la instancia competente según la naturaleza del dato. La información o el criterio clínico corresponde resolverlos a la autoridad clínica competente. La persona o instancia autorizada debe dejar constancia de la verificación, qué información prevalece o cómo proceder, quién decide y con qué fundamento.
+- **Actualización y reanudación:** actualizar el dato vigente solo después de la decisión autorizada, conservando valor anterior, nuevo, fuentes y justificación. Reanudar el flujo cuando la discrepancia esté resuelta; si no puede resolverse, solo continuar sin ese dato mediante decisión expresa y documentada de una instancia autorizada, con justificación, limitaciones y condiciones.
+- **Relación con la regla previa:** concreta la regla general de «Discrepancias entre fuentes de información»; no crea una jerarquía universal de fuentes ni competencias nuevas.
+- **Pendiente antes de uso real:** definir y autorizar criterios, responsables y vías de resolución.
+- **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
+- **Estado:** aprobado por el usuario e incorporado al caso A3 y al registro de autoevaluación en la rama del PR #114.
