@@ -531,3 +531,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Límites:** estas primeras actividades examinan consistencia intraevaluador y ambigüedades. No demuestran reproducibilidad interevaluador, validación empírica ni eficacia de VALUE/TGCV.
 - **Pendiente:** ejecutar la repetición intraevaluador y la revisión auxiliar; definir el protocolo de evaluación externa antes de abrir esa fase comunitaria. No se fija ahora número de evaluadores ni criterios no acordados.
 - **Estado:** aceptado por el usuario e incorporado documentalmente en la rama del PR #114; las pruebas siguen pendientes.
+
+### SR-053 — Gestión activa de bloqueos con responsable asignado
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** tener responsable y siguiente actuación identificados no basta para considerar que una solicitud está avanzando. Cuando la actuación dependa de información o respuesta de otro rol y el bloqueo persista, el responsable end-to-end debe gestionar activamente el desbloqueo.
+- **Actuación:** identificar y registrar la información o respuesta pendiente, el rol responsable y desde cuándo existe el bloqueo; requerir la actuación y dejar constancia; controlar el plazo previamente acordado; si no hay respuesta o desbloqueo dentro del plazo, activar la vía de escalado correspondiente o una alternativa previamente autorizada.
+- **Trazabilidad y continuidad:** registrar las actuaciones, el resultado, el responsable y el siguiente paso. La solicitud permanece abierta hasta cumplir sus condiciones de resolución; la gestión administrativa del bloqueo no equivale a resolverla.
+- **Pendiente antes de uso real:** definir y autorizar plazos, niveles de escalado, alternativas y facultades del responsable end-to-end. No se fijan valores ni competencias nuevas.
+- **Límite:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario e incorporado documentalmente en la rama del PR #114.
