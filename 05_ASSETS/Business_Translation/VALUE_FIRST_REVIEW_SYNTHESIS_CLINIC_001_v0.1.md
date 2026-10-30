@@ -6,7 +6,7 @@
 **Estado:** SÍNTESIS DOCUMENTAL REALIZADA — primera revisión individual guiada aún abierta  
 **PR:** #114  
 **Protocolo:** `VALUE_STANDARD_USABILITY_TEST_PROTOCOL_v0.1.md`, v0.3 al realizar esta síntesis  
-**Caso:** `VALUE_FICTIONAL_CASE_CLINIC_001_v0.1.md`, v1.1
+**Caso:** `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md`, v1.1
 
 ## 1. Dictamen ejecutivo
 
