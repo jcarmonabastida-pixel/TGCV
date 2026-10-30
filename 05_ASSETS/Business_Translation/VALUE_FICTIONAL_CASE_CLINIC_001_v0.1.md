@@ -832,3 +832,16 @@ Criterio funcional para el caso ficticio; no constituye un procedimiento aprobad
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
 - **v0.2:** añade identificadores de dataset y ejecución simulados, definiciones operativas y denominadores explícitos, supuestos de selección/ventanas y separación narrativa entre plan y ejecución ficticia. No añade datos reales ni validación empírica.
 - **v0.3:** documenta criterios previos de decisión como pendientes cuando no hay umbrales aprobados; separa selección de opción y autorización de ejecución; distingue explícitamente el aprendizaje del Sprint de los resultados de la prueba operativa posterior. No añade datos reales ni validación empírica.
+
+
+### SR-052 — Reproducibilidad escalonada de la autoevaluación
+
+- **Aprobación del usuario:** sí.
+- **Diseño acordado:** evaluar la reproducibilidad en etapas, sin presentar una modalidad como sustituta de otra:
+  1. **Repetición intraevaluador:** la misma persona evaluadora volverá a aplicar la revisión al mismo caso en un momento separado. En la segunda pasada no consultará los resultados ni las anotaciones de la primera antes de completar y dejar registrada su evaluación independiente. Después se compararán interpretaciones, decisiones, omisiones, ambigüedades y diferencias detectadas.
+  2. **Revisión auxiliar asistida por IA:** una instancia/modelo independiente revisará el caso y la documentación disponible sin recibir las conclusiones de la autoevaluación previa. Su resultado se registrará por separado y podrá ayudar a detectar omisiones o ambigüedades; no equivale a una segunda persona evaluadora ni acredita reproducibilidad interevaluador.
+  3. **Reproducibilidad interevaluador humana:** queda diferida hasta que la investigación se abra a la comunidad a través de la web y puedan participar evaluadores externos independientes.
+- **Registro y comparación:** conservar por separado las versiones de cada pasada, fecha, material consultado, observaciones y discrepancias; documentar posteriormente la comparación sin sobrescribir los registros originales.
+- **Límites de interpretación:** las dos primeras etapas permiten examinar consistencia intraevaluador y detectar ambigüedades, pero no demuestran reproducibilidad interevaluador, validez empírica ni eficacia del método VALUE o de TGCV.
+- **Condición de apertura comunitaria:** el protocolo de evaluación externa, selección/independencia de evaluadores y tratamiento de discrepancias deberá definirse antes de iniciar esa fase; no se presume ahora un número de evaluadores ni un procedimiento aún no acordado.
+- **Estado:** aceptado por el usuario; incorporado documentalmente en la rama del PR #114. La repetición intraevaluador y la revisión auxiliar por IA quedan como actividades pendientes, no como pruebas ya realizadas.
