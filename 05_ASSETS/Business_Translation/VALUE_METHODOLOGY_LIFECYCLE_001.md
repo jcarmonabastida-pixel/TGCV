@@ -283,40 +283,37 @@ La comunidad podrá proponer cambios mediante issues y pull requests con:
 
 Las propuestas se revisan antes de integrarse. Una implementación de software no cambia automáticamente el estándar; las decisiones aceptadas se documentan en la especificación y se versionan. La licencia del repositorio y los derechos de uso deben comprobarse explícitamente antes de anunciar condiciones de contribución o reutilización.
 
-## 11. Camino desde el estándar hasta el playground y la comunidad
+## 11. Camino desde el estándar al prototipo web y la comunidad
 
-El trabajo se secuencia en tres etapas, sin adelantarlas ni mezclarlas.
+Las líneas de normalización, especificación de artefactos, diseño del servicio y prototipo web se coordinan, pero no deben convertirse en una secuencia rígida que impida aprender mediante la implementación. La promoción del prototipo no declara cerrado el diseño del servicio piloto ni valida empíricamente el estándar.
 
-### Etapa 1 — Normalización metodológica (actual)
+### Línea A — Base metodológica de referencia
 
-1. Revisar y aprobar vocabulario y definiciones.
-2. Validar las siete fases operativas/entrada ALIGN y sus puertas.
-3. Aprobar los ocho artefactos canónicos y las vistas del VSM.
-4. Resolver excepciones y conceptos que se conservan como pendientes.
-5. Añadir ejemplos y criterios de aceptación del estándar.
+1. Mantener una versión identificada del maestro, el ciclo canónico, las puertas y las distinciones metodológicas.
+2. Conservar explícitas las decisiones pendientes, los supuestos y los límites.
+3. Revisar la coherencia entre maestro, fichas A1–A8 y ejemplos antes de cada promoción relevante.
 
-**Salida:** estándar VALUE v0.3 candidato, coherente y revisable.
+**Estado en v0.4:** base metodológica identificada para implementar un prototipo de referencia; no equivale a validación empírica.
 
-### Etapa 2 — Fichas maestras y servicio piloto
+### Línea B — Fichas maestras y Value Discovery Sprint
 
-1. Crear una ficha por artefacto canónico: propósito, contenido, campos, relaciones, responsable, entradas/salidas, reglas de calidad y ejemplo.
-2. Diseñar el Value Discovery Sprint como un recorrido acotado por las fases que necesita; no prometer ejecución y resultados de largo plazo si no están dentro del servicio.
-3. Definir preparación, agenda, roles, criterios de aceptación, entregables y evaluación.
-4. Probar el flujo manualmente con un caso controlado y registrar cambios requeridos.
+1. Desarrollar y revisar las fichas A1–A8: propósito, contenido, campos, relaciones, responsable, entradas/salidas, reglas de calidad y ejemplos.
+2. Mantener el Value Discovery Sprint como diseño de servicio piloto, con recorrido, preparación, roles, entregables y criterios de aceptación.
+3. Evaluar su esfuerzo y utilidad cuando pueda probarse en un caso apropiado y autorizado.
 
-**Salida:** kit de facilitación y servicio piloto especificado.
+**Estado:** fichas y Sprint continúan como especificaciones de trabajo en evolución. No es necesario completar un piloto comercial para empezar a construir el prototipo web.
 
-### Etapa 3 — Playground web y apertura comunitaria
+### Línea C — Prototipo web y apertura comunitaria
 
-1. Implementar el recorrido completo de fases con el estándar como referencia.
-2. Permitir consultar y editar los ocho artefactos y sus vínculos.
-3. Mostrar la trazabilidad desde intención y oportunidad hasta decisión, ejecución y aprendizaje.
-4. Hacer visibles los estados incompletos, las incertidumbres y las puertas no superadas; no simular validación automática cuando no exista.
+1. Implementar progresivamente el recorrido VALUE sobre la versión identificada del maestro y las fichas disponibles.
+2. Permitir consultar y editar los artefactos y sus vínculos, mostrando qué partes están implementadas, provisionales o pendientes.
+3. Mostrar trazabilidad desde intención y oportunidad hasta decisión, ejecución y aprendizaje, sin confundir accesibilidad, recomendación, autorización y ejecución.
+4. Hacer visibles incertidumbres, evidencia insuficiente y puertas no superadas; no simular validación automática cuando no exista.
 5. Exportar los datos en un formato documentado y portable.
-6. Publicar guía de contribución, decisiones metodológicas, ejemplos y límites conocidos.
-7. Invitar a la comunidad a desarrollar el producto más completo, proponiendo cambios al estándar mediante gobernanza explícita.
+6. Preparar guía de uso, contribución, decisiones metodológicas, ejemplos y límites conocidos.
+7. Invitar a usuarios y comunidad a evaluar, proponer mejoras y contribuir mediante gobernanza explícita.
 
-**Salida:** demostrador de referencia útil para aprender, no un producto completo ni una prueba de validez del método.
+**Estado:** línea habilitada por la decisión de la sección 16. El prototipo será una implementación de referencia para aprender y evolucionar, no un producto completo ni una prueba de validez del método.
 
 ## 12. Decisiones explícitamente pendientes
 
@@ -346,6 +343,7 @@ Esta especificación integra y normaliza propuestas históricas para facilitar r
 ## 15. Nota de versión
 
 - **v0.3 (2026-10-30):** aclara la separación entre selección de alternativa, autorización para desarrollar su diseño y autorización explícita para ejecutar. Se establece que, sin autorización de ejecución emitida por la autoridad competente y con alcance, recursos, condiciones, salvaguardas y límites definidos, A7 permanece como propuesta y ACT no se inicia. La aclaración responde a la revisión documental A1–A8 basada en CLINIC-001; no constituye validación empírica ni aprobación definitiva del estándar.
+- **v0.4 (2026-10-30):** habilita el prototipo web de referencia sin esperar a una evaluación interevaluador humana ni a un piloto del servicio; sustituye la secuencia rígida de etapas por líneas coordinadas de trabajo. Las fichas A1–A8 y el Value Discovery Sprint siguen en evolución; el prototipo debe declarar la versión y los límites que implementa. No constituye validación empírica.
 
 
 ## 16. Decisión de promoción a prototipo web — 2026-10-30
