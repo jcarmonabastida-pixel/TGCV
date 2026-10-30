@@ -680,3 +680,20 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 
 - **Límite:** propuesta para el caso ficticio; no procedimiento aprobado ni validación empírica.
 - **Estado:** aprobado e incorporado al caso y al registro de autoevaluación en la rama del PR #114.
+
+
+### SR-061 — Comunicación y aplicación efectiva de una corrección documental en el sistema de gestión de citas
+
+- **Aprobación del usuario:** sí (2026-10-30).
+- **Escenario:** se corrige un registro o instrucción del proceso de citas en el sistema de gestión, pero usuarios del proceso pueden seguir consultando o utilizando la versión anterior al no haber advertido el cambio.
+- **Regla acordada:** comprobar si el propio sistema permite identificar la versión vigente, conservar el historial, localizar a quienes consultaron o utilizaron la versión anterior y comunicarles la corrección. No exigir canales externos duplicados si el sistema permite una comunicación suficiente y trazable.
+- **Alcance:** distinguir usuarios que pudieron consultar el registro de quienes efectivamente lo utilizaron; identificar con evidencia las solicitudes, decisiones y actuaciones potencialmente afectadas, sin presumir impacto.
+- **Comunicación:** utilizar el mecanismo autorizado del sistema y registrar la corrección comunicada, destinatarios, fecha/hora, medio y resultado. Si el sistema no permite una notificación adecuada, documentar la limitación y someter a autorización un canal alternativo.
+- **Versión vigente:** hacerla claramente identificable y accesible en el punto de uso, conservando el historial y evitando confundir el registro anterior con el vigente.
+- **Verificación:** comprobar recepción/consulta y aplicación de la versión correcta con las evidencias que realmente ofrezca el sistema. Envío de notificación no equivale por sí solo a lectura, comprensión o aplicación.
+- **Efectos previos:** revisar individualmente las actuaciones que efectivamente utilizaron la versión anterior; no invalidar ni rectificar automáticamente.
+- **Criterio de implantación:** editar el documento no basta. No considerar implantada la corrección hasta verificar comunicación, acceso y aplicación efectiva en la medida que permitan las capacidades reales del sistema; registrar limitaciones pendientes.
+- **Límites:** no se presume que el sistema disponga de auditoría de consultas, notificaciones, confirmaciones de lectura o analítica de uso. Comprobar capacidades, permisos y canales existentes; no inventar roles, plazos o funciones. Propuesta para el caso ficticio, no procedimiento aprobado ni validación empírica.
+- **Relación:** complementa SR-055 (impacto de correcciones sobre actuaciones previas) y SR-057 (incidencia común con varias solicitudes); no impone comunicación externa duplicada.
+- **Estado:** aprobado e incorporado documentalmente al caso ficticio y al registro de autoevaluación en la rama del PR #114.
+
