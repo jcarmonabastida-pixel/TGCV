@@ -26,38 +26,160 @@ async function assertStructuredTAccMatchesExecution(page, label) {
   const comparison = await page.evaluate(() => {
     const model = JSON.parse(document.querySelector("#model").value);
     const scenarioId = document.querySelector("#which").value;
-    const scenarioResult = window.lastPackage?.result?.scenario_results?.[scenarioId];
+    const scenario = (model.scenarios || []).find(item => item.id === scenarioId);
     const demo = window.lastTgcvDemoResult;
-    if (!scenarioResult) throw new Error("missing executed scenario result");
+    if (!scenario) throw new Error("missing selected scenario");
+
+    // Independent expected-input reconstruction: use the input contract and
+    // reviewed-effective correspondence decisions, never demo.mappings or
+    // demo.relations, which are outputs of the implementation under test.
+    const transitions = new Map((model.transitions || []).map(t => [t.id, t]));
+    const expectedMappings = [];
     const declared = model.tgcv_mapping;
-    const byTransition = new Map();
-    // Only the built-in illustrative fixture has an implicit tau_ mapping. Custom
-    // models contribute to T_acc only through declared or reviewed-effective mappings.
-    if (model.model_id === "toy-diamond-001" && !declared) {
-      for (const transition of model.transitions || []) byTransition.set(transition.id, "tau_" + transition.id);
-    } else {
-      for (const mapping of declared?.mappings || []) byTransition.set(mapping.system_transition_id, mapping.tgcv_transformation_id);
-    }
-    for (const mapping of window.effectiveCorrespondenceState?.mappings || []) {
-      if (mapping.status === "EFFECTIVE" && mapping.active !== false) {
-        byTransition.set(mapping.system_transition_id, mapping.tgcv_transformation_id);
+    if (declared) {
+      for (const mapping of declared.mappings || []) {
+        expectedMappings.push({
+          system_transition_id: mapping.system_transition_id,
+          tgcv_transformation_id: mapping.tgcv_transformation_id
+        });
+      }
+    } else if (model.model_id === "toy-diamond-001") {
+      // The sole implicit illustrative fixture is explicitly defined by the
+      // demo contract. No arbitrary user model receives this fallback.
+      for (const transition of model.transitions || []) {
+        expectedMappings.push({
+          system_transition_id: transition.id,
+          tgcv_transformation_id: "tau_" + transition.id
+        });
       }
     }
-    const usedTransitions = new Set();
-    for (const trajectory of scenarioResult.trajectories || []) {
-      for (const step of trajectory) if (step.transition) usedTransitions.add(step.transition);
+    // Effective decisions are valid only for the exact model and catalogue
+    // content scope that was reviewed. Reconstruct canonical JSON locally so
+    // stale mappings cannot leak into the oracle after either input changes.
+    const correspondenceState = window.effectiveCorrespondenceState;
+    const canonicalInput = value => {
+      if (Array.isArray(value)) return "[" + value.map(canonicalInput).join(",") + "]";
+      if (value && typeof value === "object") {
+        return "{" + Object.keys(value).sort().map(key =>
+          JSON.stringify(key) + ":" + canonicalInput(value[key])
+        ).join(",") + "}";
+      }
+      return JSON.stringify(value);
+    };
+    let correspondenceScopeMatches = false;
+    try {
+      const catalogueText = document.querySelector("#tgcv-target-catalogue")?.value;
+      const catalogue = catalogueText ? JSON.parse(catalogueText) : null;
+      correspondenceScopeMatches = !!(
+        correspondenceState &&
+        catalogue &&
+        correspondenceState.sourceModelCanonical === canonicalInput(model) &&
+        correspondenceState.catalogueCanonical === canonicalInput(catalogue)
+      );
+    } catch {
+      correspondenceScopeMatches = false;
     }
-    const expected = (model.transitions || [])
-      .filter(transition => usedTransitions.has(transition.id) && byTransition.has(transition.id))
-      .map(transition => byTransition.get(transition.id)).sort();
+    const activeEffectiveMappings = correspondenceScopeMatches
+      ? (correspondenceState.mappings || [])
+        .filter(mapping => mapping.status === "EFFECTIVE" && mapping.active !== false)
+        .map(mapping => ({
+          system_transition_id: mapping.system_transition_id,
+          tgcv_transformation_id: mapping.tgcv_transformation_id
+        }))
+      : [];
+    for (const mapping of activeEffectiveMappings) {
+      if (expectedMappings.some(old =>
+        old.system_transition_id === mapping.system_transition_id ||
+        old.tgcv_transformation_id === mapping.tgcv_transformation_id)) {
+        throw new Error("ambiguous expected correspondence input; production output cannot be used as an oracle");
+      }
+      expectedMappings.push(mapping);
+    }
+
+    const mappingByTransformation = new Map();
+    for (const mapping of expectedMappings) {
+      if (mappingByTransformation.has(mapping.tgcv_transformation_id)) {
+        mappingByTransformation.set(mapping.tgcv_transformation_id, null);
+      } else mappingByTransformation.set(mapping.tgcv_transformation_id, mapping);
+    }
+
+    let declaredRelations = [];
+    if (declared) {
+      declaredRelations = (declared.relations || []).map(pair => pair.slice());
+    } else if (model.model_id === "toy-diamond-001") {
+      const byId = new Map(expectedMappings.map(mapping => [mapping.system_transition_id, mapping.tgcv_transformation_id]));
+      for (const from of model.transitions || []) {
+        for (const to of model.transitions || []) {
+          if (from.target === to.source && byId.has(from.id) && byId.has(to.id)) {
+            declaredRelations.push([byId.get(from.id), byId.get(to.id)]);
+          }
+        }
+      }
+    }
+    const disabled = new Set(scenario.disabled_transitions || []);
+    const evaluations = scenario.condition_evaluations || {};
+    const allowed = new Set();
+    const allTransformationIds = [...new Set([
+      ...expectedMappings.map(mapping => mapping.tgcv_transformation_id),
+      ...declaredRelations.flatMap(pair => pair)
+    ])].sort();
+    for (const id of allTransformationIds) {
+      const mapping = mappingByTransformation.get(id);
+      const transition = mapping && transitions.get(mapping.system_transition_id);
+      if (!transition || disabled.has(transition.id)) continue;
+      if (transition.condition) {
+        const evaluation = evaluations[transition.id];
+        if (!evaluation || evaluation.condition !== transition.condition || evaluation.result !== "TRUE") continue;
+      }
+      allowed.add(id);
+    }
+    const successors = new Map([...allowed].map(id => [id, []]));
+    for (const [from, to] of declaredRelations) {
+      if (allowed.has(from) && allowed.has(to)) successors.get(from).push(to);
+    }
+    // Roots derive from input-declared TGCV relations, not the implementation's
+    // filtered graph, so blocked predecessors cannot manufacture new roots.
+    const incoming = new Set(declaredRelations.map(([, to]) => to));
+    const starts = [...allowed].filter(id => !incoming.has(id)).sort();
+    const reachable = new Set(starts);
+    const queue = starts.slice();
+    while (queue.length) {
+      const id = queue.shift();
+      for (const next of successors.get(id) || []) {
+        if (reachable.has(next)) continue;
+        // Accessibility follows TGCV transformation relations. State continuity
+        // and prerequisite feasibility are checked separately when enumerating
+        // executable TGCV trajectories, not when calculating the accessible set.
+        reachable.add(next);
+        queue.push(next);
+      }
+    }
+    if (!demo || !demo.current) {
+      if (reachable.size) throw new Error("missing TGCV graph result despite independently reachable transformations");
+      return {
+        scenario: scenarioId, expected: [], actual: [],
+        diagnostic_inputs: {
+          declared_mappings: (declared?.mappings || []).length,
+          active_effective_mappings: activeEffectiveMappings.length,
+          declared_relations: declaredRelations.length,
+          reason: "no independently reachable TGCV transformations"
+        }
+      };
+    }
     return {
       scenario: scenarioId,
-      expected,
-      actual: [...(demo?.current?.transformations || [])].sort()
+      expected: [...reachable].sort(),
+      actual: [...(demo.current?.transformations || [])].sort(),
+      diagnostic_inputs: {
+        declared_mappings: (declared?.mappings || []).length,
+        active_effective_mappings: activeEffectiveMappings.length,
+        declared_relations: declaredRelations,
+        transformations: allTransformationIds
+      }
     };
   });
   assert.deepEqual(comparison.actual, comparison.expected,
-    label + ": structured operational T_acc must equal the transformations mapped from transitions present in the selected scenario's enumerated trajectories");
+    label + ": TGCV availability must match an independent traversal of input-declared TGCV relations, independent of the system engine and production graph output");
 }
 
 function pythonJson(source, input) {
@@ -117,7 +239,10 @@ function pythonJson(source, input) {
       const transition = pkg.input.transitions[0];
       const catalogue = {
         schema:"tgcv-target-catalogue-001", version:"import-replay-contract-v1",
-        transformations:[{id:"T_REPLAY_"+transition.id,source_state:transition.source,target_state:transition.target}]
+        transformations:[
+          {id:"T_REPLAY_"+transition.id,source_state:transition.source,target_state:transition.target},
+          {id:"T_WRONG_BOUNDARY_"+transition.id,source_state:"__OTHER_SOURCE__",target_state:"__OTHER_TARGET__"}
+        ]
       };
       const derived = await window.deriveTgcvCorrespondenceCandidates(pkg.input, catalogue);
       if (!derived.candidates.length || derived.candidates[0].status !== "PROPOSED") {
@@ -128,7 +253,8 @@ function pythonJson(source, input) {
         schema:"tgcv-correspondence-review-001",
         source_model_sha256:await window.hash(pkg.input),
         catalogue_version:catalogue.version,
-        catalogue_sha256:await window.hash(catalogue),
+        catalogue_sha256:await window.hash(catalogue,"tgcv_correspondence_catalogue"),
+        catalogue_snapshot:JSON.parse(JSON.stringify(catalogue)),
         candidates:derived.candidates
       };
       const imported = JSON.parse(JSON.stringify(pkg));
@@ -143,12 +269,46 @@ function pythonJson(source, input) {
       tampered.package_sha256 = await window.hash(tampered);
       let tamperRejected = false;
       try { await window.assessImportedBrowserPackage(tampered); } catch (_error) { tamperRejected = true; }
+      const forgedCorrespondence = JSON.parse(JSON.stringify(imported));
+      forgedCorrespondence.tgcv_correspondence_review.catalogue_snapshot.transformations[0].id = "T_FORGED_NOT_IN_CATALOGUE";
+      forgedCorrespondence.tgcv_correspondence_review.catalogue_sha256 = await window.hash(
+        forgedCorrespondence.tgcv_correspondence_review.catalogue_snapshot,"tgcv_correspondence_catalogue"
+      );
+      delete forgedCorrespondence.package_sha256;
+      forgedCorrespondence.package_sha256 = await window.hash(forgedCorrespondence);
+      let forgedCorrespondenceRejected = false;
+      try { await window.assessImportedBrowserPackage(forgedCorrespondence); } catch (_error) { forgedCorrespondenceRejected = true; }
+      const forgedTransition = JSON.parse(JSON.stringify(imported));
+      forgedTransition.tgcv_correspondence_review.candidates[0].system_transition_id = "TRANSITION_FORGED_NOT_IN_MODEL";
+      delete forgedTransition.package_sha256;
+      forgedTransition.package_sha256 = await window.hash(forgedTransition);
+      let forgedTransitionRejected = false;
+      try { await window.assessImportedBrowserPackage(forgedTransition); } catch (_error) { forgedTransitionRejected = true; }
+      const mismatchedExistingPair = JSON.parse(JSON.stringify(imported));
+      mismatchedExistingPair.tgcv_correspondence_review.candidates[0].tgcv_transformation_id = "T_WRONG_BOUNDARY_"+transition.id;
+      delete mismatchedExistingPair.package_sha256;
+      mismatchedExistingPair.package_sha256 = await window.hash(mismatchedExistingPair);
+      let mismatchedExistingPairRejected = false;
+      try { await window.assessImportedBrowserPackage(mismatchedExistingPair); } catch (_error) { mismatchedExistingPairRejected = true; }
+      const forgedEvidence = JSON.parse(JSON.stringify(imported));
+      forgedEvidence.tgcv_correspondence_review.candidates[0].evidence.system_source_state = "__FORGED_SOURCE__";
+      delete forgedEvidence.package_sha256;
+      forgedEvidence.package_sha256 = await window.hash(forgedEvidence);
+      let forgedEvidenceRejected = false;
+      try { await window.assessImportedBrowserPackage(forgedEvidence); } catch (_error) { forgedEvidenceRejected = true; }
+      const tamperedCatalogueSnapshot = JSON.parse(JSON.stringify(imported));
+      tamperedCatalogueSnapshot.tgcv_correspondence_review.catalogue_snapshot.transformations[0].label = "__TAMPERED_CATALOGUE__";
+      delete tamperedCatalogueSnapshot.package_sha256;
+      tamperedCatalogueSnapshot.package_sha256 = await window.hash(tamperedCatalogueSnapshot);
+      let tamperedCatalogueSnapshotRejected = false;
+      try { await window.assessImportedBrowserPackage(tamperedCatalogueSnapshot); } catch (_error) { tamperedCatalogueSnapshotRejected = true; }
       return {
         status:assessment.status, replay:assessment.replay,
         review:assessment.correspondence_review,
         message:assessment.message,
         snapshotPreserved:JSON.stringify(imported.tgcv_correspondence_review)===JSON.stringify(review),
-        tamperRejected
+        tamperRejected, forgedCorrespondenceRejected, forgedTransitionRejected,
+        mismatchedExistingPairRejected, forgedEvidenceRejected, tamperedCatalogueSnapshotRejected
       };
     }, pkg);
     assert.equal(reviewReplay.status, "replay-verified", "package replay must remain verified when a valid review snapshot is attached");
@@ -156,6 +316,11 @@ function pythonJson(source, input) {
     assert.equal(reviewReplay.review.accepted_count, 1, "accepted decision must survive import/replay validation");
     assert.equal(reviewReplay.snapshotPreserved, true, "the imported review snapshot must remain byte-structure equivalent");
     assert.equal(reviewReplay.tamperRejected, true, "review/model linkage tampering must be rejected");
+    assert.equal(reviewReplay.forgedCorrespondenceRejected, true, "rehashed catalogue snapshots must not authenticate forged transformation IDs");
+    assert.equal(reviewReplay.forgedTransitionRejected, true, "rehashed packages must reject correspondence references to absent system transitions");
+    assert.equal(reviewReplay.mismatchedExistingPairRejected, true, "rehashed packages must reject system/TGCV pairs with incompatible state boundaries");
+    assert.equal(reviewReplay.forgedEvidenceRejected, true, "rehashed packages must reject forged correspondence evidence");
+    assert.equal(reviewReplay.tamperedCatalogueSnapshotRejected, true, "rehashed packages must reject catalogue snapshot tampering when its digest is not updated");
     assert.match(reviewReplay.message, /no se aplican al grafo TGCV/i, "replay must explicitly avoid applying accepted mappings");
     assert.equal(pkg.input.rule_profile.type, "temporal_prerequisite_graph");
     assert.deepEqual(pkg.result, engineRun.result, "browser and Python temporal-profile results must be identical");
@@ -398,6 +563,42 @@ function pythonJson(source, input) {
       assert.match(await page.locator("#graph").textContent(), new RegExp(evaluation === "FALSE" ? "FALSA: humidity is low" : "DESCONOCIDA: humidity is low"),
         evaluation + " must remain visible on the system graph");
     }
+
+    // Combined regression: a condition-blocked TGCV predecessor must not
+    // make its otherwise-valid descendant appear as a new root.
+    const blockedPredecessorModel = {
+      ...explicitlyMappedModel,
+      model_id: "condition-blocked-tgcv-predecessor",
+      tgcv_mapping: {
+        ...explicitlyMappedModel.tgcv_mapping,
+        relations: [["T_HUMIDITY", "T_CD"]]
+      },
+      scenarios: [{
+        id: "baseline", disabled_transitions: [],
+        condition_evaluations: { t_ab: { condition: "humidity is low", result: "FALSE" } }
+      }]
+    };
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(blockedPredecessorModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
+    const blockedPredecessorTgcvText = await page.locator("#tgcv-graph").textContent();
+    assert.doesNotMatch(blockedPredecessorTgcvText, /T_HUMIDITY/,
+      "a FALSE condition removes the predecessor from the current scenario T_acc view");
+    assert.doesNotMatch(blockedPredecessorTgcvText, /T_CD/,
+      "a descendant must not become an artificial root when its declared TGCV predecessor is unavailable");
+    await assertStructuredTAccMatchesExecution(page, "scenario T_acc must exclude unavailable predecessor and must not promote its descendant");
+
+    // Restore the explicitly mapped TRUE-condition fixture so later correspondence
+    // proposal tests begin from their own expected rendered graph.
+    await page.locator("#model").evaluate((el, value) => {
+      el.value = value;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, JSON.stringify(explicitlyMappedModel));
+    await page.locator("#run").click();
+    await page.locator("#status").filter({hasText:/completad/i}).waitFor({timeout:5000});
 
     // Candidate discovery must not duplicate user-declared correspondences.
     const reviewModel = {
@@ -3496,7 +3697,14 @@ function pythonJson(source, input) {
       await conflictPage.waitForFunction(() => /ejecución completada/i.test(
         document.querySelector("#status")?.textContent || ""
       ), null, {timeout:5000});
-      await assertStructuredTAccMatchesExecution(conflictPage, "conflict lifecycle baseline");
+      const unmappedConflictBaseline = await conflictPage.evaluate(() => ({
+        result: window.lastTgcvDemoResult,
+        note: document.querySelector("#tgcv-provenance-note")?.textContent || ""
+      }));
+      assert.equal(unmappedConflictBaseline.result, null,
+        "an arbitrary model without declared or accepted mappings must not fabricate a TGCV graph before correspondence review");
+      assert.match(unmappedConflictBaseline.note, /no declara una correspondencia TGCV explícita/i,
+        "the UI must explain why the TGCV graph is unavailable before mappings are explicitly accepted");
       const catalogueDetails = conflictPage.locator("#correspondence-review-section details").filter({
         has: conflictPage.locator("#tgcv-target-catalogue")
       });
