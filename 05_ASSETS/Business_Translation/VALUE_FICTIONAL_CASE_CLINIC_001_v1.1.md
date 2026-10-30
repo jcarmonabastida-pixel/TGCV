@@ -2,7 +2,8 @@
 
 **Identificador:** VALUE-CASE-CLINIC-001  
 **Versión:** 1.1  
-**Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
+**Estado:** CASO FICTICIO CONSOLIDADO PARA REVISIÓN DOCUMENTAL — no validado en una organización real  
+**Precedencia:** esta versión consolidada sustituye como referencia de trabajo al snapshot anterior `VALUE_FICTIONAL_CASE_CLINIC_001_v0.2.md` (presente en `main`); conserva y amplía la revisión A1–A8 y las correcciones registradas.  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
 **Sprint de referencia:** [VALUE Discovery Sprint](VALUE_DISCOVERY_SPRINT_v0.1.md)  
