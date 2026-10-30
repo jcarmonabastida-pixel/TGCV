@@ -3,9 +3,9 @@
 **Identificador:** VALUE-FIRST-REVIEW-SYNTHESIS-CLINIC-001  
 **Versión:** 0.1  
 **Fecha:** 2026-10-30  
-**Estado:** SÍNTESIS DOCUMENTAL REALIZADA — primera revisión individual guiada aún abierta  
+**Estado:** SÍNTESIS DOCUMENTAL REALIZADA — autoevaluación individual cerrada posteriormente con cobertura parcial (protocolo v0.7)  
 **PR:** #114  
-**Protocolo:** `VALUE_STANDARD_USABILITY_TEST_PROTOCOL_v0.1.md`, v0.3 al realizar esta síntesis  
+**Protocolo:** `VALUE_STANDARD_USABILITY_TEST_PROTOCOL_v0.1.md`; esta síntesis refleja el estado histórico de v0.3 y su cierre posterior se registra en el addendum de la sección 9  
 **Caso:** `VALUE_FICTIONAL_CASE_CLINIC_001_v1.1.md`, v1.1
 
 ## 1. Dictamen ejecutivo
@@ -91,3 +91,17 @@ La primera revisión individual guiada ha generado una base documental útil y h
 ## 8. Límites
 
 Esta síntesis es una consolidación documental de una revisión individual guiada. No es una prueba de usabilidad independiente, no aporta métricas de uso, no demuestra validez, causalidad, eficacia ni valor realizado, y no valida TGCV. CLINIC-001 y sus datos siguen siendo ficticios.
+
+
+## 9. Addendum de cierre — 2026-10-30
+
+Esta síntesis conserva la fotografía de la primera revisión cuando se redactó. Las secciones 5 y 7 describían entonces actividades pendientes; esas frases son históricas y no representan el estado actual.
+
+Conforme al protocolo v0.7, sección 16, la autoevaluación individual queda **cerrada con cobertura parcial documentada**:
+- la primera revisión humana individual se realizó;
+- las subtareas sin evidencia formal suficiente quedan como no acreditadas;
+- la repetición intraevaluador diferida con ocultación documental se realizó y registró;
+- la revisión auxiliar documental por IA se realizó por separado, sin considerarla evaluador humano independiente;
+- la comparación de las fuentes se realizó y registró.
+
+La evaluación por otros evaluadores humanos, la reproducibilidad interevaluador y las pruebas con usuarios/comunidad quedan diferidas. No bloquean la construcción del prototipo web. Este cierre no demuestra usabilidad independiente, validez empírica, causalidad, eficacia ni valor realizado.
