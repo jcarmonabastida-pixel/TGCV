@@ -3,7 +3,7 @@
 - **Fecha:** 2026-10-30
 - **Caso:** CLINIC-001 v1.1
 - **Fuentes comparadas:** primera revisión individual guiada (SR-001–SR-061 y síntesis v0.1), repetición intraevaluador diferida con ocultación documental (registro móvil del 2026-10-30) y revisión auxiliar documental por IA (informe del 2026-10-30).
-- **Estado:** comparación documental realizada; conclusión del protocolo todavía pendiente de aprobación/cierre.
+- **Estado:** comparación documental realizada; incorporada a la decisión de cierre de la autoevaluación individual con cobertura parcial (protocolo v0.7, sección 16).
 - **Límite:** comparación cualitativa, no cálculo de fiabilidad ni puntuación de usabilidad.
 
 ## 1. Precaución de comparabilidad
@@ -82,6 +82,6 @@ No se deben convertir estas diferencias en errores de memoria ni en pérdida de 
 
 ## 8. Límites y estado de cierre
 
-Esta comparación permite cerrar la comparación documental entre las dos pasadas y la revisión auxiliar, pero no completa todas las tareas de la primera revisión guiada que carecen de registro formal de intento/observación/contraste. Tampoco produce reproducibilidad interevaluador humana, prueba externa ni validación empírica.
+La comparación documental entre las dos pasadas y la revisión auxiliar está cerrada. Las subtareas de la primera revisión que carecen de registro formal suficiente de intento/observación/contraste quedan clasificadas como no acreditadas; no se reabren ni se repiten preguntas para reconstruir evidencia inexistente.
 
-**Estado propuesto:** comparación realizada; autoevaluación individual con cobertura parcial documentada. Cierre formal del protocolo sujeto a decisión explícita sobre las subtareas de primera pasada que no quedaron acreditadas y a completar la plantilla final de conclusión sin sobrestimar el alcance.
+**Estado final:** comparación realizada; autoevaluación individual cerrada con cobertura parcial documentada, conforme al protocolo v0.7, sección 16. La evaluación por otro evaluador humano, las pruebas externas y la evaluación comunitaria quedan diferidas como actividades posteriores, no como requisitos previos para construir el prototipo web. Esta comparación no produce reproducibilidad interevaluador ni validación empírica.
