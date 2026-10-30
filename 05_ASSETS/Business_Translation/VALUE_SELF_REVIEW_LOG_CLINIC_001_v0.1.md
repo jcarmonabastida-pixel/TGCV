@@ -814,3 +814,26 @@ No se modificaron el documento maestro ni las fichas maestras. La propuesta qued
 La regla establece que seleccionar una alternativa o autorizar el desarrollo de su diseño no equivale a autorizar su ejecución. La autorización de ejecución debe ser explícita, emitida por la autoridad competente y especificar alcance, recursos, condiciones, salvaguardas y límites. Sin ella, A7 permanece como propuesta y ACT no se inicia. Las autorizaciones limitadas no se amplían por inferencia. A6 debe registrar si el siguiente paso autorizado es diseño, preparativos operativos expresamente autorizados o ejecución.
 
 La revisión de coherencia A1–A8 se actualizó para reflejar la aprobación e incorporación. Las fichas maestras A1–A8 y el protocolo de usabilidad permanecen sin cambios. No se declara el estándar validado ni aprobado definitivamente; la modificación es una aclaración metodológica documental.
+
+
+## Reconciliación del estado del protocolo de autoevaluación — 2026-10-30
+
+**Protocolo:** `VALUE_STANDARD_USABILITY_TEST_PROTOCOL_v0.1.md`, actualizado de v0.2 a **v0.3**.  
+**Hallazgo:** la versión anterior indicaba «revisión no iniciada», lo que ya no correspondía al trabajo registrado en este log. A la vez, declarar la autoevaluación completada habría excedido la evidencia disponible.
+
+### Estado corregido
+
+- La revisión individual guiada está **iniciada y en curso**, con cobertura parcial documentada.
+- SR-001 registra la comprensión inicial del propósito. SR-001–SR-013 documentan observaciones sobre A1/A2 y su actualización; A3 fue revisado y consolidado.
+- A4–A5 y A6–A8 cuentan con revisiones de coherencia documental y cambios asociados. Esto no acredita por sí solo que cada tarea se haya realizado íntegramente siguiendo el procedimiento de intento propio, registro de observación y contraste.
+- La revisión global está parcialmente realizada mediante las auditorías A1–A8 y el log acumulado; falta completar la síntesis final de la sección 8 y la plantilla de conclusión.
+- SR-052 mantiene pendientes la repetición intraevaluador diferida y ciega y la revisión auxiliar ciega por IA. Esta última no es un segundo evaluador humano.
+- La reproducibilidad interevaluador humana queda diferida hasta disponer de evaluadores independientes; no se ha realizado ni comprometido una prueba externa.
+
+### Precisión de alcance
+
+Los 61 hallazgos SR-001–SR-061 son registros de observaciones, propuestas y decisiones de la revisión; no equivalen a 61 tareas de usabilidad completadas ni a 61 defectos confirmados. SR-062 se descartó como duplicado sustancial de SR-061 y no se cuenta como nuevo hallazgo aprobado.
+
+No se han realizado sesiones independientes ni externas. El trabajo corresponde a revisión individual guiada en conversación y contraste documental asistido. No se han medido tiempos, tasas de éxito, errores de participantes ni métricas de usabilidad.
+
+**Resultado:** se corrige el estado del protocolo a «revisión individual guiada en curso, con cobertura parcial documentada». No se declara cerrada la autoevaluación, validado el estándar ni demostrada la usabilidad independiente.
