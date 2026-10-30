@@ -347,6 +347,20 @@ Si la información necesaria está disponible, pero existen contradicciones entr
 
 Esta es una regla funcional propuesta para el caso ficticio. No establece una jerarquía real de fuentes ni un procedimiento clínico aprobado.
 
+
+### Impacto de una corrección sobre actuaciones ya realizadas
+
+Cuando una discrepancia se haya resuelto y posteriormente se determine que el dato vigente era incorrecto o deba corregirse, no basta con actualizar el registro: debe revisarse si alguna actuación, decisión o comunicación previa se apoyó en el dato corregido.
+
+- Identificar las actuaciones, decisiones y comunicaciones previas que utilizaron ese dato y conservar su trazabilidad.
+- Evaluar individualmente si cada actuación sigue siendo válida, requiere revisión o podría necesitar rectificación. La corrección del dato no invalida automáticamente todas las actuaciones anteriores.
+- Asignar la revisión a la persona o instancia competente según la naturaleza de la actuación. Las consecuencias que impliquen criterio o decisión clínica corresponden a la autoridad clínica competente.
+- Registrar la evaluación, la decisión adoptada, su fundamento, quién la autorizó y las actuaciones de corrección, repetición o rectificación que se determinen.
+- Informar a las personas afectadas cuando corresponda, mediante los canales autorizados.
+- Mantener la solicitud abierta hasta revisar las consecuencias relevantes y cumplir las condiciones de resolución aplicables.
+
+No se presume que toda corrección exija revertir actuaciones ni se atribuyen competencias nuevas. Los criterios, responsables, vías de rectificación y comunicaciones deben definirse y autorizarse antes del uso real. Esta es una propuesta funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
+
 ### Información imprescindible no disponible ni recuperable
 
 Si una información necesaria no está disponible y tampoco es posible obtenerla, se registra qué dato falta y por qué no se ha podido obtener. Si es imprescindible para avanzar con seguridad o cumplir los requisitos del proceso, la solicitud permanece abierta y no se sustituye el dato por una suposición no declarada.
@@ -453,6 +467,20 @@ Antes de considerar recuperada la operativa del proceso evaluado, debe comprobar
 - ha retomado efectivamente su tramitación o, si continúa bloqueada, tiene documentados el motivo, el responsable y la respuesta prevista.
 
 La recuperación de la contingencia y la resolución de las solicitudes son resultados distintos. Una solicitud puede seguir pendiente después de recuperada la operativa, pero no debe quedar sin responsable ni seguimiento.
+
+### SR-055 — Revisión del impacto de información corregida sobre actuaciones previas
+
+Cuando, después de resolver una discrepancia, se determine que el dato vigente era incorrecto o debe corregirse, revisar las actuaciones, decisiones y comunicaciones previas que dependieron de ese dato.
+
+- Identificar las actuaciones afectadas y conservar la trazabilidad del dato utilizado y de la corrección posterior.
+- Evaluar individualmente si cada actuación sigue siendo válida, requiere revisión o podría necesitar rectificación. La corrección no invalida automáticamente todas las actuaciones previas.
+- Asignar la revisión a la persona o instancia competente según la naturaleza de la actuación. Las consecuencias clínicas corresponden a la autoridad clínica competente.
+- Registrar evaluación, decisión, fundamento, responsable/autoridad y cualquier actuación de corrección, repetición o rectificación autorizada.
+- Informar a las personas afectadas cuando corresponda, mediante canales autorizados.
+- Mantener abierta la solicitud hasta revisar las consecuencias relevantes y cumplir las condiciones de resolución aplicables.
+- No se crean competencias ni vías de rectificación nuevas; criterios, responsables y comunicaciones deben definirse y autorizarse antes del uso real.
+
+Propuesta funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 
 ### SR-054 — Resolución trazable de contradicciones entre información nueva y registros existentes
 
