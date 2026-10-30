@@ -938,6 +938,20 @@ Cuando la revisión de solicitudes bloqueadas o reincorporadas revele que varias
 
 Esta regla complementa SR-049 y SR-050 (registro y ciclo de vida de incidencias), SR-051 (persistencia y reincidencia) y SR-045/046 (identificación y recuperación individual de solicitudes). Se limita a la gestión operativa del proceso de concertación de citas; no sustituye la investigación de seguridad clínica ni la autoridad clínica cuando procedan. Es una propuesta para el caso ficticio, no un procedimiento aprobado ni validación empírica.
 
+
+#### Efectos residuales después de corregir el defecto común
+
+La corrección del defecto del proceso y la resolución de sus consecuencias sobre las solicitudes son comprobaciones distintas. Aunque la causa común se haya corregido, algunas solicitudes pueden conservar efectos pendientes que requieran actuaciones adicionales.
+
+- Mantener el registro de la incidencia común hasta verificar que la corrección del defecto se ha implantado y funciona conforme a los criterios autorizados.
+- Mantener vinculadas y bajo seguimiento individual las solicitudes que sigan afectadas, identificando para cada una el efecto residual, la actuación necesaria, el responsable y la siguiente actuación.
+- Determinar y ejecutar las actuaciones adicionales mediante las competencias y procedimientos autorizados. Cuando las consecuencias impliquen valoración clínica, corresponde decidir a la autoridad clínica competente.
+- Verificar individualmente que cada consecuencia relevante ha sido atendida y que se cumplen las condiciones de resolución de la solicitud. No cerrar una solicitud solo porque se haya corregido el defecto común.
+- Registrar por separado la verificación de la corrección del proceso y la resolución de los efectos en cada solicitud. La incidencia común podrá cerrarse cuando se cumplan sus propios criterios autorizados, aunque permanezcan solicitudes individuales abiertas; estas deben conservar su seguimiento y vínculo.
+- Si las actuaciones individuales revelan que la corrección común fue insuficiente o que el defecto persiste, reabrir o mantener la incidencia común conforme al ciclo autorizado y revisar el alcance potencial.
+
+Esta precisión desarrolla SR-057 y mantiene la separación entre corrección de causa común y tratamiento de consecuencias individuales. No establece criterios de cierre, plazos ni competencias nuevos.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
