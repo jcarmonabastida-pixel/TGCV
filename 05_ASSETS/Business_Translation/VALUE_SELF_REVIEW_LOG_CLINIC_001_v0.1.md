@@ -519,3 +519,15 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Relación con SR-050:** la revisión o el escalado no resuelven ni cierran automáticamente la incidencia o la solicitud. La incidencia continúa su ciclo hasta cumplir las condiciones de resolución de SR-050.
 - **Límite de validez:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 - **Estado:** aceptado por el usuario e incorporado documentalmente al caso ficticio y al registro de autoevaluación en la rama del PR #114.
+
+
+### SR-052 — Reproducibilidad escalonada de la autoevaluación
+
+- **Aprobación del usuario:** sí.
+- **Acuerdo:** realizar primero una repetición intraevaluador en un momento separado; en la segunda pasada, la persona evaluadora no consultará los resultados de la primera hasta cerrar su nuevo registro. Comparar después interpretaciones, decisiones, omisiones, ambigüedades y discrepancias.
+- **Revisión auxiliar:** incorporar una revisión ciega por una instancia/modelo de IA independiente, con registro separado. Es una ayuda para detectar omisiones o ambigüedades, no una segunda persona evaluadora ni una prueba de reproducibilidad interevaluador.
+- **Fase diferida:** la reproducibilidad interevaluador humana se realizará cuando la investigación se abra a la comunidad mediante la web y puedan participar evaluadores externos independientes.
+- **Trazabilidad:** conservar los registros originales de cada pasada y de la revisión auxiliar; no sobrescribirlos al comparar.
+- **Límites:** estas primeras actividades examinan consistencia intraevaluador y ambigüedades. No demuestran reproducibilidad interevaluador, validación empírica ni eficacia de VALUE/TGCV.
+- **Pendiente:** ejecutar la repetición intraevaluador y la revisión auxiliar; definir el protocolo de evaluación externa antes de abrir esa fase comunitaria. No se fija ahora número de evaluadores ni criterios no acordados.
+- **Estado:** aceptado por el usuario e incorporado documentalmente en la rama del PR #114; las pruebas siguen pendientes.
