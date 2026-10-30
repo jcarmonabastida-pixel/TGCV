@@ -639,3 +639,10 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Límite:** propuesta funcional para el caso ficticio; no es un procedimiento aprobado ni validación empírica.
 - **Estado:** aprobado por el usuario e incorporado documentalmente en la rama del PR #114.
 
+- **Reconfirmación del usuario (2026-10-30):** si se detecta que solicitudes recibieron anticipadamente la nueva regla pese a que la transición autorizada exigía mantener la anterior, identificar los casos potencialmente afectados y comprobarlos individualmente; ampliar el alcance con evidencia, sin presumir afectación general.
+- **Historial y evaluación:** conservar reglas, decisiones, actuaciones y registros originales; documentar la regla que se aplicó y la que correspondía. Evaluar por solicitud las decisiones, comunicaciones y actuaciones previas que pudieron verse afectadas, distinguiendo hechos de incertidumbres.
+- **Corrección:** someter cada rectificación a la instancia competente. No revertir automáticamente actuaciones ni aplicar mecánicamente la regla anterior; determinar y autorizar la respuesta adecuada según el caso. Registrar fundamento, autorización, responsable, momento y actuación correctiva.
+- **Verificación y prevención:** comprobar individualmente que cada solicitud queda bajo la regla correcta y mantiene responsable, seguimiento y siguiente actuación. Analizar si hubo un fallo más amplio de comunicación, configuración, control o implantación; cualquier ajuste adicional requiere el mecanismo de cambio autorizado y verificación de eficacia.
+- **Relación:** precisión integrada en SR-058; complementa SR-055 para revisar actuaciones previas y SR-057 si se confirma un defecto común de implantación. No crea un requisito independiente, competencias nuevas ni reversiones automáticas.
+- **Estado:** precisión aprobada e incorporada al caso ficticio y al registro de autoevaluación en la rama del PR #114.
+
