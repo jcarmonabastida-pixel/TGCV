@@ -817,6 +817,16 @@ Cada incidencia de seguimiento tendrá un ciclo propio que permita conocer su es
 
 Antes del uso real deberán definirse las condiciones de entrada y salida de cada estado, los responsables de las transiciones y la evidencia mínima de resolución. Criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 
+### SR-051 — Incidencias que no se resuelven o que reinciden
+
+Cuando una incidencia de seguimiento permanezca sin actuación, supere un plazo de revisión o actuación previamente acordado, o el mismo problema vuelva a producirse después de haberse resuelto una incidencia anterior, se activará una revisión por el responsable end-to-end y, cuando corresponda, el escalado previsto.
+
+La revisión deberá dejar registrados, como mínimo, el motivo por el que la incidencia no se ha resuelto o la causa/motivo conocido de la reincidencia, la evaluación realizada, la siguiente actuación prevista y el responsable de llevarla a cabo. Cuando exista un plazo aplicable, se registrará también el plazo acordado para esa siguiente actuación. No se presumirán plazos, responsables nominales ni niveles de escalado que todavía no hayan sido definidos y autorizados.
+
+En caso de reincidencia, se conservará la incidencia anterior como antecedente y se registrará una nueva incidencia vinculada a ella y a la solicitud original. Esto permite distinguir una incidencia persistente de una nueva ocurrencia y mantener la trazabilidad de las actuaciones previas. La revisión o el escalado no resuelven ni cierran automáticamente la incidencia ni la solicitud original: la incidencia seguirá su ciclo conforme a SR-050 hasta que se cumplan sus condiciones de resolución.
+
+Criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
