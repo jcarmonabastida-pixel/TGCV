@@ -3689,6 +3689,37 @@ const assert = require("node:assert/strict");
       "GT-05 temporal: max_trajectories must cap emitted candidates");
     assert.equal(boundedEnumeration.capTruncated, true,
       "GT-05 temporal: reaching the trajectory cap must explicitly report truncation");
+    const integratedCycleAccessibility = await temporalPage.evaluate(() => {
+      const model = window.lastModel;
+      const originalMapping = model.tgcv_mapping;
+      const hadMapping = Object.prototype.hasOwnProperty.call(model, "tgcv_mapping");
+      const originalResult = window.lastTgcvDemoResult;
+      const originalSnapshot = tgcvSourceSnapshot;
+      model.tgcv_mapping = {
+        schema: "tgcv-explicit-mapping-001",
+        mapping_rule: "cycle-accessibility-test-v1",
+        provenance: "test",
+        mappings: model.transitions.map(transition => ({
+          system_transition_id: transition.id,
+          tgcv_transformation_id: "tau_" + transition.id
+        })),
+        relations: [
+          ["tau_t_ab", "tau_t_bc"], ["tau_t_bc", "tau_t_cd"],
+          ["tau_t_cd", "tau_t_ab"], ["tau_t_ab", "tau_t_ax"],
+          ["tau_t_ax", "tau_t_xd"]
+        ]
+      };
+      window.renderTgcvDemo(model, window.lastPackage.result, "baseline");
+      const current = window.lastTgcvDemoResult.current.transformations.slice().sort();
+      if (hadMapping) model.tgcv_mapping = originalMapping;
+      else delete model.tgcv_mapping;
+      window.lastTgcvDemoResult = originalResult;
+      tgcvSourceSnapshot = originalSnapshot;
+      return current;
+    });
+    assert.deepEqual(integratedCycleAccessibility, [
+      "tau_t_ab", "tau_t_ax", "tau_t_bc", "tau_t_cd", "tau_t_xd"
+    ], "GT-05 integration: source cyclic TGCV component and its downstream transformations must remain accessible in the integrated T_acc derivation");
     const cyclicRelationCheck = await temporalPage.evaluate(() => {
       const tgcv = window.lastTgcvDemoResult.current;
       const originalRelations = structuredClone(tgcv.relations);
