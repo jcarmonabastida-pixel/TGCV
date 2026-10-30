@@ -1,7 +1,7 @@
 # VALUE — Protocolo de autoevaluación estructurada de usabilidad
 
-**Versión:** 0.2  
-**Estado:** BORRADOR DE PROTOCOLO; revisión no iniciada  
+**Versión:** 0.3  
+**Estado:** BORRADOR DE PROTOCOLO; revisión individual guiada en curso, con cobertura parcial documentada  
 **Modo previsto en esta fase:** una persona (autor/usuario), con acompañamiento conversacional para revisar documentos  
 **Ámbito:** comprensión y usabilidad documental del estándar VALUE. No es validación científica de TGCV ni prueba de eficacia de una intervención.
 
@@ -121,9 +121,41 @@ Cuando existan colaboradores o usuarios potenciales, podrá plantearse una prueb
 ## 11. Límites y estado
 
 - CLINIC-001 y sus datos son ficticios.
-- No se han realizado ni simulado sesiones de evaluación.
+- No se han realizado sesiones independientes ni externas. El trabajo registrado corresponde a una revisión individual guiada en conversación; no debe confundirse con sesiones de prueba formalizadas ni con una evaluación independiente.
 - La autoevaluación no es un piloto clínico ni autoriza una intervención real.
 - No valida empíricamente VALUE ni la teoría científica TGCV.
 - Cualquier futura prueba en una organización real requerirá autorización, salvaguardas y tratamiento de datos adecuados al contexto.
 
-**Estado al actualizar este protocolo:** procedimiento adaptado a una revisión individual guiada; revisión todavía no iniciada.
+**Estado al actualizar este protocolo (v0.3):** revisión individual guiada iniciada y en curso. Hay observaciones del usuario y decisiones documentadas en el log, junto con revisiones de coherencia asistidas. La cobertura del procedimiento no está completa y no se declara cierre de la autoevaluación.
+
+
+## 12. Estado de ejecución del protocolo — 2026-10-30
+
+Esta sección registra el estado real conocido de la revisión. No modifica el procedimiento previsto en las secciones anteriores ni convierte los hallazgos en una puntuación de usabilidad.
+
+| Tarea prevista | Evidencia documental disponible | Estado |
+|---|---|---|
+| 1. Comprensión inicial | SR-001 registra explicación del propósito y salvaguardas por el usuario | REALIZADA para la comprensión inicial; no equivale a evaluación independiente |
+| 2. Recorrido A1–A3 | SR-001–SR-013 documentan observaciones de A1/A2; A3 fue ampliado, revisado y posteriormente consolidado | REALIZADA PARCIALMENTE; A1/A2 revisados en el caso y A3 consolidado; no se acredita que cada subactividad se completara con un registro formal de intento/relectura |
+| 3. Hipótesis y evidencia A4–A5 | Revisiones de coherencia A3→A4→A5 y ajustes en el caso v1.0 | CONTRASTE DOCUMENTAL REALIZADO; no se acredita una pasada independiente completa del usuario siguiendo todos los pasos de la tarea |
+| 4. Decisión y autorización A6 | Revisión A6→A7→A8 y regla DECIDE→ACT aprobada e incorporada al maestro v0.3 | CONTRASTE DOCUMENTAL REALIZADO; la comprensión y decisión están registradas, pero no se ha repetido todavía como tarea ciega/diferida |
+| 5. Plan y aprendizaje A7–A8 | Separación documentada entre diseño, autorización, ejecución y datos inventados; sin ejecución real | CONTRASTE DOCUMENTAL REALIZADO; no es prueba de implementación ni aprendizaje empírico |
+| 6. Revisión global | Auditorías de coherencia A1–A8 y registro acumulado de hallazgos SR-001–SR-061; SR-062 se descartó como duplicado de SR-061 | PARCIALMENTE REALIZADA; falta una pasada final explícita de duplicidades, términos y campos transversales |
+
+### Actividades diferenciadas y pendientes
+
+- **Primera revisión individual guiada:** iniciada; observaciones y decisiones están registradas en el log. No debe describirse como una prueba independiente de usabilidad.
+- **Repetición intraevaluador diferida y ciega:** pendiente, según SR-052. Debe conservar un registro nuevo y no consultar la primera pasada hasta cerrar la segunda.
+- **Revisión auxiliar ciega por IA:** pendiente, según SR-052. Debe registrarse por separado y no contarse como segundo evaluador humano.
+- **Reproducibilidad interevaluador humana:** diferida hasta que exista una comunidad/evaluadores independientes; no realizada.
+- **Prueba externa exploratoria opcional:** no iniciada ni comprometida; no es requisito para cerrar la revisión documental actual.
+
+### Regla de cierre
+
+No declarar completado el protocolo hasta:
+1. completar o marcar explícitamente como no aplicables las tareas/subtareas pendientes de la primera revisión;
+2. realizar la síntesis global prevista en la sección 8 y completar la plantilla de la sección 9;
+3. ejecutar y comparar la repetición intraevaluador y la revisión auxiliar ciega acordadas en SR-052, o registrar una decisión explícita y justificada de diferirlas sin presentarlas como realizadas.
+
+El cierre de estas actividades solo podrá respaldar conclusiones formativas sobre esta revisión y consistencia intraevaluador. No demostrará usabilidad independiente, validez empírica, causalidad ni eficacia de VALUE/TGCV.
+
