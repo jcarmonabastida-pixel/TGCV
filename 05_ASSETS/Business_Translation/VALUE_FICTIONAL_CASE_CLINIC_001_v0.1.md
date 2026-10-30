@@ -1,7 +1,7 @@
 # VALUE — Caso ficticio integral: mejora del acceso a citas en una clínica
 
 **Identificador:** VALUE-CASE-CLINIC-001  
-**Versión:** 0.3  
+**Versión:** 0.4  
 **Estado:** EJERCICIO DOCUMENTAL FICTICIO — pendiente de revisión; no validado en una organización real  
 **Documento rector:** [VALUE — Diseño integrado del estándar metodológico](VALUE_METHODOLOGY_LIFECYCLE_001.md)  
 **Fichas canónicas:** [Especificaciones maestras A1–A8](VALUE_ARTIFACT_MASTER_SPECS_v0.1.md)  
@@ -980,11 +980,26 @@ Cuando se proponga modificar una regla del proceso que ya se utiliza para tramit
 
 Esta regla complementa SR-054 y SR-055 cuando el cambio afecta a información o actuaciones previas, y SR-057 cuando la modificación responde a un defecto común del proceso. No crea competencias, plazos, criterios de transición ni autoridad de aprobación; deben estar definidos y autorizados antes de aplicar el cambio. Es una propuesta funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
 
+
+#### Aplicación incorrecta de una regla durante la transición
+
+Si se detecta que una o varias solicitudes recibieron anticipadamente la nueva regla, aunque la transición autorizada establecía que debían continuar con la regla anterior, tratarlo como una desviación de implantación que requiere revisión y corrección controladas.
+
+- Identificar las solicitudes potencialmente afectadas y comprobar individualmente qué regla se aplicó, cuándo, por quién o mediante qué mecanismo y qué transición estaba autorizada. Ampliar la revisión a otros casos potencialmente expuestos con base en evidencia, sin asumir que todo el conjunto está afectado.
+- Mantener el historial de versiones, decisiones, actuaciones y registros originales. No sobrescribir la regla aplicada ni ocultar la desviación; registrar también la regla que debía haberse aplicado conforme a la transición autorizada.
+- Evaluar por solicitud qué decisiones, comunicaciones o actuaciones se apoyaron en la aplicación anticipada y qué efectos pudieron producirse. Distinguir los hechos comprobados de las consecuencias aún inciertas.
+- Someter la corrección de cada caso a la instancia competente. No revertir automáticamente actuaciones ni aplicar la regla anterior de forma mecánica: determinar y autorizar la rectificación adecuada según el caso y la naturaleza de sus efectos; las consecuencias clínicas corresponden a la autoridad clínica.
+- Registrar la decisión correctiva, su fundamento, autorización, responsable, momento de aplicación y actuaciones realizadas. Verificar individualmente que cada solicitud queda sometida a la regla que corresponde y conserva responsable, seguimiento y siguiente actuación.
+- Analizar si la desviación revela un fallo más amplio en la comunicación, configuración, control o implantación de la transición. Cualquier ajuste del proceso debe seguir el mecanismo de cambio y autorización correspondiente; comprobar después su eficacia y posibles efectos no previstos.
+
+Esta precisión desarrolla SR-058: trata la aplicación incorrecta de una transición ya autorizada, mientras SR-058 establece cómo debe aprobarse y aplicarse el cambio. Se coordina con SR-055 para revisar actuaciones previas y con SR-057 si se identifica un defecto común de implantación. No autoriza rectificaciones automáticas ni crea competencias o criterios nuevos.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
 - **v0.2:** añade identificadores de dataset y ejecución simulados, definiciones operativas y denominadores explícitos, supuestos de selección/ventanas y separación narrativa entre plan y ejecución ficticia. No añade datos reales ni validación empírica.
 - **v0.3:** documenta criterios previos de decisión como pendientes cuando no hay umbrales aprobados; separa selección de opción y autorización de ejecución; distingue explícitamente el aprendizaje del Sprint de los resultados de la prueba operativa posterior. No añade datos reales ni validación empírica.
+- **v0.4:** incorpora una precisión de SR-058 para detectar, revisar y corregir de forma autorizada la aplicación anticipada o incorrecta de una regla durante la transición; conserva la trazabilidad y evita reversiones automáticas. No añade datos reales ni validación empírica.
 
 
 ### SR-052 — Reproducibilidad escalonada de la autoevaluación
