@@ -966,6 +966,20 @@ La corrección del defecto puede generar un efecto secundario no previsto en otr
 
 Esta precisión complementa SR-057 y la regla de efectos residuales: la corrección del problema original no demuestra por sí sola que la solución global sea adecuada. No crea competencias ni autoriza cambios unilaterales.
 
+
+### SR-058 — Gestión autorizada del cambio de reglas con solicitudes en curso
+
+Cuando se proponga modificar una regla del proceso que ya se utiliza para tramitar varias solicitudes abiertas, el cambio no debe aplicarse de forma implícita ni retroactiva por el mero hecho de que la nueva regla haya sido aprobada.
+
+- Identificar las solicitudes abiertas que utilizan la regla vigente y registrar la versión de regla aplicada, cuando esa información esté disponible. Determinar cuáles pueden verse afectadas por el cambio; no asumir que todas lo están ni limitar el análisis a una muestra sin justificación.
+- Evaluar el impacto del cambio sobre cada solicitud afectada, incluidas las actuaciones ya realizadas, los compromisos o plazos aplicables y los controles que dependan de la regla. Cuando corresponda, coordinar la revisión con la instancia competente; las consecuencias clínicas corresponden a la autoridad clínica.
+- Antes de aplicar el cambio, obtener la autorización de la instancia competente y dejar documentados el alcance, la fecha o condición de entrada en vigor y la regla de transición aplicable a las solicitudes en curso.
+- La transición debe decidirse expresamente conforme a la autorización: mantener la regla anterior para los casos que se determinen, aplicar la nueva regla a los casos que se determinen o revisar individualmente cada solicitud antes de decidir. No se presume que una de estas opciones sea siempre la correcta ni que la regla nueva se aplique automáticamente a todos los casos abiertos.
+- Registrar para cada solicitud qué regla se aplica durante la transición, la decisión adoptada, su fundamento, quién la autorizó y cuándo entra en vigor para ese caso. Conservar el historial de la regla anterior y de las actuaciones realizadas; no sobrescribirlo ni mezclar versiones sin trazabilidad.
+- Comprobar que ninguna solicitud queda sin responsable, seguimiento o siguiente actuación como consecuencia del cambio. Si la transición revela efectos no previstos, discrepancias o riesgos, mantener la solicitud bajo control y activar la revisión y autorización que correspondan antes de introducir ajustes adicionales.
+
+Esta regla complementa SR-054 y SR-055 cuando el cambio afecta a información o actuaciones previas, y SR-057 cuando la modificación responde a un defecto común del proceso. No crea competencias, plazos, criterios de transición ni autoridad de aprobación; deben estar definidos y autorizados antes de aplicar el cambio. Es una propuesta funcional para el caso ficticio, no un procedimiento aprobado ni validación empírica.
+
 ## Historial de cambios
 
 - **v0.1:** primera reconstrucción integral del caso ficticio; incluye A1–A8, recorrido del Sprint, trazabilidad, resultados simulados, límites y preguntas de revisión.
