@@ -1,6 +1,6 @@
 # VALUE — Protocolo de autoevaluación estructurada de usabilidad
 
-**Versión:** 0.4  
+**Versión:** 0.5  
 **Estado:** BORRADOR DE PROTOCOLO; revisión individual guiada en curso, con cobertura parcial documentada  
 **Modo previsto en esta fase:** una persona (autor/usuario), con acompañamiento conversacional para revisar documentos  
 **Ámbito:** comprensión y usabilidad documental del estándar VALUE. No es validación científica de TGCV ni prueba de eficacia de una intervención.
@@ -191,3 +191,33 @@ El cierre de estas actividades solo podrá respaldar conclusiones formativas sob
 ### Estado tras la síntesis
 
 La síntesis de la primera revisión está realizada y registrada. Esto no significa que la primera revisión formal esté completa en todos sus pasos ni que el protocolo esté cerrado. La siguiente actividad prevista es preparar y ejecutar la repetición intraevaluador diferida y ciega, respetando la separación respecto de los resultados de la primera pasada. La revisión auxiliar ciega por IA se realizará por separado y no se contará como evaluación humana independiente.
+
+
+## 14. Adaptación temporal de la repetición a trabajo exclusivamente móvil — 2026-10-30
+
+**Restricción comunicada por el usuario:** temporalmente no dispone de acceso al ordenador; participa desde un teléfono móvil.
+
+### Adaptación operativa
+
+- No se exige acceso a ordenador, edición local de archivos, terminal, hojas de cálculo ni navegación simultánea por múltiples documentos.
+- La repetición se realizará en bloques breves, secuenciales y legibles en móvil. Cada bloque presentará únicamente el material necesario para la tarea y solicitará una respuesta concreta.
+- El asistente recuperará los documentos canónicos de GitHub, preparará los extractos y registrará las respuestas y resultados en la rama del PR. El usuario no tendrá que copiar, editar ni subir archivos.
+- Se evitarán formularios largos, tablas extensas y tareas que requieran comparar varias ventanas. Se conservará una pregunta o decisión por turno cuando sea posible.
+- La revisión auxiliar ciega por IA se ejecutará por separado, sobre copias de los artefactos y sin acceso al log ni a los resultados de la primera revisión.
+
+### Alcance de la ceguera
+
+El usuario ya estuvo expuesto a los resultados de la primera pasada. Por ello, la segunda revisión no puede calificarse como plenamente ciega respecto de la memoria del evaluador. Se denominará **repetición intraevaluador diferida con ocultación documental de la primera pasada**: durante la repetición no se mostrarán ni consultarán el log, las auditorías ni la síntesis previa. Esta medida reduce el sesgo de recuerdo documental, pero no elimina el conocimiento previo ni garantiza ceguera estricta.
+
+La revisión auxiliar por IA sí podrá mantenerse separada de los resultados anteriores si se prepara con instrucciones neutrales y únicamente los documentos fuente autorizados.
+
+### Secuencia
+
+1. Preparar un paquete de revisión móvil con el caso, las fichas y las instrucciones estrictamente necesarias; excluir log, síntesis y auditorías.
+2. Ejecutar la repetición por bloques, sin revelar resultados anteriores y registrando respuestas originales antes de cualquier contraste.
+3. Cerrar y preservar el registro de esta repetición.
+4. Ejecutar por separado la revisión auxiliar por IA sin facilitarle la primera pasada ni la repetición del usuario.
+5. Comparar ambas revisiones con el registro histórico, clasificar coincidencias y discrepancias y actualizar la conclusión.
+
+La restricción de dispositivo es temporal y no altera los criterios metodológicos ni constituye una razón para declarar realizada una actividad pendiente. No se fija fecha de finalización ni se exige acceso al ordenador.
+
