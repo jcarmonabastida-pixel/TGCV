@@ -509,3 +509,13 @@ El registro se actualiza a medida que se realiza la revisión. Las tareas no rea
 - **Pendiente antes de uso real:** definir condiciones de entrada y salida de cada estado, responsables de las transiciones y evidencia mínima de resolución.
 - **Límite de validez:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
 - **Estado:** aceptado por el usuario e incorporado al caso ficticio y al registro de autoevaluación en la rama de trabajo.
+### SR-051 — Gestión de incidencias sin resolución y reincidencias
+
+- **Aprobación del usuario:** sí.
+- **Regla funcional acordada:** activar una revisión por el responsable end-to-end cuando una incidencia permanezca sin actuación, supere un plazo de revisión o actuación previamente acordado, o el mismo problema vuelva a producirse después de haberse resuelto una incidencia anterior.
+- **Actuación de control:** registrar el motivo de la falta de resolución o la causa/motivo conocido de la reincidencia, la evaluación realizada, la siguiente actuación prevista y su responsable; registrar también el plazo acordado cuando corresponda.
+- **Escalado:** aplicar el escalado previsto cuando corresponda. Los plazos, responsables nominales y niveles concretos de escalado quedan pendientes de definición y autorización; no se presuponen.
+- **Reincidencia:** conservar la incidencia anterior como antecedente y registrar una nueva incidencia vinculada a aquella y a la solicitud original, diferenciándola de una incidencia persistente.
+- **Relación con SR-050:** la revisión o el escalado no resuelven ni cierran automáticamente la incidencia o la solicitud. La incidencia continúa su ciclo hasta cumplir las condiciones de resolución de SR-050.
+- **Límite de validez:** criterio funcional para el caso ficticio; no constituye un procedimiento aprobado ni validación empírica.
+- **Estado:** aceptado por el usuario e incorporado documentalmente al caso ficticio y al registro de autoevaluación en la rama del PR #114.
