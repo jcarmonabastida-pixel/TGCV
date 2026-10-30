@@ -1,6 +1,6 @@
 # VALUE — Protocolo de autoevaluación estructurada de usabilidad
 
-**Versión:** 0.3  
+**Versión:** 0.4  
 **Estado:** BORRADOR DE PROTOCOLO; revisión individual guiada en curso, con cobertura parcial documentada  
 **Modo previsto en esta fase:** una persona (autor/usuario), con acompañamiento conversacional para revisar documentos  
 **Ámbito:** comprensión y usabilidad documental del estándar VALUE. No es validación científica de TGCV ni prueba de eficacia de una intervención.
@@ -159,3 +159,35 @@ No declarar completado el protocolo hasta:
 
 El cierre de estas actividades solo podrá respaldar conclusiones formativas sobre esta revisión y consistencia intraevaluador. No demostrará usabilidad independiente, validez empírica, causalidad ni eficacia de VALUE/TGCV.
 
+
+
+## 13. Síntesis de la primera revisión — 2026-10-30
+
+**Referencia:** `VALUE_FIRST_REVIEW_SYNTHESIS_CLINIC_001_v0.1.md`.
+
+### Conclusión de la síntesis
+
+- Se han consolidado documentalmente 61 registros SR-001–SR-061; SR-062 se ha dispuesto como duplicado sustancial de SR-061, no como hallazgo independiente.
+- Los registros se han clasificado por naturaleza y destino. No equivalen a 61 defectos ni a 61 tareas de usabilidad completadas.
+- A3 se ha consolidado a nivel sistémico y queda cerrada la generación de nuevos escenarios A3 en esta ronda.
+- Las revisiones documentales A3→A4→A5 y A6→A7→A8 están registradas; las brechas de evidencia ficticia permanecen explícitas.
+- La regla DECIDE→ACT está incorporada en el documento maestro v0.3.
+- Las fichas A1–A8 y el protocolo no se consideran validados por estos cambios.
+
+### Plantilla de conclusión — cumplimentación provisional
+
+- **Fecha y versiones revisadas:** 2026-10-30; caso CLINIC-001 v1.1; maestro VALUE Lifecycle v0.3; fichas A1–A8 v0.1; protocolo v0.4; log de autoevaluación vigente en PR #114.
+- **Tareas recorridas:** comprensión inicial; revisión guiada A1–A3; contrastes documentales A3→A4→A5 y A6→A7→A8; revisión de coherencia A1–A8; consolidación y clasificación de hallazgos.
+- **Tareas pendientes:** completar las subtareas del primer recorrido sin evidencia formal de intento/observación/contraste; repetición intraevaluador diferida y ciega; revisión auxiliar ciega por IA; comparación y conclusión final.
+- **Hallazgos del usuario:** observaciones y decisiones registradas en SR-001–SR-061; SR-062 descartado como nuevo hallazgo.
+- **Hallazgos del contraste documental asistido:** desproporción inicial de A3; necesidad de trazabilidad A3→A4→A5; ambigüedad en la separación entre selección, autorización, ejecución y resultados; corrección del estado del protocolo.
+- **Ambigüedades o redundancias:** detalle operativo excesivo en A3; duplicidad sustancial SR-062/SR-061; riesgo de interpretar una secuencia contrafactual como registro de ejecución; riesgo de confundir datos fabricados con resultados observados.
+- **Cambios aceptados y fundamento:** consolidación A3; IDs y relaciones estables y trazabilidad de opciones/evidencia; separación de estados A6–A8; regla explícita DECIDE→ACT. Cambios limitados a aclaraciones necesarias y sin inventar datos.
+- **Cuestiones abiertas:** brechas de evidencia de A5, criterios/umbrales previos no acordados, autorización de ejecución inexistente, repetición ciega y revisión auxiliar pendientes.
+- **Limitaciones de esta autoevaluación:** revisión individual guiada y contraste documental asistido; sin participantes independientes, métricas de usabilidad, prueba real ni evidencia empírica de VALUE/TGCV.
+- **Decisión:** mantener y continuar la revisión; no declarar cierre ni validación; no ampliar A3.
+- **Responsable y fecha:** autor/usuario, con apoyo documental asistido; 2026-10-30.
+
+### Estado tras la síntesis
+
+La síntesis de la primera revisión está realizada y registrada. Esto no significa que la primera revisión formal esté completa en todos sus pasos ni que el protocolo esté cerrado. La siguiente actividad prevista es preparar y ejecutar la repetición intraevaluador diferida y ciega, respetando la separación respecto de los resultados de la primera pasada. La revisión auxiliar ciega por IA se realizará por separado y no se contará como evaluación humana independiente.
