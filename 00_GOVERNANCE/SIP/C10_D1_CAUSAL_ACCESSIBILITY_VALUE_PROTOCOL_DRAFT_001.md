@@ -1295,3 +1295,75 @@ Este procedimiento no incorpora heurísticas de puntuación, optimización, rank
 ### 28.7 Estado y límites
 
 Este procedimiento es una propuesta metodológica para evaluar si la enumeración de trayectorias TGCV puede hacerse reproducible en un estudio delimitado. No constituye validación empírica ni certifica que exista ya un enumerador implementado. No modifica Core, RMA, Matrix, STATUS, claims o cierres previos, ni autoriza selección de caso, adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
+
+
+## 29. Selección, no ejecución y sesgo post-tratamiento
+
+### 29.1 Estados diferenciados de una trayectoria
+
+La relación entre posibilidades y resultados requiere registrar por separado, para cada trayectoria factible o candidata:
+1. **Factible respaldada:** satisface las condiciones TGCV bajo la configuración e historia especificadas.
+2. **Considerada/conocida:** fue identificada y estuvo disponible para los agentes o decisores pertinentes. Una trayectoria puede ser factible sin haber sido conocida por ellos.
+3. **Seleccionada:** fue elegida frente a otras opciones, con registro de quién decide, cuándo, bajo qué información, preferencias, reglas y restricciones.
+4. **Iniciada/intento de ejecución:** comenzó una acción dirigida a realizarla.
+5. **Ejecutada:** se realizaron una o más transformaciones de la secuencia, con evidencia de cada una.
+6. **Completada:** se alcanzó el criterio terminal preespecificado de esa trayectoria.
+7. **No seleccionada, no iniciada, interrumpida o fallida:** registrar la categoría y, cuando pueda establecerse, el motivo.
+
+Estas categorías no son equivalentes ni necesariamente estados mutuamente excluyentes de una única variable: una trayectoria puede ser parcialmente ejecutada y luego interrumpida. Conservar el historial temporal y el nivel de avance, sin codificar todos los casos como simple ejecución/no ejecución.
+
+La factibilidad TGCV es una propiedad del sistema bajo condiciones especificadas; el conocimiento, la consideración y la selección son propiedades del proceso de decisión de agentes concretos. La falta de conocimiento o de selección no convierte por sí misma una transformación en inaccesible para el sistema. Si la información o el permiso de acceso son condiciones constitutivas de realizabilidad, deben modelarse explícitamente en T_acc y no confundirse con la mera visibilidad de una opción.
+
+### 29.2 Proceso de selección y variables relevantes
+
+La selección de una trayectoria puede depender de información disponible, preferencias, objetivos, expectativas, costes percibidos y reales, capacidades de los agentes, reglas institucionales, restricciones, coordinación, riesgos y alternativas conocidas. Algunas de estas variables pueden ser basales; otras pueden cambiar como consecuencia de la intervención que modifica T_acc o de transformaciones ejecutadas previamente.
+
+Por ello, el protocolo del caso debe:
+- identificar quién selecciona y cuál es la unidad de decisión;
+- fechar disponibilidad de información, consideración, selección, inicio, interrupción y finalización;
+- registrar alternativas factibles conocidas y desconocidas cuando pueda establecerse;
+- documentar razones de selección/no selección y de fallo/interrupción sin tratarlas automáticamente como causas identificadas;
+- distinguir costes/restricciones reales de percepciones y expectativas;
+- identificar variables que afectan tanto selección/ejecución como Outcome o Value;
+- representar la retroalimentación: selección y ejecución pueden cambiar estado, recursos, información y T_acc futuro.
+
+La selección observada no es una muestra aleatoria de trayectorias factibles. Las trayectorias ejecutadas pueden diferir sistemáticamente de las no ejecutadas en características de agentes, contextos, expectativas y restricciones.
+
+### 29.3 Implicaciones para estimandos de C10
+
+El estimando θ_A(q), cuando se defina mediante políticas factibles g_1 y g_0 sobre cambios de accesibilidad, debe aclarar qué proceso posterior de conocimiento, consideración, selección y ejecución queda bajo cada régimen.
+
+Si el objetivo es la contribución total de una política de accesibilidad, las respuestas posteriores de agentes y organizaciones —incluidas selección, no selección, ejecución parcial y abandono— forman parte de las consecuencias del régimen y no deben eliminarse mediante ajuste indiscriminado. En ese caso, no ajustar mecánicamente por selección o ejecución si son mediadores posteriores: hacerlo puede bloquear parte de la vía que se pretende incluir.
+
+Si se desea estimar una contribución bajo una política de selección/ejecución fijada o intervenida, debe definirse un estimando distinto, especificando:
+- la política de selección y la unidad decisora;
+- la información e historia disponibles en cada momento;
+- la intervención sobre ejecución, adherencia o finalización, si procede;
+- las combinaciones factibles y el soporte;
+- el Outcome/Value potencial y horizonte;
+- los supuestos de identificación secuencial y tratamiento de confusión afectada por intervenciones previas.
+
+No interpretar ese contraste condicionado como el efecto total de accesibilidad. Tampoco asumir que comparar seleccionados con no seleccionados identifica el efecto de ejecutar una trayectoria: la selección puede estar confundida por causas basales y post-treatment, y condicionar por ella puede abrir asociaciones espurias.
+
+La selección puede ser un mediador de la contribución de accesibilidad, pero también un punto de selección estadística. Su papel depende del DAG temporal y del estimando, no de una etiqueta fija. La aleatorización de la intervención inicial no aleatoriza automáticamente la selección ni la ejecución.
+
+### 29.4 Datos faltantes, no ejecución y resultados contrafactuales
+
+La ausencia de ejecución no es un dato faltante de trayectoria ejecutada: puede ser un resultado del proceso que debe registrarse. La falta de información sobre si una trayectoria era factible, conocida, seleccionada o ejecutada sí es incertidumbre de medición y debe clasificarse como tal.
+
+No imputar que una trayectoria factible habría producido el Outcome/Value observado en otra unidad o bajo otra trayectoria. No atribuir un Value nulo a una trayectoria no ejecutada salvo que la regla de Value y la pregunta evaluativa definan explícitamente ese resultado. Diferenciar:
+- Value observado bajo la trayectoria realizada;
+- Value observado bajo la política de accesibilidad asignada, incluyendo no selección/no ejecución;
+- Value potencial bajo una política alternativa de selección/ejecución, que requiere un estimando y supuestos adicionales.
+
+El análisis principal debe preservar el contraste de asignación/política que corresponda al diseño. Los análisis por trayectoria seleccionada o ejecutada son secundarios y requieren estrategia explícita para sesgo de selección, confusión temporal, adherencia y positividad. Informar límites de identificación cuando esas condiciones no puedan defenderse.
+
+### 29.5 Requisito de reporte
+
+El informe de C10 debe presentar, al menos, el flujo desde trayectorias factibles enumeradas hasta conocimiento/consideración, selección, inicio, ejecución, interrupción y finalización; las razones conocidas de cada transición; la cobertura de medición; y las diferencias basales y post-treatment relevantes entre trayectorias seleccionadas y no seleccionadas.
+
+No reducir este flujo a una tasa de adopción ni usarlo como sustituto de T_acc. No usar la distribución de trayectorias realizadas como estimación directa del conjunto de trayectorias factibles. Las probabilidades de selección/ejecución solo se estimarán si existe un modelo/política explícito y una estrategia de identificación defendible.
+
+### 29.6 Estado y límites
+
+Este apartado establece requisitos analíticos para separar posibilidad, conocimiento, decisión y ejecución y para evitar sesgos de selección en C10. No identifica por sí mismo efectos de selección o ejecución, no establece un nuevo estimando primario ni decide un modelo de agentes. No modifica Core, RMA, Matrix, STATUS, claims o cierres previos, ni autoriza selección de caso, adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
