@@ -1042,3 +1042,93 @@ La auditoría identifica:
 El protocolo puede continuar como marco metodológico de trabajo, pero no debe considerarse todavía listo para preregistro ni para ejecución. El siguiente paso es completar la especificación formal de los estimandos longitudinales solo si el diseño candidato realmente los necesita; no añadir complejidad dinámica por defecto. Después deberá realizarse una revisión final de ecuaciones, variables, referencias cruzadas y consistencia de las puertas.
 
 Este addendum no altera clasificaciones previas de casos, C09, VSL-KGFS-02 ni ningún claim. El PR permanece draft y pendiente de revisión.
+
+
+## 25. Auditoría global de consistencia y reglas de interpretación
+
+### 25.1 Resultado de la auditoría
+
+La revisión conjunta de los bloques metodológicos desarrollados después del apartado 24 no identifica una contradicción que invalide la arquitectura general de C10-D1. Sí identifica ambigüedades de notación y alcance que deben resolverse antes de seleccionar un caso, preregistrar o ejecutar un estudio.
+
+Este apartado establece reglas de lectura y precedencia para evitar que propuestas metodológicas condicionales se interpreten como decisiones científicas aprobadas. No reemplaza la especificación particular del DAG, las intervenciones, los estimandos ni el plan de análisis de un estudio.
+
+### 25.2 Variables y temporalidad: separar generación de accesibilidad y condiciones
+
+Para describir un diseño, distinguir explícitamente:
+
+- **X:** covariables basales y contexto previo a la intervención.
+- **B_t:** componentes manipulables o asignables en el momento t, cuya intervención puede modificar el sistema.
+- **C_{c,t}:** condiciones constitutivas o habilitadoras necesarias para que determinadas transformaciones sean realizables en t.
+- **L_t:** otras condiciones que varían en el tiempo. Su papel debe clasificarse según la historia causal concreta: pueden ser confusoras, mediadoras, consecuencias de intervenciones previas o condiciones habilitadoras de transformaciones futuras.
+- **A_t:** cambio de accesibilidad reconstruido como diferencia entre espacios de transformaciones accesibles pertinentes en t; no es una asignación abstracta independiente de las condiciones que lo hacen posible.
+- **M_t:** mecanismos posteriores, incluidos Reach y Trayectoria derivados del espacio transformacional.
+- **O:** outcomes observables.
+- **V:** Value, construido mediante una regla evaluativa independiente.
+
+La expresión T_acc=F(S,C,L) recuerda que la accesibilidad depende del estado y de condiciones del sistema; no implica que C y L sean variables homogéneas ni que deban mantenerse todas constantes. Una condición puede ser constitutiva en un momento y convertirse en variable temporal que afecta accesibilidad futura en otro. Clasificar por función causal y temporal, no por etiqueta permanente.
+
+No incluir indiscriminadamente todas las variables L en q. El régimen q solo puede especificar condiciones/historias no constitutivas que sea coherente intervenir o estandarizar para la pregunta causal. Las condiciones constitutivas deben conservar configuraciones compatibles con las transformaciones comparadas. Cuando una condición y la accesibilidad solo puedan cambiar conjuntamente, el contraste identificable puede ser conjunto y no específico de A.
+
+### 25.3 Interpretación operativa de θ_A(q)
+
+La formulación de trabajo θ_A(q)=E[V^{q,g_1}]-E[V^{q,g_0}] representa un contraste entre dos políticas factibles sobre cambios de accesibilidad bajo un régimen común q de condiciones/historias admisibles.
+
+V^{q,g} debe entenderse como Value bajo un régimen conjunto y coherente: q no fija condiciones constitutivas en valores incompatibles y g no asigna A fuera del conjunto factible dado el estado y la historia. Las políticas g_1 y g_0 deben especificar cómo se generan cambios de accesibilidad mediante configuraciones/intervenciones realizables; no son una intervención metafísica sobre un índice ni se identifican automáticamente con P(A|Z,L).
+
+Bajo cada política, Reach, Trayectoria, Outcome y Value posteriores evolucionan como consecuencias del régimen. No ajustar mecánicamente por M_t u O cuando son mecanismos posteriores que forman parte de la vía cuyo efecto se pretende incluir. Si se condiciona o interviene sobre ellos, se habrá definido otro estimando y deberá explicitarse.
+
+Este contraste es específico de las políticas, población, horizonte y régimen q definidos. No representa una contribución universal de toda variación de T_acc. Si los componentes B que generan A también afectan Value por vías alternativas, la atribución específica exige separar o identificar esas vías; si no es posible, informar el efecto de la intervención/paquete o el efecto conjunto, no atribuirlo exclusivamente a accesibilidad.
+
+### 25.4 Contraste conjunto, interacción y factibilidad
+
+θ_{L,A}=E[V^{q_1,g_1}]-E[V^{q_0,g_0}] solo debe interpretarse cuando (q_1,g_1) y (q_0,g_0) definen regímenes conjuntos bien especificados, consistentes y factibles. Es un contraste entre políticas conjuntas de condiciones y accesibilidad; no es por sí mismo el efecto de A ni una descomposición del efecto total.
+
+Una interacción aditiva entre políticas puede definirse mediante las cuatro medias contrafactuales correspondientes a (q_0,g_0), (q_0,g_1), (q_1,g_0) y (q_1,g_1). Solo está definida e identificable si las cuatro combinaciones tienen significado causal, son realizables y cuentan con soporte suficiente en la población objetivo. Su interpretación es interacción en la escala aditiva entre los regímenes comparados; no debe describirse automáticamente como interacción ontológica entre L y T_acc. Si alguna celda es imposible o incoherente, no calcularla por extrapolación ni interpretar la interacción.
+
+### 25.5 Efecto total, residual y descomposición
+
+TE es el efecto de la intervención Z especificada sobre Value. No equivale a θ_A(q), y la aleatorización de Z no aleatoriza automáticamente A.
+
+La resta TE−θ_A(q) no es, en general, un efecto directo ni el efecto de todas las vías distintas de accesibilidad. Solo tiene interpretación como componente de una descomposición si ambos contrastes pertenecen a una arquitectura contrafactual compatible, con misma población, escala, horizonte y escenarios de referencia. Una descomposición secuencial puede depender del orden cuando hay interacción y requiere que los escenarios intermedios sean factibles. Las vías de Z que no estén representadas por los regímenes q y g impiden interpretar esa descomposición como partición completa de TE.
+
+No presentar porcentajes de mediación o atribución cuando los estimandos no sean componentes complementarios, el efecto total esté cerca de cero, haya signos opuestos o la incertidumbre impida una interpretación estable.
+
+### 25.6 Diseños de intervención: qué identifica cada uno
+
+La intervención experimental debe asignarse a componentes B implementables, no a T_acc como variable abstracta. El factorial de componentes es una opción de diseño, no un requisito universal; solo procede si sus combinaciones son factibles y coherentes.
+
+La aleatorización de B identifica, bajo los supuestos del diseño, efectos de asignación de esos componentes (por ejemplo, ITT) y sus interacciones en la escala definida. No identifica automáticamente el efecto mediado por A. Una intervención que cambia accesibilidad puede modificar también condiciones, preferencias, costes, capacidades u otras vías relevantes para Value.
+
+La variación experimental de componentes combinada con una estrategia mediacional o políticas factibles sobre accesibilidad es una familia de estrategias prometedora, no un método universal ni garantía de identificación. La variación secuencial/aleatorización repetida puede ayudar cuando las decisiones y confusores evolucionan en el tiempo, pero requiere su propio protocolo. IV solo es defendible cuando relevancia, independencia, exclusión y demás supuestos del estimando elegido son plausibles y justificables; no presumir exclusión por la etiqueta de la intervención.
+
+Si no puede separarse el cambio de accesibilidad de condiciones que también afectan Value, el resultado válido puede ser una contribución conjunta o un efecto de paquete. Debe conservarse esa limitación, no resolverla por definición.
+
+### 25.7 Medición, identificación y sensibilidad son puertas distintas
+
+La medición independiente de T_acc, Reach, Trayectoria, Outcome y Value es necesaria para evitar circularidad y confusión de constructos, pero no basta para identificación causal. Deben auditarse por separado:
+
+1. validez y fiabilidad de cada constructo y de sus unidades;
+2. temporalidad y reconstrucción del espacio de transformaciones;
+3. consistencia de versiones de intervención y políticas;
+4. confusión basal y post-intervención, incluida la afectada por decisiones previas;
+5. positividad y soporte de las políticas comparadas;
+6. interferencia, censura y datos faltantes cuando proceda;
+7. vías alternativas y supuestos de identificación;
+8. sensibilidad a confusión no medida, error de medición de T_acc y definición de Value.
+
+Cuando sea viable, quienes reconstruyan T_acc deben desconocer Outcome y Value; la regla de Value debe especificar beneficiario, objetivo, dirección, horizonte, costes, beneficios y compensaciones sin derivarse de T_acc ni del outcome usado como mediador.
+
+El efecto mínimo relevante δ y el margen de equivalencia ε deben fijarse antes del análisis. Un intervalo amplio que incluye cero y efectos relevantes indica incertidumbre, no ausencia de efecto. Solo un intervalo suficientemente preciso dentro del margen predefinido respalda ausencia de efecto relevante en el ámbito estudiado. Los controles negativos y análisis de sensibilidad deben preespecificarse cuando sea posible; no usarlos para seleccionar retrospectivamente especificaciones favorables.
+
+### 25.8 Alcance longitudinal y heterogeneidad
+
+La notación θ_A^dyn sigue siendo un marcador pendiente de formalización. No introducir θ_dyn ni otra variante como estimando disponible sin especificar historia h_t, secuencia temporal, políticas dinámicas factibles, conjunto de acciones admisibles, régimen de condiciones, resultado potencial de Value, horizonte, población, contraste y supuestos de identificación. No sumar contrastes estáticos para simular una estimación longitudinal.
+
+La heterogeneidad puede depender de la composición de T_acc, relaciones y dependencias, condiciones del sistema, estado inicial, horizonte y regla de Value. Los modificadores relevantes deben preespecificarse. Los niveles de evidencia se mantienen: A, existencia local; B, contribución condicional bajo condiciones delimitadas (objetivo principal); C, generalización/transportabilidad. Un resultado local no implica universalidad, monotonicidad ni que toda expansión de accesibilidad aumente Value.
+
+### 25.9 Estado de decisión
+
+La auditoría global permite conservar los trece bloques como desarrollo metodológico condicionado, con las reglas de interpretación anteriores. No convierte los diseños, políticas, estimandos dinámicos ni estrategias de identificación en decisiones aprobadas. No selecciona un caso Tipo III, no identifica un régimen q universal, no valida empíricamente los constructos y no demuestra ni refuta C10.
+
+Antes de preregistro o ejecución siguen siendo necesarias la selección justificada del caso, la especificación de su DAG temporal, la definición de intervenciones y versiones factibles, la elección del estimando compatible con ese diseño, el plan de medición independiente y la auditoría de identificación/precisión. Este apartado no autoriza descarga o procesamiento de datos ni ejecución experimental.
+
