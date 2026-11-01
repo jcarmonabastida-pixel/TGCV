@@ -309,3 +309,135 @@ Antes de seleccionar un caso o ejecutar trabajo empírico:
 5. decisión explícita sobre si existe algún candidato Tipo II que merezca una auditoría de identificabilidad adicional.
 
 **No iniciar selector predictivo ni trabajo de predictor en paralelo mientras C10 mantenga prioridad científica.**
+
+
+---
+
+## 17. Addendum metodológico — interacción, temporalidad y definición de las intervenciones (01-11-2026)
+
+**Estado:** refinamiento metodológico pendiente de revisión; no aprobado, no preregistrado y no ejecutado.  
+**Precedencia:** este addendum precisa y, donde se indica, restringe las formulaciones provisionales de las secciones 3, 5, 6, 7, 8, 9 y 16. No debe interpretarse la notación anterior como una definición causal ya cerrada.
+
+### 17.1 Condiciones constitutivas y otras condiciones variables
+
+La notación agregada (L) es insuficiente para todos los diseños. Debe descomponerse analíticamente, caso por caso, al menos en:
+
+- **(L_c): condiciones constitutivas o habilitadoras de accesibilidad.** Recursos, capacidades, permisos, dependencias, restricciones y otras condiciones que participan en la determinación de qué transformaciones son realizables. Pueden formar parte de la función que genera el espacio accesible, por ejemplo (T_{acc,t}=F(S_t,C_t,L_{c,t})).
+- **(L_m): otras condiciones variables en el tiempo** que pueden afectar accesibilidad, mecanismos, outcomes o Value y desempeñar funciones de confusión, mediación o vías alternativas.
+
+La clasificación depende de la estructura del sistema y del momento temporal, no del nombre de una variable. Una misma variable puede cambiar de papel entre momentos o contextos; cada papel debe justificarse mediante el modelo causal y la evidencia del caso.
+
+No se debe ajustar mecánicamente por (L_c) como si fuera siempre un confusor externo a (T_{acc}). Mantener fija una condición constitutiva mientras se modifica accesibilidad puede definir una intervención imposible o incoherente. Tampoco se debe clasificar automáticamente toda variable post-treatment como (L_m) ni asumir que basta con condicionarla estadísticamente.
+
+### 17.2 Factibilidad de las políticas y soporte común
+
+Las políticas sobre accesibilidad deben respetar las condiciones de realizabilidad del sistema. Para una historia/contexto (h_t), defínase conceptualmente el conjunto factible (\mathcal{A}_{fact}(h_t)). Una política (g_j) solo puede asignar configuraciones de accesibilidad pertenecientes a ese conjunto:
+
+(g_j(A_t\mid h_t)=0) para (A_t\notin\mathcal{A}_{fact}(h_t)).
+
+La comparación de dos políticas bajo un régimen común de condiciones solo es interpretable cuando ambas políticas tienen soporte factible en la población/historias a las que se aplica el contraste. Si la variación de (L_c) es constitutiva del cambio de accesibilidad y no existe soporte común para variar (A) manteniendo un régimen comparable, no debe forzarse una atribución aislada mediante extrapolación. En tal caso, el objeto defendible puede ser una intervención conjunta sobre condiciones y accesibilidad.
+
+El régimen común no tiene por qué fijar todas las condiciones en un valor constante. Puede ser una distribución conjunta explícita sobre historias o condiciones, condicionada por covariables basales, siempre que sea causalmente interpretable, realizable y fijada ex ante.
+
+### 17.3 Efectos condicionados e interacción (A × L)
+
+Cuando existan combinaciones factibles, se pueden definir efectos de accesibilidad bajo regímenes concretos de condiciones:
+
+(θ_A(q_0)=E[V^{q_0,g_1}]-E[V^{q_0,g_0}])
+
+(θ_A(q_1)=E[V^{q_1,g_1}]-E[V^{q_1,g_0}]).
+
+La interacción aditiva entre políticas de accesibilidad y regímenes de condiciones es:
+
+(I_{A,L}=[E[V^{q_1,g_1}]-E[V^{q_1,g_0}]]-[E[V^{q_0,g_1}]-E[V^{q_0,g_0}]]).
+
+(I_{A,L}) expresa cuánto cambia el contraste de accesibilidad entre los dos regímenes de condiciones en la escala aditiva de Value preespecificada. No es una interacción universal independiente de la escala, ni una descomposición automática del efecto total. La escala, los regímenes, el margen de relevancia y las combinaciones factibles deben fijarse antes del análisis.
+
+Si las cuatro combinaciones no son realizables o carecen de soporte, no estimar las celdas contrafactuales imposibles ni extrapolar para completar un factorial aparente. Informar el límite de identificación y, si procede, estimar solo contrastes conjuntos factibles.
+
+### 17.4 Estructura longitudinal y actualización del espacio accesible
+
+La secuencia debe indexarse temporalmente. Como esquema de trabajo:
+
+- en (t), el sistema tiene estado y condiciones (S_t,C_t,L_{c,t},L_{m,t});
+- se reconstruye (T_{acc,t}) a partir de esa configuración;
+- se ejecuta, o no, una transformación (τ_t) perteneciente a las posibilidades admisibles;
+- la ejecución puede modificar el estado y las condiciones;
+- en (t+1), se vuelve a reconstruir (T_{acc,t+1}) a partir de la nueva configuración.
+
+Representación conceptual:
+
+((S_t,C_t,L_{c,t},L_{m,t}) → T_{acc,t} → τ_t → (S_{t+1},C_{t+1},L_{c,t+1},L_{m,t+1}) → T_{acc,t+1}).
+
+Reach y Trayectoria deben derivarse de las transformaciones TGCV admisibles y de su actualización a lo largo de la secuencia; no deben reducirse a transiciones observadas entre estados ni calcularse necesariamente sobre un espacio fijo.
+
+La medición debe registrar para cada variable relevante identidad, momento/intervalo, papel causal en ese momento, dependencias previas, consecuencias posteriores, procedencia y calidad de evidencia. No asignar papeles causales solo por conveniencia del modelo estadístico.
+
+Value debe tener horizonte explícito. Puede representar valor realizado, acumulado o diferido, según una regla independiente que contemple costes, beneficios, compensaciones, beneficiario y posibles efectos intermedios. No elegir el horizonte después de observar los resultados.
+
+Cuando existan confusores variables en el tiempo afectados por tratamiento previo, una regresión convencional con ajuste indiscriminado puede bloquear vías causales o introducir sesgo. G-computation, modelos estructurales marginales o TMLE longitudinal son opciones condicionadas a supuestos defendibles; ningún método resuelve automáticamente confusión no medida, mala medición, falta de positividad o mala especificación temporal.
+
+### 17.5 Intervención manipulable, respuesta estructural y ejecución
+
+No definir “aumentar (T_{acc})” como tratamiento causal abstracto. Distinguir:
+
+1. **Intervención/política (Z o π):** acción asignable o mecanismo realizable sobre el sistema, especificado por componente, unidad afectada, intensidad/alcance, momento/duración, población y condiciones de implementación.
+2. **Respuesta estructural (A=ΔT_{acc}):** cambio en las transformaciones accesibles producido por la intervención, medido independientemente de su ejecución y de Value.
+3. **Ejecución (τ):** transformación concreta efectivamente realizada, que puede modificar el estado y la accesibilidad futura.
+
+Una política dinámica puede representarse como (π:h_t→Z_t), donde (h_t) es la historia disponible hasta (t). La secuencia de espacios accesibles inducida por la política debe medirse en cada momento; el efecto de una política dinámica no es intercambiable con el efecto de un cambio puntual de accesibilidad.
+
+La especificación de la intervención debe permitir identificar versiones relevantes: mecanismo/componente, elemento del sistema, intensidad, temporalidad, población/unidad y condiciones de implementación. La asignación aleatoria de (Z) puede identificar el efecto total de la asignación bajo los supuestos del diseño, pero no aleatoriza automáticamente (A), no garantiza exclusión y no identifica por sí sola la contribución específica de accesibilidad.
+
+### 17.6 Versiones de tratamiento y equivalencia de políticas
+
+Dos políticas que producen el mismo (ΔT_{acc}) medido no son automáticamente equivalentes causalmente. Pueden diferir en costes, tiempos, calidad, riesgos, distribución de beneficios u otras vías hacia Value. Por tanto, igualdad de accesibilidad observada no implica igualdad de resultados potenciales de Value.
+
+Distinguir:
+
+- **Equivalencia de accesibilidad:** mismo cambio estructural bajo un universo, representación, equivalencia (≡T), contexto y horizonte comunes.
+- **Equivalencia de vías relevantes para Value:** además, las diferencias entre políticas no introducen vías alternativas relevantes para Value, o estas quedan separadas por un diseño/estimando defendible. Es el requisito más importante para una atribución específica.
+- **Equivalencia de versión de tratamiento:** las versiones agrupadas bajo una misma política satisfacen una definición de intervención y consistencia previamente justificada.
+
+No agrupar políticas distintas solo porque comparten un indicador o cardinalidad de (ΔT_{acc}). Si no puede defenderse equivalencia de versiones o separarse sus vías alternativas, informar el efecto de la política concreta o del paquete, no un efecto puro de accesibilidad.
+
+### 17.7 Notación de estimandos precisada
+
+La notación de la sección 5.2 debe leerse como abreviatura provisional. La formulación de trabajo más explícita es:
+
+(θ_A(q)=E[V^{q,g_1}]-E[V^{q,g_0}]).
+
+Aquí (q) define un régimen común y factible de condiciones/historias, y (g_1) y (g_0) son políticas estocásticas concretas sobre cambios de accesibilidad, condicionadas por covariables basales e historia relevante y restringidas a (\mathcal{A}_{fact}). La respuesta posterior de Reach, Trayectoria, Outcome y Value evoluciona bajo cada política; por tanto, el contraste puede incluir las consecuencias de accesibilidad a través de esos mecanismos.
+
+Este contraste no es automáticamente un efecto indirecto natural, no es una fracción del efecto total y no queda identificado por sustituir (g_j) por distribuciones observadas (P(A\mid Z,L)). Su identificación exige justificar consistencia/versiones, temporalidad, ausencia de confusión relevante para la asignación de la política sobre (A), tratamiento de confusión inducida por tratamiento, positividad/soporte, interferencia y medición. Si esos supuestos no son defendibles, declarar (θ_A(q)) no identificado.
+
+Un contraste conjunto puede expresarse como:
+
+(θ_{L,A}=E[V^{q_1,g_1}]-E[V^{q_0,g_0}]).
+
+Este recoge el efecto de un cambio coordinado de régimen de condiciones y política de accesibilidad; no atribuye todo el contraste a (A). Los contrastes simples e interacción de la sección 17.3 solo se interpretan cuando sus políticas/regímenes son coherentes y factibles.
+
+No asumir que (TE=θ_A(q)+θ_{L,A}), ni que (TE-θ_A(q)) es un efecto directo puro. Cualquier descomposición del efecto total requiere definir una secuencia explícita de intervenciones y contrastes compatibles; puede depender del orden de intervención y de las interacciones.
+
+### 17.8 Consecuencias para la interpretación científica
+
+- Un efecto total de (Z) sobre Value demuestra, como máximo, un efecto de esa intervención en el ámbito estudiado; no establece atribución específica a (A).
+- Un (θ_A(q)) identificado respalda una contribución de accesibilidad bajo las políticas, condiciones, población, horizonte y regla de Value especificados.
+- Un (θ_{L,A}) identificado respalda una contribución conjunta de condiciones y accesibilidad, no una atribución exclusiva a accesibilidad.
+- Un (θ_A(q)) nulo bajo un régimen concreto no demuestra que accesibilidad sea irrelevante bajo otros regímenes, ni descarta una contribución conjunta o una interacción.
+- La ausencia de soporte, las combinaciones imposibles o la falta de identificación deben informarse como límites, no como evidencia confirmatoria o refutatoria.
+- Un efecto adverso solo limita/refuta la versión de la hipótesis y el ámbito definidos ex ante, con precisión suficiente y criterios de relevancia preespecificados.
+
+### 17.9 Consecuencia operativa y estado
+
+Antes de seleccionar un caso o ejecutar análisis empírico, el protocolo debe:
+
+1. clasificar (L_c) y (L_m) y justificar sus papeles temporales;
+2. especificar intervenciones/políticas concretas y versiones relevantes;
+3. definir el conjunto de configuraciones de accesibilidad factibles bajo cada historia;
+4. comprobar soporte común para los contrastes específicos y conjuntos;
+5. preespecificar horizonte y regla independiente de Value;
+6. decidir si el estimando es puntual, condicionado o dinámico;
+7. documentar identificación y límites antes de estimar.
+
+Este addendum no selecciona caso, no autoriza descarga/procesamiento de datos ni ejecución experimental. No cambia TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims, cierres C09 o VSL-KGFS-02, ni reanuda el predictor. El PR permanece como borrador metodológico pendiente de revisión.
