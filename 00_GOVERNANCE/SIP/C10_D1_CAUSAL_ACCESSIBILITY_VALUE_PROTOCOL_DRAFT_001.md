@@ -1930,3 +1930,43 @@ La clasificación es una decisión de elegibilidad probatoria, no un ranking. La
 La plantilla queda definida, pero no se ha cumplimentado para un candidato nuevo ni se ha iniciado una búsqueda adicional. Los estados de los cinco grupos de candidatos del apartado 36 permanecen sin cambios. No se ha adquirido ni procesado información nueva. No se autoriza por esta plantilla el acceso a datos, preregistro, experimento o ejecución.
 
 Este apartado no modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres históricos. El PR permanece draft y pendiente de revisión.
+
+
+## 38. Exploración inicial de dominios e intervenciones potenciales
+
+### 38.1 Alcance
+
+Primera exploración bibliográfica de fuentes públicas para identificar líneas que merezcan una auditoría documental posterior. No es una búsqueda sistemática ni exhaustiva, no constituye evaluación de datasets y no designa candidatos Tipo II o Tipo III. Se aplican G1–G7 de forma preliminar y conservadora. La existencia de un ensayo aleatorizado acredita variación exógena de una asignación/intervención en el diseño descrito, pero no aleatoriza automáticamente ΔT_acc ni identifica θ_A(q).
+
+### 38.2 Líneas exploratorias
+
+| Línea / estudio de referencia | Evidencia pública que justifica exploración | Potencial TGCV a comprobar | Carencias críticas documentadas o pendientes | Decisión preliminar |
+|---|---|---|---|---|
+| Salud pública digital — sistema de citas para cribado cervical, Montevideo, Uruguay (Gallegos et al., Journal of Public Economics, 2023) | Experimento a escala con 47.600 mujeres; invitaciones aleatorizadas a usar una aplicación de citas, invitaciones habituales y control; la aplicación permitía elegir fechas y horas disponibles en la clínica local. El estudio informa efectos sobre reservas y asistencia y analiza costes de transacción/saliencia. Fuente: https://doi.org/10.1016/j.jpubeco.2023.104975 | La aplicación podría añadir o reconfigurar una transformación de programación remota frente al procedimiento presencial; el diseño multi-brazo permite explorar diferencias entre acceso al enlace y recordatorio/invitación | No consta reconstrucción independiente de T_acc; el resultado principal es reserva/asistencia, no Value TGCV; el efecto del enlace/estímulo no equivale sin más a una intervención estructural aislada sobre A; falta comprobar datos, horizonte clínico, costes y vías alternativas | **Prioridad alta para auditoría documental; no designado Tipo II** |
+| Formación profesional — Smart Skilling, India (Afridi et al., IZA DP 18272, 2025) | Asignación aleatoria a formación profesional, formación más aprendizaje experiencial basado en proyectos y habilidades digitales, o control. Se informan cambios en sector de empleo, autoempleo, ingresos y satisfacción. Fuente: https://www.iza.org/publications/dp/18272/smart-skilling-experimental-evidence-on-vocational-training-design | Las competencias complementarias podrían cambiar el conjunto de ocupaciones/actividades realizables y sus combinaciones; los brazos permiten examinar paquetes de formación diferenciados | Ocupación elegida y empleo observado no equivalen a inventario independiente de transformaciones accesibles; satisfacción e ingresos no constituyen por sí solos una regla de Value TGCV; falta reconstruir precondiciones, restricciones, recursos y trayectorias factibles | **Prioridad media para auditoría documental; no designado Tipo II** |
+| Digitalización de programas públicos — portal de solicitudes en Virginia (Cholli y Wu, IZA DP 18873, 2026) | Estudio con microdatos administrativos sobre portal digital que simplificó solicitudes de SNAP, Medicaid y TANF; el resumen informa heterogeneidad en inscripción según distancia y acceso digital. Fuente: https://www.iza.org/publications/dp/18873/who-benefits-from-digitizing-public-programs | Puede permitir estudiar transformaciones administrativas: iniciar, completar, corregir y tramitar solicitudes por rutas digitales o presenciales, así como exclusión por capacidades digitales | La información consultada no permite confirmar diseño de identificación completo, medición independiente de T_acc, regla Value ni si el portal amplía transformaciones frente a reducir costes de una ruta ya existente | **Reserva exploratoria; no designado Tipo II** |
+| Transporte y movilidad — subsidio de transporte gratuito (Brough, Freedman y Phillips, AEJ: Economic Policy, 2025) | RCT de subsidio temporal para transporte público entre personas de bajos ingresos; no detecta efectos significativos en horas pagadas o ingresos y encuentra indicios en algunos indicadores de salud financiera y física. Fuente: https://doi.org/10.1257/pol.20230460 | Podría alterar la factibilidad de desplazamientos y conexiones con empleo/servicios, según rutas, horarios y restricciones | Reducir el precio no demuestra por sí mismo que cambie T_acc; los resultados agregados no identifican la composición del conjunto de transformaciones ni Value TGCV. Riesgo de confundir condiciones habilitadoras con accesibilidad | **Prioridad baja; no designado Tipo II** |
+| Microfinanzas / crédito digital | Existen evaluaciones aleatorizadas sobre acceso al crédito y resultados de hogares/negocios; la literatura incluye el ensayo de Hyderabad y una evaluación de crédito digital en Nigeria. Fuentes: https://doi.org/10.1257/app.20130533 ; https://doi.org/10.1086/735169 | Puede cambiar opciones de financiación y acciones empresariales/hogareñas factibles | Solapamiento conceptual y metodológico con KGFS ya examinado; el crédito/take-up no es T_acc y bienestar/consumo/ingresos no equivalen automáticamente a Value TGCV. No resuelve las carencias conocidas de C10 | **No priorizar en esta ronda; evitar repetir KGFS con otro proxy** |
+
+### 38.3 Priorización provisional
+
+La priorización para una siguiente auditoría documental —no una clasificación de elegibilidad— es:
+1. **Uruguay, citas de cribado cervical:** mejor contraste inicial entre una nueva vía de programación digital y una invitación habitual, con asignación aleatoria y registros administrativos. Debe examinarse si el cambio puede reconstruirse como transformación accesible y no solo como menor coste/saliencia.
+2. **Smart Skilling, India:** interés por cambios en competencias complementarias y elección ocupacional; requiere reconstrucción del conjunto de ocupaciones/actividades factibles antes de usar resultados de empleo como sustituto.
+3. **Portal de programas públicos, Virginia:** potencial para transformaciones administrativas, pero primero se necesita verificar el diseño causal, la arquitectura de procesos y las fuentes de Value.
+
+Transporte queda en reserva por la dificultad de separar el cambio de coste/condiciones de un cambio del conjunto de transformaciones. Microfinanzas no se prioriza porque repetiría el tipo de limitación ya observado en KGFS.
+
+### 38.4 Regla de no elevación
+
+Ninguna de estas líneas se clasifica todavía como Tipo II. Para elevar una línea a Tipo II se necesita una auditoría de fuentes que documente una ruta específica y factible para G1, G3, G4 y G5, además de una estrategia defendible para G2 y G6. En particular:
+- no inferir T_acc a partir de take-up, uso, ocupación, empleo, reserva o asistencia;
+- no inferir Value a partir de un outcome aislado, satisfacción o coste-efectividad sin regla de valor explícita;
+- no atribuir a A el ITT de un paquete, estímulo o asignación;
+- no asumir que una transformación nueva en la interfaz constituye por sí misma una transformación TGCV sin especificar origen, destino, mecanismo, admisibilidad, recursos y dependencias.
+
+### 38.5 Próxima acción de investigación
+
+La siguiente acción recomendada es una auditoría documental focalizada del estudio de Uruguay: reconstruir el proceso previo y posterior de programación de citas, identificar exactamente qué transformaciones se hicieron posibles para qué unidades y en qué condiciones, distinguir inversión en la aplicación de asignación aleatoria del estímulo, y comprobar si existe una regla independiente de Value y un horizonte de resultados clínicos/económicos. Si esa ruta no puede documentarse, detener la línea sin elevarla a Tipo II y pasar a la siguiente.
+
+No se han descargado ni procesado datasets, solicitado datos privados ni iniciado contacto con autores o instituciones. Esta exploración no es revisión sistemática, no constituye evidencia C10 ni cambia la clasificación de candidatos históricos. No modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. No autoriza acceso a datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
