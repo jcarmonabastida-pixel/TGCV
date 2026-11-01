@@ -1807,3 +1807,58 @@ No se debe intentar resolver estas decisiones añadiendo una fórmula universal 
 El siguiente trabajo debe cambiar de modo: pasar de ampliar el marco general a una evaluación de candidatos contra G1–G7, sin designar Tipo III hasta demostrar cada puerta. Esa evaluación puede concluir que ningún candidato es adecuado o que la identificación no es viable; no presupone encontrar un caso positivo.
 
 No se ha elegido caso, estimando primario, política, régimen q, regla Value ni valores numéricos de δ/ε. No se han descargado ni procesado datos. No se ha realizado revisión externa, preregistro o ejecución experimental. Este apartado no modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. El PR permanece draft y pendiente de revisión.
+
+
+## 36. Cribado documental de candidatos conocidos frente a G1–G7
+
+### 36.1 Alcance y criterio
+
+Este cribado aplica G1–G7 exclusivamente a la evidencia y documentación ya incorporadas al repositorio y a las revisiones previas resumidas en este protocolo. No se han consultado fuentes nuevas, descargado datos, reabierto casos cerrados ni inferido que una variable proxy sea un constructo TGCV. Los estados describen la documentación disponible, no propiedades inmutables de los sistemas estudiados.
+
+Estados:
+- **Superada:** la documentación permite justificar el requisito para el objetivo C10.
+- **Condicional:** existe una ruta concreta que podría resolverlo, pendiente de evidencia.
+- **No superada:** la evidencia conocida no satisface el requisito central.
+- **No evaluada:** no hay información suficiente para juzgarlo.
+
+### 36.2 Matriz de cribado
+
+| Candidato | G1 T_acc independiente | G2 variación causal | G3 separar C_c/L y vías | G4 Reach/Trayectoria TGCV | G5 Value independiente | G6 θ_A(q) identificable | G7 precisión/viabilidad/ética | Clasificación documental |
+|---|---|---|---|---|---|---|---|---|
+| KGFS | No superada: no consta reconstrucción independiente de ΔT_acc | Condicional para efecto del paquete Z; no identifica variación específica de A | No superada con el paquete documentado: condiciones y vías alternativas simultáneas | No superada para constructos TGCV completos; C09 y auditoría de trayectorias no sustituyen Reach/Trayectoria TGCV | No superada: no consta Value TGCV independiente | No superada: θ_A(q) no estimable con documentación actual | No evaluada para un estudio C10 específico | **Tipo I**, se conserva sin elevación |
+| México C10C-002 | No superada: indicador cardinal T_acc* no equivale a reconstrucción TGCV suficiente; ITT no detectable | Condicional para el contraste de asignación ya analizado; no acredita manipulación/variación de A pertinente | No evaluada | No evaluada | No superada: Value no estimado | No superada: no se identifica θ_A(q) | No evaluada | Caso de frontera de medición; no se designa Tipo II |
+| Marruecos C10C-004 | No superada: reconstrucción de empoderamiento no equivale a T_acc | No evaluada para una variación causal específica de A | No evaluada | No superada con la documentación descrita: no se ha reconstruido Reach/Trayectoria TGCV | No superada: no consta Value TGCV independiente | No superada | No evaluada | Reconstrucción operacional acotada; no se designa Tipo II |
+| VSL sintético | Condicional solo como entorno de prueba de operacionalización; no evidencia de T_acc empírica | No superada para inferencia causal real | Condicional para probar separaciones dentro del diseño sintético, no en un sistema empírico | Condicional como prueba de reglas/representación; no acredita mecanismos reales | Condicional como regla/variable Value* sintética; no medición empírica independiente | No superada para atribución causal empírica | No evaluada para estudio real | Tipo I metodológico |
+| Casos solares examinados | No superada: no superaron reconstrucción estructural | No evaluada | No evaluada | No superada con la reconstrucción disponible | No evaluada | No superada como candidatos probatorios con la evidencia actual | No evaluada | Casos de frontera; no se designa Tipo II |
+
+### 36.3 Lectura de los resultados
+
+1. **No hay candidato Tipo III.** Ninguno reúne simultáneamente medición independiente de T_acc, medición independiente de Value y un contraste que identifique θ_A(q).
+2. **KGFS no se reabre ni se eleva de categoría.** Su asignación aleatoria conserva valor metodológico para comprender el efecto del paquete y C09 en su alcance documentado; no resuelve la separación de A ni Value. VSL-KGFS-02 permanece cerrado como COMPATIBILITY_NOT_ESTABLISHED.
+3. **México C10C-002 no es una refutación general.** El ITT no detectable sobre T_acc* y la ausencia de estimación de Value no identifican ni descartan θ_A(q).
+4. **Marruecos C10C-004 no proporciona la variable causal requerida.** Empoderamiento no debe renombrarse como accesibilidad TGCV ni como Value.
+5. **VSL sintético es útil para depurar operacionalizaciones y escenarios**, pero sus resultados no se transportan como evidencia causal empírica.
+6. **Los casos solares no avanzan** mientras no exista reconstrucción estructural suficiente; no se debe invertir en análisis de resultados antes de superar G1.
+
+### 36.4 Decisión sobre candidatos Tipo II
+
+Con la documentación revisada no se designa ningún candidato Tipo II. Esto no afirma que sea imposible obtener evidencia nueva; indica que todavía no se ha documentado una ruta concreta, verificable y viable que cierre las puertas esenciales sin reabrir indebidamente cierres previos.
+
+En particular, no se inicia una nueva búsqueda de candidatos ni se elige un dominio alternativo en este apartado. Esa búsqueda requeriría una decisión separada sobre alcance, recursos, criterios de selección y autorización de fuentes/datos.
+
+### 36.5 Próxima tarea permitida y recomendada
+
+La siguiente tarea de bajo riesgo es una **ficha de requisitos mínimos para un nuevo candidato**, no una búsqueda indiscriminada de datasets. Debe exigir desde el inicio:
+- posibilidad de reconstruir T_acc antes de observar Outcome/Value;
+- variación causal de accesibilidad mediante política o intervención implementable;
+- variación que permita distinguir accesibilidad de condiciones y vías alternativas;
+- mecanismos y trayectorias TGCV reconstruibles;
+- regla de Value independiente y datos con horizonte adecuado;
+- contrafactual, soporte, precisión, interferencia y confusión evaluables;
+- viabilidad ética y operativa.
+
+Un candidato solo pasará a Tipo II cuando exista evidencia documental de una ruta concreta para resolver las puertas condicionales. Tipo III requiere cierre demostrado de G1–G7. Ninguna clasificación autoriza por sí misma adquirir datos, ejecutar análisis no autorizados, preregistrar o realizar un experimento.
+
+### 36.6 Estado y límites
+
+Este cribado es documental y preliminar. No constituye nueva auditoría de datasets, revisión externa ni evaluación de potencia. Los estados «no superada» y «no evaluada» se refieren a la evidencia actualmente documentada y no equivalen a falsación de C10. No modifica las clasificaciones históricas, C09, VSL-KGFS-02, Core, RMA, Evidence→Claim Matrix, STATUS ni claims. No se han adquirido ni procesado datos. El PR permanece draft y pendiente de revisión.
