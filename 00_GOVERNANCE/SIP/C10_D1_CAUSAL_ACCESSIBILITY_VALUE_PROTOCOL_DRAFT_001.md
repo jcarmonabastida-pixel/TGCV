@@ -1593,3 +1593,77 @@ En esos casos, informar únicamente el estimando más estrecho que los datos y e
 ### 32.6 Estado y límites
 
 Este apartado convierte en puertas operativas los supuestos de identificación ya mencionados en el protocolo. No afirma que un método concreto sea aplicable a un caso, no elige un estimando primario, no demuestra que θ_A(q) sea identificable y no designa un caso probatorio. No modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims o cierres previos, ni autoriza adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
+
+
+## 33. Matriz de trazabilidad científica y puertas de observación/identificación
+
+### 33.1 Propósito y regla de lectura
+
+Esta matriz conecta la hipótesis C10 con sus constructos, variables, mediciones, estimandos, supuestos y resultados que podrían limitarla o contradecirla. Es una matriz de especificación metodológica general, no una ficha ya cumplimentada para un caso empírico. Los procedimientos indicados son requisitos candidatos que deberán concretarse y justificarse para cada sistema, población, horizonte y regla de Value.
+
+**Regla:** ningún eslabón se considera satisfecho porque exista una variable con nombre parecido o un dato disponible. Debe demostrarse correspondencia entre definición conceptual, unidad de análisis, procedimiento de medición, temporalidad y papel en el estimando. La ausencia de medición o identificación se registra como pendiente/no identificable, nunca como evidencia nula a favor o en contra de C10.
+
+### 33.2 Matriz principal
+
+| Afirmación o eslabón | Constructo/variable | Medición requerida | Estimando o contraste relacionado | Supuestos/puerta crítica | Resultado adverso o falsador |
+|---|---|---|---|---|---|
+| H10: cambios de accesibilidad contribuyen a Value bajo condiciones especificadas | Hipótesis condicional C10; población, sistema, política, horizonte y regla de Value delimitados | Versión fechada y falsable de H10; alcance y predicción direccional o bilateral preespecificados | θ_A(q) como contraste específico primario cuando sea identificable; TE y θ_{L,A} responden preguntas distintas | Alcance no protegido por moderadores retrospectivos; estimando y regla de Value definidos ex ante | Efecto específico nulo/prácticamente equivalente con precisión suficiente, signo contrario preespecificado o ausencia de vía bajo condiciones que la hipótesis afirmaba cubrir |
+| La intervención puede inducir variación pertinente | B/Z y versiones de intervención; unidad y asignación | Registro de asignación, componentes realmente recibidos, versión, tiempo, intensidad, cumplimiento y contaminación | TE/ITT de Z o B | Consistencia de versiones, asignación defendible, positividad, pérdidas e interferencia | La intervención no produce variación pertinente, asignación comprometida o versiones no comparables; esto puede impedir probar H10, pero no falsifica por sí solo la relación A→V |
+| Las condiciones habilitan y restringen accesibilidad | C_c y otras condiciones L_m, con función temporal explícita | Medición repetida de condiciones, recursos, dependencias y restricciones antes/después de decisiones; clasificación causal justificada | q común para condiciones no constitutivas; θ_{L,A} para cambios conjuntos factibles | No fijar C_c en estados incompatibles; soporte común; confusión temporal tratada | Ausencia de soporte para q/g o imposibilidad estructural de separar A de condiciones; conclusión conjunta o no identificación |
+| La intervención cambia el espacio accesible | A=ΔT_acc | Inventario comparable de transformaciones, identidad/equivalencia, mecanismo, precondiciones, recursos, admisibilidad y evidencia; altas, pérdidas, reconfiguraciones y cambios relacionales/configuracionales; evaluación independiente y ciega a O/V | θ_A(q), solo si políticas factibles inducen cambios distinguibles de vías alternativas | Validez de constructo, fiabilidad, comparabilidad longitudinal, error de clasificación, independencia de O/V y realizabilidad de políticas g | No se observa cambio A pese a intervención: no se ha probado el mecanismo propuesto. Medición precisa que excluye el cambio mínimo preespecificado puede limitar la versión de intervención, no toda C10 |
+| Los cambios de A alteran posibilidades estructurales | F_t: conjunto de trayectorias factibles; Reach_H | Enumerador basado en transformaciones admisibles, composición, precondiciones, dependencias, recursos, horizonte y actualización de T_acc; documentar cobertura y truncamiento | Mecanismo intermedio de θ_A(q); no es por sí solo el estimando de Value | Reglas de composición y equivalencia versionadas; incertidumbre separada; enumeración exhaustiva solo dentro de límites declarados | A cambia pero F/Reach no cambia en el ámbito definido: limita la vía propuesta a través de expansión/restricción de posibilidades, sin excluir otras vías de A |
+| Las posibilidades pueden ser conocidas por los agentes | K_t: conocimiento/consideración | Registro temporal de información disponible, exposición, conocimiento y alternativas consideradas; distinguir conocimiento de accesibilidad | Mediador/respuesta posterior cuando forme parte del proceso de la política | Medición temporal; causas comunes de K y resultados; no confundir opción desconocida con inaccesible | F existe pero K no cambia: limita la vía que depende de conocimiento/consideración, no implica A=0 |
+| Los agentes seleccionan y realizan algunas posibilidades | Sel_t y E_t: selección, inicio, ejecución, interrupción, finalización | Registro por trayectoria, decisor, momento, alternativas, razones, grado de avance y evidencia; no selección/no ejecución como estados observados, no como datos faltantes | Consecuencias posteriores incluidas en θ_A(q); contrastes intervenidos de selección/ejecución requieren estimandos separados | Sesgo de selección, confusión post-treatment, adherencia, positividad, pérdidas e interferencia | Aumenta F pero no Sel/E: limita la conversión de posibilidades en realización en ese contexto; no refuta por sí solo el cambio de A |
+| La realización produce cambios posteriores del sistema | Trayectoria realizada y mecanismos M_t | Secuencia temporal de transformaciones efectivamente ejecutadas, cambios de estado/condiciones, dependencias y mecanismos; distinguir factible, seleccionada y realizada | Vías mediadoras de θ_A(q), sin ajustar indiscriminadamente por ellas | Consistencia temporal, confusión secuencial, medición independiente y reglas de composición | No aparece la vía mediadora preespecificada o la trayectoria no se modifica pese a A; evidencia adversa para ese mecanismo específico |
+| Los cambios del sistema se expresan en resultados observables | O: Outcome | Indicadores de resultado definidos ex ante, unidades, fuente, horizonte, calidad y momento | Componente de la cadena hacia V; no sustituye Value | Temporalidad, medición, confusión y pérdidas | A cambia pero O no cambia con precisión suficiente: limita la vía que predice ese Outcome; no equivale automáticamente a ΔV=0 |
+| Los resultados se traducen en valor bajo una regla evaluativa | V: Value | Regla independiente con entidad/beneficiario, objetivo, dirección, costes, beneficios, compensaciones, distribución, horizonte e incertidumbre | Resultado potencial V^{q,g}; θ_A(q), θ_{L,A}, TE | Validez y estabilidad de la regla; independencia de A y O como definiciones; comparabilidad evaluativa | Efecto sobre O sin cambio de V puede limitar la conversión O→V; cambio de regla puede alterar signo/magnitud y debe tratarse como modificación evaluativa |
+| La intervención total afecta Value | V bajo asignación Z/B | Value medido bajo asignación, con seguimiento de toda la población asignada según regla preespecificada | TE/ITT | Diseño, consistencia, interferencia, pérdidas y medición de V | TE nulo preciso limita el efecto de esa intervención/paquete; no identifica por sí solo θ_A(q) ni refuta toda C10 |
+| Una política de accesibilidad contribuye específicamente a Value | A, B, g_1/g_0, q y V | Medición independiente de A y V; versiones B; distribución de A inducida; vías alternativas; historia temporal; selección/ejecución posteriores | θ_A(q) | Política implementable, equivalencia o separación de versiones, factibilidad, soporte, intercambiabilidad pertinente, confusión longitudinal, interferencia y pérdidas | θ_A(q) prácticamente nulo con precisión suficiente o signo contrario preespecificado en el ámbito; si falla una puerta, no identificación, no falsación |
+| Condiciones y accesibilidad contribuyen conjuntamente | C_c/L_m, A y V | Medición de régimen conjunto y soporte de combinaciones | θ_{L,A} | Regímenes conjuntos factibles; no atribuir exclusivamente a A | Efecto conjunto nulo/adverso limita el paquete conjunto definido, no separa el papel de A |
+| La contribución depende de condiciones | A×L y V | Cuatro regímenes/políticas comparables y factibles; medición de modificadores preespecificados | I_{A,L} | Soporte de las cuatro combinaciones, escala aditiva predefinida, precisión y multiplicidad controlada | Interacción no respaldada con precisión suficiente limita la hipótesis de modificación especificada; no invalida automáticamente el efecto promedio |
+| La conclusión puede transportarse a otros sistemas | Modificadores, composición de T_acc, condiciones y reglas de Value | Comparación de población, sistema, composición, política, horizonte, medición y regla evaluativa | Estimando de transporte, solo si se define y se dispone de soporte | Invariancia condicional o modelo de transporte defendible; solapamiento y medición comparable | Heterogeneidad incompatible con la regularidad propuesta limita alcance; no extrapolar desde un caso local |
+
+### 33.3 Puertas de trazabilidad
+
+La matriz se considera cumplimentada para un caso solo cuando cada fila pertinente contiene:
+1. definición operacional específica y versión;
+2. unidad de análisis y momento de observación;
+3. variable, fuente, instrumento y responsable de medición;
+4. regla de clasificación, calidad, cobertura y tratamiento de incertidumbre;
+5. enlace temporal/causal con variables anteriores y posteriores;
+6. estimando al que contribuye y papel causal (exposición, mediador, confusor, modificador, resultado o variable de selección);
+7. supuestos de identificación y evidencia que permitiría auditarlos;
+8. análisis de sensibilidad, criterio de falsación y límites de conclusión.
+
+Una fila no aplicable debe justificarse. Una fila no medida o no identificada debe quedar marcada como pendiente/no identificable, no rellenarse con proxies sin validación ni con outcomes/ejecución como sustitutos de T_acc.
+
+### 33.4 Diagnóstico de cobertura actual del protocolo
+
+Con la información metodológica actualmente documentada, la cobertura es la siguiente:
+- **Definición conceptual:** desarrollada como propuesta para A, F/Reach, trayectorias factibles/realizadas, selección/ejecución, O y V; no equivale a validación empírica.
+- **Procedimientos de medición:** especificados como requisitos, pero no validados para un caso Tipo III ni acompañados de instrumentos calibrados universalmente.
+- **Estimandos:** TE, θ_A(q), θ_{L,A} e I_{A,L} distinguidos; no hay estimando primario seleccionado para un caso.
+- **Identificación:** puertas de diseño, temporalidad, soporte, confusión, interferencia y pérdidas especificadas; no se ha demostrado que puedan satisfacerse en datos concretos.
+- **Falsación:** lógica de δ/ε, signos, precisión y evidencia adversa descrita; valores numéricos y predicciones concretas pendientes de caso y regla de Value.
+- **Evidencia empírica C10:** no establecida. KGFS sigue siendo referencia metodológica Tipo I en el alcance documentado; no existe caso Tipo III designado.
+
+Por tanto, la matriz está completa como mapa de requisitos del protocolo, pero no como matriz empírica cumplimentada. No permite declarar que cada constructo ya sea observable o que la contribución causal esté identificada.
+
+### 33.5 Regla de conclusión por eslabón
+
+La evidencia puede detenerse en distintos eslabones. Informar el último eslabón respaldado y el primero no respaldado:
+- B/Z no induce A: intervención no logra manipular el mecanismo; C10 no probada por ese diseño.
+- A cambia, pero F/Reach no: no se respalda la vía de cambio de posibilidades especificada.
+- F cambia, pero K/Sel/E no: posibilidad no se convierte en conocimiento/selección/ejecución bajo ese contexto.
+- E/trayectoria cambia, pero O no: no se respalda la vía hacia el Outcome definido.
+- O cambia, pero V no: no se respalda la traducción evaluativa bajo la regla de Value.
+- θ_A(q) identificado y relevante: evidencia de contribución específica en el dominio delimitado.
+- Alguna puerta esencial falla: declarar no identificación o evidencia insuficiente, sin convertirla en resultado nulo.
+
+La ausencia de un eslabón no debe atribuirse automáticamente al eslabón anterior: considerar medición, error, mecanismos alternativos, horizonte, heterogeneidad y precisión antes de concluir.
+
+### 33.6 Estado y límites
+
+La matriz establece trazabilidad conceptual y analítica para futuros estudios; no aporta datos ni valida las mediciones, no define un instrumento universal, no elige caso, no fija δ/ε numéricos ni selecciona el estimando primario. La matriz empírica de un caso solo podrá completarse tras superar las puertas de elegibilidad y especificar su diseño.
+
+Este apartado no modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims o cierres previos, no eleva KGFS ni otro caso a Tipo III y no autoriza adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
