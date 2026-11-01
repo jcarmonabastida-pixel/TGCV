@@ -1862,3 +1862,71 @@ Un candidato solo pasará a Tipo II cuando exista evidencia documental de una ru
 ### 36.6 Estado y límites
 
 Este cribado es documental y preliminar. No constituye nueva auditoría de datasets, revisión externa ni evaluación de potencia. Los estados «no superada» y «no evaluada» se refieren a la evidencia actualmente documentada y no equivalen a falsación de C10. No modifica las clasificaciones históricas, C09, VSL-KGFS-02, Core, RMA, Evidence→Claim Matrix, STATUS ni claims. No se han adquirido ni procesado datos. El PR permanece draft y pendiente de revisión.
+
+
+## 37. Plantilla normalizada de evaluación de candidato C10
+
+### 37.1 Relación con la ficha de selección vigente
+
+Este apartado operacionaliza la hoja de evaluación enumerada en 23.5 y aplicada documentalmente en 36. No crea un segundo conjunto de puertas ni sustituye G1–G7. Su finalidad es que futuras evaluaciones registren, para cada puerta, evidencia verificable, carencia concreta, tarea de cierre y decisión. La plantilla debe duplicarse y cumplimentarse por candidato; no debe completarse por inferencia cuando falte documentación.
+
+### 37.2 Identificación del candidato
+
+| Campo | Registro |
+|---|---|
+| Identificador único / versión de ficha | Pendiente |
+| Nombre del sistema, programa o intervención | Pendiente |
+| Dominio, país/región y periodo | Pendiente |
+| Población y unidad de análisis | Pendiente |
+| Unidad de asignación/intervención | Pendiente |
+| Fuentes documentales y procedencia | Pendiente |
+| Responsable y fecha de evaluación | Pendiente |
+| Estado de autorización de datos | Documentación pública/existente únicamente; toda adquisición/procesamiento adicional requiere autorización |
+
+### 37.3 Registro de puertas G1–G7
+
+Para cada G, completar todos los campos. «Pendiente» no significa «superada».
+
+| Puerta | Estado (S/C/NS/NE) | Evidencia y fuente verificable | Carencia exacta | Tarea mínima de cierre | Criterio verificable de cierre | Coste/viabilidad/ética |
+|---|---|---|---|---|---|---|
+| G1 — T_acc independiente | Pendiente | Pendiente | ¿Puede reconstruirse el conjunto de transformaciones, admisibilidad, precondiciones, recursos y realizabilidad independientemente de O/V? | Definir unidad, instrumento, fuentes y evaluación ciega; demostrar cobertura y fiabilidad | Transformaciones identificables y comparables en los momentos relevantes, sin usar ejecución/outcome como sustitutos | Pendiente |
+| G2 — variación causal | Pendiente | Pendiente | ¿Qué política/intervención implementable induce variación de A y qué contrafactual la identifica? | Especificar B/Z, versiones, asignación/exposición y contrafactual | Variación pertinente y contraste defendible para la población/periodo | Pendiente |
+| G3 — separación de condiciones/vías | Pendiente | Pendiente | ¿Qué condiciones son C_c, cuáles L_t y qué vías alternativas conectan B/Z con V? | DAG temporal específico, inventario de componentes y vías alternativas | Separación causal defendible o delimitación explícita a un efecto conjunto, sin atribución exclusiva indebida | Pendiente |
+| G4 — mecanismos TGCV | Pendiente | Pendiente | ¿Pueden derivarse F/Reach y trayectorias factibles/realizadas desde T_acc? | Especificar reglas de composición, actualización, horizonte, recursos y medición temporal | Reconstrucción reproducible de posibilidades y trayectorias, separando factible, conocida, seleccionada y ejecutada | Pendiente |
+| G5 — Value independiente | Pendiente | Pendiente | ¿Qué Value se mide, para quién, con qué regla, horizonte, costes, beneficios y distribución? | Definir y validar regla de Value independiente de Outcome y A | Regla explícita, estable y aplicable antes de observar resultados | Pendiente |
+| G6 — θ_A(q) identificable | Pendiente | Pendiente | ¿Qué estimando, políticas g₁/g₀ y régimen q son factibles e identificables? | Especificar población, historia, soporte, confusión, consistencia, interferencia y pérdidas | Identificación defendible del contraste específico de accesibilidad; TE/ITT aislado no basta | Pendiente |
+| G7 — precisión, viabilidad y ética | Pendiente | Pendiente | ¿Puede discriminarse efecto relevante, equivalencia y daño con precisión y condiciones aceptables? | Justificar δ/ε, precisión/potencia, reglas de parada, ética, equidad y seguridad | Precisión suficiente y viabilidad ética/operativa demostradas antes de preregistro | Pendiente |
+
+Estados permitidos: **S** = superada; **C** = condicional; **NS** = no superada; **NE** = no evaluada. Toda puerta C debe especificar tarea, evidencia, responsable, coste/viabilidad y criterio de cierre. Una puerta NS o NE impide clasificar el candidato como Tipo III.
+
+### 37.4 Especificación causal del candidato
+
+| Elemento | Registro requerido |
+|---|---|
+| Pregunta causal acotada | Población, intervención/política, accesibilidad, regla Value y horizonte |
+| Intervención B/Z | Componentes, versiones, unidad, asignación, exposición y cumplimiento |
+| Exposición de interés A | Definición de ΔT_acc y política implementable que la induce |
+| Condiciones C_c y L_t | Clasificación temporal y papel causal, no etiquetas estáticas |
+| Mecanismos | F/Reach, conocimiento, selección, ejecución, trayectorias, Outcome |
+| Regla de Value | Beneficiario, objetivo, escala, costes/beneficios, compensaciones, distribución e incertidumbre |
+| Estimando primario candidato | θ_A(q), o explicación explícita si no es identificable y solo puede estimarse TE/θ_{L,A} |
+| Políticas/régimen | g₁, g₀, q; factibilidad, soporte y versiones |
+| DAG | Grafo temporal específico del caso y supuestos |
+| Identificación | Confusión basal/post-treatment, interferencia, selección, censura, datos faltantes y sensibilidad |
+| Predicción y falsación | Bilateral/direccional, δ, ε, signo esperado si justificable, precisión y falsadores |
+| Ética y viabilidad | Daños, equidad, privacidad, consentimiento, carga operativa y reglas de parada |
+
+### 37.5 Regla de clasificación y decisión
+
+- **Tipo I:** utilidad metodológica demostrable; no se afirma atribución causal C10.
+- **Tipo II:** existe una ruta concreta, verificable y factible para cerrar las puertas pendientes; debe indicarse cuál es la ruta y qué evidencia falta. No basta con que el dominio parezca prometedor.
+- **Tipo III:** G1–G7 están superadas con evidencia verificable y existe un diseño cuyo estimando primario identifica la contribución específica de accesibilidad a Value.
+- **Descartar/no priorizar:** una puerta esencial no es superable o el coste, riesgo, ética o falta de soporte hacen inviable la identificación. Documentar la razón; no convertirlo en falsación general de C10.
+
+La clasificación es una decisión de elegibilidad probatoria, no un ranking. La ficha cumplimentada debe terminar con una decisión explícita: avanzar a auditoría documental adicional, mantener como Tipo I, solicitar autorización para una fase de datos, o no avanzar.
+
+### 37.6 Aplicación y límites
+
+La plantilla queda definida, pero no se ha cumplimentado para un candidato nuevo ni se ha iniciado una búsqueda adicional. Los estados de los cinco grupos de candidatos del apartado 36 permanecen sin cambios. No se ha adquirido ni procesado información nueva. No se autoriza por esta plantilla el acceso a datos, preregistro, experimento o ejecución.
+
+Este apartado no modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres históricos. El PR permanece draft y pendiente de revisión.
