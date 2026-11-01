@@ -802,3 +802,79 @@ Clasificar cada resultado como:
 El informe debe indicar estimando, población, política, régimen, regla de Value, horizonte, δ/ε, incertidumbre, supuestos, sensibilidad y alcance. No resumir categorías distintas como «C10 confirmada» o «C10 refutada» sin especificar qué versión y ámbito se evaluaron.
 
 Este addendum no selecciona caso, no fija valores numéricos de δ/ε, no autoriza adquisición/procesamiento de datos ni ejecución experimental. No modifica Core, RMA, Matrix, STATUS, claims, cierres C09 o VSL-KGFS-02, ni reanuda el predictor. El PR permanece draft, pendiente de revisión.
+
+
+---
+
+## 22. Addendum metodológico — arquitectura de diseños experimentales para C10-D1 (01-11-2026)
+
+**Estado:** propuesta de diseño pendiente de revisión; no es protocolo de ejecución ni preregistro. No selecciona un caso ni autoriza intervención, adquisición o procesamiento de datos.
+
+### 22.1 Principio de diseño
+
+No se aleatoriza T_acc como variable abstracta. Se asignan intervenciones/componentes implementables que pretenden modificar condiciones o accesibilidad; posteriormente se verifica de forma independiente si cambiaron T_acc. Distinguir siempre:
+- efecto por intención de tratar de cada componente asignado;
+- efecto de la intervención/paquete sobre Value;
+- efecto causal atribuible a la política de accesibilidad;
+- efecto sobre T_acc, Reach, Trayectoria y Outcome como resultados mecanísticos separados.
+
+La asignación aleatoria de un componente que pretende cambiar accesibilidad no demuestra que su efecto sobre Value esté mediado exclusivamente por ΔT_acc. Deben diseñarse y evaluar vías alternativas.
+
+### 22.2 Factorial de componentes
+
+Sean B_A una intervención concreta diseñada para modificar accesibilidad y B_L una intervención sobre condiciones habilitadoras. Si las combinaciones son factibles, un diseño factorial 2×2 puede asignar (B_L,B_A)=(0,0),(0,1),(1,0),(1,1). Permite estimar efectos de asignación de cada componente y su interacción en la escala preespecificada de Value.
+
+El contraste de interacción aditiva entre componentes asignados puede expresarse como:
+I_B = [E(V|B_L=1,B_A=1)-E(V|B_L=1,B_A=0)] - [E(V|B_L=0,B_A=1)-E(V|B_L=0,B_A=0)].
+Con asignación aleatoria, adherencia/consistencia y diseño adecuados, este contraste identifica interacción de los componentes asignados en esa escala; no es automáticamente interacción causal entre L y T_acc ni identifica θ_A.
+
+La factibilidad de las cuatro celdas es una condición sustantiva. Si B_A=1 requiere necesariamente B_L=1, la celda (0,1) no existe o no representa una intervención coherente. No extrapolar a combinaciones imposibles ni imputar contrafactuales fuera del soporte. Usar un factorial restringido, diseño secuencial o contraste conjunto factible y limitar la interpretación.
+
+### 22.3 Variación experimental específica de accesibilidad
+
+La opción más informativa para C10 sería una intervención implementable que cambie el conjunto de transformaciones realizables, con medición independiente de T_acc antes de Outcome/Value y sin modificar directamente otras vías relevantes, o con esas vías separadas por diseño.
+
+La exclusión de vías directas no se presume por denominar la intervención «de accesibilidad». Una nueva herramienta, permiso, recurso, información o incentivo puede modificar simultáneamente costes, preferencias, capacidades, ejecución y Value. Inventariar las vías alternativas y justificar cuáles se mantienen constantes, se miden o se identifican.
+
+Si solo se aleatoriza un estímulo/encouragement para cambiar T_acc, el efecto de asignación es ITT del estímulo. Interpretarlo como efecto de accesibilidad requeriría supuestos adicionales (por ejemplo, exclusión y, para IV, relevancia, independencia y condiciones propias del estimando); no asumirlos por la aleatorización.
+
+### 22.4 Diseño secuencial y políticas dinámicas
+
+Cuando las condiciones habilitadoras y accesibilidad evolucionan o dependen de la historia, considerar asignación secuencial:
+1. medir historia basal y condiciones;
+2. asignar intervención habilitadora factible;
+3. medir de forma independiente T_acc y condiciones posteriores;
+4. asignar, entre opciones factibles, intervención/política de accesibilidad;
+5. volver a medir estado, T_acc, mecanismos, Reach y Trayectoria;
+6. medir Outcome y Value en el horizonte predefinido;
+7. repetir decisiones si el sistema y la política lo requieren.
+
+Diseños secuenciales aleatorizados (incluidos factoriales secuenciales o diseños adaptativos cuando proceda) pueden identificar efectos de asignación de estrategias dinámicas bajo sus probabilidades de asignación y supuestos. Para efectos de políticas dinámicas observadas/estimadas, aplicar métodos g longitudinales solo si la historia relevante, intercambiabilidad secuencial, positividad, consistencia, interferencia y censura están justificadas. La aleatorización inicial no resuelve la confusión de decisiones posteriores no aleatorizadas.
+
+### 22.5 Diseños por componentes y mecanismos
+
+Cuando el paquete contenga componentes separables, utilizar diseños de desmantelamiento, factoriales parciales o variación por componentes si cada intervención es realizable y su asignación permite contrastes interpretables. No dividir artificialmente un mecanismo indivisible. Los efectos de componentes no equivalen automáticamente a mediación por T_acc; medir cambios de accesibilidad y mecanismos por separado.
+
+### 22.6 Jerarquía de diseños y alcance de inferencia
+
+- Intervención compuesta aleatorizada: identifica efecto de asignación del paquete sobre Value, no atribución específica a accesibilidad.
+- Factorial aleatorizado factible: identifica efectos e interacciones de componentes asignados en la escala y población estudiadas; no necesariamente θ_A.
+- Intervención/variación de accesibilidad estrechamente definida, con vías alternativas controladas o identificadas: puede acercarse a θ_A; requiere supuestos de mediación/identificación defendibles.
+- Diseño secuencial aleatorizado: identifica efectos de estrategias dinámicas asignadas; atribución a accesibilidad requiere separar componentes y verificar T_acc.
+- Cuasiexperimental/observacional: solo permite atribución si su contrafactual y supuestos específicos son defendibles; incluir sensibilidad y falsaciones.
+
+### 22.7 Puertas de diseño antes de elegir un caso
+
+Un candidato no pasa a diseño experimental hasta documentar:
+1. intervención y componentes implementables, con versiones precisas;
+2. mapa de vías causales alternativas y condiciones constitutivas de accesibilidad;
+3. combinaciones posibles/imposibles y soporte;
+4. asignación/unidad experimental, contaminación e interferencia;
+5. medición independiente y temporal de T_acc, Reach, Trayectoria, Outcome y Value;
+6. estimando primario (ITT, θ_A(q), θ_A^dyn o efecto conjunto) y contraste correspondiente;
+7. supuestos de identificación, plan analítico, potencia/precisión, δ/ε y reglas de parada;
+8. riesgos éticos, operativos, de equidad y de daño por resultados adversos.
+
+Si solo se puede identificar el efecto del paquete o el efecto conjunto, el caso puede ser útil para otra pregunta, pero no se presentará como prueba de atribución específica C10. Si las combinaciones necesarias no son factibles, redefinir el estimando/diseño antes de recoger datos, no después de ver resultados.
+
+Este addendum no designa un caso, no reabre KGFS ni otros casos previamente delimitados, no autoriza datos o ejecución y no modifica Core, RMA, Matrix, STATUS, claims ni el estado de C09/VSL-KGFS-02. El PR permanece draft, pendiente de revisión.
