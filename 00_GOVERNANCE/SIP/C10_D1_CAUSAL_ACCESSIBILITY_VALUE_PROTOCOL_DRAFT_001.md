@@ -588,3 +588,118 @@ Antes de aceptar una medición longitudinal para C10:
 Si falla una condición esencial, calificar la medición como insuficiente/no comparable y limitar la inferencia causal. No interpretar automáticamente desacuerdo, falta de cobertura o error de medición como ausencia de cambio real.
 
 Este addendum no selecciona caso, no autoriza adquisición/procesamiento de datos ni ejecución experimental. No modifica Core, RMA, Matrix, STATUS, claims, cierres C09 o VSL-KGFS-02, ni reanuda el predictor. El PR permanece draft, pendiente de revisión.
+
+
+---
+
+## 20. Addendum metodológico — validez externa, transportabilidad y alcance de C10 (01-11-2026)
+
+**Estado:** propuesta metodológica pendiente de revisión; no aprobada, no preregistrada y no validada empíricamente. Este apartado define criterios para interpretar y extender evidencia causal; no eleva claims ni modifica el Core.
+
+### 20.1 Niveles de conclusión
+
+Distinguir:
+- **Efecto localizado:** contribución causal identificada en un sistema/población, configuración, horizonte, política y regla de Value delimitados.
+- **Regularidad condicional:** contribución reproducida en más de un contexto y asociada a condiciones/modificadores especificados previamente.
+- **Generalización de alcance:** evidencia acumulada que respalda una regularidad condicional en una clase delimitada de sistemas generativos, con límites explícitos.
+
+No inferir universalidad a partir de un efecto localizado. No confundir una colección de réplicas estructuralmente similares con evidencia de diversidad de sistemas. El nivel de conclusión debe reflejar la unidad de evidencia y la heterogeneidad observada.
+
+### 20.2 Dimensiones de comparabilidad y modificación del efecto
+
+Antes de transportar o generalizar, caracterizar por sistema:
+- composición y estructura de T_acc, transformaciones nuevas/perdidas/reconfiguradas;
+- relaciones, dependencias y configuraciones transformacionales;
+- estado inicial y dinámica del sistema;
+- condiciones constitutivas y otras condiciones habilitadoras/restrictivas;
+- mecanismos de ejecución, Reach y Trayectoria;
+- política/intervención, sus versiones, intensidad y vías alternativas;
+- regla de Value, beneficiario, objetivo, costes, beneficios, compensaciones y horizonte;
+- calidad y comparabilidad de la medición, cobertura y error de clasificación.
+
+Estas dimensiones no son todas simples covariables de ajuste. Algunas constituyen la definición del sistema transformacional; otras pueden modificar el efecto o la respuesta al tratamiento. Su papel debe justificarse causal y temporalmente. Una diferencia de efecto entre sistemas no implica automáticamente contradicción: puede reflejar modificación del efecto por composición, condiciones, mecanismos o regla de Value.
+
+### 20.3 Replicación, reproducción contextual, transporte y generalización
+
+Separar cuatro operaciones:
+1. **Replicación:** repetir el contraste en condiciones y estructura similares.
+2. **Reproducción contextual:** repetirlo en otro entorno con mecanismos y arquitectura comparables.
+3. **Transporte:** estimar el efecto en una población/sistema objetivo diferente a partir de evidencia de origen y supuestos explícitos.
+4. **Generalización teórica:** establecer una regularidad condicional en una clase de sistemas delimitada.
+
+El número de casos no sustituye a la diversidad estructural. Varias réplicas del mismo tipo pueden precisar la reproducibilidad local, pero no necesariamente identificar los límites de validez externa.
+
+### 20.4 Estimando de transporte
+
+Sea (S=1) el sistema/población de origen y (S=0) la población objetivo, y sea (W) el conjunto de características basales o estructurales que modifican el efecto y que se miden de forma comparable. El estimando objetivo es:
+
+(theta_target=E_target[V^{g_1}-V^{g_0}]).
+
+La estimación a partir del origen puede requerir estimar efectos condicionales por (W) y estandarizarlos a la distribución objetivo, o usar ponderación/estimadores de transporte. No asumir que (theta_target=theta_source).
+
+La identificación requiere, según el diseño:
+- consistencia y versiones de política comparables;
+- intercambiabilidad interna en el estudio de origen;
+- intercambiabilidad de selección/transporte condicionada a modificadores suficientes (no quedan diferencias origen-destino que alteren el efecto tras condicionar por W);
+- positividad de selección y soporte común: perfiles relevantes del objetivo están representados en el origen;
+- medición comparable de W, accesibilidad, mecanismos y outcome;
+- interferencia ausente o modelizada en ambos contextos.
+
+Estos supuestos no son demostrables solo con los datos observados. Deben justificarse por conocimiento del sistema, diseño, diagnóstico de soporte y análisis de sensibilidad. Si no son defendibles, no presentar una estimación puntual transportada como identificada.
+
+### 20.5 Regla de Value y comparabilidad evaluativa
+
+Value no es necesariamente una escala universal intercambiable entre sistemas. Beneficiarios, objetivos, costes, compensaciones, umbrales y horizontes pueden diferir legítimamente.
+
+Antes de comparar efectos:
+- especificar si la pregunta usa una regla de Value común o reglas contextuales distintas;
+- si se usa una regla común, justificar su validez y significado en cada sistema;
+- si las reglas son distintas, no comparar directamente magnitudes como si estuvieran en la misma escala;
+- cuando sea posible, informar resultados bajo la regla local y bajo una regla común explícitamente justificada;
+- documentar distribución de costes/beneficios y heterogeneidad entre beneficiarios, no solo un promedio agregado.
+
+Si la regla de Value cambia, puede cambiar el signo o magnitud del efecto sin que cambie la accesibilidad. Esto es una diferencia evaluativa que debe hacerse visible, no tratarse como ruido ni corregirse retrospectivamente para obtener homogeneidad.
+
+### 20.6 Modificación del efecto y heterogeneidad
+
+Preespecificar modificadores plausibles antes de observar los resultados comparativos: estructura/composición de T_acc, dependencias, estado inicial, condiciones habilitadoras, mecanismos, política, horizonte y regla de Value. Distinguir:
+- heterogeneidad del efecto causal;
+- heterogeneidad de la medición;
+- heterogeneidad de la definición/regla de Value;
+- heterogeneidad de implementación y versiones de política.
+
+No buscar subgrupos retrospectivamente para excluir efectos negativos ni seleccionar solo contextos favorables. Informar efectos por contexto, incertidumbre, distribución y límites de soporte. Un promedio agregado puede ocultar efectos nulos o adversos en subpoblaciones relevantes.
+
+### 20.7 Programa de evidencia multi-sistema
+
+Una secuencia prudente sería:
+1. Identificación causal en un caso con medición independiente y diseño defendible.
+2. Replicación en condiciones próximas para comprobar reproducibilidad.
+3. Reproducción contextual en sistemas con arquitectura transformacional comparable pero entorno diferente.
+4. Contraste deliberado en sistemas estructuralmente distintos para identificar modificadores y límites.
+5. Síntesis de efectos y heterogeneidad, sin imponer un efecto común si no está justificado.
+6. Formulación de una regularidad condicional que indique población/clase, condiciones, políticas, mecanismos, horizonte y regla de Value.
+
+Los casos deben seleccionarse por capacidad de probar mecanismos y límites, no por probabilidad de producir un efecto positivo. Conservar resultados nulos, adversos y no identificados.
+
+### 20.8 Puerta de decisión y lenguaje de conclusión
+
+Antes de afirmar transporte/generalización, documentar:
+- población/sistema origen y objetivo;
+- estimando en ambos;
+- modificadores del efecto y distribución;
+- soporte común y positividad;
+- equivalencia/compatibilidad de políticas y mediciones;
+- regla de Value y horizonte;
+- supuestos de transporte y sensibilidad;
+- heterogeneidad, efectos adversos y límites.
+
+Lenguaje permitido:
+- «Se identificó una contribución causal en el sistema y ámbito estudiados».
+- «La contribución se reprodujo en los contextos evaluados».
+- «La evidencia respalda una regularidad condicional en la clase delimitada».
+- «El efecto no pudo transportarse/identificarse con los datos y supuestos disponibles».
+
+No afirmar «C10 es universal» ni convertir una estimación localizada en validación general. Una falta de transporte puede indicar diferencias estructurales, evaluativas o falta de soporte; no refuta automáticamente la contribución local ni confirma una regularidad alternativa.
+
+Este addendum no selecciona casos, no autoriza adquisición/procesamiento de datos ni ejecución experimental. No modifica Core, RMA, Matrix, STATUS, claims, cierres C09 o VSL-KGFS-02, ni reanuda el predictor. El PR permanece draft y pendiente de revisión.
