@@ -1132,3 +1132,34 @@ La auditoría global permite conservar los trece bloques como desarrollo metodol
 
 Antes de preregistro o ejecución siguen siendo necesarias la selección justificada del caso, la especificación de su DAG temporal, la definición de intervenciones y versiones factibles, la elección del estimando compatible con ese diseño, el plan de medición independiente y la auditoría de identificación/precisión. Este apartado no autoriza descarga o procesamiento de datos ni ejecución experimental.
 
+
+
+## 26. Precisión de la notación de intervención sobre accesibilidad
+
+### 26.1 Lectura de do(A~G) y relación con componentes implementables
+
+Las expresiones de las secciones 5.2 y 17.7 que utilizan do(A~G_j) son notación abreviada para un régimen estocástico sobre cambios de accesibilidad, no una afirmación de que A pueda asignarse directamente con independencia de la estructura generativa del sistema.
+
+Para cualquier aplicación concreta, especificar una intervención o política implementable sobre componentes manipulables B (o una secuencia de ellos) y la distribución de cambios A que esa intervención induce bajo cada historia/contexto. La política g_j debe corresponder a esa distribución inducida, respetar el conjunto de configuraciones factibles y conservar la dependencia de A respecto del estado y de las condiciones constitutivas. No basta con definir una distribución matemática sobre valores de A si no existe una intervención realizable que la genere o una estrategia de identificación defendible para el contraste estocástico.
+
+La notación V^{q,g_j} representa Value bajo el régimen conjunto coherente formado por q y la política de accesibilidad g_j, incluyendo la respuesta posterior de mecanismos, outcomes y Value. Cuando g_j se implementa mediante componentes B, documentar la correspondencia B→A y las versiones de intervención. Si B tiene vías directas o alternativas hacia Value que no pueden separarse o identificarse, el contraste no permite atribución específica a A: informar el efecto de B/paquete o un efecto conjunto, según el diseño.
+
+### 26.2 Condición para interpretar θ_A(q)
+
+Interpretar θ_A(q) como contribución causal específica de accesibilidad solo cuando se sostengan conjuntamente:
+- una definición operacional de las políticas g_1 y g_0 y de las intervenciones realizables que las inducen;
+- compatibilidad de cada política con estado, condiciones constitutivas e historia;
+- soporte suficiente para la comparación en la población objetivo;
+- consistencia y equivalencia defendible de versiones;
+- identificación de confusión relevante entre cambios de accesibilidad y Value, incluida la confusión afectada por intervenciones previas;
+- separación o identificación de vías alternativas desde los componentes B hacia Value.
+
+Si alguna condición falla, no reinterpretar el efecto de asignación de B como θ_A(q). Puede seguir siendo válido estimar el ITT de B, el efecto de un paquete o un contraste conjunto, etiquetándolo correctamente. La insuficiencia de identificación no constituye por sí misma evidencia a favor ni en contra de C10.
+
+### 26.3 Auditoría de ecuaciones: estado
+
+Las expresiones TE=E[V(1)-V(0)], θ_A(q), θ_{L,A}, la interacción aditiva entre regímenes y las descomposiciones secuenciales se conservan como notación de trabajo, sujetas a las poblaciones, escalas, horizontes, políticas y condiciones de factibilidad definidas en este protocolo. V(1)-V(0) es una abreviatura para los valores potenciales bajo los dos niveles de la intervención Z especificada; no presupone que toda intervención tenga necesariamente dos niveles.
+
+La interacción I_{A,L} del apartado 17.3 y las interacciones descritas en los apartados 25.4 y 22.2 se refieren a contrastes distintos: la primera compara políticas de accesibilidad bajo regímenes de condiciones; la segunda, cuando se utiliza, compara componentes asignados en un diseño factorial. No intercambiar sus interpretaciones ni tratarlas como una misma interacción.
+
+La auditoría no convierte estas ecuaciones en estimandos identificados para un caso concreto. La selección de la parametrización final y del estimando primario queda condicionada al diseño, a la factibilidad de las intervenciones y a la estrategia de identificación que pueda defenderse.
