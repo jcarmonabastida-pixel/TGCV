@@ -703,3 +703,102 @@ Lenguaje permitido:
 No afirmar «C10 es universal» ni convertir una estimación localizada en validación general. Una falta de transporte puede indicar diferencias estructurales, evaluativas o falta de soporte; no refuta automáticamente la contribución local ni confirma una regularidad alternativa.
 
 Este addendum no selecciona casos, no autoriza adquisición/procesamiento de datos ni ejecución experimental. No modifica Core, RMA, Matrix, STATUS, claims, cierres C09 o VSL-KGFS-02, ni reanuda el predictor. El PR permanece draft y pendiente de revisión.
+
+
+---
+
+## 21. Addendum metodológico — falsabilidad, equivalencia práctica y tratamiento de evidencia adversa (01-11-2026)
+
+**Estado:** propuesta metodológica pendiente de revisión; no aprobada, no preregistrada ni ejecutada. No establece todavía valores numéricos de efecto mínimo, margen de equivalencia, potencia o tamaño muestral: estos dependen de la regla de Value y del diseño concreto.
+
+### 21.1 Alcance falsable y versión de hipótesis
+
+Cada prueba debe delimitar antes de observar resultados:
+- sistema, población/unidades y periodo;
+- estado inicial, contexto y condiciones relevantes;
+- política/intervención y versiones;
+- cambio de accesibilidad que se pretende inducir y cómo se medirá;
+- mecanismos/mediadores y secuencia temporal esperada;
+- estimando primario (efecto de política, θ_A(q), θ_A^dyn o efecto conjunto);
+- regla independiente de Value, beneficiario, escala y horizonte;
+- dirección esperada, si está justificada;
+- modificadores, exclusiones y límites de generalización;
+- efecto mínimo relevante δ y margen de equivalencia ε, con justificación previa.
+
+La hipótesis condicional no autoriza a introducir después del resultado nuevas condiciones para excluir el caso. Una condición o moderador descubierto posteriormente puede originar una hipótesis nueva y una prueba posterior; no reinterpreta retroactivamente la prueba original.
+
+### 21.2 Estimando primario y separación de preguntas
+
+No mezclar:
+- efecto total de asignación/intervención sobre Value (TE);
+- contribución de una política específica de accesibilidad bajo régimen definido (θ_A(q));
+- contribución de política dinámica de accesibilidad (θ_A^dyn);
+- efecto conjunto de condiciones y accesibilidad (θ_L,A);
+- efectos sobre Reach, Trayectoria u Outcome.
+
+El estimando primario y la escala deben fijarse antes del análisis. Los demás son secundarios o mecanísticos, con su propio alcance. Un efecto positivo de TE o θ_L,A no sustituye evidencia de θ_A. Un efecto nulo de θ_A(q) limita esa política y régimen; no demuestra que toda política de accesibilidad sea irrelevante.
+
+### 21.3 δ y ε: relevancia y equivalencia
+
+Definir por separado:
+- **δ:** efecto mínimo de Value considerado científicamente/prácticamente relevante en la escala y horizonte elegidos.
+- **ε:** margen de equivalencia práctica alrededor de cero, justificado por la regla de Value, incertidumbre de medición y consecuencias de decisión.
+
+No asumir que δ=ε. Justificar ambos antes de observar los resultados mediante criterios sustantivos, participación de beneficiarios/decisores pertinentes, propiedades de la medición y consecuencias de errores. No elegirlos para acomodar el tamaño del efecto observado.
+
+Para una hipótesis direccional positiva, la interpretación orientativa es:
+- intervalo de incertidumbre completamente por encima de δ: evidencia de efecto positivo relevante;
+- intervalo completamente dentro de [-ε,+ε]: evidencia de equivalencia práctica con cero en el ámbito;
+- intervalo completamente por debajo de -δ: evidencia de efecto adverso relevante;
+- intervalo que cruza umbrales o incluye regiones relevantes distintas: resultado inconcluso.
+
+La regla exacta de decisión, nivel de error, intervalo y procedimiento (incluidos métodos de equivalencia) debe preespecificarse. Un p-valor no significativo no demuestra equivalencia; un intervalo amplio que incluye cero no es evidencia de ausencia.
+
+### 21.4 Falsación por eslabón de la cadena
+
+Evaluar la cadena completa, manteniendo separado el fallo de manipulación del contraste causal sobre Value:
+
+1. **Intervención/política no modifica T_acc como estaba previsto:** fallo de manipulación/implementación o de la hipótesis sobre esa intervención; no estima la contribución causal del cambio de accesibilidad que no ocurrió.
+2. **T_acc cambia, pero Reach no responde como se preespecificó:** evidencia adversa para el vínculo accesibilidad–Reach en ese sistema y horizonte, si ambas mediciones son válidas.
+3. **Reach cambia, pero Trayectoria no responde como se preespecificó:** evidencia adversa para el mecanismo dinámico propuesto en ese ámbito.
+4. **Trayectoria/Outcome cambian, pero Value no:** evidencia adversa para el vínculo con la regla de Value y horizonte especificados; no equivale por sí sola a un θ_A nulo si el estimando específico no está identificado.
+5. **θ_A(q) o θ_A^dyn está identificado y es equivalente a cero con precisión suficiente:** evidencia directa contra una contribución relevante de la política de accesibilidad en el ámbito delimitado.
+6. **Estimando identificado con signo contrario a la dirección preespecificada y magnitud relevante:** evidencia adversa para esa predicción direccional.
+7. **Medición, identificación o soporte insuficientes:** resultado no concluyente; no confirmar ni refutar.
+
+Un resultado adverso en un eslabón no autoriza a reescribir retrospectivamente la cadena. Debe registrarse qué proposición concreta queda cuestionada y cuáles permanecen no evaluadas.
+
+### 21.5 Evidencia contra la hipótesis y alcance de la conclusión
+
+Una equivalencia práctica bien identificada de θ_A en un contexto limita la hipótesis para esa población, política, régimen, horizonte y regla de Value. No refuta automáticamente todos los contextos condicionales de C10.
+
+Para cuestionar una regularidad condicional más amplia, se requiere replicación/contraste en los contextos que la hipótesis afirmaba cubrir, con medición e identificación comparables. Si la formulación de alcance es tan amplia que no especifica contextos donde se espera un efecto, no es suficientemente falsable y debe precisarse antes de probarla.
+
+No se puede proteger la hipótesis invocando un moderador no medido o descubierto solo después de un resultado adverso. Las hipótesis modificadas reciben nueva versión, predicciones y prueba independiente.
+
+### 21.6 Multiplicidad, selección y análisis
+
+Preespecificar hipótesis primaria, estimando, resultado primario, momentos, subgrupos y análisis. Controlar o declarar multiplicidad cuando se prueben numerosos resultados, horizontes, políticas, escalas o subgrupos. Distinguir análisis confirmatorios de exploratorios. No seleccionar la regla de Value, el horizonte, el modelo o la subpoblación por producir el resultado más favorable.
+
+Conservar protocolo fechado/versionado, plan analítico, desviaciones, datos derivados autorizados, código, resultados completos, intervalos, diagnósticos y análisis de sensibilidad. Publicar/reportar resultados nulos, negativos, adversos y no identificados con el mismo rigor que los positivos.
+
+### 21.7 Criterios de detención y suficiencia
+
+Antes de ejecutar, definir qué precisión se necesita para discriminar δ y ε, tamaño muestral/potencia o precisión objetivo, pérdidas esperadas, reglas de parada y tratamiento de análisis intermedios. No detener por significación favorable ni prolongar selectivamente un estudio hasta obtenerla. Si la precisión prevista no permite distinguir efecto relevante de equivalencia, el diseño no es una prueba concluyente de ausencia.
+
+### 21.8 Registro de resultados y lenguaje permitido
+
+Clasificar cada resultado como:
+- contribución positiva relevante identificada;
+- equivalencia práctica con cero identificada;
+- efecto adverso relevante identificado;
+- efecto de intervención/paquete identificado pero atribución a accesibilidad no identificada;
+- mecanismo parcial/no confirmado;
+- resultado impreciso;
+- no identificación;
+- fallo de implementación/manipulación;
+- medición insuficiente/no comparable.
+
+El informe debe indicar estimando, población, política, régimen, regla de Value, horizonte, δ/ε, incertidumbre, supuestos, sensibilidad y alcance. No resumir categorías distintas como «C10 confirmada» o «C10 refutada» sin especificar qué versión y ámbito se evaluaron.
+
+Este addendum no selecciona caso, no fija valores numéricos de δ/ε, no autoriza adquisición/procesamiento de datos ni ejecución experimental. No modifica Core, RMA, Matrix, STATUS, claims, cierres C09 o VSL-KGFS-02, ni reanuda el predictor. El PR permanece draft, pendiente de revisión.
