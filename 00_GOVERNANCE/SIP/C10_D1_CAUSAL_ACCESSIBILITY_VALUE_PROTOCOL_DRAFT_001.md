@@ -1667,3 +1667,75 @@ La ausencia de un eslabón no debe atribuirse automáticamente al eslabón anter
 La matriz establece trazabilidad conceptual y analítica para futuros estudios; no aporta datos ni valida las mediciones, no define un instrumento universal, no elige caso, no fija δ/ε numéricos ni selecciona el estimando primario. La matriz empírica de un caso solo podrá completarse tras superar las puertas de elegibilidad y especificar su diseño.
 
 Este apartado no modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims o cierres previos, no eleva KGFS ni otro caso a Tipo III y no autoriza adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
+
+
+## 34. Prueba lógica mediante contraejemplos y escenarios discriminantes
+
+### 34.1 Propósito
+
+Este apartado somete la formulación condicional C10 a escenarios adversos para comprobar si el protocolo distingue:
+- una contribución causal nula o adversa de accesibilidad en un ámbito delimitado;
+- una expansión de posibilidades que no llega a producirse como conocimiento, selección o ejecución;
+- un efecto de una intervención/paquete que opera por vías distintas de accesibilidad;
+- una mejora de Value que ocurre sin cambio de accesibilidad;
+- una aparente asociación debida a medición circular, error o selección.
+
+No se presupone que toda expansión de T_acc deba aumentar Value. La hipótesis general admite dirección y magnitud dependientes de composición transformacional, condiciones, mecanismos, horizonte y regla evaluativa. Por ello, los escenarios solo son falsadores de una versión de H10 cuando población, política, régimen q, horizonte, regla de Value, contraste y predicción se hayan delimitado ex ante.
+
+### 34.2 Escenarios discriminantes
+
+| Escenario | Configuración observada hipotética | Diagnóstico causal requerido | Conclusión admisible |
+|---|---|---|---|
+| CE-1 — expansión sin contribución de Value | Una política factible induce altas de transformaciones accesibles; la medición independiente confirma ΔT_acc, pero Value no cambia | Estimar θ_A(q) con precisión suficiente; descartar error de medición, falta de soporte, horizonte inadecuado y compensaciones ocultas; fijar δ/ε ex ante | Si θ_A(q) queda dentro del margen de equivalencia, evidencia contra una contribución relevante de esa política en ese ámbito. No refuta por sí sola C10 en otros contextos o políticas |
+| CE-2 — expansión con pérdida de Value | Aumentan algunas transformaciones accesibles, pero la política incrementa costes, riesgos, desigualdad o externalidades y Value disminuye | La regla de Value debe incorporar esos costes/beneficios y su distribución; separar el efecto de la política de las vías que pasan por A | Si el signo negativo de θ_A(q) está identificado, constituye contribución causal adversa, no efecto positivo. Contradice una predicción positiva preespecificada; no contradice una H10 bilateral de contribución no nula |
+| CE-3 — accesibilidad sin conversión en realización | A cambia y Reach/F amplía las trayectorias factibles, pero K, selección o ejecución no cambian | Medir por separado F/Reach, conocimiento, selección y ejecución; comprobar si el contraste θ_A(q) incluye esas respuestas posteriores | Si Value no cambia, la política puede tener efecto causal nulo sobre Value pese a ampliar posibilidades. Si la hipótesis preespecificaba una vía que exigía conversión en realización, su mecanismo queda limitado o contradicho en ese contexto |
+| CE-4 — Value mejora sin cambio de accesibilidad | Value mejora por una vía como utilización más eficiente, redistribución, reducción de costes o cambio institucional, mientras ΔT_acc permanece estable | Confirmar que T_acc se midió con cobertura y sensibilidad suficientes; identificar el efecto total y las vías alternativas de B/Z | Evidencia de una mejora de Value no atribuible a cambio de accesibilidad en ese contraste. No refuta una contribución de A en otros contrastes, pero impide atribuir a A el efecto observado |
+| CE-5 — efecto del paquete confundido con efecto de A | La intervención cambia A y Value, pero también modifica directamente recursos, precios, calidad, riesgos o distribución | Separar componentes B o vías alternativas mediante diseño; justificar g₁/g₀ y soporte; estimar θ_A(q), no inferirlo del ITT | Solo queda identificado el efecto del paquete si las vías no se separan. La asociación ΔT_acc–ΔV no permite atribución específica |
+| CE-6 — aumento de cardinalidad sin mejora estructural relevante | El número de transformaciones registradas crece, pero son redundantes, inviables, dominadas, inaccesibles bajo recursos reales o no modifican relaciones/configuraciones relevantes | Auditar identidad ≡T, admisibilidad Pτ, realizabilidad, composición, dependencias y doble conteo; comparar altas, pérdidas, reconfiguraciones y cambios relacionales/configuracionales | No se ha demostrado una expansión pertinente de T_acc. La cardinalidad bruta no es prueba suficiente del mecanismo |
+| CE-7 — aparente vínculo por medición circular | Los evaluadores infieren qué transformaciones eran accesibles a partir de lo que finalmente se ejecutó o del Value observado | Reconstrucción independiente y ciega, fuentes anteriores al outcome, auditoría de clasificación y sensibilidad al error | Medición inválida para atribución causal; resultado no identificado, no evidencia a favor ni en contra |
+| CE-8 — resultado adverso oculto por heterogeneidad | El efecto promedio parece nulo, pero hay efectos positivos y negativos según composición, condiciones o regla de Value | Modificadores preespecificados, estimandos por subgrupo con soporte y control de multiplicidad; evitar selección retrospectiva | La conclusión se limita a la población/promedio y a los modificadores probados. No elegir después el subgrupo favorable para rescatar H10 |
+| CE-9 — cambio de Value por modificación de la regla | La regla, beneficiario, horizonte o ponderación cambia entre escenarios y produce un signo distinto | Mantener una regla común o declarar explícitamente que se comparan objetos evaluativos distintos; analizar sensibilidad evaluativa | No es una contradicción causal interpretable hasta fijar qué Value se está estimando. No armonizar reglas retrospectivamente para obtener el signo esperado |
+
+### 34.3 Qué cuenta como contraejemplo fuerte
+
+Un escenario de observación aislado no es suficiente. Para que CE-1 o CE-2 constituyan evidencia adversa fuerte contra una versión de H10 se requiere conjuntamente:
+1. una política implementable y descrita por versiones, no una manipulación abstracta de A;
+2. evidencia independiente de que la política indujo el cambio de T_acc previsto, con identidad, admisibilidad, realizabilidad y cobertura adecuadas;
+3. regla de Value y horizonte fijados antes de observar resultados;
+4. estimando θ_A(q) compatible con la política, población y régimen comparados, identificado bajo supuestos defendibles;
+5. precisión suficiente para distinguir efecto relevante, equivalencia práctica y efecto adverso, usando δ/ε preespecificados;
+6. auditoría de vías alternativas, confusión post-treatment, selección, interferencia, pérdidas y error de medición;
+7. ausencia de exclusiones o moderadores introducidos retrospectivamente para descartar el resultado.
+
+Si falla una de estas condiciones, la conclusión adecuada puede ser no identificación, evidencia insuficiente o limitación de alcance; no debe llamarse falsación concluyente.
+
+### 34.4 Distinción entre hipótesis general, predicción direccional y mecanismo
+
+Mantener separadas tres afirmaciones:
+- **Contribución no nula:** θ_A(q) ≠ 0. Un efecto negativo identificado también es contribución causal, aunque pueda ser adverso.
+- **Predicción direccional:** por ejemplo, θ_A(q) > 0. Un efecto negativo preciso contradice esta predicción en el ámbito preespecificado.
+- **Hipótesis de mecanismo:** la contribución opera a través de Reach, conocimiento, selección, ejecución u otra secuencia especificada. La ausencia de un eslabón limita ese mecanismo, aunque otra vía de A pudiera operar.
+
+No redefinir una hipótesis direccional como bilateral después de observar un signo contrario. Tampoco convertir un efecto nulo impreciso en evidencia de ausencia ni una ausencia de mediación medida deficientemente en refutación del mecanismo.
+
+### 34.5 Conclusiones que el protocolo debe poder producir
+
+La prueba lógica se considera superada si el protocolo permite emitir, sin ambigüedad, al menos estas conclusiones:
+- **Contribución específica positiva:** θ_A(q) positivo, identificado y relevante en el ámbito delimitado.
+- **Contribución específica negativa:** θ_A(q) negativo e identificado; contradice una predicción positiva, pero no una hipótesis bilateral de contribución.
+- **Equivalencia práctica:** θ_A(q) dentro de ±ε con precisión suficiente; limita o contradice la contribución mínima relevante preespecificada.
+- **Efecto de paquete sin atribución:** TE/ITT identificado, pero θ_A(q) no separado de vías alternativas.
+- **Mejora por vía distinta de A:** Value cambia sin cambio relevante de T_acc medido con validez suficiente.
+- **Mecanismo bloqueado:** A cambia, pero el eslabón posterior preespecificado no aparece.
+- **No identificación/evidencia insuficiente:** falta una puerta crítica, soporte, medición o precisión.
+- **Resultado dependiente del contexto:** heterogeneidad respaldada dentro de modificadores preespecificados, con alcance delimitado.
+
+### 34.6 Resultado de la prueba lógica
+
+La formulación C10 no implica monotonicidad ni que toda expansión de accesibilidad produzca un aumento de Value. Por ello, CE-1 y CE-2 son pruebas de una contribución relevante o direccional en un ámbito delimitado; CE-3 prueba la conversión de posibilidades en mecanismos posteriores; CE-4 y CE-5 impiden atribuir a accesibilidad mejoras debidas a otras vías; CE-6 y CE-7 examinan validez de la medición; CE-8 y CE-9 examinan heterogeneidad y comparabilidad evaluativa.
+
+**Resultado metodológico:** el protocolo puede distinguir lógicamente contribución positiva, negativa, prácticamente nula, vías alternativas, mecanismo bloqueado y no identificación. La hipótesis sigue siendo empíricamente abierta: superar esta prueba conceptual no constituye evidencia de que θ_A(q) sea distinto de cero ni demuestra que exista un caso capaz de identificarlo.
+
+### 34.7 Estado y límites
+
+Este ejercicio es una prueba lógica de discriminación del protocolo, no un experimento, simulación empírica, análisis de datos ni falsación de C10. No asigna probabilidades a los escenarios, no elige una predicción direccional universal, no define valores numéricos de δ/ε ni selecciona un caso. No modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims o cierres previos y no autoriza adquisición/procesamiento de datos, preregistro ni ejecución experimental. El PR permanece draft y pendiente de revisión.
