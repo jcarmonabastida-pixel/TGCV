@@ -1223,3 +1223,75 @@ La medición independiente de estos constructos mejora la validez de la prueba, 
 
 Las definiciones de este apartado son especificaciones operacionales propuestas para hacer medibles y comparables los constructos en un estudio C10-D1. No constituyen validación empírica, no convierten la representación T_acc=(U_acc,R_acc,C_acc) en Core, no cierran las decisiones pendientes sobre formalización general de Reach/Trayectoria y no autorizan selección de caso, adquisición de datos, preregistro ni ejecución.
 
+
+
+## 28. Procedimiento reproducible de enumeración de trayectorias factibles
+
+### 28.1 Objeto y separación de funciones
+
+Este procedimiento construye, para una configuración inicial y un horizonte definidos, el conjunto de trayectorias TGCV factibles respaldadas por el modelo y la evidencia disponible. No selecciona la trayectoria preferida, no predice cuál se ejecutará y no asigna valor a las trayectorias. Enumerar posibilidades, seleccionar una opción y ejecutar una transformación son operaciones distintas y deben conservar registros separados.
+
+La enumeración se realiza sobre transformaciones TGCV identificadas y sus condiciones de admisibilidad, no sobre una lista de transiciones de estado observadas. La salida primaria es un inventario reproducible de secuencias factibles, sus configuraciones intermedias y su estado de evidencia.
+
+### 28.2 Entradas mínimas
+
+Antes de iniciar, versionar y fijar:
+- configuración inicial S_0 y condiciones/recursos relevantes;
+- inventario candidato de transformaciones y sus identidades bajo ≡T;
+- mecanismo, origen/destino, precondiciones, restricciones, dependencias y evidencia de cada transformación;
+- reglas de composición, incompatibilidades y efectos sobre estado/condiciones;
+- función o procedimiento para reconstruir T_acc después de cada transformación hipotética;
+- horizonte H y su unidad (pasos, tiempo, coste u otra magnitud), así como límites de recursos;
+- criterio de equivalencia entre configuraciones y entre trayectorias;
+- tratamiento de transformaciones no deterministas, resultados alternativos y admisibilidad indeterminada.
+
+Si falta una entrada esencial, la enumeración se declara parcial o no ejecutable; no se completan silenciosamente las reglas ausentes.
+
+### 28.3 Expansión paso a paso
+
+Para cada nodo de exploración, conservar al menos configuración actual, condiciones y recursos disponibles, T_acc reconstruido para esa configuración, secuencia de transformaciones que conduce al nodo, horizonte consumido y procedencia de las reglas/evidencias aplicadas.
+
+En cada iteración:
+
+1. reconstruir o recuperar T_acc para la configuración actual mediante la regla versionada;
+2. identificar las transformaciones candidatas respaldadas como accesibles y comprobar sus precondiciones, dependencias, compatibilidad y recursos;
+3. crear una rama por cada transformación admisible que respete el horizonte;
+4. aplicar el modelo de respuesta de esa transformación para obtener cada configuración posterior factible; si hay varios resultados estructurales posibles, conservar ramas separadas;
+5. actualizar estado, condiciones, recursos y T_acc para cada nueva configuración;
+6. registrar la secuencia y continuar hasta alcanzar el horizonte, una condición terminal preespecificada o la ausencia de transformaciones admisibles.
+
+La expansión debe ser determinista respecto de las mismas entradas, versiones, reglas y orden canónico de procesamiento. El orden de enumeración no expresa preferencia ni ranking.
+
+### 28.4 Incertidumbre, ciclos y equivalencias
+
+Las transformaciones con admisibilidad indeterminada no se incorporan al conjunto primario de trayectorias factibles confirmadas. Se registran en una colección separada de ramas condicionales o indeterminadas, indicando qué evidencia o condición permitiría resolverlas. Puede realizarse análisis de sensibilidad incorporándolas bajo supuestos explícitos, sin mezclarlas con el resultado principal.
+
+Los ciclos se permiten cuando sean conceptualmente admisibles, pero la enumeración debe terminar mediante un horizonte finito o reglas de terminación justificadas. Si se utiliza deduplicación de configuraciones, esta no puede eliminar secuencias distintas que difieran en mecanismo, orden, dependencias o consecuencias relevantes. Conservar identificadores de trayectoria y relación con sus nodos/configuraciones; la equivalencia de destinos no implica equivalencia de caminos.
+
+Si el horizonte o el espacio de ramificación no es finito, o se imponen límites computacionales, informar el truncamiento, criterio de parada, cobertura alcanzada y ramas no exploradas. No declarar exhaustividad cuando solo se haya obtenido una enumeración parcial.
+
+### 28.5 Salidas y reproducibilidad
+
+La salida mínima debe contener:
+- identificador y versión de configuración inicial, horizonte y reglas;
+- inventario de transformaciones candidatas y clasificación de admisibilidad;
+- trayectorias factibles respaldadas, con secuencia ordenada de transformaciones;
+- ramas condicionales/indeterminadas, separadas de las confirmadas;
+- configuraciones intermedias y terminales, con actualización de condiciones y T_acc;
+- conjunto Reach derivado de los destinos de trayectorias factibles dentro del horizonte;
+- ciclos, duplicados resueltos, ramas truncadas y razones de terminación;
+- procedencia, hashes, versiones, parámetros y registro de ejecución del enumerador.
+
+Una repetición con las mismas entradas y reglas debe reproducir las mismas trayectorias, clasificaciones, destinos y razones de terminación. Si existen componentes estocásticos, conservar semillas cuando proceda y distinguir enumeración de resultados posibles de simulación probabilística bajo una política.
+
+### 28.6 Límites de interpretación
+
+La enumeración describe posibilidades estructuralmente respaldadas bajo el modelo, condiciones y horizonte especificados. No demuestra que una trayectoria vaya a seleccionarse, ejecutarse o producir un Outcome/Value determinado. Tampoco equivale a una distribución de probabilidad de ejecución: para obtenerla se requiere un modelo o política de selección/ejecución independiente, validado y explícito.
+
+La completitud solo puede afirmarse respecto del inventario, reglas, horizonte y límites computacionales declarados. La omisión de una transformación candidata, una condición o una rama puede reducir Reach y el conjunto de trayectorias enumeradas. La sensibilidad a granularidad, equivalencia, incertidumbre y cobertura debe informarse.
+
+Este procedimiento no incorpora heurísticas de puntuación, optimización, ranking ni predicción. No activa ni reanuda la capa predictiva o el selector del prototipo. La selección de trayectoria queda fuera del enumerador y requiere especificación y evaluación independientes.
+
+### 28.7 Estado y límites
+
+Este procedimiento es una propuesta metodológica para evaluar si la enumeración de trayectorias TGCV puede hacerse reproducible en un estudio delimitado. No constituye validación empírica ni certifica que exista ya un enumerador implementado. No modifica Core, RMA, Matrix, STATUS, claims o cierres previos, ni autoriza selección de caso, adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
