@@ -32,7 +32,8 @@ Esta formulación es una hipótesis de trabajo para diseñar pruebas falsables; 
 
 - (X): contexto y características basales.
 - (Z): intervención o asignación exógena.
-- (L): condiciones habilitadoras y confusores posteriores a la intervención que pueden afectar accesibilidad y Value.
+- (C_c): condiciones constitutivas/habilitadoras necesarias para que determinadas transformaciones sean realizables.
+- (L): otras condiciones variables en el tiempo, clasificadas según su papel causal e historia; pueden ser confusoras, mediadoras, consecuencias de intervenciones previas o condiciones habilitadoras futuras. No agruparlas automáticamente con C_c ni tratarlas como covariables basales.
 - (A): cambio en el espacio de transformaciones accesibles, operacionalizado como ΔT_acc.
 - (M): mecanismos posteriores, incluidos Reach y Trayectoria.
 - (O): outcomes observables.
@@ -40,7 +41,7 @@ Esta formulación es una hipótesis de trabajo para diseñar pruebas falsables; 
 
 DAG de trabajo (no una estructura causal universal):
 
-`X → (Z,A,L,M,O,V)` en la medida en que corresponda al diseño; `Z → (L,A,M,O,V)`; `L → (A,M,O,V)`; `A → M → O → V`, con posibles vías alternativas `A → V`, `Z → O/V`, interacciones y confusión no medida.
+`X → (Z,A,L,M,O,V)` solo en la medida en que corresponda al mecanismo de asignación y a la estructura causal del diseño; `Z → (C_c,L,A,M,O,V)`; `C_c,L → (A,M,O,V)` según su papel temporal; `A → M → O → V`, con posibles vías alternativas `A → V`, `Z → O/V`, interacciones y confusión no medida. El apartado 24.4 determina cuándo procede X→Z; el apartado 25.2 distingue condiciones constitutivas C_c de otras condiciones temporales L.
 
 La aleatorización de (Z) no aleatoriza automáticamente (A) ni (M), y no identifica por sí sola la mediación específica por accesibilidad. Una variable (L) inducida por (Z) que afecte tanto (A) como (V) impide una identificación simple por ajuste convencional.
 
@@ -51,7 +52,7 @@ La cadena de medición debe preservar constructos distintos:
 1. **Estado/contexto/condiciones:** describen el sistema y sus restricciones, recursos y capacidades.
 2. **Transformaciones accesibles ((T_{acc})):** conjunto estructurado de transformaciones realizables bajo condiciones especificadas; no es una lista de outcomes, adopciones o acciones observadas.
 3. **Reach:** estados/configuraciones alcanzables mediante composiciones admisibles de transformaciones.
-4. **Trayectoria:** secuencia efectivamente realizada. Debe derivarse de transformaciones TGCV, no identificarse sin más con transiciones observadas de estados.
+4. **Trayectorias:** distinguir (a) trayectorias factibles/candidatas, secuencias admisibles de transformaciones TGCV derivadas de T_acc y sus reglas de composición; y (b) trayectoria realizada, secuencia efectivamente ejecutada con evidencia temporal. No identificar ninguna de ellas sin más con transiciones observadas de estados.
 5. **Outcome:** resultado observado.
 6. **Value:** evaluación independiente con beneficiario/entidad, objetivo, regla, dirección, horizonte, costes, beneficios, compensaciones e incertidumbre.
 
@@ -85,13 +86,13 @@ La accesibilidad requiere evidencia de realizabilidad y de precondiciones, recur
 
 Describe el efecto total de (Z) sobre Value en el diseño y población definidos. No atribuye ese efecto a accesibilidad.
 
-### 5.2 Efecto indirecto interventional específico de accesibilidad
+### 5.2 Efecto de una política específica de accesibilidad bajo un régimen común
 
-Estimando de trabajo, condicionado a un régimen común (q(L)):
+Estimando de trabajo, condicionado a un régimen común y factible de condiciones/historias no constitutivas (q). La expresión siguiente es una abreviatura provisional; prevalece la formulación precisada en el apartado 17.7 y las reglas de los apartados 24–26:
 
 `θ_A(q) = E[V | do(L~q), do(A~G₁(·|L))] - E[V | do(L~q), do(A~G₀(·|L))]`
 
-(G₁) y (G₀) representan distribuciones contrafactuales de cambios estructurales de accesibilidad inducidas por intervención y referencia, respectivamente, condicionadas por (L). Deben describirse mediante intervenciones concretas y realizables; no basta con ordenar un índice abstracto de accesibilidad.
+(G₁) y (G₀) representan políticas contrafactuales concretas y realizables que inducen cambios estructurales de accesibilidad bajo el régimen común q. No asignan A abstractamente ni se identifican automáticamente con distribuciones observadas condicionadas por Z y L. Deben respetar las condiciones constitutivas, el estado, la historia y el conjunto factible.
 
 La definición exacta del estimando, población, horizonte, régimen (q), distribuciones (G₁/G₀) y estrategia de identificación debe fijarse antes de observar outcomes/Value. No tratar la fórmula como identificada por defecto.
 
@@ -1739,3 +1740,70 @@ La formulación C10 no implica monotonicidad ni que toda expansión de accesibil
 ### 34.7 Estado y límites
 
 Este ejercicio es una prueba lógica de discriminación del protocolo, no un experimento, simulación empírica, análisis de datos ni falsación de C10. No asigna probabilidades a los escenarios, no elige una predicción direccional universal, no define valores numéricos de δ/ε ni selecciona un caso. No modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims o cierres previos y no autoriza adquisición/procesamiento de datos, preregistro ni ejecución experimental. El PR permanece draft y pendiente de revisión.
+
+
+## 35. Auditoría final de coherencia: resultados, precedencias y decisiones pendientes
+
+### 35.1 Alcance de la revisión
+
+Esta auditoría contrasta las definiciones iniciales, los addenda 17–24 y las reconciliaciones 25–34. Su propósito es distinguir contradicciones sustantivas, formulaciones antiguas ya subordinadas por precedencia, redundancias documentales y decisiones que solo pueden resolverse al especificar un caso. No equivale a revisión externa por especialistas ni a validación empírica.
+
+### 35.2 Correcciones de coherencia editorial aplicadas
+
+Se armonizan las entradas iniciales con las precisiones posteriores:
+- La variable L deja de describirse como un bloque indiferenciado de condiciones habilitadoras y confusores. Se explicita C_c para condiciones constitutivas/habilitadoras y L para otras condiciones temporales, cuyo papel depende de la historia causal.
+- La sección 5.2 deja de titular θ_A(q) como «efecto indirecto interventional». La formulación vigente es un efecto de política específica de accesibilidad bajo un régimen común. El contraste puede incluir consecuencias posteriores de la política a través de Reach, Trayectoria, Outcome y Value; no debe confundirse con un efecto indirecto natural ni con una fracción de TE.
+- La fórmula inicial de 5.2 queda identificada expresamente como abreviatura provisional; prevalecen 17.7 y las reglas de 24–26 para q, g, factibilidad, historia y soporte.
+- La definición inicial de Trayectoria se armoniza para distinguir trayectorias factibles/candidatas de trayectoria realizada, conforme a 27–29.
+- El DAG inicial se declara dependiente del mecanismo real de asignación y se remite a la distinción C_c/L y a la regla X→Z de 24.4–25.2.
+
+Estas modificaciones corrigen la puerta de entrada y reducen el riesgo de que lectores o futuras implementaciones interpreten como vigentes formulaciones abreviadas ya precisadas.
+
+### 35.3 Resultado de la auditoría sustantiva
+
+**No se identifica, en la revisión documental realizada, una contradicción sustantiva que invalide la arquitectura general**, siempre que se respete la precedencia de los apartados 17, 24–27 y 30–34. La coherencia depende de mantener las siguientes reglas:
+1. TE, θ_A(q), θ_{L,A} e I_{A,L} responden a preguntas diferentes; no sumarlos ni restarlos como descomposición automática.
+2. θ_A(q) es un contraste entre políticas de accesibilidad implementables bajo un régimen común factible; no es automáticamente un efecto indirecto natural ni se identifica por el ITT de Z.
+3. C_c no puede fijarse en configuraciones que hagan imposible la transformación; L se clasifica por papel causal e historia.
+4. T_acc, Reach, trayectorias factibles, conocimiento, selección, ejecución, trayectoria realizada, Outcome y Value son objetos distintos.
+5. La factibilidad de una trayectoria no implica que sea conocida, seleccionada o ejecutada.
+6. Las vías posteriores a A forman parte del efecto de la política de accesibilidad cuando el estimando así se define; no deben ajustarse indiscriminadamente como covariables.
+7. La evidencia adversa, la equivalencia práctica y la no identificación deben mantenerse separadas.
+8. La hipótesis general no implica monotonicidad ni que toda expansión de T_acc incremente Value.
+
+### 35.4 Redundancias y control de precedencia
+
+Los apartados 17–34 contienen desarrollo acumulativo y algunas reiteraciones deliberadas. No todas son contradicciones. Para evitar que las repeticiones se conviertan en reglas paralelas:
+- 17.7 y 24.3–24.4 gobiernan la notación de θ_A(q), el estado pendiente de θ_A^dyn y la representación del mecanismo de asignación.
+- 25–26 gobiernan la interpretación causal de C_c/L, q, g, factibilidad y compatibilidad de estimandos.
+- 27–29 gobiernan las definiciones operacionales de T_acc, Reach, trayectorias factibles/realizadas y selección/ejecución.
+- 30–32 gobiernan atribución, intervención implementable, longitudinalidad, interferencia y datos incompletos.
+- 33 gobierna la trazabilidad entre hipótesis, constructos, medición, estimandos, supuestos y falsadores.
+- 34 gobierna la prueba lógica por contraejemplos.
+
+Las secciones iniciales son marco introductorio; si una expresión abreviada parece discrepar de estas reglas, prevalecen las especificaciones posteriores citadas. No se eliminan bloques históricos ni se reescribe la historia de las decisiones.
+
+### 35.5 Decisiones que siguen pendientes y no pueden resolverse por auditoría documental
+
+Antes de seleccionar un caso Tipo III y diseñar un estudio se requiere, como mínimo:
+1. población, sistema, unidad de asignación y unidad de análisis;
+2. definición de B/Z y versiones concretas de intervención implementable;
+3. DAG temporal específico, incluida la clasificación caso a caso de C_c y L_t;
+4. regla de Value, beneficiario, objetivo, escala, distribución, costes/beneficios y horizonte;
+5. instrumento/procedimiento de reconstrucción T_acc y su validación de contenido, constructo, fiabilidad y error;
+6. procedimiento de Reach y enumeración de trayectorias factibles adecuado al sistema y horizonte;
+7. estimando primario elegido entre las alternativas realmente identificables; θ_A^dyn solo si se formaliza y el diseño lo necesita;
+8. régimen q y políticas g₁/g₀ factibles, con soporte y vías alternativas auditadas;
+9. estrategia de identificación y tratamiento de confusión post-treatment, interferencia, selección, censura y datos incompletos;
+10. predicción direccional o bilateral, δ, ε, precisión/potencia y análisis confirmatorios preespecificados;
+11. viabilidad, ética, daños, equidad y reglas de parada.
+
+No se debe intentar resolver estas decisiones añadiendo una fórmula universal ni eligiendo retrospectivamente el caso que produzca el resultado más favorable.
+
+### 35.6 Juicio de suficiencia y estado
+
+**Juicio:** C10-D1 alcanza una arquitectura metodológica internamente coherente y trazable a nivel de protocolo general, con las correcciones editoriales de este apartado. No alcanza todavía el nivel de protocolo específico listo para preregistro o ejecución. La brecha restante es principalmente de especificación y demostración empírica para un caso, no una razón documental para seguir acumulando addenda generales.
+
+El siguiente trabajo debe cambiar de modo: pasar de ampliar el marco general a una evaluación de candidatos contra G1–G7, sin designar Tipo III hasta demostrar cada puerta. Esa evaluación puede concluir que ningún candidato es adecuado o que la identificación no es viable; no presupone encontrar un caso positivo.
+
+No se ha elegido caso, estimando primario, política, régimen q, regla Value ni valores numéricos de δ/ε. No se han descargado ni procesado datos. No se ha realizado revisión externa, preregistro o ejecución experimental. Este apartado no modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. El PR permanece draft y pendiente de revisión.
