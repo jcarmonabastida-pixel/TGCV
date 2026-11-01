@@ -1367,3 +1367,73 @@ No reducir este flujo a una tasa de adopción ni usarlo como sustituto de T_acc.
 ### 29.6 Estado y límites
 
 Este apartado establece requisitos analíticos para separar posibilidad, conocimiento, decisión y ejecución y para evitar sesgos de selección en C10. No identifica por sí mismo efectos de selección o ejecución, no establece un nuevo estimando primario ni decide un modelo de agentes. No modifica Core, RMA, Matrix, STATUS, claims o cierres previos, ni autoriza selección de caso, adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
+
+
+## 30. Compatibilidad de estimandos y reglas de atribución C10
+
+### 30.1 Preguntas causales distintas
+
+Los estimandos del protocolo responden a preguntas distintas y no deben tratarse como componentes automáticamente aditivos:
+
+| Estimando | Pregunta | Interpretación permitida |
+|---|---|---|
+| TE | ¿Qué efecto tiene la asignación/intervención Z sobre Value en la población objetivo? | Efecto total de Z, incluyendo las vías que active bajo el diseño. |
+| θ_A(q) | ¿Qué diferencia de Value producirían dos políticas factibles de accesibilidad g_1 y g_0 bajo el mismo régimen común q? | Contribución causal específica de esas políticas de accesibilidad, solo si la intervención que las induce permite separar A de otras vías y se cumplen los supuestos de identificación. |
+| θ_{L,A} | ¿Qué diferencia de Value producen dos regímenes conjuntos de condiciones y accesibilidad? | Efecto del contraste conjunto; no atribución exclusiva a A ni componente residual de TE. |
+| I_{A,L} | ¿Cambia el contraste entre políticas de accesibilidad al cambiar el régimen de condiciones? | Interacción aditiva entre los regímenes definidos, solo si las cuatro combinaciones son factibles e identificables. |
+
+La tabla resume interpretaciones y no sustituye las definiciones formales ni las condiciones de identificación de los apartados anteriores.
+
+### 30.2 Lugar de selección y ejecución en cada contraste
+
+Para θ_A(q), selección, no selección, ejecución parcial, abandono y finalización son respuestas posteriores a la política de accesibilidad. Cuando la pregunta sea la contribución total de esa política, deben evolucionar bajo cada régimen g_j según el proceso que realmente corresponda a ese régimen. Sus consecuencias sobre Reach, Trayectoria, Outcome y Value quedan incluidas en V^{q,g_j}; no se condiciona por selección o ejecución observada como si fueran covariables basales.
+
+Si se interviene sobre la política de selección o ejecución, se cambia el régimen causal y debe definirse otro estimando. No denominar θ_A(q) a un contraste entre seleccionados, ejecutores o trayectorias completadas salvo que esa población/estrategia esté definida contrafactualmente y su identificación sea defendible.
+
+La factibilidad y enumeración de trayectorias siguen siendo mediciones del espacio de posibilidades; el proceso de selección/ejecución describe qué hacen los agentes ante ese espacio. No sustituir una dimensión por la otra.
+
+### 30.3 Condición crítica para atribución específica a A
+
+La asignación de Z puede identificar TE bajo los supuestos del diseño, pero no identifica automáticamente θ_A(q). Para atribución específica, debe existir una intervención o política implementable que genere diferencias en A y permita distinguirlas de otras vías hacia Value.
+
+Antes de interpretar θ_A(q), construir y documentar la correspondencia:
+
+intervención/componentes implementables B → cambio medido A=ΔT_acc → respuestas posteriores (conocimiento, selección, ejecución, Reach/Trayectoria) → Outcome → Value,
+
+incluyendo todas las vías alternativas plausibles B→Value que no pasan por A y las variables temporales que confunden mediador y resultado. La secuencia es una guía de auditoría causal, no una afirmación de mediación exclusiva ni de ausencia de vías adicionales.
+
+La atribución específica no queda establecida si:
+- B modifica simultáneamente A y otras condiciones o mecanismos con vías propias hacia Value que no pueden separarse;
+- las políticas g_1 y g_0 no corresponden a intervenciones/versiones realizables o no tienen soporte común;
+- la clasificación/medición de A depende de selección, ejecución, Outcome o Value;
+- la selección/ejecución genera confusión temporal no tratada;
+- no se puede definir un régimen q coherente sin fijar condiciones constitutivas en configuraciones incompatibles;
+- la estimación requiere extrapolar a trayectorias, configuraciones o historias no respaldadas.
+
+En esos casos, informar el estimando más amplio que sí sea defendible: ITT de Z/B, efecto de paquete, contraste conjunto θ_{L,A}, o límite/no identificación. No rebautizarlo como contribución específica de accesibilidad.
+
+### 30.4 Regla de no descomposición automática
+
+No asumir:
+
+TE = θ_A(q) + θ_{L,A},
+
+ni interpretar TE−θ_A(q) como efecto directo puro, residual causal completo o porcentaje explicado. Los contrastes pueden referirse a regímenes, poblaciones, escalas, horizontes y vías distintos. Incluso cuando sean compatibles, la interacción y el orden de intervención pueden hacer que una descomposición secuencial dependa del orden elegido. Toda descomposición requiere definir explícitamente escenarios contrafactuales intermedios factibles, una regla de asignación de interacciones y supuestos de identificación para cada componente.
+
+El informe debe presentar por separado estimaciones, intervalos, escalas, población, horizonte, regímenes, supuestos y límites de identificación. No calcular proporciones de atribución salvo que la descomposición esté formalmente definida, identificada y sea estable.
+
+### 30.5 Matriz de decisión de la conclusión C10
+
+La conclusión debe clasificarse según el contraste realmente identificado:
+
+- **Atribución específica respaldada en el ámbito estudiado:** θ_A(q) identificado con medición independiente de A y Value, políticas factibles, separación de vías alternativas, tratamiento adecuado de confusión temporal/selección y precisión suficiente. La conclusión queda limitada a población, sistema, régimen, horizonte y regla de Value estudiados.
+- **Efecto de intervención/paquete, sin atribución específica:** TE o un efecto de B está identificado, pero las vías directas/alternativas o la confusión impiden aislar θ_A(q). Es evidencia sobre la intervención, no demostración de C10 específica.
+- **Contribución conjunta respaldada:** θ_{L,A} identificado, pero no puede separarse el papel de A del de las condiciones que cambian conjuntamente. Informar efecto conjunto.
+- **Evidencia limitante o contraria:** θ_A(q) está identificado con precisión suficiente y el resultado satisface criterios de equivalencia/nulidad relevante o contradice una predicción direccional preespecificada. Limitar la conclusión al dominio estudiado; no generalizar automáticamente la refutación.
+- **No identificado/insuficiente:** falla medición, soporte, factibilidad, separación de vías, temporalidad o supuestos de identificación, o la incertidumbre es demasiado amplia. No equivale a confirmar ni refutar C10.
+
+No elevar un resultado de una categoría a otra por disponibilidad de datos, significación estadística del TE, calidad de un outcome convencional o volumen de trayectorias observadas.
+
+### 30.6 Estado y límites
+
+Este apartado consolida reglas de compatibilidad e interpretación de estimandos ya propuestos. No selecciona el estimando primario de un caso, no declara identificable θ_A(q) en ningún dataset, no designa caso Tipo III y no constituye una descomposición empírica. No modifica Core, RMA, Matrix, STATUS, claims o cierres previos, ni autoriza adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
