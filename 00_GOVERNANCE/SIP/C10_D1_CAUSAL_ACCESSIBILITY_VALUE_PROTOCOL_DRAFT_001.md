@@ -441,3 +441,71 @@ Antes de seleccionar un caso o ejecutar análisis empírico, el protocolo debe:
 7. documentar identificación y límites antes de estimar.
 
 Este addendum no selecciona caso, no autoriza descarga/procesamiento de datos ni ejecución experimental. No cambia TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims, cierres C09 o VSL-KGFS-02, ni reanuda el predictor. El PR permanece como borrador metodológico pendiente de revisión.
+
+
+---
+
+## 18. Addendum metodológico — medición longitudinal y separación ontológico-epistemológica de T_acc (01-11-2026)
+
+**Estado:** propuesta metodológica pendiente de revisión; no constituye validación empírica ni cambio de Core.
+
+### 18.1 Dos objetos distintos
+
+Separar en cada momento:
+- **Estado transformacional del sistema:** qué transformaciones son realmente realizables bajo el estado, contexto, condiciones, recursos, dependencias y restricciones existentes.
+- **Estado epistemológico:** qué transformaciones han sido identificadas y qué evidencia permite clasificarlas.
+
+Un cambio en el conocimiento o en la cobertura de observación no demuestra por sí mismo un cambio en el espacio accesible. No inferir accesibilidad a partir de outcomes, ejecución observada o declaraciones de intención.
+
+### 18.2 Estados epistemológicos
+
+Para cada transformación candidata y momento de referencia, registrar:
+- accesible respaldada;
+- inaccesible respaldada;
+- indeterminada.
+
+La confianza/calidad de evidencia se registra en campos separados; no es un cuarto estado de accesibilidad. Ausencia de evidencia no equivale a evidencia de inaccesibilidad. Una transformación indeterminada no se computa automáticamente como ganancia ni pérdida.
+
+### 18.3 Cambio ontológico estimado y cambio epistemológico
+
+Distinguir analíticamente:
+- cambio ontológico estimado de accesibilidad: diferencia entre los espacios que se infieren para dos momentos, bajo condiciones y criterios comparables;
+- cambio epistemológico: diferencia en conocimiento, identificación, cobertura, calidad o clasificación de evidencia.
+
+Una transformación descubierta en t1 puede haber sido accesible ya en t0. La reconstrucción retrospectiva de t0 es admisible solo si la evidencia se refiere a las condiciones y capacidades existentes entonces; no proyectar hacia atrás capacidades adquiridas después. Registrar cuándo se obtuvo la evidencia y a qué momento del sistema se refiere.
+
+### 18.4 Comparabilidad longitudinal
+
+Para comparar T_acc,t0 y T_acc,t1:
+1. fijar universo de transformaciones candidatas, identidad y equivalencia ≡T comunes;
+2. documentar estado, contexto, condiciones y horizonte de cada evaluación;
+3. utilizar evidencia fechada o retrospectivamente atribuible al momento correcto;
+4. evaluar accesibilidad independientemente de Outcome y Value;
+5. registrar cobertura, fuentes, incertidumbre y cambios de procedimiento;
+6. separar cambios de clasificación debidos a nueva evidencia de cambios atribuibles a una modificación del sistema.
+
+Si el universo candidato, los criterios de identidad, la cobertura o el procedimiento cambian, documentar el cambio y realizar análisis de sensibilidad/reconstrucción; no interpretar directamente el recuento de nuevas transformaciones identificadas como ΔT_acc.
+
+### 18.5 Registro mínimo por transformación y momento
+
+Registrar identidad/mecanismo, origen y destino, condiciones y recursos, precondiciones y restricciones, momento del sistema evaluado, momento de obtención de evidencia, estado epistemológico, calidad/confianza, fuente/procedencia, cobertura de búsqueda, evaluador y justificación de revisiones.
+
+Los evaluadores deben, cuando sea viable, desconocer Outcomes y Value para reducir sesgo de clasificación. La independencia de evaluación y el acuerdo entre evaluadores deben documentarse; el acuerdo no sustituye la validez de la evidencia.
+
+### 18.6 Estimación de ΔT_acc
+
+No reducir el cambio a una diferencia de cardinalidades. Bajo un universo común y una equivalencia explícita, registrar al menos:
+- transformaciones nuevas respaldadas como accesibles;
+- transformaciones previamente accesibles que dejan de serlo;
+- transformaciones cuya accesibilidad se reconfigura por cambios de mecanismo, condiciones o dependencias;
+- casos indeterminados en cualquiera de los momentos.
+
+La comparación debe preservar composición y relaciones, no solo el número neto. Los casos indeterminados deben reflejarse como incertidumbre o límites, no imputarse silenciosamente. Si no existe comparabilidad suficiente, declarar ΔT_acc no estimable con la evidencia disponible.
+
+### 18.7 Consecuencia para identificación causal
+
+El error de medición de accesibilidad puede sesgar estimandos de C10; si la calidad de medición cambia con la intervención, el sesgo puede ser diferencial. Por ello, la evaluación de T_acc debe ser independiente del proceso que mide Outcome/Value, con protocolo estable, cobertura comparable, trazabilidad y análisis de sensibilidad a clasificación errónea.
+
+No utilizar la misma evidencia de Value para inferir retrospectivamente qué era accesible y luego afirmar que accesibilidad explica Value. Esa circularidad invalidaría la separación de constructos.
+
+Este addendum no selecciona caso, no autoriza datos ni ejecución. No modifica Core, RMA, Matrix, STATUS, claims, cierres previos ni el predictor. El PR permanece draft y pendiente de revisión.
