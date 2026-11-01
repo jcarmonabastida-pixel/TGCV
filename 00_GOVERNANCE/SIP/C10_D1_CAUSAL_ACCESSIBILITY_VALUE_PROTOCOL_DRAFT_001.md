@@ -878,3 +878,80 @@ Un candidato no pasa a diseño experimental hasta documentar:
 Si solo se puede identificar el efecto del paquete o el efecto conjunto, el caso puede ser útil para otra pregunta, pero no se presentará como prueba de atribución específica C10. Si las combinaciones necesarias no son factibles, redefinir el estimando/diseño antes de recoger datos, no después de ver resultados.
 
 Este addendum no designa un caso, no reabre KGFS ni otros casos previamente delimitados, no autoriza datos o ejecución y no modifica Core, RMA, Matrix, STATUS, claims ni el estado de C09/VSL-KGFS-02. El PR permanece draft, pendiente de revisión.
+
+
+---
+
+## 23. Addendum metodológico — puerta de selección y clasificación de casos C10-D1 (01-11-2026)
+
+**Estado:** marco de cribado propuesto, pendiente de revisión. No selecciona ni designa un caso empírico. No autoriza adquisición/procesamiento de datos ni ejecución.
+
+### 23.1 Principio de selección
+
+Seleccionar casos por su capacidad de identificar la contribución causal de una política de accesibilidad a Value, no por volumen de datos, notoriedad del programa, disponibilidad de outcomes o probabilidad de encontrar un resultado favorable.
+
+Las puertas excluyentes no se compensan mediante una puntuación agregada. Un buen registro de Value no compensa ausencia de medición independiente de T_acc; una asignación aleatoria no compensa que solo se identifique el efecto de un paquete inseparable.
+
+### 23.2 Puertas excluyentes
+
+**G1 — Medición independiente de accesibilidad.** ¿Puede reconstruirse T_acc en momentos pertinentes, con transformaciones identificables, condiciones/precondiciones, evidencia de realizabilidad y clasificación independiente de Outcome/Value? Si solo hay acciones adoptadas, capacidades declaradas, transiciones observadas o outcomes, no supera la puerta.
+
+**G2 — Variación causal defendible.** ¿Existe una intervención/política o fuente de variación con contraste y contrafactual defendibles que pueda modificar accesibilidad? Si solo hay correlación o cambio descriptivo, no es candidato probatorio.
+
+**G3 — Separación de condiciones y vías alternativas.** ¿Pueden distinguirse las condiciones constitutivas de realizabilidad, otras condiciones habilitadoras/confusoras y las vías directas/alternativas hacia Value? Si solo se identifica un paquete inseparable, puede estudiarse su efecto total/conjunto, pero no atribuirlo específicamente a T_acc.
+
+**G4 — Mecanismos y dinámica TGCV.** ¿Pueden derivarse Reach y Trayectoria desde transformaciones accesibles y sus dependencias, con actualización dinámica y temporalidad coherente? Una secuencia de estados observados no sustituye por sí sola una trayectoria TGCV.
+
+**G5 — Medición independiente de Value.** ¿Existe una regla de Value explícita, con entidad/beneficiario, objetivo, dirección, costes, beneficios, compensaciones, horizonte e incertidumbre, separada de Outcome? Si Value se infiere retrospectivamente de los resultados, no supera la puerta.
+
+**G6 — Contrafactual y estimando identificables.** ¿El diseño permite estimar el contraste pertinente (θ_A(q), θ_A^dyn o, si procede, solo TE/θ_LA), con supuestos, positividad, consistencia, interferencia y confusión tratados explícitamente? Identificar TE o el efecto del paquete no satisface por sí solo la atribución C10.
+
+**G7 — Precisión, viabilidad y ética.** ¿Puede alcanzarse precisión para discriminar efecto relevante, equivalencia práctica y efecto adverso, con δ/ε justificados y reglas de parada? ¿Es viable y ético asignar la intervención, medir resultados y gestionar daños, equidad, contaminación y pérdidas? Si no, no se presenta como prueba concluyente.
+
+### 23.3 Resultado del cribado
+
+Para cada puerta registrar uno de estos estados:
+- **Superada:** evidencia y justificación suficientes, con fuente/procedencia.
+- **Condicional:** existe una ruta concreta, verificable y factible para resolver la carencia antes de diseñar/ejecutar.
+- **No superada:** la carencia impide la inferencia probatoria o no existe ruta defendible conocida.
+- **No evaluada:** información insuficiente para juzgarla.
+
+No confundir «no evaluada» con «superada». Una puerta condicional debe incluir tarea, evidencia requerida, responsable, coste/viabilidad y criterio de cierre. No se avanza a diseño probatorio mientras una puerta esencial siga no superada o no evaluada.
+
+### 23.4 Clasificación de utilidad científica
+
+Mantener tres tipos, sin confundir utilidad metodológica con evidencia causal:
+- **Tipo I — metodológico:** útil para desarrollar/probar mediciones, procedimientos, mecanismos o métodos; no acredita por ello la atribución C10.
+- **Tipo II — candidato a identificación:** tiene potencial probatorio, pero una o más puertas están condicionales; requiere resolverlas antes de designarlo probatorio.
+- **Tipo III — probatorio:** supera las puertas y permite formular un diseño cuyo estimando primario identifica específicamente la contribución de accesibilidad a Value.
+
+El paso de Tipo II a Tipo III exige evidencia nueva y cierre documentado de las puertas, no solo más documentación ni una valoración subjetiva de potencial. La clasificación no es una puntuación ni un ranking de atractivo.
+
+### 23.5 Hoja de evaluación por caso
+
+La ficha de cribado debe conservar:
+- identidad, sistema, población/unidad, periodo y contexto;
+- pregunta causal y estimando que se pretende identificar;
+- política/intervención y versiones;
+- estado G1–G7, evidencia que lo sustenta y carencias;
+- condiciones constitutivas de T_acc y otras condiciones habilitadoras;
+- mapa de vías alternativas y contrafactual;
+- medición de Reach/Trayectoria, Outcome y Value;
+- soporte/positividad, interferencia, pérdidas y precisión;
+- riesgos éticos/operativos;
+- tipo I/II/III y justificación;
+- tareas necesarias para avanzar, límites y decisión de no avanzar cuando corresponda.
+
+La evaluación inicial puede realizarse con documentación ya disponible y sin descargar ni procesar datos. Toda adquisición, acceso, vinculación o procesamiento adicional requiere autorización y revisión previa conforme a la gobernanza del repositorio.
+
+### 23.6 Aplicación a casos ya examinados
+
+Esta puerta no cambia clasificaciones históricas ni reabre casos cerrados. KGFS permanece como Tipo I metodológico en el estado documentado; no se eleva a Tipo III ni se utiliza como evidencia de ΔT_acc→ΔV. México C10C-002 y Marruecos C10C-004 conservan sus límites documentados. VSL-KGFS-02 permanece cerrado como COMPATIBILITY_NOT_ESTABLISHED. Cualquier reevaluación futura requiere una decisión explícita y evidencia nueva.
+
+### 23.7 Regla de decisión
+
+- Tipo I: conservar como referencia metodológica, sin claim causal C10.
+- Tipo II: especificar una única ruta de resolución de carencias y reevaluar; no iniciar diseño probatorio mientras persistan puertas esenciales abiertas.
+- Tipo III: preparar un protocolo de diseño específico, preregistro y evaluación ética; la clasificación Tipo III no autoriza por sí sola ejecución ni adquisición de datos.
+
+Este addendum no selecciona un caso, no autoriza datos o experimentos, y no modifica Core, RMA, Matrix, STATUS, claims, C09 o VSL-KGFS-02. El PR permanece draft y pendiente de revisión.
