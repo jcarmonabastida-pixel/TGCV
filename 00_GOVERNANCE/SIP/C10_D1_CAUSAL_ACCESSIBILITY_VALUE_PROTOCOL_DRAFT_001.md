@@ -509,3 +509,82 @@ El error de medición de accesibilidad puede sesgar estimandos de C10; si la cal
 No utilizar la misma evidencia de Value para inferir retrospectivamente qué era accesible y luego afirmar que accesibilidad explica Value. Esa circularidad invalidaría la separación de constructos.
 
 Este addendum no selecciona caso, no autoriza datos ni ejecución. No modifica Core, RMA, Matrix, STATUS, claims, cierres previos ni el predictor. El PR permanece draft y pendiente de revisión.
+
+
+---
+
+## 19. Addendum metodológico — fiabilidad, equivalencia y reproducibilidad de la medición de T_acc (01-11-2026)
+
+**Estado:** propuesta metodológica pendiente de revisión; no aprobada, no preregistrada y no ejecutada. Complementa los apartados 17 y 18. El acuerdo entre evaluadores no se considera por sí solo prueba de validez del constructo.
+
+### 19.1 Unidad de análisis e identidad transformacional
+
+La unidad candidata de registro es (τ=(S_o,S_d,M,P_τ,K,E)): origen, destino, mecanismo, precondiciones/admisibilidad, recursos/dependencias/restricciones y evidencia de realizabilidad.
+
+La identidad no debe depender solo de etiquetas, descripciones textuales ni resultados observados. Dos descripciones pueden referirse a una misma transformación; dos mecanismos distintos pueden producir un mismo resultado y seguir siendo transformaciones diferentes. Las reglas de identidad y equivalencia (≡T) deben considerar mecanismo, condiciones y estructura, y aplicarse consistentemente entre momentos y evaluadores.
+
+### 19.2 Composición, variantes y doble conteo
+
+Registrar explícitamente:
+- duplicados descriptivos que deben resolverse como una identidad;
+- transformaciones distintas que comparten resultado pero difieren en mecanismo;
+- transformaciones compuestas y sus componentes;
+- variantes cuyo mecanismo común tiene condiciones de realización diferentes.
+
+Una transformación compuesta no se contará automáticamente como una transformación independiente adicional si ello duplica sus componentes o altera artificialmente la cardinalidad. La regla de composición, granularidad y equivalencia debe fijarse antes de comparar momentos. Si cambia, reconstruir retrospectivamente ambos momentos con la regla común o declarar la comparación no directamente comparable.
+
+### 19.3 Evaluación independiente y ciega
+
+Cuando sea viable, dos evaluadores clasificarán independientemente el mismo expediente, sin conocer Outcome ni Value. Para cada transformación y momento registrarán por separado:
+- identidad y equivalencia;
+- accesibilidad (accesible respaldada, inaccesible respaldada, indeterminada);
+- admisibilidad y precondiciones;
+- suficiencia/calidad de evidencia;
+- justificación y fuentes.
+
+La confianza de evidencia no sustituye el estado epistemológico. El acuerdo se calcula por dimensión, no mediante un único indicador agregado. Documentar entrenamiento, instrucciones, casos de calibración, cegamiento, orden de evaluación y posibles conflictos de interés.
+
+### 19.4 Fiabilidad interevaluador
+
+Informar matriz de desacuerdos, acuerdo observado y, cuando proceda, estadísticos como kappa o alfa de Krippendorff seleccionados según número de evaluadores, escala, datos faltantes y diseño. Informar prevalencia de categorías y distribución de casos indeterminados, ya que un coeficiente aislado puede resultar engañoso con categorías desequilibradas.
+
+No fijar umbrales universales sin estudio piloto y justificación. Los umbrales de aceptación, reglas de recalibración y criterios para suspender la medición deben preespecificarse. Un acuerdo elevado no demuestra que la clasificación corresponda a la accesibilidad real: requiere además validez de contenido/constructo y evidencia de realizabilidad.
+
+### 19.5 Desacuerdo, adjudicación y trazabilidad
+
+Conservar sin sobrescribir:
+1. clasificaciones independientes originales;
+2. adjudicación motivada mediante tercer evaluador o procedimiento previamente definido;
+3. desacuerdo residual no resoluble con la evidencia disponible.
+
+La adjudicación no puede transformar una clasificación indeterminada en accesible sin nueva evidencia suficiente. Cada cambio debe registrar evaluador, fecha, motivo, evidencia nueva y versión del criterio aplicado. Mantener historial de cambios y posibilidad de reconstruir resultados anteriores.
+
+### 19.6 Error de clasificación y sensibilidad causal
+
+Evaluar falsos positivos, falsos negativos, indeterminación y error diferencial entre brazos, momentos o condiciones. Una intervención puede cambiar la visibilidad/documentación de capacidades y generar una diferencia aparente en T_acc sin modificar la accesibilidad real.
+
+La sensibilidad debe examinar cómo reglas plausibles de clasificación y tasas de error afectan:
+- transformaciones nuevas/perdidas y reconfiguradas;
+- estimación de ΔT_acc;
+- soporte y asignación de políticas g;
+- estimandos θ_A(q) y θ_A^dyn, cuando se pretendan estimar.
+
+Si la calidad de medición depende de intervención, momento, evaluador o resultado, una fiabilidad global no basta. Considerar subestudio de validación, fuentes independientes, revisión ciega o cotas/análisis de sensibilidad. No corregir error de medición mediante supuestos no contrastados ni usar Value para resolver retrospectivamente la accesibilidad.
+
+### 19.7 Reproducibilidad del procedimiento
+
+Conservar protocolo e instrucciones de evaluación versionados, universo candidato, reglas de identidad/equivalencia, expedientes de evidencia, formularios de clasificación, resultados originales, adjudicaciones, scripts de cálculo, parámetros, versiones de herramientas y hashes de artefactos. Una repetición independiente debe poder reconstruir las clasificaciones y los cambios de accesibilidad a partir de esos registros.
+
+### 19.8 Puerta de decisión
+
+Antes de aceptar una medición longitudinal para C10:
+- identidad, granularidad y equivalencia están definidas y son estables;
+- cobertura y evidencia son comparables o sus diferencias están modelizadas;
+- evaluaciones independientes y desacuerdos están preservados;
+- la fiabilidad se informa por dimensión y no se confunde con validez;
+- el error diferencial y su impacto en ΔT_acc/estimandos se han evaluado;
+- las transformaciones indeterminadas no se imputan silenciosamente.
+
+Si falla una condición esencial, calificar la medición como insuficiente/no comparable y limitar la inferencia causal. No interpretar automáticamente desacuerdo, falta de cobertura o error de medición como ausencia de cambio real.
+
+Este addendum no selecciona caso, no autoriza adquisición/procesamiento de datos ni ejecución experimental. No modifica Core, RMA, Matrix, STATUS, claims, cierres C09 o VSL-KGFS-02, ni reanuda el predictor. El PR permanece draft, pendiente de revisión.
