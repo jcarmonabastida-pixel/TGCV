@@ -1437,3 +1437,85 @@ No elevar un resultado de una categoría a otra por disponibilidad de datos, sig
 ### 30.6 Estado y límites
 
 Este apartado consolida reglas de compatibilidad e interpretación de estimandos ya propuestos. No selecciona el estimando primario de un caso, no declara identificable θ_A(q) en ningún dataset, no designa caso Tipo III y no constituye una descomposición empírica. No modifica Core, RMA, Matrix, STATUS, claims o cierres previos, ni autoriza adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
+
+
+## 31. Reconciliación final de notación, DAG y precedencia causal
+
+### 31.1 Precedencia y corrección de la notación agregada L
+
+Este apartado prevalece sobre las formulaciones abreviadas de las secciones 3, 5.2, 6, 9 y 16 cuando parezcan tratar todas las variables L como un único bloque intervenible. La distinción de los apartados 17, 25 y 30 es la regla vigente.
+
+En particular, la expresión inicial E[V | do(L~q), do(A~G_j(·|L))] no debe interpretarse como una intervención sobre todas las condiciones L ni como autorización para fijar condiciones constitutivas en valores incompatibles. Se conserva únicamente como notación histórica abreviada.
+
+La formulación operativa vigente es:
+
+θ_A(q)=E[V^{q,g_1}]-E[V^{q,g_0}],
+
+donde:
+- q define un régimen común, explícito, factible y fijado ex ante sobre las condiciones/historias no constitutivas que el diseño permita intervenir o estandarizar;
+- las condiciones constitutivas/habilitadoras C_c (o L_c en la notación anterior) conservan configuraciones coherentes con cada transformación y política comparada; no se fijan independientemente cuando ello haría imposible la accesibilidad;
+- g_1 y g_0 son políticas realizables que inducen distribuciones de cambios A=ΔT_acc mediante componentes/intervenciones implementables B, condicionadas por covariables basales e historia pertinente y restringidas al conjunto factible;
+- las variables temporales restantes se modelan por su papel causal e historia; no se introducen automáticamente todas en q ni se ajustan como covariables ordinarias;
+- selección, ejecución, mecanismos posteriores, Outcome y Value evolucionan bajo cada régimen y forman parte del contraste total de la política de accesibilidad, salvo que se defina explícitamente otro estimando.
+
+Si las condiciones constitutivas y A solo pueden variar conjuntamente, o no hay soporte para comparar g_1 y g_0 bajo un q común, θ_A(q) no es identificable para esa comparación. No forzar la separación; considerar el contraste conjunto factible θ_{L,A}, un efecto de paquete/ITT o declarar no identificación.
+
+### 31.2 DAG temporal reconciliado
+
+El DAG inicial de la sección 3 es una representación resumida y no debe leerse como un DAG completo. Para cada aplicación se requiere un DAG temporal específico. Como mínimo, separar:
+
+- X: contexto y covariables basales;
+- B_t/Z_t: asignación o componentes implementables;
+- C_{c,t}: condiciones constitutivas/habilitadoras;
+- L_{m,t}: otras condiciones temporales, clasificadas por historia y papel causal;
+- A_t: cambio medido en T_acc;
+- F_t: conjunto de trayectorias factibles y Reach derivado de la composición de transformaciones;
+- K_t: conocimiento/consideración de opciones por los agentes;
+- Sel_t: selección de trayectoria;
+- E_t: inicio, ejecución, interrupción y finalización;
+- M_t/O_t: mecanismos posteriores y outcomes observables;
+- V: Value bajo regla evaluativa independiente.
+
+La secuencia causal de referencia puede incluir:
+
+B_t/Z_t → (C_{c,t}, L_{m,t}, A_t);
+(C_{c,t}, A_t) → F_t;
+F_t → K_t → Sel_t → E_t → trayectoria realizada → O → V;
+
+con vías adicionales plausibles desde B/Z, condiciones, A, selección o ejecución hacia otros mecanismos, O y V. Las flechas exactas deben justificarse para cada sistema; no se presume que todos los caminos existan ni que la secuencia sea exclusivamente lineal.
+
+La factibilidad de una trayectoria no implica que sea conocida; conocerla no implica seleccionarla; seleccionarla no implica ejecutarla ni completarla. F_t/Reach y la trayectoria realizada son variables distintas. La selección y ejecución pueden depender de factores basales y post-treatment que también afectan O/V, y pueden modificar estado, condiciones y A en momentos posteriores. Por ello, en diseños longitudinales se deben representar historias y retroalimentación temporal, no colapsar toda la secuencia en un DAG transversal.
+
+M puede conservarse como categoría general para mecanismos, pero no debe absorber K, Sel y E sin distinguirlos cuando estos sean relevantes para identificación o medición. Reach y trayectorias factibles pertenecen al espacio de posibilidades; ejecución y trayectoria realizada pertenecen al proceso de realización.
+
+### 31.3 Compatibilidad de ecuaciones y estimandos
+
+La ecuación TE=E[V(1)-V(0)] es una abreviatura para el contraste de valores potenciales bajo los niveles/versiones de la intervención Z definidos en el diseño; no presupone que todos los tratamientos tengan dos niveles.
+
+θ_A(q) es el contraste de dos políticas factibles de accesibilidad bajo el régimen común q, tal como se restringe en 31.1. Incluye consecuencias posteriores sobre conocimiento, selección, ejecución, Reach/Trayectoria, Outcome y Value. No se estima comparando directamente trayectorias ejecutadas ni condicionando por selección observada.
+
+θ_{L,A}=E[V^{q_1,g_1}]-E[V^{q_0,g_0}] es un contraste conjunto entre dos regímenes factibles de condiciones y accesibilidad. No identifica por sí solo la contribución exclusiva de A.
+
+I_{A,L} es una interacción aditiva entre los contrastes de accesibilidad bajo dos regímenes de condiciones; requiere cuatro combinaciones contrafactuales factibles y con soporte. No confundirla con la interacción entre componentes asignados en un factorial.
+
+No asumir TE=θ_A(q)+θ_{L,A}, ni que TE−θ_A(q) sea un efecto directo puro. Cualquier descomposición exige escenarios intermedios coherentes, misma población/escala/horizonte, reglas explícitas para interacciones y una estrategia de identificación para cada componente. θ_A^dyn continúa pendiente de formalización y no puede tratarse como estimando definido.
+
+### 31.4 Reconciliación de las definiciones operacionales
+
+La sección 4 describe inicialmente Trayectoria como secuencia efectivamente realizada. Para evitar ambigüedad, prevalece la distinción de los apartados 27–29:
+- trayectoria factible/candidata: secuencia admisible del espacio de posibilidades;
+- trayectoria seleccionada: opción elegida por un decisor;
+- trayectoria iniciada/ejecutada/completada: estados del proceso de realización;
+- trayectoria realizada: secuencia de transformaciones efectivamente ejecutadas, con su grado de avance y evidencia.
+
+Del mismo modo, la definición inicial ΔT_acc=(A⁺,A⁻) es una abreviatura mínima. Para comparaciones que requieran cambios de estructura, utilizar la ficha ampliada del apartado 27.1, evitando doble conteo y manteniendo la identidad/equivalencia estable.
+
+La enumeración de trayectorias factibles del apartado 28 no es un modelo de selección ni una distribución de probabilidad de ejecución. La salida del enumerador no debe confundirse con K, Sel, E ni con una predicción de comportamiento.
+
+### 31.5 Estado de cierre de la auditoría
+
+Con esta reconciliación se resuelven las ambigüedades documentales identificadas entre notación agregada L, condiciones constitutivas, DAG resumido, selección/ejecución y definiciones de trayectoria. No significa que exista un DAG causal válido para un caso concreto ni que θ_A(q) sea identificable en datos actuales.
+
+El protocolo queda preparado para una revisión metodológica final por especialistas y para una futura especificación de caso, pero no queda aprobado, preregistrado ni ejecutado. Siguen pendientes la selección justificada de caso, DAG temporal específico, definición de B y sus versiones, régimen q factible, políticas g_1/g_0, estimando primario, regla de Value, plan de medición y auditoría empírica de identificación/precisión.
+
+Este apartado no modifica TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims ni cierres previos. No autoriza selección definitiva de caso, adquisición/procesamiento de datos ni ejecución experimental. El PR permanece draft y pendiente de revisión.
