@@ -1163,3 +1163,63 @@ Las expresiones TE=E[V(1)-V(0)], θ_A(q), θ_{L,A}, la interacción aditiva entr
 La interacción I_{A,L} del apartado 17.3 y las interacciones descritas en los apartados 25.4 y 22.2 se refieren a contrastes distintos: la primera compara políticas de accesibilidad bajo regímenes de condiciones; la segunda, cuando se utiliza, compara componentes asignados en un diseño factorial. No intercambiar sus interpretaciones ni tratarlas como una misma interacción.
 
 La auditoría no convierte estas ecuaciones en estimandos identificados para un caso concreto. La selección de la parametrización final y del estimando primario queda condicionada al diseño, a la factibilidad de las intervenciones y a la estrategia de identificación que pueda defenderse.
+
+
+## 27. Especificación operacional de ΔT_acc, Reach y Trayectoria
+
+### 27.1 Representación estructurada y comparación de T_acc
+
+Para la medición de C10, T_acc debe tratarse como un conjunto estructurado de transformaciones accesibles bajo un estado, condiciones, recursos, dependencias y restricciones especificados. Cuando sea útil para el caso, puede representarse analíticamente como T_acc,t=(U_acc,t,R_acc,t,C_acc,t): unidades/transformaciones accesibles, relaciones/dependencias y configuraciones admisibles. Esta representación es instrumental para medir composición y estructura; no modifica el Core ni establece una nueva ontología canónica.
+
+La comparación entre momentos requiere un universo candidato común, reglas preespecificadas de identidad y equivalencia (≡T), granularidad estable y evidencia referida al momento correcto. La unidad candidata τ=(S_o,S_d,M,P_τ,K,E) debe permitir reconocer origen, destino, mecanismo, admisibilidad, condiciones/dependencias/recursos y evidencia de realizabilidad.
+
+Con esa correspondencia, distinguir:
+- **A⁺:** transformaciones que pasan a estar respaldadas como accesibles en t1 y no lo estaban en t0;
+- **A⁻:** transformaciones respaldadas como accesibles en t0 que dejan de estarlo en t1;
+- **A^reconf:** transformaciones emparejadas bajo la regla de identidad/equivalencia cuya accesibilidad se conserva, pero cambia de forma material su mecanismo, precondiciones, recursos, dependencias o restricciones;
+- **ΔR:** cambios en relaciones/dependencias entre transformaciones;
+- **ΔC:** cambios en configuraciones admisibles y sus restricciones.
+
+La representación ampliada de trabajo es ΔT_acc=(A⁺,A⁻,A^reconf,ΔR,ΔC), cuando las dimensiones relacionales y configuracionales sean pertinentes y medibles. Es una ficha de comparación analítica, no una nueva definición del Core. Si una modificación cambia la identidad de la transformación según ≡T, no registrarla como mera reconfiguración: clasificarla como pérdida y alta correspondientes. Evitar doble conteo entre A^reconf, ΔR y ΔC, y documentar qué cambios son atributos de una transformación y cuáles afectan a la estructura del conjunto.
+
+Las diferencias epistemológicas —nueva evidencia, mayor cobertura, cambio de evaluador o revisión de clasificación— deben mantenerse separadas de esos cambios estimados del sistema. Una transformación recién descubierta no es necesariamente una transformación recién accesible.
+
+### 27.2 Trayectorias factibles y trayectorias realizadas
+
+La palabra Trayectoria debe desambiguarse en dos objetos relacionados pero distintos:
+
+1. **Trayectoria factible/candidata:** secuencia ordenada de transformaciones TGCV que podría realizarse desde una configuración inicial, si en cada paso se satisfacen las condiciones, precondiciones, recursos, dependencias y reglas de admisibilidad. Es un objeto del espacio de posibilidades, no evidencia de ejecución.
+2. **Trayectoria realizada:** secuencia de transformaciones que efectivamente se ejecutó, reconstruida con evidencia de ejecución y trazabilidad temporal. Es una realización observada del sistema, no el conjunto de todas sus posibilidades.
+
+Una secuencia de estados observados no basta para identificar ninguna de las dos: debe reconstruirse qué transformación TGCV conecta cada paso, con qué mecanismo y bajo qué condiciones. La trayectoria realizada debe vincularse a las transformaciones correspondientes; no inferir automáticamente que una transición observada prueba que toda transformación equivalente era accesible en otros momentos o contextos.
+
+### 27.3 Composición admisible y actualización dinámica
+
+Sea S_0 la configuración inicial y H un horizonte definido. Una trayectoria factible candidata puede representarse como σ=(τ_0,...,τ_{k-1}), junto con sus configuraciones intermedias. Para cada paso i, τ_i debe pertenecer al espacio accesible T_acc(S_i,C_i,L_i) y satisfacer sus condiciones y dependencias. La ejecución hipotética de τ_i produce una configuración posterior compatible (S_{i+1},C_{i+1},L_{i+1}); por tanto, la accesibilidad se vuelve a evaluar en el siguiente paso. No asumir que T_acc permanece fijo durante la composición.
+
+El conjunto Reach_H(S_0,C_0,L_0) se define, para el estudio, como el conjunto de configuraciones terminales alcanzables desde la configuración inicial mediante al menos una secuencia factible de transformaciones TGCV, de longitud/tiempo dentro del horizonte H y respetando la actualización de estado y condiciones en cada paso. El horizonte, la granularidad temporal, las reglas de composición, las restricciones de recursos y los criterios de equivalencia deben especificarse para cada aplicación. Esta definición es una especificación operacional de trabajo, no una formalización universal ya validada.
+
+Las trayectorias factibles son las secuencias que satisfacen esas reglas; la trayectoria realizada es la secuencia efectivamente seguida. Una transformación puede pertenecer a T_acc sin haber sido ejecutada. Un estado/configuración puede pertenecer a Reach sin haber sido alcanzado en la trayectoria observada. Una trayectoria realizada es una de las posibles realizaciones del sistema, no una medición exhaustiva de Reach.
+
+### 27.4 Consecuencias para la prueba causal C10
+
+La cadena de medición y análisis debe preservar el orden conceptual y temporal:
+
+configuración/condiciones → T_acc,t → trayectorias factibles y Reach_H → selección/ejecución de transformaciones → trayectoria realizada → Outcome → Value.
+
+La cadena no implica que cada eslabón sea determinista ni que todos los efectos estén mediados exclusivamente por el eslabón anterior. Deben medirse por separado las posibilidades, la ejecución, los resultados y la evaluación de valor.
+
+Para estimar la contribución causal de accesibilidad:
+- medir T_acc antes de la ejecución y sin inferirlo de la trayectoria realizada, Outcome o Value;
+- reconstruir Reach y trayectorias factibles mediante composición TGCV admisible y actualización dinámica;
+- registrar por separado qué trayectoria se realizó y qué transformaciones no fueron elegidas o ejecutadas;
+- medir Outcome y Value con procedimientos independientes;
+- considerar que la ejecución puede modificar estado, condiciones y T_acc futuro, generando confusión temporal y retroalimentación;
+- si el diseño no permite separar el cambio de posibilidades del proceso de selección/ejecución, limitar la interpretación al efecto de la política o paquete estudiado.
+
+La medición independiente de estos constructos mejora la validez de la prueba, pero no identifica por sí sola el efecto causal. La identificación sigue sujeta a las condiciones de los apartados 25 y 26.
+
+### 27.5 Estado y límites
+
+Las definiciones de este apartado son especificaciones operacionales propuestas para hacer medibles y comparables los constructos en un estudio C10-D1. No constituyen validación empírica, no convierten la representación T_acc=(U_acc,R_acc,C_acc) en Core, no cierran las decisiones pendientes sobre formalización general de Reach/Trayectoria y no autorizan selección de caso, adquisición de datos, preregistro ni ejecución.
+
