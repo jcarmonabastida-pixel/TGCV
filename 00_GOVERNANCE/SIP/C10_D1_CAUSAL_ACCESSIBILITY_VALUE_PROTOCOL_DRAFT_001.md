@@ -1519,3 +1519,77 @@ Con esta reconciliación se resuelven las ambigüedades documentales identificad
 El protocolo queda preparado para una revisión metodológica final por especialistas y para una futura especificación de caso, pero no queda aprobado, preregistrado ni ejecutado. Siguen pendientes la selección justificada de caso, DAG temporal específico, definición de B y sus versiones, régimen q factible, políticas g_1/g_0, estimando primario, regla de Value, plan de medición y auditoría empírica de identificación/precisión.
 
 Este apartado no modifica TGCV Core, RMA, Evidence→Claim Matrix, STATUS, claims ni cierres previos. No autoriza selección definitiva de caso, adquisición/procesamiento de datos ni ejecución experimental. El PR permanece draft y pendiente de revisión.
+
+
+## 32. Puertas críticas de identificación: intervención sobre A, longitudinalidad, interferencia y datos incompletos
+
+### 32.1 Una política sobre A debe corresponder a una intervención implementable
+
+La notación estocástica g_j(A_t|h_t) describe una distribución objetivo sobre cambios de accesibilidad; por sí sola no demuestra que A sea directamente manipulable ni define una intervención física única. Antes de interpretar θ_A(q) como contribución específica de accesibilidad, documentar la cadena:
+- componente/intervención implementable B y sus versiones;
+- mecanismo por el que B modifica condiciones constitutivas y/o A=ΔT_acc;
+- distribución de A inducida por cada versión de B, condicionada por historia pertinente;
+- vías de B hacia selección, ejecución, Outcome o Value que no estén mediadas por A;
+- condiciones bajo las que versiones distintas que inducen el mismo A son causalmente equivalentes para el estimando.
+
+Si B induce A pero también modifica Value por vías directas o por otras condiciones no separables, la aleatorización de B identifica el efecto de B, no θ_A(q). No renombrar el ITT de B como efecto de A. Para atribución específica se necesita una intervención separable sobre accesibilidad o un diseño/estimando que identifique y separe las vías alternativas con supuestos defendibles.
+
+Las políticas g_1 y g_0 deben ser estocásticas, factibles y definidas sobre historias con soporte. No deben asignar transformaciones o configuraciones incompatibles con C_c, recursos, dependencias o restricciones. Si el mismo cambio medido de T_acc puede producirse mediante versiones de B con efectos propios distintos sobre Value, no agruparlas como una sola política de accesibilidad sin justificar equivalencia causal. En ausencia de esa justificación, el estimando se refiere a las políticas B concretas o al paquete.
+
+### 32.2 Puerta de identificación longitudinal
+
+Cuando accesibilidad, condiciones, selección, ejecución y Value evolucionen en el tiempo, especificar antes del análisis una historia temporal ordenada y la información disponible antes de cada decisión. Para cualquier estimando longitudinal, documentar al menos:
+
+1. **Consistencia secuencial:** las intervenciones/versiones, políticas y resultados potenciales están definidos en cada momento; la exposición observada corresponde a la versión descrita.
+2. **Intercambiabilidad secuencial:** condicionada por la historia medida anterior a cada decisión, no quedan causas comunes no controladas de la decisión/intervención y los resultados futuros relevantes. Justificarla por diseño o reconocer que no es defendible.
+3. **Positividad secuencial:** cada decisión/política comparada tiene probabilidad/densidad positiva en las historias objetivo; comprobar soporte empírico y factibilidad estructural.
+4. **Orden temporal y medición:** confusores, condiciones constitutivas, A, selección, ejecución, mecanismos, Outcome y Value se miden en orden temporal suficientemente fino para sostener el DAG.
+5. **Censura y pérdidas:** definir seguimiento, eventos de censura, pérdidas, truncamiento y reglas de observación; justificar cualquier ponderación/modelo de censura y evaluar sensibilidad a pérdidas informativas.
+6. **Interferencia:** especificar la unidad de asignación y la estructura de exposición entre unidades, según 32.3.
+7. **Especificación y diagnóstico:** documentar modelos, covariables, pesos, truncamiento de pesos si procede, diagnósticos de positividad, ajuste, sensibilidad y análisis alternativos.
+
+G-computation, modelos estructurales marginales, TMLE longitudinal u otros métodos g pueden estimar ciertos contrastes bajo estos supuestos y con datos adecuados; no reparan confusión no medida, historias mal medidas, ausencia de soporte, intervenciones mal definidas ni DAG incorrecto. La elección del método debe seguir al estimando, diseño y estructura temporal, no precederlos.
+
+Si una variable post-treatment afecta decisiones posteriores y Value, no ajustar por ella como covariable convencional sin considerar su papel longitudinal. Debe tratarse mediante un método compatible con la pregunta causal, o declararse no identificación si no existe estrategia defendible.
+
+### 32.3 Interferencia y sistemas interdependientes
+
+No asumir SUTVA/no interferencia entre unidades cuando transformaciones, recursos, relaciones o configuraciones de una unidad alteran la accesibilidad o Value de otras. En sistemas relacionales, la interferencia puede ser parte constitutiva del fenómeno estudiado.
+
+Antes del diseño, definir:
+- unidad de asignación, unidad de medición y unidad de análisis;
+- vínculos por los que una intervención en una unidad puede modificar T_acc, Reach, selección, ejecución u Outcome/Value de otras;
+- mapa/red de exposición o agrupación relevante y su justificación;
+- estimando bajo exposición propia y exposición de otras unidades, cuando ambas sean relevantes;
+- diseño de asignación por conglomerados, saturación, redes o exposición, si es viable;
+- supuestos de interferencia parcial o restricciones de alcance, con análisis de sensibilidad a contaminación y vínculos no observados.
+
+Si no puede sostenerse ausencia de interferencia ni definirse una estructura de exposición defendible, no interpretar el contraste como efecto individual aislado. Reformular el estimando a nivel de grupo/red/sistema o declarar que el efecto no está identificado bajo el diseño disponible.
+
+La unidad de análisis debe corresponder al nivel al que se define T_acc y Value. No inferir efectos de sistema a partir de unidades individuales sin una regla de agregación y tratamiento de dependencias.
+
+### 32.4 Datos incompletos: estados distintos y tratamiento
+
+Registrar por separado:
+- **no ejecución/no selección:** resultado del proceso de decisión, no dato faltante de ejecución;
+- **interrupción/abandono:** resultado parcial con momento y motivo cuando se conozcan;
+- **censura/pérdida de seguimiento:** deja de observarse el proceso o resultado después de un momento;
+- **medición faltante:** el constructo pudo existir, pero no se observó o documentó;
+- **clasificación indeterminada:** evidencia disponible no permite decidir accesibilidad/admisibilidad;
+- **truncamiento estructural:** la unidad deja de pertenecer al conjunto observado por diseño o por evento.
+
+No codificar ninguna de estas categorías automáticamente como inaccesibilidad, no ejecución o Value cero. La ausencia de seguimiento no equivale a ausencia de efecto.
+
+Para cada variable crítica (T_acc, condiciones, selección, ejecución, Reach/Trayectoria, Outcome y Value), informar patrón, momento, causa conocida, proporción y diferencias entre grupos/régimen. Justificar supuestos de datos faltantes (MCAR/MAR/MNAR cuando corresponda), método de análisis y análisis de sensibilidad; no asumir MAR por conveniencia. Si la pérdida depende de resultados no observados y no puede acotarse o modelarse de forma defendible, presentar límites de identificación en vez de una estimación puntual aparentemente precisa.
+
+La imputación no debe crear transformaciones accesibles, ejecuciones, trayectorias o Value contrafactuales sin un modelo y supuestos explícitos. Mantener separados datos observados, imputados y escenarios de sensibilidad.
+
+### 32.5 Regla de no identificación y alcance de los resultados
+
+La atribución específica θ_A(q) no pasa la puerta de identificación si no se define una intervención/política realizable, si las versiones de intervención tienen vías alternativas no separables, si falla el soporte, si la confusión longitudinal relevante no puede tratarse, si la interferencia no está modelada o si las pérdidas/mediciones incompletas impiden identificar el contraste.
+
+En esos casos, informar únicamente el estimando más estrecho que los datos y el diseño sostengan: efecto de asignación/paquete, efecto conjunto de condiciones y accesibilidad, contraste de grupo/red o límites parciales. Si ninguno es defendible, declarar no identificación. No sustituir la identificación por complejidad del modelo, ajuste estadístico, significación o volumen de datos.
+
+### 32.6 Estado y límites
+
+Este apartado convierte en puertas operativas los supuestos de identificación ya mencionados en el protocolo. No afirma que un método concreto sea aplicable a un caso, no elige un estimando primario, no demuestra que θ_A(q) sea identificable y no designa un caso probatorio. No modifica Core, RMA, Evidence→Claim Matrix, STATUS, claims o cierres previos, ni autoriza adquisición/procesamiento de datos, preregistro o ejecución experimental. El PR permanece draft y pendiente de revisión.
