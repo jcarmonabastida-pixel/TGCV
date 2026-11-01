@@ -955,3 +955,90 @@ Esta puerta no cambia clasificaciones históricas ni reabre casos cerrados. KGFS
 - Tipo III: preparar un protocolo de diseño específico, preregistro y evaluación ética; la clasificación Tipo III no autoriza por sí sola ejecución ni adquisición de datos.
 
 Este addendum no selecciona un caso, no autoriza datos o experimentos, y no modifica Core, RMA, Matrix, STATUS, claims, C09 o VSL-KGFS-02. El PR permanece draft y pendiente de revisión.
+
+
+---
+
+## 24. Addendum de auditoría — reconciliación de notación, precedencia y flujo metodológico (01-11-2026)
+
+**Estado:** corrección de coherencia interna del borrador; pendiente de revisión científica. No añade evidencia, no aprueba el protocolo y no modifica Core, RMA, Matrix, STATUS ni claims.
+
+### 24.1 Precedencia normativa interna
+
+Para evitar que formulaciones provisionales antiguas se utilicen como especificaciones vigentes, aplicar esta precedencia:
+1. El apartado 17 prevalece sobre las formulaciones iniciales de los apartados 3, 5, 6, 7, 8, 9 y 16 cuando precisa condiciones constitutivas, factibilidad, temporalidad, políticas y estimandos.
+2. Los apartados 18–21 precisan medición, fiabilidad, transportabilidad y falsabilidad; no sustituyen la definición causal de 17.
+3. El apartado 22 precisa la arquitectura de diseños y prevalece sobre la jerarquía genérica inicial del apartado 8 cuando se elija un diseño concreto.
+4. El apartado 23 precisa la elegibilidad y clasificación de casos y prevalece sobre la ficha abreviada de selección del apartado 11.
+5. El apartado 24 aclara la notación y el orden de uso; no crea estimandos ni cambia decisiones científicas.
+
+Las secciones iniciales conservan el contexto histórico y conceptual, pero no deben leerse como especificaciones independientes cuando exista una precisión posterior.
+
+### 24.2 Notación causal vigente para accesibilidad
+
+La fórmula inicial de 5.2, escrita como distribuciones G₁/G₀ condicionadas únicamente por L, es una abreviatura histórica y no una especificación suficiente para análisis. La formulación de trabajo vigente es la de 17.7:
+
+(θ_A(q)=E[V^{q,g_1}]-E[V^{q,g_0}]).
+
+Aquí:
+- q define un régimen común, explícito y factible de condiciones/historias, condicionado por covariables basales cuando corresponda;
+- g₁ y g₀ son políticas estocásticas implementables sobre cambios de accesibilidad, condicionadas por covariables basales e historia pertinente;
+- las políticas respetan el conjunto de configuraciones de accesibilidad factibles bajo cada historia;
+- las condiciones constitutivas de accesibilidad (L_c) no se fijan artificialmente en valores incompatibles con la transformación;
+- otras variables temporales (L_m) se clasifican por su papel causal en cada momento, no por una etiqueta permanente;
+- los mecanismos posteriores y Value evolucionan bajo cada política.
+
+No sustituir g₁/g₀ por distribuciones observadas P(A|Z,L) sin una estrategia causal que justifique esa operación. No interpretar θ_A(q) como efecto indirecto natural ni como fracción de TE. Si las políticas no comparten soporte factible, el contraste específico no está identificado para esa población/régimen; considerar un contraste conjunto factible y limitar la atribución.
+
+En consecuencia, donde las fases 0, 3 y 4 de la sección 9 mencionen q(L) y G₁/G₀, deben entenderse como referencias abreviadas a la especificación completa de 17.7 y este apartado. La ficha de preregistro deberá recoger la versión completa.
+
+### 24.3 Estado de θ_A^dyn
+
+La notación θ_A^dyn utilizada en los apartados 19, 21, 22 y 23 es por ahora **un marcador de estimando longitudinal pendiente de formalización**, no un estimando ya definido ni disponible para estimación.
+
+Antes de utilizarlo se deberá especificar, como mínimo:
+- población y tiempo inicial;
+- historia longitudinal h_t y variables observadas antes de cada decisión;
+- políticas dinámicas comparadas y sus versiones;
+- conjunto factible de acciones/configuraciones de accesibilidad en cada historia;
+- régimen de condiciones y tratamiento de variables afectadas por decisiones previas;
+- resultado potencial de Value, regla evaluativa y horizonte;
+- contraste contrafactual y estrategia de identificación;
+- supuestos de consistencia, intercambiabilidad secuencial, positividad, interferencia, censura y medición.
+
+Hasta completar esta definición, usar θ_A(q) para el contraste estocástico bajo régimen común cuando sea defendible, o describir el efecto de asignación de la estrategia dinámica sin llamarlo efecto causal específico de accesibilidad. La mera existencia de una política π:h_t→Z_t no define por sí sola θ_A^dyn.
+
+### 24.4 DAG y mecanismo de asignación
+
+La expresión de la sección 3 que incluye X→Z debe interpretarse según el diseño, no como una flecha universal:
+- **Ensayo aleatorizado:** Z se asigna por el mecanismo aleatorio especificado; no dibujar X→Z como relación causal. X puede ser usado para estratificación/ajuste de precisión, sin que ello convierta la asignación en confusa.
+- **Diseño observacional/cuasi-experimental:** representar X→Z cuando las covariables basales influyen en la asignación/exposición, además de las demás relaciones justificadas.
+- **Diseño por conglomerados, secuencial o adaptativo:** representar unidad, calendario y probabilidades de asignación en cada momento, incluyendo la historia que gobierna las decisiones.
+
+El DAG debe reflejar el mecanismo real de asignación y la temporalidad del caso; el DAG inicial es solo un esquema general de posibles vías y no sustituye el DAG específico preregistrado.
+
+### 24.5 Relación entre fases de investigación y puertas de elegibilidad
+
+Mantener dos instrumentos distintos y conectados:
+- **Fases 0–6 de la sección 9:** orden del trabajo de investigación desde delimitación/preregistro hasta síntesis científica.
+- **Puertas G1–G7 de la sección 23:** cribado de la capacidad probatoria de un caso antes de diseñar o ejecutar un estudio.
+
+La clasificación de cada G1–G7 (superada, condicional, no superada, no evaluada) informa la Fase 1 y determina si el caso puede avanzar. Las puertas de diseño del apartado 22 se aplican después de la elegibilidad y antes de diseñar/ejecutar. Superar G1–G7 no sustituye la auditoría de identificación ni autoriza ejecución. Una puerta condicional requiere evidencia de cierre antes de tratar el caso como Tipo III.
+
+### 24.6 Catálogo de selección y diseños: versión vigente
+
+La tabla C1–C7 del apartado 11 es una ficha histórica abreviada. Para el cribado vigente usar G1–G7 del apartado 23, que incorporan explícitamente mecanismos TGCV, medición independiente de Value, precisión, viabilidad y ética.
+
+La jerarquía inicial del apartado 8 es orientativa. Para especificar un diseño utilizar el apartado 22, distinguiendo ITT de componentes, factorial factible, variación específica de accesibilidad, política secuencial y efecto conjunto. Ninguno de esos diseños identifica automáticamente θ_A(q); debe demostrarse para el diseño concreto.
+
+### 24.7 Resultado de la auditoría de coherencia
+
+La auditoría identifica:
+- **Resuelto por precedencia/aclaración:** formulación inicial de θ_A frente a la precisión del apartado 17; relación entre fases y puertas; jerarquía de selección y diseños.
+- **Pendiente de formalización antes de uso:** θ_A^dyn.
+- **Requiere adaptación por estudio, no una fórmula universal:** DAG, clasificación de L_c/L_m, q y políticas g, soporte y versiones de intervención.
+- **No autorizado por esta auditoría:** selección de caso, descarga/procesamiento de datos, preregistro o ejecución.
+
+El protocolo puede continuar como marco metodológico de trabajo, pero no debe considerarse todavía listo para preregistro ni para ejecución. El siguiente paso es completar la especificación formal de los estimandos longitudinales solo si el diseño candidato realmente los necesita; no añadir complejidad dinámica por defecto. Después deberá realizarse una revisión final de ecuaciones, variables, referencias cruzadas y consistencia de las puertas.
+
+Este addendum no altera clasificaciones previas de casos, C09, VSL-KGFS-02 ni ningún claim. El PR permanece draft y pendiente de revisión.
