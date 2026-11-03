@@ -2099,3 +2099,155 @@ Aunque S4-R recupere θ_A(q*) en este mundo sintético:
 - no valida por sí solo C10 ni cierra XSYNC-138.
 
 **Estado:** contrato operativo sintético propuesto; no congelado, implementado, simulado, ejecutado, auditado mediante pruebas ni aceptado. S4-R permanece en diseño. XSYNC-138-01 y hallazgos relacionados permanecen abiertos hasta revisión independiente, comprobación de factibilidad y pruebas autorizadas. No se modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos.
+
+
+---
+
+## 31. Auditoría adversarial del mecanismo técnico S4-R (sección conversacional 144)
+
+**Objetivo:** evaluar si la dependencia técnica C_dep puede considerarse una manipulación aislada de realizabilidad de τ2 o si introduce vías adicionales hacia Outcome/Value. Revisar además la coherencia del mecanismo probabilístico, la definición de accesibilidad y la separación entre acceso, aplicabilidad y ejecución.
+
+**Alcance:** auditoría conceptual/documental adversarial del contrato de §30. No es revisión independiente, auditoría de código, simulación, ejecución estadística ni validación empírica. No cierra XSYNC-138-01 ni autoriza implementación o ejecución.
+
+### 31.1. Hallazgo principal: C_dep no implica exclusión causal
+
+La definición actual de C_dep como componente software instalado, íntegro, compatible y operativo permite describir una condición técnica de realizabilidad, pero no demuestra que el componente solo afecte a la accesibilidad de τ2.
+
+Una dependencia software real puede modificar:
+- costes de instalación, licencia, mantenimiento o consumo de recursos;
+- tiempos, latencia, disponibilidad y recuperación;
+- calidad, estabilidad, compatibilidad y tasa de errores;
+- seguridad, vulnerabilidades, fallos y exposición operacional;
+- información, diagnósticos, alertas y visibilidad para los agentes;
+- expectativas, confianza, conocimiento, prioridades y decisiones de selección;
+- otras transformaciones, al habilitar o bloquear operaciones distintas de τ2.
+
+Si alguna de estas consecuencias varía entre políticas y afecta a Value, existe una vía adicional. El contraste no identifica exclusivamente la contribución de accesibilidad.
+
+### 31.2. Tres variantes que deben distinguirse
+
+| Variante | Cambio inducido | Interpretación admisible |
+|---|---|---|
+| A. Apertura técnica aislada | Solo cambia la realizabilidad de τ2 | Candidata a identificar θ_A(q*) bajo los restantes supuestos |
+| B. Apertura más efectos secundarios | Cambia τ2 y también costes, tiempos, calidad, riesgos, información u otras variables | Efecto de política/paquete; no atribución exclusiva a accesibilidad sin diseño adicional |
+| C. Intento sin apertura efectiva | Se intenta instalar/activar, pero C_dep no cambia o las condiciones de τ2 siguen incumplidas | No hay primera etapa transformacional para esa unidad; no atribuir efecto a ΔT_acc |
+
+La variante A es una estipulación posible en un mundo sintético controlado. No es una propiedad que pueda presumirse de una instalación software real.
+
+### 31.3. Descomposición de la condición técnica
+
+La definición binaria de C_dep oculta posibles causas de fallo. Se propone registrar por separado:
+- C_install: instalación presente;
+- C_integrity: integridad verificada;
+- C_compat: compatibilidad con la versión y el objeto de sistema objetivo;
+- C_oper: funcionamiento operativo comprobado.
+
+La condición compuesta se deriva como:
+
+C_dep = C_install ∧ C_integrity ∧ C_compat ∧ C_oper.
+
+Cada componente debe conservar estado epistémico, fuente de evidencia, instante de verificación y validez temporal. Un estado desconocido no se convierte automáticamente en falso ni en verdadero.
+
+Esta descomposición no altera la regla focal de accesibilidad: A_f* se deriva de C_dep y de las demás condiciones necesarias de τ2. Tampoco convierte C_dep en una medida universal de accesibilidad.
+
+### 31.4. Corrección de la cadena probabilística
+
+La especificación de §30.2 denomina W_g al intento técnico, pero asocia p_g a la probabilidad de instalación operativa. Si existen fallos, intento y éxito no son equivalentes.
+
+Se propone separar:
+- W_attempt: intento de instalación/activación;
+- S_install: éxito técnico del procedimiento;
+- C_dep: estado final verificado de la dependencia;
+- C_dep,0: estado basal previo a la intervención.
+
+Cadena:
+
+Z_g → B_g → W_attempt → S_install → C_dep → A_f* → ΔT_acc.
+
+Los parámetros p0=.20 y p1=.80 deben representar las probabilidades finales inducidas y verificadas:
+
+P(C_dep=1 | g0)=.20;
+P(C_dep=1 | g1)=.80,
+
+en la población primaria definida, no meramente la probabilidad de iniciar un intento. Si la tasa de fallo de instalación es distinta de cero, el generador debe parametrizar el mecanismo para que las probabilidades finales correspondan a esos valores, o recalcular la verdad analítica de θ_A(q*).
+
+La población primaria debe especificar el estado basal C_dep,0. Si C_dep,0=0 para todas las unidades, el contraste representa una apertura desde ausencia basal. Si no, debe modelarse la dependencia ya presente y evitar atribuir una nueva apertura a las unidades que ya tenían τ2 accesible.
+
+### 31.5. Separación entre acceso y calidad de ejecución
+
+La existencia de C_dep puede habilitar τ2, pero una implementación concreta también podría modificar la forma en que τ2 se ejecuta: velocidad, precisión, fiabilidad, seguridad o probabilidad de éxito.
+
+Para preservar el escenario aislado:
+- C_dep modifica únicamente la realizabilidad estructural de τ2;
+- la regla de ejecución y la calidad condicional de τ2 son idénticas entre brazos;
+- los recursos, tiempos no inherentes a la apertura, información, incentivos y riesgos no focales permanecen invariantes;
+- el generador no permite que C_dep modifique directamente M, O o V fuera de la vía de accesibilidad y sus transformaciones posteriores.
+
+Si el componente modifica la calidad o las consecuencias de τ2, se trata de una versión de intervención distinta o de una vía adicional. No debe interpretarse el contraste como θ_A(q*) aislado.
+
+### 31.6. Arquitectura recomendada: escenario aislado y escenario adversarial
+
+Se recomienda separar dos DGP:
+
+**S4-R aislado — escenario principal de identificación sintética**
+- C_dep se representa como una capacidad técnica controlada en un entorno sandbox.
+- La capacidad solo cambia la realizabilidad de τ2.
+- No modifica recursos, información, expectativas, incentivos, costes, latencia, calidad, seguridad ni condiciones de ejecución.
+- La regla y calidad condicional de ejecución de τ2 son comunes entre brazos.
+- La asignación aleatoria modifica la probabilidad de activar la capacidad; A_f* se deriva de condiciones verificadas.
+- La exclusión de vías alternativas es una estipulación explícita del mundo sintético y un invariante que deberá comprobarse en el generador.
+
+**S4-R ampliado — escenario adversarial de efectos colaterales**
+- Se introduce deliberadamente una o varias consecuencias adicionales de la dependencia: coste, demora, riesgo, información, calidad o cambio de decisiones.
+- El analizador debe reconocer el efecto de política/paquete y no atribuir el ITT completo a accesibilidad.
+- Solo podrá recuperar θ_A(q*) si el diseño separa e identifica las vías adicionales bajo supuestos explícitos.
+- Si no se pueden separar, el dictamen correcto será efecto de paquete o no-identificación.
+
+Los dos escenarios no se fusionan en un único DGP ni se presentan como réplicas del mismo estimando.
+
+### 31.7. Pruebas adversariales propuestas
+
+| ID | Perturbación | Dictamen exigido |
+|---|---|---|
+| ADV-01 | Coste de instalación diferencial | No atribuir el efecto completo a accesibilidad |
+| ADV-02 | Latencia o demora diferencial | Detectar vía alternativa |
+| ADV-03 | Cambio de calidad o seguridad | Distinguir accesibilidad de calidad de ejecución |
+| ADV-04 | Cambio de información o conocimiento | No confundir accesibilidad con consideración/selección |
+| ADV-05 | Cambio de expectativas o incentivos | Identificar efecto de política o paquete |
+| ADV-06 | Fallo de instalación | Usar C_dep verificado, no el intento |
+| ADV-07 | Dependencia ya presente en el estado basal | No atribuir una apertura que no ocurrió |
+| ADV-08 | Componente instalado pero incompatible | No clasificar τ2 como accesible |
+| ADV-09 | Dependencia operativa, pero τ2 no aplicable tras τ1 | Mantener separadas accesibilidad y aplicabilidad |
+| ADV-10 | Mismo ΔT_acc, distinta calidad de ejecución de τ2 | No atribuir la diferencia de Value a accesibilidad |
+
+Estas pruebas se proponen como extensión adversarial de S4-R. No se incorporan todavía como escenarios ejecutables ni se agregan a la matriz principal S0–S10/C131 hasta reconciliar numeración, diccionario y cobertura.
+
+### 31.8. Consecuencias para el estimando y la interpretación
+
+La aleatorización de Z_g identifica el efecto por asignación a las políticas ofrecidas, bajo los supuestos del diseño. No basta por sí sola para identificar el efecto de accesibilidad.
+
+El contraste θ_A(q*) requiere:
+- políticas implementables y factibles por historia;
+- cambio estructural de accesibilidad derivado de condiciones verificadas;
+- equivalencia de versiones en los aspectos no focales relevantes;
+- ausencia de vías alternativas diferenciales o identificación separada de estas;
+- medición independiente de ΔT_acc;
+- régimen q* común y soporte suficiente;
+- regla Value, población y horizonte coherentes.
+
+Si B_g/C_dep modifica otras vías hacia Value, el estimando identificado por la asignación será el efecto de política/paquete. No se renombra como θ_A(q*) ni se descompone por residuo sin un diseño identificador.
+
+### 31.9. Dictamen adversarial
+
+**Hallazgos conceptuales:**
+1. El mecanismo de §30 es coherente como mundo sintético aislado solo si la exclusión de vías alternativas se estipula y se verifica como invariante del DGP.
+2. La interpretación de p0/p1 necesita distinguir intento, éxito y estado técnico final, además de declarar el estado basal de C_dep.
+3. La condición C_dep debe conservar sus componentes y evidencia, evitando ocultar incompatibilidad o fallo bajo una etiqueta binaria.
+4. La calidad de ejecución de τ2 debe mantenerse constante en S4-R aislado; si cambia, aparece una vía adicional o una versión de intervención distinta.
+5. S4-R ampliado debe funcionar como prueba de detección de efectos de paquete, no como estimación del mismo θ_A(q*) bajo supuestos violados.
+
+**Decisión recomendada:** mantener S4-R aislado como escenario sintético principal, reformulando C_dep como capacidad técnica sandbox verificable; conservar S4-R ampliado como escenario adversarial separado. No congelar todavía el contrato de S4-R hasta incorporar estas precisiones y someterlas a revisión independiente.
+
+**Pendientes:** formalizar el estado basal C_dep,0; precisar el mecanismo de intento/éxito/provisión; completar el diccionario; definir las invariantes de exclusión; reconciliar ADV-01…10 con las matrices de escenarios y pruebas; verificar q* y soporte por historia; revisión independiente frente a C10-D1.
+
+**Estado:** auditoría adversarial conceptual/documental propuesta y registrada; no implementada, no simulada, no ejecutada, no auditada mediante pruebas, no aceptada y no congelada. XSYNC-138-01 permanece abierto. No modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. No autoriza implementación ni ejecución científica.
