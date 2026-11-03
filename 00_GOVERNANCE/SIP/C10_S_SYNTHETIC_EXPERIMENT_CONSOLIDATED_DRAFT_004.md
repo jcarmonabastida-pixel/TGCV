@@ -1365,3 +1365,73 @@ La implementación técnica requiere además contrato ejecutable, pruebas y auto
 **Pendiente:** asignación real de auditores, revisión integral C10-S frente a C10-D1, resolución de hallazgos y aceptación formal.  
 **No realizado:** auditoría independiente, implementación, simulación o ejecución.  
 **No autorizado por esta sección:** ejecución científica o avance automático a C10-P.
+
+
+---
+
+## 25. Auditoría cruzada C10-S ↔ C10-D1: coherencia de estimandos, intervenciones y constructos (sección conversacional 138)
+
+**Fuentes contrastadas:**
+- C10-S consolidado, borrador 004, rama research/c10-s-consolidation-draft.
+- C10-D1, C10_D1_CAUSAL_ACCESSIBILITY_VALUE_PROTOCOL_DRAFT_001.md, rama research/c10-d1-protocol-draft, blob SHA bf25f6ec8965166e5fa52ff18e6d07613bad0eb3.
+
+**Estado:** auditoría documental de coherencia; no es aceptación ni auditoría de implementación. No modifica C10-D1, Core, RMA, Matrix, STATUS ni claims.
+
+### 25.1 Regla de precedencia
+
+C10-D1 contiene precisiones posteriores sobre condiciones constitutivas, factibilidad de políticas, versiones de intervención, dinámica longitudinal, selección/ejecución y notación. C10-S debe ser compatible con ellas. En caso de diferencia:
+1. las definiciones de C10-D1, especialmente sus apartados 17, 24, 25, 26–30, son la referencia causal vigente de trabajo;
+2. C10-S describe cómo probar metodológicamente esas definiciones en un entorno sintético;
+3. una simplificación de C10-S no puede convertir una intervención implementable en una asignación abstracta de accesibilidad ni cambiar el significado del estimando;
+4. toda adaptación sintética debe identificarse como tal y preservar las restricciones de factibilidad.
+
+### 25.2 Hallazgos de auditoría
+
+| ID | Severidad provisional | Hallazgo | Consecuencia | Disposición requerida |
+|---|---|---|---|---|
+| XSYNC-138-01 | P0 — bloqueante para congelación causal | C10-S §16.3 define g1/g0 como políticas sobre autorización focal; C10-D1 §§17.5, 17.7 y 26 define g1/g0 como políticas implementables sobre cambios de accesibilidad, inducidos por componentes B/Z y respetando el conjunto factible. | Puede confundirse efecto de política de autorización con θ_A(q), o tratar autorización como si fuera accesibilidad. | Reformular el mapeo B/Z → condiciones/intervención → A=ΔT_acc; mantener ψ_policy como efecto de política y θ_A(q) como contraste entre políticas factibles de accesibilidad. |
+| XSYNC-138-02 | P1 | C10-S §16.2 incluye la regla de Value dentro de los elementos controlados por q_X. C10-D1 define q como régimen común de condiciones/historias; la regla de Value es una regla evaluativa fijada para el contraste, no una condición aleatoria de q. | Mezcla régimen causal con definición del resultado y puede introducir diferencias evaluativas entre regímenes. | Separar q_X de la regla Value; fijar beneficiario, criterio, escala y horizonte como parte del resultado/estimando, constantes en el contraste salvo que la pregunta estudie explícitamente un cambio evaluativo. |
+| XSYNC-138-03 | P1 | C10-S utiliza A_f* como indicador focal binario y en algunos pasajes aproxima A a ΔT_acc. C10-D1 §27 define ΔT_acc como objeto estructurado que puede incluir A+, A−, reconfiguración, cambios relacionales y configuracionales. | El indicador focal puede confundirse con el cambio completo del espacio transformacional. | Declarar A_f* como componente/indicador de accesibilidad de una transformación focal τ_f; preservar ΔT_acc estructurado como constructo TGCV más amplio. Definir la proyección focal y sus límites. |
+| XSYNC-138-04 | P1 | S4-R usa q*(L=1|X)=0.5 y políticas g1=.8/g0=.2 bajo la premisa de factibilidad en todos los estratos, pero no separa explícitamente L_c de L_m ni demuestra que las cuatro asignaciones sean realizables. | Puede generar contrafactuales imposibles o falta de positividad. | Especificar que el L de S4-R representa condiciones no constitutivas compatibles con el contraste; si incluye L_c, definir conjuntos factibles por historia. Verificar soporte de ambas políticas en cada estrato y declarar no identificación si falla. |
+| XSYNC-138-05 | P1 | C10-D1 §24.3 mantiene θ_A^dyn como marcador pendiente de formalización. C10-S no debe sugerir que existe ya un estimando dinámico listo para estimación. | Riesgo de tratar una etiqueta como estimando definido. | Mantener θ_A^dyn fuera del conjunto de estimandos evaluables hasta fijar historia, políticas dinámicas, factibilidad, población, Value, horizonte y supuestos. |
+| XSYNC-138-06 | P1 | C10-D1 §§17.6 y 26 advierten que dos intervenciones que producen el mismo ΔT_acc no son automáticamente equivalentes causalmente; pueden tener vías directas distintas hacia Value. | La igualdad de accesibilidad podría usarse indebidamente para agrupar versiones de tratamiento. | Incorporar equivalencia de accesibilidad, equivalencia de vías relevantes para Value y equivalencia de versión de tratamiento como juicios separados. |
+| XSYNC-138-07 | P1 | C10-D1 §§29–30 distingue trayectoria factible, conocida/considerada, seleccionada, iniciada, ejecutada, completada, no seleccionada, interrumpida o fallida. C10-S conserva solo parte de esos estados. | Pérdida de información sobre selección y ejecución; riesgo de sesgo post-tratamiento. | Ampliar diccionario y contrato de resultados para conservar estados y marcas temporales separados, sin ajustar mecánicamente por mediadores posteriores. |
+| XSYNC-138-08 | P1 | C10-S §20 denomina dictamen global del experimento y C10-D1 §21 clasifica resultados científicos C10. Son decisiones de niveles diferentes. | Riesgo de confundir superación metodológica de C10-S con conclusión científica sobre C10. | Mantener C10S-01…05 como dictámenes metodológicos del experimento sintético; conservar por separado las categorías científicas de C10-D1 (contribución identificada, equivalencia/adversidad delimitada, paquete identificado sin atribución, imprecisión o no-identificación). |
+| XSYNC-138-09 | P2 | C10-D1 §21.3 explicita la interpretación de intervalos respecto de δ y ε; C10-S §§21–23 define justificación, pero aún no incorpora la regla de clasificación completa como contrato de salida. | Puede haber ambigüedad al convertir estimaciones en conclusiones de relevancia/equivalencia. | Incorporar regla preespecificada para efecto relevante, equivalencia, efecto adverso e inconclusión; no usar p no significativo como equivalencia. |
+| XSYNC-138-10 | P2 | C10-D1 §§27–30 precisa enumeración de trayectorias, actualización dinámica, selección y no ejecución. C10-S cubre ramas y estados principales, pero no toda la secuencia de conocimiento/consideración/inicio/interrupción. | La evaluación sintética podría validar el enumerador sin probar el proceso posterior de selección/ejecución. | Ampliar el contrato de ejecución y declarar explícitamente qué parte queda fuera del alcance de C10-S si no se modela. |
+
+### 25.3 Distinción causal que debe regir la revisión
+
+La arquitectura que debe conservarse es:
+
+`B/Z` (intervención o componente implementable)
+→ condiciones y respuesta estructural
+→ `A=ΔT_acc` (medición independiente, estructurada)
+→ Reach y trayectorias factibles
+→ conocimiento/consideración y selección
+→ ejecución (parcial, completa, interrumpida o ausente)
+→ Outcome
+→ Value.
+
+Esta cadena no afirma mediación exclusiva. Deben mantenerse registradas las vías alternativas desde B/Z hacia Value y las condiciones que afectan simultáneamente accesibilidad, selección, ejecución y resultados.
+
+Los estimandos siguen separados:
+- TE_Z: efecto total de asignación/intervención.
+- ψ_policy: efecto de la política implementable concreta (por ejemplo, autorización), incluyendo sus vías.
+- θ_A(q): contraste entre políticas factibles sobre cambios de accesibilidad bajo un régimen común q, solo cuando el mapeo intervención→A y la identificación específica son defendibles.
+- θ_{L,A}: efecto de un régimen conjunto de condiciones y accesibilidad, no atribución exclusiva a A.
+- θ_A^dyn: marcador no disponible para estimación hasta formalización completa.
+
+### 25.4 Estado de los hallazgos
+
+- XSYNC-138-01: **abierto; bloquea congelación de la especificación causal C10-S y cualquier interpretación de g como política de accesibilidad**.
+- XSYNC-138-02 a 138-08: **abiertos; requieren corrección documental antes de aceptación integral**.
+- XSYNC-138-09 y 138-10: **abiertos; requieren incorporación o delimitación explícita del alcance**.
+
+No se declara cerrado ningún hallazgo por esta auditoría. No se modifica C10-D1 ni se altera el contenido histórico de sus addenda. Las correcciones deberán incorporarse como nueva revisión del documento C10-S, conservando la trazabilidad de la versión anterior.
+
+### 25.5 Decisión operativa
+
+La consolidación C10-S puede seguir en estado de borrador para revisión, pero **no debe congelarse, implementarse ni utilizarse para ejecución confirmatoria** hasta resolver XSYNC-138-01 y los hallazgos P1 pertinentes. El siguiente trabajo es una revisión correctiva de C10-S frente a C10-D1, no una ampliación de escenarios ni un salto a código.
+
+**Estado de la auditoría:** documental ejecutada sobre las versiones identificadas; hallazgos registrados; sin aceptación ni cierre formal.
