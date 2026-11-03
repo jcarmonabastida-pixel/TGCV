@@ -4206,3 +4206,125 @@ La factibilidad de B₀ y B₁ no implica que ambos estados de D_f sean posibles
 Continúan abiertas: distribución P* y población objetivo; accesibilidad basal A_f,base*; definición/medición de C_c; soporte por estrato; unidad de asignación e interferencia; regla de Value y pérdidas; y si las variantes con L_m requieren q_L* explícito o se limitan a demostrar no-identificación sin intervención adecuada.
 
 **Dictamen:** q_X* queda definido conceptualmente como distribución basal común; q_L* es un objeto distinto reservado a intervenciones dinámicas. La simplificación mejora la atribución focal bajo el DGP estipulado, pero no demuestra que los supuestos se cumplan en sistemas reales. No congelar S4-R, implementar ni simular hasta cerrar las decisiones abiertas y obtener revisión independiente.
+
+
+---
+
+## 45. Unidad experimental, unidad de asignación e interferencia en S4-R (sección conversacional 158)
+
+**Estado:** propuesta de especificación de diseño para C10-S/S4-R. No modifica C10-D1 ni el Core TGCV. No es freeze, implementación, simulación, ejecución, auditoría independiente ni aceptación.
+
+### 45.1. Tres unidades diferenciadas
+
+Se definen por separado:
+
+1. **Unidad experimental (UE):** sistema generativo autónomo para el que se definen accesibilidad, trayectorias, Outcome y Value potenciales.
+2. **Unidad de asignación (UA):** unidad a la que se asigna Z y, por tanto, la política de provisión.
+3. **Unidad de observación (UO):** nivel al que se registran variables, snapshots y resultados; puede incluir medidas anidadas dentro de la UE.
+
+La configuración primaria propuesta es UE=UA, con UO anidadas en UE cuando sea necesario. Esta coincidencia solo es admisible si la provisión, dependencia, recursos y resultados de una unidad no afectan a otras unidades del experimento. No se presume por definición.
+
+### 45.2. Fuentes potenciales de interferencia
+
+En S4-R, la dependencia técnica puede generar exposición compartida mediante:
+- instalación, licencia o paquete reutilizado;
+- servidor, entorno de ejecución o infraestructura común;
+- equipo técnico, capacidad de instalación o soporte compartido;
+- transferencia de configuraciones o conocimiento entre unidades;
+- competencia por recursos que altera tiempos o calidad de provisión;
+- propagación de fallos, incompatibilidades o actualizaciones.
+
+La interferencia puede ser positiva (una provisión habilita otra unidad) o negativa (una provisión desplaza capacidad o introduce fallos). También puede alterar A_f*, ejecución, Outcome o Value sin cambiar la asignación individual.
+
+### 45.3. Hipótesis primaria de no interferencia
+
+Para el S4-R sintético aislado se propone generar unidades independientes, cada una con:
+- dependencia, instalación y entorno técnico propios;
+- recursos y capacidad no compartidos;
+- ausencia de transferencia entre unidades;
+- asignación y provisión sin efectos sobre otras unidades;
+- generación independiente de errores, salvo factores basales explícitamente modelados.
+
+Bajo esta estipulación, los resultados potenciales de la unidad i dependen de su propia asignación:
+
+`Y_i(z_i,mathbf z_{-i}) = Y_i(z_i)`
+
+La hipótesis debe verificarse como invariante del generador y someterse a pruebas adversariales; no es evidencia de que sistemas reales carezcan de interferencia. La independencia estadística de los errores tampoco sustituye a la ausencia causal de interferencia.
+
+### 45.4. Cuando UE y UA no coinciden
+
+Si la dependencia o los recursos se comparten, la asignación individual puede contaminarse. Se contemplan tres diseños alternativos:
+
+**A. Aleatorización por conglomerados.** La UA es el conglomerado que comparte dependencia, infraestructura o capacidad. Todas las UE del conglomerado reciben la misma política. El análisis debe reconocer la correlación intraclúster y el número de conglomerados como determinante de la precisión.
+
+**B. Diseño de saturación.** Se asigna aleatoriamente a conglomerados una proporción objetivo de unidades tratadas y después se aleatoriza dentro de conglomerado. Permite estudiar efectos directos e indirectos según exposición, si el mapa de interferencia está bien definido.
+
+**C. Exposición de red o mapa explícito.** Se define para cada unidad una exposición G_i a las asignaciones/provisiones de otras unidades (por ejemplo, proporción de vecinos o unidades conectadas con dependencia instalada). Los resultados potenciales se expresan Y_i(z_i,G_i). El estimando debe especificar contraste propio y exposición; no se aplica el ITT individual sin modificación.
+
+No se elegirá uno de estos diseños para el S4-R primario mientras se mantenga la estipulación de independencia entre unidades. Se conservarán como variantes adversariales y posibles extensiones a C10-P.
+
+### 45.5. Estimandos bajo interferencia
+
+Si hay interferencia, el resultado potencial individual se representa:
+
+`Y_i(z_i,g_i)`
+
+donde g_i es una exposición definida mediante un mapa de interferencia preespecificado. Deben distinguirse:
+- efecto directo: cambiar z_i manteniendo fija la exposición g_i;
+- efecto indirecto/spillover: cambiar g_i manteniendo z_i;
+- efecto total: cambiar conjuntamente asignación propia y exposición;
+- efecto de política/conglomerado: contraste entre regímenes de asignación.
+
+Estos contrastes no son intercambiables. La forma de aleatorización debe proporcionar soporte para las exposiciones comparadas. Si el diseño no genera ese soporte, el efecto correspondiente no se identifica.
+
+### 45.6. Invariantes del generador y pruebas adversariales
+
+**Invariantes del S4-R primario:**
+1. Cada UE tiene dependencia y entorno aislados.
+2. Ninguna instalación cambia C_dep o A_f* de otra UE.
+3. No se comparten recursos limitantes entre UE.
+4. No hay transferencia de configuraciones, conocimiento ni efectos de red.
+5. La asignación de una UE no altera provisión, trayectoria, Outcome o Value de otra.
+6. Los identificadores UE, UA y UO quedan registrados y enlazados.
+7. La unidad de análisis coincide con la unidad de asignación en el análisis primario si UE=UA.
+8. Si existen observaciones repetidas/anidadas, se modela su dependencia y no se cuentan como UE independientes.
+
+**Pruebas adversariales propuestas:**
+- INT-01: instalación compartida habilita τ2 en unidad no asignada.
+- INT-02: capacidad técnica compartida retrasa o impide instalación de otra unidad.
+- INT-03: una licencia limita el número de unidades habilitadas.
+- INT-04: propagación de actualización o fallo entre unidades.
+- INT-05: transferencia de conocimiento cambia la accesibilidad de control.
+- INT-06: exposición de red modifica selección o ejecución.
+- INT-07: asignación individual aleatoria con contaminación entre brazos.
+- INT-08: conglomerados con correlación intraclúster y número reducido de conglomerados.
+- INT-09: mapa de exposición mal especificado.
+- INT-10: unidad de observación confundida con unidad experimental, produciendo pseudorreplicación.
+
+Cada prueba debe tener un resultado esperado de detección, clasificación de estimando y limitación de identificación. No se asignará PASS hasta implementar y ejecutar pruebas.
+
+### 45.7. Consecuencias para tamaño muestral e inferencia
+
+La cifra provisional N=2000 no puede interpretarse como 2000 unidades independientes si la asignación se hace por conglomerados o existen medidas anidadas. En diseños agrupados la precisión depende, entre otros factores, del número de conglomerados, tamaños, variación de tamaños y correlación intraclúster. Debe recalcularse mediante análisis de potencia o precisión coherente con el diseño finalmente elegido.
+
+Para el S4-R aislado, N=2000 por réplica y 1000 réplicas Monte Carlo siguen siendo parámetros provisionales del plan previo, no una decisión de tamaño muestral. No se ejecuta ni se declara potencia.
+
+### 45.8. Decisión propuesta
+
+**S4-R primario:** estipular UE=UA y ausencia de interferencia mediante aislamiento de dependencias, recursos y entornos. La unidad de observación puede ser anidada, pero no se cuenta como unidad experimental independiente.
+
+**Variantes adversariales:** incluir interferencia positiva, negativa, de red y por conglomerado para comprobar que el analizador no interpreta como efecto individual lo que es efecto indirecto o de política agrupada.
+
+**C10-P:** la unidad de asignación deberá elegirse tras mapear dependencias y recursos compartidos en el sistema real; no se heredará automáticamente UE=UA.
+
+### 45.9. Cuestiones pendientes y dictamen
+
+Quedan pendientes:
+- verificar si la unidad autónoma del modelo representa adecuadamente el sistema generativo de interés;
+- decidir la granularidad de UE y UO;
+- establecer cómo se mapearán recursos y dependencias compartidas en C10-P;
+- definir exposición y estimandos si se detecta interferencia;
+- ajustar inferencia y tamaño muestral si la asignación es agrupada;
+- revisar la coherencia de esta estipulación con el contrato de C_dep y con q_X*.
+
+**Dictamen:** la ausencia de interferencia se propone como estipulación explícita del DGP primario sintético, no como supuesto general de TGCV ni como afirmación empírica. El diseño alternativo ante interferencia queda delimitado, pero no seleccionado. No congelar S4-R, implementar ni simular hasta completar las decisiones abiertas y revisión independiente.
