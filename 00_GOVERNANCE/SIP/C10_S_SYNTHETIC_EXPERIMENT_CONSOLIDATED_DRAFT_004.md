@@ -3844,3 +3844,141 @@ El análisis de casos completos puede destruir la comparabilidad creada por la a
 **Decisión propuesta:** mantener el ITT en población asignada como objetivo primario; registrar pérdidas por bloque y temporalidad; separar MCAR/MAR/MNAR como supuestos de análisis, no diagnósticos automáticos; añadir MISS-01…MISS-15; utilizar ponderación, imputación, sensibilidad o límites solo cuando sus supuestos sean defendibles; no excluir casos incompletos por defecto.
 
 **Estado:** contrato de ausencia/selección propuesto, no implementado ni probado. XSYNC-138-01 y las decisiones abiertas sobre mecanismos de ausencia, métodos, tolerancias, δ/ε, Se/Sp e inferencia permanecen pendientes.
+
+
+
+---
+
+## 42. Auditoría integral de coherencia causal, transformacional y estadística
+
+**Estado:** auditoría documental interna de coherencia. No es revisión externa independiente, implementación, simulación, ejecución ni aceptación. No cierra XSYNC-138-01 ni modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 o cierres previos.
+
+### 42.1. Objeto y alcance de la auditoría
+
+Se contrasta la coherencia interna entre:
+1. DAG, intervención y estimandos;
+2. DGP de provisión y accesibilidad;
+3. representación de ΔT_acc, Reach y trayectorias;
+4. medición verdadera/observada y validación;
+5. inferencia IV/Wald y heterogeneidad;
+6. ausencia de datos, selección y población objetivo;
+7. reglas de Value y criterios de aceptación.
+
+La auditoría distingue coherencia matemática bajo un DGP estipulado, identificación causal bajo supuestos, recuperación estadística y validez de medición TGCV. Ninguna de estas capas sustituye a las demás.
+
+### 42.2. Hallazgo INT-42-01 — estimandos que no deben confundirse
+
+En el escenario homogéneo ilustrativo:
+- primera etapa verdadera: ITT_A = 0.80 − 0.20 = 0.60;
+- efecto de asignación/política sobre Value: ITT_V = 3.60;
+- cociente Wald: ITT_V / ITT_A = 6.00.
+
+El 3.60 es el contraste de Value inducido por las dos políticas en el DGP especificado. El 6.00 es el efecto focal por unidad de accesibilidad bajo los supuestos IV y homogeneidad del ejemplo; con heterogeneidad, el Wald identifica un LATE ponderado de compliers, no automáticamente el ATE ni el efecto medio poblacional.
+
+La notación debe mantener separados:
+- ITT_Z: efecto de asignación de la política;
+- ψ_B(q*): contraste entre políticas implementables de provisión;
+- LATE_f: efecto local de accesibilidad focal entre compliers;
+- θ_A(q): estimando general de C10-D1 sobre el cambio de accesibilidad/espacio definido en ese protocolo.
+
+No llamar θ_Af al Wald y a ψ_B indistintamente. La relación entre estos parámetros depende del DGP y de los supuestos de identificación. El efecto focal sobre τ2 no valida el efecto general de ΔT_acc.
+
+### 42.3. Hallazgo INT-42-02 — población, ITT y Value faltante
+
+La población asignada define el objetivo ITT, pero no garantiza identificación puntual cuando Value no se observa. Deben distinguirse:
+- definición del estimando en toda la población asignada;
+- estimación con Value observado;
+- identificación bajo supuestos de ausencia;
+- conjunto de valores compatible/límites cuando no hay identificación puntual.
+
+El análisis de casos completos no se convierte en ITT por conservar la etiqueta. Si R_V depende de Z, A, pronóstico o Value no observado, la comparación observada puede estar seleccionada. Ponderación, imputación o g-computation solo proceden bajo sus supuestos específicos y positividad. Para MNAR deben presentarse sensibilidad, modelos explícitos o límites. Si Value no está definido ontológicamente para ciertas unidades, no tratarlo como un dato faltante: redefinir población o estimando.
+
+### 42.4. Hallazgo INT-42-03 — régimen común q* y temporalidad
+
+q* no puede ser una distribución marginal abstracta ni un ajuste estadístico posterior. Debe especificar:
+- población objetivo y covariables basales X;
+- historia relevante y orden temporal;
+- variables constitutivas C_c que no se pueden fijar en estados incompatibles;
+- régimen común efectivamente implementable para las variables post-asignación incluidas;
+- soporte y factibilidad de ambos brazos en cada historia objetivo;
+- regla de Value, beneficiario y horizonte.
+
+Si L_m es posterior a Z, su distribución común debe proceder de una intervención/regla definida en el diseño o de una estrategia de identificación justificada. No asumir que condicionar/estandarizar por L_m reproduce q*. Si L_m es afectada por Z y afecta A_f o V, el ajuste ingenuo puede introducir sesgo o cambiar el estimando.
+
+### 42.5. Hallazgo INT-42-04 — interferencia y unidad de asignación
+
+El contrato debe especificar ausencia de interferencia entre unidades o modelar explícitamente la interferencia. Una dependencia, licencia, servidor, equipo técnico o recurso compartido puede:
+- habilitar τ2 para varias unidades;
+- desplazar capacidad entre unidades;
+- generar contaminación entre brazos;
+- producir efectos de red o saturación.
+
+Si existe exposición compartida, la asignación individual puede no representar el tratamiento recibido. Deben definirse unidad de asignación, unidad de análisis, conglomerados, mapa de exposición y estimando bajo interferencia. Si la hipótesis de no interferencia no es plausible, usar asignación por conglomerados o diseño de saturación cuando corresponda; no asumir independencia de unidades por conveniencia computacional.
+
+### 42.6. Hallazgo INT-42-05 — cadena transformacional y temporal
+
+Se mantiene la separación:
+- A_f*: accesibilidad verdadera de τ2;
+- A_f_obs: medición de la accesibilidad focal;
+- App_f: aplicabilidad en estado/historia concretos;
+- selección de trayectoria;
+- ejecución efectiva;
+- Outcome;
+- Value.
+
+A_f* no sustituye ΔT_acc completo. Deben preservarse U, R y C, sus versiones y snapshots. Reach y trayectorias candidatas se derivan de T_acc y condiciones en cada estado; no se reconstruyen retrospectivamente desde ejecuciones u Outcomes. La falta de snapshot produce indeterminación temporal, no un estado constante supuesto.
+
+El DGP y el analizador deben compartir definiciones y diccionario, pero no acceso a la verdad oculta: el generador/evaluador conserva A_f* y parámetros verdaderos; el analizador recibe solo asignación, registros observables, probabilidades de diseño y reglas de medición autorizadas.
+
+### 42.7. Hallazgo INT-42-06 — medición e inferencia IV
+
+La relación ITT_Aobs = (Se + Sp − 1) ITT_A* solo se aplica bajo error de clasificación no diferencial entre brazos, sensibilidad/especificidad constantes y condiciones de medición compatibles con el modelo. No es una corrección universal. Si Se/Sp difieren por brazo, versión, historia o tiempo, la primera etapa observada puede atenuarse, invertirse o aparecer espuriamente.
+
+La validación requiere referencia independiente suficientemente fiable, selección conocida y propagación de incertidumbre. Si la referencia también es imperfecta, no denominarla gold standard sin justificación.
+
+Para inferencia IV:
+- reportar primera etapa, forma reducida y Wald por separado;
+- no usar solo errores estándar delta/convencionales si el instrumento puede ser débil;
+- considerar inversión Anderson–Rubin u otro procedimiento robusto a instrumentos débiles;
+- permitir conjuntos de confianza no acotados o disjuntos;
+- evaluar cobertura y error Monte Carlo en simulación;
+- mantener separados error de medición, debilidad instrumental y violación de exclusión.
+
+### 42.8. Matriz integrada de coherencia
+
+| Capa | Condición de coherencia | Estado documental |
+|---|---|---|
+| DAG/estimandos | ITT, política, LATE y θ_A general separados | Parcial; requiere armonización final de notación |
+| DGP/provisión | Z→B→instalación verificada→A_f* | Propuesto; estado basal y éxito operativo aún abiertos |
+| Exclusión/monotonicidad | Sin vías directas; monotonicidad explicitada como supuesto | Estipulado en DGP aislado, no validado empíricamente |
+| ΔT_acc/Reach | Focal τ2 no sustituye espacio completo | Regla definida; implementación no probada |
+| q*/soporte | Régimen común implementable y factible por historia | Abierto |
+| Medición | A_f* separado de A_f_obs y T_acc multidimensional | Propuesto; Se/Sp y validación abiertos |
+| Inferencia | Wald/LATE local y robustez a instrumento débil | Métodos propuestos; no ejecutados |
+| Ausencia/selección | Estimando poblacional separado de estimación observada | Propuesto; mecanismos y métodos pendientes |
+| Interferencia | Unidad y exposición compartida especificadas | Brecha contractual por resolver |
+| Value | Regla estable, independiente y comparable entre brazos | Requiere verificación final de invariancia y datos faltantes |
+| Aceptación | Recuperación sintética + auditoría + límites declarados | Criterios aún no ejecutados |
+
+### 42.9. Decisiones requeridas antes de implementar
+
+1. Congelar un diccionario único de variables, símbolos, tiempos y estimandos.
+2. Definir formalmente población objetivo, unidad de asignación/análisis y tratamiento de interferencia.
+3. Especificar q* como régimen intervenible, con historia y soporte.
+4. Cerrar el estado basal de C_dep y distinguir intento, instalación, operación y verificación.
+5. Precisar si la calidad/versiones de τ2 son invariantes en el DGP aislado.
+6. Separar ψ_B, ITT_Z, LATE_f y θ_A general en todas las ecuaciones, tablas y reportes.
+7. Definir Value para la población objetivo y la estrategia ante Value no observado/no definido.
+8. Cerrar protocolo de referencia de medición, submuestra y error diferencial.
+9. Preespecificar inferencia robusta a instrumento débil y sensibilidad a exclusión/monotonicidad.
+10. Resolver las tolerancias, δ/ε y criterios de aceptación antes de observar resultados.
+11. Realizar revisión cruzada independiente de C10-S frente a C10-D1 y revisión externa del contrato.
+12. Solo después implementar el generador y ejecutar las pruebas autorizadas.
+
+### 42.10. Dictamen integrado
+
+La arquitectura de C10-S es conceptualmente articulable, pero todavía no constituye un contrato ejecutable sin ambigüedad. Los principales bloqueos no son la falta de más escenarios, sino la armonización de estimandos, la intervención q*, la unidad de interferencia, el estado basal de la dependencia, la definición de Value y la identificación bajo ausencia/medición imperfecta.
+
+La evidencia sintética futura deberá demostrar recuperación de verdades programadas y detección de violaciones; no demostrará que los supuestos IV se cumplen en un sistema real. El resultado admisible podrá ser recuperación, identificación parcial, no-identificación o fallo del procedimiento.
+
+**Decisión:** no congelar S4-R, no iniciar simulación ni declarar cierre de XSYNC-138-01. La sección 42 consolida hallazgos y brechas para una revisión independiente posterior. No se modifica C10-D1 ni ningún artefacto de gobernanza superior.
