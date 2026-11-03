@@ -1711,3 +1711,128 @@ S4-O y S4-R no son réplicas del mismo diseño ni deben agregarse como si estima
 - XSYNC-138-05, 09 y 10: permanecen abiertos salvo la delimitación parcial de alcance descrita aquí.
 
 **Estado general:** reespecificación documental propuesta; no implementada, no simulada, no ejecutada ni aceptada. Los valores numéricos siguen siendo ilustrativos. La auditoría cruzada debe verificar que S4-R conserva el estimando de C10-D1 y que q* y las políticas tienen implementación coherente.
+
+
+---
+
+## 28. Versiones de intervención, equivalencia causal y estados longitudinales de trayectoria (sección conversacional 141)
+
+**Base de coherencia:** C10-D1 §§17.5–17.7, 26–30. Esta sección completa las correcciones iniciadas en §§26–27. No modifica el significado del estimando de C10-D1.
+
+### 28.1. Identidad de la intervención y versiones
+
+Cada intervención/política B debe tener una ficha de versión que incluya:
+- mecanismo/componente implementado;
+- transformación, unidad o elemento del sistema afectado;
+- intensidad, alcance y duración;
+- momento de inicio y calendario;
+- población/unidad destinataria;
+- condiciones y recursos de implementación;
+- información, expectativas, incentivos, trato y prioridades que puedan cambiar;
+- costes, tiempos, riesgos, calidad y distribución de beneficios;
+- versión del procedimiento y evidencia de cumplimiento.
+
+La asignación Z identifica qué versión se ofrece/asigna; el registro de recepción y cumplimiento identifica qué versión se implementó efectivamente. No se colapsan asignación, recepción, intervención implementada y respuesta estructural A=ΔT_acc.
+
+### 28.2. Tres equivalencias independientes
+
+| Tipo | Pregunta | Consecuencia |
+|---|---|---|
+| Equivalencia transformacional | ¿Las versiones producen el mismo cambio estructurado ΔT_acc bajo la regla de identidad/granularidad fijada? | Compara el constructo de accesibilidad |
+| Equivalencia de intervención | ¿Las versiones son iguales en mecanismo, unidad, intensidad, tiempo, recursos y condiciones de implementación relevantes? | Compara tratamientos implementados |
+| Equivalencia causal respecto a Value | ¿Las versiones generan los mismos resultados potenciales de Value en la población/horizonte especificados? | Compara sus consecuencias evaluativas |
+
+Ninguna equivalencia implica automáticamente las otras. En particular, igualdad de ΔT_acc no permite agrupar versiones si difieren en costes, demoras, calidad, riesgo, trato o distribución de beneficios. La equivalencia causal respecto a Value requiere evidencia/diseño apropiados y no se deduce de similitud descriptiva.
+
+### 28.3. Regla de atribución cuando las versiones difieren
+
+- Si las versiones difieren únicamente en la distribución inducida de accesibilidad y las restantes vías están controladas por diseño o identificadas separadamente, el contraste puede ser candidato a θ_A(q).
+- Si difieren en accesibilidad y en otras vías no separadas, el contraste estima un efecto de política/paquete (ψ_policy) o queda parcialmente identificado.
+- Si producen el mismo ΔT_acc pero difieren en costes/tiempos/calidad/riesgos, el contraste es un efecto entre versiones de intervención, no un efecto de accesibilidad.
+- Si no puede establecerse qué versión se implementó, se informa contaminación/no cumplimiento y se mantiene el ITT por asignación como estimando distinto del efecto de recepción.
+
+No se utilizará el residual TE−θ_A como efecto directo puro. Solo se informará si ambos estimandos son compatibles en población, escala y horizonte; incluso entonces puede contener vías alternativas e interacciones.
+
+### 28.4. Interacción entre condiciones y accesibilidad
+
+Se conserva el estimando conjunto θ_(L,A) para contrastes coordinados de condiciones y accesibilidad. Cuando el diseño haga factibles e identificables las cuatro combinaciones, puede definirse una interacción aditiva I_(A,L) como diferencia entre el efecto de accesibilidad bajo dos regímenes de condiciones:
+
+I_(A,L) = [V(q1,g1) − V(q1,g0)] − [V(q0,g1) − V(q0,g0)].
+
+Esta interacción:
+- requiere que q0/q1 y g0/g1 estén definidos como políticas factibles;
+- requiere soporte para las cuatro combinaciones en la población objetivo;
+- no se interpreta como componente universal de C10;
+- no se presume nula ni se usa para forzar una descomposición aditiva;
+- si alguna combinación es imposible, se informa no-identificación de esa interacción o se define un estimando restringido distinto.
+
+### 28.5. Contrato longitudinal de trayectorias
+
+Para cada trayectoria candidata, conservar un historial de eventos y marcas temporales, no una única variable binaria de ejecución. Estados mínimos:
+1. factible respaldada;
+2. conocida/identificada por los agentes pertinentes;
+3. considerada;
+4. seleccionada;
+5. inicio/intento;
+6. ejecución parcial;
+7. ejecución completa;
+8. completada según criterio terminal;
+9. no seleccionada;
+10. no iniciada;
+11. interrumpida/abandonada;
+12. fallida.
+
+Las categorías pueden coexistir secuencialmente: una trayectoria puede ser seleccionada, iniciada, parcialmente ejecutada y después interrumpida. Registrar quién decide, momento, información disponible, regla de selección, motivo conocido y transformaciones realizadas.
+
+La factibilidad es propiedad del sistema bajo condiciones e historia definidas. Conocimiento/consideración/selección son propiedades del proceso de decisión de agentes. La falta de conocimiento o selección no convierte automáticamente una transformación en inaccesible. Si información o permiso son condiciones constitutivas de realizabilidad, se modelan como tales dentro de T_acc y se aporta evidencia.
+
+### 28.6. No ajustar mecánicamente por selección o ejecución
+
+Para θ_A(q), selección y ejecución son respuestas posteriores a las políticas g_j. Su evolución bajo cada política forma parte del resultado potencial V^(q,g_j). No condicionar por selección, inicio o ejecución observada como si fueran covariables basales para estimar el efecto total de la política.
+
+Si se desea estudiar efectos entre quienes ejecutan, se necesita un estimando distinto y una estrategia de identificación específica; no se interpreta la comparación observada entre ejecutores como causal por defecto.
+
+### 28.7. Extensión del diccionario y contrato de datos
+
+Añadir por intervención:
+- intervention_id, intervention_version, assignment_id, receipt_status, implementation_fidelity;
+- component, target_unit, intensity, scope, start_time, duration, implementation_conditions;
+- resources, information_change, incentive_change, expectation_change, priority_change, treatment_other_paths;
+- costs, delay, quality, risk, benefit_distribution.
+
+Añadir por trayectoria/evento:
+- trajectory_id, event_id, event_time, agent/decision_unit;
+- feasibility_status, knowledge_status, consideration_status, selection_status;
+- initiation_status, execution_status, completion_status, interruption/failure_reason;
+- information_at_decision, selection_rule, transformations_attempted/completed;
+- T_acc_snapshot_id y evidencia temporal asociada.
+
+Los registros deben permitir reconstruir qué era accesible, qué conocían los agentes, qué eligieron y qué ejecutaron en cada momento. No inferir estados anteriores desde Outcome o Value.
+
+### 28.8. Pruebas de consistencia adicionales
+
+- VER-01: dos versiones con mismo ΔT_acc y distinto coste no se declaran equivalentes causalmente.
+- VER-02: dos versiones con mismo ΔT_acc y distinta demora conservan identidad de versión.
+- VER-03: dos versiones con mismo ΔT_acc y distinto riesgo/calidad no se agrupan como un único tratamiento.
+- VER-04: versión asignada y versión recibida se registran separadamente.
+- VER-05: incumplimiento no altera el ITT por asignación.
+- VER-06: el efecto de paquete no se etiqueta θ_A(q) si existen vías adicionales no separadas.
+- TRJ-01: factible pero desconocida no equivale a inaccesible.
+- TRJ-02: conocida pero no considerada se conserva como estado distinto.
+- TRJ-03: seleccionada pero no iniciada no equivale a ejecutada.
+- TRJ-04: parcial seguida de interrupción conserva ambos eventos.
+- TRJ-05: finalización exige criterio terminal preespecificado.
+- TRJ-06: ejecución observada no se usa para reconstruir retrospectivamente T_acc.
+- TRJ-07: el estimador de efecto total no ajusta mecánicamente por selección/ejecución posteriores.
+- INT-01: interacción I_(A,L) se calcula solo si las cuatro combinaciones son factibles e identificables.
+- INT-02: combinación imposible produce no-identificación/restricción explícita, nunca extrapolación silenciosa.
+
+### 28.9. Relación con hallazgos XSYNC-138
+
+- XSYNC-138-06: respuesta documental ampliada; pendiente de auditoría de ejemplos y prueba de equivalencia de versiones.
+- XSYNC-138-07: respuesta documental ampliada; pendiente de verificación de exhaustividad respecto al contrato longitudinal C10-D1.
+- XSYNC-138-10: el alcance sintético ahora distingue enumeración, conocimiento/consideración, selección e historial de ejecución; queda pendiente demostrar que las pruebas cubren cada estado.
+- XSYNC-138-08: sigue abierto; el dictamen metodológico C10-S y la conclusión científica C10 deben quedar en contratos separados.
+- XSYNC-138-01: §§26–28 ofrecen una corrección coherente propuesta; no se cierra sin revisión independiente y aceptación.
+
+**Estado:** contrato documental ampliado; no implementado, simulado, ejecutado ni auditado mediante pruebas. Los hallazgos siguen abiertos hasta revisión y cierre explícito.
