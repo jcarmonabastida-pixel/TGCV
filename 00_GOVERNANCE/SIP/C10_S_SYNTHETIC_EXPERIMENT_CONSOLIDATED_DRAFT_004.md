@@ -3365,3 +3365,150 @@ La sensibilidad a defiers debe ser un análisis del evaluador con verdad conocid
 9. Someter la especificación revisada a revisión independiente antes de simulación o ejecución.
 
 **Dictamen:** relevancia, monotonicidad, cumplimiento y consistencia son condiciones distintas. La política alta puede tener primera etapa positiva y aun así generar defiers. Una construcción monotónica es útil para calibración sintética, pero no valida el supuesto en sistemas reales. La interpretación LATE requiere además exclusión, consistencia/versiones, independencia y ausencia de interferencia. XSYNC-138-01 permanece abierto; no se ha implementado, simulado, ejecutado ni aceptado el diseño.
+
+
+---
+
+## 39. Auditoría de identificación estadística e inferencia del estimador Wald (sección conversacional 152)
+
+**Estado:** especificación metodológica propuesta. No es simulación, resultado de potencia, auditoría independiente ni aceptación del diseño. No cierra XSYNC-138-01 ni modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 o cierres previos.
+
+### 39.1. Dos preguntas distintas
+
+La inferencia de S4-R debe separar:
+
+1. **Identificación causal:** bajo aleatorización, relevancia, exclusión, monotonicidad, consistencia/versiones y ausencia de interferencia, el cociente instrumental tiene interpretación LATE para los compliers.
+2. **Recuperación estadística:** con el tamaño muestral, variabilidad, tasa de primera etapa, error de medición y estimador elegido, ¿se recupera ese parámetro con sesgo, cobertura y precisión aceptables?
+
+Un estimando identificado puede estimarse con gran incertidumbre. Una estimación precisa no corrige supuestos causales falsos. El DGP sintético debe probar ambas dimensiones por separado.
+
+### 39.2. Definición del estimador
+
+Con instrumento aleatorio (Z_g), accesibilidad focal verdadera binaria (A_f) y Value (V):
+
+[
+widehat{ITT}_A=ar A_{Z=1}-ar A_{Z=0},qquad
+widehat{ITT}_V=ar V_{Z=1}-ar V_{Z=0}.
+]
+
+El estimador de Wald es:
+
+[
+widehat{	heta}_{W}=
+rac{widehat{ITT}_V}{widehat{ITT}_A}.
+]
+
+Bajo los supuestos de §36–38, estima LATE. Sin monotonicidad o exclusión puede seguir siendo un cociente descriptivo de formas reducidas, pero no tiene la interpretación LATE focal propuesta.
+
+El analizador no recibe coeficientes ni estados potenciales verdaderos. Recibe asignación, variables observadas, protocolo de medición y reglas de análisis. El evaluador conserva el DGP, los estados potenciales y el efecto verdadero.
+
+### 39.3. Riesgos de muestra finita y denominador débil
+
+El cociente de dos estimaciones aleatorias no se comporta como una estimación lineal ordinaria:
+- si la primera etapa es pequeña, el denominador puede acercarse a cero;
+- el cociente puede presentar sesgo de muestra finita y distribución asimétrica;
+- errores estándar delta/Wald pueden ser poco fiables con instrumento débil;
+- intervalos simétricos pueden excluir valores plausibles o sugerir precisión inexistente;
+- una primera etapa positiva en la muestra no garantiza una primera etapa poblacional suficientemente fuerte.
+
+Por ello, no se declarará «instrumento fuerte» usando solo una regla mecánica ni se utilizará el estadístico F como certificado de validez causal. Se informarán tamaño, estimación e intervalo de la primera etapa, además de la incertidumbre del efecto reducido.
+
+### 39.4. Inferencia del cociente y conjuntos de confianza
+
+La especificación primaria debe construir un conjunto de confianza para el cociente mediante inversión de una prueba sobre:
+
+[
+ITT_V-	heta,ITT_A=0.
+]
+
+El enfoque de Fieller o una inversión equivalente de pruebas robustas a instrumento débil puede producir intervalos muy amplios, no acotados o disjuntos cuando la primera etapa es débil. Eso es un resultado informativo de falta de precisión, no un fallo que deba ocultarse.
+
+El intervalo delta puede presentarse como complemento cuando la primera etapa sea suficientemente precisa y alejada de cero, nunca como único intervalo en escenarios de instrumento débil.
+
+La implementación estadística concreta (Fieller, inversión tipo Anderson–Rubin para el parámetro de razón u otro método adecuado al estimando LATE) queda pendiente de selección y validación. No se asumirá que cualquier procedimiento denominado Anderson–Rubin identifica LATE bajo heterogeneidad; el método deberá justificarse para el parámetro de razón y el diseño exacto.
+
+### 39.5. Aleatorización, estratos y errores estándar
+
+La asignación (Z_g) debe analizarse según el esquema realmente generado:
+- respetar bloques/estratos de aleatorización;
+- ajustar por variables basales solo según un plan preespecificado;
+- utilizar errores estándar compatibles con la unidad de asignación;
+- si existe agrupación, asignación por clúster o interferencia dentro de clúster, definir la unidad independiente y la inferencia correspondiente;
+- no tratar observaciones repetidas de una unidad como unidades independientes;
+- reportar el número de unidades y clústeres, no solo el número de filas.
+
+El análisis primario será por asignación (ITT). El análisis IV será secundario y no condicionará la muestra a haber instalado, cumplido, ejecutado τ2 o completado la trayectoria: hacerlo seleccionaría por variables post-asignación.
+
+### 39.6. Recuperación bajo el DGP ilustrativo
+
+En la versión homogénea y aislada de calibración:
+- (P(A_f=1mid Z=0)=.20);
+- (P(A_f=1mid Z=1)=.80);
+- (ITT_A=.60);
+- efecto focal por unidad de accesibilidad (=6);
+- (ITT_V=3.60);
+- Wald poblacional (=6).
+
+Estas igualdades definen la verdad analítica de esa versión. No proporcionan por sí mismas error estándar, potencia ni garantía de recuperación con (N=2000). La varianza depende de la distribución de (V), errores, heterogeneidad, proporción de compliers, estratos, pérdidas, medición y diseño de asignación.
+
+El tamaño provisional (N=2000) por réplica, 1:1, y 1000 réplicas Monte Carlo se conserva como configuración de diseño no validada. Debe aclararse en el contrato si (N) es total por réplica (1000 por brazo en asignación 1:1); la formulación actual se interpretará así salvo corrección explícita. No equivale a cálculo de potencia ni a tamaño recomendado para un piloto real.
+
+### 39.7. Métricas de recuperación
+
+Para cada escenario y réplica se guardarán:
+- sesgo: promedio de (hat	heta-	heta_{true});
+- sesgo relativo solo cuando el parámetro verdadero esté suficientemente separado de cero;
+- RMSE;
+- cobertura empírica del intervalo nominal del 95 %;
+- anchura y proporción de intervalos no acotados/disjuntos;
+- tasa de convergencia y fallos numéricos;
+- frecuencia de primera etapa débil;
+- error tipo I bajo nulo y potencia bajo alternativas;
+- error Monte Carlo de cada métrica;
+- calibración de intervalos y estimación de ITT/primera etapa por separado.
+
+Para efectos nulos o próximos a cero, no se utilizará sesgo relativo ni porcentaje de recuperación como métrica principal. Se evaluarán sesgo absoluto, RMSE, cobertura y control de error tipo I. Los escenarios con efecto negativo y heterogeneidad se informarán por separado, sin ocultarlos en una media global.
+
+### 39.8. Matriz de inferencia adversarial
+
+| ID | DGP | Comportamiento esperado |
+|---|---|---|
+| INF-01 | Primera etapa .60, efecto homogéneo 6, exclusión y monotonicidad verdaderas | Recuperación calibrada de Wald/LATE con cobertura nominal aproximada |
+| INF-02 | Primera etapa moderada, efecto heterogéneo | Recuperar LATE, no ATE |
+| INF-03 | Primera etapa débil | Intervalos robustos amplios/no acotados; evitar falsa precisión |
+| INF-04 | Primera etapa nula | No estimar efecto IV; informar no identificación por falta de relevancia |
+| INF-05 | Efecto verdadero cero | Control de error tipo I y cobertura |
+| INF-06 | Efecto negativo | Recuperar signo y magnitud sin imponer beneficio |
+| INF-07 | Error de medición de (A_f) | Cuantificar distorsión; usar validación o sensibilidad |
+| INF-08 | Pérdida diferencial post-asignación | Diagnosticar sesgo y no asumir datos faltantes al azar |
+| INF-09 | Asignación por clúster ignorada en SE | Detectar inferencia anticonservadora |
+| INF-10 | Heterogeneidad extrema y pocos compliers | Informar LATE impreciso y alcance limitado |
+| INF-11 | Defiers | Rechazar interpretación LATE estándar |
+| INF-12 | Exclusión violada por efecto directo (delta) | Wald sesgado; sensibilidad a (delta) y no atribución focal |
+| INF-13 | Intervalo delta frente a Fieller/inversión robusta | Mostrar fallo de aproximación delta con denominador débil |
+| INF-14 | N insuficiente pese a identificación válida | Concluir imprecisión, no ausencia de efecto |
+| INF-15 | Nulo con intervalo estrecho dentro de margen predefinido | Permitir conclusión de equivalencia solo si margen y regla se fijaron antes |
+
+### 39.9. Criterios de aceptación metodológica
+
+La futura prueba sintética de inferencia no se considerará satisfactoria por recuperar el valor 6 en el escenario ideal solamente. Deberá:
+1. recuperar ITT y primera etapa;
+2. recuperar LATE en escenarios identificados;
+3. no etiquetar LATE como ATE;
+4. reconocer primera etapa nula/débil;
+5. producir intervalos robustos al denominador débil;
+6. mantener cobertura y error tipo I calibrados dentro de tolerancias preespecificadas;
+7. detectar escenarios donde exclusión, monotonicidad, consistencia o medición fallan;
+8. distinguir no-identificación, baja potencia e inexistencia de efecto;
+9. cuantificar error Monte Carlo;
+10. reproducir resultados con semilla, configuración y versiones registradas.
+
+Las tolerancias numéricas, potencia mínima, δ, margen de equivalencia ε y reglas de aceptación siguen abiertos. No se fijarán retrospectivamente después de ver los resultados.
+
+### 39.10. Dictamen
+
+La auditoría concluye que el diseño necesita una evaluación explícita de inferencia de cociente, no solo una comparación de medias ni un error estándar convencional. El estimador Wald puede ser apropiado para el LATE bajo los supuestos, pero su recuperación depende de la fuerza de la primera etapa, tamaño muestral, variabilidad, heterogeneidad y método de intervalo.
+
+**Decisión propuesta:** mantener ITT como estimando primario; Wald/LATE como análisis secundario condicionado; añadir INF-01…INF-15; conservar (N=2000) total por réplica y 1000 réplicas como valores provisionales; seleccionar y validar un método robusto de intervalo antes de implementar. No calcular ni declarar potencia todavía.
+
+**Estado:** contrato estadístico propuesto, no ejecutado. XSYNC-138-01 y las decisiones abiertas de δ/ε, tolerancias y método de inferencia permanecen pendientes. No se ha realizado simulación, cálculo de potencia, experimento real ni aceptación.
