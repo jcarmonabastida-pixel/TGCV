@@ -4440,3 +4440,133 @@ Queda pendiente:
 - revisión de la coherencia con C10-D1, q_X* y el contrato de τ2.
 
 **Dictamen:** la población queda delimitada conceptualmente y la regla evita seleccionar según variables post-asignación. La elegibilidad constitutiva y el cierre focal basal deben verificarse de forma independiente antes de randomizar. No congelar S4-R, implementar ni simular hasta cerrar las decisiones abiertas y obtener revisión independiente.
+
+
+---
+
+## 47. Contrato operativo de las condiciones constitutivas y elegibilidad (sección conversacional 160)
+
+**Estado:** propuesta de especificación para la clasificación basal de elegibilidad S4-R. No modifica C10-D1 ni el Core TGCV. No es freeze, implementación, simulación, ejecución, auditoría independiente ni aceptación.
+
+### 47.1. Estados de clasificación
+
+Cada condición basal se clasifica en uno de cuatro estados:
+
+| Estado | Criterio | Consecuencia |
+|---|---|---|
+| Cumplida | Evidencia suficiente conforme al criterio preespecificado | Puede contribuir a la elegibilidad |
+| Incumplida | Evidencia suficiente de que no se satisface | La unidad no pertenece a la población primaria |
+| Indeterminada | Evidencia insuficiente, contradictoria o no verificable | No se presume cumplida ni incumplida |
+| No aplicable | La condición no corresponde al dominio definido | Requiere regla previa y justificación; no equivale a cumplida |
+
+La ausencia de evidencia no prueba que la condición esté incumplida; tampoco autoriza a tratarla como cumplida. La categoría no aplicable no puede asignarse para evitar una restricción de elegibilidad.
+
+### 47.2. Ficha mínima de cada condición
+
+Cada condición constitutiva C_j debe disponer de una ficha versionada con:
+
+1. **Identificador y definición operacional:** qué propiedad del sistema se evalúa, con límites explícitos.
+2. **Criterio de suficiencia:** umbral, regla lógica o evidencia cualitativa admisible, definido antes de asignar Z.
+3. **Fuente de evidencia:** registro, prueba técnica, inventario, inspección o medición; procedencia y fecha.
+4. **Procedimiento:** pasos reproducibles, instrumentos y condiciones de evaluación.
+5. **Temporalidad:** instante o ventana basal; debe preceder a Z y a cualquier provisión experimental.
+6. **Evaluador y cegamiento:** rol responsable y confirmación de que desconoce asignación y resultados posteriores.
+7. **Estado y justificación:** cumplida, incumplida, indeterminada o no aplicable, con razón codificada.
+8. **Calidad de evidencia:** completitud, fiabilidad, actualidad y limitaciones, separadas del estado de la condición.
+9. **Versión y trazabilidad:** identificador de ficha, versión del criterio, evidencia asociada y registro de cualquier reevaluación.
+
+El estado de una condición y la calidad de la evidencia son dimensiones diferentes. Una condición puede estar clasificada como cumplida con evidencia de calidad limitada; esa limitación debe conservarse y entrar en análisis de sensibilidad.
+
+### 47.3. Matriz inicial de condiciones de S4-R
+
+| Condición | Definición operacional que debe concretarse | Evidencia admisible propuesta | Riesgo de clasificación |
+|---|---|---|---|
+| C_auth,base | Autorización basal vigente para efectuar la reconfiguración focal una vez disponible la dependencia | Registro de autorización y vigencia | Confundir autorización basal con autorización creada por B |
+| C_resource | Recursos materiales y económicos necesarios, excluyendo la dependencia focal | Inventario y disponibilidad documentada | Contar como disponible un recurso comprometido o compartido |
+| C_capacity | Capacidad técnica/operativa suficiente para realizar τ2 | Prueba de capacidad o acreditación verificable | Confundir capacidad nominal con capacidad efectiva |
+| C_info | Información mínima necesaria para diagnosticar y ejecutar τ2 | Registros, entradas y comprobación de integridad | Información generada después de Z o por la propia provisión |
+| C_domain | El sistema y problema pertenecen al dominio donde τ2 está definida | Criterios de dominio y diagnóstico basal | Definir dominio a partir del Outcome observado |
+| C_other,j | Cualquier otra precondición esencial no focal | Ficha específica por condición | Incorporación retrospectiva de nuevas condiciones para explicar resultados |
+| C_dep,0 | Dependencia técnica focal ausente al inicio | Inventario/versiones y prueba de entorno | Confundir ausencia de paquete con ausencia de capacidad equivalente |
+| A_f,0* | τ2 no es accesible por el cierre focal basal, sin ruta equivalente | Evaluación TGCV independiente del catálogo, condiciones y alternativas | Inferir inaccesibilidad solo por no haber ejecutado τ2 |
+
+Esta tabla no fija todavía umbrales ni acredita que las fuentes propuestas sean suficientes. Cada fila requiere una ficha operacional completa antes de congelar el protocolo.
+
+### 47.4. Regla de agregación de elegibilidad
+
+La regla provisional es conjuntiva:
+
+`E_i = I( C_{auth,base}=1 land C_{resource}=1 land C_{capacity}=1 land C_{info}=1 land C_{domain}=1 land igwedge_j C_{other,j}=1 )`
+
+La unidad se considera elegible solo si todas las condiciones constitutivas requeridas están **cumplidas**. Una condición requerida incumplida implica E_i=0. Una condición requerida indeterminada impide confirmar E_i; no se convierte automáticamente en E_i=0 ni en E_i=1. Una condición no aplicable solo se excluye de la conjunción si la regla de aplicabilidad estaba definida antes de evaluar la unidad y su justificación es auditable.
+
+La población primaria sigue requiriendo, además, C_dep,0=0 y A_f,0*=0. La clasificación de elegibilidad y la evaluación de accesibilidad basal son procesos distintos, aunque ambos preceden a Z.
+
+### 47.5. Protocolo de evaluación y adjudicación
+
+1. Congelar versiones de fichas, criterios y catálogo antes de generar o asignar unidades.
+2. Evaluar todas las condiciones con el mismo protocolo y ventana temporal.
+3. Mantener a los evaluadores ciegos a Z, provisión, ejecución, Outcome y Value.
+4. Registrar evidencia original, estado, justificación y calidad; no sobrescribir registros.
+5. En discrepancias, aplicar adjudicación independiente según regla preestablecida; conservar las clasificaciones originales.
+6. En indeterminación, aplicar solo las pruebas complementarias predefinidas. Si persiste, registrar como indeterminada.
+7. Resolver la elegibilidad y la pertenencia a P* antes de aleatorizar.
+8. Publicar el diagrama de unidades evaluadas, elegibles, no elegibles e indeterminadas, con motivos.
+9. Repetir la clasificación solo ante nueva evidencia basal válida y bajo procedimiento documentado, nunca por conocer resultados posteriores.
+
+### 47.6. Cegamiento, fiabilidad y desacuerdo
+
+Se propone doble evaluación independiente para condiciones con juicio técnico o cualitativo. Para cada condición se informará:
+- acuerdo bruto;
+- matriz de desacuerdos entre categorías;
+- medida de concordancia apropiada al tipo de escala y prevalencia;
+- porcentaje de indeterminados;
+- frecuencia y motivos de adjudicación.
+
+No se impondrá automáticamente kappa como único indicador: su interpretación depende de prevalencia y distribución marginal. En condiciones técnicas objetivas se priorizará reproducibilidad de medición, calibración y concordancia con la prueba de referencia.
+
+El acuerdo entre evaluadores no demuestra validez de constructo; solo informa reproducibilidad de la clasificación.
+
+### 47.7. Pruebas adversariales
+
+Se proponen:
+- ELIG-01: todas las condiciones requeridas cumplidas; unidad elegible si también satisface cierre focal.
+- ELIG-02: una condición constitutiva incumplida; unidad no elegible.
+- ELIG-03: una condición requerida indeterminada; elegibilidad no confirmada.
+- ELIG-04: condición no aplicable sin regla previa; clasificación rechazada.
+- ELIG-05: evidencia caducada o fuera de ventana basal; estado indeterminado.
+- ELIG-06: evaluador conoce Z o resultados; riesgo de cegamiento detectado.
+- ELIG-07: criterio cambia entre unidades; inconsistencia de versión detectada.
+- ELIG-08: autorización basal confundida con provisión experimental; contaminación de tratamiento detectada.
+- ELIG-09: recursos nominales compartidos y no disponibles; C_resource no se declara cumplida.
+- ELIG-10: capacidad acreditada documentalmente pero falla prueba operativa; discrepancia adjudicada.
+- ELIG-11: ausencia de dependencia focal pero existe ruta técnica equivalente; A_f,0* no se declara inaccesible.
+- ELIG-12: exclusión posterior a Z por incumplimiento, ejecución u Outcome; violación de población preasignación detectada.
+
+### 47.8. Relación con errores de medición y estimando
+
+La clasificación de elegibilidad también puede contener error. Debe distinguirse:
+- error en medición de condiciones constitutivas;
+- error en presencia/ausencia de C_dep,0;
+- error en evaluación de accesibilidad basal A_f,0*;
+- indeterminación genuina por evidencia incompleta.
+
+La validación debe usar una referencia independiente, ciega y, cuando sea posible, una submuestra seleccionada sin sesgo. Si la selección para validación depende de características observadas, se documentará y corregirá mediante diseño o ponderación apropiada; si depende de estado no observado, se requerirá sensibilidad.
+
+La incertidumbre de clasificación puede alterar quién pertenece a P* y, por tanto, cambiar el estimando objetivo. No basta con corregir el error de A_f observado si E_i también está mal clasificado. Deben analizarse errores conjuntos y la sensibilidad de la composición de P*.
+
+### 47.9. Decisión propuesta y pendientes
+
+**Decisión propuesta:** adoptar una regla conjuntiva de elegibilidad preasignación, basada en fichas operacionales versionadas, evidencia trazable, evaluación ciega y clasificación de cuatro estados. Solo las unidades con todas las condiciones constitutivas requeridas cumplidas, C_dep,0=0 y A_f,0*=0 integran la población primaria confirmada.
+
+Continúan abiertos:
+- umbrales concretos y pruebas de cada condición;
+- definición final de C_other,j y su control de proliferación;
+- fiabilidad y validez de las fuentes de evidencia;
+- protocolo de adjudicación y tamaño de muestra de validación;
+- tratamiento analítico de elegibilidad indeterminada;
+- error conjunto en E_i, C_dep,0 y A_f,0*;
+- verificación de ausencia de rutas equivalentes;
+- distribución y composición concreta de P*.
+
+**Dictamen:** el contrato hace reproducible la lógica de clasificación, pero todavía no permite clasificar unidades reales sin completar umbrales, instrumentos y evidencias. La matriz no debe utilizarse como lista de comprobación informal ni para reclasificar unidades a posteriori. No congelar S4-R, implementar ni simular hasta completar esas especificaciones y obtener revisión independiente.
