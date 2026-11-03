@@ -2530,3 +2530,220 @@ No se cambia la matriz S0–S10 ni se agregan pruebas ejecutables en esta secci�
 8. someter la revisión a especialistas independientes antes de aceptar el contrato.
 
 **Estado:** propuesta correctiva documental; no aceptada, no congelada, no implementada, no simulada ni ejecutada. C145-01…06 permanecen abiertos hasta resolución y revisión independiente. XSYNC-138-01 permanece abierto. No modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. No autoriza implementación ni ejecución científica.
+
+
+---
+
+## 34. Contrato formal provisional de variables y ecuaciones de S4-R (sección conversacional 147)
+
+**Estado:** especificación formal de trabajo derivada de §§30–33; propuesta, no aceptada ni congelada. No implementada, simulada, ejecutada ni auditada mediante pruebas. No cierra XSYNC-138-01 ni modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 o cierres previos.
+
+### 34.1. Unidad, población y tiempos
+
+- Unidad experimental: sistema sintético independiente (i).
+- Población objetivo primaria: unidades definidas antes de asignación, con estado basal verificable y ambas políticas de provisión factibles bajo las historias incluidas.
+- (t_0): evaluación basal previa a la asignación.
+- (t_1): asignación de política.
+- (t_2): provisión e intento de instalación.
+- (t_3): verificación técnica de la dependencia.
+- (t_4): evaluación ciega de accesibilidad y snapshot completo de (T_{acc}), antes de selección/ejecución.
+- (t_5): generación de Reach y trayectorias candidatas.
+- (t_6): selección y ejecución.
+- (t_7): medición de Outcome.
+- (t_8): construcción de Value según regla preespecificada.
+
+Los tiempos son orden causal, no duraciones fijadas. Cada snapshot tiene identificador, timestamp lógico, versión del catálogo/reglas, unidad, historia, fuente y calidad de evidencia. Una modificación posterior crea un snapshot nuevo; nunca sobrescribe el anterior.
+
+### 34.2. Variables basales y régimen común
+
+| Variable | Definición | Momento / uso |
+|---|---|---|
+| (i) | Identificador de unidad sintética | Todos los tiempos |
+| (X_i) | Covariables basales preespecificadas | (t_0); heterogeneidad/estratificación |
+| (H_{0i}) | Historia previa relevante | (t_0); soporte y políticas |
+| (S_{0i}) | Estado inicial del sistema | (t_0); generación transformacional |
+| (C_{c,i}) | Condiciones constitutivas/habilitantes de τ2 | (t_0) y snapshots; no se fijan en valores incompatibles |
+| (L_{m,i}) | Variables de historia/mecanismo que el diseño incluye en el régimen común | Según secuencia; no agrupar automáticamente todo post-tratamiento |
+| (q^*) | Régimen común, explícito y factible sobre (X,H_0,L_m) según la historia | Preespecificado antes de resultados |
+
+(q^*) no es una distribución marginal ilustrativa aislada. Debe declarar para cada componente: definición, tiempo, quién/qué puede intervenirlo, dependencia de la historia, soporte y mecanismo de asignación. Si un componente no es manipulable ni estandarizable coherentemente, no se presenta como intervención de (q^*); se trata conforme a su papel causal en el diseño. Las condiciones constitutivas (C_c) se conservan compatibles con τ2 y no se fuerzan mediante una distribución común que haga imposible la transformación.
+
+### 34.3. Asignación y mecanismo de provisión
+
+| Variable | Definición | Regla |
+|---|---|---|
+| (Z_{g,i}) | Asignación aleatoria a política (g_0^B) o (g_1^B) | Asignación, no accesibilidad |
+| (B_{g,i}) | Versión/procedimiento de provisión técnica asignado | Debe tener especificación y versión |
+| (W_{attempt,i}) | Intento efectivo de instalación/activación | No equivale a éxito |
+| (S_{install,i}) | Éxito técnico del procedimiento | Resultado del intento |
+| (C_{dep,0,i}) | Estado basal de dependencia antes de asignación | Medido en (t_0) |
+| (C_{dep,1,i}) | Estado final verificado de dependencia | Medido en (t_3) |
+| (E_{verify,i}) | Evidencia de verificación de instalación, integridad, compatibilidad y operación | Ciega a Outcome/Value |
+
+Descomposición de la dependencia:
+- (C_{install}): componente presente/instalado;
+- (C_{integrity}): integridad verificada;
+- (C_{compat}): compatibilidad con el sistema y versión objetivo;
+- (C_{oper}): funcionamiento operativo comprobado.
+
+(C_{dep,1}=1) solo si las cuatro condiciones están respaldadas por evidencia suficiente. Los estados posibles de cada componente son verdadero respaldado, falso respaldado o indeterminado. La ausencia de evidencia no se recodifica automáticamente como fallo ni como éxito.
+
+Cadena de implementación:
+
+[
+Z_g ightarrow B_g ightarrow W_{attempt}
+ightarrow S_{install} ightarrow C_{dep,1}.
+]
+
+La asignación (Z_g) se conserva para ITT. No se condiciona el análisis principal a instalación exitosa, porque (S_{install}) es post-asignación.
+
+### 34.4. Accesibilidad focal y espacio transformacional completo
+
+- (A^*_{f,0,i}): accesibilidad verdadera de τ2 en (t_0).
+- (A^*_{f,1,i}): accesibilidad verdadera de τ2 tras verificación en (t_3/t_4).
+- (Delta A_{f,i}=A^*_{f,1,i}-A^*_{f,0,i}), con valores (-1,0,+1).
+- (A^{obs}_{f,1,i}): medición del analizador; puede diferir de la verdad generadora.
+- (T_{acc,0,i}), (T_{acc,1,i}): representación completa versionada del espacio de transformaciones accesibles.
+- (Delta T_{acc,i}): cambio completo entre snapshots, incluyendo transformaciones añadidas/eliminadas y cambios relevantes en relaciones/condiciones, sin reducirlo a cardinalidad.
+- (h_f): proyección versionada que extrae el cambio focal de τ2 desde la representación completa bajo condiciones, identidad y horizonte definidos.
+
+[
+Delta A_{f,i}=h_f(Delta T_{acc,i};	au_2,X_i,H_{0i},C_{c,i}).
+]
+
+La regla estructural de accesibilidad de τ2 se propone como:
+
+[
+A^*_{f,1,i}=1
+iff
+C_{dep,1,i}=1
+land C_{auth,i}=1
+land C_{resource,i}=1
+land C_{capacity,i}=1
+land C_{info,i}=1
+land C_{domain,i}=1
+land C_{other,i}=1.
+]
+
+La expresión es válida solo si el catálogo de condiciones necesarias está completo para el entorno sintético. Cada condición debe tener evidencia, instante y estado epistémico. La accesibilidad no implica aplicabilidad inmediata, selección ni ejecución. La regla de accesibilidad no se infiere de Outcome ni de Value.
+
+La población primaria más simple para la ilustración analítica puede restringirse ex ante a (A^*_{f,0}=0), con condiciones restantes compatibles. Esta restricción debe aplicarse antes de asignar (Z_g), nunca retrospectivamente según (C_{dep,1}), ejecución o resultados. Si no se restringe, el DGP debe modelar explícitamente la accesibilidad basal y la distribución de (Delta A_f).
+
+### 34.5. Transformaciones, Reach, trayectorias y ejecución
+
+| Variable | Definición |
+|---|---|
+| (Pi_{H,i}) | Trayectorias candidatas generadas desde (S_0,T_{acc},R_{acc},C_{acc}), con horizonte (H) |
+| (Reach_{H,i}) | Estados alcanzables mediante transformaciones accesibles y aplicables hasta (H) |
+| (App_{	au_2,i}) | Aplicabilidad de τ2 en el estado/historia actual |
+| (Sel_i) | Trayectoria seleccionada |
+| (Exec_i) | Registro de ejecución efectiva, parcial, completa o interrumpida |
+
+Se mantiene (H=3) como horizonte provisional del juguete colectivo, según el contrato previo. Accesibilidad y aplicabilidad se reevalúan por estado y snapshot. Las trayectorias candidatas no se reconstruyen retrospectivamente a partir de estados observados. Los estados observados sirven para contrastar ejecución y resultados, no para definir por sí solos el espacio previo de transformaciones.
+
+### 34.6. Outcome y Value
+
+- (O_i): resultado observado de la ejecución bajo definición independiente.
+- (V_i): valor construido con regla preespecificada (R_V), beneficiario/entidad (B_V), dimensiones, horizonte y tratamiento de costes, beneficios, compensaciones e incertidumbre.
+- La regla (R_V) no puede premiar automáticamente más transformaciones, mayor longitud de trayectoria ni la propia clasificación de accesibilidad.
+- El evaluador conserva la verdad del DGP; el analizador recibe solo los datos y reglas que tendría un analista legítimo.
+
+La forma lineal de juguete (V=3O+4L_m+epsilon_V) se conserva únicamente como escenario analítico provisional. Antes de congelar debe documentarse qué representa cada componente de Value, su unidad/escala, beneficiario y horizonte. Si (L_m) es parte del régimen común (q^*), su distribución se define y aplica de forma coherente en ambos brazos; no se ajusta mecánicamente por variables post-tratamiento.
+
+### 34.7. Políticas, estimandos y límites de identificación
+
+Se distinguen tres cantidades:
+
+1. **Efecto por asignación (ITT):**
+[
+TE_Z=E[Vmid do(Z_g=1)]-E[Vmid do(Z_g=0)].
+]
+Es el efecto causal de asignar las políticas de provisión, bajo aleatorización, consistencia, ausencia de interferencia relevante y manejo válido de pérdidas.
+
+2. **Contraste de política de provisión bajo régimen común:**
+[
+psi_B(q^*)=E[V^{q^*,g_1^B}]-E[V^{q^*,g_0^B}].
+]
+Compara las políticas implementables de provisión. No es automáticamente un efecto de accesibilidad.
+
+3. **Contribución focal de accesibilidad:**
+[
+	heta_{Af}(q^*)=
+E[V^{q^*,g_1^{Af}}]-E[V^{q^*,g_0^{Af}}].
+]
+Compara políticas objetivo que inducen distribuciones diferentes de (Delta A_f), bajo el mismo régimen (q^*). Requiere definirlas como intervenciones factibles y demostrar que el mapeo desde (g^B) preserva consistencia de versiones, soporte y exclusión de vías alternativas.
+
+La equivalencia (psi_B(q^*)=	heta_{Af}(q^*)) no se presume. Solo podría sostenerse en el DGP aislado si las políticas difieren únicamente en la accesibilidad focal inducida y todas las demás vías relevantes permanecen invariantes. Si la provisión modifica costes, tiempos, información, expectativas, calidad, seguridad, selección u otras variables con vías propias hacia Value, el resultado es efecto de política/paquete o exige diseño adicional. No se obtiene (	heta_{Af}) restando efectos ni ajustando automáticamente por variables post-tratamiento.
+
+Tampoco se identifica (	heta_{Af}) por el mero hecho de aleatorizar (Z_g). La aleatorización identifica ITT; la atribución a accesibilidad necesita supuestos/diseño adicionales sobre el mediador focal, medición, confusión mediador–resultado, versiones y vías alternativas.
+
+### 34.8. DGP focal ilustrativo y condición para el valor 3.6
+
+Para una ilustración deliberadamente simple, se puede estipular:
+- (A^*_{f,0}=0) para toda unidad de la población primaria;
+- condiciones restantes satisfechas y comunes;
+- (P(A^*_{f,1}=1mid g_1^{Af})=.80);
+- (P(A^*_{f,1}=1mid g_0^{Af})=.20);
+- (Delta A_f=A^*_{f,1});
+- (M=1+Delta A_f+0.5X+epsilon_M);
+- (O=2M+epsilon_O);
+- (V=3O+4L_m+epsilon_V);
+- errores de media cero y distribución común, sin interacciones ni vías alternativas desde la provisión/dependencia hacia (M,O,V);
+- distribución de (X,L_m) y régimen (q^*) comunes en los dos brazos.
+
+Entonces:
+
+[
+E[Delta A_fmid g_1^{Af}]-E[Delta A_fmid g_0^{Af}]=0.80-0.20=0.60,
+]
+
+y, dado que el efecto de (Delta A_f) sobre (M) es 1, de (M) sobre (O) es 2 y de (O) sobre (V) es 3:
+
+[
+	heta_{Af}(q^*)=0.60	imes1	imes2	imes3=3.6.
+]
+
+Esta es una verdad matemática condicional del DGP focal, no evidencia empírica ni validación de C10. Si el estado basal no es cero, las condiciones restantes varían, existe fallo diferencial, hay interacción o aparece una vía alternativa, el valor debe derivarse de nuevo y puede no ser 3.6.
+
+### 34.9. Diccionario mínimo y trazabilidad de datos
+
+Cada registro debe incluir como mínimo:
+- IDs: scenario_id, unit_id, replicate_id, snapshot_id, intervention_version;
+- tiempos/orden: t0…t8, timestamp lógico y evento;
+- basales: X, H0, S0, C_c, C_dep,0, A_f,0*;
+- intervención: Z_g, B_g, W_attempt, S_install, C_dep,1, evidencia de verificación;
+- transformacional: catálogo/versiones, U_acc, R_acc, C_acc, T_acc, ΔT_acc, A_f,1*, ΔA_f, A_f,obs;
+- mecanismos: Reach, Π_H, App, selección, ejecución y estado de ejecución;
+- resultados: O, V, regla R_V, beneficiario, dimensiones, horizonte y componentes;
+- calidad: estado epistémico, fuente, confianza/calidad de evidencia, missingness y motivo;
+- reproducibilidad: DGP/versiones, semilla, configuración, hashes y orden de generación.
+
+La verdad del generador (por ejemplo A_f* y coeficientes verdaderos) se conserva en un artefacto separado y no se entrega al analizador. El analizador no recibe etiquetas de escenario, coeficientes causales verdaderos ni resultados de evaluación. La separación de roles debe poder auditarse.
+
+### 34.10. Invariantes y puertas pendientes
+
+Invariantes del DGP aislado:
+1. Z_g se asigna antes de provisión.
+2. W_attempt no se confunde con S_install ni con C_dep,1.
+3. A_f* se deriva de condiciones verificadas; nunca se asigna directamente.
+4. ΔT_acc completo se conserva y A_f* es solo su proyección focal.
+5. accesibilidad, aplicabilidad, selección y ejecución son estados distintos.
+6. no hay vías directas/alternativas desde B_g/C_dep hacia O/V fuera de la cadena transformacional focal.
+7. calidad condicional de τ2 y demás versiones no focales son comunes.
+8. q* y la población objetivo se preespecifican; ambas políticas tienen soporte por historia.
+9. Value no se construye desde ΔT_acc, longitud de trayectoria ni selección.
+10. snapshots no se sobrescriben y la evaluación de accesibilidad es ciega a O/V.
+11. la asignación aleatoria identifica ITT, no automáticamente θ_Af.
+12. cualquier violación de invariantes se registra y clasifica como escenario adversarial, efecto de paquete o no-identificación.
+
+Puertas aún abiertas:
+- definición completa y factibilidad de q*;
+- contrato de política (g^{Af}) y mapeo verificable desde (g^B);
+- especificación de población basal y C_dep,0;
+- justificación de exclusión y equivalencia de versiones;
+- definición completa de Value;
+- precisión Monte Carlo, δ/ε y tamaño final;
+- reconciliación con C10-D1 y revisión verdaderamente independiente;
+- cobertura del diccionario y de las matrices de escenarios/pruebas.
+
+**Dictamen:** el contrato de variables y ecuaciones queda especificado como propuesta provisional y mejora la consistencia entre §§30–33. No se considera cerrado ni congelable. Los parámetros .20/.80 y 3.6 siguen siendo ilustrativos. No se ha implementado, simulado, ejecutado ni validado. XSYNC-138-01 permanece abierto. No autoriza implementación ni ejecución científica.
