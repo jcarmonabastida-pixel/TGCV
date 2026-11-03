@@ -3028,3 +3028,171 @@ Si la pregunta científica es el efecto de la accesibilidad focal, el LATE es un
 8. No simular, ejecutar ni congelar hasta revisar independientemente este contrato y reconciliarlo con C10-D1.
 
 **Dictamen:** la vía instrumental ofrece una estrategia de identificación focal más concreta sin asignar directamente (A_f^*), pero depende críticamente de exclusión, monotonicidad y validez de la primera etapa. La identificación resultante sería local a los compliers, no una atribución poblacional general. Propuesta documental pendiente de revisión; XSYNC-138-01 permanece abierto.
+
+
+---
+
+## 37. Auditoría adversarial de la restricción de exclusión instrumental (sección conversacional 150)
+
+**Estado:** auditoría conceptual interna de la propuesta IV de §36. No es prueba empírica de exclusión, auditoría independiente externa, simulación ni ejecución. No cierra XSYNC-138-01 ni modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 o cierres previos.
+
+### 37.1. Pregunta de auditoría
+
+¿La asignación aleatoria a la política de provisión (Z_g) puede afectar Value por alguna vía distinta del cambio focal de accesibilidad (A_f) de τ2 y sus consecuencias transformacionales?
+
+La vía focal pretendida es:
+
+[
+Z_gightarrow B_gightarrow C_{dep,1}ightarrow A_f
+ightarrow T_{acc}ightarrow Pi_Hightarrow Sel
+ightarrow Execightarrow Oightarrow V.
+]
+
+Se consideran parte de la vía focal los cambios posteriores que solo ocurren porque τ2 se vuelve accesible y puede ser aplicable, seleccionada y ejecutada. No son vías alternativas el mero hecho de que existan mediadores entre accesibilidad y Value: son el mecanismo causal que se desea estudiar.
+
+La exclusión instrumental se viola si existe una ruta causal desde (Z_g), (B_g) o (C_{dep,1}) hasta Value que no dependa de (A_f) y de sus consecuencias transformacionales. La ruta puede ser directa o pasar por variables intermedias.
+
+### 37.2. Distinción crítica: dependencia habilitadora frente a efecto propio del componente
+
+(C_{dep}) puede desempeñar dos papeles distintos:
+
+1. **Condición habilitadora:** la dependencia instalada solo permite que τ2 sea realizable. No cambia por sí misma el estado operativo, rendimiento, seguridad, costes, tiempos, información ni decisiones. En el DGP aislado, su único efecto causal es cambiar (A_f).
+2. **Componente con efectos propios:** además de habilitar τ2, la dependencia modifica rendimiento, latencia, fiabilidad, mantenimiento, seguridad, coste, información, formación, atención o conducta. Cualquier efecto sobre Value que no requiera que τ2 sea accesible constituye una vía que amenaza exclusión.
+
+No basta con llamar a (C_{dep}) «condición de accesibilidad» para garantizar el primer papel. El generador debe declarar qué propiedades cambian y qué propiedades permanecen invariantes. Si el software está activo y altera el sistema incluso cuando τ2 no se ejecuta o no es aplicable, la exclusión puede fallar.
+
+### 37.3. Mapa de vías y clasificación
+
+| Ruta o mecanismo | Clasificación IV | Motivo |
+|---|---|---|
+| (Z_g	o B_g	o C_{dep}	o A_f	o T_{acc}	oPi_H	o Exec	o O	o V) | Vía focal permitida | La provisión afecta Value a través de la accesibilidad y su desarrollo transformacional |
+| (B_g	o) menor coste operativo (	o V), sin depender de (A_f) | Violación | Efecto propio de la provisión |
+| (C_{dep}	o) mayor velocidad/latencia (	o O/V), sin τ2 | Violación | Efecto funcional del componente independiente de la transformación focal |
+| (C_{dep}	o) mayor seguridad o fiabilidad basal (	o V) | Violación | Mejora directa del sistema no mediada por accesibilidad |
+| (B_g	o) formación/atención del personal (	o Sel/Exec/V) sin pasar por (A_f) | Violación | Efecto de acompañamiento o expectativa |
+| (Z_g	o) prioridad/incentivos/expectativas (	o Sel/Exec/V) | Violación | Efecto conductual de la asignación |
+| (A_f	o) nueva trayectoria posible (	o) selección/ejecución (	o V) | Vía focal permitida | Consecuencia de la nueva posibilidad transformacional |
+| (A_f	o) más opciones percibidas (	o) selección (	o V) | Vía focal permitida si la percepción surge únicamente de la accesibilidad real | Si la política comunica información adicional por sí misma, aparece una vía alternativa |
+| (C_{dep}	o) calidad de ejecución de τ2, condicionada a que τ2 sea accesible y ejecutada | Ambigua; requiere definición de versión | Puede ser parte del mecanismo de τ2 o una versión distinta; no debe quedar sin especificar |
+| (Z_g	o) medición diferencial de (A_f) o (V) | Amenaza de medición | Puede sesgar primera etapa, ITT o Wald |
+
+La ruta focal puede incluir selección, ejecución y mediadores. No exige que todas las unidades ejecuten τ2: el estimando IV refleja el efecto de inducir accesibilidad en la población de cumplidores, incluyendo las consecuencias reales de que esa opción esté disponible.
+
+### 37.4. Por qué la exclusión no es verificable solo con los datos observados
+
+La independencia de (Z_g) puede estar respaldada por el procedimiento de aleatorización; la relevancia puede examinarse mediante la primera etapa; consistencia, interferencia y medición admiten auditorías parciales. Pero la exclusión es una restricción contrafactual sobre rutas que no se observan simultáneamente.
+
+No existe un test estadístico general que demuestre que (Z_g) no tiene ninguna vía alternativa hacia (V). En particular:
+- balance basal no prueba exclusión;
+- ausencia de diferencias significativas en variables auxiliares no prueba exclusión;
+- controles negativos sin efecto no descartan todas las vías alternativas;
+- ajustar por variables post-tratamiento puede bloquear parte del efecto focal o inducir sesgo;
+- que el Wald recupere el valor esperado en un DGP donde la exclusión fue programada no valida exclusión en un sistema real.
+
+Por tanto, la exclusión debe tratarse como supuesto de diseño y conocimiento mecanístico, sometido a análisis adversarial y sensibilidad; nunca como resultado demostrado por un p-valor.
+
+### 37.5. Condiciones del DGP aislado para que IV-01 sea un control válido
+
+El escenario de calibración IV-01 solo debe declarar exclusión verdadera si el generador impone explícitamente:
+
+1. Los dos brazos usan el mismo procedimiento, interfaz, instrucciones, contacto, formación, prioridad, atención, hardware, recursos, calendario y criterios de soporte.
+2. La asignación solo altera la probabilidad de que la dependencia habilitadora quede instalada, íntegra, compatible y operativa.
+3. (C_{dep}) no altera el funcionamiento del sistema fuera de hacer realizable τ2.
+4. No hay reducción de costes, latencia, riesgo o carga de trabajo independiente de τ2.
+5. No se informa al personal de la asignación de forma que cambie expectativas, esfuerzo, selección o conducta.
+6. No existe acceso alternativo a τ2 en el brazo de menor provisión ni una ruta sustituta equivalente no catalogada.
+7. La accesibilidad se evalúa antes de selección/ejecución, mediante el mismo procedimiento ciego en ambos brazos.
+8. La regla de Value y su medición son idénticas y ciegas a la asignación.
+9. No hay interferencia ni spillovers entre unidades.
+10. Las versiones de τ2, sus precondiciones y la calidad de su ejecución son invariantes; cualquier diferencia se declara como versión/tratamiento adicional.
+
+Si la implementación requiere que el brazo alto reciba más visitas, formación, tiempo de técnicos o prioridad, el DGP ya no es un instrumento puro salvo que esas diferencias se demuestre que no abren vías hacia Value fuera de (A_f). La igualdad de recursos nominales no basta si la experiencia efectiva difiere.
+
+### 37.6. Ambigüedad de las probabilidades .20/.80
+
+Las probabilidades .20 y .80 deben definirse como probabilidades de accesibilidad focal inducida por la asignación, no como meras probabilidades de intento ni de instalación sin demostrar el mapeo.
+
+Se requiere registrar por separado:
+- (P(W_{attempt}=1mid Z_g));
+- (P(S_{install}=1mid W_{attempt},Z_g));
+- (P(C_{dep,1}=1mid Z_g));
+- (P(A_f=1mid Z_g)).
+
+En el DGP más simple, con (A_{f,0}=0), todas las demás condiciones satisfechas y (A_f=C_{dep,1}), se puede programar (P(A_f=1mid Z=0)=.20) y (P(A_f=1mid Z=1)=.80). En una variante con fallos de compatibilidad, condiciones basales o medición imperfecta, estas probabilidades no coinciden necesariamente. La primera etapa debe calcularse sobre (A_f) verdadero para el evaluador y sobre (A_f^{obs}) para el analizador.
+
+### 37.7. Pruebas adversariales de exclusión
+
+Se amplía la matriz IV con los siguientes casos:
+
+| ID | Alteración del DGP | Verdad | Dictamen esperado |
+|---|---|---|---|
+| EXCL-01 | Componente solo habilita τ2; resto idéntico | Exclusión válida por construcción | IV puede recuperar LATE |
+| EXCL-02 | Componente mejora latencia aunque τ2 no se use | Vía alternativa | ITT válido; IV focal no válido |
+| EXCL-03 | Provisión reduce costes de operación independientemente de τ2 | Vía alternativa | Efecto de paquete; no atribuir a accesibilidad |
+| EXCL-04 | Formación/atención adicional modifica selección | Vía alternativa | IV inválido salvo diseño que aisle esa vía |
+| EXCL-05 | Personal conoce asignación y cambia esfuerzo | Vía alternativa potencial | Exclusión no establecida |
+| EXCL-06 | Componente mejora calidad/seguridad sin τ2 | Vía alternativa | IV focal inválido |
+| EXCL-07 | Calidad de τ2 cambia entre versiones de instalación | Consistencia/versión amenazada | Redefinir tratamiento o separar versiones |
+| EXCL-08 | Medición de accesibilidad depende del brazo | Medición diferencial | Primera etapa sesgada; auditoría de medición |
+| EXCL-09 | Acceso alternativo a τ2 en G0 | Contraste contaminado | Revisar exclusividad y primera etapa |
+| EXCL-10 | Efecto de provisión sobre Value solo aparece cuando τ2 se vuelve accesible y sigue su mecanismo | Compatible con vía focal | IV admisible si los demás supuestos se sostienen |
+| EXCL-11 | Spillover de instalación entre unidades | Interferencia | Wald individual estándar no identificado |
+| EXCL-12 | Efecto directo pequeño, conocido y no nulo desde (Z_g) a (V) | Exclusión falsa | Cuantificar sesgo; no presentar Wald como LATE |
+
+Para EXCL-12, el generador puede usar:
+[
+V=eta A_f+delta Z_g+epsilon,
+qquad
+	heta_{Wald}=eta+rac{delta}{ITT_A}.
+]
+Así se muestra que una vía directa pequeña puede amplificarse cuando la primera etapa es débil. Esta ecuación es un diagnóstico analítico del sesgo, no una corrección automática.
+
+### 37.8. Sensibilidad a violaciones de exclusión
+
+Se propone que el evaluador sintético calcule la sensibilidad del Wald ante un efecto directo hipotético (delta):
+
+[
+	heta(delta)=rac{ITT_V-delta}{ITT_A}.
+]
+
+El analizador no conoce el (delta) verdadero en escenarios ciegos; puede reportar una curva o intervalo de sensibilidad para valores plausibles justificados externamente. No debe elegir (delta) para obtener el resultado deseado ni presentarlo como estimación empírica del efecto directo.
+
+Con (ITT_A=.60), cada unidad de efecto directo (delta) desplaza el cociente en (delta/.60). Si la primera etapa disminuye, la sensibilidad se amplifica. El informe debe presentar:
+- primera etapa e incertidumbre;
+- ITT de Value e incertidumbre;
+- Wald y su incertidumbre bajo los supuestos;
+- sensibilidad a (delta);
+- justificación de rangos plausibles de (delta);
+- dictamen de identificación: compatible, amenazada o no defendible.
+
+No se fija todavía un rango numérico de (delta); requiere escala de Value, relevancia sustantiva y justificación preespecificada.
+
+### 37.9. Límites de los controles negativos y de la auditoría de mecanismos
+
+Los controles negativos pueden revelar algunas violaciones:
+- medir latencia, coste, calidad, seguridad, esfuerzo, formación y expectativas incluso en unidades donde τ2 no llega a ser accesible;
+- comprobar si (Z_g) cambia esos resultados auxiliares;
+- incluir resultados que no deberían depender de τ2;
+- usar escenarios sintéticos con vías alternativas conocidas.
+
+Pero estos controles no prueban exclusión: pueden tener poca potencia, medir imperfectamente o no cubrir todas las vías. Un resultado nulo solo limita las alternativas medidas bajo la precisión del estudio.
+
+El DGP debe separar:
+- variables que son consecuencias legítimas de la nueva accesibilidad y su uso;
+- variables que cambian por la política/provisión independientemente de la accesibilidad;
+- variables cuya clasificación es incierta y exige sensibilidad.
+
+No ajustar automáticamente por ninguna de ellas. La función de los controles es diagnosticar y acotar, no reparar sin supuestos el instrumento.
+
+### 37.10. Dictamen y decisiones propuestas
+
+1. Mantener IV-01 como control sintético de exclusión verdadera, con invariantes explícitos.
+2. Añadir EXCL-01…EXCL-12 como matriz adversarial, sin confundirla con pruebas empíricas de exclusión.
+3. Distinguir dependencia puramente habilitadora de componente con efectos propios.
+4. Definir .20/.80 como probabilidades de accesibilidad focal solo en el DGP simple; separar intento, instalación, dependencia y accesibilidad en variantes generales.
+5. Añadir sensibilidad a efecto directo (delta), sin fijar rango hasta definir escala y relevancia de Value.
+6. Mantener ITT como estimando primario de política; no atribuir el Wald a accesibilidad si exclusión no es defendible.
+7. Si exclusión no puede sostenerse en un caso real, reportar ITT/efecto de paquete y clasificar la atribución focal como no identificada, sin presentar el IV como confirmatorio.
+8. Someter el contrato a revisión independiente antes de implementación o simulación.
+
+**Dictamen:** la estrategia IV es coherente como diseño sintético condicionado, pero la exclusión es un supuesto fuerte y no verificable directamente. El DGP aislado puede validar que el analizador recupera el LATE cuando el supuesto es verdadero y rechaza la interpretación focal cuando se introduce una vía alternativa conocida. No puede demostrar que la exclusión se cumpla en un sistema real. XSYNC-138-01 permanece abierto; no se ha implementado, simulado, ejecutado ni aceptado el diseño.
