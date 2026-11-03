@@ -4718,3 +4718,160 @@ Pendientes:
 - revisar consistencia con C10-D1, exclusión IV y población P*.
 
 **Dictamen:** el protocolo evita inferir inaccesibilidad a partir de la mera ausencia de una dependencia o de la no ejecución. La exclusividad solo puede afirmarse respecto al universo, granularidad, condiciones y horizonte auditados; no se demuestra universalmente por una búsqueda finita. No congelar S4-R, implementar ni simular hasta completar criterios técnicos, cobertura y revisión independiente.
+
+
+---
+
+## 49. Contrato de evidencia para rutas alternativas y evaluación de exclusividad (sección conversacional 162)
+
+**Estado:** propuesta de contrato de evidencia para evaluar rutas alternativas a τ2 en S4-R. No modifica C10-D1 ni el Core TGCV. No es freeze, implementación, simulación, ejecución, auditoría independiente ni aceptación.
+
+### 49.1. Principio: realizabilidad no equivale a ejecución histórica
+
+La accesibilidad TGCV no exige que una transformación se haya ejecutado previamente. Exige que sea realizable bajo condiciones, recursos, mecanismos y restricciones definidos. Por tanto:
+- la ausencia de ejecuciones históricas no demuestra inaccesibilidad;
+- una descripción documental no demuestra realizabilidad;
+- una ruta imaginable o lógicamente concebible no constituye una ruta accesible;
+- la prueba técnica puede respaldar realizabilidad prospectiva sin convertir la ejecución previa en requisito ontológico;
+- la ejecución observada puede validar mecanismos y resultados, pero no es el único tipo de evidencia admisible de accesibilidad.
+
+La evaluación debe referirse al sistema, estado/contexto, historia, granularidad y horizonte concretos.
+
+### 49.2. Niveles de evidencia
+
+Los niveles describen fuerza y tipo de respaldo, no estados ontológicos ni una escala universal automática:
+
+| Nivel | Evidencia | Inferencia permitida | Inferencia no permitida |
+|---|---|---|---|
+| E1 Documental | Descripción, diseño, manual, especificación o referencia | La ruta está documentada/propuesta | Que sea realizable |
+| E2 Mecanística | Mecanismos, dependencias, precondiciones, recursos y restricciones identificados | Existe una explicación concreta y contrastable de cómo podría realizarse | Que el mecanismo funcione en el entorno de la unidad |
+| E3 Técnica | Prueba independiente de componentes y compatibilidad en entorno representativo; evidencia de que se satisfacen condiciones | Realizabilidad técnica respaldada bajo las condiciones probadas | Generalización a otras versiones, contextos o condiciones |
+| E4 Reproducible | Repetición trazable, control de versiones/condiciones y reproducción independiente | Respaldo robusto de realizabilidad dentro del ámbito verificado | Ausencia universal de alternativas o validez fuera del ámbito probado |
+
+Un nivel superior no compensa una incompatibilidad de contexto: una prueba E4 en un entorno distinto no demuestra realizabilidad para la unidad objetivo. Se conservarán los artefactos y condiciones que delimitan cada inferencia.
+
+### 49.3. Ficha de evidencia por ruta
+
+Cada ruta candidata π debe registrarse con:
+- route_id, versión e identidad de sus transformaciones;
+- función objetivo F* y criterio de substituibilidad aplicado;
+- sistema/unidad, estado basal, contexto e historia;
+- granularidad y horizonte H;
+- secuencia ordenada de transformaciones, relaciones y dependencias;
+- precondiciones, recursos, restricciones y condiciones de seguridad;
+- evidencia E1–E4 disponible, con fuente, fecha, versión y responsable;
+- método de verificación, entorno y representatividad;
+- estado de accesibilidad, aplicabilidad y substituibilidad;
+- incertidumbres, limitaciones y condiciones no verificadas;
+- hashes/IDs de artefactos y registro de evaluación/adjudicación.
+
+La ficha debe permitir a un tercero reconstruir por qué la ruta se considera viable, inviable o indeterminada sin conocer Outcome ni Value.
+
+### 49.4. Tres juicios separados por ruta
+
+Para evitar que la evidencia de una propiedad se utilice como prueba de otra, cada ruta recibe tres juicios:
+
+1. **Accesibilidad:** ¿la secuencia es realizable para el sistema y contexto considerados?
+2. **Aplicabilidad:** ¿se satisfacen las precondiciones para iniciar cada paso desde el estado/ramificación correspondiente?
+3. **Substituibilidad funcional:** ¿la ruta cumple F* dentro de H y las restricciones especificadas?
+
+Una ruta puede estar accesible pero no ser aplicable desde el estado inicial; puede ser aplicable pero no cumplir la función focal; o puede cumplir F* sin ser la misma identidad que τ2. Las tres evaluaciones se documentan separadamente.
+
+### 49.5. Estados de conclusión
+
+Cada juicio se clasifica como:
+- **Respaldado positivo:** evidencia suficiente y contextualizada de que se cumple.
+- **Respaldado negativo:** evidencia suficiente de que no se cumple bajo el ámbito definido.
+- **Indeterminado:** evidencia insuficiente, contradictoria o no representativa.
+- **Fuera de ámbito:** el contexto/versión no corresponde a la población o condiciones objetivo; no se interpreta como positivo ni negativo.
+
+“Ruta no encontrada” solo puede convertirse en ausencia respaldada si se documentan el universo de búsqueda, fuentes, granularidad, reglas de identidad, horizonte, cobertura y procedimiento de búsqueda. De lo contrario, el resultado es indeterminado.
+
+### 49.6. Evidencia para descartar una ruta
+
+No encontrar una ruta en el catálogo no basta para descartarla. El descarte requiere demostrar al menos una condición bloqueante bajo la definición y ámbito fijados, por ejemplo:
+- mecanismo necesario físicamente/operativamente imposible en el sistema;
+- precondición esencial incumplida y no modificable dentro del régimen/horizonte;
+- recurso imprescindible ausente y no obtenible dentro del horizonte;
+- incompatibilidad técnica verificada;
+- dependencia imposible de satisfacer;
+- secuencia que excede H;
+- violación inevitable de restricciones de seguridad/integridad;
+- imposibilidad de alcanzar F* según el criterio técnico preespecificado.
+
+La conclusión negativa se limita a la versión, contexto, estado, historia, horizonte y granularidad examinados. Si el supuesto bloqueo es incierto o puede cambiar mediante otra transformación, la ruta permanece indeterminada o debe ampliarse la búsqueda.
+
+### 49.7. Prueba técnica independiente sin exigir ejecución histórica
+
+Una prueba técnica E3 puede respaldar realizabilidad prospectiva mediante:
+- verificación de componentes y dependencias;
+- pruebas de compatibilidad e interfaces;
+- comprobación de precondiciones y recursos;
+- validación de mecanismo en entorno aislado/sandbox representativo;
+- inspección de restricciones y fallos previsibles;
+- prueba de la secuencia completa cuando la composición sea esencial.
+
+La prueba debe evitar modificar las condiciones que definen el estimando, o documentar que lo hace. Si la ruta solo funciona tras una intervención adicional, esa intervención forma parte de la ruta y debe incluirse en la comparación.
+
+Cuando el sandbox no representa adecuadamente el entorno objetivo, la evidencia no supera E2/E3 para ese contexto. La calificación de nivel depende de la correspondencia demostrada, no de la sofisticación del instrumento.
+
+### 49.8. Independencia, cegamiento y adjudicación
+
+- Los evaluadores de rutas desconocen asignación, provisión, selección, ejecución, Outcome y Value.
+- La definición de F*, granularidad, H y restricciones se congela antes de evaluar alternativas.
+- Cuando la clasificación implica juicio, se utilizan dos evaluadores independientes y adjudicación documentada.
+- Se conservan desacuerdos, evidencia original y versiones; la adjudicación no sobrescribe juicios previos.
+- El evaluador de exclusividad no utiliza como evidencia que una ruta produjo peor Value o no fue seleccionada.
+- El generador conserva la verdad de las rutas del DGP; el analizador recibe evidencia y debe inferir estados. El evaluador independiente compara clasificación con verdad generadora.
+
+El cegamiento reduce sesgos de evaluación, pero no corrige un universo de búsqueda incompleto ni demuestra validez del criterio F*.
+
+### 49.9. Regla de exclusividad funcional
+
+Para afirmar que τ2 es la única vía que cumple F* en el escenario sintético, se requiere:
+1. universo de transformaciones y mecanismos declarado como cerrado;
+2. granularidad e identidad congeladas;
+3. enumeración completa de rutas hasta H;
+4. evaluación de condiciones y aplicabilidad por rama;
+5. examen de rutas directas, compuestas, distribuidas e indirectas incluidas en el universo;
+6. evidencia suficiente para descartar rutas candidatas no viables;
+7. ausencia de rutas alternativas con substituibilidad funcional respaldada;
+8. ausencia de rutas relevantes indeterminadas.
+
+Si alguna ruta potencialmente substituible permanece indeterminada, la exclusividad no recibe PASS. El resultado será INDETERMINATE, no FAIL por defecto. Si una ruta alternativa sí cumple F*, la exclusividad funcional falla para ese escenario, aunque τ2 siga siendo una transformación distinta y relevante.
+
+En un DGP sintético cerrado, la completitud puede demostrarse respecto al universo generado mediante enumeración exhaustiva y pruebas del generador. Esto no demuestra completitud empírica en sistemas reales.
+
+### 49.10. Pruebas adversariales
+
+Se proponen:
+- EVID-01: ruta documentada E1 sin mecanismo; no clasificar accesible.
+- EVID-02: mecanismo plausible E2 sin compatibilidad contextual; no elevar a realizable.
+- EVID-03: prueba E3 en entorno no representativo; marcar fuera de ámbito.
+- EVID-04: prueba E3 reproducida independientemente; evaluar E4 dentro del ámbito.
+- EVID-05: ruta no encontrada sin cobertura documentada; exclusividad indeterminada.
+- EVID-06: bloqueo técnico verificado y esencial; descarte limitado al ámbito probado.
+- EVID-07: ruta requiere recurso adicional no contemplado; ampliar ruta y revisar estimando.
+- EVID-08: ruta accesible pero no aplicable desde S0; conservar distinción.
+- EVID-09: ruta cumple F* mediante mecanismo distinto; τ2 no equivalente por identidad, pero funcionalmente substituible.
+- EVID-10: ruta con precondición indeterminada; no confirmar exclusividad.
+- EVID-11: secuencia excede H; no substituible dentro del horizonte, sin afirmar imposibilidad general.
+- EVID-12: evaluador conoce Outcome/Value; invalidar evaluación por cegamiento.
+- EVID-13: universo sintético declarado cerrado pero generador omite una composición; falla completitud computacional.
+- EVID-14: ruta externa fuera del universo declarado; documentar límite, no inferir ausencia universal.
+- EVID-15: dos evaluadores discrepan; conservar ambas clasificaciones y adjudicar según protocolo.
+
+### 49.11. Dictamen y decisiones pendientes
+
+**Decisión propuesta:** utilizar los niveles E1–E4 y los tres juicios separados (accesibilidad, aplicabilidad y substituibilidad) para documentar rutas alternativas. La ausencia de rutas solo se considera respaldada cuando el procedimiento de búsqueda y la cobertura del universo están especificados. La exclusividad recibe PASS únicamente dentro del universo, granularidad, contexto y horizonte declarados, sin alternativas indeterminadas.
+
+Pendientes:
+- fijar F* y criterios técnicos/umbrales;
+- definir qué entornos se consideran representativos;
+- cerrar granularidad, identidad y H;
+- especificar el universo cerrado del DGP sintético;
+- definir estándares de evidencia E3/E4 por tipo de transformación;
+- establecer la regla de adjudicación y reproducibilidad;
+- armonizar el contrato con C10-D1, XSYNC-138 y el protocolo de accesibilidad basal.
+
+**Dictamen:** el contrato evita confundir documentación, plausibilidad, realizabilidad, ejecución y ausencia de búsqueda. La exclusividad puede probarse computacionalmente solo en un universo sintético cerrado; en aplicaciones reales queda limitada por cobertura y evidencia. No congelar S4-R, implementar ni simular hasta completar criterios, universo y revisión independiente.
