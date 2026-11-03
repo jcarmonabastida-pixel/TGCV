@@ -2876,3 +2876,155 @@ Además, la aleatorización de (Z_g) no aleatoriza (A_f), no garantiza exclusió
 6. Recalcular la verdad analítica del DGP solo después de resolver los puntos anteriores.
 
 **Conclusión:** el contrato de §34 es matemáticamente coherente como arquitectura de variables, pero no demuestra todavía la identificación del estimando focal. La fórmula 3.6 es correcta únicamente bajo la versión simplificada y explícita del DGP. La siguiente versión debe resolver el estatus de (g^{Af}), (q^*), (L_m) y la relación entre ITT, política de provisión y accesibilidad focal. No se autoriza simulación ni ejecución por esta auditoría.
+
+
+---
+
+## 36. Propuesta de identificación instrumental focal de S4-R (sección conversacional 149)
+
+**Estado:** propuesta metodológica para resolver MATH-148-01…06. No aceptada ni congelada; requiere revisión independiente y escenarios adversariales. No se ha implementado, simulado ni ejecutado. No cierra XSYNC-138-01 ni modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 o cierres previos.
+
+### 36.1. Decisión de diseño
+
+Se propone no añadir por ahora una segunda intervención que asigne directamente la condición focal. S4-R se mantiene como ensayo sintético de políticas de provisión con asignación aleatoria (Z_g), y se distinguen:
+
+- **Estimando primario:** efecto ITT de la política de provisión, (psi_B), bajo el protocolo efectivamente asignado.
+- **Estimando secundario de mecanismo:** efecto causal local de la accesibilidad focal inducida por la política, identificable mediante variable instrumental solo bajo supuestos explícitos.
+- **Estimando general C10:** contribución de cambios estructurados de (T_{acc}) a Value en la población/contextos objetivo. No queda identificado automáticamente por este instrumento focal.
+
+Esta estrategia evita asignar directamente (A_f^*), pero limita la interpretación a las unidades cuyo estado de accesibilidad focal responde a la política, salvo supuestos adicionales de homogeneidad o identificación de efectos en otros estratos.
+
+### 36.2. Variables para el diseño instrumental
+
+Se definen:
+- (Z_gin{0,1}): asignación aleatoria a política de provisión baja/alta.
+- (A_f=Delta A_fin{0,1}): cambio focal de accesibilidad de τ2, en la población primaria con (A_{f,0}^*=0).
+- (V): Value final, construido con regla independiente.
+- (X,H_0): variables basales de estratificación/heterogeneidad y definición de población.
+- (P^*(X,H_0)): distribución basal de referencia para la población objetivo, distinta de un régimen de intervención.
+- (C_{dep,0},C_{dep,1}): dependencia técnica antes y después de la provisión; son mecanismo de primera etapa, no sustitutos de (A_f).
+- (W_{attempt},S_{install}): intento y éxito de instalación, variables intermedias observadas.
+
+En el DGP focal más simple, las condiciones restantes para τ2 se fijan como satisfechas y estables, (C_{dep,0}=0), y (A_f=C_{dep,1}). En variantes más realistas, la accesibilidad se deriva de todas las condiciones necesarias; la primera etapa debe medirse sobre (A_f), no inferirse únicamente de la instalación.
+
+### 36.3. Estimandos identificables
+
+El efecto de asignación es:
+
+[
+ITT_V=E[Vmid Z_g=1]-E[Vmid Z_g=0].
+]
+
+La primera etapa es:
+
+[
+ITT_A=E[A_fmid Z_g=1]-E[A_fmid Z_g=0].
+]
+
+Si (ITT_A
+e0), el estimador instrumental de Wald es:
+
+[
+	heta_{IV}=rac{ITT_V}{ITT_A}.
+]
+
+Con instrumento binario, accesibilidad focal binaria, asignación aleatoria, consistencia, ausencia de interferencia, exclusión, monotonicidad y relevancia, (	heta_{IV}) identifica el **efecto causal medio local (LATE)** de la accesibilidad focal sobre Value entre las unidades cumplidoras (compliers), es decir, aquellas para las que la política cambia (A_f) de 0 a 1.
+
+No identifica por sí solo:
+- el efecto medio de accesibilidad en toda la población (ATE);
+- el efecto en unidades siempre accesibles o nunca accesibles;
+- el efecto de todos los cambios posibles de (T_{acc});
+- el efecto de una política distinta de las dos versiones estudiadas;
+- una contribución universal de accesibilidad a Value.
+
+Si los efectos de accesibilidad son homogéneos en todos los estratos relevantes, LATE puede coincidir con ATE; esta homogeneidad es un supuesto adicional, no una consecuencia del instrumento.
+
+### 36.4. Supuestos de identificación y condiciones de refutación
+
+1. **Independencia:** (Z_g) es aleatorio respecto de los resultados potenciales y estados potenciales de accesibilidad, según el diseño y estratos de asignación.
+2. **Relevancia:** la asignación cambia la probabilidad de (A_f=1); la primera etapa se estima y reporta con incertidumbre.
+3. **Exclusión:** (Z_g) afecta Value únicamente mediante (A_f) y las consecuencias causales que se siguen de esa accesibilidad en el sistema TGCV. No puede existir vía directa de provisión, instalación o asignación hacia Value fuera de la vía focal.
+4. **Monotonicidad:** ninguna unidad se vuelve menos accesible a τ2 por recibir la política de provisión alta, frente a la baja. Si existen defiers, el Wald estándar no tiene la interpretación LATE habitual.
+5. **Consistencia y versiones:** cada política y cada estado focal tienen versiones suficientemente especificadas; no se mezclan tratamientos distintos bajo una misma etiqueta.
+6. **No interferencia relevante:** la asignación de una unidad no modifica la accesibilidad o Value de otras unidades, salvo que el diseño modele explícitamente interferencia.
+7. **Medición válida:** (A_f) se evalúa con criterios independientes de Outcome y Value; el error de clasificación se valida o se incorpora a análisis de sensibilidad.
+8. **Población y soporte:** ambas políticas son factibles y la asignación tiene probabilidad positiva en cada estrato de la población objetivo.
+
+La exclusión es el supuesto más exigente. La asignación de (Z_g) puede alterar expectativas, prioridad, información, entrenamiento, tiempo, costes, seguridad, mantenimiento, calidad o decisiones. Si cualquiera de estas vías alcanza Value sin pasar por la accesibilidad focal, el instrumento no identifica el LATE propuesto. Un test de balance o un resultado no significativo en controles negativos no demuestra por sí solo exclusión.
+
+### 36.5. Ejemplo algebraico y reinterpretación del 3.6
+
+En el DGP focal simplificado:
+- (P(A_f=1mid Z_g=1)=.80);
+- (P(A_f=1mid Z_g=0)=.20);
+- (A_f) es binaria y la población cumple (A_{f,0}^*=0);
+- el efecto estructural de (A_f) sobre (M) es 1, de (M) sobre (O) es 2 y de (O) sobre (V) es 3;
+- no hay vías alternativas desde (Z_g/B_g/C_{dep}) hacia Value;
+- no hay interacciones ni heterogeneidad del efecto focal en esta versión ilustrativa.
+
+Entonces:
+
+[
+ITT_A=.80-.20=.60.
+]
+
+[
+ITT_V=6	imes.60=3.6.
+]
+
+[
+	heta_{IV}=ITT_V/ITT_A=3.6/.60=6.
+]
+
+Interpretación:
+- **3.6** es el efecto medio de asignar la política alta en lugar de la baja en este DGP.
+- **6** es el efecto causal por unidad de cambio de accesibilidad en la versión homogénea del DGP; bajo los supuestos IV, con heterogeneidad sería el LATE de los compliers.
+- Ninguno de los dos números constituye evidencia empírica ni prueba de C10.
+
+Si se mantiene un término (L_m) en la ecuación de Value, debe ser basal o tener distribución esperada igual por el diseño y no abrir una vía directa desde (Z_g). La versión primaria de S4-R debería eliminar (L_m) post-tratamiento del DGP principal. Los confusores inducidos y vías alternativas se reservan para variantes adversariales explícitas.
+
+### 36.6. Qué hacer con (q^*)
+
+Para la versión primaria simple:
+- sustituir la notación ambigua de intervención común sobre (X,H_0) por una población/distribución de referencia (P^*(X,H_0));
+- definir (X,H_0) antes de la asignación;
+- aleatorizar (Z_g) dentro de estratos basales si procede;
+- no introducir un régimen post-tratamiento (q^*) si no existe una variable longitudinal concreta que deba intervenirse.
+
+Si una variante requiere controlar una historia post-asignación, debe definirse un régimen secuencial explícito, con orden temporal, intervención factible, probabilidades por historia y soporte. No se llamará (q^*) a una estandarización estadística que no corresponda a una intervención coherente.
+
+### 36.7. Escenarios sintéticos que debe incluir la auditoría instrumental
+
+| Variante | DGP | Dictamen esperado del analizador |
+|---|---|---|
+| IV-01 | Relevancia, exclusión y monotonicidad verdaderas; efecto homogéneo | Recuperar ITT, primera etapa y efecto focal 6 |
+| IV-02 | Supuestos IV válidos; efecto heterogéneo | Recuperar LATE, no etiquetarlo ATE |
+| IV-03 | Instrumento débil o primera etapa nula | No estimar atribución focal estable; reportar falta de relevancia |
+| IV-04 | Vía directa (Z_g/B_g	o V) | Rechazar interpretación IV focal; conservar ITT de política |
+| IV-05 | Defiers/no monotonicidad | No atribuir Wald a LATE estándar |
+| IV-06 | Error de clasificación en (A_f^{obs}) | Cuantificar sesgo/sensibilidad; no usar A observada como verdad |
+| IV-07 | Cambio de coste/tiempo/calidad por provisión | Efecto de paquete o instrumento inválido para accesibilidad |
+| IV-08 | Accesibilidad basal heterogénea | Separar always-takers, never-takers y compliers; definir población objetivo |
+| IV-09 | Interferencia entre unidades | Declarar estimando de exposición/interferencia o no-identificación |
+| IV-10 | Violación de consistencia/versiones | No combinar versiones; redefinir intervención o limitar alcance |
+
+Los escenarios deben generarse con verdad conocida y analizarse a ciegas. La evaluación separará: recuperación de ITT, primera etapa, diagnóstico de supuestos, recuperación LATE y construcción de Value. No se agregará un score único.
+
+### 36.8. Relación con C10-D1 y alcance TGCV
+
+El diseño instrumental focaliza una sola dimensión de (Delta T_{acc}), concretamente el cambio de accesibilidad de τ2. El instrumento no identifica la contribución causal de todas las transformaciones, relaciones y condiciones de (T_{acc}). La representación completa sigue siendo obligatoria para la evaluación TGCV.
+
+Si la pregunta científica es el efecto de la accesibilidad focal, el LATE es un objetivo legítimo y acotado. Si la pregunta es el efecto general de cambios de (T_{acc}) sobre Value, harán falta variaciones y diseños que cubran composición, relaciones, condiciones y contextos, además de τ2. No se generalizará desde este juguete a ese estimando general.
+
+### 36.9. Decisión propuesta
+
+1. Mantener S4-R como ensayo aleatorizado de política de provisión.
+2. Definir ITT de Value como estimando primario identificable por asignación.
+3. Añadir el análisis instrumental como estimando secundario de mecanismo, condicionado a los supuestos IV.
+4. Denominar el resultado secundario LATE de accesibilidad focal, no ATE ni efecto general de (Delta T_{acc}).
+5. Mantener la versión homogénea con verdad analítica 6 como caso de calibración; conservar 3.6 como ITT de política.
+6. Añadir IV-01…IV-10 a la matriz de escenarios, pendiente de reconciliación y aceptación.
+7. Mantener explícitamente variantes donde la exclusión, relevancia, monotonicidad o medición fallen.
+8. No simular, ejecutar ni congelar hasta revisar independientemente este contrato y reconciliarlo con C10-D1.
+
+**Dictamen:** la vía instrumental ofrece una estrategia de identificación focal más concreta sin asignar directamente (A_f^*), pero depende críticamente de exclusión, monotonicidad y validez de la primera etapa. La identificación resultante sería local a los compliers, no una atribución poblacional general. Propuesta documental pendiente de revisión; XSYNC-138-01 permanece abierto.
