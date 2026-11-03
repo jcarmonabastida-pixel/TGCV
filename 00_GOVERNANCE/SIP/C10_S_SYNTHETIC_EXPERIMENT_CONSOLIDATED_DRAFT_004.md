@@ -3512,3 +3512,173 @@ La auditoría concluye que el diseño necesita una evaluación explícita de inf
 **Decisión propuesta:** mantener ITT como estimando primario; Wald/LATE como análisis secundario condicionado; añadir INF-01…INF-15; conservar (N=2000) total por réplica y 1000 réplicas como valores provisionales; seleccionar y validar un método robusto de intervalo antes de implementar. No calcular ni declarar potencia todavía.
 
 **Estado:** contrato estadístico propuesto, no ejecutado. XSYNC-138-01 y las decisiones abiertas de δ/ε, tolerancias y método de inferencia permanecen pendientes. No se ha realizado simulación, cálculo de potencia, experimento real ni aceptación.
+
+
+---
+
+## 40. Auditoría del error de medición de la accesibilidad (sección conversacional 153)
+
+**Estado:** especificación metodológica propuesta. No es validación de instrumento de medida, simulación, auditoría independiente ni aceptación del diseño. No cierra XSYNC-138-01 ni modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 o cierres previos.
+
+### 40.1. Dos objetos de medición que no deben confundirse
+
+La estrategia IV focal necesita distinguir:
+
+- A_f*: estado verdadero de accesibilidad de la transformación focal τ2, derivado de todas sus condiciones constitutivas y de realizabilidad.
+- A_f_obs: clasificación observada por el procedimiento de medición.
+- T_acc*: espacio transformacional verdadero, representado por catálogo/versiones, relaciones y condiciones de accesibilidad.
+- T_acc_obs: reconstrucción observada y documentada del espacio transformacional.
+
+A_f* es una variable focal binaria útil para el contraste IV de S4-R; no es una representación suficiente de T_acc ni de ΔT_acc. La medición TGCV debe conservar cambios de composición, altas y bajas de transformaciones, relaciones y condiciones, incluidos cambios que no afecten a τ2.
+
+El estado verdadero no se vuelve observable por definición. Debe existir una referencia operacional independiente, trazable y auditada, con reglas que no utilicen Outcome, ejecución ni Value para inferir retrospectivamente accesibilidad.
+
+### 40.2. Matriz de error de clasificación
+
+Para accesibilidad binaria, definir sensibilidad y especificidad:
+
+- Se = P(A_f_obs = 1 | A_f* = 1).
+- Sp = P(A_f_obs = 0 | A_f* = 0).
+
+La tasa de falsos negativos es 1−Se; la tasa de falsos positivos es 1−Sp. Deben estimarse o acotarse por brazo, tiempo, versión técnica, contexto y evaluador cuando haya razones para esperar heterogeneidad.
+
+No se supondrá automáticamente sensibilidad y especificidad perfectas, error no diferencial entre brazos, independencia del error respecto a versión/contexto/estado operativo, infalibilidad del evaluador experto ni independencia de mediciones repetidas.
+
+La matriz de clasificación debe distinguir además estado accesible, inaccesible e indeterminado. No convertir indeterminado en inaccesible ni excluirlo silenciosamente.
+
+### 40.3. Consecuencia analítica de error no diferencial
+
+Si Se y Sp son constantes e iguales entre brazos, y el error se refiere a la clasificación binaria A_f*, entonces:
+
+E[A_f_obs | Z=z] = (Se+Sp−1) P(A_f*=1 | Z=z) + (1−Sp).
+
+Por tanto:
+
+ITT_Aobs = (Se+Sp−1) × ITT_A*.
+
+Si el numerador de Value está medido sin error diferencial y el instrumento satisface los demás supuestos, el Wald que usa accesibilidad observada queda:
+
+Wald_obs = ITT_V / ITT_Aobs = LATE* / (Se+Sp−1).
+
+Esto muestra que el error no diferencial no es inocuo para un mediador/endógeno instrumentado: puede atenuar la primera etapa y magnificar el cociente en valor absoluto cuando 0 < Se+Sp−1 < 1. Si Se+Sp=1, la medición no discrimina mejor que azar y la primera etapa observada se anula. Si el índice de Youden es negativo, la clasificación está invertida y debe corregirse con una regla de codificación validada, no interpretar el signo mecánicamente.
+
+La relación anterior es exacta bajo los supuestos indicados; no es una corrección general aplicable cuando el error es diferencial, hay tres estados, cambios de clasificación a lo largo del tiempo o el estimando usa una exposición distinta de A_f*.
+
+### 40.4. Error diferencial entre brazos y versiones
+
+Si Se_z y Sp_z varían con la asignación:
+
+E[A_f_obs | Z=z] = (Se_z+Sp_z−1)p_z + (1−Sp_z), donde p_z=P(A_f*=1 | Z=z).
+
+La diferencia observada ya no es un múltiplo simple de la primera etapa verdadera. Puede aumentar, reducir, invertir o incluso crear una primera etapa aparente cuando la primera etapa verdadera es cero.
+
+Causas plausibles:
+- evaluadores conocen el brazo asignado;
+- documentación más completa en el brazo de provisión alta;
+- pruebas diagnósticas distintas según versión;
+- dependencia parcialmente instalada clasificada como plenamente operativa;
+- ventanas temporales distintas;
+- evaluador infiere accesibilidad porque observó que τ2 se ejecutó;
+- condiciones de acceso se reconstruyen retrospectivamente desde Outcome.
+
+Se requiere medición ciega a asignación, selección, ejecución y Value, usando el mismo protocolo y ventana temporal. Si el cegamiento es imposible, registrar la exposición del evaluador y medir acuerdo/error mediante referencia independiente.
+
+### 40.5. Referencia de validación independiente
+
+Se propone una submuestra de validación seleccionada aleatoriamente, estratificada si es necesario por brazo y contexto, en la que un equipo independiente aplique una evaluación de referencia de A_f* y del snapshot T_acc*.
+
+Requisitos:
+1. Selección aleatoria o probabilidades conocidas de inclusión en la validación.
+2. Evaluadores de referencia cegados a Z, A_f_obs, Outcome y Value cuando sea factible.
+3. Aplicación de criterios de realizabilidad, identidad, precondiciones, recursos, dependencias y admisibilidad.
+4. Snapshot temporal anterior a selección y ejecución.
+5. Registro de evidencia, fuente, versión, evaluador, fecha y grado de incertidumbre.
+6. Doble evaluación independiente en una fracción de la submuestra y adjudicación de discrepancias.
+7. Estimación de Se/Sp y sus intervalos; análisis por brazo/versión/contexto si el tamaño lo permite.
+8. Ponderación por diseño si la probabilidad de entrar en validación varía.
+9. Propagación de incertidumbre de Se/Sp a primera etapa y Wald.
+10. No usar Outcome o Value como patrón de oro.
+
+Si la referencia también es imperfecta, no llamarla gold standard. Se necesitará una adjudicación compuesta, múltiples indicadores o análisis de sensibilidad a error residual. La submuestra de validación no convierte automáticamente A_f* en verdad conocida.
+
+### 40.6. Métodos de análisis y límites
+
+Se compararán, según el diseño:
+- análisis principal con referencia de validación cuando esté disponible;
+- corrección de clasificación usando Se/Sp estimadas, propagando incertidumbre;
+- estimación con modelos de error de medición o likelihood conjunto cuando el diseño y datos lo permitan;
+- análisis de sensibilidad para rangos plausibles de Se/Sp;
+- límites parciales si no existe información suficiente para identificar tasas de error.
+
+No se recomienda sustituir A_f* por la probabilidad posterior de accesibilidad sin definir un estimando y un modelo que justifique ese uso. Tampoco se recomienda corregir dividiendo automáticamente por el índice de Youden si Se/Sp son estimadas con error, varían entre brazos o el modelo no es identificable.
+
+El analizador debe informar por separado:
+- ITT de política sobre Value;
+- primera etapa con A_f_obs;
+- primera etapa corregida/estimada para A_f*, si identificable;
+- Wald ingenuo y Wald corregido, claramente etiquetados;
+- incertidumbre adicional por validación;
+- sensibilidad a error diferencial;
+- conclusión de identificación o no-identificación.
+
+### 40.7. Error en la medición del espacio completo T_acc
+
+La medición de A_f no resuelve la medición TGCV. Para T_acc se requiere auditar, como mínimo:
+- omisiones de transformaciones accesibles;
+- falsas inclusiones de transformaciones no realizables;
+- identificación duplicada o incorrecta de transformaciones;
+- errores en equivalencia y versiones;
+- relaciones y dependencias ausentes o falsas;
+- condiciones constitutivas mal clasificadas;
+- estado indeterminado tratado como cierto;
+- cambios temporales sobrescritos;
+- catálogo incompleto y rutas alternativas no detectadas.
+
+Se conservarán snapshots versionados de U_acc, R_acc y C_acc, con procedencia y evidencia. Las discrepancias entre T_acc_obs y referencia deben informarse como errores por dimensión, no reducirse a una sola exactitud binaria.
+
+La reconstrucción de Reach y trayectorias se realizará desde el espacio transformacional observado y sus incertidumbres; el evaluador comparará con el espacio verdadero del DGP. No se inferirá T_acc a partir de transformaciones ejecutadas, estados alcanzados, Outcome o Value.
+
+### 40.8. Escenarios adversariales de medición
+
+| ID | Alteración | Resultado esperado |
+|---|---|---|
+| MEAS-01 | Se=Sp=1 | Primera etapa observada coincide con verdadera |
+| MEAS-02 | Error no diferencial moderado | Primera etapa observada atenuada; Wald ingenuo distorsionado |
+| MEAS-03 | Se+Sp=1 | Medición sin discriminación; primera etapa observada nula |
+| MEAS-04 | Se/Sp difieren por brazo | Posible primera etapa espuria o invertida |
+| MEAS-05 | Medición depende de versión técnica | Error heterogéneo; estimación agrupada cuestionable |
+| MEAS-06 | Evaluador conoce Outcome/ejecución | Fuga retrospectiva; medición no independiente |
+| MEAS-07 | Validación aleatoria con referencia adecuada | Recuperación de tasas de error y propagación de incertidumbre |
+| MEAS-08 | Validación no aleatoria sin probabilidades conocidas | Sesgo de validación; corrección no identificada |
+| MEAS-09 | Referencia también imperfecta | No declarar gold standard; sensibilidad/identificación parcial |
+| MEAS-10 | Error en relaciones/condiciones pero no en τ2 | A_f puede estar bien medido mientras ΔT_acc está mal reconstruido |
+| MEAS-11 | Accesibilidad indeterminada recodificada como 0 | Sesgo por clasificación forzada |
+| MEAS-12 | Snapshot posterior a ejecución | Contaminación temporal y posible inferencia retrospectiva |
+| MEAS-13 | Diferencial de pérdidas en submuestra de validación | Ponderación/identificación de validación amenazada |
+| MEAS-14 | Medición binaria correcta pero catálogo incompleto | IV focal puede ser válido; inferencia TGCV sobre el espacio completo no |
+
+### 40.9. Criterios de aceptación de medición
+
+Antes de simulación confirmatoria o piloto se deberán preespecificar:
+1. definición operacional de A_f* y T_acc*;
+2. protocolo de referencia, evidencia y snapshot;
+3. procedimiento de cegamiento;
+4. diseño y tamaño de submuestra de validación;
+5. tratamiento de indeterminados y discrepancias;
+6. tasas de error admisibles o límites de sensibilidad justificados;
+7. método de propagación de incertidumbre;
+8. análisis de error diferencial;
+9. métricas separadas para U, R y C;
+10. reglas para concluir medición suficiente, limitada o no identificada.
+
+No se fija ahora un umbral de Se/Sp ni de concordancia: dependerá de la escala, el impacto de falsos positivos/negativos, la precisión del IV y la finalidad TGCV. No se elegirá tras observar resultados.
+
+### 40.10. Dictamen
+
+El error de medición de accesibilidad puede sesgar directamente la primera etapa y el Wald; si es diferencial, puede incluso producir una primera etapa aparente. La aleatorización del instrumento no corrige ese problema. Se necesita una referencia independiente y una estrategia explícita para propagar incertidumbre.
+
+A su vez, una medición fiable de la transformación focal no garantiza una reconstrucción válida del espacio T_acc. Ambas capas deben auditarse por separado.
+
+**Decisión propuesta:** mantener A_f* como variable causal focal del DGP y A_f_obs como medición del analizador; incorporar MEAS-01…MEAS-14; añadir submuestra de validación independiente y análisis de sensibilidad; mantener la evaluación de T_acc multidimensional y temporal. No ejecutar todavía la simulación ni fijar umbrales.
+
+**Estado:** contrato de medición propuesto, no implementado ni probado. XSYNC-138-01 y las decisiones abiertas de Se/Sp, validación, δ/ε, tolerancias y método de inferencia permanecen pendientes.
