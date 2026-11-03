@@ -1435,3 +1435,151 @@ No se declara cerrado ningún hallazgo por esta auditoría. No se modifica C10-D
 La consolidación C10-S puede seguir en estado de borrador para revisión, pero **no debe congelarse, implementarse ni utilizarse para ejecución confirmatoria** hasta resolver XSYNC-138-01 y los hallazgos P1 pertinentes. El siguiente trabajo es una revisión correctiva de C10-S frente a C10-D1, no una ampliación de escenarios ni un salto a código.
 
 **Estado de la auditoría:** documental ejecutada sobre las versiones identificadas; hallazgos registrados; sin aceptación ni cierre formal.
+
+
+---
+
+## 26. Revisión correctiva de la arquitectura de intervención y accesibilidad — XSYNC-138-01 (sección conversacional 139)
+
+**Objeto:** resolver documentalmente el hallazgo bloqueante XSYNC-138-01 sin alterar el estimando causal definido en C10-D1. Esta sección corrige y sustituye, en los puntos incompatibles, las formulaciones simplificadas de §§16.2–16.3 y §25.3. No borra su historial.
+
+### 26.1. Cuatro objetos que no deben colapsarse
+
+1. **Asignación** (Z): asignación aleatoria o mecanismo de asignación observado. En un experimento puede asignar una política; no es por sí misma accesibilidad.
+2. **Intervención implementable** (B): acción, regla o componente que el sistema puede aplicar realmente (por ejemplo, una regla de autorización). Su versión, contenido y momento deben especificarse.
+3. **Respuesta transformacional** (A=Delta T_{acc}): cambio estructurado del espacio de transformaciones accesibles producido bajo (B), medido independientemente de Outcome y Value.
+4. **Ejecución**: selección, inicio y realización de transformaciones accesibles. No se deduce de (A) ni de Reach.
+
+La relación causal general se representa como:
+
+`Z ightarrow B ightarrow C ightarrow A=Delta T_{acc}
+ightarrow (Reach,Pi_{feasible}) ightarrow
+(Knowledge/Consideration,Selection) ightarrow Execution
+ightarrow Outcome ightarrow Value`
+
+La cadena es una estructura de referencia, no una afirmación de mediación exclusiva. Se deben registrar vías alternativas (Bightarrow Lightarrow Value), (Bightarrow Lightarrow A) y otras que el dominio permita.
+
+### 26.2. Accesibilidad estructurada y componente focal
+
+El objeto TGCV general es `A=Delta T_acc=(A^+,A^-,Delta R,Delta C,ldots)`, donde se conservan las transformaciones incorporadas/eliminadas y los cambios relacionales/configuracionales pertinentes según la representación y granularidad declaradas.
+
+Para un experimento focal puede definirse:
+
+`A_f = h_f(Delta T_acc)`
+
+donde (h_f) es una proyección preespecificada que identifica el cambio de accesibilidad de la transformación o familia focal (	au_f). Esta proyección:
+- no sustituye al objeto completo (Delta T_{acc});
+- no convierte una variable binaria en definición universal de accesibilidad;
+- conserva dirección (apertura/cierre), versión, condiciones y evidencia;
+- distingue valor verdadero/estructural de su medición (A_f^{obs});
+- no incorpora selección, ejecución, Outcome ni Value.
+
+Si la intervención modifica otras transformaciones o relaciones, el analizador debe recibir el cambio estructurado completo. No se puede presentar el efecto de una reconfiguración amplia como efecto exclusivo de (	au_f).
+
+### 26.3. Políticas (g_1/g_0): objeto y factibilidad
+
+En el estimando de accesibilidad de C10-D1, (g_1) y (g_0) son políticas implementables que inducen distribuciones distintas de cambios de accesibilidad, condicionadas por contexto basal e historia pertinente. No son, por definición, políticas de autorización ni asignaciones abstractas que fuerzan (A).
+
+Se expresa el mecanismo de implementación como:
+
+`B_g ightarrow C_g ightarrow A_g=Delta T_{acc}`
+
+y las políticas como distribuciones inducidas sobre cambios accesibles factibles:
+
+`g_j(amid X,H_0),quad jin{0,1}`
+
+sujetas al conjunto factible `F(X,H_0)`. Debe cumplirse:
+
+`supp(g_j(cdotmid X,H_0)) subseteq F(X,H_0)`
+
+para cada política y estrato de la población objetivo. La notación no autoriza a intervenir sobre una transformación imposible, a ignorar sus precondiciones ni a asignar accesibilidad sin un mecanismo realizable.
+
+Cuando (g_j) solo pueda materializarse mediante una política (B_{g_j}), se documentan el mecanismo, la versión y las vías adicionales de esa política. Para interpretar el contraste como efecto atribuible a accesibilidad, las versiones deben diferir en el cambio de accesibilidad focal sin introducir diferencias no separadas en información, incentivos, expectativas, recursos, trato u otras vías hacia Value. Si esto no puede garantizarse, el contraste es un efecto de política o de paquete, no (	heta_A(q)) aislado.
+
+### 26.4. Régimen común (q) y regla de Value
+
+El régimen (q) fija una distribución común y explícita de condiciones/historias pertinentes para ambos brazos del contraste. Puede incluir contexto basal, estado inicial, recursos y capacidades comunes, información basal, necesidad, condiciones constitutivas no manipuladas y horizonte, siempre que su papel temporal y causal esté especificado.
+
+La regla de Value no es una variable que (q) deba asignar. Se fija como parte de la definición del resultado/estimando: beneficiario, dimensión, regla evaluativa, escala, dirección y horizonte. Debe ser idéntica entre los regímenes comparados, salvo que la pregunta científica sea explícitamente el efecto de cambiar el criterio evaluativo, que no es el estimando focal C10.
+
+Las condiciones constitutivas (L_c) que hacen imposible una transformación no se estandarizan para crear artificialmente soporte. Las condiciones posteriores (L_m) se clasifican por su posición temporal y papel causal; no se ajustan mecánicamente como covariables ordinarias.
+
+### 26.5. Estimandos no intercambiables
+
+**Efecto total de asignación:**
+
+`TE_Z=E[Vmid do(Z=1)]-E[Vmid do(Z=0)]`
+
+En un diseño aleatorizado, el contraste por asignación identifica el ITT de la asignación, bajo consistencia, ausencia de interferencia relevante y manejo adecuado de pérdidas. No identifica automáticamente el efecto de accesibilidad.
+
+**Efecto de política implementable:**
+
+`\psi_{policy}(q)=E[V^{q,B_1}]-E[V^{q,B_0}]`
+
+Incluye todas las vías causales de las versiones de política comparadas. Si (B) es una regla de autorización, este es el efecto de esa política, no una etiqueta alternativa para (	heta_A(q)).
+
+**Efecto de políticas de accesibilidad:**
+
+`\theta_A(q)=E[V^{q,g_1}]-E[V^{q,g_0}]`
+
+Compara políticas factibles que inducen cambios distintos de accesibilidad bajo un régimen común. Su interpretación como contribución atribuible a accesibilidad exige que la intervención esté bien definida y que las vías no atribuibles a ese cambio estén controladas, excluidas por diseño o separadamente identificadas. No se identifica solo porque (Z) esté aleatorizado ni porque (A_f^{obs}) difiera entre brazos.
+
+**Efecto conjunto de condiciones y accesibilidad:** cuando la accesibilidad solo puede cambiar junto con condiciones constitutivas, se define un contraste conjunto sobre esas condiciones y (A). Se etiqueta como efecto conjunto (por ejemplo, (	heta_{L,A})); no se renombra como efecto exclusivo de accesibilidad.
+
+`\theta_A^{dyn}` continúa fuera del conjunto de estimandos operativos hasta que se definan políticas dinámicas, historia, población, factibilidad, horizonte, regla Value y supuestos.
+
+### 26.6. Papel de la autorización
+
+La autorización es una posible condición o componente de implementación (C_{auth}), no una medida de accesibilidad. La secuencia posible es:
+
+`B_{auth} ightarrow C_{auth} ightarrow A_f^* ightarrow Delta T_{acc}`
+
+Si la autorización también cambia expectativas, incentivos, prioridades, información o trato, esas vías se miden y el contraste primario se interpreta como (psi_{policy}). No se atribuye su ITT íntegro a accesibilidad.
+
+La modalidad sintética preferida para probar atribución es una intervención técnica aislada que altere la condición de realizabilidad focal sin cambiar las demás condiciones relevantes. La modalidad de autorización puede conservarse como escenario de efecto de política y como caso adversarial de vías múltiples.
+
+### 26.7. Revisión requerida de S4-R
+
+S4-R queda especificado como escenario de políticas sobre accesibilidad, no como asignación de autorización:
+- (q^*) establece una distribución común sobre condiciones no constitutivas pertinentes, condicionada en (X,H_0).
+- Se identifica explícitamente si la variable (L) representa condición constitutiva (L_c), condición inducida (L_m) o ambas; no se permite la etiqueta indiferenciada.
+- (g_1) y (g_0) inducen distribuciones diferentes de (A_f) solo dentro del conjunto factible de cada historia.
+- Los valores previos .8/.2 y (q^*(L=1mid X)=.5) permanecen como parámetros ilustrativos provisionales, no como política aprobada ni prueba de soporte.
+- El generador debe comprobar factibilidad/positividad en cada estrato. Si una política exige una transformación imposible o tiene probabilidad positiva fuera de (F(X,H_0)), el contraste poblacional original no es identificable/implementable. No se fuerza la asignación.
+- Si la condición es constitutiva y hace (g_0) imposible, se informa el estrato factible o se formula un estimando conjunto distinto, preservando la diferencia.
+
+### 26.8. Matriz de correspondencia correctiva
+
+| Formulación anterior | Regla corregida | Efecto |
+|---|---|---|
+| (g) como política de autorización | (g) como política factible sobre cambios de accesibilidad; autorización es posible mecanismo (B) | Corrige XSYNC-138-01 |
+| (q_X) incluye regla Value | (q) fija condiciones/historias; Value se fija en el estimando | Corrige XSYNC-138-02 |
+| (A_f^*) representa todo (Delta T_{acc}) | (A_f=h_f(Delta T_{acc})), proyección focal | Corrige XSYNC-138-03 |
+| S4-R asume soporte uniforme | Factibilidad por historia y separación (L_c/L_m) | Corrige XSYNC-138-04 |
+| Efecto de autorización se interpreta como accesibilidad | (psi_{policy}) separado de (	heta_A(q)) | Corrige XSYNC-138-01/06 |
+
+### 26.9. Reglas de decisión del analizador
+
+El analizador debe emitir por separado:
+1. ¿La asignación (Z) está definida y fue respetada?
+2. ¿Qué intervención implementable (B) se aplicó y qué versión?
+3. ¿Qué condiciones y vías produjo?
+4. ¿Qué cambio estructurado (Delta T_{acc}) ocurrió y qué evidencia lo respalda?
+5. ¿Qué componente focal (A_f) se deriva mediante (h_f)?
+6. ¿Las políticas (g_1/g_0) son implementables y tienen soporte en la población objetivo?
+7. ¿El contraste identifica (TE_Z), (psi_{policy}), (	heta_A(q)), un efecto conjunto o ninguno?
+8. ¿Se han confundido accesibilidad, aplicabilidad, selección, inicio, ejecución y finalización?
+
+Debe declarar no-identificación cuando el mapeo (Bightarrow A) sea ambiguo, existan vías alternativas no separadas, falte soporte, la política no sea factible o la medición no permita recuperar el constructo requerido.
+
+### 26.10. Dictamen de XSYNC-138-01
+
+La presente sección **resuelve la contradicción documental a nivel de especificación propuesta**: (B/Z), (A=Delta T_{acc}), (A_f), autorización, (g_1/g_0), (q) y Value quedan diferenciados y relacionados.
+
+El hallazgo no se declara formalmente cerrado todavía. Requiere:
+- revisión de consistencia con los apartados exactos de C10-D1;
+- actualización de los escenarios S4-O/S4-R y del diccionario/contrato de datos;
+- revisión independiente que confirme que no se ha cambiado el estimando de C10-D1;
+- evidencia documental de resolución y aceptación.
+
+**Estado:** resolución correctiva propuesta y registrada; no implementada, no simulada, no ejecutada y no aceptada. Los restantes XSYNC-138-02…10 siguen abiertos salvo cierre explícito posterior.
