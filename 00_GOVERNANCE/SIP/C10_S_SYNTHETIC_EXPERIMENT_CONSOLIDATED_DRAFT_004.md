@@ -4570,3 +4570,151 @@ Continúan abiertos:
 - distribución y composición concreta de P*.
 
 **Dictamen:** el contrato hace reproducible la lógica de clasificación, pero todavía no permite clasificar unidades reales sin completar umbrales, instrumentos y evidencias. La matriz no debe utilizarse como lista de comprobación informal ni para reclasificar unidades a posteriori. No congelar S4-R, implementar ni simular hasta completar esas especificaciones y obtener revisión independiente.
+
+
+---
+
+## 48. Operacionalización de accesibilidad basal de τ2 y exclusividad funcional (sección conversacional 161)
+
+**Estado:** propuesta de protocolo de medición basal y análisis de rutas alternativas para S4-R. No modifica C10-D1 ni el Core TGCV. No es freeze, implementación, simulación, ejecución, auditoría independiente ni aceptación.
+
+### 48.1. Dos objetos distintos
+
+Se separan:
+
+- **Disponibilidad de la dependencia focal:** C_dep,0 indica si la dependencia técnica específica está instalada, íntegra, compatible y operativa en el estado basal.
+- **Accesibilidad de la transformación focal:** A_f,0* indica si la transformación τ2, con identidad, mecanismo y condiciones definidos en el catálogo, es realizable desde el estado basal.
+
+C_dep,0=0 no implica por sí solo A_f,0*=0. Puede haber una instalación alternativa de la misma dependencia, una dependencia distinta o una composición de transformaciones que permita una reconfiguración equivalente.
+
+También se separa la accesibilidad de la identidad τ2 de la posibilidad de cumplir su función objetivo por otra vía. Una transformación alternativa no se convierte automáticamente en τ2: se registra como ruta alternativa y se evalúa su substituibilidad funcional por separado.
+
+### 48.2. Definiciones operacionales
+
+Se proponen tres variables:
+
+1. **D_f,0:** disponibilidad basal de la dependencia focal, derivada de C_install, C_integrity, C_compat y C_oper.
+2. **A_f,0*:** accesibilidad basal de τ2 como transformación identificada en el catálogo TGCV.
+3. **F_alt,0:** existencia de una ruta alternativa realizable que cumple la función focal predefinida de reconfiguración técnica dentro del horizonte H y bajo las condiciones basales.
+
+D_f,0=1 requiere que todos los componentes de la dependencia estén verificados. Si alguno está indeterminado, D_f,0 no se fuerza a cero.
+
+A_f,0* requiere evidencia de identidad, mecanismo, precondiciones, recursos, compatibilidad, admisibilidad y dependencia. La ausencia de ejecución no es evidencia de inaccesibilidad.
+
+F_alt,0 no se define por igualdad de estado final ni por igualdad de Outcome o Value. Se evalúa por la función técnica objetivo y por criterios de substituibilidad preespecificados, preservando la identidad y el mecanismo de cada ruta.
+
+### 48.3. Función focal y criterio de substituibilidad
+
+Antes de inspeccionar las unidades se define la función focal F* de τ2: modificar técnicamente la configuración del sistema diagnosticado para obtener una configuración objetivo especificada, bajo restricciones de seguridad, integridad y compatibilidad.
+
+Para cada ruta alternativa π se evalúa:
+
+`Sub(π, F^*, G, H, C_0)`
+
+donde G es la granularidad transformacional fijada, H el horizonte y C₀ las condiciones basales. La relación significa que π puede cumplir la función focal bajo esas condiciones. No es una equivalencia de identidad entre π y τ2, ni tiene por qué ser simétrica o transitiva.
+
+Criterios de substituibilidad funcional propuestos:
+- mismo objetivo técnico previamente especificado;
+- modificación real de la configuración, no mera transferencia de responsabilidad o diagnóstico;
+- cumplimiento de las restricciones de seguridad e integridad;
+- factibilidad dentro de H;
+- disponibilidad de recursos y precondiciones;
+- evidencia de mecanismo realizable, no mera posibilidad lógica o intención.
+
+Los umbrales técnicos concretos y la tolerancia a diferencias de calidad deben fijarse antes de evaluar unidades. No se permite definir F* a partir de Outcome o Value observado.
+
+### 48.4. Protocolo basal de doble evaluación
+
+**A. Auditoría de dependencia**
+1. Registrar versión, origen, instalación y configuración de la dependencia.
+2. Verificar instalación efectiva, integridad, compatibilidad y operación en el entorno de la unidad.
+3. Comprobar licencias, permisos y restricciones técnicas que formen parte de la disponibilidad.
+4. Registrar evidencia, herramienta, fecha, evaluador, resultado y estado de incertidumbre.
+5. No confundir documentación de instalación con prueba de operación.
+
+**B. Auditoría transformacional**
+1. Congelar catálogo, granularidad, identidad de τ2, condiciones, relaciones y horizonte H.
+2. Enumerar transformaciones accesibles respaldadas y sus precondiciones en el estado basal.
+3. Enumerar composiciones y rutas factibles, incluidas vías distribuidas o mecanismos alternativos.
+4. Evaluar accesibilidad y aplicabilidad por separado, reevaluando condiciones a lo largo de cada rama.
+5. Comparar rutas con F* usando criterios funcionales independientes.
+6. Registrar ruta, mecanismo, dependencias, evidencia, incertidumbres y decisión de substituibilidad.
+7. Mantener evaluación ciega a Z, provisión, ejecución, Outcome y Value.
+
+El análisis de rutas es completo solo respecto al universo y granularidad declarados. La inspección de un catálogo incompleto no prueba ausencia universal de alternativas.
+
+### 48.5. Clasificación conjunta
+
+| C_dep,0 | A_f,0* | F_alt,0 | Interpretación para S4-R |
+|---|---|---|---|
+| 0 | 0 | 0 | Caso basal objetivo, si elegibilidad constitutiva está cumplida y cobertura de rutas es suficiente |
+| 0 | 0 | 1 | τ2 focal inaccesible, pero la función puede lograrse por otra vía; el contraste de apertura funcional no es exclusivo |
+| 0 | 1 | 0/1 | Inconsistencia aparente o ruta de τ2 independiente de la dependencia declarada; investigar contrato/medición |
+| 1 | 1 | 0/1 | Dependencia y τ2 ya accesibles; fuera de la población primaria de apertura |
+| Indeterminado | Cualquiera | Cualquiera | No confirmar el cierre basal |
+| Cualquiera | Indeterminado | Cualquiera | No confirmar inaccesibilidad |
+| Cualquiera | Cualquiera | Indeterminado | No confirmar exclusividad funcional |
+
+Una ruta alternativa funcional no significa necesariamente que τ2 esté accesible como identidad transformacional. Sí significa que la intervención puede no ser la única vía para cumplir la función focal, lo que afecta la interpretación causal y el contraste de exclusividad.
+
+### 48.6. Regla de inclusión y consecuencias
+
+La población primaria de apertura de τ2 requiere:
+- elegibilidad constitutiva confirmada;
+- D_f,0=0;
+- A_f,0*=0;
+- ausencia respaldada de ruta funcional alternativa F_alt,0=0, dentro del universo, granularidad, condiciones y horizonte auditados.
+
+Si existe ruta alternativa, no se debe excluir automáticamente la unidad sin analizar el estimando. Hay dos posibilidades:
+1. **Estimando de apertura de τ2 como identidad:** la unidad podría seguir siendo elegible si τ2 es realmente inaccesible, pero la alternativa se registra como mecanismo competidor y puede afectar exclusión/atribución.
+2. **Estimando de apertura de la función F*:** la unidad no tiene cierre funcional basal y no pertenece a una población donde la intervención sea la única apertura de esa función.
+
+S4-R pretende estudiar el efecto focal de τ2 y su contribución transformacional. Por ello, la ausencia de rutas funcionalmente substituibles se propone como requisito del escenario sintético aislado. En sistemas reales, si no puede demostrarse, la conclusión deberá limitarse al cambio de accesibilidad de τ2, no a la apertura exclusiva de la función.
+
+### 48.7. Estados de evidencia y pruebas adversariales
+
+Para D_f,0, A_f,0* y F_alt,0 se conservarán estados respaldado presente, respaldado ausente e indeterminado, además de calidad/confianza por separado. “No encontrado” solo puede clasificarse como ausencia respaldada si la cobertura del universo de búsqueda está documentada.
+
+Pruebas propuestas:
+- ACC-01: dependencia focal ausente y τ2 sin ruta; inaccesibilidad respaldada.
+- ACC-02: dependencia ausente pero τ2 disponible mediante instalación equivalente; A_f,0* debe ser accesible.
+- ACC-03: τ2 inaccesible pero existe ruta alternativa funcional; separar identidad de función.
+- ACC-04: ruta alternativa solo alcanza mismo estado final por mecanismo distinto; no inferir equivalencia automática.
+- ACC-05: ruta alternativa requiere recursos no disponibles; no clasificar como realizable.
+- ACC-06: ruta requiere más pasos que H; no es funcionalmente substituible dentro del horizonte definido.
+- ACC-07: ruta compuesta válida no enumerada en catálogo; fallo de cobertura.
+- ACC-08: condición indeterminada en una ruta; exclusividad indeterminada.
+- ACC-09: evaluación basada en no ejecución observada; inferencia inválida detectada.
+- ACC-10: evaluador conoce Outcome/Value; violación de cegamiento.
+- ACC-11: cambio de granularidad altera identidad/substituibilidad; sensibilidad documentada.
+- ACC-12: evidencia de ausencia incompleta; no confirmar F_alt,0=0.
+
+### 48.8. Registro y trazabilidad
+
+El registro basal debe contener como mínimo:
+- unidad y momento basal;
+- versiones del catálogo, reglas de identidad y granularidad;
+- D_f,0 y evidencia de cada componente;
+- A_f,0* y justificación de identidad, mecanismo y condiciones;
+- rutas alternativas candidatas, aceptadas, rechazadas o indeterminadas;
+- función F*, H y restricciones utilizadas;
+- cobertura del universo auditado y límites conocidos;
+- evaluadores, cegamiento, desacuerdos y adjudicación;
+- clasificación final y regla de elegibilidad aplicada.
+
+Los snapshots son inmutables. Una reevaluación válida genera una nueva versión enlazada, sin sobrescribir el estado basal original.
+
+### 48.9. Dictamen y decisiones abiertas
+
+**Decisión propuesta:** mantener separadas la disponibilidad de dependencia, accesibilidad de τ2 como identidad transformacional y substituibilidad funcional. Para el S4-R sintético aislado se exige cierre basal de τ2 y ausencia de ruta funcional alternativa dentro del universo declarado. Para aplicaciones reales, la conclusión se limita por la cobertura empírica de ese universo.
+
+Pendientes:
+- fijar función focal F* y tolerancias técnicas;
+- cerrar identidad/granularidad de τ2;
+- determinar H y reglas de factibilidad;
+- especificar cobertura y exhaustividad del catálogo/rutas;
+- validar las pruebas de dependencia y accesibilidad;
+- definir tratamiento de rutas alternativas y estados indeterminados;
+- revisar consistencia con C10-D1, exclusión IV y población P*.
+
+**Dictamen:** el protocolo evita inferir inaccesibilidad a partir de la mera ausencia de una dependencia o de la no ejecución. La exclusividad solo puede afirmarse respecto al universo, granularidad, condiciones y horizonte auditados; no se demuestra universalmente por una búsqueda finita. No congelar S4-R, implementar ni simular hasta completar criterios técnicos, cobertura y revisión independiente.
