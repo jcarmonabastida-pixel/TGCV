@@ -4328,3 +4328,115 @@ Quedan pendientes:
 - revisar la coherencia de esta estipulación con el contrato de C_dep y con q_X*.
 
 **Dictamen:** la ausencia de interferencia se propone como estipulación explícita del DGP primario sintético, no como supuesto general de TGCV ni como afirmación empírica. El diseño alternativo ante interferencia queda delimitado, pero no seleccionado. No congelar S4-R, implementar ni simular hasta completar las decisiones abiertas y revisión independiente.
+
+
+---
+
+## 46. Delimitación de la población objetivo y elegibilidad basal de S4-R (sección conversacional 159)
+
+**Estado:** propuesta de definición de población para el experimento sintético S4-R. No modifica C10-D1 ni el Core TGCV. No es freeze, implementación, simulación, ejecución, auditoría independiente ni aceptación.
+
+### 46.1. Principio de delimitación
+
+La población primaria no debe definirse únicamente por la inaccesibilidad basal de τ2. Debe incluir sistemas donde τ2 sea técnicamente realizable si se habilita la dependencia focal, pero donde esa dependencia esté ausente al inicio.
+
+Se proponen dos condiciones simultáneas:
+1. **Elegibilidad constitutiva:** se cumplen las condiciones basales no manipuladas necesarias para que τ2 pueda ser realizable.
+2. **Cierre focal basal:** τ2 no es accesible en el momento basal debido a la ausencia de la condición técnica focal C_dep,0.
+
+Así se evita incluir sistemas donde τ2 sea imposible por falta de capacidad, recursos, información, compatibilidad de dominio u otras condiciones que la intervención no modifica.
+
+### 46.2. Regla de elegibilidad
+
+Para cada unidad i, antes de asignar Z:
+
+`E_i = I(C_{auth,base}=1 ∧ C_{resource}=1 ∧ C_{capacity}=1 ∧ C_{info}=1 ∧ C_{domain}=1 ∧ C_{other}=1)`
+
+La regla es ilustrativa y debe armonizarse con el contrato completo de τ2. Cada condición tendrá definición observable, fuente, momento de medida y criterio de suficiencia preespecificado. No se admiten juicios retrospectivos basados en Outcome o Value.
+
+La población primaria propuesta satisface:
+
+`P^* = {i: E_i=1,; C_{dep,0}=0,; A_{f,0}^*=0}`
+
+La ausencia basal de C_dep debe verificarse mediante el mismo protocolo técnico en todos los brazos. La accesibilidad A_f,0* se determina con evaluación independiente y ciega a asignación y resultados posteriores.
+
+Si el DGP garantiza que C_dep,0=0 y que ninguna ruta equivalente existe, A_f,0*=0 puede derivarse del contrato. Aun así, se conserva la prueba de accesibilidad basal para detectar errores de especificación o rutas alternativas.
+
+### 46.3. Qué se manipula y qué no
+
+| Elemento | Rol en S4-R | Tratamiento |
+|---|---|---|
+| C_dep,0 | Dependencia técnica basal | Debe estar ausente en la población primaria |
+| C_install / C_integrity / C_compat / C_oper | Componentes de dependencia posterior | Se verifican tras provisión |
+| C_auth,base | Autorización basal no focal | Se mantiene constante y se documenta |
+| C_resource | Recursos disponibles | Se mantiene constante |
+| C_capacity | Capacidad técnica/operativa | Se mantiene constante |
+| C_info | Información necesaria | Se mantiene constante |
+| C_domain | Condición de dominio/compatibilidad del problema | Se mantiene constante |
+| C_other | Otras precondiciones esenciales | Se definen antes de asignación |
+| Z / B | Asignación y política de provisión | Única variación asignada del diseño primario |
+| A_f* / D_f | Accesibilidad y apertura focal | Se derivan de condiciones verificadas, no se asignan directamente |
+
+Si la autorización es realmente parte de la condición focal que se pretende modificar, no puede figurar simultáneamente como condición basal constante: deberá redefinirse el tratamiento y revisarse el estimando. El contrato actual de S4-R trata la dependencia como condición focal y mantiene la autorización como condición constitutiva basal.
+
+### 46.4. Unidades con τ2 accesible al inicio
+
+Las unidades con A_f,0*=1 no pertenecen a la población primaria cuyo estimando es la apertura de τ2. Se deben:
+- identificar antes de aleatorizar;
+- excluir del estimando primario mediante la regla basal preespecificada;
+- conservar en un registro separado si se quiere estudiar mantenimiento, robustez o efectos de provisión sobre unidades ya habilitadas.
+
+No deben mezclarse con las unidades elegibles de τ2 inicialmente inaccesible ni eliminarse después de conocer Z, cumplimiento, ejecución, Outcome o Value.
+
+### 46.5. Casos indeterminados y errores de clasificación
+
+La accesibilidad basal puede quedar como accesible, inaccesible o indeterminada. Los casos indeterminados no se reclasifican automáticamente como inaccesibles.
+
+Antes de asignación:
+- repetir o complementar la evaluación conforme a un protocolo ciego preestablecido;
+- documentar la causa de indeterminación y calidad de evidencia;
+- si persiste, excluir del estimando primario por regla previa y contabilizar su frecuencia;
+- evaluar en sensibilidad cómo cambiaría la población y el estimando bajo clasificaciones alternativas.
+
+La proporción de indeterminados es un resultado de calidad de medición, no un motivo para ocultar unidades.
+
+### 46.6. Relación con q_X* y estimandos
+
+La distribución objetivo pasa a ser condicional a elegibilidad basal:
+
+`q_X^* = P^*(X,H_0,C_c mid E=1,; C_{dep,0}=0,; A_{f,0}^*=0)`
+
+Esta definición fija el alcance del efecto: sistemas constitutivamente elegibles para τ2, inicialmente sin acceso a τ2 por ausencia de la dependencia focal.
+
+El ITT_Z y la primera etapa ITT_D se estiman en esta población preasignación. El LATE_f, si se identifican sus supuestos, se refiere a compliers dentro de esta población, no a todos los sistemas generativos. La generalización a sistemas con otras condiciones basales requiere evidencia y un estimando de transporte explícito.
+
+### 46.7. Pruebas de elegibilidad y robustez
+
+Se proponen:
+- POP-01: sistema elegible con C_dep,0=0 y τ2 inaccesible.
+- POP-02: falta de recursos; debe quedar fuera del objetivo primario.
+- POP-03: capacidad insuficiente; debe quedar fuera.
+- POP-04: información insuficiente; debe quedar fuera o indeterminado según regla.
+- POP-05: C_dep,0=1 y τ2 accesible; cohorte separada.
+- POP-06: ruta alternativa equivalente a τ2; no clasificar como cierre focal sin revisar el contraste.
+- POP-07: accesibilidad basal indeterminada; no recodificar automáticamente.
+- POP-08: clasificación de elegibilidad basada en Outcome/Value; debe detectarse como violación.
+- POP-09: exclusión posterior a Z por incumplimiento o resultado; debe detectarse como selección inválida.
+- POP-10: diferencias de medición de elegibilidad entre brazos; debe detectarse como riesgo de sesgo.
+
+### 46.8. Límites y decisión propuesta
+
+**Decisión propuesta:** población primaria S4-R = sistemas que cumplen todas las condiciones constitutivas basales preespecificadas, tienen C_dep,0=0 y presentan τ2 inaccesible en una evaluación independiente anterior a la asignación.
+
+Esta decisión acota la inferencia. No representa sistemas donde τ2 ya sea accesible, sistemas donde sea imposible por otras restricciones ni sistemas con accesibilidad basal indeterminada no resuelta.
+
+Queda pendiente:
+- definición observable y umbrales de cada condición constitutiva;
+- confirmación de que la ausencia de C_dep es la única diferencia focal relevante;
+- equivalencia y búsqueda de rutas alternativas;
+- protocolo y fiabilidad de la evaluación basal;
+- tratamiento de elegibilidad indeterminada;
+- población P* concreta y su distribución;
+- revisión de la coherencia con C10-D1, q_X* y el contrato de τ2.
+
+**Dictamen:** la población queda delimitada conceptualmente y la regla evita seleccionar según variables post-asignación. La elegibilidad constitutiva y el cierre focal basal deben verificarse de forma independiente antes de randomizar. No congelar S4-R, implementar ni simular hasta cerrar las decisiones abiertas y obtener revisión independiente.
