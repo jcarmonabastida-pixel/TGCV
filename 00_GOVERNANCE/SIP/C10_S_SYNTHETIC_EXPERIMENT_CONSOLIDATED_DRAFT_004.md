@@ -3682,3 +3682,165 @@ A su vez, una medición fiable de la transformación focal no garantiza una reco
 **Decisión propuesta:** mantener A_f* como variable causal focal del DGP y A_f_obs como medición del analizador; incorporar MEAS-01…MEAS-14; añadir submuestra de validación independiente y análisis de sensibilidad; mantener la evaluación de T_acc multidimensional y temporal. No ejecutar todavía la simulación ni fijar umbrales.
 
 **Estado:** contrato de medición propuesto, no implementado ni probado. XSYNC-138-01 y las decisiones abiertas de Se/Sp, validación, δ/ε, tolerancias y método de inferencia permanecen pendientes.
+
+
+---
+
+## 41. Auditoría de datos faltantes, pérdidas de seguimiento y selección post-asignación (sección conversacional 154)
+
+**Estado:** especificación metodológica propuesta. No es simulación, análisis de datos, auditoría independiente ni aceptación. No cierra XSYNC-138-01 ni modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 o cierres previos.
+
+### 41.1. Principio: ausencia de dato no equivale a ausencia de transformación ni a valor cero
+
+En C10-S la ausencia de un registro puede tener significados diferentes:
+- el dato existe, pero no se capturó;
+- el registro se perdió o quedó ilegible;
+- la unidad abandonó el seguimiento;
+- una evaluación no pudo realizarse por razones técnicas;
+- la condición es genuinamente indeterminada;
+- la transformación o el evento no ocurrió;
+- la unidad dejó de ser observable por una consecuencia de la intervención.
+
+Estos estados no se pueden codificar todos como cero, inaccesible, no ejecutado o Value nulo. Deben distinguirse ausencia de observación, estado negativo observado, indeterminación ontológica y evento realmente inexistente.
+
+### 41.2. Puntos de pérdida en la cadena causal y transformacional
+
+Se requiere un indicador de observación separado para cada bloque:
+
+- R_Z: asignación y versión de política registradas.
+- R_C: provisión, instalación y condiciones técnicas observadas.
+- R_A: medición de A_f_obs disponible.
+- R_T: snapshot y reconstrucción de T_acc_obs disponibles.
+- R_M: mecanismos/condiciones intermedias observados.
+- R_Pi: enumeración de trayectorias candidatas disponible.
+- R_E: selección y ejecución documentadas.
+- R_O: Outcome observado.
+- R_V: Value evaluado.
+- R_val: referencia independiente de validación disponible.
+
+La pérdida puede ocurrir en un bloque y no en otros. No crear un indicador único de caso completo que oculte qué capa falta. Registrar motivo, fecha, responsable, estado de recuperación y relación temporal con Z, A, ejecución y Outcome.
+
+La ausencia de ejecución no implica ausencia de trayectoria candidata; la ausencia de trayectoria registrada no implica que no existiera una ruta accesible; y la falta de Value evaluado no implica Value igual a cero.
+
+### 41.3. Estimandos y población bajo pérdida
+
+El ITT de política se define para la población asignada. El análisis de casos completos puede cambiar esa población si la observación depende de asignación, accesibilidad, ejecución, Outcome o factores pronósticos.
+
+Se distinguirán:
+1. Estimando en población asignada: efecto de política sobre Value definido para todas las unidades asignadas.
+2. Estimando en población con Value observado: contraste entre quienes tienen R_V=1, descriptivo salvo que la selección sea ignorable o se ajuste bajo supuestos defendibles.
+3. Estimando en población principal observable: efecto entre unidades que serían observables bajo ambas asignaciones; contrafactual y generalmente no identificado sin supuestos adicionales.
+4. Estimando de supervivencia/retención: efecto de Z sobre la probabilidad de observación, abandono o disponibilidad del resultado.
+5. Estimando parcial: límites o conjunto de efectos compatibles cuando Value falta y no puede identificarse puntualmente.
+
+No sustituir el ITT de población asignada por el contraste de casos completos sin declararlo. Si Value no está definido para una unidad por razones ontológicas, distinguirlo de un Value definido pero no medido; redefinir población/estimando si es necesario.
+
+### 41.4. Mecanismos de ausencia
+
+Clasificar, con cautela, los mecanismos de datos faltantes:
+
+- MCAR: ausencia independiente de variables observadas y no observadas. Supuesto fuerte, no deducible de una prueba no significativa.
+- MAR: ausencia independiente del dato no observado condicionado a historia observada suficiente. Permite métodos como ponderación o imputación bajo correcta especificación y positividad.
+- MNAR: ausencia aún depende del valor no observado o de factores no observados tras condicionar en la historia disponible. Requiere análisis de sensibilidad, modelos explícitos o límites; no se resuelve con imputación estándar.
+
+Los mecanismos pueden diferir por bloque y tiempo. Por ejemplo, Value puede faltar por deterioro no observado aunque Outcome y ejecución estén registrados. No clasificar todo el dataset con una sola etiqueta MCAR/MAR/MNAR.
+
+### 41.5. Selección post-asignación y sesgo de colisionador
+
+No condicionar el análisis primario a haber instalado, cumplido, mantenido accesibilidad, seleccionado τ2, ejecutado una trayectoria, completado el seguimiento o disponer de una medición de referencia si esos estados pueden depender de Z y de causas de Value.
+
+Ejemplo conceptual: Z → R_V ← U_V → V. Condicionar en R_V=1 puede abrir una asociación no causal entre Z y U_V, aun con Z aleatorizado. Análogamente, restringir a Exec_f=1 puede seleccionar unidades por accesibilidad y factores pronósticos.
+
+La selección a validación también debe modelarse: si R_val depende de A observada, brazo o pronóstico, la submuestra deja de ser una muestra aleatoria simple. Registrar probabilidades de selección y utilizar ponderación por diseño cuando proceda.
+
+### 41.6. Estrategias de análisis, condicionadas al mecanismo
+
+No hay una corrección universal. El plan deberá elegir método tras especificar proceso de ausencia, variables disponibles, estructura temporal y estimando:
+
+- ITT con resultados completos solo como análisis descriptivo o bajo supuesto de observación ignorable explícito.
+- Ponderación por probabilidad inversa de observación/retención cuando MAR, positividad y modelos adecuados sean defendibles.
+- Imputación múltiple bajo MAR, preservando brazo, interacciones, estructura longitudinal, variables auxiliares y relaciones entre capas; no imputar T_acc como si fuera una puntuación escalar sin estructura.
+- G-computation o modelos longitudinales cuando la pérdida depende de historia observada y la secuencia temporal lo permita.
+- Modelos de selección o patrones-mixtura para MNAR, con parámetros de sensibilidad explícitos.
+- Límites parciales para Value no observado, con rangos defendibles en su escala.
+- Ponderación por probabilidad de inclusión para submuestra de validación, si las probabilidades son conocidas y hay positividad.
+- Análisis de tipping point para determinar cuánto tendría que diferir el Value no observado para cambiar la conclusión.
+
+No usar last observation carried forward como solución general; no imputar no accesible cuando falta el snapshot; no imputar Value cero por ausencia de evaluación; no eliminar unidades con datos incompletos sin mostrar el efecto sobre la población y el estimando.
+
+### 41.7. Pérdida longitudinal y snapshots temporales
+
+Cada snapshot T_acc,t debe tener identificador, fecha, estado de observación y ventana temporal. Si falta un snapshot intermedio, no reconstruirlo automáticamente a partir del posterior ni asumir que el estado permaneció constante.
+
+Distinguir:
+- estado transformacional observado en t;
+- estado no observado en t;
+- estado conocido por evidencia indirecta;
+- estado indeterminado;
+- transición real entre snapshots respaldada por evento.
+
+La pérdida de snapshot puede impedir establecer cuándo cambió accesibilidad y si precedió a trayectoria, ejecución u Outcome. En ese caso, la secuencia temporal puede quedar no identificada aunque se observe un resultado final.
+
+Para Reach y trayectorias, ausencia de snapshots intermedios puede producir un conjunto de caminos posibles. El analizador debe devolver rutas confirmadas, rutas descartadas y rutas indeterminadas, sin colapsar incertidumbre en una trayectoria retrospectiva única.
+
+### 41.8. Matriz adversarial de ausencia y selección
+
+| ID | Escenario | Resultado esperado |
+|---|---|---|
+| MISS-01 | Ausencia MCAR baja | Métodos completos/ponderados calibrados dentro de tolerancias |
+| MISS-02 | MAR por covariables basales observadas | Recuperación bajo modelo correcto y positividad |
+| MISS-03 | MAR por historia post-asignación observada | Método longitudinal que respete orden temporal |
+| MISS-04 | MNAR dependiente de Value no observado | Análisis de sensibilidad/límites; no afirmar identificación puntual automática |
+| MISS-05 | Pérdida diferencial por brazo | Informar efecto de Z sobre retención y sesgo potencial |
+| MISS-06 | Pérdida ligada a accesibilidad | No condicionar ingenuamente en observación; modelar selección |
+| MISS-07 | Value falta más en unidades con Outcome desfavorable | Sensibilidad MNAR y tipping point |
+| MISS-08 | Snapshot T_acc intermedio ausente | Temporalidad/Reach indeterminados donde corresponda |
+| MISS-09 | Solo se observan ejecutores de τ2 | Rechazar análisis causal restringido a ejecutores |
+| MISS-10 | Validación seleccionada por A_obs sin diseño conocido | Error de medición no identificado por validación |
+| MISS-11 | Abandono después de evento adverso | No asumir MAR sin variables que capturen el evento |
+| MISS-12 | Value no definido frente a Value no medido | Separar definición del constructo y falta de observación |
+| MISS-13 | Pérdida por clúster/unidad organizativa | Ajustar unidad de análisis y dependencia |
+| MISS-14 | Retención casi nula en algún estrato | Positividad fallida; restringir objetivo o reportar no-identificación |
+| MISS-15 | Ausencia diferencial de documentación de U/R/C | Auditar sesgo de reconstrucción TGCV por dimensión |
+
+### 41.9. Requisitos de registro y análisis
+
+El diccionario de datos incorporará para cada bloque:
+- valor observado y estado de ausencia;
+- motivo y momento de ausencia;
+- última fecha de observación;
+- fuente y responsable;
+- si la ausencia ocurrió antes o después de Z, instalación, selección, ejecución y Outcome;
+- probabilidad de retención/validación cuando el diseño la conozca;
+- indicadores de recuperabilidad;
+- reglas de imputación/ponderación y versiones;
+- análisis primario y sensibilidad;
+- impacto sobre población objetivo, soporte y estimando.
+
+El informe mostrará flujo de unidades por brazo, pérdidas por etapa y motivo, completitud de cada bloque, diferencias entre observadas/no observadas en variables basales, retención, distribución de pesos y diagnósticos de positividad. Los pesos extremos no se truncarán sin justificarlo y mostrar sensibilidad.
+
+### 41.10. Criterios de aceptación metodológica
+
+La futura prueba sintética debe:
+1. recuperar el ITT sin selección en ausencia completa;
+2. detectar y reportar pérdidas diferenciales;
+3. recuperar efectos bajo escenarios MAR correctamente especificados;
+4. no prometer recuperación bajo MNAR sin supuestos/sensibilidad;
+5. identificar sesgo de casos completos cuando la selección lo genere;
+6. preservar la distinción entre no observado, negativo e indeterminado;
+7. no reconstruir retrospectivamente snapshots ausentes;
+8. detectar pérdida de positividad;
+9. ponderar validación según diseño cuando corresponda;
+10. distinguir estimando de población asignada, población observada y población parcialmente identificada;
+11. propagar incertidumbre de imputación/ponderación al Wald y a Value;
+12. mantener independientes las evaluaciones TGCV, causal y Value.
+
+Las tolerancias, tasas máximas de pérdida, reglas de tipping point, tamaño de muestra y métodos específicos permanecen abiertos. No se fijarán retrospectivamente.
+
+### 41.11. Dictamen
+
+El análisis de casos completos puede destruir la comparabilidad creada por la aleatorización al seleccionar por variables post-asignación. La pérdida de Value, snapshots o validación puede afectar de forma distinta al ITT, al IV y a la reconstrucción TGCV. No basta con informar el porcentaje total de datos faltantes.
+
+**Decisión propuesta:** mantener el ITT en población asignada como objetivo primario; registrar pérdidas por bloque y temporalidad; separar MCAR/MAR/MNAR como supuestos de análisis, no diagnósticos automáticos; añadir MISS-01…MISS-15; utilizar ponderación, imputación, sensibilidad o límites solo cuando sus supuestos sean defendibles; no excluir casos incompletos por defecto.
+
+**Estado:** contrato de ausencia/selección propuesto, no implementado ni probado. XSYNC-138-01 y las decisiones abiertas sobre mecanismos de ausencia, métodos, tolerancias, δ/ε, Se/Sp e inferencia permanecen pendientes.
