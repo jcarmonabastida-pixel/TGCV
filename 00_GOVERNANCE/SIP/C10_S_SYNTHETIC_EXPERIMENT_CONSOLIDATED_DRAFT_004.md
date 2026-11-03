@@ -1567,3 +1567,147 @@ El hallazgo no se declara formalmente cerrado todavía. Requiere:
 - evidencia documental de resolución y aceptación.
 
 **Estado:** resolución correctiva propuesta y registrada; no implementada, no simulada, no ejecutada y no aceptada. Los restantes XSYNC-138-02…10 siguen abiertos salvo cierre explícito posterior.
+
+
+---
+
+## 27. Reespecificación de S4-O y S4-R tras XSYNC-138-01 (sección conversacional 140)
+
+**Propósito:** separar el escenario de efecto de una política implementable con vías potencialmente múltiples (S4-O) del escenario diseñado para identificar un contraste entre políticas factibles de accesibilidad bajo un régimen común (S4-R). Esta sección prevalece sobre las formulaciones anteriores de S4-O/S4-R cuando exista incompatibilidad. No declara identificabilidad empírica fuera del DGP sintético.
+
+### 27.1. S4-O: efecto total de una política de autorización
+
+**Pregunta:** ¿cuál es el efecto total de asignar una política de autorización, cuando esa política puede cambiar accesibilidad y también otras condiciones relevantes?
+
+- Z_B: asignación aleatoria de la política.
+- B_auth: política de autorización aplicada según asignación.
+- C_auth: autorización efectiva recibida.
+- A_f*: accesibilidad estructural verdadera de la transformación focal, derivada de condiciones de realizabilidad.
+- A_f_obs: medición de A_f*.
+- L: variable posterior inducida por la política que afecta tanto accesibilidad como Value.
+- M, O, V: mecanismo, Outcome y Value.
+
+DGP conceptual:
+- L | Z_B=0 ~ Bernoulli(0.25); L | Z_B=1 ~ Bernoulli(0.75).
+- A_f* se deriva de C_auth, L y las condiciones técnicas efectivas; no se asigna directamente.
+- M = 1 + A_f* + 0.5X + ε_M.
+- O = 2M + ε_O.
+- V = 3O + 4L + ε_V.
+
+La política puede además modificar expectativas, incentivos o prioridades. Si se incluyen, deben quedar en el DGP y en el diccionario como vías explícitas; no se absorben en A_f*.
+
+**Estimando primario:** TE_ZB o ψ_policy para la política de autorización, según el contraste de asignación o de versiones de política que se haya definido. El contraste identifica el efecto total de la política bajo la aleatorización y supuestos pertinentes. No se etiqueta como θ_A(q).
+
+**Objetivo analítico:** que el analizador reconozca que L es postratamiento, que Z_B aleatorizado no elimina confusión mediador–resultado y que no se puede atribuir todo el ITT a accesibilidad. El efecto estructural de A_f* conocido por el generador se mantiene oculto al analizador. La recuperación de una contribución específica de accesibilidad no es requisito de éxito en S4-O; el reconocimiento de sus límites sí lo es.
+
+### 27.2. S4-R: contraste de políticas de accesibilidad bajo régimen común
+
+**Pregunta:** ¿puede recuperarse el contraste entre dos políticas factibles de cambio de accesibilidad cuando las condiciones/historias pertinentes se mantienen bajo un régimen común explícito?
+
+Se define un régimen común q* y dos políticas de accesibilidad g1/g0. El DGP debe implementarlas mediante condiciones y mecanismos realizables, no mediante asignación directa del indicador A_f*.
+
+- L_m: condición no constitutiva cuya distribución se fija mediante el régimen común q*.
+- C_c: conjunto de condiciones constitutivas de realizabilidad.
+- Población objetivo primaria: unidades con C_c compatible con ambas políticas, de modo que g1 y g0 sean factibles.
+- q*: intervención común y factible sobre L_m, por ejemplo P(L_m=1 | X,H0)=0.5, idéntica bajo ambas políticas.
+- g1/g0: políticas que inducen probabilidades distintas de apertura de la condición técnica focal; valores .8 y .2 son ilustrativos y provisionales.
+- A_f*: resultado estructural derivado de la condición técnica y de C_c; A_f_obs es su medición.
+
+El soporte exigido es:
+supp(g_j(. | X,H0,L_m)) ⊆ F(X,H0,L_m,C_c), j ∈ {0,1}.
+La población primaria y el conjunto de condiciones deben permitir ambas políticas. No se extrapola a estratos constitutivos en los que una política sea imposible.
+
+**DGP de resultado ilustrativo:**
+- M = 1 + A_f* + 0.5X + ε_M.
+- O = 2M + ε_O.
+- V = 3O + 4L_m + ε_V.
+- ε_M, ε_O y ε_V se generan con distribuciones y semillas preespecificadas.
+
+Bajo este DGP lineal, sin interacciones y con errores de media cero, el contraste estructural esperado inducido por g1=.8 frente a g0=.2 es 6×(.8−.2)=3.6 unidades de Value, condicionado al régimen q* y a la población donde ambas políticas son factibles. Este valor es una verdad del DGP ilustrativo, no un umbral de relevancia, estimación empírica ni prueba de C10.
+
+La contribución de L_m a Value queda estandarizada por q* y no cambia entre políticas. Si q* no puede implementarse o si L_m conserva una vía diferencial entre brazos, el contraste deja de representar el estimando previsto y se informa como no identificado o como efecto conjunto.
+
+### 27.3. Separación entre L_m y C_c
+
+- L_m representa condiciones que pueden ser intervenidas bajo un régimen común factible sin hacer imposible la transformación focal.
+- C_c representa condiciones constitutivas que determinan si la transformación es realizable. No se fuerza su valor para crear positividad.
+- Si C_c impide g0 o g1 en una parte de la población, esa parte queda fuera del estimando primario de S4-R o requiere un estimando conjunto distinto, predefinido.
+- S10b mantiene el papel de control de no factibilidad constitutiva. No se resuelve aumentando N ni ajustando estadísticamente una imposibilidad estructural.
+
+### 27.4. Implementación sintética sin asignación abstracta de accesibilidad
+
+El generador debe ejecutar la siguiente secuencia:
+1. generar X, H0 y condiciones basales;
+2. determinar C_c y el conjunto factible F;
+3. aplicar q* a L_m en S4-R, o asignar Z_B/B_auth en S4-O;
+4. ejecutar el mecanismo implementable que altera la condición técnica focal;
+5. evaluar realizabilidad y calcular A_f* desde las condiciones efectivas;
+6. generar A_f_obs según el modelo de medición;
+7. derivar el ΔT_acc estructurado completo, no solo el indicador focal;
+8. generar Reach y trayectorias factibles;
+9. registrar conocimiento/consideración, selección e inicio;
+10. ejecutar o no ejecutar según las reglas del escenario;
+11. generar Outcome y Value sin que Value influya retrospectivamente en A, Reach o trayectorias.
+
+El generador conserva la verdad completa; el analizador recibe únicamente variables observables permitidas, metadatos del diseño y reglas de medición. El evaluador compara los dictámenes con el DGP protegido.
+
+### 27.5. Contrato de variables adicional para S4-O/S4-R
+
+| Variable | Rol | Momento | Observabilidad analizador |
+|---|---|---|---|
+| Z_B | Asignación de política | Basal | Sí |
+| B_auth / B_g | Versión de política implementable | Intervención | Sí |
+| C_auth | Autorización efectiva | Posterior | Sí, con calidad |
+| L_m | Condición bajo régimen común | Según q* | Sí, con historial |
+| C_c | Condición constitutiva | Basal/estado | Sí, con evidencia |
+| F | Conjunto de políticas factibles | Por historia | Derivable si reglas conocidas |
+| A_f* | Accesibilidad focal verdadera | Posterior a mecanismo | No directamente si hay cegamiento/medición imperfecta |
+| A_f_obs | Medición de accesibilidad | Posterior | Sí |
+| ΔT_acc | Cambio estructurado completo | Por estado/tiempo | Sí, con evidencia y calidad |
+| M | Mecanismo | Posterior | Sí si está medido |
+| Reach / Π_feasible | Alcance y trayectorias factibles | Dinámico | Reconstrucción ciega |
+| Knowledge/Consideration | Conocimiento/consideración | Antes de selección | Sí si se mide |
+| Selection / Initiation | Selección/inicio | Posterior | Sí |
+| Execution_status | Parcial/completa/interrumpida/ausente | Posterior | Sí |
+| O | Outcome | Posterior | Sí |
+| V | Value y dimensiones | Según horizonte | Sí, con regla fija |
+
+La verdad A_f* se reserva al generador/evaluador salvo en una submuestra de validación preespecificada. El analizador no recibe coeficientes estructurales ni etiquetas de escenario.
+
+### 27.6. Estimandos y dictámenes por escenario
+
+| Escenario | Estimando primario | Lo que puede concluirse | Lo que no debe concluirse |
+|---|---|---|---|
+| S4-O | TE_ZB / ψ_policy | Efecto total de política de autorización | θ_A(q) por mera aleatorización |
+| S4-R | θ_A(q*) en población con soporte | Contraste de políticas factibles de accesibilidad bajo q* | Efecto universal fuera del soporte |
+| S10b | Efecto conjunto o efecto en estrato factible, si se define | Límite de factibilidad constitutiva | Contrafactual imposible de la población completa |
+
+S4-O y S4-R no son réplicas del mismo diseño ni deben agregarse como si estimaran el mismo parámetro.
+
+### 27.7. Pruebas específicas
+
+- S4O-01: recuperación del ITT de política cuando la asignación es aleatoria.
+- S4O-02: no atribuir automáticamente el ITT a A_f*.
+- S4O-03: reconocer L postratamiento y evitar ajuste mecánico que induzca sesgo.
+- S4O-04: identificar vías alternativas explícitas y declarar límites de separación.
+- S4R-01: verificar que q* sea común, implementable y aplicado antes/durante la política según protocolo.
+- S4R-02: verificar soporte de g1/g0 por estrato e historia.
+- S4R-03: comprobar que g1/g0 se implementan mediante condiciones técnicas reales.
+- S4R-04: derivar A_f* desde condiciones efectivas, nunca asignarlo como etiqueta.
+- S4R-05: recuperar el contraste conocido del DGP dentro de tolerancias preespecificadas.
+- S4R-06: detectar no-identificación si se viola soporte o aparece una vía alternativa diferencial.
+- S4R-07: conservar ΔT_acc estructurado y no solo el indicador focal.
+- S4R-08: comprobar que selección/ejecución no se confunden con accesibilidad.
+
+### 27.8. Estado y relación con XSYNC
+
+- XSYNC-138-01: corrección aplicada en §§26–27; pendiente de revisión independiente antes de cierre formal.
+- XSYNC-138-02: corrección propuesta; q y regla Value separados.
+- XSYNC-138-03: corrección propuesta; A_f se declara proyección de ΔT_acc.
+- XSYNC-138-04: corrección propuesta; S4-R separa L_m/C_c y exige soporte.
+- XSYNC-138-06: parcialmente tratado mediante distinción de versiones de política; falta auditoría de equivalencia causal de versiones.
+- XSYNC-138-07: contrato ampliado con estados de conocimiento, selección e inicio; falta comprobar exhaustividad frente a C10-D1.
+- XSYNC-138-08: permanece abierto hasta separar explícitamente dictamen metodológico C10-S y conclusión científica C10.
+- XSYNC-138-05, 09 y 10: permanecen abiertos salvo la delimitación parcial de alcance descrita aquí.
+
+**Estado general:** reespecificación documental propuesta; no implementada, no simulada, no ejecutada ni aceptada. Los valores numéricos siguen siendo ilustrativos. La auditoría cruzada debe verificar que S4-R conserva el estimando de C10-D1 y que q* y las políticas tienen implementación coherente.
