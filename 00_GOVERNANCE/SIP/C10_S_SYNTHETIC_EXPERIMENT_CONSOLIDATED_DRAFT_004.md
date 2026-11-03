@@ -1121,3 +1121,140 @@ Definidos conceptualmente: capas de preespecificación, registro, separación co
 | 135 | Preespecificación cuantitativa y control de decisiones posteriores |
 
 Las secciones 16–22 amplían incrementalmente el borrador 004. No convierten definiciones en implementación, ejecución, auditoría o aceptación. La numeración conversacional y documental quedan vinculadas en esta tabla; las decisiones explícitas prevalecen sobre formulaciones preliminares corregidas.
+
+
+---
+
+## 23. Método de justificación de umbrales y dimensionamiento (sección conversacional 136)
+
+### 23.1. Objetivo y separación de decisiones
+
+Esta sección establece cómo justificar los parámetros pendientes de la sección 21 sin introducir valores arbitrarios ni seleccionarlos después de observar resultados. Se distinguen cuatro decisiones que no deben confundirse:
+
+1. **Relevancia sustantiva:** qué cambio en Value importa para el beneficiario y la decisión evaluada.
+2. **Calidad estadística:** qué error de estimación es tolerable para el uso previsto.
+3. **Capacidad de diseño:** qué tamaño y número de réplicas permiten evaluar los criterios con precisión suficiente.
+4. **Regla científica:** qué patrón de resultados respalda, limita o contradice la hipótesis dentro del ámbito especificado.
+
+Los umbrales estadísticos no deben definir por sí mismos qué es Value relevante. La relevancia sustantiva tampoco puede justificar un estimador estadísticamente defectuoso.
+
+### 23.2. Justificación de δ: efecto mínimo relevante
+
+δ debe derivarse de la regla de Value y de la decisión concreta que el sistema evaluado pretende apoyar. Su expediente de justificación debe identificar:
+
+- beneficiario o entidad evaluada;
+- decisión que cambiaría ante un efecto de ese tamaño;
+- escala, unidad y dirección de Value;
+- horizonte temporal;
+- costes, riesgos y trade-offs relevantes;
+- heterogeneidad que pueda hacer variar la relevancia;
+- fuente externa, criterio operativo o procedimiento deliberativo que justifique el umbral;
+- incertidumbre de la propia valoración del umbral.
+
+δ no se elegirá para coincidir con el efecto esperado del DGP ni para producir una potencia conveniente. Si Value es multidimensional o no agregable, no se impondrá un δ escalar artificial: se definirán criterios por dimensión o una regla de decisión explícita y justificada.
+
+### 23.3. Justificación de ε: margen de equivalencia
+
+ε responde a una pregunta distinta: qué diferencias pueden considerarse suficientemente pequeñas como para descartar un efecto de relevancia práctica dentro del ámbito especificado.
+
+Debe:
+- derivarse de la escala y regla de Value;
+- justificarse independientemente de los resultados observados;
+- especificar si el margen es simétrico o asimétrico;
+- ser compatible con δ, sin solapamientos que hagan incoherentes las categorías;
+- reflejar incertidumbre, costes de error y consecuencias de declarar equivalencia.
+
+No se concluirá equivalencia porque un IC incluya cero. Se requerirá que el procedimiento de inferencia y el intervalo correspondiente queden dentro del margen preespecificado. Si no existe justificación defendible de ε, C10-S podrá evaluar estimación y calibración, pero no podrá emitir un dictamen de equivalencia sustantiva.
+
+### 23.4. Tolerancias de recuperación estadística
+
+Las tolerancias se definirán por estimando y escala, no como un único umbral global. El expediente incluirá:
+
+- sesgo absoluto admisible;
+- RMSE admisible;
+- cobertura objetivo y desviación Monte Carlo tolerable;
+- tasa de error tipo I;
+- potencia mínima para efectos relevantes;
+- proporción máxima de no convergencia o réplicas inválidas;
+- precisión mínima de las métricas Monte Carlo.
+
+Cuando sea útil, sesgo y RMSE podrán expresarse en relación con δ, pero esa normalización no sustituye la justificación sustantiva ni se utilizará si δ no está definido o si la escala cruza cero de forma problemática.
+
+Los criterios deberán ser coherentes con el uso del estimador y la severidad de los errores: un falso positivo de atribución causal, una falsa declaración de equivalencia y una no detección no tienen necesariamente el mismo coste.
+
+### 23.5. Dimensionamiento de N y R
+
+Separar dos tamaños:
+
+- **N:** unidades sintéticas por réplica; determina la información disponible en cada dataset generado.
+- **R:** número de réplicas Monte Carlo; determina la precisión con que se estiman las propiedades del procedimiento estadístico.
+
+N se elegirá mediante análisis de potencia/precisión sobre una cuadrícula preespecificada de efectos, heterogeneidad, prevalencias, error de medición, missingness y mecanismos alternativos. La cuadrícula debe incluir escenarios adversos plausibles, no solo el DGP favorable.
+
+R se elegirá para que el error Monte Carlo de cobertura, potencia, sesgo y tasa de falsos positivos sea suficientemente pequeño respecto de las tolerancias de evaluación. Aumentar R no compensa un N insuficiente; aumentar N no corrige una identificación fallida.
+
+La elección se documentará por escenario y estimando. Un N común puede ser operativo, pero no se supondrá adecuado para todos los contrastes sin demostrarlo.
+
+### 23.6. Dos ejecuciones Monte Carlo con funciones diferentes
+
+**MC-CAL — calibración de diseño:** explora rangos plausibles para justificar N, R, precisión y sensibilidad del diseño. Sus resultados sirven para elegir el diseño y no se presentan como prueba confirmatoria de que el analizador supera los escenarios.
+
+**MC-EVAL — evaluación confirmatoria metodológica:** utiliza la versión congelada del DGP, estimadores, criterios, N, R, seeds y agregación. Evalúa la recuperación y la detección de no-identificación.
+
+MC-CAL y MC-EVAL deben diferenciarse por versión, configuración y semillas. No se reutilizarán los mismos resultados de calibración como evidencia confirmatoria. Las decisiones derivadas de MC-CAL deben registrarse antes de iniciar MC-EVAL.
+
+### 23.7. Cuadrícula de sensibilidad obligatoria
+
+La calibración debe explorar, cuando sean pertinentes:
+- efectos nulos, positivos, negativos y cercanos a δ;
+- heterogeneidad por X y cambios de signo;
+- vías alternativas que refuercen o contrarresten la vía focal;
+- solapamiento y pérdida de positividad;
+- incumplimiento y contaminación de la intervención;
+- error de medición de accesibilidad;
+- missingness diferencial;
+- interferencia entre unidades;
+- errores de especificación y alternativas de estimador.
+
+Los rangos se justifican antes de la evaluación confirmatoria. No se escogerá como escenario principal el que produzca mejores métricas.
+
+### 23.8. Regla para escenarios no identificados
+
+S5-C, S10a y S10b conservan su función de controles de identificación. No se incrementará N indefinidamente para forzar un estimando que el diseño no identifica.
+
+- Si el problema es falta de soporte, informar el estrato identificable y el alcance poblacional.
+- Si la intervención es contrafactualmente imposible, redefinir la población o el estimando de manera explícita; no simular factibilidad.
+- Si dos vías están perfectamente colineales, introducir una asignación independiente o aceptar la no-identificación.
+- Si falta medición de A verdadera, diseñar validación o limitar la conclusión a A observada bajo supuestos explícitos.
+
+### 23.9. Expediente de justificación y aprobación
+
+Antes de MC-EVAL debe existir una tabla de control con:
+- parámetro y estimando al que aplica;
+- valor propuesto y unidad;
+- justificación sustantiva/estadística;
+- análisis de calibración que lo informa;
+- sensibilidad y escenarios adversos;
+- autoridad/registro de aprobación;
+- versión congelada y hash;
+- fecha y relación con el protocolo.
+
+No se inventarán aprobaciones ni se inferirá aceptación a partir de que el valor aparezca en un documento.
+
+### 23.10. Gate de dimensionamiento
+
+El dimensionamiento queda satisfecho solo cuando:
+1. δ y ε tienen justificación independiente o se declara formalmente qué conclusiones quedan fuera de alcance;
+2. tolerancias estadísticas están vinculadas a los estimandos y costes de error;
+3. N y R se justifican mediante MC-CAL;
+4. la cuadrícula cubre escenarios adversos y no solo favorables;
+5. MC-CAL y MC-EVAL están separados;
+6. escenarios no identificados no se tratan como problemas de potencia;
+7. la versión final queda congelada y auditada antes de MC-EVAL.
+
+### 23.11. Estado
+
+**Definido:** procedimiento para justificar δ/ε, tolerancias, N/R, cuadrícula de sensibilidad y separación MC-CAL/MC-EVAL.  
+**Pendiente:** contexto de Value y beneficiario del futuro C10-P, escalas, costes de error, valores numéricos y auditoría de dimensionamiento.  
+**No realizado:** cálculo de potencia, simulación de calibración, simulación confirmatoria, implementación o ejecución.  
+**Regla:** no asignar valores numéricos a δ, ε, N o R como si estuvieran justificados hasta completar el expediente correspondiente.
