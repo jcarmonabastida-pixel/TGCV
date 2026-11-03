@@ -1836,3 +1836,122 @@ Los registros deben permitir reconstruir qué era accesible, qué conocían los 
 - XSYNC-138-01: §§26–28 ofrecen una corrección coherente propuesta; no se cierra sin revisión independiente y aceptación.
 
 **Estado:** contrato documental ampliado; no implementado, simulado, ejecutado ni auditado mediante pruebas. Los hallazgos siguen abiertos hasta revisión y cierre explícito.
+
+
+---
+
+## 29. Auditoría de consistencia de §§26–28 frente a C10-D1 (sección conversacional 142)
+
+**Fuentes de contraste:** C10-D1 §§17.1–17.9, 26.1–26.3 y 27–31; especialmente la definición de políticas factibles, la distinción intervención/respuesta estructural/ejecución, la equivalencia de versiones, la notación de θ_A(q), el contrato de trayectorias y la regla de atribución.
+
+**Alcance:** auditoría documental. No es auditoría de código, simulación, ejecución estadística ni validación empírica. No cierra por sí sola los hallazgos XSYNC.
+
+### 29.1. Matriz de consistencia
+
+| Elemento C10-S | Regla C10-D1 de referencia | Dictamen documental |
+|---|---|---|
+| §26.1: Z, B, A=ΔT_acc y ejecución | D1 §17.5 y §26.1: intervención implementable, respuesta estructural y ejecución separadas | **Conforme en concepto** |
+| §26.2: A_f como proyección de ΔT_acc | D1 §§27.1 y 30.3: medir el cambio estructurado completo y documentar el componente focal sin sustituirlo | **Conforme, condicionado** a que el diccionario conserve ΔT_acc completo y la proyección h_f |
+| §26.3: g1/g0 factibles | D1 §§17.2, 17.7 y 31.1: políticas estocásticas implementables, condicionadas por historia y restringidas al conjunto factible | **Conforme en definición; falta operacionalización** |
+| §26.4: q y Value | D1 §§17.7 y 31.1: q es régimen común factible; la regla Value define el resultado y debe permanecer coherente entre contrastes | **Conforme** |
+| §26.5: TE, ψ_policy y θ_A(q) | D1 §§17.7, 26.1–26.2 y 30: estimandos distintos, no aditivos automáticamente | **Conforme en separación; requiere precisión en S4-O** |
+| §26.6: autorización como mecanismo, no accesibilidad | D1 §§17.5 y 26.1: B implementable puede inducir A y otras vías | **Conforme** |
+| §27: S4-O frente a S4-R | D1 §§17.7, 26 y 30: efecto de política distinto de contraste de accesibilidad | **Conforme en propósito; S4-O tiene ambigüedad de estimando** |
+| §27: q* y soporte S4-R | D1 §§17.1–17.2 y 31.1: separar condiciones constitutivas y otras condiciones; soporte factible por historia | **Conforme como objetivo; falta completar régimen y mecanismo** |
+| §28.1: ficha de versiones | D1 §17.5: versiones especificadas por componente, unidad, intensidad, temporalidad, población y condiciones | **Conforme y ampliado** |
+| §28.2: equivalencias | D1 §17.6: equivalencia de accesibilidad, equivalencia de vías relevantes para Value y equivalencia de versión de tratamiento | **Requiere corrección terminológica** |
+| §28.3: atribución según vías | D1 §§17.6, 26.2 y 30.3 | **Conforme** |
+| §28.4: interacción | D1 §§17.3, 17.7 y 26.3: cuatro combinaciones factibles e identificables; no confundir interacciones | **Conforme, condicionado** |
+| §§28.5–28.7: estados longitudinales y no ajuste mecánico | D1 §§27–30: posibilidad, selección, ejecución y temporalidad separadas | **Conforme; verificar exhaustividad del diccionario** |
+
+### 29.2. Corrección 1 — S4-O: asignación e implementación recibida
+
+La formulación anterior «TE_ZB o ψ_policy, según el contraste» es demasiado ambigua. Se sustituye por esta regla:
+
+- **ITT de asignación:**  
+  TE_ZB = E[V | do(Z_B=1)] − E[V | do(Z_B=0)].  
+  Contrasta la asignación aleatoria a las versiones/políticas ofrecidas. Se conserva aunque exista incumplimiento, recepción incompleta o contaminación, bajo los supuestos del diseño y tratamiento adecuado de pérdidas/interferencia.
+
+- **Efecto de política implementada:**  
+  ψ_policy = E[V^(B_1)] − E[V^(B_0)].  
+  Contrasta los regímenes de política efectivamente definidos e implementados. No se identifica automáticamente por el ITT cuando la recepción o fidelidad difiere de la asignación.
+
+- **Relación entre ambos:** solo coinciden bajo condiciones de consistencia y correspondencia entre asignación y versión recibida —por ejemplo, implementación completa y ausencia de versiones cruzadas relevantes— que deben declararse, no presumirse.
+
+En S4-O, el estimando primario de recuperación del diseño aleatorizado será **TE_ZB**. ψ_policy será un estimando distinto y secundario, únicamente si el generador define recepción/fidelidad y el diseño permite identificarlo. Ninguno se etiqueta como θ_A(q).
+
+El analizador debe informar por separado asignación, política ofrecida, recepción, fidelidad y vías alternativas. La aleatorización de Z_B no elimina la confusión entre A_f* y Value inducida por L ni convierte el ITT en atribución específica de accesibilidad.
+
+### 29.3. Corrección 2 — Taxonomía de equivalencia alineada con C10-D1
+
+La tabla de §28.2 debe leerse y corregirse conforme a las tres categorías exactas de D1 §17.6:
+
+1. **Equivalencia de accesibilidad:** mismo cambio estructural ΔT_acc bajo universo, representación, regla ≡T, contexto y horizonte comunes.
+2. **Equivalencia de vías relevantes para Value:** las diferencias entre políticas no introducen vías alternativas relevantes hacia Value, o esas vías quedan separadas mediante un diseño/estimando defendible.
+3. **Equivalencia de versión de tratamiento:** las versiones agrupadas bajo una misma política satisfacen una definición de intervención y consistencia previamente justificada.
+
+La expresión «equivalencia causal respecto a Value» utilizada en §28.2 no debe figurar como cuarta equivalencia ni sustituir la segunda categoría. La igualdad de resultados potenciales de Value puede ser una afirmación causal que requiera evidencia, pero no es el criterio operativo de equivalencia de vías formulado en D1.
+
+Regla: la equivalencia de accesibilidad no implica equivalencia de vías; ninguna de las dos implica por sí sola equivalencia de versión. Si las vías relevantes no pueden separarse, informar el efecto de la política concreta o del paquete, no θ_A(q).
+
+### 29.4. Corrección 3 — Mecanismo implementable de S4-R
+
+S4-R no puede limitarse a asignar directamente probabilidades .8 y .2 al indicador A_f*. Debe incorporar una cadena de generación verificable:
+
+B_g → C_g → A_f* → ΔT_acc.
+
+Para el entorno sintético se propone, pendiente de congelación del contrato:
+
+- B_g: asignación de una política a un **módulo técnico de activación de dependencia** focal, con versión e intensidad registradas.
+- C_g: estado efectivo del módulo/dependencia técnica después de su implementación.
+- A_f*: accesibilidad verdadera derivada de las condiciones técnicas, las precondiciones y C_c; no asignada por el generador como etiqueta independiente.
+- g1/g0: versiones del mecanismo que inducen distribuciones distintas de C_g y, a través de él, de A_f*. Los valores .8/.2 solo pueden conservarse si se definen como probabilidades inducidas por ese mecanismo y se verifica su soporte por historia.
+- q*: régimen común completo sobre X, H0 y L_m, manteniendo la misma distribución bajo ambas políticas. El valor ilustrativo P(L_m=1|X,H0)=.5 es solo una parte de q*, no su definición completa.
+- C_c: condiciones constitutivas verificadas antes de aplicar g; el conjunto factible se calcula para cada unidad/historia y ambas políticas deben ser posibles en la población primaria.
+
+El DGP sintético puede estipular que el módulo técnico solo altera la dependencia que habilita la transformación focal y no modifica información, expectativas, incentivos, recursos, trato, costes, calidad o riesgos por otras vías. Esa exclusión es una propiedad estipulada del mundo sintético y debe probarse como invariante del generador; no puede trasladarse automáticamente a un sistema real.
+
+Si el módulo afecta otras vías, S4-R deja de ser un contraste aislado de accesibilidad y pasa a ser un efecto de paquete. Si una política asigna masa fuera del conjunto factible, el escenario debe producir un dictamen de no factibilidad/no identificación, no forzar A_f*.
+
+### 29.5. Auditoría de temporalidad y trayectoria
+
+La comparación confirma que §§28.5–28.7 preservan la distinción de D1 §§27–30 entre:
+- factibilidad estructural;
+- conocimiento/consideración por agentes;
+- selección;
+- inicio/intento;
+- ejecución parcial o completa;
+- interrupción/fallo;
+- Outcome y Value.
+
+Se añade una cautela: el estado de accesibilidad debe llevar un T_acc_snapshot_id y tiempo de validez. Cada decisión/ejecución debe enlazarse con el snapshot vigente en ese momento. Una ejecución puede modificar estado, condiciones y accesibilidad futura; por ello, el historial debe permitir reconstruir la secuencia sin atribuir retrospectivamente al estado inicial posibilidades que solo aparecieron después.
+
+No se ajustará por selección/ejecución observadas para estimar el efecto total de las políticas de accesibilidad. Si se interviene sobre ellas, se define un estimando distinto, tal como exige D1 §§29–30.
+
+### 29.6. Dictamen de auditoría
+
+**Conforme documentalmente, sin cierre formal:**
+- separación Z/B/A/ejecución;
+- A_f como proyección, sin sustituir ΔT_acc;
+- distinción q frente a regla Value;
+- factibilidad como restricción de g1/g0;
+- versiones de intervención y vías alternativas;
+- separación de trayectorias factibles y realizadas;
+- tratamiento de selección/ejecución como variables posteriores;
+- prohibición de descomposición automática TE−θ_A.
+
+**Correcciones necesarias incorporadas en esta sección:**
+- S4-O separa ITT de asignación y efecto de política implementada;
+- equivalencias se alinean con las tres categorías de C10-D1;
+- S4-R requiere un mecanismo técnico implementable que genere accesibilidad, no asignación directa de A_f*;
+- se refuerza la vinculación temporal entre T_acc snapshots y eventos de trayectoria.
+
+**Pendiente antes de cerrar XSYNC-138-01 y los hallazgos relacionados:**
+1. convertir la propuesta del módulo técnico S4-R en contrato de datos y reglas del generador;
+2. comprobar que q* y g1/g0 son factibles en cada estrato de la población primaria;
+3. revisar el DAG de S4-O y S4-R con sus variables temporales y vías alternativas;
+4. verificar que el diccionario implementa todos los estados y snapshots;
+5. realizar revisión independiente de consistencia con C10-D1;
+6. ejecutar, cuando exista autorización y código, las pruebas correspondientes; la auditoría documental no sustituye esos resultados.
+
+**Estado:** auditoría documental realizada; correcciones propuestas y registradas. No implementado, no simulado, no ejecutado, no aceptado y no cerrado formalmente. No modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. No autoriza implementación ni ejecución científica.
