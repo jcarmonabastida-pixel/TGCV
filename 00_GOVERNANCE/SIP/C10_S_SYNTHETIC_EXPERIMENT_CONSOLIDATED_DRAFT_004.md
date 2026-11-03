@@ -3982,3 +3982,132 @@ La arquitectura de C10-S es conceptualmente articulable, pero todavía no consti
 La evidencia sintética futura deberá demostrar recuperación de verdades programadas y detección de violaciones; no demostrará que los supuestos IV se cumplen en un sistema real. El resultado admisible podrá ser recuperación, identificación parcial, no-identificación o fallo del procedimiento.
 
 **Decisión:** no congelar S4-R, no iniciar simulación ni declarar cierre de XSYNC-138-01. La sección 42 consolida hallazgos y brechas para una revisión independiente posterior. No se modifica C10-D1 ni ningún artefacto de gobernanza superior.
+
+
+---
+
+## 43. Diccionario canónico de variables y estimandos para S4-R (sección conversacional 156)
+
+**Estado:** propuesta de armonización interna específica de C10-S/S4-R. No modifica definiciones generales de C10-D1 ni el Core TGCV. No es implementación, simulación, auditoría independiente ni aceptación. No cierra XSYNC-138-01.
+
+### 43.1. Principio de separación
+
+La asignación a una política, su provisión efectiva, la accesibilidad resultante y el cambio completo del espacio transformacional son variables distintas. Cadena propuesta:
+
+`Z → B → W → C_dep → A_f* → ΔT_acc → {Reach_H, Π_H} → selección → Exec → O → V`
+
+La cadena es una hipótesis estructural del DGP, no una afirmación de que todas las flechas estén identificadas.
+
+### 43.2. Diccionario de variables
+
+| Símbolo | Definición operacional en S4-R | Naturaleza / observación |
+|---|---|---|
+| X | Covariables basales del sistema/unidad | Basales |
+| H₀ | Historia basal relevante anterior a Z | Basal, temporalmente ordenada |
+| Z | Asignación aleatoria a política de provisión | Instrumento/encouragement asignado |
+| B | Política o versión de provisión realmente recibida | Registrar versión y cumplimiento |
+| W | Intento de instalación/provisión | Evento posterior a B |
+| C_install | Dependencia instalada correctamente | Componente técnico |
+| C_integrity | Dependencia íntegra y no alterada | Componente técnico |
+| C_compat | Dependencia compatible con sistema/entorno | Componente técnico |
+| C_oper | Dependencia operativa en condiciones de uso | Componente técnico |
+| C_dep | Conjunción verificada de los cuatro componentes | Estado técnico; no equivale por sí solo a accesibilidad |
+| A_f,t* | Indicador verdadero de accesibilidad de τ2 en tiempo t | Estado focal verdadero |
+| D_f | Apertura focal: 1 si A_f,post*=1 y A_f,base*=0 | Tratamiento endógeno binario focal para IV |
+| A_f,obs | Medición observada de A_f* / D_f | Sujeta a error de clasificación |
+| T_acc,t | Espacio accesible en t: U_acc,t, R_acc,t, C_acc,t | Objeto TGCV multidimensional |
+| ΔT_acc | Diferencia estructurada entre snapshots: ΔU, ΔR, ΔC | Cambio completo; no se reduce a D_f |
+| App_f,t | Aplicabilidad de τ2 en estado e historia t | No equivale a accesibilidad |
+| Reach_H | Estados alcanzables dentro de H bajo T_acc y condiciones | Derivado del espacio transformacional |
+| Π_H^cand | Trayectorias candidatas válidas | Enumeración TGCV |
+| Π_H^sel | Trayectoria seleccionada | Decisión posterior |
+| Π_H^exec / Exec | Trayectoria/transformaciones ejecutadas | Evento, no medida de accesibilidad |
+| M | Mecanismos intermedios definidos por DGP | Desglosar; no usar como caja negra |
+| O | Outcome definido antes del análisis | Resultado con indicador de ausencia |
+| V | Value según beneficiario, regla, horizonte y dimensiones preespecificados | Evaluación independiente de O y T_acc |
+| R_j | Indicador de observación del bloque j | Un indicador por bloque; sección 41 |
+
+### 43.3. Apertura focal D_f
+
+`D_f = I(A_{f,post}*=1 ∧ A_{f,base}*=0)`
+
+D_f indica que τ2 pasó de no accesible a accesible. Si el DGP impone A_f,base*=0 para todas las unidades, D_f coincide con A_f,post*. Si no, deben conservarse las unidades con accesibilidad basal, estratificar o definir otro contraste antes del análisis.
+
+La proyección h_f(ΔT_acc)=D_f solo representa la apertura focal bajo el diccionario, snapshots y equivalencia fijados. No conserva por sí sola cambios en otras transformaciones, relaciones o condiciones. Por tanto:
+- D_f no es ΔT_acc;
+- D_f=1 no implica necesariamente ΔReach_H>0;
+- ΔT_acc≠0 no implica D_f=1;
+- D_f=1 no implica selección ni ejecución de τ2;
+- ejecución de τ2 no debe reconstruir D_f retrospectivamente.
+
+### 43.4. Estimandos que deben reportarse por separado
+
+**A. Efecto de asignación (ITT primario)**
+
+`ITT_Z = E[V | Z=1] - E[V | Z=0]`
+
+Bajo asignación aleatoria, consistencia y ausencia de interferencia (o diseño que la modele), es el efecto causal de asignar la política. Con Value faltante, su identificación estadística depende además del mecanismo de ausencia y de la estrategia correspondiente. No es automáticamente el efecto de recibir B ni el efecto de D_f.
+
+**B. Primera etapa focal**
+
+`ITT_D = E[D_f | Z=1] - E[D_f | Z=0]`
+
+Mide cuánto cambia la probabilidad de apertura focal por asignación. Debe acompañarse de incertidumbre, distribución por estratos/historia y diagnóstico de soporte. No basta con reportar que la instalación se intentó.
+
+**C. Efecto instrumental focal**
+
+`LATE_f = ITT_Z / ITT_D`
+
+La razón Wald puede interpretarse como efecto causal local de D_f entre compliers solo bajo instrumento relevante, asignación independiente, exclusión, monotonicidad, consistencia/versiones bien definidas, ausencia de interferencia y tratamiento binario bien especificado. Si ITT_D es débil, el cociente puede ser inestable y requiere inferencia robusta a instrumentos débiles. Con heterogeneidad, no es ATE.
+
+**D. Efecto de política recibida**
+
+Un contraste causal entre versiones de B recibidas no se identifica por el mero hecho de que Z se aleatorice si existe incumplimiento. Debe definirse como estimando propio y justificar el diseño/análisis. No etiquetar ITT_Z como efecto de B cuando Z solo asigna una oferta o encouragement.
+
+**E. Efecto focal poblacional θ_Af(q*)**
+
+Representa el contraste contrafactual de Value bajo políticas de accesibilidad focal definidas dentro de un régimen común q*. No queda identificado automáticamente por el IV: el IV aporta LATE_f bajo sus supuestos, mientras θ_Af poblacional requiere homogeneidad, extrapolación justificada u otro diseño/estimador identificador.
+
+**F. Efecto general de accesibilidad TGCV**
+
+El estimando general sobre cambios en T_acc del protocolo C10-D1 no puede sustituirse por D_f ni por LATE_f. S4-R manipula una transformación focal τ2 y solo puede informar sobre ese mecanismo acotado, salvo que el diseño y la medición cubran el espacio completo y permitan otra identificación.
+
+### 43.5. Separación de información entre generador y analizador
+
+El generador/evaluador conserva valores verdaderos y parámetros del DGP, incluidos A_f*, D_f, T_acc verdadero y estados potenciales. El analizador recibe únicamente:
+- asignación Z y probabilidades de asignación;
+- versiones y registros observables de B, W y verificación técnica;
+- mediciones A_f,obs y snapshots observados con su calidad;
+- información de diseño necesaria para los estimandos;
+- Reach, trayectorias, ejecución, Outcome y Value solo cuando estén observados;
+- indicadores, motivos y tiempos de ausencia.
+
+No recibe A_f*, D_f verdadero, estados potenciales contrafactuales ni parámetros estructurales del generador. La validación de accesibilidad se entrega solo en la submuestra y bajo el mecanismo de selección preespecificado.
+
+### 43.6. Reporte mínimo obligatorio
+
+Cada escenario debe informar por separado:
+1. ITT_Z sobre Value y su incertidumbre;
+2. ITT_D y fuerza de primera etapa;
+3. forma reducida y estimación IV/LATE_f, si procede;
+4. supuestos IV evaluados, no evaluables y violados en el DGP;
+5. D_f y ΔT_acc como objetos distintos;
+6. cambios en Reach_H y Π_H^cand;
+7. selección y ejecución, sin condicionar ingenuamente el ITT;
+8. pérdidas por bloque y método/limitación de identificación;
+9. evaluación independiente de Value;
+10. alcance: focal τ2 frente al espacio general TGCV.
+
+### 43.7. Decisiones todavía abiertas
+
+- Si la población primaria impondrá A_f,base*=0 o incluirá unidades con accesibilidad basal.
+- Definición final de las versiones de B y del cumplimiento.
+- Correspondencia exacta entre C_dep y condiciones constitutivas de realizabilidad de τ2.
+- Regla de equivalencia/versiones de τ2.
+- q*, soporte por historia y tratamiento de L_m.
+- Unidad de asignación y posible interferencia.
+- Identificación de θ_Af poblacional más allá del LATE.
+- Definición completa de Value y estrategia para ausencia.
+- Concordancia final de símbolos con C10-D1 §17.6 y ecuaciones previas del documento.
+
+**Dictamen:** este diccionario separa los objetos que S4-R debe medir y estimar, pero no cierra las decisiones de q*, interferencia ni identificación poblacional. Se propone como base de armonización, no como freeze. No implementar ni simular hasta resolver los puntos abiertos y completar revisión independiente.
