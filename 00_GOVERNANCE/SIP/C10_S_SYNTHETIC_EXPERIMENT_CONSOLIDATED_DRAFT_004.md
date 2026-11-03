@@ -1258,3 +1258,110 @@ El dimensionamiento queda satisfecho solo cuando:
 **Pendiente:** contexto de Value y beneficiario del futuro C10-P, escalas, costes de error, valores numéricos y auditoría de dimensionamiento.  
 **No realizado:** cálculo de potencia, simulación de calibración, simulación confirmatoria, implementación o ejecución.  
 **Regla:** no asignar valores numéricos a δ, ε, N o R como si estuvieran justificados hasta completar el expediente correspondiente.
+
+
+---
+
+## 24. Auditoría independiente previa a implementación y ejecución (sección conversacional 137)
+
+### 24.1. Propósito y frontera
+
+La auditoría previa debe comprobar que el protocolo, sus contratos y sus decisiones son internamente coherentes y suficientemente determinados antes de traducirlos a código o ejecutar MC-CAL/MC-EVAL.
+
+La auditoría no implementa, no simula, no ejecuta C10-S y no demuestra C10. Su resultado es una decisión sobre la aptitud metodológica del paquete para pasar a la siguiente fase técnica.
+
+### 24.2. Independencia y separación de funciones
+
+Distinguir:
+1. **Autoría del protocolo:** propone definiciones, escenarios y criterios.
+2. **Auditoría transformacional:** revisa identidad, accesibilidad, condiciones, relaciones, composición, Reach y trayectorias.
+3. **Auditoría causal/estadística:** revisa DAG, estimandos, identificación, soporte, estimadores, calibración, potencia y reglas de interpretación.
+4. **Auditoría de Value:** revisa beneficiario, regla, dimensiones, escalas, horizonte, trade-offs y ausencia de circularidad.
+5. **Auditoría de reproducibilidad y cegamiento:** revisa separación generador/analizador/evaluador, control de filtraciones, versionado y reproducibilidad.
+6. **Autoridad de aceptación:** emite la decisión formal de aceptar, devolver o bloquear.
+
+Cuando no sea posible disponer de auditores distintos para cada área, se registrarán conflictos de rol y medidas compensatorias. El autor del protocolo no puede ser el único evaluador de su propia aceptación.
+
+### 24.3. Paquete de auditoría
+
+El paquete debe incluir:
+- borrador C10-S versionado y su hash;
+- C10-D1 vigente y su hash;
+- matriz de correspondencia entre ambos documentos;
+- DAG y diccionario de variables;
+- estimandos y supuestos de identificación;
+- catálogo transformacional, condiciones, relaciones y equivalencias;
+- escenarios y DGP con parámetros verdaderos separados del material del analizador;
+- contratos del generador, analizador y evaluador;
+- matriz de pruebas EQ, EX, GEN, TG, SR, CV y Value;
+- reglas de resultados, agregación y dictamen;
+- expediente de δ, ε, tolerancias y dimensionamiento, o lista explícita de conclusiones fuera de alcance;
+- política de seeds, versiones, hashes y desviaciones;
+- registro de decisiones abiertas y hallazgos anteriores.
+
+No incluir secretos de verdad generadora en el paquete que recibirá el analizador ciego. La auditoría puede verificar el canal protegido de verdad sin exponerlo al componente evaluado.
+
+### 24.4. Matriz de auditoría
+
+| Dominio | Pregunta de auditoría | Evidencia mínima |
+|---|---|---|
+| Coherencia documental | ¿C10-S es compatible con C10-D1 y no altera silenciosamente estimandos? | Matriz de correspondencia y hashes |
+| Identidad transformacional | ¿Identidad y granularidad son operativas y consistentes? | Reglas EQ y ejemplos límite |
+| Accesibilidad | ¿Se separan realizabilidad, accesibilidad, aplicabilidad y ejecución? | Predicados, evidencia y pruebas |
+| Composición/Reach | ¿El generador deriva rutas de T_acc y reevalúa condiciones por rama? | Contrato y pruebas TG/GEN |
+| Exclusividad | ¿Se han examinado alternativas en G0 dentro del alcance declarado? | Expediente EXC y límites de completitud |
+| Identificación causal | ¿Cada estimando tiene intervención, población, supuestos y soporte definidos? | DAG, contratos y escenarios |
+| Medición | ¿A_true, A_obs y error se mantienen separados? | Plan de medición/validación |
+| Value | ¿La regla es independiente y no recompensa mecánicamente expansión? | Especificación Value y pruebas V |
+| Estadística | ¿Estimadores y métricas corresponden al estimando y al diseño? | Plan analítico y MC-CAL |
+| Preespecificación | ¿Criterios y desviaciones se congelan antes de MC-EVAL? | Registro versionado |
+| Cegamiento | ¿El analizador no recibe verdad generadora ni etiquetas reveladoras? | Mapa de datos y prueba de leakage |
+| Reproducibilidad | ¿Cada resultado puede vincularse a versión, seed y configuración? | Contrato de artefactos |
+| Gobernanza | ¿Está claro qué queda autorizado y qué permanece bloqueado? | Decisión formal y registro de permisos |
+
+### 24.5. Severidad de hallazgos
+
+- **P0 — bloqueante:** amenaza identificación, validez del constructo, integridad del cegamiento o interpretación central. Impide pasar a implementación/ejecución.
+- **P1 — mayor:** puede alterar resultados, estimandos, completitud o reproducibilidad. Requiere resolución antes de la fase afectada.
+- **P2 — menor:** defecto editorial, trazabilidad o claridad que no cambia el significado, pero debe corregirse antes de congelar.
+- **OBS — observación:** mejora recomendada o limitación explícita que no bloquea el gate.
+
+No cerrar hallazgos por reformulación textual si la contradicción subyacente permanece. Toda resolución debe apuntar a evidencia y versión concreta.
+
+### 24.6. Estados del gate de auditoría
+
+- **AUDIT-PASS:** no quedan P0/P1 abiertos; los P2 están corregidos o tienen disposición documentada; los límites están explícitos.
+- **AUDIT-CONDITIONAL:** no quedan P0, pero existen condiciones delimitadas que bloquean únicamente fases posteriores concretas.
+- **AUDIT-FAIL:** persiste al menos un P0 o una incoherencia que impide interpretar el diseño.
+- **AUDIT-INDETERMINATE:** falta material o evidencia para emitir dictamen.
+
+Un AUDIT-PASS documental autoriza únicamente a proponer la traducción técnica. No autoriza por sí solo ejecución científica, simulación confirmatoria, selección de caso real ni C10-P.
+
+### 24.7. Cierre de hallazgos y trazabilidad
+
+Cada hallazgo conserva:
+- audit_id y finding_id;
+- severidad;
+- documento/sección/versión afectados;
+- descripción y fundamento;
+- consecuencia metodológica;
+- resolución propuesta;
+- evidencia de resolución;
+- revisor y fecha;
+- estado (open, resolved, accepted-risk, superseded);
+- versión en que se resolvió.
+
+Los hallazgos aceptados como riesgo deben tener justificación, alcance y consecuencia explícitos. No se eliminan hallazgos cerrados ni se sobrescriben auditorías anteriores.
+
+### 24.8. Gate de transición
+
+La transición documental a implementación requiere AUDIT-PASS o AUDIT-CONDITIONAL con condiciones compatibles con esa implementación, más aceptación formal de la versión.
+
+La implementación técnica requiere además contrato ejecutable, pruebas y autorización específica. MC-CAL y MC-EVAL requieren gates y autorizaciones separados. La ejecución confirmatoria y C10-P siguen bloqueadas hasta sus propios controles.
+
+### 24.9. Estado
+
+**Definido:** independencia de funciones, paquete de auditoría, matriz, severidad, estados y gates.  
+**Pendiente:** asignación real de auditores, revisión integral C10-S frente a C10-D1, resolución de hallazgos y aceptación formal.  
+**No realizado:** auditoría independiente, implementación, simulación o ejecución.  
+**No autorizado por esta sección:** ejecución científica o avance automático a C10-P.
