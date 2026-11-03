@@ -1955,3 +1955,147 @@ No se ajustará por selección/ejecución observadas para estimar el efecto tota
 6. ejecutar, cuando exista autorización y código, las pruebas correspondientes; la auditoría documental no sustituye esos resultados.
 
 **Estado:** auditoría documental realizada; correcciones propuestas y registradas. No implementado, no simulado, no ejecutado, no aceptado y no cerrado formalmente. No modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. No autoriza implementación ni ejecución científica.
+
+
+---
+
+## 30. Contrato operativo propuesto del mecanismo técnico S4-R (sección conversacional 143)
+
+**Objetivo:** convertir la propuesta de §29.4 en un mecanismo sintético explícito, implementable en principio y auditable, que genere cambios de accesibilidad a través de condiciones técnicas reales. La especificación no autoriza programación ni ejecución. Los parámetros son valores de diseño provisionales, no resultados.
+
+### 30.1. Transformación focal y condición técnica
+
+Se conserva el catálogo sintético:
+- τ1: diagnosticar incidencia;
+- τ2: reconfigurar técnicamente el sistema (**transformación focal**);
+- τ3: verificar técnicamente la reconfiguración;
+- τ4: escalar/transferir responsabilidad.
+
+La condición técnica focal será C_dep: disponibilidad efectiva de un componente de dependencia software que habilita la operación de reconfiguración sobre el objeto de sistema designado.
+
+C_dep=1 significa que el componente está instalado, íntegro, compatible con la versión del sistema y operativo en el momento relevante. No significa que τ2 ya se haya ejecutado, que haya sido seleccionada ni que su resultado sea exitoso.
+
+La accesibilidad estructural de τ2 se deriva de:
+A_f* = I(C_dep=1 ∧ C_auth_base=1 ∧ C_resource=1 ∧ C_capacity=1 ∧ C_info=1 ∧ C_domain=1 ∧ C_other=1),
+donde cada condición distinta de C_dep permanece constante y satisfecha en la población primaria S4-R. La expresión es una regla de este juguete sintético, no una definición universal de T_acc.
+
+Si una de las condiciones restantes no se satisface, A_f*=0 o indeterminado según la evidencia; el generador no debe corregirla ni forzarla. La transformación τ2 solo será applicable después de τ1 y de cumplirse sus precondiciones de estado. Accesible no equivale a aplicable.
+
+### 30.2. Política implementable y mecanismo de generación
+
+Se definen dos versiones de política técnica:
+- B_g0: procedimiento de provisión del componente con probabilidad objetivo de instalación operativa p0=0.20;
+- B_g1: mismo procedimiento y recursos, con probabilidad objetivo p1=0.80.
+
+Para cada unidad, el sistema de provisión genera un intento técnico W_g ~ Bernoulli(p_g). Si W_g=1, instala/activa el componente según protocolo; si W_g=0, conserva la configuración base. El estado resultante se verifica mediante una prueba técnica independiente y ciega al Outcome/Value, que produce C_dep.
+
+La secuencia es:
+Z_g → B_g → W_g → C_dep → A_f* → ΔT_acc.
+
+- Z_g asigna aleatoriamente la versión de política; es el instrumento de asignación del experimento sintético.
+- B_g especifica el procedimiento de provisión; no es idéntico a su recepción.
+- W_g es el resultado aleatorio del intento de provisión.
+- C_dep es el estado técnico verificado, no el resultado de una encuesta o intención.
+- A_f* se calcula a partir de todas las condiciones reales de τ2.
+- A_f_obs es la medición que recibe el analizador; puede coincidir con A_f* en el escenario de medición perfecta o tener error en S6-N/S6-V.
+
+Las probabilidades .20/.80 son parámetros del generador. Antes de congelar S4-R se debe comprobar que la política las induce efectivamente y que el mecanismo de verificación no introduce clasificación diferencial.
+
+### 30.3. Qué se mantiene constante
+
+En S4-R primario, B_g0 y B_g1 deben ser idénticos salvo por la probabilidad de provisión técnica del componente focal. Se fijan y registran:
+- hardware, capacidad de cómputo y disponibilidad del sistema;
+- recursos humanos y materiales;
+- información de diagnóstico y conocimiento de agentes;
+- interfaz, mensajes, formación, expectativas e incentivos;
+- prioridades, reglas de selección y tratamiento;
+- autorización basal distinta de C_dep;
+- costes de operación y mantenimiento, latencia y tiempos no inherentes al cambio focal;
+- calidad, seguridad, riesgo y distribución de beneficios no afectados por el componente;
+- horizonte, catálogo, reglas de identidad, condiciones de τ1/τ3/τ4 y criterio de Value.
+
+La instalación de C_dep no debe añadir personal, presupuesto, información, prioridad, formación o trato. Si el componente introduce costes, latencia, seguridad u otra consecuencia que varía entre brazos y afecta Value, se registra como vía adicional; el contraste deja de ser un efecto aislado de accesibilidad y se etiqueta como efecto de paquete, salvo diseño factorial que separe esa vía.
+
+No se debe afirmar que estos invariantes se cumplen en un sistema real: son restricciones deliberadas del DGP sintético y deben verificarse en el generador.
+
+### 30.4. Régimen común q* y población objetivo
+
+Para el S4-R primario:
+- X y H0 se generan antes de la asignación.
+- L_m se fija bajo una distribución común q* idéntica en ambos brazos; para el escenario ilustrativo puede usarse P(L_m=1|X,H0)=0.5.
+- C_c contiene condiciones constitutivas de τ2. La población primaria se restringe, antes de asignar Z_g, a unidades en las que ambas políticas B_g0/B_g1 son implementables y las restantes precondiciones basales están satisfechas.
+- La pertenencia a la población primaria no puede depender de resultados posteriores, C_dep, A_f*, selección, ejecución, Outcome o Value.
+- Se registra el soporte de ambas políticas por estrato de X,H0,L_m y C_c.
+
+q* es la distribución común completa de condiciones/historias declaradas, no solo la distribución marginal de L_m. Si la asignación de q* no puede mantenerse común o el soporte de alguna política falla, el escenario debe emitir no-identificación para el contraste poblacional propuesto.
+
+### 30.5. Estimando y verdad del DGP
+
+El estimando sintético primario es el contraste entre las dos políticas factibles de accesibilidad:
+θ_A(q*) = E[V^(q*,g1)] − E[V^(q*,g0)].
+
+Con p1=.80, p0=.20, condiciones restantes satisfechas y medición estructural perfecta:
+E[A_f*|g1]−E[A_f*|g0]=.60.
+
+Si el DGP mantiene:
+- M = 1 + A_f* + 0.5X + ε_M;
+- O = 2M + ε_O;
+- V = 3O + 4L_m + ε_V;
+- errores de media cero, misma distribución bajo ambas políticas y sin interacciones ni vías directas de B_g/C_dep hacia M, O o V;
+
+entonces el efecto medio inducido en Value es θ_A(q*) = 6 × .60 = 3.6.
+
+Esta igualdad es verdad analítica del DGP propuesto, condicionada a todos los supuestos listados. No es un valor empírico, umbral de relevancia ni evidencia a favor de TGCV. El generador debe conservar el valor verdadero y el analizador no debe recibirlo.
+
+### 30.6. Medición, snapshots y temporalidad
+
+Por unidad se registran:
+- assignment_id, Z_g, B_g_version, W_g, installation_status;
+- C_dep_status, verification_time, verification_evidence, measurement_quality;
+- C_c y condiciones restantes con estado, fuente, instante de validez;
+- A_f* solo en el generador/evaluador y A_f_obs para el analizador;
+- T_acc_snapshot_id, valid_from, valid_to, U_acc, R_acc, C_acc, ΔT_acc;
+- estado de τ1–τ4, Reach_H, trayectorias candidatas y sus dependencias;
+- conocimiento/consideración, selección, inicio, ejecución parcial/completa, interrupción/fallo;
+- Outcome, dimensiones de Value, regla y horizonte.
+
+El snapshot de accesibilidad se crea después de verificar C_dep y las restantes condiciones, y antes de selección/ejecución. Si una transformación ejecutada altera condiciones o el estado del sistema, se crea un snapshot posterior; nunca se reescribe el snapshot basal. Los eventos se enlazan al snapshot vigente al momento del evento.
+
+### 30.7. Controles negativos y escenarios de falsación interna
+
+Añadir variantes sintéticas:
+- S4R-NC1: el módulo se asigna/provisiona, pero C_dep no cambia; ΔT_acc no cambia. El analizador no debe atribuir efecto a accesibilidad.
+- S4R-NC2: C_dep y A_f* cambian, pero el coeficiente causal A_f*→M es cero; accesibilidad cambia sin cambio de Value por esa vía.
+- S4R-NC3: C_dep/A_f* no cambian, pero una vía alternativa directa B_g→V se activa deliberadamente; el analizador debe identificar efecto de paquete/vía alternativa, no θ_A.
+- S4R-NC4: política asignada tiene soporte insuficiente en un estrato constitutivo; no se extrapola el efecto a toda la población.
+- S4R-NC5: medición A_f_obs diferencial entre brazos; el analizador debe detectar amenaza de medición y no equiparar A_f_obs con A_f*.
+
+Estas variantes no se agregan a la matriz principal hasta reconciliar su numeración con S0–S10 y C131. Se consideran extensiones de estrés propuestas.
+
+### 30.8. Invariantes y pruebas de aceptación para el generador futuro
+
+- S4R-GEN-01: A_f* se deriva de C_dep y condiciones; nunca se asigna directamente.
+- S4R-GEN-02: B_g0/B_g1 difieren únicamente en p_g dentro del escenario aislado.
+- S4R-GEN-03: C_dep refleja instalación operativa verificada, no solo intento W_g.
+- S4R-GEN-04: las condiciones restantes y q* tienen la misma distribución por brazo.
+- S4R-GEN-05: no existen rutas directas B_g/C_dep→Value en el escenario aislado.
+- S4R-GEN-06: los costes, tiempos, riesgos y calidad no focales son invariantes.
+- S4R-GEN-07: la población objetivo se define antes de Z_g y ambas políticas son factibles en ella.
+- S4R-GEN-08: las probabilidades inducidas de A_f* se recuperan dentro de tolerancias que se preespecificarán.
+- S4R-GEN-09: el snapshot T_acc precede a selección/ejecución y conserva su historial.
+- S4R-GEN-10: el generador/evaluador conoce la verdad; el analizador no recibe A_f* ni coeficientes.
+- S4R-GEN-11: los controles negativos producen los dictámenes previstos.
+- S4R-GEN-12: semilla, versiones, reglas y resultados permiten reproducibilidad.
+
+No se fijan tolerancias estadísticas ni tamaño muestral definitivo en esta sección; requieren justificación y preespecificación posterior.
+
+### 30.9. Límites de interpretación
+
+Aunque S4-R recupere θ_A(q*) en este mundo sintético:
+- solo demuestra que el diseño, la medición y el analizador pueden recuperar una verdad conocida bajo supuestos programados;
+- no demuestra que un módulo técnico real carezca de vías alternativas;
+- no demuestra que la representación de T_acc sea exhaustiva en sistemas reales;
+- no demuestra generalización a otros dominios, poblaciones, horizontes o reglas de Value;
+- no valida por sí solo C10 ni cierra XSYNC-138.
+
+**Estado:** contrato operativo sintético propuesto; no congelado, implementado, simulado, ejecutado, auditado mediante pruebas ni aceptado. S4-R permanece en diseño. XSYNC-138-01 y hallazgos relacionados permanecen abiertos hasta revisión independiente, comprobación de factibilidad y pruebas autorizadas. No se modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos.
