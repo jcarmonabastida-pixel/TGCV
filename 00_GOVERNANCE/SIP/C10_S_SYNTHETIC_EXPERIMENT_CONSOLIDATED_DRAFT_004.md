@@ -2747,3 +2747,132 @@ Puertas aún abiertas:
 - cobertura del diccionario y de las matrices de escenarios/pruebas.
 
 **Dictamen:** el contrato de variables y ecuaciones queda especificado como propuesta provisional y mejora la consistencia entre §§30–33. No se considera cerrado ni congelable. Los parámetros .20/.80 y 3.6 siguen siendo ilustrativos. No se ha implementado, simulado, ejecutado ni validado. XSYNC-138-01 permanece abierto. No autoriza implementación ni ejecución científica.
+
+
+---
+
+## 35. Auditoría matemática y de identificación de S4-R (sección conversacional 148)
+
+**Alcance:** revisión analítica del contrato de §34 y su compatibilidad con C10-D1. No es simulación, ejecución de estimadores, auditoría de código ni revisión independiente externa. No cierra XSYNC-138-01 ni modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 o cierres previos.
+
+### 35.1. Dictamen general
+
+El contrato distingue correctamente ITT de asignación, efecto de política de provisión y estimando focal. Sin embargo, el estimando focal todavía no está plenamente identificado por una intervención implementable. La notación (g^{Af}) describe políticas objetivo sobre cambios de accesibilidad, pero el contrato no define todavía un mecanismo concreto que las implemente sin asignar directamente (A_f^*), ni demuestra que las políticas de provisión (g^B) sean versiones equivalentes de esas políticas focales.
+
+Por tanto:
+- (TE_Z) es identificable por aleatorización de (Z_g), sujeto a consistencia, interferencia, pérdidas y cumplimiento del protocolo.
+- (psi_B) es un efecto de política de provisión; si (q^*) se aplica realmente y está bien definido, puede ser el estimando de la intervención conjunta.
+- (	heta_{Af}) es un objetivo causal focal conceptualmente formulado, pero su identificación a partir de (Z_g) no está demostrada.
+- El valor 3.6 es una derivación algebraica del DGP focal bajo supuestos fuertes, no una cantidad ya identificada por el diseño de provisión.
+
+### 35.2. Hallazgo MATH-148-01 — (g^{Af}) carece de implementación independiente
+
+La definición de §34.7 requiere políticas (g_1^{Af},g_0^{Af}) que induzcan distribuciones de (Delta A_f). Pero §34.3 solo proporciona una intervención concreta sobre provisión (B_g). No existe aún un procedimiento distinto y ejecutable para asignar o inducir (g^{Af}).
+
+No debe resolverse asignando directamente (A_f^*), porque eso repetiría la abstracción que el diseño pretende evitar. Hay dos opciones coherentes:
+
+1. **Estimando de política implementada:** mantener (g^B) como intervención concreta y estimar (psi_B(q^*)). Solo denominar su efecto contribución focal de accesibilidad si se estipula y verifica la exclusión de otras vías y la equivalencia de versiones en el DGP.
+2. **Diseño de intervención focal adicional:** especificar un mecanismo implementable que cambie la condición necesaria de τ2, con asignación propia y manipulación verificable, sin asignar directamente el estado de accesibilidad. Debe demostrar que no modifica otras causas de Value y que induce la variación focal requerida.
+
+Hasta elegir y formalizar una de estas opciones, (	heta_{Af}) debe mantenerse como estimando objetivo no identificado, no como efecto recuperable garantizado por la aleatorización de (Z_g).
+
+### 35.3. Hallazgo MATH-148-02 — las tres cantidades no son intercambiables
+
+Se conserva la separación:
+
+[
+TE_Z=E[Vmid do(Z_g=1)]-E[Vmid do(Z_g=0)]
+]
+
+[
+psi_B(q^*)=E[V^{q^*,g_1^B}]-E[V^{q^*,g_0^B}]
+]
+
+[
+	heta_{Af}(q^*)=E[V^{q^*,g_1^{Af}}]-E[V^{q^*,g_0^{Af}}].
+]
+
+El primer contraste corresponde a asignar las políticas tal como se implementan en el ensayo. El segundo corresponde a políticas de provisión bajo el régimen común declarado. El tercero corresponde a políticas focales de accesibilidad que todavía requieren implementación y definición propias.
+
+La igualdad (TE_Z=psi_B(q^*)) requiere que el régimen (q^*) coincida con el régimen efectivamente aplicado por diseño, además de consistencia y ausencia de contaminación entre versiones. Si (q^*) es una intervención hipotética distinta de lo aplicado, no es el ITT observado.
+
+La igualdad (psi_B(q^*)=	heta_{Af}(q^*)) requiere que la provisión no tenga vías relevantes hacia Value distintas del cambio focal de accesibilidad y sus consecuencias transformacionales, y que las versiones sean equivalentes en todo lo demás. Esta igualdad es una restricción del DGP aislado, no una consecuencia de aleatorizar (Z_g).
+
+### 35.4. Hallazgo MATH-148-03 — covariables basales no son automáticamente parte de (q^*)
+
+En §34.2 se describe (q^*) como régimen sobre (X,H_0,L_m). Esa expresión puede inducir a tratar covariables basales como variables intervenidas.
+
+Corrección:
+- (X,H_0,S_0) definen población, historia, estratificación, condicionamiento y heterogeneidad; no son intervenciones por defecto.
+- (q^*) debe designar únicamente un régimen común sobre variables que el diseño pueda intervenir o estandarizar mediante una operación causal explícita.
+- Si se desea estandarizar respecto a la distribución basal, se debe declarar una población objetivo/distribución de referencia (P^*(X,H_0)), no describirla como una intervención sobre (X,H_0).
+- (C_c) son condiciones constitutivas compatibles; no deben asignarse a valores que hagan imposible τ2.
+- Cada componente de (L_m) requiere clasificación temporal y causal antes de incorporarse a (q^*).
+
+La notación debe distinguir (P^*(X,H_0)), régimen (q^*(L)) y políticas (g). No se deben mezclar distribución poblacional, intervención y condicionamiento en una sola letra.
+
+### 35.5. Hallazgo MATH-148-04 — (L_m) y el riesgo de fijar mediadores post-tratamiento
+
+La expresión (V=3O+4L_m+epsilon_V) puede ser coherente como DGP, pero la interpretación depende de cuándo y cómo se genera (L_m).
+
+Se requieren tres casos distintos:
+
+1. **(L_0) basal:** antecede a (Z_g); puede formar parte de (X/H_0), estratificar o condicionar, pero no es post-tratamiento.
+2. **(L_1) post-asignación y previo a accesibilidad:** si (Z_g/B_g) puede afectarlo y también afecta (A_f) o Value, es variable inducida por tratamiento y posible confusor mediador–resultado. No se debe ajustar ingenuamente ni fijar como común sin definir una intervención secuencial.
+3. **(L_2) posterior a accesibilidad o mecanismo transformacional:** puede ser mediador o consecuencia de la vía focal. Fijarlo en (q^*) podría bloquear parte del efecto que se pretende atribuir a accesibilidad.
+
+Por ello, la fórmula actual debe tratar (L_m) como variable ilustrativa no causalmente clasificada hasta definir su momento y mecanismo. Para el DGP lineal más simple, la opción más limpia es eliminar el término (4L_m) de la ecuación principal de Value, o redefinirlo como covariable basal (L_0) con distribución común por aleatorización/estandarización. Si se mantiene un (L) post-tratamiento, debe introducirse en el DAG y en el régimen longitudinal correspondiente, y recalcularse el estimando.
+
+### 35.6. Hallazgo MATH-148-05 — derivación de 3.6 y condiciones exactas
+
+Bajo el DGP simplificado:
+[
+M=1+Delta A_f+0.5X+epsilon_M,quad
+O=2M+epsilon_O,quad
+V=3O+epsilon_V,
+]
+con (A_{f,0}^*=0), (E[epsilon_M]=E[epsilon_O]=E[epsilon_V]=0), distribuciones de errores invariantes, ausencia de interacciones y de vías alternativas, y la misma distribución de (X) bajo ambas políticas, se obtiene:
+
+[
+E[Vmid g_1^{Af}]-E[Vmid g_0^{Af}]
+=3cdot2cdot1{E[Delta A_fmid g_1^{Af}]-E[Delta A_fmid g_0^{Af}]}.
+]
+
+Si las probabilidades de accesibilidad final son .80 y .20 y la población basal cumple (A_{f,0}^*=0), entonces la diferencia de medias de (Delta A_f) es .60 y el contraste es 3.6.
+
+Si se mantiene (+4L_m), el término se cancela solo si su distribución esperada es igual bajo ambas políticas; esa igualdad debe derivarse del diseño/DGP, no asumirse por el nombre (q^*). Con interacción, heterogeneidad, accesibilidad basal distinta de cero, efectos de provisión directos o errores diferenciales, el producto (6	imes.60) deja de ser la verdad general.
+
+La ecuación de 3.6 es, por tanto, una prueba algebraica condicional y debe etiquetarse como tal.
+
+### 35.7. Hallazgo MATH-148-06 — ITT y notación de identificación
+
+La expresión (E[Vmid do(Z_g=z)]) es notación contrafactual/intervencional. No es literalmente una media observada condicionada en (Z_g=z). Bajo aleatorización, consistencia, positividad de asignación y pérdidas manejadas válidamente, se identifica por la media observada correspondiente:
+[
+E[V(z)]=E[Vmid Z_g=z].
+]
+La estimación concreta será diferencia de medias o un estimador compatible con la asignación/estratificación. No debe confundir la definición del estimando con su fórmula de identificación estadística.
+
+Además, la aleatorización de (Z_g) no aleatoriza (A_f), no garantiza exclusión y no elimina confusión mediador–Outcome/Value inducida tras la asignación. Un análisis por instalación exitosa o por accesibilidad observada no sustituye al ITT y puede introducir sesgo de selección.
+
+### 35.8. Matriz de dictamen
+
+| Elemento | Dictamen | Acción |
+|---|---|---|
+| (TE_Z) | Identificable por asignación bajo supuestos de ensayo | Mantener como efecto primario de política asignada |
+| (psi_B(q^*)) | Definible si q* es implementado y documentado | Precisar si coincide con el régimen real del ensayo |
+| (	heta_{Af}(q^*)) | Objetivo focal, aún no identificado por el diseño descrito | Definir intervención implementable o limitar interpretación |
+| (P^*(X,H_0)) | Distribución de población, no intervención | Separar de q* |
+| (L_m) | Ambiguo por temporalidad/rol causal | Clasificar L0/L1/L2 y revisar ecuación |
+| Valor 3.6 | Algebraicamente correcto bajo DGP focal simplificado | Mantener como ilustración condicional, no evidencia |
+| Equivalencia provisión-accesibilidad | Supuesto fuerte, no demostrado por aleatorización | Auditar vías y versiones |
+
+### 35.9. Correcciones propuestas antes de congelar
+
+1. Decidir si S4-R se presenta primariamente como ensayo de política de provisión con ITT (psi_B), o si se añade una intervención focal implementable para identificar (	heta_{Af}).
+2. Separar distribución basal de referencia (P^*(X,H_0)) del régimen intervenido (q^*).
+3. Clasificar (L_m) por temporalidad y rol causal; simplificar el DGP principal si no se necesita un confusor post-tratamiento.
+4. Especificar el mapeo entre políticas, primera etapa de accesibilidad y estimando, sin igualar probabilidades de instalación con probabilidades de (Delta A_f) salvo derivación.
+5. Mantener ITT como resultado identificado por aleatorización y reportar no-identificación de (	heta_{Af}) cuando falten supuestos/diseño.
+6. Recalcular la verdad analítica del DGP solo después de resolver los puntos anteriores.
+
+**Conclusión:** el contrato de §34 es matemáticamente coherente como arquitectura de variables, pero no demuestra todavía la identificación del estimando focal. La fórmula 3.6 es correcta únicamente bajo la versión simplificada y explícita del DGP. La siguiente versión debe resolver el estatus de (g^{Af}), (q^*), (L_m) y la relación entre ITT, política de provisión y accesibilidad focal. No se autoriza simulación ni ejecución por esta auditoría.
