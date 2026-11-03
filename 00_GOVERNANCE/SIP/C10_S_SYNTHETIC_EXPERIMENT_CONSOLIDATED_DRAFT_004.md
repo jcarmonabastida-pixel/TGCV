@@ -4875,3 +4875,146 @@ Pendientes:
 - armonizar el contrato con C10-D1, XSYNC-138 y el protocolo de accesibilidad basal.
 
 **Dictamen:** el contrato evita confundir documentación, plausibilidad, realizabilidad, ejecución y ausencia de búsqueda. La exclusividad puede probarse computacionalmente solo en un universo sintético cerrado; en aplicaciones reales queda limitada por cobertura y evidencia. No congelar S4-R, implementar ni simular hasta completar criterios, universo y revisión independiente.
+
+
+---
+
+## 50. Auditoría integrada de consistencia de elegibilidad, accesibilidad y exclusividad (sección conversacional 163)
+
+**Estado:** auditoría conceptual cruzada de las secciones 46–49. Propone separar poblaciones objetivo según el objeto causal. No modifica C10-D1 ni el Core TGCV. No es freeze, implementación, simulación, ejecución, auditoría independiente ni aceptación.
+
+### 50.1. Hallazgo principal: dos preguntas causales distintas
+
+Las secciones 46–49 aproximaban dos objetivos que deben mantenerse separados:
+
+**Objetivo I — Apertura de τ2 como transformación identificada.** Pregunta si hacer accesible la transformación focal τ2 cambia los mecanismos, trayectorias, Outcome o Value, aunque existan otras rutas que puedan cumplir una función parecida.
+
+**Objetivo F — Apertura exclusiva de la función técnica F*.** Pregunta si la intervención abre una capacidad funcional que no podía realizarse previamente por ninguna ruta alternativa admisible dentro del universo, granularidad, condiciones y horizonte definidos.
+
+La ausencia de alternativas funcionales es constitutiva del segundo objetivo, pero no necesariamente del primero. Convertirla en requisito de toda la población primaria seleccionaría unidades por una propiedad funcional adicional y cambiaría el alcance del estimando de apertura de τ2.
+
+### 50.2. Dos poblaciones objetivo explícitas
+
+Se proponen dos poblaciones, que no deben confundirse:
+
+**P*_τ2 — Población de apertura de la identidad transformacional**
+
+Incluye unidades que:
+- cumplen las condiciones constitutivas basales;
+- tienen la dependencia focal ausente y verificada (D_f,0=0);
+- presentan inaccesibilidad basal respaldada de τ2 (A_f,0*=0);
+- disponen de información suficiente para clasificar estas propiedades antes de Z.
+
+La existencia de rutas funcionales alternativas no excluye automáticamente la unidad. Se registra como característica basal, posible modificador del efecto y límite de interpretación. Si su presencia cambia el régimen de intervención o abre vías afectadas por B, se revisa la identificación.
+
+**P*_F — Población de apertura exclusiva de la función**
+
+Incluye unidades de P*_τ2 que, además, presentan ausencia respaldada de rutas alternativas funcionalmente substituibles (F_alt,0=0) en el universo, granularidad, condiciones y horizonte congelados.
+
+P*_F es, por construcción, un subconjunto de P*_τ2. La diferencia entre ambas poblaciones debe quedar visible en el diagrama de selección y en los resultados.
+
+### 50.3. Tabla de decisión de elegibilidad
+
+| Condiciones constitutivas | D_f,0 | A_f,0* | F_alt,0 | Clasificación |
+|---|---|---|---|---|
+| No cumplidas | Cualquiera | Cualquiera | Cualquiera | Fuera de ambas poblaciones |
+| Indeterminadas | Cualquiera | Cualquiera | Cualquiera | Elegibilidad no confirmada |
+| Cumplidas | 0 | 0 | 0 respaldado | P*_τ2 y P*_F |
+| Cumplidas | 0 | 0 | 1 respaldado | P*_τ2; no P*_F |
+| Cumplidas | 0 | 0 | Indeterminado | P*_τ2 si las demás condiciones están confirmadas; exclusividad funcional indeterminada |
+| Cumplidas | 1 | 1 | Cualquiera | Fuera de la población de apertura basal |
+| Cumplidas | Indeterminado | Cualquiera | Cualquiera | No confirmar pertenencia a P*_τ2 |
+| Cumplidas | Cualquiera | Indeterminado | Cualquiera | No confirmar pertenencia a P*_τ2 |
+
+La tabla presupone que la ausencia de D_f,0 y la inaccesibilidad de τ2 se han medido mediante protocolos independientes. Una discordancia —por ejemplo, dependencia focal ausente pero τ2 accesible— exige auditoría de mecanismos, catálogo y medición, no una clasificación automática.
+
+### 50.4. Estimandos y alcance de interpretación
+
+La población objetivo debe formar parte explícita de cada estimando:
+
+- θ_τ2(P*_τ2,q*): contraste causal de la política que abre la accesibilidad focal de τ2, bajo el régimen común q*, en P*_τ2.
+- θ_F(P*_F,q*): contraste correspondiente en la población donde la función F* carecía de ruta funcional alternativa basal.
+
+Estos símbolos identifican objetivos conceptuales, no estimandos ya identificados. Antes de formalizarlos deben fijarse la versión de intervención, régimen q*, horizonte, Value, tratamiento de no cumplimiento y supuestos de identificación.
+
+No se puede interpretar θ_τ2 como efecto de abrir una capacidad funcional exclusiva cuando F_alt,0=1 o indeterminado. Tampoco se puede generalizar θ_F a unidades de P*_τ2 excluidas de P*_F sin hipótesis adicionales.
+
+La presencia de una alternativa basal no invalida por sí misma el efecto causal de hacer accesible τ2. Sí puede:
+- reducir la necesidad de ejecutar τ2;
+- modificar selección y ejecución;
+- cambiar Reach y el conjunto de trayectorias;
+- generar heterogeneidad;
+- hacer que el efecto observado sea distinto del efecto de abrir una función antes imposible.
+
+### 50.5. Implicaciones para el DAG y la exclusión IV
+
+La ruta focal sigue siendo:
+
+Z → B → W → C_dep → A_f* → ΔT_acc → Reach/Π → selección/ejecución → O → V.
+
+Las rutas alternativas basales se representan como característica F_alt,0 del sistema, que puede modificar la relación entre accesibilidad, ejecución y Value. No se deben eliminar estadísticamente por defecto ni confundir con una vía directa de Z.
+
+Se requiere distinguir tres situaciones:
+
+1. **Alternativa basal no afectada por Z/B:** puede modificar el efecto de abrir τ2 y generar heterogeneidad, sin violar automáticamente la exclusión IV.
+2. **La provisión B altera también la alternativa:** aparece una vía adicional desde Z/B; la interpretación como efecto instrumental exclusivo de A_f* queda comprometida.
+3. **La alternativa se activa como respuesta a Z/B:** es un mecanismo post-asignación. No debe ajustarse ingenuamente; requiere modelización temporal y un estimando compatible.
+
+La exclusión IV exige que Z afecte V únicamente a través del tratamiento focal instrumentado, bajo la definición de tratamiento y versiones elegida. La existencia de rutas alternativas no demuestra ni refuta por sí sola esa exclusión: importa si la asignación las modifica o si la versión de tratamiento incluye sus cambios.
+
+### 50.6. Error de clasificación y selección de población
+
+La clasificación errónea de F_alt,0 afecta principalmente a la separación P*_τ2/P*_F. La clasificación errónea de condiciones constitutivas, D_f,0 o A_f,0* afecta a la composición de P*_τ2 y puede sesgar ambos estimandos.
+
+Reglas propuestas:
+- realizar todas las clasificaciones antes de Z;
+- mantener indeterminación explícita;
+- no reclasificar con Outcome, ejecución o Value;
+- conservar las unidades indeterminadas en el diagrama de flujo;
+- no excluirlas silenciosamente del denominador;
+- analizar sensibilidad a errores de clasificación y a diferentes reglas de pertenencia;
+- si se estima efecto en P*_F, informar el procedimiento de selección y la incertidumbre de F_alt,0.
+
+La clasificación de P*_F puede ser más exigente y menos precisa por depender de una afirmación de ausencia de alternativas. No debe ocultarse esa menor cobertura detrás de una etiqueta binaria.
+
+### 50.7. Armonización de las secciones 46–49
+
+Se propone la siguiente reconciliación:
+
+- **Sección 46:** define el marco de población basal constitutivamente elegible y requiere inaccesibilidad de τ2 para el estudio de apertura focal. La ausencia de alternativas se reserva para el subobjetivo funcional.
+- **Sección 47:** mantiene fichas versionadas, cuatro estados y evaluación ciega de condiciones constitutivas; no decide por sí sola la exclusividad funcional.
+- **Sección 48:** conserva por separado D_f,0, A_f,0* y F_alt,0; su regla de inclusión se interpreta según P*_τ2 o P*_F.
+- **Sección 49:** mantiene niveles E1–E4 y juicios separados. La regla PASS de exclusividad se aplica a P*_F, no como filtro general de P*_τ2.
+
+Esta reconciliación corrige el alcance de la regla de inclusión propuesta en las secciones 46 y 48, sin borrar su contenido ni reescribir la trazabilidad previa.
+
+### 50.8. Pruebas de coherencia cruzada
+
+Se proponen:
+- INT-01: alternativa funcional ausente; unidad clasificada en P*_τ2 y P*_F.
+- INT-02: alternativa funcional respaldada presente; unidad permanece en P*_τ2, sale de P*_F.
+- INT-03: alternativa indeterminada; P*_τ2 confirmada si sus condiciones se cumplen, P*_F no confirmada.
+- INT-04: τ2 accesible basalmente; exclusión de ambas poblaciones de apertura.
+- INT-05: dependencia ausente pero τ2 accesible por otra vía; activar auditoría de contrato.
+- INT-06: alternativa basal no afectada por Z; permitir análisis de heterogeneidad sin declarar violación automática de exclusión.
+- INT-07: B altera alternativa funcional; marcar posible violación de exclusión/versión.
+- INT-08: alternativa aparece tras Z; clasificar como mecanismo post-asignación y no ajustar ingenuamente.
+- INT-09: clasificación de alternativa utiliza Outcome/Value; invalidar evaluación por contaminación.
+- INT-10: clasificación de P*_F cambia tras conocer asignación; violación de temporalidad.
+- INT-11: error en A_f,0* cambia P*_τ2; propagar incertidumbre de población.
+- INT-12: reporte combina ambos estimandos sin distinguir poblaciones; fallo de interpretación.
+
+### 50.9. Dictamen y decisiones pendientes
+
+**Dictamen conceptual:** las secciones 46–49 pueden reconciliarse si se distinguen dos objetivos y dos poblaciones. La ausencia de alternativas es necesaria para la afirmación de apertura funcional exclusiva, pero no debe imponerse automáticamente como criterio de elegibilidad del estudio de apertura de τ2.
+
+Continúan pendientes:
+- definición formal y operacional de θ_τ2 y θ_F;
+- decisión de cuál será el objetivo primario de C10-S y su transición a C10-P;
+- definición de q* y población de referencia para cada objetivo;
+- protocolo de interacción/heterogeneidad por F_alt,0;
+- análisis de sensibilidad a error de clasificación y selección;
+- especificación de efectos de B sobre rutas alternativas;
+- armonización formal con C10-D1 y revisión independiente de XSYNC.
+
+No se declara cerrada la auditoría completa ni se congela S4-R. No se implementa ni simula. La propuesta resuelve una contradicción de alcance, pero aún debe comprobarse contra los contratos causales y el DGP antes de aceptar el diseño.
