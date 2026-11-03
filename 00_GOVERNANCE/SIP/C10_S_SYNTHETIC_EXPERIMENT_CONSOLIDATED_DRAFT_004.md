@@ -2251,3 +2251,154 @@ Si B_g/C_dep modifica otras vías hacia Value, el estimando identificado por la 
 **Pendientes:** formalizar el estado basal C_dep,0; precisar el mecanismo de intento/éxito/provisión; completar el diccionario; definir las invariantes de exclusión; reconciliar ADV-01…10 con las matrices de escenarios y pruebas; verificar q* y soporte por historia; revisión independiente frente a C10-D1.
 
 **Estado:** auditoría adversarial conceptual/documental propuesta y registrada; no implementada, no simulada, no ejecutada, no auditada mediante pruebas, no aceptada y no congelada. XSYNC-138-01 permanece abierto. No modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. No autoriza implementación ni ejecución científica.
+
+
+---
+
+## 32. Auditoría cruzada del contrato S4-R frente a C10-D1 (sección conversacional 145)
+
+**Fuentes contrastadas:**
+- C10-S, `C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md`, rama `research/c10-s-consolidation-draft`, versión consultada antes de esta adición.
+- C10-D1, `C10_D1_CAUSAL_ACCESSIBILITY_VALUE_PROTOCOL_DRAFT_001.md`, rama `research/c10-d1-protocol-draft`, blob SHA `bf25f6ec8965166e5fa52ff18e6d07613bad0eb3`.
+
+**Naturaleza:** auditoría cruzada documental interna de consistencia entre contratos. No es revisión independiente por especialistas externos, auditoría de código, simulación, ejecución estadística ni validación empírica. La autoría compartida de las propuestas no sustituye la independencia requerida por el gate de aceptación de C10-S.
+
+**Alcance:** §§26–31 de C10-S, con atención a S4-R, contrastadas con C10-D1 §§17.5–17.9, 19–21 y 24–32. No modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos.
+
+### 32.1. Matriz de hallazgos
+
+| ID | Severidad provisional | Hallazgo | Consecuencia | Resolución requerida |
+|---|---|---|---|---|
+| C145-01 | P0 | S4-R usa A_f* como accesibilidad de τ2 focal, mientras C10-D1 define A=ΔT_acc como cambio estructurado completo. | Riesgo de sustituir el constructo completo por un indicador focal y cambiar silenciosamente el estimando. | Mantener ΔT_acc completo y declarar A_f* como proyección focal. Nombrar el estimando focal θ_Af(q*) hasta justificar su relación con θ_A(q). |
+| C145-02 | P0 | Las políticas g de S4-R se implementan mediante políticas de provisión B_g que inducen C_dep y A_f*. | El efecto de B_g no es automáticamente un efecto de accesibilidad; puede incluir vías alternativas. | Especificar el mapeo g^B→C_dep→A_f*→ΔT_acc y la exclusión de otras vías en el DGP aislado. Si la exclusión falla, informar efecto de política/paquete o no-identificación. |
+| C145-03 | P1 | No está definido C_dep,0 ni la accesibilidad focal basal. | No se distingue apertura nueva de persistencia de accesibilidad previa. | Incorporar C_dep,0, A_f,0*, A_f,1* y ΔA_f; declarar la población basal elegible antes de asignación. |
+| C145-04 | P1 | Intento, éxito de instalación, estado operativo y verificación no quedan plenamente separados. | p0/p1 pueden representar intentos y no la primera etapa transformacional efectiva. | Distinguir W_attempt, S_install y C_dep,1 verificado; p0/p1 deben corresponder al estado final inducido o recalibrarse. |
+| C145-05 | P1 | La equivalencia de versiones y la calidad condicional de τ2 necesitan regla explícita. | Igual ΔT_acc podría ocultar diferencias de ejecución con consecuencias propias para Value. | Mantener constante la calidad de ejecución en S4-R aislado; si cambia, tratarlo como vía adicional/versión distinta. |
+| C145-06 | P1 | q* y el soporte se expresan de forma resumida. | Una probabilidad marginal común no demuestra soporte por historia ni factibilidad conjunta. | Especificar q* completo, separar C_c de L_m y comprobar factibilidad de ambas políticas en cada historia objetivo. |
+
+La severidad es una clasificación provisional de auditoría interna; no constituye un registro externo ni una aceptación de riesgos.
+
+### 32.2. Hallazgo C145-01 — accesibilidad focal frente a ΔT_acc completo
+
+C10-D1 define A como el cambio estructurado del espacio de transformaciones accesibles, operacionalizado como ΔT_acc. S4-R manipula la accesibilidad de una transformación focal τ2 mediante A_f*.
+
+Se establecen dos niveles distintos:
+- **ΔT_acc:** cambio completo, conservando altas, bajas y modificaciones de identidades, relaciones y configuraciones transformacionales según la representación y equivalencia fijadas.
+- **A_f*:** proyección focal que indica si τ2 pasa a ser realizable bajo las condiciones pertinentes.
+
+La relación que debe preservarse es:
+
+ΔT_acc → A_f* → Reach/trayectorias → ejecución → Outcome → Value.
+
+A_f* no sustituye ΔT_acc ni demuestra el efecto de cualquier cambio del espacio transformacional. Hasta justificar la relación entre el estimando focal y el estimando general, el contraste de S4-R se denominará provisionalmente:
+
+θ_Af(q*) = E[V^(q*,g1^B)] − E[V^(q*,g0^B)].
+
+Esta notación expresa el contraste inducido por dos políticas de provisión focal bajo q*, sujeto a las condiciones de identificación de §32.3. No se identificará automáticamente con θ_A(q) de C10-D1. La etiqueta provisional no altera el estimando general ni establece una nueva definición del Core.
+
+### 32.3. Hallazgo C145-02 — correspondencia entre políticas de provisión y accesibilidad
+
+C10-D1 exige que g1/g0 sean políticas factibles que inducen cambios de accesibilidad mediante componentes/intervenciones implementables. En S4-R, las políticas se materializan mediante provisión técnica B_g.
+
+La correspondencia debe expresarse como:
+
+g0^B, g1^B → B_g → mecanismo de instalación → C_dep → A_f* → ΔT_acc.
+
+g^B no asigna A_f* directamente; es una política implementable que modifica la probabilidad de obtener la condición técnica focal y, a través de ella, la accesibilidad.
+
+Para interpretar θ_Af(q*) como contribución específica de accesibilidad en el DGP aislado se requiere estipular y comprobar:
+1. las políticas difieren solo en la provisión de la capacidad focal;
+2. la diferencia afecta Value únicamente mediante el cambio de accesibilidad y sus consecuencias transformacionales posteriores;
+3. no existen vías directas o alternativas desde B_g/C_dep hacia Value;
+4. las versiones de intervención son equivalentes en los aspectos no focales relevantes;
+5. las políticas son factibles y tienen soporte en la población/historias objetivo.
+
+La exclusión de vías alternativas es una propiedad estipulada del mundo sintético, no una conclusión empírica. El generador podrá comprobar que respeta la estipulación; ello no demuestra que una instalación real carezca de efectos colaterales.
+
+Si la exclusión falla, el efecto por asignación identifica el efecto de la política de provisión o del paquete bajo los supuestos del diseño, no θ_A ni θ_Af específico. Si las vías no pueden separarse, informar efecto de paquete o no-identificación.
+
+### 32.4. Hallazgo C145-03 — estado basal y primera etapa transformacional
+
+La especificación debe distinguir:
+- C_dep,0: estado técnico basal;
+- W_attempt: intento de instalación/activación;
+- S_install: éxito del procedimiento de instalación;
+- C_dep,1: estado final verificado;
+- A_f,0* y A_f,1*: accesibilidad focal antes y después.
+
+El cambio focal se registra como ΔA_f=A_f,1*−A_f,0*. No basta con C_dep,1=1 para afirmar una nueva apertura: debe comprobarse que τ2 no era ya accesible en el estado basal, o documentar que la política no produjo una apertura para esa unidad.
+
+La población primaria y sus criterios de elegibilidad deben definirse antes de Z_g. No se excluirán retrospectivamente unidades en función de C_dep,1, A_f, selección, ejecución, Outcome o Value. Si el estado basal no permite una comparación coherente, restringir la población antes de asignar o redefinir el estimando.
+
+### 32.5. Hallazgo C145-04 — probabilidades de provisión y estado final
+
+La cadena probabilística debe separar intento, éxito y estado técnico verificado:
+
+Z_g → B_g → W_attempt → S_install → C_dep,1 → A_f,1* → ΔT_acc.
+
+Los valores p0=.20 y p1=.80 solo pueden interpretarse como probabilidades finales de accesibilidad focal si:
+- las condiciones restantes necesarias están satisfechas;
+- el estado basal es explícito;
+- el procedimiento de verificación es independiente y no diferencial;
+- la instalación y compatibilidad se comprueban;
+- la probabilidad se refiere a la población e historias objetivo.
+
+Si p0/p1 son probabilidades de intento o de éxito de instalación, no equivalen automáticamente a P(A_f,1*=1|g). La verdad analítica de θ_Af(q*) deberá derivarse del DGP completo, incluyendo accesibilidad basal, fallos, condiciones restantes y régimen q*.
+
+### 32.6. Hallazgo C145-05 — equivalencia de versiones y calidad de ejecución
+
+Se conservan las tres categorías de C10-D1 §17.6:
+1. equivalencia de accesibilidad;
+2. equivalencia de vías relevantes para Value;
+3. equivalencia de versión de tratamiento.
+
+Igualdad de ΔT_acc no implica equivalencia de vías ni de versión. En S4-R aislado, la regla y calidad condicional de ejecución de τ2 deben ser idénticas entre brazos; C_dep modifica únicamente su realizabilidad. Si la dependencia cambia velocidad, precisión, seguridad, fiabilidad, costes o calidad, existe una vía adicional o una versión de intervención distinta. No atribuir esa diferencia exclusivamente a accesibilidad.
+
+Accesibilidad, aplicabilidad, conocimiento/consideración, selección, inicio, ejecución parcial/completa, interrupción y finalización siguen siendo estados distintos y fechados. No ajustar mecánicamente por selección o ejecución posteriores al régimen cuando se pretende el efecto total de la política.
+
+### 32.7. Hallazgo C145-06 — q*, condiciones constitutivas y soporte
+
+q* no se reduce a una probabilidad marginal ilustrativa P(L_m=1)=.5. Debe definirse como régimen conjunto, explícito y factible sobre condiciones/historias no constitutivas pertinentes, condicionado por X y por la historia previa cuando corresponda.
+
+- C_c conserva configuraciones compatibles con τ2; no se fija independientemente en valores que hagan imposible la transformación.
+- L_m se clasifica por papel causal y temporal; solo se incluye en q* aquello que el diseño puede intervenir o estandarizar coherentemente.
+- Ambas políticas deben ser factibles en cada historia de la población objetivo.
+- La población objetivo se define antes de la asignación.
+- Se documenta el soporte de ambas políticas por estrato/historia.
+- Si alguna historia carece de soporte, no se extrapola: se restringe ex ante la población o se informa no-identificación del contraste propuesto.
+
+La compatibilidad de q* con C10-D1 es conceptual; la factibilidad por historia aún no está demostrada por implementación ni por datos.
+
+### 32.8. Correspondencia resumida con C10-D1
+
+| Requisito C10-D1 | Contrato S4-R | Dictamen |
+|---|---|---|
+| B implementable induce A=ΔT_acc (§§17.5, 31–32) | B_g induce C_dep y A_f* | Coherente como diseño focal, pero debe distinguir θ_Af de θ_A general |
+| g factibles y condicionadas por historia (§§17.7, 31.1) | g^B de provisión con p0/p1 | Mapeo y soporte incompletos |
+| Separar vías alternativas (§§30.3, 32.1) | Exclusión estipulada en S4-R aislado; adversarial en S4-R ampliado | Condicional; no transferible a sistemas reales |
+| Condiciones constitutivas compatibles (§§17.2, 25.2, 31.1) | C_c y q* | Definición conceptual conforme; falta contrato por historia |
+| Medición independiente de T_acc (§§18–19, 27) | A_f* ciega y snapshots | Parcial; debe preservar ΔT_acc completo y estado basal |
+| Versiones de intervención (§17.6, §28) | B_g0/B_g1 | Pendiente de demostrar equivalencia no focal |
+| Selección/ejecución posterior (§§29–30) | Estados separados y snapshots | Conforme en arquitectura; falta verificación de diccionario/generador |
+| Outcome y Value independientes (§§4, 9, 17, 21) | Ecuación sintética de V y regla fija | Requiere mantener trazabilidad de regla, entidad, dimensiones y horizonte en el contrato de datos |
+
+### 32.9. Dictamen y decisiones pendientes
+
+**Conforme en arquitectura:**
+- separación de intervención, accesibilidad, aplicabilidad, selección y ejecución;
+- uso de una condición técnica verificable para inducir accesibilidad;
+- distinción entre escenario aislado y escenario adversarial;
+- separación de Outcome y Value;
+- uso de snapshots temporales y actualización de T_acc.
+
+**No conforme todavía para congelación causal:**
+- sustitución potencial de ΔT_acc por A_f*;
+- identificación del contraste de políticas de provisión con θ_A(q);
+- ausencia de C_dep,0 y accesibilidad focal basal;
+- ambigüedad entre intento, éxito y probabilidad final de accesibilidad;
+- soporte de g0/g1 por historia;
+- equivalencia de versiones y calidad condicional de τ2.
+
+**Decisión:** S4-R no se congela todavía. Se mantiene como diseño focal sintético en borrador. La siguiente corrección debe preservar el objeto completo ΔT_acc y definir explícitamente θ_Af(q*) como estimando focal, además de completar la cadena basal/provisión/verificación. Solo después procede una revisión independiente externa del paquete.
+
+**Estado:** auditoría cruzada documental interna realizada; hallazgos C145-01…06 registrados como provisionales; no aceptados ni cerrados. No es revisión independiente por especialistas externos. No implementado, no simulado, no ejecutado ni validado empíricamente. XSYNC-138-01 permanece abierto. No modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. No autoriza implementación ni ejecución científica.
