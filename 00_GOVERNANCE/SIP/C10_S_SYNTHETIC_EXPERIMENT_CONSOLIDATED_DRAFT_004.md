@@ -4111,3 +4111,98 @@ Cada escenario debe informar por separado:
 - Concordancia final de símbolos con C10-D1 §17.6 y ecuaciones previas del documento.
 
 **Dictamen:** este diccionario separa los objetos que S4-R debe medir y estimar, pero no cierra las decisiones de q*, interferencia ni identificación poblacional. Se propone como base de armonización, no como freeze. No implementar ni simular hasta resolver los puntos abiertos y completar revisión independiente.
+
+
+---
+
+## 44. Definición operativa del régimen común q* para S4-R (sección conversacional 157)
+
+**Estado:** propuesta metodológica para el S4-R primario. No modifica C10-D1 ni el Core TGCV. No es freeze, implementación, simulación, ejecución, auditoría independiente ni aceptación.
+
+### 44.1. Decisión estructural
+
+Se distinguen dos objetos:
+- **q_X***: distribución objetivo común de características e historia basales anteriores a la asignación.
+- **q_L***: régimen dinámico común sobre variables posteriores a la asignación, definido mediante una intervención secuencial implementable.
+
+Para el S4-R primario se propone q_X* y retirar L_m post-asignación del DGP aislado si no es indispensable para representar el mecanismo focal. Los escenarios con L_m inducido por Z se mantienen como variantes adversariales, no como parte del DGP primario limpio.
+
+q_X* no es una intervención que fuerce covariables basales. Es la distribución de la población objetivo sobre la que se comparan las políticas. La aleatorización equilibra los brazos en expectativa; explicitar q_X* fija el referente poblacional común.
+
+### 44.2. Definición de q_X*
+
+Sea X el vector basal, H₀ la historia anterior a la asignación y C_c las condiciones constitutivas basales relevantes:
+
+`q_X^* = P^*(X,H_0,C_c)`
+
+P* es la distribución de la población objetivo preespecificada, restringida al soporte donde la comparación es coherente y ambas políticas son factibles. La restricción no puede eliminar unidades después de observar Z, A, ejecución, O o V.
+
+C_c no debe confundirse con C_dep posterior a la provisión. C_c describe el dominio y condiciones basales necesarias para que el contraste tenga sentido; C_dep pertenece a la cadena de provisión que puede cambiar tras Z.
+
+Si se impone A_f,base*=0, esa restricción se define antes de generar resultados como característica de la población objetivo; no se aplica retrospectivamente.
+
+### 44.3. Estimandos bajo q_X*
+
+El contraste de política estandarizado se expresa:
+
+`ψ_B(q_X^*) = E_{(X,H₀,C_c)~q_X^*}[E(V^{B_1}|X,H₀,C_c)-E(V^{B_0}|X,H₀,C_c)]`
+
+Representa versiones implementables de B₁ y B₀ en la misma población objetivo. No es un efecto puro de accesibilidad. Si Z aleatoriza una oferta y existe incumplimiento, ITT_Z sigue siendo el contraste primario por asignación; ψ_B requiere consistencia de versiones y estrategia de identificación propia.
+
+`ITT_Z(q_X^*) = E_{q_X^*}[V(1)-V(0)]`
+
+La igualdad ITT_Z=ψ_B no se presume: requiere implementación completa o condiciones que hagan coincidir asignación y política recibida. Con Value faltante, la definición del ITT no garantiza su identificación estadística puntual.
+
+### 44.4. DGP primario simplificado: retirar L_m
+
+Para aislar la ruta focal, el DGP primario no incluirá una variable post-asignación L_m que afecte simultáneamente accesibilidad y Value, salvo que se justifique su indispensabilidad. Especificación ilustrativa:
+
+`D_f = I(C_dep=1 ∧ C_{auth,base}=1 ∧ C_{resource}=1 ∧ C_{capacity}=1 ∧ C_{info}=1 ∧ C_{domain}=1)`
+
+`M = 1 + D_f + 0.5X + ε_M`
+
+`O = 2M + ε_O`
+
+`V = 3O + ε_V`
+
+Con errores de media cero y distribución común entre brazos, el efecto estructural homogéneo de D_f sobre V es 6. Si P(D_f=1|B₁)=0.80 y P(D_f=1|B₀)=0.20, el contraste esperado de Value entre políticas es 3.60. Son valores analíticos ilustrativos, no evidencia ni estimaciones empíricas.
+
+La simplificación no afirma que sistemas reales carezcan de confusión post-tratamiento; evita introducirla en el escenario primario diseñado para comprobar recuperación bajo una ruta causal aislada conocida.
+
+### 44.5. Cuándo conservar q_L*
+
+Si L_m posterior a Z es indispensable, no se elimina por conveniencia. Se define q_L* como política secuencial:
+
+`q_L^*: P(L_t | X,H₀,ar L_{t-1},ar B_{t-1},ar A_{t-1})`
+
+Debe especificar momento de intervención, historia condicionante, mecanismo operativo común a ambos brazos, soporte/factibilidad por historia, efectos de L_t y estrategia de identificación. Una distribución marginal común de L no basta: puede ocultar historias incompatibles y no equivale a una intervención coherente. Ajustar estadísticamente por L tampoco sustituye q_L*.
+
+### 44.6. Soporte y factibilidad
+
+Antes de aceptar q_X* o q_L* se debe comprobar:
+1. probabilidad positiva de ambas políticas en cada estrato/historia objetivo;
+2. factibilidad física y técnica de la apertura focal en la población definida;
+3. ausencia de selección de estratos mediante variables posteriores a Z;
+4. distinción entre condiciones constitutivas y consecuencias de provisión;
+5. tratamiento explícito de estratos sin soporte, sin extrapolación silenciosa.
+
+La factibilidad de B₀ y B₁ no implica que ambos estados de D_f sean posibles para cada unidad; esa distinción afecta la interpretación de compliers.
+
+### 44.7. Matriz de decisión
+
+| Elemento | S4-R primario | Variantes adversariales |
+|---|---|---|
+| q_X* | Distribución basal común | Puede incorporar heterogeneidad |
+| L_m post-asignación | Excluida si no es indispensable | Incluida para estudiar confusión inducida |
+| q_L* | No requerido | Requerido si se interviene sobre L_m |
+| Ajuste por L_m | No aplica | No sustituye intervención |
+| Soporte | Verificado antes de generar | Puede manipularse para probar no-identificación |
+| Interpretación | Ruta focal aislada bajo DGP estipulado | Efecto conjunto/condicional según régimen |
+
+### 44.8. Decisión propuesta y cuestiones abiertas
+
+**Decisión propuesta:** adoptar q_X* como referente común del S4-R primario y retirar L_m post-asignación de su DGP aislado. Mantener escenarios separados con L_m para probar confusión post-tratamiento y la necesidad de métodos longitudinales.
+
+Continúan abiertas: distribución P* y población objetivo; accesibilidad basal A_f,base*; definición/medición de C_c; soporte por estrato; unidad de asignación e interferencia; regla de Value y pérdidas; y si las variantes con L_m requieren q_L* explícito o se limitan a demostrar no-identificación sin intervención adecuada.
+
+**Dictamen:** q_X* queda definido conceptualmente como distribución basal común; q_L* es un objeto distinto reservado a intervenciones dinámicas. La simplificación mejora la atribución focal bajo el DGP estipulado, pero no demuestra que los supuestos se cumplan en sistemas reales. No congelar S4-R, implementar ni simular hasta cerrar las decisiones abiertas y obtener revisión independiente.
