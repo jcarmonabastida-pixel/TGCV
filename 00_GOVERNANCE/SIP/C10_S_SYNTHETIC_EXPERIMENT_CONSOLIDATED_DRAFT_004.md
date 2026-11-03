@@ -2402,3 +2402,131 @@ La compatibilidad de q* con C10-D1 es conceptual; la factibilidad por historia a
 **Decisión:** S4-R no se congela todavía. Se mantiene como diseño focal sintético en borrador. La siguiente corrección debe preservar el objeto completo ΔT_acc y definir explícitamente θ_Af(q*) como estimando focal, además de completar la cadena basal/provisión/verificación. Solo después procede una revisión independiente externa del paquete.
 
 **Estado:** auditoría cruzada documental interna realizada; hallazgos C145-01…06 registrados como provisionales; no aceptados ni cerrados. No es revisión independiente por especialistas externos. No implementado, no simulado, no ejecutado ni validado empíricamente. XSYNC-138-01 permanece abierto. No modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. No autoriza implementación ni ejecución científica.
+
+
+---
+
+## 33. Propuesta de corrección del estimando focal S4-R (sección conversacional 146)
+
+**Estado:** propuesta metodológica derivada de C145-01…06; pendiente de revisión independiente y aceptación. No congela S4-R, no cierra XSYNC-138-01 y no modifica C10-D1.
+
+### 33.1. Regla de conservación del constructo completo
+
+Se conserva como objeto transformacional de referencia el cambio estructurado completo:
+
+ΔT_acc = (A⁺, A⁻, ΔR, ΔC),
+
+con las precisiones de identidad, equivalencia, granularidad y evidencia que correspondan al contrato TGCV. La notación es esquemática: los componentes se registran según la representación versionada y no se reducen a cardinalidad.
+
+La transformación focal de S4-R es τ2. Su accesibilidad focal se registra en cada momento:
+- A_f,0*: accesibilidad verdadera de τ2 en la configuración basal;
+- A_f,1*: accesibilidad verdadera de τ2 después del mecanismo de provisión y verificación;
+- ΔA_f: cambio focal derivado de ambas evaluaciones.
+
+La proyección focal se representa como:
+
+ΔA_f = h_f(ΔT_acc; τ2, X, H0, C_c),
+
+donde h_f extrae únicamente el cambio relativo a τ2, bajo la identidad, condiciones y horizonte especificados. No sustituye ni agota ΔT_acc.
+
+El analizador debe recibir la representación completa de ΔT_acc y la medición focal permitida; el evaluador conserva la verdad generadora. La clasificación de A_f no puede reconstruirse a partir de Outcome, Value, selección o ejecución.
+
+### 33.2. Estimando focal restringido
+
+Se propone distinguir:
+
+- **θ_A(q):** estimando general de C10-D1, definido sobre políticas factibles de cambios estructurados de accesibilidad A=ΔT_acc bajo un régimen común q.
+- **θ_Af(q*):** estimando focal de S4-R, restringido a políticas que inducen cambios en la accesibilidad de τ2 bajo q* y mantienen constantes las restantes dimensiones relevantes de ΔT_acc, salvo que el diseño declare y modele otra modificación.
+
+La forma de trabajo para S4-R es:
+
+θ_Af(q*) = E[V^(q*,g^Af_1)] − E[V^(q*,g^Af_0)].
+
+g^Af_1 y g^Af_0 son políticas objetivo factibles sobre la modificación focal ΔA_f. No asignan A_f* como etiqueta abstracta: representan distribuciones de cambio focal inducidas por mecanismos implementables. El estimando solo queda definido para la población, horizonte, régimen, reglas de Value y soporte que se especifiquen.
+
+La correspondencia de implementación es:
+
+g^B_0, g^B_1
+→ B_g
+→ W_attempt
+→ S_install
+→ C_dep,1
+→ A_f,1*
+→ ΔA_f
+→ ΔT_acc
+→ Reach/Π
+→ selección/ejecución
+→ Outcome
+→ Value.
+
+Las políticas de provisión g^B son mecanismos de implementación de las políticas focales g^Af; no son idénticas a ellas. La igualdad de sus contrastes solo puede sostenerse bajo consistencia de versiones, mapeo verificable, exclusión de vías alternativas y supuestos de identificación explícitos.
+
+### 33.3. Condiciones para interpretar θ_Af como contribución de accesibilidad
+
+La interpretación focal requiere:
+1. población primaria definida antes de la asignación, con A_f,0*=0 y condiciones basales compatibles, o una formulación explícita que modele accesibilidad basal;
+2. g^B_0/g^B_1 implementables y factibles en cada historia de la población objetivo;
+3. diferencia inducida verificable en ΔA_f, no solo en intento de provisión;
+4. medición de ΔT_acc completo, demostrando qué componentes cambian y cuáles permanecen invariantes;
+5. ausencia de cambios diferenciales en otras vías hacia Value o identificación separada de esas vías;
+6. calidad condicional de ejecución de τ2 y versiones de intervención comparables en el escenario aislado;
+7. q* común, completo, explícito y compatible con condiciones constitutivas;
+8. medición independiente de Outcome y Value, con regla, entidad/beneficiario, dimensiones y horizonte fijados;
+9. temporalidad, interferencia, pérdidas, error de medición y soporte tratados conforme al diseño.
+
+Si B_g cambia otras condiciones o mecanismos con vías propias hacia Value, el contraste de asignación identifica el efecto de la política de provisión/paquete, no θ_Af(q*). Si el mapeo entre política de provisión y accesibilidad focal no es identificable, declarar no-identificación de la atribución focal.
+
+### 33.4. Corrección de la verdad analítica ilustrativa
+
+La igualdad previa:
+
+θ_A(q*) = 6(0.80−0.20)=3.6
+
+se debe releer, mientras no se resuelva la auditoría, como una verdad analítica candidata del DGP focal, no como el estimando general de C10-D1.
+
+Bajo la población primaria con A_f,0*=0, condiciones restantes satisfechas, políticas que inducen:
+
+P(A_f,1*=1 | g^Af_1)=.80;
+P(A_f,1*=1 | g^Af_0)=.20,
+
+y el DGP:
+
+M = 1 + ΔA_f + 0.5X + ε_M;
+O = 2M + ε_O;
+V = 3O + 4L_m + ε_V,
+
+con errores de media cero, distribución común entre políticas, sin interacciones ni vías alternativas desde B_g/C_dep hacia M, O o V, se obtiene:
+
+E[ΔA_f|g^Af_1]−E[ΔA_f|g^Af_0]=.60;
+θ_Af(q*)=6×.60=3.6.
+
+Esta derivación es válida solo bajo las condiciones enumeradas. Si A_f,0* no es cero para toda la población, la diferencia entre probabilidades de acceso final no equivale automáticamente a la diferencia en ΔA_f; el DGP y el valor verdadero deben recalcularse.
+
+El valor 3.6 no es evidencia empírica, umbral de relevancia ni confirmación de C10. Tampoco demuestra el efecto de cambios no focales de ΔT_acc.
+
+### 33.5. Consecuencias para escenarios y controles
+
+- S4-R aislado estima, si se cumplen las condiciones, el contraste focal θ_Af(q*) bajo exclusión estipulada.
+- S4-R ampliado introduce vías adicionales y debe producir un dictamen de efecto de política/paquete o no-identificación cuando no sea posible separar la contribución focal.
+- S7 y otros escenarios que modifican composición, relaciones o configuraciones conservan su función de comprobar que el analizador no reduce ΔT_acc a A_f* ni a cardinalidad.
+- S8 conserva la distinción entre cambio de accesibilidad y cambio de Reach.
+- S9 conserva la posibilidad de cambio de Value sin cambio de accesibilidad.
+- Los escenarios de medición mantienen separados A_true, A_obs, ΔA_f y ΔT_acc completo.
+
+No se cambia la matriz S0–S10 ni se agregan pruebas ejecutables en esta sección. La correspondencia y cobertura deberán revisarse antes de congelar el contrato.
+
+### 33.6. Decisión propuesta y pendientes
+
+**Propuesta:** mantener S4-R como experimento sintético focal sobre τ2, nombrar provisionalmente su estimando θ_Af(q*), conservar ΔT_acc completo como constructo TGCV y no afirmar equivalencia con θ_A(q) general.
+
+**Pendientes antes de congelación:**
+1. confirmar definición de h_f y su relación con la representación completa ΔT_acc;
+2. definir C_dep,0, A_f,0*, W_attempt, S_install y C_dep,1;
+3. recalibrar p0/p1 como probabilidades de accesibilidad focal final en la población primaria;
+4. completar q* y el soporte por historia;
+5. formalizar las condiciones de exclusión y equivalencia de versiones;
+6. comprobar que la regla sintética de Value y sus dimensiones están trazadas en el diccionario;
+7. reconciliar el contrato con C10-D1 §§17, 30–32;
+8. someter la revisión a especialistas independientes antes de aceptar el contrato.
+
+**Estado:** propuesta correctiva documental; no aceptada, no congelada, no implementada, no simulada ni ejecutada. C145-01…06 permanecen abiertos hasta resolución y revisión independiente. XSYNC-138-01 permanece abierto. No modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 ni cierres previos. No autoriza implementación ni ejecución científica.
