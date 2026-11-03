@@ -835,3 +835,289 @@ Siguiente operación recomendada:
 5. no implementar ni ejecutar hasta autorización expresa.
 
 **Regla de continuidad:** todo nuevo desarrollo C10-S debe actualizar este documento mediante una nueva revisión/versionado o un registro de decisión trazable. No se considerará canónico un desarrollo que permanezca únicamente en memoria de conversación.
+
+
+---
+
+## 16. Resolución conceptual de auditoría cruzada XAUD-001 / XAUD-002 (sección conversacional 130)
+
+### 16.1. Hallazgos
+- **XAUD-001 (crítico):** posible incompatibilidad entre el régimen común q y las políticas g1/g0 si q fija la autorización focal y las políticas g también la modifican.
+- **XAUD-002 (alto):** insuficiente separación entre efecto de política y efecto atribuible a accesibilidad.
+- Hallazgos asociados: separar accesibilidad verdadera/observada, aplicabilidad y ejecución; no forzar transformaciones que incumplan precondiciones; conservar temporalidad y snapshots de T_acc.
+
+### 16.2. Resolución de q/g
+Se distingue el contexto basal común del componente de intervención focal:
+- q_X controla una distribución común de contexto e historia preintervención: estado inicial, recursos, capacidad, información basal, necesidad, horizonte y regla Value.
+- q_X no fija la autorización focal ni consecuencias posteriores que forman parte del mecanismo.
+- g1 y g0 son políticas implementables sobre autorización focal, condicionadas por X e historia basal pertinente.
+- A_f* es accesibilidad verdadera derivada de las condiciones efectivas de realizabilidad de τ_f; A_f^obs es su medición.
+- La autorización C_auth es condición habilitadora, no una asignación abstracta de A_f*.
+
+DAG focal: Z_A → C_auth → A_f* → T_acc → Π_H → Exec → O → V.
+
+### 16.3. Estimandos separados
+**Efecto de política:** ψ_policy(q_X)=E[V^(q_X,g1)]−E[V^(q_X,g0)]. Incluye todas las vías que la política active, incluidas expectativas, incentivos o prioridades si cambian.
+
+**Efecto atribuible a accesibilidad:** θ_Af(q_X), objetivo específico que requiere un diseño capaz de variar accesibilidad sin vías alternativas no separadas, o un diseño adicional que las identifique. No se declara identificado por estimar ψ_policy.
+
+S4-R debe describir q_X y g como componentes implementables y compatibles. No utilizar automáticamente P(L|Z) observado como régimen común ni sustituir intervención por estandarización retrospectiva.
+
+### 16.4. Modalidades y cumplimiento
+- Modalidad A — manipulación técnica aislada: preferida para C10-S; cambia la condición técnica focal sin alterar información, incentivos, expectativas, trato o recursos no focales.
+- Modalidad B — política de autorización: puede activar otras vías; requiere diseño factorial u otra estrategia de separación e interacciones explícitas.
+
+Registrar separadamente Z, C_auth, A_f*, A_f^obs, App_f y Exec_f. Una trayectoria experimental estandarizada no puede forzar una transformación inaccesible. La ejecución debe respetar precondiciones; selección libre es un régimen distinto.
+
+### 16.5. Dictamen
+- XAUD-001: resuelto conceptualmente, pendiente de cierre formal por auditoría.
+- XAUD-002: parcialmente resuelto; estimandos separados, pero identificación específica de θ_Af depende del diseño implementado.
+No se modifica el estado científico ni se declara resuelta la identificación empírica de C10.
+
+---
+
+## 17. Matriz de identificación de vías causales y controles negativos (sección 131)
+
+### 17.1. DAG ampliado
+Se conserva Z_A → C_auth → A_f* → T_acc → Π_H → Exec → O → V y se explicitan:
+- Z_A → L_d → V: variables posteriores que afectan directamente Value.
+- Z_A → L_m → A_f* → V: condiciones inducidas que afectan accesibilidad y Value.
+- X → (A_f*, Π_H, O, V): contexto basal.
+- T_acc → Π_H → Exec: selección y ejecución.
+
+L_d y L_m se clasifican por historia temporal y función causal. No ajustar indiscriminadamente por variables posteriores al tratamiento.
+
+### 17.2. Escenarios C131
+| ID | Accesibilidad focal | Vía alternativa | Value | Interpretación |
+|---|---|---|---|---|
+| C131-01 | Cambia | Ausente | Positivo | Atribución recuperable si el diseño identifica |
+| C131-02 | Cambia | Ausente | Nulo | Accesibilidad cambia sin contribución Value detectable |
+| C131-03 | Cambia | Ausente | Negativo | Efecto adverso atribuible si se identifica |
+| C131-04 | No cambia | Presente | Positivo | No atribuir a accesibilidad |
+| C131-05 | Cambia | Presente | Positivo | Separar contribuciones solo si el diseño lo permite |
+| C131-06 | Cambia | Presente | Total nulo | No inferir ausencia; puede haber compensación |
+| C131-07 | Cambia | Variable por X | Heterogéneo | Recuperar heterogeneidad contextual |
+| C131-08 | No cambia | Ausente | Nulo | Control negativo completo |
+| C131-09 | Cambia | Ausente | No identificable | Declarar límite de identificación |
+| C131-10 | No cambia | Presente | Negativo | Reconocer efecto adverso alternativo |
+
+### 17.3. Controles negativos
+- NC-A: ΔT_acc ≠ 0 y ΔReach ≠ 0, pero θ_Af = 0. Expansión no garantiza Value.
+- NC-B: ΔT_acc = 0 y ΔV ≠ 0. Value puede cambiar por vía alternativa.
+- NC-C: ΔT_acc ≠ 0 y ΔReach ≠ 0, pero Exec_f = 0. No inferir ejecución.
+
+Un TE nulo puede ocultar efectos contrapuestos; por ejemplo θ_Af=+6 y θ_alt=−6. Sin diseño que separe vías no se declaran identificadas ambas contribuciones.
+
+### 17.4. Ecuaciones y arquitectura ciega
+Modelo simplificado: M=α_A A_f+α_X X+ε_M; O=β_M M+β_X X+ε_O; V=γ_O O+γ_L L+ε_V. Sin interacciones, contribución estructural θ_Af=α_A β_M γ_O. Con interacciones no se presupone aditividad.
+
+El analizador recibe asignación/historial, probabilidades, autorización, accesibilidad observada y calidad, catálogo/relaciones, Reach/trayectorias, selección/ejecución, Outcome, Value y regla evaluativa. No recibe coeficientes verdaderos, A_true oculto ni etiquetas de escenario. El evaluador conserva el DGP. Tres dictámenes independientes: reconstrucción TGCV, identificación causal y Value; sin puntuación global.
+
+---
+
+## 18. Identificación causal frente a recuperación estadística (sección 132)
+
+### 18.1. Dos preguntas
+**Identificabilidad:** diseño y supuestos permiten determinar el estimando a partir de datos observables. **Recuperación:** dado un estimando identificado, el procedimiento lo estima con sesgo, incertidumbre y cobertura aceptables.
+
+La aleatorización de Z puede identificar ITT: TE_Z=E[V|Z=1]−E[V|Z=0], pero no identifica automáticamente θ_Af. Precisión no demuestra identificación.
+
+### 18.2. Matriz
+| Identificación | Recuperación | Dictamen |
+|---|---|---|
+| Sí | Sí | Resultado causal recuperado dentro del modelo |
+| Sí | No | Diseño válido; estimación defectuosa/insuficiente |
+| No | Sí aparente | Precisión engañosa; no atribuir causalidad |
+| No | No | No concluyente por ambas vías |
+
+### 18.3. Identificabilidad esperada por escenario
+| Escenario | Identificación esperada | Condición/límite |
+|---|---|---|
+| S0 | Nulo identificable en DGP | Variación válida y sin vía alternativa |
+| S1 | Positivo | Asignación focal aislada |
+| S2 | Negativo | No imponer signo positivo |
+| S3 | Heterogeneidad | Medir X e interacción A×X; estratos y promedio |
+| S4-O | TE de Z | θ_Af no automáticamente identificado; L postratamiento |
+| S4-R | θ_A(q*) | Intervención secuencial, soporte y políticas factibles |
+| S5-C | TE de Z | A y alternativa colineales; contribuciones no separables |
+| S5-F | Efectos de asignaciones independientes | Separación bajo supuestos |
+| S6-N | A verdadero no identificado en general | Error sin validación; sensibilidad no es corrección |
+| S6-V | Potencialmente identificable | Submuestra de validación adecuada e independiente |
+| S7 | Cambio de composición | No implica efecto sobre Value |
+| S8 | Accesibilidad sin Reach | No atribuir mediación por Reach si no cambia |
+| S9 | Efecto alternativo | A no cambia; efecto de accesibilidad nulo |
+| S10a | Efecto en estrato con soporte | Población completa no identificada sin datos/supuestos |
+| S10b | Efecto donde ambas políticas son factibles | Contraste original imposible en estrato constitutivo |
+
+S7/S8 son controles de reconstrucción TGCV, no pruebas de atribución causal a Value.
+
+### 18.4. Familias de estimadores
+| Diseño/estimando | Familia | Límite |
+|---|---|---|
+| Asignación aleatoria Z | Diferencia de medias/regresión ajustada preespecificada | ITT, no θ_Af automáticamente |
+| Políticas secuenciales q,g1,g0 | G-computation, ponderación inversa o TMLE | Supuestos/soporte; no efectos naturales automáticamente |
+| Heterogeneidad por X | Estratificación/interacción | No extrapolar sin soporte |
+| A con error | Validación/sensibilidad | No corregir con tasas supuestas como si fueran verdad |
+| Instrumento para A | Métodos instrumentales | Relevancia, independencia, exclusión, monotonicidad; alcance local |
+| Vías alternativas independientes | Diseño factorial/efectos conjuntos | Estimar interacción; no asumir aditividad |
+
+Mantener ψ_policy y θ_Af separados.
+
+### 18.5. Diagnósticos y Monte Carlo
+Antes de estimar: positividad, consistencia, temporalidad, confusión basal/postratamiento, vías alternativas, medición, interferencia y datos ausentes. No corregir automáticamente un diagnóstico negativo; ajustar por variables posteriores puede introducir sesgo.
+
+Métricas de recuperación: sesgo, RMSE, cobertura IC, error tipo I, potencia, calibración, convergencia y error Monte Carlo. Solo aplicarlas como recuperación de un estimando identificado. En escenarios no identificados evaluar si el analizador reconoce correctamente la no-identificación.
+
+N=2.000 por réplica, R=1.000, asignación 1:1, α=.05 e IC95% siguen siendo provisionales; no constituyen cálculo de potencia. δ, ε y tolerancias pendientes.
+
+### 18.6. Estados
+Identificación: ID-01 identificado; ID-02 condicional; ID-03 parcial; ID-04 no identificado; ID-05 no factible; ID-06 indeterminado.
+
+Recuperación: REC-01 satisfactoria; REC-02 sesgada; REC-03 mal calibrada; REC-04 inestable; REC-05 no evaluable por falta de identificación; REC-06 inconclusa por precisión insuficiente.
+
+ID-04 ≠ ID-05. REC-05 no es fallo estadístico. Un IC ancho que incluye cero no prueba ausencia.
+
+---
+
+## 19. Contrato de resultados y reglas de interpretación (sección 133)
+
+### 19.1. Niveles e identificadores
+L1 unidad sintética; L2 réplica; L3 escenario; L4 experimento. Registrar experiment_id, scenario_id, replicate_id, unit_id, design_version, transform_catalog_version, causal_model_version, value_rule_version, analysis_version y random_seed.
+
+### 19.2. Contrato por unidad
+Registrar:
+1. Diseño: X, Z/probabilidades, condiciones basales/posteriores, q, g e historial.
+2. Transformacional: catálogo, accesibilidad/inaccesibilidad/indeterminación, relaciones, dependencias, A_f*, A_f^obs, T_acc, Reach, trayectorias candidatas/seleccionadas/ejecutadas.
+3. Evolución: mecanismos, ejecución, Outcome, dimensiones Value, Value agregado si procede, incertidumbre y missingness.
+4. Calidad: fuente, medición, calidad, versiones, incidencias y exclusiones.
+
+No reconstruir T_acc retrospectivamente desde Outcome o Value.
+
+### 19.3. Contrato por estimando
+Cada resultado registra estimand_id, definición, población, contraste, resultado, regla Value, horizonte, identificación, supuestos, estimador, estimación, error estándar, IC, N efectivo, diagnósticos, recuperación e interpretación. Separar TE_Z, ψ_policy(q_X), θ_Af(q_X), efectos de mecanismos/alternativas y heterogeneidad. No usar una columna genérica causal_effect.
+
+### 19.4. Dictámenes
+- ID-01 identificado; ID-02 condicional; ID-03 parcial; ID-04 no identificado; ID-05 no factible; ID-06 indeterminado.
+- REC-01 satisfactoria; REC-02 sesgada; REC-03 incertidumbre mal calibrada; REC-04 inestable; REC-05 no evaluable; REC-06 inconclusa.
+
+Interpretación conjunta: ID-01+REC-01 permite recuperación dentro del DGP; ID-01+REC-02/03/04 exige revisar estimador/modelo; ID-04+REC-05 obliga a declarar no-identificación; ID-02 exige supuestos y sensibilidad; ID-03 exige conjunto identificado; ID-05 impide presentar el contrafactual original como estimado; ID-06 no autoriza conclusión afirmativa/negativa.
+
+### 19.5. Dictamen transformacional
+TGCV-01 reconstrucción satisfactoria; TGCV-02 error identidad/equivalencia; TGCV-03 error accesibilidad/admisibilidad; TGCV-04 error composición/dependencia; TGCV-05 error Reach/trayectoria; TGCV-06 contaminación Outcome/Value; TGCV-07 indeterminado.
+
+### 19.6. Value e informe
+Registrar beneficiario, objetivo, criterios, regla/pesos, dirección, horizonte, costes/beneficios, trade-offs, incertidumbre y Value realizado. Value potencial es complementario y no sustituye Value realizado ni demuestra causalidad por expansión de opciones.
+
+Informe por escenario: DGP/diseño; manipulación; T_acc/Reach/trayectorias; ejecución/Outcome; Value; identificación; recuperación; diagnósticos/sensibilidad; dictámenes separados; limitaciones. No declarar C10-S validado si alguna dimensión falla o es indeterminada.
+
+---
+
+## 20. Agregación y dictamen global de C10-S (sección 134)
+
+### 20.1. Principios
+No compensación; dimensiones separadas; trazabilidad; reproducibilidad; incertidumbre explícita; fallo cerrado ante evidencia ausente. No promediar escenarios con DGP/estimandos distintos.
+
+### 20.2. Grupos
+- Fundamentales: S0–S3 (nulo, positivo, negativo, heterogeneidad).
+- Identificación/vías alternativas: S4-O/R, S5-C/F, S9, S10a/b.
+- Integridad transformacional/medición: S6-N/V, S7, S8.
+
+Controles críticos no compensables: S0, S2, S3, S4-O, S4-R, S5-C, S5-F, S9, S10a y S10b.
+
+### 20.3. Cuatro controles por escenario
+A. Fidelidad del generador. B. Reconstrucción transformacional. C. Identificación causal. D. Recuperación estadística cuando proceda.
+
+Estados: PASS, FAIL, INDETERMINATE, NOT_APPLICABLE. NOT_APPLICABLE no equivale a PASS.
+
+### 20.4. Agregación Monte Carlo
+Para R réplicas y valor verdadero θ:
+- Bias = promedio de (θ̂_r−θ).
+- RMSE = raíz del promedio de (θ̂_r−θ)^2.
+- Coverage = proporción de IC_r que contienen θ.
+
+Informar distribución, convergencia, amplitud de intervalos, error Monte Carlo, sensibilidad y estratos. En escenarios no identificados evaluar reconocimiento correcto de no-identificación, no sesgo respecto de coeficiente oculto. Umbrales pendientes y preespecificados antes de ejecución.
+
+### 20.5. Dictámenes independientes
+TGCV: reconstrucción del espacio transformacional. Causal: identificación y recuperación de contribución causal. Value: construcción/estimación independiente y coherente. Efecto de política identificado no implica efecto de accesibilidad identificado.
+
+### 20.6. Dictamen global
+- C10S-01: superado metodológicamente; controles críticos y auditoría satisfechos; permite preparar C10-P.
+- C10S-02: superado con límites; piloto restringido al ámbito demostrado.
+- C10S-03: superación parcial; rediseño concreto.
+- C10S-04: fallido; requisitos esenciales incumplidos.
+- C10S-05: indeterminado; evidencia insuficiente.
+
+C10-S superado no demuestra C10; demuestra solo que el protocolo puede investigar la hipótesis distinguiendo accesibilidad, ejecución, Outcome y Value.
+
+### 20.7. Rediseño
+Rediseñar ante filtración de verdad, reconstrucción retrospectiva de T_acc, confusión política/accesibilidad, falsa atribución en escenarios no identificados, vías alternativas omitidas, dependencia no controlada de orden/seed/configuración, Value que premie expansión mecánicamente o agregación que oculte fallos.
+
+Estado: arquitectura de decisión definida; umbrales pendientes; no implementado ni ejecutado.
+
+---
+
+## 21. Preespecificación cuantitativa y control de decisiones posteriores (sección 135)
+
+### 21.1. Objetivo
+Evitar modificar umbrales, márgenes, escenarios o reglas tras observar resultados para conseguir un dictamen favorable. Separar parámetros del DGP, diseño, evaluación estadística y decisión científica.
+
+### 21.2. Cuatro capas
+| Capa | Contenido | Regla |
+|---|---|---|
+| DGP | Ecuaciones, coeficientes verdaderos, distribuciones, interacciones, mecanismos | Congelar antes de generar |
+| Diseño | Unidad, asignación, tamaño, réplicas, horizonte, seeds, missingness, interferencia | Congelar antes de ejecutar |
+| Evaluación | Estimandos, estimadores, tolerancias, cobertura, sesgo, potencia, error tipo I | Justificar antes de analizar |
+| Decisión científica | δ, ε, dirección esperada, falsadores, límites, gates | Derivar de Value/alcance antes de resultados |
+
+No cambiar una capa silenciosamente para corregir resultados desfavorables en otra.
+
+### 21.3. Registro de parámetros
+Cada parámetro registra parameter_id, definición/unidad, capa, valor/rango, justificación, fuente/derivación, sensibilidad, estado (provisional/propuesto/preespecificado/congelado), versión/fecha y responsable.
+
+### 21.4. Pendientes prioritarios
+1. δ: efecto mínimo relevante, vinculado a regla Value, beneficiario, escala y horizonte.
+2. ε: margen de equivalencia justificado independientemente de resultados.
+3. Tolerancias de sesgo y RMSE por estimando.
+4. Cobertura y precisión Monte Carlo admisibles.
+5. Convergencia y proporción máxima de réplicas inválidas.
+6. Potencia y tamaños muestrales justificados.
+7. Missingness, interferencia y no cumplimiento.
+8. Sensibilidad ante error de medición y especificación.
+
+N=2.000 por réplica y R=1.000 son propuestas iniciales, no decisiones congeladas ni cálculo de potencia.
+
+### 21.5. Prohibición de adaptación post-resultados
+Tras la primera ejecución no cambiar silenciosamente DGP/coeficientes, identidad/granularidad, H, población/estimandos, regla Value, estimador primario, δ/ε/tolerancias, escenarios críticos o PASS/FAIL.
+
+Toda modificación posterior requiere nueva versión, motivación, impacto esperado, análisis afectados y preservación íntegra de resultados anteriores.
+
+### 21.6. Confirmatorio, exploratorio y sensibilidad
+- Confirmatorio: criterios congelados antes de generar/analizar resultados.
+- Exploratorio: análisis adicional rotulado; no sustituye confirmatorio.
+- Sensibilidad: variaciones preespecificadas; no seleccionar retrospectivamente el modelo más favorable.
+
+### 21.7. Registro de desviaciones
+Registrar deviation_id, versión, fecha, motivo, autorización, momento respecto a resultados, variables/estimandos afectados y análisis original/revisado. No eliminar historial.
+
+### 21.8. Gate previo a simulación confirmatoria
+No comenzar hasta versionar DGP/escenarios; definir estimandos/población; fijar Value; justificar δ/ε o declarar inferencias no disponibles; definir criterios de recuperación/precisión; justificar N y réplicas; congelar analizador/evaluador y datos permitidos; registrar seeds/configuración/agregación; activar registro de desviaciones; y superar auditoría independiente previa.
+
+Si falta un requisito, el resultado será exploratorio o la ejecución quedará bloqueada según la naturaleza del requisito.
+
+### 21.9. Estado
+Definidos conceptualmente: capas de preespecificación, registro, separación confirmatoria/exploratoria y control de desviaciones. Pendientes: valores, justificaciones, tolerancias y auditoría previa. No realizado: implementación, simulación, ejecución y análisis. No autorizado: ejecución confirmatoria o transición automática a C10-P.
+
+---
+
+## 22. Historial incremental de consolidación
+
+| Secciones conversacionales | Incorporación |
+|---|---|
+| 130 | Resolución XAUD-001/002 y compatibilidad q/g |
+| 131 | Vías causales, controles negativos y efectos contrapuestos |
+| 132 | Identificación frente a recuperación estadística |
+| 133 | Contrato de resultados y estados de interpretación |
+| 134 | Agregación, escenarios críticos y dictamen global |
+| 135 | Preespecificación cuantitativa y control de decisiones posteriores |
+
+Las secciones 16–22 amplían incrementalmente el borrador 004. No convierten definiciones en implementación, ejecución, auditoría o aceptación. La numeración conversacional y documental quedan vinculadas en esta tabla; las decisiones explícitas prevalecen sobre formulaciones preliminares corregidas.
