@@ -3196,3 +3196,172 @@ No ajustar automáticamente por ninguna de ellas. La función de los controles e
 8. Someter el contrato a revisión independiente antes de implementación o simulación.
 
 **Dictamen:** la estrategia IV es coherente como diseño sintético condicionado, pero la exclusión es un supuesto fuerte y no verificable directamente. El DGP aislado puede validar que el analizador recupera el LATE cuando el supuesto es verdadero y rechaza la interpretación focal cuando se introduce una vía alternativa conocida. No puede demostrar que la exclusión se cumpla en un sistema real. XSYNC-138-01 permanece abierto; no se ha implementado, simulado, ejecutado ni aceptado el diseño.
+
+
+---
+
+## 38. Auditoría de monotonicidad, cumplimiento y versiones del tratamiento (sección conversacional 151)
+
+**Estado:** auditoría conceptual interna de los supuestos IV de §36–37. No es validación empírica, revisión independiente externa, simulación ni ejecución. No cierra XSYNC-138-01 ni modifica C10-D1, Core, RMA, Evidence→Claim Matrix, STATUS, claims, C09 o cierres previos.
+
+### 38.1. Dictamen central
+
+El hecho de que la política alta produzca una primera etapa media mayor que la política baja:
+
+[
+E[A_fmid Z_g=1]>E[A_fmid Z_g=0]
+]
+
+no demuestra monotonicidad individual:
+
+[
+A_f(1)ge A_f(0)quad	ext{para cada unidad}.
+]
+
+La primera expresión es una diferencia de medias observable bajo aleatorización. La segunda es una restricción sobre dos estados potenciales de la misma unidad, de los cuales como máximo uno se observa. No se puede verificar directamente con los datos del ensayo.
+
+En políticas estocásticas de provisión, elevar la probabilidad media de instalación no excluye que algunas unidades pierdan accesibilidad bajo la política alta por incompatibilidad, sustitución de componentes, interrupción de servicio, errores de despliegue, conflictos de versiones o desplazamiento de recursos.
+
+### 38.2. Definición de estados potenciales y estratos de cumplimiento
+
+Para instrumento binario (Z_g) y accesibilidad focal binaria (A_f), se definen (A_f(0)) y (A_f(1)), accesibilidad que tendría la unidad bajo cada asignación.
+
+Los estratos principales son:
+
+| Estrato | (A_f(0)) | (A_f(1)) | Interpretación |
+|---|---:|---:|---|
+| Always-taker | 1 | 1 | Accesible con ambas políticas |
+| Never-taker | 0 | 0 | Inaccesible con ambas |
+| Complier | 0 | 1 | La política alta induce accesibilidad |
+| Defier | 1 | 0 | La política alta elimina accesibilidad |
+
+Monotonicidad excluye defiers. En un sistema real, los estratos son contrafactuales y no pueden clasificarse individualmente sin supuestos o diseños adicionales. La asignación aleatoria identifica proporciones marginales y la primera etapa, no la pertenencia individual a cada estrato.
+
+Para el estimando focal de cambio (Delta A_f), la población primaria debe tener (A_{f,0}=0) antes de asignación. Si se incluyen unidades ya accesibles, el resultado binario post-asignación mezcla siempre-accesibles con unidades cuya accesibilidad cambia; debe definirse si el tratamiento es (A_{f,1}) o el cambio (Delta A_f), sin intercambiar ambos.
+
+### 38.3. Qué puede y qué no puede demostrar la primera etapa
+
+Con (P(A_f=1mid Z=1)=.80) y (P(A_f=1mid Z=0)=.20), la primera etapa es .60. Esto acredita relevancia media en el DGP si se calcula con (A_f) verdadero. No acredita monotonicidad.
+
+Una política alta puede generar una media mayor y, al mismo tiempo, crear defiers en una fracción de unidades, compensados por más compliers. En ese caso el Wald no tiene la interpretación LATE estándar de compliers.
+
+La auditoría debe informar:
+- diferencia de medias de (A_f) y su intervalo;
+- distribución de instalación, compatibilidad, integridad y operatividad;
+- fallos y pérdidas de accesibilidad por brazo;
+- sensibilidad a proporciones hipotéticas de defiers;
+- distinción entre evidencia observable y supuesto contrafactual.
+
+No se etiquetará monotonicidad como «verificada» a partir de una primera etapa positiva o de ausencia de incidentes observados.
+
+### 38.4. Mecanismo de provisión compatible con monotonicidad
+
+Para un DGP sintético de calibración, una construcción transparente es:
+
+[
+U_isim Uniforme(0,1),qquad
+A_i(z)=mathbb{1}[U_ile p_z],
+qquad p_0=.20, p_1=.80.
+]
+
+Con el mismo (U_i) en ambos estados potenciales, se cumple por construcción (A_i(1)ge A_i(0)). Las unidades con (U_ile .20) son always-takers; con (.20<U_ile .80), compliers; con (U_i>.80), never-takers; no hay defiers. La proporción de compliers es .60.
+
+Esta construcción es una **acoplación monotónica del DGP**, no una prueba de que una política real cumpla monotonicidad. Para mantener la interpretación técnica, el generador debe representar (U_i) como susceptibilidad/propensión basal a una instalación exitosa bajo versiones anidadas de la misma provisión, no como asignación directa de accesibilidad por el analizador.
+
+Una alternativa física equivalente en el juguete es que la política alta añada oportunidades de instalación sin retirar ninguna oportunidad disponible bajo la política baja, con el mismo componente y sin desplazar recursos. Si el despliegue alto puede reemplazar, desinstalar o degradar una dependencia existente, la monotonicidad deja de estar garantizada.
+
+### 38.5. Cumplimiento en cada etapa de la cadena
+
+La cadena no debe colapsarse en una única variable de cumplimiento:
+
+[
+Z_gightarrow B_gightarrow W_{attempt}
+ightarrow S_{install}ightarrow C_{dep}
+ightarrow A_f^*ightarrow A_f^{obs}.
+]
+
+Se registrarán por separado:
+
+- (Z_g): asignación aleatoria.
+- (B_g): versión/procedimiento de provisión asignado y realmente ofrecido.
+- (W_{attempt}): intento de instalación.
+- (S_{install}): instalación técnicamente completada.
+- (C_{dep}): dependencia verificada, íntegra, compatible y operativa.
+- (A_f^*): accesibilidad focal verdadera, derivada de todas las condiciones necesarias.
+- (A_f^{obs}): medición observada de accesibilidad.
+- (App_f): aplicabilidad en el estado actual, condicionada a precondiciones.
+- (Exec_f): ejecución efectiva de τ2.
+
+No intentar instalar no equivale a instalación fallida; instalación completada no equivale a dependencia operativa; dependencia operativa no equivale a accesibilidad si falla otra condición constitutiva; accesibilidad no equivale a aplicabilidad ni ejecución.
+
+El IV de §36 usa (Z_g) como instrumento de (A_f^*), no de (W_{attempt}), (S_{install}) o (C_{dep}) aisladamente. Si solo se mide instalación y se infiere accesibilidad, el estimando queda expuesto a error de clasificación y a condiciones no observadas.
+
+### 38.6. Versiones del tratamiento y consistencia
+
+La consistencia requiere que el tratamiento focal (A_f=1) represente una condición suficientemente definida. Sin embargo, la accesibilidad de τ2 puede obtenerse con dependencias, configuraciones, versiones, compatibilidades, latencias, garantías de seguridad o soporte técnico distintos.
+
+Si esas versiones tienen efectos distintos sobre la calidad de τ2 o Value, (A_f) binaria no representa una intervención única. El estimando IV pasa a ser un efecto de una mezcla de versiones inducida por (Z_g), no un efecto bien definido de «accesibilidad» en abstracto.
+
+Se requiere:
+1. Identificador y versión de la dependencia.
+2. Configuración, compatibilidad, integridad y pruebas de aceptación.
+3. Versión del mecanismo τ2 y sus precondiciones.
+4. Calidad/seguridad/latencia de la ejecución, diferenciadas de la mera accesibilidad.
+5. Procedimiento de instalación, soporte y mantenimiento.
+6. Registro de sustituciones, actualizaciones y reversión.
+7. Regla de equivalencia de versiones definida antes de analizar Value.
+
+Si las versiones son equivalentes en los atributos causales relevantes, pueden agruparse con justificación. Si no, deberán modelarse como tratamientos/versiones distintos, restringir la población o reconocer que el instrumento cambia tanto accesibilidad como versión. No se resolverá ajustando sin más por la versión post-tratamiento.
+
+### 38.7. Monotonicidad de accesibilidad no implica monotonicidad de Value
+
+La monotonicidad IV se refiere a (A_f(1)ge A_f(0)), no a que Value mejore para todas las unidades. Una transformación accesible puede no aplicarse, no seleccionarse, producir resultados desfavorables o implicar trade-offs. Por tanto, no se impondrá:
+
+[
+V_i(1)ge V_i(0).
+]
+
+El efecto causal local puede ser negativo, nulo o heterogéneo. Monotonicidad de accesibilidad no es una hipótesis normativa de beneficio ni una garantía de mejora de Value.
+
+### 38.8. Matriz adversarial ampliada
+
+| ID | Escenario | Verdad del DGP | Dictamen esperado |
+|---|---|---|---|
+| MON-01 | Oportunidades de instalación anidadas, sin retirada | Monotonicidad verdadera | Wald puede identificar LATE si demás supuestos se cumplen |
+| MON-02 | Primera etapa positiva, con una fracción de defiers | Monotonicidad falsa | No llamar LATE estándar al Wald |
+| MON-03 | Política alta sustituye/desinstala configuración funcional | Defiers posibles | Auditar pérdidas de accesibilidad; monotonicidad no establecida |
+| MON-04 | Política alta aumenta instalación pero también incompatibilidad | Media puede subir y algunas unidades perder acceso | Primera etapa no demuestra monotonicidad |
+| MON-05 | Unidad ya accesible en baseline | Always-taker posible | Definir población y tratamiento; no contar como cambio inducido |
+| MON-06 | Instalación falla pero la dependencia ya existía | Cumplimiento de provisión y accesibilidad divergen | Medir baseline y estado final |
+| MON-07 | Instalación exitosa, pero otra condición constitutiva falla | (C_{dep}=1), (A_f=0) | No usar instalación como proxy suficiente |
+| MON-08 | Dos versiones de dependencia producen distinta calidad/Value | Tratamiento multiversión | Separar versiones o redefinir intervención |
+| MON-09 | Política alta cambia soporte/formación y calidad de ejecución | Exclusión/versiones amenazadas | ITT de paquete; no atribución focal |
+| MON-10 | Accesibilidad sube, pero Value cae por riesgo de τ2 | Monotonicidad de A verdadera; efecto V negativo | Mantener resultado negativo; no imponer beneficio |
+| MON-11 | (A_f^*) monotónica, pero (A_f^{obs}) tiene error diferencial | Monotonicidad latente no basta para análisis observado | Validar medición y propagar incertidumbre |
+| MON-12 | Interferencia o recursos compartidos generan desplazamiento entre unidades | Monotonicidad individual puede fallar | Redefinir unidad/exposición y estimando |
+
+### 38.9. Sensibilidad y límites
+
+No hay una prueba observacional general que certifique ausencia de defiers. Se propone:
+- documentar por mecanismo por qué la política alta no puede retirar accesibilidad;
+- auditar sustitución, desinstalación, degradación e incompatibilidad;
+- presentar escenarios sintéticos con y sin defiers;
+- evaluar sensibilidad a proporciones hipotéticas de defiers, sin afirmar que se estiman directamente;
+- separar monotonicidad de accesibilidad de efectos sobre Value;
+- si la política alta puede degradar acceso de algunas unidades, abandonar la interpretación LATE estándar o redefinir el tratamiento/población.
+
+La sensibilidad a defiers debe ser un análisis del evaluador con verdad conocida en simulación futura; no es una corrección automática del Wald ni un test que pruebe monotonicidad.
+
+### 38.10. Dictamen y decisiones propuestas
+
+1. Mantener la primera etapa .60 como relevancia ilustrativa, no como evidencia de monotonicidad.
+2. Definir el DGP de calibración con acoplación monotónica de (A_f(0),A_f(1)), manteniendo el mecanismo de provisión implementable.
+3. Añadir MON-01…MON-12 a la matriz de escenarios.
+4. Registrar todos los eslabones de cumplimiento, desde asignación hasta accesibilidad verdadera/observada, aplicabilidad y ejecución.
+5. Definir baseline (A_{f,0}) y población primaria; si (A_{f,0}=1), no contar automáticamente la unidad como compliers.
+6. Congelar versiones técnicas relevantes o modelarlas por separado; no mezclar versiones causalmente distintas bajo (A_f=1).
+7. No imponer monotonicidad de Value ni interpretación beneficiosa.
+8. Si monotonicidad no es defendible, reportar ITT de política y no presentar Wald como LATE estándar.
+9. Someter la especificación revisada a revisión independiente antes de simulación o ejecución.
+
+**Dictamen:** relevancia, monotonicidad, cumplimiento y consistencia son condiciones distintas. La política alta puede tener primera etapa positiva y aun así generar defiers. Una construcción monotónica es útil para calibración sintética, pero no valida el supuesto en sistemas reales. La interpretación LATE requiere además exclusión, consistencia/versiones, independencia y ausencia de interferencia. XSYNC-138-01 permanece abierto; no se ha implementado, simulado, ejecutado ni aceptado el diseño.
