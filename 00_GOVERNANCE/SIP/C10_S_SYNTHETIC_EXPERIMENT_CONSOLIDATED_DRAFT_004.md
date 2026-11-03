@@ -5018,3 +5018,138 @@ Continúan pendientes:
 - armonización formal con C10-D1 y revisión independiente de XSYNC.
 
 No se declara cerrada la auditoría completa ni se congela S4-R. No se implementa ni simula. La propuesta resuelve una contradicción de alcance, pero aún debe comprobarse contra los contratos causales y el DGP antes de aceptar el diseño.
+
+
+---
+
+## 51. Contraste de objetivos causales y matriz de escenarios S4-R (sección conversacional 164)
+
+**Estado:** propuesta de matriz DGP para contrastar apertura de τ2, apertura funcional y no cumplimiento. No modifica C10-D1 ni el Core TGCV. No es freeze, implementación, simulación, ejecución, auditoría independiente ni aceptación.
+
+### 51.1. Objetivo primario propuesto
+
+Se propone que C10-S tenga como objetivo causal primario el efecto de la política aleatorizada de provisión sobre Value en la población P*_τ2, y como objetivo de identificación secundario el efecto local de la accesibilidad focal de τ2 entre las unidades cuyo acceso cambia por la política, si los supuestos IV se sostienen.
+
+La elección no debe confundirse con afirmar que el efecto de accesibilidad está ya identificado:
+- **Primario de diseño:** ITT de asignación a la política de provisión (TE_Z), estimable por la aleatorización si Value se observa o su ausencia se trata con supuestos/límites explícitos.
+- **Secundario causal:** efecto de accesibilidad focal (A_f*) inducido por la política; el cociente de Wald solo identifica un LATE entre compliers bajo relevancia, independencia, exclusión, monotonicidad, consistencia/versiones y ausencia de interferencia, además de medición válida.
+- **Subobjetivo funcional:** efecto en P*_F, donde no existen alternativas basales substituibles; análisis de alcance/heterogeneidad, no filtro automático de la población primaria.
+- **No objetivo de S4-R:** estimar el efecto universal de todo ΔT_acc. El instrumento focaliza τ2 y no representa todos los cambios posibles en U_acc, R_acc y C_acc.
+
+Esta jerarquía es una propuesta de diseño para C10-S, pendiente de armonización con C10-D1 y decisión formal.
+
+### 51.2. Variables y secuencia común del DGP
+
+Se conserva la separación:
+- Z: asignación aleatoria a política de provisión.
+- B: política/provisión efectivamente ofrecida y su versión.
+- W: intento de instalación/provisión.
+- C_dep: estado verificado de la dependencia focal.
+- A_f*: accesibilidad verdadera de τ2 derivada de C_dep y las demás condiciones.
+- ΔT_acc: cambio completo del espacio transformacional, no solo el indicador focal.
+- F_alt,0: existencia basal de ruta funcional alternativa.
+- F_alt,1: estado posterior de las rutas alternativas.
+- Reach, Π_candidate, Π_selected, Π_executed: alcance y etapas de trayectoria, separadas.
+- O, V: Outcome y Value, respectivamente.
+
+Secuencia estructural:
+
+Z → B → W → C_dep → A_f* → ΔT_acc → Reach/Π_candidate → Π_selected → Π_executed → O → V.
+
+La ruta alternativa puede existir antes de la asignación (F_alt,0) y mantenerse inalterada, o cambiar tras la asignación (F_alt,1). No debe confundirse su disponibilidad con la identidad de τ2.
+
+### 51.3. Cuatro escenarios mínimos
+
+| Escenario | Alternativa basal | Efecto de B sobre alternativa | Apertura focal | Interpretación principal |
+|---|---|---|---|---|
+| S4R-A | Ausente | No aplica | Sí, con cumplimiento imperfecto permitido | Apertura de τ2 y, dentro del universo cerrado, de F* |
+| S4R-B | Presente y funcional | Ninguno | Sí | Apertura de τ2 con sustitución funcional basal |
+| S4R-C | Ausente o presente | B la modifica | Puede abrirse τ2 | Intervención compuesta; exclusión IV focal comprometida |
+| S4R-D | Cualquiera | Ninguno | No se produce en algunas unidades | No cumplimiento/fallo de provisión; separar ITT y primera etapa |
+
+**S4R-A — Sin alternativa basal.** La unidad pertenece a P*_F y P*_τ2. G0 carece de ruta funcional F* y G1 hace accesible τ2. La afirmación de exclusividad queda limitada al universo sintético, granularidad, condiciones y H declarados. Si todas las unidades cumplen, el efecto de política y el de accesibilidad pueden coincidir bajo consistencia; no se debe asumirlo antes de comprobar implementación.
+
+**S4R-B — Alternativa basal no afectada.** La unidad pertenece a P*_τ2, pero no a P*_F. La alternativa está disponible en ambos brazos y no es modificada por B. El efecto de abrir τ2 puede ser menor, nulo o heterogéneo porque el sistema ya puede realizar F* por otra vía. No es por sí mismo una violación de exclusión IV. Deben conservarse por separado rutas, selección y ejecución: la existencia de alternativa no significa que τ2 se ejecute ni que ambas rutas sean equivalentes por identidad.
+
+**S4R-C — Provisión que modifica alternativas.** B altera la accesibilidad, calidad, coste, latencia o disponibilidad de una ruta alternativa. Si Z afecta V por esa ruta además de A_f*, la exclusión del instrumento para el efecto focal queda violada. El ITT de la política continúa siendo un estimando de la asignación aleatoria, pero ya representa el paquete de cambios inducido por B. No se presentará el cociente de Wald como efecto causal exclusivo de A_f* sin una redefinición justificada del tratamiento y un diseño que identifique los componentes.
+
+**S4R-D — No cumplimiento o fallo de provisión.** Z asigna la política, pero W puede no iniciarse, la instalación puede fallar, C_dep puede no quedar operativo o alguna condición constitutiva puede impedir A_f*. Se registra cada etapa; no se fuerza A_f*=Z. Si existe primera etapa positiva, se puede estudiar IV bajo sus supuestos. Si la primera etapa es nula, el efecto IV focal no está identificado por ese instrumento; un ITT distinto de cero puede revelar vías alternativas o errores de especificación, no un efecto de accesibilidad.
+
+### 51.4. Construcción coherente del no cumplimiento
+
+La generación no asigna directamente A_f*. Para cada unidad se genera un estado basal de dependencia y un mecanismo de provisión:
+
+1. C_dep,0 se mide antes de Z; la población de apertura exige C_dep,0=0.
+2. Z asigna una versión concreta de B.
+3. W registra intento, inicio y finalización de instalación.
+4. Se generan C_install, C_integrity, C_compat y C_oper.
+5. C_dep,1 = C_install ∧ C_integrity ∧ C_compat ∧ C_oper.
+6. A_f* se deriva de C_dep,1 y del resto de condiciones focales: autorización basal, recursos, capacidad, información, dominio y restricciones.
+7. ΔT_acc se recalcula con el catálogo completo y se registra snapshot versionado.
+
+Para el ejemplo monotónico previo puede utilizarse una variable latente común U y probabilidades finales de acceso p0=.20, p1=.80, de modo que A_f*(z)=I(U≤p_z). Esta construcción solo es admisible si se implementa a través de los pasos de provisión y verificación anteriores: U representa propensión a completar la provisión/instalación, no una asignación directa de accesibilidad. La interpretación de p0 debe aclarar si representa acceso por instalación basal residual, contaminación o provisión de control; no puede contradecir C_dep,0=0 sin explicar la vía que genera ese acceso.
+
+### 51.5. Consecuencias para los estimandos
+
+En cada escenario se informarán, como mínimo:
+- TE_Z = E[V|Z=1] − E[V|Z=0], ITT de asignación;
+- ITT_A = E[A_f*|Z=1] − E[A_f*|Z=0], primera etapa en accesibilidad verdadera;
+- Wald = TE_Z / ITT_A, solo si la primera etapa es distinta de cero y los supuestos IV son defendibles;
+- estimandos por F_alt,0, para detectar modificación del efecto y diferenciar P*_τ2 de P*_F;
+- contraste de accesibilidad observada frente a verdadera, cuando haya error de medición.
+
+El cociente Wald no es θ_τ2(P*_τ2) en general: bajo las condiciones IV usuales identifica un efecto local ponderado entre compliers. Con heterogeneidad, no equivale al ATE en P*_τ2 ni al efecto en P*_F. Si hay múltiples versiones de instalación o de accesibilidad, se debe demostrar consistencia de versiones o definir el tratamiento como una política/versionado más amplio.
+
+En S4R-C, reportar TE_Z como efecto de asignación al paquete. Si la provisión altera varias rutas, no atribuir el efecto a τ2 mediante el IV simple. En S4R-D con primera etapa cero, no calcular ni interpretar Wald; reportar ITT, primera etapa y fallo de identificación.
+
+### 51.6. Contrato de rutas alternativas por brazo
+
+El registro de F_alt incluirá:
+- identidad y versión de cada ruta alternativa;
+- accesibilidad basal y posterior;
+- relaciones, precondiciones, recursos y dependencias;
+- evidencia de que B no la modifica o descripción del cambio;
+- función F* que satisface y horizonte;
+- si se seleccionó/ejecutó, en campos separados de accesibilidad;
+- coste, latencia, calidad, seguridad y otros efectos colaterales.
+
+No se inferirá que B no afecta una alternativa solo porque no cambie su etiqueta de catálogo. Deben verificarse condiciones y rendimiento funcional. Si B cambia una dependencia compartida, la alternativa puede cambiar aunque su identidad transformacional permanezca igual.
+
+### 51.7. Pruebas de aceptación propuestas
+
+- S4R-01: en A, G0 sin alternativa y G1 con τ2; exclusividad solo respecto al universo declarado.
+- S4R-02: en B, alternativa basal permanece idéntica entre brazos y τ2 se abre; P*_τ2 incluye, P*_F excluye.
+- S4R-03: alternativa basal sustituye F* pero conserva identidad distinta de τ2.
+- S4R-04: alternativa basal modifica la magnitud del efecto sin violar automáticamente exclusión.
+- S4R-05: B modifica alternativa y el analizador rechaza interpretación IV focal.
+- S4R-06: cambio de dependencia compartida modifica alternativa sin cambiar identidad; detectar vía adicional.
+- S4R-07: fallo en instalación deja C_dep,1=0 y A_f*=0 pese a Z=1.
+- S4R-08: primera etapa nula; Wald no calculado/interpretado.
+- S4R-09: primera etapa débil; activar inferencia robusta a instrumento débil.
+- S4R-10: acceso focal se abre, pero τ2 no se aplica desde S0; no confundir accesibilidad con aplicabilidad.
+- S4R-11: τ2 accesible y aplicable, pero no seleccionada; no inferir ausencia de acceso.
+- S4R-12: ruta alternativa se ejecuta en lugar de τ2; mantener ambas trayectorias y mecanismo.
+- S4R-13: B altera coste/calidad/seguridad de la alternativa; marcar paquete y revisar exclusión.
+- S4R-14: clasificación F_alt utiliza Outcome o Value; invalidar evaluación.
+- S4R-15: clasificación basal cambia tras asignación; fallo de temporalidad.
+- S4R-16: p0=.20/p1=.80 contradice C_dep,0=0 o el proceso de instalación; fallo de consistencia DGP.
+- S4R-17: ΔT_acc se reduce a A_f*; fallo de representación del cambio transformacional completo.
+- S4R-18: estimación Wald se presenta como ATE; fallo de interpretación.
+
+### 51.8. Dictamen y decisiones pendientes
+
+**Dictamen:** los cuatro escenarios mínimos permiten separar apertura de τ2, substitución funcional basal, intervención compuesta y no cumplimiento. La matriz debe integrarse en el DGP antes de implementar el generador.
+
+Se propone mantener como objetivo primario de diseño el ITT de la política aleatorizada en P*_τ2; como objetivo de atribución focal, el efecto IV/LATE solo cuando sus supuestos sean defendibles; y como análisis secundario, P*_F y la heterogeneidad por alternativas basales.
+
+Pendientes antes de congelar:
+- definir la política B y sus versiones, incluidos control y contaminación;
+- reconciliar p0=.20 con la condición C_dep,0=0;
+- decidir si S4R-C es un escenario de fallo de exclusión o un diseño factorial alternativo;
+- formalizar estimandos y población en C10-D1;
+- fijar F*, q_X*, horizonte y Value;
+- especificar medición de F_alt, costes/efectos colaterales y validación;
+- fijar reglas para primera etapa nula/débil y estimación robusta;
+- completar revisión independiente XSYNC y resolver hallazgos abiertos.
+
+No se congela S4-R, no se implementa ni simula. Los valores y escenarios son especificaciones analíticas propuestas, no resultados experimentales.
