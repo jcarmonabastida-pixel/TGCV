@@ -485,3 +485,31 @@ Estado: contratos documentales, no implementados ni ejecutados.
 | MEAS-24 | Evidencia temporal | Cada predicado y cambio conserva timestamp, ventana y procedencia |
 
 Estado: contratos documentales; no implementados ni ejecutados.
+
+
+## 25. Contratos de clasificación temporal-causal
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| TEMP-01 | Indexación | Cada condición tiene componente, unidad, nivel, tiempo, versión y rol |
+| TEMP-02 | Baseline sellado | Elegibilidad y A_f,base* usan solo información pre-Z |
+| TEMP-03 | No reconstrucción | Baseline nunca se reconstruye desde post-Z |
+| TEMP-04 | Constitutiva/temporal | Predicado constitutivo puede ser basal o post; rol causal indexado por tiempo |
+| TEMP-05 | C_dep | Componentes pre/post separados y versionados |
+| TEMP-06 | Autorización | C_auth basal separada de intervención posterior sobre autorización |
+| TEMP-07 | Recursos | Stock, disponibilidad, asignación, demanda y consumo separados |
+| TEMP-08 | Capacidad | Instalada, slots, disponibilidad temporal y saturación separados |
+| TEMP-09 | Información | Configuración técnica separada de mensajes, formación y conocimiento |
+| TEMP-10 | Dominio/estado | Compatibilidad de objeto separada de precondiciones S0/App_f |
+| TEMP-11 | Alternativas | F_alt basal pre-Z; cambios post-Z registrados como vías potenciales |
+| TEMP-12 | Mediadores | C_dep/A_f/Reach/K/Select/Exec post-Z no tratados como basales |
+| TEMP-13 | No ajuste post | ITT no ajustado por mediadores post-Z para inferir efecto directo |
+| TEMP-14 | Confusión temporal | Confusores afectados por tratamiento requieren método longitudinal |
+| TEMP-15 | Co-intervención | Cambio no focal detectado y etiquetado como paquete/vía alternativa |
+| TEMP-16 | Medición | VALID/cobertura no se confunde con condición causal del sistema |
+| TEMP-17 | Missingness diferencial | Cambio de observabilidad por B se modela |
+| TEMP-18 | Orden temporal | t−1, t0…t9 y eventos t+1 respetan orden/snapshots inmutables |
+| TEMP-19 | Política B | Detecta incompatibilidad entre §62 y probabilidades .20/.80 |
+| TEMP-20 | Autorización alternativa | C_auth no se mezcla con provisión primaria sin decisión explícita |
+
+Estado: contratos documentales; no implementados ni ejecutados.
