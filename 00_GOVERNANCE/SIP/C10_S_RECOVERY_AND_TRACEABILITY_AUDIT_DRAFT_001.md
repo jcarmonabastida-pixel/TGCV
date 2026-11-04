@@ -228,3 +228,14 @@ Se actualizó la matriz maestra para mapear estos contratos a los hallazgos XSYN
 Se ha creado `C10_S_DGP_TEMPORAL_AND_ROLE_CONTRACT_DRAFT_001.md` en PR #116. Integra en una misma unidad la secuencia basal→asignación→política/provisión→intento→éxito→estado técnico verificado→accesibilidad focal→ΔT_acc completo→Reach/trayectorias→conocimiento/selección/ejecución→Outcome→Value. Incluye matriz de variable×momento, separación generador/analizador/evaluador, indicadores de ausencia por bloque e invariantes DGP-01…16.
 
 El contrato se propone para armonizar AUD-002, AUD-010/011 y XAUD-003…006. La matriz maestra actualiza estos hallazgos a “propuesta integrada/parcial”, no a cerrados. Siguen pendientes la revisión matemática global, el diccionario final, unidad de asignación/interferencia, F*, q*, Value, tolerancias y pruebas/fixtures.
+
+
+## 18. Recuperación efectiva de la fuente conversacional 165–183 (2026-11-04)
+
+Se recibió el archivo `Notes_261104_163033.docx` y se leyó su contenido completo mediante Files. La fuente contiene 4.366 líneas de texto extraído y cubre desde la sección 165 hasta inmediatamente antes de la 184. Esto corrige el estado previo de “fuente original no localizada”: el contenido primario ya está disponible en la conversación y se ha inventariado en `C10_S_RECOVERY_165_183_SOURCE_REGISTER_DRAFT_001.md`.
+
+La fuente recupera la reconstrucción D1/D2 de la primera etapa, exclusión IV y sus adversariales, sensibilidad δ/γ, LATE y heterogeneidad de compliers, perfiles basales, matriz de potenciales, DGP adversariales, arquitectura de estimación, potencia/reproducibilidad, Value multidimensional, medición A/O/V, validez de constructo y datos ausentes/censura. El registro distingue explícitamente lo propuesto de lo aceptado y enumera alertas para la reconciliación.
+
+**Límite de persistencia:** el DOCX original y la transcripción literal completa aún no están incorporados como archivos en GitHub. La fuente fue recibida y examinada, no se afirma que se haya subido íntegramente. Las tablas se pueden transcribir estructuralmente, pero no conservar su maquetación visual. El nuevo registro de recuperación es una síntesis trazable, no sustituto de la fuente primaria.
+
+Cambio de estado G0: fuente 165–183 **RECUPERADA EN LA CONVERSACIÓN**; persistencia primaria en GitHub **PENDIENTE**; cotejo/reconciliación científica **EN CURSO**. No se declara D1/D2 aceptado, pruebas P181/P182/P183 ejecutadas, revisión independiente, freeze ni autorización de ejecución. La sección 184 permanece fuera del intervalo recuperado y no debe desarrollarse hasta completar la integración.
