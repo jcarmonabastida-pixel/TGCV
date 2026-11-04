@@ -466,3 +466,21 @@ La recomendación no cambia retrospectivamente los datos ni parámetros históri
 | Fallo/indeterminado | REGLA 1/0/? PROPUESTA | Fixtures y validación de error diferencial |
 
 **Dictamen:** avance documental sustantivo; no validación empírica ni cierre de OPEN-C10-001/007/008. No freeze, implementación, simulación ni ejecución.
+
+
+## 29. Distribución conjunta y sensibilidad — reconciliación de cierre
+
+| Elemento | Estado | Pendiente |
+|---|---|---|
+| p_abcd, 16 patrones | REQUISITO DE ESPECIFICACIÓN PROPUESTO | Tabla/generador confirmatorio |
+| s=p1111 | UNA CELDA, NO DGP COMPLETO | Calibración y sensibilidad |
+| Marginales m_i | NO IDENTIFICADAS POR s | Fuente/elección explícita |
+| Dependencia | NO PRESUPUESTA | Familias y asociaciones |
+| Fallos parciales | NO IDENTIFICADOS POR s | Conteos/patrones y medición |
+| Fréchet | LÍMITES, NO IDENTIFICACIÓN | Marginales para estrechar límites |
+| s=.60/.70/.80/.90 | MALLA EXPLORATORIA | Justificación de rango y resolución |
+| D1/D2 | CALIBRACIÓN SEPARADA | No transferir distribuciones/estimandos |
+| Heterogeneidad/versiones | PENDIENTE | Estratos basales y deriva temporal |
+| Truth vs observación | SEPARACIÓN EXIGIDA | Pruebas de no filtración |
+
+**Dictamen:** el éxito condicional no especifica el patrón de fallos. No cerrar calibración ni selección confirmatoria.
