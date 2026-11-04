@@ -383,3 +383,19 @@ La ecuación candidata depurada se documenta en el capítulo 59 del maestro. No 
 7. **Poblaciones:** P*_τ2 y P*_F se determinan con datos basales pre-Z; P*_F es subconjunto funcional exclusivo.
 8. **Interferencia:** el generador primario no comparte recursos, agentes, información, estado ni canales entre instancias. Escenarios con spillover se mantienen adversariales y requieren clúster/mapa de exposición y estimando compatible.
 9. No se acepta la configuración hasta verificar frontera, mecanismo material de B, q_X*, no interferencia, poblaciones y vías colaterales. OPEN-C10-005 y XAUD-001/002 permanecen abiertos.
+
+
+## 21. Contrato material candidato de B0/B1
+
+**Estado:** propuesta, no aprobada ni congelada.
+
+- **B0:** mantener configuración basal durante H; no desplegar ni habilitar la dependencia focal τ2. No retirar capacidades basales.
+- **B1:** aplicar protocolo versionado de despliegue/configuración de la dependencia focal τ2 y habilitar su interfaz técnica; verificar instalación, integridad, compatibilidad y operación.
+- **Actor/destinatario/objeto:** rol ejecutor sintético; instancia i; identidad canónica y versión de τ2/dependencia.
+- **Registro:** versión del protocolo/artefacto/configuración, actor, unidad, tiempos, pasos, estado, fallos, reintentos, rollback, desviaciones, contaminación, snapshots y hashes.
+- **Cadena:** Z asigna B; B_received/W_attempt/S_install/C_dep*/A_f*/A_f_obs/D_f*/App_f/Exec_f permanecen variables distintas.
+- **C_dep*:** conjunción de C_install*, C_integrity*, C_compat* y C_oper*. Cada componente requiere evidencia/tiempo/regla propios. C_oper acredita disponibilidad del canal técnico, no ejecución funcional de τ2.
+- **Aislamiento:** autorización basal no focal, recursos no focales, conocimiento/formación, incentivos, atención, selección, rutas alternativas, costes/calidad/seguridad y medición se mantienen invariantes. Si cambian, reclasificar B como paquete.
+- **Incumplimiento:** fallos, parcialidad, rollback y contaminación no cambian Z ni la clasificación ITT. Indeterminado no equivale a fallo ni éxito.
+- **Interpretación:** ITT identifica asignación de política B; no demuestra mediación ni efecto específico de A_f. Exclusión y atribución permanecen sujetos a C10-D1/S4-R.
+- **Pendiente:** fijar identidad/versiones, pasos, tiempos, fixtures, estándares de evidencia, invariantes y revisión independiente. No freeze/ejecución.
