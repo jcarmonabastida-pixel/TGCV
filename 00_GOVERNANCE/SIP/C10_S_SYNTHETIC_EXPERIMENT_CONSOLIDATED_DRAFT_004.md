@@ -7331,3 +7331,12 @@ Hallazgo crítico de separación: B provisiona/configura el adaptador; C_dep reg
 Se identifican posibles vías B→permisos, recursos, configuración fuente/destino, seguridad, latencia, costes, información, librerías/dependencias compartidas y A1/A2. Se requiere manifiesto de cambios y grafo de dependencias. A1/A2 solo son alternativa genuina si no dependen del adaptador focal ni son afectadas por B en R0/R1. Si B las afecta, R2 es vía colateral y el ITT es efecto de paquete. F* debe armonizarse con la definición histórica de §§47–51/POP §5; el oráculo común puede ser compartido si mide sin generar la ruta.
 
 D1/D2 sigue abierto; el microdominio no elige comparador. Se mantienen seis gates MD-C1…MD-C6 para B, A_f*, rutas, F*, estimandos/comparador y medición/cobertura. Opción A permanece recomendación condicionada, NO seleccionada ni aprobada. No se generan datos, implementa, simula ni ejecuta.
+
+
+# 80. Manifiesto de provisión B y grafo de dependencias (2026-11-05)
+
+Se crea C10_S_ADAPTER_PROVISION_MANIFEST_AND_DEPENDENCY_GRAPH_DRAFT_001.md para concretar la frontera de provisión de la Opción A. No existe todavía implementación ni inventario técnico real; por ello las superficies B-M01…15 se marcan NO INVENTARIADO, no como ausentes. La arquitectura de menor riesgo recomendada para evaluar es un adaptador sidecar/runtime aislado, aditivo, con versiones fijadas, permisos mínimos y cuotas propias; no está aprobada ni instalada.
+
+B puede obtener/verificar/instalar el paquete, habilitar canal restringido y registrar C_dep; no puede ejecutar F1/F2/A1/A2, modificar F*, oráculo, datos fuente/destino, permisos funcionales ni ruta alternativa. Se distinguen dependencias focales, alternativas, comunes de medición, infraestructura compartida, críticas compartidas y externas. Se especifican snapshots preB/postB/rollback, catálogo de cambios, grafo nodo-arista, criterios de no-afectación A1/A2 y contratos PROV-01…12.
+
+MD-C1 y MD-C4 permanecen abiertos: no se ha demostrado que B sea aislada, que A1/A2 sean independientes ni que B modifique A_f*. El siguiente bloque es una matriz de cobertura del grafo con evidencia 1/0/? y propagación de Reach/F_alt. No se implementa ni instala nada.
