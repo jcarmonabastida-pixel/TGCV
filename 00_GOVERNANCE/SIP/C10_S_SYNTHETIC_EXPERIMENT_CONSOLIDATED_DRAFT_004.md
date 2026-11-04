@@ -5357,3 +5357,93 @@ Quedan abiertos: reconciliación formal de (p_0=.20) con (C_{dep,0}=0) bajo el m
 - `C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md`: puertas de cierre y reconciliación de hallazgos.
 
 La copia íntegra DOCX original no está todavía persistida en el repositorio. Este capítulo es la integración en el documento maestro, no una reproducción literal íntegra de la fuente primaria. La sección 184 no se incorpora ni desarrolla aquí.
+
+
+---
+
+# 53. Auditoría integral de reconciliación y especificación candidata única
+
+**Referencia:** `C10_S_INTEGRATED_RECONCILIATION_AUDIT_DRAFT_001.md`  
+**Estado:** integración de auditoría documental / propuesta de armonización; NO APROBADA, NO IMPLEMENTADA, NO EJECUTADA.  
+**Fecha:** 2026-11-04.
+
+Esta sección establece el punto integrado de lectura para el diseño C10-S después de contrastar el documento maestro, C10-D1, la recuperación 165–183, el contrato DGP temporal/roles, la reconciliación de estimandos, el Decision Log, la matriz de cierre y los contratos de prueba. Las secciones históricas previas no se borran. Cuando una formulación temprana difiere de esta especificación candidata, se conserva como antecedente y se aplica la regla de precedencia aquí declarada; no se convierte una propuesta en decisión aceptada.
+
+## 53.1. Precedencia
+
+1. C10-D1 gobierna la pregunta causal general `θ_A(q)`, su interpretación y requisitos de identificación.
+2. C10-S operacionaliza un experimento sintético focal y sus pruebas; no redefine C10-D1.
+3. El contrato DGP temporal/roles contiene la formulación generativa candidata que debe armonizarse con este capítulo.
+4. S4-R focaliza `τ2`; no identifica por sí solo el efecto general de todo `ΔT_acc`.
+5. La matriz de cierre y el Decision Log registran estado y pendientes; no sustituyen las definiciones matemáticas.
+6. Las fuentes 165–183 respaldan las propuestas recuperadas, pero su incorporación no implica aprobación científica.
+
+## 53.2. Pregunta científica, objetivo del experimento y estimandos
+
+Se mantienen distintos:
+
+- **Pregunta C10-D1:** `θ_A(q)=E[V^{q,g1}]-E[V^{q,g0}]`, definida para población, horizonte, regla Value, versiones de política y régimen común factible. Es el objeto científico general.
+- **Objetivo primario de S4-R:** `ITT_Z=E[V|Z=1]-E[V|Z=0]`, efecto de asignación aleatoria a las políticas de provisión concretas. Se informa por dimensión de Value y para los Outcomes preespecificados, sin condicionar a cumplimiento ni a variables postratamiento.
+- **Primera etapa focal:** `ITT_{D_f}=E[D_f|Z=1]-E[D_f|Z=0]`, donde `D_f=I(A_{f,base}*=0 ∧ A_{f,post}*=1)`.
+- **Atribución local secundaria:** `LATE_f=ITT_Z/ITT_{D_f}`, únicamente bajo relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, no interferencia y medición válida; con inferencia robusta a instrumento débil.
+- **Contraste poblacional focal:** `θ_{Af}(q*)`, solo cuando las políticas difieren únicamente en la distribución de accesibilidad focal bajo régimen común y factible, sin vías colaterales hacia Value.
+- **Efecto de paquete:** `ψ_policy`, cuando la política cambia otras vías además de accesibilidad.
+
+No intercambiar ITT, `θ_A(q)`, `θ_{Af}(q*)`, LATE, ATE, ATT ni efecto de paquete. Un ITT identificado no demuestra por sí mismo contribución causal específica de accesibilidad. La mediación y cualquier residual requieren identificación adicional; no usar `TE-θ_A(q)` como residual automático.
+
+## 53.3. Poblaciones
+
+- `P*_{τ2}` se define antes de Z con elegibilidad y condiciones basales; para el contraste de apertura basal→post requiere `A_{f,base}*=0`.
+- `P*_F` es un subgrupo basal sin alternativa funcional substituible bajo `F*`; no es filtro automático de la población primaria.
+- Alternativas, equivalencia funcional, soporte y estados indeterminados deben evaluarse solo con información basal para la clasificación primaria.
+- No se excluyen unidades por cumplimiento, accesibilidad postratamiento, selección, ejecución, Outcome o Value.
+
+## 53.4. D1 y D2: resolución de p0=.20 y C_dep,base=0
+
+La recuperación de las secciones 165–183 propone D1 como escenario principal condicionado a justificar la provisión ordinaria en el control y D2 como contraste.
+
+| Parámetro | D1 principal condicionado | D2 contraste |
+|---|---:|---:|
+| `C_dep,base` | 0 | 0 |
+| `P(C_dep,post=1|Z=0)` | .20 | 0 |
+| `P(C_dep,post=1|Z=1)` | .80 | .80 |
+| Primera etapa objetivo | .60 | .80 |
+
+Así, `p0=.20` en D1 es probabilidad de provisión/estado técnico final postasignación bajo la política de control, no accesibilidad basal. No contradice `C_dep,base=0`. D2 representa ausencia de provisión ordinaria en control. Si no se justifica que la provisión de control D1 pertenece al comparador legítimo, no se mantiene D1 como principal sin decisión explícita.
+
+## 53.5. Cadena generativa y condiciones
+
+La cadena de referencia es:
+
+`Z → B_g → W_attempt → S_install → C_install/C_integrity/C_compat/C_oper → C_dep,post → A_f,post* → ΔT_acc → Reach_H → Π_candidate → K/Consider → Sel → Start → Exec → O → V`.
+
+- Intento, éxito de instalación, estado técnico verificado y accesibilidad verdadera son variables distintas.
+- `C_dep,post=C_install∧C_integrity∧C_compat∧C_oper`; cada componente conserva valor, estado epistémico, evidencia y tiempo de verificación.
+- `A_f,post*` se deriva de `C_dep,post` y del resto de condiciones focales. Si estas últimas no están todas satisfechas, no se copia automáticamente la probabilidad de C_dep a A_f.
+- La probabilidad .20/.80 se calibra en el estado final verificado. Si se usan `ω_z` y `s_z` para intento y éxito, la distribución conjunta debe producir las probabilidades finales objetivo; no se presume independencia.
+- `A_f` es una proyección focal. `ΔT_acc=(ΔU,ΔR,ΔC,ΔValidity,ΔState)` conserva el cambio transformacional completo.
+- Accesibilidad, aplicabilidad, Reach, conocimiento/consideración, selección, inicio, ejecución parcial/completa, Outcome y Value son predicados/eventos separados y fechados.
+
+## 53.6. q*, g y factibilidad
+
+`q*` es el régimen común, preespecificado y factible sobre condiciones/historias no manipuladas por la política. `g_0/g_1` implementan las políticas de provisión focal. No se fija simultáneamente el componente manipulado por g como si fuera una condición común de q.
+
+Las condiciones constitutivas `C_c` delimitan la factibilidad y la elegibilidad; no se tratan como variables libremente intervenibles. Las políticas deben ser factibles bajo q* en la población/historias incluidas y tener soporte por estrato. Si no lo son, se restringe ex ante la población con justificación o se declara no identificación. q* no es la regla de Value.
+
+## 53.7. DGP aislado y escenarios adversariales
+
+El DGP aislado estipula que la política solo modifica la realizabilidad estructural de τ2; calidad condicional de ejecución, recursos, información, costes no inherentes, latencia, seguridad, expectativas y regla Value permanecen invariantes. La exclusión es una propiedad estipulada del mundo sintético que debe comprobarse en el generador.
+
+Los DGP adversariales introducen δ, γ, vías directas, cambios de alternativas, versiones, no cumplimiento, errores de medición, primera etapa débil/nula, interferencia y missingness. El analizador debe clasificar correctamente efecto de paquete o no identificación. No se fusionan los DGP ni se redefine el estimando después de observar sus resultados.
+
+## 53.8. Outcome, Value, medición y roles
+
+Outcome y Value son constructos distintos. Value permanece vectorial de forma provisional; no se agrega sin justificar dimensiones, escalas, pesos, compensabilidad, beneficiario y horizonte. A, Outcome y Value se miden con fuentes, instrumentos y ventanas independientes. El analizador no recibe estados potenciales, latentes ni parámetros generadores. Ausencia, desconocido, censura, fallo técnico y cero observado no son equivalentes. Los dictámenes de identificación se emiten por estimando y dimensión.
+
+## 53.9. Pendientes que permanecen abiertos
+
+La armonización no cierra: definición física/versionado de B; aceptación de D1 como comparador principal; q* y soporte; F* y equivalencia funcional; unidad de asignación/interferencia; especificación completa de ΔT_acc, Reach y lógica de indeterminación; exclusión IV y rangos δ/γ; Value operacional; N, réplicas, precisión, tolerancias; fixtures y oráculos de todas las familias; cotejo literal y persistencia del DOCX; revisión independiente XSYNC; aprobación científica y gates de freeze.
+
+## 53.10. Criterio de interpretación
+
+La persistencia de este capítulo significa **especificación candidata reconciliada documentalmente**, no decisión aceptada, test PASS, implementación, ejecución, evidencia causal ni freeze. El estado de cada bloque debe mantenerse según la matriz de cierre y el Decision Log.
