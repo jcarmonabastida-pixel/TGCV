@@ -40,6 +40,7 @@ La numeración de las secciones conversacionales no constituye por sí sola una 
 | SRC-10 | Decision log C10 | `C10_S_DECISION_LOG_DRAFT_001.md`, PR #116 | DEC-C10-001…010, decisiones abiertas y alternativas no admisibles | Registro inicial, no aprobado |
 | SRC-11 | XSYNC tracker | `C10_S_XSYNC_138_CLOSURE_TRACKER_DRAFT_001.md`, PR #116 | Recupera y clasifica XSYNC-138-01…10, respuesta documental y cierre pendiente | Texto recuperado; hallazgos abiertos |
 | SRC-12 | Registro de contratos de prueba | `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`, PR #116 | Normaliza S4R-01…18, MEAS-01…14, MISS-01…15, VER/TRJ/INT, POL-01…10 y GEN | Especificación; fixtures y pruebas no ejecutados |
+| SRC-13 | Contrato integrado DGP temporal/roles | `C10_S_DGP_TEMPORAL_AND_ROLE_CONTRACT_DRAFT_001.md`, PR #116 | Secuencia causal-transformacional, variable×tiempo×rol, verdad/observado, estimandos e invariantes DGP-01…16 | Propuesta; no aprobada ni implementada |
 
 ### 2.1 Resultado de la búsqueda de fuentes posteriores a 164
 
@@ -103,7 +104,7 @@ Estas son propuestas de armonización, no decisiones científicas aceptadas. La 
 | ID | Hallazgo | Estado | Criterio de aceptación mínimo |
 |---|---|---|---|
 | AUD-001 | A focal frente a ΔT_acc completo | ABIERTO; existe propuesta A_f | Definir A_f, T_acc y ΔT_acc en todo el DGP; mostrar qué cambia y qué no; ningún estimando focal presentado como efecto de todo ΔT_acc sin justificación |
-| AUD-002 | Integración DGP causal-transformacional | ABIERTO; existe contrato propuesto | Una misma unidad atraviesa asignación, condiciones, accesibilidad, Reach/Π_H, selección, ejecución, O y V; verdad oculta sin filtración |
+| AUD-002 | Integración DGP causal-transformacional | PROPUESTA INTEGRADA EN SRC-13; pendiente de auditoría | Revisar cadena única, orden temporal, correspondencia de ecuaciones, verdad oculta y no filtración; completar fixtures y aprobación |
 | AUD-003 | Contratos de pruebas no ejecutables | ABIERTO | Todas las pruebas del gate C10-S→C10-P tienen fixture, versión, entradas, verdad oculta, salida, aserciones, tolerancia, códigos y artefactos |
 | AUD-004 | ΔT_acc relacional incompleto | ABIERTO | Formalizar ΔU, ΔR, ΔC, identidad/versionado, cambios de validez y estados indeterminados |
 | AUD-005 | Reach_possible y trayectorias indeterminadas | ABIERTO | Lógica de tres estados, composición, deduplicación y reglas definite/possible |
@@ -111,8 +112,8 @@ Estas son propuestas de armonización, no decisiones científicas aceptadas. La 
 | AUD-007 | S5-C verdad estructural vs identificabilidad | ABIERTO | Separar verdad DGP, soporte observado, estimando y conclusión permitida al analizador |
 | AUD-008 | No circularidad de Value | ABIERTO | Pruebas metamórficas T_acc/O/Value; V_real y V_potential separados |
 | AUD-009 | N y réplicas sin justificación de precisión/potencia | ABIERTO | Métricas de sesgo, cobertura, error Monte Carlo, precisión y justificación por escenario |
-| AUD-010 | Diccionario variable×rol×tiempo | ABIERTO | Matriz completa generador/analizadores/evaluador por momento; truth fields protegidos |
-| AUD-011 | Clasificación C_c frente a L | ABIERTO | Clasificar cada condición por papel causal y temporal; no por etiqueta nominal |
+| AUD-010 | Diccionario variable×rol×tiempo | PROPUESTA PARCIAL EN SRC-13 | Completar cada variable del diccionario maestro, estados de ausencia, unidad/cluster y fuentes; revisar no filtración |
+| AUD-011 | Clasificación C_c frente a L | PROPUESTA EN SRC-13 | Clasificar cada condición concreta por momento, papel causal, factibilidad y evidencia; no por etiqueta nominal |
 | AUD-012 | Decision log incompleto | ABIERTO | ID, decisión, alternativas, justificación, estado, orden/fecha, fuente y commit para cada decisión |
 
 ### 5.2 XAUD-001…007
@@ -121,10 +122,10 @@ Estas son propuestas de armonización, no decisiones científicas aceptadas. La 
 |---|---|---|---|
 | XAUD-001 | Coherencia del régimen q con políticas g | ABIERTO / CRÍTICO | Separar variables fijadas por q de las manipuladas por g, o definir régimen conjunto coherente; mostrar contrafactuales factibles |
 | XAUD-002 | Intervención autónoma sobre A_f no demostrada | ABIERTO | Separar ITT de política habilitadora y efecto atribuible a accesibilidad; no llamarlo efecto puro si hay vías colaterales |
-| XAUD-003 | Accesibilidad, aplicabilidad y ejecución | ABIERTO | Predicados separados Acc_f, App_f, Exec_f; ninguna implicación automática |
-| XAUD-004 | Asignación, provisión, verdad y medición | ABIERTO | Z_A, C_auth, A_f*, A_f_obs, App_f, Exec_f y estados indeterminados distintos |
-| XAUD-005 | Régimen E1 podría forzar ejecución inválida | ABIERTO | E1 selecciona/ejecuta solo trayectorias válidas; si no existe ruta, registra no ejecución/fallo sin saltarse precondiciones |
-| XAUD-006 | Orden temporal y snapshots | ABIERTO | Snapshot basal, post-provisión, evaluación por rama, pre-ejecución y post-ejecución; reglas de actualización/versionado |
+| XAUD-003 | Accesibilidad, aplicabilidad y ejecución | PROPUESTA EN SRC-13 | Verificar predicados separados Acc_f, App_f, Reach, K/Consider, Sel, Start, Exec y End; mapear pruebas por estado |
+| XAUD-004 | Asignación, provisión, verdad y medición | PROPUESTA EN SRC-13 | Verificar Z, B, W_attempt, S_install, C_dep, A_f*, A_f_obs, ΔT_acc y estados indeterminados; completar validación |
+| XAUD-005 | Régimen E1 podría forzar ejecución inválida | PROPUESTA EN SRC-13 | Verificar precondiciones y salidas no aplicable/no seleccionado/no iniciado/interrumpido; fixtures adversariales pendientes |
+| XAUD-006 | Orden temporal y snapshots | PROPUESTA EN SRC-13 | Auditar reloj t−1…t9, snapshots inmutables y eventos posteriores; falta completar reglas de simultaneidad/versionado |
 | XAUD-007 | Notación y delimitadores | ABIERTO / EDITORIAL | Notación canónica única; revisión matemática/Markdown/LaTeX automatizable |
 
 **Dependencia:** no cerrar AUD-001/002 ni XAUD-001/002 por mera edición de símbolos. La intervención físicamente realizable y el objeto causal deben estar resueltos antes de aprobar el contrato integrado.
