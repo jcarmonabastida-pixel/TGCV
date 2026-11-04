@@ -812,3 +812,19 @@ Contratos documentales; no ejecutados.
 | PM-18 | Enumeración truncada | No declarar cobertura semántica exhaustiva |
 
 Contratos documentales; no ejecutados.
+
+
+## 39. Contratos de identidad semántica de fichas transformacionales
+
+| ID | Caso | Aserción requerida |
+|---|---|---|
+| TC-01 | F1/τ2 | No confundir provisión B/C_dep con A_f*, App, ejecución o resultado |
+| TC-02 | F2 sin función definida | No adjudicar accesibilidad/aplicabilidad por su posición en la ruta |
+| TC-03 | A1/A2 solo topológicos | No afirmar ruta funcional alternativa ni Sub(π,F*,G,H,C0) |
+| TC-04 | SF como estado formal | No usar GOAL_F(SF)=1 por definición como validación empírica de F* |
+| TC-05 | Evidencia F1 transferida a F2 | No transferir fuerza probatoria entre identidades distintas sin mapping/evidencia |
+| TC-06 | R0 sin cobertura exhaustiva | No afirmar exclusividad funcional |
+| TC-07 | R1 con A1→A2 topológica | No afirmar Reach funcional confirmado hasta definir F* y factibilidad |
+| TC-08 | F2/A1/A2 reciben semántica no aprobada | Rechazar como cambio de diseño no trazado |
+
+Contratos documentales; no ejecutados.
