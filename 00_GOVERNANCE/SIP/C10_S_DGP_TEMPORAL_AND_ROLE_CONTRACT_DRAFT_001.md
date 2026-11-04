@@ -596,3 +596,10 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 5. La ausencia de alternativas solo se declara con cobertura exhaustiva de catálogo, relaciones, condiciones, universo funcional, recursos, tiempo, identidad/versiones y observación.
 6. Truth DGP permanece oculta al analizador; cada predicado conserva observed_state 1/0/? y evidencia/procedencia/cobertura. Outcome y Value no definen estado, aristas, accesibilidad ni Reach.
 7. No se seleccionan comparador, población confirmatoria, F*, G/H ni parámetros; no se autoriza implementación, simulación o ejecución.
+
+
+## 34. Reconciliación de H, reloj t0–t9 y S4-R
+
+La auditoría C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRATION_AUDIT_DRAFT_001.md propone separar (i) reloj del estudio t0–t9, (ii) profundidad de ruta k=0…H y (iii) tiempo/ventanas internas de factibilidad. H=3 queda como profundidad máxima candidata, no como tres unidades temporales. Reach_H se calcula en t4 sobre snapshot postintervención t3, antes de conocimiento/selección/ejecución. App se evalúa desde el estado hipotético de entrada de cada paso; relación, recursos, autorización, ventanas y bloqueos se evalúan por prefijo. Si hay dinámica se requieren snapshots hipotéticos de rama inmutables; sin regla de actualización no se inventa dinámica.
+
+Crosswalk propuesto: R0↔S4R-A; R1↔S4R-B; R2↔S4R-C; R3↔S4R-D. R0 requiere cobertura exhaustiva para declarar ausencia funcional. R2 introduce vía colateral; R3 no permite inferir accesibilidad desde asignación/intento. Propuesta no aprobada; no cierra AUD-005/007 ni selecciona D1/D2.
