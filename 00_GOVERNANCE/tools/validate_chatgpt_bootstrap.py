@@ -125,6 +125,7 @@ def main() -> int:
     print("RMA_CROSS_REFERENCE=" + ("PASS" if "RMA_VERSION_CROSS_REFERENCE_MISMATCH" not in errors else "FAIL"))
     print("MATRIX_CROSS_REFERENCE=" + ("PASS" if "MATRIX_VERSION_CROSS_REFERENCE_MISMATCH" not in errors else "FAIL"))
     print("TRACE_CROSS_REFERENCE=" + ("PASS" if "TRACE_VERSION_CROSS_REFERENCE_MISMATCH" not in errors else "FAIL"))
+    print("IGRT_STATUS=NOT_ESTABLISHED_NOT_REQUIRED")
     if errors:
         print("RESULT=BLOCKED")
         print("ERRORS=" + "|".join(errors))
