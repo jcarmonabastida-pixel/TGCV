@@ -399,3 +399,19 @@ OPEN-C10-005 y XAUD-001/002 permanecen ABIERTOS. La especificación no es un tra
 | Verdad vs analizador | CANALES SEPARADOS | Pruebas de no filtración y validación |
 
 **XSYNC-138-03 y AUD-001 permanecen abiertos formalmente.** AUD-004/005/007 y OPEN-C10-005 no quedan cerrados. Es una reconciliación de diseño propuesta, no evidencia de medición válida ni autorización de ejecución.
+
+
+## 25. Clasificación temporal-causal — cierre parcial
+
+| Elemento | Estado | Pendiente |
+|---|---|---|
+| Condiciones basales | CLASIFICACIÓN PROPUESTA | Inventario definitivo y evidencia/adjudicación |
+| Condiciones constitutivas post-Z | MEDIADORES/CO-INTERVENCIONES POTENCIALES | Registrar cambios y vías alternativas |
+| C_dep | MECANISMO TÉCNICO MANIPULABLE | Resolver semántica de brazos B y .20/.80 |
+| C_auth | BASAL INVARIANTE EN PRIMARIO | Separar propuesta histórica de intervención sobre autorización |
+| Recursos/capacidad/información | COMPONENTES DESCOMPUESTOS | Especificaciones y ventanas |
+| App_f / K / Select / Exec | DOWNSTREAM SEPARADOS | Verificar diccionario longitudinal |
+| VALID/cobertura | PROCESO EPISTÉMICO | Protocolo de missingness/error diferencial |
+| Ajuste postratamiento | REGLA DE NO AJUSTE DOCUMENTADA | Definir análisis longitudinal si hay confusión inducida |
+
+**AUD-011 y XAUD-003/004/006 permanecen abiertos.** La clasificación documental no cierra la identificación ni valida la medición.
