@@ -28,13 +28,13 @@ La numeración de las secciones conversacionales no constituye por sí sola una 
 | ID | Fuente | Identidad/ubicación | Cobertura comprobada | Estado |
 |---|---|---|---|---|
 | SRC-01 | C10-D1 | `C10_D1_CAUSAL_ACCESSIBILITY_VALUE_PROTOCOL_DRAFT_001.md`, PR #115, blob `bf25f6ec8965166e5fa52ff18e6d07613bad0eb3` | Protocolo causal consolidado; 38 secciones principales según registro de recuperación | Draft, no aprobado |
-| SRC-02 | C10-S | `C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md`, PR #116, blob actual `2b7834c23ff690c8dc5379b02486a0693b32a632` | Documento consolidado hasta sección conversacional 164 (51 secciones documentales) | Draft, no aprobado |
+| SRC-02 | C10-S | `C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md`, PR #116, blob verificado antes de esta actualización `b41e593bba3eddef45c2424b732c7539d8547e04` | Documento consolidado hasta sección conversacional 164 (51 secciones documentales) | Draft, no aprobado |
 | SRC-03 | Auditoría integrada | `C10_S_INTEGRATED_CONSISTENCY_AUDIT_DRAFT_001.md`, blob `d3ffa9ed0670764c339dc390423f435e6da0fc9b` | AUD-C10S-001…012 | Hallazgos abiertos |
 | SRC-04 | Propuesta de resolución | `C10_S_AUD001_AUD002_RESOLUTION_DRAFT_001.md`, blob `5a3a2fa061fe146d9df9d4cdfbb803c5ee274d65` | Propuesta A_f, T_acc, ΔT_acc y DGP integrado | No aceptada |
 | SRC-05 | Auditoría cruzada | `C10_S_AUD001_AUD002_CROSS_AUDIT_DRAFT_001.md`, blob `ce53c902fb39820e976eed5cb2a87e5eacace31c` | XAUD-001…007 | Hallazgos abiertos |
 | SRC-06 | Informe de recuperación | `C10_S_RECOVERY_AND_TRACEABILITY_AUDIT_DRAFT_001.md`, blob `2f77832076773c67711f55a3c0d6680b69c2c6d9` | Reconstrucción de fuentes y límites hasta sección 183 | Recuperación parcial |
 | SRC-07 | PR #115 | `research/c10-d1-protocol-draft` → PR #115 | 23 commits; 1 archivo; abierto Draft | Sin comentarios/revisiones |
-| SRC-08 | PR #116 | `research/c10-s-consolidation-draft` → PR #116 | Diez archivos modificados en el corte de actualización; el número de commits es dinámico; abierto Draft | Sin comentarios/revisiones registradas |
+| SRC-08 | PR #116 | `research/c10-s-consolidation-draft` → PR #116 | Trece archivos modificados en el corte de verificación 2026-11-04; el número de commits es dinámico; abierto Draft | Sin comentarios/revisiones registradas |
 
 | SRC-09 | Reconciliación C10-D1 ↔ S4-R | `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`, PR #116 | Jerarquía `θ_A(q)` / ITT_Z / LATE_f; propuesta para `p0` y poblaciones | Propuesta, no aprobada |
 | SRC-10 | Decision log C10 | `C10_S_DECISION_LOG_DRAFT_001.md`, PR #116 | DEC-C10-001…010, decisiones abiertas y alternativas no admisibles | Registro inicial, no aprobado |
@@ -307,3 +307,19 @@ No se cierra DEC-C10-012 ni se declara freeze.
 F* debe fijarse antes de Z con objetivo técnico, entrada/salida, restricciones, tolerancias, horizonte, granularidad, contexto y estándar de evidencia independientes de Outcome/Value. Cada ruta conserva juicios separados de accesibilidad, aplicabilidad y substituibilidad; identidad ≠ equivalencia funcional. F_alt,0=0/1/?; “no encontrado” no es ausencia sin cobertura suficiente. Alternativa basal estable no viola automáticamente exclusión; si B la altera/activa, se compromete LATE focal y queda ITT de paquete.
 
 **OPEN-C10-003 sigue ABIERTA:** F*, umbrales, H/G/C0, universo/cobertura, recursos, E1–E4 por tipo, adjudicación, sensibilidad/error de clasificación y q_X,F*/pesos no están fijados. OPEN-C10-006 también permanece abierta.
+
+
+## 19. Cierre parcial del contrato de medición A_f*, C_dep y ΔT_acc
+
+**Propuesta incorporada documentalmente:** se separan verdad DGP y medición observada; C_dep se conserva como conjunción técnica verificable; A_f* requiere identidad válida, C_dep y predicados de acceso focal; App_f se mide aparte; D_f* es apertura basal→post; T_acc/ΔT_acc conserva identidades/versiones, relaciones, condiciones, validez/cobertura y estado. La clasificación observada usa 1/0/? y no fuerza indeterminados. Se fija orden basal pre-Z y snapshot post antes de conocimiento/selección/ejecución.
+
+**No se cierra:** clasificación de condiciones, definición/versionado de τ2, estándar de evidencia, adjudicación, concordancia, validación, error diferencial, cobertura del universo y comparabilidad de snapshots.
+
+| Hallazgo | Estado tras esta propuesta | Criterio aún necesario |
+|---|---|---|
+| AUD-004 ΔT_acc relacional | PROPUESTA PARCIAL; ABIERTO | Identidades/versiones, relaciones, condiciones, validez, estado, reglas de correspondencia y fixtures |
+| XAUD-003 Acc/App/Reach/Exec | PROPUESTA PARCIAL; ABIERTO | Clasificación completa y validación de predicados/tiempos |
+| XAUD-004 Z/B/W/S/C_dep/A_f truth-observed | PROPUESTA PARCIAL; ABIERTO | Evidencia, roles, errores, validación y casos adversariales |
+| OPEN-C10-004 medición de accesibilidad/ΔT_acc | ABIERTA | Operacionalización técnica, umbrales, fuentes, cobertura y sensibilidad |
+
+No se declara validez de constructo, aceptación científica, freeze ni autorización de implementación o ejecución.
