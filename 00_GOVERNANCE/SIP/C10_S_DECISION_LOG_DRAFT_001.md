@@ -337,3 +337,14 @@ Se registra DEC-C10-034 como propuesta, no decisión aceptada:
 | DEC-C10-034 | Reach_H y propagación de trayectorias | PROPUESTA | Separar Reach_H* y Reach_H,obs; usar lógica 1/0/? por ruta y disyunción entre alternativas; una ruta confirmada basta para Reach=1; Reach=0 requiere cobertura exhaustiva; truncamiento/cobertura incompleta/mapping ? producen indeterminación; selección/ejecución/Outcome/Value no definen Reach. | Catálogo/estados/objetivos DGP; G/H; reglas composicionales; recursos/ciclos; snapshots dinámicos; fixtures/oráculos REACH-01…20; revisión independiente. |
 
 No cierra AUD-005 ni AUD-007. No autoriza freeze, implementación, simulación o ejecución.
+
+
+## 29. Propuesta de inventario finito del DGP y mapa de cobertura (2026-11-04)
+
+Se registra DEC-C10-035 como propuesta, no decisión aceptada:
+
+| ID | Objeto | Estado | Formulación | Dependencias |
+|---|---|---|---|---|
+| DEC-C10-035 | Universo finito candidato para Reach | PROPUESTA | Fixture abstracto S0/S1/S2/SF; rutas focal F1→F2 y alternativa A1→A2; escenarios R0 exclusivo, R1 alternativa basal, R2 alternativa afectada y R3 fallo; G atómica y H=3 candidatos. La apertura focal no implica Reach(SF), y la ruta alternativa puede mantenerlo alcanzable. La no alcanzabilidad/ausencia de alternativa exige cobertura exhaustiva en ocho dimensiones. | Aprobación de frontera/G/H; F* y criterio GOAL_F; identidad τ2; recursos/condiciones; escenario y comparador primario; evidencia E1–E4, cobertura, oráculos y revisión independiente. |
+
+DEC-C10-035 es una topología de fixture para revisión. No canoniza TID, no selecciona D1/D2, no valida F*, no cierra AUD-005/007 y no autoriza freeze, implementación, simulación o ejecución.
