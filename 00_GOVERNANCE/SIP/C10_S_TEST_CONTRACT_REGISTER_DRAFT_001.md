@@ -147,11 +147,30 @@ Estados de salida por prueba: **PASS**, **FAIL** o **INDETERMINATE**. No usar PA
 
 Además, XSYNC-138-04 exige un test de soporte por estrato e historia para cada política; XSYNC-138-02 exige que la regla Value no forme parte de q; XSYNC-138-08 exige que los dictámenes metodológicos C10-S y las conclusiones científicas C10-D1 se emitan en campos separados.
 
-## 9. Familias GEN y requisitos aún no convertidos a fixtures
+
+## 9. Contratos de atribución de política y cobertura XSYNC
+
+| ID | Fixture / perturbación | Oráculo y salida exigida | Falla si… |
+|---|---|---|---|
+| POL-01 | DGP aislado: Z aleatoriza B_g0/B_g1; ambas políticas difieren solo en la probabilidad final verificada de apertura focal; q* común; no vías directas | ITT_Z recupera el contraste entre políticas y puede etiquetarse como θ_Af(q*) solo si se satisfacen las condiciones de atribución | El analizador llama θ_Af al ITT sin verificar mapeo, exclusión, versiones, q* y Value |
+| POL-02 | DGP con vía directa B→Value o B→coste/calidad/seguridad | ITT_Z permanece como efecto de política/paquete; θ_Af no identificado por ese contraste | El analizador mantiene atribución focal pese a la vía directa |
+| POL-03 | Dos versiones con mismo A_f*/ΔT_acc, pero distinto coste/latencia/calidad | Mantiene equivalencia de accesibilidad separada de equivalencia causal y versión | Agrupa versiones por igualdad de ΔT_acc |
+| POL-04 | p0/p1 aplicados a intentos, con fallo de instalación posterior | Recalcula probabilidades finales C_dep,post/A_f,post* y verdad de Value | Conserva θ=3.6 cuando el mecanismo final ya no produce .20/.80 |
+| POL-05 | Regla de Value incluida erróneamente dentro de q_X | Detecta mezcla entre régimen de condiciones e instrumento evaluativo | Acepta que q cambie la definición de Value entre brazos |
+| POL-06 | g1/g0 no factibles en una historia/estrato | Restringe población ex ante o emite no-identificación del contraste original | Extrapola a configuración imposible o sin soporte |
+| POL-07 | θ_A^dyn usado sin historia/políticas/horizonte formalizados | Marca estimando como no disponible/no evaluable | Lo estima como si estuviera definido |
+| POL-08 | Dictamen metodológico C10-S PASS sin evidencia empírica C10 | Emite por separado estado del test sintético y conclusión científica C10 | Convierte PASS sintético en confirmación/refutación empírica |
+| POL-09 | Resultado impreciso cuyo intervalo cruza cero y ±δ/±ε | Emite INDETERMINATE o evidencia insuficiente según regla preespecificada | Declara equivalencia por p>0.05 |
+| POL-10 | Enumerador correcto, pero estados de conocimiento/consideración/selección/ejecución incompletos | Limita el dictamen al módulo efectivamente probado | Afirma validación end-to-end de selección y ejecución sin pruebas |
+
+Estos contratos convierten los hallazgos XSYNC-138-01…10 en aserciones verificables. La correspondencia no es uno-a-uno: varios hallazgos comparten pruebas, y la aceptación exige que cada hallazgo tenga al menos un test discriminante y una revisión documental global.
+
+
+## 10. Familias GEN y requisitos aún no convertidos a fixtures
 
 Los invariantes S4R-GEN-01…12 de C10-S §30.8 deben convertirse en pruebas con verdad oculta y aserciones equivalentes. Los hallazgos AUD-004…008 requieren contratos específicos para ΔT_acc, Reach_possible, S5-F, S5-C y no circularidad de Value. No se declara que los catálogos existentes cubran estas familias de forma ejecutable.
 
-## 10. Reglas de interpretación del resultado
+## 11. Reglas de interpretación del resultado
 
 - PASS significa que el analizador discrimina correctamente el escenario sintético y recupera lo que el DGP hace identificable dentro de tolerancias justificadas.
 - FAIL significa que viola una aserción, confunde constructos/estimandos o emite una conclusión no permitida.
@@ -162,7 +181,7 @@ Los invariantes S4R-GEN-01…12 de C10-S §30.8 deben convertirse en pruebas con
 - No atribuir ITT_Z a accesibilidad cuando exclusión no está defendida.
 - No convertir un resultado sintético PASS en evidencia empírica de C10.
 
-## 11. Pendientes antes de convertirlo en contrato ejecutable
+## 12. Pendientes antes de convertirlo en contrato ejecutable
 
 1. Confirmar diccionario y temporalidad de cada variable.
 2. Fijar versiones del fixture y mecanismo exacto B_g0/B_g1, intento, éxito y verificación.
@@ -174,4 +193,4 @@ Los invariantes S4R-GEN-01…12 de C10-S §30.8 deben convertirse en pruebas con
 8. Obtener revisión independiente.
 9. Autorizar por separado implementación y ejecución.
 
-**Dictamen:** este registro normaliza el inventario de pruebas conocido y explicita las aserciones mínimas. No constituye implementación, ejecución ni PASS. El cierre de AUD-003 y XSYNC-06/07/09/10 depende de completar los fixtures, verificar cobertura y realizar la auditoría independiente.
+**Dictamen:** este registro normaliza el inventario de pruebas conocido y explicita las aserciones mínimas. No constituye implementación, ejecución ni PASS. El cierre de AUD-003 y XSYNC-01…10 depende de completar los fixtures, verificar cobertura y realizar la auditoría independiente.
