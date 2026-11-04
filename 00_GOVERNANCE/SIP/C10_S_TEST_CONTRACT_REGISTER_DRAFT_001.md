@@ -194,3 +194,45 @@ Los invariantes S4R-GEN-01…12 de C10-S §30.8 deben convertirse en pruebas con
 9. Autorizar por separado implementación y ejecución.
 
 **Dictamen:** este registro normaliza el inventario de pruebas conocido y explicita las aserciones mínimas. No constituye implementación, ejecución ni PASS. El cierre de AUD-003 y XSYNC-01…10 depende de completar los fixtures, verificar cobertura y realizar la auditoría independiente.
+
+
+## 13. Contratos recuperados de las secciones 182 y 183 (fuente DOCX, 2026-11-04)
+
+Las fichas siguientes se transcriben de las tablas de aceptación de la fuente conversacional recuperada. Se incorporan como **contratos propuestos**, no como tests implementados ni ejecutados.
+
+### P182-01…12 — Validez de constructo y sensibilidad de medidas
+
+| ID | Prueba | Criterio de aceptación |
+|---|---|---|
+| P182-01 | Cobertura de A | Todas las condiciones constitutivas están documentadas |
+| P182-02 | Circularidad de A | A no depende de O ni de V |
+| P182-03 | Especificación de O | Cada indicador tiene unidad, fuente y ventana |
+| P182-04 | Separación O/V | Ningún indicador usa automáticamente la valoración como resultado operativo |
+| P182-05 | Reproducibilidad | Los valores pueden reconstruirse desde los registros |
+| P182-06 | Acuerdo interevaluador | Se informa acuerdo y discrepancias |
+| P182-07 | Error en A | Se evalúan falsos positivos y falsos negativos |
+| P182-08 | Error en O/V | Se comparan escenarios de error de medición |
+| P182-09 | Invariancia | Se detectan cambios de criterio entre D1 y D2 |
+| P182-10 | Sensibilidad de Value | Se informa si las conclusiones cambian bajo reglas alternativas |
+| P182-11 | Separación de datos | El analizador no recibe variables latentes del generador |
+| P182-12 | Trazabilidad | Cada resultado conserva versión de indicador y regla aplicada |
+
+### P183-01…13 — Datos ausentes, censura e identificación
+
+| ID | Prueba | Criterio de aceptación |
+|---|---|---|
+| P183-01 | Taxonomía | Cada ausencia tiene categoría documentada |
+| P183-02 | Mecanismo | Se evalúan MCAR, MAR y MNAR |
+| P183-03 | Separación A | Desconocido no equivale a inaccesible |
+| P183-04 | Separación O | No observado no equivale a resultado cero |
+| P183-05 | Separación V | Ausencia dimensional no implica valoración nula |
+| P183-06 | ITT | Se conserva la población aleatorizada |
+| P183-07 | Selección | Se auditan mecanismos postasignación |
+| P183-08 | Mediación | Se evalúa el efecto de la ausencia de A sobre la identificación |
+| P183-09 | Censura | Se distingue censura administrativa e informativa |
+| P183-10 | Sensibilidad | Se incluyen escenarios MAR y MNAR |
+| P183-11 | Cotas | Se calculan cuando no procede una estimación puntual |
+| P183-12 | Dictamen | Cada estimando recibe su propio estado de identificación |
+| P183-13 | Trazabilidad | Se conservan reglas, versiones y decisiones |
+
+La fuente especifica que las pruebas son propuestas, no ejecutadas. La sección 183 exige dictámenes separados para ITT sobre O, ITT por dimensión de V, efecto mediado por A, LATE sobre V, efecto residual e índice agregado si se utiliza; no debe emitirse un único dictamen global que oculte diferencias de identificación.
