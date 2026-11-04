@@ -18,11 +18,11 @@ La lectura cruzada de los textos canónicos confirma una tensión de jerarquía,
 - El propio C10-D1 establece que aleatorizar componentes implementables identifica el efecto de asignación (ITT), pero no identifica automáticamente `θ_A(q)`; si no se separan las vías alternativas, la conclusión debe ser efecto de paquete/conjunto o no identificación.
 - C10-S §43.4–43.7 reconoce que ITT, primera etapa, LATE focal, `θ_Af(q*)` poblacional y el efecto general de accesibilidad TGCV son objetos distintos, y deja abiertos la población, el régimen, la identificación poblacional y Value.
 
-**Conclusión:** no debe sustituirse la pregunta científica de C10-D1 por el ITT de S4-R. La arquitectura más coherente es una jerarquía de dos niveles:
-1. **Pregunta científica C10:** `θ_A(q)` para políticas factibles de accesibilidad, cuando sea identificable.
-2. **Objetivo primario del diseño S4-R:** ITT de la asignación a la política concreta de provisión, que comprueba el efecto de esa política en la población sintética.
-3. **Objetivo de atribución focal de S4-R:** LATE de apertura de `τ2` entre compliers, solo si se cumplen los supuestos IV.
-4. **Límite de alcance:** S4-R focaliza `τ2`; no identifica por sí solo el efecto poblacional de `θ_A(q)` sobre el espacio completo `ΔT_acc`.
+**Conclusión:** no debe sustituirse la pregunta científica de C10-D1 por el ITT de S4-R. La arquitectura coherente tiene tres niveles de objeto causal y dos estimadores en S4-R:
+1. **Pregunta científica general C10:** `θ_A(q)` para políticas factibles sobre cambios del espacio transformacional accesible, cuando sea identificable.
+2. **Contraste focal de política S4-R:** `θ_Af(q*)` entre las dos políticas factibles B_g1/B_g0 que inducen distribuciones de apertura de `τ2`. Si Z aleatoriza esas políticas, el ITT_Z estima el contraste de asignación a las políticas. Solo puede interpretarse como `θ_Af(q*)` si B_g1/B_g0 implementan g1/g0, q* es común, las versiones son consistentes y no hay vías diferenciales hacia Value fuera de la accesibilidad focal.
+3. **Efecto local de apertura S4-R:** `LATE_f` entre compliers, estimado por Wald solo bajo supuestos IV. Es distinto del contraste poblacional de políticas `θ_Af(q*)`.
+4. **Límite de alcance:** S4-R focaliza `τ2`; no identifica por sí solo el efecto general de `θ_A(q)` sobre el espacio completo `ΔT_acc`.
 
 Esta reconciliación se propone para revisión y no se considera decisión aprobada. No cambia el estimando de C10-D1 ni cierra XSYNC.
 
@@ -59,7 +59,24 @@ Los SHA anteriores identifican los blobs inspeccionados. La referencia normativa
 ITT_Z=E[V\mid Z=1]-E[V\mid Z=0]
 ]
 
-Es el efecto de asignar la política de provisión concreta en `P*_τ2`, bajo el diseño aleatorizado y los supuestos de consistencia, interferencia y observación de Value. No es el efecto de recibir la provisión, de abrir `τ2` ni de modificar todo `ΔT_acc`.
+Es el efecto de asignar la política de provisión concreta en `P*_τ2`, bajo el diseño aleatorizado y los supuestos de consistencia, interferencia y observación de Value. Es el estimador de la diferencia entre las políticas asignadas. Si el diseño demuestra que esas políticas solo difieren en la distribución de accesibilidad focal bajo q*, el contraste puede interpretarse como `θ_Af(q*)`; si existen vías directas/colaterales, sigue siendo el efecto de la política/paquete (`ψ_policy`/`TE_Z`) y no `θ_Af`. No es el efecto de recibir la provisión ni el efecto de todo `ΔT_acc`.
+
+
+### 3.2.1 Condición de atribución del ITT a la política de accesibilidad focal
+
+La igualdad interpretativa que debe probarse es:
+
+`ITT_Z = ψ_policy(B_g1,B_g0)`; y solo bajo exclusión/aislamiento, equivalencia de versiones, régimen común y mapeo válido `B_g → A_f*`, se puede interpretar `ψ_policy = θ_Af(q*)`.
+
+No es una identidad algebraica automática. El analizador debe comprobar en la verdad oculta del DGP:
+- las políticas asignadas corresponden a g1/g0 y difieren solo en el componente de provisión focal;
+- las condiciones constitutivas y q* tienen distribuciones coherentes y soporte;
+- no hay vías B/C_dep→Value ajenas a la apertura de τ2;
+- costes, calidad, seguridad, latencia, información y demás efectos no focales son invariantes;
+- la medición de A_f* y Value es independiente y temporalmente correcta.
+
+Si una condición falla, reportar ITT_Z como efecto de política/paquete y no como θ_Af(q*). La exclusión no se demuestra solo por aleatorización ni por un control negativo; se justifica por diseño y se somete a escenarios adversariales.
+
 
 ### 3.3 Primera etapa y efecto local focal
 
