@@ -369,3 +369,10 @@ No se asignan valores por escenario ni se ratifican F*, G/H, recursos, ventanas,
 Se registra DEC-C10-038 como propuesta de control semántico. Se reutilizan las definiciones existentes de §§47–51 y 57–69. F1=τ2 focal está parcialmente especificada; F2/A1/A2 solo son aliases con transiciones topológicas S2→SF, S0→S1 y S1→SF. SF no constituye una definición operacional de F*. No asignar operaciones, precondiciones o recursos ficticios a los aliases. El hueco se resolverá con una propuesta explícita de microdominio sintético que permita una F* común y rutas focal/alternativa genuinas.
 
 DEC-C10-038 no aprueba el microdominio, no completa las fichas sustantivas, no cierra AUD-004/005/007/010/011 ni OPEN-C10-001/003/005/007, y no autoriza freeze, implementación, simulación o ejecución.
+
+
+## 33. Recomendación comparativa de microdominio (2026-11-05)
+
+Se registra DEC-C10-039 como recomendación, no decisión aceptada. Se comparan tres opciones: migración de configuración software, integración de datos y flujo organizativo. Se recomienda Opción A para revisión: F1 conversión mediante adaptador focal provisionado por B; F2 aplicación y validación en destino; A1 exportación a formato neutral baseline; A2 importación/aplicación por mecanismo nativo; F* conformidad técnica de esquema/integridad/compatibilidad. Ventajas: separación provisión/ejecución, precondiciones diferenciables, alternativa genuina, control de recursos/ventanas e interferencia menor.
+
+La selección sigue abierta. Deben aprobarse F*, propiedades de preservación, independencia A1/A2, identidades/versiones, recursos, autorizaciones, ventanas, R0–R3 y evidencia. DEC-C10-039 no selecciona D1/D2, no fija parámetros ni autoriza freeze/implementación/simulación/ejecución.
