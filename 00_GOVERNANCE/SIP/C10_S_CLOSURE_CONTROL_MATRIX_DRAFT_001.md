@@ -34,7 +34,7 @@ La numeración de las secciones conversacionales no constituye por sí sola una 
 | SRC-05 | Auditoría cruzada | `C10_S_AUD001_AUD002_CROSS_AUDIT_DRAFT_001.md`, blob `ce53c902fb39820e976eed5cb2a87e5eacace31c` | XAUD-001…007 | Hallazgos abiertos |
 | SRC-06 | Informe de recuperación | `C10_S_RECOVERY_AND_TRACEABILITY_AUDIT_DRAFT_001.md`, blob `2f77832076773c67711f55a3c0d6680b69c2c6d9` | Reconstrucción de fuentes y límites hasta sección 183 | Recuperación parcial |
 | SRC-07 | PR #115 | `research/c10-d1-protocol-draft` → PR #115 | 23 commits; 1 archivo; abierto Draft | Sin comentarios/revisiones |
-| SRC-08 | PR #116 | `research/c10-s-consolidation-draft` → PR #116 | 46 commits y seis archivos, verificados tras esta consolidación; abierto Draft | Sin comentarios/revisiones |
+| SRC-08 | PR #116 | `research/c10-s-consolidation-draft` → PR #116 | 48 commits y seis archivos, verificados tras esta consolidación; abierto Draft | Sin comentarios/revisiones |
 
 ### 2.1 Resultado de la búsqueda de fuentes posteriores a 164
 
