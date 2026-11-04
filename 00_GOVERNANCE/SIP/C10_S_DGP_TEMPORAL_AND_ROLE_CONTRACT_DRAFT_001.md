@@ -583,3 +583,16 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 8. Selección, ejecución, Outcome y Value son downstream; no definen Reach.
 9. No confundir ΔT_acc≠0 con ΔReach_H≠0.
 10. AUD-005/007 permanecen abiertos hasta catálogo DGP, fixtures/oráculos, evaluación de cobertura/error y revisión independiente.
+
+
+## 33. Inventario finito candidato y cobertura de rutas
+
+**Estado:** propuesta de fixture, no aprobada; contrato detallado en C10_S_FINITE_DGP_INVENTORY_AND_REACH_COVERAGE_DRAFT_001.md.
+
+1. Universo abstracto candidato: S0 inicial, S1 intermedio alternativo, S2 intermedio focal, SF objetivo; F1=τ2 (S0→S2), F2 (S2→SF), A1 (S0→S1), A2 (S1→SF); composiciones F1→F2 y A1→A2. Los IDs son aliases locales, no TID canónicas.
+2. Escenarios: R0 focal exclusiva; R1 alternativa basal estable; R2 alternativa afectada por B; R3 intento/provisión fallida. No se agrupan poblaciones/ITT ni se asume exclusión en R2.
+3. G atómica, H=3 pasos y ciclos prohibidos en el fixture base son propuestas que requieren ratificación. H=3 no es un límite computacional intercambiable con el horizonte científico.
+4. Abrir F1 no basta para Reach(SF): F2 debe ser accesible, aplicable y componible. La ruta A1→A2 puede mantener Reach(SF)=1 con F1 cerrada.
+5. La ausencia de alternativas solo se declara con cobertura exhaustiva de catálogo, relaciones, condiciones, universo funcional, recursos, tiempo, identidad/versiones y observación.
+6. Truth DGP permanece oculta al analizador; cada predicado conserva observed_state 1/0/? y evidencia/procedencia/cobertura. Outcome y Value no definen estado, aristas, accesibilidad ni Reach.
+7. No se seleccionan comparador, población confirmatoria, F*, G/H ni parámetros; no se autoriza implementación, simulación o ejecución.
