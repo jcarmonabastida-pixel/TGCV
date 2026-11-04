@@ -38,6 +38,7 @@ La numeración de las secciones conversacionales no constituye por sí sola una 
 
 | SRC-09 | Reconciliación C10-D1 ↔ S4-R | `C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`, PR #116 | Jerarquía `θ_A(q)` / ITT_Z / LATE_f; propuesta para `p0` y poblaciones | Propuesta, no aprobada |
 | SRC-10 | Decision log C10 | `C10_S_DECISION_LOG_DRAFT_001.md`, PR #116 | DEC-C10-001…010, decisiones abiertas y alternativas no admisibles | Registro inicial, no aprobado |
+| SRC-11 | XSYNC tracker | `C10_S_XSYNC_138_CLOSURE_TRACKER_DRAFT_001.md`, PR #116 | Recupera y clasifica XSYNC-138-01…10, respuesta documental y cierre pendiente | Texto recuperado; hallazgos abiertos |
 
 ### 2.1 Resultado de la búsqueda de fuentes posteriores a 164
 
@@ -177,14 +178,21 @@ Los campos `hidden_truth` solo son accesibles al generador y al evaluador indepe
 
 ## 8. XSYNC y revisión independiente
 
-La información persistida identifica XSYNC-138-01 como formalmente abierto y XSYNC-138-02…10 como hallazgos que siguen abiertos salvo cierre explícito posterior. No se ha recuperado en esta auditoría el texto íntegro de cada hallazgo XSYNC ni un acta independiente de resolución.
+**Corrección de recuperación:** el texto íntegro de XSYNC-138-01…10 sí se encuentra en C10-S §25.2; sus estados y respuestas parciales aparecen en §§25.4, 26.10, 27.8 y 28.9. Se ha creado `C10_S_XSYNC_138_CLOSURE_TRACKER_DRAFT_001.md`, que registra hallazgo original, respuesta documental, pendientes y criterios de cierre.
 
-Por tanto:
-- no se presume el contenido específico de XSYNC-02…10;
-- no se marcan como cerrados por inferencia;
-- se requiere recuperar la fuente exacta que los define;
-- se requiere una revisión independiente que compruebe la coherencia de DGP, variables, estimandos, contratos, reglas de no filtración y casos límite;
-- la revisión debe registrar autor/rol, fecha, versión auditada, hallazgos, evidencia y resolución.
+Estado actual:
+- XSYNC-01: respuesta documental en §§26–27, pero P0 y formalmente abierto hasta revisión independiente.
+- XSYNC-02: separación q/Value propuesta; cierre global pendiente.
+- XSYNC-03: A_f como proyección focal, ΔT_acc completo preservado; auditar globalmente y cerrar AUD-001.
+- XSYNC-04: separación L_c/L_m y soporte por historia propuestos; q* y positividad aún abiertos.
+- XSYNC-05: θ_A^dyn permanece marcador no estimable; verificar usos globales.
+- XSYNC-06: distinción de equivalencia/versiones y VER-01…06 documentada; pruebas no ejecutadas.
+- XSYNC-07: estados de trayectoria ampliados; cobertura no probada.
+- XSYNC-08: separación entre dictamen metodológico y conclusión científica en curso; contrato de salida pendiente.
+- XSYNC-09: regla δ/ε de clasificación incompleta como contrato de salida.
+- XSYNC-10: ampliación documental de trayectoria, pero cobertura por pruebas pendiente.
+
+No se declara cerrado ningún hallazgo. La recuperación del texto no equivale a resolución. La auditoría independiente debe comprobar DGP, variables, estimandos, contratos, no filtración, límites y casos adversariales, registrando autor/rol, fecha, versión, evidencia y resolución.
 
 ## 9. Puertas de cierre y secuencia de trabajo
 
