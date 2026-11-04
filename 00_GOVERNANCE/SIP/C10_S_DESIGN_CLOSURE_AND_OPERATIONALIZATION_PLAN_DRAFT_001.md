@@ -761,3 +761,14 @@ Resultado: F1/τ2 está parcialmente especificada por los contratos de provisió
 Pendiente: formular y comparar una propuesta explícita de microdominio sintético neutral, con F* observable y no circular, una transformación focal τ2, su continuación F2 y una ruta alternativa A1→A2 genuina. La selección requiere decisión explícita antes de completar las fichas y asignar parámetros del DGP. AUD-004/005/007/010/011 y OPEN-C10-001/003/005/007 permanecen abiertos. No se han generado datos, implementado fixtures, simulado ni ejecutado el experimento.
 
 Siguiente bloque: preparar alternativas de microdominio que satisfagan los contratos ya definidos, compararlas contra C10-S (mecanismo focal, ruta alternativa, F*, predicados, evidencia, recursos, riesgos de exclusión y observabilidad) y recomendar una sin tratarla como aprobada.
+
+
+# XVI. Ejecución del plan — comparación y recomendación de microdominio (2026-11-05)
+
+Se comparan tres microdominios para completar las fichas F1/F2/A1/A2: migración de configuración software, integración de datos y reconfiguración de flujo organizativo. Se recomienda Opción A como candidata por parsimonia, verificabilidad técnica, control de recursos/ventanas y menor interferencia. Se crea C10_S_SYNTHETIC_MICRODOMAIN_OPTIONS_AND_SELECTION_RECOMMENDATION_DRAFT_001.md y se propaga a maestro §78, contrato DGP §37, DEC-C10-039, matriz de cierre §17 y registro de pruebas §40.
+
+La propuesta ilustra F1=conversión mediante adaptador focal; F2=aplicación y validación en destino; A1=exportación a formato neutral preexistente; A2=importación/aplicación por mecanismo nativo. F* sería conformidad técnica de esquema, integridad y compatibilidad. B solo provisiona el adaptador y no ejecuta conversiones. La ruta alternativa debe ser mecanísticamente independiente; R2 prueba el caso de afectación colateral.
+
+La recomendación no es selección ni aprobación. Pendiente decisión de microdominio, definición de propiedades/tolerancias F*, identidades/versiones, independencia de la ruta alternativa, recursos, permisos, ventanas, fallos, cobertura, E1–E4, D1/D2 y revisión independiente. No se cierran AUD-004/005/007/010/011 ni OPEN-C10-001/003/005/007. No hay datos, implementación, fixtures ejecutables, simulación ni ejecución.
+
+Siguiente bloque: someter la Opción A a una auditoría de consistencia contra las ecuaciones causales/estimandos, la definición de A_f*, el comparador D1/D2 y los escenarios R0–R3; identificar si el adaptador focal realmente constituye una intervención sobre la accesibilidad o si introduce vías adicionales. Solo después recomendar aceptación o reformulación.
