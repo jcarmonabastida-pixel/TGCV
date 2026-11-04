@@ -739,3 +739,14 @@ Hallazgo: la descripción previa de H=3 como tres pasos/unidades de tiempo era a
 Pendiente: ratificar H; duración y ventanas; predicados App por estado; snapshots dinámicos por rama; recursos/caducidades; F*; cobertura funcional; D1/D2 y oráculos. AUD-005/007 siguen abiertos. No se han creado fixtures ejecutables, simulado ni ejecutado el experimento.
 
 Siguiente bloque: especificar la tabla por paso y por rama de predicados de accesibilidad, aplicabilidad, composición, autorización, recursos, ventana y bloqueo, con tiempos y evidencia requerida; resolver explícitamente qué condiciones permanecen constantes bajo el snapshot t3 y cuáles pueden variar en la trayectoria hipotética.
+
+
+# XIV. Ejecución del plan — matriz operacional de predicados (2026-11-05)
+
+Se crea C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md y se propaga a maestro §76, contrato DGP §35, DEC-C10-037, matriz de cierre §15 y registro de pruebas §38.
+
+La matriz separa accesibilidad, aplicabilidad, composición, condiciones, autorización, recursos, dependencia técnica, bloqueos, ventanas y evidencia/cobertura. Se propone snapshot estructural fijo en t3 para el fixture base, APP por estado hipotético de entrada y evaluación de cada rama por separado. Cualquier dinámica intrarrama exige regla explícita y snapshot inmutable. Se distingue truth DGP de observación; COV no forma parte de la verdad causal. Se registran clases I/S/T/R/D/E y contratos PM-01…18.
+
+Pendiente: completar fichas sustantivas por transformación, fijar qué predicados son state-dependent/temporales, recursos/demanda/reserva, autorización y ventanas, F*, cobertura de alternativas, E1–E4 y oráculos. No se cierran AUD-004/005/007/010/011 ni OPEN-C10-001/003/005/007. No se han generado datos, implementado fixtures, simulado ni ejecutado el experimento.
+
+Siguiente bloque: construir fichas sustantivas de predicados para F1, F2, A1 y A2 y resolver, sin asignar todavía valores truth, el significado operacional de cada precondición, condición, recurso, autorización, dependencia, bloqueo y ventana.
