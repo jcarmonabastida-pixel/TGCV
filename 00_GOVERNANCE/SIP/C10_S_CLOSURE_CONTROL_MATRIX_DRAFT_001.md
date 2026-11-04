@@ -252,3 +252,10 @@ El registro de contenido y alertas se documenta en `C10_S_RECOVERY_165_183_SOURC
 Decisiones que deben conservarse como propuestas, no aceptarse automáticamente: D1 principal condicionado y D2 contraste; D1 p0=.20/p1=.80 por provisión ordinaria posterior a la asignación con C_dep,base=0; Wald/LATE local, no ATE; δ/γ y vías alternativas pueden invalidar exclusión; Value vectorial provisional; ausencia de A/O/V no se recodifica como cero. P181/P182/P183 siguen sin ejecución y requieren normalización/cotejo de contratos.
 
 La sección 184 es solo una propuesta de siguiente paso y queda fuera de la fuente 165–183. No se declara cierre causal, aprobación del DGP, freeze ni autorización de ejecución.
+
+
+## 13. Precisión de contratos P182/P183 tras recuperación de fuente (2026-11-04)
+
+El registro de pruebas `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md` incorpora ahora las tablas completas recuperadas P182-01…12 y P183-01…13, con sus criterios de aceptación textuales. Esto sustituye la descripción anterior de “solo IDs y resumen” en cuanto a la disponibilidad documental de esas fichas.
+
+El cambio es documental: los criterios todavía deben convertirse en fixtures, entradas/salidas, tolerancias, códigos de fallo y evidencia reproducible. Todas las pruebas siguen propuestas y no ejecutadas. La sección 183 requiere además dictámenes separados para ITT-O, ITT por dimensión de V, mediación por A, LATE-V, efecto residual e índice agregado si existe.
