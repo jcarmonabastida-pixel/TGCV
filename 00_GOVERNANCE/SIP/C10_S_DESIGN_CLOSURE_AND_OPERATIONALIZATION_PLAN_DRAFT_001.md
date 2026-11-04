@@ -635,3 +635,65 @@ Continuar con la **integración de los predicados de accesibilidad y la cobertur
 6. diseñar pruebas adversariales y criterios de no-identificación.
 
 Este paso aborda AUD-005 y la parte correspondiente de AUD-007. No iniciar aún simulación ni ejecución.
+
+
+# XI. Ejecución del plan — Bloque 3, Reach y trayectorias (2026-11-04)
+
+## 47. Reconstrucción y alcance
+
+Se revisaron README.md y 00_GOVERNANCE/README.md, la regla de reconstrucción histórica y el maestro §§43, 47–49, 58, 63–67 y 71–72, además de los contratos de snapshot, identidad y DGP.
+
+La arquitectura previa ya distinguía T_acc, Reach_H, Π_H^cand, Π_H^sel y Π_H^exec, además de accesibilidad y aplicabilidad. No se duplicó esa definición: se formalizó la propagación de incertidumbre por rutas y el requisito de exhaustividad para afirmar no alcanzabilidad.
+
+## 48. Artefacto generado
+
+`00_GOVERNANCE/SIP/C10_S_REACHABILITY_AND_TRAJECTORY_PROPAGATION_CONTRACT_DRAFT_001.md`
+
+Incluye:
+- definición de Reach_H* (truth) y Reach_H,obs;
+- secuencia admisible con identidad, accesibilidad, aplicabilidad, composición, recursos y temporalidad;
+- lógica trivalente 1/0/? por ruta;
+- disyunción entre rutas alternativas;
+- conjuntos lógicos Reach_H^- y Reach_H^+;
+- horizonte, ciclos, truncamiento y snapshots dinámicos;
+- separación de selección/ejecución/Outcome/Value;
+- criterios de no-identificación;
+- veinte contratos adversariales REACH-01…20.
+
+## 49. Regla crítica resultante
+
+Una ruta confirmada basta para afirmar que un estado es alcanzable. La ausencia de rutas confirmadas no demuestra no alcanzabilidad. Para declarar Reach=0 deben estar exhaustivamente cubiertos el universo, catálogo, frontera, granularidad, horizonte y rutas posibles, y todas las rutas deben quedar refutadas. Si existe una ruta potencial con predicado desconocido, mapping no resuelto, cobertura incompleta o búsqueda truncada, el resultado es ?.
+
+La aplicabilidad se evalúa desde el estado intermedio para recorrer la ruta, pero no se usa para redefinir T_acc. La selección y ejecución son downstream y no forman parte de Reach estructural.
+
+## 50. Propagación documental
+
+Se incorporó:
+- maestro C10-S: §73;
+- contrato DGP: §32;
+- Decision Log: DEC-C10-034;
+- matriz de cierre: §12, REACH-01…10;
+- registro de pruebas: §35, REACH-01…20.
+
+Los contratos son documentales; no hay fixtures ejecutables ni pruebas realizadas.
+
+## 51. Dictamen
+
+**Avance:** la lógica de alcanzabilidad y la propagación de indeterminación quedan especificadas documentalmente.
+
+**No cerrado:** AUD-005 y AUD-007 siguen abiertos. Faltan catálogo finito DGP, estados iniciales/objetivo, G/H, duraciones, ciclos, reglas composicionales por clase, recursos, snapshots dinámicos, cobertura de rutas, oráculos, validación de error y revisión independiente.
+
+No hay aprobación, freeze, implementación, simulación ni ejecución.
+
+## 52. Próxima operación
+
+El siguiente bloque no debe añadir más definiciones abstractas. Debe convertir los contratos en un **inventario finito del DGP y un mapa de cobertura**:
+1. fijar estado inicial y estados objetivo del experimento sintético;
+2. enumerar TID/SID/RID focales y no focales y relaciones permitidas;
+3. fijar G, H, duración, ciclos y reglas de composición;
+4. enumerar condiciones, recursos, autorizaciones, bloqueos y rutas alternativas;
+5. construir la matriz ruta × predicados × tiempo × evidencia × cobertura;
+6. clasificar qué estados/rutas son exhaustivamente enumerables y cuáles quedan ?;
+7. alinear inventario con REACH-01…20, SNAP-01…15 e ID-01…15.
+
+La operación será documental y de especificación. No ejecutar generador ni simulación sin autorización expresa.
