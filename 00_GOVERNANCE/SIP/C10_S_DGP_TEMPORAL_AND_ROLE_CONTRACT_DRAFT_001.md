@@ -399,3 +399,21 @@ La ecuación candidata depurada se documenta en el capítulo 59 del maestro. No 
 - **Incumplimiento:** fallos, parcialidad, rollback y contaminación no cambian Z ni la clasificación ITT. Indeterminado no equivale a fallo ni éxito.
 - **Interpretación:** ITT identifica asignación de política B; no demuestra mediación ni efecto específico de A_f. Exclusión y atribución permanecen sujetos a C10-D1/S4-R.
 - **Pendiente:** fijar identidad/versiones, pasos, tiempos, fixtures, estándares de evidencia, invariantes y revisión independiente. No freeze/ejecución.
+
+
+## 22. Contrato candidato de medición A_f*, A_f,obs, D_f* y ΔT_acc*
+
+**Estado:** propuesta; no aprobada ni congelada.
+
+1. C_dep* es el estado técnico compuesto de provisión; no define por sí solo accesibilidad.
+2. A_f* se determina desde snapshot estructural completo y predicados ID, REL, COND, AUTH, RES, DEP, BLOCK y VALID.
+3. A_f,obs es salida del analizador con estados 1/0/?; verdad del DGP permanece separada y oculta.
+4. App_f, conocimiento, consideración, selección, inicio y ejecución son variables distintas de A_f*.
+5. D_f*=1 solo si A_f,base*=0 y A_f,post*=1; elegibilidad basal exige ausencia respaldada pre-Z.
+6. ITT_Df* y ITT_Df,obs se reportan separadamente; primera etapa de C_dep* no sustituye primera etapa de accesibilidad.
+7. ΔT_acc* se conserva como diff estructurado de U_acc, R_acc, C_acc, Validity y State/context; snapshots incompatibles producen indeterminado o requieren correspondencia versionada.
+8. h_f(ΔT_acc*)=D_f* es proyección focal, no equivalencia con el objeto completo.
+9. Analizador ciego a Z/B, selección, ejecución, Outcome y Value; validación imperfecta exige límites/sensibilidad.
+10. Alternativas funcionales F* y accesibilidad de τ2 se clasifican separadamente.
+11. Si B modifica AUTH/RES/capacidad/conocimiento/rutas alternativas u otras vías, reclasificar como paquete o efecto conjunto.
+12. No fijar umbrales, fixtures, cobertura ni error de medición sin protocolo ex ante. No freeze/ejecución.
