@@ -192,3 +192,33 @@ Tareas:
 **Entregable:** DGP integrado y contrato de generación/reporte.  
 **Cierre:** toda variable tiene regla generadora, rol causal, tiempo, distribución y observación.
 
+
+
+## 13. Bloque 5 — Validez de constructo y medición (P1)
+
+Tareas:
+1. Validez de contenido, convergente/discriminante cuando proceda.
+2. Indicadores y fuentes independientes para T_acc, ΔT_acc, Reach, trayectoria, Outcome y Value.
+3. Adjudicación, cegamiento y fiabilidad intra/interevaluador.
+4. Sensibilidad, especificidad, falsos positivos/negativos y error diferencial.
+5. Invariancia entre brazos, escenarios, periodos y versiones.
+6. Reconciliar P182/P183 con matriz, Decision Log y registro de pruebas.
+7. Missingness MCAR/MAR/MNAR, censura y selección postratamiento.
+
+**Entregable:** matriz constructo-indicador-fuente-error-validación.  
+**Cierre:** no hay circularidad; errores e indeterminación están modelados.
+
+## 14. Bloque 6 — Identificación, falsación y sensibilidad (P1)
+
+Tareas:
+1. Supuestos: relevancia, independencia, exclusión, monotonicidad, consistencia/versiones, positividad/soporte e interferencia.
+2. Confusión inducida por tratamiento y mediadores postratamiento.
+3. Sensibilidad a alternativas, rutas directas, recursos, autorización, conocimiento, costes y calidad de ejecución.
+4. Primera etapa débil/nula y error de clasificación.
+5. Escenarios adversariales: Outcome cambia sin A; A cambia sin Value; A y otra vía cambian; exclusión falla; alternativas existen; missingness informativa.
+6. Reglas de salida: efecto paquete, atribución identificada/no identificada, evidencia adversa, equivalencia o insuficiencia.
+7. Cierre por ID de XSYNC-138-01…10.
+
+**Entregable:** matriz de identificación, amenazas, falsadores y resultados admisibles.  
+**Cierre:** el diseño puede concluir no-identificación o evidencia adversa.
+
