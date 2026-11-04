@@ -846,3 +846,21 @@ Contratos documentales; no ejecutados.
 | MD-10 | F* evaluada con Outcome/Value posterior | Rechazar circularidad/filtración |
 
 Contratos de diseño; no ejecutados.
+
+
+## 41. Contratos de compatibilidad causal del microdominio
+
+| ID | Caso | Aserción requerida |
+|---|---|---|
+| MDC-01 | B provisiona adaptador | No ejecuta conversión F1, aplicación F2 ni validación F* |
+| MDC-02 | B modifica C_dep | No inferir automáticamente A_f*, D_f* ni ΔT_acc |
+| MDC-03 | B cambia permisos/configuración/recursos | Registrar vía colateral; no atribuir ITT exclusivamente a A_f* |
+| MDC-04 | F1 definido como habilitar y convertir | Rechazar mezcla; provisión B y conversión F1 separadas |
+| MDC-05 | A1/A2 comparten dependencia focal | No afirmar independencia funcional ni exclusión focal sin análisis |
+| MDC-06 | B no afecta A1/A2 en R0/R1 | Mantener Reach alternativo; permitir ΔT_acc sin cambio Reach |
+| MDC-07 | B afecta A1/A2 en R2 | Clasificar como vía colateral/efecto de paquete |
+| MDC-08 | Primer estadio C_dep positivo | No inferir first stage A_f*/D_f*/ΔT_acc |
+| MDC-09 | F* evaluada por oráculo común | Compartición de medición admisible si no genera/ejecuta la ruta y es ciego |
+| MDC-10 | Se elige Opción A | No inferir elección D1/D2 ni identificación de θ_A(q) |
+
+Contratos documentales; no ejecutados.
