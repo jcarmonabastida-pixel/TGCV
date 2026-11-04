@@ -28,7 +28,7 @@ La numeración de las secciones conversacionales no constituye por sí sola una 
 | ID | Fuente | Identidad/ubicación | Cobertura comprobada | Estado |
 |---|---|---|---|---|
 | SRC-01 | C10-D1 | `C10_D1_CAUSAL_ACCESSIBILITY_VALUE_PROTOCOL_DRAFT_001.md`, PR #115, blob `bf25f6ec8965166e5fa52ff18e6d07613bad0eb3` | Protocolo causal consolidado; 38 secciones principales según registro de recuperación | Draft, no aprobado |
-| SRC-02 | C10-S | `C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md`, PR #116, blob verificado tras la actualización del capítulo 58 `87e3a3cb385fd3fb05f106dcdc0a5829431a5bc5` | Documento consolidado hasta sección conversacional 164 (51 secciones documentales) | Draft, no aprobado |
+| SRC-02 | C10-S | `C10_S_SYNTHETIC_EXPERIMENT_CONSOLIDATED_DRAFT_004.md`, PR #116, blob actual `87e3a3cb385fd3fb05f106dcdc0a5829431a5bc5` | Base histórica hasta sección conversacional 164; recuperación resumida 165–183 en §§52–53; capítulos de reconciliación y medición §§54–58 | Draft, no aprobado |
 | SRC-03 | Auditoría integrada | `C10_S_INTEGRATED_CONSISTENCY_AUDIT_DRAFT_001.md`, blob `d3ffa9ed0670764c339dc390423f435e6da0fc9b` | AUD-C10S-001…012 | Hallazgos abiertos |
 | SRC-04 | Propuesta de resolución | `C10_S_AUD001_AUD002_RESOLUTION_DRAFT_001.md`, blob `5a3a2fa061fe146d9df9d4cdfbb803c5ee274d65` | Propuesta A_f, T_acc, ΔT_acc y DGP integrado | No aceptada |
 | SRC-05 | Auditoría cruzada | `C10_S_AUD001_AUD002_CROSS_AUDIT_DRAFT_001.md`, blob `ce53c902fb39820e976eed5cb2a87e5eacace31c` | XAUD-001…007 | Hallazgos abiertos |
