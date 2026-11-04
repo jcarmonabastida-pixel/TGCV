@@ -291,3 +291,10 @@ Una tasa conjunta de éxito técnico de .80 condicionada al intento reconcilia l
 **OPEN-C10-002 sigue ABIERTA:** faltan distribución concreta P*, composición y categorías de X/H0, inventario/umbrales C_c, unidad y posible interferencia, probabilidades de asignación, estratos/pesos, ventanas, rutas equivalentes y Value. No hay datos para calcular soporte numérico ni para afirmar positividad empírica.
 
 No se cierra DEC-C10-012 ni se declara freeze.
+
+
+## 17. Unidad experimental, asignación e interferencia
+
+**Propuesta:** UE=UA=instancia sintética independiente; UO son snapshots repetidos. La independencia requiere ausencia de recursos, agentes, información, infraestructura y canales compartidos. Si hay agrupación, definir clúster y asignar por clúster o modelar exposición; inferencia y N efectivo respetan la UA real. Con spillover no modelado, no interpretar ITT/Wald individual convencional como efecto causal focal.
+
+**OPEN-C10-005 permanece ABIERTA:** faltan inventario del entorno, mapa de recursos/agentes/red, decisión sobre asignación individual o por clúster, esquema de aleatorización y probabilidades. UE=UA no se presenta como hecho ni como decisión aprobada.
