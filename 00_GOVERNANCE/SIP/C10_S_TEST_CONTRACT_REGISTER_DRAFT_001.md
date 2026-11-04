@@ -718,3 +718,31 @@ Estos contratos son especificaciones documentales. No se han creado fixtures eje
 | ID-15 | Riesgo/calidad cambian, propósito estable | TID puede continuar; no inferir equivalencia causal | Confundir semántica y equivalencia de política/valor |
 
 Contratos documentales. No hay fixtures ejecutables, oráculos implementados ni pruebas ejecutadas.
+
+
+## 35. Contratos adversariales de Reach y trayectorias
+
+| ID | Fixture / verdad DGP | Aserción exigida | Fallo que debe detectar |
+|---|---|---|---|
+| REACH-01 | Ruta completa confirmada | Reach=1 | No reconocer ruta válida |
+| REACH-02 | Ruta potencial con predicado ? | Reach=? | Convertir desconocido en 0/1 |
+| REACH-03 | Catálogo incompleto y sin ruta confirmada | Reach=? | Falso negativo por cobertura |
+| REACH-04 | Todas las rutas refutadas, universo exhaustivo | Reach=0 | Falso positivo |
+| REACH-05 | Accesible pero no aplicable desde S0 | No alcanza por esa ruta | Confundir T_acc y App |
+| REACH-06 | Ruta válida no seleccionada | Reach=1 | Usar selección como filtro |
+| REACH-07 | Ruta válida no ejecutada | Reach=1 | Usar ejecución como prueba necesaria |
+| REACH-08 | Ejecución sin baseline | No inferir accesibilidad basal | Sesgo retrospectivo |
+| REACH-09 | Paso necesario 0 y otro ? | Ruta=0 | Propagación incorrecta |
+| REACH-10 | Recurso necesario ? | Ruta=? | Ignorar recursos |
+| REACH-11 | Dos rutas; una confirmada | Reach=1 | Exigir todas las rutas confirmadas |
+| REACH-12 | Búsqueda truncada | No declarar Reach=0 | Truncamiento confundido con imposibilidad |
+| REACH-13 | Descubrimiento post de ruta basal | ΔE_T, no ADD estructural | Fecha de creación falsa |
+| REACH-14 | Cambio RID/SID sin compatibilidad probada | Ruta=? | Continuidad asumida |
+| REACH-15 | Mapping 1:N no validado | ?/NOT_COMPARABLE | Composición inventada |
+| REACH-16 | Ciclo sin terminación | Enumeración incompleta | No alcanzabilidad falsa |
+| REACH-17 | Recurso compartido incompatible | Rutas no simultáneamente factibles | Doble asignación |
+| REACH-18 | Outcome/Value favorable | Reach inalterado | Circularidad |
+| REACH-19 | Cambio de TID focal | D_f* no comparable | Falsa continuidad focal |
+| REACH-20 | ΔT_acc fuera de rutas a s | Reach(s) puede no cambiar | Igualar espacio y alcanzabilidad |
+
+Contratos documentales; sin fixtures implementados ni pruebas ejecutadas.
