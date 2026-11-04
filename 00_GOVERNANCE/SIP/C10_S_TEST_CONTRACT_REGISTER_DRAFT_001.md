@@ -608,3 +608,23 @@ Estado: contratos propuestos; fixtures no implementados ni ejecutados.
 | JNT-15 | Reproducibilidad | Semilla, versión, parámetros y tabla permiten reconstruir cada réplica |
 
 Estado: contratos propuestos; fixtures no implementados ni ejecutados.
+
+
+## 30. Contratos de fixtures explícitos y propagación analítica
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| FIX-01 | Tabla choque común | p1111=s, p0000=1−s, suma 1 |
+| FIX-02 | Tabla fallos simples | Cuatro patrones simples con masa (1−s)/4; suma 1 |
+| FIX-03 | Bottleneck | Un patrón de fallo con masa 1−s; marginales coherentes |
+| FIX-04 | Fallos emparejados | Dos patrones con masa (1−s)/2; suma 1 |
+| FIX-05 | Marginales | Coinciden con las derivadas de cada tabla |
+| FIX-06 | Escalado s | Para s=.60/.70/.80/.90 cada tabla conserva no negatividad y suma 1 |
+| FIX-07 | D1 first stage | q0=.25/q1=1 implica FS=.75s |
+| FIX-08 | D2 first stage | q0=0/q1=1 implica FS=s |
+| FIX-09 | D1 baseline | P0=.20 únicamente cuando s=.80 bajo q0=.25 |
+| FIX-10 | No transferencia | FS_Cdep no se iguala a FS_Af/FS_Df sin supuestos |
+| FIX-11 | Intentos múltiples | No usar fórmula de independencia sin contrato de dependencia |
+| FIX-12 | Sin simulación | Fixtures analíticos no se presentan como resultados de réplicas |
+
+Estado: contratos documentales propuestos; no implementados ni ejecutados.
