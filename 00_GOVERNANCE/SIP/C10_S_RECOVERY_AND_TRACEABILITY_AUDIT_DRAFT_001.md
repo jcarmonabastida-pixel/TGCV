@@ -100,7 +100,7 @@ La búsqueda realizada no ha localizado una fuente canónica íntegra para las s
 
 ## 6. Incidencias de trazabilidad y consistencia documental
 
-1. **Metadato de cobertura desactualizado en el documento 004.** El encabezado declara que la consolidación llega a la sección conversacional 129, pero el contenido incorpora secciones 130–164 y la sección 51 identifica explícitamente la 164. El PR #116 también declara cobertura hasta 164. Debe corregirse el metadato en una revisión posterior, conservando la historia del cambio.
+1. **Metadato de cobertura corregido.** El encabezado original declaraba cobertura hasta la sección conversacional 129, aunque el contenido, la sección 51 y el PR #116 acreditaban cobertura hasta 164. Se corrigió únicamente ese metadato en el borrador 004 mediante commit `12dfcb1d29eabdba3e392f4c2a0137cae8acacb7`; no se modificó contenido científico. La versión anterior queda trazable por su blob SHA `d75b4ffc2be057ae7ac61478e3d27a0c53c1fc1d`.
 2. **Dependencia entre PRs.** PR #116 se basa en la rama de PR #115, no directamente en `main`. Debe mantenerse visible esa dependencia y revisarse la cadena de integración antes de cualquier promoción.
 3. **No existe revisión independiente registrada en PR #115/#116.** Ambos siguen Draft y no tienen comentarios/revisiones.
 4. **No hay evidencia de implementación o ejecución de C10-S.** Los contratos, escenarios, valores numéricos y tamaños muestrales descritos en el borrador son propuestas/ilustraciones, no resultados ni parámetros validados.
