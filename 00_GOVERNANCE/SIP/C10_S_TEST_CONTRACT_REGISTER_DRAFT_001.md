@@ -646,3 +646,29 @@ Estado: contratos documentales propuestos; no implementados ni ejecutados.
 | CAUS-10 | A_f* cambia sin que se ejecute τ2 | Reconoce apertura de accesibilidad sin ejecución | Define accesibilidad por ejecución observada |
 
 Estos son contratos especificados documentalmente; no se han generado fixtures ni ejecutado pruebas. Requieren verdad oculta, versiones, entradas/salidas, tolerancias y revisión para cerrar AUD-003.
+
+
+## 32. Contratos del Bloque 2 — población, elegibilidad, F* y comparadores
+
+| ID | Fixture/verdad DGP | Aserción del analizador | Fallo que debe detectar |
+|---|---|---|---|
+| POP-11 | E=1, C_dep,0=0, A_f,0*=0, F_alt,0=0 | Unidad pertenece a P*_τ2 y P*_F | Excluir por error o confundir objetivos |
+| POP-12 | E=1, C_dep,0=0, A_f,0*=0, F_alt,0=1 | Unidad pertenece a P*_τ2, no a P*_F | Excluirla de P*_τ2 por alternativa basal |
+| POP-13 | E=1, C_dep,0=0, A_f,0*=0, F_alt,0=? | P*_τ2 confirmable; P*_F no confirmable | Tratar indeterminación como ausencia |
+| POP-14 | Alguna condición constitutiva incumplida | Fuera de población focal confirmatoria antes de Z | Mantenerla como elegible |
+| POP-15 | Condición constitutiva indeterminada | Elegibilidad no confirmada; registrar flujo y sensibilidad | Recodificarla como cumplida/incumplida sin regla |
+| POP-16 | Accesibilidad basal A_f,0*=1 | Fuera de población de apertura τ2; cohorte distinta si procede | Mezclar mantenimiento con apertura |
+| POP-17 | Dependencia basal C_dep,0=0 pero A_f,0*=1 por ruta alternativa | Detecta discordancia y exige auditoría de ruta/medición | Inferir A_f,0*=0 desde C_dep,0 |
+| POP-18 | D_f,0 y D_f* aparecen con roles distintos | Aplica crosswalk C_dep,0 / A_f,0* / A_f,1* / D_f* | Confunde disponibilidad basal con apertura |
+| FSTAR-01 | Ruta cumple F* con identidad distinta a τ2 | Mantiene identidad distinta y substituibilidad funcional | Colapsar F* y τ2 |
+| FSTAR-02 | Ruta alternativa sin cobertura de búsqueda suficiente | F_alt,0=? | Declarar ausencia por “no encontrado” |
+| FSTAR-03 | Ruta documental E1 sin prueba mecanística/técnica | No inferir realizabilidad | Aceptar descripción como ruta accesible |
+| FSTAR-04 | Ruta accesible pero no aplicable desde S0 | Juicios separados de accesibilidad y aplicabilidad | Inferir aplicabilidad desde accesibilidad |
+| FSTAR-05 | Ruta supera H o viola restricción de seguridad | No substituible dentro de F*/H/C0 definidos | Afirmar imposibilidad universal |
+| FSTAR-06 | Evaluador conoce O/V o Z | Clasificación inválida por falta de cegamiento | Usar resultados para definir F* o alternativas |
+| CMP-15 | D1 justificado por fuente independiente .25/.20 | D1 puede considerarse para selección primaria tras decisión | Aceptar D1 solo por etiqueta “ordinario” |
+| CMP-16 | D1 sin justificación externa | D1 permanece no validado como comparador ordinario | Tratar .25/.20 como realidad del dominio |
+| CMP-17 | D2 con ausencia de provisión focal de fondo verificada | D2 puede considerarse para objetivo ausencia-vs-provisión | Asumir ausencia por diseño sin verificar fondo |
+| CMP-18 | D1/D2 con diferentes first stages/compliers | Reporte y dictamen separados | Agrupar o transportar LATE |
+
+Estos contratos son especificaciones documentales; no se han generado fixtures ni ejecutado pruebas. Para cerrar AUD-003 deben añadirse entradas, salidas, verdad oculta, versiones, tolerancias, oráculos y revisión independiente.
