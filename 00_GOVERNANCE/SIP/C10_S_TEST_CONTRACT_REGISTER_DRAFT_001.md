@@ -367,3 +367,23 @@ Estado: pruebas contractuales documentales; no implementadas ni ejecutadas.
 | DTA-08 | No circularidad | Outcome, Value, selección y ejecución no definen T_acc ni ΔT_acc |
 
 Estado: contratos de aceptación documentales; no implementados ni ejecutados. Las tolerancias y fixtures se fijarán antes de cualquier implementación.
+
+
+## 20. Contratos de clasificación causal de condiciones de τ2
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| CLS-01 | C_dep compuesto | Cada componente C_install/integrity/compat/oper tiene definición, evidencia y tiempo |
+| CLS-02 | Autorización basal | C_auth_base se distingue de Z y de autorización manipulada por política |
+| CLS-03 | Recurso | Disponibilidad ex ante se distingue de consumo/insumo de ejecución |
+| CLS-04 | Capacidad | Capacidad instalada se distingue de saturación y precondiciones de S0 |
+| CLS-05 | Información | Información técnica integrada se distingue de conocimiento/formación/mensajes |
+| CLS-06 | Dominio | Compatibilidad del objeto/dominio se distingue de precondiciones del estado |
+| CLS-07 | Aplicabilidad | A_f=1, App_f=0 es representable |
+| CLS-08 | C_other | Ninguna variable heterogénea permanece bajo un comodín sin definición |
+| CLS-09 | No intervención colateral | Cambio de C_auth/recursos/capacidad/información/conocimiento identifica paquete, no efecto aislado |
+| CLS-10 | Factibilidad q/g | Ninguna condición manipulada por g se fija simultáneamente como componente incompatible de q* |
+| CLS-11 | Cegamiento temporal | Clasificación y elegibilidad no usan selección, ejecución, Outcome ni Value |
+| CLS-12 | Escenario adversarial | Cambios colaterales activan dictamen de paquete o no identificación |
+
+Estado: contratos documentales; no implementados ni ejecutados. Los fixtures, tolerancias y adjudicación permanecen pendientes.
