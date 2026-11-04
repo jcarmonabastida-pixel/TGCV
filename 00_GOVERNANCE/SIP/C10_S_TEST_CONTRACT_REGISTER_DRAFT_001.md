@@ -864,3 +864,23 @@ Contratos de diseño; no ejecutados.
 | MDC-10 | Se elige Opción A | No inferir elección D1/D2 ni identificación de θ_A(q) |
 
 Contratos documentales; no ejecutados.
+
+
+## 42. Contratos de provisión y dependencias PROV-01…12
+
+| ID | Escenario | Aserción esperada |
+|---|---|---|
+| PROV-01 | Provisionar adaptador | B no ejecuta F1/F2/A1/A2 |
+| PROV-02 | Cambios en artefactos | B no modifica F*, dataset ni oráculo |
+| PROV-03 | Snapshots | PreB/postB/rollback cubren host, datos, permisos, red y componentes |
+| PROV-04 | Dependencias | Nodos, aristas transitivas y consumidores inventariados |
+| PROV-05 | Recursos | B no reduce recursos A1/A2/F2 en R0/R1 |
+| PROV-06 | Permisos | ACL mínima; C_auth funcional no cambia |
+| PROV-07 | Estado | Fuente/destino no alterados por B |
+| PROV-08 | Ruta alternativa | A1/A2 conservan F* pre/post B dentro de margen justificado |
+| PROV-09 | Dependencia compartida | B no modifica librerías/APIs/servicios críticos comunes |
+| PROV-10 | Rollback | No quedan residuos funcionales relevantes |
+| PROV-11 | Cobertura | Nodo/arista desconocido mantiene estado indeterminado |
+| PROV-12 | Primera etapa | C_dep no se interpreta como A_f* sin predicados restantes |
+
+Contratos documentales; no implementados ni ejecutados. El detalle de evidencias y estados está en el manifiesto B.
