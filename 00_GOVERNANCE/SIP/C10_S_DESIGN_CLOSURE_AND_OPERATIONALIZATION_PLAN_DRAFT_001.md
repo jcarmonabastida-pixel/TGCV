@@ -194,6 +194,8 @@ Tareas:
 
 
 
+# IV. Plan de trabajo: bloques 5–8
+
 ## 13. Bloque 5 — Validez de constructo y medición (P1)
 
 Tareas:
