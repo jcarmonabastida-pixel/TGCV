@@ -7141,3 +7141,48 @@ La fuente 165–168 recomienda D1 principal condicionado; DEC-C10-026 y DGP §25
 ### 70.5 Estado
 
 Propuesta de reconciliación documentada. No cierra OPEN-C10-001/003/005/007, AUD-001/004/005/011, ni los contratos CMP/POP. No selecciona D1/D2, no fija F*, no congela y no autoriza implementación, simulación o ejecución.
+
+
+---
+
+## 71. Reconciliación de snapshots estructurales, evidencia y ΔT_acc (2026-11-04)
+
+**Estado:** propuesta de armonización; no aprobada ni congelada. Artefacto: `C10_S_TRANSFORMATIONAL_SNAPSHOT_AND_DELTA_RECONCILIATION_DRAFT_001.md`.
+
+### 71.1. Hallazgo y precedencia
+
+Se detecta una tensión entre §63.7, que incluía ΔValidity en ΔT_acc*, y §§64.2/67.3/67.6 y DEC-C10-023/027, que sitúan VALID/cobertura en el plano epistémico, fuera de la verdad estructural de A_f*. Una mejora de cobertura puede descubrir una ruta preexistente sin crearla; perder evidencia no destruye por sí mismo una ruta.
+
+Se propone mantener la verdad estructural separada del paquete de evidencia. La validez semántica/operativa real de una ruta permanece en las condiciones estructurales; la validez/fiabilidad de la evidencia permanece en la medición. La formulación de §63.7 se conserva como histórico, pero su ΔValidity queda supersedida para la definición causal.
+
+### 71.2. Dos objetos
+
+Snapshot estructural verdadero:
+`S_T^*(i,b,c,t)=(U_t^*,R_t^*,C_t^*,X_t^*)`.
+
+Paquete epistémico de evidencia:
+`E_T(i,b,c,t)=(Sources,Coverage,Validity_e,Provenance,Version,Timestamp,Adjudication)`.
+
+### 71.3. Diferencias
+
+`ΔT_acc^*=Diff_{G,M}(S_T^*(t0),S_T^*(t1))=(ΔU^*,ΔR^*,ΔC^*,ΔX^*)`.
+
+`ΔE_T=Diff_E(E_T(t0),E_T(t1))=(ΔSources,ΔCoverage,ΔValidity_e,ΔProvenance,ΔVersion,ΔAdjudication)`.
+
+La evidencia/cobertura no forma parte de la tupla causal. Un cambio de ΔE_T puede modificar la clasificación observada sin cambio estructural. La verdad puede cambiar aunque el analizador emita ? por falta de evidencia.
+
+### 71.4. Correspondencia e identidad
+
+No calcular diff antes de fijar ID canónico, semántica, versiones de especificación/implementación, frontera, granularidad G y mapping M. Misma identidad semántica con nueva versión puede conservar ID y registrar cambios; cambio semántico requiere baja/alta; mapping incierto produce Match=? y diff indeterminado. Un hash distinto no implica automáticamente identidad distinta.
+
+### 71.5. Relación con variables focales
+
+Se mantienen separados C_dep*, A_f*(t), D_f*=I(A_f*(t0)=0 ∧ A_f*(t1)=1) y ΔT_acc*. h_f(ΔT_acc*)=D_f* es proyección focal bajo snapshots comparables, no equivalencia de objetos. ΔT_acc* puede cambiar sin D_f*; D_f*=0 no implica ΔT_acc*=0; ΔE_T≠0 no implica ΔT_acc*≠0.
+
+### 71.6. Contratos
+
+Se registran SNAP-01…15 en el registro de pruebas: cambios de cobertura sin cambio de sistema, pérdida de evidencia, altas/bajas de relaciones, versiones, mapping incierto, cambios no focales, apertura focal, Outcome/Value sin cambio estructural, evidencia tardía, frontera no comparable, vías de B y cambio de aplicabilidad.
+
+### 71.7. Estado
+
+La reconciliación se propone y requiere propagación global. No cierra AUD-001/004/005/007, XAUD-003/004/006 ni XSYNC-138-03/06. No fija G, catálogo, IDs/versiones, reglas de mapping, validación ni oráculos. No hay freeze, implementación, simulación ni ejecución.
