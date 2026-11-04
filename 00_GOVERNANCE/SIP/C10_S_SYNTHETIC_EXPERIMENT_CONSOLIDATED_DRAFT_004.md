@@ -5645,3 +5645,93 @@ Bajo (q_X^*), (ITT_Z) es el contraste primario de asignación en (P^*_{	au2}). (
 No se inventan ni se cierran: distribución empírica/paramétrica (P^*); variables y categorías completas de (X,H_0); inventario definitivo y umbrales de (C_c); unidad de asignación e interferencia; probabilidades de asignación; tamaño y pesos de estratos; evaluación de rutas equivalentes; ventanas temporales; protocolo de Value; reglas para indeterminación persistente; y necesidad de (q_L^*) en cada escenario adversarial.
 
 **Dictamen:** (q_X^*) queda especificado como referente común basal condicionado a elegibilidad constitutiva, dependencia focal ausente e inaccesibilidad basal. El soporte se define por historia y factibilidad de ambas políticas, sin condicionar por resultados postratamiento. Es una propuesta operacional coherente con §§44, 46 y 47; no cierra DEC-C10-012 ni autoriza ejecución.
+
+
+---
+
+# 56. Unidad experimental, unidad de asignación e interferencia: contrato candidato
+
+**Estado:** propuesta de diseño para el DGP sintético primario; OPEN-C10-005 permanece ABIERTA hasta aprobación.  
+**Base fuente:** §51.2 y §51.5 (unidad i, no interferencia como supuesto IV); contrato DGP §2; matriz S4R-15.  
+**Objetivo:** hacer explícita la unidad sobre la que se define el tratamiento y los resultados potenciales, y especificar qué hacer si hay recursos compartidos o spillovers.
+
+## 56.1. Tres unidades que no deben confundirse
+
+- **Unidad experimental (UE):** instancia sintética del sistema cuyo estado basal, espacio de transformaciones, trayectoria, Outcome y Value se generan y evalúan.
+- **Unidad de asignación (UA):** entidad a la que se asigna aleatoriamente una versión de B.
+- **Unidad de observación (UO):** entidad sobre la que se registran las medidas y snapshots. Puede haber varias observaciones temporales por UE, pero no crean nuevas unidades independientes.
+
+**Propuesta primaria:** UE = UA = una instancia sintética completa e independiente. La UO es la misma instancia repetida en tiempos T0–T9. Cada instancia recibe una sola asignación Z y una versión B durante el horizonte primario. La asignación no se realiza por transformación, trayectoria, resultado ni medición temporal.
+
+Esta propuesta es adecuada para el DGP primario aislado si y solo si las instancias no comparten recursos, agentes, información, estado, políticas adaptativas ni canales de transmisión que permitan que la asignación de una instancia afecte los resultados de otra.
+
+## 56.2. Clúster y dependencia
+
+Si varias UE comparten un recurso, agente, entorno, organización, infraestructura, presupuesto, cola de servicio, información o regla de decisión, se define un clúster (c). La independencia entre esas UE no puede suponerse por conveniencia.
+
+Hay dos diseños admisibles, que no se mezclan:
+
+1. **Asignación individual dentro de clúster:** solo si se puede justificar ausencia de interferencia entre UE del mismo clúster o modelar explícitamente la exposición cruzada. La inferencia debe respetar la dependencia residual.
+2. **Asignación por clúster:** todas las UE del clúster reciben la misma política asignada (Z_c). La UA es el clúster y el estimando primario es un contraste de política a nivel de clúster o un contraste individual ponderado con inferencia que respete la aleatorización por clúster. El tamaño efectivo depende del número de clústeres, no del número bruto de UE.
+
+La decisión entre ambos diseños requiere conocer el mecanismo concreto de B y el mapa de recursos/relaciones. No se declara que la asignación por clúster sea necesaria sin evidencia de agrupación; tampoco se declara que la asignación individual sea válida antes de auditarla.
+
+## 56.3. Resultados potenciales con interferencia
+
+Bajo no interferencia:
+
+[
+V_i(z_i),quad D_{f,i}(z_i)
+]
+
+y el ITT individual es (E[V_i(1)-V_i(0)mid P^*_{	au2}]).
+
+Si puede existir interferencia, se introduce un mapa de exposición preespecificado (G_i(mathbf Z_{-i})), basado en relaciones de recursos, agentes, comunicación o vecindad pertinentes:
+
+[
+V_i(z_i,g_i),quad D_{f,i}(z_i,g_i)
+]
+
+El mapa (G_i) debe fijarse antes de generar resultados y debe corresponder al mecanismo real de spillover. Se distinguen al menos: exposición cero, exposición a unidades tratadas, exposición a unidades control, recurso compartido saturado y exposición indeterminada. No se infiere (G_i) desde Outcome o Value.
+
+Si la exposición es parcial, se define el estimando compatible: efecto directo a exposición fija, efecto indirecto/spillover, efecto total de política o contraste de saturación. El ITT individual convencional no se conserva como si no hubiera interferencia.
+
+## 56.4. Contrato de aleatorización y positividad
+
+El diseño debe registrar, antes de asignar:
+
+- identificador UE, UA, UO y, cuando aplique, clúster;
+- marco de aleatorización, estratos/bloques y probabilidad conocida de cada asignación;
+- versión de B asignada y regla de asignación;
+- semilla/algoritmo, orden, fecha y hash del manifiesto;
+- relaciones de recursos compartidos y mapa de exposición;
+- desviaciones, reasignaciones y unidades no asignadas, sin borrado.
+
+La probabilidad de asignación positiva requerida por (q_X^*) se evalúa en la UA real. Si se aleatoriza por clúster, no basta con que cada UE tenga probabilidad marginal positiva: debe existir soporte de asignación de clúster compatible con el estimando y con los estratos definidos.
+
+## 56.5. Escenarios de interferencia y reglas de interpretación
+
+| Escenario | Mecanismo | Resultado exigido |
+|---|---|---|
+| INT-U0 | UE independientes; sin recursos ni canales compartidos | ITT individual válido bajo aleatorización y demás supuestos |
+| INT-U1 | Correlación basal por clúster, sin spillover de tratamiento | Errores/inferencia respetan clúster; no confundir correlación con interferencia |
+| INT-U2 | Recurso compartido cuya disponibilidad cambia con Z ajeno | Detectar interferencia; ITT individual simple no se etiqueta causal |
+| INT-U3 | Información/decisión/actor transmite provisión entre unidades | Modelar exposición; si no es medible, no identificación del efecto individual focal |
+| INT-U4 | Asignación aleatoria por clúster | Estimar efecto de política según unidad y esquema de aleatorización por clúster |
+| INT-U5 | Mapa de exposición incompleto o desconocido | INDETERMINATE / NO IDENTIFICADO para efectos que requieren exposición |
+| INT-U6 | B modifica recursos compartidos y afecta más de una UE | Efecto de política de clúster/paquete; no LATE individual focal sin rediseño |
+
+## 56.6. Implicaciones para ITT, IV/LATE y C10-D1
+
+- El ITT de S4-R sigue siendo efecto de asignación, pero su unidad es la UA realmente aleatorizada. Con UA individual y no interferencia puede expresarse como contraste individual; con UA clúster, debe respetar el clúster.
+- El LATE_f exige no interferencia en la versión individual convencional. Si hay interferencia, se requiere un estimando IV de exposición/cluster explícito; no se reutiliza el Wald individual.
+- La primera etapa (ITT_{D_f}) también debe estimarse en la unidad y exposición definidas.
+- El estimando general (	heta_A(q)) de C10-D1 no se sustituye por un efecto de clúster ni por ITT_Z. Si la política opera sobre recursos compartidos, la intervención causal debe redefinirse como política sobre el clúster/sistema relevante.
+
+## 56.7. Regla de decisión y datos faltantes
+
+No se acepta UE=UA por definición universal. Se acepta como configuración primaria candidata únicamente si el inventario del entorno confirma independencia entre instancias. Si aparece cualquier recurso/canal compartido relevante, se pausa la asignación individual y se decide entre clúster, diseño de saturación o declaración de no identificación.
+
+La unidad, el clúster, la exposición y las probabilidades de asignación se fijan antes de generar los resultados potenciales y antes de observar Outcome/Value. No se crean clústeres retrospectivos para obtener errores estándar convenientes.
+
+**Dictamen:** UE=UA=instancia sintética independiente es la propuesta más parsimoniosa para el DGP aislado; no es todavía una decisión aprobada ni un hecho verificado. El mapa de interferencia y la auditoría de recursos compartidos son condiciones de aceptación. OPEN-C10-005 sigue ABIERTA. No hay implementación, simulación ni ejecución.
