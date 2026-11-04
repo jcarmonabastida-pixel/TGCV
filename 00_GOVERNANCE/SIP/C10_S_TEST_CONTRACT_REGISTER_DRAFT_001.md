@@ -427,3 +427,29 @@ Estado: contratos documentales, no implementados ni ejecutados.
 | BND-12 | Dependencias externas | Dependencia no inventariada impide declarar frontera/cobertura completa |
 
 Estado: contratos documentales; no implementados ni ejecutados.
+
+
+## 23. Contratos de intervención material B
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| BACT-01 | Definición de brazos | B0 mantiene configuración basal; B1 aplica protocolo focal versionado |
+| BACT-02 | Actor y destinatario | Rol, instancia, objeto τ2, versión y tiempos identificables |
+| BACT-03 | Separación Z/B | Z solo asigna; provisión recibida e intento se registran aparte |
+| BACT-04 | Instalación | Declaración/intent no basta; identidad y configuración verificadas |
+| BACT-05 | Integridad | Hash/configuración corresponden a artefacto autorizado |
+| BACT-06 | Compatibilidad | Dependencias e interfaces cumplen contrato versionado |
+| BACT-07 | Operación | Canal técnico disponible sin exigir ejecutar τ2 |
+| BACT-08 | Primera etapa | C_dep* y A_f* derivan de componentes/predicados verificados |
+| BACT-09 | No ejecución forzada | B1 no obliga a seleccionar ni ejecutar τ2 |
+| BACT-10 | Vías colaterales | Cambio de condición no focal fuerza reclasificación como paquete |
+| BACT-11 | Incumplimiento | Fallo/parcialidad/rollback conserva asignación ITT |
+| BACT-12 | Contaminación | Provisión focal en B0 se registra sin reasignar Z |
+| BACT-13 | Indeterminación | Evidencia insuficiente conserva estado ? |
+| BACT-14 | Exclusión | Efecto directo B→Outcome/Value se representa como adversarial; no se presume ausencia |
+| BACT-15 | q y poblaciones | B0/B1 factibles en historias q_X* y elegibilidad pre-Z |
+| BACT-16 | Consistencia | Una versión definida de B corresponde a cada brazo; desviaciones versionadas |
+| BACT-17 | No interferencia | Provisión y artefactos no se transmiten entre instancias del primario |
+| BACT-18 | Revisión independiente | Compatibilidad con C10-D1/S4-R y auditoría de invariantes revisadas antes de freeze |
+
+Estado: contratos documentales, no implementados ni ejecutados.
