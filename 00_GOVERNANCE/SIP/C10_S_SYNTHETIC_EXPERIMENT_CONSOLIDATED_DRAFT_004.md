@@ -7295,3 +7295,10 @@ Se propone distinguir reloj de estudio t0–t9, profundidad de trayectoria k=0�
 Se propone R0↔S4R-A, R1↔S4R-B, R2↔S4R-C y R3↔S4R-D. R0 solo acredita ausencia alternativa con cobertura exhaustiva; R2 introduce vía colateral; R3 conserva ITT y no imputa accesibilidad por Z/intento. El artefacto de auditoría C10_S_TEMPORAL_HORIZON_AND_S4R_INTEGRATION_AUDIT_DRAFT_001.md documenta la reconciliación.
 
 No se ratifican H, duración, ventanas, F*, recursos, D1/D2 ni cobertura. AUD-005/007 permanecen abiertos. No hay ejecución ni simulación.
+
+
+# 76. Matriz operacional de predicados por paso, rama y tiempo (2026-11-05)
+
+Se crea C10_S_PATH_PREDICATE_TEMPORAL_EVIDENCE_MATRIX_DRAFT_001.md. La matriz separa ID, ACC, APP, REL, COND, AUTH, RES, DEP, BLOCK, WIN y COV; distingue verdad DGP de clasificación observada; y especifica evaluación por paso F1(S0→S2), F2(S2→SF), A1(S0→S1), A2(S1→SF). ACC/T_acc queda fijada en snapshot t3 en el fixture base; APP se evalúa desde el estado hipotético de entrada; REL por arista; recursos/ventanas/autorizaciones solo cambian intrarrama con reglas explícitas. Las ramas F y A son alternativas contrafactuales, no ejecuciones concurrentes.
+
+Se proponen clases I (invariante), S (state-dependent), T (temporal), R (recurso-dependiente), D (dinámica explícita) y E (epistémica). Por defecto no se inventan transiciones: sin regla DGP, se mantiene snapshot t3 o se clasifica indeterminado. Se añaden contratos documentales PM-01…18. No se asignan valores por escenario ni se cierran AUD-004/005/007/010/011 u OPEN-C10-001/003/005/007. No hay implementación, fixtures ejecutables, simulación ni ejecución.
