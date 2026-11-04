@@ -673,3 +673,19 @@ La recomendación no aprueba el microdominio ni cierra las auditorías causales/
 | MD-C7 | Vías colaterales | Abierto | Recursos, permisos, seguridad, coste, latencia, información, interferencia |
 
 La auditoría concluye compatibilidad potencial, no identificación ni aprobación del microdominio.
+
+
+## 19. Seguimiento — manifiesto de provisión y dependencias
+
+| ID | Punto | Estado | Criterio de cierre |
+|---|---|---|---|
+| MD-B01 | Catálogo de cambios B-M01…15 | NO INVENTARIADO | Inventario real con evidencia por superficie; “no cambia” requiere diff/cobertura |
+| MD-B02 | Arquitectura ARCH-B1 sidecar | Recomendada para evaluar | Factibilidad, frontera, versiones, hash y decisión explícita |
+| MD-B03 | Grafo dependencias focal/alternativa | Abierto | Nodos/aristas, consumidores, relaciones, versiones y cobertura |
+| MD-B04 | Recursos/contención | Abierto | Cuotas y medición por unidad/ruta; no degradación de A1/A2/F2 en R0/R1 |
+| MD-B05 | Permisos/seguridad | Abierto | ACL mínima, sin cambio de C_auth funcional; auditoría de seguridad |
+| MD-B06 | Snapshots/rollback | Abierto | S_preB/S_postB/S_rollback comparables y residuos caracterizados |
+| MD-B07 | No-afectación A1/A2 | Abierto | Prueba funcional pre/post B con margen de equivalencia justificado |
+| MD-B08 | Cobertura de universo | Abierto | Catálogo finito y cobertura; unknowns propagan Reach/F_alt=? |
+
+El documento de manifiesto contiene PROV-01…12, contratos documentales no ejecutados.
