@@ -7320,3 +7320,14 @@ Se crea C10_S_SYNTHETIC_MICRODOMAIN_OPTIONS_AND_SELECTION_RECOMMENDATION_DRAFT_0
 Bajo Opción A se propone F1 convertir configuración fuente mediante adaptador focal; F2 aplicar y validar en destino; A1 exportar mediante formato neutral preexistente; A2 importar/aplicar y validar por mecanismo nativo. F* sería conformidad con propiedades preespecificadas de esquema, integridad y compatibilidad. Son fichas ilustrativas, no seleccionadas: formatos, tolerancias, IDs, recursos y reglas permanecen abiertos.
 
 B debe provisionar el adaptador, no ejecutar conversión ni aplicación. A1/A2 deben permanecer mecanísticamente independientes en R0/R1; R2 conserva el caso de vía colateral. No se aprueba microdominio ni se fijan parámetros DGP. No se cierran AUD-004/005/007/010/011 ni OPEN-C10-001/003/005/007. Sin datos, fixtures ejecutables, simulación ni ejecución.
+
+
+# 79. Auditoría de compatibilidad causal del microdominio Opción A (2026-11-05)
+
+Se crea C10_S_MICRODOMAIN_CAUSAL_COMPATIBILITY_AUDIT_DRAFT_001.md. Dictamen: la migración de configuración software es potencialmente compatible, pero la formulación actual no demuestra una intervención autónoma sobre A_f* ni identifica θ_A(q). Una asignación Z a provisión B identifica, bajo supuestos de diseño, el ITT de esa política; no el efecto mediado por accesibilidad. Un primer estadio de C_dep no demuestra primer estadio de A_f*, D_f* ni ΔT_acc.
+
+Hallazgo crítico de separación: B provisiona/configura el adaptador; C_dep registra su estado técnico; A_f* determina accesibilidad de τ2; F1 es la operación de conversión cuando se ejecuta, no la instalación; F2 aplica/valida en destino. La descripción anterior de F1 como “habilitar y utilizar” mezclaba provisión y transformación y debe reformularse. ACC, App, selección, ejecución y F* permanecen separados.
+
+Se identifican posibles vías B→permisos, recursos, configuración fuente/destino, seguridad, latencia, costes, información, librerías/dependencias compartidas y A1/A2. Se requiere manifiesto de cambios y grafo de dependencias. A1/A2 solo son alternativa genuina si no dependen del adaptador focal ni son afectadas por B en R0/R1. Si B las afecta, R2 es vía colateral y el ITT es efecto de paquete. F* debe armonizarse con la definición histórica de §§47–51/POP §5; el oráculo común puede ser compartido si mide sin generar la ruta.
+
+D1/D2 sigue abierto; el microdominio no elige comparador. Se mantienen seis gates MD-C1…MD-C6 para B, A_f*, rutas, F*, estimandos/comparador y medición/cobertura. Opción A permanece recomendación condicionada, NO seleccionada ni aprobada. No se generan datos, implementa, simula ni ejecuta.
