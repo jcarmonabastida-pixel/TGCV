@@ -241,3 +241,14 @@ Un PASS de C10-S solo acreditaría que el protocolo sintético discrimina los es
 Se dispone de una base integrada suficiente para trabajar sin reiniciar C10-D1/C10-S: fuentes rectoras identificadas, consolidación hasta la sección 164, auditorías AUD-001…012 y XAUD-001…007, matriz S4-R y límites de recuperación 165–183. Sin embargo, los bloqueos críticos permanecen abiertos; los contratos de prueba no están completos; las fuentes originales 165–183 y XSYNC no están íntegramente recuperadas; no hay revisión independiente ni ejecución.
 
 Este documento consolida el control del trabajo y evita que se pierdan los pendientes. No declara el diseño listo para freeze, no cambia decisiones científicas y no sustituye la recuperación de fuentes primarias.
+
+
+## 12. Recuperación de la fuente conversacional 165–183 (2026-11-04)
+
+Se recibió y examinó el archivo `Notes_261104_163033.docx`, que contiene el intervalo desde la sección 165 hasta inmediatamente antes de la 184. La cobertura recuperada incluye DGP-S4R-D1/D2 (166–168), supuestos IV (169), exclusión y adversariales (170), sensibilidad δ/γ (171), LATE/heterogeneidad (172–173), perfiles y potenciales (174–175), DGP adversariales (176), estimación (177), protocolo sintético (178), Value (179–180), medición independiente (181), validez (182) y missingness/censura (183).
+
+El registro de contenido y alertas se documenta en `C10_S_RECOVERY_165_183_SOURCE_REGISTER_DRAFT_001.md`. La fuente original fue recibida y leída; la copia íntegra DOCX y la transcripción literal completa todavía no están persistidas en GitHub. Por tanto, G0 pasa de “fuente no localizada” a “fuente recibida y cobertura recuperada”, pero **no** a “persistencia íntegra verificada”.
+
+Decisiones que deben conservarse como propuestas, no aceptarse automáticamente: D1 principal condicionado y D2 contraste; D1 p0=.20/p1=.80 por provisión ordinaria posterior a la asignación con C_dep,base=0; Wald/LATE local, no ATE; δ/γ y vías alternativas pueden invalidar exclusión; Value vectorial provisional; ausencia de A/O/V no se recodifica como cero. P181/P182/P183 siguen sin ejecución y requieren normalización/cotejo de contratos.
+
+La sección 184 es solo una propuesta de siguiente paso y queda fuera de la fuente 165–183. No se declara cierre causal, aprobación del DGP, freeze ni autorización de ejecución.
