@@ -190,3 +190,12 @@ El bloque no se considera cerrado hasta que una decisión científica explícita
 8. registre revisión causal independiente y estado de aprobación.
 
 Hasta entonces, este documento es un contrato candidato de reconciliación y no una especificación congelada.
+
+
+## 10. Auditoría de compatibilidad con el microdominio Opción A (2026-11-05)
+
+La auditoría C10_S_MICRODOMAIN_CAUSAL_COMPATIBILITY_AUDIT_DRAFT_001.md concluye que la migración de configuración es potencialmente compatible, pero no identifica por sí misma θ_A(q). Z→B identifica ITT de la política de provisión bajo supuestos de diseño; la atribución a A_f* requiere políticas g1/g0 bajo q común y ausencia/separación de vías directas. C_dep first stage no equivale a A_f*, D_f* o ΔT_acc first stage.
+
+Se corrige una ambigüedad de fichas: B provisiona/configura el adaptador; C_dep mide el estado técnico; A_f* mide accesibilidad de τ2; F1 es la conversión ejecutada mediante el adaptador disponible, no su instalación; F2 aplica/valida en destino. No usar “habilitar y utilizar” como una sola definición de F1. App, ejecución y F* se mantienen separados.
+
+La instalación puede afectar configuración, permisos, recursos, seguridad, costes, latencia, información, librerías o dependencias compartidas. Se requiere manifiesto de cambios y grafo de dependencias. A1/A2 deben ser no afectadas por B en R0/R1 para sostener interpretación focal; si B las modifica, R2/vía colateral y efecto de paquete. D1/D2 permanece abierto. Recomendación condicionada, no aprobada.
