@@ -415,3 +415,19 @@ OPEN-C10-005 y XAUD-001/002 permanecen ABIERTOS. La especificación no es un tra
 | Ajuste postratamiento | REGLA DE NO AJUSTE DOCUMENTADA | Definir análisis longitudinal si hay confusión inducida |
 
 **AUD-011 y XAUD-003/004/006 permanecen abiertos.** La clasificación documental no cierra la identificación ni valida la medición.
+
+
+## 26. Política B — reconciliación D1/D2 (cierre semántico parcial)
+
+| Elemento | Estado | Pendiente |
+|---|---|---|
+| Distinción D1/D2 | RECONCILIADA DOCUMENTALMENTE | Aprobación del escenario |
+| p0=.20 / p1=.80 | ESTADO FINAL C_dep | Calibración y verificación |
+| W_attempt | D1: .25/1; D2: 0/1 | Actor, disparador y registro |
+| S_success condicional | .80 propuesto | Especificación conjunta y validación |
+| B0 sin provisión | D2 solamente | Confirmar D2 como contraste |
+| D1 como primario | PRINCIPAL CONDICIONADO | Justificar control ordinario |
+| A_f*/D_f* | No inferidos desde C_dep | Calcular desde predicados completos |
+| OPEN-C10-001/005 | ABIERTAS | Aprobación, materialización y revisión independiente |
+
+La ambigüedad semántica entre «política probabilística» y «brazo determinista» queda aclarada: las políticas regulan la probabilidad de intento y el éxito técnico es posterior; los valores .20/.80 son probabilidades de estado final C_dep. No queda aprobado el comparador ni la tasa de éxito condicional.
