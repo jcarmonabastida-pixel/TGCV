@@ -387,3 +387,23 @@ Estado: contratos de aceptación documentales; no implementados ni ejecutados. L
 | CLS-12 | Escenario adversarial | Cambios colaterales activan dictamen de paquete o no identificación |
 
 Estado: contratos documentales; no implementados ni ejecutados. Los fixtures, tolerancias y adjudicación permanecen pendientes.
+
+
+## 21. Contratos de frontera, nivel y recursos
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| SYS-01 | Capacidad vs acceso | Una transformación puede pertenecer a T_cap y no a T_acc(i) |
+| SYS-02 | Cambio de asignación | ΔT_acc(i) puede ser distinto de cero con ΔT_cap=0 |
+| SYS-03 | Cambio estructural | ΔT_cap puede ser distinto de cero sin cambiar T_acc(i) |
+| SYS-04 | Recursos compartidos | La saturación/concurrencia se refleja en disponibilidad por unidad/ventana |
+| SYS-05 | Consumo | No inferir falta de acceso desde ausencia de consumo |
+| SYS-06 | Aplicabilidad | T_acc(i)=1 y App_f(i)=0 es representable |
+| SYS-07 | Conocimiento | Conocimiento no convierte una transformación no accesible en accesible |
+| SYS-08 | No conocimiento | No conocer/no ejecutar no elimina accesibilidad respaldada |
+| SYS-09 | Interferencia | Reasignación a j puede afectar T_acc(i) si el recurso es rival |
+| SYS-10 | Frontera externa | Dependencia externa no declarada impide dictamen de cobertura completo |
+| SYS-11 | Nivel de asignación | Desajuste entre unidad de Z y unidad de A_f exige modelo multinivel |
+| SYS-12 | Agregación | No se agrega por unión/promedio sin estimando y regla predefinidos |
+
+Estado: contratos documentales, no implementados ni ejecutados.
