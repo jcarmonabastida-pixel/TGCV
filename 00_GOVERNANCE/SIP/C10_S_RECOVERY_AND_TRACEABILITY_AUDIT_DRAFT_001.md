@@ -164,3 +164,15 @@ La matriz no transforma resúmenes en fuentes originales ni cierra hallazgos por
 La cabecera histórica de la sección 3.2 conserva el corte inicial de la recuperación. Tras las nuevas incorporaciones, PR #116 contiene seis archivos modificados; su SHA head y número de commits son datos dinámicos que deben consultarse directamente en la ficha del PR, no duplicarse aquí.\n\nLa nueva búsqueda no permite afirmar que las fuentes 165–183 no existan fuera de GitHub; únicamente que no se han recuperado desde las fuentes consultadas. Para cerrar la recuperación literal se necesita la exportación original de las conversaciones o los artefactos fuente que contengan esas secciones y los hallazgos XSYNC.
 
 No se ha ejecutado código, simulación ni experimento. No se ha autorizado implementación, selección de caso real, adquisición/procesamiento de datos o preregistro. No se han modificado Core, RMA, Evidence→Claim Matrix, STATUS ni claims.
+
+
+## 11. Reconciliación causal C10-D1 ↔ S4-R y registro de decisiones (2026-11-04)
+
+La lectura íntegra de C10-D1 §§5, 17, 24–26 y 30–34 y de C10-S §§43 y 51 confirma que el ITT de la asignación a provisión no sustituye al estimando científico de accesibilidad. Se han añadido dos documentos a PR #116:
+
+- `00_GOVERNANCE/SIP/C10_S_C10D1_S4R_ESTIMAND_RECONCILIATION_DRAFT_001.md`: propone conservar `θ_A(q)` como pregunta científica C10-D1, `ITT_Z` como objetivo primario del diseño S4-R y `LATE_f` como efecto local focal condicionado a IV. Explicita que S4-R no identifica por sí solo `θ_A(q)` poblacional ni el efecto de todo `ΔT_acc`. Propone separar un DGP limpio (`p0=0`) de otro adversarial con contaminación explícita (`p0>0`) y precisar la elegibilidad basal.
+- `00_GOVERNANCE/SIP/C10_S_DECISION_LOG_DRAFT_001.md`: registra DEC-C10-001…010, decisiones abiertas y alternativas no admisibles, diferenciando propuestas de decisiones aceptadas.
+
+La matriz maestra se actualizó para reflejar esta reconciliación sin marcar como cerrados AUD/XAUD/S4-R. PR #116 se verificó con ocho archivos modificados y permanecía abierto en estado Draft. El número de commits y SHA head son dinámicos y se consultan en el propio PR.
+
+**Dictamen de esta etapa:** la jerarquía de estimandos queda reconciliada como propuesta documental coherente, no aprobada. La contradicción `p0=.20` / `C_dep,base=0` queda convertida en dos alternativas de DGP explícitas, pendientes de decisión. No se ha ejecutado simulación ni experimento.
