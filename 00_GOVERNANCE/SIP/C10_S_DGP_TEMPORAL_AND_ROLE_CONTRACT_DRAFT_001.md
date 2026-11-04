@@ -353,3 +353,18 @@ Este contrato no fija umbrales ni tolerancias, no declara validez de constructo,
 Regla: la clasificación depende del nivel, objeto, unidad, versión, historia y tiempo. Los nombres no determinan el rol. En S4-R aislado, B_g modifica solo la provisión técnica focal y C_dep; los demás predicados de acceso deben estar fijados/satisfechos antes de Z. Si la política cambia autorización, recursos, capacidad, información, conocimiento, coste, calidad u otra vía, se interpreta como paquete salvo diseño adicional.
 
 La ecuación candidata depurada se documenta en el capítulo 59 del maestro. No se cierra la definición universal de A_f*, ni AUD-011/XAUD-003/004/OPEN-C10-004.
+
+
+## 19. Nivel de sistema, unidad de análisis y recursos en la medición de T_acc
+
+**Estado:** propuesta, no aprobada. Complementa §§2–8 y 17–18.
+
+1. La accesibilidad se indexa por unidad y tiempo cuando la unidad no coincide con el sistema completo: T_acc(i,t | B_sys,B_i,S_sys,t,R_pool,t,R_i,t,C_sys,t,C_i,t,V_t,G,H).
+2. Se distingue auxiliarmente T_cap(sys,t | B_sys,S_sys,t,C_sys,t,V_t,G,H), capacidad estructural del sistema, de T_acc(i,t), disponibilidad efectiva para la unidad. En condiciones de identidad/versionado/granularidad compatibles, se espera T_acc(i,t) ⊆ T_cap(sys,t).
+3. T_cap no sustituye el T_acc del Core ni añade un tercer componente. El Core permanece Core=(S,T_acc); la descomposición aclara frontera y nivel de indexación.
+4. Fijar B_sys, unidad i, B_i, recursos compartidos R_pool, recursos asignados R_i, condiciones de sistema/unidad, instante, horizonte, granularidad y versiones.
+5. Infraestructura/capacidad nominal es nivel sistema; pool compartido requiere disponibilidad temporal y concurrencia; asignación/reserva es relación sistema-unidad; consumo durante ejecución no define acceso basal; precondiciones de S0 pertenecen a aplicabilidad.
+6. Si la disponibilidad depende de otras unidades, modelar interferencia; no asumir ausencia de interferencia. Si la asignación experimental y la medición se realizan en niveles distintos, especificar estructura multinivel.
+7. ΔT_acc(i) y ΔT_cap se registran separadamente. Cambio de capacidad no garantiza acceso de cada unidad; cambio de asignación puede modificar T_acc sin cambiar T_cap.
+8. No agregar por unión ni promedio sin estimando/regla explícitos. Outcome/Value de sistema requieren regla de agregación independiente.
+9. Pendientes: frontera, unidad, recursos, rivalidad, proveedores externos, nivel de Z/B y Outcome/Value, interferencia y agregación. No cierra AUD-010/011, XAUD-001…004 ni OPEN-C10-004.
