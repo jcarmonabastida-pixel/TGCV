@@ -6770,7 +6770,7 @@ Si el control no puede sostener ausencia de provisión, D2 no es el contraste im
 Definir, para cada escenario d en {D1,D2}, el ITT de política:
 
 [
-ITT_d = E[Vmid Z=1,D=d]-E[Vmid Z=0,D=d]
+ITT_d = E[V | Z=1, D=d] − E[V | Z=0, D=d]
 ]
 
 y análogamente para Outcome y cada dimensión de Value preespecificada. El ITT_D1 responde al cambio entre provisión ordinaria y programada; el ITT_D2 responde a provisión programada frente a ausencia de intento focal.
