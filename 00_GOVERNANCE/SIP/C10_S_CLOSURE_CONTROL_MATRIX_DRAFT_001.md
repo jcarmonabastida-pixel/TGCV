@@ -613,3 +613,19 @@ No se cierra calibración empírica ni selección primaria.
 | TEMP-06 | Duración/ventanas/caducidad | Abierto | Unidades, origen, restricciones y sensibilidad |
 
 No se cierra AUD-005/007 ni se declara H confirmado.
+
+
+## 15. Seguimiento — matriz operacional de predicados
+
+| ID | Punto | Estado | Criterio de cierre |
+|---|---|---|---|
+| PMX-01 | ACC/T_acc fijada en t3 | Propuesta para fixture base | Ratificar frontera y reglas de cambio |
+| PMX-02 | APP por estado de entrada | Especificado conceptualmente | Fichas de precondiciones para F1/F2/A1/A2 |
+| PMX-03 | REL por arista | Especificado conceptualmente | Catálogo y versión de relaciones |
+| PMX-04 | AUTH/BLOCK/WIN | Parcial | Política, ventanas, caducidad y fuentes |
+| PMX-05 | RES por ruta | Abierto | Demanda, reserva, capacidad y liberación |
+| PMX-06 | dinámica por rama | Abierto | Regla DGP y snapshots inmutables |
+| PMX-07 | COV/evidencia | Parcial | Universo, E1–E4, adjudicación y error |
+| PMX-08 | truth vs observed | Regla establecida documentalmente | Oráculo independiente y validación |
+
+La matriz no asigna valores por escenario ni cierra AUD-004/005/007/010/011.
