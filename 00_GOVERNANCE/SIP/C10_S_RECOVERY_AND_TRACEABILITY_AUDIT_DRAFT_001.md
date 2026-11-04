@@ -221,3 +221,10 @@ Verificación final de este corte: PR #116 abierto y Draft, diez archivos modifi
 El registro `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md` se amplió con POL-01…10 para convertir en pruebas discriminantes las condiciones de atribución del ITT_Z a `θ_Af(q*)`, la detección de vías directas/paquete, factibilidad y soporte, separación de q/Value, el estado no formalizado de `θ_A^dyn`, la separación de dictámenes C10-S/C10-D1, la regla δ/ε y los límites de cobertura del enumerador.
 
 Se actualizó la matriz maestra para mapear estos contratos a los hallazgos XSYNC. El mapeo no implica cierre: los tests siguen sin fixtures ejecutables, implementación, tolerancias aprobadas o ejecución.
+
+
+## 17. Contrato integrado del DGP temporal y separación de roles (2026-11-04)
+
+Se ha creado `C10_S_DGP_TEMPORAL_AND_ROLE_CONTRACT_DRAFT_001.md` en PR #116. Integra en una misma unidad la secuencia basal→asignación→política/provisión→intento→éxito→estado técnico verificado→accesibilidad focal→ΔT_acc completo→Reach/trayectorias→conocimiento/selección/ejecución→Outcome→Value. Incluye matriz de variable×momento, separación generador/analizador/evaluador, indicadores de ausencia por bloque e invariantes DGP-01…16.
+
+El contrato se propone para armonizar AUD-002, AUD-010/011 y XAUD-003…006. La matriz maestra actualiza estos hallazgos a “propuesta integrada/parcial”, no a cerrados. Siguen pendientes la revisión matemática global, el diccionario final, unidad de asignación/interferencia, F*, q*, Value, tolerancias y pruebas/fixtures.
