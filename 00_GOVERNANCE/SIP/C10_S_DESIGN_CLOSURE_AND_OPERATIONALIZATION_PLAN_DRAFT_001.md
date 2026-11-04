@@ -574,3 +574,64 @@ Continuar Bloque 3 con **contrato de identidad, versionado y correspondencia de 
 6. propagación a A_f*, D_f*, Reach_possible y pruebas SNAP.
 
 Después, integrar la matriz predicado-evidencia con los contratos de Reach_possible y trayectorias (AUD-005), sin pasar aún al DGP completo ni a ejecución.
+
+
+# X. Ejecución del plan — Bloque 3, identidad y correspondencia (2026-11-04)
+
+## 41. Reconstrucción histórica y decisión de alcance
+
+Se revisaron README.md y 00_GOVERNANCE/README.md en main, la regla HISTORICAL_RECONSTRUCTION_BEFORE_NEW_WORK_RULE_v0.1 y las secciones relevantes del maestro C10-S (§§43, 47–48, 57–58, 63–64, 70–71) y el contrato SNAP-DELTA-001.
+
+La reconstrucción confirmó que ya existían reglas parciales sobre IDs canónicos, versiones, hash, comparabilidad, frontera, granularidad y estado indeterminado. No se duplicaron. La brecha nueva era el contrato completo para distinguir identidad semántica de especificación/implementación/evento y resolver mappings 1:1, 1:N y N:1.
+
+## 42. Artefacto generado
+
+`00_GOVERNANCE/SIP/C10_S_IDENTITY_VERSION_AND_SNAPSHOT_MATCHING_CONTRACT_DRAFT_001.md`
+
+Contiene:
+- niveles TID/SID/RID/EID;
+- esquema de IDs opacos y persistentes;
+- firma semántica y regla de continuidad;
+- nueva identidad, continuidad o indeterminación;
+- tratamiento de hash, plataforma, configuración, interfaz y recursos;
+- matching jerárquico y adjudicación ciega;
+- split/merge y correspondencia composicional;
+- frontera, granularidad G y comparabilidad;
+- eventos tipados de diff;
+- implicaciones para τ2, A_f*, D_f* y ΔT_acc;
+- no filtración y quince contratos adversariales ID-01…15.
+
+## 43. Hallazgo de diseño que queda protegido
+
+La continuidad de TID no implica equivalencia de accesibilidad, calidad, coste, riesgo, política causal ni Value. A la inversa, una misma TID puede volverse accesible/inaccesible por cambios de RID, compatibilidad, autorización, recursos, dependencias o relaciones. Si τ2 cambia de identidad entre baseline y post, no se calcula D_f* como transición de la misma transformación sin redefinir ex ante el objeto y el estimando.
+
+## 44. Propagación documental
+
+Se incorporó:
+- maestro C10-S: §72;
+- contrato DGP: §31;
+- Decision Log: DEC-C10-033;
+- matriz de cierre: §11, ID-01…10;
+- registro de pruebas: §34, ID-01…15.
+
+El contrato de prueba es documental; no se crearon fixtures ejecutables ni se ejecutaron pruebas.
+
+## 45. Dictamen
+
+**Avance:** la regla de correspondencia ya no depende de intuiciones ad hoc sobre nombres, hashes o versiones. Se dispone de una propuesta explícita para identidad semántica, realización técnica, mapping y comparabilidad.
+
+**No cerrado:** faltan taxonomía aprobada, catálogo, serialización, firma/tolerancias por clase, G/frontera concretas del DGP, mapping focal τ2, oráculos, validación de errores y revisión independiente. AUD-004 y XSYNC-138-03/06 siguen abiertos.
+
+No hay aprobación, freeze, implementación, simulación ni ejecución.
+
+## 46. Próxima operación
+
+Continuar con la **integración de los predicados de accesibilidad y la cobertura de rutas en Reach_possible y trayectorias**:
+1. reutilizar los predicados constitutivos del §67 y los estados de evidencia 1/0/?;
+2. definir propagación de indeterminación por ruta, composición y horizonte;
+3. distinguir Reach_possible verdadero, observado y estimado;
+4. impedir que la falta de evidencia se convierta en ausencia de ruta;
+5. conectar T_acc/ΔT_acc y el contrato de matching con enumeración de trayectorias sin usar selección/ejecución/Outcome/Value para definir accesibilidad;
+6. diseñar pruebas adversariales y criterios de no-identificación.
+
+Este paso aborda AUD-005 y la parte correspondiente de AUD-007. No iniciar aún simulación ni ejecución.
