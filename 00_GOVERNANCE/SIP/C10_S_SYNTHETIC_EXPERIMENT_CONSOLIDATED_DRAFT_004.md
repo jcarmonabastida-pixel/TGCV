@@ -6063,3 +6063,122 @@ Las condiciones constitutivas basales delimitan factibilidad y elegibilidad; no 
 Siguen abiertos: inventario exacto de componentes de C_resource, C_capacity y C_info; definición y fuente de C_auth_base; semántica de C_domain; inventario que sustituye C_other; si capacidad/recursos forman parte de la definición del sistema o de la unidad de análisis; ventanas de vigencia y reglas de actualización; interacción entre condiciones; evidencia y adjudicación; y reconciliación de toda fórmula histórica que use C_auth como condición basal frente a las modalidades de intervención sobre autorización.
 
 **Dictamen:** se dispone de una matriz de clasificación provisional y una ecuación depurada candidata para S4-R. No se cierra AUD-011, XAUD-003/004, AUD-001/002 ni OPEN-C10-004. DEC-C10-019 queda como propuesta. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+# 60. Nivel de sistema y accesibilidad relacional: frontera, unidad y recursos
+
+**Estado:** propuesta de arquitectura de medición; no aprobada, no congelada, no implementada ni ejecutada.  
+**Dependencias:** §§2–3, 30–31, 58–59; contrato DGP §§2–8 y 17–18; XAUD-001…004; AUD-010/011.  
+**Pregunta:** ¿la accesibilidad es propiedad del sistema o del sistema en relación con una unidad y sus recursos?
+
+## 60.1. Dictamen conceptual provisional
+
+La accesibilidad no debe definirse como propiedad intrínseca y descontextualizada de un sistema, ni como atributo psicológico o conductual del usuario. Es una **propiedad relacional y situada de realizabilidad**: una transformación pertenece al espacio accesible respecto de una frontera de sistema, una configuración temporal, un contexto y un conjunto de recursos/disposiciones efectivamente disponibles para la unidad de análisis.
+
+La estructura del sistema delimita qué transformaciones puede soportar. La relación de esa estructura con una unidad, sus interfaces, asignaciones de recursos y condiciones de acceso determina cuáles de ellas están efectivamente disponibles para esa unidad. El conocimiento, la consideración, la selección y la ejecución son eventos posteriores y no constituyen accesibilidad en el contrato focal actual.
+
+Por tanto, no se trata de elegir entre “propiedad del sistema” o “propiedad del usuario”. La formulación más precisa es: **propiedad del sistema-en-relación-con-la-unidad, bajo una frontera y un contexto explícitos**. La unidad no tiene que ser una persona; puede ser una organización, equipo, subsistema, agente o entidad experimental.
+
+## 60.2. Dos niveles que no deben colapsarse
+
+Se propone distinguir:
+
+1. **Espacio de capacidad estructural del sistema**, T_cap(sys,t | B_sys, C_sys): transformaciones que la arquitectura/configuración del sistema puede soportar bajo la frontera B_sys y contexto estructural C_sys, sin asignarlas todavía a una unidad concreta.
+2. **Espacio de accesibilidad efectiva de la unidad**, T_acc(i,t | sys, B_i, R_i, C_i): transformaciones de esa capacidad que están disponibles y son realizables para la unidad i en el momento t, dadas su interfaz, autorización, recursos asignados/disponibles y condiciones contextuales pertinentes.
+
+Relación candidata: T_acc(i,t) ⊆ T_cap(sys,t).
+
+La inclusión solo se sostiene cuando ambos conjuntos usan la misma identidad/versionado, granularidad, horizonte y reglas de realizabilidad. Si una unidad puede acceder a una transformación mediante un proveedor o sistema externo, ese proveedor debe incluirse dentro de la frontera de sistema o registrarse como dependencia externa explícita; no se permite que la inclusión falle silenciosamente por una frontera ambigua.
+
+T_cap no sustituye al T_acc del Core TGCV ni se propone como cambio del Core. Es una descomposición auxiliar para evitar confundir capacidad arquitectónica con acceso efectivo de la unidad. Si el sistema se define desde el principio incluyendo la unidad y sus recursos asignados, los dos niveles pueden coincidir; esa coincidencia debe declararse, no presumirse.
+
+## 60.3. Frontera del sistema y unidad de análisis
+
+Antes de medir accesibilidad se debe fijar:
+
+- B_sys: frontera funcional y organizativa del sistema; componentes internos, servicios externos, interfaces y dependencias.
+- i: unidad de análisis y entidad a la que se atribuye la disponibilidad.
+- B_i: relación de pertenencia/acceso de la unidad al sistema (interfaz, canal, credenciales, derechos, ubicación o conexión pertinente).
+- R_pool: recursos compartidos dentro de la frontera del sistema.
+- R_i: recursos asignados o efectivamente disponibles para la unidad, con reglas de reserva, competencia, prioridad y concurrencia.
+- C_sys y C_i: condiciones estructurales y condiciones específicas de la unidad, respectivamente.
+- t: instante/snapshot y ventana de vigencia.
+- G, H: granularidad y horizonte de evaluación.
+- V: versiones de sistema, transformación, dependencias y política.
+
+La elección de unidad no es una cuestión editorial: cambia la variable medida, la población, la estructura de dependencia y el estimando. Si Z se asigna a organizaciones pero A_f se mide por persona, la estructura jerárquica y la interferencia deben declararse. No se permite mezclar niveles sin una regla de agregación y un estimando multinivel explícitos.
+
+## 60.4. Tratamiento de recursos y capacidad
+
+Los recursos no son automáticamente “del sistema” ni automáticamente “de la unidad”. Se clasifican según su mecanismo:
+
+| Recurso/condición | Nivel candidato | Tratamiento |
+|---|---|---|
+| Infraestructura instalada, licencias globales, capacidad nominal | Sistema | Delimita T_cap; no demuestra disponibilidad individual |
+| Pool compartido y capacidad libre en una ventana | Sistema/tiempo | Registrar inventario, concurrencia, reglas de cola/prioridad y disponibilidad temporal |
+| Recurso reservado/asignado a i | Relación sistema-unidad | Puede ser constitutivo de T_acc(i) si es necesario para disponer de τ2 |
+| Recurso aportado por i y requerido para τ2 | Unidad/relación | Puede ser constitutivo de acceso efectivo; distinguir existencia de consumo |
+| Recurso consumido por una ejecución | Ejecución | No usar retrospectivamente para definir accesibilidad basal |
+| Capacidad requerida por el estado S0 o carga de una instancia | Aplicabilidad/ejecución | Evaluar por separado; no colapsar con capacidad instalada |
+| Recurso externo/proveedor | Dependencia de frontera | Incluirlo en B_sys o documentar dependencia externa, disponibilidad, versión y contrato |
+
+Una capacidad nominal instalada no basta si el recurso compartido está saturado y no existe asignación o disponibilidad para la unidad durante H. A la inversa, el hecho de que una unidad no haya consumido un recurso no prueba que careciera de acceso a él.
+
+Si la disponibilidad depende de competencia entre unidades, T_acc(i) puede variar por la asignación a otras unidades. Se debe modelar interferencia/versión de exposición y no asumir SUTVA por conveniencia. Si el pool es no rival y suficiente, la disponibilidad puede ser común.
+
+## 60.5. Notación y relación con el Core
+
+Notación candidata:
+
+T_acc,i,t = T_acc(i,t | B_sys, B_i, S_sys,t, R_pool,t, R_i,t, C_sys,t, C_i,t, V_t, G, H).
+
+T_cap,sys,t = T_cap(sys,t | B_sys, S_sys,t, C_sys,t, V_t, G, H).
+
+La lista de argumentos es un contrato de indexación, no una afirmación de que todos sean predictores independientes ni una ecuación causal. Algunos pueden ser partes del estado S del Core, otros relaciones de asignación o condiciones externas. Su clasificación debe evitar doble conteo.
+
+El Core sigue siendo Core=(S,T_acc). Esta propuesta aclara que S y la frontera deben contener o referenciar la configuración relevante, mientras que T_acc se indexa por unidad y tiempo cuando la unidad no coincide con el sistema completo. No se introduce un tercer componente del Core.
+
+## 60.6. Consecuencias para ΔT_acc y el experimento C10-S
+
+ΔT_acc,i debe comparar snapshots de la misma unidad o de unidades comparables, con frontera, catálogo, granularidad, horizonte y reglas de recursos declarados. La descomposición de cambio debe distinguir:
+
+- cambios de capacidad estructural ΔT_cap;
+- cambios en interfaz/relación de acceso ΔB_i;
+- cambios en asignación o disponibilidad de recursos ΔR_i;
+- cambios en condiciones contextuales ΔC_i;
+- cambios de identidad/versión, relaciones y evidencia ya definidos en §58.
+
+Una variación de T_acc,i puede ocurrir sin cambio de T_cap (p. ej., se asigna una licencia o se habilita una interfaz). Una variación de T_cap no implica que todas las unidades reciban acceso efectivo. Si la política cambia a la vez capacidad del sistema y asignación por unidad, ambos mecanismos deben registrarse; no atribuir toda la diferencia a una sola causa.
+
+El estimando C10 debe declarar si la intervención pretende:
+(a) cambiar capacidad estructural del sistema;
+(b) cambiar la relación de acceso de unidades a capacidad ya existente;
+(c) cambiar ambos componentes como paquete.
+El escenario S4-R de habilitación técnica aislada solo puede etiquetarse así después de fijar esta elección y demostrar que los otros componentes permanecen invariantes.
+
+## 60.7. No agregación automática
+
+No se define T_acc(sys)=⋃_i T_acc(i) como medida universal. La unión solo describe si alguna unidad dispone de cada transformación y puede ocultar desigualdad, saturación y distribución del acceso. Tampoco se usa promedio de cardinalidades como sustituto del espacio transformacional.
+
+Si el outcome se mide a nivel de sistema, debe fijarse una función de agregación explícita (cobertura, distribución, mínimo, proporción de unidades elegibles, acceso ponderado u otra) y justificarla con el estimando. La agregación no forma parte de la definición básica de accesibilidad.
+
+## 60.8. Pruebas conceptuales adversariales
+
+1. Capacidad estructural presente, unidad sin credenciales: τ∈T_cap, pero τ∉T_acc(i).
+2. Capacidad estructural presente, recurso compartido saturado y sin reserva: acceso efectivo puede ser 0 o indeterminado según ventana y regla.
+3. Recurso asignado, transformación no aplicable desde S0: τ∈T_acc(i) y App_f(i)=0.
+4. Unidad conoce una transformación no accesible: conocimiento no la incorpora a T_acc(i).
+5. Transformación accesible no conocida ni ejecutada: sigue perteneciendo a T_acc(i) si la evidencia de realizabilidad es suficiente.
+6. Cambio de asignación sin cambio de arquitectura: ΔT_cap=0, ΔT_acc(i)≠0.
+7. Cambio de arquitectura sin asignación a la unidad: ΔT_cap≠0, pero ΔT_acc(i) puede ser 0.
+8. Pool rival: la asignación a j puede modificar T_acc(i); evaluar interferencia.
+9. Unidad agregada distinta de la unidad de asignación: declarar estructura jerárquica y no mezclar denominadores.
+10. Servicio externo: si no se declara en la frontera ni como dependencia, el juicio de accesibilidad queda incompleto.
+
+## 60.9. Decisiones que permanecen abiertas
+
+Se requiere decidir para el experimento: frontera B_sys; unidad de asignación y unidad de análisis; si la unidad está dentro de la frontera o es una entidad relacionada; inventario de recursos compartidos y asignados; rivalidad/concurrencia; reglas de reserva y prioridad; dependencias externas; nivel al que se manipula Z/B; nivel de medición de Outcome/Value; estructura de interferencia; y regla de agregación si procede.
+
+**Dictamen:** la accesibilidad se conceptualiza provisionalmente como propiedad relacional del sistema-en-relación-con-una-unidad, bajo frontera y contexto definidos. T_cap es un auxiliar de descomposición, no reemplaza T_acc ni altera el Core. La propuesta no cierra AUD-010/011, XAUD-001…004 ni OPEN-C10-004. No hay freeze, implementación, simulación ni ejecución.
