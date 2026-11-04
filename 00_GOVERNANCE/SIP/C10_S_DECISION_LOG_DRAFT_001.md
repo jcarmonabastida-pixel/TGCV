@@ -348,3 +348,10 @@ Se registra DEC-C10-035 como propuesta, no decisión aceptada:
 | DEC-C10-035 | Universo finito candidato para Reach | PROPUESTA | Fixture abstracto S0/S1/S2/SF; rutas focal F1→F2 y alternativa A1→A2; escenarios R0 exclusivo, R1 alternativa basal, R2 alternativa afectada y R3 fallo; G atómica y H=3 candidatos. La apertura focal no implica Reach(SF), y la ruta alternativa puede mantenerlo alcanzable. La no alcanzabilidad/ausencia de alternativa exige cobertura exhaustiva en ocho dimensiones. | Aprobación de frontera/G/H; F* y criterio GOAL_F; identidad τ2; recursos/condiciones; escenario y comparador primario; evidencia E1–E4, cobertura, oráculos y revisión independiente. |
 
 DEC-C10-035 es una topología de fixture para revisión. No canoniza TID, no selecciona D1/D2, no valida F*, no cierra AUD-005/007 y no autoriza freeze, implementación, simulación o ejecución.
+
+
+## 30. Reconciliación propuesta de horizonte y escenarios (2026-11-04)
+
+Se registra DEC-C10-036 como propuesta, no decisión aceptada: distinguir reloj del estudio t0–t9, profundidad de ruta k=0…H y tiempo/ventanas de factibilidad. H=3 se interpreta provisionalmente como profundidad máxima candidata, no duración temporal. Reach se calcula en t4 sobre snapshot t3, antes de K/Sel/Exec; dinámica por rama requiere snapshots inmutables y reglas explícitas. Crosswalk R0/R1/R2/R3 ↔ S4R-A/B/C/D. Dependencias: ratificación de H, duración/ventanas, actualización de estados hipotéticos, recursos, F*, cobertura, D1/D2 y oráculos.
+
+DEC-C10-036 no cierra AUD-005/007, no selecciona parámetros ni autoriza freeze, implementación, simulación o ejecución.
