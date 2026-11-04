@@ -7186,3 +7186,48 @@ Se registran SNAP-01…15 en el registro de pruebas: cambios de cobertura sin ca
 ### 71.7. Estado
 
 La reconciliación se propone y requiere propagación global. No cierra AUD-001/004/005/007, XAUD-003/004/006 ni XSYNC-138-03/06. No fija G, catálogo, IDs/versiones, reglas de mapping, validación ni oráculos. No hay freeze, implementación, simulación ni ejecución.
+
+
+---
+
+## 72. Contrato de identidad, versionado y correspondencia de snapshots (2026-11-04)
+
+**Estado:** propuesta operacional; no aprobada ni congelada. Artefacto: `C10_S_IDENTITY_VERSION_AND_SNAPSHOT_MATCHING_CONTRACT_DRAFT_001.md`.
+
+### 72.1. Brecha histórica concreta
+
+Se reutilizan §§43, 47–48, 57–58, 63–64 y 70–71: identidad canónica/versiones, U/R/C, comparabilidad por frontera/G/catálogo, no equivalencia por hash y estado ? ante mapping no resuelto. La brecha restante era un contrato de identidad multinivel, continuidad semántica, split/merge, granularidad y eventos diff.
+
+### 72.2. Niveles separados
+
+Se propone distinguir:
+- TID: identidad semántica de la transformación;
+- SID: versión de especificación/contrato;
+- RID: realización técnica/implementación;
+- EID: instancia o evento concreto.
+
+Una TID puede tener varias SID/RID y muchos EID. Cambiar RID no crea automáticamente una TID nueva. Cambiar la función/contrato esencial puede exigir nueva TID y relación de sucesión.
+
+### 72.3. Identidad y continuidad
+
+Los IDs son persistentes, opacos y no codifican versión, fecha, estado, brazo o resultado. Se propone firma semántica `Sig(T)=(Purpose,InputDomain,OutputDomain,CoreOperation,Preconditions,Postconditions,Invariants,Constraints,FailureSemantics)`. La continuidad requiere equivalencia contractual adjudicada; un cambio material de propósito/operación/pre-postcondiciones/invariantes exige nueva identidad; la evidencia insuficiente produce `IdentityMatch=?`.
+
+Hash, nombre, plataforma o cambio de implementación no bastan por sí solos para crear o fusionar identidad.
+
+### 72.4. Matching y granularidad
+
+Se establece jerarquía de ID exacto, alias registrado, continuidad de versión, candidato semántico y adjudicación ciega. Se prohíbe fuzzy auto-merge. Se contemplan mappings 1:N/N:1 (SPLIT/MERGE) sin equivalencia automática. Snapshots incompatibles en frontera/G/catálogo solo se comparan mediante mapping explícito a granularidad común; si no, diff parcial o `DIFF_NOT_COMPARABLE`.
+
+### 72.5. Eventos diff y relación focal
+
+Se proponen ADD, REMOVE, MODIFY_STRUCTURAL, VERSION_CHANGE, SPLIT, MERGE, REWIRE, STATE_CHANGE, UNKNOWN y OUT_OF_SCOPE. La aparición/desaparición documental no prueba alta/baja estructural sin cobertura basal/post.
+
+El matching de τ2 es requisito para D_f* basal→post. Si la identidad focal cambia, D_f* no se calcula como transición de la misma transformación sin redefinir ex ante el objeto/estimando. Cambios RID/SID pueden afectar C_dep/A_f* sin cambio de TID.
+
+### 72.6. Contratos de diseño
+
+Se registran ID-01…15 para hash, nombre, precondiciones, plataforma, split/merge, cobertura, frontera/G, recursos, ΔE_T, continuidad focal y mappings no validados. No hay fixtures ejecutables ni pruebas realizadas.
+
+### 72.7. Dictamen
+
+La propuesta completa el contrato documental de matching, pero no fija aún catálogo, serialización, clases de transformación, tolerancias, G/frontera del DGP, algoritmo confirmatorio ni oráculos. No cierra AUD-004 ni XSYNC-138-03/06. No hay freeze, implementación, simulación ni ejecución.
