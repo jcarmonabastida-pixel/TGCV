@@ -252,3 +252,37 @@ Tareas:
 **Entregable:** expediente de cierre auditable.  
 **Cierre:** ningún P0 sin disposición; cada aceptación tiene autoridad, evidencia y commit.
 
+
+
+# V. Gates y secuencia
+
+## 17. Cinco gates
+
+| Gate | Evidencia mínima | Habilita |
+|---|---|---|
+| G1 — Conceptual | Constructos, población, unidad, intervención, estimandos, DAG y decisiones | Freeze conceptual |
+| G2 — Causal | Supuestos, vías alternativas, identificación, falsadores y sensibilidad | Protocolo causal |
+| G3 — Generativo | DGP completo, ecuaciones, parámetros, distribuciones y escenarios adversariales | Freeze de especificación |
+| G4 — Medición/estadística | Validez, error, missingness, N, réplicas, precisión, δ/ε | Implementación autorizable |
+| G5 — Técnico/reproducibilidad | Código, contratos, preflight, pruebas, replay, hashes y auditoría independiente | Solicitud de autorización de ejecución |
+
+Los gates requieren evidencia, no volumen documental. Aprobar el diseño no autoriza ejecución; la autorización es una decisión separada.
+
+## 18. Orden de trabajo
+
+| Fase | Trabajo | Producto |
+|---|---|---|
+| 0 | Reconstrucción histórica, precedencia y rama base | Registro de decisiones/fuentes |
+| 1 | Estimandos, q/g, intervención, población y D1/D2 | Contrato causal |
+| 2 | Accesibilidad, alternativas, F*, ΔT_acc y medición | Contrato transformacional |
+| 3 | DGP y ecuaciones completas | Especificación generativa |
+| 4 | Validez, errores, missingness y Value | Matriz de medición |
+| 5 | Identificación, falsación y sensibilidad | Matriz causal |
+| 6 | N, réplicas, precisión y δ/ε | Plan estadístico |
+| 7 | Revisión independiente y cierre documental | Dictamen de diseño |
+| 8 | Implementación y pruebas | Paquete técnico |
+| 9 | Preflight, replay, auditoría y G5 | Solicitud de autorización |
+| 10 | Ejecución autorizada y auditoría científica | Resultados reproducibles |
+
+No dimensionar definitivamente antes de cerrar DGP/estimandos. No implementar antes de cerrar truth/observación y medición. No ejecutar fixtures o simulaciones sin autorización.
+
