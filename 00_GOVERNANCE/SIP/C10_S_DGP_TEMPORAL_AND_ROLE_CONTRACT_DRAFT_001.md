@@ -523,3 +523,16 @@ No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación mate
 6. Por tanto, el .20 de control D1 es consecuencia de q0=.25 y s=.80. No debe mantenerse constante al variar s salvo que se modifique otro mecanismo.
 7. Estas son expectativas analíticas de C_dep, no de A_f*/D_f* salvo inaccesibilidad basal, ruta única, predicados no técnicos invariantes y condiciones de medición de §67. Múltiples intentos requieren modelo secuencial; no aplicar automáticamente 1−(1−s)^n.
 8. No se selecciona fixture, no se estima potencia/tamaño muestral, no se ejecuta simulación y no se aprueba distribución confirmatoria.
+
+
+## 29. Reconciliación de población, elegibilidad y notación de apertura
+
+**Estado:** propuesta de armonización; no aprobada ni congelada. Vinculada al maestro §70 y a C10_S_POPULATION_ELIGIBILITY_AND_COMPARATOR_RECONCILIATION_DRAFT_001.md.
+
+1. Población focal de apertura de identidad: P*_{τ2}={i:E_i=1, C_dep,i0=0, A_f,i0*=0}; todas las condiciones y clasificaciones son pre-Z.
+2. Población de apertura funcional exclusiva: P*_F={i∈P*_{τ2}:F_alt,i0=0 respaldado}; por construcción es subconjunto de P*_{τ2}.
+3. La alternativa basal presente o indeterminada no excluye automáticamente de P*_{τ2}; impide confirmar pertenencia a P*_F cuando F_alt,0 no es ausencia respaldada.
+4. Se normaliza la notación nueva: C_dep,0 es disponibilidad basal técnica; A_f,0* y A_f,1* son accesibilidad verdadera basal/post; D_f*=I(A_f,0*=0 ∧ A_f,1*=1) es transición de apertura. Evitar D_f,0 para disponibilidad basal.
+5. F* se mantiene como función/capacidad funcional focal y requiere objetivo, S0, criterios de aceptación, restricciones, tolerancias, H/G/C0, recursos y evidencia E1–E4. No derivar F* de Outcome o Value.
+6. D1 y D2 son comparadores distintos. D1 requiere evidencia independiente para el régimen ordinario .25/.20; D2 requiere objetivo explícito ausencia-vs-provisión y ausencia de provisión focal de fondo. No combinar ITT ni LATE.
+7. La propuesta no fija el comparador primario, no valida .80, no cierra OPEN-C10-001/003/005/007 y no autoriza implementación, simulación o ejecución.
