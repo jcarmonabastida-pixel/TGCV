@@ -437,3 +437,28 @@ La ecuación candidata depurada se documenta en el capítulo 59 del maestro. No 
 12. No modificar .20/.80 ni asumir equivalencia entre contratos sin decisión explícita.
 
 No cierra AUD-011, XAUD-003/004/006, OPEN-C10-004/005 ni la especificación material de B. No freeze/ejecución.
+
+
+## 24. Reconciliación explícita de B: escenarios D1/D2, intento y estado final
+
+**Estado:** propuesta documental; complementa y aclara §§3.1–3.2 y 21–23, sin aprobación ni freeze.
+
+1. La discrepancia aparente se resuelve distinguiendo dos escenarios candidatos ya definidos en maestro §§53.4–54:
+   - D1: control ordinario con provisión de baja frecuencia frente a provisión programada; principal condicionado.
+   - D2: control sin provisión frente a provisión programada; contraste.
+2. Los parámetros p0=.20 y p1=.80 de §3.1 representan probabilidades objetivo del estado técnico final verificado C_dep, no probabilidades de intento W_attempt.
+3. Factorización candidata de §54:
+   | Parámetro | D1 Z=0 | D1 Z=1 | D2 Z=0 | D2 Z=1 |
+   |---|---:|---:|---:|---:|
+   | P(W_attempt=1) | .25 | 1.00 | 0 | 1.00 |
+   | P(S_success=1 | W_attempt=1) | .80 | .80 | .80 | .80 |
+   | P(C_dep=1) | .20 | .80 | 0 | .80 |
+4. El .80 condicional es una factorización propuesta algebraicamente para reproducir los estados finales; no es dato empírico ni parámetro histórico literalmente recuperado. No se presume independencia entre componentes técnicos de C_dep.
+5. La descripción de B0 como mantenimiento sin provisión focal y B1 como provisión programada en §21 corresponde a D2. No debe usarse como definición general de B0/B1 ni como descripción de D1.
+6. En D1, B_g0 es la política ordinaria de baja frecuencia; B_g1 programa el mismo procedimiento para todas las unidades elegibles. En D2, B_g0 no inicia provisión; B_g1 la programa para todas.
+7. Z asigna política; B_assigned/offered/received, W_attempt, S_success, componentes técnicos, C_dep, A_f*, D_f*, App_f y Exec_f permanecen separados.
+8. La primera etapa .60 (D1) o .80 (D2) es primero una diferencia en C_dep. Solo equivale a primera etapa de accesibilidad/apertura si los demás predicados estructurales de A_f* y la elegibilidad basal lo permiten.
+9. D1 sigue siendo principal condicionado a justificar la provisión ordinaria de control como comparador legítimo. Si no se justifica, D2 solo puede sustituirlo mediante decisión explícita y reevaluación de población/estimandos.
+10. Esta sección aclara la ambigüedad registrada en §23.10; no altera silenciosamente el texto histórico ni declara aprobadas las políticas.
+11. Permanecen abiertos: actor/disparador, recepción, hash/versión, evidencia, distribución conjunta de componentes, crossover/contaminación, calibración de A_f*, exclusión y aprobación del comparador.
+12. No freeze, implementación, simulación ni ejecución.
