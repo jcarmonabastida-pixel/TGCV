@@ -5153,3 +5153,207 @@ Pendientes antes de congelar:
 - completar revisión independiente XSYNC y resolver hallazgos abiertos.
 
 No se congela S4-R, no se implementa ni simula. Los valores y escenarios son especificaciones analíticas propuestas, no resultados experimentales.
+
+
+---
+
+# 52. Integración en el documento maestro de la recuperación conversacional 165–183
+
+**Fecha de integración:** 2026-11-04  
+**Fuente primaria examinada:** `Notes_261104_163033.docx`, recibida como archivo adjunto de conversación.  
+**Cobertura:** secciones 165–183 inclusive; la sección 184 queda fuera.  
+**Estado:** integración documental en borrador; decisiones científicas no aprobadas por el mero hecho de incorporarse; no hay ejecución experimental.
+
+Esta sección incorpora al documento maestro los desarrollos recuperados de 165–183. El registro de recuperación conserva la procedencia y las alertas de cotejo; el registro de contratos conserva el catálogo normalizado de pruebas. Esta sección es el punto integrado de lectura dentro del documento principal y no sustituye la fuente primaria original.
+
+## 52.1. Sección 165 — problema de coherencia de la primera etapa
+
+La cuestión recuperada es cómo representar una primera etapa con acceso final en control (p_0=.20) y en tratamiento (p_1=.80), manteniendo a la vez una condición de dependencia basal (C_{dep,0}=0) para la población de apertura focal.
+
+La distinción temporal esencial es entre dependencia basal antes de la asignación y dependencia/provisión final después de la asignación. (C_{dep,0}=0) no impide que el régimen de control tenga una provisión ordinaria posterior a la asignación; pero esa vía debe estar descrita en el DGP. No se puede introducir (p_0=.20) como probabilidad final sin identificar el mecanismo que lo genera.
+
+## 52.2. Secciones 166–168 — mecanismos D1 y D2
+
+Se mantienen dos construcciones candidatas, no decisiones aceptadas:
+
+| Parámetro | D1: provisión ordinaria en control | D2: sin provisión ordinaria en control |
+|---|---:|---:|
+| Intento/provisión en control (w_0) | .25 | 0 |
+| Intento/provisión en tratamiento (w_1) | 1 | 1 |
+| Probabilidad final de acceso (p_0) | .20 | 0 |
+| Probabilidad final de acceso (p_1) | .80 | .80 |
+| Primera etapa (p_1-p_0) | .60 | .80 |
+
+La cadena generativa que debe quedar explícita es:
+
+[
+Z ightarrow B ightarrow W ightarrow
+(C_{install},C_{integrity},C_{compat},C_{oper})
+ightarrow C_{dep,1}ightarrow A_f^*
+]
+
+con:
+
+[
+C_{dep,1}=C_{install}land C_{integrity}land C_{compat}land C_{oper}.
+]
+
+(A_f^*) se deriva de (C_{dep,1}) y de las demás condiciones focales (autorización basal, recursos, capacidad, información, dominio y restricciones); no se asigna directamente a partir de (Z). La variable latente común (U) puede representar propensión a completar la provisión/instalación y generar (A_f^*(z)=I(Ule p_z)), pero solo si el mecanismo de instalación y verificación implementa esa probabilidad. La independencia entre latentes es una elección del DGP, no una condición lógica de monotonicidad.
+
+La recomendación recuperada es D1 como escenario principal **condicionado** a justificar que la provisión en control pertenece al régimen comparador ordinario; D2 como contraste. En D1 no debe llamarse contaminación a una provisión que forma parte del comparador preespecificado. Sí debe registrarse crossover/contaminación si el control recibe componentes reservados al tratamiento. Instalación, integridad, compatibilidad y operatividad permanecen como componentes observables separados.
+
+## 52.3. Sección 169 — supuestos IV
+
+La interpretación IV/LATE exige auditar por separado:
+
+1. Independencia del instrumento/asignación respecto de los potenciales pertinentes.
+2. Relevancia: primera etapa distinta de cero y suficientemente informativa.
+3. Monotonicidad individual, sin defiers bajo la codificación adoptada.
+4. Exclusión para el resultado y tratamiento focales.
+5. Consistencia y versiones del tratamiento suficientemente definidas.
+6. Ausencia de interferencia o tratamiento explícito de interferencia.
+7. Medición válida de accesibilidad verdadera y resultado/Value.
+
+Ningún supuesto se considera demostrado por estar escrito en el DGP. La primera etapa positiva no prueba exclusión. La asignación aleatoria puede identificar el ITT de la política aunque no identifique el efecto focal de accesibilidad.
+
+## 52.4. Secciones 170–171 — exclusión, efectos directos y sensibilidad
+
+La fuente introduce potenciales (V_i(a,z)), con efecto directo (delta), interacción (gamma) y vías alternativas desde la asignación/provisión hacia Value. El diseño debe distinguir:
+
+- efecto de accesibilidad focal;
+- efecto directo de la asignación/provisión;
+- interacción entre accesibilidad y asignación;
+- vías por coste, calidad, seguridad, latencia u otras rutas;
+- efecto total de la política asignada.
+
+Con (delta
+e0) o vías directas no bloqueadas, el cociente de Wald no debe atribuirse exclusivamente a accesibilidad. Con interacción (gamma), el efecto focal puede depender del régimen. Las expresiones de sesgo Wald recuperadas pertenecen a un modelo simplificado y deben verificarse bajo el DGP final, en particular si hay heterogeneidad.
+
+Se propone una batería adversarial E1–E6 y análisis de sensibilidad sobre (delta) y (gamma), sesgo IV, umbrales de cambio de signo, cotas y clasificación de resultados como robustos, condicionados o insuficientes. Los rangos plausibles, tolerancias y precisión deben fijarse antes de la ejecución; los ejemplos de la fuente no son resultados.
+
+## 52.5. Secciones 172–174 — heterogeneidad, LATE y poblaciones objetivo
+
+Con heterogeneidad, el IV identifica un efecto local ponderado entre compliers inducidos por la política/instrumento estudiados. No autoriza inferencia automática al ATE ni al ATT. D1 y D2 pueden producir distintas proporciones y composiciones de compliers, y por tanto distintos LATE.
+
+Deben mantenerse diferenciadas las poblaciones:
+- (P^*_{	au2}): población con posibilidad estructural/focal de apertura de (	au2) según las condiciones basales especificadas.
+- (P^*_F): población para la que la función objetivo (F^*) carece de alternativa funcional basal, según la definición preasignación.
+
+La alternativa basal, los perfiles (X_i), la positividad/soporte y los pesos de agregación deben fijarse ex ante. La existencia de una alternativa puede modificar el efecto de abrir (	au2) sin constituir por sí sola una violación de exclusión. No debe confundirse sustitución funcional con identidad transformacional.
+
+## 52.6. Secciones 175–176 — potenciales y DGP adversariales
+
+La arquitectura de verdad del generador debe mantener separados, por unidad e historia:
+
+- (A_i(z)): accesibilidad verdadera;
+- (O_i(a,z)): Outcome;
+- (F_{alt,i}(z)): rutas alternativas y sus cambios;
+- (V_i(a,z)): Value;
+- estados basales y postasignación, con tiempos y versiones;
+- verdad latente del DGP y variables observadas disponibles al analizador.
+
+El generador puede conocer estratos y potenciales que el analizador no recibe. Las pruebas deben comprobar no filtración, temporalidad, asignación, versiones, alternativas, vías directas y casos de no identificación. Los escenarios adversariales no deben construirse de forma que hagan imposible la condición de transformación o fuercen ejecuciones incompatibles.
+
+## 52.7. Sección 177 — arquitectura de estimación
+
+El protocolo recuperado contempla, como mínimo, ITT de asignación sobre Outcome y sobre cada dimensión de Value, primera etapa en accesibilidad verdadera/observada, IV/Wald/LATE cuando los supuestos se sostengan, covariables basales preespecificadas, heterogeneidad por perfiles y alternativas, intervalos de incertidumbre, errores estándar y reglas de multiplicidad/recuperación.
+
+Los estimandos deben etiquetarse y dictaminarse por separado. ITT de política no equivale a efecto mediado por accesibilidad. El análisis de mediación requiere supuestos adicionales y tratamiento explícito de confusión postratamiento. ATE/ATT no se obtienen automáticamente del LATE. Los parámetros, población, horizonte, precisión, tolerancias y reglas inferenciales permanecen pendientes de fijación.
+
+## 52.8. Sección 178 — protocolo sintético y reproducibilidad
+
+Antes de ejecutar se debe preespecificar tamaño muestral (N), número de réplicas Monte Carlo, semillas, escenarios, parámetros, pérdidas/censura, potencia o precisión objetivo, intervalos, tolerancias, reglas de aceptación, artefactos de salida y condiciones de parada. Debe justificarse el diseño respecto de los estimandos y escenarios adversariales; no se fija aquí un (N) ni un número de réplicas por ausencia de justificación final en la fuente.
+
+La ejecución requiere autorización separada. La existencia del protocolo o de fixtures no autoriza simulación.
+
+## 52.9. Secciones 179–180 — definición y medición de Value
+
+La recomendación recuperada es mantener inicialmente Value como vector multidimensional y no imponer un índice escalar hasta justificar dimensiones, escalas, ponderaciones, compensabilidad y sensibilidad. Outcome y Value no son intercambiables. Value requiere observador, contexto, criterio y regla explícitos; su valoración debe conservar momentos antes/después y trazabilidad.
+
+La fuente considera dimensiones candidatas de calidad, seguridad, acceso, coste/eficiencia y otros componentes contextuales. La selección final y sus escalas requieren aceptación. Debe distinguirse accesibilidad de una transformación de acceso de los destinatarios a un resultado. No se permite que la definición/regla de Value se incorpore al régimen (q) de forma que cambie entre brazos.
+
+## 52.10. Sección 181 — protocolo de medición independiente
+
+A, O y V se miden con fuentes e instrumentos independientes, ventanas temporales explícitas, cegamiento cuando proceda y trazabilidad de versiones. No se define A mediante éxito de ejecución, O mediante valoración ni V mecánicamente a partir de A/O. La accesibilidad verdadera del generador se conserva separada de la medición observada del analizador.
+
+La temporalidad T0–T6 debe fijar baseline, asignación, provisión, medición de accesibilidad, aplicabilidad/selección/ejecución, Outcome y valoración. Las pruebas P181-01…12 cubren independencia de medición, circularidad, fuentes, cegamiento, temporalidad, ausencias, invariancia, reproducibilidad, no filtración y contaminación. Siguen propuestas y no ejecutadas.
+
+## 52.11. Sección 182 — validez de constructo
+
+Se incorporan al registro maestro de pruebas los criterios recuperados:
+
+| ID | Prueba | Criterio |
+|---|---|---|
+| P182-01 | Cobertura de A | Todas las condiciones constitutivas documentadas |
+| P182-02 | Circularidad de A | A no depende de O ni de V |
+| P182-03 | Especificación de O | Cada indicador tiene unidad, fuente y ventana |
+| P182-04 | Separación O/V | La valoración no sustituye automáticamente al resultado operativo |
+| P182-05 | Reproducibilidad | Valores reconstruibles desde registros |
+| P182-06 | Acuerdo interevaluador | Acuerdo y discrepancias informados |
+| P182-07 | Error en A | Falsos positivos y negativos evaluados |
+| P182-08 | Error en O/V | Escenarios de error de medición comparados |
+| P182-09 | Invariancia | Cambios de criterio entre D1/D2 detectados |
+| P182-10 | Sensibilidad de Value | Efecto de reglas alternativas informado |
+| P182-11 | Separación de datos | El analizador no recibe latentes del generador |
+| P182-12 | Trazabilidad | Versión de indicador y regla conservadas |
+
+La validez de constructo no se demuestra por completar la tabla: deben existir operacionalizaciones, instrumentos, fixtures, oráculos y evidencia de ejecución/revisión.
+
+## 52.12. Sección 183 — datos ausentes, censura e identificación
+
+Se incorporan los criterios recuperados:
+
+| ID | Prueba | Criterio |
+|---|---|---|
+| P183-01 | Taxonomía | Cada ausencia tiene categoría documentada |
+| P183-02 | Mecanismo | MCAR, MAR y MNAR evaluados |
+| P183-03 | Separación A | Desconocido no equivale a inaccesible |
+| P183-04 | Separación O | No observado no equivale a cero |
+| P183-05 | Separación V | Ausencia dimensional no implica Value nulo |
+| P183-06 | ITT | Se conserva la población aleatorizada |
+| P183-07 | Selección | Mecanismos postasignación auditados |
+| P183-08 | Mediación | Efecto de ausencia de A sobre identificación evaluado |
+| P183-09 | Censura | Censura administrativa e informativa diferenciadas |
+| P183-10 | Sensibilidad | Escenarios MAR/MNAR incluidos |
+| P183-11 | Cotas | Calculadas cuando no procede estimación puntual |
+| P183-12 | Dictamen | Estado de identificación separado por estimando |
+| P183-13 | Trazabilidad | Reglas, versiones y decisiones conservadas |
+
+Los dictámenes se emiten separadamente para ITT sobre O, ITT por dimensión de V, efecto mediado por A, LATE sobre V, efecto residual e índice agregado si se utiliza. No se convierte la ausencia de datos en cero ni se excluye automáticamente a unidades postratamiento. Si la mediación no es identificable, eso no implica necesariamente que el ITT total deje de serlo. Deben distinguirse ausencia de registro, fallo técnico, abandono, censura temporal, indefinición estructural y medición inválida; aplicar cotas/sensibilidad cuando sean defendibles y declarar no identificación cuando no lo sean.
+
+## 52.13. Integración con S4-R, C10-D1 y el resto de C10-S
+
+La recuperación refuerza y precisa la matriz S4-R de la sección 51:
+
+- S4R-A: sin alternativa funcional basal; la exclusividad queda limitada al universo sintético declarado.
+- S4R-B: alternativa basal presente y no modificada; puede reducir/modificar el efecto sin violar automáticamente exclusión.
+- S4R-C: la política modifica alternativas/coste/calidad/latencia/seguridad; el ITT sigue siendo efecto de política/paquete, pero el IV focal queda comprometido.
+- S4R-D: no cumplimiento/fallo de provisión; se separan asignación, provisión, dependencia operativa, accesibilidad y ejecución.
+
+La matriz S4-R y esta recuperación deben armonizarse con C10-D1 en población, intervención, régimen (q), políticas (g), tratamiento focal, Outcome/Value, horizonte y estimandos. El ITT de la política es el estimando primario de asignación propuesto; el IV/LATE focal es condicional a supuestos; el ITT no demuestra por sí mismo la contribución causal específica de accesibilidad. Esta integración no resuelve por sí sola AUD-001/002 ni XAUD-001/002.
+
+## 52.14. Decisiones, cuestiones abiertas y criterio de aceptación
+
+Se conservan como propuestas recuperadas, no como decisiones congeladas:
+
+1. D1 como principal condicionado y D2 como contraste.
+2. Primera etapa generada por mecanismo de provisión verificable, no asignación directa de (A_f^*).
+3. ITT de política separado de atribución focal IV/LATE.
+4. LATE no extrapolado automáticamente a ATE/ATT.
+5. Value multidimensional provisional, sin índice agregado no justificado.
+6. Medición independiente de A/O/V, con generador y analizador separados.
+7. Tratamiento explícito de missingness/censura y dictámenes por estimando.
+8. Revisión de heterogeneidad, perfiles, soporte, alternativas y vías directas.
+
+Quedan abiertos: reconciliación formal de (p_0=.20) con (C_{dep,0}=0) bajo el mecanismo D1; versión final de (B), (q), (g) y población; definición de (F^*), (q_X^*), horizonte y Value; ecuaciones de sesgo IV bajo el DGP heterogéneo; rangos (delta/gamma); tamaño muestral, réplicas y precisión; escalas y pesos de Value; contratos ejecutables y oráculos P181/P182/P183; cobertura GEN y AUD-004…008; revisión independiente y autorización de ejecución.
+
+**Criterio de estado:** recuperación e integración documental ≠ aceptación científica ≠ test implementado ≠ test ejecutado ≠ evidencia empírica ≠ freeze. Ninguna de estas transiciones se presume.
+
+## 52.15. Trazabilidad de artefactos de apoyo
+
+- `C10_S_RECOVERY_165_183_SOURCE_REGISTER_DRAFT_001.md`: inventario de procedencia, cobertura, decisiones y alertas.
+- `C10_S_RECOVERY_AND_TRACEABILITY_AUDIT_DRAFT_001.md`: actualización del estado de recuperación y límites de persistencia.
+- `C10_S_TEST_CONTRACT_REGISTER_DRAFT_001.md`: contratos normalizados, incluidos P182-01…12 y P183-01…13.
+- `C10_S_CLOSURE_CONTROL_MATRIX_DRAFT_001.md`: puertas de cierre y reconciliación de hallazgos.
+
+La copia íntegra DOCX original no está todavía persistida en el repositorio. Este capítulo es la integración en el documento maestro, no una reproducción literal íntegra de la fuente primaria. La sección 184 no se incorpora ni desarrolla aquí.
