@@ -290,3 +290,25 @@ Estado: contrato candidato definido documentalmente; fixtures, oráculos, tolera
 | QX-10 | Estimando | ITT_Z, psi_B, theta_Af, LATE_f y theta_A no se intercambian |
 
 Estado: contrato documental candidato; no calculado, implementado ni ejecutado. No se declara positividad empírica sin datos o DGP cuantificado.
+
+
+## 17. Pruebas de unidad, aleatorización e interferencia
+
+| ID | Prueba | Criterio de aceptación |
+|---|---|---|
+| UNIT-01 | Identidad de unidades | UE, UA y UO están identificadas; observaciones repetidas no se cuentan como UE independientes |
+| UNIT-02 | Independencia primaria | No hay recursos, agentes, información, infraestructura ni canales compartidos relevantes entre UE |
+| UNIT-03 | Correlación basal | Distingue correlación por clúster sin spillover de interferencia causada por Z |
+| UNIT-04 | Spillover de recurso | Cambiar Z de una unidad altera disponibilidad/resultado de otra; detecta y rechaza ITT individual simple |
+| UNIT-05 | Spillover informacional | Provisión/instrucción se transmite entre unidades; requiere mapa de exposición |
+| UNIT-06 | Aleatorización por clúster | La UA pasa a ser clúster; N e inferencia se basan en clústeres y probabilidades correctas |
+| UNIT-07 | Exposición parcial | Potenciales y estimandos incorporan G_i(Z_-i); separa efecto directo/indirecto/total |
+| UNIT-08 | Exposición desconocida | Devuelve INDETERMINATE/NO IDENTIFIED, no fuerza supuesto SUTVA |
+| UNIT-09 | Positividad | Comprueba probabilidad positiva en unidad realmente aleatorizada y soporte de exposición |
+| UNIT-10 | LATE bajo interferencia | Rechaza Wald individual como LATE_f si no interferencia no se sostiene |
+| UNIT-11 | Integridad de asignación | Registra semilla, algoritmo, bloque/estrato, versión B, probabilidades y desviaciones |
+| UNIT-12 | Tamaño efectivo | Distingue N de UE, N de UA/clústeres y observaciones longitudinales |
+| UNIT-13 | No clúster retrospectivo | Prohíbe definir agrupación después de observar Outcome/Value para ajustar errores |
+| UNIT-14 | Cambio de unidad | Si cambia UE/UA, exige recalcular población, estimando, qX, soporte, N y protocolo |
+
+Estado: contratos propuestos, no implementados ni ejecutados.
