@@ -283,3 +283,18 @@ El .80 de éxito condicional es una factorización propuesta, no evidencia empí
 D1 conserva estatus de principal condicionado a justificar el comparador ordinario. D2 es la alternativa de control sin provisión; no se sustituye uno por otro sin decisión explícita. La definición de §21 como B0 sin provisión/B1 provisión se restringe a D2. Los parámetros .20/.80 de DGP §3.1 se interpretan como estados finales C_dep, no intentos.
 
 Esta reconciliación es propuesta, no decisión aceptada. OPEN-C10-001/005 siguen abiertos; no freeze ni ejecución.
+
+
+## 18. Interpretación de estimandos bajo la adjudicación provisional D1/D2
+
+La sección 17 reconcilia la semántica de los escenarios, pero no selecciona el escenario primario. Se añade la siguiente regla de interpretación:
+
+- D1 estima el contraste de política incremental entre provisión ordinaria de baja frecuencia y provisión programada. Su legitimidad como comparador primario depende de justificar ex ante que .25 intentos/.20 estado final representa el régimen ordinario de la población objetivo.
+- D2 estima el contraste entre ausencia de intento focal y provisión programada. Es el candidato preferente provisional para el objetivo sintético mecanístico de apertura focal mientras no exista evidencia que justifique D1.
+- ITT_D1 e ITT_D2 son estimandos distintos. No se agrupan ni se promedian como un único efecto.
+- La primera etapa debe estimarse para C_dep, A_f,post*, D_f y ΔT_acc completo por escenario. C_dep no sustituye accesibilidad ni apertura.
+- Los Wald/LATE pueden corresponder a estratos de cumplidores diferentes entre D1 y D2; no se transportan ni agrupan automáticamente.
+- La provisión ordinaria incluida en B_g0^D1 no es contaminación. Crossover es recepción fuera de la política/version asignada.
+- La asignación identifica el ITT de la política, no demuestra por sí sola exclusión ni atribución causal exclusiva a accesibilidad.
+
+Estado: recomendación provisional, no decisión aprobada. La selección primaria sigue ABIERTA; OPEN-C10-001/005 continúan abiertas.
