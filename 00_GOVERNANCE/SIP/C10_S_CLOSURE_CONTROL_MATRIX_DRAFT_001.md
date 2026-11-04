@@ -338,3 +338,17 @@ No se declara validez de constructo, aceptación científica, freeze ni autoriza
 | OPEN-C10-004 | ABIERTA | Definición empírica, estándares, cobertura, umbrales y validación |
 
 La matriz no aprueba la ecuación depurada ni cierra constructos. La modalidad A continúa siendo la candidata preferida; cualquier manipulación de autorización, recursos, capacidad, información o conocimiento exige identificar vías adicionales o declarar efecto de paquete.
+
+
+## 21. Nivel sistema/unidad — cierre parcial
+
+| Hallazgo | Estado | Pendiente |
+|---|---|---|
+| AUD-010 unidad×variable×tiempo | PROPUESTA PARCIAL; ABIERTO | Fijar unidad, nivel Z/B, estructura jerárquica, interferencia y roles temporales |
+| AUD-011 clasificación C_c/L | PROPUESTA PARCIAL; ABIERTO | Confirmar frontera, recursos, predicados mixtos y niveles |
+| XAUD-001 régimen q/políticas g | ABIERTO / CRÍTICO | Definir si g cambia capacidad estructural, relación de acceso o ambas; contrafactuales factibles |
+| XAUD-002 intervención autónoma A_f | ABIERTO | Precisar política físicamente realizable y vías colaterales |
+| XAUD-003/004 | PROPUESTA PARCIAL; ABIERTO | Aplicar la distinción de niveles a Acc/App/Exec y Z/B/C_dep/A_f |
+| OPEN-C10-004 | ABIERTA | Operacionalizar frontera, recursos, evidencia, cobertura y validación |
+
+La distinción T_cap/T_acc(i) es auxiliar y no cambia el Core. No se aprueba todavía la ecuación de §59 ni se declara identificada la contribución causal.
