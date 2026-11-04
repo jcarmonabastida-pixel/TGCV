@@ -658,3 +658,18 @@ La auditoría histórica de fichas no cierra las fichas sustantivas.
 | MD-06 | Recursos/ventanas/IDs | Abierto | Fichas versionadas y valores justificados |
 
 La recomendación no aprueba el microdominio ni cierra las auditorías causales/medición.
+
+
+## 18. Seguimiento — compatibilidad causal del microdominio
+
+| ID | Punto | Estado | Criterio de cierre |
+|---|---|---|---|
+| MD-C1 | Manifiesto de B | Abierto | Cambios exhaustivos, reversibilidad, recursos, permisos y prueba de no ejecución de F1/F2 |
+| MD-C2 | Primera etapa A_f* | Abierto | Medir A_f* por separado de C_dep y D_f* |
+| MD-C3 | Identidad/roles F1/F2 | Reformulación requerida | B/provisión separada de F1/conversión; contratos entrada/salida |
+| MD-C4 | Independencia A1/A2 | Abierto | Grafo de dependencias y prueba de no afectación en R0/R1 |
+| MD-C5 | F* y oráculo | Abierto | Armonización con POP §5; criterios y oráculo ciegos, no circulares |
+| MD-C6 | Estimandos/D1-D2 | Abierto | g0/g1, q, población, Value, horizonte y comparador justificados |
+| MD-C7 | Vías colaterales | Abierto | Recursos, permisos, seguridad, coste, latencia, información, interferencia |
+
+La auditoría concluye compatibilidad potencial, no identificación ni aprobación del microdominio.
