@@ -222,3 +222,33 @@ Tareas:
 **Entregable:** matriz de identificación, amenazas, falsadores y resultados admisibles.  
 **Cierre:** el diseño puede concluir no-identificación o evidencia adversa.
 
+
+
+## 15. Bloque 7 — Dimensionamiento y reglas estadísticas (P1/P2)
+
+Tareas:
+1. Justificar N, asignación, escenarios y réplicas.
+2. Potencia, precisión, cobertura y error Monte Carlo.
+3. Primeras etapas débiles, heterogeneidad, missingness e interferencia.
+4. Definir δ de relevancia y ε de equivalencia con fundamento sustantivo.
+5. Reglas bilaterales/direccionales, intervalos, equivalencia e inconclusión.
+6. Revisar N=2.000 y 1.000 réplicas como candidatos, no decisiones.
+
+**Entregable:** plan estadístico preespecificado.  
+**Cierre:** discrimina relevancia, equivalencia, daño e insuficiencia con precisión justificada.
+
+## 16. Bloque 8 — Auditoría, contratos y gobernanza (transversal)
+
+Tareas:
+1. Disponer AUD-001…012, XAUD-001…007 y XSYNC-01…10 con evidencia por ID.
+2. Reconciliar maestro, DGP, Decision Log, matriz y test register.
+3. Integrar fuente 165–183 y P182/P183.
+4. Revisión matemática y causal independiente registrada.
+5. Resolver rama base PR #116 y secuencia de integración.
+6. Verificar hashes, versiones, trazabilidad y regla de no propagación.
+7. Convertir contratos críticos en pruebas ejecutables; preflight/replay/auditoría.
+8. Mantener PR Draft hasta satisfacer gobernanza.
+
+**Entregable:** expediente de cierre auditable.  
+**Cierre:** ningún P0 sin disposición; cada aceptación tiene autoridad, evidencia y commit.
+
