@@ -644,3 +644,17 @@ La matriz no asigna valores por escenario ni cierra AUD-004/005/007/010/011.
 | TC-07 | Microdominio | No seleccionado | Propuesta neutral explícita y revisión/decisión |
 
 La auditoría histórica de fichas no cierra las fichas sustantivas.
+
+
+## 17. Seguimiento — selección de microdominio
+
+| ID | Punto | Estado | Criterio de cierre |
+|---|---|---|---|
+| MD-01 | Comparación de microdominios | Completada como análisis documental | Revisión independiente de criterios y sesgos |
+| MD-02 | Opción A: migración de configuración | Recomendada, no seleccionada | Decisión explícita del diseño |
+| MD-03 | F* técnico | Borrador conceptual | Propiedades, tolerancias y oráculo independientes de O/V |
+| MD-04 | Independencia A1/A2 | Hipótesis de diseño | Demostrar separación mecanística respecto de F1/F2 |
+| MD-05 | B vs ejecución | Separación conceptual | Especificación de protocolo/tiempos sin ejecución de transformaciones por B |
+| MD-06 | Recursos/ventanas/IDs | Abierto | Fichas versionadas y valores justificados |
+
+La recomendación no aprueba el microdominio ni cierra las auditorías causales/medición.
