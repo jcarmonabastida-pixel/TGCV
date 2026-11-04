@@ -507,3 +507,70 @@ Los contratos nuevos son documentales; no se han generado fixtures ni ejecutado 
 ## 34. Próxima operación
 
 Continuar con **Bloque 3 — accesibilidad, alternativas y ΔT_acc**, reutilizando el contrato técnico de §§67–70 y DGP §§26–29. La operación deberá formalizar la matriz de predicados ID/REL/COND/AUTH/RES/DEP/BLOCK, estados 1/0/?, snapshots, versiones, cobertura, relación entre C_dep/A_f*/D_f*/ΔT_acc y errores de medición, sin volver a calibrar s=.80 como si fuera dato empírico.
+
+
+# IX. Ejecución del plan — Bloque 3, subbloque de snapshots y ΔT_acc (2026-11-04)
+
+## 35. Auditoría de reutilización previa
+
+Antes de generar un artefacto nuevo se comprobó que el maestro ya contenía:
+- §63.7: snapshot y ΔT_acc estructurado;
+- §64.2–64.5: clasificación temporal-causal, reloj y no ajuste postratamiento;
+- §67.3–67.6: predicados completos, VALID epistémico y no filtración;
+- §§68–69: distribución conjunta de 16 patrones, fixtures y propagación analítica;
+- DGP §§26–29 y contratos ACC/JNT/FIX.
+
+Por tanto, no se recreó la matriz de predicados ni la calibración .80. Se realizó una auditoría de coherencia entre lo ya documentado.
+
+## 36. Hallazgo crítico
+
+La auditoría detectó una contradicción no resuelta: §63.7 incluía ΔValidity en la tupla causal ΔT_acc*, mientras §§64/67 y DEC-C10-023/027 declaran que VALID/cobertura es epistémico y no pertenece a la verdad estructural de A_f*.
+
+Esto podía convertir un cambio de cobertura documental en un supuesto cambio real de accesibilidad. Ejemplo: descubrir en t1 una ruta que ya existía en t0 no significa que la política la haya creado.
+
+## 37. Resolución propuesta y artefactos
+
+Nuevo artefacto:
+`00_GOVERNANCE/SIP/C10_S_TRANSFORMATIONAL_SNAPSHOT_AND_DELTA_RECONCILIATION_DRAFT_001.md`
+
+Propuesta:
+- snapshot estructural verdadero S_T*=(U*,R*,C*,X*);
+- paquete de evidencia E_T separado;
+- ΔT_acc*=(ΔU*,ΔR*,ΔC*,ΔX*);
+- ΔE_T registra fuentes, cobertura, validez epistémica, procedencia, versión y adjudicación;
+- validez estructural real permanece en condiciones/relaciones; validez de evidencia no entra en ΔT_acc*;
+- identidad, versión, frontera, granularidad y mapping deben resolverse antes del diff;
+- D_f* es proyección focal de ΔT_acc*, no equivalente al cambio completo.
+
+La expresión de §63.7 se conserva como histórico, pero ΔValidity queda propuesta como supersedida para la definición causal. No se borró ni reescribió silenciosamente la fuente.
+
+## 38. Propagación documental
+
+Se incorporó:
+- maestro C10-S: §71;
+- contrato DGP: §30;
+- Decision Log: DEC-C10-032;
+- matriz de cierre: §10, SNAP-01…07;
+- registro de pruebas: §33, SNAP-01…15.
+
+Los contratos siguen siendo documentales; no hay fixtures ejecutables ni resultados de prueba.
+
+## 39. Dictamen del subbloque
+
+**Avance:** se identificó y resolvió en propuesta una conflación importante entre cambio estructural y cambio de evidencia. Esto mejora la validez de constructo de ΔT_acc y evita atribuir a la intervención cambios debidos únicamente a cobertura o descubrimiento.
+
+**No cerrado:** AUD-004 continúa abierto; también AUD-001/005/007, XAUD-003/004/006 y XSYNC-138-03/06. Falta catálogo/IDs, reglas de equivalencia entre versiones, frontera/G, mapping, truth/observed por componente, oráculos, tolerancias y revisión independiente.
+
+No hay aprobación, freeze, implementación, simulación ni ejecución.
+
+## 40. Próxima operación del plan
+
+Continuar Bloque 3 con **contrato de identidad, versionado y correspondencia de snapshots**:
+1. catálogo y esquema de IDs para transformaciones, relaciones, condiciones y dependencias;
+2. reglas de continuidad semántica frente a cambio de identidad;
+3. mapping de versiones y granularidad;
+4. reglas de diff para altas, bajas, reconfiguración y cambios de estado;
+5. comparación basal/post y tratamiento de snapshots no comparables;
+6. propagación a A_f*, D_f*, Reach_possible y pruebas SNAP.
+
+Después, integrar la matriz predicado-evidencia con los contratos de Reach_possible y trayectorias (AUD-005), sin pasar aún al DGP completo ni a ejecución.
