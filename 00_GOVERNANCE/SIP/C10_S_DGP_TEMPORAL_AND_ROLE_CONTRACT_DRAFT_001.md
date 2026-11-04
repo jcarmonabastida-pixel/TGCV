@@ -332,3 +332,24 @@ Se reconcilian dos poblaciones: P*_τ2 estudia apertura de identidad focal y no 
 10. **Pendientes.** Clasificación de predicados, definición/versionado de τ2, estándares E1–E4, adjudicación, concordancia, tamaño de validación, error diferencial, cobertura y reglas de correspondencia de snapshots siguen abiertos. AUD-004, XAUD-003/004 y OPEN-C10-004 no se cierran.
 
 Este contrato no fija umbrales ni tolerancias, no declara validez de constructo, no autoriza freeze, código, simulación ni ejecución.
+
+
+## 18. Matriz provisional de clasificación de condiciones de τ2
+
+**Estado:** propuesta, no aprobada. Complementa §§2–8 y 17.
+
+| Condición | Papel candidato | Regla de separación |
+|---|---|---|
+| C_install, C_integrity, C_compat, C_oper | Componentes técnicos de C_dep y condiciones constitutivas de realizabilidad focal | Verificar cada componente; intento, instalación declarada y operación comprobada no son equivalentes |
+| C_auth_base | Autorización constitutiva basal de acceso | Mantener fijada/satisfecha en S4-R modalidad A; si B la manipula, el tratamiento es política de autorización y puede abrir vías adicionales |
+| C_resource | Acceso si es disponibilidad ex ante persistente; aplicabilidad/ejecución si es insumo consumido por instancia | Descomponer disponibilidad, asignación, demanda y consumo |
+| C_capacity | Acceso si es capacidad instalada/slots ofrecidos; aplicabilidad si es margen requerido por S0/carga puntual | Separar stock, disponibilidad por unidad/tiempo y precondición |
+| C_info | Acceso solo si es información técnica integrada que habilita invocación; conocimiento/formación/mensajes son mediadores de conocimiento/consideración | Separar configuración técnica de información al agente |
+| C_domain | Acceso si es compatibilidad del dominio/objeto con τ2; aplicabilidad si es precondición del estado S0 | Separar clase de objeto de estado concreto |
+| C_other | No admisible como comodín | Descomponer en predicados identificados, temporales, verificables y causalmente clasificados |
+| S0/precondiciones | Aplicabilidad App_f | No incorporarlas a A_f* por defecto |
+| K/consideración/selección/ejecución | Eventos posteriores separados | No definen accesibilidad |
+
+Regla: la clasificación depende del nivel, objeto, unidad, versión, historia y tiempo. Los nombres no determinan el rol. En S4-R aislado, B_g modifica solo la provisión técnica focal y C_dep; los demás predicados de acceso deben estar fijados/satisfechos antes de Z. Si la política cambia autorización, recursos, capacidad, información, conocimiento, coste, calidad u otra vía, se interpreta como paquete salvo diseño adicional.
+
+La ecuación candidata depurada se documenta en el capítulo 59 del maestro. No se cierra la definición universal de A_f*, ni AUD-011/XAUD-003/004/OPEN-C10-004.
