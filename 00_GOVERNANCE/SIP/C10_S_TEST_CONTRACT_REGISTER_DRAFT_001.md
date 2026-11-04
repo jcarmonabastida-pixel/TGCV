@@ -585,3 +585,26 @@ Estado: contratos documentales; no implementados ni ejecutados.
 | ACC-20 | No circularidad | Outcome/Value/selección/ejecución no definen A_f* ni predicados técnicos |
 
 Estado: contratos propuestos; fixtures no implementados ni ejecutados.
+
+
+## 29. Contratos de distribución conjunta y sensibilidad
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| JNT-01 | Soporte 16 patrones | La distribución contiene exactamente 16 celdas no negativas y suma 1 |
+| JNT-02 | Éxito conjunto | s coincide con p1111, no con un producto implícito de marginales |
+| JNT-03 | No identificación | Dos tablas distintas con mismo s y fallos parciales distintos son aceptadas como DGP distintos |
+| JNT-04 | Fréchet | Marginales y s respetan límites de Fréchet |
+| JNT-05 | Independencia explícita | Producto de marginales solo se utiliza en fixture que declara independencia |
+| JNT-06 | Choque común | Fixture de dependencia positiva extrema reproduce el patrón declarado |
+| JNT-07 | Fallo parcial | Fixtures con uno/dos/tres componentes fallidos conservan sus patrones |
+| JNT-08 | Bottleneck | La sensibilidad puede variar el componente limitante |
+| JNT-09 | Heterogeneidad | Estratos basales tienen distribuciones explícitas y no usan mediadores post-Z para definir asignación |
+| JNT-10 | Deriva/versiones | Distribuciones de versiones/periodos no equivalentes no se agrupan implícitamente |
+| JNT-11 | Sensibilidad s | La malla exploratoria se distingue de primeras etapas por brazo |
+| JNT-12 | Reporte D1/D2 | Tablas, marginales y fallos se informan por escenario |
+| JNT-13 | No filtración | Tabla, parámetros y truth no llegan al analizador |
+| JNT-14 | Reintentos | Dependencia entre intentos/orden/rollback se registra explícitamente |
+| JNT-15 | Reproducibilidad | Semilla, versión, parámetros y tabla permiten reconstruir cada réplica |
+
+Estado: contratos propuestos; fixtures no implementados ni ejecutados.
