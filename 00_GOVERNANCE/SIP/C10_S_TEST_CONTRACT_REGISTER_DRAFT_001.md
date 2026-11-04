@@ -407,3 +407,23 @@ Estado: contratos documentales; no implementados ni ejecutados. Los fixtures, to
 | SYS-12 | Agregación | No se agrega por unión/promedio sin estimando y regla predefinidos |
 
 Estado: contratos documentales, no implementados ni ejecutados.
+
+
+## 22. Contratos de unidad, frontera e intervención primaria
+
+| ID | Prueba | Criterio de aceptación propuesto |
+|---|---|---|
+| BND-01 | Frontera completa | Cada dependencia necesaria de τ2 está dentro de B_sys o declarada externa con versión/contrato |
+| BND-02 | Unidad primaria | UE=UA=i; UO son medidas repetidas, no unidades nuevas |
+| BND-03 | Niveles | T_cap=T_acc solo si no hay subunidades con acceso diferenciado y la frontera lo justifica |
+| BND-04 | Asignación | Z asigna B; Z no se interpreta como provisión, accesibilidad ni ejecución |
+| BND-05 | Política material | B tiene acción técnica focal, versión, actor, destinatario, tiempo y mecanismo verificables |
+| BND-06 | Vías colaterales | Cambio de autorización/recursos/capacidad/conocimiento/coste/calidad activa dictamen de paquete |
+| BND-07 | q_X* | q_X* define historia basal; no fuerza condiciones post-Z ni fija una variable manipulada por B |
+| BND-08 | Soporte | Ambas políticas factibles y con probabilidad positiva en cada historia basal objetivo |
+| BND-09 | Población | P*_τ2 y P*_F se determinan pre-Z; no se filtra por cumplimiento o resultados |
+| BND-10 | No interferencia | No hay recursos, agentes, información ni canales compartidos entre instancias primarias |
+| BND-11 | Adversarial | Spillovers fuerzan clúster/exposición y estimando compatible; no ITT individual ingenuo |
+| BND-12 | Dependencias externas | Dependencia no inventariada impide declarar frontera/cobertura completa |
+
+Estado: contratos documentales; no implementados ni ejecutados.
